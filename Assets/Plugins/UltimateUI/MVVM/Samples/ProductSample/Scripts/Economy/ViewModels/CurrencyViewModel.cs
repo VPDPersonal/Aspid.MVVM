@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using UltimateUI.MVVM.ViewModels;
 using UltimateUI.MVVM.Samples.ProductSample.Economy.Data;
 using UltimateUI.MVVM.Samples.ProductSample.Economy.Models;
@@ -8,7 +9,8 @@ using UltimateUI.MVVM.Samples.ProductSample.Economy.Models;
 // ReSharper disable once CheckNamespace
 namespace UltimateUI.MVVM.Samples.ProductSample.Economy.ViewModels
 {
-    public partial class CurrencyViewModel : IViewModel, IDisposable
+    
+    public partial class CurrencyViewModel : IDisposable
     {
         [Bind] private Sprite _icon;
         [Bind] private int _currency;
@@ -33,11 +35,11 @@ namespace UltimateUI.MVVM.Samples.ProductSample.Economy.ViewModels
         }
         
         private void UpdateIcon() =>
-            _icon = _currencyViewDataCollection.GetIcon(_currencyType, _currency);
+            Icon = _currencyViewDataCollection.GetIcon(_currencyType, Currency);
         
         private void OnCurrencyChanged(int currency)
         {
-            _currency = currency;
+            Currency = currency;
             UpdateIcon();
         }
         
@@ -47,7 +49,7 @@ namespace UltimateUI.MVVM.Samples.ProductSample.Economy.ViewModels
         }
     }
     
-    public partial class CurrencyViewModel
+    public partial class CurrencyViewModel : IViewModel
     {
         private event Action<Sprite> IconChanged;
         private event Action<int> CurrencyChanged;
@@ -55,16 +57,27 @@ namespace UltimateUI.MVVM.Samples.ProductSample.Economy.ViewModels
         private Sprite Icon
         {
             get => _icon;
-            set => ViewModelUtility.SetValue(ref _icon, value, IconChanged);
+            set
+            {
+                if (ViewModelUtility.SetField(ref _icon, value)) 
+                    IconChanged?.Invoke(_icon);
+            }
         }
         
         private int Currency
         {
             get => _currency;
-            set => ViewModelUtility.SetValue(ref _currency, value, CurrencyChanged);
+            set
+            {
+                if (ViewModelUtility.SetField(ref _currency, value))
+                    CurrencyChanged?.Invoke(_currency);
+            }
         }
         
-        public virtual IReadOnlyDictionary<string, Action<IReadOnlyCollection<IBinder>>> GetBinds()
+        IReadOnlyDictionary<string, Action<IReadOnlyCollection<IBinder>>> IViewModel.GetBindMethods() =>
+            GetBindMethods();
+        
+        protected virtual Dictionary<string, Action<IReadOnlyCollection<IBinder>>> GetBindMethods()
         {
             return new Dictionary<string, Action<IReadOnlyCollection<IBinder>>>
             {
@@ -73,7 +86,10 @@ namespace UltimateUI.MVVM.Samples.ProductSample.Economy.ViewModels
             };
         }
         
-        public virtual IReadOnlyDictionary<string, Action<IReadOnlyCollection<IBinder>>> GetUnbinds()
+        IReadOnlyDictionary<string, Action<IReadOnlyCollection<IBinder>>> IViewModel.GetUnbindsMethods() =>
+            GetUnbindsMethods();
+        
+        protected virtual Dictionary<string, Action<IReadOnlyCollection<IBinder>>> GetUnbindsMethods()
         {
             return new Dictionary<string, Action<IReadOnlyCollection<IBinder>>>
             {

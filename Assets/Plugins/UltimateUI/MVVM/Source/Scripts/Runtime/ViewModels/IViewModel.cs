@@ -6,8 +6,8 @@ namespace UltimateUI.MVVM.ViewModels
 {
     public interface IViewModel
     {
-        public IReadOnlyDictionary<string, Action<IReadOnlyCollection<IBinder>>> GetBinds();
+        public IReadOnlyDictionary<string, Action<IReadOnlyCollection<IBinder>>> GetBindMethods();
         
-        public IReadOnlyDictionary<string, Action<IReadOnlyCollection<IBinder>>> GetUnbinds();
+        public IReadOnlyDictionary<string, Action<IReadOnlyCollection<IBinder>>> GetUnbindsMethods();
     }
 }

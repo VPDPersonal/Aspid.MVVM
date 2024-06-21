@@ -30,15 +30,15 @@ namespace UltimateUI.MVVM.Samples.ProductSample
             BindViewAndViewModel(_emeraldView, emeraldsViewModel);
         }
         
-        private void BindViewAndViewModel(IView view, IViewModel viewModel)
+        private static void BindViewAndViewModel(IView view, IViewModel viewModel)
         {
-            var binds = viewModel.GetBinds();
+            var binds = viewModel.GetBindMethods();
             var binders = view.GetBinders();
             
             foreach (var binder in binders)
             {
-                if (binds.ContainsKey(binder.Key))
-                    binds[binder.Key]?.Invoke(binder.Value);
+                if (binds.TryGetValue(binder.Key, out var bind))
+                    bind?.Invoke(binder.Value);
             }
         }
     }

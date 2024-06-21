@@ -1,10 +1,12 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 // ReSharper disable once CheckNamespace
 namespace UltimateUI.MVVM.Samples.ProductSample.Economy.Models
 {
-    public class Wallet
+    public class Wallet : IEnumerable<(CurrencyType, int)>
     {
         private readonly Dictionary<CurrencyType, int> _currency;
         private readonly Dictionary<CurrencyType, Action<int>> _currencyChangedEvents;
@@ -57,5 +59,11 @@ namespace UltimateUI.MVVM.Samples.ProductSample.Economy.Models
         {
             if (coins < 0) throw new ArgumentException($"Currency can't be less than 0; Currency = {coins}");
         }
+        
+        IEnumerator IEnumerable.GetEnumerator() =>
+            GetEnumerator();
+        
+        public IEnumerator<(CurrencyType, int)> GetEnumerator() =>
+            _currency.Select(pair => (pair.Key, pair.Value)).GetEnumerator();
     }
 }

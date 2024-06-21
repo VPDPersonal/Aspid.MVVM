@@ -510,8 +510,8 @@ MonoBehaviour:
   _coinsView: {fileID: 1369864926}
   _emeraldView: {fileID: 1674554216}
   _currencyViewDataCollection: {fileID: 11400000, guid: 13a7df60492884d83b1f0d14b0448953, type: 2}
-  _coinsCount: 55
-  _emeraldCount: 1
+  _coinsCount: 0
+  _emeraldCount: 1000
 --- !u!1 &620964728
 GameObject:
   m_ObjectHideFlags: 0

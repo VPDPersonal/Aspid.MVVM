@@ -5,6 +5,7 @@ namespace UltimateUI.MVVM.ViewModels
     {
         Private,
         Protected,
+        Iternal,
         Public,
     }
 }

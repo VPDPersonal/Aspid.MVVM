@@ -13,15 +13,49 @@ namespace UltimateUI.MVVM.ViewModels
                 switch (binder)
                 {
                     case IBinder<T> specificBinder:
-                        specificBinder.SetValue(defaultValue);
-                        changed += specificBinder.SetValue;
+                        Bind(defaultValue, specificBinder.SetValue, ref changed);
                         break;
                     
-                    case IAnyBinder anyBinder:
-                        anyBinder.SetValue(defaultValue);
-                        changed += anyBinder.SetValue;
+                    case IAnyBinder anyBinder: 
+                        Bind(defaultValue, anyBinder.SetValue, ref changed);
+                        break;
+                    
+                    default:
+                        BindBySubtype(defaultValue, binder, ref changed);
                         break;
                 }
+            }
+        }
+        
+        private static void Bind<T>(T defaultValue, Action<T> setValueMethod, ref Action<T> changed)
+        {
+            setValueMethod(defaultValue);
+            changed += setValueMethod;
+        }
+      
+        private static void BindBySubtype<T>(T defaultValue, IBinder binder, ref Action<T> changed)
+        {
+            var binderType = binder.GetType();
+            foreach (var i in binderType.GetInterfaces())
+            {
+                if (!i.IsGenericType || i.GetGenericTypeDefinition() != typeof(IBinder<>)) continue;
+                
+                var genericArgument = i.GetGenericArguments()[0];
+                if (!typeof(T).IsAssignableFrom(genericArgument)) continue;
+                
+                var setValueMethod = i.GetMethod("SetValue");
+                if (setValueMethod != null)
+                {
+                    setValueMethod.Invoke(binder, new object[] { defaultValue });
+                    
+                    // Creating a compatible delegate
+                    var actionType = typeof(Action<>).MakeGenericType(typeof(T));
+                    var action = Delegate.CreateDelegate(actionType, binder, setValueMethod);
+                    
+                    if (action is Action<T> typedAction)
+                        changed += typedAction;
+                }
+                break;
             }
         }
         
@@ -37,12 +71,40 @@ namespace UltimateUI.MVVM.ViewModels
             }
         }
         
-        public static void SetValue<T>(ref T value, T newValue, Action<T> changed)
+        public static bool SetField<T>(ref T field, T newValue)
         {
-            if (value.Equals(newValue)) return;
+            if (EqualityComparer<T>.Default.Equals(field, newValue)) return false;
             
-            value = newValue;
-            changed?.Invoke(value);
+            field = newValue;
+            return true;
+        }
+        
+        public static bool SetField<T>(ref T field, T newValue, IEqualityComparer<T> comparer)
+        {
+            if (comparer == null) throw new ArgumentNullException(nameof(comparer));
+            if (comparer.Equals(field, newValue)) return false;
+            
+            field = newValue;
+            return true;
+        }
+        
+        public static bool SetField<T>(T oldValue, T newValue, Action<T> callback)
+        {
+            if (callback == null) throw new ArgumentNullException(nameof(callback));
+            if (EqualityComparer<T>.Default.Equals(oldValue, newValue)) return false;
+            
+            callback(newValue);
+            return true;
+        }
+        
+        public static bool SetField<T>(T oldValue, T newValue, Action<T> callback, IEqualityComparer<T> comparer)
+        {
+            if (comparer == null) throw new ArgumentNullException(nameof(comparer));
+            if (callback == null) throw new ArgumentNullException(nameof(callback));
+            if (comparer.Equals(oldValue, newValue)) return false;
+            
+            callback(newValue);
+            return true;
         }
     }
 }

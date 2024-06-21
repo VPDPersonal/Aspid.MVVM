@@ -1,3 +1,5 @@
+using System;
+
 // ReSharper disable once CheckNamespace
 namespace UltimateUI.MVVM
 {

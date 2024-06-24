@@ -1,0 +1,18 @@
+{
+    "name": "UltimateUI.MVVM.DIExtension.Editor",
+    "rootNamespace": "",
+    "references": [
+        "GUID:4096e4778ada94f4cb1c844b593ff2fe"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

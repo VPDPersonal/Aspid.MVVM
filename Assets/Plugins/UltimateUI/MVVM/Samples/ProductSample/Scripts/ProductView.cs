@@ -1,6 +1,5 @@
 using UnityEngine;
 using UltimateUI.MVVM.Views;
-using System.Collections.Generic;
 
 namespace UltimateUI.MVVM.Samples.ProductSample
 {
@@ -21,13 +20,13 @@ namespace UltimateUI.MVVM.Samples.ProductSample
     
     public partial class ProductView
     {
-        protected Dictionary<string, IReadOnlyList<IBinder>> Binders;
+        protected BindersCollectionById Binders;
         
-        public override IReadOnlyDictionary<string, IReadOnlyList<IBinder>> GetBinders()
+        public override IReadOnlyBindersCollectionById GetBinders()
         {
             if (Binders != null) return Binders;
             
-            return Binders = new Dictionary<string, IReadOnlyList<IBinder>>()
+            return Binders = new BindersCollectionById
             {
                 { "Icon", _icon },
                 { "Name", _name },
@@ -35,4 +34,5 @@ namespace UltimateUI.MVVM.Samples.ProductSample
             };
         }
     }
+
 }

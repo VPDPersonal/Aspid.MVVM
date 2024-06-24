@@ -8,13 +8,15 @@ namespace UltimateUI.MVVM.StarterKit.Transforms
     {
         [Header("Parameters")]
         [SerializeField] private Space _space;
+
+        protected Space Space => _space;
         
         public void SetValue(Vector3 value) =>
             SetValue(Quaternion.Euler(value));
         
         public void SetValue(Quaternion value)
         {
-            switch (_space)
+            switch (Space)
             {
                 case Space.Self: CachedTransform.localRotation = value; break;
                 case Space.World: CachedTransform.rotation = value; break;

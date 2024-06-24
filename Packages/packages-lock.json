@@ -7,7 +7,7 @@
       "dependencies": {
         "com.unity.localization": "1.0.0"
       },
-      "hash": "0c5b8f4480f55bf4fdd21c8e6da9620571c3ff43"
+      "hash": "6c844f0b69b2843808a0d30aec46cdd3486cce0f"
     },
     "com.singularitygroup.hotreload": {
       "version": "file:com.singularitygroup.hotreload",

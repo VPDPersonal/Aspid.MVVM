@@ -8,9 +8,11 @@ namespace UltimateUI.MVVM.StarterKit.GameObjects
         [Header("Parameters")]
         [SerializeField] private bool _isInvert;
         
+        protected bool IsInvert => _isInvert;
+        
         public void SetValue(bool value)
         {
-            if (_isInvert) value = !_isInvert;
+            if (IsInvert) value = !IsInvert;
             gameObject.SetActive(value);
         }
     }

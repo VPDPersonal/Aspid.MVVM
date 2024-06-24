@@ -8,8 +8,12 @@ namespace UltimateUI.MVVM.StarterKit.Graphics
         [Header("Parameters")]
         [SerializeField] private Color _trueColor;
         [SerializeField] private Color _falseColor;
+
+        protected Color TrueColor => _trueColor;
+        
+        protected Color FalseColor => _falseColor;
         
         public void SetValue(bool value) =>
-            CachedGraphic.color = value ? _trueColor : _falseColor;
+            CachedGraphic.color = value ? TrueColor : FalseColor;
     }
 }

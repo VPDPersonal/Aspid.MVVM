@@ -1,14 +1,13 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
+using UnityEngine;
 using UltimateUI.MVVM;
+using System.Collections.Generic;
+using UltimateUI.MVVM.ViewModels;
 using UltimateUI.MVVM.Collections;
 using UltimateUI.MVVM.Samples.ProductSample.Economy;
 using UltimateUI.MVVM.Samples.ProductSample.Economy.Data;
 using UltimateUI.MVVM.Samples.ProductSample.Economy.Models;
 using UltimateUI.MVVM.Samples.ProductSample.Economy.ViewModels;
-using UltimateUI.MVVM.ViewModels;
-using UnityEngine;
 
 namespace Plugins.UltimateUI.MVVM.Samples.ProductSample.Scripts.Economy.ViewModels
 {
@@ -53,17 +52,16 @@ namespace Plugins.UltimateUI.MVVM.Samples.ProductSample.Scripts.Economy.ViewMode
                     CurrenciesChanged?.Invoke(_currenciesWrapper);
             }
         }
-
-        public IReadOnlyDictionary<string, Action<IReadOnlyCollection<IBinder>>> GetBindMethods()
-        {
-            throw new NotImplementedException();
-        }
-
-        public IReadOnlyDictionary<string, Action<IReadOnlyCollection<IBinder>>> GetUnbindsMethods()
-        {
-            throw new NotImplementedException();
-        }
         
+        public IReadOnlyBindsMethods GetBindMethods()
+        {
+            throw new NotImplementedException();
+        }
+
+        public IReadOnlyBindsMethods GetUnbindsMethods()
+        {
+            throw new NotImplementedException();
+        }
     }
 
     

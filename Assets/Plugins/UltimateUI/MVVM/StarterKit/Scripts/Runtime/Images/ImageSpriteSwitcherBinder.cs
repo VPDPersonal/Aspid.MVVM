@@ -8,8 +8,12 @@ namespace UltimateUI.MVVM.StarterKit.Images
         [Header("Parameters")]
         [SerializeField] private Sprite _trueSprite;
         [SerializeField] private Sprite _falseSprite;
+        
+        protected Sprite TrueTexture => _trueSprite;
+        
+        protected Sprite FalseTexture => _falseSprite;
 
         public void SetValue(bool value) =>
-            CachedImage.sprite = value ? _trueSprite : _falseSprite;
+            CachedImage.sprite = value ? TrueTexture : FalseTexture;
     }
 }

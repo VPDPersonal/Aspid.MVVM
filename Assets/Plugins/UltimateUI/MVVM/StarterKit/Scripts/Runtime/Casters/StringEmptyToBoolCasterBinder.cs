@@ -3,7 +3,7 @@ using UnityEngine;
 // ReSharper disable once CheckNamespace
 namespace UltimateUI.MVVM.StarterKit.Casters
 {
-    public class StringEmptyToBoolCasterBinder : IBinder<string>
+    public class StringEmptyToBoolCasterBinder : MonoBinder, IBinder<string>
     {
         // TODO Validate
         [Header("Binders")]

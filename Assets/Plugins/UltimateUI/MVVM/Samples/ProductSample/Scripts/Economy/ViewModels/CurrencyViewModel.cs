@@ -1,7 +1,6 @@
 using System;
 using UnityEngine;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using UltimateUI.MVVM.ViewModels;
 using UltimateUI.MVVM.Samples.ProductSample.Economy.Data;
 using UltimateUI.MVVM.Samples.ProductSample.Economy.Models;
@@ -9,7 +8,7 @@ using UltimateUI.MVVM.Samples.ProductSample.Economy.Models;
 // ReSharper disable once CheckNamespace
 namespace UltimateUI.MVVM.Samples.ProductSample.Economy.ViewModels
 {
-    
+    [ViewModel]
     public partial class CurrencyViewModel : IDisposable
     {
         [Bind] private Sprite _icon;
@@ -74,28 +73,38 @@ namespace UltimateUI.MVVM.Samples.ProductSample.Economy.ViewModels
             }
         }
         
-        IReadOnlyDictionary<string, Action<IReadOnlyCollection<IBinder>>> IViewModel.GetBindMethods() =>
+        IReadOnlyBindsMethods IViewModel.GetBindMethods() =>
             GetBindMethods();
         
-        protected virtual Dictionary<string, Action<IReadOnlyCollection<IBinder>>> GetBindMethods()
+        protected virtual BindMethods GetBindMethods()
         {
-            return new Dictionary<string, Action<IReadOnlyCollection<IBinder>>>
+            var bindMethods = new BindMethods
             {
                 { nameof(Icon), binders => ViewModelUtility.Bind(_icon, ref IconChanged, binders) },
                 { nameof(Currency), binders => ViewModelUtility.Bind(Currency, ref CurrencyChanged, binders) },
             };
+
+            AddBindMethods(ref bindMethods);
+            return bindMethods;
         }
+
+        partial void AddBindMethods(ref BindMethods bindMethods);
         
-        IReadOnlyDictionary<string, Action<IReadOnlyCollection<IBinder>>> IViewModel.GetUnbindsMethods() =>
+        IReadOnlyBindsMethods IViewModel.GetUnbindsMethods() =>
             GetUnbindsMethods();
         
-        protected virtual Dictionary<string, Action<IReadOnlyCollection<IBinder>>> GetUnbindsMethods()
+        protected virtual BindMethods GetUnbindsMethods()
         {
-            return new Dictionary<string, Action<IReadOnlyCollection<IBinder>>>
+            var unbindMethods = new BindMethods
             {
                 { nameof(Icon), binders => ViewModelUtility.Unbind(ref IconChanged, binders) },
                 { nameof(Currency), binders => ViewModelUtility.Unbind(ref CurrencyChanged, binders) },
             };
+            
+            AddUnbindMethods(ref unbindMethods);
+            return unbindMethods;
         }
+
+        partial void AddUnbindMethods(ref BindMethods bindMethods);
     }
 }

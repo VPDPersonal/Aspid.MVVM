@@ -1,6 +1,5 @@
 using UnityEngine;
 using UltimateUI.MVVM.Views;
-using System.Collections.Generic;
 
 // ReSharper disable once CheckNamespace
 namespace UltimateUI.MVVM.Samples.ProductSample.Economy
@@ -17,13 +16,9 @@ namespace UltimateUI.MVVM.Samples.ProductSample.Economy
     // View Description
     public partial class CurrencyView
     {
-        protected IReadOnlyDictionary<string, IReadOnlyList<IBinder>> Binders;
-        
-        public override IReadOnlyDictionary<string, IReadOnlyList<IBinder>> GetBinders()
+        public override IReadOnlyBindersCollectionById GetBinders()
         {
-            if (Binders != null) return Binders;
-            
-            return Binders = new Dictionary<string, IReadOnlyList<IBinder>>
+            return new BindersCollectionById
             {
                 { "Icon", _icon },
                 { "Currency", _currency },

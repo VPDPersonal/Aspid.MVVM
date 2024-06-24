@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using Object = UnityEngine.Object;
 
 // ReSharper disable once CheckNamespace
-namespace UltimateUI.MVVM.DI
+namespace UltimateUI.MVVM.DIExtension
 {
     [CustomPropertyDrawer(typeof(SerializableInterface<>), true)]
     public class SerializableInterfacePropertyDrawer : PropertyDrawer

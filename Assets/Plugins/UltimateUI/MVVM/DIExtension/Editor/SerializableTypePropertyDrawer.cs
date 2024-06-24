@@ -4,7 +4,7 @@ using UnityEngine;
 using System.Collections.Generic;
 
 // ReSharper disable once CheckNamespace
-namespace UltimateUI.MVVM.DI
+namespace UltimateUI.MVVM.DIExtension
 {
     [CustomPropertyDrawer(typeof(SerializableMonoScript),true)]
     public class SerializableTypePropertyDrawer : PropertyDrawer

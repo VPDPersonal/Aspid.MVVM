@@ -2,7 +2,8 @@ using System;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
-namespace UltimateUI.MVVM.DI
+// ReSharper disable once CheckNamespace
+namespace UltimateUI.MVVM.DIExtension
 {
     [Serializable]
     public class SerializableInterface<T> 

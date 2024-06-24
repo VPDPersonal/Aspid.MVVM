@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 
 // ReSharper disable once CheckNamespace
-namespace UltimateUI.MVVM.DI
+namespace UltimateUI.MVVM.DIExtension
 {
     [Serializable]
     public class SerializableMonoScript

@@ -5,7 +5,7 @@ using UltimateUI.MVVM.ViewModels;
 using UltimateUI.MVVM.ViewBinders;
 
 // ReSharper disable once CheckNamespace
-namespace UltimateUI.MVVM.DI
+namespace UltimateUI.MVVM.DIExtension
 {
     public sealed class MonoUniversalViewBinder : MonoViewBinderBase
     {

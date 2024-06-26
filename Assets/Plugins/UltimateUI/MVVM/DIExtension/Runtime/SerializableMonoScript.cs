@@ -30,7 +30,7 @@ namespace UltimateUI.MVVM.DIExtension
 
         public static implicit operator SerializableMonoScript(Type type) => new() { Type = type };
     }
-
+    
     [Serializable]
     public class SerializableMonoScript<T> : SerializableMonoScript { }
 }

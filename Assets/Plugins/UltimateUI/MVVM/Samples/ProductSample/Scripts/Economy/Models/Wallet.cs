@@ -1,7 +1,7 @@
 using System;
+using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 
 // ReSharper disable once CheckNamespace
 namespace UltimateUI.MVVM.Samples.ProductSample.Economy.Models
@@ -21,14 +21,14 @@ namespace UltimateUI.MVVM.Samples.ProductSample.Economy.Models
             }
         }
         
-        public Wallet(params (CurrencyType, int)[] currencies)
+        public Wallet(params CurrencyDefaultData[] currencies)
         {
             var length = currencies.Length;
             _currency = new Dictionary<CurrencyType, int>(length);
             _currencyChangedEvents = new Dictionary<CurrencyType, Action<int>>(length);
             
-            foreach (var (type, currency) in currencies)
-                _currency.Add(type, currency);
+            foreach (var data in currencies)
+                _currency.Add(data.Type, data.DefaultCount);
         }
         
         public void AddListener(CurrencyType type, Action<int> currencyChanged)

@@ -9,7 +9,8 @@ using UltimateUI.MVVM.Samples.ProductSample.Economy.Data;
 using UltimateUI.MVVM.Samples.ProductSample.Economy.Models;
 using UltimateUI.MVVM.Samples.ProductSample.Economy.ViewModels;
 
-namespace Plugins.UltimateUI.MVVM.Samples.ProductSample.Scripts.Economy.ViewModels
+// ReSharper disable once CheckNamespace
+namespace UltimateUI.MVVM.Samples.ProductSample.Economy.ViewModels
 {
     [ViewModel]
     public partial class WalletViewModel

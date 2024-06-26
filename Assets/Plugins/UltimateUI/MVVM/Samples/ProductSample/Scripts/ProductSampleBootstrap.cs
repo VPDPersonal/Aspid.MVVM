@@ -21,13 +21,13 @@ namespace UltimateUI.MVVM.Samples.ProductSample
         
         private void Awake()
         {
-            var wallet = new Wallet((CurrencyType.Coins, _coinsCount), (CurrencyType.Emeralds, _emeraldCount));
+            // var wallet = new Wallet((CurrencyType.Coins, _coinsCount), (CurrencyType.Emeralds, _emeraldCount));
             
-            var coinsViewModel = new CurrencyViewModel(wallet, _currencyViewDataCollection, CurrencyType.Coins);
-            var emeraldsViewModel = new CurrencyViewModel(wallet, _currencyViewDataCollection, CurrencyType.Emeralds);
-            
-            BindViewAndViewModel(_coinsView, coinsViewModel);
-            BindViewAndViewModel(_emeraldView, emeraldsViewModel);
+            // var coinsViewModel = new CurrencyViewModel(wallet, _currencyViewDataCollection, CurrencyType.Coins);
+            // var emeraldsViewModel = new CurrencyViewModel(wallet, _currencyViewDataCollection, CurrencyType.Emeralds);
+            //
+            // BindViewAndViewModel(_coinsView, coinsViewModel);
+            // BindViewAndViewModel(_emeraldView, emeraldsViewModel);
         }
         
         private static void BindViewAndViewModel(IView view, IViewModel viewModel)

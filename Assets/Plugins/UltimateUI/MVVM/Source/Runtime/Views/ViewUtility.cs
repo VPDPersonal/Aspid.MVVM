@@ -1,7 +1,7 @@
 using System;
 using System.Linq;
 using System.Reflection;
-// using Unity.VisualScripting;
+using System.Diagnostics;
 using System.Collections.Generic;
 
 // ReSharper disable once CheckNamespace
@@ -9,42 +9,44 @@ namespace UltimateUI.MVVM.Views
 {
     public static class ViewUtility
     {
+        [Conditional("UNITY_EDITOR")]
         public static void ValidateBinders(IView view)
         {
-//             var type = view.GetType();
-//             
-//             const BindingFlags bindingFlags = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic;
-//             var fields = type.GetFields(bindingFlags).Where(field =>
-//             {
-//                 var fieldType = field.FieldType;
-//                 return fieldType == typeof(MonoBinder[]);
-//             });
-//             
-//             foreach (var field in fields)
-//             {
-//                 if (!field.HasAttribute(typeof(RequireBinder))) return;
-//                 
-//                 var binders = (MonoBinder[])field.GetValue(view);
-//                 var requiredType = ((RequireBinder)field.GetAttribute(typeof(RequireBinder))).Type;
-//                 
-//                 binders = binders.Where(binder =>
-//                 {
-//                     var interfaces = binder.GetType().GetInterfaces();
-//                     return interfaces.Any(i =>
-//                         i == typeof(IAnyBinder) ||
-//                         i.IsGenericType &&
-//                         i.GetGenericTypeDefinition() == typeof(IBinder<>) &&
-//                         i.GetGenericArguments()[0] == requiredType
-//                     );
-//                 }).ToArray();
-//                 
-// #if UNITY_EDITOR
-//                 foreach (var binder in binders)
-//                     binder.Id = field.Name;
-// #endif
-//                 
-//                 field.SetValue(view, binders);
-//             }
+            var type = view.GetType();
+            
+            const BindingFlags bindingFlags = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic;
+            var fields = type.GetFields(bindingFlags).Where(field =>
+            {
+                var fieldType = field.FieldType;
+                return fieldType == typeof(MonoBinder[]);
+            });
+            
+            foreach (var field in fields)
+            {
+                if (!Attribute.IsDefined(field, typeof(RequireBinder))) return;
+
+                var binders = (MonoBinder[])field.GetValue(view);
+                var requiredTypes = field.GetCustomAttributes(typeof(RequireBinder), false)
+                    .Select(attribute => ((RequireBinder)attribute).Type);
+                
+                binders = binders.Where(binder =>
+                {
+                    var interfaces = binder.GetType().GetInterfaces();
+                    return interfaces.Any(i =>
+                        i == typeof(IAnyBinder) ||
+                        i.IsGenericType &&
+                        i.GetGenericTypeDefinition() == typeof(IBinder<>) &&
+                        requiredTypes.Any(requiredType => requiredType == i.GetGenericArguments()[0])
+                    );
+                }).ToArray();
+                
+#if UNITY_EDITOR
+                foreach (var binder in binders)
+                    binder.Id = field.Name;
+#endif
+                
+                field.SetValue(view, binders);
+            }
         }
 
 #if UNITY_EDITOR

@@ -4,7 +4,7 @@ using System.Collections.Specialized;
 // ReSharper disable once CheckNamespace
 namespace UltimateUI.MVVM.Collections
 {
-    public sealed class NotifyCollectionChangedEventArgs<T> : INotifyCollectionChangedEventArgs<T>
+    public readonly struct NotifyCollectionChangedEventArgs<T> : INotifyCollectionChangedEventArgs<T>
     {
         public NotifyCollectionChangedAction Action { get; }
 

@@ -9,66 +9,13 @@ namespace UltimateUI.MVVM.ViewModels
         public static void Bind<T>(T defaultValue, ref Action<T> changed, IReadOnlyCollection<IBinder> binders)
         {
             foreach (var binder in binders)
-            {
-                switch (binder)
-                {
-                    case IBinder<T> specificBinder:
-                        Bind(defaultValue, specificBinder.SetValue, ref changed);
-                        break;
-                    
-                    case IAnyBinder anyBinder: 
-                        Bind(defaultValue, anyBinder.SetValue, ref changed);
-                        break;
-                    
-                    default:
-                        BindBySubtype(defaultValue, binder, ref changed);
-                        break;
-                }
-            }
-        }
-        
-        private static void Bind<T>(T defaultValue, Action<T> setValueMethod, ref Action<T> changed)
-        {
-            setValueMethod(defaultValue);
-            changed += setValueMethod;
-        }
-      
-        private static void BindBySubtype<T>(T defaultValue, IBinder binder, ref Action<T> changed)
-        {
-            var binderType = binder.GetType();
-            foreach (var i in binderType.GetInterfaces())
-            {
-                if (!i.IsGenericType || i.GetGenericTypeDefinition() != typeof(IBinder<>)) continue;
-                
-                var genericArgument = i.GetGenericArguments()[0];
-                if (!typeof(T).IsAssignableFrom(genericArgument)) continue;
-                
-                var setValueMethod = i.GetMethod("SetValue");
-                if (setValueMethod != null)
-                {
-                    setValueMethod.Invoke(binder, new object[] { defaultValue });
-                    
-                    // Creating a compatible delegate
-                    var actionType = typeof(Action<>).MakeGenericType(typeof(T));
-                    var action = Delegate.CreateDelegate(actionType, binder, setValueMethod);
-                    
-                    if (action is Action<T> typedAction)
-                        changed += typedAction;
-                }
-                break;
-            }
+                binder.Bind(defaultValue, ref changed);
         }
         
         public static void Unbind<T>(ref Action<T> changed, IReadOnlyCollection<IBinder> binders)
         {
             foreach (var binder in binders)
-            {
-                switch (binder)
-                {
-                    case IBinder<T> specificBinder: changed -= specificBinder.SetValue; break;
-                    case IAnyBinder anyBinder: changed -= anyBinder.SetValue; break;
-                }
-            }
+                binder.Unbind(ref changed);
         }
         
         public static bool SetField<T>(ref T field, T newValue)

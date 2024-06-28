@@ -58,7 +58,7 @@ namespace UltimateUI.MVVM.Samples.ProductSample.Economy.ViewModels
             get => _icon;
             set
             {
-                if (ViewModelUtility.SetField(ref _icon, value)) 
+                if (ViewModelUtility.SetProperty(ref _icon, value)) 
                     IconChanged?.Invoke(_icon);
             }
         }
@@ -68,7 +68,7 @@ namespace UltimateUI.MVVM.Samples.ProductSample.Economy.ViewModels
             get => _currency;
             set
             {
-                if (ViewModelUtility.SetField(ref _currency, value))
+                if (ViewModelUtility.SetProperty(ref _currency, value))
                     CurrencyChanged?.Invoke(_currency);
             }
         }

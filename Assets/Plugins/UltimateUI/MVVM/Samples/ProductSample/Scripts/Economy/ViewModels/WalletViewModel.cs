@@ -49,7 +49,7 @@ namespace UltimateUI.MVVM.Samples.ProductSample.Economy.ViewModels
             }
             set
             {
-                if (ViewModelUtility.SetField(ref _currenciesWrapper, value))
+                if (ViewModelUtility.SetProperty(ref _currenciesWrapper, value))
                     CurrenciesChanged?.Invoke(_currenciesWrapper);
             }
         }

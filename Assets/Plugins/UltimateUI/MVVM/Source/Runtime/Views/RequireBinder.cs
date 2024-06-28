@@ -5,7 +5,7 @@ using System.Diagnostics;
 namespace UltimateUI.MVVM.Views
 {
     [Conditional("UNITY_EDITOR")]
-    [AttributeUsage(AttributeTargets.Field)]
+    [AttributeUsage(AttributeTargets.Field, AllowMultiple = true)]
     public sealed class RequireBinder : Attribute
     {
         public Type Type { get; }

@@ -18,7 +18,7 @@ namespace UltimateUI.MVVM.ViewModels
                 binder.Unbind(ref changed);
         }
         
-        public static bool SetField<T>(ref T field, T newValue)
+        public static bool SetProperty<T>(ref T field, T newValue)
         {
             if (EqualityComparer<T>.Default.Equals(field, newValue)) return false;
             
@@ -26,7 +26,7 @@ namespace UltimateUI.MVVM.ViewModels
             return true;
         }
         
-        public static bool SetField<T>(ref T field, T newValue, IEqualityComparer<T> comparer)
+        public static bool SetProperty<T>(ref T field, T newValue, IEqualityComparer<T> comparer)
         {
             if (comparer == null) throw new ArgumentNullException(nameof(comparer));
             if (comparer.Equals(field, newValue)) return false;
@@ -35,7 +35,7 @@ namespace UltimateUI.MVVM.ViewModels
             return true;
         }
         
-        public static bool SetField<T>(T oldValue, T newValue, Action<T> callback)
+        public static bool SetProperty<T>(T oldValue, T newValue, Action<T> callback)
         {
             if (callback == null) throw new ArgumentNullException(nameof(callback));
             if (EqualityComparer<T>.Default.Equals(oldValue, newValue)) return false;
@@ -44,7 +44,7 @@ namespace UltimateUI.MVVM.ViewModels
             return true;
         }
         
-        public static bool SetField<T>(T oldValue, T newValue, Action<T> callback, IEqualityComparer<T> comparer)
+        public static bool SetProperty<T>(T oldValue, T newValue, Action<T> callback, IEqualityComparer<T> comparer)
         {
             if (comparer == null) throw new ArgumentNullException(nameof(comparer));
             if (callback == null) throw new ArgumentNullException(nameof(callback));

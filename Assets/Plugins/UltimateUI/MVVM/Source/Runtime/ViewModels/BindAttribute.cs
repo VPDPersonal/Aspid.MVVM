@@ -4,8 +4,5 @@ using System;
 namespace UltimateUI.MVVM.ViewModels
 {
     [AttributeUsage(AttributeTargets.Field)]
-    public sealed class BindAttribute : Attribute
-    {
-        public BindAttribute(string id = "") { }
-    }
+    public sealed class BindAttribute : Attribute { }
 }

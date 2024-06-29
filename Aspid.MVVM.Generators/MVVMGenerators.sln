@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MVVMGenerators", "MVVMGenerators\MVVMGenerators\MVVMGenerators.csproj", "{8396B53C-70A1-422E-9E40-9AEBB223F6B3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MVVMGenerators.Sample", "MVVMGenerators\MVVMGenerators.Sample\MVVMGenerators.Sample.csproj", "{A1DE8BA3-CAEC-4823-99D1-720059565792}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MVVMGenerators.Tests", "MVVMGenerators\MVVMGenerators.Tests\MVVMGenerators.Tests.csproj", "{837E3102-786A-44C6-9490-1C77BE8D26C3}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{8396B53C-70A1-422E-9E40-9AEBB223F6B3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8396B53C-70A1-422E-9E40-9AEBB223F6B3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8396B53C-70A1-422E-9E40-9AEBB223F6B3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8396B53C-70A1-422E-9E40-9AEBB223F6B3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A1DE8BA3-CAEC-4823-99D1-720059565792}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A1DE8BA3-CAEC-4823-99D1-720059565792}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A1DE8BA3-CAEC-4823-99D1-720059565792}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A1DE8BA3-CAEC-4823-99D1-720059565792}.Release|Any CPU.Build.0 = Release|Any CPU
+		{837E3102-786A-44C6-9490-1C77BE8D26C3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{837E3102-786A-44C6-9490-1C77BE8D26C3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{837E3102-786A-44C6-9490-1C77BE8D26C3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{837E3102-786A-44C6-9490-1C77BE8D26C3}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

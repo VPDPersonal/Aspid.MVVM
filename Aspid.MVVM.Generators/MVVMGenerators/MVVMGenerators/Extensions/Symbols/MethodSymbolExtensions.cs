@@ -1,9 +1,9 @@
 using System.Text;
 using Microsoft.CodeAnalysis;
 
-namespace MVVMGenerators.Extensions;
+namespace MVVMGenerators.Extensions.Symbols;
 
-public static class MethodExtensions
+public static class MethodSymbolExtensions
 {
     public static string GetParametersAsText(this IMethodSymbol symbol)
     {

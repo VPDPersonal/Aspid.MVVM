@@ -1,8 +1,8 @@
 using Microsoft.CodeAnalysis;
 
-namespace MVVMGenerators.Extensions;
+namespace MVVMGenerators.Extensions.Symbols;
 
-public static class FieldExtensions
+public static class FieldSymbolExtensions
 {
     public static string GetPropertyName(this IFieldSymbol symbol) =>
         GetPropertyNameFromFieldName(symbol.Name);

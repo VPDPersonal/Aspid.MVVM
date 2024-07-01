@@ -2,24 +2,12 @@ namespace MVVMGenerators.Descriptions.UnityEngine;
 
 public static class ClassesDescription
 {
-    public const string Object = nameof(Object);
-    public const string ObjectFull = $"{NamespacesDescription.UnityEngine}.{Object}";
+    public static readonly TypeDescription Object = new("Object", NamespacesDescription.UnityEngine);
+    public static readonly TypeDescription Component = new("Component", NamespacesDescription.UnityEngine);
+    public static readonly TypeDescription MonoBehaviour = new("MonoBehaviour", NamespacesDescription.UnityEngine);
     
-    public const string Component = nameof(Component);
-    public const string ComponentFull = $"{NamespacesDescription.UnityEngine}.{Component}";
-    
-    public const string MonoBehaviour = nameof(MonoBehaviour);
-    public const string MonoBehaviourFull = $"{NamespacesDescription.UnityEngine}.{MonoBehaviour}";
-    
-    public const string Button = nameof(Button);
-    public const string ButtonFull = $"{NamespacesDescription.UnityEngineUI}.{Button}";
-    
-    public const string Toggle = nameof(Toggle);
-    public const string ToggleFull = $"{NamespacesDescription.UnityEngineUI}.{Toggle}";
-    
-    public const string Slider = nameof(Slider);
-    public const string SliderFull = $"{NamespacesDescription.UnityEngineUI}.{Slider}";
-    
-    public const string ScrollRect = nameof(ScrollRect);
-    public const string ScrollRectFull = $"{NamespacesDescription.UnityEngineUI}.{ScrollRect}";
+    public static readonly TypeDescription Button = new("Button", NamespacesDescription.UnityEngine_UI);
+    public static readonly TypeDescription Toggle = new("Toggle", NamespacesDescription.UnityEngine_UI);
+    public static readonly TypeDescription Slider = new("Slider", NamespacesDescription.UnityEngine_UI);
+    public static readonly TypeDescription ScrollRect = new("ScrollRect", NamespacesDescription.UnityEngine_UI);
 }

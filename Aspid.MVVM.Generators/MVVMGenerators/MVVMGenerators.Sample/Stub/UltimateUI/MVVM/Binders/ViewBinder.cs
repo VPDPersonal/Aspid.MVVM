@@ -21,7 +21,7 @@ namespace UltimateUI.MVVM.ViewBinders
         public static void Unbind(IView view, IViewModel viewModel)
         {
             var binders = view.GetBinders();
-            var unbindMethods = viewModel.GetUnbindsMethods();
+            var unbindMethods = viewModel.GetUnbindMethods();
             
             foreach (var pair in binders)
             {

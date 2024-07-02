@@ -1,43 +1,43 @@
 using Microsoft.CodeAnalysis;
 using MVVMGenerators.Helpers;
 using System.Collections.Generic;
+using MVVMGenerators.Descriptions;
 using MVVMGenerators.Extensions.Symbols;
 
 namespace MVVMGenerators.Generators.ViewModels;
 
 public static class PropertiesBodyCodeWriterExtension
 {
-    public static void AppendViewModelProperties(this CodeWriter writer, IReadOnlyCollection<IFieldSymbol> fields)
+    public static void AppendViewModelProperties(this CodeWriter code, IReadOnlyCollection<IFieldSymbol> fields)
     {
         if (fields.Count == 0) return;
 
         foreach (var field in fields)
-            AppendEvents(writer, field);
+            AppendEvents(code, field);
 
-        writer.AppendLine();
+        code.AppendLine();
         
         foreach (var field in fields)
-            AppendProperty(writer, field);
+            AppendProperty(code, field);
         
         foreach (var field in fields)
-            AppendPartialMethods(writer, field);
+            AppendPartialMethods(code, field);
     }
 
-    private static void AppendEvents(CodeWriter writer, IFieldSymbol field) =>
-        writer.AppendLine($"public event global::System.Action<{field.Type}> {field.GetPropertyName()}Changed;");
+    private static void AppendEvents(CodeWriter code, IFieldSymbol field) =>
+        code.AppendLine($"public event {Classes.Action.Global}<{field.Type}> {field.GetPropertyName()}Changed;");
 
-    private static void AppendProperty(CodeWriter writer, IFieldSymbol field)
+    private static void AppendProperty(CodeWriter code, IFieldSymbol field)
     {
         var propertyName = field.GetPropertyName();
         
-        writer
-            .AppendLine("[global::System.CodeDom.Compiler.GeneratedCode(\"UltimateUI.Mvvm.SourceGenerators.ViewModelGenerator\", \"0.0.1\")]")
+        code.AppendLine(General.GeneratedCodeAttribute)
             .AppendLine($"private {field.Type} {propertyName}")
             .BeginBlock()
             .AppendLine($"get => {field.Name};")
             .AppendLine("set")
             .BeginBlock()
-            .AppendLine($"if (global::UltimateUI.MVVM.ViewModels.ViewModelUtility.EqualsDefault({field.Name}, value))")
+            .AppendLine($"if ({Classes.ViewModelUtility.Global}.EqualsDefault({field.Name}, value))")
             .BeginBlock()
             .AppendLine($"On{propertyName}Changing({field.Name}, value);")
             .AppendLine($"{field.Name} = value;")
@@ -49,16 +49,15 @@ public static class PropertiesBodyCodeWriterExtension
             .AppendLine();
     }
 
-    private static void AppendPartialMethods(CodeWriter writer, IFieldSymbol field)
+    private static void AppendPartialMethods(CodeWriter code, IFieldSymbol field)
     {
         var type = field.Type;
         var propertyName = field.GetPropertyName();
         
-        writer
-            .AppendLine("[global::System.CodeDom.Compiler.GeneratedCode(\"UltimateUI.Mvvm.SourceGenerators.ViewModelGenerator\", \"0.0.1\")]")
+        code.AppendLine(General.GeneratedCodeAttribute)
             .AppendLine($"partial void On{propertyName}Changing({type} oldValue, {type} newValue);")
             .AppendLine()
-            .AppendLine("[global::System.CodeDom.Compiler.GeneratedCode(\"UltimateUI.Mvvm.SourceGenerators.ViewModelGenerator\", \"0.0.1\")]")
+            .AppendLine(General.GeneratedCodeAttribute)
             .AppendLine($"partial void On{propertyName}Changed({type} newValue);")
             .AppendLine();
     }

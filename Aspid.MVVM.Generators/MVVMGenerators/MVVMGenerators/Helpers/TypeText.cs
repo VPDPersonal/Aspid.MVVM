@@ -1,0 +1,12 @@
+namespace MVVMGenerators.Helpers;
+
+public class TypeText(string name, NamespaceText? @namespace = null)
+{
+    public string Name { get; } = name;
+
+    public NamespaceText? Namespace { get; } = @namespace;
+
+    public string FullName => (Namespace != null ? $"{Namespace}." : "") + Name;
+    
+    public string Global => $"global::{FullName}";
+}

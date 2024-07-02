@@ -1,15 +1,15 @@
-using System.Threading;
-using System.Diagnostics;
-using Microsoft.CodeAnalysis;
-using MVVMGenerators.Helpers;
 using System.Collections.Generic;
-using Microsoft.CodeAnalysis.CSharp;
+using System.Diagnostics;
 using System.Runtime.CompilerServices;
-using MVVMGenerators.Extensions.Symbols;
+using System.Threading;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using MVVMGenerators.Extensions.Declarations;
+using MVVMGenerators.Extensions.Symbols;
+using MVVMGenerators.Helpers;
 
-namespace MVVMGenerators;
+namespace MVVMGenerators.Generators.ViewModels;
 
 [Generator(LanguageNames.CSharp)]
 public class ViewModelGenerator : IIncrementalGenerator
@@ -91,24 +91,12 @@ public class ViewModelGenerator : IIncrementalGenerator
             .AppendLine(declarationText.ToString())
             .BeginBlock();
         
+        codeWriter.AppendViewModelProperties(viewModel.Fields);
         codeWriter.EndBlock();
         
         if (!string.IsNullOrEmpty(namespaceName))
             codeWriter.EndBlock();
         
-        context.AddSource($"{declarationText.Name}.Bind.Generated.cs", codeWriter.GetSourceText());
-    }
-    
-    public readonly struct ViewModelData(
-        bool hasViewModelInterface,
-        TypeDeclarationSyntax declaration,
-        IReadOnlyCollection<IFieldSymbol> fields, 
-        IReadOnlyCollection<IMethodSymbol> methods)
-    {
-        public readonly bool HasViewModelInterface = hasViewModelInterface;
-        
-        public readonly TypeDeclarationSyntax Declaration = declaration;
-        public readonly IReadOnlyCollection<IFieldSymbol> Fields = fields;
-        public readonly IReadOnlyCollection<IMethodSymbol> Methods = methods;
+        context.AddSource($"{declarationText.Name}.BindProperty.Generated.cs", codeWriter.GetSourceText());
     }
 }

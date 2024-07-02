@@ -4,11 +4,11 @@ namespace MVVMGenerators.Extensions.Symbols;
 
 public static class SymbolExtensions
 {
-    public static bool HasAttribute(this ISymbol symbol, string attributeName)
+    public static bool HasAttribute(this ISymbol symbol, string attributeFullName)
     {
         foreach (var attribute in symbol.GetAttributes())
         {
-            if (attribute.AttributeClass != null && attribute.AttributeClass.Name == attributeName)
+            if (attribute.AttributeClass != null && attribute.AttributeClass.ToDisplayString() == attributeFullName)
                 return true;
         }
         

@@ -11,71 +11,93 @@ namespace MVVMGenerators.Generators.ViewModels;
 public static class IViewModelBodyCodeWriterExtensions
 {
     private const string BindersVar = "binders";
-    
-    public static void AppendGetBindMethods(this CodeWriter code, IReadOnlyCollection<IFieldSymbol> fields)
+
+    public static CodeWriter AppendGetBindMethods(
+        this CodeWriter code,
+        bool hasBaseType, 
+        bool hasInterface, 
+        IReadOnlyCollection<IFieldSymbol> fields)
     {
-        AppendGetMethod(code, "bindMethods", AppendBindMethodForBind, fields);
-        AppendGetMethod(code, "unbindMethods", AppendBindMethodForUnbind, fields);
+        AppendGetMethod(code, "bindMethods", hasBaseType, hasInterface, GetBindMethodForBind, fields);
+        AppendGetMethod(code, "unbindMethods", hasBaseType, hasInterface, GetBindMethodForUnbind, fields);
+        return code;
     }
 
     private static void AppendGetMethod(
         CodeWriter code,
         string methodName, 
-        Action<CodeWriter, IFieldSymbol> method,
+        bool hasBaseType,
+        bool hasInterface,
+        Func<IFieldSymbol, string> method,
         IReadOnlyCollection<IFieldSymbol> fields)
     {
-        var iViewModel = Classes.IViewModel.Global;
-        var bindMethods = Classes.BindMethods.Global;
-        var iReadOnlyBindsMethods = Classes.IReadOnlyBindsMethods.Global;
+        var iViewModelType = Classes.IViewModel.Global;
+        var bindMethodsType = Classes.BindMethods.Global;
+        var iReadOnlyBindsMethodsType = Classes.IReadOnlyBindsMethods.Global;
 
         var upperMethodName = char.ToUpper(methodName[0]) + methodName.Remove(0, 1);
         var getMethodName = $"Get{upperMethodName}";
         var addMethodName = $"Add{upperMethodName}";
+
+        if (!hasBaseType && !hasInterface)
+        {
+            code.AppendLine(General.GeneratedCodeAttribute)
+                .AppendLine($"{iReadOnlyBindsMethodsType} {iViewModelType}.{getMethodName}() => {getMethodName}Iternal();")
+                .AppendLine();
+        }
+
+        var methodIternal = hasBaseType ? "protected override " : "protected virtual ";
+        methodIternal += $"{bindMethodsType} {getMethodName}Iternal()";
         
         code.AppendLine(General.GeneratedCodeAttribute)
-            .AppendLine($"{iReadOnlyBindsMethods} {iViewModel}.{getMethodName}() => {getMethodName}();")
-            .AppendLine()
-            .AppendLine(General.GeneratedCodeAttribute)
-            .AppendLine($"protected virtual {iReadOnlyBindsMethods} {getMethodName}()")
-            .BeginBlock()
-            .AppendLine($"var {methodName} = new {bindMethods}")
+            .AppendLine(methodIternal)
             .BeginBlock();
 
-        foreach (var field in fields)
+        if (hasBaseType)
         {
-            code.Append("{ ");
-            method.Invoke(code, field);
-            code.AppendLine(" },");
+            code.AppendLine($"var {methodName} = base.{getMethodName}Iternal();");
+
+            foreach (var field in fields)
+                code.AppendLine($"{methodName}.Add({method.Invoke(field)});");
+        }
+        else
+        {
+            code.AppendLine($"var {methodName} = new {bindMethodsType}")
+                .BeginBlock();
+            
+            foreach (var field in fields)
+                code.AppendLine($"{{ {method.Invoke(field)} }},");
+            
+            code.DecreaseIndent()
+                .AppendLine("};");
         }
         
-        code.DecreaseIndent()
-            .AppendLine("};")
-            .AppendLine()
+        code.AppendLine()
             .AppendLine($"{addMethodName}(ref {methodName});")
             .AppendLine($"return {methodName};")
             .EndBlock()
             .AppendLine()
             .AppendLine(General.GeneratedCodeAttribute)
-            .AppendLine($"partial void {addMethodName}(ref {bindMethods} {methodName});")
+            .AppendLine($"partial void {addMethodName}(ref {bindMethodsType} {methodName});")
             .AppendLine();
     }
 
-    private static void AppendBindMethodForBind(CodeWriter code, IFieldSymbol field)
+    private static string GetBindMethodForBind(IFieldSymbol field)
     {
         var name = field.Name;
         var propertyName = field.GetPropertyName();
         var changedName = $"{propertyName}Changed";
         var bindMethod = $"{Classes.ViewModelUtility.Global}.Bind";
 
-        code.Append($"nameof({propertyName}), {BindersVar} => {bindMethod}({name}, ref {changedName}, {BindersVar})");
+        return $"nameof({propertyName}), {BindersVar} => {bindMethod}({name}, ref {changedName}, {BindersVar})";
     }
 
-    private static void AppendBindMethodForUnbind(CodeWriter code, IFieldSymbol field)
+    private static string GetBindMethodForUnbind(IFieldSymbol field)
     {
         var propertyName = field.GetPropertyName();
         var changedName = $"{propertyName}Changed";
         var bindMethod = $"{Classes.ViewModelUtility.Global}.Unbind";
 
-        code.Append($"nameof({propertyName}), {BindersVar} => {bindMethod}(ref {changedName}, {BindersVar})");
+        return $"nameof({propertyName}), {BindersVar} => {bindMethod}(ref {changedName}, {BindersVar})";
     }
 }

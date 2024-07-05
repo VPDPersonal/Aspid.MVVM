@@ -8,7 +8,7 @@ using MVVMGenerators.Extensions.Symbols;
 namespace MVVMGenerators.Generators.ViewModels;
 
 // ReSharper disable once InconsistentNaming
-public static class IViewModelBodyCodeWriterExtensions
+public static class IViewModelBody
 {
     private const string BindersVar = "binders";
 

@@ -15,15 +15,15 @@ namespace UltimateUI.MVVM
         /// <param name="changed">The action to invoke when the value changes.</param>
         /// <typeparam name="T">The type of the value.</typeparam>
         /// <returns>True if the binding is successful; otherwise, false.</returns>
-        public bool Bind<T>(in T value, ref Action<T> changed);
-        
+        public bool Bind<T>(in T value, ref Action<T> changed) { return true; }
+
         /// <summary>
         /// Unbinds a previously bound action, stopping it from being triggered by value changes.
         /// </summary>
         /// <param name="changed">The action to unbind.</param>
         /// <typeparam name="T">The type of the value associated with the action.</typeparam>
         /// <returns>True if the unbinding is successful; otherwise, false.</returns>
-        public bool Unbind<T>(ref Action<T> changed);
+        public bool Unbind<T>(ref Action<T> changed) { return true; }
     }
     
     /// <summary>

@@ -1,6 +1,6 @@
 using Microsoft.CodeAnalysis;
-using MVVMGenerators.Descriptions;
 using MVVMGenerators.Helpers;
+using MVVMGenerators.Descriptions;
 
 namespace MVVMGenerators.Generators.Binders;
 

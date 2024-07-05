@@ -4,7 +4,7 @@ using UltimateUI.MVVM.ViewModels;
 
 namespace MVVMGenerators.Sample;
 
-public partial class SomeBinder : SomeBinderParent, IBinder<string>, IBinder<object>
+public partial class SomeBinder : SomeBinderParent, IBinder<string>, IBinder<object>, IBinder<IBinder>
 {
     [BinderLog]
     public void SetValue(string value)
@@ -14,6 +14,12 @@ public partial class SomeBinder : SomeBinderParent, IBinder<string>, IBinder<obj
 
     [BindInheritorsAlso]
     public void SetValue(object value)
+    {
+        
+    }
+
+    [BindInheritorsAlso]
+    public void SetValue(IBinder value)
     {
         
     }

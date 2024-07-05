@@ -110,18 +110,17 @@ public class BinderGenerator : IIncrementalGenerator
         var namespaceName = declaration.GetNamespaceName();
         var declarationText = declaration.GetDeclarationText();
 
-        GenerateBinderLog(context, namespaceName, declarationText, binderData.HasBinderLogInBaseType, binderData.BinderLogMethods);
+        GenerateBinderLog(context, namespaceName, declarationText, binderData);
         GenerateBindInheritorsAlso(context, namespaceName, declarationText, binderData.HasBindInheritorsAlsoInBaseType, binderData.BindInheritorsAlsoTypes);
     }
 
     public static void GenerateBinderLog(
         SourceProductionContext context,
         string namespaceName,
-        DeclarationText declarationText,
-        bool hasBinderLogInBaseType,
-        IReadOnlyCollection<IMethodSymbol> binderLogMethods)
+        DeclarationText declarationText, 
+        BinderData binderData)
     {
-        if (binderLogMethods.Count == 0) return;
+        if (binderData.BinderLogMethods.Count == 0) return;
         
         var code = new CodeWriter();
         code.AppendLine("#if UNITY_EDITOR")
@@ -135,52 +134,8 @@ public class BinderGenerator : IIncrementalGenerator
 
         code.AppendLine($"{declarationText}")
             .BeginBlock();
-
-        if (!hasBinderLogInBaseType)
-        {
-            code.AppendLine($"[{Classes.SerializeFieldAttribute.AttributeGlobal}] protected bool IsDebug;").
-                AppendLine().AppendLine("// TODO Custom Property").
-                AppendLine(
-                    $"[{Classes.SerializeFieldAttribute.AttributeGlobal}] private {Classes.List.Global}<string> _log;").
-                AppendLine();
-        }
-
-        foreach (var method in binderLogMethods)
-        {
-            var parameterName = method.Parameters[0].Name;
-            var parameterType = method.Parameters[0].Type.ToDisplayString();
-            
-            code.AppendLine(General.GeneratedCodeAttribute)
-                .AppendLine($"void {Classes.IBinder.Global}<{parameterType}>.{method.Name}({parameterType} {parameterName})")
-                .BeginBlock()
-                .AppendLine("if (IsDebug)")
-                .BeginBlock()
-                .AppendLine("try")
-                .BeginBlock()
-                .AppendLine($"SetValue({parameterName});")
-                .AppendLine($"AddLog($\"Set Value: {{{parameterName}}}\");")
-                .EndBlock()
-                .AppendLine($"catch ({Classes.Exception.Global} e)")
-                .BeginBlock()
-                .AppendLine($"AddLog($\"<color=red>Exception: {{e.Message}}. {{nameof({parameterName})}}: {parameterName}</color>\");")
-                .AppendLine("throw;")
-                .EndBlock()
-                .EndBlock()
-                .AppendLine($"else SetValue({parameterName});")
-                .EndBlock()
-                .AppendLine();
-        }
-
-        if (!hasBinderLogInBaseType)
-        {
-            code.AppendLine(General.GeneratedCodeAttribute)
-                .AppendLine("protected void AddLog(string log)")
-                .BeginBlock()
-                .AppendLine($"_log ??= new {Classes.List.Global}<string>();")
-                .AppendLine("_log.Add(log);")
-                .EndBlock();
-        }
         
+        code.AppendBinderLog(binderData);
         code.EndBlock();
         
         if (!string.IsNullOrEmpty(namespaceName))

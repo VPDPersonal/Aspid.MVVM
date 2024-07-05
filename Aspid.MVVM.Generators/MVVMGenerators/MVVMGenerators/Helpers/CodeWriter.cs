@@ -35,6 +35,20 @@ public sealed class CodeWriter
         _textWriter.WriteLine(value);
         return this;
     }
+
+    public CodeWriter AppendMultiline(string value)
+    {
+        var indent = Indent;
+        Indent = 0;
+
+        var tab = new string('\t', indent);
+        value = $"{tab}{value}";
+        value = value.Replace("\n", $"\n{tab}");
+        AppendLine(value);
+
+        Indent = indent;
+        return this;
+    }
     
     public IDisposable BeginIndentScope() => 
         new IndentScope(this);

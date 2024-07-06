@@ -1,4 +1,3 @@
-using System;
 using System.Linq;
 using System.Threading;
 using System.Diagnostics;
@@ -74,7 +73,7 @@ public class ViewGenerator : IIncrementalGenerator
             if (!type.HasAttribute(Classes.ViewAttribute.FullName)) continue;
             
             inheritor = ViewInheritor.InheritorViewAttribute;
-            return new FoundForGenerator<ViewData>(true, new ViewData(symbol, inheritor, candidate, fields));
+            return new FoundForGenerator<ViewData>(true, new ViewData(inheritor, candidate, fields));
         }
         
         if (symbol.HasBaseType(Classes.MonoView))
@@ -98,7 +97,7 @@ public class ViewGenerator : IIncrementalGenerator
             inheritor = ViewInheritor.HasInterface;
         }
 
-        return new FoundForGenerator<ViewData>(true, new ViewData(symbol, inheritor, candidate, fields));
+        return new FoundForGenerator<ViewData>(true, new ViewData(inheritor, candidate, fields));
     }
     
     private static void GenerateCode(SourceProductionContext context, ViewData viewData)
@@ -115,150 +114,17 @@ public class ViewGenerator : IIncrementalGenerator
             code.AppendLine($"namespace {namespaceName}")
                 .BeginBlock();   
         }
-        
-        if (viewData.Inheritor == ViewInheritor.None)
-        {
-            code.AppendLine($"{declarationText} : {Classes.IView.Global}")
-                .BeginBlock();
-        }
-        else
-        {
-            code.AppendLine($"{declarationText}")
-                .BeginBlock(); 
-        }
-        
-        switch (viewData.Inheritor)
-        {
-            case ViewInheritor.InheritorViewAttribute:
-                code.AppendMultiline(
-                    $$"""
-                      protected override {{Classes.BindersCollectionById.Global}} GetBindersIternal()
-                      {
-                          var binders = base.GetBindersIternal(); 
-                          
-                      """).IncreaseIndent();
-                break;
-            
-            case ViewInheritor.None:
-                code.AppendMultiline(
-                    $"""
-                    {Classes.IReadOnlyBindersCollectionById.Global} {Classes.IView.Global}.GetBinders() =>
-                        GetBindersIternal();
 
-                    """);
-                goto case ViewInheritor.OverrideMonoView;
-            
-            case ViewInheritor.InheritorMonoView:
-                code.AppendMultiline(
-                    $"""
-                    protected sealed override {Classes.IReadOnlyBindersCollectionById.Global} GetBinders() =>
-                        GetBindersIternal();
-                    
-                    """);
-                goto case ViewInheritor.OverrideMonoView;
-            
-            case ViewInheritor.HasInterface:
-            case ViewInheritor.OverrideMonoView: 
-                code.AppendMultiline(
-                    $$"""
-                    protected virtual {{Classes.BindersCollectionById.Global}} GetBindersIternal()
-                    {
-                        var binders = new {{Classes.BindersCollectionById.Global}}
-                        {
-                    """)
-                    .IncreaseIndent()
-                    .IncreaseIndent();
-                break;
-            
-            default: throw new ArgumentOutOfRangeException();
-        }
-
-        if (viewData.Inheritor is ViewInheritor.None or ViewInheritor.InheritorMonoView
-            or ViewInheritor.OverrideMonoView or ViewInheritor.HasInterface)
-        {
-            foreach (var field in viewData.Fields)
-            {
-                code.AppendLine(field.Type.Kind != SymbolKind.ArrayType ?
-                    $"{{ \"{field.GetPropertyName()}\", new[] {{ {field.Name} }} }}," :
-                    $"{{ \"{field.GetPropertyName()}\", {field.Name} }},");
-            }
-            
-            code.DecreaseIndent()
-                .AppendLine("};")
-                .AppendLine();
-
-            code.AppendMultiline(
-                """
-                AddBinders(ref binders);
-                return binders;
-                """);
-        }
-        else
-        {
-            foreach (var field in viewData.Fields)
-            {
-                code.AppendLine(field.Type.Kind != SymbolKind.ArrayType ?
-                    $"binders.Add(\"{field.GetPropertyName()}\", new[] {{ {field.Name} }});" :
-                    $"binders.Add(\"{field.GetPropertyName()}\", {field.Name});");
-            }
-            
-            code.AppendLine()
-                .AppendMultiline(
-                """
-                AddBinders(ref binders);
-                return binders;
-                """);
-        }
-
-        code.EndBlock();
-        code.AppendLine();
-        code.AppendLine($"partial void AddBinders(ref {Classes.BindersCollectionById.Global} binders);");
-
-        // foreach (var field in viewData.Symbol.GetMembers().OfType<IFieldSymbol>())
-        // {
-        //     code.AppendLine($"{field.Type.ToDisplayString()}")
-        //         .BeginBlock();
-        //
-        //     foreach (var @interface in field.Type.AllInterfaces)
-        //     {
-        //         code.AppendLine($"{@interface.ToDisplayString()}");
-        //     }
-        //
-        //     code.EndBlock();
-        //     code.AppendLine();
-        // }
-            
-            
-        code.EndBlock();
+        code.AppendLine(viewData.Inheritor != ViewInheritor.None
+            ? $"{declarationText}"
+            : $"{declarationText} : {Classes.IView.Global}")
+            .BeginBlock()
+            .AppendIViewBody(viewData)
+            .EndBlock();
         
         if (!string.IsNullOrEmpty(namespaceName))
             code.EndBlock();
             
         context.AddSource($"{declarationText.Name}.IView.Generated.cs", code.GetSourceText());
-
-    }
-    
-    private readonly struct ViewData(
-        INamedTypeSymbol symbol,
-        ViewInheritor inheritor,
-        TypeDeclarationSyntax declaration,
-        IReadOnlyCollection<IFieldSymbol> fields)
-    {
-        public readonly INamedTypeSymbol Symbol = symbol;
-        public readonly ViewInheritor Inheritor = inheritor;
-        public readonly TypeDeclarationSyntax Declaration = declaration;
-        public readonly IReadOnlyCollection<IFieldSymbol> Fields = fields;
-
-    }
-    
-    public enum ViewInheritor
-    {
-        None,
-        InheritorViewAttribute, // Наследует ViewAttribute
-        
-        InheritorMonoView, // Наследует MonoView
-        OverrideMonoView, // Наследует MonoView с переопределением методов
-        
-        HasInterface, // Реализует интерфейс
     }
 }

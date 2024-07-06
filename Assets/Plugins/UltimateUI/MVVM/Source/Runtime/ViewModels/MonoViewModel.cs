@@ -9,7 +9,7 @@ namespace UltimateUI.MVVM.ViewModels
         public virtual IReadOnlyBindsMethods GetBindMethods() =>
             throw new NotImplementedException("This method must be implemented in the inheritor");
 
-        public virtual IReadOnlyBindsMethods GetUnbindsMethods() =>
+        public virtual IReadOnlyBindsMethods GetUnbindMethods() =>
             throw new NotImplementedException("This method must be implemented in the inheritor");
     }
 }

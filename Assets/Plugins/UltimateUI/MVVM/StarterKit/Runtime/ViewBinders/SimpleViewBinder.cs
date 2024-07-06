@@ -3,6 +3,7 @@ using UnityEngine;
 using UltimateUI.MVVM.Views;
 using UltimateUI.MVVM.ViewModels;
 using UltimateUI.MVVM.ViewBinders;
+using UnityEngine.Serialization;
 
 // ReSharper disable once CheckNamespace
 namespace UltimateUI.MVVM.StarterKit.ViewBinders
@@ -13,11 +14,12 @@ namespace UltimateUI.MVVM.StarterKit.ViewBinders
         [SerializeField] private Resolve _viewResolve;
         
 #if ULTIMATE_UI_TRI_INSPECTOR_INTEGRATION
+        [FormerlySerializedAs("_monoView")]
         [TriInspector.ShowIf(nameof(_viewResolve), Resolve.Mono)]
 #elif ULTIMATE_UI_ODIN_INSPECTOR_INTEGRATION
         [Sirenix.OdinInspector.ShowIf(nameof(_viewResolve), Resolve.Mono)]
 #endif
-        [SerializeField] private MonoView _monoView;
+        [SerializeField] private MonoView _monoViewValidate;
         
 #if ULTIMATE_UI_TRI_INSPECTOR_INTEGRATION
         [TriInspector.ShowIf(nameof(_viewResolve), Resolve.References)]
@@ -48,7 +50,7 @@ namespace UltimateUI.MVVM.StarterKit.ViewBinders
 
         protected override IView View => _viewResolve switch 
         { 
-            Resolve.Mono => _monoView,
+            Resolve.Mono => _monoViewValidate,
             Resolve.References => _referenceView,
             _ => throw new ArgumentOutOfRangeException()
         };

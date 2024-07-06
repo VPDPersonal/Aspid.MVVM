@@ -4,5 +4,4 @@ using System.Collections.Generic;
 namespace UltimateUI.MVVM.Views
 {
     public sealed class BindersCollectionById : Dictionary<string, IReadOnlyList<IBinder>>, IReadOnlyBindersCollectionById { }
-
 }

@@ -3,7 +3,6 @@ using System;
 using UnityEngine;
 using System.Globalization;
 using System.Collections.Generic;
-using UltimateUI.MVVM.Source.Binders;
 
 // ReSharper disable once CheckNamespace
 namespace UltimateUI.MVVM.StarterKit.Binders.Texts

@@ -22,7 +22,7 @@ namespace UltimateUI.MVVM.Samples.ProductSample
     {
         protected BindersCollectionById Binders;
         
-        public override IReadOnlyBindersCollectionById GetBinders()
+        protected override IReadOnlyBindersCollectionById GetBinders()
         {
             if (Binders != null) return Binders;
             

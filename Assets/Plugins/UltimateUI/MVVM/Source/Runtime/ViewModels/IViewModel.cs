@@ -16,6 +16,6 @@ namespace UltimateUI.MVVM.ViewModels
         /// Retrieves the methods that handle unbinding.
         /// </summary>
         /// <returns>A read-only collection of methods responsible for unbinding.</returns>
-        public IReadOnlyBindsMethods GetUnbindsMethods();
+        public IReadOnlyBindsMethods GetUnbindMethods();
     }
 }

@@ -1,13 +1,10 @@
 using System;
 using UnityEngine;
-using UltimateUI.MVVM;
 using System.Collections.Generic;
 using UltimateUI.MVVM.ViewModels;
 using UltimateUI.MVVM.Collections;
-using UltimateUI.MVVM.Samples.ProductSample.Economy;
 using UltimateUI.MVVM.Samples.ProductSample.Economy.Data;
 using UltimateUI.MVVM.Samples.ProductSample.Economy.Models;
-using UltimateUI.MVVM.Samples.ProductSample.Economy.ViewModels;
 
 // ReSharper disable once CheckNamespace
 namespace UltimateUI.MVVM.Samples.ProductSample.Economy.ViewModels
@@ -59,15 +56,9 @@ namespace UltimateUI.MVVM.Samples.ProductSample.Economy.ViewModels
             throw new NotImplementedException();
         }
 
-        public IReadOnlyBindsMethods GetUnbindsMethods()
+        public IReadOnlyBindsMethods GetUnbindMethods()
         {
             throw new NotImplementedException();
         }
-    }
-
-    
-    public class WalletView : MonoBehaviour
-    {
-        [SerializeField] private CurrencyView[] _currencyViews;
     }
 }

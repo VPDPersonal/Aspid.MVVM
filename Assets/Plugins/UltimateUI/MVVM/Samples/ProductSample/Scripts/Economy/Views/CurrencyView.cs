@@ -16,13 +16,21 @@ namespace UltimateUI.MVVM.Samples.ProductSample.Economy
     // View Description
     public partial class CurrencyView
     {
-        public override IReadOnlyBindersCollectionById GetBinders()
+        protected sealed override IReadOnlyBindersCollectionById GetBinders() =>
+            GetBindersIternal();
+
+        protected virtual BindersCollectionById GetBindersIternal()
         {
-            return new BindersCollectionById
+            var binders = new BindersCollectionById
             {
                 { "Icon", _icon },
                 { "Currency", _currency },
             };
+
+            AddBinders(ref binders);
+            return binders;
         }
+
+        partial void AddBinders(ref BindersCollectionById binders);
     }
 }

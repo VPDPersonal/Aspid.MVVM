@@ -90,7 +90,7 @@ namespace UltimateUI.MVVM.Samples.ProductSample.Economy.ViewModels
 
         partial void AddBindMethods(ref BindMethods bindMethods);
         
-        IReadOnlyBindsMethods IViewModel.GetUnbindsMethods() =>
+        IReadOnlyBindsMethods IViewModel.GetUnbindMethods() =>
             GetUnbindsMethods();
         
         protected virtual BindMethods GetUnbindsMethods()

@@ -1,18 +1,17 @@
 using UltimateUI.MVVM.Samples.ProductSample.Economy;
 using UltimateUI.MVVM.Samples.ProductSample.Economy.Data;
-using UltimateUI.MVVM.Samples.ProductSample.Economy.Models;
-using UltimateUI.MVVM.Samples.ProductSample.Economy.ViewModels;
 using UltimateUI.MVVM.ViewModels;
 using UltimateUI.MVVM.Views;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 // ReSharper disable once CheckNamespace
 namespace UltimateUI.MVVM.Samples.ProductSample
 {
     public class ProductSampleBootstrap : MonoBehaviour
     {
-        [SerializeField] private CurrencyView _coinsView;
-        [SerializeField] private CurrencyView _emeraldView;
+        [FormerlySerializedAs("_coinsView")] [SerializeField] private CurrencyView _coinsViewValidate;
+        [FormerlySerializedAs("_emeraldView")] [SerializeField] private CurrencyView _emeraldViewValidate;
         [SerializeField] private CurrencyViewDataCollection _currencyViewDataCollection;
         
         [Space]

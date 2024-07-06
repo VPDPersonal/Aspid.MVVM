@@ -13,7 +13,7 @@ OcclusionCullingSettings:
 --- !u!104 &2
 RenderSettings:
   m_ObjectHideFlags: 0
-  serializedVersion: 10
+  serializedVersion: 9
   m_Fog: 0
   m_FogColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
   m_FogMode: 3
@@ -38,11 +38,13 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
+  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 12
+  m_GIWorkflowMode: 1
   m_GISettings:
     serializedVersion: 2
     m_BounceScale: 1
@@ -65,6 +67,9 @@ LightmapSettings:
     m_LightmapParameters: {fileID: 0}
     m_LightmapsBakeMode: 1
     m_TextureCompression: 1
+    m_FinalGather: 0
+    m_FinalGatherFiltering: 1
+    m_FinalGatherRayCount: 256
     m_ReflectionCompression: 2
     m_MixedBakeMode: 2
     m_BakeBackend: 1
@@ -363,6 +368,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Id>k__BackingField: _currency
   _text: {fileID: 0}
+  _format: 
+  _isDebug: 0
   _log: []
 --- !u!114 &488396807
 MonoBehaviour:
@@ -427,17 +434,15 @@ MonoBehaviour:
   m_lineSpacingMax: 0
   m_paragraphSpacing: 0
   m_charWidthMaxAdj: 0
-  m_TextWrappingMode: 1
+  m_enableWordWrapping: 0
   m_wordWrappingRatios: 0.4
   m_overflowMode: 0
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 0
-  m_ActiveFontFeatures: 6e72656b
   m_enableExtraPadding: 0
   checkPaddingRequired: 0
   m_isRichText: 1
-  m_EmojiFallbackSupport: 1
   m_parseCtrlCharacters: 1
   m_isOrthographic: 1
   m_isCullingEnabled: 0
@@ -507,8 +512,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 166a44561e02d4b19b722833262aa8c7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _coinsView: {fileID: 1369864926}
-  _emeraldView: {fileID: 1674554216}
+  _coinsViewValidate: {fileID: 1369864926}
+  _emeraldViewValidate: {fileID: 1674554216}
   _currencyViewDataCollection: {fileID: 11400000, guid: 13a7df60492884d83b1f0d14b0448953, type: 2}
   _coinsCount: 0
   _emeraldCount: 1000
@@ -643,12 +648,12 @@ MonoBehaviour:
   m_RequiresColorTexture: 0
   m_Version: 2
   m_TaaSettings:
-    m_Quality: 3
-    m_FrameInfluence: 0.1
-    m_JitterScale: 1
-    m_MipBias: 0
-    m_VarianceClampScale: 0.9
-    m_ContrastAdaptiveSharpening: 0
+    quality: 3
+    frameInfluence: 0.1
+    jitterScale: 1
+    mipBias: 0
+    varianceClampScale: 0.9
+    contrastAdaptiveSharpening: 0
 --- !u!1 &1369864922
 GameObject:
   m_ObjectHideFlags: 0
@@ -756,20 +761,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9851e6ff800943488c33cba4ba788778, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _viewResolver: 1
+  _viewResolve: 0
   _viewType:
     _typeName: 
   _monoView:
-    _obj: {fileID: 1369864926}
-  _viewReferences:
+    _obj: {fileID: 0}
+  _referencesView:
     rid: -2
-  _viewModelResolver: 0
+  _viewModelResolve: 0
   _viewModelType:
     _typeName: UltimateUI.MVVM.Samples.ProductSample.Economy.ViewModels.CoinsViewModel,
       Assembly-CSharp-firstpass, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
   _monoViewModel:
     _obj: {fileID: 0}
-  _viewModelReferences:
+  _referencesViewModel:
     rid: -2
   _bindOrder: 0
   references:
@@ -1107,20 +1112,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9851e6ff800943488c33cba4ba788778, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _viewResolver: 1
+  _viewResolve: 0
   _viewType:
     _typeName: 
   _monoView:
-    _obj: {fileID: 1674554216}
-  _viewReferences:
+    _obj: {fileID: 0}
+  _referencesView:
     rid: -2
-  _viewModelResolver: 0
+  _viewModelResolve: 0
   _viewModelType:
     _typeName: UltimateUI.MVVM.Samples.ProductSample.Economy.ViewModels.EmeraldsViewModel,
       Assembly-CSharp-firstpass, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
   _monoViewModel:
     _obj: {fileID: 0}
-  _viewModelReferences:
+  _referencesViewModel:
     rid: -2
   _bindOrder: 0
   references:
@@ -1229,17 +1234,15 @@ MonoBehaviour:
   m_lineSpacingMax: 0
   m_paragraphSpacing: 0
   m_charWidthMaxAdj: 0
-  m_TextWrappingMode: 1
+  m_enableWordWrapping: 0
   m_wordWrappingRatios: 0.4
   m_overflowMode: 0
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 0
-  m_ActiveFontFeatures: 6e72656b
   m_enableExtraPadding: 0
   checkPaddingRequired: 0
   m_isRichText: 1
-  m_EmojiFallbackSupport: 1
   m_parseCtrlCharacters: 1
   m_isOrthographic: 1
   m_isCullingEnabled: 0
@@ -1279,6 +1282,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Id>k__BackingField: _currency
   _text: {fileID: 0}
+  _format: 
+  _isDebug: 0
   _log: []
 --- !u!1660057539 &9223372036854775807
 SceneRoots:

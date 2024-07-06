@@ -1,3 +1,14 @@
 {
-  "name": "UltimateUI.MVVM.Collections"
+    "name": "UltimateUI.MVVM.Collections",
+    "rootNamespace": "",
+    "references": [],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": true
 }

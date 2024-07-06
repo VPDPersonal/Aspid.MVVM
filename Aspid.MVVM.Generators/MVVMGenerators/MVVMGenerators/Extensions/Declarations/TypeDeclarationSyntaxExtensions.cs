@@ -34,7 +34,7 @@ public static class TypeDeclarationSyntaxExtensions
         var genericTypes = new StringBuilder();
         foreach (var type in types.Parameters)
         {
-            if (genericTypes.Length != 1)
+            if (genericTypes.Length > 0)
                 genericTypes.Append(", ");
             
             genericTypes.Append(type.Identifier.Text);

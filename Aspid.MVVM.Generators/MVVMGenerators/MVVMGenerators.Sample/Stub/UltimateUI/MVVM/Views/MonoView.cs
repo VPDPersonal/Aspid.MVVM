@@ -9,7 +9,9 @@ namespace UltimateUI.MVVM.Views
         protected virtual void OnValidate() =>
             ViewUtility.ValidateBinders(this);
 
-        public virtual IReadOnlyBindersCollectionById GetBinders() =>
+        IReadOnlyBindersCollectionById IView.GetBinders() => GetBinders();
+
+        protected virtual IReadOnlyBindersCollectionById GetBinders() =>
             throw new Exception("This method must be implemented in the inheritor");
     }
 }

@@ -1,3 +1,4 @@
+using System.Collections.Immutable;
 using System.Linq;
 using Microsoft.CodeAnalysis;
 using MVVMGenerators.Helpers;
@@ -27,6 +28,35 @@ public static class NamedSymbolExtensions
             return true;
         }
 
+        return false;
+    }
+
+    public static bool HasBaseType(this INamedTypeSymbol symbol, TypeText typeText) =>
+        symbol.HasBaseType(typeText.FullName);
+    
+    public static bool HasBaseType(this INamedTypeSymbol symbol, string baseTypeName)
+    {
+        for (var type = symbol; type != null; type = type.BaseType)
+            if (type.ToDisplayString() == baseTypeName) return true;
+
+        return false;
+    }
+    
+    public static bool HasBaseType(this INamedTypeSymbol symbol, TypeText typeText, out INamedTypeSymbol? foundBaseType) =>
+        symbol.HasBaseType(typeText.FullName, out foundBaseType);
+    
+    public static bool HasBaseType(this INamedTypeSymbol symbol, string baseTypeName, out INamedTypeSymbol? foundBaseType)
+    {
+        foundBaseType = null;
+        
+        for (var type = symbol; type != null; type = type.BaseType)
+        {
+            if (type.ToDisplayString() != baseTypeName) continue;
+            
+            foundBaseType = type;
+            return true;
+        }
+        
         return false;
     }
 }

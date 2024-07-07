@@ -1,3 +1,4 @@
+using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -98,8 +99,8 @@ namespace UltimateUI.MVVM.Collections
         
         public void Clear()
         {
+            CollectionChanged?.Invoke(NotifyCollectionChangedEventArgs<KeyValuePair<TKey, TValue>>.Reset(_dictionary.ToList()));
             _dictionary.Clear();
-            CollectionChanged?.Invoke(NotifyCollectionChangedEventArgs<KeyValuePair<TKey, TValue>>.Reset());
         }
     }
 }

@@ -3,7 +3,7 @@ using UnityEngine;
 // ReSharper disable once CheckNamespace
 namespace UltimateUI.MVVM.StarterKit.Binders.Graphics
 {
-    public class GraphicColorSwitcherBinder : GraphicBinderBase, IBinder<bool>
+    public partial class GraphicColorSwitcherBinder : GraphicBinderBase, IBinder<bool>
     {
         [Header("Parameters")]
         [SerializeField] private Color _trueColor;
@@ -13,6 +13,7 @@ namespace UltimateUI.MVVM.StarterKit.Binders.Graphics
         
         protected Color FalseColor => _falseColor;
 
+        [BinderLog]
         public void SetValue(bool value) =>
             CachedGraphic.color = GetColor(value);
         

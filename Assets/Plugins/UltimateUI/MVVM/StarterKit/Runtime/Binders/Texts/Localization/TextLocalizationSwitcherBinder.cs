@@ -4,7 +4,7 @@ using UnityEngine;
 // ReSharper disable once CheckNamespace
 namespace UltimateUI.MVVM.StarterKit.Binders.Texts.Localization
 {
-    public class TextLocalizationSwitcherBinder : TextLocalizationBinderBase, IBinder<bool>
+    public partial class TextLocalizationSwitcherBinder : TextLocalizationBinderBase, IBinder<bool>
     {
         [Header("Keys")]
         [SerializeField] private string _trueKey;
@@ -14,6 +14,7 @@ namespace UltimateUI.MVVM.StarterKit.Binders.Texts.Localization
 
         protected string FalseKey => _falseKey;
         
+        [BinderLog]
         public void SetValue(bool value) =>
             CachedLocalizeStringEvent.StringReference.TableEntryReference = GetKey(value);
 

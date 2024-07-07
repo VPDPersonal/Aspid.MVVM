@@ -20,7 +20,7 @@ namespace UltimateUI.MVVM.ViewModels
         
         public static bool SetProperty<T>(ref T field, T newValue)
         {
-            if (EqualityComparer<T>.Default.Equals(field, newValue)) return false;
+            if (EqualsDefault(field, newValue)) return false;
             
             field = newValue;
             return true;
@@ -38,7 +38,7 @@ namespace UltimateUI.MVVM.ViewModels
         public static bool SetProperty<T>(T oldValue, T newValue, Action<T> callback)
         {
             if (callback == null) throw new ArgumentNullException(nameof(callback));
-            if (EqualityComparer<T>.Default.Equals(oldValue, newValue)) return false;
+            if (EqualsDefault(oldValue, newValue)) return false;
             
             callback(newValue);
             return true;
@@ -53,5 +53,8 @@ namespace UltimateUI.MVVM.ViewModels
             callback(newValue);
             return true;
         }
+        
+        public static bool EqualsDefault<T>(T field, T newValue) =>
+            EqualityComparer<T>.Default.Equals(field, newValue);
     }
 }

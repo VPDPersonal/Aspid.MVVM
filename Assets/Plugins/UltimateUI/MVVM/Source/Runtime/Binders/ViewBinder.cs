@@ -6,6 +6,12 @@ namespace UltimateUI.MVVM.ViewBinders
 {
     public static class ViewBinder
     {
+        public static void Rebind(IView view, IViewModel oldViewModel, IViewModel newViewModel)
+        {
+            Unbind(view, oldViewModel);
+            Bind(view, newViewModel);
+        }
+        
         public static void Bind(IView view, IViewModel viewModel)
         {
             var binders = view.GetBinders();

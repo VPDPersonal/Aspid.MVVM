@@ -4,7 +4,7 @@ using UnityEngine;
 // ReSharper disable once CheckNamespace
 namespace UltimateUI.MVVM.StarterKit.Binders.Transforms
 {
-    public class TransformPositionBinder : TransformBinderBase, IVectorBinder
+    public partial class TransformPositionBinder : TransformBinderBase, IVectorBinder
     {
         [Header("Parameters")]
         [SerializeField] private Space _space;
@@ -14,6 +14,7 @@ namespace UltimateUI.MVVM.StarterKit.Binders.Transforms
         public void SetValue(Vector2 value) =>
             SetValue((Vector3)value);
         
+        [BinderLog]
         public void SetValue(Vector3 value)
         {
             switch (Space)

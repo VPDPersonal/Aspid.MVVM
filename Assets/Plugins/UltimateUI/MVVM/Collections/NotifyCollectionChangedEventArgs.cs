@@ -82,7 +82,7 @@ namespace UltimateUI.MVVM.Collections
         public static NotifyCollectionChangedEventArgs<T> Move(T changedItem, int oldStartingIndex, int newStartingIndex) =>
             new(NotifyCollectionChangedAction.Move, changedItem, changedItem, oldStartingIndex, newStartingIndex);
 
-        public static NotifyCollectionChangedEventArgs<T> Reset() => 
-            new(NotifyCollectionChangedAction.Reset, true);
+        public static NotifyCollectionChangedEventArgs<T> Reset(IReadOnlyList<T> oldItems) => 
+            new(NotifyCollectionChangedAction.Reset, true, oldItems: oldItems);
     }
 }

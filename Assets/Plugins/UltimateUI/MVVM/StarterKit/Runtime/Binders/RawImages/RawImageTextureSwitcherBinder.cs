@@ -3,7 +3,7 @@ using UnityEngine;
 // ReSharper disable once CheckNamespace
 namespace UltimateUI.MVVM.StarterKit.Binders.RawImages
 {
-    public class RawImageTextureSwitcherBinder : RawImageBinderBase, IBinder<bool>
+    public partial class RawImageTextureSwitcherBinder : RawImageBinderBase, IBinder<bool>
     {
         [Header("Parameters")]
         [SerializeField] private Texture2D _trueTexture;
@@ -13,6 +13,7 @@ namespace UltimateUI.MVVM.StarterKit.Binders.RawImages
         
         protected Texture2D FalseTexture => _falseTexture;
 
+        [BinderLog]
         public void SetValue(bool value) =>
             CachedImage.texture = GetTexture2D(value);
 

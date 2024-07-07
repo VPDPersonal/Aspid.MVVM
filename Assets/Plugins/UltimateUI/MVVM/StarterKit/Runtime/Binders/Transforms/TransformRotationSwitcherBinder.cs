@@ -4,7 +4,7 @@ using UnityEngine;
 // ReSharper disable once CheckNamespace
 namespace UltimateUI.MVVM.StarterKit.Binders.Transforms
 {
-    public class TransformRotationSwitcherBinder : TransformBinderBase, IBinder<bool>
+    public partial class TransformRotationSwitcherBinder : TransformBinderBase, IBinder<bool>
     {
         [Header("Parameters")]
         [SerializeField] private Space _space;
@@ -17,6 +17,7 @@ namespace UltimateUI.MVVM.StarterKit.Binders.Transforms
         
         protected Vector3 FalseRotation => _falseRotation;
         
+        [BinderLog]
         public void SetValue(bool value)
         {
             switch (Space)

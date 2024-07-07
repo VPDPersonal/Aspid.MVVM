@@ -3,7 +3,7 @@ using UnityEngine;
 // ReSharper disable once CheckNamespace
 namespace UltimateUI.MVVM.StarterKit.Binders.Images
 {
-    public class ImageSpriteSwitcherBinder : ImageBinderBase, IBinder<bool>
+    public partial class ImageSpriteSwitcherBinder : ImageBinderBase, IBinder<bool>
     {
         [Header("Parameters")]
         [SerializeField] private Sprite _trueSprite;
@@ -13,6 +13,7 @@ namespace UltimateUI.MVVM.StarterKit.Binders.Images
         
         protected Sprite FalseTexture => _falseSprite;
 
+        [BinderLog]
         public void SetValue(bool value) =>
             CachedImage.sprite = GetSprite(value);
         

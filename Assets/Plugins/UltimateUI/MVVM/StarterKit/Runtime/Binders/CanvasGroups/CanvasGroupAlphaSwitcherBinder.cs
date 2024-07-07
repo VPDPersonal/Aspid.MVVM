@@ -3,7 +3,7 @@ using UnityEngine;
 // ReSharper disable once CheckNamespace
 namespace UltimateUI.MVVM.StarterKit.Binders.CanvasGroups
 {
-    public class CanvasGroupAlphaSwitcherBinder : CanvasGroupBinderBase, IBinder<bool>
+    public partial class CanvasGroupAlphaSwitcherBinder : CanvasGroupBinderBase, IBinder<bool>
     {
         [Header("Parameters")]
         [SerializeField] [Range(0, 1)] private float _trueAlpha;
@@ -13,6 +13,7 @@ namespace UltimateUI.MVVM.StarterKit.Binders.CanvasGroups
         
         protected float FalseAlpha => _falseAlpha;
 
+        [BinderLog]
         public void SetValue(bool value) =>
             CachedCanvasGroup.alpha = GetAlpha(value);
         

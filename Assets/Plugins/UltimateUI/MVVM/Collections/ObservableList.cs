@@ -133,8 +133,8 @@ namespace UltimateUI.MVVM.Collections
         
         public void Clear()
         {
+            CollectionChanged?.Invoke(NotifyCollectionChangedEventArgs<T>.Reset(_list.ToList()));
             _list.Clear();
-            CollectionChanged?.Invoke(NotifyCollectionChangedEventArgs<T>.Reset());
         }
     }
 }

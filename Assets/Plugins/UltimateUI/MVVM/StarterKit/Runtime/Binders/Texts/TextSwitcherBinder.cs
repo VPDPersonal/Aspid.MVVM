@@ -4,7 +4,7 @@ using UnityEngine;
 // ReSharper disable once CheckNamespace
 namespace UltimateUI.MVVM.StarterKit.Binders.Texts
 {
-    public class TextSwitcherBinder : TextBinderBase, IBinder<bool>
+    public partial class TextSwitcherBinder : TextBinderBase, IBinder<bool>
     {
         [Header("Parameters")]
         [SerializeField] private string _trueText;
@@ -14,6 +14,7 @@ namespace UltimateUI.MVVM.StarterKit.Binders.Texts
         
         protected string FalseText => _falseText;
 
+        [BinderLog]
         public void SetValue(bool value) =>
             CachedText.text = GetText(value);
 

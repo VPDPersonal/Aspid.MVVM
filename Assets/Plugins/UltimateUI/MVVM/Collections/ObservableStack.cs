@@ -1,3 +1,4 @@
+using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -106,8 +107,8 @@ namespace UltimateUI.MVVM.Collections
         
         public void Clear()
         {
+            CollectionChanged?.Invoke(NotifyCollectionChangedEventArgs<T>.Reset(_stack.ToList()));
             _stack.Clear();
-            CollectionChanged?.Invoke(NotifyCollectionChangedEventArgs<T>.Reset());
         }
     }
 }

@@ -4,7 +4,7 @@ using UnityEngine.Events;
 // ReSharper disable once CheckNamespace
 namespace UltimateUI.MVVM.StarterKit.Binders.Events
 {
-    public class BoolEventBinder : MonoBinder, IBinder<bool>
+    public partial class BoolEventBinder : MonoBinder, IBinder<bool>
     {
         public event UnityAction<bool> BoolValueSet
         {
@@ -15,6 +15,7 @@ namespace UltimateUI.MVVM.StarterKit.Binders.Events
         [Header("Events")]
         [SerializeField] private UnityEvent<bool> _boolValueSet;
         
+        [BinderLog]
         public void SetValue(bool value) =>
             _boolValueSet?.Invoke(value);
     }

@@ -2,8 +2,9 @@
 // ReSharper disable once CheckNamespace
 namespace UltimateUI.MVVM.StarterKit.Binders.Texts.Localization
 {
-    public class TextLocalizationBinder : TextLocalizationBinderBase, IBinder<string>
+    public partial class TextLocalizationBinder : TextLocalizationBinderBase, IBinder<string>
     {
+        [BinderLog]
         public void SetValue(string value) =>
             CachedLocalizeStringEvent.StringReference.TableEntryReference = value;
     }

@@ -4,7 +4,7 @@ using UnityEngine.Events;
 // ReSharper disable once CheckNamespace
 namespace UltimateUI.MVVM.StarterKit.Binders.Events
 {
-    public class NumberEventBinder : MonoBinder, IBinderNumber
+    public partial class NumberEventBinder : MonoBinder, IBinderNumber
     {
         public event UnityAction<int> IntValueSet
         {
@@ -36,15 +36,19 @@ namespace UltimateUI.MVVM.StarterKit.Binders.Events
         [SerializeField] private UnityEvent<float> _floatValueSet;
         [SerializeField] private UnityEvent<double> _doubleValueSet;
         
+        [BinderLog]
         public void SetValue(int value) =>
             _intValueSet?.Invoke(value);
         
+        [BinderLog]
         public void SetValue(long value) =>
             _longValueSet?.Invoke(value);
         
+        [BinderLog]
         public void SetValue(float value) =>
             _floatValueSet?.Invoke(value);
         
+        [BinderLog]
         public void SetValue(double value) =>
             _doubleValueSet?.Invoke(value);
     }

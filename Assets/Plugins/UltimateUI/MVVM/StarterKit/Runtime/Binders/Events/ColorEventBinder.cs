@@ -4,7 +4,7 @@ using UnityEngine.Events;
 // ReSharper disable once CheckNamespace
 namespace UltimateUI.MVVM.StarterKit.Binders.Events
 {
-    public class ColorEventBinder : MonoBinder, IColorBinder
+    public partial class ColorEventBinder : MonoBinder, IColorBinder
     {
         public event UnityAction<Color> ColorValueSet
         {
@@ -15,6 +15,7 @@ namespace UltimateUI.MVVM.StarterKit.Binders.Events
         [Header("Events")]
         [SerializeField] private UnityEvent<Color> _colorValueSet;
         
+        [BinderLog]
         public void SetValue(Color value) =>
             _colorValueSet?.Invoke(value);
     }

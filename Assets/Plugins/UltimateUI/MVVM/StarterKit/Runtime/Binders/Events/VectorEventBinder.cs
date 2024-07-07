@@ -4,7 +4,7 @@ using UnityEngine.Events;
 // ReSharper disable once CheckNamespace
 namespace UltimateUI.MVVM.StarterKit.Binders.Events
 {
-    public class VectorEventBinder : MonoBinder, IVectorBinder
+    public partial class VectorEventBinder : MonoBinder, IVectorBinder
     {
         public event UnityAction<Vector2> Vector2ValueSet
         {
@@ -22,9 +22,11 @@ namespace UltimateUI.MVVM.StarterKit.Binders.Events
         [SerializeField] private UnityEvent<Vector2> _vector2ValueSet;
         [SerializeField] private UnityEvent<Vector3> _vector3ValueSet;
         
+        [BinderLog]
         public void SetValue(Vector2 value) =>
             _vector2ValueSet?.Invoke(value);
         
+        [BinderLog]
         public void SetValue(Vector3 value) =>
             _vector3ValueSet?.Invoke(value);
     }

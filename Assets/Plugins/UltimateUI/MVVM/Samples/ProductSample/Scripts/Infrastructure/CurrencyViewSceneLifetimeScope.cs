@@ -4,6 +4,7 @@ using VContainer.Unity;
 using UltimateUI.MVVM.Samples.ProductSample.Economy.Data;
 using UltimateUI.MVVM.Samples.ProductSample.Economy.Models;
 using UltimateUI.MVVM.Samples.ProductSample.Economy.ViewModels;
+using UltimateUI.MVVM.ViewBinders;
 
 // ReSharper disable once CheckNamespace
 namespace UltimateUI.MVVM.Samples.ProductSample.Infrastructure
@@ -20,6 +21,8 @@ namespace UltimateUI.MVVM.Samples.ProductSample.Infrastructure
 
             builder.RegisterInstance(_currencyViewDataCollection);
 
+            builder.Register<WalletViewModel>(Lifetime.Singleton);
+            
             builder.Register<CoinsViewModel>(Lifetime.Singleton);
             builder.Register<EmeraldsViewModel>(Lifetime.Singleton);
         }

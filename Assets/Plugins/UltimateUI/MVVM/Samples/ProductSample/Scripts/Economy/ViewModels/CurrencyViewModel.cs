@@ -1,6 +1,5 @@
 using System;
 using UnityEngine;
-using System.Collections.Generic;
 using UltimateUI.MVVM.ViewModels;
 using UltimateUI.MVVM.Samples.ProductSample.Economy.Data;
 using UltimateUI.MVVM.Samples.ProductSample.Economy.Models;
@@ -30,13 +29,13 @@ namespace UltimateUI.MVVM.Samples.ProductSample.Economy.ViewModels
         
         public void Initialize()
         {
-            _wallet.AddListener(_currencyType, OnCurrencyChanged);
+            _wallet.AddListener(_currencyType, OnWalletCurrencyChanged);
         }
         
         private void UpdateIcon() =>
             Icon = _currencyViewDataCollection.GetIcon(_currencyType, Currency);
         
-        private void OnCurrencyChanged(int currency)
+        private void OnWalletCurrencyChanged(int currency)
         {
             Currency = currency;
             UpdateIcon();
@@ -44,67 +43,7 @@ namespace UltimateUI.MVVM.Samples.ProductSample.Economy.ViewModels
         
         public virtual void Dispose()
         {
-            _wallet.RemoveListener(_currencyType, OnCurrencyChanged);
+            _wallet.RemoveListener(_currencyType, OnWalletCurrencyChanged);
         }
-    }
-    
-    public partial class CurrencyViewModel : IViewModel
-    {
-        private event Action<Sprite> IconChanged;
-        private event Action<int> CurrencyChanged;
-        
-        private Sprite Icon
-        {
-            get => _icon;
-            set
-            {
-                if (ViewModelUtility.SetProperty(ref _icon, value)) 
-                    IconChanged?.Invoke(_icon);
-            }
-        }
-        
-        private int Currency
-        {
-            get => _currency;
-            set
-            {
-                if (ViewModelUtility.SetProperty(ref _currency, value))
-                    CurrencyChanged?.Invoke(_currency);
-            }
-        }
-        
-        IReadOnlyBindsMethods IViewModel.GetBindMethods() =>
-            GetBindMethods();
-        
-        protected virtual BindMethods GetBindMethods()
-        {
-            var bindMethods = new BindMethods
-            {
-                { nameof(Icon), binders => ViewModelUtility.Bind(_icon, ref IconChanged, binders) },
-                { nameof(Currency), binders => ViewModelUtility.Bind(Currency, ref CurrencyChanged, binders) },
-            };
-
-            AddBindMethods(ref bindMethods);
-            return bindMethods;
-        }
-
-        partial void AddBindMethods(ref BindMethods bindMethods);
-        
-        IReadOnlyBindsMethods IViewModel.GetUnbindMethods() =>
-            GetUnbindsMethods();
-        
-        protected virtual BindMethods GetUnbindsMethods()
-        {
-            var unbindMethods = new BindMethods
-            {
-                { nameof(Icon), binders => ViewModelUtility.Unbind(ref IconChanged, binders) },
-                { nameof(Currency), binders => ViewModelUtility.Unbind(ref CurrencyChanged, binders) },
-            };
-            
-            AddUnbindMethods(ref unbindMethods);
-            return unbindMethods;
-        }
-
-        partial void AddUnbindMethods(ref BindMethods bindMethods);
     }
 }

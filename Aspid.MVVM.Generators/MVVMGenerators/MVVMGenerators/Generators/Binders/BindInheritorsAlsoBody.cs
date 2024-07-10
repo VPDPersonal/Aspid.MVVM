@@ -24,10 +24,10 @@ public static class BindInheritorsAlsoBody
     {
         code.AppendMultiline(
             $$"""
-              {{General.GeneratedCodeAttribute}}
+              {{General.GeneratedCodeBinderModelAttribute}}
               private readonly {{Classes.Dictionary.Global}}<{{Classes.Delegate.Global}}, {{Classes.Delegate.Global}}> _handlers = new();
 
-              {{General.GeneratedCodeAttribute}}
+              {{General.GeneratedCodeBinderModelAttribute}}
               bool {{Classes.IBinder.Global}}.Bind<T>(in T value, ref {{Classes.Action.Global}}<T> changed)
               {
                   switch (this)
@@ -56,7 +56,7 @@ public static class BindInheritorsAlsoBody
     {
         code.AppendMultiline(
             $$"""
-              {{General.GeneratedCodeAttribute}}
+              {{General.GeneratedCodeBinderModelAttribute}}
               bool {{Classes.IBinder.Global}}.Unbind<T>(ref {{Classes.Action.Global}}<T> changed)
               {
                  switch (this)
@@ -85,7 +85,7 @@ public static class BindInheritorsAlsoBody
         var method = hasBaseType ? "protected override " : "protected virtual ";
         method += $"bool BindViaHandler<T>(T value, out {Classes.Action.Global}<T> handler)";
         
-        code.AppendLine(General.GeneratedCodeAttribute)
+        code.AppendLine(General.GeneratedCodeBinderModelAttribute)
             .AppendLine(method)
             .BeginBlock()
             .AppendLine(hasBaseType 

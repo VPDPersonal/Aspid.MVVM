@@ -22,14 +22,14 @@ public static class BinderLogBody
     {
         code.AppendMultiline(
             $"""
-             {General.GeneratedCodeAttribute}
+             {General.GeneratedCodeViewModelAttribute}
              [{Classes.SerializeFieldAttribute.AttributeGlobal}] private bool _isDebug;
 
              // TODO Add Custom Property
-             {General.GeneratedCodeAttribute}
+             {General.GeneratedCodeViewModelAttribute}
              [{Classes.SerializeFieldAttribute.AttributeGlobal}] private {Classes.List.Global}<string> _log;
 
-             {General.GeneratedCodeAttribute}
+             {General.GeneratedCodeViewModelAttribute}
              protected bool IsDebug => _isDebug;
              """);
 
@@ -43,7 +43,7 @@ public static class BinderLogBody
 
         code.AppendMultiline(
             $$"""
-              {{General.GeneratedCodeAttribute}}
+              {{General.GeneratedCodeBinderModelAttribute}}
               void {{Classes.IBinder.Global}}<{{parameterType}}>.{{method.Name}}({{parameterType}} {{parameterName}})
               {
                   if (IsDebug)
@@ -70,7 +70,7 @@ public static class BinderLogBody
     {
         code.AppendMultiline(
             $$"""
-              {{General.GeneratedCodeAttribute}}
+              {{General.GeneratedCodeBinderModelAttribute}}
               protected void AddLog(string log)
               {
                   _log ??= new {{Classes.List.Global}}<string>();

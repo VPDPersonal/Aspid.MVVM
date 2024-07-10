@@ -41,7 +41,7 @@ public static class IViewModelBody
 
         if (!hasBaseType && !hasInterface)
         {
-            code.AppendLine(General.GeneratedCodeAttribute)
+            code.AppendLine(General.GeneratedCodeViewModelAttribute)
                 .AppendLine($"{iReadOnlyBindsMethodsType} {iViewModelType}.{getMethodName}() => {getMethodName}Iternal();")
                 .AppendLine();
         }
@@ -49,7 +49,7 @@ public static class IViewModelBody
         var methodIternal = hasBaseType ? "protected override " : "protected virtual ";
         methodIternal += $"{bindMethodsType} {getMethodName}Iternal()";
         
-        code.AppendLine(General.GeneratedCodeAttribute)
+        code.AppendLine(General.GeneratedCodeViewModelAttribute)
             .AppendLine(methodIternal)
             .BeginBlock();
 
@@ -77,7 +77,7 @@ public static class IViewModelBody
             .AppendLine($"return {methodName};")
             .EndBlock()
             .AppendLine()
-            .AppendLine(General.GeneratedCodeAttribute)
+            .AppendLine(General.GeneratedCodeViewModelAttribute)
             .AppendLine($"partial void {addMethodName}(ref {bindMethodsType} {methodName});")
             .AppendLine();
     }

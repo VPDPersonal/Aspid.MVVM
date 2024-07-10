@@ -45,6 +45,7 @@ public static class IViewBody
     {
         code.AppendMultiline(
             $"""
+             {General.GeneratedCodeViewAttribute}
              {Classes.IReadOnlyBindersCollectionById.Global} {Classes.IView.Global}.GetBinders() =>
                  GetBindersIternal();
 
@@ -55,6 +56,7 @@ public static class IViewBody
     {
         code.AppendMultiline(
             $"""
+             {General.GeneratedCodeViewAttribute}
              protected sealed override {Classes.IReadOnlyBindersCollectionById.Global} GetBinders() =>
                  GetBindersIternal();
 
@@ -65,6 +67,7 @@ public static class IViewBody
     {
         code.AppendMultiline(
                 $$"""
+                  {{General.GeneratedCodeViewAttribute}}
                   protected override {{Classes.BindersCollectionById.Global}} GetBindersIternal()
                   {
                       var binders = base.GetBindersIternal(); 
@@ -92,6 +95,7 @@ public static class IViewBody
     {
         code.AppendMultiline(
                 $$"""
+                  {{General.GeneratedCodeViewAttribute}}
                   protected virtual {{Classes.BindersCollectionById.Global}} GetBindersIternal()
                   {
                       var binders = new {{Classes.BindersCollectionById.Global}}
@@ -119,6 +123,12 @@ public static class IViewBody
             .EndBlock();
     }
 
-    private static void AppendAddBindersMethod(this CodeWriter code) =>
-        code.AppendLine($"partial void AddBinders(ref {Classes.BindersCollectionById.Global} binders);");
+    private static void AppendAddBindersMethod(this CodeWriter code)
+    {
+        code.AppendMultiline(
+            $"""
+            {General.GeneratedCodeViewAttribute}
+            partial void AddBinders(ref {Classes.BindersCollectionById.Global} binders);
+            """);
+    }
 }

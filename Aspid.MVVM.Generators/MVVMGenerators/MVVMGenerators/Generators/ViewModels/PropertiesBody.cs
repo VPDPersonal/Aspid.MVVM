@@ -24,7 +24,7 @@ public static class PropertiesBody
 
     private static void AppendEvents(CodeWriter code, IFieldSymbol field)
     {
-        code.AppendLine(General.GeneratedCodeAttribute)
+        code.AppendLine(General.GeneratedCodeViewModelAttribute)
             .AppendLine($"public event {Classes.Action.Global}<{field.Type}> {field.GetPropertyName()}Changed;");
     }
 
@@ -36,13 +36,13 @@ public static class PropertiesBody
         
         code.AppendMultiline(
             $$"""
-            {{General.GeneratedCodeAttribute}}
+            {{General.GeneratedCodeViewModelAttribute}}
             private {{type}} {{propertyName}}
             {
                 get => {{field.Name}};
                 set 
                 {
-                    if (!{{Classes.ViewModelUtility.Global}}.EqualsDefault({{name}}, value)) return;
+                    if ({{Classes.ViewModelUtility.Global}}.EqualsDefault({{name}}, value)) return;
                     
                     On{{propertyName}}Changing({{name}}, value);
                     {{name}} = value;
@@ -62,10 +62,10 @@ public static class PropertiesBody
         
         code.AppendMultiline(
             $"""
-              {General.GeneratedCodeAttribute}
+              {General.GeneratedCodeViewModelAttribute}
               partial void On{name}Changing({type} oldValue, {type} newValue);
               
-              {General.GeneratedCodeAttribute}
+              {General.GeneratedCodeViewModelAttribute}
               partial void On{name}Changed({type} newValue);
               """);
 

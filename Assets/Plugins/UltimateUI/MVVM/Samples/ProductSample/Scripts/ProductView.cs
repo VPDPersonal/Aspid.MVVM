@@ -3,6 +3,7 @@ using UltimateUI.MVVM.Views;
 
 namespace UltimateUI.MVVM.Samples.ProductSample
 {
+    [View]
     public partial class ProductView : MonoView
     {
         [RequireBinder(typeof(Sprite))]
@@ -17,22 +18,4 @@ namespace UltimateUI.MVVM.Samples.ProductSample
         [RequireBinder(typeof(Sprite))]
         [SerializeField] private Sprite _currencyIcon;
     }
-    
-    public partial class ProductView
-    {
-        protected BindersCollectionById Binders;
-        
-        protected override IReadOnlyBindersCollectionById GetBinders()
-        {
-            if (Binders != null) return Binders;
-            
-            return Binders = new BindersCollectionById
-            {
-                { "Icon", _icon },
-                { "Name", _name },
-                { "Icon", _description },
-            };
-        }
-    }
-
 }

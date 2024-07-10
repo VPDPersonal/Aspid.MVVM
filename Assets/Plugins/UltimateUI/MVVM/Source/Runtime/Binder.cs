@@ -1,17 +1,11 @@
 #nullable disable
 using System;
-using UnityEngine;
 
 // ReSharper disable once CheckNamespace
 namespace UltimateUI.MVVM
 {
-    public abstract class MonoBinder : MonoBehaviour, IBinder
+    public abstract class Binder : IBinder
     {
-#if UNITY_EDITOR
-        [field: SerializeField] 
-        public string Id { get; set; }
-#endif
-        
         public virtual bool Bind<T>(in T value, ref Action<T> changed)
         {
             switch (this)

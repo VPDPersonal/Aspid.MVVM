@@ -1,0 +1,121 @@
+using System;
+using UltimateUI.MVVM.ViewModels;
+
+namespace Plugins.UltimateUI.MVVM.Samples.StatsSample.Scripts
+{
+    [ViewModel]
+    public partial class HeroViewModel : IDisposable
+    {
+        [Bind] private int _cool;
+        [Bind] private int _power;
+        [Bind] private int _reflexes;
+        [Bind] private int _intelligence;
+        [Bind] private int _technicalAbility;
+        
+        [Bind] private int _skillPointsAvailable;
+        [Bind] private bool _isDraft;
+
+        private readonly Hero _hero;
+
+        public HeroViewModel(Hero hero)
+        {
+            _hero = hero;
+            
+            _cool = _hero.GetNumberSkillPointFrom(Skill.Cool);
+            _power = _hero.GetNumberSkillPointFrom(Skill.Cool);
+            _reflexes = _hero.GetNumberSkillPointFrom(Skill.Cool);
+            _intelligence = _hero.GetNumberSkillPointFrom(Skill.Cool);
+            _technicalAbility = _hero.GetNumberSkillPointFrom(Skill.Cool);
+            
+            _skillPointsAvailable = _hero.SkillPointsAvailable;
+            
+            Subscribe();
+        }
+
+        private void Subscribe()
+        {
+            _hero.SkillChanged += OnSkillChanged;
+        }
+        
+        private void Unsubscribe()
+        {
+            _hero.SkillChanged -= OnSkillChanged;
+        }
+
+        private void SetSkillPointsTo(Skill skill, int points)
+        {
+            switch (skill)
+            {
+                case Skill.Cool: Cool = points; break;
+                case Skill.Power: Power = points; break;
+                case Skill.Reflexes: Reflexes = points; break;
+                case Skill.Intelligence: Intelligence = points; break;
+                case Skill.TechnicalAbility: TechnicalAbility = points; break;
+                default: throw new ArgumentOutOfRangeException(nameof(skill), skill, null);
+            }
+        }
+
+        private int GetNumberSkillPointFrom(Skill skill) => skill switch
+        {
+            Skill.Cool => Cool, 
+            Skill.Power => Power,
+            Skill.Reflexes => Reflexes, 
+            Skill.Intelligence => Intelligence, 
+            Skill.TechnicalAbility => TechnicalAbility, 
+            _ => throw new ArgumentOutOfRangeException(nameof(skill), skill, null)
+        };
+
+        // [BindCommand]
+        private void AddSkillPointTo(Skill skill)
+        {
+            if (SkillPointsAvailable == 0) return;
+
+            IsDraft = true;
+            SetSkillPointsTo(skill, GetNumberSkillPointFrom(skill) + 1);
+            SkillPointsAvailable--;
+        }
+
+        // [BindCommand]
+        private void RemoveSkillPointTo(Skill skill)
+        {
+            var skillPoints = GetNumberSkillPointFrom(skill);
+            if (skillPoints < 2) return;
+            
+            IsDraft = true;
+            SetSkillPointsTo(skill, GetNumberSkillPointFrom(skill) - 1);
+            SkillPointsAvailable++;
+        }
+
+        // [BindCommand]
+        private void Confirm()
+        {
+            _hero.SettSkillPointTo(Skill.Cool, Cool);
+            _hero.SettSkillPointTo(Skill.Power, Power);
+            _hero.SettSkillPointTo(Skill.Reflexes, Reflexes);
+            _hero.SettSkillPointTo(Skill.Intelligence, Intelligence);
+            _hero.SettSkillPointTo(Skill.TechnicalAbility, TechnicalAbility);
+            IsDraft = false;
+
+            if (_hero.SkillPointsAvailable != SkillPointsAvailable)
+                throw new Exception();
+        }
+
+        // [BindCommand]
+        private void ResetToDefault()
+        {
+            Cool = _hero.GetNumberSkillPointFrom(Skill.Cool);
+            Power = _hero.GetNumberSkillPointFrom(Skill.Power);
+            Reflexes = _hero.GetNumberSkillPointFrom(Skill.Reflexes);
+            Intelligence = _hero.GetNumberSkillPointFrom(Skill.Intelligence);
+            TechnicalAbility = _hero.GetNumberSkillPointFrom(Skill.TechnicalAbility);
+            
+            SkillPointsAvailable = _hero.SkillPointsAvailable;
+            IsDraft = false;
+        }
+
+        private void OnSkillChanged(Skill skill) =>
+            SetSkillPointsTo(skill, _hero.GetNumberSkillPointFrom(skill));
+
+        public void Dispose() => Unsubscribe();
+    }
+}

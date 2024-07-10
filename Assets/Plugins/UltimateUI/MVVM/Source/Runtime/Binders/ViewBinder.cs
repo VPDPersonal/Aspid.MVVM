@@ -6,33 +6,54 @@ namespace UltimateUI.MVVM.ViewBinders
 {
     public static class ViewBinder
     {
+#if UNITY_EDITOR
+        private static readonly Unity.Profiling.ProfilerMarker _bindMarker = new($"{nameof(ViewBinder)}.{nameof(Bind)}");
+        private static readonly Unity.Profiling.ProfilerMarker _unbindMarker = new($"{nameof(ViewBinder)}.{nameof(Unbind)}");
+        private static readonly Unity.Profiling.ProfilerMarker _rebindMarker = new($"{nameof(ViewBinder)}.{nameof(Rebind)}");
+#endif
+        
         public static void Rebind(IView view, IViewModel oldViewModel, IViewModel newViewModel)
         {
-            Unbind(view, oldViewModel);
-            Bind(view, newViewModel);
+#if UNITY_EDITOR
+            using (_rebindMarker.Auto())
+#endif
+            {
+                Unbind(view, oldViewModel);
+                Bind(view, newViewModel);
+            }
         }
         
         public static void Bind(IView view, IViewModel viewModel)
         {
-            var binders = view.GetBinders();
-            var bindMethods = viewModel.GetBindMethods();
-
-            foreach (var pair in binders)
+#if UNITY_EDITOR
+            using (_bindMarker.Auto())
+#endif
             {
-                if (bindMethods.TryGetValue(pair.Key, out var bindMethod))
-                    bindMethod(pair.Value);
+                var binders = view.GetBinders();
+                var bindMethods = viewModel.GetBindMethods();
+
+                foreach (var pair in binders)
+                {
+                    if (bindMethods.TryGetValue(pair.Key, out var bindMethod))
+                        bindMethod(pair.Value);
+                }
             }
         }
 
         public static void Unbind(IView view, IViewModel viewModel)
         {
-            var binders = view.GetBinders();
-            var unbindMethods = viewModel.GetUnbindMethods();
-            
-            foreach (var pair in binders)
+#if UNITY_EDITOR
+            using (_unbindMarker.Auto())
+#endif
             {
-                if (unbindMethods.TryGetValue(pair.Key, out var unbindMethod))
-                    unbindMethod(pair.Value);
+                var binders = view.GetBinders();
+                var unbindMethods = viewModel.GetUnbindMethods();
+            
+                foreach (var pair in binders)
+                {
+                    if (unbindMethods.TryGetValue(pair.Key, out var unbindMethod))
+                        unbindMethod(pair.Value);
+                }
             }
         }
     }

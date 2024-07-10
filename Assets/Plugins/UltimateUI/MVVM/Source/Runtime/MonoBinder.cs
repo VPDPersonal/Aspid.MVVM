@@ -1,18 +1,28 @@
 #nullable disable
 using System;
 using UnityEngine;
+using Unity.Profiling;
 
 // ReSharper disable once CheckNamespace
 namespace UltimateUI.MVVM
 {
     public abstract class MonoBinder : MonoBehaviour, IBinder
     {
+        private static readonly ProfilerMarker _bindMarker = new($"{nameof(MonoBinder)}.{nameof(Bind)}");
+        private static readonly ProfilerMarker _unbindMarker = new($"{nameof(MonoBinder)}.{nameof(Unbind)}");
+        
 #if UNITY_EDITOR
         [field: SerializeField] 
         public string Id { get; set; }
 #endif
         
-        public virtual bool Bind<T>(in T value, ref Action<T> changed)
+        bool IBinder.Bind<T>(in T value, ref Action<T> changed)
+        {
+            using (_bindMarker.Auto()) 
+                return Bind(in value, ref changed);
+        }
+
+        protected virtual bool Bind<T>(in T value, ref Action<T> changed)
         {
             switch (this)
             {
@@ -32,10 +42,13 @@ namespace UltimateUI.MVVM
         
         bool IBinder.Unbind<T>(ref Action<T> changed)
         {
-            var result = Unbind(ref changed);
-            if (result) ReleaseBinding<T>();
+            using (_unbindMarker.Auto())
+            {
+                var result = Unbind(ref changed);
+                if (result) ReleaseBinding<T>();
             
-            return result;
+                return result;
+            }
         }
         
         protected virtual bool Unbind<T>(ref Action<T> changed)

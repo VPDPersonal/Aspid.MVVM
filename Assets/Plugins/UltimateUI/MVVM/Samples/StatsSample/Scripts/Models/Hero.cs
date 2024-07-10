@@ -1,8 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
+using Plugins.UltimateUI.MVVM.Samples.StatsSample.Scripts;
 
-namespace Plugins.UltimateUI.MVVM.Samples.StatsSample.Scripts
+namespace UltimateUI.MVVM.Samples.StatsSample.Models
 {
     public class Hero
     {
@@ -60,6 +61,8 @@ namespace Plugins.UltimateUI.MVVM.Samples.StatsSample.Scripts
 
             _skills[skill] = value;
             SkillPointsAvailable -= delta;
+            
+            SkillChanged?.Invoke(skill);
         }
 
         public int GetNumberSkillPointFrom(Skill skill) => _skills[skill];

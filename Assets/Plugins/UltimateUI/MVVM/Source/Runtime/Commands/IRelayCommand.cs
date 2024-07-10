@@ -9,6 +9,8 @@ namespace UltimateUI.MVVM.Commands
         public bool CanExecute();
 
         public void Execute();
+        
+        void NotifyCanExecuteChanged();
     }
     
     public interface IRelayCommand<in T>
@@ -18,6 +20,8 @@ namespace UltimateUI.MVVM.Commands
         public bool CanExecute(T? param);
 
         public void Execute(T param);
+        
+        void NotifyCanExecuteChanged();
     }
     
     public interface IRelayCommand<in T1, in T2>
@@ -27,6 +31,8 @@ namespace UltimateUI.MVVM.Commands
         public bool CanExecute(T1? param1, T2? param2);
 
         public void Execute(T1 param1, T2 param2);
+        
+        void NotifyCanExecuteChanged();
     }
     
     public interface IRelayCommand<in T1, in T2, in T3>
@@ -36,6 +42,8 @@ namespace UltimateUI.MVVM.Commands
         public bool CanExecute(T1? param1, T2? param2, T3? param3);
 
         public void Execute(T1 param1, T2 param2, T3 param3);
+        
+        void NotifyCanExecuteChanged();
     }
     
     public interface IRelayCommand<in T1, in T2, in T3, in T4>
@@ -45,5 +53,7 @@ namespace UltimateUI.MVVM.Commands
         public bool CanExecute(T1? param1, T2? param2, T3? param3, T4? param4);
 
         public void Execute(T1 param1, T2 param2, T3 param3, T4 param4);
+        
+        void NotifyCanExecuteChanged();
     }
 }

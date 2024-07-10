@@ -1,7 +1,10 @@
 using System;
+using Plugins.UltimateUI.MVVM.Samples.StatsSample.Scripts;
+using UltimateUI.MVVM.Commands;
+using UltimateUI.MVVM.Samples.StatsSample.Models;
 using UltimateUI.MVVM.ViewModels;
 
-namespace Plugins.UltimateUI.MVVM.Samples.StatsSample.Scripts
+namespace UltimateUI.MVVM.Samples.StatsSample
 {
     [ViewModel]
     public partial class HeroViewModel : IDisposable
@@ -14,6 +17,11 @@ namespace Plugins.UltimateUI.MVVM.Samples.StatsSample.Scripts
         
         [Bind] private int _skillPointsAvailable;
         [Bind] private bool _isDraft;
+
+        [Bind] private IRelayCommand _confirmCommand;
+        [Bind] private IRelayCommand _resetToDefaultCommand;
+        [Bind] private IRelayCommand<Skill> _addSkillPointToCommand;
+        [Bind] private IRelayCommand<Skill> _removeSkillPointToCommand;
 
         private readonly Hero _hero;
 
@@ -28,6 +36,12 @@ namespace Plugins.UltimateUI.MVVM.Samples.StatsSample.Scripts
             _technicalAbility = _hero.GetNumberSkillPointFrom(Skill.Cool);
             
             _skillPointsAvailable = _hero.SkillPointsAvailable;
+
+            _confirmCommand = new RelayCommand(Confirm, () => IsDraft);
+            _resetToDefaultCommand = new RelayCommand(ResetToDefault, () => IsDraft);
+            _addSkillPointToCommand = new RelayCommand<Skill>(AddSkillPointTo, _ => SkillPointsAvailable > 0);
+            _removeSkillPointToCommand = new RelayCommand<Skill>(RemoveSkillPointTo, 
+                skill => GetNumberSkillPointFrom(skill) != _hero.GetNumberSkillPointFrom(skill));
             
             Subscribe();
         }
@@ -66,11 +80,36 @@ namespace Plugins.UltimateUI.MVVM.Samples.StatsSample.Scripts
         };
 
         // [BindCommand]
+        private void Confirm()
+        {
+            _hero.SettSkillPointTo(Skill.Cool, Cool);
+            _hero.SettSkillPointTo(Skill.Power, Power);
+            _hero.SettSkillPointTo(Skill.Reflexes, Reflexes);
+            _hero.SettSkillPointTo(Skill.Intelligence, Intelligence);
+            _hero.SettSkillPointTo(Skill.TechnicalAbility, TechnicalAbility);
+            
+            IsDraft = false;
+            if (_hero.SkillPointsAvailable != SkillPointsAvailable)
+                throw new Exception();
+        }
+        
+        // [BindCommand]
+        private void ResetToDefault()
+        {
+            Cool = _hero.GetNumberSkillPointFrom(Skill.Cool);
+            Power = _hero.GetNumberSkillPointFrom(Skill.Power);
+            Reflexes = _hero.GetNumberSkillPointFrom(Skill.Reflexes);
+            Intelligence = _hero.GetNumberSkillPointFrom(Skill.Intelligence);
+            TechnicalAbility = _hero.GetNumberSkillPointFrom(Skill.TechnicalAbility);
+
+            SkillPointsAvailable = _hero.SkillPointsAvailable;
+        }
+
+        // [BindCommand]
         private void AddSkillPointTo(Skill skill)
         {
             if (SkillPointsAvailable == 0) return;
 
-            IsDraft = true;
             SetSkillPointsTo(skill, GetNumberSkillPointFrom(skill) + 1);
             SkillPointsAvailable--;
         }
@@ -80,41 +119,30 @@ namespace Plugins.UltimateUI.MVVM.Samples.StatsSample.Scripts
         {
             var skillPoints = GetNumberSkillPointFrom(skill);
             if (skillPoints < 2) return;
-            
-            IsDraft = true;
+
             SetSkillPointsTo(skill, GetNumberSkillPointFrom(skill) - 1);
             SkillPointsAvailable++;
         }
 
-        // [BindCommand]
-        private void Confirm()
+        private void OnSkillChanged(Skill skill) 
         {
-            _hero.SettSkillPointTo(Skill.Cool, Cool);
-            _hero.SettSkillPointTo(Skill.Power, Power);
-            _hero.SettSkillPointTo(Skill.Reflexes, Reflexes);
-            _hero.SettSkillPointTo(Skill.Intelligence, Intelligence);
-            _hero.SettSkillPointTo(Skill.TechnicalAbility, TechnicalAbility);
-            IsDraft = false;
-
-            if (_hero.SkillPointsAvailable != SkillPointsAvailable)
-                throw new Exception();
-        }
-
-        // [BindCommand]
-        private void ResetToDefault()
-        {
-            Cool = _hero.GetNumberSkillPointFrom(Skill.Cool);
-            Power = _hero.GetNumberSkillPointFrom(Skill.Power);
-            Reflexes = _hero.GetNumberSkillPointFrom(Skill.Reflexes);
-            Intelligence = _hero.GetNumberSkillPointFrom(Skill.Intelligence);
-            TechnicalAbility = _hero.GetNumberSkillPointFrom(Skill.TechnicalAbility);
-            
-            SkillPointsAvailable = _hero.SkillPointsAvailable;
-            IsDraft = false;
-        }
-
-        private void OnSkillChanged(Skill skill) =>
             SetSkillPointsTo(skill, _hero.GetNumberSkillPointFrom(skill));
+            RemoveSkillPointToCommand.NotifyCanExecuteChanged();
+        }
+
+        partial void OnIsDraftChanged(bool newValue)
+        {
+            ConfirmCommand.NotifyCanExecuteChanged();
+            ResetToDefaultCommand.NotifyCanExecuteChanged();
+        }
+
+        partial void OnSkillPointsAvailableChanged(int newValue)
+        {
+            IsDraft = newValue != _hero.SkillPointsAvailable;
+            
+            AddSkillPointToCommand.NotifyCanExecuteChanged();
+            RemoveSkillPointToCommand.NotifyCanExecuteChanged();
+        }
 
         public void Dispose() => Unsubscribe();
     }

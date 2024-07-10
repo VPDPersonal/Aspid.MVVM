@@ -873,5 +873,5 @@ MonoBehaviour:
   <Id>k__BackingField: 
   _text: {fileID: 0}
   _format: 
-  _isDebug: 0
+  _isDebug: 1
   _log: []

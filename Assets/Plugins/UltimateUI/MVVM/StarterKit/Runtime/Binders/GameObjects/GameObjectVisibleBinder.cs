@@ -13,7 +13,7 @@ namespace UltimateUI.MVVM.StarterKit.Binders.GameObjects
         [BinderLog]
         public void SetValue(bool value)
         {
-            if (IsInvert) value = !IsInvert;
+            if (IsInvert) value = !value;
             gameObject.SetActive(value);
         }
     }

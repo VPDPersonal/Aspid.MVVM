@@ -4,7 +4,7 @@ using UnityEngine.UI;
 using UltimateUI.MVVM.Commands;
 
 // ReSharper disable once CheckNamespace
-namespace UltimateUI.MVVM.StarterKit.Commands
+namespace UltimateUI.MVVM.StarterKit.Binders.Commands
 {
     [Serializable]
     public sealed class ScrollRectCommandProviderVector2 : Binder, IBinder<IRelayCommand<Vector2>>

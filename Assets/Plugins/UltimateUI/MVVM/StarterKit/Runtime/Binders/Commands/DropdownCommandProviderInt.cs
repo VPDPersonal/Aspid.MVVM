@@ -1,22 +1,22 @@
+using TMPro;
 using System;
 using UnityEngine;
-using UnityEngine.UI;
 using UltimateUI.MVVM.Commands;
 
 // ReSharper disable once CheckNamespace
-namespace UltimateUI.MVVM.StarterKit.Commands
+namespace UltimateUI.MVVM.StarterKit.Binders.Commands
 {
     [Serializable]
-    public sealed class SliderCommandProviderFloat : Binder, IBinder<IRelayCommand<float>>
+    public sealed class DropdownCommandProviderInt : Binder, IBinder<IRelayCommand<int>>
     {
         [SerializeField] private bool _isBindInteractable;
-        [SerializeField] private Slider _slider;
+        [SerializeField] private TMP_Dropdown _dropdown;
         
-        private IRelayCommand<float> _command;
+        private IRelayCommand<int> _command;
         
-        public void SetValue(IRelayCommand<float> command)
+        public void SetValue(IRelayCommand<int> command)
         {
-            ReleaseBinding<IRelayCommand<float>>();
+            ReleaseBinding<IRelayCommand<int>>();
             
             _command = command;
             
@@ -26,17 +26,17 @@ namespace UltimateUI.MVVM.StarterKit.Commands
         
         private void Subscribe()
         {
-            _slider.onValueChanged.AddListener(Execute);
+            _dropdown.onValueChanged.AddListener(Execute);
             _command.CanExecuteChanged += OnCanExecuteChanged;
         }
 
         private void Unsubscribe()
         {
-            _slider.onValueChanged.RemoveListener(Execute);
+            _dropdown.onValueChanged.RemoveListener(Execute);
             _command.CanExecuteChanged -= OnCanExecuteChanged;
         }
         
-        private void Execute(float value)
+        private void Execute(int value) 
         {
             OnCanExecuteChanged(_command);
             _command?.Execute(value);
@@ -48,23 +48,23 @@ namespace UltimateUI.MVVM.StarterKit.Commands
             _command = null;
         }
         
-        private void OnCanExecuteChanged(IRelayCommand<float> command)
+        private void OnCanExecuteChanged(IRelayCommand<int> command)
         {
-            if (!_isBindInteractable) return; 
-            _slider.interactable = command.CanExecute(_slider.value);
+            if (!_isBindInteractable) return;
+            _dropdown.interactable = command.CanExecute(_dropdown.value);
         }
     }
-
+    
     [Serializable]
-    public sealed class SliderCommandProviderFloat<T1> : Binder, IBinder<IRelayCommand<float, T1>>
+    public sealed class DropdownCommandProviderInt<T1> : Binder, IBinder<IRelayCommand<int, T1>>
     {
         [SerializeField] private bool _isBindInteractable;
-        [SerializeField] private Slider _slider;
+        [SerializeField] private TMP_Dropdown _dropdown;
         
         [Header("Parameters")]
         [SerializeField] private T1 _parameter1;
         
-        private IRelayCommand<float, T1> _command;
+        private IRelayCommand<int, T1> _command;
         
         public T1 Parameter1
         {
@@ -72,9 +72,9 @@ namespace UltimateUI.MVVM.StarterKit.Commands
             set => _parameter1 = value;
         }
         
-        public void SetValue(IRelayCommand<float, T1> command)
+        public void SetValue(IRelayCommand<int, T1> command)
         {
-            ReleaseBinding<IRelayCommand<float, T1>>();
+            ReleaseBinding<IRelayCommand<int, T1>>();
             
             _command = command;
             
@@ -84,17 +84,17 @@ namespace UltimateUI.MVVM.StarterKit.Commands
         
         private void Subscribe()
         {
-            _slider.onValueChanged.AddListener(Execute);
+            _dropdown.onValueChanged.AddListener(Execute);
             _command.CanExecuteChanged += OnCanExecuteChanged;
         }
 
         private void Unsubscribe()
         {
-            _slider.onValueChanged.RemoveListener(Execute);
+            _dropdown.onValueChanged.RemoveListener(Execute);
             _command.CanExecuteChanged -= OnCanExecuteChanged;
         }
         
-        private void Execute(float value)
+        private void Execute(int value) 
         {
             OnCanExecuteChanged(_command);
             _command?.Execute(value, Parameter1);
@@ -106,24 +106,24 @@ namespace UltimateUI.MVVM.StarterKit.Commands
             _command = null;
         }
         
-        private void OnCanExecuteChanged(IRelayCommand<float, T1> command)
+        private void OnCanExecuteChanged(IRelayCommand<int, T1> command)
         {
-            if (!_isBindInteractable) return; 
-            _slider.interactable = command.CanExecute(_slider.value, Parameter1);
+            if (!_isBindInteractable) return;
+            _dropdown.interactable = command.CanExecute(_dropdown.value, Parameter1);
         }
     }
     
     [Serializable]
-    public sealed class SliderCommandProviderFloat<T1, T2> : Binder, IBinder<IRelayCommand<float, T1, T2>>
+    public sealed class DropdownCommandProviderInt<T1, T2> : Binder, IBinder<IRelayCommand<int, T1, T2>>
     {
         [SerializeField] private bool _isBindInteractable;
-        [SerializeField] private Slider _slider;
+        [SerializeField] private TMP_Dropdown _dropdown;
         
         [Header("Parameters")]
         [SerializeField] private T1 _parameter1;
         [SerializeField] private T2 _parameter2;
-        
-        private IRelayCommand<float, T1, T2> _command;
+
+        private IRelayCommand<int, T1, T2> _command;
         
         public T1 Parameter1
         {
@@ -137,9 +137,9 @@ namespace UltimateUI.MVVM.StarterKit.Commands
             set => _parameter2 = value;
         }
         
-        public void SetValue(IRelayCommand<float, T1, T2> command)
+        public void SetValue(IRelayCommand<int, T1, T2> command)
         {
-            ReleaseBinding<IRelayCommand<float, T1, T2>>();
+            ReleaseBinding<IRelayCommand<int, T1, T2>>();
             
             _command = command;
             
@@ -149,17 +149,17 @@ namespace UltimateUI.MVVM.StarterKit.Commands
         
         private void Subscribe()
         {
-            _slider.onValueChanged.AddListener(Execute);
+            _dropdown.onValueChanged.AddListener(Execute);
             _command.CanExecuteChanged += OnCanExecuteChanged;
         }
 
         private void Unsubscribe()
         {
-            _slider.onValueChanged.RemoveListener(Execute);
+            _dropdown.onValueChanged.RemoveListener(Execute);
             _command.CanExecuteChanged -= OnCanExecuteChanged;
         }
         
-        private void Execute(float value)
+        private void Execute(int value) 
         {
             OnCanExecuteChanged(_command);
             _command?.Execute(value, Parameter1, Parameter2);
@@ -171,25 +171,25 @@ namespace UltimateUI.MVVM.StarterKit.Commands
             _command = null;
         }
         
-        private void OnCanExecuteChanged(IRelayCommand<float, T1, T2> command)
+        private void OnCanExecuteChanged(IRelayCommand<int, T1, T2> command)
         {
-            if (!_isBindInteractable) return; 
-            _slider.interactable = command.CanExecute(_slider.value, Parameter1, Parameter2);
+            if (!_isBindInteractable) return;
+            _dropdown.interactable = command.CanExecute(_dropdown.value, Parameter1, Parameter2);
         }
     }
     
     [Serializable]
-    public sealed class SliderCommandProviderFloat<T1, T2, T3> : Binder, IBinder<IRelayCommand<float, T1, T2, T3>>
+    public sealed class DropdownCommandProviderInt<T1, T2, T3> : Binder, IBinder<IRelayCommand<int, T1, T2, T3>>
     {
         [SerializeField] private bool _isBindInteractable;
-        [SerializeField] private Slider _slider;
+        [SerializeField] private TMP_Dropdown _dropdown;
         
         [Header("Parameters")]
         [SerializeField] private T1 _parameter1;
         [SerializeField] private T2 _parameter2;
         [SerializeField] private T3 _parameter3;
         
-        private IRelayCommand<float, T1, T2, T3> _command;
+        private IRelayCommand<int, T1, T2, T3> _command;
         
         public T1 Parameter1
         {
@@ -209,9 +209,9 @@ namespace UltimateUI.MVVM.StarterKit.Commands
             set => _parameter3 = value;
         }
         
-        public void SetValue(IRelayCommand<float, T1, T2, T3> command)
+        public void SetValue(IRelayCommand<int, T1, T2, T3> command)
         {
-            ReleaseBinding<IRelayCommand<float, T1, T2, T3>>();
+            ReleaseBinding<IRelayCommand<int, T1, T2, T3>>();
             
             _command = command;
             
@@ -221,17 +221,17 @@ namespace UltimateUI.MVVM.StarterKit.Commands
         
         private void Subscribe()
         {
-            _slider.onValueChanged.AddListener(Execute);
+            _dropdown.onValueChanged.AddListener(Execute);
             _command.CanExecuteChanged += OnCanExecuteChanged;
         }
 
         private void Unsubscribe()
         {
-            _slider.onValueChanged.RemoveListener(Execute);
+            _dropdown.onValueChanged.RemoveListener(Execute);
             _command.CanExecuteChanged -= OnCanExecuteChanged;
         }
         
-        private void Execute(float value)
+        private void Execute(int value) 
         {
             OnCanExecuteChanged(_command);
             _command?.Execute(value, Parameter1, Parameter2, Parameter3);
@@ -243,10 +243,10 @@ namespace UltimateUI.MVVM.StarterKit.Commands
             _command = null;
         }
         
-        private void OnCanExecuteChanged(IRelayCommand<float, T1, T2, T3> command)
+        private void OnCanExecuteChanged(IRelayCommand<int, T1, T2, T3> command)
         {
-            if (!_isBindInteractable) return; 
-            _slider.interactable = command.CanExecute(_slider.value, Parameter1, Parameter2, Parameter3);
+            if (!_isBindInteractable) return;
+            _dropdown.interactable = command.CanExecute(_dropdown.value, Parameter1, Parameter2, Parameter3);
         }
     }
 }

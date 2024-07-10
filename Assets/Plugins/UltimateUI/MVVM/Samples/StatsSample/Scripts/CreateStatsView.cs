@@ -1,7 +1,7 @@
 using UnityEngine;
 using UltimateUI.MVVM;
 using UltimateUI.MVVM.Views;
-using UltimateUI.MVVM.StarterKit.Commands;
+using UltimateUI.MVVM.StarterKit.Binders.Commands;
 
 namespace Plugins.UltimateUI.MVVM.Samples.StatsSample.Scripts
 {

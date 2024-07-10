@@ -6,14 +6,14 @@ namespace UltimateUI.MVVM
 {
     public abstract class Binder : IBinder
     {
-#if UNITY_EDITOR
+#if UNITY_EDITOR && !ULTIMATE_UI_MVVM_UNITY_PROFILER_DISABLED
         private static readonly Unity.Profiling.ProfilerMarker _bindMarker = new($"{nameof(Binder)}.{nameof(Bind)}");
         private static readonly Unity.Profiling.ProfilerMarker _unbindMarker = new($"{nameof(Binder)}.{nameof(Unbind)}");
 #endif
         
         bool IBinder.Bind<T>(in T value, ref Action<T> changed)
         {
-#if UNITY_EDITOR
+#if UNITY_EDITOR && !ULTIMATE_UI_MVVM_UNITY_PROFILER_DISABLED
             using (_bindMarker.Auto()) 
 #endif
             {
@@ -41,7 +41,7 @@ namespace UltimateUI.MVVM
         
         bool IBinder.Unbind<T>(ref Action<T> changed)
         {
-#if UNITY_EDITOR
+#if UNITY_EDITOR && !ULTIMATE_UI_MVVM_UNITY_PROFILER_DISABLED
             using (_unbindMarker.Auto()) 
 #endif
             {

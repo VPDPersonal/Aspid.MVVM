@@ -6,14 +6,14 @@ namespace UltimateUI.MVVM.ViewModels
 {
     public static class ViewModelUtility
     {
-#if UNITY_EDITOR
+#if UNITY_EDITOR && !ULTIMATE_UI_MVVM_UNITY_PROFILER_DISABLED
         private static readonly Unity.Profiling.ProfilerMarker _bindMarker = new($"{nameof(ViewModelUtility)}.{nameof(Bind)}");
         private static readonly Unity.Profiling.ProfilerMarker _unbindMarker = new($"{nameof(ViewModelUtility)}.{nameof(Unbind)}");
 #endif
         
         public static void Bind<T>(T defaultValue, ref Action<T> changed, IReadOnlyCollection<IBinder> binders)
         {
-#if UNITY_EDITOR
+#if UNITY_EDITOR && !ULTIMATE_UI_MVVM_UNITY_PROFILER_DISABLED
             using (_bindMarker.Auto())
 #endif
             {
@@ -24,7 +24,7 @@ namespace UltimateUI.MVVM.ViewModels
         
         public static void Unbind<T>(ref Action<T> changed, IReadOnlyCollection<IBinder> binders)
         {
-#if UNITY_EDITOR
+#if UNITY_EDITOR && !ULTIMATE_UI_MVVM_UNITY_PROFILER_DISABLED
             using (_unbindMarker.Auto())
 #endif
             {

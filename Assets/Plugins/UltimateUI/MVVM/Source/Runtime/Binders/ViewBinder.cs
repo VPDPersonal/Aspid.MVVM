@@ -6,7 +6,7 @@ namespace UltimateUI.MVVM.ViewBinders
 {
     public static class ViewBinder
     {
-#if UNITY_EDITOR
+#if UNITY_EDITOR && !ULTIMATE_UI_MVVM_UNITY_PROFILER_DISABLED
         private static readonly Unity.Profiling.ProfilerMarker _bindMarker = new($"{nameof(ViewBinder)}.{nameof(Bind)}");
         private static readonly Unity.Profiling.ProfilerMarker _unbindMarker = new($"{nameof(ViewBinder)}.{nameof(Unbind)}");
         private static readonly Unity.Profiling.ProfilerMarker _rebindMarker = new($"{nameof(ViewBinder)}.{nameof(Rebind)}");
@@ -14,7 +14,7 @@ namespace UltimateUI.MVVM.ViewBinders
         
         public static void Rebind(IView view, IViewModel oldViewModel, IViewModel newViewModel)
         {
-#if UNITY_EDITOR
+#if UNITY_EDITOR && !ULTIMATE_UI_MVVM_UNITY_PROFILER_DISABLED
             using (_rebindMarker.Auto())
 #endif
             {
@@ -25,7 +25,7 @@ namespace UltimateUI.MVVM.ViewBinders
         
         public static void Bind(IView view, IViewModel viewModel)
         {
-#if UNITY_EDITOR
+#if UNITY_EDITOR && !ULTIMATE_UI_MVVM_UNITY_PROFILER_DISABLED
             using (_bindMarker.Auto())
 #endif
             {
@@ -42,7 +42,7 @@ namespace UltimateUI.MVVM.ViewBinders
 
         public static void Unbind(IView view, IViewModel viewModel)
         {
-#if UNITY_EDITOR
+#if UNITY_EDITOR && !ULTIMATE_UI_MVVM_UNITY_PROFILER_DISABLED
             using (_unbindMarker.Auto())
 #endif
             {

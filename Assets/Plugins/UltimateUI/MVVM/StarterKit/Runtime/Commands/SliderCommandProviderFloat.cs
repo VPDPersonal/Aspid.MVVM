@@ -10,9 +10,7 @@ namespace UltimateUI.MVVM.StarterKit.Commands
     public sealed class SliderCommandProviderFloat : Binder, IBinder<IRelayCommand<float>>
     {
         [SerializeField] private bool _isBindInteractable;
-        
-        [Space]
-        [SerializeField] private Slider[] _sliders;
+        [SerializeField] private Slider _slider;
         
         private IRelayCommand<float> _command;
         
@@ -28,17 +26,13 @@ namespace UltimateUI.MVVM.StarterKit.Commands
         
         private void Subscribe()
         {
-            foreach (var slider in _sliders)
-                slider.onValueChanged.AddListener(Execute);
-            
+            _slider.onValueChanged.AddListener(Execute);
             _command.CanExecuteChanged += OnCanExecuteChanged;
         }
 
         private void Unsubscribe()
         {
-            foreach (var slider in _sliders)
-                slider.onValueChanged.RemoveListener(Execute);
-            
+            _slider.onValueChanged.RemoveListener(Execute);
             _command.CanExecuteChanged -= OnCanExecuteChanged;
         }
         
@@ -56,10 +50,8 @@ namespace UltimateUI.MVVM.StarterKit.Commands
         
         private void OnCanExecuteChanged(IRelayCommand<float> command)
         {
-            if (!_isBindInteractable) return;
-
-            foreach (var slider in _sliders)
-                slider.interactable = command.CanExecute(slider.value);
+            if (!_isBindInteractable) return; 
+            _slider.interactable = command.CanExecute(_slider.value);
         }
     }
 
@@ -67,12 +59,10 @@ namespace UltimateUI.MVVM.StarterKit.Commands
     public sealed class SliderCommandProviderFloat<T1> : Binder, IBinder<IRelayCommand<float, T1>>
     {
         [SerializeField] private bool _isBindInteractable;
+        [SerializeField] private Slider _slider;
         
-        [Space]
+        [Header("Parameters")]
         [SerializeField] private T1 _parameter1;
-        
-        [Space]
-        [SerializeField] private Slider[] _sliders;
         
         private IRelayCommand<float, T1> _command;
         
@@ -94,17 +84,13 @@ namespace UltimateUI.MVVM.StarterKit.Commands
         
         private void Subscribe()
         {
-            foreach (var slider in _sliders)
-                slider.onValueChanged.AddListener(Execute);
-            
+            _slider.onValueChanged.AddListener(Execute);
             _command.CanExecuteChanged += OnCanExecuteChanged;
         }
 
         private void Unsubscribe()
         {
-            foreach (var slider in _sliders)
-                slider.onValueChanged.RemoveListener(Execute);
-            
+            _slider.onValueChanged.RemoveListener(Execute);
             _command.CanExecuteChanged -= OnCanExecuteChanged;
         }
         
@@ -122,10 +108,8 @@ namespace UltimateUI.MVVM.StarterKit.Commands
         
         private void OnCanExecuteChanged(IRelayCommand<float, T1> command)
         {
-            if (!_isBindInteractable) return;
-
-            foreach (var slider in _sliders)
-                slider.interactable = command.CanExecute(slider.value, Parameter1);
+            if (!_isBindInteractable) return; 
+            _slider.interactable = command.CanExecute(_slider.value, Parameter1);
         }
     }
     
@@ -133,13 +117,11 @@ namespace UltimateUI.MVVM.StarterKit.Commands
     public sealed class SliderCommandProviderFloat<T1, T2> : Binder, IBinder<IRelayCommand<float, T1, T2>>
     {
         [SerializeField] private bool _isBindInteractable;
+        [SerializeField] private Slider _slider;
         
-        [Space]
+        [Header("Parameters")]
         [SerializeField] private T1 _parameter1;
         [SerializeField] private T2 _parameter2;
-        
-        [Space]
-        [SerializeField] private Slider[] _sliders;
         
         private IRelayCommand<float, T1, T2> _command;
         
@@ -167,17 +149,13 @@ namespace UltimateUI.MVVM.StarterKit.Commands
         
         private void Subscribe()
         {
-            foreach (var slider in _sliders)
-                slider.onValueChanged.AddListener(Execute);
-            
+            _slider.onValueChanged.AddListener(Execute);
             _command.CanExecuteChanged += OnCanExecuteChanged;
         }
 
         private void Unsubscribe()
         {
-            foreach (var slider in _sliders)
-                slider.onValueChanged.RemoveListener(Execute);
-            
+            _slider.onValueChanged.RemoveListener(Execute);
             _command.CanExecuteChanged -= OnCanExecuteChanged;
         }
         
@@ -195,10 +173,8 @@ namespace UltimateUI.MVVM.StarterKit.Commands
         
         private void OnCanExecuteChanged(IRelayCommand<float, T1, T2> command)
         {
-            if (!_isBindInteractable) return;
-
-            foreach (var slider in _sliders)
-                slider.interactable = command.CanExecute(slider.value, Parameter1, Parameter2);
+            if (!_isBindInteractable) return; 
+            _slider.interactable = command.CanExecute(_slider.value, Parameter1, Parameter2);
         }
     }
     
@@ -206,14 +182,12 @@ namespace UltimateUI.MVVM.StarterKit.Commands
     public sealed class SliderCommandProviderFloat<T1, T2, T3> : Binder, IBinder<IRelayCommand<float, T1, T2, T3>>
     {
         [SerializeField] private bool _isBindInteractable;
+        [SerializeField] private Slider _slider;
         
-        [Space]
+        [Header("Parameters")]
         [SerializeField] private T1 _parameter1;
         [SerializeField] private T2 _parameter2;
         [SerializeField] private T3 _parameter3;
-        
-        [Space]
-        [SerializeField] private Slider[] _sliders;
         
         private IRelayCommand<float, T1, T2, T3> _command;
         
@@ -247,17 +221,13 @@ namespace UltimateUI.MVVM.StarterKit.Commands
         
         private void Subscribe()
         {
-            foreach (var slider in _sliders)
-                slider.onValueChanged.AddListener(Execute);
-            
+            _slider.onValueChanged.AddListener(Execute);
             _command.CanExecuteChanged += OnCanExecuteChanged;
         }
 
         private void Unsubscribe()
         {
-            foreach (var slider in _sliders)
-                slider.onValueChanged.RemoveListener(Execute);
-            
+            _slider.onValueChanged.RemoveListener(Execute);
             _command.CanExecuteChanged -= OnCanExecuteChanged;
         }
         
@@ -275,10 +245,8 @@ namespace UltimateUI.MVVM.StarterKit.Commands
         
         private void OnCanExecuteChanged(IRelayCommand<float, T1, T2, T3> command)
         {
-            if (!_isBindInteractable) return;
-
-            foreach (var slider in _sliders)
-                slider.interactable = command.CanExecute(slider.value, Parameter1, Parameter2, Parameter3);
+            if (!_isBindInteractable) return; 
+            _slider.interactable = command.CanExecute(_slider.value, Parameter1, Parameter2, Parameter3);
         }
     }
 }

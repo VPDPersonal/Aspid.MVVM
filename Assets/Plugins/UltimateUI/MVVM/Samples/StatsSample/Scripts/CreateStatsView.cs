@@ -6,7 +6,7 @@ using UltimateUI.MVVM.StarterKit.Commands;
 namespace Plugins.UltimateUI.MVVM.Samples.StatsSample.Scripts
 {
     [View]
-    public partial class HeroView : MonoView
+    public partial class CreateStatsView : MonoView
     {
         [RequireBinder(typeof(int))]
         [SerializeField] private MonoBinder[] _cool;

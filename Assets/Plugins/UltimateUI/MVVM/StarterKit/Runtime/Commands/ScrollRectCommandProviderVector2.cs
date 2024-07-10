@@ -9,8 +9,7 @@ namespace UltimateUI.MVVM.StarterKit.Commands
     [Serializable]
     public sealed class ScrollRectCommandProviderVector2 : Binder, IBinder<IRelayCommand<Vector2>>
     {
-        [Space]
-        [SerializeField] private ScrollRect[] _scrollRects;
+        [SerializeField] private ScrollRect _scrollRect;
         
         private IRelayCommand<Vector2> _command;
         
@@ -23,17 +22,11 @@ namespace UltimateUI.MVVM.StarterKit.Commands
             Subscribe();
         }
         
-        private void Subscribe()
-        {
-            foreach (var scrollRect in _scrollRects)
-                scrollRect.onValueChanged.AddListener(Execute);
-        }
+        private void Subscribe() =>
+            _scrollRect.onValueChanged.AddListener(Execute);
 
-        private void Unsubscribe()
-        {
-            foreach (var scrollRect in _scrollRects)
-                scrollRect.onValueChanged.RemoveListener(Execute);
-        }
+        private void Unsubscribe() =>
+            _scrollRect.onValueChanged.RemoveListener(Execute);
         
         private void Execute(Vector2 value) =>
             _command?.Execute(value);
@@ -48,10 +41,10 @@ namespace UltimateUI.MVVM.StarterKit.Commands
     [Serializable]
     public sealed class ScrollRectCommandProviderVector2<T1> : Binder, IBinder<IRelayCommand<Vector2, T1>>
     {
-        [SerializeField] private T1 _parameter1;
+        [SerializeField] private ScrollRect _scrollRect;
         
-        [Space]
-        [SerializeField] private ScrollRect[] _scrollRects;
+        [Header("Parameters")]
+        [SerializeField] private T1 _parameter1;
         
         private IRelayCommand<Vector2, T1> _command;
         
@@ -70,17 +63,11 @@ namespace UltimateUI.MVVM.StarterKit.Commands
             Subscribe();
         }
         
-        private void Subscribe()
-        {
-            foreach (var scrollRect in _scrollRects)
-                scrollRect.onValueChanged.AddListener(Execute);
-        }
+        private void Subscribe() =>
+            _scrollRect.onValueChanged.AddListener(Execute);
 
-        private void Unsubscribe()
-        {
-            foreach (var scrollRect in _scrollRects)
-                scrollRect.onValueChanged.RemoveListener(Execute);
-        }
+        private void Unsubscribe() =>
+            _scrollRect.onValueChanged.RemoveListener(Execute);
         
         private void Execute(Vector2 value) =>
             _command?.Execute(value, Parameter1);
@@ -95,11 +82,11 @@ namespace UltimateUI.MVVM.StarterKit.Commands
     [Serializable]
     public sealed class ScrollRectCommandProviderVector2<T1, T2> : Binder, IBinder<IRelayCommand<Vector2, T1, T2>>
     {
+        [SerializeField] private ScrollRect _scrollRect;
+        
+        [Header("Parameters")]
         [SerializeField] private T1 _parameter1;
         [SerializeField] private T2 _parameter2;
-        
-        [Space]
-        [SerializeField] private ScrollRect[] _scrollRects;
         
         private IRelayCommand<Vector2, T1, T2> _command;
         
@@ -124,17 +111,11 @@ namespace UltimateUI.MVVM.StarterKit.Commands
             Subscribe();
         }
         
-        private void Subscribe()
-        {
-            foreach (var scrollRect in _scrollRects)
-                scrollRect.onValueChanged.AddListener(Execute);
-        }
+        private void Subscribe() =>
+            _scrollRect.onValueChanged.AddListener(Execute);
 
-        private void Unsubscribe()
-        {
-            foreach (var scrollRect in _scrollRects)
-                scrollRect.onValueChanged.RemoveListener(Execute);
-        }
+        private void Unsubscribe() =>
+            _scrollRect.onValueChanged.RemoveListener(Execute);
         
         private void Execute(Vector2 value) =>
             _command?.Execute(value, Parameter1, Parameter2);
@@ -149,12 +130,12 @@ namespace UltimateUI.MVVM.StarterKit.Commands
     [Serializable]
     public sealed class ScrollRectCommandProviderVector2<T1, T2, T3> : Binder, IBinder<IRelayCommand<Vector2, T1, T2, T3>>
     {
+        [SerializeField] private ScrollRect _scrollRect;
+
+        [Header("Parameters")]
         [SerializeField] private T1 _parameter1;
         [SerializeField] private T2 _parameter2;
         [SerializeField] private T3 _parameter3;
-        
-        [Space]
-        [SerializeField] private ScrollRect[] _scrollRects;
         
         private IRelayCommand<Vector2, T1, T2, T3> _command;
         
@@ -185,17 +166,11 @@ namespace UltimateUI.MVVM.StarterKit.Commands
             Subscribe();
         }
         
-        private void Subscribe()
-        {
-            foreach (var scrollRect in _scrollRects)
-                scrollRect.onValueChanged.AddListener(Execute);
-        }
+        private void Subscribe() =>
+            _scrollRect.onValueChanged.AddListener(Execute);
 
-        private void Unsubscribe()
-        {
-            foreach (var scrollRect in _scrollRects)
-                scrollRect.onValueChanged.RemoveListener(Execute);
-        }
+        private void Unsubscribe() =>
+            _scrollRect.onValueChanged.RemoveListener(Execute);
         
         private void Execute(Vector2 value) =>
             _command?.Execute(value, Parameter1, Parameter2, Parameter3);

@@ -10,9 +10,7 @@ namespace UltimateUI.MVVM.StarterKit.Commands
     public sealed class ToggleCommandProviderBool : Binder, IBinder<IRelayCommand<bool>>
     {
         [SerializeField] private bool _isBindInteractable;
-        
-        [Space]
-        [SerializeField] private Toggle[] _toggles;
+        [SerializeField] private Toggle _toggle;
         
         private IRelayCommand<bool> _command;
         
@@ -27,18 +25,14 @@ namespace UltimateUI.MVVM.StarterKit.Commands
         }
         
         private void Subscribe()
-        {
-            foreach (var toggle in _toggles)
-                toggle.onValueChanged.AddListener(Execute);
-            
+        { 
+            _toggle.onValueChanged.AddListener(Execute);
             _command.CanExecuteChanged += OnCanExecuteChanged;
         }
 
         private void Unsubscribe()
         {
-            foreach (var toggle in _toggles)
-                toggle.onValueChanged.RemoveListener(Execute);
-            
+            _toggle.onValueChanged.RemoveListener(Execute);
             _command.CanExecuteChanged -= OnCanExecuteChanged;
         }
 
@@ -57,9 +51,7 @@ namespace UltimateUI.MVVM.StarterKit.Commands
         private void OnCanExecuteChanged(IRelayCommand<bool> command)
         {
             if (!_isBindInteractable) return;
-
-            foreach (var toggle in _toggles)
-                toggle.interactable = command.CanExecute(toggle.isOn);
+            _toggle.interactable = command.CanExecute(_toggle.isOn);
         }
     }
     
@@ -67,12 +59,10 @@ namespace UltimateUI.MVVM.StarterKit.Commands
     public sealed class ToggleCommandProviderBool<T1> : Binder, IBinder<IRelayCommand<bool, T1>>
     {
         [SerializeField] private bool _isBindInteractable;
+        [SerializeField] private Toggle _toggle;
         
-        [Space]
+        [Header("Parameters")]
         [SerializeField] private T1 _parameter1;
-
-        [Space]
-        [SerializeField] private Toggle[] _toggles;
         
         private IRelayCommand<bool, T1> _command;
         
@@ -93,18 +83,14 @@ namespace UltimateUI.MVVM.StarterKit.Commands
         }
         
         private void Subscribe()
-        {
-            foreach (var toggle in _toggles)
-                toggle.onValueChanged.AddListener(Execute);
-            
+        { 
+            _toggle.onValueChanged.AddListener(Execute);
             _command.CanExecuteChanged += OnCanExecuteChanged;
         }
 
         private void Unsubscribe()
         {
-            foreach (var toggle in _toggles)
-                toggle.onValueChanged.RemoveListener(Execute);
-            
+            _toggle.onValueChanged.RemoveListener(Execute);
             _command.CanExecuteChanged -= OnCanExecuteChanged;
         }
 
@@ -123,9 +109,7 @@ namespace UltimateUI.MVVM.StarterKit.Commands
         private void OnCanExecuteChanged(IRelayCommand<bool, T1> command)
         {
             if (!_isBindInteractable) return;
-
-            foreach (var toggle in _toggles)
-                toggle.interactable = command.CanExecute(toggle.isOn, Parameter1);
+            _toggle.interactable = command.CanExecute(_toggle.isOn, Parameter1);
         }
     }
     
@@ -133,14 +117,12 @@ namespace UltimateUI.MVVM.StarterKit.Commands
     public sealed class ToggleCommandProviderBool<T1, T2> : Binder, IBinder<IRelayCommand<bool, T1, T2>>
     {
         [SerializeField] private bool _isBindInteractable;
+        [SerializeField] private Toggle _toggle;
         
-        [Space]
+        [Header("Parameters")]
         [SerializeField] private T1 _parameter1;
         [SerializeField] private T2 _parameter2;
-        
-        [Space]
-        [SerializeField] private Toggle[] _toggles;
-        
+
         private IRelayCommand<bool, T1, T2> _command;
         
         public T1 Parameter1
@@ -166,18 +148,14 @@ namespace UltimateUI.MVVM.StarterKit.Commands
         }
         
         private void Subscribe()
-        {
-            foreach (var toggle in _toggles)
-                toggle.onValueChanged.AddListener(Execute);
-            
+        { 
+            _toggle.onValueChanged.AddListener(Execute);
             _command.CanExecuteChanged += OnCanExecuteChanged;
         }
 
         private void Unsubscribe()
         {
-            foreach (var toggle in _toggles)
-                toggle.onValueChanged.RemoveListener(Execute);
-            
+            _toggle.onValueChanged.RemoveListener(Execute);
             _command.CanExecuteChanged -= OnCanExecuteChanged;
         }
 
@@ -196,9 +174,7 @@ namespace UltimateUI.MVVM.StarterKit.Commands
         private void OnCanExecuteChanged(IRelayCommand<bool, T1, T2> command)
         {
             if (!_isBindInteractable) return;
-
-            foreach (var toggle in _toggles)
-                toggle.interactable = command.CanExecute(toggle.isOn, Parameter1, Parameter2);
+            _toggle.interactable = command.CanExecute(_toggle.isOn, Parameter1, Parameter2);
         }
     }
     
@@ -206,15 +182,13 @@ namespace UltimateUI.MVVM.StarterKit.Commands
     public sealed class ToggleCommandProviderBool<T1, T2, T3> : Binder, IBinder<IRelayCommand<bool, T1, T2, T3>>
     {
         [SerializeField] private bool _isBindInteractable;
+        [SerializeField] private Toggle _toggle;
         
-        [Space]
+        [Header("Parameters")]
         [SerializeField] private T1 _parameter1;
         [SerializeField] private T2 _parameter2;
         [SerializeField] private T3 _parameter3;
-        
-        [Space]
-        [SerializeField] private Toggle[] _toggles;
-        
+
         private IRelayCommand<bool, T1, T2, T3> _command;
         
         public T1 Parameter1
@@ -246,18 +220,14 @@ namespace UltimateUI.MVVM.StarterKit.Commands
         }
         
         private void Subscribe()
-        {
-            foreach (var toggle in _toggles)
-                toggle.onValueChanged.AddListener(Execute);
-            
+        { 
+            _toggle.onValueChanged.AddListener(Execute);
             _command.CanExecuteChanged += OnCanExecuteChanged;
         }
 
         private void Unsubscribe()
         {
-            foreach (var toggle in _toggles)
-                toggle.onValueChanged.RemoveListener(Execute);
-            
+            _toggle.onValueChanged.RemoveListener(Execute);
             _command.CanExecuteChanged -= OnCanExecuteChanged;
         }
 
@@ -276,9 +246,7 @@ namespace UltimateUI.MVVM.StarterKit.Commands
         private void OnCanExecuteChanged(IRelayCommand<bool, T1, T2, T3> command)
         {
             if (!_isBindInteractable) return;
-
-            foreach (var toggle in _toggles)
-                toggle.interactable = command.CanExecute(toggle.isOn, Parameter1, Parameter2, Parameter3);
+            _toggle.interactable = command.CanExecute(_toggle.isOn, Parameter1, Parameter2, Parameter3);
         }
     }
 }

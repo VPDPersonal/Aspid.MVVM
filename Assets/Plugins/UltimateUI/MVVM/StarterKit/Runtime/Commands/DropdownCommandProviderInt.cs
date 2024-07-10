@@ -10,9 +10,7 @@ namespace UltimateUI.MVVM.StarterKit.Commands
     public sealed class DropdownCommandProviderInt : Binder, IBinder<IRelayCommand<int>>
     {
         [SerializeField] private bool _isBindInteractable;
-        
-        [Space]
-        [SerializeField] private TMP_Dropdown[] _dropdowns;
+        [SerializeField] private TMP_Dropdown _dropdown;
         
         private IRelayCommand<int> _command;
         
@@ -28,17 +26,13 @@ namespace UltimateUI.MVVM.StarterKit.Commands
         
         private void Subscribe()
         {
-            foreach (var dropdown in _dropdowns)
-                dropdown.onValueChanged.AddListener(Execute);
-            
+            _dropdown.onValueChanged.AddListener(Execute);
             _command.CanExecuteChanged += OnCanExecuteChanged;
         }
 
         private void Unsubscribe()
         {
-            foreach (var dropdown in _dropdowns)
-                dropdown.onValueChanged.RemoveListener(Execute);
-            
+            _dropdown.onValueChanged.RemoveListener(Execute);
             _command.CanExecuteChanged -= OnCanExecuteChanged;
         }
         
@@ -57,9 +51,7 @@ namespace UltimateUI.MVVM.StarterKit.Commands
         private void OnCanExecuteChanged(IRelayCommand<int> command)
         {
             if (!_isBindInteractable) return;
-
-            foreach (var dropdown in _dropdowns)
-                dropdown.interactable = command.CanExecute(dropdown.value);
+            _dropdown.interactable = command.CanExecute(_dropdown.value);
         }
     }
     
@@ -67,12 +59,10 @@ namespace UltimateUI.MVVM.StarterKit.Commands
     public sealed class DropdownCommandProviderInt<T1> : Binder, IBinder<IRelayCommand<int, T1>>
     {
         [SerializeField] private bool _isBindInteractable;
+        [SerializeField] private TMP_Dropdown _dropdown;
         
-        [Space]
+        [Header("Parameters")]
         [SerializeField] private T1 _parameter1;
-        
-        [Space]
-        [SerializeField] private TMP_Dropdown[] _dropdowns;
         
         private IRelayCommand<int, T1> _command;
         
@@ -94,17 +84,13 @@ namespace UltimateUI.MVVM.StarterKit.Commands
         
         private void Subscribe()
         {
-            foreach (var dropdown in _dropdowns)
-                dropdown.onValueChanged.AddListener(Execute);
-            
+            _dropdown.onValueChanged.AddListener(Execute);
             _command.CanExecuteChanged += OnCanExecuteChanged;
         }
 
         private void Unsubscribe()
         {
-            foreach (var dropdown in _dropdowns)
-                dropdown.onValueChanged.RemoveListener(Execute);
-            
+            _dropdown.onValueChanged.RemoveListener(Execute);
             _command.CanExecuteChanged -= OnCanExecuteChanged;
         }
         
@@ -123,9 +109,7 @@ namespace UltimateUI.MVVM.StarterKit.Commands
         private void OnCanExecuteChanged(IRelayCommand<int, T1> command)
         {
             if (!_isBindInteractable) return;
-
-            foreach (var dropdown in _dropdowns)
-                dropdown.interactable = command.CanExecute(dropdown.value, Parameter1);
+            _dropdown.interactable = command.CanExecute(_dropdown.value, Parameter1);
         }
     }
     
@@ -133,14 +117,12 @@ namespace UltimateUI.MVVM.StarterKit.Commands
     public sealed class DropdownCommandProviderInt<T1, T2> : Binder, IBinder<IRelayCommand<int, T1, T2>>
     {
         [SerializeField] private bool _isBindInteractable;
+        [SerializeField] private TMP_Dropdown _dropdown;
         
-        [Space]
+        [Header("Parameters")]
         [SerializeField] private T1 _parameter1;
         [SerializeField] private T2 _parameter2;
-        
-        [Space]
-        [SerializeField] private TMP_Dropdown[] _dropdowns;
-        
+
         private IRelayCommand<int, T1, T2> _command;
         
         public T1 Parameter1
@@ -167,17 +149,13 @@ namespace UltimateUI.MVVM.StarterKit.Commands
         
         private void Subscribe()
         {
-            foreach (var dropdown in _dropdowns)
-                dropdown.onValueChanged.AddListener(Execute);
-            
+            _dropdown.onValueChanged.AddListener(Execute);
             _command.CanExecuteChanged += OnCanExecuteChanged;
         }
 
         private void Unsubscribe()
         {
-            foreach (var dropdown in _dropdowns)
-                dropdown.onValueChanged.RemoveListener(Execute);
-            
+            _dropdown.onValueChanged.RemoveListener(Execute);
             _command.CanExecuteChanged -= OnCanExecuteChanged;
         }
         
@@ -196,9 +174,7 @@ namespace UltimateUI.MVVM.StarterKit.Commands
         private void OnCanExecuteChanged(IRelayCommand<int, T1, T2> command)
         {
             if (!_isBindInteractable) return;
-
-            foreach (var dropdown in _dropdowns)
-                dropdown.interactable = command.CanExecute(dropdown.value, Parameter1, Parameter2);
+            _dropdown.interactable = command.CanExecute(_dropdown.value, Parameter1, Parameter2);
         }
     }
     
@@ -206,14 +182,12 @@ namespace UltimateUI.MVVM.StarterKit.Commands
     public sealed class DropdownCommandProviderInt<T1, T2, T3> : Binder, IBinder<IRelayCommand<int, T1, T2, T3>>
     {
         [SerializeField] private bool _isBindInteractable;
+        [SerializeField] private TMP_Dropdown _dropdown;
         
-        [Space]
+        [Header("Parameters")]
         [SerializeField] private T1 _parameter1;
         [SerializeField] private T2 _parameter2;
         [SerializeField] private T3 _parameter3;
-        
-        [Space]
-        [SerializeField] private TMP_Dropdown[] _dropdowns;
         
         private IRelayCommand<int, T1, T2, T3> _command;
         
@@ -247,17 +221,13 @@ namespace UltimateUI.MVVM.StarterKit.Commands
         
         private void Subscribe()
         {
-            foreach (var dropdown in _dropdowns)
-                dropdown.onValueChanged.AddListener(Execute);
-            
+            _dropdown.onValueChanged.AddListener(Execute);
             _command.CanExecuteChanged += OnCanExecuteChanged;
         }
 
         private void Unsubscribe()
         {
-            foreach (var dropdown in _dropdowns)
-                dropdown.onValueChanged.RemoveListener(Execute);
-            
+            _dropdown.onValueChanged.RemoveListener(Execute);
             _command.CanExecuteChanged -= OnCanExecuteChanged;
         }
         
@@ -276,9 +246,7 @@ namespace UltimateUI.MVVM.StarterKit.Commands
         private void OnCanExecuteChanged(IRelayCommand<int, T1, T2, T3> command)
         {
             if (!_isBindInteractable) return;
-
-            foreach (var dropdown in _dropdowns)
-                dropdown.interactable = command.CanExecute(dropdown.value, Parameter1, Parameter2, Parameter3);
+            _dropdown.interactable = command.CanExecute(_dropdown.value, Parameter1, Parameter2, Parameter3);
         }
     }
 }

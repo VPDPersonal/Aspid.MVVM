@@ -10,9 +10,7 @@ namespace UltimateUI.MVVM.StarterKit.Commands
     public sealed class ButtonCommandProvider : Binder, IBinder<IRelayCommand>
     {
         [SerializeField] private bool _isBindInteractable = true;
-        
-        [Space]
-        [SerializeField] private Button[] _buttons;
+        [SerializeField] private Button _button;
 
         private IRelayCommand _command;
         
@@ -28,17 +26,13 @@ namespace UltimateUI.MVVM.StarterKit.Commands
 
         private void Subscribe()
         {
-            foreach (var button in _buttons)
-                button.onClick.AddListener(Execute);
-            
+            _button.onClick.AddListener(Execute);
             _command.CanExecuteChanged += OnCanExecuteChanged;
         }
 
         private void Unsubscribe()
         {
-            foreach (var button in _buttons)
-                button.onClick.RemoveListener(Execute);
-            
+            _button.onClick.RemoveListener(Execute);
             _command.CanExecuteChanged -= OnCanExecuteChanged;
         }
 
@@ -54,10 +48,7 @@ namespace UltimateUI.MVVM.StarterKit.Commands
         private void OnCanExecuteChanged(IRelayCommand command)
         {
             if (!_isBindInteractable) return;
-            
-            var canExecute = command.CanExecute();
-            foreach (var button in _buttons)
-                button.interactable = canExecute;
+            _button.interactable = command.CanExecute();
         }
     }
     
@@ -65,12 +56,10 @@ namespace UltimateUI.MVVM.StarterKit.Commands
     public sealed class ButtonCommandProvider<T1> : Binder, IBinder<IRelayCommand<T1>>
     {
         [SerializeField] private bool _isBindInteractable = true;
+        [SerializeField] private Button _button;
         
-        [Space]
+        [Header("Parameters")]
         [SerializeField] private T1 _parameter;
-        
-        [Space]
-        [SerializeField] private Button[] _buttons;
 
         private IRelayCommand<T1> _command;
 
@@ -92,17 +81,13 @@ namespace UltimateUI.MVVM.StarterKit.Commands
 
         private void Subscribe()
         {
-            foreach (var button in _buttons)
-                button.onClick.AddListener(Execute);
-            
+            _button.onClick.AddListener(Execute);
             _command.CanExecuteChanged += OnCanExecuteChanged;
         }
 
         private void Unsubscribe()
         {
-            foreach (var button in _buttons)
-                button.onClick.RemoveListener(Execute);
-            
+            _button.onClick.RemoveListener(Execute);
             _command.CanExecuteChanged -= OnCanExecuteChanged;
         }
 
@@ -118,10 +103,7 @@ namespace UltimateUI.MVVM.StarterKit.Commands
         private void OnCanExecuteChanged(IRelayCommand<T1> command)
         {
             if (!_isBindInteractable) return;
-            
-            var canExecute = command.CanExecute(Parameter);
-            foreach (var button in _buttons)
-                button.interactable = canExecute;
+            _button.interactable = command.CanExecute(Parameter);
         }
     }
     
@@ -129,13 +111,11 @@ namespace UltimateUI.MVVM.StarterKit.Commands
     public sealed class ButtonCommandProvider<T1, T2> : Binder, IBinder<IRelayCommand<T1, T2>>
     {
         [SerializeField] private bool _isBindInteractable = true;
+        [SerializeField] private Button _button;
         
-        [Space]
+        [Header("Parameters")]
         [SerializeField] private T1 _parameter1;
         [SerializeField] private T2 _parameter2;
-        
-        [Space]
-        [SerializeField] private Button[] _buttons;
 
         private IRelayCommand<T1, T2> _command;
 
@@ -163,17 +143,13 @@ namespace UltimateUI.MVVM.StarterKit.Commands
 
         private void Subscribe()
         {
-            foreach (var button in _buttons)
-                button.onClick.AddListener(Execute);
-            
+            _button.onClick.AddListener(Execute);
             _command.CanExecuteChanged += OnCanExecuteChanged;
         }
 
         private void Unsubscribe()
         {
-            foreach (var button in _buttons)
-                button.onClick.RemoveListener(Execute);
-            
+            _button.onClick.RemoveListener(Execute);
             _command.CanExecuteChanged -= OnCanExecuteChanged;
         }
 
@@ -189,10 +165,7 @@ namespace UltimateUI.MVVM.StarterKit.Commands
         private void OnCanExecuteChanged(IRelayCommand<T1, T2> command)
         {
             if (!_isBindInteractable) return;
-            
-            var canExecute = command.CanExecute(Parameter1, Parameter2);
-            foreach (var button in _buttons)
-                button.interactable = canExecute;
+            _button.interactable = command.CanExecute(Parameter1, Parameter2);
         }
     }
     
@@ -200,14 +173,12 @@ namespace UltimateUI.MVVM.StarterKit.Commands
     public sealed class ButtonCommandProvider<T1, T2, T3> : Binder, IBinder<IRelayCommand<T1, T2, T3>>
     {
         [SerializeField] private bool _isBindInteractable = true;
+        [SerializeField] private Button _button;
         
-        [Space]
+        [Header("Parameters")]
         [SerializeField] private T1 _parameter1;
         [SerializeField] private T2 _parameter2;
         [SerializeField] private T3 _parameter3;
-        
-        [Space]
-        [SerializeField] private Button[] _buttons;
 
         private IRelayCommand<T1, T2, T3> _command;
 
@@ -241,17 +212,13 @@ namespace UltimateUI.MVVM.StarterKit.Commands
 
         private void Subscribe()
         {
-            foreach (var button in _buttons)
-                button.onClick.AddListener(Execute);
-            
+            _button.onClick.AddListener(Execute);
             _command.CanExecuteChanged += OnCanExecuteChanged;
         }
 
         private void Unsubscribe()
         {
-            foreach (var button in _buttons)
-                button.onClick.RemoveListener(Execute);
-            
+            _button.onClick.RemoveListener(Execute);
             _command.CanExecuteChanged -= OnCanExecuteChanged;
         }
 
@@ -267,10 +234,7 @@ namespace UltimateUI.MVVM.StarterKit.Commands
         private void OnCanExecuteChanged(IRelayCommand<T1, T2, T3> command)
         {
             if (!_isBindInteractable) return;
-            
-            var canExecute = command.CanExecute(Parameter1, Parameter2, Parameter3);
-            foreach (var button in _buttons)
-                button.interactable = canExecute;
+            _button.interactable = command.CanExecute(Parameter1, Parameter2, Parameter3);
         }
     }
     
@@ -278,16 +242,14 @@ namespace UltimateUI.MVVM.StarterKit.Commands
     public sealed class ButtonCommandProvider<T1, T2, T3, T4> : Binder, IBinder<IRelayCommand<T1, T2, T3, T4>>
     {
         [SerializeField] private bool _isBindInteractable = true;
+        [SerializeField] private Button _button;
         
-        [Space]
+        [Header("Parameters")]
         [SerializeField] private T1 _parameter1;
         [SerializeField] private T2 _parameter2;
         [SerializeField] private T3 _parameter3;
         [SerializeField] private T4 _parameter4;
         
-        [Space]
-        [SerializeField] private Button[] _buttons;
-
         private IRelayCommand<T1, T2, T3, T4> _command;
 
         public T1 Parameter1
@@ -326,17 +288,13 @@ namespace UltimateUI.MVVM.StarterKit.Commands
 
         private void Subscribe()
         {
-            foreach (var button in _buttons)
-                button.onClick.AddListener(Execute);
-            
+            _button.onClick.AddListener(Execute);
             _command.CanExecuteChanged += OnCanExecuteChanged;
         }
 
         private void Unsubscribe()
         {
-            foreach (var button in _buttons)
-                button.onClick.RemoveListener(Execute);
-            
+            _button.onClick.RemoveListener(Execute);
             _command.CanExecuteChanged -= OnCanExecuteChanged;
         }
 
@@ -352,10 +310,7 @@ namespace UltimateUI.MVVM.StarterKit.Commands
         private void OnCanExecuteChanged(IRelayCommand<T1, T2, T3, T4> command)
         {
             if (!_isBindInteractable) return;
-            
-            var canExecute = command.CanExecute(Parameter1, Parameter2, Parameter3, Parameter4);
-            foreach (var button in _buttons)
-                button.interactable = canExecute;
+            _button.interactable = command.CanExecute(Parameter1, Parameter2, Parameter3, Parameter4);
         }
     }
 }

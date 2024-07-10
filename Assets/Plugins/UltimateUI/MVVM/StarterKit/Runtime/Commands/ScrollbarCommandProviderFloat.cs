@@ -10,9 +10,7 @@ namespace UltimateUI.MVVM.StarterKit.Commands
     public sealed class ScrollbarCommandProviderFloat : Binder, IBinder<IRelayCommand<float>>
     {
         [SerializeField] private bool _isBindInteractable;
-        
-        [Space]
-        [SerializeField] private Scrollbar[] _scrollbars;
+        [SerializeField] private Scrollbar _scrollbar;
         
         private IRelayCommand<float> _command;
         
@@ -28,17 +26,13 @@ namespace UltimateUI.MVVM.StarterKit.Commands
         
         private void Subscribe()
         {
-            foreach (var scrollbar in _scrollbars)
-                scrollbar.onValueChanged.AddListener(Execute);
-            
+            _scrollbar.onValueChanged.AddListener(Execute);
             _command.CanExecuteChanged += OnCanExecuteChanged;
         }
 
         private void Unsubscribe()
         {
-            foreach (var scrollbar in _scrollbars)
-                scrollbar.onValueChanged.RemoveListener(Execute);
-            
+            _scrollbar.onValueChanged.RemoveListener(Execute);
             _command.CanExecuteChanged -= OnCanExecuteChanged;
         }
         
@@ -57,9 +51,7 @@ namespace UltimateUI.MVVM.StarterKit.Commands
         private void OnCanExecuteChanged(IRelayCommand<float> command)
         {
             if (!_isBindInteractable) return;
-
-            foreach (var scrollbar in _scrollbars)
-                scrollbar.interactable = command.CanExecute(scrollbar.value);
+            _scrollbar.interactable = command.CanExecute(_scrollbar.value);
         }
     }
     
@@ -67,12 +59,10 @@ namespace UltimateUI.MVVM.StarterKit.Commands
     public sealed class ScrollbarCommandProviderFloat<T1> : Binder, IBinder<IRelayCommand<float, T1>>
     {
         [SerializeField] private bool _isBindInteractable;
+        [SerializeField] private Scrollbar _scrollbar;
         
-        [Space]
+        [Header("Parameters")]
         [SerializeField] private T1 _parameter1;
-        
-        [Space]
-        [SerializeField] private Scrollbar[] _scrollbars;
         
         private IRelayCommand<float, T1> _command;
         
@@ -94,17 +84,13 @@ namespace UltimateUI.MVVM.StarterKit.Commands
         
         private void Subscribe()
         {
-            foreach (var scrollbar in _scrollbars)
-                scrollbar.onValueChanged.AddListener(Execute);
-            
+            _scrollbar.onValueChanged.AddListener(Execute);
             _command.CanExecuteChanged += OnCanExecuteChanged;
         }
 
         private void Unsubscribe()
         {
-            foreach (var scrollbar in _scrollbars)
-                scrollbar.onValueChanged.RemoveListener(Execute);
-            
+            _scrollbar.onValueChanged.RemoveListener(Execute);
             _command.CanExecuteChanged -= OnCanExecuteChanged;
         }
         
@@ -123,9 +109,7 @@ namespace UltimateUI.MVVM.StarterKit.Commands
         private void OnCanExecuteChanged(IRelayCommand<float, T1> command)
         {
             if (!_isBindInteractable) return;
-
-            foreach (var scrollbar in _scrollbars)
-                scrollbar.interactable = command.CanExecute(scrollbar.value, Parameter1);
+            _scrollbar.interactable = command.CanExecute(_scrollbar.value, Parameter1);
         }
     }
     
@@ -133,13 +117,11 @@ namespace UltimateUI.MVVM.StarterKit.Commands
     public sealed class ScrollbarCommandProviderFloat<T1, T2> : Binder, IBinder<IRelayCommand<float, T1, T2>>
     {
         [SerializeField] private bool _isBindInteractable;
+        [SerializeField] private Scrollbar _scrollbar;
         
-        [Space]
+        [Header("Parameters")]
         [SerializeField] private T1 _parameter1;
         [SerializeField] private T2 _parameter2;
-        
-        [Space]
-        [SerializeField] private Scrollbar[] _scrollbars;
         
         private IRelayCommand<float, T1, T2> _command;
         
@@ -167,17 +149,13 @@ namespace UltimateUI.MVVM.StarterKit.Commands
         
         private void Subscribe()
         {
-            foreach (var scrollbar in _scrollbars)
-                scrollbar.onValueChanged.AddListener(Execute);
-            
+            _scrollbar.onValueChanged.AddListener(Execute);
             _command.CanExecuteChanged += OnCanExecuteChanged;
         }
 
         private void Unsubscribe()
         {
-            foreach (var scrollbar in _scrollbars)
-                scrollbar.onValueChanged.RemoveListener(Execute);
-            
+            _scrollbar.onValueChanged.RemoveListener(Execute);
             _command.CanExecuteChanged -= OnCanExecuteChanged;
         }
         
@@ -196,9 +174,7 @@ namespace UltimateUI.MVVM.StarterKit.Commands
         private void OnCanExecuteChanged(IRelayCommand<float, T1, T2> command)
         {
             if (!_isBindInteractable) return;
-
-            foreach (var scrollbar in _scrollbars)
-                scrollbar.interactable = command.CanExecute(scrollbar.value, Parameter1, Parameter2);
+            _scrollbar.interactable = command.CanExecute(_scrollbar.value, Parameter1, Parameter2);
         }
     }
     
@@ -206,14 +182,12 @@ namespace UltimateUI.MVVM.StarterKit.Commands
     public sealed class ScrollbarCommandProviderFloat<T1, T2, T3> : Binder, IBinder<IRelayCommand<float, T1, T2, T3>>
     {
         [SerializeField] private bool _isBindInteractable;
+        [SerializeField] private Scrollbar _scrollbar;
         
-        [Space]
+        [Header("Parameters")]
         [SerializeField] private T1 _parameter1;
         [SerializeField] private T2 _parameter2;
         [SerializeField] private T3 _parameter3;
-        
-        [Space]
-        [SerializeField] private Scrollbar[] _scrollbars;
         
         private IRelayCommand<float, T1, T2, T3> _command;
         
@@ -247,17 +221,13 @@ namespace UltimateUI.MVVM.StarterKit.Commands
         
         private void Subscribe()
         {
-            foreach (var scrollbar in _scrollbars)
-                scrollbar.onValueChanged.AddListener(Execute);
-            
+            _scrollbar.onValueChanged.AddListener(Execute);
             _command.CanExecuteChanged += OnCanExecuteChanged;
         }
 
         private void Unsubscribe()
         {
-            foreach (var scrollbar in _scrollbars)
-                scrollbar.onValueChanged.RemoveListener(Execute);
-            
+            _scrollbar.onValueChanged.RemoveListener(Execute);
             _command.CanExecuteChanged -= OnCanExecuteChanged;
         }
         
@@ -276,9 +246,7 @@ namespace UltimateUI.MVVM.StarterKit.Commands
         private void OnCanExecuteChanged(IRelayCommand<float, T1, T2, T3> command)
         {
             if (!_isBindInteractable) return;
-
-            foreach (var scrollbar in _scrollbars)
-                scrollbar.interactable = command.CanExecute(scrollbar.value, Parameter1, Parameter2, Parameter3);
+            _scrollbar.interactable = command.CanExecute(_scrollbar.value, Parameter1, Parameter2, Parameter3);
         }
     }
 }

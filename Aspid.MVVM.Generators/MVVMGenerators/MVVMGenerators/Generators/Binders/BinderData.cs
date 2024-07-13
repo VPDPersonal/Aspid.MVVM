@@ -7,15 +7,10 @@ namespace MVVMGenerators.Generators.Binders;
 public readonly struct BinderData(
     TypeDeclarationSyntax declaration, 
     bool hasBinderLogInBaseType,
-    IReadOnlyCollection<IMethodSymbol> binderLogMethods,
-    bool hasBindInheritorsAlsoInBaseType,
-    IReadOnlyCollection<ITypeSymbol> bindInheritorsAlsoTypes)
+    IReadOnlyCollection<IMethodSymbol> binderLogMethods)
 {
     public readonly TypeDeclarationSyntax Declaration = declaration;
 
     public readonly bool HasBinderLogInBaseType = hasBinderLogInBaseType;
     public readonly IReadOnlyCollection<IMethodSymbol> BinderLogMethods = binderLogMethods;
-
-    public readonly bool HasBindInheritorsAlsoInBaseType = hasBindInheritorsAlsoInBaseType;
-    public readonly IReadOnlyCollection<ITypeSymbol> BindInheritorsAlsoTypes = bindInheritorsAlsoTypes;
 }

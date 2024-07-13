@@ -13,7 +13,9 @@ namespace UltimateUI.MVVM.StarterKit.Binders.Transforms
 
         protected Vector3 FalseScale => _falseScale;
 
+#if !ULTIMATE_UI_MVVM_STARTER_KIT_BINDER_LOG_GENERATOR_DISABLED
         [BinderLog]
+#endif
         public void SetValue(bool value) =>
             CachedTransform.localScale = GetLocalScale(value);
 

@@ -11,7 +11,9 @@ namespace UltimateUI.MVVM.StarterKit.Binders.Casters
         [RequireBinder(typeof(string))]
         [SerializeField] private MonoBinder[] _binders;
         
+#if !ULTIMATE_UI_MVVM_STARTER_KIT_BINDER_LOG_GENERATOR_DISABLED
         [BinderLog]
+#endif
         public void SetValue(TimeSpan value)
         {
             var casterValue = value.ToString();

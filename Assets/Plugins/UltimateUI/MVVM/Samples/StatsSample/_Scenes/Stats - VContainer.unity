@@ -455,6 +455,30 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3697158587917215939, guid: a7e999c98b71641ada1dceb5273a5c60, type: 3}
+      propertyPath: _isDebug
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5315928923478365624, guid: a7e999c98b71641ada1dceb5273a5c60, type: 3}
+      propertyPath: _confirmCommand.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5315928923478365624, guid: a7e999c98b71641ada1dceb5273a5c60, type: 3}
+      propertyPath: _resetToDefaultCommand.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5315928923478365624, guid: a7e999c98b71641ada1dceb5273a5c60, type: 3}
+      propertyPath: _addSkillPointToCommand.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5315928923478365624, guid: a7e999c98b71641ada1dceb5273a5c60, type: 3}
+      propertyPath: _removeSkillPointToCommand.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5734425860776028814, guid: a7e999c98b71641ada1dceb5273a5c60, type: 3}
+      propertyPath: _isDebug
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

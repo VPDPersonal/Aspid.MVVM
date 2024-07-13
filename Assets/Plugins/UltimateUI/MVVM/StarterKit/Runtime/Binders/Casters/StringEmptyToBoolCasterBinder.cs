@@ -10,7 +10,9 @@ namespace UltimateUI.MVVM.StarterKit.Binders.Casters
         [RequireBinder(typeof(bool))]
         [SerializeField] private MonoBinder[] _binders;
         
+#if !ULTIMATE_UI_MVVM_STARTER_KIT_BINDER_LOG_GENERATOR_DISABLED
         [BinderLog]
+#endif
         public void SetValue(string value)
         {
             var casterValue = string.IsNullOrEmpty(value);

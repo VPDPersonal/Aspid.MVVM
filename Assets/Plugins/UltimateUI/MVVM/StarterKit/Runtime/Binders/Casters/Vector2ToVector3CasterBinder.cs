@@ -17,7 +17,9 @@ namespace UltimateUI.MVVM.StarterKit.Binders.Casters
         [SerializeField] private Values _values;
         [SerializeField] private float _thirdValue;
         
+#if !ULTIMATE_UI_MVVM_STARTER_KIT_BINDER_LOG_GENERATOR_DISABLED
         [BinderLog]
+#endif
         public void SetValue(Vector2 value)
         {
             var vector3 = _values switch

@@ -14,7 +14,9 @@ namespace UltimateUI.MVVM.StarterKit.Binders.Texts.Localization
 
         protected string FalseKey => _falseKey;
         
+#if !ULTIMATE_UI_MVVM_STARTER_KIT_BINDER_LOG_GENERATOR_DISABLED
         [BinderLog]
+#endif
         public void SetValue(bool value) =>
             CachedLocalizeStringEvent.StringReference.TableEntryReference = GetKey(value);
 

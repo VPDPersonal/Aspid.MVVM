@@ -7,7 +7,9 @@ namespace UltimateUI.MVVM.StarterKit.Binders.Lists
     {
         protected IReadOnlyObservableList<T> List { get; private set; }
         
+#if !ULTIMATE_UI_MVVM_STARTER_KIT_BINDER_LOG_GENERATOR_DISABLED
         [BinderLog]
+#endif
         public void SetValue(IReadOnlyObservableList<T> list)
         {
             if (List != null)

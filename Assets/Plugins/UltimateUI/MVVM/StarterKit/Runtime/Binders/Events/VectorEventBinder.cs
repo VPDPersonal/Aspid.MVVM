@@ -22,11 +22,15 @@ namespace UltimateUI.MVVM.StarterKit.Binders.Events
         [SerializeField] private UnityEvent<Vector2> _vector2ValueSet;
         [SerializeField] private UnityEvent<Vector3> _vector3ValueSet;
         
+#if !ULTIMATE_UI_MVVM_STARTER_KIT_BINDER_LOG_GENERATOR_DISABLED
         [BinderLog]
+#endif
         public void SetValue(Vector2 value) =>
             _vector2ValueSet?.Invoke(value);
         
+#if !ULTIMATE_UI_MVVM_STARTER_KIT_BINDER_LOG_GENERATOR_DISABLED
         [BinderLog]
+#endif
         public void SetValue(Vector3 value) =>
             _vector3ValueSet?.Invoke(value);
     }

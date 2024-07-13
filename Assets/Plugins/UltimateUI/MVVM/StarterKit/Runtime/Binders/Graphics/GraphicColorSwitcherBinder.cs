@@ -12,8 +12,10 @@ namespace UltimateUI.MVVM.StarterKit.Binders.Graphics
         protected Color TrueColor => _trueColor;
         
         protected Color FalseColor => _falseColor;
-
+        
+#if !ULTIMATE_UI_MVVM_STARTER_KIT_BINDER_LOG_GENERATOR_DISABLED
         [BinderLog]
+#endif
         public void SetValue(bool value) =>
             CachedGraphic.color = GetColor(value);
         

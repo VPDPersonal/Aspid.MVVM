@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UltimateUI.MVVM.Views;
 
@@ -17,5 +18,9 @@ namespace UltimateUI.MVVM.Samples.ProductSample
         
         [RequireBinder(typeof(Sprite))]
         [SerializeField] private Sprite _currencyIcon;
+        public override IEnumerable<(string id, IReadOnlyList<IBinder> binders)> GetBindersLazy()
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

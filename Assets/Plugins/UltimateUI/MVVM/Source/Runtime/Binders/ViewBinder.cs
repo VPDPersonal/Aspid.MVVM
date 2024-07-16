@@ -1,5 +1,6 @@
 using UltimateUI.MVVM.Views;
 using UltimateUI.MVVM.ViewModels;
+using UnityEngine.Profiling;
 
 // ReSharper disable once CheckNamespace
 namespace UltimateUI.MVVM.ViewBinders
@@ -29,14 +30,13 @@ namespace UltimateUI.MVVM.ViewBinders
             using (_bindMarker.Auto())
 #endif
             {
-                var binders = view.GetBinders();
-                var bindMethods = viewModel.GetBindMethods();
-
-                foreach (var pair in binders)
+                Profiler.BeginSample("Foreach");
+                foreach (var (key, binders) in view.GetBindersLazy())
                 {
-                    if (bindMethods.TryGetValue(pair.Key, out var bindMethod))
-                        bindMethod(pair.Value);
+                    for (var i = 0; i < binders.Count; i++)
+                        binders[i].Bind(viewModel, key);
                 }
+                Profiler.EndSample();
             }
         }
 

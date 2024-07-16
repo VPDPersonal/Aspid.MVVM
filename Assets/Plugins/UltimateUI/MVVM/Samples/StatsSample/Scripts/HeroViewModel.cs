@@ -1,8 +1,11 @@
 using System;
-using Plugins.UltimateUI.MVVM.Samples.StatsSample.Scripts;
+using System.Collections.Generic;
+using UnityEngine.Profiling;
 using UltimateUI.MVVM.Commands;
-using UltimateUI.MVVM.Samples.StatsSample.Models;
 using UltimateUI.MVVM.ViewModels;
+using UltimateUI.MVVM.Samples.StatsSample.Models;
+using Plugins.UltimateUI.MVVM.Samples.StatsSample.Scripts;
+using UltimateUI.MVVM.Views;
 
 namespace UltimateUI.MVVM.Samples.StatsSample
 {
@@ -12,7 +15,7 @@ namespace UltimateUI.MVVM.Samples.StatsSample
         [Bind] private int _cool;
         [Bind] private int _power;
         [Bind] private int _reflexes;
-        [Bind] private int _intelligence;
+        [Bind] private int _intelligence; 
         [Bind] private int _technicalAbility;
         
         [Bind] private int _skillPointsAvailable;
@@ -145,5 +148,75 @@ namespace UltimateUI.MVVM.Samples.StatsSample
         }
 
         public void Dispose() => Unsubscribe();
+    }
+    
+    public partial class HeroViewModel
+    {
+        public void AddBinder(IBinder binder, string propertyName)
+        {
+            Profiler.BeginSample("AddBinder");
+            switch (propertyName)
+            {
+                case nameof(Cool): AddBinderLocal(Cool, ref CoolChanged); break;
+                case nameof(Power): AddBinderLocal(Power, ref PowerChanged); break;
+                case nameof(Reflexes): AddBinderLocal(Reflexes, ref ReflexesChanged); break;
+                case nameof(Intelligence): AddBinderLocal(Intelligence, ref IntelligenceChanged); break;
+                case nameof(TechnicalAbility): AddBinderLocal(TechnicalAbility, ref TechnicalAbilityChanged); break;
+                case nameof(SkillPointsAvailable): AddBinderLocal(SkillPointsAvailable, ref SkillPointsAvailableChanged); break;
+                case nameof(IsDraft): AddBinderLocal(IsDraft, ref IsDraftChanged); break;
+                case nameof(ConfirmCommand): AddBinderLocal(ConfirmCommand, ref ConfirmCommandChanged); break;
+                case nameof(ResetToDefaultCommand): AddBinderLocal(ResetToDefaultCommand, ref ResetToDefaultCommandChanged); break;
+                case nameof(AddSkillPointToCommand): AddBinderLocal(AddSkillPointToCommand, ref AddSkillPointToCommandChanged); break;
+                case nameof(RemoveSkillPointToCommand): AddBinderLocal(RemoveSkillPointToCommand, ref RemoveSkillPointToCommandChanged); break;
+            }
+            Profiler.EndSample();
+            return;
+
+            void AddBinderLocal<T>(T value, ref Action<T> changed)
+            {
+                switch (binder)
+                {
+                    case IBinder<T> specificBinder:
+                        specificBinder.SetValue(value);
+                        changed += specificBinder.SetValue;
+                        break;
+                    
+                    case IAnyBinder anyBinder:
+                        anyBinder.SetValue(value);
+                        changed += anyBinder.SetValue;
+                        break;
+                    
+                    default: throw new Exception();
+                }
+            }
+        }
+        
+        public void RemoveBinder(IBinder binder, string propertyName)
+        {
+            switch (propertyName)
+            {
+                case nameof(Cool): RemoveBinderLocal(ref CoolChanged); break;
+                case nameof(Power): RemoveBinderLocal(ref PowerChanged); break;
+                case nameof(Reflexes): RemoveBinderLocal(ref ReflexesChanged); break;
+                case nameof(Intelligence): RemoveBinderLocal(ref IntelligenceChanged); break;
+                case nameof(TechnicalAbility): RemoveBinderLocal(ref TechnicalAbilityChanged); break;
+                case nameof(SkillPointsAvailable): RemoveBinderLocal(ref SkillPointsAvailableChanged); break;
+                case nameof(IsDraft): RemoveBinderLocal(ref IsDraftChanged); break;
+                case nameof(ConfirmCommand): RemoveBinderLocal(ref ConfirmCommandChanged); break;
+                case nameof(ResetToDefaultCommand): RemoveBinderLocal(ref ResetToDefaultCommandChanged); break;
+                case nameof(AddSkillPointToCommand): RemoveBinderLocal(ref AddSkillPointToCommandChanged); break;
+                case nameof(RemoveSkillPointToCommand): RemoveBinderLocal(ref RemoveSkillPointToCommandChanged); break;
+            }
+            return;
+
+            void RemoveBinderLocal<T>(ref Action<T> changed)
+            {
+                switch (binder)
+                {
+                    case IBinder<T> specificBinder: changed -= specificBinder.SetValue; break;
+                    case IAnyBinder anyBinder: changed -= anyBinder.SetValue; break;
+                }
+            }
+        }
     }
 }

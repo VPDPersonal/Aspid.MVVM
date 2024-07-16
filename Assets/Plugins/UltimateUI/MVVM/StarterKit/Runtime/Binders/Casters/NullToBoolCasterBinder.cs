@@ -1,9 +1,10 @@
 using UnityEngine;
 using UltimateUI.MVVM.Views;
 
+// ReSharper disable once CheckNamespace
 namespace UltimateUI.MVVM.StarterKit.Binders.Casters
 {
-    public class NullToBoolCasterBinding : MonoBinder, IAnyBinder
+    public class NullToBoolCasterBinder : MonoBinder, IAnyBinder
     {
         [Header("Binders")]
         [RequireBinder(typeof(bool))]

@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UltimateUI.MVVM.Views;
 using UnityEngine;
 
@@ -8,5 +9,9 @@ namespace UltimateUI.MVVM.Samples.ProductSample.Economy
     public partial class WalletView : MonoView
     {
         [SerializeField] private MonoBinder[] _currencies;
+        public override IEnumerable<(string id, IReadOnlyList<IBinder> binders)> GetBindersLazy()
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

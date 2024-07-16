@@ -1,5 +1,6 @@
 #nullable disable
 using System;
+using UltimateUI.MVVM.ViewModels;
 
 // ReSharper disable once CheckNamespace
 namespace UltimateUI.MVVM
@@ -16,23 +17,7 @@ namespace UltimateUI.MVVM
         /// <param name="changed">The action to invoke when the value changes.</param>
         /// <typeparam name="T">The type of the value.</typeparam>
         /// <returns>True if the binding is successful; otherwise, false.</returns>
-        public bool Bind<T>(in T value, ref Action<T> changed)
-        {
-            switch (this)
-            {
-                case IBinder<T> specificBinder:
-                    specificBinder.SetValue(value);
-                    changed += specificBinder.SetValue;
-                    return true;
-                
-                case IAnyBinder anyBinder:
-                    anyBinder.SetValue(value);
-                    changed += anyBinder.SetValue;
-                    return true;
-                
-                default: return false;
-            }
-        }
+        public bool Bind(IViewModel viewModel, string propertyName);
         
         /// <summary>
         /// Unbinds a previously bound action, stopping it from being triggered by value changes.
@@ -40,21 +25,7 @@ namespace UltimateUI.MVVM
         /// <param name="changed">The action to unbind.</param>
         /// <typeparam name="T">The type of the value associated with the action.</typeparam>
         /// <returns>True if the unbinding is successful; otherwise, false.</returns>
-        public bool Unbind<T>(ref Action<T> changed)
-        {
-            switch (this)
-            {
-                case IBinder<T> specificBinder:
-                    changed -= specificBinder.SetValue;
-                    return true;
-                
-                case IAnyBinder anyBinder:
-                    changed -= anyBinder.SetValue;
-                    return true;
-                
-                default: return false;
-            }
-        }
+        public bool Unbind(IViewModel viewModel, string propertyName);
     }
     
     /// <summary>

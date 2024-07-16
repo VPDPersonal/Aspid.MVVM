@@ -11,27 +11,9 @@ namespace UltimateUI.MVVM.ViewModels
         private static readonly Unity.Profiling.ProfilerMarker _unbindMarker = new($"{nameof(ViewModelUtility)}.{nameof(Unbind)}");
 #endif
         
-        public static void Bind<T>(T defaultValue, ref Action<T> changed, IReadOnlyCollection<IBinder> binders)
-        {
-#if UNITY_EDITOR && !ULTIMATE_UI_MVVM_UNITY_PROFILER_DISABLED
-            using (_bindMarker.Auto())
-#endif
-            {
-                foreach (var binder in binders)
-                    binder.Bind(defaultValue, ref changed);
-            }
-        }
+        public static void Bind<T>(T defaultValue, ref Action<T> changed, IReadOnlyCollection<IBinder> binders) { }
         
-        public static void Unbind<T>(ref Action<T> changed, IReadOnlyCollection<IBinder> binders)
-        {
-#if UNITY_EDITOR && !ULTIMATE_UI_MVVM_UNITY_PROFILER_DISABLED
-            using (_unbindMarker.Auto())
-#endif
-            {
-                foreach (var binder in binders)
-                    binder.Unbind(ref changed);
-            }
-        }
+        public static void Unbind<T>(ref Action<T> changed, IReadOnlyCollection<IBinder> binders) { }
         
         public static bool SetProperty<T>(ref T field, T newValue)
         {

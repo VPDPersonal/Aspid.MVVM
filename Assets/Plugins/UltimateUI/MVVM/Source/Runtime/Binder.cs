@@ -1,5 +1,5 @@
 #nullable disable
-using System;
+using UltimateUI.MVVM.ViewModels;
 
 // ReSharper disable once CheckNamespace
 namespace UltimateUI.MVVM
@@ -10,64 +10,40 @@ namespace UltimateUI.MVVM
         private static readonly Unity.Profiling.ProfilerMarker _bindMarker = new($"{nameof(Binder)}.{nameof(Bind)}");
         private static readonly Unity.Profiling.ProfilerMarker _unbindMarker = new($"{nameof(Binder)}.{nameof(Unbind)}");
 #endif
-        
-        bool IBinder.Bind<T>(in T value, ref Action<T> changed)
+
+        bool IBinder.Bind(IViewModel viewModel, string propertyName)
         {
-#if UNITY_EDITOR && !ULTIMATE_UI_MVVM_UNITY_PROFILER_DISABLED
+#if !ULTIMATE_UI_MVVM_UNITY_PROFILER_DISABLED
             using (_bindMarker.Auto()) 
 #endif
             {
-                return Bind(in value, ref changed);
-            }
-        }
-
-        protected virtual bool Bind<T>(in T value, ref Action<T> changed)
-        {
-            switch (this)
-            {
-                case IBinder<T> specificBinder:
-                    specificBinder.SetValue(value);
-                    changed += specificBinder.SetValue;
-                    return true;
-                
-                case IAnyBinder anyBinder:
-                    anyBinder.SetValue(value);
-                    changed += anyBinder.SetValue;
-                    return true;
-                
-                default: return false;
+                return Bind(viewModel, propertyName);
             }
         }
         
-        bool IBinder.Unbind<T>(ref Action<T> changed)
+        bool IBinder.Unbind(IViewModel viewModel, string propertyName)
         {
-#if UNITY_EDITOR && !ULTIMATE_UI_MVVM_UNITY_PROFILER_DISABLED
-            using (_unbindMarker.Auto()) 
-#endif
+            using (_unbindMarker.Auto())
             {
-                var result = Unbind(ref changed);
-                if (result) ReleaseBinding<T>();
+                var result = Unbind(viewModel, propertyName);
+                if (result) ReleaseBinding();
             
                 return result;
             }
         }
-        
-        protected virtual bool Unbind<T>(ref Action<T> changed)
+
+        protected virtual bool Bind(IViewModel viewModel, string propertyName)
         {
-            switch (this)
-            {
-                case IBinder<T> specificBinder:
-                    changed -= specificBinder.SetValue;
-                    return true;
-                
-                case IAnyBinder anyBinder:
-                    changed -= anyBinder.SetValue;
-                    return true;
-                
-                default: return false;
-            }
+            viewModel.AddBinder(this, propertyName);
+            return true;
+        }
+        
+        public bool Unbind(IViewModel viewModel, string propertyName)
+        {
+            viewModel.RemoveBinder(this, propertyName);
+            return true;
         }
 
-        protected virtual void ReleaseBinding<T>() { }
+        protected virtual void ReleaseBinding() { }
     }
 }

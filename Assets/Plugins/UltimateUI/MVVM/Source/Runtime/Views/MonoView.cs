@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 // ReSharper disable once CheckNamespace
@@ -22,6 +23,8 @@ namespace UltimateUI.MVVM.Views
                 return GetBinders();
             }
         }
+
+        public abstract IEnumerable<(string id, IReadOnlyList<IBinder> binders)> GetBindersLazy();
 
         protected virtual IReadOnlyBindersCollectionById GetBinders() =>
             throw new Exception("This method must be implemented in the inheritor");

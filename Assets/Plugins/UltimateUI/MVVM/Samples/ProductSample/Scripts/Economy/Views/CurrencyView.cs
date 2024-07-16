@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UltimateUI.MVVM.Views;
 
@@ -12,5 +13,9 @@ namespace UltimateUI.MVVM.Samples.ProductSample.Economy
         
         [RequireBinder(typeof(int))]
         [SerializeField] private MonoBinder[] _currency;
+        public override IEnumerable<(string id, IReadOnlyList<IBinder> binders)> GetBindersLazy()
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

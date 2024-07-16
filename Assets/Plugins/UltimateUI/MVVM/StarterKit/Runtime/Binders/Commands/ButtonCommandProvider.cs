@@ -16,7 +16,7 @@ namespace UltimateUI.MVVM.StarterKit.Binders.Commands
         
         public void SetValue(IRelayCommand command)
         {
-            ReleaseBinding<IRelayCommand>();
+            ReleaseBinding();
             
             _command = command;
             
@@ -39,7 +39,7 @@ namespace UltimateUI.MVVM.StarterKit.Binders.Commands
         private void Execute() =>
             _command?.Execute();
 
-        protected override void ReleaseBinding<TBinding>()
+        protected override void ReleaseBinding()
         {
             if (_command != null) Unsubscribe();
             _command = null;
@@ -71,7 +71,7 @@ namespace UltimateUI.MVVM.StarterKit.Binders.Commands
         
         public void SetValue(IRelayCommand<T1> command)
         {
-            ReleaseBinding<IRelayCommand<T1>>();
+            ReleaseBinding();
             
             _command = command;
             
@@ -94,7 +94,7 @@ namespace UltimateUI.MVVM.StarterKit.Binders.Commands
         private void Execute() =>
             _command?.Execute(Parameter);
 
-        protected override void ReleaseBinding<TBinding>()
+        protected override void ReleaseBinding()
         {
             if (_command != null) Unsubscribe();
             _command = null;
@@ -133,7 +133,7 @@ namespace UltimateUI.MVVM.StarterKit.Binders.Commands
         
         public void SetValue(IRelayCommand<T1, T2> command)
         {
-            ReleaseBinding<IRelayCommand<T1, T2>>();
+            ReleaseBinding();
             
             _command = command;
             
@@ -156,7 +156,7 @@ namespace UltimateUI.MVVM.StarterKit.Binders.Commands
         private void Execute() =>
             _command?.Execute(Parameter1, Parameter2);
 
-        protected override void ReleaseBinding<TBinding>()
+        protected override void ReleaseBinding()
         {
             if (_command != null) Unsubscribe();
             _command = null;
@@ -202,7 +202,7 @@ namespace UltimateUI.MVVM.StarterKit.Binders.Commands
         
         public void SetValue(IRelayCommand<T1, T2, T3> command)
         {
-            ReleaseBinding<IRelayCommand<T1, T2, T3>>();
+            ReleaseBinding();
             
             _command = command;
             
@@ -225,7 +225,7 @@ namespace UltimateUI.MVVM.StarterKit.Binders.Commands
         private void Execute() =>
             _command?.Execute(Parameter1, Parameter2, Parameter3);
 
-        protected override void ReleaseBinding<TBinding>()
+        protected override void ReleaseBinding()
         {
             if (_command != null) Unsubscribe();
             _command = null;
@@ -278,8 +278,7 @@ namespace UltimateUI.MVVM.StarterKit.Binders.Commands
         
         public void SetValue(IRelayCommand<T1, T2, T3, T4> command)
         {
-            ReleaseBinding<IRelayCommand<T1, T2, T3, T4>>();
-            
+            ReleaseBinding();            
             _command = command;
             
             Subscribe();
@@ -301,7 +300,7 @@ namespace UltimateUI.MVVM.StarterKit.Binders.Commands
         private void Execute() =>
             _command?.Execute(Parameter1, Parameter2, Parameter3, Parameter4);
 
-        protected override void ReleaseBinding<TBinding>()
+        protected override void ReleaseBinding()
         {
             if (_command != null) Unsubscribe();
             _command = null;

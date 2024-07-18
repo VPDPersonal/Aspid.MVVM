@@ -6,7 +6,7 @@ using UltimateUI.MVVM.Samples.ProductSample.Economy.Models;
 // ReSharper disable once CheckNamespace
 namespace UltimateUI.MVVM.Samples.ProductSample.Economy.ViewModels
 {
-    [ViewModel]
+    // [ViewModel]
     public partial class WalletViewModel
     {
         private readonly Wallet _wallet;
@@ -23,7 +23,7 @@ namespace UltimateUI.MVVM.Samples.ProductSample.Economy.ViewModels
 
         public void AddNewCurrency()
         {
-            Currencies.Add(new CurrencyViewModel(_wallet, null, 0));
+            // Currencies.Add(new CurrencyViewModel(_wallet, null, 0));
         }
     }
 }

@@ -1,5 +1,8 @@
 using UltimateUI.MVVM.Views;
 using UltimateUI.MVVM.ViewModels;
+#if UNITY_EDITOR && !ULTIMATE_UI_MVVM_UNITY_PROFILER_DISABLED
+using Unity.Profiling;
+#endif
 
 // ReSharper disable once CheckNamespace
 namespace UltimateUI.MVVM.ViewBinders
@@ -7,9 +10,9 @@ namespace UltimateUI.MVVM.ViewBinders
     public static class ViewBinder
     {
 #if UNITY_EDITOR && !ULTIMATE_UI_MVVM_UNITY_PROFILER_DISABLED
-        private static readonly Unity.Profiling.ProfilerMarker _bindMarker = new($"{nameof(ViewBinder)}.{nameof(Bind)}");
-        private static readonly Unity.Profiling.ProfilerMarker _unbindMarker = new($"{nameof(ViewBinder)}.{nameof(Unbind)}");
-        private static readonly Unity.Profiling.ProfilerMarker _rebindMarker = new($"{nameof(ViewBinder)}.{nameof(Rebind)}");
+        private static readonly ProfilerMarker _bindMarker = new("ViewBinder.Bind");
+        private static readonly ProfilerMarker _unbindMarker = new("ViewBinder.Unbind");
+        private static readonly ProfilerMarker _rebindMarker = new("ViewBinder.Rebind");
 #endif
         
         public static void Rebind(IView view, IViewModel oldViewModel, IViewModel newViewModel)

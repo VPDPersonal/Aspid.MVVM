@@ -1,14 +1,14 @@
 using System;
 using UnityEngine;
 using UltimateUI.MVVM.Views;
-using UltimateUI.MVVM.ViewModels;
-using UltimateUI.MVVM.ViewBinders;
 using UnityEngine.Serialization;
+using UltimateUI.MVVM.ViewModels;
+using UltimateUI.MVVM.Initializers;
 
 // ReSharper disable once CheckNamespace
 namespace UltimateUI.MVVM.StarterKit.ViewBinders
 {
-    public sealed class SimpleViewBinder : MonoViewBinderBase
+    public sealed class SimpleViewInitializer : MonoViewInitializerBase
     {
         [Header("View")]
         [SerializeField] private Resolve _viewResolve;
@@ -45,8 +45,9 @@ namespace UltimateUI.MVVM.StarterKit.ViewBinders
 #endif
         [SerializeReference] private IViewModel _referencesViewModel;
         
+        [FormerlySerializedAs("_bindOrder")]
         [Header("Bind Order")]
-        [SerializeField] private BindOrder _bindOrder;
+        [SerializeField] private InitializeOrder _initializeOrder;
 
         protected override IView View => _viewResolve switch 
         { 
@@ -62,28 +63,16 @@ namespace UltimateUI.MVVM.StarterKit.ViewBinders
             _ => throw new ArgumentOutOfRangeException()
         };
         
-        private void Awake() => Bind(BindOrder.Awake);
+        private void Awake() => Initialize(InitializeOrder.Awake);
 
-        private void OnEnable() => Bind(BindOrder.OnEnable);
-
-        private void OnDisable()
+        private void OnEnable() => Initialize(InitializeOrder.OnEnable);
+        
+        private void Start() => Initialize(InitializeOrder.Start);
+        
+        private void Initialize(InitializeOrder initializeOrder)
         {
-            if (_bindOrder == BindOrder.OnEnable)
-                Unbind();
-        }
-
-        private void Start() => Bind(BindOrder.Start);
-
-        private void OnDestroy()
-        {
-            if (_bindOrder != BindOrder.OnEnable)
-                Unbind();
-        }
-
-        private void Bind(BindOrder bindOrder)
-        {
-            if (bindOrder == _bindOrder)
-                Bind();
+            if (initializeOrder == _initializeOrder)
+                Initialize();
         }
         
         private enum Resolve
@@ -92,7 +81,7 @@ namespace UltimateUI.MVVM.StarterKit.ViewBinders
             References
         }
         
-        private enum BindOrder
+        private enum InitializeOrder
         {
             Awake,
             Start,

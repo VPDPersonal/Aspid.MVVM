@@ -2,12 +2,13 @@ using System;
 using UnityEngine;
 using UltimateUI.MVVM.Views;
 using UltimateUI.MVVM.ViewModels;
-using UltimateUI.MVVM.ViewBinders;
+using UltimateUI.MVVM.Initializers;
+using UnityEngine.Serialization;
 
 // ReSharper disable once CheckNamespace
 namespace UltimateUI.MVVM.DIExtension
 {
-    public sealed class UniversalViewBinder : MonoViewBinderBase
+    public sealed class UniversalViewInitializer : MonoViewInitializerBase
     {
         [Header("View")]
         [SerializeField] private Resolve _viewResolve;
@@ -57,9 +58,6 @@ namespace UltimateUI.MVVM.DIExtension
         [Sirenix.OdinInspector.ShowIf(nameof(_viewModelResolve), Resolve.References)]
 #endif
         [SerializeReference] private IViewModel _referencesViewModel;
-
-        [Header("Bind Order")]
-        [SerializeField] private BindOrder _bindOrder;
 
         private IView _view;
         private IViewModel _viewModel;
@@ -158,29 +156,7 @@ namespace UltimateUI.MVVM.DIExtension
         }
         
 #if ULTIMATE_UI_VCONTAINER_INTEGRATION || ULTIMATE_UI_ZENJECT_INTEGRATION
-        private void Awake() => Bind(BindOrder.Awake);
-
-        private void OnEnable() => Bind(BindOrder.OnEnable);
-
-        private void OnDisable()
-        {
-            if (_bindOrder == BindOrder.OnEnable)
-                Unbind();
-        }
-
-        private void Start() => Bind(BindOrder.Start);
-
-        private void OnDestroy()
-        {
-            if (_bindOrder != BindOrder.OnEnable)
-                Unbind();
-        }
-
-        private void Bind(BindOrder bindOrder)
-        {
-            if (bindOrder == _bindOrder)
-                Bind();
-        }
+        private void Awake() => Initialize();
 #else
         private void Awake() =>
             throw new Exception("There must be integration with VContainer or Zenject");
@@ -191,13 +167,6 @@ namespace UltimateUI.MVVM.DIExtension
             Di,
             Mono,
             References,
-        }
-
-        private enum BindOrder
-        {
-            Awake,
-            Start,
-            OnEnable,
         }
     }
 }

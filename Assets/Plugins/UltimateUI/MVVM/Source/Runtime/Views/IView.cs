@@ -1,13 +1,15 @@
-// ReSharper disable once CheckNamespace
-
-using System.Collections.Generic;
+using UltimateUI.MVVM.ViewModels;
 
 namespace UltimateUI.MVVM.Views
 {
     public interface IView
     {
-        public IReadOnlyBindersCollectionById GetBinders();
-        
-        public IEnumerable<(string id, IReadOnlyList<IBinder> binders)> GetBindersLazy() { yield break; }
+        public void Initialize(IViewModel viewModel);
+    }
+
+    public interface IView<in T> : IView
+        where T : IViewModel
+    {
+        public void Initialize(T viewModel);
     }
 } 

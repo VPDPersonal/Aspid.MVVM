@@ -34,7 +34,7 @@ namespace UltimateUI.MVVM.Views
                     {
                         var interfaces = binder.GetType().GetInterfaces();
                         return interfaces.Any(i =>
-                            i == typeof(IAnyBinder) ||
+                            // i == typeof(IAnyBinder) ||
                             i.IsGenericType &&
                             i.GetGenericTypeDefinition() == typeof(IBinder<>) &&
                             requiredTypes.Any(requiredType => requiredType == i.GetGenericArguments()[0])
@@ -43,8 +43,8 @@ namespace UltimateUI.MVVM.Views
                 }
                 
 #if UNITY_EDITOR
-                foreach (var binder in binders)
-                    binder.Id = field.Name;
+                // foreach (var binder in binders)
+                //     binder.Id = field.Name;
 #endif
                 
                 field.SetValue(view, binders);

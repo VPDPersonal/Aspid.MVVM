@@ -1,18 +1,17 @@
+#nullable disable
 using UnityEngine;
 using UltimateUI.MVVM.Views;
 using UltimateUI.MVVM.ViewModels;
 
 // ReSharper disable once CheckNamespace
-namespace UltimateUI.MVVM.ViewBinders
+namespace UltimateUI.MVVM.Initializers
 {
-    public abstract class MonoViewBinderBase : MonoBehaviour
+    public abstract class MonoViewInitializerBase : MonoBehaviour
     {
         protected abstract IView View { get; }
         
         protected abstract IViewModel ViewModel { get; }
 
-        protected void Bind() => ViewBinder.Bind(View, ViewModel);
-        
-        protected void Unbind() => ViewBinder.Unbind(View, ViewModel);
+        protected void Initialize() => View.Initialize(ViewModel);
     }
 }

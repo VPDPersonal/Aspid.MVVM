@@ -1,14 +1,11 @@
-using System;
 using UnityEngine;
 using UltimateUI.MVVM;
 using UltimateUI.MVVM.Views;
-using System.Collections.Generic;
-using UltimateUI.MVVM.Samples.StatsSample;
+using UltimateUI.MVVM.ViewModels;
 using UltimateUI.MVVM.StarterKit.Binders.Commands;
 
 namespace Plugins.UltimateUI.MVVM.Samples.StatsSample.Scripts
 {
-    [View]
     public partial class CreateStatsView : MonoView
     {
         [RequireBinder(typeof(int))]
@@ -37,71 +34,59 @@ namespace Plugins.UltimateUI.MVVM.Samples.StatsSample.Scripts
         [SerializeField] private ButtonCommandProvider[] _resetToDefaultCommand;
         [SerializeField] private ButtonCommandProvider<Skill>[] _addSkillPointToCommand;
         [SerializeField] private ButtonCommandProvider<Skill>[] _removeSkillPointToCommand;
-
-        public override IEnumerable<(string id, IReadOnlyList<IBinder> binders)> GetBindersLazy()
-        {
-            if (_cool.Length > 0)
-                yield return ("Cool", _cool);
-            
-            if (_power.Length > 0)
-                yield return ("Power", _power);  
-            
-            if (_reflexes.Length > 0)
-                yield return ("Reflexes", _reflexes);
-            
-            if (_intelligence.Length > 0)
-                yield return ("Intelligence", _intelligence);
-            
-            if (_technicalAbility.Length > 0)
-                yield return ("TechnicalAbility", _technicalAbility);
-            
-            if (_isDraft.Length > 0)
-                yield return ("IsDraft", _isDraft);
-            
-            if (_confirmCommand.Length > 0)
-                yield return ("ConfirmCommand", _confirmCommand);
-            
-            if (_resetToDefaultCommand.Length > 0)
-                yield return ("ResetToDefaultCommand", _resetToDefaultCommand);
-            
-            if (_addSkillPointToCommand.Length > 0)
-                yield return ("AddSkillPointToCommand", _addSkillPointToCommand);
-            
-            if (_removeSkillPointToCommand.Length > 0)
-                yield return ("RemoveSkillPointToCommand", _removeSkillPointToCommand);
-        }
     }
 
-    [ViewModelToView(typeof(HeroViewModel))]
-    public partial class HeroView : MonoBehaviour
+    public partial class CreateStatsView
     {
-        [RequireBinder(typeof(int))]
-        [SerializeField] private MonoBinder[] _cool;
-        
-        [RequireBinder(typeof(int))]
-        [SerializeField] private MonoBinder[] _power;
-        
-        [RequireBinder(typeof(int))]
-        [SerializeField] private MonoBinder[] _reflexes;
-        
-        [RequireBinder(typeof(int))]
-        [SerializeField] private MonoBinder[] _intelligence;
-        
-        [RequireBinder(typeof(int))]
-        [SerializeField] private MonoBinder[] _technicalAbility;
-        
-        [RequireBinder(typeof(int))]
-        [SerializeField] private MonoBinder[] _skillPointsAvailable;
-        
-        [RequireBinder(typeof(bool))]
-        [SerializeField] private MonoBinder[] _isDraft;
+        private const string CoolId = "Cool";
+        private const string PowerId = "Power";
+        private const string ReflexesIdId = "Reflexes";
+        private const string IntelligenceId = "Intelligence";
+        private const string TechnicalAbilityId = "TechnicalAbility";
+        private const string SkillPointsAvailableId = "SkillPointsAvailable";
+        private const string IsDraftId = "IsDraft";
+        private const string ConfirmCommandId = "ConfirmCommand";
+        private const string ResetToDefaultCommandId = "ResetToDefaultCommand";
+        private const string AddSkillPointToCommandId = "AddSkillPointToCommand";
+        private const string RemoveSkillPointToCommandId = "RemoveSkillPointToCommand";
     }
-
-    public class ViewModelToViewAttribute : Attribute
+    
+    public partial class CreateStatsView
     {
-        public ViewModelToViewAttribute(params Type[] types)
+        public override void Initialize(IViewModel viewModel)
         {
+            for (var i = 0; i < _cool.Length; i++)
+                _cool[i].Bind(viewModel, CoolId);
             
+            for (var i = 0; i < _power.Length; i++)
+                _power[i].Bind(viewModel, PowerId);
+            
+            for (var i = 0; i < _reflexes.Length; i++)
+                _reflexes[i].Bind(viewModel, ReflexesIdId);
+            
+            for (var i = 0; i < _intelligence.Length; i++)
+                _intelligence[i].Bind(viewModel, IntelligenceId);
+            
+            for (var i = 0; i < _technicalAbility.Length; i++)
+                _technicalAbility[i].Bind(viewModel, TechnicalAbilityId);
+            
+            for (var i = 0; i < _skillPointsAvailable.Length; i++)
+                _skillPointsAvailable[i].Bind(viewModel, SkillPointsAvailableId);
+            
+            for (var i = 0; i < _isDraft.Length; i++)
+                _isDraft[i].Bind(viewModel, IsDraftId);
+            
+            for (var i = 0; i < _confirmCommand.Length; i++)
+                _confirmCommand[i].Bind(viewModel, ConfirmCommandId);
+            
+            for (var i = 0; i < _resetToDefaultCommand.Length; i++)
+                _resetToDefaultCommand[i].Bind(viewModel, ResetToDefaultCommandId);
+            
+            for (var i = 0; i < _addSkillPointToCommand.Length; i++)
+                _addSkillPointToCommand[i].Bind(viewModel, AddSkillPointToCommandId);
+            
+            for (var i = 0; i < _removeSkillPointToCommand.Length; i++)
+                _removeSkillPointToCommand[i].Bind(viewModel, RemoveSkillPointToCommandId);
         }
     }
 }

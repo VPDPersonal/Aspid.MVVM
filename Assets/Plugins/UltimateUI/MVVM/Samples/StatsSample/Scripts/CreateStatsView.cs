@@ -1,10 +1,12 @@
 using UnityEngine;
-using UltimateUI.MVVM;
-using UltimateUI.MVVM.Views;
+using UltimateUI.MVVM.Unity;
 using UltimateUI.MVVM.ViewModels;
+using UltimateUI.MVVM.Unity.Views;
+using UltimateUI.MVVM.Samples.StatsSample.Models;
 using UltimateUI.MVVM.StarterKit.Binders.Commands;
 
-namespace Plugins.UltimateUI.MVVM.Samples.StatsSample.Scripts
+// ReSharper disable once CheckNamespace
+namespace UltimateUI.MVVM.Samples.StatsSample
 {
     public partial class CreateStatsView : MonoView
     {
@@ -53,7 +55,7 @@ namespace Plugins.UltimateUI.MVVM.Samples.StatsSample.Scripts
     
     public partial class CreateStatsView
     {
-        public override void Initialize(IViewModel viewModel)
+        protected override void InitializeIternal(IViewModel viewModel)
         {
             for (var i = 0; i < _cool.Length; i++)
                 _cool[i].Bind(viewModel, CoolId);

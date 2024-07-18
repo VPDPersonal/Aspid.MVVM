@@ -1,21 +1,24 @@
 #nullable disable
 using UnityEngine;
 using UltimateUI.MVVM.ViewModels;
+#if !ULTIMATE_UI_MVVM_UNITY_PROFILER_DISABLED
+using Unity.Profiling;
+#endif
 
 // ReSharper disable once CheckNamespace
-namespace UltimateUI.MVVM
+namespace UltimateUI.MVVM.Unity
 {
     public abstract class MonoBinder : MonoBehaviour, IBinder
     {
 #if !ULTIMATE_UI_MVVM_UNITY_PROFILER_DISABLED
-        private static readonly Unity.Profiling.ProfilerMarker _bindMarker = new($"{nameof(MonoBinder)}.{nameof(Bind)}");
-        private static readonly Unity.Profiling.ProfilerMarker _unbindMarker = new($"{nameof(MonoBinder)}.{nameof(Unbind)}");
+        private static readonly ProfilerMarker _bindMarker = new("MonoBinder.Bind");
+        private static readonly  ProfilerMarker _unbindMarker = new("MonoBinder.Unbind");
 #endif
         
-// #if UNITY_EDITOR
+#if UNITY_EDITOR
         [field: SerializeField] 
         public string Id { get; set; }
-// #endif
+#endif
         public void Bind(IViewModel viewModel, string id)
         {
 #if !ULTIMATE_UI_MVVM_UNITY_PROFILER_DISABLED
@@ -23,24 +26,23 @@ namespace UltimateUI.MVVM
 #endif
             {
                 viewModel.AddBinder(this, id);
+                OnBound(viewModel, id);
             }
         }
         
-        void IBinder.Unbind(IViewModel viewModel, string propertyName)
+        protected virtual void OnBound(IViewModel viewModel, string id) { }
+        
+        public void Unbind(IViewModel viewModel, string id)
         {
+#if !ULTIMATE_UI_MVVM_UNITY_PROFILER_DISABLED
             using (_unbindMarker.Auto())
+#endif
             {
-                Unbind(viewModel, propertyName);
-                ReleaseBinding();
+                viewModel.RemoveBinder(this, id);
+                OnUnbound(viewModel, id);
             }
         }
-
-        public bool Unbind(IViewModel viewModel, string propertyName)
-        {
-            viewModel.RemoveBinder(this, propertyName);
-            return true;
-        }
         
-        protected virtual void ReleaseBinding() { }
+        protected virtual void OnUnbound(IViewModel viewModel, string id) { }
     }
 }

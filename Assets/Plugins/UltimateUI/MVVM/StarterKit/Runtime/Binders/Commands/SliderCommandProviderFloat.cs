@@ -2,6 +2,7 @@ using System;
 using UnityEngine;
 using UnityEngine.UI;
 using UltimateUI.MVVM.Commands;
+using UltimateUI.MVVM.ViewModels;
 
 // ReSharper disable once CheckNamespace
 namespace UltimateUI.MVVM.StarterKit.Binders.Commands
@@ -16,7 +17,7 @@ namespace UltimateUI.MVVM.StarterKit.Binders.Commands
         
         public void SetValue(IRelayCommand<float> command)
         {
-            ReleaseBinding();            
+            ReleaseCommand();            
             _command = command;
             
             Subscribe();
@@ -41,7 +42,10 @@ namespace UltimateUI.MVVM.StarterKit.Binders.Commands
             _command?.Execute(value);
         }
 
-        protected override void ReleaseBinding()
+        protected override void OnUnbound(IViewModel viewModel, string id) =>
+            ReleaseCommand();
+
+        private void ReleaseCommand()
         {
             if (_command != null) Unsubscribe();
             _command = null;
@@ -73,7 +77,7 @@ namespace UltimateUI.MVVM.StarterKit.Binders.Commands
         
         public void SetValue(IRelayCommand<float, T1> command)
         {
-            ReleaseBinding();            
+            ReleaseCommand();            
             _command = command;
             
             Subscribe();
@@ -98,7 +102,10 @@ namespace UltimateUI.MVVM.StarterKit.Binders.Commands
             _command?.Execute(value, Parameter1);
         }
 
-        protected override void ReleaseBinding()
+        protected override void OnUnbound(IViewModel viewModel, string id) =>
+            ReleaseCommand();
+
+        private void ReleaseCommand()
         {
             if (_command != null) Unsubscribe();
             _command = null;
@@ -137,7 +144,7 @@ namespace UltimateUI.MVVM.StarterKit.Binders.Commands
         
         public void SetValue(IRelayCommand<float, T1, T2> command)
         {
-            ReleaseBinding();            
+            ReleaseCommand();            
             _command = command;
             
             Subscribe();
@@ -162,7 +169,10 @@ namespace UltimateUI.MVVM.StarterKit.Binders.Commands
             _command?.Execute(value, Parameter1, Parameter2);
         }
 
-        protected override void ReleaseBinding()
+        protected override void OnUnbound(IViewModel viewModel, string id) =>
+            ReleaseCommand();
+
+        private void ReleaseCommand()
         {
             if (_command != null) Unsubscribe();
             _command = null;
@@ -208,7 +218,7 @@ namespace UltimateUI.MVVM.StarterKit.Binders.Commands
         
         public void SetValue(IRelayCommand<float, T1, T2, T3> command)
         {
-            ReleaseBinding();            
+            ReleaseCommand();            
             _command = command;
             
             Subscribe();
@@ -233,7 +243,10 @@ namespace UltimateUI.MVVM.StarterKit.Binders.Commands
             _command?.Execute(value, Parameter1, Parameter2, Parameter3);
         }
 
-        protected override void ReleaseBinding()
+        protected override void OnUnbound(IViewModel viewModel, string id) =>
+            ReleaseCommand();
+
+        private void ReleaseCommand()
         {
             if (_command != null) Unsubscribe();
             _command = null;

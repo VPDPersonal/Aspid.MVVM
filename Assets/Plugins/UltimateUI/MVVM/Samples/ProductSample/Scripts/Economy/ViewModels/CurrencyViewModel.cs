@@ -7,7 +7,7 @@ using UltimateUI.MVVM.Samples.ProductSample.Economy.Models;
 // ReSharper disable once CheckNamespace
 namespace UltimateUI.MVVM.Samples.ProductSample.Economy.ViewModels
 {
-    [ViewModel]
+    // [ViewModel]
     public partial class CurrencyViewModel : IDisposable
     {
         [Bind] private Sprite _icon;
@@ -24,26 +24,26 @@ namespace UltimateUI.MVVM.Samples.ProductSample.Economy.ViewModels
             _currencyViewDataCollection = currencyViewDataCollection;
             
             _currency = _wallet[currencyType];
-            UpdateIcon();
+            // UpdateIcon();
         }
         
         public void Initialize()
         {
-            _wallet.AddListener(_currencyType, OnWalletCurrencyChanged);
+            // _wallet.AddListener(_currencyType, OnWalletCurrencyChanged);
         }
         
-        private void UpdateIcon() =>
-            Icon = _currencyViewDataCollection.GetIcon(_currencyType, Currency);
-        
-        private void OnWalletCurrencyChanged(int currency)
-        {
-            Currency = currency;
-            UpdateIcon();
-        }
+        // private void UpdateIcon() =>
+        //     Icon = _currencyViewDataCollection.GetIcon(_currencyType, Currency);
+        //
+        // private void OnWalletCurrencyChanged(int currency)
+        // {
+        //     Currency = currency;
+        //     UpdateIcon();
+        // }
         
         public virtual void Dispose()
         {
-            _wallet.RemoveListener(_currencyType, OnWalletCurrencyChanged);
+            // _wallet.RemoveListener(_currencyType, OnWalletCurrencyChanged);
         }
     }
 }

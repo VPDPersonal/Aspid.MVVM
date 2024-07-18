@@ -1,5 +1,6 @@
 using UnityEngine;
-using UltimateUI.MVVM.Views;
+using UltimateUI.MVVM.Unity;
+using UltimateUI.MVVM.Unity.Views;
 
 // ReSharper disable once CheckNamespace
 namespace UltimateUI.MVVM.StarterKit.Binders.Casters

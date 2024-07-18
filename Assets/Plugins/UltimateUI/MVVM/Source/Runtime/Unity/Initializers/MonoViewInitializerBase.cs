@@ -1,10 +1,9 @@
-#nullable disable
 using UnityEngine;
 using UltimateUI.MVVM.Views;
 using UltimateUI.MVVM.ViewModels;
 
 // ReSharper disable once CheckNamespace
-namespace UltimateUI.MVVM.Initializers
+namespace UltimateUI.MVVM.Unity.Initializers
 {
     public abstract class MonoViewInitializerBase : MonoBehaviour
     {

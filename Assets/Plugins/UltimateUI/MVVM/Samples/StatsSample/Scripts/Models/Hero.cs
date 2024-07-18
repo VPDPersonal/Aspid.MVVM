@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
-using Plugins.UltimateUI.MVVM.Samples.StatsSample.Scripts;
 
+// ReSharper disable once CheckNamespace
 namespace UltimateUI.MVVM.Samples.StatsSample.Models
 {
     public class Hero

@@ -2,10 +2,11 @@ using System;
 using System.Linq;
 using System.Reflection;
 using System.Diagnostics;
+using UltimateUI.MVVM.Views;
 using System.Collections.Generic;
 
 // ReSharper disable once CheckNamespace
-namespace UltimateUI.MVVM.Views
+namespace UltimateUI.MVVM.Unity.Views
 {
     public static class ViewUtility
     {
@@ -34,7 +35,6 @@ namespace UltimateUI.MVVM.Views
                     {
                         var interfaces = binder.GetType().GetInterfaces();
                         return interfaces.Any(i =>
-                            // i == typeof(IAnyBinder) ||
                             i.IsGenericType &&
                             i.GetGenericTypeDefinition() == typeof(IBinder<>) &&
                             requiredTypes.Any(requiredType => requiredType == i.GetGenericArguments()[0])
@@ -43,8 +43,8 @@ namespace UltimateUI.MVVM.Views
                 }
                 
 #if UNITY_EDITOR
-                // foreach (var binder in binders)
-                //     binder.Id = field.Name;
+                foreach (var binder in binders)
+                    binder.Id = field.Name;
 #endif
                 
                 field.SetValue(view, binders);

@@ -2,8 +2,7 @@ using System;
 using UnityEngine;
 using UltimateUI.MVVM.Views;
 using UltimateUI.MVVM.ViewModels;
-using UltimateUI.MVVM.Initializers;
-using UnityEngine.Serialization;
+using UltimateUI.MVVM.Unity.Initializers;
 
 // ReSharper disable once CheckNamespace
 namespace UltimateUI.MVVM.DIExtension
@@ -11,53 +10,10 @@ namespace UltimateUI.MVVM.DIExtension
     public sealed class UniversalViewInitializer : MonoViewInitializerBase
     {
         [Header("View")]
-        [SerializeField] private Resolve _viewResolve;
-        
-#if ULTIMATE_UI_TRI_INSPECTOR_INTEGRATION
-        [TriInspector.ShowIf(nameof(_viewResolve), Resolve.Di)]
-#endif
-#if ULTIMATE_UI_ODIN_INSPECTOR_INTEGRATION
-        [Sirenix.OdinInspector.ShowIf(nameof(_viewResolve), Resolve.Di)]
-#endif
-        [SerializeField] private SerializableMonoScript<IView> _viewType;
-        
-#if ULTIMATE_UI_TRI_INSPECTOR_INTEGRATION
-        [TriInspector.ShowIf(nameof(_viewResolve), Resolve.Mono)]
-#elif ULTIMATE_UI_ODIN_INSPECTOR_INTEGRATION
-        [Sirenix.OdinInspector.ShowIf(nameof(_viewResolve), Resolve.Mono)]
-#endif
-        [SerializeField] private SerializableInterface<IView> _monoView;
-        
-#if ULTIMATE_UI_TRI_INSPECTOR_INTEGRATION
-        [TriInspector.ShowIf(nameof(_viewResolve), Resolve.References)]
-#elif ULTIMATE_UI_ODIN_INSPECTOR_INTEGRATION
-        [Sirenix.OdinInspector.ShowIf(nameof(_viewResolve), Resolve.References)]
-#endif
-        [SerializeReference] private IView _referencesView;
-        
+        [SerializeField] private Component<IView> _viewComponent;
+
         [Header("View Model")]
-        [SerializeField] private Resolve _viewModelResolve;
-        
-#if ULTIMATE_UI_TRI_INSPECTOR_INTEGRATION
-        [TriInspector.ShowIf(nameof(_viewModelResolve), Resolve.Di)]
-#elif ULTIMATE_UI_ODIN_INSPECTOR_INTEGRATION
-        [Sirenix.OdinInspector.ShowIf(nameof(_viewModelResolve), Resolve.Di)]
-#endif
-        [SerializeField] private SerializableMonoScript<IViewModel> _viewModelType;
-        
-#if ULTIMATE_UI_TRI_INSPECTOR_INTEGRATION
-        [TriInspector.ShowIf(nameof(_viewModelResolve), Resolve.Mono)]
-#elif ULTIMATE_UI_ODIN_INSPECTOR_INTEGRATION
-        [Sirenix.OdinInspector.ShowIf(nameof(_viewModelResolve), Resolve.Mono)]
-#endif
-        [SerializeField] private SerializableInterface<IViewModel> _monoViewModel;
-        
-#if ULTIMATE_UI_TRI_INSPECTOR_INTEGRATION
-        [TriInspector.ShowIf(nameof(_viewModelResolve), Resolve.References)]
-#elif ULTIMATE_UI_ODIN_INSPECTOR_INTEGRATION
-        [Sirenix.OdinInspector.ShowIf(nameof(_viewModelResolve), Resolve.References)]
-#endif
-        [SerializeReference] private IViewModel _referencesViewModel;
+        [SerializeField] private Component<IViewModel> _viewModelComponent;
 
         private IView _view;
         private IViewModel _viewModel;
@@ -66,107 +22,128 @@ namespace UltimateUI.MVVM.DIExtension
 
         protected override IViewModel ViewModel => _viewModel;
 
-#if ULTIMATE_UI_VCONTAINER_INTEGRATION
-        [VContainer.Inject]
-        private void Constructor(VContainer.IObjectResolver diContainer)
-        {
-            _view = _viewResolve switch
-            {
-                Resolve.Di => diContainer.Resolve(_viewType) as IView,
-                Resolve.Mono => _monoView.Instance,
-                Resolve.References => _referencesView,
-                _ => throw new ArgumentOutOfRangeException()
-            };
-            
-            _viewModel = _viewModelResolve switch
-            {
-                Resolve.Di => diContainer.Resolve(_viewModelType) as IViewModel,
-                Resolve.Mono => _monoViewModel.Instance,
-                Resolve.References => _referencesViewModel,
-                _ => throw new ArgumentOutOfRangeException()
-            };
-        }
-#elif ULTIMATE_UI_ZENJECT_INTEGRATION
+        #region Constructor
+#if ULTIMATE_UI_ZENJECT_INTEGRATION
         [Zenject.Inject]
         private void Constructor(Zenject.DiContainer diContainer)
+#elif ULTIMATE_UI_VCONTAINER_INTEGRATION
+        [VContainer.Inject]
+        private void Constructor(VContainer.IObjectResolver diContainer)
+#else
+        private void Constructor()
+#endif
         {
-            _view = _viewResolver switch
+            _view = _viewComponent.Resolve switch
             {
-                Resolve.Di => diContainer.Resolve(_viewType) as IView,
-                Resolve.Mono => _monoView.Instance,
-                Resolve.References => _viewReferences,
+                Resolve.Di => diContainer.Resolve(_viewComponent.Type) as IView,
+                Resolve.Mono => _viewComponent.Mono.Instance,
+                Resolve.References => _viewComponent.References,
                 _ => throw new ArgumentOutOfRangeException()
             };
-            
-            _viewModel = _viewModelResolver switch
+
+            _viewModel = _viewModelComponent.Resolve switch
             {
-                Resolve.Di => diContainer.Resolve(_viewModelType) as IViewModel,
-                Resolve.Mono => _monoViewModel.Instance,
-                Resolve.References => _viewModelReferences,
+                Resolve.Di => diContainer.Resolve(_viewModelComponent.Type) as IViewModel,
+                Resolve.Mono => _viewModelComponent.Mono.Instance,
+                Resolve.References => _viewModelComponent.References,
                 _ => throw new ArgumentOutOfRangeException()
             };
         }
-#endif
-        
+        #endregion
+
         private void OnValidate()
         {
-            switch (_viewResolve)
-            {
-                case Resolve.Di:
-                    _monoView = null;
-                    _referencesView = null;
-                    break;
-                
-                case Resolve.Mono:
-                    _viewType = null;
-                    _referencesView = null;
-                    break;
-                
-                case Resolve.References:
-                    _viewType = null;
-                    _monoView = null;
-                    break;
-                
-                default: throw new ArgumentOutOfRangeException();
-            }
-            
-            switch (_viewModelResolve)
-            {
-                case Resolve.Di:
-                    _monoViewModel = null;
-                    _referencesViewModel = null;
-                    break;
-                
-                case Resolve.Mono:
-                    _viewModelType = null;
-                    _referencesViewModel = null;
-                    break;
-                
-                case Resolve.References:
-                    _viewModelType = null;
-                    _monoViewModel = null;
-                    break;
-                
-                default: throw new ArgumentOutOfRangeException();
-            }
-            
 #if !ULTIMATE_UI_VCONTAINER_INTEGRATION && !ULTIMATE_UI_ZENJECT_INTEGRATION
             throw new Exception("There must be integration with VContainer or Zenject");
 #endif
+            return;
+            switch (_viewComponent.Resolve)
+            {
+                case Resolve.Di:
+                    _viewComponent.Mono = null;
+                    _viewComponent.References = null;
+                    break;
+                
+                case Resolve.Mono:
+                    _viewComponent.Type = null;
+                    _viewComponent.References = null;
+                    break;
+                
+                case Resolve.References:
+                    _viewComponent.Type = null;
+                    _viewComponent.Mono = null;
+                    break;
+                
+                default: throw new ArgumentOutOfRangeException();
+            }
+            
+            switch (_viewModelComponent.Resolve)
+            {
+                case Resolve.Di:
+                    _viewModelComponent.Mono = null;
+                    _viewModelComponent.References = null;
+                    break;
+                
+                case Resolve.Mono:
+                    _viewModelComponent.Type = null;
+                    _viewModelComponent.References = null;
+                    break;
+                
+                case Resolve.References:
+                    _viewModelComponent.Type = null;
+                    _viewModelComponent.Mono = null;
+                    break;
+                
+                default: throw new ArgumentOutOfRangeException();
+            }
         }
-        
+
+        private void Awake()
+        {
 #if ULTIMATE_UI_VCONTAINER_INTEGRATION || ULTIMATE_UI_ZENJECT_INTEGRATION
-        private void Awake() => Initialize();
+            Initialize();
 #else
-        private void Awake() =>
             throw new Exception("There must be integration with VContainer or Zenject");
 #endif
+        }
         
         private enum Resolve
         {
             Di,
             Mono,
             References,
+        }
+        
+        [Serializable]
+        private sealed class Component<T>
+            where T : class
+        {
+            [field: SerializeField] 
+            public Resolve Resolve { get; set; }
+        
+#if ULTIMATE_UI_TRI_INSPECTOR_INTEGRATION
+            [field: TriInspector.ShowIf(nameof(Resolve), Resolve.Di)]
+#elif ULTIMATE_UI_ODIN_INSPECTOR_INTEGRATION
+            [field: Sirenix.OdinInspector.ShowIf(nameof(Resolve), Resolve.Di)]
+#endif
+            [field: SerializeField] 
+            public SerializableMonoScript<T> Type { get; set; }
+        
+#if ULTIMATE_UI_TRI_INSPECTOR_INTEGRATION
+            [field: TriInspector.ShowIf(nameof(Resolve), Resolve.Mono)]
+#elif ULTIMATE_UI_ODIN_INSPECTOR_INTEGRATION
+            [field: Sirenix.OdinInspector.ShowIf(nameof(Resolve), Resolve.Mono)]
+#endif
+            [field: SerializeField] 
+            public SerializableInterface<T> Mono { get; set; }
+        
+#if ULTIMATE_UI_TRI_INSPECTOR_INTEGRATION
+            [field: TriInspector.ShowIf(nameof(Resolve), Resolve.References)]
+#elif ULTIMATE_UI_ODIN_INSPECTOR_INTEGRATION
+            [field: Sirenix.OdinInspector.ShowIf(nameof(Resolve), Resolve.References)]
+#endif
+            [field: SerializeReference]
+            public T References { get; set; }
         }
     }
 }

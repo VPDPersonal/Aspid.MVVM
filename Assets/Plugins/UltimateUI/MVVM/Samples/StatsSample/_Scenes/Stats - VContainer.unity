@@ -373,9 +373,21 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 304495757}
     m_Modifications:
+    - target: {fileID: 385806640844422567, guid: a7e999c98b71641ada1dceb5273a5c60, type: 3}
+      propertyPath: _isDebug
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1863818017136329706, guid: a7e999c98b71641ada1dceb5273a5c60, type: 3}
       propertyPath: m_Name
       value: Hero View
+      objectReference: {fileID: 0}
+    - target: {fileID: 2198956193388416759, guid: a7e999c98b71641ada1dceb5273a5c60, type: 3}
+      propertyPath: _isDebug
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2375750696855174819, guid: a7e999c98b71641ada1dceb5273a5c60, type: 3}
+      propertyPath: _isDebug
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2896256761785461889, guid: a7e999c98b71641ada1dceb5273a5c60, type: 3}
       propertyPath: m_Pivot.x
@@ -456,6 +468,14 @@ PrefabInstance:
     - target: {fileID: 2896256761785461889, guid: a7e999c98b71641ada1dceb5273a5c60, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6357351656032391070, guid: a7e999c98b71641ada1dceb5273a5c60, type: 3}
+      propertyPath: _isDebug
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8292001902922383642, guid: a7e999c98b71641ada1dceb5273a5c60, type: 3}
+      propertyPath: _isDebug
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -733,6 +753,7 @@ MonoBehaviour:
   autoRun: 1
   autoInjectGameObjects:
   - {fileID: 304495753}
+  _heroViewModelLifeTime: 0
   _skillPointsAvailable: 7
 --- !u!1 &1613160668
 GameObject:
@@ -1008,9 +1029,21 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 304495757}
     m_Modifications:
+    - target: {fileID: 385806640844422567, guid: a7e999c98b71641ada1dceb5273a5c60, type: 3}
+      propertyPath: _isDebug
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1863818017136329706, guid: a7e999c98b71641ada1dceb5273a5c60, type: 3}
       propertyPath: m_Name
       value: Hero View (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 2198956193388416759, guid: a7e999c98b71641ada1dceb5273a5c60, type: 3}
+      propertyPath: _isDebug
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2375750696855174819, guid: a7e999c98b71641ada1dceb5273a5c60, type: 3}
+      propertyPath: _isDebug
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2896256761785461889, guid: a7e999c98b71641ada1dceb5273a5c60, type: 3}
       propertyPath: m_Pivot.x
@@ -1091,6 +1124,14 @@ PrefabInstance:
     - target: {fileID: 2896256761785461889, guid: a7e999c98b71641ada1dceb5273a5c60, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6357351656032391070, guid: a7e999c98b71641ada1dceb5273a5c60, type: 3}
+      propertyPath: _isDebug
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8292001902922383642, guid: a7e999c98b71641ada1dceb5273a5c60, type: 3}
+      propertyPath: _isDebug
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

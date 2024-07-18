@@ -1,16 +1,17 @@
-#nullable disable
 using UltimateUI.MVVM.ViewModels;
+#if !ULTIMATE_UI_MVVM_UNITY_PROFILER_DISABLED
+using Unity.Profiling;
+#endif
 
 // ReSharper disable once CheckNamespace
 namespace UltimateUI.MVVM
 {
     public abstract class Binder : IBinder
     {
-#if UNITY_EDITOR && !ULTIMATE_UI_MVVM_UNITY_PROFILER_DISABLED
-        private static readonly Unity.Profiling.ProfilerMarker _bindMarker = new($"{nameof(Binder)}.{nameof(Bind)}");
-        private static readonly Unity.Profiling.ProfilerMarker _unbindMarker = new($"{nameof(Binder)}.{nameof(Unbind)}");
+#if !ULTIMATE_UI_MVVM_UNITY_PROFILER_DISABLED
+        private static readonly ProfilerMarker _bindMarker = new("Binder.Bind");
+        private static readonly ProfilerMarker _unbindMarker = new("Binder.Unbind)");
 #endif
-
         public void Bind(IViewModel viewModel, string id)
         {
 #if !ULTIMATE_UI_MVVM_UNITY_PROFILER_DISABLED
@@ -18,21 +19,23 @@ namespace UltimateUI.MVVM
 #endif
             {
                 viewModel.AddBinder(this, id);
+                OnBound(viewModel, id);
             }
         }
         
-        void IBinder.Unbind(IViewModel viewModel, string propertyName)
+        protected virtual void OnBound(IViewModel viewModel, string id) { }
+        
+        public void Unbind(IViewModel viewModel, string id)
         {
+#if !ULTIMATE_UI_MVVM_UNITY_PROFILER_DISABLED
             using (_unbindMarker.Auto())
+#endif
             {
-                Unbind(viewModel, propertyName);
-                ReleaseBinding();
+                viewModel.RemoveBinder(this, id);
+                OnUnbound(viewModel, id);
             }
         }
         
-        public void Unbind(IViewModel viewModel, string propertyName) =>
-            viewModel.RemoveBinder(this, propertyName);
-
-        protected virtual void ReleaseBinding() { }
+        protected virtual void OnUnbound(IViewModel viewModel, string id) { }
     }
 }

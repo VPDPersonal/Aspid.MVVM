@@ -1,4 +1,5 @@
 using UnityEngine;
+using UltimateUI.MVVM.Unity;
 
 // ReSharper disable once CheckNamespace
 namespace UltimateUI.MVVM.StarterKit.Binders.GameObjects

@@ -5,7 +5,6 @@ namespace UltimateUI.MVVM.StarterKit.Binders.Transforms
 {
     public partial class TransformScaleBinder : TransformBinderBase, IVectorBinder
     {
-                
 #if !ULTIMATE_UI_MVVM_STARTER_KIT_BINDER_LOG_GENERATOR_DISABLED
         [BinderLog]
 #endif

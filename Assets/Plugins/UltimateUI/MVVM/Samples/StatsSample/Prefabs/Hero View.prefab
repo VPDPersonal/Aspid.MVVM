@@ -284,8 +284,6 @@ MonoBehaviour:
   <Id>k__BackingField: _skillPointsAvailable
   _text: {fileID: 0}
   _format: 
-  _isDebug: 1
-  _log: []
 --- !u!1 &1863818017136329706
 GameObject:
   m_ObjectHideFlags: 0
@@ -444,22 +442,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9851e6ff800943488c33cba4ba788778, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _viewResolve: 1
-  _viewType:
-    _typeName: 
-  _monoView:
-    _obj: {fileID: 5315928923478365624}
-  _referencesView:
-    rid: -2
-  _viewModelResolve: 0
-  _viewModelType:
-    _typeName: UltimateUI.MVVM.Samples.StatsSample.HeroViewModel, Assembly-CSharp-firstpass,
-      Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-  _monoViewModel:
-    _obj: {fileID: 0}
-  _referencesViewModel:
-    rid: -2
-  _bindOrder: 0
+  _viewComponent:
+    <Resolve>k__BackingField: 1
+    <Type>k__BackingField:
+      _typeName: 
+    <Mono>k__BackingField:
+      _obj: {fileID: 5315928923478365624}
+    <References>k__BackingField:
+      rid: -2
+  _viewModelComponent:
+    <Resolve>k__BackingField: 0
+    <Type>k__BackingField:
+      _typeName: UltimateUI.MVVM.Samples.StatsSample.HeroViewModel, Assembly-CSharp-firstpass,
+        Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    <Mono>k__BackingField:
+      _obj: {fileID: 0}
+    <References>k__BackingField:
+      rid: -2
   references:
     version: 2
     RefIds:
@@ -1059,8 +1058,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Id>k__BackingField: _isDraft
   _isInvert: 0
-  _isDebug: 1
-  _log: []
 --- !u!1 &8031546957962004038
 GameObject:
   m_ObjectHideFlags: 0

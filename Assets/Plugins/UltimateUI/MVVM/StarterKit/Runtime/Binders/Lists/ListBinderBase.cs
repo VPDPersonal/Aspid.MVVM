@@ -1,3 +1,4 @@
+using UltimateUI.MVVM.Unity;
 using UltimateUI.MVVM.Collections;
 
 // ReSharper disable once CheckNamespace

@@ -2,7 +2,7 @@ using UnityEditor;
 using UnityEngine;
 
 // ReSharper disable once CheckNamespace
-namespace UltimateUI.MVVM.Views
+namespace UltimateUI.MVVM.Unity.Views
 {
     [CanEditMultipleObjects]
     [CustomEditor(typeof(MonoView), editorForChildClasses: true)]

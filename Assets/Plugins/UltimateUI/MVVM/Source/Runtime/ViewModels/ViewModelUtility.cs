@@ -6,15 +6,6 @@ namespace UltimateUI.MVVM.ViewModels
 {
     public static class ViewModelUtility
     {
-#if UNITY_EDITOR && !ULTIMATE_UI_MVVM_UNITY_PROFILER_DISABLED
-        private static readonly Unity.Profiling.ProfilerMarker _bindMarker = new($"{nameof(ViewModelUtility)}.{nameof(Bind)}");
-        private static readonly Unity.Profiling.ProfilerMarker _unbindMarker = new($"{nameof(ViewModelUtility)}.{nameof(Unbind)}");
-#endif
-        
-        public static void Bind<T>(T defaultValue, ref Action<T> changed, IReadOnlyCollection<IBinder> binders) { }
-        
-        public static void Unbind<T>(ref Action<T> changed, IReadOnlyCollection<IBinder> binders) { }
-        
         public static bool SetProperty<T>(ref T field, T newValue)
         {
             if (EqualsDefault(field, newValue)) return false;

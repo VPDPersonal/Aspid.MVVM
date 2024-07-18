@@ -1,4 +1,5 @@
 #if ULTIMATE_UI_UNITY_LOCALIZATION_INTEGRATION
+using UltimateUI.MVVM.Unity;
 using UnityEngine.Localization.Components;
 
 // ReSharper disable once CheckNamespace

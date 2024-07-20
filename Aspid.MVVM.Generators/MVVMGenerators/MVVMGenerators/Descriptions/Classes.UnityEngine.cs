@@ -4,6 +4,8 @@ namespace MVVMGenerators.Descriptions;
 
 public static partial class Classes
 {
+    public static readonly TypeText ProfilerMarker = new("ProfilerMarker", Namespaces.Unity_Profiling);
+    
     public static readonly TypeText Object = new("Object", Namespaces.UnityEngine);
     public static readonly TypeText Component = new("Component", Namespaces.UnityEngine);
     public static readonly TypeText MonoBehaviour = new("MonoBehaviour", Namespaces.UnityEngine);

@@ -2,10 +2,11 @@ using System;
 using System.Linq;
 using System.Reflection;
 using System.Diagnostics;
+using UltimateUI.MVVM.Views;
 using System.Collections.Generic;
 
 // ReSharper disable once CheckNamespace
-namespace UltimateUI.MVVM.Views
+namespace UltimateUI.MVVM.Unity.Views
 {
     public static class ViewUtility
     {
@@ -23,22 +24,23 @@ namespace UltimateUI.MVVM.Views
             
             foreach (var field in fields)
             {
-                if (!Attribute.IsDefined(field, typeof(RequireBinder))) return;
-
                 var binders = (MonoBinder[])field.GetValue(view);
-                var requiredTypes = field.GetCustomAttributes(typeof(RequireBinder), false)
-                    .Select(attribute => ((RequireBinder)attribute).Type);
                 
-                binders = binders.Where(binder =>
+                if (Attribute.IsDefined(field, typeof(RequireBinder)))
                 {
-                    var interfaces = binder.GetType().GetInterfaces();
-                    return interfaces.Any(i =>
-                        i == typeof(IAnyBinder) ||
-                        i.IsGenericType &&
-                        i.GetGenericTypeDefinition() == typeof(IBinder<>) &&
-                        requiredTypes.Any(requiredType => requiredType == i.GetGenericArguments()[0])
-                    );
-                }).ToArray();
+                    var requiredTypes = field.GetCustomAttributes(typeof(RequireBinder), false).
+                        Select(attribute => ((RequireBinder)attribute).Type);
+
+                    binders = binders.Where(binder =>
+                    {
+                        var interfaces = binder.GetType().GetInterfaces();
+                        return interfaces.Any(i =>
+                            i.IsGenericType &&
+                            i.GetGenericTypeDefinition() == typeof(IBinder<>) &&
+                            requiredTypes.Any(requiredType => requiredType == i.GetGenericArguments()[0])
+                        );
+                    }).ToArray();
+                }
                 
 #if UNITY_EDITOR
                 foreach (var binder in binders)

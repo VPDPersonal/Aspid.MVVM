@@ -1,103 +1,133 @@
 using System;
 using Microsoft.CodeAnalysis;
 using MVVMGenerators.Helpers;
-using System.Collections.Generic;
 using MVVMGenerators.Descriptions;
 using MVVMGenerators.Extensions.Symbols;
+using MVVMGenerators.Helpers.Extensions;
 
 namespace MVVMGenerators.Generators.ViewModels;
 
 // ReSharper disable once InconsistentNaming
 public static class IViewModelBody
 {
-    private const string BindersVar = "binders";
+    private const string BinderVar = "binder";
+    private const string ChangedVar = "changed";
+    private const string PropertyNameVar = "propertyName";
+    private const string SpecificBinderVar = "specificBinder";
 
-    public static CodeWriter AppendGetBindMethods(
-        this CodeWriter code,
-        bool hasBaseType, 
-        bool hasInterface, 
-        IReadOnlyCollection<IFieldSymbol> fields)
+    private const string AddBindersLocalMethod = "AddBindersLocal";
+    private const string AddBindersIternalMethod = "AddBindersIternal";
+    private const string RemoveBindersLocalMethod = "RemoveBindersLocal";
+    private const string RemoveBindersIternalMethod = "RemoveBindersIternal";
+    
+    public static CodeWriter AppendGetBindMethods(this CodeWriter code, bool hasBaseType, bool hasInterface, string classname, in ReadOnlySpan<IFieldSymbol> fields)
     {
-        AppendGetMethod(code, "bindMethods", hasBaseType, hasInterface, GetBindMethodForBind, fields);
-        AppendGetMethod(code, "unbindMethods", hasBaseType, hasInterface, GetBindMethodForUnbind, fields);
-        return code;
-    }
-
-    private static void AppendGetMethod(
-        CodeWriter code,
-        string methodName, 
-        bool hasBaseType,
-        bool hasInterface,
-        Func<IFieldSymbol, string> method,
-        IReadOnlyCollection<IFieldSymbol> fields)
-    {
-        var iViewModelType = Classes.IViewModel.Global;
-        var bindMethodsType = Classes.BindMethods.Global;
-        var iReadOnlyBindsMethodsType = Classes.IReadOnlyBindsMethods.Global;
-
-        var upperMethodName = char.ToUpper(methodName[0]) + methodName.Remove(0, 1);
-        var getMethodName = $"Get{upperMethodName}";
-        var addMethodName = $"Add{upperMethodName}";
-
-        if (!hasBaseType && !hasInterface)
-        {
-            code.AppendLine(General.GeneratedCodeViewModelAttribute)
-                .AppendLine($"{iReadOnlyBindsMethodsType} {iViewModelType}.{getMethodName}() => {getMethodName}Iternal();")
-                .AppendLine();
-        }
-
-        var methodIternal = hasBaseType ? "protected override " : "protected virtual ";
-        methodIternal += $"{bindMethodsType} {getMethodName}Iternal()";
-        
-        code.AppendLine(General.GeneratedCodeViewModelAttribute)
-            .AppendLine(methodIternal)
-            .BeginBlock();
-
-        if (hasBaseType)
-        {
-            code.AppendLine($"var {methodName} = base.{getMethodName}Iternal();");
-
-            foreach (var field in fields)
-                code.AppendLine($"{methodName}.Add({method.Invoke(field)});");
-        }
-        else
-        {
-            code.AppendLine($"var {methodName} = new {bindMethodsType}")
-                .BeginBlock();
-            
-            foreach (var field in fields)
-                code.AppendLine($"{{ {method.Invoke(field)} }},");
-            
-            code.DecreaseIndent()
-                .AppendLine("};");
-        }
-        
-        code.AppendLine()
-            .AppendLine($"{addMethodName}(ref {methodName});")
-            .AppendLine($"return {methodName};")
-            .EndBlock()
+        return code
+            .AppendMultilineIf(!hasBaseType && !hasInterface,
+                $"""
+                 #if !{Defines.ULTIMATE_UI_MVVM_UNITY_PROFILER_DISABLED}
+                 private static readonly {Classes.ProfilerMarker.Global} _addBinderMarker = new("{classname}.AddBinder");
+                 private static readonly {Classes.ProfilerMarker.Global} _removeBinderMarker = new("{classname}.RemoveBinder");
+                 #endif
+                 
+                 """)
+            .AppendAddBinder(hasBaseType, hasInterface, fields)
             .AppendLine()
-            .AppendLine(General.GeneratedCodeViewModelAttribute)
-            .AppendLine($"partial void {addMethodName}(ref {bindMethodsType} {methodName});")
-            .AppendLine();
+            .AppendRemoveBinder(hasBaseType, hasInterface, fields);
+    }
+    
+    private static CodeWriter AppendAddBinder(this CodeWriter code, bool hasBaseType, bool hasInterface, in ReadOnlySpan<IFieldSymbol> fields)
+    {
+        // TODO Add inheritors support
+        return code
+            .AppendMultilineIf(!hasBaseType && !hasInterface, 
+                $$"""
+                public void AddBinder({{Classes.IBinder.Global}} {{BinderVar}}, string {{PropertyNameVar}})
+                {
+                    #if !{{Defines.ULTIMATE_UI_MVVM_UNITY_PROFILER_DISABLED}}
+                    using (_addBinderMarker.Auto())
+                    #endif
+                    {
+                        {{AddBindersIternalMethod}}({{BinderVar}}, {{PropertyNameVar}});
+                    }
+                }
+                
+                """)
+            .AppendMultiline(
+                $$"""
+                protected virtual void {{AddBindersIternalMethod}}({{Classes.IBinder.Global}} {{BinderVar}}, string {{PropertyNameVar}})
+                {
+                    switch ({{PropertyNameVar}})
+                    {
+                """)
+            .IncreaseIndent()
+            .IncreaseIndent()
+            .AppendLoop(fields, field =>
+            {
+                var propertyName = field.GetPropertyName();
+                code.AppendLine($"case {propertyName}Id: {AddBindersLocalMethod}({propertyName}, ref {propertyName}Changed); break;");
+            })
+            .EndBlock()
+            .AppendMultiline(
+                $$"""
+                return;
+            
+                void {{AddBindersLocalMethod}}<T>(T value, ref {{Classes.Action.Global}}<T> {{ChangedVar}})
+                {           
+                    if ({{BinderVar}} is not {{Classes.IBinder.Global}}<T> {{SpecificBinderVar}})
+                        throw new {{Classes.Exception.Global}}();
+                
+                    {{SpecificBinderVar}}.SetValue(value);
+                    {{ChangedVar}} += {{SpecificBinderVar}}.SetValue;
+                }
+                """)
+            .EndBlock();
     }
 
-    private static string GetBindMethodForBind(IFieldSymbol field)
+    private static CodeWriter AppendRemoveBinder(this CodeWriter code, bool hasBaseType, bool hasInterface, in ReadOnlySpan<IFieldSymbol> fields)
     {
-        var name = field.Name;
-        var propertyName = field.GetPropertyName();
-        var changedName = $"{propertyName}Changed";
-        var bindMethod = $"{Classes.ViewModelUtility.Global}.Bind";
-
-        return $"nameof({propertyName}), {BindersVar} => {bindMethod}({name}, ref {changedName}, {BindersVar})";
-    }
-
-    private static string GetBindMethodForUnbind(IFieldSymbol field)
-    {
-        var propertyName = field.GetPropertyName();
-        var changedName = $"{propertyName}Changed";
-        var bindMethod = $"{Classes.ViewModelUtility.Global}.Unbind";
-
-        return $"nameof({propertyName}), {BindersVar} => {bindMethod}(ref {changedName}, {BindersVar})";
+        // TODO Add inheritors support
+        return 
+            code.AppendMultilineIf(!hasBaseType && !hasInterface,
+                $$"""
+                public void RemoveBinder({{Classes.IBinder.Global}} {{BinderVar}}, string {{PropertyNameVar}}) 
+                {
+                    #if !{{Defines.ULTIMATE_UI_MVVM_UNITY_PROFILER_DISABLED}}
+                    using (_removeBinderMarker.Auto())
+                    #endif
+                    {
+                        {{RemoveBindersIternalMethod}}({{BinderVar}}, {{PropertyNameVar}});
+                    }
+                }
+                
+                """)
+            .AppendMultiline(
+                $$"""
+                protected virtual void {{RemoveBindersIternalMethod}}({{Classes.IBinder.Global}} {{BinderVar}}, string {{PropertyNameVar}})
+                {
+                    switch ({{PropertyNameVar}})
+                    {    
+                """)
+            .IncreaseIndent()
+            .IncreaseIndent()
+            .AppendLoop(fields, field => 
+            {
+                var propertyName = field.GetPropertyName();
+                code.AppendLine($"case {propertyName}Id: {RemoveBindersLocalMethod}(ref {propertyName}Changed); break;");
+            })
+            .EndBlock()
+            .AppendMultiline(
+                $$"""
+                return;
+                
+                void {{RemoveBindersLocalMethod}}<T>(ref {{Classes.Action.Global}}<T> {{ChangedVar}})
+                {
+                    if ({{BinderVar}} is not {{Classes.IBinder.Global}}<T> {{SpecificBinderVar}})
+                        throw new {{Classes.Exception.Global}}();
+                        
+                    {{ChangedVar}} -= {{SpecificBinderVar}}.SetValue;
+                }      
+                """)
+            .EndBlock();
     }
 }

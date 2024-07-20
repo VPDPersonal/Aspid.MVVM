@@ -14,8 +14,4 @@
         <None Remove="DDD.UbiquitousLanguageRegistry.txt"/>
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="Stub\" />
-    </ItemGroup>
-
 </Project>

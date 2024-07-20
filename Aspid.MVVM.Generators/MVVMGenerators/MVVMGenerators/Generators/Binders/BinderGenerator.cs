@@ -78,7 +78,6 @@ public class BinderGenerator : IIncrementalGenerator
         }
         
         var binderLogMethods = new List<IMethodSymbol>();
-        var bindInheritorsAlsoTypes = new List<ITypeSymbol>();
         
         foreach (var method in symbol.GetMembers().OfType<IMethodSymbol>())
         {
@@ -89,13 +88,9 @@ public class BinderGenerator : IIncrementalGenerator
             if (method.HasAttribute(Classes.BinderLogAttribute) &&
                 !method.ExplicitInterfaceImplementations.Any())
                 binderLogMethods.Add(method);
-            
-            if (method.HasAttribute(Classes.BindInheritorsAlsoAttribute))
-                bindInheritorsAlsoTypes.Add(method.Parameters[0].Type);
         }
         
-        if (binderLogMethods.Count + bindInheritorsAlsoTypes.Count == 0)
-            return default;
+        if (binderLogMethods.Count == 0) return default;
         
         return new FoundForGenerator<BinderData>(true, 
             new BinderData(candidate, hasBinderLogInBaseType, binderLogMethods));

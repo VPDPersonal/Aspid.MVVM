@@ -6,18 +6,6 @@ namespace UltimateUI.MVVM.ViewModels
 {
     public static class ViewModelUtility
     {
-        public static void Bind<T>(T defaultValue, ref Action<T> changed, IReadOnlyCollection<IBinder> binders)
-        {
-            foreach (var binder in binders)
-                binder.Bind(defaultValue, ref changed);
-        }
-        
-        public static void Unbind<T>(ref Action<T> changed, IReadOnlyCollection<IBinder> binders)
-        {
-            foreach (var binder in binders)
-                binder.Unbind(ref changed);
-        }
-        
         public static bool SetProperty<T>(ref T field, T newValue)
         {
             if (EqualsDefault(field, newValue)) return false;
@@ -53,7 +41,7 @@ namespace UltimateUI.MVVM.ViewModels
             callback(newValue);
             return true;
         }
-
+        
         public static bool EqualsDefault<T>(T field, T newValue) =>
             EqualityComparer<T>.Default.Equals(field, newValue);
     }

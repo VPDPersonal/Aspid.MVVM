@@ -13,6 +13,7 @@ namespace UltimateUI.MVVM.StarterKit.Binders.Texts
 
         protected string Format => _format;
         
+        // TODO ZString
         [BinderLog]
         public void SetValue(string value) =>
             CachedText.text = string.IsNullOrEmpty(Format) ? value : string.Format(Format, value);

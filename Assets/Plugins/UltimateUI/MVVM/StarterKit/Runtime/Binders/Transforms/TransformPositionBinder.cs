@@ -1,9 +1,11 @@
 using System;
 using UnityEngine;
+using UltimateUI.MVVM.Unity;
 
 // ReSharper disable once CheckNamespace
 namespace UltimateUI.MVVM.StarterKit.Binders.Transforms
 {
+    [AddComponentMenu("UI/Binders/Transform/Transform Binder - Position")]
     public partial class TransformPositionBinder : TransformBinderBase, IVectorBinder
     {
         [Header("Parameters")]
@@ -11,15 +13,11 @@ namespace UltimateUI.MVVM.StarterKit.Binders.Transforms
         
         protected Space Space => _space;
         
-#if !ULTIMATE_UI_MVVM_STARTER_KIT_BINDER_LOG_GENERATOR_DISABLED
         [BinderLog]
-#endif
         public void SetValue(Vector2 value) =>
             SetValue((Vector3)value);
         
-#if !ULTIMATE_UI_MVVM_STARTER_KIT_BINDER_LOG_GENERATOR_DISABLED
         [BinderLog]
-#endif
         public void SetValue(Vector3 value)
         {
             switch (Space)

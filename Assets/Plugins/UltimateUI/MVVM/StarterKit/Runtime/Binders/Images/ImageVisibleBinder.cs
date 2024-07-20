@@ -1,8 +1,10 @@
 using UnityEngine;
+using UltimateUI.MVVM.Unity;
 
 // ReSharper disable once CheckNamespace
 namespace UltimateUI.MVVM.StarterKit.Binders.Images
 {
+    [AddComponentMenu("UI/Binders/Image/Image Binder - Visible")]
     public partial class ImageVisibleBinder : ImageBinderBase, IBinder<bool>
     {
         [Header("Parameters")]
@@ -10,9 +12,7 @@ namespace UltimateUI.MVVM.StarterKit.Binders.Images
         
         protected bool IsInvert => _isInvert;
         
-#if !ULTIMATE_UI_MVVM_STARTER_KIT_BINDER_LOG_GENERATOR_DISABLED
         [BinderLog]
-#endif
         public void SetValue(bool value)
         {
             if (IsInvert) value = !IsInvert;

@@ -5,6 +5,7 @@ using UltimateUI.MVVM.Unity;
 // ReSharper disable once CheckNamespace
 namespace UltimateUI.MVVM.StarterKit.Binders.Events
 {
+    [AddComponentMenu("UI/Binders/Event/Event Binder - Color")]
     public partial class ColorEventBinder : MonoBinder, IColorBinder
     {
         public event UnityAction<Color> ColorValueSet
@@ -16,9 +17,7 @@ namespace UltimateUI.MVVM.StarterKit.Binders.Events
         [Header("Events")]
         [SerializeField] private UnityEvent<Color> _colorValueSet;
         
-#if !ULTIMATE_UI_MVVM_STARTER_KIT_BINDER_LOG_GENERATOR_DISABLED
         [BinderLog]
-#endif
         public void SetValue(Color value) =>
             _colorValueSet?.Invoke(value);
     }

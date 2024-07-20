@@ -1,9 +1,6 @@
 #nullable disable
 using UnityEngine;
 using UltimateUI.MVVM.ViewModels;
-#if !ULTIMATE_UI_MVVM_UNITY_PROFILER_DISABLED
-using Unity.Profiling;
-#endif
 
 // ReSharper disable once CheckNamespace
 namespace UltimateUI.MVVM.Unity
@@ -11,8 +8,8 @@ namespace UltimateUI.MVVM.Unity
     public abstract class MonoBinder : MonoBehaviour, IBinder
     {
 #if !ULTIMATE_UI_MVVM_UNITY_PROFILER_DISABLED
-        private static readonly ProfilerMarker _bindMarker = new("MonoBinder.Bind");
-        private static readonly  ProfilerMarker _unbindMarker = new("MonoBinder.Unbind");
+        private static readonly global::Unity.Profiling.ProfilerMarker _bindMarker = new("MonoBinder.Bind");
+        private static readonly global::Unity.Profiling.ProfilerMarker _unbindMarker = new("MonoBinder.Unbind");
 #endif
         
 #if UNITY_EDITOR

@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 using UnityEngine.UI;
+using UltimateUI.MVVM.Unity;
 using UltimateUI.MVVM.Commands;
 using UltimateUI.MVVM.ViewModels;
 
@@ -14,6 +15,7 @@ namespace UltimateUI.MVVM.StarterKit.Binders.Commands
         
         private IRelayCommand<Vector2> _command;
         
+        [BinderLog]
         public void SetValue(IRelayCommand<Vector2> command)
         {
             ReleaseCommand();
@@ -57,6 +59,7 @@ namespace UltimateUI.MVVM.StarterKit.Binders.Commands
             set => _parameter1 = value;
         }
         
+        [BinderLog]
         public void SetValue(IRelayCommand<Vector2, T1> command)
         {
             ReleaseCommand();            
@@ -107,6 +110,7 @@ namespace UltimateUI.MVVM.StarterKit.Binders.Commands
             set => _parameter2 = value;
         }
         
+        [BinderLog]
         public void SetValue(IRelayCommand<Vector2, T1, T2> command)
         {
             ReleaseCommand();            
@@ -164,6 +168,7 @@ namespace UltimateUI.MVVM.StarterKit.Binders.Commands
             set => _parameter3 = value;
         }
         
+        [BinderLog]
         public void SetValue(IRelayCommand<Vector2, T1, T2, T3> command)
         {
             ReleaseCommand();            

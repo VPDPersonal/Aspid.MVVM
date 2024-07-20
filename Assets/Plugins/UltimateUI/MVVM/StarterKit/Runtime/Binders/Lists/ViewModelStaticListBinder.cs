@@ -4,6 +4,7 @@ using UltimateUI.MVVM.Unity.Views;
 // ReSharper disable once CheckNamespace
 namespace UltimateUI.MVVM.StarterKit.Binders.Lists
 {
+    [AddComponentMenu("UI/Binders/Lists/Static List Binder - View Model")]
     public sealed class ViewModelStaticListBinder : ViewModelListBinderBase
     {
         [SerializeField] private MonoView[] _views;

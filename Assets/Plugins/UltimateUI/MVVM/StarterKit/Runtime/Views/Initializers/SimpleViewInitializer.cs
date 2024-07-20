@@ -9,6 +9,7 @@ using UltimateUI.MVVM.Unity.Initializers;
 // ReSharper disable once CheckNamespace
 namespace UltimateUI.MVVM.StarterKit.Views.Initializers
 {
+    [AddComponentMenu("UI/View Initializers/Simple View Initializer")]
     public sealed class SimpleViewInitializer : MonoViewInitializerBase
     {
         [Header("View")]

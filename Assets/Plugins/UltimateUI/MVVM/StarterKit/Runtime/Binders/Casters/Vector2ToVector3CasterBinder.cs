@@ -7,6 +7,7 @@ using UltimateUI.MVVM.Unity.Views;
 // ReSharper disable once CheckNamespace
 namespace UltimateUI.MVVM.StarterKit.Binders.Casters
 {
+    [AddComponentMenu("UI/Binders/Casters/Vector2 To Vector3 Caster Binder")]
     public partial class Vector2ToVector3CasterBinder : MonoBinder, IBinder<Vector2>
     {
         // TODO Add Validate
@@ -18,9 +19,7 @@ namespace UltimateUI.MVVM.StarterKit.Binders.Casters
         [SerializeField] private Values _values;
         [SerializeField] private float _thirdValue;
         
-#if !ULTIMATE_UI_MVVM_STARTER_KIT_BINDER_LOG_GENERATOR_DISABLED
         [BinderLog]
-#endif
         public void SetValue(Vector2 value)
         {
             var vector3 = _values switch

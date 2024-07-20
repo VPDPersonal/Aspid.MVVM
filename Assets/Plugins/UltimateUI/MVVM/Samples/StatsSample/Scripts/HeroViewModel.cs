@@ -412,7 +412,7 @@ namespace UltimateUI.MVVM.Samples.StatsSample
     
     public partial class HeroViewModel : IViewModel
     {
-        public void AddBinder(IBinder binder, string propertyName)
+        public virtual void AddBinder(IBinder binder, string propertyName)
         {
             // switch (propertyName)
             // {

@@ -2,12 +2,16 @@ using System;
 using System.Diagnostics;
 
 // ReSharper disable once CheckNamespace
-namespace UltimateUI.MVVM
+namespace UltimateUI.MVVM.Unity
 {
     [Conditional("UNITY_EDITOR")]
     [AttributeUsage(AttributeTargets.Method)]
-    public class BinderLogAttribute : Attribute
+    public sealed class BinderLogAttribute : Attribute
     {
-        public BinderLogAttribute(string condition = "") { }
+#if !ULTIMATE_UI_MVVM_BINDER_LOG_DISABLED
+        public const bool Enabled = true;
+#else
+        public const bool Disabled = false;
+#endif
     }
 }

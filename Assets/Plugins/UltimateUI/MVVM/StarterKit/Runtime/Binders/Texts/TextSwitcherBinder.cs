@@ -1,9 +1,11 @@
 #if ULTIMATE_UI_TEXT_MESH_PRO_INTEGRATION
 using UnityEngine;
+using UltimateUI.MVVM.Unity;
 
 // ReSharper disable once CheckNamespace
 namespace UltimateUI.MVVM.StarterKit.Binders.Texts
 {
+    [AddComponentMenu("UI/Binders/Text/Text Binder - Switcher")]
     public partial class TextSwitcherBinder : TextBinderBase, IBinder<bool>
     {
         [Header("Parameters")]
@@ -14,9 +16,7 @@ namespace UltimateUI.MVVM.StarterKit.Binders.Texts
         
         protected string FalseText => _falseText;
         
-#if !ULTIMATE_UI_MVVM_STARTER_KIT_BINDER_LOG_GENERATOR_DISABLED
         [BinderLog]
-#endif
         public void SetValue(bool value) =>
             CachedText.text = GetText(value);
 

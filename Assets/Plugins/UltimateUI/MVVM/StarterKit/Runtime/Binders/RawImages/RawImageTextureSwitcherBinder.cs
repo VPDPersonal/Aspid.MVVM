@@ -1,8 +1,10 @@
 using UnityEngine;
+using UltimateUI.MVVM.Unity;
 
 // ReSharper disable once CheckNamespace
 namespace UltimateUI.MVVM.StarterKit.Binders.RawImages
 {
+    [AddComponentMenu("UI/Binders/Raw Image/Raw Image Binder - Texture Switcher")]
     public partial class RawImageTextureSwitcherBinder : RawImageBinderBase, IBinder<bool>
     {
         [Header("Parameters")]
@@ -13,9 +15,7 @@ namespace UltimateUI.MVVM.StarterKit.Binders.RawImages
         
         protected Texture2D FalseTexture => _falseTexture;
         
-#if !ULTIMATE_UI_MVVM_STARTER_KIT_BINDER_LOG_GENERATOR_DISABLED
         [BinderLog]
-#endif
         public void SetValue(bool value) =>
             CachedImage.texture = GetTexture2D(value);
 

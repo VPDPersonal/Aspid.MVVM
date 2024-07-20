@@ -1,9 +1,11 @@
 using System;
 using UnityEngine;
+using UltimateUI.MVVM.Unity;
 
 // ReSharper disable once CheckNamespace
 namespace UltimateUI.MVVM.StarterKit.Binders.Transforms
 {
+    [AddComponentMenu("UI/Binders/Transform/Transform Binder - Rotation Switcher")]
     public partial class TransformRotationSwitcherBinder : TransformBinderBase, IBinder<bool>
     {
         [Header("Parameters")]
@@ -17,9 +19,7 @@ namespace UltimateUI.MVVM.StarterKit.Binders.Transforms
         
         protected Vector3 FalseRotation => _falseRotation;
         
-#if !ULTIMATE_UI_MVVM_STARTER_KIT_BINDER_LOG_GENERATOR_DISABLED
         [BinderLog]
-#endif
         public void SetValue(bool value)
         {
             switch (Space)

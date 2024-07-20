@@ -1,9 +1,6 @@
 using UnityEngine;
 using UltimateUI.MVVM.Views;
 using UltimateUI.MVVM.ViewModels;
-#if !ULTIMATE_UI_MVVM_UNITY_PROFILER_DISABLED
-using Unity.Profiling;
-#endif
 
 // ReSharper disable once CheckNamespace
 namespace UltimateUI.MVVM.Unity.Views
@@ -11,7 +8,7 @@ namespace UltimateUI.MVVM.Unity.Views
     public abstract class MonoView : MonoBehaviour, IView
     {
 #if !ULTIMATE_UI_MVVM_UNITY_PROFILER_DISABLED
-        private static readonly ProfilerMarker _initializeMarker = new("MonoView.Initialize");
+        private static readonly global::Unity.Profiling.ProfilerMarker _initializeMarker = new("MonoView.Initialize");
 #endif
         
         protected virtual void OnValidate() =>

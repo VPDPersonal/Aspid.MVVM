@@ -2,7 +2,7 @@ using System.Linq;
 using System.Text;
 using Microsoft.CodeAnalysis;
 
-namespace MVVMGenerators.Extensions.Symbols;
+namespace MVVMGenerators.Helpers.Extensions.Symbols;
 
 public static class MethodSymbolExtensions
 {

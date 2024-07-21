@@ -4,13 +4,13 @@ using System.Diagnostics;
 using MVVMGenerators.Helpers;
 using Microsoft.CodeAnalysis;
 using System.Collections.Generic;
-using MVVMGenerators.Descriptions;
 using Microsoft.CodeAnalysis.CSharp;
 using System.Runtime.CompilerServices;
-using MVVMGenerators.Extensions.Symbols;
-using MVVMGenerators.Helpers.Extensions;
+using MVVMGenerators.Helpers.Descriptions;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using MVVMGenerators.Extensions.Declarations;
+using MVVMGenerators.Helpers.Extensions.Writer;
+using MVVMGenerators.Helpers.Extensions.Symbols;
+using MVVMGenerators.Helpers.Extensions.Declarations;
 
 namespace MVVMGenerators.Generators.Binders;
 

@@ -1,4 +1,4 @@
-namespace MVVMGenerators.Descriptions;
+namespace MVVMGenerators.Helpers.Descriptions;
 
 public class General
 {

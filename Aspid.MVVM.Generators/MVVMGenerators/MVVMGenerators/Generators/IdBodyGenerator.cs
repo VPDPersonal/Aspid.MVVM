@@ -2,9 +2,9 @@ using System;
 using Microsoft.CodeAnalysis;
 using MVVMGenerators.Helpers;
 using System.Collections.Generic;
-using MVVMGenerators.Descriptions;
-using MVVMGenerators.Helpers.Extensions;
-using MVVMGenerators.Extensions.Symbols;
+using MVVMGenerators.Helpers.Descriptions;
+using MVVMGenerators.Helpers.Extensions.Writer;
+using MVVMGenerators.Helpers.Extensions.Symbols;
 
 namespace MVVMGenerators.Generators;
 

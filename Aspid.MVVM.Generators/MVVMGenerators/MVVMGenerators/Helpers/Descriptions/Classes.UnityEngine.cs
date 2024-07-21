@@ -1,6 +1,4 @@
-using MVVMGenerators.Helpers;
-
-namespace MVVMGenerators.Descriptions;
+namespace MVVMGenerators.Helpers.Descriptions;
 
 public static partial class Classes
 {

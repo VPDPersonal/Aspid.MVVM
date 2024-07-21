@@ -1,7 +1,7 @@
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-namespace MVVMGenerators.Extensions.Declarations;
+namespace MVVMGenerators.Helpers.Extensions.Declarations;
 
 public static class CSharpSyntaxNodeExtensions
 {

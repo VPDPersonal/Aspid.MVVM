@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace MVVMGenerators.Helpers.Extensions;
+namespace MVVMGenerators.Helpers.Extensions.Writer;
 
 public static class CodeWriteLoopExtensions
 {

@@ -2,7 +2,7 @@ using System.Linq;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-namespace MVVMGenerators.Extensions.Declarations;
+namespace MVVMGenerators.Helpers.Extensions.Declarations;
 
 public static class MemberDeclarationSyntaxExtensions
 {

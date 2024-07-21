@@ -1,6 +1,4 @@
-using MVVMGenerators.Helpers;
-
-namespace MVVMGenerators.Descriptions;
+namespace MVVMGenerators.Helpers.Descriptions;
 
 // ReSharper disable InconsistentNaming
 public static partial class Classes

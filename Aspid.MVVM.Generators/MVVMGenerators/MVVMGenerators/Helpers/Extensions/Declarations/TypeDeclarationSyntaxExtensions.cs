@@ -1,8 +1,7 @@
 using System.Text;
-using MVVMGenerators.Helpers;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-namespace MVVMGenerators.Extensions.Declarations;
+namespace MVVMGenerators.Helpers.Extensions.Declarations;
 
 public static class TypeDeclarationSyntaxExtensions
 {

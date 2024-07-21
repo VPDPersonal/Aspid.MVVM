@@ -1,7 +1,6 @@
 using Microsoft.CodeAnalysis;
-using MVVMGenerators.Helpers;
 
-namespace MVVMGenerators.Extensions.Symbols;
+namespace MVVMGenerators.Helpers.Extensions.Symbols;
 
 public static class SymbolExtensions
 {

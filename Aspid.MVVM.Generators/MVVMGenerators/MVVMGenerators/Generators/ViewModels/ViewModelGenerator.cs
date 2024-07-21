@@ -4,13 +4,13 @@ using System.Diagnostics;
 using Microsoft.CodeAnalysis;
 using MVVMGenerators.Helpers;
 using System.Collections.Generic;
-using MVVMGenerators.Descriptions;
 using Microsoft.CodeAnalysis.CSharp;
 using System.Runtime.CompilerServices;
-using MVVMGenerators.Extensions.Symbols;
-using MVVMGenerators.Helpers.Extensions;
+using MVVMGenerators.Helpers.Descriptions;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using MVVMGenerators.Extensions.Declarations;
+using MVVMGenerators.Helpers.Extensions.Writer;
+using MVVMGenerators.Helpers.Extensions.Symbols;
+using MVVMGenerators.Helpers.Extensions.Declarations;
 
 namespace MVVMGenerators.Generators.ViewModels;
 
@@ -117,7 +117,7 @@ public class ViewModelGenerator : IIncrementalGenerator
          *  {
          *  |   public partial class MyClassName
          *  |   {
-         *  |   |   public event Action<SomeType> MyNameChanged;
+         * x |   |   public event Action<SomeType> MyNameChanged;
          *  |   |
          *  |   |   private SomeType MyName
          *  |   |   {

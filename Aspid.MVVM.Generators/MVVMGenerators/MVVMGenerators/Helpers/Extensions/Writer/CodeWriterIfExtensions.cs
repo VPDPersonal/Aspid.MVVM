@@ -1,6 +1,6 @@
 using System;
 
-namespace MVVMGenerators.Helpers.Extensions;
+namespace MVVMGenerators.Helpers.Extensions.Writer;
 
 public static class CodeWriterIfExtensions
 {

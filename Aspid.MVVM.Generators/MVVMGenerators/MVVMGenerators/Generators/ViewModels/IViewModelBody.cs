@@ -15,19 +15,24 @@ public static class IViewModelBody
     private const string PropertyNameVar = "propertyName";
     private const string SpecificBinderVar = "specificBinder";
 
-    private const string AddBindersLocalMethod = "AddBindersLocal";
-    private const string AddBindersIternalMethod = "AddBindersIternal";
-    private const string RemoveBindersLocalMethod = "RemoveBindersLocal";
-    private const string RemoveBindersIternalMethod = "RemoveBindersIternal";
+    private const string SetValueMethod = "SetValue";
+    private const string AddBindersMethod = "AddBinder";
+    private const string AddBindersLocalMethod = "AddBinderLocal";
+    private const string AddBindersIternalMethod = "AddBinderIternal";
+    private const string RemoveBindersMethod = "RemoveBinder";
+    private const string RemoveBindersLocalMethod = "RemoveBinderLocal";
+    private const string RemoveBindersIternalMethod = "RemoveBinderIternal";
     
-    public static CodeWriter AppendGetBindMethods(this CodeWriter code, bool hasBaseType, bool hasInterface, string classname, in ReadOnlySpan<IFieldSymbol> fields)
+    public static CodeWriter AppendIViewModel(this CodeWriter code, bool hasBaseType, bool hasInterface, string classname, in ReadOnlySpan<IFieldSymbol> fields)
     {
         return code
             .AppendMultilineIf(!hasBaseType && !hasInterface,
                 $"""
                  #if !{Defines.ULTIMATE_UI_MVVM_UNITY_PROFILER_DISABLED}
-                 private static readonly {Classes.ProfilerMarker.Global} _addBinderMarker = new("{classname}.AddBinder");
-                 private static readonly {Classes.ProfilerMarker.Global} _removeBinderMarker = new("{classname}.RemoveBinder");
+                 {General.GeneratedCodeViewModelAttribute}
+                 private static readonly {Classes.ProfilerMarker.Global} _addBinderMarker = new("{classname}.{AddBindersMethod}");
+                 {General.GeneratedCodeViewModelAttribute}
+                 private static readonly {Classes.ProfilerMarker.Global} _removeBinderMarker = new("{classname}.{RemoveBindersMethod}");
                  #endif
                  
                  """)
@@ -42,7 +47,8 @@ public static class IViewModelBody
         return code
             .AppendMultilineIf(!hasBaseType && !hasInterface, 
                 $$"""
-                public void AddBinder({{Classes.IBinder.Global}} {{BinderVar}}, string {{PropertyNameVar}})
+                {{General.GeneratedCodeViewModelAttribute}}
+                public void {{AddBindersMethod}}({{Classes.IBinder.Global}} {{BinderVar}}, string {{PropertyNameVar}})
                 {
                     #if !{{Defines.ULTIMATE_UI_MVVM_UNITY_PROFILER_DISABLED}}
                     using (_addBinderMarker.Auto())
@@ -55,6 +61,7 @@ public static class IViewModelBody
                 """)
             .AppendMultiline(
                 $$"""
+                {{General.GeneratedCodeViewModelAttribute}}
                 protected virtual void {{AddBindersIternalMethod}}({{Classes.IBinder.Global}} {{BinderVar}}, string {{PropertyNameVar}})
                 {
                     switch ({{PropertyNameVar}})
@@ -77,8 +84,8 @@ public static class IViewModelBody
                     if ({{BinderVar}} is not {{Classes.IBinder.Global}}<T> {{SpecificBinderVar}})
                         throw new {{Classes.Exception.Global}}();
                 
-                    {{SpecificBinderVar}}.SetValue(value);
-                    {{ChangedVar}} += {{SpecificBinderVar}}.SetValue;
+                    {{SpecificBinderVar}}.{{SetValueMethod}}(value);
+                    {{ChangedVar}} += {{SpecificBinderVar}}.{{SetValueMethod}};
                 }
                 """)
             .EndBlock();
@@ -90,7 +97,8 @@ public static class IViewModelBody
         return 
             code.AppendMultilineIf(!hasBaseType && !hasInterface,
                 $$"""
-                public void RemoveBinder({{Classes.IBinder.Global}} {{BinderVar}}, string {{PropertyNameVar}}) 
+                {{General.GeneratedCodeViewModelAttribute}}
+                public void {{RemoveBindersMethod}}({{Classes.IBinder.Global}} {{BinderVar}}, string {{PropertyNameVar}}) 
                 {
                     #if !{{Defines.ULTIMATE_UI_MVVM_UNITY_PROFILER_DISABLED}}
                     using (_removeBinderMarker.Auto())
@@ -103,6 +111,7 @@ public static class IViewModelBody
                 """)
             .AppendMultiline(
                 $$"""
+                {{General.GeneratedCodeViewModelAttribute}}
                 protected virtual void {{RemoveBindersIternalMethod}}({{Classes.IBinder.Global}} {{BinderVar}}, string {{PropertyNameVar}})
                 {
                     switch ({{PropertyNameVar}})
@@ -125,7 +134,7 @@ public static class IViewModelBody
                     if ({{BinderVar}} is not {{Classes.IBinder.Global}}<T> {{SpecificBinderVar}})
                         throw new {{Classes.Exception.Global}}();
                         
-                    {{ChangedVar}} -= {{SpecificBinderVar}}.SetValue;
+                    {{ChangedVar}} -= {{SpecificBinderVar}}.{{SetValueMethod}};
                 }      
                 """)
             .EndBlock();

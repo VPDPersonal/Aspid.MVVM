@@ -1,25 +1,24 @@
-// using UltimateUI.MVVM;
-// using UltimateUI.MVVM.Unity;
-// using UltimateUI.MVVM.Unity.Views;
-// using UltimateUI.MVVM.Views;
-//
-// namespace MVVMGenerators.Sample;
-//
-// [View]
-// public partial class MyView1
-// {
-//     private MonoBinder[] _name;
-//     private MonoBinder[] _color;
-//     private IBinder<string> _title;
-// }
-//
-// [View]
-// public partial class MyView2 : MyView1
-// {
-//     private MonoBinder[] _someBinders;
-//     private MonoBinder _singleBinders;
-// }
-//
+using UltimateUI.MVVM;
+using UltimateUI.MVVM.Unity;
+using UltimateUI.MVVM.Views;
+
+namespace MVVMGenerators.Sample;
+
+[View]
+public partial class MyView
+{
+    private MonoBinder[] _name;
+    private MonoBinder[] _color;
+    private IBinder<string> _title;
+}
+
+[View]
+public partial class MyView2 : MyView
+{
+    private MonoBinder[] _someBinders;
+    private MonoBinder _singleBinders;
+}
+
 // [View]
 // public partial class MyView3 : IView
 // {

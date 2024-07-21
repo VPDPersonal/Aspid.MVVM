@@ -6,15 +6,25 @@ namespace MVVMGenerators.Generators.Binders;
 
 public static class BinderLogBody
 {
+    private const string LogVar = "_log";
+    private const string IsDebugVar = "_isDebug";
+
+    private const string IsDebugProperty = "IsDebug";
+
+    private const string AddLogMethod = "AddLog";
+    private const string SetValueMethod = "SetValue";
+    
     public static void AppendBinderLog(this CodeWriter code, BinderData binderData)
     {
-        if (!binderData.HasBinderLogInBaseType)
+        var hasBinderLogInBaseType = binderData.HasBinderLogInBaseType;
+        
+        if (!hasBinderLogInBaseType)
             code.AppendFieldsAndProperties();
 
         foreach (var method in binderData.BinderLogMethods)
             code.AppendMethod(method);
 
-        if (!binderData.HasBinderLogInBaseType)
+        if (!hasBinderLogInBaseType)
             code.AppendAddLog();
     }
     
@@ -22,15 +32,15 @@ public static class BinderLogBody
     {
         code.AppendMultiline(
             $"""
-             {General.GeneratedCodeViewModelAttribute}
-             [{Classes.SerializeFieldAttribute.AttributeGlobal}] private bool _isDebug;
+             {General.GeneratedCodeBinderModelAttribute}
+             [{Classes.SerializeFieldAttribute.AttributeGlobal}] private bool {IsDebugVar};
 
              // TODO Add Custom Property
-             {General.GeneratedCodeViewModelAttribute}
-             [{Classes.SerializeFieldAttribute.AttributeGlobal}] private {Classes.List.Global}<string> _log;
+             {General.GeneratedCodeBinderModelAttribute}
+             [{Classes.SerializeFieldAttribute.AttributeGlobal}] private {Classes.List.Global}<string> {LogVar};
 
-             {General.GeneratedCodeViewModelAttribute}
-             protected bool IsDebug => _isDebug;
+             {General.GeneratedCodeBinderModelAttribute}
+             protected bool {IsDebugProperty} => {IsDebugVar};
              """);
 
         code.AppendLine();
@@ -46,20 +56,20 @@ public static class BinderLogBody
               {{General.GeneratedCodeBinderModelAttribute}}
               void {{Classes.IBinder.Global}}<{{parameterType}}>.{{method.Name}}({{parameterType}} {{parameterName}})
               {
-                  if (IsDebug)
+                  if ({{IsDebugProperty}})
                   {
                       try
                       {
-                          SetValue({{parameterName}});
-                          AddLog($"Set Value: {{{parameterName}}}");
+                          {{SetValueMethod}}({{parameterName}});
+                          {{AddLogMethod}}($"Set Value: {{{parameterName}}}");
                       }
                       catch ({{Classes.Exception.Global}} e)
                       {
-                          AddLog($"<color=red>Exception: {e.Message}. {nameof({{parameterName}})}: {{parameterName}}</color>");
+                          {{AddLogMethod}}($"<color=red>Exception: {e.Message}. {nameof({{parameterName}})}: {{parameterName}}</color>");
                           throw;
                       }
                   }
-                  else SetValue({{parameterName}});
+                  else {{SetValueMethod}}({{parameterName}});
               }
               """);
 
@@ -71,10 +81,10 @@ public static class BinderLogBody
         code.AppendMultiline(
             $$"""
               {{General.GeneratedCodeBinderModelAttribute}}
-              protected void AddLog(string log)
+              protected void {{AddLogMethod}}(string log)
               {
-                  _log ??= new {{Classes.List.Global}}<string>();
-                  _log.Add(log);
+                  {{LogVar}} ??= new {{Classes.List.Global}}<string>();
+                  {{LogVar}}.Add(log);
               }
               """);
     }

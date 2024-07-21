@@ -13,7 +13,7 @@ public static partial class Classes
         new("View", Namespaces.UltimateUI_MVVM_Views);
 
     public static readonly TypeText MonoView =
-        new("MonoView", Namespaces.UltimateUI_MVVM_Views);
+        new("MonoView", Namespaces.UltimateUI_MVVM_Unity_Views);
     #endregion
     
     #region Binders
@@ -21,10 +21,10 @@ public static partial class Classes
         new("IBinder", Namespaces.UltimateUI_MVVM);
     
     public static readonly TypeText MonoBinder =
-        new("MonoBinder", Namespaces.UltimateUI_MVVM);
+        new("MonoBinder", Namespaces.UltimateUI_MVVM_Unity);
     
     public static readonly AttributeText BinderLogAttribute =
-        new("BinderLog", Namespaces.UltimateUI_MVVM);
+        new("BinderLog", Namespaces.UltimateUI_MVVM_Unity);
     #endregion
 
     #region View Models

@@ -10,7 +10,6 @@ public readonly struct BinderData(
     IReadOnlyCollection<IMethodSymbol> binderLogMethods)
 {
     public readonly TypeDeclarationSyntax Declaration = declaration;
-
     public readonly bool HasBinderLogInBaseType = hasBinderLogInBaseType;
     public readonly IReadOnlyCollection<IMethodSymbol> BinderLogMethods = binderLogMethods;
 }

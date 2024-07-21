@@ -44,7 +44,7 @@ public static class PropertiesBody
                           
                           On{{propertyName}}Changing({{name}}, value);
                           {{name}} = value;
-                          On{{propertyName}}Changed(value);;
+                          On{{propertyName}}Changed(value);
                           {{propertyName}}Changed?.Invoke({{name}});
                       }
                   }

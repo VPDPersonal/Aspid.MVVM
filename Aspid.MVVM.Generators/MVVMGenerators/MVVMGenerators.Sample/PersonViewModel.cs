@@ -1,9 +1,10 @@
+using UltimateUI.MVVM;
 using UltimateUI.MVVM.ViewModels;
 
 namespace MVVMGenerators.Sample;
 
 [ViewModel]
-public partial class PersonViewModel(int age, string name, string family)
+public partial class PersonViewModel(int age, string name, string family) 
 {
     [Bind] private int _age = age;
     [Bind] private string _name = name;
@@ -11,7 +12,7 @@ public partial class PersonViewModel(int age, string name, string family)
 }
 
 [ViewModel]
-public partial class WorkerViewModel(int age, string name, string family) 
+public partial class WorkerViewModel1(int age, string name, string family) 
     : PersonViewModel(age, name, family)
 {
     [Bind] private int _experience;
@@ -19,6 +20,6 @@ public partial class WorkerViewModel(int age, string name, string family)
 
 [ViewModel]
 public partial class BossViewModel(int age, string name, string family) 
-    : WorkerViewModel(age, name, family)
+    : WorkerViewModel1(age, name, family)
 {
 }

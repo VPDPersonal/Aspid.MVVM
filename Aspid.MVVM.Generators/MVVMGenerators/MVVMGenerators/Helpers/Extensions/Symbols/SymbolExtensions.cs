@@ -17,4 +17,23 @@ public static class SymbolExtensions
         
         return false;
     }
+    
+    public static bool HasAttribute(this ISymbol symbol, AttributeText attributeText, out INamedTypeSymbol? foundAttribute) =>
+        symbol.HasAttribute(attributeText.FullName, out foundAttribute);
+    
+    public static bool HasAttribute(this ISymbol symbol, string attributeFullName, out INamedTypeSymbol? foundAttribute)
+    {
+        foundAttribute = null;
+        
+        foreach (var attribute in symbol.GetAttributes())
+        {
+            if (attribute.AttributeClass != null && attribute.AttributeClass.ToDisplayString() == attributeFullName)
+            {
+                foundAttribute = attribute.AttributeClass;
+                return true;
+            }
+        }
+        
+        return false;
+    }
 }

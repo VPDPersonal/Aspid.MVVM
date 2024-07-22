@@ -119,9 +119,10 @@ public class BinderGenerator : IIncrementalGenerator
         var code = new CodeWriter();
 
 #if DEBUG
-        code.AppendClass(namespaceName, declarationText, body: () => code.AppendBinderLog(binderData));
+        code.AppendLine($"#if !{Defines.ULTIMATE_UI_MVVM_BINDER_LOG_DISABLED}")
+            .AppendClass(namespaceName, declarationText, body: () => code.AppendBinderLog(binderData));
 #else
-        code.AppendLine($"#if {Defines.UNITY_EDITOR}")
+        code.AppendLine($"#if {Defines.UNITY_EDITOR} && !{Defines.ULTIMATE_UI_MVVM_BINDER_LOG_DISABLED}")
             .AppendClass(namespaceName, declarationText, body: () => code.AppendBinderLog(binderData))
             .Append("#endif");
 #endif

@@ -104,10 +104,10 @@ public class ViewGenerator : IIncrementalGenerator
         {
             if (!method.IsOverride) return false;
             if (method.DeclaredAccessibility != Accessibility.Protected) return false;
-            if (method.Parameters.Length == 1) return false;
-
+            if (method.Parameters.Length != 1) return false;
+            
             if (method.Name != "InitializeIternal") return false;
-            if (method.Parameters[0].ToDisplayString() != Classes.IViewModel.FullName) return false;
+            if (method.Parameters[0].Type.ToDisplayString() != Classes.IViewModel.FullName) return false;
             if (method.ReturnType.ToDisplayString() != "void") return false;
 
             return true;
@@ -128,11 +128,13 @@ public class ViewGenerator : IIncrementalGenerator
     private static void GenerateCode(SourceProductionContext context, string namespaceName,
         DeclarationText declarationText, ViewData viewData)
     {
+        if (viewData.Inheritor == ViewInheritor.OverrideMonoView) return;
+        
         var code = new CodeWriter();
         string[]? baseTypes = null;
         if (viewData.Inheritor == ViewInheritor.None)
             baseTypes = [Classes.IView.Global];
-        
+
         code.AppendClass(namespaceName, declarationText,
             body: () => code.AppendIView(viewData),
             baseTypes);

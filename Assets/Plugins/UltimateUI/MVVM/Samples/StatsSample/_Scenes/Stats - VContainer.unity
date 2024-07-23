@@ -373,21 +373,9 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 304495757}
     m_Modifications:
-    - target: {fileID: 385806640844422567, guid: a7e999c98b71641ada1dceb5273a5c60, type: 3}
-      propertyPath: _isDebug
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 1863818017136329706, guid: a7e999c98b71641ada1dceb5273a5c60, type: 3}
       propertyPath: m_Name
       value: Hero View
-      objectReference: {fileID: 0}
-    - target: {fileID: 2198956193388416759, guid: a7e999c98b71641ada1dceb5273a5c60, type: 3}
-      propertyPath: _isDebug
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2375750696855174819, guid: a7e999c98b71641ada1dceb5273a5c60, type: 3}
-      propertyPath: _isDebug
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2896256761785461889, guid: a7e999c98b71641ada1dceb5273a5c60, type: 3}
       propertyPath: m_Pivot.x
@@ -468,50 +456,6 @@ PrefabInstance:
     - target: {fileID: 2896256761785461889, guid: a7e999c98b71641ada1dceb5273a5c60, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5315928923478365624, guid: a7e999c98b71641ada1dceb5273a5c60, type: 3}
-      propertyPath: _isDraft.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5315928923478365624, guid: a7e999c98b71641ada1dceb5273a5c60, type: 3}
-      propertyPath: _reflexes.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5315928923478365624, guid: a7e999c98b71641ada1dceb5273a5c60, type: 3}
-      propertyPath: _intelligence.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5315928923478365624, guid: a7e999c98b71641ada1dceb5273a5c60, type: 3}
-      propertyPath: _confirmCommand.Array.size
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5315928923478365624, guid: a7e999c98b71641ada1dceb5273a5c60, type: 3}
-      propertyPath: _technicalAbility.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5315928923478365624, guid: a7e999c98b71641ada1dceb5273a5c60, type: 3}
-      propertyPath: _skillPointsAvailable.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5315928923478365624, guid: a7e999c98b71641ada1dceb5273a5c60, type: 3}
-      propertyPath: _resetToDefaultCommand.Array.size
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5315928923478365624, guid: a7e999c98b71641ada1dceb5273a5c60, type: 3}
-      propertyPath: _addSkillPointToCommand.Array.size
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5315928923478365624, guid: a7e999c98b71641ada1dceb5273a5c60, type: 3}
-      propertyPath: _removeSkillPointToCommand.Array.size
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6357351656032391070, guid: a7e999c98b71641ada1dceb5273a5c60, type: 3}
-      propertyPath: _isDebug
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8292001902922383642, guid: a7e999c98b71641ada1dceb5273a5c60, type: 3}
-      propertyPath: _isDebug
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1070,6 +1014,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bfc12b6b7b514b0487f612772f933b7c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <View>k__BackingField: {fileID: 0}
   <Id>k__BackingField: 
   _text: {fileID: 0}
   _format: 
@@ -1083,21 +1028,9 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 304495757}
     m_Modifications:
-    - target: {fileID: 385806640844422567, guid: a7e999c98b71641ada1dceb5273a5c60, type: 3}
-      propertyPath: _isDebug
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 1863818017136329706, guid: a7e999c98b71641ada1dceb5273a5c60, type: 3}
       propertyPath: m_Name
       value: Hero View (1)
-      objectReference: {fileID: 0}
-    - target: {fileID: 2198956193388416759, guid: a7e999c98b71641ada1dceb5273a5c60, type: 3}
-      propertyPath: _isDebug
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2375750696855174819, guid: a7e999c98b71641ada1dceb5273a5c60, type: 3}
-      propertyPath: _isDebug
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2896256761785461889, guid: a7e999c98b71641ada1dceb5273a5c60, type: 3}
       propertyPath: m_Pivot.x
@@ -1178,38 +1111,6 @@ PrefabInstance:
     - target: {fileID: 2896256761785461889, guid: a7e999c98b71641ada1dceb5273a5c60, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5315928923478365624, guid: a7e999c98b71641ada1dceb5273a5c60, type: 3}
-      propertyPath: _confirmCommand.Array.size
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5315928923478365624, guid: a7e999c98b71641ada1dceb5273a5c60, type: 3}
-      propertyPath: _resetToDefaultCommand.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5315928923478365624, guid: a7e999c98b71641ada1dceb5273a5c60, type: 3}
-      propertyPath: _addSkillPointToCommand.Array.size
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5315928923478365624, guid: a7e999c98b71641ada1dceb5273a5c60, type: 3}
-      propertyPath: _removeSkillPointToCommand.Array.size
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5315928923478365624, guid: a7e999c98b71641ada1dceb5273a5c60, type: 3}
-      propertyPath: _resetToDefaultCommand.Array.data[0]._button
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 5315928923478365624, guid: a7e999c98b71641ada1dceb5273a5c60, type: 3}
-      propertyPath: _resetToDefaultCommand.Array.data[0]._isBindInteractable
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6357351656032391070, guid: a7e999c98b71641ada1dceb5273a5c60, type: 3}
-      propertyPath: _isDebug
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8292001902922383642, guid: a7e999c98b71641ada1dceb5273a5c60, type: 3}
-      propertyPath: _isDebug
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

@@ -4,12 +4,12 @@ using System;
 namespace UltimateUI.MVVM.ViewModels
 {
     [AttributeUsage(AttributeTargets.Field)]
-    public sealed class AccessorsAttribute : Attribute
+    public sealed class AccessAttribute : Attribute
     {
         public Access Get { get; set; }
         
         public Access Set { get; set; }
         
-        public AccessorsAttribute(Access access = Access.Private) { }
+        public AccessAttribute(Access access = Access.Private) { }
     }
 }

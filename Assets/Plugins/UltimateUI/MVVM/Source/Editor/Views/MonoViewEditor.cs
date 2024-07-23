@@ -6,9 +6,9 @@ namespace UltimateUI.MVVM.Unity.Views
 {
     [CanEditMultipleObjects]
     [CustomEditor(typeof(MonoView), editorForChildClasses: true)]
-    public class ViewEditor : Editor
+    public class MonoViewEditor : Editor
     {
-        protected MonoView ViewValidate => (MonoView)target;
+        protected MonoView View => (MonoView)target;
         
         public sealed override void OnInspectorGUI() =>
             DrawInspector();
@@ -25,7 +25,7 @@ namespace UltimateUI.MVVM.Unity.Views
         protected void DrawFindAllBindersButton()
         {
             if (GUILayout.Button("Find All Binders"))
-                ViewUtility.FindAllBinders(ViewValidate, ViewValidate.GetComponentsInChildren<MonoBinder>());
+                ViewUtility.FindAllBinders(View, View.GetComponentsInChildren<MonoBinder>());
         }
     }
 }

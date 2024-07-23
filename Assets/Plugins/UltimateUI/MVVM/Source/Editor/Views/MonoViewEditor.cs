@@ -24,8 +24,11 @@ namespace UltimateUI.MVVM.Unity.Views
         
         protected void DrawFindAllBindersButton()
         {
-            if (GUILayout.Button("Find All Binders"))
-                ViewUtility.FindAllBinders(View, View.GetComponentsInChildren<MonoBinder>());
+            if (!GUILayout.Button("Find All Binders")) return;
+
+            serializedObject.UpdateIfRequiredOrScript();
+            ViewUtility.FindAllBinders(View, View.GetComponentsInChildren<MonoBinder>());
+            serializedObject.ApplyModifiedProperties();
         }
     }
 }

@@ -469,6 +469,42 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5315928923478365624, guid: a7e999c98b71641ada1dceb5273a5c60, type: 3}
+      propertyPath: _isDraft.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5315928923478365624, guid: a7e999c98b71641ada1dceb5273a5c60, type: 3}
+      propertyPath: _reflexes.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5315928923478365624, guid: a7e999c98b71641ada1dceb5273a5c60, type: 3}
+      propertyPath: _intelligence.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5315928923478365624, guid: a7e999c98b71641ada1dceb5273a5c60, type: 3}
+      propertyPath: _confirmCommand.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5315928923478365624, guid: a7e999c98b71641ada1dceb5273a5c60, type: 3}
+      propertyPath: _technicalAbility.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5315928923478365624, guid: a7e999c98b71641ada1dceb5273a5c60, type: 3}
+      propertyPath: _skillPointsAvailable.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5315928923478365624, guid: a7e999c98b71641ada1dceb5273a5c60, type: 3}
+      propertyPath: _resetToDefaultCommand.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5315928923478365624, guid: a7e999c98b71641ada1dceb5273a5c60, type: 3}
+      propertyPath: _addSkillPointToCommand.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5315928923478365624, guid: a7e999c98b71641ada1dceb5273a5c60, type: 3}
+      propertyPath: _removeSkillPointToCommand.Array.size
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6357351656032391070, guid: a7e999c98b71641ada1dceb5273a5c60, type: 3}
       propertyPath: _isDebug
       value: 1
@@ -1141,6 +1177,30 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2896256761785461889, guid: a7e999c98b71641ada1dceb5273a5c60, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5315928923478365624, guid: a7e999c98b71641ada1dceb5273a5c60, type: 3}
+      propertyPath: _confirmCommand.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5315928923478365624, guid: a7e999c98b71641ada1dceb5273a5c60, type: 3}
+      propertyPath: _resetToDefaultCommand.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5315928923478365624, guid: a7e999c98b71641ada1dceb5273a5c60, type: 3}
+      propertyPath: _addSkillPointToCommand.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5315928923478365624, guid: a7e999c98b71641ada1dceb5273a5c60, type: 3}
+      propertyPath: _removeSkillPointToCommand.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5315928923478365624, guid: a7e999c98b71641ada1dceb5273a5c60, type: 3}
+      propertyPath: _resetToDefaultCommand.Array.data[0]._button
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 5315928923478365624, guid: a7e999c98b71641ada1dceb5273a5c60, type: 3}
+      propertyPath: _resetToDefaultCommand.Array.data[0]._isBindInteractable
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6357351656032391070, guid: a7e999c98b71641ada1dceb5273a5c60, type: 3}

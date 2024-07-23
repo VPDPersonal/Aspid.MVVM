@@ -9,7 +9,7 @@ using UltimateUI.MVVM.ViewModels;
 namespace UltimateUI.MVVM.StarterKit.Binders.Commands
 {
     [Serializable]
-    public sealed class ToggleCommandProviderBool : Binder, IBinder<IRelayCommand<bool>>
+    public sealed partial class ToggleCommandProviderBool : Binder, IBinder<IRelayCommand<bool>>
     {
         [SerializeField] private bool _isBindInteractable;
         [SerializeField] private Toggle _toggle;
@@ -61,7 +61,7 @@ namespace UltimateUI.MVVM.StarterKit.Binders.Commands
     }
     
     [Serializable]
-    public sealed class ToggleCommandProviderBool<T1> : Binder, IBinder<IRelayCommand<bool, T1>>
+    public sealed partial class ToggleCommandProviderBool<T1> : Binder, IBinder<IRelayCommand<bool, T1>>
     {
         [SerializeField] private bool _isBindInteractable;
         [SerializeField] private Toggle _toggle;
@@ -122,7 +122,7 @@ namespace UltimateUI.MVVM.StarterKit.Binders.Commands
     }
     
     [Serializable]
-    public sealed class ToggleCommandProviderBool<T1, T2> : Binder, IBinder<IRelayCommand<bool, T1, T2>>
+    public sealed partial class ToggleCommandProviderBool<T1, T2> : Binder, IBinder<IRelayCommand<bool, T1, T2>>
     {
         [SerializeField] private bool _isBindInteractable;
         [SerializeField] private Toggle _toggle;
@@ -190,7 +190,7 @@ namespace UltimateUI.MVVM.StarterKit.Binders.Commands
     }
     
     [Serializable]
-    public sealed class ToggleCommandProviderBool<T1, T2, T3> : Binder, IBinder<IRelayCommand<bool, T1, T2, T3>>
+    public sealed partial class ToggleCommandProviderBool<T1, T2, T3> : Binder, IBinder<IRelayCommand<bool, T1, T2, T3>>
     {
         [SerializeField] private bool _isBindInteractable;
         [SerializeField] private Toggle _toggle;

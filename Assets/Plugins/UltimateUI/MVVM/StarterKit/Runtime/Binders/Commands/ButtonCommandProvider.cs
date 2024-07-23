@@ -9,7 +9,7 @@ using UltimateUI.MVVM.ViewModels;
 namespace UltimateUI.MVVM.StarterKit.Binders.Commands
 {
     [Serializable]
-    public sealed class ButtonCommandProvider : Binder, IBinder<IRelayCommand>
+    public partial class ButtonCommandProvider : Binder, IBinder<IRelayCommand>
     {
         [SerializeField] private bool _isBindInteractable = true;
         [SerializeField] private Button _button;
@@ -58,7 +58,7 @@ namespace UltimateUI.MVVM.StarterKit.Binders.Commands
     }
     
     [Serializable]
-    public sealed class ButtonCommandProvider<T1> : Binder, IBinder<IRelayCommand<T1>>
+    public partial class ButtonCommandProvider<T1> : Binder, IBinder<IRelayCommand<T1>>
     {
         [SerializeField] private bool _isBindInteractable = true;
         [SerializeField] private Button _button;
@@ -116,7 +116,7 @@ namespace UltimateUI.MVVM.StarterKit.Binders.Commands
     }
     
     [Serializable]
-    public sealed class ButtonCommandProvider<T1, T2> : Binder, IBinder<IRelayCommand<T1, T2>>
+    public partial class ButtonCommandProvider<T1, T2> : Binder, IBinder<IRelayCommand<T1, T2>>
     {
         [SerializeField] private bool _isBindInteractable = true;
         [SerializeField] private Button _button;
@@ -181,7 +181,7 @@ namespace UltimateUI.MVVM.StarterKit.Binders.Commands
     }
     
     [Serializable]
-    public sealed class ButtonCommandProvider<T1, T2, T3> : Binder, IBinder<IRelayCommand<T1, T2, T3>>
+    public partial class ButtonCommandProvider<T1, T2, T3> : Binder, IBinder<IRelayCommand<T1, T2, T3>>
     {
         [SerializeField] private bool _isBindInteractable = true;
         [SerializeField] private Button _button;
@@ -253,7 +253,7 @@ namespace UltimateUI.MVVM.StarterKit.Binders.Commands
     }
     
     [Serializable]
-    public sealed class ButtonCommandProvider<T1, T2, T3, T4> : Binder, IBinder<IRelayCommand<T1, T2, T3, T4>>
+    public partial class ButtonCommandProvider<T1, T2, T3, T4> : Binder, IBinder<IRelayCommand<T1, T2, T3, T4>>
     {
         [SerializeField] private bool _isBindInteractable = true;
         [SerializeField] private Button _button;

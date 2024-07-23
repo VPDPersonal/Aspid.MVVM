@@ -9,7 +9,7 @@ using UltimateUI.MVVM.ViewModels;
 namespace UltimateUI.MVVM.StarterKit.Binders.Commands
 {
     [Serializable]
-    public sealed class SliderCommandProviderFloat : Binder, IBinder<IRelayCommand<float>>
+    public sealed partial class SliderCommandProviderFloat : Binder, IBinder<IRelayCommand<float>>
     {
         [SerializeField] private bool _isBindInteractable;
         [SerializeField] private Slider _slider;
@@ -61,7 +61,7 @@ namespace UltimateUI.MVVM.StarterKit.Binders.Commands
     }
 
     [Serializable]
-    public sealed class SliderCommandProviderFloat<T1> : Binder, IBinder<IRelayCommand<float, T1>>
+    public sealed partial class SliderCommandProviderFloat<T1> : Binder, IBinder<IRelayCommand<float, T1>>
     {
         [SerializeField] private bool _isBindInteractable;
         [SerializeField] private Slider _slider;
@@ -122,7 +122,7 @@ namespace UltimateUI.MVVM.StarterKit.Binders.Commands
     }
     
     [Serializable]
-    public sealed class SliderCommandProviderFloat<T1, T2> : Binder, IBinder<IRelayCommand<float, T1, T2>>
+    public sealed partial class SliderCommandProviderFloat<T1, T2> : Binder, IBinder<IRelayCommand<float, T1, T2>>
     {
         [SerializeField] private bool _isBindInteractable;
         [SerializeField] private Slider _slider;
@@ -190,7 +190,7 @@ namespace UltimateUI.MVVM.StarterKit.Binders.Commands
     }
     
     [Serializable]
-    public sealed class SliderCommandProviderFloat<T1, T2, T3> : Binder, IBinder<IRelayCommand<float, T1, T2, T3>>
+    public sealed partial class SliderCommandProviderFloat<T1, T2, T3> : Binder, IBinder<IRelayCommand<float, T1, T2, T3>>
     {
         [SerializeField] private bool _isBindInteractable;
         [SerializeField] private Slider _slider;

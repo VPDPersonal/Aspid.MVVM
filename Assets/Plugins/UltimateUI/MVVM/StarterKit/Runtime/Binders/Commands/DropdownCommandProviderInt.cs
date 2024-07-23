@@ -9,7 +9,7 @@ using UltimateUI.MVVM.ViewModels;
 namespace UltimateUI.MVVM.StarterKit.Binders.Commands
 {
     [Serializable]
-    public sealed class DropdownCommandProviderInt : Binder, IBinder<IRelayCommand<int>>
+    public sealed partial class DropdownCommandProviderInt : Binder, IBinder<IRelayCommand<int>>
     {
         [SerializeField] private bool _isBindInteractable;
         [SerializeField] private TMP_Dropdown _dropdown;
@@ -61,7 +61,7 @@ namespace UltimateUI.MVVM.StarterKit.Binders.Commands
     }
     
     [Serializable]
-    public sealed class DropdownCommandProviderInt<T1> : Binder, IBinder<IRelayCommand<int, T1>>
+    public sealed partial class DropdownCommandProviderInt<T1> : Binder, IBinder<IRelayCommand<int, T1>>
     {
         [SerializeField] private bool _isBindInteractable;
         [SerializeField] private TMP_Dropdown _dropdown;
@@ -122,7 +122,7 @@ namespace UltimateUI.MVVM.StarterKit.Binders.Commands
     }
     
     [Serializable]
-    public sealed class DropdownCommandProviderInt<T1, T2> : Binder, IBinder<IRelayCommand<int, T1, T2>>
+    public sealed partial class DropdownCommandProviderInt<T1, T2> : Binder, IBinder<IRelayCommand<int, T1, T2>>
     {
         [SerializeField] private bool _isBindInteractable;
         [SerializeField] private TMP_Dropdown _dropdown;
@@ -190,7 +190,7 @@ namespace UltimateUI.MVVM.StarterKit.Binders.Commands
     }
     
     [Serializable]
-    public sealed class DropdownCommandProviderInt<T1, T2, T3> : Binder, IBinder<IRelayCommand<int, T1, T2, T3>>
+    public sealed partial class DropdownCommandProviderInt<T1, T2, T3> : Binder, IBinder<IRelayCommand<int, T1, T2, T3>>
     {
         [SerializeField] private bool _isBindInteractable;
         [SerializeField] private TMP_Dropdown _dropdown;

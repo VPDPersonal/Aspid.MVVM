@@ -9,7 +9,7 @@ using UltimateUI.MVVM.ViewModels;
 namespace UltimateUI.MVVM.StarterKit.Binders.Commands
 {
     [Serializable]
-    public sealed class ScrollRectCommandProviderVector2 : Binder, IBinder<IRelayCommand<Vector2>>
+    public sealed partial class ScrollRectCommandProviderVector2 : Binder, IBinder<IRelayCommand<Vector2>>
     {
         [SerializeField] private ScrollRect _scrollRect;
         
@@ -44,7 +44,7 @@ namespace UltimateUI.MVVM.StarterKit.Binders.Commands
     }
 
     [Serializable]
-    public sealed class ScrollRectCommandProviderVector2<T1> : Binder, IBinder<IRelayCommand<Vector2, T1>>
+    public sealed partial class ScrollRectCommandProviderVector2<T1> : Binder, IBinder<IRelayCommand<Vector2, T1>>
     {
         [SerializeField] private ScrollRect _scrollRect;
         
@@ -88,7 +88,7 @@ namespace UltimateUI.MVVM.StarterKit.Binders.Commands
     }
     
     [Serializable]
-    public sealed class ScrollRectCommandProviderVector2<T1, T2> : Binder, IBinder<IRelayCommand<Vector2, T1, T2>>
+    public sealed partial class ScrollRectCommandProviderVector2<T1, T2> : Binder, IBinder<IRelayCommand<Vector2, T1, T2>>
     {
         [SerializeField] private ScrollRect _scrollRect;
         
@@ -139,7 +139,7 @@ namespace UltimateUI.MVVM.StarterKit.Binders.Commands
     }
     
     [Serializable]
-    public sealed class ScrollRectCommandProviderVector2<T1, T2, T3> : Binder, IBinder<IRelayCommand<Vector2, T1, T2, T3>>
+    public sealed partial class ScrollRectCommandProviderVector2<T1, T2, T3> : Binder, IBinder<IRelayCommand<Vector2, T1, T2, T3>>
     {
         [SerializeField] private ScrollRect _scrollRect;
 

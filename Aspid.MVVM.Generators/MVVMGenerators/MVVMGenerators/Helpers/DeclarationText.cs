@@ -1,3 +1,5 @@
+using System.Linq;
+
 namespace MVVMGenerators.Helpers;
 
 public readonly struct DeclarationText(string? modifiers, string typeType, string name, string? genericArguments)
@@ -10,14 +12,16 @@ public readonly struct DeclarationText(string? modifiers, string typeType, strin
 
     public string? GenericArguments { get; } = genericArguments;
 
-    public string GetFileName(string? postfix)
+    public string GetFileName(string? namespaceName, string? postfix)
     {
         postfix ??= "";
         if (postfix.Length > 0 && postfix[0] != '.') postfix = $".{postfix}";
+
+        namespaceName = string.IsNullOrEmpty(namespaceName) ? "" : $"{namespaceName}.";
         
-        return string.IsNullOrEmpty(GenericArguments)
-            ? $"{Name}{postfix}.cs" 
-            : $"{Name}{{{GenericArguments}}}{postfix}.cs";
+        return namespaceName + (string.IsNullOrEmpty(GenericArguments)
+            ? $"{Name}{postfix}.g.cs" 
+            : $"{Name}`{GenericArguments!.Count(arg => arg == ',') + 1}{postfix}.g.cs");
     }
     
     public override string ToString()

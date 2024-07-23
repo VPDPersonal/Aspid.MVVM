@@ -110,14 +110,14 @@ public class ViewModelGenerator : IIncrementalGenerator
         code.AppendClass(namespaceName, declarationText,
             body: () => code.AppendViewModelProperties(viewModel.Fields));
         
-        context.AddSource(declarationText.GetFileName("BindProperty.Generated"), code.GetSourceText());
+        context.AddSource(declarationText.GetFileName(namespaceName, "BindProperty"), code.GetSourceText());
 
         #region Generation Example
         /*  namespace MyNamespace
          *  {
          *  |   public partial class MyClassName
          *  |   {
-         * x |   |   public event Action<SomeType> MyNameChanged;
+         *  |   |   public event Action<SomeType> MyNameChanged;
          *  |   |
          *  |   |   private SomeType MyName
          *  |   |   {
@@ -149,7 +149,7 @@ public class ViewModelGenerator : IIncrementalGenerator
     private static void GenerateIViewModel(SourceProductionContext context, string namespaceName,
         DeclarationText declarationText, ViewModelData viewModel)
     {
-        if (viewModel.HasViewModelBaseType) return;
+        // if (viewModel.HasViewModelBaseType) return;
         
         string[]? baseTypes = null;
         if (!viewModel.HasViewModelInterface)
@@ -160,7 +160,7 @@ public class ViewModelGenerator : IIncrementalGenerator
             body: () => code.AppendIViewModel(viewModel.HasViewModelBaseType, viewModel.HasViewModelInterface, declarationText.Name, viewModel.Fields.AsSpan()),
             baseTypes);
         
-        context.AddSource(declarationText.GetFileName("IViewModel.Generated"), code.GetSourceText());
+        context.AddSource(declarationText.GetFileName(namespaceName, "IViewModel"), code.GetSourceText());
 
         #region Generation Example
         /*  namespace MyNamespace

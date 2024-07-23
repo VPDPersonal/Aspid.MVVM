@@ -18,9 +18,11 @@ public static class IViewModelBody
     private const string SetValueMethod = "SetValue";
     private const string AddBindersMethod = "AddBinder";
     private const string AddBindersLocalMethod = "AddBinderLocal";
+    private const string AddBindersMethodManual = "AddBinderManual";
     private const string AddBindersIternalMethod = "AddBinderIternal";
     private const string RemoveBindersMethod = "RemoveBinder";
     private const string RemoveBindersLocalMethod = "RemoveBinderLocal";
+    private const string RemoveBindersMethodManual = "RemoveBinderManual";
     private const string RemoveBindersIternalMethod = "RemoveBinderIternal";
     
     public static CodeWriter AppendIViewModel(this CodeWriter code, bool hasBaseType, bool hasInterface, string classname, in ReadOnlySpan<IFieldSymbol> fields)
@@ -38,14 +40,17 @@ public static class IViewModelBody
                  """)
             .AppendAddBinder(hasBaseType, hasInterface, fields)
             .AppendLine()
-            .AppendRemoveBinder(hasBaseType, hasInterface, fields);
+            .AppendRemoveBinder(hasBaseType, hasInterface, fields)
+            .AppendLine()
+            .AppendManualMethods();
     }
     
     private static CodeWriter AppendAddBinder(this CodeWriter code, bool hasBaseType, bool hasInterface, in ReadOnlySpan<IFieldSymbol> fields)
     {
-        // TODO Add inheritors support
-        return code
-            .AppendMultilineIf(!hasBaseType && !hasInterface, 
+        var virtualOrOverride = !hasBaseType ? "virtual" : "override";
+        
+        return 
+            code.AppendMultilineIf(!hasBaseType && !hasInterface, 
                 $$"""
                 {{General.GeneratedCodeViewModelAttribute}}
                 public void {{AddBindersMethod}}({{Classes.IBinder.Global}} {{BinderVar}}, string {{PropertyNameVar}})
@@ -62,7 +67,7 @@ public static class IViewModelBody
             .AppendMultiline(
                 $$"""
                 {{General.GeneratedCodeViewModelAttribute}}
-                protected virtual void {{AddBindersIternalMethod}}({{Classes.IBinder.Global}} {{BinderVar}}, string {{PropertyNameVar}})
+                protected {{virtualOrOverride}} void {{AddBindersIternalMethod}}({{Classes.IBinder.Global}} {{BinderVar}}, string {{PropertyNameVar}})
                 {
                     switch ({{PropertyNameVar}})
                     {
@@ -72,9 +77,18 @@ public static class IViewModelBody
             .AppendLoop(fields, field =>
             {
                 var propertyName = field.GetPropertyName();
-                code.AppendLine($"case {propertyName}Id: {AddBindersLocalMethod}({propertyName}, ref {propertyName}Changed); break;");
+                code.AppendLine($"case {propertyName}Id: {AddBindersLocalMethod}({propertyName}, ref {propertyName}Changed); return;");
             })
+            .AppendMultiline(
+                $"""
+                 default:
+                    var flag = false;
+                    {AddBindersMethodManual}({BinderVar}, {PropertyNameVar}, ref flag);
+                    if (flag) return;
+                    break;
+                 """)
             .EndBlock()
+            .AppendLineIf(hasBaseType, $"base.{AddBindersIternalMethod}({BinderVar}, {PropertyNameVar});")
             .AppendMultiline(
                 $$"""
                 return;
@@ -93,7 +107,8 @@ public static class IViewModelBody
 
     private static CodeWriter AppendRemoveBinder(this CodeWriter code, bool hasBaseType, bool hasInterface, in ReadOnlySpan<IFieldSymbol> fields)
     {
-        // TODO Add inheritors support
+        var virtualOrOverride = !hasBaseType ? "virtual" : "override";
+        
         return 
             code.AppendMultilineIf(!hasBaseType && !hasInterface,
                 $$"""
@@ -112,7 +127,7 @@ public static class IViewModelBody
             .AppendMultiline(
                 $$"""
                 {{General.GeneratedCodeViewModelAttribute}}
-                protected virtual void {{RemoveBindersIternalMethod}}({{Classes.IBinder.Global}} {{BinderVar}}, string {{PropertyNameVar}})
+                protected {{virtualOrOverride}} void {{RemoveBindersIternalMethod}}({{Classes.IBinder.Global}} {{BinderVar}}, string {{PropertyNameVar}})
                 {
                     switch ({{PropertyNameVar}})
                     {    
@@ -122,9 +137,18 @@ public static class IViewModelBody
             .AppendLoop(fields, field => 
             {
                 var propertyName = field.GetPropertyName();
-                code.AppendLine($"case {propertyName}Id: {RemoveBindersLocalMethod}(ref {propertyName}Changed); break;");
+                code.AppendLine($"case {propertyName}Id: {RemoveBindersLocalMethod}(ref {propertyName}Changed); return;");
             })
+            .AppendMultiline(
+                $"""
+                 default:
+                    var flag = false;
+                    {RemoveBindersMethodManual}({BinderVar}, {PropertyNameVar}, ref flag);
+                    if (flag) return;
+                    break;
+                 """)
             .EndBlock()
+            .AppendLineIf(hasBaseType, $"base.{RemoveBindersIternalMethod}({BinderVar}, {PropertyNameVar});")
             .AppendMultiline(
                 $$"""
                 return;
@@ -138,5 +162,15 @@ public static class IViewModelBody
                 }      
                 """)
             .EndBlock();
+    }
+
+    private static CodeWriter AppendManualMethods(this CodeWriter code)
+    {
+        return code.AppendMultiline(
+            $"""
+            partial void {AddBindersMethodManual}({Classes.IBinder.Global} {BinderVar}, string {PropertyNameVar}, ref bool flag);
+            
+            partial void {RemoveBindersMethodManual}({Classes.IBinder.Global} {BinderVar}, string {PropertyNameVar}, ref bool flag);
+            """);
     }
 }

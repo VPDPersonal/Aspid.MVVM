@@ -17,7 +17,7 @@ namespace MVVMGenerators.Generators.Binders;
 [Generator]
 public class BinderGenerator : IIncrementalGenerator
 {
-    private const string PartialBinderLogName = "BinderLog.Generated";
+    private const string PartialBinderLogName = "BinderLog";
     
     public void Initialize(IncrementalGeneratorInitializationContext context)
     {
@@ -128,7 +128,7 @@ public class BinderGenerator : IIncrementalGenerator
             .Append("#endif");
 #endif
         
-        context.AddSource(declarationText.GetFileName(PartialBinderLogName), code.GetSourceText());
+        context.AddSource(declarationText.GetFileName(namespaceName, PartialBinderLogName), code.GetSourceText());
         
         #region Generation Example
         /*  #if UNITY_EDITOR

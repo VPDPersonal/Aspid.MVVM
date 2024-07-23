@@ -4,10 +4,10 @@ using UltimateUI.MVVM.ViewModels;
 using UltimateUI.MVVM.Samples.StatsSample.Models;
 
 // ReSharper disable once CheckNamespace
-namespace UltimateUI.MVVM.Samples.StatsSample
+namespace UltimateUI.MVVM.Samples.StatsSample.ViewModels
 {
     [ViewModel]
-    public partial class HeroViewModel : IDisposable
+    public partial class CreateStatsViewModel : IDisposable
     {
         [Bind] private int _cool;
         [Bind] private int _power;
@@ -25,7 +25,7 @@ namespace UltimateUI.MVVM.Samples.StatsSample
 
         private readonly Hero _hero;
 
-        public HeroViewModel(Hero hero)
+        public CreateStatsViewModel(Hero hero)
         {
             _hero = hero;
             

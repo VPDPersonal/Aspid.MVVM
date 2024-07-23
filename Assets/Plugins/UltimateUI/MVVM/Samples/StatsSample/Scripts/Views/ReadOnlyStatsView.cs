@@ -4,7 +4,7 @@ using UltimateUI.MVVM.Views;
 using UltimateUI.MVVM.Unity.Views;
 
 // ReSharper disable once CheckNamespace
-namespace UltimateUI.MVVM.Samples.StatsSample
+namespace UltimateUI.MVVM.Samples.StatsSample.Views
 {
     [View]
     public partial class ReadOnlyStatsView : MonoView
@@ -26,8 +26,5 @@ namespace UltimateUI.MVVM.Samples.StatsSample
         
         [RequireBinder(typeof(int))]
         [SerializeField] private MonoBinder[] _skillPointsAvailable;
-        
-        [RequireBinder(typeof(bool))]
-        [SerializeField] private MonoBinder[] _isDraft;
     }
 }

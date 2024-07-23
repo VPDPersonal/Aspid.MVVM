@@ -401,7 +401,7 @@ GameObject:
   - component: {fileID: 378572986234925329}
   - component: {fileID: 37681656375371275}
   m_Layer: 5
-  m_Name: Skill
+  m_Name: Edit Skill
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -870,8 +870,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bfc12b6b7b514b0487f612772f933b7c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <View>k__BackingField: {fileID: 0}
   <Id>k__BackingField: 
-  _text: {fileID: 0}
+  _text: {fileID: 5180319446533110654}
   _format: 
-  _isDebug: 0
-  _log: []

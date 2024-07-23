@@ -281,9 +281,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bfc12b6b7b514b0487f612772f933b7c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <View>k__BackingField: {fileID: 0}
   <Id>k__BackingField: _skillPointsAvailable
   _text: {fileID: 0}
   _format: 
+  _isDebug: 0
+  _log: []
 --- !u!1 &1863818017136329706
 GameObject:
   m_ObjectHideFlags: 0
@@ -298,7 +301,7 @@ GameObject:
   - component: {fileID: 5315928923478365624}
   - component: {fileID: 5704678514400029323}
   m_Layer: 5
-  m_Name: Hero View
+  m_Name: Create Stats View
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -395,41 +398,65 @@ MonoBehaviour:
   _confirmCommand:
   - _isBindInteractable: 1
     _button: {fileID: 5444464546274840865}
+    _isDebug: 0
+    _log: []
   _resetToDefaultCommand:
   - _isBindInteractable: 1
     _button: {fileID: 2931516315228818707}
+    _isDebug: 0
+    _log: []
   _addSkillPointToCommand:
   - _isBindInteractable: 1
     _button: {fileID: 5174176717364985295}
     _parameter: 0
+    _isDebug: 0
+    _log: []
   - _isBindInteractable: 1
     _button: {fileID: 104643719858257062}
     _parameter: 1
+    _isDebug: 0
+    _log: []
   - _isBindInteractable: 1
     _button: {fileID: 1922244232776191990}
     _parameter: 2
+    _isDebug: 0
+    _log: []
   - _isBindInteractable: 1
     _button: {fileID: 7846568134673888075}
     _parameter: 3
+    _isDebug: 0
+    _log: []
   - _isBindInteractable: 1
     _button: {fileID: 4544091627993418994}
     _parameter: 4
+    _isDebug: 0
+    _log: []
   _removeSkillPointToCommand:
   - _isBindInteractable: 1
     _button: {fileID: 1795662829568435913}
     _parameter: 0
+    _isDebug: 0
+    _log: []
   - _isBindInteractable: 1
     _button: {fileID: 6797870773731993504}
     _parameter: 1
+    _isDebug: 0
+    _log: []
   - _isBindInteractable: 1
     _button: {fileID: 5010264940167386352}
     _parameter: 2
+    _isDebug: 0
+    _log: []
   - _isBindInteractable: 1
     _button: {fileID: 3729468392672634957}
     _parameter: 3
+    _isDebug: 0
+    _log: []
   - _isBindInteractable: 1
     _button: {fileID: 6929628987986647028}
     _parameter: 4
+    _isDebug: 0
+    _log: []
 --- !u!114 &5704678514400029323
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -453,8 +480,8 @@ MonoBehaviour:
   _viewModelComponent:
     <Resolve>k__BackingField: 0
     <Type>k__BackingField:
-      _typeName: UltimateUI.MVVM.Samples.StatsSample.HeroViewModel, Assembly-CSharp-firstpass,
-        Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+      _typeName: UltimateUI.MVVM.Samples.StatsSample.ViewModels.CreateStatsViewModel,
+        Assembly-CSharp-firstpass, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
     <Mono>k__BackingField:
       _obj: {fileID: 0}
     <References>k__BackingField:
@@ -1056,8 +1083,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 265f3a2980dc47039fccdd5a66acba34, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <View>k__BackingField: {fileID: 0}
   <Id>k__BackingField: _isDraft
   _isInvert: 0
+  _isDebug: 0
+  _log: []
 --- !u!1 &8031546957962004038
 GameObject:
   m_ObjectHideFlags: 0

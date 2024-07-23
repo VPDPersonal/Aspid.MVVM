@@ -139,6 +139,6 @@ public class ViewGenerator : IIncrementalGenerator
             body: () => code.AppendIView(viewData),
             baseTypes);
             
-        context.AddSource($"{declarationText.Name}.IView.Generated.cs", code.GetSourceText());
+        context.AddSource(declarationText.GetFileName("IView.Generated"), code.GetSourceText());
     }
 }

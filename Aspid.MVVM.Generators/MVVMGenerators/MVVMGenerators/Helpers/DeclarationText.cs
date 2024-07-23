@@ -10,11 +10,21 @@ public readonly struct DeclarationText(string? modifiers, string typeType, strin
 
     public string? GenericArguments { get; } = genericArguments;
 
+    public string GetFileName(string? postfix)
+    {
+        postfix ??= "";
+        if (postfix.Length > 0 && postfix[0] != '.') postfix = $".{postfix}";
+        
+        return string.IsNullOrEmpty(GenericArguments)
+            ? $"{Name}{postfix}.cs" 
+            : $"{Name}{{{GenericArguments}}}{postfix}.cs";
+    }
+    
     public override string ToString()
     {
         var modifiers = !string.IsNullOrEmpty(Modifiers) ?  $"{Modifiers} " : "";
-        var genericArguments = !string.IsNullOrEmpty(GenericArguments) ? $"<{GenericArguments}>" : "";
+        var arguments = !string.IsNullOrEmpty(GenericArguments) ? $"<{GenericArguments}>" : "";
 
-        return $"{modifiers}{TypeType} {Name}{genericArguments}";
+        return $"{modifiers}{TypeType} {Name}{arguments}";
     }
 }

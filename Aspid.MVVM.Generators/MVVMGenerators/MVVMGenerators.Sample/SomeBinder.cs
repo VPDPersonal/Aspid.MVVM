@@ -56,27 +56,27 @@ public partial class SomeBinderParent : INumberBinder, IBinder<IViewModel>
     }
 }
 
-// public partial class GenericBinder1<T1> : Binder, IBinder<IRelayCommand<int, T1>>
-// {
-//
-//     [BinderLog]
-//     public void SetValue(IRelayCommand<int, T1> value)
-//     {
-//         throw new NotImplementedException();
-//     }
-//
-//     public void Bind(IViewModel viewModel, string id)
-//     {
-//         throw new NotImplementedException();
-//     }
-//
-//     public void Unbind(IViewModel viewModel, string id)
-//     {
-//         throw new NotImplementedException();
-//     }
-// }
+public partial class GenericBinder<T1> : Binder, IBinder<IRelayCommand<int, T1>>
+{
 
-public partial class GenericBinder1<T1, T2> : Binder, IBinder<IRelayCommand<int, T1, T2>>
+    [BinderLog]
+    public void SetValue(IRelayCommand<int, T1> value)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void Bind(IViewModel viewModel, string id)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void Unbind(IViewModel viewModel, string id)
+    {
+        throw new NotImplementedException();
+    }
+}
+
+public partial class GenericBinder<T1, T2> : Binder, IBinder<IRelayCommand<int, T1, T2>>
 {
     [BinderLog]
     public void SetValue(IRelayCommand<int, T1, T2> value)

@@ -49,7 +49,7 @@ public static class IdBodyGenerator
                 });
             });
         
-        context.AddSource($"{declarationText.Name}.Id.Generated.cs", code.GetSourceText());
+        context.AddSource(declarationText.GetFileName("Id.Generated"), code.GetSourceText());
 
         #region Generation Example
         /*  namespace MyNamespace

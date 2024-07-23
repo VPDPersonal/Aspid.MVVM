@@ -110,7 +110,7 @@ public class ViewModelGenerator : IIncrementalGenerator
         code.AppendClass(namespaceName, declarationText,
             body: () => code.AppendViewModelProperties(viewModel.Fields));
         
-        context.AddSource($"{declarationText.Name}.BindProperty.Generated.cs", code.GetSourceText());
+        context.AddSource(declarationText.GetFileName("BindProperty.Generated"), code.GetSourceText());
 
         #region Generation Example
         /*  namespace MyNamespace
@@ -160,7 +160,7 @@ public class ViewModelGenerator : IIncrementalGenerator
             body: () => code.AppendIViewModel(viewModel.HasViewModelBaseType, viewModel.HasViewModelInterface, declarationText.Name, viewModel.Fields.AsSpan()),
             baseTypes);
         
-        context.AddSource($"{declarationText.Name}.IViewModel.Generated.cs", code.GetSourceText());
+        context.AddSource(declarationText.GetFileName("IViewModel.Generated"), code.GetSourceText());
 
         #region Generation Example
         /*  namespace MyNamespace

@@ -120,14 +120,15 @@ public class BinderGenerator : IIncrementalGenerator
 
 #if DEBUG
         code.AppendLine($"#if !{Defines.ULTIMATE_UI_MVVM_BINDER_LOG_DISABLED}")
-            .AppendClass(namespaceName, declarationText, body: () => code.AppendBinderLog(binderData));
+            .AppendClass(namespaceName, declarationText, body: () => code.AppendBinderLog(binderData))
+            .AppendLine("#endif");
 #else
         code.AppendLine($"#if {Defines.UNITY_EDITOR} && !{Defines.ULTIMATE_UI_MVVM_BINDER_LOG_DISABLED}")
             .AppendClass(namespaceName, declarationText, body: () => code.AppendBinderLog(binderData))
             .Append("#endif");
 #endif
         
-        context.AddSource($"{declarationText.Name}.{PartialBinderLogName}.cs", code.GetSourceText());
+        context.AddSource(declarationText.GetFileName(PartialBinderLogName), code.GetSourceText());
         
         #region Generation Example
         /*  #if UNITY_EDITOR

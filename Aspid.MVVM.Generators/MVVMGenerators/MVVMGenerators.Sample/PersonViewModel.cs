@@ -6,8 +6,13 @@ namespace MVVMGenerators.Sample;
 [ViewModel]
 public partial class PersonViewModel(int age, string name, string family) 
 {
+    [Access(Get = Access.Public)]
     [Bind] private int _age = age;
+    
+    [Access(Get = Access.Public)]
     [Bind] private string _name = name;
+    
+    [Access(Get = Access.Public)]
     [Bind] private string _family = family;
 }
 

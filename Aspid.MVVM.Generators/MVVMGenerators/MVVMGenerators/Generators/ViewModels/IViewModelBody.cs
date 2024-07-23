@@ -1,6 +1,6 @@
-using System;
 using Microsoft.CodeAnalysis;
 using MVVMGenerators.Helpers;
+using System.Collections.Generic;
 using MVVMGenerators.Helpers.Descriptions;
 using MVVMGenerators.Helpers.Extensions.Writer;
 using MVVMGenerators.Helpers.Extensions.Symbols;
@@ -25,16 +25,16 @@ public static class IViewModelBody
     private const string RemoveBindersMethodManual = "RemoveBinderManual";
     private const string RemoveBindersIternalMethod = "RemoveBinderIternal";
     
-    public static CodeWriter AppendIViewModel(this CodeWriter code, bool hasBaseType, bool hasInterface, string classname, in ReadOnlySpan<IFieldSymbol> fields)
+    public static CodeWriter AppendIViewModel(this CodeWriter code, bool hasBaseType, bool hasInterface, string className, in IEnumerable<IFieldSymbol> fields)
     {
         return code
             .AppendMultilineIf(!hasBaseType && !hasInterface,
                 $"""
                  #if !{Defines.ULTIMATE_UI_MVVM_UNITY_PROFILER_DISABLED}
                  {General.GeneratedCodeViewModelAttribute}
-                 private static readonly {Classes.ProfilerMarker.Global} _addBinderMarker = new("{classname}.{AddBindersMethod}");
+                 private static readonly {Classes.ProfilerMarker.Global} _addBinderMarker = new("{className}.{AddBindersMethod}");
                  {General.GeneratedCodeViewModelAttribute}
-                 private static readonly {Classes.ProfilerMarker.Global} _removeBinderMarker = new("{classname}.{RemoveBindersMethod}");
+                 private static readonly {Classes.ProfilerMarker.Global} _removeBinderMarker = new("{className}.{RemoveBindersMethod}");
                  #endif
                  
                  """)
@@ -45,7 +45,7 @@ public static class IViewModelBody
             .AppendManualMethods();
     }
     
-    private static CodeWriter AppendAddBinder(this CodeWriter code, bool hasBaseType, bool hasInterface, in ReadOnlySpan<IFieldSymbol> fields)
+    private static CodeWriter AppendAddBinder(this CodeWriter code, bool hasBaseType, bool hasInterface, in IEnumerable<IFieldSymbol> fields)
     {
         var virtualOrOverride = !hasBaseType ? "virtual" : "override";
         
@@ -105,7 +105,7 @@ public static class IViewModelBody
             .EndBlock();
     }
 
-    private static CodeWriter AppendRemoveBinder(this CodeWriter code, bool hasBaseType, bool hasInterface, in ReadOnlySpan<IFieldSymbol> fields)
+    private static CodeWriter AppendRemoveBinder(this CodeWriter code, bool hasBaseType, bool hasInterface, in IEnumerable<IFieldSymbol> fields)
     {
         var virtualOrOverride = !hasBaseType ? "virtual" : "override";
         

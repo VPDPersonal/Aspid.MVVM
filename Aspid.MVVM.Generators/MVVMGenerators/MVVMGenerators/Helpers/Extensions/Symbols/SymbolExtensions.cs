@@ -1,4 +1,5 @@
 using Microsoft.CodeAnalysis;
+using System.Diagnostics.CodeAnalysis;
 
 namespace MVVMGenerators.Helpers.Extensions.Symbols;
 
@@ -18,10 +19,10 @@ public static class SymbolExtensions
         return false;
     }
     
-    public static bool HasAttribute(this ISymbol symbol, AttributeText attributeText, out INamedTypeSymbol? foundAttribute) =>
+    public static bool HasAttribute(this ISymbol symbol, AttributeText attributeText, out AttributeData? foundAttribute) =>
         symbol.HasAttribute(attributeText.FullName, out foundAttribute);
     
-    public static bool HasAttribute(this ISymbol symbol, string attributeFullName, out INamedTypeSymbol? foundAttribute)
+    public static bool HasAttribute(this ISymbol symbol, string attributeFullName, out AttributeData? foundAttribute)
     {
         foundAttribute = null;
         
@@ -29,7 +30,7 @@ public static class SymbolExtensions
         {
             if (attribute.AttributeClass != null && attribute.AttributeClass.ToDisplayString() == attributeFullName)
             {
-                foundAttribute = attribute.AttributeClass;
+                foundAttribute = attribute;
                 return true;
             }
         }

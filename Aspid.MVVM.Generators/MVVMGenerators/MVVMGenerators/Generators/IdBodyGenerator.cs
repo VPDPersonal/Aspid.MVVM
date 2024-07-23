@@ -12,7 +12,7 @@ public static class IdBodyGenerator
 {
     public static void GenerateViewId(
         SourceProductionContext context, string namespaceName, 
-        DeclarationText declarationText, IReadOnlyCollection<IFieldSymbol> fields)
+        DeclarationText declarationText, IEnumerable<IFieldSymbol> fields)
     {
         Generate(General.GeneratedCodeViewAttribute, field => $"\"{field.GetPropertyName()}\"", 
             context, namespaceName, declarationText, fields);
@@ -23,7 +23,7 @@ public static class IdBodyGenerator
 
     public static void GenerateViewModelId(
         SourceProductionContext context, string namespaceName, 
-        DeclarationText declarationText, IReadOnlyCollection<IFieldSymbol> fields)
+        DeclarationText declarationText, IEnumerable<IFieldSymbol> fields)
     {
         Generate(General.GeneratedCodeViewModelAttribute, field => $"nameof({field.GetPropertyName()})", 
             context, namespaceName, declarationText, fields);
@@ -35,7 +35,7 @@ public static class IdBodyGenerator
     private static void Generate(
         string generatorAttribute, Func<IFieldSymbol, string> value,
         SourceProductionContext context, string namespaceName, 
-        DeclarationText declarationText, IReadOnlyCollection<IFieldSymbol> fields)
+        DeclarationText declarationText, IEnumerable<IFieldSymbol> fields)
     {
         var code = new CodeWriter();
         code.AppendClass(namespaceName, declarationText,

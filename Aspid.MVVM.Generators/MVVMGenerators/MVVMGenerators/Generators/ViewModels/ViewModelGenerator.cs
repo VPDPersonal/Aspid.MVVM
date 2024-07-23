@@ -1,4 +1,4 @@
-using System;
+using System.Linq;
 using System.Threading;
 using System.Diagnostics;
 using Microsoft.CodeAnalysis;
@@ -51,7 +51,7 @@ public class ViewModelGenerator : IIncrementalGenerator
         var symbol = context.SemanticModel.GetDeclaredSymbol(candidate, cancellationToken);
         if (symbol is null) return default;
     
-        var fields = new List<IFieldSymbol>();
+        var fields = new List<FieldData>();
         var methods = new List<IMethodSymbol>();
     
         foreach (var member in symbol.GetMembers())
@@ -59,8 +59,32 @@ public class ViewModelGenerator : IIncrementalGenerator
             switch (member)
             {
                 case IFieldSymbol field:
-                    if (field.HasAttribute(Classes.BindAttribute.FullName)) 
-                        fields.Add(field);
+                    if (field.HasAttribute(Classes.BindAttribute.FullName))
+                    {
+                        var getAccess = -1;
+                        var setAccess = -1;
+
+                        if (field.HasAttribute(Classes.AccessAttribute.FullName, out var accessAttribute))
+                        {
+                            if (accessAttribute!.ConstructorArguments.Length > 0)
+                            {
+                                var value = (int)(accessAttribute!.ConstructorArguments[0].Value ?? 0);
+                                getAccess = value;
+                                setAccess = value;
+                            }
+                            
+                            foreach (var argument in accessAttribute!.NamedArguments)
+                            {
+                                switch (argument.Key)
+                                {
+                                    case "Get": getAccess = (int)(argument.Value.Value ?? -1); break;
+                                    case "Set": setAccess = (int)(argument.Value.Value ?? -1); break;
+                                }
+                            }
+                        }
+
+                        fields.Add(new FieldData(field, getAccess, setAccess));
+                    }
                     break;
                 
                 case IMethodSymbol method: 
@@ -85,7 +109,7 @@ public class ViewModelGenerator : IIncrementalGenerator
         }
 
         return new FoundForGenerator<ViewModelData>(true,
-            new ViewModelData(hasBaseType, hasInterface, candidate, fields.ToArray(), methods));
+            new ViewModelData(hasBaseType, hasInterface, candidate, fields, methods));
     }
     
     private static void GenerateCode(SourceProductionContext context, ViewModelData viewModel)
@@ -94,10 +118,11 @@ public class ViewModelGenerator : IIncrementalGenerator
         var namespaceName = declaration.GetNamespaceName();
         var declarationText = declaration.GetDeclarationText();
 
-        if (viewModel.Fields.Length > 0)
+        if (viewModel.Fields.Count > 0)
         {
             GenerateProperties(context, namespaceName, declarationText, viewModel);
-            IdBodyGenerator.GenerateViewModelId(context, namespaceName, declarationText, viewModel.Fields);
+            IdBodyGenerator.GenerateViewModelId(context, namespaceName, declarationText,
+                viewModel.Fields.Select(field => field.Field));
         }
         
         GenerateIViewModel(context, namespaceName, declarationText, viewModel);
@@ -149,15 +174,14 @@ public class ViewModelGenerator : IIncrementalGenerator
     private static void GenerateIViewModel(SourceProductionContext context, string namespaceName,
         DeclarationText declarationText, ViewModelData viewModel)
     {
-        // if (viewModel.HasViewModelBaseType) return;
-        
         string[]? baseTypes = null;
         if (!viewModel.HasViewModelInterface)
             baseTypes = [Classes.IViewModel.Global];
 
         var code = new CodeWriter();
         code.AppendClass(namespaceName, declarationText,
-            body: () => code.AppendIViewModel(viewModel.HasViewModelBaseType, viewModel.HasViewModelInterface, declarationText.Name, viewModel.Fields.AsSpan()),
+            body: () => code.AppendIViewModel(viewModel.HasViewModelBaseType, viewModel.HasViewModelInterface,
+                declarationText.Name, viewModel.Fields.Select(field => field.Field)),
             baseTypes);
         
         context.AddSource(declarationText.GetFileName(namespaceName, "IViewModel"), code.GetSourceText());

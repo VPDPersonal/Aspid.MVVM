@@ -8,13 +8,13 @@ public readonly struct ViewModelData(
     bool hasViewModelBaseType,
     bool hasViewModelInterface,
     TypeDeclarationSyntax declaration,
-    IFieldSymbol[] fields, 
+    IReadOnlyCollection<FieldData> fields, 
     IReadOnlyCollection<IMethodSymbol> methods)
 {
     public readonly bool HasViewModelBaseType = hasViewModelBaseType;
     public readonly bool HasViewModelInterface = hasViewModelInterface;
         
     public readonly TypeDeclarationSyntax Declaration = declaration;
-    public readonly IFieldSymbol[] Fields = fields;
+    public readonly IReadOnlyCollection<FieldData> Fields = fields;
     public readonly IReadOnlyCollection<IMethodSymbol> Methods = methods;
 }

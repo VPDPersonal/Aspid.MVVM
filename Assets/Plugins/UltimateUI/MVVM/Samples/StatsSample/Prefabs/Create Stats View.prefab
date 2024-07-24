@@ -281,8 +281,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bfc12b6b7b514b0487f612772f933b7c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <View>k__BackingField: {fileID: 0}
-  <Id>k__BackingField: _skillPointsAvailable
+  _view: {fileID: 0}
+  _id: _skillPointsAvailable
   _text: {fileID: 0}
   _format: 
   _isDebug: 0
@@ -1083,8 +1083,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 265f3a2980dc47039fccdd5a66acba34, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <View>k__BackingField: {fileID: 0}
-  <Id>k__BackingField: _isDraft
+  _view: {fileID: 0}
+  _id: _isDraft
   _isInvert: 0
   _isDebug: 0
   _log: []
@@ -1179,6 +1179,10 @@ PrefabInstance:
     - target: {fileID: 1785872875882177319, guid: 28dcd3a91ac8d478283826b5db692c5d, type: 3}
       propertyPath: m_text
       value: Intelligence
+      objectReference: {fileID: 0}
+    - target: {fileID: 1852926600267366306, guid: 28dcd3a91ac8d478283826b5db692c5d, type: 3}
+      propertyPath: _id
+      value: _intelligence
       objectReference: {fileID: 0}
     - target: {fileID: 1852926600267366306, guid: 28dcd3a91ac8d478283826b5db692c5d, type: 3}
       propertyPath: <Id>k__BackingField
@@ -1332,6 +1336,10 @@ PrefabInstance:
       value: Reflexes
       objectReference: {fileID: 0}
     - target: {fileID: 1852926600267366306, guid: 28dcd3a91ac8d478283826b5db692c5d, type: 3}
+      propertyPath: _id
+      value: _reflexes
+      objectReference: {fileID: 0}
+    - target: {fileID: 1852926600267366306, guid: 28dcd3a91ac8d478283826b5db692c5d, type: 3}
       propertyPath: <Id>k__BackingField
       value: _reflexes
       objectReference: {fileID: 0}
@@ -1483,6 +1491,10 @@ PrefabInstance:
       value: Cool
       objectReference: {fileID: 0}
     - target: {fileID: 1852926600267366306, guid: 28dcd3a91ac8d478283826b5db692c5d, type: 3}
+      propertyPath: _id
+      value: _cool
+      objectReference: {fileID: 0}
+    - target: {fileID: 1852926600267366306, guid: 28dcd3a91ac8d478283826b5db692c5d, type: 3}
       propertyPath: <Id>k__BackingField
       value: _cool
       objectReference: {fileID: 0}
@@ -1628,6 +1640,10 @@ PrefabInstance:
     - target: {fileID: 557253933507048913, guid: 28dcd3a91ac8d478283826b5db692c5d, type: 3}
       propertyPath: m_Name
       value: Add Power Point
+      objectReference: {fileID: 0}
+    - target: {fileID: 1852926600267366306, guid: 28dcd3a91ac8d478283826b5db692c5d, type: 3}
+      propertyPath: _id
+      value: _power
       objectReference: {fileID: 0}
     - target: {fileID: 1852926600267366306, guid: 28dcd3a91ac8d478283826b5db692c5d, type: 3}
       propertyPath: <Id>k__BackingField
@@ -1779,6 +1795,10 @@ PrefabInstance:
     - target: {fileID: 1785872875882177319, guid: 28dcd3a91ac8d478283826b5db692c5d, type: 3}
       propertyPath: m_text
       value: Technical ability
+      objectReference: {fileID: 0}
+    - target: {fileID: 1852926600267366306, guid: 28dcd3a91ac8d478283826b5db692c5d, type: 3}
+      propertyPath: _id
+      value: _technicalAbility
       objectReference: {fileID: 0}
     - target: {fileID: 1852926600267366306, guid: 28dcd3a91ac8d478283826b5db692c5d, type: 3}
       propertyPath: <Id>k__BackingField

@@ -1,11 +1,11 @@
-#if ULTIMATE_UI_UNITY_LOCALIZATION_INTEGRATION
+#if ULTIMATE_UI_TEXT_MESH_PRO_INTEGRATION && ULTIMATE_UI_UNITY_LOCALIZATION_INTEGRATION
 using UltimateUI.MVVM.Unity;
 using UnityEngine.Localization.Components;
 
 // ReSharper disable once CheckNamespace
 namespace UltimateUI.MVVM.StarterKit.Binders.Texts.Localization
 {
-    public class TextLocalizationBinderBase : MonoBinder
+    public abstract class TextLocalizationBinderBase : MonoBinder
     {
         private LocalizeStringEvent _localizeStringEvent;
 

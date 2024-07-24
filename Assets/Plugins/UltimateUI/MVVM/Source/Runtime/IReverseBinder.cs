@@ -5,7 +5,7 @@ namespace UltimateUI.MVVM
 {
     public interface IReverseBinder<out T> : IBinder
     {
-        public event Action<T> ValueChanged;
+        public event Action<T>? ValueChanged;
         
         bool IBinder.IsReverseEnabled => true;
     }

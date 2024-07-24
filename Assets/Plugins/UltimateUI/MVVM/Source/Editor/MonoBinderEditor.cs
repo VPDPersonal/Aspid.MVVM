@@ -2,13 +2,13 @@ using UnityEditor;
 using UnityEngine;
 
 // ReSharper disable once CheckNamespace
-namespace UltimateUI.MVVM.Unity.Views
+namespace UltimateUI.MVVM.Unity
 {
     [CanEditMultipleObjects]
-    [CustomEditor(typeof(MonoView), editorForChildClasses: true)]
-    public class MonoViewEditor : Editor
+    [CustomEditor(typeof(MonoBinder), true)]
+    public class MonoBinderEditor : Editor
     {
-        protected MonoView View => (MonoView)target;
+        protected MonoBinder Binder => (MonoBinder)target;
         
         public sealed override void OnInspectorGUI() =>
             DrawInspector();
@@ -16,19 +16,19 @@ namespace UltimateUI.MVVM.Unity.Views
         protected virtual void DrawInspector()
         {
             DrawBaseInspector();
-            DrawFindAllBindersButton();
+            DrawRebindButton();
         }
         
         protected void DrawBaseInspector() =>
             base.OnInspectorGUI();
-        
-        protected void DrawFindAllBindersButton()
+
+        protected void DrawRebindButton()
         {
 #if !ULTIMATE_UI_EDITOR_DISABLED
-            if (!GUILayout.Button("Find All Binders")) return;
-            
+            if (!GUILayout.Button("Rebind")) return;
+
             serializedObject.UpdateIfRequiredOrScript();
-            ViewUtility.FindAllBinders(View, View.GetComponentsInChildren<MonoBinder>());
+            Binder.RebindOnlyEditor();
             serializedObject.ApplyModifiedProperties();
 #endif
         }

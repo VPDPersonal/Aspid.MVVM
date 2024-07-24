@@ -1,9 +1,12 @@
+using System.Diagnostics;
+using UltimateUI.MVVM.Views;
+
+#if !ULTIMATE_UI_EDITOR_DISABLED
 using System;
 using System.Linq;
 using System.Reflection;
-using System.Diagnostics;
-using UltimateUI.MVVM.Views;
 using System.Collections.Generic;
+#endif
 
 // ReSharper disable once CheckNamespace
 namespace UltimateUI.MVVM.Unity.Views
@@ -13,10 +16,11 @@ namespace UltimateUI.MVVM.Unity.Views
         [Conditional("UNITY_EDITOR")]
         public static void ValidateBinders(IView view)
         {
+#if !ULTIMATE_UI_EDITOR_DISABLED
             var type = view.GetType();
             
             const BindingFlags bindingFlags = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic;
-            var fields = type.GetFields(bindingFlags).Where(field =>
+            var fields = GetFieldInfosIncludingBaseClasses(type, bindingFlags).Where(field =>
             {
                 var fieldType = field.FieldType;
                 return fieldType == typeof(MonoBinder[]);
@@ -49,9 +53,10 @@ namespace UltimateUI.MVVM.Unity.Views
                 
                 field.SetValue(view, binders);
             }
+#endif
         }
 
-#if UNITY_EDITOR
+#if UNITY_EDITOR && !ULTIMATE_UI_EDITOR_DISABLED
         public static void FindAllBinders(IView view, IReadOnlyCollection<MonoBinder> bindersOnScene)
         {
             var type = view.GetType();

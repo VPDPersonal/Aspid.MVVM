@@ -1047,12 +1047,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bfc12b6b7b514b0487f612772f933b7c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <View>k__BackingField: {fileID: 0}
-  <Id>k__BackingField: 
   _text: {fileID: 0}
   _format: 
-  _isDebug: 0
-  _log: []
 --- !u!1 &2083037821
 GameObject:
   m_ObjectHideFlags: 0

@@ -299,7 +299,6 @@ MonoBehaviour:
   - {fileID: 5846639445404257184}
   _power:
   - {fileID: 6171478802293871531}
-  - {fileID: 4272623832969421457}
   _reflexes:
   - {fileID: 8522334273913449374}
   _intelligence:
@@ -565,12 +564,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bfc12b6b7b514b0487f612772f933b7c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <View>k__BackingField: {fileID: 0}
-  <Id>k__BackingField: _skillPointsAvailable
   _text: {fileID: 0}
   _format: 
-  _isDebug: 0
-  _log: []
 --- !u!1001 &1250457354493871557
 PrefabInstance:
   m_ObjectHideFlags: 0

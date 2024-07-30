@@ -564,8 +564,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bfc12b6b7b514b0487f612772f933b7c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _view: {fileID: 1482142762350697732}
+  _id: SkillPointsAvailable
   _text: {fileID: 0}
   _format: 
+  _isDebug: 0
+  _log: []
 --- !u!1001 &1250457354493871557
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -666,6 +670,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3031464521117165396, guid: 8cac121c9d4614cb5996b1dac74694a5, type: 3}
+      propertyPath: _id
+      value: TechnicalAbility
+      objectReference: {fileID: 0}
+    - target: {fileID: 3031464521117165396, guid: 8cac121c9d4614cb5996b1dac74694a5, type: 3}
+      propertyPath: _view
+      value: 
+      objectReference: {fileID: 1482142762350697732}
     - target: {fileID: 3031464521117165396, guid: 8cac121c9d4614cb5996b1dac74694a5, type: 3}
       propertyPath: <Id>k__BackingField
       value: _technicalAbility
@@ -800,6 +812,14 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3031464521117165396, guid: 8cac121c9d4614cb5996b1dac74694a5, type: 3}
+      propertyPath: _id
+      value: Intelligence
+      objectReference: {fileID: 0}
+    - target: {fileID: 3031464521117165396, guid: 8cac121c9d4614cb5996b1dac74694a5, type: 3}
+      propertyPath: _view
+      value: 
+      objectReference: {fileID: 1482142762350697732}
+    - target: {fileID: 3031464521117165396, guid: 8cac121c9d4614cb5996b1dac74694a5, type: 3}
       propertyPath: <Id>k__BackingField
       value: _intelligence
       objectReference: {fileID: 0}
@@ -932,6 +952,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3031464521117165396, guid: 8cac121c9d4614cb5996b1dac74694a5, type: 3}
+      propertyPath: _id
+      value: Reflexes
+      objectReference: {fileID: 0}
+    - target: {fileID: 3031464521117165396, guid: 8cac121c9d4614cb5996b1dac74694a5, type: 3}
+      propertyPath: _view
+      value: 
+      objectReference: {fileID: 1482142762350697732}
     - target: {fileID: 3031464521117165396, guid: 8cac121c9d4614cb5996b1dac74694a5, type: 3}
       propertyPath: <Id>k__BackingField
       value: _reflexes
@@ -1066,8 +1094,72 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3031464521117165396, guid: 8cac121c9d4614cb5996b1dac74694a5, type: 3}
+      propertyPath: _id
+      value: Cool
+      objectReference: {fileID: 0}
+    - target: {fileID: 3031464521117165396, guid: 8cac121c9d4614cb5996b1dac74694a5, type: 3}
+      propertyPath: _view
+      value: 
+      objectReference: {fileID: 1482142762350697732}
+    - target: {fileID: 3031464521117165396, guid: 8cac121c9d4614cb5996b1dac74694a5, type: 3}
+      propertyPath: _log.Array.size
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 3031464521117165396, guid: 8cac121c9d4614cb5996b1dac74694a5, type: 3}
+      propertyPath: _log.Array.data[0]
+      value: 'SetValue: some text'
+      objectReference: {fileID: 0}
+    - target: {fileID: 3031464521117165396, guid: 8cac121c9d4614cb5996b1dac74694a5, type: 3}
+      propertyPath: _log.Array.data[1]
+      value: 'SetValue: one test'
+      objectReference: {fileID: 0}
+    - target: {fileID: 3031464521117165396, guid: 8cac121c9d4614cb5996b1dac74694a5, type: 3}
+      propertyPath: _log.Array.data[2]
+      value: 'SetValue: you are king'
+      objectReference: {fileID: 0}
+    - target: {fileID: 3031464521117165396, guid: 8cac121c9d4614cb5996b1dac74694a5, type: 3}
+      propertyPath: _log.Array.data[3]
+      value: 'SetValue: Stop please'
+      objectReference: {fileID: 0}
+    - target: {fileID: 3031464521117165396, guid: 8cac121c9d4614cb5996b1dac74694a5, type: 3}
+      propertyPath: _log.Array.data[4]
+      value: 'SetValue: 10'
+      objectReference: {fileID: 0}
+    - target: {fileID: 3031464521117165396, guid: 8cac121c9d4614cb5996b1dac74694a5, type: 3}
+      propertyPath: _log.Array.data[5]
+      value: 'SetValue: 9'
+      objectReference: {fileID: 0}
+    - target: {fileID: 3031464521117165396, guid: 8cac121c9d4614cb5996b1dac74694a5, type: 3}
+      propertyPath: _log.Array.data[6]
+      value: 'SetValue: 8'
+      objectReference: {fileID: 0}
+    - target: {fileID: 3031464521117165396, guid: 8cac121c9d4614cb5996b1dac74694a5, type: 3}
+      propertyPath: _log.Array.data[7]
+      value: 'SetValue: 7'
+      objectReference: {fileID: 0}
+    - target: {fileID: 3031464521117165396, guid: 8cac121c9d4614cb5996b1dac74694a5, type: 3}
+      propertyPath: _log.Array.data[8]
+      value: 'SetValue: 6'
+      objectReference: {fileID: 0}
+    - target: {fileID: 3031464521117165396, guid: 8cac121c9d4614cb5996b1dac74694a5, type: 3}
+      propertyPath: _log.Array.data[9]
+      value: 'SetValue: 5'
+      objectReference: {fileID: 0}
+    - target: {fileID: 3031464521117165396, guid: 8cac121c9d4614cb5996b1dac74694a5, type: 3}
       propertyPath: <Id>k__BackingField
       value: _cool
+      objectReference: {fileID: 0}
+    - target: {fileID: 3031464521117165396, guid: 8cac121c9d4614cb5996b1dac74694a5, type: 3}
+      propertyPath: _log.Array.data[10]
+      value: 'SetValue: 4'
+      objectReference: {fileID: 0}
+    - target: {fileID: 3031464521117165396, guid: 8cac121c9d4614cb5996b1dac74694a5, type: 3}
+      propertyPath: _log.Array.data[11]
+      value: 'SetValue: 3'
+      objectReference: {fileID: 0}
+    - target: {fileID: 3031464521117165396, guid: 8cac121c9d4614cb5996b1dac74694a5, type: 3}
+      propertyPath: _log.Array.data[12]
+      value: 'SetValue: Noooooo'
       objectReference: {fileID: 0}
     - target: {fileID: 3129922492389129169, guid: 8cac121c9d4614cb5996b1dac74694a5, type: 3}
       propertyPath: m_text
@@ -1186,6 +1278,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3031464521117165396, guid: 8cac121c9d4614cb5996b1dac74694a5, type: 3}
+      propertyPath: _id
+      value: Power
+      objectReference: {fileID: 0}
+    - target: {fileID: 3031464521117165396, guid: 8cac121c9d4614cb5996b1dac74694a5, type: 3}
+      propertyPath: _view
+      value: 
+      objectReference: {fileID: 1482142762350697732}
     - target: {fileID: 8163769307145917364, guid: 8cac121c9d4614cb5996b1dac74694a5, type: 3}
       propertyPath: m_Name
       value: Power Skill

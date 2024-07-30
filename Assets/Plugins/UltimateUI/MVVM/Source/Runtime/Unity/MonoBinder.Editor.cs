@@ -10,7 +10,6 @@ namespace UltimateUI.MVVM.Unity
 {
     public abstract partial class MonoBinder
     {
-        [Header("Source")]
         [SerializeField] private MonoView _view;
         [SerializeField] private string _id;
 

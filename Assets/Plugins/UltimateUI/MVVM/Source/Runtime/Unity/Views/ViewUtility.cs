@@ -1,33 +1,24 @@
-using System.Diagnostics;
-using UltimateUI.MVVM.Views;
-
-#if !ULTIMATE_UI_EDITOR_DISABLED
 using System;
 using System.Linq;
 using System.Reflection;
-using System.Collections.Generic;
-#endif
+using UltimateUI.MVVM.Extensions;
 
 // ReSharper disable once CheckNamespace
 namespace UltimateUI.MVVM.Unity.Views
 {
     public static class ViewUtility
     {
-        [Conditional("UNITY_EDITOR")]
-        public static void ValidateBinders(IView view)
+        private const BindingFlags BindingFlags = System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic;
+  
+#if UNITY_EDITOR
+        public static void ValidateBinders(MonoView view)
         {
-#if !ULTIMATE_UI_EDITOR_DISABLED
             var type = view.GetType();
-            
-            const BindingFlags bindingFlags = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic;
-            var fields = GetFieldInfosIncludingBaseClasses(type, bindingFlags).Where(field =>
-            {
-                var fieldType = field.FieldType;
-                return fieldType == typeof(MonoBinder[]);
-            });
+            var fields = type.GetMonoBinderFields(BindingFlags);
             
             foreach (var field in fields)
             {
+                // TODO support single binder
                 var binders = (MonoBinder[])field.GetValue(view);
                 
                 if (Attribute.IsDefined(field, typeof(RequireBinder)))
@@ -46,54 +37,53 @@ namespace UltimateUI.MVVM.Unity.Views
                     }).ToArray();
                 }
                 
-#if UNITY_EDITOR
+                var name = GetPropertyNameFromFieldName(field.Name);
                 foreach (var binder in binders)
-                    binder.Id = field.Name;
-#endif
+                {
+                    binder.Id = name;
+                    binder.View = view;
+                }
                 
                 field.SetValue(view, binders);
             }
-#endif
-        }
-
-#if UNITY_EDITOR && !ULTIMATE_UI_EDITOR_DISABLED
-        public static void FindAllBinders(IView view, IReadOnlyCollection<MonoBinder> bindersOnScene)
-        {
-            var type = view.GetType();
-            
-            const BindingFlags bindingFlags = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic ;
-            var fields = GetFieldInfosIncludingBaseClasses(type, bindingFlags).Where(field =>
-            {
-                var fieldType = field.FieldType;
-                return fieldType == typeof(MonoBinder[]);
-            });
-            
-            foreach (var field in fields)
-            {
-                var binders = bindersOnScene.Where(binderOnScene => field.Name == binderOnScene.Id).ToArray();
-                field.SetValue(view, binders);
-            }
-            
-            ValidateBinders(view);
         }
         
-        private static FieldInfo[] GetFieldInfosIncludingBaseClasses(Type type, BindingFlags bindingFlags)
+        public static void FindAllBindersInChildren(MonoView view)
         {
-            if (type.BaseType == typeof(object)) return type.GetFields(bindingFlags);
+            var type = view.GetType();
+            var fields = type.GetMonoBinderFields(BindingFlags);
+            var bindersOnScene = view.GetComponentsInChildren<MonoBinder>();
 
-            var currentType = type;
-            var fieldInfoList = new List<FieldInfo>();
-            
-            while (currentType != typeof(object))
+            foreach (var field in fields)
             {
-                if (currentType == null) break;
-                
-                fieldInfoList.AddRange(currentType.GetFields(bindingFlags));
-                currentType = currentType.BaseType;
+                var name = GetPropertyNameFromFieldName(field.Name);
+                var binders = bindersOnScene.Where(binder =>
+                    binder.View == view && name == binder.Id).ToArray();
+
+                if (field.FieldType.IsArray) field.SetValue(view, binders);
+                else field.SetValue(view, binders.First());
             }
-            
-            return fieldInfoList.ToArray();
+
+            ValidateBinders(view);
         }
 #endif
+
+        public static string GetPropertyNameFromFieldName(string name)
+        {
+            var prefixCount = GetPrefixCount();
+            name = name.Remove(0, prefixCount);
+
+            var firstSymbol = name[0];
+            if (char.IsLower(firstSymbol))
+            {
+                name = name.Remove(0, 1);
+                name = char.ToUpper(firstSymbol) + name;
+            }
+        
+            return name;
+            
+            int GetPrefixCount() =>
+                name.StartsWith("_") ? 1 : name.StartsWith("m_") ? 2 : 0;
+        }
     }
 }

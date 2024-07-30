@@ -28,7 +28,7 @@ namespace UltimateUI.MVVM.Unity.Views
             if (!GUILayout.Button("Find All Binders")) return;
             
             serializedObject.UpdateIfRequiredOrScript();
-            ViewUtility.FindAllBinders(View, View.GetComponentsInChildren<MonoBinder>());
+            ViewUtility.FindAllBindersInChildren(View);
             serializedObject.ApplyModifiedProperties();
 #endif
         }

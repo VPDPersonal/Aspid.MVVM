@@ -6,33 +6,38 @@ namespace UltimateUI.MVVM
     public abstract class Binder : IBinder
     {
 #if !ULTIMATE_UI_MVVM_UNITY_PROFILER_DISABLED
-        private static readonly global::Unity.Profiling.ProfilerMarker _bindMarker = new("Binder.Bind");
-        private static readonly global::Unity.Profiling.ProfilerMarker _unbindMarker = new("Binder.Unbind)");
+        private static readonly global::Unity.Profiling.ProfilerMarker _onBoundMarker = new("Binder.OnBound");
+        private static readonly global::Unity.Profiling.ProfilerMarker _onUnboundMarker = new("Binder.OnUnbound");
 #endif
-        public void Bind(IViewModel viewModel, string id)
+
+        void IBinder.OnBound()
         {
 #if !ULTIMATE_UI_MVVM_UNITY_PROFILER_DISABLED
-            using (_bindMarker.Auto()) 
+            using (_onBoundMarker.Auto()) 
 #endif
             {
-                viewModel.AddBinder(this, id);
-                OnBound(viewModel, id);
+                OnBound();
             }
         }
-        
-        protected virtual void OnBound(IViewModel viewModel, string id) { }
-        
-        public void Unbind(IViewModel viewModel, string id)
+
+        protected virtual void OnBound() { }
+
+        void IBinder.OnUnbound()
         {
 #if !ULTIMATE_UI_MVVM_UNITY_PROFILER_DISABLED
-            using (_unbindMarker.Auto())
+            using (_onUnboundMarker.Auto())
 #endif
             {
-                viewModel.RemoveBinder(this, id);
-                OnUnbound(viewModel, id);
+                OnUnbound();
             }
         }
+
+        protected virtual void OnUnbound() { }
         
-        protected virtual void OnUnbound(IViewModel viewModel, string id) { }
+        // TODO Delete
+        public void Bind(IViewModel viewModel, string id) => viewModel.AddBinder(this, id);
+        
+        // TODO Delete
+        public void Unbind(IViewModel viewModel, string id) => viewModel.RemoveBinder(this, id);
     }
 }

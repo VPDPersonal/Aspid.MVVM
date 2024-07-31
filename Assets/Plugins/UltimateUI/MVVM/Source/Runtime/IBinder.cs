@@ -7,9 +7,15 @@ namespace UltimateUI.MVVM
     {
         public bool IsReverseEnabled => false;
         
+        // TODO Delete
         public void Bind(IViewModel viewModel, string id);
+
+        public void OnBound() { }
         
+        // TODO Delete
         public void Unbind(IViewModel viewModel, string id);
+
+        public void OnUnbound() { }
     }
     
     public interface IBinder<in T> : IBinder

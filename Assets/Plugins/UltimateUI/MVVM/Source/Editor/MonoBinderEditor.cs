@@ -123,7 +123,7 @@ namespace UltimateUI.MVVM.Unity
             if (!GUILayout.Button("Rebind")) return;
 
             serializedObject.UpdateIfRequiredOrScript();
-            Binder.RebindOnlyEditor();
+            // Binder.RebindOnlyEditor();
             serializedObject.ApplyModifiedProperties();
 #endif
         }

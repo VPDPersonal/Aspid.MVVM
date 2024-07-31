@@ -33,7 +33,7 @@ namespace UltimateUI.MVVM.StarterKit.Binders.Commands
         private void Execute(Vector2 value) =>
             _command?.Execute(value);
 
-        protected override void OnUnbound(IViewModel viewModel, string id) =>
+        protected override void OnUnbound() =>
             ReleaseCommand();
 
         private void ReleaseCommand()
@@ -77,7 +77,7 @@ namespace UltimateUI.MVVM.StarterKit.Binders.Commands
         private void Execute(Vector2 value) =>
             _command?.Execute(value, Parameter1);
 
-        protected override void OnUnbound(IViewModel viewModel, string id) =>
+        protected override void OnUnbound() =>
             ReleaseCommand();
 
         private void ReleaseCommand()
@@ -128,7 +128,7 @@ namespace UltimateUI.MVVM.StarterKit.Binders.Commands
         private void Execute(Vector2 value) =>
             _command?.Execute(value, Parameter1, Parameter2);
 
-        protected override void OnUnbound(IViewModel viewModel, string id) =>
+        protected override void OnUnbound() =>
             ReleaseCommand();
 
         private void ReleaseCommand()
@@ -186,7 +186,7 @@ namespace UltimateUI.MVVM.StarterKit.Binders.Commands
         private void Execute(Vector2 value) =>
             _command?.Execute(value, Parameter1, Parameter2, Parameter3);
 
-        protected override void OnUnbound(IViewModel viewModel, string id) =>
+        protected override void OnUnbound() =>
             ReleaseCommand();
 
         private void ReleaseCommand()

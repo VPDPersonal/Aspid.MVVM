@@ -44,7 +44,7 @@ namespace UltimateUI.MVVM.StarterKit.Binders.Commands
             _command?.Execute(isOn);
         }
 
-        protected override void OnUnbound(IViewModel viewModel, string id) =>
+        protected override void OnUnbound() =>
             ReleaseCommand();
 
         private void ReleaseCommand()
@@ -105,7 +105,7 @@ namespace UltimateUI.MVVM.StarterKit.Binders.Commands
             _command?.Execute(isOn, Parameter1);
         }
 
-        protected override void OnUnbound(IViewModel viewModel, string id) =>
+        protected override void OnUnbound() =>
             ReleaseCommand();
 
         private void ReleaseCommand()
@@ -173,7 +173,7 @@ namespace UltimateUI.MVVM.StarterKit.Binders.Commands
             _command?.Execute(isOn, Parameter1, Parameter2);
         }
 
-        protected override void OnUnbound(IViewModel viewModel, string id) =>
+        protected override void OnUnbound() =>
             ReleaseCommand();
 
         private void ReleaseCommand()
@@ -248,7 +248,7 @@ namespace UltimateUI.MVVM.StarterKit.Binders.Commands
             _command?.Execute(isOn, Parameter1, Parameter2, Parameter3);
         }
 
-        protected override void OnUnbound(IViewModel viewModel, string id) =>
+        protected override void OnUnbound() =>
             ReleaseCommand();
 
         private void ReleaseCommand()

@@ -1,9 +1,9 @@
 using System;
 using UltimateUI.MVVM.ViewModels;
-using UltimateUI.MVVM.Samples.StatsSample.Models;
+using UltimateUI.Samples.StatsSample.Models;
 
 // ReSharper disable once CheckNamespace
-namespace UltimateUI.MVVM.Samples.StatsSample.ModelViews
+namespace UltimateUI.Samples.StatsSample.ViewModels
 {
     [ViewModel]
     public partial class ReadOnlyStatsViewModel : IDisposable

@@ -4,7 +4,7 @@ using UltimateUI.MVVM.Views;
 using UltimateUI.MVVM.Unity.Views;
 
 // ReSharper disable once CheckNamespace
-namespace UltimateUI.MVVM.Samples.StatsSample.Views
+namespace UltimateUI.Samples.StatsSample.Views
 {
     [View]
     public partial class ReadOnlyStatsView : MonoView

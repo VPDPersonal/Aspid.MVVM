@@ -1,11 +1,7 @@
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Reflection;
-using UltimateUI.MVVM.Extensions;
 using UltimateUI.MVVM.Unity.Views;
-using UltimateUI.MVVM.Views;
 using UnityEditor;
 using UnityEngine;
 
@@ -71,6 +67,8 @@ namespace UltimateUI.MVVM.Unity
             MonoView ViewPopup()
             {
                 var views = GetViewList();
+                if (views.Length == 0) return null;
+                
                 var viewNames = views.Select(view => view.name).ToArray();
                 var index = Popup(_view.objectReferenceValue, viewNames, true);
 
@@ -79,6 +77,8 @@ namespace UltimateUI.MVVM.Unity
             
             string IdPopup(MonoView view)
             {
+                if (!view) return null;
+                
                 var binderNames = GetIdList(view);
                 var index = Popup(_id.stringValue, binderNames, true);
                 
@@ -88,6 +88,7 @@ namespace UltimateUI.MVVM.Unity
         
         private void DrawLog()
         {
+            if (_log == null) return;
             _showLog = EditorGUILayout.Foldout(_showLog, "Log");
 
             if (_showLog)
@@ -114,7 +115,7 @@ namespace UltimateUI.MVVM.Unity
         
         protected virtual void DrawBaseInspector()
         {
-            DrawPropertiesExcluding(serializedObject, ScriptPropertyName, _view.name, _id.name, "_log");
+            DrawPropertiesExcluding(serializedObject, ScriptPropertyName, _view.name, _id.name, _log?.name);
         }
 
         protected void DrawRebindButton()
@@ -141,36 +142,6 @@ namespace UltimateUI.MVVM.Unity
             
             index = EditorGUILayout.Popup(index, menus);
             return index;
-        }
-    }
-
-    // Без визуализации
-    public abstract class MonoBinderEditorBase<TBinder> : Editor
-        where TBinder : Component, IBinder
-    { 
-        protected TBinder Binder => (TBinder)target;
-        
-        protected MonoView[] GetViewList()
-        {
-            var views = new List<MonoView>(1);
-            
-            for (var parent = Binder.transform; parent; parent = parent.parent)
-            {
-                if (parent.TryGetComponent<MonoView>(out var view))
-                    views.Add(view);
-            }
-
-            return views.ToArray();
-        }
-
-        protected string[] GetIdList(IView view)
-        {
-            if (view == null) return null;
-            
-            const BindingFlags bindingFlags = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic;
-            var binderFields = view.GetType().GetMonoBinderFields(bindingFlags).ToList();
-            
-            return binderFields.Select(field => ViewUtility.GetPropertyNameFromFieldName(field.Name)).ToArray();
         }
     }
 }

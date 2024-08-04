@@ -1,10 +1,10 @@
 using System;
 using UltimateUI.MVVM.Commands;
 using UltimateUI.MVVM.ViewModels;
-using UltimateUI.MVVM.Samples.StatsSample.Models;
+using UltimateUI.Samples.StatsSample.Models;
 
 // ReSharper disable once CheckNamespace
-namespace UltimateUI.MVVM.Samples.StatsSample.ViewModels
+namespace UltimateUI.Samples.StatsSample.ViewModels
 {
     [ViewModel]
     public partial class CreateStatsViewModel : IDisposable
@@ -17,14 +17,14 @@ namespace UltimateUI.MVVM.Samples.StatsSample.ViewModels
         
         [Bind] private int _skillPointsAvailable;
         [Bind] private bool _isDraft;
-
+        
         [Bind] private IRelayCommand _confirmCommand;
         [Bind] private IRelayCommand _resetToDefaultCommand;
         [Bind] private IRelayCommand<Skill> _addSkillPointToCommand;
         [Bind] private IRelayCommand<Skill> _removeSkillPointToCommand;
-
+        
         private readonly Hero _hero;
-
+        
         public CreateStatsViewModel(Hero hero)
         {
             _hero = hero;
@@ -36,7 +36,7 @@ namespace UltimateUI.MVVM.Samples.StatsSample.ViewModels
             _technicalAbility = _hero.GetNumberSkillPointFrom(Skill.Cool);
             
             _skillPointsAvailable = _hero.SkillPointsAvailable;
-
+        
             _confirmCommand = new RelayCommand(Confirm, () => IsDraft);
             _resetToDefaultCommand = new RelayCommand(ResetToDefault, () => IsDraft);
             _addSkillPointToCommand = new RelayCommand<Skill>(AddSkillPointTo, _ => SkillPointsAvailable > 0);
@@ -45,7 +45,7 @@ namespace UltimateUI.MVVM.Samples.StatsSample.ViewModels
             
             Subscribe();
         }
-
+        
         private void Subscribe()
         {
             _hero.SkillChanged += OnSkillChanged;
@@ -55,7 +55,7 @@ namespace UltimateUI.MVVM.Samples.StatsSample.ViewModels
         {
             _hero.SkillChanged -= OnSkillChanged;
         }
-
+        
         private void SetSkillPointsTo(Skill skill, int points)
         {
             switch (skill)
@@ -68,7 +68,7 @@ namespace UltimateUI.MVVM.Samples.StatsSample.ViewModels
                 default: throw new ArgumentOutOfRangeException(nameof(skill), skill, null);
             }
         }
-
+        
         private int GetNumberSkillPointFrom(Skill skill) => skill switch
         {
             Skill.Cool => Cool, 
@@ -78,7 +78,7 @@ namespace UltimateUI.MVVM.Samples.StatsSample.ViewModels
             Skill.TechnicalAbility => TechnicalAbility, 
             _ => throw new ArgumentOutOfRangeException(nameof(skill), skill, null)
         };
-
+        
         // [BindCommand]
         private void Confirm()
         {
@@ -101,42 +101,42 @@ namespace UltimateUI.MVVM.Samples.StatsSample.ViewModels
             Reflexes = _hero.GetNumberSkillPointFrom(Skill.Reflexes);
             Intelligence = _hero.GetNumberSkillPointFrom(Skill.Intelligence);
             TechnicalAbility = _hero.GetNumberSkillPointFrom(Skill.TechnicalAbility);
-
+        
             SkillPointsAvailable = _hero.SkillPointsAvailable;
         }
-
+        
         // [BindCommand]
         private void AddSkillPointTo(Skill skill)
         {
             if (SkillPointsAvailable == 0) return;
-
+        
             SetSkillPointsTo(skill, GetNumberSkillPointFrom(skill) + 1);
             SkillPointsAvailable--;
         }
-
+        
         // [BindCommand]
         private void RemoveSkillPointTo(Skill skill)
         {
             var skillPoints = GetNumberSkillPointFrom(skill);
             if (skillPoints < 2) return;
-
+        
             SetSkillPointsTo(skill, GetNumberSkillPointFrom(skill) - 1);
             SkillPointsAvailable++;
         }
-
+        
         private void OnSkillChanged(Skill skill) 
         {
             SetSkillPointsTo(skill, _hero.GetNumberSkillPointFrom(skill));
             SkillPointsAvailable = _hero.SkillPointsAvailable;
             RemoveSkillPointToCommand.NotifyCanExecuteChanged();
         }
-
+        
         partial void OnIsDraftChanged(bool newValue)
         {
             ConfirmCommand.NotifyCanExecuteChanged();
             ResetToDefaultCommand.NotifyCanExecuteChanged();
         }
-
+        
         partial void OnSkillPointsAvailableChanged(int newValue)
         {
             IsDraft = newValue != _hero.SkillPointsAvailable;
@@ -144,7 +144,7 @@ namespace UltimateUI.MVVM.Samples.StatsSample.ViewModels
             AddSkillPointToCommand.NotifyCanExecuteChanged();
             RemoveSkillPointToCommand.NotifyCanExecuteChanged();
         }
-
+        
         public void Dispose() => Unsubscribe();
     }
 }

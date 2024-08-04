@@ -1,5 +1,5 @@
 // ReSharper disable once CheckNamespace
-namespace UltimateUI.MVVM.Samples.StatsSample.Models
+namespace UltimateUI.Samples.StatsSample.Models
 {
     public enum Skill
     {

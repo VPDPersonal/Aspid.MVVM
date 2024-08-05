@@ -410,6 +410,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Create Stats View
       objectReference: {fileID: 0}
+    - target: {fileID: 2375750696855174819, guid: a7e999c98b71641ada1dceb5273a5c60, type: 3}
+      propertyPath: _isDebug
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2896256761785461889, guid: a7e999c98b71641ada1dceb5273a5c60, type: 3}
       propertyPath: m_Pivot.x
       value: 1
@@ -489,6 +493,11 @@ PrefabInstance:
     - target: {fileID: 2896256761785461889, guid: a7e999c98b71641ada1dceb5273a5c60, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5704678514400029323, guid: a7e999c98b71641ada1dceb5273a5c60, type: 3}
+      propertyPath: _viewModelComponent.<Type>k__BackingField._typeName
+      value: UltimateUI.Samples.StatsSample.ViewModels.CreateStatsViewModel, Assembly-CSharp,
+        Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1052,6 +1061,8 @@ MonoBehaviour:
   _id: 
   _text: {fileID: 0}
   _format: 
+  _isDebug: 0
+  _log: []
 --- !u!1 &2083037821
 GameObject:
   m_ObjectHideFlags: 0
@@ -1204,6 +1215,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 304495757}
     m_Modifications:
+    - target: {fileID: 857392291670090133, guid: 74b8ba5986ae646a6a44c88b05165b97, type: 3}
+      propertyPath: _viewModelComponent.<Type>k__BackingField._typeName
+      value: UltimateUI.Samples.StatsSample.ViewModels.ReadOnlyStatsViewModel, Assembly-CSharp,
+        Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+      objectReference: {fileID: 0}
     - target: {fileID: 2550778387010145548, guid: 74b8ba5986ae646a6a44c88b05165b97, type: 3}
       propertyPath: m_Name
       value: Read Only Stats View

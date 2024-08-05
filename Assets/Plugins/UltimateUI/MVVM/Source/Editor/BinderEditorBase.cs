@@ -10,7 +10,7 @@ using UltimateUI.MVVM.Unity.Views;
 // ReSharper disable once CheckNamespace
 namespace UltimateUI.MVVM.Unity
 {
-    public abstract class MonoBinderEditorBase<TBinder> : Editor
+    public abstract class BinderEditorBase<TBinder> : Editor
         where TBinder : Component, IBinder
     { 
         protected TBinder Binder => (TBinder)target;

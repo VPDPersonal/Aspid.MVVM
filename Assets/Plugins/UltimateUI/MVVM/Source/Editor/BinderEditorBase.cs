@@ -35,7 +35,9 @@ namespace UltimateUI.MVVM.Unity
             const BindingFlags bindingFlags = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic;
             var binderFields = view.GetType().GetMonoBinderFields(bindingFlags).ToList();
             
-            return binderFields.Select(field => ViewUtility.GetPropertyNameFromFieldName(field.Name)).ToArray();
+            var ids = binderFields.Select(field => ViewUtility.GetPropertyName(field.Name)).ToList();
+            ids.Insert(0, "None");
+            return ids.ToArray();
         }
     }
 }

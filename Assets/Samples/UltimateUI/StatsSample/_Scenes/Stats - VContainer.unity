@@ -1220,6 +1220,30 @@ PrefabInstance:
       value: UltimateUI.Samples.StatsSample.ViewModels.ReadOnlyStatsViewModel, Assembly-CSharp,
         Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
       objectReference: {fileID: 0}
+    - target: {fileID: 1482142762350697732, guid: 74b8ba5986ae646a6a44c88b05165b97, type: 3}
+      propertyPath: _cool.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1482142762350697732, guid: 74b8ba5986ae646a6a44c88b05165b97, type: 3}
+      propertyPath: _power.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1482142762350697732, guid: 74b8ba5986ae646a6a44c88b05165b97, type: 3}
+      propertyPath: _reflexes.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1482142762350697732, guid: 74b8ba5986ae646a6a44c88b05165b97, type: 3}
+      propertyPath: _intelligence.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1482142762350697732, guid: 74b8ba5986ae646a6a44c88b05165b97, type: 3}
+      propertyPath: _technicalAbility.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1482142762350697732, guid: 74b8ba5986ae646a6a44c88b05165b97, type: 3}
+      propertyPath: _skillPointsAvailable.Array.size
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2550778387010145548, guid: 74b8ba5986ae646a6a44c88b05165b97, type: 3}
       propertyPath: m_Name
       value: Read Only Stats View
@@ -1303,6 +1327,10 @@ PrefabInstance:
     - target: {fileID: 2984221494839884996, guid: 74b8ba5986ae646a6a44c88b05165b97, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5846639445404257184, guid: 74b8ba5986ae646a6a44c88b05165b97, type: 3}
+      propertyPath: _id
+      value: None
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

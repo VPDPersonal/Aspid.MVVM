@@ -1,13 +1,10 @@
-namespace MVVMGenerators.Generators.Views;
+namespace MVVMGenerators.Generators.Views.Data;
 
-public enum ViewInheritor
+public enum Inheritor
 {
     None,
-    
     InheritorViewAttribute,
-        
     InheritorMonoView,
     OverrideMonoView,
-        
     HasInterface,
 }

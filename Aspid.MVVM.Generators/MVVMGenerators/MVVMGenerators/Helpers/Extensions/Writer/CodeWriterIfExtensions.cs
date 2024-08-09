@@ -34,7 +34,6 @@ public static class CodeWriterIfExtensions
     public static CodeWriter BeginBlockIf(this CodeWriter code, bool flag) =>
         !flag ? code : code.BeginBlock();
     
-    
     public static CodeWriter EndBlockIf(this CodeWriter code, Func<bool> condition) =>
         code.EndBlockIf(condition.Invoke());
     

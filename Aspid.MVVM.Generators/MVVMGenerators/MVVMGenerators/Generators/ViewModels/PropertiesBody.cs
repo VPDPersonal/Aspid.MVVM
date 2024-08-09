@@ -15,7 +15,7 @@ public static class PropertiesBody
             .AppendLoop(fields, code.AppendEvents)
             .AppendLine()
             .AppendLoop(fields, code.AppendProperty)
-            .AppendLoop(fields, code.AppendPartialMethods);
+            .AppendLoop(fields, code.AppendSetMethod);
     }
 
     private static void AppendEvents(this CodeWriter code, FieldData field)
@@ -46,35 +46,44 @@ public static class PropertiesBody
                   {{generalAccess}}{{type}} {{propertyName}}
                   {
                       {{getAccess}}get => {{name}};
-                      {{setAccess}}set 
-                      {
-                          if ({{Classes.ViewModelUtility.Global}}.EqualsDefault({{name}}, value)) return;
-                          
-                          On{{propertyName}}Changing({{name}}, value);
-                          {{name}} = value;
-                          On{{propertyName}}Changed(value);
-                          {{propertyName}}Changed?.Invoke({{name}});
-                      }
+                      {{setAccess}}set => Set{{propertyName}}(value);
                   }
                   
                   """);
     }
 
-    private static void AppendPartialMethods(this CodeWriter code, FieldData field)
+    private static void AppendSetMethod(this CodeWriter code, FieldData field)
     {
         var type = field.Field.Type;
-        var name = field.Field.GetPropertyName();
+        var name = field.Field.Name;
+        var propertyName = field.Field.GetPropertyName();
 
-        code
+        var changedMethod = $"On{propertyName}Changed";
+        var changingMethod = $"On{propertyName}Changing";
+
+        code.AppendMultiline(
+            $$"""
+            {{General.GeneratedCodeViewModelAttribute}}
+            private void Set{{propertyName}}({{type}} value)
+            {
+                if ({{Classes.EqualityComparer.Global}}<{{type}}>.Default.Equals({{name}}, value)) return;
+                
+                {{changingMethod}}({{name}}, value);
+                {{name}} = value;
+                {{changedMethod}}(value);
+                {{propertyName}}Changed?.Invoke({{name}});
+            }
+            
+            """)
             .AppendMultiline(
-                $"""
-                 {General.GeneratedCodeViewModelAttribute}
-                 partial void On{name}Changing({type} oldValue, {type} newValue);
-
-                 {General.GeneratedCodeViewModelAttribute}
-                 partial void On{name}Changed({type} newValue);
-
-                 """);
+            $"""
+            {General.GeneratedCodeViewModelAttribute}
+            partial void {changingMethod}({type} oldValue, {type} newValue);
+            
+            {General.GeneratedCodeViewModelAttribute}
+            partial void {changedMethod}({type} newValue);
+            
+            """);
     }
 
     private static string GetAccess(int number) => number switch

@@ -21,9 +21,5 @@
         <PackageReference ExcludeAssets="runtime" Include="Microsoft.CodeAnalysis.CSharp" Version="4.3.0"/>
         <PackageReference ExcludeAssets="runtime" Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="4.3.0"/>
     </ItemGroup>
-
-    <ItemGroup>
-      <Folder Include="Extensions\" />
-    </ItemGroup>
     
 </Project>

@@ -121,7 +121,7 @@ public class ViewModelGenerator : IIncrementalGenerator
         if (viewModel.Fields.Count > 0)
         {
             GenerateProperties(context, namespaceName, declarationText, viewModel);
-            IdBodyGenerator.GenerateViewModelId(context, namespaceName, declarationText,
+            IdBodyGenerator.GenerateViewModelId(context, declarationText, namespaceName,
                 viewModel.Fields.Select(field => field.Field));
         }
         

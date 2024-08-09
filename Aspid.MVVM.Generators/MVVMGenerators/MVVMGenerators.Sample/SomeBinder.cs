@@ -8,6 +8,11 @@ namespace MVVMGenerators.Sample
 {
     public partial class SomeBinder : IBinder<string>, IBinder<object>, IBinder<IBinder>
     {
+        public SomeBinder(string name)
+        {
+            
+        }
+        
         [BinderLog]
         public void SetValue(string value)
         {

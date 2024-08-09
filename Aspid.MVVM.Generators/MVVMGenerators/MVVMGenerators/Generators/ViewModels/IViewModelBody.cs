@@ -1,6 +1,7 @@
 using Microsoft.CodeAnalysis;
 using MVVMGenerators.Helpers;
 using System.Collections.Generic;
+using System.Linq;
 using MVVMGenerators.Helpers.Descriptions;
 using MVVMGenerators.Helpers.Extensions.Writer;
 using MVVMGenerators.Helpers.Extensions.Symbols;
@@ -14,14 +15,17 @@ public static class IViewModelBody
     private const string ChangedVar = "changed";
     private const string PropertyNameVar = "propertyName";
     private const string SpecificBinderVar = "specificBinder";
+    private const string SpecificReverseBinderVar = "specificReverseBinder";
 
     private const string SetValueMethod = "SetValue";
     private const string AddBindersMethod = "AddBinder";
     private const string AddBindersLocalMethod = "AddBinderLocal";
+    private const string AddReverseBindersLocalMethod = "AddReverseBinderLocal";
     private const string AddBindersMethodManual = "AddBinderManual";
     private const string AddBindersIternalMethod = "AddBinderIternal";
     private const string RemoveBindersMethod = "RemoveBinder";
     private const string RemoveBindersLocalMethod = "RemoveBinderLocal";
+    private const string RemoveReverseBindersLocalMethod = "RemoveReverseBinderLocal";
     private const string RemoveBindersMethodManual = "RemoveBinderManual";
     private const string RemoveBindersIternalMethod = "RemoveBinderIternal";
     
@@ -77,7 +81,14 @@ public static class IViewModelBody
             .AppendLoop(fields, field =>
             {
                 var propertyName = field.GetPropertyName();
-                code.AppendLine($"case {propertyName}Id: {AddBindersLocalMethod}({propertyName}, ref {propertyName}Changed); return;");
+                
+                code.AppendMultiline(
+                    $"""
+                    case {propertyName}Id: 
+                        {AddBindersLocalMethod}({propertyName}, ref {propertyName}Changed);
+                        if ({BinderVar}.IsReverseEnabled) {AddReverseBindersLocalMethod}<{field.Type}>(Set{propertyName});
+                        return;
+                    """);
             })
             .AppendMultiline(
                 $"""
@@ -89,17 +100,25 @@ public static class IViewModelBody
                  """)
             .EndBlock()
             .AppendLineIf(hasBaseType, $"base.{AddBindersIternalMethod}({BinderVar}, {PropertyNameVar});")
-            .AppendMultiline(
+            .AppendMultilineIf(fields.Any(),
                 $$"""
                 return;
             
                 void {{AddBindersLocalMethod}}<T>(T value, ref {{Classes.Action.Global}}<T> {{ChangedVar}})
-                {           
+                {   
                     if ({{BinderVar}} is not {{Classes.IBinder.Global}}<T> {{SpecificBinderVar}})
                         throw new {{Classes.Exception.Global}}();
-                
+                        
                     {{SpecificBinderVar}}.{{SetValueMethod}}(value);
                     {{ChangedVar}} += {{SpecificBinderVar}}.{{SetValueMethod}};
+                }
+                
+                void {{AddReverseBindersLocalMethod}}<T>({{Classes.Action.Global}}<T> setValue)
+                {
+                    if ({{BinderVar}} is not {{Classes.IReverseBinder.Global}}<T> {{SpecificReverseBinderVar}})
+                        throw new {{Classes.Exception.Global}}();
+                        
+                    {{SpecificReverseBinderVar}}.ValueChanged += setValue;
                 }
                 """)
             .EndBlock();
@@ -137,7 +156,13 @@ public static class IViewModelBody
             .AppendLoop(fields, field => 
             {
                 var propertyName = field.GetPropertyName();
-                code.AppendLine($"case {propertyName}Id: {RemoveBindersLocalMethod}(ref {propertyName}Changed); return;");
+                code.AppendMultiline(
+                    $"""
+                    case {propertyName}Id: 
+                        {RemoveBindersLocalMethod}(ref {propertyName}Changed);
+                        if ({BinderVar}.IsReverseEnabled) {RemoveReverseBindersLocalMethod}<{field.Type}>(Set{propertyName});
+                        return;
+                    """);
             })
             .AppendMultiline(
                 $"""
@@ -149,7 +174,7 @@ public static class IViewModelBody
                  """)
             .EndBlock()
             .AppendLineIf(hasBaseType, $"base.{RemoveBindersIternalMethod}({BinderVar}, {PropertyNameVar});")
-            .AppendMultiline(
+            .AppendMultilineIf(fields.Any(),
                 $$"""
                 return;
                 
@@ -160,6 +185,14 @@ public static class IViewModelBody
                         
                     {{ChangedVar}} -= {{SpecificBinderVar}}.{{SetValueMethod}};
                 }      
+                
+                void {{RemoveReverseBindersLocalMethod}}<T>({{Classes.Action.Global}}<T> setValue)
+                {
+                    if ({{BinderVar}} is not {{Classes.IReverseBinder.Global}}<T> {{SpecificReverseBinderVar}})
+                        throw new {{Classes.Exception.Global}}();
+                        
+                    {{SpecificReverseBinderVar}}.ValueChanged -= setValue;
+                }
                 """)
             .EndBlock();
     }

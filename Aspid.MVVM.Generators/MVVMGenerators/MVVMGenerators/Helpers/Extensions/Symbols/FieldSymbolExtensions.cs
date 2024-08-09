@@ -10,7 +10,7 @@ public static class FieldSymbolExtensions
     public static string GetPropertyNameFromFieldName(string name)
     {
         var prefixCount = GetPrefixCount();
-        name = name.Remove(0, prefixCount);
+        if (prefixCount > 0) name = name.Remove(0, prefixCount);
 
         var firstSymbol = name[0];
         if (char.IsLower(firstSymbol))

@@ -18,6 +18,12 @@ public static partial class Classes
     public static readonly TypeText IBinder =
         new("IBinder", Namespaces.UltimateUI_MVVM);
     
+    public static readonly AttributeText AsBinderAttribute =
+        new("AsBinder", Namespaces.UltimateUI_MVVM);
+    
+    public static readonly TypeText IReverseBinder =
+        new("IReverseBinder", Namespaces.UltimateUI_MVVM);
+    
     public static readonly TypeText MonoBinder =
         new("MonoBinder", Namespaces.UltimateUI_MVVM_Unity);
     

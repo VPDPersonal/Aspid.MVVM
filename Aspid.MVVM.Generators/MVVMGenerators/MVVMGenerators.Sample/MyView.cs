@@ -26,6 +26,15 @@ public partial class MyView3 : IView
 {
     private MonoBinder[] _someBinders;
     private MonoBinder _singleBinders;
+
+    [AsBinder(typeof(SomeBinder))]
+    private string _type;
+
+    [AsBinder(typeof(SomeBinder))]
+    private static string MyType => "";
+
+    [AsBinder(typeof(SomeBinder))]
+    private string newMyType => "";
     
     public void Initialize(IViewModel viewModel) =>
         InitializeIternal(viewModel);

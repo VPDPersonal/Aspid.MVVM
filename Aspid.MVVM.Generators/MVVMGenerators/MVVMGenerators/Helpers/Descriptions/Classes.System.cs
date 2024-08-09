@@ -8,4 +8,5 @@ public static partial class Classes
     
     public static readonly TypeText List = new("List", Namespaces.System_Collections_Generic);
     public static readonly TypeText Dictionary = new("Dictionary", Namespaces.System_Collections_Generic);
+    public static readonly TypeText EqualityComparer = new("EqualityComparer", Namespaces.System_Collections_Generic);
 }

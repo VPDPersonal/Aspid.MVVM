@@ -9,6 +9,9 @@ public static partial class Classes
     
     public static readonly AttributeText ViewAttribute = 
         new("View", Namespaces.UltimateUI_MVVM_Views);
+    
+    public static readonly AttributeText AsBinderAttribute =
+        new("AsBinder", Namespaces.UltimateUI_MVVM_Views);
 
     public static readonly TypeText MonoView =
         new("MonoView", Namespaces.UltimateUI_MVVM_Unity_Views);
@@ -17,9 +20,6 @@ public static partial class Classes
     #region Binders
     public static readonly TypeText IBinder =
         new("IBinder", Namespaces.UltimateUI_MVVM);
-    
-    public static readonly AttributeText AsBinderAttribute =
-        new("AsBinder", Namespaces.UltimateUI_MVVM);
     
     public static readonly TypeText IReverseBinder =
         new("IReverseBinder", Namespaces.UltimateUI_MVVM);

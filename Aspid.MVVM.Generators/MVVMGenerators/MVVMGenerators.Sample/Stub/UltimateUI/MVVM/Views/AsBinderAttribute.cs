@@ -1,6 +1,6 @@
 using System;
 
-namespace UltimateUI.MVVM;
+namespace UltimateUI.MVVM.Views;
 
 public sealed class AsBinderAttribute : Attribute
 {

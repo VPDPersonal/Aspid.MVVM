@@ -28,4 +28,33 @@ public static class TypeSymbolExtensions
 
         return false;
     }
+    
+    public static bool HasBaseType(this ITypeSymbol symbol, TypeText typeText) =>
+        symbol.HasBaseType(typeText.FullName);
+    
+    public static bool HasBaseType(this ITypeSymbol symbol, string baseTypeName)
+    {
+        for (var type = symbol; type != null; type = type.BaseType)
+            if (type.ToDisplayString() == baseTypeName) return true;
+
+        return false;
+    }
+    
+    public static bool HasBaseType(this ITypeSymbol symbol, TypeText typeText, out ITypeSymbol? foundBaseType) =>
+        symbol.HasBaseType(typeText.FullName, out foundBaseType);
+    
+    public static bool HasBaseType(this ITypeSymbol symbol, string baseTypeName, out ITypeSymbol? foundBaseType)
+    {
+        foundBaseType = null;
+        
+        for (var type = symbol; type != null; type = type.BaseType)
+        {
+            if (type.ToDisplayString() != baseTypeName) continue;
+            
+            foundBaseType = type;
+            return true;
+        }
+        
+        return false;
+    }
 }

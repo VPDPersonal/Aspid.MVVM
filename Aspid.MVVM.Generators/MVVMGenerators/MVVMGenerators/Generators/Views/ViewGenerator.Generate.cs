@@ -24,7 +24,7 @@ public partial class ViewGenerator
     private static void GenerateAsBinder(SourceProductionContext context, string namespaceName,
         DeclarationText declarationText, ViewData data)
     {
-        if (data.AsBinderFields.Length + data.AsBinderProperties.Length == 0) return;
+        if (data.AsBinderMembers.Length + data.PropertyMembers.Length == 0) return;
         
         var code = new CodeWriter();
         string[]? baseTypes = null;
@@ -32,10 +32,10 @@ public partial class ViewGenerator
             baseTypes = [Classes.IView.Global];
 
         code.AppendClass(namespaceName, declarationText,
-            body: () => code.AppendViewBinderFields(data),
+            body: () => code.AppendViewBinderCached(data),
             baseTypes);
             
-        context.AddSource(declarationText.GetFileName(namespaceName, "AsBinder"), code.GetSourceText());
+        context.AddSource(declarationText.GetFileName(namespaceName, "CachedBinders"), code.GetSourceText());
     }
     
     private static void GenerateIView(SourceProductionContext context, string namespaceName,

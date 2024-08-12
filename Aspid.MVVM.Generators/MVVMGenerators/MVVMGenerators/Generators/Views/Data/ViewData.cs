@@ -1,26 +1,20 @@
-using Microsoft.CodeAnalysis;
+using System.Collections.Immutable;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using MVVMGenerators.Generators.Views.Data.Members;
 
 namespace MVVMGenerators.Generators.Views.Data;
 
 public readonly struct ViewData(
     Inheritor inheritor, 
-    TypeDeclarationSyntax declaration,
-    IFieldSymbol[] viewFields,
-    IFieldSymbol[] binderFields,
-    AsBinderMember<IFieldSymbol>[] asBinderFields,
-    IPropertySymbol[] viewProperties, 
-    IPropertySymbol[] binderProperties, 
-    AsBinderMember<IPropertySymbol>[] asBinderProperties)
+    TypeDeclarationSyntax declaration, 
+    ImmutableArray<FieldMember> otherMembers, 
+    ImmutableArray<PropertyMember> propertyMembers, 
+    ImmutableArray<AsBinderMember> asBinderMembers)
 {
     public readonly Inheritor Inheritor = inheritor;
     public readonly TypeDeclarationSyntax Declaration = declaration;
 
-    public readonly IFieldSymbol[] ViewFields = viewFields;
-    public readonly IFieldSymbol[] BinderFields = binderFields;
-    public readonly AsBinderMember<IFieldSymbol>[] AsBinderFields = asBinderFields;
-    
-    public readonly IPropertySymbol[] ViewProperties = viewProperties;
-    public readonly IPropertySymbol[] BinderProperties = binderProperties;
-    public readonly AsBinderMember<IPropertySymbol>[] AsBinderProperties = asBinderProperties;
+    public readonly ImmutableArray<FieldMember> FieldMembers = otherMembers;
+    public readonly ImmutableArray<PropertyMember> PropertyMembers = propertyMembers;
+    public readonly ImmutableArray<AsBinderMember> AsBinderMembers = asBinderMembers;
 }

@@ -11,6 +11,7 @@ using MVVMGenerators.Helpers.Descriptions;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using MVVMGenerators.Generators.Views.Data;
 using MVVMGenerators.Helpers.Extensions.Symbols;
+using MVVMGenerators.Generators.Views.Data.Members;
 using MVVMGenerators.Helpers.Extensions.Declarations;
 
 using Field = Microsoft.CodeAnalysis.IFieldSymbol;
@@ -20,7 +21,8 @@ namespace MVVMGenerators.Generators.Views;
 
 public partial class ViewGenerator
 {
-    private static FoundForGenerator<ViewData> FindView(GeneratorSyntaxContext context, 
+    private static FoundForGenerator<ViewData> FindView(
+        GeneratorSyntaxContext context, 
         CancellationToken cancellationToken)
     {
         Debug.Assert(context.Node is TypeDeclarationSyntax);
@@ -30,92 +32,68 @@ public partial class ViewGenerator
         var symbol = context.SemanticModel.GetDeclaredSymbol(candidate, cancellationToken);
         if (symbol is null) return default;
 
-        var symbolMembers = symbol.GetMembers();
-        
-        var members = GetMembers(symbolMembers);
-        var inheritor = RecognizeInheritor(symbol, symbolMembers);
+        var members = symbol.GetMembers();
+        var inheritor = RecognizeInheritor(symbol, members);
+        var viewMembers = GetViewMembers(members);
 
-        return new FoundForGenerator<ViewData>(true, new ViewData(
-            inheritor,
-            candidate,
-            members.ViewFields,
-            members.BinderFields,
-            members.AsBinderFields,
-            members.ViewProperties,
-            members.BinderProperties,
-            members.AsBinderProperties));
+        var viewData = new ViewData(inheritor, candidate, viewMembers.FieldMembers, viewMembers.PropertyMembers, viewMembers.AsBinderMembers);
+        return new FoundForGenerator<ViewData>(true, viewData);
     }
 
-    private static Members GetMembers(ImmutableArray<ISymbol> members)
+    private static Members GetViewMembers(ImmutableArray<ISymbol> members)
     {
-        List<Field> viewFields = [];
-        List<Field> binderFields = [];
-        List<AsBinderMember<Field>> asBinderFields = [];
-        
-        List<Property> viewProperties = [];
-        List<Property> binderProperties = [];
-        List<AsBinderMember<Property>> asBinderProperties = [];
+        List<FieldMember> otherMembers = [];
+        List<PropertyMember> propertyMembers = [];
+        List<AsBinderMember> asBinderMembers = [];
         
         foreach (var member in members)
         {
-            switch (member)
-            {
-                case Field field:
-                    AddToList(field,viewFields, binderFields, asBinderFields);
-                    break;
-                
-                case Property property:
-                    AddToList(property,viewProperties, binderProperties, asBinderProperties);
-                    break;
-            }
-        }
-
-        return new Members(
-            viewFields,
-            binderFields,
-            asBinderFields,
-            viewProperties,
-            binderProperties,
-            asBinderProperties);
-
-        void AddToList<T>(T member, IList<T> viewList, IList<T> binderList, List<AsBinderMember<T>> list)
-            where T : ISymbol
-        {
             if (member.HasAttribute(Classes.AsBinderAttribute, out var attribute))
             {
-                if (attribute?.ConstructorArguments[0].Value is INamedTypeSymbol type 
-                    && type.HasInterface(Classes.IBinder))
-                {
-                    list.Add(new AsBinderMember<T>(member, type.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat)));
-                }
+                if (attribute?.ConstructorArguments[0].Value is not INamedTypeSymbol type) continue;
+                
+                if (type.IsAbstract) continue;
+                if (!type.HasInterface(Classes.IBinder)) continue;
+                
+                asBinderMembers.Add(new AsBinderMember(member, type));
             }
             else
             {
-                var type = GetType(member);
+                var isView = IsView(member);
                 
-                if (type == null) return;
-                if (!type.HasInterface(Classes.IBinder)) return;
-            
-                if (type.HasInterface(Classes.IView)) viewList.Add(member);
-                else binderList.Add(member);
+                if (isView != null)
+                {
+                    switch (member)
+                    {
+                        case Field field: otherMembers.Add(new FieldMember(field, isView.Value)); break;
+                        case Property property: propertyMembers.Add(new PropertyMember(property, isView.Value)); break;
+                    }
+                }
             }
         }
         
-        ITypeSymbol? GetType<T>(T member)
-            where T : ISymbol
+        return new Members(otherMembers, propertyMembers, asBinderMembers);
+
+        bool? IsView(ISymbol member)
         {
-            return member switch
+            var type = member switch
             {
                 Field field => field.Type is IArrayTypeSymbol arrayTypeSymbol ? arrayTypeSymbol.ElementType : field.Type,
                 Property property => property.Type is IArrayTypeSymbol arrayTypeSymbol ? arrayTypeSymbol.ElementType : property.Type,
                 _ => null
             };
+
+            if (type == null) return null;
+            if (type.HasInterface(Classes.IBinder)) return false;
+            if (type.HasInterface(Classes.IView)) return true;
+
+            return null;
         }
     }
 
     private static Inheritor RecognizeInheritor(INamedTypeSymbol symbol, ImmutableArray<ISymbol> members)
     {
-        if (HasViewModeAttributeInBase())
+        if (symbol.BaseType?.HasAttribute(Classes.ViewAttribute) ?? false) 
             return Inheritor.InheritorViewAttribute;
         
         if (symbol.HasBaseType(Classes.MonoView))
@@ -126,18 +104,6 @@ public partial class ViewGenerator
         }
         
         return symbol.HasInterface(Classes.IView) ? Inheritor.HasInterface : Inheritor.None;
-
-        // TODO Delete?
-        bool HasViewModeAttributeInBase()
-        {
-            for (var type = symbol.BaseType; type != null; type = type.BaseType)
-            {
-                if (!type.HasAttribute(Classes.ViewAttribute.FullName)) continue;
-                return true;
-            }
-
-            return false;
-        }
         
         bool HasOverrideInitializeIternal(IMethodSymbol method)
         {
@@ -153,20 +119,13 @@ public partial class ViewGenerator
         }
     }
     
-    private readonly ref struct Members(
-        IReadOnlyList<Field> viewFields,
-        IReadOnlyList<Field> binderFields,
-        IReadOnlyList<AsBinderMember<Field>> asBinderFields,
-        IReadOnlyList<Property> viewProperties,
-        IReadOnlyList<Property> binderProperties,
-        IReadOnlyList<AsBinderMember<Property>> asBinderProperties)
+    private readonly struct Members(
+        IEnumerable<FieldMember> fieldMembers, 
+        IEnumerable<PropertyMember> propertyMembers,
+        IEnumerable<AsBinderMember> ssBinderMembers)
     {
-        public readonly Field[] ViewFields = viewFields.ToArray();
-        public readonly Field[] BinderFields = binderFields.ToArray();
-        public readonly AsBinderMember<Field>[] AsBinderFields = asBinderFields.ToArray();
-        
-        public readonly Property[] ViewProperties = viewProperties.ToArray();
-        public readonly Property[] BinderProperties = binderProperties.ToArray();
-        public readonly AsBinderMember<Property>[] AsBinderProperties = asBinderProperties.ToArray();
+        public readonly ImmutableArray<FieldMember> FieldMembers = ImmutableArray.CreateRange(fieldMembers);
+        public readonly ImmutableArray<PropertyMember> PropertyMembers = ImmutableArray.CreateRange(propertyMembers);
+        public readonly ImmutableArray<AsBinderMember> AsBinderMembers = ImmutableArray.CreateRange(ssBinderMembers);
     }
 }

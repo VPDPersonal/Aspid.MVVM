@@ -25,5 +25,26 @@ namespace UltimateUI.MVVM.Unity.Views
         }
 
         protected abstract void InitializeIternal(IViewModel viewModel);
+        
+        protected static void BindSafely<T>(T binder, IViewModel viewModel, string id)
+            where T : Object, IBinder
+        {
+            if (!binder) return;
+            binder.Bind(viewModel, id);
+        }
+        
+        protected static void BindSafely(IBinder binder, IViewModel viewModel, string id)
+        {
+            binder?.Bind(viewModel, id);
+        }
+        
+        protected static void BindSafely<T>(T[] binders, IViewModel viewModel, string id)
+            where T : IBinder
+        {
+            if (binders == null) return;
+
+            foreach (var binder in binders)
+                binder.Bind(viewModel, id);
+        }
     }
 }

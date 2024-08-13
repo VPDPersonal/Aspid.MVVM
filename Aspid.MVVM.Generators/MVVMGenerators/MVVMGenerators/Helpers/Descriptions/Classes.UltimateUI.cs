@@ -38,6 +38,9 @@ public static partial class Classes
     public static readonly AttributeText BindAttribute =
         new("Bind", Namespaces.UltimateUI_MVVM_ViewModels);
     
+    public static readonly AttributeText RelayCommand =
+        new("RelayCommand", Namespaces.UltimateUI_MVVM_ViewModels);
+    
     public static readonly AttributeText AccessAttribute =
         new("Access", Namespaces.UltimateUI_MVVM_ViewModels);
     

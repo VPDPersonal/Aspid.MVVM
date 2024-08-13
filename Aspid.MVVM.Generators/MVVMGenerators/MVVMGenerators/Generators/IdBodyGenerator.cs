@@ -2,6 +2,7 @@ using System.Linq;
 using Microsoft.CodeAnalysis;
 using MVVMGenerators.Helpers;
 using System.Collections.Generic;
+using MVVMGenerators.Generators.ViewModels.Data;
 using MVVMGenerators.Generators.Views.Data;
 using MVVMGenerators.Helpers.Descriptions;
 using MVVMGenerators.Helpers.Extensions.Writer;
@@ -33,11 +34,11 @@ public static class IdBodyGenerator
     public static void GenerateViewModelId(
         SourceProductionContext context, 
         DeclarationText declarationText, 
-        string namespaceName, IEnumerable<IFieldSymbol> fields)
+        string namespaceName, IEnumerable<FieldData> fields)
     {
         var propertyNames = new List<(string, string)>(fields.Select(field =>
         {
-            var name = field.GetPropertyName();
+            var name = field.PropertyName;
             return (name, $"{name}Id");
         }));
         

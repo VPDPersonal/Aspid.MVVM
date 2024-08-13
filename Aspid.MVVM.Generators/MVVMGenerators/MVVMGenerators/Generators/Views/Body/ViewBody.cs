@@ -22,7 +22,7 @@ public static class ViewBody
     {
         var readOnlyData = new ReadOnlyViewData(data);
 
-        return readOnlyData.Inheritor switch
+        code = readOnlyData.Inheritor switch
         {
             Inheritor.None => code.AppendNone(in readOnlyData),
             Inheritor.InheritorViewAttribute => code.AppendInheritorView(in readOnlyData),
@@ -31,6 +31,14 @@ public static class ViewBody
             Inheritor.HasInterface => code.AppendHasInterface(in readOnlyData),
             _ => throw new ArgumentOutOfRangeException()
         };
+        
+        var isInstantiateBinders = readOnlyData.PropertyMembers.Length + readOnlyData.AsBinderMembers.Length > 0;
+        if (!isInstantiateBinders) return code;
+        
+        code.AppendLine()
+            .AppendInstantiateBindersMethods(readOnlyData);
+
+        return code;
     }
 
     private static CodeWriter AppendNone(this CodeWriter code, in ReadOnlyViewData data)
@@ -101,7 +109,9 @@ public static class ViewBody
 
     private static CodeWriter AppendInitialize(this CodeWriter code, in ReadOnlyViewData data)
     {
-        code.AppendCreateBinders(data)
+        var isInstantiateBinders = data.PropertyMembers.Length + data.AsBinderMembers.Length > 0;
+        
+        code.AppendLineIf(isInstantiateBinders, "InstantiateBinders();\n")
             .AppendLoop(data.FieldMembers, AppendFieldMember)
             .AppendLoop(data.PropertyMembers, AppendPropertyMember)
             .AppendLoop(data.AsBinderMembers, AppendAsBinderMember);
@@ -122,6 +132,19 @@ public static class ViewBody
             code.AppendLine($"BindSafely({name}, viewModel, {idName});");
         }
     }
+    private static CodeWriter AppendInstantiateBindersMethods(this CodeWriter code, ReadOnlyViewData data)
+    {
+        code.AppendMultiline(
+            $"""
+            {GeneratedAttribute}
+            private void InstantiateBinders()
+            """)
+            .BeginBlock()
+            .AppendCreateBinders(data)
+            .EndBlock();
+
+        return code;
+    }
     
     private static CodeWriter AppendCreateBinders(this CodeWriter code, ReadOnlyViewData data)
     {
@@ -134,7 +157,8 @@ public static class ViewBody
                     : $"{member.FieldName} ??= {member.Name};");
             });
             
-            code.AppendLine();
+            if (data.AsBinderMembers.Length > 0) 
+                code.AppendLine();
         }
 
         if (data.AsBinderMembers.Length > 0)
@@ -176,10 +200,9 @@ public static class ViewBody
                         : $"{member.BinderName} ??= new {member.AsBinderType}({member.Name});");
                 }
             });
-
-            code.AppendLine();
         }
 
         return code;
     }
+
 }

@@ -1,5 +1,4 @@
 using Microsoft.CodeAnalysis;
-using System.Diagnostics.CodeAnalysis;
 
 namespace MVVMGenerators.Helpers.Extensions.Symbols;
 

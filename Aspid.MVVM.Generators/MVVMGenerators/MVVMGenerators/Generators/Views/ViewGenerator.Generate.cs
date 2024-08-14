@@ -12,46 +12,53 @@ public partial class ViewGenerator
 {
     private static void GenerateCode(SourceProductionContext context, ViewData data)
     {
+        var dataSpan = new ViewDataSpan(data);
+        
         var declaration = data.Declaration;
-        var namespaceName = declaration.GetNamespaceName();
+        var @namespace = declaration.GetNamespaceName();
         var declarationText = declaration.GetDeclarationText();
         
-        GenerateIView(context, namespaceName, declarationText, data);
-        GenerateAsBinder(context, namespaceName, declarationText, data);
-        IdBodyGenerator.GenerateViewId(context, declarationText, namespaceName, data);
+        GenerateIView(@namespace, dataSpan, declarationText, context);
+        GenerateAsBinder(@namespace, dataSpan, declarationText, context);
+        IdBodyGenerator.GenerateViewId(context, declarationText, @namespace, data);
     }
 
-    private static void GenerateAsBinder(SourceProductionContext context, string namespaceName,
-        DeclarationText declarationText, ViewData data)
+    private static void GenerateAsBinder(
+        string @namespace,
+        in ViewDataSpan data,
+        DeclarationText declaration,
+        SourceProductionContext context)
     {
         if (data.AsBinderMembers.Length + data.PropertyMembers.Length == 0) return;
         
         var code = new CodeWriter();
-        string[]? baseTypes = null;
-        if (data.Inheritor == Inheritor.None)
-            baseTypes = [Classes.IView.Global];
+        var baseTypes = GetBaseTypes(data);
 
-        code.AppendClass(namespaceName, declarationText,
-            body: () => code.AppendViewBinderCached(data),
-            baseTypes);
+        code.AppendClassBegin(@namespace, declaration, baseTypes)
+            .AppendViewBinderCached(data)
+            .AppendClassEnd(@namespace);
             
-        context.AddSource(declarationText.GetFileName(namespaceName, "CachedBinders"), code.GetSourceText());
+        context.AddSource(declaration.GetFileName(@namespace, "CachedBinders"), code.GetSourceText());
     }
     
-    private static void GenerateIView(SourceProductionContext context, string namespaceName,
-        DeclarationText declarationText, ViewData viewData)
+    private static void GenerateIView(
+        string @namespace,
+        in ViewDataSpan data,
+        DeclarationText declaration,
+        SourceProductionContext context)
     {
-        if (viewData.Inheritor == Inheritor.OverrideMonoView) return;
+        if (data.Inheritor == Inheritor.OverrideMonoView) return;
         
         var code = new CodeWriter();
-        string[]? baseTypes = null;
-        if (viewData.Inheritor == Inheritor.None)
-            baseTypes = [Classes.IView.Global];
+        var baseTypes = GetBaseTypes(data);
 
-        code.AppendClass(namespaceName, declarationText,
-            body: () => code.AppendIView(viewData),
-            baseTypes);
-            
-        context.AddSource(declarationText.GetFileName(namespaceName, "IView"), code.GetSourceText());
+        code.AppendClassBegin(@namespace, declaration, baseTypes)
+            .AppendIView(data)
+            .AppendClassEnd(@namespace);
+        
+        context.AddSource(declaration.GetFileName(@namespace, "IView"), code.GetSourceText());
     }
+
+    private static string[]? GetBaseTypes(in ViewDataSpan data) =>
+        data.Inheritor == Inheritor.None ? [Classes.IView.Global] : null;
 }

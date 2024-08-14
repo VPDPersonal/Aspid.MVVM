@@ -4,7 +4,7 @@ using MVVMGenerators.Generators.Views.Data.Members;
 
 namespace MVVMGenerators.Generators.Views.Data;
 
-public readonly ref struct ReadOnlyViewData(ViewData viewData)
+public readonly ref struct ViewDataSpan(ViewData viewData)
 {
     public readonly Inheritor Inheritor = viewData.Inheritor;
     public readonly TypeDeclarationSyntax Declaration = viewData.Declaration;

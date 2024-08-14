@@ -9,17 +9,15 @@ namespace MVVMGenerators.Generators.Views.Body;
 
 public static class AsBinderBody
 {
-    public static CodeWriter AppendViewBinderCached(this CodeWriter code, ViewData data)
+    public static CodeWriter AppendViewBinderCached(this CodeWriter code, in ViewDataSpan data)
     {
-        var readOnlyData = new ReadOnlyViewData(data);
-
-        code.AppendProperties(readOnlyData.PropertyMembers)
-            .AppendAsBinders(readOnlyData.AsBinderMembers);
+        code.AppendProperties(data.PropertyMembers)
+            .AppendAsBinders(data.AsBinderMembers);
         
         return code;
     }
 
-    private static CodeWriter AppendProperties(this CodeWriter code, ReadOnlySpan<PropertyMember> properties)
+    private static CodeWriter AppendProperties(this CodeWriter code, in ReadOnlySpan<PropertyMember> properties)
     {
         code.AppendLoop(properties, property =>
         {
@@ -29,7 +27,7 @@ public static class AsBinderBody
         return code;
     }
     
-    private static CodeWriter AppendAsBinders(this CodeWriter code, ReadOnlySpan<AsBinderMember> members)
+    private static CodeWriter AppendAsBinders(this CodeWriter code, in ReadOnlySpan<AsBinderMember> members)
     {
         code.AppendLoop(members, member =>
         {

@@ -3,8 +3,8 @@ using Microsoft.CodeAnalysis;
 using MVVMGenerators.Helpers;
 using MVVMGenerators.Helpers.Descriptions;
 using MVVMGenerators.Generators.Views.Data;
-using MVVMGenerators.Generators.Views.Data.Members;
 using MVVMGenerators.Helpers.Extensions.Writer;
+using MVVMGenerators.Generators.Views.Data.Members;
 
 namespace MVVMGenerators.Generators.Views.Body;
 
@@ -18,30 +18,28 @@ public static class ViewBody
     private static readonly string IViewModel = Classes.IViewModel.Global;
     private static readonly string ProfilerMarker = Classes.ProfilerMarker.Global;
 
-    public static CodeWriter AppendIView(this CodeWriter code, in ViewData data)
+    public static CodeWriter AppendIView(this CodeWriter code, in ViewDataSpan data)
     {
-        var readOnlyData = new ReadOnlyViewData(data);
-
-        code = readOnlyData.Inheritor switch
+        code = data.Inheritor switch
         {
-            Inheritor.None => code.AppendNone(in readOnlyData),
-            Inheritor.InheritorViewAttribute => code.AppendInheritorView(in readOnlyData),
-            Inheritor.InheritorMonoView => code.AppendInheritorMonoView(in readOnlyData),
+            Inheritor.None => code.AppendNone(data),
+            Inheritor.InheritorViewAttribute => code.AppendInheritorView(data),
+            Inheritor.InheritorMonoView => code.AppendInheritorMonoView(data),
             Inheritor.OverrideMonoView => code,
-            Inheritor.HasInterface => code.AppendHasInterface(in readOnlyData),
+            Inheritor.HasInterface => code.AppendHasInterface(data),
             _ => throw new ArgumentOutOfRangeException()
         };
         
-        var isInstantiateBinders = readOnlyData.PropertyMembers.Length + readOnlyData.AsBinderMembers.Length > 0;
+        var isInstantiateBinders = data.PropertyMembers.Length + data.AsBinderMembers.Length > 0;
         if (!isInstantiateBinders) return code;
         
         code.AppendLine()
-            .AppendInstantiateBindersMethods(readOnlyData);
+            .AppendInstantiateBindersMethods(data);
 
         return code;
     }
 
-    private static CodeWriter AppendNone(this CodeWriter code, in ReadOnlyViewData data)
+    private static CodeWriter AppendNone(this CodeWriter code, in ViewDataSpan data)
     {
         var className = data.Declaration.Identifier.Text;
 
@@ -71,7 +69,7 @@ public static class ViewBody
         return code;
     }
 
-    private static CodeWriter AppendInheritorView(this CodeWriter code, in ReadOnlyViewData data)
+    private static CodeWriter AppendInheritorView(this CodeWriter code, in ViewDataSpan data)
     {
         /* lang=C# */
         code.AppendMultiline(
@@ -83,7 +81,7 @@ public static class ViewBody
         return code;
     }
 
-    public static CodeWriter AppendInheritorMonoView(this CodeWriter code, in ReadOnlyViewData data)
+    public static CodeWriter AppendInheritorMonoView(this CodeWriter code, in ViewDataSpan data)
     {
         /* lang=C# */
         code.AppendMultiline(
@@ -95,7 +93,7 @@ public static class ViewBody
         return code;
     }
 
-    public static CodeWriter AppendHasInterface(this CodeWriter code, in ReadOnlyViewData data)
+    public static CodeWriter AppendHasInterface(this CodeWriter code, in ViewDataSpan data)
     {
         /* lang=C# */
         code.AppendMultiline(
@@ -107,7 +105,7 @@ public static class ViewBody
         return code;
     }
 
-    private static CodeWriter AppendInitialize(this CodeWriter code, in ReadOnlyViewData data)
+    private static CodeWriter AppendInitialize(this CodeWriter code, in ViewDataSpan data)
     {
         var isInstantiateBinders = data.PropertyMembers.Length + data.AsBinderMembers.Length > 0;
         
@@ -132,7 +130,7 @@ public static class ViewBody
             code.AppendLine($"BindSafely({name}, viewModel, {idName});");
         }
     }
-    private static CodeWriter AppendInstantiateBindersMethods(this CodeWriter code, ReadOnlyViewData data)
+    private static CodeWriter AppendInstantiateBindersMethods(this CodeWriter code, in ViewDataSpan data)
     {
         code.AppendMultiline(
             $"""
@@ -146,7 +144,7 @@ public static class ViewBody
         return code;
     }
     
-    private static CodeWriter AppendCreateBinders(this CodeWriter code, ReadOnlyViewData data)
+    private static CodeWriter AppendCreateBinders(this CodeWriter code, in ViewDataSpan data)
     {
         if (data.PropertyMembers.Length > 0)
         {

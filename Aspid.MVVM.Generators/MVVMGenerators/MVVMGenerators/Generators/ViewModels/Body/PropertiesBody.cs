@@ -41,15 +41,6 @@ public static class PropertiesBody
             AppendProperty(field.Type, field.Name, field.PropertyName, field.GetAccess, field.SetAccess, field.IsReadOnly);
         });
         
-        code.AppendLoop(data.Commands, command =>
-        {
-            // var propertyName = 
-            //
-            // // TODO IRelay Type
-            // AppendProperty(null, PropertySymbolExtensions.GetFieldNameFromPropertyName(command.ExecuteMethod.Name), 
-            //     field.PropertyName, field.GetAccess, field.SetAccess);
-        });
-        
         return code;
 
         void AppendProperty(ITypeSymbol type, string name, string propertyName, int getAccess, int setAccess, bool isReadOnly)

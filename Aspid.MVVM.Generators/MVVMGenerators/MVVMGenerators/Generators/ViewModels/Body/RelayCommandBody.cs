@@ -19,12 +19,12 @@ public static class RelayCommandBody
         
         foreach (var command in data.Commands)
         {
+            var fieldName = command.FieldName;
             var methodName = command.Execute.Name;
-            var propertyName = $"{methodName}Command";
-            var fieldName = PropertySymbolExtensions.GetFieldName(propertyName);
+            var propertyName = command.PropertyName;
             
-            var type = GetCommandType(command);
-            var canExecuteName = GetCanExecuteName(command);
+            var type = command.GetTypeName();
+            var canExecuteAction = GetCanExecuteAction(command);
             
             code.AppendMultiline(
                 $"""
@@ -32,7 +32,7 @@ public static class RelayCommandBody
                 private {type} {fieldName};
                 
                 {GeneratedAttribute}
-                private {type} {propertyName} => {fieldName} ??= new {type}({methodName}{canExecuteName});
+                private {type} {propertyName} => {fieldName} ??= new {type}({methodName}{canExecuteAction});
                 """);
 
             index++;
@@ -42,24 +42,7 @@ public static class RelayCommandBody
         return code;
     }
 
-    private static string GetCommandType(in RelayCommandData command)
-    {
-        var type = new StringBuilder(Classes.RelayCommand.Global);
-        var parameters = command.Execute.Parameters;
-        if (parameters.Length <= 0) return type.ToString();
-        
-        type.Append("<");
-
-        foreach (var parameter in parameters)
-            type.Append($"{parameter.Type},");
-
-        type.Length--;
-        type.Append(">");
-
-        return type.ToString();
-    }
-
-    private static string GetCanExecuteName(in RelayCommandData command)
+    private static string GetCanExecuteAction(in RelayCommandData command)
     {
         var canExecuteName = new StringBuilder(command.CanExecuteName ?? "");
             

@@ -55,7 +55,7 @@ public static class IViewModelBody
         var hasInterface = data.HasViewModelInterface;
         
         AppendBaseMethodIf(!hasBaseType && !hasInterface);
-        AppendSwitch(data.Fields);
+        AppendSwitch(data);
         code.AppendLineIf(hasBaseType, "base.AddBinderInternal(binder, propertyName);");
         AppendLocalMethods(data.Fields);
         code.EndBlock();
@@ -80,7 +80,7 @@ public static class IViewModelBody
                 """);
         }
 
-        void AppendSwitch(in ReadOnlySpan<FieldData> fields)
+        void AppendSwitch(in ViewModelDataSpan data)
         {
             var additionalModificator = hasBaseType ? "override" : "virtual";
             
@@ -93,7 +93,7 @@ public static class IViewModelBody
                 """)
             .IncreaseIndent()
             .BeginBlock()
-            .AppendLoop(fields, field =>
+            .AppendLoop(data.Fields, field =>
             {
                 var type = field.Type;
                 var propertyName = field.PropertyName;
@@ -123,6 +123,20 @@ public static class IViewModelBody
                         }
                         """);
                 }
+            })
+            .AppendLoop(data.Commands, command =>
+            {
+                readOnlyFieldsExist = true;
+                var propertyName = command.PropertyName;
+                
+                code.AppendMultiline(
+                    $$"""
+                      case {{propertyName}}Id:
+                      {
+                          SetValueLocal({{propertyName}});
+                          return;
+                      }
+                      """);
             })
             .AppendMultiline(
                 """

@@ -870,7 +870,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bfc12b6b7b514b0487f612772f933b7c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <View>k__BackingField: {fileID: 0}
-  <Id>k__BackingField: 
-  _text: {fileID: 5180319446533110654}
+  _view: {fileID: 0}
+  _id: 
+  _text: {fileID: 0}
   _format: 
+  _isDebug: 0
+  _log: []

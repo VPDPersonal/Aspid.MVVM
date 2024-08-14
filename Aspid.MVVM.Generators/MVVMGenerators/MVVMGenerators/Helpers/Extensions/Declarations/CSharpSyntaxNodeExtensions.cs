@@ -7,14 +7,10 @@ public static class CSharpSyntaxNodeExtensions
 {
     public static string GetNamespaceName(this CSharpSyntaxNode node)
     {
-        var parent = node.Parent;
-        
-        while (parent != null)
+        for (var parent = node.Parent; parent != null; parent = parent.Parent)
         {
             if (parent is BaseNamespaceDeclarationSyntax namespaceDeclaration)
                 return namespaceDeclaration.Name.ToString();
-            
-            parent = parent.Parent;
         }
 
         return "";

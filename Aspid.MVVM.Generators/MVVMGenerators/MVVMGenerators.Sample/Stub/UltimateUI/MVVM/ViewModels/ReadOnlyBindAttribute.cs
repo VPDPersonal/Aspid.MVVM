@@ -1,6 +1,8 @@
-namespace UltimateUI.MVVM.ViewModels;
+using System;
 
-public class ReadOnlyBindAttribute
+// ReSharper disable once CheckNamespace
+namespace UltimateUI.MVVM.ViewModels
 {
-    
+    [AttributeUsage(AttributeTargets.Field)]
+    public sealed class ReadOnlyBindAttribute : Attribute { }
 }

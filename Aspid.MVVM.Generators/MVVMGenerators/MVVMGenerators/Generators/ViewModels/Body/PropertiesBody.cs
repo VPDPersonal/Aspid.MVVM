@@ -21,6 +21,8 @@ public static class PropertiesBody
     {
         code.AppendLoop(data.Fields, field =>
         {
+            if (field.IsReadOnly) return;
+            
             code.AppendMultiline(
                 $"""
                 {General.GeneratedCodeViewModelAttribute}
@@ -36,7 +38,7 @@ public static class PropertiesBody
     {
         code.AppendLoop(data.Fields, field =>
         {
-            AppendProperty(field.Type, field.Name, field.PropertyName, field.GetAccess, field.SetAccess);
+            AppendProperty(field.Type, field.Name, field.PropertyName, field.GetAccess, field.SetAccess, field.IsReadOnly);
         });
         
         code.AppendLoop(data.Commands, command =>
@@ -50,7 +52,7 @@ public static class PropertiesBody
         
         return code;
 
-        void AppendProperty(ITypeSymbol type, string name, string propertyName, int getAccess, int setAccess)
+        void AppendProperty(ITypeSymbol type, string name, string propertyName, int getAccess, int setAccess, bool isReadOnly)
         {
             var getAccessName = "";
             var setAccessName = "";
@@ -58,17 +60,29 @@ public static class PropertiesBody
             
             if (getAccess > setAccess) setAccessName = GetAccess(setAccess);
             else if (getAccess < setAccess) getAccessName = GetAccess(getAccess);
-            
-            code.AppendMultiline(
-                $$"""
-                  {{General.GeneratedCodeViewModelAttribute}}
-                  {{generalAccessName}}{{type}} {{propertyName}}
-                  {
-                      {{getAccessName}}get => {{name}};
-                      {{setAccessName}}set => Set{{propertyName}}(value);
-                  }
-                  
-                  """);
+
+            if (isReadOnly)
+            {
+                code.AppendMultiline(
+                    $"""
+                    {General.GeneratedCodeViewModelAttribute}
+                    {generalAccessName}{type} {propertyName} => {name};
+                    
+                    """);
+            }
+            else
+            {
+                code.AppendMultiline(
+                    $$"""
+                    {{General.GeneratedCodeViewModelAttribute}}
+                    {{generalAccessName}}{{type}} {{propertyName}}
+                    {
+                        {{getAccessName}}get => {{name}};
+                        {{setAccessName}}set => Set{{propertyName}}(value);
+                    }
+                    
+                    """);
+            }
         }
 
         static string GetAccess(int number) => number switch
@@ -86,6 +100,8 @@ public static class PropertiesBody
         
         code.AppendLoop(data.Fields, (i, field) =>
         {
+            if (field.IsReadOnly) return;
+            
             var type = field.Type;
             var name = field.Name;
             var propertyName = field.PropertyName;

@@ -5,9 +5,9 @@ namespace MVVMGenerators.Helpers.Extensions.Symbols;
 public static class FieldSymbolExtensions
 {
     public static string GetPropertyName(this IFieldSymbol symbol) =>
-        GetPropertyNameFromFieldName(symbol.Name);
+        GetPropertyName(symbol.Name);
     
-    public static string GetPropertyNameFromFieldName(string name)
+    public static string GetPropertyName(string name)
     {
         var prefixCount = GetPrefixCount();
         if (prefixCount > 0) name = name.Remove(0, prefixCount);

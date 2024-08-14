@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using Microsoft.CodeAnalysis;
 using MVVMGenerators.Generators.ViewModels.Body;
@@ -20,7 +21,27 @@ public partial class ViewModelGenerator
         if (dataSpan.Fields.Length > 0)
         {
             GenerateProperties(@namespace, dataSpan, declarationText, context);
-            IdBodyGenerator.GenerateViewModelId(@namespace, declarationText, dataSpan.Fields, context);
+
+            var idList = new List<(string, string)>();
+
+            foreach (var field in dataSpan.Fields)
+            {
+                var name = field.PropertyName;
+                idList.Add((name, $"{name}Id"));
+            }
+            
+            foreach (var command in dataSpan.Commands)
+            {
+                var name = command.Execute.Name + "Command";
+                idList.Add((name, $"{name}Id"));
+            }
+            
+            IdBodyGenerator.GenerateViewModelId(@namespace, declarationText, context, idList);
+        }
+
+        if (dataSpan.Commands.Length > 0)
+        {
+            GenerateCommands(@namespace, dataSpan, declarationText, context);
         }
 
         GenerateIViewModel(@namespace, dataSpan, declarationText, context);
@@ -72,6 +93,21 @@ public partial class ViewModelGenerator
          *  }
          */
         #endregion
+    }
+
+    private static void GenerateCommands(
+        string @namespace,
+        in ViewModelDataSpan data,
+        DeclarationText declaration,
+        SourceProductionContext context)
+    {
+        var code = new CodeWriter();
+
+        code.AppendClassBegin(@namespace, declaration)
+            .AppendRelayCommandBody(data)
+            .AppendClassEnd(@namespace);
+
+        context.AddSource(declaration.GetFileName(@namespace, "Commands"), code.GetSourceText());
     }
 
     private static void GenerateIViewModel(

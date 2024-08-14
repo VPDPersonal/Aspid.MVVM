@@ -23,7 +23,7 @@ public readonly struct AsBinderMember(ISymbol member, ITypeSymbol asBinderType) 
         ? $"{property.GetFieldName()}Binder"
         : $"{member.Name}Binder";
 
-    public string Id => $"{FieldSymbolExtensions.GetPropertyNameFromFieldName(member.Name)}Id";
+    public string Id => $"{FieldSymbolExtensions.GetPropertyName(member.Name)}Id";
     
     public bool IsUnityEngineObject => Type switch
     {

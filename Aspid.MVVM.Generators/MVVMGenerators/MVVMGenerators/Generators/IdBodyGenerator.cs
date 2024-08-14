@@ -12,6 +12,7 @@ namespace MVVMGenerators.Generators;
 
 public static class IdBodyGenerator
 {
+
     public static void GenerateViewId(
         string @namespace,
         in ViewDataSpan data,
@@ -23,13 +24,13 @@ public static class IdBodyGenerator
         var idList = new List<(string, string)>(capacity);
 
         foreach (var field in data.FieldMembers)
-            idList.Add((FieldSymbolExtensions.GetPropertyNameFromFieldName(field.Name), field.Id));
+            idList.Add((FieldSymbolExtensions.GetPropertyName(field.Name), field.Id));
         
         foreach (var property in data.PropertyMembers)
             idList.Add((property.Name, property.Id));
         
         foreach (var member in data.AsBinderMembers)
-            idList.Add((FieldSymbolExtensions.GetPropertyNameFromFieldName(member.Name), member.Id));
+            idList.Add((FieldSymbolExtensions.GetPropertyName(member.Name), member.Id));
         
         Generate(isNameOf, @namespace, General.GeneratedCodeViewAttribute, declaration, context, idList);
         
@@ -40,24 +41,16 @@ public static class IdBodyGenerator
     public static void GenerateViewModelId(
         string @namespace,
         DeclarationText declaration, 
-        in ReadOnlySpan<FieldData> fields,
-        SourceProductionContext context)
+        SourceProductionContext context,
+        IEnumerable<(string, string)> names)
     {
         const bool isNameOf = true;
-        var idList = new List<(string, string)>(fields.Length);
-
-        foreach (var field in fields)
-        {
-            var name = field.PropertyName;
-            idList.Add((name, $"{name}Id"));
-        }
-        
-        Generate(isNameOf, @namespace, General.GeneratedCodeViewAttribute, declaration, context, idList);
+        Generate(isNameOf, @namespace, General.GeneratedCodeViewAttribute, declaration, context, names);
         
         // Generation Example
         // private const string MyNameId = nameof(MyName);
     }
-    
+
     private static void Generate(
         bool isNameOf,
         string @namespace, 

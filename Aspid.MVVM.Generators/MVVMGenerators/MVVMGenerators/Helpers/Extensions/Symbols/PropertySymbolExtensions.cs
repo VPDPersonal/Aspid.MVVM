@@ -5,9 +5,9 @@ namespace MVVMGenerators.Helpers.Extensions.Symbols;
 public static class PropertySymbolExtensions
 {
     public static string GetFieldName(this IPropertySymbol symbol) =>
-        GetFieldNameFromPropertyName(symbol.Name);
+        GetFieldName(symbol.Name);
     
-    public static string GetFieldNameFromPropertyName(string name)
+    public static string GetFieldName(string name)
     {
         if (name.Length == 0) return name;
         

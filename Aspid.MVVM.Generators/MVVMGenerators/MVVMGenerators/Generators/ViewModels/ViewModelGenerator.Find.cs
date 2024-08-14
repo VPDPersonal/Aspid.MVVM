@@ -4,6 +4,7 @@ using Microsoft.CodeAnalysis;
 using MVVMGenerators.Helpers;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Linq;
 using Microsoft.CodeAnalysis.CSharp;
 using System.Runtime.CompilerServices;
 using MVVMGenerators.Helpers.Descriptions;
@@ -28,11 +29,18 @@ public partial class ViewModelGenerator
 
         var fields = new List<IFieldSymbol>();
         var methods = new List<IMethodSymbol>();
-
-        symbol.FillMembers(fields: fields, methods: methods);
+        var properties = new List<IPropertySymbol>();
+        
+        symbol.FillMembers(fields: fields, methods: methods, properties: properties);
         
         var fieldData = FindFields(fields);
-        var commandData = FindCommand(methods);
+
+        var generatedProperties = fieldData
+            .Where(field => field.Type.ToString() == "bool")
+            .Select(field => FieldSymbolExtensions.GetPropertyName(field.Name))
+            .ToArray();
+        
+        var commandData = FindCommand(methods, properties, generatedProperties);
         
         var hasBaseType = false;
         var hasInterface = symbol.HasInterface(Classes.IViewModel.FullName);
@@ -58,12 +66,15 @@ public partial class ViewModelGenerator
         
         foreach (var field in fields)
         {
-            if (!field.HasAttribute(Classes.BindAttribute.FullName)) continue;
+            var isBind = field.HasAttribute(Classes.BindAttribute);
+            var idReadOnlyBind = !isBind && field.HasAttribute(Classes.ReadOnlyBindAttribute);
+            
+            if (!isBind && !idReadOnlyBind) continue;
 
             var getAccess = -1;
             var setAccess = -1;
 
-            if (field.HasAttribute(Classes.AccessAttribute.FullName, out var accessAttribute))
+            if (field.HasAttribute(Classes.AccessAttribute, out var accessAttribute))
             {
                 if (accessAttribute!.ConstructorArguments.Length > 0)
                 {
@@ -86,77 +97,76 @@ public partial class ViewModelGenerator
                 }
             }
 
-            data.Add(new FieldData(field, getAccess, setAccess));
+            if (idReadOnlyBind)
+                setAccess = getAccess;
+
+            data.Add(new FieldData(field, getAccess, setAccess, idReadOnlyBind));
         }
 
         return ImmutableArray.CreateRange(data);
     }
 
-    private static ImmutableArray<RelayCommandData> FindCommand(IReadOnlyCollection<IMethodSymbol> methods)
+    private static ImmutableArray<RelayCommandData> FindCommand(
+        IReadOnlyCollection<IMethodSymbol> methods,
+        IReadOnlyCollection<IPropertySymbol> properties,
+        IReadOnlyCollection<string> generatedBoolProperties)
     {
         var commandData = new List<RelayCommandData>();
-        
-        foreach (var executeMethod in methods)
+
+        foreach (var method in methods)
         {
-            if (!executeMethod.HasAttribute(Classes.RelayCommand, out var attribute)) continue;
+            if (!method.HasAttribute(Classes.RelayCommandAttribute, out var attribute)) continue;
             
-            TypedConstant? argument = null;
-            foreach (var namedArgument in attribute!.NamedArguments)
-            {
-                if (namedArgument.Key != "CanExecute") continue;
+            var canExecuteArgument = attribute!.NamedArguments
+                .Where(pair => pair.Key == "CanExecute")
+                .Select(pair => pair.Value.Value as string)
+                .FirstOrDefault();
 
-                argument = namedArgument.Value;
-                break;
-            }
-
-            if (argument is not null)
+            if (!string.IsNullOrEmpty(canExecuteArgument))
             {
-                if (argument.Value.Value is null) continue;
-                var canExecuteName = (string)argument.Value.Value;
+                var isExist = false;
+                var isLambda = false;
+                var isMethod = false;
+
+                var canExecuteMethods = methods.Where(method2 =>
+                    method2.ReturnType.ToString() == "bool" &&
+                    method2.Name == canExecuteArgument).ToArray();
                 
-                if (TryGetCanExecuteMethod(canExecuteName, executeMethod.TypeArguments, out var canExecuteMethod))
-                    commandData.Add(new RelayCommandData(executeMethod, canExecuteMethod));
-                
-                continue; 
-            }
-
-            commandData.Add(new RelayCommandData(executeMethod));
-        }
-
-        return ImmutableArray.CreateRange(commandData);
-
-        bool TryGetCanExecuteMethod(
-            string canExecuteName,
-            ImmutableArray<ITypeSymbol> canExecuteArguments, 
-            out IMethodSymbol? canExecuteMethod)
-        {
-            canExecuteMethod = null;
-                    
-            foreach (var method in methods)
-            {
-                if (method.Name != canExecuteName) continue;
-
-                var arguments = method.TypeArguments;
-                if (canExecuteArguments.Length != arguments.Length) continue;
-
-                var argumentsAreEqual = true;
-                for (var i = 0; i < arguments.Length; i++)
+                if (canExecuteMethods.Length > 0)
                 {
-                    var canExecuteTypeArgument = canExecuteArguments[i].ContainingType?.ToDisplayString();
-                    var typeArgument = arguments[i].ContainingType?.ToDisplayString();
-                    if (typeArgument == canExecuteTypeArgument) continue;
-
-                    argumentsAreEqual = false;
-                    break;
+                    isExist = canExecuteMethods.Any(method2 => method2.Parameters.Length == method.Parameters.Length);
+                    isLambda = !isExist && canExecuteMethods.Any(method2 => method2.Parameters.Length == 0);
+                    
+                    if (isLambda) isExist = true;
+                    if (isExist) isMethod = true;
                 }
-                        
-                if (!argumentsAreEqual) continue;
                 
-                canExecuteMethod = method;
-                return true;
-            }
+                if (!isExist)
+                {
+                    var canExecuteProperties = properties.Where(property => 
+                        property.Type.ToString() == "bool" &&
+                        property.Name == canExecuteArgument).ToArray();
+                    
+                    isExist = canExecuteProperties.Any();
+                    isLambda = isExist;
+                }
 
-            return false;
+                if (!isExist)
+                {
+                    var canExecuteProperties = generatedBoolProperties.Where(property => property == canExecuteArgument);
+                    if (canExecuteProperties.Any()) isExist = true;
+                    isLambda = isExist;
+                }
+
+                if (!isExist) continue;
+                commandData.Add(new RelayCommandData(method, canExecuteArgument, isMethod, isLambda));
+            }
+            else
+            {
+                commandData.Add(new RelayCommandData(method));
+            }
         }
+        
+        return ImmutableArray.CreateRange(commandData);
     }
 }

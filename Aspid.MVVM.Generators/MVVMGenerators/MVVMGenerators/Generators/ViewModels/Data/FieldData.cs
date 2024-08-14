@@ -3,7 +3,11 @@ using MVVMGenerators.Helpers.Extensions.Symbols;
 
 namespace MVVMGenerators.Generators.ViewModels.Data;
 
-public readonly struct FieldData(IFieldSymbol field, int getAccess, int setAccess)
+public readonly struct FieldData(
+    IFieldSymbol field,
+    int getAccess,
+    int setAccess,
+    bool isReadOnly)
 {
     public readonly ITypeSymbol Type = field.Type;
     
@@ -12,4 +16,5 @@ public readonly struct FieldData(IFieldSymbol field, int getAccess, int setAcces
     
     public readonly int SetAccess = setAccess;
     public readonly int GetAccess = getAccess;
+    public readonly bool IsReadOnly = isReadOnly;
 }

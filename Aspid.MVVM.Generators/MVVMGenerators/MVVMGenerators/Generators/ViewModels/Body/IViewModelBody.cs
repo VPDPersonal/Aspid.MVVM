@@ -97,22 +97,43 @@ public static class IViewModelBody
             {
                 var type = field.Type;
                 var propertyName = field.PropertyName;
-                
-                code.AppendMultiline(
-                    $"""
-                    case {propertyName}Id:
-                        AddBinderLocal({propertyName}, ref {propertyName}Changed);
-                        if (binder.IsReverseEnabled) AddReverseBinderLocal<{type}>(Set{propertyName});
-                        return;
-                    """);
+
+                if (field.IsReadOnly)
+                {
+                    code.AppendMultiline(
+                        $$"""
+                        case {{propertyName}}Id:
+                        {
+                            if (binder is not {{IBinder}}<{{type}}> specificBinder)
+                                throw new {{Exception}}();
+                        
+                            specificBinder.SetValue({{propertyName}});
+                            return;
+                        }
+                        """);
+                }
+                else
+                {
+                    code.AppendMultiline(
+                        $$"""
+                        case {{propertyName}}Id:
+                        {
+                            AddBinderLocal({{propertyName}}, ref {{propertyName}}Changed);
+                            if (binder.IsReverseEnabled) AddReverseBinderLocal<{{type}}>(Set{{propertyName}});
+                            return;
+                        }
+                        """);
+                }
             })
             .AppendMultiline(
                 """
                 default:
+                {
                     var isAdded = false;
                     AddBinderManual(binder, propertyName, ref isAdded);
                     if (isAdded) return;
                     break;
+                }
                 """)
             .EndBlock();
         }
@@ -191,24 +212,30 @@ public static class IViewModelBody
                 .IncreaseIndent()
                 .AppendLoop(fields, field =>
                 {
+                    if (field.IsReadOnly) return;
+                    
                     var type = field.Type;
                     var propertyName = field.PropertyName;
                 
                     code.AppendMultiline(
-                        $"""
-                         case {propertyName}Id:
-                             RemoveBinderLocal(ref {propertyName}Changed);
-                             if (binder.IsReverseEnabled) RemoveReverseBinderLocal<{type}>(Set{propertyName});
-                             return;
-                         """);
+                        $$"""
+                        case {{propertyName}}Id:
+                        {
+                            RemoveBinderLocal(ref {{propertyName}}Changed);
+                            if (binder.IsReverseEnabled) RemoveReverseBinderLocal<{{type}}>(Set{{propertyName}});
+                            return;
+                        }
+                        """);
                 })
                 .AppendMultiline(
                     """
                     default:
+                    {
                         var isRemoved = false;
                         RemoveBinderManual(binder, propertyName, ref isRemoved);
                         if (isRemoved) return;
                         break;
+                    }
                     """)
                 .EndBlock();
         }

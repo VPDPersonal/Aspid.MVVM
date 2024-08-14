@@ -1,20 +1,16 @@
 #nullable disable
 using UnityEngine;
-using UltimateUI.MVVM.Views;
 using UltimateUI.MVVM.ViewModels;
 
 // ReSharper disable once CheckNamespace
-namespace UltimateUI.MVVM.Unity.Views
+namespace UltimateUI.MVVM.Views
 {
-    public abstract class MonoView : MonoBehaviour, IView
+    public abstract class View : IView
     {
 #if !ULTIMATE_UI_MVVM_UNITY_PROFILER_DISABLED
-        private static readonly global::Unity.Profiling.ProfilerMarker _initializeMarker = new("MonoView.Initialize");
+        private static readonly global::Unity.Profiling.ProfilerMarker _initializeMarker = new("View.Initialize");
 #endif
-
-        protected virtual void OnValidate() =>
-            ViewUtility.ValidateBinders(this);
-
+        
         public void Initialize(IViewModel viewModel)
         {
 #if !ULTIMATE_UI_MVVM_UNITY_PROFILER_DISABLED

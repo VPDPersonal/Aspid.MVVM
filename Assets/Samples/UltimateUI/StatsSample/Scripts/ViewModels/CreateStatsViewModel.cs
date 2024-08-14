@@ -18,13 +18,18 @@ namespace UltimateUI.Samples.StatsSample.ViewModels
         [Bind] private int _skillPointsAvailable;
         [Bind] private bool _isDraft;
         
-        [Bind] private IRelayCommand _confirmCommand;
-        [Bind] private IRelayCommand _resetToDefaultCommand;
-        [Bind] private IRelayCommand<Skill> _addSkillPointToCommand;
-        [Bind] private IRelayCommand<Skill> _removeSkillPointToCommand;
+        [ReadOnlyBind] private readonly IRelayCommand _confirmCommand;
+        [ReadOnlyBind] private readonly IRelayCommand _resetToDefaultCommand;
+        [ReadOnlyBind] private readonly IRelayCommand<Skill> _addSkillPointToCommand;
+        [ReadOnlyBind] private readonly IRelayCommand<Skill> _removeSkillPointToCommand;
         
         private readonly Hero _hero;
+
+        private IRelayCommand _command;
         
+        private IRelayCommand Command => 
+            _command ??= new RelayCommand(Confirm, () => IsDraft);
+
         public CreateStatsViewModel(Hero hero)
         {
             _hero = hero;
@@ -79,7 +84,7 @@ namespace UltimateUI.Samples.StatsSample.ViewModels
             _ => throw new ArgumentOutOfRangeException(nameof(skill), skill, null)
         };
         
-        // [BindCommand]
+        // [RelayCommand(CanExecute = nameof(IsDraft))]
         private void Confirm()
         {
             _hero.SettSkillPointTo(Skill.Cool, Cool);
@@ -93,7 +98,7 @@ namespace UltimateUI.Samples.StatsSample.ViewModels
                 throw new Exception();
         }
         
-        // [BindCommand]
+        // [RelayCommand(CanExecute = nameof(IsDraft))]
         private void ResetToDefault()
         {
             Cool = _hero.GetNumberSkillPointFrom(Skill.Cool);
@@ -105,7 +110,7 @@ namespace UltimateUI.Samples.StatsSample.ViewModels
             SkillPointsAvailable = _hero.SkillPointsAvailable;
         }
         
-        // [BindCommand]
+        // [RelayCommand(CanExecute = nameof(CanAddSkillPointTo))]
         private void AddSkillPointTo(Skill skill)
         {
             if (SkillPointsAvailable == 0) return;
@@ -113,8 +118,10 @@ namespace UltimateUI.Samples.StatsSample.ViewModels
             SetSkillPointsTo(skill, GetNumberSkillPointFrom(skill) + 1);
             SkillPointsAvailable--;
         }
+
+        // private bool CanAddSkillPointTo() => SkillPointsAvailable > 0;
         
-        // [BindCommand]
+        // [RelayCommand(CanExecute = nameof(CanRemoveSkillPointTo))]
         private void RemoveSkillPointTo(Skill skill)
         {
             var skillPoints = GetNumberSkillPointFrom(skill);
@@ -123,6 +130,9 @@ namespace UltimateUI.Samples.StatsSample.ViewModels
             SetSkillPointsTo(skill, GetNumberSkillPointFrom(skill) - 1);
             SkillPointsAvailable++;
         }
+
+        // private bool CanRemoveSkillPointTo(Skill skill) =>
+        //     GetNumberSkillPointFrom(skill) != _hero.GetNumberSkillPointFrom(skill);
         
         private void OnSkillChanged(Skill skill) 
         {

@@ -1,64 +1,74 @@
-using System.Linq;
+using System;
 using Microsoft.CodeAnalysis;
 using MVVMGenerators.Helpers;
 using System.Collections.Generic;
-using MVVMGenerators.Generators.ViewModels.Data;
-using MVVMGenerators.Generators.Views.Data;
 using MVVMGenerators.Helpers.Descriptions;
+using MVVMGenerators.Generators.Views.Data;
 using MVVMGenerators.Helpers.Extensions.Writer;
 using MVVMGenerators.Helpers.Extensions.Symbols;
+using MVVMGenerators.Generators.ViewModels.Data;
 
 namespace MVVMGenerators.Generators;
 
 public static class IdBodyGenerator
 {
     public static void GenerateViewId(
-        SourceProductionContext context, 
-        DeclarationText declarationText, 
-        string namespaceName, in ViewData data)
+        string @namespace,
+        in ViewDataSpan data,
+        DeclarationText declaration, 
+        SourceProductionContext context)
     {
-        var capacity = data.FieldMembers.Length + data.PropertyMembers.Length + data.AsBinderMembers.Length;
-        var propertyNames = new List<(string, string)>(capacity);
-        
-        propertyNames.AddRange(data.FieldMembers.Select(member => (FieldSymbolExtensions.GetPropertyNameFromFieldName(member.Name), member.Id)));
-        propertyNames.AddRange(data.PropertyMembers.Select(member => (member.Name, member.Id)));
-        propertyNames.AddRange(data.AsBinderMembers.Select(member => (FieldSymbolExtensions.GetPropertyNameFromFieldName(member.Name), member.Id)));
-
         const bool isNameOf = false;
-        Generate(context, declarationText, namespaceName, General.GeneratedCodeViewAttribute, propertyNames, isNameOf);
+        var capacity = data.FieldMembers.Length + data.PropertyMembers.Length + data.AsBinderMembers.Length;
+        var idList = new List<(string, string)>(capacity);
+
+        foreach (var field in data.FieldMembers)
+            idList.Add((FieldSymbolExtensions.GetPropertyNameFromFieldName(field.Name), field.Id));
+        
+        foreach (var property in data.PropertyMembers)
+            idList.Add((property.Name, property.Id));
+        
+        foreach (var member in data.AsBinderMembers)
+            idList.Add((FieldSymbolExtensions.GetPropertyNameFromFieldName(member.Name), member.Id));
+        
+        Generate(isNameOf, @namespace, General.GeneratedCodeViewAttribute, declaration, context, idList);
         
         // Generation Example
         // private const string MyNameId = "MyName";
     }
 
     public static void GenerateViewModelId(
-        SourceProductionContext context, 
-        DeclarationText declarationText, 
-        string namespaceName, IEnumerable<FieldData> fields)
+        string @namespace,
+        DeclarationText declaration, 
+        in ReadOnlySpan<FieldData> fields,
+        SourceProductionContext context)
     {
-        var propertyNames = new List<(string, string)>(fields.Select(field =>
+        const bool isNameOf = true;
+        var idList = new List<(string, string)>(fields.Length);
+
+        foreach (var field in fields)
         {
             var name = field.PropertyName;
-            return (name, $"{name}Id");
-        }));
+            idList.Add((name, $"{name}Id"));
+        }
         
-        const bool isNameOf = true;
-        Generate(context, declarationText, namespaceName, General.GeneratedCodeViewAttribute, propertyNames, isNameOf);
+        Generate(isNameOf, @namespace, General.GeneratedCodeViewAttribute, declaration, context, idList);
         
         // Generation Example
         // private const string MyNameId = nameof(MyName);
     }
     
-    
     private static void Generate(
+        bool isNameOf,
+        string @namespace, 
+        string generatorAttribute,
+        DeclarationText declaration,
         SourceProductionContext context,
-        DeclarationText declarationText,
-        string namespaceName, string generatorAttribute,
-        IEnumerable<(string, string)> names, bool isNameOf)
+        IEnumerable<(string, string)> names)
     {
         var code = new CodeWriter();
 
-        code.AppendClass(namespaceName, declarationText,
+        code.AppendClass(@namespace, declaration,
             body: () =>
             {
                 code.AppendLoop(names, (tuple) =>
@@ -70,7 +80,7 @@ public static class IdBodyGenerator
                 });
             });
         
-        context.AddSource(declarationText.GetFileName(namespaceName, "Id"), code.GetSourceText());
+        context.AddSource(declaration.GetFileName(@namespace, "Id"), code.GetSourceText());
         
         #region Generation Example
         /*  namespace MyNamespace<

@@ -14,13 +14,13 @@ public partial class ViewGenerator
     {
         var dataSpan = new ViewDataSpan(data);
         
-        var declaration = data.Declaration;
+        var declaration = dataSpan.Declaration;
         var @namespace = declaration.GetNamespaceName();
         var declarationText = declaration.GetDeclarationText();
         
         GenerateIView(@namespace, dataSpan, declarationText, context);
         GenerateAsBinder(@namespace, dataSpan, declarationText, context);
-        IdBodyGenerator.GenerateViewId(context, declarationText, @namespace, data);
+        IdBodyGenerator.GenerateViewId(@namespace, dataSpan, declarationText, context);
     }
 
     private static void GenerateAsBinder(

@@ -21,7 +21,7 @@ public static class CodeWriteClassExtension
         this CodeWriter code, 
         string? @namespace, 
         DeclarationText declaration,
-        string[]? baseTypes)
+        params string[]? baseTypes)
     {
         var hasNamespace = !string.IsNullOrEmpty(@namespace);
         

@@ -10,30 +10,35 @@ namespace MVVMGenerators.Generators.ViewModels;
 
 public partial class ViewModelGenerator
 {
-    private static void GenerateCode(SourceProductionContext context, ViewModelData viewModel)
+    private static void GenerateCode(SourceProductionContext context, ViewModelData data)
     {
-        var declaration = viewModel.Declaration;
-        var namespaceName = declaration.GetNamespaceName();
+        var dataSpan = new ViewModelDataSpan(data);
+        var declaration = dataSpan.Declaration;
+        var @namespace = declaration.GetNamespaceName();
         var declarationText = declaration.GetDeclarationText();
 
-        if (viewModel.Fields.Length > 0)
+        if (dataSpan.Fields.Length > 0)
         {
-            GenerateProperties(context, namespaceName, declarationText, viewModel);
-            IdBodyGenerator.GenerateViewModelId(context, declarationText, namespaceName,
-                viewModel.Fields.Select(field => field));
+            GenerateProperties(@namespace, dataSpan, declarationText, context);
+            IdBodyGenerator.GenerateViewModelId(@namespace, declarationText, dataSpan.Fields, context);
         }
 
-        GenerateIViewModel(context, namespaceName, declarationText, viewModel);
+        GenerateIViewModel(@namespace, dataSpan, declarationText, context);
     }
 
-    private static void GenerateProperties(SourceProductionContext context, string namespaceName,
-        DeclarationText declarationText, ViewModelData viewModel)
+    private static void GenerateProperties(
+        string @namespace,
+        in ViewModelDataSpan data,
+        DeclarationText declaration,
+        SourceProductionContext context)
     {
         var code = new CodeWriter();
-        code.AppendClass(namespaceName, declarationText,
-            body: () => code.AppendPropertiesBody(viewModel));
 
-        context.AddSource(declarationText.GetFileName(namespaceName, "BindProperty"), code.GetSourceText());
+        code.AppendClassBegin(@namespace, declaration)
+            .AppendPropertiesBody(data)
+            .AppendClassEnd(@namespace);
+
+        context.AddSource(declaration.GetFileName(@namespace, "BindProperty"), code.GetSourceText());
 
         #region Generation Example
         /*  namespace MyNamespace
@@ -69,19 +74,22 @@ public partial class ViewModelGenerator
         #endregion
     }
 
-    private static void GenerateIViewModel(SourceProductionContext context, string namespaceName,
-        DeclarationText declarationText, ViewModelData viewModel)
+    private static void GenerateIViewModel(
+        string @namespace,
+        in ViewModelDataSpan data,
+        DeclarationText declaration,
+        SourceProductionContext context)
     {
         string[]? baseTypes = null;
-        if (!viewModel.HasViewModelInterface)
+        if (!data.HasViewModelInterface)
             baseTypes = [Classes.IViewModel.Global];
 
         var code = new CodeWriter();
-        code.AppendClass(namespaceName, declarationText,
-            body: () => code.AppendIViewModelBody(viewModel),
-            baseTypes);
+        code.AppendClassBegin(@namespace, declaration, baseTypes)
+            .AppendIViewModelBody(data)
+            .AppendClassEnd(@namespace);
 
-        context.AddSource(declarationText.GetFileName(namespaceName, "IViewModel"), code.GetSourceText());
+        context.AddSource(declaration.GetFileName(@namespace, "IViewModel"), code.GetSourceText());
 
         #region Generation Example
         /*  namespace MyNamespace

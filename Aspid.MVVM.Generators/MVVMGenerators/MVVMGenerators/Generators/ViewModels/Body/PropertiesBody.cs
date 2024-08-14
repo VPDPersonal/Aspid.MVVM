@@ -8,13 +8,11 @@ namespace MVVMGenerators.Generators.ViewModels.Body;
 
 public static class PropertiesBody
 {
-    public static CodeWriter AppendPropertiesBody(this CodeWriter code, ViewModelData data)
+    public static CodeWriter AppendPropertiesBody(this CodeWriter code, ViewModelDataSpan data)
     {
-        var dataSpan = new ViewModelDataSpan(data);
-        
-        code.AppendEvents(dataSpan)
-            .AppendProperties(dataSpan)
-            .AppendSetMethods(dataSpan);
+        code.AppendEvents(data)
+            .AppendProperties(data)
+            .AppendSetMethods(data);
         
         return code;
     }

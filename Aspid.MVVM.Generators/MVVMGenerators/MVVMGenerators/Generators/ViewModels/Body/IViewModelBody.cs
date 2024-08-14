@@ -17,15 +17,13 @@ public static class IViewModelBody
     private static readonly string IReverseBinder = Classes.IReverseBinder.Global;
     private static readonly string ProfilerMarker = Classes.ProfilerMarker.Global;
 
-    public static CodeWriter AppendIViewModelBody(this CodeWriter code, ViewModelData data)
+    public static CodeWriter AppendIViewModelBody(this CodeWriter code, in ViewModelDataSpan data)
     {
-        var dataSpan = new ViewModelDataSpan(data);
-
-        code.AppendProfilerMarkers(dataSpan)
+        code.AppendProfilerMarkers(data)
             .AppendLine()
-            .AppendAddBinder(dataSpan)
+            .AppendAddBinder(data)
             .AppendLine()
-            .AppendRemoveBinder(dataSpan)
+            .AppendRemoveBinder(data)
             .AppendLine()
             .AppendManualMethods();
 

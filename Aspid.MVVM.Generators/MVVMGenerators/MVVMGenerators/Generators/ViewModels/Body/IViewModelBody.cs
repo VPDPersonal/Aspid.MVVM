@@ -6,7 +6,7 @@ using MVVMGenerators.Generators.ViewModels.Data;
 
 namespace MVVMGenerators.Generators.ViewModels.Body;
 
-// ReSharper disable once InconsistentNaming
+// ReSharper disable InconsistentNaming
 public static class IViewModelBody
 {
     private const string GeneratedAttribute = General.GeneratedCodeViewModelAttribute;
@@ -50,6 +50,7 @@ public static class IViewModelBody
 
     private static CodeWriter AppendAddBinder(this CodeWriter code, in ViewModelDataSpan data)
     {
+        var readOnlyFieldsExist = false;
         var hasBaseType = data.HasViewModelBaseType;
         var hasInterface = data.HasViewModelInterface;
         
@@ -89,10 +90,9 @@ public static class IViewModelBody
                 protected {{additionalModificator}} void AddBinderInternal({{IBinder}} binder, string propertyName)
                 {
                     switch (propertyName)
-                    {
                 """)
             .IncreaseIndent()
-            .IncreaseIndent()
+            .BeginBlock()
             .AppendLoop(fields, field =>
             {
                 var type = field.Type;
@@ -100,14 +100,13 @@ public static class IViewModelBody
 
                 if (field.IsReadOnly)
                 {
+                    readOnlyFieldsExist = true;
+                    
                     code.AppendMultiline(
                         $$"""
                         case {{propertyName}}Id:
                         {
-                            if (binder is not {{IBinder}}<{{type}}> specificBinder)
-                                throw new {{Exception}}();
-                        
-                            specificBinder.SetValue({{propertyName}});
+                            SetValueLocal({{propertyName}});
                             return;
                         }
                         """);
@@ -162,6 +161,18 @@ public static class IViewModelBody
                     specificReverseBinder.ValueChanged += setValue;
                 }
                 """);
+
+            code.AppendMultilineIf(readOnlyFieldsExist,
+                $$"""
+                
+                void SetValueLocal<T>(T value)
+                {
+                    if (binder is not {{IBinder}}<T> specificBinder)
+                        throw new {{Exception}}();
+                        
+                    specificBinder.SetValue(value);
+                }
+                """);
         }
     }
     
@@ -199,24 +210,23 @@ public static class IViewModelBody
         void AppendSwitch(in ReadOnlySpan<FieldData> fields)
         {
             var additionalModificator = hasBaseType ? "override" : "virtual";
-            
+
             code.AppendMultiline(
                     $$"""
-                      {{GeneratedAttribute}}
-                      protected {{additionalModificator}} void RemoveBinderIternal({{IBinder}} binder, string propertyName)
-                      {
-                          switch (propertyName)
-                          {
-                      """)
+                    {{GeneratedAttribute}}
+                    protected {{additionalModificator}} void RemoveBinderIternal({{IBinder}} binder, string propertyName)
+                    {
+                        switch (propertyName)
+                    """)
                 .IncreaseIndent()
-                .IncreaseIndent()
+                .BeginBlock()
                 .AppendLoop(fields, field =>
                 {
                     if (field.IsReadOnly) return;
-                    
+
                     var type = field.Type;
                     var propertyName = field.PropertyName;
-                
+
                     code.AppendMultiline(
                         $$"""
                         case {{propertyName}}Id:
@@ -242,7 +252,7 @@ public static class IViewModelBody
 
         void AppendLocalMethods(in ReadOnlySpan<FieldData> fields)
         {
-            code.AppendMultilineIf(fields.Length > 0,
+            code.AppendMultilineIf(fields.Length != 0,
                 $$"""
                 
                 return;

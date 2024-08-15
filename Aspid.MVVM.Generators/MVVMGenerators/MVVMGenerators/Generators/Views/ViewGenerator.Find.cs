@@ -105,9 +105,9 @@ public partial class ViewGenerator
                 {
                     if (asBinderAttribute.ConstructorArguments[0].Value is not INamedTypeSymbol argumentType) continue;
                     if (argumentType.IsAbstract) continue;
-                    if (!type.HasInterface(Classes.IBinder)) continue;
+                    if (!argumentType.HasInterface(Classes.IBinder)) continue;
                     
-                    asBinderMembers.Add(new AsBinderMember(member, type));
+                    asBinderMembers.Add(new AsBinderMember(member, argumentType));
                 }
                 else
                 {

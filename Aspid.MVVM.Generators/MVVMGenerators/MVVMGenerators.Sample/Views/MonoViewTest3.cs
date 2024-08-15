@@ -1,5 +1,4 @@
 using UnityEngine.UI;
-using UltimateUI.MVVM;
 using UltimateUI.MVVM.Views;
 using UltimateUI.MVVM.Unity.Views;
 using MVVMGenerators.Sample.Binders;

@@ -6,6 +6,6 @@ namespace UltimateUI.MVVM.Views
     [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property)]
     public sealed class AsBinderAttribute : Attribute
     {
-        public AsBinderAttribute(Type type) { }
+        public AsBinderAttribute(Type type, params object[] args) { }
     }
 }

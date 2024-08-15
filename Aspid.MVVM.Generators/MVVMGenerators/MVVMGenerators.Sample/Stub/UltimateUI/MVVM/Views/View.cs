@@ -29,23 +29,23 @@ namespace UltimateUI.MVVM.Views
         
         protected abstract void InitializeIternal(IViewModel viewModel);
 
-        public void Deinitialization(IViewModel viewModel)
+        public void Deinitialize(IViewModel viewModel)
         {
 #if !ULTIMATE_UI_MVVM_UNITY_PROFILER_DISABLED
             using (_deinitializationMarker.Auto())
 #endif
             {
-                DeinitializationIternal(viewModel);
+                DeinitializeIternal(viewModel);
                 _viewModel = null;
             }
         }
         
-        protected abstract void DeinitializationIternal(IViewModel viewModel);
+        protected abstract void DeinitializeIternal(IViewModel viewModel);
         
         public virtual void Dispose()
         {
             if (_viewModel == null) return;
-            Deinitialization(_viewModel);
+            Deinitialize(_viewModel);
         }
         
         protected static void BindSafely<T>(T binder, IViewModel viewModel, string id)
@@ -65,6 +65,25 @@ namespace UltimateUI.MVVM.Views
 
             foreach (var binder in binders)
                 binder.Bind(viewModel, id);
+        }
+        
+        protected static void UnbindSafely<T>(T binder, IViewModel viewModel, string id)
+            where T : Object, IBinder
+        {
+            if (!binder) return;
+            binder.Unbind(viewModel, id);
+        }
+        
+        protected static void UnbindSafely(IBinder binder, IViewModel viewModel, string id) =>
+            binder?.Unbind(viewModel, id);
+        
+        protected static void UnbindSafely<T>(T[] binders, IViewModel viewModel, string id)
+            where T : IBinder
+        {
+            if (binders == null) return;
+
+            foreach (var binder in binders)
+                binder.Unbind(viewModel, id);
         }
     }
 }

@@ -25,9 +25,4 @@ public partial class MonoViewTest1 : MonoView
 
     [RequireBinder(typeof(IRelayCommand<Color>))]
     [SerializeField] private MonoBinder[] _changeHairColorCommand;
-    
-    protected override void DeinitializationIternal(IViewModel viewModel)
-    {
-        throw new System.NotImplementedException();
-    }
 }

@@ -5,6 +5,5 @@ public enum Inheritor
     None,
     InheritorViewAttribute,
     InheritorMonoView,
-    OverrideMonoView,
     HasInterface,
 }

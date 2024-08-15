@@ -25,7 +25,6 @@ public static class ViewBody
             Inheritor.None => code.AppendNone(data),
             Inheritor.InheritorViewAttribute => code.AppendInheritorView(data),
             Inheritor.InheritorMonoView => code.AppendInheritorMonoView(data),
-            Inheritor.OverrideMonoView => code,
             Inheritor.HasInterface => code.AppendHasInterface(data),
             _ => throw new ArgumentOutOfRangeException()
         };
@@ -43,74 +42,171 @@ public static class ViewBody
     {
         var className = data.Declaration.Identifier.Text;
 
-        /* lang=C# */
         code.AppendMultiline(
-            $$"""
-              #if !ULTIMATE_UI_MVVM_UNITY_PROFILER_DISABLED
-              {{GeneratedAttribute}}
-              private static readonly {{ProfilerMarker}} _initializeMarker = new("{{className}}.Initialize");
-              #endif
+                $$"""
+                #if !ULTIMATE_UI_MVVM_UNITY_PROFILER_DISABLED
+                {{GeneratedAttribute}}
+                private static readonly {{ProfilerMarker}} _initializeMarker = new("{{className}}.Initialize");
+                
+                {{GeneratedAttribute}}
+                private static readonly {{ProfilerMarker}} _deinitializeMarker = mew("{{className}}.Deinitialize");
+                #endif
+                
+                {{GeneratedAttribute}}
+                void {{IView}}.Initialize({{IViewModel}} viewModel)
+                {
+                    #if !ULTIMATE_UI_MVVM_UNITY_PROFILER_DISABLED
+                    using (_initializeMarker.Auto())
+                    #endif
+                    {
+                        InitializeIternal(viewModel);
+                    }
+                }
+                
+                {{GeneratedAttribute}}
+                protected virtual void InitializeIternal({{IViewModel}} viewModel)
+                """)
+            .BeginBlock()
+            .AppendInitializeBody(data)
+            .EndBlock();
+        
+        code.AppendMultiline(
+                $$"""
+                #if !ULTIMATE_UI_MVVM_UNITY_PROFILER_DISABLED
+                {{GeneratedAttribute}}
+                private static readonly {{ProfilerMarker}} _initializeMarker = new("{{className}}.Initialize");
 
-              {{GeneratedAttribute}}
-              void {{IView}}.Initialize({{IViewModel}} viewModel)
-              {
-                  #if !ULTIMATE_UI_MVVM_UNITY_PROFILER_DISABLED
-                  using (_initializeMarker.Auto())
-                  #endif
-                  {
-                      InitializeIternal(viewModel);
-                  }
-              }
+                {{GeneratedAttribute}}
+                private static readonly {{ProfilerMarker}} _deinitializeMarker = mew("{{className}}.Deinitialize");
+                #endif
 
-              {{GeneratedAttribute}}
-              protected virtual void InitializeIternal({{IViewModel}} viewModel)
-              """).BeginBlock().AppendInitialize(data).EndBlock();
+                {{GeneratedAttribute}}
+                void {{IView}}.Initialize({{IViewModel}} viewModel)
+                {
+                    #if !ULTIMATE_UI_MVVM_UNITY_PROFILER_DISABLED
+                    using (_deinitializeMarker.Auto())
+                    #endif
+                    {
+                        DeinitializeIternal(viewModel);
+                    }
+                }
+
+                {{GeneratedAttribute}}
+                protected virtual void DeinitializeIternal({{IViewModel}} viewModel)
+                """)
+            .BeginBlock()
+            .AppendDeinitializeBody(data)
+            .EndBlock();
 
         return code;
     }
 
     private static CodeWriter AppendInheritorView(this CodeWriter code, in ViewDataSpan data)
     {
-        /* lang=C# */
-        code.AppendMultiline(
-            $"""
-             {GeneratedAttribute}
-             protected override void InitializeIternal({IViewModel} viewModel)
-             """).BeginBlock().AppendInitialize(data).AppendLine("base.InitializeIternal(viewModel);").EndBlock();
+        const bool isOverride = true;
+        
+        if (!data.IsInitializeOverride)
+        {
+            code.AppendMethodDeclaration("InitializeIternal", isOverride)
+                .BeginBlock()
+                .AppendInitializeBody(data)
+                .AppendLine("base.InitializeIternal(viewModel);")
+                .EndBlock();
+        }
+        
+        if (!data.IsDeinitializeOverride)
+        {
+            code.AppendLineIf(!data.IsInitializeOverride)
+                .AppendMethodDeclaration("DeinitializeIternal", isOverride)
+                .BeginBlock()
+                .AppendDeinitializeBody(data)
+                .AppendLine("base.DeinitializeIternal(viewModel);")
+                .EndBlock();
+        }
 
         return code;
     }
 
     public static CodeWriter AppendInheritorMonoView(this CodeWriter code, in ViewDataSpan data)
     {
-        /* lang=C# */
-        code.AppendMultiline(
-            $"""
-             {GeneratedAttribute}
-             protected override void InitializeIternal({IViewModel} viewModel)
-             """).BeginBlock().AppendInitialize(data).EndBlock();
-
+        const bool isOverride = true;
+        
+        if (!data.IsInitializeOverride)
+        {
+            code.AppendMethodDeclaration("InitializeIternal", isOverride)
+                .BeginBlock()
+                .AppendInitializeBody(data)
+                .EndBlock();
+        }
+        
+        if (!data.IsDeinitializeOverride)
+        {
+            code.AppendLineIf(!data.IsInitializeOverride)
+                .AppendMethodDeclaration("DeinitializeIternal", isOverride)
+                .BeginBlock()
+                .AppendDeinitializeBody(data)
+                .EndBlock();
+        }
+        
         return code;
     }
 
     public static CodeWriter AppendHasInterface(this CodeWriter code, in ViewDataSpan data)
     {
-        /* lang=C# */
+        const bool isOverride = false;
+        
+        if (!data.IsInitializeOverride)
+        {
+            code.AppendMethodDeclaration("InitializeIternal", isOverride)
+                .BeginBlock()
+                .AppendInitializeBody(data)
+                .EndBlock();
+        }
+        
+        if (!data.IsDeinitializeOverride)
+        {
+            code.AppendLineIf(!data.IsInitializeOverride)
+                .AppendMethodDeclaration("DeinitializeIternal", isOverride)
+                .BeginBlock()
+                .AppendDeinitializeBody(data)
+                .EndBlock();
+        }
+        
+        return code;
+    }
+
+    private static CodeWriter AppendMethodDeclaration(this CodeWriter code, string methodName, bool isOverride)
+    {
+        var modificator = isOverride ? "override" : "virtual";
+        
         code.AppendMultiline(
             $"""
-             {GeneratedAttribute}
-             protected virtual void InitializeIternal({IViewModel} viewModel)
-             """).BeginBlock().AppendInitialize(data).EndBlock();
+            {GeneratedAttribute}
+            protected {modificator} void {methodName}({IViewModel} viewModel)
+            """);
 
         return code;
     }
 
-    private static CodeWriter AppendInitialize(this CodeWriter code, in ViewDataSpan data)
+    private static CodeWriter AppendInitializeBody(this CodeWriter code, in ViewDataSpan data)
     {
         var isInstantiateBinders = data.PropertyMembers.Length + data.AsBinderMembers.Length > 0;
         
         code.AppendLineIf(isInstantiateBinders, "InstantiateBinders();\n")
-            .AppendLoop(data.FieldMembers, AppendFieldMember)
+            .AppendMethodBody("BindSafely", data);
+
+        return code;
+    }
+    
+    private static CodeWriter AppendDeinitializeBody(this CodeWriter code, in ViewDataSpan data)
+    {
+        code.AppendMethodBody("UnbindSafely", data);
+        return code;
+    }
+
+    private static CodeWriter AppendMethodBody(this CodeWriter code, string bindMethodName, in ViewDataSpan data)
+    {
+        code.AppendLoop(data.FieldMembers, AppendFieldMember)
             .AppendLoop(data.PropertyMembers, AppendPropertyMember)
             .AppendLoop(data.AsBinderMembers, AppendAsBinderMember);
 
@@ -125,25 +221,24 @@ public static class ViewBody
         void AppendAsBinderMember(AsBinderMember member) =>
             Append(member.BinderName, member.Id);
 
-        void Append(string name, string idName)
-        {
-            code.AppendLine($"BindSafely({name}, viewModel, {idName});");
-        }
+        void Append(string name, string idName) =>
+            code.AppendLine($"{bindMethodName}({name}, viewModel, {idName});");
     }
+
     private static CodeWriter AppendInstantiateBindersMethods(this CodeWriter code, in ViewDataSpan data)
     {
         code.AppendMultiline(
-            $"""
-            {GeneratedAttribute}
-            private void InstantiateBinders()
-            """)
+                $"""
+                {GeneratedAttribute}
+                private void InstantiateBinders()
+                """)
             .BeginBlock()
             .AppendCreateBinders(data)
             .EndBlock();
 
         return code;
     }
-    
+
     private static CodeWriter AppendCreateBinders(this CodeWriter code, in ViewDataSpan data)
     {
         if (data.PropertyMembers.Length > 0)
@@ -172,8 +267,7 @@ public static class ViewBody
                     var localName = $"local{name}";
                     var binderName = member.BinderName;
                     var binderType = member.AsBinderType;
-
-                    /*lang=C#*/
+                    
                     code.AppendLineIf(isAppend)
                         .AppendMultiline(
                         $$"""
@@ -202,5 +296,4 @@ public static class ViewBody
 
         return code;
     }
-
 }

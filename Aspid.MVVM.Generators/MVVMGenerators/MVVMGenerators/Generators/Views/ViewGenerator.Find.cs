@@ -32,12 +32,47 @@ public partial class ViewGenerator
         var symbol = context.SemanticModel.GetDeclaredSymbol(candidate, cancellationToken);
         if (symbol is null) return default;
 
+        var inheritor = RecognizeInheritor(symbol);
         var members = symbol.GetMembers();
-        var inheritor = RecognizeInheritor(symbol, members);
         var viewMembers = GetViewMembers(members);
+        
+        var isInitializeOverride = false;
+        var isDeinitializeOverride = false;
 
-        var viewData = new ViewData(inheritor, viewMembers, candidate);
+        if (inheritor != Inheritor.None && inheritor != Inheritor.HasInterface)
+        {
+            foreach (var method in members.OfType<IMethodSymbol>())
+            {
+                if (isInitializeOverride && isDeinitializeOverride) break;
+
+                if (!isInitializeOverride && HasOverrideViewIternalMethod(method, "InitializeIternal"))
+                {
+                    isInitializeOverride = true;
+                    continue;
+                }
+
+                if (!isDeinitializeOverride && HasOverrideViewIternalMethod(method, "DeinitializeIternal"))
+                {
+                    isDeinitializeOverride = true;
+                }
+            }
+        }
+
+        var viewData = new ViewData(inheritor, viewMembers, isInitializeOverride, isDeinitializeOverride, candidate);
         return new FoundForGenerator<ViewData>(true, viewData);
+        
+        bool HasOverrideViewIternalMethod(IMethodSymbol method, string methodName)
+        {
+            if (!method.IsOverride) return false;
+            if (method.DeclaredAccessibility != Accessibility.Protected) return false;
+            if (method.Parameters.Length != 1) return false;
+            
+            if (method.Name != methodName) return false;
+            if (method.Parameters[0].Type.ToDisplayString() != Classes.IViewModel.FullName) return false;
+            if (method.ReturnType.ToDisplayString() != "void") return false;
+
+            return true;
+        }
     }
 
     private static MembersContainer GetViewMembers(ImmutableArray<ISymbol> members)
@@ -92,31 +127,10 @@ public partial class ViewGenerator
         return new MembersContainer(otherMembers, propertyMembers, asBinderMembers);
     }
 
-    private static Inheritor RecognizeInheritor(INamedTypeSymbol symbol, ImmutableArray<ISymbol> members)
+    private static Inheritor RecognizeInheritor(INamedTypeSymbol symbol)
     {
-        if (symbol.BaseType?.HasAttribute(Classes.ViewAttribute) ?? false) 
-            return Inheritor.InheritorViewAttribute;
-        
-        if (symbol.HasBaseType(Classes.MonoView))
-        {
-            return members.OfType<IMethodSymbol>().Any(HasOverrideInitializeIternal)
-                ? Inheritor.OverrideMonoView
-                : Inheritor.InheritorMonoView;
-        }
-        
+        if (symbol.BaseType?.HasAttribute(Classes.ViewAttribute) ?? false) return Inheritor.InheritorViewAttribute;
+        if (symbol.HasBaseType(Classes.MonoView)) return Inheritor.InheritorMonoView;
         return symbol.HasInterface(Classes.IView) ? Inheritor.HasInterface : Inheritor.None;
-        
-        bool HasOverrideInitializeIternal(IMethodSymbol method)
-        {
-            if (!method.IsOverride) return false;
-            if (method.DeclaredAccessibility != Accessibility.Protected) return false;
-            if (method.Parameters.Length != 1) return false;
-            
-            if (method.Name != "InitializeIternal") return false;
-            if (method.Parameters[0].Type.ToDisplayString() != Classes.IViewModel.FullName) return false;
-            if (method.ReturnType.ToDisplayString() != "void") return false;
-
-            return true;
-        }
     }
 }

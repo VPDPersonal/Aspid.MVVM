@@ -19,7 +19,7 @@ public partial class MonoViewTest2 : MonoView
     private ButtonMonoBinder OkCommand =>
         GetComponent<ButtonMonoBinder>();
     
-    protected override void DeinitializationIternal(IViewModel viewModel)
+    protected override void DeinitializeIternal(IViewModel viewModel)
     {
         throw new System.NotImplementedException();
     }

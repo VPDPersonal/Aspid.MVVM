@@ -30,7 +30,7 @@ namespace UltimateUI.MVVM.Views
         {
             if (_viewModel == null) return;
             
-            _view.Deinitialization(_viewModel);
+            _view.Deinitialize(_viewModel);
             _viewModel = null;
         }
     }

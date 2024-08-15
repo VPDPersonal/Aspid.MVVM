@@ -7,6 +7,6 @@ namespace UltimateUI.MVVM.Views
     {
         public void Initialize(IViewModel viewModel);
 
-        public void Deinitialization(IViewModel viewModel);
+        public void Deinitialize(IViewModel viewModel);
     }
 }

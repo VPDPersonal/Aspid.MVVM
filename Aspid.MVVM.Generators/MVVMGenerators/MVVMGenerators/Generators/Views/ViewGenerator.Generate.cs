@@ -47,7 +47,7 @@ public partial class ViewGenerator
         DeclarationText declaration,
         SourceProductionContext context)
     {
-        if (data.Inheritor == Inheritor.OverrideMonoView) return;
+        if (data.IsInitializeOverride && data.IsDeinitializeOverride) return;
         
         var code = new CodeWriter();
         var baseTypes = GetBaseTypes(data);

@@ -23,7 +23,7 @@ public partial class MonoViewTest3 : MonoView
     [AsBinder(typeof(ButtonBinder))]
     private Button[] CancelCommand => GetComponents<Button>();
     
-    protected override void DeinitializationIternal(IViewModel viewModel)
+    protected override void DeinitializeIternal(IViewModel viewModel)
     {
         throw new System.NotImplementedException();
     }

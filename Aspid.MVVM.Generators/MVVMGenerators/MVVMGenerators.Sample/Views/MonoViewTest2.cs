@@ -3,6 +3,7 @@ using UltimateUI.MVVM.Views;
 using UltimateUI.MVVM.Commands;
 using UltimateUI.MVVM.Unity.Views;
 using MVVMGenerators.Sample.Binders;
+using UltimateUI.MVVM.ViewModels;
 
 namespace MVVMGenerators.Sample.Views;
 
@@ -17,4 +18,9 @@ public partial class MonoViewTest2 : MonoView
 
     private ButtonMonoBinder OkCommand =>
         GetComponent<ButtonMonoBinder>();
+    
+    protected override void DeinitializationIternal(IViewModel viewModel)
+    {
+        throw new System.NotImplementedException();
+    }
 }

@@ -5,6 +5,7 @@ using UltimateUI.MVVM.Commands;
 using UltimateUI.MVVM.Unity;
 using UltimateUI.MVVM.Views;
 using UltimateUI.MVVM.Unity.Views;
+using UltimateUI.MVVM.ViewModels;
 
 namespace MVVMGenerators.Sample.Views;
 
@@ -24,4 +25,9 @@ public partial class MonoViewTest1 : MonoView
 
     [RequireBinder(typeof(IRelayCommand<Color>))]
     [SerializeField] private MonoBinder[] _changeHairColorCommand;
+    
+    protected override void DeinitializationIternal(IViewModel viewModel)
+    {
+        throw new System.NotImplementedException();
+    }
 }

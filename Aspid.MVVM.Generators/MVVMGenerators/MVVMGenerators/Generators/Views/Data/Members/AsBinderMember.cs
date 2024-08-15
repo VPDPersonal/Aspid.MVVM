@@ -4,30 +4,42 @@ using MVVMGenerators.Helpers.Extensions.Symbols;
 
 namespace MVVMGenerators.Generators.Views.Data.Members;
 
-public readonly struct AsBinderMember(ISymbol member, ITypeSymbol asBinderType) : IMember
+public readonly struct AsBinderMember
 {
-    public ITypeSymbol? Type => member switch
-    {
-        IFieldSymbol field => field.Type,
-        IPropertySymbol property => property.Type,
-                
-        // TODO Add Log
-        _ => null
-    };
+    public readonly string Name;
+    public readonly string BinderName;
+    public readonly string AsBinderType;
     
-    public string Name => member.Name;
-
-    public ITypeSymbol AsBinderType => asBinderType;
-
-    public string BinderName => member is IPropertySymbol property
-        ? $"{property.GetFieldName()}Binder"
-        : $"{member.Name}Binder";
-
-    public string Id => $"{FieldSymbolExtensions.GetPropertyName(member.Name)}Id";
+    public readonly string Id;
+    public readonly ITypeSymbol? Type;
     
     public bool IsUnityEngineObject => Type switch
     {
         IArrayTypeSymbol => false,
         _ => Type?.HasBaseType(Classes.Object) ?? false
     };
+    
+    public AsBinderMember(ISymbol member, ITypeSymbol asBinderType) 
+        : this(member, asBinderType.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat)) { }
+
+    public AsBinderMember(ISymbol member, string asBinderType)
+    {
+        Name = member.Name;
+        AsBinderType = asBinderType;
+
+        switch (member)
+        {
+            case IFieldSymbol field:
+                Id = $"{field.GetPropertyName()}Id";
+                Type = field.Type;
+                BinderName = $"{Name}Binder";
+                break;
+            
+            case IPropertySymbol property:
+                Id = $"{Name}Id";
+                Type = property.Type;
+                BinderName = $"{property.GetFieldName()}Binder";
+                break;
+        }
+    }
 }

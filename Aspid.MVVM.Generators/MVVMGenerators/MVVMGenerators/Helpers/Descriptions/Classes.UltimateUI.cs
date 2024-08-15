@@ -13,6 +13,9 @@ public static partial class Classes
     public static readonly AttributeText AsBinderAttribute =
         new("AsBinder", Namespaces.UltimateUI_MVVM_Views);
 
+    public static readonly TypeText ViewBinder =
+        new ("ViewBinder", Namespaces.UltimateUI_MVVM_Views);
+    
     public static readonly TypeText MonoView =
         new("MonoView", Namespaces.UltimateUI_MVVM_Unity_Views);
     #endregion

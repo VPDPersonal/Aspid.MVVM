@@ -1,6 +1,10 @@
+#nullable disable
 using UnityEngine;
+using Unity.Profiling;
 using UltimateUI.MVVM.Views;
 using UltimateUI.MVVM.ViewModels;
+
+using Object = UnityEngine.Object;
 
 // ReSharper disable once CheckNamespace
 namespace UltimateUI.MVVM.Unity.Views
@@ -8,24 +12,46 @@ namespace UltimateUI.MVVM.Unity.Views
     public abstract class MonoView : MonoBehaviour, IView
     {
 #if !ULTIMATE_UI_MVVM_UNITY_PROFILER_DISABLED
-        // private static readonly global::Unity.Profiling.ProfilerMarker _initializeMarker = new("MonoView.Initialize");
+        private static readonly ProfilerMarker _initializeMarker = new("MonoView.Initialize");
+        private static readonly ProfilerMarker _deinitializationMarker = new("MonoView.Deinitialization");
 #endif
-        
+        private IViewModel _viewModel;
+
         protected virtual void OnValidate() =>
             ViewUtility.ValidateBinders(this);
+
+        protected virtual void OnDestroy()
+        {
+            if (_viewModel == null) return;
+            Deinitialization(_viewModel);
+        }
 
         public void Initialize(IViewModel viewModel)
         {
 #if !ULTIMATE_UI_MVVM_UNITY_PROFILER_DISABLED
-            // using (_initializeMarker.Auto())
+            using (_initializeMarker.Auto())
 #endif
             {
+                _viewModel = viewModel;
                 InitializeIternal(viewModel);
             }
         }
 
         protected abstract void InitializeIternal(IViewModel viewModel);
+
+        public void Deinitialization(IViewModel viewModel)
+        {
+#if !ULTIMATE_UI_MVVM_UNITY_PROFILER_DISABLED
+            using (_deinitializationMarker.Auto())
+#endif
+            {
+                DeinitializationIternal(viewModel);
+                _viewModel = null;
+            }
+        }
         
+        protected abstract void DeinitializationIternal(IViewModel viewModel);
+
         protected static void BindSafely<T>(T binder, IViewModel viewModel, string id)
             where T : Object, IBinder
         {
@@ -33,10 +59,8 @@ namespace UltimateUI.MVVM.Unity.Views
             binder.Bind(viewModel, id);
         }
         
-        protected static void BindSafely(IBinder binder, IViewModel viewModel, string id)
-        {
+        protected static void BindSafely(IBinder binder, IViewModel viewModel, string id) =>
             binder?.Bind(viewModel, id);
-        }
         
         protected static void BindSafely<T>(T[] binders, IViewModel viewModel, string id)
             where T : IBinder

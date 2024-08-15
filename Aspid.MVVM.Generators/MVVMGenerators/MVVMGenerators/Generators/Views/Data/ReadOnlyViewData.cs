@@ -9,7 +9,7 @@ public readonly ref struct ViewDataSpan(ViewData viewData)
     public readonly Inheritor Inheritor = viewData.Inheritor;
     public readonly TypeDeclarationSyntax Declaration = viewData.Declaration;
     
-    public readonly ReadOnlySpan<FieldMember> FieldMembers = viewData.FieldMembers.AsSpan();
-    public readonly ReadOnlySpan<PropertyMember> PropertyMembers = viewData.PropertyMembers.AsSpan();
-    public readonly ReadOnlySpan<AsBinderMember> AsBinderMembers = viewData.AsBinderMembers.AsSpan();
+    public readonly ReadOnlySpan<FieldMember> FieldMembers = viewData.Members.FieldMembers.AsSpan();
+    public readonly ReadOnlySpan<PropertyMember> PropertyMembers = viewData.Members.PropertyMembers.AsSpan();
+    public readonly ReadOnlySpan<AsBinderMember> AsBinderMembers = viewData.Members.AsBinderMembers.AsSpan();
 }

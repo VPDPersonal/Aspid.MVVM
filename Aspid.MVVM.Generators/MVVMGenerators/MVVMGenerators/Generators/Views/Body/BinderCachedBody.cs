@@ -2,12 +2,12 @@ using System;
 using Microsoft.CodeAnalysis;
 using MVVMGenerators.Helpers;
 using MVVMGenerators.Generators.Views.Data;
-using MVVMGenerators.Generators.Views.Data.Members;
 using MVVMGenerators.Helpers.Extensions.Writer;
+using MVVMGenerators.Generators.Views.Data.Members;
 
 namespace MVVMGenerators.Generators.Views.Body;
 
-public static class AsBinderBody
+public static class BinderCachedBody
 {
     public static CodeWriter AppendViewBinderCached(this CodeWriter code, in ViewDataSpan data)
     {
@@ -31,14 +31,9 @@ public static class AsBinderBody
     {
         code.AppendLoop(members, member =>
         {
-            if (member.Type is IArrayTypeSymbol)
-            {
-                code.AppendLine($"private {member.AsBinderType}[] {member.BinderName};");
-            }
-            else
-            {
-                code.AppendLine($"private {member.AsBinderType} {member.BinderName};");
-            }
+            code.AppendLine(member.Type is IArrayTypeSymbol ?
+                $"private {member.AsBinderType}[] {member.BinderName};" :
+                $"private {member.AsBinderType} {member.BinderName};");
         });
 
         return code;

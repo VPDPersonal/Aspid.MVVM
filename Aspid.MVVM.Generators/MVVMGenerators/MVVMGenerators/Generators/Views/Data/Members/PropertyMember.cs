@@ -4,21 +4,17 @@ using MVVMGenerators.Helpers.Extensions.Symbols;
 
 namespace MVVMGenerators.Generators.Views.Data.Members;
 
-public readonly struct PropertyMember(IPropertySymbol property, bool isView = false) : IMember
+public readonly struct PropertyMember(IPropertySymbol property)
 {
-    public bool IsView => isView;
+    public readonly string Name = property.Name;
+    public readonly string FieldName = property.GetFieldName();
     
-    public string Name => property.Name;
-
-    public string FieldName => property.GetFieldName();
+    public readonly string Id = $"{property.Name}Id";
+    public readonly ITypeSymbol Type = property.Type;
     
-    public string Id => $"{property.Name}Id";
-    
-    public ITypeSymbol Type => property.Type;
-    
-    public bool IsUnityEngineObject => Type switch
+    public readonly bool IsUnityEngineObject = property.Type switch
     {
         IArrayTypeSymbol => false,
-        _ => Type?.HasBaseType(Classes.Object) ?? false
+        _ => property.Type.HasBaseType(Classes.Object)
     };
 }

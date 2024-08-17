@@ -7,7 +7,7 @@ using UltimateUI.MVVM.ViewModels;
 
 namespace MVVMGenerators.Sample
 {
-    public partial class SomeBinder : IBinder<string>, IBinder<object>, IBinder<IBinder>
+    public partial class SomeBinder : IBinder<string>, IBinder<IBinder>
     {
         public SomeBinder(string name)
         {
@@ -20,11 +20,7 @@ namespace MVVMGenerators.Sample
             throw new NotImplementedException();
         }
 
-        [BinderLog]
-        void IBinder<object>.SetValue(object value)
-        {
-            throw new NotImplementedException();
-        }
+
 
         public void SetValue(IBinder value)
         {
@@ -42,74 +38,87 @@ namespace MVVMGenerators.Sample
         }
     }
 
-    // public partial class SomeBinderParent : INumberBinder, IBinder<IViewModel>
-    // {
-    //     [BinderLog]
-    //     public void SetValue(int value)
-    //     {
-    //     }
-    //
-    //     [BinderLog]
-    //     public void SetValue(long value)
-    //     {
-    //
-    //     }
-    //
-    //     [BinderLog]
-    //     public void SetValue(IViewModel value)
-    //     {
-    //         throw new NotImplementedException();
-    //     }
-    //
-    //     public void Bind(IViewModel viewModel, string id)
-    //     {
-    //         throw new NotImplementedException();
-    //     }
-    //
-    //     public void Unbind(IViewModel viewModel, string id)
-    //     {
-    //         throw new NotImplementedException();
-    //     }
-    // }
-    //
-    // public partial class GenericBinder<T1> : Binder, IBinder<IRelayCommand<int, T1>>
-    // {
-    //
-    //     [BinderLog]
-    //     public void SetValue(IRelayCommand<int, T1> value)
-    //     {
-    //         throw new NotImplementedException();
-    //     }
-    //
-    //     public void Bind(IViewModel viewModel, string id)
-    //     {
-    //         throw new NotImplementedException();
-    //     }
-    //
-    //     public void Unbind(IViewModel viewModel, string id)
-    //     {
-    //         throw new NotImplementedException();
-    //     }
-    // }
-    //
-    // public partial class GenericBinder<T1, T2> : Binder, IBinder<IRelayCommand<int, T1, T2>>
-    // {
-    //     [BinderLog]
-    //     public void SetValue(IRelayCommand<int, T1, T2> value)
-    //     {
-    //         throw new NotImplementedException();
-    //     }
-    //
-    //     public void Bind(IViewModel viewModel, string id)
-    //     {
-    //         throw new NotImplementedException();
-    //     }
-    //
-    //     public void Unbind(IViewModel viewModel, string id)
-    //     {
-    //         throw new NotImplementedException();
-    //     }
-    // }
+    public partial class SomeBinder2 : SomeBinder, IBinder<object>
+    {
+        public SomeBinder2(string name) : base(name)
+        {
+        }
+
+        [BinderLog]
+        void SetValue(object value)
+        {
+            throw new NotImplementedException();
+        }
+    }
+    
+    public partial class SomeBinderParent : INumberBinder, IBinder<IViewModel>
+    {
+        [BinderLog]
+        public void SetValue(int value)
+        {
+        }
+    
+        [BinderLog]
+        public void SetValue(long value)
+        {
+    
+        }
+    
+        [BinderLog]
+        public void SetValue(IViewModel value)
+        {
+            throw new NotImplementedException();
+        }
+    
+        public void Bind(IViewModel viewModel, string id)
+        {
+            throw new NotImplementedException();
+        }
+    
+        public void Unbind(IViewModel viewModel, string id)
+        {
+            throw new NotImplementedException();
+        }
+    }
+    
+    public partial class GenericBinder<T1> : Binder, IBinder<IRelayCommand<int, T1>>
+    {
+    
+        [BinderLog]
+        public void SetValue(IRelayCommand<int, T1> value)
+        {
+            throw new NotImplementedException();
+        }
+    
+        public void Bind(IViewModel viewModel, string id)
+        {
+            throw new NotImplementedException();
+        }
+    
+        public void Unbind(IViewModel viewModel, string id)
+        {
+            throw new NotImplementedException();
+        }
+    }
+    
+    public partial class GenericBinder<T1, T2> : Binder, IBinder<IRelayCommand<int, T1, T2>>
+    {
+        [BinderLog]
+        public void SetValue(IRelayCommand<int, T1, T2> value)
+        {
+            throw new NotImplementedException();
+        }
+    
+        public void Bind(IViewModel viewModel, string id)
+        {
+            throw new NotImplementedException();
+        }
+    
+        public void Unbind(IViewModel viewModel, string id)
+        {
+            throw new NotImplementedException();
+        }
+    }
 }
 
 namespace MVVMGenerators.Sample1

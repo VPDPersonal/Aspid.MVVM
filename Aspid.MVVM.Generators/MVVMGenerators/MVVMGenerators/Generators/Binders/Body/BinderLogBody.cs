@@ -1,91 +1,100 @@
+using System;
 using Microsoft.CodeAnalysis;
 using MVVMGenerators.Helpers;
 using MVVMGenerators.Helpers.Descriptions;
+using MVVMGenerators.Generators.Binders.Data;
+using MVVMGenerators.Helpers.Extensions.Writer;
 
-namespace MVVMGenerators.Generators.Binders;
+namespace MVVMGenerators.Generators.Binders.Body;
 
+// ReSharper disable InconsistentNaming
 public static class BinderLogBody
 {
-    private const string LogVar = "_log";
-    private const string IsDebugVar = "_isDebug";
-
-    private const string IsDebugProperty = "IsDebug";
-
-    private const string AddLogMethod = "AddLog";
-    private const string SetValueMethod = "SetValue";
+    private const string GeneratedAttribute = General.GeneratedCodeBinderModelAttribute;
     
-    public static void AppendBinderLog(this CodeWriter code, BinderData binderData)
+    private static readonly string List = Classes.List.Global;
+    private static readonly string IBinder = Classes.IBinder.Global;
+    private static readonly string Exception = Classes.Exception.Global;
+    private static readonly string SerializeFieldAttribute = Classes.SerializeFieldAttribute.AttributeGlobal;
+
+    public static CodeWriter AppendBinderLogBody(this CodeWriter code, in BinderDataSpan data)
     {
-        var hasBinderLogInBaseType = binderData.HasBinderLogInBaseType;
+        var hasBinderLogInBaseType = data.HasBinderLogInBaseType;
         
         if (!hasBinderLogInBaseType)
-            code.AppendFieldsAndProperties();
-
-        foreach (var method in binderData.BinderLogMethods)
-            code.AppendMethod(method);
+            code.AppendProperties();
+        
+        code.AppendSetValueMethods(data.Methods);
 
         if (!hasBinderLogInBaseType)
-            code.AppendAddLog();
+            code.AppendAddLogMethod();
+        
+        return code;
     }
-    
-    private static void AppendFieldsAndProperties(this CodeWriter code)
+
+    private static CodeWriter AppendProperties(this CodeWriter code)
     {
         code.AppendMultiline(
             $"""
-             {General.GeneratedCodeBinderModelAttribute}
-             [{Classes.SerializeFieldAttribute.AttributeGlobal}] private bool {IsDebugVar};
-
-             // TODO Add Custom Property
-             {General.GeneratedCodeBinderModelAttribute}
-             [{Classes.SerializeFieldAttribute.AttributeGlobal}] private {Classes.List.Global}<string> {LogVar};
-
-             {General.GeneratedCodeBinderModelAttribute}
-             protected bool {IsDebugProperty} => {IsDebugVar};
-             """);
-
-        code.AppendLine();
+            {GeneratedAttribute}
+            [{SerializeFieldAttribute}] private bool _isDebug;
+            
+            // TODO Add Custom Property
+            {GeneratedAttribute}
+            [{SerializeFieldAttribute}] private {Classes.List.Global}<string> _log;
+            
+            {GeneratedAttribute}
+            protected bool IsDebug => _isDebug;
+            """)
+            .AppendLine();
+         
+        return code;
     }
 
-    private static void AppendMethod(this CodeWriter code, IMethodSymbol method)
+    private static CodeWriter AppendSetValueMethods(this CodeWriter code, in ReadOnlySpan<IMethodSymbol> methods)
     {
-        var parameterName = method.Parameters[0].Name;
-        var parameterType = method.Parameters[0].Type.ToDisplayString();
+        code.AppendLoop(methods, method =>
+        {
+            var parameterName = method.Parameters[0].Name;
+            var parameterType = method.Parameters[0].Type;
+            
+            code.AppendMultiline(
+                $$"""
+                {{GeneratedAttribute}}
+                void {{IBinder}}<{{parameterType}}>.{{method.Name}}({{parameterType}} {{parameterName}})
+                {
+                    if (IsDebug)
+                    {
+                        try
+                        {
+                        }
+                        catch ({{Exception}} e)
+                        {
+                            AddLog($"<color=red>Exception: {e}. {nameof({{parameterName}})}: {{parameterName}}</color>");
+                            throw;
+                        }
+                    }
+                    else SetValue({{parameterName}});
+                }
+                """)
+                .AppendLine();
+        });
 
-        code.AppendMultiline(
-            $$"""
-              {{General.GeneratedCodeBinderModelAttribute}}
-              void {{Classes.IBinder.Global}}<{{parameterType}}>.{{method.Name}}({{parameterType}} {{parameterName}})
-              {
-                  if ({{IsDebugProperty}})
-                  {
-                      try
-                      {
-                          {{SetValueMethod}}({{parameterName}});
-                          {{AddLogMethod}}($"Set Value: {{{parameterName}}}");
-                      }
-                      catch ({{Classes.Exception.Global}} e)
-                      {
-                          {{AddLogMethod}}($"<color=red>Exception: {e.Message}. {nameof({{parameterName}})}: {{parameterName}}</color>");
-                          throw;
-                      }
-                  }
-                  else {{SetValueMethod}}({{parameterName}});
-              }
-              """);
-
-        code.AppendLine();
+        return code;
     }
 
-    private static void AppendAddLog(this CodeWriter code)
+    private static CodeWriter AppendAddLogMethod(this CodeWriter code)
     {
         code.AppendMultiline(
             $$"""
-              {{General.GeneratedCodeBinderModelAttribute}}
-              protected void {{AddLogMethod}}(string log)
-              {
-                  {{LogVar}} ??= new {{Classes.List.Global}}<string>();
-                  {{LogVar}}.Add(log);
-              }
-              """);
+            {{GeneratedAttribute}}
+            protected void AddLog(string log)
+            {
+                _log ??= new {{List}}<string>();
+                _log.Add(log);
+            }
+            """);
+
+        return code;
     }
 }

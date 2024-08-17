@@ -8,8 +8,6 @@ namespace MVVMGenerators.Generators.Binders;
 [Generator]
 public partial class BinderGenerator : IIncrementalGenerator
 {
-    private const string PartialBinderLogName = "BinderLog";
-    
     public void Initialize(IncrementalGeneratorInitializationContext context)
     {
         var provider = context.SyntaxProvider.CreateSyntaxProvider(SyntacticPredicate, FindBinders)

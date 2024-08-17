@@ -1,6 +1,8 @@
 using Microsoft.CodeAnalysis;
 using MVVMGenerators.Helpers;
 using MVVMGenerators.Helpers.Descriptions;
+using MVVMGenerators.Generators.Binders.Body;
+using MVVMGenerators.Generators.Binders.Data;
 using MVVMGenerators.Helpers.Extensions.Writer;
 using MVVMGenerators.Helpers.Extensions.Declarations;
 
@@ -8,34 +10,42 @@ namespace MVVMGenerators.Generators.Binders;
 
 public partial class BinderGenerator
 {
+    private const string PartialBinderLogName = "BinderLog";
+    
     private static void GenerateCode(SourceProductionContext context, BinderData binderData)
     {
         var declaration = binderData.Declaration;
-        var namespaceName = declaration.GetNamespaceName();
+        var @namespace = declaration.GetNamespaceName();
         var declarationText = declaration.GetDeclarationText();
 
-        GenerateBinderLog(context, binderData, namespaceName, declarationText);
+        GenerateBinderLog(@namespace, new BinderDataSpan(binderData), context, declarationText);
     }
 
     private static void GenerateBinderLog(
-        SourceProductionContext context, BinderData binderData,
-        string namespaceName, DeclarationText declarationText)
+        string @namespace,
+        in BinderDataSpan data,
+        SourceProductionContext context,
+        DeclarationText declarationText)
     {
-        if (binderData.BinderLogMethods.Count == 0) return;
+        if (data.Methods.Length == 0) return;
         
         var code = new CodeWriter();
 
 #if DEBUG
         code.AppendLine($"#if !{Defines.ULTIMATE_UI_MVVM_BINDER_LOG_DISABLED}")
-            .AppendClass(namespaceName, declarationText, body: () => code.AppendBinderLog(binderData))
+            .AppendClassBegin(@namespace, declarationText)
+            .AppendBinderLogBody(data)
+            .AppendClassEnd(@namespace)
             .AppendLine("#endif");
 #else
         code.AppendLine($"#if {Defines.UNITY_EDITOR} && !{Defines.ULTIMATE_UI_MVVM_BINDER_LOG_DISABLED}")
-            .AppendClass(namespaceName, declarationText, body: () => code.AppendBinderLog(binderData))
+            .AppendClassBegin(@namespace, declarationText)
+            .AppendBinderLogBody(data)
+            .AppendClassEnd(@namespace)
             .Append("#endif");
 #endif
         
-        context.AddSource(declarationText.GetFileName(namespaceName, PartialBinderLogName), code.GetSourceText());
+        context.AddSource(declarationText.GetFileName(@namespace, PartialBinderLogName), code.GetSourceText());
         
         #region Generation Example
         /*  #if UNITY_EDITOR

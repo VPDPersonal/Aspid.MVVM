@@ -3,8 +3,8 @@ namespace UltimateUI.MVVM.ViewModels
 {
     public enum Access
     {
-        Private,
-        Protected,
-        Public,
+        Private = 8344,
+        Protected = 8346,
+        Public = 8343,
     }
 }

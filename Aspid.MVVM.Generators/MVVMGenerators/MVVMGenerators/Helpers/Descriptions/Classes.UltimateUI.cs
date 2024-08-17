@@ -41,6 +41,9 @@ public static partial class Classes
     public static readonly AttributeText BindAttribute =
         new("Bind", Namespaces.UltimateUI_MVVM_ViewModels);
     
+    public static readonly AttributeText BindAlsoAttribute =
+        new("BindAlso", Namespaces.UltimateUI_MVVM_ViewModels);
+    
     public static readonly AttributeText ReadOnlyBindAttribute =
         new("ReadOnlyBind", Namespaces.UltimateUI_MVVM_ViewModels);
     
@@ -55,7 +58,7 @@ public static partial class Classes
 
     public static readonly TypeText ViewModelUtility =
         new("ViewModelUtility", Namespaces.UltimateUI_MVVM_ViewModels);
-   #endregion
+    #endregion
 
     #region Commands
     public static readonly TypeText RelayCommand =

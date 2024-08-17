@@ -1,6 +1,7 @@
-using System;
-using MVVMGenerators.Helpers;
 using Microsoft.CodeAnalysis;
+using MVVMGenerators.Helpers;
+using System.Collections.Generic;
+using Microsoft.CodeAnalysis.CSharp;
 using MVVMGenerators.Helpers.Descriptions;
 using MVVMGenerators.Helpers.Extensions.Writer;
 
@@ -19,70 +20,97 @@ public static class PropertiesBody
 
     private static CodeWriter AppendEvents(this CodeWriter code, in ViewModelDataSpan data)
     {
+        HashSet<IPropertySymbol> changedEvents = [];
+        
         code.AppendLoop(data.Fields, field =>
         {
             if (field.IsReadOnly) return;
+
+            foreach (var bindAlso in field.BindAlso)
+                changedEvents.Add(bindAlso);
             
-            code.AppendMultiline(
-                $"""
-                {General.GeneratedCodeViewModelAttribute}
-                public event {Classes.Action.Global}<{field.Type}> {field.PropertyName}Changed;
-                
-                """);
+            Append(field.Type, field.PropertyName);
+        });
+
+        code.AppendLoop(changedEvents, changedEvent =>
+        {
+            Append(changedEvent.Type, changedEvent.Name);
         });
 
         return code;
+
+        void Append(ITypeSymbol type, string propertyName)
+        {
+            code.AppendMultiline(
+                $"""
+                {General.GeneratedCodeViewModelAttribute}
+                public event {Classes.Action.Global}<{type}> {propertyName}Changed;
+                
+                """);
+        }
     }
 
     private static CodeWriter AppendProperties(this CodeWriter code, in ViewModelDataSpan data)
     {
         code.AppendLoop(data.Fields, field =>
         {
-            AppendProperty(field.Type, field.Name, field.PropertyName, field.GetAccess, field.SetAccess, field.IsReadOnly);
-        });
-        
-        return code;
-
-        void AppendProperty(ITypeSymbol type, string name, string propertyName, int getAccess, int setAccess, bool isReadOnly)
-        {
-            var getAccessName = "";
-            var setAccessName = "";
-            var generalAccessName = GetAccess(Math.Max(0, Math.Max(getAccess, setAccess)));
+            var type = field.Type;
+            var name = field.Name;
+            var propertyName = field.PropertyName;
             
-            if (getAccess > setAccess) setAccessName = GetAccess(setAccess);
-            else if (getAccess < setAccess) getAccessName = GetAccess(getAccess);
+            var getAccessor = field.GetAccess;
+            var setAccessor = field.SetAccess;
+            var generalAccessor = GetGeneralAccessor(getAccessor, setAccessor);
+            
+            var generalAccessorName = GetAccess(generalAccessor);
 
-            if (isReadOnly)
+            if (field.IsReadOnly)
             {
                 code.AppendMultiline(
                     $"""
-                    {General.GeneratedCodeViewModelAttribute}
-                    {generalAccessName}{type} {propertyName} => {name};
-                    
-                    """);
+                     {General.GeneratedCodeViewModelAttribute}
+                     {generalAccessorName}{type} {propertyName} => {name};
+                     
+                     """);
             }
             else
             {
+                var getAccessorName = getAccessor == generalAccessor ? "" : GetAccess(getAccessor);
+                var setAccessorName = setAccessor == generalAccessor ? "" : GetAccess(setAccessor);
+                
                 code.AppendMultiline(
                     $$"""
-                    {{General.GeneratedCodeViewModelAttribute}}
-                    {{generalAccessName}}{{type}} {{propertyName}}
-                    {
-                        {{getAccessName}}get => {{name}};
-                        {{setAccessName}}set => Set{{propertyName}}(value);
-                    }
-                    
-                    """);
-            }
-        }
+                      {{General.GeneratedCodeViewModelAttribute}}
+                      {{generalAccessorName}}{{type}} {{propertyName}}
+                      {
+                          {{getAccessorName}}get => {{name}};
+                          {{setAccessorName}}set => Set{{propertyName}}(value);
+                      }
 
-        static string GetAccess(int number) => number switch
+                      """);
+            }
+        });
+        
+        return code;
+        
+        string GetAccess(SyntaxKind syntaxKind) => syntaxKind switch
         {
-            0 => "private ",
-            1 => "protected ",
-            2 => "public ",
+            SyntaxKind.PrivateKeyword => "private ",
+            SyntaxKind.ProtectedKeyword => "protected ",
+            SyntaxKind.PublicKeyword => "public ",
             _ => ""
         };
+
+        SyntaxKind GetGeneralAccessor(SyntaxKind getAccessor, SyntaxKind setAccessor)
+        {
+            if (setAccessor == getAccessor) return getAccessor;
+            if (getAccessor == SyntaxKind.PrivateKeyword) return setAccessor;
+            if (setAccessor == SyntaxKind.PrivateKeyword) return getAccessor;
+            if (getAccessor == SyntaxKind.ProtectedKeyword) return getAccessor;
+            if (setAccessor == SyntaxKind.ProtectedKeyword) return setAccessor;
+
+            return SyntaxKind.PrivateKeyword;
+        }
     }
 
     private static void AppendSetMethods(this CodeWriter code, in ViewModelDataSpan data)
@@ -99,20 +127,26 @@ public static class PropertiesBody
 
             var changedMethod = $"On{propertyName}Changed";
             var changingMethod = $"On{propertyName}Changing";
-            
-            /*lang=C#*/
-            code.AppendMultiline(
-                $$"""
-                {{General.GeneratedCodeViewModelAttribute}}
-                private void Set{{propertyName}}({{type}} value)
-                {
-                    {{changingMethod}}({{name}}, value);
-                    {{name}} = value;
-                    {{changedMethod}}(value);
-                    {{propertyName}}Changed?.Invoke({{name}});
-                }
 
-                """);
+            code.AppendMultiline(
+                    $"""
+                     {General.GeneratedCodeViewModelAttribute}
+                     private void Set{propertyName}({type} value)
+                     """)
+                .BeginBlock()
+                .AppendMultiline(
+                    $"""
+                    {changingMethod}({name}, value);
+                    {name} = value;
+                    {changedMethod}(value);
+                    {propertyName}Changed?.Invoke({name});
+                    """)
+                .AppendLoop(field.BindAlso, bindAlso =>
+                {
+                    code.AppendLine($"{bindAlso.Name}Changed?.Invoke({bindAlso.Name});");
+                })
+                .EndBlock()
+                .AppendLine();
                 
             code.AppendMultiline(
                 $"""

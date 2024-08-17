@@ -1,3 +1,4 @@
+using System;
 using System.Threading;
 using System.Diagnostics;
 using Microsoft.CodeAnalysis;
@@ -33,7 +34,7 @@ public partial class ViewModelGenerator
         
         symbol.FillMembers(fields: fields, methods: methods, properties: properties);
         
-        var fieldData = FindFields(fields);
+        var fieldData = FindFields(fields, properties);
 
         var generatedProperties = fieldData
             .Where(field => field.Type.ToString() == "bool")
@@ -60,50 +61,76 @@ public partial class ViewModelGenerator
             new ViewModelData(hasBaseType, hasInterface, candidate, fieldData, commandData));
     }
 
-    private static ImmutableArray<FieldData> FindFields(IReadOnlyCollection<IFieldSymbol> fields)
+    private static ImmutableArray<FieldData> FindFields(
+        IReadOnlyCollection<IFieldSymbol> fields,
+        IReadOnlyCollection<IPropertySymbol> properties)
     {
         var data = new List<FieldData>();
         
         foreach (var field in fields)
         {
-            var isBind = field.HasAttribute(Classes.BindAttribute);
-            var idReadOnlyBind = !isBind && field.HasAttribute(Classes.ReadOnlyBindAttribute);
+            var hasReadOnlyBindAttribute = false;
+            var hasBindAttribute = field.HasAttribute(Classes.BindAttribute);
             
-            if (!isBind && !idReadOnlyBind) continue;
-
-            var getAccess = -1;
-            var setAccess = -1;
-
-            if (field.HasAttribute(Classes.AccessAttribute, out var accessAttribute))
+            if (!hasBindAttribute)
             {
-                if (accessAttribute!.ConstructorArguments.Length > 0)
-                {
-                    var value = (int)(accessAttribute!.ConstructorArguments[0].Value ?? 0);
-                    getAccess = value;
-                    setAccess = value;
-                }
-
-                foreach (var argument in accessAttribute!.NamedArguments)
-                {
-                    switch (argument.Key)
-                    {
-                        case "Get":
-                            getAccess = (int)(argument.Value.Value ?? -1);
-                            break;
-                        case "Set":
-                            setAccess = (int)(argument.Value.Value ?? -1);
-                            break;
-                    }
-                }
+                hasReadOnlyBindAttribute = field.HasAttribute(Classes.ReadOnlyBindAttribute);
+                if (!hasReadOnlyBindAttribute) continue;
             }
-
-            if (idReadOnlyBind)
-                setAccess = getAccess;
-
-            data.Add(new FieldData(field, getAccess, setAccess, idReadOnlyBind));
+            
+            var accessors = GetAccessors(field);
+            var bindAlso = GetBindAlso(field);
+            
+            if (hasReadOnlyBindAttribute) accessors.Set = accessors.Get;
+            data.Add(new FieldData(field, hasReadOnlyBindAttribute, accessors.Get, accessors.Set, bindAlso));
         }
 
         return ImmutableArray.CreateRange(data);
+
+        IEnumerable<IPropertySymbol> GetBindAlso(IFieldSymbol field)
+        {
+            var bindAlso = new List<IPropertySymbol>();
+            var attributesArgument = new List<string?>();
+            
+            foreach (var attribute in field.GetAttributes())
+            {
+                if (attribute.ConstructorArguments.Length != 1) continue;
+                if (attribute.AttributeClass?.ToDisplayString() != Classes.BindAlsoAttribute.FullName) continue;
+                attributesArgument.Add(attribute.ConstructorArguments[0].Value?.ToString());
+            }
+
+            foreach (var property in properties)
+            {
+                if (attributesArgument.Any(argument => property.Name == argument))
+                    bindAlso.Add(property);
+            }
+            
+            return bindAlso;
+        }
+        
+        (SyntaxKind Get, SyntaxKind Set) GetAccessors(IFieldSymbol field)
+        {
+            (SyntaxKind Get, SyntaxKind Set) accessors = (SyntaxKind.PrivateKeyword, SyntaxKind.PrivateKeyword);
+            if (!field.HasAttribute(Classes.AccessAttribute, out var accessAttribute)) return accessors;
+            
+            if (accessAttribute!.ConstructorArguments.Length == 1)
+            {
+                var value = (SyntaxKind)(int)(accessAttribute.ConstructorArguments[0].Value ?? SyntaxKind.PrivateKeyword);
+                accessors.Get = value;
+                accessors.Set = value;
+            }
+            
+            foreach (var argument in accessAttribute!.NamedArguments)
+            {
+                switch (argument.Key)
+                {
+                    case "Get": accessors.Get = (SyntaxKind)(int)(argument.Value.Value ?? SyntaxKind.PrivateKeyword); break;
+                    case "Set": accessors.Set = (SyntaxKind)(int)(argument.Value.Value ?? SyntaxKind.PrivateKeyword); break;
+                }
+            }
+
+            return accessors;
+        }
     }
 
     private static ImmutableArray<RelayCommandData> FindCommand(

@@ -1,4 +1,3 @@
-using UltimateUI.MVVM.Views;
 using UltimateUI.MVVM.ViewModels;
 
 // ReSharper disable once CheckNamespace

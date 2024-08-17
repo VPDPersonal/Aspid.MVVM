@@ -9,4 +9,4 @@ namespace UltimateUI.MVVM.Views
 
         public void Deinitialize(IViewModel viewModel);
     }
-}
+} 

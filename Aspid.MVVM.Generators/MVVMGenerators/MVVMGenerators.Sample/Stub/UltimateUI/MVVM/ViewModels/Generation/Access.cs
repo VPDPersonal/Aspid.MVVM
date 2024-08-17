@@ -1,5 +1,5 @@
 // ReSharper disable once CheckNamespace
-namespace UltimateUI.MVVM.ViewModels
+namespace UltimateUI.MVVM.ViewModels.Generation
 {
     public enum Access
     {

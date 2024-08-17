@@ -3,9 +3,8 @@ using System.Drawing;
 using UltimateUI.MVVM;
 using UltimateUI.MVVM.Commands;
 using UltimateUI.MVVM.Unity;
-using UltimateUI.MVVM.Views;
 using UltimateUI.MVVM.Unity.Views;
-using UltimateUI.MVVM.ViewModels;
+using UltimateUI.MVVM.Views.Generation;
 
 namespace MVVMGenerators.Sample.Views;
 

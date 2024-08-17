@@ -1,8 +1,8 @@
 using UnityEngine.UI;
-using UltimateUI.MVVM.Views;
 using UltimateUI.MVVM.Unity.Views;
 using MVVMGenerators.Sample.Binders;
 using UltimateUI.MVVM.ViewModels;
+using UltimateUI.MVVM.Views.Generation;
 using UnityEngine;
 
 namespace MVVMGenerators.Sample.Views;

@@ -2,6 +2,7 @@ using System;
 using UltimateUI.MVVM;
 using UltimateUI.MVVM.Commands;
 using UltimateUI.MVVM.Unity;
+using UltimateUI.MVVM.Unity.Generation;
 using UltimateUI.MVVM.ViewModels;
 
 namespace MVVMGenerators.Sample

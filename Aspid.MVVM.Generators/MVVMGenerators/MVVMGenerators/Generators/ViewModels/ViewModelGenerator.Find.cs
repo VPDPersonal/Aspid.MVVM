@@ -1,11 +1,10 @@
-using System;
+using System.Linq;
 using System.Threading;
 using System.Diagnostics;
 using Microsoft.CodeAnalysis;
 using MVVMGenerators.Helpers;
 using System.Collections.Generic;
 using System.Collections.Immutable;
-using System.Linq;
 using Microsoft.CodeAnalysis.CSharp;
 using System.Runtime.CompilerServices;
 using MVVMGenerators.Helpers.Descriptions;

@@ -45,7 +45,7 @@ namespace MVVMGenerators.Sample
         }
 
         [BinderLog]
-        void SetValue(object value)
+        public void SetValue(object value)
         {
             throw new NotImplementedException();
         }

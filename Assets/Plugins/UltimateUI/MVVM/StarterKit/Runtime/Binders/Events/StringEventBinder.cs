@@ -2,12 +2,13 @@ using UnityEngine;
 using UnityEngine.Events;
 using System.Globalization;
 using UltimateUI.MVVM.Unity;
+using UltimateUI.MVVM.Unity.Generation;
 
 // ReSharper disable once CheckNamespace
 namespace UltimateUI.MVVM.StarterKit.Binders.Events
 {
     [AddComponentMenu("UI/Binders/Event/Event Binder - String")]
-    public partial class StringEventBinder : MonoBinder, IBinder<string>, IBinderNumber
+    public partial class StringEventBinder : MonoBinder, IBinder<string>, INumberBinder
     {
         public event UnityAction<string> StringValueSet
         {

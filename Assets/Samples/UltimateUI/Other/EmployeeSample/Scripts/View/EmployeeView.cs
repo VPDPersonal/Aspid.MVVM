@@ -1,7 +1,7 @@
 using UnityEngine;
 using UltimateUI.MVVM.Unity;
-using UltimateUI.MVVM.Views;
 using UltimateUI.MVVM.Unity.Views;
+using UltimateUI.MVVM.Views.Generation;
 
 [View]
 public partial class EmployeeView : MonoView

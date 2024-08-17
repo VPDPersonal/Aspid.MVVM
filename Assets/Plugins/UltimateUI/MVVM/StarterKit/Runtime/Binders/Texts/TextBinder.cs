@@ -1,13 +1,13 @@
 #if ULTIMATE_UI_TEXT_MESH_PRO_INTEGRATION
 using UnityEngine;
 using System.Globalization;
-using UltimateUI.MVVM.Unity;
+using UltimateUI.MVVM.Unity.Generation;
 
 // ReSharper disable once CheckNamespace
 namespace UltimateUI.MVVM.StarterKit.Binders.Texts
 {
     [AddComponentMenu("UI/Binders/Text/Text Binder")]
-    public partial class TextBinder : TextBinderBase, IBinder<string>, IBinderNumber
+    public partial class TextBinder : TextBinderBase, IBinder<string>, INumberBinder
     {
         [SerializeField] private string _format;
 

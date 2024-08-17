@@ -1,5 +1,6 @@
 using UltimateUI.MVVM.ViewModels;
 using UltimateUI.MVVM.Collections;
+using UltimateUI.MVVM.ViewModels.Generation;
 using UltimateUI.MVVM.Samples.ProductSample.Economy.Data;
 using UltimateUI.MVVM.Samples.ProductSample.Economy.Models;
 

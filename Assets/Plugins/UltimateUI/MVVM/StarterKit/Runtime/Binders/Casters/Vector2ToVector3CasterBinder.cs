@@ -2,6 +2,7 @@ using System;
 using UnityEngine;
 using UltimateUI.MVVM.Unity;
 using UltimateUI.MVVM.Unity.Views;
+using UltimateUI.MVVM.Unity.Generation;
 
 // ReSharper disable InconsistentNaming
 // ReSharper disable once CheckNamespace

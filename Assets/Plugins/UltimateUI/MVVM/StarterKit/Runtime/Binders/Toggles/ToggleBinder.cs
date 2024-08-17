@@ -1,54 +1,34 @@
 using System;
-using UnityEngine;
-using UltimateUI.MVVM.Unity;
+using UnityEngine.UI;
+using UltimateUI.MVVM.ViewModels;
 
 // ReSharper disable once CheckNamespace
 namespace UltimateUI.MVVM.StarterKit.Binders.Toggles
 {
-    [AddComponentMenu("UI/Binders/Toggles/Toggle Binder")]
-    public partial class ToggleBinder : ToggleBinderBase, IBinder<bool>, IReverseBinder<bool>
+    public class ToggleBinder : ToggleBinderBase, IBinder<bool>, IReverseBinder<bool>
     {
         public event Action<bool> ValueChanged;
         
-        [Header("Parameters")]
-        [SerializeField] private bool _isReverse;
-        
-#if UNITY_EDITOR
-        private bool _isSubscribed;
-#endif
-        
-        public bool IsReverseEnabled => _isReverse;
+        public bool IsReverseEnabled { get; }
 
-        private void OnValidate()
+        public ToggleBinder(Toggle toggle, bool isReverseEnabled = true) : base(toggle)
         {
-            if (!_isReverse) Unsubscribe();
-            else if (!_isSubscribed) Subscribe();
+            IsReverseEnabled = isReverseEnabled;
         }
 
-        private void OnEnable() => Subscribe();
-
-        private void OnDisable() => Unsubscribe();
-
-        private void Subscribe()
+        protected override void OnBound(IViewModel viewModel, string id)
         {
             if (!IsReverseEnabled) return;
-#if UNITY_EDITOR
-            _isSubscribed = true;
-#endif
-            CachedToggle.onValueChanged.AddListener(OnValueChanged);
+            Toggle.onValueChanged.AddListener(OnValueChanged);
         }
-        
-        private void Unsubscribe()
+
+        protected override void OnUnbound(IViewModel viewModel, string id)
         {
-#if UNITY_EDITOR
-            _isSubscribed = false;
-#endif
-            CachedToggle.onValueChanged.RemoveListener(OnValueChanged);
+            Toggle.onValueChanged.RemoveListener(OnValueChanged);
         }
         
-        [BinderLog]
         public void SetValue(bool value) =>
-            CachedToggle.isOn = value;
+            Toggle.isOn = value;
 
         private void OnValueChanged(bool isOn) =>
             ValueChanged?.Invoke(isOn);

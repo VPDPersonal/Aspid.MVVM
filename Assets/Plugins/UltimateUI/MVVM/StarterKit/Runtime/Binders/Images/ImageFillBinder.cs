@@ -1,5 +1,5 @@
 using UnityEngine;
-using UltimateUI.MVVM.Unity;
+using UltimateUI.MVVM.Unity.Generation;
 using UltimateUI.MVVM.StarterKit.Converters.Number;
 
 // ReSharper disable once CheckNamespace

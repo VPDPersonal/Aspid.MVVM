@@ -48,7 +48,7 @@ namespace UltimateUI.Samples.StatsSample.Models
             SkillChanged?.Invoke(skill);
         }
 
-        public void SettSkillPointTo(Skill skill, int value)
+        public void SetSkillPointTo(Skill skill, int value)
         {
             ThrowExceptionIfValueLessThanZero(value);
             

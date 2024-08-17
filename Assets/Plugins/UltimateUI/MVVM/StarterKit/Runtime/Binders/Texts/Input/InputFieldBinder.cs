@@ -3,14 +3,14 @@ using TMPro;
 using System;
 using UnityEngine;
 using System.Globalization;
-using UltimateUI.MVVM.Unity;
+using UltimateUI.MVVM.Unity.Generation;
 
 // ReSharper disable once CheckNamespace
 namespace UltimateUI.MVVM.StarterKit.Binders.Texts.Input
 {
     [AddComponentMenu("UI/Binders/Text/Input Field Binder")]
     public partial class InputFieldBinder : InputFieldBinderBase, 
-        IBinder<string>, IBinderNumber, IReverseBinder<string>, IReverseBinderNumber
+        IBinder<string>, INumberBinder, IReverseBinder<string>, INumberReverseBinder
     {
         public event Action<string> ValueChanged;
         

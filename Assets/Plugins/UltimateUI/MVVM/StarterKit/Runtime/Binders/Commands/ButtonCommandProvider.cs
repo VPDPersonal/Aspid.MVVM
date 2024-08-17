@@ -1,9 +1,9 @@
 using System;
 using UnityEngine;
 using UnityEngine.UI;
-using UltimateUI.MVVM.Unity;
 using UltimateUI.MVVM.Commands;
 using UltimateUI.MVVM.ViewModels;
+using UltimateUI.MVVM.Unity.Generation;
 
 // ReSharper disable once CheckNamespace
 namespace UltimateUI.MVVM.StarterKit.Binders.Commands

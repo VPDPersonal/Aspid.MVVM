@@ -1,7 +1,7 @@
 using UnityEngine;
-using UltimateUI.MVVM.Views;
 using UltimateUI.MVVM.Unity;
 using UltimateUI.MVVM.Unity.Views;
+using UltimateUI.MVVM.Views.Generation;
 using UltimateUI.Samples.StatsSample.Models;
 using UltimateUI.MVVM.StarterKit.Binders.Commands;
 

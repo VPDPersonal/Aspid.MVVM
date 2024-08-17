@@ -1,33 +1,31 @@
 using System;
 using UnityEngine;
-using UltimateUI.MVVM.Unity;
 
 // ReSharper disable once CheckNamespace
 namespace UltimateUI.MVVM.StarterKit.Binders.Transforms
 {
-    [AddComponentMenu("UI/Binders/Transform/Transform Binder - Rotation")]
-    public partial class TransformRotationBinder : TransformBinderBase, IRotationBinder
+    public class TransformRotationBinder : TransformBinderBase, IRotationBinder
     {
-        [Header("Parameters")]
-        [SerializeField] private Space _space;
+        protected readonly Space Space;
 
-        protected Space Space => _space;
-        
-        [BinderLog]
+        public TransformRotationBinder(Transform transform, Space space = Space.World)
+            : base(transform)
+        {
+            Space = space;
+        }
+
         public void SetValue(Vector2 value) =>
             SetValue((Vector3)value);
         
-        [BinderLog]
         public void SetValue(Vector3 value) =>
             SetValue(Quaternion.Euler(value));
         
-        [BinderLog]
         public void SetValue(Quaternion value)
         {
             switch (Space)
             {
-                case Space.Self: CachedTransform.localRotation = value; break;
-                case Space.World: CachedTransform.rotation = value; break;
+                case Space.Self: Transform.localRotation = value; break;
+                case Space.World: Transform.rotation = value; break;
                 default: throw new ArgumentOutOfRangeException();
             }
         }

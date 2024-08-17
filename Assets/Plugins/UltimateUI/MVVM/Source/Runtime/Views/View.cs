@@ -1,4 +1,3 @@
-#nullable disable
 using System;
 using Unity.Profiling;
 using UltimateUI.MVVM.ViewModels;
@@ -14,7 +13,7 @@ namespace UltimateUI.MVVM.Views
         private static readonly ProfilerMarker _initializeMarker = new("View.Initialize");
         private static readonly ProfilerMarker _deinitializationMarker = new("View.Deinitialization");
 #endif
-        private IViewModel _viewModel;
+        private IViewModel? _viewModel;
         
         public void Initialize(IViewModel viewModel)
         {
@@ -58,13 +57,32 @@ namespace UltimateUI.MVVM.Views
         protected static void BindSafely(IBinder binder, IViewModel viewModel, string id) =>
             binder?.Bind(viewModel, id);
         
-        protected static void BindSafely<T>(T[] binders, IViewModel viewModel, string id)
+        protected static void BindSafely<T>(T[]? binders, IViewModel viewModel, string id)
             where T : IBinder
         {
             if (binders == null) return;
 
             foreach (var binder in binders)
                 binder.Bind(viewModel, id);
+        }
+        
+        protected static void UnbindSafely<T>(T binder, IViewModel viewModel, string id)
+            where T : Object, IBinder
+        {
+            if (!binder) return;
+            binder.Unbind(viewModel, id);
+        }
+        
+        protected static void UnbindSafely(IBinder binder, IViewModel viewModel, string id) =>
+            binder?.Unbind(viewModel, id);
+        
+        protected static void UnbindSafely<T>(T[] binders, IViewModel viewModel, string id)
+            where T : IBinder
+        {
+            if (binders == null) return;
+
+            foreach (var binder in binders)
+                binder.Unbind(viewModel, id);
         }
     }
 }

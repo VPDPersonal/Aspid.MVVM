@@ -1,6 +1,6 @@
 #if ULTIMATE_UI_TEXT_MESH_PRO_INTEGRATION && ULTIMATE_UI_UNITY_LOCALIZATION_INTEGRATION
 using UnityEngine;
-using UltimateUI.MVVM.Unity;
+using UltimateUI.MVVM.Unity.Generation;
 
 // ReSharper disable once CheckNamespace
 namespace UltimateUI.MVVM.StarterKit.Binders.Texts.Localization

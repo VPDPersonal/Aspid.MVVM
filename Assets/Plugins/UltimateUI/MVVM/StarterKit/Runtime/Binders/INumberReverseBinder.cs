@@ -4,7 +4,7 @@ using System;
 
 namespace UltimateUI.MVVM.StarterKit.Binders
 {
-    public interface IReverseBinderNumber : IReverseBinder<int>, IReverseBinder<long>, IReverseBinder<float>, IReverseBinder<double>
+    public interface INumberReverseBinder : IReverseBinder<int>, IReverseBinder<long>, IReverseBinder<float>, IReverseBinder<double>
     {
         public event Action<int> IntValueChanged;
         public event Action<long> LongValueChanged;

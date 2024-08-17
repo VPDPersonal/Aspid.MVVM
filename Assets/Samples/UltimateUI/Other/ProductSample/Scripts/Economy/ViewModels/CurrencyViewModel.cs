@@ -1,6 +1,6 @@
 using System;
 using UnityEngine;
-using UltimateUI.MVVM.ViewModels;
+using UltimateUI.MVVM.ViewModels.Generation;
 using UltimateUI.MVVM.Samples.ProductSample.Economy.Data;
 using UltimateUI.MVVM.Samples.ProductSample.Economy.Models;
 

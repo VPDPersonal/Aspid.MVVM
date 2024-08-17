@@ -1,13 +1,13 @@
 using System;
 using UnityEngine;
-using UltimateUI.MVVM.Unity;
+using UltimateUI.MVVM.Unity.Generation;
 using UltimateUI.MVVM.StarterKit.Converters.Number;
 
 // ReSharper disable once CheckNamespace
 namespace UltimateUI.MVVM.StarterKit.Binders.Sliders
 {
     [AddComponentMenu("UI/Binders/Slider/Slider Binder - Value")]
-    public partial class SliderValueBinder : SliderBinderBase, IBinderNumber, IReverseBinderNumber
+    public partial class SliderValueBinder : SliderBinderBase, INumberBinder, INumberReverseBinder
     {
         public event Action<int> IntValueChanged;
         public event Action<long> LongValueChanged;

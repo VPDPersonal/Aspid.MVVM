@@ -1,31 +1,33 @@
 using System;
 using UnityEngine;
-using UltimateUI.MVVM.Unity;
 
 // ReSharper disable once CheckNamespace
 namespace UltimateUI.MVVM.StarterKit.Binders.Transforms
 {
-    [AddComponentMenu("UI/Binders/Transform/Transform Binder - Position Switcher")]
-    public partial class TransformPositionSwitcherBinder : TransformBinderBase, IBinder<bool>
+    public class TransformPositionSwitcherBinder : TransformBinderBase, IBinder<bool>
     {
-        [Header("Parameters")]
-        [SerializeField] private Space _space;
-        [SerializeField] private Vector3 _truePosition;
-        [SerializeField] private Vector3 _falsePosition;
+        protected readonly Space Space;
+        protected readonly Vector3 TruePosition;
+        protected readonly Vector3 FalsePosition;
         
-        protected Space Space => _space;
-
-        protected Vector3 TruePosition => _truePosition;
+        public TransformPositionSwitcherBinder(
+            Transform transform,
+            Vector3 truePosition, 
+            Vector3 falsePosition, 
+            Space space = Space.World) 
+            : base(transform)
+        {
+            Space = space;
+            TruePosition = truePosition;
+            FalsePosition = falsePosition;
+        }
         
-        protected Vector3 FalsePosition => _falsePosition;
-        
-        [BinderLog]
         public void SetValue(bool value)
         {
             switch (Space)
             {
-                case Space.Self: CachedTransform.localPosition = GetPosition(value); break;
-                case Space.World: CachedTransform.position = GetPosition(value); break;
+                case Space.Self: Transform.localPosition = GetPosition(value); break;
+                case Space.World: Transform.position = GetPosition(value); break;
                 default: throw new ArgumentOutOfRangeException();
             }
         }

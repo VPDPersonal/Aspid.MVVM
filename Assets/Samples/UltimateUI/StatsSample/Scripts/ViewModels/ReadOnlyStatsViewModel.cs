@@ -1,5 +1,6 @@
 using System;
 using UltimateUI.MVVM.ViewModels;
+using UltimateUI.MVVM.ViewModels.Generation;
 using UltimateUI.Samples.StatsSample.Models;
 
 // ReSharper disable once CheckNamespace

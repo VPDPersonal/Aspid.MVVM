@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.Events;
 using UltimateUI.MVVM.Unity;
+using UltimateUI.MVVM.Unity.Generation;
 
 // ReSharper disable once CheckNamespace
 namespace UltimateUI.MVVM.StarterKit.Binders.Events

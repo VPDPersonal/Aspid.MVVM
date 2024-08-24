@@ -2,6 +2,7 @@ using System.Threading;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using MVVMGenerators.Helpers.Descriptions;
 
 namespace MVVMGenerators.Generators.ViewModels;
 
@@ -10,7 +11,7 @@ public partial class ViewModelGenerator : IIncrementalGenerator
 {
     public void Initialize(IncrementalGeneratorInitializationContext context)
     {
-        var provider = context.SyntaxProvider.CreateSyntaxProvider(SyntacticPredicate, FindViewModels).
+        var provider = context.SyntaxProvider.ForAttributeWithMetadataName(Classes.ViewModelAttribute.FullName, SyntacticPredicate, FindViewModels).
             Where(foundForSourceGenerator => foundForSourceGenerator.IsNeed).
             Select((foundForSourceGenerator, _) => foundForSourceGenerator.Container);
 

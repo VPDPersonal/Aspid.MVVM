@@ -1,18 +1,15 @@
-using System.Linq;
 using System.Threading;
 using System.Diagnostics;
 using Microsoft.CodeAnalysis;
 using MVVMGenerators.Helpers;
 using System.Collections.Generic;
 using System.Collections.Immutable;
-using Microsoft.CodeAnalysis.CSharp;
 using System.Runtime.CompilerServices;
 using MVVMGenerators.Helpers.Descriptions;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using MVVMGenerators.Generators.Views.Data;
 using MVVMGenerators.Helpers.Extensions.Symbols;
 using MVVMGenerators.Generators.Views.Data.Members;
-using MVVMGenerators.Helpers.Extensions.Declarations;
 
 using Field = Microsoft.CodeAnalysis.IFieldSymbol;
 using Property = Microsoft.CodeAnalysis.IPropertySymbol;
@@ -21,17 +18,10 @@ namespace MVVMGenerators.Generators.Views;
 
 public partial class ViewGenerator
 {
-    private static FoundForGenerator<ViewData> FindView(
-        GeneratorSyntaxContext context, 
-        CancellationToken cancellationToken)
+    private static FoundForGenerator<ViewData> FindView(GeneratorAttributeSyntaxContext context, CancellationToken cancellationToken)
     {
-        Debug.Assert(context.Node is TypeDeclarationSyntax);
-        var candidate = Unsafe.As<TypeDeclarationSyntax>(context.Node);
-        if (!candidate.HasAttribute(context.SemanticModel, Classes.ViewAttribute.FullName)) return default;
-
-        var symbol = context.SemanticModel.GetDeclaredSymbol(candidate, cancellationToken);
-        if (symbol is null) return default;
-
+        if (context.TargetSymbol is not INamedTypeSymbol symbol) return default;
+        
         var inheritor = RecognizeInheritor(symbol);
         var members = symbol.GetMembers();
         var viewMembers = GetViewMembers(members);
@@ -58,6 +48,9 @@ public partial class ViewGenerator
             }
         }
 
+        Debug.Assert(context.TargetNode is TypeDeclarationSyntax);
+        var candidate = Unsafe.As<TypeDeclarationSyntax>(context.TargetNode);
+        
         var viewData = new ViewData(inheritor, viewMembers, isInitializeOverride, isDeinitializeOverride, candidate);
         return new FoundForGenerator<ViewData>(true, viewData);
         

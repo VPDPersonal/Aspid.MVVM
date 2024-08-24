@@ -17,15 +17,10 @@ namespace MVVMGenerators.Generators.ViewModels;
 
 public partial class ViewModelGenerator
 {
-    private static FoundForGenerator<ViewModelData> FindViewModels(GeneratorSyntaxContext context,
+    private static FoundForGenerator<ViewModelData> FindViewModels(GeneratorAttributeSyntaxContext context,
         CancellationToken cancellationToken)
     {
-        Debug.Assert(context.Node is TypeDeclarationSyntax);
-        var candidate = Unsafe.As<TypeDeclarationSyntax>(context.Node);
-        if (!candidate.HasAttribute(context.SemanticModel, Classes.ViewModelAttribute.FullName)) return default;
-
-        var symbol = context.SemanticModel.GetDeclaredSymbol(candidate, cancellationToken);
-        if (symbol is null) return default;
+        if (context.TargetSymbol is not INamedTypeSymbol symbol) return default;
 
         var fields = new List<IFieldSymbol>();
         var methods = new List<IMethodSymbol>();
@@ -56,6 +51,9 @@ public partial class ViewModelGenerator
             if (hasInterface && hasBaseType) break;
         }
 
+        Debug.Assert(context.TargetNode is TypeDeclarationSyntax);
+        var candidate = Unsafe.As<TypeDeclarationSyntax>(context.TargetNode);
+        
         return new FoundForGenerator<ViewModelData>(true,
             new ViewModelData(hasBaseType, hasInterface, candidate, fieldData, commandData));
     }

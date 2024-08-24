@@ -2,6 +2,7 @@ using System.Threading;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using MVVMGenerators.Helpers.Descriptions;
 
 namespace MVVMGenerators.Generators.Views;
 
@@ -10,7 +11,7 @@ public partial class ViewGenerator : IIncrementalGenerator
 {
     public void Initialize(IncrementalGeneratorInitializationContext context)
     {
-        var provider = context.SyntaxProvider.CreateSyntaxProvider(SyntacticPredicate, FindView)
+        var provider = context.SyntaxProvider.ForAttributeWithMetadataName(Classes.ViewAttribute.FullName, SyntacticPredicate, FindView)
             .Where(foundForSourceGenerator => foundForSourceGenerator.IsNeed)
             .Select((foundForSourceGenerator, _) => foundForSourceGenerator.Container);
         
@@ -29,7 +30,6 @@ public partial class ViewGenerator : IIncrementalGenerator
 
         return candidate is not null
             && candidate.Modifiers.Any(SyntaxKind.PartialKeyword)
-            && !candidate.Modifiers.Any(SyntaxKind.StaticKeyword)
-            && candidate.AttributeLists.Count > 0;
+            && !candidate.Modifiers.Any(SyntaxKind.StaticKeyword);
     }
 }

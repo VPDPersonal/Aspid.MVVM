@@ -54,7 +54,7 @@ public static class PropertiesBody
     {
         code.AppendLoop(data.Fields, field =>
         {
-            var type = field.Type;
+            var type = field.Type.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat);
             var name = field.Name;
             var propertyName = field.PropertyName;
             

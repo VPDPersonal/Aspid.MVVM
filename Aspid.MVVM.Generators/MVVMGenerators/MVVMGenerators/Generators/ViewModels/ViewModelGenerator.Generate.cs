@@ -18,7 +18,7 @@ public partial class ViewModelGenerator
         var @namespace = declaration.GetNamespaceName();
         var declarationText = declaration.GetDeclarationText();
 
-        if (dataSpan.Fields.Length > 0)
+        if (dataSpan.Fields.Length + dataSpan.Commands.Length > 0)
         {
             GenerateProperties(@namespace, dataSpan, declarationText, context);
 

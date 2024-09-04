@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 using UltimateUI.MVVM.Samples.ProductSample.Economy.Models;
 
-// ReSharper disable once CheckNamespace
+
 namespace UltimateUI.MVVM.Samples.ProductSample.Economy.Data
 {
     [CreateAssetMenu(fileName = "New Currency View Data", menuName = "MVVM/Samples/Product Sample/Economy/Currency View", order = 0)]

@@ -2,7 +2,7 @@
 // using UnityEngine;
 // using UltimateUI.MVVM.Views;
 //
-// // ReSharper disable once CheckNamespace
+// 
 // namespace UltimateUI.MVVM.Samples.ProductSample.Economy
 // {
 //     [View]

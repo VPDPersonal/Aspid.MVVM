@@ -6,7 +6,7 @@
 // using UltimateUI.MVVM.Samples.ProductSample.Economy.ViewModels;
 // using UltimateUI.MVVM.ViewBinders;
 //
-// // ReSharper disable once CheckNamespace
+// 
 // namespace UltimateUI.MVVM.Samples.ProductSample.Infrastructure
 // {
 //     public sealed class CurrencyViewSceneLifetimeScope : LifetimeScope

@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 
-// ReSharper disable once CheckNamespace
+
 namespace UltimateUI.Samples.StatsSample.Models
 {
     public class Hero

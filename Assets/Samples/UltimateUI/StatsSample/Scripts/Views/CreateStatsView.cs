@@ -5,7 +5,7 @@ using UltimateUI.MVVM.Views.Generation;
 using UltimateUI.Samples.StatsSample.Models;
 using UltimateUI.MVVM.StarterKit.Binders.Commands;
 
-// ReSharper disable once CheckNamespace
+
 namespace UltimateUI.Samples.StatsSample.Views
 {
     [View]

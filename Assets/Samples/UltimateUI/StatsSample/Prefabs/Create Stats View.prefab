@@ -145,7 +145,7 @@ GameObject:
   - component: {fileID: 594661708759931025}
   - component: {fileID: 4910674209951141257}
   - component: {fileID: 2184117819493737949}
-  - component: {fileID: 5734425860776028814}
+  - component: {fileID: 269092322224781265}
   m_Layer: 5
   m_Name: Points Available Value
   m_TagString: Untagged
@@ -269,7 +269,7 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
---- !u!114 &5734425860776028814
+--- !u!114 &269092322224781265
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -278,13 +278,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 1807833201715301235}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bfc12b6b7b514b0487f612772f933b7c, type: 3}
+  m_Script: {fileID: 11500000, guid: 308348858250478390a4e42699309252, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _view: {fileID: 0}
-  _id: _skillPointsAvailable
-  _text: {fileID: 0}
-  _format: 
+  _view: {fileID: 5315928923478365624}
+  _id: SkillPointsAvailable
+  _component: {fileID: 2184117819493737949}
   _isDebug: 0
   _log: []
 --- !u!1 &1863818017136329706
@@ -382,17 +381,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _cool:
-  - {fileID: 2375750696855174819}
+  - {fileID: 4245696846360189788}
   _power:
-  - {fileID: 6357351656032391070}
+  - {fileID: 4767688871036496481}
   _reflexes:
-  - {fileID: 385806640844422567}
+  - {fileID: 2254416076173432920}
   _intelligence:
-  - {fileID: 2198956193388416759}
+  - {fileID: 330910545420233480}
   _technicalAbility:
-  - {fileID: 8292001902922383642}
+  - {fileID: 7566321902574544101}
   _skillPointsAvailable:
-  - {fileID: 5734425860776028814}
+  - {fileID: 269092322224781265}
   _isDraft:
   - {fileID: 3697158587917215939}
   _confirmCommand:
@@ -480,8 +479,8 @@ MonoBehaviour:
   _viewModelComponent:
     <Resolve>k__BackingField: 0
     <Type>k__BackingField:
-      _typeName: UltimateUI.MVVM.Samples.StatsSample.ViewModels.CreateStatsViewModel,
-        Assembly-CSharp-firstpass, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+      _typeName: UltimateUI.Samples.StatsSample.ViewModels.CreateStatsViewModel,
+        Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
     <Mono>k__BackingField:
       _obj: {fileID: 0}
     <References>k__BackingField:
@@ -1083,9 +1082,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 265f3a2980dc47039fccdd5a66acba34, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _view: {fileID: 0}
-  _id: _isDraft
-  _isInvert: 0
+  _view: {fileID: 5315928923478365624}
+  _id: IsDraft
+  <IsInvert>k__BackingField: 0
   _isDebug: 0
   _log: []
 --- !u!1 &8031546957962004038
@@ -1172,6 +1171,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2656160824607084605}
     m_Modifications:
+    - target: {fileID: 262625561069034077, guid: 28dcd3a91ac8d478283826b5db692c5d, type: 3}
+      propertyPath: _id
+      value: Intelligence
+      objectReference: {fileID: 0}
+    - target: {fileID: 262625561069034077, guid: 28dcd3a91ac8d478283826b5db692c5d, type: 3}
+      propertyPath: _view
+      value: 
+      objectReference: {fileID: 5315928923478365624}
     - target: {fileID: 557253933507048913, guid: 28dcd3a91ac8d478283826b5db692c5d, type: 3}
       propertyPath: m_Name
       value: Add Intelligence Point
@@ -1292,15 +1299,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &2198956193388416759 stripped
+--- !u!114 &330910545420233480 stripped
 MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 1852926600267366306, guid: 28dcd3a91ac8d478283826b5db692c5d, type: 3}
+  m_CorrespondingSourceObject: {fileID: 262625561069034077, guid: 28dcd3a91ac8d478283826b5db692c5d, type: 3}
   m_PrefabInstance: {fileID: 518663743081623893}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bfc12b6b7b514b0487f612772f933b7c, type: 3}
+  m_Script: {fileID: 11500000, guid: 308348858250478390a4e42699309252, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!224 &2717705535234022949 stripped
@@ -1327,6 +1334,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2656160824607084605}
     m_Modifications:
+    - target: {fileID: 262625561069034077, guid: 28dcd3a91ac8d478283826b5db692c5d, type: 3}
+      propertyPath: _id
+      value: Reflexes
+      objectReference: {fileID: 0}
+    - target: {fileID: 262625561069034077, guid: 28dcd3a91ac8d478283826b5db692c5d, type: 3}
+      propertyPath: _view
+      value: 
+      objectReference: {fileID: 5315928923478365624}
     - target: {fileID: 557253933507048913, guid: 28dcd3a91ac8d478283826b5db692c5d, type: 3}
       propertyPath: m_Name
       value: Add Reflexes Point
@@ -1436,17 +1451,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 28dcd3a91ac8d478283826b5db692c5d, type: 3}
---- !u!114 &385806640844422567 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 1852926600267366306, guid: 28dcd3a91ac8d478283826b5db692c5d, type: 3}
-  m_PrefabInstance: {fileID: 2084115444834910725}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bfc12b6b7b514b0487f612772f933b7c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &1922244232776191990 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 450761308143439347, guid: 28dcd3a91ac8d478283826b5db692c5d, type: 3}
@@ -1456,6 +1460,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &2254416076173432920 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 262625561069034077, guid: 28dcd3a91ac8d478283826b5db692c5d, type: 3}
+  m_PrefabInstance: {fileID: 2084115444834910725}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 308348858250478390a4e42699309252, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!224 &4497355296216706421 stripped
@@ -1482,6 +1497,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2656160824607084605}
     m_Modifications:
+    - target: {fileID: 262625561069034077, guid: 28dcd3a91ac8d478283826b5db692c5d, type: 3}
+      propertyPath: _id
+      value: Cool
+      objectReference: {fileID: 0}
+    - target: {fileID: 262625561069034077, guid: 28dcd3a91ac8d478283826b5db692c5d, type: 3}
+      propertyPath: _view
+      value: 
+      objectReference: {fileID: 5315928923478365624}
     - target: {fileID: 557253933507048913, guid: 28dcd3a91ac8d478283826b5db692c5d, type: 3}
       propertyPath: m_Name
       value: Add Cool Point
@@ -1596,15 +1619,15 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 2487556152624000880, guid: 28dcd3a91ac8d478283826b5db692c5d, type: 3}
   m_PrefabInstance: {fileID: 4129438324727120129}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &2375750696855174819 stripped
+--- !u!114 &4245696846360189788 stripped
 MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 1852926600267366306, guid: 28dcd3a91ac8d478283826b5db692c5d, type: 3}
+  m_CorrespondingSourceObject: {fileID: 262625561069034077, guid: 28dcd3a91ac8d478283826b5db692c5d, type: 3}
   m_PrefabInstance: {fileID: 4129438324727120129}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bfc12b6b7b514b0487f612772f933b7c, type: 3}
+  m_Script: {fileID: 11500000, guid: 308348858250478390a4e42699309252, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &4544091627993418994 stripped
@@ -1637,6 +1660,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2656160824607084605}
     m_Modifications:
+    - target: {fileID: 262625561069034077, guid: 28dcd3a91ac8d478283826b5db692c5d, type: 3}
+      propertyPath: _id
+      value: Power
+      objectReference: {fileID: 0}
+    - target: {fileID: 262625561069034077, guid: 28dcd3a91ac8d478283826b5db692c5d, type: 3}
+      propertyPath: _view
+      value: 
+      objectReference: {fileID: 5315928923478365624}
     - target: {fileID: 557253933507048913, guid: 28dcd3a91ac8d478283826b5db692c5d, type: 3}
       propertyPath: m_Name
       value: Add Power Point
@@ -1753,6 +1784,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &4767688871036496481 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 262625561069034077, guid: 28dcd3a91ac8d478283826b5db692c5d, type: 3}
+  m_PrefabInstance: {fileID: 4724050931245887548}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 308348858250478390a4e42699309252, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &5174176717364985295 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 450761308143439347, guid: 28dcd3a91ac8d478283826b5db692c5d, type: 3}
@@ -1762,17 +1804,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &6357351656032391070 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 1852926600267366306, guid: 28dcd3a91ac8d478283826b5db692c5d, type: 3}
-  m_PrefabInstance: {fileID: 4724050931245887548}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bfc12b6b7b514b0487f612772f933b7c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!224 &7136692957490323276 stripped
@@ -1788,6 +1819,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2656160824607084605}
     m_Modifications:
+    - target: {fileID: 262625561069034077, guid: 28dcd3a91ac8d478283826b5db692c5d, type: 3}
+      propertyPath: _id
+      value: TechnicalAbility
+      objectReference: {fileID: 0}
+    - target: {fileID: 262625561069034077, guid: 28dcd3a91ac8d478283826b5db692c5d, type: 3}
+      propertyPath: _view
+      value: 
+      objectReference: {fileID: 5315928923478365624}
     - target: {fileID: 557253933507048913, guid: 28dcd3a91ac8d478283826b5db692c5d, type: 3}
       propertyPath: m_Name
       value: Add Technical Ability Point
@@ -1913,6 +1952,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 2487556152624000880, guid: 28dcd3a91ac8d478283826b5db692c5d, type: 3}
   m_PrefabInstance: {fileID: 7684813462261972664}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &7566321902574544101 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 262625561069034077, guid: 28dcd3a91ac8d478283826b5db692c5d, type: 3}
+  m_PrefabInstance: {fileID: 7684813462261972664}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 308348858250478390a4e42699309252, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &7846568134673888075 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 450761308143439347, guid: 28dcd3a91ac8d478283826b5db692c5d, type: 3}
@@ -1922,16 +1972,5 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &8292001902922383642 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 1852926600267366306, guid: 28dcd3a91ac8d478283826b5db692c5d, type: 3}
-  m_PrefabInstance: {fileID: 7684813462261972664}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bfc12b6b7b514b0487f612772f933b7c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 

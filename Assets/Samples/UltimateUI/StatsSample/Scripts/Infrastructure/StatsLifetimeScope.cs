@@ -4,7 +4,7 @@ using VContainer.Unity;
 using UltimateUI.Samples.StatsSample.Models;
 using UltimateUI.Samples.StatsSample.ViewModels;
 
-// ReSharper disable once CheckNamespace
+
 namespace UltimateUI.Samples.StatsSample.Infrastructure
 {
     public sealed class StatsLifetimeScope : LifetimeScope

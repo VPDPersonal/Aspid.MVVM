@@ -3,7 +3,7 @@ using UltimateUI.MVVM.Unity;
 using UltimateUI.MVVM.Unity.Views;
 using UltimateUI.MVVM.Views.Generation;
 
-// ReSharper disable once CheckNamespace
+
 namespace UltimateUI.Samples.StatsSample.Views
 {
     [View]

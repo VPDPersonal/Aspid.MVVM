@@ -228,17 +228,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
---- !u!114 &486623031 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 5734425860776028814, guid: a7e999c98b71641ada1dceb5273a5c60, type: 3}
-  m_PrefabInstance: {fileID: 1292469561}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bfc12b6b7b514b0487f612772f933b7c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &620964728
 GameObject:
   m_ObjectHideFlags: 0
@@ -409,46 +398,6 @@ Transform:
   - {fileID: 1458066081}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &782151048 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 4537258778618940514, guid: a7e999c98b71641ada1dceb5273a5c60, type: 3}
-  m_PrefabInstance: {fileID: 1292469561}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &782151053
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 782151048}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6b3ed74e6d0446cd8372299d5874780a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _view: {fileID: 1292469565}
-  _id: SkillPointsAvailable
-  _isConvert: 0
-  _converter:
-    _operation: 0
-    _coefficient: 0
-  _comparisons: 1
-  _value: 0
-  _casted:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 782151048}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
 --- !u!1001 &1292469561
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -552,11 +501,11 @@ PrefabInstance:
     - target: {fileID: 5315928923478365624, guid: a7e999c98b71641ada1dceb5273a5c60, type: 3}
       propertyPath: _skillPointsAvailable.Array.data[0]
       value: 
-      objectReference: {fileID: 486623031}
+      objectReference: {fileID: 0}
     - target: {fileID: 5315928923478365624, guid: a7e999c98b71641ada1dceb5273a5c60, type: 3}
       propertyPath: _skillPointsAvailable.Array.data[1]
       value: 
-      objectReference: {fileID: 782151053}
+      objectReference: {fileID: 0}
     - target: {fileID: 5704678514400029323, guid: a7e999c98b71641ada1dceb5273a5c60, type: 3}
       propertyPath: _viewModelComponent.<Type>k__BackingField._typeName
       value: UltimateUI.Samples.StatsSample.ViewModels.CreateStatsViewModel, Assembly-CSharp,
@@ -565,10 +514,7 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 4537258778618940514, guid: a7e999c98b71641ada1dceb5273a5c60, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 782151053}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a7e999c98b71641ada1dceb5273a5c60, type: 3}
 --- !u!1 &1292469562 stripped
 GameObject:
@@ -580,17 +526,6 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 2896256761785461889, guid: a7e999c98b71641ada1dceb5273a5c60, type: 3}
   m_PrefabInstance: {fileID: 1292469561}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1292469565 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 5315928923478365624, guid: a7e999c98b71641ada1dceb5273a5c60, type: 3}
-  m_PrefabInstance: {fileID: 1292469561}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1292469562}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b578c9dc55594dd7b706b7806e1d32ab, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1358715181
 GameObject:
   m_ObjectHideFlags: 0
@@ -1000,7 +935,6 @@ GameObject:
   - component: {fileID: 1862427328}
   - component: {fileID: 1862427327}
   - component: {fileID: 1862427326}
-  - component: {fileID: 1862427329}
   m_Layer: 5
   m_Name: Read Only Stats View Button
   m_TagString: Untagged
@@ -1122,24 +1056,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1862427324}
   m_CullTransparentMesh: 1
---- !u!114 &1862427329
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1862427324}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bfc12b6b7b514b0487f612772f933b7c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _view: {fileID: 0}
-  _id: 
-  _text: {fileID: 0}
-  _format: 
-  _isDebug: 0
-  _log: []
 --- !u!1 &2083037821
 GameObject:
   m_ObjectHideFlags: 0

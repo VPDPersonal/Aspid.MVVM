@@ -1,4 +1,4 @@
-// ReSharper disable once CheckNamespace
+
 namespace UltimateUI.MVVM.Samples.ProductSample.Economy.Models
 {
     public enum CurrencyType

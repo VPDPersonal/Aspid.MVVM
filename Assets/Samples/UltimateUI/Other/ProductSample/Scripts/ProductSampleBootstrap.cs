@@ -5,7 +5,7 @@
 // using UnityEngine;
 // using UnityEngine.Serialization;
 //
-// // ReSharper disable once CheckNamespace
+// 
 // namespace UltimateUI.MVVM.Samples.ProductSample
 // {
 //     public class ProductSampleBootstrap : MonoBehaviour

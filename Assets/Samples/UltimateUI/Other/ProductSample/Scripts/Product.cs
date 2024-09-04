@@ -1,7 +1,7 @@
 using UnityEngine;
 using UltimateUI.MVVM.Samples.ProductSample.Economy.Models;
 
-// ReSharper disable once CheckNamespace
+
 namespace UltimateUI.MVVM.Samples.ProductSample
 {
     [CreateAssetMenu(fileName = "New Product Data", menuName = "MVVM/Samples/Product Sample/Product", order = 0)]

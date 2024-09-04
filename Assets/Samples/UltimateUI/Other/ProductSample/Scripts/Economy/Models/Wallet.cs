@@ -3,7 +3,7 @@ using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 
-// ReSharper disable once CheckNamespace
+
 namespace UltimateUI.MVVM.Samples.ProductSample.Economy.Models
 {
     public class Wallet : IEnumerable<(CurrencyType, int)>

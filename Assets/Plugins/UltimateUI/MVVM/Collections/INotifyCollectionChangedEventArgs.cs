@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using System.Collections.Specialized;
 
-// ReSharper disable once CheckNamespace
 namespace UltimateUI.MVVM.Collections
 {
     public interface INotifyCollectionChangedEventArgs<out T>

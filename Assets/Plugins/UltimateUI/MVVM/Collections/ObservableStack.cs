@@ -2,7 +2,6 @@ using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 
-// ReSharper disable once CheckNamespace
 namespace UltimateUI.MVVM.Collections
 {
     public sealed partial class ObservableStack<T> : ICollection, IReadOnlyObservableCollection<T>

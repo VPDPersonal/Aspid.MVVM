@@ -1,5 +1,3 @@
-// ReSharper disable once CheckNamespace
-
 namespace UltimateUI.MVVM.ViewModels
 {
     public interface IViewModel

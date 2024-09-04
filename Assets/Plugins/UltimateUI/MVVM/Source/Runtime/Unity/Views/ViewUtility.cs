@@ -5,7 +5,6 @@ using System.Reflection;
 using System.Collections.Generic;
 using UltimateUI.MVVM.Extensions;
 
-// ReSharper disable once CheckNamespace
 namespace UltimateUI.MVVM.Unity.Views
 {
     public static class ViewUtility

@@ -3,7 +3,6 @@ using UnityEditor;
 using UnityEngine;
 using System.Collections.Generic;
 
-// ReSharper disable once CheckNamespace
 namespace UltimateUI.MVVM.DIExtension
 {
     [CustomPropertyDrawer(typeof(SerializableMonoScript),true)]

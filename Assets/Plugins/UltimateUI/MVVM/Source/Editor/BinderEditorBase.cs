@@ -1,14 +1,13 @@
-using System.Linq;
 using UnityEditor;
 using UnityEngine;
+using System.Linq;
 using System.Reflection;
 using UltimateUI.MVVM.Views;
-using UltimateUI.MVVM.Extensions;
 using System.Collections.Generic;
+using UltimateUI.MVVM.Extensions;
 using UltimateUI.MVVM.Unity.Views;
 
-// ReSharper disable once CheckNamespace
-namespace UltimateUI.MVVM.Unity
+namespace UltimateUI.MVVM
 {
     public abstract class BinderEditorBase<TBinder> : Editor
         where TBinder : Component, IBinder

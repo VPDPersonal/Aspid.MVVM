@@ -1,10 +1,8 @@
 using System;
 using Unity.Profiling;
 using UltimateUI.MVVM.ViewModels;
-
 using Object = UnityEngine.Object;
 
-// ReSharper disable once CheckNamespace
 namespace UltimateUI.MVVM.Views
 {
     public abstract class View : IView, IDisposable

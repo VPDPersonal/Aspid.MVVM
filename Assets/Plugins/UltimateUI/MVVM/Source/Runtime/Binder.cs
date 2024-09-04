@@ -1,6 +1,5 @@
 using UltimateUI.MVVM.ViewModels;
 
-// ReSharper disable once CheckNamespace
 namespace UltimateUI.MVVM
 {
     public abstract class Binder : IBinder

@@ -3,10 +3,8 @@ using UnityEngine;
 using Unity.Profiling;
 using UltimateUI.MVVM.Views;
 using UltimateUI.MVVM.ViewModels;
-
 using Object = UnityEngine.Object;
 
-// ReSharper disable once CheckNamespace
 namespace UltimateUI.MVVM.Unity.Views
 {
     public abstract class MonoView : MonoBehaviour, IView

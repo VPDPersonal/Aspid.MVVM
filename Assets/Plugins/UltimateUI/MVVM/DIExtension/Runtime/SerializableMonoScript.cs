@@ -1,7 +1,6 @@
 using System;
 using UnityEngine;
 
-// ReSharper disable once CheckNamespace
 namespace UltimateUI.MVVM.DIExtension
 {
     [Serializable]

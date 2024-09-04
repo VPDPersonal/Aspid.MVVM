@@ -1,10 +1,9 @@
 using System;
 using System.Linq;
 using System.Reflection;
-using System.Collections.Generic;
 using UltimateUI.MVVM.Unity;
+using System.Collections.Generic;
 
-// ReSharper disable once CheckNamespace
 namespace UltimateUI.MVVM.Extensions
 {
     public static class TypeExtensions

@@ -1,7 +1,6 @@
 using System;
 using System.Diagnostics;
 
-// ReSharper disable once CheckNamespace
 namespace UltimateUI.MVVM.Unity.Views
 {
     [Conditional("UNITY_EDITOR")]

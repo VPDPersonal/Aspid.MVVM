@@ -2,10 +2,8 @@ using System;
 using UnityEditor;
 using UnityEngine;
 using System.Collections.Generic;
-
 using Object = UnityEngine.Object;
 
-// ReSharper disable once CheckNamespace
 namespace UltimateUI.MVVM.DIExtension
 {
     [CustomPropertyDrawer(typeof(SerializableInterface<>), true)]

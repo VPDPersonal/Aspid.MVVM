@@ -1,7 +1,6 @@
 #nullable disable
 using System;
 
-// ReSharper disable once CheckNamespace
 namespace UltimateUI.MVVM
 {
     public interface IReverseBinder<out T> : IBinder

@@ -2,7 +2,6 @@
 using UnityEngine;
 using UltimateUI.MVVM.ViewModels;
 
-// ReSharper disable once CheckNamespace
 namespace UltimateUI.MVVM.Unity
 {
     public abstract partial class MonoBinder : MonoBehaviour, IBinder

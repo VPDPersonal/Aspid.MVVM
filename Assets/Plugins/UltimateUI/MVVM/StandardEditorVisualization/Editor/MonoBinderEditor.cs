@@ -3,11 +3,9 @@ using System.Linq;
 using UnityEditor;
 using UnityEngine;
 using UltimateUI.MVVM.Unity;
-using System.Collections.Generic;
 using UltimateUI.MVVM.Unity.Views;
 
-// ReSharper disable once CheckNamespace
-namespace UltimateUI.MVVM.StandardEditorVisualization.Editor
+namespace UltimateUI.MVVM.StandardEditorVisualization
 {
     [CanEditMultipleObjects]
     [CustomEditor(typeof(MonoBinder), true)]

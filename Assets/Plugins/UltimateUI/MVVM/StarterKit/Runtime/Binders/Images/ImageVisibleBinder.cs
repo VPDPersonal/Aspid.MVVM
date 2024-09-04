@@ -1,23 +1,22 @@
-using UnityEngine;
-using UltimateUI.MVVM.Unity.Generation;
+using UnityEngine.UI;
 
-// ReSharper disable once CheckNamespace
 namespace UltimateUI.MVVM.StarterKit.Binders.Images
 {
-    [AddComponentMenu("UI/Binders/Image/Image Binder - Visible")]
-    public partial class ImageVisibleBinder : ImageBinderBase, IBinder<bool>
+    public class ImageVisibleBinder : Binder, IBinder<bool>
     {
-        [Header("Parameters")]
-        [SerializeField] private bool _isInvert;
+        protected readonly Image Image;
+        protected readonly bool IsInvert;
+
+        public ImageVisibleBinder(Image image, bool isInvert = false)
+        {
+            Image = image;
+            IsInvert = isInvert;
+        }
         
-        protected bool IsInvert => _isInvert;
-        
-        [BinderLog]
         public void SetValue(bool value)
         {
             if (IsInvert) value = !IsInvert;
-            CachedImage.enabled = value;
+            Image.enabled = value;
         }
     }
-    
 }

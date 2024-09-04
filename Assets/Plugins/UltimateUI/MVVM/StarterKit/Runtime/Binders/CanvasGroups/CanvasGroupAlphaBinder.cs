@@ -1,18 +1,30 @@
+using System;
 using UnityEngine;
-using UltimateUI.MVVM.Unity.Generation;
+using UltimateUI.MVVM.StarterKit.Converters;
 
-// ReSharper disable once CheckNamespace
 namespace UltimateUI.MVVM.StarterKit.Binders.CanvasGroups
 {
-    [AddComponentMenu("UI/Binders/Canvas Group/Canvas Group Binder - Alpha")]
-    public partial class CanvasGroupAlphaBinder : CanvasGroupBinderBase, IBinder<bool>, IBinder<float>
+    public class CanvasGroupAlphaBinder : Binder, IBinder<bool>, IBinder<float>
     {
-        [BinderLog]
-        public void SetValue(bool value) =>
-            CachedCanvasGroup.alpha = value ? 1 : 0;
+        protected readonly CanvasGroup CanvasGroup;
+        protected readonly IConverter<float, float> Converter;
         
-        [BinderLog]
-        public void SetValue(float value) =>
-            CachedCanvasGroup.alpha = Mathf.Clamp(value, 0, 1);
+        public CanvasGroupAlphaBinder(CanvasGroup canvasGroup, Func<float, float> converter)
+            : this(canvasGroup, new GenericFuncConverter<float, float>(converter)) { }
+        
+        public CanvasGroupAlphaBinder(CanvasGroup canvasGroup, IConverter<float, float> converter = null)
+        {
+            Converter = converter;
+            CanvasGroup = canvasGroup;
+        }
+        
+        public void SetValue(bool value) =>
+            SetValue(value ? 1 : 0);
+
+        public void SetValue(float value)
+        {
+            value = Converter?.Convert(value) ?? value;
+            CanvasGroup.alpha = Mathf.Clamp(value, 0, 1);
+        }
     }
 }

@@ -1,9 +1,8 @@
-// ReSharper disable once CheckNamespace
-
 using System;
 
 namespace UltimateUI.MVVM.StarterKit.Binders
 {
+    // ReSharper disable once PossibleInterfaceMemberAmbiguity
     public interface INumberReverseBinder : IReverseBinder<int>, IReverseBinder<long>, IReverseBinder<float>, IReverseBinder<double>
     {
         public event Action<int> IntValueChanged;

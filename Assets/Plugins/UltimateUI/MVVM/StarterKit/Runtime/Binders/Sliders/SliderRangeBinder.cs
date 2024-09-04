@@ -1,17 +1,30 @@
+using System;
 using UnityEngine;
-using UltimateUI.MVVM.Unity.Generation;
+using UnityEngine.UI;
+using UltimateUI.MVVM.StarterKit.Converters;
 
-// ReSharper disable once CheckNamespace
 namespace UltimateUI.MVVM.StarterKit.Binders.Sliders
 {
-    [AddComponentMenu("UI/Binders/Slider/Slider Binder - Range")]
-    public partial class SliderRangeBinder : SliderBinderBase, IBinder<Vector2>
+    public class SliderRangeBinder : Binder, IBinder<Vector2>
     {
-        [BinderLog]
+        protected readonly Slider Slider;
+        protected readonly IConverter<Vector2, Vector2> Converter;
+        
+        public SliderRangeBinder(Slider slider, Func<Vector2, Vector2> converter) 
+            : this(slider, new GenericFuncConverter<Vector2, Vector2>(converter)) { }
+        
+        public SliderRangeBinder(Slider slider, IConverter<Vector2, Vector2> converter = null)
+        {
+            Slider = slider;
+            Converter = converter;
+        }
+        
         public void SetValue(Vector2 value)
         {
-            CachedSlider.minValue = value.x;
-            CachedSlider.maxValue = value.y;
+            value = Converter?.Convert(value) ?? value;
+            
+            Slider.minValue = value.x;
+            Slider.maxValue = value.y;
         }
     }
 }

@@ -1,22 +1,24 @@
-using UnityEngine;
-using UltimateUI.MVVM.Unity.Generation;
-using UltimateUI.MVVM.StarterKit.Converters.Number;
+using System;
+using UnityEngine.UI;
+using UltimateUI.MVVM.StarterKit.Converters;
 
-// ReSharper disable once CheckNamespace
 namespace UltimateUI.MVVM.StarterKit.Binders.Images
 {
-    [AddComponentMenu("UI/Binders/Image/Image Binder - Fill")]
-    public partial class ImageFillBinder : ImageBinderBase, IBinder<float>
+    public class ImageFillBinder : Binder, IBinder<float>
     {
-        [Header("Parameter")]
-        [SerializeField] private bool _isConvert;
-        [SerializeField] private FloatConverter _converter;
+        protected readonly Image Image;
+        protected readonly IConverter<float, float> Converter;
+
+        public ImageFillBinder(Image image, Func<float, float> converter) 
+            : this(image, new GenericFuncConverter<float, float>(converter)) { }
         
-        [BinderLog]
+        public ImageFillBinder(Image image, IConverter<float, float> converter = null)
+        {
+            Image = image;
+            Converter = converter;
+        }
+
         public void SetValue(float value) =>
-            CachedImage.fillAmount = ConvertValue(value);
-        
-        protected float ConvertValue(float value) =>
-            _isConvert ? _converter.Convert(value) : value;
+            Image.fillAmount = Converter?.Convert(value) ?? value;
     }
 }

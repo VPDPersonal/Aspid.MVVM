@@ -1,14 +1,18 @@
 using UnityEngine;
-using UltimateUI.MVVM.Unity.Generation;
+using UnityEngine.UI;
 
-// ReSharper disable once CheckNamespace
 namespace UltimateUI.MVVM.StarterKit.Binders.RawImages
 {
-    [AddComponentMenu("UI/Binders/Raw Image/Raw Image Binder - Texture")]
-    public partial class RawImageTextureBinder : RawImageBinderBase, IBinder<Texture2D>
+    public class RawImageTextureBinder : Binder, IBinder<Texture2D>
     {
-        [BinderLog]
+        protected readonly RawImage Image;
+
+        public RawImageTextureBinder(RawImage image)
+        {
+            Image = image;
+        }
+
         public void SetValue(Texture2D value) =>
-            CachedImage.texture = value;
+            Image.texture = value;
     }
 }

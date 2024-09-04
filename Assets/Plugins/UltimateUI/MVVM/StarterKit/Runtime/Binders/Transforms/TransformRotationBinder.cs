@@ -1,27 +1,42 @@
 using System;
 using UnityEngine;
+using UltimateUI.MVVM.StarterKit.Converters;
 
-// ReSharper disable once CheckNamespace
 namespace UltimateUI.MVVM.StarterKit.Binders.Transforms
 {
-    public class TransformRotationBinder : TransformBinderBase, IRotationBinder
+    public class TransformRotationBinder : Binder, IRotationBinder
     {
         protected readonly Space Space;
-
+        protected readonly Transform Transform;
+        protected readonly IConverter<Quaternion, Quaternion> Converter;
+        
         public TransformRotationBinder(Transform transform, Space space = Space.World)
-            : base(transform)
         {
             Space = space;
+            Converter = null;
+            Transform = transform;
         }
-
-        public void SetValue(Vector2 value) =>
-            SetValue((Vector3)value);
         
-        public void SetValue(Vector3 value) =>
-            SetValue(Quaternion.Euler(value));
+        public TransformRotationBinder(Transform transform, Func<Quaternion, Quaternion> converter) 
+            : this(transform, Space.World, new GenericFuncConverter<Quaternion, Quaternion>(converter)) { }
+        
+        public TransformRotationBinder(Transform transform, Space space, Func<Quaternion, Quaternion> converter)
+            : this(transform, space, new GenericFuncConverter<Quaternion, Quaternion>(converter)) { }
+
+        public TransformRotationBinder(Transform transform, IConverter<Quaternion, Quaternion> converter) 
+            : this(transform, Space.World, converter) { }
+        
+        public TransformRotationBinder(Transform transform, Space space, IConverter<Quaternion, Quaternion> converter)
+        {
+            Space = space;
+            Transform = transform;
+            Converter = converter;
+        }
         
         public void SetValue(Quaternion value)
         {
+            value = Converter?.Convert(value) ?? value;
+            
             switch (Space)
             {
                 case Space.Self: Transform.localRotation = value; break;

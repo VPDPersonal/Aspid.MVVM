@@ -1,27 +1,20 @@
-#if ULTIMATE_UI_TEXT_MESH_PRO_INTEGRATION && ULTIMATE_UI_UNITY_LOCALIZATION_INTEGRATION
-using UnityEngine;
-using UltimateUI.MVVM.Unity.Generation;
+#if ULTIMATE_UI_UNITY_LOCALIZATION_INTEGRATION
+using UnityEngine.Localization.Components;
 
-// ReSharper disable once CheckNamespace
 namespace UltimateUI.MVVM.StarterKit.Binders.Texts.Localization
 {
-    [AddComponentMenu("UI/Binders/Text/Text Binder - Localization Switcher")]
-    public partial class TextLocalizationSwitcherBinder : TextLocalizationBinderBase, IBinder<bool>
-    {
-        [Header("Keys")]
-        [SerializeField] private string _trueKey;
-        [SerializeField] private string _falseKey;
-
-        protected string TrueKey => _trueKey;
-
-        protected string FalseKey => _falseKey;
+    public sealed class TextLocalizationSwitcherBinder : SwitcherBinder<string>
+    { 
+        private readonly LocalizeStringEvent _localizeStringEvent;
         
-        [BinderLog]
-        public void SetValue(bool value) =>
-            CachedLocalizeStringEvent.StringReference.TableEntryReference = GetKey(value);
+        public TextLocalizationSwitcherBinder(LocalizeStringEvent localizeStringEvent, string trueValue, string falseValue) 
+            : base(trueValue, falseValue)
+        {
+            _localizeStringEvent = localizeStringEvent;
+        }
 
-        protected string GetKey(bool value) =>
-            value ? TrueKey : FalseKey;
+        protected override void SetValue(string value) =>
+            _localizeStringEvent.StringReference.TableEntryReference = value;
     }
 }
 #endif

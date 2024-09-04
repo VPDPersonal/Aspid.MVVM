@@ -2,17 +2,25 @@ using System;
 using UnityEngine.UI;
 using UltimateUI.MVVM.ViewModels;
 
-// ReSharper disable once CheckNamespace
 namespace UltimateUI.MVVM.StarterKit.Binders.Toggles
 {
-    public class ToggleBinder : ToggleBinderBase, IBinder<bool>, IReverseBinder<bool>
+    public class ToggleBinder : Binder, IBinder<bool>, IReverseBinder<bool>
     {
         public event Action<bool> ValueChanged;
         
+        protected readonly Toggle Toggle;
+        
+        public bool IsInvert { get; }
+        
         public bool IsReverseEnabled { get; }
 
-        public ToggleBinder(Toggle toggle, bool isReverseEnabled = true) : base(toggle)
+        public ToggleBinder(Toggle toggle, bool isReverseEnabled = true) 
+            : this(toggle, false, isReverseEnabled) { }
+        
+        public ToggleBinder(Toggle toggle, bool isInvert, bool isReverseEnabled)
         {
+            Toggle = toggle;
+            IsInvert = isInvert;
             IsReverseEnabled = isReverseEnabled;
         }
 

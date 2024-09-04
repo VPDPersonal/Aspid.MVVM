@@ -1,25 +1,19 @@
 using UnityEngine;
-using UltimateUI.MVVM.Unity.Generation;
+using UnityEngine.UI;
 
-// ReSharper disable once CheckNamespace
 namespace UltimateUI.MVVM.StarterKit.Binders.Graphics
 {
-    [AddComponentMenu("UI/Binders/Graphic/Graphic Binder - Color Switcher")]
-    public partial class GraphicColorSwitcherBinder : GraphicBinderBase, IBinder<bool>
+    public sealed class GraphicColorSwitcherBinder : SwitcherBinder<Color>
     {
-        [Header("Parameters")]
-        [SerializeField] private Color _trueColor;
-        [SerializeField] private Color _falseColor;
+        private readonly Graphic _graphic;
 
-        protected Color TrueColor => _trueColor;
-        
-        protected Color FalseColor => _falseColor;
-        
-        [BinderLog]
-        public void SetValue(bool value) =>
-            CachedGraphic.color = GetColor(value);
-        
-        protected Color GetColor(bool value) =>
-            value ? TrueColor : FalseColor;
+        public GraphicColorSwitcherBinder(Graphic graphic, Color trueColor, Color falseColor)
+            : base(trueColor, falseColor)
+        {
+            _graphic = graphic;
+        }
+
+        protected override void SetValue(Color value) =>
+            _graphic.color = value;
     }
 }

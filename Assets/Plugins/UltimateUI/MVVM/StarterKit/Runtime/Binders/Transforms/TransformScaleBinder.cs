@@ -1,17 +1,28 @@
+using System;
 using UnityEngine;
+using UltimateUI.MVVM.StarterKit.Converters;
 
-// ReSharper disable once CheckNamespace
 namespace UltimateUI.MVVM.StarterKit.Binders.Transforms
 {
-    public partial class TransformScaleBinder : TransformBinderBase, IVectorBinder, INumberBinder
+    public class TransformScaleBinder : Binder, IVectorBinder, INumberBinder
     {
-        public TransformScaleBinder(Transform transform) : base(transform) { }
+        protected readonly Transform Transform;
+        protected readonly IConverter<Vector3, Vector3> Converter;
+        
+        public TransformScaleBinder(Transform transform, Func<Vector3, Vector3> converter) :
+            this(transform, new GenericFuncConverter<Vector3, Vector3>(converter)) { }
+        
+        public TransformScaleBinder(Transform transform, IConverter<Vector3, Vector3> converter = null)
+        {
+            Transform = transform;
+            Converter = converter;
+        }
 
         public void SetValue(Vector2 value) =>
             SetValue((Vector3)value);
 
         public void SetValue(Vector3 value) =>
-            Transform.localScale = value;
+            Transform.localScale = Converter?.Convert(value) ?? value;
 
         public void SetValue(int value) =>
             SetValue(Vector3.one * value);

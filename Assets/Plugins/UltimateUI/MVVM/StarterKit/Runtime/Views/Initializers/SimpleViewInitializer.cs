@@ -6,7 +6,6 @@ using UltimateUI.MVVM.Unity.Views;
 using UltimateUI.MVVM.Unity.ViewModels;
 using UltimateUI.MVVM.Unity.Initializers;
 
-// ReSharper disable once CheckNamespace
 namespace UltimateUI.MVVM.StarterKit.Views.Initializers
 {
     [AddComponentMenu("UI/View Initializers/Simple View Initializer")]

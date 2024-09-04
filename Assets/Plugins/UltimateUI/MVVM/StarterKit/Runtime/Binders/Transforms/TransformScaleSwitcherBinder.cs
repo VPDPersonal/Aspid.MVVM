@@ -1,24 +1,18 @@
 using UnityEngine;
 
-// ReSharper disable once CheckNamespace
 namespace UltimateUI.MVVM.StarterKit.Binders.Transforms
 {
-    public class TransformScaleSwitcherBinder : TransformBinderBase, IBinder<bool>
+    public sealed class TransformScaleSwitcherBinder : SwitcherBinder<Vector3>
     {
-        protected readonly Vector3 TrueScale;
-        protected readonly Vector3 FalseScale;
+        private readonly Transform _transform;
 
-        public TransformScaleSwitcherBinder(Transform transform, Vector3 trueScale, Vector3 falseScale) 
-            : base(transform)
+        public TransformScaleSwitcherBinder(Transform transform, Vector3 trueValue, Vector3 falseValue) 
+            : base(trueValue, falseValue)
         {
-            TrueScale = trueScale;
-            FalseScale = falseScale;
+            _transform = transform;
         }
-        
-        public void SetValue(bool value) =>
-            Transform.localScale = GetLocalScale(value);
 
-        protected Vector3 GetLocalScale(bool value) =>
-            value ? TrueScale : FalseScale;
+        protected override void SetValue(Vector3 value) =>
+            _transform.localScale = value;
     }
 }

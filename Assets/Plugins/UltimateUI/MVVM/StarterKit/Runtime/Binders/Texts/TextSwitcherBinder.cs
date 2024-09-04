@@ -1,27 +1,20 @@
 #if ULTIMATE_UI_TEXT_MESH_PRO_INTEGRATION
-using UnityEngine;
-using UltimateUI.MVVM.Unity.Generation;
+using TMPro;
 
-// ReSharper disable once CheckNamespace
 namespace UltimateUI.MVVM.StarterKit.Binders.Texts
 {
-    [AddComponentMenu("UI/Binders/Text/Text Binder - Switcher")]
-    public partial class TextSwitcherBinder : TextBinderBase, IBinder<bool>
+    public sealed class TextSwitcherBinder : SwitcherBinder<string>
     {
-        [Header("Parameters")]
-        [SerializeField] private string _trueText;
-        [SerializeField] private string _falseText;
+        private readonly TMP_Text _text;
 
-        protected string TrueText => _trueText;
-        
-        protected string FalseText => _falseText;
-        
-        [BinderLog]
-        public void SetValue(bool value) =>
-            CachedText.text = GetText(value);
+        public TextSwitcherBinder(TMP_Text text, string trueValue, string falseValue) 
+            : base(trueValue, falseValue)
+        {
+            _text = text;
+        }
 
-        protected string GetText(bool value) =>
-            value ? TrueText : FalseText;
+        protected override void SetValue(string value) =>
+            _text.text = value;
     }
 }
 #endif

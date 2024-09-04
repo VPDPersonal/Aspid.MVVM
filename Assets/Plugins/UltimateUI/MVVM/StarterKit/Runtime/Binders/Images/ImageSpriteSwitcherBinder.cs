@@ -1,25 +1,18 @@
 using UnityEngine;
-using UltimateUI.MVVM.Unity.Generation;
+using UnityEngine.UI;
 
-// ReSharper disable once CheckNamespace
 namespace UltimateUI.MVVM.StarterKit.Binders.Images
 {
-    [AddComponentMenu("UI/Binders/Image/Image Binder - Sprite Switcher")]
-    public partial class ImageSpriteSwitcherBinder : ImageBinderBase, IBinder<bool>
+    public sealed class ImageSpriteSwitcherBinder : SwitcherBinder<Sprite>
     {
-        [Header("Parameters")]
-        [SerializeField] private Sprite _trueSprite;
-        [SerializeField] private Sprite _falseSprite;
-        
-        protected Sprite TrueTexture => _trueSprite;
-        
-        protected Sprite FalseTexture => _falseSprite;
-        
-        [BinderLog]
-        public void SetValue(bool value) =>
-            CachedImage.sprite = GetSprite(value);
-        
-        protected Sprite GetSprite(bool value) =>
-            value ? TrueTexture : FalseTexture;
+        private readonly Image _image;
+
+        public ImageSpriteSwitcherBinder(Image image, Sprite trueValue, Sprite falseValue) : base(trueValue, falseValue)
+        {
+            _image = image;
+        }
+
+        protected override void SetValue(Sprite value) =>
+            _image.sprite = value;
     }
 }

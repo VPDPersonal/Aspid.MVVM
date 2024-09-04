@@ -1,75 +1,62 @@
 using System;
-using UnityEngine;
-using UltimateUI.MVVM.Unity.Generation;
-using UltimateUI.MVVM.StarterKit.Converters.Number;
+using UnityEngine.UI;
+using UltimateUI.MVVM.ViewModels;
+using UltimateUI.MVVM.StarterKit.Converters;
 
-// ReSharper disable once CheckNamespace
 namespace UltimateUI.MVVM.StarterKit.Binders.Sliders
 {
-    [AddComponentMenu("UI/Binders/Slider/Slider Binder - Value")]
-    public partial class SliderValueBinder : SliderBinderBase, INumberBinder, INumberReverseBinder
+    public class SliderValueBinder : Binder, INumberBinder, INumberReverseBinder
     {
         public event Action<int> IntValueChanged;
         public event Action<long> LongValueChanged;
         public event Action<float> FloatValueChanged;
         public event Action<double> DoubleValueChanged;
+        
+        protected readonly Slider Slider;
+        protected readonly IConverter<float, float> Converter;
+        
+        public bool IsReverseEnabled { get; }
 
-        [Header("Parameter")]
-        [SerializeField] private bool _isReverse;
-        [SerializeField] private bool _isConvert;
-        [SerializeField] private FloatConverter _converter;
-        
-#if UNITY_EDITOR
-        private bool _isSubscribed;
-#endif
-        
-        public bool IsReverseEnabled => _isReverse;
-        
-        private void OnValidate()
+        public SliderValueBinder(Slider slider, bool isReverseEnabled)
         {
-            if (!_isReverse) Unsubscribe();
-            else if (!_isSubscribed) Subscribe();
+            Slider = slider;
+            Converter = null;
+            IsReverseEnabled = isReverseEnabled;
         }
         
-        private void OnEnable() => Subscribe();
+        public SliderValueBinder(Slider slider, Func<float, float> converter, bool isReverseEnabled = true) :
+            this(slider, new GenericFuncConverter<float, float>(converter), isReverseEnabled) { }
+        
+        public SliderValueBinder(Slider slider, IConverter<float, float> converter = null, bool isReverseEnabled = true)
+        {
+            Slider = slider;
+            Converter = converter;
+            IsReverseEnabled = isReverseEnabled;
+        }
 
-        private void OnDisable() => Unsubscribe();
-
-        private void Subscribe()
+        protected override void OnBound(IViewModel viewModel, string id)
         {
             if (!IsReverseEnabled) return;
-#if UNITY_EDITOR
-            _isSubscribed = true;
-#endif
-            CachedSlider.onValueChanged.AddListener(OnValueChanged);
-        }
-        
-        private void Unsubscribe()
-        {
-#if UNITY_EDITOR
-            _isSubscribed = false;
-#endif
-            CachedSlider.onValueChanged.RemoveListener(OnValueChanged);
+            Slider.onValueChanged.AddListener(OnValueChanged);
         }
 
-        [BinderLog]
+        protected override void OnUnbound(IViewModel viewModel, string id)
+        {
+            if (!IsReverseEnabled) return;
+            Slider.onValueChanged.RemoveListener(OnValueChanged);
+        }
+        
         public void SetValue(int value) =>
-            CachedSlider.value = ConvertValue(value);
-        
-        [BinderLog]
-        public void SetValue(long value) =>
-            CachedSlider.value = ConvertValue(value);
-        
-        [BinderLog]
-        public void SetValue(float value) =>
-            CachedSlider.value = ConvertValue(value);
-        
-        [BinderLog]
-        public void SetValue(double value) =>
             SetValue((float)value);
 
-        protected float ConvertValue(float value) =>
-            _isConvert ? _converter.Convert(value) : value;
+        public void SetValue(long value) =>
+            SetValue((float)value);
+        
+        public void SetValue(double value) =>
+            SetValue((float)value);
+        
+        public void SetValue(float value) =>
+            Slider.value = Converter?.Convert(value) ?? value;
 
         private void OnValueChanged(float value)
         {

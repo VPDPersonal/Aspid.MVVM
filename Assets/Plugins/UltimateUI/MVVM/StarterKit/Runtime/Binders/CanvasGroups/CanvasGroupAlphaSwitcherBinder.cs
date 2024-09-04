@@ -1,25 +1,22 @@
+using System;
 using UnityEngine;
-using UltimateUI.MVVM.Unity.Generation;
 
-// ReSharper disable once CheckNamespace
 namespace UltimateUI.MVVM.StarterKit.Binders.CanvasGroups
 {
-    [AddComponentMenu("UI/Binders/Canvas Group/Canvas Group Binder - Alpha Switcher")]
-    public partial class CanvasGroupAlphaSwitcherBinder : CanvasGroupBinderBase, IBinder<bool>
+    public sealed class CanvasGroupAlphaSwitcherBinder : SwitcherBinder<float>
     {
-        [Header("Parameters")]
-        [SerializeField] [Range(0, 1)] private float _trueAlpha;
-        [SerializeField] [Range(0, 1)] private float _falseAlpha;
+        private readonly CanvasGroup _canvasGroup;
 
-        protected float TrueAlpha => _trueAlpha;
-        
-        protected float FalseAlpha => _falseAlpha;
-        
-        [BinderLog]
-        public void SetValue(bool value) =>
-            CachedCanvasGroup.alpha = GetAlpha(value);
-        
-        protected float GetAlpha(bool value) =>
-            value ? TrueAlpha : FalseAlpha;
+        public CanvasGroupAlphaSwitcherBinder(CanvasGroup canvasGroup, float trueValue, float falseValue) 
+            : base(trueValue, falseValue)
+        {
+            if (trueValue is < 0 or > 1) throw new ArgumentException($"{nameof(trueValue)} must be between 0 and 1.");
+            if (falseValue is < 0 or > 1) throw new ArgumentException($"{nameof(falseValue)} must be between 0 and 1.");
+
+            _canvasGroup = canvasGroup;
+        }
+
+        protected override void SetValue(float value) => 
+            _canvasGroup.alpha = value;
     }
 }

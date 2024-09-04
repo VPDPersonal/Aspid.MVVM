@@ -1,14 +1,18 @@
 using UnityEngine;
-using UltimateUI.MVVM.Unity.Generation;
+using UnityEngine.UI;
 
-// ReSharper disable once CheckNamespace
 namespace UltimateUI.MVVM.StarterKit.Binders.Images
 {
-    [AddComponentMenu("UI/Binders/Image/Image Binder - Sprite")]
-    public partial class ImageSpriteBinder : ImageBinderBase, IBinder<Sprite>
+    public class ImageSpriteBinder : Binder, IBinder<Sprite>
     {
-        [BinderLog]
+        protected readonly Image Image;
+
+        public ImageSpriteBinder(Image image)
+        {
+            Image = image;
+        }
+
         public void SetValue(Sprite value) =>
-            CachedImage.sprite = value;
+            Image.sprite = value;
     }
 }

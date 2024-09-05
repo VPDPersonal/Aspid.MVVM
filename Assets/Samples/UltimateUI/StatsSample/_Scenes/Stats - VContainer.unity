@@ -485,6 +485,22 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4767688871036496481, guid: a7e999c98b71641ada1dceb5273a5c60, type: 3}
+      propertyPath: _isDebug
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4767688871036496481, guid: a7e999c98b71641ada1dceb5273a5c60, type: 3}
+      propertyPath: <Converter>k__BackingField
+      value: -2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4767688871036496481, guid: a7e999c98b71641ada1dceb5273a5c60, type: 3}
+      propertyPath: 'managedReferences[959730835912917404]'
+      value: UltimateUI.MVVM.StarterKit UltimateUI.MVVM.StarterKit.Converters.Strings.StringFormatConverter
+      objectReference: {fileID: 0}
+    - target: {fileID: 4767688871036496481, guid: a7e999c98b71641ada1dceb5273a5c60, type: 3}
+      propertyPath: managedReferences[959730835912917404]._format
+      value: 
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

@@ -1,10 +1,10 @@
 using System;
 using UnityEngine;
 
-namespace UltimateUI.MVVM.StarterKit.Converters.Strings
+namespace UltimateUI.MVVM.StarterKit.Converters.Bools
 {
     [Serializable]
-    public sealed class StringEmptyToBoolConverter : IConverter<string, bool>
+    public sealed class StringEmptyToBoolConverter : IConverterStringToBool
     {
         [SerializeField] private bool _isInvert;
 

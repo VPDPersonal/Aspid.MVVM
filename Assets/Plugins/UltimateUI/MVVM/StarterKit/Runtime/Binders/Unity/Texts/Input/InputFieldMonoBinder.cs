@@ -1,4 +1,4 @@
-#if ULTIMATE_UI_TEXT_MESH_PRO_INTEGRATION
+#if UNITY_2023_1_OR_NEWER || ULTIMATE_UI_TEXT_MESH_PRO_INTEGRATION
 using TMPro;
 using System;
 using UnityEngine;
@@ -25,6 +25,9 @@ namespace UltimateUI.MVVM.StarterKit.Binders.Unity.Texts.Input
         
         [field: Header("Converter")]
         [field: SerializeReference]
+#if ULTIMATE_UI_SERIALIZE_REFERENCE_DROPDOWN_INTEGRATION
+        [field: SerializeReferenceDropdown]
+#endif
         protected IConverterStringToString Converter { get; private set; }
         
         protected override void OnBound(IViewModel viewModel, string id)

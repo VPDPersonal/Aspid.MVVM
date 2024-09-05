@@ -13,7 +13,7 @@ OcclusionCullingSettings:
 --- !u!104 &2
 RenderSettings:
   m_ObjectHideFlags: 0
-  serializedVersion: 9
+  serializedVersion: 10
   m_Fog: 0
   m_FogColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
   m_FogMode: 3
@@ -38,13 +38,11 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 12
-  m_GIWorkflowMode: 1
   m_GISettings:
     serializedVersion: 2
     m_BounceScale: 1
@@ -67,9 +65,6 @@ LightmapSettings:
     m_LightmapParameters: {fileID: 0}
     m_LightmapsBakeMode: 1
     m_TextureCompression: 1
-    m_FinalGather: 0
-    m_FinalGatherFiltering: 1
-    m_FinalGatherRayCount: 256
     m_ReflectionCompression: 2
     m_MixedBakeMode: 2
     m_BakeBackend: 1
@@ -359,12 +354,12 @@ MonoBehaviour:
   m_RequiresColorTexture: 0
   m_Version: 2
   m_TaaSettings:
-    quality: 3
-    frameInfluence: 0.1
-    jitterScale: 1
-    mipBias: 0
-    varianceClampScale: 0.9
-    contrastAdaptiveSharpening: 0
+    m_Quality: 3
+    m_FrameInfluence: 0.1
+    m_JitterScale: 1
+    m_MipBias: 0
+    m_VarianceClampScale: 0.9
+    m_ContrastAdaptiveSharpening: 0
 --- !u!1 &724119498
 GameObject:
   m_ObjectHideFlags: 0
@@ -409,10 +404,6 @@ PrefabInstance:
     - target: {fileID: 1863818017136329706, guid: a7e999c98b71641ada1dceb5273a5c60, type: 3}
       propertyPath: m_Name
       value: Create Stats View
-      objectReference: {fileID: 0}
-    - target: {fileID: 2375750696855174819, guid: a7e999c98b71641ada1dceb5273a5c60, type: 3}
-      propertyPath: _isDebug
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2896256761785461889, guid: a7e999c98b71641ada1dceb5273a5c60, type: 3}
       propertyPath: m_Pivot.x
@@ -494,23 +485,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 5315928923478365624, guid: a7e999c98b71641ada1dceb5273a5c60, type: 3}
-      propertyPath: _skillPointsAvailable.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5315928923478365624, guid: a7e999c98b71641ada1dceb5273a5c60, type: 3}
-      propertyPath: _skillPointsAvailable.Array.data[0]
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 5315928923478365624, guid: a7e999c98b71641ada1dceb5273a5c60, type: 3}
-      propertyPath: _skillPointsAvailable.Array.data[1]
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 5704678514400029323, guid: a7e999c98b71641ada1dceb5273a5c60, type: 3}
-      propertyPath: _viewModelComponent.<Type>k__BackingField._typeName
-      value: UltimateUI.Samples.StatsSample.ViewModels.CreateStatsViewModel, Assembly-CSharp,
-        Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -526,6 +500,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 2896256761785461889, guid: a7e999c98b71641ada1dceb5273a5c60, type: 3}
   m_PrefabInstance: {fileID: 1292469561}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1321099783 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4704223468567197850, guid: 74b8ba5986ae646a6a44c88b05165b97, type: 3}
+  m_PrefabInstance: {fileID: 6497330040264628418}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 308348858250478390a4e42699309252, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1358715181
 GameObject:
   m_ObjectHideFlags: 0
@@ -626,15 +611,17 @@ MonoBehaviour:
   m_lineSpacingMax: 0
   m_paragraphSpacing: 0
   m_charWidthMaxAdj: 0
-  m_enableWordWrapping: 1
+  m_TextWrappingMode: 1
   m_wordWrappingRatios: 0.4
   m_overflowMode: 0
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 1
+  m_ActiveFontFeatures: 6e72656b
   m_enableExtraPadding: 0
   checkPaddingRequired: 0
   m_isRichText: 1
+  m_EmojiFallbackSupport: 1
   m_parseCtrlCharacters: 1
   m_isOrthographic: 1
   m_isCullingEnabled: 0
@@ -1156,15 +1143,17 @@ MonoBehaviour:
   m_lineSpacingMax: 0
   m_paragraphSpacing: 0
   m_charWidthMaxAdj: 0
-  m_enableWordWrapping: 1
+  m_TextWrappingMode: 1
   m_wordWrappingRatios: 0.4
   m_overflowMode: 0
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 1
+  m_ActiveFontFeatures: 6e72656b
   m_enableExtraPadding: 0
   checkPaddingRequired: 0
   m_isRichText: 1
+  m_EmojiFallbackSupport: 1
   m_parseCtrlCharacters: 1
   m_isOrthographic: 1
   m_isCullingEnabled: 0
@@ -1208,35 +1197,22 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 304495757}
     m_Modifications:
-    - target: {fileID: 857392291670090133, guid: 74b8ba5986ae646a6a44c88b05165b97, type: 3}
-      propertyPath: _viewModelComponent.<Type>k__BackingField._typeName
-      value: UltimateUI.Samples.StatsSample.ViewModels.ReadOnlyStatsViewModel, Assembly-CSharp,
-        Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-      objectReference: {fileID: 0}
     - target: {fileID: 1482142762350697732, guid: 74b8ba5986ae646a6a44c88b05165b97, type: 3}
       propertyPath: _cool.Array.size
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1482142762350697732, guid: 74b8ba5986ae646a6a44c88b05165b97, type: 3}
-      propertyPath: _power.Array.size
-      value: 1
-      objectReference: {fileID: 0}
+      propertyPath: '_cool.Array.data[1]'
+      value: 
+      objectReference: {fileID: 1321099783}
     - target: {fileID: 1482142762350697732, guid: 74b8ba5986ae646a6a44c88b05165b97, type: 3}
-      propertyPath: _reflexes.Array.size
-      value: 1
-      objectReference: {fileID: 0}
+      propertyPath: '_cool.Array.data[2]'
+      value: 
+      objectReference: {fileID: 1321099783}
     - target: {fileID: 1482142762350697732, guid: 74b8ba5986ae646a6a44c88b05165b97, type: 3}
-      propertyPath: _intelligence.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1482142762350697732, guid: 74b8ba5986ae646a6a44c88b05165b97, type: 3}
-      propertyPath: _technicalAbility.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1482142762350697732, guid: 74b8ba5986ae646a6a44c88b05165b97, type: 3}
-      propertyPath: _skillPointsAvailable.Array.size
-      value: 1
-      objectReference: {fileID: 0}
+      propertyPath: '_cool.Array.data[3]'
+      value: 
+      objectReference: {fileID: 1321099783}
     - target: {fileID: 2550778387010145548, guid: 74b8ba5986ae646a6a44c88b05165b97, type: 3}
       propertyPath: m_Name
       value: Read Only Stats View
@@ -1320,10 +1296,6 @@ PrefabInstance:
     - target: {fileID: 2984221494839884996, guid: 74b8ba5986ae646a6a44c88b05165b97, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5846639445404257184, guid: 74b8ba5986ae646a6a44c88b05165b97, type: 3}
-      propertyPath: _id
-      value: Cool
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

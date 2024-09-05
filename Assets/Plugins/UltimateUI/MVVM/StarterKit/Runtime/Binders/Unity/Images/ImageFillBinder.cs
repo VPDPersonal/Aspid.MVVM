@@ -10,7 +10,10 @@ namespace UltimateUI.MVVM.StarterKit.Binders.Unity.Images
     {
         [field: Header("Converter")]
         [field: SerializeReference]
-        protected IConverter<float, float> Converter { get; private set; }
+#if ULTIMATE_UI_SERIALIZE_REFERENCE_DROPDOWN_INTEGRATION
+        [field: SerializeReferenceDropdown]
+#endif
+        protected IConverterFloatToFloat Converter { get; private set; }
         
         [BinderLog]
         public void SetValue(float value) =>

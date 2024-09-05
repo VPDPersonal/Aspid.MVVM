@@ -1,4 +1,4 @@
-#if ULTIMATE_UI_TEXT_MESH_PRO_INTEGRATION
+#if UNITY_2023_1_OR_NEWER || ULTIMATE_UI_TEXT_MESH_PRO_INTEGRATION
 using TMPro;
 using UnityEngine;
 using System.Globalization;
@@ -13,7 +13,10 @@ namespace UltimateUI.MVVM.StarterKit.Binders.Unity.Texts
     {
         [field: Header("Converter")]
         [field: SerializeReference]
-        protected IConverterStringToString Converter { get; private set; } = new StringFormatConverter();
+#if ULTIMATE_UI_SERIALIZE_REFERENCE_DROPDOWN_INTEGRATION
+        [field: SerializeReferenceDropdown]
+#endif
+        protected IConverter<string, string> Converter { get; private set; } = new StringFormatConverter();
         
         [BinderLog]
         public void SetValue(string value) =>

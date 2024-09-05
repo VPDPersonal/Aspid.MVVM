@@ -108,15 +108,17 @@ MonoBehaviour:
   m_lineSpacingMax: 0
   m_paragraphSpacing: 0
   m_charWidthMaxAdj: 0
-  m_enableWordWrapping: 1
+  m_TextWrappingMode: 1
   m_wordWrappingRatios: 0.4
   m_overflowMode: 0
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 1
+  m_ActiveFontFeatures: 00000000
   m_enableExtraPadding: 0
   checkPaddingRequired: 0
   m_isRichText: 1
+  m_EmojiFallbackSupport: 1
   m_parseCtrlCharacters: 1
   m_isOrthographic: 1
   m_isCullingEnabled: 0
@@ -243,15 +245,17 @@ MonoBehaviour:
   m_lineSpacingMax: 0
   m_paragraphSpacing: 0
   m_charWidthMaxAdj: 0
-  m_enableWordWrapping: 1
+  m_TextWrappingMode: 1
   m_wordWrappingRatios: 0.4
   m_overflowMode: 0
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 1
+  m_ActiveFontFeatures: 00000000
   m_enableExtraPadding: 0
   checkPaddingRequired: 0
   m_isRichText: 1
+  m_EmojiFallbackSupport: 1
   m_parseCtrlCharacters: 1
   m_isOrthographic: 1
   m_isCullingEnabled: 0
@@ -284,8 +288,13 @@ MonoBehaviour:
   _view: {fileID: 5315928923478365624}
   _id: SkillPointsAvailable
   _component: {fileID: 2184117819493737949}
-  _isDebug: 0
-  _log: []
+  <Converter>k__BackingField:
+    rid: -2
+  references:
+    version: 2
+    RefIds:
+    - rid: -2
+      type: {class: , ns: , asm: }
 --- !u!1 &1863818017136329706
 GameObject:
   m_ObjectHideFlags: 0
@@ -397,65 +406,41 @@ MonoBehaviour:
   _confirmCommand:
   - _isBindInteractable: 1
     _button: {fileID: 5444464546274840865}
-    _isDebug: 0
-    _log: []
   _resetToDefaultCommand:
   - _isBindInteractable: 1
     _button: {fileID: 2931516315228818707}
-    _isDebug: 0
-    _log: []
   _addSkillPointToCommand:
   - _isBindInteractable: 1
     _button: {fileID: 5174176717364985295}
     _parameter: 0
-    _isDebug: 0
-    _log: []
   - _isBindInteractable: 1
     _button: {fileID: 104643719858257062}
     _parameter: 1
-    _isDebug: 0
-    _log: []
   - _isBindInteractable: 1
     _button: {fileID: 1922244232776191990}
     _parameter: 2
-    _isDebug: 0
-    _log: []
   - _isBindInteractable: 1
     _button: {fileID: 7846568134673888075}
     _parameter: 3
-    _isDebug: 0
-    _log: []
   - _isBindInteractable: 1
     _button: {fileID: 4544091627993418994}
     _parameter: 4
-    _isDebug: 0
-    _log: []
   _removeSkillPointToCommand:
   - _isBindInteractable: 1
     _button: {fileID: 1795662829568435913}
     _parameter: 0
-    _isDebug: 0
-    _log: []
   - _isBindInteractable: 1
     _button: {fileID: 6797870773731993504}
     _parameter: 1
-    _isDebug: 0
-    _log: []
   - _isBindInteractable: 1
     _button: {fileID: 5010264940167386352}
     _parameter: 2
-    _isDebug: 0
-    _log: []
   - _isBindInteractable: 1
     _button: {fileID: 3729468392672634957}
     _parameter: 3
-    _isDebug: 0
-    _log: []
   - _isBindInteractable: 1
     _button: {fileID: 6929628987986647028}
     _parameter: 4
-    _isDebug: 0
-    _log: []
 --- !u!114 &5704678514400029323
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -598,15 +583,17 @@ MonoBehaviour:
   m_lineSpacingMax: 0
   m_paragraphSpacing: 0
   m_charWidthMaxAdj: 0
-  m_enableWordWrapping: 1
+  m_TextWrappingMode: 1
   m_wordWrappingRatios: 0.4
   m_overflowMode: 0
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 1
+  m_ActiveFontFeatures: 00000000
   m_enableExtraPadding: 0
   checkPaddingRequired: 0
   m_isRichText: 1
+  m_EmojiFallbackSupport: 1
   m_parseCtrlCharacters: 1
   m_isOrthographic: 1
   m_isCullingEnabled: 0
@@ -734,15 +721,17 @@ MonoBehaviour:
   m_lineSpacingMax: 0
   m_paragraphSpacing: 0
   m_charWidthMaxAdj: 0
-  m_enableWordWrapping: 1
+  m_TextWrappingMode: 1
   m_wordWrappingRatios: 0.4
   m_overflowMode: 0
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 1
+  m_ActiveFontFeatures: 00000000
   m_enableExtraPadding: 0
   checkPaddingRequired: 0
   m_isRichText: 1
+  m_EmojiFallbackSupport: 1
   m_parseCtrlCharacters: 1
   m_isOrthographic: 1
   m_isCullingEnabled: 0
@@ -1085,8 +1074,6 @@ MonoBehaviour:
   _view: {fileID: 5315928923478365624}
   _id: IsDraft
   <IsInvert>k__BackingField: 0
-  _isDebug: 0
-  _log: []
 --- !u!1 &8031546957962004038
 GameObject:
   m_ObjectHideFlags: 0

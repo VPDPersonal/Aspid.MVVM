@@ -2,7 +2,6 @@ using TMPro;
 using UnityEngine;
 using UltimateUI.MVVM;
 using System.Globalization;
-using UltimateUI.MVVM.ViewModels;
 using UltimateUI.MVVM.Unity.Views;
 using UltimateUI.MVVM.Views.Generation;
 using UltimateUI.MVVM.StarterKit.Binders;
@@ -29,11 +28,6 @@ namespace UltimateUI.Samples.StatsSample.Views
         
         [AsBinder(typeof(TextBinderProvider))]
         [SerializeField] private TextMeshProUGUI[] _skillPointsAvailable;
-
-        protected override void InitializeIternal(IViewModel viewModel)
-        {
-            
-        }
     }
 
     public class TextBinderProvider : Binder, IBinder<string>, INumberBinder

@@ -3,7 +3,6 @@ using UltimateUI.MVVM.Unity;
 using UltimateUI.MVVM.Unity.Views;
 using UltimateUI.MVVM.Views.Generation;
 
-
 namespace UltimateUI.Samples.StatsSample.Views
 {
     [View]

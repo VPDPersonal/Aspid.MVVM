@@ -9,6 +9,9 @@ namespace UltimateUI.MVVM.StarterKit.Binders.Unity.GameObjects
     {
         [field: Header("Converter")]
         [field: SerializeField]
+#if ULTIMATE_UI_SERIALIZE_REFERENCE_DROPDOWN_INTEGRATION
+        [field: SerializeReferenceDropdown]
+#endif
         protected IConverterStringToString Converter { get; private set; }
 
         [BinderLog]

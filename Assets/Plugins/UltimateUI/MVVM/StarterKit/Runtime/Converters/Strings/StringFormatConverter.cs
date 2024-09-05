@@ -19,6 +19,6 @@ namespace UltimateUI.MVVM.StarterKit.Converters.Strings
         }
 
         public string Convert(string value) =>
-            string.Format(_format, value);
+            string.IsNullOrEmpty(_format) ? value : string.Format(_format, value);
     }
 }

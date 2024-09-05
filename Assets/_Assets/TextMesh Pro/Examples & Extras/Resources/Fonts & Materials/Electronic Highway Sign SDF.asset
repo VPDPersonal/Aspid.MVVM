@@ -114,16 +114,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 71c1514a6bd24e1e882cebbe1904ce04, type: 3}
   m_Name: Electronic Highway Sign SDF
   m_EditorClassIdentifier: 
-  hashCode: 1023178945
-  material: {fileID: 2140032}
-  materialHashCode: 225402433
   m_Version: 1.1.0
+  m_Material: {fileID: 2140032}
   m_SourceFontFileGUID: 8a2b9e2a607dd2143b58c44bc32410b4
-  m_SourceFontFile_EditorRef: {fileID: 12800000, guid: 8a2b9e2a607dd2143b58c44bc32410b4,
-    type: 3}
   m_SourceFontFile: {fileID: 12800000, guid: 8a2b9e2a607dd2143b58c44bc32410b4, type: 3}
   m_AtlasPopulationMode: 1
+  InternalDynamicOS: 0
   m_FaceInfo:
+    m_FaceIndex: 0
     m_FamilyName: Electronic Highway Sign
     m_StyleName: Regular
     m_PointSize: 144
@@ -187,15 +185,21 @@ MonoBehaviour:
   m_KerningTable:
     kerningPairs: []
   m_FontFeatureTable:
+    m_MultipleSubstitutionRecords: []
+    m_LigatureSubstitutionRecords: []
     m_GlyphPairAdjustmentRecords: []
+    m_MarkToBaseAdjustmentRecords: []
+    m_MarkToMarkAdjustmentRecords: []
   fallbackFontAssets: []
   m_FallbackFontAssetTable: []
   m_CreationSettings:
     sourceFontFileName: 
     sourceFontFileGUID: 8a2b9e2a607dd2143b58c44bc32410b4
+    faceIndex: 0
     pointSizeSamplingMode: 1
     pointSize: 144
     padding: 10
+    paddingMode: 0
     packingMode: 4
     atlasWidth: 1024
     atlasHeight: 1024

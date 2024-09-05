@@ -21,6 +21,9 @@ namespace UltimateUI.MVVM.StarterKit.Binders.Unity.Sliders
         
         [field: Header("Converter")]
         [field: SerializeReference]
+#if ULTIMATE_UI_SERIALIZE_REFERENCE_DROPDOWN_INTEGRATION
+        [field: SerializeReferenceDropdown]
+#endif
         protected IConverterFloatToFloat Converter { get; private set; }
 
         protected override void OnBound(IViewModel viewModel, string id)

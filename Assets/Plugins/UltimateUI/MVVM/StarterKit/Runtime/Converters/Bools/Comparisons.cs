@@ -1,4 +1,4 @@
-namespace UltimateUI.MVVM.StarterKit.Logical
+namespace UltimateUI.MVVM.StarterKit.Converters.Bools
 {
     public enum Comparisons
     {

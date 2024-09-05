@@ -10,9 +10,15 @@ namespace UltimateUI.MVVM.StarterKit.Converters
         public Func<TFrom, TTo> GetFunc() => Convert;
     }
     
+    //
+    // For Unity 2022 and Older
+    //
+    
     public interface IConverterIntToInt : IConverter<int, int> { }
     
     public interface IConverterLongToLong : IConverter<long, long> { }
+    
+    public interface IConverterStringToBool : IConverter<string, bool> { }
     
     public interface IConverterFloatToFloat : IConverter<float, float> { }
     

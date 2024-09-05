@@ -34,9 +34,21 @@ namespace UltimateUI.MVVM.StarterKit.Binders.Unity.UnityEvents
         }
 
         [Header("Converters")]
+#if ULTIMATE_UI_SERIALIZE_REFERENCE_DROPDOWN_INTEGRATION
+        [SerializeReferenceDropdown]
+#endif
         [SerializeReference] private IConverterIntToInt _intConverter;
+#if ULTIMATE_UI_SERIALIZE_REFERENCE_DROPDOWN_INTEGRATION
+        [SerializeReferenceDropdown]
+#endif
         [SerializeReference] private IConverterLongToLong _longConverter;
+#if ULTIMATE_UI_SERIALIZE_REFERENCE_DROPDOWN_INTEGRATION
+        [SerializeReferenceDropdown]
+#endif
         [SerializeReference] private IConverterFloatToFloat _floatConverter;
+#if ULTIMATE_UI_SERIALIZE_REFERENCE_DROPDOWN_INTEGRATION
+        [SerializeReferenceDropdown]
+#endif
         [SerializeReference] private IConverterDoubleToDouble _doubleConverter;
         
         [Header("Events")]

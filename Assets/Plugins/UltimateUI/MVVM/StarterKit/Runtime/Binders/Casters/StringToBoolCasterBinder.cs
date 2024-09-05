@@ -1,6 +1,6 @@
 using System;
 using UltimateUI.MVVM.StarterKit.Converters;
-using UltimateUI.MVVM.StarterKit.Converters.Strings;
+using UltimateUI.MVVM.StarterKit.Converters.Bools;
 
 namespace UltimateUI.MVVM.StarterKit.Binders.Casters
 {

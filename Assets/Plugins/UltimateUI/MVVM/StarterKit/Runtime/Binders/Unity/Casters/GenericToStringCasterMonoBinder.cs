@@ -1,3 +1,4 @@
+#if UNITY_2023_1_OR_NEWER
 using UnityEngine;
 using UnityEngine.Events;
 using UltimateUI.MVVM.Unity;
@@ -9,6 +10,9 @@ namespace UltimateUI.MVVM.StarterKit.Binders.Unity.Casters
     public abstract partial class GenericToStringCasterMonoBinder<T> : MonoBinder, IBinder<T>
     {
         [Header("Converter")]
+#if ULTIMATE_UI_SERIALIZE_REFERENCE_DROPDOWN_INTEGRATION
+        [SerializeReferenceDropdown]
+#endif
         [SerializeReference] private IConverter<T, string> _converter;
         
         [Header("Events")]
@@ -19,3 +23,4 @@ namespace UltimateUI.MVVM.StarterKit.Binders.Unity.Casters
             _casted?.Invoke(_converter.Convert(value));
     }
 }
+#endif

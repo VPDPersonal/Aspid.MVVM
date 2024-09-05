@@ -114,16 +114,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 71c1514a6bd24e1e882cebbe1904ce04, type: 3}
   m_Name: Anton SDF
   m_EditorClassIdentifier: 
-  hashCode: -1153031989
-  material: {fileID: 2140474}
-  materialHashCode: -1064320757
   m_Version: 1.1.0
+  m_Material: {fileID: 2140474}
   m_SourceFontFileGUID: 997a43b767814dd0a7642ec9b78cba41
-  m_SourceFontFile_EditorRef: {fileID: 12800000, guid: 997a43b767814dd0a7642ec9b78cba41,
-    type: 3}
   m_SourceFontFile: {fileID: 12800000, guid: 997a43b767814dd0a7642ec9b78cba41, type: 3}
   m_AtlasPopulationMode: 1
+  InternalDynamicOS: 0
   m_FaceInfo:
+    m_FaceIndex: 0
     m_FamilyName: Anton
     m_StyleName: Regular
     m_PointSize: 90
@@ -187,15 +185,21 @@ MonoBehaviour:
   m_KerningTable:
     kerningPairs: []
   m_FontFeatureTable:
+    m_MultipleSubstitutionRecords: []
+    m_LigatureSubstitutionRecords: []
     m_GlyphPairAdjustmentRecords: []
+    m_MarkToBaseAdjustmentRecords: []
+    m_MarkToMarkAdjustmentRecords: []
   fallbackFontAssets: []
   m_FallbackFontAssetTable: []
   m_CreationSettings:
     sourceFontFileName: 
     sourceFontFileGUID: 997a43b767814dd0a7642ec9b78cba41
+    faceIndex: 0
     pointSizeSamplingMode: 1
     pointSize: 90
     padding: 9
+    paddingMode: 0
     packingMode: 4
     atlasWidth: 1024
     atlasHeight: 1024

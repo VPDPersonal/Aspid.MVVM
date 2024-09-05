@@ -11,6 +11,9 @@ namespace UltimateUI.MVVM.StarterKit.Binders.Unity.Casters
     public sealed partial class Vector2ToVector3CasterBinder : MonoBinder, IBinder<Vector2>
     {
         [Header("Converter")]
+#if ULTIMATE_UI_SERIALIZE_REFERENCE_DROPDOWN_INTEGRATION
+        [SerializeReferenceDropdown]
+#endif
         [SerializeReference] private IConverterVectorToVector3 _converter = new Vector2ToVector3Converter();
         
         [Header("Events")]

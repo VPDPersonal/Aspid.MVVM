@@ -16,6 +16,9 @@ namespace UltimateUI.MVVM.StarterKit.Binders.Unity.UnityEvents
         }
         
         [Header("Converter")]
+#if ULTIMATE_UI_SERIALIZE_REFERENCE_DROPDOWN_INTEGRATION
+        [SerializeReferenceDropdown]
+#endif
         [SerializeReference] private IConverterColorToColor _colorConverter;
         
         [Header("Events")]

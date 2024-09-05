@@ -15,6 +15,9 @@ namespace UltimateUI.MVVM.StarterKit.Binders.Unity.Transforms
         
         [field: Header("Converter")]
         [field: SerializeReference]
+#if ULTIMATE_UI_SERIALIZE_REFERENCE_DROPDOWN_INTEGRATION
+        [field: SerializeReferenceDropdown]
+#endif
         protected IConverterVector3ToVector3 Converter { get; private set; }
         
         [BinderLog]

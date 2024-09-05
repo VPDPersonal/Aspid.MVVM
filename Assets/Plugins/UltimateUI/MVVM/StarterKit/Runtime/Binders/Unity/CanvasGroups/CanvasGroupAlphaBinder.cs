@@ -9,6 +9,9 @@ namespace UltimateUI.MVVM.StarterKit.Binders.Unity.CanvasGroups
     {
         [field: Header("Converter")]
         [field: SerializeReference]
+#if ULTIMATE_UI_SERIALIZE_REFERENCE_DROPDOWN_INTEGRATION
+        [field: SerializeReferenceDropdown]
+#endif
         protected IConverterFloatToFloat Converter { get; private set; }
         
         [BinderLog]

@@ -110,15 +110,17 @@ MonoBehaviour:
   m_lineSpacingMax: 0
   m_paragraphSpacing: 0
   m_charWidthMaxAdj: 0
-  m_enableWordWrapping: 1
+  m_TextWrappingMode: 1
   m_wordWrappingRatios: 0.4
   m_overflowMode: 0
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 1
+  m_ActiveFontFeatures: 00000000
   m_enableExtraPadding: 0
   checkPaddingRequired: 0
   m_isRichText: 1
+  m_EmojiFallbackSupport: 1
   m_parseCtrlCharacters: 1
   m_isOrthographic: 1
   m_isCullingEnabled: 0
@@ -526,15 +528,17 @@ MonoBehaviour:
   m_lineSpacingMax: 0
   m_paragraphSpacing: 0
   m_charWidthMaxAdj: 0
-  m_enableWordWrapping: 1
+  m_TextWrappingMode: 1
   m_wordWrappingRatios: 0.4
   m_overflowMode: 0
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 1
+  m_ActiveFontFeatures: 00000000
   m_enableExtraPadding: 0
   checkPaddingRequired: 0
   m_isRichText: 1
+  m_EmojiFallbackSupport: 1
   m_parseCtrlCharacters: 1
   m_isOrthographic: 1
   m_isCullingEnabled: 0
@@ -567,8 +571,13 @@ MonoBehaviour:
   _view: {fileID: 1482142762350697732}
   _id: SkillPointsAvailable
   _component: {fileID: 6491993284963611271}
-  _isDebug: 0
-  _log: []
+  <Converter>k__BackingField:
+    rid: -2
+  references:
+    version: 2
+    RefIds:
+    - rid: -2
+      type: {class: , ns: , asm: }
 --- !u!1001 &1250457354493871557
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1129,43 +1138,43 @@ PrefabInstance:
       value: 13
       objectReference: {fileID: 0}
     - target: {fileID: 3031464521117165396, guid: 8cac121c9d4614cb5996b1dac74694a5, type: 3}
-      propertyPath: _log.Array.data[0]
+      propertyPath: '_log.Array.data[0]'
       value: 'SetValue: some text'
       objectReference: {fileID: 0}
     - target: {fileID: 3031464521117165396, guid: 8cac121c9d4614cb5996b1dac74694a5, type: 3}
-      propertyPath: _log.Array.data[1]
+      propertyPath: '_log.Array.data[1]'
       value: 'SetValue: one test'
       objectReference: {fileID: 0}
     - target: {fileID: 3031464521117165396, guid: 8cac121c9d4614cb5996b1dac74694a5, type: 3}
-      propertyPath: _log.Array.data[2]
+      propertyPath: '_log.Array.data[2]'
       value: 'SetValue: you are king'
       objectReference: {fileID: 0}
     - target: {fileID: 3031464521117165396, guid: 8cac121c9d4614cb5996b1dac74694a5, type: 3}
-      propertyPath: _log.Array.data[3]
+      propertyPath: '_log.Array.data[3]'
       value: 'SetValue: Stop please'
       objectReference: {fileID: 0}
     - target: {fileID: 3031464521117165396, guid: 8cac121c9d4614cb5996b1dac74694a5, type: 3}
-      propertyPath: _log.Array.data[4]
+      propertyPath: '_log.Array.data[4]'
       value: 'SetValue: 10'
       objectReference: {fileID: 0}
     - target: {fileID: 3031464521117165396, guid: 8cac121c9d4614cb5996b1dac74694a5, type: 3}
-      propertyPath: _log.Array.data[5]
+      propertyPath: '_log.Array.data[5]'
       value: 'SetValue: 9'
       objectReference: {fileID: 0}
     - target: {fileID: 3031464521117165396, guid: 8cac121c9d4614cb5996b1dac74694a5, type: 3}
-      propertyPath: _log.Array.data[6]
+      propertyPath: '_log.Array.data[6]'
       value: 'SetValue: 8'
       objectReference: {fileID: 0}
     - target: {fileID: 3031464521117165396, guid: 8cac121c9d4614cb5996b1dac74694a5, type: 3}
-      propertyPath: _log.Array.data[7]
+      propertyPath: '_log.Array.data[7]'
       value: 'SetValue: 7'
       objectReference: {fileID: 0}
     - target: {fileID: 3031464521117165396, guid: 8cac121c9d4614cb5996b1dac74694a5, type: 3}
-      propertyPath: _log.Array.data[8]
+      propertyPath: '_log.Array.data[8]'
       value: 'SetValue: 6'
       objectReference: {fileID: 0}
     - target: {fileID: 3031464521117165396, guid: 8cac121c9d4614cb5996b1dac74694a5, type: 3}
-      propertyPath: _log.Array.data[9]
+      propertyPath: '_log.Array.data[9]'
       value: 'SetValue: 5'
       objectReference: {fileID: 0}
     - target: {fileID: 3031464521117165396, guid: 8cac121c9d4614cb5996b1dac74694a5, type: 3}
@@ -1173,15 +1182,15 @@ PrefabInstance:
       value: _cool
       objectReference: {fileID: 0}
     - target: {fileID: 3031464521117165396, guid: 8cac121c9d4614cb5996b1dac74694a5, type: 3}
-      propertyPath: _log.Array.data[10]
+      propertyPath: '_log.Array.data[10]'
       value: 'SetValue: 4'
       objectReference: {fileID: 0}
     - target: {fileID: 3031464521117165396, guid: 8cac121c9d4614cb5996b1dac74694a5, type: 3}
-      propertyPath: _log.Array.data[11]
+      propertyPath: '_log.Array.data[11]'
       value: 'SetValue: 3'
       objectReference: {fileID: 0}
     - target: {fileID: 3031464521117165396, guid: 8cac121c9d4614cb5996b1dac74694a5, type: 3}
-      propertyPath: _log.Array.data[12]
+      propertyPath: '_log.Array.data[12]'
       value: 'SetValue: Noooooo'
       objectReference: {fileID: 0}
     - target: {fileID: 3129922492389129169, guid: 8cac121c9d4614cb5996b1dac74694a5, type: 3}

@@ -4,12 +4,15 @@ using System.Collections;
 
 namespace TMPro.Examples
 {
-    
+
     public class ObjectSpin : MonoBehaviour
     {
+        #pragma warning disable 0414
+        public enum MotionType { Rotation, SearchLight, Translation };
+        public MotionType Motion;
 
-#pragma warning disable 0414
-
+        public Vector3 TranslationDistance = new Vector3(5, 0, 0);
+        public float TranslationSpeed = 1.0f;
         public float SpinSpeed = 5;
         public int RotationRange = 15;
         private Transform m_transform;
@@ -19,10 +22,6 @@ namespace TMPro.Examples
         private Vector3 m_initial_Rotation;
         private Vector3 m_initial_Position;
         private Color32 m_lightColor;
-        private int frames = 0;
-
-        public enum MotionType { Rotation, BackAndForth, Translation };
-        public MotionType Motion;
 
         void Awake()
         {
@@ -38,31 +37,30 @@ namespace TMPro.Examples
         // Update is called once per frame
         void Update()
         {
-            if (Motion == MotionType.Rotation)
+            switch (Motion)
             {
-                m_transform.Rotate(0, SpinSpeed * Time.deltaTime, 0);
-            }
-            else if (Motion == MotionType.BackAndForth)
-            {
-                m_time += SpinSpeed * Time.deltaTime;
-                m_transform.rotation = Quaternion.Euler(m_initial_Rotation.x, Mathf.Sin(m_time) * RotationRange + m_initial_Rotation.y, m_initial_Rotation.z);
-            }
-            else
-            {
-                m_time += SpinSpeed * Time.deltaTime;
+                case MotionType.Rotation:
+                    m_transform.Rotate(0, SpinSpeed * Time.deltaTime, 0);
+                    break;
+                case MotionType.SearchLight:
+                    m_time += SpinSpeed * Time.deltaTime;
+                    m_transform.rotation = Quaternion.Euler(m_initial_Rotation.x, Mathf.Sin(m_time) * RotationRange + m_initial_Rotation.y, m_initial_Rotation.z);
+                    break;
+                case MotionType.Translation:
+                    m_time += TranslationSpeed * Time.deltaTime;
 
-                float x = 15 * Mathf.Cos(m_time * .95f);
-                float y = 10; // *Mathf.Sin(m_time * 1f) * Mathf.Cos(m_time * 1f);
-                float z = 0f; // *Mathf.Sin(m_time * .9f);    
+                    float x = TranslationDistance.x * Mathf.Cos(m_time);
+                    float y = TranslationDistance.y * Mathf.Sin(m_time) * Mathf.Cos(m_time * 1f);
+                    float z = TranslationDistance.z * Mathf.Sin(m_time);
 
-                m_transform.position = m_initial_Position + new Vector3(x, z, y);
+                    m_transform.position = m_initial_Position + new Vector3(x, z, y);
 
-                // Drawing light patterns because they can be cool looking.
-                //if (frames > 2)
-                //    Debug.DrawLine(m_transform.position, m_prevPOS, m_lightColor, 100f);
+                    // Drawing light patterns because they can be cool looking.
+                    //if (Time.frameCount > 1)
+                    //    Debug.DrawLine(m_transform.position, m_prevPOS, m_lightColor, 100f);
 
-                m_prevPOS = m_transform.position;
-                frames += 1;
+                    m_prevPOS = m_transform.position;
+                    break;
             }
         }
     }

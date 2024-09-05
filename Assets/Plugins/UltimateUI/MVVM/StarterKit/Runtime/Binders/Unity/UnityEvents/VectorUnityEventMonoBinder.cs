@@ -22,7 +22,13 @@ namespace UltimateUI.MVVM.StarterKit.Binders.Unity.UnityEvents
         }
         
         [Header("Converters")]
+#if ULTIMATE_UI_SERIALIZE_REFERENCE_DROPDOWN_INTEGRATION
+        [SerializeReferenceDropdown]
+#endif
         [SerializeReference] private IConverterVector2ToVector2 _vector2Converter;
+#if ULTIMATE_UI_SERIALIZE_REFERENCE_DROPDOWN_INTEGRATION
+        [SerializeReferenceDropdown]
+#endif
         [SerializeReference] private IConverterVector3ToVector3 _vector3Converter;
         
         [Header("Events")]

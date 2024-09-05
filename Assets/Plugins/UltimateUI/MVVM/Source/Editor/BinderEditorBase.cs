@@ -31,10 +31,9 @@ namespace UltimateUI.MVVM
         {
             if (view == null) return null;
             
-            const BindingFlags bindingFlags = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic;
-            var binderFields = view.GetType().GetMonoBinderFields(bindingFlags).ToList();
-            
+            var binderFields = ViewUtility.GetMonoBinderFields(view.GetType()).ToList();
             var ids = binderFields.Select(field => ViewUtility.GetPropertyName(field.Name)).ToList();
+            
             ids.Insert(0, "None");
             return ids.ToArray();
         }

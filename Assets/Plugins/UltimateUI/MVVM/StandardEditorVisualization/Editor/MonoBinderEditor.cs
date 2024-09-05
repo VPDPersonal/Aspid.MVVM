@@ -67,11 +67,24 @@ namespace UltimateUI.MVVM.StandardEditorVisualization
         {
             EditorGUILayout.BeginHorizontal();
             {
+                var previousId = _id.stringValue;
+                var previousView = _view.objectReferenceValue ? (MonoView)_view.objectReferenceValue : null;
+                
                 var drawnView = ViewPopup();
                 _view.objectReferenceValue = drawnView;
-
+                
                 var id = IdPopup(drawnView);
                 _id.stringValue = id;
+
+                if (previousView?.GetInstanceID() != drawnView.GetInstanceID() || previousId != id)
+                {
+                    if (previousView)
+                    {
+                        ViewUtility.RemoveMonoBinderIfNotExist(previousView, Binder, previousId);
+                    }
+                    
+                    ViewUtility.SetMonoBinderIfNotExist(drawnView, Binder, id);
+                }
             }
             EditorGUILayout.EndHorizontal();
             return;

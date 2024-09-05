@@ -3,6 +3,7 @@ using System;
 using System.Linq;
 using System.Reflection;
 using System.Collections.Generic;
+using NUnit.Framework;
 using UltimateUI.MVVM.Extensions;
 
 namespace UltimateUI.MVVM.Unity.Views
@@ -17,7 +18,7 @@ namespace UltimateUI.MVVM.Unity.Views
         public static void ValidateMonoBinders(MonoView view)
         {
             var type = view.GetType();
-            var fields = GetMonoBinderFields(type, BindingFlags);
+            var fields = GetMonoBinderFields(type);
 
             foreach (var field in fields)
             {
@@ -62,7 +63,7 @@ namespace UltimateUI.MVVM.Unity.Views
         public static void FindAllBindersInChildren(MonoView view)
         {
             var type = view.GetType();
-            var fields = GetMonoBinderFields(type, BindingFlags);
+            var fields = GetMonoBinderFields(type);
             var bindersOnScene = view.GetComponentsInChildren<MonoBinder>()
                 .Where(binder => binder.View == view).ToArray();
             
@@ -77,6 +78,66 @@ namespace UltimateUI.MVVM.Unity.Views
             }
         
             ValidateMonoBinders(view);
+        }
+
+        public static void RemoveMonoBinderIfNotExist(MonoView view, MonoBinder binder, string id)
+        {
+            var field = GetMonoBinderFields(view.GetType())
+                .FirstOrDefault(field => GetPropertyName(field.Name) == id);
+            
+            if (field == null) return;
+            
+            var isArray = field.FieldType.IsArray;
+            var viewBinders = isArray
+                ? (MonoBinder[])field.GetValue(view)
+                : new[] { (MonoBinder)field.GetValue(view) };
+            
+            if (viewBinders == null) return;
+            
+            if (!isArray && viewBinders.Any())
+            {
+                field.SetValue(view, null);
+                return;
+            }
+
+            viewBinders = viewBinders.Where(viewBinder => viewBinder.GetInstanceID() != binder.GetInstanceID()).ToArray();
+            field.SetValue(view, viewBinders.Any() ? viewBinders : null);
+        }
+        
+        public static void SetMonoBinderIfNotExist(MonoView view, MonoBinder binder, string id)
+        {
+            var field = GetMonoBinderFields(view.GetType())
+                .FirstOrDefault(field => GetPropertyName(field.Name) == id);
+            
+            if (field == null) return;
+            
+            var isArray = field.FieldType.IsArray;
+            var viewBinders = isArray
+                ? (MonoBinder[])field.GetValue(view)
+                : new[] { (MonoBinder)field.GetValue(view) };
+
+            if (viewBinders == null)
+            {
+                if (!isArray) field.SetValue(view, binder);
+                else field.SetValue(view, new[] { binder });
+                return;
+            }
+            
+            if (viewBinders.Any(viewBinder => viewBinder.GetInstanceID() == binder.GetInstanceID()))
+            {
+                return;
+            }
+            
+            if (!isArray && viewBinders.Any())
+            {
+                viewBinders[0].Id = null;
+                field.SetValue(view, binder);
+                return;
+            }
+            
+            Array.Resize(ref viewBinders, viewBinders.Length + 1);
+            viewBinders[^1] = binder;
+            field.SetValue(view, viewBinders);
         }
         
         public static string GetPropertyName(string fieldName)
@@ -97,9 +158,9 @@ namespace UltimateUI.MVVM.Unity.Views
                 fieldName.StartsWith("_") ? 1 : fieldName.StartsWith("m_") ? 2 : 0;
         }
 
-        private static IEnumerable<FieldInfo> GetMonoBinderFields(Type type, BindingFlags bindingFlags)
+        public static IEnumerable<FieldInfo> GetMonoBinderFields(Type type)
         {
-            return  type.GetFieldInfosIncludingBaseClasses(bindingFlags).Where(field => 
+            return  type.GetFieldInfosIncludingBaseClasses(BindingFlags).Where(field => 
             {
                 var fieldType = field.FieldType;
                 return typeof(MonoBinder).IsAssignableFrom(fieldType) 

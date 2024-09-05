@@ -16,7 +16,7 @@ namespace UltimateUI.MVVM.Unity.Views
         private IViewModel _viewModel;
 
         protected virtual void OnValidate() =>
-            ViewUtility.ValidateBinders(this);
+            ViewUtility.ValidateMonoBinders(this);
 
         protected virtual void OnDestroy()
         {

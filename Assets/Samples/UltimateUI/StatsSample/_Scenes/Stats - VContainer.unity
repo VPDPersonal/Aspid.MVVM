@@ -393,6 +393,17 @@ Transform:
   - {fileID: 1458066081}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1159206903 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4245696846360189788, guid: a7e999c98b71641ada1dceb5273a5c60, type: 3}
+  m_PrefabInstance: {fileID: 1292469561}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 308348858250478390a4e42699309252, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1292469561
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -486,6 +497,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4767688871036496481, guid: a7e999c98b71641ada1dceb5273a5c60, type: 3}
+      propertyPath: _id
+      value: Power
+      objectReference: {fileID: 0}
+    - target: {fileID: 4767688871036496481, guid: a7e999c98b71641ada1dceb5273a5c60, type: 3}
       propertyPath: _isDebug
       value: 0
       objectReference: {fileID: 0}
@@ -500,6 +515,42 @@ PrefabInstance:
     - target: {fileID: 4767688871036496481, guid: a7e999c98b71641ada1dceb5273a5c60, type: 3}
       propertyPath: managedReferences[959730835912917404]._format
       value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 5315928923478365624, guid: a7e999c98b71641ada1dceb5273a5c60, type: 3}
+      propertyPath: _cool.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5315928923478365624, guid: a7e999c98b71641ada1dceb5273a5c60, type: 3}
+      propertyPath: _power.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5315928923478365624, guid: a7e999c98b71641ada1dceb5273a5c60, type: 3}
+      propertyPath: '_cool.Array.data[0]'
+      value: 
+      objectReference: {fileID: 1159206903}
+    - target: {fileID: 5315928923478365624, guid: a7e999c98b71641ada1dceb5273a5c60, type: 3}
+      propertyPath: '_cool.Array.data[1]'
+      value: 
+      objectReference: {fileID: 1159206903}
+    - target: {fileID: 5315928923478365624, guid: a7e999c98b71641ada1dceb5273a5c60, type: 3}
+      propertyPath: _isDraft.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5315928923478365624, guid: a7e999c98b71641ada1dceb5273a5c60, type: 3}
+      propertyPath: _reflexes.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5315928923478365624, guid: a7e999c98b71641ada1dceb5273a5c60, type: 3}
+      propertyPath: _intelligence.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5315928923478365624, guid: a7e999c98b71641ada1dceb5273a5c60, type: 3}
+      propertyPath: _technicalAbility.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5315928923478365624, guid: a7e999c98b71641ada1dceb5273a5c60, type: 3}
+      propertyPath: _skillPointsAvailable.Array.size
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

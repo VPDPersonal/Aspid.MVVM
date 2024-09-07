@@ -5,6 +5,7 @@ using System.Reflection;
 using System.Collections.Generic;
 using NUnit.Framework;
 using UltimateUI.MVVM.Extensions;
+using UnityEngine;
 
 namespace UltimateUI.MVVM.Unity.Views
 {
@@ -19,7 +20,7 @@ namespace UltimateUI.MVVM.Unity.Views
         {
             var type = view.GetType();
             var fields = GetMonoBinderFields(type);
-
+            
             foreach (var field in fields)
             {
                 var isArray = field.FieldType.IsArray;
@@ -28,14 +29,17 @@ namespace UltimateUI.MVVM.Unity.Views
                 var binders = isArray
                     ? (MonoBinder[])field.GetValue(view)
                     : new[] { (MonoBinder)field.GetValue(view) };
+                if (binders == null || binders.Length == 0) continue;
 
                 if (isRequire)
                 {
                     var requiredTypes = field.GetCustomAttributes(typeof(RequireBinder), false)
                         .Select(attribute => ((RequireBinder)attribute).Type);
 
-                    binders = binders.Where(binder => 
+                    binders = binders.Where(binder =>
                         {
+                            if (!binder) return true;
+
                             var interfaces = binder.GetType()
                                 .GetInterfaces();
 
@@ -51,6 +55,8 @@ namespace UltimateUI.MVVM.Unity.Views
                 var name = GetPropertyName(field.Name);
                 foreach (var binder in binders)
                 {
+                    if (!binder) continue;
+                    
                     binder.Id = name;
                     binder.View = view;
                 }

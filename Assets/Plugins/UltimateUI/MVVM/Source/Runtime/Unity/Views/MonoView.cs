@@ -14,10 +14,7 @@ namespace UltimateUI.MVVM.Unity.Views
         private static readonly ProfilerMarker _deinitializationMarker = new("MonoView.Deinitialization");
 #endif
         private IViewModel _viewModel;
-
-        protected virtual void OnValidate() =>
-            ViewUtility.ValidateMonoBinders(this);
-
+        
         protected virtual void OnDestroy()
         {
             if (_viewModel == null) return;

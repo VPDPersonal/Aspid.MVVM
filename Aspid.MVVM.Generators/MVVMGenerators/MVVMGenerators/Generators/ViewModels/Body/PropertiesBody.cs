@@ -136,6 +136,8 @@ public static class PropertiesBody
                 .BeginBlock()
                 .AppendMultiline(
                     $"""
+                    if ({Classes.EqualityComparer.Global}<{type}>.Default.Equals({name}, value)) return;
+                    
                     {changingMethod}({name}, value);
                     {name} = value;
                     {changedMethod}(value);

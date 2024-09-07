@@ -1,4 +1,3 @@
-using UltimateUI.MVVM.ViewModels;
 using UltimateUI.MVVM.ViewModels.Generation;
 
 namespace MVVMGenerators.Sample.ViewModels;

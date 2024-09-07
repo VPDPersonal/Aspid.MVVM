@@ -67,6 +67,8 @@ public static class BinderLogBody
                     {
                         try
                         {
+                            SetValue({{parameterName}});
+                            AddLog($"SetValue: {{{parameterName}}}");
                         }
                         catch ({{Exception}} e)
                         {

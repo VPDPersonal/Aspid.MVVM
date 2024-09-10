@@ -118,6 +118,17 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!114 &63665479 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1482142762350697732, guid: 74b8ba5986ae646a6a44c88b05165b97, type: 3}
+  m_PrefabInstance: {fileID: 6497330040264628418}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1863818018642850250}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e1e9c7ee5320344569a847caf8d38500, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &304495753
 GameObject:
   m_ObjectHideFlags: 0
@@ -1270,7 +1281,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 175776684273083786, guid: 74b8ba5986ae646a6a44c88b05165b97, type: 3}
       propertyPath: _id
-      value: None
+      value: Intelligence
       objectReference: {fileID: 0}
     - target: {fileID: 1257691587546239539, guid: 74b8ba5986ae646a6a44c88b05165b97, type: 3}
       propertyPath: m_Name
@@ -1278,7 +1289,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1482142762350697732, guid: 74b8ba5986ae646a6a44c88b05165b97, type: 3}
       propertyPath: _cool.Array.size
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1482142762350697732, guid: 74b8ba5986ae646a6a44c88b05165b97, type: 3}
       propertyPath: _power.Array.size
@@ -1309,6 +1320,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1321099783}
     - target: {fileID: 1482142762350697732, guid: 74b8ba5986ae646a6a44c88b05165b97, type: 3}
+      propertyPath: '_power.Array.data[2]'
+      value: 
+      objectReference: {fileID: 1321099783}
+    - target: {fileID: 1482142762350697732, guid: 74b8ba5986ae646a6a44c88b05165b97, type: 3}
       propertyPath: _reflexes.Array.size
       value: 1
       objectReference: {fileID: 0}
@@ -1316,6 +1331,10 @@ PrefabInstance:
       propertyPath: '_reflexes.Array.data[0]'
       value: 
       objectReference: {fileID: 6497330040264628422}
+    - target: {fileID: 1482142762350697732, guid: 74b8ba5986ae646a6a44c88b05165b97, type: 3}
+      propertyPath: '_reflexes.Array.data[1]'
+      value: 
+      objectReference: {fileID: 1321099783}
     - target: {fileID: 1482142762350697732, guid: 74b8ba5986ae646a6a44c88b05165b97, type: 3}
       propertyPath: _intelligence.Array.size
       value: 1
@@ -1352,6 +1371,10 @@ PrefabInstance:
       propertyPath: _id
       value: SkillPointsAvailable
       objectReference: {fileID: 0}
+    - target: {fileID: 2197191053899260683, guid: 74b8ba5986ae646a6a44c88b05165b97, type: 3}
+      propertyPath: _view
+      value: 
+      objectReference: {fileID: 63665479}
     - target: {fileID: 2550778387010145548, guid: 74b8ba5986ae646a6a44c88b05165b97, type: 3}
       propertyPath: m_Name
       value: Read Only Stats View
@@ -1440,18 +1463,38 @@ PrefabInstance:
       propertyPath: _id
       value: TechnicalAbility
       objectReference: {fileID: 0}
+    - target: {fileID: 3896231134993068557, guid: 74b8ba5986ae646a6a44c88b05165b97, type: 3}
+      propertyPath: m_Name
+      value: Skill Value
+      objectReference: {fileID: 0}
     - target: {fileID: 4704223468567197850, guid: 74b8ba5986ae646a6a44c88b05165b97, type: 3}
       propertyPath: _id
       value: Cool
       objectReference: {fileID: 0}
+    - target: {fileID: 4704223468567197850, guid: 74b8ba5986ae646a6a44c88b05165b97, type: 3}
+      propertyPath: _view
+      value: 
+      objectReference: {fileID: 63665479}
+    - target: {fileID: 4704223468567197850, guid: 74b8ba5986ae646a6a44c88b05165b97, type: 3}
+      propertyPath: _isDebug
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5030189343437693073, guid: 74b8ba5986ae646a6a44c88b05165b97, type: 3}
       propertyPath: _id
-      value: None
+      value: Power
       objectReference: {fileID: 0}
+    - target: {fileID: 5030189343437693073, guid: 74b8ba5986ae646a6a44c88b05165b97, type: 3}
+      propertyPath: _view
+      value: 
+      objectReference: {fileID: 63665479}
     - target: {fileID: 7363038036086757540, guid: 74b8ba5986ae646a6a44c88b05165b97, type: 3}
       propertyPath: _id
       value: Reflexes
       objectReference: {fileID: 0}
+    - target: {fileID: 7363038036086757540, guid: 74b8ba5986ae646a6a44c88b05165b97, type: 3}
+      propertyPath: _view
+      value: 
+      objectReference: {fileID: 63665479}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

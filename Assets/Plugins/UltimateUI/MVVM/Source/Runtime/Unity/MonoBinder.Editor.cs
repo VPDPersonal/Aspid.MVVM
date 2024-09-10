@@ -2,22 +2,30 @@
 #nullable disable
 using System;
 using UnityEngine;
+using UltimateUI.MVVM.Views;
 using UltimateUI.MVVM.ViewModels;
 using UltimateUI.MVVM.Unity.Views;
 
 namespace UltimateUI.MVVM.Unity
 {
-    public abstract partial class MonoBinder
+    public abstract partial class MonoBinder : IMonoBinderValidable
     {
         [SerializeField] private MonoView _view;
         [SerializeField] private string _id;
 
         private IViewModel _viewModel;
 
-        public MonoView View
+        public IView View
         {
             get => _view;
-            set => _view = value;
+            set
+            {
+                _view = value switch
+                {
+                    MonoView monoView => monoView,
+                    _ =>  null,
+                };
+            }
         }
 
         public string Id

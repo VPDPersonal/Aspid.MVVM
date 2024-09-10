@@ -1,4 +1,5 @@
 #nullable disable
+using System;
 using UnityEngine;
 using Unity.Profiling;
 using UltimateUI.MVVM.Views;
@@ -40,6 +41,10 @@ namespace UltimateUI.MVVM.Unity.Views
             using (_deinitializationMarker.Auto())
 #endif
             {
+#if UNITY_EDITOR
+                if (viewModel != _viewModel) throw new Exception();
+#endif
+                
                 DeinitializeIternal(viewModel);
                 _viewModel = null;
             }

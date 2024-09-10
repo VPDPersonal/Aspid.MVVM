@@ -31,10 +31,11 @@ namespace UltimateUI.MVVM
         {
             if (view == null) return null;
             
-            var binderFields = ViewUtility.GetMonoBinderFields(view.GetType()).ToList();
-            var ids = binderFields.Select(field => ViewUtility.GetPropertyName(field.Name)).ToList();
+            var binderFields = ViewUtility.GetMonoBinderValidableFields(view.GetType()).ToList();
+            var ids = binderFields.Select(field => ViewUtility.GetIdName(field.Name)).ToList();
             
-            ids.Insert(0, "None");
+            ids.Insert(0, "No Id");
+            ids.Insert(1, null);
             return ids.ToArray();
         }
     }

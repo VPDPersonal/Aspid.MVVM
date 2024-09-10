@@ -4,6 +4,7 @@ using UnityEditor;
 using UnityEngine;
 using UltimateUI.MVVM.Unity;
 using UltimateUI.MVVM.Unity.Views;
+using UnityEditor.SceneManagement;
 
 namespace UltimateUI.MVVM.StandardEditorVisualization
 {
@@ -75,15 +76,19 @@ namespace UltimateUI.MVVM.StandardEditorVisualization
                 
                 var id = IdPopup(drawnView);
                 _id.stringValue = id;
-
-                if (previousView?.GetInstanceID() != drawnView.GetInstanceID() || previousId != id)
+                
+                if (previousView?.GetInstanceID() != drawnView?.GetInstanceID() || previousId != id)
                 {
-                    if (previousView)
+                    if (previousView && !string.IsNullOrEmpty(previousId))
                     {
-                        ViewUtility.RemoveMonoBinderIfNotExist(previousView, Binder, previousId);
+                        ViewUtility.RemoveMonoBinderIfSet(previousView, Binder, previousId);
                     }
-                    
-                    ViewUtility.SetMonoBinderIfNotExist(drawnView, Binder, id);
+                
+                    if (!string.IsNullOrEmpty(id))
+                    {
+                        Debug.Log("Set");
+                        ViewUtility.SetMonoBinderIfNotSet(drawnView, Binder, id);
+                    }
                 }
             }
             EditorGUILayout.EndHorizontal();
@@ -94,20 +99,26 @@ namespace UltimateUI.MVVM.StandardEditorVisualization
                 var views = GetViewList();
                 if (views.Length == 0) return null;
                 
-                var viewNames = views.Select(view => view.name).ToArray();
-                var index = Popup(_view.objectReferenceValue, viewNames);
-
-                return index == null ? null : views[index.Value];
+                var viewNames = views.Select(view => view.name).ToList();
+                viewNames.Insert(0, "No View");
+                
+                var index = Popup(_view.objectReferenceValue?.name, viewNames.ToArray());
+                
+                return index is null or 0 ? null : views[index.Value - 1];
             }
             
             string IdPopup(MonoView view)
             {
-                if (!view) return null;
+                if (view == null)
+                {
+                    Popup("No Id", new [] {"No Id"});
+                    return null;
+                }
                 
                 var binderNames = GetIdList(view);
                 var index = Popup(_id.stringValue, binderNames);
                 
-                return index == null ? null : binderNames[index.Value];
+                return index is null or 0 ? null : binderNames[index.Value];
             }
         }
     
@@ -155,11 +166,10 @@ namespace UltimateUI.MVVM.StandardEditorVisualization
     
         protected virtual void DrawBeforeLog() { }
 
-        protected static int? Popup<T>(T value, string[] menus)
+        protected static int? Popup(string value, string[] menus)
         {
             if (menus.Length == 0)
             {
-                EditorGUILayout.Popup(0, new[] { "None" } );
                 return null;
             }
             

@@ -20,9 +20,12 @@ public static class BinderLogBody
     public static CodeWriter AppendBinderLogBody(this CodeWriter code, in BinderDataSpan data)
     {
         var hasBinderLogInBaseType = data.HasBinderLogInBaseType;
-        
+
         if (!hasBinderLogInBaseType)
-            code.AppendProperties();
+        {
+            code.AppendProfilerMarkers(data)
+                .AppendProperties();
+        }
         
         code.AppendSetValueMethods(data.Methods);
 
@@ -30,6 +33,13 @@ public static class BinderLogBody
             code.AppendAddLogMethod();
         
         return code;
+    }
+
+    private static CodeWriter AppendProfilerMarkers(this CodeWriter code, in BinderDataSpan data)
+    {
+        var className = data.Declaration.Identifier.Text;
+        code.AppendLine($"protected static readonly {Classes.ProfilerMarker.Global} SetValueMarker = new(\"{className}.SetValue\");");
+        return code.AppendLine();
     }
 
     private static CodeWriter AppendProperties(this CodeWriter code)
@@ -67,7 +77,11 @@ public static class BinderLogBody
                     {
                         try
                         {
-                            SetValue({{parameterName}});
+                            using (SetValueMarker.Auto())
+                            {
+                                SetValue({{parameterName}});
+                            }
+                                
                             AddLog($"SetValue: {{{parameterName}}}");
                         }
                         catch ({{Exception}} e)

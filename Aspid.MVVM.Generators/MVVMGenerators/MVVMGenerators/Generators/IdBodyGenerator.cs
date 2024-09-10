@@ -1,4 +1,3 @@
-using System;
 using Microsoft.CodeAnalysis;
 using MVVMGenerators.Helpers;
 using System.Collections.Generic;
@@ -6,13 +5,11 @@ using MVVMGenerators.Helpers.Descriptions;
 using MVVMGenerators.Generators.Views.Data;
 using MVVMGenerators.Helpers.Extensions.Writer;
 using MVVMGenerators.Helpers.Extensions.Symbols;
-using MVVMGenerators.Generators.ViewModels.Data;
 
 namespace MVVMGenerators.Generators;
 
 public static class IdBodyGenerator
 {
-
     public static void GenerateViewId(
         string @namespace,
         in ViewDataSpan data,

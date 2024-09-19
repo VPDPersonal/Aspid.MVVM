@@ -1,15 +1,42 @@
+using System.Text;
+using AspidUI.MVVM.Generation;
 using AspidUI.MVVM.ViewModels.Generation;
 
-namespace MVVMGenerators.Sample.ViewModels;
-
-[ViewModel]
-public partial class ViewModel2
+namespace MVVMGenerators.Sample.ViewModels
 {
-    [BindAlso(nameof(FullName))]
-    [Bind] private string _name;
- 
-    [BindAlso(nameof(FullName))]
-    [Bind] private string _family;
+    [ViewModel]
+// [CreateFrom(typeof(SomeType))]
+    [CreateFrom(typeof(SomeType))]
+    public partial class ViewModel2
+    {
+        [BindAlso(nameof(FullName))]
+        [Bind] private string _name;
+
+        [BindAlso(nameof(FullName))]
+        [Bind] private string _family;
+
+        public string FullName => Name + " " + _family;
+
+        public ViewModel2(SomeType some)
+        {
+            SomeType[] somes = new SomeType[10];
+        }
+
+        public ViewModel2(Encoding encoding)
+        {
+
+        }
+
+        public ViewModel2(SomeType some, SomeType someItem, int a)
+        {
+            SomeType[] somes = new SomeType[10];
+            some.ToViewModel2(someItem, a);
+            somes.ToViewModel2AsList(someItem, a);
+        }
+    }
+}
+
+public class SomeType
+{
     
-    public string FullName => Name + " " + _family;
 }

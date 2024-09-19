@@ -6,119 +6,111 @@ using MVVMGenerators.Generators.CreateFrom.Data;
 
 namespace MVVMGenerators.Generators.CreateFrom.Body;
 
+// ReSharper disable InconsistentNaming
 public static class CreateFromBody
 {
     private static readonly string List = Classes.List.Global;
-    private static readonly string Span = Classes.Span.Global;
     private static readonly string IEnumerable = Classes.IEnumerable.Global;
     
     public static CodeWriter AppendCreateFromBody(this CodeWriter code, CreateFromDataSpan data)
     {
-        var className = data.Declaration.Identifier.Text;
-        var fromTypeFullName = data.FromType.ToDisplayString() ?? string.Empty;
+        var toName = data.Declaration.Identifier.Text;
+        var fromTypeFullName = data.FromType.ToDisplayString();
 
         foreach (var constructor in data.Constructors)
         {
-            code.AppendMethods(constructor, className, fromTypeFullName)
+            code.AppendMethods(constructor, toName, fromTypeFullName)
                 .AppendLine();
         }
         
         return code;
     }
 
-    private static CodeWriter AppendMethods(this CodeWriter code, IMethodSymbol constructor, string className, string fromTypeFullName)
+    private static CodeWriter AppendMethods(this CodeWriter code, IMethodSymbol constructor, string toName, string fromTypeFullName)
     {
-        var (thisName, parametersNames, parameterEnum) = GetParameters(fromTypeFullName, constructor);
-        var fromTypeGlobalName = $"global::{fromTypeFullName}";
+        var parameters = GetParameters(constructor, fromTypeFullName);
+        fromTypeFullName = $"global::{fromTypeFullName}";
+
+        var methodName = $"To{toName}";
+        var fromName = parameters.FromName;
+        var parameterNames = parameters.ParameterNames;
+        var methodParameters = $"{fromName}{parameters.ParametersEnum}";
         
         code.AppendMultiline(
             $$"""
-            public static {{className}} To{{className}}<T>(this T {{thisName}}{{parameterEnum}})
-                where T : {{fromTypeGlobalName}}
+            public static {{toName}} {{methodName}}<T>(this T {{methodParameters}})
+                where T : {{fromTypeFullName}}
             {
-                return new {{className}}({{thisName}}{{parametersNames}});
+                return new {{toName}}({{fromName}}{{parameterNames}});
             }
             
-            public static {{className}}[] To{{className}}<T>(this T[] {{thisName}}{{parameterEnum}})
-                where T : {{fromTypeGlobalName}}
+            public static {{toName}}[] {{methodName}}<T>(this T[] {{methodParameters}})
+                where T : {{fromTypeFullName}}
             {
-                var to = new {{className}}[{{thisName}}.Length];
+                var __to = new {{toName}}[{{fromName}}.Length];
             
-                for (var i = 0; i < {{thisName}}.Length; i++)
-                    to[i] = new {{className}}({{thisName}}[i]{{parametersNames}});
+                for (var i = 0; i < {{fromName}}.Length; i++)
+                    __to[i] = new {{toName}}({{fromName}}[i]{{parameterNames}});
             
-                return to;
+                return __to;
             }
             
-            public static {{className}}[] To{{className}}AsArray<T>(this {{List}}<T> {{thisName}}{{parameterEnum}})
-                where T : {{fromTypeGlobalName}}
+            public static {{toName}}[] {{methodName}}AsArray<T>(this {{List}}<T> {{methodParameters}})
+                where T : {{fromTypeFullName}}
             {
-                var to = new {{className}}[{{thisName}}.Count];
+                var __to = new {{toName}}[{{fromName}}.Count];
             
-                for (var i = 0; i < {{thisName}}.Count; i++)
-                    to[i] = new {{className}}({{thisName}}[i]{{parametersNames}});
+                for (var i = 0; i < {{fromName}}.Count; i++)
+                    __to[i] = new {{toName}}({{fromName}}[i]{{parameterNames}});
             
-                return to;
+                return __to;
             }
             
-            public static {{Span}}<{{className}}> To{{className}}AsSpan<T>(this {{List}}<T> {{thisName}}{{parameterEnum}})
-                where T : {{fromTypeGlobalName}}
+            public static {{List}}<{{toName}}> {{methodName}}AsList<T>(this T[] {{methodParameters}})
+                where T : {{fromTypeFullName}}
             {
-                var to = new {{className}}[{{thisName}}.Count];
+                var __to = new {{List}}<{{toName}}>({{fromName}}.Length);
             
-                for (var i = 0; i < {{thisName}}.Count; i++)
-                    to[i] = new {{className}}({{thisName}}[i]{{parametersNames}});
+                foreach(var __{{fromName}}Item in {{fromName}})
+                    __to.Add(new {{toName}}(__{{fromName}}Item{{parameterNames}}));
             
-                return to;
+                return __to;
             }
             
-            public static {{List}}<{{className}}> To{{className}}AsList<T>(this T[] {{thisName}}{{parameterEnum}})
-                where T : {{fromTypeGlobalName}}
+            public static {{List}}<{{toName}}> {{methodName}}<T>(this {{List}}<T> {{methodParameters}})
+                where T : {{fromTypeFullName}}
             {
-                var to = new {{List}}<{{className}}>({{thisName}}.Length);
+                var __to = new {{List}}<{{toName}}>({{fromName}}.Count);
             
-                for (var i = 0; i < {{thisName}}.Length; i++)
-                    to.Add(new {{className}}({{thisName}}[i]{{parametersNames}}));
+                foreach(var __{{fromName}}Item in {{fromName}})
+                    __to.Add(new {{toName}}(__{{fromName}}Item{{parameterNames}}));
             
-                return to;
+                return __to;
             }
             
-            public static {{List}}<{{className}}> To{{className}}<T>(this {{List}}<T> {{thisName}}{{parameterEnum}})
-                where T : {{fromTypeGlobalName}}
+            public static {{IEnumerable}}<{{toName}}> {{methodName}}<T>(this {{IEnumerable}}<T> {{methodParameters}})
+                where T : {{fromTypeFullName}}
             {
-                var to = new {{List}}<{{className}}>({{thisName}}.Count);
-            
-                for (var i = 0; i < {{thisName}}.Count; i++)
-                    to.Add(new {{className}}({{thisName}}[i]{{parametersNames}}));
-            
-                return to;
-            }
-            
-            public static {{IEnumerable}}<{{className}}> To{{className}}<T>(this {{IEnumerable}}<T> {{thisName}}{{parameterEnum}})
-                where T : {{fromTypeGlobalName}}
-            {
-                foreach (var __{{thisName}}Item in {{thisName}})
-                    yield return new {{className}}(__{{thisName}}Item{{parametersNames}});
+                foreach (var __{{fromName}}Item in {{fromName}})
+                    yield return new {{toName}}(__{{fromName}}Item{{parameterNames}});
             }
             """);
 
         return code;
     }
 
-    private static (string thisName, string parameterNames, string parameterEnum) GetParameters(string fromTypeFullName, IMethodSymbol constructor)
+    private static Parameters GetParameters(IMethodSymbol constructor, string fromTypeFullName)
     {
-        var thisName = constructor.Parameters[0].Name;
-        var parametersLength = constructor.Parameters.Length;
-        if (parametersLength == 1) return (thisName, string.Empty, string.Empty);
+        var fromName = constructor.Parameters[0].Name;
+        if (constructor.Parameters.Length == 1) return new Parameters(fromName);
         
         var isFromTypeSkip = false;
-        
-        var parameterEnum = new StringBuilder();
+        var parametersEnum = new StringBuilder();
         var parameterNames = new StringBuilder();
-        
-        for (var i = 0; i < parametersLength; i++)
+
+        foreach (var parameter in constructor.Parameters)
         {
-            var parameterType = constructor.Parameters[i].Type.ToDisplayString();
+            var parameterType = parameter.Type.ToDisplayString();
             
             if (!isFromTypeSkip && parameterType == fromTypeFullName)
             {
@@ -126,11 +118,21 @@ public static class CreateFromBody
                 continue;
             }
 
-            var parameterName = $"{constructor.Parameters[i].Name}";
+            var parameterName = $"{parameter.Name}";
             parameterNames.Append($", {parameterName}");
-            parameterEnum.Append($", {parameterType} {parameterName}");
+            parametersEnum.Append($", {parameterType} {parameterName}");
         }
 
-        return (thisName, parameterNames.ToString(), parameterEnum.ToString());
+        return new Parameters(fromName, parameterNames, parametersEnum);
+    }
+
+    private readonly ref struct Parameters(
+        string fromName,
+        StringBuilder? parameterNames = null,
+        StringBuilder? parametersEnum = null)
+    {
+        public readonly string FromName = fromName;
+        public readonly string ParameterNames = parameterNames?.ToString() ?? string.Empty;
+        public readonly string ParametersEnum = parametersEnum?.ToString() ?? string.Empty;
     }
 }

@@ -55,8 +55,9 @@ public class CreateFromGenerator : IIncrementalGenerator
         
         foreach (var constructor in symbol.Constructors)
         {
-            if (constructor.TypeArguments.Any(type => type.ToDisplayString() != fromType.Name)) continue;
-            constructors.Add(constructor);
+            if (constructor.Parameters.Length == 0) continue;
+            if (constructor.Parameters.Any(type => type.Type.ToDisplayString() == fromType.ToDisplayString()))
+                constructors.Add(constructor);
         }
         
         if (constructors.Count == 0) return default;
@@ -76,6 +77,5 @@ public class CreateFromGenerator : IIncrementalGenerator
             .AppendClassEnd(@namespace);
         
         context.AddSource(declaration.GetFileName(@namespace, "IViewModel"), code.GetSourceText());
-        // context.AddSource("Some", "tut");
     }
 }

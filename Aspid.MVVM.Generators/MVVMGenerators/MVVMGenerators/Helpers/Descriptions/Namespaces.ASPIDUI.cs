@@ -8,6 +8,7 @@ public static partial class Namespaces
     public static readonly NamespaceText AspidUI_MVVM_Views = new("Views", AspidUI_MVVM);
     public static readonly NamespaceText AspidUI_MVVM_Views_Generation = new("Generation", AspidUI_MVVM_Views);
     public static readonly NamespaceText AspidUI_MVVM_Commands = new("Commands", AspidUI_MVVM);
+    public static readonly NamespaceText AspidUI_MVVM_Generation = new("Generation", AspidUI_MVVM);
     public static readonly NamespaceText AspidUI_MVVM_ViewModels = new("ViewModels", AspidUI_MVVM);
     public static readonly NamespaceText AspidUI_MVVM_ViewModels_Generation = new("Generation", AspidUI_MVVM_ViewModels);
     

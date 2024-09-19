@@ -64,4 +64,7 @@ public static partial class Classes
     public static readonly TypeText RelayCommand =
         new("RelayCommand", Namespaces.AspidUI_MVVM_Commands);
     #endregion
+    
+    public static readonly AttributeText CreateFromAttribute =
+        new("CreateFrom", Namespaces.AspidUI_MVVM_Generation);
 }

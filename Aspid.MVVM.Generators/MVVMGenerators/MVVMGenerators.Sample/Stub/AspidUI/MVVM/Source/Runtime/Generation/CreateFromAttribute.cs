@@ -1,6 +1,10 @@
+using System;
+
 namespace AspidUI.MVVM.Generation;
 
-public class CreatefromAttribute
+// TODO Move To UnityFastTools
+[AttributeUsage(AttributeTargets.Class | AttributeTargets.Struct)]
+public class CreateFromAttribute : Attribute
 {
-    
+    public CreateFromAttribute(Type type) { }
 }

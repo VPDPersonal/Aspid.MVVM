@@ -1,10 +1,10 @@
 using UnityEngine;
+using AspidUI.MVVM;
 using System.Drawing;
-using UltimateUI.MVVM;
-using UltimateUI.MVVM.Commands;
-using UltimateUI.MVVM.Unity;
-using UltimateUI.MVVM.Unity.Views;
-using UltimateUI.MVVM.Views.Generation;
+using AspidUI.MVVM.Unity;
+using AspidUI.MVVM.Commands;
+using AspidUI.MVVM.Unity.Views;
+using AspidUI.MVVM.Views.Generation;
 
 namespace MVVMGenerators.Sample.Views;
 

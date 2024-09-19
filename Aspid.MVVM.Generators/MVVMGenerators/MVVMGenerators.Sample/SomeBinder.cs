@@ -1,9 +1,8 @@
 using System;
-using UltimateUI.MVVM;
-using UltimateUI.MVVM.Commands;
-using UltimateUI.MVVM.Unity;
-using UltimateUI.MVVM.Unity.Generation;
-using UltimateUI.MVVM.ViewModels;
+using AspidUI.MVVM;
+using AspidUI.MVVM.Commands;
+using AspidUI.MVVM.Unity.Generation;
+using AspidUI.MVVM.ViewModels;
 
 namespace MVVMGenerators.Sample
 {

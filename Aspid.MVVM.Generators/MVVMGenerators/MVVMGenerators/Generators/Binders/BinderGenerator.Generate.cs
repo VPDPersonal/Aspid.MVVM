@@ -32,13 +32,13 @@ public partial class BinderGenerator
         var code = new CodeWriter();
 
 #if DEBUG
-        code.AppendLine($"#if !{Defines.ULTIMATE_UI_MVVM_BINDER_LOG_DISABLED}")
+        code.AppendLine($"#if !{Defines.ASPID_UI_MVVM_BINDER_LOG_DISABLED}")
             .AppendClassBegin(@namespace, declarationText)
             .AppendBinderLogBody(data)
             .AppendClassEnd(@namespace)
             .AppendLine("#endif");
 #else
-        code.AppendLine($"#if {Defines.UNITY_EDITOR} && !{Defines.ULTIMATE_UI_MVVM_BINDER_LOG_DISABLED}")
+        code.AppendLine($"#if {Defines.UNITY_EDITOR} && !{Defines.ASPID_UI_MVVM_BINDER_LOG_DISABLED}")
             .AppendClassBegin(@namespace, declarationText)
             .AppendBinderLogBody(data)
             .AppendClassEnd(@namespace)

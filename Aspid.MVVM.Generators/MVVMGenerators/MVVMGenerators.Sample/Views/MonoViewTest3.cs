@@ -1,9 +1,9 @@
+using AspidUI.MVVM.Unity.Views;
+using AspidUI.MVVM.ViewModels;
+using AspidUI.MVVM.Views.Generation;
 using UnityEngine.UI;
-using UltimateUI.MVVM.Unity.Views;
-using MVVMGenerators.Sample.Binders;
-using UltimateUI.MVVM.ViewModels;
-using UltimateUI.MVVM.Views.Generation;
 using UnityEngine;
+using MVVMGenerators.Sample.Binders;
 
 namespace MVVMGenerators.Sample.Views;
 

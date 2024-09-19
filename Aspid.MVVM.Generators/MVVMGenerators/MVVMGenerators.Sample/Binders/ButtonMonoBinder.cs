@@ -1,4 +1,4 @@
-using UltimateUI.MVVM.Unity;
+using AspidUI.MVVM.Unity;
 
 namespace MVVMGenerators.Sample.Binders;
 

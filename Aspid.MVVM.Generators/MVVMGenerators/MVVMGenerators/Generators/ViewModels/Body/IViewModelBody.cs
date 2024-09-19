@@ -36,7 +36,7 @@ public static class IViewModelBody
         
         code.AppendMultiline(
             $"""
-            #if !{Defines.ULTIMATE_UI_MVVM_UNITY_PROFILER_DISABLED}
+            #if !{Defines.ASPID_UI_MVVM_UNITY_PROFILER_DISABLED}
             {GeneratedAttribute}
             private static readonly {ProfilerMarker} _addBinderMarker = new("{className}.AddBinder"); 
             
@@ -69,7 +69,7 @@ public static class IViewModelBody
                 {{GeneratedAttribute}}
                 public void AddBinder({{IBinder}} binder, string propertyName)
                 {
-                    #if !{{Defines.ULTIMATE_UI_MVVM_UNITY_PROFILER_DISABLED}}
+                    #if !{{Defines.ASPID_UI_MVVM_UNITY_PROFILER_DISABLED}}
                     using (_addBinderMarker.Auto())
                     #endif
                     {
@@ -210,7 +210,7 @@ public static class IViewModelBody
                 {{GeneratedAttribute}}
                 public void RemoveBinder({{IBinder}} binder, string propertyName)
                 {
-                    #if !{{Defines.ULTIMATE_UI_MVVM_UNITY_PROFILER_DISABLED}}
+                    #if !{{Defines.ASPID_UI_MVVM_UNITY_PROFILER_DISABLED}}
                     using (_removeBinderMarker.Auto())
                     #endif
                     {

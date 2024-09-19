@@ -20,7 +20,6 @@ namespace Plugins.AspidUI.Elements.Runtime.ViewModels
             _icon = genericDialog.Icon;
             _title = genericDialog.Title;
             _message = genericDialog.Message;
-            _genericDialogButtons = genericDialog.Buttons.ToGenericDialogButtonViewModel();
         }
     }
 

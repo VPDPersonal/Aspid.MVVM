@@ -1,6 +1,5 @@
-using AspidUI.MVVM.Unity.Views;
-using AspidUI.MVVM.ViewModels;
-using AspidUI.MVVM.Views.Generation;
+using Aspid.UI.MVVM.Mono.Views;
+using Aspid.UI.MVVM.Views.Generation;
 using UnityEngine.UI;
 using UnityEngine;
 using MVVMGenerators.Sample.Binders;
@@ -21,9 +20,4 @@ public partial class MonoViewTest3 : MonoView
     
     [AsBinder(typeof(ButtonBinder))]
     private Button[] CancelCommand => GetComponents<Button>();
-    
-    protected override void DeinitializeIternal(IViewModel viewModel)
-    {
-        throw new System.NotImplementedException();
-    }
 }

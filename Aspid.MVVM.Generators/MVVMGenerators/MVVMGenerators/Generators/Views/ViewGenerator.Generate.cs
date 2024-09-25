@@ -1,3 +1,4 @@
+using System;
 using Microsoft.CodeAnalysis;
 using MVVMGenerators.Helpers;
 using MVVMGenerators.Helpers.Descriptions;
@@ -52,7 +53,7 @@ public partial class ViewGenerator
         var code = new CodeWriter();
         var baseTypes = GetBaseTypes(data);
 
-        code.AppendClassBegin(@namespace, declaration, baseTypes)
+        code.AppendClassBegin([Namespaces.Aspid_UI_MVVM_Extensions], @namespace, declaration, baseTypes)
             .AppendIView(data)
             .AppendClassEnd(@namespace);
         

@@ -35,13 +35,13 @@ public partial class ViewGenerator
             {
                 if (isInitializeOverride && isDeinitializeOverride) break;
 
-                if (!isInitializeOverride && HasOverrideViewIternalMethod(method, "InitializeIternal"))
+                if (!isInitializeOverride && HasOverrideInitializeIternalMethod(method))
                 {
                     isInitializeOverride = true;
                     continue;
                 }
-
-                if (!isDeinitializeOverride && HasOverrideViewIternalMethod(method, "DeinitializeIternal"))
+                
+                if (!isDeinitializeOverride && HasOverrideDeinitializeIternalMethod(method))
                 {
                     isDeinitializeOverride = true;
                 }
@@ -53,15 +53,27 @@ public partial class ViewGenerator
         
         var viewData = new ViewData(inheritor, viewMembers, isInitializeOverride, isDeinitializeOverride, candidate);
         return new FoundForGenerator<ViewData>(true, viewData);
-        
-        bool HasOverrideViewIternalMethod(IMethodSymbol method, string methodName)
+
+        bool HasOverrideInitializeIternalMethod(IMethodSymbol method)
         {
             if (!method.IsOverride) return false;
             if (method.DeclaredAccessibility != Accessibility.Protected) return false;
             if (method.Parameters.Length != 1) return false;
             
-            if (method.Name != methodName) return false;
+            if (method.Name != "InitializeIternal") return false;
             if (method.Parameters[0].Type.ToDisplayString() != Classes.IViewModel.FullName) return false;
+            if (method.ReturnType.ToDisplayString() != "void") return false;
+
+            return true;
+        }
+        
+        bool HasOverrideDeinitializeIternalMethod(IMethodSymbol method)
+        {
+            if (!method.IsOverride) return false;
+            if (method.DeclaredAccessibility != Accessibility.Protected) return false;
+            if (method.Parameters.Length != 0) return false;
+            
+            if (method.Name != "DeinitializeIternal") return false;
             if (method.ReturnType.ToDisplayString() != "void") return false;
 
             return true;

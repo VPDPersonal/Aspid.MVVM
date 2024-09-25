@@ -44,7 +44,7 @@ public static class ViewBody
 
         code.AppendMultiline(
                 $$"""
-                #if !ULTIMATE_UI_MVVM_UNITY_PROFILER_DISABLED
+                #if !{{Defines.ASPID_UI_MVVM_UNITY_PROFILER_DISABLED}}
                 {{GeneratedAttribute}}
                 private static readonly {{ProfilerMarker}} _initializeMarker = new("{{className}}.Initialize");
                 
@@ -53,12 +53,16 @@ public static class ViewBody
                 #endif
                 
                 {{GeneratedAttribute}}
+                public IViewModel? ViewModel { get; private set; }
+                
+                {{GeneratedAttribute}}
                 void {{IView}}.Initialize({{IViewModel}} viewModel)
                 {
                     #if !ULTIMATE_UI_MVVM_UNITY_PROFILER_DISABLED
                     using (_initializeMarker.Auto())
                     #endif
                     {
+                        ViewModel = viewModel;
                         InitializeIternal(viewModel);
                     }
                 }
@@ -68,31 +72,24 @@ public static class ViewBody
                 """)
             .BeginBlock()
             .AppendInitializeBody(data)
-            .EndBlock();
-        
-        code.AppendMultiline(
+            .EndBlock()
+            .AppendLine()
+            .AppendMultiline(
                 $$"""
-                #if !ULTIMATE_UI_MVVM_UNITY_PROFILER_DISABLED
+                
                 {{GeneratedAttribute}}
-                private static readonly {{ProfilerMarker}} _initializeMarker = new("{{className}}.Initialize");
-
-                {{GeneratedAttribute}}
-                private static readonly {{ProfilerMarker}} _deinitializeMarker = mew("{{className}}.Deinitialize");
-                #endif
-
-                {{GeneratedAttribute}}
-                void {{IView}}.Initialize({{IViewModel}} viewModel)
+                void {{IView}}.Deinitialize()
                 {
                     #if !ULTIMATE_UI_MVVM_UNITY_PROFILER_DISABLED
                     using (_deinitializeMarker.Auto())
                     #endif
                     {
-                        DeinitializeIternal(viewModel);
+                        DeinitializeIternal();
                     }
                 }
 
                 {{GeneratedAttribute}}
-                protected virtual void DeinitializeIternal({{IViewModel}} viewModel)
+                protected virtual void DeinitializeIternal()
                 """)
             .BeginBlock()
             .AppendDeinitializeBody(data)
@@ -107,7 +104,7 @@ public static class ViewBody
         
         if (!data.IsInitializeOverride)
         {
-            code.AppendMethodDeclaration("InitializeIternal", isOverride)
+            code.AppendInitializeIternalDeclaration(isOverride)
                 .BeginBlock()
                 .AppendInitializeBody(data)
                 .AppendLine("base.InitializeIternal(viewModel);")
@@ -117,10 +114,10 @@ public static class ViewBody
         if (!data.IsDeinitializeOverride)
         {
             code.AppendLineIf(!data.IsInitializeOverride)
-                .AppendMethodDeclaration("DeinitializeIternal", isOverride)
+                .AppendDeinitializeIternalDeclaration(isOverride)
                 .BeginBlock()
                 .AppendDeinitializeBody(data)
-                .AppendLine("base.DeinitializeIternal(viewModel);")
+                .AppendLine("base.DeinitializeIternal();")
                 .EndBlock();
         }
 
@@ -133,7 +130,7 @@ public static class ViewBody
         
         if (!data.IsInitializeOverride)
         {
-            code.AppendMethodDeclaration("InitializeIternal", isOverride)
+            code.AppendInitializeIternalDeclaration(isOverride)
                 .BeginBlock()
                 .AppendInitializeBody(data)
                 .EndBlock();
@@ -142,7 +139,7 @@ public static class ViewBody
         if (!data.IsDeinitializeOverride)
         {
             code.AppendLineIf(!data.IsInitializeOverride)
-                .AppendMethodDeclaration("DeinitializeIternal", isOverride)
+                .AppendDeinitializeIternalDeclaration(isOverride)
                 .BeginBlock()
                 .AppendDeinitializeBody(data)
                 .EndBlock();
@@ -157,7 +154,7 @@ public static class ViewBody
         
         if (!data.IsInitializeOverride)
         {
-            code.AppendMethodDeclaration("InitializeIternal", isOverride)
+            code.AppendInitializeIternalDeclaration(isOverride)
                 .BeginBlock()
                 .AppendInitializeBody(data)
                 .EndBlock();
@@ -166,7 +163,7 @@ public static class ViewBody
         if (!data.IsDeinitializeOverride)
         {
             code.AppendLineIf(!data.IsInitializeOverride)
-                .AppendMethodDeclaration("DeinitializeIternal", isOverride)
+                .AppendDeinitializeIternalDeclaration(isOverride)
                 .BeginBlock()
                 .AppendDeinitializeBody(data)
                 .EndBlock();
@@ -175,14 +172,27 @@ public static class ViewBody
         return code;
     }
 
-    private static CodeWriter AppendMethodDeclaration(this CodeWriter code, string methodName, bool isOverride)
+    private static CodeWriter AppendDeinitializeIternalDeclaration(this CodeWriter code, bool isOverride)
+    {
+        var modificator = isOverride ? "override" : "virtual";
+        
+        code.AppendMultiline(
+            $"""
+             {GeneratedAttribute}
+             protected {modificator} void DeinitializeIternal()
+             """);
+
+        return code; 
+    }
+
+    private static CodeWriter AppendInitializeIternalDeclaration(this CodeWriter code, bool isOverride)
     {
         var modificator = isOverride ? "override" : "virtual";
         
         code.AppendMultiline(
             $"""
             {GeneratedAttribute}
-            protected {modificator} void {methodName}({IViewModel} viewModel)
+            protected {modificator} void InitializeIternal({IViewModel} viewModel)
             """);
 
         return code;
@@ -222,7 +232,7 @@ public static class ViewBody
             Append(member.BinderName, member.Id);
 
         void Append(string name, string idName) =>
-            code.AppendLine($"{bindMethodName}({name}, viewModel, {idName});");
+            code.AppendLine($"{name}.{bindMethodName}(ViewModel, {idName});");
     }
 
     private static CodeWriter AppendInstantiateBindersMethods(this CodeWriter code, in ViewDataSpan data)

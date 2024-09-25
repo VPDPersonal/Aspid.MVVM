@@ -1,8 +1,7 @@
-using AspidUI.MVVM;
-using AspidUI.MVVM.Commands;
-using AspidUI.MVVM.Unity.Views;
-using AspidUI.MVVM.ViewModels;
-using AspidUI.MVVM.Views.Generation;
+using Aspid.UI.MVVM;
+using Aspid.UI.MVVM.Commands;
+using Aspid.UI.MVVM.Mono.Views;
+using Aspid.UI.MVVM.Views.Generation;
 using MVVMGenerators.Sample.Binders;
 
 namespace MVVMGenerators.Sample.Views;
@@ -18,9 +17,4 @@ public partial class MonoViewTest2 : MonoView
 
     private ButtonMonoBinder OkCommand =>
         GetComponent<ButtonMonoBinder>();
-    
-    protected override void DeinitializeIternal(IViewModel viewModel)
-    {
-        throw new System.NotImplementedException();
-    }
 }

@@ -9,6 +9,8 @@ namespace MVVMGenerators.Generators.CreateFrom.Body;
 // ReSharper disable InconsistentNaming
 public static class CreateFromBody
 {
+    private const string GeneratedAttribute = General.GeneratedCodeCreateFromAttribute;
+    
     private static readonly string List = Classes.List.Global;
     private static readonly string IEnumerable = Classes.IEnumerable.Global;
     
@@ -38,12 +40,14 @@ public static class CreateFromBody
         
         code.AppendMultiline(
             $$"""
+            {{GeneratedAttribute}}
             public static {{toName}} {{methodName}}<T>(this T {{methodParameters}})
                 where T : {{fromTypeFullName}}
             {
                 return new {{toName}}({{fromName}}{{parameterNames}});
             }
             
+            {{GeneratedAttribute}}
             public static {{toName}}[] {{methodName}}<T>(this T[] {{methodParameters}})
                 where T : {{fromTypeFullName}}
             {
@@ -55,6 +59,7 @@ public static class CreateFromBody
                 return __to;
             }
             
+            {{GeneratedAttribute}}
             public static {{toName}}[] {{methodName}}AsArray<T>(this {{List}}<T> {{methodParameters}})
                 where T : {{fromTypeFullName}}
             {
@@ -66,6 +71,7 @@ public static class CreateFromBody
                 return __to;
             }
             
+            {{GeneratedAttribute}}
             public static {{List}}<{{toName}}> {{methodName}}AsList<T>(this T[] {{methodParameters}})
                 where T : {{fromTypeFullName}}
             {
@@ -77,6 +83,7 @@ public static class CreateFromBody
                 return __to;
             }
             
+            {{GeneratedAttribute}}
             public static {{List}}<{{toName}}> {{methodName}}<T>(this {{List}}<T> {{methodParameters}})
                 where T : {{fromTypeFullName}}
             {
@@ -88,6 +95,7 @@ public static class CreateFromBody
                 return __to;
             }
             
+            {{GeneratedAttribute}}
             public static {{IEnumerable}}<{{toName}}> {{methodName}}<T>(this {{IEnumerable}}<T> {{methodParameters}})
                 where T : {{fromTypeFullName}}
             {

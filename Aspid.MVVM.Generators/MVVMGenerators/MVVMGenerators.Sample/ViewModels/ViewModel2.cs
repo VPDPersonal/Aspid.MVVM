@@ -1,6 +1,6 @@
 using System.Text;
-using AspidUI.MVVM.Generation;
-using AspidUI.MVVM.ViewModels.Generation;
+using Aspid.UI.MVVM.Generation;
+using Aspid.UI.MVVM.ViewModels.Generation;
 
 namespace MVVMGenerators.Sample.ViewModels
 {

@@ -1,9 +1,12 @@
 using System;
 using UnityEngine;
-using System.Threading;
 using Aspid.UI.MVVM.Views;
 using Aspid.UI.MVVM.ViewModels;
 using Object = UnityEngine.Object;
+
+#if UNITY_2023_1_OR_NEWER
+using System.Threading;
+#endif
 
 namespace Aspid.UI.MVVM.Mono.Views
 {
@@ -152,13 +155,12 @@ namespace Aspid.UI.MVVM.Mono.Views
             T original,
             int count,
             Transform parent,
-            Vector3 position,
-            Quaternion rotation,
-            IViewModel viewModel,
-            CancellationToken cancellationToken)
+            ReadOnlySpan<Vector3> positions,
+            ReadOnlySpan<Quaternion> rotations,
+            IViewModel viewModel)
             where T : Object, IView
         {
-            var operation = Object.InstantiateAsync(original, count, parent, position, rotation, cancellationToken);
+            var operation = Object.InstantiateAsync(original, count, parent, positions, rotations);
             
             operation.completed += _ =>
             {
@@ -169,16 +171,18 @@ namespace Aspid.UI.MVVM.Mono.Views
             return operation;
         }
 
+#if UNITY_2023_1_OR_NEWER
         public static AsyncInstantiateOperation<T> InstantiateAsync<T>(
             T original,
             int count,
             Transform parent,
-            ReadOnlySpan<Vector3> positions,
-            ReadOnlySpan<Quaternion> rotations,
-            IViewModel viewModel)
+            Vector3 position,
+            Quaternion rotation,
+            IViewModel viewModel,
+            CancellationToken cancellationToken)
             where T : Object, IView
         {
-            var operation = Object.InstantiateAsync(original, count, parent, positions, rotations);
+            var operation = Object.InstantiateAsync(original, count, parent, position, rotation, cancellationToken);
             
             operation.completed += _ =>
             {
@@ -209,5 +213,6 @@ namespace Aspid.UI.MVVM.Mono.Views
             
             return operation;
         }
+#endif
     }
 }

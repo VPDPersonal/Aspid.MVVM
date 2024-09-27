@@ -19,8 +19,11 @@ namespace Aspid.UI.MVVM.StarterKit.Binders.Mono.Casters
         [SerializeField] private UnityEvent<string> _casted;
         
         [BinderLog]
-        public void SetValue(T value) =>
-            _casted?.Invoke(_converter.Convert(value));
+        public void SetValue(T value)
+        {
+            if (_converter == null) return;
+            _casted.Invoke(_converter.Convert(value));
+        }
     }
 #else
     public abstract partial class GenericToStringCasterMonoBinder<T> : MonoBinder, IBinder<T>
@@ -31,8 +34,11 @@ namespace Aspid.UI.MVVM.StarterKit.Binders.Mono.Casters
         protected abstract IConverter<T, string> Converter { get; }
         
         [BinderLog]
-        public void SetValue(T value) =>
-            _casted?.Invoke(Converter.Convert(value));
+        public void SetValue(T value)
+        {
+	        if (Converter == null) return;
+	        _casted.Invoke(Converter.Convert(value));
+        }
     }
 #endif
 }

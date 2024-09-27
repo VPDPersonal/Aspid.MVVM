@@ -16,7 +16,7 @@ namespace Aspid.UI.MVVM.StarterKit.Binders.Mono.Texts
 #if ASPID_UI_SERIALIZE_REFERENCE_DROPDOWN_INTEGRATION
         [field: SerializeReferenceDropdown]
 #endif
-        protected IConverter<string, string> Converter { get; private set; } = new StringFormatConverter();
+        protected IConverterStringToString Converter { get; private set; } = new StringFormatConverter();
         
         [BinderLog]
         public void SetValue(string value) =>

@@ -1,8 +1,9 @@
+using UnityEngine;
 using UnityEngine.UI;
 
 namespace Aspid.UI.MVVM.StarterKit.Binders.Images
 {
-    public class ImageVisibleBinder : Binder, IBinder<bool>
+    public class ImageVisibleBinder : Binder, IBinder<bool>, IBinder<Sprite>
     {
         protected readonly Image Image;
         protected readonly bool IsInvert;
@@ -17,6 +18,12 @@ namespace Aspid.UI.MVVM.StarterKit.Binders.Images
         {
             if (IsInvert) value = !IsInvert;
             Image.enabled = value;
+        }
+
+        public void SetValue(Sprite sprite)
+        {
+            var value = sprite != null;
+            SetValue(value);
         }
     }
 }

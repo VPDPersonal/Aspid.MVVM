@@ -15,12 +15,7 @@ namespace Aspid.UI.MVVM.StarterKit.Converters.Strings
             _format = format;
         }
 
-        public string Convert(TFrom value)
-        {
-            var convertedValue = value?.ToString();
-            if (string.IsNullOrEmpty(convertedValue)) return convertedValue;
-            
-            return string.IsNullOrEmpty(_format) ? convertedValue : string.Format(_format, convertedValue);
-        }
+        public string Convert(TFrom value) =>
+	        string.IsNullOrEmpty(_format) ? value?.ToString() : string.Format(_format, value);
     }
 }

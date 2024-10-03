@@ -1,3 +1,4 @@
+using System;
 using Aspid.UI.MVVM.ViewModels;
 using System.Collections.Generic;
 
@@ -18,7 +19,10 @@ namespace Aspid.UI.MVVM.Extensions
             if (binders is null) return;
 
             foreach (var binder in binders)
-                binder.Bind(viewModel, id);
+            {
+	            if (binder is null) throw new NullReferenceException($"Binder {id} is null. ViewModel {viewModel.GetType().FullName}");
+	            binder.Bind(viewModel, id);
+            }
         }
 
         public static void BindSafely<T>(this List<T>? binders, IViewModel viewModel, string id)
@@ -27,7 +31,10 @@ namespace Aspid.UI.MVVM.Extensions
             if (binders is null) return;
 
             foreach (var binder in binders)
-                binder.Bind(viewModel, id);
+            {
+	            if (binder is null) throw new NullReferenceException($"Binder {id} is null. ViewModel {viewModel.GetType().FullName}");
+	            binder.Bind(viewModel, id);
+            }
         }
         
         public static void BindSafely<T>(this IEnumerable<T>? binders, IViewModel viewModel, string id)
@@ -36,7 +43,10 @@ namespace Aspid.UI.MVVM.Extensions
             if (binders is null) return;
 
             foreach (var binder in binders)
-                binder.Bind(viewModel, id);
+            {
+	            if (binder is null) throw new NullReferenceException($"Binder {id} is null. ViewModel {viewModel.GetType().FullName}");
+	            binder.Bind(viewModel, id);
+            }
         }
         
         public static void UnbindSafely<T>(this T? binder, IViewModel viewModel, string id)
@@ -61,7 +71,10 @@ namespace Aspid.UI.MVVM.Extensions
             if (binders is null) return;
 
             foreach (var binder in binders)
-                binder.Unbind(viewModel, id);
+            {
+	            if (binder is null) throw new NullReferenceException($"Binder {id} is null. ViewModel {viewModel.GetType().FullName}");
+	            binder.Unbind(viewModel, id);
+            }
         }
         
         public static void UnbindSafely<T>(this IEnumerable<T>? binders, IViewModel viewModel, string id)
@@ -70,7 +83,10 @@ namespace Aspid.UI.MVVM.Extensions
             if (binders is null) return;
 
             foreach (var binder in binders)
-                binder.Unbind(viewModel, id);
+            {
+	            if (binder is null) throw new NullReferenceException($"Binder {id} is null. ViewModel {viewModel.GetType().FullName}");
+	            binder.Unbind(viewModel, id);
+            }
         }
     }
 }

@@ -3,7 +3,7 @@ using UnityEngine.UI;
 
 namespace Aspid.UI.MVVM.StarterKit.Binders.RawImages
 {
-    public class RawImageVisibleBinder : Binder, IBinder<bool>, IBinder<Texture2D>
+    public class RawImageVisibleBinder : Binder, IBinder<bool>
     {
         protected readonly RawImage Image;
         protected readonly bool IsInvert;
@@ -18,12 +18,6 @@ namespace Aspid.UI.MVVM.StarterKit.Binders.RawImages
         {
             if (IsInvert) value = !IsInvert;
             Image.enabled = value;
-        }
-
-        public void SetValue(Texture2D texture)
-        {
-            var value = texture != null;
-            SetValue(value);
         }
     }
 }

@@ -1,115 +1,177 @@
-using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Aspid.Collections.Observable
 {
-    public sealed class ObservableQueue<T> : ICollection, IReadOnlyObservableCollection<T>
+    public sealed class ObservableQueue<T> : IReadOnlyObservableCollection<T>
     {
-        public event NotifyCollectionChangedEventHandler<T> CollectionChanged;
-
         private readonly Queue<T> _queue;
-        
-        public int Count => _queue.Count;
-        
-        object ICollection.SyncRoot => ((ICollection)_queue).SyncRoot;
-        
-        bool ICollection.IsSynchronized => ((ICollection)_queue).IsSynchronized;
 
         public ObservableQueue()
-            : this(new Queue<T>()) { }
-        
-        public ObservableQueue(int capacity) 
-            : this(new Queue<T>(capacity)) { }
+        {
+            _queue = new Queue<T>();
+        }
+
+        public ObservableQueue(int capacity)
+        {
+            _queue = new Queue<T>(capacity);
+        }
 
         public ObservableQueue(IEnumerable<T> collection)
-            : this(new Queue<T>(collection)) { }
-        
+        {
+            _queue = new Queue<T>(collection);
+        }
+
         public ObservableQueue(Queue<T> queue)
         {
             _queue = queue;
         }
 
+        public event NotifyCollectionChangedEventHandler<T>? CollectionChanged;
+
+        public int Count
+        {
+            get
+            {
+                lock (SyncRoot)
+                {
+                    return _queue.Count;
+                }
+            }
+        }
+        
+        public object SyncRoot { get; } = new();
+
         public void Enqueue(T item)
         {
-            var index = _queue.Count;
-            _queue.Enqueue(item);
-            CollectionChanged?.Invoke(NotifyCollectionChangedEventArgs<T>.Add(item, index));
+            lock (SyncRoot)
+            {
+                var index = _queue.Count;
+                _queue.Enqueue(item);
+                
+                CollectionChanged?.Invoke(NotifyCollectionChangedEventArgs<T>.Add(item, index));
+            }
         }
-
-        // public void EnqueueRange(IEnumerable<T> items)
-        // {
-        //     
-        // }
 
         public void EnqueueRange(T[] items)
         {
-            var index = _queue.Count;
-            foreach (var item in items)
-                _queue.Enqueue(item);
+            lock (SyncRoot)
+            {
+                var index = _queue.Count;
+                foreach (var item in items)
+                    _queue.Enqueue(item);
                 
-            CollectionChanged?.Invoke(NotifyCollectionChangedEventArgs<T>.Add(items, index));
+                CollectionChanged?.Invoke(NotifyCollectionChangedEventArgs<T>.Add(items, index));
+            }
         }
 
-        // public void EnqueueRange(ReadOnlySpan<T> items)
-        // {
-        //     
-        // }
+        public void EnqueueRange(IReadOnlyList<T> items)
+        {
+            lock (SyncRoot)
+            {
+                var index = _queue.Count;
+                foreach (var item in items)
+                    _queue.Enqueue(item);
+                
+                CollectionChanged?.Invoke(NotifyCollectionChangedEventArgs<T>.Add(items, index));
+            }
+        }
 
         public T Dequeue()
         {
-            var item = _queue.Dequeue();
-            CollectionChanged?.Invoke(NotifyCollectionChangedEventArgs<T>.Remove(item, 0));
-            return item;
+            lock (SyncRoot)
+            {
+                var v = _queue.Dequeue();
+                CollectionChanged?.Invoke(NotifyCollectionChangedEventArgs<T>.Remove(v, 0));
+                return v;
+            }
         }
 
-        public bool TryDequeue(out T result)
+        public bool TryDequeue([MaybeNullWhen(false)] out T result)
         {
-            var isSuccess = _queue.TryDequeue(out result);
-            if (!isSuccess) return false;
-            
-            CollectionChanged?.Invoke(NotifyCollectionChangedEventArgs<T>.Remove(result, 0));
-            return true;
+            lock (SyncRoot)
+            {
+                if (_queue.Count != 0)
+                {
+                    result = _queue.Dequeue();
+                    CollectionChanged?.Invoke(NotifyCollectionChangedEventArgs<T>.Remove(result, 0));
+                    return true;
+                }
+                
+                result = default;
+                return false;
+            }
         }
 
-        // public void DequeueRange(int count)
-        // {
-        //
-        // }
+        public void DequeueRange(T[] dest)
+        {
+            lock (SyncRoot)
+            {
+                for (var i = 0; i < dest.Length; i++)
+                    dest[i] = _queue.Dequeue();
 
-        // public void DequeueRange(Span<T> dest)
-        // {
-        //     
-        // }
+                CollectionChanged?.Invoke(NotifyCollectionChangedEventArgs<T>.Remove(dest, 0));
+            }
+        }
 
-        public T Peek() =>
-            _queue.Peek();
+        public T Peek()
+        {
+            lock (SyncRoot)
+            {
+                return _queue.Peek();
+            }
+        }
 
-        public bool TryPeek(out T result) =>
-            _queue.TryPeek(out result);
+        public bool TryPeek([MaybeNullWhen(false)] out T result)
+        {
+            lock (SyncRoot)
+            {
+                if (_queue.Count != 0)
+                {
+                    result = _queue.Peek();
+                    return true;
+                }
+                
+                result = default;
+                return false;
+            }
+        }
 
-        public T[] ToArray() =>
-            _queue.ToArray();
+        public T[] ToArray()
+        {
+            lock (SyncRoot)
+            {
+                return _queue.ToArray();
+            }
+        }
 
-        public void TrimExcess() =>
-            _queue.TrimExcess();
+        public void TrimExcess()
+        {
+            lock (SyncRoot)
+            {
+                _queue.TrimExcess();
+            }
+        }
         
-        public void CopyTo(T[] array, int arrayIndex) =>
-            _queue.CopyTo(array, arrayIndex);
-        
-        void ICollection.CopyTo(System.Array array, int arrayIndex) =>
-            ((ICollection)_queue).CopyTo(array, arrayIndex);
-        
-        IEnumerator IEnumerable.GetEnumerator() =>
-            GetEnumerator();
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
-        public IEnumerator<T> GetEnumerator() =>
-            _queue.GetEnumerator();
+        public IEnumerator<T> GetEnumerator()
+        {
+            lock (SyncRoot)
+            {
+                foreach (var item in _queue)
+                    yield return item;
+            }
+        }
         
         public void Clear()
         {
-            CollectionChanged?.Invoke(NotifyCollectionChangedEventArgs<T>.Reset(_queue.ToList()));
-            _queue.Clear();
+            lock (SyncRoot)
+            {
+                _queue.Clear();
+                CollectionChanged?.Invoke(NotifyCollectionChangedEventArgs<T>.Reset());
+            }
         }
     }
 }

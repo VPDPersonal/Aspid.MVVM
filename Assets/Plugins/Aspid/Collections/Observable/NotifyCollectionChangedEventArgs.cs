@@ -8,58 +8,62 @@ namespace Aspid.Collections.Observable
         public NotifyCollectionChangedAction Action { get; }
 
         public bool IsSingleItem { get; }
-        
-        public T OldItem { get; }
-        
-        public T NewItem { get; }
 
-        public IReadOnlyList<T> OldItems { get; }
-        
-        public IReadOnlyList<T> NewItems { get; }
+        public T? NewItem { get; }
 
-        public int OldStartingIndex { get; }
-        
+        public T? OldItem { get; }
+
+        public IReadOnlyList<T>? NewItems { get; }
+
+        public IReadOnlyList<T>? OldItems { get; }
+
         public int NewStartingIndex { get; }
 
-        private NotifyCollectionChangedEventArgs(
-            NotifyCollectionChangedAction action,
-            T oldItem = default!,
-            T newItem = default!,
-            int oldStartingIndex = -1,
-            int newStartingIndex = -1)
-            : this(action, true, oldItem, newItem, default, default, oldStartingIndex, newStartingIndex) { }
+        public int OldStartingIndex { get; }
 
         private NotifyCollectionChangedEventArgs(
             NotifyCollectionChangedAction action,
-            IReadOnlyList<T> oldItems = default, 
-            IReadOnlyList<T> newItems = default, 
+            T? oldItem = default,
+            T? newItem = default,
             int oldStartingIndex = -1,
-            int newStartingIndex = -1) 
-            : this(action, false, default!, default!, oldItems, newItems, oldStartingIndex, newStartingIndex) { }
+            int newStartingIndex = -1)
+            : this(action, true, oldItem, newItem, default, default, oldStartingIndex, newStartingIndex)
+        {
+        }
+
+        private NotifyCollectionChangedEventArgs(
+            NotifyCollectionChangedAction action,
+            IReadOnlyList<T>? oldItems = default,
+            IReadOnlyList<T>? newItems = default,
+            int oldStartingIndex = -1,
+            int newStartingIndex = -1)
+            : this(action, false, default, default, oldItems, newItems, oldStartingIndex, newStartingIndex)
+        {
+        }
 
         private NotifyCollectionChangedEventArgs(
             NotifyCollectionChangedAction action,
             bool isSingleItem,
-            T oldItem = default!, 
-            T newItem = default!,
-            IReadOnlyList<T> oldItems = default, 
-            IReadOnlyList<T> newItems = default, 
+            T? oldItem = default,
+            T? newItem = default,
+            IReadOnlyList<T>? oldItems = default,
+            IReadOnlyList<T>? newItems = default,
             int oldStartingIndex = -1,
-            int newStartingIndex = -1) 
+            int newStartingIndex = -1)
         {
             Action = action;
-            
+
             IsSingleItem = isSingleItem;
             OldItem = oldItem;
             NewItem = newItem;
-            
+
             OldItems = oldItems;
             NewItems = newItems;
-            
+
             OldStartingIndex = oldStartingIndex;
             NewStartingIndex = newStartingIndex;
         }
-        
+
         public static NotifyCollectionChangedEventArgs<T> Add(T newItem, int newStartingIndex) =>
             new(NotifyCollectionChangedAction.Add, newItem: newItem, newStartingIndex: newStartingIndex);
 
@@ -75,13 +79,13 @@ namespace Aspid.Collections.Observable
         public static NotifyCollectionChangedEventArgs<T> Replace(T oldItem, T newItem, int index) =>
             new(NotifyCollectionChangedAction.Replace, oldItem, newItem, index, index);
 
-        public static NotifyCollectionChangedEventArgs<T> Replace(IReadOnlyList<T> newItems, IReadOnlyList<T> oldItems, int index) =>
+        public static NotifyCollectionChangedEventArgs<T> Replace(IReadOnlyList<T> oldItems, IReadOnlyList<T> newItems, int index) =>
             new(NotifyCollectionChangedAction.Replace, oldItems, newItems, index, index);
 
         public static NotifyCollectionChangedEventArgs<T> Move(T changedItem, int oldStartingIndex, int newStartingIndex) =>
             new(NotifyCollectionChangedAction.Move, changedItem, changedItem, oldStartingIndex, newStartingIndex);
 
-        public static NotifyCollectionChangedEventArgs<T> Reset(IReadOnlyList<T> oldItems) => 
-            new(NotifyCollectionChangedAction.Reset, true, oldItems: oldItems);
+        public static NotifyCollectionChangedEventArgs<T> Reset() =>
+            new(NotifyCollectionChangedAction.Reset, true);
     }
 }

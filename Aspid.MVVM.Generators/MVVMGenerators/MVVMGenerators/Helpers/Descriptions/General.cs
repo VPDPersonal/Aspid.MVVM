@@ -12,5 +12,5 @@ public class General
         "[global::System.CodeDom.Compiler.GeneratedCode(\"AspidUI.MVVM.SourceGenerators.CreateFromGenerator\", \"0.0.1\")]";
     
     public const string GeneratedCodeViewModelAttribute =
-        "[global::System.CodeDom.Compiler.GeneratedCode(\"UltimateUI.MVVM.SourceGenerators.ViewModelGenerator\", \"0.0.1\")]";
+        "[global::System.CodeDom.Compiler.GeneratedCode(\"AspidUI.MVVM.SourceGenerators.ViewModelGenerator\", \"0.0.1\")]";
 }

@@ -161,7 +161,7 @@ public static class IViewModelBody
                 void AddBinderLocal<T>(T value, ref {{Action}}<T> changed)
                 {   
                     if (binder is not {{IBinder}}<T> specificBinder)
-                        throw new {{Exception}}();
+                        throw new {{Exception}}($"binder ({binder.GetType()}) is not {typeof({{IBinder}}<T>)}");
                         
                     specificBinder.SetValue(value);
                     changed += specificBinder.SetValue;
@@ -170,7 +170,7 @@ public static class IViewModelBody
                 void AddReverseBinderLocal<T>({{Action}}<T> setValue)
                 {
                     if (binder is not {{IReverseBinder}}<T> specificReverseBinder)
-                        throw new {{Exception}}();
+                        throw new {{Exception}}($"binder ({binder.GetType()}) is not {typeof({{IReverseBinder}}<T>)}");
                         
                     specificReverseBinder.ValueChanged += setValue;
                 }
@@ -182,7 +182,7 @@ public static class IViewModelBody
                 void SetValueLocal<T>(T value)
                 {
                     if (binder is not {{IBinder}}<T> specificBinder)
-                        throw new {{Exception}}();
+                        throw new {{Exception}}($"binder ({binder.GetType()}) is not {typeof({{IBinder}}<T>)}");
                         
                     specificBinder.SetValue(value);
                 }
@@ -274,7 +274,7 @@ public static class IViewModelBody
                 void RemoveBinderLocal<T>(ref {{Action}}<T> changed)
                 {   
                     if (binder is not {{IBinder}}<T> specificBinder)
-                        throw new {{Exception}}();
+                        throw new {{Exception}}($"binder ({binder.GetType()}) is not {typeof({{IBinder}}<T>)}");
                         
                     changed -= specificBinder.SetValue;
                 }
@@ -282,7 +282,7 @@ public static class IViewModelBody
                 void RemoveReverseBinderLocal<T>({{Action}}<T> setValue)
                 {
                     if (binder is not {{IReverseBinder}}<T> specificReverseBinder)
-                        throw new {{Exception}}();
+                        throw new {{Exception}}($"binder ({binder.GetType()}) is not {typeof({{IReverseBinder}}<T>)}");
                         
                     specificReverseBinder.ValueChanged -= setValue;
                 }

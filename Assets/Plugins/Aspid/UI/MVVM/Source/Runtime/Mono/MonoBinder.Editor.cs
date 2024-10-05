@@ -37,7 +37,7 @@ namespace Aspid.UI.MVVM.Mono
         partial void OnBinding(IViewModel viewModel, string id)
         {
             if (id != Id) Debug.LogWarning("Some Warning");
-            if (_viewModel != null) throw new Exception();
+            if (_viewModel != null) throw new ArgumentNullException(nameof(_viewModel));
             
             Id = _id;
             _viewModel = viewModel;
@@ -45,8 +45,8 @@ namespace Aspid.UI.MVVM.Mono
 
         partial void OnUnbinding(IViewModel viewModel, string id)
         {
-            if (Id != id) throw new Exception();
-            if (_viewModel != viewModel) throw new Exception();
+            if (Id != id) throw new Exception("Id not match");
+            if (_viewModel != viewModel) throw new Exception("Id not match");
 
             _viewModel = null;
         }

@@ -1,3 +1,4 @@
+using Unity.Profiling;
 using Aspid.UI.MVVM.ViewModels;
 
 namespace Aspid.UI.MVVM
@@ -5,8 +6,8 @@ namespace Aspid.UI.MVVM
     public abstract class Binder : IBinder
     {
 #if !ASPID_UI_MVVM_UNITY_PROFILER_DISABLED
-        private static readonly global::Unity.Profiling.ProfilerMarker _bindMarker = new("Binder.Bind");
-        private static readonly global::Unity.Profiling.ProfilerMarker _unbindMarker = new("Binder.Unbind)");
+        private static readonly ProfilerMarker _bindMarker = new("Binder.Bind");
+        private static readonly ProfilerMarker _unbindMarker = new("Binder.Unbind)");
 #endif
         protected virtual bool IsBind => true;
         

@@ -4,8 +4,6 @@ namespace Aspid.UI.MVVM.Views
 {
     public sealed class ViewBinder : Binder, IBinder<IViewModel>
     {
-        private IViewModel? _viewModel;
-        
         private readonly IView _view;
 
         public ViewBinder(IView view)
@@ -16,18 +14,13 @@ namespace Aspid.UI.MVVM.Views
         public void SetValue(IViewModel viewModel)
         {
             DeinitializeView();
-
-            _viewModel = viewModel;
             _view.Initialize(viewModel);
         }
 
         protected override void OnUnbound(IViewModel viewModel, string id) =>
             DeinitializeView();
 
-        private void DeinitializeView()
-        {
+        private void DeinitializeView() =>
             _view.Deinitialize();
-            _viewModel = null;
-        }
     }
 }

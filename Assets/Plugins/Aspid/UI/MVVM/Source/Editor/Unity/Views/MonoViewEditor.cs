@@ -7,6 +7,7 @@ using System.Collections;
 using Aspid.UI.MVVM.Mono;
 using Aspid.UI.MVVM.Mono.Views;
 using System.Collections.Generic;
+using Aspid.UI.MVVM.Unity.Views.Extensions;
 using Object = UnityEngine.Object;
 
 namespace Aspid.UI.MVVM.Unity.Views
@@ -117,7 +118,14 @@ namespace Aspid.UI.MVVM.Unity.Views
                             {
                                 EditorGUILayout.BeginVertical(style);
                                 {
-                                    var targetType = @delegate.Target.GetType();
+	                                if (delegateValue.Method.DeclaringType is null)
+	                                {
+		                                EditorGUILayout.TextField("null");
+		                                EditorGUILayout.EndHorizontal();
+		                                continue;
+	                                }
+
+	                                var targetType = @delegate.Method.DeclaringType!;
                                     var targetName = targetType.Name;
 
                                     if (@delegate.Target is Component component)
@@ -223,7 +231,7 @@ namespace Aspid.UI.MVVM.Unity.Views
 
             EditorGUI.indentLevel++;
             {
-                var fields = obj.GetType().GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+                var fields = obj.GetType().GetFieldInfosIncludingBaseClasses(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
                 foreach (var field in fields)
                     DrawValue(field.GetValue(obj), field.Name, prefsKey);
             }

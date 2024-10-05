@@ -290,6 +290,8 @@ MonoBehaviour:
   _component: {fileID: 2184117819493737949}
   <Converter>k__BackingField:
     rid: -2
+  _isDebug: 0
+  _log: []
   references:
     version: 2
     RefIds:
@@ -406,41 +408,65 @@ MonoBehaviour:
   _confirmCommand:
   - _isBindInteractable: 1
     _button: {fileID: 5444464546274840865}
+    _isDebug: 0
+    _log: []
   _resetToDefaultCommand:
   - _isBindInteractable: 1
     _button: {fileID: 2931516315228818707}
+    _isDebug: 0
+    _log: []
   _addSkillPointToCommand:
   - _isBindInteractable: 1
     _button: {fileID: 5174176717364985295}
     _parameter: 0
+    _isDebug: 0
+    _log: []
   - _isBindInteractable: 1
     _button: {fileID: 104643719858257062}
     _parameter: 1
+    _isDebug: 0
+    _log: []
   - _isBindInteractable: 1
     _button: {fileID: 1922244232776191990}
     _parameter: 2
+    _isDebug: 0
+    _log: []
   - _isBindInteractable: 1
     _button: {fileID: 7846568134673888075}
     _parameter: 3
+    _isDebug: 0
+    _log: []
   - _isBindInteractable: 1
     _button: {fileID: 4544091627993418994}
     _parameter: 4
+    _isDebug: 0
+    _log: []
   _removeSkillPointToCommand:
   - _isBindInteractable: 1
     _button: {fileID: 1795662829568435913}
     _parameter: 0
+    _isDebug: 0
+    _log: []
   - _isBindInteractable: 1
     _button: {fileID: 6797870773731993504}
     _parameter: 1
+    _isDebug: 0
+    _log: []
   - _isBindInteractable: 1
     _button: {fileID: 5010264940167386352}
     _parameter: 2
+    _isDebug: 0
+    _log: []
   - _isBindInteractable: 1
     _button: {fileID: 3729468392672634957}
     _parameter: 3
+    _isDebug: 0
+    _log: []
   - _isBindInteractable: 1
     _button: {fileID: 6929628987986647028}
     _parameter: 4
+    _isDebug: 0
+    _log: []
 --- !u!114 &5704678514400029323
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -464,8 +490,8 @@ MonoBehaviour:
   _viewModelComponent:
     <Resolve>k__BackingField: 0
     <Type>k__BackingField:
-      _typeName: UltimateUI.Samples.StatsSample.ViewModels.CreateStatsViewModel,
-        Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+      _typeName: Aspid.UI.StatsSample.ViewModels.CreateStatsViewModel, Assembly-CSharp,
+        Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
     <Mono>k__BackingField:
       _obj: {fileID: 0}
     <References>k__BackingField:
@@ -1074,6 +1100,8 @@ MonoBehaviour:
   _view: {fileID: 5315928923478365624}
   _id: IsDraft
   <IsInvert>k__BackingField: 0
+  _isDebug: 0
+  _log: []
 --- !u!1 &8031546957962004038
 GameObject:
   m_ObjectHideFlags: 0
@@ -1329,6 +1357,30 @@ PrefabInstance:
       propertyPath: _view
       value: 
       objectReference: {fileID: 5315928923478365624}
+    - target: {fileID: 262625561069034077, guid: 28dcd3a91ac8d478283826b5db692c5d, type: 3}
+      propertyPath: 'managedReferences[4930929329707417831]'
+      value: AspidUI.MVVM.StarterKit Aspid.UI.MVVM.StarterKit.Converters.Strings.StringFormatConverter
+      objectReference: {fileID: 0}
+    - target: {fileID: 262625561069034077, guid: 28dcd3a91ac8d478283826b5db692c5d, type: 3}
+      propertyPath: 'managedReferences[4930929329707417856]'
+      value: AspidUI.MVVM.StarterKit Aspid.UI.MVVM.StarterKit.Converters.Strings.StringFormatConverter
+      objectReference: {fileID: 0}
+    - target: {fileID: 262625561069034077, guid: 28dcd3a91ac8d478283826b5db692c5d, type: 3}
+      propertyPath: 'managedReferences[4930929329707417869]'
+      value: AspidUI.MVVM.StarterKit Aspid.UI.MVVM.StarterKit.Converters.Strings.StringFormatConverter
+      objectReference: {fileID: 0}
+    - target: {fileID: 262625561069034077, guid: 28dcd3a91ac8d478283826b5db692c5d, type: 3}
+      propertyPath: managedReferences[4930929329707417831]._format
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 262625561069034077, guid: 28dcd3a91ac8d478283826b5db692c5d, type: 3}
+      propertyPath: managedReferences[4930929329707417856]._format
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 262625561069034077, guid: 28dcd3a91ac8d478283826b5db692c5d, type: 3}
+      propertyPath: managedReferences[4930929329707417869]._format
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 557253933507048913, guid: 28dcd3a91ac8d478283826b5db692c5d, type: 3}
       propertyPath: m_Name
       value: Add Reflexes Point
@@ -1655,6 +1707,22 @@ PrefabInstance:
       propertyPath: _view
       value: 
       objectReference: {fileID: 5315928923478365624}
+    - target: {fileID: 262625561069034077, guid: 28dcd3a91ac8d478283826b5db692c5d, type: 3}
+      propertyPath: 'managedReferences[4930929329707417882]'
+      value: AspidUI.MVVM.StarterKit Aspid.UI.MVVM.StarterKit.Converters.Strings.StringFormatConverter
+      objectReference: {fileID: 0}
+    - target: {fileID: 262625561069034077, guid: 28dcd3a91ac8d478283826b5db692c5d, type: 3}
+      propertyPath: 'managedReferences[4930929329707417921]'
+      value: AspidUI.MVVM.StarterKit Aspid.UI.MVVM.StarterKit.Converters.Strings.StringFormatConverter
+      objectReference: {fileID: 0}
+    - target: {fileID: 262625561069034077, guid: 28dcd3a91ac8d478283826b5db692c5d, type: 3}
+      propertyPath: managedReferences[4930929329707417882]._format
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 262625561069034077, guid: 28dcd3a91ac8d478283826b5db692c5d, type: 3}
+      propertyPath: managedReferences[4930929329707417921]._format
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 557253933507048913, guid: 28dcd3a91ac8d478283826b5db692c5d, type: 3}
       propertyPath: m_Name
       value: Add Power Point

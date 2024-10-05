@@ -1,13 +1,12 @@
 using System;
 using System.Linq;
-using UnityEditor;
-using UnityEngine;
 using Aspid.UI.MVVM.Mono;
-using Aspid.UI.MVVM.Unity;
 using Aspid.UI.MVVM.Mono.Views;
 using Aspid.UI.MVVM.Unity.Views;
+using UnityEditor;
+using UnityEngine;
 
-namespace Aspid.UI.MVVM.StandardEditorVisualization
+namespace Aspid.UI.MVVM.Unity
 {
     [CanEditMultipleObjects]
     [CustomEditor(typeof(MonoBinder), true)]

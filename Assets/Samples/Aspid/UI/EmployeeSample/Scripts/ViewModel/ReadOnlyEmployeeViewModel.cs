@@ -76,8 +76,7 @@ namespace Aspid.UI.EmployeeSample.ViewModel
         private void OnWorkTimeChanged() =>
             IsPartTimer = Employee.IsPartTime;
         
-        private void OnWorkStatusChanged() =>
-            _startWorkDate = Employee.StartWorkDate;
+        private void OnWorkStatusChanged() => StartWorkDate = Employee.StartWorkDate;
 
         partial void OnIsPartTimerChanged(bool newValue) =>
             Employee.IsPartTime = newValue;

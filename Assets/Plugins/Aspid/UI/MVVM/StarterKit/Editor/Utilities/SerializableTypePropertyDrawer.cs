@@ -11,20 +11,18 @@ namespace Aspid.UI.MVVM.StarterKit.Utilities
         private Type _filterType;
         private static readonly Dictionary<Type, MonoScript> _monoScriptCache = new();
             
-        private static MonoScript GetMonoScript(Type aType)
+        private static MonoScript GetMonoScript(Type monoScriptType)
         {
-            if (aType == null) return null;
-                
-            if (_monoScriptCache.TryGetValue(aType, out var script) && script != null)
-                return script;
+            if (monoScriptType == null) return null;
+            if (_monoScriptCache.TryGetValue(monoScriptType, out var script) && script != null) return script;
                 
             var scripts = Resources.FindObjectsOfTypeAll<MonoScript>();
                 
-            foreach(var s in scripts)
+            foreach(var monoScript in scripts)
             {
-                var type = s.GetClass();
-                if (type != null) _monoScriptCache[type] = s;
-                if (type == aType) script = s;
+                var type = monoScript.GetClass();
+                if (type != null) _monoScriptCache[type] = monoScript;
+                if (type == monoScriptType) script = monoScript;
             }
                 
             return script;
@@ -32,10 +30,11 @@ namespace Aspid.UI.MVVM.StarterKit.Utilities
         public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
         {
             InitializeFilterType();
-            var typeName = property.FindPropertyRelative("_typeName");
             
+            var typeName = property.FindPropertyRelative("_typeName");
             var type = Type.GetType(typeName.stringValue);
             var monoScript = GetMonoScript(type);
+            
             EditorGUI.BeginChangeCheck();
             monoScript = (MonoScript)EditorGUI.ObjectField(position, label, monoScript, typeof(MonoScript), true);
             if (!EditorGUI.EndChangeCheck()) return;
@@ -52,23 +51,9 @@ namespace Aspid.UI.MVVM.StarterKit.Utilities
         private void InitializeFilterType()
         {
             if (_filterType != null) return;
-                
-            var fieldType = fieldInfo.FieldType;
-            if (fieldType.IsGenericType && fieldType.GetGenericTypeDefinition() == typeof(List<>))
-            {
-                // when used in a List<>, grab the actual type from the generic argument of the List
-                fieldType = fieldInfo.FieldType.GetGenericArguments()[0];
-            }
-            else if (fieldType.IsArray)
-            {
-                // when used in an array, grab the actual type from the element type.
-                fieldType = fieldType.GetElementType();
-            }
-            if (fieldType is { IsGenericType: true })
-            {
-                var types = fieldType.GetGenericArguments();
-                if (types is { Length: 1 }) _filterType = types[0];
-            }
+            var type = SerializableUtility.GetGenericArgumentFromFieldType(fieldInfo, out var isGeneric);
+            
+            if (isGeneric) _filterType = type ?? _filterType;
             else _filterType = typeof(UnityEngine.Object);
         }
     }

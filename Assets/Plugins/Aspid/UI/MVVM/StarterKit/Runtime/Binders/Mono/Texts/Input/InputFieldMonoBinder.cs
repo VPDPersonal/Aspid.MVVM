@@ -1,6 +1,6 @@
 #if UNITY_2023_1_OR_NEWER || ASPID_UI_TEXT_MESH_PRO_INTEGRATION
-using System;
 using TMPro;
+using System;
 using UnityEngine;
 using System.Globalization;
 using Aspid.UI.MVVM.ViewModels;
@@ -19,16 +19,18 @@ namespace Aspid.UI.MVVM.StarterKit.Binders.Mono.Texts.Input
         public event Action<float> FloatValueChanged;
         public event Action<double> DoubleValueChanged;
         
-        [field: Header("Parameter")]
-        [field: SerializeField]
-        public bool IsReverseEnabled { get; private set; }
+        [Header("Parameter")]
+        [SerializeField] private bool _isReverseEnabled;
         
-        [field: Header("Converter")]
-        [field: SerializeReference]
+        [Header("Converter")]
 #if ASPID_UI_SERIALIZE_REFERENCE_DROPDOWN_INTEGRATION
-        [field: SerializeReferenceDropdown]
+        [SerializeReferenceDropdown]
 #endif
-        protected IConverterStringToString Converter { get; private set; }
+        [SerializeReference] private IConverterStringToString _converter;
+        
+        private bool _isNotifyValueChanged = true;
+        
+        public bool IsReverseEnabled => _isReverseEnabled;
         
         protected override void OnBound(IViewModel viewModel, string id)
         {
@@ -43,8 +45,16 @@ namespace Aspid.UI.MVVM.StarterKit.Binders.Mono.Texts.Input
         }
 
         [BinderLog]
-        public void SetValue(string value) =>
-            CachedComponent.text = Converter?.Convert(value) ?? value;
+        public void SetValue(string value)
+        {
+            if (value is not null) 
+                value = _converter?.Convert(value) ?? value;
+            
+            if (IsReverseEnabled && CachedComponent.text != value)
+                _isNotifyValueChanged = false;
+            
+            CachedComponent.text = value;
+        }
 
         [BinderLog]
         public void SetValue(int value) =>
@@ -64,6 +74,12 @@ namespace Aspid.UI.MVVM.StarterKit.Binders.Mono.Texts.Input
 
         private void OnValueChanged(string value)
         {
+            if (!_isNotifyValueChanged)
+            {
+                _isNotifyValueChanged = true;
+                return;
+            }
+            
             ValueChanged?.Invoke(value);
 
             if (CachedComponent.contentType 
@@ -73,7 +89,7 @@ namespace Aspid.UI.MVVM.StarterKit.Binders.Mono.Texts.Input
             if (IntValueChanged != null || LongValueChanged != null)
             {
                 if (!long.TryParse(value, out var integerValue)) return;
-                
+
                 if (integerValue is <= int.MaxValue and >= int.MinValue)
                     IntValueChanged?.Invoke((int)integerValue);
 

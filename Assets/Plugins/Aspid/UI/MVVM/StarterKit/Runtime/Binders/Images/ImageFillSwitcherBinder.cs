@@ -1,3 +1,4 @@
+#nullable enable
 using System;
 using UnityEngine.UI;
 
@@ -13,7 +14,7 @@ namespace Aspid.UI.MVVM.StarterKit.Binders.Images
             if (trueValue is < 0 or > 1) throw new ArgumentException($"{nameof(falseValue)} must be between 0 and 1.");
             if (falseValue is < 0 or > 1) throw new ArgumentException($"{nameof(falseValue)} must be between 0 and 1.");
 
-            _image = image;
+            _image = image ?? throw new ArgumentNullException(nameof(image));
         }
 
         protected override void SetValue(float value) =>

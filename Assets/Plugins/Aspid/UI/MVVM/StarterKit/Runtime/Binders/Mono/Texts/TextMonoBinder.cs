@@ -11,16 +11,15 @@ namespace Aspid.UI.MVVM.StarterKit.Binders.Mono.Texts
     [AddComponentMenu("UI/Binders/Text/Text Binder")]
     public partial class TextMonoBinder : ComponentMonoBinder<TMP_Text>, IBinder<string>, INumberBinder
     {
-        [field: Header("Converter")]
-        [field: SerializeReference]
+        [Header("Converter")]
 #if ASPID_UI_SERIALIZE_REFERENCE_DROPDOWN_INTEGRATION
-        [field: SerializeReferenceDropdown]
+        [SerializeReferenceDropdown]
 #endif
-        protected IConverterStringToString Converter { get; private set; } = new StringFormatConverter();
+        [SerializeReference] private IConverterStringToString _converter = new StringFormatConverter();
         
         [BinderLog]
         public void SetValue(string value) =>
-            CachedComponent.text = Converter?.Convert(value) ?? value;
+            CachedComponent.text = _converter?.Convert(value) ?? value;
         
         [BinderLog]
         public void SetValue(int value) =>

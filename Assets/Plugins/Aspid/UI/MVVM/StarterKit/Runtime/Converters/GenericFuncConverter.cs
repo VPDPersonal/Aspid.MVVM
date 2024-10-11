@@ -1,3 +1,4 @@
+#nullable enable
 using System;
 
 namespace Aspid.UI.MVVM.StarterKit.Converters
@@ -12,5 +13,7 @@ namespace Aspid.UI.MVVM.StarterKit.Converters
         }
 
         public TTo Convert(TFrom value) => _converter(value);
+
+        public Func<TFrom, TTo> GetFunc() => _converter;
     }
 }

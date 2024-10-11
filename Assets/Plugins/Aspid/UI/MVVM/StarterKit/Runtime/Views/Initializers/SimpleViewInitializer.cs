@@ -1,9 +1,7 @@
 using System;
 using UnityEngine;
 using Aspid.UI.MVVM.Views;
-using Aspid.UI.MVVM.Mono.Views;
 using Aspid.UI.MVVM.ViewModels;
-using Aspid.UI.MVVM.Mono.ViewModels;
 using Aspid.UI.MVVM.Mono.Initializers;
 
 namespace Aspid.UI.MVVM.StarterKit.Views.Initializers
@@ -12,43 +10,41 @@ namespace Aspid.UI.MVVM.StarterKit.Views.Initializers
     public sealed class SimpleViewInitializer : MonoViewInitializerBase
     {
         [Header("View")]
-        [SerializeField] private Component<MonoView, IView> _view;
+        [SerializeField] private Component<IView> _view;
         
         [Header("View Model")]
-        [SerializeField] private Component<MonoViewModel, IViewModel> _viewModel;
+        [SerializeField] private Component<IViewModel> _viewModel;
         
         protected override IView View => _view.Resolve switch 
         { 
-            Resolve.Mono => _view.Mono,
+            Resolve.Mono => (_view.Mono as IView)!,
             Resolve.References => _view.References,
             _ => throw new ArgumentOutOfRangeException()
         };
 
         protected override IViewModel ViewModel => _viewModel.Resolve switch
         {
-            Resolve.Mono => _viewModel.Mono,
+            Resolve.Mono => (_viewModel.Mono as IViewModel)!,
             Resolve.References => _viewModel.References,
             _ => throw new ArgumentOutOfRangeException()
         };
         
         private void OnValidate()
         {
-            switch (_view.Resolve)
+            switch (_view?.Resolve)
             {
                 case Resolve.Mono: _view.References = null; break;
                 case Resolve.References: _view.Mono = null; break;
-                default: throw new ArgumentOutOfRangeException();
             }
             
-            switch (_viewModel.Resolve)
+            switch (_viewModel?.Resolve)
             {
                 case Resolve.Mono: _viewModel.References = null; break;
                 case Resolve.References: _viewModel.Mono = null; break;
-                default: throw new ArgumentOutOfRangeException();
             }
         }
 
-        private void Awake() =>  Initialize();
+        private void Awake() => Initialize();
         
         private enum Resolve
         {
@@ -57,28 +53,16 @@ namespace Aspid.UI.MVVM.StarterKit.Views.Initializers
         }
         
         [Serializable]
-        private sealed class Component<TMono, TInterface>
-            where TMono : MonoBehaviour
+        private sealed class Component<TInterface> 
             where TInterface : class
         {
-            [field: SerializeField] 
-            public Resolve Resolve { get; set; }
+            public Resolve Resolve;
+            public Component Mono;
             
-#if ASPID_UI_TRI_INSPECTOR_INTEGRATION
-            [field: TriInspector.ShowIf(nameof(Resolve), Resolve.Mono)]
-#elif ASPID_UI_ODIN_INSPECTOR_INTEGRATION
-            [field: Sirenix.OdinInspector.ShowIf(nameof(Resolve), Resolve.Mono)]
+#if ASPID_UI_SERIALIZE_REFERENCE_DROPDOWN_INTEGRATION
+            [SerializeReferenceDropdown]
 #endif
-            [field: SerializeField] 
-            public TMono Mono { get; set; }
-        
-#if ASPID_UI_TRI_INSPECTOR_INTEGRATION
-            [field: TriInspector.ShowIf(nameof(Resolve), Resolve.References)]
-#elif ASPID_UI_ODIN_INSPECTOR_INTEGRATION
-            [field: Sirenix.OdinInspector.ShowIf(nameof(Resolve), Resolve.References)]
-#endif
-            [field: SerializeReference]
-            public TInterface References { get; set; }
+            [SerializeReference] public TInterface References;
         }
     }
 }

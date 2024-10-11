@@ -1,3 +1,4 @@
+#nullable enable
 using System;
 using UnityEngine;
 using Aspid.UI.MVVM.StarterKit.Converters;
@@ -6,15 +7,15 @@ namespace Aspid.UI.MVVM.StarterKit.Binders.Transforms
 {
     public class TransformRotationBinder : Binder, IRotationBinder
     {
-        protected readonly Space Space;
-        protected readonly Transform Transform;
-        protected readonly IConverter<Quaternion, Quaternion> Converter;
+        private readonly Space _space;
+        private readonly Transform _transform;
+        private readonly IConverter<Quaternion, Quaternion>? _converter;
         
         public TransformRotationBinder(Transform transform, Space space = Space.World)
         {
-            Space = space;
-            Converter = null;
-            Transform = transform;
+            _space = space;
+            _converter = null;
+            _transform = transform ?? throw new ArgumentNullException(nameof(transform));
         }
         
         public TransformRotationBinder(Transform transform, Func<Quaternion, Quaternion> converter) 
@@ -23,24 +24,24 @@ namespace Aspid.UI.MVVM.StarterKit.Binders.Transforms
         public TransformRotationBinder(Transform transform, Space space, Func<Quaternion, Quaternion> converter)
             : this(transform, space, new GenericFuncConverter<Quaternion, Quaternion>(converter)) { }
 
-        public TransformRotationBinder(Transform transform, IConverter<Quaternion, Quaternion> converter) 
+        public TransformRotationBinder(Transform transform, IConverter<Quaternion, Quaternion>? converter) 
             : this(transform, Space.World, converter) { }
         
-        public TransformRotationBinder(Transform transform, Space space, IConverter<Quaternion, Quaternion> converter)
+        public TransformRotationBinder(Transform transform, Space space, IConverter<Quaternion, Quaternion>? converter)
         {
-            Space = space;
-            Transform = transform;
-            Converter = converter;
+            _space = space;
+            _converter = converter;
+            _transform = transform ?? throw new ArgumentNullException(nameof(transform));
         }
         
         public void SetValue(Quaternion value)
         {
-            value = Converter?.Convert(value) ?? value;
+            value = _converter?.Convert(value) ?? value;
             
-            switch (Space)
+            switch (_space)
             {
-                case Space.Self: Transform.localRotation = value; break;
-                case Space.World: Transform.rotation = value; break;
+                case Space.Self: _transform.localRotation = value; break;
+                case Space.World: _transform.rotation = value; break;
                 default: throw new ArgumentOutOfRangeException();
             }
         }

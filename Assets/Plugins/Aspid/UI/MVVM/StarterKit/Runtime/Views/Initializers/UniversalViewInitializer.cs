@@ -36,7 +36,7 @@ namespace Aspid.UI.MVVM.StarterKit.Views.Initializers
             _view = _viewComponent.Resolve switch
             {
                 Resolve.Di => diContainer.Resolve(_viewComponent.Type) as IView,
-                Resolve.Mono => _viewComponent.Mono.Instance,
+                Resolve.Mono => _viewComponent.Mono as IView,
                 Resolve.References => _viewComponent.References,
                 _ => throw new ArgumentOutOfRangeException()
             };
@@ -44,7 +44,7 @@ namespace Aspid.UI.MVVM.StarterKit.Views.Initializers
             _viewModel = _viewModelComponent.Resolve switch
             {
                 Resolve.Di => diContainer.Resolve(_viewModelComponent.Type) as IViewModel,
-                Resolve.Mono => _viewModelComponent.Mono.Instance,
+                Resolve.Mono => _viewModelComponent.Mono as IViewModel,
                 Resolve.References => _viewModelComponent.References,
                 _ => throw new ArgumentOutOfRangeException()
             };
@@ -53,7 +53,7 @@ namespace Aspid.UI.MVVM.StarterKit.Views.Initializers
 
         private void OnValidate()
         {
-            switch (_viewComponent.Resolve)
+            switch (_viewComponent?.Resolve)
             {
                 case Resolve.Di:
                     _viewComponent.Mono = null;
@@ -69,11 +69,9 @@ namespace Aspid.UI.MVVM.StarterKit.Views.Initializers
                     _viewComponent.Type = null;
                     _viewComponent.Mono = null;
                     break;
-                
-                default: throw new ArgumentOutOfRangeException();
             }
             
-            switch (_viewModelComponent.Resolve)
+            switch (_viewModelComponent?.Resolve)
             {
                 case Resolve.Di:
                     _viewModelComponent.Mono = null;
@@ -89,8 +87,6 @@ namespace Aspid.UI.MVVM.StarterKit.Views.Initializers
                     _viewModelComponent.Type = null;
                     _viewModelComponent.Mono = null;
                     break;
-                
-                default: throw new ArgumentOutOfRangeException();
             }
         }
 
@@ -107,35 +103,17 @@ namespace Aspid.UI.MVVM.StarterKit.Views.Initializers
         }
         
         [Serializable]
-        private sealed class Component<T>
-            where T : class
+        private sealed class Component<TInterface>
+            where TInterface : class
         {
-            [field: SerializeField] 
-            public Resolve Resolve { get; set; }
-        
-#if ASPID_UI_TRI_INSPECTOR_INTEGRATION
-            [field: TriInspector.ShowIf(nameof(Resolve), Resolve.Di)]
-#elif ASPID_UI_ODIN_INSPECTOR_INTEGRATION
-            [field: Sirenix.OdinInspector.ShowIf(nameof(Resolve), Resolve.Di)]
+            public Resolve Resolve;
+            public SerializableMonoScript<TInterface> Type;
+            public Component Mono;
+
+#if ASPID_UI_SERIALIZE_REFERENCE_DROPDOWN_INTEGRATION
+            [SerializeReferenceDropdown]
 #endif
-            [field: SerializeField] 
-            public SerializableMonoScript<T> Type { get; set; }
-        
-#if ASPID_UI_TRI_INSPECTOR_INTEGRATION
-            [field: TriInspector.ShowIf(nameof(Resolve), Resolve.Mono)]
-#elif ASPID_UI_ODIN_INSPECTOR_INTEGRATION
-            [field: Sirenix.OdinInspector.ShowIf(nameof(Resolve), Resolve.Mono)]
-#endif
-            [field: SerializeField] 
-            public SerializableInterface<T> Mono { get; set; }
-        
-#if ASPID_UI_TRI_INSPECTOR_INTEGRATION
-            [field: TriInspector.ShowIf(nameof(Resolve), Resolve.References)]
-#elif ASPID_UI_ODIN_INSPECTOR_INTEGRATION
-            [field: Sirenix.OdinInspector.ShowIf(nameof(Resolve), Resolve.References)]
-#endif
-            [field: SerializeReference]
-            public T References { get; set; }
+            [SerializeReference] public TInterface References;
         }
     }
 }

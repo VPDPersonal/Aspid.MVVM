@@ -5,7 +5,7 @@ namespace Aspid.UI.MVVM.StarterKit.Binders
         private readonly T _trueValue;
         private readonly T _falseValue;
 
-        public SwitcherBinder(T trueValue, T falseValue)
+        protected SwitcherBinder(T trueValue, T falseValue)
         {
             _trueValue = trueValue;
             _falseValue = falseValue;

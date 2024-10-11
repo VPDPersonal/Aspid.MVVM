@@ -15,16 +15,18 @@ namespace Aspid.UI.MVVM.StarterKit.Binders.Mono.Sliders
         public event Action<float> FloatValueChanged;
         public event Action<double> DoubleValueChanged;
 
-        [field: Header("Parameter")]
-        [field: SerializeField]
-        public bool IsReverseEnabled { get; private set; }
+        [Header("Parameter")]
+        [SerializeField] private bool _isReverseEnabled;
         
-        [field: Header("Converter")]
-        [field: SerializeReference]
+        [Header("Converter")]
 #if ASPID_UI_SERIALIZE_REFERENCE_DROPDOWN_INTEGRATION
-        [field: SerializeReferenceDropdown]
+        [SerializeReferenceDropdown]
 #endif
-        protected IConverterFloatToFloat Converter { get; private set; }
+        [SerializeReference] private IConverterFloatToFloat _converter;
+
+        private bool _isNotifyValueChanged = true;        
+        
+        public bool IsReverseEnabled => _isReverseEnabled;
 
         protected override void OnBound(IViewModel viewModel, string id)
         {
@@ -40,15 +42,22 @@ namespace Aspid.UI.MVVM.StarterKit.Binders.Mono.Sliders
 
         [BinderLog]
         public void SetValue(int value) =>
-            CachedComponent.value = Converter?.Convert(value) ?? value;
+            SetValue((float)value);
 
         [BinderLog]
         public void SetValue(long value) =>
-            CachedComponent.value = Converter?.Convert(value) ?? value;
+            SetValue((float)value);
 
         [BinderLog]
-        public void SetValue(float value) =>
-            CachedComponent.value = Converter?.Convert(value) ?? value;
+        public void SetValue(float value)
+        {
+            value = _converter?.Convert(value) ?? value;
+            
+            if (IsReverseEnabled && !Mathf.Approximately(CachedComponent.value, value))
+                _isNotifyValueChanged = false;
+            
+            CachedComponent.value = value;
+        }
         
         [BinderLog]
         public void SetValue(double value) =>
@@ -56,10 +65,15 @@ namespace Aspid.UI.MVVM.StarterKit.Binders.Mono.Sliders
 
         private void OnValueChanged(float value)
         {
-            IntValueChanged?.Invoke((int)value);
-            LongValueChanged?.Invoke((long)value);
-            FloatValueChanged?.Invoke(value);
-            DoubleValueChanged?.Invoke(value);
+            if (_isNotifyValueChanged)
+            {
+                IntValueChanged?.Invoke((int)value);
+                LongValueChanged?.Invoke((long)value);
+                FloatValueChanged?.Invoke(value);
+                DoubleValueChanged?.Invoke(value);
+            }
+
+            _isNotifyValueChanged = true;
         }
     }
 }

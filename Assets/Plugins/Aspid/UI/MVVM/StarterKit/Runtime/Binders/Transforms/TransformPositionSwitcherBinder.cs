@@ -1,3 +1,4 @@
+#nullable enable
 using System;
 using UnityEngine;
 
@@ -12,7 +13,7 @@ namespace Aspid.UI.MVVM.StarterKit.Binders.Transforms
             : base(trueValue, falseValue)
         {
             _space = space;
-            _transform = transform;
+            _transform = transform ?? throw new ArgumentNullException(nameof(transform));
         }
         
         protected override void SetValue(Vector3 value)

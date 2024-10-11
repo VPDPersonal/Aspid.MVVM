@@ -1,23 +1,25 @@
+#nullable enable
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace Aspid.UI.MVVM.StarterKit.Binders.Images
 {
-    public class ImageSpriteBinder : Binder, IBinder<Sprite>
+    public class ImageSpriteBinder : Binder, IBinder<Sprite?>
     {
-        protected readonly Image Image;
-        protected readonly bool DisabledWhenNull;
+        private readonly Image _image;
+        private readonly bool _disabledWhenNull;
 
         public ImageSpriteBinder(Image image, bool disabledWhenNull = true)
         {
-            Image = image;
-            DisabledWhenNull = disabledWhenNull;
+            _disabledWhenNull = disabledWhenNull;
+            _image = image ?? throw new ArgumentNullException(nameof(image));
         }
 
-        public void SetValue(Sprite value)
+        public void SetValue(Sprite? value)
         {
-            Image.sprite = value;
-            if (DisabledWhenNull) Image.enabled = value != null;
+            _image.sprite = value;
+            if (_disabledWhenNull) _image.enabled = value != null;
         }
     }
 }

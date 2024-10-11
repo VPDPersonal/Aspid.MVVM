@@ -8,16 +8,14 @@ namespace Aspid.UI.MVVM.StarterKit.Binders.Mono.Transforms
     [AddComponentMenu("UI/Binders/Transform/Transform Binder - Position")]
     public partial class TransformPositionMonoBinder : Aspid.UI.MVVM.Mono.MonoBinder, IVectorBinder
     {
-        [field: Header("Parameter")]
-        [field: SerializeField] 
-        protected Space Space { get; private set; }
+        [Header("Parameter")]
+        [SerializeField] private Space _space;
         
-        [field: Header("Converter")]
-        [field: SerializeReference]
+        [Header("Converter")]
 #if ASPID_UI_SERIALIZE_REFERENCE_DROPDOWN_INTEGRATION
-        [field: SerializeReferenceDropdown]
+        [SerializeReferenceDropdown]
 #endif
-        protected IConverterVector3ToVector3 Converter { get; private set; }
+        [SerializeReference] private IConverterVector3ToVector3 _converter;
 
         [BinderLog]
         public void SetValue(Vector2 value) =>
@@ -26,9 +24,9 @@ namespace Aspid.UI.MVVM.StarterKit.Binders.Mono.Transforms
         [BinderLog]
         public void SetValue(Vector3 value)
         {
-            value = Converter?.Convert(value) ?? value;
+            value = _converter?.Convert(value) ?? value;
             
-            switch (Space)
+            switch (_space)
             {
                 case Space.Self: transform.localPosition = value; break;
                 case Space.World: transform.position = value; break;

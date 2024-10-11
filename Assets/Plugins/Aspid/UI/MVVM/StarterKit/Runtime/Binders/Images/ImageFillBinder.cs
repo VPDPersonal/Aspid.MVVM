@@ -1,24 +1,31 @@
+#nullable enable
 using System;
 using UnityEngine.UI;
 using Aspid.UI.MVVM.StarterKit.Converters;
 
 namespace Aspid.UI.MVVM.StarterKit.Binders.Images
 {
-    public class ImageFillBinder : Binder, IBinder<float>
+    public class ImageFillBinder : Binder, INumberBinder
     {
-        protected readonly Image Image;
-        protected readonly IConverter<float, float> Converter;
+        private readonly Image _image;
+        private readonly IConverter<float, float>? _converter;
 
         public ImageFillBinder(Image image, Func<float, float> converter) 
             : this(image, new GenericFuncConverter<float, float>(converter)) { }
         
-        public ImageFillBinder(Image image, IConverter<float, float> converter = null)
+        public ImageFillBinder(Image image, IConverter<float, float>? converter = null)
         {
-            Image = image;
-            Converter = converter;
+            _converter = converter;
+            _image = image ?? throw new ArgumentNullException(nameof(image));
         }
 
         public void SetValue(float value) =>
-            Image.fillAmount = Converter?.Convert(value) ?? value;
+            _image.fillAmount = _converter?.Convert(value) ?? value;
+
+        public void SetValue(int value) => SetValue((float)value);
+
+        public void SetValue(long value) => SetValue((float)value);
+
+        public void SetValue(double value) => SetValue((float)value);
     }
 }

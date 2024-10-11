@@ -1,23 +1,24 @@
-using UnityEngine;
+#nullable enable
+using System;
 using UnityEngine.UI;
 
 namespace Aspid.UI.MVVM.StarterKit.Binders.RawImages
 {
     public class RawImageVisibleBinder : Binder, IBinder<bool>
     {
-        protected readonly RawImage Image;
-        protected readonly bool IsInvert;
+        private readonly RawImage _image;
+        private readonly bool _isInvert;
 
         public RawImageVisibleBinder(RawImage image, bool isInvert = false)
         {
-            Image = image;
-            IsInvert = isInvert;
+            _isInvert = isInvert;
+            _image = image ?? throw new ArgumentNullException(nameof(image));
         }
         
         public void SetValue(bool value)
         {
-            if (IsInvert) value = !IsInvert;
-            Image.enabled = value;
+            value = _isInvert ? !value : value;
+            _image.enabled = value;
         }
     }
 }

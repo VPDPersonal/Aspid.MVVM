@@ -11,12 +11,13 @@ namespace Aspid.UI.MVVM.StarterKit.Binders.Mono.Toggles
     {
         public event Action<bool> ValueChanged;
         
-        [field: Header("Parameter")]
-        [field: SerializeField]
-        protected bool IsInvert { get; private set; }
+        [Header("Parameter")]
+        [SerializeField] private bool _isInvert;
+        [SerializeField] private bool _isReverseEnabled;
         
-        [field: SerializeField]
-        public bool IsReverseEnabled { get; private set; }
+        private bool _isNotifyValueChanged = true;
+
+        public bool IsReverseEnabled => _isReverseEnabled;
 
         protected override void OnBound(IViewModel viewModel, string id)
         {
@@ -31,13 +32,22 @@ namespace Aspid.UI.MVVM.StarterKit.Binders.Mono.Toggles
         }
         
         [BinderLog]
-        public void SetValue(bool value) =>
-            CachedComponent.isOn = IsInvert ? !value : value;
+        public void SetValue(bool value)
+        {
+            value = _isInvert ? !value : value;
+            
+            if (IsReverseEnabled && CachedComponent.isOn != value)
+                _isNotifyValueChanged = false;
+
+            CachedComponent.isOn = value;
+        }
 
         private void OnValueChanged(bool isOn) 
         {
-            isOn = IsInvert ? !isOn : isOn;
-            ValueChanged?.Invoke(isOn);
+            if (_isNotifyValueChanged)
+                ValueChanged?.Invoke(_isInvert ? !isOn : isOn);
+            
+            _isNotifyValueChanged = true;
         }
     }
 }

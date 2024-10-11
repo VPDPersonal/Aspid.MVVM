@@ -7,13 +7,13 @@ namespace Aspid.UI.MVVM.StarterKit.Binders.Mono.Images
     [AddComponentMenu("UI/Binders/Image/Image Binder - Visible")]
     public partial class ImageVisibleMonoBinder : ComponentMonoBinder<Image>, IBinder<bool>
     {
-        [field: Header("Parameters")]
-        [field: SerializeField] protected bool IsInvert { get; private set; }
+        [Header("Parameters")]
+        [SerializeField] private bool _isInvert;
         
         [BinderLog]
         public void SetValue(bool value)
         {
-            if (IsInvert) value = !IsInvert;
+            if (_isInvert) value = !_isInvert;
             CachedComponent.enabled = value;
         }
     }

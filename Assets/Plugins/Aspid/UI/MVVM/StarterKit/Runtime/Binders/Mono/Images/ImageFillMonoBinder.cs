@@ -8,16 +8,15 @@ namespace Aspid.UI.MVVM.StarterKit.Binders.Mono.Images
     [AddComponentMenu("UI/Binders/Image/Image Binder - Fill")]
     public partial class ImageFillMonoBinder : ComponentMonoBinder<Image>, IBinder<float>
     {
-        [field: Header("Converter")]
-        [field: SerializeReference]
+        [Header("Converter")]
 #if ASPID_UI_SERIALIZE_REFERENCE_DROPDOWN_INTEGRATION
-        [field: SerializeReferenceDropdown]
+        [SerializeReferenceDropdown]
 #endif
-        protected IConverterFloatToFloat Converter { get; private set; }
+        [SerializeReference] private IConverterFloatToFloat _converter;
         
         [BinderLog]
         public void SetValue(float value) =>
-            CachedComponent.fillAmount = Converter?.Convert(value) ?? value;
+            CachedComponent.fillAmount = _converter?.Convert(value) ?? value;
     }
 
 }

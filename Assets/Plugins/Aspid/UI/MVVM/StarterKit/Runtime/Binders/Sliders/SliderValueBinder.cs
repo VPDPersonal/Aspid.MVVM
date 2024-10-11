@@ -1,49 +1,53 @@
+#nullable enable
 using System;
 using UnityEngine.UI;
 using Aspid.UI.MVVM.ViewModels;
 using Aspid.UI.MVVM.StarterKit.Converters;
+using UnityEngine;
 
 namespace Aspid.UI.MVVM.StarterKit.Binders.Sliders
 {
     public class SliderValueBinder : Binder, INumberBinder, INumberReverseBinder
     {
-        public event Action<int> IntValueChanged;
-        public event Action<long> LongValueChanged;
-        public event Action<float> FloatValueChanged;
-        public event Action<double> DoubleValueChanged;
+        public event Action<int>? IntValueChanged;
+        public event Action<long>? LongValueChanged;
+        public event Action<float>? FloatValueChanged;
+        public event Action<double>? DoubleValueChanged;
+
+        private bool _isNotifyValueChanged = true;
         
-        protected readonly Slider Slider;
-        protected readonly IConverter<float, float> Converter;
+        private readonly Slider _slider;
+        private readonly IConverter<float, float>? _converter;
         
         public bool IsReverseEnabled { get; }
 
         public SliderValueBinder(Slider slider, bool isReverseEnabled)
         {
-            Slider = slider;
-            Converter = null;
+            _converter = null;
             IsReverseEnabled = isReverseEnabled;
+            _slider = slider ?? throw new ArgumentNullException(nameof(slider));
         }
         
         public SliderValueBinder(Slider slider, Func<float, float> converter, bool isReverseEnabled = true) :
             this(slider, new GenericFuncConverter<float, float>(converter), isReverseEnabled) { }
         
-        public SliderValueBinder(Slider slider, IConverter<float, float> converter = null, bool isReverseEnabled = true)
+        public SliderValueBinder(Slider slider, IConverter<float, float>?converter = null, bool isReverseEnabled = true)
         {
-            Slider = slider;
-            Converter = converter;
+            _converter = converter;
             IsReverseEnabled = isReverseEnabled;
+            _slider = slider ?? throw new ArgumentNullException(nameof(slider));
         }
 
         protected override void OnBound(IViewModel viewModel, string id)
         {
             if (!IsReverseEnabled) return;
-            Slider.onValueChanged.AddListener(OnValueChanged);
+            _slider.onValueChanged.AddListener(OnValueChanged);
         }
 
         protected override void OnUnbound(IViewModel viewModel, string id)
         {
             if (!IsReverseEnabled) return;
-            Slider.onValueChanged.RemoveListener(OnValueChanged);
+            _slider.onValueChanged.RemoveListener(OnValueChanged);
         }
         
         public void SetValue(int value) =>
@@ -55,15 +59,27 @@ namespace Aspid.UI.MVVM.StarterKit.Binders.Sliders
         public void SetValue(double value) =>
             SetValue((float)value);
         
-        public void SetValue(float value) =>
-            Slider.value = Converter?.Convert(value) ?? value;
+        public void SetValue(float value)
+        {
+            value = _converter?.Convert(value) ?? value;
+            
+            if (IsReverseEnabled && !Mathf.Approximately(_slider.value, value))
+                _isNotifyValueChanged = false;
+            
+            _slider.value = value;
+        }
 
         private void OnValueChanged(float value)
         {
-            IntValueChanged?.Invoke((int)value);
-            LongValueChanged?.Invoke((long)value);
-            FloatValueChanged?.Invoke(value);
-            DoubleValueChanged?.Invoke(value);
+            if (_isNotifyValueChanged)
+            {
+                IntValueChanged?.Invoke((int)value);
+                LongValueChanged?.Invoke((long)value);
+                FloatValueChanged?.Invoke(value);
+                DoubleValueChanged?.Invoke(value);
+            }
+
+            _isNotifyValueChanged = true;
         }
     }
 }

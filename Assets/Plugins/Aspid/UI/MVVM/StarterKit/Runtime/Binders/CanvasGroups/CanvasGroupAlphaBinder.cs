@@ -1,30 +1,36 @@
+#nullable enable
 using System;
 using UnityEngine;
 using Aspid.UI.MVVM.StarterKit.Converters;
 
 namespace Aspid.UI.MVVM.StarterKit.Binders.CanvasGroups
 {
-    public class CanvasGroupAlphaBinder : Binder, IBinder<bool>, IBinder<float>
+    public class CanvasGroupAlphaBinder : Binder, IBinder<bool>, INumberBinder
     {
-        protected readonly CanvasGroup CanvasGroup;
-        protected readonly IConverter<float, float> Converter;
+        private readonly CanvasGroup _canvasGroup;
+        private readonly IConverter<float, float>? _converter;
         
         public CanvasGroupAlphaBinder(CanvasGroup canvasGroup, Func<float, float> converter)
             : this(canvasGroup, new GenericFuncConverter<float, float>(converter)) { }
         
-        public CanvasGroupAlphaBinder(CanvasGroup canvasGroup, IConverter<float, float> converter = null)
+        public CanvasGroupAlphaBinder(CanvasGroup canvasGroup, IConverter<float, float>? converter = null)
         {
-            Converter = converter;
-            CanvasGroup = canvasGroup;
+            _converter = converter;
+            _canvasGroup = canvasGroup ?? throw new ArgumentNullException(nameof(canvasGroup));
         }
         
-        public void SetValue(bool value) =>
-            SetValue(value ? 1 : 0);
-
         public void SetValue(float value)
         {
-            value = Converter?.Convert(value) ?? value;
-            CanvasGroup.alpha = Mathf.Clamp(value, 0, 1);
+            value = _converter?.Convert(value) ?? value;
+            _canvasGroup.alpha = Mathf.Clamp(value, 0, 1);
         }
+
+        public void SetValue(int value) => SetValue((float)value);
+
+        public void SetValue(long value) => SetValue((float)value);
+
+        public void SetValue(double value) => SetValue((float)value);
+        
+        public void SetValue(bool value) => SetValue(value ? 1f : 0f);
     }
 }

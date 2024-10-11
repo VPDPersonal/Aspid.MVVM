@@ -7,12 +7,11 @@ namespace Aspid.UI.MVVM.StarterKit.Binders.Mono.CanvasGroups
     [AddComponentMenu("UI/Binders/Canvas Group/Canvas Group Binder - Alpha")]
     public partial class CanvasGroupAlphaMonoBinder : ComponentMonoBinder<CanvasGroup>, IBinder<bool>, IBinder<float>
     {
-        [field: Header("Converter")]
-        [field: SerializeReference]
+        [Header("Converter")]
 #if ASPID_UI_SERIALIZE_REFERENCE_DROPDOWN_INTEGRATION
-        [field: SerializeReferenceDropdown]
+        [SerializeReferenceDropdown]
 #endif
-        protected IConverterFloatToFloat Converter { get; private set; }
+        [SerializeReference] private IConverterFloatToFloat _converter;
         
         [BinderLog]
         public void SetValue(bool value) =>
@@ -21,7 +20,7 @@ namespace Aspid.UI.MVVM.StarterKit.Binders.Mono.CanvasGroups
         [BinderLog]
         public void SetValue(float value)
         {
-            value = Converter?.Convert(value) ?? value;
+            value = _converter?.Convert(value) ?? value;
             CachedComponent.alpha = Mathf.Clamp(value, 0, 1);
         }
     }

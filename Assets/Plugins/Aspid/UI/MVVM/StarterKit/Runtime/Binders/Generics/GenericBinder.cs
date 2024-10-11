@@ -1,3 +1,4 @@
+#nullable enable
 using System;
 
 namespace Aspid.UI.MVVM.StarterKit.Binders.Generics
@@ -8,12 +9,12 @@ namespace Aspid.UI.MVVM.StarterKit.Binders.Generics
         
         public GenericBinder(Action<T> setValue)
         {
-            _setValue = setValue;
+            _setValue = setValue ?? throw new ArgumentNullException(nameof(setValue));
         }
 
         public void SetValue(T value)
         {
-            _setValue?.Invoke(value);
+            _setValue(value);
         }
     }
     
@@ -24,13 +25,13 @@ namespace Aspid.UI.MVVM.StarterKit.Binders.Generics
         
         public GenericBinder(TTarget target, Action<TTarget, T> setValue)
         {
-            _target = target;
-            _setValue = setValue;
+            _target = target ?? throw new ArgumentNullException(nameof(target));
+            _setValue = setValue ?? throw new ArgumentNullException(nameof(setValue));
         }
 
         public void SetValue(T value)
         {
-            _setValue?.Invoke(_target, value);
+            _setValue(_target, value);
         }
     }
 }

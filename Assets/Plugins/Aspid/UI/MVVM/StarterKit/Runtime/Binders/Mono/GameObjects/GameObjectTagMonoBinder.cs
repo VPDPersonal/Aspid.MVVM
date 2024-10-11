@@ -6,15 +6,14 @@ namespace Aspid.UI.MVVM.StarterKit.Binders.Mono.GameObjects
 {
     public partial class GameObjectTagMonoBinder : Aspid.UI.MVVM.Mono.MonoBinder, IBinder<string>
     {
-        [field: Header("Converter")]
-        [field: SerializeField]
+        [Header("Converter")]
 #if ASPID_UI_SERIALIZE_REFERENCE_DROPDOWN_INTEGRATION
-        [field: SerializeReferenceDropdown]
+        [SerializeReferenceDropdown]
 #endif
-        protected IConverterStringToString Converter { get; private set; }
+        [SerializeReference] private IConverterStringToString _converter;
 
         [BinderLog]
         public void SetValue(string value) =>
-            gameObject.tag = Converter?.Convert(value) ?? value;
+            gameObject.tag = _converter?.Convert(value) ?? value;
     }
 }

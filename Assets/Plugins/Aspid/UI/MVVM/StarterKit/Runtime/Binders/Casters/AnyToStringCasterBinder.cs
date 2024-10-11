@@ -1,3 +1,4 @@
+#nullable enable
 using System;
 using Aspid.UI.MVVM.StarterKit.Converters;
 using Aspid.UI.MVVM.StarterKit.Converters.Strings;
@@ -17,8 +18,8 @@ namespace Aspid.UI.MVVM.StarterKit.Binders.Casters
         
         public AnyToStringCasterBinder(Action<string> setValue, IConverter<object, string> converter)
         {
-            _setValue = setValue;
-            _converter = converter;
+            _setValue = setValue ?? throw new ArgumentNullException(nameof(setValue));
+            _converter = converter ?? throw new ArgumentNullException(nameof(converter));
         }
 
         public void SetValue(object value) =>

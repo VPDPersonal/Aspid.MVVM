@@ -8,15 +8,14 @@ namespace Aspid.UI.MVVM.StarterKit.Binders.Mono.Graphics
     [AddComponentMenu("UI/Binders/Graphic/Graphic Binder - Color")]
     public partial class GraphicColorMonoBinder : ComponentMonoBinder<Graphic>, IColorBinder
     {
-        [field: Header("Converter")]
-        [field: SerializeReference]
+        [Header("Converter")]
 #if ASPID_UI_SERIALIZE_REFERENCE_DROPDOWN_INTEGRATION
-        [field: SerializeReferenceDropdown]
+        [SerializeReferenceDropdown]
 #endif
-        protected IConverterColorToColor Converter { get; private set; }
+        [SerializeReference] private IConverterColorToColor _converter;
         
         [BinderLog]
         public void SetValue(Color value) =>
-            CachedComponent.color = Converter?.Convert(value) ?? value;
+            CachedComponent.color = _converter?.Convert(value) ?? value;
     }
 }

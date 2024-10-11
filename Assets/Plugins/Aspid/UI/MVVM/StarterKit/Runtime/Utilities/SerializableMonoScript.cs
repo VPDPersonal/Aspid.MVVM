@@ -21,7 +21,7 @@ namespace Aspid.UI.MVVM.StarterKit.Utilities
             set
             {
                 _type = value;
-                _typeName = _type == null ? "" : _type.AssemblyQualifiedName;
+                _typeName = _type?.AssemblyQualifiedName ?? "";
             }
         }
 

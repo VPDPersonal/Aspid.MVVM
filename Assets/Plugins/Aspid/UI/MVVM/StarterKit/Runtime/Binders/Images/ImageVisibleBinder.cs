@@ -1,22 +1,23 @@
+using System;
 using UnityEngine.UI;
 
 namespace Aspid.UI.MVVM.StarterKit.Binders.Images
 {
     public class ImageVisibleBinder : Binder, IBinder<bool>
     {
-        protected readonly Image Image;
-        protected readonly bool IsInvert;
+        private readonly Image _image;
+        private readonly bool _isInvert;
 
         public ImageVisibleBinder(Image image, bool isInvert = false)
         {
-            Image = image;
-            IsInvert = isInvert;
+            _isInvert = isInvert;
+            _image = image ?? throw new ArgumentNullException(nameof(image));
         }
         
         public void SetValue(bool value)
         {
-            if (IsInvert) value = !IsInvert;
-            Image.enabled = value;
+            if (_isInvert) value = !_isInvert;
+            _image.enabled = value;
         }
     }
 }

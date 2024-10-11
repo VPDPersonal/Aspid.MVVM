@@ -1,3 +1,4 @@
+#nullable enable
 using System;
 using Aspid.UI.MVVM.StarterKit.Converters;
 
@@ -13,8 +14,8 @@ namespace Aspid.UI.MVVM.StarterKit.Binders.Generics
         
         public GenericCasterBinder(Action<TTo> setValue, IConverter<TFrom, TTo> converter)
         {
-            _setValue = setValue;
-            _converter = converter;
+            _setValue = setValue ?? throw new ArgumentNullException(nameof(setValue));
+            _converter = converter ?? throw new ArgumentNullException(nameof(converter));
         }
 
         public void SetValue(TFrom value) =>
@@ -32,9 +33,9 @@ namespace Aspid.UI.MVVM.StarterKit.Binders.Generics
         
         public GenericCasterBinder(TTarget target, Action<TTarget, TTo> setValue, IConverter<TFrom, TTo> converter)
         {
-            _target = target;
-            _setValue = setValue;
-            _converter = converter;
+            _target = target ?? throw new ArgumentNullException(nameof(target));
+            _setValue = setValue ?? throw new ArgumentNullException(nameof(setValue));
+            _converter = converter ?? throw new ArgumentNullException(nameof(converter));
         }
 
         public void SetValue(TFrom value) =>

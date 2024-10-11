@@ -7,12 +7,11 @@ namespace Aspid.UI.MVVM.StarterKit.Binders.Mono.Transforms
     [AddComponentMenu("UI/Binders/Transform/Transform Binder - Scale")]
     public partial class TransformScaleMonoBinder : Aspid.UI.MVVM.Mono.MonoBinder, IVectorBinder, INumberBinder
     {
-        [field: Header("Converter")]
-        [field: SerializeReference]
+        [Header("Converter")]
 #if ASPID_UI_SERIALIZE_REFERENCE_DROPDOWN_INTEGRATION
-        [field: SerializeReferenceDropdown]
+        [SerializeReferenceDropdown]
 #endif
-        protected IConverterVector3ToVector3 Converter { get; private set; }
+        [SerializeReference] protected IConverterVector3ToVector3 _converter;
         
         [BinderLog]
         public void SetValue(Vector2 value) =>
@@ -20,7 +19,7 @@ namespace Aspid.UI.MVVM.StarterKit.Binders.Mono.Transforms
 
         [BinderLog]
         public void SetValue(Vector3 value) =>  
-            transform.localScale = Converter?.Convert(value) ?? value;
+            transform.localScale = _converter?.Convert(value) ?? value;
 
         [BinderLog]
         public void SetValue(int value) =>

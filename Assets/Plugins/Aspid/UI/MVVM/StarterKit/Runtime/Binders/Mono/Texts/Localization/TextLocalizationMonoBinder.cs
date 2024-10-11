@@ -9,16 +9,15 @@ namespace Aspid.UI.MVVM.StarterKit.Binders.Mono.Texts.Localization
     [AddComponentMenu("UI/Binders/Text/Text Binder - Localization")]
     public partial class TextLocalizationMonoBinder : ComponentMonoBinder<LocalizeStringEvent>, IBinder<string>
     {
-        [field: Header("Converter")]
-        [field: SerializeReference]
+        [Header("Converter")]
 #if ASPID_UI_SERIALIZE_REFERENCE_DROPDOWN_INTEGRATION
-        [field: SerializeReferenceDropdown]
+        [SerializeReferenceDropdown]
 #endif
-        protected IConverterStringToString Converter { get; private set; }
+        [SerializeReference] private IConverterStringToString _converter;
         
         [BinderLog]
         public void SetValue(string value) =>
-            CachedComponent.StringReference.TableEntryReference = Converter?.Convert(value) ?? value;
+            CachedComponent.StringReference.TableEntryReference = _converter?.Convert(value) ?? value;
     }
 }
 #endif

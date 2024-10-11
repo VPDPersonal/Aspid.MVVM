@@ -1,22 +1,24 @@
+#nullable enable
+using System;
 using UnityEngine;
 
 namespace Aspid.UI.MVVM.StarterKit.Binders.GameObjects
 {
     public class GameObjectVisibleBinder : Binder, IBinder<bool>
     {
-        protected readonly bool IsInvert;
-        protected readonly GameObject GameObject;
+        private readonly bool _isInvert;
+        private readonly GameObject _gameObject;
         
         public GameObjectVisibleBinder(GameObject gameObject, bool isInvert = false)
         {
-            IsInvert = isInvert;
-            GameObject = gameObject;
+            _isInvert = isInvert;
+            _gameObject = gameObject ?? throw new ArgumentNullException(nameof(gameObject));
         }
         
         public void SetValue(bool value)
         {
-            if (IsInvert) value = !value;
-            GameObject.SetActive(value);
+            if (_isInvert) value = !value;
+            _gameObject.SetActive(value);
         }
     }
 }

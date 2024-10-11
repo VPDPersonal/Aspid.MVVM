@@ -1,3 +1,5 @@
+#nullable enable
+using System;
 using UnityEngine;
 
 namespace Aspid.UI.MVVM.StarterKit.Binders.Transforms
@@ -9,7 +11,7 @@ namespace Aspid.UI.MVVM.StarterKit.Binders.Transforms
         public TransformScaleSwitcherBinder(Transform transform, Vector3 trueValue, Vector3 falseValue) 
             : base(trueValue, falseValue)
         {
-            _transform = transform;
+            _transform = transform ?? throw new ArgumentNullException(nameof(transform));
         }
 
         protected override void SetValue(Vector3 value) =>

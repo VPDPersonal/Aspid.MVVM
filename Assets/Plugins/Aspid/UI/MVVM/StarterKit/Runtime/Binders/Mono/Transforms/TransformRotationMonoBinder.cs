@@ -8,16 +8,14 @@ namespace Aspid.UI.MVVM.StarterKit.Binders.Mono.Transforms
     [AddComponentMenu("UI/Binders/Transform/Transform Binder - Rotation")]
     public partial class TransformRotationMonoBinder : Aspid.UI.MVVM.Mono.MonoBinder, IRotationBinder
     {
-        [field: Header("Parameter")]
-        [field: SerializeField] 
-        protected Space Space { get; private set; }
-        
-        [field: Header("Converter")]
-        [field: SerializeReference]
+        [Header("Parameter")]
+        [SerializeField] private Space _space;
+
+        [Header("Converter")]
 #if ASPID_UI_SERIALIZE_REFERENCE_DROPDOWN_INTEGRATION
-        [field: SerializeReferenceDropdown]
+        [SerializeReferenceDropdown]
 #endif
-        protected IConverterQuaternionToQuaternion Converter { get; private set; }
+        [SerializeReference] private IConverterQuaternionToQuaternion _converter;
         
         [BinderLog]
         public void SetValue(Vector2 value) =>
@@ -30,9 +28,9 @@ namespace Aspid.UI.MVVM.StarterKit.Binders.Mono.Transforms
         [BinderLog]
         public void SetValue(Quaternion value)
         {
-            value = Converter?.Convert(value) ?? value;
+            value = _converter?.Convert(value) ?? value;
             
-            switch (Space)
+            switch (_space)
             {
                 case Space.Self: transform.localRotation = value; break;
                 case Space.World: transform.rotation = value; break;

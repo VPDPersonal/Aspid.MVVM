@@ -7,17 +7,16 @@ namespace Aspid.UI.MVVM.StarterKit.Binders.Mono.Sliders
     [AddComponentMenu("UI/Binders/Slider/Slider Binder - Range")]
     public partial class SliderRangeMonoBinder : ComponentMonoBinder<UnityEngine.UI.Slider>, IBinder<Vector2>
     {
-        [field: Header("Converter")]
-        [field: SerializeReference]
+        [Header("Converter")]
 #if ASPID_UI_SERIALIZE_REFERENCE_DROPDOWN_INTEGRATION
-        [field: SerializeReferenceDropdown]
+        [SerializeReferenceDropdown]
 #endif
-        protected IConverterVector2ToVector2 Converter { get; private set; }
+        [SerializeReference] private IConverterVector2ToVector2 _converter;
         
         [BinderLog]
         public void SetValue(Vector2 value)
         {
-            value = Converter?.Convert(value) ?? value;
+            value = _converter?.Convert(value) ?? value;
             
             CachedComponent.minValue = value.x;
             CachedComponent.maxValue = value.y;

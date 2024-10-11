@@ -1,23 +1,25 @@
+#nullable enable
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace Aspid.UI.MVVM.StarterKit.Binders.RawImages
 {
-    public class RawImageTextureBinder : Binder, IBinder<Texture2D>
+    public class RawImageTextureBinder : Binder, IBinder<Texture2D?>
     {
-        protected readonly RawImage Image;
-        protected readonly bool DisabledWhenNull;
+        private readonly RawImage _image;
+        private readonly bool _disabledWhenNull;
 
         public RawImageTextureBinder(RawImage image, bool disabledWhenNull = true)
         {
-            Image = image;
-            DisabledWhenNull = false;
+            _disabledWhenNull = disabledWhenNull;
+            _image = image ?? throw new ArgumentNullException(nameof(image));
         }
 
-        public void SetValue(Texture2D value)
+        public void SetValue(Texture2D? value)
         {
-            Image.texture = value;
-            if (DisabledWhenNull) Image.enabled = value != null;
+            _image.texture = value;
+            if (_disabledWhenNull) _image.enabled = value != null;
         }
     }
 }

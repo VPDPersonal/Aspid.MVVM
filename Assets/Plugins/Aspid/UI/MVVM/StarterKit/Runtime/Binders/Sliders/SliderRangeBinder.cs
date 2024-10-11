@@ -1,3 +1,4 @@
+#nullable enable
 using System;
 using UnityEngine;
 using UnityEngine.UI;
@@ -7,24 +8,24 @@ namespace Aspid.UI.MVVM.StarterKit.Binders.Sliders
 {
     public class SliderRangeBinder : Binder, IBinder<Vector2>
     {
-        protected readonly Slider Slider;
-        protected readonly IConverter<Vector2, Vector2> Converter;
+        private readonly Slider _slider;
+        private readonly IConverter<Vector2, Vector2>? _converter;
         
         public SliderRangeBinder(Slider slider, Func<Vector2, Vector2> converter) 
             : this(slider, new GenericFuncConverter<Vector2, Vector2>(converter)) { }
         
-        public SliderRangeBinder(Slider slider, IConverter<Vector2, Vector2> converter = null)
+        public SliderRangeBinder(Slider slider, IConverter<Vector2, Vector2>? converter = null)
         {
-            Slider = slider;
-            Converter = converter;
+            _converter = converter;
+            _slider = slider ?? throw new ArgumentNullException(nameof(slider));
         }
         
         public void SetValue(Vector2 value)
         {
-            value = Converter?.Convert(value) ?? value;
+            value = _converter?.Convert(value) ?? value;
             
-            Slider.minValue = value.x;
-            Slider.maxValue = value.y;
+            _slider.minValue = value.x;
+            _slider.maxValue = value.y;
         }
     }
 }

@@ -1,4 +1,5 @@
 #if UNITY_2023_1_OR_NEWER || ASPID_UI_TEXT_MESH_PRO_INTEGRATION
+#nullable enable
 using TMPro;
 using System;
 using System.Globalization;
@@ -7,50 +8,59 @@ using Aspid.UI.MVVM.StarterKit.Converters;
 
 namespace Aspid.UI.MVVM.StarterKit.Binders.Texts.Input
 {
-    public class InputFieldBinder : Binder, IBinder<string>, INumberBinder, IReverseBinder<string>, INumberReverseBinder
+    public class InputFieldBinder : Binder, IBinder<string?>, INumberBinder, IReverseBinder<string>, INumberReverseBinder
     {
-        public event Action<string> ValueChanged;
-        public event Action<int> IntValueChanged;
-        public event Action<long> LongValueChanged;
-        public event Action<float> FloatValueChanged;
-        public event Action<double> DoubleValueChanged;
-        
-        protected readonly TMP_InputField InputField;
-        protected readonly IConverter<string, string> Converter;
+        public event Action<string>? ValueChanged;
+        public event Action<int>? IntValueChanged;
+        public event Action<long>? LongValueChanged;
+        public event Action<float>? FloatValueChanged;
+        public event Action<double>? DoubleValueChanged;
+
+        private bool _isNotifyValueChanged = true;
+        private readonly TMP_InputField _inputField;
+        private readonly IConverter<string, string>? _converter;
         
         public bool IsReverseEnabled { get; }
         
         public InputFieldBinder(TMP_InputField inputField, bool isReverseEnabled = true)
         {
-            Converter = null;
-            InputField = inputField;
+            _converter = null;
             IsReverseEnabled = isReverseEnabled;
+            _inputField = inputField ?? throw new ArgumentNullException(nameof(inputField));
         }
         
         public InputFieldBinder(TMP_InputField inputField, Func<string, string> converter, bool isReverseEnabled = true)
             : this(inputField, new GenericFuncConverter<string, string>(converter), isReverseEnabled) { }
         
-        public InputFieldBinder(TMP_InputField inputField, IConverter<string, string> converter, bool isReverseEnabled = true)
+        public InputFieldBinder(TMP_InputField inputField, IConverter<string, string>? converter, bool isReverseEnabled = true)
         {
-            Converter = converter;
-            InputField = inputField;
+            _converter = converter;
             IsReverseEnabled = isReverseEnabled;
+            _inputField = inputField ?? throw new ArgumentNullException(nameof(inputField));
         }
 
         protected override void OnBound(IViewModel viewModel, string id)
         {
             if (!IsReverseEnabled) return;
-            InputField.onValueChanged.AddListener(OnValueChanged);
+            _inputField.onValueChanged.AddListener(OnValueChanged);
         }
 
         protected override void OnUnbound(IViewModel viewModel, string id)
         {
             if (!IsReverseEnabled) return;
-            InputField.onValueChanged.RemoveListener(OnValueChanged);
+            _inputField.onValueChanged.RemoveListener(OnValueChanged);
         }
 
-        public void SetValue(string value) =>
-            InputField.text = Converter?.Convert(value) ?? value;
+        public void SetValue(string? value)
+        {
+            if (value is not null) 
+                value = _converter?.Convert(value) ?? value;
+            
+            if (IsReverseEnabled && _inputField.text != value)
+                _isNotifyValueChanged = false;
+            
+            _inputField.text = value;
+        }
 
         public void SetValue(int value) =>
             SetValue(value.ToString());
@@ -66,9 +76,15 @@ namespace Aspid.UI.MVVM.StarterKit.Binders.Texts.Input
 
         private void OnValueChanged(string value)
         {
+            if (!_isNotifyValueChanged)
+            {
+                _isNotifyValueChanged = true;
+                return;
+            }
+            
             ValueChanged?.Invoke(value);
 
-            if (InputField.contentType 
+            if (_inputField.contentType 
                 is not (TMP_InputField.ContentType.IntegerNumber 
                 or TMP_InputField.ContentType.DecimalNumber)) return;
            

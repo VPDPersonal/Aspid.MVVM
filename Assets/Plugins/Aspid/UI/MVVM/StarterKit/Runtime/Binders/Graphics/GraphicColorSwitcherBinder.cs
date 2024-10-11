@@ -1,3 +1,5 @@
+#nullable enable
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -10,7 +12,7 @@ namespace Aspid.UI.MVVM.StarterKit.Binders.Graphics
         public GraphicColorSwitcherBinder(Graphic graphic, Color trueColor, Color falseColor)
             : base(trueColor, falseColor)
         {
-            _graphic = graphic;
+            _graphic = graphic ?? throw new ArgumentNullException(nameof(graphic));
         }
 
         protected override void SetValue(Color value) =>

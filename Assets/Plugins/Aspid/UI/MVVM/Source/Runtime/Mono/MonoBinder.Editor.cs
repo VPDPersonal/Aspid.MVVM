@@ -26,8 +26,12 @@ namespace Aspid.UI.MVVM.Mono
             get => _view;
             set
             {
-                if (value is MonoView view) _view = view;
-                else throw new ArgumentException("View is not a MonoView");
+                _view = value switch
+                {
+                    null => null,
+                    MonoView view => view,
+                    _ => throw new ArgumentException("View is not a MonoView")
+                };
             }
         }
 

@@ -34,7 +34,6 @@ namespace Aspid.UI.MVVM.Unity.Views
             var oldBindersDictionary = ViewUtility.GetMonoBinderValidableWithFieldName(View);
             
             DrawBaseInspector();
-            DrawViewModelData();
             
             var newBindersDictionary = ViewUtility.GetMonoBinderValidableWithFieldName(View);
             ViewUtility.ValidateMonoBinderValidablesInView(View, oldBindersDictionary, newBindersDictionary);
@@ -55,6 +54,8 @@ namespace Aspid.UI.MVVM.Unity.Views
                 }
                 GUI.enabled = true;
             }
+            
+            DrawViewModelData();
             serializedObject.ApplyModifiedProperties();
         }
 

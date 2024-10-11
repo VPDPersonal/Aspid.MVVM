@@ -94,12 +94,13 @@ namespace Aspid.UI.MVVM.Unity.Views
         /// <param name="view">The view containing the binders.</param>
         public static void ValidateMonoBinderValidableByType(IView view)
         {
+            var isChanged = false;
             var fields = GetMonoBinderValidableFields(view.GetType());
             
             foreach (var field in fields)
             {
                 var isArray = field.FieldType.IsArray;
-                var isRequire = Attribute.IsDefined(field, typeof(RequireBinder));
+                var isRequire = Attribute.IsDefined(field, typeof(RequireBinderAttribute));
         
                 var binders = isArray
                     ? (IMonoBinderValidable[])field.GetValue(view)
@@ -108,9 +109,10 @@ namespace Aspid.UI.MVVM.Unity.Views
         
                 if (isRequire)
                 {
-                    var requiredTypes = field.GetCustomAttributes(typeof(RequireBinder), false)
-                        .Select(attribute => ((RequireBinder)attribute).Type);
+                    var requiredTypes = field.GetCustomAttributes(typeof(RequireBinderAttribute), false)
+                        .Select(attribute => ((RequireBinderAttribute)attribute).Type);
         
+                    var binderCount = binders.Length;
                     binders = binders.Where(binder =>
                         {
                             if (binder == null) return true;
@@ -128,26 +130,32 @@ namespace Aspid.UI.MVVM.Unity.Views
                             {
                                 binder.Id = null;
                                 binder.View = null;
+                                isChanged = true;
                             }
 
                             return result;
                         })
                         .ToArray();
+
+                    if (binderCount != binders.Length) isChanged = true;
                 }
         
                 var name = GetIdName(field.Name);
                 foreach (var binder in binders)
                 {
                     if (binder == null) continue;
+                    if (binder.Id == name && binder.View == view) continue;
                     
                     binder.Id = name;
                     binder.View = view;
+                    isChanged = true;
                 }
                 
                 field.SetValueFromCastValue(view, binders);
             }
             
-            SaveView(view);
+            if (isChanged) 
+                SaveView(view);
         }
         
         /// <summary>

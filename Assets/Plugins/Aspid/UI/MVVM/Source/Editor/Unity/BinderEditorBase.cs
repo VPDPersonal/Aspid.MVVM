@@ -1,5 +1,6 @@
 using System.Linq;
 using UnityEngine;
+using System.Reflection;
 using Aspid.UI.MVVM.Views;
 using Aspid.UI.MVVM.Mono.Views;
 using Aspid.UI.MVVM.Unity.Views;
@@ -30,7 +31,25 @@ namespace Aspid.UI.MVVM.Unity
             if (view == null) return null;
             
             var binderFields = ViewUtility.GetMonoBinderValidableFields(view.GetType()).ToList();
-            var ids = binderFields.Select(field => ViewUtility.GetIdName(field.Name)).ToList();
+            
+            var ids = binderFields
+                .Where(field =>
+                {
+                    if (field.GetCustomAttribute<RequireBinderAttribute>() is { } attribute)
+                    {
+                        var type = attribute.Type;
+                        return Binder.GetType().GetInterfaces().Any(@interface =>
+                        {
+                            if (!@interface.IsGenericType) return false;
+                            if (@interface.GetGenericTypeDefinition() != typeof(IBinder<>)) return false;
+                            return @interface.GetGenericArguments()[0].IsAssignableFrom(type);
+                        });
+                    }
+
+                    return true;
+                })
+                .Select(field => ViewUtility.GetIdName(field.Name))
+                .ToList();
             
             ids.Insert(0, "No Id");
             ids.Insert(1, null);

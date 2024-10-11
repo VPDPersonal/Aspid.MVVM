@@ -1,3 +1,4 @@
+#if UNITY_2022_3_OR_NEWER
 using System;
 using UnityEngine;
 using Aspid.UI.MVVM.Views;
@@ -6,7 +7,7 @@ using Object = UnityEngine.Object;
 
 #if UNITY_2023_1_OR_NEWER
 using System.Threading;
-#endif
+#endif // UNITY_2023_1_OR_NEWER
 
 namespace Aspid.UI.MVVM.Mono.Views
 {
@@ -213,6 +214,7 @@ namespace Aspid.UI.MVVM.Mono.Views
             
             return operation;
         }
-#endif
+#endif // UNITY_2023_1_OR_NEWER
     }
 }
+#endif // UNITY_2022_3_OR_NEWER

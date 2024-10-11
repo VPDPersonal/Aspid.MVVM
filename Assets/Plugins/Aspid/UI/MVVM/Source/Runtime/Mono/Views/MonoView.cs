@@ -1,7 +1,6 @@
 #nullable disable
 using System;
 using UnityEngine;
-using Unity.Profiling;
 using Aspid.UI.MVVM.Views;
 using Aspid.UI.MVVM.ViewModels;
 
@@ -10,8 +9,8 @@ namespace Aspid.UI.MVVM.Mono.Views
     public abstract partial class MonoView : MonoBehaviour, IView, IDisposable
     {
 #if !ASPID_UI_MVVM_UNITY_PROFILER_DISABLED
-        private static readonly ProfilerMarker _initializeMarker = new("MonoView.Initialize");
-        private static readonly ProfilerMarker _deinitializationMarker = new("MonoView.Deinitialization");
+        private static readonly Unity.Profiling.ProfilerMarker _initializeMarker = new("MonoView.Initialize");
+        private static readonly Unity.Profiling.ProfilerMarker _deinitializationMarker = new("MonoView.Deinitialization");
 #endif
 
         public IViewModel ViewModel { get; private set; }
@@ -24,6 +23,9 @@ namespace Aspid.UI.MVVM.Mono.Views
             using (_initializeMarker.Auto())
 #endif
             {
+                if (viewModel is null) throw new ArgumentNullException(nameof(viewModel));
+                if (ViewModel is not null) throw new InvalidOperationException("View is already initialized.");
+                
                 ViewModel = viewModel;
                 InitializeIternal(viewModel);
             }
@@ -46,6 +48,6 @@ namespace Aspid.UI.MVVM.Mono.Views
         
         protected abstract void DeinitializeIternal();
 
-        public void Dispose() => Destroy(gameObject);
+        public virtual void Dispose() => Destroy(gameObject);
     }
 }

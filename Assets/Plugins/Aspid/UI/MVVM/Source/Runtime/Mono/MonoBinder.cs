@@ -1,6 +1,6 @@
 #nullable disable
+using System;
 using UnityEngine;
-using Unity.Profiling;
 using Aspid.UI.MVVM.ViewModels;
 
 namespace Aspid.UI.MVVM.Mono
@@ -8,9 +8,10 @@ namespace Aspid.UI.MVVM.Mono
     public abstract partial class MonoBinder : MonoBehaviour, IBinder
     {
 #if !ASPID_UI_MVVM_UNITY_PROFILER_DISABLED
-        private static readonly ProfilerMarker _bindMarker = new("MonoBinder.Bind");
-        private static readonly ProfilerMarker _unbindMarker = new("MonoBinder.Unbind");
+        private static readonly Unity.Profiling.ProfilerMarker _bindMarker = new("MonoBinder.Bind");
+        private static readonly Unity.Profiling.ProfilerMarker _unbindMarker = new("MonoBinder.Unbind");
 #endif
+        protected virtual bool IsBind => true;
         
         public void Bind(IViewModel viewModel, string id)
         {
@@ -18,6 +19,9 @@ namespace Aspid.UI.MVVM.Mono
             using (_bindMarker.Auto()) 
 #endif
             {
+                if (!IsBind) return;
+                ThrowExceptionIfInvalidData(viewModel, id);
+                
                 OnBinding(viewModel, id);
                 viewModel.AddBinder(this, id);
                 OnBound(viewModel, id);
@@ -34,6 +38,9 @@ namespace Aspid.UI.MVVM.Mono
             using (_unbindMarker.Auto())
 #endif
             {
+                if (!IsBind) return;
+                ThrowExceptionIfInvalidData(viewModel, id);
+                
                 OnUnbinding(viewModel, id);
                 viewModel.RemoveBinder(this, id);
                 OnUnbound(viewModel, id);
@@ -43,5 +50,11 @@ namespace Aspid.UI.MVVM.Mono
         partial void OnUnbinding(IViewModel viewModel, string id);
         
         protected virtual void OnUnbound(IViewModel viewModel, string id) { }
+        
+        private static void ThrowExceptionIfInvalidData(IViewModel viewModel, string id)
+        {
+            if (string.IsNullOrEmpty(id)) throw new ArgumentNullException(nameof(id));
+            if (viewModel is null) throw new ArgumentNullException(nameof(viewModel));
+        }
     }
 }

@@ -1,13 +1,13 @@
-using Unity.Profiling;
+using System;
 using Aspid.UI.MVVM.ViewModels;
 
 namespace Aspid.UI.MVVM
 {
-    public abstract class Binder : IBinder
+    public abstract partial class Binder : IBinder
     {
 #if !ASPID_UI_MVVM_UNITY_PROFILER_DISABLED
-        private static readonly ProfilerMarker _bindMarker = new("Binder.Bind");
-        private static readonly ProfilerMarker _unbindMarker = new("Binder.Unbind)");
+        private static readonly Unity.Profiling.ProfilerMarker _bindMarker = new("Binder.Bind");
+        private static readonly Unity.Profiling.ProfilerMarker _unbindMarker = new("Binder.Unbind)");
 #endif
         protected virtual bool IsBind => true;
         
@@ -18,11 +18,15 @@ namespace Aspid.UI.MVVM
 #endif
             {
                 if (!IsBind) return;
-                
+                ThrowExceptionIfInvalidData(viewModel, id);
+
+                OnBinding(viewModel, id);
                 viewModel.AddBinder(this, id);
                 OnBound(viewModel, id);
             }
         }
+        
+        partial void OnBinding(IViewModel viewModel, string id);
         
         protected virtual void OnBound(IViewModel viewModel, string id) { }
         
@@ -33,12 +37,22 @@ namespace Aspid.UI.MVVM
 #endif
             {
                 if (!IsBind) return;
-                
+                ThrowExceptionIfInvalidData(viewModel, id);
+
+                OnUnbinding(viewModel, id);
                 viewModel.RemoveBinder(this, id);
                 OnUnbound(viewModel, id);
             }
         }
         
+        partial void OnUnbinding(IViewModel viewModel, string id);
+        
         protected virtual void OnUnbound(IViewModel viewModel, string id) { }
+
+        private static void ThrowExceptionIfInvalidData(IViewModel viewModel, string id)
+        {
+            if (string.IsNullOrEmpty(id)) throw new ArgumentNullException(nameof(id));
+            if (viewModel is null) throw new ArgumentNullException(nameof(viewModel));
+        }
     }
 }

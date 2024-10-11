@@ -1,5 +1,4 @@
 using System;
-using Unity.Profiling;
 using Aspid.UI.MVVM.ViewModels;
 
 namespace Aspid.UI.MVVM.Views
@@ -7,8 +6,8 @@ namespace Aspid.UI.MVVM.Views
     public abstract class View : IView, IDisposable
     {
 #if !ASPID_UI_MVVM_UNITY_PROFILER_DISABLED
-        private static readonly ProfilerMarker _initializeMarker = new("View.Initialize");
-        private static readonly ProfilerMarker _deinitializationMarker = new("View.Deinitialization");
+        private static readonly Unity.Profiling.ProfilerMarker _initializeMarker = new("View.Initialize");
+        private static readonly Unity.Profiling.ProfilerMarker _deinitializationMarker = new("View.Deinitialization");
 #endif
         public IViewModel? ViewModel { get; private set; }
         
@@ -18,12 +17,16 @@ namespace Aspid.UI.MVVM.Views
             using (_initializeMarker.Auto())
 #endif
             {
+                if (viewModel is null) throw new ArgumentNullException(nameof(viewModel));
+                if (ViewModel is not null) throw new InvalidOperationException("View is already initialized.");
+                
                 ViewModel = viewModel;
                 InitializeIternal(viewModel);
             }
         }
         
-        protected abstract void InitializeIternal(IViewModel viewModel);
+        protected virtual void InitializeIternal(IViewModel viewModel) =>
+            throw new NotImplementedException("This method must be implemented in the inheritor");
 
         public void Deinitialize()
         {
@@ -38,7 +41,8 @@ namespace Aspid.UI.MVVM.Views
             }
         }
         
-        protected abstract void DeinitializeIternal();
+        protected virtual void DeinitializeIternal() =>
+            throw new NotImplementedException("This method must be implemented in the inheritor");
         
         public virtual void Dispose() => Deinitialize();
     }

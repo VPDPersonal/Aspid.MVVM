@@ -229,13 +229,6 @@ namespace Aspid.UI.MVVM.Unity.Views
         }
         
         /// <summary>
-        /// Removes duplicate validable binders with the same ID in the view.
-        /// </summary>
-        /// <param name="view">The view containing the binders.</param>
-        /// <param name="id">The ID of the binder field to check for duplicates.</param>
-        
-        
-        /// <summary>
         /// Finds all validable binders among the child objects of the view.
         /// </summary>
         /// <typeparam name="TView">The type of view that implements IView.</typeparam>

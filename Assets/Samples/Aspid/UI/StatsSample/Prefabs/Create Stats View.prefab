@@ -288,15 +288,17 @@ MonoBehaviour:
   _view: {fileID: 5315928923478365624}
   _id: SkillPointsAvailable
   _component: {fileID: 2184117819493737949}
-  <Converter>k__BackingField:
-    rid: -2
+  _converter:
+    rid: 1000
   _isDebug: 0
   _log: []
   references:
     version: 2
     RefIds:
-    - rid: -2
-      type: {class: , ns: , asm: }
+    - rid: 1000
+      type: {class: StringFormatConverter, ns: Aspid.UI.MVVM.StarterKit.Converters.Strings, asm: AspidUI.MVVM.StarterKit}
+      data:
+        _format: 
 --- !u!1 &1863818017136329706
 GameObject:
   m_ObjectHideFlags: 0
@@ -480,21 +482,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _viewComponent:
-    <Resolve>k__BackingField: 1
-    <Type>k__BackingField:
+    Resolve: 1
+    Type:
       _typeName: 
-    <Mono>k__BackingField:
-      _obj: {fileID: 5315928923478365624}
-    <References>k__BackingField:
+    Mono: {fileID: 5315928923478365624}
+    References:
       rid: -2
   _viewModelComponent:
-    <Resolve>k__BackingField: 0
-    <Type>k__BackingField:
+    Resolve: 0
+    Type:
       _typeName: Aspid.UI.StatsSample.ViewModels.CreateStatsViewModel, Assembly-CSharp,
         Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-    <Mono>k__BackingField:
-      _obj: {fileID: 0}
-    <References>k__BackingField:
+    Mono: {fileID: 0}
+    References:
       rid: -2
   references:
     version: 2
@@ -1099,7 +1099,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _view: {fileID: 5315928923478365624}
   _id: IsDraft
-  <IsInvert>k__BackingField: 0
+  _isInvert: 0
   _isDebug: 0
   _log: []
 --- !u!1 &8031546957962004038

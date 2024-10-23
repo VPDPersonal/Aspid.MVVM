@@ -404,6 +404,28 @@ Transform:
   - {fileID: 1458066081}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &827780644 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4245696846360189788, guid: a7e999c98b71641ada1dceb5273a5c60, type: 3}
+  m_PrefabInstance: {fileID: 1292469561}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 308348858250478390a4e42699309252, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1262458910 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 330910545420233480, guid: a7e999c98b71641ada1dceb5273a5c60, type: 3}
+  m_PrefabInstance: {fileID: 1292469561}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 308348858250478390a4e42699309252, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1292469561
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -416,6 +438,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Create Stats View
       objectReference: {fileID: 0}
+    - target: {fileID: 2254416076173432920, guid: a7e999c98b71641ada1dceb5273a5c60, type: 3}
+      propertyPath: _id
+      value: Reflexes
+      objectReference: {fileID: 0}
+    - target: {fileID: 2254416076173432920, guid: a7e999c98b71641ada1dceb5273a5c60, type: 3}
+      propertyPath: _view
+      value: 
+      objectReference: {fileID: 1292469566}
     - target: {fileID: 2896256761785461889, guid: a7e999c98b71641ada1dceb5273a5c60, type: 3}
       propertyPath: m_Pivot.x
       value: 1
@@ -496,6 +526,38 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5315928923478365624, guid: a7e999c98b71641ada1dceb5273a5c60, type: 3}
+      propertyPath: _cool.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5315928923478365624, guid: a7e999c98b71641ada1dceb5273a5c60, type: 3}
+      propertyPath: _power.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5315928923478365624, guid: a7e999c98b71641ada1dceb5273a5c60, type: 3}
+      propertyPath: '_cool.Array.data[1]'
+      value: 
+      objectReference: {fileID: 827780644}
+    - target: {fileID: 5315928923478365624, guid: a7e999c98b71641ada1dceb5273a5c60, type: 3}
+      propertyPath: '_power.Array.data[1]'
+      value: 
+      objectReference: {fileID: 1292469564}
+    - target: {fileID: 5315928923478365624, guid: a7e999c98b71641ada1dceb5273a5c60, type: 3}
+      propertyPath: _reflexes.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5315928923478365624, guid: a7e999c98b71641ada1dceb5273a5c60, type: 3}
+      propertyPath: '_reflexes.Array.data[1]'
+      value: 
+      objectReference: {fileID: 1438670440}
+    - target: {fileID: 5315928923478365624, guid: a7e999c98b71641ada1dceb5273a5c60, type: 3}
+      propertyPath: _intelligence.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5315928923478365624, guid: a7e999c98b71641ada1dceb5273a5c60, type: 3}
+      propertyPath: '_intelligence.Array.data[1]'
+      value: 
+      objectReference: {fileID: 1262458910}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -511,6 +573,28 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 2896256761785461889, guid: a7e999c98b71641ada1dceb5273a5c60, type: 3}
   m_PrefabInstance: {fileID: 1292469561}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1292469564 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4767688871036496481, guid: a7e999c98b71641ada1dceb5273a5c60, type: 3}
+  m_PrefabInstance: {fileID: 1292469561}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 308348858250478390a4e42699309252, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1292469566 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5315928923478365624, guid: a7e999c98b71641ada1dceb5273a5c60, type: 3}
+  m_PrefabInstance: {fileID: 1292469561}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1292469562}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b578c9dc55594dd7b706b7806e1d32ab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &1321099783 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4704223468567197850, guid: 74b8ba5986ae646a6a44c88b05165b97, type: 3}
@@ -736,6 +820,17 @@ Transform:
   m_Children: []
   m_Father: {fileID: 724119499}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1438670440 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2254416076173432920, guid: a7e999c98b71641ada1dceb5273a5c60, type: 3}
+  m_PrefabInstance: {fileID: 1292469561}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 308348858250478390a4e42699309252, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1458066079
 GameObject:
   m_ObjectHideFlags: 0
@@ -1211,6 +1306,19 @@ PrefabInstance:
     - target: {fileID: 175776684273083786, guid: 74b8ba5986ae646a6a44c88b05165b97, type: 3}
       propertyPath: _id
       value: Intelligence
+      objectReference: {fileID: 0}
+    - target: {fileID: 857392291670090133, guid: 74b8ba5986ae646a6a44c88b05165b97, type: 3}
+      propertyPath: _viewComponent.Mono
+      value: 
+      objectReference: {fileID: 63665479}
+    - target: {fileID: 857392291670090133, guid: 74b8ba5986ae646a6a44c88b05165b97, type: 3}
+      propertyPath: _viewComponent.Resolve
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 857392291670090133, guid: 74b8ba5986ae646a6a44c88b05165b97, type: 3}
+      propertyPath: _viewModelComponent.Type._typeName
+      value: Aspid.UI.StatsSample.ViewModels.ReadOnlyStatsViewModel, Assembly-CSharp,
+        Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
       objectReference: {fileID: 0}
     - target: {fileID: 857392291670090133, guid: 74b8ba5986ae646a6a44c88b05165b97, type: 3}
       propertyPath: _viewModelComponent.<Type>k__BackingField._typeName

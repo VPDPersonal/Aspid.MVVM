@@ -35,7 +35,9 @@ namespace Aspid.UI.MVVM.StarterKit.Binders.Mono.Texts.Input
         protected override void OnBound(IViewModel viewModel, string id)
         {
             if (!IsReverseEnabled) return;
+            
             CachedComponent.onValueChanged.AddListener(OnValueChanged);
+            _isNotifyValueChanged = true;
         }
 
         protected override void OnUnbound(IViewModel viewModel, string id)

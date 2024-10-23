@@ -337,7 +337,7 @@ MonoBehaviour:
   m_HideSoftKeyboard: 0
   m_CharacterValidation: 0
   m_RegexValue: 
-  m_GlobalPointSize: 14
+  m_GlobalPointSize: 24
   m_CharacterLimit: 0
   m_OnEndEdit:
     m_PersistentCalls:
@@ -992,28 +992,14 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1225421080}
-  - component: {fileID: 1225421079}
+  - component: {fileID: 1225421081}
   m_Layer: 0
-  m_Name: Bootstrap
+  m_Name: Lifetime Scope
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1225421079
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1225421078}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ad92300f9cd2466e8e1c09d4df12b9ca, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _viewModelType: 1
-  _speakerView: {fileID: 1818995788}
 --- !u!4 &1225421080
 Transform:
   m_ObjectHideFlags: 0
@@ -1029,6 +1015,23 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1225421081
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1225421078}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 43300804ef1b441c800041a819b235d3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  parentReference:
+    TypeName: 
+  autoRun: 1
+  autoInjectGameObjects:
+  - {fileID: 227926683}
 --- !u!1 &1312590048
 GameObject:
   m_ObjectHideFlags: 0
@@ -1299,6 +1302,7 @@ GameObject:
   - component: {fileID: 1818995785}
   - component: {fileID: 1818995787}
   - component: {fileID: 1818995788}
+  - component: {fileID: 1818995789}
   m_Layer: 5
   m_Name: View
   m_TagString: Untagged
@@ -1412,6 +1416,38 @@ MonoBehaviour:
     _button: {fileID: 17906937}
     _isDebug: 0
     _log: []
+--- !u!114 &1818995789
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1818995783}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9851e6ff800943488c33cba4ba788778, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _viewComponent:
+    Resolve: 1
+    Type:
+      _typeName: 
+    Mono: {fileID: 1818995788}
+    References:
+      rid: -2
+  _viewModelComponent:
+    Resolve: 0
+    Type:
+      _typeName: Aspid.UI.HelloWorld.ViewModels.CommandSpeakerViewModel1, Assembly-CSharp,
+        Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    Mono: {fileID: 0}
+    References:
+      rid: -2
+  references:
+    version: 2
+    RefIds:
+    - rid: -2
+      type: {class: , ns: , asm: }
 --- !u!1 &1856005410
 GameObject:
   m_ObjectHideFlags: 0

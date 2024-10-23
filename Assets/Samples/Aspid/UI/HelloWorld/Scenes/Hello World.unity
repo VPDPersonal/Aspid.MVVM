@@ -42,7 +42,8 @@ RenderSettings:
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
-  serializedVersion: 12
+  serializedVersion: 13
+  m_BakeOnSceneLoad: 0
   m_GISettings:
     serializedVersion: 2
     m_BounceScale: 1
@@ -951,6 +952,7 @@ MonoBehaviour:
   m_DeselectOnBackgroundClick: 1
   m_PointerBehavior: 0
   m_CursorLockBehavior: 0
+  m_ScrollDeltaPerTick: 6
 --- !u!114 &1212279141
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1010,7 +1012,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad92300f9cd2466e8e1c09d4df12b9ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _view: {fileID: 1818995788}
+  _viewModelType: 1
+  _speakerView: {fileID: 1818995788}
 --- !u!4 &1225421080
 Transform:
   m_ObjectHideFlags: 0
@@ -1403,8 +1406,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _text:
   - {fileID: 1856005414}
-  _inputText:
-  - {fileID: 163721177}
+  _inputText: {fileID: 163721177}
   _sayCommand:
     _isBindInteractable: 0
     _button: {fileID: 17906937}

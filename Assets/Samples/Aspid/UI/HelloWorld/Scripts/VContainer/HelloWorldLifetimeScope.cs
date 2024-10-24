@@ -1,3 +1,4 @@
+#if ASPID_UI_VCONTAINER_INTEGRATION
 using VContainer;
 using VContainer.Unity;
 using Aspid.UI.HelloWorld.Models;
@@ -17,3 +18,4 @@ namespace Aspid.UI.HelloWorld.VContainer
         }
     }
 }
+#endif

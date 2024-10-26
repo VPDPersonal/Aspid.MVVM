@@ -1,3 +1,4 @@
+#if ASPID_UI_VCONTAINER_INTEGRATION
 using VContainer;
 using UnityEngine;
 using VContainer.Unity;
@@ -37,3 +38,4 @@ namespace Aspid.UI.TodoList.VContainer
         }
     }
 }
+#endif

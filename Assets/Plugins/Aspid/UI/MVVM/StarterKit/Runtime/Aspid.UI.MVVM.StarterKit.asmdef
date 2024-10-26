@@ -1,9 +1,8 @@
 {
-    "name": "AspidUI.MVVM.StarterKit",
+    "name": "Aspid.UI.MVVM.StarterKit",
     "rootNamespace": "",
     "references": [
         "GUID:b0214a6008ed146ff8f122a6a9c2f6cc",
-        "GUID:324caed91501a9c47a04ebfd87b68794",
         "GUID:572bdb0616e842849d7130e580b9eb98",
         "GUID:eec0964c48f6f4e40bc3ec2257ccf8c5",
         "GUID:6055be8ebefd69e48b49212b09b47b2f",
@@ -27,11 +26,6 @@
             "name": "com.unity.localization",
             "expression": "",
             "define": "ASPID_UI_UNITY_LOCALIZATION_INTEGRATION"
-        },
-        {
-            "name": "com.codewriter.triinspector",
-            "expression": "",
-            "define": "ASPID_UI_TRI_INSPECTOR_INTEGRATION"
         },
         {
             "name": "com.alexeytaranov.serializereferencedropdown",

@@ -1,12 +1,8 @@
 {
-    "name": "AspidUI.MVVM.Editor",
+    "name": "Aspid.UI.MVVM",
     "rootNamespace": "",
-    "references": [
-        "GUID:572bdb0616e842849d7130e580b9eb98"
-    ],
-    "includePlatforms": [
-        "Editor"
-    ],
+    "references": [],
+    "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
     "overrideReferences": false,

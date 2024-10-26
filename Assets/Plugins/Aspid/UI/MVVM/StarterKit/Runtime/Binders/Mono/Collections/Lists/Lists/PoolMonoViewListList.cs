@@ -14,12 +14,16 @@ namespace Aspid.UI.MVVM.StarterKit.Binders.Mono.Collections.Lists.Lists
 
         private ObjectPool<MonoView> Pool => _pool ??= new ObjectPool<MonoView>(
             () => CreateView(Prefab, Container),
-            view => view.gameObject.SetActive(true),
-            view => view.gameObject.SetActive(false),
-            view => view.DestroyView(),
-            false,
-            _initialCount,
-            _maxCount);
+            actionOnGet: view =>
+            {
+                view.gameObject.SetActive(true);
+                view.transform.SetSiblingIndex(Pool.CountActive + Pool.CountInactive);
+            },
+            actionOnRelease: view => view.gameObject.SetActive(false),
+            actionOnDestroy: view => view.DestroyView(),
+            collectionCheck: false,
+            defaultCapacity: _initialCount,
+            maxSize: _maxCount);
         
         public PoolMonoViewListList() { }
 

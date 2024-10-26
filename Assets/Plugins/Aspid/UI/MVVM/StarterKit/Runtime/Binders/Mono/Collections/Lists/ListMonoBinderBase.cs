@@ -27,6 +27,8 @@ namespace Aspid.UI.MVVM.StarterKit.Binders.Mono.Collections.Lists
             }
 
             _list = list;
+            OnAdded(_list, 0);
+            
             Subscribe();
         }
 

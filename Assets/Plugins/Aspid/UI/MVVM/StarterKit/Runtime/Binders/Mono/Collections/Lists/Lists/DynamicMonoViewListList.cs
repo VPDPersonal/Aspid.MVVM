@@ -35,8 +35,12 @@ namespace Aspid.UI.MVVM.StarterKit.Binders.Mono.Collections.Lists.Lists
 
         protected sealed override void OnAdded(IReadOnlyList<IViewModel> newItems, int newStartingIndex)
         {
+            var i = 0;
             foreach (var item in newItems)
-                OnAdded(item, newStartingIndex);
+            {
+                OnAdded(item, newStartingIndex + i);
+                i++;
+            }
         }
 
         protected sealed override void OnRemoved(IViewModel oldItem, int oldStartingIndex)

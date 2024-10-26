@@ -24,7 +24,7 @@ public static class IdBodyGenerator
             idList.Add((FieldSymbolExtensions.GetPropertyName(field.Name), field.Id));
         
         foreach (var property in data.PropertyMembers)
-            idList.Add((property.Name, property.Id));
+            idList.Add((FieldSymbolExtensions.GetPropertyName(property.Name), property.Id));
         
         foreach (var member in data.AsBinderMembers)
             idList.Add((FieldSymbolExtensions.GetPropertyName(member.Name), member.Id));

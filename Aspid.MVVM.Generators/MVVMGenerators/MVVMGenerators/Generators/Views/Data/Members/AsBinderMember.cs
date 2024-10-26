@@ -36,7 +36,7 @@ public readonly struct AsBinderMember
                 break;
             
             case IPropertySymbol property:
-                Id = $"{Name}Id";
+                Id = $"{FieldSymbolExtensions.GetPropertyName(Name)}Id";
                 Type = property.Type;
                 BinderName = $"{property.GetFieldName()}Binder";
                 break;

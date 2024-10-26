@@ -657,7 +657,7 @@ GameObject:
   m_Component:
   - component: {fileID: 566877906}
   m_Layer: 0
-  m_Name: UI
+  m_Name: '[Systems]'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -676,8 +676,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 1164258705}
   - {fileID: 1199240684}
+  - {fileID: 1224541821}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &710917651
@@ -1070,7 +1070,7 @@ RectTransform:
   - {fileID: 1180359071}
   - {fileID: 1322158806}
   - {fileID: 527272492}
-  m_Father: {fileID: 566877906}
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -1242,7 +1242,7 @@ GameObject:
   - component: {fileID: 1224541821}
   - component: {fileID: 1224541822}
   m_Layer: 0
-  m_Name: Bootstrap
+  m_Name: Lifetime Scope
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1256,12 +1256,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1224541819}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 566877906}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1224541822
 MonoBehaviour:
@@ -2177,6 +2177,6 @@ MonoBehaviour:
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
-  - {fileID: 566877906}
   - {fileID: 1253601547}
-  - {fileID: 1224541821}
+  - {fileID: 1164258705}
+  - {fileID: 566877906}

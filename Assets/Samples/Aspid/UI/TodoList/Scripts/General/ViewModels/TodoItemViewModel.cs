@@ -4,6 +4,7 @@ using Aspid.UI.MVVM.ViewModels;
 using Aspid.UI.TodoList.Models;
 using Aspid.UI.TodoList.Factories;
 using Aspid.UI.MVVM.ViewModels.Generation;
+
 namespace Aspid.UI.TodoList.ViewModels
 {
     [ViewModel]

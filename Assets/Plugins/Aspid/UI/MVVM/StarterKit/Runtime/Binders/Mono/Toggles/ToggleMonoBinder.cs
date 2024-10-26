@@ -22,7 +22,9 @@ namespace Aspid.UI.MVVM.StarterKit.Binders.Mono.Toggles
         protected override void OnBound(IViewModel viewModel, string id)
         {
             if (!IsReverseEnabled) return;
+            
             CachedComponent.onValueChanged.AddListener(OnValueChanged); 
+            _isNotifyValueChanged = true;
         }
 
         protected override void OnUnbound(IViewModel viewModel, string id)
@@ -44,10 +46,13 @@ namespace Aspid.UI.MVVM.StarterKit.Binders.Mono.Toggles
 
         private void OnValueChanged(bool isOn) 
         {
-            if (_isNotifyValueChanged)
-                ValueChanged?.Invoke(_isInvert ? !isOn : isOn);
-            
-            _isNotifyValueChanged = true;
+            if (!_isNotifyValueChanged)
+            {
+                _isNotifyValueChanged = true;
+                return;
+            }
+                
+            ValueChanged?.Invoke(_isInvert ? !isOn : isOn);
         }
     }
 }

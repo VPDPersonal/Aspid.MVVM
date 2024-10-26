@@ -16,7 +16,7 @@ namespace Aspid.UI.MVVM.StarterKit.Binders.Mono
             {
                 if (_isCached) return _component;
 
-                if (_component && TryGetComponent(out _component))
+                if (!_component && TryGetComponent(out _component))
                 {
                     _isCached = true;
                     return _component;

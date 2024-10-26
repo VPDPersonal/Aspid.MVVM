@@ -43,5 +43,38 @@ namespace Aspid.UI.MVVM.ViewModels
         
         public static bool EqualsDefault<T>(T field, T newValue) =>
             EqualityComparer<T>.Default.Equals(field, newValue);
+
+        public static void AddBinder<T>(IBinder binder, T value, ref Action<T> changed, Action<T>? setValue = null)
+        {
+            if (binder is not IBinder<T> specificBinder)
+                throw new Exception($"binder ({binder.GetType()}) is not {typeof(IBinder<T>)}");
+			        
+            specificBinder.SetValue(value);
+            changed += specificBinder.SetValue;
+
+            if (setValue != null && binder.IsReverseEnabled)
+            {
+                if (binder is not IReverseBinder<T> specificReverseBinder)
+                    throw new Exception($"binder ({binder.GetType()}) is not {typeof(IReverseBinder<T>)}");
+
+                specificReverseBinder.ValueChanged += setValue;
+            }
+        }
+        
+        public static void RemoveBinder<T>(IBinder binder, ref Action<T> changed, Action<T>? setValue = null)
+        {
+            if (binder is not IBinder<T> specificBinder)
+                throw new Exception($"binder ({binder.GetType()}) is not {typeof(IBinder<T>)}");
+			        
+            changed -= specificBinder.SetValue;
+
+            if (setValue != null && binder.IsReverseEnabled)
+            {
+                if (binder is not IReverseBinder<T> specificReverseBinder)
+                    throw new Exception($"binder ({binder.GetType()}) is not {typeof(IReverseBinder<T>)}");
+			        
+                specificReverseBinder.ValueChanged -= setValue;
+            }
+        }
     }
 }

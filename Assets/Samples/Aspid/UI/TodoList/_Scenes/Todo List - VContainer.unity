@@ -1541,7 +1541,7 @@ MonoBehaviour:
   _viewModelComponent:
     Resolve: 0
     Type:
-      _typeName: Aspid.UI.TodoList.ViewModels.TodoStorageViewModel, Assembly-CSharp,
+      _typeName: Aspid.UI.TodoList.ViewModels.TodoStorageViewModel, Aspid.UI.Samples.TodoList,
         Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
     Mono: {fileID: 0}
     References:

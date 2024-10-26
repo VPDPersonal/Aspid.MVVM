@@ -613,7 +613,7 @@ MonoBehaviour:
   _viewModelComponent:
     Resolve: 0
     Type:
-      _typeName: Aspid.UI.StatsSample.ViewModels.EditStatsViewModel, Assembly-CSharp,
+      _typeName: Aspid.UI.Stats.ViewModels.EditStatsViewModel, Aspid.UI.Samples.Stats,
         Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
     Mono: {fileID: 0}
     References:
@@ -1421,7 +1421,7 @@ MonoBehaviour:
   _viewModelComponent:
     Resolve: 0
     Type:
-      _typeName: Aspid.UI.StatsSample.ViewModels.ReadOnlyStatsViewModel, Assembly-CSharp,
+      _typeName: Aspid.UI.Stats.ViewModels.ReadOnlyStatsViewModel, Aspid.UI.Samples.Stats,
         Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
     Mono: {fileID: 0}
     References:

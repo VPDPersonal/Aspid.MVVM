@@ -74,8 +74,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4281479730
-  m_fontColor: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
+    rgba: 4290032820
+  m_fontColor: {r: 0.7058824, g: 0.7058824, b: 0.7058824, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -114,7 +114,7 @@ MonoBehaviour:
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 1
-  m_ActiveFontFeatures: 00000000
+  m_ActiveFontFeatures: 6e72656b
   m_enableExtraPadding: 0
   checkPaddingRequired: 0
   m_isRichText: 1
@@ -211,8 +211,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4278190080
-  m_fontColor: {r: 0, g: 0, b: 0, a: 1}
+    rgba: 4290032820
+  m_fontColor: {r: 0.7058824, g: 0.7058824, b: 0.7058824, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -251,7 +251,7 @@ MonoBehaviour:
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 1
-  m_ActiveFontFeatures: 00000000
+  m_ActiveFontFeatures: 6e72656b
   m_enableExtraPadding: 0
   checkPaddingRequired: 0
   m_isRichText: 1
@@ -289,14 +289,14 @@ MonoBehaviour:
   _id: SkillPointsAvailable
   _component: {fileID: 2184117819493737949}
   _converter:
-    rid: 1000
+    rid: 4930929829536858175
   _isDebug: 0
   _log: []
   references:
     version: 2
     RefIds:
-    - rid: 1000
-      type: {class: StringFormatConverter, ns: Aspid.UI.MVVM.StarterKit.Converters.Strings, asm: AspidUI.MVVM.StarterKit}
+    - rid: 4930929829536858175
+      type: {class: StringFormatConverter, ns: Aspid.UI.MVVM.StarterKit.Converters.Strings, asm: Aspid.UI.MVVM.StarterKit}
       data:
         _format: 
 --- !u!1 &1863818017136329706
@@ -308,12 +308,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2896256761785461889}
-  - component: {fileID: 9027439547880675617}
-  - component: {fileID: 6825720607917966408}
   - component: {fileID: 5315928923478365624}
-  - component: {fileID: 5704678514400029323}
   m_Layer: 5
-  m_Name: Create Stats View
+  m_Name: Edit Stats View
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -343,44 +340,6 @@ RectTransform:
   m_AnchoredPosition: {x: -150, y: 0}
   m_SizeDelta: {x: 600, y: 775}
   m_Pivot: {x: 1, y: 0.5}
---- !u!222 &9027439547880675617
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1863818017136329706}
-  m_CullTransparentMesh: 1
---- !u!114 &6825720607917966408
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1863818017136329706}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_Sprite: {fileID: 0}
-  m_Type: 0
-  m_PreserveAspect: 0
-  m_FillCenter: 1
-  m_FillMethod: 4
-  m_FillAmount: 1
-  m_FillClockwise: 1
-  m_FillOrigin: 0
-  m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 1
 --- !u!114 &5315928923478365624
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -394,15 +353,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _cool:
-  - {fileID: 4245696846360189788}
+  - {fileID: 8330108398037094094}
   _power:
-  - {fileID: 4767688871036496481}
+  - {fileID: 818520959890948083}
   _reflexes:
-  - {fileID: 2254416076173432920}
+  - {fileID: 6212866076083686858}
   _intelligence:
-  - {fileID: 330910545420233480}
+  - {fileID: 5613282692025056922}
   _technicalAbility:
-  - {fileID: 7566321902574544101}
+  - {fileID: 2337713538367418743}
   _skillPointsAvailable:
   - {fileID: 269092322224781265}
   _isDraft:
@@ -469,38 +428,6 @@ MonoBehaviour:
     _parameter: 4
     _isDebug: 0
     _log: []
---- !u!114 &5704678514400029323
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1863818017136329706}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9851e6ff800943488c33cba4ba788778, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _viewComponent:
-    Resolve: 1
-    Type:
-      _typeName: 
-    Mono: {fileID: 5315928923478365624}
-    References:
-      rid: -2
-  _viewModelComponent:
-    Resolve: 0
-    Type:
-      _typeName: Aspid.UI.StatsSample.ViewModels.CreateStatsViewModel, Assembly-CSharp,
-        Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-    Mono: {fileID: 0}
-    References:
-      rid: -2
-  references:
-    version: 2
-    RefIds:
-    - rid: -2
-      type: {class: , ns: , asm: }
 --- !u!1 &3182931967190928482
 GameObject:
   m_ObjectHideFlags: 0
@@ -575,8 +502,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4281479730
-  m_fontColor: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
+    rgba: 4290032820
+  m_fontColor: {r: 0.7058824, g: 0.7058824, b: 0.7058824, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -615,7 +542,7 @@ MonoBehaviour:
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 1
-  m_ActiveFontFeatures: 00000000
+  m_ActiveFontFeatures: 6e72656b
   m_enableExtraPadding: 0
   checkPaddingRequired: 0
   m_isRichText: 1
@@ -713,8 +640,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4278190080
-  m_fontColor: {r: 0, g: 0, b: 0, a: 1}
+    rgba: 4290032820
+  m_fontColor: {r: 0.7058824, g: 0.7058824, b: 0.7058824, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -753,7 +680,7 @@ MonoBehaviour:
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 1
-  m_ActiveFontFeatures: 00000000
+  m_ActiveFontFeatures: 6e72656b
   m_enableExtraPadding: 0
   checkPaddingRequired: 0
   m_isRichText: 1
@@ -787,6 +714,7 @@ GameObject:
   - component: {fileID: 8880093161318926199}
   - component: {fileID: 3526970235970624561}
   - component: {fileID: 2931516315228818707}
+  - component: {fileID: 4925175040536334294}
   m_Layer: 5
   m_Name: Reset To Default Button
   m_TagString: Untagged
@@ -835,7 +763,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.19215687, g: 0.19215687, b: 0.19215687, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -851,7 +779,7 @@ MonoBehaviour:
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 1
+  m_PixelsPerUnitMultiplier: 0.375
 --- !u!114 &2931516315228818707
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -877,7 +805,7 @@ MonoBehaviour:
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
     m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_DisabledColor: {r: 0.74509805, g: 0.74509805, b: 0.74509805, a: 1}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
   m_SpriteState:
@@ -896,6 +824,21 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &4925175040536334294
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4537258778618940514}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EffectColor: {r: 1, g: 1, b: 1, a: 0.5}
+  m_EffectDistance: {x: 1.75, y: -1.75}
+  m_UseGraphicAlpha: 1
 --- !u!1 &4949278914574705462
 GameObject:
   m_ObjectHideFlags: 0
@@ -975,6 +918,7 @@ GameObject:
   - component: {fileID: 2026360382633368041}
   - component: {fileID: 6464988534424297758}
   - component: {fileID: 5444464546274840865}
+  - component: {fileID: 346977288897855026}
   - component: {fileID: 3697158587917215939}
   m_Layer: 5
   m_Name: Confirm Button
@@ -1024,7 +968,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.19215687, g: 0.19215687, b: 0.19215687, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -1040,7 +984,7 @@ MonoBehaviour:
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 1
+  m_PixelsPerUnitMultiplier: 0.375
 --- !u!114 &5444464546274840865
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1085,6 +1029,21 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &346977288897855026
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6216934679498048863}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EffectColor: {r: 1, g: 1, b: 1, a: 0.5}
+  m_EffectDistance: {x: 1.75, y: -1.75}
+  m_UseGraphicAlpha: 1
 --- !u!114 &3697158587917215939
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1113,6 +1072,7 @@ GameObject:
   - component: {fileID: 680686788906026754}
   - component: {fileID: 8175245626468709643}
   - component: {fileID: 2781810437954816412}
+  - component: {fileID: 6749304247032243803}
   m_Layer: 5
   m_Name: Points Available Panel
   m_TagString: Untagged
@@ -1161,7 +1121,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.19215687, g: 0.19215687, b: 0.19215687, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -1177,7 +1137,22 @@ MonoBehaviour:
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 1
+  m_PixelsPerUnitMultiplier: 0.375
+--- !u!114 &6749304247032243803
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8031546957962004038}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EffectColor: {r: 1, g: 1, b: 1, a: 0.5}
+  m_EffectDistance: {x: 1.75, y: -1.75}
+  m_UseGraphicAlpha: 1
 --- !u!1001 &518663743081623893
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1194,6 +1169,14 @@ PrefabInstance:
       propertyPath: _view
       value: 
       objectReference: {fileID: 5315928923478365624}
+    - target: {fileID: 262625561069034077, guid: 28dcd3a91ac8d478283826b5db692c5d, type: 3}
+      propertyPath: 'managedReferences[4930929806020445160]'
+      value: Aspid.UI.MVVM.StarterKit Aspid.UI.MVVM.StarterKit.Converters.Strings.StringFormatConverter
+      objectReference: {fileID: 0}
+    - target: {fileID: 262625561069034077, guid: 28dcd3a91ac8d478283826b5db692c5d, type: 3}
+      propertyPath: managedReferences[4930929806020445160]._format
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 557253933507048913, guid: 28dcd3a91ac8d478283826b5db692c5d, type: 3}
       propertyPath: m_Name
       value: Add Intelligence Point
@@ -1294,6 +1277,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Intelligence Skill
       objectReference: {fileID: 0}
+    - target: {fileID: 5392158074146475983, guid: 28dcd3a91ac8d478283826b5db692c5d, type: 3}
+      propertyPath: _id
+      value: Intelligence
+      objectReference: {fileID: 0}
+    - target: {fileID: 5392158074146475983, guid: 28dcd3a91ac8d478283826b5db692c5d, type: 3}
+      propertyPath: _view
+      value: 
+      objectReference: {fileID: 5315928923478365624}
     - target: {fileID: 5493942966006581099, guid: 28dcd3a91ac8d478283826b5db692c5d, type: 3}
       propertyPath: m_Name
       value: Remove Intelligence Point
@@ -1314,9 +1305,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &330910545420233480 stripped
+--- !u!224 &2717705535234022949 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 2487556152624000880, guid: 28dcd3a91ac8d478283826b5db692c5d, type: 3}
+  m_PrefabInstance: {fileID: 518663743081623893}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &5613282692025056922 stripped
 MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 262625561069034077, guid: 28dcd3a91ac8d478283826b5db692c5d, type: 3}
+  m_CorrespondingSourceObject: {fileID: 5392158074146475983, guid: 28dcd3a91ac8d478283826b5db692c5d, type: 3}
   m_PrefabInstance: {fileID: 518663743081623893}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
@@ -1325,11 +1321,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 308348858250478390a4e42699309252, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!224 &2717705535234022949 stripped
-RectTransform:
-  m_CorrespondingSourceObject: {fileID: 2487556152624000880, guid: 28dcd3a91ac8d478283826b5db692c5d, type: 3}
-  m_PrefabInstance: {fileID: 518663743081623893}
-  m_PrefabAsset: {fileID: 0}
 --- !u!114 &6797870773731993504 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 6441355412146951925, guid: 28dcd3a91ac8d478283826b5db692c5d, type: 3}
@@ -1351,7 +1342,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 262625561069034077, guid: 28dcd3a91ac8d478283826b5db692c5d, type: 3}
       propertyPath: _id
-      value: Reflexes
+      value: Intelligence
       objectReference: {fileID: 0}
     - target: {fileID: 262625561069034077, guid: 28dcd3a91ac8d478283826b5db692c5d, type: 3}
       propertyPath: _view
@@ -1370,6 +1361,10 @@ PrefabInstance:
       value: AspidUI.MVVM.StarterKit Aspid.UI.MVVM.StarterKit.Converters.Strings.StringFormatConverter
       objectReference: {fileID: 0}
     - target: {fileID: 262625561069034077, guid: 28dcd3a91ac8d478283826b5db692c5d, type: 3}
+      propertyPath: 'managedReferences[4930929829536858201]'
+      value: Aspid.UI.MVVM.StarterKit Aspid.UI.MVVM.StarterKit.Converters.Strings.StringFormatConverter
+      objectReference: {fileID: 0}
+    - target: {fileID: 262625561069034077, guid: 28dcd3a91ac8d478283826b5db692c5d, type: 3}
       propertyPath: managedReferences[4930929329707417831]._format
       value: 
       objectReference: {fileID: 0}
@@ -1379,6 +1374,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 262625561069034077, guid: 28dcd3a91ac8d478283826b5db692c5d, type: 3}
       propertyPath: managedReferences[4930929329707417869]._format
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 262625561069034077, guid: 28dcd3a91ac8d478283826b5db692c5d, type: 3}
+      propertyPath: managedReferences[4930929829536858201]._format
       value: 
       objectReference: {fileID: 0}
     - target: {fileID: 557253933507048913, guid: 28dcd3a91ac8d478283826b5db692c5d, type: 3}
@@ -1481,6 +1480,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Reflexes Skill
       objectReference: {fileID: 0}
+    - target: {fileID: 5392158074146475983, guid: 28dcd3a91ac8d478283826b5db692c5d, type: 3}
+      propertyPath: _id
+      value: Reflexes
+      objectReference: {fileID: 0}
+    - target: {fileID: 5392158074146475983, guid: 28dcd3a91ac8d478283826b5db692c5d, type: 3}
+      propertyPath: _view
+      value: 
+      objectReference: {fileID: 5315928923478365624}
     - target: {fileID: 5493942966006581099, guid: 28dcd3a91ac8d478283826b5db692c5d, type: 3}
       propertyPath: m_Name
       value: Remove Reflexes Point
@@ -1501,17 +1508,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &2254416076173432920 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 262625561069034077, guid: 28dcd3a91ac8d478283826b5db692c5d, type: 3}
-  m_PrefabInstance: {fileID: 2084115444834910725}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 308348858250478390a4e42699309252, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!224 &4497355296216706421 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 2487556152624000880, guid: 28dcd3a91ac8d478283826b5db692c5d, type: 3}
@@ -1528,6 +1524,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &6212866076083686858 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5392158074146475983, guid: 28dcd3a91ac8d478283826b5db692c5d, type: 3}
+  m_PrefabInstance: {fileID: 2084115444834910725}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 308348858250478390a4e42699309252, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &4129438324727120129
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1538,12 +1545,20 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 262625561069034077, guid: 28dcd3a91ac8d478283826b5db692c5d, type: 3}
       propertyPath: _id
-      value: Cool
+      value: Intelligence
       objectReference: {fileID: 0}
     - target: {fileID: 262625561069034077, guid: 28dcd3a91ac8d478283826b5db692c5d, type: 3}
       propertyPath: _view
       value: 
       objectReference: {fileID: 5315928923478365624}
+    - target: {fileID: 262625561069034077, guid: 28dcd3a91ac8d478283826b5db692c5d, type: 3}
+      propertyPath: 'managedReferences[4930929829536858227]'
+      value: Aspid.UI.MVVM.StarterKit Aspid.UI.MVVM.StarterKit.Converters.Strings.StringFormatConverter
+      objectReference: {fileID: 0}
+    - target: {fileID: 262625561069034077, guid: 28dcd3a91ac8d478283826b5db692c5d, type: 3}
+      propertyPath: managedReferences[4930929829536858227]._format
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 557253933507048913, guid: 28dcd3a91ac8d478283826b5db692c5d, type: 3}
       propertyPath: m_Name
       value: Add Cool Point
@@ -1644,6 +1659,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Cool Skill
       objectReference: {fileID: 0}
+    - target: {fileID: 5392158074146475983, guid: 28dcd3a91ac8d478283826b5db692c5d, type: 3}
+      propertyPath: _id
+      value: Cool
+      objectReference: {fileID: 0}
+    - target: {fileID: 5392158074146475983, guid: 28dcd3a91ac8d478283826b5db692c5d, type: 3}
+      propertyPath: _view
+      value: 
+      objectReference: {fileID: 5315928923478365624}
     - target: {fileID: 5493942966006581099, guid: 28dcd3a91ac8d478283826b5db692c5d, type: 3}
       propertyPath: m_Name
       value: Remove Cool Point
@@ -1658,17 +1681,6 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 2487556152624000880, guid: 28dcd3a91ac8d478283826b5db692c5d, type: 3}
   m_PrefabInstance: {fileID: 4129438324727120129}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &4245696846360189788 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 262625561069034077, guid: 28dcd3a91ac8d478283826b5db692c5d, type: 3}
-  m_PrefabInstance: {fileID: 4129438324727120129}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 308348858250478390a4e42699309252, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &4544091627993418994 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 450761308143439347, guid: 28dcd3a91ac8d478283826b5db692c5d, type: 3}
@@ -1691,6 +1703,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &8330108398037094094 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5392158074146475983, guid: 28dcd3a91ac8d478283826b5db692c5d, type: 3}
+  m_PrefabInstance: {fileID: 4129438324727120129}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 308348858250478390a4e42699309252, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &4724050931245887548
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1701,7 +1724,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 262625561069034077, guid: 28dcd3a91ac8d478283826b5db692c5d, type: 3}
       propertyPath: _id
-      value: Power
+      value: Intelligence
       objectReference: {fileID: 0}
     - target: {fileID: 262625561069034077, guid: 28dcd3a91ac8d478283826b5db692c5d, type: 3}
       propertyPath: _view
@@ -1716,11 +1739,27 @@ PrefabInstance:
       value: AspidUI.MVVM.StarterKit Aspid.UI.MVVM.StarterKit.Converters.Strings.StringFormatConverter
       objectReference: {fileID: 0}
     - target: {fileID: 262625561069034077, guid: 28dcd3a91ac8d478283826b5db692c5d, type: 3}
+      propertyPath: 'managedReferences[4930929829536858125]'
+      value: Aspid.UI.MVVM.StarterKit Aspid.UI.MVVM.StarterKit.Converters.Strings.StringFormatConverter
+      objectReference: {fileID: 0}
+    - target: {fileID: 262625561069034077, guid: 28dcd3a91ac8d478283826b5db692c5d, type: 3}
+      propertyPath: 'managedReferences[4930929829536858162]'
+      value: Aspid.UI.MVVM.StarterKit Aspid.UI.MVVM.StarterKit.Converters.Strings.StringFormatConverter
+      objectReference: {fileID: 0}
+    - target: {fileID: 262625561069034077, guid: 28dcd3a91ac8d478283826b5db692c5d, type: 3}
       propertyPath: managedReferences[4930929329707417882]._format
       value: 
       objectReference: {fileID: 0}
     - target: {fileID: 262625561069034077, guid: 28dcd3a91ac8d478283826b5db692c5d, type: 3}
       propertyPath: managedReferences[4930929329707417921]._format
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 262625561069034077, guid: 28dcd3a91ac8d478283826b5db692c5d, type: 3}
+      propertyPath: managedReferences[4930929829536858125]._format
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 262625561069034077, guid: 28dcd3a91ac8d478283826b5db692c5d, type: 3}
+      propertyPath: managedReferences[4930929829536858162]._format
       value: 
       objectReference: {fileID: 0}
     - target: {fileID: 557253933507048913, guid: 28dcd3a91ac8d478283826b5db692c5d, type: 3}
@@ -1819,6 +1858,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Power Skill
       objectReference: {fileID: 0}
+    - target: {fileID: 5392158074146475983, guid: 28dcd3a91ac8d478283826b5db692c5d, type: 3}
+      propertyPath: _id
+      value: Power
+      objectReference: {fileID: 0}
+    - target: {fileID: 5392158074146475983, guid: 28dcd3a91ac8d478283826b5db692c5d, type: 3}
+      propertyPath: _view
+      value: 
+      objectReference: {fileID: 5315928923478365624}
     - target: {fileID: 5493942966006581099, guid: 28dcd3a91ac8d478283826b5db692c5d, type: 3}
       propertyPath: m_Name
       value: Remove Power Point
@@ -1828,6 +1875,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 28dcd3a91ac8d478283826b5db692c5d, type: 3}
+--- !u!114 &818520959890948083 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5392158074146475983, guid: 28dcd3a91ac8d478283826b5db692c5d, type: 3}
+  m_PrefabInstance: {fileID: 4724050931245887548}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 308348858250478390a4e42699309252, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &1795662829568435913 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 6441355412146951925, guid: 28dcd3a91ac8d478283826b5db692c5d, type: 3}
@@ -1837,17 +1895,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &4767688871036496481 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 262625561069034077, guid: 28dcd3a91ac8d478283826b5db692c5d, type: 3}
-  m_PrefabInstance: {fileID: 4724050931245887548}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 308348858250478390a4e42699309252, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &5174176717364985295 stripped
@@ -1876,12 +1923,20 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 262625561069034077, guid: 28dcd3a91ac8d478283826b5db692c5d, type: 3}
       propertyPath: _id
-      value: TechnicalAbility
+      value: Intelligence
       objectReference: {fileID: 0}
     - target: {fileID: 262625561069034077, guid: 28dcd3a91ac8d478283826b5db692c5d, type: 3}
       propertyPath: _view
       value: 
       objectReference: {fileID: 5315928923478365624}
+    - target: {fileID: 262625561069034077, guid: 28dcd3a91ac8d478283826b5db692c5d, type: 3}
+      propertyPath: 'managedReferences[4930929829536858214]'
+      value: Aspid.UI.MVVM.StarterKit Aspid.UI.MVVM.StarterKit.Converters.Strings.StringFormatConverter
+      objectReference: {fileID: 0}
+    - target: {fileID: 262625561069034077, guid: 28dcd3a91ac8d478283826b5db692c5d, type: 3}
+      propertyPath: managedReferences[4930929829536858214]._format
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 557253933507048913, guid: 28dcd3a91ac8d478283826b5db692c5d, type: 3}
       propertyPath: m_Name
       value: Add Technical Ability Point
@@ -1982,6 +2037,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Technical Ability Skill
       objectReference: {fileID: 0}
+    - target: {fileID: 5392158074146475983, guid: 28dcd3a91ac8d478283826b5db692c5d, type: 3}
+      propertyPath: _id
+      value: TechnicalAbility
+      objectReference: {fileID: 0}
+    - target: {fileID: 5392158074146475983, guid: 28dcd3a91ac8d478283826b5db692c5d, type: 3}
+      propertyPath: _view
+      value: 
+      objectReference: {fileID: 5315928923478365624}
     - target: {fileID: 5493942966006581099, guid: 28dcd3a91ac8d478283826b5db692c5d, type: 3}
       propertyPath: m_Name
       value: Remove Technical Ability Point
@@ -1991,6 +2054,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 28dcd3a91ac8d478283826b5db692c5d, type: 3}
+--- !u!114 &2337713538367418743 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5392158074146475983, guid: 28dcd3a91ac8d478283826b5db692c5d, type: 3}
+  m_PrefabInstance: {fileID: 7684813462261972664}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 308348858250478390a4e42699309252, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &3729468392672634957 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 6441355412146951925, guid: 28dcd3a91ac8d478283826b5db692c5d, type: 3}
@@ -2007,17 +2081,6 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 2487556152624000880, guid: 28dcd3a91ac8d478283826b5db692c5d, type: 3}
   m_PrefabInstance: {fileID: 7684813462261972664}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &7566321902574544101 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 262625561069034077, guid: 28dcd3a91ac8d478283826b5db692c5d, type: 3}
-  m_PrefabInstance: {fileID: 7684813462261972664}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 308348858250478390a4e42699309252, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &7846568134673888075 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 450761308143439347, guid: 28dcd3a91ac8d478283826b5db692c5d, type: 3}

@@ -1,4 +1,4 @@
-namespace Aspid.UI.StatsSample.Models
+namespace Aspid.UI.Stats.Models
 {
     public enum Skill
     {

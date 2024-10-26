@@ -1,9 +1,9 @@
+using UnityEngine;
 using Aspid.UI.MVVM.Mono;
 using Aspid.UI.MVVM.Mono.Views;
 using Aspid.UI.MVVM.Views.Generation;
-using UnityEngine;
 
-namespace Aspid.UI.StatsSample.Views
+namespace Aspid.UI.Stats.Views
 {
     [View]
     public partial class ReadOnlyStatsView : MonoView

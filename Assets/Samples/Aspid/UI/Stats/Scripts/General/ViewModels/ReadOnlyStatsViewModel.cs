@@ -1,8 +1,8 @@
 using System;
+using Aspid.UI.Stats.Models;
 using Aspid.UI.MVVM.ViewModels.Generation;
-using Aspid.UI.StatsSample.Models;
 
-namespace Aspid.UI.StatsSample.ViewModels
+namespace Aspid.UI.Stats.ViewModels
 {
     [ViewModel]
     public partial class ReadOnlyStatsViewModel : IDisposable

@@ -1,14 +1,14 @@
-using Aspid.UI.MVVM.Mono;
-using Aspid.UI.MVVM.Mono.Views;
-using Aspid.UI.MVVM.StarterKit.Binders.Commands;
-using Aspid.UI.MVVM.Views.Generation;
-using Aspid.UI.StatsSample.Models;
 using UnityEngine;
+using Aspid.UI.MVVM.Mono;
+using Aspid.UI.Stats.Models;
+using Aspid.UI.MVVM.Mono.Views;
+using Aspid.UI.MVVM.Views.Generation;
+using Aspid.UI.MVVM.StarterKit.Binders.Commands;
 
-namespace Aspid.UI.StatsSample.Views
+namespace Aspid.UI.Stats.Views
 {
     [View]
-    public partial class CreateStatsView : ReadOnlyStatsView
+    public partial class EditStatsView : ReadOnlyStatsView
     {
         [RequireBinder(typeof(bool))]
         [SerializeField] private MonoBinder[] _isDraft;

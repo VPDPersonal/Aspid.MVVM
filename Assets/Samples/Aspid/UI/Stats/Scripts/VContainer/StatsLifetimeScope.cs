@@ -1,10 +1,10 @@
-using Aspid.UI.StatsSample.Models;
-using Aspid.UI.StatsSample.ViewModels;
-using UnityEngine;
 using VContainer;
+using UnityEngine;
 using VContainer.Unity;
+using Aspid.UI.Stats.Models;
+using Aspid.UI.Stats.ViewModels;
 
-namespace Aspid.UI.StatsSample.Infrastructure
+namespace Aspid.UI.Stats.VContainer
 {
     public sealed class StatsLifetimeScope : LifetimeScope
     {
@@ -17,8 +17,6 @@ namespace Aspid.UI.StatsSample.Infrastructure
         
         protected override void Configure(IContainerBuilder builder)
         {
-            Application.targetFrameRate = 60;
-
             ConfigureHero(builder);
             ConfigureViewModel(builder);
         }
@@ -31,7 +29,7 @@ namespace Aspid.UI.StatsSample.Infrastructure
 
         private void ConfigureViewModel(IContainerBuilder builder)
         {
-            builder.Register<CreateStatsViewModel>(_createStatsViewModelLifeTime);
+            builder.Register<EditStatsViewModel>(_createStatsViewModelLifeTime);
             builder.Register<ReadOnlyStatsViewModel>(_readOnlyStatsViewModelLifeTime);
         }
     }

@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 
-namespace Aspid.UI.StatsSample.Models
+namespace Aspid.UI.Stats.Models
 {
     public class Hero
     {

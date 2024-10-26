@@ -1,12 +1,12 @@
 using System;
+using Aspid.UI.Stats.Models;
 using Aspid.UI.MVVM.Commands;
 using Aspid.UI.MVVM.ViewModels.Generation;
-using Aspid.UI.StatsSample.Models;
 
-namespace Aspid.UI.StatsSample.ViewModels
+namespace Aspid.UI.Stats.ViewModels
 {
     [ViewModel]
-    public partial class CreateStatsViewModel : IDisposable
+    public partial class EditStatsViewModel : IDisposable
     {
         [Bind] private int _cool;
         [Bind] private int _power;
@@ -24,7 +24,7 @@ namespace Aspid.UI.StatsSample.ViewModels
         
         private readonly Hero _hero;
 
-        public CreateStatsViewModel(Hero hero)
+        public EditStatsViewModel(Hero hero)
         {
             _hero = hero;
             

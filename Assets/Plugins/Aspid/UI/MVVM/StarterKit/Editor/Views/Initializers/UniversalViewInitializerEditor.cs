@@ -1,3 +1,4 @@
+#if ASPID_UI_ZENJECT_INTEGRATION || ASPID_UI_VCONTAINER_INTEGRATION
 using UnityEditor;
 using UnityEngine;
 using Aspid.UI.MVVM.Views;
@@ -61,3 +62,4 @@ namespace Aspid.UI.MVVM.StarterKit.Views.Initializers
         }
     }
 }
+#endif

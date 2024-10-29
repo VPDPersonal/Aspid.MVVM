@@ -20,13 +20,17 @@ namespace Aspid.UI.MVVM
                 if (!IsBind) return;
                 ThrowExceptionIfInvalidData(viewModel, id);
 
+                OnBindingDebug(viewModel, id);
                 OnBinding(viewModel, id);
+                
                 viewModel.AddBinder(this, id);
                 OnBound(viewModel, id);
             }
         }
+
+        partial void OnBindingDebug(IViewModel viewModel, string id);
         
-        partial void OnBinding(IViewModel viewModel, string id);
+        protected virtual void OnBinding(IViewModel viewModel, string id) { }
         
         protected virtual void OnBound(IViewModel viewModel, string id) { }
         
@@ -39,13 +43,17 @@ namespace Aspid.UI.MVVM
                 if (!IsBind) return;
                 ThrowExceptionIfInvalidData(viewModel, id);
 
+                OnUnbindingDebug(viewModel, id);
                 OnUnbinding(viewModel, id);
+                
                 viewModel.RemoveBinder(this, id);
                 OnUnbound(viewModel, id);
             }
         }
+
+        partial void OnUnbindingDebug(IViewModel viewModel, string id);
         
-        partial void OnUnbinding(IViewModel viewModel, string id);
+        protected virtual void OnUnbinding(IViewModel viewModel, string id) { }
         
         protected virtual void OnUnbound(IViewModel viewModel, string id) { }
 

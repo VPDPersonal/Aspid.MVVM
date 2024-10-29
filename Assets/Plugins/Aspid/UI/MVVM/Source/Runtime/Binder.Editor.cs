@@ -9,7 +9,7 @@ namespace Aspid.UI.MVVM
         private string? _id;
         private IViewModel? _viewModel;
 
-        partial void OnBinding(IViewModel viewModel, string id)
+        partial void OnBindingDebug(IViewModel viewModel, string id)
         {
             if (_viewModel is not null) throw new Exception("Binder has already been bound");
 
@@ -17,7 +17,7 @@ namespace Aspid.UI.MVVM
             _viewModel = viewModel;
         }
 
-        partial void OnUnbinding(IViewModel viewModel, string id)
+        partial void OnUnbindingDebug(IViewModel viewModel, string id)
         {
             if (_id != id) throw new Exception($"Id mismatch. OldId {_id}; NewID {id}.");
             if (_viewModel != viewModel) throw new Exception($"ViewModel not match. Old ViewModel {_viewModel?.GetType()}; NewViewModel {viewModel.GetType()}.");

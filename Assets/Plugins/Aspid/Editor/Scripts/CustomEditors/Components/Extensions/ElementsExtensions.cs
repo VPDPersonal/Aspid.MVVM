@@ -1,0 +1,31 @@
+#nullable enable
+using UnityEngine;
+using UnityEngine.UIElements;
+using Aspid.CustomEditors.Extensions.VisualElements;
+
+namespace Aspid.CustomEditors.Components.Extensions
+{
+    public static class ElementsExtensions
+    {
+        public static T AddHeader<T>(this T element, Object obj, string iconPath)
+            where T : VisualElement
+        {
+            element.AddChild(Elements.CreateHeader(obj, iconPath));
+            return element;
+        }
+
+        public static T AddContainer<T>(this T element, StyleColor color, string? name = null)
+            where T : VisualElement
+        {
+            element.AddChild(Elements.CreateContainer(color, name));
+            return element;
+        }
+        
+        public static T AddTitle<T>(this T element, StyleColor color, string text, string? name = null)
+            where T : VisualElement
+        {
+            element.AddChild(Elements.CreateTitle(color, text, name));
+            return element;
+        }
+    }
+}

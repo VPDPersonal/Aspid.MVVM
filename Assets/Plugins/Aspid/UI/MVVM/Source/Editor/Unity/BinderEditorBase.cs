@@ -13,7 +13,7 @@ namespace Aspid.UI.MVVM.Unity
     { 
         protected TBinder Binder => (TBinder)target;
         
-        protected MonoView[] GetViewList()
+        protected List<MonoView> GetViewList()
         {
             var views = new List<MonoView>(1);
             
@@ -23,12 +23,12 @@ namespace Aspid.UI.MVVM.Unity
                     views.Add(view);
             }
 
-            return views.ToArray();
+            return views;
         }
 
-        protected string[] GetIdList(IView view)
+        protected List<string> GetIdList(IView view)
         {
-            if (view == null) return null;
+            if (view == null) return new List<string>();
             
             var binderFields = ViewUtility.GetMonoBinderValidableFields(view.GetType()).ToList();
             
@@ -42,6 +42,7 @@ namespace Aspid.UI.MVVM.Unity
                         {
                             if (!@interface.IsGenericType) return false;
                             if (@interface.GetGenericTypeDefinition() != typeof(IBinder<>)) return false;
+                            
                             return @interface.GetGenericArguments()[0].IsAssignableFrom(type);
                         });
                     }
@@ -50,10 +51,8 @@ namespace Aspid.UI.MVVM.Unity
                 })
                 .Select(field => ViewUtility.GetIdName(field.Name))
                 .ToList();
-            
-            ids.Insert(0, "No Id");
-            ids.Insert(1, null);
-            return ids.ToArray();
+
+            return ids;
         }
     }
 }

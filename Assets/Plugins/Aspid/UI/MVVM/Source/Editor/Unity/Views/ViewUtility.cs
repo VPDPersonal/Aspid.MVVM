@@ -180,7 +180,7 @@ namespace Aspid.UI.MVVM.Unity.Views
             
             if (!field.FieldType.IsArray)
             {
-                if (viewBinders.Length == 0 || viewBinders[0] == binder) return;
+                if (viewBinders.Length == 0 || viewBinders[0] != binder) return;
                 field.SetValue(view, null);
                 SaveView(view);
                 return;

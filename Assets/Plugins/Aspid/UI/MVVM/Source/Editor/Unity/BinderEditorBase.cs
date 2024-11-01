@@ -45,8 +45,8 @@ namespace Aspid.UI.MVVM.Unity
                             return @interface.GetGenericArguments()[0].IsAssignableFrom(type);
                         });
                     }
-
-                    return true;
+                    
+                    return Binder.GetType().IsAssignableFrom(field.FieldType);
                 })
                 .Select(field => ViewUtility.GetIdName(field.Name))
                 .ToList();

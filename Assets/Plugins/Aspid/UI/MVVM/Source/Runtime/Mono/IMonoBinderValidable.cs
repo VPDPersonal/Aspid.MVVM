@@ -8,6 +8,12 @@ namespace Aspid.UI.MVVM.Mono
         public IView? View { get; set; }
         
         public string? Id { get; set; }
+
+        public void Reset()
+        {
+            Id = null;
+            View = null;
+        }
     }
 }
 #endif

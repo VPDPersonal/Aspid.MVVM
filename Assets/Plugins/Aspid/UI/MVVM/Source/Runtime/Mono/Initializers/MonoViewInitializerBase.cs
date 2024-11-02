@@ -1,7 +1,6 @@
 using UnityEngine;
 using Aspid.UI.MVVM.Views;
 using Aspid.UI.MVVM.ViewModels;
-using Aspid.UI.MVVM.Views.Extensions;
 using Aspid.UI.MVVM.ViewModels.Extensions;
 
 namespace Aspid.UI.MVVM.Mono.Initializers
@@ -16,10 +15,6 @@ namespace Aspid.UI.MVVM.Mono.Initializers
 
         protected void Initialize() => View.Initialize(ViewModel);
 
-        protected virtual void OnDestroy()
-        {
-            var viewModel = View.DeinitializeView();
-            if (_isDisposeOnDestroy) viewModel?.DisposeViewModel();
-        }
+        protected virtual void OnDestroy() => ViewModel.DisposeViewModel();
     }
 }

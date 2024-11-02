@@ -60,8 +60,7 @@ namespace Aspid.UI.MVVM.Unity.Views
                     if (oldBinder == null) continue;
                     if (changedBinder.NewBinders.Contains(oldBinder)) continue;
 
-                    oldBinder.Id = null;
-                    oldBinder.View = null;
+                    oldBinder.Reset();
                 }
             }
             
@@ -128,8 +127,7 @@ namespace Aspid.UI.MVVM.Unity.Views
                             
                             if (!result)
                             {
-                                binder.Id = null;
-                                binder.View = null;
+                                binder.Reset();
                                 isChanged = true;
                             }
 

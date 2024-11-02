@@ -27,5 +27,12 @@ namespace Aspid.CustomEditors.Components.Extensions
             element.AddChild(Elements.CreateTitle(color, text, name));
             return element;
         }
+        
+        public static T AddHelpBox<T>(this T element, string text, HelpBoxMessageType type, string? name = "HelpBox")
+            where T : VisualElement
+        {
+            element.AddChild(Elements.CreateHelpBox(text, type, name));
+            return element;
+        }
     }
 }

@@ -26,14 +26,42 @@ namespace Aspid.UI.MVVM.Unity.Views
         
         protected VisualElement Root { get; private set; }
         
+        protected BindersWithFieldName Binders { get; private set; }
+        
+        protected string IconPath => MessageType switch
+        {
+            ErrorType.None => "Aspid Icon",
+            ErrorType.Error => "Aspid Icon Red",
+            ErrorType.Warning => "Aspid Icon Yellow",
+            _ => throw new ArgumentOutOfRangeException()
+        };
+        
         protected virtual string[] PropertiesExcluding => new[]
         {
             "m_Script",
         };
         
-        private void OnEnable()
+        protected virtual ErrorType MessageType => 
+            Root?.Q<VisualElement>("OtherBinders").style.display != DisplayStyle.None
+                ? ErrorType.Warning 
+                : ErrorType.None;
+        
+        protected virtual void OnEnable()
         {
             ViewUtility.FindAllMonoBinderValidableInChildren(View);
+            Binders = ViewUtility.GetMonoBinderValidableWithFieldName(View);
+        }
+
+        protected virtual void OnDisable()
+        {
+            if (View) return;
+
+            foreach (var binders in Binders.Values)
+            {
+                if (binders is null) return;
+                foreach (var binder in binders)
+                    binder?.Reset();
+            }
         }
 
         public sealed override VisualElement CreateInspectorGUI()
@@ -51,51 +79,72 @@ namespace Aspid.UI.MVVM.Unity.Views
         
         private VisualElement Build()
         {
-            var drawInspector = Elements.CreateContainer(EditorColor.LightContainer)
+            const string unassignedBindersWarning = "It is recommended not to leave unassigned Binders";
+
+            var baseInspector = Elements.CreateContainer(EditorColor.LightContainer)
+                .SetMargin(top: 10)
+                .SetName("Base Inspector")
                 .AddChild(new IMGUIContainer(DrawBaseInspector));
             
-            var helpBox = Elements.CreateHelpBox("It is recommended not to leave unassigned Binders", HelpBoxMessageType.Warning)
-                .SetHelpBoxFontSize(14);
-            
-            var otherBinders = Elements.CreateContainer(EditorColor.LightContainer)
-                .SetName("OtherBinders")
-                .AddTitle(EditorColor.LightText, "Other Binders")
-                .AddChild(helpBox)
-                .AddChild(new IMGUIContainer(DrawOtherBinders));
+            var otherBinders = CreateOtherBindersContainer()
+                .SetMargin(top: 10)
+                .SetName("OtherBinders");
     
-            var viewModel = Elements.CreateContainer(EditorColor.LightContainer)
-                .AddTitle(EditorColor.LightText, "View Model")
-                .AddChild(new IMGUIContainer(() => ViewModelDrawer.DrawViewModelData(target)));
+            var viewModel = CreateViewModelContainer()
+                .SetMargin(top: 10)
+                .SetName("ViewModel");
             
             return new VisualElement()
-                .AddChild(Elements.CreateHeader(target, GetIConPath(GetOtherBinders().Length)))
-                .AddChild(drawInspector
-                    .SetMargin(top: 10))
-                .AddChild(otherBinders
-                    .SetMargin(top: 10))
-                .AddChild(viewModel
-                    .SetMargin(top: 10));
+                .AddChild(Elements.CreateHeader(target, "Aspid Icon"))
+                .AddChild(baseInspector)
+                .AddChild(otherBinders)
+                .AddChild(viewModel);
+
+            VisualElement CreateViewModelContainer()
+            {
+                return Elements.CreateContainer(EditorColor.LightContainer)
+                    .AddTitle(EditorColor.LightText, "View Model")
+                    .AddChild(new IMGUIContainer(() => ViewModelDrawer.DrawViewModelData(target)));
+            } 
+
+            VisualElement CreateOtherBindersContainer()
+            {
+                var helpBox = Elements.CreateHelpBox(unassignedBindersWarning, HelpBoxMessageType.Warning)
+                    .SetHelpBoxFontSize(14);
+
+                return Elements.CreateContainer(EditorColor.LightContainer)
+                    .AddTitle(EditorColor.LightText, "Other Binders")
+                    .AddChild(helpBox)
+                    .AddChild(new IMGUIContainer(DrawOtherBinders));
+            }
         }
 
         #region Draw
-        protected virtual void DrawBaseInspector()
+        private void DrawBaseInspector()
         {
             var oldBindersDictionary = ViewUtility.GetMonoBinderValidableWithFieldName(View);
 
-            DrawBaseInspectorIternal();
-            
-            var newBindersDictionary = ViewUtility.GetMonoBinderValidableWithFieldName(View);
-            ViewUtility.ValidateMonoBinderValidablesInView(View, oldBindersDictionary, newBindersDictionary);
-        }
-
-        private void DrawBaseInspectorIternal()
-        {
             serializedObject.UpdateIfRequiredOrScript();
             {
+                OnDrawingBaseInspector();
                 DrawPropertiesExcluding(serializedObject, PropertiesExcluding);
             }
             serializedObject.ApplyModifiedProperties();
-        } 
+
+            var newBindersDictionary = ViewUtility.GetMonoBinderValidableWithFieldName(View);
+            ViewUtility.ValidateMonoBinderValidablesInView(View, oldBindersDictionary, newBindersDictionary);
+            Binders = ViewUtility.GetMonoBinderValidableWithFieldName(View);
+
+            serializedObject.UpdateIfRequiredOrScript();
+            {
+                OnDrewBaseInspector();
+            }
+            serializedObject.ApplyModifiedProperties();
+        }
+
+        protected virtual void OnDrawingBaseInspector() { }
+        
+        protected virtual void OnDrewBaseInspector() { }
         
         private void DrawOtherBinders()
         {
@@ -109,19 +158,22 @@ namespace Aspid.UI.MVVM.Unity.Views
                     EditorGUILayout.ObjectField((Component)binder, binder.GetType(), false);
             }
             
-            Root.Q<VisualElement>("Header").Q<Image>().SetImageFromResource(GetIConPath(binders.Length));
             Root.Q<VisualElement>("OtherBinders").style.display = binders.Length > 0 ? DisplayStyle.Flex : DisplayStyle.None;
+            Root.Q<VisualElement>("Header").Q<Image>().SetImageFromResource(IconPath);
         }
         #endregion
 
         private IMonoBinderValidable[] GetOtherBinders() => 
             View.GetComponentsInChildren<IMonoBinderValidable>(true)
                 .Where(binder => string.IsNullOrEmpty(binder.Id)).ToArray();
-
-        private static string GetIConPath(int otherBindersLenght) => otherBindersLenght == 0 
-            ? "Aspid Icon" 
-            : "Aspid Icon Yellow";
-
+        
+        protected enum ErrorType
+        {
+            None,
+            Warning,
+            Error,
+        }
+        
         protected class ViewModelDrawer
         {
             public static void DrawViewModelData(Object target)

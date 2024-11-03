@@ -2,11 +2,12 @@ using System;
 using Aspid.UI.MVVM.Mono;
 using System.Collections.Generic;
 using Aspid.Collections.Observable;
+using Aspid.UI.MVVM.Mono.Generation;
 using System.Collections.Specialized;
 
 namespace Aspid.UI.MVVM.StarterKit.Binders.Mono.Collections.Lists
 {
-    public abstract class ListMonoBinderBase<T> : MonoBinder, IBinder<IReadOnlyObservableList<T>>
+    public abstract partial class ListMonoBinderBase<T> : MonoBinder, IBinder<IReadOnlyObservableList<T>>
     {
         private IReadOnlyObservableList<T> _list;
 
@@ -18,6 +19,7 @@ namespace Aspid.UI.MVVM.StarterKit.Binders.Mono.Collections.Lists
             Unsubscribe();
         }
 
+        [BinderLog]
         public void SetValue(IReadOnlyObservableList<T> list)
         {
             if (_list != null)

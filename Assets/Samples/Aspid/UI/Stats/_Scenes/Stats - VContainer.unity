@@ -599,23 +599,23 @@ MonoBehaviour:
   m_GameObject: {fileID: 1292469562}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9851e6ff800943488c33cba4ba788778, type: 3}
+  m_Script: {fileID: 11500000, guid: fc337e21787248369dc0509272f8d5f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _isDisposeOnDestroy: 0
   _viewComponent:
-    Resolve: 1
+    Resolve: 0
+    Mono: {fileID: 1292469564}
     Type:
       _typeName: 
-    Mono: {fileID: 1292469564}
     References:
       rid: -2
   _viewModelComponent:
-    Resolve: 0
+    Resolve: 2
+    Mono: {fileID: 0}
     Type:
       _typeName: Aspid.UI.Stats.ViewModels.EditStatsViewModel, Aspid.UI.Samples.Stats,
         Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-    Mono: {fileID: 0}
     References:
       rid: -2
   references:
@@ -1398,39 +1398,6 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 2984221494839884996, guid: 74b8ba5986ae646a6a44c88b05165b97, type: 3}
   m_PrefabInstance: {fileID: 6497330040264628418}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &2896256763567546018
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1863818018642850250}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9851e6ff800943488c33cba4ba788778, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _isDisposeOnDestroy: 0
-  _viewComponent:
-    Resolve: 1
-    Type:
-      _typeName: 
-    Mono: {fileID: 6497330040264628419}
-    References:
-      rid: -2
-  _viewModelComponent:
-    Resolve: 0
-    Type:
-      _typeName: Aspid.UI.Stats.ViewModels.ReadOnlyStatsViewModel, Aspid.UI.Samples.Stats,
-        Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-    Mono: {fileID: 0}
-    References:
-      rid: -2
-  references:
-    version: 2
-    RefIds:
-    - rid: -2
-      type: {class: , ns: , asm: }
 --- !u!1001 &6497330040264628418
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1633,7 +1600,7 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 2550778387010145548, guid: 74b8ba5986ae646a6a44c88b05165b97, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 2896256763567546018}
+      addedObject: {fileID: 6497330040264628420}
   m_SourcePrefab: {fileID: 100100000, guid: 74b8ba5986ae646a6a44c88b05165b97, type: 3}
 --- !u!114 &6497330040264628419 stripped
 MonoBehaviour:
@@ -1646,6 +1613,39 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1e9c7ee5320344569a847caf8d38500, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &6497330040264628420
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1863818018642850250}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fc337e21787248369dc0509272f8d5f5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _isDisposeOnDestroy: 0
+  _viewComponent:
+    Resolve: 0
+    Mono: {fileID: 6497330040264628419}
+    Type:
+      _typeName: 
+    References:
+      rid: -2
+  _viewModelComponent:
+    Resolve: 2
+    Mono: {fileID: 0}
+    Type:
+      _typeName: Aspid.UI.Stats.ViewModels.ReadOnlyStatsViewModel, Aspid.UI.Samples.Stats,
+        Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    References:
+      rid: -2
+  references:
+    version: 2
+    RefIds:
+    - rid: -2
+      type: {class: , ns: , asm: }
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

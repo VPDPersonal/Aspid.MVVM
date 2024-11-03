@@ -255,23 +255,23 @@ MonoBehaviour:
   m_GameObject: {fileID: 145963208}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9851e6ff800943488c33cba4ba788778, type: 3}
+  m_Script: {fileID: 11500000, guid: fc337e21787248369dc0509272f8d5f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _isDisposeOnDestroy: 0
   _viewComponent:
-    Resolve: 1
+    Resolve: 0
+    Mono: {fileID: 145963210}
     Type:
       _typeName: 
-    Mono: {fileID: 145963210}
     References:
       rid: -2
   _viewModelComponent:
-    Resolve: 0
+    Resolve: 2
+    Mono: {fileID: 0}
     Type:
       _typeName: Aspid.UI.HelloWorld.ViewModels.CommandSpeakerViewModel1, Aspid.UI.Samples.HelloWorld,
         Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-    Mono: {fileID: 0}
     References:
       rid: -2
   references:

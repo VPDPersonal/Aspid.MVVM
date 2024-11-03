@@ -80,6 +80,7 @@ namespace Aspid.UI.MVVM.Unity
                 {
                     SaveView(value.newValue);
                     
+                    _id.stringValue = string.Empty;
                     var newIdDropdown = DropdownFields.GetIdDropdown(this);
                     idDropdown.choices = newIdDropdown.choices.ToList();
                     idDropdown.value = newIdDropdown.value;

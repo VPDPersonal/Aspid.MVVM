@@ -60,8 +60,15 @@ namespace Aspid.UI.MVVM.Unity.Views
                     if (oldBinder == null) continue;
                     if (changedBinder.NewBinders.Contains(oldBinder)) continue;
 
-                    oldBinder.Id = null;
-                    oldBinder.View = null;
+                    oldBinder.Reset();
+                }
+
+                foreach (var newBinder in changedBinder.NewBinders)
+                {
+                    if (!IsMonoBinderValidableChild(view, newBinder))
+                    {
+                        newBinder.Reset();
+                    }
                 }
             }
             
@@ -119,8 +126,10 @@ namespace Aspid.UI.MVVM.Unity.Views
         
                             var interfaces = binder.GetType()
                                 .GetInterfaces();
-        
-                            var result = interfaces.Any(i =>
+
+                            var result = IsMonoBinderValidableChild(view, binder);
+                            
+                            result = result && interfaces.Any(i =>
                                 i.IsGenericType
                                 && i.GetGenericTypeDefinition() == typeof(IBinder<>)
                                 && requiredTypes.Any(requiredType =>
@@ -128,8 +137,7 @@ namespace Aspid.UI.MVVM.Unity.Views
                             
                             if (!result)
                             {
-                                binder.Id = null;
-                                binder.View = null;
+                                binder.Reset();
                                 isChanged = true;
                             }
 
@@ -297,6 +305,12 @@ namespace Aspid.UI.MVVM.Unity.Views
                 return typeof(IMonoBinderValidable).IsAssignableFrom(fieldType) 
                     || typeof(IMonoBinderValidable[]).IsAssignableFrom(fieldType);
             });
+        }
+
+        public static bool IsMonoBinderValidableChild(IView view, IMonoBinderValidable binder)
+        {
+            if (view is not Component monoView || binder is not Component monoBinder) return true;
+            return monoBinder.transform.IsChildOf(monoView.transform) || monoBinder.transform == monoView.transform;
         }
         
         /// <summary>

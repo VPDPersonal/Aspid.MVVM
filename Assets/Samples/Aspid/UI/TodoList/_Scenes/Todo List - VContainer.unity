@@ -1527,23 +1527,23 @@ MonoBehaviour:
   m_GameObject: {fileID: 1322158805}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9851e6ff800943488c33cba4ba788778, type: 3}
+  m_Script: {fileID: 11500000, guid: fc337e21787248369dc0509272f8d5f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _isDisposeOnDestroy: 0
   _viewComponent:
-    Resolve: 1
+    Resolve: 0
+    Mono: {fileID: 1322158807}
     Type:
       _typeName: 
-    Mono: {fileID: 1322158807}
     References:
       rid: -2
   _viewModelComponent:
-    Resolve: 0
+    Resolve: 2
+    Mono: {fileID: 0}
     Type:
       _typeName: Aspid.UI.TodoList.ViewModels.TodoStorageViewModel, Aspid.UI.Samples.TodoList,
         Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-    Mono: {fileID: 0}
     References:
       rid: -2
   references:
@@ -1957,6 +1957,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _view: {fileID: 1322158807}
   _id: TodoItemViewModels
+  _isDebug: 0
+  _log: []
   _prefab: {fileID: 5431838984888759959, guid: 5ca3370f0dcd04136bab560024ed932a, type: 3}
   _container: {fileID: 1797679511}
   _initialCount: 0

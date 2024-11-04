@@ -4,27 +4,27 @@ using System.Diagnostics;
 namespace Aspid.UI.MVVM.Mono.Views
 {
     /// <summary>
-    /// Атрибут, используемый для указания обязательного типа для Binder,
-    /// реализующих интерфейс <see cref="IMonoBinderValidable"/>.
+    /// Attribute used to specify a required type for Binders
+    /// that implement the <see cref="IMonoBinderValidable"/> interface.
     /// </summary>
     [Conditional("UNITY_EDITOR")]
     [AttributeUsage(AttributeTargets.Field, AllowMultiple = true)]
     public sealed class RequireBinderAttribute : Attribute
     {
         /// <summary>
-        /// Тип, который должен поддерживать Binder.
+        /// The type that the Binder must support.
         /// </summary>
         /// <example>
-        /// Если указанный тип — <c>string</c>, то Binder должен реализовывать интерфейс <c>IBinder{string}</c>.
-        /// Это гарантирует, что Binder поддерживает работу с указанным типом во время выполнения.
+        /// If the specified type is <c>string</c>, then the Binder must implement the interface <c>IBinder{string}</c>.
+        /// This ensures that the Binder supports working with the specified type at runtime.
         /// </example>
         public Type Type { get; }
         
         /// <summary>
-        /// Инициализирует новый экземпляр атрибута <see cref="RequireBinderAttribute"/> 
-        /// с указанным типом, который должен поддерживаться Binder.
+        /// Initializes a new instance of the <see cref="RequireBinderAttribute"/> 
+        /// with the specified type that must be supported by the Binder.
         /// </summary>
-        /// <param name="type">Тип, который должен поддерживаться Binder.</param>
+        /// <param name="type">The type that must be supported by the Binder.</param>
         public RequireBinderAttribute(Type type)
         {
             Type = type;

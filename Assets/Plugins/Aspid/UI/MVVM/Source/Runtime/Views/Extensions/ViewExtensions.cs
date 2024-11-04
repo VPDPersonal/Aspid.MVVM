@@ -4,16 +4,16 @@ using Aspid.UI.MVVM.ViewModels;
 namespace Aspid.UI.MVVM.Views.Extensions
 {
     /// <summary>
-    /// Предоставляет методы расширения для интерфейса <see cref="IView"/>.
+    /// Provides extension methods for the <see cref="IView"/> interface.
     /// </summary>
     public static class ViewExtensions
     {
         /// <summary>
-        /// Освобождает View, если реализует <see cref="IDisposable"/> и возвращает связанный <see cref="IViewModel"/>.
+        /// Disposes the view if it implements <see cref="IDisposable"/> and returns the associated <see cref="IViewModel"/>.
         /// </summary>
-        /// <param name="view"></param>
-        /// <typeparam name="T">Тип View, который реализует <see cref="IView"/> и <see cref="IDisposable"/>.</typeparam>
-        /// <returns>Связанный <see cref="IViewModel"/> или <c>null</c>, если его нет.</returns>
+        /// <param name="view">The view to be disposed.</param>
+        /// <typeparam name="T">The type of the view that implements <see cref="IView"/> and <see cref="IDisposable"/>.</typeparam>
+        /// <returns>The associated <see cref="IViewModel"/>, or <c>null</c> if none is present.</returns>
         public static IViewModel? DisposeView<T>(this T view)
             where T : IView, IDisposable
         {
@@ -24,10 +24,10 @@ namespace Aspid.UI.MVVM.Views.Extensions
         }
         
         /// <summary>
-        /// Освобождает View, если реализует <see cref="IDisposable"/> и возвращает связанный <see cref="IViewModel"/>.
+        /// Disposes the view if it implements <see cref="IDisposable"/> and returns the associated <see cref="IViewModel"/>.
         /// </summary>
-        /// <param name="view">View для освобождения.</param>
-        /// <returns>Связанный <see cref="IViewModel"/> или <c>null</c>, если его нет.</returns>
+        /// <param name="view">The view to be disposed.</param>
+        /// <returns>The associated <see cref="IViewModel"/>, or <c>null</c> if none is present.</returns>
         public static IViewModel? DisposeView(this IView view)
         {
             var viewModel = view.ViewModel;
@@ -39,11 +39,11 @@ namespace Aspid.UI.MVVM.Views.Extensions
         }
         
         /// <summary>
-        /// Деинициализирует View  и возвращает связанный <see cref="IViewModel"/>.
+        /// Deinitializes the view and returns the associated <see cref="IViewModel"/>.
         /// </summary>
-        /// <typeparam name="T">Тип View, который реализует <see cref="IView"/>.</typeparam>
-        /// <param name="view">View для деинициализации.</param>
-        /// <returns>Связанный <see cref="IViewModel"/> или <c>null</c>, если его нет.</returns>
+        /// <typeparam name="T">The type of the view that implements <see cref="IView"/>.</typeparam>
+        /// <param name="view">The view to be deinitialized.</param>
+        /// <returns>The associated <see cref="IViewModel"/>, or <c>null</c> if none is present.</returns>
         public static IViewModel? DeinitializeView<T>(this T view)
             where T : IView
         {

@@ -14,12 +14,12 @@ namespace Aspid.UI.MVVM.Mono.Views
     public abstract partial class MonoView
     {
         /// <summary>
-        /// Асинхронно создает экземпляр View и инициализирует его с заданным <see cref="IViewModel"/>.
+        /// Asynchronously creates an instance of the View and initializes it with the specified <see cref="IViewModel"/>.
         /// </summary>
-        /// <typeparam name="T">Тип View, который должен наследовать от <see cref="Object"/> и реализовывать <see cref="IView"/>.</typeparam>
-        /// <param name="original">Исходный объект View, который будет инстанцирован.</param>
-        /// <param name="viewModel">ViewModel для инициализации.</param>
-        /// <returns>Операция, представляющая асинхронный процесс создания экземпляра View.</returns>
+        /// <typeparam name="T">The type of View, which must inherit from <see cref="Object"/> and implement <see cref="IView"/>.</typeparam>
+        /// <param name="original">The original View object to be instantiated.</param>
+        /// <param name="viewModel">The ViewModel for initialization.</param>
+        /// <returns>An operation representing the asynchronous process of creating the View instance.</returns>
         public static AsyncInstantiateOperation<T> InstantiateAsync<T>(
             T original,
             IViewModel viewModel)
@@ -31,14 +31,14 @@ namespace Aspid.UI.MVVM.Mono.Views
         }
 
         /// <summary>
-        /// Асинхронно создает экземпляр View с указанным родителем
-        /// и инициализирует его с заданным <see cref="IViewModel"/>.
+        /// Asynchronously creates an instance of the View with the specified parent
+        /// and initializes it with the specified <see cref="IViewModel"/>.
         /// </summary>
-        /// <typeparam name="T">Тип View, который должен наследовать от <see cref="Object"/> и реализовывать <see cref="IView"/>.</typeparam>
-        /// <param name="original">Исходный объект View, который будет инстанцирован.</param>
-        /// <param name="parent">Родительский объект для нового экземпляра View.</param>
-        /// <param name="viewModel">ViewModel для инициализации.</param>
-        /// <returns>Операция, представляющая асинхронный процесс создания экземпляра View.</returns>
+        /// <typeparam name="T">The type of View, which must inherit from <see cref="Object"/> and implement <see cref="IView"/>.</typeparam>
+        /// <param name="original">The original View object to be instantiated.</param>
+        /// <param name="parent">The parent object for the new View instance.</param>
+        /// <param name="viewModel">The ViewModel for initialization.</param>
+        /// <returns>An operation representing the asynchronous process of creating the View instance.</returns>
         public static AsyncInstantiateOperation<T> InstantiateAsync<T>(
             T original,
             Transform parent,
@@ -51,15 +51,15 @@ namespace Aspid.UI.MVVM.Mono.Views
         }
         
         /// <summary>
-        /// Асинхронно создает экземпляр View с заданными позицией и вращением,
-        /// и инициализирует его с заданным <see cref="IViewModel"/>.
+        /// Asynchronously creates an instance of the View with specified position and rotation,
+        /// and initializes it with the specified <see cref="IViewModel"/>.
         /// </summary>
-        /// <typeparam name="T">Тип View, который должен наследовать от <see cref="Object"/> и реализовывать <see cref="IView"/>.</typeparam>
-        /// <param name="original">Исходный объект View, который будет инстанцирован.</param>
-        /// <param name="position">Позиция для нового экземпляра View.</param>
-        /// <param name="rotation">Вращение для нового экземпляра View.</param>
-        /// <param name="viewModel">ViewModel для инициализации.</param>
-        /// <returns>Операция, представляющая асинхронный процесс создания экземпляра View.</returns>
+        /// <typeparam name="T">The type of View, which must inherit from <see cref="Object"/> and implement <see cref="IView"/>.</typeparam>
+        /// <param name="original">The original View object to be instantiated.</param>
+        /// <param name="position">The position for the new View instance.</param>
+        /// <param name="rotation">The rotation for the new View instance.</param>
+        /// <param name="viewModel">The ViewModel for initialization.</param>
+        /// <returns>An operation representing the asynchronous process of creating the View instance.</returns>
         public static AsyncInstantiateOperation<T> InstantiateAsync<T>(
             T original,
             Vector3 position,
@@ -73,16 +73,16 @@ namespace Aspid.UI.MVVM.Mono.Views
         }
 
         /// <summary>
-        /// Асинхронно создает экземпляр View с заданными родителем, позицией и вращением,
-        /// и инициализирует его с заданным <see cref="IViewModel"/>.
+        /// Asynchronously creates an instance of the View with specified parent, position, and rotation,
+        /// and initializes it with the specified <see cref="IViewModel"/>.
         /// </summary>
-        /// <typeparam name="T">Тип View, который должен наследовать от <see cref="Object"/> и реализовывать <see cref="IView"/>.</typeparam>
-        /// <param name="original">Исходный объект View, который будет инстанцирован.</param>
-        /// <param name="parent">Родительский объект для нового экземпляра View.</param>
-        /// <param name="position">Позиция для нового экземпляра View.</param>
-        /// <param name="rotation">Вращение для нового экземпляра View.</param>
-        /// <param name="viewModel">ViewModel для инициализации.</param>
-        /// <returns>Операция, представляющая асинхронный процесс создания экземпляра View.</returns>
+        /// <typeparam name="T">The type of View, which must inherit from <see cref="Object"/> and implement <see cref="IView"/>.</typeparam>
+        /// <param name="original">The original View object to be instantiated.</param>
+        /// <param name="parent">The parent object for the new View instance.</param>
+        /// <param name="position">The position for the new View instance.</param>
+        /// <param name="rotation">The rotation for the new View instance.</param>
+        /// <param name="viewModel">The ViewModel for initialization.</param>
+        /// <returns>An operation representing the asynchronous process of creating the View instance.</returns>
         public static AsyncInstantiateOperation<T> InstantiateAsync<T>(
             T original,
             Transform parent,
@@ -96,14 +96,15 @@ namespace Aspid.UI.MVVM.Mono.Views
             return operation;
         }
 
+
         /// <summary>
-        /// Асинхронно создает несколько экземпляров View и инициализирует их с заданным <see cref="IViewModel"/>.
+        /// Asynchronously creates multiple instances of the View and initializes them with the specified <see cref="IViewModel"/>.
         /// </summary>
-        /// <typeparam name="T">Тип View, который должен наследовать от <see cref="Object"/> и реализовывать <see cref="IView"/>.</typeparam>
-        /// <param name="original">Исходный объект View, который будет инстанцирован.</param>
-        /// <param name="count">Количество экземпляров, которые необходимо создать.</param>
-        /// <param name="viewModel">ViewModel для инициализации.</param>
-        /// <returns>Операция, представляющая асинхронный процесс создания экземпляров View.</returns>
+        /// <typeparam name="T">The type of View, which must inherit from <see cref="Object"/> and implement <see cref="IView"/>.</typeparam>
+        /// <param name="original">The original View object to be instantiated.</param>
+        /// <param name="count">The number of instances to create.</param>
+        /// <param name="viewModel">The ViewModel for initialization.</param>
+        /// <returns>An operation representing the asynchronous process of creating the View instances.</returns>
         public static AsyncInstantiateOperation<T> InstantiateAsync<T>(
             T original,
             int count,
@@ -121,16 +122,17 @@ namespace Aspid.UI.MVVM.Mono.Views
             return operation;
         }
 
+
         /// <summary>
-        /// Асинхронно создает несколько экземпляров View с указанным родителем
-        /// и инициализирует их с заданным <see cref="IViewModel"/>.
+        /// Asynchronously creates multiple instances of the View with the specified parent
+        /// and initializes them with the specified <see cref="IViewModel"/>.
         /// </summary>
-        /// <typeparam name="T">Тип View, который должен наследовать от <see cref="Object"/> и реализовывать <see cref="IView"/>.</typeparam>
-        /// <param name="original">Исходный объект View, который будет инстанцирован.</param>
-        /// <param name="count">Количество экземпляров, которые необходимо создать.</param>
-        /// <param name="parent">Родительский объект для новых экземпляров View.</param>
-        /// <param name="viewModel">ViewModel для инициализации.</param>
-        /// <returns>Операция, представляющая асинхронный процесс создания экземпляров View.</returns>
+        /// <typeparam name="T">The type of View, which must inherit from <see cref="Object"/> and implement <see cref="IView"/>.</typeparam>
+        /// <param name="original">The original View object to be instantiated.</param>
+        /// <param name="count">The number of instances to create.</param>
+        /// <param name="parent">The parent object for the new View instances.</param>
+        /// <param name="viewModel">The ViewModel for initialization.</param>
+        /// <returns>An operation representing the asynchronous process of creating the View instances.</returns>
         public static AsyncInstantiateOperation<T> InstantiateAsync<T>(
             T original,
             int count,
@@ -150,16 +152,16 @@ namespace Aspid.UI.MVVM.Mono.Views
         }
 
         /// <summary>
-        /// Асинхронно создает несколько экземпляров View с заданными позицией и вращением, 
-        /// и инициализирует их с заданным <see cref="IViewModel"/>.
+        /// Asynchronously creates multiple instances of the View with specified position and rotation,
+        /// and initializes them with the specified <see cref="IViewModel"/>.
         /// </summary>
-        /// <typeparam name="T">Тип View, который должен наследовать от <see cref="Object"/> и реализовывать <see cref="IView"/>.</typeparam>
-        /// <param name="original">Исходный объект View, который будет инстанцирован.</param>
-        /// <param name="count">Количество экземпляров, которые необходимо создать.</param>
-        /// <param name="position">Позиция для новых экземпляров View.</param>
-        /// <param name="rotation">Вращение для новых экземпляров View.</param>
-        /// <param name="viewModel">ViewModel для инициализации.</param>
-        /// <returns>Операция, представляющая асинхронный процесс создания экземпляров View.</returns>
+        /// <typeparam name="T">The type of View, which must inherit from <see cref="Object"/> and implement <see cref="IView"/>.</typeparam>
+        /// <param name="original">The original View object to be instantiated.</param>
+        /// <param name="count">The number of instances to create.</param>
+        /// <param name="position">The position for the new View instances.</param>
+        /// <param name="rotation">The rotation for the new View instances.</param>
+        /// <param name="viewModel">The ViewModel for initialization.</param>
+        /// <returns>An operation representing the asynchronous process of creating the View instances.</returns>
         public static AsyncInstantiateOperation<T> InstantiateAsync<T>(
             T original,
             int count,
@@ -180,16 +182,16 @@ namespace Aspid.UI.MVVM.Mono.Views
         }
 
         /// <summary>
-        /// Асинхронно создает несколько View с заданными позициями и вращениями, 
-        /// и инициализирует их с заданным <see cref="IViewModel"/>.
+        /// Asynchronously creates multiple View instances with specified positions and rotations,
+        /// and initializes them with the specified <see cref="IViewModel"/>.
         /// </summary>
-        /// <typeparam name="T">Тип View, который должен наследовать от <see cref="Object"/> и реализовывать <see cref="IView"/>.</typeparam>
-        /// <param name="original">Исходный объект View, который будет инстанцирован.</param>
-        /// <param name="count">Количество экземпляров, которые необходимо создать.</param>
-        /// <param name="positions">Массив позиций для новых экземпляров View.</param>
-        /// <param name="rotations">Массив вращений для новых экземпляров View.</param>
-        /// <param name="viewModel">Модель представления для View.</param>
-        /// <returns>Операция, представляющая асинхронный процесс создания экземпляров View.</returns>
+        /// <typeparam name="T">The type of View, which must inherit from <see cref="Object"/> and implement <see cref="IView"/>.</typeparam>
+        /// <param name="original">The original View object to be instantiated.</param>
+        /// <param name="count">The number of instances to create.</param>
+        /// <param name="positions">An array of positions for the new View instances.</param>
+        /// <param name="rotations">An array of rotations for the new View instances.</param>
+        /// <param name="viewModel">The ViewModel for the View.</param>
+        /// <returns>An operation representing the asynchronous process of creating the View instances.</returns>
         public static AsyncInstantiateOperation<T> InstantiateAsync<T>(
             T original,
             int count,
@@ -209,18 +211,19 @@ namespace Aspid.UI.MVVM.Mono.Views
             return operation;
         }
 
+
         /// <summary>
-        /// Асинхронно создает экземпляр View с заданными родителем, позицией и вращением,
-        /// и инициализирует его с заданным <see cref="IViewModel"/>.
+        /// Asynchronously creates an instance of the View with specified parent, position, and rotation,
+        /// and initializes it with the specified <see cref="IViewModel"/>.
         /// </summary>
-        /// <typeparam name="T">Тип View, который должен наследовать от <see cref="Object"/> и реализовывать <see cref="IView"/>.</typeparam>
-        /// <param name="original">Исходный объект View, который будет инстанцирован.</param>
-        /// <param name="count">Количество экземпляров, которые необходимо создать.</param>
-        /// <param name="parent">Родительский объект для нового экземпляра View.</param>
-        /// <param name="position">Позиция для нового экземпляра View.</param>
-        /// <param name="rotation">Вращение для нового экземпляра View.</param>
-        /// <param name="viewModel">ViewModel для инициализации.</param>
-        /// <returns>Операция, представляющая асинхронный процесс создания экземпляра View.</returns>
+        /// <typeparam name="T">The type of View, which must inherit from <see cref="Object"/> and implement <see cref="IView"/>.</typeparam>
+        /// <param name="original">The original View object to be instantiated.</param>
+        /// <param name="count">The number of instances to create.</param>
+        /// <param name="parent">The parent object for the new View instance.</param>
+        /// <param name="position">The position for the new View instance.</param>
+        /// <param name="rotation">The rotation for the new View instance.</param>
+        /// <param name="viewModel">The ViewModel for initialization.</param>
+        /// <returns>An operation representing the asynchronous process of creating the View instance.</returns>
         public static AsyncInstantiateOperation<T> InstantiateAsync<T>(
             T original,
             int count,
@@ -241,18 +244,19 @@ namespace Aspid.UI.MVVM.Mono.Views
             return operation;
         }
 
+
         /// <summary>
-        /// Асинхронно создает несколько экземпляров View с заданными родителем, позициями и вращениями, 
-        /// и инициализирует их с заданным <see cref="IViewModel"/>.
+        /// Asynchronously creates multiple View instances with the specified parent
+        /// and initializes them with the specified <see cref="IViewModel"/>.
         /// </summary>
-        /// <typeparam name="T">Тип View, который должен наследовать от <see cref="Object"/> и реализовывать <see cref="IView"/>.</typeparam>
-        /// <param name="original">Исходный объект View, который будет инстанцирован.</param>
-        /// <param name="count">Количество экземпляров, которые необходимо создать.</param>
-        /// <param name="parent">Родительский объект для новых экземпляров View.</param>
-        /// <param name="positions">Массив позиций для новых экземпляров View.</param>
-        /// <param name="rotations">Массив вращений для новых экземпляров View.</param>
-        /// <param name="viewModel">ViewModel для инициализации.</param>
-        /// <returns>Операция, представляющая асинхронный процесс создания экземпляров View.</returns>
+        /// <typeparam name="T">The type of View, which must inherit from <see cref="Object"/> and implement <see cref="IView"/>.</typeparam>
+        /// <param name="original">The original View object to be instantiated.</param>
+        /// <param name="count">The number of instances to create.</param>
+        /// <param name="parent">The parent object for the new View instances.</param>
+        /// <param name="positions">An array of positions for the new View instances.</param>
+        /// <param name="rotations">An array of rotations for the new View instances.</param>
+        /// <param name="viewModel">The ViewModel for the View.</param>
+        /// <returns>An operation representing the asynchronous process of creating the View instances.</returns>
         public static AsyncInstantiateOperation<T> InstantiateAsync<T>(
             T original,
             int count,
@@ -275,18 +279,18 @@ namespace Aspid.UI.MVVM.Mono.Views
 
 #if UNITY_2023_1_OR_NEWER
         /// <summary>
-        /// Асинхронно создает несколько экземпляров View с заданными родителем, позицией и вращением, 
-        /// и инициализирует их с заданным <see cref="IViewModel"/>. Поддерживает отмену через <see cref="CancellationToken"/>.
+        /// Asynchronously creates multiple instances of View with the specified parent, position, and rotation, 
+        /// and initializes them with the given <see cref="IViewModel"/>. Supports cancellation via <see cref="CancellationToken"/>.
         /// </summary>
-        /// <typeparam name="T">Тип View, который должен наследовать от <see cref="Object"/> и реализовывать <see cref="IView"/>.</typeparam>
-        /// <param name="original">Исходный объект View, который будет инстанцирован.</param>
-        /// <param name="count">Количество экземпляров, которые необходимо создать.</param>
-        /// <param name="parent">Родительский объект для новых экземпляров View.</param>
-        /// <param name="position">Позиция для новых экземпляров View.</param>
-        /// <param name="rotation">Вращение для новых экземпляров View.</param>
-        /// <param name="viewModel">ViewModel для инициализации.</param>
-        /// <param name="cancellationToken">Токен отмены для остановки процесса создания.</param>
-        /// <returns>Операция, представляющая асинхронный процесс создания экземпляров View.</returns>
+        /// <typeparam name="T">The type of View that must inherit from <see cref="Object"/> and implement <see cref="IView"/>.</typeparam>
+        /// <param name="original">The original View object that will be instantiated.</param>
+        /// <param name="count">The number of instances to create.</param>
+        /// <param name="parent">The parent object for the new View instances.</param>
+        /// <param name="position">The position for the new View instances.</param>
+        /// <param name="rotation">The rotation for the new View instances.</param>
+        /// <param name="viewModel">The ViewModel for initialization.</param>
+        /// <param name="cancellationToken">The cancellation token for stopping the creation process.</param>
+        /// <returns>An operation representing the asynchronous process of creating View instances.</returns>
         public static AsyncInstantiateOperation<T> InstantiateAsync<T>(
             T original,
             int count,
@@ -307,21 +311,20 @@ namespace Aspid.UI.MVVM.Mono.Views
             
             return operation;
         }
-
         
         /// <summary>
-        /// Асинхронно создает несколько экземпляров View с заданными родителем, позициями и вращениями, 
-        /// и инициализирует их с заданным <see cref="IViewModel"/>. Поддерживает отмену через <see cref="CancellationToken"/>.
+        /// Asynchronously creates multiple instances of View with the specified parent, positions, and rotations, 
+        /// and initializes them with the given <see cref="IViewModel"/>. Supports cancellation via <see cref="CancellationToken"/>.
         /// </summary>
-        /// <typeparam name="T">Тип View, который должен наследовать от <see cref="Object"/> и реализовывать <see cref="IView"/>.</typeparam>
-        /// <param name="original">Исходный объект View, который будет инстанцирован.</param>
-        /// <param name="count">Количество экземпляров, которые необходимо создать.</param>
-        /// <param name="parent">Родительский объект для новых экземпляров View.</param>
-        /// <param name="positions">Массив позиций для новых экземпляров View.</param>
-        /// <param name="rotations">Массив вращений для новых экземпляров View.</param>
-        /// <param name="viewModel">ViewModel для инициализации.</param>
-        /// <param name="cancellationToken">Токен отмены для остановки процесса создания.</param>
-        /// <returns>Операция, представляющая асинхронный процесс создания экземпляров View.</returns>
+        /// <typeparam name="T">The type of View that must inherit from <see cref="Object"/> and implement <see cref="IView"/>.</typeparam>
+        /// <param name="original">The original View object that will be instantiated.</param>
+        /// <param name="count">The number of instances to create.</param>
+        /// <param name="parent">The parent object for the new View instances.</param>
+        /// <param name="positions">An array of positions for the new View instances.</param>
+        /// <param name="rotations">An array of rotations for the new View instances.</param>
+        /// <param name="viewModel">The ViewModel for initialization.</param>
+        /// <param name="cancellationToken">The cancellation token for stopping the creation process.</param>
+        /// <returns>An operation representing the asynchronous process of creating View instances.</returns>
         public static AsyncInstantiateOperation<T> InstantiateAsync<T>(
             T original,
             int count,

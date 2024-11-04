@@ -3,43 +3,43 @@ using Aspid.UI.MVVM.ViewModels;
 namespace Aspid.UI.MVVM
 {
     /// <summary>
-    /// Интерфейс для связывания компонента с <see cref="IViewModel"/>
-    /// для обеспечения функциональности привязки данных без возможности установки значения.
+    /// Interface for binding a component with a <see cref="IViewModel"/>
+    /// to provide data binding functionality without the ability to set values.
     /// </summary>
     public interface IBinder
     {
         /// <summary>
-        /// Определяет, включена ли обратная привязка (от View к ViewModel).
-        /// Значение по умолчанию - false.
+        /// Determines whether reverse binding (from View to ViewModel) is enabled.
+        /// The default value is <c>false</c>.
         /// </summary>
         public bool IsReverseEnabled => false;
         
         /// <summary>
-        /// Связывает компонент с указанной <see cref="IViewModel"/>.
+        /// Binds a component to the specified <see cref="IViewModel"/>.
         /// </summary>
-        /// <param name="viewModel">ViewModel, с которой устанавливается связь.</param>
-        /// <param name="id">ID компонента для привязки, который совпадает с именем свойства у ViewModel.</param>
+        /// <param name="viewModel">The ViewModel to bind to.</param>
+        /// <param name="id">The component ID for binding, which matches the property name in the ViewModel.</param>
         public void Bind(IViewModel viewModel, string id);
         
         /// <summary>
-        /// Разрывает привязку компонента с указанной <see cref="IViewModel"/>.
+        /// Unbinds a component from the specified <see cref="IViewModel"/>.
         /// </summary>
-        /// <param name="viewModel">ViewModel, с которой разрывается связь.</param>
-        /// <param name="id">ID компонента для разрыва привязки, который совпадает с именем свойства у ViewModel.</param>
+        /// <param name="viewModel">The ViewModel to unbind from.</param>
+        /// <param name="id">The component ID for unbinding, which matches the property name in the ViewModel.</param>
         public void Unbind(IViewModel viewModel, string id);
     }
     
     /// <summary>
-    /// Интерфейс для связывания компонента с <see cref="IViewModel"/>
-    /// для обеспечения функциональности привязки данных с установкой значения.
+    /// Interface for binding a component with a <see cref="IViewModel"/>
+    /// to provide data binding functionality with value setting capability.
     /// </summary>
-    /// <typeparam name="T">Тип значения, которое будет устанавливаться.</typeparam>
+    /// <typeparam name="T">The type of value that will be set.</typeparam>
     public interface IBinder<in T> : IBinder
     {
         /// <summary>
-        /// Устанавливает значения для привязанного компонента.
+        /// Sets the value for the bound component.
         /// </summary>
-        /// <param name="value">Значение, которое нужно установить.</param>
+        /// <param name="value">The value to be set.</param>
         public void SetValue(T value);
     }
 }

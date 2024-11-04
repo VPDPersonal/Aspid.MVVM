@@ -4,10 +4,10 @@ using System.Diagnostics;
 namespace Aspid.UI.MVVM.Mono.Generation
 {
     /// <summary>
-    /// Атрибут-маркер для методов в частичных классах или структурах, реализующих <see cref="IBinder{T}"/>.
-    /// Применяется только к методам <c>SetValue</c>, которые являются неявной реализацией интерфейса <see cref="IBinder{T}"/>.
-    /// Используется для логирования в процессе разработки.
-    /// Используется Source Generator для генерации явной реализации метода <c>SetValue</c> с добавлением логики логирования.
+    /// Marker attribute for methods in partial classes or structures that implement <see cref="IBinder{T}"/>.
+    /// Applicable only to <c>SetValue</c> methods that are implicit implementations of the <see cref="IBinder{T}"/> interface.
+    /// Used for logging during development.
+    /// Used by the Source Generator to generate an explicit implementation of the <c>SetValue</c> method with added logging logic.
     /// </summary>
     [Conditional("UNITY_EDITOR")]
     [AttributeUsage(AttributeTargets.Method)]

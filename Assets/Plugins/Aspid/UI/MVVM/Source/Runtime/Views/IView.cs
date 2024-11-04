@@ -3,24 +3,24 @@ using Aspid.UI.MVVM.ViewModels;
 namespace Aspid.UI.MVVM.Views
 {
     /// <summary>
-    /// Интерфейс для инициализации View с использованием заданного ViewModel.
+    /// Interface for initializing a View using a specified ViewModel.
     /// </summary>
     public interface IView
     {
         /// <summary>
-        /// Получает связанный ViewModel.
-        /// Если представление не инициализировано, может возвращать <c>null</c>.
+        /// Gets the associated ViewModel.
+        /// If the view is not initialized, it may return <c>null</c>.
         /// </summary>
         public IViewModel? ViewModel { get; }
         
         /// <summary>
-        /// Инициализирует представление с заданным <see cref="IViewModel"/> для привязки.
+        /// Initializes the view with the specified <see cref="IViewModel"/> for binding.
         /// </summary>
-        /// <param name="viewModel">Объект <see cref="IViewModel"/> для инициализации View.</param>
+        /// <param name="viewModel">The <see cref="IViewModel"/> object used to initialize the View.</param>
         public void Initialize(IViewModel viewModel);
         
         /// <summary>
-        /// Деинициализирует представление, обнуляя свойство ViewModel.
+        /// Deinitializes the view, resetting the ViewModel property to null.
         /// </summary>
         public void Deinitialize();
     }

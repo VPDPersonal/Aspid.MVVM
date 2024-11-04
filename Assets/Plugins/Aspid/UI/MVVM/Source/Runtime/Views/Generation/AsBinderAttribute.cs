@@ -3,18 +3,17 @@ using System;
 namespace Aspid.UI.MVVM.Views.Generation
 {
     /// <summary>
-    /// Атрибут-маркер для полей и свойств внутри класса или структуры, помеченных атрибутом <see cref="ViewAttribute"/>.
-    /// Используется Source Generator для генерации кода привязки по предоставленному типу <see cref="IBinder"/> во View.
+    /// Marker attribute for fields and properties within a class or structure marked with the <see cref="ViewAttribute"/>.
+    /// Used by the Source Generator to generate binding code based on the provided <see cref="IBinder"/> type in the View.
     /// </summary>
-
     [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property)]
     public sealed class AsBinderAttribute : Attribute
     {
         /// <summary>
-        /// Инициализирует новый экземпляр <see cref="AsBinderAttribute"/> с указанным типом <see cref="IBinder"/> и дополнительными аргументами.
+        /// Initializes a new instance of the <see cref="AsBinderAttribute"/> with the specified <see cref="IBinder"/> type and optional arguments.
         /// </summary>
-        /// <param name="type">Тип <see cref="IBinder"/>, который будет использоваться для связывания поля или свойства.</param>
-        /// <param name="args">Дополнительные аргументы, которые могут быть переданы конструктору типа <see cref="IBinder"/>.</param>
+        /// <param name="type">The type of <see cref="IBinder"/> that will be used to bind the field or property.</param>
+        /// <param name="args">Additional arguments that can be passed to the constructor of the <see cref="IBinder"/> type.</param>
         public AsBinderAttribute(Type type, params object[] args) { }
     }
 }

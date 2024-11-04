@@ -4,26 +4,26 @@ using Aspid.UI.MVVM.ViewModels;
 namespace Aspid.UI.MVVM.Mono.ViewModels
 {
     /// <summary>
-    /// Абстрактный базовый класс для реализации ViewModel, который предоставляет методы для управления <see cref="IBinder"/>.
-    /// Наследует <see cref="MonoBehaviour"/> и реализует интерфейс <see cref="IViewModel"/>.
-    /// Этот класс не содержит собственной реализации и служит для унификации ViewModel как объектов <see cref="MonoBehaviour"/>.
+    /// Abstract base class for implementing the ViewModel, which provides methods for managing <see cref="IBinder"/>.
+    /// Inherits from <see cref="MonoBehaviour"/> and implements the <see cref="IViewModel"/> interface.
+    /// This class does not contain its own implementation and serves to unify ViewModels as <see cref="MonoBehaviour"/> objects.
     /// </summary>
     public abstract class MonoViewModel : MonoBehaviour, IViewModel
     {
         /// <summary>
-        /// Добавляет Binder для указанного свойства ViewModel.
-        /// Наследник должен реализовать данный метод.
+        /// Adds a Binder for the specified ViewModel property.
+        /// The derived class must implement this method.
         /// </summary>
-        /// <param name="binder">Binder, который будет добавлен.</param>
-        /// <param name="propertyName">Имя свойства, к которому будет привязан Binder</param>
+        /// <param name="binder">The Binder to be added.</param>
+        /// <param name="propertyName">The name of the property to which the Binder will be bound.</param>
         public abstract void AddBinder(IBinder binder, string propertyName);
 
         /// <summary>
-        /// Удаляет Binder для указанного свойства ViewModel.
-        /// Наследник должен реализовать данный метод.
+        /// Removes a Binder for the specified ViewModel property.
+        /// The derived class must implement this method.
         /// </summary>
-        /// <param name="binder">Binder, который будет удален.</param>
-        /// <param name="propertyName">Имя свойства, от которого будет отвязан Binder.</param>
+        /// <param name="binder">The Binder to be removed.</param>
+        /// <param name="propertyName">The name of the property from which the Binder will be unbound.</param>
         public abstract void RemoveBinder(IBinder binder, string propertyName);
     }
 }

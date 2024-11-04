@@ -3,9 +3,10 @@ using System;
 namespace Aspid.UI.MVVM.ViewModels.Generation
 {
     /// <summary>
-    /// Атрибут-маркер для полей внутри класса или структуры, помеченных аттрибутом <see cref="ViewModelAttribute"/>.
-    /// Используется Source Generator для генерации вызова события в сгенерированном свойстве с именем propertyName.
-    /// Для корректной работы данного атрибута требуется также наличие атрибута <see cref="BindAttribute"/> или <see cref="ReadOnlyBindAttribute"/>.
+    /// Marker attribute for fields within a class or structure marked with the <see cref="ViewModelAttribute"/>.
+    /// Used by the Source Generator to generate an event call in the generated property named propertyName.
+    /// For this attribute to work correctly, the <see cref="BindAttribute"/> or <see cref="ReadOnlyBindAttribute"/> 
+    /// must also be present.
     /// </summary>
     [AttributeUsage(AttributeTargets.Field)]
     public sealed class BindAlsoAttribute : Attribute

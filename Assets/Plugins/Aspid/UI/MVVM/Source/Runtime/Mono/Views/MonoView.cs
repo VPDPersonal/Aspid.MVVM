@@ -7,8 +7,8 @@ using Aspid.UI.MVVM.ViewModels;
 namespace Aspid.UI.MVVM.Mono.Views
 {
     /// <summary>
-    /// Абстрактный класс для View, наследуемый от <see cref="MonoBehaviour"/>, реализующий интерфейс <see cref="IView"/>.
-    /// Предоставляет методы для инициализации и деинициализации View с <see cref="IViewModel"/> для привязки.
+    /// Abstract class for a View, inheriting from <see cref="MonoBehaviour"/>, that implements the <see cref="IView"/> interface.
+    /// Provides methods for initializing and deinitializing the View with an <see cref="IViewModel"/> for binding.
     /// </summary>
     public abstract partial class MonoView : MonoBehaviour, IView, IDisposable
     {
@@ -18,19 +18,19 @@ namespace Aspid.UI.MVVM.Mono.Views
 #endif
 
         /// <summary>
-        /// Получает связанный ViewModel.
-        /// Если представление не инициализировано, может возвращать <c>null</c>.
+        /// Gets the associated ViewModel.
+        /// May return <c>null</c> if the view is not initialized.
         /// </summary>
         public IViewModel ViewModel { get; private set; }
 
         protected virtual void OnDestroy() => Deinitialize();
 
         /// <summary>
-        /// Инициализирует представление с заданным <see cref="IViewModel"/> для привязки.
+        /// Initializes the view with the specified <see cref="IViewModel"/> for binding.
         /// </summary>
-        /// <param name="viewModel">Объект <see cref="IViewModel"/> для инициализации View.</param>
-        /// <exception cref="ArgumentNullException">Выбрасывается, если <paramref name="viewModel"/> равен <c>null</c>.</exception>
-        /// <exception cref="InvalidOperationException">Выбрасывается, если Мшуц уже инициализировано.</exception>
+        /// <param name="viewModel">The <see cref="IViewModel"/> object to initialize the View.</param>
+        /// <exception cref="ArgumentNullException">Thrown when <paramref name="viewModel"/> is <c>null</c>.</exception>
+        /// <exception cref="InvalidOperationException">Thrown when the view is already initialized.</exception>
         public void Initialize(IViewModel viewModel)
         {
 #if !ASPID_UI_MVVM_UNITY_PROFILER_DISABLED
@@ -46,14 +46,14 @@ namespace Aspid.UI.MVVM.Mono.Views
         }
 
         /// <summary>
-        /// Абстрактный метод для внутренней инициализации View. 
-        /// Должен быть переопределен в производном классе для реализации специфической логики инициализации.
+        /// Abstract method for internal view initialization. 
+        /// Must be overridden in a derived class to implement specific initialization logic.
         /// </summary>
-        /// <param name="viewModel">Объект <see cref="IViewModel"/> для инициализации View.</param>
+        /// <param name="viewModel">The <see cref="IViewModel"/> object to initialize the View.</param>
         protected abstract void InitializeIternal(IViewModel viewModel);
 
         /// <summary>
-        /// Деинициализирует  View, обнуляя связанный <see cref="ViewModel"/>.
+        /// Deinitializes the View, resetting the associated <see cref="ViewModel"/>.
         /// </summary>
         public void Deinitialize()
         {
@@ -69,15 +69,15 @@ namespace Aspid.UI.MVVM.Mono.Views
         }
         
         /// <summary>
-        /// Абстрактный метод для внутренней деинициализации представления. 
-        /// Должен быть переопределен в производном классе для реализации специфической логики деинициализации.
+        /// Abstract method for internal view deinitialization. 
+        /// Must be overridden in a derived class to implement specific deinitialization logic.
         /// </summary>
         protected abstract void DeinitializeIternal();
 
         /// <summary>
-        /// Уничтожает GameObject View.
-        /// Может быть переопределен наследником.
-        /// /// </summary>
+        /// Destroys the GameObject of the View.
+        /// May be overridden by a derived class.
+        /// </summary>
         public virtual void Dispose() => Destroy(gameObject);
     }
 }

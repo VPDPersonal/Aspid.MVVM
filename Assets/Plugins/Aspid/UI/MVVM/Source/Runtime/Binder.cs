@@ -4,9 +4,9 @@ using Aspid.UI.MVVM.ViewModels;
 namespace Aspid.UI.MVVM
 {
     /// <summary>
-    /// Абстрактный класс, реализующий базовую логику для связывания компонента с <see cref="IViewModel"/>.
-    /// Включает методы для привязки и разрыва привязки компонента с ViewModel.
-    /// Наследники должны реализовать один или несколько интерфейсов <see cref="IBinder{T}"/>, чтобы завершить реализацию конкретной логики привязки.
+    /// Abstract class that implements the base logic for binding a component with a <see cref="IViewModel"/>.
+    /// It includes methods for binding and unbinding the component with the ViewModel.
+    /// Derivatives must implement one or more <see cref="IBinder{T}"/> interfaces to complete specific binding logic.
     /// </summary>
     public abstract partial class Binder : IBinder
     {
@@ -15,16 +15,16 @@ namespace Aspid.UI.MVVM
         private static readonly Unity.Profiling.ProfilerMarker _unbindMarker = new("Binder.Unbind)");
 #endif
         /// <summary>
-        /// Указывает, разрешена ли привязка.
-        /// Значение по умолчанию - true.
+        /// Indicates whether binding is allowed.
+        /// The default value is <c>true</c>.
         /// </summary>
         protected virtual bool IsBind => true;
         
         /// <summary>
-        /// Привязывает компонент к указанной <see cref="IViewModel"/>.
+        /// Binds the component to the specified <see cref="IViewModel"/>.
         /// </summary>
-        /// <param name="viewModel">Экземпляр ViewModel для привязки.</param>
-        /// <param name="id">ID компонента для привязки, который совпадает с именем свойства у ViewModel.</param>
+        /// <param name="viewModel">The ViewModel instance to bind to.</param>
+        /// <param name="id">The component ID for binding, which matches the property name in the ViewModel.</param>
         public void Bind(IViewModel viewModel, string id)
         {
 #if !ASPID_UI_MVVM_UNITY_PROFILER_DISABLED
@@ -45,24 +45,24 @@ namespace Aspid.UI.MVVM
         partial void OnBindingDebug(IViewModel viewModel, string id);
         
         /// <summary>
-        /// Логика выполняемая перед привязкой, которая может быть переопределена в производных классах.
+        /// Logic executed before binding, which can be overridden in derived classes.
         /// </summary>
-        /// <param name="viewModel">Экземпляр ViewModel.</param>
-        /// <param name="id">ID компонента, который совпадает с именем свойства у ViewModel.</param>
+        /// <param name="viewModel">The ViewModel instance.</param>
+        /// <param name="id">The component ID, which matches the property name in the ViewModel.</param>
         protected virtual void OnBinding(IViewModel viewModel, string id) { }
         
         /// <summary>
-        /// Логика выполняемая после привязки, которая может быть переопределена в производных классах.
+        /// Logic executed after binding, which can be overridden in derived classes.
         /// </summary>
-        /// <param name="viewModel">Экземпляр ViewModel.</param>
-        /// <param name="id">ID компонента, который совпадает с именем свойства у ViewModel.</param>
+        /// <param name="viewModel">The ViewModel instance.</param>
+        /// <param name="id">The component ID, which matches the property name in the ViewModel.</param>
         protected virtual void OnBound(IViewModel viewModel, string id) { }
         
         /// <summary>
-        /// Разрывает привязку компонента с указанной <see cref="IViewModel"/>.
+        /// Unbinds the component from the specified <see cref="IViewModel"/>.
         /// </summary>
-        /// <param name="viewModel">Экземпляр ViewModel для привязки.</param>
-        /// <param name="id">ID компонента для привязки, который совпадает с именем свойства у ViewModel.</param>
+        /// <param name="viewModel">The ViewModel instance to unbind from.</param>
+        /// <param name="id">The component ID for unbinding, which matches the property name in the ViewModel.</param>
         public void Unbind(IViewModel viewModel, string id)
         {
 #if !ASPID_UI_MVVM_UNITY_PROFILER_DISABLED
@@ -83,17 +83,17 @@ namespace Aspid.UI.MVVM
         partial void OnUnbindingDebug(IViewModel viewModel, string id);
         
         /// <summary>
-        /// Логика выполняемая перед разрывом привязки, которая может быть переопределена в производных классах.
+        /// Logic executed before unbinding, which can be overridden in derived classes.
         /// </summary>
-        /// <param name="viewModel">Экземпляр ViewModel.</param>
-        /// <param name="id">ID компонента, который совпадает с именем свойства у ViewModel.</param>
+        /// <param name="viewModel">The ViewModel instance.</param>
+        /// <param name="id">The component ID, which matches the property name in the ViewModel.</param>
         protected virtual void OnUnbinding(IViewModel viewModel, string id) { }
         
         /// <summary>
-        /// Логика выполняемая после разрыва привязки, которая может быть переопределена в производных классах.
+        /// Logic executed after unbinding, which can be overridden in derived classes.
         /// </summary>
-        /// <param name="viewModel">Экземпляр ViewModel.</param>
-        /// <param name="id">ID компонента, который совпадает с именем свойства у ViewModel.</param>
+        /// <param name="viewModel">The ViewModel instance.</param>
+        /// <param name="id">The component ID, which matches the property name in the ViewModel.</param>
         protected virtual void OnUnbound(IViewModel viewModel, string id) { }
 
         private static void ThrowExceptionIfInvalidData(IViewModel viewModel, string id)

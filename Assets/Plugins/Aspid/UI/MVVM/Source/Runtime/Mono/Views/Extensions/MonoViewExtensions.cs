@@ -7,18 +7,18 @@ using Object = UnityEngine.Object;
 namespace Aspid.UI.MVVM.Mono.Views.Extensions
 {
     /// <summary>
-    /// Предоставляет методы расширения для интерфейса <see cref="IView"/>.
+    /// Provides extension methods for the <see cref="IView"/> interface.
     /// </summary>
     public static class MonoViewExtensions
     {
         /// <summary>
-        /// Разрушает View и деинициализирует ее, если она не реализует интерфейс <see cref="IDisposable"/>.
-        /// Если View реализует <see cref="IDisposable"/>, вызывает метод <see cref="IDisposable.Dispose"/>.
-        /// Возвращает экземпляр <see cref="IViewModel"/>, который был привязан к View перед ее уничтожением.
+        /// Destroys the View and deinitializes it if it does not implement the <see cref="IDisposable"/> interface.
+        /// If the View implements <see cref="IDisposable"/>, it calls the <see cref="IDisposable.Dispose"/> method.
+        /// Returns the <see cref="IViewModel"/> instance that was bound to the View before its destruction.
         /// </summary>
-        /// <typeparam name="T">Тип View, который наследуется от <see cref="Component"/> и реализует интерфейс <see cref="IView"/>.</typeparam>
-        /// <param name="view">Экземпляр View, который необходимо уничтожить.</param>
-        /// <returns>ViewModel, который был привязан к View, или <c>null</c>, если ViewModel не было.</returns>
+        /// <typeparam name="T">The type of View that inherits from <see cref="Component"/> and implements the <see cref="IView"/> interface.</typeparam>
+        /// <param name="view">The instance of the View to be destroyed.</param>
+        /// <returns>The ViewModel that was bound to the View, or <c>null</c> if there was no ViewModel.</returns>
         public static IViewModel? DestroyView<T>(this T view)
             where T : Component, IView
         {
@@ -38,12 +38,12 @@ namespace Aspid.UI.MVVM.Mono.Views.Extensions
         }
         
         /// <summary>
-        /// Разрушает View и деинициализирует ее, если она не реализует интерфейс <see cref="IDisposable"/>.
-        /// Если View реализует <see cref="IDisposable"/>, вызывает метод <see cref="IDisposable.Dispose"/>.
-        /// Возвращает экземпляр <see cref="IViewModel"/>, который был привязан к View перед ее уничтожением.
+        /// Destroys the View and deinitializes it if it does not implement the <see cref="IDisposable"/> interface.
+        /// If the View implements <see cref="IDisposable"/>, it calls the <see cref="IDisposable.Dispose"/> method.
+        /// Returns the <see cref="IViewModel"/> instance that was bound to the View before its destruction.
         /// </summary>
-        /// <param name="view">Экземпляр View, который необходимо уничтожить.</param>
-        /// <returns>ViewModel, который был привязан к View, или <c>null</c>, если ViewModel не было.</returns>
+        /// <param name="view">The instance of the View to be destroyed.</param>
+        /// <returns>The ViewModel that was bound to the View, or <c>null</c> if there was no ViewModel.</returns>
         public static IViewModel? DestroyView(this IView view)
         {
             var viewModel = view.ViewModel;

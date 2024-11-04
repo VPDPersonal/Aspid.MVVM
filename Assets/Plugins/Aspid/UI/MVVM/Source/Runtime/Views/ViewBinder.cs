@@ -5,8 +5,8 @@ using Aspid.UI.MVVM.ViewModels.Extensions;
 namespace Aspid.UI.MVVM.Views
 {
     /// <summary>
-    /// Связывает <see cref="IView"/> с его <see cref="IViewModel"/>.
-    /// Реализует интерфейс <see cref="IBinder{T}"/> для работы с объектами типа <see cref="IViewModel"/>.
+    /// Binds an <see cref="IView"/> to its <see cref="IViewModel"/>.
+    /// Implements the <see cref="IBinder{T}"/> interface to work with <see cref="IViewModel"/> objects.
     /// </summary>
     public sealed class ViewBinder : Binder, IBinder<IViewModel?>
     {
@@ -14,11 +14,11 @@ namespace Aspid.UI.MVVM.Views
         private readonly bool _isDisposeViewModel;
 
         /// <summary>
-        /// Инициализирует новый экземпляр <see cref="ViewBinder"/> с заданным представлением и опцией
-        /// для автоматического освобождения ресурсов модели представления.
+        /// Initializes a new instance of the <see cref="ViewBinder"/> class with the specified view and an option
+        /// for automatically disposing of the ViewModel resources.
         /// </summary>
-        /// <param name="view">Представление, с которым будет связана модель представления.</param>
-        /// <param name="isDisposeViewModel">Указывает, нужно ли освобождать ресурсы модели представления при деинициализации.</param>
+        /// <param name="view">The view that will be bound to the ViewModel.</param>
+        /// <param name="isDisposeViewModel">Indicates whether the ViewModel's resources should be disposed upon deinitialization.</param>
         public ViewBinder(IView view, bool isDisposeViewModel = false)
         {
             _view = view;
@@ -26,10 +26,10 @@ namespace Aspid.UI.MVVM.Views
         }
 
         /// <summary>
-        /// Устанавливает ViewModel для связываемого View.
-        /// Деинициализирует текущее View перед установкой новой ViewModel.
+        /// Sets the ViewModel for the bound view.
+        /// Deinitializes the current view before setting the new ViewModel.
         /// </summary>
-        /// <param name="viewModel"></param>
+        /// <param name="viewModel">The ViewModel to bind to the view.</param>
         public void SetValue(IViewModel? viewModel)
         {
             DeinitializeView();
@@ -39,15 +39,15 @@ namespace Aspid.UI.MVVM.Views
         }
 
         /// <summary>
-        /// Вызывается при разрыве привязки с ViewModel. Деинициализирует View.
+        /// Called when the binding with the ViewModel is broken. Deinitializes the view.
         /// </summary>
-        /// <param name="viewModel">ViewModel, которая была отвязана.</param>
-        /// <param name="id">ID компонента, который совпадает с именем свойства у ViewModel.</param>
+        /// <param name="viewModel">The ViewModel that was unbound.</param>
+        /// <param name="id">The ID of the component, which matches the property name in the ViewModel.</param>
         protected override void OnUnbound(IViewModel viewModel, string id) => 
             DeinitializeView();
 
         /// <summary>
-        /// Деинициализирует текущее View и освобождает ViewModel, если это предусмотрено.
+        /// Deinitializes the current view and disposes of the ViewModel if necessary.
         /// </summary>
         private void DeinitializeView()
         {

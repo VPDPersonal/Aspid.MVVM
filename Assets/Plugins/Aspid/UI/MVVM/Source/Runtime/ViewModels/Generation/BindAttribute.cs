@@ -3,8 +3,8 @@ using System;
 namespace Aspid.UI.MVVM.ViewModels.Generation
 {
     /// <summary>
-    /// Атрибут-маркер для полей внутри класса или структуры, помеченных атрибутом <see cref="ViewModelAttribute"/>.
-    /// Используется Source Generator для генерации свойство на основе помеченного поля.
+    /// Marker attribute for fields within a class or structure marked with the <see cref="ViewModelAttribute"/>.
+    /// Used by the Source Generator to generate a property based on the marked field.
     /// </summary>
     [AttributeUsage(AttributeTargets.Field)]
     public sealed class BindAttribute : Attribute { }

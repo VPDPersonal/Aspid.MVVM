@@ -5,18 +5,18 @@ using System.Collections.Generic;
 namespace Aspid.UI.MVVM.Extensions
 {
     /// <summary>
-    /// Предоставляет методы расширения для интерфейса <see cref="IBinder"/>.
+    /// Provides extension methods for the <see cref="IBinder"/> interface.
     /// </summary>
     public static class BinderExtensions
     {
         /// <summary>
-        /// Безопасное связывание для объекта <see cref="IBinder"/>.
-        /// Если <paramref name="binder"/> равен <c>null</c>, связывание не выполняется.
+        /// Safely binds an object of type <see cref="IBinder"/>.
+        /// If <paramref name="binder"/> is <c>null</c>, binding does not occur.
         /// </summary>
-        /// <param name="binder">Объект, который будет связываться с <see cref="IViewModel"/>.</param>
-        /// <param name="viewModel">ViewModel, с которой устанавливается связь.</param>
-        /// <param name="id">ID компонента, который совпадает с именем свойства у ViewModel.</param>
-        /// <typeparam name="T">Тип, реализующий интерфейс <see cref="IBinder"/>.</typeparam>
+        /// <param name="binder">The object to be bound to the <see cref="IViewModel"/>.</param>
+        /// <param name="viewModel">The ViewModel to bind to.</param>
+        /// <param name="id">The component ID that matches the property name in the ViewModel.</param>
+        /// <typeparam name="T">The type that implements the <see cref="IBinder"/> interface.</typeparam>
         public static void BindSafely<T>(this T? binder, IViewModel viewModel, string id)
             where T : IBinder
         {
@@ -25,15 +25,14 @@ namespace Aspid.UI.MVVM.Extensions
         }
         
         /// <summary>
-        /// Безопасное связывание для массива объектов <see cref="IBinder"/>.
-        /// Если <paramref name="binders"/> равен <c>null</c>, связывание не выполняется.
-        /// Если какой-либо элемент массива равен <c>null</c>, выбрасывается исключение <see cref="NullReferenceException"/>.
+        /// Safely binds an array of <see cref="IBinder"/> objects.
+        /// If <paramref name="binders"/> is <c>null</c>, binding does not occur.
+        /// If any element in the array is <c>null</c>, a <see cref="NullReferenceException"/> is thrown.
         /// </summary>
-        /// <param name="binders">Массив объектов, которые будут связываться с <see cref="IViewModel"/>.</param>
-        /// <param name="viewModel">ViewModel, с которой устанавливается связь.</param>
-        /// <param name="id">ID компонента, который совпадает с именем свойства у ViewModel.</param>
-        /// <typeparam name="T">Тип, реализующий интерфейс <see cref="IBinder"/>.</typeparam>
-        /// <exception cref="NullReferenceException"></exception>
+        /// <param name="binders">An array of objects to be bound to the <see cref="IViewModel"/>.</param>
+        /// <param name="viewModel">The ViewModel to bind to.</param>
+        /// <param name="id">The component ID that matches the property name in the ViewModel.</param>
+        /// <typeparam name="T">The type that implements the <see cref="IBinder"/> interface.</typeparam>
         public static void BindSafely<T>(this T[]? binders, IViewModel viewModel, string id)
             where T : IBinder
         {
@@ -47,14 +46,15 @@ namespace Aspid.UI.MVVM.Extensions
         }
 
         /// <summary>
-        /// Безопасное связывание для листа объектов <see cref="IBinder"/>.
-        /// Если <paramref name="binders"/> равен <c>null</c>, связывание не выполняется.
-        /// Если какой-либо элемент листа равен <c>null</c>, выбрасывается исключение <see cref="NullReferenceException"/>.
+        /// Safely binds a list of <see cref="IBinder"/> objects.
+        /// If <paramref name="binders"/> is <c>null</c>, binding does not occur.
+        /// If any element in the list is <c>null</c>, a <see cref="NullReferenceException"/> is thrown.
         /// </summary>
-        /// <param name="binders">Лист объектов, которые будут связываться с <see cref="IViewModel"/>.</param>
-        /// <param name="viewModel">ViewModel, с которой устанавливается связь.</param>
-        /// <param name="id">ID компонента, который совпадает с именем свойства у ViewModel.</param>
-        /// <typeparam name="T">Тип, реализующий интерфейс <see cref="IBinder"/>.</typeparam>
+        /// <param name="binders">A list of objects to be bound to the <see cref="IViewModel"/>.</param>
+        /// <param name="viewModel">The ViewModel to bind to.</param>
+        /// <param name="id">The component ID that matches the property name in the ViewModel.</param>
+        /// <typeparam name="T">The type that implements the <see cref="IBinder"/> interface.</typeparam>
+        /// <exception cref="NullReferenceException"></exception>
         /// <exception cref="NullReferenceException"></exception>
         public static void BindSafely<T>(this List<T>? binders, IViewModel viewModel, string id)
             where T : IBinder
@@ -69,14 +69,14 @@ namespace Aspid.UI.MVVM.Extensions
         }
         
         /// <summary>
-        /// Безопасное связывание для перечисления объектов <see cref="IBinder"/>.
-        /// Если <paramref name="binders"/> равен <c>null</c>, связывание не выполняется.
-        /// Если какой-либо элемент перечисления равен <c>null</c>, выбрасывается исключение <see cref="NullReferenceException"/>.
+        /// Safely binds an enumeration of <see cref="IBinder"/> objects.
+        /// If <paramref name="binders"/> is <c>null</c>, binding does not occur.
+        /// If any element in the enumeration is <c>null</c>, a <see cref="NullReferenceException"/> is thrown.
         /// </summary>
-        /// <param name="binders">Перечисление объектов, которые будут связываться с <see cref="IViewModel"/>.</param>
-        /// <param name="viewModel">ViewModel, с которой устанавливается связь.</param>
-        /// <param name="id">ID компонента, который совпадает с именем свойства у ViewModel.</param>
-        /// <typeparam name="T">Тип, реализующий интерфейс <see cref="IBinder"/>.</typeparam>
+        /// <param name="binders">An enumeration of objects to be bound to the <see cref="IViewModel"/>.</param>
+        /// <param name="viewModel">The ViewModel to bind to.</param>
+        /// <param name="id">The component ID that matches the property name in the ViewModel.</param>
+        /// <typeparam name="T">The type that implements the <see cref="IBinder"/> interface.</typeparam>
         /// <exception cref="NullReferenceException"></exception>
         public static void BindSafely<T>(this IEnumerable<T>? binders, IViewModel viewModel, string id)
             where T : IBinder
@@ -91,13 +91,13 @@ namespace Aspid.UI.MVVM.Extensions
         }
         
         /// <summary>
-        /// Безопасный разрыв привязки для объекта <see cref="IBinder"/>.
-        /// Если <paramref name="binder"/> равен <c>null</c>, разрыв привязки не выполняется.
+        /// Safely unbinds an object of type <see cref="IBinder"/>.
+        /// If <paramref name="binder"/> is <c>null</c>, unbinding does not occur.
         /// </summary>
-        /// <param name="binder">Объект, у которого будет разорвана привязка с <see cref="IViewModel"/>.</param>
-        /// <param name="viewModel">ViewModel, с которой разрывается связь.</param>
-        /// <param name="id">ID компонента для разрыва привязки, который совпадает с именем свойства у ViewModel.</param>
-        /// <typeparam name="T">Тип, реализующий интерфейс <see cref="IBinder"/>.</typeparam>
+        /// <param name="binder">The object to unbind from the <see cref="IViewModel"/>.</param>
+        /// <param name="viewModel">The ViewModel to unbind from.</param>
+        /// <param name="id">The component ID for unbinding that matches the property name in the ViewModel.</param>
+        /// <typeparam name="T">The type that implements the <see cref="IBinder"/> interface.</typeparam>
         public static void UnbindSafely<T>(this T? binder, IViewModel viewModel, string id)
             where T : IBinder
         {
@@ -106,14 +106,14 @@ namespace Aspid.UI.MVVM.Extensions
         }
         
         /// <summary>
-        /// Безопасный разрыв привязки для массива объектов <see cref="IBinder"/>.
-        /// Если <paramref name="binders"/> равен <c>null</c>, разрыв привязки не выполняется.
-        /// Если какой-либо элемент массива равен <c>null</c>, выбрасывается исключение <see cref="NullReferenceException"/>.
+        /// Safely unbinds an array of <see cref="IBinder"/> objects.
+        /// If <paramref name="binders"/> is <c>null</c>, unbinding does not occur.
+        /// If any element in the array is <c>null</c>, a <see cref="NullReferenceException"/> is thrown.
         /// </summary>
-        /// <param name="binders">Массив объектов, у которого будет разорвана привязка с <see cref="IViewModel"/>.</param>
-        /// <param name="viewModel">ViewModel, с которой устанавливается связь.</param>
-        /// <param name="id">ID компонента для разрыва привязки, который совпадает с именем свойства у ViewModel.</param>
-        /// <typeparam name="T">Тип, реализующий интерфейс <see cref="IBinder"/>.</typeparam>
+        /// <param name="binders">An array of objects to unbind from the <see cref="IViewModel"/>.</param>
+        /// <param name="viewModel">The ViewModel to unbind from.</param>
+        /// <param name="id">The component ID for unbinding that matches the property name in the ViewModel.</param>
+        /// <typeparam name="T">The type that implements the <see cref="IBinder"/> interface.</typeparam>
         /// <exception cref="NullReferenceException"></exception>
         public static void UnbindSafely<T>(this T[]? binders, IViewModel viewModel, string id)
             where T : IBinder
@@ -125,14 +125,14 @@ namespace Aspid.UI.MVVM.Extensions
         }
         
         /// <summary>
-        /// Безопасный разрыв привязки для листа объектов <see cref="IBinder"/>.
-        /// Если <paramref name="binders"/> равен <c>null</c>, разрыв привязки не выполняется.
-        /// Если какой-либо элемент листа равен <c>null</c>, выбрасывается исключение <see cref="NullReferenceException"/>.
+        /// Safely unbinds a list of <see cref="IBinder"/> objects.
+        /// If <paramref name="binders"/> is <c>null</c>, unbinding does not occur.
+        /// If any element in the list is <c>null</c>, a <see cref="NullReferenceException"/> is thrown.
         /// </summary>
-        /// <param name="binders">Лист объектов, у которого будет разорвана привязка с <see cref="IViewModel"/>.</param>
-        /// <param name="viewModel">ViewModel, с которой устанавливается связь.</param>
-        /// <param name="id">ID компонента для разрыва привязки, который совпадает с именем свойства у ViewModel.</param>
-        /// <typeparam name="T">Тип, реализующий интерфейс <see cref="IBinder"/>.</typeparam>
+        /// <param name="binders">A list of objects to unbind from the <see cref="IViewModel"/>.</param>
+        /// <param name="viewModel">The ViewModel to unbind from.</param>
+        /// <param name="id">The component ID for unbinding that matches the property name in the ViewModel.</param>
+        /// <typeparam name="T">The type that implements the <see cref="IBinder"/> interface.</typeparam>
         /// <exception cref="NullReferenceException"></exception>
         public static void UnbindSafely<T>(this List<T>? binders, IViewModel viewModel, string id)
             where T : IBinder
@@ -147,14 +147,14 @@ namespace Aspid.UI.MVVM.Extensions
         }
         
         /// <summary>
-        /// Безопасный разрыв привязки для перечисления объектов <see cref="IBinder"/>.
-        /// Если <paramref name="binders"/> равен <c>null</c>, разрыв привязки не выполняется.
-        /// Если какой-либо элемент перечисления равен <c>null</c>, выбрасывается исключение <see cref="NullReferenceException"/>.
+        /// Safely unbinds an enumeration of <see cref="IBinder"/> objects.
+        /// If <paramref name="binders"/> is <c>null</c>, unbinding does not occur.
+        /// If any element in the enumeration is <c>null</c>, a <see cref="NullReferenceException"/> is thrown.
         /// </summary>
-        /// <param name="binders">Перечисление объектов, у которого будет разорвана привязка с <see cref="IViewModel"/>.</param>
-        /// <param name="viewModel">ViewModel, с которой устанавливается связь.</param>
-        /// <param name="id">ID компонента для разрыва привязки, который совпадает с именем свойства у ViewModel.</param>
-        /// <typeparam name="T">Тип, реализующий интерфейс <see cref="IBinder"/>.</typeparam>
+        /// <param name="binders">An enumeration of objects to unbind from the <see cref="IViewModel"/>.</param>
+        /// <param name="viewModel">The ViewModel to unbind from.</param>
+        /// <param name="id">The component ID for unbinding that matches the property name in the ViewModel.</param>
+        /// <typeparam name="T">The type that implements the <see cref="IBinder"/> interface.</typeparam>
         /// <exception cref="NullReferenceException"></exception>
         public static void UnbindSafely<T>(this IEnumerable<T>? binders, IViewModel viewModel, string id)
             where T : IBinder

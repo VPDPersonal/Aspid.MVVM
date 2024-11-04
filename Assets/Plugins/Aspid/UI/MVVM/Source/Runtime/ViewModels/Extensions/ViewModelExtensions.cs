@@ -3,15 +3,15 @@ using System;
 namespace Aspid.UI.MVVM.ViewModels.Extensions
 {
     /// <summary>
-    /// Предоставляет методы расширения для интерфейса <see cref="IViewModel"/>.
+    /// Provides extension methods for the <see cref="IViewModel"/> interface.
     /// </summary>
     public static class ViewModelExtensions
     {
         /// <summary>
-        /// Освобождает экземпляр ViewModel, если реализует <see cref="IDisposable"/>.
+        /// Disposes of the ViewModel instance if it implements <see cref="IDisposable"/>.
         /// </summary>
-        /// <param name="viewModel">Экземпляр ViewModel для освобождения.</param>
-        /// <typeparam name="T">Тип ViewModel, который реализует <see cref="IViewModel"/> и <see cref="IDisposable"/>.</typeparam>
+        /// <param name="viewModel">The ViewModel instance to dispose of.</param>
+        /// <typeparam name="T">The type of the ViewModel that implements <see cref="IViewModel"/> and <see cref="IDisposable"/>.</typeparam>
         public static void DisposeViewModel<T>(this T viewModel)
             where T : class, IViewModel, IDisposable
         {
@@ -19,9 +19,9 @@ namespace Aspid.UI.MVVM.ViewModels.Extensions
         }
         
         /// <summary>
-        /// Освобождает экземпляр ViewModel, если реализует <see cref="IDisposable"/>.
+        /// Disposes of the ViewModel instance if it implements <see cref="IDisposable"/>.
         /// </summary>
-        /// <param name="viewModel">Экземпляр ViewModel для освобождения.</param>
+        /// <param name="viewModel">The ViewModel instance to dispose of.</param>
         public static void DisposeViewModel(this IViewModel viewModel)
         {
             if (viewModel is IDisposable disposable)

@@ -3,17 +3,17 @@ using System;
 namespace Aspid.UI.MVVM.ViewModels.Generation
 {
     /// <summary>
-    /// Атрибут-маркер для методов внутри класса или структуры, помеченных аттрибутом <see cref="ViewModelAttribute"/>.
-    /// Используется Source Generator для генерации свойства типа <see cref="Aspid.UI.MVVM.Commands.IRelayCommand"/>
-    /// или его перегруженных версий в зависимости от количества параметров метода.
+    /// Marker attribute for methods within a class or structure marked with the <see cref="ViewModelAttribute"/>.
+    /// Used by the Source Generator to generate a property of type <see cref="Aspid.UI.MVVM.Commands.IRelayCommand"/> 
+    /// or its overloaded versions depending on the number of parameters of the method.
     /// </summary>
     [AttributeUsage(AttributeTargets.Method, AllowMultiple = true, Inherited = false)]
     public sealed class RelayCommandAttribute : Attribute
     {
         /// <summary>
-        /// Имя метода, который определяет, может ли команда быть выполнена (CanExecute).
-        /// Этот метод должен возвращать значение типа <see cref="bool"/>.
-        /// Если не указано, команда всегда может быть выполнена.
+        /// The name of the method that determines whether the command can be executed (CanExecute).
+        /// This method must return a value of type <see cref="bool"/>.
+        /// If not specified, the command can always be executed.
         /// </summary>
         public string? CanExecute;
     }

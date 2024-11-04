@@ -3,48 +3,47 @@ using System;
 namespace Aspid.UI.MVVM.Commands
 {
     /// <summary>
-    /// Интерфейс для команды, которая может быть выполнена без параметров.
+    /// An interface for a command that can be executed without parameters.
     /// </summary>
     public interface IRelayCommand
     {
         /// <summary>
-        /// Событие, которое вызывается при изменении состояния выполнения команды.
+        /// Event that is raised when the ability to execute the command changes.
         /// </summary>
         public event Action<IRelayCommand> CanExecuteChanged;
         
         /// <summary>
-        /// Определяет, может ли команда быть выполнена.
+        /// Determines whether the command can be executed.
         /// </summary>
-        /// <returns>Значение <c>true</c>, если команда может быть выполнена, иначе <c>false</c>.</returns>
+        /// <returns><c>true</c> if the command can be executed; otherwise, <c>false</c>.</returns>
         public bool CanExecute();
 
         /// <summary>
-        /// Выполняет команду.
+        /// Executes the command.
         /// </summary>
         public void Execute();
         
         /// <summary>
-        /// Уведомляет об изменении состояния выполнения команды, вызывая событие <see cref="CanExecuteChanged"/>.
+        /// Notifies that the execution state of the command has changed, raising the <see cref="CanExecuteChanged"/> event.
         /// </summary>
         void NotifyCanExecuteChanged();
     }
     
     /// <summary>
-    /// Интерфейс для команды, которая может быть выполнена с параметром.
+    /// An interface for a command that can be executed with a parameter.
     /// </summary>
-    /// <typeparam name="T">Тип параметра, передаваемого в команду.</typeparam>
+    /// <typeparam name="T">The type of the parameter passed to the command.</typeparam>
     public interface IRelayCommand<in T>
     {
         /// <summary>
-        /// Событие, которое вызывается при изменении состояния выполнения команды.
+        /// Event that is raised when the ability to execute the command changes.
         /// </summary>
         public event Action<IRelayCommand<T>> CanExecuteChanged;
         
         /// <summary>
-        /// Определяет, может ли команда быть выполнена с переданным параметром.
+        /// Executes the command with the given parameter.
         /// </summary>
-        /// <param name="param">Параметр, используемый для выполнения команды.</param>
-        /// <returns>Значение <c>true</c>, если команда может быть выполнена, иначе <c>false</c>.</returns>
+        /// <param name="param">The parameter used to execute the command.</param>
         public bool CanExecute(T? param);
 
         /// <summary>
@@ -54,115 +53,115 @@ namespace Aspid.UI.MVVM.Commands
         public void Execute(T param);
         
         /// <summary>
-        /// Уведомляет об изменении состояния выполнения команды, вызывая событие <see cref="CanExecuteChanged"/>.
+        /// Notifies that the execution state of the command has changed, raising the <see cref="CanExecuteChanged"/> event.
         /// </summary>
         void NotifyCanExecuteChanged();
     }
     
     /// <summary>
-    /// Интерфейс для команды, которая может быть выполнена с двумя параметрами.
+    /// An interface for a command that can be executed with two parameters.
     /// </summary>
-    /// <typeparam name="T1">Тип первого параметра, передаваемого в команду.</typeparam>
-    /// <typeparam name="T2">Тип второго параметра, передаваемого в команду.</typeparam>
+    /// <typeparam name="T1">The type of the first parameter passed to the command.</typeparam>
+    /// <typeparam name="T2">The type of the second parameter passed to the command.</typeparam>
     public interface IRelayCommand<in T1, in T2>
     {
         /// <summary>
-        /// Событие, которое вызывается при изменении состояния выполнения команды.
+        /// Event that is raised when the ability to execute the command changes.
         /// </summary>
         public event Action<IRelayCommand<T1, T2>> CanExecuteChanged;
         
         /// <summary>
-        /// Определяет, может ли команда быть выполнена с переданными параметрами.
+        /// Determines whether the command can be executed with the given parameters.
         /// </summary>
-        /// <param name="param1">Первый параметр, используемый для выполнения команды.</param>
-        /// <param name="param2">Второй параметр, используемый для выполнения команды.</param>
-        /// <returns>Значение <c>true</c>, если команда может быть выполнена, иначе <c>false</c>.</returns>
+        /// <param name="param1">The first parameter used to execute the command.</param>
+        /// <param name="param2">The second parameter used to execute the command.</param>
+        /// <returns><c>true</c> if the command can be executed; otherwise, <c>false</c>.</returns>
         public bool CanExecute(T1? param1, T2? param2);
 
         /// <summary>
-        /// Выполняет команду с переданными параметрами.
+        /// Executes the command with the given parameters.
         /// </summary>
-        /// <param name="param1">Первый параметр, используемый для выполнения команды.</param>
-        /// <param name="param2">Второй параметр, используемый для выполнения команды.</param>
+        /// <param name="param1">The first parameter used to execute the command.</param>
+        /// <param name="param2">The second parameter used to execute the command.</param>
         public void Execute(T1 param1, T2 param2);
         
         /// <summary>
-        /// Уведомляет об изменении состояния выполнения команды, вызывая событие <see cref="CanExecuteChanged"/>.
+        /// Notifies that the execution state of the command has changed, raising the <see cref="CanExecuteChanged"/> event.
         /// </summary>
         void NotifyCanExecuteChanged();
     }
     
     /// <summary>
-    /// Интерфейс для команды, которая может быть выполнена с тремя параметрами.
+    /// An interface for a command that can be executed with three parameters.
     /// </summary>
-    /// <typeparam name="T1">Тип первого параметра, передаваемого в команду.</typeparam>
-    /// <typeparam name="T2">Тип второго параметра, передаваемого в команду.</typeparam>
-    /// <typeparam name="T3">Тип третьего параметра, передаваемого в команду.</typeparam>
+    /// <typeparam name="T1">The type of the first parameter passed to the command.</typeparam>
+    /// <typeparam name="T2">The type of the second parameter passed to the command.</typeparam>
+    /// <typeparam name="T3">The type of the third parameter passed to the command.</typeparam>
     public interface IRelayCommand<in T1, in T2, in T3>
     {
         /// <summary>
-        /// Событие, которое вызывается при изменении состояния выполнения команды.
+        /// Event that is raised when the ability to execute the command changes.
         /// </summary>
         public event Action<IRelayCommand<T1, T2, T3>> CanExecuteChanged;
         
         /// <summary>
-        /// Определяет, может ли команда быть выполнена с переданными параметрами.
+        /// Determines whether the command can be executed with the given parameters.
         /// </summary>
-        /// <param name="param1">Первый параметр, используемый для выполнения команды.</param>
-        /// <param name="param2">Второй параметр, используемый для выполнения команды.</param>
-        /// <param name="param3">Третий параметр, используемый для выполнения команды.</param>
-        /// <returns>Значение <c>true</c>, если команда может быть выполнена, иначе <c>false</c>.</returns>
+        /// <param name="param1">The first parameter used to execute the command.</param>
+        /// <param name="param2">The second parameter used to execute the command.</param>
+        /// <param name="param3">The third parameter used to execute the command.</param>
+        /// <returns><c>true</c> if the command can be executed; otherwise, <c>false</c>.</returns>
         public bool CanExecute(T1? param1, T2? param2, T3? param3);
 
         /// <summary>
-        /// Выполняет команду с переданными параметрами.
+        /// Executes the command with the given parameters.
         /// </summary>
-        /// <param name="param1">Первый параметр, используемый для выполнения команды.</param>
-        /// <param name="param2">Второй параметр, используемый для выполнения команды.</param>
-        /// <param name="param3">Третий параметр, используемый для выполнения команды.</param>
+        /// <param name="param1">The first parameter used to execute the command.</param>
+        /// <param name="param2">The second parameter used to execute the command.</param>
+        /// <param name="param3">The third parameter used to execute the command.</param>
         public void Execute(T1 param1, T2 param2, T3 param3);
         
         /// <summary>
-        /// Уведомляет об изменении состояния выполнения команды, вызывая событие <see cref="CanExecuteChanged"/>.
+        /// Notifies that the execution state of the command has changed, raising the <see cref="CanExecuteChanged"/> event.
         /// </summary>
         void NotifyCanExecuteChanged();
     }
     
     /// <summary>
-    /// Интерфейс для команды, которая может быть выполнена с тремя параметрами.
+    /// An interface for a command that can be executed with four parameters.
     /// </summary>
-    /// <typeparam name="T1">Тип первого параметра, передаваемого в команду.</typeparam>
-    /// <typeparam name="T2">Тип второго параметра, передаваемого в команду.</typeparam>
-    /// <typeparam name="T3">Тип третьего параметра, передаваемого в команду.</typeparam>
-    /// <typeparam name="T4">Тип четвертого параметра, передаваемого в команду.</typeparam>
+    /// <typeparam name="T1">The type of the first parameter passed to the command.</typeparam>
+    /// <typeparam name="T2">The type of the second parameter passed to the command.</typeparam>
+    /// <typeparam name="T3">The type of the third parameter passed to the command.</typeparam>
+    /// <typeparam name="T4">The type of the fourth parameter passed to the command.</typeparam>
     public interface IRelayCommand<in T1, in T2, in T3, in T4>
     {
         /// <summary>
-        /// Событие, которое вызывается при изменении состояния выполнения команды.
+        /// Event that is raised when the ability to execute the command changes.
         /// </summary>
         public event Action<IRelayCommand<T1, T2, T3, T4>> CanExecuteChanged;
         
         /// <summary>
-        /// Определяет, может ли команда быть выполнена с переданными параметрами.
+        /// Determines whether the command can be executed with the given parameters.
         /// </summary>
-        /// <param name="param1">Первый параметр, используемый для выполнения команды.</param>
-        /// <param name="param2">Второй параметр, используемый для выполнения команды.</param>
-        /// <param name="param3">Третий параметр, используемый для выполнения команды.</param>
-        /// <param name="param4">Четвертый параметр, используемый для выполнения команды.</param>
-        /// <returns>Значение <c>true</c>, если команда может быть выполнена, иначе <c>false</c>.</returns>
+        /// <param name="param1">The first parameter used to execute the command.</param>
+        /// <param name="param2">The second parameter used to execute the command.</param>
+        /// <param name="param3">The third parameter used to execute the command.</param>
+        /// <param name="param4">The fourth parameter used to execute the command.</param>
+        /// <returns><c>true</c> if the command can be executed; otherwise, <c>false</c>.</returns>
         public bool CanExecute(T1? param1, T2? param2, T3? param3, T4? param4);
 
         /// <summary>
-        /// Выполняет команду с переданными параметрами.
+        /// Executes the command with the given parameters.
         /// </summary>
-        /// <param name="param1">Первый параметр, используемый для выполнения команды.</param>
-        /// <param name="param2">Второй параметр, используемый для выполнения команды.</param>
-        /// <param name="param3">Третий параметр, используемый для выполнения команды.</param>
-        /// <param name="param4">Четвертый параметр, используемый для выполнения команды.</param>
+        /// <param name="param1">The first parameter used to execute the command.</param>
+        /// <param name="param2">The second parameter used to execute the command.</param>
+        /// <param name="param3">The third parameter used to execute the command.</param>
+        /// <param name="param4">The fourth parameter used to execute the command.</param>
         public void Execute(T1 param1, T2 param2, T3 param3, T4 param4);
         
         /// <summary>
-        /// Уведомляет об изменении состояния выполнения команды, вызывая событие <see cref="CanExecuteChanged"/>.
+        /// Notifies that the execution state of the command has changed, raising the <see cref="CanExecuteChanged"/> event.
         /// </summary>
         void NotifyCanExecuteChanged();
     }

@@ -3,9 +3,9 @@ using System;
 namespace Aspid.UI.MVVM.ViewModels.Generation
 {
     /// <summary>
-    /// Атрибут-маркер для классов и структур.
-    /// Используется Source Generator для генерации реализации интерфейса <see cref="IViewModel"/>.
-    /// Так же позволяет Source Generator анализировать блоки кода внутри помеченного класса или структуры.
+    /// Marker attribute for classes and structures.
+    /// Used by the Source Generator to generate the implementation of the <see cref="IViewModel"/> interface.
+    /// Also allows the Source Generator to analyze code blocks within the marked class or structure.
     /// </summary>
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Struct, Inherited = false)]
     public sealed class ViewModelAttribute : Attribute { }

@@ -4,17 +4,17 @@ using System.Collections.Generic;
 namespace Aspid.UI.MVVM.ViewModels
 {
     /// <summary>
-    /// Служебный класс, предоставляющий общие операции для работы с ViewModels.
+    /// Utility class providing common operations for working with ViewModels.
     /// </summary>
     public static class ViewModelUtility
     {
         /// <summary>
-        /// Устанавливает значение свойства, если оно изменилось.
+        /// Sets the value of a property if it has changed.
         /// </summary>
-        /// <param name="field">Ссылка на поле, хранящее текущее значение.</param>
-        /// <param name="newValue">Новое значение для установки.</param>
-        /// <typeparam name="T">Тип свойства.</typeparam>
-        /// <returns>Возвращает true, если свойство было изменено, иначе false.</returns>
+        /// <param name="field">Reference to the field storing the current value.</param>
+        /// <param name="newValue">New value to set.</param>
+        /// <typeparam name="T">Property type.</typeparam>
+        /// <returns>Returns <c>true</c> if the property was changed; otherwise, <c>false</c>.</returns>
         public static bool SetProperty<T>(ref T field, T newValue)
         {
             if (EqualsDefault(field, newValue)) return false;
@@ -24,13 +24,13 @@ namespace Aspid.UI.MVVM.ViewModels
         }
         
         /// <summary>
-        /// Устанавливает значение свойства с помощью пользовательского <see cref="comparer"/>, если оно изменилось.
+        /// Sets the value of a property using a custom <see cref="comparer"/> if it has changed.
         /// </summary>
-        /// <param name="field">Ссылка на поле, хранящее текущее значение.</param>
-        /// <param name="newValue">Новое значение для установки.</param>
-        /// <param name="comparer">Пользовательский <see cref="comparer"/> для проверки равенства.</param>
-        /// <typeparam name="T">Тип свойства.</typeparam>
-        /// <returns>Возвращает true, если свойство было изменено, иначе false.</returns>
+        /// <param name="field">Reference to the field storing the current value.</param>
+        /// <param name="newValue">New value to set.</param>
+        /// <param name="comparer">Custom <see cref="comparer"/> for equality checking.</param>
+        /// <typeparam name="T">Property type.</typeparam>
+        /// <returns>Returns <c>true</c> if the property was changed; otherwise, <c>false</c>.</returns>
         /// <exception cref="ArgumentNullException"></exception>
         public static bool SetProperty<T>(ref T field, T newValue, IEqualityComparer<T> comparer)
         {
@@ -42,13 +42,13 @@ namespace Aspid.UI.MVVM.ViewModels
         }
         
         /// <summary>
-        /// Устанавливает значение свойства и вызывает <see cref="callback"/>, если оно изменилось.
+        /// Sets the value of a property and invokes <see cref="callback"/> if it has changed.
         /// </summary>
-        /// <param name="oldValue">Старое значение.</param>
-        /// <param name="newValue">Новое значение для установки.</param>
-        /// <param name="callback">Action для вызова, если значение было изменено.</param>
-        /// <typeparam name="T">Тип свойства.</typeparam>
-        /// <returns>Возвращает true, если свойство было изменено, иначе false.</returns>
+        /// <param name="oldValue">Old value.</param>
+        /// <param name="newValue">New value to set.</param>
+        /// <param name="callback">Action to invoke if the value was changed.</param>
+        /// <typeparam name="T">Property type.</typeparam>
+        /// <returns>Returns <c>true</c> if the property was changed; otherwise, <c>false</c>.</returns>
         /// <exception cref="ArgumentNullException"></exception>
         public static bool SetProperty<T>(T oldValue, T newValue, Action<T> callback)
         {
@@ -60,14 +60,14 @@ namespace Aspid.UI.MVVM.ViewModels
         }
         
         /// <summary>
-        /// Устанавливает значение свойства с помощью пользовательского <see cref="comparer"/> и вызывает <see cref="callback"/>, если оно изменилось.
+        /// Sets the value of a property using a custom <see cref="comparer"/> and invokes <see cref="callback"/> if it has changed.
         /// </summary>
-        /// <param name="oldValue">Старое значение.</param>
-        /// <param name="newValue">Новое значение для установки.</param>
-        /// <param name="callback">Action для вызова, если значение было изменено.</param>
-        /// /// <param name="comparer">Пользовательский <see cref="comparer"/> для проверки равенства.</param>
-        /// <typeparam name="T">Тип свойства.</typeparam>
-        /// <returns>Возвращает true, если свойство было изменено, иначе false.</returns>
+        /// <param name="oldValue">Old value.</param>
+        /// <param name="newValue">New value to set.</param>
+        /// <param name="callback">Action to invoke if the value was changed.</param>
+        /// <param name="comparer">Custom <see cref="comparer"/> for equality checking.</param>
+        /// <typeparam name="T">Property type.</typeparam>
+        /// <returns>Returns <c>true</c> if the property was changed; otherwise, <c>false</c>.</returns>
         /// <exception cref="ArgumentNullException"></exception>
         public static bool SetProperty<T>(T oldValue, T newValue, Action<T> callback, IEqualityComparer<T> comparer)
         {
@@ -80,23 +80,23 @@ namespace Aspid.UI.MVVM.ViewModels
         }
         
         /// <summary>
-        /// Проверяет равенство значений используя дефолтный Comparer.
+        /// Checks equality of values using the default Comparer.
         /// </summary>
-        /// <param name="value">Текущие значение.</param>
-        /// <param name="newValue">Новое значение поля.</param>
-        /// <typeparam name="T">Тип значения.</typeparam>
-        /// <returns>Возвращает true, если значения равны, иначе false.</returns>
+        /// <param name="value">Current value.</param>
+        /// <param name="newValue">New value of the field.</param>
+        /// <typeparam name="T">Value type.</typeparam>
+        /// <returns>Returns <c>true</c> if the values are equal, otherwise <c>false</c>.</returns>
         public static bool EqualsDefault<T>(T value, T newValue) =>
             EqualityComparer<T>.Default.Equals(value, newValue);
 
         /// <summary>
-        /// Базовая реализация метода AddBinder из интерфейса IViewModel.
+        /// Base implementation of the AddBinder method from the IViewModel interface.
         /// </summary>
-        /// <param name="binder">Binder для связывания.</param>
-        /// <param name="value">Начальное значение.</param>
-        /// <param name="changed">Action для связывания.</param>
-        /// <param name="setValue">Необязательный Action для обратного связывания.</param>
-        /// <typeparam name="T">Тип свойства.</typeparam>
+        /// <param name="binder">Binder for binding.</param>
+        /// <param name="value">Initial value.</param>
+        /// <param name="changed">Action for binding.</param>
+        /// <param name="setValue">Optional Action for reverse binding.</param>
+        /// <typeparam name="T">Property type.</typeparam>
         /// <exception cref="Exception"></exception>
         public static void AddBinder<T>(IBinder binder, T value, ref Action<T> changed, Action<T>? setValue = null)
         {
@@ -116,12 +116,12 @@ namespace Aspid.UI.MVVM.ViewModels
         }
         
         /// <summary>
-        /// Базовая реализация метода RemoveBinder из интерфейса IViewModel.
+        /// Base implementation of the RemoveBinder method from the IViewModel interface.
         /// </summary>
-        /// <param name="binder">Binder для разрыва привязки.</param>
-        /// <param name="changed">Action для разрыва привязки.</param>
-        /// <param name="setValue">Необязательный Action для разрыва обратного связывания.</param>
-        /// <typeparam name="T">Тип свойства.</typeparam>
+        /// <param name="binder">Binder for unbinding.</param>
+        /// <param name="changed">Action for unbinding.</param>
+        /// <param name="setValue">Optional Action for unbinding reverse binding.</param>
+        /// <typeparam name="T">Property type.</typeparam>
         /// <exception cref="Exception"></exception>
         public static void RemoveBinder<T>(IBinder binder, ref Action<T> changed, Action<T>? setValue = null)
         {

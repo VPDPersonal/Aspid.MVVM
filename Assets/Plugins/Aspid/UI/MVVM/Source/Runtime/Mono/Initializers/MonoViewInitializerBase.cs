@@ -7,8 +7,8 @@ using Aspid.UI.MVVM.ViewModels.Extensions;
 namespace Aspid.UI.MVVM.Mono.Initializers
 {
     /// <summary>
-    /// Абстрактный базовый класс для инициализации View с использованием ViewModel.
-    /// Наследует <see cref="MonoBehaviour"/> и предоставляет механизм автоматической инициализации и освобождения ресурсов.
+    /// Abstract base class for initializing the View using the ViewModel.
+    /// Inherits from <see cref="MonoBehaviour"/> and provides a mechanism for automatic initialization and resource cleanup.
     /// </summary>
     public abstract class MonoViewInitializerBase : MonoBehaviour
     {
@@ -16,17 +16,17 @@ namespace Aspid.UI.MVVM.Mono.Initializers
         [SerializeField] private bool _isDisposeViewModelOnDestroy;
         
         /// <summary>
-        /// Абстрактное свойство, которое должно возвращать View.
+        /// Abstract property that should return the View.
         /// </summary>
         protected abstract IView View { get; }
         
         /// <summary>
-        /// Абстрактное свойство, которое должно возвращать ViewModel.
+        /// Abstract property that should return the ViewModel.
         /// </summary>
         protected abstract IViewModel ViewModel { get; }
 
         /// <summary>
-        /// Инициализирует View, связывая его с ViewModel.
+        /// Initializes the View by binding it to the ViewModel.
         /// </summary>
         protected void Initialize() => View.Initialize(ViewModel);
 

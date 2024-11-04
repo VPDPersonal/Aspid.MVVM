@@ -7,12 +7,12 @@ namespace Aspid.UI.MVVM.Mono.Views
     public abstract partial class MonoView
     {
         /// <summary>
-        /// Создает экземпляр View и инициализирует его с заданным <see cref="IViewModel"/>.
+        /// Creates an instance of the View and initializes it with the specified <see cref="IViewModel"/>.
         /// </summary>
-        /// <typeparam name="T">Тип View, который должен наследовать от <see cref="Object"/> и реализовывать <see cref="IView"/>.</typeparam>
-        /// <param name="original">Исходный объект View, который будет инстанцирован.</param>
-        /// <param name="viewModel">ViewModel для инициализации.</param>
-        /// <returns>Созданный экземпляр View.</returns>
+        /// <typeparam name="T">The type of the View, which must inherit from <see cref="Object"/> and implement <see cref="IView"/>.</typeparam>
+        /// <param name="original">The original View object to be instantiated.</param>
+        /// <param name="viewModel">The ViewModel for initialization.</param>
+        /// <returns>The created instance of the View.</returns>
         public static T Instantiate<T>(
             T original, 
             IViewModel viewModel)
@@ -25,13 +25,13 @@ namespace Aspid.UI.MVVM.Mono.Views
         }
 
         /// <summary>
-        /// Создает экземпляр View с указанным родителем и инициализирует его с заданным <see cref="IViewModel"/>.
+        /// Creates an instance of the View with the specified parent and initializes it with the given <see cref="IViewModel"/>.
         /// </summary>
-        /// <typeparam name="T">Тип View, который должен наследовать от <see cref="Object"/> и реализовывать <see cref="IView"/>.</typeparam>
-        /// <param name="original">Исходный объект View, который будет инстанцирован.</param>
-        /// <param name="parent">Родительский объект для нового экземпляра View.</param>
-        /// <param name="viewModel">ViewModel для инициализации.</param>
-        /// <returns>Созданный экземпляр View.</returns>
+        /// <typeparam name="T">The type of the View, which must inherit from <see cref="Object"/> and implement <see cref="IView"/>.</typeparam>
+        /// <param name="original">The original View object to be instantiated.</param>
+        /// <param name="parent">The parent object for the new View instance.</param>
+        /// <param name="viewModel">The ViewModel for initialization.</param>
+        /// <returns>The created instance of the View.</returns>
         public static T Instantiate<T>(
             T original, 
             Transform parent,
@@ -42,14 +42,14 @@ namespace Aspid.UI.MVVM.Mono.Views
         }
         
         /// <summary>
-        /// Создает экземпляр View с указанным родителем и инициализирует его с заданным <see cref="IViewModel"/>.
+        /// Creates an instance of the View with the specified parent and initializes it with the given <see cref="IViewModel"/>.
         /// </summary>
-        /// <typeparam name="T">Тип View, который должен наследовать от <see cref="Object"/> и реализовывать <see cref="IView"/>.</typeparam>
-        /// <param name="original">Исходный объект View, который будет инстанцирован.</param>
-        /// <param name="parent">Родительский объект для нового экземпляра View.</param>
-        /// <param name="worldPositionStays">Указывает, должен ли новый экземпляр сохранять мировые позиции.</param>
-        /// <param name="viewModel">ViewModel для инициализации.</param>
-        /// <returns>Созданный экземпляр View.</returns>
+        /// <typeparam name="T">The type of the View, which must inherit from <see cref="Object"/> and implement <see cref="IView"/>.</typeparam>
+        /// <param name="original">The original View object to be instantiated.</param>
+        /// <param name="parent">The parent object for the new View instance.</param>
+        /// <param name="worldPositionStays">Indicates whether the new instance should retain its world position.</param>
+        /// <param name="viewModel">The ViewModel for initialization.</param>
+        /// <returns>The created instance of the View.</returns>
         public static T Instantiate<T>(
             T original,
             Transform parent,
@@ -64,14 +64,14 @@ namespace Aspid.UI.MVVM.Mono.Views
         }
 
         /// <summary>
-        /// Создает экземпляр View с заданными позицией и вращением, и инициализирует его с заданным <see cref="IViewModel"/>.
+        /// Creates an instance of the View with the specified position and rotation, and initializes it with the given <see cref="IViewModel"/>.
         /// </summary>
-        /// <typeparam name="T">Тип View, который должен наследовать от <see cref="Object"/> и реализовывать <see cref="IView"/>.</typeparam>
-        /// <param name="original">Исходный объект View, который будет инстанцирован.</param>
-        /// <param name="position">Позиция для нового экземпляра View.</param>
-        /// <param name="rotation">Вращение для нового экземпляра View.</param>
-        /// <param name="viewModel">ViewModel для инициализации.</param>
-        /// <returns>Созданный экземпляр View.</returns>
+        /// <typeparam name="T">The type of the View, which must inherit from <see cref="Object"/> and implement <see cref="IView"/>.</typeparam>
+        /// <param name="original">The original View object to be instantiated.</param>
+        /// <param name="position">The position for the new View instance.</param>
+        /// <param name="rotation">The rotation for the new View instance.</param>
+        /// <param name="viewModel">The ViewModel for initialization.</param>
+        /// <returns>The created instance of the View.</returns>
         public static T Instantiate<T>(
             T original,
             Vector3 position,
@@ -86,15 +86,15 @@ namespace Aspid.UI.MVVM.Mono.Views
         }
         
         /// <summary>
-        /// Создает экземпляр View с заданными позицией, вращением и родителем, и инициализирует его с заданным <see cref="IViewModel"/>.
+        /// Creates an instance of the View with the specified position, rotation, and parent, and initializes it with the given <see cref="IViewModel"/>.
         /// </summary>
-        /// <typeparam name="T">Тип View, который должен наследовать от <see cref="Object"/> и реализовывать <see cref="IView"/>.</typeparam>
-        /// <param name="original">Исходный объект View, который будет инстанцирован.</param>
-        /// <param name="position">Позиция для нового экземпляра View.</param>
-        /// <param name="rotation">Вращение для нового экземпляра View.</param>
-        /// <param name="parent">Родительский объект для нового экземпляра View.</param>
-        /// <param name="viewModel">ViewModel для инициализации.</param>
-        /// <returns>Созданный экземпляр View.</returns>
+        /// <typeparam name="T">The type of the View, which must inherit from <see cref="Object"/> and implement <see cref="IView"/>.</typeparam>
+        /// <param name="original">The original View object to be instantiated.</param>
+        /// <param name="position">The position for the new View instance.</param>
+        /// <param name="rotation">The rotation for the new View instance.</param>
+        /// <param name="parent">The parent object for the new View instance.</param>
+        /// <param name="viewModel">The ViewModel for initialization.</param>
+        /// <returns>The created instance of the View.</returns>
         public static T Instantiate<T>(
             T original,
             Vector3 position, 

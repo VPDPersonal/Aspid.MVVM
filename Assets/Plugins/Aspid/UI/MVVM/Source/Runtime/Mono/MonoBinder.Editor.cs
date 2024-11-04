@@ -16,8 +16,8 @@ namespace Aspid.UI.MVVM.Mono
         private IViewModel _viewModel;
         
         /// <summary>
-        /// View, к которой относится Binder.
-        /// (Только для Editor).
+        /// The View to which the Binder relates.
+        /// (Editor only).
         /// </summary>
         public IView View
         {
@@ -34,8 +34,8 @@ namespace Aspid.UI.MVVM.Mono
         }
         
         /// <summary>
-        /// Id, который должен соответствовать имени свойства любой ViewModel.
-        /// (Только для Editor).
+        /// The ID that must correspond to the name of any ViewModel property.
+        /// (Editor only).
         /// </summary>
         public string Id
         {

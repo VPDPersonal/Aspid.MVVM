@@ -4,23 +4,23 @@ using Aspid.UI.MVVM.Views;
 namespace Aspid.UI.MVVM.Mono
 {
     /// <summary>
-    /// Интерфейс, который нужен для валидации Binder внутри Editor.
-    /// Необходимо реализовывать внутри #if UNITY_EDITOR.
+    /// Interface required for validating a Binder within the Editor.
+    /// It must be implemented inside #if UNITY_EDITOR.
     /// </summary>
     public interface IMonoBinderValidable
     {
         /// <summary>
-        /// View, к которой относится Binder.
+        /// The View to which the Binder relates.
         /// </summary>
         public IView? View { get; set; }
         
         /// <summary>
-        /// Id, который должен соответствовать имени свойства любой ViewModel.
+        /// The ID that must correspond to the name of any ViewModel property.
         /// </summary>
         public string? Id { get; set; }
 
         /// <summary>
-        /// Сброс параметров
+        /// Resets the parameters.
         /// </summary>
         public void Reset()
         {

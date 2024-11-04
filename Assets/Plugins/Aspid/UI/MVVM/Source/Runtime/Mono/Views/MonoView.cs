@@ -6,6 +6,10 @@ using Aspid.UI.MVVM.ViewModels;
 
 namespace Aspid.UI.MVVM.Mono.Views
 {
+    /// <summary>
+    /// Abstract class for a View, inheriting from <see cref="MonoBehaviour"/>, that implements the <see cref="IView"/> interface.
+    /// Provides methods for initializing and deinitializing the View with an <see cref="IViewModel"/> for binding.
+    /// </summary>
     public abstract partial class MonoView : MonoBehaviour, IView, IDisposable
     {
 #if !ASPID_UI_MVVM_UNITY_PROFILER_DISABLED
@@ -13,10 +17,20 @@ namespace Aspid.UI.MVVM.Mono.Views
         private static readonly Unity.Profiling.ProfilerMarker _deinitializationMarker = new("MonoView.Deinitialization");
 #endif
 
+        /// <summary>
+        /// Gets the associated ViewModel.
+        /// May return <c>null</c> if the view is not initialized.
+        /// </summary>
         public IViewModel ViewModel { get; private set; }
 
         protected virtual void OnDestroy() => Deinitialize();
 
+        /// <summary>
+        /// Initializes the view with the specified <see cref="IViewModel"/> for binding.
+        /// </summary>
+        /// <param name="viewModel">The <see cref="IViewModel"/> object to initialize the View.</param>
+        /// <exception cref="ArgumentNullException">Thrown when <paramref name="viewModel"/> is <c>null</c>.</exception>
+        /// <exception cref="InvalidOperationException">Thrown when the view is already initialized.</exception>
         public void Initialize(IViewModel viewModel)
         {
 #if !ASPID_UI_MVVM_UNITY_PROFILER_DISABLED
@@ -31,8 +45,16 @@ namespace Aspid.UI.MVVM.Mono.Views
             }
         }
 
+        /// <summary>
+        /// Abstract method for internal view initialization. 
+        /// Must be overridden in a derived class to implement specific initialization logic.
+        /// </summary>
+        /// <param name="viewModel">The <see cref="IViewModel"/> object to initialize the View.</param>
         protected abstract void InitializeIternal(IViewModel viewModel);
 
+        /// <summary>
+        /// Deinitializes the View, resetting the associated <see cref="ViewModel"/>.
+        /// </summary>
         public void Deinitialize()
         {
             if (ViewModel == null) return;
@@ -46,8 +68,16 @@ namespace Aspid.UI.MVVM.Mono.Views
             }
         }
         
+        /// <summary>
+        /// Abstract method for internal view deinitialization. 
+        /// Must be overridden in a derived class to implement specific deinitialization logic.
+        /// </summary>
         protected abstract void DeinitializeIternal();
 
+        /// <summary>
+        /// Destroys the GameObject of the View.
+        /// May be overridden by a derived class.
+        /// </summary>
         public virtual void Dispose() => Destroy(gameObject);
     }
 }

@@ -14,13 +14,11 @@ namespace Aspid.UI.MVVM.Mono
         [SerializeField] private string _id;
         
         private IViewModel _viewModel;
-
-        public string Id
-        {
-            get => _id;
-            set => _id = value;
-        }
         
+        /// <summary>
+        /// The View to which the Binder relates.
+        /// (Editor only).
+        /// </summary>
         public IView View
         {
             get => _view;
@@ -33,6 +31,16 @@ namespace Aspid.UI.MVVM.Mono
                     _ => throw new ArgumentException("View is not a MonoView")
                 };
             }
+        }
+        
+        /// <summary>
+        /// The ID that must correspond to the name of any ViewModel property.
+        /// (Editor only).
+        /// </summary>
+        public string Id
+        {
+            get => _id;
+            set => _id = value;
         }
 
         partial void OnBindingDebug(IViewModel viewModel, string id)

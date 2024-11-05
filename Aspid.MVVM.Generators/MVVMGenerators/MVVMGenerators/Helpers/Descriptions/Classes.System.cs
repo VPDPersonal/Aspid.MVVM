@@ -6,6 +6,8 @@ public static partial class Classes
     public static readonly TypeText Action = new("Action", Namespaces.System);
     public static readonly TypeText Delegate = new("Delegate", Namespaces.System);
     public static readonly TypeText Exception = new("Exception", Namespaces.System);
+    public static readonly TypeText ArgumentNullException = new("ArgumentNullException", Namespaces.System);
+    public static readonly TypeText InvalidOperationException = new("InvalidOperationException", Namespaces.System);
     
     public static readonly TypeText List = new("List", Namespaces.System_Collections_Generic);
     public static readonly TypeText Dictionary = new("Dictionary", Namespaces.System_Collections_Generic);

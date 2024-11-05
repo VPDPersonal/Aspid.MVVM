@@ -8,16 +8,17 @@ namespace MVVMGenerators.Sample.Views;
 
 [View]
 public partial class MonoViewTest3 : MonoView
-{
+{ 
+    // TODO Error of generation
     [AsBinder(typeof(SliderBinder))]
-    [SerializeField] private Slider MinRange;
+    [SerializeField] private Slider _asBinder1;
     
     [AsBinder(typeof(SliderBinder))]
-    [SerializeField] private Slider[] MaxRange;
+    [SerializeField] private Slider[] _asBinder2;
 
     [AsBinder(typeof(ButtonBinder))]
-    private Button OkCommand => GetComponent<Button>();
+    private Button AsBinderProperty1 => GetComponent<Button>();
     
     [AsBinder(typeof(ButtonBinder))]
-    private Button[] CancelCommand => GetComponents<Button>();
+    private Button[] AsBinderProperty2 => GetComponents<Button>();
 }

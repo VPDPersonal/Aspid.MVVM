@@ -1,11 +1,10 @@
 using UnityEngine;
-using System.Drawing;
 using Aspid.UI.MVVM;
-using Aspid.UI.MVVM.Commands;
+using System.Drawing;
 using Aspid.UI.MVVM.Mono;
+using Aspid.UI.MVVM.Commands;
 using Aspid.UI.MVVM.Mono.Views;
-using Aspid.UI.MVVM.Extensions;
-using Aspid.UI.MVVM.ViewModels;
+using System.Collections.Generic;
 using Aspid.UI.MVVM.Views.Generation;
 
 namespace MVVMGenerators.Sample.Views;
@@ -13,17 +12,21 @@ namespace MVVMGenerators.Sample.Views;
 [View]
 public partial class MonoViewTest1 : MonoView
 {
+    [SerializeField] private Binder _binder1;
+    [SerializeField] private Binder _binder2;
+    
     [RequireBinder(typeof(string))]
-    [SerializeField] private MonoBinder _name;
-
-    [SerializeField] private Binder _bind;
-
-    [RequireBinder(typeof(int))]
-    [SerializeField] private MonoBinder _age;
+    [SerializeField] private MonoBinder _monoBinder1;
+    
+    [SerializeField] private MonoBinder _monoBinder2;
 
     [RequireBinder(typeof(Color))]
-    [SerializeField] private MonoBinder[] _hairColor;
+    [SerializeField] private MonoBinder[] _arrayMonoBinder1;
 
     [RequireBinder(typeof(IRelayCommand<Color>))]
-    [SerializeField] private MonoBinder[] _changeHairColorCommand;
+    [SerializeField] private MonoBinder[] _arrayMonoBinder2;
+    
+    // TODO Fix
+    // Don't work
+    [SerializeField] private List<MonoBinder> _listMonoBinder1;
 }

@@ -49,19 +49,22 @@ public static class ViewBody
                 private static readonly {{ProfilerMarker}} _initializeMarker = new("{{className}}.Initialize");
                 
                 {{GeneratedAttribute}}
-                private static readonly {{ProfilerMarker}} _deinitializeMarker = mew("{{className}}.Deinitialize");
+                private static readonly {{ProfilerMarker}} _deinitializeMarker = new("{{className}}.Deinitialize");
                 #endif
                 
                 {{GeneratedAttribute}}
-                public IViewModel? ViewModel { get; private set; }
+                public {{IViewModel}} ViewModel { get; private set; }
                 
                 {{GeneratedAttribute}}
                 void {{IView}}.Initialize({{IViewModel}} viewModel)
                 {
-                    #if !ULTIMATE_UI_MVVM_UNITY_PROFILER_DISABLED
+                    #if !ASPID_UI_MVVM_UNITY_PROFILER_DISABLED
                     using (_initializeMarker.Auto())
                     #endif
                     {
+                        if (viewModel is null) throw new {{Classes.ArgumentNullException.Global}}(nameof(viewModel));
+                        if (ViewModel is not null) throw new {{Classes.InvalidOperationException.Global}}("View is already initialized.");
+                    
                         ViewModel = viewModel;
                         InitializeIternal(viewModel);
                     }
@@ -76,15 +79,17 @@ public static class ViewBody
             .AppendLine()
             .AppendMultiline(
                 $$"""
-                
                 {{GeneratedAttribute}}
                 void {{IView}}.Deinitialize()
                 {
-                    #if !ULTIMATE_UI_MVVM_UNITY_PROFILER_DISABLED
+                    if (ViewModel == null) return;
+                
+                    #if !ASPID_UI_MVVM_UNITY_PROFILER_DISABLED
                     using (_deinitializeMarker.Auto())
                     #endif
                     {
                         DeinitializeIternal();
+                        ViewModel = null;
                     }
                 }
 
@@ -298,7 +303,7 @@ public static class ViewBody
                 {
                     isAppend = true;
                     code.AppendLine(member.IsUnityEngineObject 
-                        ? $"if ({member.Name}) {member.BinderName} = new {member.AsBinderType}({member.Name});" 
+                        ? $"if ({member.Name}) {member.BinderName} ??= new {member.AsBinderType}({member.Name});" 
                         : $"{member.BinderName} ??= new {member.AsBinderType}({member.Name});");
                 }
             });

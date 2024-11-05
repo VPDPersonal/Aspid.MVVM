@@ -132,14 +132,14 @@ public partial class ViewModelGenerator
          *  {
          *  |   public partial class MyClassName : IViewModel
          *  |   {
-         *  |   |   #if !ULTIMATE_UI_MVVM_UNITY_PROFILER_DISABLED
+         *  |   |   #if !ASPID_UI_MVVM_UNITY_PROFILER_DISABLED
          *  |   |   private static readonly ProfilerMarker _addBinderMarker = new("MyClassName.AddBinder");
          *  |   |   private static readonly ProfilerMarker _removeBinderMarker = new("MyClassName.RemoveBinder");
          *  |   |   #endif
          *  |   |
          *  |   |   public void AddBinder(IBinder binder, string propertyName)
          *  |   |   {
-         *  |   |   |   #if ULTIMATE_UI_MVVM_UNITY_PROFILER_DISABLED
+         *  |   |   |   #if !ASPID_UI_MVVM_UNITY_PROFILER_DISABLED
          *  |   |   |   using (_addBinderMarker.Auto())
          *  |   |   |   #endif
          *  |   |   |   {
@@ -168,7 +168,7 @@ public partial class ViewModelGenerator
          *  |   |
          *  |   |   public void RemoveBinder(IBinder binder, string propertyName)
          *  |   |   {
-         *  |   |   |   #if ULTIMATE_UI_MVVM_UNITY_PROFILER_DISABLED
+         *  |   |   |   #if !ASPID_UI_MVVM_UNITY_PROFILER_DISABLED
          *  |   |   |   using (_removeBinderMarker.Auto())
          *  |   |   |   #endif
          *  |   |   |   {

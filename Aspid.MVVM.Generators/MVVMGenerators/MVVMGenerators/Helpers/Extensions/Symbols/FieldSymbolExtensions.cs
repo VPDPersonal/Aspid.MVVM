@@ -4,25 +4,22 @@ namespace MVVMGenerators.Helpers.Extensions.Symbols;
 
 public static class FieldSymbolExtensions
 {
+    #region GetPropertyName
     public static string GetPropertyName(this IFieldSymbol symbol) =>
         GetPropertyName(symbol.Name);
     
-    public static string GetPropertyName(string name)
+    public static string GetPropertyName(string fieldName)
     {
-        var prefixCount = GetPrefixCount();
-        if (prefixCount > 0) name = name.Remove(0, prefixCount);
-
-        var firstSymbol = name[0];
-        if (char.IsLower(firstSymbol))
-        {
-            name = name.Remove(0, 1);
-            name = char.ToUpper(firstSymbol) + name;
-        }
-        
-        return name;
-        
-        // TODO Custom prefix from config
-        int GetPrefixCount() =>
-            name.StartsWith("_") ? 1 : name.StartsWith("m_") ? 2 : 0;
+        var name = RemovePrefix(fieldName);
+        return char.ToUpper(name[0]) + name.Substring(1);
     }
+    #endregion
+
+    #region RemovePrefix
+    public static string RemovePrefix(this IFieldSymbol symbol) =>
+        RemovePrefix(symbol.Name);
+    
+    public static string RemovePrefix(string fieldName) =>
+        fieldName.TrimStart('m', '_').TrimStart('_');
+    #endregion
 }

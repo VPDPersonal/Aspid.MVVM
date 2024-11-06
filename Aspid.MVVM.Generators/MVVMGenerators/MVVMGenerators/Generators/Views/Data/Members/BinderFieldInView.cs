@@ -3,8 +3,8 @@ using MVVMGenerators.Helpers.Extensions.Symbols;
 
 namespace MVVMGenerators.Generators.Views.Data.Members;
 
-public readonly struct FieldMember(IFieldSymbol field) 
+public readonly struct BinderFieldInView(IFieldSymbol field) 
 {
-    public readonly string Name = field.Name;
+    public readonly string FieldName = field.Name;
     public readonly string Id = $"{field.GetPropertyName()}Id";
 }

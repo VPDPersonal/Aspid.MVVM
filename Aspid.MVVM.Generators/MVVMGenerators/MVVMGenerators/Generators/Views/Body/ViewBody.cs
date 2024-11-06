@@ -23,13 +23,13 @@ public static class ViewBody
         code = data.Inheritor switch
         {
             Inheritor.None => code.AppendNone(data),
-            Inheritor.InheritorViewAttribute => code.AppendInheritorView(data),
-            Inheritor.InheritorMonoView => code.AppendInheritorMonoView(data),
             Inheritor.HasInterface => code.AppendHasInterface(data),
+            Inheritor.InheritorView => code.AppendInheritorMonoView(data),
+            Inheritor.InheritorViewAttribute => code.AppendInheritorViewAttribute(data),
             _ => throw new ArgumentOutOfRangeException()
         };
         
-        var isInstantiateBinders = data.PropertyMembers.Length + data.AsBinderMembers.Length > 0;
+        var isInstantiateBinders = data.ViewProperties.Length + data.AsBinderMembers.Length > 0;
         if (!isInstantiateBinders) return code;
         
         code.AppendLine()
@@ -103,7 +103,7 @@ public static class ViewBody
         return code;
     }
 
-    private static CodeWriter AppendInheritorView(this CodeWriter code, in ViewDataSpan data)
+    private static CodeWriter AppendInheritorViewAttribute(this CodeWriter code, in ViewDataSpan data)
     {
         const bool isOverride = true;
         
@@ -205,7 +205,7 @@ public static class ViewBody
 
     private static CodeWriter AppendInitializeBody(this CodeWriter code, in ViewDataSpan data)
     {
-        var isInstantiateBinders = data.PropertyMembers.Length + data.AsBinderMembers.Length > 0;
+        var isInstantiateBinders = data.ViewProperties.Length + data.AsBinderMembers.Length > 0;
         
         code.AppendLineIf(isInstantiateBinders, "InstantiateBinders();\n")
             .AppendMethodBody("BindSafely", data);
@@ -222,19 +222,19 @@ public static class ViewBody
     private static CodeWriter AppendMethodBody(this CodeWriter code, string bindMethodName, in ViewDataSpan data)
     {
         code.AppendLoop(data.FieldMembers, AppendFieldMember)
-            .AppendLoop(data.PropertyMembers, AppendPropertyMember)
+            .AppendLoop(data.ViewProperties, AppendPropertyMember)
             .AppendLoop(data.AsBinderMembers, AppendAsBinderMember);
 
         return code;
 
-        void AppendFieldMember(FieldMember member) =>
-            Append(member.Name, member.Id);
-
-        void AppendPropertyMember(PropertyMember member) =>
+        void AppendFieldMember(BinderFieldInView member) =>
             Append(member.FieldName, member.Id);
 
-        void AppendAsBinderMember(AsBinderMember member) =>
-            Append(member.BinderName, member.Id);
+        void AppendPropertyMember(PropertyBinderInView member) =>
+            Append(member.CachedName, member.Id);
+
+        void AppendAsBinderMember(AsBinderMemberInView member) =>
+            Append(member.CachedName, member.Id);
 
         void Append(string name, string idName) =>
             code.AppendLine($"{name}.{bindMethodName}(ViewModel, {idName});");
@@ -256,13 +256,13 @@ public static class ViewBody
 
     private static CodeWriter AppendCreateBinders(this CodeWriter code, in ViewDataSpan data)
     {
-        if (data.PropertyMembers.Length > 0)
+        if (data.ViewProperties.Length > 0)
         {
-            code.AppendLoop(data.PropertyMembers, member =>
+            code.AppendLoop(data.ViewProperties, member =>
             {
-                code.AppendLine(member.IsUnityEngineObject 
-                    ? $"if (!{member.FieldName}) {member.FieldName} = {member.Name};" 
-                    : $"{member.FieldName} ??= {member.Name};");
+                code.AppendLine(member.IsUnityEngineObjectBinder 
+                    ? $"if (!{member.CachedName}) {member.CachedName} = {member.PropertyName};" 
+                    : $"{member.CachedName} ??= {member.PropertyName};");
             });
             
             if (data.AsBinderMembers.Length > 0) 
@@ -280,7 +280,7 @@ public static class ViewBody
                 {
                     var name = member.Name;
                     var localName = $"local{name}";
-                    var binderName = member.BinderName;
+                    var binderName = member.CachedName;
                     var binderType = member.AsBinderType;
                     
                     code.AppendLineIf(isAppend)
@@ -303,8 +303,8 @@ public static class ViewBody
                 {
                     isAppend = true;
                     code.AppendLine(member.IsUnityEngineObject 
-                        ? $"if ({member.Name}) {member.BinderName} ??= new {member.AsBinderType}({member.Name});" 
-                        : $"{member.BinderName} ??= new {member.AsBinderType}({member.Name});");
+                        ? $"if ({member.Name}) {member.CachedName} ??= new {member.AsBinderType}({member.Name});" 
+                        : $"{member.CachedName} ??= new {member.AsBinderType}({member.Name});");
                 }
             });
         }

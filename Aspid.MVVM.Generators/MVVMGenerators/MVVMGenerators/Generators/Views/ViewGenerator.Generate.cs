@@ -1,4 +1,3 @@
-using System;
 using Microsoft.CodeAnalysis;
 using MVVMGenerators.Helpers;
 using MVVMGenerators.Helpers.Descriptions;
@@ -30,13 +29,13 @@ public partial class ViewGenerator
         DeclarationText declaration,
         SourceProductionContext context)
     {
-        if (data.AsBinderMembers.Length + data.PropertyMembers.Length == 0) return;
+        if (data.AsBinderMembers.Length + data.ViewProperties.Length == 0) return;
         
         var code = new CodeWriter();
         var baseTypes = GetBaseTypes(data);
 
         code.AppendClassBegin(@namespace, declaration, baseTypes)
-            .AppendViewBinderCached(data)
+            .AppendCachedBinders(data)
             .AppendClassEnd(@namespace);
             
         context.AddSource(declaration.GetFileName(@namespace, "CachedBinders"), code.GetSourceText());

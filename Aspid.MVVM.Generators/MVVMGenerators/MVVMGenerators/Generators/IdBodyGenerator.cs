@@ -17,14 +17,14 @@ public static class IdBodyGenerator
         SourceProductionContext context)
     {
         const bool isNameOf = false;
-        var capacity = data.FieldMembers.Length + data.PropertyMembers.Length + data.AsBinderMembers.Length;
+        var capacity = data.FieldMembers.Length + data.ViewProperties.Length + data.AsBinderMembers.Length;
         var idList = new List<(string, string)>(capacity);
 
         foreach (var field in data.FieldMembers)
-            idList.Add((FieldSymbolExtensions.GetPropertyName(field.Name), field.Id));
+            idList.Add((FieldSymbolExtensions.GetPropertyName(field.FieldName), field.Id));
         
-        foreach (var property in data.PropertyMembers)
-            idList.Add((FieldSymbolExtensions.GetPropertyName(property.Name), property.Id));
+        foreach (var property in data.ViewProperties)
+            idList.Add((FieldSymbolExtensions.GetPropertyName(property.PropertyName), property.Id));
         
         foreach (var member in data.AsBinderMembers)
             idList.Add((FieldSymbolExtensions.GetPropertyName(member.Name), member.Id));

@@ -4,10 +4,10 @@ namespace MVVMGenerators.Helpers.Extensions.Symbols;
 
 public static class PropertySymbolExtensions
 {
-    public static string GetFieldName(this IPropertySymbol symbol) =>
-        GetFieldName(symbol.Name);
+    public static string GetFieldName(this IPropertySymbol symbol, bool hasPrefix = true) =>
+        GetFieldName(symbol.Name, hasPrefix);
     
-    public static string GetFieldName(string name)
+    public static string GetFieldName(string name, bool hasPrefix = true)
     {
         if (name.Length == 0) return name;
         
@@ -17,13 +17,14 @@ public static class PropertySymbolExtensions
         if (isFirstSymbolUpper)
         {
             name = name.Remove(0, 1);
-            name = "_" + char.ToLower(firstSymbol) + name;
+            name = char.ToLower(firstSymbol) + name;
         }
-        else
+        
+        if (hasPrefix)
         {
             name = "_" + name;
         }
-
+        
         return name;
     }
 }

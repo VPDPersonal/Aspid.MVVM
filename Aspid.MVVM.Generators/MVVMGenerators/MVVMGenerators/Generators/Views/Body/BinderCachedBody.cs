@@ -2,39 +2,37 @@ using System;
 using Microsoft.CodeAnalysis;
 using MVVMGenerators.Helpers;
 using MVVMGenerators.Generators.Views.Data;
-using MVVMGenerators.Helpers.Extensions.Writer;
 using MVVMGenerators.Generators.Views.Data.Members;
 
 namespace MVVMGenerators.Generators.Views.Body;
 
 public static class BinderCachedBody
 {
-    public static CodeWriter AppendViewBinderCached(this CodeWriter code, in ViewDataSpan data)
+    public static CodeWriter AppendCachedBinders(this CodeWriter code, in ViewDataSpan data)
     {
-        code.AppendProperties(data.PropertyMembers)
-            .AppendAsBinders(data.AsBinderMembers);
-        
-        return code;
+        return code
+            .AppendProperties(data.ViewProperties)
+            .AppendAsBinderMember(data.AsBinderMembers);
     }
 
-    private static CodeWriter AppendProperties(this CodeWriter code, in ReadOnlySpan<PropertyMember> properties)
+    private static CodeWriter AppendProperties(this CodeWriter code, in ReadOnlySpan<PropertyBinderInView> properties)
     {
-        code.AppendLoop(properties, property =>
+        foreach (var property in properties)
         {
-            code.AppendLine($"private {property.Type} {property.FieldName};");
-        });
+            code.AppendLine($"private {property.Type} {property.CachedName};");
+        }
 
         return code;
     }
     
-    private static CodeWriter AppendAsBinders(this CodeWriter code, in ReadOnlySpan<AsBinderMember> members)
+    private static CodeWriter AppendAsBinderMember(this CodeWriter code, in ReadOnlySpan<AsBinderMemberInView> members)
     {
-        code.AppendLoop(members, member =>
+        foreach (var member in members)
         {
-            code.AppendLine(member.Type is IArrayTypeSymbol ?
-                $"private {member.AsBinderType}[] {member.BinderName};" :
-                $"private {member.AsBinderType} {member.BinderName};");
-        });
+            code.AppendLine(member.Type is IArrayTypeSymbol 
+                ? $"private {member.AsBinderType}[] {member.CachedName};"
+                : $"private {member.AsBinderType} {member.CachedName};");
+        }
 
         return code;
     }

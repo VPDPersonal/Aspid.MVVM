@@ -16,6 +16,9 @@ public static partial class Classes
     public static readonly TypeText ViewBinder =
         new ("ViewBinder", Namespaces.Aspid_UI_MVVM_Views);
     
+    public static readonly TypeText View =
+        new("View", Namespaces.Aspid_UI_MVVM_Mono_Views);
+    
     public static readonly TypeText MonoView =
         new("MonoView", Namespaces.Aspid_UI_MVVM_Mono_Views);
     #endregion

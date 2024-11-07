@@ -1,12 +1,12 @@
+using Microsoft.CodeAnalysis;
 using System.Collections.Generic;
 using System.Collections.Immutable;
-using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using MVVMGenerators.Helpers.Extensions.Symbols;
 
-namespace MVVMGenerators.Generators.ViewModels.Data;
+namespace MVVMGenerators.Generators.ViewModels.Data.Members;
 
-public readonly struct FieldData(
+public readonly struct FieldInViewModel(
     IFieldSymbol field,
     bool isReadOnly,
     SyntaxKind getAccess,

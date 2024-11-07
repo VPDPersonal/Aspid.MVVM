@@ -1,21 +1,20 @@
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using MVVMGenerators.Generators.ViewModels.Data;
+using MVVMGenerators.Generators.ViewModels.Data.Members;
 
-namespace MVVMGenerators.Generators.ViewModels;
+namespace MVVMGenerators.Generators.ViewModels.Data;
 
 public readonly struct ViewModelData(
-    bool hasViewModelBaseType,
-    bool hasViewModelInterface,
+    Inheritor inheritor,
     TypeDeclarationSyntax declaration,
-    IEnumerable<FieldData> fields,
+    IEnumerable<FieldInViewModel> fields,
     IEnumerable<RelayCommandData> commands)
 {
+    public readonly Inheritor Inheritor = inheritor;
     public readonly TypeDeclarationSyntax Declaration = declaration;
-    public readonly bool HasViewModelBaseType = hasViewModelBaseType;
-    public readonly bool HasViewModelInterface = hasViewModelInterface;
-    
-    public readonly ImmutableArray<FieldData> Fields = ImmutableArray.CreateRange(fields);
+    public readonly bool HasBaseType = inheritor is Inheritor.InheritorViewModel or Inheritor.InheritorViewModelAttribute;
+
+    public readonly ImmutableArray<FieldInViewModel> Fields = ImmutableArray.CreateRange(fields);
     public readonly ImmutableArray<RelayCommandData> Commands = ImmutableArray.CreateRange(commands);
 }

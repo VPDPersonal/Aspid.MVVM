@@ -1,11 +1,11 @@
-using System.Collections.Generic;
-using System.Linq;
 using Microsoft.CodeAnalysis;
-using MVVMGenerators.Generators.ViewModels.Body;
 using MVVMGenerators.Helpers;
+using System.Collections.Generic;
 using MVVMGenerators.Helpers.Descriptions;
-using MVVMGenerators.Helpers.Extensions.Declarations;
 using MVVMGenerators.Helpers.Extensions.Writer;
+using MVVMGenerators.Generators.ViewModels.Body;
+using MVVMGenerators.Generators.ViewModels.Data;
+using MVVMGenerators.Helpers.Extensions.Declarations;
 
 namespace MVVMGenerators.Generators.ViewModels;
 
@@ -117,7 +117,7 @@ public partial class ViewModelGenerator
         SourceProductionContext context)
     {
         string[]? baseTypes = null;
-        if (!data.HasViewModelInterface)
+        if (data.Inheritor != Inheritor.HasInterface)
             baseTypes = [Classes.IViewModel.Global];
 
         var code = new CodeWriter();

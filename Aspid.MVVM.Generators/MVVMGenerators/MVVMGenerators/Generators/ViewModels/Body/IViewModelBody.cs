@@ -3,6 +3,7 @@ using MVVMGenerators.Helpers;
 using MVVMGenerators.Helpers.Descriptions;
 using MVVMGenerators.Helpers.Extensions.Writer;
 using MVVMGenerators.Generators.ViewModels.Data;
+using MVVMGenerators.Generators.ViewModels.Data.Members;
 
 namespace MVVMGenerators.Generators.ViewModels.Body;
 
@@ -19,13 +20,28 @@ public static class IViewModelBody
 
     public static CodeWriter AppendIViewModelBody(this CodeWriter code, in ViewModelDataSpan data)
     {
-        code.AppendProfilerMarkers(data)
-            .AppendLine()
-            .AppendAddBinder(data)
-            .AppendLine()
-            .AppendRemoveBinder(data)
-            .AppendLine()
-            .AppendManualMethods();
+        if (data.Inheritor == Inheritor.None)
+        {
+            code.AppendProfilerMarkers(in data)
+                .AppendLine()
+                .AppendAddBinder()
+                .AppendLine()
+                .AppendAddBinderInternal(in data)
+                .AppendLine()
+                .AppendRemoveBinder()
+                .AppendLine()
+                .AppendRemoveBinderInternal(in data)
+                .AppendLine()
+                .AppendManualMethods();
+        }
+        else
+        {
+            code.AppendAddBinderInternal(in data)
+                .AppendLine()
+                .AppendRemoveBinderInternal(in data)
+                .AppendLine()
+                .AppendManualMethods();
+        }
 
         return code;
     }
@@ -48,87 +64,69 @@ public static class IViewModelBody
         return code;
     }
 
-    private static CodeWriter AppendAddBinder(this CodeWriter code, in ViewModelDataSpan data)
+    private static CodeWriter AppendAddBinder(this CodeWriter code)
     {
-        var readOnlyFieldsExist = false;
-        var hasBaseType = data.HasViewModelBaseType;
-        var hasInterface = data.HasViewModelInterface;
-        
-        AppendBaseMethodIf(!hasBaseType && !hasInterface);
-        AppendSwitch(data);
-        code.AppendLineIf(hasBaseType, "base.AddBinderInternal(binder, propertyName);");
-        AppendLocalMethods(data.Fields);
-        code.EndBlock();
-
-        return code;
-
-        void AppendBaseMethodIf(bool isAppend)
-        {
-            code.AppendMultilineIf(isAppend,
-                $$"""
-                {{GeneratedAttribute}}
-                public void AddBinder({{IBinder}} binder, string propertyName)
+        code.AppendMultiline(
+            $$"""
+            {{GeneratedAttribute}}
+            public void AddBinder({{IBinder}} binder, string propertyName)
+            {
+                #if !{{Defines.ASPID_UI_MVVM_UNITY_PROFILER_DISABLED}}
+                using (_addBinderMarker.Auto())
+                #endif
                 {
-                    #if !{{Defines.ASPID_UI_MVVM_UNITY_PROFILER_DISABLED}}
-                    using (_addBinderMarker.Auto())
-                    #endif
-                    {
-                        AddBinderInternal(binder, propertyName);
-                    }
+                    AddBinderInternal(binder, propertyName);
                 }
-                
-                """);
-        }
+            }
+            """);
+        
+        return code;
+    }
 
-        void AppendSwitch(in ViewModelDataSpan data)
-        {
-            var additionalModificator = hasBaseType ? "override" : "virtual";
-            
-            code.AppendMultiline(
-                $$"""
-                {{GeneratedAttribute}}
-                protected {{additionalModificator}} void AddBinderInternal({{IBinder}} binder, string propertyName)
-                {
-                    switch (propertyName)
-                """)
+    private static CodeWriter AppendAddBinderInternal(this CodeWriter code, in ViewModelDataSpan data)
+    { 
+        var readOnlyFieldsExist = false;
+        var additionalModificator = data.HasBaseType
+            ? "override" 
+            : "virtual";
+
+        code.AppendMultiline(
+            $$"""
+            protected {{additionalModificator}} void AddBinderInternal({{IBinder}} binder, string propertyName)
+            {
+                switch (propertyName)
+            """)
             .IncreaseIndent()
             .BeginBlock()
-            .AppendLoop(data.Fields, field =>
+            .AppendLoop(data.Fields, AppendField)
+            .AppendLoop(data.Commands, AppendCommand)
+            .AppendMultiline(
+            """
+            default:
             {
-                var type = field.Type;
-                var propertyName = field.PropertyName;
+                var isAdded = false;
+                AddBinderManual(binder, propertyName, ref isAdded);
+                if (isAdded) return;
+                break;
+            }
+            """)
+            .EndBlock()
+            .AppendLineIf(data.Inheritor is Inheritor.InheritorViewModelAttribute, "base.AddBinderInternal(binder, propertyName);");
 
-                if (field.IsReadOnly)
-                {
-                    readOnlyFieldsExist = true;
-                    
-                    code.AppendMultiline(
-                        $$"""
-                        case {{propertyName}}Id:
-                        {
-                            SetValueLocal({{propertyName}});
-                            return;
-                        }
-                        """);
-                }
-                else
-                {
-                    code.AppendMultiline(
-                        $$"""
-                        case {{propertyName}}Id:
-                        {
-                            AddBinderLocal({{propertyName}}, ref {{propertyName}}Changed);
-                            if (binder.IsReverseEnabled) AddReverseBinderLocal<{{type}}>(Set{{propertyName}});
-                            return;
-                        }
-                        """);
-                }
-            })
-            .AppendLoop(data.Commands, command =>
+        AppendLocalMethods(in data.Fields);
+        code.EndBlock();
+        
+        return code;
+
+        void AppendField(FieldInViewModel field)
+        {
+            var type = field.Type;
+            var propertyName = field.PropertyName;
+
+            if (field.IsReadOnly)
             {
                 readOnlyFieldsExist = true;
-                var propertyName = command.PropertyName;
-                
+
                 code.AppendMultiline(
                     $$"""
                       case {{propertyName}}Id:
@@ -137,21 +135,37 @@ public static class IViewModelBody
                           return;
                       }
                       """);
-            })
-            .AppendMultiline(
-                """
-                default:
-                {
-                    var isAdded = false;
-                    AddBinderManual(binder, propertyName, ref isAdded);
-                    if (isAdded) return;
-                    break;
-                }
-                """)
-            .EndBlock();
+            }
+            else
+            {
+                code.AppendMultiline(
+                    $$"""
+                      case {{propertyName}}Id:
+                      {
+                          AddBinderLocal({{propertyName}}, ref {{propertyName}}Changed);
+                          if (binder.IsReverseEnabled) AddReverseBinderLocal<{{type}}>(Set{{propertyName}});
+                          return;
+                      }
+                      """);
+            }
         }
 
-        void AppendLocalMethods(in ReadOnlySpan<FieldData> fields)
+        void AppendCommand(RelayCommandData command)
+        {
+            readOnlyFieldsExist = true;
+            var propertyName = command.PropertyName;
+                
+            code.AppendMultiline(
+                $$"""
+                case {{propertyName}}Id:
+                {
+                    SetValueLocal({{propertyName}});
+                    return;
+                }
+                """);
+        }
+        
+        void AppendLocalMethods(in ReadOnlySpan<FieldInViewModel> fields)
         {
             code.AppendMultilineIf(fields.Length > 0,
                 $$"""
@@ -174,9 +188,8 @@ public static class IViewModelBody
                         
                     specificReverseBinder.ValueChanged += setValue;
                 }
-                """);
-
-            code.AppendMultilineIf(readOnlyFieldsExist,
+                """)
+                .AppendMultilineIf(readOnlyFieldsExist,
                 $$"""
                 
                 void SetValueLocal<T>(T value)
@@ -187,84 +200,81 @@ public static class IViewModelBody
                     specificBinder.SetValue(value);
                 }
                 """);
+
+            return;
         }
     }
     
-    private static CodeWriter AppendRemoveBinder(this CodeWriter code, in ViewModelDataSpan data)
+    private static CodeWriter AppendRemoveBinder(this CodeWriter code)
     {
-        var hasBaseType = data.HasViewModelBaseType;
-        var hasInterface = data.HasViewModelInterface;
+        code.AppendMultiline(
+            $$"""
+            {{GeneratedAttribute}}
+            public void RemoveBinder({{IBinder}} binder, string propertyName)
+            {
+                #if !{{Defines.ASPID_UI_MVVM_UNITY_PROFILER_DISABLED}}
+                using (_removeBinderMarker.Auto())
+                #endif
+                {
+                    RemoveBinderInternal(binder, propertyName);
+                }
+            }
+            """);
+
+        return code;
+    }
+
+    private static CodeWriter AppendRemoveBinderInternal(this CodeWriter code, in ViewModelDataSpan data)
+    {
+        var additionalModificator = data.HasBaseType ? "override" : "virtual";
+
+        code.AppendMultiline(
+            $$"""
+            {{GeneratedAttribute}}
+            protected {{additionalModificator}} void RemoveBinderInternal({{IBinder}} binder, string propertyName)
+            {
+                switch (propertyName)
+            """)
+            .IncreaseIndent()
+            .BeginBlock()
+            .AppendLoop(data.Fields, AppendField)
+            .AppendMultiline(
+            """
+            default:
+            {
+                var isRemoved = false;
+                RemoveBinderManual(binder, propertyName, ref isRemoved);
+                if (isRemoved) return;
+                break;
+            }
+            """)
+            .EndBlock()
+            .AppendLineIf(data.Inheritor is Inheritor.InheritorViewModelAttribute, "base.RemoveBinderInternal(binder, propertyName);");
         
-        AppendBaseMethodsIf(!hasBaseType && !hasInterface);
-        AppendSwitch(data.Fields);
-        code.AppendLineIf(hasBaseType, "base.RemoveBinderInternal(binder, propertyName);");
         AppendLocalMethods(data.Fields);
         code.EndBlock();
         
         return code;
 
-        void AppendBaseMethodsIf(bool isAppend)
+        void AppendField(FieldInViewModel field)
         {
-            code.AppendMultilineIf(isAppend,
-                $$"""
-                {{GeneratedAttribute}}
-                public void RemoveBinder({{IBinder}} binder, string propertyName)
-                {
-                    #if !{{Defines.ASPID_UI_MVVM_UNITY_PROFILER_DISABLED}}
-                    using (_removeBinderMarker.Auto())
-                    #endif
-                    {
-                        RemoveBinderInternal(binder, propertyName);
-                    }
-                }
-                
-                """);
-        }
+            if (field.IsReadOnly) return;
 
-        void AppendSwitch(in ReadOnlySpan<FieldData> fields)
-        {
-            var additionalModificator = hasBaseType ? "override" : "virtual";
+            var type = field.Type;
+            var propertyName = field.PropertyName;
 
             code.AppendMultiline(
-                    $$"""
-                    {{GeneratedAttribute}}
-                    protected {{additionalModificator}} void RemoveBinderInternal({{IBinder}} binder, string propertyName)
-                    {
-                        switch (propertyName)
-                    """)
-                .IncreaseIndent()
-                .BeginBlock()
-                .AppendLoop(fields, field =>
+                $$"""
+                case {{propertyName}}Id:
                 {
-                    if (field.IsReadOnly) return;
-
-                    var type = field.Type;
-                    var propertyName = field.PropertyName;
-
-                    code.AppendMultiline(
-                        $$"""
-                        case {{propertyName}}Id:
-                        {
-                            RemoveBinderLocal(ref {{propertyName}}Changed);
-                            if (binder.IsReverseEnabled) RemoveReverseBinderLocal<{{type}}>(Set{{propertyName}});
-                            return;
-                        }
-                        """);
-                })
-                .AppendMultiline(
-                    """
-                    default:
-                    {
-                        var isRemoved = false;
-                        RemoveBinderManual(binder, propertyName, ref isRemoved);
-                        if (isRemoved) return;
-                        break;
-                    }
-                    """)
-                .EndBlock();
+                    RemoveBinderLocal(ref {{propertyName}}Changed);
+                    if (binder.IsReverseEnabled) RemoveReverseBinderLocal<{{type}}>(Set{{propertyName}});
+                    return;
+                }
+                """);
         }
-
-        void AppendLocalMethods(in ReadOnlySpan<FieldData> fields)
+        
+        void AppendLocalMethods(in ReadOnlySpan<FieldInViewModel> fields)
         {
             code.AppendMultilineIf(fields.Length != 0,
                 $$"""

@@ -18,8 +18,13 @@ public static class FieldSymbolExtensions
     #region RemovePrefix
     public static string RemovePrefix(this IFieldSymbol symbol) =>
         RemovePrefix(symbol.Name);
-    
-    public static string RemovePrefix(string fieldName) =>
-        fieldName.TrimStart('m', '_').TrimStart('_');
+
+    public static string RemovePrefix(string fieldName)
+    {
+        var prefixCount = fieldName.StartsWith("_") ? 1 : fieldName.StartsWith("m_") ? 2 : 0;
+        if (prefixCount > 0) fieldName = fieldName.Remove(0, prefixCount);
+
+        return fieldName;
+    }
     #endregion
 }

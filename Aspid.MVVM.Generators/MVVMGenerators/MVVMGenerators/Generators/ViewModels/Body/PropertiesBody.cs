@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Microsoft.CodeAnalysis.CSharp;
 using MVVMGenerators.Helpers.Descriptions;
 using MVVMGenerators.Helpers.Extensions.Writer;
+using MVVMGenerators.Generators.ViewModels.Data;
 
 namespace MVVMGenerators.Generators.ViewModels.Body;
 

@@ -4,7 +4,7 @@ using MVVMGenerators.Helpers;
 using MVVMGenerators.Helpers.Descriptions;
 using MVVMGenerators.Helpers.Extensions.Writer;
 using MVVMGenerators.Generators.ViewModels.Data;
-using MVVMGenerators.Helpers.Extensions.Symbols;
+using MVVMGenerators.Generators.ViewModels.Data.Members;
 
 namespace MVVMGenerators.Generators.ViewModels.Body;
 

@@ -3,7 +3,7 @@ using Microsoft.CodeAnalysis;
 using MVVMGenerators.Helpers.Descriptions;
 using MVVMGenerators.Helpers.Extensions.Symbols;
 
-namespace MVVMGenerators.Generators.ViewModels.Data;
+namespace MVVMGenerators.Generators.ViewModels.Data.Members;
 
 public readonly struct RelayCommandData(
     IMethodSymbol execute, 

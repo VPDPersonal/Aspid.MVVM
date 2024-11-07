@@ -41,6 +41,12 @@ public static partial class Classes
     public static readonly TypeText IViewModel =
         new("IViewModel", Namespaces.Aspid_UI_MVVM_ViewModels);
 
+    public static readonly TypeText ViewModel =
+        new("ViewModel", Namespaces.Aspid_UI_MVVM_ViewModels);
+    
+    public static readonly TypeText MonoViewModel =
+        new("MonoViewModel", Namespaces.Aspid_UI_MVVM_Mono_ViewModels);
+    
     public static readonly TypeText ViewModelUtility =
         new("ViewModelUtility", Namespaces.Aspid_UI_MVVM_ViewModels);
     

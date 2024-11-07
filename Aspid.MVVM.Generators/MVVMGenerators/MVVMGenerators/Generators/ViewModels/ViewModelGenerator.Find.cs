@@ -9,9 +9,9 @@ using Microsoft.CodeAnalysis.CSharp;
 using System.Runtime.CompilerServices;
 using MVVMGenerators.Helpers.Descriptions;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using MVVMGenerators.Generators.ViewModels.Data;
 using MVVMGenerators.Helpers.Extensions.Symbols;
-using MVVMGenerators.Helpers.Extensions.Declarations;
+using MVVMGenerators.Generators.ViewModels.Data;
+using MVVMGenerators.Generators.ViewModels.Data.Members;
 
 namespace MVVMGenerators.Generators.ViewModels;
 
@@ -26,7 +26,8 @@ public partial class ViewModelGenerator
         var methods = new List<IMethodSymbol>();
         var properties = new List<IPropertySymbol>();
         
-        symbol.FillMembers(fields: fields, methods: methods, properties: properties);
+        var inheritor = RecognizeInheritor(symbol);
+        symbol.FillMembers(fields, methods, properties);
         
         var fieldData = FindFields(fields, properties);
 
@@ -36,33 +37,29 @@ public partial class ViewModelGenerator
             .ToArray();
         
         var commandData = FindCommand(methods, properties, generatedProperties);
-        
-        var hasBaseType = false;
-        var hasInterface = symbol.HasInterface(Classes.IViewModel.FullName);
-
-        for (var type = symbol.BaseType; type != null; type = type.BaseType)
-        {
-            if (type.HasInterface(Classes.IViewModel.FullName))
-                hasInterface = true;
-
-            if (type.HasAttribute(Classes.ViewModelAttribute.FullName))
-                hasBaseType = true;
-
-            if (hasInterface && hasBaseType) break;
-        }
 
         Debug.Assert(context.TargetNode is TypeDeclarationSyntax);
         var candidate = Unsafe.As<TypeDeclarationSyntax>(context.TargetNode);
         
         return new FoundForGenerator<ViewModelData>(true,
-            new ViewModelData(hasBaseType, hasInterface, candidate, fieldData, commandData));
+            new ViewModelData(inheritor, candidate, fieldData, commandData));
+    }
+    
+    private static Inheritor RecognizeInheritor(INamedTypeSymbol symbol)
+    {
+        // Strictly defined order
+        if (symbol.BaseType?.HasAttribute(Classes.ViewModelAttribute) ?? false) return Inheritor.InheritorViewModelAttribute;
+        if (symbol.HasBaseType(Classes.ViewModel, Classes.MonoViewModel)) return Inheritor.InheritorViewModel;
+        if (symbol.HasInterface(Classes.IViewModel)) return Inheritor.HasInterface;
+
+        return Inheritor.None;
     }
 
-    private static ImmutableArray<FieldData> FindFields(
+    private static ImmutableArray<FieldInViewModel> FindFields(
         IReadOnlyCollection<IFieldSymbol> fields,
         IReadOnlyCollection<IPropertySymbol> properties)
     {
-        var data = new List<FieldData>();
+        var data = new List<FieldInViewModel>();
         
         foreach (var field in fields)
         {
@@ -79,7 +76,7 @@ public partial class ViewModelGenerator
             var bindAlso = GetBindAlso(field);
             
             if (hasReadOnlyBindAttribute) accessors.Set = accessors.Get;
-            data.Add(new FieldData(field, hasReadOnlyBindAttribute, accessors.Get, accessors.Set, bindAlso));
+            data.Add(new FieldInViewModel(field, hasReadOnlyBindAttribute, accessors.Get, accessors.Set, bindAlso));
         }
 
         return ImmutableArray.CreateRange(data);

@@ -34,9 +34,25 @@ namespace MVVMGenerators.Sample.ViewModels
             somes.ToViewModel2AsList(someItem, a);
         }
     }
+    
+    [ViewModel]
+    public partial class ViewModel3 : ViewModel2
+    {
+        public ViewModel3(SomeType some) : base(some)
+        {
+        }
+
+        public ViewModel3(Encoding encoding) : base(encoding)
+        {
+        }
+
+        public ViewModel3(SomeType some, SomeType someItem, int a) : base(some, someItem, a)
+        {
+        }
+    }
 }
 
-public class SomeType
+public partial class SomeType
 {
     
 }

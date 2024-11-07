@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using System.Threading;
 using System.Diagnostics;
@@ -46,7 +47,11 @@ public partial class ViewGenerator
     {
         // Strictly defined order
         if (symbol.BaseType?.HasAttribute(Classes.ViewAttribute) ?? false) return Inheritor.InheritorViewAttribute;
-        if (symbol.HasBaseType(Classes.View, Classes.MonoView)) return Inheritor.InheritorView;
+        if (symbol.HasBaseType(Classes.View, Classes.MonoView))
+        {
+            Console.WriteLine(symbol.Name);
+            return Inheritor.InheritorView;
+        }
         if (symbol.HasInterface(Classes.IView)) return Inheritor.HasInterface;
 
         return Inheritor.None;
@@ -81,6 +86,8 @@ public partial class ViewGenerator
                 switch (member)
                 {
                     case Field field:
+                        if (field.Name.EndsWith(">k__BackingField")) continue;
+                        
                         otherMembers.Add(new BinderFieldInView(field));
                         break;
                     case Property property:
@@ -202,11 +209,11 @@ public partial class ViewGenerator
 
         foreach (var method in methods)
         {
-            if (!isInitializeOverride && HasOverrideInitializeIternalMethod(method))
+            if (!isInitializeOverride && HasOverrideInitializeInternalMethod(method))
             {
                 isInitializeOverride = true;
             }
-            else if (!isDeinitializeOverride && HasOverrideDeinitializeIternalMethod(method))
+            else if (!isDeinitializeOverride && HasOverrideDeinitializeInternalMethod(method))
             {
                 isDeinitializeOverride = true;
             }
@@ -217,11 +224,11 @@ public partial class ViewGenerator
 
         return;
 
-        bool HasOverrideInitializeIternalMethod(IMethodSymbol method) =>
-            HasOverrideMethod(method, "InitializeIternal", Classes.IViewModel.FullName);
+        bool HasOverrideInitializeInternalMethod(IMethodSymbol method) =>
+            HasOverrideMethod(method, "InitializeInternal", Classes.IViewModel.FullName);
 
-        bool HasOverrideDeinitializeIternalMethod(IMethodSymbol method) =>
-            HasOverrideMethod(method, "DeinitializeIternal");
+        bool HasOverrideDeinitializeInternalMethod(IMethodSymbol method) =>
+            HasOverrideMethod(method, "DeinitializeInternal", Classes.IViewModel.FullName);
 
         bool HasOverrideMethod(IMethodSymbol method, string methodName, params string[] parameters)
         {

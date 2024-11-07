@@ -143,7 +143,7 @@ public partial class ViewModelGenerator
          *  |   |   |   using (_addBinderMarker.Auto())
          *  |   |   |   #endif
          *  |   |   |   {
-         *  |   |   |   |    AddBinderIternal(binder, propertyName);
+         *  |   |   |   |    AddBinderInternal(binder, propertyName);
          *  |   |   |   }
          *  |   |   }
          *  |   |
@@ -172,11 +172,11 @@ public partial class ViewModelGenerator
          *  |   |   |   using (_removeBinderMarker.Auto())
          *  |   |   |   #endif
          *  |   |   |   {
-         *  |   |   |   |   RemoveBinderIternal(binder, propertyName);
+         *  |   |   |   |   RemoveBinderInternal(binder, propertyName);
          *  |   |   |   }
          *  |   |   }
          *  |   |
-         *  |   |   protected virtual void RemoveBinderIternal(IBinder binder, string propertyName)
+         *  |   |   protected virtual void RemoveBinderInternal(IBinder binder, string propertyName)
          *  |   |   {
          *  |   |   |   switch (propertyName)
          *  |   |   |   {

@@ -197,7 +197,7 @@ public static class IViewModelBody
         
         AppendBaseMethodsIf(!hasBaseType && !hasInterface);
         AppendSwitch(data.Fields);
-        code.AppendLineIf(hasBaseType, "base.RemoveBinderIternal(binder, propertyName);");
+        code.AppendLineIf(hasBaseType, "base.RemoveBinderInternal(binder, propertyName);");
         AppendLocalMethods(data.Fields);
         code.EndBlock();
         
@@ -214,7 +214,7 @@ public static class IViewModelBody
                     using (_removeBinderMarker.Auto())
                     #endif
                     {
-                        RemoveBinderIternal(binder, propertyName);
+                        RemoveBinderInternal(binder, propertyName);
                     }
                 }
                 
@@ -228,7 +228,7 @@ public static class IViewModelBody
             code.AppendMultiline(
                     $$"""
                     {{GeneratedAttribute}}
-                    protected {{additionalModificator}} void RemoveBinderIternal({{IBinder}} binder, string propertyName)
+                    protected {{additionalModificator}} void RemoveBinderInternal({{IBinder}} binder, string propertyName)
                     {
                         switch (propertyName)
                     """)

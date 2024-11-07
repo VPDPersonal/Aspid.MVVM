@@ -47,7 +47,9 @@ public partial class ViewGenerator
         DeclarationText declaration,
         SourceProductionContext context)
     {
-        if (data.IsInitializeOverride && data.IsDeinitializeOverride) return;
+        if (data.IsInitializeOverride 
+            && data.IsDeinitializeOverride
+            && data.ViewProperties.Length + data.AsBinderMembers.Length == 0) return;
         
         var code = new CodeWriter();
         var baseTypes = GetBaseTypes(data);

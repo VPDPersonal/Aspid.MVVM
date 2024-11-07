@@ -20,5 +20,8 @@ public partial class MonoViewTest3 : MonoView
     private Button AsBinderProperty1 => GetComponent<Button>();
     
     [AsBinder(typeof(ButtonBinder))]
-    private Button[] AsBinderProperty2 => GetComponents<Button>();
+    private Button[] AsBinder2Property => GetComponents<Button>();
+    
+    [AsBinder(typeof(SliderBinder))]
+    public Slider AsBinder1 => _asBinder1;
 }

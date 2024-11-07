@@ -60,7 +60,10 @@ namespace Aspid.UI.MVVM.Unity.Views
             {
                 if (binders is null) return;
                 foreach (var binder in binders)
-                    binder?.Reset();
+                {
+                    if (binder.IsMonoExist)
+                        binder.Reset();
+                }
             }
         }
 

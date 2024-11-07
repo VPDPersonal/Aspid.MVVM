@@ -10,6 +10,11 @@ namespace Aspid.UI.MVVM.Mono
     public interface IMonoBinderValidable
     {
         /// <summary>
+        /// Is there a component?
+        /// </summary>
+        public bool IsMonoExist { get; }
+        
+        /// <summary>
         /// The View to which the Binder relates.
         /// </summary>
         public IView? View { get; set; }

@@ -60,14 +60,16 @@ namespace Aspid.UI.MVVM.Unity.Views
                     if (oldBinder == null) continue;
                     if (changedBinder.NewBinders.Contains(oldBinder)) continue;
 
-                    oldBinder.Reset();
+                    if (oldBinder.IsMonoExist)
+                        oldBinder.Reset();
                 }
 
                 foreach (var newBinder in changedBinder.NewBinders)
                 {
                     if (!IsMonoBinderValidableChild(view, newBinder))
                     {
-                        newBinder.Reset();
+                        if (newBinder.IsMonoExist)
+                            newBinder.Reset();
                     }
                 }
             }
@@ -137,7 +139,9 @@ namespace Aspid.UI.MVVM.Unity.Views
                             
                             if (!result)
                             {
-                                binder.Reset();
+                                if (binder.IsMonoExist)
+                                    binder.Reset();
+                                
                                 isChanged = true;
                             }
 

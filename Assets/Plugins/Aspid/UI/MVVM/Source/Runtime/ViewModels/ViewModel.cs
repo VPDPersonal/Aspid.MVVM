@@ -1,20 +1,16 @@
-using System;
-using UnityEngine;
-using Aspid.UI.MVVM.ViewModels;
-
-namespace Aspid.UI.MVVM.Mono.ViewModels
+namespace Aspid.UI.MVVM.ViewModels
 {
     /// <summary>
-    /// Abstract class for a ViewModel, inheriting from <see cref="MonoBehaviour"/>, that implements the <see cref="IViewModel"/> interface.
+    /// Abstract class for a ViewModel implementing the <see cref="IViewModel"/> interface.
     /// Provides methods for adding and removing binders for binding with properties.
     /// </summary>
-    public abstract class MonoViewModel : MonoBehaviour, IViewModel, IDisposable
+    public abstract class ViewModel : IViewModel
     {
 #if !ASPID_UI_MVVM_UNITY_PROFILER_DISABLED
         private static readonly Unity.Profiling.ProfilerMarker _addBinderMarker = new("MonoViewModel.AddBinder"); 
         private static readonly Unity.Profiling.ProfilerMarker _removeBinderMarker = new("MonoViewModel.RemoveBinder");
 #endif
-
+        
         /// <summary>
         /// Adds a Binder for the specified ViewModel property.
         /// </summary>
@@ -58,11 +54,5 @@ namespace Aspid.UI.MVVM.Mono.ViewModels
         /// <param name="binder">The Binder to be removed.</param>
         /// <param name="propertyName">The name of the property from which the Binder will be unbound.</param>
         protected abstract void RemoveBinderInternal(IBinder binder, string propertyName);
-
-        /// <summary>
-        /// Destroys the Component of the ViewModel.
-        /// May be overridden by a derived class.
-        /// </summary>
-        public virtual void Dispose() => Destroy(this);
     }
 }

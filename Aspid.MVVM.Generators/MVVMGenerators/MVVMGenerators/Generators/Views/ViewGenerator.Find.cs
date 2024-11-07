@@ -47,11 +47,7 @@ public partial class ViewGenerator
     {
         // Strictly defined order
         if (symbol.BaseType?.HasAttribute(Classes.ViewAttribute) ?? false) return Inheritor.InheritorViewAttribute;
-        if (symbol.HasBaseType(Classes.View, Classes.MonoView))
-        {
-            Console.WriteLine(symbol.Name);
-            return Inheritor.InheritorView;
-        }
+        if (symbol.HasBaseType(Classes.View, Classes.MonoView)) return Inheritor.InheritorView;
         if (symbol.HasInterface(Classes.IView)) return Inheritor.HasInterface;
 
         return Inheritor.None;

@@ -36,7 +36,7 @@ namespace Aspid.UI.MVVM.Views
                 if (ViewModel is not null) throw new InvalidOperationException("View is already initialized.");
                 
                 ViewModel = viewModel;
-                InitializeIternal(viewModel);
+                InitializeInternal(viewModel);
             }
         }
 
@@ -45,7 +45,7 @@ namespace Aspid.UI.MVVM.Views
         /// Must be overridden in derived classes to implement specific initialization logic.
         /// </summary>
         /// <param name="viewModel">The <see cref="IViewModel"/> object used to initialize the View.</param>
-        protected abstract void InitializeIternal(IViewModel viewModel);
+        protected abstract void InitializeInternal(IViewModel viewModel);
 
         /// <summary>
         /// Deinitializes the view, resetting the associated <see cref="ViewModel"/> to null.
@@ -58,7 +58,7 @@ namespace Aspid.UI.MVVM.Views
             using (_deinitializationMarker.Auto())
 #endif
             {
-                DeinitializeIternal();
+                DeinitializeInternal(ViewModel);
                 ViewModel = null;
             }
         }
@@ -67,7 +67,7 @@ namespace Aspid.UI.MVVM.Views
         /// Abstract method for internal view deinitialization. 
         /// Must be overridden in derived classes to implement specific deinitialization logic.
         /// </summary>
-        protected abstract void DeinitializeIternal();
+        protected abstract void DeinitializeInternal(IViewModel viewModel);
         
         /// <summary>
         /// Releases the resources used by the view.

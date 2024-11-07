@@ -171,9 +171,9 @@ namespace Aspid.UI.MVVM.Unity
         
         #region Draw
         protected virtual void DrawBaseInspector() =>
-            DrawBaseInspectorIternal();
+            DrawBaseInspectorInternal();
 
-        private void DrawBaseInspectorIternal()
+        private void DrawBaseInspectorInternal()
         {
             serializedObject.UpdateIfRequiredOrScript();
             {

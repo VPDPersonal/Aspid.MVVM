@@ -66,7 +66,7 @@ namespace Aspid.UI.MVVM.Unity.Views
                 }
             }
         }
-
+        
         public sealed override VisualElement CreateInspectorGUI()
         {
             OnCreatingInspectorGUI();
@@ -153,7 +153,7 @@ namespace Aspid.UI.MVVM.Unity.Views
         {
             var binders = GetOtherBinders();
 
-            if (binders.Length > 0)
+            if (binders.Count > 0)
             {
                 EditorGUILayout.Space();
                 
@@ -161,14 +161,40 @@ namespace Aspid.UI.MVVM.Unity.Views
                     EditorGUILayout.ObjectField((Component)binder, binder.GetType(), false);
             }
             
-            Root.Q<VisualElement>("OtherBinders").style.display = binders.Length > 0 ? DisplayStyle.Flex : DisplayStyle.None;
+            Root.Q<VisualElement>("OtherBinders").style.display = binders.Count > 0 ? DisplayStyle.Flex : DisplayStyle.None;
             Root.Q<VisualElement>("Header").Q<Image>().SetImageFromResource(IconPath);
         }
         #endregion
 
-        private IMonoBinderValidable[] GetOtherBinders() => 
-            View.GetComponentsInChildren<IMonoBinderValidable>(true)
-                .Where(binder => string.IsNullOrEmpty(binder.Id)).ToArray();
+        private IReadOnlyList<IMonoBinderValidable> GetOtherBinders()
+        {
+            var otherBinders = new List<IMonoBinderValidable>();
+
+            foreach (var binder in  View.GetComponentsInChildren<IMonoBinderValidable>(true))
+            {
+                var view = binder.View;
+
+                if (view is null && !string.IsNullOrEmpty(binder.Id))
+                    binder.Id= null;
+
+                if (string.IsNullOrEmpty(binder.Id))
+                {
+                    otherBinders.Add(binder);
+                }
+                else if (view is not null)
+                {
+                    var fields = view.GetType().GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+                    var isExist = fields.Select(field => ViewUtility.GetIdName(field.Name)).Any(idName => idName == binder.Id);
+
+                    if (!isExist)
+                    {
+                        binder.Reset();
+                    }
+                }
+            }
+
+            return otherBinders;
+        }
         
         protected enum ErrorType
         {

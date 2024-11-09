@@ -13,9 +13,14 @@ public partial class ViewModel1
     [ReadOnlyBind] private readonly string _name;
 }
 
-[ViewModel]
-public partial class Child1ViewModel1 : ViewModel1
+
+public class Child1ViewModel1 : ViewModel1
 {
-    [Bind] private float _money;
-    [ReadOnlyBind] private readonly string _what;
+
+}
+
+[ViewModel]
+public partial class Child2ViewModel1 : Child1ViewModel1
+{
+
 }

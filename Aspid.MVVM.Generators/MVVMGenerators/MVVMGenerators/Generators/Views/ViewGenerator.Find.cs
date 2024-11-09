@@ -46,6 +46,12 @@ public partial class ViewGenerator
     private static Inheritor RecognizeInheritor(INamedTypeSymbol symbol)
     {
         // Strictly defined order
+        for (var type = symbol.BaseType; type is not null; type = type.BaseType)
+        {
+            if (type.HasAttribute(Classes.ViewAttribute)) 
+                return Inheritor.InheritorViewAttribute;
+        }
+        
         if (symbol.BaseType?.HasAttribute(Classes.ViewAttribute) ?? false) return Inheritor.InheritorViewAttribute;
         if (symbol.HasBaseType(Classes.View, Classes.MonoView)) return Inheritor.InheritorView;
         if (symbol.HasInterface(Classes.IView)) return Inheritor.HasInterface;

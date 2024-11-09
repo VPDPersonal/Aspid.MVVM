@@ -48,7 +48,12 @@ public partial class ViewModelGenerator
     private static Inheritor RecognizeInheritor(INamedTypeSymbol symbol)
     {
         // Strictly defined order
-        if (symbol.BaseType?.HasAttribute(Classes.ViewModelAttribute) ?? false) return Inheritor.InheritorViewModelAttribute;
+        for (var type = symbol.BaseType; type is not null; type = type.BaseType)
+        {
+            if (type.HasAttribute(Classes.ViewModelAttribute)) 
+                return Inheritor.InheritorViewModelAttribute;
+        }
+        
         if (symbol.HasBaseType(Classes.ViewModel, Classes.MonoViewModel)) return Inheritor.InheritorViewModel;
         if (symbol.HasInterface(Classes.IViewModel)) return Inheritor.HasInterface;
 

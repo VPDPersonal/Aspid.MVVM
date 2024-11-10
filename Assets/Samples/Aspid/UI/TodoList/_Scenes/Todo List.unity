@@ -808,7 +808,7 @@ Transform:
   m_GameObject: {fileID: 1008564484}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -4.9074078, y: 1.9305553, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1225,7 +1225,7 @@ Transform:
   m_GameObject: {fileID: 1199240681}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 4.9074078, y: -1.9305553, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1260,6 +1260,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9f7ca918a8ed4f31a92b3f4906ed8e19, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _todoItemViewModelFactorySettings:
+    <Type>k__BackingField: 0
   _editTodoPopUpViewContainer: {fileID: 527272492}
   _editTodoPopUpViewPrefab: {fileID: 637875192883498620, guid: f224e395776a743a085cd452b48a724f, type: 3}
   _todoStorageView: {fileID: 1322158807}
@@ -1275,7 +1277,7 @@ Transform:
   m_GameObject: {fileID: 1224541819}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 4.9074078, y: -1.9305553, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1919,6 +1921,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _view: {fileID: 1322158807}
   _id: TodoItemViewModels
+  _isDebug: 0
+  _log: []
   _prefab: {fileID: 5431838984888759959, guid: 5ca3370f0dcd04136bab560024ed932a, type: 3}
   _container: {fileID: 1797679511}
   _initialCount: 0

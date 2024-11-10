@@ -47,17 +47,19 @@ public partial class ViewModelGenerator
     
     private static Inheritor RecognizeInheritor(INamedTypeSymbol symbol)
     {
+        var baseType = symbol.BaseType;
+        
         // Strictly defined order
-        for (var type = symbol.BaseType; type is not null; type = type.BaseType)
+        for (var type = baseType; type is not null; type = type.BaseType)
         {
             if (type.HasAttribute(Classes.ViewModelAttribute)) 
                 return Inheritor.InheritorViewModelAttribute;
         }
         
         if (symbol.HasBaseType(Classes.ViewModel, Classes.MonoViewModel)) return Inheritor.InheritorViewModel;
-        if (symbol.HasInterface(Classes.IViewModel)) return Inheritor.HasInterface;
+        if (baseType is not null && baseType.HasInterface(Classes.IViewModel)) return Inheritor.HasInterface;
 
-        return Inheritor.None;
+        return symbol.HaseDirectInterface(Classes.IViewModel) ? Inheritor.HasInterface : Inheritor.None;
     }
 
     private static ImmutableArray<FieldInViewModel> FindFields(

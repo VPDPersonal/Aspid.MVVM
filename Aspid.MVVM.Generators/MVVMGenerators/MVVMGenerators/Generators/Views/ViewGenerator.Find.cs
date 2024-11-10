@@ -45,18 +45,19 @@ public partial class ViewGenerator
 
     private static Inheritor RecognizeInheritor(INamedTypeSymbol symbol)
     {
+        var baseType = symbol.BaseType;
+        
         // Strictly defined order
-        for (var type = symbol.BaseType; type is not null; type = type.BaseType)
+        for (var type = baseType; type is not null; type = type.BaseType)
         {
             if (type.HasAttribute(Classes.ViewAttribute)) 
                 return Inheritor.InheritorViewAttribute;
         }
         
-        if (symbol.BaseType?.HasAttribute(Classes.ViewAttribute) ?? false) return Inheritor.InheritorViewAttribute;
         if (symbol.HasBaseType(Classes.View, Classes.MonoView)) return Inheritor.InheritorView;
-        if (symbol.HasInterface(Classes.IView)) return Inheritor.HasInterface;
+        if (baseType is not null && baseType.HasInterface(Classes.IView)) return Inheritor.HasInterface;
 
-        return Inheritor.None;
+        return symbol.HaseDirectInterface(Classes.IView) ? Inheritor.HasInterface : Inheritor.None;
     }
 
     private static ViewMembers GetViewMembers(ImmutableArray<ISymbol> members, SemanticModel semanticModel)

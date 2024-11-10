@@ -5,6 +5,30 @@ namespace MVVMGenerators.Helpers.Extensions.Symbols;
 
 public static class TypeSymbolExtensions
 {
+    public static bool HaseDirectInterface(this ITypeSymbol type, TypeText typeText) =>
+        type.HaseDirectInterface(typeText.FullName);
+
+    public static bool HaseDirectInterface(this ITypeSymbol type, string interfaceName) =>
+        type.HaseDirectInterface(interfaceName, out _);
+
+    public static bool HaseDirectInterface(this ITypeSymbol type, TypeText typeText, out INamedTypeSymbol? foundInterface) =>
+        type.HaseDirectInterface(typeText.FullName, out foundInterface);
+
+    public static bool HaseDirectInterface(this ITypeSymbol type, string interfaceName, out INamedTypeSymbol? foundInterface)
+    {
+        foundInterface = null;
+        
+        foreach (var @interface in type.Interfaces)
+        {
+            if (@interface.ToDisplayString() != interfaceName) continue;
+            
+            foundInterface = @interface;
+            return true;
+        }
+
+        return false;
+    }
+    
     public static bool HasInterface(this ITypeSymbol type, TypeText typeText) =>
         type.HasInterface(typeText.FullName);
     

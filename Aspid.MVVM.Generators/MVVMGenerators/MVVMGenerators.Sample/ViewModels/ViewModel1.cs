@@ -1,26 +1,35 @@
 using Aspid.UI.MVVM;
-using Aspid.UI.MVVM.Mono.ViewModels;
 using Aspid.UI.MVVM.ViewModels;
 using Aspid.UI.MVVM.ViewModels.Generation;
-using Aspid.UI.MVVM.Views;
 
 namespace MVVMGenerators.Sample.ViewModels;
 
-[ViewModel]
-public partial class ViewModel1
+public class ViewModel1 : IViewModel
 {
-    [Bind] private int _age;
-    [ReadOnlyBind] private readonly string _name;
+    public void AddBinder(IBinder binder, string propertyName)
+    {
+        
+    }
+
+    public void RemoveBinder(IBinder binder, string propertyName)
+    {
+        
+    }
 }
 
-
-public class Child1ViewModel1 : ViewModel1
+[ViewModel]
+public partial class ChildViewModel1 : ViewModel1
 {
+    
+}
 
+public interface IViewModel2 : IViewModel
+{
+    
 }
 
 [ViewModel]
-public partial class Child2ViewModel1 : Child1ViewModel1
+public partial class ViewModel2 : IViewModel2
 {
-
+    
 }

@@ -13,7 +13,7 @@ namespace Aspid.UI.TodoList.ViewModels
         
         // TODO Aspid.UI Translate
         // ObservableList - специальная коллекция, которая позволяет следить за изменением коллекции
-        [Bind] private ObservableList<TodoItemViewModel> _todoItemViewModels;
+        [Bind] private ObservableList<ITodoItemViewModel> _todoItemViewModels;
         
         private readonly TodoStorage _todoStorage;
         private readonly TodoItemViewModelFactory _todoItemViewModelFactory;
@@ -22,7 +22,7 @@ namespace Aspid.UI.TodoList.ViewModels
         {
             _todoStorage = todoStorage;
             _todoItemViewModelFactory = todoItemViewModelFactory;
-            _todoItemViewModels = new ObservableList<TodoItemViewModel>();
+            _todoItemViewModels = new ObservableList<ITodoItemViewModel>();
 
             foreach (var todo in _todoStorage.Todos)
                 OnTodoAdded(todo);
@@ -35,7 +35,7 @@ namespace Aspid.UI.TodoList.ViewModels
         private void AddTodo() => 
             _todoStorage.AddTodo($"New Todo {_todoStorage.CountAddedTodo + 1}");
 
-        private void SetTodoItemVisible(TodoItemViewModel viewModel) =>
+        private void SetTodoItemVisible(ITodoItemViewModel viewModel) =>
             viewModel.IsVisible = string.IsNullOrEmpty(SearchInput) || viewModel.Todo.Text.Contains(SearchInput);
         
         private void OnTodoAdded(Todo todo)
@@ -62,10 +62,10 @@ namespace Aspid.UI.TodoList.ViewModels
             }
         }
 
-        private void OnTodoItemDeleted(TodoItemViewModel todo) =>
+        private void OnTodoItemDeleted(ITodoItemViewModel todo) =>
             _todoStorage.RemoveTodo(todo.Todo.Id);
 
-        private void OnTodoItemEdited(TodoItemViewModel todo) =>
+        private void OnTodoItemEdited(ITodoItemViewModel todo) =>
             SetTodoItemVisible(todo);
 
         partial void OnSearchInputChanged(string newValue) =>

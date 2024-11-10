@@ -10,6 +10,8 @@ namespace Aspid.UI.TodoList.Manual
 {
     public sealed class Bootstrap : MonoBehaviour
     {
+        [SerializeField] private TodoItemViewModelFactory.Settings _todoItemViewModelFactorySettings;
+        
         [Header("Edit Todo PopUp View Factory")]
         [SerializeField] private Transform _editTodoPopUpViewContainer;
         [SerializeField] private EditTodoPopUpView _editTodoPopUpViewPrefab;
@@ -25,7 +27,7 @@ namespace Aspid.UI.TodoList.Manual
         private void Awake()
         {
             var editTodoPopUpViewFactory = new EditTodoPopUpViewFactory(_editTodoPopUpViewPrefab, _editTodoPopUpViewContainer);
-            var todoItemViewModelFactory = new TodoItemViewModelFactory(editTodoPopUpViewFactory);
+            var todoItemViewModelFactory = new TodoItemViewModelFactory(editTodoPopUpViewFactory, _todoItemViewModelFactorySettings);
 
             _todoStorage = new TodoStorage();
             foreach (var todo in _todos)

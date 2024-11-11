@@ -2,7 +2,6 @@ using System;
 using UnityEngine;
 using UnityEngine.UI;
 using Aspid.UI.MVVM.Commands;
-using Aspid.UI.MVVM.ViewModels;
 using Aspid.UI.MVVM.Mono.Generation;
 
 namespace Aspid.UI.MVVM.StarterKit.Binders.Commands
@@ -34,8 +33,7 @@ namespace Aspid.UI.MVVM.StarterKit.Binders.Commands
         private void Execute(Vector2 value) =>
             _command?.Execute(value);
 
-        protected override void OnUnbound(IViewModel viewModel, string id) =>
-            ReleaseCommand();
+        protected override void OnUnbound() => ReleaseCommand();
 
         private void ReleaseCommand()
         {
@@ -80,8 +78,7 @@ namespace Aspid.UI.MVVM.StarterKit.Binders.Commands
         private void Execute(Vector2 value) =>
             _command?.Execute(value, Parameter1);
 
-        protected override void OnUnbound(IViewModel viewModel, string id) =>
-            ReleaseCommand();
+        protected override void OnUnbound() => ReleaseCommand();
 
         private void ReleaseCommand()
         {
@@ -133,8 +130,7 @@ namespace Aspid.UI.MVVM.StarterKit.Binders.Commands
         private void Execute(Vector2 value) =>
             _command?.Execute(value, Parameter1, Parameter2);
 
-        protected override void OnUnbound(IViewModel viewModel, string id) =>
-            ReleaseCommand();
+        protected override void OnUnbound() => ReleaseCommand();
 
         private void ReleaseCommand()
         {
@@ -193,8 +189,7 @@ namespace Aspid.UI.MVVM.StarterKit.Binders.Commands
         private void Execute(Vector2 value) =>
             _command?.Execute(value, Parameter1, Parameter2, Parameter3);
 
-        protected override void OnUnbound(IViewModel viewModel, string id) =>
-            ReleaseCommand();
+        protected override void OnUnbound() => ReleaseCommand();
 
         private void ReleaseCommand()
         {

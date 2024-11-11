@@ -66,13 +66,7 @@ namespace Aspid.UI.MVVM.Mono
             _viewModel = viewModel;
         }
 
-        partial void OnUnbindingDebug(IViewModel viewModel, string id)
-        {
-            if (Id != id) throw new Exception($"Id not match. Binder Id {Id}; Id {id}.");
-            if (_viewModel != viewModel) throw new Exception($"ViewModel not match. Old ViewModel {_viewModel?.GetType()}; NewViewModel {viewModel.GetType()}.");
-
-            _viewModel = null;
-        }
+        partial void OnUnbindingDebug() => _viewModel = null;
 
         private void SaveBinderDataInEditor()
         {

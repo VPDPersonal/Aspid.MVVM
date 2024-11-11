@@ -45,7 +45,7 @@ namespace Aspid.UI.MVVM.StarterKit.Binders.Texts.Input
             _inputField.onValueChanged.AddListener(OnValueChanged);
         }
 
-        protected override void OnUnbound(IViewModel viewModel, string id)
+        protected override void OnUnbound()
         {
             if (!IsReverseEnabled) return;
             _inputField.onValueChanged.RemoveListener(OnValueChanged);

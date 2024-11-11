@@ -24,9 +24,7 @@ namespace Aspid.UI.MVVM
         /// <summary>
         /// Unbinds a component from the specified <see cref="IViewModel"/>.
         /// </summary>
-        /// <param name="viewModel">The ViewModel to unbind from.</param>
-        /// <param name="id">The component ID for unbinding, which matches the property name in the ViewModel.</param>
-        public void Unbind(IViewModel viewModel, string id);
+        public void Unbind();
     }
     
     /// <summary>
@@ -40,6 +38,6 @@ namespace Aspid.UI.MVVM
         /// Sets the value for the bound component.
         /// </summary>
         /// <param name="value">The value to be set.</param>
-        public void SetValue(T value);
+        public void SetValue(T? value);
     }
 }

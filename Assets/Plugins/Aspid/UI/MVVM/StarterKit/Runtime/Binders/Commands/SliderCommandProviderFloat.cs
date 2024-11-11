@@ -45,8 +45,7 @@ namespace Aspid.UI.MVVM.StarterKit.Binders.Commands
             _command?.Execute(value);
         }
 
-        protected override void OnUnbound(IViewModel viewModel, string id) =>
-            ReleaseCommand();
+        protected override void OnUnbound() => ReleaseCommand();
 
         private void ReleaseCommand()
         {
@@ -108,8 +107,7 @@ namespace Aspid.UI.MVVM.StarterKit.Binders.Commands
             _command?.Execute(value, Parameter1);
         }
 
-        protected override void OnUnbound(IViewModel viewModel, string id) =>
-            ReleaseCommand();
+        protected override void OnUnbound() => ReleaseCommand();
 
         private void ReleaseCommand()
         {
@@ -178,8 +176,7 @@ namespace Aspid.UI.MVVM.StarterKit.Binders.Commands
             _command?.Execute(value, Parameter1, Parameter2);
         }
 
-        protected override void OnUnbound(IViewModel viewModel, string id) =>
-            ReleaseCommand();
+        protected override void OnUnbound() => ReleaseCommand();
 
         private void ReleaseCommand()
         {
@@ -255,8 +252,7 @@ namespace Aspid.UI.MVVM.StarterKit.Binders.Commands
             _command?.Execute(value, Parameter1, Parameter2, Parameter3);
         }
 
-        protected override void OnUnbound(IViewModel viewModel, string id) =>
-            ReleaseCommand();
+        protected override void OnUnbound() => ReleaseCommand();
 
         private void ReleaseCommand()
         {

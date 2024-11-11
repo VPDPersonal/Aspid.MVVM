@@ -116,42 +116,42 @@ namespace Aspid.UI.TodoList.ViewModels
         [RelayCommand]
         private void Delete() => Deleted?.Invoke(this);
 
-        #region Manual Binds
-        // TODO Aspid.UI Translate
-        // Ручное связывание
-        partial void AddBinderManual(IBinder binder, string propertyName, ref bool isAdded)
-        {
-            switch (propertyName)
-            {
-                case nameof(Text):
-                    ViewModelUtility.AddBinder(binder, Text, ref TextChanged, SetText);
-                    isAdded = true;
-                    break;
-                
-                case nameof(IsCompleted):
-                    ViewModelUtility.AddBinder(binder, IsCompleted, ref IsCompletedChanged, SetCompleted);
-                    isAdded = true;
-                    break;
-            }
-        }
-
-        // TODO Aspid.UI Translate
-        // Ручное отвязывание
-        partial void RemoveBinderManual(IBinder binder, string propertyName, ref bool isRemoved)
-        {
-            switch (propertyName)
-            {
-                case nameof(Text):
-                    ViewModelUtility.RemoveBinder(binder, ref TextChanged, SetText);
-                    isRemoved = true;
-                    break;
-                
-                case nameof(IsCompleted):
-                    ViewModelUtility.RemoveBinder(binder, ref IsCompletedChanged, SetCompleted);
-                    isRemoved = true;
-                    break;
-            }
-        }
-        #endregion
+        // #region Manual Binds
+        // // TODO Aspid.UI Translate
+        // // Ручное связывание
+        // partial void AddBinderManual(IBinder binder, string propertyName, ref bool isAdded)
+        // {
+        //     switch (propertyName)
+        //     {
+        //         case nameof(Text):
+        //             ViewModelUtility.AddBinder(binder, Text, ref TextChanged, SetText);
+        //             isAdded = true;
+        //             break;
+        //         
+        //         case nameof(IsCompleted):
+        //             ViewModelUtility.AddBinder(binder, IsCompleted, ref IsCompletedChanged, SetCompleted);
+        //             isAdded = true;
+        //             break;
+        //     }
+        // }
+        //
+        // // TODO Aspid.UI Translate
+        // // Ручное отвязывание
+        // partial void RemoveBinderManual(IBinder binder, string propertyName, ref bool isRemoved)
+        // {
+        //     switch (propertyName)
+        //     {
+        //         case nameof(Text):
+        //             ViewModelUtility.RemoveBinder(binder, ref TextChanged, SetText);
+        //             isRemoved = true;
+        //             break;
+        //         
+        //         case nameof(IsCompleted):
+        //             ViewModelUtility.RemoveBinder(binder, ref IsCompletedChanged, SetCompleted);
+        //             isRemoved = true;
+        //             break;
+        //     }
+        // }
+        // #endregion
     }
 }

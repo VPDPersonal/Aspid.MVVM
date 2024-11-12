@@ -16,6 +16,8 @@ namespace Aspid.UI.MVVM.Mono
         private static readonly Unity.Profiling.ProfilerMarker _bindMarker = new("MonoBinder.Bind");
         private static readonly Unity.Profiling.ProfilerMarker _unbindMarker = new("MonoBinder.Unbind");
 #endif
+        private IRemoveBinderFromViewModel _removeBinderFromViewModel;
+        
         /// <summary>
         /// Indicates whether binding is allowed.
         /// The default value is <c>true</c>.
@@ -39,7 +41,7 @@ namespace Aspid.UI.MVVM.Mono
                 OnBinding(viewModel, id);
                 OnBindingDebug(viewModel, id);
                 
-                viewModel.AddBinder(this, id);
+                _removeBinderFromViewModel = viewModel.AddBinder(this, id);
                 OnBound(viewModel, id);
             }
         }
@@ -63,40 +65,34 @@ namespace Aspid.UI.MVVM.Mono
         /// <summary>
         /// Unbinds the component from the specified <see cref="IViewModel"/>.
         /// </summary>
-        /// <param name="viewModel">The instance of the ViewModel to unbind.</param>
-        /// <param name="id">The ID of the component to unbind, which matches the property name in the ViewModel.</param>
-        public void Unbind(IViewModel viewModel, string id)
+        public void Unbind()
         {
 #if !ASPID_UI_MVVM_UNITY_PROFILER_DISABLED
             using (_unbindMarker.Auto())
 #endif
             {
+                if (_removeBinderFromViewModel is null) return;
                 if (!IsBind) return;
-                ThrowExceptionIfInvalidData(viewModel, id);
 
-                OnUnbindingDebug(viewModel, id);
-                OnUnbinding(viewModel, id);
+                OnUnbindingDebug();
+                OnUnbinding();
                 
-                viewModel.RemoveBinder(this, id);
-                OnUnbound(viewModel, id);
+                _removeBinderFromViewModel.RemoveBinder(this);
+                OnUnbound();
             }
         }
         
-        partial void OnUnbindingDebug(IViewModel viewModel, string id);
+        partial void OnUnbindingDebug();
         
         /// <summary>
         /// Logic executed before unbinding, which can be overridden in derived classes.
         /// </summary>
-        /// <param name="viewModel">The instance of the ViewModel.</param>
-        /// <param name="id">The ID of the component, which matches the property name in the ViewModel.</param>
-        protected virtual void OnUnbinding(IViewModel viewModel, string id) { }
+        protected virtual void OnUnbinding() { }
         
         /// <summary>
         /// Logic executed after unbinding, which can be overridden in derived classes.
         /// </summary>
-        /// <param name="viewModel">The instance of the ViewModel.</param>
-        /// <param name="id">The ID of the component, which matches the property name in the ViewModel.</param>
-        protected virtual void OnUnbound(IViewModel viewModel, string id) { }
+        protected virtual void OnUnbound() { }
         
         private static void ThrowExceptionIfInvalidData(IViewModel viewModel, string id)
         {

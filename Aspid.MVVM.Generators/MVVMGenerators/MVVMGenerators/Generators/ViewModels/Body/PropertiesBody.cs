@@ -5,6 +5,7 @@ using Microsoft.CodeAnalysis.CSharp;
 using MVVMGenerators.Helpers.Descriptions;
 using MVVMGenerators.Helpers.Extensions.Writer;
 using MVVMGenerators.Generators.ViewModels.Data;
+using MVVMGenerators.Helpers.Extensions.Symbols;
 
 namespace MVVMGenerators.Generators.ViewModels.Body;
 
@@ -13,6 +14,8 @@ public static class PropertiesBody
     public static CodeWriter AppendPropertiesBody(this CodeWriter code, ViewModelDataSpan data)
     {
         code.AppendEvents(data)
+            .AppendViewModelEvents(data)
+            .AppendLine()
             .AppendProperties(data)
             .AppendSetMethods(data);
         
@@ -21,34 +24,79 @@ public static class PropertiesBody
 
     private static CodeWriter AppendEvents(this CodeWriter code, in ViewModelDataSpan data)
     {
-        HashSet<IPropertySymbol> changedEvents = [];
-        
-        code.AppendLoop(data.Fields, field =>
-        {
-            if (field.IsReadOnly) return;
+        HashSet<IPropertySymbol> bindAlsoProperties = [];
 
-            foreach (var bindAlso in field.BindAlso)
-                changedEvents.Add(bindAlso);
+        foreach (var field in data.Fields)
+        {
+            if (field.IsReadOnly) continue;
             
-            Append(field.Type, field.PropertyName);
-        });
+            foreach (var property in field.BindAlso)
+                bindAlsoProperties.Add(property);
+            
+            AppendEvent(field.Type, field.EventName, field.ViewModelEventName);
+        }
 
-        code.AppendLoop(changedEvents, changedEvent =>
+        foreach (var property in bindAlsoProperties)
         {
-            Append(changedEvent.Type, changedEvent.Name);
-        });
+            var type = property.Type;
+            var eventName = $"{property.Name}Changed";
+            var viewModelEventName = $"__{property.GetFieldName(false)}ChangedEvent";
+            AppendEvent(type, eventName, viewModelEventName);
+        }
 
         return code;
 
-        void Append(ITypeSymbol type, string propertyName)
+        void AppendEvent(ITypeSymbol type, string eventName, string viewModelEventName)
+        {
+            code.AppendMultiline(
+                $$"""
+                {{General.GeneratedCodeViewModelAttribute}}
+                public event {{Classes.Action.Global}}<{{type}}> {{eventName}}
+                {
+                    add
+                    {
+                        {{viewModelEventName}} ??= new {{Classes.ViewModelEvent.Global}}<{{type}}>();
+                        {{viewModelEventName}}.Changed += value;
+                    }
+                    remove
+                    {
+                        if ({{viewModelEventName}} is null) return;
+                        {{viewModelEventName}}.Changed -= value;
+                    }
+                }
+                
+                """);
+        }
+    }
+
+    private static CodeWriter AppendViewModelEvents(this CodeWriter code, in ViewModelDataSpan data)
+    {
+        HashSet<IPropertySymbol> bindAlsoProperties = [];
+        
+        foreach (var field in data.Fields)
+        {
+            if (field.IsReadOnly) continue;
+            
+            foreach (var property in field.BindAlso)
+                bindAlsoProperties.Add(property);
+            
+            code.AppendMultiline(
+                $"""
+                {General.GeneratedCodeViewModelAttribute}
+                private {Classes.ViewModelEvent.Global}<{field.Type}> {field.ViewModelEventName};
+                """);
+        }
+
+        foreach (var property in bindAlsoProperties)
         {
             code.AppendMultiline(
                 $"""
                 {General.GeneratedCodeViewModelAttribute}
-                public event {Classes.Action.Global}<{type}> {propertyName}Changed;
-                
+                private {Classes.ViewModelEvent.Global}<{property.Type}> __{property.GetFieldName(false)}ChangedEvent;
                 """);
         }
+
+        return code;
     }
 
     private static CodeWriter AppendProperties(this CodeWriter code, in ViewModelDataSpan data)
@@ -56,7 +104,7 @@ public static class PropertiesBody
         code.AppendLoop(data.Fields, field =>
         {
             var type = field.Type.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat);
-            var name = field.Name;
+            var name = field.FieldName;
             var propertyName = field.PropertyName;
             
             var getAccessor = field.GetAccess;
@@ -123,8 +171,9 @@ public static class PropertiesBody
             if (field.IsReadOnly) return;
             
             var type = field.Type;
-            var name = field.Name;
+            var name = field.FieldName;
             var propertyName = field.PropertyName;
+            var changedEvent = field.ViewModelEventName;
 
             var changedMethod = $"On{propertyName}Changed";
             var changingMethod = $"On{propertyName}Changing";
@@ -142,11 +191,11 @@ public static class PropertiesBody
                     {changingMethod}({name}, value);
                     {name} = value;
                     {changedMethod}(value);
-                    {propertyName}Changed?.Invoke({name});
+                    {changedEvent}?.Invoke({name});
                     """)
                 .AppendLoop(field.BindAlso, bindAlso =>
                 {
-                    code.AppendLine($"{bindAlso.Name}Changed?.Invoke({bindAlso.Name});");
+                    code.AppendLine($"__{bindAlso.GetFieldName(false)}ChangedEvent?.Invoke({bindAlso.Name});");
                 })
                 .EndBlock()
                 .AppendLine();

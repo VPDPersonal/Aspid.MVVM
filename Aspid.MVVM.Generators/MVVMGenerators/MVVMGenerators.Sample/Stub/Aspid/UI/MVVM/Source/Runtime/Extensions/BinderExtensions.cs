@@ -102,7 +102,7 @@ namespace Aspid.UI.MVVM.Extensions
             where T : IBinder
         {
             if (binder is null) return;
-            binder.Unbind(viewModel, id);
+            binder.Unbind();
         }
         
         /// <summary>
@@ -121,7 +121,7 @@ namespace Aspid.UI.MVVM.Extensions
             if (binders is null) return;
 
             foreach (var binder in binders)
-                binder.Unbind(viewModel, id);
+                binder.Unbind();
         }
         
         /// <summary>
@@ -142,7 +142,7 @@ namespace Aspid.UI.MVVM.Extensions
             foreach (var binder in binders)
             {
 	            if (binder is null) throw new NullReferenceException($"Binder {id} is null. ViewModel {viewModel.GetType().FullName}");
-	            binder.Unbind(viewModel, id);
+	            binder.Unbind();
             }
         }
         
@@ -164,7 +164,7 @@ namespace Aspid.UI.MVVM.Extensions
             foreach (var binder in binders)
             {
 	            if (binder is null) throw new NullReferenceException($"Binder {id} is null. ViewModel {viewModel.GetType().FullName}");
-	            binder.Unbind(viewModel, id);
+	            binder.Unbind();
             }
         }
     }

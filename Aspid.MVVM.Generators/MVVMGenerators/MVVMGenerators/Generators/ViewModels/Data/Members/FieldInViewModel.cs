@@ -15,8 +15,10 @@ public readonly struct FieldInViewModel(
 {
     public readonly ITypeSymbol Type = field.Type;
     
-    public readonly string Name = field.Name;
+    public readonly string FieldName = field.Name;
     public readonly string PropertyName = field.GetPropertyName();
+    public readonly string EventName = $"{field.GetPropertyName()}Changed";
+    public readonly string ViewModelEventName = $"__{field.RemovePrefix()}ChangedEvent";
     
     public readonly bool IsReadOnly = isReadOnly;
     public readonly SyntaxKind SetAccess = setAccess;

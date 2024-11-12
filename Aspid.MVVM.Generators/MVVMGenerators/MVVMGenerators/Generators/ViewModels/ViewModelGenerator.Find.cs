@@ -33,7 +33,7 @@ public partial class ViewModelGenerator
 
         var generatedProperties = fieldData
             .Where(field => field.Type.ToString() == "bool")
-            .Select(field => FieldSymbolExtensions.GetPropertyName(field.Name))
+            .Select(field => FieldSymbolExtensions.GetPropertyName(field.FieldName))
             .ToArray();
         
         var commandData = FindCommand(methods, properties, generatedProperties);

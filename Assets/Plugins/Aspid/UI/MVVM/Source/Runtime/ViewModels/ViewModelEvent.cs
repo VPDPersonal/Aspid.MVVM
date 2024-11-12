@@ -8,51 +8,58 @@ namespace Aspid.UI.MVVM.ViewModels
         
         public Action<T>? SetValue { get; set; }
 
-        public IRemoveBinderFromViewModel AddBinder(IBinder binder, T? value)
+        public IRemoveBinderFromViewModel AddBinder(IBinder binder, T? value, bool isReverse)
         {
-            var specificBinder = binder as IBinder<T>;
-            var specificReverseBinder = binder as IReverseBinder<T>;
-            ThrowErrorIfInvalidOperation(specificBinder, specificReverseBinder);
-
-            if (specificBinder is not null)
+            var isBind = false;
+            
+            if (binder is IBinder<T> specificBinder)
             {
+                isBind = true;
                 specificBinder.SetValue(value);
                 Changed += specificBinder.SetValue;
             }
-            
-            if (IsReverseEnabled(specificReverseBinder))
-                specificReverseBinder!.ValueChanged -= SetValue;
 
+            if (isReverse && binder is IReverseBinder<T> specificReverseBinder)
+            {
+                if (SetValue is null) throw new ArgumentNullException();
+                
+                isBind = true;
+                specificReverseBinder.ValueChanged += SetValue;
+            }
+
+            if (!isBind)
+            {
+                throw new InvalidOperationException();
+            }
+            
             return this;
         }
 
         public void RemoveBinder(IBinder binder)
         {
-            var specificBinder = binder as IBinder<T>;
-            var specificReverseBinder = binder as IReverseBinder<T>;
-            ThrowErrorIfInvalidOperation(specificBinder, specificReverseBinder);
-            
-            if (specificBinder is not null)
-                Changed -= specificBinder.SetValue;
+            var isUnbind = false;
 
-            if (IsReverseEnabled(specificReverseBinder))
-                specificReverseBinder!.ValueChanged -= SetValue;
+            if (binder is IBinder<T> specificBinder)
+            {
+                isUnbind = true;
+                Changed -= specificBinder.SetValue;
+            }
+
+            if (binder.IsReverseEnabled && binder is IReverseBinder<T> specificReverseBinder)
+            {
+                if (SetValue is null) throw new ArgumentNullException();
+                
+                isUnbind = true;
+                specificReverseBinder.ValueChanged -= SetValue;
+            }
+            
+            if (!isUnbind)
+            {
+                throw new InvalidOperationException();
+            }
         }
         
         public void Invoke(T value) => Changed?.Invoke(value);
         
-        private bool IsReverseEnabled(IReverseBinder<T>? reverseBinder)
-        {
-            var result = reverseBinder is not null && reverseBinder.IsReverseEnabled;
-            if (result && SetValue is null) throw new ArgumentNullException();
-
-            return result;
-        }
-
-        private static void ThrowErrorIfInvalidOperation(IBinder<T>? binder, IReverseBinder<T>? reverseBinder)
-        {
-            if (binder is null && (reverseBinder is null || !reverseBinder.IsReverseEnabled)) 
-                throw new InvalidOperationException();
-        }
     }
 }

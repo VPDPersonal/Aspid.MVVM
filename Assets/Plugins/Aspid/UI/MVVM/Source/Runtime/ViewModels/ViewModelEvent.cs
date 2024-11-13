@@ -2,6 +2,7 @@ using System;
 
 namespace Aspid.UI.MVVM.ViewModels
 {
+    // TODO None sealed
     public sealed class ViewModelEvent<T> : IRemoveBinderFromViewModel
     {
         public event Action<T>? Changed;
@@ -60,6 +61,5 @@ namespace Aspid.UI.MVVM.ViewModels
         }
         
         public void Invoke(T value) => Changed?.Invoke(value);
-        
     }
 }

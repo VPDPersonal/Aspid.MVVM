@@ -14,7 +14,7 @@ namespace Aspid.UI.MVVM.StarterKit.Binders.Commands
         
         private IRelayCommand<bool> _command;
         
-        protected override bool IsBind => _toggle != null;
+        public override bool IsBind => _toggle != null;
         
         [BinderLog]
         public void SetValue(IRelayCommand<bool> command)
@@ -76,7 +76,7 @@ namespace Aspid.UI.MVVM.StarterKit.Binders.Commands
             set => _parameter1 = value;
         }
         
-        protected override bool IsBind => _toggle != null;
+        public override bool IsBind => _toggle != null;
         
         [BinderLog]
         public void SetValue(IRelayCommand<bool, T1> command)
@@ -145,7 +145,7 @@ namespace Aspid.UI.MVVM.StarterKit.Binders.Commands
             set => _parameter2 = value;
         }
         
-        protected override bool IsBind => _toggle != null;
+        public override bool IsBind => _toggle != null;
         
         [BinderLog]
         public void SetValue(IRelayCommand<bool, T1, T2> command)
@@ -221,7 +221,7 @@ namespace Aspid.UI.MVVM.StarterKit.Binders.Commands
             set => _parameter3 = value;
         }
         
-        protected override bool IsBind => _toggle != null;
+        public override bool IsBind => _toggle != null;
         
         [BinderLog]
         public void SetValue(IRelayCommand<bool, T1, T2, T3> command)

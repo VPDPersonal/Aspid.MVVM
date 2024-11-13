@@ -94,49 +94,19 @@ namespace Aspid.UI.MVVM.ViewModels
         /// </summary>
         /// <param name="binder">Binder for binding.</param>
         /// <param name="value">Initial value.</param>
-        /// <param name="changed">Action for binding.</param>
+        /// <param name="viewModelEvent"></param>
         /// <param name="setValue">Optional Action for reverse binding.</param>
         /// <typeparam name="T">Property type.</typeparam>
         /// <exception cref="Exception"></exception>
-        public static void AddBinder<T>(IBinder binder, T value, ref Action<T> changed, Action<T>? setValue = null)
+        public static IRemoveBinderFromViewModel AddBinder<T>(IBinder binder, T value, ViewModelEvent<T>? viewModelEvent, Action<T>? setValue = null)
         {
-            if (binder is not IBinder<T> specificBinder)
-                throw new Exception($"binder ({binder.GetType()}) is not {typeof(IBinder<T>)}");
-			        
-            specificBinder.SetValue(value);
-            changed += specificBinder.SetValue;
-
-            if (setValue != null && binder.IsReverseEnabled)
-            {
-                if (binder is not IReverseBinder<T> specificReverseBinder)
-                    throw new Exception($"binder ({binder.GetType()}) is not {typeof(IReverseBinder<T>)}");
-
-                specificReverseBinder.ValueChanged += setValue;
-            }
-        }
-        
-        /// <summary>
-        /// Base implementation of the RemoveBinder method from the IViewModel interface.
-        /// </summary>
-        /// <param name="binder">Binder for unbinding.</param>
-        /// <param name="changed">Action for unbinding.</param>
-        /// <param name="setValue">Optional Action for unbinding reverse binding.</param>
-        /// <typeparam name="T">Property type.</typeparam>
-        /// <exception cref="Exception"></exception>
-        public static void RemoveBinder<T>(IBinder binder, ref Action<T> changed, Action<T>? setValue = null)
-        {
-            if (binder is not IBinder<T> specificBinder)
-                throw new Exception($"binder ({binder.GetType()}) is not {typeof(IBinder<T>)}");
-			        
-            changed -= specificBinder.SetValue;
-
-            if (setValue != null && binder.IsReverseEnabled)
-            {
-                if (binder is not IReverseBinder<T> specificReverseBinder)
-                    throw new Exception($"binder ({binder.GetType()}) is not {typeof(IReverseBinder<T>)}");
-			        
-                specificReverseBinder.ValueChanged -= setValue;
-            }
+            viewModelEvent ??= new ViewModelEvent<T>();
+            
+            if (!binder.IsReverseEnabled)
+                return viewModelEvent.AddBinder(binder, value, false);
+           
+            viewModelEvent.SetValue ??= setValue;
+            return viewModelEvent.AddBinder(binder, value, true);
         }
     }
 }

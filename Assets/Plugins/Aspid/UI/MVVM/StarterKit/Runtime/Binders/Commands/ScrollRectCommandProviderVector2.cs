@@ -13,7 +13,7 @@ namespace Aspid.UI.MVVM.StarterKit.Binders.Commands
         
         private IRelayCommand<Vector2> _command;
         
-        protected override bool IsBind => _scrollRect != null;
+        public override bool IsBind => _scrollRect != null;
         
         [BinderLog]
         public void SetValue(IRelayCommand<Vector2> command)
@@ -58,7 +58,7 @@ namespace Aspid.UI.MVVM.StarterKit.Binders.Commands
             set => _parameter1 = value;
         }
         
-        protected override bool IsBind => _scrollRect != null;
+        public override bool IsBind => _scrollRect != null;
         
         [BinderLog]
         public void SetValue(IRelayCommand<Vector2, T1> command)
@@ -110,7 +110,7 @@ namespace Aspid.UI.MVVM.StarterKit.Binders.Commands
             set => _parameter2 = value;
         }
         
-        protected override bool IsBind => _scrollRect != null;
+        public override bool IsBind => _scrollRect != null;
         
         [BinderLog]
         public void SetValue(IRelayCommand<Vector2, T1, T2> command)
@@ -169,7 +169,7 @@ namespace Aspid.UI.MVVM.StarterKit.Binders.Commands
             set => _parameter3 = value;
         }
         
-        protected override bool IsBind => _scrollRect != null;
+        public override bool IsBind => _scrollRect != null;
         
         [BinderLog]
         public void SetValue(IRelayCommand<Vector2, T1, T2, T3> command)

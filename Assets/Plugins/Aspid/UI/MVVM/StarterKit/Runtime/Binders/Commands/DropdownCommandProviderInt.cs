@@ -2,7 +2,6 @@ using TMPro;
 using System;
 using UnityEngine;
 using Aspid.UI.MVVM.Commands;
-using Aspid.UI.MVVM.ViewModels;
 using Aspid.UI.MVVM.Mono.Generation;
 
 namespace Aspid.UI.MVVM.StarterKit.Binders.Commands
@@ -15,7 +14,7 @@ namespace Aspid.UI.MVVM.StarterKit.Binders.Commands
         
         private IRelayCommand<int> _command;
         
-        protected override bool IsBind => _dropdown != null;
+        public override bool IsBind => _dropdown != null;
         
         [BinderLog]
         public void SetValue(IRelayCommand<int> command)
@@ -77,7 +76,7 @@ namespace Aspid.UI.MVVM.StarterKit.Binders.Commands
             set => _parameter1 = value;
         }
         
-        protected override bool IsBind => _dropdown != null;
+        public override bool IsBind => _dropdown != null;
         
         [BinderLog]
         public void SetValue(IRelayCommand<int, T1> command)
@@ -146,7 +145,7 @@ namespace Aspid.UI.MVVM.StarterKit.Binders.Commands
             set => _parameter2 = value;
         }
         
-        protected override bool IsBind => _dropdown != null;
+        public override bool IsBind => _dropdown != null;
         
         [BinderLog]
         public void SetValue(IRelayCommand<int, T1, T2> command)
@@ -222,7 +221,7 @@ namespace Aspid.UI.MVVM.StarterKit.Binders.Commands
             set => _parameter3 = value;
         }
         
-        protected override bool IsBind => _dropdown != null;
+        public override bool IsBind => _dropdown != null;
         
         [BinderLog]
         public void SetValue(IRelayCommand<int, T1, T2, T3> command)

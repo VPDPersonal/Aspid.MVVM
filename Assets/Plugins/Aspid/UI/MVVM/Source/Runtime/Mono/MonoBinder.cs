@@ -22,7 +22,9 @@ namespace Aspid.UI.MVVM.Mono
         /// Indicates whether binding is allowed.
         /// The default value is <c>true</c>.
         /// </summary>
-        protected virtual bool IsBind => true;
+        public virtual bool IsBind => true;
+        
+        public bool IsBound { get; private set; }
         
         /// <summary>
         /// Binds the component to the specified <see cref="IViewModel"/>.
@@ -35,13 +37,17 @@ namespace Aspid.UI.MVVM.Mono
             using (_bindMarker.Auto()) 
 #endif
             {
-                if (!IsBind) return;
                 ThrowExceptionIfInvalidData(viewModel, id);
+                
+                if (IsBound) throw new Exception("This Binder is already bound.");
+                if (!IsBind) return;
                 
                 OnBinding(viewModel, id);
                 OnBindingDebug(viewModel, id);
                 
                 _removeBinderFromViewModel = viewModel.AddBinder(this, id);
+                IsBound = true;
+                
                 OnBound(viewModel, id);
             }
         }
@@ -71,13 +77,16 @@ namespace Aspid.UI.MVVM.Mono
             using (_unbindMarker.Auto())
 #endif
             {
-                if (_removeBinderFromViewModel is null) return;
+                if (!IsBound) return;
                 if (!IsBind) return;
 
                 OnUnbindingDebug();
                 OnUnbinding();
                 
-                _removeBinderFromViewModel.RemoveBinder(this);
+                _removeBinderFromViewModel?.RemoveBinder(this);
+                _removeBinderFromViewModel = null;
+                IsBound = false;
+                
                 OnUnbound();
             }
         }

@@ -78,9 +78,7 @@ namespace Aspid.UI.MVVM.Mono
 #endif
             {
                 if (!IsBound) return;
-                if (!IsBind) return;
-
-                OnUnbindingDebug();
+                
                 OnUnbinding();
                 
                 _removeBinderFromViewModel?.RemoveBinder(this);
@@ -90,8 +88,6 @@ namespace Aspid.UI.MVVM.Mono
                 OnUnbound();
             }
         }
-        
-        partial void OnUnbindingDebug();
         
         /// <summary>
         /// Logic executed before unbinding, which can be overridden in derived classes.

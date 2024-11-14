@@ -39,8 +39,7 @@ namespace Aspid.UI.MVVM
                 
                 if (IsBound) throw new Exception("This Binder is already bound.");
                 if (!IsBind) return;
-
-                OnBindingDebug(viewModel, id);
+                
                 OnBinding(viewModel, id);
                 
                 _removeBinderFromViewModel =  viewModel.AddBinder(this, id);;
@@ -49,8 +48,6 @@ namespace Aspid.UI.MVVM
                 OnBound(viewModel, id);
             }
         }
-
-        partial void OnBindingDebug(IViewModel viewModel, string id);
         
         /// <summary>
         /// Logic executed before binding, which can be overridden in derived classes.
@@ -76,9 +73,7 @@ namespace Aspid.UI.MVVM
 #endif
             {
                 if (!IsBound) return;
-                if (!IsBind) return;
-
-                OnUnbindingDebug();
+                
                 OnUnbinding();
                 
                 _removeBinderFromViewModel?.RemoveBinder(this);
@@ -88,8 +83,6 @@ namespace Aspid.UI.MVVM
                 OnUnbound();
             }
         }
-
-        partial void OnUnbindingDebug();
         
         /// <summary>
         /// Logic executed before unbinding, which can be overridden in derived classes.

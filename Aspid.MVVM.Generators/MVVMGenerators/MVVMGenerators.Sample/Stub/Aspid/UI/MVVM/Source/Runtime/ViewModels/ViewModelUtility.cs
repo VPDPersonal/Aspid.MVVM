@@ -100,13 +100,13 @@ namespace Aspid.UI.MVVM.ViewModels
         /// <exception cref="Exception"></exception>
         public static IRemoveBinderFromViewModel AddBinder<T>(IBinder binder, T value, ViewModelEvent<T>? viewModelEvent, Action<T>? setValue = null)
         {
+            var isReverse = binder.IsReverseEnabled;
             viewModelEvent ??= new ViewModelEvent<T>();
+
+            if (isReverse)
+                viewModelEvent.SetValue ??= setValue;
             
-            if (!binder.IsReverseEnabled)
-                return viewModelEvent.AddBinder(binder, value, false);
-           
-            viewModelEvent.SetValue ??= setValue;
-            return viewModelEvent.AddBinder(binder, value, true);
+            return viewModelEvent.AddBinder(binder, value, isReverse);
         }
     }
 }

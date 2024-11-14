@@ -24,8 +24,8 @@ namespace Aspid.UI.MVVM.ViewModels
             {
                 if (SetValue is null) throw new ArgumentNullException();
                 
-                isBind = true;
                 specificReverseBinder.ValueChanged += SetValue;
+                return this;
             }
 
             if (!isBind)
@@ -49,9 +49,9 @@ namespace Aspid.UI.MVVM.ViewModels
             if (binder.IsReverseEnabled && binder is IReverseBinder<T> specificReverseBinder)
             {
                 if (SetValue is null) throw new ArgumentNullException();
-                
-                isUnbind = true;
+
                 specificReverseBinder.ValueChanged -= SetValue;
+                return;
             }
             
             if (!isUnbind)

@@ -47,7 +47,7 @@ public static class IViewModelBody
             $"""
              #if !{Defines.ASPID_UI_MVVM_UNITY_PROFILER_DISABLED}
              {GeneratedAttribute}
-             private static readonly {ProfilerMarker} _addBinderMarker = new("{className}.AddBinder"); 
+             private static readonly {ProfilerMarker} __addBinderMarker = new("{className}.AddBinder"); 
              #endif
              """);
 
@@ -62,7 +62,7 @@ public static class IViewModelBody
             public {{IRemoveBinderFromViewModel}} AddBinder({{IBinder}} binder, string propertyName)
             {
                 #if !{{Defines.ASPID_UI_MVVM_UNITY_PROFILER_DISABLED}}
-                using (_addBinderMarker.Auto())
+                using (__addBinderMarker.Auto())
                 #endif
                 {
                     return AddBinderInternal(binder, propertyName);
@@ -105,7 +105,7 @@ public static class IViewModelBody
             .AppendLine()
             .AppendLineIf(data.Inheritor is Inheritor.InheritorViewModelAttribute,
                 "return base.AddBinderInternal(binder, propertyName);")
-            .AppendLineIf(data.Inheritor is not Inheritor.InheritorViewModelAttribute, "return null;")
+            .AppendLineIf(data.Inheritor is not Inheritor.InheritorViewModelAttribute, "return default;")
             .AppendMultilineIf(readOnlyFieldsExist,
             $$"""
             
@@ -135,7 +135,7 @@ public static class IViewModelBody
                     case {{propertyName}}Id:
                     {
                         SetValueLocal({{propertyName}});
-                        return null;
+                        return default;
                     }
                     """);
             }
@@ -145,15 +145,13 @@ public static class IViewModelBody
                     $$"""
                     case {{propertyName}}Id:
                     {
+                        var isReverse = binder.IsReverseEnabled;
                         {{field.ViewModelEventName}} ??= new {{ViewModelEvent}}<{{type}}>();
                         
-                        if (binder.IsReverseEnabled)
-                        {
+                        if (isReverse)
                             {{field.ViewModelEventName}}.SetValue ??= Set{{propertyName}};
-                            return {{field.ViewModelEventName}}.AddBinder(binder, {{propertyName}}, true);
-                        }
                             
-                        return {{field.ViewModelEventName}}.AddBinder(binder, {{propertyName}}, false);
+                        return {{field.ViewModelEventName}}.AddBinder(binder, {{propertyName}}, isReverse);
                     }
                     """);
             }
@@ -169,7 +167,7 @@ public static class IViewModelBody
                 case {{propertyName}}Id:
                 {
                     SetValueLocal({{propertyName}});
-                    return null;
+                    return default;
                 }
                 """);
         }
@@ -180,7 +178,7 @@ public static class IViewModelBody
         code.AppendMultiline(
             $"""
              {GeneratedAttribute}
-             partial void AddBinderManual({IBinder} binder, string propertyName, ref {IRemoveBinderFromViewModel} isAdded);
+             partial void AddBinderManual({IBinder} binder, string propertyName, ref {IRemoveBinderFromViewModel} removeBinder);
              """);
 
         return code;

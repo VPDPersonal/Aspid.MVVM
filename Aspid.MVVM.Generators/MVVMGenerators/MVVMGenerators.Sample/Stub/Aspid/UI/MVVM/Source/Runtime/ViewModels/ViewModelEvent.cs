@@ -2,13 +2,14 @@ using System;
 
 namespace Aspid.UI.MVVM.ViewModels
 {
+    // TODO None sealed
     public sealed class ViewModelEvent<T> : IRemoveBinderFromViewModel
     {
         public event Action<T>? Changed;
         
         public Action<T>? SetValue { get; set; }
 
-        public IRemoveBinderFromViewModel AddBinder(IBinder binder, T? value, bool isReverse = false)
+        public IRemoveBinderFromViewModel AddBinder(IBinder binder, T? value, bool isReverse)
         {
             var isBind = false;
             
@@ -21,11 +22,10 @@ namespace Aspid.UI.MVVM.ViewModels
 
             if (isReverse && binder is IReverseBinder<T> specificReverseBinder)
             {
-                if (IsReverseEnabled(specificReverseBinder))
-                {
-                    isBind = true;
-                    specificReverseBinder.ValueChanged += SetValue;
-                }
+                if (SetValue is null) throw new ArgumentNullException();
+                
+                isBind = true;
+                specificReverseBinder.ValueChanged += SetValue;
             }
 
             if (!isBind)
@@ -46,13 +46,12 @@ namespace Aspid.UI.MVVM.ViewModels
                 Changed -= specificBinder.SetValue;
             }
 
-            if (binder is IReverseBinder<T> specificReverseBinder)
+            if (binder.IsReverseEnabled && binder is IReverseBinder<T> specificReverseBinder)
             {
-                if (IsReverseEnabled(specificReverseBinder))
-                {
-                    isUnbind = true;
-                    specificReverseBinder.ValueChanged -= SetValue;
-                }
+                if (SetValue is null) throw new ArgumentNullException();
+                
+                isUnbind = true;
+                specificReverseBinder.ValueChanged -= SetValue;
             }
             
             if (!isUnbind)
@@ -62,13 +61,5 @@ namespace Aspid.UI.MVVM.ViewModels
         }
         
         public void Invoke(T value) => Changed?.Invoke(value);
-        
-        private bool IsReverseEnabled(IReverseBinder<T> specificReverseBinder)
-        {
-            var result = specificReverseBinder.IsReverseEnabled;
-            if (result && SetValue is null) throw new ArgumentNullException();
-
-            return result;
-        }
     }
 }

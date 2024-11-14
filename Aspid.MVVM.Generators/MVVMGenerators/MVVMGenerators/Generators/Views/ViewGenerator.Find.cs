@@ -231,7 +231,7 @@ public partial class ViewGenerator
             HasOverrideMethod(method, "InitializeInternal", Classes.IViewModel.FullName);
 
         bool HasOverrideDeinitializeInternalMethod(IMethodSymbol method) =>
-            HasOverrideMethod(method, "DeinitializeInternal", Classes.IViewModel.FullName);
+            HasOverrideMethod(method, "DeinitializeInternal");
 
         bool HasOverrideMethod(IMethodSymbol method, string methodName, params string[] parameters)
         {

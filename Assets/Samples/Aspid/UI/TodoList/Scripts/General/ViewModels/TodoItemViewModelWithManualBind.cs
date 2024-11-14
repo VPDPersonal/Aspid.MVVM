@@ -15,11 +15,6 @@ namespace Aspid.UI.TodoList.ViewModels
         public event Action<ITodoItemViewModel> Deleted;
         
         // TODO Aspid.UI Translate
-        // Обычно за нас эти события создает Source Generator, но ради примера мы сделаем ручную привязку двух полей.
-        public event Action<string> TextChanged;
-        public event Action<bool> IsCompletedChanged;
-
-        // TODO Aspid.UI Translate
         // Атрибут Bind по умолчанию создает полностью приватное поле
         // private bool IsVisible
         // {
@@ -30,6 +25,11 @@ namespace Aspid.UI.TodoList.ViewModels
         // Source Generator и создает вместо приватного поля - поле с настройкам из атрибута Access
         [Access(Access.Public)]
         [Bind] private bool _isVisible;
+        
+        // TODO Aspid.UI Translate
+        // Обычно за нас эти поля создает Source Generator, но ради примера мы сделаем ручную привязку двух полей.
+        private ViewModelEvent<string> _textChangedEvent;
+        private ViewModelEvent<bool> _isCompletedChangedEvent;
         
         private readonly Todo _todo;
         private readonly EditTodoPopUpViewFactory _editTodoPopUpViewFactory;
@@ -68,7 +68,7 @@ namespace Aspid.UI.TodoList.ViewModels
             if (ViewModelUtility.SetProperty(ref text, value))
             {
                 _todo.Text = text;;
-                TextChanged?.Invoke(text);
+                _textChangedEvent?.Invoke(text);
             }
         }
 
@@ -79,7 +79,7 @@ namespace Aspid.UI.TodoList.ViewModels
             if (ViewModelUtility.SetProperty(ref isCompleted, value))
             {
                 _todo.IsCompleted = isCompleted;;
-                IsCompletedChanged?.Invoke(value);
+                _isCompletedChangedEvent?.Invoke(value);
             }
         }
 
@@ -116,42 +116,18 @@ namespace Aspid.UI.TodoList.ViewModels
         [RelayCommand]
         private void Delete() => Deleted?.Invoke(this);
 
-        // #region Manual Binds
-        // // TODO Aspid.UI Translate
-        // // Ручное связывание
-        // partial void AddBinderManual(IBinder binder, string propertyName, ref bool isAdded)
-        // {
-        //     switch (propertyName)
-        //     {
-        //         case nameof(Text):
-        //             ViewModelUtility.AddBinder(binder, Text, ref TextChanged, SetText);
-        //             isAdded = true;
-        //             break;
-        //         
-        //         case nameof(IsCompleted):
-        //             ViewModelUtility.AddBinder(binder, IsCompleted, ref IsCompletedChanged, SetCompleted);
-        //             isAdded = true;
-        //             break;
-        //     }
-        // }
-        //
-        // // TODO Aspid.UI Translate
-        // // Ручное отвязывание
-        // partial void RemoveBinderManual(IBinder binder, string propertyName, ref bool isRemoved)
-        // {
-        //     switch (propertyName)
-        //     {
-        //         case nameof(Text):
-        //             ViewModelUtility.RemoveBinder(binder, ref TextChanged, SetText);
-        //             isRemoved = true;
-        //             break;
-        //         
-        //         case nameof(IsCompleted):
-        //             ViewModelUtility.RemoveBinder(binder, ref IsCompletedChanged, SetCompleted);
-        //             isRemoved = true;
-        //             break;
-        //     }
-        // }
-        // #endregion
+        #region Manual Binds
+        // TODO Aspid.UI Translate
+        // Ручное связывание
+        partial void AddBinderManual(IBinder binder, string propertyName, ref IRemoveBinderFromViewModel removeBinder)
+        {
+            removeBinder = propertyName switch
+            {
+                nameof(Text) => ViewModelUtility.AddBinder(binder, Text, ref _textChangedEvent, SetText),
+                nameof(IsCompleted) => ViewModelUtility.AddBinder(binder, IsCompleted, ref _isCompletedChangedEvent, SetCompleted),
+                _ => removeBinder
+            };
+        }
+        #endregion
     }
 }

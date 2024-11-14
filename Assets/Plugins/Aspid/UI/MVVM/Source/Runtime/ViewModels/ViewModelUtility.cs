@@ -98,7 +98,7 @@ namespace Aspid.UI.MVVM.ViewModels
         /// <param name="setValue">Optional Action for reverse binding.</param>
         /// <typeparam name="T">Property type.</typeparam>
         /// <exception cref="Exception"></exception>
-        public static IRemoveBinderFromViewModel AddBinder<T>(IBinder binder, T value, ViewModelEvent<T>? viewModelEvent, Action<T>? setValue = null)
+        public static IRemoveBinderFromViewModel AddBinder<T>(IBinder binder, T value, ref ViewModelEvent<T>? viewModelEvent, Action<T>? setValue = null)
         {
             var isReverse = binder.IsReverseEnabled;
             viewModelEvent ??= new ViewModelEvent<T>();

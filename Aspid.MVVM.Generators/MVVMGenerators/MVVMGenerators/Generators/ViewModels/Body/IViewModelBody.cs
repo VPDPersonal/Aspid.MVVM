@@ -90,6 +90,7 @@ public static class IViewModelBody
             .BeginBlock()
             .AppendLoop(data.Fields, AppendField)
             .AppendLoop(data.Commands, AppendCommand)
+            .AppendLoop(data.BindAlsoProperties, AppendBindAlsoProperty)
             .AppendMultiline(
             $$"""
             default:
@@ -120,26 +121,16 @@ public static class IViewModelBody
             .EndBlock();
 
         return code;
+        
+        void AppendCommand(RelayCommandData command) =>
+            AppendReadOnlyBind(command.PropertyName);
 
         void AppendField(FieldInViewModel field)
         {
             var type = field.Type;
             var propertyName = field.PropertyName;
-
-            if (field.IsReadOnly)
-            {
-                readOnlyFieldsExist = true;
-
-                code.AppendMultiline(
-                    $$"""
-                    case {{propertyName}}Id:
-                    {
-                        SetValueLocal({{propertyName}});
-                        return default;
-                    }
-                    """);
-            }
-            else
+            
+            if (!field.IsReadOnly)
             {
                 code.AppendMultiline(
                     $$"""
@@ -155,31 +146,40 @@ public static class IViewModelBody
                     }
                     """);
             }
+            else AppendReadOnlyBind(propertyName);
         }
 
-        void AppendCommand(RelayCommandData command)
+        void AppendBindAlsoProperty(BindAlsoProperty property)
+        {
+            code.AppendMultiline(
+                $$"""
+                case {{property.Name}}Id:
+                {
+                    {{property.ViewModelEventName}} ??= new {{ViewModelEvent}}<{{property.Type}}>();
+                    return {{property.ViewModelEventName}}.AddBinder(binder, {{property.Name}}, false);
+                }
+                """);
+        }
+
+        void AppendReadOnlyBind(string propertyName)
         {
             readOnlyFieldsExist = true;
-            var propertyName = command.PropertyName;
 
             code.AppendMultiline(
                 $$"""
-                case {{propertyName}}Id:
-                {
-                    SetValueLocal({{propertyName}});
-                    return default;
-                }
-                """);
+                  case {{propertyName}}Id:
+                  {
+                      SetValueLocal({{propertyName}});
+                      return default;
+                  }
+                  """);
         }
     }
 
     private static CodeWriter AppendManualMethods(this CodeWriter code)
     {
-        code.AppendMultiline(
-            $"""
-             {GeneratedAttribute}
-             partial void AddBinderManual({IBinder} binder, string propertyName, ref {IRemoveBinderFromViewModel} removeBinder);
-             """);
+        code.AppendLine(GeneratedAttribute)
+            .AppendLine($"partial void AddBinderManual({IBinder} binder, string propertyName, ref {IRemoveBinderFromViewModel} removeBinder);");
 
         return code;
     }

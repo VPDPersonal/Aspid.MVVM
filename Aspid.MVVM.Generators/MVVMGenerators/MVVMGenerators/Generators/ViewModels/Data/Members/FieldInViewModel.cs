@@ -11,7 +11,7 @@ public readonly struct FieldInViewModel(
     bool isReadOnly,
     SyntaxKind getAccess,
     SyntaxKind setAccess,
-    IEnumerable<IPropertySymbol> bindAlso)
+    ImmutableArray<BindAlsoProperty> bindAlso)
 {
     public readonly ITypeSymbol Type = field.Type;
     
@@ -23,6 +23,6 @@ public readonly struct FieldInViewModel(
     public readonly bool IsReadOnly = isReadOnly;
     public readonly SyntaxKind SetAccess = setAccess;
     public readonly SyntaxKind GetAccess = getAccess;
-    
-    public readonly ImmutableArray<IPropertySymbol> BindAlso = ImmutableArray.CreateRange(bindAlso);
+
+    public readonly ImmutableArray<BindAlsoProperty> BindAlso = bindAlso;
 }

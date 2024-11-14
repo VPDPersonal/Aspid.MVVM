@@ -1,11 +1,9 @@
 using Microsoft.CodeAnalysis;
 using MVVMGenerators.Helpers;
-using System.Collections.Generic;
 using Microsoft.CodeAnalysis.CSharp;
 using MVVMGenerators.Helpers.Descriptions;
 using MVVMGenerators.Helpers.Extensions.Writer;
 using MVVMGenerators.Generators.ViewModels.Data;
-using MVVMGenerators.Helpers.Extensions.Symbols;
 
 namespace MVVMGenerators.Generators.ViewModels.Body;
 
@@ -24,24 +22,15 @@ public static class PropertiesBody
 
     private static CodeWriter AppendEvents(this CodeWriter code, in ViewModelDataSpan data)
     {
-        HashSet<IPropertySymbol> bindAlsoProperties = [];
-
         foreach (var field in data.Fields)
         {
             if (field.IsReadOnly) continue;
-            
-            foreach (var property in field.BindAlso)
-                bindAlsoProperties.Add(property);
-            
             AppendEvent(field.Type, field.EventName, field.ViewModelEventName);
         }
 
-        foreach (var property in bindAlsoProperties)
+        foreach (var property in data.BindAlsoProperties)
         {
-            var type = property.Type;
-            var eventName = $"{property.Name}Changed";
-            var viewModelEventName = $"__{property.GetFieldName(false)}ChangedEvent";
-            AppendEvent(type, eventName, viewModelEventName);
+            AppendEvent(property.Type, property.EventName, property.ViewModelEventName);
         }
 
         return code;
@@ -71,14 +60,9 @@ public static class PropertiesBody
 
     private static CodeWriter AppendViewModelEvents(this CodeWriter code, in ViewModelDataSpan data)
     {
-        HashSet<IPropertySymbol> bindAlsoProperties = [];
-        
         foreach (var field in data.Fields)
         {
             if (field.IsReadOnly) continue;
-            
-            foreach (var property in field.BindAlso)
-                bindAlsoProperties.Add(property);
             
             code.AppendMultiline(
                 $"""
@@ -87,12 +71,12 @@ public static class PropertiesBody
                 """);
         }
 
-        foreach (var property in bindAlsoProperties)
+        foreach (var property in data.BindAlsoProperties)
         {
             code.AppendMultiline(
                 $"""
                 {General.GeneratedCodeViewModelAttribute}
-                private {Classes.ViewModelEvent.Global}<{property.Type}> __{property.GetFieldName(false)}ChangedEvent;
+                private {Classes.ViewModelEvent.Global}<{property.Type}> {property.ViewModelEventName};
                 """);
         }
 
@@ -195,7 +179,7 @@ public static class PropertiesBody
                     """)
                 .AppendLoop(field.BindAlso, bindAlso =>
                 {
-                    code.AppendLine($"__{bindAlso.GetFieldName(false)}ChangedEvent?.Invoke({bindAlso.Name});");
+                    code.AppendLine($"{bindAlso.ViewModelEventName}?.Invoke({bindAlso.Name});");
                 })
                 .EndBlock()
                 .AppendLine();

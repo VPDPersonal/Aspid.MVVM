@@ -29,7 +29,7 @@ public partial class Child1ViewModel1 : ViewModel1
 }
 
 [ViewModel]
-public partial class ViewModel3
+public partial class ViewModel4
 {
     [BindAlso(nameof(FullName))]
     [Bind] private string _firstName;

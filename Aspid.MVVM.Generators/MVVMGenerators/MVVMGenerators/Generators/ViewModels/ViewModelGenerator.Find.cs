@@ -30,6 +30,12 @@ public partial class ViewModelGenerator
         symbol.FillMembers(fields, methods, properties);
         
         var fieldData = FindFields(fields, properties);
+        var bindAlsoProperties = new HashSet<BindAlsoProperty>();
+
+        foreach (var property in fieldData.SelectMany(field => field.BindAlso))
+        {
+            bindAlsoProperties.Add(property);
+        }
 
         var generatedProperties = fieldData
             .Where(field => field.Type.ToString() == "bool")
@@ -42,7 +48,7 @@ public partial class ViewModelGenerator
         var candidate = Unsafe.As<TypeDeclarationSyntax>(context.TargetNode);
         
         return new FoundForGenerator<ViewModelData>(true,
-            new ViewModelData(inheritor, candidate, fieldData, commandData));
+            new ViewModelData(inheritor, candidate, fieldData, commandData, bindAlsoProperties));
     }
     
     private static Inheritor RecognizeInheritor(INamedTypeSymbol symbol)
@@ -88,9 +94,9 @@ public partial class ViewModelGenerator
 
         return ImmutableArray.CreateRange(data);
 
-        IEnumerable<IPropertySymbol> GetBindAlso(IFieldSymbol field)
+        ImmutableArray<BindAlsoProperty> GetBindAlso(IFieldSymbol field)
         {
-            var bindAlso = new List<IPropertySymbol>();
+            var bindAlso = new List<BindAlsoProperty>();
             var attributesArgument = new List<string?>();
             
             foreach (var attribute in field.GetAttributes())
@@ -103,10 +109,10 @@ public partial class ViewModelGenerator
             foreach (var property in properties)
             {
                 if (attributesArgument.Any(argument => property.Name == argument))
-                    bindAlso.Add(property);
+                    bindAlso.Add(new BindAlsoProperty(property));
             }
             
-            return bindAlso;
+            return ImmutableArray.CreateRange(bindAlso);
         }
         
         (SyntaxKind Get, SyntaxKind Set) GetAccessors(IFieldSymbol field)

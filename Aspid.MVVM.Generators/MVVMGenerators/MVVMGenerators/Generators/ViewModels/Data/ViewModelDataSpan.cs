@@ -12,4 +12,5 @@ public readonly ref struct ViewModelDataSpan(ViewModelData data)
 
     public readonly ReadOnlySpan<FieldInViewModel> Fields = data.Fields.AsSpan();
     public readonly ReadOnlySpan<RelayCommandData> Commands = data.Commands.AsSpan();
+    public readonly ReadOnlySpan<BindAlsoProperty> BindAlsoProperties = data.BindAlsoProperties.AsSpan();
 }

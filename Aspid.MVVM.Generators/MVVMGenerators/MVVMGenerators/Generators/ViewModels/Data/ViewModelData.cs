@@ -9,7 +9,8 @@ public readonly struct ViewModelData(
     Inheritor inheritor,
     TypeDeclarationSyntax declaration,
     IEnumerable<FieldInViewModel> fields,
-    IEnumerable<RelayCommandData> commands)
+    IEnumerable<RelayCommandData> commands,
+    IEnumerable<BindAlsoProperty> bindAlsoProperties)
 {
     public readonly Inheritor Inheritor = inheritor;
     public readonly TypeDeclarationSyntax Declaration = declaration;
@@ -17,4 +18,5 @@ public readonly struct ViewModelData(
 
     public readonly ImmutableArray<FieldInViewModel> Fields = ImmutableArray.CreateRange(fields);
     public readonly ImmutableArray<RelayCommandData> Commands = ImmutableArray.CreateRange(commands);
+    public readonly ImmutableArray<BindAlsoProperty> BindAlsoProperties = ImmutableArray.CreateRange(bindAlsoProperties);
 }

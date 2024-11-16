@@ -3,6 +3,7 @@ using Microsoft.CodeAnalysis;
 using MVVMGenerators.Helpers;
 using MVVMGenerators.Helpers.Descriptions;
 using MVVMGenerators.Generators.Binders.Data;
+using MVVMGenerators.Helpers.Extensions.Symbols;
 using MVVMGenerators.Helpers.Extensions.Writer;
 
 namespace MVVMGenerators.Generators.Binders.Body;
@@ -66,7 +67,7 @@ public static class BinderLogBody
         code.AppendLoop(methods, method =>
         {
             var parameterName = method.Parameters[0].Name;
-            var parameterType = method.Parameters[0].Type;
+            var parameterType = method.Parameters[0].Type.ToDisplayStringGlobal();
             
             code.AppendMultiline(
                 $$"""

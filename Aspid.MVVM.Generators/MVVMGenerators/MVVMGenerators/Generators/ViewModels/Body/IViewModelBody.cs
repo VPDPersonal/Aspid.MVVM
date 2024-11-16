@@ -3,6 +3,7 @@ using MVVMGenerators.Helpers.Descriptions;
 using MVVMGenerators.Helpers.Extensions.Writer;
 using MVVMGenerators.Generators.ViewModels.Data;
 using MVVMGenerators.Generators.ViewModels.Data.Members;
+using MVVMGenerators.Helpers.Extensions.Symbols;
 
 namespace MVVMGenerators.Generators.ViewModels.Body;
 
@@ -127,7 +128,7 @@ public static class IViewModelBody
 
         void AppendField(FieldInViewModel field)
         {
-            var type = field.Type;
+            var type = field.Type.ToDisplayStringGlobal();
             var propertyName = field.PropertyName;
             
             if (!field.IsReadOnly)
@@ -151,11 +152,13 @@ public static class IViewModelBody
 
         void AppendBindAlsoProperty(BindAlsoProperty property)
         {
+            var type = property.Type.ToDisplayStringGlobal();
+            
             code.AppendMultiline(
                 $$"""
                 case {{property.Name}}Id:
                 {
-                    {{property.ViewModelEventName}} ??= new {{ViewModelEvent}}<{{property.Type}}>();
+                    {{property.ViewModelEventName}} ??= new {{ViewModelEvent}}<{{type}}>();
                     return {{property.ViewModelEventName}}.AddBinder(binder, {{property.Name}}, false);
                 }
                 """);

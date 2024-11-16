@@ -4,6 +4,7 @@ using Microsoft.CodeAnalysis.CSharp;
 using MVVMGenerators.Helpers.Descriptions;
 using MVVMGenerators.Helpers.Extensions.Writer;
 using MVVMGenerators.Generators.ViewModels.Data;
+using MVVMGenerators.Helpers.Extensions.Symbols;
 
 namespace MVVMGenerators.Generators.ViewModels.Body;
 
@@ -35,8 +36,10 @@ public static class PropertiesBody
 
         return code;
 
-        void AppendEvent(ITypeSymbol type, string eventName, string viewModelEventName)
+        void AppendEvent(ITypeSymbol typeSymbol, string eventName, string viewModelEventName)
         {
+            var type = typeSymbol.ToDisplayStringGlobal();
+            
             code.AppendMultiline(
                 $$"""
                 {{General.GeneratedCodeViewModelAttribute}}
@@ -63,20 +66,23 @@ public static class PropertiesBody
         foreach (var field in data.Fields)
         {
             if (field.IsReadOnly) continue;
+            var type = field.Type.ToDisplayStringGlobal();
             
             code.AppendMultiline(
                 $"""
                 {General.GeneratedCodeViewModelAttribute}
-                private {Classes.ViewModelEvent.Global}<{field.Type}> {field.ViewModelEventName};
+                private {Classes.ViewModelEvent.Global}<{type}> {field.ViewModelEventName};
                 """);
         }
 
         foreach (var property in data.BindAlsoProperties)
         {
+            var type = property.Type.ToDisplayStringGlobal();
+            
             code.AppendMultiline(
                 $"""
                 {General.GeneratedCodeViewModelAttribute}
-                private {Classes.ViewModelEvent.Global}<{property.Type}> {property.ViewModelEventName};
+                private {Classes.ViewModelEvent.Global}<{type}> {property.ViewModelEventName};
                 """);
         }
 
@@ -137,8 +143,8 @@ public static class PropertiesBody
         SyntaxKind GetGeneralAccessor(SyntaxKind getAccessor, SyntaxKind setAccessor)
         {
             if (setAccessor == getAccessor) return getAccessor;
-            if (getAccessor == SyntaxKind.PrivateKeyword) return setAccessor;
-            if (setAccessor == SyntaxKind.PrivateKeyword) return getAccessor;
+            if (getAccessor == SyntaxKind.PublicKeyword) return getAccessor;
+            if (setAccessor == SyntaxKind.PublicKeyword) return setAccessor;
             if (getAccessor == SyntaxKind.ProtectedKeyword) return getAccessor;
             if (setAccessor == SyntaxKind.ProtectedKeyword) return setAccessor;
 

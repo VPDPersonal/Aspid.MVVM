@@ -15,7 +15,7 @@ public readonly struct AsBinderMemberInView
     public readonly bool IsUnityEngineObject;
     
     public AsBinderMemberInView(ISymbol member, ITypeSymbol asBinderType) 
-        : this(member, asBinderType.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat)) { }
+        : this(member, asBinderType.ToDisplayStringGlobal()) { }
 
     public AsBinderMemberInView(ISymbol member, string asBinderType)
     {
@@ -27,7 +27,7 @@ public readonly struct AsBinderMemberInView
             case IFieldSymbol field:
                 Type = field.Type;
                 Id = $"{field.GetPropertyName()}Id";
-                CachedName = $"{field.RemovePrefix()}CachedBinder";
+                CachedName = $"{field.Name}CachedBinder";
                 break;
             
             case IPropertySymbol property:

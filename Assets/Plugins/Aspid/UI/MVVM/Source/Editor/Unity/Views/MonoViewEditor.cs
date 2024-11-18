@@ -183,7 +183,7 @@ namespace Aspid.UI.MVVM.Unity.Views
                 }
                 else if (view is not null)
                 {
-                    var fields = view.GetType().GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+                    var fields = view.GetType().GetFieldInfosIncludingBaseClasses(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
                     var isExist = fields.Select(field => ViewUtility.GetIdName(field.Name)).Any(idName => idName == binder.Id);
 
                     if (!isExist)

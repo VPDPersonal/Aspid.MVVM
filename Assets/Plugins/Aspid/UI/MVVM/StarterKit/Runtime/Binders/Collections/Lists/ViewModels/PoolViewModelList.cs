@@ -5,19 +5,19 @@ using Aspid.UI.MVVM.Mono.Views;
 using Aspid.UI.MVVM.Mono.Views.Extensions;
 using Object = UnityEngine.Object;
 
-namespace Aspid.UI.MVVM.StarterKit.Binders.Collections.Lists.Lists
+namespace Aspid.UI.MVVM.StarterKit.Binders.Collections.Lists.ViewModels
 {
     [Serializable]
-    public class PoolMonoViewListList : PoolMonoViewListList<MonoView>
+    public class PoolViewModelList : PoolViewModelList<MonoView>
     {
-        public PoolMonoViewListList() { }
+        public PoolViewModelList() { }
 
-        public PoolMonoViewListList(MonoView prefab, Transform container, int initialCount = 0, int maxCount = int.MaxValue)
+        public PoolViewModelList(MonoView prefab, Transform container, int initialCount = 0, int maxCount = int.MaxValue)
             : base(prefab, container, initialCount, maxCount) { }
     }
     
     [Serializable]
-    public class PoolMonoViewListList<T> : DynamicMonoViewListList<T> 
+    public class PoolViewModelList<T> : DynamicViewModelList<T> 
         where T : MonoView
     {
         [SerializeField] [Min(0)] private int _initialCount;
@@ -34,9 +34,9 @@ namespace Aspid.UI.MVVM.StarterKit.Binders.Collections.Lists.Lists
             _initialCount,
             _maxCount);
         
-        public PoolMonoViewListList() { }
+        public PoolViewModelList() { }
 
-        public PoolMonoViewListList(T prefab, Transform container, int initialCount = 0, int maxCount = int.MaxValue)
+        public PoolViewModelList(T prefab, Transform container, int initialCount = 0, int maxCount = int.MaxValue)
             : base(prefab, container)
         {
             _maxCount = maxCount;

@@ -34,6 +34,6 @@ namespace Aspid.UI.HelloWorld.Views
         // TODO Aspid.UI Translate
         // Биндер не обязательно должен наследоваться от MonoBinder или же от MonoBehaviour. 
         // Самое главное условие для Source Generator - реализация интерфейса IBinder
-        [SerializeField] private ButtonCommandProvider _sayCommand;
+        [SerializeField] private ButtonCommandBinder _sayCommand;
     }
 }

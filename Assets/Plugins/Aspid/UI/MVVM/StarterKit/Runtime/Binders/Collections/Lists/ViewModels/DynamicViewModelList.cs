@@ -1,25 +1,38 @@
+using System;
 using UnityEngine;
-using Aspid.UI.MVVM.ViewModels;
 using Aspid.UI.MVVM.Mono.Views;
+using Aspid.UI.MVVM.ViewModels;
 using System.Collections.Generic;
 using Aspid.UI.MVVM.Mono.Views.Extensions;
+using Object = UnityEngine.Object;
 
-namespace Aspid.UI.MVVM.StarterKit.Binders.Mono.Collections.Lists.Lists
+namespace Aspid.UI.MVVM.StarterKit.Binders.Collections.Lists.ViewModels
 {
-    public class DynamicMonoViewListList : ListMonoBinderBase<IViewModel>
+    [Serializable]
+    public class DynamicViewModelList : DynamicViewModelList<MonoView>
     {
-        [SerializeField] private MonoView _prefab;
+        public DynamicViewModelList() { }
+        
+        public DynamicViewModelList(MonoView prefab, Transform container) 
+            : base(prefab, container) { }
+    }
+    
+    [Serializable]
+    public class DynamicViewModelList<T> : ListBinderBase<IViewModel>
+        where T : MonoView
+    {
+        [SerializeField] private T _prefab;
         [SerializeField] private Transform _container;
 
-        private readonly List<MonoView> _views = new();
+        private readonly List<T> _views = new();
         
-        public MonoView Prefab => _prefab;
+        public T Prefab => _prefab;
         
         public Transform Container => _container;
 
-        public DynamicMonoViewListList() { }
+        public DynamicViewModelList() { }
         
-        public DynamicMonoViewListList(MonoView prefab, Transform container)
+        public DynamicViewModelList(T prefab, Transform container)
         {
             _prefab = prefab;
             _container = container;
@@ -35,12 +48,8 @@ namespace Aspid.UI.MVVM.StarterKit.Binders.Mono.Collections.Lists.Lists
 
         protected sealed override void OnAdded(IReadOnlyList<IViewModel> newItems, int newStartingIndex)
         {
-            var i = 0;
             foreach (var item in newItems)
-            {
-                OnAdded(item, newStartingIndex + i);
-                i++;
-            }
+                OnAdded(item, newStartingIndex);
         }
 
         protected sealed override void OnRemoved(IViewModel oldItem, int oldStartingIndex)
@@ -78,9 +87,9 @@ namespace Aspid.UI.MVVM.StarterKit.Binders.Mono.Collections.Lists.Lists
             _views.Clear();
         }
         
-        protected virtual MonoView GetNewView() => 
-            Instantiate(Prefab, Container);
+        protected virtual T GetNewView() => 
+            Object.Instantiate(Prefab, Container);
         
-        protected virtual void ReleaseView(MonoView view) => view.DestroyView();
+        protected virtual void ReleaseView(T view) => view.DestroyView();
     }
 }

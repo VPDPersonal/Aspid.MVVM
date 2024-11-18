@@ -2,21 +2,27 @@ using System;
 using UnityEngine;
 using UnityEngine.UI;
 using Aspid.UI.MVVM.Commands;
-using Aspid.UI.MVVM.Mono.Generation;
 
 namespace Aspid.UI.MVVM.StarterKit.Binders.Commands
 {
     [Serializable]
-    public partial class ButtonCommandProvider : Binder, IBinder<IRelayCommand>
+    public sealed class ButtonCommandBinder : Binder, IBinder<IRelayCommand>
     {
         [SerializeField] private bool _isBindInteractable = true;
         [SerializeField] private Button _button;
 
         private IRelayCommand _command;
 
-        public override bool IsBind => _button != null;
-
-        [BinderLog]
+        public override bool IsBind => _button is not null;
+        
+        private ButtonCommandBinder() { }
+        
+        public ButtonCommandBinder(Button button, bool isBindInteractable = true)
+        {
+            _button = button;
+            _isBindInteractable = isBindInteractable;
+        }
+        
         public void SetValue(IRelayCommand command)
         {
             ReleaseCommand();
@@ -44,7 +50,7 @@ namespace Aspid.UI.MVVM.StarterKit.Binders.Commands
 
         private void ReleaseCommand()
         {
-            if (_command != null) Unsubscribe();
+            if (_command is not null) Unsubscribe();
             _command = null;
         }
         
@@ -56,26 +62,34 @@ namespace Aspid.UI.MVVM.StarterKit.Binders.Commands
     }
     
     [Serializable]
-    public partial class ButtonCommandProvider<T1> : Binder, IBinder<IRelayCommand<T1>>
+    public class ButtonCommandBinder<T> : Binder, IBinder<IRelayCommand<T>>
     {
         [SerializeField] private bool _isBindInteractable = true;
         [SerializeField] private Button _button;
         
         [Header("Parameters")]
-        [SerializeField] private T1 _parameter;
+        [SerializeField] private T _param;
 
-        private IRelayCommand<T1> _command;
+        private IRelayCommand<T> _command;
 
-        public T1 Parameter
+        public T Param
         {
-            get => _parameter;
-            set => _parameter = value;
+            get => _param;
+            set => _param = value;
         }
         
-        public override bool IsBind => _button != null;
+        public override bool IsBind => _button is not null;
         
-        [BinderLog]
-        public void SetValue(IRelayCommand<T1> command)
+        private ButtonCommandBinder() { }
+        
+        public ButtonCommandBinder(Button button, T param, bool isBindInteractable = true)
+        {
+            _param = param;
+            _button = button;
+            _isBindInteractable = isBindInteractable;
+        }
+        
+        public void SetValue(IRelayCommand<T> command)
         {
             ReleaseCommand();
             _command = command;
@@ -96,50 +110,59 @@ namespace Aspid.UI.MVVM.StarterKit.Binders.Commands
             _command.CanExecuteChanged -= OnCanExecuteChanged;
         }
 
-        private void Execute() => _command?.Execute(Parameter);
+        private void Execute() => _command?.Execute(Param);
 
         protected override void OnUnbound() => ReleaseCommand();
 
         private void ReleaseCommand()
         {
-            if (_command != null) Unsubscribe();
+            if (_command is not null) Unsubscribe();
             _command = null;
         }
         
-        private void OnCanExecuteChanged(IRelayCommand<T1> command)
+        private void OnCanExecuteChanged(IRelayCommand<T> command)
         {
             if (!_isBindInteractable) return;
-            _button.interactable = command.CanExecute(Parameter);
+            _button.interactable = command.CanExecute(Param);
         }
     }
     
     [Serializable]
-    public partial class ButtonCommandProvider<T1, T2> : Binder, IBinder<IRelayCommand<T1, T2>>
+    public class ButtonCommandBinder<T1, T2> : Binder, IBinder<IRelayCommand<T1, T2>>
     {
         [SerializeField] private bool _isBindInteractable = true;
         [SerializeField] private Button _button;
         
         [Header("Parameters")]
-        [SerializeField] private T1 _parameter1;
-        [SerializeField] private T2 _parameter2;
+        [SerializeField] private T1 _param1;
+        [SerializeField] private T2 _param2;
 
         private IRelayCommand<T1, T2> _command;
 
-        public T1 Parameter1
+        public T1 Param1
         {
-            get => _parameter1;
-            set => _parameter1 = value;
+            get => _param1;
+            set => _param1 = value;
         }
         
-        public T2 Parameter2
+        public T2 Param2
         {
-            get => _parameter2;
-            set => _parameter2 = value;
+            get => _param2;
+            set => _param2 = value;
         }
         
-        public override bool IsBind => _button != null;
+        public override bool IsBind => _button is not null;
         
-        [BinderLog]
+        private ButtonCommandBinder() { }
+        
+        public ButtonCommandBinder(Button button, T1 param1, T2 param2, bool isBindInteractable = true)
+        {
+            _button = button;
+            _param1 = param1;
+            _param2 = param2;
+            _isBindInteractable = isBindInteractable;
+        }
+        
         public void SetValue(IRelayCommand<T1, T2> command)
         {
             ReleaseCommand();
@@ -161,57 +184,67 @@ namespace Aspid.UI.MVVM.StarterKit.Binders.Commands
             _command.CanExecuteChanged -= OnCanExecuteChanged;
         }
 
-        private void Execute() => _command?.Execute(Parameter1, Parameter2);
+        private void Execute() => _command?.Execute(Param1, Param2);
 
         protected override void OnUnbound() => ReleaseCommand();
 
         private void ReleaseCommand()
         {
-            if (_command != null) Unsubscribe();
+            if (_command is not null) Unsubscribe();
             _command = null;
         }
         
         private void OnCanExecuteChanged(IRelayCommand<T1, T2> command)
         {
             if (!_isBindInteractable) return;
-            _button.interactable = command.CanExecute(Parameter1, Parameter2);
+            _button.interactable = command.CanExecute(Param1, Param2);
         }
     }
     
     [Serializable]
-    public partial class ButtonCommandProvider<T1, T2, T3> : Binder, IBinder<IRelayCommand<T1, T2, T3>>
+    public class ButtonCommandBinder<T1, T2, T3> : Binder, IBinder<IRelayCommand<T1, T2, T3>>
     {
         [SerializeField] private bool _isBindInteractable = true;
         [SerializeField] private Button _button;
         
         [Header("Parameters")]
-        [SerializeField] private T1 _parameter1;
-        [SerializeField] private T2 _parameter2;
-        [SerializeField] private T3 _parameter3;
+        [SerializeField] private T1 _param1;
+        [SerializeField] private T2 _param2;
+        [SerializeField] private T3 _param3;
 
         private IRelayCommand<T1, T2, T3> _command;
 
-        public T1 Parameter1
+        public T1 Param1
         {
-            get => _parameter1;
-            set => _parameter1 = value;
+            get => _param1;
+            set => _param1 = value;
         }
         
-        public T2 Parameter2
+        public T2 Param2
         {
-            get => _parameter2;
-            set => _parameter2 = value;
+            get => _param2;
+            set => _param2 = value;
         }
         
-        public T3 Parameter3
+        public T3 Param3
         {
-            get => _parameter3;
-            set => _parameter3 = value;
+            get => _param3;
+            set => _param3 = value;
         }
         
-        public override bool IsBind => _button != null;
+        public override bool IsBind => _button is not null;
         
-        [BinderLog]
+        private ButtonCommandBinder() { }
+        
+        public ButtonCommandBinder(Button button, T1 param1, T2 param2, T3 param3, bool isBindInteractable = true)
+        {
+            _button = button;
+            _param1 = param1;
+            _param2 = param2;
+            _param3 = param3;
+            _isBindInteractable = isBindInteractable;
+        }
+        
         public void SetValue(IRelayCommand<T1, T2, T3> command)
         {
             ReleaseCommand();
@@ -233,64 +266,75 @@ namespace Aspid.UI.MVVM.StarterKit.Binders.Commands
             _command.CanExecuteChanged -= OnCanExecuteChanged;
         }
 
-        private void Execute() => _command?.Execute(Parameter1, Parameter2, Parameter3);
+        private void Execute() => _command?.Execute(Param1, Param2, Param3);
 
         protected override void OnUnbound() => ReleaseCommand();
 
         private void ReleaseCommand()
         {
-            if (_command != null) Unsubscribe();
+            if (_command is not null) Unsubscribe();
             _command = null;
         }
         
         private void OnCanExecuteChanged(IRelayCommand<T1, T2, T3> command)
         {
             if (!_isBindInteractable) return;
-            _button.interactable = command.CanExecute(Parameter1, Parameter2, Parameter3);
+            _button.interactable = command.CanExecute(Param1, Param2, Param3);
         }
     }
     
     [Serializable]
-    public partial class ButtonCommandProvider<T1, T2, T3, T4> : Binder, IBinder<IRelayCommand<T1, T2, T3, T4>>
+    public class ButtonCommandBinder<T1, T2, T3, T4> : Binder, IBinder<IRelayCommand<T1, T2, T3, T4>>
     {
         [SerializeField] private bool _isBindInteractable = true;
         [SerializeField] private Button _button;
         
         [Header("Parameters")]
-        [SerializeField] private T1 _parameter1;
-        [SerializeField] private T2 _parameter2;
-        [SerializeField] private T3 _parameter3;
-        [SerializeField] private T4 _parameter4;
+        [SerializeField] private T1 _param1;
+        [SerializeField] private T2 _param2;
+        [SerializeField] private T3 _param3;
+        [SerializeField] private T4 _param4;
         
         private IRelayCommand<T1, T2, T3, T4> _command;
 
-        public T1 Parameter1
+        public T1 Param1
         {
-            get => _parameter1;
-            set => _parameter1 = value;
+            get => _param1;
+            set => _param1 = value;
         }
         
-        public T2 Parameter2
+        public T2 Param2
         {
-            get => _parameter2;
-            set => _parameter2 = value;
+            get => _param2;
+            set => _param2 = value;
         }
         
-        public T3 Parameter3
+        public T3 Param3
         {
-            get => _parameter3;
-            set => _parameter3 = value;
+            get => _param3;
+            set => _param3 = value;
         }
         
-        public T4 Parameter4
+        public T4 Param4
         {
-            get => _parameter4;
-            set => _parameter4 = value;
+            get => _param4;
+            set => _param4 = value;
         }
         
-        public override bool IsBind => _button != null;
+        public override bool IsBind => _button is not null;
         
-        [BinderLog]
+        private ButtonCommandBinder() { }
+        
+        public ButtonCommandBinder(Button button, T1 param1, T2 param2, T3 param3, T4 param4, bool isBindInteractable = true)
+        {
+            _button = button;
+            _param1 = param1;
+            _param2 = param2;
+            _param3 = param3;
+            _param4 = param4;
+            _isBindInteractable = isBindInteractable;
+        }
+        
         public void SetValue(IRelayCommand<T1, T2, T3, T4> command)
         {
             ReleaseCommand();            
@@ -312,20 +356,20 @@ namespace Aspid.UI.MVVM.StarterKit.Binders.Commands
             _command.CanExecuteChanged -= OnCanExecuteChanged;
         }
 
-        private void Execute() => _command?.Execute(Parameter1, Parameter2, Parameter3, Parameter4);
+        private void Execute() => _command?.Execute(Param1, Param2, Param3, Param4);
 
         protected override void OnUnbound() => ReleaseCommand();
 
         private void ReleaseCommand()
         {
-            if (_command != null) Unsubscribe();
+            if (_command is not null) Unsubscribe();
             _command = null;
         }
         
         private void OnCanExecuteChanged(IRelayCommand<T1, T2, T3, T4> command)
         {
             if (!_isBindInteractable) return;
-            _button.interactable = command.CanExecute(Parameter1, Parameter2, Parameter3, Parameter4);
+            _button.interactable = command.CanExecute(Param1, Param2, Param3, Param4);
         }
     }
 }

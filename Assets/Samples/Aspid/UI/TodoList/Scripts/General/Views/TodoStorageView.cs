@@ -3,7 +3,7 @@ using Aspid.UI.MVVM.Mono;
 using Aspid.UI.MVVM.Mono.Views;
 using Aspid.UI.MVVM.Views.Generation;
 using Aspid.UI.MVVM.StarterKit.Binders.Commands;
-using Aspid.UI.MVVM.StarterKit.Binders.Mono.Collections.Lists.Lists;
+using Aspid.UI.MVVM.StarterKit.Binders.Mono.Collections.Lists.ViewModels;
 
 namespace Aspid.UI.TodoList.Views
 {
@@ -13,7 +13,7 @@ namespace Aspid.UI.TodoList.Views
         [RequireBinder(typeof(string))]
         [SerializeField] private MonoBinder _searchInput;
         
-        [SerializeField] private ButtonCommandProvider _addTodoCommand;
-        [SerializeField] private PoolMonoViewListList _todoItemViewModels;
+        [SerializeField] private ButtonCommandBinder _addTodoCommand;
+        [SerializeField] private PoolViewModelMonoList _todoItemViewModels;
     }
 }

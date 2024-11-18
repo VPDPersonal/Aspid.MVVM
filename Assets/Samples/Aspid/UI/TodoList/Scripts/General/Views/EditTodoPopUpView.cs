@@ -12,7 +12,7 @@ namespace Aspid.UI.TodoList.Views
         [RequireBinder(typeof(string))]
         [SerializeField] private MonoBinder _text;
         
-        [SerializeField] private ButtonCommandProvider _cancelCommand;
-        [SerializeField] private ButtonCommandProvider _renamedCommand;
+        [SerializeField] private ButtonCommandBinder _cancelCommand;
+        [SerializeField] private ButtonCommandBinder _renamedCommand;
     }
 }

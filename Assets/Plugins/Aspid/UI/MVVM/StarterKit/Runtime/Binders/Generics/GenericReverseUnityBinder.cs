@@ -1,19 +1,20 @@
 #nullable enable
 using System;
+using UnityEngine.Events;
 
 namespace Aspid.UI.MVVM.StarterKit.Binders.Generics
 {
-    public sealed class GenericReverseBinder<T> : Binder, IBinder<T>, IReverseBinder<T>, IDisposable
+    public sealed class GenericReverseUnityBinder<T> : Binder, IBinder<T>, IReverseBinder<T>, IDisposable
     {
         public event Action<T>? ValueChanged;
 
-        private readonly Action<T?>? _setValue;
-        private readonly Action<Action<T>> _disposable;
+        private readonly UnityAction<T?>? _setValue;
+        private readonly UnityAction<UnityAction<T>> _disposable;
 
-        public GenericReverseBinder(
-            Action<Action<T>> initialize,
-            Action<Action<T>> disposable,
-            Action<T?>? setValue = null)
+        public GenericReverseUnityBinder(
+            UnityAction<UnityAction<T>> initialize,
+            UnityAction<UnityAction<T>> disposable,
+            UnityAction<T?>? setValue = null)
         {
             if (initialize is null) throw new ArgumentNullException(nameof(initialize));
             
@@ -32,19 +33,19 @@ namespace Aspid.UI.MVVM.StarterKit.Binders.Generics
         public void Dispose() => _disposable?.Invoke(OnValueChanged);
     }
     
-    public sealed class GenericReverseBinder<TTarget, T> : Binder, IBinder<T>, IReverseBinder<T>, IDisposable
+    public sealed class GenericReverseUnityBinder<TTarget, T> : Binder, IBinder<T>, IReverseBinder<T>, IDisposable
     {
         public event Action<T>? ValueChanged;
 
         private readonly TTarget _target;
-        private readonly Action<TTarget, T?>? _setValue;
-        private readonly Action<TTarget, Action<T>> _disposable;
+        private readonly UnityAction<TTarget, T?>? _setValue;
+        private readonly UnityAction<TTarget, UnityAction<T>> _disposable;
 
-        public GenericReverseBinder(
+        public GenericReverseUnityBinder(
             TTarget target,
-            Action<TTarget, Action<T>> initialize,
-            Action<TTarget, Action<T>> disposable, 
-            Action<TTarget, T?>? setValue = null)
+            UnityAction<TTarget, UnityAction<T>> initialize,
+            UnityAction<TTarget, UnityAction<T>> disposable, 
+            UnityAction<TTarget, T?>? setValue = null)
         {
             if (initialize is null) throw new ArgumentNullException(nameof(initialize));
             

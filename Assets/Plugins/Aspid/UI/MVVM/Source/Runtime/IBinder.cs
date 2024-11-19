@@ -22,7 +22,7 @@ namespace Aspid.UI.MVVM
         public void Bind(IViewModel viewModel, string id);
         
         /// <summary>
-        /// Unbinds a component from the specified <see cref="IViewModel"/>.
+        /// Unbinds the component from the bound s<see cref="IViewModel"/>.
         /// </summary>
         public void Unbind();
     }

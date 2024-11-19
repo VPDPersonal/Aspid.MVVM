@@ -64,7 +64,7 @@ namespace Aspid.UI.MVVM
         protected virtual void OnBound(IViewModel viewModel, string id) { }
         
         /// <summary>
-        /// Unbinds the component from the specified <see cref="IViewModel"/>.
+        /// Unbinds the component from the bound <see cref="IViewModel"/>.
         /// </summary>
         public void Unbind()
         {

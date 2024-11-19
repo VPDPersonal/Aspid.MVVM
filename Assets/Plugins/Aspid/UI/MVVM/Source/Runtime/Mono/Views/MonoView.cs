@@ -53,7 +53,7 @@ namespace Aspid.UI.MVVM.Mono.Views
         protected abstract void InitializeInternal(IViewModel viewModel);
 
         /// <summary>
-        /// Deinitialize the View, resetting the associated <see cref="ViewModel"/>.
+        /// Deinitialize the View, resetting the bound <see cref="ViewModel"/>.
         /// </summary>
         public void Deinitialize()
         {

@@ -6,7 +6,7 @@ namespace Aspid.UI.MVVM.Mono.ViewModels
 {
     /// <summary>
     /// Abstract class for a ViewModel, inheriting from <see cref="MonoBehaviour"/>, that implements the <see cref="IViewModel"/> interface.
-    /// Provides methods for adding and removing binders for binding with properties.
+    /// Provides methods for adding binders for binding with properties.
     /// </summary>
     public abstract class MonoViewModel : MonoBehaviour, IViewModel, IDisposable
     {
@@ -14,11 +14,15 @@ namespace Aspid.UI.MVVM.Mono.ViewModels
         private static readonly Unity.Profiling.ProfilerMarker _addBinderMarker = new("MonoViewModel.AddBinder"); 
 #endif
         /// <summary>
-        /// Adds a Binder for the specified ViewModel property.
+        /// Adds a binder to the specified ViewModel property.
         /// </summary>
-        /// <param name="binder">The Binder to be added.</param>
-        /// <param name="propertyName">The name of the property to which the Binder will be bound.</param>
-        public IRemoveBinderFromViewModel AddBinder(IBinder binder, string propertyName)
+        /// <param name="binder">The binder that will be associated with the ViewModel property.</param>
+        /// <param name="propertyName">The name of the property to which the binder will be bound.</param>
+        /// <returns>
+        /// An interface for removing the binder from the ViewModel, or null if the binder could not be added
+        /// or if the property is read-only.
+        /// </returns>
+        public IRemoveBinderFromViewModel? AddBinder(IBinder binder, string propertyName)
         {
 #if !ASPID_UI_MVVM_UNITY_PROFILER_DISABLED
             using (_addBinderMarker.Auto())
@@ -29,11 +33,16 @@ namespace Aspid.UI.MVVM.Mono.ViewModels
         }
 
         /// <summary>
-        /// Abstract method for internal adding binder to ViewModel. 
+        /// Abstract method for adding a binder to a ViewModel property internally.
+        /// This method must be implemented in derived classes to provide specific behavior.
         /// </summary>
-        /// <param name="binder">The Binder to be added.</param>
-        /// <param name="propertyName">The name of the property to which the Binder will be bound.</param>
-        protected abstract IRemoveBinderFromViewModel AddBinderInternal(IBinder binder, string propertyName);
+        /// <param name="binder">The binder to be added.</param>
+        /// <param name="propertyName">The name of the property to which the binder will be bound.</param>
+        /// <returns>
+        /// An interface for removing the binder from the ViewModel.
+        /// Implementations can return null if binding is not possible or if the property is read-only.
+        /// </returns>
+        protected abstract IRemoveBinderFromViewModel? AddBinderInternal(IBinder binder, string propertyName);
         
         /// <summary>
         /// Destroys the Component of the ViewModel.

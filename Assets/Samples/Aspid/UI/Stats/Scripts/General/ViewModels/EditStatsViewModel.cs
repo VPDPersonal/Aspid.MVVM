@@ -78,6 +78,7 @@ namespace Aspid.UI.Stats.ViewModels
             _ => throw new ArgumentOutOfRangeException(nameof(skill), skill, null)
         };
         
+        // Another way to command
         // [RelayCommand(CanExecute = nameof(IsDraft))]
         private void Confirm()
         {
@@ -92,6 +93,7 @@ namespace Aspid.UI.Stats.ViewModels
                 throw new Exception();
         }
         
+        // Another way to command
         // [RelayCommand(CanExecute = nameof(IsDraft))]
         private void ResetToDefault()
         {
@@ -104,6 +106,7 @@ namespace Aspid.UI.Stats.ViewModels
             SkillPointsAvailable = _hero.SkillPointsAvailable;
         }
         
+        // Another way to command
         // [RelayCommand(CanExecute = nameof(CanAddSkillPointTo))]
         private void AddSkillPointTo(Skill skill)
         {
@@ -115,6 +118,7 @@ namespace Aspid.UI.Stats.ViewModels
 
         private bool CanAddSkillPointTo() => SkillPointsAvailable > 0;
         
+        // Another way to command
         // [RelayCommand(CanExecute = nameof(CanRemoveSkillPointTo))]
         private void RemoveSkillPointTo(Skill skill)
         {

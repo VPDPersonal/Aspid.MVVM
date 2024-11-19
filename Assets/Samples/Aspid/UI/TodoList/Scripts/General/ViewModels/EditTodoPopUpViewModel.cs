@@ -5,14 +5,14 @@ using Aspid.UI.MVVM.ViewModels.Generation;
 
 namespace Aspid.UI.TodoList.ViewModels
 {
-    // TODO Aspid.UI Translate
-    // В будущем аттрибут CreateFrom будет перемещен в пакет UnityFastTools
-    // Аттрибут CreateFrom служит меткой для Source Generator, что необходимо создать методы расширения, которые 
-    // создают EditTodoPopUpViewModel из EditTodoPopUp.
-    // Примеры создания:
+    // In the future, the CreateFrom attribute will be moved to the UnityFastTools package 
+    // https://github.com/VPDPersonal/UnityFastTools
+    // The CreateFrom attribute serves as a label for the Source Generator to create extension methods that 
+    // create an EditTodoPopUpViewModel from EditTodoPopUp.
+    // Creation examples:
     // 1.
     // EditTodoPopUp popUp;
-    // EditTodoPopUpViewModel viewModel = popUp.ToEditTodoPopUpViewModel();
+    // EditTodoPopUpUpViewModel viewModel = popUp.ToEditTodoPopUpViewModel();
     // 2.
     // EditTodoPopUp[] popUps;
     // EditTodoPopUpViewModel[] viewModels = popUps.ToEditTodoPopUpViewModel();

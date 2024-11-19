@@ -5,7 +5,7 @@ using Aspid.UI.MVVM.Views;
 using Aspid.UI.MVVM.Extensions;
 using Aspid.UI.MVVM.ViewModels;
 
-namespace Samples.Aspid.UI.ScriptExamples.Views
+namespace Aspid.UI.ExampleScripts.Views
 {
     public class WithoutGeneratorNoneView : MonoBehaviour, IView
     {

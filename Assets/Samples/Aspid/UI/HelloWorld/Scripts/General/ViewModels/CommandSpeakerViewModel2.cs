@@ -5,32 +5,28 @@ using Aspid.UI.MVVM.ViewModels.Generation;
 
 namespace Aspid.UI.HelloWorld.ViewModels
 {
-    // TODO Aspid.UI Translate
-    // Аттрибут ViewModel служит меткой для Source Generator.
-    // При этом класс обязательно должен быть частичным.
-    // Source Generator реализует IViewModel и анализирует другие атрибуты в классе.
+    // The ViewModel attribute serves as a label for the Source Generator.
+    // In this case, the class must necessarily be partial.
+    // Source Generator implements IViewModel and analyzes other attributes in the class.
     [ViewModel]
     public partial class CommandSpeakerViewModel2 : IDisposable
     {
-        // TODO Aspid.UI Translate
-        // Атрибут Bind служит метко для Source Generator.
-        // Source Generator, на основе данного поля, создает 
-        // свойство Text и событие TextChanged, благодаря которым происходит связывание.
-        // Source Generator понимает следующие имена: m_text, _text, text
+        // The Bind attribute serves as a marker for the Source Generator.
+        // Source Generator, on the basis of this field, creates the 
+        // Text property and TextChanged event, thanks to which the binding takes place.
+        // Source Generator understands the following names: m_text, _text, text
         [Bind] private string _text;
     
-        // TODO Aspid.UI Translate
-        // Поле _inputText служит только для передачи информации c View.
-        // Тем не менее оно может работать в формате TwoWay.
-        // OneWayToSource пока что не поддерживается.
+        // The _inputText field is used only for passing information from View.
+        // However, it can work in TwoWay format.
+        // OneWayToSource is not supported yet.
         [Bind] private string _inputText;
-
-        // TODO Aspid.UI Translate
-        // Аттрибут ReadOnlyBind служит меткой для SourceGenerator
-        // Source Generator генерирует так же свойство, как и при Bind, но делает доступны его только для чтения.
-        // А так же не генерируется событие.
-        // При этом аттрибуте возможно только OneTime связывание.
-        // Такой способ связывания самый производительный.
+        
+        // The ReadOnlyBind attribute serves as a label for SourceGenerator
+        // Source Generator generates the same property as Bind, but makes it read-only.
+        // It also does not generate an event.
+        // Only OneTime binding is possible with this attribute.
+        // This way of binding is the most productive.
         [ReadOnlyBind] private readonly IRelayCommand _sayCommand;
     
         private readonly Speaker _speaker;
@@ -39,8 +35,7 @@ namespace Aspid.UI.HelloWorld.ViewModels
         {
             _speaker = speaker;
         
-            // TODO Aspid.UI Translate
-            // Для инициализации полей рекомендуется использовать поля, а не их свойство
+            // It is recommended to use a field rather than its property to initialize a field
             _text = _speaker.Text;
             _sayCommand = new RelayCommand(() => _speaker.Say(InputText));
         
@@ -49,11 +44,10 @@ namespace Aspid.UI.HelloWorld.ViewModels
     
         private void OnTextChanged()
         {
-            // TODO Aspid.UI Translate
-            // Для работы привязки между View и ViewModel
-            // необходимо обращаться к данным через их свойства, а иначе привязка не сработает.
-            // Чтобы избежать такой ошибки, работает анализатор, который будет считать _text в данном контексте ошибкой.
-            // Если Text == _speaker.Text, то View не получит новость об изменении так как ее нет.
+            // For the binding to work between View and ViewModel
+            // data must be accessed through their properties, otherwise the binding will not work.
+            // To avoid such an error, an analyzer works, which will consider _text in this context as an error.
+            // If Text == _speaker.Text, then View will not receive the news about the change because it does not exist.
             Text = _speaker.Text;
         }
     

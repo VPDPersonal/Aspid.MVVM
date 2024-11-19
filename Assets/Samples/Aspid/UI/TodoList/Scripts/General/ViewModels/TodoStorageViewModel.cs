@@ -11,8 +11,7 @@ namespace Aspid.UI.TodoList.ViewModels
     {
         [Bind] private string _searchInput;
         
-        // TODO Aspid.UI Translate
-        // ObservableList - специальная коллекция, которая позволяет следить за изменением коллекции
+        // ObservableList is a special collection that allows you to keep track of changes to the collection
         [Bind] private ObservableList<ITodoItemViewModel> _todoItemViewModels;
         
         private readonly TodoStorage _todoStorage;

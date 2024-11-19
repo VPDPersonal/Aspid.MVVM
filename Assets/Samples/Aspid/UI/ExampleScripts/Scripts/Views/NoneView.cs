@@ -1,12 +1,13 @@
 using TMPro;
 using UnityEngine;
 using Aspid.UI.MVVM.Mono;
+using Aspid.UI.MVVM.Mono.Views;
 using System.Collections.Generic;
 using Aspid.UI.MVVM.Views.Generation;
 using Aspid.UI.MVVM.StarterKit.Binders.Texts;
 using Aspid.UI.MVVM.StarterKit.Binders.GameObjects;
 
-namespace Samples.Aspid.UI.ScriptExamples.Views
+namespace Aspid.UI.ExampleScripts.Views
 {
     [View]
     public partial class NoneView
@@ -21,6 +22,9 @@ namespace Samples.Aspid.UI.ScriptExamples.Views
         private readonly TextMeshProUGUI[] _arrayTexts;
 
         private readonly GameObject _gameObject;
+        
+        private readonly MonoView _childView;
+        private readonly MonoView[] _childrenViews;
 
         private GameObjectVisibleBinder SingleVisibleBinder => new(_gameObject);
 
@@ -44,17 +48,21 @@ namespace Samples.Aspid.UI.ScriptExamples.Views
         private TextMeshProUGUI[] PropertyArrayTexts => _gameObject.GetComponentsInChildren<TextMeshProUGUI>();
 
         public NoneView(
+            MonoView childView, 
+            GameObject gameObject, 
             MonoBinder singleBinder,
+            MonoView[] childrenViews,
             MonoBinder[] arrayBinders,
             TextMeshProUGUI singleText,
-            TextMeshProUGUI[] arrayTexts,
-            GameObject gameObject)
+            TextMeshProUGUI[] arrayTexts)
         {
             _singleBinder = singleBinder;
             _arrayBinders = arrayBinders;
             _singleText = singleText;
             _arrayTexts = arrayTexts;
             _gameObject = gameObject;
+            _childView = childView;
+            _childrenViews = childrenViews;
         }
     }
 }

@@ -15,12 +15,11 @@ namespace Aspid.UI.HelloWorld.Models
             {
                 _text = value;
                 
-                // TODO Aspid.UI Translate
-                // Нам не нужно обновлять View каждый раз, когда это событие вызывается.
-                // Так как фактически текст мог и не поменяться.
-                // Но у нас не всегда может быть доступ для изменения модели.
-                // Для этого ViewModel будет автоматически контролировать данные
-                // и не передавая дальше, если значение не поменялось.
+                // We don't need to update the View every time this event is called.
+                // Since the actual text might not have changed.
+                // But we may not always have access to change the model.
+                // For this, ViewModel will automatically monitor the data
+                // and not passing on if the value hasn't changed.
                 TextChanged?.Invoke();
             }
         }

@@ -1,7 +1,7 @@
 using Aspid.UI.MVVM.Commands;
 using Aspid.UI.MVVM.ViewModels.Generation;
 
-namespace Samples.Aspid.UI.ExampleScripts.ViewModels
+namespace Aspid.UI.ExampleScripts.ViewModels
 {
     [ViewModel]
     public partial class Command1ViewModel

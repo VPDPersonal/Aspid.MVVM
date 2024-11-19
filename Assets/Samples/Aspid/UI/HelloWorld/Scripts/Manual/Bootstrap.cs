@@ -41,12 +41,10 @@ namespace Aspid.UI.HelloWorld.Manual
         
         private void DeinitializeView()
         {
-            // TODO Aspid.UI Translate
-            // Можно воспользоваться методами расширения, чтобы деинициализировать View и освободить ViewModel.
+            // You can use extension methods to deinitialize the View and release the ViewModel.
             _speakerView.DeinitializeView()?.DisposeViewModel();
             
-            // TODO Aspid.UI Translate
-            // Ручной способ деинициализировать View и освободить ViewModel:
+            // Manual way to deinitialize View and release ViewModel:
             //
             // var viewModel = _speakerView.ViewModel;
             // _speakerView.Deinitialize();

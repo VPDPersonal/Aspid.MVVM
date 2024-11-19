@@ -1,9 +1,9 @@
 using Aspid.UI.MVVM.Mono;
 using Aspid.UI.MVVM.Views;
-using Aspid.UI.MVVM.Extensions;
 using Aspid.UI.MVVM.ViewModels;
+using Aspid.UI.MVVM.Extensions;
 
-namespace Samples.Aspid.UI.ScriptExamples.Views
+namespace Aspid.UI.ExampleScripts.Views
 {
     public class WithoutGeneratorView : View
     {

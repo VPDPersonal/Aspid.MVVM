@@ -1,7 +1,7 @@
 using Aspid.UI.MVVM.Mono.ViewModels;
 using Aspid.UI.MVVM.ViewModels.Generation;
 
-namespace Samples.Aspid.UI.ExampleScripts.ViewModels
+namespace Aspid.UI.ExampleScripts.ViewModels
 {
     [ViewModel]
     public partial class InheritorMonoViewModel : MonoViewModel
@@ -12,28 +12,28 @@ namespace Samples.Aspid.UI.ExampleScripts.ViewModels
         [Bind] private int[] _numbers;
         [Bind] private string[] _texts;
 
-        // До изменения _number
+        // Before changing _number
         partial void OnNumberChanging(int oldValue, int newValue) { }
 
-        // После изменения _number
+        // After changing _number
         partial void OnNumberChanged(int newValue) { }
 
-        // До изменения _text
+        // Before changing _text
         partial void OnTextChanging(string oldValue, string newValue) { }
 
-        // После изменения _text
+        // After changing _text
         partial void OnTextChanged(string newValue) { } 
 
-        // До изменения _numbers
+        // Before changing _numbers
         partial void OnNumbersChanging(int[] oldValue, int[] newValue) { }
 
-        // После изменения _numbers
+        // After changing _numbers
         partial void OnNumbersChanged(int[] newValue) { }
 
-        // До изменения _texts
+        // Before changing _texts
         partial void OnTextsChanging(string[] oldValue, string[] newValue) { }
 
-        // После изменения _texts
+        // After changing _texts
         partial void OnTextsChanged(string[] newValue) { }
     }
 }

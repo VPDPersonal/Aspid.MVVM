@@ -19,9 +19,8 @@ namespace Aspid.UI.TodoList.Views
         [SerializeField] private ButtonCommandBinder[] _editCommand;
         [SerializeField] private ButtonCommandBinder[] _deleteCommand;
 
-        // TODO Aspid.UI Translate
-        // Привязка видимости объекта сделано, через свойство, что не настраивать его в инспекторе.
-        // Свойство вызывается один раз - дальше используется кэшированный экземпляр.
+        // Binding of the object visibility is done through a property, so that you don't have to customize it in the inspector.
+        // The property is called once - then the cached instance is used.
         private GameObjectVisibleBinder IsVisible => new(gameObject);
     }
 }

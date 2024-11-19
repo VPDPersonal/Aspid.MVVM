@@ -14,20 +14,18 @@ namespace Aspid.UI.TodoList.ViewModels
         public event Action<ITodoItemViewModel> Edited;
         public event Action<ITodoItemViewModel> Deleted;
         
-        // TODO Aspid.UI Translate
-        // Атрибут Bind по умолчанию создает полностью приватное поле
+        // The Bind attribute creates a fully private field by default
         // private bool IsVisible
         // {
         //     get => ...
         //     set => ...
         // }
-        // Чтобы изменить уровень доступа свойства, можно указать атрибут Access, который служит меткой для
-        // Source Generator и создает вместо приватного поля - поле с настройкам из атрибута Access
+        // To change the access level of the property, you can specify the Access attribute, which serves as a label for the
+        // Source Generator and creates instead of a private field - a field with settings from the Access attribute
         [Access(Access.Public)]
         [Bind] private bool _isVisible;
         
-        // TODO Aspid.UI Translate
-        // Обычно за нас эти поля создает Source Generator, но ради примера мы сделаем ручную привязку двух полей.
+        // Usually Source Generator creates these fields for us, but for the sake of this example we will bind two fields manually.
         private ViewModelEvent<string> _textChangedEvent;
         private ViewModelEvent<bool> _isCompletedChangedEvent;
         
@@ -36,16 +34,14 @@ namespace Aspid.UI.TodoList.ViewModels
 
         public IReadOnlyTodo Todo => _todo;
         
-        // TODO Aspid.UI Translate
-        // Свойство для связывания
+        // Property to bind
         private string Text
         {
             get => _todo.Text;
             set => SetText(value);
         }
         
-        // TODO Aspid.UI Translate
-        // Свойство для связывания
+        // Property to bind
         private bool IsCompleted
         {
             get => _todo.IsCompleted;
@@ -58,9 +54,8 @@ namespace Aspid.UI.TodoList.ViewModels
             _editTodoPopUpViewFactory = editTodoPopUpViewFactory;
         }
 
-        // TODO Aspid.UI Translate
-        // Установка значения и оповещение об изменение происходит в методе, а не прямо в свойстве, чтобы корректно
-        // провести привязку данных.
+        // Setting the value and notification of the change is done in the method, not directly in the property, in order
+        // to correctly bind the data.
         private void SetText(string value)
         {
             var text = _todo.Text;
@@ -97,9 +92,8 @@ namespace Aspid.UI.TodoList.ViewModels
             {
                 ReleasePopUp();
                 
-                // TODO Aspid.UI Translate
-                // Для корректной работы привязки, необходимо использовать свойство, а не поле.
-                // Так как анализатор не знает о существование этого свойства и поля он не подскажет об ошибки.
+                // In order for the binding to work correctly, it is necessary to use a property, not a field.
+                // Since the analyzer does not know about the existence of this property and field, it will not prompt about the error.
                 Text = newText;
                 Edited?.Invoke(this);
             }

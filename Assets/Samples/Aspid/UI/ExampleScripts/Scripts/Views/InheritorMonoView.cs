@@ -7,7 +7,7 @@ using Aspid.UI.MVVM.Views.Generation;
 using Aspid.UI.MVVM.StarterKit.Binders.Texts;
 using Aspid.UI.MVVM.StarterKit.Binders.GameObjects;
 
-namespace Samples.Aspid.UI.ScriptExamples.Views
+namespace Aspid.UI.ExampleScripts.Views
 {
     [View]
     public partial class InheritorMonoView : MonoView
@@ -23,6 +23,10 @@ namespace Samples.Aspid.UI.ScriptExamples.Views
         
         [AsBinder(typeof(TextBinder))]
         [SerializeField] private TextMeshProUGUI[] _arrayTexts;
+
+        [SerializeField] private MonoView _childView;
+        
+        [SerializeField] private MonoView[] _childrenViews;
 
         private GameObjectVisibleBinder SingleVisibleBinder => new(gameObject);
 

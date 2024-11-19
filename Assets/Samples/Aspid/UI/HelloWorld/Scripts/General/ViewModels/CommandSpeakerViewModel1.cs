@@ -4,24 +4,21 @@ using Aspid.UI.MVVM.ViewModels.Generation;
 
 namespace Aspid.UI.HelloWorld.ViewModels
 {
-    // TODO Aspid.UI Translate
-    // Аттрибут ViewModel служит меткой для Source Generator.
-    // При этом класс обязательно должен быть частичным.
-    // Source Generator реализует IViewModel и анализирует другие атрибуты в классе.
+    // The ViewModel attribute serves as a label for the Source Generator.
+    // In this case, the class must necessarily be partial.
+    // Source Generator implements IViewModel and analyzes other attributes in the class.
     [ViewModel]
     public partial class CommandSpeakerViewModel1 : IDisposable
     {
-        // TODO Aspid.UI Translate
-        // Атрибут Bind служит метко для Source Generator.
-        // Source Generator, на основе данного поля, создает 
-        // свойство Text и событие TextChanged, благодаря которым происходит связывание.
-        // Source Generator понимает следующие имена: m_text, _text, text
+        // The Bind attribute serves as a marker for the Source Generator.
+        // Source Generator, on the basis of this field, creates the 
+        // Text property and TextChanged event, thanks to which the binding takes place.
+        // Source Generator understands the following names: m_text, _text, text
         [Bind] private string _text;
-    
-        // TODO Aspid.UI Translate
-        // Поле _inputText служит только для передачи информации c View.
-        // Тем не менее оно может работать в формате TwoWay.
-        // OneWayToSource пока что не поддерживается.
+        
+        // The _inputText field is used only for passing information from View.
+        // However, it can work in TwoWay format.
+        // OneWayToSource is not supported yet.
         [Bind] private string _inputText;
     
         private readonly Speaker _speaker;
@@ -29,27 +26,24 @@ namespace Aspid.UI.HelloWorld.ViewModels
         public CommandSpeakerViewModel1(Speaker speaker)
         {
             _speaker = speaker;
-        
-            // TODO Aspid.UI Translate
-            // Для инициализации поля рекомендуется использовать поле, а не его свойство
+            
+            // It is recommended to use a field rather than its property to initialize a field
             _text = _speaker.Text;
         
             speaker.TextChanged += OnTextChanged;
         }
 
-        // TODO Aspid.UI Translate
-        // Атрибут RelayCommand служит метко для Source Generator.
-        // Source Generator создает свойство только для чтения "SayCommand", которое может быть связанно
+        // The RelayCommand attribute serves as a label for the Source Generator.
+        // Source Generator creates a read-only property “SayCommand”, which can be linked to
         [RelayCommand]
         private void Say() => _speaker.Say(InputText);
     
         private void OnTextChanged()
         {
-            // TODO Aspid.UI Translate
-            // Для работы привязки между View и ViewModel
-            // необходимо обращаться к данным через их свойства, а иначе привязка не сработает.
-            // Чтобы избежать такой ошибки, работает анализатор, который будет считать _text в данном контексте ошибкой.
-            // Если Text == _speaker.Text, то View не получит новость об изменении так как ее нет.
+            // For the binding to work between View and ViewModel
+            // data must be accessed through their properties, otherwise the binding will not work.
+            // To avoid such an error, an analyzer works, which will consider _text in this context as an error.
+            // If Text == _speaker.Text, then View will not receive the news about the change because it does not exist.
             Text = _speaker.Text;
         }
     

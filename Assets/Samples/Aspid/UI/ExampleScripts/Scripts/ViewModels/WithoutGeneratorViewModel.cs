@@ -1,7 +1,7 @@
 using Aspid.UI.MVVM;
 using Aspid.UI.MVVM.ViewModels;
 
-namespace Samples.Aspid.UI.ExampleScripts.ViewModels
+namespace Aspid.UI.ExampleScripts.ViewModels
 {
     public class WithoutGeneratorViewModel : IViewModel
     {

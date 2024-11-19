@@ -10,16 +10,15 @@ namespace Aspid.UI.TodoList.ViewModels
     {
         public event Action<ITodoItemViewModel> Edited;
         public event Action<ITodoItemViewModel> Deleted;
-
-        // TODO Aspid.UI Translate
-        // Атрибут Bind по умолчанию создает полностью приватное поле
+        
+        // The Bind attribute creates a fully private field by default
         // private bool IsVisible
         // {
         //     get => ...
         //     set => ...
         // }
-        // Чтобы изменить уровень доступа свойства, можно указать атрибут Access, который служит меткой для
-        // Source Generator и создает вместо приватного поля - поле с настройкам из атрибута Access
+        // To change the access level of the property, you can specify the Access attribute, which serves as a label for the
+        // Source Generator and creates instead of a private field - a field with settings from the Access attribute
         [Access(Access.Public)]
         [Bind] private bool _isVisible;
         
@@ -53,9 +52,8 @@ namespace Aspid.UI.TodoList.ViewModels
             {
                 ReleasePopUp();
                 
-                // TODO Aspid.UI Translate
-                // Для корректной работы привязки, необходимо использовать свойство, а не поле.
-                // Так как анализатор не знает о существование этого свойства и поля он не подскажет об ошибки.
+                // In order for the binding to work correctly, it is necessary to use a property, not a field.
+                // Since the analyzer does not know about the existence of this property and field, it will not prompt about the error.
                 Text = newText;
                 Edited?.Invoke(this);
             }

@@ -18,6 +18,7 @@ namespace Aspid.UI.Stats.VContainer
         
         protected override void Configure(IContainerBuilder builder)
         {
+            Application.targetFrameRate = 60;
             ConfigureHero(builder);
             ConfigureViewModel(builder);
         }

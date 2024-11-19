@@ -53,7 +53,7 @@ namespace Aspid.UI.MVVM.Mono.Views
         protected abstract void InitializeInternal(IViewModel viewModel);
 
         /// <summary>
-        /// Deinitializes the View, resetting the associated <see cref="ViewModel"/>.
+        /// Deinitialize the View, resetting the bound <see cref="ViewModel"/>.
         /// </summary>
         public void Deinitialize()
         {
@@ -63,7 +63,7 @@ namespace Aspid.UI.MVVM.Mono.Views
             using (_deinitializationMarker.Auto())
 #endif
             {
-                DeinitializeInternal(ViewModel);
+                DeinitializeInternal();
                 ViewModel = null;
             }
         }
@@ -72,7 +72,7 @@ namespace Aspid.UI.MVVM.Mono.Views
         /// Abstract method for internal view deinitialization. 
         /// Must be overridden in a derived class to implement specific deinitialization logic.
         /// </summary>
-        protected abstract void DeinitializeInternal(IViewModel viewModel);
+        protected abstract void DeinitializeInternal();
 
         /// <summary>
         /// Destroys the GameObject of the View.

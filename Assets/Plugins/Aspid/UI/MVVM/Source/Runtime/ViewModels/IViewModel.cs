@@ -6,17 +6,14 @@ namespace Aspid.UI.MVVM.ViewModels
     public interface IViewModel
     {
         /// <summary>
-        /// Adds a binder for the specified ViewModel property.
+        /// Adds a binder to the specified ViewModel property.
         /// </summary>
-        /// <param name="binder">The binder to be added.</param>
+        /// <param name="binder">The binder that will be associated with the ViewModel property.</param>
         /// <param name="propertyName">The name of the property to which the binder will be bound.</param>
-        public void AddBinder(IBinder binder, string propertyName);
-
-        /// <summary>
-        /// Removes a binder for the specified ViewModel property.
-        /// </summary>
-        /// <param name="binder">The binder to be removed.</param>
-        /// <param name="propertyName">The name of the property from which the binder will be unbound.</param>
-        public void RemoveBinder(IBinder binder, string propertyName);
+        /// <returns>
+        /// An interface for removing the binder from the ViewModel, or null if the binder could not be added
+        /// or if the property is read-only.
+        /// </returns>
+        public IRemoveBinderFromViewModel? AddBinder(IBinder binder, string propertyName);
     }
 }

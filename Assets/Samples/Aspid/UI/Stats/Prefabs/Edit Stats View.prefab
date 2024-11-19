@@ -369,65 +369,41 @@ MonoBehaviour:
   _confirmCommand:
   - _isBindInteractable: 1
     _button: {fileID: 5444464546274840865}
-    _isDebug: 0
-    _log: []
   _resetToDefaultCommand:
   - _isBindInteractable: 1
     _button: {fileID: 2931516315228818707}
-    _isDebug: 0
-    _log: []
   _addSkillPointToCommand:
   - _isBindInteractable: 1
     _button: {fileID: 5174176717364985295}
-    _parameter: 0
-    _isDebug: 0
-    _log: []
+    _param: 0
   - _isBindInteractable: 1
     _button: {fileID: 104643719858257062}
-    _parameter: 1
-    _isDebug: 0
-    _log: []
+    _param: 1
   - _isBindInteractable: 1
     _button: {fileID: 1922244232776191990}
-    _parameter: 2
-    _isDebug: 0
-    _log: []
+    _param: 2
   - _isBindInteractable: 1
     _button: {fileID: 7846568134673888075}
-    _parameter: 3
-    _isDebug: 0
-    _log: []
+    _param: 3
   - _isBindInteractable: 1
     _button: {fileID: 4544091627993418994}
-    _parameter: 4
-    _isDebug: 0
-    _log: []
+    _param: 4
   _removeSkillPointToCommand:
   - _isBindInteractable: 1
     _button: {fileID: 1795662829568435913}
-    _parameter: 0
-    _isDebug: 0
-    _log: []
+    _param: 0
   - _isBindInteractable: 1
     _button: {fileID: 6797870773731993504}
-    _parameter: 1
-    _isDebug: 0
-    _log: []
+    _param: 1
   - _isBindInteractable: 1
     _button: {fileID: 5010264940167386352}
-    _parameter: 2
-    _isDebug: 0
-    _log: []
+    _param: 2
   - _isBindInteractable: 1
     _button: {fileID: 3729468392672634957}
-    _parameter: 3
-    _isDebug: 0
-    _log: []
+    _param: 3
   - _isBindInteractable: 1
     _button: {fileID: 6929628987986647028}
-    _parameter: 4
-    _isDebug: 0
-    _log: []
+    _param: 4
 --- !u!1 &3182931967190928482
 GameObject:
   m_ObjectHideFlags: 0

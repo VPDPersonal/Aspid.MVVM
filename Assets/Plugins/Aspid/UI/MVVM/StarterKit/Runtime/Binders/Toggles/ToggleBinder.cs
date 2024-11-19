@@ -32,7 +32,7 @@ namespace Aspid.UI.MVVM.StarterKit.Binders.Toggles
             _toggle.onValueChanged.AddListener(OnValueChanged);
         }
 
-        protected override void OnUnbound(IViewModel viewModel, string id)
+        protected override void OnUnbound()
         {
             if (!IsReverseEnabled) return;
             _toggle.onValueChanged.RemoveListener(OnValueChanged);

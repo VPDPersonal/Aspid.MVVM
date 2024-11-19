@@ -7,13 +7,13 @@ namespace Aspid.UI.MVVM.StarterKit.Binders.Generics
     {
         public event Action<T>? ValueChanged;
 
-        private readonly Action<T>? _setValue;
+        private readonly Action<T?>? _setValue;
         private readonly Action<Action<T>> _disposable;
 
         public GenericReverseBinder(
             Action<Action<T>> initialize,
             Action<Action<T>> disposable,
-            Action<T>? setValue = null)
+            Action<T?>? setValue = null)
         {
             if (initialize is null) throw new ArgumentNullException(nameof(initialize));
             
@@ -23,7 +23,7 @@ namespace Aspid.UI.MVVM.StarterKit.Binders.Generics
             initialize.Invoke(OnValueChanged);
         }
 
-        public void SetValue(T value) =>
+        public void SetValue(T? value) =>
             _setValue?.Invoke(value);
 
         private void OnValueChanged(T value) =>
@@ -37,14 +37,14 @@ namespace Aspid.UI.MVVM.StarterKit.Binders.Generics
         public event Action<T>? ValueChanged;
 
         private readonly TTarget _target;
-        private readonly Action<TTarget, T>? _setValue;
+        private readonly Action<TTarget, T?>? _setValue;
         private readonly Action<TTarget, Action<T>> _disposable;
 
         public GenericReverseBinder(
             TTarget target,
             Action<TTarget, Action<T>> initialize,
             Action<TTarget, Action<T>> disposable, 
-            Action<TTarget, T>? setValue = null)
+            Action<TTarget, T?>? setValue = null)
         {
             if (initialize is null) throw new ArgumentNullException(nameof(initialize));
             
@@ -55,7 +55,7 @@ namespace Aspid.UI.MVVM.StarterKit.Binders.Generics
             initialize.Invoke(_target, OnValueChanged);
         }
 
-        public void SetValue(T value) =>
+        public void SetValue(T? value) =>
             _setValue?.Invoke(_target, value);
 
         private void OnValueChanged(T value) =>

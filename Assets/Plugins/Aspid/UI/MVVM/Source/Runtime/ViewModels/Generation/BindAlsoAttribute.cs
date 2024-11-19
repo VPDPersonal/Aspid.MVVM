@@ -8,7 +8,7 @@ namespace Aspid.UI.MVVM.ViewModels.Generation
     /// For this attribute to work correctly, the <see cref="BindAttribute"/> or <see cref="ReadOnlyBindAttribute"/> 
     /// must also be present.
     /// </summary>
-    [AttributeUsage(AttributeTargets.Field)]
+    [AttributeUsage(AttributeTargets.Field, AllowMultiple = true)]
     public sealed class BindAlsoAttribute : Attribute
     {
         public BindAlsoAttribute(string propertyName) { }

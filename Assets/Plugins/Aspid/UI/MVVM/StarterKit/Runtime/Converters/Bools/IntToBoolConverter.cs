@@ -4,7 +4,7 @@ using UnityEngine;
 namespace Aspid.UI.MVVM.StarterKit.Converters.Bools
 {
     [Serializable]
-    public sealed class IntToBoolConverter : IConverter<int, bool>
+    public sealed class IntToBoolConverter : IConverterIntToBool
     {
         [SerializeField] private Comparisons _comparison;
         [SerializeField] private int _value;

@@ -88,55 +88,32 @@ namespace Aspid.UI.MVVM.ViewModels
         /// <returns>Returns <c>true</c> if the values are equal, otherwise <c>false</c>.</returns>
         public static bool EqualsDefault<T>(T value, T newValue) =>
             EqualityComparer<T>.Default.Equals(value, newValue);
-
-        /// <summary>
-        /// Base implementation of the AddBinder method from the IViewModel interface.
-        /// </summary>
-        /// <param name="binder">Binder for binding.</param>
-        /// <param name="value">Initial value.</param>
-        /// <param name="changed">Action for binding.</param>
-        /// <param name="setValue">Optional Action for reverse binding.</param>
-        /// <typeparam name="T">Property type.</typeparam>
-        /// <exception cref="Exception"></exception>
-        public static void AddBinder<T>(IBinder binder, T value, ref Action<T> changed, Action<T>? setValue = null)
-        {
-            if (binder is not IBinder<T> specificBinder)
-                throw new Exception($"binder ({binder.GetType()}) is not {typeof(IBinder<T>)}");
-			        
-            specificBinder.SetValue(value);
-            changed += specificBinder.SetValue;
-
-            if (setValue != null && binder.IsReverseEnabled)
-            {
-                if (binder is not IReverseBinder<T> specificReverseBinder)
-                    throw new Exception($"binder ({binder.GetType()}) is not {typeof(IReverseBinder<T>)}");
-
-                specificReverseBinder.ValueChanged += setValue;
-            }
-        }
         
         /// <summary>
-        /// Base implementation of the RemoveBinder method from the IViewModel interface.
+        /// Adds a binder to the specified ViewModel event for a given value.
         /// </summary>
-        /// <param name="binder">Binder for unbinding.</param>
-        /// <param name="changed">Action for unbinding.</param>
-        /// <param name="setValue">Optional Action for unbinding reverse binding.</param>
-        /// <typeparam name="T">Property type.</typeparam>
-        /// <exception cref="Exception"></exception>
-        public static void RemoveBinder<T>(IBinder binder, ref Action<T> changed, Action<T>? setValue = null)
+        /// <typeparam name="T">The type of the value associated with the binder and event.</typeparam>
+        /// <param name="binder">The binder to be added, which will manage the binding logic.</param>
+        /// <param name="value">The value to be bound to the ViewModel event.</param>
+        /// <param name="viewModelEvent">
+        /// A reference to the ViewModel event for the specified type <typeparamref name="T"/>.
+        /// If the event is null, a new instance will be created.
+        /// </param>
+        /// <param name="setValue">
+        /// An optional action that sets the value of the bound property. This is used if the binder supports reverse binding.
+        /// </param>
+        /// <returns>
+        /// An interface for removing the binder from the ViewModel event.
+        /// </returns>
+        public static IRemoveBinderFromViewModel AddBinder<T>(IBinder binder, T value, ref ViewModelEvent<T>? viewModelEvent, Action<T>? setValue = null)
         {
-            if (binder is not IBinder<T> specificBinder)
-                throw new Exception($"binder ({binder.GetType()}) is not {typeof(IBinder<T>)}");
-			        
-            changed -= specificBinder.SetValue;
+            var isReverse = binder.IsReverseEnabled;
+            viewModelEvent ??= new ViewModelEvent<T>();
 
-            if (setValue != null && binder.IsReverseEnabled)
-            {
-                if (binder is not IReverseBinder<T> specificReverseBinder)
-                    throw new Exception($"binder ({binder.GetType()}) is not {typeof(IReverseBinder<T>)}");
-			        
-                specificReverseBinder.ValueChanged -= setValue;
-            }
+            if (isReverse)
+                viewModelEvent.SetValue ??= setValue;
+            
+            return viewModelEvent.AddBinder(binder, value, isReverse);
         }
     }
 }

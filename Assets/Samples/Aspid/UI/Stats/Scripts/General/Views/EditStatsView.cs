@@ -14,9 +14,9 @@ namespace Aspid.UI.Stats.Views
         [SerializeField] private MonoBinder[] _isDraft;
         
         [Header("Commands")]
-        [SerializeField] private ButtonCommandProvider[] _confirmCommand;
-        [SerializeField] private ButtonCommandProvider[] _resetToDefaultCommand;
-        [SerializeField] private ButtonCommandProvider<Skill>[] _addSkillPointToCommand;
-        [SerializeField] private ButtonCommandProvider<Skill>[] _removeSkillPointToCommand;
+        [SerializeField] private ButtonCommandBinder[] _confirmCommand;
+        [SerializeField] private ButtonCommandBinder[] _resetToDefaultCommand;
+        [SerializeField] private ButtonCommandBinder<Skill>[] _addSkillPointToCommand;
+        [SerializeField] private ButtonCommandBinder<Skill>[] _removeSkillPointToCommand;
     }
 }

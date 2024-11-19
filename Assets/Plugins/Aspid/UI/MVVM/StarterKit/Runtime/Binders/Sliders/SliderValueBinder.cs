@@ -44,7 +44,7 @@ namespace Aspid.UI.MVVM.StarterKit.Binders.Sliders
             _slider.onValueChanged.AddListener(OnValueChanged);
         }
 
-        protected override void OnUnbound(IViewModel viewModel, string id)
+        protected override void OnUnbound()
         {
             if (!IsReverseEnabled) return;
             _slider.onValueChanged.RemoveListener(OnValueChanged);

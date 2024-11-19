@@ -37,18 +37,10 @@ namespace Aspid.UI.MVVM.Views
             if (viewModel is not null) 
                 _view.Initialize(viewModel);
         }
-
-        /// <summary>
-        /// Called when the binding with the ViewModel is broken. Deinitializes the view.
-        /// </summary>
-        /// <param name="viewModel">The ViewModel that was unbound.</param>
-        /// <param name="id">The ID of the component, which matches the property name in the ViewModel.</param>
-        protected override void OnUnbound(IViewModel viewModel, string id) => 
+        
+        protected override void OnUnbound() => 
             DeinitializeView();
-
-        /// <summary>
-        /// Deinitializes the current view and disposes of the ViewModel if necessary.
-        /// </summary>
+        
         private void DeinitializeView()
         {
             var viewModel = _view.DeinitializeView();

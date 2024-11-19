@@ -27,7 +27,7 @@ namespace Aspid.UI.MVVM.StarterKit.Binders.Mono.Toggles
             _isNotifyValueChanged = true;
         }
 
-        protected override void OnUnbound(IViewModel viewModel, string id)
+        protected override void OnUnbound()
         {
             if (!IsReverseEnabled) return;
             CachedComponent.onValueChanged.RemoveListener(OnValueChanged);

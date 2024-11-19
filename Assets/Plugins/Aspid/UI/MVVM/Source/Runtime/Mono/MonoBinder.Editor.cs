@@ -13,8 +13,6 @@ namespace Aspid.UI.MVVM.Mono
         [SerializeField] private MonoView _view;
         [SerializeField] private string _id;
         
-        private IViewModel _viewModel;
-
         /// <summary>
         /// Is there a component?
         /// </summary>
@@ -60,18 +58,11 @@ namespace Aspid.UI.MVVM.Mono
 
         partial void OnBindingDebug(IViewModel viewModel, string id)
         {
-            if (Id != id) throw new Exception($"Id not match. Binder Id {Id}; Id {id}.");
-            if (_viewModel is not null) throw new Exception("Binder has already been bound");
+            if (Id != id) 
+                throw new Exception($"Id not match. Binder Id {Id}; Id {id}.");
             
-            _viewModel = viewModel;
-        }
-
-        partial void OnUnbindingDebug(IViewModel viewModel, string id)
-        {
-            if (Id != id) throw new Exception($"Id not match. Binder Id {Id}; Id {id}.");
-            if (_viewModel != viewModel) throw new Exception($"ViewModel not match. Old ViewModel {_viewModel?.GetType()}; NewViewModel {viewModel.GetType()}.");
-
-            _viewModel = null;
+            if (viewModel != View?.ViewModel) 
+                throw new Exception($"ViewModel {viewModel} not match. Binder ViewModel {View?.ViewModel}; Id {Id}.");
         }
 
         private void SaveBinderDataInEditor()

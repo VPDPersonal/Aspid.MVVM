@@ -1,10 +1,10 @@
 using Microsoft.CodeAnalysis;
 using MVVMGenerators.Helpers;
-using System.Collections.Generic;
 using Microsoft.CodeAnalysis.CSharp;
 using MVVMGenerators.Helpers.Descriptions;
 using MVVMGenerators.Helpers.Extensions.Writer;
 using MVVMGenerators.Generators.ViewModels.Data;
+using MVVMGenerators.Helpers.Extensions.Symbols;
 
 namespace MVVMGenerators.Generators.ViewModels.Body;
 
@@ -13,6 +13,8 @@ public static class PropertiesBody
     public static CodeWriter AppendPropertiesBody(this CodeWriter code, ViewModelDataSpan data)
     {
         code.AppendEvents(data)
+            .AppendViewModelEvents(data)
+            .AppendLine()
             .AppendProperties(data)
             .AppendSetMethods(data);
         
@@ -21,34 +23,70 @@ public static class PropertiesBody
 
     private static CodeWriter AppendEvents(this CodeWriter code, in ViewModelDataSpan data)
     {
-        HashSet<IPropertySymbol> changedEvents = [];
-        
-        code.AppendLoop(data.Fields, field =>
+        foreach (var field in data.Fields)
         {
-            if (field.IsReadOnly) return;
+            if (field.IsReadOnly) continue;
+            AppendEvent(field.Type, field.EventName, field.ViewModelEventName);
+        }
 
-            foreach (var bindAlso in field.BindAlso)
-                changedEvents.Add(bindAlso);
-            
-            Append(field.Type, field.PropertyName);
-        });
-
-        code.AppendLoop(changedEvents, changedEvent =>
+        foreach (var property in data.BindAlsoProperties)
         {
-            Append(changedEvent.Type, changedEvent.Name);
-        });
+            AppendEvent(property.Type, property.EventName, property.ViewModelEventName);
+        }
 
         return code;
 
-        void Append(ITypeSymbol type, string propertyName)
+        void AppendEvent(ITypeSymbol typeSymbol, string eventName, string viewModelEventName)
         {
+            var type = typeSymbol.ToDisplayStringGlobal();
+            
             code.AppendMultiline(
-                $"""
-                {General.GeneratedCodeViewModelAttribute}
-                public event {Classes.Action.Global}<{type}> {propertyName}Changed;
+                $$"""
+                {{General.GeneratedCodeViewModelAttribute}}
+                public event {{Classes.Action.Global}}<{{type}}> {{eventName}}
+                {
+                    add
+                    {
+                        {{viewModelEventName}} ??= new {{Classes.ViewModelEvent.Global}}<{{type}}>();
+                        {{viewModelEventName}}.Changed += value;
+                    }
+                    remove
+                    {
+                        if ({{viewModelEventName}} is null) return;
+                        {{viewModelEventName}}.Changed -= value;
+                    }
+                }
                 
                 """);
         }
+    }
+
+    private static CodeWriter AppendViewModelEvents(this CodeWriter code, in ViewModelDataSpan data)
+    {
+        foreach (var field in data.Fields)
+        {
+            if (field.IsReadOnly) continue;
+            var type = field.Type.ToDisplayStringGlobal();
+            
+            code.AppendMultiline(
+                $"""
+                {General.GeneratedCodeViewModelAttribute}
+                private {Classes.ViewModelEvent.Global}<{type}> {field.ViewModelEventName};
+                """);
+        }
+
+        foreach (var property in data.BindAlsoProperties)
+        {
+            var type = property.Type.ToDisplayStringGlobal();
+            
+            code.AppendMultiline(
+                $"""
+                {General.GeneratedCodeViewModelAttribute}
+                private {Classes.ViewModelEvent.Global}<{type}> {property.ViewModelEventName};
+                """);
+        }
+
+        return code;
     }
 
     private static CodeWriter AppendProperties(this CodeWriter code, in ViewModelDataSpan data)
@@ -56,7 +94,7 @@ public static class PropertiesBody
         code.AppendLoop(data.Fields, field =>
         {
             var type = field.Type.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat);
-            var name = field.Name;
+            var name = field.FieldName;
             var propertyName = field.PropertyName;
             
             var getAccessor = field.GetAccess;
@@ -105,8 +143,8 @@ public static class PropertiesBody
         SyntaxKind GetGeneralAccessor(SyntaxKind getAccessor, SyntaxKind setAccessor)
         {
             if (setAccessor == getAccessor) return getAccessor;
-            if (getAccessor == SyntaxKind.PrivateKeyword) return setAccessor;
-            if (setAccessor == SyntaxKind.PrivateKeyword) return getAccessor;
+            if (getAccessor == SyntaxKind.PublicKeyword) return getAccessor;
+            if (setAccessor == SyntaxKind.PublicKeyword) return setAccessor;
             if (getAccessor == SyntaxKind.ProtectedKeyword) return getAccessor;
             if (setAccessor == SyntaxKind.ProtectedKeyword) return setAccessor;
 
@@ -123,8 +161,9 @@ public static class PropertiesBody
             if (field.IsReadOnly) return;
             
             var type = field.Type;
-            var name = field.Name;
+            var name = field.FieldName;
             var propertyName = field.PropertyName;
+            var changedEvent = field.ViewModelEventName;
 
             var changedMethod = $"On{propertyName}Changed";
             var changingMethod = $"On{propertyName}Changing";
@@ -142,11 +181,11 @@ public static class PropertiesBody
                     {changingMethod}({name}, value);
                     {name} = value;
                     {changedMethod}(value);
-                    {propertyName}Changed?.Invoke({name});
+                    {changedEvent}?.Invoke({name});
                     """)
                 .AppendLoop(field.BindAlso, bindAlso =>
                 {
-                    code.AppendLine($"{bindAlso.Name}Changed?.Invoke({bindAlso.Name});");
+                    code.AppendLine($"{bindAlso.ViewModelEventName}?.Invoke({bindAlso.Name});");
                 })
                 .EndBlock()
                 .AppendLine();

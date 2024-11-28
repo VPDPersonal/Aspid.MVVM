@@ -3,6 +3,7 @@ using Microsoft.CodeAnalysis;
 using MVVMGenerators.Helpers;
 using MVVMGenerators.Generators.Views.Data;
 using MVVMGenerators.Generators.Views.Data.Members;
+using MVVMGenerators.Helpers.Extensions.Symbols;
 
 namespace MVVMGenerators.Generators.Views.Body;
 
@@ -19,7 +20,7 @@ public static class BinderCachedBody
     {
         foreach (var property in properties)
         {
-            code.AppendLine($"private {property.Type} {property.CachedName};");
+            code.AppendLine($"private {property.Type.ToDisplayStringGlobal()} {property.CachedName};");
         }
 
         return code;

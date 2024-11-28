@@ -67,6 +67,12 @@ public static partial class Classes
     
     public static readonly AttributeText ViewModelAttribute =
         new("ViewModel", Namespaces.Aspid_UI_MVVM_ViewModels_Generation);
+    
+    public static readonly TypeText ViewModelEvent =
+        new("ViewModelEvent", Namespaces.Aspid_UI_MVVM_ViewModels);
+    
+    public static readonly TypeText IRemoveBinderFromViewModel =
+        new("IRemoveBinderFromViewModel", Namespaces.Aspid_UI_MVVM_ViewModels);
     #endregion
 
     #region Commands

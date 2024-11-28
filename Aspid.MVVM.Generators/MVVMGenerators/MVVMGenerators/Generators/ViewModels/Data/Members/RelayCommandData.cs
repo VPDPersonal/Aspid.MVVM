@@ -29,7 +29,7 @@ public readonly struct RelayCommandData(
         type.Append("<");
 
         foreach (var parameter in parameters)
-            type.Append($"{parameter.Type},");
+            type.Append($"{parameter.Type.ToDisplayStringGlobal()},");
 
         type.Length--;
         type.Append(">");

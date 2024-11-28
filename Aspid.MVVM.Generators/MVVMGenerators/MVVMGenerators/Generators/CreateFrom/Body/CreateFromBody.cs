@@ -3,6 +3,7 @@ using Microsoft.CodeAnalysis;
 using MVVMGenerators.Helpers;
 using MVVMGenerators.Helpers.Descriptions;
 using MVVMGenerators.Generators.CreateFrom.Data;
+using MVVMGenerators.Helpers.Extensions.Symbols;
 
 namespace MVVMGenerators.Generators.CreateFrom.Body;
 
@@ -17,7 +18,7 @@ public static class CreateFromBody
     public static CodeWriter AppendCreateFromBody(this CodeWriter code, CreateFromDataSpan data)
     {
         var toName = data.Declaration.Identifier.Text;
-        var fromTypeFullName = data.FromType.ToDisplayString();
+        var fromTypeFullName = data.FromType.ToDisplayStringGlobal();
 
         foreach (var constructor in data.Constructors)
         {
@@ -31,7 +32,6 @@ public static class CreateFromBody
     private static CodeWriter AppendMethods(this CodeWriter code, IMethodSymbol constructor, string toName, string fromTypeFullName)
     {
         var parameters = GetParameters(constructor, fromTypeFullName);
-        fromTypeFullName = $"global::{fromTypeFullName}";
 
         var methodName = $"To{toName}";
         var fromName = parameters.FromName;
@@ -111,13 +111,20 @@ public static class CreateFromBody
     {
         var fromName = constructor.Parameters[0].Name;
         if (constructor.Parameters.Length == 1) return new Parameters(fromName);
-        
+
+        var isFirst = true;
         var isFromTypeSkip = false;
         var parametersEnum = new StringBuilder();
         var parameterNames = new StringBuilder();
 
         foreach (var parameter in constructor.Parameters)
         {
+            if (isFirst)
+            {
+                isFirst = false;
+                continue;
+            }
+            
             var parameterType = parameter.Type.ToDisplayString();
             
             if (!isFromTypeSkip && parameterType == fromTypeFullName)

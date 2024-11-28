@@ -36,6 +36,12 @@ public partial class ViewModelGenerator
                 idList.Add((name, $"{name}Id"));
             }
             
+            foreach (var property in dataSpan.BindAlsoProperties)
+            {
+                var name = property.Name;
+                idList.Add((name, $"{name}Id"));
+            }
+            
             IdBodyGenerator.GenerateViewModelId(@namespace, declarationText, context, idList);
         }
 

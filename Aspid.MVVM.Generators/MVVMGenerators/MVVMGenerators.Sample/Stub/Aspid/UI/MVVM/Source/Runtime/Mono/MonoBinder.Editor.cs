@@ -13,7 +13,10 @@ namespace Aspid.UI.MVVM.Mono
         [SerializeField] private MonoView _view;
         [SerializeField] private string _id;
         
-        private IViewModel _viewModel;
+        /// <summary>
+        /// Is there a component?
+        /// </summary>
+        public bool IsMonoExist => this;
         
         /// <summary>
         /// The View to which the Binder relates.
@@ -24,12 +27,16 @@ namespace Aspid.UI.MVVM.Mono
             get => _view;
             set
             {
+                if (_view == value as MonoView) return;
+                
                 _view = value switch
                 {
                     null => null,
                     MonoView view => view,
                     _ => throw new ArgumentException("View is not a MonoView")
                 };
+
+                SaveBinderDataInEditor();
             }
         }
         
@@ -40,23 +47,28 @@ namespace Aspid.UI.MVVM.Mono
         public string Id
         {
             get => _id;
-            set => _id = value;
+            set
+            {
+                if (_id == value) return;
+                
+                _id = value;
+                SaveBinderDataInEditor();
+            }
         }
 
         partial void OnBindingDebug(IViewModel viewModel, string id)
         {
-            if (Id != id) throw new Exception($"Id not match. Binder Id {Id}; Id {id}.");
-            if (_viewModel is not null) throw new Exception("Binder has already been bound");
+            if (Id != id) 
+                throw new Exception($"Id not match. Binder Id {Id}; Id {id}.");
             
-            _viewModel = viewModel;
+            if (viewModel != View?.ViewModel) 
+                throw new Exception($"ViewModel {viewModel} not match. Binder ViewModel {View?.ViewModel}; Id {Id}.");
         }
 
-        partial void OnUnbindingDebug(IViewModel viewModel, string id)
+        private void SaveBinderDataInEditor()
         {
-            if (Id != id) throw new Exception($"Id not match. Binder Id {Id}; Id {id}.");
-            if (_viewModel != viewModel) throw new Exception($"ViewModel not match. Old ViewModel {_viewModel?.GetType()}; NewViewModel {viewModel.GetType()}.");
-
-            _viewModel = null;
+            UnityEditor.EditorUtility.SetDirty(this);
+            UnityEditor.SceneManagement.EditorSceneManager.MarkSceneDirty(gameObject.scene);
         }
     }
 }

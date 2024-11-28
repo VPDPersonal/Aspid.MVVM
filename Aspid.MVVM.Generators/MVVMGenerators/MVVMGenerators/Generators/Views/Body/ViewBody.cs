@@ -46,10 +46,10 @@ public static class ViewBody
                 $$"""
                 #if !{{Defines.ASPID_UI_MVVM_UNITY_PROFILER_DISABLED}}
                 {{GeneratedAttribute}}
-                private static readonly {{ProfilerMarker}} _initializeMarker = new("{{className}}.Initialize");
+                private static readonly {{ProfilerMarker}} __initializeMarker = new("{{className}}.Initialize");
                 
                 {{GeneratedAttribute}}
-                private static readonly {{ProfilerMarker}} _deinitializeMarker = new("{{className}}.Deinitialize");
+                private static readonly {{ProfilerMarker}} __deinitializeMarker = new("{{className}}.Deinitialize");
                 #endif
                 
                 {{GeneratedAttribute}}
@@ -59,7 +59,7 @@ public static class ViewBody
                 void {{IView}}.Initialize({{IViewModel}} viewModel)
                 {
                     #if !{{Defines.ASPID_UI_MVVM_UNITY_PROFILER_DISABLED}}
-                    using (_initializeMarker.Auto())
+                    using (__initializeMarker.Auto())
                     #endif
                     {
                         if (viewModel is null) throw new {{Classes.ArgumentNullException.Global}}(nameof(viewModel));
@@ -85,16 +85,16 @@ public static class ViewBody
                     if (ViewModel == null) return;
                 
                     #if !{{Defines.ASPID_UI_MVVM_UNITY_PROFILER_DISABLED}}
-                    using (_deinitializeMarker.Auto())
+                    using (__deinitializeMarker.Auto())
                     #endif
                     {
-                        DeinitializeInternal(ViewModel);
+                        DeinitializeInternal();
                         ViewModel = null;
                     }
                 }
 
                 {{GeneratedAttribute}}
-                protected virtual void DeinitializeInternal({{IViewModel}} viewModel)
+                protected virtual void DeinitializeInternal()
                 """)
             .BeginBlock()
             .AppendDeinitializeBody(data)
@@ -122,7 +122,7 @@ public static class ViewBody
                 .AppendDeinitializeInternalDeclaration(isOverride)
                 .BeginBlock()
                 .AppendDeinitializeBody(data)
-                .AppendLine("base.DeinitializeInternal(viewModel);")
+                .AppendLine("base.DeinitializeInternal();")
                 .EndBlock();
         }
 
@@ -184,7 +184,7 @@ public static class ViewBody
         code.AppendMultiline(
             $"""
              {GeneratedAttribute}
-             protected {modificator} void DeinitializeInternal({IViewModel} viewModel)
+             protected {modificator} void DeinitializeInternal()
              """);
 
         return code; 
@@ -206,43 +206,41 @@ public static class ViewBody
     private static CodeWriter AppendInitializeBody(this CodeWriter code, in ViewDataSpan data)
     {
         var isInstantiateBinders = data.ViewProperties.Length + data.AsBinderMembers.Length > 0;
+
+        code.AppendLineIf(isInstantiateBinders, "InstantiateBinders();\n");
         
-        code.AppendLineIf(isInstantiateBinders, "InstantiateBinders();\n")
-            .AppendMethodBody("BindSafely", data);
+        foreach (var field in data.FieldMembers)
+            code.AppendLine($"{field.FieldName}.BindSafely(viewModel, {field.Id});");
+        
+        foreach (var property in data.ViewProperties)
+            code.AppendLine($"{property.CachedName}.BindSafely(viewModel, {property.Id});");
+
+        foreach (var member in data.AsBinderMembers)
+        {
+            if (member.CachedName is null || member.Id is null) continue;
+            code.AppendLine($"{member.CachedName}.BindSafely(viewModel, {member.Id});");
+        }
+
+        return code;
+    }
+
+    private static CodeWriter AppendDeinitializeBody(this CodeWriter code, in ViewDataSpan data)
+    {
+        foreach (var field in data.FieldMembers)
+            code.AppendLine($"{field.FieldName}.UnbindSafely();");
+        
+        foreach (var property in data.ViewProperties)
+            code.AppendLine($"{property.CachedName}.UnbindSafely();");
+
+        foreach (var member in data.AsBinderMembers)
+        {
+            if (member.CachedName is null || member.Id is null) continue;
+            code.AppendLine($"{member.CachedName}.UnbindSafely();");
+        }
 
         return code;
     }
     
-    private static CodeWriter AppendDeinitializeBody(this CodeWriter code, in ViewDataSpan data)
-    {
-        code.AppendMethodBody("UnbindSafely", data);
-        return code;
-    }
-
-    private static CodeWriter AppendMethodBody(this CodeWriter code, string bindMethodName, in ViewDataSpan data)
-    {
-        code.AppendLoop(data.FieldMembers, AppendFieldMember)
-            .AppendLoop(data.ViewProperties, AppendPropertyMember)
-            .AppendLoop(data.AsBinderMembers, AppendAsBinderMember);
-
-        return code;
-
-        void AppendFieldMember(BinderFieldInView member) =>
-            Append(member.FieldName, member.Id);
-
-        void AppendPropertyMember(PropertyBinderInView member) =>
-            Append(member.CachedName, member.Id);
-
-        void AppendAsBinderMember(AsBinderMemberInView member)
-        {
-            if (member.CachedName is null || member.Id is null) return;
-            Append(member.CachedName, member.Id);
-        }
-
-        void Append(string name, string idName) =>
-            code.AppendLine($"{name}.{bindMethodName}(viewModel, {idName});");
-    }
-
     private static CodeWriter AppendInstantiateBindersMethods(this CodeWriter code, in ViewDataSpan data)
     {
         code.AppendMultiline(

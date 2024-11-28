@@ -58,7 +58,7 @@ namespace Aspid.UI.MVVM.Views
             using (_deinitializationMarker.Auto())
 #endif
             {
-                DeinitializeInternal(ViewModel);
+                DeinitializeInternal();
                 ViewModel = null;
             }
         }
@@ -67,7 +67,7 @@ namespace Aspid.UI.MVVM.Views
         /// Abstract method for internal view deinitialization. 
         /// Must be overridden in derived classes to implement specific deinitialization logic.
         /// </summary>
-        protected abstract void DeinitializeInternal(IViewModel viewModel);
+        protected abstract void DeinitializeInternal();
         
         /// <summary>
         /// Releases the resources used by the view.

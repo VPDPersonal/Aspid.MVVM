@@ -5,6 +5,9 @@ namespace MVVMGenerators.Helpers.Extensions.Symbols;
 
 public static class TypeSymbolExtensions
 {
+    public static string ToDisplayStringGlobal(this ITypeSymbol symbol) =>
+        symbol.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat);
+    
     public static bool HaseDirectInterface(this ITypeSymbol type, TypeText typeText) =>
         type.HaseDirectInterface(typeText.FullName);
 

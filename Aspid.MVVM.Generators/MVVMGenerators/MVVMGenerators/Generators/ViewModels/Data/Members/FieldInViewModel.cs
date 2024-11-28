@@ -11,16 +11,18 @@ public readonly struct FieldInViewModel(
     bool isReadOnly,
     SyntaxKind getAccess,
     SyntaxKind setAccess,
-    IEnumerable<IPropertySymbol> bindAlso)
+    ImmutableArray<BindAlsoProperty> bindAlso)
 {
     public readonly ITypeSymbol Type = field.Type;
     
-    public readonly string Name = field.Name;
+    public readonly string FieldName = field.Name;
     public readonly string PropertyName = field.GetPropertyName();
+    public readonly string EventName = $"{field.GetPropertyName()}Changed";
+    public readonly string ViewModelEventName = $"__{field.RemovePrefix()}ChangedEvent";
     
     public readonly bool IsReadOnly = isReadOnly;
     public readonly SyntaxKind SetAccess = setAccess;
     public readonly SyntaxKind GetAccess = getAccess;
-    
-    public readonly ImmutableArray<IPropertySymbol> BindAlso = ImmutableArray.CreateRange(bindAlso);
+
+    public readonly ImmutableArray<BindAlsoProperty> BindAlso = bindAlso;
 }

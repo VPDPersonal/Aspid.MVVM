@@ -1,0 +1,88 @@
+using System;
+using UnityEngine;
+using Aspid.UI.MVVM.Mono;
+using Aspid.UI.MVVM.Mono.Generation;
+using Aspid.UI.MVVM.StarterKit.Utilities;
+
+namespace Aspid.UI.MVVM.StarterKit.Binders.Mono
+{
+    // TODO Need to check functionality
+    public abstract partial class EnumMonoBinder<T> : MonoBinder, IBinder<Enum>
+    {
+        [Header("Parameters")]
+        [SerializeField] private T _defaultValue;
+        [SerializeField] private bool _allowDefaultValueWhenNoValue;
+        [SerializeField] private EnumValue<T>[] _values;
+        
+        private bool _isEnumTypeSet;
+        
+        protected override void OnUnbound() =>
+            _isEnumTypeSet = false;
+        
+        [BinderLog]
+        public void SetValue(Enum enumValue)
+        {
+            if (!_isEnumTypeSet)
+            {
+                foreach (var value in _values)
+                    value.SetType(enumValue.GetType());
+                
+                _isEnumTypeSet = true;
+            }
+
+            foreach (var value in _values)
+            {
+                if (value.Key!.Equals(enumValue))
+                {
+                    SetValue(value.Value);
+                    return;
+                }
+            }
+
+            if (_allowDefaultValueWhenNoValue) 
+                SetValue(_defaultValue);
+        }
+
+        protected abstract void SetValue(T value);
+    }
+    
+    public abstract partial class EnumMonoBinder<TComponent, T> : ComponentMonoBinder<TComponent>, IBinder<Enum>
+        where TComponent : Component
+    {
+        [Header("Parameters")]
+        [SerializeField] private T _defaultValue;
+        [SerializeField] private bool _allowDefaultValueWhenNoValue;
+        [SerializeField] private EnumValue<T>[] _values;
+        
+        private bool _isEnumTypeSet;
+        
+        protected override void OnUnbound() =>
+            _isEnumTypeSet = false;
+        
+        [BinderLog]
+        public void SetValue(Enum enumValue)
+        {
+            if (!_isEnumTypeSet)
+            {
+                foreach (var value in _values)
+                    value.SetType(enumValue.GetType());
+                
+                _isEnumTypeSet = true;
+            }
+
+            foreach (var value in _values)
+            {
+                if (value.Key!.Equals(enumValue))
+                {
+                    SetValue(value.Value);
+                    return;
+                }
+            }
+
+            if (_allowDefaultValueWhenNoValue) 
+                SetValue(_defaultValue);
+        }
+
+        protected abstract void SetValue(T value);
+    }
+}

@@ -4,7 +4,7 @@ using UnityEngine;
 namespace Aspid.UI.MVVM.StarterKit.Converters.Vectors
 {
     [Serializable]
-    public sealed class Vector2ToVector3Converter : IConverterVectorToVector3
+    public sealed class Vector2ToVector3Converter : IConverterVector2ToVector3
     {
         [SerializeField] private Values _values;
         [SerializeField] private float _thirdValue;

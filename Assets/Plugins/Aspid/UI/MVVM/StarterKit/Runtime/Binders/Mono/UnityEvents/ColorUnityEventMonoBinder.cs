@@ -1,12 +1,13 @@
 using UnityEngine;
 using UnityEngine.Events;
+using Aspid.UI.MVVM.Mono;
 using Aspid.UI.MVVM.Mono.Generation;
 using Aspid.UI.MVVM.StarterKit.Converters;
 
-namespace Aspid.UI.MVVM.StarterKit.Binders.Mono.UnityEvents
+namespace Aspid.UI.MVVM.StarterKit.Binders.Mono
 {
     [AddComponentMenu("UI/Binders/UnityEvent/UnityEvent Binder - Color")]
-    public sealed partial class ColorUnityEventMonoBinder : Aspid.UI.MVVM.Mono.MonoBinder, IColorBinder
+    public sealed partial class ColorUnityEventMonoBinder : MonoBinder, IColorBinder
     {
         public event UnityAction<Color> ColorValueSet
         {
@@ -18,7 +19,11 @@ namespace Aspid.UI.MVVM.StarterKit.Binders.Mono.UnityEvents
 #if ASPID_UI_SERIALIZE_REFERENCE_DROPDOWN_INTEGRATION
         [SerializeReferenceDropdown]
 #endif
-        [SerializeReference] private IConverterColorToColor _colorConverter;
+#if UNITY_2023_1_OR_NEWER
+        [SerializeReference] private IConverter<Color, Color> _converter;
+#else
+        [SerializeReference] private IConverterColorToColor _converter;
+#endif
         
         [Header("Events")]
         [SerializeField] private UnityEvent<Color> _colorValueSet;
@@ -26,7 +31,7 @@ namespace Aspid.UI.MVVM.StarterKit.Binders.Mono.UnityEvents
         [BinderLog]
         public void SetValue(Color value)
         {
-            value = _colorConverter?.Convert(value) ?? value;
+            value = _converter?.Convert(value) ?? value;
             _colorValueSet?.Invoke(value);
         }
     }

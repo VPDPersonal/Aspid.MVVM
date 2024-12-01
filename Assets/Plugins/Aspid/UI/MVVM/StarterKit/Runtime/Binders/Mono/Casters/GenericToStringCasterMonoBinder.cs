@@ -4,7 +4,7 @@ using UnityEngine.Events;
 using Aspid.UI.MVVM.Mono.Generation;
 using Aspid.UI.MVVM.StarterKit.Converters;
 
-namespace Aspid.UI.MVVM.StarterKit.Binders.Mono.Casters
+namespace Aspid.UI.MVVM.StarterKit.Binders.Mono
 {
 #if UNITY_2023_1_OR_NEWER
     public abstract partial class GenericToStringCasterMonoBinder<T> : MonoBinder, IBinder<T>

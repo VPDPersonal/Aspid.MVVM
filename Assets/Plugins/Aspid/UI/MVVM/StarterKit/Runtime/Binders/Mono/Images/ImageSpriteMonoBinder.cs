@@ -2,12 +2,12 @@ using UnityEngine;
 using UnityEngine.UI;
 using Aspid.UI.MVVM.Mono.Generation;
 
-namespace Aspid.UI.MVVM.StarterKit.Binders.Mono.Images
+namespace Aspid.UI.MVVM.StarterKit.Binders.Mono
 {
     [AddComponentMenu("UI/Binders/Image/Image Binder - Sprite")]
     public partial class ImageSpriteMonoBinder : ComponentMonoBinder<Image>, IBinder<Sprite>
     {
-        [Header("Parameters")]
+        [Header("Parameter")]
         [SerializeField] private bool _disabledWhenNull = true;
 
         [BinderLog]

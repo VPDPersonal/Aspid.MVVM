@@ -1,9 +1,10 @@
 using UnityEngine;
+using Aspid.UI.MVVM.Mono;
 using Aspid.UI.MVVM.Mono.Generation;
 
 namespace Aspid.UI.MVVM.StarterKit.Binders.Mono
 {
-    public abstract partial class SwitcherMonoBinder<T> : Aspid.UI.MVVM.Mono.MonoBinder, IBinder<bool> 
+    public abstract partial class SwitcherMonoBinder<T> : MonoBinder, IBinder<bool> 
     {
         [Header("Parameters")]
         [SerializeField] private T _trueValue;

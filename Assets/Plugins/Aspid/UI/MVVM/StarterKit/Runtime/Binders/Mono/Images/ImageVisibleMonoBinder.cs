@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Aspid.UI.MVVM.Mono.Generation;
 
-namespace Aspid.UI.MVVM.StarterKit.Binders.Mono.Images
+namespace Aspid.UI.MVVM.StarterKit.Binders.Mono
 {
     [AddComponentMenu("UI/Binders/Image/Image Binder - Visible")]
     public partial class ImageVisibleMonoBinder : ComponentMonoBinder<Image>, IBinder<bool>

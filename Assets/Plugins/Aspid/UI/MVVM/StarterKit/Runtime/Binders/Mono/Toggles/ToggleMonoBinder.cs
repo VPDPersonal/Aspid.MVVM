@@ -4,7 +4,7 @@ using UnityEngine.UI;
 using Aspid.UI.MVVM.ViewModels;
 using Aspid.UI.MVVM.Mono.Generation;
 
-namespace Aspid.UI.MVVM.StarterKit.Binders.Mono.Toggles
+namespace Aspid.UI.MVVM.StarterKit.Binders.Mono
 {
     [AddComponentMenu("UI/Binders/Toggles/Toggle Binder")]
     public partial class ToggleMonoBinder : ComponentMonoBinder<Toggle>, IBinder<bool>, IReverseBinder<bool>
@@ -22,9 +22,7 @@ namespace Aspid.UI.MVVM.StarterKit.Binders.Mono.Toggles
         protected override void OnBound(IViewModel viewModel, string id)
         {
             if (!IsReverseEnabled) return;
-            
             CachedComponent.onValueChanged.AddListener(OnValueChanged); 
-            _isNotifyValueChanged = true;
         }
 
         protected override void OnUnbound()
@@ -37,21 +35,15 @@ namespace Aspid.UI.MVVM.StarterKit.Binders.Mono.Toggles
         public void SetValue(bool value)
         {
             value = _isInvert ? !value : value;
-            
-            if (IsReverseEnabled && CachedComponent.isOn != value)
-                _isNotifyValueChanged = false;
 
+            _isNotifyValueChanged = false;
             CachedComponent.isOn = value;
+            _isNotifyValueChanged = true;
         }
 
         private void OnValueChanged(bool isOn) 
         {
-            if (!_isNotifyValueChanged)
-            {
-                _isNotifyValueChanged = true;
-                return;
-            }
-                
+            if (!_isNotifyValueChanged) return;
             ValueChanged?.Invoke(_isInvert ? !isOn : isOn);
         }
     }

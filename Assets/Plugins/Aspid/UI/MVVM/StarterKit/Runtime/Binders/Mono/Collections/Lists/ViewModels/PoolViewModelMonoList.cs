@@ -3,8 +3,9 @@ using UnityEngine.Pool;
 using Aspid.UI.MVVM.Mono.Views;
 using Aspid.UI.MVVM.Mono.Views.Extensions;
 
-namespace Aspid.UI.MVVM.StarterKit.Binders.Mono.Collections.Lists.ViewModels
+namespace Aspid.UI.MVVM.StarterKit.Binders.Mono
 {
+    [AddComponentMenu("UI/Binders/Collections/Lists/Pool List - ViewModel")]
     public class PoolViewModelMonoList : DynamicViewModelMonoList
     {
         [SerializeField] [Min(0)] private int _initialCount;

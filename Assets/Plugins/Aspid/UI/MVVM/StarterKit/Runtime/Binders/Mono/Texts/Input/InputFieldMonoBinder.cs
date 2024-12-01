@@ -6,8 +6,9 @@ using System.Globalization;
 using Aspid.UI.MVVM.ViewModels;
 using Aspid.UI.MVVM.Mono.Generation;
 using Aspid.UI.MVVM.StarterKit.Converters;
+using Aspid.UI.MVVM.StarterKit.Converters.Strings;
 
-namespace Aspid.UI.MVVM.StarterKit.Binders.Mono.Texts.Input
+namespace Aspid.UI.MVVM.StarterKit.Binders.Mono
 {
     [AddComponentMenu("UI/Binders/Text/Input Field Binder")]
     public partial class InputFieldMonoBinder : ComponentMonoBinder<TMP_InputField>, 
@@ -20,13 +21,17 @@ namespace Aspid.UI.MVVM.StarterKit.Binders.Mono.Texts.Input
         public event Action<double> DoubleValueChanged;
         
         [Header("Parameter")]
-        [SerializeField] private bool _isReverseEnabled;
+        [SerializeField] private bool _isReverseEnabled = true;
         
         [Header("Converter")]
 #if ASPID_UI_SERIALIZE_REFERENCE_DROPDOWN_INTEGRATION
         [SerializeReferenceDropdown]
 #endif
+#if UNITY_2023_1_OR_NEWER
+        [SerializeReference] private IConverter<string, string> _converter = new StringFormatConverter();
+#else
         [SerializeReference] private IConverterStringToString _converter;
+#endif
         
         private bool _isNotifyValueChanged = true;
         
@@ -35,9 +40,7 @@ namespace Aspid.UI.MVVM.StarterKit.Binders.Mono.Texts.Input
         protected override void OnBound(IViewModel viewModel, string id)
         {
             if (!IsReverseEnabled) return;
-            
             CachedComponent.onValueChanged.AddListener(OnValueChanged);
-            _isNotifyValueChanged = true;
         }
 
         protected override void OnUnbound()
@@ -52,10 +55,9 @@ namespace Aspid.UI.MVVM.StarterKit.Binders.Mono.Texts.Input
             if (value is not null) 
                 value = _converter?.Convert(value) ?? value;
             
-            if (IsReverseEnabled && CachedComponent.text != value)
-                _isNotifyValueChanged = false;
-            
+            _isNotifyValueChanged = false;
             CachedComponent.text = value;
+            _isNotifyValueChanged = true;
         }
 
         [BinderLog]
@@ -76,11 +78,7 @@ namespace Aspid.UI.MVVM.StarterKit.Binders.Mono.Texts.Input
 
         private void OnValueChanged(string value)
         {
-            if (!_isNotifyValueChanged)
-            {
-                _isNotifyValueChanged = true;
-                return;
-            }
+            if (!_isNotifyValueChanged) return;
             
             ValueChanged?.Invoke(value);
 

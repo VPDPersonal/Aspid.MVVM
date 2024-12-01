@@ -1,21 +1,14 @@
-using System;
 using UnityEngine;
 
-namespace Aspid.UI.MVVM.StarterKit.Binders.Mono.Transforms
+namespace Aspid.UI.MVVM.StarterKit.Binders.Mono
 {
     [AddComponentMenu("UI/Binders/Transform/Transform Binder - Position Switcher")]
     public sealed class TransformPositionSwitcherMonoBinder : SwitcherMonoBinder<Vector3>
     {
-        [SerializeField] private Space _space;
+        [SerializeField] private Space _space = Space.World;
+        [SerializeField] private VectorMode _mode = VectorMode.XYZ;
 
-        protected override void SetValue(Vector3 value)
-        {
-            switch (_space)
-            {
-                case Space.Self: transform.localPosition = value; break;
-                case Space.World: transform.position = value; break;
-                default: throw new ArgumentOutOfRangeException();
-            }
-        }
+        protected override void SetValue(Vector3 value) =>
+            transform.SetPosition(value, _mode, _space);
     }
 }

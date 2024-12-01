@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 namespace Aspid.UI.MVVM.StarterKit.Binders.RawImages
 {
-    public class RawImageTextureBinder : Binder, IBinder<Texture2D?>
+    public class RawImageTextureBinder : Binder, IBinder<Texture2D?>, IBinder<Sprite?>
     {
         private readonly RawImage _image;
         private readonly bool _disabledWhenNull;
@@ -21,5 +21,8 @@ namespace Aspid.UI.MVVM.StarterKit.Binders.RawImages
             _image.texture = value;
             if (_disabledWhenNull) _image.enabled = value != null;
         }
+
+        public void SetValue(Sprite? value) =>
+            SetValue(value?.texture);
     }
 }

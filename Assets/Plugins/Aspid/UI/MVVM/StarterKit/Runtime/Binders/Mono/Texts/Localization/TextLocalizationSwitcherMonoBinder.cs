@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.Localization.Components;
 
-namespace Aspid.UI.MVVM.StarterKit.Binders.Mono.Texts.Localization
+namespace Aspid.UI.MVVM.StarterKit.Binders.Mono
 {
     [AddComponentMenu("UI/Binders/Text/Text Binder - Localization Switcher")]
     public sealed class TextLocalizationSwitcherMonoBinder : SwitcherMonoBinder<LocalizeStringEvent, string>

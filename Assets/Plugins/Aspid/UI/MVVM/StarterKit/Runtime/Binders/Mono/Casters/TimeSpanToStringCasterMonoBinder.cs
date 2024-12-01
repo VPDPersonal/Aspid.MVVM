@@ -5,7 +5,7 @@ using Aspid.UI.MVVM.StarterKit.Converters;
 using Aspid.UI.MVVM.StarterKit.Converters.Strings;
 #endif
 
-namespace Aspid.UI.MVVM.StarterKit.Binders.Mono.Casters
+namespace Aspid.UI.MVVM.StarterKit.Binders.Mono
 {
     [AddComponentMenu("UI/Binders/Casters/TimeSpan To String Caster Binder")]
 #if UNITY_2023_1_OR_NEWER

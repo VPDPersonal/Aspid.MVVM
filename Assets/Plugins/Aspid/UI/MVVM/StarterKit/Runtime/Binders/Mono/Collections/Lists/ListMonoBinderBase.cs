@@ -5,7 +5,7 @@ using Aspid.Collections.Observable;
 using Aspid.UI.MVVM.Mono.Generation;
 using System.Collections.Specialized;
 
-namespace Aspid.UI.MVVM.StarterKit.Binders.Mono.Collections.Lists
+namespace Aspid.UI.MVVM.StarterKit.Binders.Mono
 {
     public abstract partial class ListMonoBinderBase<T> : MonoBinder, IBinder<IReadOnlyObservableList<T>>
     {

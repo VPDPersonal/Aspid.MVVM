@@ -2,7 +2,7 @@ using UnityEngine;
 using Aspid.UI.MVVM.Mono.Generation;
 using Aspid.UI.MVVM.StarterKit.Converters;
 
-namespace Aspid.UI.MVVM.StarterKit.Binders.Mono.CanvasGroups
+namespace Aspid.UI.MVVM.StarterKit.Binders.Mono
 {
     [AddComponentMenu("UI/Binders/Canvas Group/Canvas Group Binder - Alpha")]
     public partial class CanvasGroupAlphaMonoBinder : ComponentMonoBinder<CanvasGroup>, IBinder<bool>, IBinder<float>
@@ -11,7 +11,11 @@ namespace Aspid.UI.MVVM.StarterKit.Binders.Mono.CanvasGroups
 #if ASPID_UI_SERIALIZE_REFERENCE_DROPDOWN_INTEGRATION
         [SerializeReferenceDropdown]
 #endif
+#if UNITY_2023_1_OR_NEWER
+        [SerializeReference] private IConverter<float, float> _converter;
+#else
         [SerializeReference] private IConverterFloatToFloat _converter;
+#endif
         
         [BinderLog]
         public void SetValue(bool value) =>

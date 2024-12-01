@@ -6,7 +6,7 @@ using Aspid.UI.MVVM.Mono.Generation;
 using Aspid.UI.MVVM.StarterKit.Converters;
 using Aspid.UI.MVVM.StarterKit.Converters.Strings;
 
-namespace Aspid.UI.MVVM.StarterKit.Binders.Mono.Texts
+namespace Aspid.UI.MVVM.StarterKit.Binders.Mono
 {
     [AddComponentMenu("UI/Binders/Text/Text Binder")]
     public partial class TextMonoBinder : ComponentMonoBinder<TMP_Text>, IBinder<string>, INumberBinder
@@ -15,7 +15,11 @@ namespace Aspid.UI.MVVM.StarterKit.Binders.Mono.Texts
 #if ASPID_UI_SERIALIZE_REFERENCE_DROPDOWN_INTEGRATION
         [SerializeReferenceDropdown]
 #endif
+#if UNITY_2023_1_OR_NEWER
+        [SerializeReference] private IConverter<string, string> _converter = new StringFormatConverter();
+#else
         [SerializeReference] private IConverterStringToString _converter = new StringFormatConverter();
+#endif
         
         [BinderLog]
         public void SetValue(string value) =>

@@ -1,13 +1,14 @@
 using UnityEngine;
 using UnityEngine.Events;
+using Aspid.UI.MVVM.Mono;
 using System.Globalization;
 using Aspid.UI.MVVM.Mono.Generation;
 using Aspid.UI.MVVM.StarterKit.Converters;
 
-namespace Aspid.UI.MVVM.StarterKit.Binders.Mono.UnityEvents
+namespace Aspid.UI.MVVM.StarterKit.Binders.Mono
 {
     [AddComponentMenu("UI/Binders/UnityEvent/UnityEvent Binder - String")]
-    public sealed partial class StringUnityEventMonoBinder : Aspid.UI.MVVM.Mono.MonoBinder, IBinder<string>, INumberBinder
+    public sealed partial class StringUnityEventMonoBinder : MonoBinder, IBinder<string>, INumberBinder
     {
         public event UnityAction<string> StringValueSet
         {
@@ -19,7 +20,11 @@ namespace Aspid.UI.MVVM.StarterKit.Binders.Mono.UnityEvents
 #if ASPID_UI_SERIALIZE_REFERENCE_DROPDOWN_INTEGRATION
         [SerializeReferenceDropdown]
 #endif
-        [SerializeReference] private IConverterStringToString _stringConverter;
+#if UNITY_2023_1_OR_NEWER
+        [SerializeReference] private IConverter<string, string> _converter;
+#else
+        [SerializeReference] private IConverterStringToString _converter;
+#endif
         
         [Header("Events")]
         [SerializeField] private UnityEvent<string> _stringValueSet;
@@ -27,8 +32,8 @@ namespace Aspid.UI.MVVM.StarterKit.Binders.Mono.UnityEvents
         [BinderLog]
         public void SetValue(string value)
         {
-            if (_stringConverter != null)
-                value = _stringConverter.Convert(value);
+            if (_converter != null)
+                value = _converter.Convert(value);
                     
             _stringValueSet?.Invoke(value);
         }

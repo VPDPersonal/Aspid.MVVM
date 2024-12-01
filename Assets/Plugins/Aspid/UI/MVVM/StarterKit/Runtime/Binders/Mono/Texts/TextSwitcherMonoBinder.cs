@@ -2,7 +2,7 @@
 using TMPro;
 using UnityEngine;
 
-namespace Aspid.UI.MVVM.StarterKit.Binders.Mono.Texts
+namespace Aspid.UI.MVVM.StarterKit.Binders.Mono
 {
     [AddComponentMenu("UI/Binders/Text/Text Binder - Switcher")]
     public sealed class TextSwitcherMonoBinder : SwitcherMonoBinder<TMP_Text, string>

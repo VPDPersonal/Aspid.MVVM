@@ -1,12 +1,13 @@
 using UnityEngine;
 using UnityEngine.Events;
+using Aspid.UI.MVVM.Mono;
 using Aspid.UI.MVVM.Mono.Generation;
 using Aspid.UI.MVVM.StarterKit.Converters;
 
-namespace Aspid.UI.MVVM.StarterKit.Binders.Mono.UnityEvents
+namespace Aspid.UI.MVVM.StarterKit.Binders.Mono
 {
     [AddComponentMenu("UI/Binders/UnityEvent/UnityEvent Binder - Number")]
-    public sealed partial class NumberUnityEventMonoBinder : Aspid.UI.MVVM.Mono.MonoBinder, INumberBinder
+    public sealed partial class NumberUnityEventMonoBinder : MonoBinder, INumberBinder
     {
         public event UnityAction<int> IntValueSet
         {
@@ -32,23 +33,46 @@ namespace Aspid.UI.MVVM.StarterKit.Binders.Mono.UnityEvents
             remove => _doubleValueSet.RemoveListener(value);
         }
 
+        // Int Converter
         [Header("Converters")]
 #if ASPID_UI_SERIALIZE_REFERENCE_DROPDOWN_INTEGRATION
         [SerializeReferenceDropdown]
 #endif
+#if UNITY_2023_1_OR_NEWER
+        [SerializeReference] private IConverter<int, int> _intConverter;
+#else
         [SerializeReference] private IConverterIntToInt _intConverter;
+#endif
+        
+        // Long Converter
 #if ASPID_UI_SERIALIZE_REFERENCE_DROPDOWN_INTEGRATION
         [SerializeReferenceDropdown]
 #endif
+#if UNITY_2023_1_OR_NEWER
+        [SerializeReference] private IConverter<long, long> _longConverter;
+#else
         [SerializeReference] private IConverterLongToLong _longConverter;
+#endif
+        
+        // Float Converter
 #if ASPID_UI_SERIALIZE_REFERENCE_DROPDOWN_INTEGRATION
         [SerializeReferenceDropdown]
 #endif
+#if UNITY_2023_1_OR_NEWER
+        [SerializeReference] private IConverter<float, float> _floatConverter;
+#else
         [SerializeReference] private IConverterFloatToFloat _floatConverter;
+#endif
+        
+        // Double Converter
 #if ASPID_UI_SERIALIZE_REFERENCE_DROPDOWN_INTEGRATION
         [SerializeReferenceDropdown]
 #endif
+#if UNITY_2023_1_OR_NEWER
+        [SerializeReference] private IConverter<double, double> _doubleConverter;
+#else
         [SerializeReference] private IConverterDoubleToDouble _doubleConverter;
+#endif
         
         [Header("Events")]
         [SerializeField] private UnityEvent<int> _intValueSet;

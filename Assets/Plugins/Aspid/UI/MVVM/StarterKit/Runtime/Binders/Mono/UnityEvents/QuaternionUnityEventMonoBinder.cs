@@ -1,12 +1,13 @@
 using UnityEngine;
 using UnityEngine.Events;
+using Aspid.UI.MVVM.Mono;
 using Aspid.UI.MVVM.Mono.Generation;
 using Aspid.UI.MVVM.StarterKit.Converters;
 
-namespace Aspid.UI.MVVM.StarterKit.Binders.Mono.UnityEvents
+namespace Aspid.UI.MVVM.StarterKit.Binders.Mono
 {
     [AddComponentMenu("UI/Binders/UnityEvent/UnityEvent Binder - Quaternion")]
-    public sealed partial class QuaternionUnityEventMonoBinder : Aspid.UI.MVVM.Mono.MonoBinder, IBinder<Quaternion>
+    public sealed partial class QuaternionUnityEventMonoBinder : MonoBinder, IBinder<Quaternion>
     {
         public event UnityAction<Quaternion> QuaternionValueSet
         {
@@ -18,7 +19,11 @@ namespace Aspid.UI.MVVM.StarterKit.Binders.Mono.UnityEvents
 #if ASPID_UI_SERIALIZE_REFERENCE_DROPDOWN_INTEGRATION
         [SerializeReferenceDropdown]
 #endif
-        [SerializeReference] private IConverterQuaternionToQuaternion _quaternionConverter;
+#if UNITY_2023_1_OR_NEWER
+        [SerializeReference] private IConverter<Quaternion, Quaternion> _converter;
+#else
+        [SerializeReference] private IConverterQuaternionToQuaternion _converter;
+#endif
         
         [Header("Events")]
         [SerializeField] private UnityEvent<Quaternion> _quaternionValueSet;
@@ -26,7 +31,7 @@ namespace Aspid.UI.MVVM.StarterKit.Binders.Mono.UnityEvents
         [BinderLog]
         public void SetValue(Quaternion value)
         {
-            value = _quaternionConverter?.Convert(value) ?? value;
+            value = _converter?.Convert(value) ?? value;
             _quaternionValueSet?.Invoke(value);
         }
     }

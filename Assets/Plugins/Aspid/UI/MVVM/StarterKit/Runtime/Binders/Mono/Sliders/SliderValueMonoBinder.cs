@@ -5,7 +5,7 @@ using Aspid.UI.MVVM.ViewModels;
 using Aspid.UI.MVVM.Mono.Generation;
 using Aspid.UI.MVVM.StarterKit.Converters;
 
-namespace Aspid.UI.MVVM.StarterKit.Binders.Mono.Sliders
+namespace Aspid.UI.MVVM.StarterKit.Binders.Mono
 {
     [AddComponentMenu("UI/Binders/Slider/Slider Binder - Value")]
     public partial class SliderValueMonoBinder : ComponentMonoBinder<Slider>, INumberBinder, INumberReverseBinder
@@ -22,7 +22,11 @@ namespace Aspid.UI.MVVM.StarterKit.Binders.Mono.Sliders
 #if ASPID_UI_SERIALIZE_REFERENCE_DROPDOWN_INTEGRATION
         [SerializeReferenceDropdown]
 #endif
+#if UNITY_2023_1_OR_NEWER
+        [SerializeReference] private IConverter<float, float> _converter;
+#else
         [SerializeReference] private IConverterFloatToFloat _converter;
+#endif
 
         private bool _isNotifyValueChanged = true;        
         

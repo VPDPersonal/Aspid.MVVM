@@ -1,40 +1,51 @@
 using UnityEngine;
+using Aspid.UI.MVVM.Mono;
 using Aspid.UI.MVVM.Mono.Generation;
 using Aspid.UI.MVVM.StarterKit.Converters;
 
-namespace Aspid.UI.MVVM.StarterKit.Binders.Mono.Transforms
+namespace Aspid.UI.MVVM.StarterKit.Binders.Mono
 {
     [AddComponentMenu("UI/Binders/Transform/Transform Binder - Scale")]
-    public partial class TransformScaleMonoBinder : Aspid.UI.MVVM.Mono.MonoBinder, IVectorBinder, INumberBinder
+    public partial class TransformScaleMonoBinder : MonoBinder, IVectorBinder, INumberBinder
     {
+        [Header("Parameter")]
+        [SerializeField] private VectorMode _mode = VectorMode.XYZ;
+        
         [Header("Converter")]
 #if ASPID_UI_SERIALIZE_REFERENCE_DROPDOWN_INTEGRATION
         [SerializeReferenceDropdown]
 #endif
-        [SerializeReference] protected IConverterVector3ToVector3 _converter;
+#if UNITY_2023_1_OR_NEWER
+        [SerializeReference] private IConverter<Vector3, Vector3> _converter;
+#else
+        [SerializeReference] private IConverterVector3ToVector3 _converter;
+#endif
         
         [BinderLog]
         public void SetValue(Vector2 value) =>
             SetValue((Vector3)value);
 
         [BinderLog]
-        public void SetValue(Vector3 value) =>  
-            transform.localScale = _converter?.Convert(value) ?? value;
+        public void SetValue(Vector3 value) 
+        {
+            value = _converter?.Convert(value) ?? value;
+            transform.SetScale(value, _mode);
+        }
 
         [BinderLog]
         public void SetValue(int value) =>
-            SetValue(Vector3.one * value);
+            SetValue((float)value);
 
         [BinderLog]
         public void SetValue(long value) =>
-            SetValue(Vector3.one * value);
-        
-        [BinderLog]
-        public void SetValue(float value) =>
-            SetValue(Vector3.one * value);
+            SetValue((float)value);
         
         [BinderLog]
         public void SetValue(double value) =>
-            SetValue(Vector3.one * (float)value);
+            SetValue((float)value);
+        
+        [BinderLog]
+        public void SetValue(float value) =>
+            SetValue(new Vector3(value, value, value));
     }
 }

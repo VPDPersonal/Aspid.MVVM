@@ -1,11 +1,12 @@
 using UnityEngine;
 using UnityEngine.Events;
+using Aspid.UI.MVVM.Mono;
 using Aspid.UI.MVVM.Mono.Generation;
 
-namespace Aspid.UI.MVVM.StarterKit.Binders.Mono.UnityEvents
+namespace Aspid.UI.MVVM.StarterKit.Binders.Mono
 {
     [AddComponentMenu("UI/Binders/UnityEvent/UnityEvent Binder - Bool")]
-    public sealed partial class BoolUnityEventMonoBinder : Aspid.UI.MVVM.Mono.MonoBinder, IBinder<bool>
+    public sealed partial class BoolUnityEventMonoBinder : MonoBinder, IBinder<bool>
     {
         public event UnityAction<bool> BoolValueSet
         {

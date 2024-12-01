@@ -1,21 +1,25 @@
-using System;
 using UnityEngine;
+using Aspid.UI.MVVM.Mono;
 using Aspid.UI.MVVM.Mono.Generation;
 using Aspid.UI.MVVM.StarterKit.Converters;
 
-namespace Aspid.UI.MVVM.StarterKit.Binders.Mono.Transforms
+namespace Aspid.UI.MVVM.StarterKit.Binders.Mono
 {
     [AddComponentMenu("UI/Binders/Transform/Transform Binder - Rotation")]
-    public partial class TransformRotationMonoBinder : Aspid.UI.MVVM.Mono.MonoBinder, IRotationBinder
+    public partial class TransformRotationMonoBinder : MonoBinder, IRotationBinder, INumberBinder
     {
         [Header("Parameter")]
-        [SerializeField] private Space _space;
+        [SerializeField] private Space _space = Space.World;
 
         [Header("Converter")]
 #if ASPID_UI_SERIALIZE_REFERENCE_DROPDOWN_INTEGRATION
         [SerializeReferenceDropdown]
 #endif
+#if UNITY_2023_1_OR_NEWER
+        [SerializeReference] private IConverter<Quaternion, Quaternion> _converter;
+#else
         [SerializeReference] private IConverterQuaternionToQuaternion _converter;
+#endif
         
         [BinderLog]
         public void SetValue(Vector2 value) =>
@@ -29,13 +33,23 @@ namespace Aspid.UI.MVVM.StarterKit.Binders.Mono.Transforms
         public void SetValue(Quaternion value)
         {
             value = _converter?.Convert(value) ?? value;
-            
-            switch (_space)
-            {
-                case Space.Self: transform.localRotation = value; break;
-                case Space.World: transform.rotation = value; break;
-                default: throw new ArgumentOutOfRangeException();
-            }
+            transform.SetRotation(value, _space);
         }
+        
+        [BinderLog]
+        public void SetValue(int value) =>
+            SetValue((float)value);
+
+        [BinderLog]
+        public void SetValue(long value) =>
+            SetValue((float)value);
+        
+        [BinderLog]
+        public void SetValue(double value) =>
+            SetValue((float)value);
+        
+        [BinderLog]
+        public void SetValue(float value) =>
+            SetValue(new Vector3(value, value, value));
     }
 }

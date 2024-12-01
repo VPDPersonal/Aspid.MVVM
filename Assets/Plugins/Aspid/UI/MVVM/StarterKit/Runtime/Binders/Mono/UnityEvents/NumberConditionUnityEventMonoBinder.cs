@@ -4,22 +4,19 @@ using UnityEngine.Events;
 using Aspid.UI.MVVM.Mono.Generation;
 using Aspid.UI.MVVM.StarterKit.Converters;
 
-namespace Aspid.UI.MVVM.StarterKit.Binders.Mono.UnityEvents
+namespace Aspid.UI.MVVM.StarterKit.Binders.Mono
 {
     [AddComponentMenu("UI/Binders/UnityEvent/UnityEvent Binder - Number Condition")]
     public partial class NumberConditionUnityEventMonoBinder : MonoBinder, INumberBinder
     {
-#if !UNITY_6000_0_OR_NEWER
 #if ASPID_UI_SERIALIZE_REFERENCE_DROPDOWN_INTEGRATION
         [SerializeReferenceDropdown]
-#endif // ASPID_UI_SERIALIZE_REFERENCE_DROPDOWN_INTEGRATION
-        [SerializeReference] private IConverterFloatToBool _converter;
-#else
-#if ASPID_UI_SERIALIZE_REFERENCE_DROPDOWN_INTEGRATION
-        [SerializeReferenceDropdown]
-#endif // ASPID_UI_SERIALIZE_REFERENCE_DROPDOWN_INTEGRATION
+#endif
+#if UNITY_2023_1_OR_NEWER
         [SerializeReference] private IConverter<float, bool> _converter;
-#endif // !UNITY_6000_0_OR_NEWER
+#else
+        [SerializeReference] private IConverterFloatToBool> _converter;
+#endif
         
         [Header("Events")]
         [SerializeField] private UnityEvent _trueEvent;

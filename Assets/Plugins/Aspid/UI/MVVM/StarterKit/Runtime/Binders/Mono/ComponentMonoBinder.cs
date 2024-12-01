@@ -1,8 +1,9 @@
 using UnityEngine;
+using Aspid.UI.MVVM.Mono;
 
 namespace Aspid.UI.MVVM.StarterKit.Binders.Mono
 {
-    public abstract class ComponentMonoBinder<TComponent> : Aspid.UI.MVVM.Mono.MonoBinder
+    public abstract class ComponentMonoBinder<TComponent> : MonoBinder
         where TComponent : Component
     {
         [Header("Component")]

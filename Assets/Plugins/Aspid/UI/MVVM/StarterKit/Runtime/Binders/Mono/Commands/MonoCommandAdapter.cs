@@ -1,16 +1,17 @@
-using UnityEngine;
+using Aspid.UI.MVVM.Mono;
 using Aspid.UI.MVVM.Commands;
+using Aspid.UI.MVVM.Mono.Generation;
 
-namespace Aspid.UI.MVVM.StarterKit.Binders.Mono.Commands.Adapters
+namespace Aspid.UI.MVVM.StarterKit.Binders.Mono.Commands
 {
-    public class MonoCommandAdapter : MonoBehaviour
+    public partial class MonoCommandAdapter : MonoBinder, IBinder<IRelayCommand>
     {
         private IRelayCommand _command;
 
-        public IRelayCommand Command
+        protected IRelayCommand Command
         {
-            protected get => _command;
-            set
+            get => _command;
+            private set
             {
                 if (_command == value) return;
 
@@ -23,6 +24,10 @@ namespace Aspid.UI.MVVM.StarterKit.Binders.Mono.Commands.Adapters
                     _command.CanExecuteChanged += OnCanExecuteChanged;
             }
         }
+
+        [BinderLog]
+        public void SetValue(IRelayCommand value) =>
+            Command = value;
         
         public bool CanExecute() => Command.CanExecute();
 
@@ -31,14 +36,14 @@ namespace Aspid.UI.MVVM.StarterKit.Binders.Mono.Commands.Adapters
         protected virtual void OnCanExecuteChanged(IRelayCommand command) { }
     }
     
-    public abstract class MonoCommandAdapter<T> : MonoBehaviour
+    public abstract partial class MonoCommandAdapter<T> : MonoBinder, IBinder<IRelayCommand<T>>
     {
         private IRelayCommand<T> _command;
 
-        public IRelayCommand<T> Command
+        protected IRelayCommand<T> Command
         {
-            protected get => _command;
-            set
+            get => _command;
+            private set
             {
                 if (_command == value) return;
 
@@ -52,6 +57,10 @@ namespace Aspid.UI.MVVM.StarterKit.Binders.Mono.Commands.Adapters
             }
         }
         
+        [BinderLog]
+        public void SetValue(IRelayCommand<T> value) =>
+            Command = value;
+        
         public bool CanExecute(T param1) => Command.CanExecute(param1);
 
         public void InvokeCommand(T param1) => Command?.Execute(param1);
@@ -59,14 +68,14 @@ namespace Aspid.UI.MVVM.StarterKit.Binders.Mono.Commands.Adapters
         protected virtual void OnCanExecuteChanged(IRelayCommand<T> command) { }
     }
     
-    public abstract class MonoCommandAdapter<T1, T2> : MonoBehaviour
+    public abstract partial class MonoCommandAdapter<T1, T2> : MonoBinder, IBinder<IRelayCommand<T1, T2>>
     {
         private IRelayCommand<T1, T2> _command;
 
-        public IRelayCommand<T1, T2> Command
+        protected IRelayCommand<T1, T2> Command
         {
-            protected get => _command;
-            set
+            get => _command;
+            private set
             {
                 if (_command == value) return;
 
@@ -79,6 +88,10 @@ namespace Aspid.UI.MVVM.StarterKit.Binders.Mono.Commands.Adapters
                     _command.CanExecuteChanged += OnCanExecuteChanged;
             }
         }
+        
+        [BinderLog]
+        public void SetValue(IRelayCommand<T1, T2> value) =>
+            Command = value;
         
         public bool CanExecute(T1 param1, T2 param2) => 
             Command.CanExecute(param1, param2);
@@ -89,14 +102,14 @@ namespace Aspid.UI.MVVM.StarterKit.Binders.Mono.Commands.Adapters
         protected virtual void OnCanExecuteChanged(IRelayCommand<T1, T2> command) { }
     }
     
-    public abstract class MonoCommandAdapter<T1, T2, T3> : MonoBehaviour
+    public abstract partial class MonoCommandAdapter<T1, T2, T3> : MonoBinder, IBinder<IRelayCommand<T1, T2, T3>>
     {
         private IRelayCommand<T1, T2, T3> _command;
 
-        public IRelayCommand<T1, T2, T3> Command
+        protected IRelayCommand<T1, T2, T3> Command
         {
-            protected get => _command;
-            set
+            get => _command;
+            private set
             {
                 if (_command == value) return;
 
@@ -110,6 +123,10 @@ namespace Aspid.UI.MVVM.StarterKit.Binders.Mono.Commands.Adapters
             }
         }
         
+        [BinderLog]
+        public void SetValue(IRelayCommand<T1, T2, T3> value) =>
+            Command = value;
+        
         public bool CanExecute(T1 param1, T2 param2, T3 param3) => 
             Command.CanExecute(param1, param2, param3);
 
@@ -119,14 +136,14 @@ namespace Aspid.UI.MVVM.StarterKit.Binders.Mono.Commands.Adapters
         protected virtual void OnCanExecuteChanged(IRelayCommand<T1, T2, T3> command) { }
     }
     
-    public abstract class MonoCommandAdapter<T1, T2, T3, T4> : MonoBehaviour
+    public abstract partial class MonoCommandAdapter<T1, T2, T3, T4> : MonoBinder, IBinder<IRelayCommand<T1, T2, T3, T4>>
     {
         private IRelayCommand<T1, T2, T3, T4> _command;
 
-        public IRelayCommand<T1, T2, T3, T4> Command
+        protected IRelayCommand<T1, T2, T3, T4> Command
         {
-            protected get => _command;
-            set
+            get => _command;
+            private set
             {
                 if (_command == value) return;
 
@@ -139,6 +156,10 @@ namespace Aspid.UI.MVVM.StarterKit.Binders.Mono.Commands.Adapters
                     _command.CanExecuteChanged += OnCanExecuteChanged;
             }
         }
+        
+        [BinderLog]
+        public void SetValue(IRelayCommand<T1, T2, T3, T4> value) =>
+            Command = value;
         
         public bool CanExecute(T1 param1, T2 param2, T3 param3, T4 param4) => 
             Command.CanExecute(param1, param2, param3, param4);

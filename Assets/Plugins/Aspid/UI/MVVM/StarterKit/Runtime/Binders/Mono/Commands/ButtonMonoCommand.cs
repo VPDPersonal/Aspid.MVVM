@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Aspid.UI.MVVM.Commands;
 
-namespace Aspid.UI.MVVM.StarterKit.Binders.Mono.Commands.Adapters
+namespace Aspid.UI.MVVM.StarterKit.Binders.Mono.Commands
 {
     [RequireComponent(typeof(Button))]
     public sealed class ButtonMonoCommand : MonoCommandAdapter
@@ -13,9 +13,7 @@ namespace Aspid.UI.MVVM.StarterKit.Binders.Mono.Commands.Adapters
         private void Awake()
         {
             if (!_button)
-            {
                 _button = GetComponent<Button>();
-            }
         }
 
         private void OnEnable() => _button.onClick.AddListener(InvokeCommand);

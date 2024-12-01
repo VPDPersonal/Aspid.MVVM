@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Aspid.UI.MVVM.StarterKit.Binders.Mono.Commands.Adapters
+namespace Aspid.UI.MVVM.StarterKit.Binders.Mono.Commands
 {
     [RequireComponent(typeof(ScrollRect))]
     public sealed class ScrollRectMonoCommand : MonoCommandAdapter<Vector2>

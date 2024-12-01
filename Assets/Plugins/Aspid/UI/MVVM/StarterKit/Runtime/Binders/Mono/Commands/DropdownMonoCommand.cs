@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Aspid.UI.MVVM.Commands;
 
-namespace Aspid.UI.MVVM.StarterKit.Binders.Mono.Commands.Adapters
+namespace Aspid.UI.MVVM.StarterKit.Binders.Mono.Commands
 {
     [RequireComponent(typeof(Dropdown))]
     public sealed class DropdownMonoCommand : MonoCommandAdapter<int>

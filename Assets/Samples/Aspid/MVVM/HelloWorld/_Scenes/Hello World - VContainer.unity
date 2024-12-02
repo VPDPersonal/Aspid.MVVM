@@ -180,8 +180,6 @@ MonoBehaviour:
   _sayCommand:
     _isBindInteractable: 0
     _button: {fileID: 311916473}
-    _isDebug: 0
-    _log: []
 --- !u!114 &145963211
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -258,7 +256,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc337e21787248369dc0509272f8d5f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _isDisposeOnDestroy: 0
+  _isDisposeViewOnDestroy: 0
+  _isDisposeViewModelOnDestroy: 0
   _viewComponent:
     Resolve: 0
     Mono: {fileID: 145963210}
@@ -270,7 +269,7 @@ MonoBehaviour:
     Resolve: 2
     Mono: {fileID: 0}
     Type:
-      _typeName: Aspid.UI.HelloWorld.ViewModels.CommandSpeakerViewModel1, Aspid.UI.Samples.HelloWorld,
+      _typeName: Aspid.MVVM.HelloWorld.ViewModels.CommandSpeakerViewModel1, Aspid.MVVM.Samples.HelloWorld,
         Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
     References:
       rid: -2

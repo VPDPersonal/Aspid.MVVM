@@ -602,7 +602,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc337e21787248369dc0509272f8d5f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _isDisposeOnDestroy: 0
+  _isDisposeViewOnDestroy: 0
+  _isDisposeViewModelOnDestroy: 0
   _viewComponent:
     Resolve: 0
     Mono: {fileID: 1292469564}
@@ -614,7 +615,7 @@ MonoBehaviour:
     Resolve: 2
     Mono: {fileID: 0}
     Type:
-      _typeName: Aspid.UI.Stats.ViewModels.EditStatsViewModel, Aspid.UI.Samples.Stats,
+      _typeName: Aspid.MVVM.Stats.ViewModels.EditStatsViewModel, Aspid.MVVM.Samples.Stats,
         Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
     References:
       rid: -2
@@ -1625,7 +1626,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc337e21787248369dc0509272f8d5f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _isDisposeOnDestroy: 0
+  _isDisposeViewOnDestroy: 0
+  _isDisposeViewModelOnDestroy: 0
   _viewComponent:
     Resolve: 0
     Mono: {fileID: 6497330040264628419}
@@ -1637,7 +1639,7 @@ MonoBehaviour:
     Resolve: 2
     Mono: {fileID: 0}
     Type:
-      _typeName: Aspid.UI.Stats.ViewModels.ReadOnlyStatsViewModel, Aspid.UI.Samples.Stats,
+      _typeName: Aspid.MVVM.Stats.ViewModels.ReadOnlyStatsViewModel, Aspid.MVVM.Samples.Stats,
         Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
     References:
       rid: -2

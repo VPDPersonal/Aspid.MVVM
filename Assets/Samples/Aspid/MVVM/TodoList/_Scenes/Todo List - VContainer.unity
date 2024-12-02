@@ -1280,8 +1280,6 @@ MonoBehaviour:
   autoRun: 1
   autoInjectGameObjects:
   - {fileID: 1322158805}
-  scopeName: 
-  <Parent>k__BackingField: {fileID: 0}
   _todoItemViewModelFactorySettings:
     <Type>k__BackingField: 0
   _editTodoPopUpViewContainer: {fileID: 527272492}
@@ -1545,7 +1543,8 @@ MonoBehaviour:
     Resolve: 2
     Mono: {fileID: 0}
     Type:
-      _typeName: 
+      _typeName: Aspid.MVVM.TodoList.ViewModels.TodoStorageViewModel, Aspid.MVVM.Samples.TodoList,
+        Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
     References:
       rid: -2
   references:

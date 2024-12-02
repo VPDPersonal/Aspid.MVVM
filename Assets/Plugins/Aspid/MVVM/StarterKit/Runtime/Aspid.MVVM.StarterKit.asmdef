@@ -25,7 +25,7 @@
         {
             "name": "com.unity.localization",
             "expression": "",
-            "define": "ASPID_MVV_UNITY_LOCALIZATION_INTEGRATION"
+            "define": "ASPID_MVVM_UNITY_LOCALIZATION_INTEGRATION"
         },
         {
             "name": "com.alexeytaranov.serializereferencedropdown",

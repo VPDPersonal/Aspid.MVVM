@@ -111,10 +111,12 @@ namespace Aspid.MVVM.Mono
             var header = Elements.CreateHeader(Binder, IconPath);
 
             var defaultInspector = Elements.CreateContainer(EditorColor.LightContainer)
+                .SetName("Parameters")
                 .AddTitle(EditorColor.LightText, "Parameters")
                 .AddChild(new IMGUIContainer(DrawBaseInspector));
             
             var logContainer = Elements.CreateContainer(EditorColor.LightContainer) 
+                .SetName("Log")
                 .AddTitle(EditorColor.LightText, "Logs") 
                 .AddChild(new IMGUIContainer(DrawDebugLog));
 
@@ -173,18 +175,35 @@ namespace Aspid.MVVM.Mono
 
         private void DrawBaseInspectorInternal()
         {
+            var hasProperties = false;
+            
             serializedObject.UpdateIfRequiredOrScript();
             {
-                DrawPropertiesExcluding(serializedObject, PropertiesExcluding);
+                var enterChildren = true;
+                var iterator = serializedObject.GetIterator();
+                
+                while (iterator.NextVisible(enterChildren))
+                {
+                    enterChildren = false;
+                    if (!PropertiesExcluding.Contains(iterator.name))
+                    {
+                        hasProperties = true;
+                        EditorGUILayout.PropertyField(iterator, true);
+                    }
+                }
             }
             serializedObject.ApplyModifiedProperties();
+            
+            Root.Q<VisualElement>("Parameters").style.display = !hasProperties ? DisplayStyle.None : DisplayStyle.Flex;
         }   
         
         private void DrawDebugLog()
         {
             const string isShowLogKey = "IsShowLogKey";
             const string scrollLogPositionYKey = "ScrollLogPositionYKey";
-
+            
+            Root.Q<VisualElement>("Log").style.display = _log is null ? DisplayStyle.None : DisplayStyle.Flex;
+            
             if (_isDebug is null || _log is null) return;
         
             serializedObject.UpdateIfRequiredOrScript();

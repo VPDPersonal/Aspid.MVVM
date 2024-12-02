@@ -7,7 +7,7 @@ namespace Aspid.MVVM.StarterKit.Binders.Mono
     [AddComponentMenu("UI/Binders/Image/Image Binder - Sprite")]
     public partial class ImageSpriteMonoBinder : ComponentMonoBinder<Image>, IBinder<Sprite>
     {
-        [Header("Parameter")]
+        [Header("Parameters")]
         [SerializeField] private bool _disabledWhenNull = true;
 
         [BinderLog]

@@ -6,7 +6,7 @@ namespace Aspid.MVVM.StarterKit.Binders.Mono
     [AddComponentMenu("UI/Binders/Line Renderers/Line Renderer Binder - Color")]
     public class LineRendererColorMonoBinder : ComponentMonoBinder<LineRenderer>, IColorBinder
     {
-        [Header("Parameter")]
+        [Header("Parameters")]
         [SerializeField] private LineRendererColorMode _mode = LineRendererColorMode.StartAndEnd;
         
         [Header("Converter")]

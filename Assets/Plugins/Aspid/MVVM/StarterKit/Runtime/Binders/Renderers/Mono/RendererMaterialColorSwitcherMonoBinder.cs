@@ -5,7 +5,6 @@ namespace Aspid.MVVM.StarterKit.Binders.Mono
     [AddComponentMenu("UI/Binders/Renderer/Renderer Binder - Material Color Switcher")]
     public sealed class RendererMaterialColorSwitcherMonoBinder : SwitcherMonoBinder<Renderer, Color>
     {
-        [Header("Parameter")]
         [SerializeField] private string _colorPropertyName = "_BaseColor";
 
         private int? _colorPropertyId;

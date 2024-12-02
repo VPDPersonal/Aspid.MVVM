@@ -9,6 +9,19 @@ namespace Aspid.MVVM.StarterKit.Binders.Mono
     [AddComponentMenu("UI/Binders/UnityEvent/UnityEvent Binder - Number Condition")]
     public partial class NumberConditionUnityEventMonoBinder : MonoBinder, INumberBinder
     {
+        public event UnityAction TrueEvent
+        {
+            add => _trueEvent.AddListener(value);
+            remove => _trueEvent.RemoveListener(value);
+        }
+        
+        public event UnityAction FalseEvent
+        {
+            add => _falseEvent.AddListener(value);
+            remove => _falseEvent.RemoveListener(value);
+        }
+        
+        [Header("Converter")]
 #if ASPID_MVVM_SERIALIZE_REFERENCE_DROPDOWN_INTEGRATION
         [SerializeReferenceDropdown]
 #endif

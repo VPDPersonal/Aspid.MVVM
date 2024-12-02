@@ -8,7 +8,6 @@ namespace Aspid.MVVM.StarterKit.Binders.Mono
     [AddComponentMenu("UI/Binders/Transform/Transform Binder - Euler Angles")]
     public partial class TransformEulerAnglesMonoBinder : MonoBinder, IVectorBinder, INumberBinder
     {
-        [Header("Parameters")]
         [SerializeField] private Space _space = Space.World;
         [SerializeField] private VectorMode _mode = VectorMode.XYZ;
         

@@ -11,7 +11,7 @@ namespace Aspid.MVVM.StarterKit.Binders.Mono
     {
         public event Action<bool> ValueChanged;
         
-        [Header("Parameter")]
+        [Header("Parameters")]
         [SerializeField] private bool _isInvert;
         [SerializeField] private bool _isReverseEnabled;
         

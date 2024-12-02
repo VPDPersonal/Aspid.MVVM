@@ -15,7 +15,7 @@ namespace Aspid.MVVM.StarterKit.Binders.Mono
         public event Action<float> FloatValueChanged;
         public event Action<double> DoubleValueChanged;
 
-        [Header("Parameter")]
+        [Header("Parameters")]
         [SerializeField] private bool _isReverseEnabled;
         
         [Header("Converter")]

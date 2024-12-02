@@ -8,7 +8,6 @@ namespace Aspid.MVVM.StarterKit.Binders.Mono
     [AddComponentMenu("UI/Binders/Transform/Transform Binder - Rotation")]
     public partial class TransformRotationMonoBinder : MonoBinder, IRotationBinder, INumberBinder
     {
-        [Header("Parameter")]
         [SerializeField] private Space _space = Space.World;
 
         [Header("Converter")]

@@ -8,7 +8,6 @@ namespace Aspid.MVVM.StarterKit.Binders.Mono
     [AddComponentMenu("UI/Binders/Transform/Transform Binder - Scale")]
     public partial class TransformScaleMonoBinder : MonoBinder, IVectorBinder, INumberBinder
     {
-        [Header("Parameter")]
         [SerializeField] private VectorMode _mode = VectorMode.XYZ;
         
         [Header("Converter")]

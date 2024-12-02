@@ -9,7 +9,6 @@ namespace Aspid.MVVM.StarterKit.Binders.Mono
     // TODO Need to check functionality
     public abstract partial class EnumMonoBinder<T> : MonoBinder, IBinder<Enum>
     {
-        [Header("Parameters")]
         [SerializeField] private T _defaultValue;
         [SerializeField] private bool _allowDefaultValueWhenNoValue;
         [SerializeField] private EnumValue<T>[] _values;

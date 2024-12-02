@@ -8,7 +8,6 @@ namespace Aspid.MVVM.StarterKit.Binders.Mono
     [AddComponentMenu("UI/Binders/Transform/Transform Binder - Position")]
     public partial class TransformPositionMonoBinder : MonoBinder, IVectorBinder, INumberBinder
     {
-        [Header("Parameters")]
         [SerializeField] private Space _space = Space.World;
         [SerializeField] private VectorMode _mode = VectorMode.XYZ;
         

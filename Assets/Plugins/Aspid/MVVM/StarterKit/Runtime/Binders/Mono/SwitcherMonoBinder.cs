@@ -6,7 +6,6 @@ namespace Aspid.MVVM.StarterKit.Binders.Mono
 {
     public abstract partial class SwitcherMonoBinder<T> : MonoBinder, IBinder<bool> 
     {
-        [Header("Parameters")]
         [SerializeField] private T _trueValue;
         [SerializeField] private T _falseValue;
 

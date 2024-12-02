@@ -84,7 +84,7 @@ namespace Aspid.MVVM.Mono.Views
 
             var baseInspector = Elements.CreateContainer(EditorColor.LightContainer)
                 .SetMargin(top: 10)
-                .SetName("Base Inspector")
+                .SetName("BaseInspector")
                 .AddChild(new IMGUIContainer(DrawBaseInspector));
             
             var otherBinders = CreateOtherBindersContainer()
@@ -123,12 +123,25 @@ namespace Aspid.MVVM.Mono.Views
         #region Draw
         private void DrawBaseInspector()
         {
+            var propertiesCount = 0;
             var oldBindersDictionary = ViewUtility.GetMonoBinderValidableWithFieldName(View);
 
             serializedObject.UpdateIfRequiredOrScript();
             {
-                OnDrawingBaseInspector();
-                DrawPropertiesExcluding(serializedObject, PropertiesExcluding);
+                propertiesCount += OnDrawingBaseInspector();
+                
+                var enterChildren = true;
+                var iterator = serializedObject.GetIterator();
+                
+                while (iterator.NextVisible(enterChildren))
+                {
+                    enterChildren = false;
+                    if (!PropertiesExcluding.Contains(iterator.name))
+                    {
+                        propertiesCount++;
+                        EditorGUILayout.PropertyField(iterator, true);
+                    }
+                }
             }
             serializedObject.ApplyModifiedProperties();
 
@@ -138,14 +151,16 @@ namespace Aspid.MVVM.Mono.Views
 
             serializedObject.UpdateIfRequiredOrScript();
             {
-                OnDrewBaseInspector();
+                propertiesCount += OnDrewBaseInspector();
             }
             serializedObject.ApplyModifiedProperties();
+            
+            Root.Q<VisualElement>("BaseInspector").style.display = propertiesCount == 0 ? DisplayStyle.None : DisplayStyle.Flex;
         }
 
-        protected virtual void OnDrawingBaseInspector() { }
-        
-        protected virtual void OnDrewBaseInspector() { }
+        protected virtual int OnDrawingBaseInspector() => 0;
+
+        protected virtual int OnDrewBaseInspector() => 0;
         
         private void DrawOtherBinders()
         {

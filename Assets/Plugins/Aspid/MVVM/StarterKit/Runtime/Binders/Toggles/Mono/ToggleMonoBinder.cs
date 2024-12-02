@@ -1,0 +1,50 @@
+using System;
+using UnityEngine;
+using UnityEngine.UI;
+using Aspid.MVVM.ViewModels;
+using Aspid.MVVM.Mono.Generation;
+
+namespace Aspid.MVVM.StarterKit.Binders.Mono
+{
+    [AddComponentMenu("UI/Binders/Toggles/Toggle Binder")]
+    public partial class ToggleMonoBinder : ComponentMonoBinder<Toggle>, IBinder<bool>, IReverseBinder<bool>
+    {
+        public event Action<bool> ValueChanged;
+        
+        [Header("Parameter")]
+        [SerializeField] private bool _isInvert;
+        [SerializeField] private bool _isReverseEnabled;
+        
+        private bool _isNotifyValueChanged = true;
+
+        public bool IsReverseEnabled => _isReverseEnabled;
+
+        protected override void OnBound(IViewModel viewModel, string id)
+        {
+            if (!IsReverseEnabled) return;
+            CachedComponent.onValueChanged.AddListener(OnValueChanged); 
+        }
+
+        protected override void OnUnbound()
+        {
+            if (!IsReverseEnabled) return;
+            CachedComponent.onValueChanged.RemoveListener(OnValueChanged);
+        }
+        
+        [BinderLog]
+        public void SetValue(bool value)
+        {
+            value = _isInvert ? !value : value;
+
+            _isNotifyValueChanged = false;
+            CachedComponent.isOn = value;
+            _isNotifyValueChanged = true;
+        }
+
+        private void OnValueChanged(bool isOn) 
+        {
+            if (!_isNotifyValueChanged) return;
+            ValueChanged?.Invoke(_isInvert ? !isOn : isOn);
+        }
+    }
+}

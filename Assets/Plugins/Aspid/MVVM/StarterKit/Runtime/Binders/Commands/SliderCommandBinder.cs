@@ -1,0 +1,301 @@
+using System;
+using UnityEngine;
+using UnityEngine.UI;
+using Aspid.MVVM.Commands;
+
+namespace Aspid.MVVM.StarterKit.Binders
+{
+    [Serializable]
+    public sealed class SliderCommandBinder : Binder, IBinder<IRelayCommand<float>>
+    {
+        [SerializeField] private bool _isBindInteractable = true;
+        [SerializeField] private Slider _slider;
+        
+        private IRelayCommand<float> _command;
+        
+        public override bool IsBind => _slider is not null;
+        
+        private SliderCommandBinder() { }
+        
+        public SliderCommandBinder(Slider slider, bool isBindInteractable = true)
+        {
+            _slider = slider;
+            _isBindInteractable = isBindInteractable;
+        }
+        
+        public void SetValue(IRelayCommand<float> command)
+        {
+            ReleaseCommand();            
+            _command = command;
+            
+            Subscribe();
+            OnCanExecuteChanged(command);
+        }
+        
+        private void Subscribe()
+        {
+            _slider.onValueChanged.AddListener(Execute);
+            _command.CanExecuteChanged += OnCanExecuteChanged;
+        }
+
+        private void Unsubscribe()
+        {
+            _slider.onValueChanged.RemoveListener(Execute);
+            _command.CanExecuteChanged -= OnCanExecuteChanged;
+        }
+        
+        private void Execute(float value)
+        {
+            OnCanExecuteChanged(_command);
+            _command?.Execute(value);
+        }
+
+        protected override void OnUnbound() => ReleaseCommand();
+
+        private void ReleaseCommand()
+        {
+            if (_command is not null) Unsubscribe();
+            _command = null;
+        }
+        
+        private void OnCanExecuteChanged(IRelayCommand<float> command)
+        {
+            if (!_isBindInteractable) return; 
+            _slider.interactable = command.CanExecute(_slider.value);
+        }
+    }
+
+    [Serializable]
+    public class SliderCommandBinder<T> : Binder, IBinder<IRelayCommand<float, T>>
+    {
+        [SerializeField] private bool _isBindInteractable = true;
+        [SerializeField] private Slider _slider;
+        
+        [Header("Parameters")]
+        [SerializeField] private T _param;
+        
+        private IRelayCommand<float, T> _command;
+        
+        public T Param
+        {
+            get => _param;
+            set => _param = value;
+        }
+        
+        public override bool IsBind => _slider is not null;
+        
+        private SliderCommandBinder() { }
+        
+        public SliderCommandBinder(Slider slider, T param, bool isBindInteractable = true)
+        {
+            _param = param;
+            _slider = slider;
+            _isBindInteractable = isBindInteractable;
+        }
+        
+        public void SetValue(IRelayCommand<float, T> command)
+        {
+            ReleaseCommand();            
+            _command = command;
+            
+            Subscribe();
+            OnCanExecuteChanged(command);
+        }
+        
+        private void Subscribe()
+        {
+            _slider.onValueChanged.AddListener(Execute);
+            _command.CanExecuteChanged += OnCanExecuteChanged;
+        }
+
+        private void Unsubscribe()
+        {
+            _slider.onValueChanged.RemoveListener(Execute);
+            _command.CanExecuteChanged -= OnCanExecuteChanged;
+        }
+        
+        private void Execute(float value)
+        {
+            OnCanExecuteChanged(_command);
+            _command?.Execute(value, Param);
+        }
+
+        protected override void OnUnbound() => ReleaseCommand();
+
+        private void ReleaseCommand()
+        {
+            if (_command is not null) Unsubscribe();
+            _command = null;
+        }
+        
+        private void OnCanExecuteChanged(IRelayCommand<float, T> command)
+        {
+            if (!_isBindInteractable) return; 
+            _slider.interactable = command.CanExecute(_slider.value, Param);
+        }
+    }
+    
+    [Serializable]
+    public class SliderCommandBinder<T1, T2> : Binder, IBinder<IRelayCommand<float, T1, T2>>
+    {
+        [SerializeField] private bool _isBindInteractable = true;
+        [SerializeField] private Slider _slider;
+        
+        [Header("Parameters")]
+        [SerializeField] private T1 _param1;
+        [SerializeField] private T2 _param2;
+        
+        private IRelayCommand<float, T1, T2> _command;
+        
+        public T1 Param1
+        {
+            get => _param1;
+            set => _param1 = value;
+        }
+        
+        public T2 Param2
+        {
+            get => _param2;
+            set => _param2 = value;
+        }
+        
+        public override bool IsBind => _slider is not null;
+        
+        private SliderCommandBinder() { }
+        
+        public SliderCommandBinder(Slider slider, T1 param1, T2 param2, bool isBindInteractable = true)
+        {
+            _param1 = param1;
+            _param2 = param2;
+            _slider = slider;
+            _isBindInteractable = isBindInteractable;
+        }
+        
+        public void SetValue(IRelayCommand<float, T1, T2> command)
+        {
+            ReleaseCommand();            
+            _command = command;
+            
+            Subscribe();
+            OnCanExecuteChanged(command);
+        }
+        
+        private void Subscribe()
+        {
+            _slider.onValueChanged.AddListener(Execute);
+            _command.CanExecuteChanged += OnCanExecuteChanged;
+        }
+
+        private void Unsubscribe()
+        {
+            _slider.onValueChanged.RemoveListener(Execute);
+            _command.CanExecuteChanged -= OnCanExecuteChanged;
+        }
+        
+        private void Execute(float value)
+        {
+            OnCanExecuteChanged(_command);
+            _command?.Execute(value, Param1, Param2);
+        }
+
+        protected override void OnUnbound() => ReleaseCommand();
+
+        private void ReleaseCommand()
+        {
+            if (_command is not null) Unsubscribe();
+            _command = null;
+        }
+        
+        private void OnCanExecuteChanged(IRelayCommand<float, T1, T2> command)
+        {
+            if (!_isBindInteractable) return; 
+            _slider.interactable = command.CanExecute(_slider.value, Param1, Param2);
+        }
+    }
+    
+    [Serializable]
+    public class SliderCommandBinder<T1, T2, T3> : Binder, IBinder<IRelayCommand<float, T1, T2, T3>>
+    {
+        [SerializeField] private bool _isBindInteractable = true;
+        [SerializeField] private Slider _slider;
+        
+        [Header("Parameters")]
+        [SerializeField] private T1 _param1;
+        [SerializeField] private T2 _param2;
+        [SerializeField] private T3 _param3;
+        
+        private IRelayCommand<float, T1, T2, T3> _command;
+        
+        public T1 Param1
+        {
+            get => _param1;
+            set => _param1 = value;
+        }
+        
+        public T2 Param2
+        {
+            get => _param2;
+            set => _param2 = value;
+        }
+        
+        public T3 Param3
+        {
+            get => _param3;
+            set => _param3 = value;
+        }
+        
+        public override bool IsBind => _slider is not null;
+        
+        private SliderCommandBinder() { }
+        
+        public SliderCommandBinder(Slider slider, T1 param1, T2 param2, T3 param3, bool isBindInteractable = true)
+        {
+            _param1 = param1;
+            _param2 = param2;
+            _param3 = param3;
+            _slider = slider;
+            _isBindInteractable = isBindInteractable;
+        }
+        
+        public void SetValue(IRelayCommand<float, T1, T2, T3> command)
+        {
+            ReleaseCommand();            
+            _command = command;
+            
+            Subscribe();
+            OnCanExecuteChanged(command);
+        }
+        
+        private void Subscribe()
+        {
+            _slider.onValueChanged.AddListener(Execute);
+            _command.CanExecuteChanged += OnCanExecuteChanged;
+        }
+
+        private void Unsubscribe()
+        {
+            _slider.onValueChanged.RemoveListener(Execute);
+            _command.CanExecuteChanged -= OnCanExecuteChanged;
+        }
+        
+        private void Execute(float value)
+        {
+            OnCanExecuteChanged(_command);
+            _command?.Execute(value, Param1, Param2, Param3);
+        }
+
+        protected override void OnUnbound() => ReleaseCommand();
+
+        private void ReleaseCommand()
+        {
+            if (_command is not null) Unsubscribe();
+            _command = null;
+        }
+        
+        private void OnCanExecuteChanged(IRelayCommand<float, T1, T2, T3> command)
+        {
+            if (!_isBindInteractable) return; 
+            _slider.interactable = command.CanExecute(_slider.value, Param1, Param2, Param3);
+        }
+    }
+}

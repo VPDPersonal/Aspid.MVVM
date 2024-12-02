@@ -1,0 +1,24 @@
+{
+    "name": "Aspid.MVVM.Samples.HelloWorld",
+    "rootNamespace": "",
+    "references": [
+        "GUID:572bdb0616e842849d7130e580b9eb98",
+        "GUID:e36ce08aaa81479aa562b0755755332c",
+        "GUID:b0214a6008ed146ff8f122a6a9c2f6cc"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [
+        {
+            "name": "jp.hadashikick.vcontainer",
+            "expression": "",
+            "define": "ASPID_UI_VCONTAINER_INTEGRATION"
+        }
+    ],
+    "noEngineReferences": false
+}

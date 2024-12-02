@@ -1,0 +1,44 @@
+using UnityEngine;
+using Aspid.MVVM.Mono;
+using UnityEngine.Events;
+using Aspid.MVVM.Mono.Generation;
+using Aspid.MVVM.StarterKit.Converters;
+
+namespace Aspid.MVVM.StarterKit.Binders.Mono
+{
+#if UNITY_2023_1_OR_NEWER
+    public abstract partial class GenericToStringCasterMonoBinder<T> : MonoBinder, IBinder<T>
+    {
+        [Header("Converter")]
+#if ASPID_MVVM_SERIALIZE_REFERENCE_DROPDOWN_INTEGRATION
+        [SerializeReferenceDropdown]
+#endif
+        [SerializeReference] private IConverter<T, string> _converter;
+        
+        [Header("Events")]
+        [SerializeField] private UnityEvent<string> _casted;
+        
+        [BinderLog]
+        public void SetValue(T value)
+        {
+            if (_converter == null) return;
+            _casted.Invoke(_converter.Convert(value));
+        }
+    }
+#else
+    public abstract partial class GenericToStringCasterMonoBinder<T> : MonoBinder, IBinder<T>
+    {
+        [Header("Events")]
+        [SerializeField] private UnityEvent<string> _casted;
+        
+        protected abstract IConverter<T, string> Converter { get; }
+        
+        [BinderLog]
+        public void SetValue(T value)
+        {
+	        if (Converter == null) return;
+	        _casted.Invoke(Converter.Convert(value));
+        }
+    }
+#endif
+}

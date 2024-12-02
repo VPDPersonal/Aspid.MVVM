@@ -1,11 +1,11 @@
 #nullable enable
 using System;
+using UnityEngine;
 using UnityEngine.UI;
 using Aspid.UI.MVVM.ViewModels;
 using Aspid.UI.MVVM.StarterKit.Converters;
-using UnityEngine;
 
-namespace Aspid.UI.MVVM.StarterKit.Binders.Sliders
+namespace Aspid.UI.MVVM.StarterKit.Binders
 {
     public class SliderValueBinder : Binder, INumberBinder, INumberReverseBinder
     {

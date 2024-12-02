@@ -5,7 +5,7 @@ using System;
 using System.Globalization;
 using Aspid.UI.MVVM.StarterKit.Converters;
 
-namespace Aspid.UI.MVVM.StarterKit.Binders.Texts
+namespace Aspid.UI.MVVM.StarterKit.Binders
 {
     public class TextBinder : Binder, IBinder<string?>, INumberBinder
     {

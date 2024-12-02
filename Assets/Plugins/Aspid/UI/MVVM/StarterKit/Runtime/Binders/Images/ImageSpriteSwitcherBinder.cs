@@ -3,7 +3,7 @@ using System;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Aspid.UI.MVVM.StarterKit.Binders.Images
+namespace Aspid.UI.MVVM.StarterKit.Binders
 {
     public sealed class ImageSpriteSwitcherBinder : SwitcherBinder<Sprite?>
     {

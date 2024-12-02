@@ -3,11 +3,10 @@ using System.Collections.Generic;
 using Aspid.Collections.Observable;
 using System.Collections.Specialized;
 
-namespace Aspid.UI.MVVM.StarterKit.Binders.Collections.Dictionaries
+namespace Aspid.UI.MVVM.StarterKit.Binders
 {
     public abstract class DictionaryBinderBase<TKey, TValue> : Binder,
-        IBinder<IReadOnlyObservableDictionary<TKey, TValue>>,
-        IDisposable
+        IBinder<IReadOnlyObservableDictionary<TKey, TValue>>, IDisposable
     {
         private IReadOnlyObservableDictionary<TKey, TValue> _dictionary;
         

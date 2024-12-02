@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Aspid.UI.MVVM.StarterKit.Converters;
 
-namespace Aspid.UI.MVVM.StarterKit.Binders.Graphics
+namespace Aspid.UI.MVVM.StarterKit.Binders
 {
     public class GraphicColorBinder : Binder, IColorBinder
     {

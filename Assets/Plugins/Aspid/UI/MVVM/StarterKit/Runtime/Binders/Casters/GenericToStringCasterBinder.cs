@@ -3,7 +3,7 @@ using System;
 using Aspid.UI.MVVM.StarterKit.Converters;
 using Aspid.UI.MVVM.StarterKit.Converters.Strings;
 
-namespace Aspid.UI.MVVM.StarterKit.Binders.Casters
+namespace Aspid.UI.MVVM.StarterKit.Binders
 {
     public sealed class GenericToStringCasterBinder<T> : Binder, IBinder<T>
     {

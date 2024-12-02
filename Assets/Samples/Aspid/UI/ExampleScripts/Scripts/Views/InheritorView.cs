@@ -5,8 +5,7 @@ using Aspid.UI.MVVM.Views;
 using Aspid.UI.MVVM.Mono.Views;
 using System.Collections.Generic;
 using Aspid.UI.MVVM.Views.Generation;
-using Aspid.UI.MVVM.StarterKit.Binders.Texts;
-using Aspid.UI.MVVM.StarterKit.Binders.GameObjects;
+using Aspid.UI.MVVM.StarterKit.Binders;
 
 namespace Aspid.UI.ExampleScripts.Views
 {

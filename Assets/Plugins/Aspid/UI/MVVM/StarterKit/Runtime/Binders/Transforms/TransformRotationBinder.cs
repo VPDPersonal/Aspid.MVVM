@@ -3,9 +3,9 @@ using System;
 using UnityEngine;
 using Aspid.UI.MVVM.StarterKit.Converters;
 
-namespace Aspid.UI.MVVM.StarterKit.Binders.Transforms
+namespace Aspid.UI.MVVM.StarterKit.Binders
 {
-    public class TransformRotationBinder : Binder, IRotationBinder
+    public class TransformRotationBinder : Binder, IRotationBinder, INumberBinder
     {
         private readonly Space _space;
         private readonly Transform _transform;
@@ -37,14 +37,19 @@ namespace Aspid.UI.MVVM.StarterKit.Binders.Transforms
         public void SetValue(Quaternion value)
         {
             value = _converter?.Convert(value) ?? value;
-            
-            switch (_space)
-            {
-                case Space.Self: _transform.localRotation = value; break;
-                case Space.World: _transform.rotation = value; break;
-                default: throw new ArgumentOutOfRangeException();
-            }
+            _transform.SetRotation(value, _space);
         }
+        
+        public void SetValue(int value) =>
+            SetValue((float)value);
+        
+        public void SetValue(long value) =>
+            SetValue((float)value);
+        
+        public void SetValue(double value) =>
+            SetValue((float)value);
+        
+        public void SetValue(float value) =>
+            SetValue(Quaternion.Euler(new Vector3(value, value, value)));
     }
-
 }

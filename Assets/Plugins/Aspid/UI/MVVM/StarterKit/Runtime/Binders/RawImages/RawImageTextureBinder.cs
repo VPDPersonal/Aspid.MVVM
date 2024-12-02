@@ -3,7 +3,7 @@ using System;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Aspid.UI.MVVM.StarterKit.Binders.RawImages
+namespace Aspid.UI.MVVM.StarterKit.Binders
 {
     public class RawImageTextureBinder : Binder, IBinder<Texture2D?>, IBinder<Sprite?>
     {

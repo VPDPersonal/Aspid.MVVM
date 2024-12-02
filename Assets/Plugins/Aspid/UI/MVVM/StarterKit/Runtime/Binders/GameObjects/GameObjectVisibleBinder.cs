@@ -2,7 +2,7 @@
 using System;
 using UnityEngine;
 
-namespace Aspid.UI.MVVM.StarterKit.Binders.GameObjects
+namespace Aspid.UI.MVVM.StarterKit.Binders
 {
     public class GameObjectVisibleBinder : Binder, IBinder<bool>
     {

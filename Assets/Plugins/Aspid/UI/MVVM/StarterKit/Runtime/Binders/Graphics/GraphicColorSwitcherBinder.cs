@@ -3,7 +3,7 @@ using System;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Aspid.UI.MVVM.StarterKit.Binders.Graphics
+namespace Aspid.UI.MVVM.StarterKit.Binders
 {
     public sealed class GraphicColorSwitcherBinder : SwitcherBinder<Color>
     {

@@ -3,7 +3,7 @@ using System;
 using UnityEngine.UI;
 using Aspid.UI.MVVM.StarterKit.Converters;
 
-namespace Aspid.UI.MVVM.StarterKit.Binders.Images
+namespace Aspid.UI.MVVM.StarterKit.Binders
 {
     public class ImageFillBinder : Binder, INumberBinder
     {

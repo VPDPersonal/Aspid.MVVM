@@ -3,7 +3,7 @@ using System;
 using UnityEngine;
 using Aspid.UI.MVVM.Commands;
 
-namespace Aspid.UI.MVVM.StarterKit.Binders.Commands
+namespace Aspid.UI.MVVM.StarterKit.Binders
 {
     [Serializable]
     public sealed class DropdownCommandBinder : Binder, IBinder<IRelayCommand<int>>

@@ -3,12 +3,13 @@ using System;
 using UnityEngine;
 using Aspid.UI.MVVM.StarterKit.Converters;
 
-namespace Aspid.UI.MVVM.StarterKit.Binders.CanvasGroups
+namespace Aspid.UI.MVVM.StarterKit.Binders
 {
+    [Serializable]
     public class CanvasGroupAlphaBinder : Binder, IBinder<bool>, INumberBinder
     {
-        private readonly CanvasGroup _canvasGroup;
-        private readonly IConverter<float, float>? _converter;
+        private CanvasGroup _canvasGroup;
+        private IConverter<float, float>? _converter;
         
         public CanvasGroupAlphaBinder(CanvasGroup canvasGroup, Func<float, float> converter)
             : this(canvasGroup, new GenericFuncConverter<float, float>(converter)) { }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Aspid.Collections.Observable;
 using System.Collections.Specialized;
 
-namespace Aspid.UI.MVVM.StarterKit.Binders.Collections.Lists
+namespace Aspid.UI.MVVM.StarterKit.Binders
 {
     public abstract class ListBinderBase<T> : Binder, IBinder<IReadOnlyObservableList<T>>, IDisposable
     {

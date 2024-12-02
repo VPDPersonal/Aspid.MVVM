@@ -2,8 +2,8 @@ using UnityEngine;
 using Aspid.UI.MVVM.Mono;
 using Aspid.UI.MVVM.Mono.Views;
 using Aspid.UI.MVVM.Views.Generation;
+using Aspid.UI.MVVM.StarterKit.Binders;
 using Aspid.UI.MVVM.StarterKit.Binders.Mono;
-using Aspid.UI.MVVM.StarterKit.Binders.Commands;
 
 namespace Aspid.UI.TodoList.Views
 {

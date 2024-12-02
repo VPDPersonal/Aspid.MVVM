@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Aspid.UI.MVVM.Commands;
 
-namespace Aspid.UI.MVVM.StarterKit.Binders.Commands
+namespace Aspid.UI.MVVM.StarterKit.Binders
 {
     [Serializable]
     public sealed class SliderCommandBinder : Binder, IBinder<IRelayCommand<float>>

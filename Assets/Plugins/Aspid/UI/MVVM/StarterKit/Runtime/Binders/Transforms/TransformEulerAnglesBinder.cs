@@ -3,15 +3,16 @@ using System;
 using UnityEngine;
 using Aspid.UI.MVVM.StarterKit.Converters;
 
-namespace Aspid.UI.MVVM.StarterKit.Binders.Transforms
+namespace Aspid.UI.MVVM.StarterKit.Binders
 {
-    public class TransformEulerAnglesBinder : Binder, IVectorBinder
+    public class TransformEulerAnglesBinder : Binder, IVectorBinder, INumberBinder
     {
         private readonly Space _space;
+        private readonly VectorMode _mode;
         private readonly Transform _transform;
         private readonly IConverter<Vector3, Vector3>? _converter;
         
-        public TransformEulerAnglesBinder(Transform transform, Space space = Space.World)
+        public TransformEulerAnglesBinder(Transform transform, Space space = Space.World, VectorMode mode = VectorMode.XYZ)
         {
             _space = space;
             _converter = null;
@@ -19,16 +20,17 @@ namespace Aspid.UI.MVVM.StarterKit.Binders.Transforms
         }
         
         public TransformEulerAnglesBinder(Transform transform, Func<Vector3, Vector3> converter) 
-            : this(transform, Space.World, new GenericFuncConverter<Vector3, Vector3>(converter)) { }
+            : this(transform, Space.World, VectorMode.XYZ, new GenericFuncConverter<Vector3, Vector3>(converter)) { }
         
-        public TransformEulerAnglesBinder(Transform transform, Space space, Func<Vector3, Vector3> converter)
-            : this(transform, space, new GenericFuncConverter<Vector3, Vector3>(converter)) { }
+        public TransformEulerAnglesBinder(Transform transform, Space space, VectorMode mode, Func<Vector3, Vector3> converter)
+            : this(transform, space, mode, new GenericFuncConverter<Vector3, Vector3>(converter)) { }
 
         public TransformEulerAnglesBinder(Transform transform, IConverter<Vector3, Vector3>? converter) :
-            this(transform, Space.World, converter) { }
+            this(transform, Space.World, VectorMode.XYZ, converter) { }
         
-        public TransformEulerAnglesBinder(Transform transform, Space space, IConverter<Vector3, Vector3>? converter)
+        public TransformEulerAnglesBinder(Transform transform, Space space, VectorMode mode, IConverter<Vector3, Vector3>? converter)
         {
+            _mode = mode;
             _space = space;
             _converter = converter;
             _transform = transform ?? throw new ArgumentNullException(nameof(transform));
@@ -39,14 +41,19 @@ namespace Aspid.UI.MVVM.StarterKit.Binders.Transforms
         public void SetValue(Vector3 value)
         {
             value = _converter?.Convert(value) ?? value;
-            
-            switch (_space)
-            {
-                case Space.Self: _transform.localEulerAngles = value; break;
-                case Space.World: _transform.eulerAngles = value; break;
-                default: throw new ArgumentOutOfRangeException();
-            }
+            _transform.SetEulerAngles(value, _mode, _space);
         }
+        
+        public void SetValue(int value) =>
+            SetValue((float)value);
+        
+        public void SetValue(long value) =>
+            SetValue((float)value);
+        
+        public void SetValue(double value) =>
+            SetValue((float)value);
+        
+        public void SetValue(float value) =>
+            SetValue(new Vector3(value, value, value));
     }
-
 }

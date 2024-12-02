@@ -2,7 +2,7 @@
 using System;
 using UnityEngine;
 
-namespace Aspid.UI.MVVM.StarterKit.Binders.Transforms
+namespace Aspid.UI.MVVM.StarterKit.Binders
 {
     public sealed class TransformRotationSwitcherBinder : SwitcherBinder<Vector3>
     {
@@ -16,14 +16,7 @@ namespace Aspid.UI.MVVM.StarterKit.Binders.Transforms
             _transform = transform ?? throw new ArgumentNullException(nameof(transform));
         }
 
-        protected override void SetValue(Vector3 value)
-        {
-            switch (_space)
-            {
-                case Space.Self: _transform.localRotation = Quaternion.Euler(value); break;
-                case Space.World: _transform.rotation = Quaternion.Euler(value); break;
-                default: throw new ArgumentOutOfRangeException();
-            }
-        }
+        protected override void SetValue(Vector3 value) =>
+            _transform.SetRotation(Quaternion.Euler(value), _space);
     }
 }

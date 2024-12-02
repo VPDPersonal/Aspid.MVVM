@@ -3,8 +3,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Aspid.UI.MVVM.Mono.Views;
 using Aspid.UI.MVVM.Views.Generation;
-using Aspid.UI.MVVM.StarterKit.Binders.Texts;
-using Aspid.UI.MVVM.StarterKit.Binders.Images;
+using Aspid.UI.MVVM.StarterKit.Binders;
 
 namespace Aspid.UI.Elements.Views
 {

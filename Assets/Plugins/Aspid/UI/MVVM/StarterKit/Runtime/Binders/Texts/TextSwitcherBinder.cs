@@ -3,7 +3,7 @@
 using System;
 using TMPro;
 
-namespace Aspid.UI.MVVM.StarterKit.Binders.Texts
+namespace Aspid.UI.MVVM.StarterKit.Binders
 {
     public sealed class TextSwitcherBinder : SwitcherBinder<string>
     {

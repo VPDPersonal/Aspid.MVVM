@@ -3,7 +3,7 @@ using System;
 using UnityEngine.UI;
 using Aspid.UI.MVVM.ViewModels;
 
-namespace Aspid.UI.MVVM.StarterKit.Binders.Toggles
+namespace Aspid.UI.MVVM.StarterKit.Binders
 {
     public class ToggleBinder : Binder, IBinder<bool>, IReverseBinder<bool>
     {
@@ -41,19 +41,16 @@ namespace Aspid.UI.MVVM.StarterKit.Binders.Toggles
         public void SetValue(bool value)
         {
             value = IsInvert ? !value : value;
-            
-            if (IsReverseEnabled && _toggle.isOn != value)
-                _isNotifyValueChanged = false;
-            
+
+            _isNotifyValueChanged = false;
             _toggle.isOn = value;
+            _isNotifyValueChanged = true;
         }
 
         private void OnValueChanged(bool isOn)
         {
-            if (_isNotifyValueChanged)
-                ValueChanged?.Invoke(IsInvert ? !isOn : isOn);
-            
-            _isNotifyValueChanged = true;
+            if (!_isNotifyValueChanged) return;
+            ValueChanged?.Invoke(IsInvert ? !isOn : isOn);
         }
     }
 }

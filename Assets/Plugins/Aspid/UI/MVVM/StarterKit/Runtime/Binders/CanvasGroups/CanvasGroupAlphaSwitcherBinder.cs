@@ -2,7 +2,7 @@
 using System;
 using UnityEngine;
 
-namespace Aspid.UI.MVVM.StarterKit.Binders.CanvasGroups
+namespace Aspid.UI.MVVM.StarterKit.Binders
 {
     public sealed class CanvasGroupAlphaSwitcherBinder : SwitcherBinder<float>
     {

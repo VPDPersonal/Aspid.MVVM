@@ -4,7 +4,6 @@ using MVVMGenerators.Helpers;
 using MVVMGenerators.Helpers.Descriptions;
 using MVVMGenerators.Generators.Views.Data;
 using MVVMGenerators.Helpers.Extensions.Writer;
-using MVVMGenerators.Generators.Views.Data.Members;
 
 namespace MVVMGenerators.Generators.Views.Body;
 
@@ -44,7 +43,7 @@ public static class ViewBody
 
         code.AppendMultiline(
                 $$"""
-                #if !{{Defines.ASPID_UI_MVVM_UNITY_PROFILER_DISABLED}}
+                #if !{{Defines.ASPID_MVVM_UNITY_PROFILER_DISABLED}}
                 {{GeneratedAttribute}}
                 private static readonly {{ProfilerMarker}} __initializeMarker = new("{{className}}.Initialize");
                 
@@ -58,7 +57,7 @@ public static class ViewBody
                 {{GeneratedAttribute}}
                 void {{IView}}.Initialize({{IViewModel}} viewModel)
                 {
-                    #if !{{Defines.ASPID_UI_MVVM_UNITY_PROFILER_DISABLED}}
+                    #if !{{Defines.ASPID_MVVM_UNITY_PROFILER_DISABLED}}
                     using (__initializeMarker.Auto())
                     #endif
                     {
@@ -84,7 +83,7 @@ public static class ViewBody
                 {
                     if (ViewModel == null) return;
                 
-                    #if !{{Defines.ASPID_UI_MVVM_UNITY_PROFILER_DISABLED}}
+                    #if !{{Defines.ASPID_MVVM_UNITY_PROFILER_DISABLED}}
                     using (__deinitializeMarker.Auto())
                     #endif
                     {

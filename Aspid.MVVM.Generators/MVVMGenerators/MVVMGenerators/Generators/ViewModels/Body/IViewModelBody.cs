@@ -46,7 +46,7 @@ public static class IViewModelBody
 
         code.AppendMultiline(
             $"""
-             #if !{Defines.ASPID_UI_MVVM_UNITY_PROFILER_DISABLED}
+             #if !{Defines.ASPID_MVVM_UNITY_PROFILER_DISABLED}
              {GeneratedAttribute}
              private static readonly {ProfilerMarker} __addBinderMarker = new("{className}.AddBinder"); 
              #endif
@@ -62,7 +62,7 @@ public static class IViewModelBody
             {{GeneratedAttribute}}
             public {{IRemoveBinderFromViewModel}} AddBinder({{IBinder}} binder, string propertyName)
             {
-                #if !{{Defines.ASPID_UI_MVVM_UNITY_PROFILER_DISABLED}}
+                #if !{{Defines.ASPID_MVVM_UNITY_PROFILER_DISABLED}}
                 using (__addBinderMarker.Auto())
                 #endif
                 {

@@ -49,10 +49,18 @@ public sealed class BindAttributeCodeFixProvider : CodeFixProvider
     
         return document.WithSyntaxRoot(newRoot);
     }
-
+    
     private static string ConvertToPascalCase(string fieldName)
     {
-        var name = fieldName.TrimStart('m', '_').TrimStart('_');
+        var name = RemovePrefix(fieldName);
         return char.ToUpper(name[0]) + name.Substring(1);
+    }
+    
+    private static string RemovePrefix(string fieldName)
+    {
+        var prefixCount = fieldName.StartsWith("_") ? 1 : fieldName.StartsWith("m_") ? 2 : 0;
+        if (prefixCount > 0) fieldName = fieldName.Remove(0, prefixCount);
+
+        return fieldName;
     }
 }

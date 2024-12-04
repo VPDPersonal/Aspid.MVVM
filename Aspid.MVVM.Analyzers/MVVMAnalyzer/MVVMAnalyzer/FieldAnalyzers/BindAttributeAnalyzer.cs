@@ -53,8 +53,8 @@ public sealed class BindAttributeAnalyzer : DiagnosticAnalyzer
         foreach (var attribute in fieldSymbol.GetAttributes().Select(attribute => attribute.AttributeClass?.ToDisplayString()))
         {
             if (attribute
-                is "Aspid.UI.MVVM.ViewModels.Generation.BindAttribute"
-                or "Aspid.UI.MVVM.ViewModels.Generation.ReadOnlyBindAttribute")
+                is "Aspid.MVVM.ViewModels.Generation.BindAttribute"
+                or "Aspid.MVVM.ViewModels.Generation.ReadOnlyBindAttribute")
             {
                 attributeName = attribute;
                 break;

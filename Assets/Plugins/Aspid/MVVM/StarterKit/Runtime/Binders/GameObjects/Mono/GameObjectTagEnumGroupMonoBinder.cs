@@ -5,6 +5,7 @@ namespace Aspid.MVVM.StarterKit.Binders.Mono
     [AddComponentMenu("Binders/GameObject/GameObject Binder - Tag Enum Group")]
     public sealed class GameObjectTagEnumGroupMonoBinder : EnumGroupMonoBinder<GameObject>
     {
+        [Header("Parameters")]
         [SerializeField] private string _defaultValue;
         [SerializeField] private string _selectedValue;
         

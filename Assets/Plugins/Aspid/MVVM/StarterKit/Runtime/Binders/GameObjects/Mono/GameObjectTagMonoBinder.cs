@@ -9,11 +9,12 @@ namespace Aspid.MVVM.StarterKit.Binders.Mono
     public partial class GameObjectTagMonoBinder : MonoBinder, IBinder<string>
     {
         [Header("Converter")]
+        [SerializeReference]
         [SerializeReferenceDropdown]
 #if UNITY_2023_1_OR_NEWER
-        [SerializeReference] private IConverter<string, string> _converter;
+         private IConverter<string, string> _converter;
 #else
-        [SerializeReference] private IConverterStringToString _converter;
+         private IConverterStringToString _converter;
 #endif
 
         [BinderLog]

@@ -15,6 +15,7 @@
   * [GameObject MonoBinder - Visible Enum Group](#gameobject-monobinder---visible-enum-group)
 
 ***
+
 ## GameObject Binder - Tag
 
 **GameObjectTagBinder** связывает `string` значение из **ViewModel** со свойством `tag` у **GameObject**.
@@ -171,12 +172,9 @@ public class GameObjectVisibleBinder : Binder, IBinder<bool>
 ***
 
 ## GameObject MonoBinder - Tag
-
-
 ## GameObject MonoBinder - Tag Enum
 ## GameObject MonoBinder - Tag Enum Group
 ## GameObject MonoBinder - Tag Switcher
 ## GameObject MonoBinder - Visible
 ## GameObject MonoBinder - Visible Enum
 ## GameObject MonoBinder - Visible Enum Group
-

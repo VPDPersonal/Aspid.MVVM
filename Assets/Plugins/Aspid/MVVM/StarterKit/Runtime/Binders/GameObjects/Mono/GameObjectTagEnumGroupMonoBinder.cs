@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace Aspid.MVVM.StarterKit.Binders.Mono
 {
-    [AddComponentMenu("UI/Binders/GameObject/GameObject Binder - Tag Enum Group")]
+    [AddComponentMenu("Binders/GameObject/GameObject Binder - Tag Enum Group")]
     public sealed class GameObjectTagEnumGroupMonoBinder : EnumGroupMonoBinder<GameObject>
     {
         [SerializeField] private string _defaultValue;

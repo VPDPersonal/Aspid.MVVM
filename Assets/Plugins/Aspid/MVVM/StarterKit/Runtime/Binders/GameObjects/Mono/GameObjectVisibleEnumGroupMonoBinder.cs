@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace Aspid.MVVM.StarterKit.Binders.Mono
 {
-    [AddComponentMenu("UI/Binders/GameObject/GameObject Binder - Visible Enum Group")]
+    [AddComponentMenu("Binders/GameObject/GameObject Binder - Visible Enum Group")]
     public sealed class GameObjectVisibleEnumGroupMonoBinder : EnumGroupMonoBinder<GameObject>
     {
         [SerializeField] private bool _isInvert;

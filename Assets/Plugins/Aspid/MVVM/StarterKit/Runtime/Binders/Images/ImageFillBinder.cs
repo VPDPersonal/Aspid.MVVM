@@ -1,14 +1,22 @@
 #nullable enable
 using System;
+using UnityEngine;
 using UnityEngine.UI;
 using Aspid.MVVM.StarterKit.Converters;
 
 namespace Aspid.MVVM.StarterKit.Binders
 {
+    [Serializable]
     public class ImageFillBinder : Binder, INumberBinder
     {
-        private readonly Image _image;
-        private readonly IConverter<float, float>? _converter;
+        [Header("Component")]
+        [SerializeField] private Image _image;
+
+#if UNITY_2023_1_OR_NEWER
+        [Header("Converter")]
+        [SerializeReference]
+#endif
+        private IConverter<float, float>? _converter;
 
         public ImageFillBinder(Image image, Func<float, float> converter) 
             : this(image, new GenericFuncConverter<float, float>(converter)) { }

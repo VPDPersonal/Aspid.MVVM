@@ -3,7 +3,7 @@ using UnityEngine.UI;
 
 namespace Aspid.MVVM.StarterKit.Binders.Mono
 {
-    [AddComponentMenu("UI/Binders/Image/Image Binder - Fill Enum")]
+    [AddComponentMenu("Binders/UI/Image/Image Binder - Fill Enum")]
     public sealed class ImageFillEnumMonoBinder : EnumMonoBinder<Image, float>
     {
         protected override void SetValue(float value) =>

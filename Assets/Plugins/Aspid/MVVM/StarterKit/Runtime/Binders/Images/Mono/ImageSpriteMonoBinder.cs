@@ -4,7 +4,7 @@ using Aspid.MVVM.Mono.Generation;
 
 namespace Aspid.MVVM.StarterKit.Binders.Mono
 {
-    [AddComponentMenu("UI/Binders/Image/Image Binder - Sprite")]
+    [AddComponentMenu("Binders/UI/Image/Image Binder - Sprite")]
     public partial class ImageSpriteMonoBinder : ComponentMonoBinder<Image>, IBinder<Sprite>
     {
         [Header("Parameters")]
@@ -14,7 +14,7 @@ namespace Aspid.MVVM.StarterKit.Binders.Mono
         public void SetValue(Sprite value)
         {
             CachedComponent.sprite = value;
-            if (_disabledWhenNull) CachedComponent.enabled = value != null;
+            if (_disabledWhenNull) CachedComponent.enabled = value is not null;
         }
     }
 }

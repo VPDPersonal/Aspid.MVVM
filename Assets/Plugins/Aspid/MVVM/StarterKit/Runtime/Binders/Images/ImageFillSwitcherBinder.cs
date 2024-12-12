@@ -1,12 +1,15 @@
 #nullable enable
 using System;
+using UnityEngine;
 using UnityEngine.UI;
 
 namespace Aspid.MVVM.StarterKit.Binders
 {
+    [Serializable]
     public sealed class ImageFillSwitcherBinder : SwitcherBinder<float>
     {
-        private readonly Image _image;
+        [Header("Component")]
+        [SerializeField] private Image _image;
 
         public ImageFillSwitcherBinder(Image image, float trueValue, float falseValue)
             : base(trueValue, falseValue)

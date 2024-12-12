@@ -3,7 +3,7 @@ using UnityEngine.UI;
 
 namespace Aspid.MVVM.StarterKit.Binders.Mono
 {
-    [AddComponentMenu("UI/Binders/Image/Image Binder - Sprite Switcher")]
+    [AddComponentMenu("Binders/UI/Image/Image Binder - Sprite Switcher")]
     public sealed class ImageSpriteSwitcherMonoBinder : SwitcherMonoBinder<Image, Sprite>
     {
         [SerializeField] private bool _disabledWhenNull = true;
@@ -11,7 +11,7 @@ namespace Aspid.MVVM.StarterKit.Binders.Mono
         protected override void SetValue(Sprite value)
         {
             CachedComponent.sprite = value;
-            if (_disabledWhenNull) CachedComponent.enabled = value != null;
+            if (_disabledWhenNull) CachedComponent.enabled = value is not null;
         }
     }
 }

@@ -5,10 +5,14 @@ using UnityEngine.UI;
 
 namespace Aspid.MVVM.StarterKit.Binders
 {
+    [Serializable]
     public class ImageSpriteBinder : Binder, IBinder<Sprite?>
     {
-        private readonly Image _image;
-        private readonly bool _disabledWhenNull;
+        [Header("Component")]
+        [SerializeField] private Image _image;
+        
+        [Header("Parameter")]
+        [SerializeField] private bool _disabledWhenNull;
 
         public ImageSpriteBinder(Image image, bool disabledWhenNull = true)
         {
@@ -19,7 +23,7 @@ namespace Aspid.MVVM.StarterKit.Binders
         public void SetValue(Sprite? value)
         {
             _image.sprite = value;
-            if (_disabledWhenNull) _image.enabled = value != null;
+            if (_disabledWhenNull) _image.enabled = value is not null;
         }
     }
 }

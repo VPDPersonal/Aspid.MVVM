@@ -1,10 +1,12 @@
 #if UNITY_EDITOR && !ASPID_MVVM_EDITOR_DISABLED
 #nullable disable
 using System;
+using UnityEditor;
 using UnityEngine;
 using Aspid.MVVM.Views;
 using Aspid.MVVM.Mono.Views;
 using Aspid.MVVM.ViewModels;
+using UnityEditor.SceneManagement;
 
 namespace Aspid.MVVM.Mono
 {
@@ -67,8 +69,15 @@ namespace Aspid.MVVM.Mono
 
         private void SaveBinderDataInEditor()
         {
-            UnityEditor.EditorUtility.SetDirty(this);
-            UnityEditor.SceneManagement.EditorSceneManager.MarkSceneDirty(gameObject.scene);
+            try
+            {
+                EditorUtility.SetDirty(this);
+                EditorSceneManager.MarkSceneDirty(gameObject.scene);
+            }
+            catch
+            {
+                // ignored
+            }
         }
     }
 }

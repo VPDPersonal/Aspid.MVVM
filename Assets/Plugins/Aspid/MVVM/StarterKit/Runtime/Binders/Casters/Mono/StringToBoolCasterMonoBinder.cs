@@ -10,9 +10,7 @@ namespace Aspid.MVVM.StarterKit.Binders.Mono
     public sealed partial class StringToBoolCasterMonoBinder : MonoBinder, IBinder<string>
     {
         [Header("Converter")]
-#if ASPID_MVVM_SERIALIZE_REFERENCE_DROPDOWN_INTEGRATION
         [SerializeReferenceDropdown]
-#endif
 #if UNITY_2023_1_OR_NEWER
         [SerializeReference] private IConverter<string, bool> _converter = new StringEmptyToBoolConverter();
 #else

@@ -10,9 +10,7 @@ namespace Aspid.MVVM.StarterKit.Binders.Mono
     public abstract partial class GenericToStringCasterMonoBinder<T> : MonoBinder, IBinder<T>
     {
         [Header("Converter")]
-#if ASPID_MVVM_SERIALIZE_REFERENCE_DROPDOWN_INTEGRATION
         [SerializeReferenceDropdown]
-#endif
         [SerializeReference] private IConverter<T, string> _converter;
         
         [Header("Events")]

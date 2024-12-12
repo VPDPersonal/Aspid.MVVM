@@ -35,9 +35,7 @@ namespace Aspid.MVVM.StarterKit.Binders.Mono
 
         // Int Converter
         [Header("Converters")]
-#if ASPID_MVVM_SERIALIZE_REFERENCE_DROPDOWN_INTEGRATION
         [SerializeReferenceDropdown]
-#endif
 #if UNITY_2023_1_OR_NEWER
         [SerializeReference] private IConverter<int, int> _intConverter;
 #else
@@ -45,9 +43,7 @@ namespace Aspid.MVVM.StarterKit.Binders.Mono
 #endif
         
         // Long Converter
-#if ASPID_MVVM_SERIALIZE_REFERENCE_DROPDOWN_INTEGRATION
         [SerializeReferenceDropdown]
-#endif
 #if UNITY_2023_1_OR_NEWER
         [SerializeReference] private IConverter<long, long> _longConverter;
 #else
@@ -55,9 +51,7 @@ namespace Aspid.MVVM.StarterKit.Binders.Mono
 #endif
         
         // Float Converter
-#if ASPID_MVVM_SERIALIZE_REFERENCE_DROPDOWN_INTEGRATION
         [SerializeReferenceDropdown]
-#endif
 #if UNITY_2023_1_OR_NEWER
         [SerializeReference] private IConverter<float, float> _floatConverter;
 #else
@@ -65,9 +59,7 @@ namespace Aspid.MVVM.StarterKit.Binders.Mono
 #endif
         
         // Double Converter
-#if ASPID_MVVM_SERIALIZE_REFERENCE_DROPDOWN_INTEGRATION
         [SerializeReferenceDropdown]
-#endif
 #if UNITY_2023_1_OR_NEWER
         [SerializeReference] private IConverter<double, double> _doubleConverter;
 #else

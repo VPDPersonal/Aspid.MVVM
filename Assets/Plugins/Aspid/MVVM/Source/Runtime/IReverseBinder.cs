@@ -12,7 +12,7 @@ namespace Aspid.MVVM
         /// <summary>
         /// Event triggered when the value changes.
         /// </summary>
-        public event Action<T>? ValueChanged;
+        public event Action<T?>? ValueChanged;
         
         /// <summary>
         /// Indicates that reverse binding is enabled.

@@ -8,9 +8,7 @@ namespace Aspid.MVVM.StarterKit.Binders.Mono
     public partial class RendererMaterialMonoBinder : ComponentMonoBinder<Renderer>, IBinder<Material>, IBinder<Material[]>
     {
         [Header("Converter")]
-#if ASPID_MVVM_SERIALIZE_REFERENCE_DROPDOWN_INTEGRATION
         [SerializeReferenceDropdown]
-#endif
 #if UNITY_2023_1_OR_NEWER
         [SerializeReference] private IConverter<Material, Material> _converter;
 #else

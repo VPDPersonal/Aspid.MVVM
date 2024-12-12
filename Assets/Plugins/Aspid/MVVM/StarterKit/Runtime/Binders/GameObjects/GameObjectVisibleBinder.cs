@@ -4,10 +4,14 @@ using UnityEngine;
 
 namespace Aspid.MVVM.StarterKit.Binders
 {
+    [Serializable]
     public class GameObjectVisibleBinder : Binder, IBinder<bool>
     {
+        [Header("Component")]
+        private GameObject _gameObject;
+        
+        [Header("Parameters")]
         private readonly bool _isInvert;
-        private readonly GameObject _gameObject;
         
         public GameObjectVisibleBinder(GameObject gameObject, bool isInvert = false)
         {
@@ -15,10 +19,8 @@ namespace Aspid.MVVM.StarterKit.Binders
             _gameObject = gameObject ?? throw new ArgumentNullException(nameof(gameObject));
         }
         
-        public void SetValue(bool value)
-        {
-            if (_isInvert) value = !value;
-            _gameObject.SetActive(value);
-        }
+        public void SetValue(bool value) =>
+            _gameObject.SetActive(_isInvert ? !value : value);
     }
+    
 }

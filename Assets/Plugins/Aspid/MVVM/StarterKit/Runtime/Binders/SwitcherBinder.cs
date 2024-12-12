@@ -1,9 +1,14 @@
+using System;
+using UnityEngine;
+
 namespace Aspid.MVVM.StarterKit.Binders
 {
+    [Serializable]
     public abstract class SwitcherBinder<T> : Binder, IBinder<bool>
     {
-        private readonly T _trueValue;
-        private readonly T _falseValue;
+        [Header("Parameters")]
+        [SerializeField] private T _trueValue; 
+        [SerializeField] private T _falseValue;
 
         protected SwitcherBinder(T trueValue, T falseValue)
         {

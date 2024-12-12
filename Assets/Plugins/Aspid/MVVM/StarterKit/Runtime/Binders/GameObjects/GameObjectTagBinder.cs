@@ -5,15 +5,23 @@ using Aspid.MVVM.StarterKit.Converters;
 
 namespace Aspid.MVVM.StarterKit.Binders
 {
+    [Serializable]
     public class GameObjectTagBinder : Binder, IBinder<string>
     {
-        private readonly GameObject _gameObject;
-        private readonly IConverter<string?, string>? _converter;
-
-        public GameObjectTagBinder(GameObject gameObject, Func<string?, string> converter)
-            : this(gameObject, new GenericFuncConverter<string?, string>(converter)) { }
+        [Header("Component")]
+        [SerializeField] private GameObject _gameObject;
         
-        public GameObjectTagBinder(GameObject gameObject, IConverter<string?, string>? converter = null)
+#if UNITY_2023_1_OR_NEWER
+        [Header("Converter")]
+        [SerializeReference]
+        [SerializeReferenceDropdown]
+#endif
+        private IConverter<string?, string?>? _converter;
+
+        public GameObjectTagBinder(GameObject gameObject, Func<string?, string?> converter)
+            : this(gameObject, new GenericFuncConverter<string?, string?>(converter)) { }
+        
+        public GameObjectTagBinder(GameObject gameObject, IConverter<string?, string?>? converter = null)
         {
             _converter = converter;
             _gameObject = gameObject ?? throw new ArgumentNullException(nameof(gameObject));

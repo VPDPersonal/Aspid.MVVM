@@ -12,9 +12,7 @@ namespace Aspid.MVVM.StarterKit.Binders.Mono
         [SerializeField] private VectorMode _mode = VectorMode.XYZ;
         
         [Header("Converter")]
-#if ASPID_MVVM_SERIALIZE_REFERENCE_DROPDOWN_INTEGRATION
         [SerializeReferenceDropdown]
-#endif
 #if UNITY_2023_1_OR_NEWER
         [SerializeReference] private IConverter<Vector3, Vector3> _converter;
 #else

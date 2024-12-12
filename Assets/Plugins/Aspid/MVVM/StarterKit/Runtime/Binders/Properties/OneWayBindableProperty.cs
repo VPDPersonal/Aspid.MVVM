@@ -1,19 +1,19 @@
 using System;
 using UnityEngine;
 
-namespace Aspid.MVVM.StarterKit.Binders.Properties
+namespace Aspid.MVVM.StarterKit.Binders
 {
     [Serializable]
-    public sealed class ReadOnlyBindableProperty<T> : Binder, IBinder<T>
+    public sealed class OneWayBindableProperty<T> : Binder, IBinder<T>, IReadOnlyBindableProperty<T>
     {
         public event Action<T> Changed;
         
         [field: SerializeField]
         public T Value { get; private set; }
         
-        public ReadOnlyBindableProperty() { }
+        public OneWayBindableProperty() { }
         
-        public ReadOnlyBindableProperty(T value)
+        public OneWayBindableProperty(T value)
         {
             Value = value;
         }
@@ -24,6 +24,6 @@ namespace Aspid.MVVM.StarterKit.Binders.Properties
             Changed?.Invoke(value);
         }
         
-        public static implicit operator T(ReadOnlyBindableProperty<T> binder) => binder.Value;
+        public static implicit operator T(OneWayBindableProperty<T> binder) => binder.Value;
     }
 }

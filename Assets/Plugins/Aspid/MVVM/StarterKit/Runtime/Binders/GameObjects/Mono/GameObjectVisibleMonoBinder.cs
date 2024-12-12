@@ -10,11 +10,7 @@ namespace Aspid.MVVM.StarterKit.Binders.Mono
         [SerializeField] private bool _isInvert;
         
         [BinderLog]
-        public void SetValue(bool value)
-        {
-            if (_isInvert) value = !value;
-            gameObject.SetActive(value);
-        }
+        public void SetValue(bool value) =>
+            gameObject.SetActive(_isInvert ? !value : value);
     }
-
 }

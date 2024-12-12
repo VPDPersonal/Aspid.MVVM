@@ -23,9 +23,7 @@ namespace Aspid.MVVM.StarterKit.Binders.Mono
         
         // Vector2 Converter
         [Header("Converters")]
-#if ASPID_MVVM_SERIALIZE_REFERENCE_DROPDOWN_INTEGRATION
         [SerializeReferenceDropdown]
-#endif
 #if UNITY_2023_1_OR_NEWER
         [SerializeReference] private IConverter<Vector2, Vector2> _vector2Converter;
 #else
@@ -33,9 +31,7 @@ namespace Aspid.MVVM.StarterKit.Binders.Mono
 #endif
         
         // Vector 3 Converter
-#if ASPID_MVVM_SERIALIZE_REFERENCE_DROPDOWN_INTEGRATION
         [SerializeReferenceDropdown]
-#endif
 #if UNITY_2023_1_OR_NEWER
         [SerializeReference] private IConverter<Vector3, Vector3> _vector3Converter;
 #else

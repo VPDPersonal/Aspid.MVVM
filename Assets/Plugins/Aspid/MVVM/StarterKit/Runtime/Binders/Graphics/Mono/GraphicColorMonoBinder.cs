@@ -9,9 +9,7 @@ namespace Aspid.MVVM.StarterKit.Binders.Mono
     public partial class GraphicColorMonoBinder : ComponentMonoBinder<Graphic>, IColorBinder
     {
         [Header("Converter")]
-#if ASPID_MVVM_SERIALIZE_REFERENCE_DROPDOWN_INTEGRATION
         [SerializeReferenceDropdown]
-#endif
 #if UNITY_2023_1_OR_NEWER
         [SerializeReference] private IConverter<Color, Color> _converter;
 #else

@@ -6,7 +6,7 @@ using Aspid.MVVM.StarterKit.Converters;
 namespace Aspid.MVVM.StarterKit.Binders
 {
     [Serializable]
-    public class CanvasGroupAlphaBinder : Binder, IBinder<bool>, INumberBinder
+    public class CanvasGroupAlphaBinder : Binder, INumberBinder
     {
         private CanvasGroup _canvasGroup;
         private IConverter<float, float>? _converter;
@@ -19,19 +19,20 @@ namespace Aspid.MVVM.StarterKit.Binders
             _converter = converter;
             _canvasGroup = canvasGroup ?? throw new ArgumentNullException(nameof(canvasGroup));
         }
+
+        public void SetValue(int value) => 
+            SetValue((float)value);
+
+        public void SetValue(long value) => 
+            SetValue((float)value);
+
+        public void SetValue(double value) => 
+            SetValue((float)value);
         
         public void SetValue(float value)
         {
             value = _converter?.Convert(value) ?? value;
             _canvasGroup.alpha = Mathf.Clamp(value, 0, 1);
         }
-
-        public void SetValue(int value) => SetValue((float)value);
-
-        public void SetValue(long value) => SetValue((float)value);
-
-        public void SetValue(double value) => SetValue((float)value);
-        
-        public void SetValue(bool value) => SetValue(value ? 1f : 0f);
     }
 }

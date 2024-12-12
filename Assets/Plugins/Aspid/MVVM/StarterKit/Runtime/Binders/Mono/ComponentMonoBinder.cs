@@ -16,14 +16,9 @@ namespace Aspid.MVVM.StarterKit.Binders.Mono
             get
             {
                 if (_isCached) return _component;
-
-                if (!_component && TryGetComponent(out _component))
-                {
-                    _isCached = true;
-                    return _component;
-                }
-
-                return _component;
+                
+                _isCached = true;
+                return _component ??= GetComponent<TComponent>();
             }
         }
     }

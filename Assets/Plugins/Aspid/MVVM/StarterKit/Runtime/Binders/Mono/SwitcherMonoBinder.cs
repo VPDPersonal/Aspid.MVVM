@@ -11,12 +11,9 @@ namespace Aspid.MVVM.StarterKit.Binders.Mono
 
         [BinderLog]
         public void SetValue(bool value) =>
-            SetValue(GetValue(value));
+            SetValue(value ? _trueValue : _falseValue);
 
         protected abstract void SetValue(T value);
-        
-        private T GetValue(bool value) =>
-            value ? _trueValue : _falseValue;
     }
     
     public abstract partial class SwitcherMonoBinder<TComponent, T> : ComponentMonoBinder<TComponent>, IBinder<bool> 
@@ -28,11 +25,8 @@ namespace Aspid.MVVM.StarterKit.Binders.Mono
 
         [BinderLog]
         public void SetValue(bool value) =>
-            SetValue(GetValue(value));
+            SetValue(value ? _trueValue : _falseValue);
 
         protected abstract void SetValue(T value);
-        
-        private T GetValue(bool value) =>
-            value ? _trueValue : _falseValue;
     }
 }

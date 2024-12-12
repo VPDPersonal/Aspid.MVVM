@@ -6,7 +6,6 @@ using Aspid.MVVM.StarterKit.Utilities;
 
 namespace Aspid.MVVM.StarterKit.Binders.Mono
 {
-    // TODO Need to check functionality
     public abstract partial class EnumMonoBinder<T> : MonoBinder, IBinder<Enum>
     {
         [SerializeField] private T _defaultValue;
@@ -31,11 +30,10 @@ namespace Aspid.MVVM.StarterKit.Binders.Mono
 
             foreach (var value in _values)
             {
-                if (value.Key!.Equals(enumValue))
-                {
-                    SetValue(value.Value);
-                    return;
-                }
+                if (!value.Key!.Equals(enumValue)) continue;
+                
+                SetValue(value.Value);
+                return;
             }
 
             if (_allowDefaultValueWhenNoValue) 
@@ -71,11 +69,10 @@ namespace Aspid.MVVM.StarterKit.Binders.Mono
 
             foreach (var value in _values)
             {
-                if (value.Key!.Equals(enumValue))
-                {
-                    SetValue(value.Value);
-                    return;
-                }
+                if (!value.Key!.Equals(enumValue)) continue;
+                
+                SetValue(value.Value);
+                return;
             }
 
             if (_allowDefaultValueWhenNoValue) 

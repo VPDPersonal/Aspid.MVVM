@@ -14,9 +14,7 @@ namespace Aspid.MVVM.StarterKit.Views.Initializers
         public SerializableMonoScript<TInterface> Type;
 #endif
         
-#if ASPID_MVVM_SERIALIZE_REFERENCE_DROPDOWN_INTEGRATION
         [SerializeReferenceDropdown]
-#endif
         [SerializeReference] public TInterface References;
     }
     

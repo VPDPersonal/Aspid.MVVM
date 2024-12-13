@@ -6,10 +6,18 @@ using Aspid.MVVM.StarterKit.Converters;
 
 namespace Aspid.MVVM.StarterKit.Binders
 {
-    public class GraphicColorBinder : Binder, IColorBinder
+    [Serializable]
+    public sealed class GraphicColorBinder : Binder, IColorBinder
     {
-        private readonly Graphic _graphic;
-        private readonly IConverter<Color, Color>? _converter;
+        [Header("Component")]
+        [SerializeField] private Graphic _graphic;
+        
+#if UNITY_2023_1_OR_NEWER
+        [Header("Converter")]
+        [SerializeReference]
+        [SerializeReferenceDropdown]
+#endif
+        private IConverter<Color, Color>? _converter;
 
         public GraphicColorBinder(Graphic graphic, Func<Color, Color> converter)
             : this(graphic, new GenericFuncConverter<Color, Color>(converter)) { }

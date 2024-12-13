@@ -5,7 +5,7 @@ using UnityEngine;
 namespace Aspid.MVVM.StarterKit.Binders
 {
     [Serializable]
-    public class GameObjectVisibleBinder : Binder, IBinder<bool>
+    public sealed class GameObjectVisibleBinder : Binder, IBinder<bool>
     {
         [Header("Component")]
         private GameObject _gameObject;

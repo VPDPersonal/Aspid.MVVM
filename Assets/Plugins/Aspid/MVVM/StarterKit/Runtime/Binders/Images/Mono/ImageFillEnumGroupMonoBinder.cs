@@ -4,16 +4,9 @@ using UnityEngine.UI;
 namespace Aspid.MVVM.StarterKit.Binders.Mono
 {
     [AddComponentMenu("Binders/UI/Image/Image Binder - Fill Enum Group")]
-    public sealed class ImageFillEnumGroupMonoBinder : EnumGroupMonoBinder<Image>
+    public sealed class ImageFillEnumGroupMonoBinder : EnumGroupMonoBinder<Image, float>
     {
-        [Header("Parameters")]
-        [SerializeField] private float _defaultValue;
-        [SerializeField] private float _selectedValue;
-        
-        protected override void SetDefaultValue(Image component) =>
-            component.fillAmount = _defaultValue;
-
-        protected override void SetSelectedValue(Image component) =>
-            component.fillAmount = _selectedValue;
+        protected override void SetValue(Image component, float value) =>
+            component.fillAmount = value;
     }
 }

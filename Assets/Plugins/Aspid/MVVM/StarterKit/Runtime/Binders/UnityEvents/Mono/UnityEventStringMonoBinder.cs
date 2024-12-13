@@ -7,33 +7,32 @@ using Aspid.MVVM.StarterKit.Converters;
 
 namespace Aspid.MVVM.StarterKit.Binders.Mono
 {
-    [AddComponentMenu("UI/Binders/UnityEvent/UnityEvent Binder - String")]
-    public sealed partial class StringUnityEventMonoBinder : MonoBinder, IBinder<string>, INumberBinder
+    [AddComponentMenu("Binders/UnityEvent/UnityEvent Binder - String")]
+    public sealed partial class UnityEventStringMonoBinder : MonoBinder, IBinder<string>, IBinder<object>, INumberBinder
     {
-        public event UnityAction<string> StringValueSet
+        public event UnityAction<string> Set
         {
-            add => _stringValueSet.AddListener(value);
-            remove => _stringValueSet.RemoveListener(value);
+            add => _set.AddListener(value);
+            remove => _set.RemoveListener(value);
         }
         
         [Header("Converter")]
+        [SerializeReference]
         [SerializeReferenceDropdown]
 #if UNITY_2023_1_OR_NEWER
-        [SerializeReference] private IConverter<string, string> _converter;
+        private IConverter<string, string> _converter;
 #else
-        [SerializeReference] private IConverterStringToString _converter;
+        private IConverterStringToString _converter;
 #endif
         
         [Header("Events")]
-        [SerializeField] private UnityEvent<string> _stringValueSet;
+        [SerializeField] private UnityEvent<string> _set;
         
         [BinderLog]
         public void SetValue(string value)
         {
-            if (_converter != null)
-                value = _converter.Convert(value);
-                    
-            _stringValueSet?.Invoke(value);
+            value = _converter?.Convert(value) ?? value;
+            _set?.Invoke(value);
         }
 
         [BinderLog]
@@ -51,5 +50,9 @@ namespace Aspid.MVVM.StarterKit.Binders.Mono
         [BinderLog]
         public void SetValue(double value) =>
             SetValue(value.ToString(CultureInfo.InvariantCulture));
+
+        [BinderLog]
+        public void SetValue(object value) =>
+            SetValue(value.ToString());
     }
 }

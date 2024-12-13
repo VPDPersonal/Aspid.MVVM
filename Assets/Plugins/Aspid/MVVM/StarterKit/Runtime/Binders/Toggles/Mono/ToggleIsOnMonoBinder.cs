@@ -6,19 +6,27 @@ using Aspid.MVVM.Mono.Generation;
 
 namespace Aspid.MVVM.StarterKit.Binders.Mono
 {
-    [AddComponentMenu("UI/Binders/Toggles/Toggle Binder")]
-    public partial class ToggleMonoBinder : ComponentMonoBinder<Toggle>, IBinder<bool>, IReverseBinder<bool>
+    [AddComponentMenu("Binders/UI/Toggles/Toggle Binder - IsOn")]
+    public sealed partial class ToggleIsOnMonoBinder : ComponentMonoBinder<Toggle>, IBinder<bool>, IReverseBinder<bool>
     {
         public event Action<bool> ValueChanged;
         
         [Header("Parameters")]
         [SerializeField] private bool _isInvert;
-        [SerializeField] private bool _isReverseEnabled;
+        [SerializeField] private bool _isReverseEnabled = true;
         
         private bool _isNotifyValueChanged = true;
 
         public bool IsReverseEnabled => _isReverseEnabled;
-
+        
+        [BinderLog]
+        public void SetValue(bool value)
+        {
+            _isNotifyValueChanged = false;
+            CachedComponent.isOn = _isInvert ? !value : value;
+            _isNotifyValueChanged = true;
+        }
+        
         protected override void OnBound(IViewModel viewModel, string id)
         {
             if (!IsReverseEnabled) return;
@@ -29,16 +37,6 @@ namespace Aspid.MVVM.StarterKit.Binders.Mono
         {
             if (!IsReverseEnabled) return;
             CachedComponent.onValueChanged.RemoveListener(OnValueChanged);
-        }
-        
-        [BinderLog]
-        public void SetValue(bool value)
-        {
-            value = _isInvert ? !value : value;
-
-            _isNotifyValueChanged = false;
-            CachedComponent.isOn = value;
-            _isNotifyValueChanged = true;
         }
 
         private void OnValueChanged(bool isOn) 

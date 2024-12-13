@@ -5,15 +5,16 @@ using Aspid.MVVM.StarterKit.Converters;
 
 namespace Aspid.MVVM.StarterKit.Binders.Mono
 {
-    [AddComponentMenu("UI/Binders/Graphic/Graphic Binder - Color")]
-    public partial class GraphicColorMonoBinder : ComponentMonoBinder<Graphic>, IColorBinder
+    [AddComponentMenu("Binders/UI/Graphic/Graphic Binder - Color")]
+    public sealed partial class GraphicColorMonoBinder : ComponentMonoBinder<Graphic>, IColorBinder
     {
         [Header("Converter")]
+        [SerializeReference]
         [SerializeReferenceDropdown]
 #if UNITY_2023_1_OR_NEWER
-        [SerializeReference] private IConverter<Color, Color> _converter;
+        private IConverter<Color, Color> _converter;
 #else
-        [SerializeReference] private IConverterColorToColor _converter;
+        private IConverterColorToColor _converter;
 #endif
         
         [BinderLog]

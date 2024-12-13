@@ -1,21 +1,31 @@
 using UnityEngine;
-using UnityEngine.UI;
+using Aspid.MVVM.Mono;
+using UnityEngine.Events;
 using Aspid.MVVM.Mono.Generation;
 using Aspid.MVVM.StarterKit.Converters;
 
 namespace Aspid.MVVM.StarterKit.Binders.Mono
 {
-    [AddComponentMenu("Binders/UI/Image/Image Binder - Fill")]
-    public sealed partial class ImageFillMonoBinder : ComponentMonoBinder<Image>, INumberBinder
+    [AddComponentMenu("Binders/UnityEvent/UnityEvent Binder - Number Condition")]
+    public sealed partial class UnityEventNumberConditionMonoBinder : MonoBinder, INumberBinder
     {
+        public event UnityAction<bool> Set
+        {
+            add => _set.AddListener(value);
+            remove => _set.RemoveListener(value);
+        }
+        
         [Header("Converter")]
         [SerializeReference]
         [SerializeReferenceDropdown]
 #if UNITY_2023_1_OR_NEWER
-        private IConverter<float, float> _converter;
+        private IConverter<float, bool> _converter;
 #else
-        private IConverterFloatToFloat _converter;
+        private IConverterFloatToBool _converter;
 #endif
+        
+        [Header("Events")]
+        [SerializeField] private UnityEvent<bool> _set;
         
         [BinderLog]
         public void SetValue(int value) =>
@@ -24,10 +34,10 @@ namespace Aspid.MVVM.StarterKit.Binders.Mono
         [BinderLog]
         public void SetValue(long value) =>
             SetValue((float)value);
-        
+
         [BinderLog]
         public void SetValue(float value) =>
-            CachedComponent.fillAmount = _converter?.Convert(value) ?? value;
+            _set.Invoke(_converter.Convert(value));
 
         [BinderLog]
         public void SetValue(double value) =>

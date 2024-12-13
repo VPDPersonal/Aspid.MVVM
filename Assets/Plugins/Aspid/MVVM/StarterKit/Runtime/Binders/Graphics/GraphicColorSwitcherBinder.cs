@@ -5,9 +5,11 @@ using UnityEngine.UI;
 
 namespace Aspid.MVVM.StarterKit.Binders
 {
+    [Serializable]
     public sealed class GraphicColorSwitcherBinder : SwitcherBinder<Color>
     {
-        private readonly Graphic _graphic;
+        [Header("Component")]
+        [SerializeField] private Graphic _graphic;
 
         public GraphicColorSwitcherBinder(Graphic graphic, Color trueColor, Color falseColor)
             : base(trueColor, falseColor)

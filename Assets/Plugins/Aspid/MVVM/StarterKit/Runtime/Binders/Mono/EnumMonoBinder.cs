@@ -8,6 +8,7 @@ namespace Aspid.MVVM.StarterKit.Binders.Mono
 {
     public abstract partial class EnumMonoBinder<T> : MonoBinder, IBinder<Enum>
     {
+        [Header("Parameters")]
         [SerializeField] private T _defaultValue;
         [SerializeField] private bool _allowDefaultValueWhenNoValue;
         [SerializeField] private EnumValue<T>[] _values;
@@ -43,42 +44,23 @@ namespace Aspid.MVVM.StarterKit.Binders.Mono
         protected abstract void SetValue(T value);
     }
     
-    public abstract partial class EnumMonoBinder<TComponent, T> : ComponentMonoBinder<TComponent>, IBinder<Enum>
+    public abstract class EnumMonoBinder<TComponent, T> : EnumMonoBinder<T>
         where TComponent : Component
     {
-        [Header("Parameters")]
-        [SerializeField] private T _defaultValue;
-        [SerializeField] private bool _allowDefaultValueWhenNoValue;
-        [SerializeField] private EnumValue<T>[] _values;
+        [Header("Component")]
+        [SerializeField] private TComponent _component;
         
-        private bool _isEnumTypeSet;
-        
-        protected override void OnUnbound() =>
-            _isEnumTypeSet = false;
-        
-        [BinderLog]
-        public void SetValue(Enum enumValue)
+        private bool _isCached;
+
+        protected TComponent CachedComponent
         {
-            if (!_isEnumTypeSet)
+            get
             {
-                foreach (var value in _values)
-                    value.SetType(enumValue.GetType());
+                if (_isCached) return _component;
                 
-                _isEnumTypeSet = true;
+                _isCached = true;
+                return _component ??= GetComponent<TComponent>();
             }
-
-            foreach (var value in _values)
-            {
-                if (!value.Key!.Equals(enumValue)) continue;
-                
-                SetValue(value.Value);
-                return;
-            }
-
-            if (_allowDefaultValueWhenNoValue) 
-                SetValue(_defaultValue);
         }
-
-        protected abstract void SetValue(T value);
     }
 }

@@ -1,7 +1,7 @@
 #nullable enable
 using System;
-using Aspid.MVVM.StarterKit.Converters;
 using UnityEngine;
+using Aspid.MVVM.StarterKit.Converters;
 
 namespace Aspid.MVVM.StarterKit.Binders
 {
@@ -21,6 +21,7 @@ namespace Aspid.MVVM.StarterKit.Binders
 #if UNITY_2023_1_OR_NEWER
         [Header("Converter")]
         [SerializeReference]
+        [SerializeReferenceDropdown]
 #endif
         private IConverter<T?, T?>? _converter;
         

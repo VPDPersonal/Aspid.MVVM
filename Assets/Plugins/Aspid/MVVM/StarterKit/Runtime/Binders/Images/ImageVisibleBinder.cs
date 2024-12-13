@@ -5,7 +5,7 @@ using UnityEngine.UI;
 namespace Aspid.MVVM.StarterKit.Binders
 {
     [Serializable]
-    public class ImageVisibleBinder : Binder, IBinder<bool>
+    public sealed class ImageVisibleBinder : Binder, IBinder<bool>
     {
         [Header("Component")]
         [SerializeField] private Image _image;

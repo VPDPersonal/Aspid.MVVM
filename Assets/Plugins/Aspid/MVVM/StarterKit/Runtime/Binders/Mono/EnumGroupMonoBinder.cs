@@ -8,6 +8,7 @@ namespace Aspid.MVVM.StarterKit.Binders.Mono
 {
     public abstract partial class EnumGroupMonoBinder<TComponent> : MonoBinder, IBinder<Enum>
     {
+        [Header("Parameters")]
         [SerializeField] private EnumValue<TComponent>[] _components;
         
         private bool _isEnumTypeSet;
@@ -36,5 +37,19 @@ namespace Aspid.MVVM.StarterKit.Binders.Mono
         protected abstract void SetDefaultValue(TComponent component);
         
         protected abstract void SetSelectedValue(TComponent component);
+    }
+    
+    public abstract class EnumGroupMonoBinder<TComponent, T> : EnumGroupMonoBinder<TComponent>
+    {
+        [SerializeField] private T _defaultValue;
+        [SerializeField] private T _selectedValue;
+        
+        protected sealed override void SetDefaultValue(TComponent component) =>
+            SetValue(component, _defaultValue);
+
+        protected sealed override void SetSelectedValue(TComponent component) =>
+            SetValue(component, _selectedValue);
+        
+        protected abstract void SetValue(TComponent component, T value);
     }
 }

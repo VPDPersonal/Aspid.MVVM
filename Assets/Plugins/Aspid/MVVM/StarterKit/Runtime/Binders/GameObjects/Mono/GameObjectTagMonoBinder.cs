@@ -6,7 +6,7 @@ using Aspid.MVVM.StarterKit.Converters;
 namespace Aspid.MVVM.StarterKit.Binders.Mono
 {
     [AddComponentMenu("Binders/GameObject/GameObject Binder - Tag")]
-    public partial class GameObjectTagMonoBinder : MonoBinder, IBinder<string>
+    public sealed partial class GameObjectTagMonoBinder : MonoBinder, IBinder<string>
     {
         [Header("Converter")]
         [SerializeReference]

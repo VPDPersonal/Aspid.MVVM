@@ -6,7 +6,7 @@ using Aspid.MVVM.StarterKit.Converters;
 namespace Aspid.MVVM.StarterKit.Binders
 {
     [Serializable]
-    public class GameObjectTagBinder : Binder, IBinder<string>
+    public sealed class GameObjectTagBinder : Binder, IBinder<string>
     {
         [Header("Component")]
         [SerializeField] private GameObject _gameObject;

@@ -6,7 +6,7 @@ using UnityEngine.UI;
 namespace Aspid.MVVM.StarterKit.Binders
 {
     [Serializable]
-    public sealed class ImageSpriteBinder : Binder, IBinder<Sprite?>, IBinder<Texture2D?>
+    public class ImageSpriteBinder : Binder, IBinder<Sprite?>, IBinder<Texture2D?>
     {
         [Header("Component")]
         [SerializeField] private Image _image;

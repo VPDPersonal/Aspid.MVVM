@@ -5,17 +5,18 @@ using Aspid.MVVM.StarterKit.Converters;
 
 namespace Aspid.MVVM.StarterKit.Binders.Mono
 {
-    [AddComponentMenu("UI/Binders/Transform/Transform Binder - Rotation")]
+    [AddComponentMenu("Binders/Transform/Transform Binder - Rotation")]
     public partial class TransformRotationMonoBinder : MonoBinder, IRotationBinder, INumberBinder
     {
         [SerializeField] private Space _space = Space.World;
 
         [Header("Converter")]
+        [SerializeReference]
         [SerializeReferenceDropdown]
 #if UNITY_2023_1_OR_NEWER
-        [SerializeReference] private IConverter<Quaternion, Quaternion> _converter;
+        private IConverter<Quaternion, Quaternion> _converter;
 #else
-        [SerializeReference] private IConverterQuaternionToQuaternion _converter;
+        private IConverterQuaternion _converter;
 #endif
         
         [BinderLog]

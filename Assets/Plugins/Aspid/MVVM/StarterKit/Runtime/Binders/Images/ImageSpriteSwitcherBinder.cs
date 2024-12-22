@@ -13,7 +13,7 @@ namespace Aspid.MVVM.StarterKit.Binders
         [Header("Component")]
         [SerializeField] private Image _image;
 
-        public ImageSpriteSwitcherBinder(Image image, Sprite trueValue, Sprite falseValue, bool disabledWhenNull = true) 
+        public ImageSpriteSwitcherBinder(Sprite trueValue, Sprite falseValue, Image image, bool disabledWhenNull = true) 
             : base(trueValue, falseValue)
         {
             _disabledWhenNull = disabledWhenNull;

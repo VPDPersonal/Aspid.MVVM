@@ -1,3 +1,4 @@
+#nullable enable
 using System;
 using System.Collections.Generic;
 using Aspid.Collections.Observable;
@@ -7,28 +8,30 @@ namespace Aspid.MVVM.StarterKit.Binders
 {
     public abstract class ListBinderBase<T> : Binder, IBinder<IReadOnlyObservableList<T>>, IDisposable
     {
-        private IReadOnlyObservableList<T> _list;
+        private IReadOnlyObservableList<T?>? _list;
 
-        public void SetValue(IReadOnlyObservableList<T> list)
+        public void SetValue(IReadOnlyObservableList<T?>? list)
         {
-            if (_list != null)
+            if (_list is not null)
             {
                 OnReset();
                 Unsubscribe();
             }
             
             _list = list;
-            if (_list == null) return;
+            if (_list is null) return;
             if (_list.Count > 0) OnAdded(_list, 0);
             
             Subscribe();
         }
 
-        private void Subscribe() => _list.CollectionChanged += OnCollectionChanged;
+        private void Subscribe() =>
+            _list!.CollectionChanged += OnCollectionChanged;
 
-        private void Unsubscribe() => _list.CollectionChanged -= OnCollectionChanged;
+        private void Unsubscribe() =>
+            _list!.CollectionChanged -= OnCollectionChanged;
 
-        private void OnCollectionChanged(INotifyCollectionChangedEventArgs<T> e)
+        private void OnCollectionChanged(INotifyCollectionChangedEventArgs<T?> e)
         {
             switch (e.Action)
             {
@@ -69,23 +72,23 @@ namespace Aspid.MVVM.StarterKit.Binders
             }
         }
 
-        protected abstract void OnAdded(T newItem, int newStartingIndex);
+        protected abstract void OnAdded(T? newItem, int newStartingIndex);
 
-        protected abstract void OnAdded(IReadOnlyList<T> newItems, int newStartingIndex);
+        protected abstract void OnAdded(IReadOnlyList<T?>? newItems, int newStartingIndex);
 
-        protected abstract void OnRemoved(T oldItem, int oldStartingIndex);
+        protected abstract void OnRemoved(T? oldItem, int oldStartingIndex);
 
-        protected abstract void OnRemoved(IReadOnlyList<T> oldItems, int oldStartingIndex);
+        protected abstract void OnRemoved(IReadOnlyList<T?>? oldItems, int oldStartingIndex);
 
-        protected abstract void OnReplace(T oldItem, T newItem, int newStartingIndex);
+        protected abstract void OnReplace(T? oldItem, T? newItem, int newStartingIndex);
         
-        protected abstract void OnMove(T oldItem, T newItem, int oldStartingIndex, int newStartingIndex);
+        protected abstract void OnMove(T? oldItem, T? newItem, int oldStartingIndex, int newStartingIndex);
 
         protected abstract void OnReset();
 
         public virtual void Dispose()
         {
-            if (_list == null) return;
+            if (_list is null) return;
             OnReset();
             Unsubscribe();
         }

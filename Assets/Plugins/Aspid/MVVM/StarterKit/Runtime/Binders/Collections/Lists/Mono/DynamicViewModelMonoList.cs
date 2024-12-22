@@ -6,7 +6,7 @@ using Aspid.MVVM.Mono.Views.Extensions;
 
 namespace Aspid.MVVM.StarterKit.Binders.Mono
 {
-    [AddComponentMenu("UI/Binders/Collections/Lists/Dynamic List - ViewModel")]
+    [AddComponentMenu("Binders/Collections/Lists/Dynamic List - ViewModel")]
     public class DynamicViewModelMonoList : ListMonoBinderBase<IViewModel>
     {
         [SerializeField] private MonoView _prefab;
@@ -17,14 +17,6 @@ namespace Aspid.MVVM.StarterKit.Binders.Mono
         public MonoView Prefab => _prefab;
         
         public Transform Container => _container;
-
-        public DynamicViewModelMonoList() { }
-        
-        public DynamicViewModelMonoList(MonoView prefab, Transform container)
-        {
-            _prefab = prefab;
-            _container = container;
-        }
 
         protected sealed override void OnAdded(IViewModel newItem, int newStartingIndex)
         {

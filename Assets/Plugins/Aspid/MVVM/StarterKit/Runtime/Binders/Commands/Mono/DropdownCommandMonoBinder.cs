@@ -5,11 +5,14 @@ using Aspid.MVVM.Commands;
 namespace Aspid.MVVM.StarterKit.Binders.Mono
 {
     [RequireComponent(typeof(Dropdown))]
-    [AddComponentMenu("UI/Binders/Commands/Dropdown Command Binder")]
+    [AddComponentMenu("Binders/UI/Commands/Dropdown Command Binder")]
     public sealed class DropdownCommandMonoBinder : MonoCommandBinder<int>
     {
-        [SerializeField] private bool _isBindInteractable;
+        [Header("Component")]
         [SerializeField] private Dropdown _dropdown;
+        
+        [Header("Parameter")]
+        [SerializeField] private bool _isBindInteractable = true;
         
         private void Awake()
         {
@@ -17,9 +20,11 @@ namespace Aspid.MVVM.StarterKit.Binders.Mono
                 _dropdown = GetComponent<Dropdown>();
         }
 
-        private void OnEnable() => _dropdown.onValueChanged.AddListener(InvokeCommand);
+        private void OnEnable() =>
+            _dropdown.onValueChanged.AddListener(InvokeCommand);
 
-        private void OnDisable() => _dropdown.onValueChanged.RemoveListener(InvokeCommand);
+        private void OnDisable() =>
+            _dropdown.onValueChanged.RemoveListener(InvokeCommand);
         
         protected override void OnCanExecuteChanged(IRelayCommand<int> command)
         {

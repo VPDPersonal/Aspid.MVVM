@@ -4,10 +4,10 @@ using Aspid.MVVM.Mono.Generation;
 
 namespace Aspid.MVVM.StarterKit.Binders.Mono
 {
-    [AddComponentMenu("UI/Binders/Raw Image/Raw Image Binder - Texture")]
+    [AddComponentMenu("Binders/UI/Raw Image/RawImage Binder - Texture")]
     public partial class RawImageTextureMonoBinder : ComponentMonoBinder<RawImage>, IBinder<Texture2D>, IBinder<Sprite>
     {
-        [Header("Parameters")]
+        [Header("Parameter")]
         [SerializeField] private bool _disabledWhenNull = true;
         
         [BinderLog]

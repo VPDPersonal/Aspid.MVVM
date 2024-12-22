@@ -1,3 +1,4 @@
+#nullable enable
 using System;
 using UnityEngine;
 
@@ -8,12 +9,18 @@ namespace Aspid.MVVM.StarterKit.Converters
     {
         [SerializeField] private bool _isInvert;
 
-        public StringEmptyToBoolConverter(bool isInvert = false)
+        public StringEmptyToBoolConverter()
+            : this(false) { }
+        
+        public StringEmptyToBoolConverter(bool isInvert)
         {
             _isInvert = isInvert;
         }
 
-        public bool Convert(string value) =>
-            string.IsNullOrEmpty(value);
+        public bool Convert(string value)
+        {
+            var to = string.IsNullOrEmpty(value);
+            return _isInvert ? !to : to;
+        }
     }
 }

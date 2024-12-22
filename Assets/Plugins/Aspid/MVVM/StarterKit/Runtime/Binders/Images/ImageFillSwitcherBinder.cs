@@ -2,6 +2,7 @@
 using System;
 using UnityEngine;
 using UnityEngine.UI;
+using Aspid.MVVM.StarterKit.Converters;
 
 namespace Aspid.MVVM.StarterKit.Binders
 {
@@ -11,16 +12,31 @@ namespace Aspid.MVVM.StarterKit.Binders
         [Header("Component")]
         [SerializeField] private Image _image;
 
-        public ImageFillSwitcherBinder(Image image, float trueValue, float falseValue)
+#if UNITY_2023_1_OR_NEWER
+        [Header("Converter")]
+        [SerializeReference]
+        [SerializeReferenceDropdown]
+#endif
+        private IConverter<float, float>? _converter;
+        
+        public ImageFillSwitcherBinder(float trueValue, float falseValue, Image image, Func<float, float> converter) 
+            : this(trueValue, falseValue, image, converter.ToConvert()) { }
+        
+        public ImageFillSwitcherBinder(
+            float trueValue, 
+            float falseValue,
+            Image image,
+            IConverter<float, float>? converter = null)
             : base(trueValue, falseValue)
         {
-            if (trueValue is < 0 or > 1) throw new ArgumentException($"{nameof(falseValue)} must be between 0 and 1.");
-            if (falseValue is < 0 or > 1) throw new ArgumentException($"{nameof(falseValue)} must be between 0 and 1.");
-
+            _converter = converter;
             _image = image ?? throw new ArgumentNullException(nameof(image));
         }
 
-        protected override void SetValue(float value) =>
-            _image.fillAmount = value;
+        protected override void SetValue(float value)
+        {
+            value = _converter?.Convert(value) ?? value;
+            _image.fillAmount = Mathf.Clamp01(value);
+        }
     }
 }

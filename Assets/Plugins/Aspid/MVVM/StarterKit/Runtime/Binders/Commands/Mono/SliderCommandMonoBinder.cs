@@ -5,11 +5,14 @@ using Aspid.MVVM.Commands;
 namespace Aspid.MVVM.StarterKit.Binders.Mono
 {
     [RequireComponent(typeof(Slider))]
-    [AddComponentMenu("UI/Binders/Commands/Slider Button Command Binder")]
+    [AddComponentMenu("Binders/UI/Commands/Slider Command Binder")]
     public sealed class SliderCommandMonoBinder : MonoCommandBinder<float>
     {
-        [SerializeField] private bool _isBindInteractable;
+        [Header("Component")]
         [SerializeField] private Slider _slider;
+        
+        [Header("Parameter")]
+        [SerializeField] private bool _isBindInteractable = true;
         
         private void Awake()
         {
@@ -17,9 +20,11 @@ namespace Aspid.MVVM.StarterKit.Binders.Mono
                 _slider = GetComponent<Slider>();
         }
 
-        private void OnEnable() => _slider.onValueChanged.AddListener(InvokeCommand);
+        private void OnEnable() => 
+            _slider.onValueChanged.AddListener(InvokeCommand);
 
-        private void OnDisable() => _slider.onValueChanged.RemoveListener(InvokeCommand);
+        private void OnDisable() => 
+            _slider.onValueChanged.RemoveListener(InvokeCommand);
         
         protected override void OnCanExecuteChanged(IRelayCommand<float> command)
         {

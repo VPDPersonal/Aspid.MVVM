@@ -7,7 +7,7 @@ using Aspid.MVVM.StarterKit.Converters;
 namespace Aspid.MVVM.StarterKit.Binders
 {
     [Serializable]
-    public sealed class GraphicColorBinder : Binder, IColorBinder
+    public class GraphicColorBinder : Binder, IColorBinder
     {
         [Header("Component")]
         [SerializeField] private Graphic _graphic;
@@ -20,7 +20,7 @@ namespace Aspid.MVVM.StarterKit.Binders
         private IConverter<Color, Color>? _converter;
 
         public GraphicColorBinder(Graphic graphic, Func<Color, Color> converter)
-            : this(graphic, new GenericFuncConverter<Color, Color>(converter)) { }
+            : this(graphic, converter.ToConvert()) { }
         
         public GraphicColorBinder(Graphic graphic, IConverter<Color, Color>? converter = null)
         {

@@ -5,18 +5,19 @@ using Aspid.MVVM.StarterKit.Converters;
 
 namespace Aspid.MVVM.StarterKit.Binders.Mono
 {
-    [AddComponentMenu("UI/Binders/Slider/Slider Binder - Min Max")]
+    [AddComponentMenu("Binders/UI/Slider/Slider Binder - MinMax")]
     public partial class SliderMinMaxMonoBinder : ComponentMonoBinder<Slider>, IBinder<Vector2>, INumberBinder
     {
-        [Header("Parameters")]
+        [Header("Parameter")]
         [SerializeField] private SliderValueMode _mode = SliderValueMode.Range;
         
         [Header("Converter")]
+        [SerializeReference]
         [SerializeReferenceDropdown]
 #if UNITY_2023_1_OR_NEWER
-        [SerializeReference] private IConverter<Vector2, Vector2> _converter;
+        private IConverter<Vector2, Vector2> _converter;
 #else
-        [SerializeReference] private IConverterVector2ToVector2 _converter;
+        private IConverterVector2 _converter;
 #endif
         
         [BinderLog]

@@ -39,10 +39,10 @@ namespace Aspid.MVVM.StarterKit.Binders
 
         public BindableProperty() { }
 
-        public BindableProperty(T value, Func<T?, T?> converter) 
-            : this(value, new GenericFuncConverter<T?, T?>(converter)) { }
+        public BindableProperty(T? value, Func<T?, T?> converter) 
+            : this(value, converter.ToConvert()) { }
         
-        public BindableProperty(T value, IConverter<T?, T?>? converter = null)
+        public BindableProperty(T? value, IConverter<T?, T?>? converter = null)
         {
             _value = value;
             _converter = converter;
@@ -54,6 +54,6 @@ namespace Aspid.MVVM.StarterKit.Binders
             Changed?.Invoke(value);
         }
         
-        public static implicit operator T?(BindableProperty<T> binder) => binder.Value;
+        public static implicit operator T?(BindableProperty<T?> binder) => binder.Value;
     }
 }

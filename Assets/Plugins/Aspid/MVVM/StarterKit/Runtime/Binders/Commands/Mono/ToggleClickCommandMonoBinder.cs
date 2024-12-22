@@ -5,11 +5,14 @@ using Aspid.MVVM.Commands;
 namespace Aspid.MVVM.StarterKit.Binders.Mono
 {
     [RequireComponent(typeof(Toggle))]
-    [AddComponentMenu("UI/Binders/Commands/Toggle Click Command Binder")]
+    [AddComponentMenu("Binders/UI/Commands/Toggle Click Command Binder")]
     public sealed class ToggleClickCommandMonoBinder : MonoCommandBinder
     {
-        [SerializeField] private bool _isBindInteractable = true;
+        [Header("Component")]
         [SerializeField] private Toggle _toggle;
+        
+        [Header("Parameter")]
+        [SerializeField] private bool _isBindInteractable = true;
         
         private void Awake()
         {
@@ -17,11 +20,14 @@ namespace Aspid.MVVM.StarterKit.Binders.Mono
                 _toggle = GetComponent<Toggle>();
         }
 
-        private void OnEnable() => _toggle.onValueChanged.AddListener(OnValueChanged);
+        private void OnEnable() => 
+            _toggle.onValueChanged.AddListener(OnValueChanged);
 
-        private void OnDisable() => _toggle.onValueChanged.RemoveListener(OnValueChanged);
+        private void OnDisable() => 
+            _toggle.onValueChanged.RemoveListener(OnValueChanged);
 
-        private void OnValueChanged(bool _) => InvokeCommand();
+        private void OnValueChanged(bool _) 
+            => InvokeCommand();
         
         protected override void OnCanExecuteChanged(IRelayCommand command)
         {

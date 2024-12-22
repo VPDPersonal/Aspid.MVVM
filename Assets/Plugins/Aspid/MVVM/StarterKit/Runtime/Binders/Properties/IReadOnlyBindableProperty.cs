@@ -1,4 +1,4 @@
-#nullable  enable
+#nullable enable
 using System;
 
 namespace Aspid.MVVM.StarterKit.Binders

@@ -5,11 +5,14 @@ using Aspid.MVVM.Commands;
 namespace Aspid.MVVM.StarterKit.Binders.Mono
 {
     [RequireComponent(typeof(Button))]
-    [AddComponentMenu("UI/Binders/Commands/Button Command Binder")]
+    [AddComponentMenu("Binders/UI/Commands/Button Command Binder")]
     public sealed class ButtonCommandMonoBinder : MonoCommandBinder
     {
-        [SerializeField] private bool _isBindInteractable = true;
+        [Header("Component")]
         [SerializeField] private Button _button;
+        
+        [Header("Parameter")]
+        [SerializeField] private bool _isBindInteractable = true;
 
         private void Awake()
         {
@@ -17,9 +20,11 @@ namespace Aspid.MVVM.StarterKit.Binders.Mono
                 _button = GetComponent<Button>();
         }
 
-        private void OnEnable() => _button.onClick.AddListener(InvokeCommand);
+        private void OnEnable() => 
+            _button.onClick.AddListener(InvokeCommand);
 
-        private void OnDisable() => _button.onClick.RemoveListener(InvokeCommand);
+        private void OnDisable() =>
+            _button.onClick.RemoveListener(InvokeCommand);
 
         protected override void OnCanExecuteChanged(IRelayCommand command)
         {

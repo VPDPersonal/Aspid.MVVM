@@ -1,13 +1,15 @@
 using UnityEngine;
+using Aspid.MVVM.StarterKit.Converters;
 
 namespace Aspid.MVVM.StarterKit.Binders.Mono
 {
-    [AddComponentMenu("UI/Binders/Transform/Transform Binder - Scale Switcher")]
+    [AddComponentMenu("Binders/Transform/Transform Binder - Scale Switcher")]
     public sealed class TransformScaleSwitcherMonoBinder : SwitcherMonoBinder<Vector3>
     {
-        [SerializeField] private VectorMode _mode = VectorMode.XYZ;
+        [Header("Converter")]
+        [SerializeField] private Vector3CombineConverter _converter = Vector3CombineConverter.Default;
 
         protected override void SetValue(Vector3 value) =>
-            transform.SetScale(value, _mode);
+            transform.SetScale(value, _converter);
     }
 }

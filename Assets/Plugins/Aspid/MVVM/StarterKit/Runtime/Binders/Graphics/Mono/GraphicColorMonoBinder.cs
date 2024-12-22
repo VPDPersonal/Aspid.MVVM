@@ -6,7 +6,7 @@ using Aspid.MVVM.StarterKit.Converters;
 namespace Aspid.MVVM.StarterKit.Binders.Mono
 {
     [AddComponentMenu("Binders/UI/Graphic/Graphic Binder - Color")]
-    public sealed partial class GraphicColorMonoBinder : ComponentMonoBinder<Graphic>, IColorBinder
+    public partial class GraphicColorMonoBinder : ComponentMonoBinder<Graphic>, IColorBinder
     {
         [Header("Converter")]
         [SerializeReference]
@@ -14,7 +14,7 @@ namespace Aspid.MVVM.StarterKit.Binders.Mono
 #if UNITY_2023_1_OR_NEWER
         private IConverter<Color, Color> _converter;
 #else
-        private IConverterColorToColor _converter;
+        private IConverterColor _converter;
 #endif
         
         [BinderLog]

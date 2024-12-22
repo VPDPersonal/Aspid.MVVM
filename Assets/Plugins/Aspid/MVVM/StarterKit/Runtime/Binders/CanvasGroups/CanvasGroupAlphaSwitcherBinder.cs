@@ -1,23 +1,45 @@
 #nullable enable
 using System;
 using UnityEngine;
+using Aspid.MVVM.StarterKit.Converters;
 
 namespace Aspid.MVVM.StarterKit.Binders
 {
+    [Serializable]
     public sealed class CanvasGroupAlphaSwitcherBinder : SwitcherBinder<float>
     {
-        private readonly CanvasGroup _canvasGroup;
+        [Header("Component")]
+        [SerializeField] private CanvasGroup _canvasGroup;
 
-        public CanvasGroupAlphaSwitcherBinder(CanvasGroup canvasGroup, float trueValue, float falseValue) 
+#if UNITY_2023_1_OR_NEWER
+        [Header("Converter")]
+        [SerializeReference]
+        [SerializeReferenceDropdown]
+#endif
+        private IConverter<float, float>? _converter;
+        
+        public CanvasGroupAlphaSwitcherBinder(
+            float trueValue, 
+            float falseValue, 
+            CanvasGroup canvasGroup, 
+            Func<float, float> converter) 
+            : this(trueValue, falseValue, canvasGroup, converter.ToConvert()) { }
+        
+        public CanvasGroupAlphaSwitcherBinder(
+            float trueValue, 
+            float falseValue, 
+            CanvasGroup canvasGroup, 
+            IConverter<float, float>? converter = null) 
             : base(trueValue, falseValue)
         {
-            if (trueValue is < 0 or > 1) throw new ArgumentException($"{nameof(trueValue)} must be between 0 and 1.");
-            if (falseValue is < 0 or > 1) throw new ArgumentException($"{nameof(falseValue)} must be between 0 and 1.");
-
+            _converter = converter;
             _canvasGroup = canvasGroup ?? throw new ArgumentNullException(nameof(canvasGroup));
         }
 
-        protected override void SetValue(float value) => 
-            _canvasGroup.alpha = value;
+        protected override void SetValue(float value)      
+        {
+            value = _converter?.Convert(value) ?? value;
+            _canvasGroup.alpha = Mathf.Clamp01(value);
+        }
     }
 }

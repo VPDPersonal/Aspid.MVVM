@@ -5,11 +5,14 @@ using Aspid.MVVM.Commands;
 namespace Aspid.MVVM.StarterKit.Binders.Mono
 {
     [RequireComponent(typeof(Scrollbar))]
-    [AddComponentMenu("UI/Binders/Commands/Scrolbar Command Binder")]
+    [AddComponentMenu("Binders/UI/Commands/Scrolbar Command Binder")]
     public sealed class ScrollBarCommandMonoBinder : MonoCommandBinder<float>
     {
-        [SerializeField] private bool _isBindInteractable;
+        [Header("Component")]
         [SerializeField] private Scrollbar _scrollBar;
+        
+        [Header("Parameter")]
+        [SerializeField] private bool _isBindInteractable = true;
         
         private void Awake()
         {
@@ -17,9 +20,11 @@ namespace Aspid.MVVM.StarterKit.Binders.Mono
                 _scrollBar = GetComponent<Scrollbar>();
         }
 
-        private void OnEnable() => _scrollBar.onValueChanged.AddListener(InvokeCommand);
+        private void OnEnable() => 
+            _scrollBar.onValueChanged.AddListener(InvokeCommand);
 
-        private void OnDisable() => _scrollBar.onValueChanged.RemoveListener(InvokeCommand);
+        private void OnDisable() => 
+            _scrollBar.onValueChanged.RemoveListener(InvokeCommand);
         
         protected override void OnCanExecuteChanged(IRelayCommand<float> command)
         {

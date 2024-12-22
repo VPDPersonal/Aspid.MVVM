@@ -5,7 +5,7 @@ using Aspid.MVVM.Mono.Generation;
 
 namespace Aspid.MVVM.StarterKit.Binders.Mono
 {
-    [AddComponentMenu("UI/Binders/Commands/Command Binder")]
+    [AddComponentMenu("Binders/Commands/Command Binder")]
     public partial class MonoCommandBinder : MonoBinder, IBinder<IRelayCommand>
     {
         private IRelayCommand _command;
@@ -31,9 +31,11 @@ namespace Aspid.MVVM.StarterKit.Binders.Mono
         public void SetValue(IRelayCommand value) =>
             Command = value;
         
-        public bool CanExecute() => Command.CanExecute();
+        public bool CanExecute() => 
+            Command.CanExecute();
 
-        public void InvokeCommand() => Command?.Execute();
+        public void InvokeCommand() =>
+            Command?.Execute();
 
         protected virtual void OnCanExecuteChanged(IRelayCommand command) { }
     }

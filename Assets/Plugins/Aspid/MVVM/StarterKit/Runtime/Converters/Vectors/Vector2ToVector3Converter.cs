@@ -1,3 +1,4 @@
+#nullable enable
 using System;
 using UnityEngine;
 
@@ -9,9 +10,10 @@ namespace Aspid.MVVM.StarterKit.Converters
         [SerializeField] private Values _values;
         [SerializeField] private float _thirdValue;
 
-        public Vector2ToVector3Converter() { }
+        public Vector2ToVector3Converter()
+            : this(Values.XY) { }
 
-        public Vector2ToVector3Converter(Values values, float thirdValue)
+        public Vector2ToVector3Converter(Values values, float thirdValue = 0)
         {
             _values = values;
             _thirdValue = thirdValue;

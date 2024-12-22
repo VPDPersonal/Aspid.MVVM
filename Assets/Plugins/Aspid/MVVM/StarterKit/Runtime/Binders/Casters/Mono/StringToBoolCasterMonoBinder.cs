@@ -6,15 +6,16 @@ using Aspid.MVVM.StarterKit.Converters;
 
 namespace Aspid.MVVM.StarterKit.Binders.Mono
 {
-    [AddComponentMenu("UI/Binders/Casters/String To Bool Caster Binder")]
+    [AddComponentMenu("Binders/Casters/String To Bool Caster Binder")]
     public sealed partial class StringToBoolCasterMonoBinder : MonoBinder, IBinder<string>
     {
         [Header("Converter")]
+        [SerializeReference]
         [SerializeReferenceDropdown]
 #if UNITY_2023_1_OR_NEWER
-        [SerializeReference] private IConverter<string, bool> _converter = new StringEmptyToBoolConverter();
+        private IConverter<string, bool> _converter = new StringEmptyToBoolConverter();
 #else
-        [SerializeReference] private IConverterStringToBool _converter = new StringEmptyToBoolConverter();
+        private IConverterStringToBool _converter = new StringEmptyToBoolConverter();
 #endif
         
         [Header("Events")]

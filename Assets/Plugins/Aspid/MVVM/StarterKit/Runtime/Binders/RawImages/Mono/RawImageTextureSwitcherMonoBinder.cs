@@ -3,10 +3,15 @@ using UnityEngine.UI;
 
 namespace Aspid.MVVM.StarterKit.Binders.Mono
 {
-    [AddComponentMenu("UI/Binders/Raw Image/Raw Image Binder - Texture Switcher")]
+    [AddComponentMenu("Binders/UI/Raw Image/RawImage Binder - Texture Switcher")]
     public sealed class RawImageTextureSwitcherMonoBinder : SwitcherMonoBinder<RawImage, Texture2D>
     {
-        protected override void SetValue(Texture2D value) =>
+        [SerializeField] private bool _disabledWhenNull = true;
+        
+        protected override void SetValue(Texture2D value)
+        {
             CachedComponent.texture = value;
+            if (_disabledWhenNull) CachedComponent.enabled = value != null;
+        }
     }
 }

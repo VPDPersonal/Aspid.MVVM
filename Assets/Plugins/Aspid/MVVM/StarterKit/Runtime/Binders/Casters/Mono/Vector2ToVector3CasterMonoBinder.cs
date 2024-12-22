@@ -6,15 +6,16 @@ using Aspid.MVVM.StarterKit.Converters;
 
 namespace Aspid.MVVM.StarterKit.Binders.Mono
 {
-    [AddComponentMenu("UI/Binders/Casters/Vector2 To Vector3 Caster Binder")]
+    [AddComponentMenu("Binders/Casters/Vector2 To Vector3 Caster Binder")]
     public sealed partial class Vector2ToVector3CasterMonoBinder : MonoBinder, IBinder<Vector2>
     {
         [Header("Converter")]
+        [SerializeReference]
         [SerializeReferenceDropdown]
 #if UNITY_2023_1_OR_NEWER
-        [SerializeReference] private IConverter<Vector2, Vector3> _converter = new Vector2ToVector3Converter();
+        private IConverter<Vector2, Vector3> _converter = new Vector2ToVector3Converter();
 #else
-        [SerializeReference] private IConverterVector2ToVector3 _converter = new Vector2ToVector3Converter();
+        private IConverterVector2ToVector3 _converter = new Vector2ToVector3Converter();
 #endif
         
         [Header("Events")]

@@ -5,7 +5,7 @@ using Aspid.MVVM.Mono.Views.Extensions;
 
 namespace Aspid.MVVM.StarterKit.Binders.Mono
 {
-    [AddComponentMenu("UI/Binders/Collections/Lists/Pool List - ViewModel")]
+    [AddComponentMenu("Binders/Collections/Lists/Pool List - ViewModel")]
     public class PoolViewModelMonoList : DynamicViewModelMonoList
     {
         [SerializeField] [Min(0)] private int _initialCount;
@@ -25,15 +25,6 @@ namespace Aspid.MVVM.StarterKit.Binders.Mono
             collectionCheck: false,
             defaultCapacity: _initialCount,
             maxSize: _maxCount);
-        
-        public PoolViewModelMonoList() { }
-
-        public PoolViewModelMonoList(MonoView prefab, Transform container, int initialCount = 0, int maxCount = int.MaxValue)
-            : base(prefab, container)
-        {
-            _maxCount = maxCount;
-            _initialCount = initialCount;
-        }
 
         protected sealed override MonoView GetNewView() => Pool.Get();
 

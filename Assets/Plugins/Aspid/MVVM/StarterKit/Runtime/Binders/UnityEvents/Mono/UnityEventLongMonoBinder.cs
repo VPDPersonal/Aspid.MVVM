@@ -15,7 +15,7 @@ namespace Aspid.MVVM.StarterKit.Binders.Mono
             remove => _set.RemoveListener(value);
         }
         
-        [Header("Converters")]
+        [Header("Converter")]
         [SerializeReference]
         [SerializeReferenceDropdown]
 #if UNITY_2023_1_OR_NEWER

@@ -6,15 +6,23 @@ using Aspid.MVVM.StarterKit.Converters;
 
 namespace Aspid.MVVM.StarterKit.Binders
 {
+    [Serializable]
     public class RawImageMaterialBinder : Binder, IBinder<Material?>
     {
-        private readonly RawImage _image;
-        private readonly IConverter<Material?, Material>? _converter;
+        [Header("Component")]
+        [SerializeField] private RawImage _image;
 
-        public RawImageMaterialBinder(RawImage image, Func<Material?, Material> converter)
-            : this(image, new GenericFuncConverter<Material?, Material>(converter)) { }
+#if UNITY_2023_1_OR_NEWER
+        [Header("Converter")]
+        [SerializeReference]
+        [SerializeReferenceDropdown]
+#endif
+        private IConverter<Material?, Material?>? _converter;
+
+        public RawImageMaterialBinder(RawImage image, Func<Material?, Material?> converter)
+            : this(image, converter.ToConvert()) { }
         
-        public RawImageMaterialBinder(RawImage image, IConverter<Material?, Material>? converter = null)
+        public RawImageMaterialBinder(RawImage image, IConverter<Material?, Material?>? converter = null)
         {
             _converter = converter;
             _image = image ?? throw new ArgumentNullException(nameof(image));

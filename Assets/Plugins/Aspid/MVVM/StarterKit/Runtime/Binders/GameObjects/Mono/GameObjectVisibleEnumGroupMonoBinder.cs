@@ -2,16 +2,17 @@ using UnityEngine;
 
 namespace Aspid.MVVM.StarterKit.Binders.Mono
 {
-    [AddComponentMenu("Binders/GameObject/GameObject Binder - Visible Enum Group")]
+    [AddComponentMenu("Binders/GameObject/GameObject Binder - Visible EnumGroup")]
     public sealed class GameObjectVisibleEnumGroupMonoBinder : EnumGroupMonoBinder<GameObject>
     {
-        [Header("Parameter")]
-        [SerializeField] private bool _isInvert;
+        [Header("Parameters")]
+        [SerializeField] private bool _defaultValue;
+        [SerializeField] private bool _selectedValue;
         
-        protected override void SetDefaultValue(GameObject component) =>
-            component.SetActive(_isInvert);
+        protected override void SetDefaultValue(GameObject element) =>
+            element.SetActive(_defaultValue);
 
-        protected override void SetSelectedValue(GameObject component) =>
-            component.SetActive(!_isInvert);
+        protected override void SetSelectedValue(GameObject element) =>
+            element.SetActive(_selectedValue);
     }
 }

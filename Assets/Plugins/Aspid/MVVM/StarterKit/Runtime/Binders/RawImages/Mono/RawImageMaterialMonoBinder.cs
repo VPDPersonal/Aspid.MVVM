@@ -5,15 +5,16 @@ using Aspid.MVVM.StarterKit.Converters;
 
 namespace Aspid.MVVM.StarterKit.Binders.Mono
 {
-    [AddComponentMenu("UI/Binders/Raw Image/Raw Image Binder - Material")]
+    [AddComponentMenu("Binders/UI/Raw Image/RawImage Binder - Material")]
     public partial class RawImageMaterialMonoBinder : ComponentMonoBinder<RawImage>, IBinder<Material>
     {
         [Header("Converter")]
+        [SerializeReference]
         [SerializeReferenceDropdown]
 #if UNITY_2023_1_OR_NEWER
-        [SerializeReference] private IConverter<Material, Material> _converter;
+        private IConverter<Material, Material> _converter;
 #else
-        [SerializeReference] private IConverterMaterialToMaterial _converter;
+        private IConverterMaterial _converter;
 #endif
         
         [BinderLog]

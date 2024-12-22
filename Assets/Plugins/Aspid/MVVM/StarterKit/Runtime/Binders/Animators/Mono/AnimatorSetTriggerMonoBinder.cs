@@ -1,12 +1,11 @@
 using System;
 using UnityEngine;
-using UnityEngine.Events;
 using Aspid.MVVM.Commands;
 using Aspid.MVVM.ViewModels;
 
 namespace Aspid.MVVM.StarterKit.Binders.Mono
 {
-    [AddComponentMenu("UI/Binders/Animator/Animator Binder - Set Trigger")]
+    [AddComponentMenu("Binders/Animator/Animator Binder - Set Trigger")]
     public class AnimatorSetTriggerMonoBinder : ComponentMonoBinder<Animator>, IReverseBinder<IRelayCommand>
     {
         public event Action<IRelayCommand> ValueChanged;
@@ -14,41 +13,32 @@ namespace Aspid.MVVM.StarterKit.Binders.Mono
         [Header("Parameters")]
         [SerializeField] private string _triggerName;
         
-        [Header("Events")]
-        [SerializeField] private UnityEvent _setting;
-        [SerializeField] private UnityEvent _set;
+        public string TriggerName => _triggerName;
         
-        private IRelayCommand _command;
-        
-        protected string TriggerName => _triggerName;
+        protected IRelayCommand Command { get; private set; }
 
-        protected virtual void OnEnable() => _command?.NotifyCanExecuteChanged();
+        protected virtual void OnEnable() => 
+            Command?.NotifyCanExecuteChanged();
         
-        protected virtual void OnDisable() => _command?.NotifyCanExecuteChanged();
+        protected virtual void OnDisable() =>
+            Command?.NotifyCanExecuteChanged();
 
         private void SetTrigger()
         {
             if (!CanExecute()) return;
-            
-            OnTriggerSetting();
-            _setting?.Invoke();
-            
             CachedComponent.SetTrigger(TriggerName);
-
-            OnTriggerSet();
-            _set?.Invoke();
         }
-        
-        protected virtual void OnTriggerSetting() { }
-        
-        protected virtual void OnTriggerSet() { }
         
         protected override void OnBound(IViewModel viewModel, string id)
         {
-            _command ??= new RelayCommand(SetTrigger, CanExecute);
-            ValueChanged?.Invoke(_command);
+            Command ??= new RelayCommand(SetTrigger, CanExecute);
+            ValueChanged?.Invoke(Command);
         }
         
-        protected virtual bool CanExecute() => CachedComponent.gameObject.activeInHierarchy;
+        protected override void OnUnbound() => 
+            Command = null;
+        
+        protected virtual bool CanExecute() =>
+            CachedComponent.gameObject.activeInHierarchy;
     }
 }

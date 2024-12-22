@@ -34,9 +34,11 @@ namespace Aspid.MVVM.StarterKit.Binders.Mono
             Subscribe();
         }
 
-        private void Subscribe() => _list.CollectionChanged += OnCollectionChanged;
+        private void Subscribe() => 
+            _list.CollectionChanged += OnCollectionChanged;
 
-        private void Unsubscribe() => _list.CollectionChanged -= OnCollectionChanged;
+        private void Unsubscribe() =>
+            _list.CollectionChanged -= OnCollectionChanged;
 
         private void OnCollectionChanged(INotifyCollectionChangedEventArgs<T> e)
         {

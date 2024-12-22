@@ -2,12 +2,14 @@
 #nullable enable
 using TMPro;
 using System;
+using UnityEngine;
 using System.Globalization;
 using Aspid.MVVM.ViewModels;
 using Aspid.MVVM.StarterKit.Converters;
 
 namespace Aspid.MVVM.StarterKit.Binders
 {
+    [Serializable]
     public class InputFieldBinder : Binder, IBinder<string?>, INumberBinder, IReverseBinder<string>, INumberReverseBinder
     {
         public event Action<string>? ValueChanged;
@@ -16,9 +18,17 @@ namespace Aspid.MVVM.StarterKit.Binders
         public event Action<float>? FloatValueChanged;
         public event Action<double>? DoubleValueChanged;
 
+        [Header("Component")]
+        private TMP_InputField _inputField;
+        
+#if UNITY_2023_1_OR_NEWER
+        [Header("Converter")]
+        [SerializeReference]
+        [SerializeReferenceDropdown]
+#endif
+        private IConverter<string?, string?>? _converter;
+        
         private bool _isNotifyValueChanged = true;
-        private readonly TMP_InputField _inputField;
-        private readonly IConverter<string, string>? _converter;
         
         public bool IsReverseEnabled { get; }
         
@@ -29,10 +39,10 @@ namespace Aspid.MVVM.StarterKit.Binders
             _inputField = inputField ?? throw new ArgumentNullException(nameof(inputField));
         }
         
-        public InputFieldBinder(TMP_InputField inputField, Func<string, string> converter, bool isReverseEnabled = true)
-            : this(inputField, new GenericFuncConverter<string, string>(converter), isReverseEnabled) { }
+        public InputFieldBinder(TMP_InputField inputField, Func<string?, string> converter, bool isReverseEnabled = true)
+            : this(inputField, converter.ToConvert(), isReverseEnabled) { }
         
-        public InputFieldBinder(TMP_InputField inputField, IConverter<string, string>? converter, bool isReverseEnabled = true)
+        public InputFieldBinder(TMP_InputField inputField, IConverter<string?, string?>? converter = null, bool isReverseEnabled = true)
         {
             _converter = converter;
             IsReverseEnabled = isReverseEnabled;
@@ -53,11 +63,8 @@ namespace Aspid.MVVM.StarterKit.Binders
 
         public void SetValue(string? value)
         {
-            if (value is not null) 
-                value = _converter?.Convert(value) ?? value;
-
             _isNotifyValueChanged = false;
-            _inputField.text = value;
+            _inputField.text = _converter?.Convert(value) ?? value;
             _isNotifyValueChanged = true;
         }
 

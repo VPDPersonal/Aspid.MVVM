@@ -6,7 +6,7 @@ using Aspid.MVVM.StarterKit.Converters;
 namespace Aspid.MVVM.StarterKit.Binders
 {
     [Serializable]
-    public sealed class GameObjectTagBinder : Binder, IBinder<string>
+    public class GameObjectTagBinder : Binder, IBinder<string>
     {
         [Header("Component")]
         [SerializeField] private GameObject _gameObject;
@@ -19,7 +19,7 @@ namespace Aspid.MVVM.StarterKit.Binders
         private IConverter<string?, string?>? _converter;
 
         public GameObjectTagBinder(GameObject gameObject, Func<string?, string?> converter)
-            : this(gameObject, new GenericFuncConverter<string?, string?>(converter)) { }
+            : this(gameObject, converter.ToConvert()) { }
         
         public GameObjectTagBinder(GameObject gameObject, IConverter<string?, string?>? converter = null)
         {

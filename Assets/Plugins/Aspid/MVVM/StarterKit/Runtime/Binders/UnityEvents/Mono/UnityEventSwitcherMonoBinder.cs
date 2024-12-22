@@ -4,7 +4,7 @@ using UnityEngine.Events;
 namespace Aspid.MVVM.StarterKit.Binders.Mono
 {
     [AddComponentMenu("Binders/UnityEvent/UnityEvent Binder - Switcher")]
-    public sealed partial class UnityEventSwitcherMonoBinder : SwitcherMonoBinder<UnityEvent>
+    public sealed class UnityEventSwitcherMonoBinder : SwitcherMonoBinder<UnityEvent>
     {
         protected override void SetValue(UnityEvent value) =>
             value?.Invoke();

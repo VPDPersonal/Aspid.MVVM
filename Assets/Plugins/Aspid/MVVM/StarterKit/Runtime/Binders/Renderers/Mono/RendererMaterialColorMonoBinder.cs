@@ -4,18 +4,19 @@ using Aspid.MVVM.StarterKit.Converters;
 
 namespace Aspid.MVVM.StarterKit.Binders.Mono
 {
-    [AddComponentMenu("UI/Binders/Renderer/Renderer Binder - Material Color")]
+    [AddComponentMenu("Binders/Renderer/Renderer Binder - Material Color")]
     public partial class RendererMaterialColorMonoBinder : ComponentMonoBinder<Renderer>, IColorBinder
     {
-        [Header("Parameters")]
+        [Header("Parameter")]
         [SerializeField] private string _colorPropertyName = "_BaseColor";
         
         [Header("Converter")]
+        [SerializeReference]
         [SerializeReferenceDropdown]
 #if UNITY_2023_1_OR_NEWER
-        [SerializeReference] private IConverter<Color, Color> _converter;
+        private IConverter<Color, Color> _converter;
 #else
-        [SerializeReference] private IConverterColorToColor _converter;
+        private IConverterColor _converter;
 #endif
 
         private int? _colorPropertyId;

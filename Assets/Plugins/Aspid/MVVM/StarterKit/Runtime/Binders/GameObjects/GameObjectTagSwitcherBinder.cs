@@ -9,10 +9,10 @@ namespace Aspid.MVVM.StarterKit.Binders
         [Header("Component")]
         [SerializeField] private GameObject _gameObject;
         
-        public GameObjectTagSwitcherBinder(GameObject gameObject, string trueValue, string falseValue)
+        public GameObjectTagSwitcherBinder(string trueValue, string falseValue, GameObject gameObject)
             : base(trueValue, falseValue)
         {
-            _gameObject = gameObject;
+            _gameObject = gameObject ?? throw new ArgumentNullException(nameof(gameObject));
         }
 
         protected override void SetValue(string value) =>

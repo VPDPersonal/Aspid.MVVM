@@ -6,50 +6,67 @@ using Aspid.MVVM.StarterKit.Utilities;
 
 namespace Aspid.MVVM.StarterKit.Binders.Mono
 {
-    public abstract partial class EnumGroupMonoBinder<TComponent> : MonoBinder, IBinder<Enum>
+    public abstract partial class EnumGroupMonoBinder<TElement> : MonoBinder, IBinder<Enum>
     {
-        [Header("Parameters")]
-        [SerializeField] private EnumValue<TComponent>[] _components;
+        [Header("Enum")]
+        [SerializeField] private EnumValues<TElement> _enumValues;
         
-        private bool _isEnumTypeSet;
-        
-        protected override void OnUnbound() =>
-            _isEnumTypeSet = false;
+        private bool _initialized;
         
         [BinderLog]
         public void SetValue(Enum value)
         {
-            if (!_isEnumTypeSet)
+            Initialize(value);
+            
+            foreach (var enumValue in _enumValues)
             {
-                foreach (var component in _components)
-                    component.SetType(value.GetType());
+                if (enumValue.Key is null)
+                    throw new NullReferenceException("Key is null");
                 
-                _isEnumTypeSet = true;
-            }
-
-            foreach (var component in _components)
-            {
-                if (!component.Key!.Equals(value)) SetDefaultValue(component.Value);
-                else SetSelectedValue(component.Value);
+                if (!enumValue.Key.Equals(value)) SetDefaultValue(enumValue.Value);
+                else SetSelectedValue(enumValue.Value);
             }
         }
 
-        protected abstract void SetDefaultValue(TComponent component);
+        protected override void OnUnbound() =>
+            _initialized = false;
+
+        protected abstract void SetDefaultValue(TElement element);
         
-        protected abstract void SetSelectedValue(TComponent component);
+        protected abstract void SetSelectedValue(TElement element);
+
+        private void Initialize(Enum value)
+        {
+            if (_initialized) return;
+
+            foreach (var enumValue in _enumValues)
+                enumValue.Initialize(value.GetType());
+            
+            _initialized = true;
+        }
     }
     
-    public abstract class EnumGroupMonoBinder<TComponent, T> : EnumGroupMonoBinder<TComponent>
+    public abstract partial class EnumGroupMonoBinder<TEnum, TElement> : MonoBinder, IBinder<TEnum> 
+        where TEnum : Enum
     {
-        [SerializeField] private T _defaultValue;
-        [SerializeField] private T _selectedValue;
+        [Header("Enum")]
+        [SerializeField] private EnumValues<TEnum, TElement> _enumValues;
         
-        protected sealed override void SetDefaultValue(TComponent component) =>
-            SetValue(component, _defaultValue);
+        [BinderLog]
+        public void SetValue(TEnum value)
+        {
+            foreach (var enumValue in _enumValues)
+            {
+                if (enumValue.Key is null)
+                    throw new NullReferenceException("Key is null");
+                
+                if (enumValue.Key is not null && !enumValue.Key.Equals(value)) SetDefaultValue(enumValue.Value);
+                else SetSelectedValue(enumValue.Value);
+            }
+        }
 
-        protected sealed override void SetSelectedValue(TComponent component) =>
-            SetValue(component, _selectedValue);
+        protected abstract void SetDefaultValue(TElement element);
         
-        protected abstract void SetValue(TComponent component, T value);
+        protected abstract void SetSelectedValue(TElement element);
     }
 }

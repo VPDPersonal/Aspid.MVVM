@@ -5,36 +5,37 @@ using Aspid.MVVM.StarterKit.Converters;
 
 namespace Aspid.MVVM.StarterKit.Binders
 {
+    [Serializable]
     public class TransformScaleBinder : Binder, IVectorBinder, INumberBinder
     {
-        private readonly VectorMode _mode;
-        private readonly Transform _transform;
-        private readonly IConverter<Vector3, Vector3>? _converter;
+        [Header("Component")]
+        private Transform _transform;
         
-        public TransformScaleBinder(Transform transform, Func<Vector3, Vector3> converter) :
-            this(transform, VectorMode.XYZ, new GenericFuncConverter<Vector3, Vector3>(converter)) { }
+        [Header("Converter")]
+        [SerializeField] private Vector3CombineConverter? _converter;
         
-        public TransformScaleBinder(Transform transform, VectorMode mode, Func<Vector3, Vector3> converter) :
-            this(transform, mode, new GenericFuncConverter<Vector3, Vector3>(converter)) { }
-        
-        public TransformScaleBinder(Transform transform, VectorMode mode = VectorMode.XYZ, IConverter<Vector3, Vector3>? converter = null)
+        public TransformScaleBinder(Transform transform, Vector3CombineConverter? converter = null)
         {
-            _mode = mode;
             _converter = converter;
             _transform = transform ?? throw new ArgumentNullException(nameof(transform));
         }
 
-        public void SetValue(Vector2 value) => SetValue((Vector3)value);
+        public void SetValue(Vector2 value) => 
+            SetValue((Vector3)value);
 
         public void SetValue(Vector3 value) =>
-            _transform.SetScale(value, _mode);
+            _transform.SetScale(value, _converter);
 
-        public void SetValue(int value) => SetValue(Vector3.one * value);
+        public void SetValue(int value) => 
+            SetValue(Vector3.one * value);
 
-        public void SetValue(long value) => SetValue(Vector3.one * value);
+        public void SetValue(long value) => 
+            SetValue(Vector3.one * value);
         
-        public void SetValue(float value) => SetValue(Vector3.one * value);
+        public void SetValue(float value) => 
+            SetValue(Vector3.one * value);
         
-        public void SetValue(double value) => SetValue(Vector3.one * (float)value);
+        public void SetValue(double value) => 
+            SetValue(Vector3.one * (float)value);
     }
 }

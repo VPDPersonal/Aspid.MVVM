@@ -17,23 +17,17 @@ namespace Aspid.MVVM.StarterKit.Binders.Mono
         protected abstract void SetValue(T value);
     }
     
-    public abstract class SwitcherMonoBinder<TComponent, T> : SwitcherMonoBinder<T> 
+    public abstract class SwitcherMonoBinder<TComponent, T> : ComponentMonoBinder<TComponent>, IBinder<bool> 
         where TComponent : Component
     {
-        [Header("Component")]
-        [SerializeField] private TComponent _component;
-        
-        private bool _isCached;
+        [Header("Parameters")]
+        [SerializeField] private T _trueValue;
+        [SerializeField] private T _falseValue;
 
-        protected TComponent CachedComponent
-        {
-            get
-            {
-                if (_isCached) return _component;
-                
-                _isCached = true;
-                return _component ??= GetComponent<TComponent>();
-            }
-        }
+        [BinderLog]
+        public void SetValue(bool value) =>
+            SetValue(value ? _trueValue : _falseValue);
+
+        protected abstract void SetValue(T value);
     }
 }

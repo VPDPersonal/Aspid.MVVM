@@ -7,13 +7,15 @@ using Aspid.MVVM.Mono.Generation;
 namespace Aspid.MVVM.StarterKit.Binders.Mono
 {
     [AddComponentMenu("Binders/UI/Toggles/Toggle Binder - IsOn")]
-    public sealed partial class ToggleIsOnMonoBinder : ComponentMonoBinder<Toggle>, IBinder<bool>, IReverseBinder<bool>
+    public partial class ToggleIsOnMonoBinder : ComponentMonoBinder<Toggle>, IBinder<bool>, IReverseBinder<bool>
     {
         public event Action<bool> ValueChanged;
         
-        [Header("Parameters")]
-        [SerializeField] private bool _isInvert;
+        [Header("Parameter")]
         [SerializeField] private bool _isReverseEnabled = true;
+        
+        [Header("Converter")]
+        [SerializeField] private bool _isInvert;
         
         private bool _isNotifyValueChanged = true;
 

@@ -1,42 +1,34 @@
 using System;
 using UnityEngine;
-using UnityEngine.Events;
 using Aspid.MVVM.Commands;
+using Aspid.MVVM.ViewModels;
+using Aspid.MVVM.Mono.Generation;
 
 namespace Aspid.MVVM.StarterKit.Binders.Mono
 {
-    public abstract class AnimatorSetParameterMonoBinder<T> : ComponentMonoBinder<Animator>, IBinder<T>, IReverseBinder<IRelayCommand<T>>
+    public abstract partial class AnimatorSetParameterMonoBinder<T> : ComponentMonoBinder<Animator>, IBinder<T>, IReverseBinder<IRelayCommand<T>>
     {
         public event Action<IRelayCommand<T>> ValueChanged;
         
-        public event UnityAction<T> Setting
-        {
-            add => _setting.AddListener(value);
-            remove => _setting.RemoveListener(value);
-        }
-        
-        public event UnityAction<T> Set
-        {
-            add => _set.AddListener(value);
-            remove => _set .RemoveListener(value);
-        }
-        
-        [Header("Events")]
-        [SerializeField] private UnityEvent<T> _setting;
-        [SerializeField] private UnityEvent<T> _set;
-        
+        [Header("Parameters")]
+        [SerializeField] private string _parameterName;
+
         private T _value;
-        private IRelayCommand<T> _command;
+        
+        public string ParameterName => _parameterName;
+        
+        protected IRelayCommand<T> Command { get; private set; }
 
         protected virtual void OnEnable()
         {
             SetParameter(_value);
-            _command?.NotifyCanExecuteChanged();
+            Command?.NotifyCanExecuteChanged();
         }
 
         protected virtual void OnDisable() =>
-            _command?.NotifyCanExecuteChanged();
+            Command?.NotifyCanExecuteChanged();
 
+        [BinderLog]
         public void SetValue(T value)
         {
             _value = value;
@@ -45,23 +37,24 @@ namespace Aspid.MVVM.StarterKit.Binders.Mono
 
         private void SetParameterInternal(T value)
         {
+            _value = value;
             if (!CanExecute(value)) return;
             
-            OnParameterSetting(value);
-            _setting?.Invoke(value);
-
             SetParameter(value);
-
-            OnParameterSet(value);
-            _set?.Invoke(value);
         }
-
+        
         protected abstract void SetParameter(T value);
         
-        protected virtual void OnParameterSetting(T value) { }
+        protected override void OnBound(IViewModel viewModel, string id)
+        {
+            Command ??= new RelayCommand<T>(SetParameter, CanExecute);
+            ValueChanged?.Invoke(Command);
+        }
         
-        protected virtual void OnParameterSet(T value) { }
+        protected override void OnUnbound() => 
+            Command = null;
         
-        protected virtual bool CanExecute(T value) => CachedComponent.gameObject.activeInHierarchy;
+        protected virtual bool CanExecute(T value) => 
+            CachedComponent.gameObject.activeInHierarchy;
     }
 }

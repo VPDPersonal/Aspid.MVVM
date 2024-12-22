@@ -7,15 +7,16 @@ using Aspid.MVVM.StarterKit.Converters;
 
 namespace Aspid.MVVM.StarterKit.Binders.Mono
 {
-    [AddComponentMenu("UI/Binders/Text/Text Binder")]
+    [AddComponentMenu("Binders/UI/Text/Text Binder")]
     public partial class TextMonoBinder : ComponentMonoBinder<TMP_Text>, IBinder<string>, INumberBinder
     {
         [Header("Converter")]
+        [SerializeReference]
         [SerializeReferenceDropdown]
 #if UNITY_2023_1_OR_NEWER
-        [SerializeReference] private IConverter<string, string> _converter = new StringFormatConverter();
+        private IConverter<string, string> _converter = new StringFormatConverter();
 #else
-        [SerializeReference] private IConverterStringToString _converter = new StringFormatConverter();
+        private IConverterString _converter = new StringFormatConverter();
 #endif
         
         [BinderLog]

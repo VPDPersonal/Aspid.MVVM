@@ -5,28 +5,59 @@ using UnityEngine;
 namespace Aspid.MVVM.StarterKit.Utilities
 {
     [Serializable]
-    public sealed class EnumValue<T>
+    public sealed class EnumValue<T> : IEnumValue<Enum, T>
     {
-#pragma warning disable CS8618
         [SerializeField] private string _key;
-        [SerializeField] private T _value;
-#pragma warning restore CS8618
+        [SerializeField] private T? _value;
 
-        public T Value => _value;
+        public T? Value => _value;
         
         public Enum? Key { get; private set;  }
         
-        public Type? EnumType { get; private set; }
-        
-        public void SetType(Type enumType)
+        public Type? Type { get; private set; }
+
+        public EnumValue()
+            : this(string.Empty, default) { }
+
+        public EnumValue(string key, T? value)
         {
-            if (!Enum.IsDefined(enumType, _key))
+            _key = key;
+            _value = value;
+        }
+
+        public void Initialize(Type type)
+        {
+            if (!Enum.IsDefined(type, _key))
             {
-                throw new Exception($"[{nameof(EnumValue<T>)}] [{nameof(SetType)}]" +
-                    $"Couldn't parse key '{_key}' to Enum '{nameof(enumType)}'");
+                throw new Exception($"[{nameof(EnumValue<T>)}] [{nameof(Initialize)}]" +
+                    $"Couldn't parse key '{_key}' to Enum '{nameof(type)}'");
             }
-                
-            Key = Enum.Parse(enumType, _key) as Enum;
+
+            Type = type;
+            Key = Enum.Parse(type, _key) as Enum;
+        }
+    }
+    
+    [Serializable]
+    public sealed class EnumValue<TEnum, T>  : IEnumValue<TEnum, T>
+        where TEnum : Enum
+    {
+        [SerializeField] private TEnum? _key;
+        [SerializeField] private T? _value;
+
+        public T? Value => _value;
+        
+        public TEnum? Key => _key;
+
+        public Type Type => typeof(TEnum);
+
+        public EnumValue()
+            : this(default, default) { }
+
+        public EnumValue(TEnum? key, T? value)
+        {
+            _key = key;
+            _value = value;
         }
     }
 }

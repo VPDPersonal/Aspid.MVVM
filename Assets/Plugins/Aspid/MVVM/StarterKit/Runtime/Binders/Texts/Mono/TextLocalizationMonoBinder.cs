@@ -10,11 +10,12 @@ namespace Aspid.MVVM.StarterKit.Binders.Mono
     public partial class TextLocalizationMonoBinder : ComponentMonoBinder<LocalizeStringEvent>, IBinder<string>
     {
         [Header("Converter")]
+        [SerializeReference]
         [SerializeReferenceDropdown]
 #if UNITY_2023_1_OR_NEWER
-        [SerializeReference] private IConverter<string, string> _converter;
+        private IConverter<string, string> _converter;
 #else
-        [SerializeReference] private IConverterStringToString _converter;
+        private IConverterString _converter;
 #endif
         
         [BinderLog]

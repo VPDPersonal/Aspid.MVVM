@@ -7,7 +7,7 @@ using Aspid.MVVM.StarterKit.Converters;
 namespace Aspid.MVVM.StarterKit.Binders
 {
     [Serializable]
-    public sealed class ImageFillBinder : Binder, INumberBinder
+    public class ImageFillBinder : Binder, INumberBinder
     {
         [Header("Component")]
         [SerializeField] private Image _image;
@@ -20,7 +20,7 @@ namespace Aspid.MVVM.StarterKit.Binders
         private IConverter<float, float>? _converter;
 
         public ImageFillBinder(Image image, Func<float, float> converter) 
-            : this(image, new GenericFuncConverter<float, float>(converter)) { }
+            : this(image, converter.ToConvert()) { }
         
         public ImageFillBinder(Image image, IConverter<float, float>? converter = null)
         {
@@ -32,8 +32,11 @@ namespace Aspid.MVVM.StarterKit.Binders
 
         public void SetValue(long value) => SetValue((float)value);
         
-        public void SetValue(float value) =>
-            _image.fillAmount = _converter?.Convert(value) ?? value;
+        public void SetValue(float value)
+        {
+            value = _converter?.Convert(value) ?? value;
+            _image.fillAmount = Mathf.Clamp01(value);
+        }
 
         public void SetValue(double value) => SetValue((float)value);
     }

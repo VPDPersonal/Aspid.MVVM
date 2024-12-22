@@ -14,7 +14,7 @@ namespace Aspid.MVVM.StarterKit.Binders.Mono
             remove => _set.RemoveListener(value);
         }
         
-        [Header("Parameter")]
+        [Header("Converter")]
         [SerializeField] private bool _isInvert;
         
         [Header("Events")]

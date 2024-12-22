@@ -1,23 +1,32 @@
+#nullable enable
 using System;
 using UnityEngine;
+using Aspid.MVVM.StarterKit.Converters;
 
 namespace Aspid.MVVM.StarterKit.Binders
 {
     [Serializable]
     public class AnimatorSetFloatBinder : AnimatorSetParameterBinder<float>
     {
-        [field: SerializeField]
-        protected string ParameterName { get; private set; }
+#if UNITY_2023_1_OR_NEWER
+        [Header("Converter")]
+        [SerializeReference]
+        [SerializeReferenceDropdown]
+#endif
+        private IConverter<float, float>? _converter;
 
-        public AnimatorSetFloatBinder(Animator animator, string parameterName) : base(animator)
+        public AnimatorSetFloatBinder(Animator animator, string parameterName, IConverter<float, float>? converter = null)
+            : base(animator, parameterName)
         {
-            ParameterName = parameterName;
+            _converter = converter;
         }
 
-        protected sealed override void SetParameter(float value) =>
+        protected sealed override void SetParameter(float value)
+        {
+            value = _converter?.Convert(value) ?? value;
+            if (Mathf.Approximately(value, Animator.GetFloat(ParameterName))) return;
+            
             Animator.SetFloat(ParameterName, value);
-        
-        protected override bool CanExecute(float value) =>
-            base.CanExecute(value) && !Mathf.Approximately(Animator.GetFloat(ParameterName), value);
+        }
     }
 }

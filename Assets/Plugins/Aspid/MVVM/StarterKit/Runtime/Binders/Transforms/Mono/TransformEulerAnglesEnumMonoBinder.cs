@@ -1,14 +1,18 @@
 using UnityEngine;
+using Aspid.MVVM.StarterKit.Converters;
 
 namespace Aspid.MVVM.StarterKit.Binders.Mono
 {
-    [AddComponentMenu("UI/Binders/Transform/Transform Binder - Euler Angles Enum")]
+    [AddComponentMenu("Binders/Transform/Transform Binder - EulerAngles Enum")]
     public sealed class TransformEulerAnglesEnumMonoBinder : EnumMonoBinder<Vector3>
     {
+        [Header("Parameter")]
         [SerializeField] private Space _space = Space.World;
-        [SerializeField] private VectorMode _mode = VectorMode.XYZ;
+
+        [Header("Converter")]
+        [SerializeField] private Vector3CombineConverter _converter = Vector3CombineConverter.Default;
 
         protected override void SetValue(Vector3 value) =>
-            transform.SetEulerAngles(value, _mode, _space);
+            transform.SetEulerAngles(value, _space, _converter);
     }
 }

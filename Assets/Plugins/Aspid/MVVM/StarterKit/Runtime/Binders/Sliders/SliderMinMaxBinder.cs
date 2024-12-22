@@ -20,6 +20,7 @@ namespace Aspid.MVVM.StarterKit.Binders
         
         public SliderMinMaxBinder(Slider slider, SliderValueMode mode = SliderValueMode.Range, IConverter<Vector2, Vector2>? converter = null)
         {
+            _mode = mode;
             _converter = converter;
             _slider = slider ?? throw new ArgumentNullException(nameof(slider));
         }

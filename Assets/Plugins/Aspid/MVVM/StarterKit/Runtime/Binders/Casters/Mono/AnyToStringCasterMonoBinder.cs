@@ -5,15 +5,16 @@ using Aspid.MVVM.StarterKit.Converters;
 
 namespace Aspid.MVVM.StarterKit.Binders.Mono
 {
-    [AddComponentMenu("UI/Binders/Casters/Any To String Caster Binder")]
+    [AddComponentMenu("Binders/Casters/Any To String Caster Binder")]
     public sealed class AnyToStringCasterMonoBinder : MonoBinder, IBinder<object>
     {
         [Header("Converter")]
+        [SerializeReference]
         [SerializeReferenceDropdown]
 #if UNITY_2023_1_OR_NEWER
-        [SerializeReference] private IConverter<object, string> _converter = new ObjectToStringConverter();
+        private IConverter<object, string> _converter = new ObjectToStringConverter();
 #else
-        [SerializeReference] private IConverterObjectToString _converter = new ObjectToStringConverter();
+        private IConverterObjectToString _converter = new ObjectToStringConverter();
 #endif
         
         [Header("Events")]

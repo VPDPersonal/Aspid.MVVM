@@ -5,10 +5,14 @@ using UnityEngine.UI;
 
 namespace Aspid.MVVM.StarterKit.Binders
 {
+    [Serializable]
     public class RawImageTextureBinder : Binder, IBinder<Texture2D?>, IBinder<Sprite?>
     {
-        private readonly RawImage _image;
-        private readonly bool _disabledWhenNull;
+        [Header("Component")]
+        [SerializeField] private RawImage _image;
+        
+        [Header("Parameter")]
+        [SerializeField] private bool _disabledWhenNull;
 
         public RawImageTextureBinder(RawImage image, bool disabledWhenNull = true)
         {
@@ -19,7 +23,7 @@ namespace Aspid.MVVM.StarterKit.Binders
         public void SetValue(Texture2D? value)
         {
             _image.texture = value;
-            if (_disabledWhenNull) _image.enabled = value != null;
+            if (_disabledWhenNull) _image.enabled = value is not null;
         }
 
         public void SetValue(Sprite? value) =>

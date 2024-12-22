@@ -5,13 +5,13 @@ using UnityEngine;
 namespace Aspid.MVVM.StarterKit.Binders
 {
     [Serializable]
-    public sealed class GameObjectVisibleBinder : Binder, IBinder<bool>
+    public class GameObjectVisibleBinder : Binder, IBinder<bool>
     {
         [Header("Component")]
         private GameObject _gameObject;
         
-        [Header("Parameters")]
-        private readonly bool _isInvert;
+        [Header("Converter")]
+        private bool _isInvert;
         
         public GameObjectVisibleBinder(GameObject gameObject, bool isInvert = false)
         {

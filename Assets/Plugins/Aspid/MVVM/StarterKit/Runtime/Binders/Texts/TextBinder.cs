@@ -2,15 +2,24 @@
 #nullable enable
 using TMPro;
 using System;
+using UnityEngine;
 using System.Globalization;
 using Aspid.MVVM.StarterKit.Converters;
 
 namespace Aspid.MVVM.StarterKit.Binders
 {
+    [Serializable]
     public class TextBinder : Binder, IBinder<string?>, INumberBinder
     {
-        private readonly TMP_Text _text;
-        private readonly IConverter<string, string>? _converter;
+        [Header("Component")]
+        [SerializeField] private TMP_Text _text;
+        
+#if UNITY_2023_1_OR_NEWER
+        [Header("Converter")]
+        [SerializeReference]
+        [SerializeReferenceDropdown]
+#endif
+        private IConverter<string?, string?>? _converter;
 
         public TextBinder(TMP_Text text)
         {
@@ -18,10 +27,10 @@ namespace Aspid.MVVM.StarterKit.Binders
             _text = text ?? throw new ArgumentNullException(nameof(text));
         }
         
-        public TextBinder(TMP_Text text, Func<string, string> converter)
-            : this(text, new GenericFuncConverter<string, string>(converter)) { }
+        public TextBinder(TMP_Text text, Func<string?, string?> converter)
+            : this(text, converter.ToConvert()) { }
         
-        public TextBinder(TMP_Text text, IConverter<string, string>? converter)
+        public TextBinder(TMP_Text text, IConverter<string?, string?>? converter)
         {
             _converter = converter;
             _text = text ?? throw new ArgumentNullException(nameof(text));

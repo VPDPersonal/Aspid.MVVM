@@ -10,7 +10,7 @@ namespace Aspid.MVVM.StarterKit.Binders
         private readonly IConverter<TFrom?, TTo?> _converter;
 
         public GenericCasterBinder(Action<TTo?> setValue, Func<TFrom?, TTo?> converter)
-            : this(setValue, new GenericFuncConverter<TFrom?, TTo?>(converter)) { }
+            : this(setValue, converter.ToConvert()) { }
         
         public GenericCasterBinder(Action<TTo?> setValue, IConverter<TFrom?, TTo?> converter)
         {
@@ -29,7 +29,7 @@ namespace Aspid.MVVM.StarterKit.Binders
         private readonly IConverter<TFrom?, TTo?> _converter;
 
         public GenericCasterBinder(TTarget target, Action<TTarget, TTo?> setValue, Func<TFrom?, TTo?> converter)
-            : this(target, setValue, new GenericFuncConverter<TFrom?, TTo?>(converter)) { }
+            : this(target, setValue, converter.ToConvert()) { }
         
         public GenericCasterBinder(TTarget target, Action<TTarget, TTo?> setValue, IConverter<TFrom?, TTo?> converter)
         {

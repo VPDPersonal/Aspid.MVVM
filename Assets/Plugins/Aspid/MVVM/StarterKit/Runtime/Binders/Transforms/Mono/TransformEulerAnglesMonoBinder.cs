@@ -5,19 +5,14 @@ using Aspid.MVVM.StarterKit.Converters;
 
 namespace Aspid.MVVM.StarterKit.Binders.Mono
 {
-    [AddComponentMenu("UI/Binders/Transform/Transform Binder - Euler Angles")]
+    [AddComponentMenu("Binders/Transform/Transform Binder - Euler Angles")]
     public partial class TransformEulerAnglesMonoBinder : MonoBinder, IVectorBinder, INumberBinder
     {
+        [Header("Parameter")]
         [SerializeField] private Space _space = Space.World;
-        [SerializeField] private VectorMode _mode = VectorMode.XYZ;
-        
+
         [Header("Converter")]
-        [SerializeReferenceDropdown]
-#if UNITY_2023_1_OR_NEWER
-        [SerializeReference] private IConverter<Vector3, Vector3> _converter;
-#else
-        [SerializeReference] private IConverterVector3ToVector3 _converter;
-#endif
+        [SerializeField] private Vector3CombineConverter _converter = Vector3CombineConverter.Default;
         
         [BinderLog]
         public void SetValue(int value) =>
@@ -40,10 +35,7 @@ namespace Aspid.MVVM.StarterKit.Binders.Mono
             SetValue((Vector3)value);
 
         [BinderLog]
-        public void SetValue(Vector3 value)
-        {
-            value = _converter?.Convert(value) ?? value;
-            transform.SetEulerAngles(value, _mode, _space);
-        }
+        public void SetValue(Vector3 value) =>
+            transform.SetEulerAngles(value, _space, _converter);
     }
 }

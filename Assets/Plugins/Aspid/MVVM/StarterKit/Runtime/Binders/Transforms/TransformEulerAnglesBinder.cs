@@ -5,44 +5,33 @@ using Aspid.MVVM.StarterKit.Converters;
 
 namespace Aspid.MVVM.StarterKit.Binders
 {
+    [Serializable]
     public class TransformEulerAnglesBinder : Binder, IVectorBinder, INumberBinder
     {
-        private readonly Space _space;
-        private readonly VectorMode _mode;
-        private readonly Transform _transform;
-        private readonly IConverter<Vector3, Vector3>? _converter;
+        [Header("Component")]
+        private Transform _transform;
         
-        public TransformEulerAnglesBinder(Transform transform, Space space = Space.World, VectorMode mode = VectorMode.XYZ)
-        {
-            _space = space;
-            _converter = null;
-            _transform = transform;
-        }
-        
-        public TransformEulerAnglesBinder(Transform transform, Func<Vector3, Vector3> converter) 
-            : this(transform, Space.World, VectorMode.XYZ, new GenericFuncConverter<Vector3, Vector3>(converter)) { }
-        
-        public TransformEulerAnglesBinder(Transform transform, Space space, VectorMode mode, Func<Vector3, Vector3> converter)
-            : this(transform, space, mode, new GenericFuncConverter<Vector3, Vector3>(converter)) { }
+        [Header("Parameter")]
+        private Space _space;
 
-        public TransformEulerAnglesBinder(Transform transform, IConverter<Vector3, Vector3>? converter) :
-            this(transform, Space.World, VectorMode.XYZ, converter) { }
+        [Header("Converter")]
+        [SerializeField] private Vector3CombineConverter? _converter;
         
-        public TransformEulerAnglesBinder(Transform transform, Space space, VectorMode mode, IConverter<Vector3, Vector3>? converter)
+        public TransformEulerAnglesBinder(Transform transform, Vector3CombineConverter? converter)
+            : this(transform, Space.World, converter) { }
+        
+        public TransformEulerAnglesBinder(Transform transform, Space space = Space.World, Vector3CombineConverter? converter = null)
         {
-            _mode = mode;
             _space = space;
             _converter = converter;
             _transform = transform ?? throw new ArgumentNullException(nameof(transform));
         }
         
-        public void SetValue(Vector2 value) => SetValue((Vector3)value);
+        public void SetValue(Vector2 value) =>
+            SetValue((Vector3)value);
         
-        public void SetValue(Vector3 value)
-        {
-            value = _converter?.Convert(value) ?? value;
-            _transform.SetEulerAngles(value, _mode, _space);
-        }
+        public void SetValue(Vector3 value) =>
+            _transform.SetEulerAngles(value, _space, _converter);
         
         public void SetValue(int value) =>
             SetValue((float)value);

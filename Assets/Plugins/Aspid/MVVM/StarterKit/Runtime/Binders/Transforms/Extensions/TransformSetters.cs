@@ -1,13 +1,14 @@
 using System;
 using UnityEngine;
 using System.Runtime.CompilerServices;
+using Aspid.MVVM.StarterKit.Converters;
 
 namespace Aspid.MVVM.StarterKit.Binders
 {
     public static class TransformSetters
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void SetPosition(this Transform transform, Vector3 value, VectorMode mode, Space space)
+        public static void SetPosition(this Transform transform, Vector3 value, Space space, Vector3CombineConverter converter = null)
         {
             var currentValue = space switch
             {
@@ -16,17 +17,7 @@ namespace Aspid.MVVM.StarterKit.Binders
                 _ => throw new ArgumentOutOfRangeException()
             };
 
-            value = mode switch
-            {
-                VectorMode.X => new Vector3(value.x, currentValue.y, currentValue.z),
-                VectorMode.Y => new Vector3(currentValue.x, value.y, currentValue.z),
-                VectorMode.Z => new Vector3(currentValue.x, currentValue.y, value.z),
-                VectorMode.XY => new Vector3(value.x, value.y, currentValue.z),
-                VectorMode.XZ => new Vector3(value.x, currentValue.y, value.z),
-                VectorMode.YZ => new Vector3(currentValue.x, value.y, value.z),
-                VectorMode.XYZ => new Vector3(value.x, value.y, value.z),
-                _ => throw new ArgumentOutOfRangeException()
-            };
+            value = converter?.Convert(value, currentValue) ?? value;
             
             switch (space)
             {
@@ -48,27 +39,11 @@ namespace Aspid.MVVM.StarterKit.Binders
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void SetScale(this Transform transform, Vector3 value, VectorMode mode)
-        {
-            var currentValue = transform.localScale;
-
-            value = mode switch
-            {
-                VectorMode.X => new Vector3(value.x, currentValue.y, currentValue.z),
-                VectorMode.Y => new Vector3(currentValue.x, value.y, currentValue.z),
-                VectorMode.Z => new Vector3(currentValue.x, currentValue.y, value.z),
-                VectorMode.XY => new Vector3(value.x, value.y, currentValue.z),
-                VectorMode.XZ => new Vector3(value.x, currentValue.y, value.z),
-                VectorMode.YZ => new Vector3(currentValue.x, value.y, value.z),
-                VectorMode.XYZ => new Vector3(value.x, value.y, value.z),
-                _ => throw new ArgumentOutOfRangeException()
-            };
-
-            transform.localScale = value;
-        }
+        public static void SetScale(this Transform transform, Vector3 value, Vector3CombineConverter converter = null) =>
+            transform.localScale = converter?.Convert(value, transform.localScale) ?? value;
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void SetEulerAngles(this Transform transform, Vector3 value, VectorMode mode, Space space)
+        public static void SetEulerAngles(this Transform transform, Vector3 value, Space space, Vector3CombineConverter converter = null)
         {
             var currentValue = space switch
             {
@@ -76,18 +51,8 @@ namespace Aspid.MVVM.StarterKit.Binders
                 Space.World => transform.eulerAngles,
                 _ => throw new ArgumentOutOfRangeException()
             };
-
-            value = mode switch
-            {
-                VectorMode.X => new Vector3(value.x, currentValue.y, currentValue.z),
-                VectorMode.Y => new Vector3(currentValue.x, value.y, currentValue.z),
-                VectorMode.Z => new Vector3(currentValue.x, currentValue.y, value.z),
-                VectorMode.XY => new Vector3(value.x, value.y, currentValue.z),
-                VectorMode.XZ => new Vector3(value.x, currentValue.y, value.z),
-                VectorMode.YZ => new Vector3(currentValue.x, value.y, value.z),
-                VectorMode.XYZ => new Vector3(value.x, value.y, value.z),
-                _ => throw new ArgumentOutOfRangeException()
-            };
+            
+            value = converter?.Convert(value, currentValue) ?? value;
             
             switch (space)
             {

@@ -4,7 +4,7 @@ using UnityEngine;
 namespace Aspid.MVVM.StarterKit.Converters
 {
     [Serializable]
-    public sealed class StringFormatConverter : IConverterStringToString
+    public sealed class StringFormatConverter : IConverterString
     {
         [SerializeField] private string _format;
 

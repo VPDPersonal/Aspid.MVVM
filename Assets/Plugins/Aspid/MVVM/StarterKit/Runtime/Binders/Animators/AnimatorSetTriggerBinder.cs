@@ -1,3 +1,4 @@
+#nullable enable
 using System;
 using UnityEngine;
 using Aspid.MVVM.Commands;
@@ -8,41 +9,43 @@ namespace Aspid.MVVM.StarterKit.Binders
     [Serializable]
     public class AnimatorSetTriggerBinder : Binder, IReverseBinder<IRelayCommand>
     {
-        public event Action<IRelayCommand> ValueChanged;
+        public event Action<IRelayCommand>? ValueChanged;
         
-        private IRelayCommand _command;
-        
+        [field: Header("Component")]
         [field: SerializeField]
         protected Animator Animator { get; private set; }
         
+        [field: Header("Parameters")]
         [field: SerializeField]
-        protected string TriggerName { get; private set; }
+        public string TriggerName { get; private set; }
+        
+        protected IRelayCommand? Command { get; private set; }
         
         public AnimatorSetTriggerBinder(Animator animator, string triggerName)
         {
-            Animator = animator;
-            TriggerName = triggerName;
+            Animator = animator ?? throw new ArgumentNullException(nameof(animator));
+            TriggerName = triggerName ?? throw new ArgumentNullException(nameof(triggerName));
         }
+
+        public void NotifyCanExecuteChanged() =>
+            Command?.NotifyCanExecuteChanged();
         
         private void SetTrigger()
         {
             if (!CanExecute()) return;
-            
-            OnTriggerSetting();
             Animator.SetTrigger(TriggerName);
-            OnTriggerSet();
         }
-        
-        protected virtual void OnTriggerSetting() { }
-        
-        protected virtual void OnTriggerSet() { }
         
         protected override void OnBound(IViewModel viewModel, string id)
         {
-            _command ??= new RelayCommand(SetTrigger, CanExecute);
-            ValueChanged?.Invoke(_command);
+            Command = new RelayCommand(SetTrigger, CanExecute);
+            ValueChanged?.Invoke(Command);
         }
         
-        protected virtual bool CanExecute() => Animator.gameObject.activeInHierarchy;
+        protected override void OnUnbound() => 
+            Command = null;
+
+        protected virtual bool CanExecute() => 
+            Animator.gameObject.activeInHierarchy;
     }
 }

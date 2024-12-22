@@ -1,3 +1,4 @@
+#nullable enable
 using System;
 using UnityEngine;
 using UnityEngine.Pool;
@@ -10,9 +11,10 @@ namespace Aspid.MVVM.StarterKit.Binders
     [Serializable]
     public class PoolViewModelList : PoolViewModelList<MonoView>
     {
-        public PoolViewModelList() { }
-
-        public PoolViewModelList(MonoView prefab, Transform container, int initialCount = 0, int maxCount = int.MaxValue)
+        public PoolViewModelList(MonoView prefab, int initialCount = 0, int maxCount = int.MaxValue)
+            : base(prefab, initialCount, maxCount) { }
+        
+        public PoolViewModelList(MonoView prefab, Transform? container, int initialCount = 0, int maxCount = int.MaxValue)
             : base(prefab, container, initialCount, maxCount) { }
     }
     
@@ -23,7 +25,7 @@ namespace Aspid.MVVM.StarterKit.Binders
         [SerializeField] [Min(0)] private int _initialCount;
         [SerializeField] [Min(0)] private int _maxCount = int.MaxValue;
 
-        private ObjectPool<T> _pool;
+        private ObjectPool<T>? _pool;
 
         private ObjectPool<T> Pool => _pool ??= new ObjectPool<T>(
             () => CreateView(Prefab, Container),
@@ -34,9 +36,10 @@ namespace Aspid.MVVM.StarterKit.Binders
             _initialCount,
             _maxCount);
         
-        public PoolViewModelList() { }
-
-        public PoolViewModelList(T prefab, Transform container, int initialCount = 0, int maxCount = int.MaxValue)
+        public PoolViewModelList(T prefab, int initialCount = 0, int maxCount = int.MaxValue)
+            : this(prefab, null, initialCount, maxCount) { }
+        
+        public PoolViewModelList(T prefab, Transform? container, int initialCount = 0, int maxCount = int.MaxValue)
             : base(prefab, container)
         {
             _maxCount = maxCount;
@@ -51,7 +54,7 @@ namespace Aspid.MVVM.StarterKit.Binders
             Pool.Release(view);
         }
         
-        protected virtual T CreateView(T prefab, Transform container) => 
+        protected virtual T CreateView(T prefab, Transform? container) => 
             Object.Instantiate(prefab, container);
 
         public override void Dispose()

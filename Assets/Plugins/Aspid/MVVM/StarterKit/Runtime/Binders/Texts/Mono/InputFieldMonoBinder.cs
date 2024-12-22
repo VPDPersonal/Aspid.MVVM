@@ -9,7 +9,7 @@ using Aspid.MVVM.StarterKit.Converters;
 
 namespace Aspid.MVVM.StarterKit.Binders.Mono
 {
-    [AddComponentMenu("UI/Binders/Text/Input Field Binder")]
+    [AddComponentMenu("Binders/UI/Text/InputField Binder")]
     public partial class InputFieldMonoBinder : ComponentMonoBinder<TMP_InputField>, 
         IBinder<string>, INumberBinder, IReverseBinder<string>, INumberReverseBinder
     {
@@ -23,11 +23,12 @@ namespace Aspid.MVVM.StarterKit.Binders.Mono
         [SerializeField] private bool _isReverseEnabled = true;
         
         [Header("Converter")]
+        [SerializeReference]
         [SerializeReferenceDropdown]
 #if UNITY_2023_1_OR_NEWER
-        [SerializeReference] private IConverter<string, string> _converter = new StringFormatConverter();
+        private IConverter<string, string> _converter = new StringFormatConverter();
 #else
-        [SerializeReference] private IConverterStringToString _converter;
+        private IConverterString _converter;
 #endif
         
         private bool _isNotifyValueChanged = true;
@@ -49,11 +50,8 @@ namespace Aspid.MVVM.StarterKit.Binders.Mono
         [BinderLog]
         public void SetValue(string value)
         {
-            if (value is not null) 
-                value = _converter?.Convert(value) ?? value;
-            
             _isNotifyValueChanged = false;
-            CachedComponent.text = value;
+            CachedComponent.text = _converter?.Convert(value) ?? value;
             _isNotifyValueChanged = true;
         }
 

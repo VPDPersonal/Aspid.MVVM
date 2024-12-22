@@ -1,3 +1,4 @@
+#nullable enable
 using System;
 using UnityEngine;
 
@@ -6,18 +7,21 @@ namespace Aspid.MVVM.StarterKit.Binders
     [Serializable]
     public class AnimatorSetBoolBinder : AnimatorSetParameterBinder<bool>
     {
-        [field: SerializeField]
-        protected string ParameterName { get; private set; }
+        [Header("Converter")]
+        [SerializeField] private bool _isInvert;
 
-        public AnimatorSetBoolBinder(Animator animator, string parameterName) : base(animator)
+        public AnimatorSetBoolBinder(Animator animator, string parameterName, bool isInvert = false)
+            : base(animator, parameterName)
         {
-            ParameterName = parameterName;
+            _isInvert = isInvert;
         }
 
-        protected sealed override void SetParameter(bool value) =>
+        protected sealed override void SetParameter(bool value)
+        { 
+            value = _isInvert ? !value : value;
+            if (value == Animator.GetBool(ParameterName)) return;
+            
             Animator.SetBool(ParameterName, value);
-        
-        protected override bool CanExecute(bool value) =>
-            base.CanExecute(value) && Animator.GetBool(ParameterName) != value;
+        }
     }
 }

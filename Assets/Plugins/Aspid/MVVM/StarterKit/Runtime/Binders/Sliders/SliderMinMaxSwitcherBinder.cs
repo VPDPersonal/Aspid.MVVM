@@ -9,7 +9,7 @@ namespace Aspid.MVVM.StarterKit.Binders
         private readonly Slider _slider;
         private readonly SliderValueMode _mode;
 
-        public SliderMinMaxSwitcherBinder(Slider slider, Vector2 trueValue, Vector2 falseValue, SliderValueMode mode = SliderValueMode.Range) 
+        public SliderMinMaxSwitcherBinder(Vector2 trueValue, Vector2 falseValue, Slider slider, SliderValueMode mode = SliderValueMode.Range) 
             : base(trueValue, falseValue)
         {
             _mode = mode;

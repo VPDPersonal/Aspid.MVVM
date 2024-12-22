@@ -1,12 +1,22 @@
 using UnityEngine;
 using UnityEngine.UI;
+using Aspid.MVVM.StarterKit.Converters;
 
 namespace Aspid.MVVM.StarterKit.Binders.Mono
 {
-    [AddComponentMenu("UI/Binders/Raw Image/Raw Image Binder - Material Enum")]
-    public sealed class RawImageMaterialEnumMonoBinder : EnumMonoBinder<RawImage, Material>
+    [AddComponentMenu("Binders/UI/Raw Image/RawImage Binder - Material Enum")]
+    public sealed class RawImageMaterialEnumMonoBinder : EnumComponentMonoBinder<RawImage, Material>
     {
+        [Header("Converter")]
+        [SerializeReference]
+        [SerializeReferenceDropdown]
+#if UNITY_2023_1_OR_NEWER
+        private IConverter<Material, Material> _converter;
+#else
+        private IConverterMaterial _converter;
+#endif
+        
         protected override void SetValue(Material value) =>
-            CachedComponent.material = value;
+            CachedComponent.material = _converter?.Convert(value) ?? value;
     }
 }

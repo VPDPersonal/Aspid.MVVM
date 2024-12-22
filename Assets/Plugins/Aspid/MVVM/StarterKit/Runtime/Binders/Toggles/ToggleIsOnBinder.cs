@@ -7,16 +7,18 @@ using Aspid.MVVM.ViewModels;
 namespace Aspid.MVVM.StarterKit.Binders
 {
     [Serializable]
-    public sealed class ToggleIsOnBinder : Binder, IBinder<bool>, IReverseBinder<bool>
+    public class ToggleIsOnBinder : Binder, IBinder<bool>, IReverseBinder<bool>
     {
         public event Action<bool>? ValueChanged;
         
         [Header("Component")]
         [SerializeField] private Toggle _toggle;
         
-        [Header("Parameters")]
-        [SerializeField] private bool _isInvert;
+        [Header("Parameter")]
         [SerializeField] private bool _isReverseEnabled;
+        
+        [Header("Converter")]
+        [SerializeField] private bool _isInvert;
         
         private bool _isNotifyValueChanged = true;
 

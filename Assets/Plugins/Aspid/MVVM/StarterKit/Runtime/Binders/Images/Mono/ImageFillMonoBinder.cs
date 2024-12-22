@@ -6,7 +6,7 @@ using Aspid.MVVM.StarterKit.Converters;
 namespace Aspid.MVVM.StarterKit.Binders.Mono
 {
     [AddComponentMenu("Binders/UI/Image/Image Binder - Fill")]
-    public sealed partial class ImageFillMonoBinder : ComponentMonoBinder<Image>, INumberBinder
+    public partial class ImageFillMonoBinder : ComponentMonoBinder<Image>, INumberBinder
     {
         [Header("Converter")]
         [SerializeReference]
@@ -14,7 +14,7 @@ namespace Aspid.MVVM.StarterKit.Binders.Mono
 #if UNITY_2023_1_OR_NEWER
         private IConverter<float, float> _converter;
 #else
-        private IConverterFloatToFloat _converter;
+        private IConverterFloat _converter;
 #endif
         
         [BinderLog]
@@ -26,8 +26,11 @@ namespace Aspid.MVVM.StarterKit.Binders.Mono
             SetValue((float)value);
         
         [BinderLog]
-        public void SetValue(float value) =>
-            CachedComponent.fillAmount = _converter?.Convert(value) ?? value;
+        public void SetValue(float value)
+        {
+            value = _converter?.Convert(value) ?? value;
+            CachedComponent.fillAmount = Mathf.Clamp01(value);
+        }
 
         [BinderLog]
         public void SetValue(double value) =>

@@ -10,16 +10,13 @@ using Aspid.MVVM.StarterKit.Converters;
 namespace Aspid.MVVM.StarterKit.Binders
 {
     [Serializable]
-    public class InputFieldBinder : Binder, IBinder<string?>, INumberBinder, IReverseBinder<string>, INumberReverseBinder
+    public class InputFieldBinder : TargetBinder<TMP_InputField>, IBinder<string?>, INumberBinder, IReverseBinder<string>, INumberReverseBinder
     {
         public event Action<string>? ValueChanged;
         public event Action<int>? IntValueChanged;
         public event Action<long>? LongValueChanged;
         public event Action<float>? FloatValueChanged;
         public event Action<double>? DoubleValueChanged;
-
-        [Header("Component")]
-        private TMP_InputField _inputField;
         
 #if UNITY_2023_1_OR_NEWER
         [Header("Converter")]
@@ -32,39 +29,37 @@ namespace Aspid.MVVM.StarterKit.Binders
         
         public bool IsReverseEnabled { get; }
         
-        public InputFieldBinder(TMP_InputField inputField, bool isReverseEnabled = true)
+        public InputFieldBinder(TMP_InputField target, bool isReverseEnabled = true)
+            : base(target)
         {
             _converter = null;
-            IsReverseEnabled = isReverseEnabled;
-            _inputField = inputField ?? throw new ArgumentNullException(nameof(inputField));
-        }
+            IsReverseEnabled = isReverseEnabled; }
         
-        public InputFieldBinder(TMP_InputField inputField, Func<string?, string> converter, bool isReverseEnabled = true)
-            : this(inputField, converter.ToConvert(), isReverseEnabled) { }
+        public InputFieldBinder(TMP_InputField target, Func<string?, string> converter, bool isReverseEnabled = true)
+            : this(target, converter.ToConvert(), isReverseEnabled) { }
         
-        public InputFieldBinder(TMP_InputField inputField, IConverter<string?, string?>? converter = null, bool isReverseEnabled = true)
+        public InputFieldBinder(TMP_InputField target, IConverter<string?, string?>? converter = null, bool isReverseEnabled = true)
+            : base(target)
         {
             _converter = converter;
-            IsReverseEnabled = isReverseEnabled;
-            _inputField = inputField ?? throw new ArgumentNullException(nameof(inputField));
-        }
+            IsReverseEnabled = isReverseEnabled; }
 
         protected override void OnBound(IViewModel viewModel, string id)
         {
             if (!IsReverseEnabled) return;
-            _inputField.onValueChanged.AddListener(OnValueChanged);
+            Target.onValueChanged.AddListener(OnValueChanged);
         }
 
         protected override void OnUnbound()
         {
             if (!IsReverseEnabled) return;
-            _inputField.onValueChanged.RemoveListener(OnValueChanged);
+            Target.onValueChanged.RemoveListener(OnValueChanged);
         }
 
         public void SetValue(string? value)
         {
             _isNotifyValueChanged = false;
-            _inputField.text = _converter?.Convert(value) ?? value;
+            Target.text = _converter?.Convert(value) ?? value;
             _isNotifyValueChanged = true;
         }
 
@@ -86,7 +81,7 @@ namespace Aspid.MVVM.StarterKit.Binders
             
             ValueChanged?.Invoke(value);
 
-            if (_inputField.contentType 
+            if (Target.contentType 
                 is not (TMP_InputField.ContentType.IntegerNumber 
                 or TMP_InputField.ContentType.DecimalNumber)) return;
            

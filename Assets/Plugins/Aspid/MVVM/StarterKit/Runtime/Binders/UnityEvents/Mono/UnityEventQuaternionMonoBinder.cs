@@ -21,7 +21,7 @@ namespace Aspid.MVVM.StarterKit.Binders.Mono
 #if UNITY_2023_1_OR_NEWER
         private IConverter<Quaternion, Quaternion> _converter;
 #else
-        private IConverterQuaternionToQuaternion _converter;
+        private IConverterQuaternion_converter;
 #endif
         
         [Header("Events")]

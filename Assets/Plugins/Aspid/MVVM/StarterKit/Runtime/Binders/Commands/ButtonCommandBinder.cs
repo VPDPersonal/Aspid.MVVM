@@ -6,20 +6,19 @@ using Aspid.MVVM.Commands;
 namespace Aspid.MVVM.StarterKit.Binders
 {
     [Serializable]
-    public sealed class ButtonCommandBinder : Binder, IBinder<IRelayCommand>
+    public sealed class ButtonCommandBinder : TargetBinder<Button>, IBinder<IRelayCommand>
     {
+        // ReSharper disable once MemberInitializerValueIgnored
+        [Header("Parameter")]
         [SerializeField] private bool _isBindInteractable = true;
-        [SerializeField] private Button _button;
 
         private IRelayCommand _command;
 
-        public override bool IsBind => _button is not null;
+        public override bool IsBind => Target is not null;
         
-        private ButtonCommandBinder() { }
-        
-        public ButtonCommandBinder(Button button, bool isBindInteractable = true)
+        public ButtonCommandBinder(Button target, bool isBindInteractable = true)   
+            : base(target)
         {
-            _button = button;
             _isBindInteractable = isBindInteractable;
         }
         
@@ -34,13 +33,13 @@ namespace Aspid.MVVM.StarterKit.Binders
 
         private void Subscribe()
         {
-            _button.onClick.AddListener(Execute);
+            Target.onClick.AddListener(Execute);
             _command.CanExecuteChanged += OnCanExecuteChanged;
         }
 
         private void Unsubscribe()
         {
-            _button.onClick.RemoveListener(Execute);
+            Target.onClick.RemoveListener(Execute);
             _command.CanExecuteChanged -= OnCanExecuteChanged;
         }
 
@@ -57,17 +56,16 @@ namespace Aspid.MVVM.StarterKit.Binders
         private void OnCanExecuteChanged(IRelayCommand command)
         {
             if (!_isBindInteractable) return;
-            _button.interactable = command.CanExecute();
+            Target.interactable = command.CanExecute();
         }
     }
     
     [Serializable]
-    public class ButtonCommandBinder<T> : Binder, IBinder<IRelayCommand<T>>
+    public class ButtonCommandBinder<T> : TargetBinder<Button>, IBinder<IRelayCommand<T>>
     {
-        [SerializeField] private bool _isBindInteractable = true;
-        [SerializeField] private Button _button;
-        
+        // ReSharper disable once MemberInitializerValueIgnored
         [Header("Parameters")]
+        [SerializeField] private bool _isBindInteractable = true;
         [SerializeField] private T _param;
 
         private IRelayCommand<T> _command;
@@ -78,14 +76,12 @@ namespace Aspid.MVVM.StarterKit.Binders
             set => _param = value;
         }
         
-        public override bool IsBind => _button is not null;
+        public override bool IsBind => Target is not null;
         
-        private ButtonCommandBinder() { }
-        
-        public ButtonCommandBinder(Button button, T param, bool isBindInteractable = true)
+        public ButtonCommandBinder(Button target, T param, bool isBindInteractable = true)
+            : base(target)
         {
             _param = param;
-            _button = button;
             _isBindInteractable = isBindInteractable;
         }
         
@@ -100,13 +96,13 @@ namespace Aspid.MVVM.StarterKit.Binders
 
         private void Subscribe()
         {
-            _button.onClick.AddListener(Execute);
+            Target.onClick.AddListener(Execute);
             _command.CanExecuteChanged += OnCanExecuteChanged;
         }
 
         private void Unsubscribe()
         {
-            _button.onClick.RemoveListener(Execute);
+            Target.onClick.RemoveListener(Execute);
             _command.CanExecuteChanged -= OnCanExecuteChanged;
         }
 
@@ -123,17 +119,16 @@ namespace Aspid.MVVM.StarterKit.Binders
         private void OnCanExecuteChanged(IRelayCommand<T> command)
         {
             if (!_isBindInteractable) return;
-            _button.interactable = command.CanExecute(Param);
+            Target.interactable = command.CanExecute(Param);
         }
     }
     
     [Serializable]
-    public class ButtonCommandBinder<T1, T2> : Binder, IBinder<IRelayCommand<T1, T2>>
+    public class ButtonCommandBinder<T1, T2> : TargetBinder<Button>, IBinder<IRelayCommand<T1, T2>>
     {
-        [SerializeField] private bool _isBindInteractable = true;
-        [SerializeField] private Button _button;
-        
+        // ReSharper disable once MemberInitializerValueIgnored
         [Header("Parameters")]
+        [SerializeField] private bool _isBindInteractable = true;
         [SerializeField] private T1 _param1;
         [SerializeField] private T2 _param2;
 
@@ -151,13 +146,11 @@ namespace Aspid.MVVM.StarterKit.Binders
             set => _param2 = value;
         }
         
-        public override bool IsBind => _button is not null;
+        public override bool IsBind => Target is not null;
         
-        private ButtonCommandBinder() { }
-        
-        public ButtonCommandBinder(Button button, T1 param1, T2 param2, bool isBindInteractable = true)
+        public ButtonCommandBinder(Button target, T1 param1, T2 param2, bool isBindInteractable = true)
+            : base(target)
         {
-            _button = button;
             _param1 = param1;
             _param2 = param2;
             _isBindInteractable = isBindInteractable;
@@ -174,13 +167,13 @@ namespace Aspid.MVVM.StarterKit.Binders
 
         private void Subscribe()
         {
-            _button.onClick.AddListener(Execute);
+            Target.onClick.AddListener(Execute);
             _command.CanExecuteChanged += OnCanExecuteChanged;
         }
 
         private void Unsubscribe()
         {
-            _button.onClick.RemoveListener(Execute);
+            Target.onClick.RemoveListener(Execute);
             _command.CanExecuteChanged -= OnCanExecuteChanged;
         }
 
@@ -197,17 +190,16 @@ namespace Aspid.MVVM.StarterKit.Binders
         private void OnCanExecuteChanged(IRelayCommand<T1, T2> command)
         {
             if (!_isBindInteractable) return;
-            _button.interactable = command.CanExecute(Param1, Param2);
+            Target.interactable = command.CanExecute(Param1, Param2);
         }
     }
     
     [Serializable]
-    public class ButtonCommandBinder<T1, T2, T3> : Binder, IBinder<IRelayCommand<T1, T2, T3>>
+    public class ButtonCommandBinder<T1, T2, T3> : TargetBinder<Button>, IBinder<IRelayCommand<T1, T2, T3>>
     {
-        [SerializeField] private bool _isBindInteractable = true;
-        [SerializeField] private Button _button;
-        
+        // ReSharper disable once MemberInitializerValueIgnored
         [Header("Parameters")]
+        [SerializeField] private bool _isBindInteractable = true;
         [SerializeField] private T1 _param1;
         [SerializeField] private T2 _param2;
         [SerializeField] private T3 _param3;
@@ -232,13 +224,11 @@ namespace Aspid.MVVM.StarterKit.Binders
             set => _param3 = value;
         }
         
-        public override bool IsBind => _button is not null;
+        public override bool IsBind => Target is not null;
         
-        private ButtonCommandBinder() { }
-        
-        public ButtonCommandBinder(Button button, T1 param1, T2 param2, T3 param3, bool isBindInteractable = true)
+        public ButtonCommandBinder(Button target, T1 param1, T2 param2, T3 param3, bool isBindInteractable = true)
+            : base(target)
         {
-            _button = button;
             _param1 = param1;
             _param2 = param2;
             _param3 = param3;
@@ -256,13 +246,13 @@ namespace Aspid.MVVM.StarterKit.Binders
 
         private void Subscribe()
         {
-            _button.onClick.AddListener(Execute);
+            Target.onClick.AddListener(Execute);
             _command.CanExecuteChanged += OnCanExecuteChanged;
         }
 
         private void Unsubscribe()
         {
-            _button.onClick.RemoveListener(Execute);
+            Target.onClick.RemoveListener(Execute);
             _command.CanExecuteChanged -= OnCanExecuteChanged;
         }
 
@@ -279,17 +269,16 @@ namespace Aspid.MVVM.StarterKit.Binders
         private void OnCanExecuteChanged(IRelayCommand<T1, T2, T3> command)
         {
             if (!_isBindInteractable) return;
-            _button.interactable = command.CanExecute(Param1, Param2, Param3);
+            Target.interactable = command.CanExecute(Param1, Param2, Param3);
         }
     }
     
     [Serializable]
-    public class ButtonCommandBinder<T1, T2, T3, T4> : Binder, IBinder<IRelayCommand<T1, T2, T3, T4>>
+    public class ButtonCommandBinder<T1, T2, T3, T4> : TargetBinder<Button>, IBinder<IRelayCommand<T1, T2, T3, T4>>
     {
-        [SerializeField] private bool _isBindInteractable = true;
-        [SerializeField] private Button _button;
-        
+        // ReSharper disable once MemberInitializerValueIgnored
         [Header("Parameters")]
+        [SerializeField] private bool _isBindInteractable = true;
         [SerializeField] private T1 _param1;
         [SerializeField] private T2 _param2;
         [SerializeField] private T3 _param3;
@@ -321,13 +310,11 @@ namespace Aspid.MVVM.StarterKit.Binders
             set => _param4 = value;
         }
         
-        public override bool IsBind => _button is not null;
+        public override bool IsBind => Target is not null;
         
-        private ButtonCommandBinder() { }
-        
-        public ButtonCommandBinder(Button button, T1 param1, T2 param2, T3 param3, T4 param4, bool isBindInteractable = true)
+        public ButtonCommandBinder(Button target, T1 param1, T2 param2, T3 param3, T4 param4, bool isBindInteractable = true)
+            : base(target)
         {
-            _button = button;
             _param1 = param1;
             _param2 = param2;
             _param3 = param3;
@@ -346,13 +333,13 @@ namespace Aspid.MVVM.StarterKit.Binders
 
         private void Subscribe()
         {
-            _button.onClick.AddListener(Execute);
+            Target.onClick.AddListener(Execute);
             _command.CanExecuteChanged += OnCanExecuteChanged;
         }
 
         private void Unsubscribe()
         {
-            _button.onClick.RemoveListener(Execute);
+            Target.onClick.RemoveListener(Execute);
             _command.CanExecuteChanged -= OnCanExecuteChanged;
         }
 
@@ -369,7 +356,7 @@ namespace Aspid.MVVM.StarterKit.Binders
         private void OnCanExecuteChanged(IRelayCommand<T1, T2, T3, T4> command)
         {
             if (!_isBindInteractable) return;
-            _button.interactable = command.CanExecute(Param1, Param2, Param3, Param4);
+            Target.interactable = command.CanExecute(Param1, Param2, Param3, Param4);
         }
     }
 }

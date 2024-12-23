@@ -6,24 +6,24 @@ using UnityEngine.UI;
 namespace Aspid.MVVM.StarterKit.Binders
 {
     [Serializable]
-    public sealed class ImageSpriteSwitcherBinder : SwitcherBinder<Sprite?>
+    public sealed class ImageSpriteSwitcherBinder : SwitcherBinder<Image, Sprite?>
     {
         [SerializeField] private bool _disabledWhenNull;
-        
-        [Header("Component")]
-        [SerializeField] private Image _image;
 
-        public ImageSpriteSwitcherBinder(Sprite trueValue, Sprite falseValue, Image image, bool disabledWhenNull = true) 
-            : base(trueValue, falseValue)
+        public ImageSpriteSwitcherBinder(
+            Image target,
+            Sprite trueValue, 
+            Sprite falseValue, 
+            bool disabledWhenNull = true) 
+            : base(target, trueValue, falseValue)
         {
             _disabledWhenNull = disabledWhenNull;
-            _image = image ?? throw new ArgumentNullException();
         }
 
         protected override void SetValue(Sprite? value)
         {
-            _image.sprite = value;
-            if (_disabledWhenNull) _image.enabled = value is not null;
+            Target.sprite = value;
+            if (_disabledWhenNull) Target.enabled = value is not null;
         }
     }
 }

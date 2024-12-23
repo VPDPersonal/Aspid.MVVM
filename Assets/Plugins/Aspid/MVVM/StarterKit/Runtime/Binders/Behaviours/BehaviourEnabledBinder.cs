@@ -5,21 +5,18 @@ using UnityEngine;
 namespace Aspid.MVVM.StarterKit.Binders
 {
     [Serializable]
-    public class BehaviourEnabledBinder : Binder, IBinder<bool>
+    public class BehaviourEnabledBinder : TargetBinder<Behaviour>, IBinder<bool>
     {
-        [Header("Component")]
-        [SerializeField] private Behaviour _behaviour;
-        
         [Header("Converter")]
         [SerializeField] private bool _isInvert;
 
-        public BehaviourEnabledBinder(MonoBehaviour behaviour, bool isInvert = false)
+        public BehaviourEnabledBinder(Behaviour target, bool isInvert = false)
+            : base(target)
         {
-            _isInvert = isInvert;
-            _behaviour = behaviour ?? throw new ArgumentNullException(nameof(behaviour));
+            _isInvert = isInvert; 
         }
 
         public void SetValue(bool value) =>
-            _behaviour.enabled = _isInvert ? !value : value;
+            Target.enabled = _isInvert ? !value : value;
     }
 }

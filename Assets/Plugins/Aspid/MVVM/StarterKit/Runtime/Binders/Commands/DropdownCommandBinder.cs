@@ -6,20 +6,19 @@ using Aspid.MVVM.Commands;
 namespace Aspid.MVVM.StarterKit.Binders
 {
     [Serializable]
-    public sealed class DropdownCommandBinder : Binder, IBinder<IRelayCommand<int>>
+    public sealed class DropdownCommandBinder : TargetBinder<TMP_Dropdown>, IBinder<IRelayCommand<int>>
     {
+        // ReSharper disable once MemberInitializerValueIgnored
+        [Header("Parameter")]
         [SerializeField] private bool _isBindInteractable = true;
-        [SerializeField] private TMP_Dropdown _dropdown;
         
         private IRelayCommand<int> _command;
         
-        public override bool IsBind => _dropdown is not null;
-
-        private DropdownCommandBinder() { }
+        public override bool IsBind => Target is not null;
         
-        public DropdownCommandBinder(TMP_Dropdown dropdown, bool isBindInteractable = true)
+        public DropdownCommandBinder(TMP_Dropdown target, bool isBindInteractable = true)
+            : base(target)
         {
-            _dropdown = dropdown;
             _isBindInteractable = isBindInteractable;
         }
 
@@ -34,13 +33,13 @@ namespace Aspid.MVVM.StarterKit.Binders
         
         private void Subscribe()
         {
-            _dropdown.onValueChanged.AddListener(Execute);
+            Target.onValueChanged.AddListener(Execute);
             _command.CanExecuteChanged += OnCanExecuteChanged;
         }
 
         private void Unsubscribe()
         {
-            _dropdown.onValueChanged.RemoveListener(Execute);
+            Target.onValueChanged.RemoveListener(Execute);
             _command.CanExecuteChanged -= OnCanExecuteChanged;
         }
         
@@ -61,17 +60,16 @@ namespace Aspid.MVVM.StarterKit.Binders
         private void OnCanExecuteChanged(IRelayCommand<int> command)
         {
             if (!_isBindInteractable) return;
-            _dropdown.interactable = command.CanExecute(_dropdown.value);
+            Target.interactable = command.CanExecute(Target.value);
         }
     }
     
     [Serializable]
-    public class DropdownCommandBinder<T> : Binder, IBinder<IRelayCommand<int, T>>
+    public class DropdownCommandBinder<T> : TargetBinder<TMP_Dropdown>, IBinder<IRelayCommand<int, T>>
     {
-        [SerializeField] private bool _isBindInteractable = true;
-        [SerializeField] private TMP_Dropdown _dropdown;
-        
+        // ReSharper disable once MemberInitializerValueIgnored
         [Header("Parameters")]
+        [SerializeField] private bool _isBindInteractable = true;
         [SerializeField] private T _param;
         
         private IRelayCommand<int, T> _command;
@@ -82,14 +80,12 @@ namespace Aspid.MVVM.StarterKit.Binders
             set => _param = value;
         }
         
-        public override bool IsBind => _dropdown is not null;
+        public override bool IsBind => Target is not null;
         
-        private DropdownCommandBinder() { }
-        
-        public DropdownCommandBinder(TMP_Dropdown dropdown, T param, bool isBindInteractable = true)
+        public DropdownCommandBinder(TMP_Dropdown target, T param, bool isBindInteractable = true)
+            : base(target)
         {
             _param = param;
-            _dropdown = dropdown;
             _isBindInteractable = isBindInteractable;
         }
         
@@ -104,13 +100,13 @@ namespace Aspid.MVVM.StarterKit.Binders
         
         private void Subscribe()
         {
-            _dropdown.onValueChanged.AddListener(Execute);
+            Target.onValueChanged.AddListener(Execute);
             _command.CanExecuteChanged += OnCanExecuteChanged;
         }
 
         private void Unsubscribe()
         {
-            _dropdown.onValueChanged.RemoveListener(Execute);
+            Target.onValueChanged.RemoveListener(Execute);
             _command.CanExecuteChanged -= OnCanExecuteChanged;
         }
         
@@ -131,17 +127,16 @@ namespace Aspid.MVVM.StarterKit.Binders
         private void OnCanExecuteChanged(IRelayCommand<int, T> command)
         {
             if (!_isBindInteractable) return;
-            _dropdown.interactable = command.CanExecute(_dropdown.value, Param);
+            Target.interactable = command.CanExecute(Target.value, Param);
         }
     }
     
     [Serializable]
-    public class DropdownCommandBinder<T1, T2> : Binder, IBinder<IRelayCommand<int, T1, T2>>
+    public class DropdownCommandBinder<T1, T2> : TargetBinder<TMP_Dropdown>, IBinder<IRelayCommand<int, T1, T2>>
     {
-        [SerializeField] private bool _isBindInteractable = true;
-        [SerializeField] private TMP_Dropdown _dropdown;
-        
+        // ReSharper disable once MemberInitializerValueIgnored
         [Header("Parameters")]
+        [SerializeField] private bool _isBindInteractable = true;
         [SerializeField] private T1 _param1;
         [SerializeField] private T2 _param2;
 
@@ -159,15 +154,13 @@ namespace Aspid.MVVM.StarterKit.Binders
             set => _param2 = value;
         }
         
-        public override bool IsBind => _dropdown is not null;
+        public override bool IsBind => Target is not null;
         
-        private DropdownCommandBinder() { }
-        
-        public DropdownCommandBinder(TMP_Dropdown dropdown, T1 param1, T2 param2, bool isBindInteractable = true)
+        public DropdownCommandBinder(TMP_Dropdown target, T1 param1, T2 param2, bool isBindInteractable = true)
+            : base(target)
         {
             _param1 = param1;
             _param2 = param2;
-            _dropdown = dropdown;
             _isBindInteractable = isBindInteractable;
         }
         
@@ -182,13 +175,13 @@ namespace Aspid.MVVM.StarterKit.Binders
         
         private void Subscribe()
         {
-            _dropdown.onValueChanged.AddListener(Execute);
+            Target.onValueChanged.AddListener(Execute);
             _command.CanExecuteChanged += OnCanExecuteChanged;
         }
 
         private void Unsubscribe()
         {
-            _dropdown.onValueChanged.RemoveListener(Execute);
+            Target.onValueChanged.RemoveListener(Execute);
             _command.CanExecuteChanged -= OnCanExecuteChanged;
         }
         
@@ -209,17 +202,16 @@ namespace Aspid.MVVM.StarterKit.Binders
         private void OnCanExecuteChanged(IRelayCommand<int, T1, T2> command)
         {
             if (!_isBindInteractable) return;
-            _dropdown.interactable = command.CanExecute(_dropdown.value, Param1, Param2);
+            Target.interactable = command.CanExecute(Target.value, Param1, Param2);
         }
     }
     
     [Serializable]
-    public class DropdownCommandBinder<T1, T2, T3> : Binder, IBinder<IRelayCommand<int, T1, T2, T3>>
+    public class DropdownCommandBinder<T1, T2, T3> : TargetBinder<TMP_Dropdown>, IBinder<IRelayCommand<int, T1, T2, T3>>
     {
-        [SerializeField] private bool _isBindInteractable = true;
-        [SerializeField] private TMP_Dropdown _dropdown;
-        
+        // ReSharper disable once MemberInitializerValueIgnored
         [Header("Parameters")]
+        [SerializeField] private bool _isBindInteractable = true;
         [SerializeField] private T1 _param1;
         [SerializeField] private T2 _param2;
         [SerializeField] private T3 _param3;
@@ -244,16 +236,14 @@ namespace Aspid.MVVM.StarterKit.Binders
             set => _param3 = value;
         }
         
-        public override bool IsBind => _dropdown is not null;
+        public override bool IsBind => Target is not null;
         
-        private DropdownCommandBinder() { }
-        
-        public DropdownCommandBinder(TMP_Dropdown dropdown, T1 param1, T2 param2, T3 param3, bool isBindInteractable = true)
+        public DropdownCommandBinder(TMP_Dropdown target, T1 param1, T2 param2, T3 param3, bool isBindInteractable = true)
+            : base(target)
         {
             _param1 = param1;
             _param2 = param2;
             _param3 = param3;
-            _dropdown = dropdown;
             _isBindInteractable = isBindInteractable;
         }
         
@@ -268,13 +258,13 @@ namespace Aspid.MVVM.StarterKit.Binders
         
         private void Subscribe()
         {
-            _dropdown.onValueChanged.AddListener(Execute);
+            Target.onValueChanged.AddListener(Execute);
             _command.CanExecuteChanged += OnCanExecuteChanged;
         }
 
         private void Unsubscribe()
         {
-            _dropdown.onValueChanged.RemoveListener(Execute);
+            Target.onValueChanged.RemoveListener(Execute);
             _command.CanExecuteChanged -= OnCanExecuteChanged;
         }
         
@@ -295,7 +285,7 @@ namespace Aspid.MVVM.StarterKit.Binders
         private void OnCanExecuteChanged(IRelayCommand<int, T1, T2, T3> command)
         {
             if (!_isBindInteractable) return;
-            _dropdown.interactable = command.CanExecute(_dropdown.value, Param1, Param2, Param3);
+            Target.interactable = command.CanExecute(Target.value, Param1, Param2, Param3);
         }
     }
 }

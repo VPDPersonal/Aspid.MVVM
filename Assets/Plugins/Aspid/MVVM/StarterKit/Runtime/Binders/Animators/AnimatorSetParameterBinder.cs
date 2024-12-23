@@ -7,13 +7,9 @@ using Aspid.MVVM.ViewModels;
 namespace Aspid.MVVM.StarterKit.Binders
 {
     [Serializable]
-    public abstract class AnimatorSetParameterBinder<T> : Binder, IBinder<T>, IReverseBinder<IRelayCommand<T>>
+    public abstract class AnimatorSetParameterBinder<T> : TargetBinder<Animator>, IBinder<T>, IReverseBinder<IRelayCommand<T>>
     {
         public event Action<IRelayCommand<T>>? ValueChanged;
-        
-        [field: Header("Component")]
-        [field: SerializeField]
-        protected Animator Animator { get; private set; }
         
         [field: Header("Parameters")]
         [field: SerializeField]
@@ -21,9 +17,9 @@ namespace Aspid.MVVM.StarterKit.Binders
         
         protected IRelayCommand<T>? Command { get; private set; }
         
-        protected AnimatorSetParameterBinder(Animator animator, string parameterName)
+        protected AnimatorSetParameterBinder(Animator target, string parameterName)
+            : base(target)
         {
-            Animator = animator ?? throw new ArgumentNullException(nameof(animator));
             ParameterName = parameterName ?? throw new ArgumentNullException(nameof(parameterName));
         }
         
@@ -48,6 +44,6 @@ namespace Aspid.MVVM.StarterKit.Binders
             Command = null;
         
         protected virtual bool CanExecute(T? value) => 
-            Animator.gameObject.activeInHierarchy;
+            Target.gameObject.activeInHierarchy;
     }
 }

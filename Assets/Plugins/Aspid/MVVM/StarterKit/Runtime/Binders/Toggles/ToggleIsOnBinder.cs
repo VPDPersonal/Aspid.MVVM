@@ -7,12 +7,9 @@ using Aspid.MVVM.ViewModels;
 namespace Aspid.MVVM.StarterKit.Binders
 {
     [Serializable]
-    public class ToggleIsOnBinder : Binder, IBinder<bool>, IReverseBinder<bool>
+    public class ToggleIsOnBinder : TargetBinder<Toggle>, IBinder<bool>, IReverseBinder<bool>
     {
         public event Action<bool>? ValueChanged;
-        
-        [Header("Component")]
-        [SerializeField] private Toggle _toggle;
         
         [Header("Parameter")]
         [SerializeField] private bool _isReverseEnabled;
@@ -24,33 +21,33 @@ namespace Aspid.MVVM.StarterKit.Binders
 
         public bool IsReverseEnabled => _isReverseEnabled;
 
-        public ToggleIsOnBinder(Toggle toggle, bool isReverseEnabled = true) 
-            : this(toggle, false, isReverseEnabled) { }
+        public ToggleIsOnBinder(Toggle target, bool isReverseEnabled = true) 
+            : this(target, false, isReverseEnabled) { }
         
-        public ToggleIsOnBinder(Toggle toggle, bool isInvert, bool isReverseEnabled)
+        public ToggleIsOnBinder(Toggle target, bool isInvert, bool isReverseEnabled)
+            : base(target)
         {
             _isInvert = isInvert;
             _isReverseEnabled = isReverseEnabled;
-            _toggle = toggle ?? throw new ArgumentNullException(nameof(toggle));
         }
         
         public void SetValue(bool value)
         {
             _isNotifyValueChanged = false;
-            _toggle.isOn = _isInvert ? !value : value;
+            Target.isOn = _isInvert ? !value : value;
             _isNotifyValueChanged = true;
         }
         
         protected override void OnBound(IViewModel viewModel, string id)
         {
             if (!IsReverseEnabled) return;
-            _toggle.onValueChanged.AddListener(OnValueChanged);
+            Target.onValueChanged.AddListener(OnValueChanged);
         }
 
         protected override void OnUnbound()
         {
             if (!IsReverseEnabled) return;
-            _toggle.onValueChanged.RemoveListener(OnValueChanged);
+            Target.onValueChanged.RemoveListener(OnValueChanged);
         }
 
         private void OnValueChanged(bool isOn)

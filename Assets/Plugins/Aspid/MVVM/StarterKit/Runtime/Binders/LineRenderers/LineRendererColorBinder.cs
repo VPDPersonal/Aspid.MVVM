@@ -6,10 +6,8 @@ using Aspid.MVVM.StarterKit.Converters;
 namespace Aspid.MVVM.StarterKit.Binders
 {
     [Serializable]
-    public class LineRendererColorBinder : Binder, IColorBinder
+    public class LineRendererColorBinder : TargetBinder<LineRenderer>, IColorBinder
     {
-        [SerializeField] private LineRenderer _lineRenderer;
-        
         [Header("Parameter")]
         [SerializeField] private LineRendererColorMode _mode;
     
@@ -21,17 +19,17 @@ namespace Aspid.MVVM.StarterKit.Binders
         private IConverter<Color, Color>? _converter;
 
         public LineRendererColorBinder(
-            LineRenderer lineRenderer,
+            LineRenderer target,
             LineRendererColorMode mode,
             Func<Color, Color> converter)
-            : this(lineRenderer, mode, converter.ToConvert()) { }
+            : this(target, mode, converter.ToConvert()) { }
         
         public LineRendererColorBinder(
-            LineRenderer lineRenderer,
+            LineRenderer target,
             LineRendererColorMode mode = LineRendererColorMode.StartAndEnd,
             IConverter<Color, Color>? converter = null)
+            : base(target)
         {
-            _lineRenderer = lineRenderer;
             _mode = mode;
             _converter = converter;
         }
@@ -39,7 +37,7 @@ namespace Aspid.MVVM.StarterKit.Binders
         public void SetValue(Color value)
         {
             value = _converter?.Convert(value) ?? value;
-            _lineRenderer.SetColor(value, _mode);
+            Target.SetColor(value, _mode);
         }
     }
 }

@@ -22,7 +22,7 @@ namespace Aspid.MVVM.StarterKit.Binders.Mono
 #if UNITY_2023_1_OR_NEWER
         private IConverter<string, string> _converter;
 #else
-        private IConverterStringToString _converter;
+        private IConverterString _converter;
 #endif
         
         [Header("Events")]

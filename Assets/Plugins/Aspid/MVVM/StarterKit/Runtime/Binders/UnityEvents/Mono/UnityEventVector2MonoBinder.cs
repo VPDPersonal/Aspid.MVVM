@@ -21,7 +21,7 @@ namespace Aspid.MVVM.StarterKit.Binders.Mono
 #if UNITY_2023_1_OR_NEWER
         private IConverter<Vector2, Vector2> _converter;
 #else
-        private IConverterVector2ToVector2 _converter;
+        private IConverterVector2 _converter;
 #endif
         
         [Header("Events")]

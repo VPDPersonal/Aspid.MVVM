@@ -40,7 +40,8 @@ namespace Aspid.MVVM.Mono
                         return Binder.GetType().GetInterfaces().Any(@interface =>
                         {
                             if (!@interface.IsGenericType) return false;
-                            if (@interface.GetGenericTypeDefinition() != typeof(IBinder<>)) return false;
+                            if (@interface.GetGenericTypeDefinition() != typeof(IBinder<>) 
+                                && @interface.GetGenericTypeDefinition() != typeof(IReverseBinder<>)) return false;
                             
                             return @interface.GetGenericArguments()[0].IsAssignableFrom(type);
                         });

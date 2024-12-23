@@ -6,11 +6,8 @@ using Aspid.MVVM.StarterKit.Converters;
 namespace Aspid.MVVM.StarterKit.Binders
 {
     [Serializable]
-    public class TransformRotationBinder : Binder, IRotationBinder, INumberBinder
+    public class TransformRotationBinder : TargetBinder<Transform>, IRotationBinder, INumberBinder
     {
-        [Header("Component")]
-        [SerializeField] private Transform _transform;
-        
         [Header("Parameter")]
         [SerializeField] private Space _space;
 
@@ -21,29 +18,29 @@ namespace Aspid.MVVM.StarterKit.Binders
 #endif
         private IConverter<Quaternion, Quaternion>? _converter;
         
-        public TransformRotationBinder(Transform transform, Space space = Space.World)
-            : this(transform, space, null as IConverter<Quaternion, Quaternion>) { }
+        public TransformRotationBinder(Transform target, Space space = Space.World)
+            : this(target, space, null as IConverter<Quaternion, Quaternion>) { }
         
-        public TransformRotationBinder(Transform transform, Func<Quaternion, Quaternion> converter) 
-            : this(transform, Space.World, new GenericFuncConverter<Quaternion, Quaternion>(converter)) { }
+        public TransformRotationBinder(Transform target, Func<Quaternion, Quaternion> converter) 
+            : this(target, Space.World, converter.ToConvert()) { }
         
-        public TransformRotationBinder(Transform transform, Space space, Func<Quaternion, Quaternion> converter)
-            : this(transform, space, new GenericFuncConverter<Quaternion, Quaternion>(converter)) { }
+        public TransformRotationBinder(Transform target, Space space, Func<Quaternion, Quaternion> converter)
+            : this(target, space, converter.ToConvert()) { }
 
-        public TransformRotationBinder(Transform transform, IConverter<Quaternion, Quaternion>? converter) 
-            : this(transform, Space.World, converter) { }
+        public TransformRotationBinder(Transform target, IConverter<Quaternion, Quaternion>? converter) 
+            : this(target, Space.World, converter) { }
         
-        public TransformRotationBinder(Transform transform, Space space, IConverter<Quaternion, Quaternion>? converter)
+        public TransformRotationBinder(Transform target, Space space, IConverter<Quaternion, Quaternion>? converter)    
+            : base(target)
         {
             _space = space;
-            _converter = converter;
-            _transform = transform ?? throw new ArgumentNullException(nameof(transform));
+            _converter = converter; 
         }
         
         public void SetValue(Quaternion value)
         {
             value = _converter?.Convert(value) ?? value;
-            _transform.SetRotation(value, _space);
+            Target.SetRotation(value, _space);
         }
         
         public void SetValue(int value) =>

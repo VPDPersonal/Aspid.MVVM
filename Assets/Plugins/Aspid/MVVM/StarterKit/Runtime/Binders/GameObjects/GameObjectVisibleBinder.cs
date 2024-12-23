@@ -5,22 +5,19 @@ using UnityEngine;
 namespace Aspid.MVVM.StarterKit.Binders
 {
     [Serializable]
-    public class GameObjectVisibleBinder : Binder, IBinder<bool>
+    public class GameObjectVisibleBinder : TargetBinder<GameObject>, IBinder<bool>
     {
-        [Header("Component")]
-        private GameObject _gameObject;
-        
         [Header("Converter")]
         private bool _isInvert;
         
-        public GameObjectVisibleBinder(GameObject gameObject, bool isInvert = false)
+        public GameObjectVisibleBinder(GameObject target, bool isInvert = false)
+            : base(target)
         {
             _isInvert = isInvert;
-            _gameObject = gameObject ?? throw new ArgumentNullException(nameof(gameObject));
         }
         
         public void SetValue(bool value) =>
-            _gameObject.SetActive(_isInvert ? !value : value);
+            Target.SetActive(_isInvert ? !value : value);
     }
     
 }

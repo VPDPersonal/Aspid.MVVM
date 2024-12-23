@@ -6,24 +6,21 @@ using UnityEngine.UI;
 namespace Aspid.MVVM.StarterKit.Binders
 {
     [Serializable]
-    public class ImageSpriteBinder : Binder, IBinder<Sprite?>, IBinder<Texture2D?>
+    public class ImageSpriteBinder : TargetBinder<Image>, IBinder<Sprite?>, IBinder<Texture2D?>
     {
-        [Header("Component")]
-        [SerializeField] private Image _image;
-        
         [Header("Parameter")]
         [SerializeField] private bool _disabledWhenNull;
 
-        public ImageSpriteBinder(Image image, bool disabledWhenNull = true)
+        public ImageSpriteBinder(Image target, bool disabledWhenNull = true)
+            : base(target)
         {
             _disabledWhenNull = disabledWhenNull;
-            _image = image ?? throw new ArgumentNullException(nameof(image));
         }
 
         public void SetValue(Sprite? value)
         {
-            _image.sprite = value;
-            if (_disabledWhenNull) _image.enabled = value is not null;
+            Target.sprite = value;
+            if (_disabledWhenNull) Target.enabled = value is not null;
         }
 
         public void SetValue(Texture2D? value)

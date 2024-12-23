@@ -24,9 +24,9 @@ namespace Aspid.MVVM.StarterKit.Binders
         protected sealed override void SetParameter(int value)
         {
             value = _converter?.Convert(value) ?? value;
-            if (Mathf.Approximately(value, Animator.GetInteger(ParameterName))) return;
+            if (Mathf.Approximately(value, Target.GetInteger(ParameterName))) return;
             
-            Animator.SetInteger(ParameterName, value);
+            Target.SetInteger(ParameterName, value);
         }
     }
 }

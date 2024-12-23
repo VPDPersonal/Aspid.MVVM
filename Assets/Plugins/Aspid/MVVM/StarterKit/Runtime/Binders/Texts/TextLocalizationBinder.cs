@@ -8,11 +8,8 @@ using UnityEngine.Localization.Components;
 namespace Aspid.MVVM.StarterKit.Binders
 {
     [Serializable]
-    public class TextLocalizationBinder : Binder, IBinder<string>
+    public class TextLocalizationBinder : TargetBinder<LocalizeStringEvent>, IBinder<string>
     {
-        [Header("Component")]
-        private LocalizeStringEvent _localizeStringEvent;
-        
 #if UNITY_2023_1_OR_NEWER
         [Header("Converter")]
         [SerializeReference]
@@ -23,14 +20,14 @@ namespace Aspid.MVVM.StarterKit.Binders
         public TextLocalizationBinder(LocalizeStringEvent localizeStringEvent, Func<string?, string?> converter)
             : this(localizeStringEvent, converter.ToConvert()) { }
         
-        public TextLocalizationBinder(LocalizeStringEvent localizeStringEvent, IConverter<string?, string?>? converter = null)
+        public TextLocalizationBinder(LocalizeStringEvent target, IConverter<string?, string?>? converter = null)
+            :base(target)
         {
             _converter = converter;
-            _localizeStringEvent = localizeStringEvent ?? throw new ArgumentNullException(nameof(localizeStringEvent));
         }
         
         public void SetValue(string? value) =>
-            _localizeStringEvent.StringReference.TableEntryReference = _converter?.Convert(value) ?? value;
+            Target.StringReference.TableEntryReference = _converter?.Convert(value) ?? value;
     }
 }
 #endif

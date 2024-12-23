@@ -6,12 +6,9 @@ using Aspid.MVVM.StarterKit.Converters;
 namespace Aspid.MVVM.StarterKit.Binders
 {
     [Serializable]
-    public sealed class RendererMaterialColorSwitcherBinder : SwitcherBinder<Color>
+    public sealed class RendererMaterialColorSwitcherBinder : SwitcherBinder<Renderer, Color>
     {
         [SerializeField] private string _colorPropertyName = "_BaseColor";
-        
-        [Header("Component")]
-        [SerializeField] private Renderer _renderer;
         
 #if UNITY_2023_1_OR_NEWER
         [Header("Converter")]
@@ -25,51 +22,50 @@ namespace Aspid.MVVM.StarterKit.Binders
         private int ColorPropertyId => _colorPropertyId ??= Shader.PropertyToID(_colorPropertyName);
         
         public RendererMaterialColorSwitcherBinder(
+            Renderer target, 
             Color trueValue,
             Color falseValue,
-            Renderer renderer, 
             Func<Color, Color> converter)
-            : this(trueValue, falseValue, renderer, converter.ToConvert()) { }
+            : this(target, trueValue, falseValue, converter.ToConvert()) { }
         
         public RendererMaterialColorSwitcherBinder(
+            Renderer target, 
             Color trueValue,
             Color falseValue,
-            Renderer renderer, 
             IConverter<Color, Color> converter) 
-            : this(trueValue, falseValue, renderer, "_BaseColor", converter) { }
+            : this(target, trueValue, falseValue, "_BaseColor", converter) { }
         
         public RendererMaterialColorSwitcherBinder(
+            Renderer target, 
             Color trueValue,
             Color falseValue,
-            Renderer renderer, 
             string colorPropertyName = "_BaseColor") 
-            : this(trueValue, falseValue, renderer, colorPropertyName, null as IConverter<Color, Color>) { }
+            : this(target, trueValue, falseValue, colorPropertyName, null as IConverter<Color, Color>) { }
 
         public RendererMaterialColorSwitcherBinder(
+            Renderer target,
             Color trueValue,
             Color falseValue,
-            Renderer renderer,
             string colorPropertyName,
             Func<Color, Color> converter)
-            : this(trueValue, falseValue, renderer, colorPropertyName, converter.ToConvert()) { }
+            : this(target, trueValue, falseValue, colorPropertyName, converter.ToConvert()) { }
         
         public RendererMaterialColorSwitcherBinder(
+            Renderer target,
             Color trueValue,
             Color falseValue,
-            Renderer renderer,
             string colorPropertyName = "_BaseColor",
             IConverter<Color, Color>? converter = null)
-            : base(trueValue, falseValue)
+            : base(target, trueValue, falseValue)
         {
             _converter = converter;
-            _colorPropertyName = colorPropertyName;
-            _renderer = renderer ?? throw new ArgumentNullException(nameof(renderer));
+            _colorPropertyName = colorPropertyName; 
         }
         
         protected override void SetValue(Color value)
         {
             value = _converter?.Convert(value) ?? value;
-            _renderer.material.SetColor(ColorPropertyId, value);
+            Target.material.SetColor(ColorPropertyId, value);
         }
     }
 }

@@ -6,11 +6,8 @@ using Aspid.MVVM.StarterKit.Converters;
 namespace Aspid.MVVM.StarterKit.Binders
 {
     [Serializable]
-    public class RectTransformSizeDeltaBinder : Binder, IBinder<Vector2>, INumberBinder
+    public class RectTransformSizeDeltaBinder : TargetBinder<RectTransform>, IBinder<Vector2>, INumberBinder
     {
-        [Header("Component")]
-        [SerializeField] private RectTransform _transform;
-        
         [Header("Parameter")]
         [SerializeField] private SizeDeltaMode _mode;
 
@@ -21,26 +18,26 @@ namespace Aspid.MVVM.StarterKit.Binders
 #endif
         private IConverter<Vector2, Vector2>? _converter;
 
-        public RectTransformSizeDeltaBinder(RectTransform transform, Func<Vector2, Vector2> converter)
-            : this(transform, SizeDeltaMode.SizeDelta, converter.ToConvert()) { }
+        public RectTransformSizeDeltaBinder(RectTransform target, Func<Vector2, Vector2> converter)
+            : this(target, SizeDeltaMode.SizeDelta, converter.ToConvert()) { }
         
-        public RectTransformSizeDeltaBinder(RectTransform transform, SizeDeltaMode mode, Func<Vector2, Vector2> converter)
-            : this(transform, mode, converter.ToConvert()) { }
+        public RectTransformSizeDeltaBinder(RectTransform target, SizeDeltaMode mode, Func<Vector2, Vector2> converter)
+            : this(target, mode, converter.ToConvert()) { }
         
         public RectTransformSizeDeltaBinder(
-            RectTransform transform, 
+            RectTransform target, 
             SizeDeltaMode mode = SizeDeltaMode.SizeDelta, 
             IConverter<Vector2, Vector2>? converter = null)
+            : base(target)
         {
             _mode = mode;
             _converter = converter;
-            _transform = transform ?? throw new ArgumentNullException(nameof(transform));
         }
 
         public void SetValue(Vector2 value)
         {
             value = _converter?.Convert(value) ?? value;
-            _transform.SetSizeDelta(value, _mode);
+            Target.SetSizeDelta(value, _mode);
         }
 
         public void SetValue(int value) =>

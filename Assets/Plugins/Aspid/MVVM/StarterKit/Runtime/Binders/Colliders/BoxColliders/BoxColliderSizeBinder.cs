@@ -6,26 +6,23 @@ using Aspid.MVVM.StarterKit.Converters;
 namespace Aspid.MVVM.StarterKit.Binders
 {
     [Serializable]
-    public sealed class BoxColliderSizeBinder : Binder, IVectorBinder, INumberBinder
+    public class BoxColliderSizeBinder : TargetBinder<BoxCollider>, IVectorBinder, INumberBinder
     {
-        [Header("Component")]
-        [SerializeField] private BoxCollider _collider;
-        
         // ReSharper disable once MemberInitializerValueIgnored
         [Header("Converter")]
         [SerializeField] private Vector3CombineConverter? _converter = Vector3CombineConverter.Default;
 
-        public BoxColliderSizeBinder(BoxCollider collider, Vector3CombineConverter? converter = null)
+        public BoxColliderSizeBinder(BoxCollider target, Vector3CombineConverter? converter = null)
+            : base(target)
         {
             _converter = converter;
-            _collider = collider ?? throw new ArgumentNullException(nameof(collider));
         }
         
         public void SetValue(Vector2 value) =>
             SetValue((Vector3)value);
         
         public void SetValue(Vector3 value) =>
-            _collider.size = _converter?.Convert(value, _collider.size) ?? value;
+            Target.size = _converter?.Convert(value, Target.size) ?? value;
         
         public void SetValue(int value) =>
             SetValue(new Vector3(value, value, value));

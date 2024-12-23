@@ -9,11 +9,8 @@ using Aspid.MVVM.StarterKit.Converters;
 namespace Aspid.MVVM.StarterKit.Binders
 {
     [Serializable]
-    public class TextBinder : Binder, IBinder<string?>, INumberBinder
+    public class TextBinder : TargetBinder<TMP_Text>, IBinder<string?>, INumberBinder
     {
-        [Header("Component")]
-        [SerializeField] private TMP_Text _text;
-        
 #if UNITY_2023_1_OR_NEWER
         [Header("Converter")]
         [SerializeReference]
@@ -21,25 +18,22 @@ namespace Aspid.MVVM.StarterKit.Binders
 #endif
         private IConverter<string?, string?>? _converter;
 
-        public TextBinder(TMP_Text text)
-        {
-            _converter = null;
-            _text = text ?? throw new ArgumentNullException(nameof(text));
-        }
+        public TextBinder(TMP_Text target)
+            : base(target) { }
         
-        public TextBinder(TMP_Text text, Func<string?, string?> converter)
-            : this(text, converter.ToConvert()) { }
+        public TextBinder(TMP_Text target, Func<string?, string?> converter)
+            : this(target, converter.ToConvert()) { }
         
-        public TextBinder(TMP_Text text, IConverter<string?, string?>? converter)
+        public TextBinder(TMP_Text target, IConverter<string?, string?>? converter)
+            : base(target)
         {
-            _converter = converter;
-            _text = text ?? throw new ArgumentNullException(nameof(text));
+            _converter = converter; 
         }
 
         public void SetValue(string? value)
         {
-            if (value is null) _text.text = null;
-            else _text.text = _converter?.Convert(value) ?? value;
+            if (value is null) Target.text = null;
+            else Target.text = _converter?.Convert(value) ?? value;
         }
         
         public void SetValue(int value) =>

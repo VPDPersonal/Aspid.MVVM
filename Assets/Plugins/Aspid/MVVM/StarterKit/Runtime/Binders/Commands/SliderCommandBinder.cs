@@ -6,20 +6,19 @@ using Aspid.MVVM.Commands;
 namespace Aspid.MVVM.StarterKit.Binders
 {
     [Serializable]
-    public sealed class SliderCommandBinder : Binder, IBinder<IRelayCommand<float>>
+    public sealed class SliderCommandBinder : TargetBinder<Slider>, IBinder<IRelayCommand<float>>
     {
+        // ReSharper disable once MemberInitializerValueIgnored
+        [Header("Parameter")]
         [SerializeField] private bool _isBindInteractable = true;
-        [SerializeField] private Slider _slider;
         
         private IRelayCommand<float> _command;
         
-        public override bool IsBind => _slider is not null;
+        public override bool IsBind => Target is not null;
         
-        private SliderCommandBinder() { }
-        
-        public SliderCommandBinder(Slider slider, bool isBindInteractable = true)
+        public SliderCommandBinder(Slider target, bool isBindInteractable = true)
+            : base(target)
         {
-            _slider = slider;
             _isBindInteractable = isBindInteractable;
         }
         
@@ -34,13 +33,13 @@ namespace Aspid.MVVM.StarterKit.Binders
         
         private void Subscribe()
         {
-            _slider.onValueChanged.AddListener(Execute);
+            Target.onValueChanged.AddListener(Execute);
             _command.CanExecuteChanged += OnCanExecuteChanged;
         }
 
         private void Unsubscribe()
         {
-            _slider.onValueChanged.RemoveListener(Execute);
+            Target.onValueChanged.RemoveListener(Execute);
             _command.CanExecuteChanged -= OnCanExecuteChanged;
         }
         
@@ -61,17 +60,16 @@ namespace Aspid.MVVM.StarterKit.Binders
         private void OnCanExecuteChanged(IRelayCommand<float> command)
         {
             if (!_isBindInteractable) return; 
-            _slider.interactable = command.CanExecute(_slider.value);
+            Target.interactable = command.CanExecute(Target.value);
         }
     }
 
     [Serializable]
-    public class SliderCommandBinder<T> : Binder, IBinder<IRelayCommand<float, T>>
+    public class SliderCommandBinder<T> : TargetBinder<Slider>, IBinder<IRelayCommand<float, T>>
     {
-        [SerializeField] private bool _isBindInteractable = true;
-        [SerializeField] private Slider _slider;
-        
+        // ReSharper disable once MemberInitializerValueIgnored
         [Header("Parameters")]
+        [SerializeField] private bool _isBindInteractable = true;
         [SerializeField] private T _param;
         
         private IRelayCommand<float, T> _command;
@@ -82,14 +80,12 @@ namespace Aspid.MVVM.StarterKit.Binders
             set => _param = value;
         }
         
-        public override bool IsBind => _slider is not null;
+        public override bool IsBind => Target is not null;
         
-        private SliderCommandBinder() { }
-        
-        public SliderCommandBinder(Slider slider, T param, bool isBindInteractable = true)
+        public SliderCommandBinder(Slider target, T param, bool isBindInteractable = true)
+            : base(target)
         {
             _param = param;
-            _slider = slider;
             _isBindInteractable = isBindInteractable;
         }
         
@@ -104,13 +100,13 @@ namespace Aspid.MVVM.StarterKit.Binders
         
         private void Subscribe()
         {
-            _slider.onValueChanged.AddListener(Execute);
+            Target.onValueChanged.AddListener(Execute);
             _command.CanExecuteChanged += OnCanExecuteChanged;
         }
 
         private void Unsubscribe()
         {
-            _slider.onValueChanged.RemoveListener(Execute);
+            Target.onValueChanged.RemoveListener(Execute);
             _command.CanExecuteChanged -= OnCanExecuteChanged;
         }
         
@@ -131,17 +127,16 @@ namespace Aspid.MVVM.StarterKit.Binders
         private void OnCanExecuteChanged(IRelayCommand<float, T> command)
         {
             if (!_isBindInteractable) return; 
-            _slider.interactable = command.CanExecute(_slider.value, Param);
+            Target.interactable = command.CanExecute(Target.value, Param);
         }
     }
     
     [Serializable]
-    public class SliderCommandBinder<T1, T2> : Binder, IBinder<IRelayCommand<float, T1, T2>>
+    public class SliderCommandBinder<T1, T2> : TargetBinder<Slider>, IBinder<IRelayCommand<float, T1, T2>>
     {
-        [SerializeField] private bool _isBindInteractable = true;
-        [SerializeField] private Slider _slider;
-        
+        // ReSharper disable once MemberInitializerValueIgnored
         [Header("Parameters")]
+        [SerializeField] private bool _isBindInteractable = true;
         [SerializeField] private T1 _param1;
         [SerializeField] private T2 _param2;
         
@@ -159,15 +154,13 @@ namespace Aspid.MVVM.StarterKit.Binders
             set => _param2 = value;
         }
         
-        public override bool IsBind => _slider is not null;
+        public override bool IsBind => Target is not null;
         
-        private SliderCommandBinder() { }
-        
-        public SliderCommandBinder(Slider slider, T1 param1, T2 param2, bool isBindInteractable = true)
+        public SliderCommandBinder(Slider target, T1 param1, T2 param2, bool isBindInteractable = true)
+            : base(target)
         {
             _param1 = param1;
             _param2 = param2;
-            _slider = slider;
             _isBindInteractable = isBindInteractable;
         }
         
@@ -182,13 +175,13 @@ namespace Aspid.MVVM.StarterKit.Binders
         
         private void Subscribe()
         {
-            _slider.onValueChanged.AddListener(Execute);
+            Target.onValueChanged.AddListener(Execute);
             _command.CanExecuteChanged += OnCanExecuteChanged;
         }
 
         private void Unsubscribe()
         {
-            _slider.onValueChanged.RemoveListener(Execute);
+            Target.onValueChanged.RemoveListener(Execute);
             _command.CanExecuteChanged -= OnCanExecuteChanged;
         }
         
@@ -209,17 +202,16 @@ namespace Aspid.MVVM.StarterKit.Binders
         private void OnCanExecuteChanged(IRelayCommand<float, T1, T2> command)
         {
             if (!_isBindInteractable) return; 
-            _slider.interactable = command.CanExecute(_slider.value, Param1, Param2);
+            Target.interactable = command.CanExecute(Target.value, Param1, Param2);
         }
     }
     
     [Serializable]
-    public class SliderCommandBinder<T1, T2, T3> : Binder, IBinder<IRelayCommand<float, T1, T2, T3>>
+    public class SliderCommandBinder<T1, T2, T3> : TargetBinder<Slider>, IBinder<IRelayCommand<float, T1, T2, T3>>
     {
-        [SerializeField] private bool _isBindInteractable = true;
-        [SerializeField] private Slider _slider;
-        
+        // ReSharper disable once MemberInitializerValueIgnored
         [Header("Parameters")]
+        [SerializeField] private bool _isBindInteractable = true;
         [SerializeField] private T1 _param1;
         [SerializeField] private T2 _param2;
         [SerializeField] private T3 _param3;
@@ -244,16 +236,14 @@ namespace Aspid.MVVM.StarterKit.Binders
             set => _param3 = value;
         }
         
-        public override bool IsBind => _slider is not null;
+        public override bool IsBind => Target is not null;
         
-        private SliderCommandBinder() { }
-        
-        public SliderCommandBinder(Slider slider, T1 param1, T2 param2, T3 param3, bool isBindInteractable = true)
+        public SliderCommandBinder(Slider target, T1 param1, T2 param2, T3 param3, bool isBindInteractable = true)
+            : base(target)
         {
             _param1 = param1;
             _param2 = param2;
             _param3 = param3;
-            _slider = slider;
             _isBindInteractable = isBindInteractable;
         }
         
@@ -268,13 +258,13 @@ namespace Aspid.MVVM.StarterKit.Binders
         
         private void Subscribe()
         {
-            _slider.onValueChanged.AddListener(Execute);
+            Target.onValueChanged.AddListener(Execute);
             _command.CanExecuteChanged += OnCanExecuteChanged;
         }
 
         private void Unsubscribe()
         {
-            _slider.onValueChanged.RemoveListener(Execute);
+            Target.onValueChanged.RemoveListener(Execute);
             _command.CanExecuteChanged -= OnCanExecuteChanged;
         }
         
@@ -295,7 +285,7 @@ namespace Aspid.MVVM.StarterKit.Binders
         private void OnCanExecuteChanged(IRelayCommand<float, T1, T2, T3> command)
         {
             if (!_isBindInteractable) return; 
-            _slider.interactable = command.CanExecute(_slider.value, Param1, Param2, Param3);
+            Target.interactable = command.CanExecute(Target.value, Param1, Param2, Param3);
         }
     }
 }

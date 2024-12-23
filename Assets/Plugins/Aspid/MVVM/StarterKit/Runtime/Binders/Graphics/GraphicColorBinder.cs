@@ -7,11 +7,8 @@ using Aspid.MVVM.StarterKit.Converters;
 namespace Aspid.MVVM.StarterKit.Binders
 {
     [Serializable]
-    public class GraphicColorBinder : Binder, IColorBinder
+    public class GraphicColorBinder : TargetBinder<Graphic>, IColorBinder
     {
-        [Header("Component")]
-        [SerializeField] private Graphic _graphic;
-        
 #if UNITY_2023_1_OR_NEWER
         [Header("Converter")]
         [SerializeReference]
@@ -19,16 +16,16 @@ namespace Aspid.MVVM.StarterKit.Binders
 #endif
         private IConverter<Color, Color>? _converter;
 
-        public GraphicColorBinder(Graphic graphic, Func<Color, Color> converter)
-            : this(graphic, converter.ToConvert()) { }
+        public GraphicColorBinder(Graphic target, Func<Color, Color> converter)
+            : this(target, converter.ToConvert()) { }
         
-        public GraphicColorBinder(Graphic graphic, IConverter<Color, Color>? converter = null)
+        public GraphicColorBinder(Graphic target, IConverter<Color, Color>? converter = null)
+            : base(target)
         {
             _converter = converter;
-            _graphic = graphic ?? throw new ArgumentNullException(nameof(graphic));
         }
 
         public void SetValue(Color value) => 
-            _graphic.color = _converter?.Convert(value) ?? value;
+            Target.color = _converter?.Convert(value) ?? value;
     }
 }

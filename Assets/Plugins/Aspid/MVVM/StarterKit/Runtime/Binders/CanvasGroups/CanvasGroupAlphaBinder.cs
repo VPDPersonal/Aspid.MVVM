@@ -6,11 +6,8 @@ using Aspid.MVVM.StarterKit.Converters;
 namespace Aspid.MVVM.StarterKit.Binders
 {
     [Serializable]
-    public class CanvasGroupAlphaBinder : Binder, INumberBinder
+    public class CanvasGroupAlphaBinder : TargetBinder<CanvasGroup>, INumberBinder
     {
-        [Header("Component")]
-        [SerializeField] private CanvasGroup _canvasGroup;
-        
 #if UNITY_2023_1_OR_NEWER
         [Header("Converter")]
         [SerializeReference]
@@ -18,13 +15,13 @@ namespace Aspid.MVVM.StarterKit.Binders
 #endif
         private IConverter<float, float>? _converter;
         
-        public CanvasGroupAlphaBinder(CanvasGroup canvasGroup, Func<float, float> converter)
-            : this(canvasGroup, converter.ToConvert()) { }
+        public CanvasGroupAlphaBinder(CanvasGroup target, Func<float, float> converter)
+            : this(target, converter.ToConvert()) { }
         
-        public CanvasGroupAlphaBinder(CanvasGroup canvasGroup, IConverter<float, float>? converter = null)
+        public CanvasGroupAlphaBinder(CanvasGroup target, IConverter<float, float>? converter = null)
+            : base(target)
         {
             _converter = converter;
-            _canvasGroup = canvasGroup ?? throw new ArgumentNullException(nameof(canvasGroup));
         }
 
         public void SetValue(int value) => 
@@ -36,7 +33,7 @@ namespace Aspid.MVVM.StarterKit.Binders
         public void SetValue(float value)
         {
             value = _converter?.Convert(value) ?? value;
-            _canvasGroup.alpha = Mathf.Clamp01(value);
+            Target.alpha = Mathf.Clamp01(value);
         }
 
         public void SetValue(double value) => 

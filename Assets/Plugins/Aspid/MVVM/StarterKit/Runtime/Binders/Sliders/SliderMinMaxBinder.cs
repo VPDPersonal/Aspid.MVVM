@@ -6,29 +6,49 @@ using Aspid.MVVM.StarterKit.Converters;
 
 namespace Aspid.MVVM.StarterKit.Binders
 {
-    public class SliderMinMaxBinder : Binder, IBinder<Vector2>
+    [Serializable]
+    public class SliderMinMaxBinder : TargetBinder<Slider>, IBinder<Vector2>
     {
-        private readonly Slider _slider;
-        private readonly SliderValueMode _mode;
-        private readonly IConverter<Vector2, Vector2>? _converter;
+        [Header("Parameter")]
+        [SerializeField] private SliderValueMode _mode;
         
-        public SliderMinMaxBinder(Slider slider, Func<Vector2, Vector2> converter) 
-            : this(slider, SliderValueMode.Range, new GenericFuncConverter<Vector2, Vector2>(converter)) { }
+#if UNITY_2023_1_OR_NEWER
+        [Header("Converter")]
+        [SerializeReference]
+        [SerializeReferenceDropdown]
+#endif
+        private IConverter<Vector2, Vector2>? _converter;
         
-        public SliderMinMaxBinder(Slider slider, SliderValueMode mode, Func<Vector2, Vector2> converter) 
-            : this(slider, mode, new GenericFuncConverter<Vector2, Vector2>(converter)) { }
+        public SliderMinMaxBinder(
+            Slider target, 
+            Func<Vector2, Vector2> converter) 
+            : this(target, SliderValueMode.Range, converter) { }
         
-        public SliderMinMaxBinder(Slider slider, SliderValueMode mode = SliderValueMode.Range, IConverter<Vector2, Vector2>? converter = null)
+        public SliderMinMaxBinder(
+            Slider target, 
+            SliderValueMode mode, 
+            Func<Vector2, Vector2> converter) 
+            : this(target, mode, converter.ToConvert()) { }
+        
+        public SliderMinMaxBinder(
+            Slider target, 
+            IConverter<Vector2, Vector2>? converter)
+            : this(target, SliderValueMode.Range, converter) { }
+        
+        public SliderMinMaxBinder(
+            Slider target, 
+            SliderValueMode mode = SliderValueMode.Range, 
+            IConverter<Vector2, Vector2>? converter = null)
+            : base(target)
         {
             _mode = mode;
-            _converter = converter;
-            _slider = slider ?? throw new ArgumentNullException(nameof(slider));
+            _converter = converter; 
         }
         
         public void SetValue(Vector2 value)
         {
             value = _converter?.Convert(value) ?? value;
-            _slider.SetMinMax(value, _mode);
+            Target.SetMinMax(value, _mode);
         }
     }
 }

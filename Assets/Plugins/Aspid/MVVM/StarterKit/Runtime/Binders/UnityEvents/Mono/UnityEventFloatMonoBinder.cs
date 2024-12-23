@@ -21,7 +21,7 @@ namespace Aspid.MVVM.StarterKit.Binders.Mono
 #if UNITY_2023_1_OR_NEWER
         private IConverter<float, float> _converter;
 #else
-        private IConverterFloatToFloat _converter;
+        private IConverterFloat _converter;
 #endif
         
         [Header("Events")]

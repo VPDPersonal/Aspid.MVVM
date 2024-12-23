@@ -131,7 +131,7 @@ namespace Aspid.MVVM.Mono.Views
                             
                             result = result && interfaces.Any(i =>
                                 i.IsGenericType
-                                && i.GetGenericTypeDefinition() == typeof(IBinder<>)
+                                && (i.GetGenericTypeDefinition() == typeof(IBinder<>) || i.GetGenericTypeDefinition() == typeof(IReverseBinder<>) )
                                 && requiredTypes.Any(requiredType =>
                                     requiredType == i.GetGenericArguments()[0]));
                             

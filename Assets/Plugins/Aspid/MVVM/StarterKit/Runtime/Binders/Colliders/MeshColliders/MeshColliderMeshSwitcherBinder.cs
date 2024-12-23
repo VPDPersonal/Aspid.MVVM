@@ -6,11 +6,8 @@ using Aspid.MVVM.StarterKit.Converters;
 namespace Aspid.MVVM.StarterKit.Binders
 {
     [Serializable]
-    public sealed class MeshColliderMeshSwitcherBinder : SwitcherBinder<Mesh>
+    public sealed class MeshColliderMeshSwitcherBinder : SwitcherBinder<MeshCollider, Mesh>
     {
-        [Header("Component")]
-        [SerializeField] private MeshCollider _collider;
-        
 #if UNITY_2023_1_OR_NEWER
         [Header("Converter")]
         [SerializeReference]
@@ -19,24 +16,22 @@ namespace Aspid.MVVM.StarterKit.Binders
         private IConverter<Mesh?, Mesh?>? _converter;
 
         public MeshColliderMeshSwitcherBinder(
+            MeshCollider target,
             Mesh trueValue, 
             Mesh falseValue, 
-            MeshCollider collider,
             Func<Mesh?, Mesh?> converter)
-            : this(trueValue, falseValue, collider, converter.ToConvert()) { }
+            : this(target, trueValue, falseValue, converter.ToConvert()) { }
         
         public MeshColliderMeshSwitcherBinder(
+            MeshCollider target,
             Mesh trueValue, 
             Mesh falseValue, 
-            MeshCollider collider,
             IConverter<Mesh?, Mesh?>? converter = null)
-            : base(trueValue, falseValue)
+            : base(target, trueValue, falseValue)
         {
-            _converter = converter;
-            _collider = collider ?? throw new ArgumentNullException(nameof(collider));
-        }
+            _converter = converter; }
 
         protected override void SetValue(Mesh value) =>
-            _collider.sharedMesh = _converter?.Convert(value) ?? value;
+            Target.sharedMesh = _converter?.Convert(value) ?? value;
     }
 }

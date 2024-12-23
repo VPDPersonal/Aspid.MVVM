@@ -6,11 +6,8 @@ using Aspid.MVVM.StarterKit.Converters;
 namespace Aspid.MVVM.StarterKit.Binders
 {
     [Serializable]
-    public class GameObjectTagBinder : Binder, IBinder<string>
+    public class GameObjectTagBinder : TargetBinder<GameObject>, IBinder<string>
     {
-        [Header("Component")]
-        [SerializeField] private GameObject _gameObject;
-        
 #if UNITY_2023_1_OR_NEWER
         [Header("Converter")]
         [SerializeReference]
@@ -18,16 +15,16 @@ namespace Aspid.MVVM.StarterKit.Binders
 #endif
         private IConverter<string?, string?>? _converter;
 
-        public GameObjectTagBinder(GameObject gameObject, Func<string?, string?> converter)
-            : this(gameObject, converter.ToConvert()) { }
+        public GameObjectTagBinder(GameObject target, Func<string?, string?> converter)
+            : this(target, converter.ToConvert()) { }
         
-        public GameObjectTagBinder(GameObject gameObject, IConverter<string?, string?>? converter = null)
+        public GameObjectTagBinder(GameObject target, IConverter<string?, string?>? converter = null)
+            : base(target)
         {
             _converter = converter;
-            _gameObject = gameObject ?? throw new ArgumentNullException(nameof(gameObject));
         }
 
         public void SetValue(string? value) =>
-            _gameObject.tag = _converter?.Convert(value) ?? value;
+            Target.tag = _converter?.Convert(value) ?? value;
     }
 }

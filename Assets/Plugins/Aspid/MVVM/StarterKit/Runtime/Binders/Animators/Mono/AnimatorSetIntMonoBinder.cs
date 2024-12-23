@@ -12,7 +12,7 @@ namespace Aspid.MVVM.StarterKit.Binders.Mono
 #if UNITY_2023_1_OR_NEWER
         private IConverter<int, int> _converter;
 #else
-        private IConverterIntToInt _converter;
+        private IConverterInt _converter;
 #endif
         
         protected sealed override void SetParameter(int value)

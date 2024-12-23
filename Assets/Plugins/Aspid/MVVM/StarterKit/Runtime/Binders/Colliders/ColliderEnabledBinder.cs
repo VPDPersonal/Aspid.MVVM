@@ -5,21 +5,18 @@ using UnityEngine;
 namespace Aspid.MVVM.StarterKit.Binders
 {
     [Serializable]
-    public class ColliderEnabledBinder : Binder, IBinder<bool>
+    public class ColliderEnabledBinder : TargetBinder<Collider>, IBinder<bool>
     {
-        [Header("Component")]
-        [SerializeField] private Collider _collider;
-
         [Header("Converter")]
         [SerializeField] private bool _isInvert;
 
-        public ColliderEnabledBinder(Collider collider, bool isInvert)
+        public ColliderEnabledBinder(Collider target, bool isInvert)
+            : base(target)
         {
             _isInvert = isInvert;
-            _collider = collider ?? throw new ArgumentNullException(nameof(collider));
         }
 
         public void SetValue(bool value) =>
-            _collider.enabled = _isInvert ? !value : value;
+            Target.enabled = _isInvert ? !value : value;
     }
 }

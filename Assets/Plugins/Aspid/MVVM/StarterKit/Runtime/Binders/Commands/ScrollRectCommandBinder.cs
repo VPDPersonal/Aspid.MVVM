@@ -6,20 +6,14 @@ using Aspid.MVVM.Commands;
 namespace Aspid.MVVM.StarterKit.Binders
 {
     [Serializable]
-    public sealed class ScrollRectCommandBinder : Binder, IBinder<IRelayCommand<Vector2>>
+    public sealed class ScrollRectCommandBinder : TargetBinder<ScrollRect>, IBinder<IRelayCommand<Vector2>>
     {
-        [SerializeField] private ScrollRect _scrollRect;
-        
         private IRelayCommand<Vector2> _command;
         
-        public override bool IsBind => _scrollRect is not null;
+        public override bool IsBind => Target is not null;
         
-        private ScrollRectCommandBinder() { }
-        
-        public ScrollRectCommandBinder(ScrollRect scrollRect)
-        {
-            _scrollRect = scrollRect;
-        }
+        public ScrollRectCommandBinder(ScrollRect target)
+            : base(target) { }
         
         public void SetValue(IRelayCommand<Vector2> command)
         {
@@ -30,10 +24,10 @@ namespace Aspid.MVVM.StarterKit.Binders
         }
         
         private void Subscribe() =>
-            _scrollRect.onValueChanged.AddListener(Execute);
+            Target.onValueChanged.AddListener(Execute);
 
         private void Unsubscribe() =>
-            _scrollRect.onValueChanged.RemoveListener(Execute);
+            Target.onValueChanged.RemoveListener(Execute);
         
         private void Execute(Vector2 value) =>
             _command?.Execute(value);
@@ -48,11 +42,9 @@ namespace Aspid.MVVM.StarterKit.Binders
     }
 
     [Serializable]
-    public class ScrollRectCommandBinder<T> : Binder, IBinder<IRelayCommand<Vector2, T>>
+    public class ScrollRectCommandBinder<T> :  TargetBinder<ScrollRect>, IBinder<IRelayCommand<Vector2, T>>
     {
-        [SerializeField] private ScrollRect _scrollRect;
-        
-        [Header("Parameters")]
+        [Header("Parameter")]
         [SerializeField] private T _param;
         
         private IRelayCommand<Vector2, T> _command;
@@ -63,14 +55,12 @@ namespace Aspid.MVVM.StarterKit.Binders
             set => _param = value;
         }
         
-        public override bool IsBind => _scrollRect is not null;
+        public override bool IsBind => Target is not null;
         
-        private ScrollRectCommandBinder() { }
-        
-        public ScrollRectCommandBinder(ScrollRect scrollRect, T param)
+        public ScrollRectCommandBinder(ScrollRect target, T param)
+            : base(target)
         {
             _param = param;
-            _scrollRect = scrollRect;
         }
         
         public void SetValue(IRelayCommand<Vector2, T> command)
@@ -82,10 +72,10 @@ namespace Aspid.MVVM.StarterKit.Binders
         }
         
         private void Subscribe() =>
-            _scrollRect.onValueChanged.AddListener(Execute);
+            Target.onValueChanged.AddListener(Execute);
 
         private void Unsubscribe() =>
-            _scrollRect.onValueChanged.RemoveListener(Execute);
+            Target.onValueChanged.RemoveListener(Execute);
         
         private void Execute(Vector2 value) =>
             _command?.Execute(value, Param);
@@ -100,10 +90,8 @@ namespace Aspid.MVVM.StarterKit.Binders
     }
     
     [Serializable]
-    public class ScrollRectCommandBinder<T1, T2> : Binder, IBinder<IRelayCommand<Vector2, T1, T2>>
+    public class ScrollRectCommandBinder<T1, T2> :  TargetBinder<ScrollRect>, IBinder<IRelayCommand<Vector2, T1, T2>>
     {
-        [SerializeField] private ScrollRect _scrollRect;
-        
         [Header("Parameters")]
         [SerializeField] private T1 _param1;
         [SerializeField] private T2 _param2;
@@ -122,15 +110,13 @@ namespace Aspid.MVVM.StarterKit.Binders
             set => _param2 = value;
         }
         
-        public override bool IsBind => _scrollRect is not null;
+        public override bool IsBind => Target is not null;
         
-        private ScrollRectCommandBinder() { }
-        
-        public ScrollRectCommandBinder(ScrollRect scrollRect, T1 param1, T2 param2)
+        public ScrollRectCommandBinder(ScrollRect target, T1 param1, T2 param2)
+            : base(target)
         {
             _param1 = param1;
             _param2 = param2;
-            _scrollRect = scrollRect;
         }
         
         public void SetValue(IRelayCommand<Vector2, T1, T2> command)
@@ -142,10 +128,10 @@ namespace Aspid.MVVM.StarterKit.Binders
         }
         
         private void Subscribe() =>
-            _scrollRect.onValueChanged.AddListener(Execute);
+            Target.onValueChanged.AddListener(Execute);
 
         private void Unsubscribe() =>
-            _scrollRect.onValueChanged.RemoveListener(Execute);
+            Target.onValueChanged.RemoveListener(Execute);
         
         private void Execute(Vector2 value) =>
             _command?.Execute(value, Param1, Param2);
@@ -160,10 +146,8 @@ namespace Aspid.MVVM.StarterKit.Binders
     }
     
     [Serializable]
-    public class ScrollRectCommandBinder<T1, T2, T3> : Binder, IBinder<IRelayCommand<Vector2, T1, T2, T3>>
+    public class ScrollRectCommandBinder<T1, T2, T3> :  TargetBinder<ScrollRect>, IBinder<IRelayCommand<Vector2, T1, T2, T3>>
     {
-        [SerializeField] private ScrollRect _scrollRect;
-
         [Header("Parameters")]
         [SerializeField] private T1 _param1;
         [SerializeField] private T2 _param2;
@@ -189,16 +173,14 @@ namespace Aspid.MVVM.StarterKit.Binders
             set => _param3 = value;
         }
         
-        public override bool IsBind => _scrollRect is not null;
+        public override bool IsBind => Target is not null;
         
-        private ScrollRectCommandBinder() { }
-        
-        public ScrollRectCommandBinder(ScrollRect scrollRect, T1 param1, T2 param2, T3 param3)
+        public ScrollRectCommandBinder(ScrollRect target, T1 param1, T2 param2, T3 param3)
+            : base(target)
         {
             _param1 = param1;
             _param2 = param2;
             _param3 = param3;
-            _scrollRect = scrollRect;
         }
         
         public void SetValue(IRelayCommand<Vector2, T1, T2, T3> command)
@@ -210,10 +192,10 @@ namespace Aspid.MVVM.StarterKit.Binders
         }
         
         private void Subscribe() =>
-            _scrollRect.onValueChanged.AddListener(Execute);
+            Target.onValueChanged.AddListener(Execute);
 
         private void Unsubscribe() =>
-            _scrollRect.onValueChanged.RemoveListener(Execute);
+            Target.onValueChanged.RemoveListener(Execute);
         
         private void Execute(Vector2 value) =>
             _command?.Execute(value, Param1, Param2, Param3);

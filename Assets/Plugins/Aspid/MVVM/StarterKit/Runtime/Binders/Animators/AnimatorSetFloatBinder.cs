@@ -15,7 +15,10 @@ namespace Aspid.MVVM.StarterKit.Binders
 #endif
         private IConverter<float, float>? _converter;
 
-        public AnimatorSetFloatBinder(Animator animator, string parameterName, IConverter<float, float>? converter = null)
+        public AnimatorSetFloatBinder(
+            Animator animator,
+            string parameterName, 
+            IConverter<float, float>? converter = null)
             : base(animator, parameterName)
         {
             _converter = converter;
@@ -24,9 +27,9 @@ namespace Aspid.MVVM.StarterKit.Binders
         protected sealed override void SetParameter(float value)
         {
             value = _converter?.Convert(value) ?? value;
-            if (Mathf.Approximately(value, Animator.GetFloat(ParameterName))) return;
+            if (Mathf.Approximately(value, Target.GetFloat(ParameterName))) return;
             
-            Animator.SetFloat(ParameterName, value);
+            Target.SetFloat(ParameterName, value);
         }
     }
 }

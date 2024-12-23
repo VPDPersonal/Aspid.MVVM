@@ -7,11 +7,8 @@ using Aspid.MVVM.StarterKit.Converters;
 namespace Aspid.MVVM.StarterKit.Binders
 {
     [Serializable]
-    public class RawImageMaterialBinder : Binder, IBinder<Material?>
+    public class RawImageMaterialBinder : TargetBinder<RawImage>, IBinder<Material?>
     {
-        [Header("Component")]
-        [SerializeField] private RawImage _image;
-
 #if UNITY_2023_1_OR_NEWER
         [Header("Converter")]
         [SerializeReference]
@@ -19,16 +16,16 @@ namespace Aspid.MVVM.StarterKit.Binders
 #endif
         private IConverter<Material?, Material?>? _converter;
 
-        public RawImageMaterialBinder(RawImage image, Func<Material?, Material?> converter)
-            : this(image, converter.ToConvert()) { }
+        public RawImageMaterialBinder(RawImage target, Func<Material?, Material?> converter)
+            : this(target, converter.ToConvert()) { }
         
-        public RawImageMaterialBinder(RawImage image, IConverter<Material?, Material?>? converter = null)
+        public RawImageMaterialBinder(RawImage target, IConverter<Material?, Material?>? converter = null)
+            : base(target)
         {
             _converter = converter;
-            _image = image ?? throw new ArgumentNullException(nameof(image));
         }
 
         public void SetValue(Material? value) =>
-            _image.material = _converter?.Convert(value) ?? value;
+            Target.material = _converter?.Convert(value) ?? value;
     }
 }

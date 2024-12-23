@@ -6,11 +6,8 @@ using Aspid.MVVM.StarterKit.Converters;
 namespace Aspid.MVVM.StarterKit.Binders
 {
     [Serializable]
-    public sealed class LineRendererColorSwitcherBinder : SwitcherBinder<Color>
+    public sealed class LineRendererColorSwitcherBinder : SwitcherBinder<LineRenderer, Color>
     {
-        [SerializeField] private LineRenderer _lineRenderer;
-        
-        [Header("Parameter")]
         [SerializeField] private LineRendererColorMode _mode;
     
 #if UNITY_2023_1_OR_NEWER
@@ -21,22 +18,35 @@ namespace Aspid.MVVM.StarterKit.Binders
         private IConverter<Color, Color>? _converter;
 
         public LineRendererColorSwitcherBinder(
+            LineRenderer target,
             Color trueValue,
             Color falseValue,
-            LineRenderer lineRenderer,
             LineRendererColorMode mode,
             Func<Color, Color> converter)
-            : this(trueValue, falseValue, lineRenderer, mode, converter.ToConvert()) { }
+            : this(target, trueValue, falseValue, mode, converter.ToConvert()) { }
         
         public LineRendererColorSwitcherBinder(
+            LineRenderer target,
             Color trueValue,
             Color falseValue,
-            LineRenderer lineRenderer,
+            Func<Color, Color> converter)
+            : this(target, trueValue, falseValue, LineRendererColorMode.StartAndEnd, converter.ToConvert()) { }
+        
+        public LineRendererColorSwitcherBinder(
+            LineRenderer target,
+            Color trueValue,
+            Color falseValue,
+            IConverter<Color, Color>? converter)
+            : this(target, trueValue, falseValue, LineRendererColorMode.StartAndEnd, converter) { }
+        
+        public LineRendererColorSwitcherBinder(
+            LineRenderer target,
+            Color trueValue,
+            Color falseValue,
             LineRendererColorMode mode = LineRendererColorMode.StartAndEnd,
             IConverter<Color, Color>? converter = null)
-            : base(trueValue, falseValue)
+            : base(target, trueValue, falseValue)
         {
-            _lineRenderer = lineRenderer;
             _mode = mode;
             _converter = converter;
         }
@@ -44,7 +54,7 @@ namespace Aspid.MVVM.StarterKit.Binders
         protected override void SetValue(Color value)
         {
             value = _converter?.Convert(value) ?? value;
-            _lineRenderer.SetColor(value, _mode);
+            Target.SetColor(value, _mode);
         }
     }
 }

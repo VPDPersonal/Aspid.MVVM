@@ -7,11 +7,8 @@ using Aspid.MVVM.StarterKit.Converters;
 namespace Aspid.MVVM.StarterKit.Binders
 {
     [Serializable]
-    public class RendererMaterialColorBinder : Binder, IColorBinder
+    public class RendererMaterialColorBinder : TargetBinder<Renderer>, IColorBinder
     {
-        [Header("Component")]
-        [SerializeField] private Renderer _renderer;
-        
         [Header("Parameter")]
         [SerializeField] private string _colorPropertyName = "_BaseColor";
         
@@ -26,36 +23,36 @@ namespace Aspid.MVVM.StarterKit.Binders
         
         private int ColorPropertyId => _colorPropertyId ??= Shader.PropertyToID(_colorPropertyName);
         
-        public RendererMaterialColorBinder(Renderer renderer, Func<Color, Color> converter)
-            : this(renderer, converter.ToConvert()) { }
+        public RendererMaterialColorBinder(Renderer target, Func<Color, Color> converter)
+            : this(target, converter.ToConvert()) { }
         
-        public RendererMaterialColorBinder(Renderer renderer, IConverter<Color, Color> converter) 
-            : this(renderer, "_BaseColor", converter) { }
+        public RendererMaterialColorBinder(Renderer target, IConverter<Color, Color> converter) 
+            : this(target, "_BaseColor", converter) { }
         
-        public RendererMaterialColorBinder(Renderer renderer, string colorPropertyName = "_BaseColor") 
-            : this(renderer, colorPropertyName, null as IConverter<Color, Color>) { }
+        public RendererMaterialColorBinder(Renderer target, string colorPropertyName = "_BaseColor") 
+            : this(target, colorPropertyName, null as IConverter<Color, Color>) { }
 
         public RendererMaterialColorBinder(
-            Renderer renderer,
+            Renderer target,
             string colorPropertyName,
             Func<Color, Color> converter)
-            : this(renderer, colorPropertyName, converter.ToConvert()) { }
+            : this(target, colorPropertyName, converter.ToConvert()) { }
         
         public RendererMaterialColorBinder(
-            Renderer renderer,
+            Renderer target,
             string colorPropertyName = "_BaseColor",
             IConverter<Color, Color>? converter = null)
+            : base(target)
         {
             _converter = converter;
             _colorPropertyName = colorPropertyName;
-            _renderer = renderer ?? throw new ArgumentNullException(nameof(renderer));
         }
 
         [BinderLog]
         public void SetValue(Color value)
         {
             value = _converter?.Convert(value) ?? value;
-            _renderer.material.SetColor(ColorPropertyId, value);
+            Target.material.SetColor(ColorPropertyId, value);
         }
     }
 }

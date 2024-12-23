@@ -8,11 +8,8 @@ using UnityEngine.Localization.Components;
 namespace Aspid.MVVM.StarterKit.Binders
 {
     [Serializable]
-    public sealed class TextLocalizationSwitcherBinder : SwitcherBinder<string>
+    public sealed class TextLocalizationSwitcherBinder : SwitcherBinder<LocalizeStringEvent, string>
     { 
-        [Header("Component")]
-        [SerializeField] private LocalizeStringEvent _localizeStringEvent;
-        
 #if UNITY_2023_1_OR_NEWER
         [Header("Converter")]
         [SerializeReference]
@@ -21,25 +18,24 @@ namespace Aspid.MVVM.StarterKit.Binders
         private IConverter<string?, string?>? _converter;
         
         public TextLocalizationSwitcherBinder(
+            LocalizeStringEvent target,
             string trueValue, 
             string falseValue,
-            LocalizeStringEvent localizeStringEvent,
             Func<string?, string?> converter) 
-            : this(trueValue, falseValue, localizeStringEvent, converter.ToConvert()) { }
+            : this(target, trueValue, falseValue, converter.ToConvert()) { }
         
         public TextLocalizationSwitcherBinder(
+            LocalizeStringEvent target,
             string trueValue, 
             string falseValue,
-            LocalizeStringEvent localizeStringEvent,
             IConverter<string?, string?>? converter = null) 
-            : base(trueValue, falseValue)
+            : base(target, trueValue, falseValue)
         {
             _converter = converter;
-            _localizeStringEvent = localizeStringEvent ?? throw new ArgumentNullException(nameof(localizeStringEvent));
         }
 
         protected override void SetValue(string value) =>
-            _localizeStringEvent.StringReference.TableEntryReference = value;
+            Target.StringReference.TableEntryReference = value;
     }
 }
 #endif

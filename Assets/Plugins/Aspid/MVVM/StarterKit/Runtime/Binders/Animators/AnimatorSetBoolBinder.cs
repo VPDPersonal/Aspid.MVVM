@@ -19,9 +19,9 @@ namespace Aspid.MVVM.StarterKit.Binders
         protected sealed override void SetParameter(bool value)
         { 
             value = _isInvert ? !value : value;
-            if (value == Animator.GetBool(ParameterName)) return;
+            if (value == Target.GetBool(ParameterName)) return;
             
-            Animator.SetBool(ParameterName, value);
+            Target.SetBool(ParameterName, value);
         }
     }
 }

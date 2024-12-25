@@ -1,6 +1,6 @@
 using System;
 
-namespace Aspid.UI.MVVM.Generation
+namespace Aspid.MVVM.Generation
 {
     // TODO Move To UnityFastTools
     /// <summary>

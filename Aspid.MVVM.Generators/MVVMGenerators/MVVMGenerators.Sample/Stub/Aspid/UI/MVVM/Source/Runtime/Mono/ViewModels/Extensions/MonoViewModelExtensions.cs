@@ -1,9 +1,9 @@
 using System;
 using UnityEngine;
-using Aspid.UI.MVVM.ViewModels;
+using Aspid.MVVM.ViewModels;
 using Object = UnityEngine.Object;
 
-namespace Aspid.UI.MVVM.Mono.ViewModels.Extensions
+namespace Aspid.MVVM.Mono.ViewModels.Extensions
 {
     /// <summary>
     /// Provides extension methods for the <see cref="IViewModel"/> interface.

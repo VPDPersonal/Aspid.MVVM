@@ -1,10 +1,10 @@
 #nullable disable
 using System;
 using UnityEngine;
-using Aspid.UI.MVVM.Views;
-using Aspid.UI.MVVM.ViewModels;
+using Aspid.MVVM.Views;
+using Aspid.MVVM.ViewModels;
 
-namespace Aspid.UI.MVVM.Mono.Views
+namespace Aspid.MVVM.Mono.Views
 {
     /// <summary>
     /// Abstract class for a View, inheriting from <see cref="MonoBehaviour"/>, that implements the <see cref="IView"/> interface.
@@ -12,7 +12,7 @@ namespace Aspid.UI.MVVM.Mono.Views
     /// </summary>
     public abstract partial class MonoView : MonoBehaviour, IView, IDisposable
     {
-#if !ASPID_UI_MVVM_UNITY_PROFILER_DISABLED
+#if !ASPID_MVVM_UNITY_PROFILER_DISABLED
         private static readonly Unity.Profiling.ProfilerMarker _initializeMarker = new("MonoView.Initialize");
         private static readonly Unity.Profiling.ProfilerMarker _deinitializationMarker = new("MonoView.Deinitialization");
 #endif
@@ -33,7 +33,7 @@ namespace Aspid.UI.MVVM.Mono.Views
         /// <exception cref="InvalidOperationException">Thrown when the view is already initialized.</exception>
         public void Initialize(IViewModel viewModel)
         {
-#if !ASPID_UI_MVVM_UNITY_PROFILER_DISABLED
+#if !ASPID_MVVM_UNITY_PROFILER_DISABLED
             using (_initializeMarker.Auto())
 #endif
             {
@@ -53,13 +53,13 @@ namespace Aspid.UI.MVVM.Mono.Views
         protected abstract void InitializeInternal(IViewModel viewModel);
 
         /// <summary>
-        /// Deinitialize the View, resetting the associated <see cref="ViewModel"/>.
+        /// Deinitialize the View, resetting the bound <see cref="ViewModel"/>.
         /// </summary>
         public void Deinitialize()
         {
             if (ViewModel == null) return;
             
-#if !ASPID_UI_MVVM_UNITY_PROFILER_DISABLED
+#if !ASPID_MVVM_UNITY_PROFILER_DISABLED
             using (_deinitializationMarker.Auto())
 #endif
             {

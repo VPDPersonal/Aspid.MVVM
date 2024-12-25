@@ -1,7 +1,7 @@
 #if UNITY_EDITOR
-using Aspid.UI.MVVM.Views;
+using Aspid.MVVM.Views;
 
-namespace Aspid.UI.MVVM.Mono
+namespace Aspid.MVVM.Mono
 {
     /// <summary>
     /// Interface required for validating a Binder within the Editor.

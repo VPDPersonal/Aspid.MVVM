@@ -1,8 +1,8 @@
-using Aspid.UI.MVVM;
-using Aspid.UI.MVVM.Commands;
-using Aspid.UI.MVVM.Mono.Generation;
-using Aspid.UI.MVVM.ViewModels;
+using Aspid.MVVM;
 using UnityEngine.UI;
+using Aspid.MVVM.Commands;
+using Aspid.MVVM.ViewModels;
+using Aspid.MVVM.Mono.Generation;
 
 namespace MVVMGenerators.Sample.Binders;
 

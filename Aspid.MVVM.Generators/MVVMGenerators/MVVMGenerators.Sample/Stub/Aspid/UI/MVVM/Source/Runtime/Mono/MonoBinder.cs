@@ -1,9 +1,9 @@
 #nullable disable
 using System;
 using UnityEngine;
-using Aspid.UI.MVVM.ViewModels;
+using Aspid.MVVM.ViewModels;
 
-namespace Aspid.UI.MVVM.Mono
+namespace Aspid.MVVM.Mono
 {
     /// <summary>
     /// Abstract class derived from <see cref="MonoBehaviour"/> that implements the basic logic for binding a component to <see cref="IViewModel"/>.
@@ -12,7 +12,7 @@ namespace Aspid.UI.MVVM.Mono
     /// </summary>
     public abstract partial class MonoBinder : MonoBehaviour, IBinder
     {
-#if !ASPID_UI_MVVM_UNITY_PROFILER_DISABLED
+#if !ASPID_MVVM_UNITY_PROFILER_DISABLED
         private static readonly Unity.Profiling.ProfilerMarker _bindMarker = new("MonoBinder.Bind");
         private static readonly Unity.Profiling.ProfilerMarker _unbindMarker = new("MonoBinder.Unbind");
 #endif
@@ -33,7 +33,7 @@ namespace Aspid.UI.MVVM.Mono
         /// <param name="id">The ID of the component to bind, which matches the property name in the ViewModel.</param>
         public void Bind(IViewModel viewModel, string id)
         {
-#if !ASPID_UI_MVVM_UNITY_PROFILER_DISABLED
+#if !ASPID_MVVM_UNITY_PROFILER_DISABLED
             using (_bindMarker.Auto()) 
 #endif
             {
@@ -69,11 +69,11 @@ namespace Aspid.UI.MVVM.Mono
         protected virtual void OnBound(IViewModel viewModel, string id) { }
         
         /// <summary>
-        /// Unbinds the component from the specified <see cref="IViewModel"/>.
+        /// Unbinds the component from the bound s<see cref="IViewModel"/>.
         /// </summary>
         public void Unbind()
         {
-#if !ASPID_UI_MVVM_UNITY_PROFILER_DISABLED
+#if !ASPID_MVVM_UNITY_PROFILER_DISABLED
             using (_unbindMarker.Auto())
 #endif
             {

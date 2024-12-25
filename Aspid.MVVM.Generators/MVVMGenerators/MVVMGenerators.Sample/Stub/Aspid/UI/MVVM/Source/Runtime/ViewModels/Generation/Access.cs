@@ -1,4 +1,4 @@
-namespace Aspid.UI.MVVM.ViewModels.Generation
+namespace Aspid.MVVM.ViewModels.Generation
 {
     /// <summary>
     /// Defines access modifiers for generated properties marked with the <see cref="BindAttribute"/> or <see cref="ReadOnlyBindAttribute"/>.

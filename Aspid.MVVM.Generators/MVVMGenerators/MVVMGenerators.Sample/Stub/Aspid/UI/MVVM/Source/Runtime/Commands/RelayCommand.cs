@@ -1,6 +1,6 @@
 using System;
 
-namespace Aspid.UI.MVVM.Commands
+namespace Aspid.MVVM.Commands
 {
     /// <summary>
     /// Implementation of the <see cref="IRelayCommand"/> interface for commands without parameters.

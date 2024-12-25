@@ -1,6 +1,6 @@
 using System;
 
-namespace Aspid.UI.MVVM.Views.Generation
+namespace Aspid.MVVM.Views.Generation
 {
     /// <summary>
     /// Marker attribute for fields and properties within a class or structure marked with the <see cref="ViewAttribute"/>.

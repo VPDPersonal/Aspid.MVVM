@@ -1,4 +1,4 @@
-using Aspid.UI.MVVM.Mono;
+using Aspid.MVVM.Mono;
 
 namespace MVVMGenerators.Sample.Binders;
 

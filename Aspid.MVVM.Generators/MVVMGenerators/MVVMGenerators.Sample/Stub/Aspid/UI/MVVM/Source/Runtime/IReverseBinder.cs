@@ -1,6 +1,6 @@
 using System;
 
-namespace Aspid.UI.MVVM
+namespace Aspid.MVVM
 {
     /// <summary>
     /// Interface for creating reverse data binding from View to ViewModel.
@@ -12,7 +12,7 @@ namespace Aspid.UI.MVVM
         /// <summary>
         /// Event triggered when the value changes.
         /// </summary>
-        public event Action<T>? ValueChanged;
+        public event Action<T?>? ValueChanged;
         
         /// <summary>
         /// Indicates that reverse binding is enabled.

@@ -1,7 +1,7 @@
-using Aspid.UI.MVVM;
+using Aspid.MVVM;
 using UnityEngine.UI;
-using Aspid.UI.MVVM.Commands;
-using Aspid.UI.MVVM.ViewModels;
+using Aspid.MVVM.Commands;
+using Aspid.MVVM.ViewModels;
 
 namespace MVVMGenerators.Sample.Binders;
 
@@ -12,6 +12,7 @@ public class SliderBinder : IBinder<IRelayCommand<int>>
     public void SetValue(IRelayCommand<int> value) { }
 
     public void Bind(IViewModel viewModel, string id) { }
+
     public void Unbind()
     {
         throw new System.NotImplementedException();

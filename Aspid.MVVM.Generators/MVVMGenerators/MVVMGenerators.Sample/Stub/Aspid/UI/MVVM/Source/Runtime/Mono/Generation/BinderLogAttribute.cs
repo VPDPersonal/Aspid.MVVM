@@ -1,7 +1,7 @@
 using System;
 using System.Diagnostics;
 
-namespace Aspid.UI.MVVM.Mono.Generation
+namespace Aspid.MVVM.Mono.Generation
 {
     /// <summary>
     /// Marker attribute for methods in partial classes or structures that implement <see cref="IBinder{T}"/>.

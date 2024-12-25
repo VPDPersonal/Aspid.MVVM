@@ -1,10 +1,10 @@
 using UnityEngine;
-using Aspid.UI.MVVM.Views;
-using Aspid.UI.MVVM.ViewModels;
-using Aspid.UI.MVVM.Views.Extensions;
-using Aspid.UI.MVVM.ViewModels.Extensions;
+using Aspid.MVVM.Views;
+using Aspid.MVVM.ViewModels;
+using Aspid.MVVM.Views.Extensions;
+using Aspid.MVVM.ViewModels.Extensions;
 
-namespace Aspid.UI.MVVM.Mono.Initializers
+namespace Aspid.MVVM.Mono.Initializers
 {
     /// <summary>
     /// Abstract base class for initializing the View using the ViewModel.

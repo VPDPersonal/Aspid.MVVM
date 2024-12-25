@@ -1,11 +1,11 @@
+using Aspid.MVVM;
 using UnityEngine;
-using Aspid.UI.MVVM;
 using System.Drawing;
-using Aspid.UI.MVVM.Mono;
-using Aspid.UI.MVVM.Commands;
-using Aspid.UI.MVVM.Mono.Views;
+using Aspid.MVVM.Mono;
+using Aspid.MVVM.Commands;
+using Aspid.MVVM.Mono.Views;
 using System.Collections.Generic;
-using Aspid.UI.MVVM.Views.Generation;
+using Aspid.MVVM.Views.Generation;
 
 namespace MVVMGenerators.Sample.Views;
 

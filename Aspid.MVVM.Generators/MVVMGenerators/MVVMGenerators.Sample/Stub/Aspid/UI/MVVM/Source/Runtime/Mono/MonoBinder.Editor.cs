@@ -1,12 +1,14 @@
-#if UNITY_EDITOR && !ASPID_UI_EDITOR_DISABLED
+#if UNITY_EDITOR && !ASPID_MVVM_EDITOR_DISABLED
 #nullable disable
 using System;
+using UnityEditor;
 using UnityEngine;
-using Aspid.UI.MVVM.Views;
-using Aspid.UI.MVVM.Mono.Views;
-using Aspid.UI.MVVM.ViewModels;
+using Aspid.MVVM.Views;
+using Aspid.MVVM.Mono.Views;
+using Aspid.MVVM.ViewModels;
+using UnityEditor.SceneManagement;
 
-namespace Aspid.UI.MVVM.Mono
+namespace Aspid.MVVM.Mono
 {
     public abstract partial class MonoBinder : IMonoBinderValidable
     {
@@ -67,8 +69,15 @@ namespace Aspid.UI.MVVM.Mono
 
         private void SaveBinderDataInEditor()
         {
-            UnityEditor.EditorUtility.SetDirty(this);
-            UnityEditor.SceneManagement.EditorSceneManager.MarkSceneDirty(gameObject.scene);
+            try
+            {
+                EditorUtility.SetDirty(this);
+                EditorSceneManager.MarkSceneDirty(gameObject.scene);
+            }
+            catch
+            {
+                // ignored
+            }
         }
     }
 }

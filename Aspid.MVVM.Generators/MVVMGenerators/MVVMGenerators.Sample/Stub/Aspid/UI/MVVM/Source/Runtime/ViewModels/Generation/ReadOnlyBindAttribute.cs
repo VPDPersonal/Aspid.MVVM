@@ -1,6 +1,6 @@
 using System;
 
-namespace Aspid.UI.MVVM.ViewModels.Generation
+namespace Aspid.MVVM.ViewModels.Generation
 {
     /// <summary>
     /// Marker attribute for fields within a class or structure marked with the <see cref="ViewModelAttribute"/>.

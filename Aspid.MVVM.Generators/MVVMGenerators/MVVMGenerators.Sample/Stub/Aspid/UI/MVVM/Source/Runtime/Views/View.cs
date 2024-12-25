@@ -1,7 +1,7 @@
 using System;
-using Aspid.UI.MVVM.ViewModels;
+using Aspid.MVVM.ViewModels;
 
-namespace Aspid.UI.MVVM.Views
+namespace Aspid.MVVM.Views
 {
     /// <summary>
     /// Abstract class for a View implementing the <see cref="IView"/> interface.
@@ -9,7 +9,7 @@ namespace Aspid.UI.MVVM.Views
     /// </summary>
     public abstract class View : IView, IDisposable
     {
-#if !ASPID_UI_MVVM_UNITY_PROFILER_DISABLED
+#if !ASPID_MVVM_UNITY_PROFILER_DISABLED
         private static readonly Unity.Profiling.ProfilerMarker _initializeMarker = new("View.Initialize");
         private static readonly Unity.Profiling.ProfilerMarker _deinitializationMarker = new("View.Deinitialization");
 #endif
@@ -28,7 +28,7 @@ namespace Aspid.UI.MVVM.Views
         /// <exception cref="InvalidOperationException">Thrown if the view is already initialized.</exception>
         public void Initialize(IViewModel viewModel)
         {
-#if !ASPID_UI_MVVM_UNITY_PROFILER_DISABLED
+#if !ASPID_MVVM_UNITY_PROFILER_DISABLED
             using (_initializeMarker.Auto())
 #endif
             {
@@ -48,13 +48,13 @@ namespace Aspid.UI.MVVM.Views
         protected abstract void InitializeInternal(IViewModel viewModel);
 
         /// <summary>
-        /// Deinitializes the view, resetting the associated <see cref="ViewModel"/> to null.
+        /// Deinitializes the view, resetting the bound <see cref="ViewModel"/> .
         /// </summary>
         public void Deinitialize()
         {
             if (ViewModel == null) return;
             
-#if !ASPID_UI_MVVM_UNITY_PROFILER_DISABLED
+#if !ASPID_MVVM_UNITY_PROFILER_DISABLED
             using (_deinitializationMarker.Auto())
 #endif
             {

@@ -1,7 +1,6 @@
-using Aspid.UI.MVVM;
-using Aspid.UI.MVVM.Commands;
-using Aspid.UI.MVVM.ViewModels;
-using Aspid.UI.MVVM.ViewModels.Generation;
+using Aspid.MVVM.Commands;
+using Aspid.MVVM.ViewModels;
+using Aspid.MVVM.ViewModels.Generation;
 
 namespace MVVMGenerators.Sample.ViewModels;
 

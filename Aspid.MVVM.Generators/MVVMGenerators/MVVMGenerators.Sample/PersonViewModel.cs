@@ -1,4 +1,4 @@
-using Aspid.UI.MVVM.ViewModels.Generation;
+using Aspid.MVVM.ViewModels.Generation;
 
 namespace MVVMGenerators.Sample;
 

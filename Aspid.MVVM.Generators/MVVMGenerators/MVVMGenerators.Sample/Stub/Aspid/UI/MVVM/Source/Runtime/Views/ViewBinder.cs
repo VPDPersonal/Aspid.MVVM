@@ -1,8 +1,8 @@
-using Aspid.UI.MVVM.ViewModels;
-using Aspid.UI.MVVM.Views.Extensions;
-using Aspid.UI.MVVM.ViewModels.Extensions;
+using Aspid.MVVM.ViewModels;
+using Aspid.MVVM.Views.Extensions;
+using Aspid.MVVM.ViewModels.Extensions;
 
-namespace Aspid.UI.MVVM.Views
+namespace Aspid.MVVM.Views
 {
     /// <summary>
     /// Binds an <see cref="IView"/> to its <see cref="IViewModel"/>.
@@ -37,16 +37,10 @@ namespace Aspid.UI.MVVM.Views
             if (viewModel is not null) 
                 _view.Initialize(viewModel);
         }
-
-        /// <summary>
-        /// Called when the binding with the ViewModel is broken. Deinitializes the view.
-        /// </summary>
+        
         protected override void OnUnbound() => 
             DeinitializeView();
-
-        /// <summary>
-        /// Deinitializes the current view and disposes of the ViewModel if necessary.
-        /// </summary>
+        
         private void DeinitializeView()
         {
             var viewModel = _view.DeinitializeView();

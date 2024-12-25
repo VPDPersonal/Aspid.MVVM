@@ -1,7 +1,7 @@
 using System;
-using Aspid.UI.MVVM.ViewModels;
+using Aspid.MVVM.ViewModels;
 
-namespace Aspid.UI.MVVM
+namespace Aspid.MVVM
 {
     /// <summary>
     /// Abstract class that implements the base logic for binding a component with a <see cref="IViewModel"/>.
@@ -10,7 +10,7 @@ namespace Aspid.UI.MVVM
     /// </summary>
     public abstract partial class Binder : IBinder
     {
-#if !ASPID_UI_MVVM_UNITY_PROFILER_DISABLED
+#if !ASPID_MVVM_UNITY_PROFILER_DISABLED
         private static readonly Unity.Profiling.ProfilerMarker _bindMarker = new("Binder.Bind");
         private static readonly Unity.Profiling.ProfilerMarker _unbindMarker = new("Binder.Unbind)");
 #endif
@@ -31,7 +31,7 @@ namespace Aspid.UI.MVVM
         /// <param name="id">The component ID for binding, which matches the property name in the ViewModel.</param>
         public void Bind(IViewModel viewModel, string id)
         {
-#if !ASPID_UI_MVVM_UNITY_PROFILER_DISABLED
+#if !ASPID_MVVM_UNITY_PROFILER_DISABLED
             using (_bindMarker.Auto()) 
 #endif
             {
@@ -64,11 +64,11 @@ namespace Aspid.UI.MVVM
         protected virtual void OnBound(IViewModel viewModel, string id) { }
         
         /// <summary>
-        /// Unbinds the component from the specified <see cref="IViewModel"/>.
+        /// Unbinds the component from the bound <see cref="IViewModel"/>.
         /// </summary>
         public void Unbind()
         {
-#if !ASPID_UI_MVVM_UNITY_PROFILER_DISABLED
+#if !ASPID_MVVM_UNITY_PROFILER_DISABLED
             using (_unbindMarker.Auto())
 #endif
             {

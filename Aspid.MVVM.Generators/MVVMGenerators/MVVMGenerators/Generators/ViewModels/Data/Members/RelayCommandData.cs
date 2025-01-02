@@ -14,7 +14,7 @@ public readonly struct RelayCommandData(
     public readonly IMethodSymbol Execute = execute;
     
     public readonly string PropertyName = $"{execute.Name}Command";
-    public readonly string FieldName = $"{PropertySymbolExtensions.GetFieldName(execute.Name)}Command";
+    public readonly string FieldName = $"_{PropertySymbolExtensions.GetFieldName(execute.Name)}Command";
     
     public readonly bool IsLambda = isLambda;
     public readonly bool IsMethod = isMethod;

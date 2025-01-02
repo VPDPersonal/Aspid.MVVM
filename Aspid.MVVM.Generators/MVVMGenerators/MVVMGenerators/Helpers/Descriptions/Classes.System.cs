@@ -13,4 +13,7 @@ public static partial class Classes
     public static readonly TypeText Dictionary = new("Dictionary", Namespaces.System_Collections_Generic);
     public static readonly TypeText IEnumerable = new("IEnumerable", Namespaces.System_Collections_Generic);
     public static readonly TypeText EqualityComparer = new("EqualityComparer", Namespaces.System_Collections_Generic);
+    
+    public static readonly TypeText EditorBrowsableState = new(nameof(EditorBrowsableState), Namespaces.System_ComponentModel);
+    public static readonly AttributeText EditorBrowsableAttribute = new("EditorBrowsable", Namespaces.System_ComponentModel);
 }

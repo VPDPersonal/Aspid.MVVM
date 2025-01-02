@@ -27,12 +27,12 @@ public readonly struct AsBinderMemberInView
             case IFieldSymbol field:
                 Type = field.Type;
                 Id = $"{field.GetPropertyName()}Id";
-                CachedName = $"{field.Name}CachedBinder";
+                CachedName = $"_{field.Name}CachedBinder";
                 break;
             
             case IPropertySymbol property:
                 Type = property.Type;
-                CachedName = $"{property.GetFieldName()}CachedPropertyBinder";
+                CachedName = $"_{property.GetFieldName()}CachedPropertyBinder";
                 Id = $"{FieldSymbolExtensions.GetPropertyName(Name)}IdProperty";
                 break;
             

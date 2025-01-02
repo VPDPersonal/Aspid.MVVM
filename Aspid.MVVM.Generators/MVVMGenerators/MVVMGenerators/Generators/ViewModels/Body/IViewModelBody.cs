@@ -17,6 +17,7 @@ public static class IViewModelBody
     private static readonly string ViewModelEvent = Classes.ViewModelEvent.Global;
     private static readonly string ProfilerMarker = Classes.ProfilerMarker.Global;
     private static readonly string IRemoveBinderFromViewModel = Classes.IRemoveBinderFromViewModel.Global;
+    private static readonly string EditorBrowsableAttribute = $"[{Classes.EditorBrowsableAttribute.Global}({Classes.EditorBrowsableState.Global}.Never)]";
 
     public static CodeWriter AppendIViewModelBody(this CodeWriter code, ViewModelDataSpan data)
     {
@@ -47,6 +48,7 @@ public static class IViewModelBody
         code.AppendMultiline(
             $"""
              #if !{Defines.ASPID_MVVM_UNITY_PROFILER_DISABLED}
+             {EditorBrowsableAttribute}
              {GeneratedAttribute}
              private static readonly {ProfilerMarker} __addBinderMarker = new("{className}.AddBinder"); 
              #endif

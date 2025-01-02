@@ -9,7 +9,7 @@ public readonly struct PropertyBinderInView(IPropertySymbol property)
     public readonly ITypeSymbol Type = property.Type;
     
     public readonly string PropertyName = property.Name;
-    public readonly string CachedName = $"{property.GetFieldName()}CachedPropertyBinder";
+    public readonly string CachedName = $"_{property.GetFieldName()}CachedPropertyBinder";
     public readonly string Id = $"{FieldSymbolExtensions.GetPropertyName(property.Name)}IdProperty";
 
     public readonly bool IsUnityEngineObjectBinder = property.Type switch

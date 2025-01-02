@@ -12,6 +12,8 @@ public static class RelayCommandBody
 {
     private const string GeneratedAttribute = General.GeneratedCodeViewModelAttribute;
     
+    private static readonly string EditorBrowsableAttribute = $"[{Classes.EditorBrowsableAttribute.Global}({Classes.EditorBrowsableState.Global}.Never)]";
+    
     public static CodeWriter AppendRelayCommandBody(this CodeWriter code, in ViewModelDataSpan data)
     {
         var index = 0;
@@ -28,6 +30,7 @@ public static class RelayCommandBody
             
             code.AppendMultiline(
                 $"""
+                {EditorBrowsableAttribute}
                 {GeneratedAttribute}
                 private {type} {fieldName};
                 

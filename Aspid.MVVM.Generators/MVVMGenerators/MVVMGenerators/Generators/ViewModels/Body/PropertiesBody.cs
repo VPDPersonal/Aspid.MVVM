@@ -10,6 +10,8 @@ namespace MVVMGenerators.Generators.ViewModels.Body;
 
 public static class PropertiesBody
 {
+    private static readonly string EditorBrowsableAttribute = $"[{Classes.EditorBrowsableAttribute.Global}({Classes.EditorBrowsableState.Global}.Never)]";
+    
     public static CodeWriter AppendPropertiesBody(this CodeWriter code, ViewModelDataSpan data)
     {
         code.AppendEvents(data)
@@ -70,8 +72,10 @@ public static class PropertiesBody
             
             code.AppendMultiline(
                 $"""
+                {EditorBrowsableAttribute}
                 {General.GeneratedCodeViewModelAttribute}
                 private {Classes.ViewModelEvent.Global}<{type}> {field.ViewModelEventName};
+                
                 """);
         }
 
@@ -81,8 +85,10 @@ public static class PropertiesBody
             
             code.AppendMultiline(
                 $"""
+                {EditorBrowsableAttribute}
                 {General.GeneratedCodeViewModelAttribute}
                 private {Classes.ViewModelEvent.Global}<{type}> {property.ViewModelEventName};
+                
                 """);
         }
 

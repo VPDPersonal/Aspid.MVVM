@@ -1,4 +1,5 @@
 #if !ASPID_MVVM_EDITOR_DISABLED
+using System;
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
@@ -38,8 +39,64 @@ namespace Aspid.MVVM.Mono
         private bool IsBinderAssignedError => string.IsNullOrEmpty(_id?.stringValue);
         
         private string IconPath => !IsBinderAssignedError ? "Aspid Icon" : "Aspid Icon Red";
+        
+        private void OnEnable()
+        {
+	        FindProperties();
+	        Validate();
+        }
 
-        private void OnEnable() => FindProperties();
+        private void Validate()
+        {
+	        serializedObject.Update();
+	        ValidateView();
+	        ValidateId();
+	        serializedObject.ApplyModifiedProperties();
+	        return;
+
+	        void ValidateView()
+	        {
+		        if (!_view.objectReferenceValue) return;
+		        
+		        for (var parent = ((Component)target).transform; parent is not null; parent = parent.parent)
+			        if (parent.GetComponents<MonoView>().Any(view => _view.objectReferenceValue == view)) return;
+
+		        _view.objectReferenceValue = null;
+	        }
+
+	        void ValidateId()
+	        {
+		        if (string.IsNullOrEmpty(_id.stringValue)) return;
+
+		        var view = _view.objectReferenceValue as MonoView;
+
+		        if (!view)
+		        {
+			        _id.stringValue = null;
+			        return;
+		        }
+		        
+		        var field = ViewUtility.GetFieldInfoById(view, _id.stringValue);
+		        var binder = field.GetValue(view);
+
+		        if (binder is Array array)
+		        {
+			        if (array
+			            .Cast<object>()
+			            .Any(element => (MonoBinder)element == Binder))
+			        {
+				        serializedObject.ApplyModifiedProperties();
+				        return;
+			        }
+		        }
+		        else if ((MonoBinder)binder == Binder)
+		        {
+			        return;
+		        }
+						        
+		        _id.stringValue = null;
+	        }
+        }
 
         public sealed override VisualElement CreateInspectorGUI()
         {
@@ -259,7 +316,7 @@ namespace Aspid.MVVM.Mono
                 _view.objectReferenceValue = null;
                 foreach (var view in GetViewList().Where(view => view.name == viewName))
                 {
-                    _view.objectReferenceValue = view;
+                    _view.objectReferenceValue = view.view;
                     break;
                 }
             }
@@ -289,7 +346,7 @@ namespace Aspid.MVVM.Mono
                 const string noneValue = "No View";
                 
                 var views = editor.GetViewList();
-                var viewName = editor._view.objectReferenceValue?.name;
+                var viewName = GetViewName(editor._view.objectReferenceValue as MonoView);
             
                 var dropdown = views.Count == 0
                     ? GetDropdown(noneValue) 
@@ -303,8 +360,7 @@ namespace Aspid.MVVM.Mono
             {
                 if (choices is null || choices.Count == 0) 
                     return new DropdownField(new List<string> { noneValue }, 0);
-            
-                choices = new List<string>(choices);
+                
                 choices.Insert(0, null);
                 choices.Insert(0, noneValue);
             

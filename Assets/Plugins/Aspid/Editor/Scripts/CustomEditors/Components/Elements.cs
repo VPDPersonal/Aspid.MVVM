@@ -1,8 +1,8 @@
 #nullable enable
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
 using Aspid.CustomEditors.Configs;
+using Aspid.CustomEditors.Extensions;
 using Aspid.CustomEditors.Extensions.VisualElements;
 using Object = UnityEngine.Object;
 
@@ -10,10 +10,11 @@ namespace Aspid.CustomEditors.Components
 {
     public static class Elements
     {
-        public static VisualElement CreateHeader(Object obj, string iconPath)
+	    public static VisualElement CreateHeader(Object obj, string iconPath) =>
+		    CreateHeader(iconPath, obj.GetScriptName());
+	    
+        public static VisualElement CreateHeader(string iconPath, string scriptName)
         {
-            var scriptName = GetScriptName();
-            
             var headerIcon = new Image()
                 .SetName("HeaderIcon")
                 .SetImageFromResource(iconPath)
@@ -32,23 +33,6 @@ namespace Aspid.CustomEditors.Components
                 .AddChild(headerIcon)
                 .AddChild(headerText
                     .SetMargin(left: 10));
-            
-            string GetScriptName()
-            {
-                var targetType = obj.GetType();
-                var attributes = targetType.GetCustomAttributes(false);
-
-                foreach (var attribute in attributes)
-                {
-                    if (attribute is not AddComponentMenu addComponentMenu) continue;
-                
-                    var menu = addComponentMenu.componentMenu;
-                    var lastIndex = menu.LastIndexOf('/');
-                    return menu[(lastIndex + 1)..];
-                }
-            
-                return ObjectNames.NicifyVariableName(targetType.Name);
-            }
         }
         
         public static VisualElement CreateContainer(StyleColor color, string? name = null)

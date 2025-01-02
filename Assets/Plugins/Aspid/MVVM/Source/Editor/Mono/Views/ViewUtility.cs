@@ -176,8 +176,7 @@ namespace Aspid.MVVM.Mono.Views
         /// <param name="id">The ID of the binder field to remove.</param>
         public static void RemoveMonoBinderIfSet(IView view, IMonoBinderValidable binder, string id)
         {
-            var field = GetMonoBinderValidableFields(view.GetType())
-                .FirstOrDefault(field => GetIdName(field.Name) == id);
+	        var field = GetFieldInfoById(view, id);
             
             if (field == null)
             {
@@ -209,8 +208,7 @@ namespace Aspid.MVVM.Mono.Views
         /// <param name="id">The ID of the binder field for adding the binder.</param>
         public static void SetMonoBinderIfNotSet(IView view, IMonoBinderValidable binder, string id)
         {
-            var field = GetMonoBinderValidableFields(view.GetType())
-                .FirstOrDefault(field => GetIdName(field.Name) == id);
+	        var field = GetFieldInfoById(view, id);
         
             if (field == null)
             {
@@ -338,6 +336,12 @@ namespace Aspid.MVVM.Mono.Views
             int GetPrefixCount() => fieldName.StartsWith("_") ? 1 : fieldName.StartsWith("m_") ? 2 : 0;
         }
 
+        public static FieldInfo GetFieldInfoById(IView view, string id)
+        {
+	        return GetMonoBinderValidableFields(view.GetType())
+		        .FirstOrDefault(field => GetIdName(field.Name) == id);
+        }
+        
         private static void SaveView(IView view)
         {
             if (Application.isPlaying) return;

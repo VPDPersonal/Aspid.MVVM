@@ -9,6 +9,7 @@ using UnityEngine.UIElements;
 using System.Collections.Generic;
 using Aspid.CustomEditors.Configs;
 using Aspid.CustomEditors.Components;
+using Aspid.CustomEditors.Extensions;
 using Aspid.MVVM.Mono.Views.Extensions;
 using Aspid.CustomEditors.Components.Extensions;
 using Aspid.CustomEditors.Extensions.VisualElements;
@@ -96,7 +97,7 @@ namespace Aspid.MVVM.Mono.Views
                 .SetName("ViewModel");
             
             return new VisualElement()
-                .AddChild(Elements.CreateHeader(target, "Aspid Icon"))
+                .AddChild(Elements.CreateHeader("Aspid Icon", GetScriptName()))
                 .AddChild(baseInspector)
                 .AddChild(otherBinders)
                 .AddChild(viewModel);
@@ -207,6 +208,34 @@ namespace Aspid.MVVM.Mono.Views
             }
 
             return otherBinders;
+        }
+
+        protected string GetScriptName()
+        {
+	        if (!View) return null;
+	        
+	        var type = View.GetType();
+	        var views = View.GetComponents(type);
+	        
+	        switch (views.Length)
+	        {
+		        case 0: return null;
+		        case 1: return views[0].GetScriptName();
+		        default:
+			        {
+				        var index = 0;
+	        
+				        foreach (var component in views)
+				        {
+					        if (component.GetType() != type) continue;
+		        
+					        index++;
+					        if (component == View) return $"{View.GetScriptName()} ({index})";
+				        }
+				        
+				        return null;
+			        }
+	        }
         }
         
         protected enum ErrorType

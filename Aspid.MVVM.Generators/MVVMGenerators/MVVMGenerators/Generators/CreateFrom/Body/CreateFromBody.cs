@@ -1,3 +1,4 @@
+using System;
 using System.Text;
 using Microsoft.CodeAnalysis;
 using MVVMGenerators.Helpers;
@@ -13,141 +14,306 @@ public static class CreateFromBody
     private const string GeneratedAttribute = General.GeneratedCodeCreateFromAttribute;
     
     private static readonly string List = Classes.List.Global;
+    private static readonly string Func = Classes.Func.Global;
+    private static readonly string Span = Classes.Span.Global;
+    private static readonly string IList = Classes.IList.Global;
     private static readonly string IEnumerable = Classes.IEnumerable.Global;
-    
-    public static CodeWriter AppendCreateFromBody(this CodeWriter code, CreateFromDataSpan data)
-    {
-        var toName = data.Declaration.Identifier.Text;
-        var fromTypeFullName = data.FromType.ToDisplayStringGlobal();
+    private static readonly string ReadOnlySpan = Classes.ReadOnlySpan.Global;
+    private static readonly SymbolEqualityComparer Comparer = SymbolEqualityComparer.Default;
 
-        foreach (var constructor in data.Constructors)
-        {
-            code.AppendMethods(constructor, toName, fromTypeFullName)
-                .AppendLine();
-        }
-        
+    public static CodeWriter AppendCreateFromBody(this CodeWriter code, in CreateFromDataSpan data)
+    {
+        if (data.Constructor.Parameters.Length == 0) return code;
+        var parameters = GetParameters(data.Constructor, data.FromType);
+
+        code.AppendMethodDeclaration(data, parameters, ParameterType.None, ParameterType.None)
+            .AppendMultiline(
+                $$"""
+                  {
+                      return new({{parameters.Constructor(parameters.From)}});
+                  }
+                  """)
+            .AppendLine();
+
+        code.AppendArrayMethodBody(data, ParameterType.Array, parameters)
+            .AppendArrayMethodBody(data, ParameterType.Span, parameters)
+            .AppendArrayMethodBody(data, ParameterType.ReadOnlySpan, parameters)
+            .AppendArrayMethodBody(data, ParameterType.List, parameters);
+
+        code.AppendListMethodBody(data, ParameterType.Array, parameters)
+            .AppendListMethodBody(data, ParameterType.List, parameters)
+            .AppendListMethodBody(data, ParameterType.Span, parameters)
+            .AppendListMethodBody(data, ParameterType.ReadOnlySpan, parameters)
+            .AppendListMethodBody(data ,ParameterType.Enumerable, parameters);
+            
+        code.AppendIListMethodBody(data, ParameterType.Array, parameters)
+            .AppendIListMethodBody(data, ParameterType.List, parameters)
+            .AppendIListMethodBody(data, ParameterType.Span, parameters)
+            .AppendIListMethodBody(data, ParameterType.ReadOnlySpan, parameters)
+            .AppendIListMethodBody(data, ParameterType.Enumerable, parameters);
+
+        code.AppendEnumerableMethodBody(data, ParameterType.Array, ParameterType.Enumerable, parameters)
+            .AppendEnumerableMethodBody(data, ParameterType.List, ParameterType.Enumerable, parameters)
+            .AppendEnumerableMethodBody(data, ParameterType.Enumerable, ParameterType.Enumerable, parameters);
+
         return code;
     }
 
-    private static CodeWriter AppendMethods(this CodeWriter code, IMethodSymbol constructor, string toName, string fromTypeFullName)
+    private static CodeWriter AppendArrayMethodBody(
+        this CodeWriter code,
+        in CreateFromDataSpan data,
+        ParameterType fromParameterType,
+        in Parameters parameters)
     {
-        var parameters = GetParameters(constructor, fromTypeFullName);
+        var fromName = parameters.From;
+        var constructor = parameters.Constructor($"{fromName}[__i]");
 
-        var methodName = $"To{toName}";
-        var fromName = parameters.FromName;
-        var parameterNames = parameters.ParameterNames;
-        var methodParameters = $"{fromName}{parameters.ParametersEnum}";
+        var capacity = GetLengthType(fromParameterType) switch
+        {
+            LengthType.None => "0",
+            LengthType.Count => $"{fromName}.Count",
+            LengthType.Length => $"{fromName}.Length",
+            _ => throw new ArgumentOutOfRangeException()
+        };
         
-        code.AppendMultiline(
+        return code
+            .AppendMethodDeclaration(data, parameters, fromParameterType, ParameterType.Array)
+            .AppendMultiline(
             $$"""
-            {{GeneratedAttribute}}
-            public static {{toName}} {{methodName}}<T>(this T {{methodParameters}})
-                where T : {{fromTypeFullName}}
-            {
-                return new {{toName}}({{fromName}}{{parameterNames}});
-            }
-            
-            {{GeneratedAttribute}}
-            public static {{toName}}[] {{methodName}}<T>(this T[] {{methodParameters}})
-                where T : {{fromTypeFullName}}
-            {
-                var __to = new {{toName}}[{{fromName}}.Length];
-            
-                for (var i = 0; i < {{fromName}}.Length; i++)
-                    __to[i] = new {{toName}}({{fromName}}[i]{{parameterNames}});
-            
-                return __to;
-            }
-            
-            {{GeneratedAttribute}}
-            public static {{toName}}[] {{methodName}}AsArray<T>(this {{List}}<T> {{methodParameters}})
-                where T : {{fromTypeFullName}}
-            {
-                var __to = new {{toName}}[{{fromName}}.Count];
-            
-                for (var i = 0; i < {{fromName}}.Count; i++)
-                    __to[i] = new {{toName}}({{fromName}}[i]{{parameterNames}});
-            
-                return __to;
-            }
-            
-            {{GeneratedAttribute}}
-            public static {{List}}<{{toName}}> {{methodName}}AsList<T>(this T[] {{methodParameters}})
-                where T : {{fromTypeFullName}}
-            {
-                var __to = new {{List}}<{{toName}}>({{fromName}}.Length);
-            
-                foreach(var __{{fromName}}Item in {{fromName}})
-                    __to.Add(new {{toName}}(__{{fromName}}Item{{parameterNames}}));
-            
-                return __to;
-            }
-            
-            {{GeneratedAttribute}}
-            public static {{List}}<{{toName}}> {{methodName}}<T>(this {{List}}<T> {{methodParameters}})
-                where T : {{fromTypeFullName}}
-            {
-                var __to = new {{List}}<{{toName}}>({{fromName}}.Count);
-            
-                foreach(var __{{fromName}}Item in {{fromName}})
-                    __to.Add(new {{toName}}(__{{fromName}}Item{{parameterNames}}));
-            
-                return __to;
-            }
-            
-            {{GeneratedAttribute}}
-            public static {{IEnumerable}}<{{toName}}> {{methodName}}<T>(this {{IEnumerable}}<T> {{methodParameters}})
-                where T : {{fromTypeFullName}}
-            {
-                foreach (var __{{fromName}}Item in {{fromName}})
-                    yield return new {{toName}}(__{{fromName}}Item{{parameterNames}});
-            }
-            """);
-
-        return code;
+              {
+                  var __to = new {{data.ToTypeName}}[{{capacity}}];
+                  
+                  for (var __i = 0; __i < __to.Length; __i++)
+                      __to[__i] = new({{constructor}});
+                      
+                  return __to;
+              }
+              """)
+            .AppendLine();
     }
 
-    private static Parameters GetParameters(IMethodSymbol constructor, string fromTypeFullName)
+    private static CodeWriter AppendListMethodBody(
+        this CodeWriter code, 
+        in CreateFromDataSpan data,
+        ParameterType fromParameterType,
+        in Parameters parameters)
     {
-        var fromName = constructor.Parameters[0].Name;
-        if (constructor.Parameters.Length == 1) return new Parameters(fromName);
+        const string local = "__from";
 
-        var isFirst = true;
-        var isFromTypeSkip = false;
-        var parametersEnum = new StringBuilder();
-        var parameterNames = new StringBuilder();
-
-        foreach (var parameter in constructor.Parameters)
+        var capacity = GetLengthType(fromParameterType) switch
         {
-            if (isFirst)
-            {
-                isFirst = false;
-                continue;
-            }
-            
-            var parameterType = parameter.Type.ToDisplayString();
-            
-            if (!isFromTypeSkip && parameterType == fromTypeFullName)
-            {
-                isFromTypeSkip = true;
-                continue;
-            }
+            LengthType.None => string.Empty,
+            LengthType.Count => $"{parameters.From}.Count",
+            LengthType.Length => $"{parameters.From}.Length",
+            _ => throw new ArgumentOutOfRangeException()
+        };
+        
+        var fromName = parameters.From;
+        var constructor = parameters.Constructor(local);
 
-            var parameterName = $"{parameter.Name}";
-            parameterNames.Append($", {parameterName}");
-            parametersEnum.Append($", {parameterType} {parameterName}");
+        return code
+            .AppendMethodDeclaration(data, parameters, fromParameterType, ParameterType.List)
+            .AppendMultiline(
+            $$"""
+              {
+                  var __to = new {{List}}<{{data.ToTypeName}}>({{capacity}});
+                  
+                  foreach(var {{local}} in {{fromName}})
+                      __to.Add(new({{constructor}}));
+                      
+                  return __to;
+              }
+              """)
+            .AppendLine();
+    }
+
+    private static CodeWriter AppendIListMethodBody(
+        this CodeWriter code, 
+        in CreateFromDataSpan data,
+        ParameterType fromParameterType,
+        in Parameters parameters)
+    {
+        const string local = "__from";
+
+        var fromName = parameters.From;
+        var constructor = parameters.Constructor(local);
+
+        return code
+            .AppendMethodDeclaration(data, parameters, fromParameterType, ParameterType.IList)
+            .AppendMultiline(
+            $$"""
+              {
+                  var __to = __createList();
+                  
+                  foreach(var {{local}} in {{fromName}})
+                      __to.Add(new({{constructor}}));
+                      
+                  return __to;
+              }
+              """)
+            .AppendLine();
+    }
+
+    private static CodeWriter AppendEnumerableMethodBody(
+        this CodeWriter code, 
+        in CreateFromDataSpan data,
+        ParameterType fromParameterType,
+        ParameterType toParameterType,
+        in Parameters parameters)
+    {
+        const string local = "__from";
+
+        var fromName = parameters.From;
+        var constructor = parameters.Constructor(local);
+
+        return code
+            .AppendMethodDeclaration(data, parameters, fromParameterType, toParameterType)
+            .AppendMultiline(
+            $$"""
+            {
+                foreach (var {{local}} in {{fromName}})
+                    yield return new({{constructor}});
+            }
+            """)
+            .AppendLine();
+    }
+
+    private static CodeWriter AppendMethodDeclaration(
+        this CodeWriter code,
+        in CreateFromDataSpan data,
+        in Parameters parameters,
+        ParameterType fromParameterType,
+        ParameterType toParameterType)
+    {
+        var methodName = $"To{data.ToName}";
+        var returnType = data.ToTypeName;
+        var additionalParameter = string.Empty;
+        
+        switch (toParameterType)
+        {
+            case ParameterType.None: break;
+            case ParameterType.List:
+                methodName += "AsList";
+                returnType = $"{List}<{returnType}>";
+                break;
+            
+            case ParameterType.Span:
+            case ParameterType.Array: 
+            case ParameterType.ReadOnlySpan:
+                methodName += "AsArray";
+                returnType += "[]";
+                break;
+            
+            case ParameterType.Enumerable:
+                methodName += "AsEnumerable";
+                returnType = $"{IEnumerable}<{returnType}>";
+                break;
+
+            case ParameterType.IList:
+                methodName += "AsList";
+                returnType = $"{IList}<{returnType}>";
+                additionalParameter = $", {Func}<{IList}<{data.ToTypeName}>> __createList";
+                break;
+            
+            default: throw new ArgumentOutOfRangeException(nameof(toParameterType), toParameterType, null);
         }
 
-        return new Parameters(fromName, parameterNames, parametersEnum);
+        if (!data.CanBeInherited)
+        {
+            return code.AppendMultiline(
+                $"""
+                 {GeneratedAttribute}
+                 public static {returnType} {methodName}({parameters.Method(fromParameterType, data.FromTypeName)}{additionalParameter})
+                 """);
+        }
+
+        return code.AppendMultiline(
+            $"""
+             {GeneratedAttribute}
+             public static {returnType} {methodName}<T>({parameters.Method(fromParameterType, "T")}{additionalParameter})
+              where T : {data.FromTypeName}
+             """);
     }
 
-    private readonly ref struct Parameters(
-        string fromName,
-        StringBuilder? parameterNames = null,
-        StringBuilder? parametersEnum = null)
+    private static LengthType GetLengthType(ParameterType type) => type switch
     {
-        public readonly string FromName = fromName;
-        public readonly string ParameterNames = parameterNames?.ToString() ?? string.Empty;
-        public readonly string ParametersEnum = parametersEnum?.ToString() ?? string.Empty;
+        ParameterType.None => LengthType.None,
+        ParameterType.Array => LengthType.Length,
+        ParameterType.List => LengthType.Count,
+        ParameterType.IList => LengthType.Count,
+        ParameterType.Span => LengthType.Length,
+        ParameterType.ReadOnlySpan => LengthType.Length,
+        ParameterType.Enumerable => LengthType.None,
+        _ => throw new ArgumentOutOfRangeException(nameof(type), type, null)
+    };
+    
+    private static Parameters GetParameters(IMethodSymbol constructor, ITypeSymbol fromType)
+    {
+        string? fromName = null;
+        StringBuilder methodParameters = new();
+        StringBuilder constructorParameters = new();
+        var parameters = constructor.Parameters;
+
+        foreach (var parameter in parameters)
+        {
+            if (constructorParameters.Length is not 0)
+                constructorParameters.Append(", ");
+
+            if (fromName is null && Comparer.Equals(parameter.Type, fromType))
+            {
+                fromName = parameter.Name;
+                constructorParameters.Append("{0}");
+            }
+            else
+            {
+                methodParameters.Append($", {parameter.Type.ToDisplayStringGlobal()} {parameter.Name}");
+                constructorParameters.Append($"{parameter.Name}");
+            }
+        }
+
+        return new Parameters(fromName!, methodParameters, constructorParameters);
     }
-}
+    
+    private readonly ref struct Parameters(
+        string from,
+        StringBuilder method,
+        StringBuilder constructor)
+    {
+        public readonly string From = from;
+
+        private readonly string _method = from + method;
+        private readonly string _constructor = constructor.ToString();
+
+        public string Method(ParameterType type, string fromType) => type switch
+        {
+            ParameterType.None => $"this {fromType} {_method}",
+            ParameterType.Array => $"this {fromType}[] {_method}",
+            ParameterType.Span => $"this {Span}<{fromType}> {_method}",
+            ParameterType.List => $"this {List}<{fromType}> {_method}",
+            ParameterType.IList => $"this {IList}<{fromType}> {_method}",
+            ParameterType.ReadOnlySpan => $"this {ReadOnlySpan}<{fromType}> {_method}",
+            ParameterType.Enumerable => $"this {IEnumerable}<{fromType}> {_method}",
+            _ => throw new ArgumentOutOfRangeException(nameof(type), type, null)
+        };
+
+        public string Constructor(string fromName) => string.Format(_constructor, fromName);
+    }
+
+    private enum LengthType
+    {
+        None,
+        Count,
+        Length,
+    }
+    
+    private enum ParameterType
+    {
+        None,
+        List,
+        IList,
+        Array,
+        Span,
+        ReadOnlySpan,
+        Enumerable,
+    }
+} 

@@ -17,7 +17,6 @@ namespace Aspid.MVVM.TodoList.ViewModels
     // EditTodoPopUp[] popUps;
     // EditTodoPopUpViewModel[] viewModels = popUps.ToEditTodoPopUpViewModel();
     [ViewModel]
-    [CreateFrom(typeof(EditTodoPopUp))]
     public partial class EditTodoPopUpViewModel
     {
         [Bind] private string _text;
@@ -26,6 +25,7 @@ namespace Aspid.MVVM.TodoList.ViewModels
 
         private readonly EditTodoPopUp _editTodoPopUp;
         
+        [CreateFrom(typeof(EditTodoPopUp))]
         public EditTodoPopUpViewModel(EditTodoPopUp editTodoPopUp)
         {
             _editTodoPopUp = editTodoPopUp;

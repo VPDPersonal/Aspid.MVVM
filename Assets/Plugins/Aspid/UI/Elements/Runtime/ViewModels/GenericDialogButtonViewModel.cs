@@ -6,7 +6,6 @@ using Aspid.MVVM.ViewModels.Generation;
 namespace Aspid.UI.Elements.ViewModels
 {
     [ViewModel]
-    [CreateFrom(typeof(GenericDialogButton))]
     public partial class GenericDialogButtonViewModel
     {
         [ReadOnlyBind] private readonly string _text;
@@ -14,6 +13,7 @@ namespace Aspid.UI.Elements.ViewModels
 
         private GenericDialogButton _button;
 
+        [CreateFrom(typeof(GenericDialogButton))]
         public GenericDialogButtonViewModel(GenericDialogButton button)
         {
             _text = button.Text;

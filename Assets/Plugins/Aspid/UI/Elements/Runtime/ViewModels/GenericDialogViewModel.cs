@@ -9,7 +9,6 @@ using Aspid.MVVM.ViewModels.Generation;
 namespace Aspid.UI.Elements.ViewModels
 {
     [ViewModel]
-    [CreateFrom(typeof(GenericDialog))]
     public partial class GenericDialogViewModel
     {
         [ReadOnlyBind] private readonly Sprite _icon;
@@ -17,12 +16,13 @@ namespace Aspid.UI.Elements.ViewModels
         [ReadOnlyBind] private readonly string _message;
         [ReadOnlyBind] private readonly GenericDialogButtonViewModel[] _genericDialogButtons;
 
+        [CreateFrom(typeof(GenericDialog))]
         public GenericDialogViewModel(GenericDialog genericDialog)
         {
             _icon = genericDialog.Icon;
             _title = genericDialog.Title;
             _message = genericDialog.Message;
-            _genericDialogButtons = genericDialog.Buttons.ToGenericDialogButtonViewModel();
+            _genericDialogButtons = genericDialog.Buttons.ToGenericDialogButtonViewModelAsArray();
         }
     }
 

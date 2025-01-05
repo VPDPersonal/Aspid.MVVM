@@ -26,13 +26,14 @@ public static class CreateFromBody
         if (data.Constructor.Parameters.Length == 0) return code;
         var parameters = GetParameters(data.Constructor, data.FromType);
 
-        code.AppendMethodDeclaration(data, parameters, ParameterType.None, ParameterType.None)
+        code.AppendLine($"[{Classes.MethodImplAttribute.Global}({Classes.MethodImplOptions.Global}.AggressiveInlining)]")
+            .AppendMethodDeclaration(data, parameters, ParameterType.None, ParameterType.None)
             .AppendMultiline(
                 $$"""
-                  {
-                      return new({{parameters.Constructor(parameters.From)}});
-                  }
-                  """)
+                {
+                    return new({{parameters.Constructor(parameters.From)}});
+                }
+                """)
             .AppendLine();
 
         code.AppendArrayMethodBody(data, ParameterType.Array, parameters)
@@ -66,7 +67,6 @@ public static class CreateFromBody
         in Parameters parameters)
     {
         var fromName = parameters.From;
-        var constructor = parameters.Constructor($"{fromName}[__i]");
 
         var capacity = GetLengthType(fromParameterType) switch
         {
@@ -84,7 +84,7 @@ public static class CreateFromBody
                   var __to = new {{data.ToTypeName}}[{{capacity}}];
                   
                   for (var __i = 0; __i < __to.Length; __i++)
-                      __to[__i] = new({{constructor}});
+                      __to[__i] = {{fromName}}[__i].{{data.MethodName}}({{parameters.EnumParameters}});
                       
                   return __to;
               }
@@ -98,8 +98,6 @@ public static class CreateFromBody
         ParameterType fromParameterType,
         in Parameters parameters)
     {
-        const string local = "__from";
-
         var capacity = GetLengthType(fromParameterType) switch
         {
             LengthType.None => string.Empty,
@@ -108,9 +106,6 @@ public static class CreateFromBody
             _ => throw new ArgumentOutOfRangeException()
         };
         
-        var fromName = parameters.From;
-        var constructor = parameters.Constructor(local);
-
         return code
             .AppendMethodDeclaration(data, parameters, fromParameterType, ParameterType.List)
             .AppendMultiline(
@@ -118,8 +113,8 @@ public static class CreateFromBody
               {
                   var __to = new {{List}}<{{data.ToTypeName}}>({{capacity}});
                   
-                  foreach(var {{local}} in {{fromName}})
-                      __to.Add(new({{constructor}}));
+                  foreach(var __from in {{parameters.From}})
+                      __to.Add(__from.{{data.MethodName}}({{parameters.EnumParameters}}));
                       
                   return __to;
               }
@@ -133,11 +128,6 @@ public static class CreateFromBody
         ParameterType fromParameterType,
         in Parameters parameters)
     {
-        const string local = "__from";
-
-        var fromName = parameters.From;
-        var constructor = parameters.Constructor(local);
-
         return code
             .AppendMethodDeclaration(data, parameters, fromParameterType, ParameterType.IList)
             .AppendMultiline(
@@ -145,8 +135,8 @@ public static class CreateFromBody
               {
                   var __to = __createList();
                   
-                  foreach(var {{local}} in {{fromName}})
-                      __to.Add(new({{constructor}}));
+                  foreach(var __from in {{parameters.From}})
+                      __to.Add(__from.{{data.MethodName}}({{parameters.EnumParameters}}));
                       
                   return __to;
               }
@@ -161,18 +151,13 @@ public static class CreateFromBody
         ParameterType toParameterType,
         in Parameters parameters)
     {
-        const string local = "__from";
-
-        var fromName = parameters.From;
-        var constructor = parameters.Constructor(local);
-
         return code
             .AppendMethodDeclaration(data, parameters, fromParameterType, toParameterType)
             .AppendMultiline(
             $$"""
             {
-                foreach (var {{local}} in {{fromName}})
-                    yield return new({{constructor}});
+                foreach (var __from in {{parameters.From}})
+                    yield return __from.{{data.MethodName}}({{parameters.EnumParameters}});
             }
             """)
             .AppendLine();
@@ -185,7 +170,7 @@ public static class CreateFromBody
         ParameterType fromParameterType,
         ParameterType toParameterType)
     {
-        var methodName = $"To{data.ToName}";
+        var methodName = data.MethodName;
         var returnType = data.ToTypeName;
         var additionalParameter = string.Empty;
         
@@ -250,11 +235,11 @@ public static class CreateFromBody
     private static Parameters GetParameters(IMethodSymbol constructor, ITypeSymbol fromType)
     {
         string? fromName = null;
+        StringBuilder parameters = new();
         StringBuilder methodParameters = new();
         StringBuilder constructorParameters = new();
-        var parameters = constructor.Parameters;
-
-        foreach (var parameter in parameters)
+        
+        foreach (var parameter in  constructor.Parameters)
         {
             if (constructorParameters.Length is not 0)
                 constructorParameters.Append(", ");
@@ -266,35 +251,45 @@ public static class CreateFromBody
             }
             else
             {
+                if (parameters.Length is not 0)
+                    parameters.Append(", ");
+                
+                parameters.Append($"{parameter.Name}");
                 methodParameters.Append($", {parameter.Type.ToDisplayStringGlobal()} {parameter.Name}");
                 constructorParameters.Append($"{parameter.Name}");
             }
         }
 
-        return new Parameters(fromName!, methodParameters, constructorParameters);
+        return new Parameters(fromName!, methodParameters, parameters, constructorParameters);
     }
     
     private readonly ref struct Parameters(
         string from,
         StringBuilder method,
+        StringBuilder parameters,
         StringBuilder constructor)
     {
         public readonly string From = from;
-
-        private readonly string _method = from + method;
+        public readonly string EnumParameters = parameters.ToString();
+        
+        private readonly string _methods = from + method;
         private readonly string _constructor = constructor.ToString();
-
-        public string Method(ParameterType type, string fromType) => type switch
+        
+        
+        public string Method(ParameterType type, string fromType)
         {
-            ParameterType.None => $"this {fromType} {_method}",
-            ParameterType.Array => $"this {fromType}[] {_method}",
-            ParameterType.Span => $"this {Span}<{fromType}> {_method}",
-            ParameterType.List => $"this {List}<{fromType}> {_method}",
-            ParameterType.IList => $"this {IList}<{fromType}> {_method}",
-            ParameterType.ReadOnlySpan => $"this {ReadOnlySpan}<{fromType}> {_method}",
-            ParameterType.Enumerable => $"this {IEnumerable}<{fromType}> {_method}",
-            _ => throw new ArgumentOutOfRangeException(nameof(type), type, null)
-        };
+            return type switch
+            {
+                ParameterType.None => $"this {fromType} {_methods}",
+                ParameterType.Array => $"this {fromType}[] {_methods}",
+                ParameterType.Span => $"this {Span}<{fromType}> {_methods}",
+                ParameterType.List => $"this {List}<{fromType}> {_methods}",
+                ParameterType.IList => $"this {IList}<{fromType}> {_methods}",
+                ParameterType.ReadOnlySpan => $"this {ReadOnlySpan}<{fromType}> {_methods}",
+                ParameterType.Enumerable => $"this {IEnumerable}<{fromType}> {_methods}",
+                _ => throw new ArgumentOutOfRangeException(nameof(type), type, null)
+            };
+        }
 
         public string Constructor(string fromName) => string.Format(_constructor, fromName);
     }

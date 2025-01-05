@@ -16,5 +16,6 @@ public readonly ref struct CreateFromDataSpan(CreateFromData data)
     public readonly ITypeSymbol FromType = data.FromType;
     public readonly string FromTypeName = data.FromType.ToDisplayStringGlobal();
     
+    public readonly string MethodName = $"To{data.Declaration.Identifier.Text}";
     public readonly bool CanBeInherited = data.FromType.TypeKind != TypeKind.Struct && !data.FromType.IsSealed;
 }

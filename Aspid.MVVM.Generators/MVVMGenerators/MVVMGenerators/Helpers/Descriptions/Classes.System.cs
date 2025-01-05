@@ -19,4 +19,7 @@ public static partial class Classes
     
     public static readonly TypeText EditorBrowsableState = new(nameof(EditorBrowsableState), Namespaces.System_ComponentModel);
     public static readonly AttributeText EditorBrowsableAttribute = new("EditorBrowsable", Namespaces.System_ComponentModel);
+    
+    public static readonly TypeText MethodImplOptions = new("MethodImplOptions", Namespaces.System_Runtime_CompilerServices);
+    public static readonly AttributeText MethodImplAttribute = new("MethodImpl", Namespaces.System_Runtime_CompilerServices);
 }

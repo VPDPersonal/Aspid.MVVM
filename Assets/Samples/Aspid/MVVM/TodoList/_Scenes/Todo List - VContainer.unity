@@ -1515,8 +1515,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _searchInput: {fileID: 101528973}
   _addTodoCommand:
+    <Target>k__BackingField: {fileID: 2032961964}
     _isBindInteractable: 0
-    _button: {fileID: 2032961964}
   _todoItemViewModels: {fileID: 1797679514}
 --- !u!114 &1322158808
 MonoBehaviour:

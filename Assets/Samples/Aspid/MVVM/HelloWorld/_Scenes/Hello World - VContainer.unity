@@ -178,8 +178,8 @@ MonoBehaviour:
   - {fileID: 1071675132}
   _inputText: {fileID: 1781574555}
   _sayCommand:
+    <Target>k__BackingField: {fileID: 311916473}
     _isBindInteractable: 0
-    _button: {fileID: 311916473}
 --- !u!114 &145963211
 MonoBehaviour:
   m_ObjectHideFlags: 0

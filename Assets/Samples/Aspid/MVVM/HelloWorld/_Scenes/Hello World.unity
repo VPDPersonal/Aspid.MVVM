@@ -1319,10 +1319,8 @@ MonoBehaviour:
   - {fileID: 1856005414}
   _inputText: {fileID: 163721177}
   _sayCommand:
+    <Target>k__BackingField: {fileID: 17906937}
     _isBindInteractable: 0
-    _button: {fileID: 17906937}
-    _isDebug: 0
-    _log: []
 --- !u!1 &1856005410
 GameObject:
   m_ObjectHideFlags: 0

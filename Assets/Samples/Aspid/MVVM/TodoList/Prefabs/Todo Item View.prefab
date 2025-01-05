@@ -328,8 +328,8 @@ MonoBehaviour:
   _view: {fileID: 5431838984888759959}
   _id: IsCompleted
   _component: {fileID: 6683951036056877947}
-  _isInvert: 0
   _isReverseEnabled: 1
+  _isInvert: 0
   _isDebug: 0
   _log: []
 --- !u!1 &2901238137698271161
@@ -504,15 +504,11 @@ MonoBehaviour:
   _isCompleted:
   - {fileID: 875772168249685181}
   _editCommand:
-  - _isBindInteractable: 0
-    _button: {fileID: 6131062902608095836}
-    _isDebug: 0
-    _log: []
+  - <Target>k__BackingField: {fileID: 6131062902608095836}
+    _isBindInteractable: 0
   _deleteCommand:
-  - _isBindInteractable: 0
-    _button: {fileID: 3691551536386148332}
-    _isDebug: 0
-    _log: []
+  - <Target>k__BackingField: {fileID: 3691551536386148332}
+    _isBindInteractable: 0
 --- !u!114 &363834777198584455
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -900,6 +896,8 @@ MonoBehaviour:
   references:
     version: 2
     RefIds:
+    - rid: -2
+      type: {class: , ns: , asm: }
     - rid: 4930929806020444268
       type: {class: StringFormatConverter, ns: Aspid.UI.MVVM.StarterKit.Converters.Strings, asm: AspidUI.MVVM.StarterKit}
       data:

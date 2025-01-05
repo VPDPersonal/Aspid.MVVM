@@ -1276,15 +1276,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _text: {fileID: 4087269476373177278}
   _cancelCommand:
+    <Target>k__BackingField: {fileID: 7349505069928950248}
     _isBindInteractable: 0
-    _button: {fileID: 7349505069928950248}
-    _isDebug: 0
-    _log: []
   _renamedCommand:
+    <Target>k__BackingField: {fileID: 2613306915063093282}
     _isBindInteractable: 0
-    _button: {fileID: 2613306915063093282}
-    _isDebug: 0
-    _log: []
 --- !u!1 &7908573707491760464
 GameObject:
   m_ObjectHideFlags: 0

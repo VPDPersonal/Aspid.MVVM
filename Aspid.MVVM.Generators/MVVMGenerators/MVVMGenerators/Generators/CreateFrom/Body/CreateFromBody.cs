@@ -229,10 +229,10 @@ public static class CreateFromBody
 
         return code.AppendMultiline(
             $"""
-             {GeneratedAttribute}
-             public static {returnType} {methodName}<T>({parameters.Method(fromParameterType, "T")}{additionalParameter})
-              where T : {data.FromTypeName}
-             """);
+            {GeneratedAttribute}
+            public static {returnType} {methodName}<T>({parameters.Method(fromParameterType, "T")}{additionalParameter})
+                where T : {data.FromTypeName}
+            """);
     }
 
     private static LengthType GetLengthType(ParameterType type) => type switch

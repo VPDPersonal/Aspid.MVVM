@@ -18,8 +18,18 @@ namespace Aspid.MVVM.StarterKit.Binders.Mono
                 if (_isCached) return _component;
                 
                 _isCached = true;
-                return _component ??= GetComponent<TComponent>();
+                
+                if (_component) return _component;
+                return _component = GetComponent<TComponent>();
             }
+        }
+
+        protected virtual void OnValidate()
+        {
+            if (Application.isPlaying) return;
+            if (_component) return;
+            
+            _component = GetComponent<TComponent>();
         }
     }
 }

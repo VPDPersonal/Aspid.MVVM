@@ -72,9 +72,8 @@ public static class ViewBody
                 {{GeneratedAttribute}}
                 protected virtual void InitializeInternal({{IViewModel}} viewModel)
                 """)
-            .BeginBlock()
             .AppendInitializeBody(data)
-            .EndBlock()
+            .AppendInitializeInternalEvents()
             .AppendLine()
             .AppendMultiline(
                 $$"""
@@ -95,9 +94,8 @@ public static class ViewBody
                 {{GeneratedAttribute}}
                 protected virtual void DeinitializeInternal()
                 """)
-            .BeginBlock()
             .AppendDeinitializeBody(data)
-            .EndBlock();
+            .AppendDeinitializeInternalEvents();
 
         return code;
     }
@@ -109,20 +107,16 @@ public static class ViewBody
         if (!data.IsInitializeOverride)
         {
             code.AppendInitializeInternalDeclaration(isOverride)
-                .BeginBlock()
-                .AppendInitializeBody(data)
-                .AppendLine("base.InitializeInternal(viewModel);")
-                .EndBlock();
+                .AppendInitializeBody(data, true)
+                .AppendInitializeInternalEvents();
         }
         
         if (!data.IsDeinitializeOverride)
         {
             code.AppendLineIf(!data.IsInitializeOverride)
                 .AppendDeinitializeInternalDeclaration(isOverride)
-                .BeginBlock()
-                .AppendDeinitializeBody(data)
-                .AppendLine("base.DeinitializeInternal();")
-                .EndBlock();
+                .AppendDeinitializeBody(data, true)
+                .AppendDeinitializeInternalEvents();
         }
 
         return code;
@@ -135,18 +129,16 @@ public static class ViewBody
         if (!data.IsInitializeOverride)
         {
             code.AppendInitializeInternalDeclaration(isOverride)
-                .BeginBlock()
                 .AppendInitializeBody(data)
-                .EndBlock();
+                .AppendInitializeInternalEvents();
         }
         
         if (!data.IsDeinitializeOverride)
         {
             code.AppendLineIf(!data.IsInitializeOverride)
                 .AppendDeinitializeInternalDeclaration(isOverride)
-                .BeginBlock()
                 .AppendDeinitializeBody(data)
-                .EndBlock();
+                .AppendDeinitializeInternalEvents();
         }
         
         return code;
@@ -159,18 +151,16 @@ public static class ViewBody
         if (!data.IsInitializeOverride)
         {
             code.AppendInitializeInternalDeclaration(isOverride)
-                .BeginBlock()
                 .AppendInitializeBody(data)
-                .EndBlock();
+                .AppendInitializeInternalEvents();
         }
         
         if (!data.IsDeinitializeOverride)
         {
             code.AppendLineIf(!data.IsInitializeOverride)
                 .AppendDeinitializeInternalDeclaration(isOverride)
-                .BeginBlock()
                 .AppendDeinitializeBody(data)
-                .EndBlock();
+                .AppendDeinitializeInternalEvents();
         }
         
         return code;
@@ -202,11 +192,15 @@ public static class ViewBody
         return code;
     }
 
-    private static CodeWriter AppendInitializeBody(this CodeWriter code, in ViewDataSpan data)
+    private static CodeWriter AppendInitializeBody(this CodeWriter code, in ViewDataSpan data, bool isOverride = false)
     {
+        code.BeginBlock();
+        code.AppendLine("OnInitializingInternal(viewModel);");
+        code.AppendLineIf(isOverride, "base.InitializeInternal(viewModel);");
+        
         var isInstantiateBinders = data.ViewProperties.Length + data.AsBinderMembers.Length > 0;
-
-        code.AppendLineIf(isInstantiateBinders, "InstantiateBinders();\n");
+        code.AppendLineIf(isInstantiateBinders, "InstantiateBinders();");
+        code.AppendLine();
         
         foreach (var field in data.FieldMembers)
             code.AppendLine($"{field.FieldName}.BindSafely(viewModel, {field.Id});");
@@ -220,11 +214,19 @@ public static class ViewBody
             code.AppendLine($"{member.CachedName}.BindSafely(viewModel, {member.Id});");
         }
 
+        code.AppendLine("\nOnInitializedInternal(viewModel);");
+        code.EndBlock();
+        
         return code;
     }
 
-    private static CodeWriter AppendDeinitializeBody(this CodeWriter code, in ViewDataSpan data)
+    private static CodeWriter AppendDeinitializeBody(this CodeWriter code, in ViewDataSpan data, bool isOverride = false)
     {
+        code.BeginBlock();
+        code.AppendLine("OnDeinitializingInternal();");
+        code.AppendLineIf(isOverride, "base.DeinitializeInternal();");
+        code.AppendLine();
+        
         foreach (var field in data.FieldMembers)
             code.AppendLine($"{field.FieldName}.UnbindSafely();");
         
@@ -237,6 +239,9 @@ public static class ViewBody
             code.AppendLine($"{member.CachedName}.UnbindSafely();");
         }
 
+        code.AppendLine("\nOnDeinitializedInternal();");
+        code.EndBlock();
+
         return code;
     }
     
@@ -248,8 +253,19 @@ public static class ViewBody
                 private void InstantiateBinders()
                 """)
             .BeginBlock()
+            .AppendLine("OnInstantiatingBinders();\n")
             .AppendCreateBinders(data)
-            .EndBlock();
+            .AppendLine("\nOnInstantiatedBinders();")
+            .EndBlock()
+            .AppendMultiline(
+                $"""
+                
+                {GeneratedAttribute}
+                partial void OnInstantiatingBinders();
+                
+                {GeneratedAttribute}
+                partial void OnInstantiatedBinders();
+                """);
 
         return code;
     }
@@ -310,5 +326,31 @@ public static class ViewBody
         }
 
         return code;
+    }
+    
+    private static CodeWriter AppendInitializeInternalEvents(this CodeWriter code)
+    {
+        return code.AppendMultiline(
+            $"""
+             
+             {GeneratedAttribute}
+             partial void OnInitializingInternal({IViewModel} viewModel);
+
+             {GeneratedAttribute}
+             partial void OnInitializedInternal({IViewModel} viewModel);
+             """);
+    }
+    
+    private static CodeWriter AppendDeinitializeInternalEvents(this CodeWriter code)
+    {
+        return code.AppendMultiline(
+            $"""
+             
+             {GeneratedAttribute}
+             partial void OnDeinitializingInternal();
+
+             {GeneratedAttribute}
+             partial void OnDeinitializedInternal();
+             """);
     }
 }

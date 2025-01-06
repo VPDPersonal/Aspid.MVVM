@@ -1,7 +1,7 @@
 using UnityEngine;
+using Aspid.MVVM.Mono;
 using UnityEngine.UI;
-using Aspid.MVVM.Mono.Views;
-using Aspid.MVVM.Views.Generation;
+using Aspid.MVVM.Generation;
 using MVVMGenerators.Sample.Binders;
 
 namespace MVVMGenerators.Sample.Views;

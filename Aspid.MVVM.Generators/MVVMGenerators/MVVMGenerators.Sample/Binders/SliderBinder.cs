@@ -1,7 +1,5 @@
 using Aspid.MVVM;
 using UnityEngine.UI;
-using Aspid.MVVM.Commands;
-using Aspid.MVVM.ViewModels;
 
 namespace MVVMGenerators.Sample.Binders;
 

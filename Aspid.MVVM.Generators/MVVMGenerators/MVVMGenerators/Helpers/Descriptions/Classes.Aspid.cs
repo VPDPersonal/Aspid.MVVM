@@ -5,22 +5,22 @@ public static partial class Classes
 {
     #region Views
     public static readonly TypeText IView =
-        new("IView", Namespaces.Aspid_MVVM_Views);
+        new("IView", Namespaces.Aspid_MVVM);
     
     public static readonly AttributeText ViewAttribute = 
-        new("View", Namespaces.Aspid_MVVM_Views_Generation);
+        new("View", Namespaces.Aspid_MVVM_Generation);
     
     public static readonly AttributeText AsBinderAttribute =
-        new("AsBinder", Namespaces.Aspid_MVVM_Views_Generation);
+        new("AsBinder", Namespaces.Aspid_MVVM_Generation);
 
     public static readonly TypeText ViewBinder =
-        new ("ViewBinder", Namespaces.Aspid_MVVM_Views);
+        new ("ViewBinder", Namespaces.Aspid_MVVM);
     
     public static readonly TypeText View =
-        new("View", Namespaces.Aspid_MVVM_Views);
+        new("View", Namespaces.Aspid_MVVM);
     
     public static readonly TypeText MonoView =
-        new("MonoView", Namespaces.Aspid_MVVM_Mono_Views);
+        new("MonoView", Namespaces.Aspid_MVVM_Mono);
     #endregion
     
     #region Binders
@@ -39,45 +39,45 @@ public static partial class Classes
 
     #region View Models
     public static readonly TypeText IViewModel =
-        new("IViewModel", Namespaces.Aspid_MVVM_ViewModels);
+        new("IViewModel", Namespaces.Aspid_MVVM);
 
     public static readonly TypeText ViewModel =
-        new("ViewModel", Namespaces.Aspid_MVVM_ViewModels);
+        new("ViewModel", Namespaces.Aspid_MVVM);
     
     public static readonly TypeText MonoViewModel =
-        new("MonoViewModel", Namespaces.Aspid_MVVM_Mono_ViewModels);
+        new("MonoViewModel", Namespaces.Aspid_MVVM_Mono);
     
     public static readonly TypeText ViewModelUtility =
-        new("ViewModelUtility", Namespaces.Aspid_MVVM_ViewModels);
+        new("ViewModelUtility", Namespaces.Aspid_MVVM);
     
     public static readonly AttributeText BindAttribute =
-        new("Bind", Namespaces.Aspid_MVVM_ViewModels_Generation);
+        new("Bind", Namespaces.Aspid_MVVM_Generation);
     
     public static readonly AttributeText BindAlsoAttribute =
-        new("BindAlso", Namespaces.Aspid_MVVM_ViewModels_Generation);
+        new("BindAlso", Namespaces.Aspid_MVVM_Generation);
     
     public static readonly AttributeText ReadOnlyBindAttribute =
-        new("ReadOnlyBind", Namespaces.Aspid_MVVM_ViewModels_Generation);
+        new("ReadOnlyBind", Namespaces.Aspid_MVVM_Generation);
     
     public static readonly AttributeText RelayCommandAttribute =
-        new("RelayCommand", Namespaces.Aspid_MVVM_ViewModels_Generation);
+        new("RelayCommand", Namespaces.Aspid_MVVM_Generation);
     
     public static readonly AttributeText AccessAttribute =
-        new("Access", Namespaces.Aspid_MVVM_ViewModels_Generation);
+        new("Access", Namespaces.Aspid_MVVM_Generation);
     
     public static readonly AttributeText ViewModelAttribute =
-        new("ViewModel", Namespaces.Aspid_MVVM_ViewModels_Generation);
+        new("ViewModel", Namespaces.Aspid_MVVM_Generation);
     
     public static readonly TypeText ViewModelEvent =
-        new("ViewModelEvent", Namespaces.Aspid_MVVM_ViewModels);
+        new("ViewModelEvent", Namespaces.Aspid_MVVM);
     
     public static readonly TypeText IRemoveBinderFromViewModel =
-        new("IRemoveBinderFromViewModel", Namespaces.Aspid_MVVM_ViewModels);
+        new("IRemoveBinderFromViewModel", Namespaces.Aspid_MVVM);
     #endregion
 
     #region Commands
     public static readonly TypeText RelayCommand =
-        new("RelayCommand", Namespaces.Aspid_MVVM_Commands);
+        new("RelayCommand", Namespaces.Aspid_MVVM);
     #endregion
     
     public static readonly AttributeText CreateFromAttribute =

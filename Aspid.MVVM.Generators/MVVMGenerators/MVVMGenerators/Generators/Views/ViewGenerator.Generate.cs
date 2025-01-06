@@ -54,7 +54,7 @@ public partial class ViewGenerator
         var code = new CodeWriter();
         var baseTypes = GetBaseTypes(data);
 
-        code.AppendClassBegin([Namespaces.Aspid_MVVM_Extensions], @namespace, declaration, baseTypes)
+        code.AppendClassBegin([Namespaces.Aspid_MVVM], @namespace, declaration, baseTypes)
             .AppendIView(data)
             .AppendClassEnd(@namespace);
         

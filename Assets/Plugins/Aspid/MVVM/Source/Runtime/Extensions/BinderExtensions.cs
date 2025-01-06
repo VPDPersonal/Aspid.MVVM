@@ -1,8 +1,7 @@
 using System;
-using Aspid.MVVM.ViewModels;
 using System.Collections.Generic;
 
-namespace Aspid.MVVM.Extensions
+namespace Aspid.MVVM
 {
     /// <summary>
     /// Provides extension methods for the <see cref="IBinder"/> interface.

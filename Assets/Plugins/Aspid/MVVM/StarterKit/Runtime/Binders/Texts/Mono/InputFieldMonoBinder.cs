@@ -3,7 +3,6 @@ using TMPro;
 using System;
 using UnityEngine;
 using System.Globalization;
-using Aspid.MVVM.ViewModels;
 using Aspid.MVVM.Mono.Generation;
 using Aspid.MVVM.StarterKit.Converters;
 

@@ -1,6 +1,4 @@
 #if UNITY_EDITOR
-using Aspid.MVVM.Views;
-
 namespace Aspid.MVVM.Mono
 {
     /// <summary>

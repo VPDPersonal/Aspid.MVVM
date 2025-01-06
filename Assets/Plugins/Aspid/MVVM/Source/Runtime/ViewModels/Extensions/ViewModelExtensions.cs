@@ -1,6 +1,6 @@
 using System;
 
-namespace Aspid.MVVM.ViewModels.Extensions
+namespace Aspid.MVVM
 {
     /// <summary>
     /// Provides extension methods for the <see cref="IViewModel"/> interface.

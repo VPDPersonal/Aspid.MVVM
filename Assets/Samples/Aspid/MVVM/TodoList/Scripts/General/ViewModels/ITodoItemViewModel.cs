@@ -1,5 +1,4 @@
 using System;
-using Aspid.MVVM.ViewModels;
 using Aspid.MVVM.TodoList.Models;
 
 namespace Aspid.MVVM.TodoList.ViewModels

@@ -1,7 +1,7 @@
 using System;
+using Aspid.MVVM.Generation;
 using Aspid.MVVM.TodoList.Models;
 using Aspid.MVVM.TodoList.Factories;
-using Aspid.MVVM.ViewModels.Generation;
 
 namespace Aspid.MVVM.TodoList.ViewModels
 {

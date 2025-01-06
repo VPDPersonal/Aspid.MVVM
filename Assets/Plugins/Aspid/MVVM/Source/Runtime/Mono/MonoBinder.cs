@@ -1,7 +1,6 @@
 #nullable disable
 using System;
 using UnityEngine;
-using Aspid.MVVM.ViewModels;
 
 namespace Aspid.MVVM.Mono
 {

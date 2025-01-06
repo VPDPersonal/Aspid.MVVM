@@ -1,6 +1,5 @@
 using UnityEngine;
 using Aspid.MVVM.Mono;
-using Aspid.MVVM.Commands;
 using Aspid.MVVM.Mono.Generation;
 
 namespace Aspid.MVVM.StarterKit.Binders.Mono

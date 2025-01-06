@@ -1,8 +1,6 @@
 using UnityEngine;
-using Aspid.MVVM.Mono.Views;
-using Aspid.MVVM.ViewModels;
+using Aspid.MVVM.Mono;
 using System.Collections.Generic;
-using Aspid.MVVM.Mono.Views.Extensions;
 
 namespace Aspid.MVVM.StarterKit.Binders.Mono
 {

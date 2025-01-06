@@ -1,8 +1,7 @@
 using System;
 using UnityEngine;
-using Aspid.MVVM.ViewModels;
 
-namespace Aspid.MVVM.Mono.ViewModels
+namespace Aspid.MVVM.Mono
 {
     /// <summary>
     /// Abstract class for a ViewModel, inheriting from <see cref="MonoBehaviour"/>, that implements the <see cref="IViewModel"/> interface.

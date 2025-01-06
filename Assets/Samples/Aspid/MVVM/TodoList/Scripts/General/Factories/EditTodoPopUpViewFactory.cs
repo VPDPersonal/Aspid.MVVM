@@ -1,11 +1,8 @@
 using UnityEngine;
-using Aspid.MVVM.Mono.Views;
-using Aspid.MVVM.ViewModels;
+using Aspid.MVVM.Mono;
 using Aspid.MVVM.TodoList.Views;
 using Aspid.MVVM.TodoList.Models;
 using Aspid.MVVM.TodoList.ViewModels;
-using Aspid.MVVM.ViewModels.Extensions;
-using Aspid.MVVM.Mono.Views.Extensions;
 
 namespace Aspid.MVVM.TodoList.Factories
 {

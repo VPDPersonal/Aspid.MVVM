@@ -1,5 +1,3 @@
-using Aspid.MVVM.ViewModels;
-
 namespace Aspid.MVVM
 {
     /// <summary>

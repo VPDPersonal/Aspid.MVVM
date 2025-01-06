@@ -1,10 +1,8 @@
 #nullable enable
 using System;
 using UnityEngine;
-using Aspid.MVVM.Mono.Views;
-using Aspid.MVVM.ViewModels;
+using Aspid.MVVM.Mono;
 using System.Collections.Generic;
-using Aspid.MVVM.Mono.Views.Extensions;
 using Object = UnityEngine.Object;
 
 namespace Aspid.MVVM.StarterKit.Binders

@@ -1,6 +1,6 @@
 using System;
+using Aspid.MVVM.Generation;
 using Aspid.MVVM.Stats.Models;
-using Aspid.MVVM.ViewModels.Generation;
 
 namespace Aspid.MVVM.Stats.ViewModels
 {

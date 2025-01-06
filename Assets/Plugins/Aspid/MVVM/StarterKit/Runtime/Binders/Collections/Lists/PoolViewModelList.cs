@@ -1,9 +1,8 @@
 #nullable enable
 using System;
 using UnityEngine;
+using Aspid.MVVM.Mono;
 using UnityEngine.Pool;
-using Aspid.MVVM.Mono.Views;
-using Aspid.MVVM.Mono.Views.Extensions;
 using Object = UnityEngine.Object;
 
 namespace Aspid.MVVM.StarterKit.Binders

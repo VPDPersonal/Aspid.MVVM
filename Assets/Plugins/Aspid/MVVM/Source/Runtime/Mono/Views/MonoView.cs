@@ -1,10 +1,8 @@
 #nullable disable
 using System;
 using UnityEngine;
-using Aspid.MVVM.Views;
-using Aspid.MVVM.ViewModels;
 
-namespace Aspid.MVVM.Mono.Views
+namespace Aspid.MVVM.Mono
 {
     /// <summary>
     /// Abstract class for a View, inheriting from <see cref="MonoBehaviour"/>, that implements the <see cref="IView"/> interface.

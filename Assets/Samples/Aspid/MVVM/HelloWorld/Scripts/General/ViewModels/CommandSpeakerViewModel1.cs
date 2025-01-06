@@ -1,6 +1,6 @@
 using System;
+using Aspid.MVVM.Generation;
 using Aspid.MVVM.HelloWorld.Models;
-using Aspid.MVVM.ViewModels.Generation;
 
 namespace Aspid.MVVM.HelloWorld.ViewModels
 {

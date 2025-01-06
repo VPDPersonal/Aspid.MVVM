@@ -1,7 +1,7 @@
 using System;
 using System.Diagnostics;
 
-namespace Aspid.MVVM.Mono.Views
+namespace Aspid.MVVM.Mono
 {
     /// <summary>
     /// Attribute used to specify a required type for Binders

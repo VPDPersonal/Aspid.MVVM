@@ -4,7 +4,6 @@ using TMPro;
 using System;
 using UnityEngine;
 using System.Globalization;
-using Aspid.MVVM.ViewModels;
 using Aspid.MVVM.StarterKit.Converters;
 
 namespace Aspid.MVVM.StarterKit.Binders

@@ -1,4 +1,4 @@
-namespace Aspid.MVVM.ViewModels
+namespace Aspid.MVVM
 {
     /// <summary>
     /// Abstract class for a ViewModel implementing the <see cref="IViewModel"/> interface.

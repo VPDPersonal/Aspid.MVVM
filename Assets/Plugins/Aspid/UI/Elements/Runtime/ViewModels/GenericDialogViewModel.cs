@@ -1,10 +1,9 @@
 using System;
+using Aspid.MVVM;
 using UnityEngine;
 using Aspid.MVVM.Generation;
-using Aspid.MVVM.ViewModels;
 using Aspid.UI.Elements.Models;
 using System.Collections.Generic;
-using Aspid.MVVM.ViewModels.Generation;
 
 namespace Aspid.UI.Elements.ViewModels
 {

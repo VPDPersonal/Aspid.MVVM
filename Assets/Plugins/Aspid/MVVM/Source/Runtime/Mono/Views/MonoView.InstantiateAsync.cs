@@ -1,15 +1,13 @@
 #if UNITY_2022_3_OR_NEWER
 using System;
 using UnityEngine;
-using Aspid.MVVM.Views;
-using Aspid.MVVM.ViewModels;
 using Object = UnityEngine.Object;
 
 #if UNITY_2023_1_OR_NEWER
 using System.Threading;
 #endif // UNITY_2023_1_OR_NEWER
 
-namespace Aspid.MVVM.Mono.Views
+namespace Aspid.MVVM.Mono
 {
     public abstract partial class MonoView
     {

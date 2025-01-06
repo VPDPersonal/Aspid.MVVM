@@ -2,7 +2,7 @@
 using System;
 using System.Reflection;
 
-namespace Aspid.MVVM.Mono.Views.Extensions
+namespace Aspid.MVVM.Mono
 {
     public static class FieldInfoExtensions
     {

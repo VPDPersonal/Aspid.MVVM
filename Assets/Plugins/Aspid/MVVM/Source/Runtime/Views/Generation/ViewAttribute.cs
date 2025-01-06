@@ -1,6 +1,6 @@
 using System;
 
-namespace Aspid.MVVM.Views.Generation
+namespace Aspid.MVVM.Generation
 {
     /// <summary>
     /// Marker attribute for classes and structures.

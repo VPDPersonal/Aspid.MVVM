@@ -1,10 +1,8 @@
 using System;
 using UnityEngine;
-using Aspid.MVVM.Views;
-using Aspid.MVVM.ViewModels;
 using Object = UnityEngine.Object;
 
-namespace Aspid.MVVM.Mono.Views.Extensions
+namespace Aspid.MVVM.Mono
 {
     /// <summary>
     /// Provides extension methods for the <see cref="IView"/> interface.

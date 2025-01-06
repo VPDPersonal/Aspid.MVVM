@@ -10,12 +10,11 @@ using System.Collections.Generic;
 using Aspid.CustomEditors.Configs;
 using Aspid.CustomEditors.Components;
 using Aspid.CustomEditors.Extensions;
-using Aspid.MVVM.Mono.Views.Extensions;
 using Aspid.CustomEditors.Components.Extensions;
 using Aspid.CustomEditors.Extensions.VisualElements;
 using Object = UnityEngine.Object;
 
-namespace Aspid.MVVM.Mono.Views
+namespace Aspid.MVVM.Mono
 {
     [CanEditMultipleObjects]
     [CustomEditor(typeof(MonoView), editorForChildClasses: true)]

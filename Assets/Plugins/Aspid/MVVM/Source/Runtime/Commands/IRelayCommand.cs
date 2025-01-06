@@ -1,6 +1,6 @@
 using System;
 
-namespace Aspid.MVVM.Commands
+namespace Aspid.MVVM
 {
     /// <summary>
     /// An interface for a command that can be executed without parameters.

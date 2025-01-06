@@ -1,6 +1,6 @@
 using System;
 
-namespace Aspid.MVVM.ViewModels
+namespace Aspid.MVVM
 {
     // TODO None sealed
     /// <summary>

@@ -1,8 +1,4 @@
-using Aspid.MVVM.ViewModels;
-using Aspid.MVVM.Views.Extensions;
-using Aspid.MVVM.ViewModels.Extensions;
-
-namespace Aspid.MVVM.Views
+namespace Aspid.MVVM
 {
     /// <summary>
     /// Binds an <see cref="IView"/> to its <see cref="IViewModel"/>.

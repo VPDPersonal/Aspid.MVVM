@@ -1,8 +1,6 @@
 using UnityEngine;
-using Aspid.MVVM.Views;
-using Aspid.MVVM.ViewModels;
 
-namespace Aspid.MVVM.Mono.Views
+namespace Aspid.MVVM.Mono
 {
     public abstract partial class MonoView
     {

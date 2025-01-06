@@ -1,5 +1,4 @@
 using System;
-using Aspid.MVVM.ViewModels;
 
 namespace Aspid.MVVM
 {

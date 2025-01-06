@@ -1,5 +1,5 @@
-using Aspid.MVVM.Mono.ViewModels;
-using Aspid.MVVM.ViewModels.Generation;
+using Aspid.MVVM.Mono;
+using Aspid.MVVM.Generation;
 
 namespace Aspid.MVVM.ExampleScripts.ViewModels
 {

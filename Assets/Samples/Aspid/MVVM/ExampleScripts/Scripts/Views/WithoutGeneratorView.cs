@@ -1,7 +1,4 @@
 using Aspid.MVVM.Mono;
-using Aspid.MVVM.Views;
-using Aspid.MVVM.ViewModels;
-using Aspid.MVVM.Extensions;
 
 namespace Aspid.MVVM.ExampleScripts.Views
 {

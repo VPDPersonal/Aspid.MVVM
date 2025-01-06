@@ -1,4 +1,4 @@
-namespace Aspid.MVVM.ViewModels
+namespace Aspid.MVVM
 {
     /// <summary>
     /// Interface for a ViewModel that supports data binding.

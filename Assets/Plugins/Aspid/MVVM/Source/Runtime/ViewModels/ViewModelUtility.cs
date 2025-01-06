@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Aspid.MVVM.ViewModels
+namespace Aspid.MVVM
 {
     /// <summary>
     /// Utility class providing common operations for working with ViewModels.

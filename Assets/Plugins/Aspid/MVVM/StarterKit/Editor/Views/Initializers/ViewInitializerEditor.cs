@@ -1,7 +1,5 @@
 using System;
 using UnityEditor;
-using Aspid.MVVM.Views;
-using Aspid.MVVM.ViewModels;
 using UnityEngine.UIElements;
 using Aspid.CustomEditors.Configs;
 using Aspid.CustomEditors.Components;

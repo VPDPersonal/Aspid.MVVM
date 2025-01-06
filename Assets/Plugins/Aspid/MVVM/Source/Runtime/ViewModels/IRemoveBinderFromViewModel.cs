@@ -1,4 +1,4 @@
-namespace Aspid.MVVM.ViewModels
+namespace Aspid.MVVM
 {
     /// <summary>
     /// Interface for removing a binder from the ViewModel.

@@ -1,7 +1,6 @@
 using UnityEngine;
 using Aspid.MVVM.Mono;
-using Aspid.MVVM.Mono.Views;
-using Aspid.MVVM.Views.Generation;
+using Aspid.MVVM.Generation;
 using Aspid.MVVM.StarterKit.Binders;
 
 namespace Aspid.MVVM.HelloWorld.Views

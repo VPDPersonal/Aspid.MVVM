@@ -1,7 +1,6 @@
-using Aspid.MVVM.Commands;
+using Aspid.MVVM;
 using Aspid.MVVM.Generation;
 using Aspid.UI.Elements.Models;
-using Aspid.MVVM.ViewModels.Generation;
 
 namespace Aspid.UI.Elements.ViewModels
 {

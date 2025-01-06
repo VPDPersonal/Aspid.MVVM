@@ -1,6 +1,4 @@
-using Aspid.MVVM.ViewModels;
-
-namespace Aspid.MVVM.Views
+namespace Aspid.MVVM
 {
     /// <summary>
     /// Interface for initializing a View using a specified ViewModel.

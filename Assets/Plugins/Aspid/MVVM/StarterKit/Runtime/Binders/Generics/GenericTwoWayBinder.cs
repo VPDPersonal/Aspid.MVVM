@@ -1,6 +1,5 @@
 #nullable enable
 using System;
-using Aspid.MVVM.ViewModels;
 
 namespace Aspid.MVVM.StarterKit.Binders
 {

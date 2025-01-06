@@ -1,7 +1,6 @@
 using TMPro;
 using System;
 using UnityEngine;
-using Aspid.MVVM.Commands;
 
 namespace Aspid.MVVM.StarterKit.Binders
 {

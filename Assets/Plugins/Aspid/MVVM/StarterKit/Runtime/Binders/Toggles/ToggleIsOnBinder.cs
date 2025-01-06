@@ -2,7 +2,6 @@
 using System;
 using UnityEngine;
 using UnityEngine.UI;
-using Aspid.MVVM.ViewModels;
 
 namespace Aspid.MVVM.StarterKit.Binders
 {

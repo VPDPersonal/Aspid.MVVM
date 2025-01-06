@@ -1,8 +1,6 @@
 using System;
 using UnityEngine;
-using Aspid.MVVM.Views;
-using Aspid.MVVM.ViewModels;
-using Aspid.MVVM.Mono.Initializers;
+using Aspid.MVVM.Mono;
 
 namespace Aspid.MVVM.StarterKit.Views.Initializers
 {

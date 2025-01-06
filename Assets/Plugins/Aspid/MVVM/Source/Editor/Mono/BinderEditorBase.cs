@@ -1,8 +1,6 @@
 using System.Linq;
 using UnityEngine;
-using Aspid.MVVM.Views;
 using System.Reflection;
-using Aspid.MVVM.Mono.Views;
 using System.Collections.Generic;
 
 namespace Aspid.MVVM.Mono

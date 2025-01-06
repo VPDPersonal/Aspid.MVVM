@@ -1,7 +1,6 @@
 using System;
-using Aspid.MVVM.ViewModels;
 
-namespace Aspid.MVVM.Views
+namespace Aspid.MVVM
 {
     /// <summary>
     /// Abstract class for a View implementing the <see cref="IView"/> interface.

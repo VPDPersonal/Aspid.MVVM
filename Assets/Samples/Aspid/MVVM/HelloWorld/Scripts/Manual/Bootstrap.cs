@@ -1,11 +1,8 @@
 using System;
 using UnityEngine;
-using Aspid.MVVM.ViewModels;
-using Aspid.MVVM.Views.Extensions;
 using Aspid.MVVM.HelloWorld.Views;
 using Aspid.MVVM.HelloWorld.Models;
 using Aspid.MVVM.HelloWorld.ViewModels;
-using Aspid.MVVM.ViewModels.Extensions;
 
 namespace Aspid.MVVM.HelloWorld.Manual
 {

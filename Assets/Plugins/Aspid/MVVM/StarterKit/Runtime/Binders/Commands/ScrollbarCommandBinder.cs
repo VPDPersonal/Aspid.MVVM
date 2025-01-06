@@ -1,7 +1,6 @@
 using System;
 using UnityEngine;
 using UnityEngine.UI;
-using Aspid.MVVM.Commands;
 
 namespace Aspid.MVVM.StarterKit.Binders
 {

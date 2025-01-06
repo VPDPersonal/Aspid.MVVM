@@ -1,7 +1,6 @@
 using UnityEngine;
+using Aspid.MVVM.Mono;
 using UnityEngine.Pool;
-using Aspid.MVVM.Mono.Views;
-using Aspid.MVVM.Mono.Views.Extensions;
 
 namespace Aspid.MVVM.StarterKit.Binders.Mono
 {

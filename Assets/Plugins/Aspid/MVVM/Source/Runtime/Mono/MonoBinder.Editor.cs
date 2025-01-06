@@ -2,9 +2,6 @@
 #nullable disable
 using System;
 using UnityEngine;
-using Aspid.MVVM.Views;
-using Aspid.MVVM.Mono.Views;
-using Aspid.MVVM.ViewModels;
 
 namespace Aspid.MVVM.Mono
 {

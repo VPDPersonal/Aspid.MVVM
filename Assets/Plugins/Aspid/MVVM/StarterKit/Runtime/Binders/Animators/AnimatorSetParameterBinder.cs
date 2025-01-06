@@ -1,8 +1,6 @@
 #nullable enable
 using System;
 using UnityEngine;
-using Aspid.MVVM.Commands;
-using Aspid.MVVM.ViewModels;
 
 namespace Aspid.MVVM.StarterKit.Binders
 {

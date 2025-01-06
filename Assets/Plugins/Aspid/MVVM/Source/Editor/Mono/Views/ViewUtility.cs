@@ -2,13 +2,11 @@ using System;
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
-using Aspid.MVVM.Views;
 using System.Reflection;
 using System.Collections.Generic;
 using UnityEditor.SceneManagement;
-using Aspid.MVVM.Mono.Views.Extensions;
 
-namespace Aspid.MVVM.Mono.Views
+namespace Aspid.MVVM.Mono
 {
     /// <summary>
     /// Utility class for handling the management, validation, and assignment of `IMonoBinderValidable` objects within views.

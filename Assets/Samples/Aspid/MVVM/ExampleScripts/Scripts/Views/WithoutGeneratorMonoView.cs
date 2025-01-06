@@ -1,8 +1,5 @@
 using UnityEngine;
 using Aspid.MVVM.Mono;
-using Aspid.MVVM.Extensions;
-using Aspid.MVVM.Mono.Views;
-using Aspid.MVVM.ViewModels;
 
 namespace Aspid.MVVM.ExampleScripts.Views
 {

@@ -27,6 +27,10 @@ namespace Aspid.MVVM.HelloWorld.ViewModels
         // Only OneTime binding is possible with this attribute.
         // This way of binding is the most productive.
         [ReadOnlyBind] private readonly IRelayCommand _sayCommand;
+        
+        // Alternative:
+        // 1. [Bind] private readonly IRelayCommand _sayCommand;
+        // 2. [ReadOnlyBind] private IRelayCommand _sayCommand;
     
         private readonly Speaker _speaker;
     

@@ -16,10 +16,10 @@ namespace Aspid.MVVM.Stats.ViewModels
         [Bind] private int _skillPointsAvailable;
         [Bind] private bool _isDraft;
         
-        [ReadOnlyBind] private readonly IRelayCommand _confirmCommand;
-        [ReadOnlyBind] private readonly IRelayCommand _resetToDefaultCommand;
-        [ReadOnlyBind] private readonly IRelayCommand<Skill> _addSkillPointToCommand;
-        [ReadOnlyBind] private readonly IRelayCommand<Skill> _removeSkillPointToCommand;
+        [Bind] private readonly IRelayCommand _confirmCommand;
+        [Bind] private readonly IRelayCommand _resetToDefaultCommand;
+        [Bind] private readonly IRelayCommand<Skill> _addSkillPointToCommand;
+        [Bind] private readonly IRelayCommand<Skill> _removeSkillPointToCommand;
         
         private readonly Hero _hero;
 

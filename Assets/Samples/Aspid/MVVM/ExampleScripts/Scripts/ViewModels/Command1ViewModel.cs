@@ -7,11 +7,17 @@ namespace Aspid.MVVM.ExampleScripts.ViewModels
     {
         [Bind] private string _text;
         
-        [ReadOnlyBind] private readonly IRelayCommand _command1;
-        [ReadOnlyBind] private readonly IRelayCommand<int> _command2;
-        [ReadOnlyBind] private readonly IRelayCommand<int, int> _command3;
-        [ReadOnlyBind] private readonly IRelayCommand<int, int, int> _command4;
-        [ReadOnlyBind] private readonly IRelayCommand<int, int, int, int> _command5;
+        [Bind] private readonly IRelayCommand _command1;
+        [Bind] private readonly IRelayCommand<int> _command2;
+        [Bind] private readonly IRelayCommand<int, int> _command3;
+        [Bind] private readonly IRelayCommand<int, int, int> _command4;
+        [Bind] private readonly IRelayCommand<int, int, int, int> _command5;
+        
+        // If it's necessary to bind as OneTime but the field shouldn't be readonly,
+        // you can use the [ReadOnlyBind] attribute:
+        // 1. [ReadOnlyBind] private IRelayCommand _command1;
+        // Alternatively, you can combine:
+        // 2. [ReadOnlyBind] private readonly IRelayCommand _command1;
 
         public Command1ViewModel()
         {

@@ -1275,10 +1275,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _text: {fileID: 4087269476373177278}
-  _cancelCommand:
+  _cancelButton:
     <Target>k__BackingField: {fileID: 7349505069928950248}
     _isBindInteractable: 0
-  _renamedCommand:
+  _renamedButton:
     <Target>k__BackingField: {fileID: 2613306915063093282}
     _isBindInteractable: 0
 --- !u!1 &7908573707491760464

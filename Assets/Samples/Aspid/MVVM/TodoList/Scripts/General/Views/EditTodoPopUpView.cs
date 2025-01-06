@@ -11,7 +11,11 @@ namespace Aspid.MVVM.TodoList.Views
         [RequireBinder(typeof(string))]
         [SerializeField] private MonoBinder _text;
         
-        [SerializeField] private ButtonCommandBinder _cancelCommand;
-        [SerializeField] private ButtonCommandBinder _renamedCommand;
+        // If the ID differs from the field name, you can redefine the ID
+        [BindId("CancelCommand")]
+        [SerializeField] private ButtonCommandBinder _cancelButton;
+        
+        [BindId("RenamedCommand")]
+        [SerializeField] private ButtonCommandBinder _renamedButton;
     }
 }

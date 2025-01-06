@@ -25,5 +25,4 @@ namespace Aspid.MVVM.ExampleScripts.Views
             _arrayBinders.UnbindSafely();
         }
     }
-
 }

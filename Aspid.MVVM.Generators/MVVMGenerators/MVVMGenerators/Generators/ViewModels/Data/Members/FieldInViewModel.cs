@@ -1,6 +1,7 @@
 using Microsoft.CodeAnalysis;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Linq;
 using Microsoft.CodeAnalysis.CSharp;
 using MVVMGenerators.Helpers.Extensions.Symbols;
 
@@ -20,10 +21,10 @@ public readonly struct FieldInViewModel(
     public readonly string PropertyName = field.GetPropertyName();
     public readonly string EventName = $"{field.GetPropertyName()}Changed";
     public readonly string ViewModelEventName = $"__{field.RemovePrefix()}ChangedEvent";
-    
-    public readonly bool IsReadOnly = isReadOnly;
+
     public readonly SyntaxKind SetAccess = setAccess;
     public readonly SyntaxKind GetAccess = getAccess;
+    public readonly bool IsReadOnly = isReadOnly || field.IsReadOnly;
 
     public readonly ImmutableArray<BindAlsoProperty> BindAlso = bindAlso;
 }

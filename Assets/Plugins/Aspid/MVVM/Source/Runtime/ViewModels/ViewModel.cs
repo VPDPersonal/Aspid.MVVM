@@ -7,7 +7,7 @@ namespace Aspid.MVVM
     public abstract class ViewModel : IViewModel
     {
 #if !ASPID_MVVM_UNITY_PROFILER_DISABLED
-        private static readonly Unity.Profiling.ProfilerMarker _addBinderMarker = new("MonoViewModel.AddBinder"); 
+        private static readonly Unity.Profiling.ProfilerMarker _addBinderMarker = new("ViewModel.AddBinder"); 
 #endif
         /// <summary>
         /// Adds a binder to the specified ViewModel property.

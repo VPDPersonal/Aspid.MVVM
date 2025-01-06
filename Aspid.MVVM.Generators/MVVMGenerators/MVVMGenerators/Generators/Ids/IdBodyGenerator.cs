@@ -4,9 +4,8 @@ using System.Collections.Generic;
 using MVVMGenerators.Helpers.Descriptions;
 using MVVMGenerators.Generators.Views.Data;
 using MVVMGenerators.Helpers.Extensions.Writer;
-using MVVMGenerators.Helpers.Extensions.Symbols;
 
-namespace MVVMGenerators.Generators;
+namespace MVVMGenerators.Generators.Ids;
 
 public static class IdBodyGenerator
 {
@@ -21,13 +20,22 @@ public static class IdBodyGenerator
         var idList = new List<(string, string)>(capacity);
 
         foreach (var field in data.FieldMembers)
-            idList.Add((FieldSymbolExtensions.GetPropertyName(field.FieldName), field.Id));
+        {
+            var id = field.Field.GetId(field.FieldName);
+            idList.Add((id, field.Id));
+        }
         
         foreach (var property in data.ViewProperties)
-            idList.Add((FieldSymbolExtensions.GetPropertyName(property.PropertyName), property.Id));
+        {
+            var id = property.Property.GetId(property.PropertyName);
+            idList.Add((id, property.Id));
+        }
         
         foreach (var member in data.AsBinderMembers)
-            idList.Add((FieldSymbolExtensions.GetPropertyName(member.Name), member.Id ?? member.Name + "Id"));
+        {
+            var id = member.Member.GetId(member.Name);
+            idList.Add((id, member.Id ?? member.Name + "Id"));
+        }
         
         Generate(isNameOf, @namespace, General.GeneratedCodeViewAttribute, declaration, context, idList);
         
@@ -41,7 +49,7 @@ public static class IdBodyGenerator
         SourceProductionContext context,
         IEnumerable<(string, string)> names)
     {
-        const bool isNameOf = true;
+        const bool isNameOf = false;
         Generate(isNameOf, @namespace, General.GeneratedCodeViewAttribute, declaration, context, names);
         
         // Generation Example

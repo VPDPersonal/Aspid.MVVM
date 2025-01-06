@@ -11,6 +11,7 @@ public readonly struct AsBinderMemberInView
     public readonly string AsBinderType;
     
     public readonly string? Id;
+    public readonly ISymbol Member;
     public readonly ITypeSymbol? Type;
     public readonly bool IsUnityEngineObject;
     
@@ -19,6 +20,7 @@ public readonly struct AsBinderMemberInView
 
     public AsBinderMemberInView(ISymbol member, string asBinderType)
     {
+        Member = member;
         Name = member.Name;
         AsBinderType = asBinderType;
 

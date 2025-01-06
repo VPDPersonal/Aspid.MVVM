@@ -7,6 +7,7 @@ namespace MVVMGenerators.Generators.Views.Data.Members;
 public readonly struct PropertyBinderInView(IPropertySymbol property)
 {
     public readonly ITypeSymbol Type = property.Type;
+    public readonly IPropertySymbol Property = property;
     
     public readonly string PropertyName = property.Name;
     public readonly string CachedName = $"_{property.GetFieldName()}CachedPropertyBinder";

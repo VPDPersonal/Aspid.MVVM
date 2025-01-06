@@ -70,6 +70,8 @@ public partial class ViewGenerator
         {
             var type = GetType(member);
             if (type == null) continue;
+            
+            if (member.HasAttribute(Classes.IgnoreAttribute)) continue;
 
             // Strictly defined order
             if (member.HasAttribute(Classes.AsBinderAttribute, out var asBinderAttribute))
@@ -97,8 +99,8 @@ public partial class ViewGenerator
                         var symbols = GetPropertyReturnSymbols(property, semanticModel);
                         
                         if (symbols is null) continue;
-                        if (symbols.Any(symbol => symbol is Field or Property)) continue;
-                        
+                        if (symbols.Any(symbol => symbol is Field or Property && !symbol.HasAttribute(Classes.IgnoreAttribute))) continue;
+
                         propertyMembers.Add(new PropertyBinderInView(property));
                         break;
                 }

@@ -1,6 +1,7 @@
 using Microsoft.CodeAnalysis;
 using MVVMGenerators.Helpers;
 using System.Collections.Generic;
+using MVVMGenerators.Generators.Ids;
 using MVVMGenerators.Helpers.Descriptions;
 using MVVMGenerators.Helpers.Extensions.Writer;
 using MVVMGenerators.Generators.ViewModels.Body;
@@ -26,20 +27,20 @@ public partial class ViewModelGenerator
 
             foreach (var field in dataSpan.Fields)
             {
-                var name = field.PropertyName;
-                idList.Add((name, $"{name}Id"));
+                var name = field.Field.GetId(field.PropertyName);
+                idList.Add((name, $"{field.PropertyName}Id"));
             }
             
             foreach (var command in dataSpan.Commands)
             {
-                var name = command.Execute.Name + "Command";
-                idList.Add((name, $"{name}Id"));
+                var name = command.Execute.GetId(command.Execute.Name + "Command");
+                idList.Add((name, $"{command.Execute.Name + "Command"}Id"));
             }
             
             foreach (var property in dataSpan.BindAlsoProperties)
             {
-                var name = property.Name;
-                idList.Add((name, $"{name}Id"));
+                var name = property.Property.GetId(property.Name);
+                idList.Add((name, $"{property.Name}Id"));
             }
             
             IdBodyGenerator.GenerateViewModelId(@namespace, declarationText, context, idList);

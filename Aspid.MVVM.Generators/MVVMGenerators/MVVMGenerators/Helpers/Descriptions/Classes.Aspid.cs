@@ -76,9 +76,18 @@ public static partial class Classes
     #endregion
 
     #region Commands
+    public static readonly TypeText IRelayCommand =
+        new("IRelayCommand", Namespaces.Aspid_MVVM);
+    
     public static readonly TypeText RelayCommand =
         new("RelayCommand", Namespaces.Aspid_MVVM);
     #endregion
+
+    public static readonly AttributeText IdAttribute = 
+        new("BindId", Namespaces.Aspid_MVVM_Generation);
+    
+    public static readonly AttributeText IgnoreAttribute = 
+        new("IgnoreBind", Namespaces.Aspid_MVVM_Generation);
     
     public static readonly AttributeText CreateFromAttribute =
         new("CreateFrom", Namespaces.Aspid_MVVM_Generation);

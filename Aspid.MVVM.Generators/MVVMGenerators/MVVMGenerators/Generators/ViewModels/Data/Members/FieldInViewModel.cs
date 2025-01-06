@@ -13,6 +13,7 @@ public readonly struct FieldInViewModel(
     SyntaxKind setAccess,
     ImmutableArray<BindAlsoProperty> bindAlso)
 {
+    public readonly IFieldSymbol Field = field;
     public readonly ITypeSymbol Type = field.Type;
     
     public readonly string FieldName = field.Name;

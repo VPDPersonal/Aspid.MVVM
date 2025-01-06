@@ -1,5 +1,6 @@
 using Microsoft.CodeAnalysis;
 using MVVMGenerators.Helpers;
+using MVVMGenerators.Generators.Ids;
 using MVVMGenerators.Helpers.Descriptions;
 using MVVMGenerators.Generators.Views.Body;
 using MVVMGenerators.Generators.Views.Data;

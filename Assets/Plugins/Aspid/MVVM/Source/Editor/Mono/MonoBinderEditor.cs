@@ -77,23 +77,27 @@ namespace Aspid.MVVM.Mono
 		        }
 		        
 		        var field = ViewUtility.GetFieldInfoById(view, _id.stringValue);
-		        var binder = field.GetValue(view);
 
-		        if (binder is Array array)
-		        {
-			        if (array
-			            .Cast<object>()
-			            .Any(element => (MonoBinder)element == Binder))
-			        {
-				        serializedObject.ApplyModifiedProperties();
-				        return;
-			        }
-		        }
-		        else if ((MonoBinder)binder == Binder)
-		        {
-			        return;
-		        }
-						        
+                if (field is not null)
+                {
+                    var binder = field.GetValue(view);
+
+                    if (binder is Array array)
+                    {
+                        if (array
+                            .Cast<object>()
+                            .Any(element => (MonoBinder)element == Binder))
+                        {
+                            serializedObject.ApplyModifiedProperties();
+                            return;
+                        }
+                    }
+                    else if ((MonoBinder)binder == Binder)
+                    {
+                        return;
+                    }
+                }
+                
 		        _id.stringValue = null;
 	        }
         }

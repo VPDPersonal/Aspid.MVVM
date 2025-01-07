@@ -21,6 +21,9 @@ public static partial class Classes
     
     public static readonly TypeText MonoView =
         new("MonoView", Namespaces.Aspid_MVVM_Mono);
+    
+    public static readonly TypeText ScriptableView =
+        new("ScriptableView", Namespaces.Aspid_MVVM_Mono);
     #endregion
     
     #region Binders
@@ -46,6 +49,9 @@ public static partial class Classes
     
     public static readonly TypeText MonoViewModel =
         new("MonoViewModel", Namespaces.Aspid_MVVM_Mono);
+    
+    public static readonly TypeText ScriptableViewModel =
+        new("ScriptableViewModel", Namespaces.Aspid_MVVM_Mono);
     
     public static readonly TypeText ViewModelUtility =
         new("ViewModelUtility", Namespaces.Aspid_MVVM);

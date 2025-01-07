@@ -54,7 +54,7 @@ public partial class ViewGenerator
                 return Inheritor.InheritorViewAttribute;
         }
         
-        if (symbol.HasBaseType(Classes.View, Classes.MonoView)) return Inheritor.InheritorView;
+        if (symbol.HasBaseType(Classes.View, Classes.MonoView, Classes.ScriptableView)) return Inheritor.InheritorView;
         if (baseType is not null && baseType.HasInterface(Classes.IView)) return Inheritor.HasInterface;
 
         return symbol.HaseDirectInterface(Classes.IView) ? Inheritor.HasInterface : Inheritor.None;

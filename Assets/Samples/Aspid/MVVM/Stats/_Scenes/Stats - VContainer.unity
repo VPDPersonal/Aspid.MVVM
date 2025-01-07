@@ -607,13 +607,15 @@ MonoBehaviour:
   _viewComponent:
     Resolve: 0
     Mono: {fileID: 1292469564}
+    Scriptable: {fileID: 0}
     Type:
       _typeName: 
     References:
       rid: -2
   _viewModelComponent:
-    Resolve: 2
+    Resolve: 3
     Mono: {fileID: 0}
+    Scriptable: {fileID: 0}
     Type:
       _typeName: Aspid.MVVM.Stats.ViewModels.EditStatsViewModel, Aspid.MVVM.Samples.Stats,
         Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
@@ -1631,13 +1633,15 @@ MonoBehaviour:
   _viewComponent:
     Resolve: 0
     Mono: {fileID: 6497330040264628419}
+    Scriptable: {fileID: 0}
     Type:
       _typeName: 
     References:
       rid: -2
   _viewModelComponent:
-    Resolve: 2
+    Resolve: 3
     Mono: {fileID: 0}
+    Scriptable: {fileID: 0}
     Type:
       _typeName: Aspid.MVVM.Stats.ViewModels.ReadOnlyStatsViewModel, Aspid.MVVM.Samples.Stats,
         Version=0.0.0.0, Culture=neutral, PublicKeyToken=null

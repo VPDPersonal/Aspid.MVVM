@@ -1535,13 +1535,15 @@ MonoBehaviour:
   _viewComponent:
     Resolve: 0
     Mono: {fileID: 1322158807}
+    Scriptable: {fileID: 0}
     Type:
       _typeName: 
     References:
       rid: -2
   _viewModelComponent:
-    Resolve: 2
+    Resolve: 3
     Mono: {fileID: 0}
+    Scriptable: {fileID: 0}
     Type:
       _typeName: Aspid.MVVM.TodoList.ViewModels.TodoStorageViewModel, Aspid.MVVM.Samples.TodoList,
         Version=0.0.0.0, Culture=neutral, PublicKeyToken=null

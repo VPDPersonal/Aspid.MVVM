@@ -5,19 +5,16 @@ using UnityEngine.UIElements;
 using Aspid.CustomEditors.Configs;
 using Aspid.CustomEditors.Components;
 using Aspid.CustomEditors.Extensions;
-using Aspid.CustomEditors.Components.Extensions;
 using Aspid.CustomEditors.Extensions.VisualElements;
 
 namespace Aspid.MVVM.Mono
 {
-    public abstract class ViewEditor<T> : Editor
-        where T : UnityEngine.Object, IView
+    public abstract class ViewModelEditor<T> : Editor
+        where T : UnityEngine.Object, IViewModel
     {
-        protected T View => target as T;
+        protected T ViewModel => target as T;
         
         protected VisualElement Root { get; private set; }
-        
-        protected BindersWithFieldName Binders { get; private set; }
         
         protected string IconPath => MessageType switch
         {
@@ -26,37 +23,14 @@ namespace Aspid.MVVM.Mono
             ErrorType.Warning => "Aspid Icon Yellow",
             _ => throw new ArgumentOutOfRangeException()
         };
-
+        
         protected virtual ErrorType MessageType => ErrorType.None;
         
         protected virtual string[] PropertiesExcluding => new[]
         {
             "m_Script",
         };
-
-        protected virtual void OnEnable()
-        {
-            UpdateBinders();
-        }
-
-        protected virtual void OnDisable()
-        {
-            if (View) return;
-            if (Binders is null || Binders.Values.Count is 0) return;
-            
-            foreach (var binders in Binders.Values)
-            {
-                if (binders is null) continue;
-
-                foreach (var binder in binders)
-                {
-                    if (binder.IsMonoExist)
-                        binder.Reset();
-                }
-            }
-        }
-
-        #region Build Methods
+        
         public sealed override VisualElement CreateInspectorGUI()
         {
             Root = Build();
@@ -67,13 +41,12 @@ namespace Aspid.MVVM.Mono
         {
             return new VisualElement()
                 .AddChild(BuildHeader())
-                .AddChild(BuildBaseInspector())
-                .AddChild(BuildViewModel());
+                .AddChild(BuildBaseInspector());
         }
-
+        
         protected VisualElement BuildHeader() =>
             Elements.CreateHeader(IconPath, GetScriptName());
-
+        
         protected VisualElement BuildBaseInspector()
         {
             return Elements.CreateContainer(EditorColor.LightContainer)
@@ -82,26 +55,9 @@ namespace Aspid.MVVM.Mono
                 .AddChild(new IMGUIContainer(DrawBaseInspector));
         }
 
-        protected VisualElement BuildViewModel()
-        {
-            return Elements.CreateContainer(EditorColor.LightContainer)
-                .AddTitle(EditorColor.LightText, "View Model")
-                .AddChild(new IMGUIContainer(() => ViewModelDrawer.DrawViewModelData(View)))
-                .SetMargin(top: 10)
-                .SetName("ViewModel");
-        }   
-        #endregion
-
-        protected virtual string GetScriptName() =>
-            !View ? null : View.GetScriptName();
-        
-        protected void UpdateBinders() =>
-            Binders = View ? ViewUtility.GetMonoBinderValidableWithFieldName(View) : null;
-
         private void DrawBaseInspector()
         {
             var propertiesCount = 0;
-            var oldBindersDictionary = ViewUtility.GetMonoBinderValidableWithFieldName(View);
 
             serializedObject.UpdateIfRequiredOrScript();
             {
@@ -118,15 +74,7 @@ namespace Aspid.MVVM.Mono
                     propertiesCount++;
                     EditorGUILayout.PropertyField(iterator, true);
                 }
-            }
-            serializedObject.ApplyModifiedProperties();
-            
-            var newBindersDictionary = ViewUtility.GetMonoBinderValidableWithFieldName(View);
-            ViewUtility.ValidateMonoBinderValidablesInView(View, oldBindersDictionary, newBindersDictionary);
-            UpdateBinders();
-            
-            serializedObject.UpdateIfRequiredOrScript();
-            {
+
                 propertiesCount += OnDrewBaseInspector();
             }
             serializedObject.ApplyModifiedProperties();
@@ -139,5 +87,8 @@ namespace Aspid.MVVM.Mono
         protected virtual int OnDrawingBaseInspector() => 0;
 
         protected virtual int OnDrewBaseInspector() => 0;
+
+        protected virtual string GetScriptName() =>
+            !ViewModel ? null : ViewModel.GetScriptName();
     }
 }

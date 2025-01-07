@@ -22,10 +22,8 @@ namespace Aspid.MVVM.StarterKit.Views.Initializers
                             EditorGUILayout.PropertyField(mono);
 
                             if (mono.objectReferenceValue is not null and not TInterface)
-                            {
                                 mono.objectReferenceValue =
                                     ((Component)mono.objectReferenceValue).GetComponent<TInterface>() as Object;
-                            }
                     
                             isSet?.Invoke(mono.objectReferenceValue);
                             break;
@@ -38,7 +36,17 @@ namespace Aspid.MVVM.StarterKit.Views.Initializers
                             isSet?.Invoke(references.managedReferenceValue is not null);
                             break;
                         }
-#if ASPID_MVVM_ZENJECT_INTEGRATION || ASPID_MVVM_VCONTAINER_INTEGRATION
+                    case 2:
+                        {
+                            var scriptable = component.FindPropertyRelative("Scriptable");
+                            EditorGUILayout.PropertyField(scriptable);
+
+                            if (scriptable.objectReferenceValue is not TInterface)
+                                scriptable.objectReferenceValue = null;
+                    
+                            isSet?.Invoke(scriptable.objectReferenceValue);
+                            break;
+                        }
                     default:
                         {
                             var type = component.FindPropertyRelative("Type");
@@ -50,7 +58,6 @@ namespace Aspid.MVVM.StarterKit.Views.Initializers
                             isSet?.Invoke(!typeNameIsEmpty);
                             break;
                         }
-#endif
                 }
             }
             serializedObject.ApplyModifiedProperties();

@@ -10,9 +10,8 @@ namespace Aspid.MVVM.StarterKit.Views.Initializers
     {
         public Resolve Resolve;
         public Component Mono;
-#if ASPID_MVVM_ZENJECT_INTEGRATION || ASPID_MVVM_VCONTAINER_INTEGRATION
+        public ScriptableObject Scriptable;
         public SerializableMonoScript<TInterface> Type;
-#endif
         
         [SerializeReferenceDropdown]
         [SerializeReference] public TInterface References;
@@ -24,6 +23,7 @@ namespace Aspid.MVVM.StarterKit.Views.Initializers
         {
             Mono,
             References,
+            ScriptableObject,
 #if ASPID_MVVM_ZENJECT_INTEGRATION || ASPID_MVVM_VCONTAINER_INTEGRATION
             Di,
 #endif

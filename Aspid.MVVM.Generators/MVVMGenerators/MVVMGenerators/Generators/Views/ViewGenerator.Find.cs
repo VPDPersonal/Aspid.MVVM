@@ -77,14 +77,77 @@ public partial class ViewGenerator
             if (member.HasAttribute(Classes.AsBinderAttribute, out var asBinderAttribute))
             {
                 if (asBinderAttribute!.ConstructorArguments[0].Value is not INamedTypeSymbol argumentType) continue;
+                
                 if (argumentType.IsAbstract) continue;
                 if (!argumentType.HasInterface(Classes.IBinder)) continue;
 
-                asBinderMembers.Add(new AsBinderMemberInView(member, argumentType));
+                var arguments = new List<string>();
+                
+                if (asBinderAttribute.ConstructorArguments.Length > 1)
+                {
+                    var nameOfIndexes = new HashSet<int>();
+                    var applicationSyntaxReference = asBinderAttribute.ApplicationSyntaxReference!;
+
+                    if (applicationSyntaxReference.SyntaxTree
+                            .GetRoot()
+                            .FindNode(applicationSyntaxReference.Span) is AttributeSyntax location)
+                    {
+                        var argumentSyntaxes = location.ArgumentList!.Arguments;
+                            
+                        for (var i = 1; i < argumentSyntaxes.Count; i++)
+                        {
+                            // Проверяем, является ли это вызов nameof
+                            if (argumentSyntaxes[i].Expression is InvocationExpressionSyntax invocationExpression &&
+                                invocationExpression.Expression is IdentifierNameSyntax identifier &&
+                                identifier.Identifier.Text == "nameof")
+                            {
+                                nameOfIndexes.Add(i - 1);
+                            }
+                        }
+                    }
+
+                    var values = asBinderAttribute.ConstructorArguments[1].Values;
+                    
+                    for (var i = 0; i < values.Length; i++)
+                    {
+                        var value = values[i];
+
+                        if (nameOfIndexes.Contains(i))
+                        {
+                            arguments.Add(value.Value?.ToString() ?? "null");
+                            continue;
+                        }
+
+                        if (value.Kind == TypedConstantKind.Type)
+                        {
+                            arguments.Add($"typeof({value.Value})");
+                            continue;
+                        }
+
+                        if (value.Kind == TypedConstantKind.Enum)
+                        {
+                            arguments.Add($"({value.Type!.ToDisplayStringGlobal()}){value.Value}");
+                            continue;
+                        }
+                        
+                        switch (value.Value)
+                        {
+                            case null: arguments.Add("null"); break;
+                            case char: arguments.Add($"'{value.Value}'"); break;
+                            case float: arguments.Add(value.Value + "f"); break;
+                            case string: arguments.Add($"\"{value.Value}\""); break;
+                            case bool: arguments.Add(value.Value.ToString().ToLower()); break;
+                            
+                            default: arguments.Add(value.Value.ToString()); break;
+                        }
+                    }
+                }
+                
+                asBinderMembers.Add(new AsBinderMemberInView(member, argumentType, arguments));
             }
             else if (type.HasInterface(Classes.IView))
             {
-                asBinderMembers.Add(new AsBinderMemberInView(member, Classes.ViewBinder.Global));
+                asBinderMembers.Add(new AsBinderMemberInView(member, Classes.ViewBinder.Global, null));
             }
             else if (type.HasInterface(Classes.IBinder))
             {

@@ -1,4 +1,5 @@
 using Microsoft.CodeAnalysis;
+using System.Collections.Generic;
 using MVVMGenerators.Helpers.Descriptions;
 using MVVMGenerators.Helpers.Extensions.Symbols;
 
@@ -12,17 +13,19 @@ public readonly struct AsBinderMemberInView
     
     public readonly string? Id;
     public readonly ISymbol Member;
+    public readonly string Arguments;
     public readonly ITypeSymbol? Type;
     public readonly bool IsUnityEngineObject;
     
-    public AsBinderMemberInView(ISymbol member, ITypeSymbol asBinderType) 
-        : this(member, asBinderType.ToDisplayStringGlobal()) { }
+    public AsBinderMemberInView(ISymbol member, ITypeSymbol asBinderType, IReadOnlyList<string>? arguments) 
+        : this(member, asBinderType.ToDisplayStringGlobal(), arguments) { }
 
-    public AsBinderMemberInView(ISymbol member, string asBinderType)
+    public AsBinderMemberInView(ISymbol member, string asBinderType, IReadOnlyList<string>? arguments)
     {
         Member = member;
         Name = member.Name;
         AsBinderType = asBinderType;
+        Arguments = arguments is null || arguments.Count == 0 ? string.Empty : ", " + string.Join(", ", arguments);
 
         switch (member)
         {

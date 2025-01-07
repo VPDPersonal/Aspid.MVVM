@@ -295,8 +295,9 @@ public static class ViewBody
                 if (member.Type is IArrayTypeSymbol)
                 {
                     var name = member.Name;
-                    var localName = $"local{name}";
+                    var localName = $"__local{name}";
                     var binderName = member.CachedName;
+                    var arguments = member.Arguments;
                     var binderType = member.AsBinderType;
                     
                     code.AppendLineIf(isAppend)
@@ -308,7 +309,7 @@ public static class ViewBody
                             {{binderName}} = new {{binderType}}[{{localName}}.Length];
                             
                             for (var i = 0; i < {{localName}}.Length; i++)
-                                {{binderName}}[i] = new {{member.AsBinderType}}({{localName}}[i]);
+                                {{binderName}}[i] = new {{member.AsBinderType}}({{localName}}[i]{{arguments}});
                         }
                         """)
                         .AppendLineIf(i + 1 < membersCount);
@@ -320,7 +321,7 @@ public static class ViewBody
                     isAppend = true;
                     code.AppendLine(member.IsUnityEngineObject 
                         ? $"if ({member.Name}) {member.CachedName} ??= new {member.AsBinderType}({member.Name});" 
-                        : $"{member.CachedName} ??= new {member.AsBinderType}({member.Name});");
+                        : $"{member.CachedName} ??= new {member.AsBinderType}({member.Name}{member.Arguments});");
                 }
             });
         }

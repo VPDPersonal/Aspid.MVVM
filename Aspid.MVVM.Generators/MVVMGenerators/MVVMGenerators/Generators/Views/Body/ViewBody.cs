@@ -320,7 +320,7 @@ public static class ViewBody
                 {
                     isAppend = true;
                     code.AppendLine(member.IsUnityEngineObject 
-                        ? $"if ({member.Name}) {member.CachedName} ??= new {member.AsBinderType}({member.Name});" 
+                        ? $"if ({member.Name}) {member.CachedName} ??= new {member.AsBinderType}({member.Name}{member.Arguments});" 
                         : $"{member.CachedName} ??= new {member.AsBinderType}({member.Name}{member.Arguments});");
                 }
             });

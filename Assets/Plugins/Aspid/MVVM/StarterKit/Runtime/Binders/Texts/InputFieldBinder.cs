@@ -32,7 +32,8 @@ namespace Aspid.MVVM.StarterKit.Binders
             : base(target)
         {
             _converter = null;
-            IsReverseEnabled = isReverseEnabled; }
+            IsReverseEnabled = isReverseEnabled;
+        }
         
         public InputFieldBinder(TMP_InputField target, Func<string?, string> converter, bool isReverseEnabled = true)
             : this(target, converter.ToConvert(), isReverseEnabled) { }

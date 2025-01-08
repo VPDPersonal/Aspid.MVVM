@@ -27,8 +27,11 @@ namespace Aspid.MVVM.StarterKit.Binders
         private bool _isNotifyValueChanged = true;
         
         public bool IsReverseEnabled { get; }
+
+        public InputFieldBinder(TMP_InputField target)
+            : this(target, isReverseEnabled: true) { }
         
-        public InputFieldBinder(TMP_InputField target, bool isReverseEnabled = true)
+        public InputFieldBinder(TMP_InputField target, bool isReverseEnabled)
             : base(target)
         {
             _converter = null;

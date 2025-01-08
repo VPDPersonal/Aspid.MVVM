@@ -96,7 +96,6 @@ public partial class ViewGenerator
                             
                         for (var i = 1; i < argumentSyntaxes.Count; i++)
                         {
-                            // Проверяем, является ли это вызов nameof
                             if (argumentSyntaxes[i].Expression is InvocationExpressionSyntax invocationExpression &&
                                 invocationExpression.Expression is IdentifierNameSyntax identifier &&
                                 identifier.Identifier.Text == "nameof")

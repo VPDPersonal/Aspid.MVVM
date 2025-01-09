@@ -3,7 +3,7 @@ using Aspid.MVVM.StarterKit.Converters;
 
 namespace Aspid.MVVM.StarterKit.Binders.Mono
 {
-    [AddComponentMenu("Binders/Collider/CapsuleCollider Binder - Center")]
+    [AddComponentMenu("MVVM/Binders/Collider/CapsuleCollider Binder - Center")]
     public class CapsuleColliderCentreMonoBinder : ComponentMonoBinder<CapsuleCollider>, IVectorBinder, INumberBinder
     {
         [Header("Converter")]

@@ -4,7 +4,7 @@ using Aspid.MVVM.StarterKit.Converters;
 
 namespace Aspid.MVVM.StarterKit.Binders.Mono
 {
-    [AddComponentMenu("Binders/UI/Slider/Slider Binder - MinMax Switcher")]
+    [AddComponentMenu("MVVM/Binders/UI/Slider/Slider Binder - MinMax Switcher")]
     public sealed class SliderMinMaxSwitcherMonoBinder : SwitcherMonoBinder<Slider, Vector2>
     {
         [SerializeField] private SliderValueMode _mode = SliderValueMode.Range;

@@ -5,7 +5,7 @@ using UnityEngine.Localization.Components;
 
 namespace Aspid.MVVM.StarterKit.Binders.Mono
 {
-    [AddComponentMenu("Binders/UI/Text/Text Binder - Localization Enum")]
+    [AddComponentMenu("MVVM/Binders/UI/Text/Text Binder - Localization Enum")]
     public sealed class TextLocalizationEnumMonoBinder : EnumComponentMonoBinder<LocalizeStringEvent, string>
     {
         [Header("Converter")]

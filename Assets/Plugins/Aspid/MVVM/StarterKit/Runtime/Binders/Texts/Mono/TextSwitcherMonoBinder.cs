@@ -5,7 +5,7 @@ using Aspid.MVVM.StarterKit.Converters;
 
 namespace Aspid.MVVM.StarterKit.Binders.Mono
 {
-    [AddComponentMenu("Binders/UI/Text/Text Binder - Switcher")]
+    [AddComponentMenu("MVVM/Binders/UI/Text/Text Binder - Switcher")]
     public sealed class TextSwitcherMonoBinder : SwitcherMonoBinder<TMP_Text, string>
     {
         [Header("Converter")]

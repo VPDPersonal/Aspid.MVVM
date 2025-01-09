@@ -4,7 +4,7 @@ using UnityEngine.UI;
 namespace Aspid.MVVM.StarterKit.Binders.Mono
 {
     [RequireComponent(typeof(ScrollRect))]
-    [AddComponentMenu("Binders/UI/Commands/ScrollRect Command Binder")]
+    [AddComponentMenu("MVVM/Binders/UI/Commands/ScrollRect Command Binder")]
     public sealed class ScrollRectCommandMonoBinder : MonoCommandBinder<Vector2>
     {
         [Header("Component")]

@@ -3,7 +3,7 @@ using Aspid.MVVM.StarterKit.Converters;
 
 namespace Aspid.MVVM.StarterKit.Binders.Mono
 {
-    [AddComponentMenu("Binders/Renderer/Renderer Binder - MaterialColor Enum")]
+    [AddComponentMenu("MVVM/Binders/Renderer/Renderer Binder - MaterialColor Enum")]
     public sealed class RendererMaterialColorEnumMonoBinder : EnumComponentMonoBinder<Renderer, Color>
     {
         [Header("Parameter")]

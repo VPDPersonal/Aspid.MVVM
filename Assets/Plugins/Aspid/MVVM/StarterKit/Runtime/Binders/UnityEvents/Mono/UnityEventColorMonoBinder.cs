@@ -6,7 +6,7 @@ using Aspid.MVVM.StarterKit.Converters;
 
 namespace Aspid.MVVM.StarterKit.Binders.Mono
 {
-    [AddComponentMenu("Binders/UnityEvent/UnityEvent Binder - Color")]
+    [AddComponentMenu("MVVM/Binders/UnityEvent/UnityEvent Binder - Color")]
     public sealed partial class UnityEventColorMonoBinder : MonoBinder, IColorBinder
     {
         public event UnityAction<Color> Set

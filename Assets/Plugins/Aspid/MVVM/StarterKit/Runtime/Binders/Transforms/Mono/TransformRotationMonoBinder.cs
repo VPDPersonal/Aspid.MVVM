@@ -5,7 +5,7 @@ using Aspid.MVVM.StarterKit.Converters;
 
 namespace Aspid.MVVM.StarterKit.Binders.Mono
 {
-    [AddComponentMenu("Binders/Transform/Transform Binder - Rotation")]
+    [AddComponentMenu("MVVM/Binders/Transform/Transform Binder - Rotation")]
     public partial class TransformRotationMonoBinder : MonoBinder, IRotationBinder, INumberBinder
     {
         [SerializeField] private Space _space = Space.World;

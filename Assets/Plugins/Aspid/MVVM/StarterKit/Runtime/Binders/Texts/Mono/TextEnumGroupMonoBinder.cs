@@ -5,7 +5,7 @@ using Aspid.MVVM.StarterKit.Converters;
 
 namespace Aspid.MVVM.StarterKit.Binders.Mono
 {
-    [AddComponentMenu("Binders/UI/Text/Text Binder - EnumGroup")]
+    [AddComponentMenu("MVVM/Binders/UI/Text/Text Binder - EnumGroup")]
     public sealed class TextEnumGroupMonoBinder : EnumGroupMonoBinder<TMP_Text>
     {
         [Header("Parameters")]

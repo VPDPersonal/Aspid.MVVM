@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace Aspid.MVVM.StarterKit.Binders.Mono
 {
-    [AddComponentMenu("Binders/Animator/Animator Binder - Set Bool")]
+    [AddComponentMenu("MVVM/Binders/Animator/Animator Binder - Set Bool")]
     public class AnimatorSetBoolMonoBinder : AnimatorSetParameterMonoBinder<bool>
     {
         [Header("Converter")]

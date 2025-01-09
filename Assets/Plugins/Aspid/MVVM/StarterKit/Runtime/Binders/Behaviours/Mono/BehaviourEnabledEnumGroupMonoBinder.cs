@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace Aspid.MVVM.StarterKit.Binders.Mono
 {
-    [AddComponentMenu("Binders/Behaviour/Behaviour Binder - Enabled EnumGroup")]
+    [AddComponentMenu("MVVM/Binders/Behaviour/Behaviour Binder - Enabled EnumGroup")]
     public sealed class BehaviourEnabledEnumGroupMonoBinder : EnumGroupMonoBinder<Behaviour>
     {
         [Header("Parameters")]

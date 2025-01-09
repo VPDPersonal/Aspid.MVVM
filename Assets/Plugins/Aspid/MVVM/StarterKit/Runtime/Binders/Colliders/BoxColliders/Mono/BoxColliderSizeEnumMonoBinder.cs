@@ -3,7 +3,7 @@ using Aspid.MVVM.StarterKit.Converters;
 
 namespace Aspid.MVVM.StarterKit.Binders.Mono
 {
-    [AddComponentMenu("Binders/Collider/BoxCollider Binder - Size Enum")]
+    [AddComponentMenu("MVVM/Binders/Collider/BoxCollider Binder - Size Enum")]
     public sealed class BoxColliderSizeEnumMonoBinder : EnumComponentMonoBinder<BoxCollider, Vector3>
     {
         [Header("Converter")]

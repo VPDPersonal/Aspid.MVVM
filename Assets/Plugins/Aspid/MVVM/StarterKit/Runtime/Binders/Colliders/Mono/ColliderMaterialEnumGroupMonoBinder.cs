@@ -3,7 +3,7 @@ using Aspid.MVVM.StarterKit.Converters;
 
 namespace Aspid.MVVM.StarterKit.Binders.Mono
 {
-    [AddComponentMenu("Binders/Collider/Collider Binder - Material EnumGroup")]
+    [AddComponentMenu("MVVM/Binders/Collider/Collider Binder - Material EnumGroup")]
     public sealed class ColliderMaterialEnumGroupMonoBinder : EnumGroupMonoBinder<Collider>
     {
         [Header("Parameters")]

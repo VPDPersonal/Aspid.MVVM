@@ -3,7 +3,7 @@ using Aspid.MVVM.StarterKit.Converters;
 
 namespace Aspid.MVVM.StarterKit.Binders.Mono
 {
-    [AddComponentMenu("Binders/UI/RectTransform/RectTransform Binder - SizeDelta Switcher")]
+    [AddComponentMenu("MVVM/Binders/UI/RectTransform/RectTransform Binder - SizeDelta Switcher")]
     public sealed class RectTransformSizeDeltaSwitcherMonoBinder : SwitcherMonoBinder<RectTransform, Vector2>
     {
         [SerializeField] private SizeDeltaMode _mode = SizeDeltaMode.SizeDelta;

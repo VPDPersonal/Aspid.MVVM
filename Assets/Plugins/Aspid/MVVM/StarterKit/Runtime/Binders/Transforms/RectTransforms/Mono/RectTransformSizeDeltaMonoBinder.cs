@@ -4,7 +4,7 @@ using Aspid.MVVM.StarterKit.Converters;
 
 namespace Aspid.MVVM.StarterKit.Binders.Mono
 {
-    [AddComponentMenu("Binders/UI/RectTransform/RectTransform Binder - SizeDelta")]
+    [AddComponentMenu("MVVM/Binders/UI/RectTransform/RectTransform Binder - SizeDelta")]
     public partial class RectTransformSizeDeltaMonoBinder : ComponentMonoBinder<RectTransform>, IBinder<Vector2>, INumberBinder
     {
         [Header("Parameters")]

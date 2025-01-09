@@ -5,7 +5,7 @@ using Aspid.MVVM.StarterKit.Converters;
 
 namespace Aspid.MVVM.StarterKit.Binders.Mono
 {
-    [AddComponentMenu("Binders/UI/Graphic/Graphic Binder - Color")]
+    [AddComponentMenu("MVVM/Binders/UI/Graphic/Graphic Binder - Color")]
     public partial class GraphicColorMonoBinder : ComponentMonoBinder<Graphic>, IColorBinder
     {
         [Header("Converter")]

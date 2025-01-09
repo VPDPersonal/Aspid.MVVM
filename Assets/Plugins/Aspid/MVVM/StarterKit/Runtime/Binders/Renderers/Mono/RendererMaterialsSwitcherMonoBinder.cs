@@ -3,7 +3,7 @@ using Aspid.MVVM.StarterKit.Converters;
 
 namespace Aspid.MVVM.StarterKit.Binders.Mono
 {
-    [AddComponentMenu("Binders/Renderer/Renderer Binder - Materials Switcher")]
+    [AddComponentMenu("MVVM/Binders/Renderer/Renderer Binder - Materials Switcher")]
     public sealed class RendererMaterialsSwitcherMonoBinder : SwitcherMonoBinder<Renderer, Material[]>
     {
         [Header("Converter")]

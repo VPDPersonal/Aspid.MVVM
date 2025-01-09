@@ -4,7 +4,7 @@ using UnityEngine.UI;
 namespace Aspid.MVVM.StarterKit.Binders.Mono
 {
     [RequireComponent(typeof(Toggle))]
-    [AddComponentMenu("Binders/UI/Commands/Toggle Click Command Binder")]
+    [AddComponentMenu("MVVM/Binders/UI/Commands/Toggle Click Command Binder")]
     public sealed class ToggleClickCommandMonoBinder : MonoCommandBinder
     {
         [Header("Component")]

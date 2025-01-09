@@ -5,7 +5,7 @@ using Aspid.MVVM.StarterKit.Converters;
 
 namespace Aspid.MVVM.StarterKit.Binders.Mono
 {
-    [AddComponentMenu("Binders/UI/Image/Image Binder - Fill")]
+    [AddComponentMenu("MVVM/Binders/UI/Image/Image Binder - Fill")]
     public partial class ImageFillMonoBinder : ComponentMonoBinder<Image>, INumberBinder
     {
         [Header("Converter")]

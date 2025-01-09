@@ -3,7 +3,7 @@ using Aspid.MVVM.StarterKit.Converters;
 
 namespace Aspid.MVVM.StarterKit.Binders.Mono
 {
-    [AddComponentMenu("Binders/Collider/Collider Binder - Material Switcher")]
+    [AddComponentMenu("MVVM/Binders/Collider/Collider Binder - Material Switcher")]
     public sealed class ColliderMaterialSwitcherMonoBinder : SwitcherMonoBinder<Collider, PhysicsMaterial>
     {
         [Header("Converter")]

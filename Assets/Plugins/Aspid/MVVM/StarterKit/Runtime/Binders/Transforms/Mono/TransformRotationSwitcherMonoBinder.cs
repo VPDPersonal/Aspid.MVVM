@@ -3,7 +3,7 @@ using Aspid.MVVM.StarterKit.Converters;
 
 namespace Aspid.MVVM.StarterKit.Binders.Mono
 {
-    [AddComponentMenu("Binders/Transform/Transform Binder - Rotation Switcher")]
+    [AddComponentMenu("MVVM/Binders/Transform/Transform Binder - Rotation Switcher")]
     public sealed class TransformRotationSwitcherMonoBinder : SwitcherMonoBinder<Vector3>
     {
         [SerializeField] private Space _space = Space.World;

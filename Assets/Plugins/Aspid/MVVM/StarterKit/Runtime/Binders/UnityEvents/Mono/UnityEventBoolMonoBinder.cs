@@ -5,7 +5,7 @@ using Aspid.MVVM.Mono.Generation;
 
 namespace Aspid.MVVM.StarterKit.Binders.Mono
 {
-    [AddComponentMenu("Binders/UnityEvent/UnityEvent Binder - Bool")]
+    [AddComponentMenu("MVVM/Binders/UnityEvent/UnityEvent Binder - Bool")]
     public sealed partial class UnityEventBoolMonoBinder : MonoBinder, IBinder<bool>
     {
         public event UnityAction<bool> Set

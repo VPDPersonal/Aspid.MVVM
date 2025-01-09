@@ -3,7 +3,7 @@ using Aspid.MVVM.StarterKit.Converters;
 
 namespace Aspid.MVVM.StarterKit.Binders.Mono
 {
-    [AddComponentMenu("Binders/Transform/Transform Binder - Scale Switcher")]
+    [AddComponentMenu("MVVM/Binders/Transform/Transform Binder - Scale Switcher")]
     public sealed class TransformScaleSwitcherMonoBinder : SwitcherMonoBinder<Vector3>
     {
         [Header("Converter")]

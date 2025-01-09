@@ -3,7 +3,7 @@ using Aspid.MVVM.Mono.Generation;
 
 namespace Aspid.MVVM.StarterKit.Binders.Mono
 {
-    [AddComponentMenu("Binders/UI/Canvas Group/CanvasGroup Binder - IgnoreParentGroups")]
+    [AddComponentMenu("MVVM/Binders/UI/Canvas Group/CanvasGroup Binder - IgnoreParentGroups")]
     public partial class CanvasGroupIgnoreParentGroupsMonoBinder : ComponentMonoBinder<CanvasGroup>, IBinder<bool>
     {
         [Header("Converter")]

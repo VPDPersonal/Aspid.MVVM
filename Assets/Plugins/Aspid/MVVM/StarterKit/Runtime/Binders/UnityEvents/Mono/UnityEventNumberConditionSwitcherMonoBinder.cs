@@ -6,7 +6,7 @@ using Aspid.MVVM.StarterKit.Converters;
 
 namespace Aspid.MVVM.StarterKit.Binders.Mono
 {
-    [AddComponentMenu("Binders/UnityEvent/UnityEvent Binder - Number Condition Switcher")]
+    [AddComponentMenu("MVVM/Binders/UnityEvent/UnityEvent Binder - Number Condition Switcher")]
     public sealed partial class UnityEventNumberConditionSwitcherMonoBinder : MonoBinder, INumberBinder
     {
         public event UnityAction TrueSet

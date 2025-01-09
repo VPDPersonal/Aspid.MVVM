@@ -6,7 +6,7 @@ using Aspid.MVVM.StarterKit.Converters;
 
 namespace Aspid.MVVM.StarterKit.Binders.Mono
 {
-    [AddComponentMenu("Binders/UI/Text/Text Binder - Font Size")]
+    [AddComponentMenu("MVVM/Binders/UI/Text/Text Binder - Font Size")]
     public partial class TextFontSizeMonoBinder : ComponentMonoBinder<TMP_Text>, INumberBinder
     {
         [Header("Converter")]

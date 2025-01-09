@@ -6,7 +6,7 @@ using Aspid.MVVM.StarterKit.Converters;
 
 namespace Aspid.MVVM.StarterKit.Binders.Mono
 {
-    [AddComponentMenu("Binders/Casters/String To Bool Caster Binder")]
+    [AddComponentMenu("MVVM/Binders/Casters/String To Bool Caster Binder")]
     public sealed partial class StringToBoolCasterMonoBinder : MonoBinder, IBinder<string>
     {
         [Header("Converter")]

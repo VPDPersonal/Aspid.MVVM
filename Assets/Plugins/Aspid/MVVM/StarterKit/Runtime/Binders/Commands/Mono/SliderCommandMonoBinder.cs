@@ -4,7 +4,7 @@ using UnityEngine.UI;
 namespace Aspid.MVVM.StarterKit.Binders.Mono
 {
     [RequireComponent(typeof(Slider))]
-    [AddComponentMenu("Binders/UI/Commands/Slider Command Binder")]
+    [AddComponentMenu("MVVM/Binders/UI/Commands/Slider Command Binder")]
     public sealed class SliderCommandMonoBinder : MonoCommandBinder<float>
     {
         [Header("Component")]

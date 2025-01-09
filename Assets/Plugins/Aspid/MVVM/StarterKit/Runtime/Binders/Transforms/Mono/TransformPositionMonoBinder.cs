@@ -5,7 +5,7 @@ using Aspid.MVVM.StarterKit.Converters;
 
 namespace Aspid.MVVM.StarterKit.Binders.Mono
 {
-    [AddComponentMenu("Binders/Transform/Transform Binder - Position")]
+    [AddComponentMenu("MVVM/Binders/Transform/Transform Binder - Position")]
     public partial class TransformPositionMonoBinder : MonoBinder, IVectorBinder, INumberBinder
     {
         [Header("Parameter")]

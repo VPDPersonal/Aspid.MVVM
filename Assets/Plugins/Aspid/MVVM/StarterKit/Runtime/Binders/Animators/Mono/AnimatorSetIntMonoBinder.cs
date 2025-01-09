@@ -3,7 +3,7 @@ using Aspid.MVVM.StarterKit.Converters;
 
 namespace Aspid.MVVM.StarterKit.Binders.Mono
 {
-    [AddComponentMenu("Binders/Animator/Animator Binder - Set Int")]
+    [AddComponentMenu("MVVM/Binders/Animator/Animator Binder - Set Int")]
     public class AnimatorSetIntMonoBinder : AnimatorSetParameterMonoBinder<int>
     {
         [Header("Converter")]

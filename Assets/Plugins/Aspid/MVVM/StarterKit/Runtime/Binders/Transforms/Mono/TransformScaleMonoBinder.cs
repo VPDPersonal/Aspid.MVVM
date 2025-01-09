@@ -5,7 +5,7 @@ using Aspid.MVVM.StarterKit.Converters;
 
 namespace Aspid.MVVM.StarterKit.Binders.Mono
 {
-    [AddComponentMenu("Binders/Transform/Transform Binder - Scale")]
+    [AddComponentMenu("MVVM/Binders/Transform/Transform Binder - Scale")]
     public partial class TransformScaleMonoBinder : MonoBinder, IVectorBinder, INumberBinder
     {
         [Header("Converter")]

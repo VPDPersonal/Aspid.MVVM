@@ -5,7 +5,7 @@ using Aspid.MVVM.StarterKit.Converters;
 
 namespace Aspid.MVVM.StarterKit.Binders.Mono
 {
-    [AddComponentMenu("Binders/UI/Image/Image Binder - Fill EnumGroup")]
+    [AddComponentMenu("MVVM/Binders/UI/Image/Image Binder - Fill EnumGroup")]
     public sealed class ImageFillEnumGroupMonoBinder : EnumGroupMonoBinder<Image>
     {
         [Header("Parameters")]

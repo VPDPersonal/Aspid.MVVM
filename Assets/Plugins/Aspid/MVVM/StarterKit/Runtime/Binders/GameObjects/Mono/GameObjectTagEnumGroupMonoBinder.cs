@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace Aspid.MVVM.StarterKit.Binders.Mono
 {
-    [AddComponentMenu("Binders/GameObject/GameObject Binder - Tag EnumGroup")]
+    [AddComponentMenu("MVVM/Binders/GameObject/GameObject Binder - Tag EnumGroup")]
     public sealed class GameObjectTagEnumGroupMonoBinder : EnumGroupMonoBinder<GameObject>
     {
         [Header("Parameters")]

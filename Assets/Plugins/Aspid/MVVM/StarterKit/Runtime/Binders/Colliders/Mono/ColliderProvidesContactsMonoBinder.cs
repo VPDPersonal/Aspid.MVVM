@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace Aspid.MVVM.StarterKit.Binders.Mono
 {
-    [AddComponentMenu("Binders/Collider/Collider Binder - ProvidesContacts")]
+    [AddComponentMenu("MVVM/Binders/Collider/Collider Binder - ProvidesContacts")]
     public class ColliderProvidesContactsMonoBinder : ComponentMonoBinder<Collider>, IBinder<bool>
     {
         [Header("Converter")]

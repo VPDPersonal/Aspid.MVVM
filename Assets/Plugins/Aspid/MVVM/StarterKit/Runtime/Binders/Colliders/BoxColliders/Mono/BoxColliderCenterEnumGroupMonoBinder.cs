@@ -3,7 +3,7 @@ using Aspid.MVVM.StarterKit.Converters;
 
 namespace Aspid.MVVM.StarterKit.Binders.Mono
 {
-    [AddComponentMenu("Binders/Collider/BoxCollider Binder - Center EnumGroup")]
+    [AddComponentMenu("MVVM/Binders/Collider/BoxCollider Binder - Center EnumGroup")]
     public sealed class BoxColliderCenterEnumGroupMonoBinder : EnumGroupMonoBinder<BoxCollider>
     {
         [Header("Parameters")]

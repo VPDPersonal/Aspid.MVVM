@@ -5,7 +5,7 @@ using Aspid.MVVM.StarterKit.Converters;
 
 namespace Aspid.MVVM.StarterKit.Binders.Mono
 {
-    [AddComponentMenu("Binders/Casters/Any To String Caster Binder")]
+    [AddComponentMenu("MVVM/Binders/Casters/Any To String Caster Binder")]
     public sealed class AnyToStringCasterMonoBinder : MonoBinder, IBinder<object>
     {
         [Header("Converter")]

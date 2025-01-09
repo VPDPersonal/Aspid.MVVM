@@ -3,7 +3,7 @@ using Aspid.MVVM.StarterKit.Converters;
 
 namespace Aspid.MVVM.StarterKit.Binders.Mono
 {
-    [AddComponentMenu("Binders/Collider/BoxCollider Binder - Center Switcher")]
+    [AddComponentMenu("MVVM/Binders/Collider/BoxCollider Binder - Center Switcher")]
     public sealed class BoxColliderCenterSwitcherMonoBinder : SwitcherMonoBinder<BoxCollider, Vector3>
     {
         [Header("Converter")]

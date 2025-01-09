@@ -6,7 +6,7 @@ using Aspid.MVVM.StarterKit.Converters;
 
 namespace Aspid.MVVM.StarterKit.Binders.Mono
 {
-    [AddComponentMenu("Binders/Casters/Vector3 To Vector2 Caster Binder")]
+    [AddComponentMenu("MVVM/Binders/Casters/Vector3 To Vector2 Caster Binder")]
     public sealed partial class Vector3ToVector2CasterMonoBinder : MonoBinder, IBinder<Vector2>
     {
         [Header("Converter")]

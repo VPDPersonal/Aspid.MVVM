@@ -6,7 +6,7 @@ using Aspid.MVVM.StarterKit.Converters;
 
 namespace Aspid.MVVM.StarterKit.Binders.Mono
 {
-    [AddComponentMenu("Binders/Casters/TimeSpan To String Caster Binder")]
+    [AddComponentMenu("MVVM/Binders/Casters/TimeSpan To String Caster Binder")]
 #if UNITY_2023_1_OR_NEWER
     public sealed class TimeSpanToStringCasterMonoBinder : GenericToStringCasterMonoBinder<TimeSpan> { }
 #else

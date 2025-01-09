@@ -5,7 +5,7 @@ using Aspid.MVVM.StarterKit.Converters;
 
 namespace Aspid.MVVM.StarterKit.Binders.Mono
 {
-    [AddComponentMenu("Binders/Transform/Transform Binder - Euler Angles")]
+    [AddComponentMenu("MVVM/Binders/Transform/Transform Binder - Euler Angles")]
     public partial class TransformEulerAnglesMonoBinder : MonoBinder, IVectorBinder, INumberBinder
     {
         [Header("Parameter")]

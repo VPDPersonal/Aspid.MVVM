@@ -3,7 +3,7 @@ using UnityEngine.UI;
 
 namespace Aspid.MVVM.StarterKit.Binders.Mono
 {
-    [AddComponentMenu("Binders/UI/Image/Image Binder - Sprite Switcher")]
+    [AddComponentMenu("MVVM/Binders/UI/Image/Image Binder - Sprite Switcher")]
     public sealed class ImageSpriteSwitcherMonoBinder : SwitcherMonoBinder<Image, Sprite>
     {
         [SerializeField] private bool _disabledWhenNull = true;

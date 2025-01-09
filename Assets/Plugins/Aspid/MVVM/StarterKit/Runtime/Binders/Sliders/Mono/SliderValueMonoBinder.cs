@@ -6,7 +6,7 @@ using Aspid.MVVM.StarterKit.Converters;
 
 namespace Aspid.MVVM.StarterKit.Binders.Mono
 {
-    [AddComponentMenu("Binders/UI/Slider/Slider Binder - Value")]
+    [AddComponentMenu("MVVM/Binders/UI/Slider/Slider Binder - Value")]
     public class SliderValueMonoBinder : ComponentMonoBinder<Slider>, INumberBinder, INumberReverseBinder
     {
         public event Action<int> IntValueChanged;

@@ -4,7 +4,7 @@ using Aspid.MVVM.StarterKit.Converters;
 
 namespace Aspid.MVVM.StarterKit.Binders.Mono
 {
-    [AddComponentMenu("Binders/UI/Slider/Slider Binder - MinMax Enum")]
+    [AddComponentMenu("MVVM/Binders/UI/Slider/Slider Binder - MinMax Enum")]
     public sealed class SliderMinMaxEnumMonoBinder : EnumComponentMonoBinder<Slider, Vector2>
     {
         [SerializeField] private SliderValueMode _mode = SliderValueMode.Range;

@@ -3,7 +3,7 @@ using Aspid.MVVM.StarterKit.Converters;
 
 namespace Aspid.MVVM.StarterKit.Binders.Mono
 {
-    [AddComponentMenu("Binders/Line Renderers/LineRenderer Binder - Color EnumGroup")]
+    [AddComponentMenu("MVVM/Binders/Line Renderers/LineRenderer Binder - Color EnumGroup")]
     public sealed class LineRendererColorEnumGroupMonoBinder : EnumGroupMonoBinder<LineRenderer>
     {
         [Header("Parameters")]

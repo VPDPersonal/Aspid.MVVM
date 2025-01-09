@@ -3,7 +3,7 @@ using Aspid.MVVM.StarterKit.Converters;
 
 namespace Aspid.MVVM.StarterKit.Binders.Mono
 {
-    [AddComponentMenu("Binders/Collider/SphereCollider Binder - Radius Enum")]
+    [AddComponentMenu("MVVM/Binders/Collider/SphereCollider Binder - Radius Enum")]
     public sealed class SphereColliderRadiusEnumMonoBinder : EnumComponentMonoBinder<SphereCollider, float>
     {
         [Header("Converter")]

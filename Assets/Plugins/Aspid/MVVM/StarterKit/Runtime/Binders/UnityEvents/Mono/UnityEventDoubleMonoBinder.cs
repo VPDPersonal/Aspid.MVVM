@@ -6,7 +6,7 @@ using Aspid.MVVM.StarterKit.Converters;
 
 namespace Aspid.MVVM.StarterKit.Binders.Mono
 {
-    [AddComponentMenu("Binders/UnityEvent/UnityEvent Binder - Double")]
+    [AddComponentMenu("MVVM/Binders/UnityEvent/UnityEvent Binder - Double")]
     public sealed partial class UnityEventDoubleMonoBinder : MonoBinder, IBinder<double>
     {
         public event UnityAction<double> Set

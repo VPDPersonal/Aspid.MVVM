@@ -5,7 +5,7 @@ using Aspid.MVVM.StarterKit.Converters;
 
 namespace Aspid.MVVM.StarterKit.Binders.Mono
 {
-    [AddComponentMenu("Binders/UI/Raw Image/RawImage Binder - Material")]
+    [AddComponentMenu("MVVM/Binders/UI/Raw Image/RawImage Binder - Material")]
     public partial class RawImageMaterialMonoBinder : ComponentMonoBinder<RawImage>, IBinder<Material>
     {
         [Header("Converter")]

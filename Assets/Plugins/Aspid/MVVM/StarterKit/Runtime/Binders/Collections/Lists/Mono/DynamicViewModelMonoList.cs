@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace Aspid.MVVM.StarterKit.Binders.Mono
 {
-    [AddComponentMenu("Binders/Collections/Lists/Dynamic List - ViewModel")]
+    [AddComponentMenu("MVVM/Binders/Collections/Lists/Dynamic List - ViewModel")]
     public class DynamicViewModelMonoList : ListMonoBinderBase<IViewModel>
     {
         [SerializeField] private MonoView _prefab;

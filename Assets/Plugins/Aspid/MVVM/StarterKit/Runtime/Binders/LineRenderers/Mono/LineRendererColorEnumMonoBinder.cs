@@ -3,7 +3,7 @@ using Aspid.MVVM.StarterKit.Converters;
 
 namespace Aspid.MVVM.StarterKit.Binders.Mono
 {
-    [AddComponentMenu("Binders/Line Renderers/LineRenderer Binder - Color Enum")]
+    [AddComponentMenu("MVVM/Binders/Line Renderers/LineRenderer Binder - Color Enum")]
     public sealed class LineRendererColorEnumMonoBinder : EnumComponentMonoBinder<LineRenderer, Color>
     {
         [SerializeField] private LineRendererColorMode _mode = LineRendererColorMode.StartAndEnd;

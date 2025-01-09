@@ -3,7 +3,7 @@ using Aspid.MVVM.Mono.Generation;
 
 namespace Aspid.MVVM.StarterKit.Binders.Mono
 {
-    [AddComponentMenu("Binders/Behaviour/Behaviour Binder - Enabled")]
+    [AddComponentMenu("MVVM/Binders/Behaviour/Behaviour Binder - Enabled")]
     public partial class BehaviourEnabledMonoBinder : ComponentMonoBinder<Behaviour>, IBinder<bool>
     {
         [Header("Converter")]

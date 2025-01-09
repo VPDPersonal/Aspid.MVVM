@@ -3,7 +3,7 @@ using Aspid.MVVM.StarterKit.Converters;
 
 namespace Aspid.MVVM.StarterKit.Binders.Mono
 {
-    [AddComponentMenu("Binders/UI/RectTransform/RectTransform Binder - SizeDelta EnumGroup")]
+    [AddComponentMenu("MVVM/Binders/UI/RectTransform/RectTransform Binder - SizeDelta EnumGroup")]
     public sealed class RectTransformSizeDeltaEnumGroupMonoBinder : EnumGroupMonoBinder<RectTransform>
     {
         [Header("Parameter")]

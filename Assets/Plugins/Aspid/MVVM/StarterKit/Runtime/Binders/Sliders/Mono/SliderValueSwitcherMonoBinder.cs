@@ -4,7 +4,7 @@ using Aspid.MVVM.StarterKit.Converters;
 
 namespace Aspid.MVVM.StarterKit.Binders.Mono
 {
-    [AddComponentMenu("Binders/UI/Slider/Slider Binder - Value Switcher")]
+    [AddComponentMenu("MVVM/Binders/UI/Slider/Slider Binder - Value Switcher")]
     public sealed class SliderValueSwitcherMonoBinder : SwitcherMonoBinder<Slider, float>
     {
         [Header("Converter")]

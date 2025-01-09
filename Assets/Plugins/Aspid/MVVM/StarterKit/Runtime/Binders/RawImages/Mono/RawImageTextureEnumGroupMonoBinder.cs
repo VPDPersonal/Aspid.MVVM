@@ -3,7 +3,7 @@ using UnityEngine.UI;
 
 namespace Aspid.MVVM.StarterKit.Binders.Mono
 {
-    [AddComponentMenu("Binders/UI/Raw Image/RawImage Binder - Texture EnumGroup")]
+    [AddComponentMenu("MVVM/Binders/UI/Raw Image/RawImage Binder - Texture EnumGroup")]
     public sealed class RawImageTextureEnumGroupMonoBinder : EnumGroupMonoBinder<RawImage>
     {
         [Header("Parameters")]

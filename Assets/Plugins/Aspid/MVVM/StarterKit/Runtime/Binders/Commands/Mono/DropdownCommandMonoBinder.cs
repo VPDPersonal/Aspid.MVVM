@@ -4,7 +4,7 @@ using UnityEngine.UI;
 namespace Aspid.MVVM.StarterKit.Binders.Mono
 {
     [RequireComponent(typeof(Dropdown))]
-    [AddComponentMenu("Binders/UI/Commands/Dropdown Command Binder")]
+    [AddComponentMenu("MVVM/Binders/UI/Commands/Dropdown Command Binder")]
     public sealed class DropdownCommandMonoBinder : MonoCommandBinder<int>
     {
         [Header("Component")]

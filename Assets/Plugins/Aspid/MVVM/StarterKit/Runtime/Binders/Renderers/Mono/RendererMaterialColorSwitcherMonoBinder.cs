@@ -3,7 +3,7 @@ using Aspid.MVVM.StarterKit.Converters;
 
 namespace Aspid.MVVM.StarterKit.Binders.Mono
 {
-    [AddComponentMenu("Binders/Renderer/Renderer Binder - MaterialColor Switcher")]
+    [AddComponentMenu("MVVM/Binders/Renderer/Renderer Binder - MaterialColor Switcher")]
     public sealed class RendererMaterialColorSwitcherMonoBinder : SwitcherMonoBinder<Renderer, Color>
     {
         [SerializeField] private string _colorPropertyName = "_BaseColor";

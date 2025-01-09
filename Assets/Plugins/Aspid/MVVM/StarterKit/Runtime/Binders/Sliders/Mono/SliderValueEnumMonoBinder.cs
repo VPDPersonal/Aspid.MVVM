@@ -4,7 +4,7 @@ using Aspid.MVVM.StarterKit.Converters;
 
 namespace Aspid.MVVM.StarterKit.Binders.Mono
 {
-    [AddComponentMenu("Binders/UI/Slider/Slider Binder - Value Enum")]
+    [AddComponentMenu("MVVM/Binders/UI/Slider/Slider Binder - Value Enum")]
     public sealed class SliderValueEnumMonoBinder : EnumComponentMonoBinder<Slider, float>
     {
         [Header("Converter")]

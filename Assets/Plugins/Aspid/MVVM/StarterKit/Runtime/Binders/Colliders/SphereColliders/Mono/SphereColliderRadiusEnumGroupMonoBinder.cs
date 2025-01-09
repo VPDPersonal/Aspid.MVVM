@@ -16,7 +16,7 @@ namespace Aspid.MVVM.StarterKit.Binders.Mono
 #if UNITY_2023_1_OR_NEWER
         private IConverter<float, float> _defaultValueConverter;
 #else
-        private IConverterVector3 _defaultValueConverter;
+        private IConverterFloat _defaultValueConverter;
 #endif
         
         [SerializeReference]
@@ -24,7 +24,7 @@ namespace Aspid.MVVM.StarterKit.Binders.Mono
 #if UNITY_2023_1_OR_NEWER
         private IConverter<float, float> _selectedValueConverter;
 #else
-        private IConverterVector3 _selectedValueConverter;
+        private IConverterFloat _selectedValueConverter;
 #endif
         
         protected override void SetDefaultValue(SphereCollider element) =>

@@ -17,7 +17,7 @@ namespace Aspid.MVVM.StarterKit.Binders.Mono
 #if UNITY_2023_1_OR_NEWER
         private IConverter<Color, Color> _defaultValueConverter;
 #else
-        sprivate IConverterColor _defaultValueConverter;
+        private IConverterColor _defaultValueConverter;
 #endif
         
         [SerializeReference]
@@ -25,7 +25,7 @@ namespace Aspid.MVVM.StarterKit.Binders.Mono
 #if UNITY_2023_1_OR_NEWER
         private IConverter<Color, Color> _selectedValuerConverter;
 #else
-        sprivate IConverterColor _selectedValuerConverter;
+        private IConverterColor _selectedValuerConverter;
 #endif
         
         private int? _colorPropertyId;

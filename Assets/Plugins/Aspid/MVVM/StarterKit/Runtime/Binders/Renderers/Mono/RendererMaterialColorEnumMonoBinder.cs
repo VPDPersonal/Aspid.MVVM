@@ -15,7 +15,7 @@ namespace Aspid.MVVM.StarterKit.Binders.Mono
 #if UNITY_2023_1_OR_NEWER
         private IConverter<Color, Color> _converter;
 #else
-        sprivate IConverterColor _converter;
+        private IConverterColor _converter;
 #endif
         
         private int? _colorPropertyId;

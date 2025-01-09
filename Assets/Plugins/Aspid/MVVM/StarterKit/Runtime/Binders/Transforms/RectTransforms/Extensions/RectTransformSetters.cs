@@ -23,12 +23,12 @@ namespace Aspid.MVVM.StarterKit.Binders
         {
             var currentValue = space switch
             {
-                Space.Self => transform.localPosition,
-                Space.World => transform.position,
+                Space.Self => (Vector3)transform.anchoredPosition,
+                Space.World => transform.anchoredPosition3D,
                 _ => throw new ArgumentOutOfRangeException()
             };
 
-            value = converter?.Convert(value, currentValue) ?? currentValue;
+            value = converter?.Convert(value, currentValue) ?? value;
             
             switch (space)
             {

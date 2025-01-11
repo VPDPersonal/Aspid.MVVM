@@ -23,11 +23,13 @@ namespace Aspid.MVVM.StarterKit.Binders
         [SerializeField] private TView _prefab;
         [SerializeField] private Transform? _container;
 
-        private readonly Dictionary<TKey, TView> _views = new();
+        private Dictionary<TKey, TView>? _views;
         
         public TView Prefab => _prefab;
         
         public Transform? Container => _container;
+
+        private Dictionary<TKey, TView> View => _views ??= new Dictionary<TKey, TView>();
         
         public DynamicViewModelDictionary(TView prefab, Transform? container = null)
         {
@@ -54,7 +56,7 @@ namespace Aspid.MVVM.StarterKit.Binders
         protected sealed override void OnRemoved(KeyValuePair<TKey, TViewModel?> oldItem)
         {
             ReleaseView(GetView(oldItem.Key));
-            _views.Remove(oldItem.Key);
+            View.Remove(oldItem.Key);
         }
 
         protected sealed override void OnRemoved(IReadOnlyList<KeyValuePair<TKey, TViewModel?>> oldItems)
@@ -65,28 +67,28 @@ namespace Aspid.MVVM.StarterKit.Binders
 
         protected sealed override void OnReplace(KeyValuePair<TKey, TViewModel?> oldItem, KeyValuePair<TKey, TViewModel?> newItem)
         {
-            _views[oldItem.Key].Deinitialize();
+            View[oldItem.Key].Deinitialize();
             
             if (newItem.Value is not null)
             {
-                _views[oldItem.Key].Initialize(newItem.Value);
+                View[oldItem.Key].Initialize(newItem.Value);
             }
         }
 
         protected sealed override void OnReset()
         {
-            foreach (var view in _views.Values)
+            foreach (var view in View.Values)
                 ReleaseView(view);
             
-            _views.Clear();
+            View.Clear();
         }
 
         private TView GetView(TKey key)
         {
-            if (_views.TryGetValue(key, out var view)) return view;
+            if (View.TryGetValue(key, out var view)) return view;
 
             view = GetNewView();
-            _views.Add(key, view);
+            View.Add(key, view);
 
             return view;
         }

@@ -1,6 +1,6 @@
 using System;
 
-namespace Aspid.Collections.Observable.Synchronizer.Extensions
+namespace Aspid.Collections.Observable.Synchronizer
 {
     public static class CreateSyncExtensions
     {

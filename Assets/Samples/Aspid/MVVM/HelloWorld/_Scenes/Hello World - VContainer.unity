@@ -258,8 +258,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _isDisposeViewOnDestroy: 0
   _isDisposeViewModelOnDestroy: 0
-  _viewComponent:
-    Resolve: 0
+  _viewComponents:
+  - Resolve: 0
     Mono: {fileID: 145963210}
     Scriptable: {fileID: 0}
     Type:

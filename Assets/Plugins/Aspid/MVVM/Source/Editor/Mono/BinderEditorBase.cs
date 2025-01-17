@@ -49,8 +49,12 @@ namespace Aspid.MVVM.Mono
                             return @interface.GetGenericArguments()[0].IsAssignableFrom(type);
                         });
                     }
+
+                    var fieldType = !field.FieldType.IsArray
+                        ? field.FieldType
+                        : field.FieldType.GetElementType();
                     
-                    return Binder.GetType().IsAssignableFrom(field.FieldType);
+                    return fieldType?.IsAssignableFrom(Binder.GetType()) ?? false;
                 })
                 .Select(field => ViewUtility.GetIdName(field.Name))
                 .ToList();

@@ -40,6 +40,21 @@ namespace Aspid.MVVM.Mono
 	        Validate();
         }
 
+        private void OnDisable()
+        {
+            if (Binder) return;
+            if (_id is null) return;
+            if (_view is null) return;
+
+            var view = _view.objectReferenceValue as MonoView;
+            if (!view) return;
+            
+            var id = _id.stringValue;
+            if (string.IsNullOrWhiteSpace(id)) return;
+
+            ViewUtility.CleanViewField(view, id);
+        }
+
         private void Validate()
         {
 	        serializedObject.Update();

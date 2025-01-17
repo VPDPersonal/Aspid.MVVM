@@ -165,6 +165,27 @@ namespace Aspid.MVVM.Mono
             if (isChanged) 
                 SaveView(view);
         }
+
+        public static void CleanViewField(IView view, string id)
+        {
+            var field = GetFieldInfoById(view, id);
+            
+            if (field.FieldType.IsArray)
+            {
+                var binders = new List<IMonoBinderValidable>();
+                binders.AddRange(((IMonoBinderValidable[])field.GetValue(view)).Where(binder =>
+                {
+                    var result = binder is not null;
+
+                    if (result && binder is UnityEngine.Object mono && !mono)
+                        result = false;
+
+                    return result;
+                }));
+                
+                field.SetValueFromCastValue(view, binders.ToArray());
+            }
+        }
         
         /// <summary>
         /// Removes a binder if it is already set in the specified view.

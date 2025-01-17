@@ -1,10 +1,13 @@
+using System;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
 using Aspid.CustomEditors.Configs;
 using Aspid.CustomEditors.Components;
+using Aspid.CustomEditors.Extensions;
 using Aspid.CustomEditors.Components.Extensions;
 using Aspid.CustomEditors.Extensions.VisualElements;
+using Object = UnityEngine.Object;
 
 namespace Aspid.MVVM.StarterKit.Views.Initializers
 {
@@ -33,7 +36,9 @@ namespace Aspid.MVVM.StarterKit.Views.Initializers
         {
             _root = new VisualElement();
 
-            var header = Elements.CreateHeader(target, "Aspid Icon");
+            var scriptName = target.GetScriptName();
+            var header = Elements.CreateHeader("Aspid Icon", scriptName);
+            
             header.Q<Image>("HeaderIcon").AddOpenScriptCommand(target);
 
             var viewHelpBox = Elements.CreateHelpBox(
@@ -43,7 +48,7 @@ namespace Aspid.MVVM.StarterKit.Views.Initializers
             
             var view = Elements.CreateContainer(EditorColor.LightContainer)
                 .AddTitle(EditorColor.LightText, "View")
-                .AddChild(new IMGUIContainer(() => DrawComponent<IView>(_view, ref _isViewSet)))
+                .AddChild(new IMGUIContainer(() => DrawComponent<IView>(_view, "Views", ref _isViewSet)))
                 .AddChild(viewHelpBox
                     .SetMargin(top: 5));
             
@@ -54,7 +59,12 @@ namespace Aspid.MVVM.StarterKit.Views.Initializers
 
             var viewModel = Elements.CreateContainer(EditorColor.LightContainer)
                 .AddTitle(EditorColor.LightText, "View Model")
-                .AddChild(new IMGUIContainer(() => DrawComponent<IViewModel>(_viewModel, ref _isViewModelSet)))
+                .AddChild(new IMGUIContainer(() =>
+                {
+                    DrawComponent<IViewModel>(_viewModel, "View Model", ref _isViewModelSet);
+                    var headerText = _root.Q<Label>("HeaderText");
+                    headerText.text = $"{scriptName}{GetInitializeComponentName(_viewModel)}";
+                }))
                 .AddChild(viewModelHelpBox
                     .SetMargin(top: 5));
             
@@ -66,15 +76,11 @@ namespace Aspid.MVVM.StarterKit.Views.Initializers
                     .SetMargin(top: 10));
         }
 
-        private void DrawComponent<TInterface>(SerializedProperty component, ref bool isSet)
+        private void DrawComponent<TInterface>(SerializedProperty component, string label, ref bool isSet)
             where TInterface : class
         {
             serializedObject.UpdateIfRequiredOrScript();
             {
-                var label = typeof(TInterface) == typeof(IView)
-                    ? "Views"
-                    : "View Model";
-
                 EditorGUILayout.PropertyField(component, new GUIContent(label));
 
                 if (component.isArray)
@@ -106,9 +112,34 @@ namespace Aspid.MVVM.StarterKit.Views.Initializers
             where TInterface : class
         {
             var resolve = component.FindPropertyRelative("Resolve");
-            switch (resolve.enumValueIndex)
+            switch ((InitializeComponent.Resolve)resolve.enumValueIndex)
             {
-                case 0:
+                case InitializeComponent.Resolve.References:
+                    {
+                        var references = component.FindPropertyRelative("References");
+                        return references.managedReferenceValue is not null;
+                    }
+                case InitializeComponent.Resolve.ScriptableObject:
+                    {
+                        var scriptable = component.FindPropertyRelative("Scriptable");
+                        if (scriptable.objectReferenceValue is not TInterface)
+                            scriptable.objectReferenceValue = null;
+
+                        return scriptable.objectReferenceValue;
+                    }
+#if ASPID_MVVM_ZENJECT_INTEGRATION || ASPID_MVVM_VCONTAINER_INTEGRATION
+                case InitializeComponent.Resolve.Di:
+                    {
+                        var type = component.FindPropertyRelative("Type");
+                        var typeName = type.FindPropertyRelative("_typeName");
+                        var typeNameIsEmpty = string.IsNullOrEmpty(typeName.stringValue);
+
+                        return !typeNameIsEmpty;
+                    }
+#endif
+                
+                case InitializeComponent.Resolve.Mono:
+                default:
                     {
                         var mono = component.FindPropertyRelative("Mono");
                         if (mono.objectReferenceValue is not null and not TInterface)
@@ -117,26 +148,53 @@ namespace Aspid.MVVM.StarterKit.Views.Initializers
 
                         return mono.objectReferenceValue;
                     }
-                case 1:
+            }
+        }
+
+        private static string GetInitializeComponentName(SerializedProperty component)
+        {
+            var resolve = component.FindPropertyRelative("Resolve");
+            
+            switch ((InitializeComponent.Resolve)resolve.enumValueIndex)
+            {
+                case InitializeComponent.Resolve.References:
                     {
                         var references = component.FindPropertyRelative("References");
-                        return references.managedReferenceValue is not null;
+                        var typeName = references.managedReferenceValue?.GetType().Name;
+                        
+                        return !string.IsNullOrWhiteSpace(typeName) 
+                            ? $" ({typeName})" 
+                            : string.Empty;
                     }
-                case 2:
+                case InitializeComponent.Resolve.ScriptableObject:
                     {
                         var scriptable = component.FindPropertyRelative("Scriptable");
-                        if (scriptable.objectReferenceValue is not TInterface)
-                            scriptable.objectReferenceValue = null;
 
-                        return scriptable.objectReferenceValue;
+                        return scriptable.objectReferenceValue
+                            ? $" ({scriptable.objectReferenceValue.GetType().Name})"
+                            : string.Empty;
                     }
+#if ASPID_MVVM_ZENJECT_INTEGRATION || ASPID_MVVM_VCONTAINER_INTEGRATION
+                case InitializeComponent.Resolve.Di:
+                    {
+                        var typeProperty = component.FindPropertyRelative("Type");
+                        var typeNameProperty = typeProperty.FindPropertyRelative("_typeName");
+                        
+                        var typeName = Type.GetType(typeNameProperty.stringValue)?.Name;
+                        
+                        return !string.IsNullOrWhiteSpace(typeName) 
+                            ? $" ({typeName})" 
+                            : string.Empty;
+                    }
+#endif
+                case InitializeComponent.Resolve.Mono:
                 default:
                     {
-                        var type = component.FindPropertyRelative("Type");
-                        var typeName = type.FindPropertyRelative("_typeName");
-                        var typeNameIsEmpty = string.IsNullOrEmpty(typeName.stringValue);
-
-                        return !typeNameIsEmpty;
+                        var mono = component.FindPropertyRelative("Mono");
+                        
+                        return mono.objectReferenceValue
+                            ? $" ({mono.objectReferenceValue.GetType().Name})"
+                            : string.Empty;
                     }
             }
         }

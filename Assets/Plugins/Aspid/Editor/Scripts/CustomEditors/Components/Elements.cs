@@ -21,11 +21,15 @@ namespace Aspid.CustomEditors.Components
                 .SetSize(40, 40);
 
             var headerText = new Label(scriptName)
+                .SetFlexGrow(1)
                 .SetFontSize(16)
+                .SetFlexShrink(1)
                 .SetName("HeaderText")
                 .SetAlignSelf(Align.Center)
+                .SetOverflow(Overflow.Hidden)
                 .SetColor(EditorColor.LightText)
-                .SetWhiteSpace(WhiteSpace.Normal)
+                .SetWhiteSpace(WhiteSpace.NoWrap)
+                .SetTextOverflow(TextOverflow.Ellipsis)
                 .SetUnityFontStyleAndWeight(FontStyle.Bold);
 
             return CreateContainer(EditorColor.DarkContainer, "Header")

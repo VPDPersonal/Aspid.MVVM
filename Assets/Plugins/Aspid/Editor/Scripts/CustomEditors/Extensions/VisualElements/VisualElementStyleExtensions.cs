@@ -159,6 +159,22 @@ namespace Aspid.CustomEditors.Extensions.VisualElements
             return element;
         }
         #endregion
+
+        #region Overflow
+        public static T SetOverflow<T>(this T element, StyleEnum<Overflow> overflow)
+            where T : VisualElement
+        {
+            element.style.overflow = overflow;
+            return element;
+        }
+        
+        public static T SetTextOverflow<T>(this T element, StyleEnum<TextOverflow> textOverflow)
+            where T : VisualElement
+        {
+            element.style.textOverflow = textOverflow;
+            return element;
+        } 
+        #endregion
         
         public static T SetWhiteSpace<T>(this T element, StyleEnum<WhiteSpace> whiteSpace)
             where T : VisualElement

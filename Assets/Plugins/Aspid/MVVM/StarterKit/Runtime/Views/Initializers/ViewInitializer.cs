@@ -3,8 +3,10 @@ using UnityEngine;
 using Aspid.MVVM.Mono;
 
 #if ASPID_MVVM_ZENJECT_INTEGRATION
+using Inject = Zenject.InjectAttribute;
 using DIContainer = Zenject.DiContainer;
 #elif ASPID_MVVM_VCONTAINER_INTEGRATION
+using Inject = VContainer.InjectAttribute;
 using DIContainer = VContainer.IObjectResolver;
 #endif
 
@@ -13,35 +15,39 @@ namespace Aspid.MVVM.StarterKit.Views.Initializers
     [AddComponentMenu("MVVM/View Initializers/View Initializer")]
     public sealed class ViewInitializer : MonoViewInitializerBase
     {
-        [Header("View")]
-        [SerializeField] private InitializeComponent<IView> _viewComponent;
-        
-        [Header("View Model")]
+        [SerializeField] private InitializeComponent<IView>[] _viewComponents;
         [SerializeField] private InitializeComponent<IViewModel> _viewModelComponent;
         
-        private IView _view;
+        private IView[] _views;
         private IViewModel _viewModel;
         
 #if ASPID_MVVM_ZENJECT_INTEGRATION || ASPID_MVVM_VCONTAINER_INTEGRATION
-        [VContainer.Inject] private DIContainer _diContainer;
+        [Inject] private DIContainer _diContainer;
 #endif
 
-        protected override IView View => _view;
+        protected override IView[] Views => _views;
 
         protected override IViewModel ViewModel => _viewModel;
         
         private void Constructor()
         {
-            _view = _viewComponent.Resolve switch
-            { 
+            _views = new IView[_viewComponents.Length];
+            
+            for (var i = 0; i < _views.Length; i++)
+            {
+                var viewComponent = _viewComponents[i];
+                
+                _views[i] = viewComponent.Resolve switch
+                { 
 #if ASPID_MVVM_ZENJECT_INTEGRATION || ASPID_MVVM_VCONTAINER_INTEGRATION
-                InitializeComponent.Resolve.Di => _diContainer.Resolve(_viewComponent.Type) as IView, 
+                    InitializeComponent.Resolve.Di => _diContainer.Resolve(viewComponent.Type) as IView, 
 #endif
-                InitializeComponent.Resolve.Mono => _viewComponent.Mono as IView,
-                InitializeComponent.Resolve.References => _viewComponent.References,
-                InitializeComponent.Resolve.ScriptableObject => _viewComponent.Scriptable as IView,
-                _ => throw new ArgumentOutOfRangeException()
-            };
+                    InitializeComponent.Resolve.Mono => viewComponent.Mono as IView,
+                    InitializeComponent.Resolve.References => viewComponent.References,
+                    InitializeComponent.Resolve.ScriptableObject => viewComponent.Scriptable as IView,
+                    _ => throw new ArgumentOutOfRangeException()
+                };
+            }
 
             _viewModel = _viewModelComponent.Resolve switch
             { 
@@ -57,33 +63,39 @@ namespace Aspid.MVVM.StarterKit.Views.Initializers
         
         private void OnValidate()
         {
-            switch (_viewComponent?.Resolve)
+            if (_viewComponents is not null)
             {
-                case InitializeComponent.Resolve.Mono:
-                    _viewComponent.Type = null;
-                    _viewComponent.References = null;
-                    _viewComponent.Scriptable = null;
-                    break;
-                
-                case InitializeComponent.Resolve.References:
-                    _viewComponent.Type = null;
-                    _viewComponent.Mono = null;
-                    _viewComponent.Scriptable = null;
-                    break;
-                
-                case InitializeComponent.Resolve.ScriptableObject:
-                    _viewComponent.Type = null;
-                    _viewComponent.Mono = null;
-                    _viewComponent.References = null;
-                    break;
-                
+                foreach (var viewComponent in _viewComponents)
+                {
+                    switch (viewComponent?.Resolve)
+                    {
+                        case InitializeComponent.Resolve.Mono:
+                            viewComponent.Type = null;
+                            viewComponent.References = null;
+                            viewComponent.Scriptable = null;
+                            break;
+
+                        case InitializeComponent.Resolve.References:
+                            viewComponent.Type = null;
+                            viewComponent.Mono = null;
+                            viewComponent.Scriptable = null;
+                            break;
+
+                        case InitializeComponent.Resolve.ScriptableObject:
+                            viewComponent.Type = null;
+                            viewComponent.Mono = null;
+                            viewComponent.References = null;
+                            break;
+
 #if ASPID_MVVM_ZENJECT_INTEGRATION || ASPID_MVVM_VCONTAINER_INTEGRATION
-                case InitializeComponent.Resolve.Di:
-                    _viewComponent.Mono = null;
-                    _viewComponent.References = null;
-                    _viewComponent.Scriptable = null;
-                    break;
+                        case InitializeComponent.Resolve.Di:
+                            viewComponent.Mono = null;
+                            viewComponent.References = null;
+                            viewComponent.Scriptable = null;
+                            break;
 #endif
+                    }
+                }
             }
             
             switch (_viewModelComponent?.Resolve)

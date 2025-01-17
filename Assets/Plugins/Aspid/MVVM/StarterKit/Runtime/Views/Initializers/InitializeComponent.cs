@@ -5,7 +5,7 @@ using Aspid.MVVM.StarterKit.Utilities;
 namespace Aspid.MVVM.StarterKit.Views.Initializers
 {
     [Serializable]
-    internal sealed class InitializeComponent<TInterface> : InitializeComponent
+    public sealed class InitializeComponent<TInterface> : InitializeComponent
         where TInterface : class
     {
         public Resolve Resolve;

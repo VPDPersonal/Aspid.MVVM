@@ -14,7 +14,7 @@ namespace Aspid.MVVM.Mono
         /// <summary>
         /// Abstract property that should return the View.
         /// </summary>
-        protected abstract IView View { get; }
+        protected abstract IView[] Views { get; }
         
         /// <summary>
         /// Abstract property that should return the ViewModel.
@@ -24,12 +24,19 @@ namespace Aspid.MVVM.Mono
         /// <summary>
         /// Initializes the View by binding it to the ViewModel.
         /// </summary>
-        protected void Initialize() => View.Initialize(ViewModel);
+        protected void Initialize()
+        {
+            foreach (var view in Views)
+                view.Initialize(ViewModel);
+        }
 
         protected virtual void OnDestroy()
         {
-            if (_isDisposeViewOnDestroy) 
-                View.DisposeView();
+            if (_isDisposeViewOnDestroy)
+            {
+                foreach (var view in Views)
+                    view.DisposeView();
+            }
             
             if (_isDisposeViewModelOnDestroy) 
                 ViewModel.DisposeViewModel();

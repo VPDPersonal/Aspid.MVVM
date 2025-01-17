@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using Aspid.MVVM.Mono;
 using UnityEngine.Events;
@@ -19,7 +20,7 @@ namespace Aspid.MVVM.StarterKit.Binders.Mono
         [BinderLog]
         public void SetValue(T value)
         {
-            if (_converter == null) return;
+            if (_converter is null) throw new NullReferenceException(nameof(_converter));
             _casted.Invoke(_converter.Convert(value));
         }
     }
@@ -34,7 +35,7 @@ namespace Aspid.MVVM.StarterKit.Binders.Mono
         [BinderLog]
         public void SetValue(T value)
         {
-	        if (Converter == null) return;
+	        if (Converter is null) throw new NullReferenceException(nameof(Converter));
 	        _casted.Invoke(Converter.Convert(value));
         }
     }

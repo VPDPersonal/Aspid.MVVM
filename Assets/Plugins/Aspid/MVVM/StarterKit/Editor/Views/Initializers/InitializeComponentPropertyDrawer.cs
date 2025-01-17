@@ -1,7 +1,7 @@
 using UnityEditor;
 using UnityEngine;
 
-namespace Aspid.MVVM.StarterKit.Views.Initializers
+namespace Aspid.MVVM.StarterKit.Views
 {
     [CustomPropertyDrawer(typeof(InitializeComponent<>), true)]
     public sealed class InitializeComponentPropertyDrawer : PropertyDrawer

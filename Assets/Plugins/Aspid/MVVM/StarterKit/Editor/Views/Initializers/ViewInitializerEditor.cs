@@ -33,6 +33,9 @@ namespace Aspid.MVVM.StarterKit.Views.Initializers
         {
             _root = new VisualElement();
 
+            var header = Elements.CreateHeader(target, "Aspid Icon");
+            header.Q<Image>("HeaderIcon").AddOpenScriptCommand(target);
+
             var viewHelpBox = Elements.CreateHelpBox(
                 text: "The View must be assigned",
                 type: HelpBoxMessageType.Error,
@@ -56,7 +59,7 @@ namespace Aspid.MVVM.StarterKit.Views.Initializers
                     .SetMargin(top: 5));
             
             return _root
-                .AddHeader(target, "Aspid Icon")
+                .AddChild(header)
                 .AddChild(view
                     .SetMargin(top: 10))
                 .AddChild(viewModel

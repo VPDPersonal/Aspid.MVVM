@@ -71,8 +71,13 @@ namespace Aspid.MVVM.Mono
                 .AddChild(BuildViewModel());
         }
 
-        protected VisualElement BuildHeader() =>
-            Elements.CreateHeader(IconPath, GetScriptName());
+        protected VisualElement BuildHeader() 
+        {
+            var header = Elements.CreateHeader(IconPath, GetScriptName());
+            header.Q<Image>("HeaderIcon").AddOpenScriptCommand(target);
+
+            return header;
+        }
 
         protected VisualElement BuildBaseInspector()
         {

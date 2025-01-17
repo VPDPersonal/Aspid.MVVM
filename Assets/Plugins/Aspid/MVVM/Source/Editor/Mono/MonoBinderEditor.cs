@@ -168,6 +168,7 @@ namespace Aspid.MVVM.Mono
         {
             var root = new VisualElement();
             var header = Elements.CreateHeader(Binder, IconPath);
+            header.Q<Image>("HeaderIcon").AddOpenScriptCommand(target);
 
             var defaultInspector = Elements.CreateContainer(EditorColor.LightContainer)
                 .SetName("Parameters")

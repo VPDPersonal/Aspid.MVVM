@@ -41,7 +41,7 @@ namespace Aspid.MVVM
                 
                 OnBinding(viewModel, id);
                 
-                _removeBinderFromViewModel =  viewModel.AddBinder(this, id);;
+                _removeBinderFromViewModel =  viewModel.AddBinder(this, id);
                 IsBound = true;
                 
                 OnBound(viewModel, id);
@@ -95,8 +95,8 @@ namespace Aspid.MVVM
 
         private static void ThrowExceptionIfInvalidData(IViewModel viewModel, string id)
         {
-            if (string.IsNullOrEmpty(id)) throw new ArgumentNullException(nameof(id));
             if (viewModel is null) throw new ArgumentNullException(nameof(viewModel));
+            if (string.IsNullOrWhiteSpace(id)) throw new ArgumentNullException(nameof(id));
         }
     }
 }

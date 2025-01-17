@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 using Aspid.MVVM.StarterKit.Utilities;
 
-namespace Aspid.MVVM.StarterKit.Views.Initializers
+namespace Aspid.MVVM.StarterKit.Views
 {
     [Serializable]
     public sealed class InitializeComponent<TInterface> : InitializeComponent

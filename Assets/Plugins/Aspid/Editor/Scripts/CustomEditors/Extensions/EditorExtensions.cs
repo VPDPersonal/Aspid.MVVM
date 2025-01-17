@@ -2,7 +2,7 @@ using System.Linq;
 using UnityEditor;
 using UnityEngine;
 
-namespace Aspid.CustomEditors.Extensions
+namespace Aspid.CustomEditors
 {
 	public static class EditorExtensions
 	{

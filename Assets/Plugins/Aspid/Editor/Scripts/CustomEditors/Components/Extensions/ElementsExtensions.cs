@@ -1,9 +1,8 @@
 #nullable enable
 using UnityEngine;
 using UnityEngine.UIElements;
-using Aspid.CustomEditors.Extensions.VisualElements;
 
-namespace Aspid.CustomEditors.Components.Extensions
+namespace Aspid.CustomEditors
 {
     public static class ElementsExtensions
     {

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Aspid.CustomEditors.Configs
+namespace Aspid.CustomEditors
 {
     public static class EditorColor
     {

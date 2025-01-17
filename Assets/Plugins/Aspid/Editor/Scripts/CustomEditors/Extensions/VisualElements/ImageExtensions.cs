@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UIElements;
 
-namespace Aspid.CustomEditors.Extensions.VisualElements
+namespace Aspid.CustomEditors
 {
     public static class ImageExtensions
     {

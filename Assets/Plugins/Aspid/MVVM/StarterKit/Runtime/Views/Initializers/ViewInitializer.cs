@@ -10,7 +10,7 @@ using Inject = VContainer.InjectAttribute;
 using DIContainer = VContainer.IObjectResolver;
 #endif
 
-namespace Aspid.MVVM.StarterKit.Views.Initializers
+namespace Aspid.MVVM.StarterKit.Views
 {
     [AddComponentMenu("MVVM/View Initializers/View Initializer")]
     public sealed class ViewInitializer : MonoViewInitializerBase

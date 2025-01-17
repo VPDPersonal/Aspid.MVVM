@@ -2,13 +2,9 @@ using System.Linq;
 using UnityEditor;
 using UnityEngine;
 using System.Reflection;
+using Aspid.CustomEditors;
 using UnityEngine.UIElements;
 using System.Collections.Generic;
-using Aspid.CustomEditors.Configs;
-using Aspid.CustomEditors.Components;
-using Aspid.CustomEditors.Extensions;
-using Aspid.CustomEditors.Components.Extensions;
-using Aspid.CustomEditors.Extensions.VisualElements;
 
 namespace Aspid.MVVM.Mono
 {

@@ -114,24 +114,16 @@ namespace Aspid.MVVM.Mono
         
                 if (isRequire)
                 {
-                    var requiredTypes = field.GetCustomAttributes(typeof(RequireBinderAttribute), false)
-                        .Select(attribute => ((RequireBinderAttribute)attribute).Type);
+                    var requiredTypes = field.GetCustomAttributes<RequireBinderAttribute>(false)
+                        .Select(attribute => attribute.Type);
         
                     var binderCount = binders.Length;
                     binders = binders.Where(binder =>
                         {
                             if (binder == null) return true;
-        
-                            var interfaces = binder.GetType()
-                                .GetInterfaces();
 
-                            var result = IsMonoBinderValidableChild(view, binder);
-                            
-                            result = result && interfaces.Any(i =>
-                                i.IsGenericType
-                                && (i.GetGenericTypeDefinition() == typeof(IBinder<>) || i.GetGenericTypeDefinition() == typeof(IReverseBinder<>) )
-                                && requiredTypes.Any(requiredType =>
-                                    requiredType == i.GetGenericArguments()[0]));
+                            var result = IsMonoBinderValidableChild(view, binder)
+                                && BinderMatchRequiredType(requiredTypes, binder);
                             
                             if (!result)
                             {
@@ -164,6 +156,22 @@ namespace Aspid.MVVM.Mono
             
             if (isChanged) 
                 SaveView(view);
+        }
+        
+        public static bool BinderMatchRequiredType(IEnumerable<RequireBinderAttribute> attributes, object binder) =>
+            BinderMatchRequiredType(attributes.Select(attribute => attribute.Type), binder);
+        
+        public static bool BinderMatchRequiredType(IEnumerable<Type> requiredTypes, object binder)
+        {
+            return binder.GetType().GetInterfaces().Any(@interface =>
+            {
+                if (!@interface.IsGenericType) return false;
+                if (@interface.GetGenericTypeDefinition() != typeof(IBinder<>) 
+                    && @interface.GetGenericTypeDefinition() != typeof(IReverseBinder<>)) return false;
+
+                return requiredTypes.Any(requiredType =>
+                    @interface.GetGenericArguments()[0].IsAssignableFrom(requiredType));
+            });
         }
 
         public static void CleanViewField(IView view, string id)

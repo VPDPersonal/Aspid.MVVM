@@ -37,18 +37,8 @@ namespace Aspid.MVVM.Mono
             var ids = binderFields
                 .Where(field =>
                 {
-                    if (field.GetCustomAttribute<RequireBinderAttribute>() is { } attribute)
-                    {
-                        var type = attribute.Type;
-                        return Binder.GetType().GetInterfaces().Any(@interface =>
-                        {
-                            if (!@interface.IsGenericType) return false;
-                            if (@interface.GetGenericTypeDefinition() != typeof(IBinder<>) 
-                                && @interface.GetGenericTypeDefinition() != typeof(IReverseBinder<>)) return false;
-                            
-                            return @interface.GetGenericArguments()[0].IsAssignableFrom(type);
-                        });
-                    }
+                    if (field.GetCustomAttributes<RequireBinderAttribute>(false) is { } attributes)
+                        return ViewUtility.BinderMatchRequiredType(attributes, Binder);
 
                     var fieldType = !field.FieldType.IsArray
                         ? field.FieldType

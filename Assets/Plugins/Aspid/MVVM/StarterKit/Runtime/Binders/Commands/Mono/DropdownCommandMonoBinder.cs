@@ -6,7 +6,7 @@ namespace Aspid.MVVM.StarterKit.Binders.Mono
 {
     [RequireComponent(typeof(TMP_Dropdown))]
     [AddComponentMenu("MVVM/Binders/UI/Commands/Dropdown Command Binder")]
-    public sealed class DropdownCommandMonoBinder : MonoCommandBinder<int>
+    public sealed class DropdownCommandMonoBinder : MonoCommandBinder<int>, IBinder<IRelayCommand<long>>, IBinder<IRelayCommand<float>>, IBinder<IRelayCommand<double>>
     {
         [Header("Component")]
         [SerializeField] private TMP_Dropdown _dropdown;
@@ -31,6 +31,21 @@ namespace Aspid.MVVM.StarterKit.Binders.Mono
             if (_isBindInteractable)
                 _dropdown.interactable = command.CanExecute(_dropdown.value);
         }
+
+        public void SetValue(IRelayCommand<long> command) =>
+            SetValue(new RelayCommand<int>(
+                execute: value => command.Execute(value), 
+                canExecute: value => command.CanExecute(value)));
+
+        public void SetValue(IRelayCommand<float> command) =>
+            SetValue(new RelayCommand<int>(
+                execute: value => command.Execute(value), 
+                canExecute: value => command.CanExecute(value)));
+        
+        public void SetValue(IRelayCommand<double> command) =>
+            SetValue(new RelayCommand<int>(
+                execute: value => command.Execute(value), 
+                canExecute: value => command.CanExecute(value)));
     }
 }
 #endif

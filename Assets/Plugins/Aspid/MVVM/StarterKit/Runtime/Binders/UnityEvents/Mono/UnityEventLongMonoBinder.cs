@@ -7,7 +7,7 @@ using Aspid.MVVM.StarterKit.Converters;
 namespace Aspid.MVVM.StarterKit.Binders.Mono
 {
     [AddComponentMenu("MVVM/Binders/UnityEvent/UnityEvent Binder - Long")]
-    public sealed partial class UnityEventLongMonoBinder : MonoBinder, IBinder<long>
+    public sealed partial class UnityEventLongMonoBinder : MonoBinder, INumberBinder
     {
         public event UnityAction<long> Set
         {
@@ -26,12 +26,24 @@ namespace Aspid.MVVM.StarterKit.Binders.Mono
         
         [Header("Events")]
         [SerializeField] private UnityEvent<long> _set;
-
+        
+        [BinderLog]
+        public void SetValue(int value) =>
+            SetValue((long)value);
+        
         [BinderLog]
         public void SetValue(long value)
         {
             value = _converter?.Convert(value) ?? value;
             _set?.Invoke(value);
         }
+
+        [BinderLog]
+        public void SetValue(float value) =>
+            SetValue((long)value);
+
+        [BinderLog]
+        public void SetValue(double value) =>
+            SetValue((long)value);
     }
 }

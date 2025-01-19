@@ -1,10 +1,11 @@
 using UnityEngine;
+using Aspid.MVVM.Mono.Generation;
 using Aspid.MVVM.StarterKit.Converters;
 
 namespace Aspid.MVVM.StarterKit.Binders.Mono
 {
     [AddComponentMenu("MVVM/Binders/Animator/Animator Binder - Set Int")]
-    public class AnimatorSetIntMonoBinder : AnimatorSetParameterMonoBinder<int>
+    public class AnimatorSetIntMonoBinder : AnimatorSetParameterMonoBinder<int>, INumberBinder
     {
         [Header("Converter")]
         [SerializeReference]
@@ -22,5 +23,17 @@ namespace Aspid.MVVM.StarterKit.Binders.Mono
             
             CachedComponent.SetInteger(ParameterName, value);
         }
+
+        [BinderLog]
+        public void SetValue(long value) =>
+            base.SetValue((int)value);
+
+        [BinderLog]
+        public void SetValue(float value)=>
+            base.SetValue((int)value);
+
+        [BinderLog]
+        public void SetValue(double value)=>
+            base.SetValue((int)value);
     }
 }

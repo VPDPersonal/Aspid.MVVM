@@ -5,7 +5,7 @@ using Aspid.MVVM.StarterKit.Converters;
 
 namespace Aspid.MVVM.StarterKit.Binders.Mono
 {
-    [AddComponentMenu("MVVM/Binders/Renderer/Renderer Binder - Material")]
+    [AddComponentMenu("MVVM/Binders/Renderer/Renderer Binder - Materials")]
     public partial class RendererMaterialsMonoBinder : ComponentMonoBinder<Renderer>, IBinder<Material>, IBinder<Material[]>, IBinder<IReadOnlyCollection<Material>>
     {
         [Header("Converter")]

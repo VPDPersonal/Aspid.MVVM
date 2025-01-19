@@ -7,7 +7,7 @@ using Aspid.MVVM.StarterKit.Converters;
 namespace Aspid.MVVM.StarterKit.Binders.Mono
 {
     [AddComponentMenu("MVVM/Binders/UnityEvent/UnityEvent Binder - Float")]
-    public sealed partial class UnityEventFloatMonoBinder : MonoBinder, IBinder<float>
+    public sealed partial class UnityEventFloatMonoBinder : MonoBinder, INumberBinder
     {
         public event UnityAction<float> Set
         {
@@ -28,10 +28,22 @@ namespace Aspid.MVVM.StarterKit.Binders.Mono
         [SerializeField] private UnityEvent<float> _set;
 
         [BinderLog]
+        public void SetValue(int value) =>
+            SetValue((float)value);
+
+        [BinderLog]
+        public void SetValue(long value) =>
+            SetValue((float)value);
+        
+        [BinderLog]
         public void SetValue(float value)
         {
             value = _converter?.Convert(value) ?? value;
             _set?.Invoke(value);
         }
+
+        [BinderLog]
+        public void SetValue(double value) =>
+            SetValue((float)value);
     }
 }

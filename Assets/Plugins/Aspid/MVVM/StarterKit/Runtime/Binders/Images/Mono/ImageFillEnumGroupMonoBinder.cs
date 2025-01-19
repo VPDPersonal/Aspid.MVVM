@@ -9,8 +9,8 @@ namespace Aspid.MVVM.StarterKit.Binders.Mono
     public sealed class ImageFillEnumGroupMonoBinder : EnumGroupMonoBinder<Image>
     {
         [Header("Parameters")]
-        [SerializeField] [Range(0, 100)] private float _defaultValue;
-        [SerializeField] [Range(0, 100)] private float _selectedValue;
+        [SerializeField] [Range(0, 1)] private float _defaultValue;
+        [SerializeField] [Range(0, 1)] private float _selectedValue;
         
         [Header("Converters")]
         [SerializeReference]

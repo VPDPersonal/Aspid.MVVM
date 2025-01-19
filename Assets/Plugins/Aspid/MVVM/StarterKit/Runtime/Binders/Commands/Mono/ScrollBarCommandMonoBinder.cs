@@ -4,7 +4,7 @@ using UnityEngine.UI;
 namespace Aspid.MVVM.StarterKit.Binders.Mono
 {
     [RequireComponent(typeof(Scrollbar))]
-    [AddComponentMenu("MVVM/Binders/UI/Commands/Scrolbar Command Binder")]
+    [AddComponentMenu("MVVM/Binders/UI/Commands/Scrollbar Command Binder")]
     public sealed class ScrollBarCommandMonoBinder : MonoCommandBinder<float>
     {
         [Header("Component")]

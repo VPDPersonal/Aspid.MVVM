@@ -3,7 +3,7 @@ using Aspid.MVVM.StarterKit.Converters;
 
 namespace Aspid.MVVM.StarterKit.Binders.Mono
 {
-    [AddComponentMenu("MVVM/Binders/Collider/BoxCollider Binder - Size Switcher")]
+    [AddComponentMenu("MVVM/Binders/Collider/Box/BoxCollider Binder - Size Switcher")]
     public sealed class BoxColliderSizeSwitcherMonoBinder : SwitcherMonoBinder<BoxCollider, Vector3>
     {
         [Header("Converter")]

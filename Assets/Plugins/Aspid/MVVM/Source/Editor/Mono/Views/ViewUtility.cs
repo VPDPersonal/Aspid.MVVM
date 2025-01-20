@@ -78,7 +78,7 @@ namespace Aspid.MVVM.Mono
                     if (string.IsNullOrEmpty(newBinder.Id)) return;
                     
                     if (!changedBinder.OldBinders.Contains(newBinder))
-                        RemoveMonoBinderIfSet(view, newBinder, newBinder.Id);
+                        RemoveMonoBinderIfSet(newBinder.View, newBinder, newBinder.Id);
                     
                     var field = GetMonoBinderValidableFields(view.GetType())
                         .FirstOrDefault(field => GetIdName(field.Name) == newBinder.Id);

@@ -5,7 +5,7 @@ namespace Aspid.MVVM.Mono
     /// Interface required for validating a Binder within the Editor.
     /// It must be implemented inside #if UNITY_EDITOR.
     /// </summary>
-    public interface IMonoBinderValidable
+    public interface IMonoBinderValidable : IBinder
     {
         /// <summary>
         /// Is there a component?

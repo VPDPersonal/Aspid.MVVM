@@ -46,7 +46,7 @@ namespace Aspid.MVVM.Mono
                     
                     return fieldType?.IsAssignableFrom(Binder.GetType()) ?? false;
                 })
-                .Select(field => ViewUtility.GetIdName(field.Name))
+                .Select(field => field.GetBinderId())
                 .ToList();
 
             return ids;

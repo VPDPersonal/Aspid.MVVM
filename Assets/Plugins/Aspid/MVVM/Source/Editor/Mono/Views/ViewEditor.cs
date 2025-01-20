@@ -13,7 +13,7 @@ namespace Aspid.MVVM.Mono
         
         protected VisualElement Root { get; private set; }
         
-        protected BindersWithFieldName Binders { get; private set; }
+        protected ValidableBindersById Binders { get; private set; }
         
         protected string IconPath => MessageType switch
         {
@@ -38,7 +38,7 @@ namespace Aspid.MVVM.Mono
         protected virtual void OnDisable()
         {
             if (View) return;
-            if (Binders is null || Binders.Values.Count is 0) return;
+            if (Binders is null || Binders.Count is 0) return;
             
             foreach (var binders in Binders.Values)
             {

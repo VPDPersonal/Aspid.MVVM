@@ -34,10 +34,10 @@ namespace Aspid.MVVM.Mono
         /// <param name="newBinders">The new binders that have been added or modified.</param>
         public static void ValidateMonoBinderValidablesInView(
             IView view,
-            BindersWithFieldName oldBinders,
-            BindersWithFieldName newBinders)
+            ValidableBindersById oldBinders,
+            ValidableBindersById newBinders)
         {
-            var changedFields = GetChangedBinders(oldBinders, newBinders);
+            var changedFields = ChangedBinder.GetChangedBinders(oldBinders, newBinders);
             if (changedFields.Length == 0) return;
             
             foreach (var changedBinder in changedFields)
@@ -81,7 +81,7 @@ namespace Aspid.MVVM.Mono
                         RemoveMonoBinderIfSet(newBinder.View, newBinder, newBinder.Id);
                     
                     var field = GetMonoBinderValidableFields(view.GetType())
-                        .FirstOrDefault(field => GetIdName(field.Name) == newBinder.Id);
+                        .FirstOrDefault(field => field.GetBinderId() == newBinder.Id);
                     if (field == null) continue;
             
                     var viewBinders = field.GetValueAsArray<IMonoBinderValidable>(view);
@@ -140,13 +140,13 @@ namespace Aspid.MVVM.Mono
                     if (binderCount != binders.Length) isChanged = true;
                 }
         
-                var name = GetIdName(field.Name);
+                var id = field.GetBinderId();
                 foreach (var binder in binders)
                 {
                     if (binder == null) continue;
-                    if (binder.Id == name && binder.View == view) continue;
+                    if (binder.Id == id && binder.View == view) continue;
                     
-                    binder.Id = name;
+                    binder.Id = id;
                     binder.View = view;
                     isChanged = true;
                 }
@@ -286,7 +286,7 @@ namespace Aspid.MVVM.Mono
             
             foreach (var field in fields)
             {
-                var id = GetIdName(field.Name);
+                var id = field.GetBinderId();
                 var binders = bindersOnScene.Where(binder => id == binder.Id).ToArray();
         
                 field.SetValueFromCastValue(view, binders);
@@ -302,10 +302,10 @@ namespace Aspid.MVVM.Mono
         /// <returns>
         /// A dictionary where the key is the field name and the value is an array of `IMonoBinderValidable` associated with that field.
         /// </returns>
-        public static BindersWithFieldName GetMonoBinderValidableWithFieldName(IView view)
+        public static ValidableBindersById GetMonoBinderValidableWithFieldName(IView view)
         {
             var fields = GetMonoBinderValidableFields(view.GetType());
-            var bindersByFieldName = new BindersWithFieldName();
+            var bindersByFieldName = new ValidableBindersById();
 
             foreach (var field in fields)
             {
@@ -339,34 +339,11 @@ namespace Aspid.MVVM.Mono
             if (view is not Component monoView || binder is not Component monoBinder) return true;
             return monoBinder.transform.IsChildOf(monoView.transform) || monoBinder.transform == monoView.transform;
         }
-        
-        /// <summary>
-        /// Generates an ID for a binder based on its field name.
-        /// Removes common prefixes like "_" or "m_" and ensures the first character is uppercase.
-        /// </summary>
-        /// <param name="fieldName">The original field name of the binder.</param>
-        /// <returns>The processed ID string based on the field name.</returns>
-        public static string GetIdName(string fieldName)
-        {
-            var prefixCount = GetPrefixCount();
-            fieldName = fieldName.Remove(0, prefixCount);
-        
-            var firstSymbol = fieldName[0];
-            if (char.IsLower(firstSymbol))
-            {
-                fieldName = fieldName.Remove(0, 1);
-                fieldName = char.ToUpper(firstSymbol) + fieldName;
-            }
-        
-            return fieldName;
-        
-            int GetPrefixCount() => fieldName.StartsWith("_") ? 1 : fieldName.StartsWith("m_") ? 2 : 0;
-        }
 
         public static FieldInfo GetFieldInfoById(IView view, string id)
         {
 	        return GetMonoBinderValidableFields(view.GetType())
-		        .FirstOrDefault(field => GetIdName(field.Name) == id);
+		        .FirstOrDefault(field => field.GetBinderId() == id);
         }
         
         private static void SaveView(IView view)
@@ -377,35 +354,6 @@ namespace Aspid.MVVM.Mono
             EditorUtility.SetDirty(component);
             EditorSceneManager.MarkSceneDirty(component.gameObject.scene);
         }
-        
-        /// <summary>
-        /// Identifies fields whose binders have changed between two sets of `BindersWithFieldName`.
-        /// </summary>
-        /// <param name="oldBinders">The previous set of binders.</param>
-        /// <param name="newBinders">The new set of binders to compare against the old ones.</param>
-        /// <returns>
-        /// A read-only list of `ChangedBinder` instances representing the fields where the binders have changed.
-        /// </returns>
-        private static ReadOnlySpan<ChangedBinder> GetChangedBinders(
-            BindersWithFieldName oldBinders, 
-            BindersWithFieldName newBinders)
-        {
-            if (oldBinders.Count != newBinders.Count) 
-                throw new Exception();
-            
-            var changedFields = new List<ChangedBinder>(oldBinders.Count);
-
-            foreach (var key in oldBinders.Keys)
-            {
-                var oldValue = oldBinders[key] ?? Array.Empty<IMonoBinderValidable>();
-                var newValue = newBinders[key] ?? Array.Empty<IMonoBinderValidable>();
-                if (oldValue == newValue) continue;
-                
-                changedFields.Add(new ChangedBinder(oldValue, newValue));
-            }
-
-            return changedFields.ToArray().AsSpan();
-        }
 
         /// <summary>
         /// Represents the data structure for tracking changes to binders between two sets of values.
@@ -415,10 +363,37 @@ namespace Aspid.MVVM.Mono
             public readonly IMonoBinderValidable[] OldBinders;
             public readonly IMonoBinderValidable[] NewBinders;
 
-            public ChangedBinder(IMonoBinderValidable[] oldBinders, IMonoBinderValidable[] newBinders)
+            private ChangedBinder(IMonoBinderValidable[] oldBinders, IMonoBinderValidable[] newBinders)
             {
                 OldBinders = oldBinders;
                 NewBinders = newBinders;
+            }
+            
+            /// <summary>
+            /// Identifies fields whose binders have changed between two sets of `BindersWithFieldName`.
+            /// </summary>
+            /// <param name="oldBinders">The previous set of binders.</param>
+            /// <param name="newBinders">The new set of binders to compare against the old ones.</param>
+            /// <returns>
+            /// A read-only list of `ChangedBinder` instances representing the fields where the binders have changed.
+            /// </returns>
+            public static ReadOnlySpan<ChangedBinder> GetChangedBinders(ValidableBindersById oldBinders, ValidableBindersById newBinders)
+            {
+                if (oldBinders.Count != newBinders.Count) 
+                    throw new Exception();
+            
+                var changedFields = new List<ChangedBinder>(oldBinders.Count);
+
+                foreach (var key in oldBinders.Keys)
+                {
+                    var oldValue = oldBinders[key] ?? Array.Empty<IMonoBinderValidable>();
+                    var newValue = newBinders[key] ?? Array.Empty<IMonoBinderValidable>();
+                    if (oldValue == newValue) continue;
+                
+                    changedFields.Add(new ChangedBinder(oldValue, newValue));
+                }
+
+                return changedFields.ToArray().AsSpan();
             }
         }
     }

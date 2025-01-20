@@ -83,7 +83,7 @@ namespace Aspid.MVVM.Mono
                 else if (view is not null)
                 {
                     var fields = view.GetType().GetFieldInfosIncludingBaseClasses(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
-                    var isExist = fields.Select(field => ViewUtility.GetIdName(field.Name)).Any(idName => idName == binder.Id);
+                    var isExist = fields.Select(field => field.GetBinderId()).Any(idName => idName == binder.Id);
 
                     if (!isExist)
                     {

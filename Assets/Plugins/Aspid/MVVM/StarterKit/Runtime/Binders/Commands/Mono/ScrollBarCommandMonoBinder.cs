@@ -1,11 +1,12 @@
 using UnityEngine;
 using UnityEngine.UI;
+using Aspid.MVVM.Mono.Generation;
 
 namespace Aspid.MVVM.StarterKit.Binders.Mono
 {
     [RequireComponent(typeof(Scrollbar))]
     [AddComponentMenu("MVVM/Binders/UI/Commands/Scrollbar Command Binder")]
-    public sealed class ScrollBarCommandMonoBinder : MonoCommandBinder<float>, IBinder<IRelayCommand<int>>, IBinder<IRelayCommand<long>>, IBinder<IRelayCommand<double>>
+    public sealed partial class ScrollBarCommandMonoBinder : MonoCommandBinder<float>, IBinder<IRelayCommand<int>>, IBinder<IRelayCommand<long>>, IBinder<IRelayCommand<double>>
     {
         [Header("Component")]
         [SerializeField] private Scrollbar _scrollBar;
@@ -31,16 +32,19 @@ namespace Aspid.MVVM.StarterKit.Binders.Mono
                 _scrollBar.interactable = command.CanExecute(_scrollBar.value);
         }
         
+        [BinderLog]
         public void SetValue(IRelayCommand<int> command) =>
             SetValue(new RelayCommand<float>(
                 execute: value => command.Execute((int)value), 
                 canExecute: value => command.CanExecute((int)value)));
         
+        [BinderLog]
         public void SetValue(IRelayCommand<long> command) =>
             SetValue(new RelayCommand<float>(
                 execute: value => command.Execute((int)value), 
                 canExecute: value => command.CanExecute((int)value)));
         
+        [BinderLog]
         public void SetValue(IRelayCommand<double> command) =>
             SetValue(new RelayCommand<float>(
                 execute: value => command.Execute((int)value), 

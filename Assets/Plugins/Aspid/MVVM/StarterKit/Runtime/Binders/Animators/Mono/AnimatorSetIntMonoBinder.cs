@@ -5,7 +5,7 @@ using Aspid.MVVM.StarterKit.Converters;
 namespace Aspid.MVVM.StarterKit.Binders.Mono
 {
     [AddComponentMenu("MVVM/Binders/Animator/Animator Binder - Set Int")]
-    public class AnimatorSetIntMonoBinder : AnimatorSetParameterMonoBinder<int>, INumberBinder
+    public partial class AnimatorSetIntMonoBinder : AnimatorSetParameterMonoBinder<int>, INumberBinder
     {
         [Header("Converter")]
         [SerializeReference]

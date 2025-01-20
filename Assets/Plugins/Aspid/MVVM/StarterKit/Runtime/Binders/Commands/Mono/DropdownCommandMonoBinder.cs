@@ -1,12 +1,13 @@
 #if UNITY_2023_1_OR_NEWER || ASPID_MVVM_TEXT_MESH_PRO_INTEGRATION
 using TMPro;
 using UnityEngine;
+using Aspid.MVVM.Mono.Generation;
 
 namespace Aspid.MVVM.StarterKit.Binders.Mono
 {
     [RequireComponent(typeof(TMP_Dropdown))]
     [AddComponentMenu("MVVM/Binders/UI/Commands/Dropdown Command Binder")]
-    public sealed class DropdownCommandMonoBinder : MonoCommandBinder<int>, IBinder<IRelayCommand<long>>, IBinder<IRelayCommand<float>>, IBinder<IRelayCommand<double>>
+    public sealed partial class DropdownCommandMonoBinder : MonoCommandBinder<int>, IBinder<IRelayCommand<long>>, IBinder<IRelayCommand<float>>, IBinder<IRelayCommand<double>>
     {
         [Header("Component")]
         [SerializeField] private TMP_Dropdown _dropdown;
@@ -32,16 +33,19 @@ namespace Aspid.MVVM.StarterKit.Binders.Mono
                 _dropdown.interactable = command.CanExecute(_dropdown.value);
         }
 
+        [BinderLog]
         public void SetValue(IRelayCommand<long> command) =>
             SetValue(new RelayCommand<int>(
                 execute: value => command.Execute(value), 
                 canExecute: value => command.CanExecute(value)));
 
+        [BinderLog]
         public void SetValue(IRelayCommand<float> command) =>
             SetValue(new RelayCommand<int>(
                 execute: value => command.Execute(value), 
                 canExecute: value => command.CanExecute(value)));
         
+        [BinderLog]
         public void SetValue(IRelayCommand<double> command) =>
             SetValue(new RelayCommand<int>(
                 execute: value => command.Execute(value), 

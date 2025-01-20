@@ -29,7 +29,7 @@ namespace Aspid.MVVM.StarterKit.Binders
         
         public Transform? Container => _container;
 
-        private Dictionary<TKey, TView> View => _views ??= new Dictionary<TKey, TView>();
+        private Dictionary<TKey, TView> Views => _views ??= new Dictionary<TKey, TView>();
         
         public DynamicViewModelDictionary(TView prefab, Transform? container = null)
         {
@@ -56,7 +56,7 @@ namespace Aspid.MVVM.StarterKit.Binders
         protected sealed override void OnRemoved(KeyValuePair<TKey, TViewModel?> oldItem)
         {
             ReleaseView(GetView(oldItem.Key));
-            View.Remove(oldItem.Key);
+            Views.Remove(oldItem.Key);
         }
 
         protected sealed override void OnRemoved(IReadOnlyList<KeyValuePair<TKey, TViewModel?>> oldItems)
@@ -67,28 +67,28 @@ namespace Aspid.MVVM.StarterKit.Binders
 
         protected sealed override void OnReplace(KeyValuePair<TKey, TViewModel?> oldItem, KeyValuePair<TKey, TViewModel?> newItem)
         {
-            View[oldItem.Key].Deinitialize();
+            Views[oldItem.Key].Deinitialize();
             
             if (newItem.Value is not null)
             {
-                View[oldItem.Key].Initialize(newItem.Value);
+                Views[oldItem.Key].Initialize(newItem.Value);
             }
         }
 
         protected sealed override void OnReset()
         {
-            foreach (var view in View.Values)
+            foreach (var view in Views.Values)
                 ReleaseView(view);
             
-            View.Clear();
+            Views.Clear();
         }
 
         private TView GetView(TKey key)
         {
-            if (View.TryGetValue(key, out var view)) return view;
+            if (Views.TryGetValue(key, out var view)) return view;
 
             view = GetNewView();
-            View.Add(key, view);
+            Views.Add(key, view);
 
             return view;
         }

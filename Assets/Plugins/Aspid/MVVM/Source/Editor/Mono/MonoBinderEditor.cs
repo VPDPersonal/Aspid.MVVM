@@ -85,7 +85,7 @@ namespace Aspid.MVVM.Mono
 			        return;
 		        }
 		        
-		        var field = ViewUtility.GetFieldInfoById(view, _id.stringValue);
+		        var field = ViewUtility.GetValidableBinderFieldById(view, _id.stringValue);
 
                 if (field is not null)
                 {
@@ -408,11 +408,11 @@ namespace Aspid.MVVM.Mono
                 if (_previousView?.GetInstanceID() == view?.GetInstanceID() 
                     && _previousId == id) return;
             
-                if (_previousView && !string.IsNullOrEmpty(_previousId))
-                    ViewUtility.RemoveMonoBinderIfSet(_previousView, binder, _previousId);
+                if (_previousView && !string.IsNullOrWhiteSpace(_previousId))
+                    ViewUtility.RemoveBinderIfExist(_previousView, binder, _previousId);
                 
-                if (view && !string.IsNullOrEmpty(id))
-                    ViewUtility.SetMonoBinderIfNotSet((MonoView)view, binder, id);
+                if (view && !string.IsNullOrWhiteSpace(id))
+                    ViewUtility.SetBinderIfNotExist(binder);
             }
         }
     }

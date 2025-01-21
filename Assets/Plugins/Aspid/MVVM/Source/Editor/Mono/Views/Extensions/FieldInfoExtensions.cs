@@ -6,12 +6,9 @@ namespace Aspid.MVVM.Mono
 {
     public static class FieldInfoExtensions
     {
-        public static void SetValueFromCastValue<T>(this FieldInfo field, object obj, T value) =>
-            field.SetValueFromCastValue(obj, new[] { value });
-        
-        public static void SetValueFromCastValue<T>(this FieldInfo field, object obj, T[] value)
+        public static void SetValueFromCastValue<T>(this FieldInfo field, object obj, params T?[] value)
         {
-            if (value.Length == 0)
+            if (value.Length is 0)
             {
                 field.SetValue(obj, null);
                 return;

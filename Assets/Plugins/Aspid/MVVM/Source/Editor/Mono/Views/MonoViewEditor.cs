@@ -1,7 +1,5 @@
-using System.Linq;
 using UnityEditor;
 using UnityEngine;
-using System.Reflection;
 using Aspid.CustomEditors;
 using UnityEngine.UIElements;
 using System.Collections.Generic;
@@ -19,7 +17,7 @@ namespace Aspid.MVVM.Mono
         
         protected override void OnEnable()
         {
-            ViewUtility.FindAllMonoBinderValidableInChildren(View);
+            ViewUtility.ValidateView(View);
             base.OnEnable();
         }
 
@@ -43,7 +41,9 @@ namespace Aspid.MVVM.Mono
             return Elements.CreateContainer(EditorColor.LightContainer)
                 .AddTitle(EditorColor.LightText, "Other Binders")
                 .AddChild(helpBox)
-                .AddChild(new IMGUIContainer(DrawOtherBinders))
+                .AddChild(
+                    new IMGUIContainer(DrawOtherBinders)
+                    .SetName("OtherBindersContainer"))
                 .SetMargin(top: 10)
                 .SetName("OtherBinders");;
         }
@@ -74,7 +74,7 @@ namespace Aspid.MVVM.Mono
                 var view = binder.View;
 
                 if (view is null && !string.IsNullOrEmpty(binder.Id))
-                    binder.Id= null;
+                    binder.Id = null;
 
                 if (string.IsNullOrEmpty(binder.Id))
                 {
@@ -82,13 +82,10 @@ namespace Aspid.MVVM.Mono
                 }
                 else if (view is not null)
                 {
-                    var fields = view.GetType().GetFieldInfosIncludingBaseClasses(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
-                    var isExist = fields.Select(field => field.GetBinderId()).Any(idName => idName == binder.Id);
+                    var field = ViewUtility.GetValidableBinderFieldById(view, binder.Id);
 
-                    if (!isExist)
-                    {
+                    if (field is null)
                         binder.Reset();
-                    }
                 }
             }
 

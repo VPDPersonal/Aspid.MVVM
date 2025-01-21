@@ -32,7 +32,7 @@ namespace Aspid.MVVM.Mono
         {
             if (view == null) return new List<string>();
             
-            var binderFields = ViewUtility.GetMonoBinderValidableFields(view.GetType()).ToList();
+            var binderFields = ViewUtility.GetValidableBinderFields(view);
             
             var ids = binderFields
                 .Where(field =>

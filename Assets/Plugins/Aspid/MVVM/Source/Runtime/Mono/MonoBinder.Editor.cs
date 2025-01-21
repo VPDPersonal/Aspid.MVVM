@@ -2,6 +2,7 @@
 #nullable disable
 using System;
 using UnityEngine;
+using System.ComponentModel;
 
 namespace Aspid.MVVM.Mono
 {
@@ -13,22 +14,31 @@ namespace Aspid.MVVM.Mono
         /// <summary>
         /// Is there a component?
         /// </summary>
+        [EditorBrowsable(EditorBrowsableState.Advanced)]
         public bool IsMonoExist => this;
         
         /// <summary>
         /// The View to which the Binder relates.
         /// (Editor only).
         /// </summary>
+        [EditorBrowsable(EditorBrowsableState.Advanced)]
         public IView View
         {
             get => _view;
             set
             {
+                if (!IsMonoExist) return;
+
+                if (value is null)
+                {
+                    _view = null;
+                    return;
+                }
+                
                 if (_view == value as MonoView) return;
                 
                 _view = value switch
                 {
-                    null => null,
                     MonoView view => view,
                     _ => throw new ArgumentException("View is not a MonoView")
                 };
@@ -41,11 +51,13 @@ namespace Aspid.MVVM.Mono
         /// The ID that must correspond to the name of any ViewModel property.
         /// (Editor only).
         /// </summary>
+        [EditorBrowsable(EditorBrowsableState.Advanced)]
         public string Id
         {
             get => _id;
             set
             {
+                if (!IsMonoExist) return;
                 if (_id == value) return;
                 
                 _id = value;
@@ -62,9 +74,10 @@ namespace Aspid.MVVM.Mono
                 throw new Exception($"ViewModel {viewModel} not match. Binder ViewModel {View?.ViewModel}; Id {Id}.");
         }
 
+        [EditorBrowsable(EditorBrowsableState.Never)]
         private void SaveBinderDataInEditor()
         {
-	        if (!this) return;
+	        if (!IsMonoExist) return;
 	        
             UnityEditor.EditorUtility.SetDirty(this);
             UnityEditor.SceneManagement.EditorSceneManager.MarkSceneDirty(gameObject.scene);

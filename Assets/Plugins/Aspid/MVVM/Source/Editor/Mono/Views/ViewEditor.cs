@@ -37,7 +37,16 @@ namespace Aspid.MVVM.Mono
 
         protected virtual void OnDisable()
         {
-            if (View) return;
+            if (View)
+            {
+                if (View is MonoView monoView)
+                {
+                    ViewUtility.ValidateView(monoView);
+                }
+                
+                return;
+            }
+            
             if (Binders is null || Binders.Count is 0) return;
             
             foreach (var binders in Binders.Values)
@@ -45,10 +54,7 @@ namespace Aspid.MVVM.Mono
                 if (binders is null) continue;
 
                 foreach (var binder in binders)
-                {
-                    if (binder.IsMonoExist)
-                        binder.Reset();
-                }
+                    binder.Reset();
             }
         }
 
@@ -97,12 +103,12 @@ namespace Aspid.MVVM.Mono
             !View ? null : View.GetScriptName();
         
         protected void UpdateBinders() =>
-            Binders = View ? ViewUtility.GetMonoBinderValidableWithFieldName(View) : null;
+            Binders = View ? ViewUtility.GetValidableBindersById(View) : null;
 
         private void DrawBaseInspector()
         {
             var propertiesCount = 0;
-            var oldBindersDictionary = ViewUtility.GetMonoBinderValidableWithFieldName(View);
+            var oldBindersDictionary = ViewUtility.GetValidableBindersById(View);
 
             serializedObject.UpdateIfRequiredOrScript();
             {
@@ -122,8 +128,8 @@ namespace Aspid.MVVM.Mono
             }
             serializedObject.ApplyModifiedProperties();
             
-            var newBindersDictionary = ViewUtility.GetMonoBinderValidableWithFieldName(View);
-            ViewUtility.ValidateMonoBinderValidablesInView(View, oldBindersDictionary, newBindersDictionary);
+            var newBindersDictionary = ViewUtility.GetValidableBindersById(View);
+            ViewUtility.ValidateViewChanges(View, oldBindersDictionary, newBindersDictionary);
             UpdateBinders();
             
             serializedObject.UpdateIfRequiredOrScript();

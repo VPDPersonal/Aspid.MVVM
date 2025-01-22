@@ -1,8 +1,12 @@
 #if ASPID_MVVM_UNITY_LOCALIZATION_INTEGRATION
 using UnityEngine;
 using Aspid.MVVM.Mono.Generation;
-using Aspid.MVVM.StarterKit.Converters;
 using UnityEngine.Localization.Components;
+#if UNITY_2023_1_OR_NEWER
+using Converter = Aspid.MVVM.StarterKit.Converters.IConverter<string, string>;
+#else
+using Converter = Aspid.MVVM.StarterKit.Converters.IConverterString;
+#endif
 
 namespace Aspid.MVVM.StarterKit.Binders.Mono
 {
@@ -10,13 +14,8 @@ namespace Aspid.MVVM.StarterKit.Binders.Mono
     public partial class TextLocalizationMonoBinder : ComponentMonoBinder<LocalizeStringEvent>, IBinder<string>
     {
         [Header("Converter")]
-        [SerializeReference]
         [SerializeReferenceDropdown]
-#if UNITY_2023_1_OR_NEWER
-        private IConverter<string, string> _converter;
-#else
-        private IConverterString _converter;
-#endif
+        [SerializeReference] private Converter _converter;
         
         [BinderLog]
         public void SetValue(string value) =>

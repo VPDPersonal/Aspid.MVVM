@@ -4,6 +4,11 @@ using UnityEngine;
 using System.Globalization;
 using Aspid.MVVM.Mono.Generation;
 using Aspid.MVVM.StarterKit.Converters;
+#if UNITY_2023_1_OR_NEWER
+using Converter = Aspid.MVVM.StarterKit.Converters.IConverter<string, string>;
+#else
+using Converter = Aspid.MVVM.StarterKit.Converters.IConverterString;
+#endif
 
 namespace Aspid.MVVM.StarterKit.Binders.Mono
 {
@@ -11,13 +16,8 @@ namespace Aspid.MVVM.StarterKit.Binders.Mono
     public partial class TextMonoBinder : ComponentMonoBinder<TMP_Text>, IBinder<string>, INumberBinder
     {
         [Header("Converter")]
-        [SerializeReference]
         [SerializeReferenceDropdown]
-#if UNITY_2023_1_OR_NEWER
-        private IConverter<string, string> _converter = new StringFormatConverter();
-#else
-        private IConverterString _converter = new StringFormatConverter();
-#endif
+        [SerializeReference] private Converter _converter = new StringFormatConverter();
         
         [BinderLog]
         public void SetValue(string value) =>

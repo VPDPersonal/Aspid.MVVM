@@ -1,7 +1,11 @@
 #if UNITY_2023_1_OR_NEWER || ASPID_MVVM_TEXT_MESH_PRO_INTEGRATION
 using TMPro;
 using UnityEngine;
-using Aspid.MVVM.StarterKit.Converters;
+#if UNITY_2023_1_OR_NEWER
+using Converter = Aspid.MVVM.StarterKit.Converters.IConverter<string, string>;
+#else
+using Converter = Aspid.MVVM.StarterKit.Converters.IConverterString;
+#endif
 
 namespace Aspid.MVVM.StarterKit.Binders.Mono
 {
@@ -13,21 +17,11 @@ namespace Aspid.MVVM.StarterKit.Binders.Mono
         [SerializeField] private string _selectedValue;
         
         [Header("Converters")]
-        [SerializeReference]
         [SerializeReferenceDropdown]
-#if UNITY_2023_1_OR_NEWER
-        private IConverter<string, string> _defaultValueConverter;
-#else
-        private IConverterString _defaultValueConverter;
-#endif
+        [SerializeReference] private Converter _defaultValueConverter;
         
-        [SerializeReference]
         [SerializeReferenceDropdown]
-#if UNITY_2023_1_OR_NEWER
-        private IConverter<string, string> _selectedValueConverter;
-#else
-        private IConverterString _selectedValueConverter;
-#endif
+        [SerializeReference] private Converter _selectedValueConverter;
 
         protected override void SetDefaultValue(TMP_Text element) =>
             element.text = _defaultValueConverter?.Convert(_defaultValue) ?? _defaultValue;

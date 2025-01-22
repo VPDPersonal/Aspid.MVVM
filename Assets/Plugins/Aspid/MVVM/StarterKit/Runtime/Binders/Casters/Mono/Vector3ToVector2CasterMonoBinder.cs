@@ -3,6 +3,11 @@ using Aspid.MVVM.Mono;
 using UnityEngine.Events;
 using Aspid.MVVM.Mono.Generation;
 using Aspid.MVVM.StarterKit.Converters;
+#if UNITY_2023_1_OR_NEWER
+using Converter = Aspid.MVVM.StarterKit.Converters.IConverter<UnityEngine.Vector3, UnityEngine.Vector2>;
+#else
+using Converter = Aspid.MVVM.StarterKit.Converters.IConverterVector3ToVector2;
+#endif
 
 namespace Aspid.MVVM.StarterKit.Binders.Mono
 {
@@ -10,13 +15,8 @@ namespace Aspid.MVVM.StarterKit.Binders.Mono
     public sealed partial class Vector3ToVector2CasterMonoBinder : MonoBinder, IBinder<Vector2>
     {
         [Header("Converter")]
-        [SerializeReference]
         [SerializeReferenceDropdown]
-#if UNITY_2023_1_OR_NEWER
-        private IConverter<Vector3, Vector2> _converter = new Vector3ToVector2Converter();
-#else
-        private IConverterVector3ToVector2 _converter = new Vector3ToVector2Converter();
-#endif
+        [SerializeReference] private Converter _converter = new Vector3ToVector2Converter();
         
         [Header("Events")]
         [SerializeField] private UnityEvent<Vector3> _casted;

@@ -1,7 +1,11 @@
 #if UNITY_2023_1_OR_NEWER || ASPID_MVVM_TEXT_MESH_PRO_INTEGRATION
 using TMPro;
 using UnityEngine;
-using Aspid.MVVM.StarterKit.Converters;
+#if UNITY_2023_1_OR_NEWER
+using Converter = Aspid.MVVM.StarterKit.Converters.IConverter<string, string>;
+#else
+using Converter = Aspid.MVVM.StarterKit.Converters.IConverterString;
+#endif
 
 namespace Aspid.MVVM.StarterKit.Binders.Mono
 {
@@ -9,13 +13,8 @@ namespace Aspid.MVVM.StarterKit.Binders.Mono
     public sealed class TextEnumMonoBinder : EnumComponentMonoBinder<TMP_Text, string>
     {
         [Header("Converter")]
-        [SerializeReference]
         [SerializeReferenceDropdown]
-#if UNITY_2023_1_OR_NEWER
-        private IConverter<string, string> _converter;
-#else
-        private IConverterString _converter;
-#endif
+        [SerializeReference] private Converter _converter;
         
         protected override void SetValue(string value) =>
             CachedComponent.text = _converter?.Convert(value) ?? value;

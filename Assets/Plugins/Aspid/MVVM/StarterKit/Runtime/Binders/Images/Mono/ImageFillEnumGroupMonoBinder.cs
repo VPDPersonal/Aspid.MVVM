@@ -1,7 +1,11 @@
 using UnityEngine;
 using UnityEngine.UI;
 using System.Runtime.CompilerServices;
-using Aspid.MVVM.StarterKit.Converters;
+#if UNITY_2023_1_OR_NEWER
+using Converter = Aspid.MVVM.StarterKit.Converters.IConverter<float, float>;
+#else
+using Converter = Aspid.MVVM.StarterKit.Converters.IConverterFloat;
+#endif
 
 namespace Aspid.MVVM.StarterKit.Binders.Mono
 {
@@ -13,21 +17,11 @@ namespace Aspid.MVVM.StarterKit.Binders.Mono
         [SerializeField] [Range(0, 1)] private float _selectedValue;
         
         [Header("Converters")]
-        [SerializeReference]
         [SerializeReferenceDropdown]
-#if UNITY_2023_1_OR_NEWER
-        private IConverter<float, float> _defaultValueConverter;
-#else
-        private IConverterFloat _defaultValueConverter;
-#endif
+        [SerializeReference] private Converter _defaultValueConverter;
         
-        [SerializeReference]
         [SerializeReferenceDropdown]
-#if UNITY_2023_1_OR_NEWER
-        private IConverter<float, float> _selectedValueConverter;
-#else
-        private IConverterFloat _selectedValueConverter;
-#endif
+        [SerializeReference] private Converter _selectedValueConverter;
 
         protected override void SetDefaultValue(Image element) 
         {

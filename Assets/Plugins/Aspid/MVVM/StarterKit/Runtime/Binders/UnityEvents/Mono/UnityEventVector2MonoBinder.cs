@@ -2,7 +2,11 @@ using UnityEngine;
 using Aspid.MVVM.Mono;
 using UnityEngine.Events;
 using Aspid.MVVM.Mono.Generation;
-using Aspid.MVVM.StarterKit.Converters;
+#if UNITY_2023_1_OR_NEWER
+using Converter = Aspid.MVVM.StarterKit.Converters.IConverter<UnityEngine.Vector2, UnityEngine.Vector2>;
+#else
+using Converter = Aspid.MVVM.StarterKit.Converters.IConverterVector2;
+#endif
 
 namespace Aspid.MVVM.StarterKit.Binders.Mono
 {
@@ -16,13 +20,8 @@ namespace Aspid.MVVM.StarterKit.Binders.Mono
         }
         
         [Header("Converter")]
-        [SerializeReference] 
         [SerializeReferenceDropdown]
-#if UNITY_2023_1_OR_NEWER
-        private IConverter<Vector2, Vector2> _converter;
-#else
-        private IConverterVector2 _converter;
-#endif
+        [SerializeReference] private Converter _converter;
         
         [Header("Events")]
         [SerializeField] private UnityEvent<Vector2> _set;

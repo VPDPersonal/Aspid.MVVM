@@ -1,7 +1,11 @@
 using UnityEngine;
 using UnityEngine.UI;
 using Aspid.MVVM.Mono.Generation;
-using Aspid.MVVM.StarterKit.Converters;
+#if UNITY_2023_1_OR_NEWER
+using Converter = Aspid.MVVM.StarterKit.Converters.IConverter<UnityEngine.Material, UnityEngine.Material>;
+#else
+using Converter = Aspid.MVVM.StarterKit.Converters.IConverterMaterial;
+#endif
 
 namespace Aspid.MVVM.StarterKit.Binders.Mono
 {
@@ -9,13 +13,8 @@ namespace Aspid.MVVM.StarterKit.Binders.Mono
     public partial class RawImageMaterialMonoBinder : ComponentMonoBinder<RawImage>, IBinder<Material>
     {
         [Header("Converter")]
-        [SerializeReference]
         [SerializeReferenceDropdown]
-#if UNITY_2023_1_OR_NEWER
-        private IConverter<Material, Material> _converter;
-#else
-        private IConverterMaterial _converter;
-#endif
+        [SerializeReference] private Converter _converter;
         
         [BinderLog]
         public void SetValue(Material value) =>

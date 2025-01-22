@@ -1,5 +1,9 @@
 using UnityEngine;
-using Aspid.MVVM.StarterKit.Converters;
+#if UNITY_2023_1_OR_NEWER
+using Converter = Aspid.MVVM.StarterKit.Converters.IConverter<UnityEngine.Mesh, UnityEngine.Mesh>;
+#else
+using Converter = Aspid.MVVM.StarterKit.Converters.IConverterMesh;
+#endif
 
 namespace Aspid.MVVM.StarterKit.Binders.Mono
 {
@@ -11,21 +15,11 @@ namespace Aspid.MVVM.StarterKit.Binders.Mono
         [SerializeField] private Mesh _selectedValue;
         
         [Header("Converters")]
-        [SerializeReference]
         [SerializeReferenceDropdown]
-#if UNITY_2023_1_OR_NEWER
-        private IConverter<Mesh, Mesh> _defaultValueConverter;
-#else
-        private IConverterMesh _defaultValueConverter;
-#endif
+        [SerializeReference] private Converter _defaultValueConverter;
         
-        [SerializeReference]
         [SerializeReferenceDropdown]
-#if UNITY_2023_1_OR_NEWER
-        private IConverter<Mesh, Mesh> _selectedValueConverter;
-#else
-        private IConverterMesh _selectedValueConverter;
-#endif
+        [SerializeReference] private Converter _selectedValueConverter;
         
         protected override void SetDefaultValue(MeshCollider element) =>
             element.sharedMesh = _defaultValueConverter?.Convert(_defaultValue) ?? _defaultValue;

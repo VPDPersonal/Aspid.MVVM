@@ -1,7 +1,11 @@
 using UnityEngine;
 using Aspid.MVVM.Mono;
 using Aspid.MVVM.Mono.Generation;
-using Aspid.MVVM.StarterKit.Converters;
+#if UNITY_2023_1_OR_NEWER
+using Converter = Aspid.MVVM.StarterKit.Converters.IConverter<UnityEngine.Quaternion, UnityEngine.Quaternion>;
+#else
+using Converter = Aspid.MVVM.StarterKit.Converters.IConverterQuaternion;
+#endif
 
 namespace Aspid.MVVM.StarterKit.Binders.Mono
 {
@@ -11,13 +15,8 @@ namespace Aspid.MVVM.StarterKit.Binders.Mono
         [SerializeField] private Space _space = Space.World;
 
         [Header("Converter")]
-        [SerializeReference]
         [SerializeReferenceDropdown]
-#if UNITY_2023_1_OR_NEWER
-        private IConverter<Quaternion, Quaternion> _converter;
-#else
-        private IConverterQuaternion _converter;
-#endif
+        [SerializeReference] private Converter _converter;
         
         [BinderLog]
         public void SetValue(Vector2 value) =>

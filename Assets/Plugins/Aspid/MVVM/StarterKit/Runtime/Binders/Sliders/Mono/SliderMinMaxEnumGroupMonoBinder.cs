@@ -1,6 +1,10 @@
 using UnityEngine;
 using UnityEngine.UI;
-using Aspid.MVVM.StarterKit.Converters;
+#if UNITY_2023_1_OR_NEWER
+using Converter = Aspid.MVVM.StarterKit.Converters.IConverter<UnityEngine.Vector2, UnityEngine.Vector2>;
+#else
+using Converter = Aspid.MVVM.StarterKit.Converters.IConverterVector2;
+#endif
 
 namespace Aspid.MVVM.StarterKit.Binders.Mono
 {
@@ -13,21 +17,11 @@ namespace Aspid.MVVM.StarterKit.Binders.Mono
         [SerializeField] private SliderValueMode _mode = SliderValueMode.Range;
         
         [Header("Converters")]
-        [SerializeReference]
         [SerializeReferenceDropdown]
-#if UNITY_2023_1_OR_NEWER
-        private IConverter<Vector2, Vector2> _defaultValueConverter;
-#else
-        private IConverterVector2 _defaultValueConverter;
-#endif
+        [SerializeReference] private Converter _defaultValueConverter;
         
-        [SerializeReference]
         [SerializeReferenceDropdown]
-#if UNITY_2023_1_OR_NEWER
-        private IConverter<Vector2, Vector2> _selectedValueConverter;
-#else
-        private IConverterVector2 _selectedValueConverter;
-#endif
+        [SerializeReference] private Converter _selectedValueConverter;
         
         protected override void SetDefaultValue(Slider element)
         {

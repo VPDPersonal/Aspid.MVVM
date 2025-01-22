@@ -1,5 +1,9 @@
 using UnityEngine;
-using Aspid.MVVM.StarterKit.Converters;
+#if UNITY_2023_1_OR_NEWER
+using Converter = Aspid.MVVM.StarterKit.Converters.IConverter<UnityEngine.Mesh, UnityEngine.Mesh>;
+#else
+using Converter = Aspid.MVVM.StarterKit.Converters.IConverterMesh;
+#endif
 
 namespace Aspid.MVVM.StarterKit.Binders.Mono
 {
@@ -7,13 +11,8 @@ namespace Aspid.MVVM.StarterKit.Binders.Mono
     public sealed class MeshColliderMeshEnumMonoBinder : EnumComponentMonoBinder<MeshCollider, Mesh>
     {
         [Header("Converter")]
-        [SerializeReference]
         [SerializeReferenceDropdown]
-#if UNITY_2023_1_OR_NEWER
-        private IConverter<Mesh, Mesh> _converter;
-#else
-        private IConverterMesh _converter;
-#endif
+        [SerializeReference] private Converter _converter;
         
         protected override void SetValue(Mesh value) =>
             CachedComponent.sharedMesh = _converter?.Convert(value) ?? value;

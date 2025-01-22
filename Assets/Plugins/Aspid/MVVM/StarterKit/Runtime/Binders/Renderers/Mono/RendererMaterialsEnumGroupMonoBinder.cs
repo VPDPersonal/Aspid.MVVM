@@ -1,5 +1,9 @@
 using UnityEngine;
-using Aspid.MVVM.StarterKit.Converters;
+#if UNITY_2023_1_OR_NEWER
+using Converter = Aspid.MVVM.StarterKit.Converters.IConverter<UnityEngine.Material, UnityEngine.Material>;
+#else
+using Converter = Aspid.MVVM.StarterKit.Converters.IConverterMaterial;
+#endif
 
 namespace Aspid.MVVM.StarterKit.Binders.Mono
 {
@@ -11,21 +15,11 @@ namespace Aspid.MVVM.StarterKit.Binders.Mono
         [SerializeField] private Material[] _selectedValue;
         
         [Header("Converters")]
-        [SerializeReference]
         [SerializeReferenceDropdown]
-#if UNITY_2023_1_OR_NEWER
-        private IConverter<Material, Material> _defaultValueConverter;
-#else
-        private IConverterMaterial _defaultValueConverter;
-#endif
+        [SerializeReference] private Converter _defaultValueConverter;
         
-        [SerializeReference]
         [SerializeReferenceDropdown]
-#if UNITY_2023_1_OR_NEWER
-        private IConverter<Material, Material> _selectedValueConverter;
-#else
-        private IConverterMaterial _selectedValueConverter;
-#endif
+        [SerializeReference] private Converter _selectedValueConverter;
 
         protected override void SetDefaultValue(Renderer element) =>
             element.SetMaterials(_defaultValueConverter, _defaultValue);

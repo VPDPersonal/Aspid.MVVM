@@ -1,6 +1,10 @@
 using UnityEngine;
 using Aspid.MVVM.Mono.Generation;
-using Aspid.MVVM.StarterKit.Converters;
+#if UNITY_2023_1_OR_NEWER
+using Converter = Aspid.MVVM.StarterKit.Converters.IConverter<UnityEngine.Color, UnityEngine.Color>;
+#else
+using Converter = Aspid.MVVM.StarterKit.Converters.IConverterColor;
+#endif
 
 namespace Aspid.MVVM.StarterKit.Binders.Mono
 {
@@ -11,13 +15,8 @@ namespace Aspid.MVVM.StarterKit.Binders.Mono
         [SerializeField] private string _colorPropertyName = "_BaseColor";
         
         [Header("Converter")]
-        [SerializeReference]
         [SerializeReferenceDropdown]
-#if UNITY_2023_1_OR_NEWER
-        private IConverter<Color, Color> _converter;
-#else
-        private IConverterColor _converter;
-#endif
+        [SerializeReference] private Converter _converter;
 
         private int? _colorPropertyId;
         

@@ -1,5 +1,9 @@
 using UnityEngine;
-using Aspid.MVVM.StarterKit.Converters;
+#if UNITY_2023_1_OR_NEWER
+using Converter = Aspid.MVVM.StarterKit.Converters.IConverter<UnityEngine.Quaternion, UnityEngine.Quaternion>;
+#else
+using Converter = Aspid.MVVM.StarterKit.Converters.IConverterQuaternion;
+#endif
 
 namespace Aspid.MVVM.StarterKit.Binders.Mono
 {
@@ -12,21 +16,11 @@ namespace Aspid.MVVM.StarterKit.Binders.Mono
         [SerializeField] private Space _space = Space.World;
 
         [Header("Converters")]
-        [SerializeReference]
         [SerializeReferenceDropdown]
-#if UNITY_2023_1_OR_NEWER
-        private IConverter<Quaternion, Quaternion> _defaultValueConverter;
-#else
-        private IConverterQuaternion _defaultValueConverter;
-#endif
+        [SerializeReference] private Converter _defaultValueConverter;
         
-        [SerializeReference]
         [SerializeReferenceDropdown]
-#if UNITY_2023_1_OR_NEWER
-        private IConverter<Quaternion, Quaternion> _selectedValueConverter;
-#else
-        private IConverterQuaternion _selectedValueConverter;
-#endif
+        [SerializeReference] private Converter _selectedValueConverter;
         
         protected override void SetDefaultValue(Transform element)
         {

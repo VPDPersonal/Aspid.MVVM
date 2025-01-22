@@ -1,6 +1,10 @@
 using UnityEngine;
 using Aspid.MVVM.Mono.Generation;
-using Aspid.MVVM.StarterKit.Converters;
+#if UNITY_2023_1_OR_NEWER
+using Converter = Aspid.MVVM.StarterKit.Converters.IConverter<int, int>;
+#else
+using Converter = Aspid.MVVM.StarterKit.Converters.IConverterInt;
+#endif
 
 namespace Aspid.MVVM.StarterKit.Binders.Mono
 {
@@ -8,13 +12,8 @@ namespace Aspid.MVVM.StarterKit.Binders.Mono
     public partial class AnimatorSetIntMonoBinder : AnimatorSetParameterMonoBinder<int>, INumberBinder
     {
         [Header("Converter")]
-        [SerializeReference]
         [SerializeReferenceDropdown]
-#if UNITY_2023_1_OR_NEWER
-        private IConverter<int, int> _converter;
-#else
-        private IConverterInt _converter;
-#endif
+        [SerializeReference] private Converter _converter;
         
         protected sealed override void SetParameter(int value)
         {

@@ -1,5 +1,9 @@
 using UnityEngine;
-using Aspid.MVVM.StarterKit.Converters;
+#if UNITY_2023_1_OR_NEWER
+using Converter = Aspid.MVVM.StarterKit.Converters.IConverter<float, float>;
+#else
+using Converter = Aspid.MVVM.StarterKit.Converters.IConverterFloat;
+#endif
 
 namespace Aspid.MVVM.StarterKit.Binders.Mono
 {
@@ -7,13 +11,8 @@ namespace Aspid.MVVM.StarterKit.Binders.Mono
     public class SphereColliderRadiusMonoBinder : ComponentMonoBinder<SphereCollider>, INumberBinder
     {
         [Header("Converter")]
-        [SerializeReference]
         [SerializeReferenceDropdown]
-#if UNITY_2023_1_OR_NEWER
-        private IConverter<float, float> _converter;
-#else
-        private IConverterFloat _converter;
-#endif
+        [SerializeReference] private Converter _converter;
 
         public void SetValue(int value) =>
             SetValue((float)value);

@@ -57,7 +57,7 @@ namespace Aspid.MVVM.Mono
 
             bool EqualsBinders(IMonoBinderValidable[]? array1, IMonoBinderValidable[]? array2)
             {
-                if (array1 is null && array2 is null) return true;
+                if ((array1 is null || array1.Length is 0) && (array2 is null || array2.Length is 0)) return true;
                 if (array1 is null || array2 is null) return false;
                 if (array1.Length != array2.Length) return false;
                 
@@ -446,11 +446,13 @@ namespace Aspid.MVVM.Mono
 
         private readonly struct ChangedBinder
         {
+            public readonly string Id;
             public readonly IMonoBinderValidable?[] OldBinders;
             public readonly IMonoBinderValidable?[] NewBinders;
 
-            private ChangedBinder(IMonoBinderValidable?[] oldBinders, IMonoBinderValidable?[] newBinders)
+            private ChangedBinder(string id, IMonoBinderValidable?[] oldBinders, IMonoBinderValidable?[] newBinders)
             {
+                Id = id;
                 OldBinders = oldBinders;
                 NewBinders = newBinders;
             }
@@ -467,7 +469,7 @@ namespace Aspid.MVVM.Mono
                     var newValue = newBinders[key] ?? Array.Empty<IMonoBinderValidable>();
                     if (oldValue.SequenceEqual(newValue)) continue;
                 
-                    changedFields.Add(new ChangedBinder(oldValue, newValue));
+                    changedFields.Add(new ChangedBinder(BinderFieldInfoExtensions.GetBinderId(key), oldValue, newValue));
                 }
 
                 return changedFields.ToArray().AsSpan();

@@ -14,6 +14,12 @@ namespace Aspid.MVVM.Mono
             Root?.Q<VisualElement>("OtherBinders").style.display != DisplayStyle.None
                 ? ErrorType.Warning 
                 : ErrorType.None;
+
+        protected StyleEnum<DisplayStyle> OtherBindersDisplay
+        {
+            get => Root.Q<VisualElement>("OtherBinders").style.display;
+            set => Root.Q<VisualElement>("OtherBinders").style.display = value;
+        }
         
         protected override void OnEnable()
         {
@@ -60,8 +66,8 @@ namespace Aspid.MVVM.Mono
                 foreach (var binder in binders)
                     EditorGUILayout.ObjectField((Component)binder, binder.GetType(), false);
             }
-            
-            Root.Q<VisualElement>("OtherBinders").style.display = binders.Count > 0 ? DisplayStyle.Flex : DisplayStyle.None;
+
+            UpdateOtherBindersDisplay();
             Root.Q<VisualElement>("Header").Q<Image>().SetImageFromResource(IconPath);
         }
 
@@ -84,6 +90,24 @@ namespace Aspid.MVVM.Mono
             }
 
             return otherBinders;
+        }
+        
+        protected override int OnDrewBaseInspector()
+        {
+            if (OtherBindersDisplay == DisplayStyle.None)
+                UpdateOtherBindersDisplay();
+
+            return 0;
+        }
+
+        protected bool UpdateOtherBindersDisplay()
+        {
+            var binders = GetOtherBinders();
+            
+            var isShow = binders.Count > 0;
+            OtherBindersDisplay = isShow ? DisplayStyle.Flex : DisplayStyle.None;
+            
+            return isShow;
         }
 
         protected override string GetScriptName()

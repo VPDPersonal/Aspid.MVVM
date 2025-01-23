@@ -69,24 +69,18 @@ namespace Aspid.MVVM.Mono
         {
             var otherBinders = new List<IMonoBinderValidable>();
 
-            foreach (var binder in  View.GetComponentsInChildren<IMonoBinderValidable>(true))
+            foreach (var binder in View.GetComponentsInChildren<IMonoBinderValidable>(true))
             {
                 var view = binder.View;
 
                 if (view is null && !string.IsNullOrEmpty(binder.Id))
                     binder.Id = null;
-
-                if (string.IsNullOrEmpty(binder.Id))
-                {
+                
+                if (!string.IsNullOrEmpty(binder.Id) && view is not null && !view.TryGetMonoBinderValidableFieldById(binder.Id, out _)) 
+                    binder.Id = null;
+                
+                if (string.IsNullOrEmpty(binder.Id)) 
                     otherBinders.Add(binder);
-                }
-                else if (view is not null)
-                {
-                    var field = ViewUtility.GetValidableBinderFieldById(view, binder.Id);
-
-                    if (field is null)
-                        binder.Reset();
-                }
             }
 
             return otherBinders;

@@ -36,7 +36,7 @@ namespace Aspid.MVVM.Mono
         public static void ValidateView<TView>(TView view)
             where TView : Component, IView
         {
-            var fields = GetValidableBinderFields(view);
+            var fields = view.GetMonoBinderValidableFields();
             
             var bindersOnScene = view.GetComponentsInChildren<IMonoBinderValidable>(true)
                 .Where(binder => binder.View is Component binderView && binderView == view).ToArray();
@@ -100,37 +100,44 @@ namespace Aspid.MVVM.Mono
             
             void DeleteDuplicates(in ChangedBinder changedBinder)
             {
-                foreach (var newBinder in changedBinder.NewBinders)
+                var id = changedBinder.Id;
+                if (!view.TryGetMonoBinderValidableFieldById(id, out var field)) return;
+                
+                var requiredTypes = field!.GetRequiredTypes().ToArray();
+                var validBinders = ValidNewBinders.Valid(view, changedBinder);
+
+                foreach (var binder in validBinders.Binders)
                 {
-                    if (newBinder is null) continue;
-                    if (string.IsNullOrWhiteSpace(newBinder.Id)) return;
-
-                    var isOldBinder = changedBinder.OldBinders.Contains(newBinder);
-                    if (!isOldBinder && view.IsBinderInViewScope(newBinder))
-                        RemoveBinderIfExist(newBinder);
-
-                    var field = GetValidableBinderFieldById(view, newBinder.Id!);
-                    var viewBinders = field?.GetValueAsArray<IMonoBinderValidable?>(view);
-                    if (viewBinders is null) continue;
-
-                    var oldCount = viewBinders.Length;
-                    var distinctViewBinders = viewBinders.Distinct().ToList();
-                    var newCount = distinctViewBinders.Count;
-
-                    var delta = oldCount - newCount;
-                    if (delta <= 0) continue;
-                    
-                    for (var i = 0; i < delta; i++)
-                        distinctViewBinders.Add(null);
+                    if (binder is null) continue;
+                    if (string.IsNullOrWhiteSpace(binder.Id)) continue;
                         
-                    field!.SetValueFromCastValueAndSaveView(view, distinctViewBinders.ToArray());
+                    if ((binder.View != view || binder.Id != id) && requiredTypes.IsBinderMatchRequiredType(binder))
+                        RemoveBinderIfExist(binder);
+                }
+                    
+                var oldCount = validBinders.Binders.Length;
+                var distinctBinders = validBinders.Binders.Distinct().ToArray();
+                var newCount = distinctBinders.Length;
+
+                var delta = oldCount - newCount;
+                if (delta > 0)
+                {
+                    Array.Resize(ref distinctBinders, distinctBinders.Length + delta);
+                    for (var i = 1; i < delta + 1; i++)
+                        distinctBinders[^i] = null;
+                    
+                    field!.SetValueFromCastValueAndSaveView(view, distinctBinders);
+                }
+                else if (validBinders.IsChanged)
+                {
+                    field!.SetValueFromCastValueAndSaveView(view, distinctBinders);
                 }
             }
         }
         
         private static void ValidateBindersInView(IView view)
         {
-            var fields = GetValidableBinderFields(view);
+            var fields = view.GetMonoBinderValidableFields();
             
             foreach (var field in fields)
             {
@@ -150,7 +157,7 @@ namespace Aspid.MVVM.Mono
                             if (binder is null) return true;
 
                             var isChild = IsBinderInViewScope(view, binder);
-                            var result = isChild && BinderMatchRequiredType(requiredTypes, binder);
+                            var result = isChild && requiredTypes.IsBinderMatchRequiredType(binder);
 
                             if (!result && isChild)
                                 binder.Id = null;
@@ -201,8 +208,8 @@ namespace Aspid.MVVM.Mono
         /// <param name="id">The ID of the binder field for adding the binder.</param>
         public static void SetBinderIfNotExist(IView view, IMonoBinderValidable binder, string id)
         {
-            var field = GetValidableBinderFieldById(view, id);
-            field.ThrowExceptionIfFieldNull(view, id);
+            var field = view.GetMonoBinderValidableFieldById(id);
+            field.ThrowExceptionIfMonoBinderValidableFieldIsNull(view, id);
             
             var viewBinders = field!.GetValueAsArray<IMonoBinderValidable>(view);
         
@@ -253,8 +260,8 @@ namespace Aspid.MVVM.Mono
         /// <param name="id">The ID of the binder field to remove.</param>
         public static void RemoveBinderIfExist(IView view, IBinder binder, string id)
         {
-            var field = GetValidableBinderFieldById(view, id);
-            field.ThrowExceptionIfFieldNull(view, id);
+            var field = view.GetMonoBinderValidableFieldById(id);
+            field.ThrowExceptionIfMonoBinderValidableFieldIsNull(view, id);
 
             var viewBinders = field!.GetValueAsArray<IMonoBinderValidable>(view);
             if (viewBinders is null) return;
@@ -267,7 +274,7 @@ namespace Aspid.MVVM.Mono
             else
             {
                 if (viewBinders.Length is 0 || viewBinders[0] != binder) return;
-                field.SetValueAndSave(view, null);
+                field.SetValueFromCastValueAndSaveView<IMonoBinderValidable>(view, null);
             }
         }
         #endregion
@@ -279,10 +286,10 @@ namespace Aspid.MVVM.Mono
         /// </summary>
         /// <param name="view">The view instance containing the field to be cleaned.</param>
         /// <param name="id">The identifier of the field to clean.</param>
-        public static void CleanViewField(IView view, string id)
+        public static void CleanMonoBinderValidableFieldById(IView view, string id)
         {
-            var field = GetValidableBinderFieldById(view, id);
-            field.ThrowExceptionIfFieldNull(view, id);
+            var field = view.GetMonoBinderValidableFieldById(id);
+            field.ThrowExceptionIfMonoBinderValidableFieldIsNull(view, id);
             
             if (field!.FieldType.IsArray)
             {
@@ -301,124 +308,9 @@ namespace Aspid.MVVM.Mono
             }
             else
             {
-                field.SetValueAndSave(view, null);
+                field.SetValueFromCastValueAndSaveView<IMonoBinderValidable>(view, null);
             }
         }
-        
-        /// <summary>
-        /// Retrieves all `IMonoBinderValidable` binders from a view and associates them with the field names they are assigned to.
-        /// </summary>
-        /// <param name="view">The view object containing the binders.</param>
-        /// <returns>
-        /// A dictionary where the key is the field name and the value is an array of `IMonoBinderValidable` associated with that field.
-        /// </returns>
-        public static ValidableBindersById GetValidableBindersById(IView view)
-        {
-            var fields = GetValidableBinderFields(view);
-            var bindersByFieldName = new ValidableBindersById();
-
-            foreach (var field in fields)
-            {
-                var viewBinders = field.GetValueAsArray<IMonoBinderValidable>(view);
-                
-                if (viewBinders is { Length: > 0 })
-                {
-                    var copyViewBinders = new IMonoBinderValidable[viewBinders.Length];
-                    viewBinders.CopyTo(copyViewBinders, 0);
-                    
-                    bindersByFieldName.Add(field.Name, copyViewBinders);
-                }
-                else
-                {
-                    bindersByFieldName.Add(field.Name, viewBinders);
-                }
-            }
-            
-            return bindersByFieldName;
-        }
-        
-        #region Get Fields Method
-        /// <summary>
-        /// Retrieves field in the specified type that is of type `IMonoBinderValidable` or `IMonoBinderValidable[]` by id.
-        /// </summary>
-        /// <param name="view">The type to inspect for `IMonoBinderValidable` fields.</param>
-        /// <param name="id">The name of fields.</param>
-        /// <returns>
-        /// FieldInfo` objects representing the field that contain `IMonoBinderValidable` binders.
-        /// </returns>
-        public static FieldInfo? GetValidableBinderFieldById(IView view, string id)
-        {
-            return GetValidableBinderFields(view)
-                .FirstOrDefault(field => field.GetBinderId() == id);
-        }
-        
-        /// <summary>
-        /// Retrieves all fields in the specified type that are of type `IMonoBinderValidable` or `IMonoBinderValidable[]`.
-        /// Includes fields from base classes as well.
-        /// </summary>
-        /// <param name="view">The type to inspect for `IMonoBinderValidable` fields.</param>
-        /// <returns>
-        /// A collection of `FieldInfo` objects representing the fields that contain `IMonoBinderValidable` binders.
-        /// </returns>
-        public static IEnumerable<FieldInfo> GetValidableBinderFields(IView view)
-        {
-            return view.GetType().GetFieldInfosIncludingBaseClasses(BindingFlags).Where(field => 
-            {
-                var fieldType = field.FieldType;
-                return typeof(IMonoBinderValidable).IsAssignableFrom(fieldType) 
-                    || typeof(IMonoBinderValidable[]).IsAssignableFrom(fieldType);
-            });
-        }   
-        #endregion
-        
-        #region BinderMatchRequiredType Methods
-        /// <summary>
-        /// Checks if the given binder matches the required types specified by a collection of RequireBinderAttribute.
-        /// This method extracts the types from the attributes and delegates the type-checking logic to the overloaded method.
-        /// </summary>
-        /// <param name="attributes">A collection of RequireBinderAttribute, which contain the required types.</param>
-        /// <param name="binder">The binder object to check.</param>
-        /// <returns>True if the binder matches any of the required types; otherwise, false.</returns>
-        public static bool BinderMatchRequiredType(IEnumerable<RequireBinderAttribute> attributes, object binder) =>
-            BinderMatchRequiredType(attributes.Select(attribute => attribute.Type), binder);
-        
-        /// <summary>
-        /// Checks if the given binder implements an interface (either IBinder or IReverseBinder) 
-        /// whose generic type argument is compatible with any of the required types.
-        /// </summary>
-        /// <param name="requiredTypes">A collection of required types to match against the binder's interfaces.</param>
-        /// <param name="binder">The binder object to check.</param>
-        /// <returns>True if the binder matches any of the required types; otherwise, false.</returns>
-        public static bool BinderMatchRequiredType(IEnumerable<Type> requiredTypes, object binder)
-        {
-            return binder.GetType().GetInterfaces().Any(@interface =>
-            {
-                if (!@interface.IsGenericType) return false;
-                if (@interface.GetGenericTypeDefinition() != typeof(IBinder<>) 
-                    && @interface.GetGenericTypeDefinition() != typeof(IReverseBinder<>)) return false;
-
-                return requiredTypes.Any(requiredType =>
-                    @interface.GetGenericArguments()[0].IsAssignableFrom(requiredType));
-            });
-        }
-        #endregion
-
-        #region Field SetValue Methods
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static void SetValueAndSave(this FieldInfo field, IView view, object? value)
-        {
-            field.SetValue(field, value);
-            view.SaveView();
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static void SetValueFromCastValueAndSaveView<T>(this FieldInfo field, IView view, params T?[] binders)
-            where T : IBinder
-        {
-            field.SetValueFromCastValue(view, binders);
-            view.SaveView();
-        }
-        #endregion
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static void SaveView(this IView view)
@@ -436,9 +328,17 @@ namespace Aspid.MVVM.Mono
             if (view is not Component monoView || binder is not Component monoBinder) return false;
             return monoBinder.transform.IsChildOf(monoView.transform) || monoBinder.transform == monoView.transform;
         }
-
+        
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static void ThrowExceptionIfFieldNull(this FieldInfo? field, IView view, string id)
+        private static void SetValueFromCastValueAndSaveView<T>(this FieldInfo field, IView view, params T?[]? binders)
+            where T : IBinder
+        {
+            field.SetValueFromCastValue(view, binders);
+            view.SaveView();
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private static void ThrowExceptionIfMonoBinderValidableFieldIsNull(this FieldInfo? field, IView view, string id)
         {
             if (field is null)
                 throw new Exception($"Could not find IMonoBinderValidable by name {id} in view {view.GetType().Name}");
@@ -459,7 +359,7 @@ namespace Aspid.MVVM.Mono
             
             public static ReadOnlySpan<ChangedBinder> GetChangedBinders(ValidableBindersById oldBinders, ValidableBindersById newBinders)
             {
-                // TODO Write message from Exception
+                // TODO Write message in Exception
                 if (oldBinders.Count != newBinders.Count) throw new Exception();
                 var changedFields = new List<ChangedBinder>(oldBinders.Count);
 
@@ -473,6 +373,62 @@ namespace Aspid.MVVM.Mono
                 }
 
                 return changedFields.ToArray().AsSpan();
+            }
+        }
+
+        private ref struct ValidNewBinders
+        {
+            public bool IsChanged { get; private set; }
+            
+            public IMonoBinderValidable?[] Binders { get; private set; }
+            
+            public static ValidNewBinders Valid(IView view, in ChangedBinder changedBinder)
+            {
+                var id = changedBinder.Id;
+                var result = new ValidNewBinders();
+                if (!view.TryGetMonoBinderValidableFieldById(id, out var field)) return result;
+                
+                var oldBinders = changedBinder.OldBinders.ToHashSet();
+                var requiredTypes = field!.GetRequiredTypes().ToArray();
+                
+                var validatingBinders = changedBinder.NewBinders.ToArray();
+                var validatedBinders = new HashSet<IMonoBinderValidable>(validatingBinders.Length);
+
+                for (var i = 0; i < validatingBinders.Length; i++)
+                {
+                    var validatingBinder = validatingBinders[i];
+                    if (validatingBinder is null) continue;
+                    
+                    var isOldBinder = oldBinders.Contains(validatingBinder);
+                    if (isOldBinder && validatedBinders.Add(validatingBinder)) continue;
+
+                    if (!isOldBinder)
+                    {
+                        if (validatingBinder.View == view && validatingBinder.Id == id) continue;
+                        if (requiredTypes.IsBinderMatchRequiredType(validatingBinder)) continue;
+
+                        if (!view.IsBinderInViewScope(validatingBinder))
+                        {
+                            result.IsChanged = true;
+                            validatingBinders[i] = null;
+                            continue;
+                        }
+                    }
+                    
+                    result.IsChanged = true;
+                    IMonoBinderValidable? candidateBinder = null;
+                    
+                    if (validatingBinder is Component component)
+                    { 
+                        candidateBinder = component.GetComponents<IMonoBinderValidable>()
+                            .FirstOrDefault(candidate => (candidate.View != view || candidate.Id != id) && requiredTypes.IsBinderMatchRequiredType(candidate));
+                    }
+                    
+                    validatingBinders[i] = candidateBinder;
+                }
+
+                result.Binders = validatingBinders;
+                return result;
             }
         }
     }

@@ -1,3 +1,4 @@
+#nullable enable
 using System;
 using System.Reflection;
 using System.Collections.Generic;
@@ -8,14 +9,15 @@ namespace Aspid.MVVM.Mono
     {
         public static FieldInfo[] GetFieldInfosIncludingBaseClasses(this Type type, BindingFlags bindingFlags)
         {
-            if (type.BaseType == typeof(object)) return type.GetFields(bindingFlags);
+            if (type.BaseType == typeof(object)) 
+                return type.GetFields(bindingFlags);
 
             var currentType = type;
             var fieldInfoList = new List<FieldInfo>();
             
             while (currentType != typeof(object))
             {
-                if (currentType == null) break;
+                if (currentType is null) break;
                 
                 fieldInfoList.AddRange(currentType.GetFields(bindingFlags));
                 currentType = currentType.BaseType;

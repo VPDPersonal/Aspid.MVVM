@@ -52,7 +52,7 @@ namespace Aspid.MVVM.Mono
             var id = _id.stringValue;
             if (string.IsNullOrWhiteSpace(id)) return;
 
-            ViewUtility.CleanViewField(view, id);
+            ViewUtility.CleanMonoBinderValidableFieldById(view, id);
         }
 
         private void Validate()
@@ -84,12 +84,10 @@ namespace Aspid.MVVM.Mono
 			        _id.stringValue = null;
 			        return;
 		        }
-		        
-		        var field = ViewUtility.GetValidableBinderFieldById(view, _id.stringValue);
 
-                if (field is not null)
+                if (view.TryGetMonoBinderValidableFieldById(_id.stringValue, out var field))
                 {
-                    var binder = field.GetValue(view);
+                    var binder = field!.GetValue(view);
 
                     if (binder is Array array)
                     {

@@ -32,14 +32,16 @@ namespace Aspid.MVVM.Mono
         {
             if (view == null) return new List<string>();
             
-            var binderFields = ViewUtility.GetValidableBinderFields(view);
+            var fields = view.GetMonoBinderValidableFields();
             
-            var ids = binderFields
+            var ids = fields
                 .Where(field =>
                 {
-                    if (field.GetCustomAttributes<RequireBinderAttribute>(false) is { } attributes)
-                        return ViewUtility.BinderMatchRequiredType(attributes, Binder);
+                    var requiredTypes = field.GetRequiredTypes().ToArray();
 
+                    if (requiredTypes.Any())
+                        return requiredTypes.IsBinderMatchRequiredType(Binder);
+            
                     var fieldType = !field.FieldType.IsArray
                         ? field.FieldType
                         : field.FieldType.GetElementType();
@@ -48,7 +50,7 @@ namespace Aspid.MVVM.Mono
                 })
                 .Select(field => field.GetBinderId())
                 .ToList();
-
+            
             return ids;
         }
 

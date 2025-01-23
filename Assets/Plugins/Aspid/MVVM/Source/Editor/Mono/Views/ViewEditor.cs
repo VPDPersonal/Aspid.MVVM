@@ -103,12 +103,12 @@ namespace Aspid.MVVM.Mono
             !View ? null : View.GetScriptName();
         
         protected void UpdateBinders() =>
-            Binders = View ? ViewUtility.GetValidableBindersById(View) : null;
+            Binders = View ? ValidableBindersById.GetValidableBindersById(View) : null;
 
         private void DrawBaseInspector()
         {
             var propertiesCount = 0;
-            var oldBindersDictionary = ViewUtility.GetValidableBindersById(View);
+            var oldBindersDictionary = ValidableBindersById.GetValidableBindersById(View);
 
             serializedObject.UpdateIfRequiredOrScript();
             {
@@ -128,7 +128,7 @@ namespace Aspid.MVVM.Mono
             }
             serializedObject.ApplyModifiedProperties();
             
-            var newBindersDictionary = ViewUtility.GetValidableBindersById(View);
+            var newBindersDictionary = ValidableBindersById.GetValidableBindersById(View);
             ViewUtility.ValidateViewChanges(View, oldBindersDictionary, newBindersDictionary);
             UpdateBinders();
             

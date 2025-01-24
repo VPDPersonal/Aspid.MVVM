@@ -1,6 +1,5 @@
 using System.Linq;
 using UnityEngine;
-using System.Reflection;
 using System.Collections.Generic;
 
 namespace Aspid.MVVM.Mono
@@ -30,7 +29,7 @@ namespace Aspid.MVVM.Mono
 
         protected List<string> GetIdList(IView view)
         {
-            if (view == null) return new List<string>();
+            if (view is null) return new List<string>();
             
             var fields = view.GetMonoBinderValidableFields();
             

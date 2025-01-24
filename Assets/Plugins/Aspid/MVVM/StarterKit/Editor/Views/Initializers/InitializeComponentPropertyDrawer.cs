@@ -53,6 +53,7 @@ namespace Aspid.MVVM.StarterKit.Views
                     properties.component = property.FindPropertyRelative("Type");
                     break;
 #endif
+                
                 case InitializeComponent.Resolve.Mono:
                 default: 
                     properties.component = property.FindPropertyRelative("Mono");

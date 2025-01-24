@@ -1,7 +1,5 @@
 using System;
 using UnityEngine;
-using Aspid.MVVM.Mono;
-
 #if ASPID_MVVM_ZENJECT_INTEGRATION
 using Inject = Zenject.InjectAttribute;
 using DIContainer = Zenject.DiContainer;
@@ -13,24 +11,30 @@ using DIContainer = VContainer.IObjectResolver;
 namespace Aspid.MVVM.StarterKit.Views
 {
     [AddComponentMenu("MVVM/View Initializers/View Initializer")]
-    public sealed class ViewInitializer : MonoViewInitializerBase
+    public sealed class ViewInitializer : ViewInitializerBase
     {
+        [SerializeField] private bool _isDisposeViewOnDestroy;
         [SerializeField] private InitializeComponent<IView>[] _viewComponents;
+        
+        [SerializeField] private bool _isDisposeViewModelOnDestroy;
         [SerializeField] private InitializeComponent<IViewModel> _viewModelComponent;
         
+        [SerializeField] private InitializeStage _initializeStage  = InitializeStage.Awake;
+        [SerializeField] private bool _isDeinitialize;
+        
         private IView[] _views;
+        private bool _isConstructed;
         private IViewModel _viewModel;
         
 #if ASPID_MVVM_ZENJECT_INTEGRATION || ASPID_MVVM_VCONTAINER_INTEGRATION
         [Inject] private DIContainer _diContainer;
 #endif
-
-        protected override IView[] Views => _views;
-
-        protected override IViewModel ViewModel => _viewModel;
+        
+        public bool IsInitialized { get; private set; }
         
         private void Constructor()
         {
+            if (_isConstructed) return;
             _views = new IView[_viewComponents.Length];
             
             for (var i = 0; i < _views.Length; i++)
@@ -59,8 +63,26 @@ namespace Aspid.MVVM.StarterKit.Views
                 InitializeComponent.Resolve.ScriptableObject => _viewModelComponent.Scriptable as IViewModel,
                 _ => throw new ArgumentOutOfRangeException()
             };
+
+            _isConstructed = true;
         }
         
+        public void Initialize()
+        {
+            if (_initializeStage != InitializeStage.None)
+                throw new Exception($"{_initializeStage} is not None");
+            
+            InitializeInternal();
+        }
+
+        public void Deinitialize()
+        {
+            if (_initializeStage != InitializeStage.None)
+                throw new Exception($"{_initializeStage} is not None");
+
+            DeinitializeInternal();
+        }
+
         private void OnValidate()
         {
             if (_viewComponents is not null)
@@ -130,8 +152,72 @@ namespace Aspid.MVVM.StarterKit.Views
 
         private void Awake()
         {
+            if (_initializeStage != InitializeStage.Awake) return;
+            InitializeInternal();
+        }
+
+        private void Start()
+        {
+            if (_initializeStage != InitializeStage.Start) return;
+            InitializeInternal();
+        }
+
+        private void OnEnable()
+        {
+            if (_initializeStage != InitializeStage.OnEnable) return;
+            InitializeInternal();
+        }
+
+        private void OnDisable()
+        {
+            if (!_isDeinitialize || _initializeStage != InitializeStage.OnEnable) return;
+            DeinitializeInternal();
+        }
+
+        private void OnDestroy()
+        {
+            if (_isDisposeViewOnDestroy)
+            {
+                foreach (var view in _views)
+                    view.DisposeView();
+            }
+            else if (_isDeinitialize)
+            {
+                DeinitializeInternal();
+            }
+            
+            if (_isDisposeViewModelOnDestroy) 
+                _viewModel.DisposeViewModel();
+        }
+
+        private void InitializeInternal()
+        {
+            if (IsInitialized) return;
+            
             Constructor();
-            Initialize();
+
+            foreach (var view in _views)
+                view.Initialize(_viewModel);
+
+            IsInitialized = true;
+        }
+
+        private void DeinitializeInternal()
+        {
+            if (!IsInitialized) return;
+            
+            foreach (var view in _views)
+                view.Deinitialize();
+
+            IsInitialized = false; 
+        }
+
+        private enum InitializeStage
+        {
+            None,
+            Awake,
+            OnEnable,
+            Start,
         }
     }
 }

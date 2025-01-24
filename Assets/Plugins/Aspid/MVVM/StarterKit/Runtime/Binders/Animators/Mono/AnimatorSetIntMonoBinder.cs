@@ -8,7 +8,7 @@ using Converter = Aspid.MVVM.StarterKit.Converters.IConverterInt;
 
 namespace Aspid.MVVM.StarterKit.Binders.Mono
 {
-    [AddComponentMenu("MVVM/Binders/Animator/Animator Binder - Set Int")]
+    [AddComponentMenu("Aspid/MVVM/Binders/Animator/Animator Binder - Set Int")]
     public partial class AnimatorSetIntMonoBinder : AnimatorSetParameterMonoBinder<int>, INumberBinder
     {
         [Header("Converter")]

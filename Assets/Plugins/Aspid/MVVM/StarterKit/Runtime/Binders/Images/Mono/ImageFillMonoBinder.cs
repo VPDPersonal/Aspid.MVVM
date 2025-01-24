@@ -9,7 +9,7 @@ using Converter = Aspid.MVVM.StarterKit.Converters.IConverterFloat;
 
 namespace Aspid.MVVM.StarterKit.Binders.Mono
 {
-    [AddComponentMenu("MVVM/Binders/UI/Image/Image Binder - Fill")]
+    [AddComponentMenu("Aspid/MVVM/Binders/UI/Image/Image Binder - Fill")]
     public partial class ImageFillMonoBinder : ComponentMonoBinder<Image>, INumberBinder
     {
         [Header("Converter")]

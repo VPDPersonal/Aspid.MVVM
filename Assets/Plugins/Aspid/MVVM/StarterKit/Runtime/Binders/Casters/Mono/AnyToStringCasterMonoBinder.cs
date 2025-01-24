@@ -10,7 +10,7 @@ using Converter = Aspid.MVVM.StarterKit.Converters.IConverterObjectToString;
 
 namespace Aspid.MVVM.StarterKit.Binders.Mono
 {
-    [AddComponentMenu("MVVM/Binders/Casters/Any To String Caster Binder")]
+    [AddComponentMenu("Aspid/MVVM/Binders/Casters/Any To String Caster Binder")]
     public sealed class AnyToStringCasterMonoBinder : MonoBinder, IBinder<object>
     {
         [Header("Converter")]

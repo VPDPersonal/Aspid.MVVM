@@ -8,7 +8,7 @@ using Converter = Aspid.MVVM.StarterKit.Converters.IConverterFloat;
 
 namespace Aspid.MVVM.StarterKit.Binders.Mono
 {
-    [AddComponentMenu("MVVM/Binders/UI/Image/Image Binder - Fill Enum")]
+    [AddComponentMenu("Aspid/MVVM/Binders/UI/Image/Image Binder - Fill Enum")]
     public sealed class ImageFillEnumMonoBinder : EnumComponentMonoBinder<Image, float>
     {
         [Header("Converter")]

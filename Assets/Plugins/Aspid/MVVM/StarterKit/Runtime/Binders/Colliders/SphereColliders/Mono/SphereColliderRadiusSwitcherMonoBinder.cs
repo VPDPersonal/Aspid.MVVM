@@ -7,7 +7,7 @@ using Converter = Aspid.MVVM.StarterKit.Converters.IConverterFloat;
 
 namespace Aspid.MVVM.StarterKit.Binders.Mono
 {
-    [AddComponentMenu("MVVM/Binders/Collider/Sphere/SphereCollider Binder - Radius Switcher")]
+    [AddComponentMenu("Aspid/MVVM/Binders/Collider/Sphere/SphereCollider Binder - Radius Switcher")]
     public sealed class SphereColliderRadiusSwitcherMonoBinder : SwitcherMonoBinder<SphereCollider, float>
     {
         [Header("Converter")]

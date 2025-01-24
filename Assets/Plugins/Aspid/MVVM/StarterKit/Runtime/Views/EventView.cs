@@ -6,6 +6,7 @@ using Aspid.MVVM.Generation;
 namespace Aspid.MVVM.StarterKit.Views
 {
     [View]
+    [AddComponentMenu("Aspid/MVVM/Views/Event View")]
     public partial class EventView : MonoView
     {
         [Header("Events")]

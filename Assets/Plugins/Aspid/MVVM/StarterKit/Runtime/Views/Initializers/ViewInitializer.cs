@@ -10,7 +10,7 @@ using DIContainer = VContainer.IObjectResolver;
 
 namespace Aspid.MVVM.StarterKit.Views
 {
-    [AddComponentMenu("MVVM/View Initializers/View Initializer")]
+    [AddComponentMenu("Aspid/MVVM/View Initializers/View Initializer")]
     public sealed class ViewInitializer : ViewInitializerBase
     {
         [SerializeField] private bool _isDisposeViewOnDestroy;

@@ -9,7 +9,7 @@ using Converter = Aspid.MVVM.StarterKit.Converters.IConverterFloat;
 
 namespace Aspid.MVVM.StarterKit.Binders.Mono
 {
-    [AddComponentMenu("MVVM/Binders/UI/Image/Image Binder - Fill EnumGroup")]
+    [AddComponentMenu("Aspid/MVVM/Binders/UI/Image/Image Binder - Fill EnumGroup")]
     public sealed class ImageFillEnumGroupMonoBinder : EnumGroupMonoBinder<Image>
     {
         [Header("Parameters")]

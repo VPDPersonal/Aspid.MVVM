@@ -4,7 +4,7 @@ using Aspid.MVVM.Mono.Generation;
 
 namespace Aspid.MVVM.StarterKit.Binders.Mono
 {
-    [AddComponentMenu("MVVM/Binders/UI/Image/Image Binder - Sprite")]
+    [AddComponentMenu("Aspid/MVVM/Binders/UI/Image/Image Binder - Sprite")]
     public partial class ImageSpriteMonoBinder : ComponentMonoBinder<Image>, IBinder<Sprite>, IBinder<Texture2D>
     {
         [Header("Parameters")]

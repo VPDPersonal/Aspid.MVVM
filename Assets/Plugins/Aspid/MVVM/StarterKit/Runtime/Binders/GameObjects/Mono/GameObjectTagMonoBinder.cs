@@ -4,7 +4,7 @@ using Aspid.MVVM.Mono.Generation;
 
 namespace Aspid.MVVM.StarterKit.Binders.Mono
 {
-    [AddComponentMenu("MVVM/Binders/GameObject/GameObject Binder - Tag")]
+    [AddComponentMenu("Aspid/MVVM/Binders/GameObject/GameObject Binder - Tag")]
     public partial class GameObjectTagMonoBinder : MonoBinder, IBinder<string>
     {
         [BinderLog]

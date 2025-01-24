@@ -7,7 +7,7 @@ using Converter = Aspid.MVVM.StarterKit.Converters.IConverterMesh;
 
 namespace Aspid.MVVM.StarterKit.Binders.Mono
 {
-    [AddComponentMenu("MVVM/Binders/Collider/Mesh/MeshCollider Binder - Mesh")]
+    [AddComponentMenu("Aspid/MVVM/Binders/Collider/Mesh/MeshCollider Binder - Mesh")]
     public class MeshColliderMeshMonoBinder : ComponentMonoBinder<MeshCollider>, IBinder<Mesh>
     {
         [Header("Converter")]

@@ -8,7 +8,7 @@ using Converter = Aspid.MVVM.StarterKit.Converters.IConverterMaterial;
 
 namespace Aspid.MVVM.StarterKit.Binders.Mono
 {
-    [AddComponentMenu("MVVM/Binders/UI/Raw Image/RawImage Binder - Material Switcher")]
+    [AddComponentMenu("Aspid/MVVM/Binders/UI/Raw Image/RawImage Binder - Material Switcher")]
     public sealed class RawImageMaterialSwitcherMonoBinder : SwitcherMonoBinder<RawImage, Material>
     {
         [Header("Converter")]

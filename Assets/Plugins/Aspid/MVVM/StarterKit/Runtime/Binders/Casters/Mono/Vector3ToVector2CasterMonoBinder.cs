@@ -11,7 +11,7 @@ using Converter = Aspid.MVVM.StarterKit.Converters.IConverterVector3ToVector2;
 
 namespace Aspid.MVVM.StarterKit.Binders.Mono
 {
-    [AddComponentMenu("MVVM/Binders/Casters/Vector3 To Vector2 Caster Binder")]
+    [AddComponentMenu("Aspid/MVVM/Binders/Casters/Vector3 To Vector2 Caster Binder")]
     public sealed partial class Vector3ToVector2CasterMonoBinder : MonoBinder, IBinder<Vector2>
     {
         [Header("Converter")]

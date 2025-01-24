@@ -3,7 +3,7 @@ using UnityEngine.UI;
 
 namespace Aspid.MVVM.StarterKit.Binders.Mono
 {
-    [AddComponentMenu("MVVM/Binders/UI/Raw Image/RawImage Binder - Texture Switcher")]
+    [AddComponentMenu("Aspid/MVVM/Binders/UI/Raw Image/RawImage Binder - Texture Switcher")]
     public sealed class RawImageTextureSwitcherMonoBinder : SwitcherMonoBinder<RawImage, Texture2D>
     {
         [SerializeField] private bool _disabledWhenNull = true;

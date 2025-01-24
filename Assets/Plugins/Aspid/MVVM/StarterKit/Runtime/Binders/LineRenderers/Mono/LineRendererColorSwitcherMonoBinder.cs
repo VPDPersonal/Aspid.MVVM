@@ -7,7 +7,7 @@ using Converter = Aspid.MVVM.StarterKit.Converters.IConverterColor;
 
 namespace Aspid.MVVM.StarterKit.Binders.Mono
 {
-    [AddComponentMenu("MVVM/Binders/Line Renderers/LineRenderer Binder - Color Switcher")]
+    [AddComponentMenu("Aspid/MVVM/Binders/Line Renderers/LineRenderer Binder - Color Switcher")]
     public sealed class LineRendererColorSwitcherMonoBinder : SwitcherMonoBinder<LineRenderer, Color>
     {
         [SerializeField] private LineRendererColorMode _mode = LineRendererColorMode.StartAndEnd;

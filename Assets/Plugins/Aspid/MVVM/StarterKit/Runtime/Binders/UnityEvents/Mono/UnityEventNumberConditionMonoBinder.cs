@@ -10,7 +10,7 @@ using Converter = Aspid.MVVM.StarterKit.Converters.IConverterFloatToBool;
 
 namespace Aspid.MVVM.StarterKit.Binders.Mono
 {
-    [AddComponentMenu("MVVM/Binders/UnityEvent/UnityEvent Binder - Number Condition")]
+    [AddComponentMenu("Aspid/MVVM/Binders/UnityEvent/UnityEvent Binder - Number Condition")]
     public sealed partial class UnityEventNumberConditionMonoBinder : MonoBinder, INumberBinder
     {
         public event UnityAction<bool> Set

@@ -10,7 +10,7 @@ using Converter = Aspid.MVVM.StarterKit.Converters.IConverterVector3;
 
 namespace Aspid.MVVM.StarterKit.Binders.Mono
 {
-    [AddComponentMenu("MVVM/Binders/UnityEvent/UnityEvent Binder - Vector3")]
+    [AddComponentMenu("Aspid/MVVM/Binders/UnityEvent/UnityEvent Binder - Vector3")]
     public sealed partial class UnityEventVector3MonoBinder : MonoBinder, IBinder<Vector3>
     {
         public event UnityAction<Vector3> Vector3ValueSet

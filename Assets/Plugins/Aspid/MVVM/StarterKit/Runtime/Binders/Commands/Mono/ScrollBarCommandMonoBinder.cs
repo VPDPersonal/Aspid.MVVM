@@ -5,7 +5,7 @@ using Aspid.MVVM.Mono.Generation;
 namespace Aspid.MVVM.StarterKit.Binders.Mono
 {
     [RequireComponent(typeof(Scrollbar))]
-    [AddComponentMenu("MVVM/Binders/UI/Commands/Scrollbar Command Binder")]
+    [AddComponentMenu("Aspid/MVVM/Binders/UI/Commands/Scrollbar Command Binder")]
     public sealed partial class ScrollBarCommandMonoBinder : MonoCommandBinder<float>, IBinder<IRelayCommand<int>>, IBinder<IRelayCommand<long>>, IBinder<IRelayCommand<double>>
     {
         [Header("Component")]

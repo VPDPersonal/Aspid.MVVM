@@ -7,7 +7,7 @@ using Converter = Aspid.MVVM.StarterKit.Converters.IConverterFloat;
 
 namespace Aspid.MVVM.StarterKit.Binders.Mono
 {
-    [AddComponentMenu("MVVM/Binders/UI/Canvas Group/CanvasGroup Binder - Alpha Enum")]
+    [AddComponentMenu("Aspid/MVVM/Binders/UI/Canvas Group/CanvasGroup Binder - Alpha Enum")]
     public sealed class CanvasGroupAlphaEnumMonoBinder : EnumComponentMonoBinder<CanvasGroup, float>
     {
         [Header("Converter")]

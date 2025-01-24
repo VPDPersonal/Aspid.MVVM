@@ -10,7 +10,7 @@ using Converter = Aspid.MVVM.StarterKit.Converters.IConverterQuaternion;
 
 namespace Aspid.MVVM.StarterKit.Binders.Mono
 {
-    [AddComponentMenu("MVVM/Binders/UnityEvent/UnityEvent Binder - Quaternion")]
+    [AddComponentMenu("Aspid/MVVM/Binders/UnityEvent/UnityEvent Binder - Quaternion")]
     public sealed partial class UnityEventQuaternionMonoBinder : MonoBinder, IBinder<Quaternion>
     {
         public event UnityAction<Quaternion> Set

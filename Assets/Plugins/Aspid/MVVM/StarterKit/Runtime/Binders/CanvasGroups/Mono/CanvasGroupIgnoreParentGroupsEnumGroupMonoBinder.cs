@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace Aspid.MVVM.StarterKit.Binders.Mono
 {
-    [AddComponentMenu("MVVM/Binders/UI/Canvas Group/CanvasGroup Binder - IgnoreParentGroups EnumGroup")]
+    [AddComponentMenu("Aspid/MVVM/Binders/UI/Canvas Group/CanvasGroup Binder - IgnoreParentGroups EnumGroup")]
     public sealed class CanvasGroupIgnoreParentGroupsEnumGroupMonoBinder : EnumGroupMonoBinder<CanvasGroup>
     {
         [Header("Parameters")]

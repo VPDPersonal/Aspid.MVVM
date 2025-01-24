@@ -7,7 +7,7 @@ using Converter = Aspid.MVVM.StarterKit.Converters.IConverterColor;
 
 namespace Aspid.MVVM.StarterKit.Binders.Mono
 {
-    [AddComponentMenu("MVVM/Binders/Renderer/Renderer Binder - MaterialColor EnumGroup")]
+    [AddComponentMenu("Aspid/MVVM/Binders/Renderer/Renderer Binder - MaterialColor EnumGroup")]
     public sealed class RendererMaterialColorEnumGroupMonoBinder : EnumGroupMonoBinder<Renderer>
     {
         [Header("Parameter")]

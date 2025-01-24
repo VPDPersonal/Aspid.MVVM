@@ -7,7 +7,7 @@ using Converter = Aspid.MVVM.StarterKit.Converters.IConverterQuaternion;
 
 namespace Aspid.MVVM.StarterKit.Binders.Mono
 {
-    [AddComponentMenu("MVVM/Binders/Transform/Transform Binder - Rotation EnumGroup")]
+    [AddComponentMenu("Aspid/MVVM/Binders/Transform/Transform Binder - Rotation EnumGroup")]
     public sealed class TransformRotationEnumGroupMonoBinder : EnumGroupMonoBinder<Transform>
     {
         [Header("Parameters")]

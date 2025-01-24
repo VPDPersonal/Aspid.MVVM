@@ -11,7 +11,7 @@ using Converter = Aspid.MVVM.StarterKit.Converters.IConverterStringToBool;
 
 namespace Aspid.MVVM.StarterKit.Binders.Mono
 {
-    [AddComponentMenu("MVVM/Binders/Casters/String To Bool Caster Binder")]
+    [AddComponentMenu("Aspid/MVVM/Binders/Casters/String To Bool Caster Binder")]
     public sealed partial class StringToBoolCasterMonoBinder : MonoBinder, IBinder<string>
     {
         [Header("Converter")]

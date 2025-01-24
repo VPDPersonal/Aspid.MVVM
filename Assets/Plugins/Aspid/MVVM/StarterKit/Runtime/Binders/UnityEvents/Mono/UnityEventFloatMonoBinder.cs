@@ -10,7 +10,7 @@ using Converter = Aspid.MVVM.StarterKit.Converters.IConverterFloat;
 
 namespace Aspid.MVVM.StarterKit.Binders.Mono
 {
-    [AddComponentMenu("MVVM/Binders/UnityEvent/UnityEvent Binder - Float")]
+    [AddComponentMenu("Aspid/MVVM/Binders/UnityEvent/UnityEvent Binder - Float")]
     public sealed partial class UnityEventFloatMonoBinder : MonoBinder, INumberBinder
     {
         public event UnityAction<float> Set

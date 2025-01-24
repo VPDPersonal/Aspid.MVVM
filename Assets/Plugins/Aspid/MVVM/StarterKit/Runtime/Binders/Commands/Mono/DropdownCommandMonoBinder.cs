@@ -6,7 +6,7 @@ using Aspid.MVVM.Mono.Generation;
 namespace Aspid.MVVM.StarterKit.Binders.Mono
 {
     [RequireComponent(typeof(TMP_Dropdown))]
-    [AddComponentMenu("MVVM/Binders/UI/Commands/Dropdown Command Binder")]
+    [AddComponentMenu("Aspid/MVVM/Binders/UI/Commands/Dropdown Command Binder")]
     public sealed partial class DropdownCommandMonoBinder : MonoCommandBinder<int>, IBinder<IRelayCommand<long>>, IBinder<IRelayCommand<float>>, IBinder<IRelayCommand<double>>
     {
         [Header("Component")]

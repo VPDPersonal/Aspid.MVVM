@@ -5,7 +5,7 @@ using Aspid.MVVM.Mono.Generation;
 
 namespace Aspid.MVVM.StarterKit.Binders.Mono
 {
-    [AddComponentMenu("MVVM/Binders/UI/Toggles/Toggle Binder - IsOn")]
+    [AddComponentMenu("Aspid/MVVM/Binders/UI/Toggles/Toggle Binder - IsOn")]
     public partial class ToggleIsOnMonoBinder : ComponentMonoBinder<Toggle>, IBinder<bool>, IReverseBinder<bool>
     {
         public event Action<bool> ValueChanged;

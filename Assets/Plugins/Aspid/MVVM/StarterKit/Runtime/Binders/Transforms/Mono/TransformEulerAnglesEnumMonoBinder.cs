@@ -3,7 +3,7 @@ using Aspid.MVVM.StarterKit.Converters;
 
 namespace Aspid.MVVM.StarterKit.Binders.Mono
 {
-    [AddComponentMenu("MVVM/Binders/Transform/Transform Binder - EulerAngles Enum")]
+    [AddComponentMenu("Aspid/MVVM/Binders/Transform/Transform Binder - EulerAngles Enum")]
     public sealed class TransformEulerAnglesEnumMonoBinder : EnumMonoBinder<Vector3>
     {
         [Header("Parameter")]

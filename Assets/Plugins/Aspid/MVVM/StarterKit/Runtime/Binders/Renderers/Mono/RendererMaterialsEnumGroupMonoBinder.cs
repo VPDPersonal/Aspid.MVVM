@@ -7,7 +7,7 @@ using Converter = Aspid.MVVM.StarterKit.Converters.IConverterMaterial;
 
 namespace Aspid.MVVM.StarterKit.Binders.Mono
 {
-    [AddComponentMenu("MVVM/Binders/Renderer/Renderer Binder - Materials EnumGroup")]
+    [AddComponentMenu("Aspid/MVVM/Binders/Renderer/Renderer Binder - Materials EnumGroup")]
     public sealed class RendererMaterialsEnumGroupMonoBinder : EnumGroupMonoBinder<Renderer>
     {
         [Header("Parameters")]

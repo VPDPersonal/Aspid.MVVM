@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace Aspid.MVVM.StarterKit.Binders.Mono
 {
-    [AddComponentMenu("MVVM/Binders/Collider/Collider Binder - IsTrigger EnumGroup")]
+    [AddComponentMenu("Aspid/MVVM/Binders/Collider/Collider Binder - IsTrigger EnumGroup")]
     public sealed class ColliderIsTriggerEnumGroupMonoBinder : EnumGroupMonoBinder<Collider>
     {
         [Header("Parameters")]

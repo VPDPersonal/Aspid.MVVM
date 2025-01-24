@@ -8,7 +8,7 @@ using Converter = Aspid.MVVM.StarterKit.Converters.IConverterColor;
 
 namespace Aspid.MVVM.StarterKit.Binders.Mono
 {
-    [AddComponentMenu("MVVM/Binders/Renderer/Renderer Binder - MaterialColor")]
+    [AddComponentMenu("Aspid/MVVM/Binders/Renderer/Renderer Binder - MaterialColor")]
     public partial class RendererMaterialColorMonoBinder : ComponentMonoBinder<Renderer>, IColorBinder
     {
         [Header("Parameter")]

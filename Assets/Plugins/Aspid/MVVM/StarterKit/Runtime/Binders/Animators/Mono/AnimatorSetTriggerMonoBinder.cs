@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Aspid.MVVM.StarterKit.Binders.Mono
 {
-    [AddComponentMenu("MVVM/Binders/Animator/Animator Binder - Set Trigger")]
+    [AddComponentMenu("Aspid/MVVM/Binders/Animator/Animator Binder - Set Trigger")]
     public class AnimatorSetTriggerMonoBinder : ComponentMonoBinder<Animator>, IReverseBinder<IRelayCommand>
     {
         public event Action<IRelayCommand> ValueChanged;

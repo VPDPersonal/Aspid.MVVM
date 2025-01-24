@@ -4,7 +4,7 @@ using UnityEngine.UI;
 namespace Aspid.MVVM.StarterKit.Binders.Mono
 {
     [RequireComponent(typeof(Button))]
-    [AddComponentMenu("MVVM/Binders/UI/Commands/Selectable Button Command Binder")]
+    [AddComponentMenu("Aspid/MVVM/Binders/UI/Commands/Selectable Button Command Binder")]
     public sealed class SelectableButtonCommandMonoBinder : MonoCommandBinder<bool>
     {
         [Header("Component")]

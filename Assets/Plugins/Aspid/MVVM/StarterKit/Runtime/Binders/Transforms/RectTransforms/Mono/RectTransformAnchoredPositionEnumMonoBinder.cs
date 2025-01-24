@@ -3,7 +3,7 @@ using Aspid.MVVM.StarterKit.Converters;
 
 namespace Aspid.MVVM.StarterKit.Binders.Mono
 {
-    [AddComponentMenu("MVVM/Binders/UI/RectTransform/RectTransform Binder - AnchoredPosition Enum")]
+    [AddComponentMenu("Aspid/MVVM/Binders/UI/RectTransform/RectTransform Binder - AnchoredPosition Enum")]
     public sealed class RectTransformAnchoredPositionEnumMonoBinder : EnumComponentMonoBinder<RectTransform, Vector3>
     {
         [Header("Parameter")]

@@ -5,7 +5,7 @@ using Aspid.MVVM.Mono.Generation;
 namespace Aspid.MVVM.StarterKit.Binders.Mono
 {
     [RequireComponent(typeof(Slider))]
-    [AddComponentMenu("MVVM/Binders/UI/Commands/Slider Command Binder")]
+    [AddComponentMenu("Aspid/MVVM/Binders/UI/Commands/Slider Command Binder")]
     public sealed partial class SliderCommandMonoBinder : MonoCommandBinder<float>, IBinder<IRelayCommand<int>>, IBinder<IRelayCommand<long>>, IBinder<IRelayCommand<double>>
     {
         [Header("Component")]

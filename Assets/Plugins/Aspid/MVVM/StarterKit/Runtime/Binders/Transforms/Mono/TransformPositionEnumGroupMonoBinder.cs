@@ -3,7 +3,7 @@ using Aspid.MVVM.StarterKit.Converters;
 
 namespace Aspid.MVVM.StarterKit.Binders.Mono
 {
-    [AddComponentMenu("MVVM/Binders/Transform/Transform Binder - Position EnumGroup")]
+    [AddComponentMenu("Aspid/MVVM/Binders/Transform/Transform Binder - Position EnumGroup")]
     public sealed class TransformPositionEnumGroupMonoBinder : EnumGroupMonoBinder<Transform>
     {
         [Header("Parameter")]

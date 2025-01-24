@@ -8,7 +8,7 @@ using Converter = Aspid.MVVM.StarterKit.Converters.IConverterColor;
 
 namespace Aspid.MVVM.StarterKit.Binders.Mono
 {
-    [AddComponentMenu("MVVM/Binders/UI/Graphic/Graphic Binder - Color Enum")]
+    [AddComponentMenu("Aspid/MVVM/Binders/UI/Graphic/Graphic Binder - Color Enum")]
     public sealed class GraphicColorEnumMonoBinder : EnumComponentMonoBinder<Graphic, Color>
     {
         [Header("Converter")]

@@ -13,7 +13,7 @@ using Converter = Aspid.MVVM.StarterKit.Converters.IConverterString;
 
 namespace Aspid.MVVM.StarterKit.Binders.Mono
 {
-    [AddComponentMenu("MVVM/Binders/UI/Text/InputField Binder")]
+    [AddComponentMenu("Aspid/MVVM/Binders/UI/Text/InputField Binder")]
     public partial class InputFieldMonoBinder : ComponentMonoBinder<TMP_InputField>, 
         IBinder<string>, INumberBinder, IReverseBinder<string>, INumberReverseBinder
     {

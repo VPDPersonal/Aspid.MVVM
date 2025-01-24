@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace Aspid.MVVM.StarterKit.Binders.Mono
 {
-    [AddComponentMenu("MVVM/Binders/Collider/Collider Binder - ProvidesContacts EnumGroup")]
+    [AddComponentMenu("Aspid/MVVM/Binders/Collider/Collider Binder - ProvidesContacts EnumGroup")]
     public sealed class ColliderProvidesContactsEnumGroupMonoBinder : EnumGroupMonoBinder<Collider>
     {
         [Header("Parameters")]

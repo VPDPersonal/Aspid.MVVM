@@ -4,7 +4,7 @@ using Aspid.MVVM.Mono.Generation;
 
 namespace Aspid.MVVM.StarterKit.Binders.Mono
 {
-    [AddComponentMenu("MVVM/Binders/Commands/Command Binder")]
+    [AddComponentMenu("Aspid/MVVM/Binders/Commands/Command Binder")]
     public partial class MonoCommandBinder : MonoBinder, IBinder<IRelayCommand>
     {
         private IRelayCommand _command;

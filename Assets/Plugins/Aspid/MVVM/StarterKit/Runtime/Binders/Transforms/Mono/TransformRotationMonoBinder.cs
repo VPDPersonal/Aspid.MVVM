@@ -9,7 +9,7 @@ using Converter = Aspid.MVVM.StarterKit.Converters.IConverterQuaternion;
 
 namespace Aspid.MVVM.StarterKit.Binders.Mono
 {
-    [AddComponentMenu("MVVM/Binders/Transform/Transform Binder - Rotation")]
+    [AddComponentMenu("Aspid/MVVM/Binders/Transform/Transform Binder - Rotation")]
     public partial class TransformRotationMonoBinder : MonoBinder, IRotationBinder, INumberBinder
     {
         [SerializeField] private Space _space = Space.World;

@@ -4,7 +4,7 @@ using Aspid.MVVM.StarterKit.Converters;
 
 namespace Aspid.MVVM.StarterKit.Binders.Mono
 {
-    [AddComponentMenu("MVVM/Binders/Collider/Box/BoxCollider Binder - Center")]
+    [AddComponentMenu("Aspid/MVVM/Binders/Collider/Box/BoxCollider Binder - Center")]
     public partial class BoxColliderCenterMonoBinder : ComponentMonoBinder<BoxCollider>, IVectorBinder, INumberBinder
     {
         [Header("Converter")]

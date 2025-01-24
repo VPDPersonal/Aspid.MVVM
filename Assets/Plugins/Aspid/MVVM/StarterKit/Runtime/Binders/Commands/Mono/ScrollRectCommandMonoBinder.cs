@@ -5,7 +5,7 @@ using Aspid.MVVM.Mono.Generation;
 namespace Aspid.MVVM.StarterKit.Binders.Mono
 {
     [RequireComponent(typeof(ScrollRect))]
-    [AddComponentMenu("MVVM/Binders/UI/Commands/ScrollRect Command Binder")]
+    [AddComponentMenu("Aspid/MVVM/Binders/UI/Commands/ScrollRect Command Binder")]
     public sealed partial class ScrollRectCommandMonoBinder : MonoCommandBinder<Vector2>, IBinder<IRelayCommand<Vector3>>
     {
         [Header("Component")]

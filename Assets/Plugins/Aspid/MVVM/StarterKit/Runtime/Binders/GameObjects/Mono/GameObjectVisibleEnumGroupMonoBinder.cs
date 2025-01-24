@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace Aspid.MVVM.StarterKit.Binders.Mono
 {
-    [AddComponentMenu("MVVM/Binders/GameObject/GameObject Binder - Visible EnumGroup")]
+    [AddComponentMenu("Aspid/MVVM/Binders/GameObject/GameObject Binder - Visible EnumGroup")]
     public sealed class GameObjectVisibleEnumGroupMonoBinder : EnumGroupMonoBinder<GameObject>
     {
         [Header("Parameters")]

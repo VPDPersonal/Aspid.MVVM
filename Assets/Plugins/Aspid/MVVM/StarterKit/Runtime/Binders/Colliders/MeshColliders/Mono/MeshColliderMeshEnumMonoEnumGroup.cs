@@ -7,7 +7,7 @@ using Converter = Aspid.MVVM.StarterKit.Converters.IConverterMesh;
 
 namespace Aspid.MVVM.StarterKit.Binders.Mono
 {
-    [AddComponentMenu("MVVM/Binders/Collider/Mesh/MeshCollider Binder - Mesh EnumGroup")]
+    [AddComponentMenu("Aspid/MVVM/Binders/Collider/Mesh/MeshCollider Binder - Mesh EnumGroup")]
     public sealed class MeshColliderMeshEnumMonoEnumGroup : EnumGroupMonoBinder<MeshCollider>
     {
         [Header("Parameters")]

@@ -8,7 +8,7 @@ using Converter = Aspid.MVVM.StarterKit.Converters.IConverterFloat;
 
 namespace Aspid.MVVM.StarterKit.Binders.Mono
 {
-    [AddComponentMenu("MVVM/Binders/UI/Slider/Slider Binder - Value EnumGroup")]
+    [AddComponentMenu("Aspid/MVVM/Binders/UI/Slider/Slider Binder - Value EnumGroup")]
     public sealed class SliderValueEnumGroupMonoBinder : EnumGroupMonoBinder<Slider>
     {
         [Header("Parameters")]

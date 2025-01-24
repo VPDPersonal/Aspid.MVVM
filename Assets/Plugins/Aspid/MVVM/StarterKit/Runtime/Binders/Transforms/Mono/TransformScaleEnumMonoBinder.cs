@@ -3,7 +3,7 @@ using Aspid.MVVM.StarterKit.Converters;
 
 namespace Aspid.MVVM.StarterKit.Binders.Mono
 {
-    [AddComponentMenu("MVVM/Binders/Transform/Transform Binder - Scale Enum")]
+    [AddComponentMenu("Aspid/MVVM/Binders/Transform/Transform Binder - Scale Enum")]
     public sealed class TransformScaleEnumMonoBinder : EnumMonoBinder<Vector3>
     {
         [Header("Converter")]

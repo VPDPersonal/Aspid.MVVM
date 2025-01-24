@@ -9,7 +9,7 @@ using Converter = Aspid.MVVM.StarterKit.Converters.IConverterVector2;
 
 namespace Aspid.MVVM.StarterKit.Binders.Mono
 {
-    [AddComponentMenu("MVVM/Binders/UI/Slider/Slider Binder - MinMax")]
+    [AddComponentMenu("Aspid/MVVM/Binders/UI/Slider/Slider Binder - MinMax")]
     public partial class SliderMinMaxMonoBinder : ComponentMonoBinder<Slider>, IBinder<Vector2>, INumberBinder
     {
         [Header("Parameter")]

@@ -9,7 +9,7 @@ using Converter = Aspid.MVVM.StarterKit.Converters.IConverterColor;
 
 namespace Aspid.MVVM.StarterKit.Binders.Mono
 {
-    [AddComponentMenu("MVVM/Binders/UI/Graphic/Graphic Binder - Color")]
+    [AddComponentMenu("Aspid/MVVM/Binders/UI/Graphic/Graphic Binder - Color")]
     public partial class GraphicColorMonoBinder : ComponentMonoBinder<Graphic>, IColorBinder
     {
         [Header("Converter")]

@@ -8,7 +8,7 @@ using Converter = Aspid.MVVM.StarterKit.Converters.IConverterFloat;
 
 namespace Aspid.MVVM.StarterKit.Binders.Mono
 {
-    [AddComponentMenu("MVVM/Binders/UI/Image/Image Binder - Fill Switcher")]
+    [AddComponentMenu("Aspid/MVVM/Binders/UI/Image/Image Binder - Fill Switcher")]
     public sealed class ImageFillSwitcherMonoBinder : SwitcherMonoBinder<Image, float>
     {
         [Header("Converter")]

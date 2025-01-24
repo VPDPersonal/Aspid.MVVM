@@ -3,7 +3,7 @@ using UnityEngine.UI;
 
 namespace Aspid.MVVM.StarterKit.Binders.Mono
 {
-    [AddComponentMenu("MVVM/Binders/UI/Image/Image Binder - Sprite EnumGroup")]
+    [AddComponentMenu("Aspid/MVVM/Binders/UI/Image/Image Binder - Sprite EnumGroup")]
     public sealed class ImageSpriteEnumGroupMonoBinder : EnumGroupMonoBinder<Image>
     {
         [Header("Parameters")]

@@ -24,16 +24,20 @@ namespace Aspid.MVVM
         public bool IsBound { get; private set; }
         
         /// <summary>
-        /// Binds the component to the specified <see cref="IViewModel"/>.
+        /// Binds a component using the specified binding parameters.
         /// </summary>
-        /// <param name="viewModel">The ViewModel instance to bind to.</param>
-        /// <param name="id">The component ID for binding, which matches the property name in the ViewModel.</param>
-        public void Bind(IViewModel viewModel, string id)
+        /// <param name="parameters">
+        /// The parameters that contain the ViewModel and the component ID for binding, where the component ID matches
+        /// the property name in the ViewModel.
+        /// </param>
+        public void Bind(in BindParameters parameters)
         {
 #if !ASPID_MVVM_UNITY_PROFILER_DISABLED
             using (_bindMarker.Auto()) 
 #endif
             {
+                var id = parameters.Id;
+                var viewModel = parameters.ViewModel;
                 ThrowExceptionIfInvalidData(viewModel, id);
                 
                 if (IsBound) throw new Exception("This Binder is already bound.");

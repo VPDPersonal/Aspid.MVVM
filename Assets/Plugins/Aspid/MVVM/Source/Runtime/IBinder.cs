@@ -13,11 +13,13 @@ namespace Aspid.MVVM
         public bool IsReverseEnabled => false;
         
         /// <summary>
-        /// Binds a component to the specified <see cref="IViewModel"/>.
+        /// Binds a component using the specified binding parameters.
         /// </summary>
-        /// <param name="viewModel">The ViewModel to bind to.</param>
-        /// <param name="id">The component ID for binding, which matches the property name in the ViewModel.</param>
-        public void Bind(IViewModel viewModel, string id);
+        /// <param name="parameters">
+        /// The parameters that contain the ViewModel and the component ID for binding, where the component ID matches
+        /// the property name in the ViewModel.
+        /// </param>
+        public void Bind(in BindParameters parameters);
         
         /// <summary>
         /// Unbinds the component from the bound s<see cref="IViewModel"/>.

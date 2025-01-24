@@ -20,7 +20,7 @@ namespace Aspid.MVVM
             where T : IBinder
         {
             if (binder is null) return;
-            binder.Bind(viewModel, id);
+            binder.Bind(new BindParameters(viewModel, id));
         }
         
         /// <summary>
@@ -36,11 +36,12 @@ namespace Aspid.MVVM
             where T : IBinder
         {
             if (binders is null) return;
+            var parameters = new BindParameters(viewModel, id);
 
             foreach (var binder in binders)
             {
 	            if (binder is null) throw new NullReferenceException($"Binder {id} is null. ViewModel {viewModel.GetType().FullName}");
-	            binder.Bind(viewModel, id);
+	            binder.Bind(parameters);
             }
         }
 
@@ -59,11 +60,12 @@ namespace Aspid.MVVM
             where T : IBinder
         {
             if (binders is null) return;
+            var parameters = new BindParameters(viewModel, id);
 
             foreach (var binder in binders)
             {
 	            if (binder is null) throw new NullReferenceException($"Binder {id} is null. ViewModel {viewModel.GetType().FullName}");
-	            binder.Bind(viewModel, id);
+	            binder.Bind(parameters);
             }
         }
         
@@ -81,11 +83,12 @@ namespace Aspid.MVVM
             where T : IBinder
         {
             if (binders is null) return;
+            var parameters = new BindParameters(viewModel, id);
 
             foreach (var binder in binders)
             {
 	            if (binder is null) throw new NullReferenceException($"Binder {id} is null. ViewModel {viewModel.GetType().FullName}");
-	            binder.Bind(viewModel, id);
+	            binder.Bind(parameters);
             }
         }
         

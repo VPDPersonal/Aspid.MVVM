@@ -17,7 +17,7 @@ namespace Aspid.MVVM.StarterKit.Binders.Mono
         protected abstract void SetValue(T value);
     }
     
-    public abstract class SwitcherMonoBinder<TComponent, T> : ComponentMonoBinder<TComponent>, IBinder<bool> 
+    public abstract partial class SwitcherMonoBinder<TComponent, T> : ComponentMonoBinder<TComponent>, IBinder<bool> 
         where TComponent : Component
     {
         [Header("Parameters")]

@@ -1,4 +1,5 @@
 using UnityEngine;
+using Aspid.MVVM.Mono.Generation;
 #if UNITY_2023_1_OR_NEWER
 using PhysicsMaterial = UnityEngine.PhysicsMaterial;
 using Converter = Aspid.MVVM.StarterKit.Converters.IConverter<UnityEngine.PhysicsMaterial, UnityEngine.PhysicsMaterial>;
@@ -16,6 +17,7 @@ namespace Aspid.MVVM.StarterKit.Binders.Mono
         [SerializeReferenceDropdown]
         [SerializeReference] private Converter _converter;
         
+        [BinderLog]
         public void SetValue(PhysicsMaterial value) =>
             CachedComponent.material = _converter?.Convert(value) ?? value;
     }

@@ -2,23 +2,25 @@
 using System;
 using UnityEngine;
 using Aspid.MVVM.StarterKit.Converters;
+#if UNITY_2023_1_OR_NEWER
+using Converter = Aspid.MVVM.StarterKit.Converters.IConverter<float, float>;
+#else
+using Converter = Aspid.MVVM.StarterKit.Converters.IConverterFloat;
+#endif
 
 namespace Aspid.MVVM.StarterKit.Binders
 {
     [Serializable]
     public class CapsuleColliderRadiusBinder : TargetBinder<CapsuleCollider>, INumberBinder
     {
-#if UNITY_2023_1_OR_NEWER
         [Header("Converter")]
-        [SerializeReference]
         [SerializeReferenceDropdown]
-#endif
-        private IConverter<float, float>? _converter;
+        [SerializeReference] private Converter? _converter;
 
         public CapsuleColliderRadiusBinder(CapsuleCollider target, Func<float, float> converter)
             : this(target, converter.ToConvert()) { }
         
-        public CapsuleColliderRadiusBinder(CapsuleCollider target, IConverter<float, float>? converter = null)
+        public CapsuleColliderRadiusBinder(CapsuleCollider target, Converter? converter = null)
             : base(target)
         {
             _converter = converter;

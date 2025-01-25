@@ -2,6 +2,11 @@
 using System;
 using UnityEngine;
 using Aspid.MVVM.StarterKit.Converters;
+#if UNITY_2023_1_OR_NEWER
+using Converter = Aspid.MVVM.StarterKit.Converters.IConverter<UnityEngine.Vector2, UnityEngine.Vector2>;
+#else
+using Converter = Aspid.MVVM.StarterKit.Converters.IConverterVector2
+#endif
 
 namespace Aspid.MVVM.StarterKit.Binders
 {
@@ -10,13 +15,10 @@ namespace Aspid.MVVM.StarterKit.Binders
     {
         [Header("Parameter")]
         [SerializeField] private SizeDeltaMode _mode;
-
-#if UNITY_2023_1_OR_NEWER
+        
         [Header("Converter")]
-        [SerializeReference]
         [SerializeReferenceDropdown]
-#endif
-        private IConverter<Vector2, Vector2>? _converter;
+        [SerializeReference] private Converter? _converter;
 
         public RectTransformSizeDeltaBinder(RectTransform target, Func<Vector2, Vector2> converter)
             : this(target, SizeDeltaMode.SizeDelta, converter.ToConvert()) { }
@@ -27,7 +29,7 @@ namespace Aspid.MVVM.StarterKit.Binders
         public RectTransformSizeDeltaBinder(
             RectTransform target, 
             SizeDeltaMode mode = SizeDeltaMode.SizeDelta, 
-            IConverter<Vector2, Vector2>? converter = null)
+            Converter? converter = null)
             : base(target)
         {
             _mode = mode;

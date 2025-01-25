@@ -3,6 +3,11 @@ using System;
 using UnityEngine;
 using UnityEngine.UI;
 using Aspid.MVVM.StarterKit.Converters;
+#if UNITY_2023_1_OR_NEWER
+using Converter = Aspid.MVVM.StarterKit.Converters.IConverter<float, float>;
+#else
+using Converter = Aspid.MVVM.StarterKit.Converters.IConverterFloat;
+#endif
 
 namespace Aspid.MVVM.StarterKit.Binders
 {
@@ -16,12 +21,9 @@ namespace Aspid.MVVM.StarterKit.Binders
 
         private bool _isNotifyValueChanged = true;
         
-#if UNITY_2023_1_OR_NEWER
         [Header("Converter")]
-        [SerializeReference]
         [SerializeReferenceDropdown]
-#endif
-        private IConverter<float, float>? _converter;
+        [SerializeReference] private Converter? _converter;
         
         public bool IsReverseEnabled { get; }
 
@@ -35,7 +37,7 @@ namespace Aspid.MVVM.StarterKit.Binders
         public SliderValueBinder(Slider target, Func<float, float> converter, bool isReverseEnabled = true) :
             this(target, converter.ToConvert(), isReverseEnabled) { }
         
-        public SliderValueBinder(Slider target, IConverter<float, float>? converter = null, bool isReverseEnabled = true)
+        public SliderValueBinder(Slider target, Converter? converter = null, bool isReverseEnabled = true)
             : base(target)
         {
             _converter = converter;

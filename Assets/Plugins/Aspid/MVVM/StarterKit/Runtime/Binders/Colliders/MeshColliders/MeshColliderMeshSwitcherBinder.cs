@@ -2,18 +2,20 @@
 using System;
 using UnityEngine;
 using Aspid.MVVM.StarterKit.Converters;
+#if UNITY_2023_1_OR_NEWER
+using Converter = Aspid.MVVM.StarterKit.Converters.IConverter<UnityEngine.Mesh?, UnityEngine.Mesh?>;
+#else
+using Converter = Aspid.MVVM.StarterKit.Converters.IConverterMesh;
+#endif
 
 namespace Aspid.MVVM.StarterKit.Binders
 {
     [Serializable]
     public sealed class MeshColliderMeshSwitcherBinder : SwitcherBinder<MeshCollider, Mesh>
     {
-#if UNITY_2023_1_OR_NEWER
         [Header("Converter")]
-        [SerializeReference]
         [SerializeReferenceDropdown]
-#endif
-        private IConverter<Mesh?, Mesh?>? _converter;
+        [SerializeReference] private Converter? _converter;
 
         public MeshColliderMeshSwitcherBinder(
             MeshCollider target,
@@ -26,7 +28,7 @@ namespace Aspid.MVVM.StarterKit.Binders
             MeshCollider target,
             Mesh trueValue, 
             Mesh falseValue, 
-            IConverter<Mesh?, Mesh?>? converter = null)
+            Converter? converter = null)
             : base(target, trueValue, falseValue)
         {
             _converter = converter; }

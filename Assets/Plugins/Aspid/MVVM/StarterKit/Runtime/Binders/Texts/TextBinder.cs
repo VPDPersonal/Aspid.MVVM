@@ -5,18 +5,20 @@ using System;
 using UnityEngine;
 using System.Globalization;
 using Aspid.MVVM.StarterKit.Converters;
+#if UNITY_2023_1_OR_NEWER
+using Converter = Aspid.MVVM.StarterKit.Converters.IConverter<string?, string?>;
+#else
+using Converter = Aspid.MVVM.StarterKit.Converters.IConverterString;
+#endif
 
 namespace Aspid.MVVM.StarterKit.Binders
 {
     [Serializable]
     public class TextBinder : TargetBinder<TMP_Text>, IBinder<string?>, INumberBinder
     {
-#if UNITY_2023_1_OR_NEWER
         [Header("Converter")]
-        [SerializeReference]
         [SerializeReferenceDropdown]
-#endif
-        private IConverter<string?, string?>? _converter;
+        [SerializeReference] private Converter? _converter;
 
         public TextBinder(TMP_Text target)
             : base(target) { }
@@ -24,7 +26,7 @@ namespace Aspid.MVVM.StarterKit.Binders
         public TextBinder(TMP_Text target, Func<string?, string?> converter)
             : this(target, converter.ToConvert()) { }
         
-        public TextBinder(TMP_Text target, IConverter<string?, string?>? converter)
+        public TextBinder(TMP_Text target, Converter? converter)
             : base(target)
         {
             _converter = converter; 

@@ -2,11 +2,12 @@
 using System;
 using UnityEngine;
 using Aspid.MVVM.StarterKit.Converters;
-
 #if UNITY_2023_1_OR_NEWER
 using PhysicsMaterial = UnityEngine.PhysicsMaterial;
+using Converter = Aspid.MVVM.StarterKit.Converters.IConverter<UnityEngine.PhysicsMaterial?, UnityEngine.PhysicsMaterial?>;
 #else
 using PhysicsMaterial = UnityEngine.PhysicMaterial;
+using Converter = Aspid.MVVM.StarterKit.Converters.IConverterPhysicsMaterial;
 #endif
 
 namespace Aspid.MVVM.StarterKit.Binders
@@ -14,12 +15,9 @@ namespace Aspid.MVVM.StarterKit.Binders
     [Serializable]
     public sealed class ColliderMaterialSwitcherBinder : SwitcherBinder<Collider, PhysicsMaterial>
     {
-#if UNITY_2023_1_OR_NEWER
         [Header("Converter")]
-        [SerializeReference]
         [SerializeReferenceDropdown]
-#endif 
-        private IConverter<PhysicsMaterial?, PhysicsMaterial?>? _converter;
+        [SerializeReference] private Converter? _converter;
 
         public ColliderMaterialSwitcherBinder(
             Collider target,
@@ -32,7 +30,7 @@ namespace Aspid.MVVM.StarterKit.Binders
             Collider target,
             PhysicsMaterial trueValue, 
             PhysicsMaterial falseValue, 
-            IConverter<PhysicsMaterial?, PhysicsMaterial?>? converter = null)
+            Converter? converter = null)
             : base(target, trueValue, falseValue)
         {
             _converter = converter;

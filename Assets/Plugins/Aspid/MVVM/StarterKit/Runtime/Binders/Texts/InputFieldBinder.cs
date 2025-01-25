@@ -5,6 +5,11 @@ using System;
 using UnityEngine;
 using System.Globalization;
 using Aspid.MVVM.StarterKit.Converters;
+#if UNITY_2023_1_OR_NEWER
+using Converter = Aspid.MVVM.StarterKit.Converters.IConverter<string?, string?>;
+#else
+using Converter = Aspid.MVVM.StarterKit.Converters.IConverterString;
+#endif
 
 namespace Aspid.MVVM.StarterKit.Binders
 {
@@ -17,12 +22,9 @@ namespace Aspid.MVVM.StarterKit.Binders
         public event Action<float>? FloatValueChanged;
         public event Action<double>? DoubleValueChanged;
         
-#if UNITY_2023_1_OR_NEWER
         [Header("Converter")]
-        [SerializeReference]
         [SerializeReferenceDropdown]
-#endif
-        private IConverter<string?, string?>? _converter;
+        [SerializeReference] private Converter? _converter;
         
         private bool _isNotifyValueChanged = true;
         
@@ -41,7 +43,7 @@ namespace Aspid.MVVM.StarterKit.Binders
         public InputFieldBinder(TMP_InputField target, Func<string?, string> converter, bool isReverseEnabled = true)
             : this(target, converter.ToConvert(), isReverseEnabled) { }
         
-        public InputFieldBinder(TMP_InputField target, IConverter<string?, string?>? converter = null, bool isReverseEnabled = true)
+        public InputFieldBinder(TMP_InputField target, Converter? converter = null, bool isReverseEnabled = true)
             : base(target)
         {
             _converter = converter;

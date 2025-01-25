@@ -2,18 +2,20 @@
 using System;
 using UnityEngine;
 using Aspid.MVVM.StarterKit.Converters;
+#if UNITY_2023_1_OR_NEWER
+using Converter = Aspid.MVVM.StarterKit.Converters.IConverter<float, float>;
+#else
+using Converter = Aspid.MVVM.StarterKit.Converters.IConverterFloat;
+#endif
 
 namespace Aspid.MVVM.StarterKit.Binders
 {
     [Serializable]
     public sealed class SphereColliderRadiusSwitcherBinder : SwitcherBinder<CapsuleCollider, float>
     {
-#if UNITY_2023_1_OR_NEWER
         [Header("Converter")]
-        [SerializeReference]
         [SerializeReferenceDropdown]
-#endif
-        private IConverter<float, float>? _converter;
+        [SerializeReference] private Converter? _converter;
 
         public SphereColliderRadiusSwitcherBinder(
             CapsuleCollider target,
@@ -26,7 +28,7 @@ namespace Aspid.MVVM.StarterKit.Binders
             CapsuleCollider target,
             float trueValue, 
             float falseValue, 
-            IConverter<float, float>? converter = null)
+            Converter? converter = null)
             : base(target, trueValue, falseValue)
         {
             _converter = converter;

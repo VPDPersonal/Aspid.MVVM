@@ -3,18 +3,20 @@ using System;
 using UnityEngine;
 using UnityEngine.UI;
 using Aspid.MVVM.StarterKit.Converters;
+#if UNITY_2023_1_OR_NEWER
+using Converter = Aspid.MVVM.StarterKit.Converters.IConverter<UnityEngine.Color, UnityEngine.Color>;
+#else
+using Converter = Aspid.MVVM.StarterKit.Converters.IConverterColor;
+#endif
 
 namespace Aspid.MVVM.StarterKit.Binders
 {
     [Serializable]
     public sealed class GraphicColorSwitcherBinder : SwitcherBinder<Graphic, Color>
     {
-#if UNITY_2023_1_OR_NEWER
         [Header("Converter")]
-        [SerializeReference]
         [SerializeReferenceDropdown]
-#endif
-        private IConverter<Color, Color>? _converter;
+        [SerializeReference] private Converter? _converter;
         
         public GraphicColorSwitcherBinder(
             Graphic target,
@@ -27,7 +29,7 @@ namespace Aspid.MVVM.StarterKit.Binders
             Graphic target,
             Color trueColor, 
             Color falseColor, 
-            IConverter<Color, Color>? converter = null)
+            Converter? converter = null)
             : base(target, trueColor, falseColor)
         {
             _converter = converter;

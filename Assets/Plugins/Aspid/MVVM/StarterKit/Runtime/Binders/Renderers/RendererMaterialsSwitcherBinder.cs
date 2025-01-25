@@ -2,18 +2,20 @@
 using System;
 using UnityEngine;
 using Aspid.MVVM.StarterKit.Converters;
+#if UNITY_2023_1_OR_NEWER
+using Converter = Aspid.MVVM.StarterKit.Converters.IConverter<UnityEngine.Material?, UnityEngine.Material?>;
+#else
+using Converter = Aspid.MVVM.StarterKit.Converters.IConverterMaterial;
+#endif
 
 namespace Aspid.MVVM.StarterKit.Binders
 {
     [Serializable]
     public sealed class RendererMaterialsSwitcherBinder : SwitcherBinder<Renderer, Material[]?>
     {
-#if UNITY_2023_1_OR_NEWER
         [Header("Converter")]
-        [SerializeReference]
         [SerializeReferenceDropdown]
-#endif
-        private IConverter<Material?, Material?>? _converter;
+        [SerializeReference] private Converter? _converter;
 
         public RendererMaterialsSwitcherBinder(
             Renderer target,
@@ -26,7 +28,7 @@ namespace Aspid.MVVM.StarterKit.Binders
             Renderer target, 
             Material[]? trueValue,
             Material[]? falseValue,
-            IConverter<Material?, Material?>? converter = null)
+            Converter? converter = null)
             : base(target, trueValue, falseValue)
         {
             _converter = converter;

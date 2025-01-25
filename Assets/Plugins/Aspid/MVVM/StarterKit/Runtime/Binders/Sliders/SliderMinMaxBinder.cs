@@ -3,6 +3,11 @@ using System;
 using UnityEngine;
 using UnityEngine.UI;
 using Aspid.MVVM.StarterKit.Converters;
+#if UNITY_2023_1_OR_NEWER
+using Converter = Aspid.MVVM.StarterKit.Converters.IConverter<UnityEngine.Vector2, UnityEngine.Vector2>;
+#else
+using Converter = Aspid.MVVM.StarterKit.Converters.IConverterVector2;
+#endif
 
 namespace Aspid.MVVM.StarterKit.Binders
 {
@@ -12,12 +17,9 @@ namespace Aspid.MVVM.StarterKit.Binders
         [Header("Parameter")]
         [SerializeField] private SliderValueMode _mode;
         
-#if UNITY_2023_1_OR_NEWER
         [Header("Converter")]
-        [SerializeReference]
         [SerializeReferenceDropdown]
-#endif
-        private IConverter<Vector2, Vector2>? _converter;
+        [SerializeReference] private Converter? _converter;
         
         public SliderMinMaxBinder(
             Slider target, 
@@ -32,13 +34,13 @@ namespace Aspid.MVVM.StarterKit.Binders
         
         public SliderMinMaxBinder(
             Slider target, 
-            IConverter<Vector2, Vector2>? converter)
+            Converter? converter)
             : this(target, SliderValueMode.Range, converter) { }
         
         public SliderMinMaxBinder(
             Slider target, 
             SliderValueMode mode = SliderValueMode.Range, 
-            IConverter<Vector2, Vector2>? converter = null)
+            Converter? converter = null)
             : base(target)
         {
             _mode = mode;

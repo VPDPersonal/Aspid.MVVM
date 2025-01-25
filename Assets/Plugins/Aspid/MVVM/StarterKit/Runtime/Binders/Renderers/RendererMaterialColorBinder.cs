@@ -3,21 +3,24 @@ using System;
 using UnityEngine;
 using Aspid.MVVM.Mono.Generation;
 using Aspid.MVVM.StarterKit.Converters;
+#if UNITY_2023_1_OR_NEWER
+using Converter = Aspid.MVVM.StarterKit.Converters.IConverter<UnityEngine.Color, UnityEngine.Color>;
+#else
+using Converter = Aspid.MVVM.StarterKit.Converters.IConverterColor;
+#endif
 
 namespace Aspid.MVVM.StarterKit.Binders
 {
     [Serializable]
     public class RendererMaterialColorBinder : TargetBinder<Renderer>, IColorBinder
     {
+        // ReSharper disable once MemberInitializerValueIgnored
         [Header("Parameter")]
         [SerializeField] private string _colorPropertyName = "_BaseColor";
         
-#if UNITY_2023_1_OR_NEWER
         [Header("Converter")]
-        [SerializeReference]
         [SerializeReferenceDropdown]
-#endif
-        private IConverter<Color, Color>? _converter;
+        [SerializeReference] private Converter? _converter;
 
         private int? _colorPropertyId;
         
@@ -26,11 +29,11 @@ namespace Aspid.MVVM.StarterKit.Binders
         public RendererMaterialColorBinder(Renderer target, Func<Color, Color> converter)
             : this(target, converter.ToConvert()) { }
         
-        public RendererMaterialColorBinder(Renderer target, IConverter<Color, Color> converter) 
+        public RendererMaterialColorBinder(Renderer target, Converter converter) 
             : this(target, "_BaseColor", converter) { }
         
         public RendererMaterialColorBinder(Renderer target, string colorPropertyName = "_BaseColor") 
-            : this(target, colorPropertyName, null as IConverter<Color, Color>) { }
+            : this(target, colorPropertyName, null as Converter) { }
 
         public RendererMaterialColorBinder(
             Renderer target,
@@ -41,7 +44,7 @@ namespace Aspid.MVVM.StarterKit.Binders
         public RendererMaterialColorBinder(
             Renderer target,
             string colorPropertyName = "_BaseColor",
-            IConverter<Color, Color>? converter = null)
+            Converter? converter = null)
             : base(target)
         {
             _converter = converter;

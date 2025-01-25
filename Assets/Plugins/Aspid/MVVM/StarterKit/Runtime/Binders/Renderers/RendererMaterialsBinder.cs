@@ -3,23 +3,25 @@ using System;
 using UnityEngine;
 using System.Collections.Generic;
 using Aspid.MVVM.StarterKit.Converters;
+#if UNITY_2023_1_OR_NEWER
+using Converter = Aspid.MVVM.StarterKit.Converters.IConverter<UnityEngine.Material?, UnityEngine.Material?>;
+#else
+using Converter = Aspid.MVVM.StarterKit.Converters.IConverterMaterial;
+#endif
 
 namespace Aspid.MVVM.StarterKit.Binders
 {
     [Serializable]
     public class RendererMaterialsBinder : TargetBinder<Renderer>, IBinder<Material>, IBinder<Material[]>, IBinder<IReadOnlyCollection<Material>>
     {
-#if UNITY_2023_1_OR_NEWER
         [Header("Converter")]
-        [SerializeReference]
         [SerializeReferenceDropdown]
-#endif
-        private IConverter<Material?, Material?>? _converter;
+        [SerializeReference] private Converter? _converter;
 
         public RendererMaterialsBinder(Renderer target, Func<Material?, Material?> converter)
             : this(target, converter.ToConvert()) { }
         
-        public RendererMaterialsBinder(Renderer target, IConverter<Material?, Material?>? converter = null)
+        public RendererMaterialsBinder(Renderer target, Converter? converter = null)
             : base(target)
         {
             _converter = converter;

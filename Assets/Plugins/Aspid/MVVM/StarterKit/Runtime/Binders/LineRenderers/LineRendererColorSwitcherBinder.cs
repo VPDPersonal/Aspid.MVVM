@@ -2,6 +2,11 @@
 using System;
 using UnityEngine;
 using Aspid.MVVM.StarterKit.Converters;
+#if UNITY_2023_1_OR_NEWER
+using Converter = Aspid.MVVM.StarterKit.Converters.IConverter<UnityEngine.Color, UnityEngine.Color>;
+#else
+using Converter = Aspid.MVVM.StarterKit.Converters.IConverterColor;
+#endif
 
 namespace Aspid.MVVM.StarterKit.Binders
 {
@@ -9,13 +14,10 @@ namespace Aspid.MVVM.StarterKit.Binders
     public sealed class LineRendererColorSwitcherBinder : SwitcherBinder<LineRenderer, Color>
     {
         [SerializeField] private LineRendererColorMode _mode;
-    
-#if UNITY_2023_1_OR_NEWER
+        
         [Header("Converter")]
-        [SerializeReference]
         [SerializeReferenceDropdown]
-#endif
-        private IConverter<Color, Color>? _converter;
+        [SerializeReference] private Converter? _converter;
 
         public LineRendererColorSwitcherBinder(
             LineRenderer target,
@@ -36,7 +38,7 @@ namespace Aspid.MVVM.StarterKit.Binders
             LineRenderer target,
             Color trueValue,
             Color falseValue,
-            IConverter<Color, Color>? converter)
+            Converter? converter)
             : this(target, trueValue, falseValue, LineRendererColorMode.StartAndEnd, converter) { }
         
         public LineRendererColorSwitcherBinder(
@@ -44,7 +46,7 @@ namespace Aspid.MVVM.StarterKit.Binders
             Color trueValue,
             Color falseValue,
             LineRendererColorMode mode = LineRendererColorMode.StartAndEnd,
-            IConverter<Color, Color>? converter = null)
+            Converter? converter = null)
             : base(target, trueValue, falseValue)
         {
             _mode = mode;

@@ -9,7 +9,7 @@ namespace Aspid.MVVM.StarterKit.Binders
     public class TransformEulerAnglesBinder : TargetBinder<Transform>, IVectorBinder, INumberBinder
     {
         [Header("Parameter")]
-        private Space _space;
+        [SerializeField] private Space _space;
 
         [Header("Converter")]
         [SerializeField] private Vector3CombineConverter? _converter;

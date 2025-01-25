@@ -2,6 +2,11 @@
 using System;
 using UnityEngine;
 using Aspid.MVVM.StarterKit.Converters;
+#if UNITY_2023_1_OR_NEWER
+using Converter = Aspid.MVVM.StarterKit.Converters.IConverter<UnityEngine.Quaternion, UnityEngine.Quaternion>;
+#else
+using Converter = Aspid.MVVM.StarterKit.Converters.IConverterQuaternion;
+#endif
 
 namespace Aspid.MVVM.StarterKit.Binders
 {
@@ -10,20 +15,17 @@ namespace Aspid.MVVM.StarterKit.Binders
     {
         [SerializeField] private Space _space;
         
-#if UNITY_2023_1_OR_NEWER
         [Header("Converter")]
-        [SerializeReference]
         [SerializeReferenceDropdown]
-#endif
-        private IConverter<Quaternion, Quaternion>? _converter;
-
+        [SerializeReference] private Converter? _converter;
+        
         public TransformRotationSwitcherBinder(
             Transform target, 
             Vector3 trueValue, 
             Vector3 falseValue, 
             Func<Quaternion, Quaternion> converter) 
             : this(target, trueValue, falseValue, Space.World, converter) { }
-
+        
         public TransformRotationSwitcherBinder(
             Transform target, 
             Vector3 trueValue, 
@@ -36,7 +38,7 @@ namespace Aspid.MVVM.StarterKit.Binders
             Transform target, 
             Vector3 trueValue, 
             Vector3 falseValue, 
-            IConverter<Quaternion, Quaternion>? converter) 
+            Converter? converter) 
             : this(target, trueValue, falseValue, Space.World, converter) { }
 
         public TransformRotationSwitcherBinder(
@@ -44,7 +46,7 @@ namespace Aspid.MVVM.StarterKit.Binders
             Vector3 trueValue, 
             Vector3 falseValue, 
             Space space = Space.World,
-            IConverter<Quaternion, Quaternion>? converter = null) 
+            Converter? converter = null) 
             : base(target, trueValue, falseValue)
         {
             _space = space;

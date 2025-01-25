@@ -2,23 +2,31 @@
 using System;
 using UnityEngine;
 using Aspid.MVVM.StarterKit.Converters;
+#if UNITY_2023_1_OR_NEWER
+using Converter = Aspid.MVVM.StarterKit.Converters.IConverter<float, float>;
+#else
+using Converter = Aspid.MVVM.StarterKit.Converters.IConverterFloat;
+#endif
 
 namespace Aspid.MVVM.StarterKit.Binders
 {
     [Serializable]
     public class AnimatorSetFloatBinder : AnimatorSetParameterBinder<float>
     {
-#if UNITY_2023_1_OR_NEWER
         [Header("Converter")]
-        [SerializeReference]
         [SerializeReferenceDropdown]
-#endif
-        private IConverter<float, float>? _converter;
+        [SerializeReference] private Converter? _converter;
 
         public AnimatorSetFloatBinder(
             Animator animator,
             string parameterName, 
-            IConverter<float, float>? converter = null)
+            Func<float, float> converter)
+            : this(animator, parameterName, converter.ToConvert()) { }
+        
+        public AnimatorSetFloatBinder(
+            Animator animator,
+            string parameterName, 
+            Converter? converter = null)
             : base(animator, parameterName)
         {
             _converter = converter;

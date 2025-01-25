@@ -5,18 +5,20 @@ using System;
 using UnityEngine;
 using Aspid.MVVM.Mono.Generation;
 using Aspid.MVVM.StarterKit.Converters;
+#if UNITY_2023_1_OR_NEWER
+using Converter = Aspid.MVVM.StarterKit.Converters.IConverter<float, float>;
+#else
+using Converter = Aspid.MVVM.StarterKit.Converters.IConverterFloat;
+#endif
 
 namespace Aspid.MVVM.StarterKit.Binders
 {
     [Serializable]
     public class TextFontSizeBinder : TargetBinder<TMP_Text>, INumberBinder
     {
-#if UNITY_2023_1_OR_NEWER
         [Header("Converter")]
-        [SerializeReference]
         [SerializeReferenceDropdown]
-#endif
-        private IConverter<float, float>? _converter;
+        [SerializeReference] private Converter? _converter;
         
         public TextFontSizeBinder(TMP_Text target)
             : base(target) { }
@@ -24,7 +26,7 @@ namespace Aspid.MVVM.StarterKit.Binders
         public TextFontSizeBinder(TMP_Text target, Func<float, float> converter) 
             : this(target, converter.ToConvert()) { }
         
-        public TextFontSizeBinder(TMP_Text target, IConverter<float, float> converter) 
+        public TextFontSizeBinder(TMP_Text target, Converter converter) 
             : base(target)
         {
             _converter = converter;

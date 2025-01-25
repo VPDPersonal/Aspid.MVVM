@@ -1,6 +1,11 @@
 #nullable enable
 using System;
 using UnityEngine;
+#if UNITY_2023_1_OR_NEWER
+using Converter = Aspid.MVVM.StarterKit.Converters.IConverter<UnityEngine.Vector3, UnityEngine.Vector3>;
+#else
+using Converter = Aspid.MVVM.StarterKit.Converters.IConverterVector3;
+#endif
 
 namespace Aspid.MVVM.StarterKit.Converters
 {
@@ -10,21 +15,11 @@ namespace Aspid.MVVM.StarterKit.Converters
         [SerializeField] private Mode _mode;
 
         [Header("Converters")]
-        [SerializeReference]
         [SerializeReferenceDropdown]
-#if UNITY_2023_1_OR_NEWER
-        private IConverter<Vector3, Vector3>? _preConvertor;
-#else
-        private IConverterVector3? _preConvertor;
-#endif
+        [SerializeReference] private Converter? _preConvertor;
       
-        [SerializeReference]
         [SerializeReferenceDropdown]
-#if UNITY_2023_1_OR_NEWER
-        private IConverter<Vector3, Vector3>? _postConvertor;
-#else
-        private IConverterVector3? _postConvertor;
-#endif
+        [SerializeReference] private Converter? _postConvertor;
         
         public Vector3CombineConverter() 
             : this(Mode.XYZ) { }
@@ -35,16 +30,6 @@ namespace Aspid.MVVM.StarterKit.Converters
             _preConvertor = default;
             _postConvertor = default;
         }
-
-        public Vector3CombineConverter(
-            Mode mode,
-            IConverterVector3? preConvertor, 
-            IConverterVector3? postConvertor)
-        {
-            _mode = mode;
-            _preConvertor = preConvertor;
-            _postConvertor = postConvertor;
-        }
         
 #if UNITY_2023_1_OR_NEWER
         public Vector3CombineConverter(
@@ -52,17 +37,17 @@ namespace Aspid.MVVM.StarterKit.Converters
             Func<Vector3, Vector3> preConvertor,
             Func<Vector3, Vector3> postConvertor)
             : this(mode, preConvertor.ToConvert(), postConvertor.ToConvert()) { }
-        
+#endif
+
         public Vector3CombineConverter(
-            Mode mode, 
-            IConverter<Vector3, Vector3>? preConvertor, 
-            IConverter<Vector3, Vector3>? postConvertor)
+            Mode mode,
+            Converter? preConvertor, 
+            Converter? postConvertor)
         {
             _mode = mode;
             _preConvertor = preConvertor;
             _postConvertor = postConvertor;
         }
-#endif
         
         public Vector3 Convert(Vector3 from, Vector2 to) =>
             Convert(from, (Vector3)to);

@@ -1,6 +1,11 @@
 #nullable enable
 using System;
 using UnityEngine;
+#if UNITY_2023_1_OR_NEWER
+using Converter = Aspid.MVVM.StarterKit.Converters.IConverter<UnityEngine.Vector2, UnityEngine.Vector2>;
+#else
+using Converter = Aspid.MVVM.StarterKit.Converters.IConverterVector2;
+#endif
 
 namespace Aspid.MVVM.StarterKit.Converters
 {
@@ -10,21 +15,11 @@ namespace Aspid.MVVM.StarterKit.Converters
         [SerializeField] private Mode _mode;
 
         [Header("Converters")]
-        [SerializeReference]
         [SerializeReferenceDropdown]
-#if UNITY_2023_1_OR_NEWER
-        private IConverter<Vector2, Vector2>? _preConvertor;
-#else
-        private IConverterVector2? _preConvertor;
-#endif
+        [SerializeReference] private Converter? _preConvertor;
       
-        [SerializeReference]
         [SerializeReferenceDropdown]
-#if UNITY_2023_1_OR_NEWER
-        private IConverter<Vector2, Vector2>? _postConvertor;
-#else
-        private IConverterVector2? _postConvertor;
-#endif
+        [SerializeReference] private Converter? _postConvertor;
         
         public Vector2CombineConverter() :
             this(Mode.XY) { }
@@ -36,33 +31,23 @@ namespace Aspid.MVVM.StarterKit.Converters
             _postConvertor = default;
         }
         
-        public Vector2CombineConverter(
-            Mode mode,
-            IConverterVector2? preConvertor, 
-            IConverterVector2? postConvertor)
-        {
-            _mode = mode;
-            _preConvertor = preConvertor;
-            _postConvertor = postConvertor;
-        }
-
 #if UNITY_2023_1_OR_NEWER
         public Vector2CombineConverter(
             Mode mode,
             Func<Vector2, Vector2> preConvertor,
             Func<Vector2, Vector2> postConvertor)
             : this(mode, preConvertor.ToConvert(), postConvertor.ToConvert()) { }
+#endif
         
         public Vector2CombineConverter(
-            Mode mode, 
-            IConverter<Vector2, Vector2>? preConvertor, 
-            IConverter<Vector2, Vector2>? postConvertor)
+            Mode mode,
+            Converter? preConvertor, 
+            Converter? postConvertor)
         {
             _mode = mode;
             _preConvertor = preConvertor;
             _postConvertor = postConvertor;
         }
-#endif
         
         public Vector2 Convert(Vector2 from, Vector2 to)
         {

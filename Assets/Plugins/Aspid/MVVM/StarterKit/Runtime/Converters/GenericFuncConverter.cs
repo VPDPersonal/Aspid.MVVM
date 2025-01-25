@@ -7,13 +7,14 @@ namespace Aspid.MVVM.StarterKit.Converters
     {
         private readonly Func<TFrom?, TTo?> _converter;
         
+        public GenericFuncConverter(IConverter<TFrom?, TTo?> converter)
+            : this(converter.Convert) { }
+
         public GenericFuncConverter(Func<TFrom?, TTo?> converter)
         {
             _converter = converter ?? throw new ArgumentNullException(nameof(converter));
         }
 
         public TTo? Convert(TFrom? value) => _converter(value);
-
-        public Func<TFrom?, TTo?> GetFunc() => _converter;
     }
 }

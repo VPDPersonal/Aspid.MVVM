@@ -3,5 +3,5 @@ using UnityEngine;
 
 namespace Aspid.MVVM.StarterKit.Converters
 {
-    public interface IConverterMesh : IConverter<Mesh?, Mesh?> { }
+    public interface IConverterStringToColor : IConverter<string?, Color> { }
 }

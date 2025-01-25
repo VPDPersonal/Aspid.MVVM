@@ -1,4 +1,5 @@
+#nullable enable
 namespace Aspid.MVVM.StarterKit.Converters
 {
-    public interface IConverterObjectToString : IConverter<object, string> { }
+    public interface IConverterObjectToString : IConverter<object?, string?> { }
 }

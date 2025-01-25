@@ -31,13 +31,11 @@ namespace Aspid.MVVM.StarterKit.Converters
             _postConvertor = default;
         }
         
-#if UNITY_2023_1_OR_NEWER
         public Vector2CombineConverter(
             Mode mode,
             Func<Vector2, Vector2> preConvertor,
             Func<Vector2, Vector2> postConvertor)
             : this(mode, preConvertor.ToConvert(), postConvertor.ToConvert()) { }
-#endif
         
         public Vector2CombineConverter(
             Mode mode,

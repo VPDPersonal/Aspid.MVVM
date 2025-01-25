@@ -1,4 +1,5 @@
+#nullable enable
 namespace Aspid.MVVM.StarterKit.Converters
 {
-    public interface IConverterObjectToBool : IConverter<object, bool> { }
+    public interface IConverterObjectToBool : IConverter<object?, bool> { }
 }

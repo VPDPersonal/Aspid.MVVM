@@ -5,7 +5,7 @@ using Aspid.MVVM.StarterKit.Converters;
 #if UNITY_2023_1_OR_NEWER
 using Converter = Aspid.MVVM.StarterKit.Converters.IConverter<UnityEngine.Vector2, UnityEngine.Vector2>;
 #else
-using Converter = Aspid.MVVM.StarterKit.Converters.IConverterVector2
+using Converter = Aspid.MVVM.StarterKit.Converters.IConverterVector2;
 #endif
 
 namespace Aspid.MVVM.StarterKit.Binders

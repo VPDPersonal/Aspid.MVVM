@@ -9,7 +9,7 @@ using Converter = Aspid.MVVM.StarterKit.Converters.IConverterString;
 
 namespace Aspid.MVVM.StarterKit.Binders.Mono
 {
-    [AddComponentMenu("Aspid/MVVM/Binders/UI/Text/Text Binder - EnumGroup")]
+    [AddComponentMenu("Aspid/MVVM/Binders/UI/Text/Text Binder - Text EnumGroup")]
     public sealed class TextEnumGroupMonoBinder : EnumGroupMonoBinder<TMP_Text>
     {
         [Header("Parameters")]

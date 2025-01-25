@@ -4,7 +4,6 @@ using System;
 using UnityEngine;
 using System.Globalization;
 using Aspid.MVVM.Mono.Generation;
-using Aspid.MVVM.StarterKit.Converters;
 #if UNITY_2023_1_OR_NEWER
 using Converter = Aspid.MVVM.StarterKit.Converters.IConverter<string, string>;
 #else
@@ -13,7 +12,7 @@ using Converter = Aspid.MVVM.StarterKit.Converters.IConverterString;
 
 namespace Aspid.MVVM.StarterKit.Binders.Mono
 {
-    [AddComponentMenu("Aspid/MVVM/Binders/UI/Text/InputField Binder")]
+    [AddComponentMenu("Aspid/MVVM/Binders/UI/Text/InputField Binder - Text")]
     public partial class InputFieldMonoBinder : ComponentMonoBinder<TMP_InputField>, 
         IBinder<string>, INumberBinder, IReverseBinder<string>, INumberReverseBinder
     {
@@ -25,10 +24,10 @@ namespace Aspid.MVVM.StarterKit.Binders.Mono
         
         [Header("Parameters")]
         [SerializeField] private bool _isReverseEnabled = true;
-        
+
         [Header("Converter")]
         [SerializeReferenceDropdown]
-        [SerializeReference] private Converter _converter = new StringFormatConverter();
+        [SerializeReference] private Converter _converter;
         
         private bool _isNotifyValueChanged = true;
         

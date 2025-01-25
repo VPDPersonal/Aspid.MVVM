@@ -12,7 +12,7 @@ using Converter = Aspid.MVVM.StarterKit.Converters.IConverterString;
 
 namespace Aspid.MVVM.StarterKit.Binders.Mono
 {
-    [AddComponentMenu("Aspid/MVVM/Binders/UI/Text/Text Binder")]
+    [AddComponentMenu("Aspid/MVVM/Binders/UI/Text/Text Binder - Text")]
     public partial class TextMonoBinder : ComponentMonoBinder<TMP_Text>, IBinder<string>, INumberBinder
     {
         [Header("Converter")]

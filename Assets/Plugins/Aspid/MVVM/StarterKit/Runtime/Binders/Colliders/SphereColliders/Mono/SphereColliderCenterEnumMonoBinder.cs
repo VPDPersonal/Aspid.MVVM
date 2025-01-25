@@ -4,7 +4,7 @@ using Aspid.MVVM.StarterKit.Converters;
 namespace Aspid.MVVM.StarterKit.Binders.Mono
 {
     [AddComponentMenu("Aspid/MVVM/Binders/Collider/Sphere/SphereCollider Binder - Center Enum")]
-    public sealed class SphereColliderCentreEnumMonoBinder : EnumComponentMonoBinder<SphereCollider, Vector3>
+    public sealed class SphereColliderCenterEnumMonoBinder : EnumComponentMonoBinder<SphereCollider, Vector3>
     {
         [Header("Converter")]
         [SerializeField] private Vector3CombineConverter _converter = Vector3CombineConverter.Default;

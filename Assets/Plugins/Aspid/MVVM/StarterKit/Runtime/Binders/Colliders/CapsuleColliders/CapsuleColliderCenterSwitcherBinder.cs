@@ -6,14 +6,14 @@ using Aspid.MVVM.StarterKit.Converters;
 namespace Aspid.MVVM.StarterKit.Binders
 {
     [Serializable]
-    public sealed class SphereColliderCentreSwitcherBinder : SwitcherBinder<SphereCollider, Vector3>
+    public sealed class CapsuleColliderCenterSwitcherBinder : SwitcherBinder<CapsuleCollider, Vector3>
     {
         // ReSharper disable once MemberInitializerValueIgnored
         [Header("Converter")]
         [SerializeField] private Vector3CombineConverter? _converter = Vector3CombineConverter.Default;
         
-        public SphereColliderCentreSwitcherBinder(
-            SphereCollider target,
+        public CapsuleColliderCenterSwitcherBinder(
+            CapsuleCollider target,
             Vector3 trueValue, 
             Vector3 falseValue, 
             Vector3CombineConverter? converter = null) 

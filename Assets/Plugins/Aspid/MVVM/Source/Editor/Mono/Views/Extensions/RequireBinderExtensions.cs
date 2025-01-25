@@ -29,7 +29,7 @@ namespace Aspid.MVVM.Mono
         /// <returns>True if the binder matches any of the required types; otherwise, false.</returns>
         public static bool IsBinderMatchRequiredType(this IEnumerable<Type> requiredTypes, object binder)
         {
-            return binder.GetType().GetInterfaces().Any(@interface =>
+            var result = binder.GetType().GetInterfaces().Any(@interface =>
             {
                 if (!@interface.IsGenericType) return false;
                 if (@interface.GetGenericTypeDefinition() != typeof(IBinder<>) 
@@ -38,6 +38,9 @@ namespace Aspid.MVVM.Mono
                 return requiredTypes.Any(requiredType =>
                     @interface.GetGenericArguments()[0].IsAssignableFrom(requiredType));
             });
+
+            if (!result && !requiredTypes.Any()) return true;
+            return result;
         }
         
         // TODO Write summary

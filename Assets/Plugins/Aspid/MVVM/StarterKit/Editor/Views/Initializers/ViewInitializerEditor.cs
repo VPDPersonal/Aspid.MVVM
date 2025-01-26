@@ -1,3 +1,4 @@
+#if !ASPID_MVVM_EDITOR_DISABLED
 using UnityEditor;
 using UnityEngine;
 using Aspid.CustomEditors;
@@ -140,3 +141,4 @@ namespace Aspid.MVVM.StarterKit.Views
         }
     }
 }
+#endif

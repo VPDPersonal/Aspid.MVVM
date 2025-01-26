@@ -1,3 +1,4 @@
+#if !ASPID_MVVM_EDITOR_DISABLED
 using UnityEditor;
 
 namespace Aspid.MVVM.Mono
@@ -6,3 +7,4 @@ namespace Aspid.MVVM.Mono
     [CustomEditor(typeof(MonoViewModel), editorForChildClasses: true)]
     public class MonoViewModelEditor : ViewModelEditor<MonoViewModel> { }
 }
+#endif

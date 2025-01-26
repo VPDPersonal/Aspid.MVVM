@@ -7,13 +7,13 @@ namespace Aspid.MVVM
 {
     public static class AppidMvvmMenu
     {
-        private const string ProfilerMenu = "Tools/Aspid/Settings/Enable Profiler";
+        private const string ProfilerMenu = "Tools/Aspid/Mvvm/Settings/Enable Profiler";
         private const string ProfilerDefine = "ASPID_MVVM_UNITY_PROFILER_DISABLED";
         
-        private const string BinderLogMenu = "Tools/Aspid/Settings/Enable Binder Log";
+        private const string BinderLogMenu = "Tools/Aspid/Mvvm/Settings/Enable Binder Log";
         private const string BinderLogDefine = "ASPID_MVVM_BINDER_LOG_DISABLED";
         
-        private const string CheckForEditorMenu = "Tools/Aspid/Settings/Checks for Editor";
+        private const string CheckForEditorMenu = "Tools/Aspid/Mvvm/Settings/Checks for Editor";
         private const string CheckForEditorDefine = "ASPID_MVVM_EDITOR_DISABLED";
 
         private static bool IsEnabledProfiler

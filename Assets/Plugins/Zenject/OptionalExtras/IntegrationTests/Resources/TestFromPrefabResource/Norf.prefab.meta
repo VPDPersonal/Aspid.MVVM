@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: a4833165ddddda347b80b96e1a704b4e
+timeCreated: 1459015737
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 157735
+  packageName: Extenject Dependency Injection IOC
+  packageVersion: 9.2.0
+  assetPath: Assets/Plugins/Zenject/OptionalExtras/IntegrationTests/Resources/TestFromPrefabResource/Norf.prefab
+  uploadId: 370902

@@ -1,0 +1,20 @@
+fileFormatVersion: 2
+guid: 1bdf0766db282fd4eaba7e7cd7d17ca5
+timeCreated: 1521391096
+licenseType: Store
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 157735
+  packageName: Extenject Dependency Injection IOC
+  packageVersion: 9.2.0
+  assetPath: Assets/Plugins/Zenject/OptionalExtras/MemoryPoolMonitor/Editor/DebugWindow/MpmView.cs
+  uploadId: 370902

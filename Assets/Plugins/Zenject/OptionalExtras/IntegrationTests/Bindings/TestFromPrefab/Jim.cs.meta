@@ -1,0 +1,19 @@
+fileFormatVersion: 2
+guid: 78b17c518e97edb498c1ff8a4d914bd5
+timeCreated: 1459009626
+licenseType: Store
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 157735
+  packageName: Extenject Dependency Injection IOC
+  packageVersion: 9.2.0
+  assetPath: Assets/Plugins/Zenject/OptionalExtras/IntegrationTests/Bindings/TestFromPrefab/Jim.cs
+  uploadId: 370902

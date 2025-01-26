@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: ae6347214d2fec34faa73c79172f642d
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 157735
+  packageName: Extenject Dependency Injection IOC
+  packageVersion: 9.2.0
+  assetPath: Assets/Plugins/Zenject/OptionalExtras/UnitTests/Editor/Signals/TestAsyncSignals.cs
+  uploadId: 370902

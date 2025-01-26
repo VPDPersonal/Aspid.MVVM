@@ -1,0 +1,20 @@
+fileFormatVersion: 2
+guid: 183994f131b561a43a9967cceb7c949d
+timeCreated: 1538037476
+licenseType: Store
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 157735
+  packageName: Extenject Dependency Injection IOC
+  packageVersion: 9.2.0
+  assetPath: Assets/Plugins/Zenject/OptionalExtras/Signals/Internal/Binders/DeclareSignal/DeclareSignalIdRequireHandlerAsyncTickPriorityCopyBinder.cs
+  uploadId: 370902

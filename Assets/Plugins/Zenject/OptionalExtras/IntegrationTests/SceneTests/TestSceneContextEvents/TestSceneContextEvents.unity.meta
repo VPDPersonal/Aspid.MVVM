@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 6a6e139b8a4d4d544a3318c53b9ae3d6
+timeCreated: 1527147597
+licenseType: Store
+DefaultImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 157735
+  packageName: Extenject Dependency Injection IOC
+  packageVersion: 9.2.0
+  assetPath: Assets/Plugins/Zenject/OptionalExtras/IntegrationTests/SceneTests/TestSceneContextEvents/TestSceneContextEvents.unity
+  uploadId: 370902

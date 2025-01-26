@@ -1,0 +1,20 @@
+fileFormatVersion: 2
+guid: 8379f1a96bdcecb4e9cd40975f9c898d
+timeCreated: 1519832826
+licenseType: Store
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 157735
+  packageName: Extenject Dependency Injection IOC
+  packageVersion: 9.2.0
+  assetPath: Assets/Plugins/Zenject/OptionalExtras/UnitTests/Editor/MemoryPool/TestMemoryPoolCustomFactory.cs
+  uploadId: 370902

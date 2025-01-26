@@ -1,0 +1,10 @@
+﻿fileFormatVersion: 2
+guid: 983f0bc44f6541bfab062ceec72231d3
+timeCreated: 1587867811
+AssetOrigin:
+  serializedVersion: 1
+  productId: 157735
+  packageName: Extenject Dependency Injection IOC
+  packageVersion: 9.2.0
+  assetPath: Assets/Plugins/Zenject/OptionalExtras/IntegrationTests/Tests/Misc/TestMonoKernelDecoration/DelayedInitializeKernel.cs
+  uploadId: 370902

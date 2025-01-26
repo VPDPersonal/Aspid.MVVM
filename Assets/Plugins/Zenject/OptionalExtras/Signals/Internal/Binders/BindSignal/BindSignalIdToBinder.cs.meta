@@ -1,0 +1,20 @@
+fileFormatVersion: 2
+guid: ecce6d44c178e564c8937125741f3c8c
+timeCreated: 1538401230
+licenseType: Store
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 157735
+  packageName: Extenject Dependency Injection IOC
+  packageVersion: 9.2.0
+  assetPath: Assets/Plugins/Zenject/OptionalExtras/Signals/Internal/Binders/BindSignal/BindSignalIdToBinder.cs
+  uploadId: 370902

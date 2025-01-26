@@ -1,0 +1,20 @@
+fileFormatVersion: 2
+guid: f7ee5ff810de60d4ba6ac2e06aeb70ea
+timeCreated: 1528618262
+licenseType: Store
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 157735
+  packageName: Extenject Dependency Injection IOC
+  packageVersion: 9.2.0
+  assetPath: Assets/Plugins/Zenject/OptionalExtras/UnitTests/Editor/MemoryPool/TestPoolableStaticMemoryPool.cs
+  uploadId: 370902

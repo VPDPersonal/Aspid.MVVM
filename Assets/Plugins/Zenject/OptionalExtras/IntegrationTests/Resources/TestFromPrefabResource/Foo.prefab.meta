@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: f35ac9a6aa0dab64bafb5461a8fd393a
+timeCreated: 1459015737
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 157735
+  packageName: Extenject Dependency Injection IOC
+  packageVersion: 9.2.0
+  assetPath: Assets/Plugins/Zenject/OptionalExtras/IntegrationTests/Resources/TestFromPrefabResource/Foo.prefab
+  uploadId: 370902

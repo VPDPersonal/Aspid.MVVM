@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: d0acddb179989574c8355991596bd3e6
+timeCreated: 1531030222
+licenseType: Store
+AssemblyDefinitionImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 157735
+  packageName: Extenject Dependency Injection IOC
+  packageVersion: 9.2.0
+  assetPath: Assets/Plugins/Zenject/Source/Editor/Zenject-Editor.asmdef
+  uploadId: 370902

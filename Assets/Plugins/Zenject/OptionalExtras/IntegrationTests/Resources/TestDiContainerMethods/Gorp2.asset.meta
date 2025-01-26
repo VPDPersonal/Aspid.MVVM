@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: de8d2dce06221cc4cb9fa957aebc8f15
+timeCreated: 1486678064
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 157735
+  packageName: Extenject Dependency Injection IOC
+  packageVersion: 9.2.0
+  assetPath: Assets/Plugins/Zenject/OptionalExtras/IntegrationTests/Resources/TestDiContainerMethods/Gorp2.asset
+  uploadId: 370902

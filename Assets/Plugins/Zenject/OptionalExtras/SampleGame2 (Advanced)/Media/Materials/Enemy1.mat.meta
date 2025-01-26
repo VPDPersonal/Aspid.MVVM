@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 50755dee91b8d2142a777c6b00ad6923
+timeCreated: 1456415788
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 157735
+  packageName: Extenject Dependency Injection IOC
+  packageVersion: 9.2.0
+  assetPath: Assets/Plugins/Zenject/OptionalExtras/SampleGame2 (Advanced)/Media/Materials/Enemy1.mat
+  uploadId: 370902

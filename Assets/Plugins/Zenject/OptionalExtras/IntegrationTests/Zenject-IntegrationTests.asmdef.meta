@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 2845024868d5894408e3dc7b917ca748
+timeCreated: 1533537358
+licenseType: Store
+AssemblyDefinitionImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 157735
+  packageName: Extenject Dependency Injection IOC
+  packageVersion: 9.2.0
+  assetPath: Assets/Plugins/Zenject/OptionalExtras/IntegrationTests/Zenject-IntegrationTests.asmdef
+  uploadId: 370902

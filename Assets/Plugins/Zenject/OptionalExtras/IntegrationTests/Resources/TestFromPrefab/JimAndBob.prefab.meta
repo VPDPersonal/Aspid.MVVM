@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 1592e529a326aad4b8a0a8c4640f000e
+timeCreated: 1459009683
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 157735
+  packageName: Extenject Dependency Injection IOC
+  packageVersion: 9.2.0
+  assetPath: Assets/Plugins/Zenject/OptionalExtras/IntegrationTests/Resources/TestFromPrefab/JimAndBob.prefab
+  uploadId: 370902

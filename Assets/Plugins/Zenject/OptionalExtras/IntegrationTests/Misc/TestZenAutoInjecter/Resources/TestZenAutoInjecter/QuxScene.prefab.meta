@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: 8b66e8c542fc27e40b65cba974860d22
+timeCreated: 1528434557
+licenseType: Store
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 100100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 157735
+  packageName: Extenject Dependency Injection IOC
+  packageVersion: 9.2.0
+  assetPath: Assets/Plugins/Zenject/OptionalExtras/IntegrationTests/Misc/TestZenAutoInjecter/Resources/TestZenAutoInjecter/QuxScene.prefab
+  uploadId: 370902

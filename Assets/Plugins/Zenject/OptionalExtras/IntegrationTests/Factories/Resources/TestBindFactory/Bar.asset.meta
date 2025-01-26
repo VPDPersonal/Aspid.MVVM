@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: c910fc8c1b89e63428292071be74fb96
+timeCreated: 1487537775
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 157735
+  packageName: Extenject Dependency Injection IOC
+  packageVersion: 9.2.0
+  assetPath: Assets/Plugins/Zenject/OptionalExtras/IntegrationTests/Factories/Resources/TestBindFactory/Bar.asset
+  uploadId: 370902

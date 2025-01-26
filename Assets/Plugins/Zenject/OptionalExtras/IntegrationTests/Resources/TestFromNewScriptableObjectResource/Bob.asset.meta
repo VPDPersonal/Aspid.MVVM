@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: d45f0a8bee35032448f068189a46e207
+timeCreated: 1486670371
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 157735
+  packageName: Extenject Dependency Injection IOC
+  packageVersion: 9.2.0
+  assetPath: Assets/Plugins/Zenject/OptionalExtras/IntegrationTests/Resources/TestFromNewScriptableObjectResource/Bob.asset
+  uploadId: 370902

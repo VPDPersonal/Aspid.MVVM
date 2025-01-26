@@ -1,0 +1,11 @@
+fileFormatVersion: 2
+guid: 972561acbe31e7147b76d1a430caf37d
+NativeFormatImporter:
+  userData: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 157735
+  packageName: Extenject Dependency Injection IOC
+  packageVersion: 9.2.0
+  assetPath: Assets/Plugins/Zenject/OptionalExtras/SampleGame1 (Beginner)/Prefabs/Asteroid.prefab
+  uploadId: 370902

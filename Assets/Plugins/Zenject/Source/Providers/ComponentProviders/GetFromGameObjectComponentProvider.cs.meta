@@ -1,0 +1,20 @@
+fileFormatVersion: 2
+guid: 8d5cdba9f2e79364dbf4f3d242fd22da
+timeCreated: 1529229722
+licenseType: Store
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 157735
+  packageName: Extenject Dependency Injection IOC
+  packageVersion: 9.2.0
+  assetPath: Assets/Plugins/Zenject/Source/Providers/ComponentProviders/GetFromGameObjectComponentProvider.cs
+  uploadId: 370902

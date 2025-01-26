@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 4f3e3f9dfc5945a409244fec02c55536
+timeCreated: 1465496279
+licenseType: Store
+TextScriptImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 157735
+  packageName: Extenject Dependency Injection IOC
+  packageVersion: 9.2.0
+  assetPath: Assets/Plugins/Zenject/OptionalExtras/UnitTests/ReadMe.txt
+  uploadId: 370902

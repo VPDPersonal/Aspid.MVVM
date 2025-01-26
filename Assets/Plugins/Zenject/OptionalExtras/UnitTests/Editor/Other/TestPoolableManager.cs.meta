@@ -1,0 +1,20 @@
+fileFormatVersion: 2
+guid: 25dab1c5f3ebf424da72c0f042790b11
+timeCreated: 1528651046
+licenseType: Store
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 157735
+  packageName: Extenject Dependency Injection IOC
+  packageVersion: 9.2.0
+  assetPath: Assets/Plugins/Zenject/OptionalExtras/UnitTests/Editor/Other/TestPoolableManager.cs
+  uploadId: 370902

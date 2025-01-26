@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: a2dee8dc5b292034aa05c835d3dfa23a
+timeCreated: 1465573559
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 157735
+  packageName: Extenject Dependency Injection IOC
+  packageVersion: 9.2.0
+  assetPath: Assets/Plugins/Zenject/OptionalExtras/IntegrationTests/Installers/Resources/TestMonoInstallers/QuxInstaller.prefab
+  uploadId: 370902

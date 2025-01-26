@@ -1,0 +1,20 @@
+fileFormatVersion: 2
+guid: c9c6a37cf443b134e91d0b7eb1c1532e
+timeCreated: 1529064998
+licenseType: Store
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 157735
+  packageName: Extenject Dependency Injection IOC
+  packageVersion: 9.2.0
+  assetPath: Assets/Plugins/Zenject/OptionalExtras/UnitTests/Editor/Bindings/TestFromMethodMultipleUntyped.cs
+  uploadId: 370902

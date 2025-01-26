@@ -1,0 +1,13 @@
+fileFormatVersion: 2
+guid: b1ca011c5f92d4fd4b5aeac44fd607c6
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 157735
+  packageName: Extenject Dependency Injection IOC
+  packageVersion: 9.2.0
+  assetPath: Assets/Plugins/Zenject/OptionalExtras/SampleGame2 (Advanced)/Media/Materials/Flame01.mat
+  uploadId: 370902

@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 91b0b4c77fdd1d24aa1af646e9d29960
+timeCreated: 1536994288
+licenseType: Store
+DefaultImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 157735
+  packageName: Extenject Dependency Injection IOC
+  packageVersion: 9.2.0
+  assetPath: Assets/Plugins/Zenject/OptionalExtras/ReflectionBaking/Zenject-ReflectionBaking.csproj
+  uploadId: 370902

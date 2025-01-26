@@ -1,0 +1,19 @@
+fileFormatVersion: 2
+guid: 2f9f4a0ef011f8846b17c8dc23e69b11
+timeCreated: 1506450521
+licenseType: Store
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 157735
+  packageName: Extenject Dependency Injection IOC
+  packageVersion: 9.2.0
+  assetPath: Assets/Plugins/Zenject/OptionalExtras/TestFramework/ValidateOnlyAttribute.cs
+  uploadId: 370902

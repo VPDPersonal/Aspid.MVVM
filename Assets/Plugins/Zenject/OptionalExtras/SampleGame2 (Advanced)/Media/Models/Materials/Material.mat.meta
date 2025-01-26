@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: a9aa4d682c71a304b87783910b8a6ef1
+timeCreated: 1456592001
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 157735
+  packageName: Extenject Dependency Injection IOC
+  packageVersion: 9.2.0
+  assetPath: Assets/Plugins/Zenject/OptionalExtras/SampleGame2 (Advanced)/Media/Models/Materials/Material.mat
+  uploadId: 370902

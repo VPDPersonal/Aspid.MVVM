@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: bd22ee392c7674541a3e81b03b647d58
+timeCreated: 1535265732
+licenseType: Store
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 100100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 157735
+  packageName: Extenject Dependency Injection IOC
+  packageVersion: 9.2.0
+  assetPath: Assets/Plugins/Zenject/OptionalExtras/IntegrationTests/Resources/TestInstantiateCallback/Foo.prefab
+  uploadId: 370902

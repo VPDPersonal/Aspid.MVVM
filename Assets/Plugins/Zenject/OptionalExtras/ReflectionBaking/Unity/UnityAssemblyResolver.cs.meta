@@ -1,0 +1,20 @@
+fileFormatVersion: 2
+guid: b107233111f831043b3d5983fe6f1b25
+timeCreated: 1537934945
+licenseType: Store
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 157735
+  packageName: Extenject Dependency Injection IOC
+  packageVersion: 9.2.0
+  assetPath: Assets/Plugins/Zenject/OptionalExtras/ReflectionBaking/Unity/UnityAssemblyResolver.cs
+  uploadId: 370902

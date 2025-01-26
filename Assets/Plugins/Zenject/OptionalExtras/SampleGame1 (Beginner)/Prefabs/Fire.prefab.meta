@@ -1,0 +1,11 @@
+fileFormatVersion: 2
+guid: 69fdd131bc1398b4b932a019fd9328f0
+NativeFormatImporter:
+  userData: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 157735
+  packageName: Extenject Dependency Injection IOC
+  packageVersion: 9.2.0
+  assetPath: Assets/Plugins/Zenject/OptionalExtras/SampleGame1 (Beginner)/Prefabs/Fire.prefab
+  uploadId: 370902

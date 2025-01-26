@@ -1,0 +1,20 @@
+fileFormatVersion: 2
+guid: a54443f8b7de6b844924c58d06f23df4
+timeCreated: 1520788854
+licenseType: Store
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 157735
+  packageName: Extenject Dependency Injection IOC
+  packageVersion: 9.2.0
+  assetPath: Assets/Plugins/Zenject/OptionalExtras/IntegrationTests/SceneContractTests/Decorators/Scene2Installer.cs
+  uploadId: 370902

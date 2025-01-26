@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: ecdaaf4205a5c4046ae08fbe25f94e42
+timeCreated: 1460650324
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 157735
+  packageName: Extenject Dependency Injection IOC
+  packageVersion: 9.2.0
+  assetPath: Assets/Plugins/Zenject/OptionalExtras/IntegrationTests/Factories/Resources/TestBindFactoryFive/FooSubContainer.prefab
+  uploadId: 370902

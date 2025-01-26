@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: facc2b017ff13b24d83540ec8374c3d3
+timeCreated: 1465573058
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 157735
+  packageName: Extenject Dependency Injection IOC
+  packageVersion: 9.2.0
+  assetPath: Assets/Plugins/Zenject/OptionalExtras/IntegrationTests/Installers/Resources/TestMonoInstallers/BarInstaller.prefab
+  uploadId: 370902

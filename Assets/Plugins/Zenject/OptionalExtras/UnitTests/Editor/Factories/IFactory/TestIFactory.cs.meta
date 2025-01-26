@@ -1,0 +1,19 @@
+fileFormatVersion: 2
+guid: 1663d737024bdf5438c672cef0d2d577
+timeCreated: 1461867513
+licenseType: Store
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 157735
+  packageName: Extenject Dependency Injection IOC
+  packageVersion: 9.2.0
+  assetPath: Assets/Plugins/Zenject/OptionalExtras/UnitTests/Editor/Factories/IFactory/TestIFactory.cs
+  uploadId: 370902

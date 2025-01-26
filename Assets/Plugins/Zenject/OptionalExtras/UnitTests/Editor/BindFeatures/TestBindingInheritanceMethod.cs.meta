@@ -1,0 +1,20 @@
+fileFormatVersion: 2
+guid: 645589d2772852246ac2ea1fd8ee4f92
+timeCreated: 1519842213
+licenseType: Store
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 157735
+  packageName: Extenject Dependency Injection IOC
+  packageVersion: 9.2.0
+  assetPath: Assets/Plugins/Zenject/OptionalExtras/UnitTests/Editor/BindFeatures/TestBindingInheritanceMethod.cs
+  uploadId: 370902

@@ -1,0 +1,13 @@
+fileFormatVersion: 2
+guid: 93a60ba8e409947b1a0334537c8b38c8
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 157735
+  packageName: Extenject Dependency Injection IOC
+  packageVersion: 9.2.0
+  assetPath: Assets/Plugins/Zenject/OptionalExtras/SampleGame2 (Advanced)/Media/Prefabs/Explosion.prefab
+  uploadId: 370902

@@ -1,0 +1,20 @@
+fileFormatVersion: 2
+guid: 401e2ff37163f8f428397277aba9b3a0
+timeCreated: 1528644922
+licenseType: Store
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 157735
+  packageName: Extenject Dependency Injection IOC
+  packageVersion: 9.2.0
+  assetPath: Assets/Plugins/Zenject/OptionalExtras/SampleGame2 (Advanced)/Scripts/Enemy/EnemyRegistry.cs
+  uploadId: 370902

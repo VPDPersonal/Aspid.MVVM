@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: b8f181012b3a35f46ab27f3840f85f55
+timeCreated: 1521391162
+licenseType: Store
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 11400000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 157735
+  packageName: Extenject Dependency Injection IOC
+  packageVersion: 9.2.0
+  assetPath: Assets/Plugins/Zenject/OptionalExtras/MemoryPoolMonitor/Editor/Resources/Installers/MpmSettingsInstaller.asset
+  uploadId: 370902

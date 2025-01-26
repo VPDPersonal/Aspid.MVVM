@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 4b06f8082448e80458c9e2a87fef6131
+timeCreated: 1486607599
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 157735
+  packageName: Extenject Dependency Injection IOC
+  packageVersion: 9.2.0
+  assetPath: Assets/Plugins/Zenject/OptionalExtras/IntegrationTests/Factories/Resources/TestBindFactory/Camera.prefab
+  uploadId: 370902

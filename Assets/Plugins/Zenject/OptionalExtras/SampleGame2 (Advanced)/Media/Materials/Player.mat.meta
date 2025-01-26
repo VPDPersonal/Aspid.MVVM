@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 8f4cc0ab4d6d85f4ea468f16219910a1
+timeCreated: 1456415773
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 157735
+  packageName: Extenject Dependency Injection IOC
+  packageVersion: 9.2.0
+  assetPath: Assets/Plugins/Zenject/OptionalExtras/SampleGame2 (Advanced)/Media/Materials/Player.mat
+  uploadId: 370902

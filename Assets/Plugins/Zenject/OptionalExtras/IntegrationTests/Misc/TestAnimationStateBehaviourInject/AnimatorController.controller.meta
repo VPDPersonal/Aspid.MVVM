@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: 37a3980aa64320943b24a1d48d62bf9d
+timeCreated: 1527866636
+licenseType: Store
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 9100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 157735
+  packageName: Extenject Dependency Injection IOC
+  packageVersion: 9.2.0
+  assetPath: Assets/Plugins/Zenject/OptionalExtras/IntegrationTests/Misc/TestAnimationStateBehaviourInject/AnimatorController.controller
+  uploadId: 370902

@@ -5,7 +5,7 @@ using UnityEngine;
 namespace Aspid.MVVM.StarterKit.Converters.Colors
 {
     [Serializable]
-    public sealed class ColorConverter : IConverterStringToColor
+    public sealed class ParseHtmlStringConverter : IConverterStringToColor
     {
         [SerializeField] private bool _isThrowException;
         [SerializeField] private Color _defaultColor = new(0, 0, 0, 0);

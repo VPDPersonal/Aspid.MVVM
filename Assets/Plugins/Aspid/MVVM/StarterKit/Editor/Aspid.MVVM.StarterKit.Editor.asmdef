@@ -2,10 +2,10 @@
     "name": "Aspid.MVVM.StarterKit.Editor",
     "rootNamespace": "",
     "references": [
-        "GUID:572bdb0616e842849d7130e580b9eb98",
-        "GUID:cfed9976b52748e3a7ffda65a477c3d9",
-        "GUID:e36ce08aaa81479aa562b0755755332c",
-        "GUID:d0a96927d7ad54580ba5460836c6d542"
+        "Aspid.MVVM",
+        "Aspid.MVVM.Editor",
+        "Aspid.MVVM.StarterKit",
+        "Aspid.CustomEditror.Editor"
     ],
     "includePlatforms": [
         "Editor"

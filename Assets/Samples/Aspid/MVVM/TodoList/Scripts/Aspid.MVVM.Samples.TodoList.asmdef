@@ -2,10 +2,11 @@
     "name": "Aspid.MVVM.Samples.TodoList",
     "rootNamespace": "",
     "references": [
-        "GUID:572bdb0616e842849d7130e580b9eb98",
-        "GUID:e36ce08aaa81479aa562b0755755332c",
-        "GUID:b0214a6008ed146ff8f122a6a9c2f6cc",
-        "GUID:c472d451728d4094ae5d62bd8a17e878"
+        "Zenject",
+        "VContainer",
+        "Aspid.MVVM",
+        "Aspid.MVVM.StarterKit",
+        "Aspid.Collections.Observable"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

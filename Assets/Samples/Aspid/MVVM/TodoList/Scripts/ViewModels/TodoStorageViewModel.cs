@@ -12,7 +12,7 @@ namespace Aspid.MVVM.TodoList.ViewModels
         [Bind] private string _searchInput;
         
         // ObservableList is a special collection that allows you to keep track of changes to the collection
-        [Bind] private ObservableList<ITodoItemViewModel> _todoItemViewModels;
+        [Bind] private readonly ObservableList<ITodoItemViewModel> _todoItemViewModels;
         
         private readonly TodoStorage _todoStorage;
         private readonly TodoItemViewModelFactory _todoItemViewModelFactory;

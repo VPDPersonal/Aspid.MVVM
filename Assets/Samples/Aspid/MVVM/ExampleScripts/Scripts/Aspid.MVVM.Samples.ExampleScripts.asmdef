@@ -2,8 +2,8 @@
     "name": "Aspid.MVVM.Samples.ExampleScripts",
     "rootNamespace": "",
     "references": [
-        "GUID:572bdb0616e842849d7130e580b9eb98",
-        "GUID:e36ce08aaa81479aa562b0755755332c"
+        "Aspid.MVVM",
+        "Aspid.MVVM.StarterKit"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

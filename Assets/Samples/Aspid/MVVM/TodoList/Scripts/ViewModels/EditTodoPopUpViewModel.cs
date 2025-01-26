@@ -18,8 +18,8 @@ namespace Aspid.MVVM.TodoList.ViewModels
     public partial class EditTodoPopUpViewModel
     {
         [Bind] private string _text;
-        [ReadOnlyBind] private readonly IRelayCommand _cancelCommand;
-        [ReadOnlyBind] private readonly IRelayCommand _renamedCommand;
+        [Bind] private readonly IRelayCommand _cancelCommand;
+        [Bind] private readonly IRelayCommand _renamedCommand;
 
         private readonly EditTodoPopUp _editTodoPopUp;
         

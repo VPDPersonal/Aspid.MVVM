@@ -4,7 +4,7 @@ using Aspid.MVVM.HelloWorld.Views;
 using Aspid.MVVM.HelloWorld.Models;
 using Aspid.MVVM.HelloWorld.ViewModels;
 
-namespace Aspid.MVVM.HelloWorld.Manual
+namespace Aspid.MVVM.HelloWorld
 {
     public sealed class Bootstrap : MonoBehaviour
     {

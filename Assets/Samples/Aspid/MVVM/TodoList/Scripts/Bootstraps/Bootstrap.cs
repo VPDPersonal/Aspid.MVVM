@@ -4,7 +4,7 @@ using Aspid.MVVM.TodoList.Models;
 using Aspid.MVVM.TodoList.Factories;
 using Aspid.MVVM.TodoList.ViewModels;
 
-namespace Aspid.MVVM.TodoList.Manual
+namespace Aspid.MVVM.TodoList
 {
     public sealed class Bootstrap : MonoBehaviour
     {

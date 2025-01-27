@@ -33,7 +33,7 @@ namespace Aspid.MVVM.StarterKit.Binders.Mono
         
         public bool IsReverseEnabled => _isReverseEnabled;
         
-        protected override void OnBound(IViewModel viewModel, string id)
+        protected override void OnBound(in BindParameters parameters)
         {
             if (!IsReverseEnabled) return;
             CachedComponent.onValueChanged.AddListener(OnValueChanged);

@@ -49,7 +49,7 @@ namespace Aspid.MVVM.StarterKit.Binders
             _converter = converter;
             IsReverseEnabled = isReverseEnabled; }
 
-        protected override void OnBound(IViewModel viewModel, string id)
+        protected override void OnBound(in BindParameters parameters)
         {
             if (!IsReverseEnabled) return;
             Target.onValueChanged.AddListener(OnValueChanged);

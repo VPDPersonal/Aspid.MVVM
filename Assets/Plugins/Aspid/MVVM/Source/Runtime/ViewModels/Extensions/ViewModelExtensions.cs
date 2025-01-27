@@ -1,4 +1,5 @@
 using System;
+using System.Runtime.CompilerServices;
 
 namespace Aspid.MVVM
 {
@@ -7,6 +8,22 @@ namespace Aspid.MVVM
     /// </summary>
     public static class ViewModelExtensions
     {
+        /// <summary>
+        /// Adds the specified binder to the ViewModel property specified in the binding parameters.
+        /// </summary>
+        /// <param name="parameters">
+        /// The parameters that contain the ViewModel and the component ID (property name), where the component ID matches
+        /// the property name in the ViewModel.
+        /// </param>
+        /// <param name="binder">The binder to be associated with the ViewModel property.</param>
+        /// <returns>
+        /// An interface for removing the binder from the ViewModel, or <c>null</c> if the binder could not be added
+        /// or if the property is read-only.
+        /// </returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static IRemoveBinderFromViewModel? AddBinder(this in BindParameters parameters, IBinder binder) =>
+            parameters.ViewModel.AddBinder(binder, parameters.Id);
+        
         /// <summary>
         /// Disposes of the ViewModel instance if it implements <see cref="IDisposable"/>.
         /// </summary>

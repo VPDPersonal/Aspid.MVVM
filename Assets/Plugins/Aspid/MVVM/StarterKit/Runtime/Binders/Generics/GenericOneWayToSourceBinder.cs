@@ -32,7 +32,7 @@ namespace Aspid.MVVM.StarterKit.Binders
             _onUnboundValueChanged = onUnboundValueChanged;
         }
         
-        protected override void OnBound(IViewModel viewModel, string id)
+        protected override void OnBound(in BindParameters parameters)
         {
             if (_onBoundValueChanged is not null)
                 OnValueChanged(_onBoundValueChanged.Invoke());
@@ -82,7 +82,7 @@ namespace Aspid.MVVM.StarterKit.Binders
             _target = target ?? throw new ArgumentNullException(nameof(target));
         }
         
-        protected override void OnBound(IViewModel viewModel, string id)
+        protected override void OnBound(in BindParameters parameters)
         {
             if (_onBoundValueChanged is not null)
                 OnValueChanged(_onBoundValueChanged.Invoke(_target));

@@ -43,7 +43,7 @@ namespace Aspid.MVVM.StarterKit.Binders.Mono
         
         protected abstract void SetParameter(T value);
         
-        protected override void OnBound(IViewModel viewModel, string id)
+        protected override void OnBound(in BindParameters parameters)
         {
             Command ??= new RelayCommand<T>(SetParameter, CanExecute);
             ValueChanged?.Invoke(Command);

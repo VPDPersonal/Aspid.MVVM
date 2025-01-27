@@ -65,13 +65,13 @@ namespace Aspid.MVVM.Mono
             }
         }
 
-        partial void OnBindingDebug(IViewModel viewModel, string id)
+        partial void OnBindingDebug(in BindParameters parameters)
         {
-            if (Id != id) 
-                throw new Exception($"Id not match. Binder Id {Id}; Id {id}.");
+            if (Id != parameters.Id) 
+                throw new Exception($"Id not match. Binder Id {Id}; Id {parameters.Id}.");
             
-            if (viewModel != View?.ViewModel) 
-                throw new Exception($"ViewModel {viewModel} not match. Binder ViewModel {View?.ViewModel}; Id {Id}.");
+            if (parameters.ViewModel != View?.ViewModel) 
+                throw new Exception($"ViewModel {parameters.ViewModel} not match. Binder ViewModel {View?.ViewModel}; Id {Id}.");
         }
 
         [EditorBrowsable(EditorBrowsableState.Never)]

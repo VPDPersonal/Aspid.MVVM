@@ -1,3 +1,5 @@
+using System;
+
 namespace Aspid.MVVM
 {
     /// <summary>
@@ -22,6 +24,9 @@ namespace Aspid.MVVM
         /// <param name="id">The component ID for binding, which matches the property name in the ViewModel.</param>
         public BindParameters(IViewModel viewModel, string id)
         {
+            if (viewModel is null) throw new ArgumentNullException(nameof(viewModel));
+            if (string.IsNullOrWhiteSpace(id)) throw new ArgumentNullException(nameof(id));
+            
             Id = id;
             ViewModel = viewModel;
         }

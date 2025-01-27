@@ -38,38 +38,38 @@ namespace Aspid.MVVM.Mono
             using (_bindMarker.Auto()) 
 #endif
             {
-                var id = parameters.Id;
-                var viewModel = parameters.ViewModel;
-                ThrowExceptionIfInvalidData(viewModel, id);
-                
                 if (IsBound) throw new Exception("This Binder is already bound.");
                 if (!IsBind) return;
                 
-                OnBinding(viewModel, id);
-                OnBindingDebug(viewModel, id);
+                OnBinding(parameters);
+                OnBindingDebug(parameters);
                 
-                _removeBinderFromViewModel = viewModel.AddBinder(this, id);
+                _removeBinderFromViewModel = parameters.AddBinder(this);
                 IsBound = true;
                 
-                OnBound(viewModel, id);
+                OnBound(parameters);
             }
         }
 
-        partial void OnBindingDebug(IViewModel viewModel, string id);
+        partial void OnBindingDebug(in BindParameters parameters);
         
         /// <summary>
         /// Logic executed before binding, which can be overridden in derived classes.
         /// </summary>
-        /// <param name="viewModel">The instance of the ViewModel.</param>
-        /// <param name="id">The ID of the component, which matches the property name in the ViewModel.</param>
-        protected virtual void OnBinding(IViewModel viewModel, string id) { }
+        /// <param name="parameters">
+        /// The parameters that contain the ViewModel and the component ID for binding, where the component ID matches
+        /// the property name in the ViewModel.
+        /// </param>
+        protected virtual void OnBinding(in BindParameters parameters) { }
         
         /// <summary>
         /// Logic executed after binding, which can be overridden in derived classes.
         /// </summary>
-        /// <param name="viewModel">The instance of the ViewModel.</param>
-        /// <param name="id">The ID of the component, which matches the property name in the ViewModel.</param>
-        protected virtual void OnBound(IViewModel viewModel, string id) { }
+        /// <param name="parameters">
+        /// The parameters that contain the ViewModel and the component ID for binding, where the component ID matches
+        /// the property name in the ViewModel.
+        /// </param>
+        protected virtual void OnBound(in BindParameters parameters) { }
         
         /// <summary>
         /// Unbinds the component from the bound s<see cref="IViewModel"/>.
@@ -101,11 +101,5 @@ namespace Aspid.MVVM.Mono
         /// Logic executed after unbinding, which can be overridden in derived classes.
         /// </summary>
         protected virtual void OnUnbound() { }
-        
-        private static void ThrowExceptionIfInvalidData(IViewModel viewModel, string id)
-        {
-            if (string.IsNullOrEmpty(id)) throw new ArgumentNullException(nameof(id));
-            if (viewModel is null) throw new ArgumentNullException(nameof(viewModel));
-        }
     }
 }

@@ -165,8 +165,8 @@ namespace Aspid.MVVM.Mono
 
         protected virtual void FindProperties()
         {
-            _id = serializedObject.FindProperty(nameof(_id));
-            _view = serializedObject.FindProperty(nameof(_view));
+            _id = serializedObject.FindProperty("__id");
+            _view = serializedObject.FindProperty("__view");
             
             _log = serializedObject.FindProperty(nameof(_log));
             _isDebug = serializedObject.FindProperty(nameof(_isDebug));

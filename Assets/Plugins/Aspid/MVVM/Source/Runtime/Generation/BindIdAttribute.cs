@@ -8,10 +8,19 @@ namespace Aspid.MVVM.Generation
     [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property | AttributeTargets.Method)]
     public sealed class BindIdAttribute : Attribute
     {
+#if UNITY_EDITOR
+        public string Id { get; private set; }
+#endif
+
         /// <summary>
         /// Initializes a new instance of the <see cref="BindIdAttribute"/> class with a specified ID.
         /// </summary>
         /// <param name="id">The binding ID to be associated with the target field, property, or [RelayCommand].</param>
-        public BindIdAttribute(string id) { }
+        public BindIdAttribute(string id)
+        {
+#if UNITY_EDITOR
+            Id = id;
+#endif
+        }
     }
 }

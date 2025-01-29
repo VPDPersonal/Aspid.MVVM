@@ -1,12 +1,13 @@
+#if UNITY_EDITOR
 using System.ComponentModel;
 
-#if UNITY_EDITOR
 namespace Aspid.MVVM.Mono
 {
     /// <summary>
     /// Interface required for validating a Binder within the Editor.
     /// It must be implemented inside #if UNITY_EDITOR.
     /// </summary>
+    [EditorBrowsable(EditorBrowsableState.Advanced)]
     public interface IMonoBinderValidable : IBinder
     {
         /// <summary>

@@ -285,8 +285,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 308348858250478390a4e42699309252, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _view: {fileID: 5315928923478365624}
-  _id: SkillPointsAvailable
+  __view: {fileID: 5315928923478365624}
+  __id: SkillPointsAvailable
   _component: {fileID: 2184117819493737949}
   _converter:
     rid: 4930929829536858175
@@ -1034,8 +1034,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 265f3a2980dc47039fccdd5a66acba34, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _view: {fileID: 5315928923478365624}
-  _id: IsDraft
+  __view: {fileID: 5315928923478365624}
+  __id: IsDraft
   _isInvert: 0
   _isDebug: 0
   _log: []
@@ -1260,7 +1260,15 @@ PrefabInstance:
       value: Intelligence
       objectReference: {fileID: 0}
     - target: {fileID: 5392158074146475983, guid: 28dcd3a91ac8d478283826b5db692c5d, type: 3}
+      propertyPath: __id
+      value: Intelligence
+      objectReference: {fileID: 0}
+    - target: {fileID: 5392158074146475983, guid: 28dcd3a91ac8d478283826b5db692c5d, type: 3}
       propertyPath: _view
+      value: 
+      objectReference: {fileID: 5315928923478365624}
+    - target: {fileID: 5392158074146475983, guid: 28dcd3a91ac8d478283826b5db692c5d, type: 3}
+      propertyPath: __view
       value: 
       objectReference: {fileID: 5315928923478365624}
     - target: {fileID: 5493942966006581099, guid: 28dcd3a91ac8d478283826b5db692c5d, type: 3}
@@ -1463,7 +1471,15 @@ PrefabInstance:
       value: Reflexes
       objectReference: {fileID: 0}
     - target: {fileID: 5392158074146475983, guid: 28dcd3a91ac8d478283826b5db692c5d, type: 3}
+      propertyPath: __id
+      value: Reflexes
+      objectReference: {fileID: 0}
+    - target: {fileID: 5392158074146475983, guid: 28dcd3a91ac8d478283826b5db692c5d, type: 3}
       propertyPath: _view
+      value: 
+      objectReference: {fileID: 5315928923478365624}
+    - target: {fileID: 5392158074146475983, guid: 28dcd3a91ac8d478283826b5db692c5d, type: 3}
+      propertyPath: __view
       value: 
       objectReference: {fileID: 5315928923478365624}
     - target: {fileID: 5493942966006581099, guid: 28dcd3a91ac8d478283826b5db692c5d, type: 3}
@@ -1642,7 +1658,15 @@ PrefabInstance:
       value: Cool
       objectReference: {fileID: 0}
     - target: {fileID: 5392158074146475983, guid: 28dcd3a91ac8d478283826b5db692c5d, type: 3}
+      propertyPath: __id
+      value: Cool
+      objectReference: {fileID: 0}
+    - target: {fileID: 5392158074146475983, guid: 28dcd3a91ac8d478283826b5db692c5d, type: 3}
       propertyPath: _view
+      value: 
+      objectReference: {fileID: 5315928923478365624}
+    - target: {fileID: 5392158074146475983, guid: 28dcd3a91ac8d478283826b5db692c5d, type: 3}
+      propertyPath: __view
       value: 
       objectReference: {fileID: 5315928923478365624}
     - target: {fileID: 5493942966006581099, guid: 28dcd3a91ac8d478283826b5db692c5d, type: 3}
@@ -1841,7 +1865,15 @@ PrefabInstance:
       value: Power
       objectReference: {fileID: 0}
     - target: {fileID: 5392158074146475983, guid: 28dcd3a91ac8d478283826b5db692c5d, type: 3}
+      propertyPath: __id
+      value: Power
+      objectReference: {fileID: 0}
+    - target: {fileID: 5392158074146475983, guid: 28dcd3a91ac8d478283826b5db692c5d, type: 3}
       propertyPath: _view
+      value: 
+      objectReference: {fileID: 5315928923478365624}
+    - target: {fileID: 5392158074146475983, guid: 28dcd3a91ac8d478283826b5db692c5d, type: 3}
+      propertyPath: __view
       value: 
       objectReference: {fileID: 5315928923478365624}
     - target: {fileID: 5493942966006581099, guid: 28dcd3a91ac8d478283826b5db692c5d, type: 3}
@@ -2020,7 +2052,15 @@ PrefabInstance:
       value: TechnicalAbility
       objectReference: {fileID: 0}
     - target: {fileID: 5392158074146475983, guid: 28dcd3a91ac8d478283826b5db692c5d, type: 3}
+      propertyPath: __id
+      value: TechnicalAbility
+      objectReference: {fileID: 0}
+    - target: {fileID: 5392158074146475983, guid: 28dcd3a91ac8d478283826b5db692c5d, type: 3}
       propertyPath: _view
+      value: 
+      objectReference: {fileID: 5315928923478365624}
+    - target: {fileID: 5392158074146475983, guid: 28dcd3a91ac8d478283826b5db692c5d, type: 3}
+      propertyPath: __view
       value: 
       objectReference: {fileID: 5315928923478365624}
     - target: {fileID: 5493942966006581099, guid: 28dcd3a91ac8d478283826b5db692c5d, type: 3}

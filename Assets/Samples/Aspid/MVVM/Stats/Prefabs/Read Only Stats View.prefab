@@ -509,8 +509,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 308348858250478390a4e42699309252, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _view: {fileID: 1482142762350697732}
-  _id: SkillPointsAvailable
+  __view: {fileID: 1482142762350697732}
+  __id: SkillPointsAvailable
   _component: {fileID: 6491993284963611271}
   _converter:
     rid: 1000
@@ -646,7 +646,15 @@ PrefabInstance:
       value: TechnicalAbility
       objectReference: {fileID: 0}
     - target: {fileID: 4213752011205121134, guid: 8cac121c9d4614cb5996b1dac74694a5, type: 3}
+      propertyPath: __id
+      value: TechnicalAbility
+      objectReference: {fileID: 0}
+    - target: {fileID: 4213752011205121134, guid: 8cac121c9d4614cb5996b1dac74694a5, type: 3}
       propertyPath: _view
+      value: 
+      objectReference: {fileID: 1482142762350697732}
+    - target: {fileID: 4213752011205121134, guid: 8cac121c9d4614cb5996b1dac74694a5, type: 3}
+      propertyPath: __view
       value: 
       objectReference: {fileID: 1482142762350697732}
     - target: {fileID: 8163769307145917364, guid: 8cac121c9d4614cb5996b1dac74694a5, type: 3}
@@ -795,7 +803,15 @@ PrefabInstance:
       value: Intelligence
       objectReference: {fileID: 0}
     - target: {fileID: 4213752011205121134, guid: 8cac121c9d4614cb5996b1dac74694a5, type: 3}
+      propertyPath: __id
+      value: Intelligence
+      objectReference: {fileID: 0}
+    - target: {fileID: 4213752011205121134, guid: 8cac121c9d4614cb5996b1dac74694a5, type: 3}
       propertyPath: _view
+      value: 
+      objectReference: {fileID: 1482142762350697732}
+    - target: {fileID: 4213752011205121134, guid: 8cac121c9d4614cb5996b1dac74694a5, type: 3}
+      propertyPath: __view
       value: 
       objectReference: {fileID: 1482142762350697732}
     - target: {fileID: 8163769307145917364, guid: 8cac121c9d4614cb5996b1dac74694a5, type: 3}
@@ -944,7 +960,15 @@ PrefabInstance:
       value: Reflexes
       objectReference: {fileID: 0}
     - target: {fileID: 4213752011205121134, guid: 8cac121c9d4614cb5996b1dac74694a5, type: 3}
+      propertyPath: __id
+      value: Reflexes
+      objectReference: {fileID: 0}
+    - target: {fileID: 4213752011205121134, guid: 8cac121c9d4614cb5996b1dac74694a5, type: 3}
       propertyPath: _view
+      value: 
+      objectReference: {fileID: 1482142762350697732}
+    - target: {fileID: 4213752011205121134, guid: 8cac121c9d4614cb5996b1dac74694a5, type: 3}
+      propertyPath: __view
       value: 
       objectReference: {fileID: 1482142762350697732}
     - target: {fileID: 8163769307145917364, guid: 8cac121c9d4614cb5996b1dac74694a5, type: 3}
@@ -1149,7 +1173,15 @@ PrefabInstance:
       value: Cool
       objectReference: {fileID: 0}
     - target: {fileID: 4213752011205121134, guid: 8cac121c9d4614cb5996b1dac74694a5, type: 3}
+      propertyPath: __id
+      value: Cool
+      objectReference: {fileID: 0}
+    - target: {fileID: 4213752011205121134, guid: 8cac121c9d4614cb5996b1dac74694a5, type: 3}
       propertyPath: _view
+      value: 
+      objectReference: {fileID: 1482142762350697732}
+    - target: {fileID: 4213752011205121134, guid: 8cac121c9d4614cb5996b1dac74694a5, type: 3}
+      propertyPath: __view
       value: 
       objectReference: {fileID: 1482142762350697732}
     - target: {fileID: 8163769307145917364, guid: 8cac121c9d4614cb5996b1dac74694a5, type: 3}
@@ -1278,7 +1310,15 @@ PrefabInstance:
       value: Power
       objectReference: {fileID: 0}
     - target: {fileID: 4213752011205121134, guid: 8cac121c9d4614cb5996b1dac74694a5, type: 3}
+      propertyPath: __id
+      value: Power
+      objectReference: {fileID: 0}
+    - target: {fileID: 4213752011205121134, guid: 8cac121c9d4614cb5996b1dac74694a5, type: 3}
       propertyPath: _view
+      value: 
+      objectReference: {fileID: 1482142762350697732}
+    - target: {fileID: 4213752011205121134, guid: 8cac121c9d4614cb5996b1dac74694a5, type: 3}
+      propertyPath: __view
       value: 
       objectReference: {fileID: 1482142762350697732}
     - target: {fileID: 8163769307145917364, guid: 8cac121c9d4614cb5996b1dac74694a5, type: 3}

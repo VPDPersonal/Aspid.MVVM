@@ -325,8 +325,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 143395233ea04721a82e1d5c13026345, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _view: {fileID: 5431838984888759959}
-  _id: IsCompleted
+  __view: {fileID: 5431838984888759959}
+  __id: IsCompleted
   _component: {fileID: 6683951036056877947}
   _isReverseEnabled: 1
   _isInvert: 0
@@ -886,8 +886,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 308348858250478390a4e42699309252, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _view: {fileID: 5431838984888759959}
-  _id: Text
+  __view: {fileID: 5431838984888759959}
+  __id: Text
   _component: {fileID: 280101603313839316}
   _converter:
     rid: 4930929806020444268

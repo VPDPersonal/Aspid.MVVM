@@ -2,8 +2,8 @@ using MVVMGenerators.Helpers;
 using MVVMGenerators.Helpers.Descriptions;
 using MVVMGenerators.Helpers.Extensions.Writer;
 using MVVMGenerators.Generators.ViewModels.Data;
-using MVVMGenerators.Generators.ViewModels.Data.Members;
 using MVVMGenerators.Helpers.Extensions.Symbols;
+using MVVMGenerators.Generators.ViewModels.Data.Members;
 
 namespace MVVMGenerators.Generators.ViewModels.Body;
 
@@ -14,9 +14,9 @@ public static class IViewModelBody
 
     private static readonly string IBinder = Classes.IBinder.Global;
     private static readonly string Exception = Classes.Exception.Global;
+    private static readonly string BindResult = Classes.BindResult.Global;
     private static readonly string ViewModelEvent = Classes.ViewModelEvent.Global;
     private static readonly string ProfilerMarker = Classes.ProfilerMarker.Global;
-    private static readonly string IRemoveBinderFromViewModel = Classes.IRemoveBinderFromViewModel.Global;
     private static readonly string EditorBrowsableAttribute = $"[{Classes.EditorBrowsableAttribute.Global}({Classes.EditorBrowsableState.Global}.Never)]";
 
     public static CodeWriter AppendIViewModelBody(this CodeWriter code, ViewModelDataSpan data)
@@ -62,7 +62,7 @@ public static class IViewModelBody
         code.AppendMultiline(
             $$"""
             {{GeneratedAttribute}}
-            public {{IRemoveBinderFromViewModel}} AddBinder({{IBinder}} binder, string propertyName)
+            public {{BindResult}} AddBinder({{IBinder}} binder, string propertyName)
             {
                 #if !{{Defines.ASPID_MVVM_UNITY_PROFILER_DISABLED}}
                 using (__addBinderMarker.Auto())
@@ -85,7 +85,7 @@ public static class IViewModelBody
 
         code.AppendMultiline(
              $$"""
-             protected {{additionalModificator}} {{IRemoveBinderFromViewModel}} AddBinderInternal({{IBinder}} binder, string propertyName)
+             protected {{additionalModificator}} {{BindResult}} AddBinderInternal({{IBinder}} binder, string propertyName)
              {
                  switch (propertyName)
              """)
@@ -98,9 +98,9 @@ public static class IViewModelBody
             $$"""
             default:
             {
-                {{IRemoveBinderFromViewModel}} removeBinder = null;
-                AddBinderManual(binder, propertyName, ref removeBinder);
-                if (removeBinder is not null) return removeBinder;
+                {{BindResult}} result = default;
+                AddBinderManual(binder, propertyName, ref result);
+                if (result.IsBound) return result;
                 
                 break;
             }
@@ -145,7 +145,7 @@ public static class IViewModelBody
                         if (isReverse)
                             {{field.ViewModelEventName}}.SetValue ??= Set{{propertyName}};
                             
-                        return {{field.ViewModelEventName}}.AddBinder(binder, {{propertyName}}, isReverse);
+                        return new({{field.ViewModelEventName}}.AddBinder(binder, {{propertyName}}, isReverse));
                     }
                     """);
             }
@@ -161,7 +161,7 @@ public static class IViewModelBody
                 case {{property.Name}}Id:
                 {
                     {{property.ViewModelEventName}} ??= new {{ViewModelEvent}}<{{type}}>();
-                    return {{property.ViewModelEventName}}.AddBinder(binder, {{property.Name}}, false);
+                    return new({{property.ViewModelEventName}}.AddBinder(binder, {{property.Name}}, false));
                 }
                 """);
         }
@@ -175,7 +175,7 @@ public static class IViewModelBody
                   case {{propertyName}}Id:
                   {
                       SetValueLocal({{propertyName}});
-                      return default;
+                      return new(true);
                   }
                   """);
         }
@@ -184,7 +184,7 @@ public static class IViewModelBody
     private static CodeWriter AppendManualMethods(this CodeWriter code)
     {
         code.AppendLine(GeneratedAttribute)
-            .AppendLine($"partial void AddBinderManual({IBinder} binder, string propertyName, ref {IRemoveBinderFromViewModel} removeBinder);");
+            .AppendLine($"partial void AddBinderManual({IBinder} binder, string propertyName, ref {BindResult} result);");
 
         return code;
     }

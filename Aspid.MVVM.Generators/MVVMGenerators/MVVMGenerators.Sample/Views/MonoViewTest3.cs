@@ -52,14 +52,7 @@ public class NewSliderBinder : IBinder<Slider>
     {
         throw new System.NotImplementedException();
     }
+    public void Bind(in BindParameters parameters) { }
 
-    public void Bind(IViewModel viewModel, string id)
-    {
-        throw new System.NotImplementedException();
-    }
-
-    public void Unbind()
-    {
-        throw new System.NotImplementedException();
-    }
+    public void Unbind() { }
 }

@@ -11,11 +11,7 @@ public sealed partial class ButtonBinder : IBinder<IRelayCommand>
     [BinderLog]
     public void SetValue(IRelayCommand value) { }
 
-    public void Bind(IViewModel viewModel, string id) { }
-    public void Unbind()
-    {
-        throw new System.NotImplementedException();
-    }
+    public void Bind(in BindParameters parameters) { }
 
-    public void Unbind(IViewModel viewModel, string id) { }
+    public void Unbind() { }
 }

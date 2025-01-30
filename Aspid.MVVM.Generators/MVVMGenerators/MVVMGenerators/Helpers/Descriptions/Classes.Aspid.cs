@@ -77,6 +77,9 @@ public static partial class Classes
     public static readonly TypeText ViewModelEvent =
         new("ViewModelEvent", Namespaces.Aspid_MVVM);
     
+    public static readonly TypeText BindResult =
+        new("BindResult", Namespaces.Aspid_MVVM);
+    
     public static readonly TypeText IRemoveBinderFromViewModel =
         new("IRemoveBinderFromViewModel", Namespaces.Aspid_MVVM);
     #endregion

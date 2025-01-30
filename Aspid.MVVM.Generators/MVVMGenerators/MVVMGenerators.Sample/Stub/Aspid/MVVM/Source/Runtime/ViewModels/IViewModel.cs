@@ -14,6 +14,6 @@ namespace Aspid.MVVM
         /// An interface for removing the binder from the ViewModel, or null if the binder could not be added
         /// or if the property is read-only.
         /// </returns>
-        public IRemoveBinderFromViewModel? AddBinder(IBinder binder, string propertyName);
+        public BindResult AddBinder(IBinder binder, string propertyName);
     }
 }

@@ -20,7 +20,21 @@ namespace Aspid.MVVM
             where T : IBinder
         {
             if (binder is null) return;
-            binder.Bind(viewModel, id);
+            binder.Bind(new BindParameters(viewModel, id));
+        }
+
+        /// <summary>
+        /// Safely binds an object of type <see cref="IBinder"/> using binding parameters.
+        /// If <paramref name="binder"/> is <c>null</c>, binding does not occur.
+        /// </summary>
+        /// <param name="binder">The object to be bound to the <see cref="IViewModel"/>.</param>
+        /// <param name="parameters">The parameters that contain the ViewModel and the component ID for binding.</param>
+        /// <typeparam name="T">The type that implements the <see cref="IBinder"/> interface.</typeparam>
+        public static void BindSafely<T>(this T? binder, in BindParameters parameters)
+            where T : IBinder
+        {
+            if (binder is null) return;
+            binder.Bind(parameters);
         }
         
         /// <summary>
@@ -32,15 +46,38 @@ namespace Aspid.MVVM
         /// <param name="viewModel">The ViewModel to bind to.</param>
         /// <param name="id">The component ID that matches the property name in the ViewModel.</param>
         /// <typeparam name="T">The type that implements the <see cref="IBinder"/> interface.</typeparam>
+        /// <exception cref="NullReferenceException">Thrown if any element in the array is <c>null</c>.</exception>
         public static void BindSafely<T>(this T[]? binders, IViewModel viewModel, string id)
             where T : IBinder
         {
             if (binders is null) return;
+            var parameters = new BindParameters(viewModel, id);
 
             foreach (var binder in binders)
             {
 	            if (binder is null) throw new NullReferenceException($"Binder {id} is null. ViewModel {viewModel.GetType().FullName}");
-	            binder.Bind(viewModel, id);
+	            binder.Bind(parameters);
+            }
+        }
+        
+        /// <summary>
+        /// Safely binds an array of <see cref="IBinder"/> objects using binding parameters.
+        /// If <paramref name="binders"/> is <c>null</c>, binding does not occur.
+        /// If any element in the array is <c>null</c>, a <see cref="NullReferenceException"/> is thrown.
+        /// </summary>
+        /// <param name="binders">An array of objects to be bound to the <see cref="IViewModel"/>.</param>
+        /// <param name="parameters">The parameters that contain the ViewModel and the component ID for binding.</param>
+        /// <typeparam name="T">The type that implements the <see cref="IBinder"/> interface.</typeparam>
+        /// <exception cref="NullReferenceException">Thrown if any element in the array is <c>null</c>.</exception>
+        public static void BindSafely<T>(this T[]? binders, in BindParameters parameters)
+            where T : IBinder
+        {
+            if (binders is null) return;
+            
+            foreach (var binder in binders)
+            {
+                if (binder is null) throw new NullReferenceException($"Binder {parameters.Id} is null. ViewModel {parameters.ViewModel.GetType().FullName}");
+                binder.Bind(parameters);
             }
         }
 
@@ -53,17 +90,38 @@ namespace Aspid.MVVM
         /// <param name="viewModel">The ViewModel to bind to.</param>
         /// <param name="id">The component ID that matches the property name in the ViewModel.</param>
         /// <typeparam name="T">The type that implements the <see cref="IBinder"/> interface.</typeparam>
-        /// <exception cref="NullReferenceException"></exception>
-        /// <exception cref="NullReferenceException"></exception>
+        /// <exception cref="NullReferenceException">Thrown if any element in the list is <c>null</c>.</exception>
         public static void BindSafely<T>(this List<T>? binders, IViewModel viewModel, string id)
             where T : IBinder
         {
             if (binders is null) return;
+            var parameters = new BindParameters(viewModel, id);
 
             foreach (var binder in binders)
             {
 	            if (binder is null) throw new NullReferenceException($"Binder {id} is null. ViewModel {viewModel.GetType().FullName}");
-	            binder.Bind(viewModel, id);
+	            binder.Bind(parameters);
+            }
+        }
+        
+        /// <summary>
+        /// Safely binds a list of <see cref="IBinder"/> objects using binding parameters.
+        /// If <paramref name="binders"/> is <c>null</c>, binding does not occur.
+        /// If any element in the list is <c>null</c>, a <see cref="NullReferenceException"/> is thrown.
+        /// </summary>
+        /// <param name="binders">A list of objects to be bound to the <see cref="IViewModel"/>.</param>
+        /// <param name="parameters">The parameters that contain the ViewModel and the component ID for binding.</param>
+        /// <typeparam name="T">The type that implements the <see cref="IBinder"/> interface.</typeparam>
+        /// <exception cref="NullReferenceException">Thrown if any element in the list is <c>null</c>.</exception>
+        public static void BindSafely<T>(this List<T>? binders, in BindParameters parameters)
+            where T : IBinder
+        {
+            if (binders is null) return;
+            
+            foreach (var binder in binders)
+            {
+                if (binder is null) throw new NullReferenceException($"Binder {parameters.Id} is null. ViewModel {parameters.ViewModel.GetType().FullName}");
+                binder.Bind(parameters);
             }
         }
         
@@ -76,16 +134,38 @@ namespace Aspid.MVVM
         /// <param name="viewModel">The ViewModel to bind to.</param>
         /// <param name="id">The component ID that matches the property name in the ViewModel.</param>
         /// <typeparam name="T">The type that implements the <see cref="IBinder"/> interface.</typeparam>
-        /// <exception cref="NullReferenceException"></exception>
+        /// <exception cref="NullReferenceException">Thrown if any element in the enumeration is <c>null</c>.</exception>
         public static void BindSafely<T>(this IEnumerable<T>? binders, IViewModel viewModel, string id)
             where T : IBinder
         {
             if (binders is null) return;
+            var parameters = new BindParameters(viewModel, id);
 
             foreach (var binder in binders)
             {
 	            if (binder is null) throw new NullReferenceException($"Binder {id} is null. ViewModel {viewModel.GetType().FullName}");
-	            binder.Bind(viewModel, id);
+	            binder.Bind(parameters);
+            }
+        }
+        
+        /// <summary>
+        /// Safely binds an enumeration of <see cref="IBinder"/> objects using binding parameters.
+        /// If <paramref name="binders"/> is <c>null</c>, binding does not occur.
+        /// If any element in the enumeration is <c>null</c>, a <see cref="NullReferenceException"/> is thrown.
+        /// </summary>
+        /// <param name="binders">An enumeration of objects to be bound to the <see cref="IViewModel"/>.</param>
+        /// <param name="parameters">The parameters that contain the ViewModel and the component ID for binding.</param>
+        /// <typeparam name="T">The type that implements the <see cref="IBinder"/> interface.</typeparam>
+        /// <exception cref="NullReferenceException">Thrown if any element in the enumeration is <c>null</c>.</exception>
+        public static void BindSafely<T>(this IEnumerable<T>? binders, in BindParameters parameters)
+            where T : IBinder
+        {
+            if (binders is null) return;
+            
+            foreach (var binder in binders)
+            {
+                if (binder is null) throw new NullReferenceException($"Binder {parameters.Id} is null. ViewModel {parameters.ViewModel.GetType().FullName}");
+                binder.Bind(parameters);
             }
         }
         

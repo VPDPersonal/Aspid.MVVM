@@ -105,7 +105,7 @@ namespace Aspid.MVVM
         /// <returns>
         /// An interface for removing the binder from the ViewModel event.
         /// </returns>
-        public static IRemoveBinderFromViewModel AddBinder<T>(IBinder binder, T value, ref ViewModelEvent<T>? viewModelEvent, Action<T>? setValue = null)
+        public static BindResult AddBinder<T>(IBinder binder, T value, ref ViewModelEvent<T>? viewModelEvent, Action<T>? setValue = null)
         {
             var isReverse = binder.IsReverseEnabled;
             viewModelEvent ??= new ViewModelEvent<T>();
@@ -113,7 +113,7 @@ namespace Aspid.MVVM
             if (isReverse)
                 viewModelEvent.SetValue ??= setValue;
             
-            return viewModelEvent.AddBinder(binder, value, isReverse);
+            return new BindResult(viewModelEvent.AddBinder(binder, value, isReverse));
         }
     }
 }

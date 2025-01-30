@@ -7,7 +7,7 @@ namespace Aspid.MVVM
     public abstract class ViewModel : IViewModel
     {
 #if !ASPID_MVVM_UNITY_PROFILER_DISABLED
-        private static readonly Unity.Profiling.ProfilerMarker _addBinderMarker = new("MonoViewModel.AddBinder"); 
+        private static readonly Unity.Profiling.ProfilerMarker _addBinderMarker = new("ViewModel.AddBinder"); 
 #endif
         /// <summary>
         /// Adds a binder to the specified ViewModel property.
@@ -18,7 +18,7 @@ namespace Aspid.MVVM
         /// An interface for removing the binder from the ViewModel, or null if the binder could not be added
         /// or if the property is read-only.
         /// </returns>
-        public IRemoveBinderFromViewModel? AddBinder(IBinder binder, string propertyName)
+        public BindResult AddBinder(IBinder binder, string propertyName)
         {
 #if !ASPID_MVVM_UNITY_PROFILER_DISABLED
             using (_addBinderMarker.Auto())
@@ -38,6 +38,6 @@ namespace Aspid.MVVM
         /// An interface for removing the binder from the ViewModel.
         /// Implementations can return null if binding is not possible or if the property is read-only.
         /// </returns>
-        protected abstract IRemoveBinderFromViewModel? AddBinderInternal(IBinder binder, string propertyName);
+        protected abstract BindResult AddBinderInternal(IBinder binder, string propertyName);
     }
 }

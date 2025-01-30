@@ -24,43 +24,49 @@ namespace Aspid.MVVM
         public bool IsBound { get; private set; }
         
         /// <summary>
-        /// Binds the component to the specified <see cref="IViewModel"/>.
+        /// Binds a component using the specified binding parameters.
         /// </summary>
-        /// <param name="viewModel">The ViewModel instance to bind to.</param>
-        /// <param name="id">The component ID for binding, which matches the property name in the ViewModel.</param>
-        public void Bind(IViewModel viewModel, string id)
+        /// <param name="parameters">
+        /// The parameters that contain the ViewModel and the component ID for binding, where the component ID matches
+        /// the property name in the ViewModel.
+        /// </param>
+        public void Bind(in BindParameters parameters)
         {
 #if !ASPID_MVVM_UNITY_PROFILER_DISABLED
             using (_bindMarker.Auto()) 
 #endif
             {
-                ThrowExceptionIfInvalidData(viewModel, id);
-                
                 if (IsBound) throw new Exception("This Binder is already bound.");
                 if (!IsBind) return;
                 
-                OnBinding(viewModel, id);
+                OnBinding(parameters);
+
+                var bindResult = parameters.AddBinder(this);
                 
-                _removeBinderFromViewModel =  viewModel.AddBinder(this, id);;
-                IsBound = true;
+                _removeBinderFromViewModel = bindResult.BinderRemover;
+                IsBound = bindResult.IsBound;
                 
-                OnBound(viewModel, id);
+                OnBound(parameters, bindResult.IsBound);
             }
         }
         
         /// <summary>
         /// Logic executed before binding, which can be overridden in derived classes.
         /// </summary>
-        /// <param name="viewModel">The ViewModel instance.</param>
-        /// <param name="id">The component ID, which matches the property name in the ViewModel.</param>
-        protected virtual void OnBinding(IViewModel viewModel, string id) { }
+        /// <param name="parameters">
+        /// The parameters that contain the ViewModel and the component ID for binding, where the component ID matches
+        /// the property name in the ViewModel.
+        /// </param>
+        protected virtual void OnBinding(in BindParameters parameters) { }
         
         /// <summary>
         /// Logic executed after binding, which can be overridden in derived classes.
         /// </summary>
-        /// <param name="viewModel">The ViewModel instance.</param>
-        /// <param name="id">The component ID, which matches the property name in the ViewModel.</param>
-        protected virtual void OnBound(IViewModel viewModel, string id) { }
+        /// <param name="parameters">
+        /// The parameters that contain the ViewModel and the component ID for binding, where the component ID matches
+        /// the property name in the ViewModel.
+        /// </param>
+        protected virtual void OnBound(in BindParameters parameters, bool isBound) { }
         
         /// <summary>
         /// Unbinds the component from the bound <see cref="IViewModel"/>.
@@ -92,11 +98,5 @@ namespace Aspid.MVVM
         /// Logic executed after unbinding, which can be overridden in derived classes.
         /// </summary>
         protected virtual void OnUnbound() { }
-
-        private static void ThrowExceptionIfInvalidData(IViewModel viewModel, string id)
-        {
-            if (string.IsNullOrEmpty(id)) throw new ArgumentNullException(nameof(id));
-            if (viewModel is null) throw new ArgumentNullException(nameof(viewModel));
-        }
     }
 }

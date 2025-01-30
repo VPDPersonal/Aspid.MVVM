@@ -12,6 +12,10 @@ namespace Aspid.MVVM.Mono
 #if !ASPID_MVVM_UNITY_PROFILER_DISABLED
         private static readonly Unity.Profiling.ProfilerMarker _addBinderMarker = new("MonoViewModel.AddBinder"); 
 #endif
+        
+        protected virtual void OnValidate() =>
+            this.InvokeAllChangedEventsEditor();
+        
         /// <summary>
         /// Adds a binder to the specified ViewModel property.
         /// </summary>

@@ -1,7 +1,6 @@
-#nullable enable
 using System.Reflection;
 
-namespace Aspid.MVVM.Mono
+namespace Aspid.MVVM
 {
     public static class BinderFieldInfoExtensions
     {

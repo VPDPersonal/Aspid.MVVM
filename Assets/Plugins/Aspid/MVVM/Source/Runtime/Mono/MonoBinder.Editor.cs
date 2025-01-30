@@ -76,7 +76,7 @@ namespace Aspid.MVVM.Mono
         partial void OnBindingDebug(in BindParameters parameters)
         {
             if (parameters.ViewModel != __view?.ViewModel) 
-                throw new Exception($"ViewModel {parameters.ViewModel} not match. Binder ViewModel {__view?.ViewModel}; Id {__id}.");
+                throw new Exception($"ViewModel not match. {GetBindParametersInfo(parameters)} {GetBinderIdInfo()}");
 
             var id = parameters.Id;
             if (__id != id)
@@ -126,7 +126,7 @@ namespace Aspid.MVVM.Mono
                     }
                 }
                 
-                throw new Exception($"Id not match. Binder Id {__id}; Id {id}.");
+                throw new Exception($"Id not match. {GetBindParametersInfo(parameters)} {GetBinderIdInfo()}");
             }
         }
 
@@ -138,6 +138,14 @@ namespace Aspid.MVVM.Mono
             UnityEditor.EditorUtility.SetDirty(this);
             UnityEditor.SceneManagement.EditorSceneManager.MarkSceneDirty(gameObject.scene);
         }
+        
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        private string GetBinderIdInfo() =>
+            $"Binder {{ View: {__view}; ViewModel: {__view?.ViewModel}; Id: {__id} }}";
+        
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        private static string GetBindParametersInfo(in BindParameters parameters) =>
+            $"BindParameters: {{ ViewModel: {parameters.ViewModel}; Id: {parameters.Id} }}";
     }
 }
 #endif

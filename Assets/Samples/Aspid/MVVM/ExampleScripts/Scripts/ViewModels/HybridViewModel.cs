@@ -24,12 +24,12 @@ namespace Aspid.MVVM.ExampleScripts.ViewModels
             }
         }
 
-        partial void AddBinderManual(IBinder binder, string propertyName, ref IRemoveBinderFromViewModel removeBinder)
+        partial void AddBinderManual(IBinder binder, string propertyName, ref BindResult result)
         {
-            removeBinder = propertyName switch
+            result = propertyName switch
             {
                 nameof(Text) => ViewModelUtility.AddBinder(binder, Text, ref _textChangedEvent, SetText),
-                _ => removeBinder
+                _ => result
             };
         }
     }

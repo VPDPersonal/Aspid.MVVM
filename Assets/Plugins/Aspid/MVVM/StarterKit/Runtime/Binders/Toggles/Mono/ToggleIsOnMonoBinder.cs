@@ -28,9 +28,11 @@ namespace Aspid.MVVM.StarterKit.Binders.Mono
             _isNotifyValueChanged = true;
         }
         
-        protected override void OnBound(in BindParameters parameters)
+        protected override void OnBound(in BindParameters parameters, bool isBound)
         {
+            if (!isBound) return;
             if (!IsReverseEnabled) return;
+            
             CachedComponent.onValueChanged.AddListener(OnValueChanged); 
         }
 

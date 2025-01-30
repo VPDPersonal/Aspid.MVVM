@@ -10,10 +10,10 @@ namespace Aspid.MVVM.StarterKit.ViewModels
             _value = value;
         }
 
-        public IRemoveBinderFromViewModel AddBinder(IBinder binder)
+        public BindResult AddBinder(IBinder binder)
         {
             _event ??= new ViewModelEvent<T>();
-            return _event.AddBinder(binder, _value, false);
+            return new BindResult(_event.AddBinder(binder, _value, false));
         }
     }
 }

@@ -103,9 +103,13 @@ namespace Aspid.MVVM
         /// An optional action that sets the value of the bound property. This is used if the binder supports reverse binding.
         /// </param>
         /// <returns>
-        /// An interface for removing the binder from the ViewModel event.
+        /// A <see cref="BindResult"/> object that contains information about the binding operation.
+        /// The <see cref="BindResult.IsBound"/> property indicates whether the binder was successfully bound.
+        /// If the binding was successful, the <see cref="BindResult.BinderRemover"/> property provides an interface
+        /// for removing the binder from the ViewModel. If the binding failed (e.g., the property is read-only),
+        /// <see cref="BindResult.BinderRemover"/> will be null.
         /// </returns>
-        public static IRemoveBinderFromViewModel AddBinder<T>(IBinder binder, T value, ref ViewModelEvent<T>? viewModelEvent, Action<T>? setValue = null)
+        public static BindResult AddBinder<T>(IBinder binder, T value, ref ViewModelEvent<T>? viewModelEvent, Action<T>? setValue = null)
         {
             var isReverse = binder.IsReverseEnabled;
             viewModelEvent ??= new ViewModelEvent<T>();
@@ -113,7 +117,7 @@ namespace Aspid.MVVM
             if (isReverse)
                 viewModelEvent.SetValue ??= setValue;
             
-            return viewModelEvent.AddBinder(binder, value, isReverse);
+            return new BindResult(viewModelEvent.AddBinder(binder, value, isReverse));
         }
     }
 }

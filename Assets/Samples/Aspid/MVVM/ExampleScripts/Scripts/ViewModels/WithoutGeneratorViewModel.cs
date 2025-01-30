@@ -11,7 +11,7 @@ namespace Aspid.MVVM.ExampleScripts.ViewModels
             set => SetText(value);
         }
         
-        public IRemoveBinderFromViewModel AddBinder(IBinder binder, string propertyName)
+        public BindResult AddBinder(IBinder binder, string propertyName)
         {
             return propertyName switch
             {

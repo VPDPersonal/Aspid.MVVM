@@ -27,8 +27,10 @@ namespace Aspid.MVVM.StarterKit.Binders.Mono
             CachedComponent.SetTrigger(TriggerName);
         }
         
-        protected override void OnBound(in BindParameters parameters)
+        protected override void OnBound(in BindParameters parameters, bool isBound)
         {
+            if (!isBound) return;
+            
             Command ??= new RelayCommand(SetTrigger, CanExecute);
             ValueChanged?.Invoke(Command);
         }

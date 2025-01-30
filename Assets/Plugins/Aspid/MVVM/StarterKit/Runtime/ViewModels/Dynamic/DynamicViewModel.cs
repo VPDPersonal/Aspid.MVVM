@@ -17,7 +17,7 @@ namespace Aspid.MVVM.StarterKit.ViewModels
             _throwErrorIfIdNotFind = throwErrorIfNotFindProperty;
         }
 
-        protected override IRemoveBinderFromViewModel AddBinderInternal(IBinder binder, string propertyName)
+        protected override BindResult AddBinderInternal(IBinder binder, string propertyName)
         {
             if (_properties.TryGetValue(propertyName, out var value))
                 return value.AddBinder(binder);

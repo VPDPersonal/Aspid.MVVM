@@ -110,13 +110,13 @@ namespace Aspid.MVVM.TodoList.ViewModels
 
         #region Manual Binds
         // Manual binding
-        partial void AddBinderManual(IBinder binder, string propertyName, ref IRemoveBinderFromViewModel removeBinder)
+        partial void AddBinderManual(IBinder binder, string propertyName, ref BindResult result)
         {
-            removeBinder = propertyName switch
+            result = propertyName switch
             {
                 nameof(Text) => ViewModelUtility.AddBinder(binder, Text, ref _textChangedEvent, SetText),
                 nameof(IsCompleted) => ViewModelUtility.AddBinder(binder, IsCompleted, ref _isCompletedChangedEvent, SetCompleted),
-                _ => removeBinder
+                _ => result
             };
         }
         #endregion

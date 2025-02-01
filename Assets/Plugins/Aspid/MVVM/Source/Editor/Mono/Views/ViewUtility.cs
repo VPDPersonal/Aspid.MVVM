@@ -279,39 +279,6 @@ namespace Aspid.MVVM.Mono
         }
         #endregion
         
-        /// <summary>
-        /// Cleans a field in the view based on the field's identifier.
-        /// If the field is an array, it filters out invalid or null Unity objects
-        /// and updates the field with the filtered array. Otherwise, the field is set to `null`.
-        /// </summary>
-        /// <param name="view">The view instance containing the field to be cleaned.</param>
-        /// <param name="id">The identifier of the field to clean.</param>
-        public static void CleanMonoBinderValidableFieldById(IView view, string id)
-        {
-            var field = view.GetMonoBinderValidableFieldById(id);
-            field.ThrowExceptionIfMonoBinderValidableFieldIsNull(view, id);
-            
-            if (field!.FieldType.IsArray)
-            {
-                var binders = new List<IMonoBinderValidable>();
-                binders.AddRange(((IMonoBinderValidable[])field.GetValue(view)).Where(binder =>
-                {
-                    var result = binder is not null;
-
-                    if (result && binder is UnityEngine.Object mono && !mono)
-                        result = false;
-
-                    return result;
-                }));
-                
-                field.SetValueFromCastValueAndSaveView(view, binders.ToArray());
-            }
-            else
-            {
-                field.SetValueFromCastValueAndSaveView<IMonoBinderValidable>(view, null);
-            }
-        }
-        
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static void SaveView(this IView view)
         {

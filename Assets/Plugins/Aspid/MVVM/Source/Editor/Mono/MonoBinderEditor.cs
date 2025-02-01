@@ -1,5 +1,4 @@
 #if !ASPID_MVVM_EDITOR_DISABLED
-using System;
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
@@ -45,14 +44,13 @@ namespace Aspid.MVVM.Mono
             if (Binder) return;
             if (_id is null) return;
             if (_view is null) return;
-
+        
             var view = _view.objectReferenceValue as MonoView;
-            if (!view) return;
-            
-            var id = _id.stringValue;
-            if (string.IsNullOrWhiteSpace(id)) return;
 
-            ViewUtility.CleanMonoBinderValidableFieldById(view, id);
+            if (!view) return;
+            if (string.IsNullOrWhiteSpace(_id.stringValue)) return;
+            
+            ViewUtility.ValidateView(view);
         }
 
         private void Validate()
@@ -68,7 +66,9 @@ namespace Aspid.MVVM.Mono
 		        if (!_view.objectReferenceValue) return;
 		        
 		        for (var parent = ((Component)target).transform; parent is not null; parent = parent.parent)
-			        if (parent.GetComponents<MonoView>().Any(view => _view.objectReferenceValue == view)) return;
+                {
+                    if (parent.GetComponents<MonoView>().Any(view => _view.objectReferenceValue == view)) return;
+                }
 
 		        _view.objectReferenceValue = null;
 	        }
@@ -79,29 +79,20 @@ namespace Aspid.MVVM.Mono
 
 		        var view = _view.objectReferenceValue as MonoView;
 
-		        if (!view)
-		        {
-			        _id.stringValue = null;
-			        return;
-		        }
-
-                if (view.TryGetMonoBinderValidableFieldById(_id.stringValue, out var field))
+                if (view && view.TryGetMonoBinderValidableFieldById(_id.stringValue, out var field))
                 {
-                    var binder = field!.GetValue(view);
+                    var binderProperty = new SerializedObject(view).FindProperty(field!.Name);
 
-                    if (binder is Array array)
+                    if (binderProperty is not null)
                     {
-                        if (array
-                            .Cast<object>()
-                            .Any(element => (MonoBinder)element == Binder))
+                        if (binderProperty.isArray)
                         {
-                            serializedObject.ApplyModifiedProperties();
-                            return;
+                            for (var i = 0; i < binderProperty.arraySize; i++)
+                            {
+                                if (binderProperty.GetArrayElementAtIndex(i).objectReferenceValue == Binder) return;
+                            }
                         }
-                    }
-                    else if ((MonoBinder)binder == Binder)
-                    {
-                        return;
+                        else if (binderProperty.objectReferenceValue == Binder) return;
                     }
                 }
                 

@@ -10,24 +10,25 @@ namespace Aspid.MVVM.StarterKit.Binders
     {
         public event Action<bool>? ValueChanged;
         
+        // ReSharper disable once MemberInitializerValueIgnored
         [Header("Parameter")]
-        [SerializeField] private bool _isReverseEnabled;
+        [SerializeField] private BindMode _mode = BindMode.TwoWay;
         
         [Header("Converter")]
         [SerializeField] private bool _isInvert;
         
         private bool _isNotifyValueChanged = true;
 
-        public bool IsReverseEnabled => _isReverseEnabled;
-
-        public ToggleIsOnBinder(Toggle target, bool isReverseEnabled = true) 
-            : this(target, false, isReverseEnabled) { }
+        public BindMode Mode => _mode;
         
-        public ToggleIsOnBinder(Toggle target, bool isInvert, bool isReverseEnabled)
+        public ToggleIsOnBinder(Toggle target, BindMode mode = BindMode.TwoWay) 
+            : this(target, false, mode) { }
+        
+        public ToggleIsOnBinder(Toggle target, bool isInvert, BindMode mode)
             : base(target)
         {
+            _mode = mode;
             _isInvert = isInvert;
-            _isReverseEnabled = isReverseEnabled;
         }
         
         public void SetValue(bool value)
@@ -40,14 +41,15 @@ namespace Aspid.MVVM.StarterKit.Binders
         protected override void OnBound(in BindParameters parameters, bool isBound)
         {
             if (!isBound) return;
-            if (!IsReverseEnabled) return;
+            if (Mode is not (BindMode.TwoWay or BindMode.OneWayToSource)) return;
             
             Target.onValueChanged.AddListener(OnValueChanged);
+            if (Mode is BindMode.OneWayToSource) OnValueChanged(Target.isOn);
         }
 
         protected override void OnUnbound()
         {
-            if (!IsReverseEnabled) return;
+            if (Mode is not (BindMode.TwoWay or BindMode.OneWayToSource)) return;
             Target.onValueChanged.RemoveListener(OnValueChanged);
         }
 

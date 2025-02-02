@@ -24,8 +24,8 @@ namespace Aspid.MVVM.TodoList.ViewModels
         [Bind] private bool _isVisible;
         
         // Usually Source Generator creates these fields for us, but for the sake of this example we will bind two fields manually.
-        private ViewModelEvent<string> _textChangedEvent;
-        private ViewModelEvent<bool> _isCompletedChangedEvent;
+        private TwoWayViewModelEvent<string> _textChangedEvent;
+        private TwoWayViewModelEvent<bool> _isCompletedChangedEvent;
         
         private readonly Todo _todo;
         private readonly EditTodoPopUpViewFactory _editTodoPopUpViewFactory;

@@ -1,4 +1,5 @@
 using System;
+using System.Runtime.CompilerServices;
 
 namespace Aspid.MVVM
 {
@@ -19,37 +20,43 @@ namespace Aspid.MVVM
         public Action<T?>? SetValue { get; set; }
         
         /// <summary>
-        /// Adds a binder to the event for two-way binding.
+        /// Adds a binder to the event for binding based on the specified <see cref="BindMode"/>.
         /// </summary>
         /// <param name="binder">The binder that will manage the binding logic.</param>
         /// <param name="value">The initial value to be bound to the event.</param>
-        /// <param name="isReverse">A flag indicating whether reverse binding is enabled.</param>
-        /// <returns>An interface for removing the binder from the event.</returns>
+        /// <param name="mode">The binding mode that determines the direction of data flow.</param>
+        /// <returns>
+        /// An interface for removing the binder from the event, or <c>null</c> if the binding mode is <see cref="BindMode.OneTime"/>.
+        /// </returns>
         /// <exception cref="ArgumentNullException">
-        /// Thrown if reverse binding is enabled and <see cref="SetValue"/> is not defined.
+        /// Thrown if reverse binding is enabled (in <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>)
+        /// and <see cref="SetValue"/> is not defined.
         /// </exception>
         /// <exception cref="InvalidOperationException">
-        /// Thrown if the binder is not of a compatible type for binding.
-        /// /// </exception>
-        public IRemoveBinderFromViewModel AddBinder(IBinder binder, T? value, bool isReverse)
+        /// Thrown if the binder is not of a compatible type for the specified binding mode.
+        /// </exception>
+        public IRemoveBinderFromViewModel? AddBinder(IBinder binder, T? value, BindMode mode)
         {
             var isBind = false;
-            
-            if (binder is IBinder<T> specificBinder)
+
+            if (mode is not BindMode.OneWayToSource
+                && binder is IBinder<T> specificBinder)
             {
                 isBind = true;
                 specificBinder.SetValue(value);
+                
+                if (mode is BindMode.OneTime) return null;
                 Changed += specificBinder.SetValue;
             }
 
-            if (isReverse)
+            if (mode is BindMode.TwoWay or BindMode.OneWayToSource)
             {
-                ((IReverseBinder<T>)binder).ValueChanged += SetValue ??
-                    throw new ArgumentNullException(nameof(SetValue), "SetValue must be defined for reverse binding.");
+                ThrowArgumentNullExceptionIfSetValueNull();
+                ((IReverseBinder<T>)binder).ValueChanged += SetValue;
             }
             else if (!isBind)
             {
-                throw new InvalidOperationException($"Binder must be of type {typeof(IBinder<T>)}.");
+                ThrowInvalidOperationException(mode);
             }
             
             return this;
@@ -60,29 +67,32 @@ namespace Aspid.MVVM
         /// </summary>
         /// <param name="binder">The binder to be removed.</param>
         /// <exception cref="ArgumentNullException">
-        /// Thrown if reverse binding was set up and <see cref="SetValue"/> is not defined.
+        /// Thrown if reverse binding was set up (in <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>)
+        /// and <see cref="SetValue"/> is not defined.
         /// </exception>
         /// <exception cref="InvalidOperationException">
-        /// Thrown if the binder is not of a compatible type for unbinding.
+        /// Thrown if the binder is not of a compatible type for the specified binding mode.
         /// </exception>
         void IRemoveBinderFromViewModel.RemoveBinder(IBinder binder)
         {
             var isUnbind = false;
+            var mode = binder.Mode;
 
-            if (binder is IBinder<T?> specificBinder)
+            if (mode is not BindMode.OneWayToSource 
+                && binder is IBinder<T?> specificBinder)
             {
                 isUnbind = true;
                 Changed -= specificBinder.SetValue;
             }
 
-            if (binder.IsReverseEnabled)
+            if (mode is BindMode.TwoWay or BindMode.OneWayToSource)
             {
-                ((IReverseBinder<T>)binder).ValueChanged -= SetValue ?? 
-                    throw new ArgumentNullException(nameof(SetValue), "SetValue must be defined for reverse binding.");
+                ThrowArgumentNullExceptionIfSetValueNull();
+                ((IReverseBinder<T>)binder).ValueChanged -= SetValue;
             }
             else if (!isUnbind)
             {
-                throw new InvalidOperationException($"Binder must be of type {typeof(IBinder<T>)}.");
+                ThrowInvalidOperationException(mode);
             }
         }
 
@@ -98,5 +108,16 @@ namespace Aspid.MVVM
         /// </summary>
         public void Dispose() => 
             Changed = null;
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private void ThrowArgumentNullExceptionIfSetValueNull()
+        {
+            if (SetValue is not null) return;
+            throw new ArgumentNullException(nameof(SetValue), "SetValue must be defined for reverse binding.");
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private static void ThrowInvalidOperationException(BindMode mode) =>
+            throw new InvalidOperationException($"Binder must be of type {typeof(IBinder<T>)} for the specified binding mode {mode}.");
     }
 }

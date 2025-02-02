@@ -11,14 +11,14 @@ namespace Aspid.MVVM.StarterKit.Binders.Mono
         public event Action<bool> ValueChanged;
         
         [Header("Parameter")]
-        [SerializeField] private bool _isReverseEnabled = true;
+        [SerializeField] private BindMode _mode = BindMode.TwoWay;
         
         [Header("Converter")]
         [SerializeField] private bool _isInvert;
         
         private bool _isNotifyValueChanged = true;
 
-        public bool IsReverseEnabled => _isReverseEnabled;
+        public BindMode Mode => _mode;
         
         [BinderLog]
         public void SetValue(bool value)
@@ -31,14 +31,15 @@ namespace Aspid.MVVM.StarterKit.Binders.Mono
         protected override void OnBound(in BindParameters parameters, bool isBound)
         {
             if (!isBound) return;
-            if (!IsReverseEnabled) return;
+            if (Mode is not (BindMode.TwoWay or BindMode.OneWayToSource)) return;
             
-            CachedComponent.onValueChanged.AddListener(OnValueChanged); 
+            CachedComponent.onValueChanged.AddListener(OnValueChanged);
+            if (Mode is BindMode.OneWayToSource) OnValueChanged(CachedComponent.isOn);
         }
 
         protected override void OnUnbound()
         {
-            if (!IsReverseEnabled) return;
+            if (Mode is not (BindMode.TwoWay or BindMode.OneWayToSource)) return;
             CachedComponent.onValueChanged.RemoveListener(OnValueChanged);
         }
 

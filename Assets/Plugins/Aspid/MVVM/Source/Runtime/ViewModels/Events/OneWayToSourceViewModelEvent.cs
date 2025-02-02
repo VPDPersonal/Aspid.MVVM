@@ -26,7 +26,7 @@ namespace Aspid.MVVM
         /// <param name="binder">The binder that will manage the binding logic.</param>
         /// <returns>An interface for removing the binder from the event.</returns>
         /// <exception cref="InvalidOperationException">
-        /// Thrown if the binder is not of a compatible type for binding.
+        /// Thrown if the binder is not of type <see cref="IReverseBinder{T}"/> or if the binding mode is not <see cref="BindMode.OneWayToSource"/>.
         /// </exception>
         public IRemoveBinderFromViewModel AddBinder(IBinder binder)
         {
@@ -39,24 +39,16 @@ namespace Aspid.MVVM
         /// </summary>
         /// <param name="binder">The binder to be removed.</param>
         /// <exception cref="InvalidOperationException">
-        /// Thrown if the binder is not of type <see cref="IReverseBinder{T}"/> or if reverse binding is not enabled.
+        /// Thrown if the binder is not of type <see cref="IReverseBinder{T}"/> or if the binding mode is not <see cref="BindMode.OneWayToSource"/>.
         /// </exception>
         void IRemoveBinderFromViewModel.RemoveBinder(IBinder binder) =>
             GetReverseBinder(binder).ValueChanged -= _setValue;
-
-        /// <summary>
-        /// Gets a specific reverse binder of type <see cref="IReverseBinder{T}"/> from the provided binder.
-        /// </summary>
-        /// <param name="binder">The binder to convert.</param>
-        /// <returns>The specific reverse binder of type <see cref="IReverseBinder{T}"/>.</returns>
-        /// <exception cref="InvalidOperationException">
-        /// Thrown if the binder is not of type <see cref="IReverseBinder{T}"/> or if reverse binding is not enabled.
-        /// </exception>
+        
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static IReverseBinder<T> GetReverseBinder(IBinder binder)
         {
-            if (!binder.IsReverseEnabled || binder is not IReverseBinder<T> specificReverseBinder) 
-                throw new InvalidOperationException($"Binder must be of type {typeof(IReverseBinder<T>)} and have reverse binding enabled.");
+            if (binder.Mode is not BindMode.OneWayToSource || binder is not IReverseBinder<T> specificReverseBinder) 
+                throw new InvalidOperationException($"Binder must be of type {typeof(IReverseBinder<T>)} and have a binding mode of {BindMode.OneWayToSource}.");
 
             return specificReverseBinder;
         }

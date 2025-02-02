@@ -29,13 +29,13 @@ namespace Aspid.MVVM.StarterKit.ViewModels
         public static DynamicViewModel Create<T>(DynamicPropertyData<T> p) => 
             new(new Dictionary<string, IDynamicProperty> 
             { 
-                [p.Id] = new DynamicProperty<T>(p.Value), 
+                [p.Id] = DynamicPropertyFactory.Create(p.Value), 
             });
         
         public static DynamicViewModel Create<T>(bool throwErrorIfNotFindProperty, DynamicPropertyData<T> p) => 
             new(throwErrorIfNotFindProperty, new Dictionary<string, IDynamicProperty> 
             { 
-                [p.Id] = new DynamicProperty<T>(p.Value), 
+                [p.Id] = DynamicPropertyFactory.Create(p.Value), 
             });
         
         public static DynamicViewModel Create<T1, T2>(
@@ -43,8 +43,8 @@ namespace Aspid.MVVM.StarterKit.ViewModels
             DynamicPropertyData<T2> p2) =>
             new(new Dictionary<string, IDynamicProperty>
             {
-                [p1.Id] = new DynamicProperty<T1>(p1.Value),
-                [p2.Id] = new DynamicProperty<T2>(p2.Value),
+                [p1.Id] = DynamicPropertyFactory.Create(p1.Value),
+                [p2.Id] = DynamicPropertyFactory.Create(p2.Value),
             });
         
         public static DynamicViewModel Create<T1, T2>(
@@ -53,8 +53,8 @@ namespace Aspid.MVVM.StarterKit.ViewModels
             DynamicPropertyData<T2> p2) =>
             new(throwErrorIfNotFindProperty, new Dictionary<string, IDynamicProperty>
             {
-                [p1.Id] = new DynamicProperty<T1>(p1.Value),
-                [p2.Id] = new DynamicProperty<T2>(p2.Value),
+                [p1.Id] = DynamicPropertyFactory.Create(p1.Value),
+                [p2.Id] = DynamicPropertyFactory.Create(p2.Value),
             });
         
         public static DynamicViewModel Create<T1, T2, T3>(
@@ -63,9 +63,9 @@ namespace Aspid.MVVM.StarterKit.ViewModels
             DynamicPropertyData<T3> p3) =>
             new(new Dictionary<string, IDynamicProperty>
             {
-                [p1.Id] = new DynamicProperty<T1>(p1.Value),
-                [p2.Id] = new DynamicProperty<T2>(p2.Value),
-                [p3.Id] = new DynamicProperty<T3>(p3.Value),
+                [p1.Id] = DynamicPropertyFactory.Create(p1.Value),
+                [p2.Id] = DynamicPropertyFactory.Create(p2.Value),
+                [p3.Id] = DynamicPropertyFactory.Create(p3.Value),
             });
         
         public static DynamicViewModel Create<T1, T2, T3>(
@@ -75,9 +75,9 @@ namespace Aspid.MVVM.StarterKit.ViewModels
             DynamicPropertyData<T3> p3) =>
             new(throwErrorIfNotFindProperty, new Dictionary<string, IDynamicProperty>
             {
-                [p1.Id] = new DynamicProperty<T1>(p1.Value),
-                [p2.Id] = new DynamicProperty<T2>(p2.Value),
-                [p3.Id] = new DynamicProperty<T3>(p3.Value),
+                [p1.Id] = DynamicPropertyFactory.Create(p1.Value),
+                [p2.Id] = DynamicPropertyFactory.Create(p2.Value),
+                [p3.Id] = DynamicPropertyFactory.Create(p3.Value),
             });
         
         public static DynamicViewModel Create<T1, T2, T3, T4>(
@@ -87,10 +87,10 @@ namespace Aspid.MVVM.StarterKit.ViewModels
             DynamicPropertyData<T4> p4) =>
             new(new Dictionary<string, IDynamicProperty>
             {
-                [p1.Id] = new DynamicProperty<T1>(p1.Value),
-                [p2.Id] = new DynamicProperty<T2>(p2.Value),
-                [p3.Id] = new DynamicProperty<T3>(p3.Value),
-                [p4.Id] = new DynamicProperty<T4>(p4.Value),
+                [p1.Id] = DynamicPropertyFactory.Create(p1.Value),
+                [p2.Id] = DynamicPropertyFactory.Create(p2.Value),
+                [p3.Id] = DynamicPropertyFactory.Create(p3.Value),
+                [p4.Id] = DynamicPropertyFactory.Create(p4.Value),
             });
         
         public static DynamicViewModel Create<T1, T2, T3, T4>(
@@ -101,10 +101,10 @@ namespace Aspid.MVVM.StarterKit.ViewModels
             DynamicPropertyData<T4> p4) =>
             new(throwErrorIfNotFindProperty, new Dictionary<string, IDynamicProperty>
             {
-                [p1.Id] = new DynamicProperty<T1>(p1.Value),
-                [p2.Id] = new DynamicProperty<T2>(p2.Value),
-                [p3.Id] = new DynamicProperty<T3>(p3.Value),
-                [p4.Id] = new DynamicProperty<T4>(p4.Value),
+                [p1.Id] = DynamicPropertyFactory.Create(p1.Value),
+                [p2.Id] = DynamicPropertyFactory.Create(p2.Value),
+                [p3.Id] = DynamicPropertyFactory.Create(p3.Value),
+                [p4.Id] = DynamicPropertyFactory.Create(p4.Value),
             });
         
         public static DynamicViewModel Create<T1, T2, T3, T4, T5>(
@@ -115,11 +115,11 @@ namespace Aspid.MVVM.StarterKit.ViewModels
             DynamicPropertyData<T5> p5) =>
             new(new Dictionary<string, IDynamicProperty>
             {
-                [p1.Id] = new DynamicProperty<T1>(p1.Value),
-                [p2.Id] = new DynamicProperty<T2>(p2.Value),
-                [p3.Id] = new DynamicProperty<T3>(p3.Value),
-                [p4.Id] = new DynamicProperty<T4>(p4.Value),
-                [p5.Id] = new DynamicProperty<T5>(p5.Value),
+                [p1.Id] = DynamicPropertyFactory.Create(p1.Value),
+                [p2.Id] = DynamicPropertyFactory.Create(p2.Value),
+                [p3.Id] = DynamicPropertyFactory.Create(p3.Value),
+                [p4.Id] = DynamicPropertyFactory.Create(p4.Value),
+                [p5.Id] = DynamicPropertyFactory.Create(p5.Value),
             });
         
         public static DynamicViewModel Create<T1, T2, T3, T4, T5>(
@@ -131,11 +131,11 @@ namespace Aspid.MVVM.StarterKit.ViewModels
             DynamicPropertyData<T5> p5) =>
             new(throwErrorIfNotFindProperty, new Dictionary<string, IDynamicProperty>
             {
-                [p1.Id] = new DynamicProperty<T1>(p1.Value),
-                [p2.Id] = new DynamicProperty<T2>(p2.Value),
-                [p3.Id] = new DynamicProperty<T3>(p3.Value),
-                [p4.Id] = new DynamicProperty<T4>(p4.Value),
-                [p5.Id] = new DynamicProperty<T5>(p5.Value),
+                [p1.Id] = DynamicPropertyFactory.Create(p1.Value),
+                [p2.Id] = DynamicPropertyFactory.Create(p2.Value),
+                [p3.Id] = DynamicPropertyFactory.Create(p3.Value),
+                [p4.Id] = DynamicPropertyFactory.Create(p4.Value),
+                [p5.Id] = DynamicPropertyFactory.Create(p5.Value),
             });
         
         public static DynamicViewModel Create<T1, T2, T3, T4, T5, T6>(
@@ -147,12 +147,12 @@ namespace Aspid.MVVM.StarterKit.ViewModels
             DynamicPropertyData<T6> p6) =>
             new(new Dictionary<string, IDynamicProperty>
             {
-                [p1.Id] = new DynamicProperty<T1>(p1.Value),
-                [p2.Id] = new DynamicProperty<T2>(p2.Value),
-                [p3.Id] = new DynamicProperty<T3>(p3.Value),
-                [p4.Id] = new DynamicProperty<T4>(p4.Value),
-                [p5.Id] = new DynamicProperty<T5>(p5.Value),
-                [p6.Id] = new DynamicProperty<T6>(p6.Value),
+                [p1.Id] = DynamicPropertyFactory.Create(p1.Value),
+                [p2.Id] = DynamicPropertyFactory.Create(p2.Value),
+                [p3.Id] = DynamicPropertyFactory.Create(p3.Value),
+                [p4.Id] = DynamicPropertyFactory.Create(p4.Value),
+                [p5.Id] = DynamicPropertyFactory.Create(p5.Value),
+                [p6.Id] = DynamicPropertyFactory.Create(p6.Value),
             });
         
         public static DynamicViewModel Create<T1, T2, T3, T4, T5, T6>(
@@ -165,12 +165,12 @@ namespace Aspid.MVVM.StarterKit.ViewModels
             DynamicPropertyData<T6> p6) =>
             new(throwErrorIfNotFindProperty, new Dictionary<string, IDynamicProperty>
             {
-                [p1.Id] = new DynamicProperty<T1>(p1.Value),
-                [p2.Id] = new DynamicProperty<T2>(p2.Value),
-                [p3.Id] = new DynamicProperty<T3>(p3.Value),
-                [p4.Id] = new DynamicProperty<T4>(p4.Value),
-                [p5.Id] = new DynamicProperty<T5>(p5.Value),
-                [p6.Id] = new DynamicProperty<T6>(p6.Value),
+                [p1.Id] = DynamicPropertyFactory.Create(p1.Value),
+                [p2.Id] = DynamicPropertyFactory.Create(p2.Value),
+                [p3.Id] = DynamicPropertyFactory.Create(p3.Value),
+                [p4.Id] = DynamicPropertyFactory.Create(p4.Value),
+                [p5.Id] = DynamicPropertyFactory.Create(p5.Value),
+                [p6.Id] = DynamicPropertyFactory.Create(p6.Value),
             });
         
         public static DynamicViewModel Create<T1, T2, T3, T4, T5, T6, T7>(
@@ -183,13 +183,13 @@ namespace Aspid.MVVM.StarterKit.ViewModels
             DynamicPropertyData<T7> p7) =>
             new(new Dictionary<string, IDynamicProperty>
             {
-                [p1.Id] = new DynamicProperty<T1>(p1.Value),
-                [p2.Id] = new DynamicProperty<T2>(p2.Value),
-                [p3.Id] = new DynamicProperty<T3>(p3.Value),
-                [p4.Id] = new DynamicProperty<T4>(p4.Value),
-                [p5.Id] = new DynamicProperty<T5>(p5.Value),
-                [p6.Id] = new DynamicProperty<T6>(p6.Value),
-                [p7.Id] = new DynamicProperty<T7>(p7.Value),
+                [p1.Id] = DynamicPropertyFactory.Create(p1.Value),
+                [p2.Id] = DynamicPropertyFactory.Create(p2.Value),
+                [p3.Id] = DynamicPropertyFactory.Create(p3.Value),
+                [p4.Id] = DynamicPropertyFactory.Create(p4.Value),
+                [p5.Id] = DynamicPropertyFactory.Create(p5.Value),
+                [p6.Id] = DynamicPropertyFactory.Create(p6.Value),
+                [p7.Id] = DynamicPropertyFactory.Create(p7.Value),
             });
         
         public static DynamicViewModel Create<T1, T2, T3, T4, T5, T6, T7>(
@@ -203,13 +203,13 @@ namespace Aspid.MVVM.StarterKit.ViewModels
             DynamicPropertyData<T7> p7) =>
             new(throwErrorIfNotFindProperty, new Dictionary<string, IDynamicProperty>
             {
-                [p1.Id] = new DynamicProperty<T1>(p1.Value),
-                [p2.Id] = new DynamicProperty<T2>(p2.Value),
-                [p3.Id] = new DynamicProperty<T3>(p3.Value),
-                [p4.Id] = new DynamicProperty<T4>(p4.Value),
-                [p5.Id] = new DynamicProperty<T5>(p5.Value),
-                [p6.Id] = new DynamicProperty<T6>(p6.Value),
-                [p7.Id] = new DynamicProperty<T7>(p7.Value),
+                [p1.Id] = DynamicPropertyFactory.Create(p1.Value),
+                [p2.Id] = DynamicPropertyFactory.Create(p2.Value),
+                [p3.Id] = DynamicPropertyFactory.Create(p3.Value),
+                [p4.Id] = DynamicPropertyFactory.Create(p4.Value),
+                [p5.Id] = DynamicPropertyFactory.Create(p5.Value),
+                [p6.Id] = DynamicPropertyFactory.Create(p6.Value),
+                [p7.Id] = DynamicPropertyFactory.Create(p7.Value),
             });
 
         public static DynamicViewModel Create<T1, T2, T3, T4, T5, T6, T7, T8>(
@@ -223,14 +223,14 @@ namespace Aspid.MVVM.StarterKit.ViewModels
             DynamicPropertyData<T8> p8) =>
             new(new Dictionary<string, IDynamicProperty>
             {
-                [p1.Id] = new DynamicProperty<T1>(p1.Value),
-                [p2.Id] = new DynamicProperty<T2>(p2.Value),
-                [p3.Id] = new DynamicProperty<T3>(p3.Value),
-                [p4.Id] = new DynamicProperty<T4>(p4.Value),
-                [p5.Id] = new DynamicProperty<T5>(p5.Value),
-                [p6.Id] = new DynamicProperty<T6>(p6.Value),
-                [p7.Id] = new DynamicProperty<T7>(p7.Value),
-                [p8.Id] = new DynamicProperty<T8>(p8.Value),
+                [p1.Id] = DynamicPropertyFactory.Create(p1.Value),
+                [p2.Id] = DynamicPropertyFactory.Create(p2.Value),
+                [p3.Id] = DynamicPropertyFactory.Create(p3.Value),
+                [p4.Id] = DynamicPropertyFactory.Create(p4.Value),
+                [p5.Id] = DynamicPropertyFactory.Create(p5.Value),
+                [p6.Id] = DynamicPropertyFactory.Create(p6.Value),
+                [p7.Id] = DynamicPropertyFactory.Create(p7.Value),
+                [p8.Id] = DynamicPropertyFactory.Create(p8.Value),
             });
         
         public static DynamicViewModel Create<T1, T2, T3, T4, T5, T6, T7, T8>(
@@ -245,14 +245,14 @@ namespace Aspid.MVVM.StarterKit.ViewModels
             DynamicPropertyData<T8> p8) =>
             new(throwErrorIfNotFindProperty, new Dictionary<string, IDynamicProperty>
             {
-                [p1.Id] = new DynamicProperty<T1>(p1.Value),
-                [p2.Id] = new DynamicProperty<T2>(p2.Value),
-                [p3.Id] = new DynamicProperty<T3>(p3.Value),
-                [p4.Id] = new DynamicProperty<T4>(p4.Value),
-                [p5.Id] = new DynamicProperty<T5>(p5.Value),
-                [p6.Id] = new DynamicProperty<T6>(p6.Value),
-                [p7.Id] = new DynamicProperty<T7>(p7.Value),
-                [p8.Id] = new DynamicProperty<T8>(p8.Value),
+                [p1.Id] = DynamicPropertyFactory.Create(p1),
+                [p2.Id] = DynamicPropertyFactory.Create(p2),
+                [p3.Id] = DynamicPropertyFactory.Create(p3),
+                [p4.Id] = DynamicPropertyFactory.Create(p4),
+                [p5.Id] = DynamicPropertyFactory.Create(p5),
+                [p6.Id] = DynamicPropertyFactory.Create(p6),
+                [p7.Id] = DynamicPropertyFactory.Create(p7),
+                [p8.Id] = DynamicPropertyFactory.Create(p8),
             });
         #endregion
     }

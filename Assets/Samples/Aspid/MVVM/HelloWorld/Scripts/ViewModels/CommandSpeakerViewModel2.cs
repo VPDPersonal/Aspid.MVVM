@@ -26,11 +26,13 @@ namespace Aspid.MVVM.HelloWorld.ViewModels
         // It also does not generate an event.
         // Only OneTime binding is possible with this attribute.
         // This way of binding is the most productive.
-        [ReadOnlyBind] private readonly IRelayCommand _sayCommand;
+        [OneTimeBind] private readonly IRelayCommand _sayCommand;
         
         // Alternative:
         // 1. [Bind] private readonly IRelayCommand _sayCommand;
-        // 2. [ReadOnlyBind] private IRelayCommand _sayCommand;
+        // 2. [OneTimeBind] private IRelayCommand _sayCommand;
+        // 3. [Bind(BindMode.OneTime)] private IRelayCommand _sayCommand;
+        // 4. [Bind(BindMode.OneWay)] private readonly IRelayCommand _sayCommand;
     
         private readonly Speaker _speaker;
     

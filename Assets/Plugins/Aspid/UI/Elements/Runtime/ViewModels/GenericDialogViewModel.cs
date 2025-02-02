@@ -10,10 +10,10 @@ namespace Aspid.UI.Elements.ViewModels
     [ViewModel]
     public partial class GenericDialogViewModel
     {
-        [ReadOnlyBind] private readonly Sprite _icon;
-        [ReadOnlyBind] private readonly string _title;
-        [ReadOnlyBind] private readonly string _message;
-        [ReadOnlyBind] private readonly GenericDialogButtonViewModel[] _genericDialogButtons;
+        [Bind] private readonly Sprite _icon;
+        [Bind] private readonly string _title;
+        [Bind] private readonly string _message;
+        [Bind] private readonly GenericDialogButtonViewModel[] _genericDialogButtons;
 
         [CreateFrom(typeof(GenericDialog))]
         public GenericDialogViewModel(GenericDialog genericDialog)

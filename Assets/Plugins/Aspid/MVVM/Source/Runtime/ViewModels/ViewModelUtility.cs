@@ -100,7 +100,10 @@ namespace Aspid.MVVM
         /// If the event is null, a new instance will be created.
         /// </param>
         /// <param name="setValue">
-        /// An optional action that sets the value of the bound property. This is used if the binder supports reverse binding.
+        /// An optional action that sets the value of the bound property. This is used if the binder supports reverse binding,
+        /// which includes <see cref="BindMode.TwoWay"/> and <see cref="BindMode.OneWayToSource"/> modes.
+        /// If the binding mode is set to one of these, the provided <paramref name="setValue"/> will be assigned to
+        /// <see cref="TwoWayViewModelEvent{T}.SetValue"/>.
         /// </param>
         /// <returns>
         /// A <see cref="BindResult"/> object that contains information about the binding operation.
@@ -109,15 +112,15 @@ namespace Aspid.MVVM
         /// for removing the binder from the ViewModel. If the binding failed (e.g., the property is read-only),
         /// <see cref="BindResult.BinderRemover"/> will be null.
         /// </returns>
-        public static BindResult AddBinder<T>(IBinder binder, T value, ref ViewModelEvent<T>? viewModelEvent, Action<T>? setValue = null)
+        public static BindResult AddBinder<T>(IBinder binder, T value, ref TwoWayViewModelEvent<T>? viewModelEvent, Action<T?>? setValue = null)
         {
-            var isReverse = binder.IsReverseEnabled;
-            viewModelEvent ??= new ViewModelEvent<T>();
+            var mode = binder.Mode;
+            viewModelEvent ??= new TwoWayViewModelEvent<T>();
 
-            if (isReverse)
+            if (mode is BindMode.TwoWay or BindMode.OneWayToSource)
                 viewModelEvent.SetValue ??= setValue;
             
-            return new BindResult(viewModelEvent.AddBinder(binder, value, isReverse));
+            return new BindResult(viewModelEvent.AddBinder(binder, value, mode));
         }
     }
 }

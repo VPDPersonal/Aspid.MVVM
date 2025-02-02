@@ -21,40 +21,45 @@ namespace Aspid.MVVM.StarterKit.Binders
 
         private bool _isNotifyValueChanged = true;
         
+        // ReSharper disable once MemberInitializerValueIgnored
+        [Header("Parameters")]
+        [SerializeField] private BindMode _mode = BindMode.TwoWay;
+        
         [Header("Converter")]
         [SerializeReferenceDropdown]
         [SerializeReference] private Converter? _converter;
-        
-        public bool IsReverseEnabled { get; }
 
-        public SliderValueBinder(Slider target, bool isReverseEnabled)
-            : this(target)
-        {
-            _converter = null;
-            IsReverseEnabled = isReverseEnabled; 
-        }
+        public BindMode Mode => _mode;
         
-        public SliderValueBinder(Slider target, Func<float, float> converter, bool isReverseEnabled = true) :
-            this(target, converter.ToConvert(), isReverseEnabled) { }
-        
-        public SliderValueBinder(Slider target, Converter? converter = null, bool isReverseEnabled = true)
+        public SliderValueBinder(Slider target, BindMode mode)
             : base(target)
         {
+            _mode = mode;
+            _converter = null;
+        }
+        
+        public SliderValueBinder(Slider target, Func<float, float> converter, BindMode mode = BindMode.TwoWay) :
+            this(target, converter.ToConvert(), mode) { }
+        
+        public SliderValueBinder(Slider target, Converter? converter = null, BindMode mode = BindMode.TwoWay)
+            : base(target)
+        {
+            _mode = mode;
             _converter = converter;
-            IsReverseEnabled = isReverseEnabled;
         }
 
         protected override void OnBound(in BindParameters parameters, bool isBound)
         {
             if (!isBound) return;
-            if (!IsReverseEnabled) return;
+            if (Mode is not (BindMode.TwoWay or BindMode.OneWayToSource)) return;
             
             Target.onValueChanged.AddListener(OnValueChanged);
+            if (Mode is BindMode.OneWayToSource) OnValueChanged(Target.value);
         }
 
         protected override void OnUnbound()
         {
-            if (!IsReverseEnabled) return;
+            if (Mode is not (BindMode.TwoWay or BindMode.OneWayToSource)) return;
             Target.onValueChanged.RemoveListener(OnValueChanged);
         }
         

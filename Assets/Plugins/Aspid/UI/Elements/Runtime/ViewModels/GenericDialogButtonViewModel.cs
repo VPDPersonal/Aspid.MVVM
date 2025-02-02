@@ -7,8 +7,8 @@ namespace Aspid.UI.Elements.ViewModels
     [ViewModel]
     public partial class GenericDialogButtonViewModel
     {
-        [ReadOnlyBind] private readonly string _text;
-        [ReadOnlyBind] private readonly IRelayCommand _clickCommand;
+        [Bind] private readonly string _text;
+        [Bind] private readonly IRelayCommand _clickCommand;
 
         private GenericDialogButton _button;
 

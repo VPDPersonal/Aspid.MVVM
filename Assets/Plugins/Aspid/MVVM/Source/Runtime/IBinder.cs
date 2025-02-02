@@ -7,10 +7,10 @@ namespace Aspid.MVVM
     public interface IBinder
     {
         /// <summary>
-        /// Determines whether reverse binding (from View to ViewModel) is enabled.
-        /// The default value is <c>false</c>.
+        /// Gets the binding mode that determines the direction of data flow.
+        /// Default is <see cref="BindMode.OneWay"/>.
         /// </summary>
-        public bool IsReverseEnabled => false;
+        public BindMode Mode => BindMode.OneWay;
         
         /// <summary>
         /// Binds a component using the specified binding parameters.

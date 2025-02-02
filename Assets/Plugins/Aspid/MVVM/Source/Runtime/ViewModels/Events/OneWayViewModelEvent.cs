@@ -15,26 +15,32 @@ namespace Aspid.MVVM
         public event Action<T?>? Changed;
         
         /// <summary>
-        /// Adds a binder to the event for one-way binding.
+        /// Adds a binder to the event for one-way or one-time binding.
         /// </summary>
         /// <param name="binder">The binder that will manage the binding logic.</param>
         /// <param name="value">The initial value to be bound to the event.</param>
-        /// <returns>An interface for removing the binder from the event.</returns>
+        /// <returns>
+        /// An interface for removing the binder from the event, or <c>null</c> if the binding mode is <see cref="BindMode.OneTime"/>.
+        /// </returns>
         /// <exception cref="Exception">
-        /// Thrown if reverse binding is enabled on the binder.
+        /// Thrown if the binding mode is not <see cref="BindMode.OneWay"/> or <see cref="BindMode.OneTime"/>.
         /// </exception>
         /// <exception cref="InvalidOperationException">
         /// Thrown if the binder is not of type <see cref="IBinder{T}"/>.
         /// </exception>
-        public IRemoveBinderFromViewModel AddBinder(IBinder binder, T? value)
+        public IRemoveBinderFromViewModel? AddBinder(IBinder binder, T? value)
         {
-            if (binder.IsReverseEnabled) 
-                throw new Exception("Reverse binding is not supported in OneWayViewModelEvent.");
+            var mode = binder.Mode;
+            
+            if (mode is not BindMode.OneWay && mode is not BindMode.OneTime) 
+                throw new Exception("Only OneWay and OneTime binding modes are supported in OneWayViewModelEvent.");
 
             var specificBinder = GetSpecificBinder(binder);
             specificBinder.SetValue(value);
-            Changed += specificBinder.SetValue;
             
+            if (mode is BindMode.OneTime) return null;
+            
+            Changed += specificBinder.SetValue;
             return this;
         }
 
@@ -61,14 +67,6 @@ namespace Aspid.MVVM
         public void Dispose() => 
             Changed = null;
         
-        /// <summary>
-        /// Gets a specific binder of type <see cref="IBinder{T}"/> from the provided binder.
-        /// </summary>
-        /// <param name="binder">The binder to convert.</param>
-        /// <returns>The specific binder of type <see cref="IBinder{T}"/>.</returns>
-        /// <exception cref="InvalidOperationException">
-        /// Thrown if the binder is not of type <see cref="IBinder{T}"/>.
-        /// </exception>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static IBinder<T> GetSpecificBinder(IBinder binder)
         {

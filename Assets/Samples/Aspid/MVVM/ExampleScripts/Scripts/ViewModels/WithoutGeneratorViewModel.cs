@@ -3,7 +3,7 @@ namespace Aspid.MVVM.ExampleScripts.ViewModels
     public class WithoutGeneratorViewModel : IViewModel
     {
         private string _text;
-        private ViewModelEvent<string> _textChangedEvent;
+        private TwoWayViewModelEvent<string> _textChangedEvent;
 
         private string Text
         {

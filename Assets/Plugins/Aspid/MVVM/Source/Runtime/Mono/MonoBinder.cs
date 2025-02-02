@@ -9,6 +9,7 @@ namespace Aspid.MVVM.Mono
     /// Includes methods for binding and unbinding the component from the ViewModel.
     /// Derivatives must implement one or more interfaces <see cref="IBinder{T}"/> to complete the implementation of specific binding logic.
     /// </summary>
+    // ReSharper disable once RedundantExtendsListEntry
     public abstract partial class MonoBinder : MonoBehaviour, IBinder
     {
 #if !ASPID_MVVM_UNITY_PROFILER_DISABLED

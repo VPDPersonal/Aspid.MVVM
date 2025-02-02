@@ -8,7 +8,7 @@ namespace Aspid.MVVM.ExampleScripts.ViewModels
         [Bind] private int _number;
         
         private string _text;
-        private ViewModelEvent<string> _textChangedEvent;
+        private TwoWayViewModelEvent<string> _textChangedEvent;
 
         private string Text
         {

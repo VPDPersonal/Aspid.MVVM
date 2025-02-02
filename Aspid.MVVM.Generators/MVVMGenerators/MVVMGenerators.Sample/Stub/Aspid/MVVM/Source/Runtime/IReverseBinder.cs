@@ -19,5 +19,7 @@ namespace Aspid.MVVM
         /// The default value is <c>true</c>.
         /// </summary>
         bool IBinder.IsReverseEnabled => true;
+
+        BindMode IBinder.Mode => BindMode.TwoWay;
     }
 }

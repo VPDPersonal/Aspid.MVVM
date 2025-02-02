@@ -11,6 +11,8 @@ namespace Aspid.MVVM
         /// The default value is <c>false</c>.
         /// </summary>
         public bool IsReverseEnabled => false;
+
+        public BindMode Mode => BindMode.OneWay;
         
         /// <summary>
         /// Binds a component using the specified binding parameters.

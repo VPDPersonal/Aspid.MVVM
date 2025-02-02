@@ -66,6 +66,10 @@ namespace Aspid.MVVM
         /// The parameters that contain the ViewModel and the component ID for binding, where the component ID matches
         /// the property name in the ViewModel.
         /// </param>
+        /// <param name="isBound">
+        /// Indicates whether the binding operation was successful. 
+        /// <c>true</c> if the binding was successful; otherwise, <c>false</c>.
+        /// </param>
         protected virtual void OnBound(in BindParameters parameters, bool isBound) { }
         
         /// <summary>

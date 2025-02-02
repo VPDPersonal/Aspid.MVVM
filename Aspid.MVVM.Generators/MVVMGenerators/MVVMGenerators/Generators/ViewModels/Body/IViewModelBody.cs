@@ -4,6 +4,7 @@ using MVVMGenerators.Helpers.Extensions.Writer;
 using MVVMGenerators.Generators.ViewModels.Data;
 using MVVMGenerators.Helpers.Extensions.Symbols;
 using MVVMGenerators.Generators.ViewModels.Data.Members;
+using MVVMGenerators.Generators.ViewModels.Data.Members.Fields;
 
 namespace MVVMGenerators.Generators.ViewModels.Body;
 
@@ -13,10 +14,13 @@ public static class IViewModelBody
     private const string GeneratedAttribute = General.GeneratedCodeViewModelAttribute;
 
     private static readonly string IBinder = Classes.IBinder.Global;
+    private static readonly string BindMode = Classes.BindMode.Global;
     private static readonly string Exception = Classes.Exception.Global;
     private static readonly string BindResult = Classes.BindResult.Global;
-    private static readonly string ViewModelEvent = Classes.ViewModelEvent.Global;
     private static readonly string ProfilerMarker = Classes.ProfilerMarker.Global;
+    private static readonly string OneWayViewModelEvent = Classes.OneWayViewModelEvent.Global;
+    private static readonly string TwoWayViewModelEvent = Classes.TwoWayViewModelEvent.Global;
+    private static readonly string OneWayToSourceViewModelEvent = Classes.OneWayToSourceViewModelEvent.Global;
     private static readonly string EditorBrowsableAttribute = $"[{Classes.EditorBrowsableAttribute.Global}({Classes.EditorBrowsableState.Global}.Never)]";
 
     public static CodeWriter AppendIViewModelBody(this CodeWriter code, ViewModelDataSpan data)
@@ -91,7 +95,7 @@ public static class IViewModelBody
              """)
             .IncreaseIndent()
             .BeginBlock()
-            .AppendLoop(data.Fields, AppendField)
+            .AppendFields(data.Fields)
             .AppendLoop(data.Commands, AppendCommand)
             .AppendLoop(data.BindAlsoProperties, AppendBindAlsoProperty)
             .AppendMultiline(
@@ -110,75 +114,98 @@ public static class IViewModelBody
             .AppendLineIf(data.Inheritor is Inheritor.InheritorViewModelAttribute,
                 "return base.AddBinderInternal(binder, propertyName);")
             .AppendLineIf(data.Inheritor is not Inheritor.InheritorViewModelAttribute, "return default;")
-            .AppendMultilineIf(readOnlyFieldsExist,
-            $$"""
-            
-            void SetValueLocal<T>(T value)
-            {
-                if (binder is not {{IBinder}}<T> specificBinder)
-                    throw new {{Exception}}($"Binder ({binder.GetType()}) is not {typeof({{IBinder}}<T>)}");
-                    
-                specificBinder.SetValue(value);
-            }
-            """)
             .EndBlock();
 
         return code;
         
         void AppendCommand(RelayCommandData command) =>
-            AppendReadOnlyBind(command.PropertyName);
-
-        void AppendField(FieldInViewModel field)
-        {
-            var type = field.Type.ToDisplayStringGlobal();
-            var propertyName = field.PropertyName;
-            
-            if (!field.IsReadOnly)
-            {
-                code.AppendMultiline(
-                    $$"""
-                    case {{propertyName}}Id:
-                    {
-                        var isReverse = binder.IsReverseEnabled;
-                        {{field.ViewModelEventName}} ??= new {{ViewModelEvent}}<{{type}}>();
-                        
-                        if (isReverse)
-                            {{field.ViewModelEventName}}.SetValue ??= Set{{propertyName}};
-                            
-                        return new({{field.ViewModelEventName}}.AddBinder(binder, {{propertyName}}, isReverse));
-                    }
-                    """);
-            }
-            else AppendReadOnlyBind(propertyName);
-        }
+            code.AppendOneTimeFieldInSwitch(command.GetTypeName(), command.PropertyName);
 
         void AppendBindAlsoProperty(BindAlsoProperty property)
         {
             var type = property.Type.ToDisplayStringGlobal();
-            
-            code.AppendMultiline(
-                $$"""
-                case {{property.Name}}Id:
-                {
-                    {{property.ViewModelEventName}} ??= new {{ViewModelEvent}}<{{type}}>();
-                    return new({{property.ViewModelEventName}}.AddBinder(binder, {{property.Name}}, false));
-                }
-                """);
+            code.AppendOneWayFieldInSwitch(type, property.Name, property.ViewModelEventName);
         }
+    }
 
-        void AppendReadOnlyBind(string propertyName)
-        {
-            readOnlyFieldsExist = true;
+    private static CodeWriter AppendFields(this CodeWriter code, ViewModelFieldsSpan fields)
+    {
+        foreach (var field in fields.TwoWayFields)
+            code.AppendTwoWayFieldInSwitch(field);
 
-            code.AppendMultiline(
-                $$"""
-                  case {{propertyName}}Id:
-                  {
-                      SetValueLocal({{propertyName}});
-                      return new(true);
-                  }
-                  """);
-        }
+        foreach (var field in fields.OneWayFields)
+            code.AppendOneWayFieldInSwitch(field.Type, field.PropertyName, field.Event.FieldName!);
+                
+        foreach (var field in fields.OneTimeFields)
+            code.AppendOneTimeFieldInSwitch(field.Type, field.PropertyName);
+        
+        foreach (var field in fields.OneWayToSourceFields)
+            code.AppendOneWayToSourceFieldInSwitch(field);
+
+        return code;
+    }
+
+    private static CodeWriter AppendTwoWayFieldInSwitch(this CodeWriter code, in ViewModelField field)
+    {
+        return code.AppendMultiline(
+            $$"""
+            case {{field.PropertyName}}Id:
+            {
+                var mode = binder.Mode;
+                
+                {{field.Event.FieldName}} ??= new {{TwoWayViewModelEvent}}<{{field.Type}}>();
+                
+                if (mode is {{BindMode}}.TwoWay or {{BindMode}}.OneWayToSource)
+                    {{field.Event.FieldName}}.SetValue ??= Set{{field.PropertyName}};
+                    
+                return new({{field.Event.FieldName}}.AddBinder(binder, {{field.PropertyName}}, mode));
+            }
+            """
+        );
+    }
+    
+    private static CodeWriter AppendOneWayFieldInSwitch(this CodeWriter code, string type, string propertyName, string evenName)
+    {
+        return code.AppendMultiline(
+            $$"""
+            case {{propertyName}}Id:
+            {
+                {{evenName}} ??= new {{OneWayViewModelEvent}}<{{type}}>();
+                return new({{evenName}}.AddBinder(binder, {{propertyName}}));
+            }
+            """
+        );
+    }
+
+    private static CodeWriter AppendOneTimeFieldInSwitch(this CodeWriter code, string type, string propertyName)
+    {
+        return code.AppendMultiline(
+            $$"""
+            case {{propertyName}}Id:
+            {
+                if (binder.Mode is {{BindMode}}.TwoWay or {{BindMode}}.OneWayToSource)
+                    throw new {{Classes.Exception.Global}}();
+                
+                if (binder is not {{IBinder}}<{{type}}> specificBinder)
+                    throw new {{Exception}}($"Binder ({binder.GetType()}) is not {typeof({{IBinder}}<{{type}}>)}");
+                
+                specificBinder.SetValue({{propertyName}});
+                return new(true);
+            }
+            """
+        );
+    }
+
+    private static CodeWriter AppendOneWayToSourceFieldInSwitch(this CodeWriter code, in ViewModelField field)
+    {
+        return code.AppendMultiline(
+            $$"""
+            case {{field.PropertyName}}Id:
+            {
+                {{field.Event.FieldName}} ??= new {{OneWayToSourceViewModelEvent}}<{{field.Type}}>(Set{{field.PropertyName}});
+                return new({{field.Event.FieldName}}.AddBinder(binder));
+            }
+            """);
     }
 
     private static CodeWriter AppendManualMethods(this CodeWriter code)

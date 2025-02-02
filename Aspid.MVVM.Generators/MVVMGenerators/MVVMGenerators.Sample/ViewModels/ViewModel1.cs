@@ -10,14 +10,14 @@ public partial class ViewModel1
     [Bind] private int _number2;
     
     [Bind] private string _name;
-    [ReadOnlyBind] private readonly string _id;
+    [Bind] private readonly string _id;
 }
 
 [ViewModel]
 public partial class Child1ViewModel1 : ViewModel1
 {
     [Bind] private int _number3;
-    [ReadOnlyBind] private readonly IRelayCommand _do1Command;
+    [Bind] private readonly IRelayCommand _do1Command;
 
     [RelayCommand]
     private void Do2()

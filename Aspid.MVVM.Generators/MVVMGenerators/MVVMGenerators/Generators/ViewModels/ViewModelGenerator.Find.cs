@@ -5,13 +5,14 @@ using Microsoft.CodeAnalysis;
 using MVVMGenerators.Helpers;
 using System.Collections.Generic;
 using System.Collections.Immutable;
-using Microsoft.CodeAnalysis.CSharp;
 using System.Runtime.CompilerServices;
 using MVVMGenerators.Helpers.Descriptions;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using MVVMGenerators.Helpers.Extensions.Symbols;
 using MVVMGenerators.Generators.ViewModels.Data;
+using MVVMGenerators.Generators.ViewModels.Factories;
 using MVVMGenerators.Generators.ViewModels.Data.Members;
+using MVVMGenerators.Generators.ViewModels.Data.Members.Fields;
 
 namespace MVVMGenerators.Generators.ViewModels;
 
@@ -67,77 +68,21 @@ public partial class ViewModelGenerator
 
         return symbol.HaseDirectInterface(Classes.IViewModel) ? Inheritor.HasInterface : Inheritor.None;
     }
-
-    private static ImmutableArray<FieldInViewModel> FindFields(
+    
+    private static ViewModelFields FindFields(
         IReadOnlyCollection<IFieldSymbol> fields,
         IReadOnlyCollection<IPropertySymbol> properties)
     {
-        var data = new List<FieldInViewModel>();
-        
+        var viewModelFields = new List<ViewModelField>();
+        var fieldFactory = new ViewModelFieldFactory(properties);
+
         foreach (var field in fields)
         {
-            var hasReadOnlyBindAttribute = false;
-            var hasBindAttribute = field.HasAttribute(Classes.BindAttribute);
-            
-            if (!hasBindAttribute)
-            {
-                hasReadOnlyBindAttribute = field.HasAttribute(Classes.ReadOnlyBindAttribute);
-                if (!hasReadOnlyBindAttribute) continue;
-            }
-            
-            var accessors = GetAccessors(field);
-            var bindAlso = GetBindAlso(field);
-            
-            if (hasReadOnlyBindAttribute) accessors.Set = accessors.Get;
-            data.Add(new FieldInViewModel(field, hasReadOnlyBindAttribute, accessors.Get, accessors.Set, bindAlso));
+            if (fieldFactory.TryCreate(field, out var viewModelField))
+                viewModelFields.Add(viewModelField);
         }
 
-        return ImmutableArray.CreateRange(data);
-
-        ImmutableArray<BindAlsoProperty> GetBindAlso(IFieldSymbol field)
-        {
-            var bindAlso = new List<BindAlsoProperty>();
-            var attributesArgument = new List<string?>();
-            
-            foreach (var attribute in field.GetAttributes())
-            {
-                if (attribute.ConstructorArguments.Length != 1) continue;
-                if (attribute.AttributeClass?.ToDisplayString() != Classes.BindAlsoAttribute.FullName) continue;
-                attributesArgument.Add(attribute.ConstructorArguments[0].Value?.ToString());
-            }
-
-            foreach (var property in properties)
-            {
-                if (attributesArgument.Any(argument => property.Name == argument))
-                    bindAlso.Add(new BindAlsoProperty(property));
-            }
-            
-            return ImmutableArray.CreateRange(bindAlso);
-        }
-        
-        (SyntaxKind Get, SyntaxKind Set) GetAccessors(IFieldSymbol field)
-        {
-            (SyntaxKind Get, SyntaxKind Set) accessors = (SyntaxKind.PrivateKeyword, SyntaxKind.PrivateKeyword);
-            if (!field.HasAttribute(Classes.AccessAttribute, out var accessAttribute)) return accessors;
-            
-            if (accessAttribute!.ConstructorArguments.Length == 1)
-            {
-                var value = (SyntaxKind)(int)(accessAttribute.ConstructorArguments[0].Value ?? SyntaxKind.PrivateKeyword);
-                accessors.Get = value;
-                accessors.Set = value;
-            }
-            
-            foreach (var argument in accessAttribute!.NamedArguments)
-            {
-                switch (argument.Key)
-                {
-                    case "Get": accessors.Get = (SyntaxKind)(int)(argument.Value.Value ?? SyntaxKind.PrivateKeyword); break;
-                    case "Set": accessors.Set = (SyntaxKind)(int)(argument.Value.Value ?? SyntaxKind.PrivateKeyword); break;
-                }
-            }
-
-            return accessors;
-        }
+        return new ViewModelFields(viewModelFields);
     }
 
     private static ImmutableArray<RelayCommandData> FindCommand(

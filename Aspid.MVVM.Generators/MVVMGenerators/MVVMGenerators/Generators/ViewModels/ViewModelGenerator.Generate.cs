@@ -18,16 +18,16 @@ public partial class ViewModelGenerator
         var declaration = dataSpan.Declaration;
         var @namespace = declaration.GetNamespaceName();
         var declarationText = declaration.GetDeclarationText();
-
-        if (dataSpan.Fields.Length + dataSpan.Commands.Length > 0)
+        
+        if (dataSpan.Fields.All.Length + dataSpan.Commands.Length > 0)
         {
             GenerateProperties(@namespace, dataSpan, declarationText, context);
 
             var idList = new List<(string, string)>();
 
-            foreach (var field in dataSpan.Fields)
+            foreach (var field in dataSpan.Fields.All)
             {
-                var name = field.Field.GetId(field.PropertyName);
+                var name = field.BindId;
                 idList.Add((name, $"{field.PropertyName}Id"));
             }
             

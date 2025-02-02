@@ -15,8 +15,11 @@ namespace Aspid.MVVM
         /// <param name="binder">The binder that will be associated with the ViewModel property.</param>
         /// <param name="propertyName">The name of the property to which the binder will be bound.</param>
         /// <returns>
-        /// An interface for removing the binder from the ViewModel, or null if the binder could not be added
-        /// or if the property is read-only.
+        /// A <see cref="BindResult"/> object that contains information about the binding operation.
+        /// The <see cref="BindResult.IsBound"/> property indicates whether the binder was successfully bound.
+        /// If the binding was successful, the <see cref="BindResult.BinderRemover"/> property provides an interface
+        /// for removing the binder from the ViewModel. If the binding failed (e.g., the property is read-only),
+        /// <see cref="BindResult.BinderRemover"/> will be null.
         /// </returns>
         public BindResult AddBinder(IBinder binder, string propertyName)
         {
@@ -35,8 +38,11 @@ namespace Aspid.MVVM
         /// <param name="binder">The binder to be added.</param>
         /// <param name="propertyName">The name of the property to which the binder will be bound.</param>
         /// <returns>
-        /// An interface for removing the binder from the ViewModel.
-        /// Implementations can return null if binding is not possible or if the property is read-only.
+        /// A <see cref="BindResult"/> object that contains information about the binding operation.
+        /// The <see cref="BindResult.IsBound"/> property indicates whether the binder was successfully bound.
+        /// If the binding was successful, the <see cref="BindResult.BinderRemover"/> property provides an interface
+        /// for removing the binder from the ViewModel. If the binding failed (e.g., the property is read-only),
+        /// <see cref="BindResult.BinderRemover"/> will be null.
         /// </returns>
         protected abstract BindResult AddBinderInternal(IBinder binder, string propertyName);
     }

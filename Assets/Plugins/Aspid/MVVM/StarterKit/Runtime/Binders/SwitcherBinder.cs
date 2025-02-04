@@ -10,8 +10,11 @@ namespace Aspid.MVVM.StarterKit.Binders
         [SerializeField] private T _trueValue; 
         [SerializeField] private T _falseValue;
 
-        protected SwitcherBinder(T trueValue, T falseValue)
+        protected SwitcherBinder(T trueValue, T falseValue, BindMode mode)
+            : base(mode)
         {
+            mode.ThrowExceptionIfTwo();
+            
             _trueValue = trueValue;
             _falseValue = falseValue;
         }
@@ -32,9 +35,11 @@ namespace Aspid.MVVM.StarterKit.Binders
         [SerializeField] private T _trueValue; 
         [SerializeField] private T _falseValue;
 
-        protected SwitcherBinder(TTarget target, T trueValue, T falseValue)
-            : base(target)
+        protected SwitcherBinder(TTarget target, T trueValue, T falseValue, BindMode mode)
+            : base(target, mode)
         {
+            mode.ThrowExceptionIfTwo();
+            
             _trueValue = trueValue;
             _falseValue = falseValue;
         }

@@ -7,12 +7,19 @@ namespace Aspid.MVVM.StarterKit.Binders
     [Serializable]
     public class CanvasGroupIgnoreParentGroupsBinder : TargetBinder<CanvasGroup>, IBinder<bool>
     {
-        [Header("Parameter")]
+        [Header("Converter")]
         [SerializeField] private bool _isInvert;
 
-        public CanvasGroupIgnoreParentGroupsBinder(CanvasGroup target, bool isInvert = false)
-            : base(target)
+        public CanvasGroupIgnoreParentGroupsBinder(CanvasGroup target, BindMode mode)
+            : this(target, false, mode) { }
+        
+        public CanvasGroupIgnoreParentGroupsBinder(
+            CanvasGroup target, 
+            bool isInvert = false, 
+            BindMode mode = BindMode.OneTime)
+            : base(target, mode)
         {
+            mode.ThrowExceptionIfTwo();
             _isInvert = isInvert;
         }
         

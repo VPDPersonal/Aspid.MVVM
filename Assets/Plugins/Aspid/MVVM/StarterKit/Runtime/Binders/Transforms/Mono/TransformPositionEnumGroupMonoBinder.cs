@@ -6,7 +6,7 @@ namespace Aspid.MVVM.StarterKit.Binders.Mono
     [AddComponentMenu("Aspid/MVVM/Binders/Transform/Transform Binder - Position EnumGroup")]
     public sealed class TransformPositionEnumGroupMonoBinder : EnumGroupMonoBinder<Transform>
     {
-        [Header("Parameter")]
+        [Header("Parameters")]
         [SerializeField] private Vector3 _defaultValue;
         [SerializeField] private Vector3 _selectedValue;
         [SerializeField] private Space _space = Space.World;    

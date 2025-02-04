@@ -10,6 +10,7 @@ using Converter = Aspid.MVVM.StarterKit.Converters.IConverterFloat;
 
 namespace Aspid.MVVM.StarterKit.Binders.Mono
 {
+    [BindModeOverride(IsAll = true)]
     [AddComponentMenu("Aspid/MVVM/Binders/UI/Slider/Slider Binder - Value")]
     public class SliderValueMonoBinder : ComponentMonoBinder<Slider>, INumberBinder, INumberReverseBinder
     {
@@ -17,17 +18,12 @@ namespace Aspid.MVVM.StarterKit.Binders.Mono
         public event Action<long> LongValueChanged;
         public event Action<float> FloatValueChanged;
         public event Action<double> DoubleValueChanged;
-      
-        [Header("Parameter")]
-        [SerializeField] private BindMode _mode = BindMode.TwoWay;
         
         [Header("Converter")]
         [SerializeReferenceDropdown]
         [SerializeReference] private Converter _converter;
 
         private bool _isNotifyValueChanged = true;
-        
-        public BindMode Mode => _mode;
         
         [BinderLog]
         public void SetValue(int value) =>

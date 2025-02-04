@@ -2,7 +2,6 @@
 using System;
 using UnityEngine;
 using UnityEngine.UI;
-using Aspid.MVVM.StarterKit.Converters;
 #if UNITY_2023_1_OR_NEWER
 using Converter = Aspid.MVVM.StarterKit.Converters.IConverter<UnityEngine.Vector2, UnityEngine.Vector2>;
 #else
@@ -14,7 +13,7 @@ namespace Aspid.MVVM.StarterKit.Binders
     [Serializable]
     public sealed class SliderMinMaxSwitcherBinder : SwitcherBinder<Slider, Vector2>
     {
-        [SerializeField] private SliderValueMode _mode;
+        [SerializeField] private SliderValueMode _valueMode;
         
         [Header("Converter")]
         [SerializeReferenceDropdown]
@@ -24,40 +23,42 @@ namespace Aspid.MVVM.StarterKit.Binders
             Slider target, 
             Vector2 trueValue, 
             Vector2 falseValue,
-            Func<Vector2, Vector2> converter) 
-            : this(target, trueValue, falseValue, SliderValueMode.Range, converter) { }
+            BindMode mode) 
+            : this(target, trueValue, falseValue, SliderValueMode.Range, null, mode) { }
         
         public SliderMinMaxSwitcherBinder(
             Slider target, 
             Vector2 trueValue, 
             Vector2 falseValue,
-            SliderValueMode mode,
-            Func<Vector2, Vector2> converter) 
-            : this(target, trueValue, falseValue, mode, converter.ToConvert()) { }
+            SliderValueMode valueMode,
+            BindMode mode) 
+            : this(target, trueValue, falseValue, valueMode, null, mode) { }
         
         public SliderMinMaxSwitcherBinder(
             Slider target, 
             Vector2 trueValue, 
             Vector2 falseValue,
-            Converter? converter) 
-            : this(target, trueValue, falseValue, SliderValueMode.Range, converter) { }
+            Converter? converter,
+            BindMode mode = BindMode.OneWay) 
+            : this(target, trueValue, falseValue, SliderValueMode.Range, converter, mode) { }
         
         public SliderMinMaxSwitcherBinder(
             Slider target, 
             Vector2 trueValue, 
             Vector2 falseValue,
-            SliderValueMode mode = SliderValueMode.Range,
-            Converter? converter = null) 
-            : base(target, trueValue, falseValue)
+            SliderValueMode valueMode = SliderValueMode.Range,
+            Converter? converter = null,
+            BindMode mode = BindMode.OneWay) 
+            : base(target, trueValue, falseValue, mode)
         {
-            _mode = mode;
+            _valueMode = valueMode;
             _converter = converter;
         }
 
         protected override void SetValue(Vector2 value)
         {
             value = _converter?.Convert(value) ?? value;
-            Target.SetMinMax(value, _mode);
+            Target.SetMinMax(value, _valueMode);
         }
     }
 }

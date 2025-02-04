@@ -10,7 +10,7 @@ namespace Aspid.MVVM.StarterKit.Binders.Mono
     [AddComponentMenu("Aspid/MVVM/Binders/UI/RectTransform/RectTransform Binder - SizeDelta Enum")]
     public sealed class RectTransformSizeDeltaEnumMonoBinder : EnumComponentMonoBinder<RectTransform, Vector2>
     {
-        [SerializeField] private SizeDeltaMode _mode = SizeDeltaMode.SizeDelta;
+        [SerializeField] private SizeDeltaMode _sizeMode = SizeDeltaMode.SizeDelta;
         
         [Header("Converter")]
         [SerializeReferenceDropdown]
@@ -19,7 +19,7 @@ namespace Aspid.MVVM.StarterKit.Binders.Mono
         protected override void SetValue(Vector2 value)
         {
             value = _converter?.Convert(value) ?? value;
-            CachedComponent.SetSizeDelta(value, _mode);
+            CachedComponent.SetSizeDelta(value, _sizeMode);
         }
     }
 }

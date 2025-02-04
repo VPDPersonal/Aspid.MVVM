@@ -1,7 +1,6 @@
 #nullable enable
 using System;
 using UnityEngine;
-using Aspid.MVVM.StarterKit.Converters;
 #if UNITY_2023_1_OR_NEWER
 using Converter = Aspid.MVVM.StarterKit.Converters.IConverter<UnityEngine.Quaternion, UnityEngine.Quaternion>;
 #else
@@ -22,32 +21,34 @@ namespace Aspid.MVVM.StarterKit.Binders
         public TransformRotationSwitcherBinder(
             Transform target, 
             Vector3 trueValue, 
-            Vector3 falseValue, 
-            Func<Quaternion, Quaternion> converter) 
-            : this(target, trueValue, falseValue, Space.World, converter) { }
+            Vector3 falseValue,
+            BindMode mode) 
+            : this(target, trueValue, falseValue, Space.World, null, mode) { }
         
         public TransformRotationSwitcherBinder(
             Transform target, 
             Vector3 trueValue, 
             Vector3 falseValue, 
             Space space,
-            Func<Quaternion, Quaternion> converter) 
-            : this(target, trueValue, falseValue, space, converter.ToConvert()) { }
+            BindMode mode) 
+            : this(target, trueValue, falseValue, space, null, mode) { }
         
         public TransformRotationSwitcherBinder(
             Transform target, 
             Vector3 trueValue, 
             Vector3 falseValue, 
-            Converter? converter) 
-            : this(target, trueValue, falseValue, Space.World, converter) { }
+            Converter? converter,
+            BindMode mode = BindMode.OneWay) 
+            : this(target, trueValue, falseValue, Space.World, converter, mode) { }
 
         public TransformRotationSwitcherBinder(
             Transform target, 
             Vector3 trueValue, 
             Vector3 falseValue, 
             Space space = Space.World,
-            Converter? converter = null) 
-            : base(target, trueValue, falseValue)
+            Converter? converter = null,
+            BindMode mode = BindMode.OneWay) 
+            : base(target, trueValue, falseValue, mode)
         {
             _space = space;
             _converter = converter; 

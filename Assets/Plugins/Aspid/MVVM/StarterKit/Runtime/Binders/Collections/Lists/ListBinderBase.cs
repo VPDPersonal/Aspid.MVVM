@@ -10,6 +10,9 @@ namespace Aspid.MVVM.StarterKit.Binders
     {
         private IReadOnlyObservableList<T?>? _list;
 
+        protected ListBinderBase(BindMode mode)
+            : base(mode) { }
+        
         public void SetValue(IReadOnlyObservableList<T?>? list)
         {
             if (_list is not null)

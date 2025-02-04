@@ -4,7 +4,6 @@ using TMPro;
 using System;
 using UnityEngine;
 using Aspid.MVVM.Mono.Generation;
-using Aspid.MVVM.StarterKit.Converters;
 #if UNITY_2023_1_OR_NEWER
 using Converter = Aspid.MVVM.StarterKit.Converters.IConverter<float, float>;
 #else
@@ -20,15 +19,13 @@ namespace Aspid.MVVM.StarterKit.Binders
         [SerializeReferenceDropdown]
         [SerializeReference] private Converter? _converter;
         
-        public TextFontSizeBinder(TMP_Text target)
-            : base(target) { }
-
-        public TextFontSizeBinder(TMP_Text target, Func<float, float> converter) 
-            : this(target, converter.ToConvert()) { }
+        public TextFontSizeBinder(TMP_Text target, BindMode mode)
+            : this(target, null, mode) { }
         
-        public TextFontSizeBinder(TMP_Text target, Converter converter) 
-            : base(target)
+        public TextFontSizeBinder(TMP_Text target, Converter? converter = null, BindMode mode = BindMode.OneWay) 
+            : base(target, mode)
         {
+            mode.ThrowExceptionIfTwo();
             _converter = converter;
         }
 

@@ -11,7 +11,7 @@ namespace Aspid.MVVM.StarterKit.Binders.Mono
     [AddComponentMenu("Aspid/MVVM/Binders/UI/Slider/Slider Binder - MinMax Switcher")]
     public sealed class SliderMinMaxSwitcherMonoBinder : SwitcherMonoBinder<Slider, Vector2>
     {
-        [SerializeField] private SliderValueMode _mode = SliderValueMode.Range;
+        [SerializeField] private SliderValueMode _valueMode = SliderValueMode.Range;
         
         [Header("Converter")]
         [SerializeReferenceDropdown]
@@ -20,7 +20,7 @@ namespace Aspid.MVVM.StarterKit.Binders.Mono
         protected override void SetValue(Vector2 value)
         {
             value = _converter?.Convert(value) ?? value;
-            CachedComponent.SetMinMax(value, _mode);
+            CachedComponent.SetMinMax(value, _valueMode);
         }
     }
 }

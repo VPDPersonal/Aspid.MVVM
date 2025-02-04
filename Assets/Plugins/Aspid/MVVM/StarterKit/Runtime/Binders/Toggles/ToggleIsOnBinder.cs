@@ -6,28 +6,23 @@ using UnityEngine.UI;
 namespace Aspid.MVVM.StarterKit.Binders
 {
     [Serializable]
+    [BindModeOverride(IsAll = true)]
     public class ToggleIsOnBinder : TargetBinder<Toggle>, IBinder<bool>, IReverseBinder<bool>
     {
         public event Action<bool>? ValueChanged;
-        
-        // ReSharper disable once MemberInitializerValueIgnored
-        [Header("Parameter")]
-        [SerializeField] private BindMode _mode = BindMode.TwoWay;
         
         [Header("Converter")]
         [SerializeField] private bool _isInvert;
         
         private bool _isNotifyValueChanged = true;
-
-        public BindMode Mode => _mode;
         
-        public ToggleIsOnBinder(Toggle target, BindMode mode = BindMode.TwoWay) 
+        public ToggleIsOnBinder(Toggle target, BindMode mode) 
             : this(target, false, mode) { }
         
-        public ToggleIsOnBinder(Toggle target, bool isInvert, BindMode mode)
-            : base(target)
+        public ToggleIsOnBinder(Toggle target, bool isInvert = false, BindMode mode = BindMode.TwoWay)
+            : base(target, mode)
         {
-            _mode = mode;
+            mode.ThrowExceptionIfNone();
             _isInvert = isInvert;
         }
         

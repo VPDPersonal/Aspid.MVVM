@@ -16,8 +16,16 @@ namespace Aspid.MVVM.StarterKit.Binders
             SphereCollider target,
             Vector3 trueValue, 
             Vector3 falseValue, 
-            Vector3CombineConverter? converter = null) 
-            : base(target, trueValue, falseValue)
+            BindMode mode) 
+            : this(target, trueValue, falseValue, null, mode) { }
+        
+        public SphereColliderCenterSwitcherBinder(
+            SphereCollider target,
+            Vector3 trueValue, 
+            Vector3 falseValue, 
+            Vector3CombineConverter? converter = null,
+            BindMode mode = BindMode.OneWay) 
+            : base(target, trueValue, falseValue, mode)
         {
             _converter = converter;
         }

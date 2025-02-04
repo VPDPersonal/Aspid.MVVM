@@ -10,7 +10,7 @@ namespace Aspid.MVVM.StarterKit.Binders.Mono
     [AddComponentMenu("Aspid/MVVM/Binders/Line Renderers/LineRenderer Binder - Color Switcher")]
     public sealed class LineRendererColorSwitcherMonoBinder : SwitcherMonoBinder<LineRenderer, Color>
     {
-        [SerializeField] private LineRendererColorMode _mode = LineRendererColorMode.StartAndEnd;
+        [SerializeField] private LineRendererColorMode _colorMode = LineRendererColorMode.StartAndEnd;
         
         [Header("Converter")]
         [SerializeReferenceDropdown]
@@ -19,7 +19,7 @@ namespace Aspid.MVVM.StarterKit.Binders.Mono
         protected override void SetValue(Color value)
         {
             value = _converter?.Convert(value) ?? value;
-            CachedComponent.SetColor(value, _mode);
+            CachedComponent.SetColor(value, _colorMode);
         }
     }
 }

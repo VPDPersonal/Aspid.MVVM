@@ -1,7 +1,6 @@
 #nullable enable
 using System;
 using UnityEngine;
-using Aspid.MVVM.StarterKit.Converters;
 #if UNITY_2023_1_OR_NEWER
 using Converter = Aspid.MVVM.StarterKit.Converters.IConverter<UnityEngine.Color, UnityEngine.Color>;
 #else
@@ -14,32 +13,45 @@ namespace Aspid.MVVM.StarterKit.Binders
     public class LineRendererColorBinder : TargetBinder<LineRenderer>, IColorBinder
     {
         [Header("Parameter")]
-        [SerializeField] private LineRendererColorMode _mode;
+        [SerializeField] private LineRendererColorMode _colorMode;
         
         [Header("Converter")]
         [SerializeReferenceDropdown]
         [SerializeReference] private Converter? _converter;
-
-        public LineRendererColorBinder(
-            LineRenderer target,
-            LineRendererColorMode mode,
-            Func<Color, Color> converter)
-            : this(target, mode, converter.ToConvert()) { }
         
         public LineRendererColorBinder(
             LineRenderer target,
-            LineRendererColorMode mode = LineRendererColorMode.StartAndEnd,
-            Converter? converter = null)
-            : base(target)
+            BindMode mode)
+            : this(target, LineRendererColorMode.StartAndEnd, null, mode) { }
+        
+        public LineRendererColorBinder(
+            LineRenderer target,
+            LineRendererColorMode colorMode,
+            BindMode mode)
+            : this(target, colorMode, null, mode) { }
+        
+        public LineRendererColorBinder(
+            LineRenderer target,
+            Converter? converter = null,
+            BindMode mode = BindMode.OneWay)
+            : this(target, LineRendererColorMode.StartAndEnd, converter, mode) { }
+        
+        public LineRendererColorBinder(
+            LineRenderer target,
+            LineRendererColorMode colorMode = LineRendererColorMode.StartAndEnd,
+            Converter? converter = null,
+            BindMode mode = BindMode.OneWay)
+            : base(target, mode)
         {
-            _mode = mode;
+            mode.ThrowExceptionIfTwo();
+            _colorMode = colorMode;
             _converter = converter;
         }
 
         public void SetValue(Color value)
         {
             value = _converter?.Convert(value) ?? value;
-            Target.SetColor(value, _mode);
+            Target.SetColor(value, _colorMode);
         }
     }
 }

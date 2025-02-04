@@ -13,7 +13,7 @@ namespace Aspid.MVVM.StarterKit.Binders.Mono
         [Header("Parameter")]
         [SerializeField] private Vector3 _defaultValue;
         [SerializeField] private Vector3 _selectedValue;
-        [SerializeField] private SizeDeltaMode _mode = SizeDeltaMode.SizeDelta;
+        [SerializeField] private SizeDeltaMode _sizeMode = SizeDeltaMode.SizeDelta;
         
         [Header("Converter")]
         [SerializeReferenceDropdown]
@@ -25,13 +25,13 @@ namespace Aspid.MVVM.StarterKit.Binders.Mono
         protected override void SetDefaultValue(RectTransform element)
         {
             var value = _defaultValueConverter?.Convert(_defaultValue) ?? _defaultValue;
-            element.SetSizeDelta(value, _mode);
+            element.SetSizeDelta(value, _sizeMode);
         }
 
         protected override void SetSelectedValue(RectTransform element)
         {
             var value = _selectedValueConverter?.Convert(_selectedValue) ?? _selectedValue;
-            element.SetSizeDelta(value, _mode);
+            element.SetSizeDelta(value, _sizeMode);
         }
     }
 }

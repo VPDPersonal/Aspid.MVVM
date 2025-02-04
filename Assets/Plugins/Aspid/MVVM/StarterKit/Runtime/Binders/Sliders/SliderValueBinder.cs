@@ -2,7 +2,6 @@
 using System;
 using UnityEngine;
 using UnityEngine.UI;
-using Aspid.MVVM.StarterKit.Converters;
 #if UNITY_2023_1_OR_NEWER
 using Converter = Aspid.MVVM.StarterKit.Converters.IConverter<float, float>;
 #else
@@ -12,6 +11,7 @@ using Converter = Aspid.MVVM.StarterKit.Converters.IConverterFloat;
 namespace Aspid.MVVM.StarterKit.Binders
 {
     [Serializable]
+    [BindModeOverride(IsAll = true)]
     public class SliderValueBinder : TargetBinder<Slider>, INumberBinder, INumberReverseBinder
     {
         public event Action<int>? IntValueChanged;
@@ -21,30 +21,17 @@ namespace Aspid.MVVM.StarterKit.Binders
 
         private bool _isNotifyValueChanged = true;
         
-        // ReSharper disable once MemberInitializerValueIgnored
-        [Header("Parameters")]
-        [SerializeField] private BindMode _mode = BindMode.TwoWay;
-        
         [Header("Converter")]
         [SerializeReferenceDropdown]
         [SerializeReference] private Converter? _converter;
-
-        public BindMode Mode => _mode;
         
         public SliderValueBinder(Slider target, BindMode mode)
-            : base(target)
-        {
-            _mode = mode;
-            _converter = null;
-        }
-        
-        public SliderValueBinder(Slider target, Func<float, float> converter, BindMode mode = BindMode.TwoWay) :
-            this(target, converter.ToConvert(), mode) { }
+            : this(target, null, mode) { }
         
         public SliderValueBinder(Slider target, Converter? converter = null, BindMode mode = BindMode.TwoWay)
-            : base(target)
+            : base(target, mode)
         {
-            _mode = mode;
+            mode.ThrowExceptionIfNone();
             _converter = converter;
         }
 

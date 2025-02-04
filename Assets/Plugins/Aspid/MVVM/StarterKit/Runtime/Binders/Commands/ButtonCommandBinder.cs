@@ -15,9 +15,13 @@ namespace Aspid.MVVM.StarterKit.Binders
 
         public override bool IsBind => Target is not null;
         
-        public ButtonCommandBinder(Button target, bool isBindInteractable = true)   
-            : base(target)
+        public ButtonCommandBinder(Button target, BindMode mode)   
+            : this(target, true, mode) { }
+        
+        public ButtonCommandBinder(Button target, bool isBindInteractable = true, BindMode mode = BindMode.OneWay)   
+            : base(target, mode)
         {
+            mode.ThrowExceptionIfTwo();
             _isBindInteractable = isBindInteractable;
         }
         
@@ -42,9 +46,11 @@ namespace Aspid.MVVM.StarterKit.Binders
             _command.CanExecuteChanged -= OnCanExecuteChanged;
         }
 
-        private void Execute() => _command?.Execute();
+        private void Execute() =>
+            _command?.Execute();
 
-        protected override void OnUnbound() => ReleaseCommand();
+        protected override void OnUnbound() => 
+            ReleaseCommand();
 
         private void ReleaseCommand()
         {
@@ -77,9 +83,18 @@ namespace Aspid.MVVM.StarterKit.Binders
         
         public override bool IsBind => Target is not null;
         
-        public ButtonCommandBinder(Button target, T param, bool isBindInteractable = true)
-            : base(target)
+        public ButtonCommandBinder(Button target, T param, BindMode mode)
+            : this(target, param, true, mode) { }
+        
+        public ButtonCommandBinder(
+            Button target, 
+            T param,
+            bool isBindInteractable = true, 
+            BindMode mode = BindMode.OneWay)
+            : base(target, mode)
         {
+            mode.ThrowExceptionIfTwo();
+            
             _param = param;
             _isBindInteractable = isBindInteractable;
         }
@@ -105,9 +120,11 @@ namespace Aspid.MVVM.StarterKit.Binders
             _command.CanExecuteChanged -= OnCanExecuteChanged;
         }
 
-        private void Execute() => _command?.Execute(Param);
+        private void Execute() => 
+            _command?.Execute(Param);
 
-        protected override void OnUnbound() => ReleaseCommand();
+        protected override void OnUnbound() => 
+            ReleaseCommand();
 
         private void ReleaseCommand()
         {
@@ -147,9 +164,19 @@ namespace Aspid.MVVM.StarterKit.Binders
         
         public override bool IsBind => Target is not null;
         
-        public ButtonCommandBinder(Button target, T1 param1, T2 param2, bool isBindInteractable = true)
-            : base(target)
+        public ButtonCommandBinder(Button target, T1 param1, T2 param2, BindMode mode)
+            : this(target, param1, param2, true, mode) { }
+        
+        public ButtonCommandBinder(
+            Button target, 
+            T1 param1,
+            T2 param2,
+            bool isBindInteractable = true,
+            BindMode mode = BindMode.OneWay)
+            : base(target, mode)
         {
+            mode.ThrowExceptionIfTwo();
+            
             _param1 = param1;
             _param2 = param2;
             _isBindInteractable = isBindInteractable;
@@ -176,9 +203,11 @@ namespace Aspid.MVVM.StarterKit.Binders
             _command.CanExecuteChanged -= OnCanExecuteChanged;
         }
 
-        private void Execute() => _command?.Execute(Param1, Param2);
+        private void Execute() => 
+            _command?.Execute(Param1, Param2);
 
-        protected override void OnUnbound() => ReleaseCommand();
+        protected override void OnUnbound() =>
+            ReleaseCommand();
 
         private void ReleaseCommand()
         {
@@ -225,9 +254,20 @@ namespace Aspid.MVVM.StarterKit.Binders
         
         public override bool IsBind => Target is not null;
         
-        public ButtonCommandBinder(Button target, T1 param1, T2 param2, T3 param3, bool isBindInteractable = true)
-            : base(target)
+        public ButtonCommandBinder(Button target, T1 param1, T2 param2, T3 param3, BindMode mode)
+            : this(target, param1, param2, param3, true, mode) { }
+        
+        public ButtonCommandBinder(
+            Button target, 
+            T1 param1,
+            T2 param2,
+            T3 param3, 
+            bool isBindInteractable = true,
+            BindMode mode = BindMode.OneWay)
+            : base(target, mode)
         {
+            mode.ThrowExceptionIfTwo();
+            
             _param1 = param1;
             _param2 = param2;
             _param3 = param3;
@@ -255,9 +295,11 @@ namespace Aspid.MVVM.StarterKit.Binders
             _command.CanExecuteChanged -= OnCanExecuteChanged;
         }
 
-        private void Execute() => _command?.Execute(Param1, Param2, Param3);
+        private void Execute() =>
+            _command?.Execute(Param1, Param2, Param3);
 
-        protected override void OnUnbound() => ReleaseCommand();
+        protected override void OnUnbound() => 
+            ReleaseCommand();
 
         private void ReleaseCommand()
         {
@@ -311,9 +353,21 @@ namespace Aspid.MVVM.StarterKit.Binders
         
         public override bool IsBind => Target is not null;
         
-        public ButtonCommandBinder(Button target, T1 param1, T2 param2, T3 param3, T4 param4, bool isBindInteractable = true)
-            : base(target)
+        public ButtonCommandBinder(Button target, T1 param1, T2 param2, T3 param3, T4 param4, BindMode mode)
+            : this(target, param1, param2, param3, param4, true, mode) { }
+        
+        public ButtonCommandBinder(
+            Button target, 
+            T1 param1,
+            T2 param2,
+            T3 param3,
+            T4 param4, 
+            bool isBindInteractable = true,
+            BindMode mode = BindMode.OneWay)
+            : base(target, mode)
         {
+            mode.ThrowExceptionIfTwo();
+            
             _param1 = param1;
             _param2 = param2;
             _param3 = param3;
@@ -342,9 +396,11 @@ namespace Aspid.MVVM.StarterKit.Binders
             _command.CanExecuteChanged -= OnCanExecuteChanged;
         }
 
-        private void Execute() => _command?.Execute(Param1, Param2, Param3, Param4);
+        private void Execute() => 
+            _command?.Execute(Param1, Param2, Param3, Param4);
 
-        protected override void OnUnbound() => ReleaseCommand();
+        protected override void OnUnbound() =>
+            ReleaseCommand();
 
         private void ReleaseCommand()
         {

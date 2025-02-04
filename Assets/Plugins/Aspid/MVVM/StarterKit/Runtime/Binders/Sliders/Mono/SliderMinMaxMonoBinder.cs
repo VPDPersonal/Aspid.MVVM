@@ -13,7 +13,7 @@ namespace Aspid.MVVM.StarterKit.Binders.Mono
     public partial class SliderMinMaxMonoBinder : ComponentMonoBinder<Slider>, IBinder<Vector2>, INumberBinder
     {
         [Header("Parameter")]
-        [SerializeField] private SliderValueMode _mode = SliderValueMode.Range;
+        [SerializeField] private SliderValueMode _valueMode = SliderValueMode.Range;
         
         [Header("Converter")]
         [SerializeReferenceDropdown]
@@ -23,7 +23,7 @@ namespace Aspid.MVVM.StarterKit.Binders.Mono
         public void SetValue(Vector2 value)
         {
             value = _converter?.Convert(value) ?? value;
-            CachedComponent.SetMinMax(value, _mode);
+            CachedComponent.SetMinMax(value, _valueMode);
         }
         
         [BinderLog]

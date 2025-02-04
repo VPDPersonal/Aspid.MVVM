@@ -10,9 +10,13 @@ namespace Aspid.MVVM.StarterKit.Binders
         [Header("Converter")]
         private bool _isInvert;
         
-        public GameObjectVisibleBinder(GameObject target, bool isInvert = false)
-            : base(target)
+        public GameObjectVisibleBinder(GameObject target, BindMode mode)
+            : this(target, false, mode) { }
+        
+        public GameObjectVisibleBinder(GameObject target, bool isInvert = false, BindMode mode = BindMode.OneWay)
+            : base(target, mode)
         {
+            mode.ThrowExceptionIfTwo();
             _isInvert = isInvert;
         }
         

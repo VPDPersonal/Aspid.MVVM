@@ -9,12 +9,14 @@ namespace Aspid.MVVM.StarterKit.Binders
     {
         private readonly UnityAction<TTo?> _setValue;
         private readonly IConverter<TFrom?, TTo?> _converter;
-
-        public UnityGenericCasterBinder(UnityAction<TTo?> setValue, Func<TFrom?, TTo?> converter)
-            : this(setValue, converter.ToConvert()) { }
         
-        public UnityGenericCasterBinder(UnityAction<TTo?> setValue, IConverter<TFrom?, TTo?> converter)
+        public UnityGenericCasterBinder(
+            UnityAction<TTo?> setValue, 
+            IConverter<TFrom?, TTo?> converter,
+            BindMode mode = BindMode.OneWay)
+            : base(mode)
         {
+            mode.ThrowExceptionIfTwo();
             _setValue = setValue ?? throw new ArgumentNullException(nameof(setValue));
             _converter = converter ?? throw new ArgumentNullException(nameof(converter));
         }
@@ -28,18 +30,15 @@ namespace Aspid.MVVM.StarterKit.Binders
         private readonly TTarget _target;
         private readonly UnityAction<TTarget, TTo?> _setValue;
         private readonly IConverter<TFrom?, TTo?> _converter;
-
-        public UnityGenericCasterBinder(
-            TTarget target,
-            UnityAction<TTarget, TTo?> setValue, 
-            Func<TFrom?, TTo?> converter)
-            : this(target, setValue, converter.ToConvert()) { }
         
         public UnityGenericCasterBinder(
             TTarget target,
             UnityAction<TTarget, TTo?> setValue,
-            IConverter<TFrom?, TTo?> converter)
+            IConverter<TFrom?, TTo?> converter,
+            BindMode mode = BindMode.OneWay)
+            : base(mode)
         {
+            mode.ThrowExceptionIfTwo();
             _target = target ?? throw new ArgumentNullException(nameof(target));
             _setValue = setValue ?? throw new ArgumentNullException(nameof(setValue));
             _converter = converter ?? throw new ArgumentNullException(nameof(converter));

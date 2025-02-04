@@ -1,7 +1,6 @@
 #nullable enable
 using System;
 using UnityEngine;
-using Aspid.MVVM.StarterKit.Converters;
 #if UNITY_2023_1_OR_NEWER
 using Converter = Aspid.MVVM.StarterKit.Converters.IConverter<UnityEngine.Color, UnityEngine.Color>;
 #else
@@ -28,38 +27,33 @@ namespace Aspid.MVVM.StarterKit.Binders
             Renderer target, 
             Color trueValue,
             Color falseValue,
-            Func<Color, Color> converter)
-            : this(target, trueValue, falseValue, converter.ToConvert()) { }
+            BindMode mode) 
+            : this(target, trueValue, falseValue, "_BaseColor", null, mode) { }
         
         public RendererMaterialColorSwitcherBinder(
             Renderer target, 
             Color trueValue,
             Color falseValue,
-            Converter converter) 
-            : this(target, trueValue, falseValue, "_BaseColor", converter) { }
+            Converter converter,
+            BindMode mode = BindMode.OneWay) 
+            : this(target, trueValue, falseValue, "_BaseColor", converter, mode) { }
         
         public RendererMaterialColorSwitcherBinder(
             Renderer target, 
-            Color trueValue,
-            Color falseValue,
-            string colorPropertyName = "_BaseColor") 
-            : this(target, trueValue, falseValue, colorPropertyName, null as Converter) { }
-
-        public RendererMaterialColorSwitcherBinder(
-            Renderer target,
             Color trueValue,
             Color falseValue,
             string colorPropertyName,
-            Func<Color, Color> converter)
-            : this(target, trueValue, falseValue, colorPropertyName, converter.ToConvert()) { }
+            BindMode mode) 
+            : this(target, trueValue, falseValue, colorPropertyName, null, mode) { }
         
         public RendererMaterialColorSwitcherBinder(
             Renderer target,
             Color trueValue,
             Color falseValue,
             string colorPropertyName = "_BaseColor",
-            Converter? converter = null)
-            : base(target, trueValue, falseValue)
+            Converter? converter = null,
+            BindMode mode = BindMode.OneWay)
+            : base(target, trueValue, falseValue, mode)
         {
             _converter = converter;
             _colorPropertyName = colorPropertyName; 

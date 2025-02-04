@@ -10,9 +10,13 @@ namespace Aspid.MVVM.StarterKit.Binders
         [Header("Converter")]
         [SerializeField] private bool _isInvert;
 
-        public BehaviourEnabledBinder(Behaviour target, bool isInvert = false)
-            : base(target)
+        public BehaviourEnabledBinder(Behaviour target, BindMode mode)
+            : this(target, false, mode) { }
+        
+        public BehaviourEnabledBinder(Behaviour target, bool isInvert = false, BindMode mode = BindMode.OneWay)
+            : base(target, mode)
         {
+            mode.ThrowExceptionIfTwo();
             _isInvert = isInvert; 
         }
 

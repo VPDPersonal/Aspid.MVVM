@@ -10,9 +10,12 @@ namespace Aspid.MVVM.StarterKit.Binders
         private IRelayCommand<Vector2> _command;
         
         public override bool IsBind => Target is not null;
-        
-        public ScrollRectCommandBinder(ScrollRect target)
-            : base(target) { }
+
+        public ScrollRectCommandBinder(ScrollRect target, BindMode mode = BindMode.OneWay)
+            : base(target, mode)
+        {
+            mode.ThrowExceptionIfTwo();
+        }
         
         public void SetValue(IRelayCommand<Vector2> command)
         {
@@ -31,7 +34,8 @@ namespace Aspid.MVVM.StarterKit.Binders
         private void Execute(Vector2 value) =>
             _command?.Execute(value);
 
-        protected override void OnUnbound() => ReleaseCommand();
+        protected override void OnUnbound() =>
+            ReleaseCommand();
 
         private void ReleaseCommand()
         {
@@ -56,9 +60,10 @@ namespace Aspid.MVVM.StarterKit.Binders
         
         public override bool IsBind => Target is not null;
         
-        public ScrollRectCommandBinder(ScrollRect target, T param)
-            : base(target)
+        public ScrollRectCommandBinder(ScrollRect target, T param, BindMode mode = BindMode.OneWay)
+            : base(target, mode)
         {
+            mode.ThrowExceptionIfTwo();
             _param = param;
         }
         
@@ -79,7 +84,8 @@ namespace Aspid.MVVM.StarterKit.Binders
         private void Execute(Vector2 value) =>
             _command?.Execute(value, Param);
 
-        protected override void OnUnbound() => ReleaseCommand();
+        protected override void OnUnbound() =>
+            ReleaseCommand();
 
         private void ReleaseCommand()
         {
@@ -111,9 +117,11 @@ namespace Aspid.MVVM.StarterKit.Binders
         
         public override bool IsBind => Target is not null;
         
-        public ScrollRectCommandBinder(ScrollRect target, T1 param1, T2 param2)
-            : base(target)
+        public ScrollRectCommandBinder(ScrollRect target, T1 param1, T2 param2, BindMode mode = BindMode.OneWay)
+            : base(target, mode)
         {
+            mode.ThrowExceptionIfTwo();
+            
             _param1 = param1;
             _param2 = param2;
         }
@@ -135,7 +143,8 @@ namespace Aspid.MVVM.StarterKit.Binders
         private void Execute(Vector2 value) =>
             _command?.Execute(value, Param1, Param2);
 
-        protected override void OnUnbound() => ReleaseCommand();
+        protected override void OnUnbound() =>
+            ReleaseCommand();
 
         private void ReleaseCommand()
         {
@@ -174,9 +183,16 @@ namespace Aspid.MVVM.StarterKit.Binders
         
         public override bool IsBind => Target is not null;
         
-        public ScrollRectCommandBinder(ScrollRect target, T1 param1, T2 param2, T3 param3)
-            : base(target)
+        public ScrollRectCommandBinder(
+            ScrollRect target, 
+            T1 param1, 
+            T2 param2,
+            T3 param3, 
+            BindMode mode = BindMode.OneWay)
+            : base(target, mode)
         {
+            mode.ThrowExceptionIfTwo();
+            
             _param1 = param1;
             _param2 = param2;
             _param3 = param3;
@@ -199,7 +215,8 @@ namespace Aspid.MVVM.StarterKit.Binders
         private void Execute(Vector2 value) =>
             _command?.Execute(value, Param1, Param2, Param3);
 
-        protected override void OnUnbound() => ReleaseCommand();
+        protected override void OnUnbound() => 
+            ReleaseCommand();
 
         private void ReleaseCommand()
         {

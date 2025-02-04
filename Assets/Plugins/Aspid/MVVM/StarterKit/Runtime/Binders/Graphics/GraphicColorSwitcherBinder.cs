@@ -2,7 +2,6 @@
 using System;
 using UnityEngine;
 using UnityEngine.UI;
-using Aspid.MVVM.StarterKit.Converters;
 #if UNITY_2023_1_OR_NEWER
 using Converter = Aspid.MVVM.StarterKit.Converters.IConverter<UnityEngine.Color, UnityEngine.Color>;
 #else
@@ -21,16 +20,17 @@ namespace Aspid.MVVM.StarterKit.Binders
         public GraphicColorSwitcherBinder(
             Graphic target,
             Color trueColor, 
-            Color falseColor, 
-            Func<Color, Color> converter)
-            : this(target, trueColor, falseColor, converter.ToConvert()) { }
+            Color falseColor,
+            BindMode mode)
+            : this(target, trueColor, falseColor, null, mode) { }
         
         public GraphicColorSwitcherBinder(
             Graphic target,
             Color trueColor, 
             Color falseColor, 
-            Converter? converter = null)
-            : base(target, trueColor, falseColor)
+            Converter? converter = null,
+            BindMode mode = BindMode.OneWay)
+            : base(target, trueColor, falseColor, mode)
         {
             _converter = converter;
         }

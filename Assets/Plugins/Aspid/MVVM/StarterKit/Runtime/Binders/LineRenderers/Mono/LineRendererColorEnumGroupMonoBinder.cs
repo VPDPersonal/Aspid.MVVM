@@ -13,7 +13,7 @@ namespace Aspid.MVVM.StarterKit.Binders.Mono
         [Header("Parameters")]
         [SerializeField] private Color _defaultValue;
         [SerializeField] private Color _selectedValue;
-        [SerializeField] private LineRendererColorMode _mode = LineRendererColorMode.StartAndEnd;
+        [SerializeField] private LineRendererColorMode _colorMode = LineRendererColorMode.StartAndEnd;
      
         [Header("Converters")]
         [SerializeReferenceDropdown]
@@ -25,13 +25,13 @@ namespace Aspid.MVVM.StarterKit.Binders.Mono
         protected override void SetDefaultValue(LineRenderer element)
         {
             var value = _defaultValueConverter?.Convert(_defaultValue) ?? _defaultValue;
-            element.SetColor(value, _mode);
+            element.SetColor(value, _colorMode);
         }
 
         protected override void SetSelectedValue(LineRenderer element)
         {
             var value = _selectedValueConverter?.Convert(_selectedValue) ?? _selectedValue;
-            element.SetColor(value, _mode);
+            element.SetColor(value, _colorMode);
         }
     }
 }

@@ -11,9 +11,13 @@ namespace Aspid.MVVM.StarterKit.Binders
         [Header("Converter")]
         [SerializeField] private Vector3CombineConverter? _converter;
         
-        public TransformScaleBinder(Transform target, Vector3CombineConverter? converter = null)
-            : base(target)
+        public TransformScaleBinder(Transform target,  BindMode mode = BindMode.OneWay)
+            : this(target, null, mode) { }
+        
+        public TransformScaleBinder(Transform target, Vector3CombineConverter? converter = null, BindMode mode = BindMode.OneWay)
+            : base(target, mode)
         {
+            mode.ThrowExceptionIfTwo();
             _converter = converter;
         }
 

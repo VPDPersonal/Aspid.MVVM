@@ -8,12 +8,11 @@ namespace Aspid.MVVM.StarterKit.Binders.Mono
     {
         public event Action<IRelayCommand<T>> ValueChanged;
         
-        [Header("Parameters")]
-        [SerializeField] private string _parameterName;
-
         private T _value;
         
-        public string ParameterName => _parameterName;
+        [field: Header("Parameters")]
+        [field: SerializeField] 
+        protected string ParameterName { get; private set; }
         
         protected IRelayCommand<T> Command { get; private set; }
 

@@ -2,7 +2,6 @@
 using System;
 using UnityEngine;
 using System.Collections.Generic;
-using Aspid.MVVM.StarterKit.Converters;
 #if UNITY_2023_1_OR_NEWER
 using Converter = Aspid.MVVM.StarterKit.Converters.IConverter<UnityEngine.Material?, UnityEngine.Material?>;
 #else
@@ -17,13 +16,14 @@ namespace Aspid.MVVM.StarterKit.Binders
         [Header("Converter")]
         [SerializeReferenceDropdown]
         [SerializeReference] private Converter? _converter;
-
-        public RendererMaterialsBinder(Renderer target, Func<Material?, Material?> converter)
-            : this(target, converter.ToConvert()) { }
         
-        public RendererMaterialsBinder(Renderer target, Converter? converter = null)
-            : base(target)
+        public RendererMaterialsBinder(Renderer target, BindMode mode)
+            : this(target, null, mode) { }
+        
+        public RendererMaterialsBinder(Renderer target, Converter? converter = null, BindMode mode = BindMode.OneWay)
+            : base(target, mode)
         {
+            mode.ThrowExceptionIfTwo();
             _converter = converter;
         }
         

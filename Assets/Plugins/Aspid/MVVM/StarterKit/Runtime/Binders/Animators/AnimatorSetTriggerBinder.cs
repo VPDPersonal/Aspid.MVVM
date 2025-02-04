@@ -11,13 +11,14 @@ namespace Aspid.MVVM.StarterKit.Binders
         
         [field: Header("Parameters")]
         [field: SerializeField]
-        public string TriggerName { get; private set; }
+        protected string TriggerName { get; private set; }
         
         protected IRelayCommand? Command { get; private set; }
         
-        public AnimatorSetTriggerBinder(Animator target, string triggerName)
-            : base(target)
+        public AnimatorSetTriggerBinder(Animator target, string triggerName, BindMode mode = BindMode.OneWay)
+            : base(target, mode)
         {
+            mode.ThrowExceptionIfTwo();
             TriggerName = triggerName ?? throw new ArgumentNullException(nameof(triggerName));
         }
 

@@ -17,16 +17,33 @@ namespace Aspid.MVVM.StarterKit.Binders
             RectTransform target,
             Vector3 trueValue,
             Vector3 falseValue,
-            Vector3CombineConverter? converter) 
-            : this(target, trueValue, falseValue, Space.World, converter) { }
+            BindMode mode) 
+            : this(target, trueValue, falseValue, Space.World, null, mode) { }
+        
+        public RectTransformAnchoredPositionSwitcherBinder(
+            RectTransform target,
+            Vector3 trueValue,
+            Vector3 falseValue,
+            Space space,
+            BindMode mode = BindMode.OneWay) 
+            : this(target, trueValue, falseValue, space, null, mode) { }
+        
+        public RectTransformAnchoredPositionSwitcherBinder(
+            RectTransform target,
+            Vector3 trueValue,
+            Vector3 falseValue,
+            Vector3CombineConverter? converter,
+             BindMode mode = BindMode.OneWay) 
+            : this(target, trueValue, falseValue, Space.World, converter, mode) { }
         
         public RectTransformAnchoredPositionSwitcherBinder(
             RectTransform target,
             Vector3 trueValue,
             Vector3 falseValue,
             Space space = Space.World, 
-            Vector3CombineConverter? converter = null) 
-            : base(target, trueValue, falseValue)
+            Vector3CombineConverter? converter = null,
+            BindMode mode = BindMode.OneWay) 
+            : base(target, trueValue, falseValue, mode)
         {
             _space = space;
             _converter = converter; }

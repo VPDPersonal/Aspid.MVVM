@@ -12,7 +12,7 @@ namespace Aspid.MVVM.StarterKit.Binders.Mono
     public partial class LineRendererColorMonoBinder : ComponentMonoBinder<LineRenderer>, IColorBinder
     {
         [Header("Parameter")]
-        [SerializeField] private LineRendererColorMode _mode = LineRendererColorMode.StartAndEnd;
+        [SerializeField] private LineRendererColorMode _colorMode = LineRendererColorMode.StartAndEnd;
         
         [Header("Converter")]
         [SerializeReferenceDropdown]
@@ -22,7 +22,7 @@ namespace Aspid.MVVM.StarterKit.Binders.Mono
         public void SetValue(Color value)
         {
             value = _converter?.Convert(value) ?? value;
-            CachedComponent.SetColor(value, _mode);
+            CachedComponent.SetColor(value, _colorMode);
         }
     }
 }

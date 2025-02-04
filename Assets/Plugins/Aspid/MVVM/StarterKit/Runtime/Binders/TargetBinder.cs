@@ -11,7 +11,8 @@ namespace Aspid.MVVM.StarterKit.Binders
         [field: SerializeField]
         protected TTarget Target { get; private set; }
 
-        protected TargetBinder(TTarget target)
+        protected TargetBinder(TTarget target, BindMode mode)
+            : base(mode)
         {
             Target = target ?? throw new ArgumentNullException(nameof(target));
         }

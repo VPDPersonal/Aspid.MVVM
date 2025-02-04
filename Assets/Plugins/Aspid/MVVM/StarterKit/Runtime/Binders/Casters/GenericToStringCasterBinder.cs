@@ -8,15 +8,14 @@ namespace Aspid.MVVM.StarterKit.Binders
     {
         private readonly Action<string?> _setValue;
         private readonly IConverter<T?, string?> _converter;
-
-        public GenericToStringCasterBinder(Action<string?> setValue, string? format = null)
-            : this(setValue, new GenericToString<T>(format)) { }
         
-        public GenericToStringCasterBinder(Action<string?> setValue, Func<T?, string?> converter) 
-            : this(setValue, converter.ToConvert()) { }
+        public GenericToStringCasterBinder(Action<string?> setValue, string format, BindMode mode = BindMode.OneWay)
+            : this(setValue, new GenericToString<T>(format), mode) { }
         
-        public GenericToStringCasterBinder(Action<string?> setValue, IConverter<T?, string?> converter)
+        public GenericToStringCasterBinder(Action<string?> setValue, IConverter<T?, string?> converter, BindMode mode = BindMode.OneWay)
+            : base(mode)
         {
+            mode.ThrowExceptionIfTwo();
             _setValue = setValue ?? throw new ArgumentNullException(nameof(setValue));
             _converter = converter ?? throw new ArgumentNullException(nameof(converter));
         }

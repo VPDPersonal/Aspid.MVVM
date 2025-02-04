@@ -5,20 +5,16 @@ using Aspid.MVVM.Mono.Generation;
 
 namespace Aspid.MVVM.StarterKit.Binders.Mono
 {
+    [BindModeOverride(IsAll = true)]
     [AddComponentMenu("Aspid/MVVM/Binders/UI/Toggles/Toggle Binder - IsOn")]
     public partial class ToggleIsOnMonoBinder : ComponentMonoBinder<Toggle>, IBinder<bool>, IReverseBinder<bool>
     {
         public event Action<bool> ValueChanged;
         
-        [Header("Parameter")]
-        [SerializeField] private BindMode _mode = BindMode.TwoWay;
-        
         [Header("Converter")]
         [SerializeField] private bool _isInvert;
         
         private bool _isNotifyValueChanged = true;
-
-        public BindMode Mode => _mode;
         
         [BinderLog]
         public void SetValue(bool value)

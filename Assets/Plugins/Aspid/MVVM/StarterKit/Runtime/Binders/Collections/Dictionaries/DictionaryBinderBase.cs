@@ -10,7 +10,10 @@ namespace Aspid.MVVM.StarterKit.Binders
         IBinder<IReadOnlyObservableDictionary<TKey, TValue?>>, IDisposable
     {
         private IReadOnlyObservableDictionary<TKey, TValue?>? _dictionary;
-        
+
+        protected DictionaryBinderBase(BindMode mode) 
+            : base(mode) { }
+
         public void SetValue(IReadOnlyObservableDictionary<TKey, TValue?>? dictionary)
         {
             if (_dictionary is not null)

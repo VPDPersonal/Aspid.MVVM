@@ -1,7 +1,6 @@
 #nullable enable
 using System;
 using UnityEngine;
-using Aspid.MVVM.StarterKit.Converters;
 #if UNITY_2023_1_OR_NEWER
 using Converter = Aspid.MVVM.StarterKit.Converters.IConverter<float, float>;
 #else
@@ -16,13 +15,14 @@ namespace Aspid.MVVM.StarterKit.Binders
         [Header("Converter")]
         [SerializeReferenceDropdown]
         [SerializeReference] private Converter? _converter;
+
+        public CanvasGroupAlphaBinder(CanvasGroup target, BindMode mode)
+            : this(target, null, mode) { }
         
-        public CanvasGroupAlphaBinder(CanvasGroup target, Func<float, float> converter)
-            : this(target, converter.ToConvert()) { }
-        
-        public CanvasGroupAlphaBinder(CanvasGroup target, Converter? converter = null)
-            : base(target)
+        public CanvasGroupAlphaBinder(CanvasGroup target, Converter? converter = null, BindMode mode = BindMode.OneWay)
+            : base(target, mode)
         {
+            mode.ThrowExceptionIfTwo();
             _converter = converter;
         }
 

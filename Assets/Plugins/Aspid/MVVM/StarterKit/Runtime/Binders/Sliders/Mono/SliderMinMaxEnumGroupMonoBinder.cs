@@ -14,7 +14,7 @@ namespace Aspid.MVVM.StarterKit.Binders.Mono
         [Header("Parameters")]
         [SerializeField] private Vector2 _defaultValue;
         [SerializeField] private Vector2 _selectedValue;
-        [SerializeField] private SliderValueMode _mode = SliderValueMode.Range;
+        [SerializeField] private SliderValueMode _valueMode = SliderValueMode.Range;
         
         [Header("Converters")]
         [SerializeReferenceDropdown]
@@ -26,13 +26,13 @@ namespace Aspid.MVVM.StarterKit.Binders.Mono
         protected override void SetDefaultValue(Slider element)
         {
             var value = _defaultValueConverter?.Convert(_defaultValue) ?? _defaultValue;
-            element.SetMinMax(value, _mode);
+            element.SetMinMax(value, _valueMode);
         }
 
         protected override void SetSelectedValue(Slider element)
         {
             var value = _selectedValueConverter?.Convert(_selectedValue) ?? _selectedValue;
-            element.SetMinMax(value, _mode);
+            element.SetMinMax(value, _valueMode);
         }
     }
 }

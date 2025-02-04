@@ -1,7 +1,6 @@
 #nullable enable
 using System;
 using UnityEngine;
-using Aspid.MVVM.StarterKit.Converters;
 #if UNITY_2023_1_OR_NEWER
 using Converter = Aspid.MVVM.StarterKit.Converters.IConverter<UnityEngine.Quaternion, UnityEngine.Quaternion>;
 #else
@@ -19,22 +18,25 @@ namespace Aspid.MVVM.StarterKit.Binders
         [Header("Converter")]
         [SerializeReferenceDropdown]
         [SerializeReference] private Converter? _converter;
-        
-        public TransformRotationBinder(Transform target, Space space = Space.World)
-            : this(target, space, null as Converter) { }
-        
-        public TransformRotationBinder(Transform target, Func<Quaternion, Quaternion> converter) 
-            : this(target, Space.World, converter.ToConvert()) { }
-        
-        public TransformRotationBinder(Transform target, Space space, Func<Quaternion, Quaternion> converter)
-            : this(target, space, converter.ToConvert()) { }
 
-        public TransformRotationBinder(Transform target, Converter? converter) 
-            : this(target, Space.World, converter) { }
+        public TransformRotationBinder(Transform target, BindMode mode) 
+            : this(target, Space.World, null, mode) { }
         
-        public TransformRotationBinder(Transform target, Space space, Converter? converter)    
-            : base(target)
+        public TransformRotationBinder(Transform target, Space space, BindMode mode) 
+            : this(target, space, null, mode) { }
+        
+        public TransformRotationBinder(Transform target, Converter? converter, BindMode mode = BindMode.OneWay) 
+            : this(target, Space.World, converter, mode) { }
+        
+        public TransformRotationBinder(
+            Transform target,
+            Space space = Space.World, 
+            Converter? converter = null,
+            BindMode mode = BindMode.OneWay)    
+            : base(target, mode)
         {
+            mode.ThrowExceptionIfTwo();
+            
             _space = space;
             _converter = converter; 
         }

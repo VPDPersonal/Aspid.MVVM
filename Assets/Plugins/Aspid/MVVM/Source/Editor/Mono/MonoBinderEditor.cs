@@ -14,6 +14,7 @@ namespace Aspid.MVVM.Mono
     {
         private SerializedProperty _id;
         private SerializedProperty _view;
+        private SerializedProperty _mode;
         
         private SerializedProperty _log;
         private SerializedProperty _isDebug;
@@ -24,6 +25,7 @@ namespace Aspid.MVVM.Mono
         {
             _id.name,
             _view.name,
+            _mode.name,
             "m_Script",
             _log?.name,
             _isDebug?.name,
@@ -158,6 +160,7 @@ namespace Aspid.MVVM.Mono
         {
             _id = serializedObject.FindProperty("__id");
             _view = serializedObject.FindProperty("__view");
+            _mode = serializedObject.FindProperty(nameof(_mode));
             
             _log = serializedObject.FindProperty(nameof(_log));
             _isDebug = serializedObject.FindProperty(nameof(_isDebug));
@@ -206,10 +209,16 @@ namespace Aspid.MVVM.Mono
                 .AddChild(CreateField("View", viewDropdown))
                 .AddChild(CreateField("ID", idDropdown));
 
+            var modeContainer = new IMGUIContainer(DrawMode)
+                .SetName("Mode")
+                .SetAlignItems(Align.Center)
+                .SetMargin(left: 3, right: -2);
+
             return Elements.CreateContainer(EditorColor.DarkContainer)
                 .SetFlexDirection(FlexDirection.Column)
                 .AddChild(fieldsContainer)
-                .AddChild(helpBox);
+                .AddChild(helpBox)
+                .AddChild(modeContainer);
 
             VisualElement CreateField(string text, DropdownField dropdown)
             {
@@ -232,6 +241,15 @@ namespace Aspid.MVVM.Mono
         #region Draw
         protected virtual void DrawBaseInspector() =>
             DrawBaseInspectorInternal();
+
+        private void DrawMode()
+        {
+            serializedObject.UpdateIfRequiredOrScript();
+            {
+                EditorGUILayout.PropertyField(_mode, new GUIContent());
+            }
+            serializedObject.ApplyModifiedProperties();
+        }
 
         private void DrawBaseInspectorInternal()
         {

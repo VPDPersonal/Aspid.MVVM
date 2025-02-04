@@ -1,7 +1,6 @@
 #nullable enable
 using System;
 using UnityEngine;
-using Aspid.MVVM.StarterKit.Converters;
 #if UNITY_2023_1_OR_NEWER
 using PhysicsMaterial = UnityEngine.PhysicsMaterial;
 using Converter = Aspid.MVVM.StarterKit.Converters.IConverter<UnityEngine.PhysicsMaterial?, UnityEngine.PhysicsMaterial?>;
@@ -18,20 +17,21 @@ namespace Aspid.MVVM.StarterKit.Binders
         [Header("Converter")]
         [SerializeReferenceDropdown]
         [SerializeReference] private Converter? _converter;
-
-        public ColliderMaterialSwitcherBinder(
-            Collider target,
-            PhysicsMaterial trueValue, 
-            PhysicsMaterial falseValue, 
-            Func<PhysicsMaterial?, PhysicsMaterial?> converter)
-            : this(target, trueValue, falseValue, converter.ToConvert()) { }
         
         public ColliderMaterialSwitcherBinder(
             Collider target,
             PhysicsMaterial trueValue, 
             PhysicsMaterial falseValue, 
-            Converter? converter = null)
-            : base(target, trueValue, falseValue)
+            BindMode mode)
+            : this(target, trueValue, falseValue, null, mode) { }
+        
+        public ColliderMaterialSwitcherBinder(
+            Collider target,
+            PhysicsMaterial trueValue, 
+            PhysicsMaterial falseValue, 
+            Converter? converter = null,
+            BindMode mode = BindMode.OneWay)
+            : base(target, trueValue, falseValue, mode)
         {
             _converter = converter;
         }

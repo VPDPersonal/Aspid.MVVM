@@ -9,14 +9,13 @@ namespace Aspid.MVVM.StarterKit.Binders
         private readonly Action<string?> _setValue;
         private readonly IConverter<object?, string?> _converter;
 
-        public AnyToStringCasterBinder(Action<string?> setValue)
-            : this(setValue, new ObjectToStringConverter()) { }
+        public AnyToStringCasterBinder(Action<string?> setValue, BindMode mode = BindMode.OneWay)
+            : this(setValue, new ObjectToStringConverter(), mode) { }
         
-        public AnyToStringCasterBinder(Action<string?> setValue, Func<object?, string?> converter) 
-            : this(setValue, converter.ToConvert()) { }
-        
-        public AnyToStringCasterBinder(Action<string?> setValue, IConverter<object?, string?> converter)
+        public AnyToStringCasterBinder(Action<string?> setValue, IConverter<object?, string?> converter, BindMode mode = BindMode.OneWay)
+            : base(mode)
         {
+            mode.ThrowExceptionIfTwo();
             _setValue = setValue ?? throw new ArgumentNullException(nameof(setValue));
             _converter = converter ?? throw new ArgumentNullException(nameof(converter));
         }

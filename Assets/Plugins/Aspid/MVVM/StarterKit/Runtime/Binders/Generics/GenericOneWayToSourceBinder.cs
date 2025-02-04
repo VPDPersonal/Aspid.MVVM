@@ -14,6 +14,7 @@ namespace Aspid.MVVM.StarterKit.Binders
             Action<Action<T>> initialize, 
             Func<T?>? onBoundValueChanged = null,
             Func<T?>? onUnboundValueChanged = null)
+            : base(BindMode.OneWayToSource)
         {
             initialize.Invoke(OnValueChanged);
             
@@ -24,6 +25,7 @@ namespace Aspid.MVVM.StarterKit.Binders
         public GenericOneWayToSourceBinder(
             Func<T?>? onBoundValueChanged = null,
             Func<T?>? onUnboundValueChanged = null)
+            : base(BindMode.OneWayToSource)
         {
             if (onBoundValueChanged is null && onUnboundValueChanged is null)
                 throw new Exception("OnBoundValueChanged and OnUnboundValueChanged are both null");
@@ -63,6 +65,7 @@ namespace Aspid.MVVM.StarterKit.Binders
             Action<TTarget, Action<T>> initialize, 
             Func<TTarget, T?>? onBoundValueChanged = null,
             Func<TTarget, T?>? onUnboundValueChanged = null)
+            : base(BindMode.OneWayToSource)
         {
             _onBoundValueChanged = onBoundValueChanged;
             _onUnboundValueChanged = onUnboundValueChanged;
@@ -75,6 +78,7 @@ namespace Aspid.MVVM.StarterKit.Binders
             TTarget target,
             Func<TTarget, T?>? onBoundValueChanged = null,
             Func<TTarget, T?>? onUnboundValueChanged = null)
+            : base(BindMode.OneWayToSource)
         {
             if (onBoundValueChanged is null && onUnboundValueChanged is null)
                 throw new Exception("OnBoundValueChanged and OnUnboundValueChanged are both null");

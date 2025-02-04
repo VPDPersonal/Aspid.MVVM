@@ -12,6 +12,7 @@ using Converter = Aspid.MVVM.StarterKit.Converters.IConverterString;
 
 namespace Aspid.MVVM.StarterKit.Binders.Mono
 {
+    [BindModeOverride(IsAll = true)]
     [AddComponentMenu("Aspid/MVVM/Binders/UI/Text/InputField Binder - Text")]
     public partial class InputFieldMonoBinder : ComponentMonoBinder<TMP_InputField>, 
         IBinder<string>, INumberBinder, IReverseBinder<string>, INumberReverseBinder
@@ -22,16 +23,11 @@ namespace Aspid.MVVM.StarterKit.Binders.Mono
         public event Action<float> FloatValueChanged;
         public event Action<double> DoubleValueChanged;
         
-        [Header("Parameters")]
-        [SerializeField] private BindMode _mode = BindMode.TwoWay;
-
         [Header("Converter")]
         [SerializeReferenceDropdown]
         [SerializeReference] private Converter _converter;
         
         private bool _isNotifyValueChanged = true;
-        
-        public BindMode Mode => _mode;
         
         protected override void OnBound(in BindParameters parameters, bool isBound)
         {

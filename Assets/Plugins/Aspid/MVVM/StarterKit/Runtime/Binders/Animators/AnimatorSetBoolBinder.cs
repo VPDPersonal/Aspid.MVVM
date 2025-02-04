@@ -10,8 +10,15 @@ namespace Aspid.MVVM.StarterKit.Binders
         [Header("Converter")]
         [SerializeField] private bool _isInvert;
 
-        public AnimatorSetBoolBinder(Animator animator, string parameterName, bool isInvert = false)
-            : base(animator, parameterName)
+        public AnimatorSetBoolBinder(Animator animator, string parameterName, BindMode mode)
+            : this(animator, parameterName, false, mode) { }
+        
+        public AnimatorSetBoolBinder(
+            Animator animator, 
+            string parameterName, 
+            bool isInvert = false,
+            BindMode mode = BindMode.OneWay)
+            : base(animator, parameterName, mode)
         {
             _isInvert = isInvert;
         }

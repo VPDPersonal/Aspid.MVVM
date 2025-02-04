@@ -16,16 +16,29 @@ namespace Aspid.MVVM.Mono
         private static readonly Unity.Profiling.ProfilerMarker _bindMarker = new("MonoBinder.Bind");
         private static readonly Unity.Profiling.ProfilerMarker _unbindMarker = new("MonoBinder.Unbind");
 #endif
-        private IRemoveBinderFromViewModel _removeBinderFromViewModel;
+        [BindMode(BindMode.OneWay, BindMode.OneTime)]
+        [SerializeField] private BindMode _mode = BindMode.TwoWay;
         
+        private IRemoveBinderFromViewModel _removeBinderFromViewModel;
+
         /// <summary>
         /// Indicates whether binding is allowed.
         /// The default value is <c>true</c>.
         /// </summary>
         public virtual bool IsBind => true;
         
+        /// <summary>
+        /// Indicates whether the object is currently bound.
+        /// This value can only be set within the class.
+        /// </summary>
         public bool IsBound { get; private set; }
-        
+
+        /// <summary>
+        /// Gets the binding mode that determines the direction of data flow.
+        /// Default is <see cref="BindMode.OneWay"/>.
+        /// </summary>
+        public BindMode Mode => _mode;
+
         /// <summary>
         /// Binds a component using the specified binding parameters.
         /// </summary>

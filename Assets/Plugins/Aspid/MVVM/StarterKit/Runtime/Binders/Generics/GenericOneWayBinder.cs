@@ -7,8 +7,10 @@ namespace Aspid.MVVM.StarterKit.Binders
     {
         private readonly Action<T?> _setValue;
 
-        public GenericOneWayBinder(Action<T?> setValue)
+        public GenericOneWayBinder(Action<T?> setValue, BindMode mode = BindMode.OneWay)
+            : base(mode)
         {
+            mode.ThrowExceptionIfTwo();
             _setValue = setValue ?? throw new ArgumentNullException(nameof(setValue));
         }
 
@@ -21,8 +23,10 @@ namespace Aspid.MVVM.StarterKit.Binders
         private readonly TTarget _target;
         private readonly Action<TTarget, T?> _setValue;
 
-        public GenericOneWayBinder(TTarget target, Action<TTarget, T?> setValue)
+        public GenericOneWayBinder(TTarget target, Action<TTarget, T?> setValue, BindMode mode = BindMode.OneWay)
+            : base(mode)
         {
+            mode.ThrowExceptionIfTwo();
             _target = target ?? throw new ArgumentNullException(nameof(target));
             _setValue = setValue ?? throw new ArgumentNullException(nameof(setValue));
         }

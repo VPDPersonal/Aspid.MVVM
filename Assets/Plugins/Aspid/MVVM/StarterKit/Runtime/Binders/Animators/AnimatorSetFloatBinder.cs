@@ -1,7 +1,6 @@
 #nullable enable
 using System;
 using UnityEngine;
-using Aspid.MVVM.StarterKit.Converters;
 #if UNITY_2023_1_OR_NEWER
 using Converter = Aspid.MVVM.StarterKit.Converters.IConverter<float, float>;
 #else
@@ -17,17 +16,15 @@ namespace Aspid.MVVM.StarterKit.Binders
         [SerializeReferenceDropdown]
         [SerializeReference] private Converter? _converter;
 
-        public AnimatorSetFloatBinder(
-            Animator animator,
-            string parameterName, 
-            Func<float, float> converter)
-            : this(animator, parameterName, converter.ToConvert()) { }
+        public AnimatorSetFloatBinder(Animator animator, string parameterName, BindMode mode)
+            : this(animator, parameterName, null, mode) { }
         
         public AnimatorSetFloatBinder(
             Animator animator,
             string parameterName, 
-            Converter? converter = null)
-            : base(animator, parameterName)
+            Converter? converter = null,
+            BindMode mode = BindMode.OneWay)
+            : base(animator, parameterName, mode)
         {
             _converter = converter;
         }

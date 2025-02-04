@@ -11,8 +11,20 @@ namespace Aspid.MVVM.StarterKit.Binders
     public class PoolViewModelDictionary<TKey, TViewModel> : PoolViewModelDictionary<TKey, TViewModel, MonoView>
         where TViewModel : IViewModel
     {
-        public PoolViewModelDictionary(MonoView prefab, Transform? container, int initialCount = 0, int maxCount = int.MaxValue)
-            : base(prefab, container, initialCount, maxCount) { }
+        public PoolViewModelDictionary(
+            MonoView prefab,
+            int initialCount = 0,
+            int maxCount = int.MaxValue,
+            BindMode mode = BindMode.OneWay)
+            : this(prefab, null, initialCount, maxCount, mode) { }
+        
+        public PoolViewModelDictionary(
+            MonoView prefab,
+            Transform? container, 
+            int initialCount = 0,
+            int maxCount = int.MaxValue,
+            BindMode mode = BindMode.OneWay)
+            : base(prefab, container, initialCount, maxCount, mode) { }
     }
     
     [Serializable]
@@ -34,11 +46,19 @@ namespace Aspid.MVVM.StarterKit.Binders
             _initialCount,
             _maxCount);
         
-        public PoolViewModelDictionary(TView prefab, int initialCount = 0, int maxCount = int.MaxValue)
-            : this(prefab, null, initialCount, maxCount) { }
+        public PoolViewModelDictionary(TView prefab, 
+            int initialCount = 0, 
+            int maxCount = int.MaxValue,
+            BindMode mode = BindMode.OneWay)
+            : this(prefab, null, initialCount, maxCount, mode) { }
         
-        public PoolViewModelDictionary(TView prefab, Transform? container, int initialCount = 0, int maxCount = int.MaxValue)
-            : base(prefab, container)
+        public PoolViewModelDictionary(
+            TView prefab,
+            Transform? container, 
+            int initialCount = 0,
+            int maxCount = int.MaxValue,
+            BindMode mode = BindMode.OneWay)
+            : base(prefab, container, mode)
         {
             _maxCount = maxCount;
             _initialCount = initialCount;

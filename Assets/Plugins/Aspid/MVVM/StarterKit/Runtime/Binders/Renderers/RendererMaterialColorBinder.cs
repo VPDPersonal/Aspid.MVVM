@@ -2,7 +2,6 @@
 using System;
 using UnityEngine;
 using Aspid.MVVM.Mono.Generation;
-using Aspid.MVVM.StarterKit.Converters;
 #if UNITY_2023_1_OR_NEWER
 using Converter = Aspid.MVVM.StarterKit.Converters.IConverter<UnityEngine.Color, UnityEngine.Color>;
 #else
@@ -26,27 +25,24 @@ namespace Aspid.MVVM.StarterKit.Binders
         
         private int ColorPropertyId => _colorPropertyId ??= Shader.PropertyToID(_colorPropertyName);
         
-        public RendererMaterialColorBinder(Renderer target, Func<Color, Color> converter)
-            : this(target, converter.ToConvert()) { }
+        public RendererMaterialColorBinder(Renderer target, BindMode mode) 
+            : this(target, "_BaseColor", null, mode) { }
         
-        public RendererMaterialColorBinder(Renderer target, Converter converter) 
-            : this(target, "_BaseColor", converter) { }
+        public RendererMaterialColorBinder(Renderer target, Converter converter, BindMode mode = BindMode.OneWay) 
+            : this(target, "_BaseColor", converter, mode) { }
         
-        public RendererMaterialColorBinder(Renderer target, string colorPropertyName = "_BaseColor") 
-            : this(target, colorPropertyName, null as Converter) { }
-
-        public RendererMaterialColorBinder(
-            Renderer target,
-            string colorPropertyName,
-            Func<Color, Color> converter)
-            : this(target, colorPropertyName, converter.ToConvert()) { }
+        public RendererMaterialColorBinder(Renderer target, string colorPropertyName, BindMode mode) 
+            : this(target, colorPropertyName, null, mode) { }
         
         public RendererMaterialColorBinder(
             Renderer target,
             string colorPropertyName = "_BaseColor",
-            Converter? converter = null)
-            : base(target)
+            Converter? converter = null,
+            BindMode mode = BindMode.OneWay)
+            : base(target, mode)
         {
+            mode.ThrowExceptionIfTwo();
+            
             _converter = converter;
             _colorPropertyName = colorPropertyName;
         }

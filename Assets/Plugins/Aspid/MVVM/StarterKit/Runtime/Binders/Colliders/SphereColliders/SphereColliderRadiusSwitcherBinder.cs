@@ -1,7 +1,6 @@
 #nullable enable
 using System;
 using UnityEngine;
-using Aspid.MVVM.StarterKit.Converters;
 #if UNITY_2023_1_OR_NEWER
 using Converter = Aspid.MVVM.StarterKit.Converters.IConverter<float, float>;
 #else
@@ -16,20 +15,21 @@ namespace Aspid.MVVM.StarterKit.Binders
         [Header("Converter")]
         [SerializeReferenceDropdown]
         [SerializeReference] private Converter? _converter;
-
-        public SphereColliderRadiusSwitcherBinder(
-            CapsuleCollider target,
-            float trueValue, 
-            float falseValue, 
-            Func<float, float> converter)
-            : this(target, trueValue, falseValue, converter.ToConvert()) { }
         
         public SphereColliderRadiusSwitcherBinder(
             CapsuleCollider target,
             float trueValue, 
             float falseValue, 
-            Converter? converter = null)
-            : base(target, trueValue, falseValue)
+            BindMode mode)
+            : this(target, trueValue, falseValue, null, mode) { }
+        
+        public SphereColliderRadiusSwitcherBinder(
+            CapsuleCollider target,
+            float trueValue, 
+            float falseValue, 
+            Converter? converter = null,
+            BindMode mode = BindMode.OneWay)
+            : base(target, trueValue, falseValue, mode)
         {
             _converter = converter;
         }

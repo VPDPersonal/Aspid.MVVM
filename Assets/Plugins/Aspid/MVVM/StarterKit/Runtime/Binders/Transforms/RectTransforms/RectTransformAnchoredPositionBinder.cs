@@ -16,15 +16,29 @@ namespace Aspid.MVVM.StarterKit.Binders
         
         public RectTransformAnchoredPositionBinder(
             RectTransform transform,
-            Vector3CombineConverter? converter)
-            : this(transform, Space.World, converter) { }
+            BindMode mode)
+            : this(transform, Space.World, null, mode) { }
+        
+        public RectTransformAnchoredPositionBinder(
+            RectTransform transform,
+            Space space,
+            BindMode mode)
+            : this(transform, space, null, mode) { }
+        
+        public RectTransformAnchoredPositionBinder(
+            RectTransform transform,
+            Vector3CombineConverter? converter,
+            BindMode mode = BindMode.OneWay)
+            : this(transform, Space.World, converter, mode) { }
         
         public RectTransformAnchoredPositionBinder(
             RectTransform target,
             Space space = Space.World, 
-            Vector3CombineConverter? converter = null)
-            : base(target)
+            Vector3CombineConverter? converter = null,
+            BindMode mode = BindMode.OneWay)
+            : base(target, mode)
         {
+            mode.ThrowExceptionIfTwo();
             _space = space;
             _converter = converter;
         }

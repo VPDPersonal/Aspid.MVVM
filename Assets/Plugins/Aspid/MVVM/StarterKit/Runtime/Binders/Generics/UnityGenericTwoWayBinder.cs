@@ -26,6 +26,7 @@ namespace Aspid.MVVM.StarterKit.Binders
             UnityAction<T?> setValue,
             Func<T?>? onBoundValueChanged = null,
             Func<T?>? onUnboundValueChanged = null)
+            : base(BindMode.TwoWay)
         {
             _onBoundValueChanged = onBoundValueChanged;
             _onUnboundValueChanged = onUnboundValueChanged;
@@ -68,6 +69,7 @@ namespace Aspid.MVVM.StarterKit.Binders
             UnityAction<TTarget, T?> setValue,
             Func<TTarget, T?>? onBoundValueChanged = null,
             Func<TTarget, T?>? onUnboundValueChanged = null)
+            : base(BindMode.TwoWay)
         {
             _onBoundValueChanged = onBoundValueChanged;
             _onUnboundValueChanged = onUnboundValueChanged;
@@ -83,6 +85,7 @@ namespace Aspid.MVVM.StarterKit.Binders
             UnityAction<TTarget, T?> setValue,
             Func<TTarget, T?>? onBoundValueChanged = null,
             Func<TTarget, T?>? onUnboundValueChanged = null)
+            : base(BindMode.TwoWay)
         {
             if (onBoundValueChanged is null && onUnboundValueChanged is null)
                 throw new Exception("OnBoundValueChanged and OnUnboundValueChanged are both null");

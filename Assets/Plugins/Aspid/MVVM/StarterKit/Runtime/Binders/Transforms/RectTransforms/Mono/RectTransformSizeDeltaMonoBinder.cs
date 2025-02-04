@@ -12,7 +12,7 @@ namespace Aspid.MVVM.StarterKit.Binders.Mono
     public partial class RectTransformSizeDeltaMonoBinder : ComponentMonoBinder<RectTransform>, IBinder<Vector2>, INumberBinder
     {
         [Header("Parameters")]
-        [SerializeField] private SizeDeltaMode _mode = SizeDeltaMode.SizeDelta;
+        [SerializeField] private SizeDeltaMode _sizeMode = SizeDeltaMode.SizeDelta;
         
         [Header("Converter")]
         [SerializeReferenceDropdown]
@@ -22,7 +22,7 @@ namespace Aspid.MVVM.StarterKit.Binders.Mono
         public void SetValue(Vector2 value)
         {
             value = _converter?.Convert(value) ?? value;
-            CachedComponent.SetSizeDelta(value, _mode);
+            CachedComponent.SetSizeDelta(value, _sizeMode);
         }
 
         [BinderLog]

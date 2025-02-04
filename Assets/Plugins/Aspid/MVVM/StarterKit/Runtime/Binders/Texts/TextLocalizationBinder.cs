@@ -2,7 +2,6 @@
 #nullable enable
 using System;
 using UnityEngine;
-using Aspid.MVVM.StarterKit.Converters;
 using UnityEngine.Localization.Components;
 #if UNITY_2023_1_OR_NEWER
 using Converter = Aspid.MVVM.StarterKit.Converters.IConverter<string?, string?>;
@@ -18,13 +17,14 @@ namespace Aspid.MVVM.StarterKit.Binders
         [Header("Converter")]
         [SerializeReferenceDropdown]
         [SerializeReference] private Converter? _converter;
-
-        public TextLocalizationBinder(LocalizeStringEvent localizeStringEvent, Func<string?, string?> converter)
-            : this(localizeStringEvent, converter.ToConvert()) { }
         
-        public TextLocalizationBinder(LocalizeStringEvent target, Converter? converter = null)
-            :base(target)
+        public TextLocalizationBinder(LocalizeStringEvent target, BindMode mode)
+            :this(target, null, mode) { }
+        
+        public TextLocalizationBinder(LocalizeStringEvent target, Converter? converter = null, BindMode mode = BindMode.OneWay)
+            :base(target, mode)
         {
+            mode.ThrowExceptionIfTwo();
             _converter = converter;
         }
         

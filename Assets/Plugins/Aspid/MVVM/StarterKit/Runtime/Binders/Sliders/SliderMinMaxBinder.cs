@@ -2,7 +2,6 @@
 using System;
 using UnityEngine;
 using UnityEngine.UI;
-using Aspid.MVVM.StarterKit.Converters;
 #if UNITY_2023_1_OR_NEWER
 using Converter = Aspid.MVVM.StarterKit.Converters.IConverter<UnityEngine.Vector2, UnityEngine.Vector2>;
 #else
@@ -15,7 +14,7 @@ namespace Aspid.MVVM.StarterKit.Binders
     public class SliderMinMaxBinder : TargetBinder<Slider>, IBinder<Vector2>
     {
         [Header("Parameter")]
-        [SerializeField] private SliderValueMode _mode;
+        [SerializeField] private SliderValueMode _valueMode;
         
         [Header("Converter")]
         [SerializeReferenceDropdown]
@@ -23,34 +22,37 @@ namespace Aspid.MVVM.StarterKit.Binders
         
         public SliderMinMaxBinder(
             Slider target, 
-            Func<Vector2, Vector2> converter) 
-            : this(target, SliderValueMode.Range, converter) { }
+            BindMode mode)
+            : this(target, SliderValueMode.Range, null, mode) { }
         
         public SliderMinMaxBinder(
             Slider target, 
-            SliderValueMode mode, 
-            Func<Vector2, Vector2> converter) 
-            : this(target, mode, converter.ToConvert()) { }
+            SliderValueMode valueMode, 
+            BindMode mode)
+            : this(target, valueMode, null, mode) { }
         
         public SliderMinMaxBinder(
             Slider target, 
-            Converter? converter)
-            : this(target, SliderValueMode.Range, converter) { }
+            Converter? converter,
+            BindMode mode = BindMode.OneWay)
+            : this(target, SliderValueMode.Range, converter, mode) { }
         
         public SliderMinMaxBinder(
             Slider target, 
-            SliderValueMode mode = SliderValueMode.Range, 
-            Converter? converter = null)
-            : base(target)
+            SliderValueMode valueMode = SliderValueMode.Range, 
+            Converter? converter = null,
+            BindMode mode = BindMode.OneWay)
+            : base(target, mode)
         {
-            _mode = mode;
+            mode.ThrowExceptionIfTwo();
+            _valueMode = valueMode;
             _converter = converter; 
         }
         
         public void SetValue(Vector2 value)
         {
             value = _converter?.Convert(value) ?? value;
-            Target.SetMinMax(value, _mode);
+            Target.SetMinMax(value, _valueMode);
         }
     }
 }

@@ -4,7 +4,6 @@ using TMPro;
 using System;
 using UnityEngine;
 using System.Globalization;
-using Aspid.MVVM.StarterKit.Converters;
 #if UNITY_2023_1_OR_NEWER
 using Converter = Aspid.MVVM.StarterKit.Converters.IConverter<string?, string?>;
 #else
@@ -14,6 +13,7 @@ using Converter = Aspid.MVVM.StarterKit.Converters.IConverterString;
 namespace Aspid.MVVM.StarterKit.Binders
 {
     [Serializable]
+    [BindModeOverride(IsAll = true)]
     public class InputFieldBinder : TargetBinder<TMP_InputField>, IBinder<string?>, INumberBinder, IReverseBinder<string>, INumberReverseBinder
     {
         public event Action<string>? ValueChanged;
@@ -22,32 +22,19 @@ namespace Aspid.MVVM.StarterKit.Binders
         public event Action<float>? FloatValueChanged;
         public event Action<double>? DoubleValueChanged;
         
-        // ReSharper disable once MemberInitializerValueIgnored
-        [Header("Parameters")]
-        [SerializeField] private BindMode _mode = BindMode.TwoWay;
-        
         [Header("Converter")]
         [SerializeReferenceDropdown]
         [SerializeReference] private Converter? _converter;
         
         private bool _isNotifyValueChanged = true;
 
-        public BindMode Mode => _mode;
-        
         public InputFieldBinder(TMP_InputField target, BindMode mode)
-            : base(target)
-        {
-            _mode = mode;
-            _converter = null;
-        }
-        
-        public InputFieldBinder(TMP_InputField target, Func<string?, string> converter, BindMode mode = BindMode.TwoWay)
-            : this(target, converter.ToConvert(), mode) { }
+            : this(target, null, mode) { }
         
         public InputFieldBinder(TMP_InputField target, Converter? converter = null, BindMode mode = BindMode.TwoWay)
-            : base(target)
+            : base(target, mode)
         {
-            _mode = mode; 
+            mode.ThrowExceptionIfNone();
             _converter = converter;
         }
 

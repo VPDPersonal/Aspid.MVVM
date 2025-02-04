@@ -11,8 +11,11 @@ namespace Aspid.MVVM.StarterKit.Binders
     public class DynamicViewModelDictionary<TKey, TViewModel> : DynamicViewModelDictionary<TKey, TViewModel, MonoView>
         where TViewModel : IViewModel
     {
-        public DynamicViewModelDictionary(MonoView prefab, Transform? container = null)
-            : base(prefab, container) { }
+        public DynamicViewModelDictionary(MonoView prefab, BindMode mode)
+            : this(prefab, null, mode) { }
+        
+        public DynamicViewModelDictionary(MonoView prefab, Transform? container = null, BindMode mode = BindMode.OneWay)
+            : base(prefab, container, mode) { }
     }
     
     [Serializable]
@@ -31,8 +34,14 @@ namespace Aspid.MVVM.StarterKit.Binders
 
         private Dictionary<TKey, TView> Views => _views ??= new Dictionary<TKey, TView>();
         
-        public DynamicViewModelDictionary(TView prefab, Transform? container = null)
+        public DynamicViewModelDictionary(TView prefab, BindMode mode)
+            : this(prefab, null, mode) { }
+        
+        public DynamicViewModelDictionary(TView prefab, Transform? container = null, BindMode mode = BindMode.OneWay)
+            : base(mode)
         {
+            mode.ThrowExceptionIfTwo();
+            
             _container = container;
             _prefab = prefab ?? throw new ArgumentNullException(nameof(prefab));
         }

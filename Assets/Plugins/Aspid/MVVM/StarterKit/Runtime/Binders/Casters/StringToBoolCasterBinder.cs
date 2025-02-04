@@ -9,14 +9,16 @@ namespace Aspid.MVVM.StarterKit.Binders
         private readonly Action<bool> _setValue;
         private readonly IConverter<string?, bool> _converter;
         
-        public StringToBoolCasterBinder(Action<bool> setValue, bool isInvert = false)
-            : this(setValue, new StringEmptyToBoolConverter(isInvert)) { }
+        public StringToBoolCasterBinder(Action<bool> setValue, BindMode mode)
+            : this(setValue, false, mode) { }
         
-        public StringToBoolCasterBinder(Action<bool> setValue, Func<string?, bool> converter) 
-            : this(setValue, converter.ToConvert()) { }
+        public StringToBoolCasterBinder(Action<bool> setValue, bool isInvert = false, BindMode mode = BindMode.OneWay)
+            : this(setValue, new StringEmptyToBoolConverter(isInvert), mode) { }
         
-        public StringToBoolCasterBinder(Action<bool> setValue, IConverter<string?, bool> converter)
+        public StringToBoolCasterBinder(Action<bool> setValue, IConverter<string?, bool> converter, BindMode mode = BindMode.OneWay)
+            : base(mode)
         {
+            mode.ThrowExceptionIfTwo();
             _setValue = setValue ?? throw new ArgumentNullException(nameof(setValue));
             _converter = converter ?? throw new ArgumentNullException(nameof(converter));
         }

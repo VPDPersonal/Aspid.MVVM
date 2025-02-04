@@ -2,7 +2,6 @@
 using System;
 using UnityEngine;
 using UnityEngine.UI;
-using Aspid.MVVM.StarterKit.Converters;
 #if UNITY_2023_1_OR_NEWER
 using Converter = Aspid.MVVM.StarterKit.Converters.IConverter<UnityEngine.Material?, UnityEngine.Material?>;
 #else
@@ -21,16 +20,17 @@ namespace Aspid.MVVM.StarterKit.Binders
         public RawImageMaterialSwitcherBinder(
             RawImage target, 
             Material trueValue, 
-            Material falseValue, 
-            Func<Material?, Material?> converter) 
-            : this(target, trueValue, falseValue, converter.ToConvert()) { }
+            Material falseValue,
+            BindMode mode = BindMode.OneWay) 
+            : this(target, trueValue, falseValue, null, mode) { }
         
         public RawImageMaterialSwitcherBinder(
             RawImage target, 
             Material trueValue, 
             Material falseValue, 
-            Converter? converter = null) 
-            : base(target, trueValue, falseValue)
+            Converter? converter = null,
+            BindMode mode = BindMode.OneWay) 
+            : base(target, trueValue, falseValue, mode)
         {
             _converter = converter;
         }

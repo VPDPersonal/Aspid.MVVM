@@ -15,9 +15,13 @@ namespace Aspid.MVVM.StarterKit.Binders
         
         public override bool IsBind => Target is not null;
         
-        public ToggleCommandBinder(Toggle target, bool isBindInteractable = true)
-            : base(target)
+        public ToggleCommandBinder(Toggle target, BindMode mode)
+            : this(target, true, mode) { }
+        
+        public ToggleCommandBinder(Toggle target, bool isBindInteractable = true, BindMode mode = BindMode.OneWay)
+            : base(target, mode)
         {
+            mode.ThrowExceptionIfTwo();
             _isBindInteractable = isBindInteractable;
         }
         
@@ -48,7 +52,8 @@ namespace Aspid.MVVM.StarterKit.Binders
             _command?.Execute(isOn);
         }
 
-        protected override void OnUnbound() => ReleaseCommand();
+        protected override void OnUnbound() => 
+            ReleaseCommand();
 
         private void ReleaseCommand()
         {
@@ -81,9 +86,15 @@ namespace Aspid.MVVM.StarterKit.Binders
         
         public override bool IsBind => Target is not null;
         
-        public ToggleCommandBinder(Toggle target, T param, bool isBindInteractable = true)
-            : base(target)
+        public ToggleCommandBinder(Toggle target, T param, BindMode mode)
+            : this(target, param, true, mode) { }
+        
+        public ToggleCommandBinder(
+            Toggle target, T param, bool isBindInteractable = true, BindMode mode = BindMode.OneWay)
+            : base(target, mode)
         {
+            mode.ThrowExceptionIfTwo();
+            
             _param = param;
             _isBindInteractable = isBindInteractable;
         }
@@ -115,7 +126,8 @@ namespace Aspid.MVVM.StarterKit.Binders
             _command?.Execute(isOn, Param);
         }
 
-        protected override void OnUnbound() => ReleaseCommand();
+        protected override void OnUnbound() => 
+            ReleaseCommand();
 
         private void ReleaseCommand()
         {
@@ -155,9 +167,19 @@ namespace Aspid.MVVM.StarterKit.Binders
         
         public override bool IsBind => Target is not null;
         
-        public ToggleCommandBinder(Toggle target, T1 param1, T2 param2, bool isBindInteractable = true)
-            : base(target)
+        public ToggleCommandBinder(Toggle target, T1 param1, T2 param2, BindMode mode)
+            : this(target, param1, param2, true, mode) { }
+        
+        public ToggleCommandBinder(
+            Toggle target,
+            T1 param1, 
+            T2 param2,
+            bool isBindInteractable = true,
+            BindMode mode = BindMode.OneWay)
+            : base(target, mode)
         {
+            mode.ThrowExceptionIfTwo();
+            
             _param1 = param1;
             _param2 = param2;
             _isBindInteractable = isBindInteractable;
@@ -190,7 +212,8 @@ namespace Aspid.MVVM.StarterKit.Binders
             _command?.Execute(isOn, Param1, Param2);
         }
 
-        protected override void OnUnbound() => ReleaseCommand();
+        protected override void OnUnbound() =>
+            ReleaseCommand();
 
         private void ReleaseCommand()
         {
@@ -237,9 +260,20 @@ namespace Aspid.MVVM.StarterKit.Binders
         
         public override bool IsBind => Target is not null;
 
-        public ToggleCommandBinder(Toggle target, T1 param1, T2 param2, T3 param3, bool isBindInteractable = true)
-            : base(target)
+        public ToggleCommandBinder(Toggle target, T1 param1, T2 param2, T3 param3, BindMode mode)
+            : this(target, param1, param2, param3, true, mode) { }
+        
+        public ToggleCommandBinder(
+            Toggle target,
+            T1 param1,
+            T2 param2, 
+            T3 param3,
+            bool isBindInteractable = true, 
+            BindMode mode = BindMode.OneWay)
+            : base(target, mode)
         {
+            mode.ThrowExceptionIfTwo();
+            
             _param1 = param1;
             _param2 = param2;
             _param3 = param3;
@@ -273,7 +307,8 @@ namespace Aspid.MVVM.StarterKit.Binders
             _command?.Execute(isOn, Param1, Param2, Param3);
         }
 
-        protected override void OnUnbound() => ReleaseCommand();
+        protected override void OnUnbound() =>
+            ReleaseCommand();
 
         private void ReleaseCommand()
         {

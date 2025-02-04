@@ -2,7 +2,6 @@
 using System;
 using UnityEngine;
 using UnityEngine.UI;
-using Aspid.MVVM.StarterKit.Converters;
 #if UNITY_2023_1_OR_NEWER
 using Converter = Aspid.MVVM.StarterKit.Converters.IConverter<UnityEngine.Color, UnityEngine.Color>;
 #else
@@ -17,13 +16,14 @@ namespace Aspid.MVVM.StarterKit.Binders
         [Header("Converter")]
         [SerializeReferenceDropdown]
         [SerializeReference] private Converter? _converter;
-
-        public GraphicColorBinder(Graphic target, Func<Color, Color> converter)
-            : this(target, converter.ToConvert()) { }
         
-        public GraphicColorBinder(Graphic target, Converter? converter = null)
-            : base(target)
+        public GraphicColorBinder(Graphic target, BindMode mode)
+            : this(target,null,  mode) { }
+        
+        public GraphicColorBinder(Graphic target, Converter? converter = null, BindMode mode = BindMode.OneWay)
+            : base(target, mode)
         {
+            mode.ThrowExceptionIfTwo();
             _converter = converter;
         }
 

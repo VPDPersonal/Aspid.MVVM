@@ -10,11 +10,20 @@ namespace Aspid.MVVM.StarterKit.Binders
     [Serializable]
     public class PoolViewModelList : PoolViewModelList<MonoView>
     {
-        public PoolViewModelList(MonoView prefab, int initialCount = 0, int maxCount = int.MaxValue)
-            : base(prefab, initialCount, maxCount) { }
+        public PoolViewModelList(
+            MonoView prefab, 
+            int initialCount = 0, 
+            int maxCount = int.MaxValue,
+            BindMode mode = BindMode.OneWay)
+            : this(prefab, null, initialCount, maxCount, mode) { }
         
-        public PoolViewModelList(MonoView prefab, Transform? container, int initialCount = 0, int maxCount = int.MaxValue)
-            : base(prefab, container, initialCount, maxCount) { }
+        public PoolViewModelList(
+            MonoView prefab, 
+            Transform? container,
+            int initialCount = 0,
+            int maxCount = int.MaxValue,
+            BindMode mode = BindMode.OneWay)
+            : base(prefab, container, initialCount, maxCount, mode) { }
     }
     
     [Serializable]
@@ -35,11 +44,20 @@ namespace Aspid.MVVM.StarterKit.Binders
             _initialCount,
             _maxCount);
         
-        public PoolViewModelList(T prefab, int initialCount = 0, int maxCount = int.MaxValue)
-            : this(prefab, null, initialCount, maxCount) { }
+        public PoolViewModelList(
+            T prefab,
+            int initialCount = 0,
+            int maxCount = int.MaxValue,
+            BindMode mode = BindMode.OneWay)
+            : this(prefab, null, initialCount, maxCount, mode) { }
         
-        public PoolViewModelList(T prefab, Transform? container, int initialCount = 0, int maxCount = int.MaxValue)
-            : base(prefab, container)
+        public PoolViewModelList(
+            T prefab,
+            Transform? container, 
+            int initialCount = 0, 
+            int maxCount = int.MaxValue,
+            BindMode mode = BindMode.OneWay)
+            : base(prefab, container, mode)
         {
             _maxCount = maxCount;
             _initialCount = initialCount;

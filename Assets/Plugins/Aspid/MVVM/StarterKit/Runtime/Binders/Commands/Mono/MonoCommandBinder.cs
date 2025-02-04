@@ -31,7 +31,7 @@ namespace Aspid.MVVM.StarterKit.Binders.Mono
             Command = value;
         
         public bool CanExecute() => 
-            Command.CanExecute();
+            Command?.CanExecute() ?? false;
 
         public void InvokeCommand() =>
             Command?.Execute();
@@ -64,9 +64,11 @@ namespace Aspid.MVVM.StarterKit.Binders.Mono
         public void SetValue(IRelayCommand<T> value) =>
             Command = value;
         
-        public bool CanExecute(T param1) => Command.CanExecute(param1);
+        public bool CanExecute(T param1) =>
+            Command?.CanExecute(param1) ?? false;
 
-        public void InvokeCommand(T param1) => Command?.Execute(param1);
+        public void InvokeCommand(T param1) => 
+            Command?.Execute(param1);
 
         protected virtual void OnCanExecuteChanged(IRelayCommand<T> command) { }
     }
@@ -97,7 +99,7 @@ namespace Aspid.MVVM.StarterKit.Binders.Mono
             Command = value;
         
         public bool CanExecute(T1 param1, T2 param2) => 
-            Command.CanExecute(param1, param2);
+            Command?.CanExecute(param1, param2) ?? false;
 
         public void InvokeCommand(T1 param1, T2 param2) => 
             Command?.Execute(param1, param2);
@@ -131,7 +133,7 @@ namespace Aspid.MVVM.StarterKit.Binders.Mono
             Command = value;
         
         public bool CanExecute(T1 param1, T2 param2, T3 param3) => 
-            Command.CanExecute(param1, param2, param3);
+            Command?.CanExecute(param1, param2, param3) ?? false;
 
         public void InvokeCommand(T1 param1, T2 param2, T3 param3) => 
             Command?.Execute(param1, param2, param3);
@@ -165,7 +167,7 @@ namespace Aspid.MVVM.StarterKit.Binders.Mono
             Command = value;
         
         public bool CanExecute(T1 param1, T2 param2, T3 param3, T4 param4) => 
-            Command.CanExecute(param1, param2, param3, param4);
+            Command?.CanExecute(param1, param2, param3, param4) ?? false;
 
         public void InvokeCommand(T1 param1, T2 param2, T3 param3, T4 param4) => 
             Command?.Execute(param1, param2, param3, param4);

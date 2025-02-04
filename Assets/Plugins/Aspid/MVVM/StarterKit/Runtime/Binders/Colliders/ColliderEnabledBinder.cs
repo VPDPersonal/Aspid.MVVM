@@ -10,9 +10,13 @@ namespace Aspid.MVVM.StarterKit.Binders
         [Header("Converter")]
         [SerializeField] private bool _isInvert;
 
-        public ColliderEnabledBinder(Collider target, bool isInvert)
-            : base(target)
+        public ColliderEnabledBinder(Collider target, BindMode mode)
+            : this(target, false, mode) { }
+        
+        public ColliderEnabledBinder(Collider target, bool isInvert, BindMode mode = BindMode.OneWay)
+            : base(target, mode)
         {
+            mode.ThrowExceptionIfTwo();
             _isInvert = isInvert;
         }
 

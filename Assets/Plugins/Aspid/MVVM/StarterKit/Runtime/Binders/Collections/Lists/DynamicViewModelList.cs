@@ -10,7 +10,10 @@ namespace Aspid.MVVM.StarterKit.Binders
     [Serializable]
     public class DynamicViewModelList : DynamicViewModelList<MonoView>
     {
-        public DynamicViewModelList(MonoView prefab, Transform container) 
+        public DynamicViewModelList(MonoView prefab, BindMode mode) 
+            : this(prefab, null, mode) { }
+        
+        public DynamicViewModelList(MonoView prefab, Transform? container, BindMode mode = BindMode.OneWay) 
             : base(prefab, container) { }
     }
     
@@ -29,8 +32,14 @@ namespace Aspid.MVVM.StarterKit.Binders
 
         private List<T> Views => _views ??= new List<T>();
         
-        public DynamicViewModelList(T prefab, Transform? container = null)
+        public DynamicViewModelList(T prefab, BindMode mode)
+            : this(prefab, null, mode) { }
+        
+        public DynamicViewModelList(T prefab, Transform? container = null, BindMode mode = BindMode.OneWay)
+            : base(mode)
         {
+            mode.ThrowExceptionIfTwo();
+            
             _container = container;
             _prefab = prefab ?? throw new ArgumentNullException(nameof(prefab));
         }

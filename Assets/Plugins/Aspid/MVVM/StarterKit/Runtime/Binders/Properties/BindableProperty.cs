@@ -16,6 +16,7 @@ namespace Aspid.MVVM.StarterKit.Binders
             remove => _valueChanged -= value;
         }
         
+        [Header("Parameter")]
         [SerializeField] private T? _value;
         
 #if UNITY_2023_1_OR_NEWER
@@ -25,8 +26,8 @@ namespace Aspid.MVVM.StarterKit.Binders
 #endif
         private IConverter<T?, T?>? _converter;
         
-        private Action<T>? _valueChanged;
-        
+        private Action<T?>? _valueChanged;
+
         public T? Value
         {
             get => _value;
@@ -37,13 +38,20 @@ namespace Aspid.MVVM.StarterKit.Binders
             }
         }
 
-        public BindableProperty() { }
-
-        public BindableProperty(T? value, Func<T?, T?> converter) 
-            : this(value, converter.ToConvert()) { }
-        
-        public BindableProperty(T? value, IConverter<T?, T?>? converter = null)
+        public BindableProperty(BindMode mode = BindMode.TwoWay)
+            : base(mode)
         {
+            mode.ThrowExceptionIfNone();
+        }
+        
+        public BindableProperty(T? value, Func<T?, T?> converter, BindMode mode = BindMode.TwoWay) 
+            : this(value, converter.ToConvert(), mode) { }
+        
+        public BindableProperty(T? value, IConverter<T?, T?>? converter = null, BindMode mode = BindMode.TwoWay)
+            : base(mode)
+        {
+            mode.ThrowExceptionIfNone();
+            
             _value = value;
             _converter = converter;
         }
@@ -53,7 +61,15 @@ namespace Aspid.MVVM.StarterKit.Binders
             Value = _converter is not null ? _converter.Convert(value) : value;
             Changed?.Invoke(value);
         }
-        
+
+        protected override void OnBound(in BindParameters parameters, bool isBound)
+        {
+            if (!isBound) return;
+            if (Mode is not BindMode.OneWayToSource) return;
+            
+            _valueChanged?.Invoke(Value);
+        }
+
         public static implicit operator T?(BindableProperty<T?> binder) => binder.Value;
     }
 }

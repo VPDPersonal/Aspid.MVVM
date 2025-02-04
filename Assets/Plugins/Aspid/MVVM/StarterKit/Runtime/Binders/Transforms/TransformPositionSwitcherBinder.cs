@@ -12,21 +12,38 @@ namespace Aspid.MVVM.StarterKit.Binders
 
         [Header("Converter")]
         [SerializeField] private Vector3CombineConverter? _converter;
+       
+        public TransformPositionSwitcherBinder(
+            Transform target,
+            Vector3 trueValue,
+            Vector3 falseValue, 
+            BindMode mode) 
+            : this(target, trueValue, falseValue, Space.World, null, mode) { }
         
         public TransformPositionSwitcherBinder(
             Transform target,
             Vector3 trueValue,
             Vector3 falseValue, 
-            Vector3CombineConverter? converter) 
-            : this(target, trueValue, falseValue, Space.World, converter) { }
+            Space space,
+            BindMode mode) 
+            : this(target, trueValue, falseValue, space, null, mode) { }
+        
+        public TransformPositionSwitcherBinder(
+            Transform target,
+            Vector3 trueValue,
+            Vector3 falseValue, 
+            Vector3CombineConverter? converter,
+            BindMode mode = BindMode.OneWay) 
+            : this(target, trueValue, falseValue, Space.World, converter, mode) { }
         
         public TransformPositionSwitcherBinder(
             Transform target,
             Vector3 trueValue,
             Vector3 falseValue, 
             Space space = Space.World,
-            Vector3CombineConverter? converter = null) 
-            : base(target, trueValue, falseValue)
+            Vector3CombineConverter? converter = null,
+            BindMode mode = BindMode.OneWay) 
+            : base(target, trueValue, falseValue, mode)
         {
             _space = space;
             _converter = converter;

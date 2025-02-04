@@ -1,7 +1,6 @@
 #nullable enable
 using System;
 using UnityEngine;
-using Aspid.MVVM.StarterKit.Converters;
 #if UNITY_2023_1_OR_NEWER
 using Converter = Aspid.MVVM.StarterKit.Converters.IConverter<UnityEngine.Color, UnityEngine.Color>;
 #else
@@ -13,7 +12,7 @@ namespace Aspid.MVVM.StarterKit.Binders
     [Serializable]
     public sealed class LineRendererColorSwitcherBinder : SwitcherBinder<LineRenderer, Color>
     {
-        [SerializeField] private LineRendererColorMode _mode;
+        [SerializeField] private LineRendererColorMode _colorMode;
         
         [Header("Converter")]
         [SerializeReferenceDropdown]
@@ -23,40 +22,42 @@ namespace Aspid.MVVM.StarterKit.Binders
             LineRenderer target,
             Color trueValue,
             Color falseValue,
-            LineRendererColorMode mode,
-            Func<Color, Color> converter)
-            : this(target, trueValue, falseValue, mode, converter.ToConvert()) { }
+            BindMode mode)
+            : this(target, trueValue, falseValue, LineRendererColorMode.StartAndEnd, null, mode) { }
         
         public LineRendererColorSwitcherBinder(
             LineRenderer target,
             Color trueValue,
             Color falseValue,
-            Func<Color, Color> converter)
-            : this(target, trueValue, falseValue, LineRendererColorMode.StartAndEnd, converter.ToConvert()) { }
+            LineRendererColorMode colorMode,
+            BindMode mode)
+            : this(target, trueValue, falseValue, colorMode, null, mode) { }
         
         public LineRendererColorSwitcherBinder(
             LineRenderer target,
             Color trueValue,
             Color falseValue,
-            Converter? converter)
-            : this(target, trueValue, falseValue, LineRendererColorMode.StartAndEnd, converter) { }
+            Converter? converter,
+            BindMode mode = BindMode.OneWay)
+            : this(target, trueValue, falseValue, LineRendererColorMode.StartAndEnd, converter, mode) { }
         
         public LineRendererColorSwitcherBinder(
             LineRenderer target,
             Color trueValue,
             Color falseValue,
-            LineRendererColorMode mode = LineRendererColorMode.StartAndEnd,
-            Converter? converter = null)
-            : base(target, trueValue, falseValue)
+            LineRendererColorMode colorMode = LineRendererColorMode.StartAndEnd,
+            Converter? converter = null,
+            BindMode mode = BindMode.OneWay)
+            : base(target, trueValue, falseValue, mode)
         {
-            _mode = mode;
+            _colorMode = colorMode;
             _converter = converter;
         }
 
         protected override void SetValue(Color value)
         {
             value = _converter?.Convert(value) ?? value;
-            Target.SetColor(value, _mode);
+            Target.SetColor(value, _colorMode);
         }
     }
 }

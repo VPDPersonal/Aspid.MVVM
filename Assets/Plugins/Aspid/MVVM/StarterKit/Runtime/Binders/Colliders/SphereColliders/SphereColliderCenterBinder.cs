@@ -12,9 +12,16 @@ namespace Aspid.MVVM.StarterKit.Binders
         [Header("Converter")]
         [SerializeField] private Vector3CombineConverter? _converter = Vector3CombineConverter.Default;
 
-        public SphereColliderCenterBinder(SphereCollider target, Vector3CombineConverter? converter = null)
-            : base(target)
+        public SphereColliderCenterBinder(SphereCollider target, BindMode mode)
+            : this(target, null, mode) { }
+        
+        public SphereColliderCenterBinder(
+            SphereCollider target,
+            Vector3CombineConverter? converter = null,
+            BindMode mode = BindMode.OneWay)
+            : base(target, mode)
         {
+            mode.ThrowExceptionIfTwo();
             _converter = converter;
         }
         

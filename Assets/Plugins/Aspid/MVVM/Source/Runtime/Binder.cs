@@ -1,4 +1,5 @@
 using System;
+using UnityEngine;
 
 namespace Aspid.MVVM
 {
@@ -7,12 +8,16 @@ namespace Aspid.MVVM
     /// It includes methods for binding and unbinding the component with the ViewModel.
     /// Derivatives must implement one or more <see cref="IBinder{T}"/> interfaces to complete specific binding logic.
     /// </summary>
-    public abstract partial class Binder : IBinder
+    [Serializable]
+    public abstract class Binder : IBinder
     {
 #if !ASPID_MVVM_UNITY_PROFILER_DISABLED
         private static readonly Unity.Profiling.ProfilerMarker _bindMarker = new("Binder.Bind");
         private static readonly Unity.Profiling.ProfilerMarker _unbindMarker = new("Binder.Unbind)");
 #endif
+        [BindMode(BindMode.OneTime, BindMode.TwoWay)]
+        [SerializeField] private BindMode _mode;
+        
         private IRemoveBinderFromViewModel? _removeBinderFromViewModel;
         
         /// <summary>
@@ -21,8 +26,26 @@ namespace Aspid.MVVM
         /// </summary>
         public virtual bool IsBind => true;
         
+        /// <summary>
+        /// Indicates whether the object is currently bound.
+        /// This value can only be set within the class.
+        /// </summary>
         public bool IsBound { get; private set; }
-        
+
+        /// <summary>
+        /// Gets the binding mode that determines the direction of data flow.
+        /// Default is <see cref="BindMode.OneWay"/>.
+        /// </summary>
+        public BindMode Mode => _mode;
+
+        internal Binder()
+            : this(BindMode.OneWay) { }
+
+        protected Binder(BindMode mode)
+        {
+            _mode = mode;
+        }
+
         /// <summary>
         /// Binds a component using the specified binding parameters.
         /// </summary>

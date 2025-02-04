@@ -11,9 +11,13 @@ namespace Aspid.MVVM.StarterKit.Binders
         [Header("Parameter")]
         [SerializeField] private bool _disabledWhenNull;
 
-        public RawImageTextureBinder(RawImage target, bool disabledWhenNull = true)
-            : base(target)
+        public RawImageTextureBinder(RawImage target, BindMode mode)
+            : this(target, true, mode) { }
+        
+        public RawImageTextureBinder(RawImage target, bool disabledWhenNull = true, BindMode mode = BindMode.OneWay)
+            : base(target, mode)
         {
+            mode.ThrowExceptionIfTwo();
             _disabledWhenNull = disabledWhenNull;
         }
 

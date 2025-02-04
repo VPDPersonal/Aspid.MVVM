@@ -285,20 +285,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 308348858250478390a4e42699309252, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _view: {fileID: 0}
-  _id: 
+  _mode: 1
+  __view: {fileID: 0}
+  __id: 
   _component: {fileID: 8377600274772714376}
   _converter:
-    rid: 4930929806020444905
+    rid: -2
   _isDebug: 0
   _log: []
   references:
     version: 2
     RefIds:
-    - rid: 4930929806020444905
-      type: {class: StringFormatConverter, ns: Aspid.UI.MVVM.StarterKit.Converters.Strings, asm: AspidUI.MVVM.StarterKit}
-      data:
-        _format: 
+    - rid: -2
+      type: {class: , ns: , asm: }
 --- !u!1 &8163769307145917364
 GameObject:
   m_ObjectHideFlags: 0

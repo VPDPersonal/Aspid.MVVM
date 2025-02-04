@@ -442,6 +442,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 308348858250478390a4e42699309252, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _mode: 1
   __view: {fileID: 8348079297892927482}
   __id: Text
   _component: {fileID: 7174742462179750531}
@@ -713,6 +714,7 @@ MonoBehaviour:
   - {fileID: 8472612410677436496}
   _inputText: {fileID: 7181481635355908134}
   _sayCommand:
+    _mode: 3
     <Target>k__BackingField: {fileID: 5935934854526309564}
     _isBindInteractable: 0
 --- !u!1 &7110031172678762529
@@ -1043,10 +1045,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 54f2f3eca39044b7b80233ab29c71975, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _mode: 2
   __view: {fileID: 8348079297892927482}
   __id: InputText
   _component: {fileID: 707778036831228094}
-  _isReverseEnabled: 1
   _converter:
     rid: -2
   _isDebug: 0

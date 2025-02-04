@@ -513,6 +513,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _searchInput: {fileID: 2622802561178726815}
   _addTodoCommand:
+    _mode: 3
     <Target>k__BackingField: {fileID: 1647855970933561101}
     _isBindInteractable: 0
   _todoItemViewModels: {fileID: 6930036194731237436}
@@ -681,6 +682,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 30e348c866ef48e881f23732bca00376, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _mode: 3
   __view: {fileID: 6621106528252726653}
   __id: TodoItemViewModels
   _isDebug: 0
@@ -1490,10 +1492,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 54f2f3eca39044b7b80233ab29c71975, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _mode: 2
   __view: {fileID: 6621106528252726653}
   __id: SearchInput
   _component: {fileID: 3563492015900296024}
-  _isReverseEnabled: 1
   _converter:
     rid: -2
   _isDebug: 0

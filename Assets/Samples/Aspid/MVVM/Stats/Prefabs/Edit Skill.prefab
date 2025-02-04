@@ -926,8 +926,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 308348858250478390a4e42699309252, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _view: {fileID: 0}
-  _id: 
+  _mode: 1
+  __view: {fileID: 0}
+  __id: 
   _component: {fileID: 5180319446533110654}
   _converter:
     rid: -2

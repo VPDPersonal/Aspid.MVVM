@@ -509,6 +509,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 308348858250478390a4e42699309252, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _mode: 1
   __view: {fileID: 1482142762350697732}
   __id: SkillPointsAvailable
   _component: {fileID: 6491993284963611271}
@@ -648,6 +649,10 @@ PrefabInstance:
     - target: {fileID: 4213752011205121134, guid: 8cac121c9d4614cb5996b1dac74694a5, type: 3}
       propertyPath: __id
       value: TechnicalAbility
+      objectReference: {fileID: 0}
+    - target: {fileID: 4213752011205121134, guid: 8cac121c9d4614cb5996b1dac74694a5, type: 3}
+      propertyPath: _mode
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4213752011205121134, guid: 8cac121c9d4614cb5996b1dac74694a5, type: 3}
       propertyPath: _view
@@ -807,6 +812,10 @@ PrefabInstance:
       value: Intelligence
       objectReference: {fileID: 0}
     - target: {fileID: 4213752011205121134, guid: 8cac121c9d4614cb5996b1dac74694a5, type: 3}
+      propertyPath: _mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4213752011205121134, guid: 8cac121c9d4614cb5996b1dac74694a5, type: 3}
       propertyPath: _view
       value: 
       objectReference: {fileID: 1482142762350697732}
@@ -962,6 +971,10 @@ PrefabInstance:
     - target: {fileID: 4213752011205121134, guid: 8cac121c9d4614cb5996b1dac74694a5, type: 3}
       propertyPath: __id
       value: Reflexes
+      objectReference: {fileID: 0}
+    - target: {fileID: 4213752011205121134, guid: 8cac121c9d4614cb5996b1dac74694a5, type: 3}
+      propertyPath: _mode
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4213752011205121134, guid: 8cac121c9d4614cb5996b1dac74694a5, type: 3}
       propertyPath: _view
@@ -1177,6 +1190,10 @@ PrefabInstance:
       value: Cool
       objectReference: {fileID: 0}
     - target: {fileID: 4213752011205121134, guid: 8cac121c9d4614cb5996b1dac74694a5, type: 3}
+      propertyPath: _mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4213752011205121134, guid: 8cac121c9d4614cb5996b1dac74694a5, type: 3}
       propertyPath: _view
       value: 
       objectReference: {fileID: 1482142762350697732}
@@ -1312,6 +1329,10 @@ PrefabInstance:
     - target: {fileID: 4213752011205121134, guid: 8cac121c9d4614cb5996b1dac74694a5, type: 3}
       propertyPath: __id
       value: Power
+      objectReference: {fileID: 0}
+    - target: {fileID: 4213752011205121134, guid: 8cac121c9d4614cb5996b1dac74694a5, type: 3}
+      propertyPath: _mode
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4213752011205121134, guid: 8cac121c9d4614cb5996b1dac74694a5, type: 3}
       propertyPath: _view

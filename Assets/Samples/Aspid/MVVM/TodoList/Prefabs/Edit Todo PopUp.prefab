@@ -1172,10 +1172,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 54f2f3eca39044b7b80233ab29c71975, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _mode: 2
   __view: {fileID: 637875192883498620}
   __id: Text
   _component: {fileID: 3022432735548335227}
-  _isReverseEnabled: 1
   _converter:
     rid: -2
   _isDebug: 0
@@ -1276,9 +1276,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _text: {fileID: 4087269476373177278}
   _cancelButton:
+    _mode: 3
     <Target>k__BackingField: {fileID: 7349505069928950248}
     _isBindInteractable: 0
   _renamedButton:
+    _mode: 3
     <Target>k__BackingField: {fileID: 2613306915063093282}
     _isBindInteractable: 0
 --- !u!1 &7908573707491760464

@@ -285,6 +285,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 308348858250478390a4e42699309252, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _mode: 1
   __view: {fileID: 5315928923478365624}
   __id: SkillPointsAvailable
   _component: {fileID: 2184117819493737949}
@@ -369,41 +370,53 @@ MonoBehaviour:
   _isDraft:
   - {fileID: 3697158587917215939}
   _confirmCommand:
-  - <Target>k__BackingField: {fileID: 5444464546274840865}
+  - _mode: 0
+    <Target>k__BackingField: {fileID: 5444464546274840865}
     _isBindInteractable: 1
   _resetToDefaultCommand:
-  - <Target>k__BackingField: {fileID: 2931516315228818707}
+  - _mode: 0
+    <Target>k__BackingField: {fileID: 2931516315228818707}
     _isBindInteractable: 1
   _addSkillPointToCommand:
-  - <Target>k__BackingField: {fileID: 5174176717364985295}
+  - _mode: 0
+    <Target>k__BackingField: {fileID: 5174176717364985295}
     _isBindInteractable: 1
     _param: 0
-  - <Target>k__BackingField: {fileID: 104643719858257062}
+  - _mode: 0
+    <Target>k__BackingField: {fileID: 104643719858257062}
     _isBindInteractable: 1
     _param: 1
-  - <Target>k__BackingField: {fileID: 1922244232776191990}
+  - _mode: 0
+    <Target>k__BackingField: {fileID: 1922244232776191990}
     _isBindInteractable: 1
     _param: 2
-  - <Target>k__BackingField: {fileID: 7846568134673888075}
+  - _mode: 0
+    <Target>k__BackingField: {fileID: 7846568134673888075}
     _isBindInteractable: 1
     _param: 3
-  - <Target>k__BackingField: {fileID: 4544091627993418994}
+  - _mode: 0
+    <Target>k__BackingField: {fileID: 4544091627993418994}
     _isBindInteractable: 1
     _param: 4
   _removeSkillPointToCommand:
-  - <Target>k__BackingField: {fileID: 1795662829568435913}
+  - _mode: 0
+    <Target>k__BackingField: {fileID: 1795662829568435913}
     _isBindInteractable: 1
     _param: 0
-  - <Target>k__BackingField: {fileID: 6797870773731993504}
+  - _mode: 0
+    <Target>k__BackingField: {fileID: 6797870773731993504}
     _isBindInteractable: 1
     _param: 1
-  - <Target>k__BackingField: {fileID: 5010264940167386352}
+  - _mode: 0
+    <Target>k__BackingField: {fileID: 5010264940167386352}
     _isBindInteractable: 1
     _param: 2
-  - <Target>k__BackingField: {fileID: 3729468392672634957}
+  - _mode: 0
+    <Target>k__BackingField: {fileID: 3729468392672634957}
     _isBindInteractable: 1
     _param: 3
-  - <Target>k__BackingField: {fileID: 6929628987986647028}
+  - _mode: 0
+    <Target>k__BackingField: {fileID: 6929628987986647028}
     _isBindInteractable: 1
     _param: 4
 --- !u!1 &3182931967190928482
@@ -1034,6 +1047,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 265f3a2980dc47039fccdd5a66acba34, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _mode: 1
   __view: {fileID: 5315928923478365624}
   __id: IsDraft
   _isInvert: 0

@@ -325,10 +325,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 143395233ea04721a82e1d5c13026345, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _mode: 2
   __view: {fileID: 5431838984888759959}
   __id: IsCompleted
   _component: {fileID: 6683951036056877947}
-  _isReverseEnabled: 1
   _isInvert: 0
   _isDebug: 0
   _log: []
@@ -504,10 +504,12 @@ MonoBehaviour:
   _isCompleted:
   - {fileID: 875772168249685181}
   _editCommand:
-  - <Target>k__BackingField: {fileID: 6131062902608095836}
+  - _mode: 3
+    <Target>k__BackingField: {fileID: 6131062902608095836}
     _isBindInteractable: 0
   _deleteCommand:
-  - <Target>k__BackingField: {fileID: 3691551536386148332}
+  - _mode: 3
+    <Target>k__BackingField: {fileID: 3691551536386148332}
     _isBindInteractable: 0
 --- !u!114 &363834777198584455
 MonoBehaviour:
@@ -886,11 +888,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 308348858250478390a4e42699309252, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _mode: 1
   __view: {fileID: 5431838984888759959}
   __id: Text
   _component: {fileID: 280101603313839316}
   _converter:
-    rid: 4930929806020444268
+    rid: -2
   _isDebug: 0
   _log: []
   references:
@@ -898,10 +901,6 @@ MonoBehaviour:
     RefIds:
     - rid: -2
       type: {class: , ns: , asm: }
-    - rid: 4930929806020444268
-      type: {class: StringFormatConverter, ns: Aspid.UI.MVVM.StarterKit.Converters.Strings, asm: AspidUI.MVVM.StarterKit}
-      data:
-        _format: 
 --- !u!114 &8634012386221396185
 MonoBehaviour:
   m_ObjectHideFlags: 0

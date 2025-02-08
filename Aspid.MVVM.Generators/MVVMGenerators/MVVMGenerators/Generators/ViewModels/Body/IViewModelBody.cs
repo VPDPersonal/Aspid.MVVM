@@ -184,7 +184,7 @@ public static class IViewModelBody
             case {{propertyName}}Id:
             {
                 if (binder.Mode is {{BindMode}}.TwoWay or {{BindMode}}.OneWayToSource)
-                    throw new {{Exception}}($"The binder mode '{binder.Mode}' is not supported. This operation requires BindMode.TwoWay or BindMode.OneWayToSource.");
+                    throw new {{Exception}}($"The binder mode '{binder.Mode}' is not supported. This operation requires BindMode.OneWay or BindMode.OneTime.");
                 
                 if (binder is not {{IBinder}}<{{type}}> specificBinder)
                     throw new {{Exception}}($"Binder ({binder.GetType()}) is not {typeof({{IBinder}}<{{type}}>)}");

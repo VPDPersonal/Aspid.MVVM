@@ -15,8 +15,9 @@ namespace Aspid.MVVM
         private static readonly Unity.Profiling.ProfilerMarker _bindMarker = new("Binder.Bind");
         private static readonly Unity.Profiling.ProfilerMarker _unbindMarker = new("Binder.Unbind)");
 #endif
+        // ReSharper disable once MemberInitializerValueIgnored
         [BindMode(BindMode.OneWay, BindMode.OneTime)]
-        [SerializeField] private BindMode _mode;
+        [SerializeField] private BindMode _mode = BindMode.TwoWay;
         
         private IRemoveBinderFromViewModel? _removeBinderFromViewModel;
         

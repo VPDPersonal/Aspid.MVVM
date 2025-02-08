@@ -34,7 +34,7 @@ namespace Aspid.MVVM
         /// <exception cref="ArgumentNullException"></exception>
         public static bool SetProperty<T>(ref T field, T newValue, IEqualityComparer<T> comparer)
         {
-            if (comparer == null) throw new ArgumentNullException(nameof(comparer));
+            if (comparer is null) throw new ArgumentNullException(nameof(comparer));
             if (comparer.Equals(field, newValue)) return false;
             
             field = newValue;
@@ -52,7 +52,7 @@ namespace Aspid.MVVM
         /// <exception cref="ArgumentNullException"></exception>
         public static bool SetProperty<T>(T oldValue, T newValue, Action<T> callback)
         {
-            if (callback == null) throw new ArgumentNullException(nameof(callback));
+            if (callback is null) throw new ArgumentNullException(nameof(callback));
             if (EqualsDefault(oldValue, newValue)) return false;
             
             callback(newValue);
@@ -71,8 +71,8 @@ namespace Aspid.MVVM
         /// <exception cref="ArgumentNullException"></exception>
         public static bool SetProperty<T>(T oldValue, T newValue, Action<T> callback, IEqualityComparer<T> comparer)
         {
-            if (comparer == null) throw new ArgumentNullException(nameof(comparer));
-            if (callback == null) throw new ArgumentNullException(nameof(callback));
+            if (comparer is null) throw new ArgumentNullException(nameof(comparer));
+            if (callback is null) throw new ArgumentNullException(nameof(callback));
             if (comparer.Equals(oldValue, newValue)) return false;
             
             callback(newValue);

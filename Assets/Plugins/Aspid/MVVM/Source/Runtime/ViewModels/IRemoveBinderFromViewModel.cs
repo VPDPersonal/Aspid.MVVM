@@ -11,9 +11,4 @@ namespace Aspid.MVVM
         /// <param name="binder">The binder to be removed from the ViewModel.</param>
         public void RemoveBinder(IBinder binder);
     }
-
-    public interface IRemoveBinderFromViewModel<out T> : IRemoveBinderFromViewModel
-    {
-        public void RemoveBinder(IBinder<T?> binder);
-    }
 }

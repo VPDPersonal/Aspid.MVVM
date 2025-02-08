@@ -12,7 +12,7 @@ namespace Aspid.MVVM.Mono
     {
 #if !ASPID_MVVM_UNITY_PROFILER_DISABLED
         private static readonly Unity.Profiling.ProfilerMarker _initializeMarker = new("MonoView.Initialize");
-        private static readonly Unity.Profiling.ProfilerMarker _deinitializationMarker = new("MonoView.Deinitialization");
+        private static readonly Unity.Profiling.ProfilerMarker _deinitializeMarker = new("MonoView.Deinitialize");
 #endif
 
         /// <summary>
@@ -21,7 +21,8 @@ namespace Aspid.MVVM.Mono
         /// </summary>
         public IViewModel ViewModel { get; private set; }
 
-        protected virtual void OnDestroy() => Deinitialize();
+        protected virtual void OnDestroy() => 
+            Deinitialize();
 
         /// <summary>
         /// Initializes the view with the specified <see cref="IViewModel"/> for binding.
@@ -55,10 +56,10 @@ namespace Aspid.MVVM.Mono
         /// </summary>
         public void Deinitialize()
         {
-            if (ViewModel == null) return;
+            if (ViewModel is null) return;
             
 #if !ASPID_MVVM_UNITY_PROFILER_DISABLED
-            using (_deinitializationMarker.Auto())
+            using (_deinitializeMarker.Auto())
 #endif
             {
                 DeinitializeInternal();
@@ -76,6 +77,7 @@ namespace Aspid.MVVM.Mono
         /// Destroys the GameObject of the View.
         /// May be overridden by a derived class.
         /// </summary>
-        public virtual void Dispose() => Destroy(gameObject);
+        public virtual void Dispose() =>
+            Destroy(gameObject);
     }
 }

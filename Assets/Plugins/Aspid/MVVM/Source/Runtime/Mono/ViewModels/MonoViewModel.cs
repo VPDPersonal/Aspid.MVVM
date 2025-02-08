@@ -57,6 +57,7 @@ namespace Aspid.MVVM.Mono
         /// Destroys the Component of the ViewModel.
         /// May be overridden by a derived class.
         /// </summary>
-        public virtual void Dispose() => Destroy(this);
+        public virtual void Dispose() =>
+            Destroy(this);
     }
 }

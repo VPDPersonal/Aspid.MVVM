@@ -9,6 +9,17 @@ namespace Aspid.MVVM
 {
     public static class ViewModelEditorExtensions
     {
+        /// <summary>
+        /// Forcibly invokes all Changed events (e.g., "valueChangedEvent") for fields marked with 
+        /// <see cref="BindAttribute"/> in the Unity editor.
+        /// </summary>
+        /// <param name="viewModel">The ViewModel in which to trigger events.</param>
+        /// <remarks>
+        /// This method only works in the Unity editor (compilation condition: UNITY_EDITOR).
+        /// Uses reflection to find fields with the <see cref="BindAttribute"/> and their corresponding events.
+        /// Useful for testing/debugging data bindings in the editor.
+        /// </remarks>
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="viewModel"/> is null.</exception>
         [Conditional("UNITY_EDITOR")]
         public static void InvokeAllChangedEventsEditor(this IViewModel viewModel)
         {

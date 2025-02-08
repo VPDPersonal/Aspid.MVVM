@@ -8,7 +8,7 @@ namespace Aspid.MVVM.Mono
     {
 #if !ASPID_MVVM_UNITY_PROFILER_DISABLED
         private static readonly Unity.Profiling.ProfilerMarker _initializeMarker = new("ScriptableView.Initialize");
-        private static readonly Unity.Profiling.ProfilerMarker _deinitializationMarker = new("ScriptableView.Deinitialization");
+        private static readonly Unity.Profiling.ProfilerMarker _deinitializeMarker = new("ScriptableView.Deinitialize");
 #endif
 
         /// <summary>
@@ -49,10 +49,10 @@ namespace Aspid.MVVM.Mono
         /// </summary>
         public void Deinitialize()
         {
-            if (ViewModel == null) return;
+            if (ViewModel is null) return;
             
 #if !ASPID_MVVM_UNITY_PROFILER_DISABLED
-            using (_deinitializationMarker.Auto())
+            using (_deinitializeMarker.Auto())
 #endif
             {
                 DeinitializeInternal();

@@ -10,7 +10,7 @@ namespace Aspid.MVVM
     {
 #if !ASPID_MVVM_UNITY_PROFILER_DISABLED
         private static readonly Unity.Profiling.ProfilerMarker _initializeMarker = new("View.Initialize");
-        private static readonly Unity.Profiling.ProfilerMarker _deinitializationMarker = new("View.Deinitialization");
+        private static readonly Unity.Profiling.ProfilerMarker _deinitializeMarker = new("View.Deinitialize");
 #endif
         
         /// <summary>
@@ -51,10 +51,10 @@ namespace Aspid.MVVM
         /// </summary>
         public void Deinitialize()
         {
-            if (ViewModel == null) return;
+            if (ViewModel is null) return;
             
 #if !ASPID_MVVM_UNITY_PROFILER_DISABLED
-            using (_deinitializationMarker.Auto())
+            using (_deinitializeMarker.Auto())
 #endif
             {
                 DeinitializeInternal();
@@ -73,6 +73,7 @@ namespace Aspid.MVVM
         /// Can be overridden by derived classes.
         /// Calls <see cref="Deinitialize"/> to ensure proper cleanup.
         /// </summary>
-        public virtual void Dispose() => Deinitialize();
+        public virtual void Dispose() =>
+            Deinitialize();
     }
 }

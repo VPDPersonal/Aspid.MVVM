@@ -27,27 +27,23 @@ namespace Aspid.Collections.Observable
             T? newItem = default,
             int oldStartingIndex = -1,
             int newStartingIndex = -1)
-            : this(action, true, oldItem, newItem, default, default, oldStartingIndex, newStartingIndex)
-        {
-        }
+            : this(action, true, oldItem, newItem, null, null, oldStartingIndex, newStartingIndex) { }
 
         private NotifyCollectionChangedEventArgs(
             NotifyCollectionChangedAction action,
-            IReadOnlyList<T>? oldItems = default,
-            IReadOnlyList<T>? newItems = default,
+            IReadOnlyList<T>? oldItems = null,
+            IReadOnlyList<T>? newItems = null,
             int oldStartingIndex = -1,
             int newStartingIndex = -1)
-            : this(action, false, default, default, oldItems, newItems, oldStartingIndex, newStartingIndex)
-        {
-        }
+            : this(action, false, default, default, oldItems, newItems, oldStartingIndex, newStartingIndex) { }
 
         private NotifyCollectionChangedEventArgs(
             NotifyCollectionChangedAction action,
             bool isSingleItem,
             T? oldItem = default,
             T? newItem = default,
-            IReadOnlyList<T>? oldItems = default,
-            IReadOnlyList<T>? newItems = default,
+            IReadOnlyList<T>? oldItems = null,
+            IReadOnlyList<T>? newItems = null,
             int oldStartingIndex = -1,
             int newStartingIndex = -1)
         {

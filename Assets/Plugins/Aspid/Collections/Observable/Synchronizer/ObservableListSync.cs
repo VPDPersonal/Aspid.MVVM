@@ -6,9 +6,9 @@ namespace Aspid.Collections.Observable.Synchronizer
 {
     public sealed class ObservableListSync<TFrom, TTo> : IDisposable
     {
-        private readonly IReadOnlyObservableList<TFrom> _fromList;
-        private readonly ObservableList<TTo> _toList;
         private readonly Func<TFrom, TTo> _converter;
+        private readonly ObservableList<TTo> _toList;
+        private readonly IReadOnlyObservableList<TFrom> _fromList;
 
         public ObservableListSync(
             IReadOnlyObservableList<TFrom> fromList, 
@@ -25,9 +25,11 @@ namespace Aspid.Collections.Observable.Synchronizer
             Subscribe();
         }
 
-        private void Subscribe() => _fromList.CollectionChanged += OnFromListChanged;
+        private void Subscribe() => 
+            _fromList.CollectionChanged += OnFromListChanged;
 
-        private void Unsubscribe() => _fromList.CollectionChanged -= OnFromListChanged;
+        private void Unsubscribe() => 
+            _fromList.CollectionChanged -= OnFromListChanged;
         
         private TTo[] Convert(IReadOnlyList<TFrom> fromValues)
         {
@@ -39,7 +41,8 @@ namespace Aspid.Collections.Observable.Synchronizer
             return toValues;
         }
 
-        private TTo Convert(TFrom fromValue) => _converter(fromValue);
+        private TTo Convert(TFrom fromValue) => 
+            _converter(fromValue);
 
         private void OnFromListChanged(INotifyCollectionChangedEventArgs<TFrom> args)
         {
@@ -83,6 +86,7 @@ namespace Aspid.Collections.Observable.Synchronizer
             }
         }
 
-        public void Dispose() => Unsubscribe();
+        public void Dispose() => 
+            Unsubscribe();
     }
 }

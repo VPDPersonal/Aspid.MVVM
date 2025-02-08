@@ -7,9 +7,9 @@ namespace Aspid.Collections.Observable.Synchronizer
     public sealed class ObservableDictionarySync<TKey, TFrom, TTo> : IDisposable
         where TKey : notnull
     {
-        private readonly IReadOnlyObservableDictionary<TKey, TFrom> _fromDictionary;
-        private readonly ObservableDictionary<TKey, TTo> _toDictionary;
         private readonly Func<TFrom, TTo> _converter;
+        private readonly ObservableDictionary<TKey, TTo> _toDictionary;
+        private readonly IReadOnlyObservableDictionary<TKey, TFrom> _fromDictionary;
 
         public ObservableDictionarySync(
             IReadOnlyObservableDictionary<TKey, TFrom> fromDictionary, 
@@ -26,9 +26,11 @@ namespace Aspid.Collections.Observable.Synchronizer
             Subscribe();
         }
 
-        private void Subscribe() => _fromDictionary.CollectionChanged += OnFromListChanged;
+        private void Subscribe() => 
+            _fromDictionary.CollectionChanged += OnFromListChanged;
 
-        private void Unsubscribe() => _fromDictionary.CollectionChanged -= OnFromListChanged;
+        private void Unsubscribe() => 
+            _fromDictionary.CollectionChanged -= OnFromListChanged;
         
         private TTo[] Convert(IReadOnlyList<TFrom> fromValues)
         {
@@ -40,7 +42,8 @@ namespace Aspid.Collections.Observable.Synchronizer
             return toValues;
         }
 
-        private TTo Convert(TFrom fromValue) => _converter(fromValue);
+        private TTo Convert(TFrom fromValue) =>
+            _converter(fromValue);
 
         private void OnFromListChanged(INotifyCollectionChangedEventArgs<KeyValuePair<TKey, TFrom>> args)
         {
@@ -78,6 +81,7 @@ namespace Aspid.Collections.Observable.Synchronizer
             }
         }
 
-        public void Dispose() => Unsubscribe();
+        public void Dispose() =>
+            Unsubscribe();
     }
 }

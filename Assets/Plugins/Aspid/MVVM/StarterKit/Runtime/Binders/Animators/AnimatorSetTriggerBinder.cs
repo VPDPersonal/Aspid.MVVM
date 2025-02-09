@@ -5,6 +5,7 @@ using UnityEngine;
 namespace Aspid.MVVM.StarterKit.Binders
 {
     [Serializable]
+    [BindModeOverride(BindMode.OneWayToSource)]
     public class AnimatorSetTriggerBinder : TargetBinder<Animator>, IReverseBinder<IRelayCommand>
     {
         public event Action<IRelayCommand>? ValueChanged;
@@ -15,10 +16,9 @@ namespace Aspid.MVVM.StarterKit.Binders
         
         protected IRelayCommand? Command { get; private set; }
         
-        public AnimatorSetTriggerBinder(Animator target, string triggerName, BindMode mode = BindMode.OneWay)
-            : base(target, mode)
-        {
-            mode.ThrowExceptionIfTwo();
+        public AnimatorSetTriggerBinder(Animator target, string triggerName)
+            : base(target, BindMode.OneWayToSource)
+        { 
             TriggerName = triggerName ?? throw new ArgumentNullException(nameof(triggerName));
         }
 

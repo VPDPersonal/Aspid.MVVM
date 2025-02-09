@@ -36,10 +36,23 @@ namespace Aspid.MVVM
         /// <param name="validMode">The valid binding mode to compare against.</param>
         /// <exception cref="ArgumentException">Thrown when the mode is not equal to the valid mode.</exception>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void ThrowExceptionIfInvalid(this BindMode mode, BindMode validMode)
+        public static void ThrowExceptionIfNotMatches(this BindMode mode, BindMode validMode)
         {
             if (mode != validMode)
                 throw new ArgumentException($"BindMode can be only {validMode}. Mode = {mode}");
+        }
+
+        /// <summary>
+        /// Throws an <see cref="ArgumentException"/> if the binding mode matches the specified invalid mode.
+        /// </summary>
+        /// <param name="mode">The current binding mode to check.</param>
+        /// <param name="invalidMode">The invalid binding mode to compare against.</param>
+        /// <exception cref="ArgumentException">Thrown when the mode matches the invalid mode.</exception>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void ThrowExceptionIfMatches(this BindMode mode, BindMode invalidMode)
+        {
+            if (mode == invalidMode)
+                throw new ArgumentException($"BindMode is not supported {invalidMode}");
         }
 
         /// <summary>

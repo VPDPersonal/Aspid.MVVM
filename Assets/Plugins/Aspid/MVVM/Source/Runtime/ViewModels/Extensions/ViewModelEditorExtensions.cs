@@ -28,6 +28,23 @@ namespace Aspid.MVVM
             var bindFields = new List<(Type type, FieldInfo field)>();
             for (var type = viewModel.GetType(); type is not null; type = type.BaseType)
             {
+                var fields = type.GetFields(bindingFlags);
+                bindFields.AddRange(fields.Where(field =>
+                {
+                    if (field.IsInitOnly) return false;
+
+                    foreach (var attribute in field.GetCustomAttributes<BindAttribute>())
+                    {
+                        if (attribute.Mode is BindMode.TwoWay or BindMode.OneWay)
+                            return true;
+                    }
+                    
+                    if (field.GetCustomAttributes<OneWayBindAttribute>().Any()) return true;
+                    if (field.GetCustomAttributes<TwoWayBindAttribute>().Any()) return true;
+                    
+                    return false;
+                }).Select(field => (type, field)));
+                
                 bindFields.AddRange(type.GetFields(bindingFlags)
                     .Where(field => field.GetCustomAttributes<BindAttribute>().Any()).Select(field => (type, field)));
             }

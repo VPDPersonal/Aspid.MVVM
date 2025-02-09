@@ -14,13 +14,22 @@ namespace Aspid.MVVM.Generation
     [AttributeUsage(AttributeTargets.Field)]
     public sealed class BindAttribute : BaseBindAttribute
     {
+#if UNITY_EDITOR
+        public BindMode Mode { get; }
+#endif
+
         /// <summary>
         /// Initializes a new instance of the <see cref="BindAttribute"/> class with the default binding mode.
         /// For non-readonly fields, the default mode is <see cref="BindMode.TwoWay"/>.
         /// For readonly fields, the default mode is <see cref="BindMode.OneTime"/>.
         /// /// </summary>
-        public BindAttribute() { }
-        
+        public BindAttribute()
+        {
+#if UNITY_EDITOR
+            Mode = BindMode.None;
+#endif
+        }
+
         /// <summary>
         /// Initializes a new instance of the <see cref="BindAttribute"/> class with the specified binding mode.
         /// For readonly fields, only <see cref="BindMode.OneTime"/> and <see cref="BindMode.OneWay"/> are supported, 
@@ -28,6 +37,11 @@ namespace Aspid.MVVM.Generation
         /// Other modes are not supported for readonly fields.
         /// </summary>
         /// <param name="mode">The desired binding mode for the field.</param>
-        public BindAttribute(BindMode mode) { }
+        public BindAttribute(BindMode mode)
+        {
+#if UNITY_EDITOR
+            Mode = mode;
+#endif
+        }
     }
 }

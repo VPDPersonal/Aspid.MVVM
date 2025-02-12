@@ -8,63 +8,70 @@ namespace Aspid.MVVM.HelloWorld
 {
     public sealed class Bootstrap : MonoBehaviour
     {
-        [SerializeField] private ViewModelType _viewModelType;
+        [Header("Views")]
         [SerializeField] private SpeakerView _speakerView;
+        [SerializeField] private InputSpeakerView _inputSpeakerView;
+        
+        [Header("ViewModel")]
+        [SerializeField] private InputViewModelType _inputViewModelType;
 
         private Speaker _speaker;
 
         private void OnValidate()
         {
             if (!Application.isPlaying) return;
-            if (!_speakerView || _speaker == null) return;
+            if (!_speakerView || _speaker is null) return;
             
-            DeinitializeView();
-            InitializeView();
+            DeinitializeViews();
+            InitializeViews();
         }
 
         private void Awake()
         {
             _speaker = new Speaker();
-            InitializeView();
+            InitializeViews();
         }
 
-        private void OnDestroy() => DeinitializeView();
+        private void OnDestroy() => 
+            DeinitializeViews();
 
-        private void InitializeView()
+        private void InitializeViews()
         {
-            var viewModel = GetViewModel(_speaker);
+            var inputViewModel = GetInputViewModel();
+            _inputSpeakerView.Initialize(inputViewModel);
+
+            var viewModel = GetViewModel();
             _speakerView.Initialize(viewModel);
         }
         
-        private void DeinitializeView()
+        private void DeinitializeViews()
         {
-            // You can use extension methods to deinitialize the View and release the ViewModel.
+            // Вы можете использовать методы расширения для деинициализации View и освобождения ViewModel.
             _speakerView.DeinitializeView()?.DisposeViewModel();
+            _inputSpeakerView.DeinitializeView()?.DisposeViewModel();
             
-            // Manual way to deinitialize View and release ViewModel:
-            //
+            // Ручной способ деинициализации View и освобождения ViewModel:
             // var viewModel = _speakerView.ViewModel;
             // _speakerView.Deinitialize();
             //
             // if (viewModel is IDisposable disposable) 
-            // {
             //     disposable.Dispose();
-            // }
         }
+        
+        private IViewModel GetViewModel() =>
+            new SpeakerViewModel(_speaker);
 
-        private IViewModel GetViewModel(Speaker speaker) => _viewModelType switch
+        private IViewModel GetInputViewModel() => _inputViewModelType switch
         {
-            ViewModelType.Moment => new MomentSpeakerViewModel(speaker),
-            ViewModelType.Command1 => new CommandSpeakerViewModel1(speaker),
-            ViewModelType.Command2 => new CommandSpeakerViewModel2(speaker),
+            InputViewModelType.Command => new InputSpeakerViewModel(_speaker),
+            InputViewModelType.Moment => new MomentInputSpeakerViewModel(_speaker),
             _ => throw new ArgumentOutOfRangeException()
         };
         
-        private enum ViewModelType
+        private enum InputViewModelType
         {
             Moment,
-            Command1,
-            Command2,
+            Command,
         }
     }
 }

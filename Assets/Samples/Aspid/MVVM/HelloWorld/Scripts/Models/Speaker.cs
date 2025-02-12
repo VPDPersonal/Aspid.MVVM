@@ -14,12 +14,6 @@ namespace Aspid.MVVM.HelloWorld.Models
             private set
             {
                 _text = value;
-                
-                // We don't need to update the View every time this event is called.
-                // Since the actual text might not have changed.
-                // But we may not always have access to change the model.
-                // For this, ViewModel will automatically monitor the data
-                // and not passing on if the value hasn't changed.
                 TextChanged?.Invoke();
             }
         }

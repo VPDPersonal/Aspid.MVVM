@@ -6,7 +6,8 @@ using Aspid.MVVM.StarterKit.Converters;
 namespace Aspid.MVVM.StarterKit.Binders
 {
     [Serializable]
-    public sealed class BindableProperty<T> : Binder, IBinder<T>, IReverseBinder<T>, IBindableProperty<T>
+    [BindModeOverride(IsAll = true)]
+    public sealed class TwoWayProperty<T> : Binder, IBinder<T>, IReverseBinder<T>, IBindableProperty<T>
     {
         public event Action<T?>? Changed;
         
@@ -38,16 +39,20 @@ namespace Aspid.MVVM.StarterKit.Binders
             }
         }
 
-        public BindableProperty(BindMode mode = BindMode.TwoWay)
+        public TwoWayProperty(BindMode mode = BindMode.TwoWay)
+            : this(default, mode) { }
+        
+        public TwoWayProperty(T? value, BindMode mode = BindMode.TwoWay)
             : base(mode)
         {
             mode.ThrowExceptionIfNone();
+            _value = value;
         }
         
-        public BindableProperty(T? value, Func<T?, T?> converter, BindMode mode = BindMode.TwoWay) 
+        public TwoWayProperty(T? value, Func<T?, T?> converter, BindMode mode = BindMode.TwoWay) 
             : this(value, converter.ToConvert(), mode) { }
         
-        public BindableProperty(T? value, IConverter<T?, T?>? converter = null, BindMode mode = BindMode.TwoWay)
+        public TwoWayProperty(T? value, IConverter<T?, T?>? converter = null, BindMode mode = BindMode.TwoWay)
             : base(mode)
         {
             mode.ThrowExceptionIfNone();
@@ -70,6 +75,6 @@ namespace Aspid.MVVM.StarterKit.Binders
             _valueChanged?.Invoke(Value);
         }
 
-        public static implicit operator T?(BindableProperty<T?> binder) => binder.Value;
+        public static implicit operator T?(TwoWayProperty<T?> binder) => binder.Value;
     }
 }

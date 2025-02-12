@@ -8,5 +8,7 @@ namespace Aspid.MVVM.StarterKit.Binders
         public event Action<T?>? Changed;
         
         public T? Value { get; }
+        
+        public BindMode Mode { get; }
     }
 }

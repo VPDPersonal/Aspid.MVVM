@@ -80,8 +80,8 @@ namespace Aspid.MVVM.StarterKit.Views
             const BindingFlags bindingFlags = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic;
            
             var scriptName = target.GetScriptName();
-            var field = typeof(ViewInitializerManual).GetField("_viewModel", bindingFlags);
-            var viewModel = field.GetValue(target);
+            var property = typeof(ViewInitializerManual).GetProperty("ViewModel", bindingFlags);
+            var viewModel = property!.GetValue(target);
             
             return viewModel is null ? scriptName : $"{scriptName} ({viewModel.GetType().Name})";
         }

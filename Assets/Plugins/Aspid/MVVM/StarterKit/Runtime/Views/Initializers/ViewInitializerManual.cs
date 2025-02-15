@@ -17,18 +17,21 @@ namespace Aspid.MVVM.StarterKit.Views
         [SerializeField] private InitializeComponent<IView>[] _viewComponents;
         
         private IView[] _views;
-        private IViewModel _viewModel;
         private bool _isConstructed;
         
 #if ASPID_MVVM_ZENJECT_INTEGRATION || ASPID_MVVM_VCONTAINER_INTEGRATION
         [Inject] private DIContainer _diContainer;
 #endif
 
-        public bool IsInitialized { get; private set; }
+        public IViewModel ViewModel { get; private set; }
+        
+        public bool IsInitialized => ViewModel is not null;
         
         private void Constructor()
         {
             if (_isConstructed) return;
+
+            _views = new IView[_viewComponents.Length];
             
             for (var i = 0; i < _views.Length; i++)
             {
@@ -53,13 +56,15 @@ namespace Aspid.MVVM.StarterKit.Views
         {
             if (IsInitialized)
                 throw new Exception($"{nameof(ViewInitializerManual)} can't be initialized twice");
+            
+            if (viewModel is null)
+	            if (viewModel is null) throw new ArgumentNullException(nameof(viewModel));
 
             Constructor();
-            
+
+            ViewModel = viewModel;
             foreach (var view in _views)
                 view.Initialize(viewModel);
-
-            IsInitialized = true;
         }
 
         public void Deinitialize()
@@ -69,7 +74,7 @@ namespace Aspid.MVVM.StarterKit.Views
             foreach (var view in _views)
                 view.Deinitialize();
 
-            IsInitialized = true;
+            ViewModel = null;
         }
 
         private void OnValidate()

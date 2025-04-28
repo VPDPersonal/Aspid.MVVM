@@ -1,5 +1,7 @@
 using System;
 using Microsoft.CodeAnalysis;
+using MVVMGenerators.Generators.Ids;
+using MVVMGenerators.Helpers.Descriptions;
 using MVVMGenerators.Helpers.Extensions.Symbols;
 
 namespace MVVMGenerators.Generators.ViewModels.Data.Members;
@@ -10,8 +12,8 @@ public readonly struct BindAlsoProperty(IPropertySymbol property) : IEquatable<B
     public readonly IPropertySymbol Property = property;
     
     public readonly string Name = property.Name;
-    public readonly string Id = $"{property.Name}Id";
     public readonly string EventName = $"{property.Name}Changed";
+    public readonly string Id = $"{Classes.Ids.Global}.{property.GetId()}";
     public readonly string ViewModelEventName = $"__{property.GetFieldName(false)}ChangedEvent";
     
     public override bool Equals(object? obj) =>

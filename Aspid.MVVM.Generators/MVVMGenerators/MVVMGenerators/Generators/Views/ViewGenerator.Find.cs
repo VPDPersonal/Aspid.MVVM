@@ -60,7 +60,7 @@ public partial class ViewGenerator
         return symbol.HaseDirectInterface(Classes.IView) ? Inheritor.HasInterface : Inheritor.None;
     }
 
-    private static ViewMembers GetViewMembers(ImmutableArray<ISymbol> members, SemanticModel semanticModel)
+    public static ViewMembers GetViewMembers(ImmutableArray<ISymbol> members, SemanticModel semanticModel)
     {
         List<BinderFieldInView> otherMembers = [];
         List<PropertyBinderInView> propertyMembers = [];

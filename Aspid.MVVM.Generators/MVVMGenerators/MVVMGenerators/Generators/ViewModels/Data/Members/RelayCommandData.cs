@@ -1,5 +1,6 @@
 using System.Text;
 using Microsoft.CodeAnalysis;
+using MVVMGenerators.Generators.Ids;
 using MVVMGenerators.Helpers.Descriptions;
 using MVVMGenerators.Helpers.Extensions.Symbols;
 
@@ -12,8 +13,9 @@ public readonly struct RelayCommandData(
     bool isLambda = false)
 {
     public readonly IMethodSymbol Execute = execute;
-    
+
     public readonly string PropertyName = $"{execute.Name}Command";
+    public readonly string Id = $"{Classes.Ids.Global}.{execute.GetId("Command")}";
     public readonly string FieldName = $"_{PropertySymbolExtensions.GetFieldName(execute.Name)}Command";
     
     public readonly bool IsLambda = isLambda;

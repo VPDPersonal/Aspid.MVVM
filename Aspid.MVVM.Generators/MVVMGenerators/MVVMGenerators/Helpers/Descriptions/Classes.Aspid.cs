@@ -114,6 +114,9 @@ public static partial class Classes
         new("RelayCommand", Namespaces.Aspid_MVVM_Generation);
     #endregion
 
+    public static readonly TypeText Ids =
+        new("Ids", Namespaces.Aspid_MVVM_Generated);
+    
     public static readonly AttributeText IdAttribute = 
         new("BindId", Namespaces.Aspid_MVVM_Generation);
     

@@ -1,4 +1,5 @@
 using Microsoft.CodeAnalysis;
+using MVVMGenerators.Generators.Ids;
 using MVVMGenerators.Helpers.Descriptions;
 using MVVMGenerators.Helpers.Extensions.Symbols;
 
@@ -10,8 +11,8 @@ public readonly struct PropertyBinderInView(IPropertySymbol property)
     public readonly IPropertySymbol Property = property;
     
     public readonly string PropertyName = property.Name;
+    public readonly string Id = $"{Classes.Ids.Global}.{property.GetId()}";
     public readonly string CachedName = $"_{property.GetFieldName()}CachedPropertyBinder";
-    public readonly string Id = $"{FieldSymbolExtensions.GetPropertyName(property.Name)}IdProperty";
 
     public readonly bool IsUnityEngineObjectBinder = property.Type switch
     {

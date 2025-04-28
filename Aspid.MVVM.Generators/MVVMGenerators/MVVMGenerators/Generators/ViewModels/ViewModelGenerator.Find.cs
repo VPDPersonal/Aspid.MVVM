@@ -69,7 +69,7 @@ public partial class ViewModelGenerator
         return symbol.HaseDirectInterface(Classes.IViewModel) ? Inheritor.HasInterface : Inheritor.None;
     }
     
-    private static ViewModelFields FindFields(
+    public static ViewModelFields FindFields(
         IReadOnlyCollection<IFieldSymbol> fields,
         IReadOnlyCollection<IPropertySymbol> properties)
     {
@@ -85,7 +85,7 @@ public partial class ViewModelGenerator
         return new ViewModelFields(viewModelFields);
     }
 
-    private static ImmutableArray<RelayCommandData> FindCommand(
+    public static ImmutableArray<RelayCommandData> FindCommand(
         IReadOnlyCollection<IMethodSymbol> methods,
         IReadOnlyCollection<IPropertySymbol> properties,
         IReadOnlyCollection<string> generatedBoolProperties)

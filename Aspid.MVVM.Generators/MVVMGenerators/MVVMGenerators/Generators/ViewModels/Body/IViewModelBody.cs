@@ -82,7 +82,6 @@ public static class IViewModelBody
 
     private static CodeWriter AppendAddBinderInternal(this CodeWriter code, in ViewModelDataSpan data)
     {
-        var readOnlyFieldsExist = false;
         var additionalModificator = data.HasBaseType
             ? "override"
             : "virtual";
@@ -119,12 +118,12 @@ public static class IViewModelBody
         return code;
         
         void AppendCommand(RelayCommandData command) =>
-            code.AppendOneTimeFieldInSwitch(command.GetTypeName(), command.PropertyName);
+            code.AppendOneTimeFieldInSwitch(command.GetTypeName(), command.PropertyName, command.Id);
 
         void AppendBindAlsoProperty(BindAlsoProperty property)
         {
             var type = property.Type.ToDisplayStringGlobal();
-            code.AppendOneWayFieldInSwitch(type, property.Name, property.ViewModelEventName);
+            code.AppendOneWayFieldInSwitch(type, property.Name, property.ViewModelEventName, property.Id);
         }
     }
 
@@ -134,10 +133,10 @@ public static class IViewModelBody
             code.AppendTwoWayFieldInSwitch(field);
 
         foreach (var field in fields.OneWayFields)
-            code.AppendOneWayFieldInSwitch(field.Type, field.PropertyName, field.Event.FieldName!);
+            code.AppendOneWayFieldInSwitch(field.Type, field.PropertyName, field.Event.FieldName!, field.BindId);
                 
         foreach (var field in fields.OneTimeFields)
-            code.AppendOneTimeFieldInSwitch(field.Type, field.PropertyName);
+            code.AppendOneTimeFieldInSwitch(field.Type, field.PropertyName, field.BindId);
         
         foreach (var field in fields.OneWayToSourceFields)
             code.AppendOneWayToSourceFieldInSwitch(field);
@@ -149,7 +148,7 @@ public static class IViewModelBody
     {
         return code.AppendMultiline(
             $$"""
-            case {{field.PropertyName}}Id:
+            case {{field.BindId}}:
             {
                 var mode = binder.Mode;
                 
@@ -164,11 +163,11 @@ public static class IViewModelBody
         );
     }
     
-    private static CodeWriter AppendOneWayFieldInSwitch(this CodeWriter code, string type, string propertyName, string evenName)
+    private static CodeWriter AppendOneWayFieldInSwitch(this CodeWriter code, string type, string propertyName, string evenName, string id)
     {
         return code.AppendMultiline(
             $$"""
-            case {{propertyName}}Id:
+            case {{id}}:
             {
                 {{evenName}} ??= new {{OneWayViewModelEvent}}<{{type}}>();
                 return new({{evenName}}.AddBinder(binder, {{propertyName}}));
@@ -177,11 +176,11 @@ public static class IViewModelBody
         );
     }
 
-    private static CodeWriter AppendOneTimeFieldInSwitch(this CodeWriter code, string type, string propertyName)
+    private static CodeWriter AppendOneTimeFieldInSwitch(this CodeWriter code, string type, string propertyName, string id)
     {
         return code.AppendMultiline(
             $$"""
-            case {{propertyName}}Id:
+            case {{id}}:
             {
                 if (binder.Mode is {{BindMode}}.TwoWay or {{BindMode}}.OneWayToSource)
                     throw new {{Exception}}($"The binder mode '{binder.Mode}' is not supported. This operation requires BindMode.OneWay or BindMode.OneTime.");
@@ -200,7 +199,7 @@ public static class IViewModelBody
     {
         return code.AppendMultiline(
             $$"""
-            case {{field.PropertyName}}Id:
+            case {{field.BindId}}:
             {
                 {{field.Event.FieldName}} ??= new {{OneWayToSourceViewModelEvent}}<{{field.Type}}>(Set{{field.PropertyName}});
                 return new({{field.Event.FieldName}}.AddBinder(binder));

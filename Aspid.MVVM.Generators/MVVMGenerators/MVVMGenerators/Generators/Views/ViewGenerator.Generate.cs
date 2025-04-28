@@ -21,7 +21,6 @@ public partial class ViewGenerator
         
         GenerateIView(@namespace, dataSpan, declarationText, context);
         GenerateAsBinder(@namespace, dataSpan, declarationText, context);
-        IdBodyGenerator.GenerateViewId(@namespace, dataSpan, declarationText, context);
     }
 
     private static void GenerateAsBinder(

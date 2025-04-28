@@ -1,7 +1,5 @@
 using Microsoft.CodeAnalysis;
 using MVVMGenerators.Helpers;
-using System.Collections.Generic;
-using MVVMGenerators.Generators.Ids;
 using MVVMGenerators.Helpers.Descriptions;
 using MVVMGenerators.Helpers.Extensions.Writer;
 using MVVMGenerators.Generators.ViewModels.Body;
@@ -22,28 +20,6 @@ public partial class ViewModelGenerator
         if (dataSpan.Fields.All.Length + dataSpan.Commands.Length > 0)
         {
             GenerateProperties(@namespace, dataSpan, declarationText, context);
-
-            var idList = new List<(string, string)>();
-
-            foreach (var field in dataSpan.Fields.All)
-            {
-                var name = field.BindId;
-                idList.Add((name, $"{field.PropertyName}Id"));
-            }
-            
-            foreach (var command in dataSpan.Commands)
-            {
-                var name = command.Execute.GetId(command.Execute.Name + "Command");
-                idList.Add((name, $"{command.Execute.Name + "Command"}Id"));
-            }
-            
-            foreach (var property in dataSpan.BindAlsoProperties)
-            {
-                var name = property.Property.GetId(property.Name);
-                idList.Add((name, $"{property.Name}Id"));
-            }
-            
-            IdBodyGenerator.GenerateViewModelId(@namespace, declarationText, context, idList);
         }
 
         if (dataSpan.Commands.Length > 0)

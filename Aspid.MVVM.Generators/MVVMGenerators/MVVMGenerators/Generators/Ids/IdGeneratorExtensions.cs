@@ -6,15 +6,18 @@ namespace MVVMGenerators.Generators.Ids;
 
 public static class IdGeneratorExtensions
 {
-    public static string GetId(this ISymbol member, string memberName)
+    public static string GetId(this ISymbol member, string prefixName = "")
     {
         if (!member.HasAttribute(Classes.IdAttribute, out var attribute))
-            return FieldSymbolExtensions.GetPropertyName(memberName);
+            return member.GetName(prefixName);
         
         var value = attribute!.ConstructorArguments[0].Value as string;
         
         return !string.IsNullOrWhiteSpace(value) 
             ? value! 
-            : FieldSymbolExtensions.GetPropertyName(memberName);
+            : member.GetName(prefixName);
     }
+
+    private static string GetName(this ISymbol member, string prefixName) =>
+        FieldSymbolExtensions.GetPropertyName(member.Name) + prefixName;
 }

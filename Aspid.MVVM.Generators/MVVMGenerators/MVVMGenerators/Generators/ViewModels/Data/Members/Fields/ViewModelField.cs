@@ -12,9 +12,10 @@ public readonly struct ViewModelField(
     IFieldSymbol field,
     ImmutableArray<BindAlsoProperty> bindAlso)
 {
+    public readonly IFieldSymbol Field = field;
     public readonly string FieldName = field.Name;
     public readonly string PropertyName = field.GetPropertyName();
-    public readonly string BindId = field.GetId(field.GetPropertyName());
+    public readonly string BindId = $"{Classes.Ids.Global}.{field.GetId()}";
     
     public readonly bool IsReadOnly = mode is BindMode.OneTime;
     public readonly string Type = field.Type.ToDisplayStringGlobal();

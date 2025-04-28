@@ -1,5 +1,6 @@
 using Microsoft.CodeAnalysis;
 using System.Collections.Generic;
+using MVVMGenerators.Generators.Ids;
 using MVVMGenerators.Helpers.Descriptions;
 using MVVMGenerators.Helpers.Extensions.Symbols;
 
@@ -31,14 +32,14 @@ public readonly struct AsBinderMemberInView
         {
             case IFieldSymbol field:
                 Type = field.Type;
-                Id = $"{field.GetPropertyName()}Id";
                 CachedName = $"_{field.Name}CachedBinder";
+                Id = $"{Classes.Ids.Global}.{field.GetId()}";
                 break;
             
             case IPropertySymbol property:
                 Type = property.Type;
+                Id = $"{Classes.Ids.Global}.{property.GetId()}";
                 CachedName = $"_{property.GetFieldName()}CachedPropertyBinder";
-                Id = $"{FieldSymbolExtensions.GetPropertyName(Name)}IdProperty";
                 break;
             
             default:

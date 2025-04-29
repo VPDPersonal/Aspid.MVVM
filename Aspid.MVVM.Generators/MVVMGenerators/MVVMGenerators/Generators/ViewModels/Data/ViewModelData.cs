@@ -15,7 +15,7 @@ public readonly struct ViewModelData(
 {
     public readonly Inheritor Inheritor = inheritor;
     public readonly TypeDeclarationSyntax Declaration = declaration;
-    public readonly bool HasBaseType = inheritor is Inheritor.InheritorViewModel or Inheritor.InheritorViewModelAttribute;
+    public readonly bool HasBaseType = inheritor is Inheritor.InheritorViewModelAttribute;
 
     public readonly ViewModelFields Fields = fields;
     public readonly ImmutableArray<RelayCommandData> Commands = ImmutableArray.CreateRange(commands);

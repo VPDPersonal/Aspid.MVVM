@@ -63,10 +63,7 @@ public partial class ViewModelGenerator
                 return Inheritor.InheritorViewModelAttribute;
         }
         
-        if (symbol.HasBaseType(Classes.ViewModel, Classes.MonoViewModel, Classes.ScriptableViewModel)) return Inheritor.InheritorViewModel;
-        if (baseType is not null && baseType.HasInterface(Classes.IViewModel)) return Inheritor.HasInterface;
-
-        return symbol.HaseDirectInterface(Classes.IViewModel) ? Inheritor.HasInterface : Inheritor.None;
+        return Inheritor.None;
     }
     
     public static ViewModelFields FindFields(

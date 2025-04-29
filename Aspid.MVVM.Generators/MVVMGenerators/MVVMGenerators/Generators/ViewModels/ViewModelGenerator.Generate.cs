@@ -99,9 +99,7 @@ public partial class ViewModelGenerator
         DeclarationText declaration,
         SourceProductionContext context)
     {
-        string[]? baseTypes = null;
-        if (data.Inheritor != Inheritor.HasInterface)
-            baseTypes = [Classes.IViewModel.Global];
+        string[] baseTypes = [Classes.IViewModel.Global];
 
         var code = new CodeWriter();
         code.AppendClassBegin(@namespace, declaration, baseTypes)

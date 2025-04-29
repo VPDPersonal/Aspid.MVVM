@@ -1,6 +1,5 @@
 using Microsoft.CodeAnalysis;
 using MVVMGenerators.Helpers;
-using MVVMGenerators.Generators.Ids;
 using MVVMGenerators.Helpers.Descriptions;
 using MVVMGenerators.Generators.Views.Body;
 using MVVMGenerators.Generators.Views.Data;
@@ -47,10 +46,6 @@ public partial class ViewGenerator
         DeclarationText declaration,
         SourceProductionContext context)
     {
-        if (data.IsInitializeOverride 
-            && data.IsDeinitializeOverride
-            && data.ViewProperties.Length + data.AsBinderMembers.Length == 0) return;
-        
         var code = new CodeWriter();
         var baseTypes = GetBaseTypes(data);
 

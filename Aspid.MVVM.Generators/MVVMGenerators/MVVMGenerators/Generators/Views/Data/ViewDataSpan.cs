@@ -6,9 +6,6 @@ namespace MVVMGenerators.Generators.Views.Data;
 
 public readonly ref struct ViewDataSpan(ViewData viewData)
 {
-    public readonly bool IsInitializeOverride = viewData.IsInitializeOverride;
-    public readonly bool IsDeinitializeOverride = viewData.IsDeinitializeOverride;
-    
     public readonly Inheritor Inheritor = viewData.Inheritor;
     public readonly TypeDeclarationSyntax Declaration = viewData.Declaration;
     

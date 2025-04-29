@@ -12,8 +12,7 @@ namespace MVVMGenerators.Generators.Views.Body;
 public static class ViewBody
 {
     private const string GeneratedAttribute = General.GeneratedCodeViewAttribute;
-
-    private static readonly string IView = Classes.IView.Global;
+    
     private static readonly string IViewModel = Classes.IViewModel.Global;
     private static readonly string ProfilerMarker = Classes.ProfilerMarker.Global;
     private static readonly string EditorBrowsableAttribute = $"[{Classes.EditorBrowsableAttribute.Global}({Classes.EditorBrowsableState.Global}.Never)]";
@@ -23,9 +22,7 @@ public static class ViewBody
         code = data.Inheritor switch
         {
             Inheritor.None => code.AppendNone(data),
-            Inheritor.HasInterface => code.AppendHasInterface(data),
-            Inheritor.InheritorView => code.AppendInheritorMonoView(data),
-            Inheritor.InheritorViewAttribute => code.AppendInheritorViewAttribute(data),
+            Inheritor.InheritorViewAttribute => code.AppendHasInterfaceOrInheritor(data),
             _ => throw new ArgumentOutOfRangeException()
         };
         
@@ -42,34 +39,21 @@ public static class ViewBody
     {
         var className = data.Declaration.Identifier.Text;
 
-        code.AppendMultiline(
+        code.AppendProfilerMarkers(className)
+            .AppendLine()
+            .AppendMultiline(
                 $$"""
-                #if !{{Defines.ASPID_MVVM_UNITY_PROFILER_DISABLED}}
-                {{EditorBrowsableAttribute}}
-                {{GeneratedAttribute}}
-                private static readonly {{ProfilerMarker}} __initializeMarker = new("{{className}}.Initialize");
-                
-                {{EditorBrowsableAttribute}}
-                {{GeneratedAttribute}}
-                private static readonly {{ProfilerMarker}} __deinitializeMarker = new("{{className}}.Deinitialize");
-                #endif
-                
                 {{GeneratedAttribute}}
                 public {{IViewModel}} ViewModel { get; private set; }
                 
                 {{GeneratedAttribute}}
-                void {{IView}}.Initialize({{IViewModel}} viewModel)
+                public void Initialize({{IViewModel}} viewModel)
                 {
-                    #if !{{Defines.ASPID_MVVM_UNITY_PROFILER_DISABLED}}
-                    using (__initializeMarker.Auto())
-                    #endif
-                    {
-                        if (viewModel is null) throw new {{Classes.ArgumentNullException.Global}}(nameof(viewModel));
-                        if (ViewModel is not null) throw new {{Classes.InvalidOperationException.Global}}("View is already initialized.");
+                    if (viewModel is null) throw new {{Classes.ArgumentNullException.Global}}(nameof(viewModel));
+                    if (ViewModel is not null) throw new {{Classes.InvalidOperationException.Global}}("View is already initialized.");
                     
-                        ViewModel = viewModel;
-                        InitializeInternal(viewModel);
-                    }
+                    ViewModel = viewModel;
+                    InitializeInternal(viewModel);
                 }
                 
                 {{GeneratedAttribute}}
@@ -81,17 +65,12 @@ public static class ViewBody
             .AppendMultiline(
                 $$"""
                 {{GeneratedAttribute}}
-                void {{IView}}.Deinitialize()
+                public void Deinitialize()
                 {
-                    if (ViewModel == null) return;
+                    if (ViewModel is null) return;
                 
-                    #if !{{Defines.ASPID_MVVM_UNITY_PROFILER_DISABLED}}
-                    using (__deinitializeMarker.Auto())
-                    #endif
-                    {
-                        DeinitializeInternal();
-                        ViewModel = null;
-                    }
+                    DeinitializeInternal();
+                    ViewModel = null;
                 }
 
                 {{GeneratedAttribute}}
@@ -103,69 +82,51 @@ public static class ViewBody
         return code;
     }
 
-    private static CodeWriter AppendInheritorViewAttribute(this CodeWriter code, in ViewDataSpan data)
+    private static CodeWriter AppendHasInterfaceOrInheritor(this CodeWriter code, in ViewDataSpan data)
     {
         const bool isOverride = true;
-        
-        if (!data.IsInitializeOverride)
-        {
-            code.AppendInitializeInternalDeclaration(isOverride)
-                .AppendInitializeBody(data, true)
-                .AppendInitializeInternalEvents();
-        }
-        
-        if (!data.IsDeinitializeOverride)
-        {
-            code.AppendLineIf(!data.IsInitializeOverride)
-                .AppendDeinitializeInternalDeclaration(isOverride)
-                .AppendDeinitializeBody(data, true)
-                .AppendDeinitializeInternalEvents();
-        }
+        var className = data.Declaration.Identifier.Text;
 
-        return code;
-    }
-
-    public static CodeWriter AppendInheritorMonoView(this CodeWriter code, in ViewDataSpan data)
-    {
-        const bool isOverride = true;
+        code.AppendProfilerMarkers(className)
+            .AppendLine();
+            
+        code.AppendInitializeInternalDeclaration(isOverride)
+            .AppendInitializeBody(data, isOverride)
+            .AppendInitializeInternalEvents();
         
-        if (!data.IsInitializeOverride)
-        {
-            code.AppendInitializeInternalDeclaration(isOverride)
-                .AppendInitializeBody(data)
-                .AppendInitializeInternalEvents();
-        }
-        
-        if (!data.IsDeinitializeOverride)
-        {
-            code.AppendLineIf(!data.IsInitializeOverride)
-                .AppendDeinitializeInternalDeclaration(isOverride)
-                .AppendDeinitializeBody(data)
-                .AppendDeinitializeInternalEvents();
-        }
+        code.AppendDeinitializeInternalDeclaration(isOverride)
+            .AppendDeinitializeBody(data, isOverride)
+            .AppendDeinitializeInternalEvents();
         
         return code;
     }
-
-    public static CodeWriter AppendHasInterface(this CodeWriter code, in ViewDataSpan data)
+    
+    private static CodeWriter AppendProfilerMarkers(this CodeWriter code, string className)
     {
-        const bool isOverride = false;
+        return code.AppendMultiline(
+            $"""
+             #if !{Defines.ASPID_MVVM_UNITY_PROFILER_DISABLED}
+             {EditorBrowsableAttribute}
+             {GeneratedAttribute}
+             private static readonly {ProfilerMarker} __initializeMarker = new("{className}.Initialize");
+             
+             {EditorBrowsableAttribute}
+             {GeneratedAttribute}
+             private static readonly {ProfilerMarker} __deinitializeMarker = new("{className}.Deinitialize");
+             #endif
+             """);
+    }
+    
+    private static CodeWriter AppendInitializeInternalDeclaration(this CodeWriter code, bool isOverride)
+    {
+        var modificator = isOverride ? "override" : "virtual";
         
-        if (!data.IsInitializeOverride)
-        {
-            code.AppendInitializeInternalDeclaration(isOverride)
-                .AppendInitializeBody(data)
-                .AppendInitializeInternalEvents();
-        }
-        
-        if (!data.IsDeinitializeOverride)
-        {
-            code.AppendLineIf(!data.IsInitializeOverride)
-                .AppendDeinitializeInternalDeclaration(isOverride)
-                .AppendDeinitializeBody(data)
-                .AppendDeinitializeInternalEvents();
-        }
-        
+        code.AppendMultiline(
+            $"""
+             {GeneratedAttribute}
+             protected {modificator} void InitializeInternal({IViewModel} viewModel)
+             """);
+
         return code;
     }
 
@@ -182,22 +143,17 @@ public static class ViewBody
         return code; 
     }
 
-    private static CodeWriter AppendInitializeInternalDeclaration(this CodeWriter code, bool isOverride)
-    {
-        var modificator = isOverride ? "override" : "virtual";
-        
-        code.AppendMultiline(
-            $"""
-            {GeneratedAttribute}
-            protected {modificator} void InitializeInternal({IViewModel} viewModel)
-            """);
-
-        return code;
-    }
-
     private static CodeWriter AppendInitializeBody(this CodeWriter code, in ViewDataSpan data, bool isOverride = false)
     {
-        code.BeginBlock();
+        code.BeginBlock()
+            .AppendMultiline(
+                $"""
+                #if !{Defines.ASPID_MVVM_UNITY_PROFILER_DISABLED}
+                using (__initializeMarker.Auto())
+                #endif
+                """)
+            .BeginBlock();
+        
         code.AppendLine("OnInitializingInternal(viewModel);");
         code.AppendLineIf(isOverride, "base.InitializeInternal(viewModel);");
         
@@ -219,13 +175,22 @@ public static class ViewBody
 
         code.AppendLine("\nOnInitializedInternal(viewModel);");
         code.EndBlock();
+        code.EndBlock();
         
         return code;
     }
 
     private static CodeWriter AppendDeinitializeBody(this CodeWriter code, in ViewDataSpan data, bool isOverride = false)
     {
-        code.BeginBlock();
+        code.BeginBlock()
+            .AppendMultiline(
+                $"""
+                 #if !{Defines.ASPID_MVVM_UNITY_PROFILER_DISABLED}
+                 using (__deinitializeMarker.Auto())
+                 #endif
+                 """)
+            .BeginBlock();
+        
         code.AppendLine("OnDeinitializingInternal();");
         code.AppendLineIf(isOverride, "base.DeinitializeInternal();");
         code.AppendLine();
@@ -243,6 +208,7 @@ public static class ViewBody
         }
 
         code.AppendLine("\nOnDeinitializedInternal();");
+        code.EndBlock();
         code.EndBlock();
 
         return code;

@@ -25,22 +25,18 @@ public static class IViewModelBody
 
     public static CodeWriter AppendIViewModelBody(this CodeWriter code, ViewModelDataSpan data)
     {
+        code.AppendProfilerMarkers(in data)
+            .AppendLine();
+        
         if (data.Inheritor == Inheritor.None)
         {
-            code.AppendProfilerMarkers(in data)
-                .AppendLine()
-                .AppendAddBinder()
-                .AppendLine()
-                .AppendAddBinderInternal(in data)
-                .AppendLine()
-                .AppendManualMethods();
+            code.AppendAddBinder()
+                .AppendLine();
         }
-        else
-        {
-            code.AppendAddBinderInternal(in data)
-                .AppendLine()
-                .AppendManualMethods();
-        }
+
+        code.AppendAddBinderInternal(in data)
+            .AppendLine()
+            .AppendManualMethods();
 
         return code;
     }
@@ -68,12 +64,7 @@ public static class IViewModelBody
             {{GeneratedAttribute}}
             public {{BindResult}} AddBinder({{IBinder}} binder, string propertyName)
             {
-                #if !{{Defines.ASPID_MVVM_UNITY_PROFILER_DISABLED}}
-                using (__addBinderMarker.Auto())
-                #endif
-                {
-                    return AddBinderInternal(binder, propertyName);
-                }
+                return AddBinderInternal(binder, propertyName);
             }
             """);
 
@@ -90,8 +81,13 @@ public static class IViewModelBody
              $$"""
              protected {{additionalModificator}} {{BindResult}} AddBinderInternal({{IBinder}} binder, string propertyName)
              {
-                 switch (propertyName)
+                 #if !{{Defines.ASPID_MVVM_UNITY_PROFILER_DISABLED}}
+                 using (__addBinderMarker.Auto())
+                 #endif
+                 {
+                     switch (propertyName)
              """)
+            .IncreaseIndent()
             .IncreaseIndent()
             .BeginBlock()
             .AppendFields(data.Fields)
@@ -113,6 +109,7 @@ public static class IViewModelBody
             .AppendLineIf(data.Inheritor is Inheritor.InheritorViewModelAttribute,
                 "return base.AddBinderInternal(binder, propertyName);")
             .AppendLineIf(data.Inheritor is not Inheritor.InheritorViewModelAttribute, "return default;")
+            .EndBlock()
             .EndBlock();
 
         return code;

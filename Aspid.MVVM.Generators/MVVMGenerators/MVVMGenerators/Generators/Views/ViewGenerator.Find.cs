@@ -1,4 +1,3 @@
-using System;
 using System.Linq;
 using System.Threading;
 using System.Diagnostics;
@@ -30,16 +29,10 @@ public partial class ViewGenerator
         var members = symbol.GetMembers();
         var viewMembers = GetViewMembers(members, context.SemanticModel);
 
-        RecognizeOverriddenMethods(
-            inheritor,
-            members.OfType<IMethodSymbol>(),
-            out var isInitializeOverride,
-            out var isDeinitializeOverride);
-
         Debug.Assert(context.TargetNode is TypeDeclarationSyntax);
         var candidate = Unsafe.As<TypeDeclarationSyntax>(context.TargetNode);
 
-        var viewData = new ViewData(inheritor, viewMembers, isInitializeOverride, isDeinitializeOverride, candidate);
+        var viewData = new ViewData(inheritor, viewMembers, candidate);
         return new FoundForGenerator<ViewData>(true, viewData);
     }
 
@@ -53,11 +46,8 @@ public partial class ViewGenerator
             if (type.HasAttribute(Classes.ViewAttribute)) 
                 return Inheritor.InheritorViewAttribute;
         }
-        
-        if (symbol.HasBaseType(Classes.View, Classes.MonoView, Classes.ScriptableView)) return Inheritor.InheritorView;
-        if (baseType is not null && baseType.HasInterface(Classes.IView)) return Inheritor.HasInterface;
 
-        return symbol.HaseDirectInterface(Classes.IView) ? Inheritor.HasInterface : Inheritor.None;
+        return Inheritor.None;
     }
 
     public static ViewMembers GetViewMembers(ImmutableArray<ISymbol> members, SemanticModel semanticModel)
@@ -262,56 +252,5 @@ public partial class ViewGenerator
         }
 
         ISymbol? GetSymbol(IdentifierNameSyntax node) => semanticModel.GetSymbolInfo(node).Symbol;
-    }
-
-    private static void RecognizeOverriddenMethods(
-        Inheritor inheritor,
-        IEnumerable<IMethodSymbol> methods,
-        out bool isInitializeOverride,
-        out bool isDeinitializeOverride)
-    {
-        isInitializeOverride = false;
-        isDeinitializeOverride = false;
-        if (inheritor is Inheritor.None or Inheritor.HasInterface) return;
-
-        foreach (var method in methods)
-        {
-            if (!isInitializeOverride && HasOverrideInitializeInternalMethod(method))
-            {
-                isInitializeOverride = true;
-            }
-            else if (!isDeinitializeOverride && HasOverrideDeinitializeInternalMethod(method))
-            {
-                isDeinitializeOverride = true;
-            }
-            else continue;
-            
-            if (isInitializeOverride && isDeinitializeOverride) return;
-        }
-
-        return;
-
-        bool HasOverrideInitializeInternalMethod(IMethodSymbol method) =>
-            HasOverrideMethod(method, "InitializeInternal", Classes.IViewModel.FullName);
-
-        bool HasOverrideDeinitializeInternalMethod(IMethodSymbol method) =>
-            HasOverrideMethod(method, "DeinitializeInternal");
-
-        bool HasOverrideMethod(IMethodSymbol method, string methodName, params string[] parameters)
-        {
-            if (!method.IsOverride) return false;
-            if (method.Parameters.Length != parameters.Length) return false;
-            if (method.DeclaredAccessibility != Accessibility.Protected) return false;
-
-            if (method.Name != methodName) return false;
-            if (method.ReturnType.ToDisplayString() != "void") return false;
-
-            for (var i = 0; i < parameters.Length; i++)
-            {
-                if (method.Parameters[i].Type.ToDisplayString() != parameters[i]) return false;
-            }
-
-            return true;
-        }
     }
 }

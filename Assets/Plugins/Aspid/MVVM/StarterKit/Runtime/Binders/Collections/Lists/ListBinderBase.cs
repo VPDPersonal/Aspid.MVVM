@@ -1,10 +1,9 @@
-#nullable enable
 using System;
 using System.Collections.Generic;
 using Aspid.Collections.Observable;
 using System.Collections.Specialized;
 
-namespace Aspid.MVVM.StarterKit.Binders
+namespace Aspid.MVVM.StarterKit
 {
     public abstract class ListBinderBase<T> : Binder, IBinder<IReadOnlyObservableList<T>>, IDisposable
     {

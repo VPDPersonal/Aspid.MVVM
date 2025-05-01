@@ -1,9 +1,9 @@
-namespace Aspid.MVVM.StarterKit.ViewModels
+namespace Aspid.MVVM.StarterKit
 {
     public sealed class OneWayDynamicProperty<T> : IDynamicProperty
     {
         private readonly T _value;
-        private OneWayViewModelEvent<T> _event;
+        private OneWayViewModelEvent<T>? _event;
         
         public OneWayDynamicProperty(T value)
         {

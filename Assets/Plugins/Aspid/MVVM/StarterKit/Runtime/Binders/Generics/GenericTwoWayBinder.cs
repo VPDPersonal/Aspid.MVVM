@@ -1,7 +1,6 @@
-#nullable enable
 using System;
 
-namespace Aspid.MVVM.StarterKit.Binders
+namespace Aspid.MVVM.StarterKit
 {
     public class GenericTwoWayBinder<T> : Binder, IBinder<T>, IReverseBinder<T>
     {

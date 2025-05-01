@@ -1,12 +1,18 @@
-#if UNITY_2023_1_OR_NEWER
-using UnityEngine;
-
-namespace Aspid.MVVM.StarterKit.Converters
+namespace Aspid.MVVM.StarterKit
 {
     public class SequenceConverters<T> : IConverter<T, T>
     {
+        // ReSharper disable once FieldCanBeMadeReadOnly.Local
+        #if UNITY_2022_1_OR_NEWER
         [SerializeReferenceDropdown]
-        [SerializeReference] private IConverter<T, T>[] _converters;
+        [UnityEngine.SerializeReference] 
+        #endif
+        private IConverter<T, T>[] _converters;
+
+        public SequenceConverters(params IConverter<T, T>[] converters)
+        {
+            _converters = converters;
+        }
 
         public T Convert(T value)
         {
@@ -17,4 +23,3 @@ namespace Aspid.MVVM.StarterKit.Converters
         }
     }
 }
-#endif

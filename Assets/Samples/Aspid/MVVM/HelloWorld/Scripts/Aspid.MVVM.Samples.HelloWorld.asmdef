@@ -5,6 +5,7 @@
         "Zenject",
         "VContainer",
         "Aspid.MVVM",
+        "Aspid.MVVM.Unity",
         "Aspid.MVVM.StarterKit"
     ],
     "includePlatforms": [],

@@ -1,5 +1,4 @@
 using Aspid.MVVM;
-using Aspid.MVVM.Generation;
 using Aspid.UI.Elements.Models;
 
 namespace Aspid.UI.Elements.ViewModels

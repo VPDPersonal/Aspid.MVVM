@@ -1,0 +1,40 @@
+#nullable enable
+using System;
+using UnityEngine;
+#if UNITY_2023_1_OR_NEWER
+using Converter = Aspid.MVVM.StarterKit.IConverter<int, int>;
+#else
+using Converter = Aspid.MVVM.StarterKit.Unity.IConverterInt;
+#endif
+
+namespace Aspid.MVVM.StarterKit.Unity
+{
+    [Serializable]
+    public class AnimatorSetIntBinder : AnimatorSetParameterBinder<int>
+    {
+        [Header("Converter")]
+        [SerializeReferenceDropdown]
+        [SerializeReference] private Converter? _converter;
+
+        public AnimatorSetIntBinder(Animator animator, string parameterName, BindMode mode)
+            : this(animator, parameterName, null, mode) { }
+        
+        public AnimatorSetIntBinder(
+            Animator animator,
+            string parameterName, 
+            Converter? converter = null, 
+            BindMode mode = BindMode.OneWay)
+            : base(animator, parameterName, mode)
+        {
+            _converter = converter;
+        }
+
+        protected sealed override void SetParameter(int value)
+        {
+            value = _converter?.Convert(value) ?? value;
+            if (Mathf.Approximately(value, Target.GetInteger(ParameterName))) return;
+            
+            Target.SetInteger(ParameterName, value);
+        }
+    }
+}

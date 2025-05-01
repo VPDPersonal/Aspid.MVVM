@@ -5,8 +5,10 @@
         "Zenject",
         "VContainer",
         "Aspid.MVVM",
+        "Aspid.MVVM.Unity",
         "Aspid.MVVM.StarterKit",
-        "Aspid.Collections.Observable"
+        "Aspid.Collections.Observable",
+        "Aspid.MVVM.StarterKit.Unity"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

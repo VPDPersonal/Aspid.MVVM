@@ -1,26 +1,28 @@
-using Aspid.MVVM.Mono;
+using System;
+using UnityEngine;
+using Aspid.MVVM.Unity;
 
 namespace Aspid.MVVM.ExampleScripts.Views
 {
-    public class WithoutGeneratorView : View
+    public class WithoutGeneratorView : MonoBehaviour, IView
     {
         private readonly MonoBinder _singleBinder; 
         private readonly MonoBinder[] _arrayBinders;
 
-        public WithoutGeneratorView(MonoBinder singleBinder, MonoBinder[] arrayBinders)
+        public IViewModel ViewModel { get; private set; }
+        
+        public void Initialize(IViewModel viewModel)
         {
-            _singleBinder = singleBinder;
-            _arrayBinders = arrayBinders;
-        }
+            if (ViewModel is not null) throw new Exception("View is already initialized");
 
-        protected override void InitializeInternal(IViewModel viewModel)
-        {
+            ViewModel = viewModel;
             _singleBinder.BindSafely(viewModel, "SingleBinder");
             _arrayBinders.BindSafely(viewModel, "ArrayBinders");
         }
 
-        protected override void DeinitializeInternal()
+        public void Deinitialize()
         {
+            ViewModel = null;
             _singleBinder.UnbindSafely();
             _arrayBinders.UnbindSafely();
         }

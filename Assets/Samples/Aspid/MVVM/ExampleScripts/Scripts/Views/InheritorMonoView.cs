@@ -1,9 +1,8 @@
 using UnityEngine;
 using UnityEngine.UI;
-using Aspid.MVVM.Mono;
-using Aspid.MVVM.Generation;
+using Aspid.MVVM.Unity;
 using System.Collections.Generic;
-using Aspid.MVVM.StarterKit.Binders;
+using Aspid.MVVM.StarterKit.Unity;
 
 namespace Aspid.MVVM.ExampleScripts.Views
 {

@@ -1,0 +1,44 @@
+#nullable enable
+using System;
+using UnityEngine;
+using UnityEngine.UI;
+#if UNITY_2023_1_OR_NEWER
+using Converter = Aspid.MVVM.StarterKit.IConverter<float, float>;
+#else
+using Converter = Aspid.MVVM.StarterKit.Unity.IConverterFloat;
+#endif
+
+namespace Aspid.MVVM.StarterKit.Unity
+{
+    [Serializable]
+    public sealed class ImageFillSwitcherBinder : SwitcherBinder<Image, float>
+    {
+        [Header("Converter")]
+        [SerializeReferenceDropdown]
+        [SerializeReference] private Converter? _converter;
+        
+        public ImageFillSwitcherBinder(
+            Image target,
+            float trueValue, 
+            float falseValue,
+            BindMode mode)
+            : this(target, trueValue, falseValue, null, mode) { }
+        
+        public ImageFillSwitcherBinder(
+            Image target,
+            float trueValue, 
+            float falseValue,
+            Converter? converter = null,
+            BindMode mode = BindMode.OneWay)
+            : base(target, trueValue, falseValue, mode)
+        {
+            _converter = converter;
+        }
+
+        protected override void SetValue(float value)
+        {
+            value = _converter?.Convert(value) ?? value;
+            Target.fillAmount = Mathf.Clamp01(value);
+        }
+    }
+}

@@ -1,13 +1,14 @@
-#nullable enable
 using System;
-using UnityEngine;
 
-namespace Aspid.MVVM.StarterKit.Converters
+namespace Aspid.MVVM.StarterKit
 {
     [Serializable]
-    public sealed class ObjectNullToBoolConverter : IConverterObjectToBool
+    public class ObjectNullToBoolConverter : IConverter<object, bool>
     {
-        [SerializeField] private bool _isInvert;
+#if UNITY_2022_1_OR_NEWER
+        [UnityEngine.SerializeField] 
+#endif
+        private bool _isInvert;
 
         public ObjectNullToBoolConverter()
             : this(false) { }

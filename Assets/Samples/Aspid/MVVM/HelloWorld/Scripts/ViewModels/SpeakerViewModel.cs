@@ -1,5 +1,4 @@
 using System;
-using Aspid.MVVM.Generation;
 using Aspid.MVVM.HelloWorld.Models;
 
 // Объяснение:

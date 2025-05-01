@@ -1,11 +1,11 @@
 using System.Collections.Generic;
 
-namespace Aspid.MVVM.StarterKit.ViewModels
+namespace Aspid.MVVM.StarterKit
 {
     public sealed class TwoWayDynamicProperty<T> : IDynamicProperty
     {
         private T _value;
-        private TwoWayViewModelEvent<T> _event;
+        private TwoWayViewModelEvent<T>? _event;
         
         public TwoWayDynamicProperty(T value)
         {

@@ -1,14 +1,14 @@
-#nullable enable
 using System;
-using UnityEngine;
 
-namespace Aspid.MVVM.StarterKit.Binders
+namespace Aspid.MVVM.StarterKit
 {
     [Serializable]
     public abstract class TargetBinder<TTarget> : Binder
     {
-        [field: Header("Target")]
-        [field: SerializeField]
+#if UNITY_2022_1_OR_NEWER
+        [field: UnityEngine.Header("Target")]
+        [field: UnityEngine.SerializeField]
+#endif
         protected TTarget Target { get; private set; }
 
         protected TargetBinder(TTarget target, BindMode mode)

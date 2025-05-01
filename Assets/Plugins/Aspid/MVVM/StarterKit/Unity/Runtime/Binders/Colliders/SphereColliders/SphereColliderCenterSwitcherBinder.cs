@@ -1,0 +1,35 @@
+#nullable enable
+using System;
+using UnityEngine;
+
+namespace Aspid.MVVM.StarterKit.Unity
+{
+    [Serializable]
+    public sealed class SphereColliderCenterSwitcherBinder : SwitcherBinder<SphereCollider, Vector3>
+    {
+        // ReSharper disable once MemberInitializerValueIgnored
+        [Header("Converter")]
+        [SerializeField] private Vector3CombineConverter? _converter = Vector3CombineConverter.Default;
+        
+        public SphereColliderCenterSwitcherBinder(
+            SphereCollider target,
+            Vector3 trueValue, 
+            Vector3 falseValue, 
+            BindMode mode) 
+            : this(target, trueValue, falseValue, null, mode) { }
+        
+        public SphereColliderCenterSwitcherBinder(
+            SphereCollider target,
+            Vector3 trueValue, 
+            Vector3 falseValue, 
+            Vector3CombineConverter? converter = null,
+            BindMode mode = BindMode.OneWay) 
+            : base(target, trueValue, falseValue, mode)
+        {
+            _converter = converter;
+        }
+
+        protected override void SetValue(Vector3 value) =>
+            Target.center = _converter?.Convert(value, Target.center) ?? value;
+    }
+}

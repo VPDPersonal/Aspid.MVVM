@@ -1,14 +1,20 @@
 using System;
-using UnityEngine;
 
-namespace Aspid.MVVM.StarterKit.Binders
+namespace Aspid.MVVM.StarterKit
 {
     [Serializable]
     public abstract class SwitcherBinder<T> : Binder, IBinder<bool>
     {
-        [Header("Parameters")]
-        [SerializeField] private T _trueValue; 
-        [SerializeField] private T _falseValue;
+#if UNITY_2022_1_OR_NEWER
+        [UnityEngine.Header("Parameters")]
+        [UnityEngine.SerializeField] 
+#endif
+        private T _trueValue;
+        
+#if UNITY_2022_1_OR_NEWER
+        [UnityEngine.SerializeField] 
+#endif
+        private T _falseValue;
 
         protected SwitcherBinder(T trueValue, T falseValue, BindMode mode)
             : base(mode)
@@ -31,9 +37,16 @@ namespace Aspid.MVVM.StarterKit.Binders
     [Serializable]
     public abstract class SwitcherBinder<TTarget, T> : TargetBinder<TTarget>, IBinder<bool>
     {
-        [Header("Parameters")]
-        [SerializeField] private T _trueValue; 
-        [SerializeField] private T _falseValue;
+#if UNITY_2022_1_OR_NEWER
+        [UnityEngine.Header("Parameters")]
+        [UnityEngine.SerializeField] 
+#endif
+        private T _trueValue; 
+        
+#if UNITY_2022_1_OR_NEWER
+        [UnityEngine.SerializeField] 
+#endif
+        private T _falseValue;
 
         protected SwitcherBinder(TTarget target, T trueValue, T falseValue, BindMode mode)
             : base(target, mode)

@@ -1,9 +1,9 @@
 using TMPro;
+using Aspid.MVVM;
 using UnityEngine;
 using UnityEngine.UI;
-using Aspid.MVVM.Mono;
-using Aspid.MVVM.Generation;
-using Aspid.MVVM.StarterKit.Binders;
+using Aspid.MVVM.Unity;
+using Aspid.MVVM.StarterKit.Unity;
 
 namespace Aspid.UI.Elements.Views
 {

@@ -1,12 +1,14 @@
 using System;
-using UnityEngine;
 
-namespace Aspid.MVVM.StarterKit.Converters
+namespace Aspid.MVVM.StarterKit
 {
     [Serializable]
-    public sealed class StringFormatConverter : IConverterString
+    public class StringFormatConverter : IConverter<string, string>
     {
-        [SerializeField] private string _format;
+#if UNITY_2022_1_OR_NEWER
+        [UnityEngine.SerializeField]
+#endif
+        private string _format;
 
         public StringFormatConverter()
         {

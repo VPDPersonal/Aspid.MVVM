@@ -1,4 +1,3 @@
-using Aspid.MVVM.Generation;
 using Aspid.MVVM.TodoList.Models;
 
 namespace Aspid.MVVM.TodoList.ViewModels

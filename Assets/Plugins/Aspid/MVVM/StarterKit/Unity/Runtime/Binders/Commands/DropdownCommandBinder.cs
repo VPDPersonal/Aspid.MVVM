@@ -1,0 +1,326 @@
+using TMPro;
+using System;
+using UnityEngine;
+
+namespace Aspid.MVVM.StarterKit.Unity
+{
+    [Serializable]
+    public sealed class DropdownCommandBinder : TargetBinder<TMP_Dropdown>, IBinder<IRelayCommand<int>>
+    {
+        // ReSharper disable once MemberInitializerValueIgnored
+        [Header("Parameter")]
+        [SerializeField] private bool _isBindInteractable = true;
+        
+        private IRelayCommand<int> _command;
+        
+        public override bool IsBind => Target is not null;
+        
+        public DropdownCommandBinder(TMP_Dropdown target, BindMode mode)
+            : this(target, true, mode) { }
+        
+        public DropdownCommandBinder(
+            TMP_Dropdown target, 
+            bool isBindInteractable = true,
+            BindMode mode = BindMode.OneWay)
+            : base(target, mode)
+        {
+            _isBindInteractable = isBindInteractable;
+        }
+
+        public void SetValue(IRelayCommand<int> command)
+        {
+            ReleaseCommand();
+            _command = command;
+            
+            Subscribe();
+            OnCanExecuteChanged(command);
+        }
+        
+        private void Subscribe()
+        {
+            Target.onValueChanged.AddListener(Execute);
+            _command.CanExecuteChanged += OnCanExecuteChanged;
+        }
+
+        private void Unsubscribe()
+        {
+            Target.onValueChanged.RemoveListener(Execute);
+            _command.CanExecuteChanged -= OnCanExecuteChanged;
+        }
+        
+        private void Execute(int value) 
+        {
+            OnCanExecuteChanged(_command);
+            _command?.Execute(value);
+        }
+
+        protected override void OnUnbound() =>
+            ReleaseCommand();
+
+        private void ReleaseCommand()
+        {
+            if (_command is not null) Unsubscribe();
+            _command = null;
+        }
+        
+        private void OnCanExecuteChanged(IRelayCommand<int> command)
+        {
+            if (!_isBindInteractable) return;
+            Target.interactable = command.CanExecute(Target.value);
+        }
+    }
+    
+    [Serializable]
+    public class DropdownCommandBinder<T> : TargetBinder<TMP_Dropdown>, IBinder<IRelayCommand<int, T>>
+    {
+        // ReSharper disable once MemberInitializerValueIgnored
+        [Header("Parameters")]
+        [SerializeField] private bool _isBindInteractable = true;
+        [SerializeField] private T _param;
+        
+        private IRelayCommand<int, T> _command;
+        
+        public T Param
+        {
+            get => _param;
+            set => _param = value;
+        }
+        
+        public override bool IsBind => Target is not null;
+        
+        public DropdownCommandBinder(TMP_Dropdown target, T param, BindMode mode)
+            : this(target, param, true, mode) { }
+        
+        public DropdownCommandBinder(
+            TMP_Dropdown target, 
+            T param,
+            bool isBindInteractable = true,
+            BindMode mode = BindMode.OneWay)
+            : base(target, mode)
+        {
+            _param = param;
+            _isBindInteractable = isBindInteractable;
+        }
+        
+        public void SetValue(IRelayCommand<int, T> command)
+        {
+            ReleaseCommand();
+            _command = command;
+            
+            Subscribe();
+            OnCanExecuteChanged(command);
+        }
+        
+        private void Subscribe()
+        {
+            Target.onValueChanged.AddListener(Execute);
+            _command.CanExecuteChanged += OnCanExecuteChanged;
+        }
+
+        private void Unsubscribe()
+        {
+            Target.onValueChanged.RemoveListener(Execute);
+            _command.CanExecuteChanged -= OnCanExecuteChanged;
+        }
+        
+        private void Execute(int value) 
+        {
+            OnCanExecuteChanged(_command);
+            _command?.Execute(value, Param);
+        }
+
+        protected override void OnUnbound() =>
+            ReleaseCommand();
+
+        private void ReleaseCommand()
+        {
+            if (_command is not null) Unsubscribe();
+            _command = null;
+        }
+        
+        private void OnCanExecuteChanged(IRelayCommand<int, T> command)
+        {
+            if (!_isBindInteractable) return;
+            Target.interactable = command.CanExecute(Target.value, Param);
+        }
+    }
+    
+    [Serializable]
+    public class DropdownCommandBinder<T1, T2> : TargetBinder<TMP_Dropdown>, IBinder<IRelayCommand<int, T1, T2>>
+    {
+        // ReSharper disable once MemberInitializerValueIgnored
+        [Header("Parameters")]
+        [SerializeField] private bool _isBindInteractable = true;
+        [SerializeField] private T1 _param1;
+        [SerializeField] private T2 _param2;
+
+        private IRelayCommand<int, T1, T2> _command;
+        
+        public T1 Param1
+        {
+            get => _param1;
+            set => _param1 = value;
+        }
+        
+        public T2 Param2
+        {
+            get => _param2;
+            set => _param2 = value;
+        }
+        
+        public override bool IsBind => Target is not null;
+        
+        public DropdownCommandBinder(TMP_Dropdown target, T1 param1, T2 param2, BindMode mode)
+            : this(target, param1, param2, true, mode) { }
+        
+        public DropdownCommandBinder(
+            TMP_Dropdown target,
+            T1 param1, 
+            T2 param2, 
+            bool isBindInteractable = true,
+            BindMode mode = BindMode.OneWay)
+            : base(target, mode)
+        {
+            _param1 = param1;
+            _param2 = param2;
+            _isBindInteractable = isBindInteractable;
+        }
+        
+        public void SetValue(IRelayCommand<int, T1, T2> command)
+        {
+            ReleaseCommand();            
+            _command = command;
+            
+            Subscribe();
+            OnCanExecuteChanged(command);
+        }
+        
+        private void Subscribe()
+        {
+            Target.onValueChanged.AddListener(Execute);
+            _command.CanExecuteChanged += OnCanExecuteChanged;
+        }
+
+        private void Unsubscribe()
+        {
+            Target.onValueChanged.RemoveListener(Execute);
+            _command.CanExecuteChanged -= OnCanExecuteChanged;
+        }
+        
+        private void Execute(int value) 
+        {
+            OnCanExecuteChanged(_command);
+            _command?.Execute(value, Param1, Param2);
+        }
+
+        protected override void OnUnbound() => 
+            ReleaseCommand();
+
+        private void ReleaseCommand()
+        {
+            if (_command is not null) Unsubscribe();
+            _command = null;
+        }
+        
+        private void OnCanExecuteChanged(IRelayCommand<int, T1, T2> command)
+        {
+            if (!_isBindInteractable) return;
+            Target.interactable = command.CanExecute(Target.value, Param1, Param2);
+        }
+    }
+    
+    [Serializable]
+    public class DropdownCommandBinder<T1, T2, T3> : TargetBinder<TMP_Dropdown>, IBinder<IRelayCommand<int, T1, T2, T3>>
+    {
+        // ReSharper disable once MemberInitializerValueIgnored
+        [Header("Parameters")]
+        [SerializeField] private bool _isBindInteractable = true;
+        [SerializeField] private T1 _param1;
+        [SerializeField] private T2 _param2;
+        [SerializeField] private T3 _param3;
+        
+        private IRelayCommand<int, T1, T2, T3> _command;
+        
+        public T1 Param1
+        {
+            get => _param1;
+            set => _param1 = value;
+        }
+        
+        public T2 Param2
+        {
+            get => _param2;
+            set => _param2 = value;
+        }
+        
+        public T3 Param3
+        {
+            get => _param3;
+            set => _param3 = value;
+        }
+        
+        public override bool IsBind => Target is not null;
+        
+        public DropdownCommandBinder(TMP_Dropdown target, T1 param1, T2 param2, T3 param3, BindMode mode)
+            : this(target, param1, param2, param3, true, mode) { }
+        
+        public DropdownCommandBinder(
+            TMP_Dropdown target,
+            T1 param1, 
+            T2 param2,
+            T3 param3,
+            bool isBindInteractable = true,
+            BindMode mode = BindMode.OneWay)
+            : base(target, mode)
+        {
+            mode.ThrowExceptionIfTwo();
+            
+            _param1 = param1;
+            _param2 = param2;
+            _param3 = param3;
+            _isBindInteractable = isBindInteractable;
+        }
+        
+        public void SetValue(IRelayCommand<int, T1, T2, T3> command)
+        {
+            ReleaseCommand();            
+            _command = command;
+            
+            Subscribe();
+            OnCanExecuteChanged(command);
+        }
+        
+        private void Subscribe()
+        {
+            Target.onValueChanged.AddListener(Execute);
+            _command.CanExecuteChanged += OnCanExecuteChanged;
+        }
+
+        private void Unsubscribe()
+        {
+            Target.onValueChanged.RemoveListener(Execute);
+            _command.CanExecuteChanged -= OnCanExecuteChanged;
+        }
+        
+        private void Execute(int value) 
+        {
+            OnCanExecuteChanged(_command);
+            _command?.Execute(value, Param1, Param2, Param3);
+        }
+
+        protected override void OnUnbound() => 
+            ReleaseCommand();
+
+        private void ReleaseCommand()
+        {
+            if (_command != null) Unsubscribe();
+            _command = null;
+        }
+        
+        private void OnCanExecuteChanged(IRelayCommand<int, T1, T2, T3> command)
+        {
+            if (!_isBindInteractable) return;
+            Target.interactable = command.CanExecute(Target.value, Param1, Param2, Param3);
+        }
+    }
+}

@@ -1,8 +1,6 @@
-#nullable enable
 using System;
-using Aspid.MVVM.StarterKit.Converters;
 
-namespace Aspid.MVVM.StarterKit.Binders
+namespace Aspid.MVVM.StarterKit
 {
     public class GenericCasterBinder<TFrom, TTo> : Binder, IBinder<TFrom>
     {

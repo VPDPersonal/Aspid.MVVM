@@ -1,6 +1,6 @@
 using System;
 
-namespace Aspid.MVVM.StarterKit.ViewModels
+namespace Aspid.MVVM.StarterKit
 {
     public readonly ref struct DynamicPropertyData<T>
     {

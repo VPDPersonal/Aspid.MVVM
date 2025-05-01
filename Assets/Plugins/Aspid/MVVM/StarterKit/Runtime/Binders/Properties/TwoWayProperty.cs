@@ -1,9 +1,6 @@
-#nullable enable
 using System;
-using UnityEngine;
-using Aspid.MVVM.StarterKit.Converters;
 
-namespace Aspid.MVVM.StarterKit.Binders
+namespace Aspid.MVVM.StarterKit
 {
     [Serializable]
     [BindModeOverride(IsAll = true)]
@@ -17,12 +14,15 @@ namespace Aspid.MVVM.StarterKit.Binders
             remove => _valueChanged -= value;
         }
         
-        [Header("Parameter")]
-        [SerializeField] private T? _value;
+#if UNITY_2022_1_OR_NEWER
+        [UnityEngine.Header("Parameter")]
+        [UnityEngine.SerializeField] 
+#endif
+        private T? _value;
         
-#if UNITY_2023_1_OR_NEWER
-        [Header("Converter")]
-        [SerializeReference]
+#if UNITY_2022_1_OR_NEWER
+        [UnityEngine.Header("Converter")]
+        [UnityEngine.SerializeReference]
         [SerializeReferenceDropdown]
 #endif
         private IConverter<T?, T?>? _converter;

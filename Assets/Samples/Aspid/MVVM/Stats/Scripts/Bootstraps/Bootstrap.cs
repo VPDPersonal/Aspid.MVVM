@@ -16,6 +16,7 @@ namespace Aspid.MVVM.Stats
         
         private void Awake()
         {
+            Application.targetFrameRate = 60;
             var hero = new Hero(_skillPointsAvailable);
             _editStatsView.Initialize(new EditStatsViewModel(hero));
             _readOnlyStatsView.Initialize(new ReadOnlyStatsViewModel(hero));

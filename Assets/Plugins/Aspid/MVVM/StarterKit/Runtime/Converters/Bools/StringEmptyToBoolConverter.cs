@@ -1,13 +1,14 @@
-#nullable enable
 using System;
-using UnityEngine;
 
-namespace Aspid.MVVM.StarterKit.Converters
+namespace Aspid.MVVM.StarterKit
 {
     [Serializable]
-    public sealed class StringEmptyToBoolConverter : IConverterStringToBool
+    public class StringEmptyToBoolConverter : IConverter<string?, bool>
     {
-        [SerializeField] private bool _isInvert;
+#if UNITY_2022_1_OR_NEWER
+        [UnityEngine.SerializeField]
+#endif
+        private bool _isInvert;
 
         public StringEmptyToBoolConverter()
             : this(false) { }
@@ -17,7 +18,7 @@ namespace Aspid.MVVM.StarterKit.Converters
             _isInvert = isInvert;
         }
 
-        public bool Convert(string value)
+        public bool Convert(string? value)
         {
             var to = string.IsNullOrEmpty(value);
             return _isInvert ? !to : to;

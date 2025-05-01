@@ -1,5 +1,4 @@
-#nullable enable
-namespace Aspid.MVVM.StarterKit.Binders
+namespace Aspid.MVVM.StarterKit
 {
     public interface IBindableProperty<T> : IReadOnlyBindableProperty<T>
     {

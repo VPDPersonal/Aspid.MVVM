@@ -3,7 +3,9 @@
     "rootNamespace": "",
     "references": [
         "Aspid.MVVM",
-        "Aspid.MVVM.StarterKit"
+        "Aspid.MVVM.Unity",
+        "Aspid.MVVM.StarterKit",
+        "Aspid.MVVM.StarterKit.Unity"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

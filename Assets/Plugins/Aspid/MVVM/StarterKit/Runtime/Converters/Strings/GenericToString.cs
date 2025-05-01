@@ -1,13 +1,14 @@
-#nullable enable
 using System;
-using UnityEngine;
 
-namespace Aspid.MVVM.StarterKit.Converters
+namespace Aspid.MVVM.StarterKit
 {
     [Serializable]
     public class GenericToString<TFrom> : IConverter<TFrom?, string?>
     {
-        [SerializeField] private string? _format;
+#if UNITY_2022_1_OR_NEWER
+        [UnityEngine.SerializeField]
+#endif
+        private string? _format;
         
         public GenericToString() { }
         

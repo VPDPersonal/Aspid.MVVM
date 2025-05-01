@@ -1,4 +1,4 @@
-namespace Aspid.MVVM.StarterKit.ViewModels
+namespace Aspid.MVVM.StarterKit
 {
     public sealed class EmptyViewModel : IViewModel
     {

@@ -1,7 +1,6 @@
 using System;
 using Aspid.MVVM;
 using UnityEngine;
-using Aspid.MVVM.Generation;
 using Aspid.UI.Elements.Models;
 using System.Collections.Generic;
 

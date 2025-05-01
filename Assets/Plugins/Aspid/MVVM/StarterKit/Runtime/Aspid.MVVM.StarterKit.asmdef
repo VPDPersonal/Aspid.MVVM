@@ -2,11 +2,7 @@
     "name": "Aspid.MVVM.StarterKit",
     "rootNamespace": "",
     "references": [
-        "Zenject",
-        "VContainer",
         "Aspid.MVVM",
-        "Unity.Localization",
-        "Unity.TextMeshPro",
         "Aspid.Collections.Observable",
         "SerializeReferenceDropdownRuntime"
     ],
@@ -19,24 +15,9 @@
     "defineConstraints": [],
     "versionDefines": [
         {
-            "name": "com.unity.textmeshpro",
-            "expression": "",
-            "define": "ASPID_MVVM_TEXT_MESH_PRO_INTEGRATION"
-        },
-        {
-            "name": "com.unity.localization",
-            "expression": "",
-            "define": "ASPID_MVVM_UNITY_LOCALIZATION_INTEGRATION"
-        },
-        {
             "name": "com.alexeytaranov.serializereferencedropdown",
             "expression": "",
             "define": "ASPID_MVVM_SERIALIZE_REFERENCE_DROPDOWN_INTEGRATION"
-        },
-        {
-            "name": "jp.hadashikick.vcontainer",
-            "expression": "",
-            "define": "ASPID_MVVM_VCONTAINER_INTEGRATION"
         }
     ],
     "noEngineReferences": false

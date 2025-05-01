@@ -1,6 +1,6 @@
 using System;
 
-namespace Aspid.MVVM.StarterKit.Binders
+namespace Aspid.MVVM.StarterKit
 {
     // ReSharper disable once PossibleInterfaceMemberAmbiguity
     public interface INumberReverseBinder : IReverseBinder<int>, IReverseBinder<long>, IReverseBinder<float>, IReverseBinder<double>

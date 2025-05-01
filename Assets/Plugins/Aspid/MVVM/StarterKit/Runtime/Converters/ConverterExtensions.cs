@@ -1,7 +1,6 @@
-#nullable enable
 using System;
 
-namespace Aspid.MVVM.StarterKit.Converters
+namespace Aspid.MVVM.StarterKit
 {
     public static class ConverterExtensions
     {

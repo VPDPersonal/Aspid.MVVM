@@ -1,6 +1,5 @@
 using UnityEngine;
-using Aspid.MVVM.Mono;
-using Aspid.MVVM.Generation;
+using Aspid.MVVM.Unity;
 
 namespace Aspid.MVVM.HelloWorld.Views
 {

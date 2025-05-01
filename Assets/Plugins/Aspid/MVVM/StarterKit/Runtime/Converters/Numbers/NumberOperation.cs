@@ -1,4 +1,4 @@
-namespace Aspid.MVVM.StarterKit.Converters
+namespace Aspid.MVVM.StarterKit
 {
     public enum NumberOperation
     {

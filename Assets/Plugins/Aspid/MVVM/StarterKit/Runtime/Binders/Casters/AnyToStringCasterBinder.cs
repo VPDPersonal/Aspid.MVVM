@@ -1,8 +1,6 @@
-#nullable enable
 using System;
-using Aspid.MVVM.StarterKit.Converters;
 
-namespace Aspid.MVVM.StarterKit.Binders
+namespace Aspid.MVVM.StarterKit
 {
     public sealed class AnyToStringCasterBinder : Binder, IBinder<object?>
     {
@@ -10,7 +8,7 @@ namespace Aspid.MVVM.StarterKit.Binders
         private readonly IConverter<object?, string?> _converter;
 
         public AnyToStringCasterBinder(Action<string?> setValue, BindMode mode = BindMode.OneWay)
-            : this(setValue, new ObjectToStringConverter(), mode) { }
+            : this(setValue, new GenericToString<object>(), mode) { }
         
         public AnyToStringCasterBinder(Action<string?> setValue, IConverter<object?, string?> converter, BindMode mode = BindMode.OneWay)
             : base(mode)

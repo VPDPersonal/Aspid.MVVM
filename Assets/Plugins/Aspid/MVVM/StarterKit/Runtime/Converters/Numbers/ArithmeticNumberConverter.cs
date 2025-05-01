@@ -1,18 +1,23 @@
-#nullable enable
 using System;
-using UnityEngine;
 
-namespace Aspid.MVVM.StarterKit.Converters
+namespace Aspid.MVVM.StarterKit
 {
     [Serializable]
-    public sealed class ArithmeticNumberConverter : 
-        IConverterDouble, IConverterIntToDouble, IConverterLongToDouble, IConverterFloatToDouble,
-        IConverterFloat, IConverterIntToFloat, IConverterLongToFloat, IConverterDoubleToFloat,
-        IConverterInt, IConverterLongToInt, IConverterFloatToInt, IConverterDoubleToInt,
-        IConverterLong, IConverterIntToLong, IConverterFloatToLong, IConverterDoubleToLong
+    public class ArithmeticNumberConverter : 
+        IConverter<double, double>, IConverter<int, double>, IConverter<long, double>, IConverter<float, double>,
+        IConverter<float, float>, IConverter<int, float>, IConverter<long, float>, IConverter<double, float>,
+        IConverter<int, int>, IConverter<long, int>, IConverter<float, int>, IConverter<double, int>,
+        IConverter<long, long>, IConverter<int, long>, IConverter<float, long>, IConverter<double, long>
     {
-        [SerializeField] private NumberOperation _operation;
-        [SerializeField] private double _coefficient;
+#if UNITY_2022_1_OR_NEWER
+        [UnityEngine.SerializeField]
+#endif
+        private NumberOperation _operation;
+        
+#if UNITY_2022_1_OR_NEWER
+        [UnityEngine.SerializeField] 
+#endif
+        private double _coefficient;
 
         public ArithmeticNumberConverter() { }
 

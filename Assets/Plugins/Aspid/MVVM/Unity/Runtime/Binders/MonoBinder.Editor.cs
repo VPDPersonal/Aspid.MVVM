@@ -1,9 +1,7 @@
 #if UNITY_EDITOR && !ASPID_MVVM_EDITOR_DISABLED
 #nullable disable
 using System;
-using System.Linq;
 using UnityEngine;
-using System.Reflection;
 using System.ComponentModel;
 
 namespace Aspid.MVVM.Unity
@@ -72,63 +70,6 @@ namespace Aspid.MVVM.Unity
             }
         }
 
-        partial void OnBindingDebug(in BindParameters parameters)
-        {
-            if (parameters.ViewModel != __view?.ViewModel) 
-                throw new Exception($"ViewModel not match. {GetBindParametersInfo(parameters)} {GetBinderIdInfo()}");
-
-            var id = parameters.Id;
-            if (__id != id)
-            {
-                if (!string.IsNullOrWhiteSpace(__id))
-                {
-                    string[] fieldNames = null;
-                    var viewType = __view.GetType();
-                    const BindingFlags binding = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance;
-                    
-                    for (var type = viewType; type is not null; type = type.BaseType)
-                    {
-                        if (type == typeof(object)) break;
-                        if (type == typeof(MonoView) || type == typeof(MonoBehaviour)) break;
-                        if (type.GetFields(binding).Any(CheckMember)) return;
-                    }
-                    
-                    bool CheckMember(FieldInfo field)
-                    {
-                        var attribute = field.GetCustomAttribute<BindIdAttribute>();
-                        if (attribute is null || attribute.Id != id) return false;
-
-                        var fieldType = field.FieldType.IsArray ? field.FieldType.GetElementType() : field.FieldType;
-                        
-                        if (fieldType is null) return false;
-                        if (fieldType.GetInterfaces().All(@interface => @interface != typeof(IBinder))) return false;
-                        
-                        return GetFieldNames().Any(fieldName => fieldName == field.Name);
-                    }
-
-                    string[] GetFieldNames()
-                    {
-                        if (fieldNames is not null) return fieldNames;
-                        
-                        var fieldName = __id;
-                        fieldNames = new string[4];
-                        fieldNames[0] = fieldName;
-
-                        var firstChar = char.ToLower(fieldName[0]);
-                        fieldName = firstChar + fieldName.Remove(0, 1);
-
-                        fieldNames[1] = fieldName;
-                        fieldNames[2] = "_" + fieldName;
-                        fieldNames[3] = "m_" + fieldName;
-
-                        return fieldNames;
-                    }
-                }
-                
-                throw new Exception($"Id not match. {GetBindParametersInfo(parameters)} {GetBinderIdInfo()}");
-            }
-        }
-
         [EditorBrowsable(EditorBrowsableState.Never)]
         private void SaveBinderDataInEditor()
         {
@@ -137,14 +78,6 @@ namespace Aspid.MVVM.Unity
             UnityEditor.EditorUtility.SetDirty(this);
             UnityEditor.SceneManagement.EditorSceneManager.MarkSceneDirty(gameObject.scene);
         }
-        
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        private string GetBinderIdInfo() =>
-            $"Binder {{ View: {__view}; ViewModel: {__view?.ViewModel}; Id: {__id} }}";
-        
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        private static string GetBindParametersInfo(in BindParameters parameters) =>
-            $"BindParameters: {{ ViewModel: {parameters.ViewModel}; Id: {parameters.Id} }}";
     }
 }
 #endif

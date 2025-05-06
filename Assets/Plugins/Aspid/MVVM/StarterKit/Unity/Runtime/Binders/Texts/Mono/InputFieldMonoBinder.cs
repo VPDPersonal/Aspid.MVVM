@@ -28,9 +28,8 @@ namespace Aspid.MVVM.StarterKit.Unity
         
         private bool _isNotifyValueChanged = true;
         
-        protected override void OnBound(in BindParameters parameters, bool isBound)
+        protected override void OnBound()
         {
-            if (!isBound) return;
             if (Mode is not (BindMode.TwoWay or BindMode.OneWayToSource)) return;
             
             CachedComponent.onValueChanged.AddListener(OnValueChanged);

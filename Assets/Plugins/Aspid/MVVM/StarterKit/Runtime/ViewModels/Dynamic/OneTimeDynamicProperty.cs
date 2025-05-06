@@ -9,16 +9,7 @@ namespace Aspid.MVVM.StarterKit
             _value = value;
         }
 
-        public BindResult AddBinder(IBinder binder)
-        {
-            if (binder.Mode is BindMode.TwoWay or BindMode.OneWayToSource)
-                throw new System.Exception();
-				    
-            if (binder is not IBinder<T> specificBinder)
-                throw new System.Exception($"Binder ({binder.GetType()}) is not {typeof(IBinder<IRelayCommand>)}");
-				    
-            specificBinder.SetValue(_value);
-            return new BindResult(true);
-        }
+        public IViewModelEventAdder GetAdder() =>
+            BindableMember<T>.OneTime(_value);
     }
 }

@@ -10,10 +10,10 @@ namespace Aspid.MVVM.StarterKit
             _value = value;
         }
 
-        public BindResult AddBinder(IBinder binder)
+        public IViewModelEventAdder GetAdder()
         {
             _event ??= new OneWayViewModelEvent<T>();
-            return new BindResult(_event.AddBinder(binder, _value));
+            return BindableMember<T>.OneWay(_event, _value);
         }
     }
 }

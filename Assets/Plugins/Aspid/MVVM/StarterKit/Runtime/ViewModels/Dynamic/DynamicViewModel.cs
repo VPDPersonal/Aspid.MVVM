@@ -10,27 +10,40 @@ namespace Aspid.MVVM.StarterKit
 #endif
         
         private readonly bool _throwErrorIfIdNotFind;
-        private readonly Dictionary<string, IDynamicProperty> _properties;
+        private readonly Dictionary<Id, IDynamicProperty> _properties;
         
-        public DynamicViewModel(Dictionary<string, IDynamicProperty> properties)
+        public DynamicViewModel(Dictionary<Id, IDynamicProperty> properties)
             : this(false, properties) { }
         
-        public DynamicViewModel(bool throwErrorIfNotFindProperty, Dictionary<string, IDynamicProperty> properties)
+        public DynamicViewModel(bool throwErrorIfNotFindProperty, Dictionary<Id, IDynamicProperty> properties)
         {
             _properties = properties;
             _throwErrorIfIdNotFind = throwErrorIfNotFindProperty;
         }
 
-        public BindResult AddBinder(IBinder binder, string propertyName)
+        public FindBindableMemberResult FindBindableMember(Id id)
         {
 #if UNITY_2022_1_OR_NEWER && !ASPID_MVVM_UNITY_PROFILER_DISABLED
             using (_addBinderMarker.Auto())
 #endif
             {
-                if (_properties.TryGetValue(propertyName, out var value))
-                    return value.AddBinder(binder);
+                if (_properties.TryGetValue(id, out var value))
+                    return new FindBindableMemberResult(true, value.GetAdder());
 
-                return !_throwErrorIfIdNotFind ? default : throw new ArgumentException(nameof(propertyName));
+                return !_throwErrorIfIdNotFind ? default : throw new ArgumentException(nameof(id));
+            }
+        }
+
+        public FindBindableMemberResult<T> FindBindableMember<T>(Id id)
+        {
+#if UNITY_2022_1_OR_NEWER && !ASPID_MVVM_UNITY_PROFILER_DISABLED
+            using (_addBinderMarker.Auto())
+#endif
+            {
+                if (_properties.TryGetValue(id, out var value))
+                    return new FindBindableMemberResult<T>(true, ((BindableMember<T>)value.GetAdder())!);
+
+                return !_throwErrorIfIdNotFind ? default : throw new ArgumentException(nameof(id));
             }
         }
     }

@@ -21,7 +21,7 @@ namespace Aspid.MVVM
         [BindMode(BindMode.OneWay, BindMode.OneTime)]
         private BindMode _mode = BindMode.TwoWay;
         
-        private IRemoveBinderFromViewModel? _removeBinderFromViewModel;
+        private IViewModelEventRemover? _viewModelEventRemover;
         
         /// <summary>
         /// Indicates whether binding is allowed.
@@ -46,57 +46,52 @@ namespace Aspid.MVVM
 
         protected Binder(BindMode mode)
         {
+            var b = new Binder[5];
+            b.BindSafely<Binder, int>(default);
             _mode = mode;
         }
 
-        /// <summary>
-        /// Binds a component using the specified binding parameters.
-        /// </summary>
-        /// <param name="parameters">
-        /// The parameters that contain the ViewModel and the component ID for binding, where the component ID matches
-        /// the property name in the ViewModel.
-        /// </param>
-        public void Bind(in BindParameters parameters)
+        public void Bind<T>(BindableMember<T> bindableMember)
         {
 #if UNITY_2022_1_OR_NEWER && !ASPID_MVVM_UNITY_PROFILER_DISABLED
-            using (_bindMarker.Auto()) 
+            using (_bindMarker.Auto())
 #endif
             {
-                if (IsBound) throw new Exception("This Binder is already bound.");
-                if (!IsBind) return;
-                
-                OnBinding(parameters);
-
-                var bindResult = parameters.AddBinder(this);
-                
-                _removeBinderFromViewModel = bindResult.BinderRemover;
-                IsBound = bindResult.IsBound;
-                
-                OnBound(parameters, bindResult.IsBound);
+                OnBindingInternal();
+                _viewModelEventRemover = bindableMember.AddBinder(this);
+                OnBoundInternal();
             }
         }
         
-        /// <summary>
-        /// Logic executed before binding, which can be overridden in derived classes.
-        /// </summary>
-        /// <param name="parameters">
-        /// The parameters that contain the ViewModel and the component ID for binding, where the component ID matches
-        /// the property name in the ViewModel.
-        /// </param>
-        protected virtual void OnBinding(in BindParameters parameters) { }
+        public void Bind(IViewModelEventAdder viewModelEventAdder)
+        {
+#if UNITY_2022_1_OR_NEWER && !ASPID_MVVM_UNITY_PROFILER_DISABLED
+            using (_bindMarker.Auto())
+#endif
+            {
+                OnBindingInternal();
+                _viewModelEventRemover = viewModelEventAdder.AddBinder(this);
+                OnBoundInternal();
+            }
+        }
+
+        private void OnBindingInternal()
+        {
+            if (IsBound) throw new Exception("This Binder is already bound.");
+            if (!IsBind) return;
+
+            OnBinding();
+        }
         
-        /// <summary>
-        /// Logic executed after binding, which can be overridden in derived classes.
-        /// </summary>
-        /// <param name="parameters">
-        /// The parameters that contain the ViewModel and the component ID for binding, where the component ID matches
-        /// the property name in the ViewModel.
-        /// </param>
-        /// <param name="isBound">
-        /// Indicates whether the binding operation was successful. 
-        /// <c>true</c> if the binding was successful; otherwise, <c>false</c>.
-        /// </param>
-        protected virtual void OnBound(in BindParameters parameters, bool isBound) { }
+        protected virtual void OnBinding() { }
+
+        private void OnBoundInternal()
+        {
+            IsBound = true;
+            OnBound();
+        }
+        
+        protected virtual void OnBound() { }
         
         /// <summary>
         /// Unbinds the component from the bound <see cref="IViewModel"/>.
@@ -111,8 +106,8 @@ namespace Aspid.MVVM
                 
                 OnUnbinding();
                 
-                _removeBinderFromViewModel?.RemoveBinder(this);
-                _removeBinderFromViewModel = null;
+                _viewModelEventRemover?.RemoveBinder(this);
+                _viewModelEventRemover = null;
                 IsBound = false;
                 
                 OnUnbound();

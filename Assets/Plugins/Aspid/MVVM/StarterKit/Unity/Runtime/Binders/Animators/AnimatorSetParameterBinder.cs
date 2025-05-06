@@ -34,10 +34,8 @@ namespace Aspid.MVVM.StarterKit.Unity
         
         protected abstract void SetParameter(T? value);
         
-        protected override void OnBound(in BindParameters parameters, bool isBound)
+        protected override void OnBound()
         {
-            if (!isBound) return;
-            
             Command = new RelayCommand<T>(SetParameter, CanExecute);
             ValueChanged?.Invoke(Command);
         }

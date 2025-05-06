@@ -67,11 +67,9 @@ namespace Aspid.MVVM.StarterKit
             Changed?.Invoke(value);
         }
 
-        protected override void OnBound(in BindParameters parameters, bool isBound)
+        protected override void OnBound()
         {
-            if (!isBound) return;
             if (Mode is not BindMode.OneWayToSource) return;
-            
             _valueChanged?.Invoke(Value);
         }
 

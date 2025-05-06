@@ -11,19 +11,18 @@ namespace Aspid.MVVM.StarterKit
         {
             _value = value;
         }
-
-        public BindResult AddBinder(IBinder binder)
+        
+        public IViewModelEventAdder GetAdder()
         {
-            var mode = binder.Mode;
-            _event ??= new TwoWayViewModelEvent<T>();
+            _event ??= new TwoWayViewModelEvent<T>()
+            {
+                SetValue = SetValue
+            };
 
-            if (mode is BindMode.TwoWay or BindMode.OneWayToSource)
-                _event.SetValue = SetValue;
-            
-            return new BindResult(_event.AddBinder(binder, _value, mode));
+            return BindableMember<T>.TwoWay(_event, _value);
         }
 
-        private void SetValue(T value)
+        private void SetValue(T? value)
         {
             if (EqualityComparer<T>.Default.Equals(_value, value)) return;
             

@@ -1,5 +1,10 @@
-using UnityEngine;
+using System;
 using System.Diagnostics;
+#if UNITY_2022_1_OR_NEWER
+using Attribute = UnityEngine.PropertyAttribute;
+#else
+using Attribute = System.Attribute;
+#endif
 
 namespace Aspid.MVVM
 {
@@ -12,7 +17,8 @@ namespace Aspid.MVVM
 #else
     [Conditional("DEBUG")]
 #endif
-    public sealed class BindModeAttribute : PropertyAttribute
+    [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property)]
+    public sealed class BindModeAttribute : Attribute
     {
         /// <summary>
         /// Gets or sets a value indicating whether all binding modes (except <see cref="BindMode.None"/>) are allowed.

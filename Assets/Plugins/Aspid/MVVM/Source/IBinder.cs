@@ -11,15 +11,10 @@ namespace Aspid.MVVM
         /// Default is <see cref="BindMode.OneWay"/>.
         /// </summary>
         public BindMode Mode => BindMode.OneWay;
-        
-        /// <summary>
-        /// Binds a component using the specified binding parameters.
-        /// </summary>
-        /// <param name="parameters">
-        /// The parameters that contain the ViewModel and the component ID for binding, where the component ID matches
-        /// the property name in the ViewModel.
-        /// </param>
-        public void Bind(in BindParameters parameters);
+
+        public void Bind<T>(BindableMember<T> bindableMember);
+
+        public void Bind(IViewModelEventAdder viewModelEventAdder);
         
         /// <summary>
         /// Unbinds the component from the bound s<see cref="IViewModel"/>.

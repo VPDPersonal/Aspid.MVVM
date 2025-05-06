@@ -34,10 +34,8 @@ namespace Aspid.MVVM.StarterKit
         public void SetValue(T? value) =>
             _setValue.Invoke(value);
 
-        protected override void OnBound(in BindParameters parameters, bool isBound)
+        protected override void OnBound()
         {
-            if (!isBound) return;
-            
             if (_onBoundValueChanged is not null)
                 OnValueChanged(_onBoundValueChanged.Invoke());
         }
@@ -98,10 +96,8 @@ namespace Aspid.MVVM.StarterKit
         public void SetValue(T? value) =>
             _setValue.Invoke(_target, value);
 
-        protected override void OnBound(in BindParameters parameters, bool isBound)
+        protected override void OnBound()
         {
-            if (!isBound) return;
-            
             if (_onBoundValueChanged is not null)
                 OnValueChanged(_onBoundValueChanged.Invoke(_target));
         }

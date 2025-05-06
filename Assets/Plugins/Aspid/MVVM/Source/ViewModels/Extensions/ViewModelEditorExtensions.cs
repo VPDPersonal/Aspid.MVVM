@@ -26,6 +26,7 @@ namespace Aspid.MVVM
 #endif
         public static void InvokeAllChangedEventsDebug(this IViewModel viewModel)
         {
+#if UNITY_2022_1_OR_NEWER
             const BindingFlags bindingFlags = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance;
 
             var bindFields = new List<(Type type, FieldInfo field)>();
@@ -67,6 +68,7 @@ namespace Aspid.MVVM
                 var eventInvokeMethod = eventField?.FieldType.GetMethod("Invoke");
                 eventInvokeMethod?.Invoke(eventInstance, new[] { bindField.field.GetValue(viewModel) });
             }
+#endif
         }
     }
 }

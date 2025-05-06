@@ -7,7 +7,7 @@ namespace Aspid.MVVM
     /// Represents a one-way to source binding event that allows the View to notify the ViewModel of changes.
     /// </summary>
     /// <typeparam name="T">The type of the value managed by the event.</typeparam>
-    public sealed class OneWayToSourceViewModelEvent<T> : IRemoveBinderFromViewModel
+    public sealed class OneWayToSourceViewModelEvent<T> : IViewModelEvent
     {
         private readonly Action<T?> _setValue;
 
@@ -28,12 +28,12 @@ namespace Aspid.MVVM
         /// <exception cref="InvalidOperationException">
         /// Thrown if the binder is not of type <see cref="IReverseBinder{T}"/> or if the binding mode is not <see cref="BindMode.OneWayToSource"/>.
         /// </exception>
-        public IRemoveBinderFromViewModel AddBinder(IBinder binder)
+        public IViewModelEventRemover? AddBinder(IBinder binder)
         {
             GetReverseBinder(binder).ValueChanged += _setValue;
             return this;
         }
-
+        
         /// <summary>
         /// Removes a binder from the event.
         /// </summary>
@@ -41,7 +41,7 @@ namespace Aspid.MVVM
         /// <exception cref="InvalidOperationException">
         /// Thrown if the binder is not of type <see cref="IReverseBinder{T}"/> or if the binding mode is not <see cref="BindMode.OneWayToSource"/>.
         /// </exception>
-        void IRemoveBinderFromViewModel.RemoveBinder(IBinder binder) =>
+        public void RemoveBinder(IBinder binder) =>
             GetReverseBinder(binder).ValueChanged -= _setValue;
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

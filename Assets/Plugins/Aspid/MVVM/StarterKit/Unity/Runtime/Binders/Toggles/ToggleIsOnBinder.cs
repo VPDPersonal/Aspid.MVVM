@@ -33,9 +33,8 @@ namespace Aspid.MVVM.StarterKit.Unity
             _isNotifyValueChanged = true;
         }
         
-        protected override void OnBound(in BindParameters parameters, bool isBound)
+        protected override void OnBound()
         {
-            if (!isBound) return;
             if (Mode is not (BindMode.TwoWay or BindMode.OneWayToSource)) return;
             
             Target.onValueChanged.AddListener(OnValueChanged);

@@ -11,6 +11,8 @@ namespace Aspid.MVVM.StarterKit.Unity
         [Header("Parameters")]
         [SerializeField] private bool _disabledWhenNull;
 
+        public ImageSpriteBinder(Image target) : this(target, BindMode.OneWay) { }
+        
         public ImageSpriteBinder(Image target, BindMode mode)
             : this(target, true, mode) { }
         

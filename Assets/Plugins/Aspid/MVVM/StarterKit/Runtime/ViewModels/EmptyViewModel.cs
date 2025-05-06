@@ -2,6 +2,10 @@ namespace Aspid.MVVM.StarterKit
 {
     public sealed class EmptyViewModel : IViewModel
     {
-        public BindResult AddBinder(IBinder binder, string propertyName) => default;
+        public FindBindableMemberResult FindBindableMember(Id id) =>
+            default;
+
+        public FindBindableMemberResult<T> FindBindableMember<T>(Id id) => 
+            default;
     }
 }

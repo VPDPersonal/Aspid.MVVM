@@ -40,9 +40,8 @@ namespace Aspid.MVVM.StarterKit.Unity
         public void SetValue(double value) =>
             SetValueInternal((float)value);
 
-        protected override void OnBound(in BindParameters parameters, bool isBound)
+        protected override void OnBound()
         {
-            if (!isBound) return;
             if (Mode is not (BindMode.TwoWay or BindMode.OneWayToSource)) return;
             
             CachedComponent.onValueChanged.AddListener(OnValueChanged);

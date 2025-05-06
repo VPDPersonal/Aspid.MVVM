@@ -18,7 +18,7 @@ namespace Aspid.MVVM
 #if UNITY_2022_1_OR_NEWER
         [UnityEngine.SerializeField]
 #endif
-        // [BindMode(BindMode.OneWay, BindMode.OneTime)]
+        [BindMode(BindMode.OneWay, BindMode.OneTime)]
         private BindMode _mode = BindMode.TwoWay;
         
         private IViewModelEventRemover? _viewModelEventRemover;

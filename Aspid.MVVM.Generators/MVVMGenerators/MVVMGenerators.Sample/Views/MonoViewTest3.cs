@@ -53,7 +53,7 @@ public class NewSliderBinder : IBinder<Slider>
     {
         throw new System.NotImplementedException();
     }
-    public void Bind(in BindParameters parameters) { }
+    public void Bind() { }
 
     public void Bind<T1>(BindableMember<T1> bindableMember)
     {

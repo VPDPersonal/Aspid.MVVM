@@ -9,7 +9,7 @@ public class SliderBinder : IBinder<IRelayCommand<int>>
 
     public void SetValue(IRelayCommand<int> value) { }
 
-    public void Bind(in BindParameters parameters) { }
+    public void Bind() { }
 
     public void Bind<T>(BindableMember<T> bindableMember)
     {

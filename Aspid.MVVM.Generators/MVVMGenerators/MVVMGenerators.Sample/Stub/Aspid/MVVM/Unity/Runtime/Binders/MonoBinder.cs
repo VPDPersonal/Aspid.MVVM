@@ -15,7 +15,7 @@ namespace Aspid.MVVM.Unity
         private static readonly global::Unity.Profiling.ProfilerMarker _bindMarker = new("MonoBinder.Bind");
         private static readonly global::Unity.Profiling.ProfilerMarker _unbindMarker = new("MonoBinder.Unbind");
 #endif
-        // [BindMode(BindMode.OneWay, BindMode.OneTime)]
+        [BindMode(BindMode.OneWay, BindMode.OneTime)]
         [SerializeField] private BindMode _mode = BindMode.TwoWay;
         
         private IViewModelEventRemover _viewModelEventRemover;

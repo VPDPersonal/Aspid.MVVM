@@ -43,6 +43,7 @@ public static class FindBindableMembersBody
             {EditorBrowsableAttribute}
             {General.GeneratedCodeViewModelAttribute}
             private static readonly {Classes.ProfilerMarker} __findBindableMemberMarker = new("{className}.FindBindableMember");
+            private static readonly {Classes.ProfilerMarker} __findBindableMemberMarkerT = new("{className}.FindBindableMember<T>");
             #endif
             """);
     }
@@ -73,7 +74,7 @@ public static class FindBindableMembersBody
     private static CodeWriter AppendFindBindableMemberBody(this CodeWriter code, ViewModelDataSpan span, bool isGeneric)
     {
         code.AppendLine($"#if !{Defines.ASPID_MVVM_UNITY_PROFILER_DISABLED}")
-            .AppendLine("using (__findBindableMemberMarker.Auto())")
+            .AppendLine(isGeneric ? "using (__findBindableMemberMarkerT.Auto())" : "using (__findBindableMemberMarker.Auto())")
             .AppendLine("#endif")
             .BeginBlock();
         

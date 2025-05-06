@@ -1,8 +1,5 @@
 using System;
-using System.Linq;
-using System.Reflection;
 using System.Diagnostics;
-using System.Collections.Generic;
 
 namespace Aspid.MVVM
 {
@@ -26,6 +23,7 @@ namespace Aspid.MVVM
 #endif
         public static void InvokeAllChangedEventsDebug(this IViewModel viewModel)
         {
+#if UNITY_EDITOR || (!UNITY_EDITOR && DEBUG)
             const BindingFlags bindingFlags = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance;
 
             var bindFields = new List<(Type type, FieldInfo field)>();
@@ -67,6 +65,7 @@ namespace Aspid.MVVM
                 var eventInvokeMethod = eventField?.FieldType.GetMethod("Invoke");
                 eventInvokeMethod?.Invoke(eventInstance, new[] { bindField.field.GetValue(viewModel) });
             }
+#endif
         }
     }
 }

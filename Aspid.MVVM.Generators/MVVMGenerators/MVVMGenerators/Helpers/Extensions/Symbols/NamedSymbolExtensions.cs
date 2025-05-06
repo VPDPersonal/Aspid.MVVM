@@ -1,5 +1,6 @@
 using Microsoft.CodeAnalysis;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 
 namespace MVVMGenerators.Helpers.Extensions.Symbols;
 
@@ -17,12 +18,20 @@ public static class NamedSymbolExtensions
     
     public static IReadOnlyList<ISymbol> FillMembers(
         this INamedTypeSymbol symbol,
-        IList<IFieldSymbol>? fields = null,
-        IList<IMethodSymbol>? methods = null,
-        IList<IPropertySymbol>? properties = null)
+        in IList<IFieldSymbol>? fields = null,
+        in IList<IMethodSymbol>? methods = null,
+        in IList<IPropertySymbol>? properties = null)
+    {
+        return FillMembers(symbol.GetMembers(), fields, methods, properties);
+    }
+    
+    public static IReadOnlyList<ISymbol> FillMembers(
+        this ImmutableArray<ISymbol> members,
+        in IList<IFieldSymbol>? fields = null,
+        in IList<IMethodSymbol>? methods = null,
+        in IList<IPropertySymbol>? properties = null)
     {
         var index = 0;
-        var members = symbol.GetMembers();
         var otherMembers = new List<ISymbol>(members);
 
         foreach (var member in members)

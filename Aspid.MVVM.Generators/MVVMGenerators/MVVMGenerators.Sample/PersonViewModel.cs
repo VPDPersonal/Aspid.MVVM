@@ -1,4 +1,4 @@
-using Aspid.MVVM.Generation;
+using Aspid.MVVM;
 
 namespace MVVMGenerators.Sample;
 

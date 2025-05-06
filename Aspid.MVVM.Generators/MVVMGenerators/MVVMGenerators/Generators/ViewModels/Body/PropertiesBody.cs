@@ -1,10 +1,11 @@
 using System;
+using Microsoft.CodeAnalysis;
 using MVVMGenerators.Helpers;
+using MVVMGenerators.Helpers.Data;
 using MVVMGenerators.Helpers.Descriptions;
+using MVVMGenerators.Helpers.Extensions.Writer;
 using MVVMGenerators.Generators.ViewModels.Data;
-using MVVMGenerators.Helpers.Extensions.Symbols;
 using MVVMGenerators.Generators.ViewModels.Data.Members;
-using MVVMGenerators.Generators.ViewModels.Data.Members.Fields;
 
 namespace MVVMGenerators.Generators.ViewModels.Body;
 
@@ -12,15 +13,30 @@ public static class PropertiesBody
 {
     // ReSharper disable once InconsistentNaming
     private static readonly string EditorBrowsableAttribute = $"[{Classes.EditorBrowsableAttribute.Global}({Classes.EditorBrowsableState.Global}.Never)]";
-    
-    public static CodeWriter AppendPropertiesBody(this CodeWriter code, ViewModelDataSpan data)
+
+    public static void Generate(
+        string @namespace,
+        in ViewModelDataSpan data,
+        in DeclarationText declaration,
+        in SourceProductionContext context)
     {
-        var fields = data.Fields;
-        var properties = data.BindAlsoProperties;
+        if (data.Members.IsEmpty) return;
         
-        code
-            .AppendEvents(fields, properties)
-            .AppendViewModelEvents(fields, properties)
+        var code = new CodeWriter();
+
+        code.AppendClassBegin(@namespace, declaration)
+            .AppendPropertiesBody(data)
+            .AppendClassEnd(@namespace);
+
+        context.AddSource(declaration.GetFileName(@namespace, "Properties"), code.GetSourceText());
+    }
+
+    private static CodeWriter AppendPropertiesBody(this CodeWriter code, ViewModelDataSpan data)
+    {
+        var fields = data.MembersByType.Fields;
+        
+        code.AppendEvents(data.Members)
+            .AppendViewModelEvents(data.Members)
             .AppendProperties(fields)
             .AppendSetMethods(fields);
         
@@ -30,28 +46,36 @@ public static class PropertiesBody
     #region Events
     private static CodeWriter AppendEvents(
         this CodeWriter code, 
-        in ViewModelFieldsSpan fields, 
-        in ReadOnlySpan<BindAlsoProperty> bindAlsoProperties)
+        in ReadOnlySpan<BindableMember> bindableMembers)
     {
-        foreach (var field in fields.OneWayFields)
-            code.AppendEvent(field)
-                .AppendLine();
-        
-        foreach (var field in fields.TwoWayFields)
-            code.AppendEvent(field)
-                .AppendLine();
-        
-        foreach (var property in bindAlsoProperties)
-            code.AppendEvent(property.Type.ToDisplayStringGlobal(), Classes.OneWayViewModelEvent.Global, property.EventName, property.ViewModelEventName)
-                .AppendLine();
+        foreach (var bindableMember in bindableMembers)
+        {
+            if (bindableMember.Mode is BindMode.OneTime or BindMode.OneWayToSource) continue;
+
+            switch (bindableMember)
+            {
+                case BindableField bindableField:
+                    {
+                        code.AppendEvent(bindableField.Event)
+                            .AppendLine();
+                        break;
+                    }
+                
+                case BindableBindAlso bindableBindAlso:
+                    {
+                        code.AppendEvent(bindableBindAlso.Event)
+                            .AppendLine();
+                        break;
+                    }
+            }
+        }
         
         return code;
     }
 
-    private static CodeWriter AppendEvent(this CodeWriter code, in ViewModelField field)
+    private static CodeWriter AppendEvent(this CodeWriter code, in ViewModelEvent viewModelEvent)
     {
-        if (field.Mode is BindMode.None or BindMode.OneTime or BindMode.OneWayToSource) return code;
-        return code.AppendEvent(field.Type, field.Event.EventType!, field.Event.Name!, field.Event.FieldName!);
+        return code.AppendEvent(viewModelEvent.Type!, viewModelEvent.EventType!, viewModelEvent.Name!, viewModelEvent.FieldName!);
     }
     
     private static CodeWriter AppendEvent(
@@ -85,31 +109,37 @@ public static class PropertiesBody
     #region ViewModel Events
     private static CodeWriter AppendViewModelEvents(
         this CodeWriter code,
-        in ViewModelFieldsSpan fields, 
-        in ReadOnlySpan<BindAlsoProperty> bindAlsoProperties)
+        in ReadOnlySpan<BindableMember> bindableMembers)
     {
-        foreach (var field in fields.OneWayFields)
-            code.AppendViewModelEvent(field)
-                .AppendLine();
-        
-        foreach (var field in fields.TwoWayFields)
-            code.AppendViewModelEvent(field)
-                .AppendLine();
-        
-        foreach (var field in fields.OneWayToSourceFields)
-            code.AppendViewModelEvent(field)
-                .AppendLine();
+        foreach (var bindableMember in bindableMembers)
+        {
+            if (bindableMember.Mode is BindMode.OneTime) continue;
 
-        foreach (var property in bindAlsoProperties)
-            code.AppendViewModelEvent(property.Type.ToDisplayStringGlobal(), Classes.OneWayViewModelEvent.Global, property.ViewModelEventName);
-
+            switch (bindableMember)
+            {
+                case BindableField bindableField:
+                    {
+                        code.AppendViewModelEvent(bindableField.Event)
+                            .AppendLine();
+                        break;
+                    }
+                
+                case BindableBindAlso bindableBindAlso:
+                    {
+                        code.AppendViewModelEvent(bindableBindAlso.Event)
+                            .AppendLine();
+                        break;
+                    }
+            }
+        }
         return code;
     }
 
-    private static CodeWriter AppendViewModelEvent(this CodeWriter code, in ViewModelField field)
+    private static CodeWriter AppendViewModelEvent(this CodeWriter code, in ViewModelEvent bindableField)
     {
-        if (!field.Event.Has) return code;
-        return code.AppendViewModelEvent(field.Type, field.Event.EventType!, field.Event.FieldName!);
+        return !bindableField.Has 
+            ? code 
+            : code.AppendViewModelEvent(bindableField.Type!, bindableField.EventType!, bindableField.FieldName!);
     }
     
     private static CodeWriter AppendViewModelEvent(this CodeWriter code, string type, string eventType, string eventFieldName)
@@ -125,23 +155,23 @@ public static class PropertiesBody
     #endregion
 
     #region Properties
-    private static CodeWriter AppendProperties(this CodeWriter code, in ViewModelFieldsSpan fields)
+    private static CodeWriter AppendProperties(this CodeWriter code, in CastedSpan<BindableMember, BindableField> bindableFields)
     {
-        foreach (var field in fields.All)
+        foreach (var field in bindableFields)
             code.AppendProperty(field)
                 .AppendLine();
         
         return code;
     }
 
-    private static CodeWriter AppendProperty(this CodeWriter code, in ViewModelField field)
+    private static CodeWriter AppendProperty(this CodeWriter code, in BindableField bindableField)
     {
-        if (field.IsReadOnly)
+        if (bindableField.IsReadOnly)
         {
             return code.AppendMultiline(
                 $"""
                 {General.GeneratedCodeViewModelAttribute}
-                {field.GeneralAccessAsText}{field.Type} {field.PropertyName} => {field.FieldName};
+                {bindableField.GeneralAccessAsText}{bindableField.Type} {bindableField.GeneratedName} => {bindableField.SourceName};
                 """
             );
         }
@@ -149,10 +179,10 @@ public static class PropertiesBody
         return code.AppendMultiline(
             $$"""
             {{General.GeneratedCodeViewModelAttribute}}
-            {{field.GeneralAccessAsText}}{{field.Type}} {{field.PropertyName}}
+            {{bindableField.GeneralAccessAsText}}{{bindableField.Type}} {{bindableField.GeneratedName}}
             {
-                {{field.GetAccessAsText}}get => {{field.FieldName}};
-                {{field.SetAccessAsText}}set => Set{{field.PropertyName}}(value);
+                {{bindableField.GetAccessAsText}}get => {{bindableField.SourceName}};
+                {{bindableField.SetAccessAsText}}set => Set{{bindableField.GeneratedName}}(value);
             }
             """
         );
@@ -160,44 +190,40 @@ public static class PropertiesBody
     #endregion
 
     #region Set Methods
-    private static void AppendSetMethods(this CodeWriter code, in ViewModelFieldsSpan fields)
+    private static void AppendSetMethods(this CodeWriter code, in CastedSpan<BindableMember, BindableField> bindableFields)
     {
-        foreach (var field in fields.OneWayFields)
-            code.AppendSetMethod(field)
+        foreach (var bindableField in bindableFields)
+        {
+            if (bindableField.Mode is BindMode.OneTime) continue;
+            
+            code.AppendSetMethod(bindableField)
                 .AppendLine();
-        
-        foreach (var field in fields.TwoWayFields)
-            code.AppendSetMethod(field)
-                .AppendLine();
-        
-        foreach (var field in fields.OneWayToSourceFields)
-            code.AppendSetMethod(field)
-                .AppendLine();
+        }
     }
 
-    private static CodeWriter AppendSetMethod(this CodeWriter code, in ViewModelField field)
+    private static CodeWriter AppendSetMethod(this CodeWriter code, in BindableField bindableField)
     {
-        if (field.Mode is BindMode.None or BindMode.OneTime) return code;
+        if (bindableField.Mode is BindMode.OneTime) return code;
         
-        var changedMethod = $"On{field.PropertyName}Changed";
-        var changingMethod = $"On{field.PropertyName}Changing";
+        var changedMethod = $"On{bindableField.GeneratedName}Changed";
+        var changingMethod = $"On{bindableField.GeneratedName}Changing";
         
-        var eventInvoke = field.Event.Has && field.Mode is not BindMode.OneWayToSource 
-            ? $"\n\t{field.Event.FieldName}?.Invoke({field.FieldName});" 
+        var eventInvoke = bindableField.Event.Has && bindableField.Mode is not BindMode.OneWayToSource 
+            ? $"\n\t{bindableField.Event.FieldName}?.Invoke({bindableField.SourceName});" 
             : string.Empty;
 
-        foreach (var property in field.BindAlso)
-            eventInvoke += $"\n\t{property.ViewModelEventName}?.Invoke({property.Name});";
+        foreach (var property in bindableField.BindAlso)
+            eventInvoke += $"\n\t{property.Event.FieldName}?.Invoke({property.SourceName});";
         
         return code.AppendMultiline(
                 $$"""
                 {{General.GeneratedCodeViewModelAttribute}}
-                private void Set{{field.PropertyName}}({{field.Type}} value)
+                private void Set{{bindableField.GeneratedName}}({{bindableField.Type}} value)
                 {
-                    if ({{Classes.EqualityComparer.Global}}<{{field.Type}}>.Default.Equals({{field.FieldName}}, value)) return;
+                    if ({{Classes.EqualityComparer.Global}}<{{bindableField.Type}}>.Default.Equals({{bindableField.SourceName}}, value)) return;
                     
-                    {{changingMethod}}({{field.FieldName}}, value);
-                    {{field.FieldName}} = value;
+                    {{changingMethod}}({{bindableField.SourceName}}, value);
+                    {{bindableField.SourceName}} = value;
                     {{changedMethod}}(value);{{eventInvoke}}
                 }
                 """
@@ -206,12 +232,12 @@ public static class PropertiesBody
         .AppendMultiline(
             $"""
             {General.GeneratedCodeViewModelAttribute}
-            partial void {changingMethod}({field.Type} oldValue, {field.Type} newValue);
+            partial void {changingMethod}({bindableField.Type} oldValue, {bindableField.Type} newValue);
 
             {General.GeneratedCodeViewModelAttribute}
-            partial void {changedMethod}({field.Type} newValue);
+            partial void {changedMethod}({bindableField.Type} newValue);
             """
         );
     }
-  #endregion
+    #endregion
 }

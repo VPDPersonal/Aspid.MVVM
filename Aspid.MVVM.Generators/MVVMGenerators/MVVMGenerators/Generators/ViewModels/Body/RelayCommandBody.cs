@@ -1,6 +1,8 @@
 using System.Linq;
 using System.Text;
+using Microsoft.CodeAnalysis;
 using MVVMGenerators.Helpers;
+using MVVMGenerators.Helpers.Data;
 using MVVMGenerators.Helpers.Descriptions;
 using MVVMGenerators.Helpers.Extensions.Writer;
 using MVVMGenerators.Generators.ViewModels.Data;
@@ -11,22 +13,38 @@ namespace MVVMGenerators.Generators.ViewModels.Body;
 public static class RelayCommandBody
 {
     private const string GeneratedAttribute = General.GeneratedCodeViewModelAttribute;
-    
     private static readonly string EditorBrowsableAttribute = $"[{Classes.EditorBrowsableAttribute.Global}({Classes.EditorBrowsableState.Global}.Never)]";
+
+    public static void Generate(
+        string @namespace,
+        in ViewModelDataSpan data,
+        in DeclarationText declaration,
+        in SourceProductionContext context)
+    {
+        if (data.MembersByType.Commands.IsEmpty) return;
+        
+        var code = new CodeWriter();
+            
+        code.AppendClassBegin(@namespace, declaration)
+            .AppendRelayCommandBody(data.MembersByType.Commands)
+            .AppendClassEnd(@namespace);
+            
+        context.AddSource(declaration.GetFileName(@namespace, "Commands"), code.GetSourceText());
+    }
     
-    public static CodeWriter AppendRelayCommandBody(this CodeWriter code, in ViewModelDataSpan data)
+    private static CodeWriter AppendRelayCommandBody(this CodeWriter code, in CastedSpan<BindableMember, BindableCommand> bindableCommands)
     {
         var index = 0;
-        var count = data.Commands.Length;
+        var count = bindableCommands.Length;
         
-        foreach (var command in data.Commands)
+        foreach (var command in bindableCommands)
         {
-            var fieldName = command.FieldName;
-            var methodName = command.Execute.Name;
-            var propertyName = command.PropertyName;
+            var fieldName = command.SourceName;
+            var methodName = command.Member.Name;
+            var propertyName = command.GeneratedName;
             
-            var type = command.GetTypeName();
-            var canExecuteAction = GetCanExecuteAction(command);
+            var type = command.Type;
+            var canExecuteAction = GetCanExecuteAction((BindableCommand)command);
             
             code.AppendMultiline(
                 $"""
@@ -45,9 +63,9 @@ public static class RelayCommandBody
         return code;
     }
 
-    private static string GetCanExecuteAction(in RelayCommandData command)
+    private static string GetCanExecuteAction(BindableCommand command)
     {
-        var canExecuteName = new StringBuilder(command.CanExecuteName ?? "");
+        var canExecuteName = new StringBuilder(command.CanExecute ?? "");
             
         if (canExecuteName.Length != 0)
         {
@@ -57,11 +75,11 @@ public static class RelayCommandBody
             }
             else
             {
-                var parameters = command.Execute.Parameters;
+                var parameters = ((IMethodSymbol)command.Member).Parameters;
                 var missingParameters = string.Join(", ", Enumerable.Repeat("_", parameters.Length));
                 
                 canExecuteName.Insert(0, $", ({missingParameters}) => ");
-                if (command.IsMethod) canExecuteName.Append("()");
+                if (command.IsLambda) canExecuteName.Append("()");
             }
         }
 

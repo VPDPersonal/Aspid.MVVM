@@ -9,4 +9,7 @@ public class TypeText(string name, NamespaceText? @namespace = null)
     public string FullName => (Namespace != null ? $"{Namespace}." : "") + Name;
     
     public string Global => $"global::{FullName}";
+
+    public override string ToString() =>
+        Global;
 }

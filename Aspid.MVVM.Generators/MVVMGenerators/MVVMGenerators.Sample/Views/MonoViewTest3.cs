@@ -1,9 +1,8 @@
 using System;
 using Aspid.MVVM;
 using UnityEngine;
-using Aspid.MVVM.Mono;
 using UnityEngine.UI;
-using Aspid.MVVM.Generation;
+using Aspid.MVVM.Unity;
 using MVVMGenerators.Sample.Binders;
 
 namespace MVVMGenerators.Sample.Views;
@@ -19,6 +18,8 @@ public partial class MonoViewTest3 : MonoView
     
     [AsBinder(typeof(NewSliderBinder), nameof(_asBinder1), 123, true, 1.1, 1.5f, 0x0A, 3.2e3, '\x78', 'd', 1.9f, null, typeof(Slider), T.A | T.B, nameof(a))]
     [SerializeField] private Slider[] _asBinder2;
+
+    private NewSliderBinder slider1 => new(null);
 
     [AsBinder(typeof(ButtonBinder))]
     private Button AsBinderProperty1 => GetComponent<Button>();
@@ -53,6 +54,16 @@ public class NewSliderBinder : IBinder<Slider>
         throw new System.NotImplementedException();
     }
     public void Bind(in BindParameters parameters) { }
+
+    public void Bind<T1>(BindableMember<T1> bindableMember)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void Bind(IViewModelEventAdder viewModelEventAdder)
+    {
+        throw new NotImplementedException();
+    }
 
     public void Unbind() { }
 }

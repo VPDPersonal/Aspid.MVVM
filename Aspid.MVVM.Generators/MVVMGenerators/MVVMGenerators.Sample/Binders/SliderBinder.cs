@@ -11,5 +11,15 @@ public class SliderBinder : IBinder<IRelayCommand<int>>
 
     public void Bind(in BindParameters parameters) { }
 
+    public void Bind<T>(BindableMember<T> bindableMember)
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public void Bind(IViewModelEventAdder viewModelEventAdder)
+    {
+        throw new System.NotImplementedException();
+    }
+
     public void Unbind() { }
 }

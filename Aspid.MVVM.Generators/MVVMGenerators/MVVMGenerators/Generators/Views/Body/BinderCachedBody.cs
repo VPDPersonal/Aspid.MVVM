@@ -1,50 +1,66 @@
-using System;
 using Microsoft.CodeAnalysis;
 using MVVMGenerators.Helpers;
 using MVVMGenerators.Helpers.Descriptions;
 using MVVMGenerators.Generators.Views.Data;
-using MVVMGenerators.Helpers.Extensions.Symbols;
 using MVVMGenerators.Generators.Views.Data.Members;
+using MVVMGenerators.Helpers.Extensions.Writer;
+using MVVMGenerators.Helpers.Extensions.Symbols;
 
 namespace MVVMGenerators.Generators.Views.Body;
 
 public static class BinderCachedBody
 {
     private const string GeneratedAttribute = General.GeneratedCodeViewAttribute;
-    
     private static readonly string EditorBrowsableAttribute = $"[{Classes.EditorBrowsableAttribute.Global}({Classes.EditorBrowsableState.Global}.Never)]";
-    
-    public static CodeWriter AppendCachedBinders(this CodeWriter code, in ViewDataSpan data)
-    {
-        return code
-            .AppendProperties(data.ViewProperties)
-            .AppendAsBinderMember(data.AsBinderMembers);
-    }
 
-    private static CodeWriter AppendProperties(this CodeWriter code, in ReadOnlySpan<PropertyBinderInView> properties)
+    public static void Generate(
+        string @namespace,
+        in ViewDataSpan data,
+        in DeclarationText declaration,
+        in SourceProductionContext context)
     {
-        foreach (var property in properties)
+        if (data.MembersByType.PropertyBinders.Length + data.MembersByType.AsBinders.Length == 0) return;
+        var code = new CodeWriter();
+
+        code.AppendClassBegin(@namespace, declaration)
+            .AppendCachedBinders(data)
+            .AppendClassEnd(@namespace);
+            
+        context.AddSource(declaration.GetFileName(@namespace, "CachedBinders"), code.GetSourceText());
+    }
+    
+    private static CodeWriter AppendCachedBinders(this CodeWriter code, in ViewDataSpan data)
+    {
+        foreach (var member in data.Members)
         {
-            code.AppendLine(EditorBrowsableAttribute)
-                .AppendLine(GeneratedAttribute)
-                .AppendLine($"private {property.Type.ToDisplayStringGlobal()} {property.CachedName};")
-                .AppendLine();
+            switch (member)
+            {
+                case AsBinderMember asBinderMember: code.AppendAsBinderMember(asBinderMember); break;
+                case CachedBinderMember cachedBinderMember: code.AppendCachedBinderMember(cachedBinderMember); break;
+            }
         }
 
         return code;
     }
-    
-    private static CodeWriter AppendAsBinderMember(this CodeWriter code, in ReadOnlySpan<AsBinderMemberInView> members)
+
+    private static CodeWriter AppendCachedBinderMember(this CodeWriter code, in CachedBinderMember cashedBinderMember)
     {
-        foreach (var member in members)
-        {
-            code.AppendLine(EditorBrowsableAttribute)
-                .AppendLine(GeneratedAttribute)
-                .AppendLine(member.Type is IArrayTypeSymbol
-                    ? $"private {member.AsBinderType}[] {member.CachedName};"
-                    : $"private {member.AsBinderType} {member.CachedName};")
-                .AppendLine();
-        }
+        code.AppendLine(EditorBrowsableAttribute)
+            .AppendLine(GeneratedAttribute)
+            .AppendLine($"private {cashedBinderMember.Type?.ToDisplayStringGlobal()} {cashedBinderMember.CachedName};")
+            .AppendLine();
+
+        return code;
+    }
+    
+    private static CodeWriter AppendAsBinderMember(this CodeWriter code, AsBinderMember asBinderMember)
+    {
+        code.AppendLine(EditorBrowsableAttribute)
+            .AppendLine(GeneratedAttribute)
+            .AppendLine(asBinderMember.Type is IArrayTypeSymbol
+                ? $"private {asBinderMember.AsBinderType}[] {asBinderMember.CachedName};"
+                : $"private {asBinderMember.AsBinderType} {asBinderMember.CachedName};")
+            .AppendLine();
 
         return code;
     }

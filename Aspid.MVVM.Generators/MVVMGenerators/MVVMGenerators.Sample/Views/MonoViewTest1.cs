@@ -1,8 +1,7 @@
 using Aspid.MVVM;
 using UnityEngine;
 using System.Drawing;
-using Aspid.MVVM.Mono;
-using Aspid.MVVM.Generation;
+using Aspid.MVVM.Unity;
 using System.Collections.Generic;
 
 namespace MVVMGenerators.Sample.Views;
@@ -12,6 +11,9 @@ public partial class MonoViewTest1 : MonoView
 {
     [SerializeField] private Binder _binder1;
     [SerializeField] private Binder _binder2;
+    
+    [BindId("Binder2")]
+    [SerializeField] private Binder _binder3;
     
     [RequireBinder(typeof(string))]
     [SerializeField] private MonoBinder _monoBinder1;

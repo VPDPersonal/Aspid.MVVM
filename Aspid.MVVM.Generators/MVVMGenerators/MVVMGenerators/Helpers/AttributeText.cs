@@ -8,4 +8,7 @@ public class AttributeText(string name, NamespaceText? @namespace = null) :
     public string AttributeFullName => (Namespace != null ? $"{Namespace}." : "") + AttributeName;
     
     public string AttributeGlobal => $"global::{AttributeFullName}";
+
+    public override string ToString() =>
+        AttributeGlobal;
 }

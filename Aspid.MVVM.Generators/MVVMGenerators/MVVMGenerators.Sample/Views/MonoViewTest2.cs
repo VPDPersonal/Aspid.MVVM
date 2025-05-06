@@ -1,6 +1,5 @@
 using Aspid.MVVM;
-using Aspid.MVVM.Mono;
-using Aspid.MVVM.Generation;
+using Aspid.MVVM.Unity;
 using MVVMGenerators.Sample.Binders;
 
 namespace MVVMGenerators.Sample.Views;

@@ -1,8 +1,8 @@
 using System.Threading;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 using MVVMGenerators.Helpers.Descriptions;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace MVVMGenerators.Generators.ViewModels;
 

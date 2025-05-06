@@ -4,6 +4,19 @@ namespace MVVMGenerators.Helpers.Extensions.Symbols;
 
 public static class SymbolExtensions
 {
+    public static ITypeSymbol? GetSymbolType(this ISymbol symbol) => symbol switch
+    {
+        ITypeSymbol type => type,
+        IFieldSymbol field => field.Type,
+        ILocalSymbol local => local.Type,
+        IEventSymbol @event => @event.Type,
+        IDiscardSymbol discard => discard.Type,
+        IMethodSymbol method => method.ReturnType,
+        IPropertySymbol property => property.Type,
+        IParameterSymbol parameter => parameter.Type,
+        _ => null
+    };
+    
     public static bool HasAttribute(this ISymbol symbol, AttributeText attributeText) =>
         symbol.HasAttribute(attributeText.FullName);
     
@@ -35,5 +48,16 @@ public static class SymbolExtensions
         }
         
         return false;
+    }
+
+    public static string GetPropertyName(this ISymbol member) =>
+        FieldSymbolExtensions.GetPropertyName(member.Name);
+    
+    public static string GetFieldName(this ISymbol member, bool hasPrefix = true)
+    {
+        if (member is IFieldSymbol field)
+            return hasPrefix ? field.RemovePrefix() : field.Name;
+
+        return PropertySymbolExtensions.GetFieldName(member.Name, hasPrefix);
     }
 }

@@ -32,14 +32,14 @@ public static partial class Classes
     
     public static readonly AttributeText BinderLogAttribute =
         new("BinderLog", Namespaces.Aspid_MVVM);
+    
+    public static readonly AttributeText RequireBinderAttribute =
+        new("RequireBinder", Namespaces.Aspid_MVVM);
     #endregion
     
     #region View Models
     public static readonly TypeText IViewModel =
         new(nameof(IViewModel), Namespaces.Aspid_MVVM);
-    
-    public static readonly TypeText ViewModelUtility =
-        new(nameof(ViewModelUtility), Namespaces.Aspid_MVVM);
     
     public static readonly AttributeText ViewModelAttribute =
         new("ViewModel", Namespaces.Aspid_MVVM);
@@ -47,8 +47,11 @@ public static partial class Classes
     public static readonly TypeText BindResult =
         new(nameof(BindResult), Namespaces.Aspid_MVVM);
     
-    public static readonly TypeText IRemoveBinderFromViewModel =
-        new(nameof(IRemoveBinderFromViewModel), Namespaces.Aspid_MVVM);
+    public static readonly TypeText FindBindableMemberResult =
+        new(nameof(FindBindableMemberResult), Namespaces.Aspid_MVVM);  
+    
+    public static readonly TypeText BindableMember =
+        new(nameof(BindableMember), Namespaces.Aspid_MVVM);
     #endregion
 
     #region Bind Attributes
@@ -96,6 +99,12 @@ public static partial class Classes
         new("RelayCommand", Namespaces.Aspid_MVVM);
     #endregion
 
+    public static readonly TypeText Id =
+        new(nameof(Id), Namespaces.Aspid_MVVM);
+    
+    public static readonly TypeText Unsafe =
+        new(nameof(Unsafe), Namespaces.Aspid_MVVM);
+    
     public static readonly TypeText Ids =
         new("Ids", Namespaces.Aspid_MVVM_Generated);
     

@@ -3,6 +3,7 @@ using System.IO;
 using System.Text;
 using System.CodeDom.Compiler;
 using Microsoft.CodeAnalysis.Text;
+using MVVMGenerators.Generators.Views.Data.Members;
 
 namespace MVVMGenerators.Helpers;
 

@@ -6,13 +6,13 @@ namespace Aspid.MVVM.Stats.ViewModels
     [ViewModel]
     public partial class ReadOnlyStatsViewModel : IDisposable
     {
-        [Bind] private int _cool;
-        [Bind] private int _power;
-        [Bind] private int _reflexes;
-        [Bind] private int _intelligence;
-        [Bind] private int _technicalAbility;
+        [OneWayBind] private int _cool;
+        [OneWayBind] private int _power;
+        [OneWayBind] private int _reflexes;
+        [OneWayBind] private int _intelligence;
+        [OneWayBind] private int _technicalAbility;
         
-        [Bind] private int _skillPointsAvailable;
+        [OneWayBind] private int _skillPointsAvailable;
 
         protected readonly Hero Hero;
 

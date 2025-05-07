@@ -6,19 +6,19 @@ namespace Aspid.MVVM.Stats.ViewModels
     [ViewModel]
     public partial class EditStatsViewModel : IDisposable
     {
-        [Bind] private int _cool;
-        [Bind] private int _power;
-        [Bind] private int _reflexes;
-        [Bind] private int _intelligence; 
-        [Bind] private int _technicalAbility;
+        [OneWayBind] private int _cool;
+        [OneWayBind] private int _power;
+        [OneWayBind] private int _reflexes;
+        [OneWayBind] private int _intelligence; 
+        [OneWayBind] private int _technicalAbility;
         
-        [Bind] private int _skillPointsAvailable;
-        [Bind] private bool _isDraft;
+        [OneWayBind] private int _skillPointsAvailable;
+        [TwoWayBind] private bool _isDraft;
         
-        [Bind] private readonly IRelayCommand _confirmCommand;
-        [Bind] private readonly IRelayCommand _resetToDefaultCommand;
-        [Bind] private readonly IRelayCommand<Skill> _addSkillPointToCommand;
-        [Bind] private readonly IRelayCommand<Skill> _removeSkillPointToCommand;
+        [OneTimeBind] private readonly IRelayCommand _confirmCommand;
+        [OneTimeBind] private readonly IRelayCommand _resetToDefaultCommand;
+        [OneTimeBind] private readonly IRelayCommand<Skill> _addSkillPointToCommand;
+        [OneTimeBind] private readonly IRelayCommand<Skill> _removeSkillPointToCommand;
         
         private readonly Hero _hero;
 

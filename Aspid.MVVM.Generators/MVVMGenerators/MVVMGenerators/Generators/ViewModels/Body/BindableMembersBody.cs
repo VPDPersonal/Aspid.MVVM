@@ -3,6 +3,7 @@ using MVVMGenerators.Helpers;
 using MVVMGenerators.Helpers.Descriptions;
 using MVVMGenerators.Helpers.Extensions.Writer;
 using MVVMGenerators.Generators.ViewModels.Data;
+using MVVMGenerators.Generators.ViewModels.Data.Members;
 using MVVMGenerators.Helpers.Extensions.Symbols;
 using MVVMGenerators.Generators.ViewModels.Extensions;
 
@@ -28,27 +29,26 @@ public static class BindableMembersBody
         context.AddSource(declaration.GetFileName(@namespace, "BindableMembers"), code.GetSourceText());
     }
 
-    private static CodeWriter AppendBindableMemberProperties(this CodeWriter code, ViewModelDataSpan data)
+    private static CodeWriter AppendBindableMemberProperties(this CodeWriter code, in ViewModelDataSpan data)
     {
-        foreach (var idGroup in data.IdLengthMemberGroups)
+        foreach (var member in data.Members)
         {
-            foreach (var hashGroup in idGroup.HashCodeGroup)
-            {
-                foreach (var member in hashGroup.Members)
-                {
-                    if (member.Mode is BindMode.None) continue;
-                    
-                    code.AppendLine($"{Classes.BindableMember}<{member.Type}> {data.Name}.IBindableMembers.{member.GeneratedName} =>")
-                        .IncreaseIndent()
-                        .AppendBindableMemberInstance(member)
-                        .AppendLine(";")
-                        .DecreaseIndent()
-                        .AppendLine();
-                }
-            }
+            Append(data, member);
         }
 
         return code;
+
+        void Append(in ViewModelDataSpan data, BindableMember member)
+        {
+            if (member.Mode is BindMode.None) return;
+                    
+            code.AppendLine($"{Classes.BindableMember}<{member.Type}> {data.Name}.IBindableMembers.{member.GeneratedName} =>")
+                .IncreaseIndent()
+                .AppendBindableMemberInstance(member)
+                .AppendLine(";")
+                .DecreaseIndent()
+                .AppendLine();
+        }
     }
 
     private static CodeWriter AppendBindableMembersInterface(this CodeWriter code, ViewModelDataSpan data)
@@ -58,16 +58,10 @@ public static class BindableMembersBody
             $"public interface IBindableMembers : {Classes.IViewModel}");
         code.BeginBlock();
 
-        foreach (var idGroup in data.IdLengthMemberGroups)
+        foreach (var member in data.Members)
         {
-            foreach (var hashGroup in idGroup.HashCodeGroup)
-            {
-                foreach (var member in hashGroup.Members)
-                {
-                    code.AppendLine($"public {Classes.BindableMember}<{member.Type}> {member.GeneratedName} {{ get; }}")
-                        .AppendLine();
-                }
-            }
+            code.AppendLine($"public {Classes.BindableMember}<{member.Type}> {member.GeneratedName} {{ get; }}")
+                .AppendLine();
         }
 
         return code.EndBlock();

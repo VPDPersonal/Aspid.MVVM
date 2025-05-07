@@ -33,7 +33,7 @@ public static class GenericInitializeView
     
     private static CodeWriter AppendGenericViews(this CodeWriter code, in ViewDataSpan data, ITypeSymbol viewModelType)
     {
-        code.AppendProfilerMarker(viewModelType)
+        code.AppendProfilerMarker(data, viewModelType)
             .AppendLine()
             .AppendInitialize(data, viewModelType);
 
@@ -105,12 +105,14 @@ public static class GenericInitializeView
         return code;
     }
 
-    private static CodeWriter AppendProfilerMarker(this CodeWriter code, ITypeSymbol viewModelType)
+    private static CodeWriter AppendProfilerMarker(this CodeWriter code, in ViewDataSpan data, ITypeSymbol viewModelType)
     {
+        var viewModelTypeName = viewModelType.ToDisplayString().Replace(".", "_");
+        
         return code.AppendMultiline(
             $"""
             #if !{Defines.ASPID_MVVM_UNITY_PROFILER_DISABLED}
-            private readonly static {Classes.ProfilerMarker} __initialize{viewModelType.ToDisplayString().Replace(".", "_")}Marker;
+            private readonly static {Classes.ProfilerMarker} __initialize{viewModelTypeName}Marker = new("{data.Declaration.Identifier.Text}.{viewModelTypeName}.Initialize");
             #endif
             """);
     }

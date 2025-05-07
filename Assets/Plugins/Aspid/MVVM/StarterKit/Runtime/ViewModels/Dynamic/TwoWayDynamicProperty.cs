@@ -14,11 +14,7 @@ namespace Aspid.MVVM.StarterKit
         
         public IViewModelEventAdder GetAdder()
         {
-            _event ??= new TwoWayViewModelEvent<T>()
-            {
-                SetValue = SetValue
-            };
-
+            _event ??= new TwoWayViewModelEvent<T>(SetValue);
             return BindableMember<T>.TwoWay(_event, _value);
         }
 

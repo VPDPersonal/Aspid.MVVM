@@ -7,7 +7,7 @@ namespace Aspid.MVVM
     /// Represents a one-way to source binding event that allows the View to notify the ViewModel of changes.
     /// </summary>
     /// <typeparam name="T">The type of the value managed by the event.</typeparam>
-    public sealed class OneWayToSourceViewModelEvent<T> : IViewModelEvent
+    public sealed class OneWayToSourceViewModelEvent<T> : IOneWayToSourceViewModelEvent<T>
     {
         private readonly Action<T?> _setValue;
 

@@ -3,7 +3,7 @@ namespace Aspid.MVVM
     /// <summary>
     /// Represents the result of a binding operation.
     /// </summary>
-    public readonly ref struct FindBindableMemberResult
+    public readonly partial struct FindBindableMemberResult
     {
         /// <summary>
         /// Indicates whether the binding operation was successful.
@@ -12,17 +12,17 @@ namespace Aspid.MVVM
         
         public readonly IViewModelEventAdder? Adder;
         
-        public FindBindableMemberResult(bool isFound, IViewModelEventAdder? adder = null)
+        private FindBindableMemberResult(IViewModelEventAdder? adder = null)
         {
             Adder = adder;
-            IsFound = isFound;
+            IsFound = true;
         }
     }
     
     /// <summary>
     /// Represents the result of a binding operation.
     /// </summary>
-    public readonly struct FindBindableMemberResult<T>
+    public readonly partial struct FindBindableMemberResult<T>
     {
         /// <summary>
         /// Indicates whether the binding operation was successful.
@@ -31,19 +31,13 @@ namespace Aspid.MVVM
         
         public readonly BindableMember<T?> Member;
         
-        public FindBindableMemberResult(bool isBound)
-        {
-            Member = default;
-            IsFound = isBound;
-        }
-        
-        public FindBindableMemberResult(bool isBound, BindableMember<T?> member)
+        private FindBindableMemberResult(BindableMember<T?> member)
         {
             Member = member;
-            IsFound = isBound;
+            IsFound = true;
         }
 
-        public static implicit operator FindBindableMemberResult<T>(BindableMember<T?> bindableMember) =>
-            new(true, bindableMember);
+        public static implicit operator FindBindableMemberResult<T>(in BindableMember<T?> bindableMember) =>
+            new(bindableMember);
     }
 }

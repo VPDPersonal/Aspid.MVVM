@@ -9,7 +9,7 @@ namespace Aspid.MVVM
         private BindableMember(T? value)
         {
             _value = value;
-            _isDefault = false;
+            _isDefault = true;
             _viewModelEvent = null;
         }
         

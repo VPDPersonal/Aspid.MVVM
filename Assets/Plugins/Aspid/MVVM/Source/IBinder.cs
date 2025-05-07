@@ -12,7 +12,7 @@ namespace Aspid.MVVM
         /// </summary>
         public BindMode Mode => BindMode.OneWay;
 
-        public void Bind<T>(BindableMember<T> bindableMember);
+        public void Bind<T>(in BindableMember<T> bindableMember);
 
         public void Bind(IViewModelEventAdder viewModelEventAdder);
         

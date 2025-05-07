@@ -24,9 +24,11 @@ public partial class ViewModelGenerator
         
         Debug.Assert(context.TargetNode is TypeDeclarationSyntax);
         var candidate = Unsafe.As<TypeDeclarationSyntax>(context.TargetNode);
+
+        var groups = GroupsFactory.Create(bindableMembers);
         
         return new FoundForGenerator<ViewModelData>(true,
-            new ViewModelData(inheritor, symbol, candidate, bindableMembers, IdLengthMemberGroup.CreateGroups(bindableMembers)));
+            new ViewModelData(inheritor, symbol, candidate, bindableMembers, groups.hashCodeGroup, groups.idLengthGroups));
     }
     
     private static Inheritor RecognizeInheritor(INamedTypeSymbol symbol)

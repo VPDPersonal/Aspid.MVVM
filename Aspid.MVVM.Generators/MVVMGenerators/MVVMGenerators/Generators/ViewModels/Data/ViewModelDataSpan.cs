@@ -1,5 +1,6 @@
 using System;
 using Microsoft.CodeAnalysis;
+using System.Collections.Immutable;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using MVVMGenerators.Generators.ViewModels.Data.Members;
 using MVVMGenerators.Generators.ViewModels.Data.Members.Collections;
@@ -15,5 +16,6 @@ public readonly ref struct ViewModelDataSpan(ViewModelData data)
 
     public readonly ReadOnlySpan<BindableMember> Members = data.Members.AsSpan(); 
     public readonly BindableMembersCollectionSpanByType MembersByType = new(data.Members);
+    public readonly ImmutableArray<HasCodeMemberGroup> HashCodeMemberGroups = data.HashCodeMemberGroups;
     public readonly ReadOnlySpan<IdLengthMemberGroup> IdLengthMemberGroups = data.IdLengthMemberGroups.AsSpan();
 }

@@ -1,8 +1,10 @@
 using System;
+using System.Diagnostics;
 using System.ComponentModel;
 
 namespace Aspid.MVVM
 {
+    [DebuggerDisplay("Id {Value}")]
     public readonly struct Id : IEquatable<Id>
     {
         public readonly int Length;
@@ -43,5 +45,11 @@ namespace Aspid.MVVM
 
         public static implicit operator Id(string value) =>
             new(value);
+
+        public static bool operator ==(Id left, Id right) =>
+            left.Equals(right);
+
+        public static bool operator !=(Id left, Id right) =>
+            !(left == right);
     }
 }

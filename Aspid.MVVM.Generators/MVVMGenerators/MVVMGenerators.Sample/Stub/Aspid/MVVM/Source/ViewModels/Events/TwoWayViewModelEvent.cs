@@ -13,12 +13,14 @@ namespace Aspid.MVVM
         /// Event that is triggered when the value changes.
         /// </summary>
         public event Action<T?>? Changed;
-        
-        /// <summary>
-        /// Optional action to set the value of the bound property, used for reverse binding.
-        /// </summary>
-        public Action<T?>? SetValue { get; set; }
-        
+
+        private readonly Action<T?> _setValue;
+
+        public TwoWayViewModelEvent(Action<T?> setValue)
+        {
+            _setValue = setValue ?? throw new NullReferenceException(nameof(setValue));
+        }
+
         /// <summary>
         /// Adds a binder to the event for binding based on the specified <see cref="BindMode"/>.
         /// </summary>
@@ -28,7 +30,7 @@ namespace Aspid.MVVM
         /// </returns>
         /// <exception cref="ArgumentNullException">
         /// Thrown if reverse binding is enabled (in <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>)
-        /// and <see cref="SetValue"/> is not defined.
+        /// and <see cref="_setValue"/> is not defined.
         /// </exception>
         /// <exception cref="InvalidOperationException">
         /// Thrown if the binder is not of a compatible type for the specified binding mode.
@@ -47,8 +49,7 @@ namespace Aspid.MVVM
 
             if (mode is BindMode.TwoWay or BindMode.OneWayToSource)
             {
-                ThrowArgumentNullExceptionIfSetValueNull();
-                GetReverseBinder(binder).ValueChanged += SetValue;
+                GetReverseBinder(binder).ValueChanged += _setValue;
             }
             else if (!isBind)
             {
@@ -64,7 +65,7 @@ namespace Aspid.MVVM
         /// <param name="binder">The binder to be removed.</param>
         /// <exception cref="ArgumentNullException">
         /// Thrown if reverse binding was set up (in <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>)
-        /// and <see cref="SetValue"/> is not defined.
+        /// and <see cref="_setValue"/> is not defined.
         /// </exception>
         /// <exception cref="InvalidOperationException">
         /// Thrown if the binder is not of a compatible type for the specified binding mode.
@@ -84,8 +85,7 @@ namespace Aspid.MVVM
 
             if (mode is BindMode.TwoWay or BindMode.OneWayToSource)
             {
-                ThrowArgumentNullExceptionIfSetValueNull();
-                GetReverseBinder(binder).ValueChanged -= SetValue;
+                GetReverseBinder(binder).ValueChanged -= _setValue;
             }
             else if (!isUnbind)
             {
@@ -105,13 +105,6 @@ namespace Aspid.MVVM
         /// </summary>
         public void Dispose() => 
             Changed = null;
-        
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private void ThrowArgumentNullExceptionIfSetValueNull()
-        {
-            if (SetValue is not null) return;
-            throw new ArgumentNullException(nameof(SetValue), "SetValue must be defined for reverse binding.");
-        }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static void ThrowInvalidOperationException(BindMode mode) =>

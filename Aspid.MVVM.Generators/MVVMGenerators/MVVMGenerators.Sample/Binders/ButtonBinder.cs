@@ -12,7 +12,7 @@ public sealed partial class ButtonBinder : IBinder<IRelayCommand>
 
     public void Bind() { }
 
-    public void Bind<T>(BindableMember<T> bindableMember)
+    public void Bind<T>(in BindableMember<T> bindableMember)
     {
         throw new System.NotImplementedException();
     }

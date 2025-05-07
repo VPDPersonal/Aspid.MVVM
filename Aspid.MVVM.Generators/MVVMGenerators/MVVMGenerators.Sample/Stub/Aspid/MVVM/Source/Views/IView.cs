@@ -23,6 +23,9 @@ namespace Aspid.MVVM
         public void Deinitialize();
     }
     
-    public interface IView<T> : IView
-        where T : IViewModel { }
+    public interface IView<in T> : IView
+        where T : IViewModel
+    {
+        public void Initialize(T viewModel);
+    }
 } 

@@ -54,8 +54,9 @@ public class NewSliderBinder : IBinder<Slider>
         throw new System.NotImplementedException();
     }
     public void Bind() { }
+    
 
-    public void Bind<T1>(BindableMember<T1> bindableMember)
+    public void Bind<T1>(in BindableMember<T1> bindableMember)
     {
         throw new NotImplementedException();
     }

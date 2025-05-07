@@ -51,7 +51,7 @@ namespace Aspid.MVVM
             _mode = mode;
         }
 
-        public void Bind<T>(BindableMember<T> bindableMember)
+        public void Bind<T>(in BindableMember<T> bindableMember)
         {
 #if UNITY_2022_1_OR_NEWER && !ASPID_MVVM_UNITY_PROFILER_DISABLED
             using (_bindMarker.Auto())

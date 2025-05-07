@@ -28,7 +28,7 @@ namespace Aspid.MVVM.StarterKit
 #endif
             {
                 if (_properties.TryGetValue(id, out var value))
-                    return new FindBindableMemberResult(true, value.GetAdder());
+                    return new FindBindableMemberResult(value.GetAdder());
 
                 return !_throwErrorIfIdNotFind ? default : throw new ArgumentException(nameof(id));
             }
@@ -41,7 +41,7 @@ namespace Aspid.MVVM.StarterKit
 #endif
             {
                 if (_properties.TryGetValue(id, out var value))
-                    return new FindBindableMemberResult<T>(true, ((BindableMember<T>)value.GetAdder())!);
+                    return new FindBindableMemberResult<T>(((BindableMember<T>)value.GetAdder())!);
 
                 return !_throwErrorIfIdNotFind ? default : throw new ArgumentException(nameof(id));
             }

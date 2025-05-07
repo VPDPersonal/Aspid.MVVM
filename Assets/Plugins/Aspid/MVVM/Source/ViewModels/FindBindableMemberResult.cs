@@ -12,7 +12,7 @@ namespace Aspid.MVVM
         
         public readonly IViewModelEventAdder? Adder;
         
-        private FindBindableMemberResult(IViewModelEventAdder? adder = null)
+        public FindBindableMemberResult(IViewModelEventAdder? adder = null)
         {
             Adder = adder;
             IsFound = true;
@@ -31,7 +31,7 @@ namespace Aspid.MVVM
         
         public readonly BindableMember<T?> Member;
         
-        private FindBindableMemberResult(BindableMember<T?> member)
+        public FindBindableMemberResult(BindableMember<T?> member)
         {
             Member = member;
             IsFound = true;

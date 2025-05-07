@@ -4,8 +4,9 @@ using MVVMGenerators.Helpers;
 using MVVMGenerators.Helpers.Descriptions;
 using MVVMGenerators.Generators.Views.Data;
 using MVVMGenerators.Helpers.Extensions.Writer;
-using MVVMGenerators.Helpers.Extensions.Symbols;
 using MVVMGenerators.Generators.Views.Data.Members;
+using MVVMGenerators.Generators.Views.Body.Extensions;
+using MVVMGenerators.Helpers.Extensions.Symbols;
 
 namespace MVVMGenerators.Generators.Views.Body;
 
@@ -43,7 +44,6 @@ public static class InitializeBody
             Inheritor.InheritorViewAttribute => code.AppendHasInterfaceOrInheritor(data),
             _ => throw new ArgumentOutOfRangeException()
         };
-        
         
         var isInstantiateBinders = data.MembersByType.AsBinders.Length + data.MembersByType.PropertyBinders.Length > 0;
         if (!isInstantiateBinders) return code;
@@ -172,37 +172,33 @@ public static class InitializeBody
                 #endif
                 """)
             .BeginBlock();
-        
-        code.AppendLine("OnInitializingInternal(viewModel);");
-        code.AppendLineIf(isOverride, "base.InitializeInternal(viewModel);");
-        
+
+        for (var i = 0; i < data.GenericViews.Length; i++)
+        {
+            code.AppendLine(
+                    $"if (viewModel is {data.GenericViews[i].ToDisplayStringGlobal()}.IBindableMembers specificViewModel{i})")
+                .BeginBlock()
+                .AppendLine($"InitializeInternal(specificViewModel{i});")
+                .AppendLine("return;")
+                .EndBlock();
+        }
+
         var isInstantiateBinders = data.MembersByType.PropertyBinders.Length + data.MembersByType.AsBinders.Length > 0;
-        code.AppendLineIf(isInstantiateBinders, "InstantiateBinders();");
-        code.AppendLine();
+        
+        code.AppendLineIf(data.GenericViews.Length > 0)
+            .AppendLine("OnInitializingInternal(viewModel);")
+            .AppendLineIf(isOverride, "base.InitializeInternal(viewModel);")
+            .AppendLineIf(isInstantiateBinders, "InstantiateBinders();")
+            .AppendLine();
 
         foreach (var member in data.Members)
-            AppendBindSafely(member);
+            code.AppendBindSafely(member);
         
         code.AppendLine("\nOnInitializedInternal(viewModel);");
         code.EndBlock();
         code.EndBlock();
         
         return code;
-
-        void AppendBindSafely(BinderMember member)
-        {
-            var name = member is CachedBinderMember cachedMember ? cachedMember.CachedName : member.Name;
-
-            if (member.BindingType is not null)
-            {
-                var type = member.Type is IArrayTypeSymbol arrayType ? arrayType.ElementType : member.Type!;
-                code.AppendLine($"{name}.BindSafely<{type.ToDisplayStringGlobal()}, {member.BindingType.ToDisplayStringGlobal()}>(viewModel, new({member.Id}, {member.Id.Length}, {member.Id.HashCode}));");   
-            }
-            else
-            {
-                code.AppendLine($"{name}.BindSafely(viewModel, new({member.Id}, {member.Id.Length}, {member.Id.HashCode}));");   
-            }
-        }
     }
 
     private static CodeWriter AppendDeinitializeBody(this CodeWriter code, in ViewDataSpan data, bool isOverride = false)
@@ -219,9 +215,7 @@ public static class InitializeBody
         code.AppendLine("OnDeinitializingInternal();");
         code.AppendLineIf(isOverride, "base.DeinitializeInternal();");
         code.AppendLine();
-
-        var membersByType = data.MembersByType;
-
+        
         foreach (var member in data.Members)
         {
             if (member is CachedBinderMember cachedBinderMember)
@@ -357,5 +351,5 @@ public static class InitializeBody
     }
     
     private static string[]? GetBaseTypes(in ViewDataSpan data) =>
-        data.Inheritor == Inheritor.None ? [Classes.IView.Global] : null;
+        data.Inheritor is Inheritor.None ? [Classes.IView.ToString()] : null;
 }

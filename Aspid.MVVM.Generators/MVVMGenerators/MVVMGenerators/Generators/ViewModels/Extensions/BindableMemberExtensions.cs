@@ -24,13 +24,13 @@ public static class BindableMemberExtensions
         {
             case BindMode.OneWay:
                 {
-                    code.Append($"OneWay({viewModelEvent.FieldName}, {member.SourceName})");
+                    code.Append($"OneWay({viewModelEvent.FieldName} ??= new(), {member.SourceName})");
                     break;
                 }
                         
             case BindMode.TwoWay: 
                 {
-                    code.Append($"TwoWay({viewModelEvent.FieldName}, {member.SourceName})");
+                    code.Append($"TwoWay({viewModelEvent.FieldName} ??= new(Set{member.GeneratedName}), {member.SourceName})");
                     break;
                 }
                         
@@ -42,7 +42,7 @@ public static class BindableMemberExtensions
                         
             case BindMode.OneWayToSource: 
                 {
-                    code.Append($"OneWayToSource({viewModelEvent.FieldName})");
+                    code.Append($"OneWayToSource({viewModelEvent.FieldName} ??= new(Set{member.GeneratedName}))");
                     break;
                 }
         }

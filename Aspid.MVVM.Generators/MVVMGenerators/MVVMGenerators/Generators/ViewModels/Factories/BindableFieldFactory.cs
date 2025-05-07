@@ -5,6 +5,7 @@ using System.Collections.Immutable;
 using MVVMGenerators.Helpers.Descriptions;
 using MVVMGenerators.Generators.ViewModels.Data;
 using MVVMGenerators.Helpers.Extensions.Symbols;
+using MVVMGenerators.Generators.ViewModels.Extensions;
 using MVVMGenerators.Generators.ViewModels.Data.Members;
 
 namespace MVVMGenerators.Generators.ViewModels.Factories;
@@ -17,7 +18,7 @@ public static class BindableFieldFactory
 
         foreach (var field in fields)
         {
-            var mode = GetBindMode(field);
+            var mode = field.GetBindMode();
 
             switch (mode)
             {
@@ -58,30 +59,5 @@ public static class BindableFieldFactory
 
         return allBindableBindAlsos.Where(bindableBindAlso => 
             set.Contains(bindableBindAlso.SourceName) || set.Contains(bindableBindAlso.GeneratedName)).ToImmutableArray();
-    }
-    
-    private static BindMode GetBindMode(IFieldSymbol field)
-    {
-        if (field.HasAttribute(Classes.BindAttribute, out var bindAttribute))
-        {
-            if (bindAttribute!.ConstructorArguments.Length is 0)
-                return field.IsReadOnly ? BindMode.OneTime : BindMode.TwoWay;
-
-            return (BindMode)(int)bindAttribute!.ConstructorArguments[0].Value!;
-        }
-        
-        if (field.HasAttribute(Classes.OneWayBindAttribute))
-            return BindMode.OneWay;
-        
-        if (field.HasAttribute(Classes.TwoWayBindAttribute))
-            return BindMode.TwoWay;
-        
-        if (field.HasAttribute(Classes.OneTimeBindAttribute))
-            return BindMode.OneTime;
-        
-        if (field.HasAttribute(Classes.OneWayToSourceBindAttribute))
-            return BindMode.OneWayToSource;
-        
-        return (BindMode)(-1);
     }
 }

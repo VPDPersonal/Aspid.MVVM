@@ -56,14 +56,14 @@ public static class PropertiesBody
             {
                 case BindableField bindableField:
                     {
-                        code.AppendEvent(bindableField.Event)
+                        code.AppendEvent(bindableMember, bindableField.Event)
                             .AppendLine();
                         break;
                     }
                 
                 case BindableBindAlso bindableBindAlso:
                     {
-                        code.AppendEvent(bindableBindAlso.Event)
+                        code.AppendEvent(bindableMember, bindableBindAlso.Event)
                             .AppendLine();
                         break;
                     }
@@ -73,36 +73,33 @@ public static class PropertiesBody
         return code;
     }
 
-    private static CodeWriter AppendEvent(this CodeWriter code, in ViewModelEvent viewModelEvent)
+    private static CodeWriter AppendEvent(this CodeWriter code, BindableMember member, in ViewModelEvent viewModelEvent)
     {
-        return code.AppendEvent(viewModelEvent.Type!, viewModelEvent.EventType!, viewModelEvent.Name!, viewModelEvent.FieldName!);
-    }
-    
-    private static CodeWriter AppendEvent(
-        this CodeWriter code, 
-        string type, 
-        string eventTYpe,
-        string eventName,
-        string eventFieldName)
-    {
+        var eventName = viewModelEvent.Name!;
+        var type = viewModelEvent.Type!;
+        var eventFieldName = viewModelEvent.FieldName!;
+        var eventType = viewModelEvent.EventType!;
+        var parameters = member.Mode is BindMode.TwoWay
+            ? $"Set{member.GeneratedName}"
+            : string.Empty;
+
         return code.AppendMultiline(
             $$"""
-            {{General.GeneratedCodeViewModelAttribute}}
-            public event {{Classes.Action.Global}}<{{type}}> {{eventName}}
-            {
-                add
-                {
-                    {{eventFieldName}} ??= new {{eventTYpe}}<{{type}}>();
-                    {{eventFieldName}}.Changed += value;
-                }
-                remove
-                {
-                    if ({{eventFieldName}} is null) return;
-                    {{eventFieldName}}.Changed -= value;
-                }
-            }
-            """
-        );
+              {{General.GeneratedCodeViewModelAttribute}}
+              public event {{Classes.Action.Global}}<{{type}}> {{eventName}}
+              {
+                  add
+                  {
+                      {{eventFieldName}} ??= new {{eventType}}<{{type}}>({{parameters}});
+                      {{eventFieldName}}.Changed += value;
+                  }
+                  remove
+                  {
+                      if ({{eventFieldName}} is null) return;
+                      {{eventFieldName}}.Changed -= value;
+                  }
+              }
+              """);
     }
     #endregion
 

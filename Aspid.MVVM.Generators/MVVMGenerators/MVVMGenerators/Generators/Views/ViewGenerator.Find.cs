@@ -2,6 +2,8 @@ using System.Threading;
 using System.Diagnostics;
 using Microsoft.CodeAnalysis;
 using MVVMGenerators.Helpers;
+using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Runtime.CompilerServices;
 using MVVMGenerators.Helpers.Descriptions;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -25,8 +27,26 @@ public partial class ViewGenerator
         Debug.Assert(context.TargetNode is TypeDeclarationSyntax);
         var candidate = Unsafe.As<TypeDeclarationSyntax>(context.TargetNode);
 
-        var viewData = new ViewData(inheritor, candidate, members);
+        var viewData = new ViewData(inheritor, candidate, members, GetGenericViews(symbol));
         return new FoundForGenerator<ViewData>(true, viewData);
+    }
+
+    private static ImmutableArray<ITypeSymbol> GetGenericViews(INamedTypeSymbol symbol)
+    {
+        var genericViews = new List<ITypeSymbol>();
+        
+        foreach (var @interface in symbol.Interfaces)
+        {
+            if (@interface.IsGenericType)
+            {
+                if (@interface.Name == Classes.IView.Name)
+                {
+                    genericViews.Add(@interface.TypeArguments[0]);
+                }
+            }
+        }
+
+        return genericViews.ToImmutableArray();
     }
 
     private static Inheritor RecognizeInheritor(INamedTypeSymbol symbol)

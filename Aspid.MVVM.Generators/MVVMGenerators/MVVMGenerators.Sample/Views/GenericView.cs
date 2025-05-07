@@ -4,7 +4,7 @@ using MVVMGenerators.Sample.ViewModels;
 namespace MVVMGenerators.Sample.Views;
 
 [View]
-public partial class GenericView1 : IView<PersonViewModel>, IView<ViewModelAccessTest>
+public partial class GenericView : IView<PersonViewModel>, IView<ViewModelAccessTest>
 {
     public Binder _a;
     public Binder _age;
@@ -15,7 +15,7 @@ public partial class GenericView1 : IView<PersonViewModel>, IView<ViewModelAcces
 }
 
 [View]
-public partial class ChildGenericView : GenericView1, IView<WorkerViewModel1>
+public partial class ChildGenericView : GenericView, IView<WorkerViewModel1>
 {
     public Binder _experience;
 }

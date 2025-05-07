@@ -16,6 +16,8 @@ public sealed class BindableCommand(IMethodSymbol command, string? canExecute, b
     public readonly bool IsLambda = isLambda;
     public readonly string? CanExecute = canExecute;
     
+    public override bool IsValueType => false;
+    
     public override string Type { get; } = GetTypeName(command);
 
     private static string GetTypeName(IMethodSymbol command)

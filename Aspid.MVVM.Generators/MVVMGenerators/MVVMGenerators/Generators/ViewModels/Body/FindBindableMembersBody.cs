@@ -3,7 +3,7 @@ using MVVMGenerators.Helpers;
 using MVVMGenerators.Helpers.Descriptions;
 using MVVMGenerators.Helpers.Extensions.Writer;
 using MVVMGenerators.Generators.ViewModels.Data;
-using MVVMGenerators.Generators.ViewModels.Extensions;
+using MVVMGenerators.Generators.ViewModels.Data.Members;
 
 namespace MVVMGenerators.Generators.ViewModels.Body;
 
@@ -100,16 +100,15 @@ public static class FindBindableMembersBody
                         
                         if (isGeneric)
                         {
-                            code.Append($"var __result__ = new {Classes.FindBindableMemberResult}<{type}>(true, ");
-                            code.AppendBindableMemberInstance(member)
-                                .AppendLine(");")
-                                .AppendLine($"return {Classes.Unsafe}.As<{Classes.FindBindableMemberResult}<{type}>, {Classes.FindBindableMemberResult}<T>>(ref __result__);");
+                            code.Append($"return {Classes.FindBindableMemberResult}<T>")
+                                .AppendCreateFindBindableMemberResult(member, true)
+                                .AppendLine(";");
                         }
                         else
                         {
-                            code.Append($"return new {Classes.FindBindableMemberResult}(true, ");
-                            code.AppendBindableMemberInstance(member)
-                                .AppendLine(");");
+                            code.Append($"return {Classes.FindBindableMemberResult}")
+                                .AppendCreateFindBindableMemberResult(member, false)
+                                .AppendLine(";");
                         }
 
                         code.EndBlock();
@@ -149,5 +148,48 @@ public static class FindBindableMembersBody
         void AppendCaseBlock( string conditional) => 
             code.AppendLine($"case {conditional}:")
                 .BeginBlock();
+    }
+
+    private static CodeWriter AppendCreateFindBindableMemberResult(this CodeWriter code, in BindableMember member, bool isGeneric)
+    {
+        switch (member.Mode)
+        {
+            case BindMode.OneWay:
+                {
+                    var methodName = "OneWay".GetCreateFindBindableMemberResultMethodName(member, isGeneric);
+                    var @event = member is BindableField field ? field.Event : ((BindableBindAlso)member).Event;
+                    return code.Append($".{methodName}({@event.FieldName} ??= new(), {member.SourceName})");
+                }
+            
+            case BindMode.TwoWay:
+                {
+                    var methodName = "TwoWay".GetCreateFindBindableMemberResultMethodName(member, isGeneric);
+                    var @event = member is BindableField field ? field.Event : ((BindableBindAlso)member).Event;
+                    return code.Append($".{methodName}({@event.FieldName} ??= new(Set{member.GeneratedName}), {member.SourceName})");
+                }
+            
+            case BindMode.OneTime:
+                {
+                    var methodName = "OneTime".GetCreateFindBindableMemberResultMethodName(member, isGeneric);
+                    return code.Append($".{methodName}({member.SourceName})");
+                }
+            
+            case BindMode.OneWayToSource:
+                {
+                    var methodName = "OneWayToSource".GetCreateFindBindableMemberResultMethodName(member, isGeneric);
+                    var @event = member is BindableField field ? field.Event : ((BindableBindAlso)member).Event;
+                    return code.Append($".{methodName}({@event.FieldName} ??= new(Set{member.GeneratedName}))");
+                }
+        }
+
+        return code;
+    }
+
+    private static string GetCreateFindBindableMemberResultMethodName(this string methodName, BindableMember member, bool isGeneric)
+    {
+        if (isGeneric && member.IsValueType) 
+            methodName += "ByValueType";
+        
+        return methodName;
     }
 }

@@ -32,5 +32,7 @@ public readonly struct IdData : IEquatable<IdData>
     
     public override string ToString() => Value;
 
+    public string ToInstanceString() => $"new({Value}, {Length}, {HashCode})";
+
     public static implicit operator string(IdData id) => id.Value;
 }

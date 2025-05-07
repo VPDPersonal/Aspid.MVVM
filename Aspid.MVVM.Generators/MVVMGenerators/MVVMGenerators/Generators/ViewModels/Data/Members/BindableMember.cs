@@ -1,5 +1,6 @@
 using Microsoft.CodeAnalysis;
 using MVVMGenerators.Generators.Ids.Data;
+using MVVMGenerators.Helpers.Extensions.Symbols;
 
 namespace MVVMGenerators.Generators.ViewModels.Data.Members;
 
@@ -18,5 +19,7 @@ public abstract class BindableMember(
     public readonly string GeneratedName = generatedName;
     
     public abstract string Type { get; }
+
+    public virtual bool IsValueType { get; } = member.GetSymbolType()?.IsValueType ?? false;
 
 }

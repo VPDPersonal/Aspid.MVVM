@@ -8,6 +8,10 @@ namespace Aspid.MVVM
     /// <typeparam name="T">The type of the value managed by the event.</typeparam>
     public sealed class OneWayViewModelEvent<T> : IViewModelEvent, IDisposable
     {
+#if UNITY_2022_1_OR_NEWER && !ASPID_MVVM_UNITY_PROFILER_DISABLED
+        private static readonly Unity.Profiling.ProfilerMarker AddBinderMarker = new("OneWayViewModelEvent.AddBinder");
+#endif
+        
         /// <summary>
         /// Event that is triggered when the value changes.
         /// </summary>
@@ -26,8 +30,15 @@ namespace Aspid.MVVM
         /// <exception cref="InvalidOperationException">
         /// Thrown if the binder is not of type <see cref="IBinder{T}"/>.
         /// </exception>
-        public IViewModelEventRemover? AddBinder(IBinder binder) =>
-            AddBinder(binder.Cast<T>());
+        public IViewModelEventRemover? AddBinder(IBinder binder)
+        {
+#if UNITY_2022_1_OR_NEWER && !ASPID_MVVM_UNITY_PROFILER_DISABLED
+            using (AddBinderMarker.Auto())
+#endif
+            {
+                return AddBinder(binder.Cast<T>());
+            }
+        }
         
         /// <summary>
         /// Adds a binder to the event for one-way or one-time binding.

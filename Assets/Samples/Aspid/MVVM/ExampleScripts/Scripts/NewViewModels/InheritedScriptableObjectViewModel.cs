@@ -1,4 +1,5 @@
 using UnityEngine;
+using Aspid.MVVM.Unity;
 
 namespace Aspid.MVVM.ExampleScripts.NewViewModels
 {

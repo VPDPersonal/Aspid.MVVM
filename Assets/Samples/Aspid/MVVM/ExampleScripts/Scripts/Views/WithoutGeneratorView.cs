@@ -16,8 +16,8 @@ namespace Aspid.MVVM.ExampleScripts.Views
             if (ViewModel is not null) throw new Exception("View is already initialized");
 
             ViewModel = viewModel;
-            _singleBinder.BindSafely(viewModel, "SingleBinder");
-            _arrayBinders.BindSafely(viewModel, "ArrayBinders");
+            // _singleBinder.BindSafely(viewModel, "SingleBinder");
+            // _arrayBinders.BindSafely(viewModel, "ArrayBinders");
         }
 
         public void Deinitialize()

@@ -9,6 +9,9 @@ namespace Aspid.MVVM
     /// <typeparam name="T">The type of the value managed by the event.</typeparam>
     public sealed class TwoWayViewModelEvent<T> : IViewModelEvent, IDisposable
     {
+#if UNITY_2022_1_OR_NEWER && !ASPID_MVVM_UNITY_PROFILER_DISABLED
+        private static readonly Unity.Profiling.ProfilerMarker AddBinderMarker = new("TwoWayViewModelEvent.AddBinder");
+#endif
         /// <summary>
         /// Event that is triggered when the value changes.
         /// </summary>
@@ -37,26 +40,31 @@ namespace Aspid.MVVM
         /// </exception>
         public IViewModelEventRemover? AddBinder(IBinder binder)
         {
-            var mode = binder.Mode;
-            if (mode is BindMode.OneTime) return null;
-            
-            var isBind = false;
-            if (mode is not BindMode.OneWayToSource)
+#if UNITY_2022_1_OR_NEWER && !ASPID_MVVM_UNITY_PROFILER_DISABLED
+            using (AddBinderMarker.Auto())
+#endif
             {
-                isBind = true;
-                Changed += binder.Cast<T>().SetValue;
-            }
+                var mode = binder.Mode;
+                if (mode is BindMode.OneTime) return null;
 
-            if (mode is BindMode.TwoWay or BindMode.OneWayToSource)
-            {
-                GetReverseBinder(binder).ValueChanged += _setValue;
+                var isBind = false;
+                if (mode is not BindMode.OneWayToSource)
+                {
+                    isBind = true;
+                    Changed += binder.Cast<T>().SetValue;
+                }
+
+                if (mode is BindMode.TwoWay or BindMode.OneWayToSource)
+                {
+                    GetReverseBinder(binder).ValueChanged += _setValue;
+                }
+                else if (!isBind)
+                {
+                    ThrowInvalidOperationException(mode);
+                }
+
+                return this;
             }
-            else if (!isBind)
-            {
-                ThrowInvalidOperationException(mode);
-            }
-            
-            return this;
         }
         
         /// <summary>

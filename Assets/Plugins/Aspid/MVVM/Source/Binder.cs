@@ -12,6 +12,7 @@ namespace Aspid.MVVM
     {
 #if UNITY_2022_1_OR_NEWER && !ASPID_MVVM_UNITY_PROFILER_DISABLED
         private static readonly Unity.Profiling.ProfilerMarker _bindMarker = new("Binder.Bind");
+        private static readonly Unity.Profiling.ProfilerMarker _bindTMarker = new("Binder<T>.Bind");
         private static readonly Unity.Profiling.ProfilerMarker _unbindMarker = new("Binder.Unbind)");
 #endif
         // ReSharper disable once MemberInitializerValueIgnored
@@ -54,7 +55,7 @@ namespace Aspid.MVVM
         public void Bind<T>(in BindableMember<T> bindableMember)
         {
 #if UNITY_2022_1_OR_NEWER && !ASPID_MVVM_UNITY_PROFILER_DISABLED
-            using (_bindMarker.Auto())
+            using (_bindTMarker.Auto())
 #endif
             {
                 OnBindingInternal();

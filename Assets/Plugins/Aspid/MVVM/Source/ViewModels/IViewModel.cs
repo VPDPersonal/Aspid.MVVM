@@ -5,8 +5,8 @@ namespace Aspid.MVVM
     /// </summary>
     public interface IViewModel
     {
-        public FindBindableMemberResult FindBindableMember(Id id);
+        public FindBindableMemberResult FindBindableMember(in FindBindableMemberParameters parameters);
         
-        public FindBindableMemberResult<T> FindBindableMember<T>(Id id);
+        public FindBindableMemberResult<T> FindBindableMember<T>(in FindBindableMemberParameters parameters);
     }
 }

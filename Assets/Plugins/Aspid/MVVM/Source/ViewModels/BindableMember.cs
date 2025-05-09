@@ -46,6 +46,21 @@ namespace Aspid.MVVM
             }
         }
 
+        public IViewModelEventRemover? AddBinderUnsafe(IBinder binder)
+        {
+#if UNITY_2022_1_OR_NEWER && !ASPID_MVVM_UNITY_PROFILER_DISABLED
+            using (AddBinderMarker.Auto())
+#endif
+            {
+                if (_isDefault && binder.Mode is not BindMode.OneWayToSource)
+                    Unsafe.As<IBinder, IBinder<T>>(ref binder).SetValue(_value);
+            
+                return binder.Mode is not BindMode.OneTime 
+                    ? _viewModelEvent?.AddBinder(binder) 
+                    : null;
+            }
+        }
+
         public static BindableMember<T> OneTime(T? value) => 
             new(value);
         
@@ -55,6 +70,6 @@ namespace Aspid.MVVM
         public static BindableMember<T> TwoWay(IViewModelEventAdder viewModelEvent, T? value) =>
             new(viewModelEvent, value);
         
-        public static BindableMember<T> OneWayToSource(IViewModelEventAdder viewModelEvent) => new(viewModelEvent);
+        public static BindableMember<T> OneWayToSource(IOneWayToSourceViewModelEvent<T> viewModelEvent) => new(viewModelEvent);
     }
 }

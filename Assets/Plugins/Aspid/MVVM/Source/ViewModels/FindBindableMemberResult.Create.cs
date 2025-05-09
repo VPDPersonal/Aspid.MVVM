@@ -23,6 +23,8 @@ namespace Aspid.MVVM
 
     public readonly partial struct FindBindableMemberResult<T>
     {
+        // private static readonly OneWayByValueTypeMarker
+        
         #region Create By ValueType
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static FindBindableMemberResult<T> OneWayByValueType<TFrom>(IViewModelEventAdder adder, in TFrom value)

@@ -5,13 +5,13 @@ namespace Aspid.MVVM.StarterKit
     public sealed partial class DynamicViewModel
     {
         public static DynamicViewModel Create<T>(DynamicPropertyData<T> p) => 
-            new(new Dictionary<Id, IDynamicProperty> 
+            new(new Dictionary<string, IDynamicProperty> 
             { 
                 [p.Id] = DynamicPropertyFactory.Create(p.Value), 
             });
         
         public static DynamicViewModel Create<T>(bool throwErrorIfNotFindProperty, DynamicPropertyData<T> p) => 
-            new(throwErrorIfNotFindProperty, new Dictionary<Id, IDynamicProperty> 
+            new(throwErrorIfNotFindProperty, new Dictionary<string, IDynamicProperty> 
             { 
                 [p.Id] = DynamicPropertyFactory.Create(p.Value), 
             });
@@ -19,7 +19,7 @@ namespace Aspid.MVVM.StarterKit
         public static DynamicViewModel Create<T1, T2>(
             DynamicPropertyData<T1> p1,
             DynamicPropertyData<T2> p2) =>
-            new(new Dictionary<Id, IDynamicProperty>
+            new(new Dictionary<string, IDynamicProperty>
             {
                 [p1.Id] = DynamicPropertyFactory.Create(p1.Value),
                 [p2.Id] = DynamicPropertyFactory.Create(p2.Value),
@@ -29,7 +29,7 @@ namespace Aspid.MVVM.StarterKit
             bool throwErrorIfNotFindProperty,
             DynamicPropertyData<T1> p1,
             DynamicPropertyData<T2> p2) =>
-            new(throwErrorIfNotFindProperty, new Dictionary<Id, IDynamicProperty>
+            new(throwErrorIfNotFindProperty, new Dictionary<string, IDynamicProperty>
             {
                 [p1.Id] = DynamicPropertyFactory.Create(p1.Value),
                 [p2.Id] = DynamicPropertyFactory.Create(p2.Value),
@@ -39,7 +39,7 @@ namespace Aspid.MVVM.StarterKit
             DynamicPropertyData<T1> p1,
             DynamicPropertyData<T2> p2,
             DynamicPropertyData<T3> p3) =>
-            new(new Dictionary<Id, IDynamicProperty>
+            new(new Dictionary<string, IDynamicProperty>
             {
                 [p1.Id] = DynamicPropertyFactory.Create(p1.Value),
                 [p2.Id] = DynamicPropertyFactory.Create(p2.Value),
@@ -51,7 +51,7 @@ namespace Aspid.MVVM.StarterKit
             DynamicPropertyData<T1> p1,
             DynamicPropertyData<T2> p2,
             DynamicPropertyData<T3> p3) =>
-            new(throwErrorIfNotFindProperty, new Dictionary<Id, IDynamicProperty>
+            new(throwErrorIfNotFindProperty, new Dictionary<string, IDynamicProperty>
             {
                 [p1.Id] = DynamicPropertyFactory.Create(p1.Value),
                 [p2.Id] = DynamicPropertyFactory.Create(p2.Value),
@@ -63,7 +63,7 @@ namespace Aspid.MVVM.StarterKit
             DynamicPropertyData<T2> p2,
             DynamicPropertyData<T3> p3,
             DynamicPropertyData<T4> p4) =>
-            new(new Dictionary<Id, IDynamicProperty>
+            new(new Dictionary<string, IDynamicProperty>
             {
                 [p1.Id] = DynamicPropertyFactory.Create(p1.Value),
                 [p2.Id] = DynamicPropertyFactory.Create(p2.Value),
@@ -77,7 +77,7 @@ namespace Aspid.MVVM.StarterKit
             DynamicPropertyData<T2> p2,
             DynamicPropertyData<T3> p3,
             DynamicPropertyData<T4> p4) =>
-            new(throwErrorIfNotFindProperty, new Dictionary<Id, IDynamicProperty>
+            new(throwErrorIfNotFindProperty, new Dictionary<string, IDynamicProperty>
             {
                 [p1.Id] = DynamicPropertyFactory.Create(p1.Value),
                 [p2.Id] = DynamicPropertyFactory.Create(p2.Value),
@@ -91,7 +91,7 @@ namespace Aspid.MVVM.StarterKit
             DynamicPropertyData<T3> p3,
             DynamicPropertyData<T4> p4,
             DynamicPropertyData<T5> p5) =>
-            new(new Dictionary<Id, IDynamicProperty>
+            new(new Dictionary<string, IDynamicProperty>
             {
                 [p1.Id] = DynamicPropertyFactory.Create(p1.Value),
                 [p2.Id] = DynamicPropertyFactory.Create(p2.Value),
@@ -107,7 +107,7 @@ namespace Aspid.MVVM.StarterKit
             DynamicPropertyData<T3> p3,
             DynamicPropertyData<T4> p4,
             DynamicPropertyData<T5> p5) =>
-            new(throwErrorIfNotFindProperty, new Dictionary<Id, IDynamicProperty>
+            new(throwErrorIfNotFindProperty, new Dictionary<string, IDynamicProperty>
             {
                 [p1.Id] = DynamicPropertyFactory.Create(p1.Value),
                 [p2.Id] = DynamicPropertyFactory.Create(p2.Value),
@@ -123,7 +123,7 @@ namespace Aspid.MVVM.StarterKit
             DynamicPropertyData<T4> p4, 
             DynamicPropertyData<T5> p5, 
             DynamicPropertyData<T6> p6) =>
-            new(new Dictionary<Id, IDynamicProperty>
+            new(new Dictionary<string, IDynamicProperty>
             {
                 [p1.Id] = DynamicPropertyFactory.Create(p1.Value),
                 [p2.Id] = DynamicPropertyFactory.Create(p2.Value),
@@ -141,7 +141,7 @@ namespace Aspid.MVVM.StarterKit
             DynamicPropertyData<T4> p4, 
             DynamicPropertyData<T5> p5, 
             DynamicPropertyData<T6> p6) =>
-            new(throwErrorIfNotFindProperty, new Dictionary<Id, IDynamicProperty>
+            new(throwErrorIfNotFindProperty, new Dictionary<string, IDynamicProperty>
             {
                 [p1.Id] = DynamicPropertyFactory.Create(p1.Value),
                 [p2.Id] = DynamicPropertyFactory.Create(p2.Value),
@@ -159,7 +159,7 @@ namespace Aspid.MVVM.StarterKit
             DynamicPropertyData<T5> p5,
             DynamicPropertyData<T6> p6, 
             DynamicPropertyData<T7> p7) =>
-            new(new Dictionary<Id, IDynamicProperty>
+            new(new Dictionary<string, IDynamicProperty>
             {
                 [p1.Id] = DynamicPropertyFactory.Create(p1.Value),
                 [p2.Id] = DynamicPropertyFactory.Create(p2.Value),
@@ -179,7 +179,7 @@ namespace Aspid.MVVM.StarterKit
             DynamicPropertyData<T5> p5,
             DynamicPropertyData<T6> p6, 
             DynamicPropertyData<T7> p7) =>
-            new(throwErrorIfNotFindProperty, new Dictionary<Id, IDynamicProperty>
+            new(throwErrorIfNotFindProperty, new Dictionary<string, IDynamicProperty>
             {
                 [p1.Id] = DynamicPropertyFactory.Create(p1.Value),
                 [p2.Id] = DynamicPropertyFactory.Create(p2.Value),
@@ -199,7 +199,7 @@ namespace Aspid.MVVM.StarterKit
             DynamicPropertyData<T6> p6, 
             DynamicPropertyData<T7> p7,
             DynamicPropertyData<T8> p8) =>
-            new(new Dictionary<Id, IDynamicProperty>
+            new(new Dictionary<string, IDynamicProperty>
             {
                 [p1.Id] = DynamicPropertyFactory.Create(p1.Value),
                 [p2.Id] = DynamicPropertyFactory.Create(p2.Value),
@@ -221,7 +221,7 @@ namespace Aspid.MVVM.StarterKit
             DynamicPropertyData<T6> p6, 
             DynamicPropertyData<T7> p7,
             DynamicPropertyData<T8> p8) =>
-            new(throwErrorIfNotFindProperty, new Dictionary<Id, IDynamicProperty>
+            new(throwErrorIfNotFindProperty, new Dictionary<string, IDynamicProperty>
             {
                 [p1.Id] = DynamicPropertyFactory.Create(p1),
                 [p2.Id] = DynamicPropertyFactory.Create(p2),

@@ -10,8 +10,8 @@ namespace Aspid.MVVM.ExampleScripts.Views
         
         protected override void InitializeInternal(IViewModel viewModel)
         {
-            _singleBinder.BindSafely(viewModel, "SingleBinder");
-            _arrayBinders.BindSafely(viewModel, "ArrayBinders");
+            // _singleBinder.BindSafely(viewModel, "SingleBinder");
+            // _arrayBinders.BindSafely(viewModel, "ArrayBinders");
         }
 
         protected override void DeinitializeInternal()

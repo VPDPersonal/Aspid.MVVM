@@ -28,7 +28,6 @@ namespace Aspid.MVVM
         /// Indicates whether the binding operation was successful.
         /// </summary>
         public readonly bool IsFound;
-        
         public readonly BindableMember<T?> Member;
         
         public FindBindableMemberResult(BindableMember<T?> member)
@@ -37,6 +36,9 @@ namespace Aspid.MVVM
             IsFound = true;
         }
 
+        public static implicit operator FindBindableMemberResult(FindBindableMemberResult<T> result) =>
+            new(result.Member);
+        
         public static implicit operator FindBindableMemberResult<T>(in BindableMember<T?> bindableMember) =>
             new(bindableMember);
     }

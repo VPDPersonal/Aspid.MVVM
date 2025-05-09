@@ -3,11 +3,7 @@ namespace Aspid.MVVM
     public readonly struct BindableMember<T> : IViewModelEventAdder
     {
 #if UNITY_2022_1_OR_NEWER && !ASPID_MVVM_UNITY_PROFILER_DISABLED
-        private static readonly Unity.Profiling.ProfilerMarker OneWayMarker = new("BindableMember.OneWay");
-        private static readonly Unity.Profiling.ProfilerMarker TwoWayMarker = new("BindableMember.TwoWay");
-        private static readonly Unity.Profiling.ProfilerMarker OneTimeMarker = new("BindableMember.OneTime");
         private static readonly Unity.Profiling.ProfilerMarker AddBinderMarker = new("BindableMember.AddBinder");
-        private static readonly Unity.Profiling.ProfilerMarker OneWayToSourceMarker = new("BindableMember.OneWayToSource");
 #endif
         
         private readonly T? _value;
@@ -17,7 +13,7 @@ namespace Aspid.MVVM
         private BindableMember(T? value)
         {
             _value = value;
-            _isDefault = false;
+            _isDefault = true;
             _viewModelEvent = null;
         }
         
@@ -50,44 +46,30 @@ namespace Aspid.MVVM
             }
         }
 
-        public static BindableMember<T> OneTime(T? value)
+        public IViewModelEventRemover? AddBinderUnsafe(IBinder binder)
         {
 #if UNITY_2022_1_OR_NEWER && !ASPID_MVVM_UNITY_PROFILER_DISABLED
-            using (OneTimeMarker.Auto())
+            using (AddBinderMarker.Auto())
 #endif
             {
-                return new BindableMember<T>(value);
+                if (_isDefault && binder.Mode is not BindMode.OneWayToSource)
+                    Unsafe.As<IBinder, IBinder<T>>(ref binder).SetValue(_value);
+            
+                return binder.Mode is not BindMode.OneTime 
+                    ? _viewModelEvent?.AddBinder(binder) 
+                    : null;
             }
         }
+
+        public static BindableMember<T> OneTime(T? value) => 
+            new(value);
         
-        public static BindableMember<T> OneWay(IViewModelEventAdder viewModelEvent, T? value)
-        {
-#if UNITY_2022_1_OR_NEWER && !ASPID_MVVM_UNITY_PROFILER_DISABLED
-            using (OneWayMarker.Auto())
-#endif
-            {
-                return new BindableMember<T>(viewModelEvent, value);
-            }
-        }
+        public static BindableMember<T> OneWay(IViewModelEventAdder viewModelEvent, T? value) =>
+            new(viewModelEvent, value);
         
-        public static BindableMember<T> TwoWay(IViewModelEventAdder viewModelEvent, T? value)
-        {
-#if UNITY_2022_1_OR_NEWER && !ASPID_MVVM_UNITY_PROFILER_DISABLED
-            using (TwoWayMarker.Auto())
-#endif
-            {
-                return new BindableMember<T>(viewModelEvent, value);
-            }
-        }
+        public static BindableMember<T> TwoWay(IViewModelEventAdder viewModelEvent, T? value) =>
+            new(viewModelEvent, value);
         
-        public static BindableMember<T> OneWayToSource(IViewModelEventAdder viewModelEvent)
-        {
-#if UNITY_2022_1_OR_NEWER && !ASPID_MVVM_UNITY_PROFILER_DISABLED
-            using (OneWayToSourceMarker.Auto())
-#endif
-            {
-                return new BindableMember<T>(viewModelEvent);
-            }
-        }
+        public static BindableMember<T> OneWayToSource(IOneWayToSourceViewModelEvent<T> viewModelEvent) => new(viewModelEvent);
     }
 }

@@ -9,6 +9,10 @@ namespace Aspid.MVVM
     /// <typeparam name="T">The type of the value managed by the event.</typeparam>
     public sealed class OneWayToSourceViewModelEvent<T> : IOneWayToSourceViewModelEvent<T>
     {
+#if UNITY_2022_1_OR_NEWER && !ASPID_MVVM_UNITY_PROFILER_DISABLED
+        private static readonly Unity.Profiling.ProfilerMarker AddBinderMarker = new("OneWayToSourceViewModelEvent.AddBinder");
+#endif
+        
         private readonly Action<T?> _setValue;
 
         /// <summary>
@@ -30,7 +34,12 @@ namespace Aspid.MVVM
         /// </exception>
         public IViewModelEventRemover? AddBinder(IBinder binder)
         {
-            GetReverseBinder(binder).ValueChanged += _setValue;
+#if UNITY_2022_1_OR_NEWER && !ASPID_MVVM_UNITY_PROFILER_DISABLED
+            using (AddBinderMarker.Auto())
+#endif
+            {
+                GetReverseBinder(binder).ValueChanged += _setValue;
+            }
             return this;
         }
         

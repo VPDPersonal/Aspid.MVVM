@@ -13,6 +13,7 @@ namespace Aspid.MVVM.Unity
     {
 #if !ASPID_MVVM_UNITY_PROFILER_DISABLED
         private static readonly global::Unity.Profiling.ProfilerMarker _bindMarker = new("MonoBinder.Bind");
+        private static readonly global::Unity.Profiling.ProfilerMarker _bindTMarker = new("MonoBinder<T>.Bind");
         private static readonly global::Unity.Profiling.ProfilerMarker _unbindMarker = new("MonoBinder.Unbind");
 #endif
         [BindMode(BindMode.OneWay, BindMode.OneTime)]
@@ -41,7 +42,7 @@ namespace Aspid.MVVM.Unity
         public void Bind<T>(in BindableMember<T> bindableMember)
         {
 #if UNITY_2022_1_OR_NEWER && !ASPID_MVVM_UNITY_PROFILER_DISABLED
-            using (_bindMarker.Auto())
+            using (_bindTMarker.Auto())
 #endif
             {
                 OnBindingInternal();

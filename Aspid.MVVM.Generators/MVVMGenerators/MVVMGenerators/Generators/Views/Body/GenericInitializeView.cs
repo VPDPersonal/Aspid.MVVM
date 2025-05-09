@@ -97,7 +97,7 @@ public static class GenericInitializeView
         }
         
         code.AppendLine()
-            .AppendLine("\nOnInitializedInternal(viewModel);");
+            .AppendLine("OnInitializedInternal(viewModel);");
 
         code.EndBlock()
             .EndBlock();

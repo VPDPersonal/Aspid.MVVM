@@ -6,16 +6,17 @@ using MVVMGenerators.Helpers.Extensions.Symbols;
 
 namespace MVVMGenerators.Generators.ViewModels.Data.Members;
 
-public sealed class BindableField : BindableMember
+public sealed class BindableField : BindableMember, IBindableViewModelEvent
 {
     public readonly bool IsReadOnly;
-    public readonly ViewModelEvent Event;
     public readonly string GetAccessAsText;
     public readonly string SetAccessAsText;
     public readonly string GeneralAccessAsText;
     public readonly ImmutableArray<BindableBindAlso> BindAlso;
     
     public override string Type { get; }
+    
+    public ViewModelEvent Event { get; }
     
     public BindableField(IFieldSymbol field, BindMode mode, ImmutableArray<BindableBindAlso> bindAlso)
         : base(field, mode, field.Name, field.GetPropertyName())

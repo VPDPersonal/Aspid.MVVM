@@ -194,7 +194,7 @@ public static class InitializeBody
         foreach (var member in data.Members)
             code.AppendBindSafely(member);
         
-        code.AppendLine("\nOnInitializedInternal(viewModel);");
+        code.AppendLine("OnInitializedInternal(viewModel);");
         code.EndBlock();
         code.EndBlock();
         

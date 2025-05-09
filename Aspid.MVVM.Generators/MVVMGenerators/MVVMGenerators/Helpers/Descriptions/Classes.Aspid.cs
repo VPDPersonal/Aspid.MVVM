@@ -52,17 +52,26 @@ public static partial class Classes
     
     public static readonly TypeText BindableMember =
         new(nameof(BindableMember), Namespaces.Aspid_MVVM);
+    
+    public static readonly TypeText FindBindableMemberParameters =
+        new(nameof(FindBindableMemberParameters), Namespaces.Aspid_MVVM);
     #endregion
 
     #region Bind Attributes
+    public static readonly AttributeText BindAttribute =
+        new("Bind", Namespaces.Aspid_MVVM);
+    
+    public static readonly AttributeText IdAttribute = 
+        new("BindId", Namespaces.Aspid_MVVM);
+    
     public static readonly AttributeText AccessAttribute =
         new("Access", Namespaces.Aspid_MVVM);
     
     public static readonly AttributeText BindAlsoAttribute =
         new("BindAlso", Namespaces.Aspid_MVVM);
     
-    public static readonly AttributeText BindAttribute =
-        new("Bind", Namespaces.Aspid_MVVM);
+    public static readonly AttributeText IgnoreAttribute = 
+        new("IgnoreBind", Namespaces.Aspid_MVVM);
     
     public static readonly AttributeText OneWayBindAttribute =
         new("OneWayBind", Namespaces.Aspid_MVVM);
@@ -98,21 +107,12 @@ public static partial class Classes
     public static readonly AttributeText RelayCommandAttribute =
         new("RelayCommand", Namespaces.Aspid_MVVM);
     #endregion
-
-    public static readonly TypeText Id =
-        new(nameof(Id), Namespaces.Aspid_MVVM);
     
     public static readonly TypeText Unsafe =
         new(nameof(Unsafe), Namespaces.Aspid_MVVM);
     
     public static readonly TypeText Ids =
-        new("Ids", Namespaces.Aspid_MVVM_Generated);
-    
-    public static readonly AttributeText IdAttribute = 
-        new("BindId", Namespaces.Aspid_MVVM);
-    
-    public static readonly AttributeText IgnoreAttribute = 
-        new("IgnoreBind", Namespaces.Aspid_MVVM);
+        new(nameof(Ids), Namespaces.Aspid_MVVM_Generated);
     
     public static readonly AttributeText CreateFromAttribute =
         new("CreateFrom", Namespaces.Aspid_MVVM);

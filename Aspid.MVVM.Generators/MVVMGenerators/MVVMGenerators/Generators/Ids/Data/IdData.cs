@@ -8,7 +8,6 @@ namespace MVVMGenerators.Generators.Ids.Data;
 public readonly struct IdData : IEquatable<IdData>
 {
     public readonly int Length;
-    public readonly int HashCode;
     public readonly string Value;
     public readonly string SourceValue;
 
@@ -17,7 +16,6 @@ public readonly struct IdData : IEquatable<IdData>
         SourceValue = member.GetId(postfix);
         
         Length = SourceValue.Length;
-        HashCode = SourceValue.GetHashCode();
         Value = $"{Classes.Ids}.{SourceValue}";
     }
 
@@ -25,14 +23,12 @@ public readonly struct IdData : IEquatable<IdData>
         obj is IdData other && Equals(other);
     
     public bool Equals(IdData other) =>
-        Length == other.Length && HashCode == other.HashCode && Value == other.Value;
+        Length == other.Length && Value == other.Value;
 
     public override int GetHashCode() => 
-        HashCode;
+        Value.GetHashCode();
     
     public override string ToString() => Value;
-
-    public string ToInstanceString() => $"new({Value}, {Length}, {HashCode})";
 
     public static implicit operator string(IdData id) => id.Value;
 }

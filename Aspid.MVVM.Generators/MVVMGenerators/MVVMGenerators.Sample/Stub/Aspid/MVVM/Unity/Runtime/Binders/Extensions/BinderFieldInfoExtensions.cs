@@ -1,6 +1,6 @@
 using System.Reflection;
 
-namespace Aspid.MVVM
+namespace Aspid.MVVM.Unity
 {
     public static class BinderFieldInfoExtensions
     {

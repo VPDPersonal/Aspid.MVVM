@@ -4,11 +4,11 @@ using MVVMGenerators.Helpers.Extensions.Symbols;
 
 namespace MVVMGenerators.Generators.ViewModels.Data.Members;
 
-public sealed class BindableBindAlso : BindableMember, IEquatable<BindableBindAlso>
+public sealed class BindableBindAlso : BindableMember, IBindableViewModelEvent, IEquatable<BindableBindAlso>
 {
     public override string Type { get; }
     
-    public readonly ViewModelEvent Event;
+    public ViewModelEvent Event { get; }
     
     public BindableBindAlso(ISymbol member)
         : base(member, BindMode.OneWay, member.Name, member.Name)

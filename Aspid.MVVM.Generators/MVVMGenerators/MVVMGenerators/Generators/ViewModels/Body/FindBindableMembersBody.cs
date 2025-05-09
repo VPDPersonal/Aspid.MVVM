@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Microsoft.CodeAnalysis;
 using MVVMGenerators.Helpers;
 using System.Collections.Immutable;
@@ -5,7 +6,6 @@ using MVVMGenerators.Helpers.Descriptions;
 using MVVMGenerators.Helpers.Extensions.Writer;
 using MVVMGenerators.Generators.ViewModels.Data;
 using MVVMGenerators.Generators.ViewModels.Data.Members;
-using MVVMGenerators.Generators.ViewModels.Data.Members.Collections;
 
 namespace MVVMGenerators.Generators.ViewModels.Body;
 
@@ -57,7 +57,7 @@ public static class FindBindableMembersBody
         return code.AppendMultiline(
                 $"""
                  {General.GeneratedCodeViewModelAttribute}
-                 public {modifier} {Classes.FindBindableMemberResult} FindBindableMember({Classes.Id} id)
+                 public {modifier} {Classes.FindBindableMemberResult} FindBindableMember(in {Classes.FindBindableMemberParameters} parameters)
                  """)
             .BeginBlock()
             .AppendFindBindableMemberBody(span, false)
@@ -66,7 +66,7 @@ public static class FindBindableMembersBody
             .AppendMultiline(
                 $"""
                  {General.GeneratedCodeViewModelAttribute}
-                 public {modifier} {Classes.FindBindableMemberResult}<T> FindBindableMember<T>({Classes.Id} id)
+                 public {modifier} {Classes.FindBindableMemberResult}<T> FindBindableMember<T>(in {Classes.FindBindableMemberParameters} parameters)
                  """)
             .BeginBlock()
             .AppendFindBindableMemberBody(span, true)
@@ -79,21 +79,23 @@ public static class FindBindableMembersBody
             .AppendLine(isGeneric ? "using (__findBindableMemberMarkerT.Auto())" : "using (__findBindableMemberMarker.Auto())")
             .AppendLine("#endif")
             .BeginBlock();
+
+        var addedMembers = new HashSet<BindableMember>();
         
         if (!span.IdLengthMemberGroups.IsEmpty)
         {
-            AppendSwitchBlock("id.Length");
-
+            AppendSwitchBlock("parameters.Id.Length");
+            
             foreach (var idGroup in span.IdLengthMemberGroups)
             {
                 AppendCaseBlock($"{idGroup.Length}");
-                AppendSwitchBlock("id.HashCode");
+                AppendSwitchBlock("parameters.Id");
 
-                AppendHashCodeGroup(idGroup.HashCodeGroup);
+                AppendIdBlock(idGroup.BindableMembers);
                 
                 code.EndBlock()
                     .AppendLine()
-                    .AppendLine("break;")
+                    .AppendLine("return default;")
                     .EndBlock();
             }
 
@@ -101,19 +103,20 @@ public static class FindBindableMembersBody
                 .AppendLine();
         }
         
-        if (!span.HashCodeMemberGroups.IsEmpty)
+        if (addedMembers.Count != span.Members.Length)
         {
-            AppendSwitchBlock("id.HashCode");
-            AppendHashCodeGroup(span.HashCodeMemberGroups);
+            AppendSwitchBlock("parameters.Id");
+            AppendIdBlock(span.Members);
+
             code.EndBlock()
                 .AppendLine();
         }
-
+        
         var returnCode = span.Inheritor is Inheritor.None
             ? "return default;" 
             : !isGeneric 
-                ? "return base.FindBindableMember(id);"
-                : "return base.FindBindableMember<T>(id);";
+                ? "return base.FindBindableMember(parameters);"
+                : "return base.FindBindableMember<T>(parameters);";
         
         code.AppendLine(returnCode)
             .EndBlock();
@@ -128,39 +131,28 @@ public static class FindBindableMembersBody
             code.AppendLine($"case {conditional}:")
                 .BeginBlock();
 
-        void AppendHashCodeGroup(ImmutableArray<HasCodeMemberGroup> hashCodeGroups)
+        void AppendIdBlock(ImmutableArray<BindableMember> members)
         {
-            foreach (var hasCodeGroup in hashCodeGroups)
+            foreach (var member in members)
             {
-                AppendCaseBlock($"{hasCodeGroup.HashCode}");
-                AppendSwitchBlock("id.Value");
-                
-                foreach (var member in hasCodeGroup.Members)
+                if (addedMembers.Contains(member)) continue;
+                AppendCaseBlock(member.Id.ToString());
+                        
+                if (isGeneric)
                 {
-                    var type = member.Type;
-                        
-                    AppendCaseBlock(member.Id.ToString());
-                        
-                    if (isGeneric)
-                    {
-                        code.Append($"return {Classes.FindBindableMemberResult}<T>")
-                            .AppendCreateFindBindableMemberResult(member, true)
-                            .AppendLine(";");
-                    }
-                    else
-                    {
-                        code.Append($"return {Classes.FindBindableMemberResult}")
-                            .AppendCreateFindBindableMemberResult(member, false)
-                            .AppendLine(";");
-                    }
-
-                    code.EndBlock();
+                    code.Append($"return {Classes.FindBindableMemberResult}<T>")
+                        .AppendCreateFindBindableMemberResult(member, true)
+                        .AppendLine(";");
                 }
-                
-                code.EndBlock()
-                    .AppendLine()
-                    .AppendLine("break;")
-                    .EndBlock();
+                else
+                {
+                    code.Append($"return {Classes.FindBindableMemberResult}")
+                        .AppendCreateFindBindableMemberResult(member, false)
+                        .AppendLine(";");
+                }
+
+                code.EndBlock();
+                addedMembers.Add(member);
             }
         }
     }

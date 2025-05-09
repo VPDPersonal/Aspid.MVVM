@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Immutable;
 using Microsoft.CodeAnalysis;
 using MVVMGenerators.Helpers;
 using MVVMGenerators.Helpers.Data;
@@ -46,7 +47,7 @@ public static class PropertiesBody
     #region Events
     private static CodeWriter AppendEvents(
         this CodeWriter code, 
-        in ReadOnlySpan<BindableMember> bindableMembers)
+        in ImmutableArray<BindableMember> bindableMembers)
     {
         foreach (var bindableMember in bindableMembers)
         {
@@ -106,7 +107,7 @@ public static class PropertiesBody
     #region ViewModel Events
     private static CodeWriter AppendViewModelEvents(
         this CodeWriter code,
-        in ReadOnlySpan<BindableMember> bindableMembers)
+        in ImmutableArray<BindableMember> bindableMembers)
     {
         foreach (var bindableMember in bindableMembers)
         {

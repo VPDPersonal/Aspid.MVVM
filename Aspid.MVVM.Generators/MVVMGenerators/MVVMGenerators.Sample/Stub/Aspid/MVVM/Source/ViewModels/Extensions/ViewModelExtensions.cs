@@ -8,12 +8,6 @@ namespace Aspid.MVVM
     /// </summary>
     public static class ViewModelExtensions
     {
-        public static FindBindableMemberResult FindBindableMember(this IViewModel viewModel, string id) =>
-            viewModel.FindBindableMember(new Id(id));
-        
-        public static FindBindableMemberResult<T> FindBindableMember<T>(this IViewModel viewModel, string id) =>
-            viewModel.FindBindableMember<T>(new Id(id));
-        
         /// <summary>
         /// Disposes of the ViewModel instance if it implements <see cref="IDisposable"/>.
         /// </summary>

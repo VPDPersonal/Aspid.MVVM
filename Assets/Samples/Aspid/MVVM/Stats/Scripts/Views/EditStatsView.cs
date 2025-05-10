@@ -13,16 +13,9 @@ namespace Aspid.MVVM.Stats.Views
         [SerializeField] private MonoBinder[] _isDraft;
         
         [Header("Commands")]
-        [RequireBinder(typeof(IRelayCommand))]
         [SerializeField] private ButtonCommandBinder[] _confirmCommand;
-        
-        [RequireBinder(typeof(IRelayCommand))]
         [SerializeField] private ButtonCommandBinder[] _resetToDefaultCommand;
-        
-        [RequireBinder(typeof(IRelayCommand<Skill>))]
         [SerializeField] private ButtonCommandBinder<Skill>[] _addSkillPointToCommand;
-        
-        [RequireBinder(typeof(IRelayCommand<Skill>))]
         [SerializeField] private ButtonCommandBinder<Skill>[] _removeSkillPointToCommand;
     }
 }

@@ -1,6 +1,6 @@
 using System;
-using System.Collections.Immutable;
 using Microsoft.CodeAnalysis;
+using System.Collections.Immutable;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using MVVMGenerators.Generators.ViewModels.Data.Members;
 using MVVMGenerators.Generators.ViewModels.Data.Members.Collections;

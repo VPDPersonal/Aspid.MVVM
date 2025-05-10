@@ -1,4 +1,3 @@
-using System;
 using Microsoft.CodeAnalysis;
 using MVVMGenerators.Helpers.Extensions.Symbols;
 

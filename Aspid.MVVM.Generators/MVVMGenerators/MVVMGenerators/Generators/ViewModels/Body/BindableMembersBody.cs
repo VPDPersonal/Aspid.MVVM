@@ -3,9 +3,8 @@ using MVVMGenerators.Helpers;
 using MVVMGenerators.Helpers.Descriptions;
 using MVVMGenerators.Helpers.Extensions.Writer;
 using MVVMGenerators.Generators.ViewModels.Data;
-using MVVMGenerators.Generators.ViewModels.Data.Members;
 using MVVMGenerators.Helpers.Extensions.Symbols;
-using MVVMGenerators.Generators.ViewModels.Extensions;
+using MVVMGenerators.Generators.ViewModels.Data.Members;
 
 namespace MVVMGenerators.Generators.ViewModels.Body;
 
@@ -32,31 +31,33 @@ public static class BindableMembersBody
     private static CodeWriter AppendBindableMemberProperties(this CodeWriter code, in ViewModelDataSpan data)
     {
         foreach (var member in data.Members)
-        {
-            Append(data, member);
-        }
+            code.AppendBindableMemberProperty(member, data)
+                .AppendLine();
 
         return code;
-
-        void Append(in ViewModelDataSpan data, BindableMember member)
-        {
-            if (member.Mode is BindMode.None) return;
-                    
-            code.AppendLine($"{Classes.IBindableMemberEventAdder} {data.Name}.IBindableMembers.{member.GeneratedName} =>")
-                .IncreaseIndent()
-                .AppendBindableMemberInstance(member)
-                .AppendLine(";")
-                .DecreaseIndent()
-                .AppendLine();
-        }
     }
 
-    private static CodeWriter AppendBindableMembersInterface(this CodeWriter code, ViewModelDataSpan data)
+    private static CodeWriter AppendBindableMemberProperty(this CodeWriter code, BindableMember member, in ViewModelDataSpan data)
     {
-        code.AppendLine(data.Inheritor is Inheritor.InheritorViewModelAttribute ?
-            $"public new interface IBindableMembers : {data.ClassSymbol.BaseType!.ToDisplayStringGlobal()}.IBindableMembers" :
-            $"public interface IBindableMembers : {Classes.IViewModel}");
-        code.BeginBlock();
+        if (member.Mode is BindMode.None) return code;
+
+        var className = data.Name;
+
+        return code
+            .AppendLine($"{Classes.IBindableMemberEventAdder} {className}.IBindableMembers.{member.GeneratedName} =>")
+            .IncreaseIndent()
+            .AppendLine($"{member.Event.ToInstantiateFieldString()};")
+            .DecreaseIndent();
+    }
+
+    private static CodeWriter AppendBindableMembersInterface(this CodeWriter code, in ViewModelDataSpan data)
+    {
+        var classType = data.ClassSymbol.BaseType!.ToDisplayStringGlobal();
+        
+        code.AppendLine(data.Inheritor is Inheritor.InheritorViewModelAttribute 
+            ? $"public new interface IBindableMembers : {classType}.IBindableMembers" 
+            : $"public interface IBindableMembers : {Classes.IViewModel}")
+            .BeginBlock();
 
         foreach (var member in data.Members)
         {

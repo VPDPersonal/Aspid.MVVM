@@ -11,9 +11,15 @@ public readonly struct ViewModelEvent
     public readonly string? Name;
     public readonly string? EventType;
     public readonly string? FieldName;
+    
+    private readonly BindMode _mode;
+    private readonly string _generatedName;
 
     public ViewModelEvent(BindMode mode, string generatedName, string type)
     {
+        _mode = mode;
+        _generatedName = generatedName;
+        
         if (mode is BindMode.None) return;
         
         EventType = mode switch
@@ -30,4 +36,13 @@ public readonly struct ViewModelEvent
         Name = mode is BindMode.OneWay or BindMode.TwoWay ? $"{generatedName}Changed" : null;
         FieldName = $"__{FieldSymbolExtensions.RemovePrefix(PropertySymbolExtensions.GetFieldName(generatedName, false))}ChangedEvent";
     }
+
+    public string ToInstantiateFieldString() => _mode switch
+    {
+        BindMode.OneWay => $"{FieldName} ??= new({_generatedName})",
+        BindMode.TwoWay => $"{FieldName} ??= new({_generatedName}, Set{_generatedName})",
+        BindMode.OneTime => $"{FieldName} ??= new({_generatedName})",
+        BindMode.OneWayToSource => $"{FieldName} ??= new(Set{_generatedName})",
+        _ => string.Empty
+    };
 }

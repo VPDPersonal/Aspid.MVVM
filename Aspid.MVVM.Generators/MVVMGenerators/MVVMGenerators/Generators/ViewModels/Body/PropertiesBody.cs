@@ -1,8 +1,7 @@
-using System;
-using System.Collections.Immutable;
 using Microsoft.CodeAnalysis;
 using MVVMGenerators.Helpers;
 using MVVMGenerators.Helpers.Data;
+using System.Collections.Immutable;
 using MVVMGenerators.Helpers.Descriptions;
 using MVVMGenerators.Helpers.Extensions.Writer;
 using MVVMGenerators.Generators.ViewModels.Data;
@@ -122,12 +121,12 @@ public static class PropertiesBody
         
         return !@event.Has 
             ? code 
-            : code.AppendViewModelEvent(@event.Type!, @event.EventType!, @event.FieldName!, member.Mode is BindMode.OneTime);
+            : code.AppendViewModelEvent(@event.Type!, @event.EventType!, @event.FieldName!);
     }
     
-    private static CodeWriter AppendViewModelEvent(this CodeWriter code, string type, string eventType, string eventFieldName, bool isNullable)
+    private static CodeWriter AppendViewModelEvent(this CodeWriter code, string type, string eventType, string eventFieldName)
     {
-        var fullType = $"{eventType}<{type}>" + (isNullable ? "?" : string.Empty);
+        var fullType = $"{eventType}<{type}>";
         
         return code.AppendMultiline(
             $"""

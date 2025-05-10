@@ -4,9 +4,9 @@ using MVVMGenerators.Helpers;
 using MVVMGenerators.Helpers.Descriptions;
 using MVVMGenerators.Generators.Views.Data;
 using MVVMGenerators.Helpers.Extensions.Writer;
+using MVVMGenerators.Helpers.Extensions.Symbols;
 using MVVMGenerators.Generators.Views.Data.Members;
 using MVVMGenerators.Generators.Views.Body.Extensions;
-using MVVMGenerators.Helpers.Extensions.Symbols;
 
 namespace MVVMGenerators.Generators.Views.Body;
 

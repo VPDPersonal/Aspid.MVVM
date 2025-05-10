@@ -2,7 +2,7 @@ using System;
 
 namespace Aspid.MVVM
 {
-    public readonly struct OneTimeBindableMemberEvent<T> : IBindableMemberEventAdder
+    public class OneTimeBindableMemberEvent<T> : IBindableMemberEventAdder
     {
         private readonly T? _value; 
         

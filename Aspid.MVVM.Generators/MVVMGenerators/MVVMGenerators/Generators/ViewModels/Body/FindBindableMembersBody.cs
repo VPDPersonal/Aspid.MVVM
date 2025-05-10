@@ -1,6 +1,6 @@
-using System.Collections.Generic;
 using Microsoft.CodeAnalysis;
 using MVVMGenerators.Helpers;
+using System.Collections.Generic;
 using System.Collections.Immutable;
 using MVVMGenerators.Helpers.Descriptions;
 using MVVMGenerators.Helpers.Extensions.Writer;
@@ -126,28 +126,17 @@ public static class FindBindableMembersBody
                 if (addedMembers.Contains(member)) continue;
                 AppendCaseBlock(member.Id.ToString());
 
-                code.Append("return ")
-                    .AppendCreateFindBindableMemberResult(member)
-                    .AppendLine();
-
-                code.EndBlock();
+                code.AppendReturnFindBindableMemberResult(member)
+                    .EndBlock();
+                
                 addedMembers.Add(member);
             }
         }
     }
 
-    private static CodeWriter AppendCreateFindBindableMemberResult(this CodeWriter code, in BindableMember member)
+    private static CodeWriter AppendReturnFindBindableMemberResult(this CodeWriter code, in BindableMember member)
     {
-        var valueName = member.GeneratedName;
-        var eventName = member.Event.FieldName;
-
-        return member.Mode switch
-        {
-            BindMode.OneWay => code.Append($"new({eventName} ??= new({valueName}));"),
-            BindMode.TwoWay => code.Append($"new({eventName} ??= new({valueName}, Set{valueName}));"),
-            BindMode.OneTime => code.Append($"new({eventName} ??= new({valueName}));"),
-            BindMode.OneWayToSource => code.Append($"new({eventName} ??= new(Set{valueName}));"),
-            _ => code
-        };
+        var @event = member.Event;
+        return code.AppendLine($"return new({@event.ToInstantiateFieldString()});");
     }
 }

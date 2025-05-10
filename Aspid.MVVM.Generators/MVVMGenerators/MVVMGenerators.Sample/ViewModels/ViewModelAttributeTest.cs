@@ -3,7 +3,7 @@ using Aspid.MVVM;
 namespace MVVMGenerators.Sample.ViewModels;
 
 [ViewModel]
-public partial class ViewModelAttributeTest
+public partial class ViewModelAttributeTest1
 {
     [Bind] private int _bindAuto;
     [Bind] private readonly int _bindAutoReadonly;

@@ -37,8 +37,8 @@ public static class BindableCommandFactory
             var canExecute = GetCanExecute(canExecuteArgument, method, boolMethods, boolProperties, generatedBoolProperties);
 
             bindableCommands.Add(canExecute.isEixst ?
-                new BindableCommand(method, canExecuteArgument, !canExecute.isLamda, canExecute.isLamda) :
-                new BindableCommand(method, null, false, false));
+                new BindableCommand(method, canExecuteArgument, canExecute.isLamda) :
+                new BindableCommand(method, null, false));
         }
 
         return bindableCommands;

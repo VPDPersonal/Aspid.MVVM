@@ -54,14 +54,8 @@ public class NewSliderBinder : IBinder<Slider>
         throw new System.NotImplementedException();
     }
     public void Bind() { }
-    
 
-    public void Bind<T1>(in BindableMember<T1> bindableMember)
-    {
-        throw new NotImplementedException();
-    }
-
-    public void Bind(IViewModelEventAdder viewModelEventAdder)
+    public void Bind(IBindableMemberEventAdder bindableMemberEventAdder)
     {
         throw new NotImplementedException();
     }

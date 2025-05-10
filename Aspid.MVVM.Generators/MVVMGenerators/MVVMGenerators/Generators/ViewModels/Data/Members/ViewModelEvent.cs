@@ -1,35 +1,33 @@
 using System;
-using Microsoft.CodeAnalysis;
 using MVVMGenerators.Helpers.Descriptions;
 using MVVMGenerators.Helpers.Extensions.Symbols;
 
 namespace MVVMGenerators.Generators.ViewModels.Data.Members;
 
-public readonly struct ViewModelEvent(BindMode mode, ISymbol member)
+public readonly struct ViewModelEvent
 {
-    public readonly string? Type = member switch
+    public readonly bool Has;
+    public readonly string? Type;
+    public readonly string? Name;
+    public readonly string? EventType;
+    public readonly string? FieldName;
+
+    public ViewModelEvent(BindMode mode, string generatedName, string type)
     {
-        IFieldSymbol field => field.Type.ToDisplayStringGlobal(),
-        IPropertySymbol property => property.Type.ToDisplayStringGlobal(),
-        _ => null
-    };
-    
-    public readonly string? Name = mode is BindMode.OneTime or BindMode.OneWayToSource ?
-        null
-        : $"{member.GetPropertyName()}Changed";
-    
-    public readonly string? FieldName = mode is BindMode.OneTime
-        ? null
-        : $"__{FieldSymbolExtensions.RemovePrefix(member.GetFieldName(false))}ChangedEvent";
-    
-    public readonly string? EventType = mode switch
-    {
-        BindMode.OneWay => Classes.OneWayViewModelEvent.Global,
-        BindMode.TwoWay => Classes.TwoWayViewModelEvent.Global,
-        BindMode.OneTime => null,
-        BindMode.OneWayToSource => Classes.OneWayToSourceViewModelEvent.Global,
-        _ => throw new ArgumentOutOfRangeException(nameof(mode), mode, null)
-    };
-    
-    public bool Has => EventType is not null;
+        if (mode is BindMode.None) return;
+        
+        EventType = mode switch
+        {
+            BindMode.OneWay => Classes.OneWayBindableMemberEvent.Global,
+            BindMode.TwoWay => Classes.TwoWayBindableMemberEvent.Global,
+            BindMode.OneTime => Classes.OneTimeBindableMemberEvent.Global,
+            BindMode.OneWayToSource => Classes.OneWayToSourceBindableMemberEvent.Global,
+            _ => throw new ArgumentOutOfRangeException(nameof(mode), mode, null)
+        };
+
+        Type = type;
+        Has = EventType is not null;
+        Name = mode is BindMode.OneWay or BindMode.TwoWay ? $"{generatedName}Changed" : null;
+        FieldName = $"__{FieldSymbolExtensions.RemovePrefix(PropertySymbolExtensions.GetFieldName(generatedName, false))}ChangedEvent";
+    }
 }

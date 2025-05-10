@@ -44,14 +44,8 @@ public static partial class Classes
     public static readonly AttributeText ViewModelAttribute =
         new("ViewModel", Namespaces.Aspid_MVVM);
     
-    public static readonly TypeText BindResult =
-        new(nameof(BindResult), Namespaces.Aspid_MVVM);
-    
     public static readonly TypeText FindBindableMemberResult =
         new(nameof(FindBindableMemberResult), Namespaces.Aspid_MVVM);  
-    
-    public static readonly TypeText BindableMember =
-        new(nameof(BindableMember), Namespaces.Aspid_MVVM);
     
     public static readonly TypeText FindBindableMemberParameters =
         new(nameof(FindBindableMemberParameters), Namespaces.Aspid_MVVM);
@@ -86,15 +80,27 @@ public static partial class Classes
         new("OneWayToSourceBind", Namespaces.Aspid_MVVM);
     #endregion
     
-    #region View Model Events
-    public static readonly TypeText OneWayViewModelEvent =
-        new(nameof(OneWayViewModelEvent), Namespaces.Aspid_MVVM);
+    #region Bindable Member Events
+    public static readonly TypeText IBindableMemberEvent =
+        new(nameof(IBindableMemberEvent), Namespaces.Aspid_MVVM);
     
-    public static readonly TypeText TwoWayViewModelEvent =
-        new(nameof(TwoWayViewModelEvent), Namespaces.Aspid_MVVM);
+    public static readonly TypeText IBindableMemberEventAdder =
+        new(nameof(IBindableMemberEventAdder), Namespaces.Aspid_MVVM);
     
-    public static readonly TypeText OneWayToSourceViewModelEvent =
-        new(nameof(OneWayToSourceViewModelEvent), Namespaces.Aspid_MVVM);
+    public static readonly TypeText IBindableMemberEventRemover =
+        new(nameof(IBindableMemberEventRemover), Namespaces.Aspid_MVVM);
+    
+    public static readonly TypeText OneWayBindableMemberEvent =
+        new(nameof(OneWayBindableMemberEvent), Namespaces.Aspid_MVVM);
+    
+    public static readonly TypeText TwoWayBindableMemberEvent =
+        new(nameof(TwoWayBindableMemberEvent), Namespaces.Aspid_MVVM);
+    
+    public static readonly TypeText OneTimeBindableMemberEvent =
+        new(nameof(OneTimeBindableMemberEvent), Namespaces.Aspid_MVVM);
+    
+    public static readonly TypeText OneWayToSourceBindableMemberEvent =
+        new(nameof(OneWayToSourceBindableMemberEvent), Namespaces.Aspid_MVVM);
     #endregion
 
     #region Commands

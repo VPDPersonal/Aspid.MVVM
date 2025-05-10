@@ -9,8 +9,6 @@ public partial class GenericView : IView<PersonViewModel>, IView<ViewModelAccess
     public Binder _a;
     public Binder _age;
     public Binder _name;
-    
-    [RequireBinder(typeof(string))]
     public Binder _family;
 }
 

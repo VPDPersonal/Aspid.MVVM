@@ -12,7 +12,6 @@ namespace Aspid.MVVM
     {
 #if UNITY_2022_1_OR_NEWER && !ASPID_MVVM_UNITY_PROFILER_DISABLED
         private static readonly Unity.Profiling.ProfilerMarker _bindMarker = new("Binder.Bind");
-        private static readonly Unity.Profiling.ProfilerMarker _bindTMarker = new("Binder<T>.Bind");
         private static readonly Unity.Profiling.ProfilerMarker _unbindMarker = new("Binder.Unbind)");
 #endif
         // ReSharper disable once MemberInitializerValueIgnored
@@ -22,7 +21,7 @@ namespace Aspid.MVVM
         [BindMode(BindMode.OneWay, BindMode.OneTime)]
         private BindMode _mode = BindMode.TwoWay;
         
-        private IViewModelEventRemover? _viewModelEventRemover;
+        private IBindableMemberEventRemover? _bindableMemberEventRemover;
         
         /// <summary>
         /// Indicates whether binding is allowed.
@@ -47,50 +46,28 @@ namespace Aspid.MVVM
 
         protected Binder(BindMode mode)
         {
-            var b = new Binder[5];
-            b.BindSafely<Binder, int>(default);
             _mode = mode;
         }
-
-        public void Bind<T>(in BindableMember<T> bindableMember)
-        {
-#if UNITY_2022_1_OR_NEWER && !ASPID_MVVM_UNITY_PROFILER_DISABLED
-            using (_bindTMarker.Auto())
-#endif
-            {
-                OnBindingInternal();
-                _viewModelEventRemover = bindableMember.AddBinder(this);
-                OnBoundInternal();
-            }
-        }
         
-        public void Bind(IViewModelEventAdder viewModelEventAdder)
+        public void Bind(IBindableMemberEventAdder bindableMemberEventAdder)
         {
 #if UNITY_2022_1_OR_NEWER && !ASPID_MVVM_UNITY_PROFILER_DISABLED
             using (_bindMarker.Auto())
 #endif
             {
-                OnBindingInternal();
-                _viewModelEventRemover = viewModelEventAdder.AddBinder(this);
-                OnBoundInternal();
+                if (IsBound) throw new Exception("This Binder is already bound.");
+                if (!IsBind) return;
+                
+                OnBinding();
+                
+                _bindableMemberEventRemover = bindableMemberEventAdder.Add(this);
+                IsBound = true;
+                
+                OnBound();
             }
-        }
-
-        private void OnBindingInternal()
-        {
-            if (IsBound) throw new Exception("This Binder is already bound.");
-            if (!IsBind) return;
-
-            OnBinding();
         }
         
         protected virtual void OnBinding() { }
-
-        private void OnBoundInternal()
-        {
-            IsBound = true;
-            OnBound();
-        }
         
         protected virtual void OnBound() { }
         
@@ -107,8 +84,8 @@ namespace Aspid.MVVM
                 
                 OnUnbinding();
                 
-                _viewModelEventRemover?.RemoveBinder(this);
-                _viewModelEventRemover = null;
+                _bindableMemberEventRemover?.Remove(this);
+                _bindableMemberEventRemover = null;
                 IsBound = false;
                 
                 OnUnbound();

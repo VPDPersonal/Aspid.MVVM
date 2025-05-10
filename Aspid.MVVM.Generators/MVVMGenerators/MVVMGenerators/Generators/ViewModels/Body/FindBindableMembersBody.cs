@@ -45,7 +45,6 @@ public static class FindBindableMembersBody
             {EditorBrowsableAttribute}
             {General.GeneratedCodeViewModelAttribute}
             private static readonly {Classes.ProfilerMarker} __findBindableMemberMarker = new("{className}.FindBindableMember");
-            private static readonly {Classes.ProfilerMarker} __findBindableMemberMarkerT = new("{className}.FindBindableMember<T>");
             #endif
             """);
     }
@@ -60,23 +59,14 @@ public static class FindBindableMembersBody
                  public {modifier} {Classes.FindBindableMemberResult} FindBindableMember(in {Classes.FindBindableMemberParameters} parameters)
                  """)
             .BeginBlock()
-            .AppendFindBindableMemberBody(span, false)
-            .EndBlock()
-            .AppendLine()
-            .AppendMultiline(
-                $"""
-                 {General.GeneratedCodeViewModelAttribute}
-                 public {modifier} {Classes.FindBindableMemberResult}<T> FindBindableMember<T>(in {Classes.FindBindableMemberParameters} parameters)
-                 """)
-            .BeginBlock()
-            .AppendFindBindableMemberBody(span, true)
+            .AppendFindBindableMemberBody(span)
             .EndBlock();
     }
 
-    private static CodeWriter AppendFindBindableMemberBody(this CodeWriter code, ViewModelDataSpan span, bool isGeneric)
+    private static CodeWriter AppendFindBindableMemberBody(this CodeWriter code, ViewModelDataSpan span)
     {
         code.AppendLine($"#if !{Defines.ASPID_MVVM_UNITY_PROFILER_DISABLED}")
-            .AppendLine(isGeneric ? "using (__findBindableMemberMarkerT.Auto())" : "using (__findBindableMemberMarker.Auto())")
+            .AppendLine("using (__findBindableMemberMarker.Auto())")
             .AppendLine("#endif")
             .BeginBlock();
 
@@ -114,9 +104,7 @@ public static class FindBindableMembersBody
         
         var returnCode = span.Inheritor is Inheritor.None
             ? "return default;" 
-            : !isGeneric 
-                ? "return base.FindBindableMember(parameters);"
-                : "return base.FindBindableMember<T>(parameters);";
+            : "return base.FindBindableMember(parameters);";
         
         code.AppendLine(returnCode)
             .EndBlock();
@@ -137,19 +125,10 @@ public static class FindBindableMembersBody
             {
                 if (addedMembers.Contains(member)) continue;
                 AppendCaseBlock(member.Id.ToString());
-                        
-                if (isGeneric)
-                {
-                    code.Append($"return {Classes.FindBindableMemberResult}<T>")
-                        .AppendCreateFindBindableMemberResult(member, true)
-                        .AppendLine(";");
-                }
-                else
-                {
-                    code.Append($"return {Classes.FindBindableMemberResult}")
-                        .AppendCreateFindBindableMemberResult(member, false)
-                        .AppendLine(";");
-                }
+
+                code.Append("return ")
+                    .AppendCreateFindBindableMemberResult(member)
+                    .AppendLine();
 
                 code.EndBlock();
                 addedMembers.Add(member);
@@ -157,46 +136,18 @@ public static class FindBindableMembersBody
         }
     }
 
-    private static CodeWriter AppendCreateFindBindableMemberResult(this CodeWriter code, in BindableMember member, bool isGeneric)
+    private static CodeWriter AppendCreateFindBindableMemberResult(this CodeWriter code, in BindableMember member)
     {
-        switch (member.Mode)
+        var valueName = member.GeneratedName;
+        var eventName = member.Event.FieldName;
+
+        return member.Mode switch
         {
-            case BindMode.OneWay:
-                {
-                    var methodName = "OneWay".GetCreateFindBindableMemberResultMethodName(member, isGeneric);
-                    var @event = member is BindableField field ? field.Event : ((BindableBindAlso)member).Event;
-                    return code.Append($".{methodName}({@event.FieldName} ??= new(), {member.SourceName})");
-                }
-            
-            case BindMode.TwoWay:
-                {
-                    var methodName = "TwoWay".GetCreateFindBindableMemberResultMethodName(member, isGeneric);
-                    var @event = member is BindableField field ? field.Event : ((BindableBindAlso)member).Event;
-                    return code.Append($".{methodName}({@event.FieldName} ??= new(Set{member.GeneratedName}), {member.SourceName})");
-                }
-            
-            case BindMode.OneTime:
-                {
-                    var methodName = "OneTime".GetCreateFindBindableMemberResultMethodName(member, isGeneric);
-                    return code.Append($".{methodName}({member.SourceName})");
-                }
-            
-            case BindMode.OneWayToSource:
-                {
-                    var methodName = "OneWayToSource".GetCreateFindBindableMemberResultMethodName(member, isGeneric);
-                    var @event = member is BindableField field ? field.Event : ((BindableBindAlso)member).Event;
-                    return code.Append($".{methodName}({@event.FieldName} ??= new(Set{member.GeneratedName}))");
-                }
-        }
-
-        return code;
-    }
-
-    private static string GetCreateFindBindableMemberResultMethodName(this string methodName, BindableMember member, bool isGeneric)
-    {
-        if (isGeneric && member.IsValueType) 
-            methodName += "ByValueType";
-        
-        return methodName;
+            BindMode.OneWay => code.Append($"new({eventName} ??= new({valueName}));"),
+            BindMode.TwoWay => code.Append($"new({eventName} ??= new({valueName}, Set{valueName}));"),
+            BindMode.OneTime => code.Append($"new({eventName} ??= new({valueName}));"),
+            BindMode.OneWayToSource => code.Append($"new({eventName} ??= new(Set{valueName}));"),
+            _ => code
+        };
     }
 }

@@ -42,7 +42,7 @@ public static class BindableMembersBody
         {
             if (member.Mode is BindMode.None) return;
                     
-            code.AppendLine($"{Classes.BindableMember}<{member.Type}> {data.Name}.IBindableMembers.{member.GeneratedName} =>")
+            code.AppendLine($"{Classes.IBindableMemberEventAdder} {data.Name}.IBindableMembers.{member.GeneratedName} =>")
                 .IncreaseIndent()
                 .AppendBindableMemberInstance(member)
                 .AppendLine(";")
@@ -60,7 +60,7 @@ public static class BindableMembersBody
 
         foreach (var member in data.Members)
         {
-            code.AppendLine($"public {Classes.BindableMember}<{member.Type}> {member.GeneratedName} {{ get; }}")
+            code.AppendLine($"public {Classes.IBindableMemberEventAdder} {member.GeneratedName} {{ get; }}")
                 .AppendLine();
         }
 

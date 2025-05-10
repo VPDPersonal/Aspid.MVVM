@@ -194,11 +194,10 @@ public static class InitializeBody
         foreach (var member in data.Members)
             code.AppendBindSafely(member);
         
-        code.AppendLine("OnInitializedInternal(viewModel);");
-        code.EndBlock();
-        code.EndBlock();
-        
-        return code;
+        return code.AppendLine()
+            .AppendLine("OnInitializedInternal(viewModel);")
+            .EndBlock()
+            .EndBlock();
     }
 
     private static CodeWriter AppendDeinitializeBody(this CodeWriter code, in ViewDataSpan data, bool isOverride = false)

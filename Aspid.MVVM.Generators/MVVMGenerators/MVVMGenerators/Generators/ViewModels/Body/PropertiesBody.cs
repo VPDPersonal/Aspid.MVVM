@@ -81,8 +81,8 @@ public static class PropertiesBody
         var eventFieldName = viewModelEvent.FieldName!;
         var eventType = viewModelEvent.EventType!;
         var parameters = member.Mode is BindMode.TwoWay
-            ? $"Set{member.GeneratedName}"
-            : string.Empty;
+            ? $"{member.GeneratedName}, Set{member.GeneratedName}"
+            : $"{member.GeneratedName}";
 
         return code.AppendMultiline(
             $$"""
@@ -110,43 +110,30 @@ public static class PropertiesBody
         in ImmutableArray<BindableMember> bindableMembers)
     {
         foreach (var bindableMember in bindableMembers)
-        {
-            if (bindableMember.Mode is BindMode.OneTime) continue;
-
-            switch (bindableMember)
-            {
-                case BindableField bindableField:
-                    {
-                        code.AppendViewModelEvent(bindableField.Event)
-                            .AppendLine();
-                        break;
-                    }
-                
-                case BindableBindAlso bindableBindAlso:
-                    {
-                        code.AppendViewModelEvent(bindableBindAlso.Event)
-                            .AppendLine();
-                        break;
-                    }
-            }
-        }
+            code.AppendViewModelEvent(bindableMember)
+                .AppendLine();
+        
         return code;
     }
 
-    private static CodeWriter AppendViewModelEvent(this CodeWriter code, in ViewModelEvent bindableField)
+    private static CodeWriter AppendViewModelEvent(this CodeWriter code, BindableMember member)
     {
-        return !bindableField.Has 
+        var @event = member.Event;
+        
+        return !@event.Has 
             ? code 
-            : code.AppendViewModelEvent(bindableField.Type!, bindableField.EventType!, bindableField.FieldName!);
+            : code.AppendViewModelEvent(@event.Type!, @event.EventType!, @event.FieldName!, member.Mode is BindMode.OneTime);
     }
     
-    private static CodeWriter AppendViewModelEvent(this CodeWriter code, string type, string eventType, string eventFieldName)
+    private static CodeWriter AppendViewModelEvent(this CodeWriter code, string type, string eventType, string eventFieldName, bool isNullable)
     {
+        var fullType = $"{eventType}<{type}>" + (isNullable ? "?" : string.Empty);
+        
         return code.AppendMultiline(
             $"""
             {EditorBrowsableAttribute}
             {General.GeneratedCodeViewModelAttribute}
-            private {eventType}<{type}> {eventFieldName};
+            private {fullType} {eventFieldName};
             """
         );
     }

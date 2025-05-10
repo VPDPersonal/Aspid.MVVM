@@ -5,21 +5,19 @@ using MVVMGenerators.Helpers.Extensions.Symbols;
 
 namespace MVVMGenerators.Generators.ViewModels.Data.Members;
 
-public sealed class BindableCommand(IMethodSymbol command, string? canExecute, bool isMethod, bool isLambda)
+public sealed class BindableCommand(IMethodSymbol command, string? canExecute, bool isLambda)
     : BindableMember(command,
         BindMode.OneTime,
+        GetTypeName(command),
         $"_{command.GetFieldName()}Command",
         $"{command.GetPropertyName()}Command",
         "Command")
 {
-    public readonly bool IsMethod = isMethod;
     public readonly bool IsLambda = isLambda;
     public readonly string? CanExecute = canExecute;
     
     public override bool IsValueType => false;
     
-    public override string Type { get; } = GetTypeName(command);
-
     private static string GetTypeName(IMethodSymbol command)
     {
         var type = new StringBuilder(Classes.RelayCommand.Global);

@@ -10,14 +10,7 @@ public sealed partial class ButtonBinder : IBinder<IRelayCommand>
     [BinderLog]
     public void SetValue(IRelayCommand value) { }
 
-    public void Bind() { }
-
-    public void Bind<T>(in BindableMember<T> bindableMember)
-    {
-        throw new System.NotImplementedException();
-    }
-
-    public void Bind(IViewModelEventAdder viewModelEventAdder)
+    public void Bind(IBindableMemberEventAdder bindableMemberEventAdder)
     {
         throw new System.NotImplementedException();
     }

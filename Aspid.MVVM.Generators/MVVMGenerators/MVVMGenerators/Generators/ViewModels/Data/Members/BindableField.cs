@@ -6,7 +6,7 @@ using MVVMGenerators.Helpers.Extensions.Symbols;
 
 namespace MVVMGenerators.Generators.ViewModels.Data.Members;
 
-public sealed class BindableField : BindableMember, IBindableViewModelEvent
+public sealed class BindableField : BindableMember
 {
     public readonly bool IsReadOnly;
     public readonly string GetAccessAsText;
@@ -14,17 +14,11 @@ public sealed class BindableField : BindableMember, IBindableViewModelEvent
     public readonly string GeneralAccessAsText;
     public readonly ImmutableArray<BindableBindAlso> BindAlso;
     
-    public override string Type { get; }
-    
-    public ViewModelEvent Event { get; }
-    
     public BindableField(IFieldSymbol field, BindMode mode, ImmutableArray<BindableBindAlso> bindAlso)
-        : base(field, mode, field.Name, field.GetPropertyName())
+        : base(field, mode, field.Type.ToDisplayStringGlobal(), field.Name, field.GetPropertyName())
     {
         BindAlso = bindAlso;
         IsReadOnly = mode is BindMode.OneTime;
-        Event = new ViewModelEvent(mode, field);
-        Type = field.Type.ToDisplayStringGlobal();
 
         var accessors = GetAccessors(field);
 

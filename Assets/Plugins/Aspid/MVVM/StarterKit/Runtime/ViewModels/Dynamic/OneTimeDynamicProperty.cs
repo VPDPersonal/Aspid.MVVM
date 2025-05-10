@@ -9,7 +9,7 @@ namespace Aspid.MVVM.StarterKit
             _value = value;
         }
 
-        public IViewModelEventAdder GetAdder() =>
-            BindableMember<T>.OneTime(_value);
+        public IBindableMemberEventAdder GetAdder() =>
+            new OneTimeBindableMemberEvent<T>(_value);
     }
 }

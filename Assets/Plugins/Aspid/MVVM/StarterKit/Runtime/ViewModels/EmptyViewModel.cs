@@ -4,8 +4,5 @@ namespace Aspid.MVVM.StarterKit
     {
         public FindBindableMemberResult FindBindableMember(in FindBindableMemberParameters parameters) =>
             default;
-
-        public FindBindableMemberResult<T> FindBindableMember<T>(in FindBindableMemberParameters parameters) => 
-            default;
     }
 }

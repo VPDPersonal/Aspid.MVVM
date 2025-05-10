@@ -2,6 +2,6 @@ namespace Aspid.MVVM.StarterKit
 {
     public interface IDynamicProperty
     {
-        public IViewModelEventAdder GetAdder();
+        public IBindableMemberEventAdder GetAdder();
     }
 }

@@ -33,18 +33,5 @@ namespace Aspid.MVVM.StarterKit
                 return !_throwErrorIfIdNotFind ? default : throw new ArgumentException(nameof(parameters.Id));
             }
         }
-
-        public FindBindableMemberResult<T> FindBindableMember<T>(in FindBindableMemberParameters parameters)
-        {
-#if UNITY_2022_1_OR_NEWER && !ASPID_MVVM_UNITY_PROFILER_DISABLED
-            using (_addBinderMarker.Auto())
-#endif
-            {
-                if (_properties.TryGetValue(parameters.Id, out var value))
-                    return new FindBindableMemberResult<T>(((BindableMember<T>)value.GetAdder())!);
-
-                return !_throwErrorIfIdNotFind ? default : throw new ArgumentException(nameof(parameters.Id));
-            }
-        }
     }
 }

@@ -4,19 +4,17 @@ namespace Aspid.MVVM.StarterKit
 {
     public sealed class TwoWayDynamicProperty<T> : IDynamicProperty
     {
-        private T _value;
-        private TwoWayViewModelEvent<T>? _event;
+        private T? _value;
+        private readonly TwoWayBindableMemberEvent<T> _event;
         
-        public TwoWayDynamicProperty(T value)
+        public TwoWayDynamicProperty(T? value)
         {
             _value = value;
+            _event = new TwoWayBindableMemberEvent<T>(_value, SetValue);
         }
-        
-        public IViewModelEventAdder GetAdder()
-        {
-            _event ??= new TwoWayViewModelEvent<T>(SetValue);
-            return BindableMember<T>.TwoWay(_event, _value);
-        }
+
+        public IBindableMemberEventAdder GetAdder() =>
+            _event;
 
         private void SetValue(T? value)
         {

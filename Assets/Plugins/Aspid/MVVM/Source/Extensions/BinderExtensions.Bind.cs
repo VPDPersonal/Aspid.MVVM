@@ -11,19 +11,16 @@ namespace Aspid.MVVM
     {
         #region Singl BindSafely
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void BindSafely<T>(this IBinder? binder, in BindableMember<T> bindableMember) =>
-            binder?.Bind(bindableMember);
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void BindSafely<TBinder, T>(this TBinder? binder, in BindableMember<T> bindableMember)
-            where TBinder : IBinder
+        public static void BindSafely<T>(this T? binder, FindBindableMemberResult result)
+            where T : IBinder
         {
-            binder?.Bind(bindableMember);
+            if (!result.IsFound) 
+                binder.BindSafely(result.Adder!);
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void BindSafely<TBinder>(this TBinder? binder, IViewModelEventAdder adder)
-            where TBinder : IBinder
+        public static void BindSafely<T>(this T? binder, IBindableMemberEventAdder adder)
+            where T : IBinder
         {
             binder?.Bind(adder);
         }
@@ -31,21 +28,16 @@ namespace Aspid.MVVM
 
         #region Array BindSafely
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void BindSafely<TBinder, T>(this TBinder[]? binders, in BindableMember<T> bindableMember)
-            where TBinder : IBinder
+        public static void BindSafely<T>(this T[]? binders, FindBindableMemberResult result)
+            where T : IBinder
         {
-            if (binders is null) return;
-            
-            foreach (var binder in binders)
-            {
-                if (binder is null) throw new NullReferenceException(nameof(binder));
-                binder.Bind(bindableMember);
-            }
+            if (result.IsFound) 
+                binders.BindSafely(result.Adder!);
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void BindSafely<TBinder>(this TBinder[]? binders, IViewModelEventAdder adder)
-            where TBinder : IBinder
+        public static void BindSafely<T>(this T[]? binders, IBindableMemberEventAdder adder)
+            where T : IBinder
         {
             if (binders is null) return;
             
@@ -59,21 +51,16 @@ namespace Aspid.MVVM
         
         #region List BindSafely
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void BindSafely<TBinder, T>(this List<TBinder>? binders, in BindableMember<T> bindableMember)
-            where TBinder : IBinder
+        public static void BindSafely<T>(this List<Binder>? binders, FindBindableMemberResult result)
+            where T : IBinder
         {
-            if (binders is null) return;
-            
-            foreach (var binder in binders)
-            {
-                if (binder is null) throw new NullReferenceException(nameof(binder));
-                binder.Bind(bindableMember);
-            }
+            if (result.IsFound) 
+                binders.BindSafely(result.Adder!);
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void BindSafely<TBinder>(this List<TBinder>? binders, IViewModelEventAdder adder)
-            where TBinder : IBinder
+        public static void BindSafely<T>(this List<T>? binders, IBindableMemberEventAdder adder)
+            where T : IBinder
         {
             if (binders is null) return;
             
@@ -87,21 +74,16 @@ namespace Aspid.MVVM
         
         #region IEnumerable BindSafely
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void BindSafely<TBinder, T>(this IEnumerable<TBinder>? binders, in BindableMember<T> bindableMember)
-            where TBinder : IBinder
+        public static void BindSafely<T>(this IEnumerable<Binder>? binders, FindBindableMemberResult result)
+            where T : IBinder
         {
-            if (binders is null) return;
-            
-            foreach (var binder in binders)
-            {
-                if (binder is null) throw new NullReferenceException(nameof(binder));
-                binder.Bind(bindableMember);
-            }
+            if (result.IsFound) 
+                binders.BindSafely(result.Adder!);
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void BindSafely<TBinder>(this IEnumerable<TBinder>? binders, IViewModelEventAdder adder)
-            where TBinder : IBinder
+        public static void BindSafely<T>(this IEnumerable<T>? binders, IBindableMemberEventAdder adder)
+            where T : IBinder
         {
             if (binders is null) return;
             

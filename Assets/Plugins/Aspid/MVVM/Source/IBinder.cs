@@ -11,10 +11,8 @@ namespace Aspid.MVVM
         /// Default is <see cref="BindMode.OneWay"/>.
         /// </summary>
         public BindMode Mode => BindMode.OneWay;
-
-        public void Bind<T>(in BindableMember<T> bindableMember);
-
-        public void Bind(IViewModelEventAdder viewModelEventAdder);
+        
+        public void Bind(IBindableMemberEventAdder bindableMemberEventAdder);
         
         /// <summary>
         /// Unbinds the component from the bound s<see cref="IViewModel"/>.

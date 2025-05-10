@@ -561,6 +561,54 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5315928923478365624, guid: a7e999c98b71641ada1dceb5273a5c60, type: 3}
+      propertyPath: _confirmCommand.Array.data[0]._mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5315928923478365624, guid: a7e999c98b71641ada1dceb5273a5c60, type: 3}
+      propertyPath: _resetToDefaultCommand.Array.data[0]._mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5315928923478365624, guid: a7e999c98b71641ada1dceb5273a5c60, type: 3}
+      propertyPath: _addSkillPointToCommand.Array.data[0]._mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5315928923478365624, guid: a7e999c98b71641ada1dceb5273a5c60, type: 3}
+      propertyPath: _addSkillPointToCommand.Array.data[1]._mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5315928923478365624, guid: a7e999c98b71641ada1dceb5273a5c60, type: 3}
+      propertyPath: _addSkillPointToCommand.Array.data[2]._mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5315928923478365624, guid: a7e999c98b71641ada1dceb5273a5c60, type: 3}
+      propertyPath: _addSkillPointToCommand.Array.data[3]._mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5315928923478365624, guid: a7e999c98b71641ada1dceb5273a5c60, type: 3}
+      propertyPath: _addSkillPointToCommand.Array.data[4]._mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5315928923478365624, guid: a7e999c98b71641ada1dceb5273a5c60, type: 3}
+      propertyPath: _removeSkillPointToCommand.Array.data[0]._mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5315928923478365624, guid: a7e999c98b71641ada1dceb5273a5c60, type: 3}
+      propertyPath: _removeSkillPointToCommand.Array.data[1]._mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5315928923478365624, guid: a7e999c98b71641ada1dceb5273a5c60, type: 3}
+      propertyPath: _removeSkillPointToCommand.Array.data[2]._mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5315928923478365624, guid: a7e999c98b71641ada1dceb5273a5c60, type: 3}
+      propertyPath: _removeSkillPointToCommand.Array.data[3]._mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5315928923478365624, guid: a7e999c98b71641ada1dceb5273a5c60, type: 3}
+      propertyPath: _removeSkillPointToCommand.Array.data[4]._mode
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

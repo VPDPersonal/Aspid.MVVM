@@ -11,10 +11,10 @@ namespace Aspid.MVVM
     {
         #region Singl BindSafely
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void BindSafely<T>(this T? binder, FindBindableMemberResult result)
+        public static void BindSafely<T>(this T? binder, in FindBindableMemberResult result)
             where T : IBinder
         {
-            if (!result.IsFound) 
+            if (result.IsFound) 
                 binder.BindSafely(result.Adder!);
         }
         
@@ -28,7 +28,7 @@ namespace Aspid.MVVM
 
         #region Array BindSafely
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void BindSafely<T>(this T[]? binders, FindBindableMemberResult result)
+        public static void BindSafely<T>(this T[]? binders, in FindBindableMemberResult result)
             where T : IBinder
         {
             if (result.IsFound) 
@@ -51,7 +51,7 @@ namespace Aspid.MVVM
         
         #region List BindSafely
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void BindSafely<T>(this List<Binder>? binders, FindBindableMemberResult result)
+        public static void BindSafely<T>(this List<Binder>? binders, in FindBindableMemberResult result)
             where T : IBinder
         {
             if (result.IsFound) 
@@ -74,7 +74,7 @@ namespace Aspid.MVVM
         
         #region IEnumerable BindSafely
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void BindSafely<T>(this IEnumerable<Binder>? binders, FindBindableMemberResult result)
+        public static void BindSafely<T>(this IEnumerable<Binder>? binders, in FindBindableMemberResult result)
             where T : IBinder
         {
             if (result.IsFound) 

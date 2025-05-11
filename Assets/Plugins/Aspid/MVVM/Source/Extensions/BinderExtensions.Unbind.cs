@@ -6,6 +6,12 @@ namespace Aspid.MVVM
 {
     public static partial class BinderExtensions
     {
+        /// <summary>
+        /// Safely unbinds a single <see cref="IBinder"/> instance.
+        /// If the binder is <c>null</c>, the call is ignored.
+        /// </summary>
+        /// <typeparam name="T">The type that implements the <see cref="IBinder"/> interface.</typeparam>
+        /// <param name="binder">The binder to unbind from the <see cref="IViewModel"/>.</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void UnbindSafely<T>(this T? binder)
             where T : IBinder
@@ -15,13 +21,14 @@ namespace Aspid.MVVM
         }
         
         /// <summary>
-        /// Safely unbinds an array of <see cref="IBinder"/> objects.
-        /// If <paramref name="binders"/> is <c>null</c>, unbinding does not occur.
-        /// If any element in the array is <c>null</c>, a <see cref="NullReferenceException"/> is thrown.
+        /// Safely unbinds an array of <see cref="IBinder"/> instances.
+        /// If <paramref name="binders"/> is <c>null</c>, unbinding is skipped.
         /// </summary>
-        /// <param name="binders">An array of objects to unbind from the <see cref="IViewModel"/>.</param>
         /// <typeparam name="T">The type that implements the <see cref="IBinder"/> interface.</typeparam>
-        /// <exception cref="NullReferenceException"></exception>
+        /// <param name="binders">An array of binders to unbind from the <see cref="IViewModel"/>.</param>
+        /// <exception cref="NullReferenceException">
+        /// Thrown if any element in the array is <c>null</c>.
+        /// </exception>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void UnbindSafely<T>(this T[]? binders)
             where T : IBinder
@@ -36,13 +43,14 @@ namespace Aspid.MVVM
         }
         
         /// <summary>
-        /// Safely unbinds a list of <see cref="IBinder"/> objects.
-        /// If <paramref name="binders"/> is <c>null</c>, unbinding does not occur.
-        /// If any element in the list is <c>null</c>, a <see cref="NullReferenceException"/> is thrown.
+        /// Safely unbinds a list of <see cref="IBinder"/> instances.
+        /// If <paramref name="binders"/> is <c>null</c>, unbinding is skipped.
         /// </summary>
-        /// <param name="binders">A list of objects to unbind from the <see cref="IViewModel"/>.</param>
         /// <typeparam name="T">The type that implements the <see cref="IBinder"/> interface.</typeparam>
-        /// <exception cref="NullReferenceException"></exception>
+        /// <param name="binders">A list of binders to unbind from the <see cref="IViewModel"/>.</param>
+        /// <exception cref="NullReferenceException">
+        /// Thrown if any element in the list is <c>null</c>.
+        /// </exception>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void UnbindSafely<T>(this List<T>? binders)
             where T : IBinder
@@ -57,13 +65,14 @@ namespace Aspid.MVVM
         }
         
         /// <summary>
-        /// Safely unbinds an enumeration of <see cref="IBinder"/> objects.
-        /// If <paramref name="binders"/> is <c>null</c>, unbinding does not occur.
-        /// If any element in the enumeration is <c>null</c>, a <see cref="NullReferenceException"/> is thrown.
+        /// Safely unbinds a sequence of <see cref="IBinder"/> instances.
+        /// If <paramref name="binders"/> is <c>null</c>, unbinding is skipped.
         /// </summary>
-        /// <param name="binders">An enumeration of objects to unbind from the <see cref="IViewModel"/>.</param>
         /// <typeparam name="T">The type that implements the <see cref="IBinder"/> interface.</typeparam>
-        /// <exception cref="NullReferenceException"></exception>
+        /// <param name="binders">An enumerable of binders to unbind from the <see cref="IViewModel"/>.</param>
+        /// <exception cref="NullReferenceException">
+        /// Thrown if any element in the sequence is <c>null</c>.
+        /// </exception>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void UnbindSafely<T>(this IEnumerable<T>? binders)
             where T : IBinder

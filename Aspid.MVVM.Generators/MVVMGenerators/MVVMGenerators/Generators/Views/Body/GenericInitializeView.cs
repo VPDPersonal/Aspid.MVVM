@@ -107,12 +107,12 @@ public static class GenericInitializeView
 
     private static CodeWriter AppendProfilerMarker(this CodeWriter code, in ViewDataSpan data, ITypeSymbol viewModelType)
     {
-        var viewModelTypeName = viewModelType.ToDisplayString().Replace(".", "_");
+        var viewModelTypeName = viewModelType.ToDisplayString();
         
         return code.AppendMultiline(
             $"""
             #if !{Defines.ASPID_MVVM_UNITY_PROFILER_DISABLED}
-            private readonly static {Classes.ProfilerMarker} __initialize{viewModelTypeName}Marker = new("{data.Declaration.Identifier.Text}.{viewModelTypeName}.Initialize");
+            private readonly static {Classes.ProfilerMarker} __initialize{viewModelTypeName.Replace(".", "_")}Marker = new("{data.Declaration.Identifier.Text}.{viewModelTypeName}.Initialize");
             #endif
             """);
     }

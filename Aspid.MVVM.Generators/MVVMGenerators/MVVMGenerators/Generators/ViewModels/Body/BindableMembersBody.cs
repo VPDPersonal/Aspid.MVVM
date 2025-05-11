@@ -16,7 +16,7 @@ public static class BindableMembersBody
         in DeclarationText declaration,
         in SourceProductionContext context)
     {
-        string[] baseTypes = [$"{data.Name}.IBindableMembers"];
+        string[] baseTypes = [$"{data.ClassSymbol.ToDisplayStringGlobal()}.IBindableMembers"];
 
         var code = new CodeWriter();
         code.AppendClassBegin(@namespace, declaration, baseTypes)
@@ -41,10 +41,10 @@ public static class BindableMembersBody
     {
         if (member.Mode is BindMode.None) return code;
 
-        var className = data.Name;
+        var classType = data.ClassSymbol.ToDisplayStringGlobal();
 
         return code
-            .AppendLine($"{Classes.IBindableMemberEventAdder} {className}.IBindableMembers.{member.GeneratedName} =>")
+            .AppendLine($"{Classes.IBindableMemberEventAdder} {classType}.IBindableMembers.{member.GeneratedName} =>")
             .IncreaseIndent()
             .AppendLine($"{member.Event.ToInstantiateFieldString()};")
             .DecreaseIndent();

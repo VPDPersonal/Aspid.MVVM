@@ -79,7 +79,7 @@ public static class RelayCommandBody
                 var missingParameters = string.Join(", ", Enumerable.Repeat("_", parameters.Length));
                 
                 canExecuteName.Insert(0, $", ({missingParameters}) => ");
-                if (command.IsLambda) canExecuteName.Append("()");
+                if (command is { IsLambda: true, IsMethod: true }) canExecuteName.Append("()");
             }
         }
 

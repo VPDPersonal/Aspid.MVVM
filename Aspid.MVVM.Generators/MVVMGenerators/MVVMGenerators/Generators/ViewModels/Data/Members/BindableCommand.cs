@@ -5,7 +5,7 @@ using MVVMGenerators.Helpers.Extensions.Symbols;
 
 namespace MVVMGenerators.Generators.ViewModels.Data.Members;
 
-public sealed class BindableCommand(IMethodSymbol command, string? canExecute, bool isLambda)
+public sealed class BindableCommand(IMethodSymbol command, string? canExecute, bool isLambda, bool isMethod)
     : BindableMember(command,
         BindMode.OneTime,
         GetTypeName(command),
@@ -14,6 +14,7 @@ public sealed class BindableCommand(IMethodSymbol command, string? canExecute, b
         "Command")
 {
     public readonly bool IsLambda = isLambda;
+    public readonly bool IsMethod = isMethod;
     public readonly string? CanExecute = canExecute;
     
     public override bool IsValueType => false;

@@ -49,7 +49,9 @@ public static class GenericInitializeView
             $$"""
             public void Initialize({{typeName}} viewModel)
             {
-                if (ViewModel is null) return;
+                if (viewModel is null) throw new {{Classes.ArgumentNullException}}(nameof(viewModel));
+                if (ViewModel is not null) throw new {{Classes.InvalidOperationException}}("View is already initialized.");
+                
                 InitializeInternal({{Classes.Unsafe}}.As<{{typeName}}, {{typeBindableMembersName}}>(ref viewModel));
             }
             """);
@@ -60,7 +62,9 @@ public static class GenericInitializeView
             $$"""
             public void Initialize({{typeBindableMembersName}} viewModel)
             {
-                if (ViewModel is null) return;
+                if (viewModel is null) throw new {{Classes.ArgumentNullException}}(nameof(viewModel));
+                if (ViewModel is not null) throw new {{Classes.InvalidOperationException}}("View is already initialized.");
+                
                 InitializeInternal(viewModel);
             }
             """);

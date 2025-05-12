@@ -37,23 +37,24 @@ public static class BindableCommandFactory
             var canExecute = GetCanExecute(canExecuteArgument, method, boolMethods, boolProperties, generatedBoolProperties);
 
             bindableCommands.Add(canExecute.isEixst ?
-                new BindableCommand(method, canExecuteArgument, canExecute.isLamda) :
-                new BindableCommand(method, null, false));
+                new BindableCommand(method, canExecuteArgument, canExecute.isLamda, canExecute.isMethod) :
+                new BindableCommand(method, null, false, false));
         }
 
         return bindableCommands;
     }
 
-    private static (bool isEixst, bool isLamda) GetCanExecute(
+    private static (bool isEixst, bool isLamda, bool isMethod) GetCanExecute(
         string? canExecuteArgument,
         IMethodSymbol method,
         ImmutableArray<IMethodSymbol> boolMethods,
         ImmutableArray<IPropertySymbol> boolProperties,
         ImmutableArray<string> generatedBoolProperties)
     {
-        if (string.IsNullOrWhiteSpace(canExecuteArgument)) return (false, false);
+        if (string.IsNullOrWhiteSpace(canExecuteArgument)) return (false, false, false);
         
         var isLambda = false;
+        var isMethod = false;
         var isCanExecuteExist = false;
                 
         var canExecuteMethodCandidates = boolMethods.Where(boolMethod =>
@@ -61,11 +62,11 @@ public static class BindableCommandFactory
 
         if (canExecuteMethodCandidates.Length > 0)
         {
-                    
             isCanExecuteExist = canExecuteMethodCandidates.Any(candidate => candidate.Parameters.Length == method.Parameters.Length);
             isLambda = !isCanExecuteExist && canExecuteMethodCandidates.Any(candidate => candidate.Parameters.Length == 0);
-                    
+
             if (isLambda) isCanExecuteExist = true;
+            if (isCanExecuteExist) isMethod = true;
         }
 
         if (!isCanExecuteExist)
@@ -84,6 +85,6 @@ public static class BindableCommandFactory
             isLambda = isCanExecuteExist;
         }
             
-        return (isCanExecuteExist, isLambda);
+        return (isCanExecuteExist, isLambda, isMethod);
     }
 }

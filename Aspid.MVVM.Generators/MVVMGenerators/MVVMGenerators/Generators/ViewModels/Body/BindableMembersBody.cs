@@ -31,8 +31,10 @@ public static class BindableMembersBody
     private static CodeWriter AppendBindableMemberProperties(this CodeWriter code, in ViewModelDataSpan data)
     {
         foreach (var member in data.Members)
+        {
             code.AppendBindableMemberProperty(member, data)
                 .AppendLine();
+        }
 
         return code;
     }
@@ -41,10 +43,12 @@ public static class BindableMembersBody
     {
         if (member.Mode is BindMode.None) return code;
 
-        var classType = data.ClassSymbol.ToDisplayStringGlobal();
+        var classType = data.ClassSymbol.ToDisplayStringGlobal() + ".IBindableMembers";
+        if (data.BindableMembersInterfaces.TryGetInterface(member.GeneratedName, out var @interface))
+            classType = @interface.Interface.ToDisplayStringGlobal();
 
         return code
-            .AppendLine($"{Classes.IBindableMemberEventAdder} {classType}.IBindableMembers.{member.GeneratedName} =>")
+            .AppendLine($"{Classes.IBindableMemberEventAdder} {classType}.{member.GeneratedName} =>")
             .IncreaseIndent()
             .AppendLine($"{member.Event.ToInstantiateFieldString()};")
             .DecreaseIndent();
@@ -53,14 +57,17 @@ public static class BindableMembersBody
     private static CodeWriter AppendBindableMembersInterface(this CodeWriter code, in ViewModelDataSpan data)
     {
         var classType = data.ClassSymbol.BaseType!.ToDisplayStringGlobal();
+
+        code.Append(data.Inheritor is Inheritor.InheritorViewModelAttribute
+            ? $"public new partial interface IBindableMembers : {classType}.IBindableMembers"
+            : $"public partial interface IBindableMembers : {Classes.IViewModel}");
         
-        code.AppendLine(data.Inheritor is Inheritor.InheritorViewModelAttribute 
-            ? $"public new interface IBindableMembers : {classType}.IBindableMembers" 
-            : $"public interface IBindableMembers : {Classes.IViewModel}")
+        code.AppendLine()
             .BeginBlock();
 
         foreach (var member in data.Members)
         {
+            if (data.BindableMembersInterfaces.HasName(member.GeneratedName)) continue;
             code.AppendLine($"public {Classes.IBindableMemberEventAdder} {member.GeneratedName} {{ get; }}")
                 .AppendLine();
         }

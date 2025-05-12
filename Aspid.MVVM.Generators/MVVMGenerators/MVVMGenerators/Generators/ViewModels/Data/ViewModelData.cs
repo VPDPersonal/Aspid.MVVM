@@ -11,6 +11,7 @@ public readonly struct ViewModelData(
     INamedTypeSymbol classSymbol,
     TypeDeclarationSyntax declaration,
     ImmutableArray<BindableMember> members,
+    BindableMembersInterfacesData bindableMembersInterfaces,
     ImmutableArray<IdLengthMemberGroup> idLengthMemberGroups)
 {
     public readonly Inheritor Inheritor = inheritor;
@@ -20,4 +21,5 @@ public readonly struct ViewModelData(
 
     public readonly ImmutableArray<BindableMember> Members = members;
     public readonly ImmutableArray<IdLengthMemberGroup> IdLengthMemberGroups = idLengthMemberGroups;
+    public readonly BindableMembersInterfacesData BindableMembersInterfaces = bindableMembersInterfaces;
 }

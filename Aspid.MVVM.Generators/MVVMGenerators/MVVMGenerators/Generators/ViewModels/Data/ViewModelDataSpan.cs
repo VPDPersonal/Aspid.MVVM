@@ -16,5 +16,6 @@ public readonly ref struct ViewModelDataSpan(ViewModelData data)
 
     public readonly ImmutableArray<BindableMember> Members = data.Members; 
     public readonly BindableMembersCollectionSpanByType MembersByType = new(data.Members);
+    public readonly BindableMembersInterfacesData BindableMembersInterfaces = data.BindableMembersInterfaces;
     public readonly ReadOnlySpan<IdLengthMemberGroup> IdLengthMemberGroups = data.IdLengthMemberGroups.AsSpan();
 }

@@ -3,26 +3,26 @@ using Aspid.MVVM.Unity;
 
 namespace Aspid.MVVM.HelloWorld.Views
 {
-    // ViewAttribute - маркер для Source Generator.
-    // Для правильно работы Source Generator, класс должен быть partial.
-    // Source generator реализует абстрактные методы инициализации и деинициализации,
-    // где инициализирует все перечисленные IBinder во View.
+    // ViewAttribute is a marker for Source Generator.
+    // For Source Generator to work properly, the class must be partial.
+    // Source generator implements abstract initialization and de-initialization methods,
+    // where it initializes all listed IBinder in View.
     [View]
     public partial class InputSpeakerView : MonoView
     {
-        // RequireBinderAttribute - необязательный атрибут.
-        // Он нужен только для фильтрации биндеров, которые реализуют IMonoBinderValidable.
-        // В этом случаи, только биндеры, которые реализуют IBinder<string> могут быть установлены в это поле.
-        // Биндер - это компонент, который связывает компонент с данными из ViewModel.
-        // Стоит обратить внимание, что поле должно называться точно так же, как и поле во ViewModel,
-        // и хоть это можно переопределить рекомендуется называть точно так же.
-        // Поля: m_inputText, _inputText и inputText являются эквивалентными.
-        // MonoBinder - базовый класс для всех биндеров, которые должны наследоваться от MonoBehaviour.
-        // _inputText может принять только один биндер. Данный подход удобен, когда мы точно знаем, что будет однин биндер.
+        // RequireBinderAttribute is an optional attribute.
+        // It is only needed to filter binders that implement IMonoBinderValidable.
+        // In this case, only binders that implement IBinder<string> can be set to this field.
+        // A binder is a component that binds a component to data from the ViewModel.
+        // It is worth noting that the field must be named exactly the same as the field in the ViewModel,
+        // and although it can be overridden, it is recommended to call it exactly the same.
+        // The fields: m_inputText, _inputText and inputText are equivalent.
+        // MonoBinder is the base class for all binders that should inherit from MonoBehaviour.
+        // _inputText can only accept one binder. This approach is convenient when we know for sure that there will be one binder.
         [RequireBinder(typeof(string))]
         [SerializeField] private MonoBinder _inputText;
         
-        // _sayCommand объявлен как массив - это удобно для того, чтобы мы могли указать бесчисленное количество биндеров.
+        // _sayCommand is declared as an array - this is handy so that we can specify countless binders.
         [RequireBinder(typeof(IRelayCommand))]
         [SerializeField] private MonoBinder[] _sayCommand;
     }

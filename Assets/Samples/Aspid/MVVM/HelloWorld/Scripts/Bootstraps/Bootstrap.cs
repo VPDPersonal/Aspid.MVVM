@@ -13,7 +13,7 @@ namespace Aspid.MVVM.HelloWorld
         [SerializeField] private InputSpeakerView _inputSpeakerView;
         
         [Header("ViewModel")]
-        [SerializeField] private InputViewModelType _inputViewModelType;
+        [SerializeField] private InputViewModelType _inputViewModelType = InputViewModelType.Command;
 
         private Speaker _speaker;
 
@@ -46,11 +46,11 @@ namespace Aspid.MVVM.HelloWorld
         
         private void DeinitializeViews()
         {
-            // Вы можете использовать методы расширения для деинициализации View и освобождения ViewModel.
+            // You can use extension methods to deinitialize the View and release the ViewModel.
             _speakerView.DeinitializeView()?.DisposeViewModel();
             _inputSpeakerView.DeinitializeView()?.DisposeViewModel();
             
-            // Ручной способ деинициализации View и освобождения ViewModel:
+            // Manual way to deinitialize View and release ViewModel:
             // var viewModel = _speakerView.ViewModel;
             // _speakerView.Deinitialize();
             //

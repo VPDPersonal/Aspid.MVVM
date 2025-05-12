@@ -1,23 +1,23 @@
 using Aspid.MVVM.HelloWorld.Models;
 
-// Объяснение:
-// 1. _inputText поле, которое будет связано, в нашем случае мы никак не изменяем поле внутри ViewModel,
-// а ожидаем, что значение будет устанавливаться через View.
-// 2. При изменении _inputText сразу передаем в модель, через метод OnInputTextChanged.
+// Explanation:
+// 1. _inputText field to be bound, in our case we are not modifying the field inside ViewModel in any way,
+// but expect the value to be set through View.
+// 2. When _inputText is changed, we immediately pass it to the model through the OnInputTextChanged method.
 namespace Aspid.MVVM.HelloWorld.ViewModels
 {
-    // ViewModelAttribute - маркер для Source Generator.
-    // Для правильной работы Source Generator, класс должен быть partial.
-    // Source Generator реализует IViewModel и сгенерирует связанные свойства для маркированных членов.
+    // ViewModelAttribute - marker for Source Generator.
+    // For Source Generator to work properly, the class must be partial.
+    // Source Generator implements IViewModel and generates related properties for labeled members.
     [ViewModel]
     public partial class MomentInputSpeakerViewModel
     {
-        // BindAttribute - маркер для Source Generator.
-        // Source Generator, на основе маркированного поля
-        // создает свойство "InputText" и событие "InputTextChanged" для связывания.
-        // Source Generator корректно работает со следующим стилем имен: m_inputText, _inputText, inputText.
-        // Для работы Source Generator так же необходимо маркировать класс с помощью ViewModelAttribute.
-        [Bind] private string _inputText;
+        // OneWayToSourceBind is a token for Source Generator.
+        // Source Generator, based on the labeled field
+        // creates the “InputText” property for binding.
+        // Source Generator works correctly with the following name style: m_inputText, _inputText, inputText.
+        // For Source Generator to work, it is also necessary to label the class with ViewModelAttribute.
+        [OneWayToSourceBind] private string _inputText;
     
         private readonly Speaker _speaker;
     
@@ -26,10 +26,10 @@ namespace Aspid.MVVM.HelloWorld.ViewModels
             _speaker = speaker;
         }
         
-        // Вы можете реализовать два partial метода для каждого сгенерированного связанного свойства:
-        // Вызов перед изменением:
+        // You can implement two partial methods for each generated bound property:
+        // Call before changing:
         // partial void On(Property name)Changing(string oldValue, string newValue)
-        // Вызов после изменения:
+        // Called after changing:
         // partial void On(Property name)Changed(string newValue)
         partial void OnInputTextChanged(string newValue)
         {

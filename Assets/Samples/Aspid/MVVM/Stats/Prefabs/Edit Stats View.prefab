@@ -370,52 +370,52 @@ MonoBehaviour:
   _isDraft:
   - {fileID: 3697158587917215939}
   _confirmCommand:
-  - _mode: 0
+  - _mode: 1
     <Target>k__BackingField: {fileID: 5444464546274840865}
     _isBindInteractable: 1
   _resetToDefaultCommand:
-  - _mode: 0
+  - _mode: 1
     <Target>k__BackingField: {fileID: 2931516315228818707}
     _isBindInteractable: 1
   _addSkillPointToCommand:
-  - _mode: 0
+  - _mode: 1
     <Target>k__BackingField: {fileID: 5174176717364985295}
     _isBindInteractable: 1
     _param: 0
-  - _mode: 0
+  - _mode: 1
     <Target>k__BackingField: {fileID: 104643719858257062}
     _isBindInteractable: 1
     _param: 1
-  - _mode: 0
+  - _mode: 1
     <Target>k__BackingField: {fileID: 1922244232776191990}
     _isBindInteractable: 1
     _param: 2
-  - _mode: 0
+  - _mode: 1
     <Target>k__BackingField: {fileID: 7846568134673888075}
     _isBindInteractable: 1
     _param: 3
-  - _mode: 0
+  - _mode: 1
     <Target>k__BackingField: {fileID: 4544091627993418994}
     _isBindInteractable: 1
     _param: 4
   _removeSkillPointToCommand:
-  - _mode: 0
+  - _mode: 1
     <Target>k__BackingField: {fileID: 1795662829568435913}
     _isBindInteractable: 1
     _param: 0
-  - _mode: 0
+  - _mode: 1
     <Target>k__BackingField: {fileID: 6797870773731993504}
     _isBindInteractable: 1
     _param: 1
-  - _mode: 0
+  - _mode: 1
     <Target>k__BackingField: {fileID: 5010264940167386352}
     _isBindInteractable: 1
     _param: 2
-  - _mode: 0
+  - _mode: 1
     <Target>k__BackingField: {fileID: 3729468392672634957}
     _isBindInteractable: 1
     _param: 3
-  - _mode: 0
+  - _mode: 1
     <Target>k__BackingField: {fileID: 6929628987986647028}
     _isBindInteractable: 1
     _param: 4

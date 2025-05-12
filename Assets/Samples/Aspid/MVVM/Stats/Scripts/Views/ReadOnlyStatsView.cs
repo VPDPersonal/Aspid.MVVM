@@ -1,6 +1,6 @@
-using Aspid.MVVM.Stats.ViewModels;
 using UnityEngine;
 using Aspid.MVVM.Unity;
+using Aspid.MVVM.Stats.ViewModels;
 
 namespace Aspid.MVVM.Stats.Views
 {

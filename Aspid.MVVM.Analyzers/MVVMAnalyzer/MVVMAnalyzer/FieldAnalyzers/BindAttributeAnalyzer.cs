@@ -53,8 +53,11 @@ public sealed class BindAttributeAnalyzer : DiagnosticAnalyzer
         foreach (var attribute in fieldSymbol.GetAttributes().Select(attribute => attribute.AttributeClass?.ToDisplayString()))
         {
             if (attribute
-                is "Aspid.MVVM.Generation.BindAttribute"
-                or "Aspid.MVVM.Generation.ReadOnlyBindAttribute")
+                is "Aspid.MVVM.BindAttribute"
+                or "Aspid.MVVM.OneWayBindAttribute"
+                or "Aspid.MVVM.TwoWayBindAttribute"
+                or "Aspid.MVVM.OneTimeBindAttribute"
+                or "Aspid.MVVM.OneWayToSourceBindAttribute")
             {
                 attributeName = attribute;
                 break;

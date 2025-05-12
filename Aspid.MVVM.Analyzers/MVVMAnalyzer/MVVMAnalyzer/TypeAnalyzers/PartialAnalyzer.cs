@@ -61,14 +61,14 @@ public sealed class PartialAnalyzer : DiagnosticAnalyzer
             if (declaration.Modifiers.Any(SyntaxKind.PartialKeyword)) continue;
             if (context.SemanticModel.GetSymbolInfo(attribute).Symbol is not IMethodSymbol attributeSymbol) continue;
             
-            if (attributeSymbol.ContainingType.ToDisplayString() == "Aspid.MVVM.Generation.ViewModelAttribute")
+            if (attributeSymbol.ContainingType.ToDisplayString() == "Aspid.MVVM.ViewModelAttribute")
             {
                 context.ReportDiagnostic(Diagnostic.Create(
                     declaration is ClassDeclarationSyntax ? _classViewModelRule : _structViewModelRule,
                     declaration.Identifier.GetLocation(),
                     declaration.Identifier.Text));
             }
-            else if (attributeSymbol.ContainingType.ToDisplayString() == "Aspid.MVVM.Generation.ViewAttribute")
+            else if (attributeSymbol.ContainingType.ToDisplayString() == "Aspid.MVVM.ViewAttribute")
             {
                 context.ReportDiagnostic(Diagnostic.Create(
                     declaration is ClassDeclarationSyntax ? _classViewRule : _structViewRule,

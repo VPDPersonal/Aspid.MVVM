@@ -175,8 +175,12 @@ public static class InitializeBody
 
         for (var i = 0; i < data.GenericViews.Length; i++)
         {
+            var isInterface = data.GenericViews[i].TypeKind is TypeKind.Interface;
+            var type = data.GenericViews[i].ToDisplayStringGlobal();
+            if (!isInterface) type += ".IBindableMembers";
+            
             code.AppendLine(
-                    $"if (viewModel is {data.GenericViews[i].ToDisplayStringGlobal()}.IBindableMembers specificViewModel{i})")
+                    $"if (viewModel is {type} specificViewModel{i})")
                 .BeginBlock()
                 .AppendLine($"InitializeInternal(specificViewModel{i});")
                 .AppendLine("return;")

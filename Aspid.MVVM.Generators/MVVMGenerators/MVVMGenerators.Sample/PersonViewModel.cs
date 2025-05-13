@@ -28,6 +28,21 @@ public partial class PersonViewModel(int age, string name, string family)
     // {
     //     return true;
     // }
+    
+    partial interface IBindableMembers : IPersonViewModel { }
+}
+
+public interface IPersonViewModel : IViewModel
+{
+    public IBindableMemberEventAdder Age { get; }
+            
+    public IBindableMemberEventAdder Name { get; }
+            
+    public IBindableMemberEventAdder Family { get; }
+            
+    public IBindableMemberEventAdder CanExecute { get; }
+            
+    public IBindableMemberEventAdder ChangeAgeCommand { get; }
 }
 
 [ViewModel]

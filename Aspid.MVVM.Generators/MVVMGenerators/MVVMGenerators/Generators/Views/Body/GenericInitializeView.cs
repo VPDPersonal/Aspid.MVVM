@@ -21,9 +21,12 @@ public static class GenericInitializeView
         foreach (var viewModelType in data.GenericViews)
         {
             var code = new CodeWriter();
-            var baseType = new[] { $"{Classes.IView}<{viewModelType.ToDisplayStringGlobal()}.IBindableMembers>" };
+            
+            var baseTypes = viewModelType.TypeKind is not TypeKind.Interface 
+                ? new[] { $"{Classes.IView}<{viewModelType.ToDisplayStringGlobal()}.IBindableMembers>" }
+                : null;
 
-            code.AppendClassBegin([Namespaces.Aspid_MVVM], @namespace, declaration, baseType)
+            code.AppendClassBegin([Namespaces.Aspid_MVVM], @namespace, declaration, baseTypes)
                 .AppendGenericViews(data, viewModelType)
                 .AppendClassEnd(@namespace);
             
@@ -43,18 +46,24 @@ public static class GenericInitializeView
     private static CodeWriter AppendInitialize(this CodeWriter code, in ViewDataSpan data, ITypeSymbol viewModelType)
     {
         var typeName = viewModelType.ToDisplayStringGlobal();
-        var typeBindableMembersName = $"{typeName}.IBindableMembers";
-        
-        code.AppendMultiline(
-            $$"""
-            public void Initialize({{typeName}} viewModel)
-            {
-                if (viewModel is null) throw new {{Classes.ArgumentNullException}}(nameof(viewModel));
-                if (ViewModel is not null) throw new {{Classes.InvalidOperationException}}("View is already initialized.");
-                
-                InitializeInternal({{Classes.Unsafe}}.As<{{typeName}}, {{typeBindableMembersName}}>(ref viewModel));
-            }
-            """);
+        var typeBindableMembersName = viewModelType.TypeKind is not TypeKind.Interface
+            ? $"{typeName}.IBindableMembers"
+            : $"{typeName}";
+
+        if (viewModelType.TypeKind is not TypeKind.Interface)
+        {
+            code.AppendMultiline(
+                $$"""
+                public void Initialize({{typeName}} viewModel)
+                {
+                    if (viewModel is null) throw new {{Classes.ArgumentNullException}}(nameof(viewModel));
+                    if (ViewModel is not null) throw new {{Classes.InvalidOperationException}}("View is already initialized.");
+                    
+                    InitializeInternal({{Classes.Unsafe}}.As<{{typeName}}, {{typeBindableMembersName}}>(ref viewModel));
+                }
+                """);
+        }
+
 
         code.AppendLine();
         

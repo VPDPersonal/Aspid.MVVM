@@ -4,7 +4,7 @@ using MVVMGenerators.Helpers.Extensions.Symbols;
 
 namespace MVVMGenerators.Generators.ViewModels.Data.Members;
 
-public abstract class BindableMember(
+public class BindableMember(
     ISymbol member,
     BindMode mode,
     string type,
@@ -23,5 +23,4 @@ public abstract class BindableMember(
 
 
     public virtual bool IsValueType { get; } = member.GetSymbolType()?.IsValueType ?? false;
-
 }

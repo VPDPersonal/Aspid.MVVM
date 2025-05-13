@@ -51,5 +51,7 @@ namespace Aspid.MVVM.Stats.ViewModels
         
         public virtual void Dispose() =>
             Hero.SkillChanged -= OnSkillChanged;
+        
+        public partial interface IBindableMembers : IReadOnlyStatsViewModel { }
     }
 }

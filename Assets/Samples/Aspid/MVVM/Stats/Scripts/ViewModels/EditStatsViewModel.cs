@@ -152,5 +152,7 @@ namespace Aspid.MVVM.Stats.ViewModels
         }
         
         public void Dispose() => Unsubscribe();
+        
+        partial interface IBindableMembers : IReadOnlyStatsViewModel { }
     }
 }

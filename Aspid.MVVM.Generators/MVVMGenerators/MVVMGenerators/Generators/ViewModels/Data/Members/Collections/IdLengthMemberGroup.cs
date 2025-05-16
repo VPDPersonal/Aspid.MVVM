@@ -4,10 +4,10 @@ using System.Collections.Immutable;
 
 namespace MVVMGenerators.Generators.ViewModels.Data.Members.Collections;
 
-public readonly struct IdLengthMemberGroup(int length, ImmutableArray<BindableMember> bindableMembers)
+public readonly struct IdLengthMemberGroup(int length, ImmutableArray<BindableMember> members)
 {
     public readonly int Length = length;
-    public readonly ImmutableArray<BindableMember> BindableMembers = bindableMembers;
+    public readonly ImmutableArray<BindableMember> Members = members;
     
     public static ImmutableArray<IdLengthMemberGroup> Create(ImmutableArray<BindableMember> bindableMembers)
     {

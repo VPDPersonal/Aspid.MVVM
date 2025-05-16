@@ -23,7 +23,7 @@ public partial class BinderGenerator
         var symbol = context.SemanticModel.GetDeclaredSymbol(candidate, cancellationToken);
         
         if (symbol is null) return default;
-        if (!symbol.HasInterface(Classes.IBinder, out var binderInterface)) return default;
+        if (!symbol.HasInterfaceInSelfOrBases(Classes.IBinder, out var binderInterface)) return default;
         
         var hasBinderLogInBaseType = false;
         const string setValueName = "SetValue";
@@ -58,7 +58,7 @@ public partial class BinderGenerator
         {
             if (method.Parameters.Length != 1) continue;
             if (method.NameFromExplicitImplementation() != setValueName) continue;
-            if (!symbol.HasInterface($"{Classes.IBinder.FullName}<{method.Parameters[0].Type.ToDisplayString()}>")) continue;
+            if (!symbol.HasInterfaceInSelfOrBases($"{Classes.IBinder.FullName}<{method.Parameters[0].Type.ToDisplayString()}>")) continue;
             
             if (method.HasAttribute(Classes.BinderLogAttribute) &&
                 !method.ExplicitInterfaceImplementations.Any())
@@ -67,7 +67,6 @@ public partial class BinderGenerator
         
         if (binderLogMethods.Count == 0) return default;
         
-        return new FoundForGenerator<BinderData>(true, 
-            new BinderData(candidate, hasBinderLogInBaseType, binderLogMethods));
+        return new FoundForGenerator<BinderData>(new BinderData(candidate, hasBinderLogInBaseType, binderLogMethods));
     }
 }

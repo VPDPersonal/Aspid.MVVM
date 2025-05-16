@@ -31,4 +31,7 @@ public readonly struct DeclarationText(string? modifiers, string typeType, strin
 
         return $"{modifiers}{TypeType} {Name}{arguments}";
     }
+    
+    public static implicit operator string(DeclarationText declaration) =>
+        declaration.ToString();
 }

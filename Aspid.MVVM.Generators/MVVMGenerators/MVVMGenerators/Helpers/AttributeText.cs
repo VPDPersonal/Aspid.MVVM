@@ -11,4 +11,7 @@ public class AttributeText(string name, NamespaceText? @namespace = null) :
 
     public override string ToString() =>
         AttributeGlobal;
+    
+    public static implicit operator string(AttributeText type) =>
+        type.ToString();
 }

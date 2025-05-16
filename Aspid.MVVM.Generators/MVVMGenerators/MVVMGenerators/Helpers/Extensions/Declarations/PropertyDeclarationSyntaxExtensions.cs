@@ -6,15 +6,18 @@ namespace MVVMGenerators.Helpers.Extensions.Declarations;
 
 public static class PropertyDeclarationSyntaxExtensions
 {
-    public static bool HasGetAccessor(this PropertyDeclarationSyntax propertyDeclaration)
-    {
-        var accessorList = propertyDeclaration.AccessorList;
-        return accessorList != null && accessorList.Accessors.Any(accessor => accessor.Kind() == SyntaxKind.GetAccessorDeclaration);
-    } 
+    public static bool HasGetAccessor(this PropertyDeclarationSyntax property) =>
+        property.HasAccessor(SyntaxKind.GetAccessorDeclaration);
     
-    public static bool HasSetAccessor(this PropertyDeclarationSyntax propertyDeclaration)
+    public static bool HasSetAccessor(this PropertyDeclarationSyntax property) =>
+        property.HasAccessor(SyntaxKind.SetAccessorDeclaration);
+
+    public static bool HasInitAccessor(this PropertyDeclarationSyntax property) =>
+        property.HasAccessor(SyntaxKind.InitAccessorDeclaration);
+    
+    private static bool HasAccessor(this PropertyDeclarationSyntax propertyDeclaration, SyntaxKind accessorKind)
     {
         var accessorList = propertyDeclaration.AccessorList;
-        return accessorList != null && accessorList.Accessors.Any(accessor => accessor.Kind() == SyntaxKind.SetAccessorDeclaration);
-    } 
+        return accessorList != null && accessorList.Accessors.Any(accessor => accessor.Kind() == accessorKind);
+    }
 }

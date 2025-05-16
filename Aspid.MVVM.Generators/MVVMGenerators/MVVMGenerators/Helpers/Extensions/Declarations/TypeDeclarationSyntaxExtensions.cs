@@ -14,8 +14,8 @@ public static class TypeDeclarationSyntaxExtensions
         
         return new DeclarationText(modifiers, typeType, typeName, genericArguments);
     }
-    
-    public static string GetModifiersAsText(this TypeDeclarationSyntax declaration)
+
+    private static string GetModifiersAsText(this TypeDeclarationSyntax declaration)
     {
         var modifiers = new StringBuilder();
         foreach (var modifier in declaration.Modifiers)
@@ -24,8 +24,8 @@ public static class TypeDeclarationSyntaxExtensions
         modifiers.Length--;
         return modifiers.ToString();
     }
-    
-    public static string GetGenericArgumentsAsText(this TypeDeclarationSyntax declaration)
+
+    private static string GetGenericArgumentsAsText(this TypeDeclarationSyntax declaration)
     {
         var types = declaration.TypeParameterList;
         if (types == null || types.Parameters.Count == 0) return "";

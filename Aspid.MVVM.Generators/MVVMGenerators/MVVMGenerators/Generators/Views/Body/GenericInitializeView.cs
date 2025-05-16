@@ -93,19 +93,38 @@ public static class GenericInitializeView
         var isInstantiateBinders = data.MembersByType.PropertyBinders.Length + data.MembersByType.AsBinders.Length > 0;
         code.AppendLineIf(isInstantiateBinders, "InstantiateBinders();");
         code.AppendLine();
-        
-        var bindableMembers = BindableMembersFactory.Create(viewModelType)
-            .ToDictionary(bindable => bindable.Id, bindable => bindable);
 
-        foreach (var member in data.Members)
+        if (viewModelType.TypeKind is not TypeKind.Interface)
         {
-            if (bindableMembers.TryGetValue(member.Id, out var bindableMember))
+            var bindableMembers = BindableMembersFactory.Create(viewModelType)
+                .ToDictionary(bindable => bindable.Id.SourceValue, bindable => bindable);
+
+            foreach (var member in data.Members)
             {
-                code.AppendBindSafely(member, bindableMember);
+                if (bindableMembers.TryGetValue(member.Id.SourceValue, out var bindableMember))
+                {
+                    code.AppendBindSafely(member, bindableMember);
+                }
+                else
+                {
+                    code.AppendBindSafely(member);
+                }
             }
-            else
+        }
+        else
+        {
+            var customViewModelInterfaces = CustomViewModelInterfacesFactory.Create(viewModelType);
+
+            foreach (var member in data.Members)
             {
-                code.AppendBindSafely(member);
+                if (customViewModelInterfaces.TryGetValue(member.Id.SourceValue, out var bindableMember))
+                {
+                    code.AppendBindSafely(member, bindableMember.PropertyName);
+                }
+                else
+                {
+                    code.AppendBindSafely(member);
+                }
             }
         }
         

@@ -1,5 +1,4 @@
 using System.Linq;
-using System.Text;
 using Microsoft.CodeAnalysis;
 
 namespace MVVMGenerators.Helpers.Extensions.Symbols;
@@ -16,28 +15,13 @@ public static class MethodSymbolExtensions
         
         if (!SymbolEqualityComparer.Default.Equals(method1.ReturnType, method2.ReturnType)) return false;
 
-        var areParametersEqual = !method1.Parameters.Where((parameter, i) =>
-            parameter.Type.ToDisplayString() != method2.Parameters[i].Type.ToDisplayString()).Any();
+        var areParametersEqual = method1.Parameters
+            .Where((parameter, i) => SymbolEqualityComparer.Default.Equals(parameter.Type, method2.Parameters[i].Type))
+            .Any();
+        
         return areParametersEqual;
     }
 
     public static string NameFromExplicitImplementation(this IMethodSymbol method) =>
         method.Name.Substring(method.Name.LastIndexOf('.') + 1);
-    
-    public static string GetParametersAsText(this IMethodSymbol method)
-    {
-        var text = new StringBuilder();
-
-        foreach (var parameter in method.Parameters)
-        {
-            if (text.Length > 0)
-                text.Append(", ");
-
-            text.Append(parameter.ContainingType.ToDisplayString())
-                .Append(" ")
-                .Append(parameter.Name);
-        }
-
-        return text.ToString();
-    }
 }

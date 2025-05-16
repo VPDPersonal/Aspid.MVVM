@@ -90,16 +90,16 @@ public static partial class Classes
     public static readonly TypeText IBindableMemberEventRemover =
         new(nameof(IBindableMemberEventRemover), Namespaces.Aspid_MVVM);
     
-    public static readonly TypeText OneWayBindableMemberEvent =
+    public static readonly TypeText? OneWayBindableMemberEvent =
         new(nameof(OneWayBindableMemberEvent), Namespaces.Aspid_MVVM);
     
-    public static readonly TypeText TwoWayBindableMemberEvent =
+    public static readonly TypeText? TwoWayBindableMemberEvent =
         new(nameof(TwoWayBindableMemberEvent), Namespaces.Aspid_MVVM);
     
-    public static readonly TypeText OneTimeBindableMemberEvent =
+    public static readonly TypeText? OneTimeBindableMemberEvent =
         new(nameof(OneTimeBindableMemberEvent), Namespaces.Aspid_MVVM);
     
-    public static readonly TypeText OneWayToSourceBindableMemberEvent =
+    public static readonly TypeText? OneWayToSourceBindableMemberEvent =
         new(nameof(OneWayToSourceBindableMemberEvent), Namespaces.Aspid_MVVM);
     #endregion
 

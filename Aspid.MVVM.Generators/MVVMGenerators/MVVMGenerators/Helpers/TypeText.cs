@@ -12,4 +12,7 @@ public class TypeText(string name, NamespaceText? @namespace = null)
 
     public override string ToString() =>
         Global;
+    
+    public static implicit operator string(TypeText? type) =>
+        type.ToString();
 }

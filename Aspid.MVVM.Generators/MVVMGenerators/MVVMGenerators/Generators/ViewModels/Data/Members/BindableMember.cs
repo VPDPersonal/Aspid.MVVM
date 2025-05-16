@@ -1,26 +1,46 @@
 using Microsoft.CodeAnalysis;
 using MVVMGenerators.Generators.Ids.Data;
-using MVVMGenerators.Helpers.Extensions.Symbols;
 
 namespace MVVMGenerators.Generators.ViewModels.Data.Members;
 
-public class BindableMember(
-    ISymbol member,
-    BindMode mode,
-    string type,
-    string sourceName,
-    string generatedName,
-    string idPostfix = "")
+public abstract class BindableMember<T> : BindableMember
+    where T : ISymbol
 {
-    public readonly IdData Id = new(member, idPostfix);
-    public readonly BindMode Mode = mode;
-    public readonly ISymbol Member = member;
+    public readonly T Member;
 
-    public readonly string Type = type;
-    public readonly string SourceName = sourceName;
-    public readonly string GeneratedName = generatedName;
-    public readonly ViewModelEvent Event = new(mode, generatedName, type);
+    protected BindableMember(T member, BindMode mode, string type, string name, string idPostfix)
+        : base(member, mode, type, name, idPostfix)
+    {
+        Member = member;
+    }
 
+    protected BindableMember(T member, BindMode mode, string type, string sourceName, string generatedName, string idPostfix) 
+        : base(member, mode, type, sourceName, generatedName, idPostfix)
+    {
+        Member = member;
+    }
+}
 
-    public virtual bool IsValueType { get; } = member.GetSymbolType()?.IsValueType ?? false;
+public abstract class BindableMember
+{
+    public readonly string Type;
+    public readonly string SourceName;
+    public readonly string GeneratedName;
+
+    public readonly IdData Id;
+    public readonly BindMode Mode;
+    public readonly ViewModelEvent Event;
+
+    protected BindableMember(ISymbol member, BindMode mode, string type, string name, string idPostfix)
+        : this(member, mode, type, name, name, idPostfix) { }
+    
+    protected BindableMember(ISymbol member, BindMode mode, string type, string sourceName, string generatedName, string idPostfix)
+    {
+        Type = type;
+        Mode = mode;
+        SourceName = sourceName;
+        GeneratedName = generatedName;
+        Id = new IdData(member, idPostfix);
+        Event = new ViewModelEvent(mode, sourceName, generatedName, type);
+    }
 }

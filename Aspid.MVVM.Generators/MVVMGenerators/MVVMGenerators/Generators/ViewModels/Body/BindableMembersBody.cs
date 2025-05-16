@@ -1,10 +1,12 @@
 using Microsoft.CodeAnalysis;
 using MVVMGenerators.Helpers;
-using MVVMGenerators.Helpers.Descriptions;
 using MVVMGenerators.Helpers.Extensions.Writer;
 using MVVMGenerators.Generators.ViewModels.Data;
 using MVVMGenerators.Helpers.Extensions.Symbols;
 using MVVMGenerators.Generators.ViewModels.Data.Members;
+using static MVVMGenerators.Helpers.Descriptions.General;
+using static MVVMGenerators.Helpers.Descriptions.Classes;
+using BindMode = MVVMGenerators.Generators.ViewModels.Data.BindMode;
 
 namespace MVVMGenerators.Generators.ViewModels.Body;
 
@@ -12,66 +14,71 @@ public static class BindableMembersBody
 {
     public static void Generate(       
         string @namespace,
-        in ViewModelDataSpan data,
+        in ViewModelData data,
         in DeclarationText declaration,
         in SourceProductionContext context)
     {
-        string[] baseTypes = [$"{data.ClassSymbol.ToDisplayStringGlobal()}.IBindableMembers"];
+        string[] baseTypes = [$"{data.Symbol.ToDisplayStringGlobal()}.IBindableMembers"];
 
         var code = new CodeWriter();
         code.AppendClassBegin(@namespace, declaration, baseTypes)
-            .AppendBindableMemberProperties(data)
-            .AppendLine()
-            .AppendBindableMembersInterface(data)
+            .AppendProperties(data)
+            .AppendInterface(data)
             .AppendClassEnd(@namespace);
         
         context.AddSource(declaration.GetFileName(@namespace, "BindableMembers"), code.GetSourceText());
     }
 
-    private static CodeWriter AppendBindableMemberProperties(this CodeWriter code, in ViewModelDataSpan data)
+    private static CodeWriter AppendProperties(this CodeWriter code, in ViewModelData data)
     {
+        var bindableMembersInterface = data.Symbol.ToDisplayStringGlobal() + ".IBindableMembers";
+        
         foreach (var member in data.Members)
         {
-            code.AppendBindableMemberProperty(member, data)
-                .AppendLine();
+            if (member.Mode is BindMode.None) return code;
+
+            AppendProperty(bindableMembersInterface, member.GeneratedName, member);
+            code.AppendLine();
+
+            if (data.CustomViewModelInterfaces.TryGetValue(member.Id.SourceValue, out var customInterface))
+            {
+                AppendProperty(customInterface.Interface.ToDisplayStringGlobal(), customInterface.PropertyName, member);
+                code.AppendLine();
+            }
         }
 
         return code;
-    }
-
-    private static CodeWriter AppendBindableMemberProperty(this CodeWriter code, BindableMember member, in ViewModelDataSpan data)
-    {
-        if (member.Mode is BindMode.None) return code;
-
-        var classType = data.ClassSymbol.ToDisplayStringGlobal() + ".IBindableMembers";
-        if (data.BindableMembersInterfaces.TryGetInterface(member.GeneratedName, out var @interface))
-            classType = @interface.Interface.ToDisplayStringGlobal();
-
-        return code
-            .AppendLine($"{Classes.IBindableMemberEventAdder} {classType}.{member.GeneratedName} =>")
-            .IncreaseIndent()
-            .AppendLine($"{member.Event.ToInstantiateFieldString()};")
-            .DecreaseIndent();
-    }
-
-    private static CodeWriter AppendBindableMembersInterface(this CodeWriter code, in ViewModelDataSpan data)
-    {
-        var classType = data.ClassSymbol.BaseType!.ToDisplayStringGlobal();
-
-        code.Append(data.Inheritor is Inheritor.InheritorViewModelAttribute
-            ? $"public new partial interface IBindableMembers : {classType}.IBindableMembers"
-            : $"public partial interface IBindableMembers : {Classes.IViewModel}");
         
-        code.AppendLine()
-            .BeginBlock();
+        void AppendProperty(string interfaceType, string propertyName, BindableMember member)
+        { 
+            code.AppendLine($"{IBindableMemberEventAdder} {interfaceType}.{propertyName} =>")
+                .IncreaseIndent()
+                .AppendLine($"{member.Event.ToInstantiateFieldString()};")
+                .DecreaseIndent();
+        }
+    }
+    
+    private static CodeWriter AppendInterface(this CodeWriter code, in ViewModelData data)
+    {
+        var members = data.Members;
 
-        foreach (var member in data.Members)
+        code.AppendLine(GeneratedCodeViewModelAttribute)
+            .Append(data.Inheritor is Inheritor.None 
+                ? $"public interface IBindableMembers : {IViewModel}" 
+                : $"public new interface IBindableMembers : {data.Symbol.BaseType}.IBindableMembers");
+
+        if (members.Length > 0)
         {
-            if (data.BindableMembersInterfaces.HasName(member.GeneratedName)) continue;
-            code.AppendLine($"public {Classes.IBindableMemberEventAdder} {member.GeneratedName} {{ get; }}")
-                .AppendLine();
+            return code
+                .BeginBlock()
+                .AppendLoop(members, member =>
+                {
+                    code.AppendLine($"public {IBindableMemberEventAdder} {member.GeneratedName} {{ get; }}")
+                        .AppendLine();
+                })
+                .EndBlock();
         }
 
-        return code.EndBlock();
+        return code.AppendLine("{ }");
     }
 }

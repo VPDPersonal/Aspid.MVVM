@@ -21,14 +21,17 @@ public partial class ViewGenerator
     {
         if (context.TargetSymbol is not INamedTypeSymbol symbol) return default;
 
-        var inheritor = RecognizeInheritor(symbol);
+        var inheritor = symbol.HasAttributeInBases(Classes.ViewAttribute)
+            ? Inheritor.InheritorViewAttribute
+            : Inheritor.None;
+        
         var members = BinderMembersFactory.Create(symbol, context.SemanticModel);
 
         Debug.Assert(context.TargetNode is TypeDeclarationSyntax);
         var candidate = Unsafe.As<TypeDeclarationSyntax>(context.TargetNode);
 
         var viewData = new ViewData(inheritor, candidate, members, GetGenericViews(symbol));
-        return new FoundForGenerator<ViewData>(true, viewData);
+        return new FoundForGenerator<ViewData>(viewData);
     }
 
     private static ImmutableArray<ITypeSymbol> GetGenericViews(INamedTypeSymbol symbol)
@@ -47,19 +50,5 @@ public partial class ViewGenerator
         }
 
         return genericViews.ToImmutableArray();
-    }
-
-    private static Inheritor RecognizeInheritor(INamedTypeSymbol symbol)
-    {
-        var baseType = symbol.BaseType;
-        
-        // Strictly defined order
-        for (var type = baseType; type is not null; type = type.BaseType)
-        {
-            if (type.HasAttribute(Classes.ViewAttribute)) 
-                return Inheritor.InheritorViewAttribute;
-        }
-
-        return Inheritor.None;
     }
 }

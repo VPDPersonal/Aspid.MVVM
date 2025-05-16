@@ -1,48 +1,100 @@
-using System;
-using MVVMGenerators.Helpers.Descriptions;
-using MVVMGenerators.Helpers.Extensions.Symbols;
+using static MVVMGenerators.Helpers.Descriptions.General;
+using static MVVMGenerators.Helpers.Descriptions.Classes;
+using static MVVMGenerators.Helpers.Extensions.Symbols.SymbolExtensions;
 
 namespace MVVMGenerators.Generators.ViewModels.Data.Members;
 
 public readonly struct ViewModelEvent
 {
-    public readonly bool Has;
+    public readonly bool IsExist;
+    public readonly bool IsEventExist;
+    
     public readonly string? Type;
-    public readonly string? Name;
-    public readonly string? EventType;
+    public readonly string? ValueType;
+    
     public readonly string? FieldName;
+    public readonly string? EventName;
     
     private readonly BindMode _mode;
+    private readonly string _sourceName;
     private readonly string _generatedName;
 
-    public ViewModelEvent(BindMode mode, string generatedName, string type)
+    public ViewModelEvent(BindMode mode, string sourceName, string generatedName, string valueType)
     {
         _mode = mode;
+        _sourceName = sourceName;
         _generatedName = generatedName;
-        
         if (mode is BindMode.None) return;
         
-        EventType = mode switch
+        Type = mode switch
         {
-            BindMode.OneWay => Classes.OneWayBindableMemberEvent.Global,
-            BindMode.TwoWay => Classes.TwoWayBindableMemberEvent.Global,
-            BindMode.OneTime => Classes.OneTimeBindableMemberEvent.Global,
-            BindMode.OneWayToSource => Classes.OneWayToSourceBindableMemberEvent.Global,
-            _ => throw new ArgumentOutOfRangeException(nameof(mode), mode, null)
+            BindMode.OneWay => OneWayBindableMemberEvent,
+            BindMode.TwoWay => TwoWayBindableMemberEvent,
+            BindMode.OneTime => OneTimeBindableMemberEvent,
+            BindMode.OneWayToSource => OneWayToSourceBindableMemberEvent,
+            _ => null,
         };
+        
+        if (Type is null) return;
+        
+        IsExist = true;
+        ValueType = valueType;
+        FieldName = $"__{RemoveFieldPrefix(GetFieldName(generatedName, null))}ChangedEvent";
 
-        Type = type;
-        Has = EventType is not null;
-        Name = mode is BindMode.OneWay or BindMode.TwoWay ? $"{generatedName}Changed" : null;
-        FieldName = $"__{FieldSymbolExtensions.RemovePrefix(PropertySymbolExtensions.GetFieldName(generatedName, false))}ChangedEvent";
+        EventName = mode is BindMode.OneWay or BindMode.TwoWay
+            ? $"{generatedName}Changed"
+            : null;
+        
+        IsEventExist = EventName is not null;
     }
 
-    public string ToInstantiateFieldString() => _mode switch
+    // TODO Nullable?
+    public string ToInvokeString() => IsExist && _mode is not BindMode.OneWayToSource
+        ? $"{FieldName}?.Invoke({_sourceName});"
+        : string.Empty;
+
+    // TODO Nullable?
+    public string ToEventDeclarationString()
+    {
+        return IsEventExist
+            ? $$"""
+                {{GeneratedCodeViewModelAttribute}}
+                public event {{Action}}<{{ValueType}}> {{EventName}}
+                {
+                    add
+                    {
+                        {{ToInstantiateFieldString()}};
+                        {{FieldName}}.Changed += value;
+                    }
+                    remove
+                    {
+                        if ({{FieldName}} is null) return;
+                        {{FieldName}}.Changed -= value;
+                    }
+                }
+                """
+            : string.Empty;
+    }
+
+    // TODO Nullable?
+    public string ToFieldDeclarationString()
+    {
+        return IsExist
+            ? $"""
+               [{EditorBrowsableAttribute}({EditorBrowsableState}.Never)]
+               {GeneratedCodeViewModelAttribute}
+               private {Type}<{ValueType}> {FieldName};
+               """
+            : string.Empty;
+    }
+
+    // TODO Nullable?
+    public string ToInstantiateFieldString() => IsExist ? _mode switch
     {
         BindMode.OneWay => $"{FieldName} ??= new({_generatedName})",
         BindMode.TwoWay => $"{FieldName} ??= new({_generatedName}, Set{_generatedName})",
         BindMode.OneTime => $"{FieldName} ??= new({_generatedName})",
         BindMode.OneWayToSource => $"{FieldName} ??= new(Set{_generatedName})",
         _ => string.Empty
-    };
+    } : string.Empty;
 }

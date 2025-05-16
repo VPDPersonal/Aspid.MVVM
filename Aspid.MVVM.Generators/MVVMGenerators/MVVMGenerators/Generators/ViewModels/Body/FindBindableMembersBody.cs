@@ -2,86 +2,87 @@ using Microsoft.CodeAnalysis;
 using MVVMGenerators.Helpers;
 using System.Collections.Generic;
 using System.Collections.Immutable;
-using MVVMGenerators.Helpers.Descriptions;
 using MVVMGenerators.Helpers.Extensions.Writer;
 using MVVMGenerators.Generators.ViewModels.Data;
 using MVVMGenerators.Generators.ViewModels.Data.Members;
+using static MVVMGenerators.Helpers.Descriptions.General;
+using static MVVMGenerators.Helpers.Descriptions.Defines;
+using static MVVMGenerators.Helpers.Descriptions.Classes;
 
 namespace MVVMGenerators.Generators.ViewModels.Body;
 
 public static class FindBindableMembersBody
 {
-    // ReSharper disable once InconsistentNaming
-    private static readonly string EditorBrowsableAttribute = $"[{Classes.EditorBrowsableAttribute}({Classes.EditorBrowsableState}.Never)]";
-
     public static void Generate(
         string @namespace,
-        in ViewModelDataSpan data,
+        in ViewModelData data,
         in DeclarationText declaration,
         in SourceProductionContext context)
     {
-        string[] baseTypes = [Classes.IViewModel.Global];
+        string[] baseTypes = [IViewModel.Global];
 
         var code = new CodeWriter();
         code.AppendClassBegin(@namespace, declaration, baseTypes)
-            .AppendFound(data)
+            .AppendBody(data)
             .AppendClassEnd(@namespace);
 
         context.AddSource(declaration.GetFileName(@namespace, "FindBindableMembers"), code.GetSourceText());
     }
     
-    private static CodeWriter AppendFound(this CodeWriter code, ViewModelDataSpan span)
+    private static CodeWriter AppendBody(this CodeWriter code, in ViewModelData data)
     {
-        return code.AppendProfilerMarkers(span.Name)
+        return code
+            .AppendMarkers(data)
             .AppendLine()
-            .AppendFindBindableMembersDeclaration(span);
+            .AppendFindBindableMember(data);
     }
 
-    private static CodeWriter AppendProfilerMarkers(this CodeWriter code, string className)
+    private static CodeWriter AppendMarkers(this CodeWriter code, in ViewModelData data)
     {
+        var className = data.Name;
+        
         return code.AppendMultiline(
             $"""
-            #if !{Defines.ASPID_MVVM_UNITY_PROFILER_DISABLED}
-            {EditorBrowsableAttribute}
-            {General.GeneratedCodeViewModelAttribute}
-            private static readonly {Classes.ProfilerMarker} __findBindableMemberMarker = new("{className}.FindBindableMember");
+            #if !{ASPID_MVVM_UNITY_PROFILER_DISABLED}
+            {GeneratedCodeViewModelAttribute}
+            [{EditorBrowsableAttribute}({EditorBrowsableState}.Never)]
+            private static readonly {ProfilerMarker} __findBindableMemberMarker = new("{className}.FindBindableMember");
             #endif
             """);
     }
 
-    private static CodeWriter AppendFindBindableMembersDeclaration(this CodeWriter code, ViewModelDataSpan span)
+    private static CodeWriter AppendFindBindableMember(this CodeWriter code, in ViewModelData data)
     {
-        var modifier = span.Inheritor is Inheritor.None ? "virtual" : "override";
+        var addedMembers = new HashSet<BindableMember>();
+        var modifier = data.Inheritor is Inheritor.None ? "virtual" : "override";
 
-        return code.AppendMultiline(
+        code.AppendMultiline(
                 $"""
-                 {General.GeneratedCodeViewModelAttribute}
-                 public {modifier} {Classes.FindBindableMemberResult} FindBindableMember(in {Classes.FindBindableMemberParameters} parameters)
+                 {GeneratedCodeViewModelAttribute}
+                 public {modifier} {FindBindableMemberResult} FindBindableMember(in {FindBindableMemberParameters} parameters)
                  """)
             .BeginBlock()
-            .AppendFindBindableMemberBody(span)
-            .EndBlock();
-    }
-
-    private static CodeWriter AppendFindBindableMemberBody(this CodeWriter code, ViewModelDataSpan span)
-    {
-        code.AppendLine($"#if !{Defines.ASPID_MVVM_UNITY_PROFILER_DISABLED}")
-            .AppendLine("using (__findBindableMemberMarker.Auto())")
-            .AppendLine("#endif")
+            .AppendMultiline(
+                $"""
+                #if !{ASPID_MVVM_UNITY_PROFILER_DISABLED}
+                using (__findBindableMemberMarker.Auto())
+                #endif
+                """)
             .BeginBlock();
-
-        var addedMembers = new HashSet<BindableMember>();
         
-        if (!span.IdLengthMemberGroups.IsEmpty)
+        if (!data.IdGroups.IsEmpty)
         {
-            AppendSwitchBlock("parameters.Id.Length");
-            
-            foreach (var idGroup in span.IdLengthMemberGroups)
-            {
-                AppendCaseBlock($"{idGroup.Length}");
-                AppendSwitchBlock("parameters.Id");
+            code.AppendLine("switch(parameters.Id.Length)")
+                .BeginBlock();
 
-                AppendIdBlock(idGroup.BindableMembers);
+            foreach (var idGroup in data.IdGroups)
+            {
+                code.AppendLine($"case {idGroup.Length}:")
+                    .BeginBlock()
+                    .AppendLine("switch(parameters.Id)")
+                    .BeginBlock();
+
+                AppendIdBlock(idGroup.Members);
                 
                 code.EndBlock()
                     .AppendLine()
@@ -92,51 +93,42 @@ public static class FindBindableMembersBody
             code.EndBlock()
                 .AppendLine();
         }
-        
-        if (addedMembers.Count != span.Members.Length)
+
+        if (addedMembers.Count != data.Members.Length)
         {
-            AppendSwitchBlock("parameters.Id");
-            AppendIdBlock(span.Members);
+            code.AppendLine("switch(parameters.Id)")
+                .BeginBlock();
+
+            AppendIdBlock(data.Members);
 
             code.EndBlock()
                 .AppendLine();
         }
         
-        var returnCode = span.Inheritor is Inheritor.None
-            ? "return default;" 
-            : "return base.FindBindableMember(parameters);";
-        
-        code.AppendLine(returnCode)
+        code.AppendLine(data.Inheritor is Inheritor.None
+                ? "return default;"
+                : "return base.FindBindableMember(parameters);")
+            .EndBlock()
             .EndBlock();
-
-        return code;
-
-        void AppendSwitchBlock(string conditional) => 
-            code.AppendLine($"switch({conditional})")
-                .BeginBlock();
         
-        void AppendCaseBlock( string conditional) => 
-            code.AppendLine($"case {conditional}:")
-                .BeginBlock();
+        return code;
 
         void AppendIdBlock(ImmutableArray<BindableMember> members)
         {
             foreach (var member in members)
             {
-                if (addedMembers.Contains(member)) continue;
-                AppendCaseBlock(member.Id.ToString());
+                if (addedMembers.Contains(member)) return;
 
-                code.AppendReturnFindBindableMemberResult(member)
-                    .EndBlock();
+                code.AppendMultiline(
+                    $$"""
+                      case {{member.Id}}:
+                      {
+                          return new({{member.Event.ToInstantiateFieldString()}});
+                      }
+                      """);
                 
                 addedMembers.Add(member);
             }
         }
-    }
-
-    private static CodeWriter AppendReturnFindBindableMemberResult(this CodeWriter code, in BindableMember member)
-    {
-        var @event = member.Event;
-        return code.AppendLine($"return new({@event.ToInstantiateFieldString()});");
     }
 }

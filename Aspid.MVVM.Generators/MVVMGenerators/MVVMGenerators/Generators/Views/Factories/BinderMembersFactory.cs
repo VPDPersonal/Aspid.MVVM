@@ -28,7 +28,7 @@ public static class BinderMembersFactory
                 if (asBinderAttribute!.ConstructorArguments[0].Value is not INamedTypeSymbol argumentType) continue;
                 
                 if (argumentType.IsAbstract) continue;
-                if (!argumentType.HasInterface(Classes.IBinder)) continue;
+                if (!argumentType.HasInterfaceInSelfOrBases(Classes.IBinder)) continue;
 
                 var arguments = new List<string>();
                 
@@ -93,11 +93,11 @@ public static class BinderMembersFactory
                 
                 binderMembers.Add(new AsBinderMember(member, argumentType.ToDisplayStringGlobal(), arguments));
             }
-            else if (type.HasInterface(Classes.IView))
+            else if (type.HasInterfaceInSelfOrBases(Classes.IView))
             {
                 binderMembers.Add(new AsBinderMember(member, Classes.ViewBinder.Global, null));
             }
-            else if (type.HasInterface(Classes.IBinder))
+            else if (type.HasInterfaceInSelfOrBases(Classes.IBinder))
             {
                 switch (member)
                 {

@@ -19,5 +19,5 @@ public static class IdGeneratorExtensions
     }
 
     private static string GetName(this ISymbol member, string prefixName) =>
-        FieldSymbolExtensions.GetPropertyName(member.Name) + prefixName;
+        SymbolExtensions.GetPropertyName(member.Name) + prefixName;
 }

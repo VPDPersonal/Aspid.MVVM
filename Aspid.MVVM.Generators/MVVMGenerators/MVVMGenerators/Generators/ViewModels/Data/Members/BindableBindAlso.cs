@@ -4,14 +4,11 @@ using MVVMGenerators.Helpers.Extensions.Symbols;
 
 namespace MVVMGenerators.Generators.ViewModels.Data.Members;
 
-public sealed class BindableBindAlso(ISymbol member)
-    : BindableMember(
-        member, 
-        BindMode.OneWay,
-        member.GetSymbolType()?.ToDisplayStringGlobal() ?? string.Empty, 
-        member.Name,
-        member.Name), IEquatable<BindableBindAlso>
+public sealed class BindableBindAlso : BindableMember<ISymbol>, IEquatable<BindableBindAlso>
 {
+    public BindableBindAlso(ISymbol member) 
+        : base(member, BindMode.OneWay, member.GetSymbolType()?.ToDisplayStringGlobal() ?? string.Empty, member.Name, member.Name, string.Empty) { }
+
     public override bool Equals(object? obj) =>
         obj is BindableBindAlso other && Equals(other);
 

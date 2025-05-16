@@ -39,6 +39,6 @@ public partial class IdGenerator
 
         return ids.Count is 0 
             ? default 
-            : new FoundForGenerator<HashSet<string>>(true, ids);
+            : new FoundForGenerator<HashSet<string>>(ids);
     }
 }

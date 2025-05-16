@@ -1,9 +1,9 @@
 using Microsoft.CodeAnalysis;
 using System.Collections.Generic;
 using System.Collections.Immutable;
-using MVVMGenerators.Helpers.Descriptions;
 using MVVMGenerators.Helpers.Extensions.Symbols;
 using MVVMGenerators.Generators.ViewModels.Data.Members;
+using static MVVMGenerators.Helpers.Descriptions.Classes;
 
 namespace MVVMGenerators.Generators.ViewModels.Factories;
 
@@ -19,7 +19,7 @@ public static class BindableBindAlsoFactory
             foreach (var attribute in member.GetAttributes())
             {
                 if (attribute.AttributeClass != null &&
-                    attribute.AttributeClass.ToDisplayStringGlobal() == Classes.BindAlsoAttribute.Global)
+                    attribute.AttributeClass.ToDisplayStringGlobal() == BindAlsoAttribute)
                 {
                     var value = attribute.ConstructorArguments[0].Value;
                     if (value is null) continue;

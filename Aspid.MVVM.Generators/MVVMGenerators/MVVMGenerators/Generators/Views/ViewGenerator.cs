@@ -22,13 +22,8 @@ public partial class ViewGenerator : IIncrementalGenerator
 
     private static bool SyntacticPredicate(SyntaxNode node, CancellationToken cancellationToken)
     {
-        var candidate = node switch
-        {
-            ClassDeclarationSyntax or StructDeclarationSyntax => node as TypeDeclarationSyntax,
-            _ => null
-        };
-
-        return candidate is not null
+        // TODO add support for static
+        return node is ClassDeclarationSyntax candidate
             && candidate.Modifiers.Any(SyntaxKind.PartialKeyword)
             && !candidate.Modifiers.Any(SyntaxKind.StaticKeyword);
     }

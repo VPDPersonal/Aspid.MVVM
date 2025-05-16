@@ -51,7 +51,7 @@ public class CreateFromGenerator : IIncrementalGenerator
         
         if (constructor.Parameters.Length == 0) return default;
         var candidate = Unsafe.As<ConstructorDeclarationSyntax>(context.TargetNode);
-        return new FoundForGenerator<CreateFromData>(true, new CreateFromData(candidate, constructor, fromType));
+        return new FoundForGenerator<CreateFromData>(new CreateFromData(candidate, constructor, fromType));
     }
 
     private static void GenerateCode(SourceProductionContext context, CreateFromData data)

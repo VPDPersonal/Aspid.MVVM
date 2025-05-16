@@ -3,7 +3,7 @@ using Aspid.MVVM;
 namespace MVVMGenerators.Sample;
 
 [ViewModel]
-public partial class PersonViewModel(int age, string name, string family) 
+public partial class PersonViewModel(int age, string name, string family) : IPersonViewModel
 {
     [Access(Get = Access.Public)]
     [Bind] private int _age = age;
@@ -28,8 +28,6 @@ public partial class PersonViewModel(int age, string name, string family)
     // {
     //     return true;
     // }
-    
-    partial interface IBindableMembers : IPersonViewModel { }
 }
 
 public interface IPersonViewModel : IViewModel

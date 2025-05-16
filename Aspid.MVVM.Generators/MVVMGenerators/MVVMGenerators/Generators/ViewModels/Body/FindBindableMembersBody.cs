@@ -117,7 +117,7 @@ public static class FindBindableMembersBody
         {
             foreach (var member in members)
             {
-                if (addedMembers.Contains(member)) return;
+                if (addedMembers.Contains(member)) continue;
 
                 code.AppendMultiline(
                     $$"""

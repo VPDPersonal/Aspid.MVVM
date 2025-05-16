@@ -4,7 +4,7 @@ using Aspid.MVVM.Stats.Models;
 namespace Aspid.MVVM.Stats.ViewModels
 {
     [ViewModel]
-    public partial class ReadOnlyStatsViewModel : IDisposable
+    public partial class ReadOnlyStatsViewModel : IReadOnlyStatsViewModel, IDisposable
     {
         [OneWayBind] private int _cool;
         [OneWayBind] private int _power;
@@ -51,7 +51,5 @@ namespace Aspid.MVVM.Stats.ViewModels
         
         public virtual void Dispose() =>
             Hero.SkillChanged -= OnSkillChanged;
-        
-        public partial interface IBindableMembers : IReadOnlyStatsViewModel { }
     }
 }

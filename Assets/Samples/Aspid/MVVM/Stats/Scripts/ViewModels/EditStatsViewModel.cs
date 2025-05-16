@@ -4,7 +4,7 @@ using Aspid.MVVM.Stats.Models;
 namespace Aspid.MVVM.Stats.ViewModels
 {
     [ViewModel]
-    public partial class EditStatsViewModel : IDisposable
+    public partial class EditStatsViewModel : IReadOnlyStatsViewModel, IDisposable
     {
         [OneWayBind] private int _cool;
         [OneWayBind] private int _power;
@@ -152,7 +152,5 @@ namespace Aspid.MVVM.Stats.ViewModels
         }
         
         public void Dispose() => Unsubscribe();
-        
-        partial interface IBindableMembers : IReadOnlyStatsViewModel { }
     }
 }

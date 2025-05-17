@@ -13,9 +13,10 @@ public static class SymbolExtensions
         {
             if (bindAttribute!.ConstructorArguments.Length is 0)
             {
-                return member is IFieldSymbol { IsReadOnly: true } 
-                    ? BindMode.OneTime 
-                    : BindMode.TwoWay;
+                if (member is not IFieldSymbol field) return BindMode.TwoWay;
+                if (field.IsReadOnly || field.IsConst) return BindMode.OneTime;
+
+                return BindMode.TwoWay;
             }
 
             return Determine((BindMode)(int)bindAttribute!.ConstructorArguments[0].Value!);

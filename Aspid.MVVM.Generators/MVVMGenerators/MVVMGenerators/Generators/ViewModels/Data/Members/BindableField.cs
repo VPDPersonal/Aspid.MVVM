@@ -16,7 +16,12 @@ public class BindableField : BindableMember<IFieldSymbol>
     public readonly ImmutableArray<BindableBindAlso> BindAlso;
     
     public BindableField(IFieldSymbol field, BindMode mode, ImmutableArray<BindableBindAlso> bindAlso)
-        : base(field, mode, field.Type.ToDisplayStringGlobal(), field.Name, field.GetPropertyName(), string.Empty)
+        : base(field, 
+            mode,
+            field.Type.ToDisplayStringGlobal(), 
+            field.Name, 
+            mode is BindMode.OneTime ? field.Name : field.GetPropertyName(), 
+            string.Empty)
     {
         BindAlso = bindAlso;
         IsReadOnly = mode is BindMode.OneTime;
@@ -62,10 +67,12 @@ public class BindableField : BindableMember<IFieldSymbol>
 
         var eventInvoke = Event.ToInvokeString();
         if (eventInvoke != string.Empty)
-            eventInvoke = $"\t{eventInvoke}";
+            eventInvoke = $"this.{eventInvoke}";
+        
+        var keyWordThis = !Member.IsStatic ? "this." : string.Empty;
 
         foreach (var property in BindAlso)
-            eventInvoke += $"\n\t{property.Event.ToInvokeString()}";
+            eventInvoke += $"\n\tthis.{property.Event.ToInvokeString()}";
 
         return
             $$"""
@@ -75,7 +82,7 @@ public class BindableField : BindableMember<IFieldSymbol>
                   if ({{EqualityComparer}}<{{Type}}>.Default.Equals({{SourceName}}, value)) return;
 
                   {{onMethodChanging}}({{SourceName}}, value);
-                  this.{{SourceName}} = value;
+                  {{keyWordThis}}{{SourceName}} = value;
                   {{eventInvoke}}
                   {{onMethodChanged}}(value);
               }

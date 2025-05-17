@@ -20,7 +20,7 @@ public class BindableField : BindableMember<IFieldSymbol>
             mode,
             field.Type.ToDisplayStringGlobal(), 
             field.Name, 
-            mode is BindMode.OneTime ? field.Name : field.GetPropertyName(), 
+            field.IsConst ? field.Name : field.GetPropertyName(), 
             string.Empty)
     {
         BindAlso = bindAlso;

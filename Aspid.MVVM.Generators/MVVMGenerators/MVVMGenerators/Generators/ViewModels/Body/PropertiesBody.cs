@@ -66,7 +66,7 @@ public static class PropertiesBody
     {
         foreach (var field in data.Members.OfType<BindableField>())
         {
-            if (field.Mode is BindMode.OneTime) continue;
+            if (field.Member.IsConst) continue;
             
             code.AppendMultiline(field.ToDeclarationPropertyString())
                 .AppendLine();

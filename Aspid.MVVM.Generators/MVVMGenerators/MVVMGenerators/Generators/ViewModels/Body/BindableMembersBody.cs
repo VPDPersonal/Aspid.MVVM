@@ -65,7 +65,7 @@ public static class BindableMembersBody
         code.AppendLine(GeneratedCodeViewModelAttribute)
             .Append(data.Inheritor is Inheritor.None 
                 ? $"public interface IBindableMembers : {IViewModel}" 
-                : $"public new interface IBindableMembers : {data.Symbol.BaseType}.IBindableMembers");
+                : $"public new interface IBindableMembers : {data.Symbol.BaseType!.ToDisplayStringGlobal()}.IBindableMembers");
 
         if (members.Length > 0)
         {

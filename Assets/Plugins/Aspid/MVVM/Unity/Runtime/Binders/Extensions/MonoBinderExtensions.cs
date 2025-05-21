@@ -7,7 +7,7 @@ namespace Aspid.MVVM.Unity
 {
     public static class MonoBinderExtensions
     {
-        #region Singl BindSafely
+        #region Single BindSafely
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void BindSafely<T>(this T binder, in FindBindableMemberResult result)
             where T : MonoBehaviour, IBinder

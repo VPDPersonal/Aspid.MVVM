@@ -22,6 +22,7 @@ namespace Aspid.MVVM.Unity
         [Conditional("UNITY_EDITOR")]
         public static void InvokeAllChangedEventsDebug(this IViewModel viewModel)
         {
+#if UNITY_EDITOR
             const BindingFlags bindingFlags = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance;
 
             var bindFields = new List<(Type type, FieldInfo field)>();
@@ -63,6 +64,7 @@ namespace Aspid.MVVM.Unity
                 var eventInvokeMethod = eventField?.FieldType.GetMethod("Invoke");
                 eventInvokeMethod?.Invoke(eventInstance, new[] { bindField.field.GetValue(viewModel) });
             }
+#endif
         }
     }
 }

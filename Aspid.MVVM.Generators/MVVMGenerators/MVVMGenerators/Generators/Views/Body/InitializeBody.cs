@@ -63,7 +63,7 @@ public static class InitializeBody
             .AppendMultiline(
                 $$"""
                 {{GeneratedAttribute}}
-                public {{IViewModel}} ViewModel { get; private set; }
+                public {{IViewModel}} ViewModel { get; protected set; }
                 
                 {{GeneratedAttribute}}
                 public void Initialize({{IViewModel}} viewModel)

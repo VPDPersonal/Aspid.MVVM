@@ -11,7 +11,7 @@ namespace Aspid.MVVM.StarterKit.Unity
         [SerializeField] private Slider _slider;
         
         [Header("Parameter")]
-        [SerializeField] private bool _isBindInteractable = true;
+        [SerializeField] private InteractableMode _interactableMode = InteractableMode.Interactable;
         
         private void Awake()
         {
@@ -27,8 +27,14 @@ namespace Aspid.MVVM.StarterKit.Unity
         
         protected override void OnCanExecuteChanged(IRelayCommand<float> command)
         {
-            if (_isBindInteractable)
-                _slider.interactable = command.CanExecute(_slider.value);
+            if (_interactableMode is InteractableMode.None) return;
+            var interactable = command.CanExecute(_slider.value);
+            
+            switch (_interactableMode)
+            {
+                case InteractableMode.Visible: gameObject.SetActive(interactable); break;
+                case InteractableMode.Interactable: _slider.interactable = interactable; break;
+            }
         }
 
         [BinderLog]

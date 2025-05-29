@@ -9,20 +9,20 @@ namespace Aspid.MVVM.StarterKit.Unity
     {
         // ReSharper disable once MemberInitializerValueIgnored
         [Header("Parameter")]
-        [SerializeField] private bool _isBindInteractable = true;
+        [SerializeField] private InteractableMode _interactableMode = InteractableMode.Interactable;
         
         private IRelayCommand<bool> _command;
         
         public override bool IsBind => Target is not null;
         
         public ToggleCommandBinder(Toggle target, BindMode mode)
-            : this(target, true, mode) { }
+            : this(target, InteractableMode.Interactable, mode) { }
         
-        public ToggleCommandBinder(Toggle target, bool isBindInteractable = true, BindMode mode = BindMode.OneWay)
+        public ToggleCommandBinder(Toggle target, InteractableMode interactableMode = InteractableMode.Interactable, BindMode mode = BindMode.OneWay)
             : base(target, mode)
         {
             mode.ThrowExceptionIfTwo();
-            _isBindInteractable = isBindInteractable;
+            _interactableMode = interactableMode;
         }
         
         public void SetValue(IRelayCommand<bool> command)
@@ -63,8 +63,14 @@ namespace Aspid.MVVM.StarterKit.Unity
         
         private void OnCanExecuteChanged(IRelayCommand<bool> command)
         {
-            if (!_isBindInteractable) return;
-            Target.interactable = command.CanExecute(Target.isOn);
+            if (_interactableMode is InteractableMode.None) return;
+            var interactable = command.CanExecute(Target.isOn);
+            
+            switch (_interactableMode)
+            {
+                case InteractableMode.Visible: Target.gameObject.SetActive(interactable); break;
+                case InteractableMode.Interactable: Target.interactable = interactable; break;
+            }
         }
     }
     
@@ -73,7 +79,7 @@ namespace Aspid.MVVM.StarterKit.Unity
     {
         // ReSharper disable once MemberInitializerValueIgnored
         [Header("Parameters")]
-        [SerializeField] private bool _isBindInteractable = true;
+        [SerializeField] private InteractableMode _interactableMode = InteractableMode.Interactable;
         [SerializeField] private T _param;
         
         private IRelayCommand<bool, T> _command;
@@ -87,16 +93,16 @@ namespace Aspid.MVVM.StarterKit.Unity
         public override bool IsBind => Target is not null;
         
         public ToggleCommandBinder(Toggle target, T param, BindMode mode)
-            : this(target, param, true, mode) { }
+            : this(target, param, InteractableMode.Interactable, mode) { }
         
         public ToggleCommandBinder(
-            Toggle target, T param, bool isBindInteractable = true, BindMode mode = BindMode.OneWay)
+            Toggle target, T param, InteractableMode interactableMode = InteractableMode.Interactable, BindMode mode = BindMode.OneWay)
             : base(target, mode)
         {
             mode.ThrowExceptionIfTwo();
             
             _param = param;
-            _isBindInteractable = isBindInteractable;
+            _interactableMode = interactableMode;
         }
         
         public void SetValue(IRelayCommand<bool, T> command)
@@ -137,8 +143,14 @@ namespace Aspid.MVVM.StarterKit.Unity
         
         private void OnCanExecuteChanged(IRelayCommand<bool, T> command)
         {
-            if (!_isBindInteractable) return;
-            Target.interactable = command.CanExecute(Target.isOn, Param);
+            if (_interactableMode is InteractableMode.None) return;
+            var interactable = command.CanExecute(Target.isOn, Param);
+            
+            switch (_interactableMode)
+            {
+                case InteractableMode.Visible: Target.gameObject.SetActive(interactable); break;
+                case InteractableMode.Interactable: Target.interactable = interactable; break;
+            }
         }
     }
     
@@ -147,7 +159,7 @@ namespace Aspid.MVVM.StarterKit.Unity
     {
         [Header("Parameters")]
         // ReSharper disable once MemberInitializerValueIgnored
-        [SerializeField] private bool _isBindInteractable = true;
+        [SerializeField] private InteractableMode _interactableMode = InteractableMode.Interactable;
         [SerializeField] private T1 _param1;
         [SerializeField] private T2 _param2;
 
@@ -168,13 +180,13 @@ namespace Aspid.MVVM.StarterKit.Unity
         public override bool IsBind => Target is not null;
         
         public ToggleCommandBinder(Toggle target, T1 param1, T2 param2, BindMode mode)
-            : this(target, param1, param2, true, mode) { }
+            : this(target, param1, param2, InteractableMode.Interactable, mode) { }
         
         public ToggleCommandBinder(
             Toggle target,
             T1 param1, 
             T2 param2,
-            bool isBindInteractable = true,
+            InteractableMode interactableMode = InteractableMode.Interactable,
             BindMode mode = BindMode.OneWay)
             : base(target, mode)
         {
@@ -182,7 +194,7 @@ namespace Aspid.MVVM.StarterKit.Unity
             
             _param1 = param1;
             _param2 = param2;
-            _isBindInteractable = isBindInteractable;
+            _interactableMode = interactableMode;
         }
         
         public void SetValue(IRelayCommand<bool, T1, T2> command)
@@ -223,8 +235,14 @@ namespace Aspid.MVVM.StarterKit.Unity
         
         private void OnCanExecuteChanged(IRelayCommand<bool, T1, T2> command)
         {
-            if (!_isBindInteractable) return;
-            Target.interactable = command.CanExecute(Target.isOn, Param1, Param2);
+            if (_interactableMode is InteractableMode.None) return;
+            var interactable = command.CanExecute(Target.isOn, Param1, Param2);
+            
+            switch (_interactableMode)
+            {
+                case InteractableMode.Visible: Target.gameObject.SetActive(interactable); break;
+                case InteractableMode.Interactable: Target.interactable = interactable; break;
+            }
         }
     }
     
@@ -233,7 +251,7 @@ namespace Aspid.MVVM.StarterKit.Unity
     {
         // ReSharper disable once MemberInitializerValueIgnored
         [Header("Parameters")]
-        [SerializeField] private bool _isBindInteractable = true;
+        [SerializeField] private InteractableMode _interactableMode = InteractableMode.Interactable;
         [SerializeField] private T1 _param1;
         [SerializeField] private T2 _param2;
         [SerializeField] private T3 _param3;
@@ -261,14 +279,14 @@ namespace Aspid.MVVM.StarterKit.Unity
         public override bool IsBind => Target is not null;
 
         public ToggleCommandBinder(Toggle target, T1 param1, T2 param2, T3 param3, BindMode mode)
-            : this(target, param1, param2, param3, true, mode) { }
+            : this(target, param1, param2, param3, InteractableMode.Interactable, mode) { }
         
         public ToggleCommandBinder(
             Toggle target,
             T1 param1,
             T2 param2, 
             T3 param3,
-            bool isBindInteractable = true, 
+            InteractableMode interactableMode = InteractableMode.Interactable, 
             BindMode mode = BindMode.OneWay)
             : base(target, mode)
         {
@@ -277,7 +295,7 @@ namespace Aspid.MVVM.StarterKit.Unity
             _param1 = param1;
             _param2 = param2;
             _param3 = param3;
-            _isBindInteractable = isBindInteractable;
+            _interactableMode = interactableMode;
         }
         
         public void SetValue(IRelayCommand<bool, T1, T2, T3> command)
@@ -318,8 +336,14 @@ namespace Aspid.MVVM.StarterKit.Unity
         
         private void OnCanExecuteChanged(IRelayCommand<bool, T1, T2, T3> command)
         {
-            if (!_isBindInteractable) return;
-            Target.interactable = command.CanExecute(Target.isOn, Param1, Param2, Param3);
+            if (_interactableMode is InteractableMode.None) return;
+            var interactable = command.CanExecute(Target.isOn, Param1, Param2, Param3);
+            
+            switch (_interactableMode)
+            {
+                case InteractableMode.Visible: Target.gameObject.SetActive(interactable); break;
+                case InteractableMode.Interactable: Target.interactable = interactable; break;
+            }
         }
     }
 }

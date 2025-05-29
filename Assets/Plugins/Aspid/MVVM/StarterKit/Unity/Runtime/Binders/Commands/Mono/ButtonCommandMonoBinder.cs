@@ -11,7 +11,7 @@ namespace Aspid.MVVM.StarterKit.Unity
         [SerializeField] private Button _button;
         
         [Header("Parameter")]
-        [SerializeField] private bool _isBindInteractable = true;
+        [SerializeField] private InteractableMode _interactableMode = InteractableMode.Interactable;
 
         private void Awake()
         {
@@ -27,8 +27,14 @@ namespace Aspid.MVVM.StarterKit.Unity
 
         protected override void OnCanExecuteChanged(IRelayCommand command)
         {
-            if (_isBindInteractable)
-                _button.interactable = command.CanExecute();
+            if (_interactableMode is InteractableMode.None) return;
+            var interactable = command.CanExecute();
+            
+            switch (_interactableMode)
+            {
+                case InteractableMode.Visible: gameObject.SetActive(interactable); break;
+                case InteractableMode.Interactable: _button.interactable = interactable; break;
+            }
         }
     }
 }

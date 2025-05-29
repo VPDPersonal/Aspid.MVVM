@@ -12,7 +12,7 @@ namespace Aspid.MVVM.StarterKit.Unity
         [SerializeField] private TMP_Dropdown _dropdown;
         
         [Header("Parameter")]
-        [SerializeField] private bool _isBindInteractable = true;
+        [SerializeField] private InteractableMode _interactableMode = InteractableMode.Interactable;
         
         private void Awake()
         {
@@ -28,8 +28,14 @@ namespace Aspid.MVVM.StarterKit.Unity
         
         protected override void OnCanExecuteChanged(IRelayCommand<int> command)
         {
-            if (_isBindInteractable)
-                _dropdown.interactable = command.CanExecute(_dropdown.value);
+            if (_interactableMode is InteractableMode.None) return;
+            var interactable = command.CanExecute(_dropdown.value);
+            
+            switch (_interactableMode)
+            {
+                case InteractableMode.Visible: gameObject.SetActive(interactable); break;
+                case InteractableMode.Interactable: _dropdown.interactable = interactable; break;
+            }
         }
 
         [BinderLog]

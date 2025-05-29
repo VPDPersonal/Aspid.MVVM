@@ -8,6 +8,7 @@ namespace Aspid.MVVM
     /// Used by the Source Generator to generate extension methods for converting 
     /// from the type specified in the attribute to the type to which the attribute is attached.
     /// </summary>
+    [Obsolete]
     [AttributeUsage(AttributeTargets.Constructor)]
     public class CreateFromAttribute : Attribute
     {

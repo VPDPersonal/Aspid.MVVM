@@ -39,6 +39,11 @@ namespace Aspid.MVVM.Unity
         /// </summary>
         public BindMode Mode => _mode;
         
+        /// <summary>
+        /// Binds the component using the specified <see cref="IBindableMemberEventAdder"/>.
+        /// </summary>
+        /// <param name="bindableMemberEventAdder">The event adder for the component to bind to.</param>
+        /// <exception cref="Exception">Thrown if the binder is already bound.</exception>\
         public void Bind(IBindableMemberEventAdder bindableMemberEventAdder)
         {
 #if UNITY_2022_1_OR_NEWER && !ASPID_MVVM_UNITY_PROFILER_DISABLED
@@ -57,8 +62,14 @@ namespace Aspid.MVVM.Unity
             }
         }
         
+        /// <summary>
+        /// Logic executed before binding, which can be overridden in derived classes.
+        /// </summary>
         protected virtual void OnBinding() { }
         
+        /// <summary>
+        /// Logic executed after binding, which can be overridden in derived classes.
+        /// </summary>
         protected virtual void OnBound() { }
         
         /// <summary>

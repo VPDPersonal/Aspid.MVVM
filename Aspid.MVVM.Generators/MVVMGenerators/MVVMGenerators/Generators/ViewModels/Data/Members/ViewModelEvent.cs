@@ -1,3 +1,4 @@
+using Microsoft.CodeAnalysis;
 using static MVVMGenerators.Helpers.Descriptions.General;
 using static MVVMGenerators.Helpers.Descriptions.Classes;
 using static MVVMGenerators.Helpers.Extensions.Symbols.SymbolExtensions;
@@ -19,21 +20,51 @@ public readonly struct ViewModelEvent
     private readonly string _sourceName;
     private readonly string _generatedName;
 
-    public ViewModelEvent(BindMode mode, string sourceName, string generatedName, string valueType)
+    public ViewModelEvent(BindMode mode, string sourceName, string generatedName, string valueType, TypeKind typeKind)
     {
         _mode = mode;
         _sourceName = sourceName;
         _generatedName = generatedName;
         if (mode is BindMode.None) return;
-        
-        Type = mode switch
+
+        switch (mode)
         {
-            BindMode.OneWay => OneWayBindableMemberEvent,
-            BindMode.TwoWay => TwoWayBindableMemberEvent,
-            BindMode.OneTime => OneTimeBindableMemberEvent,
-            BindMode.OneWayToSource => OneWayToSourceBindableMemberEvent,
-            _ => null,
-        };
+            case BindMode.OneWay:
+                Type = typeKind switch
+                {
+                    TypeKind.Enum => OneWayEnumEvent,
+                    TypeKind.Struct => OneWayStructEvent,
+                    _ => OneWayClassEvent
+                }; 
+                break;
+            
+            case BindMode.TwoWay:
+                Type = typeKind switch
+                {
+                    TypeKind.Enum => TwoWayEnumEvent,
+                    TypeKind.Struct => TwoWayStructEvent,
+                    _ => TwoWayClassEvent
+                };
+                break;
+            
+            case BindMode.OneTime:
+                Type = typeKind switch
+                {
+                    TypeKind.Enum => OneTimeEnumEvent,
+                    TypeKind.Struct => OneTimeStructEvent,
+                    _ => OneTimeClassEvent
+                };
+                break;
+            
+            case BindMode.OneWayToSource:
+                Type = typeKind switch
+                {
+                    TypeKind.Enum => OneWayToSourceEnumEvent,
+                    TypeKind.Struct => OneWayToSourceStructEvent,
+                    _ => OneWayToSourceClassEvent
+                };
+                break;
+        }
         
         if (Type is null) return;
         
@@ -49,7 +80,7 @@ public readonly struct ViewModelEvent
     }
 
     // TODO Nullable?
-    public string ToInvokeString() => IsExist && _mode is not BindMode.OneWayToSource
+    public string ToInvokeString() => IsExist && _mode is not (BindMode.OneWayToSource or BindMode.OneTime)
         ? $"{FieldName}?.Invoke({_sourceName});"
         : string.Empty;
 

@@ -23,9 +23,17 @@ namespace Aspid.MVVM
         public void Deinitialize();
     }
     
+    /// <summary>
+    /// Generic interface for initializing a View with a strongly-typed ViewModel.
+    /// </summary>
+    /// <typeparam name="T">The specific type of the ViewModel to be used for initialization. Must implement <see cref="IViewModel"/>.</typeparam>
     public interface IView<in T> : IView
         where T : IViewModel
     {
+        /// <summary>
+        /// Initializes the view with a strongly-typed <typeparamref name="T"/> ViewModel.
+        /// </summary>
+        /// <param name="viewModel">The <typeparamref name="T"/> ViewModel instance to initialize the View.</param>
         public void Initialize(T viewModel);
     }
 } 

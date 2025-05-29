@@ -21,7 +21,8 @@ public class BindableField : BindableMember<IFieldSymbol>
             field.Type.ToDisplayStringGlobal(), 
             field.Name, 
             field.IsConst ? field.Name : field.GetPropertyName(), 
-            string.Empty)
+            string.Empty,
+            field.Type.TypeKind)
     {
         BindAlso = bindAlso;
         IsReadOnly = mode is BindMode.OneTime;

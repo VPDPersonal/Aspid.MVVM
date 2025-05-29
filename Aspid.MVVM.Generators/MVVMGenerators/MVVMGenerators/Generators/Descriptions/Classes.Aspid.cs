@@ -90,17 +90,41 @@ public static partial class Classes
     public static readonly TypeText IBindableMemberEventRemover =
         new(nameof(IBindableMemberEventRemover), Namespaces.Aspid_MVVM);
     
-    public static readonly TypeText? OneWayBindableMemberEvent =
-        new(nameof(OneWayBindableMemberEvent), Namespaces.Aspid_MVVM);
+    public static readonly TypeText? OneWayClassEvent =
+        new(nameof(OneWayClassEvent), Namespaces.Aspid_MVVM);
     
-    public static readonly TypeText? TwoWayBindableMemberEvent =
-        new(nameof(TwoWayBindableMemberEvent), Namespaces.Aspid_MVVM);
+    public static readonly TypeText? OneWayStructEvent =
+        new(nameof(OneWayStructEvent), Namespaces.Aspid_MVVM);
     
-    public static readonly TypeText? OneTimeBindableMemberEvent =
-        new(nameof(OneTimeBindableMemberEvent), Namespaces.Aspid_MVVM);
+    public static readonly TypeText? OneWayEnumEvent =
+        new(nameof(OneWayEnumEvent), Namespaces.Aspid_MVVM);
     
-    public static readonly TypeText? OneWayToSourceBindableMemberEvent =
-        new(nameof(OneWayToSourceBindableMemberEvent), Namespaces.Aspid_MVVM);
+    public static readonly TypeText? TwoWayClassEvent =
+        new(nameof(TwoWayClassEvent), Namespaces.Aspid_MVVM);
+    
+    public static readonly TypeText? TwoWayStructEvent =
+        new(nameof(TwoWayStructEvent), Namespaces.Aspid_MVVM);
+    
+    public static readonly TypeText? TwoWayEnumEvent =
+        new(nameof(TwoWayEnumEvent), Namespaces.Aspid_MVVM);
+    
+    public static readonly TypeText? OneTimeClassEvent =
+        new(nameof(OneTimeClassEvent), Namespaces.Aspid_MVVM);
+    
+    public static readonly TypeText? OneTimeStructEvent =
+        new(nameof(OneTimeStructEvent), Namespaces.Aspid_MVVM);
+    
+    public static readonly TypeText? OneTimeEnumEvent =
+        new(nameof(OneTimeEnumEvent), Namespaces.Aspid_MVVM);
+    
+    public static readonly TypeText? OneWayToSourceClassEvent =
+        new(nameof(OneWayToSourceClassEvent), Namespaces.Aspid_MVVM);
+    
+    public static readonly TypeText? OneWayToSourceStructEvent =
+        new(nameof(OneWayToSourceStructEvent), Namespaces.Aspid_MVVM);
+    
+    public static readonly TypeText? OneWayToSourceEnumEvent =
+        new(nameof(OneWayToSourceEnumEvent), Namespaces.Aspid_MVVM);
     #endregion
 
     #region Commands

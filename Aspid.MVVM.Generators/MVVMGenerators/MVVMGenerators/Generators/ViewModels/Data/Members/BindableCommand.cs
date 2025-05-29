@@ -12,7 +12,7 @@ public sealed class BindableCommand : BindableMember<IMethodSymbol>
     public readonly string CanExecute;
 
     public BindableCommand(IMethodSymbol command, string? canExecute, bool isLambda, bool isMethod)
-        : base(command, BindMode.OneTime, GetTypeName(command), $"{command.GetFieldName()}Command", $"{command.GetPropertyName()}Command", "Command")
+        : base(command, BindMode.OneTime, GetTypeName(command), $"{command.GetFieldName("__")}Command", $"{command.GetPropertyName()}Command", "Command")
     {
         CanExecute = GetCanExecuteAction(command, isLambda, isMethod, canExecute);
     }

@@ -39,7 +39,7 @@ public static partial class SymbolExtensions
             name = char.ToLower(firstSymbol) + name;
         }
         
-        if (string.IsNullOrWhiteSpace(prefix))
+        if (!string.IsNullOrWhiteSpace(prefix))
             return prefix + name;
         
         return name;

@@ -45,8 +45,7 @@ public static class InitializeBody
             _ => throw new ArgumentOutOfRangeException()
         };
         
-        var isInstantiateBinders = data.MembersByType.AsBinders.Length + data.MembersByType.PropertyBinders.Length > 0;
-        if (!isInstantiateBinders) return code;
+        if (!data.IsInstantiateBinders) return code;
         
         code.AppendLine()
             .AppendInstantiateBindersMethods(data);
@@ -60,6 +59,13 @@ public static class InitializeBody
 
         code.AppendProfilerMarkers(className)
             .AppendLine()
+            .AppendMultilineIf(data.IsInstantiateBinders, 
+                $$"""
+                {{GeneratedAttribute}}
+                {{EditorBrowsableAttribute}}
+                private bool __isBindersCached;
+                
+                """)
             .AppendMultiline(
                 $$"""
                 {{GeneratedAttribute}}
@@ -107,7 +113,14 @@ public static class InitializeBody
         var className = data.Declaration.Identifier.Text;
 
         code.AppendProfilerMarkers(className)
-            .AppendLine();
+            .AppendLine()
+            .AppendMultilineIf(data.IsInstantiateBinders, 
+                $$"""
+                {{GeneratedAttribute}}
+                {{EditorBrowsableAttribute}}
+                private bool __isBindersCached;
+
+                """);
             
         code.AppendInitializeInternalDeclaration(isOverride)
             .AppendInitializeBody(data, isOverride)
@@ -186,13 +199,11 @@ public static class InitializeBody
                 .AppendLine("return;")
                 .EndBlock();
         }
-
-        var isInstantiateBinders = data.MembersByType.PropertyBinders.Length + data.MembersByType.AsBinders.Length > 0;
         
         code.AppendLineIf(data.GenericViews.Length > 0)
             .AppendLine("OnInitializingInternal(viewModel);")
             .AppendLineIf(isOverride, "base.InitializeInternal(viewModel);")
-            .AppendLineIf(isInstantiateBinders, "InstantiateBinders();")
+            .AppendLineIf(data.IsInstantiateBinders, "InstantiateBinders();")
             .AppendLine();
 
         foreach (var member in data.Members)
@@ -231,9 +242,10 @@ public static class InitializeBody
             }
         }
 
-        code.AppendLine("\nOnDeinitializedInternal();");
-        code.EndBlock();
-        code.EndBlock();
+        code.AppendLine()
+            .AppendLine("OnDeinitializedInternal();")
+            .EndBlock()
+            .EndBlock();
 
         return code;
     }
@@ -246,9 +258,13 @@ public static class InitializeBody
                 private void InstantiateBinders()
                 """)
             .BeginBlock()
-            .AppendLine("OnInstantiatingBinders();\n")
+            .AppendLine("if (__isBindersCached) return;")
+            .AppendLine("OnInstantiatingBinders();")
+            .AppendLine()
             .AppendCreateBinders(data)
-            .AppendLine("\nOnInstantiatedBinders();")
+            .AppendLine()
+            .AppendLine("OnInstantiatedBinders();")
+            .AppendLine("__isBindersCached = true;")
             .EndBlock()
             .AppendMultiline(
                 $"""
@@ -271,11 +287,7 @@ public static class InitializeBody
         if (propertyMembers.Length > 0)
         {
             foreach (var member in propertyMembers)
-            {
-                code.AppendLine(member.IsUnityEngineObject 
-                    ? $"if (!{member.CachedName}) {member.CachedName} = {member.Name};" 
-                    : $"{member.CachedName} ??= {member.Name};");
-            }
+                code.AppendLine($"{member.CachedName} = {member.Name};");
             
             if (asBinderMembers.Length > 0) 
                 code.AppendLine();
@@ -301,14 +313,11 @@ public static class InitializeBody
                     code.AppendLineIf(isAppend)
                         .AppendMultiline(
                             $$"""
-                              if ({{binderName}} == null)
-                              {
-                                  var {{localName}} = {{name}};
-                                  {{binderName}} = new {{binderType}}[{{localName}}.Length];
-                                  
-                                  for (var i = 0; i < {{localName}}.Length; i++)
-                                      {{binderName}}[i] = new {{member.AsBinderType}}({{localName}}[i]{{arguments}});
-                              }
+                              var {{localName}} = {{name}};
+                              {{binderName}} = new {{binderType}}[{{localName}}.Length];
+                              
+                              for (var i = 0; i < {{localName}}.Length; i++)
+                                  {{binderName}}[i] = new {{member.AsBinderType}}({{localName}}[i]{{arguments}});
                               """)
                         .AppendLineIf(i + 1 < membersCount);
 
@@ -317,9 +326,7 @@ public static class InitializeBody
                 else
                 {
                     isAppend = true;
-                    code.AppendLine(member.IsUnityEngineObject 
-                        ? $"if ({member.Name}) {member.CachedName} ??= new {member.AsBinderType}({member.Name}{member.Arguments});" 
-                        : $"{member.CachedName} ??= new {member.AsBinderType}({member.Name}{member.Arguments});");
+                    code.AppendLine($"{member.CachedName} = new {member.AsBinderType}({member.Name}{member.Arguments});");
                 }
             }
         }

@@ -7,7 +7,7 @@ namespace MVVMGenerators.Generators.ViewModels.Data.Members;
 public sealed class BindableBindAlso : BindableMember<ISymbol>, IEquatable<BindableBindAlso>
 {
     public BindableBindAlso(ISymbol member) 
-        : base(member, BindMode.OneWay, member.GetSymbolType()?.ToDisplayStringGlobal() ?? string.Empty, member.Name, member.Name, string.Empty) { }
+        : base(member, BindMode.OneWay, member.GetSymbolType()?.ToDisplayStringGlobal() ?? string.Empty, member.Name, member.Name, string.Empty, member.GetSymbolType()?.TypeKind ?? TypeKind.Class) { }
 
     public override bool Equals(object? obj) =>
         obj is BindableBindAlso other && Equals(other);

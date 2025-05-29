@@ -2,6 +2,9 @@ namespace MVVMGenerators.Helpers.Descriptions;
 
 public class General
 {
+    public const string GeneratedCodeIdAttribute =
+        "[global::System.CodeDom.Compiler.GeneratedCode(\"Aspid.MVVM.SourceGenerators.IdGenerator\", \"1.0.0\")]";
+    
     public const string GeneratedCodeViewAttribute =
         "[global::System.CodeDom.Compiler.GeneratedCode(\"Aspid.MVVM.SourceGenerators.ViewGenerator\", \"1.0.0\")]";
     

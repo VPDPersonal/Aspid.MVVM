@@ -3,6 +3,7 @@ using MVVMGenerators.Helpers;
 using MVVMGenerators.Helpers.Extensions.Writer;
 using MVVMGenerators.Generators.ViewModels.Data;
 using MVVMGenerators.Generators.ViewModels.Data.Members;
+using static MVVMGenerators.Helpers.Descriptions.General;
 
 namespace MVVMGenerators.Generators.ViewModels.Body;
 
@@ -14,8 +15,6 @@ public static class PropertiesBody
         in DeclarationText declaration,
         in SourceProductionContext context)
     {
-        if (data.Members.IsEmpty) return;
-        
         var code = new CodeWriter();
 
         code.AppendClassBegin(@namespace, declaration)
@@ -27,11 +26,15 @@ public static class PropertiesBody
     
     private static CodeWriter AppendBody(this CodeWriter code, in ViewModelData data)
     {
-        return code
-            .AppendEvents(data)
-            .AppendFieldEvents(data)
-            .AppendProperties(data)
-            .AppendSetMethods(data);
+        if (!data.Members.IsEmpty)
+        {
+            code.AppendEvents(data)
+                .AppendFieldEvents(data)
+                .AppendProperties(data)
+                .AppendSetMethods(data);
+        }
+        
+        return code.AppendNotifyAll(data);
     }
     
     private static CodeWriter AppendEvents(this CodeWriter code, in ViewModelData data)
@@ -86,5 +89,25 @@ public static class PropertiesBody
         }
 
         return code;
+    }
+
+    private static CodeWriter AppendNotifyAll(this CodeWriter code, in ViewModelData data)
+    {
+        code.AppendLine(GeneratedCodeViewModelAttribute)
+            .AppendLine(data.Inheritor is Inheritor.None
+                ? "protected virtual void NotifyAll()"
+                : "protected override void NotifyAll()")
+            .BeginBlock()
+            .AppendLineIf(data.Inheritor is Inheritor.Inheritor, "base.NotifyAll();");
+        
+        foreach (var member in data.Members)
+        {
+            var e = member.Event;
+            if (!e.IsExist || member.Mode is BindMode.OneWayToSource or BindMode.OneTime) continue;
+
+            code.AppendLine(e.ToInvokeString());
+        }
+
+        return code.EndBlock();
     }
 }

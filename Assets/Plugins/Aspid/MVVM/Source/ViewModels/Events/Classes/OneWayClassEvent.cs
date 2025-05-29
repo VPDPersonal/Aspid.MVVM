@@ -6,20 +6,20 @@ namespace Aspid.MVVM
     /// Represents a one-way bindable member event that supports event notification and handling for values of a specified type.
     /// </summary>
     /// <typeparam name="T">The type of the value being handled in the bindable member event.</typeparam>
-    public sealed class OneWayBindableMemberEvent<T> : IBindableMemberEvent
+    public sealed class OneWayClassEvent<T> : IBindableMemberEvent
     {
         /// <summary>
         /// Event triggered when the value changes.
         /// </summary>
         public event Action<T?>? Changed;
-        
+
         private T? _value;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="OneWayBindableMemberEvent{T}"/> class with the specified initial value.
+        /// Initializes a new instance of the <see cref="OneWayClassEvent{T}"/> class with the specified initial value.
         /// </summary>
         /// <param name="value">The initial value of the bindable member event.</param>
-        public OneWayBindableMemberEvent(T? value)
+        public OneWayClassEvent(T? value)
         {
             _value = value;
         }
@@ -33,17 +33,31 @@ namespace Aspid.MVVM
         /// <exception cref="Exception">
         /// Thrown if the binding mode is not <see cref="BindMode.OneWay"/> or <see cref="BindMode.OneTime"/>.
         /// </exception>
-        public IBindableMemberEventRemover? Add(IBinder binder)
+        public IBindableMemberEventRemover Add(IBinder binder)
         {
             var mode = binder.Mode;
             
-            if (mode is not (BindMode.OneWay or BindMode.OneTime)) 
-                throw new Exception("Only OneWay and PneTime binding modes are supported in OneWayViewModelEvent.");
+            if (mode is not (BindMode.OneWay or BindMode.OneTime))
+                throw new InvalidOperationException($"Mode must be OneWay or OneTime. Mode = {{{mode}}}");
 
-            var specificBinder = binder.Cast<T>();
-            
-            specificBinder.SetValue(_value);
-            Changed += specificBinder.SetValue;
+            switch (binder)
+            {
+                case IBinder<T> specificBinder:
+                    specificBinder.SetValue(_value);
+                    
+                    if (mode is BindMode.OneWay)
+                        Changed += specificBinder.SetValue;
+                    break;
+                
+                case IAnyBinder anyBinder:
+                    anyBinder.SetValue(_value);
+                    
+                    if (mode is BindMode.OneWay)
+                        Changed += anyBinder.SetValue;
+                    break;
+                
+                default: throw BinderInvalidCastException<T>.Class();
+            }
             
             return this;
         }
@@ -53,8 +67,18 @@ namespace Aspid.MVVM
         /// Removes the binder from the event subscription.
         /// </summary>
         /// <param name="binder">The binder to remove.</param>
-        public void Remove(IBinder binder) =>
-            Changed -= binder.Cast<T>().SetValue;
+        public void Remove(IBinder binder)
+        {
+            if (binder.Mode is BindMode.OneTime)
+                return;
+
+            Changed -= binder switch
+            {
+                IBinder<T> specificBinder => specificBinder.SetValue,
+                IAnyBinder anyBinder => anyBinder.SetValue,
+                _ => throw BinderInvalidCastException<T>.Class()
+            };
+        }
         
         /// <summary>
         /// Triggers the Changed event with the specified value and updates the current value.

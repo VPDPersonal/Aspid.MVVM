@@ -1,6 +1,6 @@
 namespace Aspid.MVVM.StarterKit
 {
-    public sealed class OneTimeDynamicProperty<T> : IDynamicProperty
+    public sealed class OneTimeDynamicProperty<T> : IDynamicProperty 
     {
         private readonly T _value;
         
@@ -10,6 +10,6 @@ namespace Aspid.MVVM.StarterKit
         }
 
         public IBindableMemberEventAdder GetAdder() =>
-            new OneTimeBindableMemberEvent<T>(_value);
+            new OneTimeClassEvent<T>(_value);
     }
 }

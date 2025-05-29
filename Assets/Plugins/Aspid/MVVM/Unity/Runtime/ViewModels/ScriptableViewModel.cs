@@ -9,6 +9,6 @@ namespace Aspid.MVVM.Unity
     public abstract partial class ScriptableViewModel : ScriptableObject
     {
         protected virtual void OnValidate() =>
-            this.InvokeAllChangedEventsDebug();
+            NotifyAll();
     }
 }

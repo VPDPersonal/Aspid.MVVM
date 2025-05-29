@@ -11,7 +11,7 @@ namespace Aspid.MVVM.Unity
     public abstract partial class MonoViewModel : MonoBehaviour, IDisposable
     {
         protected virtual void OnValidate() =>
-            this.InvokeAllChangedEventsDebug();
+            NotifyAll();
         
         /// <summary>
         /// Destroys the Component of the ViewModel.

@@ -5,12 +5,12 @@ namespace Aspid.MVVM.StarterKit
     public sealed class TwoWayDynamicProperty<T> : IDynamicProperty
     {
         private T? _value;
-        private readonly TwoWayBindableMemberEvent<T> _event;
+        private readonly TwoWayClassEvent<T> _event;
         
         public TwoWayDynamicProperty(T? value)
         {
             _value = value;
-            _event = new TwoWayBindableMemberEvent<T>(_value, SetValue);
+            _event = new TwoWayClassEvent<T>(_value, SetValue);
         }
 
         public IBindableMemberEventAdder GetAdder() =>

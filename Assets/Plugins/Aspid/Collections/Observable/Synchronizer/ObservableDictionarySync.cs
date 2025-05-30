@@ -4,7 +4,7 @@ using System.Collections.Specialized;
 
 namespace Aspid.Collections.Observable.Synchronizer
 {
-    public sealed class ObservableDictionarySync<TKey, TFrom, TTo> : ObservableDictionary<TKey, TTo>
+    public sealed class ObservableDictionarySync<TKey, TFrom, TTo> : ObservableDictionary<TKey, TTo>, IReadOnlyObservableDictionarySync<TKey, TTo>
         where TKey : notnull
     {
         private readonly bool _isDisposable;

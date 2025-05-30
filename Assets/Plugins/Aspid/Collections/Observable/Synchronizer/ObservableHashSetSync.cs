@@ -4,7 +4,7 @@ using System.Collections.Specialized;
 
 namespace Aspid.Collections.Observable.Synchronizer
 {
-    public sealed class ObservableHashSetSync<TFrom, TTo> : ObservableHashSet<TTo> 
+    public sealed class ObservableHashSetSync<TFrom, TTo> : ObservableHashSet<TTo>, IReadOnlyObservableCollectionSync<TTo>
         where TTo : notnull 
         where TFrom : notnull
     {

@@ -4,7 +4,7 @@ using System.Collections.Specialized;
 
 namespace Aspid.Collections.Observable.Synchronizer
 {
-    public sealed class ObservableStackSync<TFrom, TTo> : ObservableStack<TTo>
+    public sealed class ObservableStackSync<TFrom, TTo> : ObservableStack<TTo>, IReadOnlyObservableCollectionSync<TTo>
     {
         private readonly bool _isDisposable;
         private readonly Action<TTo>? _remove;

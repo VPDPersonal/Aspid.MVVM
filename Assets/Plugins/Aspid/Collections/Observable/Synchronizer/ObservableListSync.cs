@@ -60,8 +60,8 @@ namespace Aspid.Collections.Observable.Synchronizer
             {
                 case NotifyCollectionChangedAction.Add:
                     {
-                        if (args.IsSingleItem) Add(Convert(args.NewItem!));
-                        else AddRange(Convert(args.NewItems!));
+                        if (args.IsSingleItem) Insert(args.NewStartingIndex, Convert(args.NewItem!));
+                        else InsertRange(args.NewStartingIndex, Convert(args.NewItems!));
                     }
                     break;
                 

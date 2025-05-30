@@ -51,43 +51,43 @@ namespace Aspid.Collections.Observable.Synchronizer
         {
             return new ObservableStackSync<TFrom, TTo>(fromStack, converter, remove);
         }
-        
+
         public static IReadOnlyObservableCollection<TTo> CreateSync<TFrom, TTo>(
-            this ObservableHashSet<TFrom> fromStack, 
+            this ObservableHashSet<TFrom> fromHashSet,
             Func<TFrom, TTo> converter,
-            bool isDisposable = false) 
+            bool isDisposable = false)
             where TTo : notnull
-            where TFrom : notnull 
+            where TFrom : notnull
         {
-            return new ObservableHashSetSync<TFrom, TTo>(fromStack, converter, isDisposable);
+            return new ObservableHashSetSync<TFrom, TTo>(fromHashSet, converter, isDisposable);
         }
-        
+
         public static IReadOnlyObservableCollection<TTo> CreateSync<TFrom, TTo>(
-            this ObservableHashSet<TFrom> fromStack, 
+            this ObservableHashSet<TFrom> fromHashSet,
             Func<TFrom, TTo> converter,
-            Action<TTo> remove) 
+            Action<TTo> remove)
             where TTo : notnull
-            where TFrom : notnull 
+            where TFrom : notnull
         {
-            return new ObservableHashSetSync<TFrom, TTo>(fromStack, converter, remove);
+            return new ObservableHashSetSync<TFrom, TTo>(fromHashSet, converter, remove);
         }
-        
+
         public static IReadOnlyObservableDictionary<TKey, TTo> CreateSync<TKey, TFrom, TTo>(
-            this IReadOnlyObservableDictionary<TKey, TFrom> fromStack, 
+            this IReadOnlyObservableDictionary<TKey, TFrom> fromDictionary, 
             Func<TFrom, TTo> converter,
             bool isDisposable = false)
             where TKey : notnull
         {
-            return new ObservableDictionarySync<TKey, TFrom, TTo>(fromStack, converter, isDisposable);
+            return new ObservableDictionarySync<TKey, TFrom, TTo>(fromDictionary, converter, isDisposable);
         }
         
         public static IReadOnlyObservableDictionary<TKey, TTo> CreateSync<TKey, TFrom, TTo>(
-            this IReadOnlyObservableDictionary<TKey, TFrom> fromStack, 
+            this IReadOnlyObservableDictionary<TKey, TFrom> fromDictionary, 
             Func<TFrom, TTo> converter,
             Action<TTo> remove)
             where TKey : notnull
         {
-            return new ObservableDictionarySync<TKey, TFrom, TTo>(fromStack, converter, remove);
+            return new ObservableDictionarySync<TKey, TFrom, TTo>(fromDictionary, converter, remove);
         }
     }
 }

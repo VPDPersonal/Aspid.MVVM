@@ -13,7 +13,7 @@ namespace Aspid.MVVM.Stats.ViewModels
         [OneWayBind] private int _technicalAbility;
         
         [OneWayBind] private int _skillPointsAvailable;
-        [TwoWayBind] private bool _isDraft;
+        [OneWayBind] private bool _isDraft;
         
         [OneTimeBind] private readonly IRelayCommand _confirmCommand;
         [OneTimeBind] private readonly IRelayCommand _resetToDefaultCommand;

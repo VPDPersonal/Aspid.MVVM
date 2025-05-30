@@ -1,12 +1,14 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 
 namespace Aspid.Collections.Observable
 {
-    public sealed class ObservableDictionary<TKey, TValue> :
+    public class ObservableDictionary<TKey, TValue> :
         IDictionary<TKey, TValue>,
-        IReadOnlyObservableDictionary<TKey, TValue>
+        IReadOnlyObservableDictionary<TKey, TValue>,
+        IDisposable
         where TKey : notnull
     {
         public event NotifyCollectionChangedEventHandler<KeyValuePair<TKey, TValue>>? CollectionChanged;
@@ -58,10 +60,12 @@ namespace Aspid.Collections.Observable
                     if (_dictionary.TryGetValue(key, out var oldValue))
                     {
                         _dictionary[key] = value;
-                        CollectionChanged?.Invoke(NotifyCollectionChangedEventArgs<KeyValuePair<TKey, TValue>>.Replace(
-                            new KeyValuePair<TKey, TValue>(key, oldValue),
-                            new KeyValuePair<TKey, TValue>(key, value),
-                            -1));
+
+                        var oldItem = new KeyValuePair<TKey, TValue>(key, oldValue);
+                        var newItem = new KeyValuePair<TKey, TValue>(key, value);
+                        
+                        OnReplaced(oldItem, newItem);
+                        CollectionChanged?.Invoke(NotifyCollectionChangedEventArgs<KeyValuePair<TKey, TValue>>.Replace(oldItem, newItem, -1));
                     }
                     else
                     {
@@ -109,7 +113,7 @@ namespace Aspid.Collections.Observable
             }
         }
         
-        IEnumerable<TKey> IReadOnlyDictionary<TKey, TValue>.Keys
+        public IEnumerable<TKey> Keys
         {
             get
             {
@@ -120,7 +124,7 @@ namespace Aspid.Collections.Observable
             }
         }
 
-        IEnumerable<TValue> IReadOnlyDictionary<TKey, TValue>.Values
+        public IEnumerable<TValue> Values
         {
             get
             {
@@ -136,14 +140,16 @@ namespace Aspid.Collections.Observable
             lock (SyncRoot)
             {
                 _dictionary.Add(key, value);
+                OnAdded(key, value);
+                
                 CollectionChanged?.Invoke(NotifyCollectionChangedEventArgs<KeyValuePair<TKey, TValue>>.Add(new KeyValuePair<TKey, TValue>(key, value), -1));
             }
         }
 
-        public void Add(KeyValuePair<TKey, TValue> item)
-        {
+        public void Add(KeyValuePair<TKey, TValue> item) =>
             Add(item.Key, item.Value);
-        }
+        
+        protected virtual void OnAdded(in TKey key, in TValue value) { }
 
         public bool ContainsKey(TKey key)
         {
@@ -158,7 +164,8 @@ namespace Aspid.Collections.Observable
             lock (SyncRoot)
             {
                 if (!_dictionary.Remove(key, out var value)) return false;
-                
+               
+                OnRemoved(key, value);
                 CollectionChanged?.Invoke(NotifyCollectionChangedEventArgs<KeyValuePair<TKey, TValue>>.Remove(new KeyValuePair<TKey, TValue>(key, value), -1));
                 return true;
             }
@@ -171,11 +178,16 @@ namespace Aspid.Collections.Observable
                 if (!_dictionary.TryGetValue(item.Key, out var value)) return false;
                 if (!EqualityComparer<TValue>.Default.Equals(value, item.Value)) return false;
                 if (!_dictionary.Remove(item.Key, out var value2)) return false;
-                        
+
+                OnRemoved(item.Key, item.Value);
                 CollectionChanged?.Invoke(NotifyCollectionChangedEventArgs<KeyValuePair<TKey, TValue>>.Remove(new KeyValuePair<TKey, TValue>(item.Key, value2), -1));
                 return true;
             }
         }
+
+        protected virtual void OnRemoved(in TKey key, in TValue value) { }
+        
+        protected virtual void OnReplaced(in KeyValuePair<TKey, TValue> oldItem, in KeyValuePair<TKey, TValue> newItem) { }
 
 #pragma warning disable CS8767
         public bool TryGetValue(TKey key, [MaybeNullWhen(false)] out TValue value)
@@ -229,9 +241,16 @@ namespace Aspid.Collections.Observable
         {
             lock (SyncRoot)
             {
+                OnClearing();
                 _dictionary.Clear();
+                
                 CollectionChanged?.Invoke(NotifyCollectionChangedEventArgs<KeyValuePair<TKey, TValue>>.Reset());
             }
         }
+        
+        protected virtual void OnClearing() { }
+
+        public virtual void Dispose() =>
+            Clear();
     }
 }

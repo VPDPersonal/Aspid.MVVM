@@ -1,10 +1,11 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 
 namespace Aspid.Collections.Observable
 {
     // can not implements ISet<T> because set operation can not get added/removed values.
-    public sealed partial class ObservableHashSet<T> : IReadOnlyObservableCollection<T>
+    public class ObservableHashSet<T> : IReadOnlyObservableCollection<T>, IDisposable
         where T : notnull
     {
         public event NotifyCollectionChangedEventHandler<T>? CollectionChanged;
@@ -56,31 +57,43 @@ namespace Aspid.Collections.Observable
             lock (SyncRoot)
             {
                 if (!_set.Add(item)) return false;
-                
+
+                OnAdded(item);
                 CollectionChanged?.Invoke(NotifyCollectionChangedEventArgs<T>.Add(item, -1));
+                
                 return true;
             }
         }
+        
+        protected virtual void OnAdded(T item) { }
 
         public bool Remove(T item)
         {
             lock (SyncRoot)
             {
                 if (!_set.Remove(item)) return false;
+                
+                OnRemoved(item);
                 CollectionChanged?.Invoke(NotifyCollectionChangedEventArgs<T>.Remove(item, -1));
                 
                 return true;
             }
         }
 
+        protected virtual void OnRemoved(T item) { }
+
         public void Clear()
         {
             lock (SyncRoot)
             {
+                OnClearing();
                 _set.Clear();
+                
                 CollectionChanged?.Invoke(NotifyCollectionChangedEventArgs<T>.Reset());
             }
         }
+        
+        protected virtual void OnClearing() { }
 
         public bool Contains(T item)
         {
@@ -159,5 +172,8 @@ namespace Aspid.Collections.Observable
                 }
             }
         }
+
+        public virtual void Dispose() =>
+            Clear();
     }
 }

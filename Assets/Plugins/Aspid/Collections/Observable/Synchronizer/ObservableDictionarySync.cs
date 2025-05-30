@@ -4,26 +4,36 @@ using System.Collections.Specialized;
 
 namespace Aspid.Collections.Observable.Synchronizer
 {
-    public sealed class ObservableDictionarySync<TKey, TFrom, TTo> : IDisposable
+    public sealed class ObservableDictionarySync<TKey, TFrom, TTo> : ObservableDictionary<TKey, TTo>
         where TKey : notnull
     {
+        private readonly bool _isDisposable;
+        private readonly Action<TTo>? _remove;
         private readonly Func<TFrom, TTo> _converter;
-        private readonly ObservableDictionary<TKey, TTo> _toDictionary;
         private readonly IReadOnlyObservableDictionary<TKey, TFrom> _fromDictionary;
 
         public ObservableDictionarySync(
             IReadOnlyObservableDictionary<TKey, TFrom> fromDictionary, 
-            out ObservableDictionary<TKey, TTo> toDictionary,
-            Func<TFrom, TTo> converter)
+            Func<TFrom, TTo> converter,
+            Action<TTo>? remove)
         {
+            _remove = remove;
             _converter = converter;
             _fromDictionary = fromDictionary;
-            _toDictionary = toDictionary = new ObservableDictionary<TKey, TTo>(fromDictionary.Count);
 
             foreach (var pair in fromDictionary)
-                toDictionary.Add(pair.Key, converter(pair.Value));
+                Add(pair.Key, converter(pair.Value));
             
             Subscribe();
+        }
+        
+        public ObservableDictionarySync(
+            IReadOnlyObservableDictionary<TKey, TFrom> fromDictionary, 
+            Func<TFrom, TTo> converter,
+            bool isDisposable)
+            : this(fromDictionary, converter, null)
+        {
+            _isDisposable = isDisposable;
         }
 
         private void Subscribe() => 
@@ -51,28 +61,28 @@ namespace Aspid.Collections.Observable.Synchronizer
             {
                 case NotifyCollectionChangedAction.Add:
                     {
-                        if (args.IsSingleItem) _toDictionary.Add(args.NewItem.Key, Convert(args.NewItem.Value));
+                        if (args.IsSingleItem) Add(args.NewItem.Key, Convert(args.NewItem.Value));
                         else throw new NotImplementedException();
                     }
                     break;
                 
                 case NotifyCollectionChangedAction.Remove:
                     {
-                        if (args.IsSingleItem) _toDictionary.Remove(args.OldItem.Key);
+                        if (args.IsSingleItem) Remove(args.OldItem.Key);
                         else throw new NotImplementedException();
                     }
                     break;
 
                 case NotifyCollectionChangedAction.Replace:
                     {
-                        if (args.IsSingleItem) _toDictionary[args.NewItem.Key] = Convert(args.NewItem.Value);
+                        if (args.IsSingleItem) base[args.NewItem.Key] = Convert(args.NewItem.Value);
                         else throw new NotImplementedException();
                     }
                     break;
 
                 case NotifyCollectionChangedAction.Reset:
                     {
-                        _toDictionary.Clear();
+                        Clear();
                     }
                     break;
 
@@ -81,7 +91,40 @@ namespace Aspid.Collections.Observable.Synchronizer
             }
         }
 
-        public void Dispose() =>
+        protected override void OnRemoved(in TKey key, in TTo value)
+        {
+            if (_isDisposable)
+            {
+                if (value is IDisposable disposable)
+                    disposable.Dispose();
+            }
+            else _remove?.Invoke(value);
+        }
+
+        protected override void OnReplaced(in KeyValuePair<TKey, TTo> oldItem, in KeyValuePair<TKey, TTo> newItem) =>
+            OnRemoved(oldItem.Key, newItem.Value);
+
+        protected override void OnClearing()
+        {
+            if (_isDisposable)
+            {
+                foreach (var value in Values)
+                {
+                    if (value is IDisposable disposable)
+                        disposable.Dispose();
+                }
+            }
+            else if (_remove is not null)
+            {
+                foreach (var value in Values)
+                    _remove.Invoke(value);
+            }
+        }
+
+        public override void Dispose()
+        {
             Unsubscribe();
+            base.Dispose();
+        }
     }
 }

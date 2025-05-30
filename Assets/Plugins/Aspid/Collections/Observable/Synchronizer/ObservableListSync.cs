@@ -4,81 +4,91 @@ using System.Collections.Specialized;
 
 namespace Aspid.Collections.Observable.Synchronizer
 {
-    public sealed class ObservableListSync<TFrom, TTo> : IDisposable
+    public sealed class ObservableListSync<TFrom, TTo> : ObservableList<TTo>
     {
+        private readonly bool _isDisposable;
+        private readonly Action<TTo>? _remove;
         private readonly Func<TFrom, TTo> _converter;
-        private readonly ObservableList<TTo> _toList;
         private readonly IReadOnlyObservableList<TFrom> _fromList;
 
         public ObservableListSync(
             IReadOnlyObservableList<TFrom> fromList, 
-            out ObservableList<TTo> toList,
-            Func<TFrom, TTo> converter)
+            Func<TFrom, TTo> converter,
+            Action<TTo>? remove)
         {
+            _remove = remove;
             _fromList = fromList;
             _converter = converter;
-            _toList = toList = new ObservableList<TTo>(fromList.Count);
-
+            
             foreach (var from in fromList)
-                toList.Add(converter(from));
+                Add(converter(from));
             
             Subscribe();
         }
-
+        
+        public ObservableListSync(
+            IReadOnlyObservableList<TFrom> fromList, 
+            Func<TFrom, TTo> converter,
+            bool isDisposable = false)
+            : this(fromList, converter, null)
+        {
+            _isDisposable = isDisposable;
+        }
+        
         private void Subscribe() => 
             _fromList.CollectionChanged += OnFromListChanged;
-
+        
         private void Unsubscribe() => 
             _fromList.CollectionChanged -= OnFromListChanged;
         
         private TTo[] Convert(IReadOnlyList<TFrom> fromValues)
         {
             var toValues = new TTo[fromValues.Count];
-
+        
             for (var i = 0; i < toValues.Length; i++)
                 toValues[i] = Convert(fromValues[i]);
-
+        
             return toValues;
         }
-
+        
         private TTo Convert(TFrom fromValue) => 
             _converter(fromValue);
-
+        
         private void OnFromListChanged(INotifyCollectionChangedEventArgs<TFrom> args)
         {
             switch (args.Action)
             {
                 case NotifyCollectionChangedAction.Add:
                     {
-                        if (args.IsSingleItem) _toList.Add(Convert(args.NewItem!));
-                        else _toList.AddRange(Convert(args.NewItems!));
+                        if (args.IsSingleItem) Add(Convert(args.NewItem!));
+                        else AddRange(Convert(args.NewItems!));
                     }
                     break;
                 
                 case NotifyCollectionChangedAction.Move:
                     {
-                        if (args.IsSingleItem) _toList.Move(args.OldStartingIndex, args.NewStartingIndex);
+                        if (args.IsSingleItem) Move(args.OldStartingIndex, args.NewStartingIndex);
                         else throw new NotImplementedException();
                     }
                     break;
                 
                 case NotifyCollectionChangedAction.Remove:
                     {
-                        if (args.IsSingleItem) _toList.RemoveAt(args.OldStartingIndex);
+                        if (args.IsSingleItem) RemoveAt(args.OldStartingIndex);
                         else throw new NotImplementedException();
                     }
                     break;
-
+        
                 case NotifyCollectionChangedAction.Replace:
                     {
-                        if (args.IsSingleItem) _toList[args.OldStartingIndex] = Convert(args.NewItem!);
+                        if (args.IsSingleItem) base[args.OldStartingIndex] = Convert(args.NewItem!);
                         else throw new NotImplementedException();
                     }
                     break;
-
+        
                 case NotifyCollectionChangedAction.Reset:
                     {
-                        _toList.Clear();
+                        Clear();
                     }
                     break;
                 
@@ -86,7 +96,40 @@ namespace Aspid.Collections.Observable.Synchronizer
             }
         }
 
-        public void Dispose() => 
+        protected override void OnReplaced(int index, in TTo oldItem, in TTo newItem) =>
+            OnRemoved(oldItem);
+
+        protected override void OnRemoved(in TTo value)
+        {
+            if (_isDisposable)
+            {
+                if (value is IDisposable disposable)
+                    disposable.Dispose();
+            }
+            else _remove?.Invoke(value);
+        }
+
+        protected override void OnClearing()
+        {
+            if (_isDisposable)
+            {
+                foreach (var value in this)
+                {
+                    if (value is IDisposable disposable)
+                        disposable.Dispose();
+                }
+            }
+            else if (_remove is not null)
+            {
+                foreach (var value in this)
+                    _remove.Invoke(value);
+            }
+        }
+        
+        public override void Dispose()
+        {
             Unsubscribe();
+            base.Dispose();
+        }
     }
 }

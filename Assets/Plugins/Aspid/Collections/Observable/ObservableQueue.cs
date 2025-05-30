@@ -1,10 +1,11 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 
 namespace Aspid.Collections.Observable
 {
-    public sealed class ObservableQueue<T> : IReadOnlyObservableCollection<T>
+    public class ObservableQueue<T> : IReadOnlyObservableCollection<T>, IDisposable
     {
         private readonly Queue<T> _queue;
 
@@ -48,11 +49,15 @@ namespace Aspid.Collections.Observable
             lock (SyncRoot)
             {
                 var index = _queue.Count;
+                
                 _queue.Enqueue(item);
+                OnEnqueued(item);
                 
                 CollectionChanged?.Invoke(NotifyCollectionChangedEventArgs<T>.Add(item, index));
             }
         }
+        
+        protected virtual void OnEnqueued(T item) { }
 
         public void EnqueueRange(T[] items)
         {
@@ -61,6 +66,8 @@ namespace Aspid.Collections.Observable
                 var index = _queue.Count;
                 foreach (var item in items)
                     _queue.Enqueue(item);
+                
+                OnEnqueuedRange(items);
                 
                 CollectionChanged?.Invoke(NotifyCollectionChangedEventArgs<T>.Add(items, index));
             }
@@ -73,18 +80,24 @@ namespace Aspid.Collections.Observable
                 var index = _queue.Count;
                 foreach (var item in items)
                     _queue.Enqueue(item);
+
+                OnEnqueuedRange(items);
                 
                 CollectionChanged?.Invoke(NotifyCollectionChangedEventArgs<T>.Add(items, index));
             }
         }
+        
+        protected virtual void OnEnqueuedRange(in IReadOnlyList<T> items) { }
 
         public T Dequeue()
         {
             lock (SyncRoot)
             {
-                var v = _queue.Dequeue();
-                CollectionChanged?.Invoke(NotifyCollectionChangedEventArgs<T>.Remove(v, 0));
-                return v;
+                var result = _queue.Dequeue();
+                OnDequeued(result);
+                
+                CollectionChanged?.Invoke(NotifyCollectionChangedEventArgs<T>.Remove(result, 0));
+                return result;
             }
         }
 
@@ -95,6 +108,8 @@ namespace Aspid.Collections.Observable
                 if (_queue.Count != 0)
                 {
                     result = _queue.Dequeue();
+                    OnDequeued(result);
+                    
                     CollectionChanged?.Invoke(NotifyCollectionChangedEventArgs<T>.Remove(result, 0));
                     return true;
                 }
@@ -104,16 +119,21 @@ namespace Aspid.Collections.Observable
             }
         }
 
-        public void DequeueRange(T[] dest)
+        protected virtual void OnDequeued(T item) { }
+        
+        public void DequeueRange(in T[] dest)
         {
             lock (SyncRoot)
             {
                 for (var i = 0; i < dest.Length; i++)
                     dest[i] = _queue.Dequeue();
 
+                OnDequeuedRange(dest);
                 CollectionChanged?.Invoke(NotifyCollectionChangedEventArgs<T>.Remove(dest, 0));
             }
         }
+
+        protected virtual void OnDequeuedRange(in IReadOnlyList<T> dest) { }
 
         public T Peek()
         {
@@ -169,9 +189,16 @@ namespace Aspid.Collections.Observable
         {
             lock (SyncRoot)
             {
+                OnClearing();
                 _queue.Clear();
+                
                 CollectionChanged?.Invoke(NotifyCollectionChangedEventArgs<T>.Reset());
             }
         }
+        
+        protected virtual void OnClearing() { }
+
+        public virtual void Dispose() =>
+            Clear();
     }
 }

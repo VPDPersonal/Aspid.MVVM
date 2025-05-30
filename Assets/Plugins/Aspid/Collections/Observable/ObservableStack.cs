@@ -1,10 +1,11 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 
 namespace Aspid.Collections.Observable
 {
-    public sealed class ObservableStack<T> : IReadOnlyObservableCollection<T>
+    public class ObservableStack<T> : IReadOnlyObservableCollection<T>, IDisposable
     {
         public event NotifyCollectionChangedEventHandler<T>? CollectionChanged;
         
@@ -43,9 +44,13 @@ namespace Aspid.Collections.Observable
             lock (SyncRoot)
             {
                 _stack.Push(item);
+                OnPushed(item);
+                
                 CollectionChanged?.Invoke(NotifyCollectionChangedEventArgs<T>.Add(item, 0));
             }
         }
+        
+        protected virtual void OnPushed(T item) { }
 
         public void PushRange(T[] items)
         {
@@ -54,6 +59,7 @@ namespace Aspid.Collections.Observable
                 foreach (var item in items)
                     _stack.Push(item);
                 
+                OnPushedRange(items);
                 CollectionChanged?.Invoke(NotifyCollectionChangedEventArgs<T>.Add(items, 0));
             }
         }
@@ -64,18 +70,23 @@ namespace Aspid.Collections.Observable
             {
                 foreach (var item in items)
                     _stack.Push(item);
-                
+
+                OnPushedRange(items);
                 CollectionChanged?.Invoke(NotifyCollectionChangedEventArgs<T>.Add(items, 0));
             }
         }
+        
+        protected virtual void OnPushedRange(in IReadOnlyList<T> items) { }
 
         public T Pop()
         {
             lock (SyncRoot)
             {
-                var v = _stack.Pop();
-                CollectionChanged?.Invoke(NotifyCollectionChangedEventArgs<T>.Remove(v, 0));
-                return v;
+                var result = _stack.Pop();
+                OnPopped(result);
+                
+                CollectionChanged?.Invoke(NotifyCollectionChangedEventArgs<T>.Remove(result, 0));
+                return result;
             }
         }
 
@@ -86,6 +97,8 @@ namespace Aspid.Collections.Observable
                 if (_stack.Count != 0)
                 {
                     result = _stack.Pop();
+                    OnPopped(result);
+                    
                     CollectionChanged?.Invoke(NotifyCollectionChangedEventArgs<T>.Remove(result, 0));
                     return true;
                 }
@@ -94,6 +107,8 @@ namespace Aspid.Collections.Observable
                 return false;
             }
         }
+        
+        protected virtual void OnPopped(T item) { }
 
         public void PopRange(T[] dest)
         {
@@ -102,9 +117,12 @@ namespace Aspid.Collections.Observable
                 for (var i = 0; i < dest.Length; i++)
                     dest[i] = _stack.Pop();
 
+                OnPoppedRange(dest);
                 CollectionChanged?.Invoke(NotifyCollectionChangedEventArgs<T>.Remove(dest, 0));
             }
         }
+
+        protected virtual void OnPoppedRange(in IReadOnlyList<T> dest) { }
 
         public T Peek()
         {
@@ -159,9 +177,16 @@ namespace Aspid.Collections.Observable
         {
             lock (SyncRoot)
             {
+                OnClearing();
                 _stack.Clear();
+                
                 CollectionChanged?.Invoke(NotifyCollectionChangedEventArgs<T>.Reset());
             }
         }
+
+        protected virtual void OnClearing() { }
+
+        public virtual void Dispose() =>
+            Clear();
     }
 }

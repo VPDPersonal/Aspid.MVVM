@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace Aspid.Collections.Observable
 {
-    public sealed class ObservableList<T> : IList<T>, IReadOnlyObservableList<T>
+    public class ObservableList<T> : IList<T>, IReadOnlyObservableList<T>, IDisposable
     {
         public event NotifyCollectionChangedEventHandler<T>? CollectionChanged;
 
@@ -41,6 +41,8 @@ namespace Aspid.Collections.Observable
                 {
                     var oldValue = _list[index];
                     _list[index] = value;
+
+                    OnReplaced(index, oldValue, value);
                     CollectionChanged?.Invoke(NotifyCollectionChangedEventArgs<T>.Replace(oldValue, value, index));
                 }
             }
@@ -66,17 +68,25 @@ namespace Aspid.Collections.Observable
             lock (SyncRoot)
             {
                 var index = _list.Count;
+                
                 _list.Add(item);
+                OnAdded(item);
+                
                 CollectionChanged?.Invoke(NotifyCollectionChangedEventArgs<T>.Add(item, index));
             }
         }
+        
+        protected virtual void OnAdded(in T item) { }
 
         public void AddRange(T[] items)
         {
             lock (SyncRoot)
             {
                 var index = _list.Count;
+                
                 _list.AddRange(items);
+                OnAddedRange(items);
+                
                 CollectionChanged?.Invoke(NotifyCollectionChangedEventArgs<T>.Add(items, index));
             }
         }
@@ -87,18 +97,22 @@ namespace Aspid.Collections.Observable
             {
                 var index = _list.Count;
 
-                foreach (var item in items)
-                    _list.Add(item);
-
+                _list.AddRange(items);
+                OnAddedRange(items);
+                
                 CollectionChanged?.Invoke(NotifyCollectionChangedEventArgs<T>.Add(items, index));
             }
         }
+        
+        protected virtual void OnAddedRange(in IReadOnlyList<T> items) { }
 
         public void Insert(int index, T item)
         {
             lock (SyncRoot)
             {
                 _list.Insert(index, item);
+                OnAdded(item);
+                
                 CollectionChanged?.Invoke(NotifyCollectionChangedEventArgs<T>.Add(item, index));
             }
         }
@@ -108,6 +122,8 @@ namespace Aspid.Collections.Observable
             lock (SyncRoot)
             {
                 _list.InsertRange(index, items);
+                OnAddedRange(items);
+                
                 CollectionChanged?.Invoke(NotifyCollectionChangedEventArgs<T>.Add(items, index));
             }
         }
@@ -117,6 +133,8 @@ namespace Aspid.Collections.Observable
             lock (SyncRoot)
             {
                 _list.InsertRange(index, items);
+                OnAddedRange(items);
+                
                 CollectionChanged?.Invoke(NotifyCollectionChangedEventArgs<T>.Add(items, index));
             }
         }
@@ -129,6 +147,8 @@ namespace Aspid.Collections.Observable
                 if (index < 0) return false;
                 
                 _list.RemoveAt(index);
+                OnRemoved(item);
+                
                 CollectionChanged?.Invoke(NotifyCollectionChangedEventArgs<T>.Remove(item, index));
                 return true;
             }
@@ -139,21 +159,33 @@ namespace Aspid.Collections.Observable
             lock (SyncRoot)
             {
                 var item = _list[index];
+                
                 _list.RemoveAt(index);
+                OnRemoved(item);
+                
                 CollectionChanged?.Invoke(NotifyCollectionChangedEventArgs<T>.Remove(item, index));
             }
         }
+        
+        protected virtual void OnRemoved(in T item) { }
 
         public void Move(int oldIndex, int newIndex)
         {
             lock (SyncRoot)
             {
                 var removedItem = _list[oldIndex];
+                
                 _list.RemoveAt(oldIndex);
                 _list.Insert(newIndex, removedItem);
+                OnMoved(oldIndex, newIndex, removedItem);
+                
                 CollectionChanged?.Invoke(NotifyCollectionChangedEventArgs<T>.Move(removedItem, newIndex, oldIndex));
             }
         }
+        
+        protected virtual void OnMoved(int oldIndex, int newIndex, in T item) { }
+        
+        protected virtual void OnReplaced(int index, in T oldItem, in T newItem) { }
         
         public int IndexOf(T item)
         {
@@ -203,9 +235,16 @@ namespace Aspid.Collections.Observable
         {
             lock (SyncRoot)
             {
+                OnClearing();
                 _list.Clear();
+                
                 CollectionChanged?.Invoke(NotifyCollectionChangedEventArgs<T>.Reset());
             }
         }
+        
+        protected virtual void OnClearing() { }
+
+        public virtual void Dispose() =>
+            Clear();
     }
 }

@@ -4,42 +4,51 @@ using System.Collections.Specialized;
 
 namespace Aspid.Collections.Observable.Synchronizer
 {
-    public sealed class ObservableStackSync<TFrom, TTo> : ObservableStack<TTo>
+    public sealed class ObservableHashSetSync<TFrom, TTo> : ObservableHashSet<TTo> 
+        where TTo : notnull 
+        where TFrom : notnull
     {
         private readonly bool _isDisposable;
         private readonly Action<TTo>? _remove;
         private readonly Func<TFrom, TTo> _converter;
-        private readonly ObservableStack<TFrom> _fromStack;
+        private readonly Dictionary<TFrom, TTo> _sync;
+        private readonly ObservableHashSet<TFrom> _fromHasSet;
 
-        public ObservableStackSync(
-            ObservableStack<TFrom> fromStack, 
+        public ObservableHashSetSync(
+            ObservableHashSet<TFrom> fromHashSet, 
             Func<TFrom, TTo> converter,
             Action<TTo>? remove)
         {
             _remove = remove;
             _converter = converter;
-            _fromStack = fromStack;
+            _fromHasSet = fromHashSet;
+            _sync = new Dictionary<TFrom, TTo>(fromHashSet.Count);
 
-            foreach (var from in fromStack)
-                Push(_converter(from));
+            foreach (var from in fromHashSet)
+            {
+                var to = Convert(from);
+                
+                Add(to);
+                _sync.Add(from,to );
+            }
 
             Subscribe();
         }
         
-        public ObservableStackSync(
-            ObservableStack<TFrom> fromStack, 
+        public ObservableHashSetSync(
+            ObservableHashSet<TFrom> fromHashSet, 
             Func<TFrom, TTo> converter,
             bool isDisposable = false)
-            : this(fromStack, converter, null)
+            : this(fromHashSet, converter, null)
         {
             _isDisposable = isDisposable;
         }
 
         private void Subscribe() => 
-            _fromStack.CollectionChanged += OnFromStackChanged;
+            _fromHasSet.CollectionChanged += OnFromStackChanged;
 
         private void Unsubscribe() =>
-            _fromStack.CollectionChanged -= OnFromStackChanged;
+            _fromHasSet.CollectionChanged -= OnFromStackChanged;
         
         private TTo[] Convert(IReadOnlyList<TFrom> fromValues)
         {
@@ -52,7 +61,7 @@ namespace Aspid.Collections.Observable.Synchronizer
         }
 
         private TTo Convert(TFrom fromValue) => 
-            _converter(fromValue);
+            _converter.Invoke(fromValue);
 
         private void OnFromStackChanged(INotifyCollectionChangedEventArgs<TFrom> args)
         {
@@ -60,21 +69,33 @@ namespace Aspid.Collections.Observable.Synchronizer
             {
                 case NotifyCollectionChangedAction.Add:
                     {
-                        if (args.IsSingleItem) Push(Convert(args.NewItem!));
-                        else PushRange(Convert(args.NewItems!));
+                        if (args.IsSingleItem)
+                        {
+                            var fromItem = args.NewItem!;
+                            var item = Convert(fromItem);
+                            
+                            Add(item);
+                            _sync.Add(fromItem, item);
+                        }
+                        else throw new NotImplementedException();
                     }
                     break;
                 
                 case NotifyCollectionChangedAction.Remove:
                     {
-                        if (args.IsSingleItem) Pop();
-                        else PopRange(new TTo[args.OldItems!.Count]);
+                        if (args.IsSingleItem)
+                        {
+                            Remove(_sync[args.OldItem!]);
+                            _sync.Remove(args.OldItem!);
+                        }
+                        else throw new NotImplementedException();
                     }
                     break;
 
                 case NotifyCollectionChangedAction.Reset:
                     {
                         Clear();
+                        _sync.Clear();
                     }
                     break;
 
@@ -85,39 +106,33 @@ namespace Aspid.Collections.Observable.Synchronizer
                 default: throw new ArgumentOutOfRangeException();
             }
         }
-
-        protected override void OnPopped(TTo item)
+        
+        protected override void OnRemoved(TTo item)
         {
             if (_isDisposable)
             {
-                if (item is IDisposable disposable) 
+                if (item is IDisposable disposable)
                     disposable.Dispose();
             }
             else _remove?.Invoke(item);
         }
 
-        protected override void OnPoppedRange(in IReadOnlyList<TTo> dest) =>
-            OnPoppedRange(dest);
-        
-        private void OnPoppedRange(IReadOnlyCollection<TTo> dest)
+        protected override void OnClearing()
         {
             if (_isDisposable)
             {
-                foreach (var item in dest)
+                foreach (var item in _sync.Values)
                 {
-                    if (item is IDisposable disposable) 
+                    if (item is IDisposable disposable)
                         disposable.Dispose();
                 }
             }
             else if (_remove is not null)
             {
-                foreach (var item in dest)
-                    _remove(item);
+                foreach (var item in _sync.Values)
+                    _remove.Invoke(item);
             }
         }
-
-        protected override void OnClearing() =>
-            OnPoppedRange(this);
 
         public override void Dispose()
         {

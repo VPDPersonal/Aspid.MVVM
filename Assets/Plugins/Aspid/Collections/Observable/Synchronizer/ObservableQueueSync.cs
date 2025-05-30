@@ -4,25 +4,35 @@ using System.Collections.Specialized;
 
 namespace Aspid.Collections.Observable.Synchronizer
 {
-    public sealed class ObservableQueueSync<TFrom, TTo> : IDisposable
+    public sealed class ObservableQueueSync<TFrom, TTo> : ObservableQueue<TTo>
     {
+        private readonly bool _isDisposable;
+        private readonly Action<TTo>? _remove;
         private readonly Func<TFrom, TTo> _converter;
-        private readonly ObservableQueue<TTo> _toQueue;
         private readonly ObservableQueue<TFrom> _fromQueue;
 
         public ObservableQueueSync(
-            ObservableQueue<TFrom> fromQueue, 
-            out ObservableQueue<TTo> toQueue,
-            Func<TFrom, TTo> converter)
+            ObservableQueue<TFrom> fromQueue,
+            Func<TFrom, TTo> converter,
+            Action<TTo>? remove)
         {
+            _remove = remove;
             _converter = converter;
             _fromQueue = fromQueue;
-            _toQueue = toQueue = new ObservableQueue<TTo>(fromQueue.Count);
 
-            foreach (var from in fromQueue)
-                toQueue.Enqueue(converter(from));
+            foreach (var from in fromQueue) 
+                Enqueue(converter(from));
 
             Subscribe();
+        }
+
+        public ObservableQueueSync(
+            ObservableQueue<TFrom> fromQueue,
+            Func<TFrom, TTo> converter,
+            bool isDisposable = false)
+            : this(fromQueue, converter, null)
+        {
+            _isDisposable = isDisposable;
         }
 
         private void Subscribe() => 
@@ -50,21 +60,21 @@ namespace Aspid.Collections.Observable.Synchronizer
             {
                 case NotifyCollectionChangedAction.Add:
                     {
-                        if (args.IsSingleItem) _toQueue.Enqueue(Convert(args.NewItem!));
-                        else _toQueue.EnqueueRange(Convert(args.NewItems!));
+                        if (args.IsSingleItem) Enqueue(Convert(args.NewItem!));
+                        else EnqueueRange(Convert(args.NewItems!));
                     }
                     break;
                 
                 case NotifyCollectionChangedAction.Remove:
                     {
-                        if (args.IsSingleItem) _toQueue.Dequeue();
-                        _toQueue.DequeueRange(new TTo[args.OldItems!.Count]);
+                        if (args.IsSingleItem) Dequeue();
+                        else DequeueRange(new TTo[args.OldItems!.Count]);
                     }
                     break;
 
                 case NotifyCollectionChangedAction.Reset:
                     {
-                        _toQueue.Clear();
+                        Clear();
                     }
                     break;
 
@@ -76,7 +86,43 @@ namespace Aspid.Collections.Observable.Synchronizer
             }
         }
 
-        public void Dispose() => 
+        protected override void OnDequeued(TTo item)
+        {
+            if (_isDisposable)
+            {
+                if (item is IDisposable disposable)
+                    disposable.Dispose();
+            }
+            else _remove?.Invoke(item);
+        }
+
+        protected override void OnDequeuedRange(in IReadOnlyList<TTo> dest) =>
+            OnDequeuedRange(dest);
+        
+        private void OnDequeuedRange(IReadOnlyCollection<TTo> dest)
+        {
+            if (_isDisposable)
+            {
+                foreach (var value in dest)
+                {
+                    if (value is IDisposable disposable)
+                        disposable.Dispose();
+                }
+            }
+            else if (_remove is not null)
+            {
+                foreach (var value in dest)
+                    _remove.Invoke(value);
+            }
+        }
+
+        protected override void OnClearing() =>
+            OnDequeuedRange(this);
+
+        public override void Dispose()
+        {
             Unsubscribe();
+            base.Dispose();
+        }
     }
 }

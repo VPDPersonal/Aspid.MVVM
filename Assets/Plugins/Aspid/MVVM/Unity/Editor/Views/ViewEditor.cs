@@ -93,7 +93,7 @@ namespace Aspid.MVVM.Unity
         {
             return Elements.CreateContainer(EditorColor.LightContainer)
                 .AddTitle(EditorColor.LightText, "View Model")
-                .AddChild(new IMGUIContainer(() => ViewModelDrawer.DrawViewModelData(View)))
+                .AddChild(ViewModelDrawer.CreateViewModelContainer(View))
                 .SetMargin(top: 10)
                 .SetName("ViewModel");
         }   

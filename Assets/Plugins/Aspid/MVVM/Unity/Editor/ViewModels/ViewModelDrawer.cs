@@ -5,6 +5,8 @@ using UnityEngine;
 using System.Reflection;
 using System.Collections;
 using Aspid.CustomEditors;
+using UnityEditor.UIElements;
+using UnityEngine.UIElements;
 using System.Collections.Generic;
 using Object = UnityEngine.Object;
 
@@ -12,146 +14,212 @@ namespace Aspid.MVVM.Unity
 {
     public static class ViewModelDrawer
     {
-        public static void DrawViewModelData(Object target)
+        private const BindingFlags Flags = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic;
+        
+        public static VisualElement CreateViewModelContainer(Object target)
         {
-            EditorGUILayout.Space();
-            var property = target.GetType().GetProperty("ViewModel", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)?.GetValue(target);
-
-            var viewModelName = property is null ? "View Model" : $"View Model ({property.GetType().Namespace}.{property.GetType().Name})";
-            DrawCompositeValue(property, viewModelName, ignoreNicify: true);
-        }
+            var root = new VisualElement();
             
-        private static void DrawValue(object obj, string fieldName, string parentFieldName)
+            var type = target.GetType();
+            var property = type.GetProperty("ViewModel", Flags);
+            
+            root.AddChild(BuildCompositeValue(new ViewModelMemberInfo(target, property),"View Model"));
+            return root;
+        }
+
+        private static VisualElement BuildCompositeValue(ViewModelMemberInfo member, string label)
         {
-            var label = ObjectNames.NicifyVariableName(fieldName);
+            var root = new VisualElement();
+            var value = member.Value;
+            
+            if (value is null)
+                return root.AddChild(BuildNullField(label));
 
-            if (obj == null)
-            {
-                EditorGUILayout.TextField(label, "null");
-                return;
-            }
+            var type = value.GetType();
+            return root.AddChild(Foldout(label, member.Name + label, type, DataContainer));
 
-            switch (obj)
+            VisualElement DataContainer()
             {
-                case int intValue: EditorGUILayout.IntField(label, intValue); break;
-                case bool boolValue: EditorGUILayout.Toggle(label, boolValue); break;
-                case long longValue: EditorGUILayout.LongField(label, longValue); break;
-                case Rect rectValue: EditorGUILayout.RectField(label, rectValue); break;
-                case Color colorValue: EditorGUILayout.ColorField(label, colorValue); break;
-                case float floatValue: EditorGUILayout.FloatField(label, floatValue); break;
-                case Enum enumValue: EditorGUILayout.EnumFlagsField(label, enumValue); break;
-                case double doubleValue: EditorGUILayout.DoubleField(label, doubleValue); break;
-                case Bounds boundsValue: EditorGUILayout.BoundsField(label, boundsValue); break;
-                case string stringValue: EditorGUILayout.TextField(label, stringValue); break;
-                case RectInt rectIntValue: EditorGUILayout.RectIntField(label, rectIntValue); break;
-                case Vector2 vector2Value: EditorGUILayout.Vector2Field(label, vector2Value); break;
-                case Vector3 vector3Value: EditorGUILayout.Vector3Field(label, vector3Value); break;
-                case Vector4 vector4Value: EditorGUILayout.Vector4Field(label, vector4Value); break;
-                case Gradient gradientValue: EditorGUILayout.GradientField(label, gradientValue); break;
-                case BoundsInt boundsIntValue: EditorGUILayout.BoundsIntField(label, boundsIntValue); break;
-                case Vector2Int vector2IntValue: EditorGUILayout.Vector2IntField(label, vector2IntValue); break;
-                case Vector3Int vector3IntValue: EditorGUILayout.Vector3IntField(label, vector3IntValue); break;
-                case AnimationCurve animationCurveValue: EditorGUILayout.CurveField(label, animationCurveValue); break;
-                case Object unityObjValue: EditorGUILayout.ObjectField(label, unityObjValue, unityObjValue.GetType()); break;
-                case Delegate delegateValue:
+                var childElement = new VisualElement();
+                
+                var fields = type.GetFieldInfosIncludingBaseClasses(Flags);
+                var properties = type.GetPropertyInfosIncludingBaseClasses(Flags);
+
+                var bindNames = new HashSet<string>();
+                var context = new ViewModelFieldsUpdater();
+
+                foreach (var field in fields)
+                {
+                    if (field.GetCustomAttribute<BaseBindAttribute>() is not null)
                     {
-                        if (!Foldout($"{parentFieldName}.{fieldName}", fieldName)) break;
-
-                        EditorGUI.indentLevel++;
-                        {
-                            var indentLevel = EditorGUI.indentLevel;
-                            var style = new GUIStyle(EditorStyles.helpBox)
-                            {
-                                margin = new RectOffset((EditorGUI.indentLevel + 1) * 15, 0, 0, 0),
-                            };
-                            EditorGUI.indentLevel = 0;
-
-                            foreach (var @delegate in delegateValue.GetInvocationList())
-                            {
-                                using (AspidEditorGUILayout.BeginVertical(style))
-                                {
-                                    if (delegateValue.Method.DeclaringType is null)
-                                    {
-                                        EditorGUILayout.TextField("null");
-                                        continue;
-                                    }
-
-                                    var targetType = @delegate.Method.DeclaringType!;
-                                    var targetName = targetType.Name;
-
-                                    if (@delegate.Target is Component component)
-                                    {
-                                        EditorGUILayout.ObjectField(component.gameObject, targetType, true);
-                                    }
-                                    else
-                                    {
-                                        using (AspidEditorGUILayout.BeginHorizontal())
-                                        {
-                                            var targetNamespace = targetType.Namespace;
-                                            EditorGUILayout.LabelField("Type", GUILayout.Width(45));
-                                            EditorGUILayout.TextField($"{targetNamespace}.{targetName}");
-                                        }
-                                    }
-
-                                    using (AspidEditorGUILayout.BeginHorizontal())
-                                    {
-                                        EditorGUILayout.LabelField("Method", GUILayout.Width(45));
-                                        EditorGUILayout.TextField(@delegate.Method.Name);
-                                    }
-                                }
-                            }
-
-                            EditorGUI.indentLevel = indentLevel;
-                        }
-                        EditorGUI.indentLevel--;
+                        bindNames.Add(field.GetGeneratedPropertyName());
+                        continue;
                     }
-                    break;
-                case IEnumerable enumerable:
-                    {
-                        if (!Foldout($"{parentFieldName}.{fieldName}", fieldName)) break;
 
-                        EditorGUI.indentLevel++;
-                        {
-                            if (IsKeyValuePairInEnumerable(enumerable))
-                            {
-                                foreach (var item in enumerable)
-                                {
-                                    var keyProperty = item.GetType().GetProperty("Key");
-                                    var valueProperty = item.GetType().GetProperty("Value");
+                    childElement.AddChild(BuildField(context, new ViewModelMemberInfo(value, field)));
+                }
 
-                                    var key = keyProperty!.GetValue(item).ToString();
-                                    var value = valueProperty!.GetValue(item);
+                foreach (var property in properties)
+                {
+                    if (property.GetIndexParameters().Length > 0) continue;
+                    
+                    if (type.GetExplicitInterface(property) is null) 
+                        childElement.AddChild(BuildField(context, new ViewModelMemberInfo(value, property, bindNames.Contains(property.Name))));
+                }
 
-                                    if (!Foldout($"{parentFieldName}.{fieldName}.{key}", key)) continue;
-
-                                    EditorGUI.indentLevel++;
-                                    {
-                                        DrawValue(value, "Value", $"{parentFieldName}.{fieldName}.{key}");
-                                    }
-                                    EditorGUI.indentLevel--;
-                                }
-                            }
-                            else
-                            {
-                                var index = 0;
-                                foreach (var item in enumerable)
-                                {
-                                    DrawValue(item, index.ToString(), parentFieldName);
-                                    index++;
-                                }
-
-                            }
-                        }
-                        EditorGUI.indentLevel--;
-                    }
-                    break;
-                default: DrawCompositeValue(obj, fieldName, parentFieldName); break;
+                return childElement;
             }
-            return;
+        }
 
-            bool IsKeyValuePairInEnumerable(object obj)
+        private static VisualElement BuildField(ViewModelFieldsUpdater updater, ViewModelMemberInfo member)
+        {
+            var type = member.Type;
+            var value = member.Value;
+            var label = NicifyVariableName(member.Name);
+            
+            if (type.IsGenericType)
             {
-                return obj.GetType()
+                var genericTypeDefinition = type.GetGenericTypeDefinition();
+                if (genericTypeDefinition == typeof(OneTimeClassEvent<>)
+                    || genericTypeDefinition == typeof(OneTimeStructEvent<,>))
+                {
+                    return new VisualElement();
+                }
+            }
+            
+            if (typeof(int) == type) return new IntegerField(label).SetupField((int)value, updater, member);
+            if (typeof(long) == type) return new LongField(label).SetupField((long)value, updater, member);
+            if (typeof(float) == type) return new FloatField(label).SetupField((float)value, updater, member);
+            if (typeof(double) == type) return new DoubleField(label).SetupField((double)value, updater, member);
+            if (typeof(bool) == type) return new Toggle(label).SetupField((bool)value, updater, member);
+            if (typeof(string) == type) return new TextField(label).SetupField(value as string, updater, member);
+            if (typeof(Color) == type) return new ColorField(label).SetupField((Color)value, updater, member);
+            if (typeof(Rect) == type) return new RectField(label).SetupField((Rect)value, updater, member);
+            if (typeof(RectInt) == type) return new RectIntField(label).SetupField((RectInt)value, updater, member);
+            if (typeof(Bounds) == type) return new BoundsField(label).SetupField((Bounds)value, updater, member);
+            if (typeof(BoundsInt) == type) return new BoundsIntField(label).SetupField((BoundsInt)value, updater, member);
+            if (typeof(Vector2) == type) return new Vector2Field(label).SetupField((Vector2)value, updater, member);
+            if (typeof(Vector3) == type) return new Vector3Field(label).SetupField((Vector3)value, updater, member);
+            if (typeof(Vector4) == type) return new Vector4Field(label).SetupField((Vector4)value, updater, member);
+            if (typeof(Vector2Int) == type) return new Vector2IntField(label).SetupField((Vector2Int)value, updater, member);
+            if (typeof(Vector3Int) == type) return new Vector3IntField(label).SetupField((Vector3Int)value, updater, member);
+            if (typeof(Delegate).IsAssignableFrom(type)) return BuildDelegateField(value as Delegate, label);
+            if (typeof(IEnumerable).IsAssignableFrom(type)) return BuildEnumerableField(value as IEnumerable, label);
+            if (typeof(Object).IsAssignableFrom(type)) return new ObjectField(label).SetupField(value as Object, updater, member);
+            if (typeof(Gradient).IsAssignableFrom(type)) return new GradientField(label).SetupField(value as Gradient, updater, member);
+            if (typeof(AnimationCurve).IsAssignableFrom(type)) return new CurveField(label).SetupField(value as AnimationCurve, updater, member);
+            if (typeof(Enum).IsAssignableFrom(type)) return new EnumField(label, value as Enum).SetupField(value as Enum, updater, member);
+            return BuildCompositeValue(member, label);
+        }
+
+        private static VisualElement BuildNullField(string label) => new TextField(label)
+        { 
+            value = "null",
+            enabledSelf = false,
+        };
+
+        private static VisualElement BuildDelegateField(Delegate value, string label)
+        {
+            if (value is null)
+                return BuildNullField(label);
+            
+            return Foldout(label, label, value.GetType(), () =>
+            {
+                var root = new VisualElement();
+
+                foreach (var @delegate in value.GetInvocationList())
+                {
+                    if (@delegate is null)
+                    {
+                        root.AddChild(BuildNullField(label));
+                        continue;
+                    }
+
+                    var targetType = @delegate.Method.DeclaringType!;
+                    var targetName = targetType.Name;
+
+                    var box = Elements.CreateContainer(EditorColor.LighterContainer)
+                        .SetMargin(top: 5);
+                    
+                    if (@delegate.Target is Object obj)
+                    {
+                        box.AddChild(new ObjectField(label)
+                        {
+                            value = obj,
+                            enabledSelf = false,
+                        });
+                    }
+                    else
+                    {
+                        var targetNamespace = targetType.Namespace;
+
+                        box.AddChild(new TextField("Type")
+                        {
+                            enabledSelf = false,
+                            value = $"{targetNamespace}.{targetName}",
+                        });
+                    }
+
+                    box.AddChild(new TextField("Method")
+                    {
+                        enabledSelf = false,
+                        value = @delegate.Method.Name
+                    });
+                    
+                    root.AddChild(box)
+                        .SetMargin(bottom: 5);
+                }
+
+                return root;
+            });
+        }
+
+        private static VisualElement BuildEnumerableField(IEnumerable value, string label)
+        {
+            if (value is null)
+                return BuildNullField(label);
+            
+            return Foldout(label, label, value.GetType(), () =>
+            {
+                var root = new VisualElement();
+
+                if (IsKeyValuePairInEnumerable())
+                {
+                    foreach (var item in value)
+                    {
+                        var keyProperty = item.GetType().GetProperty("Key");
+                        var valueProperty = item.GetType().GetProperty("Value");
+
+                        var key = keyProperty!.GetValue(item);
+                        var elementValue = valueProperty!.GetValue(item);
+
+                        var box = Elements.CreateContainer(EditorColor.LighterContainer)
+                            .SetMargin(top: 5);
+
+                        box.AddChild(BuildField(new ViewModelFieldsUpdater(), new ViewModelMemberInfo(key, "Key")));
+                        box.AddChild(BuildField(new ViewModelFieldsUpdater(), new ViewModelMemberInfo(elementValue, "Value")));
+                        
+                        root.AddChild(box);
+                    }
+                    
+                    root.SetMargin(bottom: 5);
+                }
+                else
+                {
+                    var index = 0;
+                    foreach (var item in value)
+                    {
+                        root.AddChild(BuildField(new ViewModelFieldsUpdater(), new ViewModelMemberInfo(item, index.ToString())));
+                        index++;
+                    }
+                }
+
+                return root;
+            });
+            
+            bool IsKeyValuePairInEnumerable()
+            {
+                return value.GetType()
                     .GetInterfaces()
                     .Any(@interface =>
                     {
@@ -166,43 +234,56 @@ namespace Aspid.MVVM.Unity
             }
         }
 
-        private static void DrawCompositeValue(object obj, string fieldName, string parentFieldName = "",
-            bool ignoreNicify = false)
+        private static VisualElement SetupField<T>(this BaseField<T> field, T value, ViewModelFieldsUpdater updater, ViewModelMemberInfo memberInfo)
         {
-            if (obj == null)
-            {
-                GUI.enabled = false;
-                {
-                    EditorGUILayout.TextField(fieldName, "null");
-                }
-                GUI.enabled = true;
-                return;
-            }
-
-            var prefsKey = string.IsNullOrEmpty(parentFieldName) ? $"{parentFieldName}.{fieldName}" :
-                $"{fieldName}";
-            if (!Foldout(prefsKey, fieldName, ignoreNicify)) return;
-
-            EditorGUI.indentLevel++;
-            {
-                var fields = obj.GetType()
-                    .GetFieldInfosIncludingBaseClasses(BindingFlags.Instance | BindingFlags.Public |
-                        BindingFlags.NonPublic);
-                foreach (var field in fields)
-                    DrawValue(field.GetValue(obj), field.Name, prefsKey);
-            }
-            EditorGUI.indentLevel--;
+            if (!string.IsNullOrEmpty(memberInfo.Tag))
+                field.AddChild(new HelpBox(memberInfo.Tag, HelpBoxMessageType.None));
+            
+            field.value = value;
+            field.enabledSelf = !memberInfo.IsReadonly;
+            
+            updater.AddField(field, memberInfo);
+            return field;
         }
 
-        private static bool Foldout(string prefsKey, string fieldName, bool ignoreNicify = false)
+        private static Foldout Foldout(string name, string prefsKey, Type type, Func<VisualElement> trueCallBack)
         {
-            var prefsValue = EditorPrefs.GetBool(prefsKey, false);
+            var label = string.IsNullOrEmpty(type.Namespace)
+                ? $"{NicifyVariableName(name)} ({type.Name})"
+                : $"{NicifyVariableName(name)} ({type.Namespace}.{type.Name})";
 
-            prefsValue = EditorGUILayout.Foldout(prefsValue,
-                ignoreNicify ? fieldName : ObjectNames.NicifyVariableName(fieldName));
-            EditorPrefs.SetBool(prefsKey, prefsValue);
+            var foldout = new Foldout
+            {
+                text = label,
+                value = EditorPrefs.GetBool(prefsKey, false),
+            }
+            .SetMargin(left: 15);
+                
+            foldout.RegisterValueChangedCallback(e =>
+            {
+                if (e.target == foldout)
+                    SetValue(e.newValue);
+            });
+            
+            SetValue(foldout.value);
+            return foldout;
 
-            return prefsValue;
+            void SetValue(bool value)
+            {
+                foldout.Clear();
+                EditorPrefs.SetBool(prefsKey, value);
+                
+                if (value)
+                {
+                    foldout.AddChild(trueCallBack?.Invoke());
+                }
+            }
+        }
+        
+        private static string NicifyVariableName(string name)
+        {
+            var nameWithoutPrefix = name.Remove(0, name.GetPrefixCount());
+            return ObjectNames.NicifyVariableName(nameWithoutPrefix);
         }
     }
 }

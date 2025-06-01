@@ -1,3 +1,4 @@
+using System;
 using UnityEngine.UIElements;
 using System.Collections.Generic;
 
@@ -15,10 +16,23 @@ namespace Aspid.MVVM.Unity
             {
                 e.StopPropagation();
                 member.Value = e.newValue;
-
-                foreach (var updater in _updaters)
-                    updater.Update();
+                Update();
             });
+        }
+
+        public Button CreateButton(string text, Action action) => new(() =>
+        {
+            action?.Invoke();
+            Update();
+        })
+        {
+            text = text,
+        };
+
+        private void Update()
+        {
+            foreach (var updater in _updaters)
+                updater.Update();
         }
         
         private abstract class FieldUpdater

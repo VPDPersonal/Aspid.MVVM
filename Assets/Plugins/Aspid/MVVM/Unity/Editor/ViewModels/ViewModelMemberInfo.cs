@@ -52,12 +52,12 @@ namespace Aspid.MVVM.Unity
             _target = value;
         }
         
-        public ViewModelMemberInfo(object target, System.Reflection.MemberInfo info, bool isBind = false)
+        public ViewModelMemberInfo(object target, MemberInfo info, bool isBind = false)
         {
             _info = info;
             Name = info.Name;
             _target = target;
-            Tag = isBind ? "B" : target is FieldInfo ? "F" : "P";
+            Tag = isBind ? "B" : info is FieldInfo ? "F" : "P";
         }
     }
 }

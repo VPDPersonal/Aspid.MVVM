@@ -49,11 +49,19 @@ namespace Aspid.CustomEditors
         
         public static VisualElement CreateTitle(StyleColor color, string text, string? name = null)
         {
-            var label = new Label(text)
+            var textContainer = new VisualElement()
+                .SetFlexDirection(FlexDirection.Row)
+                .SetName("TextContainer")
+                .SetAlignContent(Align.Center)
+                .SetSize(width: Length.Percent(100));
+            
+            textContainer.style.justifyContent = Justify.SpaceBetween;
+
+            textContainer.AddChild(new Label(text)
                 .SetName("Text")
                 .SetColor(color)
                 .SetFontSize(14)
-                .SetUnityFontStyleAndWeight(FontStyle.Bold);
+                .SetUnityFontStyleAndWeight(FontStyle.Bold));
 
             var line = new VisualElement()
                 .SetName("Line")
@@ -62,7 +70,7 @@ namespace Aspid.CustomEditors
                 .SetSize(new StyleLength(new Length(100, LengthUnit.Percent)), 2);
             
             var title = new VisualElement()
-                .AddChild(label)
+                .AddChild(textContainer)
                 .AddChild(line);
 
             if (!string.IsNullOrEmpty(name)) title.SetName(name);

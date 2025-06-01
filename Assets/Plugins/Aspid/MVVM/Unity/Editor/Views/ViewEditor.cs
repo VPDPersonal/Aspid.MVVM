@@ -91,11 +91,31 @@ namespace Aspid.MVVM.Unity
 
         protected VisualElement BuildViewModel()
         {
-            return Elements.CreateContainer(EditorColor.LightContainer)
-                .AddTitle(EditorColor.LightText, "View Model")
-                .AddChild(ViewModelDrawer.CreateViewModelContainer(View))
+
+            var title = Elements.CreateTitle(EditorColor.LightText, "View Model");
+            
+            var viewModel = Elements.CreateContainer(EditorColor.LightContainer)
+                .AddChild(title)
+                .AddChild(ViewModelDrawer.CreateViewModelContainer(View)
+                    .SetName("ViewModelContainer"))
                 .SetMargin(top: 10)
                 .SetName("ViewModel");
+            
+            var refreshButton = new Button(Refresh)
+            {
+                text = "Refresh"
+            };
+
+            title.Q<VisualElement>("TextContainer").AddChild(refreshButton);
+
+            return viewModel;
+
+            void Refresh()
+            {
+                viewModel.Remove(viewModel.Q<VisualElement>("ViewModelContainer"));
+                viewModel.AddChild(ViewModelDrawer.CreateViewModelContainer(View)
+                    .SetName("ViewModelContainer"));
+            }
         }   
         #endregion
 

@@ -104,11 +104,17 @@ namespace Aspid.MVVM.Unity
             if (typeof(Vector2Int) == type) return new Vector2IntField(label).SetupField((Vector2Int)value, updater, member);
             if (typeof(Vector3Int) == type) return new Vector3IntField(label).SetupField((Vector3Int)value, updater, member);
             if (typeof(Delegate).IsAssignableFrom(type)) return BuildDelegateField(value as Delegate, label);
-            if (typeof(IEnumerable).IsAssignableFrom(type)) return BuildEnumerableField(value as IEnumerable, label);
             if (typeof(Object).IsAssignableFrom(type)) return new ObjectField(label).SetupField(value as Object, updater, member);
             if (typeof(Gradient).IsAssignableFrom(type)) return new GradientField(label).SetupField(value as Gradient, updater, member);
             if (typeof(AnimationCurve).IsAssignableFrom(type)) return new CurveField(label).SetupField(value as AnimationCurve, updater, member);
             if (typeof(Enum).IsAssignableFrom(type)) return new EnumField(label, value as Enum).SetupField(value as Enum, updater, member);
+            if (typeof(IEnumerable).IsAssignableFrom(type)) return BuildEnumerableField(value as IEnumerable, label);
+            
+            if (value is RelayCommand)
+            {
+                return BuildRelayCommandField(updater, member, label);
+            }
+            
             return BuildCompositeValue(member, label);
         }
 
@@ -231,6 +237,34 @@ namespace Aspid.MVVM.Unity
                         return interfaceArgument.IsGenericType &&
                             typeof(KeyValuePair<,>).IsAssignableFrom(interfaceArgument.GetGenericTypeDefinition());
                     });
+            }
+        }
+        
+        private static VisualElement BuildRelayCommandField(ViewModelFieldsUpdater updater, ViewModelMemberInfo member, string label)
+        {
+            return Foldout(label, member.Name + label, member.Type, DataContainer);
+            
+            VisualElement DataContainer()
+            {
+                var root = new VisualElement();
+
+                var type = typeof(RelayCommand);
+                var execute = type.GetField("_execute", Flags);
+                var canExecute = type.GetField("_canExecute", Flags);
+                var canExecuteChanged = type.GetField("CanExecuteChanged", Flags);
+
+                var value = member.Value;
+                root.AddChild(BuildDelegateField(execute?.GetValue(value) as Delegate, "Execute"));
+                root.AddChild(BuildDelegateField(canExecute?.GetValue(value) as Delegate, "CanExecute"));
+                root.AddChild(BuildDelegateField(canExecuteChanged?.GetValue(value) as Delegate, "CanExecuteChanged"));
+                
+                var executeMethod = type.GetMethod("Execute", Flags);
+                var canExecuteMethod = type.GetMethod("CanExecute", Flags);
+                
+                root.AddChild(updater.CreateButton("Execute", () => executeMethod?.Invoke(value, new object[] { })));
+                root.AddChild(updater.CreateButton("Can Execute", () => canExecuteMethod?.Invoke(value, new object[] { })));
+                
+                return root;
             }
         }
 

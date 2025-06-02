@@ -36,7 +36,7 @@ namespace Aspid.MVVM.Unity
                 return root.AddChild(BuildNullField(label));
 
             var type = value.GetType();
-            return root.AddChild(Foldout(label, member.Name + label, type, DataContainer));
+            return root.AddChild(Foldout(label, type, DataContainer, member.Name + label));
 
             VisualElement DataContainer()
             {
@@ -110,6 +110,7 @@ namespace Aspid.MVVM.Unity
             if (typeof(Vector4) == type) return new Vector4Field(label).SetupField((Vector4)value, updater, member);
             if (typeof(Vector2Int) == type) return new Vector2IntField(label).SetupField((Vector2Int)value, updater, member);
             if (typeof(Vector3Int) == type) return new Vector3IntField(label).SetupField((Vector3Int)value, updater, member);
+            if (typeof(Type).IsAssignableFrom(type)) return BuildTypeField((Type)value, label);
             if (typeof(Delegate).IsAssignableFrom(type)) return BuildDelegateField(value as Delegate, label);
             if (typeof(Object).IsAssignableFrom(type)) return new ObjectField(label).SetupField(value as Object, updater, member);
             if (typeof(Gradient).IsAssignableFrom(type)) return new GradientField(label).SetupField(value as Gradient, updater, member);
@@ -136,65 +137,83 @@ namespace Aspid.MVVM.Unity
             return field;
         }
 
+        private static VisualElement BuildTypeField(Type value, string label)
+        {
+	        if (value is null) return BuildNullField(label);
+	        
+	        var namespaceName = !string.IsNullOrEmpty(value.Namespace) ? $"{value.Namespace}." : string.Empty;
+	        var name = $"{namespaceName}{value.Name}";
+	            
+	        var field = new TextField(label)
+	        {
+		        value = name,
+	        };
+	        field.SetEnabled(false);
+
+	        return field;
+        }
+
         private static VisualElement BuildDelegateField(Delegate value, string label)
         {
             if (value is null)
                 return BuildNullField(label);
             
-            return Foldout(label, label, value.GetType(), () =>
+            return Foldout(label, value.GetType(), DataContainer);
+
+            VisualElement DataContainer()
             {
-                var root = new VisualElement();
+	            var root = new VisualElement();
 
-                foreach (var @delegate in value.GetInvocationList())
-                {
-                    if (@delegate is null)
-                    {
-                        root.AddChild(BuildNullField(label));
-                        continue;
-                    }
+	            foreach (var @delegate in value.GetInvocationList())
+	            {
+		            if (@delegate is null)
+		            {
+			            root.AddChild(BuildNullField(label));
+			            continue;
+		            }
 
-                    var targetType = @delegate.Method.DeclaringType!;
-                    var targetName = targetType.Name;
+		            var targetType = @delegate.Method.DeclaringType!;
+		            var targetName = targetType.Name;
 
-                    var box = Elements.CreateContainer(EditorColor.LighterContainer)
-                        .SetMargin(top: 5);
+		            var box = Elements.CreateContainer(EditorColor.LighterContainer)
+		                              .SetMargin(top: 5);
                     
-                    if (@delegate.Target is Object obj)
-                    {
-                        var field = new ObjectField(label)
-                        {
-                            value = obj,
-                        };
+		            if (@delegate.Target is Object obj)
+		            {
+			            var field = new ObjectField(label)
+			            {
+				            value = obj,
+			            };
                         
-                        field.SetEnabled(false);
-                        box.AddChild(field);
-                    }
-                    else
-                    {
-                        var targetNamespace = targetType.Namespace;
-                        var field = new TextField("Type")
-                        {
-                            value = $"{targetNamespace}.{targetName}",
-                        };
+			            field.SetEnabled(false);
+			            box.AddChild(field);
+		            }
+		            else
+		            {
+			            var targetNamespace = targetType.Namespace;
+			            var field = new TextField("Type")
+			            {
+				            value = $"{targetNamespace}.{targetName}",
+			            };
                         
-                        field.SetEnabled(false);
-                        box.AddChild(field);
-                    }
+			            field.SetEnabled(false);
+			            box.AddChild(field);
+		            }
 
-                    var methodField = new TextField("Method")
-                    {
-                        value = @delegate.Method.Name
-                    };
+		            var methodField = new TextField("Method")
+		            {
+			            value = @delegate.Method.Name
+		            };
                     
-                    methodField.SetEnabled(false);
-                    box.AddChild(methodField);
+		            methodField.SetEnabled(false);
+		            box.AddChild(methodField);
                     
-                    root.AddChild(box)
-                        .SetMargin(bottom: 5);
-                }
+		            root.AddChild(box)
+		                .SetMargin(bottom: 5);
+	            }
 
-                return root;
-            });
+	            return root;
+            }
         }
 
         private static VisualElement BuildEnumerableField(IEnumerable value, string label)
@@ -202,7 +221,7 @@ namespace Aspid.MVVM.Unity
             if (value is null)
                 return BuildNullField(label);
             
-            return Foldout(label, label, value.GetType(), () =>
+            return Foldout(label, value.GetType(), () =>
             {
                 var root = new VisualElement();
 
@@ -259,7 +278,7 @@ namespace Aspid.MVVM.Unity
         
         private static VisualElement BuildRelayCommandField(ViewModelFieldsUpdater updater, ViewModelMemberInfo member, string label)
         {
-            return Foldout(label, member.Name + label, member.Type, DataContainer);
+            return Foldout(label, member.Type, DataContainer, member.Name + label);
             
             VisualElement DataContainer()
             {
@@ -297,7 +316,7 @@ namespace Aspid.MVVM.Unity
             return field;
         }
 
-        private static Foldout Foldout(string name, string prefsKey, Type type, Func<VisualElement> trueCallBack)
+        private static Foldout Foldout(string name, Type type, Func<VisualElement> trueCallBack, string prefsKey = null)
         {
             var label = string.IsNullOrEmpty(type.Namespace)
                 ? $"{NicifyVariableName(name)} ({type.Name})"
@@ -306,7 +325,7 @@ namespace Aspid.MVVM.Unity
             var foldout = new Foldout
             {
                 text = label,
-                value = EditorPrefs.GetBool(prefsKey, false),
+                value = !string.IsNullOrWhiteSpace(prefsKey) && EditorPrefs.GetBool(prefsKey, false),
             }
             .SetMargin(left: 15);
                 
@@ -322,7 +341,9 @@ namespace Aspid.MVVM.Unity
             void SetValue(bool value)
             {
                 foldout.Clear();
-                EditorPrefs.SetBool(prefsKey, value);
+                
+                if (!string.IsNullOrWhiteSpace(prefsKey))
+					EditorPrefs.SetBool(prefsKey, value);
                 
                 if (value)
                 {

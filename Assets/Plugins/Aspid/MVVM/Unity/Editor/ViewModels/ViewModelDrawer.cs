@@ -266,10 +266,10 @@ namespace Aspid.MVVM.Unity
                 root.AddChild(BuildDelegateField(canExecuteChanged?.GetValue(value) as Delegate, "CanExecuteChanged"));
                 
                 var executeMethod = type.GetMethod("Execute", Flags);
-                var canExecuteMethod = type.GetMethod("CanExecute", Flags);
+                var notifyCanExecuteChangedMethod = type.GetMethod("NotifyCanExecuteChanged", Flags);
                 
                 root.AddChild(updater.CreateButton("Execute", () => executeMethod?.Invoke(value, new object[] { })));
-                root.AddChild(updater.CreateButton("Can Execute", () => canExecuteMethod?.Invoke(value, new object[] { })));
+                root.AddChild(updater.CreateButton("Notify Can Execute Changed", () => notifyCanExecuteChangedMethod?.Invoke(value, new object[] { })));
                 
                 return root;
             }

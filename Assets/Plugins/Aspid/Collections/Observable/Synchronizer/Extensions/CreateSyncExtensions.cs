@@ -4,7 +4,7 @@ namespace Aspid.Collections.Observable.Synchronizer
 {
     public static class CreateSyncExtensions
     {
-        public static IReadOnlyObservableList<TTo> CreateSync<TFrom, TTo>(
+        public static IReadOnlyObservableListSync<TTo> CreateSync<TFrom, TTo>(
             this IReadOnlyObservableList<TFrom> fromList, 
             Func<TFrom, TTo> converter,
             bool isDisposable = false)
@@ -12,7 +12,7 @@ namespace Aspid.Collections.Observable.Synchronizer
             return new ObservableListSync<TFrom, TTo>(fromList, converter, isDisposable);
         }
         
-        public static IReadOnlyObservableList<TTo> CreateSync<TFrom, TTo>(
+        public static IReadOnlyObservableListSync<TTo> CreateSync<TFrom, TTo>(
             this IReadOnlyObservableList<TFrom> fromList, 
             Func<TFrom, TTo> converter,
             Action<TTo> removed)
@@ -20,7 +20,7 @@ namespace Aspid.Collections.Observable.Synchronizer
             return new ObservableListSync<TFrom, TTo>(fromList, converter, removed);
         }
         
-        public static IReadOnlyObservableCollection<TTo> CreateSync<TFrom, TTo>(
+        public static IReadOnlyObservableCollectionSync<TTo> CreateSync<TFrom, TTo>(
             this ObservableQueue<TFrom> fromQueue, 
             Func<TFrom, TTo> converter,
             bool isDisposable = false)
@@ -28,7 +28,7 @@ namespace Aspid.Collections.Observable.Synchronizer
             return new ObservableQueueSync<TFrom, TTo>(fromQueue, converter, isDisposable);
         }
         
-        public static IReadOnlyObservableCollection<TTo> CreateSync<TFrom, TTo>(
+        public static IReadOnlyObservableCollectionSync<TTo> CreateSync<TFrom, TTo>(
             this ObservableQueue<TFrom> fromQueue, 
             Func<TFrom, TTo> converter,
             Action<TTo> remove)
@@ -36,7 +36,7 @@ namespace Aspid.Collections.Observable.Synchronizer
             return new ObservableQueueSync<TFrom, TTo>(fromQueue, converter, remove);
         }
         
-        public static IReadOnlyObservableCollection<TTo> CreateSync<TFrom, TTo>(
+        public static IReadOnlyObservableCollectionSync<TTo> CreateSync<TFrom, TTo>(
             this ObservableStack<TFrom> fromStack, 
             Func<TFrom, TTo> converter,
             bool isDisposable = false)
@@ -44,7 +44,7 @@ namespace Aspid.Collections.Observable.Synchronizer
             return new ObservableStackSync<TFrom, TTo>(fromStack, converter, isDisposable);
         }
         
-        public static IReadOnlyObservableCollection<TTo> CreateSync<TFrom, TTo>(
+        public static IReadOnlyObservableCollectionSync<TTo> CreateSync<TFrom, TTo>(
             this ObservableStack<TFrom> fromStack, 
             Func<TFrom, TTo> converter,
             Action<TTo> remove)
@@ -52,7 +52,7 @@ namespace Aspid.Collections.Observable.Synchronizer
             return new ObservableStackSync<TFrom, TTo>(fromStack, converter, remove);
         }
 
-        public static IReadOnlyObservableCollection<TTo> CreateSync<TFrom, TTo>(
+        public static IReadOnlyObservableCollectionSync<TTo> CreateSync<TFrom, TTo>(
             this ObservableHashSet<TFrom> fromHashSet,
             Func<TFrom, TTo> converter,
             bool isDisposable = false)
@@ -62,7 +62,7 @@ namespace Aspid.Collections.Observable.Synchronizer
             return new ObservableHashSetSync<TFrom, TTo>(fromHashSet, converter, isDisposable);
         }
 
-        public static IReadOnlyObservableCollection<TTo> CreateSync<TFrom, TTo>(
+        public static IReadOnlyObservableCollectionSync<TTo> CreateSync<TFrom, TTo>(
             this ObservableHashSet<TFrom> fromHashSet,
             Func<TFrom, TTo> converter,
             Action<TTo> remove)
@@ -72,7 +72,7 @@ namespace Aspid.Collections.Observable.Synchronizer
             return new ObservableHashSetSync<TFrom, TTo>(fromHashSet, converter, remove);
         }
 
-        public static IReadOnlyObservableDictionary<TKey, TTo> CreateSync<TKey, TFrom, TTo>(
+        public static IReadOnlyObservableDictionarySync<TKey, TTo> CreateSync<TKey, TFrom, TTo>(
             this IReadOnlyObservableDictionary<TKey, TFrom> fromDictionary, 
             Func<TFrom, TTo> converter,
             bool isDisposable = false)
@@ -81,7 +81,7 @@ namespace Aspid.Collections.Observable.Synchronizer
             return new ObservableDictionarySync<TKey, TFrom, TTo>(fromDictionary, converter, isDisposable);
         }
         
-        public static IReadOnlyObservableDictionary<TKey, TTo> CreateSync<TKey, TFrom, TTo>(
+        public static IReadOnlyObservableDictionarySync<TKey, TTo> CreateSync<TKey, TFrom, TTo>(
             this IReadOnlyObservableDictionary<TKey, TFrom> fromDictionary, 
             Func<TFrom, TTo> converter,
             Action<TTo> remove)

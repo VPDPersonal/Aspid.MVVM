@@ -125,11 +125,16 @@ namespace Aspid.MVVM.Unity
             return BuildCompositeValue(member, label);
         }
 
-        private static VisualElement BuildNullField(string label) => new TextField(label)
-        { 
-            value = "null",
-            enabledSelf = false,
-        };
+        private static VisualElement BuildNullField(string label)
+        {
+            var field = new TextField(label)
+            {
+                value = "null",
+            };
+            
+            field.SetEnabled(false);
+            return field;
+        }
 
         private static VisualElement BuildDelegateField(Delegate value, string label)
         {
@@ -156,28 +161,33 @@ namespace Aspid.MVVM.Unity
                     
                     if (@delegate.Target is Object obj)
                     {
-                        box.AddChild(new ObjectField(label)
+                        var field = new ObjectField(label)
                         {
                             value = obj,
-                            enabledSelf = false,
-                        });
+                        };
+                        
+                        field.SetEnabled(false);
+                        box.AddChild(field);
                     }
                     else
                     {
                         var targetNamespace = targetType.Namespace;
-
-                        box.AddChild(new TextField("Type")
+                        var field = new TextField("Type")
                         {
-                            enabledSelf = false,
                             value = $"{targetNamespace}.{targetName}",
-                        });
+                        };
+                        
+                        field.SetEnabled(false);
+                        box.AddChild(field);
                     }
 
-                    box.AddChild(new TextField("Method")
+                    var methodField = new TextField("Method")
                     {
-                        enabledSelf = false,
                         value = @delegate.Method.Name
-                    });
+                    };
+                    
+                    methodField.SetEnabled(false);
+                    box.AddChild(methodField);
                     
                     root.AddChild(box)
                         .SetMargin(bottom: 5);
@@ -281,7 +291,7 @@ namespace Aspid.MVVM.Unity
                 field.AddChild(new HelpBox(memberInfo.Tag, HelpBoxMessageType.None));
             
             field.value = value;
-            field.enabledSelf = !memberInfo.IsReadonly;
+            field.SetEnabled(!memberInfo.IsReadonly);
             
             updater.AddField(field, memberInfo);
             return field;

@@ -72,8 +72,8 @@ namespace Aspid.MVVM.Unity
         private BindModeOverrideAttribute GetOverrideAttribute(SerializedProperty property)
         {
             if (_wasLookingFor) return _attribute;
-
-            var type = property.serializedObject.targetObject.GetType();
+            
+            var type = GetClassType(property);
 
             for (; type is not null; type = type.BaseType)
             {
@@ -86,6 +86,46 @@ namespace Aspid.MVVM.Unity
             
             _wasLookingFor = true;
             return _attribute;
+        }
+
+        private Type GetClassType(SerializedProperty property)
+        {
+            var path = property.propertyPath;
+            var startRemoveIndex = path.Length - fieldInfo.Name.Length - 1;
+            
+            if (startRemoveIndex < 0)
+                return property.serializedObject.targetObject.GetType();
+            
+            path = path.Remove(startRemoveIndex)
+                .Replace(".Array.data[", "[");
+            
+            SerializedProperty childProperty = null;
+
+            foreach (var part in path.Split('.'))
+            {
+                if (part.Contains("["))
+                {
+                    var index = int.Parse(part[part.IndexOf("[", StringComparison.Ordinal)..]
+                        .Replace("[", "")
+                        .Replace("]", ""));
+
+                    SetChildProperty(part[..part.IndexOf("[", StringComparison.Ordinal)]);
+                    childProperty = childProperty.GetArrayElementAtIndex(index);
+                }
+                else
+                {
+                    SetChildProperty(part);
+                }
+            }
+            
+            return childProperty?.boxedValue.GetType();
+
+            void SetChildProperty(string propertyName)
+            {
+                childProperty = childProperty is null 
+                    ? property.serializedObject.FindProperty(propertyName) 
+                    : childProperty.FindPropertyRelative(propertyName);
+            }
         }
 
         private readonly ref struct BindModes

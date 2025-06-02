@@ -10,7 +10,7 @@ using Converter = Aspid.MVVM.StarterKit.Unity.IConverterObjectToString;
 namespace Aspid.MVVM.StarterKit.Unity
 {
     [AddComponentMenu("Aspid/MVVM/Binders/Casters/Any To String Caster Binder")]
-    public sealed class AnyToStringCasterMonoBinder : MonoBinder, IBinder<object>
+    public sealed class AnyToStringCasterMonoBinder : MonoBinder, IAnyBinder 
     {
         [Header("Converter")]
         [SerializeReferenceDropdown]
@@ -19,7 +19,8 @@ namespace Aspid.MVVM.StarterKit.Unity
         [Header("Events")]
         [SerializeField] private UnityEvent<string> _casted;
         
-        public void SetValue(object value)
+        [BinderLog]
+        public void SetValue<T>(T value)
         {
             var castedValue = _converter.Convert(value);
             _casted?.Invoke(castedValue);

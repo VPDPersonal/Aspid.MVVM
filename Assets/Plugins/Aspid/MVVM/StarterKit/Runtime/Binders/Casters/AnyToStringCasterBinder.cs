@@ -2,7 +2,7 @@ using System;
 
 namespace Aspid.MVVM.StarterKit
 {
-    public sealed class AnyToStringCasterBinder : Binder, IBinder<object?>
+    public sealed class AnyToStringCasterBinder : Binder, IAnyBinder
     {
         private readonly Action<string?> _setValue;
         private readonly IConverter<object?, string?> _converter;
@@ -18,7 +18,7 @@ namespace Aspid.MVVM.StarterKit
             _converter = converter ?? throw new ArgumentNullException(nameof(converter));
         }
 
-        public void SetValue(object? value) =>
+        public void SetValue<T>(T value) =>
             _setValue(_converter.Convert(value));
     }
 }

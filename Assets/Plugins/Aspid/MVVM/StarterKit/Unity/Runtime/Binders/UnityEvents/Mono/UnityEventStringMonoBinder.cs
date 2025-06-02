@@ -11,7 +11,7 @@ using Converter = Aspid.MVVM.StarterKit.Unity.IConverterString;
 namespace Aspid.MVVM.StarterKit.Unity
 {
     [AddComponentMenu("Aspid/MVVM/Binders/UnityEvent/UnityEvent Binder - String")]
-    public sealed partial class UnityEventStringMonoBinder : MonoBinder, IBinder<string>, IBinder<object>, INumberBinder
+    public sealed partial class UnityEventStringMonoBinder : MonoBinder, IBinder<string>, IAnyBinder, INumberBinder
     {
         public event UnityAction<string> Set
         {
@@ -48,9 +48,9 @@ namespace Aspid.MVVM.StarterKit.Unity
         [BinderLog]
         public void SetValue(double value) =>
             SetValue(value.ToString(CultureInfo.InvariantCulture));
-
+        
         [BinderLog]
-        public void SetValue(object value) =>
+        public void SetValue<T>(T value) =>
             SetValue(value.ToString());
     }
 }

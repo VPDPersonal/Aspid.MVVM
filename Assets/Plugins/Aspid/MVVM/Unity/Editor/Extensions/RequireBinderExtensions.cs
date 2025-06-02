@@ -31,6 +31,8 @@ namespace Aspid.MVVM.Unity
         {
             var result = binder.GetType().GetInterfaces().Any(@interface =>
             {
+                if (@interface == typeof(IAnyBinder)) return true;
+                
                 if (!@interface.IsGenericType) return false;
                 if (@interface.GetGenericTypeDefinition() != typeof(IBinder<>) 
                     && @interface.GetGenericTypeDefinition() != typeof(IReverseBinder<>)) return false;

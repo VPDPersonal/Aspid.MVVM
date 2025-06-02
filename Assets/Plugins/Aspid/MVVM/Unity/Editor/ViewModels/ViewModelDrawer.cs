@@ -42,7 +42,12 @@ namespace Aspid.MVVM.Unity
             {
                 var childElement = new VisualElement();
 
-                var baseType = value is ScriptableObject ? typeof(ScriptableObject) : typeof(object);
+                var baseType = value switch
+                {
+                    ScriptableObject => typeof(ScriptableObject),
+                    MonoBehaviour => typeof(MonoBehaviour),
+                    _ => typeof(object)
+                };
                 
                 var fields = type.GetFieldInfosIncludingBaseClasses(Flags, baseType);
                 var properties = type.GetPropertyInfosIncludingBaseClasses(Flags, baseType);

@@ -41,9 +41,11 @@ namespace Aspid.MVVM.Unity
             VisualElement DataContainer()
             {
                 var childElement = new VisualElement();
+
+                var baseType = value is ScriptableObject ? typeof(ScriptableObject) : typeof(object);
                 
-                var fields = type.GetFieldInfosIncludingBaseClasses(Flags);
-                var properties = type.GetPropertyInfosIncludingBaseClasses(Flags);
+                var fields = type.GetFieldInfosIncludingBaseClasses(Flags, baseType);
+                var properties = type.GetPropertyInfosIncludingBaseClasses(Flags, baseType);
 
                 var bindNames = new HashSet<string>();
                 var context = new ViewModelFieldsUpdater();

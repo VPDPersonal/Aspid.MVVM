@@ -29,25 +29,25 @@ namespace Aspid.MVVM.Unity
             return null;
         }
         
-        public static IEnumerable<FieldInfo> GetFieldInfosIncludingBaseClasses(this Type type, BindingFlags bindingFlags) =>
-            GetMembersInfosIncludingBaseClasses(type, bindingFlags).OfType<FieldInfo>();
+        public static IEnumerable<FieldInfo> GetFieldInfosIncludingBaseClasses(this Type type, BindingFlags bindingFlags, Type? baseType = null) =>
+            GetMembersInfosIncludingBaseClasses(type, bindingFlags, baseType).OfType<FieldInfo>();
         
-        public static IEnumerable<PropertyInfo> GetPropertyInfosIncludingBaseClasses(this Type type, BindingFlags bindingFlags) =>
-            GetMembersInfosIncludingBaseClasses(type, bindingFlags).OfType<PropertyInfo>();
+        public static IEnumerable<PropertyInfo> GetPropertyInfosIncludingBaseClasses(this Type type, BindingFlags bindingFlags, Type? baseType = null) =>
+            GetMembersInfosIncludingBaseClasses(type, bindingFlags, baseType).OfType<PropertyInfo>();
         
-        public static IEnumerable<System.Reflection.MemberInfo> GetMembersInfosIncludingBaseClasses(this Type type, BindingFlags bindingFlags)
+        public static IEnumerable<MemberInfo> GetMembersInfosIncludingBaseClasses(this Type type, BindingFlags bindingFlags, Type? baseType = null)
         {
             if (type.BaseType == typeof(object)) 
                 return type.GetMembers(bindingFlags);
 
             var currentType = type;
-            var memberInfoList = new List<System.Reflection.MemberInfo>();
+            var memberInfoList = new List<MemberInfo>();
             
-            while (currentType != typeof(object))
+            while (currentType != (baseType ?? typeof(object)))
             {
                 if (currentType is null) break;
                 
-                memberInfoList.AddRange(currentType.GetMembers(bindingFlags));
+                memberInfoList.AddRange(currentType.GetMembers(bindingFlags | BindingFlags.DeclaredOnly));
                 currentType = currentType.BaseType;
             }
 

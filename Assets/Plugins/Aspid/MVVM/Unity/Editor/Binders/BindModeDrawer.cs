@@ -1,5 +1,7 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using UnityEditor;
 using UnityEngine;
 
@@ -98,33 +100,40 @@ namespace Aspid.MVVM.Unity
             
             path = path.Remove(startRemoveIndex)
                 .Replace(".Array.data[", "[");
-            
-            SerializedProperty childProperty = null;
+
+            Type currentType = null;
 
             foreach (var part in path.Split('.'))
             {
-                if (part.Contains("["))
-                {
-                    var index = int.Parse(part[part.IndexOf("[", StringComparison.Ordinal)..]
-                        .Replace("[", "")
-                        .Replace("]", ""));
-
-                    SetChildProperty(part[..part.IndexOf("[", StringComparison.Ordinal)]);
-                    childProperty = childProperty.GetArrayElementAtIndex(index);
-                }
-                else
-                {
-                    SetChildProperty(part);
-                }
+	            currentType = part.Contains("[")
+		            ? FindType(part[..part.IndexOf("[", StringComparison.Ordinal)], true)
+		            : FindType(part);
             }
-            
-            return childProperty?.boxedValue.GetType();
 
-            void SetChildProperty(string propertyName)
+            return currentType;
+
+            Type FindType(string name, bool isArray = false)
             {
-                childProperty = childProperty is null 
-                    ? property.serializedObject.FindProperty(propertyName) 
-                    : childProperty.FindPropertyRelative(propertyName);
+	            var field = currentType is null
+		            ? FindField(property.serializedObject.targetObject.GetType(), name)
+		            : FindField(currentType, name);
+
+	            if (isArray)
+	            {
+		            if (field.FieldType.IsArray) 
+			            return field.FieldType.GetElementType();
+
+		            if (field.FieldType.IsGenericType && field.FieldType.GetGenericTypeDefinition() == typeof(List<>))
+			            return field.FieldType.GetGenericArguments()[0];
+	            }
+
+	            return field.FieldType;
+            }
+
+            FieldInfo FindField(Type type, string name)
+            {
+	            return type?.GetFieldInfosIncludingBaseClasses(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
+	                .FirstOrDefault(field => field.Name == name);
             }
         }
 

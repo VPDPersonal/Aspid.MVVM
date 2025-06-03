@@ -4,7 +4,7 @@ namespace Aspid.MVVM.StarterKit
 {
     [Serializable]
     [BindModeOverride(IsAll = true)]
-    public sealed class TwoWayProperty<T> : Binder, IBinder<T>, IReverseBinder<T>, IBindableProperty<T>
+    public class TwoWayValue<T> : Binder, IBinder<T>, IReverseBinder<T>, IBindableValue<T>
     {
         public event Action<T?>? Changed;
         
@@ -15,13 +15,11 @@ namespace Aspid.MVVM.StarterKit
         }
         
 #if UNITY_2022_1_OR_NEWER
-        [UnityEngine.Header("Parameter")]
         [UnityEngine.SerializeField] 
 #endif
         private T? _value;
         
 #if UNITY_2022_1_OR_NEWER
-        [UnityEngine.Header("Converter")]
         [UnityEngine.SerializeReference]
         [SerializeReferenceDropdown]
 #endif
@@ -39,20 +37,17 @@ namespace Aspid.MVVM.StarterKit
             }
         }
 
-        public TwoWayProperty(BindMode mode = BindMode.TwoWay)
+        public TwoWayValue(BindMode mode = BindMode.TwoWay)
             : this(default, mode) { }
         
-        public TwoWayProperty(T? value, BindMode mode = BindMode.TwoWay)
+        public TwoWayValue(T? value, BindMode mode = BindMode.TwoWay)
             : base(mode)
         {
             mode.ThrowExceptionIfNone();
             _value = value;
         }
         
-        public TwoWayProperty(T? value, Func<T?, T?> converter, BindMode mode = BindMode.TwoWay) 
-            : this(value, converter.ToConvert(), mode) { }
-        
-        public TwoWayProperty(T? value, IConverter<T?, T?>? converter = null, BindMode mode = BindMode.TwoWay)
+        public TwoWayValue(T? value, IConverter<T?, T?>? converter, BindMode mode = BindMode.TwoWay)
             : base(mode)
         {
             mode.ThrowExceptionIfNone();
@@ -73,6 +68,6 @@ namespace Aspid.MVVM.StarterKit
             _valueChanged?.Invoke(Value);
         }
 
-        public static implicit operator T?(TwoWayProperty<T?> binder) => binder.Value;
+        public static implicit operator T?(TwoWayValue<T?> binder) => binder.Value;
     }
 }

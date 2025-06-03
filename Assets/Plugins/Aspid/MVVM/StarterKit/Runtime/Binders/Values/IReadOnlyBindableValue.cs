@@ -2,7 +2,7 @@ using System;
 
 namespace Aspid.MVVM.StarterKit
 {
-    public interface IReadOnlyBindableProperty<out T>
+    public interface IReadOnlyBindableValue<out T>
     {
         public event Action<T?>? Changed;
         

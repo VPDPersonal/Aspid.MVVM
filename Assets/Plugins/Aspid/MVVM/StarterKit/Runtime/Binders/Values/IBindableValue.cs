@@ -1,6 +1,6 @@
 namespace Aspid.MVVM.StarterKit
 {
-    public interface IBindableProperty<T> : IReadOnlyBindableProperty<T>
+    public interface IBindableValue<T> : IReadOnlyBindableValue<T>
     {
         public new T? Value { get; set; }
     }

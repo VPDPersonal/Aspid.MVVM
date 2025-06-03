@@ -26,8 +26,13 @@ namespace Aspid.MVVM.StarterKit.Unity
         }
 
         [BinderLog]
-        public void SetValue(IRelayCommand value) =>
+        public void SetValue(IRelayCommand value)
+        {
             Command = value;
+            OnSetValue(value);
+        }
+
+        protected virtual void OnSetValue(IRelayCommand value) { }
         
         public bool CanExecute() => 
             Command?.CanExecute() ?? false;
@@ -60,8 +65,13 @@ namespace Aspid.MVVM.StarterKit.Unity
         }
         
         [BinderLog]
-        public void SetValue(IRelayCommand<T> value) =>
+        public void SetValue(IRelayCommand<T> value)
+        {
             Command = value;
+            OnSetValue(value);
+        }
+
+        protected virtual void OnSetValue(IRelayCommand<T> value) { }
         
         public bool CanExecute(T param1) =>
             Command?.CanExecute(param1) ?? false;
@@ -94,9 +104,14 @@ namespace Aspid.MVVM.StarterKit.Unity
         }
         
         [BinderLog]
-        public void SetValue(IRelayCommand<T1, T2> value) =>
+        public void SetValue(IRelayCommand<T1, T2> value)
+        {
             Command = value;
+            OnSetValue(value);
+        }
         
+        protected virtual void OnSetValue(IRelayCommand<T1, T2> value) { }
+
         public bool CanExecute(T1 param1, T2 param2) => 
             Command?.CanExecute(param1, param2) ?? false;
 
@@ -128,8 +143,13 @@ namespace Aspid.MVVM.StarterKit.Unity
         }
         
         [BinderLog]
-        public void SetValue(IRelayCommand<T1, T2, T3> value) =>
+        public void SetValue(IRelayCommand<T1, T2, T3> value)
+        {
             Command = value;
+            OnSetValue(value);
+        }
+
+        protected virtual void OnSetValue(IRelayCommand<T1, T2, T3> value) { }
         
         public bool CanExecute(T1 param1, T2 param2, T3 param3) => 
             Command?.CanExecute(param1, param2, param3) ?? false;
@@ -162,8 +182,13 @@ namespace Aspid.MVVM.StarterKit.Unity
         }
         
         [BinderLog]
-        public void SetValue(IRelayCommand<T1, T2, T3, T4> value) =>
+        public void SetValue(IRelayCommand<T1, T2, T3, T4> value)
+        {
             Command = value;
+            OnSetValue(value);
+        }
+
+        protected virtual void OnSetValue(IRelayCommand<T1, T2, T3, T4> value) { }
         
         public bool CanExecute(T1 param1, T2 param2, T3 param3, T4 param4) => 
             Command?.CanExecute(param1, param2, param3, param4) ?? false;

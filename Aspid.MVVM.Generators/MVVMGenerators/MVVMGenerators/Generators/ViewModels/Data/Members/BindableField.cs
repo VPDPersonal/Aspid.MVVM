@@ -107,7 +107,7 @@ public class BindableField : BindableMember<IFieldSymbol>
     private static Accessors GetAccessors(IFieldSymbol field)
     {
         var accessors = new Accessors(SyntaxKind.PrivateKeyword, SyntaxKind.PrivateKeyword);
-        if (!field.HasAttribute(AccessAttribute, out var accessAttribute)) return accessors;
+        if (!field.HasAnyAttribute(out var accessAttribute, AccessAttribute)) return accessors;
             
         if (accessAttribute!.ConstructorArguments.Length == 1)
         {

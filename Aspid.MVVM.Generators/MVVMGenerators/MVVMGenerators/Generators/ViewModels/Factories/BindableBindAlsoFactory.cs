@@ -2,6 +2,8 @@ using Microsoft.CodeAnalysis;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using MVVMGenerators.Generators.ViewModels.Data.Members;
+using MVVMGenerators.Helpers.Descriptions;
+using MVVMGenerators.Helpers.Extensions.Symbols;
 using static MVVMGenerators.Helpers.Descriptions.Classes;
 
 namespace MVVMGenerators.Generators.ViewModels.Factories;
@@ -15,17 +17,13 @@ public static class BindableBindAlsoFactory
 
         foreach (var member in members)
         {
-            foreach (var attribute in member.GetAttributes())
-            {
-                if (attribute.AttributeClass != null &&
-                    attribute.AttributeClass.ToDisplayString() == BindAlsoAttribute.FullName)
-                {
-                    var value = attribute.ConstructorArguments[0].Value;
-                    if (value is null) continue;
+            if (!member.HasAnyAttribute(BindAttribute, OneWayBindAttribute, TwoWayBindAttribute)) continue;
+            if (!member.HasAnyAttribute(out var attribute, BindAlsoAttribute)) continue;
+            
+            var value = attribute!.ConstructorArguments[0].Value;
+            if (value is null) continue;
                     
-                    set.Add(value.ToString());
-                }
-            }
+            set.Add(value.ToString());
         }
 
         foreach (var member in members)

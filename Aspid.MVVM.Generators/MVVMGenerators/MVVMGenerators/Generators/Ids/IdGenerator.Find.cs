@@ -21,20 +21,24 @@ public partial class IdGenerator
 
         var ids = new HashSet<string>();
 
-        if (symbol.HasAttribute(Classes.ViewAttribute))
+        if (symbol.HasAnyAttribute(out var attribute, Classes.ViewAttribute, Classes.ViewModelAttribute))
         {
-            var members = BinderMembersFactory.Create(symbol, context.SemanticModel);
-            
-            foreach (var member in members)
-                ids.Add(member.Id.SourceValue);
-        }
-        
-        if (symbol.HasAttribute(Classes.ViewModelAttribute))
-        {
-            var members = BindableMembersFactory.Create(symbol);
+            var attributeName = attribute!.AttributeClass!.ToDisplayString();
 
-            foreach (var member in members)
-                ids.Add(member.Id.SourceValue);
+            if (attributeName == Classes.ViewAttribute.FullName)
+            {
+                var members = BinderMembersFactory.Create(symbol, context.SemanticModel);
+            
+                foreach (var member in members)
+                    ids.Add(member.Id.SourceValue);
+            }
+            else
+            {
+                var members = BindableMembersFactory.Create(symbol);
+
+                foreach (var member in members)
+                    ids.Add(member.Id.SourceValue);
+            }
         }
 
         return ids.Count is 0 

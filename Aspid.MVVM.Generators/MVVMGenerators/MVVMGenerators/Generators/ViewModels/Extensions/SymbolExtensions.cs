@@ -9,30 +9,36 @@ public static class SymbolExtensions
 {
     public static BindMode GetBindMode(this ISymbol member)
     {
-        if (member.HasAttribute(Classes.BindAttribute, out var bindAttribute))
+        if (member.HasAnyAttribute(out var attribute, Classes.BindAttribute, Classes.OneWayBindAttribute, 
+                Classes.TwoWayBindAttribute, Classes.OneTimeBindAttribute, Classes.OneWayToSourceBindAttribute))
         {
-            if (bindAttribute!.ConstructorArguments.Length is 0)
+            var attributeName = attribute!.AttributeClass!.ToDisplayString();
+
+            if (attributeName == Classes.BindAttribute.FullName)
             {
-                if (member is not IFieldSymbol field) return BindMode.TwoWay;
-                if (field.IsReadOnly || field.IsConst) return BindMode.OneTime;
+                if (attribute!.ConstructorArguments.Length is 0)
+                {
+                    if (member is not IFieldSymbol field) return BindMode.TwoWay;
+                    if (field.IsReadOnly || field.IsConst) return BindMode.OneTime;
 
-                return BindMode.TwoWay;
+                    return BindMode.TwoWay;
+                }
+
+                return Determine((BindMode)(int)attribute!.ConstructorArguments[0].Value!);
             }
-
-            return Determine((BindMode)(int)bindAttribute!.ConstructorArguments[0].Value!);
+            
+            if (attributeName == Classes.OneWayBindAttribute.FullName)
+                return Determine(BindMode.OneWay);
+            
+            if (attributeName == Classes.TwoWayBindAttribute.FullName)
+                return Determine(BindMode.TwoWay);
+            
+            if (attributeName == Classes.OneTimeBindAttribute.FullName)
+                return Determine(BindMode.OneTime);
+            
+            if (attributeName == Classes.OneWayToSourceBindAttribute.FullName)
+                return Determine(BindMode.OneWayToSource);
         }
-        
-        if (member.HasAttribute(Classes.OneWayBindAttribute))
-            return Determine(BindMode.OneWay);
-        
-        if (member.HasAttribute(Classes.TwoWayBindAttribute))
-            return Determine(BindMode.TwoWay);
-        
-        if (member.HasAttribute(Classes.OneTimeBindAttribute))
-            return Determine(BindMode.OneTime);
-        
-        if (member.HasAttribute(Classes.OneWayToSourceBindAttribute))
-            return Determine(BindMode.OneWayToSource);
         
         return BindMode.None;
 

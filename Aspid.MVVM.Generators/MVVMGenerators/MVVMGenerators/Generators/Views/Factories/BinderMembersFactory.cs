@@ -18,12 +18,12 @@ public static class BinderMembersFactory
         
         foreach (var member in symbolClass.GetMembers())
         {
-            if (member.HasAttribute(Classes.IgnoreAttribute)) continue;
+            if (member.HasAnyAttribute(Classes.IgnoreAttribute)) continue;
 
             var type = GetType(member);
             if (type is null) continue;
 
-            if (member.HasAttribute(Classes.AsBinderAttribute, out var asBinderAttribute))
+            if (member.HasAnyAttribute(out var asBinderAttribute, Classes.AsBinderAttribute))
             {
                 if (asBinderAttribute!.ConstructorArguments[0].Value is not INamedTypeSymbol argumentType) continue;
                 
@@ -93,7 +93,7 @@ public static class BinderMembersFactory
                 
                 binderMembers.Add(new AsBinderMember(member, argumentType.ToDisplayStringGlobal(), arguments));
             }
-            else if (type.HasInterfaceInSelfOrBases(Classes.IView))
+            else if (type.HasAnyAttribute(Classes.ViewAttribute) || type.HasInterfaceInSelfOrBases(Classes.IView))
             {
                 binderMembers.Add(new AsBinderMember(member, Classes.ViewBinder.Global, null));
             }
@@ -110,7 +110,7 @@ public static class BinderMembersFactory
                         var symbols = GetPropertyReturnSymbols(property, semanticModel);
                         
                         if (symbols is null) continue;
-                        if (symbols.Any(symbol => symbol is IFieldSymbol or IPropertySymbol && !symbol.HasAttribute(Classes.IgnoreAttribute))) continue;
+                        if (symbols.Any(symbol => symbol is IFieldSymbol or IPropertySymbol && !symbol.HasAnyAttribute(Classes.IgnoreAttribute))) continue;
 
                         binderMembers.Add(new CachedBinderMember(property));
                         break;

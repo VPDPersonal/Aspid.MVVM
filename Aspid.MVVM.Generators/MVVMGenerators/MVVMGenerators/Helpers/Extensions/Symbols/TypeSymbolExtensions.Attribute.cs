@@ -11,7 +11,7 @@ public static partial class TypeSymbolExtensions
     {
         for (var type = symbol.BaseType; type is not null; type = type.BaseType)
         {
-            if (type.HasAttribute(fullName))
+            if (type.HasAnyAttribute(fullName))
                 return true;
         }
 
@@ -25,7 +25,7 @@ public static partial class TypeSymbolExtensions
     {
         for (var type = symbol.BaseType; type is not null; type = type.BaseType)
         {
-            if (type.HasAttribute(fullName, out attribute))
+            if (type.HasAnyAttribute(out attribute, fullName))
                 return true;
         }
 
@@ -40,7 +40,7 @@ public static partial class TypeSymbolExtensions
     {
         for (var type = symbol; type is not null; type = type.BaseType)
         {
-            if (type.HasAttribute(fullName))
+            if (type.HasAnyAttribute(fullName))
                 return true;
         }
 
@@ -54,7 +54,7 @@ public static partial class TypeSymbolExtensions
     {
         for (var type = symbol; type is not null; type = type.BaseType)
         {
-            if (type.HasAttribute(fullName, out attribute))
+            if (type.HasAnyAttribute(out attribute, fullName))
                 return true;
         }
 

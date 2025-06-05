@@ -8,7 +8,7 @@ public static class IdGeneratorExtensions
 {
     public static string GetId(this ISymbol member, string prefixName = "")
     {
-        if (!member.HasAttribute(Classes.IdAttribute, out var attribute))
+        if (!member.HasAnyAttribute(out var attribute, Classes.IdAttribute))
             return member.GetName(prefixName);
         
         var value = attribute!.ConstructorArguments[0].Value as string;

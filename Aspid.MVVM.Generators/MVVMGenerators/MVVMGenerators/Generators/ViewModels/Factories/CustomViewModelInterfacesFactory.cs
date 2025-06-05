@@ -28,7 +28,7 @@ public static class CustomViewModelInterfacesFactory
                          .OfType<IPropertySymbol>()
                          .Where(p => p.Type.ToDisplayStringGlobal() == IBindableMemberEventAdder))
             {
-                if (property.HasAttribute(IgnoreAttribute)) continue;
+                if (property.HasAnyAttribute(IgnoreAttribute)) continue;
 
                 var id = property.GetId();
                 dictionary[id] = new CustomViewModelInterface(id, property.Name, @interface);

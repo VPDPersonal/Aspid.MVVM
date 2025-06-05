@@ -27,7 +27,7 @@ public static class BindableCommandFactory
         
         foreach (var method in methods)
         {
-            if (!method.HasAttribute(Classes.RelayCommandAttribute, out var attribute)) continue;
+            if (!method.HasAnyAttribute(out var attribute, Classes.RelayCommandAttribute)) continue;
             
             var canExecuteArgument = attribute!.NamedArguments
                 .Where(pair => pair.Key == "CanExecute")

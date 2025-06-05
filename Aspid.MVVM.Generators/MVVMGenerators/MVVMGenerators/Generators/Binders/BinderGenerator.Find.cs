@@ -45,7 +45,7 @@ public partial class BinderGenerator
 
                 if (!hasBinderLogInBaseType 
                     && !SymbolEqualityComparer.Default.Equals(type, symbol)
-                    && method.HasAttribute(Classes.BinderLogAttribute))
+                    && method.HasAnyAttribute(Classes.BinderLogAttribute))
                 {
                     hasBinderLogInBaseType = true;
                 }
@@ -60,7 +60,7 @@ public partial class BinderGenerator
             if (method.NameFromExplicitImplementation() != setValueName) continue;
             if (!symbol.HasInterfaceInSelfOrBases($"{Classes.IBinder.FullName}<{method.Parameters[0].Type.ToDisplayString()}>")) continue;
             
-            if (method.HasAttribute(Classes.BinderLogAttribute) &&
+            if (method.HasAnyAttribute(Classes.BinderLogAttribute) &&
                 !method.ExplicitInterfaceImplementations.Any())
                 binderLogMethods.Add(method);
         }

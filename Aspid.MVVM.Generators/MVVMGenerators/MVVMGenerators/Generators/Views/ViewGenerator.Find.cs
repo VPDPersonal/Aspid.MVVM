@@ -30,7 +30,7 @@ public partial class ViewGenerator
         Debug.Assert(context.TargetNode is TypeDeclarationSyntax);
         var candidate = Unsafe.As<TypeDeclarationSyntax>(context.TargetNode);
 
-        var viewData = new ViewData(inheritor, candidate, members, GetGenericViews(symbol));
+        var viewData = new ViewData(symbol, inheritor, candidate, members, GetGenericViews(symbol));
         return new FoundForGenerator<ViewData>(viewData);
     }
 

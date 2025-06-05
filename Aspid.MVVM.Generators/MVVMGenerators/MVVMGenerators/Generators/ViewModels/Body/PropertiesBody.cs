@@ -93,10 +93,12 @@ public static class PropertiesBody
 
     private static CodeWriter AppendNotifyAll(this CodeWriter code, in ViewModelData data)
     {
+        var modifiers = "private";
+        if (data.Inheritor is not Inheritor.None) modifiers = "protected override";
+        else if (!data.Symbol.IsSealed) modifiers = "protected virtual";
+        
         code.AppendLine(GeneratedCodeViewModelAttribute)
-            .AppendLine(data.Inheritor is Inheritor.None
-                ? "protected virtual void NotifyAll()"
-                : "protected override void NotifyAll()")
+            .AppendLine($"{modifiers} void NotifyAll()")
             .BeginBlock()
             .AppendLineIf(data.Inheritor is Inheritor.Inheritor, "base.NotifyAll();");
         

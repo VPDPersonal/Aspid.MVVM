@@ -54,12 +54,15 @@ public static class FindBindableMembersBody
     private static CodeWriter AppendFindBindableMember(this CodeWriter code, in ViewModelData data)
     {
         var addedMembers = new HashSet<BindableMember>();
-        var modifier = data.Inheritor is Inheritor.None ? "virtual" : "override";
-
+        
+        var modifiers = "public";
+        if (data.Inheritor is not Inheritor.None) modifiers = "public override";
+        else if (!data.Symbol.IsSealed) modifiers = "public virtual";
+        
         code.AppendMultiline(
                 $"""
                  {GeneratedCodeViewModelAttribute}
-                 public {modifier} {FindBindableMemberResult} FindBindableMember(in {FindBindableMemberParameters} parameters)
+                 {modifiers} {FindBindableMemberResult} FindBindableMember(in {FindBindableMemberParameters} parameters)
                  """)
             .BeginBlock()
             .AppendMultiline(

@@ -8,6 +8,7 @@ namespace MVVMGenerators.Generators.Views.Data;
 
 public readonly ref struct ViewDataSpan(ViewData viewData)
 {
+    public readonly ISymbol Symbol = viewData.Symbol; 
     public readonly Inheritor Inheritor = viewData.Inheritor;
     public readonly TypeDeclarationSyntax Declaration = viewData.Declaration;
     public readonly ReadOnlySpan<BinderMember> Members = viewData.Members.AsSpan();

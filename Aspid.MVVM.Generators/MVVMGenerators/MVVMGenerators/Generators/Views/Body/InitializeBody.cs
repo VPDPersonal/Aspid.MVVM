@@ -56,6 +56,7 @@ public static class InitializeBody
     private static CodeWriter AppendNone(this CodeWriter code, in ViewDataSpan data)
     {
         var className = data.Declaration.Identifier.Text;
+        var modifiers = !data.Symbol.IsSealed ? "protected virtual" : "private";
 
         code.AppendProfilerMarkers(className)
             .AppendLine()
@@ -82,7 +83,7 @@ public static class InitializeBody
                 }
                 
                 {{GeneratedAttribute}}
-                protected virtual void InitializeInternal({{IViewModel}} viewModel)
+                {{modifiers}} void InitializeInternal({{IViewModel}} viewModel)
                 """)
             .AppendInitializeBody(data)
             .AppendInitializeInternalEvents()
@@ -99,7 +100,7 @@ public static class InitializeBody
                 }
 
                 {{GeneratedAttribute}}
-                protected virtual void DeinitializeInternal()
+                {{modifiers}} void DeinitializeInternal()
                 """)
             .AppendDeinitializeBody(data)
             .AppendDeinitializeInternalEvents();
@@ -122,11 +123,11 @@ public static class InitializeBody
 
                 """);
             
-        code.AppendInitializeInternalDeclaration(isOverride)
+        code.AppendInitializeInternalDeclaration(data)
             .AppendInitializeBody(data, isOverride)
             .AppendInitializeInternalEvents();
         
-        code.AppendDeinitializeInternalDeclaration(isOverride)
+        code.AppendDeinitializeInternalDeclaration(data)
             .AppendDeinitializeBody(data, isOverride)
             .AppendDeinitializeInternalEvents();
         
@@ -149,27 +150,31 @@ public static class InitializeBody
              """);
     }
     
-    private static CodeWriter AppendInitializeInternalDeclaration(this CodeWriter code, bool isOverride)
+    private static CodeWriter AppendInitializeInternalDeclaration(this CodeWriter code, in ViewDataSpan data)
     {
-        var modificator = isOverride ? "override" : "virtual";
+        var modifiers = "private";
+        if (data.Inheritor is not Inheritor.None) modifiers = "protected override";
+        else if (!data.Symbol.IsSealed) modifiers = "protected virtual";
         
         code.AppendMultiline(
             $"""
              {GeneratedAttribute}
-             protected {modificator} void InitializeInternal({IViewModel} viewModel)
+             {modifiers} void InitializeInternal({IViewModel} viewModel)
              """);
 
         return code;
     }
 
-    private static CodeWriter AppendDeinitializeInternalDeclaration(this CodeWriter code, bool isOverride)
+    private static CodeWriter AppendDeinitializeInternalDeclaration(this CodeWriter code, in ViewDataSpan data)
     {
-        var modificator = isOverride ? "override" : "virtual";
+        var modifiers = "private";
+        if (data.Inheritor is not Inheritor.None) modifiers = "protected override";
+        else if (!data.Symbol.IsSealed) modifiers = "protected virtual";
         
         code.AppendMultiline(
             $"""
              {GeneratedAttribute}
-             protected {modificator} void DeinitializeInternal()
+             {modifiers} void DeinitializeInternal()
              """);
 
         return code; 

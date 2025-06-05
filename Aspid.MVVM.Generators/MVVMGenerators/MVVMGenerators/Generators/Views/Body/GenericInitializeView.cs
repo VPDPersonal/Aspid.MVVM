@@ -45,6 +45,7 @@ public static class GenericInitializeView
 
     private static CodeWriter AppendInitialize(this CodeWriter code, in ViewDataSpan data, ITypeSymbol viewModelType)
     {
+        var modifier = data.Symbol.IsSealed ? "private" : "protected";
         var typeName = viewModelType.ToDisplayStringGlobal();
         var typeBindableMembersName = viewModelType.TypeKind is not TypeKind.Interface
             ? $"{typeName}.IBindableMembers"
@@ -63,10 +64,9 @@ public static class GenericInitializeView
                     InitializeInternal({{Classes.Unsafe}}.As<{{typeName}}, {{typeBindableMembersName}}>(ref viewModel));
                 }
                 """);
+            
+            code.AppendLine();
         }
-
-
-        code.AppendLine();
         
         code.AppendMultiline(
             $$"""
@@ -81,7 +81,7 @@ public static class GenericInitializeView
             """);
 
         code.AppendLine();
-        code.AppendLine($"protected void InitializeInternal({typeBindableMembersName} viewModel)");
+        code.AppendLine($"{modifier} void InitializeInternal({typeBindableMembersName} viewModel)");
         code.BeginBlock();
         
         code.AppendLine($"#if !{Defines.ASPID_MVVM_UNITY_PROFILER_DISABLED}")

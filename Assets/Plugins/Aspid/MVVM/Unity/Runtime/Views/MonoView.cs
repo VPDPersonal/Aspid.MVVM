@@ -14,10 +14,10 @@ namespace Aspid.MVVM.Unity
         /// Destroys the GameObject of the View.
         /// May be overridden by a derived class.
         /// </summary>
-        public virtual void Dispose()
-        {
-            Deinitialize();
+        public virtual void Dispose() =>
             Destroy(gameObject);
-        }
+
+        protected virtual void OnDestroy() =>
+            Deinitialize();
     }
 }

@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 74c6ede60eb8341ad8df258935112301
+guid: a208a8433b950430fb32f99cdd000b8c
 labels:
 - RoslynAnalyzer
 PluginImporter:
@@ -13,14 +13,22 @@ PluginImporter:
   isExplicitlyReferenced: 0
   validateReferences: 1
   platformData:
+    Android:
+      enabled: 0
+      settings:
+        AndroidLibraryDependee: UnityLibrary
+        AndroidSharedLibraryType: Executable
+        CPU: ARMv7
     Any:
       enabled: 0
       settings:
+        Exclude Android: 1
         Exclude Editor: 1
         Exclude Linux64: 1
         Exclude OSXUniversal: 1
         Exclude Win: 1
         Exclude Win64: 1
+        Exclude iOS: 1
     Editor:
       enabled: 0
       settings:
@@ -47,6 +55,13 @@ PluginImporter:
       enabled: 0
       settings:
         CPU: AnyCPU
+    iOS:
+      enabled: 0
+      settings:
+        AddToEmbeddedBinaries: false
+        CPU: AnyCPU
+        CompileFlags: 
+        FrameworkDependencies: 
   userData: 
   assetBundleName: 
   assetBundleVariant: 

@@ -6,7 +6,7 @@ namespace Aspid.MVVM.StarterKit
     public sealed partial class DynamicViewModel : IViewModel
     {
 #if UNITY_2022_1_OR_NEWER && !ASPID_MVVM_UNITY_PROFILER_DISABLED
-        private static readonly Unity.Profiling.ProfilerMarker _addBinderMarker = new("DynamicViewModel.AddBinder"); 
+        private static readonly global::Unity.Profiling.ProfilerMarker _addBinderMarker = new("DynamicViewModel.AddBinder"); 
 #endif
         
         private readonly bool _throwErrorIfIdNotFind;

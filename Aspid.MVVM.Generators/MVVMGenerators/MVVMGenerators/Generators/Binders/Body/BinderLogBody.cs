@@ -16,7 +16,7 @@ public static class BinderLogBody
     private static readonly string List = Classes.List.Global;
     private static readonly string IBinder = Classes.IBinder.Global;
     private static readonly string Exception = Classes.Exception.Global;
-    private static readonly string SerializeFieldAttribute = Classes.SerializeFieldAttribute.AttributeGlobal;
+    private static readonly string SerializeFieldAttribute = Classes.SerializeField.Global;
 
     public static CodeWriter AppendBinderLogBody(this CodeWriter code, in BinderDataSpan data)
     {

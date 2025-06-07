@@ -1,8 +1,11 @@
 using UnityEngine;
+using Aspid.MVVM.Unity;
 
 namespace Aspid.MVVM.StarterKit.Unity
 {
+    [AddPropertyContextMenu(typeof(BoxCollider), "m_Center")]
     [AddComponentMenu("Aspid/MVVM/Binders/Collider/Box/BoxCollider Binder - Center")]
+    [AddComponentContextMenu(typeof(BoxCollider),"Add BoxCollider Binder/BoxCollider Binder - Center")]
     public partial class BoxColliderCenterMonoBinder : ComponentMonoBinder<BoxCollider>, IVectorBinder, INumberBinder
     {
         [Header("Converter")]

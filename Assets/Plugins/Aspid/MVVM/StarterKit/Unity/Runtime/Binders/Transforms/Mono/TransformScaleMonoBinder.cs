@@ -4,6 +4,8 @@ using Aspid.MVVM.Unity;
 namespace Aspid.MVVM.StarterKit.Unity
 {
     [AddComponentMenu("Aspid/MVVM/Binders/Transform/Transform Binder - Scale")]
+    [AddPropertyContextMenu(typeof(Transform), "m_LocalScale")]
+    [AddComponentContextMenu(typeof(Transform),"Add Transform Binder/Transform Binder - Scale")]
     public partial class TransformScaleMonoBinder : MonoBinder, IVectorBinder, INumberBinder
     {
         [Header("Converter")]

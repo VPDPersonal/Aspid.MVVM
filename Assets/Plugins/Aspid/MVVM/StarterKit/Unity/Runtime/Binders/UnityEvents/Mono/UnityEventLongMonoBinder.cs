@@ -9,7 +9,9 @@ using Converter = Aspid.MVVM.StarterKit.Unity.IConverterLong;
 
 namespace Aspid.MVVM.StarterKit.Unity
 {
+    [AddPropertyContextMenu(typeof(long))]
     [AddComponentMenu("Aspid/MVVM/Binders/UnityEvent/UnityEvent Binder - Long")]
+    [AddComponentContextMenu(typeof(Component),"Add UnityEvent Binder/UnityEvent Binder - Long")]
     public sealed partial class UnityEventLongMonoBinder : MonoBinder, INumberBinder
     {
         public event UnityAction<long> Set

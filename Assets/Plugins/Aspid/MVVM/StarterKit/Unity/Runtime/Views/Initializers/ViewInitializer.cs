@@ -13,7 +13,7 @@ namespace Aspid.MVVM.StarterKit.Unity
     [AddComponentMenu("Aspid/MVVM/View Initializers/View Initializer")]
     public sealed class ViewInitializer : ViewInitializerBase
     {
-        [SerializeField] private bool _isDisposeViewOnDestroy;
+        [SerializeField] private bool _isDisposeViewOnDestroy = true;
         [SerializeField] private InitializeComponent<IView>[] _viewComponents;
         
         [SerializeField] private bool _isDisposeViewModelOnDestroy;

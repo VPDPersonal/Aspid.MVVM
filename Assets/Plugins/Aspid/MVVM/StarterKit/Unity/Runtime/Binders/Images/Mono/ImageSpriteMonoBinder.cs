@@ -1,9 +1,12 @@
 using UnityEngine;
 using UnityEngine.UI;
+using Aspid.MVVM.Unity;
 
 namespace Aspid.MVVM.StarterKit.Unity
 {
+    [AddPropertyContextMenu(typeof(Image), "m_Sprite")]
     [AddComponentMenu("Aspid/MVVM/Binders/UI/Image/Image Binder - Sprite")]
+    [AddComponentContextMenu(typeof(Image),"Add Image Binder/Image Binder - Sprite")]
     public partial class ImageSpriteMonoBinder : ComponentMonoBinder<Image>, IBinder<Sprite>, IBinder<Texture2D>
     {
         [Header("Parameters")]

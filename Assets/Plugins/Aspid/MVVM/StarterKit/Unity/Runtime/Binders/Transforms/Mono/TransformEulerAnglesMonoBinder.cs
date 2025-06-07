@@ -3,7 +3,9 @@ using Aspid.MVVM.Unity;
 
 namespace Aspid.MVVM.StarterKit.Unity
 {
+    [AddPropertyContextMenu(typeof(Transform), "m_LocalRotation")]
     [AddComponentMenu("Aspid/MVVM/Binders/Transform/Transform Binder - Euler Angles")]
+    [AddComponentContextMenu(typeof(Transform),"Add Transform Binder/Transform Binder - EulerAngles")]
     public partial class TransformEulerAnglesMonoBinder : MonoBinder, IVectorBinder, INumberBinder
     {
         [Header("Parameter")]

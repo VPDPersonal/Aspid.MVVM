@@ -9,6 +9,8 @@ using Converter = Aspid.MVVM.StarterKit.Unity.IConverterQuaternion;
 namespace Aspid.MVVM.StarterKit.Unity
 {
     [AddComponentMenu("Aspid/MVVM/Binders/Transform/Transform Binder - Rotation")]
+    [AddPropertyContextMenu(typeof(Transform), "m_LocalRotation")]
+    [AddComponentContextMenu(typeof(Transform),"Add Transform Binder/Transform Binder - Rotation")]
     public partial class TransformRotationMonoBinder : MonoBinder, IRotationBinder, INumberBinder
     {
         [SerializeField] private Space _space = Space.World;

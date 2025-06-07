@@ -1,10 +1,13 @@
 using UnityEngine;
 using UnityEngine.UI;
+using Aspid.MVVM.Unity;
 
 namespace Aspid.MVVM.StarterKit.Unity
 {
     [RequireComponent(typeof(Scrollbar))]
+    [AddPropertyContextMenu(typeof(Scrollbar), "m_Calls")]
     [AddComponentMenu("Aspid/MVVM/Binders/UI/Commands/Scrollbar Command Binder")]
+    [AddComponentContextMenu(typeof(Scrollbar),"Add Scrollbar Binder/Scrollbar Command Binder")]
     public sealed partial class ScrollBarCommandMonoBinder : MonoCommandBinder<float>, IBinder<IRelayCommand<int>>, IBinder<IRelayCommand<long>>, IBinder<IRelayCommand<double>>
     {
         [Header("Component")]

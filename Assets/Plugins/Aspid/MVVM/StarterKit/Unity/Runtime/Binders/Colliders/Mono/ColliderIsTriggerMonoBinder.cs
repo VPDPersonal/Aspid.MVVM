@@ -1,8 +1,11 @@
 using UnityEngine;
+using Aspid.MVVM.Unity;
 
 namespace Aspid.MVVM.StarterKit.Unity
 {
+    [AddPropertyContextMenu(typeof(Collider), "m_IsTrigger")]   
     [AddComponentMenu("Aspid/MVVM/Binders/Collider/Collider Binder - IsTrigger")]
+    [AddComponentContextMenu(typeof(Collider),"Add Binder/Collider Binder - IsTrigger")]
     public partial class ColliderIsTriggerMonoBinder : ComponentMonoBinder<Collider>, IBinder<bool>
     {
         [Header("Converter")]

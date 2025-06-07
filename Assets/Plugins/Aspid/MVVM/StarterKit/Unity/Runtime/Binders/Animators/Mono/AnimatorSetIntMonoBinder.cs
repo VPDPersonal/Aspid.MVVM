@@ -1,4 +1,5 @@
 using UnityEngine;
+using Aspid.MVVM.Unity;
 #if UNITY_2023_1_OR_NEWER
 using Converter = Aspid.MVVM.StarterKit.IConverter<int, int>;
 #else
@@ -8,6 +9,7 @@ using Converter = Aspid.MVVM.StarterKit.Unity.IConverterInt;
 namespace Aspid.MVVM.StarterKit.Unity
 {
     [AddComponentMenu("Aspid/MVVM/Binders/Animator/Animator Binder - Set Int")]
+    [AddComponentContextMenu(typeof(Animator),"Add Animator Binder/Animator Binder - Set Int")]
     public partial class AnimatorSetIntMonoBinder : AnimatorSetParameterMonoBinder<int>, INumberBinder
     {
         [Header("Converter")]

@@ -1,4 +1,5 @@
 using UnityEngine;
+using Aspid.MVVM.Unity;
 using System.Collections.Generic;
 #if UNITY_2023_1_OR_NEWER
 using Converter = Aspid.MVVM.StarterKit.IConverter<UnityEngine.Material, UnityEngine.Material>;
@@ -8,7 +9,9 @@ using Converter = Aspid.MVVM.StarterKit.Unity.IConverterMaterial;
 
 namespace Aspid.MVVM.StarterKit.Unity
 {
+    [AddPropertyContextMenu(typeof(Renderer), "m_Materials")]
     [AddComponentMenu("Aspid/MVVM/Binders/Renderer/Renderer Binder - Materials")]
+    [AddComponentContextMenu(typeof(Renderer),"Add Renderer Binder/Renderer Binder - Materials")]
     public partial class RendererMaterialsMonoBinder : ComponentMonoBinder<Renderer>, IBinder<Material>, IBinder<Material[]>, IBinder<IReadOnlyCollection<Material>>
     {
         [Header("Converter")]

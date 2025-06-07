@@ -9,18 +9,20 @@ using Converter = Aspid.MVVM.StarterKit.Unity.IConverterVector3ToVector2;
 
 namespace Aspid.MVVM.StarterKit.Unity
 {
+    [AddPropertyContextMenu(typeof(Vector2), "Casters")]
     [AddComponentMenu("Aspid/MVVM/Binders/Casters/Vector3 To Vector2 Caster Binder")]
-    public sealed partial class Vector3ToVector2CasterMonoBinder : MonoBinder, IBinder<Vector2>
+    [AddComponentContextMenu(typeof(Component),"Add Casters Binder/Vector3 To Vector2 Caster Binder")]
+    public sealed partial class Vector3ToVector2CasterMonoBinder : MonoBinder, IBinder<Vector3>
     {
         [Header("Converter")]
         [SerializeReferenceDropdown]
         [SerializeReference] private Converter _converter = new Vector3ToVector2Converter();
         
         [Header("Events")]
-        [SerializeField] private UnityEvent<Vector3> _casted;
+        [SerializeField] private UnityEvent<Vector2> _casted;
         
         [BinderLog]
-        public void SetValue(Vector2 value) =>
+        public void SetValue(Vector3 value) =>
             _casted?.Invoke(_converter.Convert(value));
     }
 }

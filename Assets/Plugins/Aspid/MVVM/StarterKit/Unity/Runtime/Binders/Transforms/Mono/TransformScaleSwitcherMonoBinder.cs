@@ -1,8 +1,11 @@
 using UnityEngine;
+using Aspid.MVVM.Unity;
 
 namespace Aspid.MVVM.StarterKit.Unity
 {
+    [AddPropertyContextMenu(typeof(Transform), "m_LocalScale")]
     [AddComponentMenu("Aspid/MVVM/Binders/Transform/Transform Binder - Scale Switcher")]
+    [AddComponentContextMenu(typeof(Transform),"Add Transform Binder/Transform Binder - Scale Switcher")]
     public sealed class TransformScaleSwitcherMonoBinder : SwitcherMonoBinder<Vector3>
     {
         [Header("Converter")]

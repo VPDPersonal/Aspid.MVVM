@@ -1,7 +1,5 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using UnityEditor;
 using UnityEngine;
 
@@ -75,7 +73,7 @@ namespace Aspid.MVVM.Unity
         {
             if (_wasLookingFor) return _attribute;
             
-            var type = GetClassType(property);
+            var type = property.GetClassType();
 
             for (; type is not null; type = type.BaseType)
             {
@@ -88,53 +86,6 @@ namespace Aspid.MVVM.Unity
             
             _wasLookingFor = true;
             return _attribute;
-        }
-
-        private Type GetClassType(SerializedProperty property)
-        {
-            var path = property.propertyPath;
-            var startRemoveIndex = path.Length - fieldInfo.Name.Length - 1;
-            
-            if (startRemoveIndex < 0)
-                return property.serializedObject.targetObject.GetType();
-            
-            path = path.Remove(startRemoveIndex)
-                .Replace(".Array.data[", "[");
-
-            Type currentType = null;
-
-            foreach (var part in path.Split('.'))
-            {
-	            currentType = part.Contains("[")
-		            ? FindType(part[..part.IndexOf("[", StringComparison.Ordinal)], true)
-		            : FindType(part);
-            }
-
-            return currentType;
-
-            Type FindType(string name, bool isArray = false)
-            {
-	            var field = currentType is null
-		            ? FindField(property.serializedObject.targetObject.GetType(), name)
-		            : FindField(currentType, name);
-
-	            if (isArray)
-	            {
-		            if (field.FieldType.IsArray) 
-			            return field.FieldType.GetElementType();
-
-		            if (field.FieldType.IsGenericType && field.FieldType.GetGenericTypeDefinition() == typeof(List<>))
-			            return field.FieldType.GetGenericArguments()[0];
-	            }
-
-	            return field.FieldType;
-            }
-
-            FieldInfo FindField(Type type, string name)
-            {
-	            return type?.GetFieldInfosIncludingBaseClasses(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
-	                .FirstOrDefault(field => field.Name == name);
-            }
         }
 
         private readonly ref struct BindModes

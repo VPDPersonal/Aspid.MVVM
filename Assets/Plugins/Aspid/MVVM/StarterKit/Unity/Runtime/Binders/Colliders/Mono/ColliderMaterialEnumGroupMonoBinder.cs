@@ -1,3 +1,4 @@
+using Aspid.MVVM.Unity;
 using UnityEngine;
 #if UNITY_2023_1_OR_NEWER
 using PhysicsMaterial = UnityEngine.PhysicsMaterial;
@@ -9,7 +10,9 @@ using Converter = Aspid.MVVM.StarterKit.Unity.IConverterPhysicsMaterial;
 
 namespace Aspid.MVVM.StarterKit.Unity
 {
+    [AddPropertyContextMenu(typeof(Collider), "m_Material")]
     [AddComponentMenu("Aspid/MVVM/Binders/Collider/Collider Binder - Material EnumGroup")]
+    [AddComponentContextMenu(typeof(Collider),"Add Binder/Collider Binder - Material EnumGroup")]
     public sealed class ColliderMaterialEnumGroupMonoBinder : EnumGroupMonoBinder<Collider>
     {
         [Header("Parameters")]

@@ -1,8 +1,11 @@
 using UnityEngine;
+using Aspid.MVVM.Unity;
 
 namespace Aspid.MVVM.StarterKit.Unity
 {
+    [AddPropertyContextMenu(typeof(BoxCollider), "m_Size")]
     [AddComponentMenu("Aspid/MVVM/Binders/Collider/Box/BoxCollider Binder - Size Enum")]
+    [AddComponentContextMenu(typeof(BoxCollider),"Add BoxCollider Binder/BoxCollider Binder - Size Enum")]
     public sealed class BoxColliderSizeEnumMonoBinder : EnumComponentMonoBinder<BoxCollider, Vector3>
     {
         [Header("Converter")]

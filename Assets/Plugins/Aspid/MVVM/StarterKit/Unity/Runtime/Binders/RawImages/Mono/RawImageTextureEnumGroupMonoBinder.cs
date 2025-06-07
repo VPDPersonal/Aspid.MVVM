@@ -1,9 +1,12 @@
 using UnityEngine;
 using UnityEngine.UI;
+using Aspid.MVVM.Unity;
 
 namespace Aspid.MVVM.StarterKit.Unity
 {
+    [AddPropertyContextMenu(typeof(RawImage), "m_Texture")]
     [AddComponentMenu("Aspid/MVVM/Binders/UI/Raw Image/RawImage Binder - Texture EnumGroup")]
+    [AddComponentContextMenu(typeof(LineRenderer),"Add RawImage Binder/RawImage Binder - Texture EnumGroup")]
     public sealed class RawImageTextureEnumGroupMonoBinder : EnumGroupMonoBinder<RawImage>
     {
         [Header("Parameters")]

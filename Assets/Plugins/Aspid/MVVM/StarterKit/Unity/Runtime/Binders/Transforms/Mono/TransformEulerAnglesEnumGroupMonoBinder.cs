@@ -1,8 +1,11 @@
 using UnityEngine;
+using Aspid.MVVM.Unity;
 
 namespace Aspid.MVVM.StarterKit.Unity
 {
+    [AddPropertyContextMenu(typeof(Transform), "m_LocalRotation")]
     [AddComponentMenu("Aspid/MVVM/Binders/Transform/Transform Binder - EulerAngles EnumGroup")]
+    [AddComponentContextMenu(typeof(Transform),"Add Transform Binder/Transform Binder - EulerAngles EnumGroup")]
     public sealed class TransformEulerAnglesEnumGroupMonoBinder : EnumGroupMonoBinder<Transform>
     {
         [Header("Parameters")]

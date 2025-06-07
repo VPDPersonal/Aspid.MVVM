@@ -1,8 +1,11 @@
 using UnityEngine;
+using Aspid.MVVM.Unity;
 
 namespace Aspid.MVVM.StarterKit.Unity
 {
+    [AddPropertyContextMenu(typeof(SphereCollider), "m_Center")]
     [AddComponentMenu("Aspid/MVVM/Binders/Collider/Sphere/SphereCollider Binder - Center Enum")]
+    [AddComponentContextMenu(typeof(SphereCollider),"Add SphereCollider Binder/SphereCollider Binder - Center Enum")]
     public sealed class SphereColliderCenterEnumMonoBinder : EnumComponentMonoBinder<SphereCollider, Vector3>
     {
         [Header("Converter")]

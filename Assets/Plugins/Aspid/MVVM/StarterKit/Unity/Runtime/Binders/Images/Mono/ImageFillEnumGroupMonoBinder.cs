@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using Aspid.MVVM.Unity;
 using System.Runtime.CompilerServices;
 #if UNITY_2023_1_OR_NEWER
 using Converter = Aspid.MVVM.StarterKit.IConverter<float, float>;
@@ -9,7 +10,9 @@ using Converter = Aspid.MVVM.StarterKit.Unity.IConverterFloat;
 
 namespace Aspid.MVVM.StarterKit.Unity
 {
+    [AddPropertyContextMenu(typeof(Image), "m_FillAmount")]
     [AddComponentMenu("Aspid/MVVM/Binders/UI/Image/Image Binder - Fill EnumGroup")]
+    [AddComponentContextMenu(typeof(Image),"Add Image Binder/Image Binder - Fill EnumGroup")]
     public sealed class ImageFillEnumGroupMonoBinder : EnumGroupMonoBinder<Image>
     {
         [Header("Parameters")]

@@ -1,6 +1,7 @@
 #if UNITY_2023_1_OR_NEWER || ASPID_MVVM_TEXT_MESH_PRO_INTEGRATION
 using TMPro;
 using UnityEngine;
+using Aspid.MVVM.Unity;
 #if UNITY_2023_1_OR_NEWER
 using Converter = Aspid.MVVM.StarterKit.IConverter<string, string>;
 #else
@@ -9,7 +10,9 @@ using Converter = Aspid.MVVM.StarterKit.Unity.IConverterString;
 
 namespace Aspid.MVVM.StarterKit.Unity
 {
+    [AddPropertyContextMenu(typeof(TMP_Text), "m_text")]
     [AddComponentMenu("Aspid/MVVM/Binders/UI/Text/Text Binder - Text EnumGroup")]
+    [AddComponentContextMenu(typeof(TMP_Text),"Add Text Binder/Text Binder - Text EnumGroup")]
     public sealed class TextEnumGroupMonoBinder : EnumGroupMonoBinder<TMP_Text>
     {
         [Header("Parameters")]

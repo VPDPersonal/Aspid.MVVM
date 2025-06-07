@@ -1,8 +1,11 @@
 using UnityEngine;
+using Aspid.MVVM.Unity;
 
 namespace Aspid.MVVM.StarterKit.Unity
 {
+    [AddPropertyContextMenu(typeof(Transform), "m_LocalPosition")]
     [AddComponentMenu("Aspid/MVVM/Binders/Transform/Transform Binder - Position Enum")]
+    [AddComponentContextMenu(typeof(Transform),"Add Transform Binder/Transform Binder - Position Enum")]
     public sealed class TransformPositionEnumMonoBinder : EnumMonoBinder<Vector3>
     {
         [Header("Parameter")]

@@ -1,4 +1,5 @@
 using UnityEngine;
+using Aspid.MVVM.Unity;
 #if UNITY_2023_1_OR_NEWER
 using Converter = Aspid.MVVM.StarterKit.IConverter<UnityEngine.Quaternion, UnityEngine.Quaternion>;
 #else
@@ -7,7 +8,9 @@ using Converter = Aspid.MVVM.StarterKit.Unity.IConverterQuaternion;
 
 namespace Aspid.MVVM.StarterKit.Unity
 {
+    [AddPropertyContextMenu(typeof(Transform), "m_LocalRotation")]
     [AddComponentMenu("Aspid/MVVM/Binders/Transform/Transform Binder - Rotation Enum")]
+    [AddComponentContextMenu(typeof(Transform),"Add Transform Binder/Transform Binder - Rotation Enum")]
     public sealed class TransformRotationEnumMonoBinder : EnumMonoBinder<Vector3>
     {
         [SerializeField] private Space _space = Space.World;

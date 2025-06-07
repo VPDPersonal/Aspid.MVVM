@@ -1,10 +1,13 @@
 using UnityEngine;
 using UnityEngine.UI;
+using Aspid.MVVM.Unity;
 
 namespace Aspid.MVVM.StarterKit.Unity
 {
     [RequireComponent(typeof(Button))]
+    [AddPropertyContextMenu(typeof(Button), "m_Calls")]
     [AddComponentMenu("Aspid/MVVM/Binders/UI/Commands/Selectable Button Command Binder")]
+    [AddComponentContextMenu(typeof(Button),"Add Button Binder/Selectable Button Command Binder")]
     public sealed class SelectableButtonCommandMonoBinder : MonoCommandBinder<bool>
     {
         [Header("Component")]

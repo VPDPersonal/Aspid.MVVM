@@ -1,10 +1,13 @@
 using UnityEngine;
 using UnityEngine.UI;
+using Aspid.MVVM.Unity;
 
 namespace Aspid.MVVM.StarterKit.Unity
 {
     [RequireComponent(typeof(Toggle))]
+    [AddPropertyContextMenu(typeof(Toggle), "m_Calls")]
     [AddComponentMenu("Aspid/MVVM/Binders/UI/Commands/Toggle Click Command Binder")]
+    [AddComponentContextMenu(typeof(Toggle),"Add Toggle Binder/Toggle Click Command Binder")]
     public sealed class ToggleClickCommandMonoBinder : MonoCommandBinder
     {
         [Header("Component")]

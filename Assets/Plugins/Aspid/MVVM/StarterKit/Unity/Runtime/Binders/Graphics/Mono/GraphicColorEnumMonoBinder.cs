@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using Aspid.MVVM.Unity;
 #if UNITY_2023_1_OR_NEWER
 using Converter = Aspid.MVVM.StarterKit.IConverter<UnityEngine.Color, UnityEngine.Color>;
 #else
@@ -8,7 +9,9 @@ using Converter = Aspid.MVVM.StarterKit.Unity.IConverterColor;
 
 namespace Aspid.MVVM.StarterKit.Unity
 {
+    [AddPropertyContextMenu(typeof(Graphic), "m_Color")]
     [AddComponentMenu("Aspid/MVVM/Binders/UI/Graphic/Graphic Binder - Color Enum")]
+    [AddComponentContextMenu(typeof(Graphic),"Add Graphic Binder/Graphic Binder - Color Enum")]
     public sealed class GraphicColorEnumMonoBinder : EnumComponentMonoBinder<Graphic, Color>
     {
         [Header("Converter")]

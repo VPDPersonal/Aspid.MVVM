@@ -4,6 +4,7 @@ using Aspid.MVVM.Unity;
 namespace Aspid.MVVM.StarterKit.Unity
 {
     [AddComponentMenu("Aspid/MVVM/Binders/Commands/Command Binder")]
+    [AddPropertyContextMenu(typeof(Component), "m_Calls")]
     public partial class MonoCommandBinder : MonoBinder, IBinder<IRelayCommand>
     {
         private IRelayCommand _command;

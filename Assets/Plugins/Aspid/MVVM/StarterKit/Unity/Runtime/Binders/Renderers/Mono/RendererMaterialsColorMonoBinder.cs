@@ -1,4 +1,5 @@
 using UnityEngine;
+using Aspid.MVVM.Unity;
 #if UNITY_2023_1_OR_NEWER
 using Converter = Aspid.MVVM.StarterKit.IConverter<UnityEngine.Color, UnityEngine.Color>;
 #else
@@ -7,8 +8,10 @@ using Converter = Aspid.MVVM.StarterKit.Unity.IConverterColor;
 
 namespace Aspid.MVVM.StarterKit.Unity
 {
-    [AddComponentMenu("Aspid/MVVM/Binders/Renderer/Renderer Binder - MaterialColor")]
-    public partial class RendererMaterialColorMonoBinder : ComponentMonoBinder<Renderer>, IColorBinder
+    [AddPropertyContextMenu(typeof(Renderer), "m_Materials")]
+    [AddComponentMenu("Aspid/MVVM/Binders/Renderer/Renderer Binder - MaterialsColor")]
+    [AddComponentContextMenu(typeof(Renderer),"Add Renderer Binder/Renderer Binder - MaterialsColor")]
+    public partial class RendererMaterialsColorMonoBinder : ComponentMonoBinder<Renderer>, IColorBinder
     {
         [Header("Parameter")]
         [SerializeField] private string _colorPropertyName = "_BaseColor";
@@ -25,7 +28,9 @@ namespace Aspid.MVVM.StarterKit.Unity
         public void SetValue(Color value)
         {
             value = _converter?.Convert(value) ?? value;
-            CachedComponent.material.SetColor(ColorPropertyId, value);
+            
+            foreach (var material in CachedComponent.materials)
+                material.SetColor(ColorPropertyId, value);
         }
     }
 }

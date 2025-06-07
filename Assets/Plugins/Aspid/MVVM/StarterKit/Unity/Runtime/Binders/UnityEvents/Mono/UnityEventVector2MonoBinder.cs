@@ -9,7 +9,9 @@ using Converter = Aspid.MVVM.StarterKit.Unity.IConverterVector2;
 
 namespace Aspid.MVVM.StarterKit.Unity
 {
+    [AddPropertyContextMenu(typeof(Vector2))]
     [AddComponentMenu("Aspid/MVVM/Binders/UnityEvent/UnityEvent Binder - Vector2")]
+    [AddComponentContextMenu(typeof(Component),"Add UnityEvent Binder/UnityEvent Binder - Vector2")]
     public sealed partial class UnityEventVector2MonoBinder : MonoBinder, IBinder<Vector2>
     {
         public event UnityAction<Vector2> Set

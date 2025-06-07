@@ -1,4 +1,5 @@
 using UnityEngine;
+using Aspid.MVVM.Unity;
 #if UNITY_2023_1_OR_NEWER
 using Converter = Aspid.MVVM.StarterKit.IConverter<float, float>;
 #else
@@ -7,7 +8,9 @@ using Converter = Aspid.MVVM.StarterKit.Unity.IConverterFloat;
 
 namespace Aspid.MVVM.StarterKit.Unity
 {
+    [AddPropertyContextMenu(typeof(SphereCollider), "m_Radius")]
     [AddComponentMenu("Aspid/MVVM/Binders/Collider/Sphere/SphereCollider Binder - Radius")]
+    [AddComponentContextMenu(typeof(SphereCollider),"Add SphereCollider Binder/SphereCollider Binder - Radius")]
     public partial class SphereColliderRadiusMonoBinder : ComponentMonoBinder<SphereCollider>, INumberBinder
     {
         [Header("Converter")]

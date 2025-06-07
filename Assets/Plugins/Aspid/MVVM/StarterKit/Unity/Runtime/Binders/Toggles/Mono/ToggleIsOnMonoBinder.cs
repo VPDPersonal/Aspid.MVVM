@@ -1,11 +1,14 @@
 using System;
 using UnityEngine;
 using UnityEngine.UI;
+using Aspid.MVVM.Unity;
 
 namespace Aspid.MVVM.StarterKit.Unity
 {
     [BindModeOverride(IsAll = true)]
+    [AddPropertyContextMenu(typeof(Toggle), "m_IsOn")]
     [AddComponentMenu("Aspid/MVVM/Binders/UI/Toggles/Toggle Binder - IsOn")]
+    [AddComponentContextMenu(typeof(Toggle),"Add Toggle Binder/Toggle Binder - IsOn")]
     public partial class ToggleIsOnMonoBinder : ComponentMonoBinder<Toggle>, IBinder<bool>, IReverseBinder<bool>
     {
         public event Action<bool> ValueChanged;

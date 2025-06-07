@@ -4,6 +4,8 @@ using Aspid.MVVM.Unity;
 namespace Aspid.MVVM.StarterKit.Unity
 {
     [AddComponentMenu("Aspid/MVVM/Binders/Transform/Transform Binder - Position")]
+    [AddPropertyContextMenu(typeof(Transform), "m_LocalPosition")]
+    [AddComponentContextMenu(typeof(Transform),"Add Transform Binder/Transform Binder - Position")]
     public partial class TransformPositionMonoBinder : MonoBinder, IVectorBinder, INumberBinder
     {
         [Header("Parameter")]

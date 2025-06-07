@@ -9,7 +9,9 @@ using Converter = Aspid.MVVM.StarterKit.Unity.IConverterColor;
 
 namespace Aspid.MVVM.StarterKit.Unity
 {
+    [AddPropertyContextMenu(typeof(Color))]
     [AddComponentMenu("Aspid/MVVM/Binders/UnityEvent/UnityEvent Binder - Color")]
+    [AddComponentContextMenu(typeof(Component),"Add UnityEvent Binder/UnityEvent Binder Color")]
     public sealed partial class UnityEventColorMonoBinder : MonoBinder, IColorBinder
     {
         public event UnityAction<Color> Set

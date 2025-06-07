@@ -2,6 +2,7 @@
 using TMPro;
 using System;
 using UnityEngine;
+using Aspid.MVVM.Unity;
 using System.Globalization;
 #if UNITY_2023_1_OR_NEWER
 using Converter = Aspid.MVVM.StarterKit.IConverter<string, string>;
@@ -13,6 +14,8 @@ namespace Aspid.MVVM.StarterKit.Unity
 {
     [BindModeOverride(IsAll = true)]
     [AddComponentMenu("Aspid/MVVM/Binders/UI/Text/InputField Binder - Text")]
+    [AddPropertyContextMenu(typeof(TMP_InputField), "m_Text")]
+    [AddComponentContextMenu(typeof(TMP_InputField),"Add InputField Binder/InputField Binder - Text")]
     public partial class InputFieldMonoBinder : ComponentMonoBinder<TMP_InputField>, 
         IBinder<string>, INumberBinder, IReverseBinder<string>, INumberReverseBinder
     {

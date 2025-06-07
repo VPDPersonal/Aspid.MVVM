@@ -1,10 +1,13 @@
 using UnityEngine;
 using UnityEngine.UI;
+using Aspid.MVVM.Unity;
 
 namespace Aspid.MVVM.StarterKit.Unity
 {
     [RequireComponent(typeof(Slider))]
+    [AddPropertyContextMenu(typeof(Slider), "m_Calls")]
     [AddComponentMenu("Aspid/MVVM/Binders/UI/Commands/Slider Command Binder")]
+    [AddComponentContextMenu(typeof(Slider),"Add Slider Binder/Slider Command Binder")]
     public sealed partial class SliderCommandMonoBinder : MonoCommandBinder<float>, IBinder<IRelayCommand<int>>, IBinder<IRelayCommand<long>>, IBinder<IRelayCommand<double>>
     {
         [Header("Component")]

@@ -148,4 +148,7 @@ public static partial class Classes
     
     public static readonly AttributeText CreateFromAttribute =
         new("CreateFrom", Namespaces.Aspid_MVVM);
+    
+    public static readonly AttributeText AddComponentContextMenuAttribute =
+        new ("AddComponentContextMenu", Namespaces.Aspid_MVVM_UNITY);
 }

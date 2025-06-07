@@ -10,4 +10,6 @@ public static partial class Namespaces
     
     public static readonly NamespaceText UnityEngine = new("UnityEngine");
     public static readonly NamespaceText UnityEngine_UI = new("UI", UnityEngine);
+    
+    public static readonly NamespaceText UnityEditor = new("UnityEditor");
 }

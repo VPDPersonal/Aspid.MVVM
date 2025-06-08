@@ -6,11 +6,12 @@ using Aspid.Generator.Helpers;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using static Aspid.MVVM.Generators.Descriptions.Classes;
 using static Aspid.MVVM.Generators.Descriptions.Defines;
+using static Aspid.MVVM.Generators.Descriptions.General;
 
 namespace Aspid.MVVM.Unity.Generators.ContextMenu;
 
 [Generator(LanguageNames.CSharp)]
-public sealed class AddBinderContextMenuGenerator : IIncrementalGenerator
+public sealed class AddComponentContextMenuGenerator : IIncrementalGenerator
 {
     public void Initialize(IncrementalGeneratorInitializationContext context)
     {
@@ -71,20 +72,25 @@ public sealed class AddBinderContextMenuGenerator : IIncrementalGenerator
                 .BeginBlock();
         }
 
-        code.AppendLine($"internal static class __{declarationText.Name}Editor")
-            .BeginBlock()
-            .AppendLine(data.Path is null
-                ? $"[{MenuItem}(\"CONTEXT/{data.Type}/{data.Name}\", priority = {data.Priority})]"
-                : $"[{MenuItem}(\"CONTEXT/{data.Type}/{data.Path}\", priority = {data.Priority})]")
-            .AppendMultiline(
-                $$"""
-                private static void AddContextMenu({{MenuCommand}} command)
-                {
-                    var gameObject = (({{Component}})command.context).gameObject;
-                    gameObject.AddComponent(typeof({{data.Symbol.ToDisplayStringGlobal()}}));
-                }
-                """)
-            .EndBlock();
+        var path = data.Path ?? data.Name;
+        var editorBrowsable= $"{EditorBrowsableAttribute}({EditorBrowsableState}.Never)";
+
+        code.AppendMultiline(
+            $$"""
+              [{{editorBrowsable}}]
+              {{GeneratedAddComponentContextMenuGeneratorAttribute}}
+              internal static class __{{declarationText.Name}}Editor
+              {
+                  [{{editorBrowsable}}]
+                  {{GeneratedAddComponentContextMenuGeneratorAttribute}}
+                  [{{MenuItem}}("CONTEXT/{{data.Type}}/{{path}}", priority = {{data.Priority}})]
+                  private static void AddContextMenu({{MenuCommand}} command)
+                  {
+                      var gameObject = (({{Component}})command.context).gameObject;
+                      gameObject.AddComponent(typeof({{data.Symbol.ToDisplayStringGlobal()}}));
+                  }
+              }
+              """);
         
         if (hasNamespace)
             code.EndBlock();

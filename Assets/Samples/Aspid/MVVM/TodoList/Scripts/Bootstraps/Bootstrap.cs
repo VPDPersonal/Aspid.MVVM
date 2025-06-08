@@ -10,7 +10,7 @@ namespace Aspid.MVVM.TodoList.Bootstraps
         [SerializeField] private Transform _editTodoDialogViewContainer;
         [SerializeField] private EditTodoDialogView _editTodoDialogViewPrefab;
 
-        [Header("Todo")]
+        [Header("Todos")]
         [SerializeField] private TodoStorageView _todoStorageView;
         [SerializeField] private string[] _todos;
 

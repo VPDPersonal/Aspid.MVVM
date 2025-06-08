@@ -9,7 +9,7 @@ using Converter = Aspid.MVVM.StarterKit.Unity.IConverterStringToBool;
 
 namespace Aspid.MVVM.StarterKit.Unity
 {
-    [AddPropertyContextMenu(typeof(bool), "Casters")]
+    [AddPropertyContextMenu(typeof(bool))]
     [AddComponentMenu("Aspid/MVVM/Binders/Casters/String To Bool Caster Binder")]
     [AddComponentContextMenu(typeof(Component),"Add Casters Binder/String To Bool Caster Binder")]
     public sealed partial class StringToBoolCasterMonoBinder : MonoBinder, IBinder<string>

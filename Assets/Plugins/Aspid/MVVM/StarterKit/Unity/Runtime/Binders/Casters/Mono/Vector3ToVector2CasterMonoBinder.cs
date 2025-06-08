@@ -9,7 +9,7 @@ using Converter = Aspid.MVVM.StarterKit.Unity.IConverterVector3ToVector2;
 
 namespace Aspid.MVVM.StarterKit.Unity
 {
-    [AddPropertyContextMenu(typeof(Vector2), "Casters")]
+    [AddPropertyContextMenu(typeof(Vector2))]
     [AddComponentMenu("Aspid/MVVM/Binders/Casters/Vector3 To Vector2 Caster Binder")]
     [AddComponentContextMenu(typeof(Component),"Add Casters Binder/Vector3 To Vector2 Caster Binder")]
     public sealed partial class Vector3ToVector2CasterMonoBinder : MonoBinder, IBinder<Vector3>

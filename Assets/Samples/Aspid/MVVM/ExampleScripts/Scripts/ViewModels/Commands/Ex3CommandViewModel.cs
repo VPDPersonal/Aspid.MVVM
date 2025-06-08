@@ -20,16 +20,3 @@ namespace Aspid.MVVM.ExampleScripts.ViewModels.Commands
         private void Do3(int a) => Text = "Command3";
     }
 }
-
-//  Generated Code:
-//  public partial class Ex3CommandViewModel
-//  {
-//      private RelayCommand<int> __do1Command;
-//      private RelayCommand<int> Do1Command => __do1Command ??= new RelayCommand<int>(Do1, (_) => CanDo1());
-//          
-//      private RelayCommand<int> __do2Command;
-//      private RelayCommand<int> Do2Command => __do2Command ??= new RelayCommand<int>(Do2, (_) => CanDo2);
-//
-//      private RelayCommand<int> __do3Command;
-//      private RelayCommand<int> Do3Command => __do3Command ??= new RelayCommand<int>(Do3, (_) => CanDo3);
-//  }

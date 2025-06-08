@@ -64,7 +64,8 @@ namespace Aspid.MVVM.Stats.Models
             SkillChanged?.Invoke(skill);
         }
 
-        public int GetNumberSkillPointFrom(Skill skill) => _skills[skill];
+        public int GetNumberSkillPointFrom(Skill skill) =>
+            _skills[skill];
 
         private static void ThrowExceptionIfValueLessThanZero(int value, [CallerMemberName] string name = "")
         {

@@ -31,22 +31,3 @@ namespace Aspid.MVVM.ExampleScripts.ViewModels.Commands
         private bool CanDo5(int arg1, int arg2, int arg3, int arg4) => true;
     }
 }
-
-//  Generated Code:
-//  public partial class Ex2CommandViewModel
-//  {
-//  	private RelayCommand __do1Command;
-//  	private RelayCommand Do1Command => __do1Command ??= new RelayCommand(Do1, CanDo1);
-//      
-//  	private RelayCommand<int> __do2Command;
-//  	private RelayCommand<int> Do2Command => __do2Command ??= new RelayCommand<int>(Do2, CanDo2);
-//      
-//  	private RelayCommand<int,int> __do3Command;
-//  	private RelayCommand<int,int> Do3Command => __do3Command ??= new RelayCommand<int, int>(Do3, CanDo3);
-//      
-//  	private RelayCommand<int,int,int> __do4Command;
-//  	private RelayCommand<int,int,int> Do4Command => __do4Command ??= new RelayCommand<int, int, int>(Do4, CanDo4);
-//      
-//  	private RelayCommand<int,int,int,int> __do5Command;
-//  	private RelayCommand<int,int,int,int> Do5Command => __do5Command ??= new RelayCommand<int, int, int, int>(Do5, CanDo5);
-//  }

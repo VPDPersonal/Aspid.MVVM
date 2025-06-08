@@ -3,7 +3,7 @@ using Aspid.MVVM.Stats.Views;
 using Aspid.MVVM.Stats.Models;
 using Aspid.MVVM.Stats.ViewModels;
 
-namespace Aspid.MVVM.Stats
+namespace Aspid.MVVM.Stats.Bootstraps
 {
     public sealed class Bootstrap : MonoBehaviour
     {

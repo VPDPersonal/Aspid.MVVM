@@ -2,13 +2,13 @@ using UnityEngine;
 using Aspid.MVVM.Unity;
 using Aspid.MVVM.StarterKit.Unity;
 
-namespace Aspid.MVVM.TodoList.Views
+namespace Aspid.MVVM.TodoList.EditTodoDialogs
 {
     [View]
-    public partial class EditTodoPopUpView : MonoView
+    public sealed partial class EditTodoDialogView : MonoView
     {
         [RequireBinder(typeof(string))]
-        [SerializeField] private MonoBinder _text;
+        [SerializeField] private MonoBinder[] _text;
         
         // If the ID differs from the field name, you can redefine the ID
         [BindId("CancelCommand")]

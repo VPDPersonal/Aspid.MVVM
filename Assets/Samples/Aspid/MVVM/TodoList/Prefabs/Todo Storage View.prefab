@@ -513,9 +513,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _searchInput: {fileID: 2622802561178726815}
   _addTodoCommand:
-    _mode: 3
+  - _mode: 3
     <Target>k__BackingField: {fileID: 1647855970933561101}
-    _isBindInteractable: 0
+    _interactableMode: 1
   _todoItemViewModels: {fileID: 6930036194731237436}
 --- !u!1 &5376062593577326655
 GameObject:

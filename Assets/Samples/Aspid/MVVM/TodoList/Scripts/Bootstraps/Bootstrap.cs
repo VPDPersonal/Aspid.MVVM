@@ -1,41 +1,34 @@
 using UnityEngine;
-using Aspid.MVVM.TodoList.Views;
-using Aspid.MVVM.TodoList.Models;
-using Aspid.MVVM.TodoList.Factories;
-using Aspid.MVVM.TodoList.ViewModels;
+using Aspid.MVVM.TodoList.Todos.Storages;
+using Aspid.MVVM.TodoList.EditTodoDialogs;
 
-namespace Aspid.MVVM.TodoList
+namespace Aspid.MVVM.TodoList.Bootstraps
 {
     public sealed class Bootstrap : MonoBehaviour
     {
-        [Header("Edit Todo PopUp View Factory")]
-        [SerializeField] private Transform _editTodoPopUpViewContainer;
-        [SerializeField] private EditTodoPopUpView _editTodoPopUpViewPrefab;
+        [Header("Edit Todo Dialog")]
+        [SerializeField] private Transform _editTodoDialogViewContainer;
+        [SerializeField] private EditTodoDialogView _editTodoDialogViewPrefab;
 
-        [Header("Todo Storage")]
+        [Header("Todo")]
         [SerializeField] private TodoStorageView _todoStorageView;
-        
-        [Header("Todos")]
         [SerializeField] private string[] _todos;
 
         private TodoStorage _todoStorage;
 
         private void Awake()
         {
-            var editTodoPopUpViewFactory = new EditTodoPopUpViewFactory(_editTodoPopUpViewPrefab, _editTodoPopUpViewContainer);
-            var todoItemViewModelFactory = new TodoItemViewModelFactory(editTodoPopUpViewFactory);
+            var editTodoDialog = new EditTodoDialog(_editTodoDialogViewPrefab, _editTodoDialogViewContainer);
 
             _todoStorage = new TodoStorage();
             foreach (var todo in _todos)
                 _todoStorage.AddTodo(todo);
             
-            var todoStorageViewModel = new TodoStorageViewModel(_todoStorage, todoItemViewModelFactory);
+            var todoStorageViewModel = new TodoStorageViewModel(_todoStorage, editTodoDialog);
             _todoStorageView.Initialize(todoStorageViewModel);
         }
 
-        private void OnDestroy()
-        {
+        private void OnDestroy() => 
             _todoStorageView.DeinitializeView()?.DisposeViewModel();
-        }
     }
 }

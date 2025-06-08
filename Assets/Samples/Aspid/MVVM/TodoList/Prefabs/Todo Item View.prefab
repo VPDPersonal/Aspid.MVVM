@@ -506,11 +506,11 @@ MonoBehaviour:
   _editCommand:
   - _mode: 3
     <Target>k__BackingField: {fileID: 6131062902608095836}
-    _isBindInteractable: 0
+    _interactableMode: 0
   _deleteCommand:
   - _mode: 3
     <Target>k__BackingField: {fileID: 3691551536386148332}
-    _isBindInteractable: 0
+    _interactableMode: 0
 --- !u!114 &363834777198584455
 MonoBehaviour:
   m_ObjectHideFlags: 0

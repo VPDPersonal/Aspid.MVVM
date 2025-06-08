@@ -795,7 +795,7 @@ MonoBehaviour:
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
     m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
   m_SpriteState:
@@ -1198,7 +1198,7 @@ GameObject:
   - component: {fileID: 6283604184244404737}
   - component: {fileID: 637875192883498620}
   m_Layer: 5
-  m_Name: Edit Todo PopUp
+  m_Name: Edit Todo Dialog View
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1274,15 +1274,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76eb67e094de4e858dff27e43a984794, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _text: {fileID: 4087269476373177278}
+  _text:
+  - {fileID: 4087269476373177278}
   _cancelButton:
     _mode: 3
     <Target>k__BackingField: {fileID: 7349505069928950248}
-    _isBindInteractable: 0
+    _interactableMode: 0
   _renamedButton:
     _mode: 3
     <Target>k__BackingField: {fileID: 2613306915063093282}
-    _isBindInteractable: 0
+    _interactableMode: 2
 --- !u!1 &7908573707491760464
 GameObject:
   m_ObjectHideFlags: 0
@@ -1386,7 +1387,7 @@ MonoBehaviour:
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
     m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
   m_SpriteState:

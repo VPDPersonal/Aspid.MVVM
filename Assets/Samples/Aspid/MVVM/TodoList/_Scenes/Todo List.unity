@@ -129,7 +129,7 @@ GameObject:
   m_Component:
   - component: {fileID: 527272492}
   m_Layer: 5
-  m_Name: Edit Todo PopUp Container
+  m_Name: Edit Todo Dialog Container
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -474,10 +474,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9f7ca918a8ed4f31a92b3f4906ed8e19, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _todoItemViewModelFactorySettings:
-    <Type>k__BackingField: 0
-  _editTodoPopUpViewContainer: {fileID: 527272492}
-  _editTodoPopUpViewPrefab: {fileID: 637875192883498620, guid: f224e395776a743a085cd452b48a724f, type: 3}
+  _editTodoDialogViewContainer: {fileID: 527272492}
+  _editTodoDialogViewPrefab: {fileID: 637875192883498620, guid: f224e395776a743a085cd452b48a724f, type: 3}
   _todoStorageView: {fileID: 1322158807}
   _todos:
   - Fisrt Todo
@@ -742,6 +740,18 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5753742671738815608, guid: 50d0d1aaa1d114333bf2f9b8a775538b, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5753742671738815608, guid: 50d0d1aaa1d114333bf2f9b8a775538b, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5753742671738815608, guid: 50d0d1aaa1d114333bf2f9b8a775538b, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5825338637607389157, guid: 50d0d1aaa1d114333bf2f9b8a775538b, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0
@@ -750,11 +760,42 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6621106528252726653, guid: 50d0d1aaa1d114333bf2f9b8a775538b, type: 3}
+      propertyPath: _addTodoCommand.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6621106528252726653, guid: 50d0d1aaa1d114333bf2f9b8a775538b, type: 3}
+      propertyPath: _addTodoCommand.Array.data[0]._mode
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 6621106528252726653, guid: 50d0d1aaa1d114333bf2f9b8a775538b, type: 3}
+      propertyPath: _addTodoCommand.Array.data[1]._mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6621106528252726653, guid: 50d0d1aaa1d114333bf2f9b8a775538b, type: 3}
+      propertyPath: _addTodoCommand.Array.data[2]._mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6621106528252726653, guid: 50d0d1aaa1d114333bf2f9b8a775538b, type: 3}
+      propertyPath: _addTodoCommand.Array.data[0].<Target>k__BackingField
+      value: 
+      objectReference: {fileID: 7402877119677772890}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 50d0d1aaa1d114333bf2f9b8a775538b, type: 3}
+--- !u!114 &7402877119677772890 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1647855970933561101, guid: 50d0d1aaa1d114333bf2f9b8a775538b, type: 3}
+  m_PrefabInstance: {fileID: 7402877119677772889}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

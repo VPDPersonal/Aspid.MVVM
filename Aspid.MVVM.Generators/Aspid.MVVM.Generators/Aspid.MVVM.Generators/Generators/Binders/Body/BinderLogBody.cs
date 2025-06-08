@@ -9,7 +9,7 @@ namespace Aspid.MVVM.Generators.Binders.Body;
 // ReSharper disable InconsistentNaming
 public static class BinderLogBody
 {
-    private const string GeneratedAttribute = General.GeneratedCodeBinderAttribute;
+    private const string GeneratedAttribute = General.GeneratedCodeLogBinderAttribute;
     
     private static readonly string List = Classes.List.Global;
     private static readonly string IBinder = Classes.IBinder.Global;

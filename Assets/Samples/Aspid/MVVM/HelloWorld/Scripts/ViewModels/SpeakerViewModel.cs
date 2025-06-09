@@ -18,7 +18,7 @@ namespace Aspid.MVVM.HelloWorld.ViewModels
         // creates “Text” property and “TextChanged” event for binding.
         // Source Generator works correctly with the following name style: m_text, _text, text.
         // For Source Generator to work, it is also necessary to label the class with ViewModelAttribute.
-        [Bind] private string _text;
+        [OneWayBind] private string _text;
         
         private readonly Speaker _speaker;
 

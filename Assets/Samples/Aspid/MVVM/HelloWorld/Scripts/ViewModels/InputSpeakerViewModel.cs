@@ -44,7 +44,7 @@ namespace Aspid.MVVM.HelloWorld.ViewModels
     // public partial class InputSpeakerViewModel
     // {
     //     [OneWayToSourceBind] private string _inputText;
-    //     [Bind] private readonly IRelayCommand _sayCommand;
+    //     [OneWayBind] private readonly IRelayCommand _sayCommand;
     //     
     //     private readonly Speaker _speaker;
     //

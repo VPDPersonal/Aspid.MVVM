@@ -5,11 +5,17 @@ using System.Collections.Generic;
 
 namespace Aspid.Collections.Observable
 {
+#if UNITY_2021_3_OR_NEWER
+    [Serializable]
+#endif
     public class ObservableList<T> : IList<T>, IReadOnlyObservableList<T>, IDisposable
     {
         public event NotifyCollectionChangedEventHandler<T>? CollectionChanged;
 
-        private readonly List<T> _list;
+#if UNITY_2021_3_OR_NEWER
+        [UnityEngine.SerializeField] 
+#endif
+        private List<T> _list;
 
         public ObservableList()
         {

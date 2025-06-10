@@ -4,16 +4,19 @@ using System.Collections.Generic;
 
 namespace Aspid.MVVM.StarterKit.Unity
 {
-    [AddComponentMenu("Aspid/MVVM/Binders/Collections/Lists/Dynamic List - ViewModel")]
-    [AddComponentContextMenu(typeof(Component), "Add Collection Binder/Dynamic List - ViewModel")]
-    public class DynamicViewModelMonoList : ListMonoBinderBase<IViewModel>
+    [AddComponentMenu("Aspid/MVVM/Binders/Collections/Observable Lists/Dynamic Observable List - ViewModel")]
+    [AddComponentContextMenu(typeof(Component), "Add Collection Binder/Dynamic Observable List - ViewModel")]
+    public class DynamicViewModelMonoObservableList : DynamicViewModelMonoObservableList<MonoView> { }
+    
+    public abstract class DynamicViewModelMonoObservableList<T> : ObservableListMonoBinderBase<IViewModel>
+        where T : MonoBehaviour, IView
     {
-        [SerializeField] private MonoView _prefab;
+        [SerializeField] private T _prefab;
         [SerializeField] private Transform _container;
 
-        private readonly List<MonoView> _views = new();
+        private readonly List<T> _views = new();
         
-        public MonoView Prefab => _prefab;
+        public T Prefab => _prefab;
         
         public Transform Container => _container;
 
@@ -70,9 +73,9 @@ namespace Aspid.MVVM.StarterKit.Unity
             _views.Clear();
         }
         
-        protected virtual MonoView GetNewView() => 
+        protected virtual T GetNewView() => 
             Instantiate(Prefab, Container);
         
-        protected virtual void ReleaseView(MonoView view) => view.DestroyView();
+        protected virtual void ReleaseView(T view) => view.DestroyView();
     }
 }

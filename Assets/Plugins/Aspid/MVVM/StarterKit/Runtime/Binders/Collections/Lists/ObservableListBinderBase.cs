@@ -5,33 +5,34 @@ using System.Collections.Specialized;
 
 namespace Aspid.MVVM.StarterKit
 {
-    public abstract class ListBinderBase<T> : Binder, IBinder<IReadOnlyObservableList<T>>, IDisposable
+    public abstract class ObservableListBinderBase<T> : Binder, IBinder<IReadOnlyObservableList<T>>, IDisposable
     {
-        private IReadOnlyObservableList<T?>? _list;
+        protected IReadOnlyObservableList<T?>? List { get; private set; }
 
-        protected ListBinderBase(BindMode mode)
+        protected ObservableListBinderBase(BindMode mode)
             : base(mode) { }
         
         public void SetValue(IReadOnlyObservableList<T?>? list)
         {
-            if (_list is not null)
-            {
-                OnReset();
-                Unsubscribe();
-            }
+            DeinitializeList();
             
-            _list = list;
-            if (_list is null) return;
-            if (_list.Count > 0) OnAdded(_list, 0);
+            List = list;
+            if (List is null) return;
+            if (List.Count > 0) OnAdded(List, 0);
             
-            Subscribe();
+            InitializeList();
         }
 
-        private void Subscribe() =>
-            _list!.CollectionChanged += OnCollectionChanged;
+        private void InitializeList() =>
+            List!.CollectionChanged += OnCollectionChanged;
 
-        private void Unsubscribe() =>
-            _list!.CollectionChanged -= OnCollectionChanged;
+        private void DeinitializeList() 
+        {
+            if (List is null) return;
+            
+            OnReset();
+            List.CollectionChanged -= OnCollectionChanged;
+        }
 
         private void OnCollectionChanged(INotifyCollectionChangedEventArgs<T?> e)
         {
@@ -88,11 +89,7 @@ namespace Aspid.MVVM.StarterKit
 
         protected abstract void OnReset();
 
-        public virtual void Dispose()
-        {
-            if (_list is null) return;
-            OnReset();
-            Unsubscribe();
-        }
+        public virtual void Dispose() =>
+            DeinitializeList();
     }
 }

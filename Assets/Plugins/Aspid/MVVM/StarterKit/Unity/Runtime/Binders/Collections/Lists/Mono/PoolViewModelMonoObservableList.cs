@@ -4,16 +4,19 @@ using UnityEngine.Pool;
 
 namespace Aspid.MVVM.StarterKit.Unity
 {
-    [AddComponentMenu("Aspid/MVVM/Binders/Collections/Lists/Pool List - ViewModel")]
-    [AddComponentContextMenu(typeof(Component), "Add Collection Binder/Pool List - ViewModel")]
-    public class PoolViewModelMonoList : DynamicViewModelMonoList
+    [AddComponentMenu("Aspid/MVVM/Binders/Collections/Observable Lists/Pool Observable List - ViewModel")]
+    [AddComponentContextMenu(typeof(Component), "Add Collection Binder/Pool Observable List - ViewModel")]
+    public class PoolViewModelMonoObservableList : PoolViewModelMonoObservableList<MonoView> { }
+    
+    public abstract class PoolViewModelMonoObservableList<T> : DynamicViewModelMonoObservableList<T>
+        where T : MonoBehaviour, IView
     {
         [SerializeField] [Min(0)] private int _initialCount;
         [SerializeField] [Min(0)] private int _maxCount = int.MaxValue;
 
-        private ObjectPool<MonoView> _pool;
+        private ObjectPool<T> _pool;
 
-        private ObjectPool<MonoView> Pool => _pool ??= new ObjectPool<MonoView>(
+        private ObjectPool<T> Pool => _pool ??= new ObjectPool<T>(
             () => CreateView(Prefab, Container),
             actionOnGet: view =>
             {
@@ -26,15 +29,15 @@ namespace Aspid.MVVM.StarterKit.Unity
             defaultCapacity: _initialCount,
             maxSize: _maxCount);
 
-        protected sealed override MonoView GetNewView() => Pool.Get();
+        protected sealed override T GetNewView() => Pool.Get();
 
-        protected sealed override void ReleaseView(MonoView view)
+        protected sealed override void ReleaseView(T view)
         {
             view.Deinitialize();
             Pool.Release(view);
         }
         
-        protected virtual MonoView CreateView(MonoView prefab, Transform container) => 
+        protected virtual T CreateView(T prefab, Transform container) => 
             Instantiate(prefab, container);
 
         protected override void OnDestroy()

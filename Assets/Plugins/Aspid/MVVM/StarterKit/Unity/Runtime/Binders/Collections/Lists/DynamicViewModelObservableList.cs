@@ -8,18 +8,18 @@ using Object = UnityEngine.Object;
 namespace Aspid.MVVM.StarterKit.Unity
 {
     [Serializable]
-    public class DynamicViewModelList : DynamicViewModelList<MonoView>
+    public class DynamicViewModelObservableList : DynamicViewModelObservableList<MonoView>
     {
-        public DynamicViewModelList(MonoView prefab, BindMode mode) 
+        public DynamicViewModelObservableList(MonoView prefab, BindMode mode) 
             : this(prefab, null, mode) { }
         
-        public DynamicViewModelList(MonoView prefab, Transform? container, BindMode mode = BindMode.OneWay) 
+        public DynamicViewModelObservableList(MonoView prefab, Transform? container, BindMode mode = BindMode.OneWay) 
             : base(prefab, container) { }
     }
     
     [Serializable]
-    public class DynamicViewModelList<T> : ListBinderBase<IViewModel>
-        where T : MonoView
+    public class DynamicViewModelObservableList<T> : ObservableListBinderBase<IViewModel>
+        where T : MonoBehaviour, IView
     {
         [SerializeField] private T _prefab;
         [SerializeField] private Transform? _container;
@@ -32,10 +32,10 @@ namespace Aspid.MVVM.StarterKit.Unity
 
         private List<T> Views => _views ??= new List<T>();
         
-        public DynamicViewModelList(T prefab, BindMode mode)
+        public DynamicViewModelObservableList(T prefab, BindMode mode)
             : this(prefab, null, mode) { }
         
-        public DynamicViewModelList(T prefab, Transform? container = null, BindMode mode = BindMode.OneWay)
+        public DynamicViewModelObservableList(T prefab, Transform? container = null, BindMode mode = BindMode.OneWay)
             : base(mode)
         {
             mode.ThrowExceptionIfTwo();

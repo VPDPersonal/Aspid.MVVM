@@ -8,16 +8,16 @@ using Object = UnityEngine.Object;
 namespace Aspid.MVVM.StarterKit.Unity
 {
     [Serializable]
-    public class PoolViewModelList : PoolViewModelList<MonoView>
+    public class PoolViewModelObservableList : PoolViewModelObservableList<MonoView>
     {
-        public PoolViewModelList(
+        public PoolViewModelObservableList(
             MonoView prefab, 
             int initialCount = 0, 
             int maxCount = int.MaxValue,
             BindMode mode = BindMode.OneWay)
             : this(prefab, null, initialCount, maxCount, mode) { }
         
-        public PoolViewModelList(
+        public PoolViewModelObservableList(
             MonoView prefab, 
             Transform? container,
             int initialCount = 0,
@@ -27,7 +27,7 @@ namespace Aspid.MVVM.StarterKit.Unity
     }
     
     [Serializable]
-    public class PoolViewModelList<T> : DynamicViewModelList<T> 
+    public class PoolViewModelObservableList<T> : DynamicViewModelObservableList<T> 
         where T : MonoView
     {
         [SerializeField] [Min(0)] private int _initialCount;
@@ -44,14 +44,14 @@ namespace Aspid.MVVM.StarterKit.Unity
             _initialCount,
             _maxCount);
         
-        public PoolViewModelList(
+        public PoolViewModelObservableList(
             T prefab,
             int initialCount = 0,
             int maxCount = int.MaxValue,
             BindMode mode = BindMode.OneWay)
             : this(prefab, null, initialCount, maxCount, mode) { }
         
-        public PoolViewModelList(
+        public PoolViewModelObservableList(
             T prefab,
             Transform? container, 
             int initialCount = 0, 

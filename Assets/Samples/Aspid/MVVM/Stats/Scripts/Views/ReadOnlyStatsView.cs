@@ -5,7 +5,7 @@ using Aspid.MVVM.Stats.ViewModels;
 namespace Aspid.MVVM.Stats.Views
 {
     [View]
-    public partial class ReadOnlyStatsView : MonoView, IView<IReadOnlyStatsViewModel>
+    public partial class ReadOnlyStatsView : MonoView, IView<StatsViewModel>
     {
         [RequireBinder(typeof(int))]
         [SerializeField] private MonoBinder[] _cool;

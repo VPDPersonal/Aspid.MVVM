@@ -1,12 +1,11 @@
 using UnityEngine;
 using Aspid.MVVM.Stats.Models;
 using Aspid.MVVM.StarterKit.Unity;
-using Aspid.MVVM.Stats.ViewModels;
 
 namespace Aspid.MVVM.Stats.Views
 {
     [View]
-    public partial class EditStatsView : ReadOnlyStatsView, IView<EditStatsViewModel>
+    public partial class EditStatsView : ReadOnlyStatsView
     {
         [Header("Commands")]
         [SerializeField] private ButtonCommandBinder[] _confirmCommand;

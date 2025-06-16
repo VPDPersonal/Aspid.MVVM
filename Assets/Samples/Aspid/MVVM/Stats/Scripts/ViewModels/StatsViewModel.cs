@@ -4,7 +4,7 @@ using Aspid.MVVM.Stats.Models;
 namespace Aspid.MVVM.Stats.ViewModels
 {
     [ViewModel]
-    public partial class EditStatsViewModel : IReadOnlyStatsViewModel, IDisposable
+    public partial class StatsViewModel : IDisposable
     {
         [OneWayBind] private int _cool;
         [OneWayBind] private int _power;
@@ -15,14 +15,9 @@ namespace Aspid.MVVM.Stats.ViewModels
         [OneWayBind] private int _skillPointsAvailable;
         [OneWayBind] private bool _isDraft;
         
-        [OneTimeBind] private readonly IRelayCommand _confirmCommand;
-        [OneTimeBind] private readonly IRelayCommand _resetToDefaultCommand;
-        [OneTimeBind] private readonly IRelayCommand<Skill> _addSkillPointToCommand;
-        [OneTimeBind] private readonly IRelayCommand<Skill> _removeSkillPointToCommand;
-        
         private readonly Hero _hero;
 
-        public EditStatsViewModel(Hero hero)
+        public StatsViewModel(Hero hero)
         {
             _hero = hero;
             
@@ -33,12 +28,6 @@ namespace Aspid.MVVM.Stats.ViewModels
             _technicalAbility = _hero.GetNumberSkillPointFrom(Skill.Cool);
             
             _skillPointsAvailable = _hero.SkillPointsAvailable;
-        
-            _confirmCommand = new RelayCommand(Confirm, () => IsDraft);
-            _resetToDefaultCommand = new RelayCommand(ResetToDefault, () => IsDraft);
-            _addSkillPointToCommand = new RelayCommand<Skill>(AddSkillPointTo, _ => SkillPointsAvailable > 0);
-            _removeSkillPointToCommand = new RelayCommand<Skill>(RemoveSkillPointTo, 
-                skill => GetNumberSkillPointFrom(skill) != _hero.GetNumberSkillPointFrom(skill));
             
             Subscribe();
         }
@@ -76,8 +65,7 @@ namespace Aspid.MVVM.Stats.ViewModels
             _ => throw new ArgumentOutOfRangeException(nameof(skill), skill, null)
         };
         
-        // Another way to command
-        // [RelayCommand(CanExecute = nameof(IsDraft))]
+        [RelayCommand(CanExecute = nameof(IsDraft))]
         private void Confirm()
         {
             _hero.SetSkillPointTo(Skill.Cool, Cool);
@@ -91,8 +79,7 @@ namespace Aspid.MVVM.Stats.ViewModels
                 throw new Exception();
         }
         
-        // Another way to command
-        // [RelayCommand(CanExecute = nameof(IsDraft))]
+        [RelayCommand(CanExecute = nameof(IsDraft))]
         private void ResetToDefault()
         {
             Cool = _hero.GetNumberSkillPointFrom(Skill.Cool);
@@ -104,8 +91,7 @@ namespace Aspid.MVVM.Stats.ViewModels
             SkillPointsAvailable = _hero.SkillPointsAvailable;
         }
         
-        // Another way to command
-        // [RelayCommand(CanExecute = nameof(CanAddSkillPointTo))]
+        [RelayCommand(CanExecute = nameof(CanAddSkillPointTo))]
         private void AddSkillPointTo(Skill skill)
         {
             if (SkillPointsAvailable == 0) return;
@@ -116,8 +102,7 @@ namespace Aspid.MVVM.Stats.ViewModels
 
         private bool CanAddSkillPointTo() => SkillPointsAvailable > 0;
         
-        // Another way to command
-        // [RelayCommand(CanExecute = nameof(CanRemoveSkillPointTo))]
+        [RelayCommand(CanExecute = nameof(CanRemoveSkillPointTo))]
         private void RemoveSkillPointTo(Skill skill)
         {
             var skillPoints = GetNumberSkillPointFrom(skill);

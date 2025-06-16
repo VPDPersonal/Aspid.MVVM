@@ -16,10 +16,10 @@ namespace Aspid.MVVM.Stats.Bootstraps
         
         private void Awake()
         {
-            Application.targetFrameRate = 60;
             var hero = new Hero(_skillPointsAvailable);
-            _editStatsView.Initialize(new EditStatsViewModel(hero));
-            _readOnlyStatsView.Initialize(new ReadOnlyStatsViewModel(hero));
+            
+            _editStatsView.Initialize(new StatsViewModel(hero));
+            _readOnlyStatsView.Initialize(new StatsViewModel(hero));
         }
 
         private void OnDestroy()

@@ -5,8 +5,7 @@ namespace Aspid.MVVM.HelloWorld.Views
 {
     // ViewAttribute is a marker for Source Generator.
     // For Source Generator to work properly, the class must be partial.
-    // Source generator implements abstract initialization and de-initialization methods,
-    // where it initializes all listed IBinder in View.
+    // Source Generator implements IView and generates bind and unbind binders in initialize and de-initialize methods.
     [View]
     public partial class InputSpeakerView : MonoView
     {

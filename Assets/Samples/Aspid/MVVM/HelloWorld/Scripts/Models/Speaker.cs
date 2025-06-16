@@ -4,7 +4,7 @@ namespace Aspid.MVVM.HelloWorld.Models
 {
     public class Speaker
     {
-        public event Action TextChanged;
+        public event Action<string> TextChanged;
 
         private string _text;
     
@@ -14,7 +14,7 @@ namespace Aspid.MVVM.HelloWorld.Models
             private set
             {
                 _text = value;
-                TextChanged?.Invoke();
+                TextChanged?.Invoke(value);
             }
         }
     

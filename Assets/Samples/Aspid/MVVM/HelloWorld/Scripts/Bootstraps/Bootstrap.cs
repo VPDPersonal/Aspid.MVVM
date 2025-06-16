@@ -9,7 +9,7 @@ namespace Aspid.MVVM.HelloWorld.Bootstraps
     public sealed class Bootstrap : MonoBehaviour
     {
         [Header("Views")]
-        [SerializeField] private SpeakerView _speakerView;
+        [SerializeField] private OutSpeakerView _outSpeakerView;
         [SerializeField] private InputSpeakerView _inputSpeakerView;
         
         [Header("ViewModel")]
@@ -20,7 +20,7 @@ namespace Aspid.MVVM.HelloWorld.Bootstraps
         private void OnValidate()
         {
             if (!Application.isPlaying) return;
-            if (!_speakerView || _speaker is null) return;
+            if (!_outSpeakerView || !_inputSpeakerView || _speaker is null) return;
             
             DeinitializeViews();
             InitializeViews();
@@ -37,34 +37,30 @@ namespace Aspid.MVVM.HelloWorld.Bootstraps
 
         private void InitializeViews()
         {
-            var inputViewModel = GetInputViewModel();
-            _inputSpeakerView.Initialize(inputViewModel);
-
             var viewModel = GetViewModel();
-            _speakerView.Initialize(viewModel);
+            
+            _outSpeakerView.Initialize(viewModel);
+            _inputSpeakerView.Initialize(viewModel);
         }
         
         private void DeinitializeViews()
         {
             // You can use extension methods to deinitialize the View and release the ViewModel.
-            _speakerView.DeinitializeView()?.DisposeViewModel();
+            _outSpeakerView.DeinitializeView()?.DisposeViewModel();
             _inputSpeakerView.DeinitializeView()?.DisposeViewModel();
             
             // Manual way to deinitialize View and release ViewModel:
-            // var viewModel = _speakerView.ViewModel;
-            // _speakerView.Deinitialize();
+            // var viewModel = _outSpeakerView.ViewModel;
+            // _outSpeakerView.Deinitialize();
             //
             // if (viewModel is IDisposable disposable) 
             //     disposable.Dispose();
         }
-        
-        private IViewModel GetViewModel() =>
-            new SpeakerViewModel(_speaker);
 
-        private IViewModel GetInputViewModel() => _inputViewModelType switch
+        private IViewModel GetViewModel() => _inputViewModelType switch
         {
-            InputViewModelType.Command => new InputSpeakerViewModel(_speaker),
-            InputViewModelType.Moment => new MomentInputSpeakerViewModel(_speaker),
+            InputViewModelType.Command => new SpeakerViewModel(_speaker),
+            InputViewModelType.Moment => new MomentSpeakerViewModel(_speaker),
             _ => throw new ArgumentOutOfRangeException()
         };
         

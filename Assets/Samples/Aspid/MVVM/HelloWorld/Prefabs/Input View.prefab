@@ -505,13 +505,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 54f2f3eca39044b7b80233ab29c71975, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _mode: 4
+  _mode: 2
   __view: {fileID: 5393079313702443611}
   __id: InputText
   _component: {fileID: 3399648360439780675}
   _converter:
     rid: -2
-  _isDebug: 0
+  _isDebug: 1
   _log: []
   references:
     version: 2
@@ -810,7 +810,7 @@ MonoBehaviour:
   _isDebug: 0
   _log: []
   _button: {fileID: 3086336165678962565}
-  _isBindInteractable: 1
+  _interactableMode: 0
 --- !u!1 &7372420315193681481
 GameObject:
   m_ObjectHideFlags: 0

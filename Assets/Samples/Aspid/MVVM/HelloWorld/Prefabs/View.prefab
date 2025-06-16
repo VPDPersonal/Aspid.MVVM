@@ -152,7 +152,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _mode: 1
   __view: {fileID: 8348079297892927482}
-  __id: Text
+  __id: OutText
   _component: {fileID: 7041658431837729244}
   _converter:
     rid: -2
@@ -329,7 +329,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _mode: 1
   __view: {fileID: 8348079297892927482}
-  __id: Text
+  __id: OutText
   _component: {fileID: 9039111509317181709}
   _converter:
     rid: -2
@@ -506,7 +506,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _mode: 1
   __view: {fileID: 8348079297892927482}
-  __id: Text
+  __id: OutText
   _component: {fileID: 4170462269045882427}
   _converter:
     rid: -2
@@ -683,7 +683,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _mode: 1
   __view: {fileID: 8348079297892927482}
-  __id: Text
+  __id: OutText
   _component: {fileID: 1676591072717040920}
   _converter:
     rid: -2
@@ -719,8 +719,8 @@ GameObject:
   - component: {fileID: 2528914176844078341}
   - component: {fileID: 7080310203790269471}
   - component: {fileID: 7174742462179750531}
-  - component: {fileID: 8472612410677436496}
   - component: {fileID: 4190672021522639303}
+  - component: {fileID: 443234779251679968}
   m_Layer: 5
   m_Name: Text (1)
   m_TagString: Untagged
@@ -846,31 +846,6 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
---- !u!114 &8472612410677436496
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3966531726734033619}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 308348858250478390a4e42699309252, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _mode: 1
-  __view: {fileID: 8348079297892927482}
-  __id: Text
-  _component: {fileID: 7174742462179750531}
-  _converter:
-    rid: -2
-  _isDebug: 0
-  _log: []
-  references:
-    version: 2
-    RefIds:
-    - rid: -2
-      type: {class: , ns: , asm: }
 --- !u!114 &4190672021522639303
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -885,6 +860,33 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_HorizontalFit: 2
   m_VerticalFit: 2
+--- !u!114 &443234779251679968
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3966531726734033619}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 308348858250478390a4e42699309252, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _mode: 1
+  __view: {fileID: 8348079297892927482}
+  __id: OutText
+  _component: {fileID: 7174742462179750531}
+  _converter:
+    rid: 4192322585601507426
+  _isDebug: 0
+  _log: []
+  references:
+    version: 2
+    RefIds:
+    - rid: 4192322585601507426
+      type: {class: StringFormatConverter, ns: Aspid.MVVM.StarterKit.Unity, asm: Aspid.MVVM.StarterKit.Unity}
+      data:
+        _format: 
 --- !u!1 &4521561719128131652
 GameObject:
   m_ObjectHideFlags: 0
@@ -1037,7 +1039,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _mode: 1
   __view: {fileID: 8348079297892927482}
-  __id: Text
+  __id: OutText
   _component: {fileID: 1011148578480681439}
   _converter:
     rid: -2
@@ -1214,7 +1216,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _mode: 1
   __view: {fileID: 8348079297892927482}
-  __id: Text
+  __id: OutText
   _component: {fileID: 1149886398080824890}
   _converter:
     rid: -2
@@ -1391,7 +1393,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _mode: 1
   __view: {fileID: 8348079297892927482}
-  __id: Text
+  __id: OutText
   _component: {fileID: 4401318497945244839}
   _converter:
     rid: -2
@@ -1568,7 +1570,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _mode: 1
   __view: {fileID: 8348079297892927482}
-  __id: Text
+  __id: OutText
   _component: {fileID: 7307834886014229625}
   _converter:
     rid: -2
@@ -1745,7 +1747,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _mode: 1
   __view: {fileID: 8348079297892927482}
-  __id: Text
+  __id: OutText
   _component: {fileID: 512489528834311953}
   _converter:
     rid: -2
@@ -1842,8 +1844,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: af6ab7543d644715b650e3e7ef156ad3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _text:
-  - {fileID: 8472612410677436496}
+  _outText:
+  - {fileID: 443234779251679968}
   - {fileID: 2411825988536775899}
   - {fileID: 9021229572394938546}
   - {fileID: 2796341752838201196}
@@ -2010,7 +2012,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _mode: 1
   __view: {fileID: 8348079297892927482}
-  __id: Text
+  __id: OutText
   _component: {fileID: 8409175071213816942}
   _converter:
     rid: -2
@@ -2187,7 +2189,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _mode: 1
   __view: {fileID: 8348079297892927482}
-  __id: Text
+  __id: OutText
   _component: {fileID: 4480981676079402071}
   _converter:
     rid: -2
@@ -2364,7 +2366,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _mode: 1
   __view: {fileID: 8348079297892927482}
-  __id: Text
+  __id: OutText
   _component: {fileID: 3800272644567232525}
   _converter:
     rid: -2
@@ -2541,7 +2543,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _mode: 1
   __view: {fileID: 8348079297892927482}
-  __id: Text
+  __id: OutText
   _component: {fileID: 5377912710078581598}
   _converter:
     rid: -2
@@ -2718,7 +2720,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _mode: 1
   __view: {fileID: 8348079297892927482}
-  __id: Text
+  __id: OutText
   _component: {fileID: 3010959335594743484}
   _converter:
     rid: -2

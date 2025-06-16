@@ -191,8 +191,8 @@ public static class InitializeBody
 
         for (var i = 0; i < data.GenericViews.Length; i++)
         {
-            var isInterface = data.GenericViews[i].TypeKind is TypeKind.Interface;
-            var type = data.GenericViews[i].ToDisplayStringGlobal();
+            var isInterface = data.GenericViews[i].Type.TypeKind is TypeKind.Interface;
+            var type = data.GenericViews[i].Type.ToDisplayStringGlobal();
             if (!isInterface) type += ".IBindableMembers";
             
             code.AppendLine(

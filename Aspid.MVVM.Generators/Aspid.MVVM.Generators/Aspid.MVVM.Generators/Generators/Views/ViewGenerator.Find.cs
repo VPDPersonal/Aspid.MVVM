@@ -33,21 +33,25 @@ public partial class ViewGenerator
         return new FoundForGenerator<ViewData>(viewData);
     }
 
-    private static ImmutableArray<ITypeSymbol> GetGenericViews(INamedTypeSymbol symbol)
+    private static ImmutableArray<GenericViewData> GetGenericViews(INamedTypeSymbol symbol)
     {
-        var genericViews = new List<ITypeSymbol>();
+        var genericViews = new HashSet<GenericViewData>();
         
-        foreach (var @interface in symbol.Interfaces)
+        for (var type = symbol; type is not null; type = type.BaseType)
         {
-            if (@interface.IsGenericType)
+            foreach (var @interface in type.Interfaces)
             {
-                if (@interface.Name == Classes.IView.Name)
-                {
-                    genericViews.Add(@interface.TypeArguments[0]);
-                }
+                if (!@interface.IsGenericType) continue;
+                if (@interface.Name != Classes.IView.Name) continue;
+            
+                var isSelf = SymbolEqualityComparer.Default.Equals(type, symbol);
+                var data = new GenericViewData(isSelf, @interface.TypeArguments[0]);
+
+                genericViews.Remove(data);
+                genericViews.Add(data);
             }
         }
-
+        
         return genericViews.ToImmutableArray();
     }
 }

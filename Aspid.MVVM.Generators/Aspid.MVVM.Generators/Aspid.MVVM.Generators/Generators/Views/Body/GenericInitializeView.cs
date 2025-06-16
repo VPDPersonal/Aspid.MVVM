@@ -1,10 +1,12 @@
 using System.Linq;
 using Microsoft.CodeAnalysis;
 using Aspid.Generator.Helpers;
+using System.Collections.Generic;
 using Aspid.MVVM.Generators.Views.Data;
 using Aspid.MVVM.Generators.Descriptions;
 using Aspid.MVVM.Generators.ViewModels.Factories;
 using Aspid.MVVM.Generators.Views.Body.Extensions;
+using Aspid.MVVM.Generators.ViewModels.Data.Members;
 
 namespace Aspid.MVVM.Generators.Views.Body;
 
@@ -16,74 +18,81 @@ public static class GenericInitializeView
         in DeclarationText declaration,
         in SourceProductionContext context)
     {
-        foreach (var viewModelType in data.GenericViews)
+        foreach (var genericView in data.GenericViews)
         {
             var code = new CodeWriter();
             
-            var baseTypes = viewModelType.TypeKind is not TypeKind.Interface 
-                ? new[] { $"{Classes.IView}<{viewModelType.ToDisplayStringGlobal()}.IBindableMembers>" }
+            var baseTypes = genericView is { IsSelf: true, Type.TypeKind: not TypeKind.Interface }
+                ? new[] { $"{Classes.IView}<{genericView.Type.ToDisplayStringGlobal()}.IBindableMembers>" }
                 : null;
 
             code.AppendClassBegin([Namespaces.Aspid_MVVM], @namespace, declaration, baseTypes)
-                .AppendGenericViews(data, viewModelType)
+                .AppendGenericViews(data, genericView)
                 .AppendClassEnd(@namespace);
             
-            context.AddSource(declaration.GetFileName(@namespace, viewModelType.ToDisplayString()), code.GetSourceText());
+            context.AddSource(declaration.GetFileName(@namespace, genericView.Type.ToDisplayString()), code.GetSourceText());
         }
     }
     
-    private static CodeWriter AppendGenericViews(this CodeWriter code, in ViewDataSpan data, ITypeSymbol viewModelType)
+    private static CodeWriter AppendGenericViews(this CodeWriter code, in ViewDataSpan data, GenericViewData genericView)
     {
-        code.AppendProfilerMarker(data, viewModelType)
+        code.AppendProfilerMarker(data, genericView.Type)
             .AppendLine()
-            .AppendInitialize(data, viewModelType);
+            .AppendInitialize(data, genericView);
 
         return code;
     }
 
-    private static CodeWriter AppendInitialize(this CodeWriter code, in ViewDataSpan data, ITypeSymbol viewModelType)
+    private static CodeWriter AppendInitialize(this CodeWriter code, in ViewDataSpan data, GenericViewData genericView)
     {
-        var modifier = data.Symbol.IsSealed ? "private" : "protected";
-        var typeName = viewModelType.ToDisplayStringGlobal();
-        var typeBindableMembersName = viewModelType.TypeKind is not TypeKind.Interface
+        string modifier;
+        if (genericView.IsSelf) modifier = data.Symbol.IsSealed ? "private" : "protected virtual";
+        else modifier = "protected override";
+        
+        var typeName = genericView.Type.ToDisplayStringGlobal();
+        var typeBindableMembersName = genericView.Type.TypeKind is not TypeKind.Interface
             ? $"{typeName}.IBindableMembers"
             : $"{typeName}";
 
-        if (viewModelType.TypeKind is not TypeKind.Interface)
+        if (genericView.IsSelf)
         {
+            if (genericView.Type.TypeKind is not TypeKind.Interface)
+            {
+                code.AppendMultiline(
+                    $$"""
+                      public void Initialize({{typeName}} viewModel)
+                      {
+                          if (viewModel is null) throw new {{Classes.ArgumentNullException}}(nameof(viewModel));
+                          if (ViewModel is not null) throw new {{Classes.InvalidOperationException}}("View is already initialized.");
+                          
+                          ViewModel = viewModel;
+                          InitializeInternal({{Classes.Unsafe}}.As<{{typeName}}, {{typeBindableMembersName}}>(ref viewModel));
+                      }
+                      """);
+            
+                code.AppendLine();
+            }
+        
             code.AppendMultiline(
                 $$"""
-                public void Initialize({{typeName}} viewModel)
-                {
-                    if (viewModel is null) throw new {{Classes.ArgumentNullException}}(nameof(viewModel));
-                    if (ViewModel is not null) throw new {{Classes.InvalidOperationException}}("View is already initialized.");
-                    
-                    ViewModel = viewModel;
-                    InitializeInternal({{Classes.Unsafe}}.As<{{typeName}}, {{typeBindableMembersName}}>(ref viewModel));
-                }
-                """);
+                  public void Initialize({{typeBindableMembersName}} viewModel)
+                  {
+                      if (viewModel is null) throw new {{Classes.ArgumentNullException}}(nameof(viewModel));
+                      if (ViewModel is not null) throw new {{Classes.InvalidOperationException}}("View is already initialized.");
+                      
+                      ViewModel = viewModel;
+                      InitializeInternal(viewModel);
+                  }
+                  """);
             
             code.AppendLine();
         }
         
-        code.AppendMultiline(
-            $$"""
-            public void Initialize({{typeBindableMembersName}} viewModel)
-            {
-                if (viewModel is null) throw new {{Classes.ArgumentNullException}}(nameof(viewModel));
-                if (ViewModel is not null) throw new {{Classes.InvalidOperationException}}("View is already initialized.");
-                
-                ViewModel = viewModel;
-                InitializeInternal(viewModel);
-            }
-            """);
-
-        code.AppendLine();
         code.AppendLine($"{modifier} void InitializeInternal({typeBindableMembersName} viewModel)");
         code.BeginBlock();
         
         code.AppendLine($"#if !{Defines.ASPID_MVVM_UNITY_PROFILER_DISABLED}")
-            .AppendLine($"using (__initialize{viewModelType.ToDisplayString().Replace(".", "_")}Marker.Auto())")
+            .AppendLine($"using (__initialize{genericView.Type.ToDisplayString().Replace(".", "_")}Marker.Auto())")
             .AppendLine("#endif")
             .BeginBlock();
         
@@ -94,10 +103,19 @@ public static class GenericInitializeView
         code.AppendLineIf(isInstantiateBinders, "InstantiateBinders();");
         code.AppendLine();
 
-        if (viewModelType.TypeKind is not TypeKind.Interface)
+        if (genericView.Type.TypeKind is not TypeKind.Interface)
         {
-            var bindableMembers = BindableMembersFactory.Create(viewModelType)
-                .ToDictionary(bindable => bindable.Id.SourceValue, bindable => bindable);
+            var bindableMembers = new Dictionary<string, BindableMember>();
+
+            for (var viewModelType = genericView.Type; viewModelType is not null; viewModelType = viewModelType.BaseType)
+            {
+                foreach (var memberPair in  
+                         BindableMembersFactory.Create(viewModelType)
+                             .ToDictionary(bindable => bindable.Id.SourceValue, bindable => bindable))
+                {
+                    bindableMembers.Add(memberPair.Key, memberPair.Value);
+                }
+            }
 
             foreach (var member in data.Members)
             {
@@ -113,7 +131,7 @@ public static class GenericInitializeView
         }
         else
         {
-            var customViewModelInterfaces = CustomViewModelInterfacesFactory.Create(viewModelType);
+            var customViewModelInterfaces = CustomViewModelInterfacesFactory.Create(genericView.Type);
 
             foreach (var member in data.Members)
             {

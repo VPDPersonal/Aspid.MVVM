@@ -6,15 +6,15 @@ using Aspid.MVVM.Generators.Views.Data.Members;
 namespace Aspid.MVVM.Generators.Views.Data;
 
 public readonly struct ViewData(
-    ISymbol symbol,
+    INamedTypeSymbol symbol,
     Inheritor inheritor, 
     TypeDeclarationSyntax declaration,
     ImmutableArray<BinderMember> members,
-    ImmutableArray<ITypeSymbol> genericViews)
+    ImmutableArray<GenericViewData> genericViews)
 {
-    public readonly ISymbol Symbol = symbol; 
+    public readonly INamedTypeSymbol Symbol = symbol; 
     public readonly Inheritor Inheritor = inheritor;
     public readonly ImmutableArray<BinderMember> Members = members;
     public readonly TypeDeclarationSyntax Declaration = declaration;
-    public readonly ImmutableArray<ITypeSymbol> GenericViews = genericViews;
+    public readonly ImmutableArray<GenericViewData> GenericViews = genericViews;
 }

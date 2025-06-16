@@ -8,36 +8,32 @@ namespace Aspid.MVVM.StarterKit.Unity
 {
     public abstract partial class ObservableListMonoBinderBase<T> : MonoBinder, IBinder<IReadOnlyObservableList<T>>
     {
-        private IReadOnlyObservableList<T> _list;
-
-        protected virtual void OnDestroy()
-        {
-            if (_list == null) return;
-            
-            OnReset();
-            Unsubscribe();
-        }
+        protected IReadOnlyObservableList<T> List { get; private set; }
 
         [BinderLog]
         public void SetValue(IReadOnlyObservableList<T> list)
         {
-            if (_list != null)
-            {
-                OnReset();
-                Unsubscribe();
-            }
+            DeinitializeList();
 
-            _list = list;
-            OnAdded(_list, 0);
+            List = list;
+            OnAdded(List, 0);
             
-            Subscribe();
+            InitializeList();
         }
 
-        private void Subscribe() => 
-            _list.CollectionChanged += OnCollectionChanged;
+        protected override void OnUnbound() =>
+            DeinitializeList();
 
-        private void Unsubscribe() =>
-            _list.CollectionChanged -= OnCollectionChanged;
+        private void InitializeList() => 
+            List.CollectionChanged += OnCollectionChanged;
+
+        private void DeinitializeList()
+        {
+            if (List is null) return;
+                
+            OnReset();
+            List.CollectionChanged -= OnCollectionChanged;
+        }
 
         private void OnCollectionChanged(INotifyCollectionChangedEventArgs<T> e)
         {

@@ -5,7 +5,7 @@ using System.Collections.Specialized;
 
 namespace Aspid.MVVM.StarterKit
 {
-    public abstract class ObservableListBinderBase<T> : Binder, IBinder<IReadOnlyObservableList<T>>, IDisposable
+    public abstract class ObservableListBinderBase<T> : Binder, IBinder<IReadOnlyObservableList<T>>
     {
         protected IReadOnlyObservableList<T?>? List { get; private set; }
 
@@ -22,6 +22,9 @@ namespace Aspid.MVVM.StarterKit
             
             InitializeList();
         }
+
+        protected override void OnUnbound() =>
+            DeinitializeList();
 
         private void InitializeList() =>
             List!.CollectionChanged += OnCollectionChanged;
@@ -88,8 +91,5 @@ namespace Aspid.MVVM.StarterKit
         protected abstract void OnMove(T? oldItem, T? newItem, int oldStartingIndex, int newStartingIndex);
 
         protected abstract void OnReset();
-
-        public virtual void Dispose() =>
-            DeinitializeList();
     }
 }

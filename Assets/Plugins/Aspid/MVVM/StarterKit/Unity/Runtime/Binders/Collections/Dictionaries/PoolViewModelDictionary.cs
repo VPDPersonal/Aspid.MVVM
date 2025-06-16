@@ -63,6 +63,12 @@ namespace Aspid.MVVM.StarterKit.Unity
             _maxCount = maxCount;
             _initialCount = initialCount;
         }
+        
+        protected override void OnUnbound()
+        {
+            base.OnUnbound();
+            Pool.Clear();
+        }
 
         protected sealed override TView GetNewView() => Pool.Get();
 
@@ -74,11 +80,5 @@ namespace Aspid.MVVM.StarterKit.Unity
         
         protected virtual TView CreateView(TView prefab, Transform? container) =>
             Object.Instantiate(prefab, container);
-
-        public override void Dispose()
-        {
-            base.Dispose();
-            Pool.Dispose();
-        }
     }
 }

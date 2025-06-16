@@ -5,23 +5,18 @@ using System.Collections.Specialized;
 
 namespace Aspid.MVVM.StarterKit
 {
-    public abstract class DictionaryBinderBase<TKey, TValue> : Binder,
-        IBinder<IReadOnlyObservableDictionary<TKey, TValue?>>, IDisposable
+    public abstract class DictionaryBinderBase<TKey, TValue> : Binder, IBinder<IReadOnlyObservableDictionary<TKey, TValue?>>
     {
-        private IReadOnlyObservableDictionary<TKey, TValue?>? _dictionary;
+        protected IReadOnlyObservableDictionary<TKey, TValue?>? Dictionary { get; private set; }
 
         protected DictionaryBinderBase(BindMode mode) 
             : base(mode) { }
 
         public void SetValue(IReadOnlyObservableDictionary<TKey, TValue?>? dictionary)
         {
-            if (_dictionary is not null)
-            {
-                OnReset();
-                Unsubscribe();
-            }
+            DeinitializeDictionary();
             
-            _dictionary = dictionary;
+            Dictionary = dictionary;
             
             if (dictionary is null) return;
             if (dictionary.Count > 0)
@@ -30,15 +25,23 @@ namespace Aspid.MVVM.StarterKit
                     OnAdded(pair);
             }
             
-            Subscribe();
+            InitializeDictionary();
+        }
+        
+        protected override void OnUnbound() =>
+            DeinitializeDictionary();
+
+        private void InitializeDictionary() => 
+            Dictionary!.CollectionChanged += OnCollectionChanged;
+
+        private void DeinitializeDictionary()
+        {
+            if (Dictionary is null) return;
+            
+            OnReset();
+            Dictionary!.CollectionChanged -= OnCollectionChanged;
         }
 
-        private void Subscribe() => 
-            _dictionary!.CollectionChanged += OnCollectionChanged;
-
-        private void Unsubscribe() => 
-            _dictionary!.CollectionChanged -= OnCollectionChanged;
-        
         private void OnCollectionChanged(INotifyCollectionChangedEventArgs<KeyValuePair<TKey, TValue?>> e)
         {
             switch (e.Action)
@@ -86,12 +89,5 @@ namespace Aspid.MVVM.StarterKit
         protected abstract void OnReplace(KeyValuePair<TKey, TValue?> oldItem, KeyValuePair<TKey, TValue?> newItem);
 
         protected abstract void OnReset();
-
-        public virtual void Dispose()
-        {
-            if (_dictionary == null) return;
-            OnReset();
-            Unsubscribe();
-        }
     }
 }

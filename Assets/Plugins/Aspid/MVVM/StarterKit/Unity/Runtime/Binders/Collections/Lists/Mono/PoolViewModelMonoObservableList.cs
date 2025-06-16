@@ -31,6 +31,12 @@ namespace Aspid.MVVM.StarterKit.Unity
 
         protected sealed override T GetNewView() => Pool.Get();
 
+        protected override void OnUnbound()
+        {
+            base.OnUnbound();
+            Pool.Clear();
+        }
+
         protected sealed override void ReleaseView(T view)
         {
             view.Deinitialize();
@@ -39,11 +45,5 @@ namespace Aspid.MVVM.StarterKit.Unity
         
         protected virtual T CreateView(T prefab, Transform container) => 
             Instantiate(prefab, container);
-
-        protected override void OnDestroy()
-        {
-            base.OnDestroy();
-            Pool.Dispose();
-        }
     }
 }

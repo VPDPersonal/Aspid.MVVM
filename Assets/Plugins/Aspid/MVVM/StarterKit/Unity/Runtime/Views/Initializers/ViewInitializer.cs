@@ -20,7 +20,7 @@ namespace Aspid.MVVM.StarterKit.Unity
         [SerializeField] private InitializeComponent<IViewModel> _viewModelComponent;
         
         [SerializeField] private InitializeStage _initializeStage  = InitializeStage.Awake;
-        [SerializeField] private bool _isDeinitialize;
+        [SerializeField] private bool _isDeinitialize = true;
         
         private IView[] _views;
         private bool _isConstructed;

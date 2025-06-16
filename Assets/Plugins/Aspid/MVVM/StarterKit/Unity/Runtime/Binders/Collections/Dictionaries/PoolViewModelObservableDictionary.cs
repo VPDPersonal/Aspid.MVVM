@@ -8,17 +8,17 @@ using Object = UnityEngine.Object;
 namespace Aspid.MVVM.StarterKit.Unity
 {
     [Serializable]
-    public class PoolViewModelDictionary<TKey, TViewModel> : PoolViewModelDictionary<TKey, TViewModel, MonoView>
+    public class PoolViewModelObservableDictionary<TKey, TViewModel> : PoolViewModelObservableDictionary<TKey, TViewModel, MonoView>
         where TViewModel : IViewModel
     {
-        public PoolViewModelDictionary(
+        public PoolViewModelObservableDictionary(
             MonoView prefab,
             int initialCount = 0,
             int maxCount = int.MaxValue,
             BindMode mode = BindMode.OneWay)
             : this(prefab, null, initialCount, maxCount, mode) { }
         
-        public PoolViewModelDictionary(
+        public PoolViewModelObservableDictionary(
             MonoView prefab,
             Transform? container, 
             int initialCount = 0,
@@ -28,7 +28,7 @@ namespace Aspid.MVVM.StarterKit.Unity
     }
     
     [Serializable]
-    public class PoolViewModelDictionary<TKey, TViewModel, TView> : DynamicViewModelDictionary<TKey, TViewModel, TView>
+    public class PoolViewModelObservableDictionary<TKey, TViewModel, TView> : DynamicViewModelObservableDictionary<TKey, TViewModel, TView>
         where TView : MonoView 
         where TViewModel : IViewModel
     {
@@ -46,13 +46,13 @@ namespace Aspid.MVVM.StarterKit.Unity
             _initialCount,
             _maxCount);
         
-        public PoolViewModelDictionary(TView prefab, 
+        public PoolViewModelObservableDictionary(TView prefab, 
             int initialCount = 0, 
             int maxCount = int.MaxValue,
             BindMode mode = BindMode.OneWay)
             : this(prefab, null, initialCount, maxCount, mode) { }
         
-        public PoolViewModelDictionary(
+        public PoolViewModelObservableDictionary(
             TView prefab,
             Transform? container, 
             int initialCount = 0,

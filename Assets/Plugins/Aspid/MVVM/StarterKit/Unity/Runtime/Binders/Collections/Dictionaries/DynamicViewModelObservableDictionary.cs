@@ -8,18 +8,18 @@ using Object = UnityEngine.Object;
 namespace Aspid.MVVM.StarterKit.Unity
 {
     [Serializable]
-    public class DynamicViewModelDictionary<TKey, TViewModel> : DynamicViewModelDictionary<TKey, TViewModel, MonoView>
+    public class DynamicViewModelObservableDictionary<TKey, TViewModel> : DynamicViewModelObservableDictionary<TKey, TViewModel, MonoView>
         where TViewModel : IViewModel
     {
-        public DynamicViewModelDictionary(MonoView prefab, BindMode mode)
+        public DynamicViewModelObservableDictionary(MonoView prefab, BindMode mode)
             : this(prefab, null, mode) { }
         
-        public DynamicViewModelDictionary(MonoView prefab, Transform? container = null, BindMode mode = BindMode.OneWay)
+        public DynamicViewModelObservableDictionary(MonoView prefab, Transform? container = null, BindMode mode = BindMode.OneWay)
             : base(prefab, container, mode) { }
     }
     
     [Serializable]
-    public class DynamicViewModelDictionary<TKey, TViewModel, TView> : DictionaryBinderBase<TKey, TViewModel>
+    public class DynamicViewModelObservableDictionary<TKey, TViewModel, TView> : ObservableDictionaryBinderBase<TKey, TViewModel>
         where TView : MonoView
         where TViewModel : IViewModel
     {
@@ -34,10 +34,10 @@ namespace Aspid.MVVM.StarterKit.Unity
 
         private Dictionary<TKey, TView> Views => _views ??= new Dictionary<TKey, TView>();
         
-        public DynamicViewModelDictionary(TView prefab, BindMode mode)
+        public DynamicViewModelObservableDictionary(TView prefab, BindMode mode)
             : this(prefab, null, mode) { }
         
-        public DynamicViewModelDictionary(TView prefab, Transform? container = null, BindMode mode = BindMode.OneWay)
+        public DynamicViewModelObservableDictionary(TView prefab, Transform? container = null, BindMode mode = BindMode.OneWay)
             : base(mode)
         {
             mode.ThrowExceptionIfTwo();

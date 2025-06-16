@@ -33,6 +33,9 @@ namespace Aspid.MVVM.StarterKit.Unity
             OnSetValue(value);
         }
 
+        protected override void OnUnbound() =>
+            Command = null;
+
         protected virtual void OnSetValue(IRelayCommand value) { }
         
         public bool CanExecute() => 
@@ -71,6 +74,9 @@ namespace Aspid.MVVM.StarterKit.Unity
             Command = value;
             OnSetValue(value);
         }
+        
+        protected override void OnUnbound() =>
+            Command = null;
 
         protected virtual void OnSetValue(IRelayCommand<T> value) { }
         
@@ -111,6 +117,9 @@ namespace Aspid.MVVM.StarterKit.Unity
             OnSetValue(value);
         }
         
+        protected override void OnUnbound() =>
+            Command = null;
+        
         protected virtual void OnSetValue(IRelayCommand<T1, T2> value) { }
 
         public bool CanExecute(T1 param1, T2 param2) => 
@@ -149,6 +158,9 @@ namespace Aspid.MVVM.StarterKit.Unity
             Command = value;
             OnSetValue(value);
         }
+        
+        protected override void OnUnbound() =>
+            Command = null;
 
         protected virtual void OnSetValue(IRelayCommand<T1, T2, T3> value) { }
         
@@ -188,6 +200,9 @@ namespace Aspid.MVVM.StarterKit.Unity
             Command = value;
             OnSetValue(value);
         }
+        
+        protected override void OnUnbound() =>
+            Command = null;
 
         protected virtual void OnSetValue(IRelayCommand<T1, T2, T3, T4> value) { }
         

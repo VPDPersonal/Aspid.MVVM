@@ -95,6 +95,15 @@ public static class GenericInitializeView
             .AppendLine($"using (__initialize{genericView.Type.ToDisplayString().Replace(".", "_")}Marker.Auto())")
             .AppendLine("#endif")
             .BeginBlock();
+
+        code.AppendLine("if (__isInitializing)")
+            .BeginBlock()
+            .AppendLineIf(!genericView.IsSelf, "base.InitializeInternal(viewModel);")
+            .AppendLine("return;")
+            .EndBlock()
+            .AppendLine()
+            .AppendLine("__isInitializing = true;")
+            .AppendLine();
         
         code.AppendLine("OnInitializingInternal(viewModel);");
         code.AppendLineIf(data.Inheritor is not Inheritor.None, "base.InitializeInternal(viewModel);");
@@ -147,9 +156,10 @@ public static class GenericInitializeView
         }
         
         code.AppendLine()
-            .AppendLine("OnInitializedInternal(viewModel);");
+            .AppendLine("OnInitializedInternal(viewModel);")
+            .AppendLine("__isInitializing = false;");
 
-        code.EndBlock()
+        code.EndBlock()  
             .EndBlock();
 
         return code;

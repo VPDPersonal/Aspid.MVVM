@@ -58,10 +58,19 @@ public static class InitializeBody
 
         code.AppendProfilerMarkers(className)
             .AppendLine()
+            .AppendMultiline(
+                $"""
+                 [global::System.NonSerialized]
+                 {GeneratedAttribute}
+                 {EditorBrowsableAttribute}
+                 private bool __isInitializing;
+                 
+                 """)
             .AppendMultilineIf(data.IsInstantiateBinders, 
-                $$"""
-                {{GeneratedAttribute}}
-                {{EditorBrowsableAttribute}}
+                $"""
+                [global::System.NonSerialized]
+                {GeneratedAttribute}
+                {EditorBrowsableAttribute}
                 private bool __isBindersCached;
                 
                 """)
@@ -113,12 +122,21 @@ public static class InitializeBody
 
         code.AppendProfilerMarkers(className)
             .AppendLine()
+            .AppendMultiline(
+                $"""
+                 [global::System.NonSerialized]
+                 {GeneratedAttribute}
+                 {EditorBrowsableAttribute}
+                 private bool __isInitializing;
+                 
+                 """)
             .AppendMultilineIf(data.IsInstantiateBinders, 
-                $$"""
-                {{GeneratedAttribute}}
-                {{EditorBrowsableAttribute}}
+                $"""
+                [global::System.NonSerialized]
+                {GeneratedAttribute}
+                {EditorBrowsableAttribute}
                 private bool __isBindersCached;
-
+                
                 """);
             
         code.AppendInitializeInternalDeclaration(data)
@@ -189,6 +207,13 @@ public static class InitializeBody
                 """)
             .BeginBlock();
 
+        code.AppendLine("if (__isInitializing)")
+            .BeginBlock()
+            .AppendLineIf(isOverride, "base.InitializeInternal(viewModel);")
+            .AppendLine("return;")
+            .EndBlock()
+            .AppendLine();
+
         for (var i = 0; i < data.GenericViews.Length; i++)
         {
             var isInterface = data.GenericViews[i].Type.TypeKind is TypeKind.Interface;
@@ -204,6 +229,7 @@ public static class InitializeBody
         }
         
         code.AppendLineIf(data.GenericViews.Length > 0)
+            .AppendLine("__isInitializing = true;")
             .AppendLine("OnInitializingInternal(viewModel);")
             .AppendLineIf(isOverride, "base.InitializeInternal(viewModel);")
             .AppendLineIf(data.IsInstantiateBinders, "InstantiateBinders();")
@@ -214,6 +240,7 @@ public static class InitializeBody
         
         return code.AppendLine()
             .AppendLine("OnInitializedInternal(viewModel);")
+            .AppendLine("__isInitializing = false;")
             .EndBlock()
             .EndBlock();
     }

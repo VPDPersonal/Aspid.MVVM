@@ -3,7 +3,7 @@ using Aspid.MVVM.Unity;
 
 namespace Aspid.MVVM.StarterKit.Unity
 {
-    [AddComponentMenu("Aspid/MVVM/Binders/Commands/Command Binder")]
+    [AddComponentMenu("Aspid/MVVM/Binders/Commands/Binder - Command")]
     [AddPropertyContextMenu(typeof(Component), "m_Calls")]
     public partial class MonoCommandBinder : MonoBinder, IBinder<IRelayCommand>
     {
@@ -12,18 +12,7 @@ namespace Aspid.MVVM.StarterKit.Unity
         protected IRelayCommand Command
         {
             get => _command;
-            private set
-            {
-                if (_command == value) return;
-
-                if (_command is not null)
-                    _command.CanExecuteChanged -= OnCanExecuteChanged;
-                
-                _command = value;
-                
-                if (_command is not null)
-                    _command.CanExecuteChanged += OnCanExecuteChanged;
-            }
+            private set => CommandBinderExtensions.UpdateCommand(ref _command, value, OnCanExecuteChanged);
         }
 
         [BinderLog]
@@ -41,7 +30,7 @@ namespace Aspid.MVVM.StarterKit.Unity
         public bool CanExecute() => 
             Command?.CanExecute() ?? false;
 
-        public void InvokeCommand() =>
+        public void Execute() =>
             Command?.Execute();
 
         protected virtual void OnCanExecuteChanged(IRelayCommand command) { }
@@ -54,18 +43,7 @@ namespace Aspid.MVVM.StarterKit.Unity
         protected IRelayCommand<T> Command
         {
             get => _command;
-            private set
-            {
-                if (_command == value) return;
-
-                if (_command is not null)
-                    _command.CanExecuteChanged -= OnCanExecuteChanged;
-                
-                _command = value;
-                
-                if (_command is not null)
-                    _command.CanExecuteChanged += OnCanExecuteChanged;
-            }
+            private set => CommandBinderExtensions.UpdateCommand(ref _command, value, OnCanExecuteChanged);
         }
         
         [BinderLog]
@@ -83,7 +61,7 @@ namespace Aspid.MVVM.StarterKit.Unity
         public bool CanExecute(T param1) =>
             Command?.CanExecute(param1) ?? false;
 
-        public void InvokeCommand(T param1) => 
+        public void Execute(T param1) => 
             Command?.Execute(param1);
 
         protected virtual void OnCanExecuteChanged(IRelayCommand<T> command) { }
@@ -96,18 +74,7 @@ namespace Aspid.MVVM.StarterKit.Unity
         protected IRelayCommand<T1, T2> Command
         {
             get => _command;
-            private set
-            {
-                if (_command == value) return;
-
-                if (_command is not null)
-                    _command.CanExecuteChanged -= OnCanExecuteChanged;
-                
-                _command = value;
-                
-                if (_command is not null)
-                    _command.CanExecuteChanged += OnCanExecuteChanged;
-            }
+            private set => CommandBinderExtensions.UpdateCommand(ref _command, value, OnCanExecuteChanged);
         }
         
         [BinderLog]
@@ -125,7 +92,7 @@ namespace Aspid.MVVM.StarterKit.Unity
         public bool CanExecute(T1 param1, T2 param2) => 
             Command?.CanExecute(param1, param2) ?? false;
 
-        public void InvokeCommand(T1 param1, T2 param2) => 
+        public void Execute(T1 param1, T2 param2) => 
             Command?.Execute(param1, param2);
 
         protected virtual void OnCanExecuteChanged(IRelayCommand<T1, T2> command) { }
@@ -138,18 +105,7 @@ namespace Aspid.MVVM.StarterKit.Unity
         protected IRelayCommand<T1, T2, T3> Command
         {
             get => _command;
-            private set
-            {
-                if (_command == value) return;
-
-                if (_command is not null)
-                    _command.CanExecuteChanged -= OnCanExecuteChanged;
-                
-                _command = value;
-                
-                if (_command is not null)
-                    _command.CanExecuteChanged += OnCanExecuteChanged;
-            }
+            private set => CommandBinderExtensions.UpdateCommand(ref _command, value, OnCanExecuteChanged);
         }
         
         [BinderLog]
@@ -167,7 +123,7 @@ namespace Aspid.MVVM.StarterKit.Unity
         public bool CanExecute(T1 param1, T2 param2, T3 param3) => 
             Command?.CanExecute(param1, param2, param3) ?? false;
 
-        public void InvokeCommand(T1 param1, T2 param2, T3 param3) => 
+        public void Execute(T1 param1, T2 param2, T3 param3) => 
             Command?.Execute(param1, param2, param3);
 
         protected virtual void OnCanExecuteChanged(IRelayCommand<T1, T2, T3> command) { }
@@ -180,18 +136,7 @@ namespace Aspid.MVVM.StarterKit.Unity
         protected IRelayCommand<T1, T2, T3, T4> Command
         {
             get => _command;
-            private set
-            {
-                if (_command == value) return;
-
-                if (_command is not null)
-                    _command.CanExecuteChanged -= OnCanExecuteChanged;
-                
-                _command = value;
-                
-                if (_command is not null)
-                    _command.CanExecuteChanged += OnCanExecuteChanged;
-            }
+            private set => CommandBinderExtensions.UpdateCommand(ref _command, value, OnCanExecuteChanged);
         }
         
         [BinderLog]
@@ -209,7 +154,7 @@ namespace Aspid.MVVM.StarterKit.Unity
         public bool CanExecute(T1 param1, T2 param2, T3 param3, T4 param4) => 
             Command?.CanExecute(param1, param2, param3, param4) ?? false;
 
-        public void InvokeCommand(T1 param1, T2 param2, T3 param3, T4 param4) => 
+        public void Execute(T1 param1, T2 param2, T3 param3, T4 param4) => 
             Command?.Execute(param1, param2, param3, param4);
 
         protected virtual void OnCanExecuteChanged(IRelayCommand<T1, T2, T3, T4> command) { }

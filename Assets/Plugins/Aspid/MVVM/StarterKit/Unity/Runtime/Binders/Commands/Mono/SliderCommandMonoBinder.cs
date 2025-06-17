@@ -6,56 +6,75 @@ namespace Aspid.MVVM.StarterKit.Unity
 {
     [RequireComponent(typeof(Slider))]
     [AddPropertyContextMenu(typeof(Slider), "m_Calls")]
-    [AddComponentMenu("Aspid/MVVM/Binders/UI/Commands/Slider Command Binder")]
-    [AddComponentContextMenu(typeof(Slider),"Add Slider Binder/Slider Command Binder")]
-    public sealed partial class SliderCommandMonoBinder : MonoCommandBinder<float>, IBinder<IRelayCommand<int>>, IBinder<IRelayCommand<long>>, IBinder<IRelayCommand<double>>
+    [AddComponentMenu("Aspid/MVVM/Binders/UI/Commands/Slider Binder - Command")]
+    [AddComponentContextMenu(typeof(Slider),"Add Slider Binder/Slider Binder - Command")]
+    public sealed partial class SliderCommandMonoBinder : ComponentMonoBinder<Slider>, IBinder<IRelayCommand<int>>, IBinder<IRelayCommand<long>>, IBinder<IRelayCommand<float>>, IBinder<IRelayCommand<double>>
     {
-        [Header("Component")]
-        [SerializeField] private Slider _slider;
-        
         [Header("Parameter")]
         [SerializeField] private InteractableMode _interactableMode = InteractableMode.Interactable;
+
+        private IRelayCommand<int> _intCommand;
+        private IRelayCommand<long> _longCommand;
+        private IRelayCommand<float> _floatCommand;
+        private IRelayCommand<double> _doubleCommand;
+
+        private void OnEnable() =>
+            CachedComponent.onValueChanged.AddListener(Execute);
+
+        private void OnDisable() =>
+            CachedComponent.onValueChanged.RemoveListener(Execute);
+
+        [BinderLog]
+        public void SetValue(IRelayCommand<int> value) =>
+            CommandBinderExtensions.UpdateCommand(ref _intCommand, value, onCanExecuteChanged: OnCanExecuteChanged);
+
+        [BinderLog]
+        public void SetValue(IRelayCommand<long> value) =>
+            CommandBinderExtensions.UpdateCommand(ref _longCommand, value, onCanExecuteChanged: OnCanExecuteChanged);
         
-        private void Awake()
+        [BinderLog]
+        public void SetValue(IRelayCommand<float> value) =>
+            CommandBinderExtensions.UpdateCommand(ref _floatCommand, value, onCanExecuteChanged: OnCanExecuteChanged);
+
+        [BinderLog]
+        public void SetValue(IRelayCommand<double> value) =>
+            CommandBinderExtensions.UpdateCommand(ref _doubleCommand, value, onCanExecuteChanged: OnCanExecuteChanged);
+
+        protected override void OnUnbound()
         {
-            if (!_slider)
-                _slider = GetComponent<Slider>();
+            SetValue((IRelayCommand<int>)null);
+            SetValue((IRelayCommand<long>)null);
+            SetValue((IRelayCommand<float>)null);
+            SetValue((IRelayCommand<double>)null);
         }
 
-        private void OnEnable() => 
-            _slider.onValueChanged.AddListener(InvokeCommand);
-
-        private void OnDisable() => 
-            _slider.onValueChanged.RemoveListener(InvokeCommand);
+        private void Execute(float value)
+        {
+            if (_floatCommand is not null) _floatCommand.Execute(CachedComponent.value);
+            else if (_intCommand is not null) _intCommand.Execute((int)CachedComponent.value);
+            else if (_doubleCommand is not null) _doubleCommand.Execute(CachedComponent.value);
+            else if (_longCommand is not null) _longCommand.Execute((long)CachedComponent.value);
+        }
         
-        protected override void OnCanExecuteChanged(IRelayCommand<float> command)
+        private void OnCanExecuteChanged<T>(IRelayCommand<T> command)
         {
             if (_interactableMode is InteractableMode.None) return;
-            var interactable = command.CanExecute(_slider.value);
+
+            var value = CachedComponent.value;
             
-            switch (_interactableMode)
-            {
-                case InteractableMode.Visible: gameObject.SetActive(interactable); break;
-                case InteractableMode.Interactable: _slider.interactable = interactable; break;
-            }
+            // TODO Check As
+            var castedValue = Unsafe.As<float, T>(ref value);
+            
+            SetInteractableMode(command.CanExecute(castedValue));
         }
 
-        [BinderLog]
-        public void SetValue(IRelayCommand<int> command) =>
-            SetValue(new RelayCommand<float>(
-                execute: value => command.Execute((int)value), 
-                canExecute: value => command.CanExecute((int)value)));
-
-        [BinderLog]
-        public void SetValue(IRelayCommand<long> command) =>
-            SetValue(new RelayCommand<float>(
-                execute: value => command.Execute((int)value), 
-                canExecute: value => command.CanExecute((int)value)));
-
-        [BinderLog]
-        public void SetValue(IRelayCommand<double> command) =>
-            SetValue(new RelayCommand<float>(
-                execute: value => command.Execute((int)value), 
-                canExecute: value => command.CanExecute((int)value)));
+        private void SetInteractableMode(bool isInteractable)
+        {
+            switch (_interactableMode)
+            {
+                case InteractableMode.Visible: gameObject.SetActive(isInteractable); break;
+                case InteractableMode.Interactable: CachedComponent.interactable = isInteractable; break;
+            }
+        }
     }
 }

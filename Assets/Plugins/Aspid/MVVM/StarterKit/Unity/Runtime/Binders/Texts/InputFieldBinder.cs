@@ -22,6 +22,9 @@ namespace Aspid.MVVM.StarterKit.Unity
         public event Action<float>? FloatValueChanged;
         public event Action<double>? DoubleValueChanged;
         
+        [Header("Parameter")]
+        [SerializeField] private UpdateInputFieldEvent _updateEvent = UpdateInputFieldEvent.OnValueChanged;
+        
         [Header("Converter")]
         [SerializeReferenceDropdown]
         [SerializeReference] private Converter? _converter;
@@ -42,14 +45,14 @@ namespace Aspid.MVVM.StarterKit.Unity
         {
             if (Mode is not (BindMode.TwoWay or BindMode.OneWayToSource)) return;
             
-            Target.onValueChanged.AddListener(OnValueChanged);
+            Subscribe();
             if (Mode is BindMode.OneWayToSource) OnValueChanged(Target.text);
         }
 
         protected override void OnUnbound()
         {
             if (Mode is not (BindMode.TwoWay or BindMode.OneWayToSource)) return;
-            Target.onValueChanged.RemoveListener(OnValueChanged);
+            Unsubscribe();
         }
 
         public void SetValue(string? value)
@@ -70,6 +73,32 @@ namespace Aspid.MVVM.StarterKit.Unity
         
         public void SetValue(double value) =>
             SetValue(value.ToString(CultureInfo.InvariantCulture));
+        
+        private void Subscribe()
+        {
+            switch (_updateEvent)
+            {
+                case UpdateInputFieldEvent.OnValueChanged: Target.onValueChanged.AddListener(OnValueChanged); break;
+                case UpdateInputFieldEvent.OnEndEdit: Target.onEndEdit.AddListener(OnValueChanged); break;
+                case UpdateInputFieldEvent.OnSubmit: Target.onSubmit.AddListener(OnValueChanged); break;
+                case UpdateInputFieldEvent.OnSelect: Target.onSelect.AddListener(OnValueChanged); break;
+                case UpdateInputFieldEvent.OnDeselect: Target.onDeselect.AddListener(OnValueChanged); break;
+                default: throw new ArgumentOutOfRangeException();
+            }
+        }
+
+        private void Unsubscribe()
+        {
+            switch (_updateEvent)
+            {
+                case UpdateInputFieldEvent.OnValueChanged: Target.onValueChanged.RemoveListener(OnValueChanged); break;
+                case UpdateInputFieldEvent.OnEndEdit: Target.onEndEdit.RemoveListener(OnValueChanged); break;
+                case UpdateInputFieldEvent.OnSubmit: Target.onSubmit.RemoveListener(OnValueChanged); break;
+                case UpdateInputFieldEvent.OnSelect: Target.onSelect.RemoveListener(OnValueChanged); break;
+                case UpdateInputFieldEvent.OnDeselect: Target.onDeselect.RemoveListener(OnValueChanged); break;
+                default: throw new ArgumentOutOfRangeException();
+            }
+        }
 
         private void OnValueChanged(string value)
         {

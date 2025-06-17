@@ -5,59 +5,63 @@ using Aspid.MVVM.Unity;
 
 namespace Aspid.MVVM.StarterKit.Unity
 {
-    [RequireComponent(typeof(TMP_Dropdown))]
     [AddPropertyContextMenu(typeof(TMP_Dropdown), "m_Calls")]
-    [AddComponentMenu("Aspid/MVVM/Binders/UI/Commands/Dropdown Command Binder")]
-    [AddComponentContextMenu(typeof(TMP_Dropdown),"Add Dropdown Binder/Dropdown Command Binder")]
-    public sealed partial class DropdownCommandMonoBinder : MonoCommandBinder<int>, IBinder<IRelayCommand<long>>, IBinder<IRelayCommand<float>>, IBinder<IRelayCommand<double>>
+    [AddComponentMenu("Aspid/MVVM/Binders/UI/Commands/Dropdown Binder - Command")]
+    [AddComponentContextMenu(typeof(TMP_Dropdown), "Add Dropdown Binder/Dropdown Binder - Command")]
+    public sealed partial class DropdownCommandMonoBinder : ComponentMonoBinder<TMP_Dropdown>, IBinder<IRelayCommand<int>>, IBinder<IRelayCommand<long>>
     {
-        [Header("Component")]
-        [SerializeField] private TMP_Dropdown _dropdown;
-        
         [Header("Parameter")]
         [SerializeField] private InteractableMode _interactableMode = InteractableMode.Interactable;
-        
-        private void Awake()
-        {
-            if (!_dropdown)
-                _dropdown = GetComponent<TMP_Dropdown>();
-        }
+
+        private IRelayCommand<int> _intCommand;
+        private IRelayCommand<long> _longCommand;
 
         private void OnEnable() =>
-            _dropdown.onValueChanged.AddListener(InvokeCommand);
+            CachedComponent.onValueChanged.AddListener(Execute);
 
         private void OnDisable() =>
-            _dropdown.onValueChanged.RemoveListener(InvokeCommand);
-        
-        protected override void OnCanExecuteChanged(IRelayCommand<int> command)
+            CachedComponent.onValueChanged.RemoveListener(Execute);
+
+        [BinderLog]
+        public void SetValue(IRelayCommand<int> value) =>
+            CommandBinderExtensions.UpdateCommand(ref _intCommand, value, onCanExecuteChanged: OnCanExecuteChanged);
+
+        [BinderLog]
+        public void SetValue(IRelayCommand<long> value) =>
+            CommandBinderExtensions.UpdateCommand(ref _longCommand, value, onCanExecuteChanged: OnCanExecuteChanged);
+
+        protected override void OnUnbound()
         {
-            if (_interactableMode is InteractableMode.None) return;
-            var interactable = command.CanExecute(_dropdown.value);
-            
-            switch (_interactableMode)
-            {
-                case InteractableMode.Visible: gameObject.SetActive(interactable); break;
-                case InteractableMode.Interactable: _dropdown.interactable = interactable; break;
-            }
+            SetValue((IRelayCommand<int>)null);
+            SetValue((IRelayCommand<long>)null);
         }
 
-        [BinderLog]
-        public void SetValue(IRelayCommand<long> command) =>
-            SetValue(new RelayCommand<int>(
-                execute: value => command.Execute(value), 
-                canExecute: value => command.CanExecute(value)));
+        private void Execute(int value)
+        {
+            if (_intCommand is not null) _intCommand.Execute(CachedComponent.value);
+            else _longCommand?.Execute(CachedComponent.value);
+        }
 
-        [BinderLog]
-        public void SetValue(IRelayCommand<float> command) =>
-            SetValue(new RelayCommand<int>(
-                execute: value => command.Execute(value), 
-                canExecute: value => command.CanExecute(value)));
-        
-        [BinderLog]
-        public void SetValue(IRelayCommand<double> command) =>
-            SetValue(new RelayCommand<int>(
-                execute: value => command.Execute(value), 
-                canExecute: value => command.CanExecute(value)));
+        private void OnCanExecuteChanged(IRelayCommand<int> command)
+        {
+            if (_interactableMode is InteractableMode.None) return;
+            SetInteractableMode(command.CanExecute(CachedComponent.value));
+        }
+
+        private void OnCanExecuteChanged(IRelayCommand<long> command)
+        {
+            if (_interactableMode is InteractableMode.None) return;
+            SetInteractableMode(command.CanExecute(CachedComponent.value));
+        }
+
+        private void SetInteractableMode(bool isInteractable)
+        {
+            switch (_interactableMode)
+            {
+                case InteractableMode.Visible: gameObject.SetActive(isInteractable); break;
+                case InteractableMode.Interactable: CachedComponent.interactable = isInteractable; break;
+            }
+        }
     }
 }
 #endif

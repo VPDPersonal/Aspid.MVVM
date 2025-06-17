@@ -38,7 +38,7 @@ namespace Aspid.MVVM.Unity
                 menu.AddItem(new GUIContent($"{AddBinderText}/{type.Name}"), false, () =>
                 {
                     if (target is Component component)
-                        component.gameObject.AddComponent(types.FirstOrDefault());
+                        component.gameObject.AddComponent(type);
                 }); 
             }
         }

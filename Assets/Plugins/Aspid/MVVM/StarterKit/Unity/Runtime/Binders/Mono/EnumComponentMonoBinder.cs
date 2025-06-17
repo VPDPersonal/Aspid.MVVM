@@ -11,7 +11,7 @@ namespace Aspid.MVVM.StarterKit.Unity
         
         [BinderLog]
         public void SetValue(Enum value) =>
-            _enumValues.GetValue(value);
+            SetValue(_enumValues.GetValue(value));
         
         protected abstract void SetValue(T value);
     }
@@ -25,7 +25,7 @@ namespace Aspid.MVVM.StarterKit.Unity
         
         [BinderLog]
         public void SetValue(TEnum value) =>
-            _enumValues.GetValue(value);
+            SetValue(_enumValues.GetValue(value));
         
         protected abstract void SetValue(T value);
     }

@@ -6,7 +6,7 @@ using System.ComponentModel;
 
 namespace Aspid.MVVM.Unity
 {
-    public abstract partial class MonoBinder : IMonoBinderValidable
+    public abstract partial class MonoBinder : IMonoBinderValidable, IRebindableBinder
     {
         // ReSharper disable once InconsistentNaming
         [EditorBrowsable(EditorBrowsableState.Never)]
@@ -15,6 +15,10 @@ namespace Aspid.MVVM.Unity
         // ReSharper disable once InconsistentNaming
         [EditorBrowsable(EditorBrowsableState.Never)]
         [SerializeField] private string __id;
+        
+        // ReSharper disable once InconsistentNaming
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        private LastData? __bindData;
         
         /// <summary>
         /// Is there a component?
@@ -70,6 +74,28 @@ namespace Aspid.MVVM.Unity
             }
         }
 
+        partial void OnBoundDebug(IBindableMemberEventAdder bindableMemberEventAdder) =>
+            __bindData = new LastData(_mode, bindableMemberEventAdder);
+
+        partial void OnUnboundDebug() =>
+            __bindData = null;
+        
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        void IRebindableBinder.Rebind()
+        {
+            if (__bindData is not null)
+            {
+                var cachedData = __bindData.Value;
+                var currentMode = Mode;
+
+                _mode = cachedData.Mode;
+                Unbind();
+
+                _mode = currentMode;
+                Bind(cachedData.BindableMemberEventAdder);
+            }
+        }
+
         [EditorBrowsable(EditorBrowsableState.Never)]
         private void SaveBinderDataInEditor()
         {
@@ -77,6 +103,18 @@ namespace Aspid.MVVM.Unity
 	        
             UnityEditor.EditorUtility.SetDirty(this);
             UnityEditor.SceneManagement.EditorSceneManager.MarkSceneDirty(gameObject.scene);
+        }
+        
+        private readonly struct LastData
+        {
+            public readonly BindMode Mode;
+            public readonly IBindableMemberEventAdder BindableMemberEventAdder;
+
+            public LastData(BindMode mode, IBindableMemberEventAdder bindableMemberEventAdder)
+            {
+                Mode = mode;
+                BindableMemberEventAdder = bindableMemberEventAdder;
+            }
         }
     }
 }

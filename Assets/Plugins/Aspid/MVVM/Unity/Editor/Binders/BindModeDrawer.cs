@@ -10,11 +10,12 @@ namespace Aspid.MVVM.Unity
     internal sealed class BindModeDrawer : PropertyDrawer
     {
         private bool _wasLookingFor;
-        private BindModeOverrideAttribute _attribute;
+        private (BindModeOverrideAttribute overrideAttribute, object instance) _classInfo;
         
         public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
         {
-            var availableModes = GetAvailableModes(property);
+            InitializeOverrideAttribute(property);
+            var availableModes = GetAvailableModes();
 
             var currentMode = (BindMode)property.intValue;
             var selectedIndex = Array.IndexOf(availableModes.Modes, currentMode);
@@ -25,14 +26,23 @@ namespace Aspid.MVVM.Unity
                 property.intValue = (int)availableModes.FirstMode;
             }
 
-            var displayedOptions = Array.ConvertAll(availableModes.Modes, mode => mode.ToString());
-            selectedIndex = EditorGUI.Popup(position, label.text, selectedIndex, displayedOptions);
-            property.intValue = (int)availableModes.Modes[selectedIndex];
+            EditorGUI.BeginChangeCheck();
+            {
+                var displayedOptions = Array.ConvertAll(availableModes.Modes, mode => mode.ToString());
+                selectedIndex = EditorGUI.Popup(position, label.text, selectedIndex, displayedOptions);
+            }
+            if (EditorGUI.EndChangeCheck() && _classInfo.instance is IRebindableBinder rebindable)
+            {
+                property.intValue = (int)availableModes.Modes[selectedIndex];
+                property.serializedObject.ApplyModifiedProperties();
+                
+                rebindable.Rebind();
+            }
         }
         
-        private BindModes GetAvailableModes(SerializedProperty property)
+        private BindModes GetAvailableModes()
         {
-            var overrideAttribute = GetOverrideAttribute(property);
+            var overrideAttribute = _classInfo.overrideAttribute;
             
             if (overrideAttribute is not null)
             {
@@ -69,23 +79,23 @@ namespace Aspid.MVVM.Unity
             return BindModes.CreateAll();
         }
 
-        private BindModeOverrideAttribute GetOverrideAttribute(SerializedProperty property)
+        private void InitializeOverrideAttribute(SerializedProperty property)
         {
-            if (_wasLookingFor) return _attribute;
+            if (_wasLookingFor) return;
             
-            var type = property.GetClassType();
+            var (type, classInstance) = property.GetClassInfo();
+            _classInfo.instance = classInstance;
 
             for (; type is not null; type = type.BaseType)
             {
-                _attribute = type
+                _classInfo.overrideAttribute = type
                     .GetCustomAttributes(typeof(BindModeOverrideAttribute), false)
                     .FirstOrDefault() as BindModeOverrideAttribute;
                 
-                if (_attribute is not null) break;
+                if (_classInfo.overrideAttribute is not null) break;
             }
             
             _wasLookingFor = true;
-            return _attribute;
         }
 
         private readonly ref struct BindModes

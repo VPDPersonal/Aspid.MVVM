@@ -8,7 +8,7 @@ namespace Aspid.MVVM
     /// Derivatives must implement one or more <see cref="IBinder{T}"/> interfaces to complete specific binding logic.
     /// </summary>
     [Serializable]
-    public abstract class Binder : IBinder
+    public abstract partial class Binder : IBinder
     {
 #if UNITY_2022_1_OR_NEWER && !ASPID_MVVM_UNITY_PROFILER_DISABLED
         private static readonly global::Unity.Profiling.ProfilerMarker _bindMarker = new("Binder.Bind");
@@ -66,15 +66,21 @@ namespace Aspid.MVVM
             {
                 if (IsBound) throw new Exception("This Binder is already bound.");
                 if (!IsBind) return;
-                
+
+                OnBindingDebug(bindableMemberEventAdder);
                 OnBinding();
                 
                 _bindableMemberEventRemover = bindableMemberEventAdder.Add(this);
                 IsBound = true;
                 
+                OnBoundDebug(bindableMemberEventAdder);
                 OnBound();
             }
         }
+        
+        partial void OnBindingDebug(IBindableMemberEventAdder bindableMemberEventAdder);
+        
+        partial void OnBoundDebug(IBindableMemberEventAdder bindableMemberEventAdder);
         
         /// <summary>
         /// Logic executed before binding, which can be overridden in derived classes.
@@ -96,16 +102,22 @@ namespace Aspid.MVVM
 #endif
             {
                 if (!IsBound) return;
-                
+
+                OnUnbindingDebug();
                 OnUnbinding();
                 
                 _bindableMemberEventRemover?.Remove(this);
                 _bindableMemberEventRemover = null;
                 IsBound = false;
-                
+
+                OnUnboundDebug();
                 OnUnbound();
             }
         }
+        
+        partial void OnUnbindingDebug();
+        
+        partial void OnUnboundDebug();
         
         /// <summary>
         /// Logic executed before unbinding, which can be overridden in derived classes.

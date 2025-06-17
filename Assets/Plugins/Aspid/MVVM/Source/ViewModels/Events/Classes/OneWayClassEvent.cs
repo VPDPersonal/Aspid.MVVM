@@ -33,7 +33,7 @@ namespace Aspid.MVVM
         /// <exception cref="Exception">
         /// Thrown if the binding mode is not <see cref="BindMode.OneWay"/> or <see cref="BindMode.OneTime"/>.
         /// </exception>
-        public IBindableMemberEventRemover Add(IBinder binder)
+        public IBindableMemberEventRemover? Add(IBinder binder)
         {
             var mode = binder.Mode;
             
@@ -44,16 +44,16 @@ namespace Aspid.MVVM
             {
                 case IBinder<T> specificBinder:
                     specificBinder.SetValue(_value);
-                    
-                    if (mode is BindMode.OneWay)
-                        Changed += specificBinder.SetValue;
+
+                    if (mode is BindMode.OneWay) Changed += specificBinder.SetValue;
+                    else return null;
                     break;
                 
                 case IAnyBinder anyBinder:
                     anyBinder.SetValue(_value);
                     
-                    if (mode is BindMode.OneWay)
-                        Changed += anyBinder.SetValue;
+                    if (mode is BindMode.OneWay) Changed += anyBinder.SetValue;
+                    else return null;
                     break;
                 
                 default: throw BinderInvalidCastException<T>.Class();

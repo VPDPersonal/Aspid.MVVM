@@ -52,15 +52,21 @@ namespace Aspid.MVVM.Unity
             {
                 if (IsBound) throw new Exception("This Binder is already bound.");
                 if (!IsBind) return;
-                
+
+                OnBindingDebug(bindableMemberEventAdder);
                 OnBinding();
                 
                 _bindableMemberEventRemover = bindableMemberEventAdder.Add(this);
                 IsBound = true;
                 
+                OnBoundDebug(bindableMemberEventAdder);
                 OnBound();
             }
         }
+
+        partial void OnBindingDebug(IBindableMemberEventAdder bindableMemberEventAdder);
+        
+        partial void OnBoundDebug(IBindableMemberEventAdder bindableMemberEventAdder);
         
         /// <summary>
         /// Logic executed before binding, which can be overridden in derived classes.
@@ -83,15 +89,21 @@ namespace Aspid.MVVM.Unity
             {
                 if (!IsBound) return;
                 
+                OnUnbindingDebug();
                 OnUnbinding();
                 
                 _bindableMemberEventRemover?.Remove(this);
                 _bindableMemberEventRemover = null;
                 IsBound = false;
                 
+                OnUnboundDebug();
                 OnUnbound();
             }
         }
+        
+        partial void OnUnbindingDebug();
+        
+        partial void OnUnboundDebug();
         
         /// <summary>
         /// Logic executed before unbinding, which can be overridden in derived classes.

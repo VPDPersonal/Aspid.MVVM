@@ -115,8 +115,13 @@ namespace Aspid.MVVM.Unity
             if (typeof(Object).IsAssignableFrom(type)) return new ObjectField(label).SetupField(value as Object, updater, member);
             if (typeof(Gradient).IsAssignableFrom(type)) return new GradientField(label).SetupField(value as Gradient, updater, member);
             if (typeof(AnimationCurve).IsAssignableFrom(type)) return new CurveField(label).SetupField(value as AnimationCurve, updater, member);
-            if (typeof(Enum).IsAssignableFrom(type)) return new EnumField(label, value as Enum).SetupField(value as Enum, updater, member);
             if (typeof(IEnumerable).IsAssignableFrom(type)) return BuildEnumerableField(value as IEnumerable, label);
+            if (typeof(Enum).IsAssignableFrom(type))
+            {
+                return type.IsDefined(typeof(FlagsAttribute), false) 
+                    ? new EnumFlagsField(label, value as Enum).SetupField(value as Enum, updater, member) 
+                    : new EnumField(label, value as Enum).SetupField(value as Enum, updater, member);
+            }
             
             if (value is RelayCommand)
             {

@@ -14,6 +14,9 @@ namespace Aspid.MVVM.StarterKit.Unity
             SetValue(_enumValues.GetValue(value));
         
         protected abstract void SetValue(T value);
+        
+        protected override void OnUnbound() =>
+            _enumValues.Deinitialize();
     }
     
     public abstract partial class EnumMonoBinder<T, TEnum> : MonoBinder, IBinder<TEnum>
@@ -27,5 +30,8 @@ namespace Aspid.MVVM.StarterKit.Unity
             SetValue(_enumValues.GetValue(value));
         
         protected abstract void SetValue(T value);
+        
+        protected override void OnUnbound() =>
+            _enumValues.Deinitialize();
     }
 }

@@ -14,34 +14,24 @@ namespace Aspid.MVVM.StarterKit.Unity
         [BinderLog]
         public void SetValue(Enum value)
         {
-            Initialize(value);
+            _enumValues.Initialize(value);
             
             foreach (var enumValue in _enumValues)
             {
                 if (enumValue.Key is null)
                     throw new NullReferenceException("Key is null");
                 
-                if (!enumValue.Key.Equals(value)) SetDefaultValue(enumValue.Value);
+                if (!_enumValues.Equals(value, enumValue.Key)) SetDefaultValue(enumValue.Value);
                 else SetSelectedValue(enumValue.Value);
             }
         }
 
-        protected override void OnUnbound() =>
-            _initialized = false;
-
         protected abstract void SetDefaultValue(TElement element);
         
         protected abstract void SetSelectedValue(TElement element);
-
-        private void Initialize(Enum value)
-        {
-            if (_initialized) return;
-
-            foreach (var enumValue in _enumValues)
-                enumValue.Initialize(value.GetType());
-            
-            _initialized = true;
-        }
+        
+        protected override void OnUnbound() =>
+            _enumValues.Deinitialize();
     }
     
     public abstract partial class EnumGroupMonoBinder<TEnum, TElement> : MonoBinder, IBinder<TEnum> 
@@ -53,12 +43,14 @@ namespace Aspid.MVVM.StarterKit.Unity
         [BinderLog]
         public void SetValue(TEnum value)
         {
+            _enumValues.Initialize(value);
+            
             foreach (var enumValue in _enumValues)
             {
                 if (enumValue.Key is null)
                     throw new NullReferenceException("Key is null");
                 
-                if (enumValue.Key is not null && !enumValue.Key.Equals(value)) SetDefaultValue(enumValue.Value);
+                if (!_enumValues.Equals(value, enumValue.Key)) SetDefaultValue(enumValue.Value);
                 else SetSelectedValue(enumValue.Value);
             }
         }
@@ -66,5 +58,8 @@ namespace Aspid.MVVM.StarterKit.Unity
         protected abstract void SetDefaultValue(TElement element);
         
         protected abstract void SetSelectedValue(TElement element);
+        
+        protected override void OnUnbound() =>
+            _enumValues.Deinitialize();
     }
 }

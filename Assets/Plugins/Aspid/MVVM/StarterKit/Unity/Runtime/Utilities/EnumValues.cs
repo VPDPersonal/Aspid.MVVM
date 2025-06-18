@@ -15,8 +15,9 @@ namespace Aspid.MVVM.StarterKit.Unity
         
         [SerializeField] private EnumValue<T>[] _values;
         
-        private bool _isEnumTypeSet;
-
+        private bool _isFlag;
+        private bool _isInitialized;
+        
         public EnumValues(params EnumValue<T>[] values)
             : this(values, default) { }
 
@@ -27,24 +28,42 @@ namespace Aspid.MVVM.StarterKit.Unity
             _allowDefaultValueWhenNoValue = allowDefaultValueWhenNoValue;
         }
         
+        public void Initialize(Enum enumValue)
+        {
+            if (_isInitialized) return;
+            
+            foreach (var value in _values)
+                value.Initialize(enumValue.GetType());
+            
+            _isFlag = enumValue.GetType().IsDefined(typeof(FlagsAttribute), false);
+            _isInitialized = true;
+        }
+
+        public void Deinitialize() =>
+            _isInitialized = false;
+        
         public T? GetValue(Enum enumValue)
         {
             Initialize(enumValue);
-
+            
             foreach (var value in _values)
             {
-                if (!value.Key!.Equals(enumValue)) continue;
-                return value.Value;
+                if (Equals(enumValue, value.Key!))
+                    return value.Value; 
             }
-
+            
             if (!_allowDefaultValueWhenNoValue)
                 throw new ArgumentOutOfRangeException();
             
             return _defaultValue;
         }
 
-        public void Deinitialize() =>
-            _isEnumTypeSet = false;
+        public bool Equals(Enum enumValue1, Enum enumValue2)
+        {
+            return _isFlag 
+                ? enumValue1.HasFlag(enumValue2) 
+                : enumValue1.Equals(enumValue2);
+        }
 
         public IEnumerator<EnumValue<T>> GetEnumerator()
         {
@@ -54,16 +73,6 @@ namespace Aspid.MVVM.StarterKit.Unity
 
         IEnumerator IEnumerable.GetEnumerator() =>
             GetEnumerator();
-        
-        private void Initialize(Enum enumValue)
-        {
-            if (_isEnumTypeSet) return;
-            
-            foreach (var value in _values)
-                value.Initialize(enumValue.GetType());
-                
-            _isEnumTypeSet = true;
-        }
     }
     
     [Serializable]
@@ -76,6 +85,9 @@ namespace Aspid.MVVM.StarterKit.Unity
         
         [SerializeField] private EnumValue<TEnum, T>[] _values;
         
+        private bool _isFlag;
+        private bool _isInitialized;
+        
         public EnumValues(params EnumValue<TEnum, T>[] values)
             : this(values, default) { }
 
@@ -86,18 +98,38 @@ namespace Aspid.MVVM.StarterKit.Unity
             _allowDefaultValueWhenNoValue = allowDefaultValueWhenNoValue;
         }
         
+        public void Initialize(Enum enumValue)
+        {
+            if (_isInitialized) return;
+            
+            _isFlag = enumValue.GetType().IsDefined(typeof(FlagsAttribute), false);
+            _isInitialized = true;
+        }
+        
+        public void Deinitialize() =>
+            _isInitialized = false;
+        
         public T? GetValue(TEnum enumValue)
         {
+            Initialize(enumValue);
+            
             foreach (var value in _values)
             {
-                if (!value.Key!.Equals(enumValue)) continue;
-                return value.Value;
+                if (Equals(enumValue, value.Key!))
+                    return value.Value; 
             }
 
             if (!_allowDefaultValueWhenNoValue)
                 throw new ArgumentOutOfRangeException();
             
             return _defaultValue;
+        }
+        
+        public bool Equals(TEnum enumValue1, TEnum enumValue2)
+        {
+            return _isFlag 
+                ? enumValue1.HasFlag(enumValue2) 
+                : enumValue1.Equals(enumValue2);
         }
         
         public IEnumerator<EnumValue<TEnum, T>> GetEnumerator()

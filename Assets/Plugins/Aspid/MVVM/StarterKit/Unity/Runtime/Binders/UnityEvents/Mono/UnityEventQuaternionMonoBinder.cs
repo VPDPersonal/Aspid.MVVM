@@ -11,7 +11,7 @@ namespace Aspid.MVVM.StarterKit.Unity
 {
     [AddPropertyContextMenu(typeof(Quaternion))]
     [AddComponentMenu("Aspid/MVVM/Binders/UnityEvent/UnityEvent Binder - Quaternion")]
-    [AddComponentContextMenu(typeof(Component),"Add UnityEvent Binder/UnityEvent Binder - Quaternion")]
+    [AddComponentContextMenu(typeof(Component),"Add General Binder/UnityEvent/UnityEvent Binder - Quaternion")]
     public sealed partial class UnityEventQuaternionMonoBinder : MonoBinder, IBinder<Quaternion>
     {
         public event UnityAction<Quaternion> Set

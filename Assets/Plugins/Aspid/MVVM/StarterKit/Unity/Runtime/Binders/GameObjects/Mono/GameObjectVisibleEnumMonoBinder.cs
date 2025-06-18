@@ -4,7 +4,7 @@ using Aspid.MVVM.Unity;
 namespace Aspid.MVVM.StarterKit.Unity
 {
     [AddComponentMenu("Aspid/MVVM/Binders/GameObject/GameObject Binder - Visible Enum")]
-    [AddComponentContextMenu(typeof(Component),"Add GameObject Binder/GameObject Binder - Visible Enum")]
+    [AddComponentContextMenu(typeof(Component),"Add General Binder/GameObject/GameObject Binder - Visible Enum")]
     public sealed class GameObjectVisibleEnumMonoBinder : EnumMonoBinder<bool>
     {
         protected override void SetValue(bool value) =>

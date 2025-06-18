@@ -11,7 +11,7 @@ namespace Aspid.MVVM.StarterKit.Unity
 {
     [AddPropertyContextMenu(typeof(Vector3))]
     [AddComponentMenu("Aspid/MVVM/Binders/UnityEvent/UnityEvent Binder - Vector3")]
-    [AddComponentContextMenu(typeof(Component),"Add UnityEvent Binder/UnityEvent Binder - Vector3")]
+    [AddComponentContextMenu(typeof(Component),"Add General Binder/UnityEvent/UnityEvent Binder - Vector3")]
     public sealed partial class UnityEventVector3MonoBinder : MonoBinder, IBinder<Vector3>
     {
         public event UnityAction<Vector3> Vector3ValueSet

@@ -5,7 +5,7 @@ using UnityEngine.Pool;
 namespace Aspid.MVVM.StarterKit.Unity
 {
     [AddComponentMenu("Aspid/MVVM/Binders/Collections/Observable Lists/Pool Observable List - ViewModel")]
-    [AddComponentContextMenu(typeof(Component), "Add Collection Binder/Pool Observable List - ViewModel")]
+    [AddComponentContextMenu(typeof(Component), "Add General Binder/Collection/Pool Observable List - ViewModel")]
     public class PoolViewModelMonoObservableList : PoolViewModelMonoObservableList<MonoView> { }
     
     public abstract class PoolViewModelMonoObservableList<T> : DynamicViewModelMonoObservableList<T>

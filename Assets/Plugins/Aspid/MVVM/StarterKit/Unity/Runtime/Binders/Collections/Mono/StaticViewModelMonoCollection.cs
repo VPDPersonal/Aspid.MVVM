@@ -5,7 +5,7 @@ using System.Collections.Generic;
 namespace Aspid.MVVM.StarterKit.Unity
 {
     [AddComponentMenu("Aspid/MVVM/Binders/Collections/Static Collection - ViewModel")]
-    [AddComponentContextMenu(typeof(Component), "Add Collection Binder/Static Collection - ViewModel")]
+    [AddComponentContextMenu(typeof(Component), "Add General Binder/Collection/Static Collection - ViewModel")]
     public class StaticViewModelMonoCollection : StaticViewModelMonoCollection<MonoView> { }
     
     public abstract class StaticViewModelMonoCollection<T> : CollectionMonoBinderBase<IViewModel>

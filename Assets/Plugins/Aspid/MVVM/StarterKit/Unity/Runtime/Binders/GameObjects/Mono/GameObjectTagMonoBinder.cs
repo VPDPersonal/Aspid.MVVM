@@ -9,7 +9,7 @@ using Converter = Aspid.MVVM.StarterKit.Unity.IConverterString;
 namespace Aspid.MVVM.StarterKit.Unity
 {
     [AddComponentMenu("Aspid/MVVM/Binders/GameObject/GameObject Binder - Tag")]
-    [AddComponentContextMenu(typeof(Component),"Add GameObject Binder/GameObject Binder - Tag")]
+    [AddComponentContextMenu(typeof(Component),"Add General Binder/GameObject/GameObject Binder - Tag")]
     public partial class GameObjectTagMonoBinder : MonoBinder, IBinder<string>
     {
         [Header("Converter")]

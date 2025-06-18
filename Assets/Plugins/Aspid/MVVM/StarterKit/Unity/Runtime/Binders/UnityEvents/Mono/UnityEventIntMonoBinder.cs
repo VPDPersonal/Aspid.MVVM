@@ -11,7 +11,7 @@ namespace Aspid.MVVM.StarterKit.Unity
 {
     [AddPropertyContextMenu(typeof(int))]
     [AddComponentMenu("Aspid/MVVM/Binders/UnityEvent/UnityEvent Binder - Int")]
-    [AddComponentContextMenu(typeof(Component),"Add UnityEvent Binder/UnityEvent Binder - Int")]
+    [AddComponentContextMenu(typeof(Component),"Add General Binder/UnityEvent/UnityEvent Binder - Int")]
     public sealed partial class UnityEventIntMonoBinder : MonoBinder, INumberBinder
     {
         public event UnityAction<int> Set

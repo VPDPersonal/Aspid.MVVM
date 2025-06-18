@@ -11,7 +11,7 @@ namespace Aspid.MVVM.StarterKit.Unity
 {
     [AddPropertyContextMenu(typeof(double))]
     [AddComponentMenu("Aspid/MVVM/Binders/UnityEvent/UnityEvent Binder - Double")]
-    [AddComponentContextMenu(typeof(Component),"Add UnityEvent Binder/UnityEvent Binder - Double")]
+    [AddComponentContextMenu(typeof(Component),"Add General Binder/UnityEvent/UnityEvent Binder - Double")]
     public sealed partial class UnityEventDoubleMonoBinder : MonoBinder, INumberBinder
     {
         public event UnityAction<double> Set

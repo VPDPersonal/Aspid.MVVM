@@ -11,7 +11,7 @@ namespace Aspid.MVVM.StarterKit.Unity
 {
     [AddPropertyContextMenu(typeof(string))]
     [AddComponentMenu("Aspid/MVVM/Binders/Casters/Any To String Caster Binder")]
-    [AddComponentContextMenu(typeof(Component),"Add Casters Binder/Any To String Caster Binder")]
+    [AddComponentContextMenu(typeof(Component),"Add General Binder/Casters/Any To String Caster Binder")]
     public sealed class AnyToStringCasterMonoBinder : MonoBinder, IAnyBinder 
     {
         [Header("Converter")]

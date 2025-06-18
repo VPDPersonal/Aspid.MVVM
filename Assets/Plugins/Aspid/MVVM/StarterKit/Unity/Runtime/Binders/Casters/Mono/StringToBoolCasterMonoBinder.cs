@@ -11,7 +11,7 @@ namespace Aspid.MVVM.StarterKit.Unity
 {
     [AddPropertyContextMenu(typeof(bool))]
     [AddComponentMenu("Aspid/MVVM/Binders/Casters/String To Bool Caster Binder")]
-    [AddComponentContextMenu(typeof(Component),"Add Casters Binder/String To Bool Caster Binder")]
+    [AddComponentContextMenu(typeof(Component),"Add General Binder/Casters/String To Bool Caster Binder")]
     public sealed partial class StringToBoolCasterMonoBinder : MonoBinder, IBinder<string>
     {
         [Header("Converter")]

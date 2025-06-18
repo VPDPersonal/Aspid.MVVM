@@ -11,7 +11,7 @@ namespace Aspid.MVVM.StarterKit.Unity
 {
     [AddPropertyContextMenu(typeof(float))]
     [AddComponentMenu("Aspid/MVVM/Binders/UnityEvent/UnityEvent Binder - Float")]
-    [AddComponentContextMenu(typeof(Component),"Add UnityEvent Binder/UnityEvent Binder - Float")]
+    [AddComponentContextMenu(typeof(Component),"Add General Binder/UnityEvent/UnityEvent Binder - Float")]
     public sealed partial class UnityEventFloatMonoBinder : MonoBinder, INumberBinder
     {
         public event UnityAction<float> Set

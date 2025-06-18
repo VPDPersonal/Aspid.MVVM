@@ -5,7 +5,7 @@ using System.Collections.Generic;
 namespace Aspid.MVVM.StarterKit.Unity
 {
     [AddComponentMenu("Aspid/MVVM/Binders/Collections/Observable Lists/Dynamic Observable List - ViewModel")]
-    [AddComponentContextMenu(typeof(Component), "Add Collection Binder/Dynamic Observable List - ViewModel")]
+    [AddComponentContextMenu(typeof(Component), "Add General Binder/Collection/Dynamic Observable List - ViewModel")]
     public class DynamicViewModelMonoObservableList : DynamicViewModelMonoObservableList<MonoView> { }
     
     public abstract class DynamicViewModelMonoObservableList<T> : ObservableListMonoBinderBase<IViewModel>

@@ -4,7 +4,7 @@ using Aspid.MVVM.Unity;
 namespace Aspid.MVVM.StarterKit.Unity
 {
     [AddComponentMenu("Aspid/MVVM/Binders/GameObject/GameObject Binder - Visible")]
-    [AddComponentContextMenu(typeof(Component),"Add GameObject Binder/GameObject Binder - Visible")]
+    [AddComponentContextMenu(typeof(Component),"Add General Binder/GameObject/GameObject Binder - Visible")]
     public partial class GameObjectVisibleMonoBinder : MonoBinder, IBinder<bool>
     {
         [SerializeField] private bool _isInvert;

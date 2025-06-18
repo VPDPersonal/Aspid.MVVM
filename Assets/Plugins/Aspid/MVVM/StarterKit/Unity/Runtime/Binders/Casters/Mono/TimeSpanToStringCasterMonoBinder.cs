@@ -6,7 +6,7 @@ namespace Aspid.MVVM.StarterKit.Unity
 {
     [AddPropertyContextMenu(typeof(string))]
     [AddComponentMenu("Aspid/MVVM/Binders/Casters/TimeSpan To String Caster Binder")]
-    [AddComponentContextMenu(typeof(Component),"Add Casters Binder/TimeSpan To String Caster Binder")]
+    [AddComponentContextMenu(typeof(Component),"Add General Binder/Casters/TimeSpan To String Caster Binder")]
 #if UNITY_2023_1_OR_NEWER
     public sealed class TimeSpanToStringCasterMonoBinder : GenericToStringCasterMonoBinder<TimeSpan> { }
 #else

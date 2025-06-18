@@ -11,7 +11,7 @@ namespace Aspid.MVVM.StarterKit.Unity
 {
     [AddPropertyContextMenu(typeof(Vector2))]
     [AddComponentMenu("Aspid/MVVM/Binders/Casters/Vector3 To Vector2 Caster Binder")]
-    [AddComponentContextMenu(typeof(Component),"Add Casters Binder/Vector3 To Vector2 Caster Binder")]
+    [AddComponentContextMenu(typeof(Component),"Add General Binder/Casters/Vector3 To Vector2 Caster Binder")]
     public sealed partial class Vector3ToVector2CasterMonoBinder : MonoBinder, IBinder<Vector3>
     {
         [Header("Converter")]

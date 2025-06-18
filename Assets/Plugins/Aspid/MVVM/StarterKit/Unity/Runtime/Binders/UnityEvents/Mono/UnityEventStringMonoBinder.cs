@@ -12,7 +12,7 @@ namespace Aspid.MVVM.StarterKit.Unity
 {
     [AddPropertyContextMenu(typeof(string))]
     [AddComponentMenu("Aspid/MVVM/Binders/UnityEvent/UnityEvent Binder - String")]
-    [AddComponentContextMenu(typeof(Component),"Add UnityEvent Binder/UnityEvent Binder - String")]
+    [AddComponentContextMenu(typeof(Component),"Add General Binder/UnityEvent/UnityEvent Binder - String")]
     public sealed partial class UnityEventStringMonoBinder : MonoBinder, IBinder<string>, IAnyBinder, INumberBinder
     {
         public event UnityAction<string> Set

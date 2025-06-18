@@ -23,6 +23,7 @@ namespace Aspid.MVVM.StarterKit.Unity
     {
         [SerializeField] private T _prefab;
         [SerializeField] private Transform? _container;
+        [SerializeField] private bool _addNewElementOnTop;
 
         private List<T>? _views;
         
@@ -47,6 +48,9 @@ namespace Aspid.MVVM.StarterKit.Unity
         protected sealed override void OnAdded(IViewModel? newItem, int newStartingIndex)
         {
             var view = GetNewView();
+            
+            if (_addNewElementOnTop)
+                view.transform.SetAsFirstSibling();
             
             if (newItem is not null) 
                 view.Initialize(newItem);

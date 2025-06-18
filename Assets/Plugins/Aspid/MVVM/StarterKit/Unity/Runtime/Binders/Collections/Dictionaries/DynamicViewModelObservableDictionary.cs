@@ -25,6 +25,7 @@ namespace Aspid.MVVM.StarterKit.Unity
     {
         [SerializeField] private TView _prefab;
         [SerializeField] private Transform? _container;
+        [SerializeField] private bool _addNewElementOnTop;
 
         private Dictionary<TKey, TView>? _views;
         
@@ -50,10 +51,11 @@ namespace Aspid.MVVM.StarterKit.Unity
         {
             var view = GetView(newItem.Key);
             
+            if (_addNewElementOnTop)
+                view.transform.SetAsFirstSibling();
+            
             if (newItem.Value is not null)
-            {
                 view.Initialize(newItem.Value);
-            }
         }
 
         protected sealed override void OnAdded(IReadOnlyList<KeyValuePair<TKey, TViewModel?>> newItems)
@@ -79,9 +81,7 @@ namespace Aspid.MVVM.StarterKit.Unity
             Views[oldItem.Key].Deinitialize();
             
             if (newItem.Value is not null)
-            {
                 Views[oldItem.Key].Initialize(newItem.Value);
-            }
         }
 
         protected sealed override void OnReset()

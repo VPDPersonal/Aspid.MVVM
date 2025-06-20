@@ -13,9 +13,15 @@ namespace Aspid.MVVM
         /// </summary>
         public event Action<IRelayCommand>? CanExecuteChanged;
         
+        private static RelayCommand? _empty;
         private readonly Action _execute;
         private readonly Func<bool>? _canExecute;
 
+        /// <summary>
+        /// Gets an empty command that cannot be executed.
+        /// </summary>
+        public static RelayCommand Empty => _empty ??= new RelayCommand();
+        
         /// <summary>
         /// Initializes a new instance of the <see cref="RelayCommand"/> class, taking an action to execute the command.
         /// </summary>
@@ -32,12 +38,16 @@ namespace Aspid.MVVM
         /// </summary>
         /// <param name="execute">The action that will be executed by the command.</param>
         /// <param name="canExecute">A function that returns <c>true</c> if the command can be executed; otherwise, <c>false</c>.</param>
-        /// <exception cref="ArgumentNullException">Thrown if <paramref name="execute"/> or <paramref name="canExecute"/> is <c>null</c>.</exception>
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="execute"/> is <c>null</c>.</exception>
         public RelayCommand(Action execute, Func<bool>? canExecute)
         {
+            _canExecute = canExecute;
             _execute = execute ?? throw new ArgumentNullException(nameof(execute));
-            _canExecute = canExecute ?? throw new ArgumentNullException(nameof(canExecute));
         }
+        
+#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring as nullable.
+        private RelayCommand() => _canExecute = () => false;
+#pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring as nullable.
         
         /// <summary>
         /// Determines whether the command can be executed.
@@ -74,8 +84,14 @@ namespace Aspid.MVVM
         /// </summary>
         public event Action<IRelayCommand<T>>? CanExecuteChanged;
         
+        private static RelayCommand<T>? _empty;
         private readonly Action<T?> _execute;
         private readonly Func<T?, bool>? _canExecute;
+
+        /// <summary>
+        /// Gets an empty command that cannot be executed.
+        /// </summary>
+        public static RelayCommand<T> Empty => _empty ??= new RelayCommand<T>();
         
         /// <summary>
         /// Initializes a new instance of the <see cref="RelayCommand{T}"/> class, taking an action to execute the command.
@@ -96,9 +112,13 @@ namespace Aspid.MVVM
         /// <exception cref="ArgumentNullException">Thrown if <paramref name="execute"/> is <c>null</c>.</exception>
         public RelayCommand(Action<T?> execute, Func<T?, bool>? canExecute)
         {
+            _canExecute = canExecute;
             _execute = execute ?? throw new ArgumentNullException(nameof(execute));
-            _canExecute = canExecute ?? throw new ArgumentNullException(nameof(canExecute));
         }
+        
+#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring as nullable.
+        private RelayCommand() => _canExecute = _ => false;
+#pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring as nullable.
         
         /// <summary>
         /// Determines whether the command can be executed with the specified parameter.
@@ -138,9 +158,15 @@ namespace Aspid.MVVM
         /// </summary>
         public event Action<IRelayCommand<T1, T2>>? CanExecuteChanged;
         
+        private static RelayCommand<T1, T2>? _empty;
         private readonly Action<T1?, T2?> _execute;
         private readonly Func<T1?, T2?, bool>? _canExecute;
-
+        
+        /// <summary>
+        /// Gets an empty command that cannot be executed.
+        /// </summary>
+        public static RelayCommand<T1, T2> Empty => _empty ??= new RelayCommand<T1, T2>();
+        
         /// <summary>
         /// Initializes a new instance of the <see cref="RelayCommand{T1, T2}"/> class, taking an action to execute the command.
         /// </summary>
@@ -158,11 +184,15 @@ namespace Aspid.MVVM
         /// <param name="execute">The action that will be executed by the command.</param>
         /// <param name="canExecute">A function that returns <c>true</c> if the command can be executed; otherwise, <c>false</c>.</param>
         /// <exception cref="ArgumentNullException">Thrown if <paramref name="execute"/> is <c>null</c>.</exception>
-        public RelayCommand(Action<T1?, T2?> execute, Func<T1?, T2?, bool> canExecute)
+        public RelayCommand(Action<T1?, T2?> execute, Func<T1?, T2?, bool>? canExecute)
         {
+            _canExecute = canExecute;
             _execute = execute ?? throw new ArgumentNullException(nameof(execute));
-            _canExecute = canExecute ?? throw new ArgumentNullException(nameof(canExecute));
         }
+        
+#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring as nullable.
+        private RelayCommand() => _canExecute = (_, _) => false;
+#pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring as nullable.
         
         /// <summary>
         /// Determines whether the command can be executed with the specified parameters.
@@ -205,9 +235,15 @@ namespace Aspid.MVVM
         /// </summary>
         public event Action<IRelayCommand<T1, T2, T3>>? CanExecuteChanged;
         
+        private static RelayCommand<T1, T2, T3>? _empty;
         private readonly Action<T1?, T2?, T3?> _execute;
         private readonly Func<T1?, T2?, T3?, bool>? _canExecute;
 
+        /// <summary>
+        /// Gets an empty command that cannot be executed.
+        /// </summary>
+        public static RelayCommand<T1, T2, T3> Empty => _empty ??= new RelayCommand<T1, T2, T3>();
+        
         /// <summary>
         /// Initializes a new instance of the <see cref="RelayCommand{T1, T2, T3}"/> class, taking an action to execute the command.
         /// </summary>
@@ -224,11 +260,15 @@ namespace Aspid.MVVM
         /// <param name="execute">The action that will be executed by the command.</param>
         /// <param name="canExecute">A function that returns <c>true</c> if the command can execute; otherwise, <c>false</c>.</param>
         /// <exception cref="ArgumentNullException">Thrown if <paramref name="execute"/> is <c>null</c>.</exception>
-        public RelayCommand(Action<T1?, T2?, T3?> execute, Func<T1?, T2?, T3?, bool> canExecute)
+        public RelayCommand(Action<T1?, T2?, T3?> execute, Func<T1?, T2?, T3?, bool>? canExecute)
         {
+            _canExecute = canExecute;
             _execute = execute ?? throw new ArgumentNullException(nameof(execute));
-            _canExecute = canExecute ?? throw new ArgumentNullException(nameof(canExecute));
         }
+        
+#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring as nullable.
+        private RelayCommand() => _canExecute = (_, _, _) => false;
+#pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring as nullable.
         
         /// <summary>
         /// Determines whether the command can be executed with the specified parameters.
@@ -274,9 +314,15 @@ namespace Aspid.MVVM
         /// </summary>
         public event Action<IRelayCommand<T1, T2, T3, T4>>? CanExecuteChanged;
         
+        private static RelayCommand<T1, T2, T3, T4>? _empty;
         private readonly Action<T1?, T2?, T3?, T4?> _execute;
         private readonly Func<T1?, T2?, T3?, T4?, bool>? _canExecute;
 
+        /// <summary>
+        /// Gets an empty command that cannot be executed.
+        /// </summary>
+        public static RelayCommand<T1, T2, T3, T4> Empty => _empty ??= new RelayCommand<T1, T2, T3, T4>();
+        
         /// <summary>
         /// Initializes a new instance of the <see cref="RelayCommand{T1, T2, T3, T4}"/> class, taking an action to execute the command.
         /// </summary>
@@ -293,11 +339,15 @@ namespace Aspid.MVVM
         /// <param name="execute">The action that will be executed by the command.</param>
         /// <param name="canExecute">A function that returns <c>true</c> if the command can execute; otherwise, <c>false</c>.</param>
         /// <exception cref="ArgumentNullException">Thrown if <paramref name="execute"/> is <c>null</c>.</exception>
-        public RelayCommand(Action<T1?, T2?, T3?, T4?> execute, Func<T1?, T2?, T3?, T4?, bool> canExecute)
+        public RelayCommand(Action<T1?, T2?, T3?, T4?> execute, Func<T1?, T2?, T3?, T4?, bool>? canExecute)
         {
+            _canExecute = canExecute;
             _execute = execute ?? throw new ArgumentNullException(nameof(execute));
-            _canExecute = canExecute ?? throw new ArgumentNullException(nameof(canExecute));
         }
+        
+#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring as nullable.
+        private RelayCommand() => _canExecute = (_, _, _, _) => false;
+#pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring as nullable.
         
         /// <summary>
         /// Determines whether the command can be executed with the specified parameters.

@@ -7,11 +7,8 @@ namespace Aspid.MVVM
     /// Attribute used to override allowed binding modes for a class.
     /// This attribute is conditional and only active when the "UNITY_EDITOR" symbol is defined.
     /// </summary>
-#if UNITY_2022_1_OR_NEWER
-    [Conditional("UNITY_EDITOR")]
-#else
     [Conditional("DEBUG")]
-#endif
+    [Conditional("UNITY_EDITOR")]
     [AttributeUsage(AttributeTargets.Class, Inherited = false)]
     public sealed class BindModeOverrideAttribute : Attribute
     {

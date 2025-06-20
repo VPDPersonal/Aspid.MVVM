@@ -42,11 +42,11 @@ namespace Aspid.MVVM.Unity
             {
                 if (part.Contains("["))
                 {
-                    var startPartIndex = part.IndexOf("[", StringComparison.Ordinal);
+                    var startPartIndex = part.IndexOf("[", StringComparison.Ordinal) + 1;
                     var length = part.IndexOf("]", StringComparison.Ordinal) - startPartIndex;
 
                     var index = int.Parse(part.Substring(startPartIndex, length));
-                    current = FindType(part[..startPartIndex], index);
+                    current = FindType(part[..(startPartIndex - 1)], index);
                 }
                 else
                 {

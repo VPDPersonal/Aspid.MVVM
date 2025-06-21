@@ -33,5 +33,8 @@ namespace Aspid.MVVM.StarterKit
                 return !_throwErrorIfIdNotFind ? default : throw new ArgumentException(nameof(parameters.Id));
             }
         }
+        
+        public static implicit operator DynamicViewModel(Dictionary<string, IDynamicProperty> dictionary) =>
+            new(dictionary);
     }
 }

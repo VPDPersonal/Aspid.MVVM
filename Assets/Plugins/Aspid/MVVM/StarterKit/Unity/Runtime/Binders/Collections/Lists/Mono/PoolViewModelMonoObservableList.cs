@@ -21,7 +21,7 @@ namespace Aspid.MVVM.StarterKit.Unity
             actionOnGet: view =>
             {
                 view.gameObject.SetActive(true);
-                view.transform.SetSiblingIndex(Pool.CountActive + Pool.CountInactive);
+                view.transform.SetAsLastSibling();
             },
             actionOnRelease: view => view.gameObject.SetActive(false),
             actionOnDestroy: view => view.DestroyView(),

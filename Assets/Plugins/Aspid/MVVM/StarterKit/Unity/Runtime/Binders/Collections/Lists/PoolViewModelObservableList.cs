@@ -37,7 +37,11 @@ namespace Aspid.MVVM.StarterKit.Unity
 
         private ObjectPool<T> Pool => _pool ??= new ObjectPool<T>(
             () => CreateView(Prefab, Container),
-            view => view.gameObject.SetActive(true),
+            actionOnGet: view =>
+            {
+                view.gameObject.SetActive(true);
+                view.transform.SetAsLastSibling();
+            },
             view => view.gameObject.SetActive(false),
             view => view.DestroyView(),
             false,

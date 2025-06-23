@@ -1,6 +1,6 @@
 using System;
 
-namespace Aspid.MVVM.TodoList.Todos
+namespace Aspid.MVVM.Samples.TodoList.Todos
 {
     public sealed class Todo : IReadOnlyTodo
     {

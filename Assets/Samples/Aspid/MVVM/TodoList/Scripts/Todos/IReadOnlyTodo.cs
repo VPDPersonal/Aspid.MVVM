@@ -1,4 +1,4 @@
-namespace Aspid.MVVM.TodoList.Todos
+namespace Aspid.MVVM.Samples.TodoList.Todos
 {
     public interface IReadOnlyTodo
     {

@@ -2,7 +2,7 @@ using UnityEngine;
 using Aspid.MVVM.Unity;
 using Aspid.MVVM.StarterKit.Unity;
 
-namespace Aspid.MVVM.TodoList.Todos
+namespace Aspid.MVVM.Samples.TodoList.Todos
 {
     [View]
     public sealed partial class TodoItemView : MonoView

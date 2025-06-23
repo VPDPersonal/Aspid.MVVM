@@ -1,6 +1,6 @@
 using System;
 
-namespace Aspid.MVVM.TodoList.EditTodoDialogs
+namespace Aspid.MVVM.Samples.TodoList.EditTodoDialogs
 {
     [ViewModel]
     public sealed partial class EditTextDialogViewModel

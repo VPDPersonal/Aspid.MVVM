@@ -10,8 +10,11 @@ namespace Aspid.MVVM.StarterKit.Unity
     {
         [SerializeField] private bool _isInvert;
 
-        private void OnValidate() =>
-            SetVisible();
+        private void OnValidate()
+        {
+            if (Application.isPlaying)
+                SetVisible();
+        }
 
         private void OnEnable() =>
             SetVisible();

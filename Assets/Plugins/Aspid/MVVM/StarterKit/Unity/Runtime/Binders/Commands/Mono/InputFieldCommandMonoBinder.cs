@@ -9,7 +9,9 @@ namespace Aspid.MVVM.StarterKit.Unity
     [AddPropertyContextMenu(typeof(TMP_InputField), "m_Calls")]
     [AddComponentMenu("Aspid/MVVM/Binders/UI/Commands/InputField Binder - Command")]
     [AddComponentContextMenu(typeof(TMP_InputField), "Add InputField Binder/InputField Binder - Command")]
-    public sealed partial class InputFieldCommandMonoBinder : ComponentMonoBinder<TMP_InputField>, IBinder<IRelayCommand<string>>
+    public sealed partial class InputFieldCommandMonoBinder : ComponentMonoBinder<TMP_InputField>, 
+        IBinder<IRelayCommand>,
+        IBinder<IRelayCommand<string>>
     {
         [Header("Parameters")]
         [SerializeField] private UpdateInputFieldEvent _updateEvent = UpdateInputFieldEvent.OnValueChanged;
@@ -18,7 +20,8 @@ namespace Aspid.MVVM.StarterKit.Unity
         [SerializeReferenceDropdown]
         [SerializeReference] private ICanExecuteView _customInteractable;
         
-        private IRelayCommand<string> _command;
+        private IRelayCommand _command;
+        private IRelayCommand<string> _stringCommand;
 
         protected override void OnValidate()
         {
@@ -33,13 +36,17 @@ namespace Aspid.MVVM.StarterKit.Unity
             
             Subscribe();
             
-            if (_command is not null) 
-                OnCanExecuteChanged(_command);
+            if (_command is not null) OnCanExecuteChanged(_command);
+            if (_stringCommand is not null) OnCanExecuteChanged(_stringCommand);
         }
 
         [BinderLog]
-        public void SetValue(IRelayCommand<string> value) =>
+        public void SetValue(IRelayCommand value) =>
             CommandBinderExtensions.UpdateCommand(ref _command, value, OnCanExecuteChanged);
+        
+        [BinderLog]
+        public void SetValue(IRelayCommand<string> value) =>
+            CommandBinderExtensions.UpdateCommand(ref _stringCommand, value, OnCanExecuteChanged);
 
         protected override void OnBound() =>
             Subscribe();
@@ -47,7 +54,9 @@ namespace Aspid.MVVM.StarterKit.Unity
         protected override void OnUnbound()
         {
             Unsubscribe();
-            SetValue(null);
+            
+            SetValue((IRelayCommand)null);
+            SetValue((IRelayCommand<string>)null);
         }
 
         private void Subscribe()
@@ -76,8 +85,17 @@ namespace Aspid.MVVM.StarterKit.Unity
             }
         }
         
-        private void OnValueChanged(string value) =>
-            _command?.Execute(value);
+        private void OnValueChanged(string value)
+        {
+            if (_command is not null) _command.Execute();
+            else _stringCommand?.Execute(value);
+        }
+
+        private void OnCanExecuteChanged(IRelayCommand command)
+        {
+            if (_interactableMode is InteractableMode.None) return;
+            SetInteractableMode(command.CanExecute());
+        }
         
         private void OnCanExecuteChanged(IRelayCommand<string> command)
         {
@@ -132,7 +150,6 @@ namespace Aspid.MVVM.StarterKit.Unity
             if (_command is not null) OnCanExecuteChanged(_command);
         }
         
-
         [BinderLog]
         public void SetValue(IRelayCommand<string, T> value) =>
             CommandBinderExtensions.UpdateCommand(ref _command, value, OnCanExecuteChanged);
@@ -235,7 +252,6 @@ namespace Aspid.MVVM.StarterKit.Unity
             if (_command is not null) OnCanExecuteChanged(_command);
         }
         
-
         [BinderLog]
         public void SetValue(IRelayCommand<string, T1, T2> value) =>
             CommandBinderExtensions.UpdateCommand(ref _command, value, OnCanExecuteChanged);
@@ -345,7 +361,6 @@ namespace Aspid.MVVM.StarterKit.Unity
             if (_command is not null) OnCanExecuteChanged(_command);
         }
         
-
         [BinderLog]
         public void SetValue(IRelayCommand<string, T1, T2, T3> value) =>
             CommandBinderExtensions.UpdateCommand(ref _command, value, OnCanExecuteChanged);

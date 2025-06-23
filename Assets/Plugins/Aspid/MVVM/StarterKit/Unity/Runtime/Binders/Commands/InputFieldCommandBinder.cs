@@ -6,7 +6,9 @@ using UnityEngine;
 namespace Aspid.MVVM.StarterKit.Unity
 {
     [Serializable]
-    public sealed class InputFieldCommandBinder: TargetBinder<TMP_InputField>, IBinder<IRelayCommand<string>>
+    public sealed class InputFieldCommandBinder: TargetBinder<TMP_InputField>, 
+        IBinder<IRelayCommand>,
+        IBinder<IRelayCommand<string>>
     {
         [Header("Parameters")]
         // ReSharper disable once MemberInitializerValueIgnored
@@ -18,7 +20,8 @@ namespace Aspid.MVVM.StarterKit.Unity
         [SerializeReferenceDropdown]
         [SerializeReference] private ICanExecuteView _customInteractable;
         
-        private IRelayCommand<string> _command;
+        private IRelayCommand _command;
+        private IRelayCommand<string> _stringCommand;
 
         public InputFieldCommandBinder(TMP_InputField target, BindMode mode = BindMode.OneWay)
             : this(target, InteractableMode.Interactable, UpdateInputFieldEvent.OnValueChanged, mode) { }
@@ -52,9 +55,12 @@ namespace Aspid.MVVM.StarterKit.Unity
                 ? interactableMode
                 : throw new ArgumentOutOfRangeException(nameof(mode), "InteractableMode can't be Custom. Use constructor by ICanExecuteView");
         }
-
-        public void SetValue(IRelayCommand<string> value) =>
+        
+        public void SetValue(IRelayCommand value) =>
             CommandBinderExtensions.UpdateCommand(ref _command, value, OnCanExecuteChanged);
+        
+        public void SetValue(IRelayCommand<string> value) =>
+            CommandBinderExtensions.UpdateCommand(ref _stringCommand, value, OnCanExecuteChanged);
 
         protected override void OnBound() =>
             Subscribe();
@@ -62,7 +68,9 @@ namespace Aspid.MVVM.StarterKit.Unity
         protected override void OnUnbound()
         {
             Unsubscribe();
-            SetValue(null);
+            
+            SetValue((IRelayCommand)null);
+            SetValue((IRelayCommand<string>)null);
         }
 
         private void Subscribe()
@@ -91,8 +99,17 @@ namespace Aspid.MVVM.StarterKit.Unity
             }
         }
         
-        private void OnValueChanged(string value) =>
-            _command?.Execute(value);
+        private void OnValueChanged(string value)
+        {
+            if (_command is not null) _command.Execute();
+            else _stringCommand?.Execute(value);
+        }
+        
+        private void OnCanExecuteChanged(IRelayCommand command)
+        {
+            if (_interactableMode is InteractableMode.None) return;
+            SetInteractableMode(command.CanExecute());
+        }
         
         private void OnCanExecuteChanged(IRelayCommand<string> command)
         {

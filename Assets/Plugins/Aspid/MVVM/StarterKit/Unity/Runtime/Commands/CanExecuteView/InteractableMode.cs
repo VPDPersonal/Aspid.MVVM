@@ -5,5 +5,6 @@ namespace Aspid.MVVM.StarterKit.Unity
         None,
         Visible,
         Interactable,
+        Custom
     }
 }

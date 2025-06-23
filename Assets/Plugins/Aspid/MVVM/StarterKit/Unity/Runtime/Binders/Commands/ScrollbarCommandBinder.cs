@@ -5,85 +5,129 @@ using UnityEngine.UI;
 namespace Aspid.MVVM.StarterKit.Unity
 {
     [Serializable]
-    public sealed class ScrollbarCommandBinder : TargetBinder<Scrollbar>, IBinder<IRelayCommand<float>>
+    public sealed class ScrollbarCommandBinder : TargetBinder<Scrollbar>, 
+        IBinder<IRelayCommand<int>>, 
+        IBinder<IRelayCommand<long>>, 
+        IBinder<IRelayCommand<float>>, 
+        IBinder<IRelayCommand<double>>
     {
         // ReSharper disable once MemberInitializerValueIgnored
         [Header("Parameter")]
         [SerializeField] private InteractableMode _interactableMode = InteractableMode.Interactable;
         
-        private IRelayCommand<float> _command;
+        [SerializeReferenceDropdown]
+        [SerializeReference] private ICanExecuteView _customInteractable;
+        
+        private IRelayCommand<int> _intCommand;
+        private IRelayCommand<long> _longCommand;
+        private IRelayCommand<float> _floatCommand;
+        private IRelayCommand<double> _doubleCommand;
         
         public override bool IsBind => Target is not null;
         
-        public ScrollbarCommandBinder(Scrollbar target, BindMode mode)
+        public ScrollbarCommandBinder(Scrollbar target, BindMode mode = BindMode.OneWay)
             : this(target, InteractableMode.Interactable, mode) { }
         
-        public ScrollbarCommandBinder(Scrollbar target,InteractableMode interactableMode = InteractableMode.Interactable, BindMode mode = BindMode.OneWay)
+        public ScrollbarCommandBinder(Scrollbar target,
+            ICanExecuteView customInteractable, 
+            BindMode mode = BindMode.OneWay)
+            : this(target, InteractableMode.Custom, mode)
+        {
+            mode.ThrowExceptionIfTwo();
+            _interactableMode = InteractableMode.Custom;
+            _customInteractable = customInteractable ?? throw new ArgumentNullException(nameof(customInteractable));
+        }
+        
+        public ScrollbarCommandBinder(Scrollbar target,
+            InteractableMode interactableMode, 
+            BindMode mode = BindMode.OneWay)
             : base(target, mode)
         {
-            _interactableMode = interactableMode;
+            mode.ThrowExceptionIfTwo();
+            _interactableMode = interactableMode is not InteractableMode.Custom
+                ? interactableMode
+                : throw new ArgumentOutOfRangeException(nameof(mode), "InteractableMode can't be Custom. Use constructor by ICanExecuteView");
         }
         
-        public void SetValue(IRelayCommand<float> command)
+        public void SetValue(IRelayCommand<int> value) =>
+            CommandBinderExtensions.UpdateCommand(ref _intCommand, value, OnCanExecuteChanged);
+        
+        public void SetValue(IRelayCommand<long> value) =>
+            CommandBinderExtensions.UpdateCommand(ref _longCommand, value, OnCanExecuteChanged);
+        
+        public void SetValue(IRelayCommand<float> value) =>
+            CommandBinderExtensions.UpdateCommand(ref _floatCommand, value, OnCanExecuteChanged);
+
+        public void SetValue(IRelayCommand<double> value) =>
+            CommandBinderExtensions.UpdateCommand(ref _doubleCommand, value, OnCanExecuteChanged);
+
+        protected override void OnBound() =>
+            Target.onValueChanged.AddListener(OnValueChanged);
+
+        protected override void OnUnbound()
         {
-            ReleaseCommand();
-            _command = command;
+            Target.onValueChanged.RemoveListener(OnValueChanged);
             
-            Subscribe();
-            OnCanExecuteChanged(command);
+            SetValue((IRelayCommand<int>)null);
+            SetValue((IRelayCommand<long>)null);
+            SetValue((IRelayCommand<float>)null);
+            SetValue((IRelayCommand<double>)null);
         }
         
-        private void Subscribe()
+        private void OnValueChanged(float value)
         {
-            Target.onValueChanged.AddListener(Execute);
-            _command.CanExecuteChanged += OnCanExecuteChanged;
-        }
-
-        private void Unsubscribe()
-        {
-            Target.onValueChanged.RemoveListener(Execute);
-            _command.CanExecuteChanged -= OnCanExecuteChanged;
+            if (_floatCommand is not null) _floatCommand.Execute(Target.value);
+            else if (_intCommand is not null) _intCommand.Execute((int)Target.value);
+            else if (_doubleCommand is not null) _doubleCommand.Execute(Target.value);
+            else if (_longCommand is not null) _longCommand.Execute((long)Target.value);
         }
         
-        private void Execute(float value)
-        {
-            OnCanExecuteChanged(_command);
-            _command?.Execute(value);
-        }
-
-        protected override void OnUnbound() =>
-            ReleaseCommand();
-
-        private void ReleaseCommand()
-        {
-            if (_command is not null) Unsubscribe();
-            _command = null;
-        }
-        
-        private void OnCanExecuteChanged(IRelayCommand<float> command)
+        private void OnCanExecuteChanged<T>(IRelayCommand<T> command)
         {
             if (_interactableMode is InteractableMode.None) return;
-            var interactable = command.CanExecute(Target.value);
+
+            var value = Target.value;
             
+            // TODO Check As
+            var castedValue = Unsafe.As<float, T>(ref value);
+            
+            SetInteractableMode(command.CanExecute(castedValue));
+        }
+
+        private void SetInteractableMode(bool isInteractable)
+        {
             switch (_interactableMode)
             {
-                case InteractableMode.Visible: Target.gameObject.SetActive(interactable); break;
-                case InteractableMode.Interactable: Target.interactable = interactable; break;
+                case InteractableMode.Visible: Target.gameObject.SetActive(isInteractable); break;
+                case InteractableMode.Custom: _customInteractable.SetCanExecute(isInteractable); break;
+                case InteractableMode.Interactable: Target.interactable = isInteractable; break;
             }
         }
     }
     
     [Serializable]
-    public class ScrollbarCommandBinder<T> : TargetBinder<Scrollbar>, IBinder<IRelayCommand<float, T>>
+    public class ScrollbarCommandBinder<T> : TargetBinder<Scrollbar>, 
+        IBinder<IRelayCommand<int, T>>, 
+        IBinder<IRelayCommand<long, T>>, 
+        IBinder<IRelayCommand<float, T>>, 
+        IBinder<IRelayCommand<double, T>>
     {
-        // ReSharper disable once MemberInitializerValueIgnored
         [Header("Parameters")]
-        [SerializeField] private InteractableMode _interactableMode = InteractableMode.Interactable;
         [SerializeField] private T _param;
         
-        private IRelayCommand<float, T> _command;
+        // ReSharper disable once MemberInitializerValueIgnored
+        [Space]
+        [SerializeField] private InteractableMode _interactableMode = InteractableMode.Interactable;
+
+        [SerializeReferenceDropdown]
+        [SerializeReference] private ICanExecuteView _customInteractable;
         
-        public T Param
+        private IRelayCommand<int, T> _intCommand;
+        private IRelayCommand<long, T> _longCommand;
+        private IRelayCommand<float, T> _floatCommand;
+        private IRelayCommand<double, T> _doubleCommand;
+        
+        public virtual T Param
         {
             get => _param;
             set => _param = value;
@@ -91,89 +135,126 @@ namespace Aspid.MVVM.StarterKit.Unity
         
         public override bool IsBind => Target is not null;
         
-        public ScrollbarCommandBinder(Scrollbar target, T param, BindMode mode)
+        public ScrollbarCommandBinder(Scrollbar target, T param, BindMode mode = BindMode.OneWay)
             : this(target, param, InteractableMode.Interactable, mode) { }
         
         public ScrollbarCommandBinder(
             Scrollbar target, 
             T param,
-            InteractableMode interactableMode = InteractableMode.Interactable, 
+            ICanExecuteView customInteractable, 
             BindMode mode = BindMode.OneWay)
             : base(target, mode)
         {
             mode.ThrowExceptionIfTwo();
-            
+
             _param = param;
-            _interactableMode = interactableMode;
-        }
-        
-        public void SetValue(IRelayCommand<float, T> command)
-        {
-            ReleaseCommand();            
-            _command = command;
             
-            Subscribe();
-            OnCanExecuteChanged(command);
+            _interactableMode = InteractableMode.Custom;
+            _customInteractable = customInteractable ?? throw new ArgumentNullException(nameof(customInteractable));
         }
         
-        private void Subscribe()
+        public ScrollbarCommandBinder(
+            Scrollbar target, 
+            T param,
+            InteractableMode interactableMode, 
+            BindMode mode = BindMode.OneWay)
+            : base(target, mode)
         {
-            Target.onValueChanged.AddListener(Execute);
-            _command.CanExecuteChanged += OnCanExecuteChanged;
-        }
+            mode.ThrowExceptionIfTwo();
 
-        private void Unsubscribe()
-        {
-            Target.onValueChanged.RemoveListener(Execute);
-            _command.CanExecuteChanged -= OnCanExecuteChanged;
+            _param = param;  
+            
+            _interactableMode = interactableMode is not InteractableMode.Custom
+                ? interactableMode
+                : throw new ArgumentOutOfRangeException(nameof(mode), "InteractableMode can't be Custom. Use constructor by ICanExecuteView");
         }
         
-        private void Execute(float value)
-        {
-            OnCanExecuteChanged(_command);
-            _command?.Execute(value, Param);
-        }
+        public void SetValue(IRelayCommand<int, T> value) =>
+            CommandBinderExtensions.UpdateCommand(ref _intCommand, value, OnCanExecuteChanged);
+        
+        public void SetValue(IRelayCommand<long, T> value) =>
+            CommandBinderExtensions.UpdateCommand(ref _longCommand, value, OnCanExecuteChanged);
+        
+        public void SetValue(IRelayCommand<float, T> value) =>
+            CommandBinderExtensions.UpdateCommand(ref _floatCommand, value, OnCanExecuteChanged);
+        
+        public void SetValue(IRelayCommand<double, T> value) =>
+            CommandBinderExtensions.UpdateCommand(ref _doubleCommand, value, OnCanExecuteChanged);
 
-        protected override void OnUnbound() => 
-            ReleaseCommand();
+        protected override void OnBound() =>
+            Target.onValueChanged.AddListener(OnValueChanged);
 
-        private void ReleaseCommand()
+        protected override void OnUnbound()
         {
-            if (_command is not null) Unsubscribe();
-            _command = null;
+            Target.onValueChanged.RemoveListener(OnValueChanged);
+            
+            SetValue((IRelayCommand<int, T>)null);
+            SetValue((IRelayCommand<long, T>)null);
+            SetValue((IRelayCommand<float, T>)null);
+            SetValue((IRelayCommand<double, T>)null);
         }
         
-        private void OnCanExecuteChanged(IRelayCommand<float, T> command)
+        private void OnValueChanged(float value)
+        {
+            if (_floatCommand is not null) _floatCommand.Execute(Target.value, Param);
+            else if (_intCommand is not null) _intCommand.Execute((int)Target.value, Param);
+            else if (_doubleCommand is not null) _doubleCommand.Execute(Target.value, Param);
+            else if (_longCommand is not null) _longCommand.Execute((long)Target.value, Param);
+        }
+        
+        private void OnCanExecuteChanged<TValue>(IRelayCommand<TValue, T> command)
         {
             if (_interactableMode is InteractableMode.None) return;
-            var interactable = command.CanExecute(Target.value, Param);
+
+            var value = Target.value;
             
+            // TODO Check As
+            var castedValue = Unsafe.As<float, TValue>(ref value);
+            
+            SetInteractableMode(command.CanExecute(castedValue, Param));
+        }
+
+        private void SetInteractableMode(bool isInteractable)
+        {
             switch (_interactableMode)
             {
-                case InteractableMode.Visible: Target.gameObject.SetActive(interactable); break;
-                case InteractableMode.Interactable: Target.interactable = interactable; break;
+                case InteractableMode.Interactable: Target.interactable = isInteractable; break;
+                case InteractableMode.Visible: Target.gameObject.SetActive(isInteractable); break;
+                case InteractableMode.Custom: _customInteractable.SetCanExecute(isInteractable); break;
             }
         }
     }
     
     [Serializable]
-    public class ScrollbarCommandBinder<T1, T2> : TargetBinder<Scrollbar>, IBinder<IRelayCommand<float, T1, T2>>
+    public class ScrollbarCommandBinder<T1, T2> : TargetBinder<Scrollbar>, 
+        IBinder<IRelayCommand<int, T1, T2>>, 
+        IBinder<IRelayCommand<long, T1, T2>>, 
+        IBinder<IRelayCommand<float, T1, T2>>, 
+        IBinder<IRelayCommand<double, T1, T2>>
     {
-        // ReSharper disable once MemberInitializerValueIgnored
         [Header("Parameters")]
-        [SerializeField] private InteractableMode _interactableMode = InteractableMode.Interactable;
         [SerializeField] private T1 _param1;
         [SerializeField] private T2 _param2;
         
-        private IRelayCommand<float, T1, T2> _command;
+        // ReSharper disable once MemberInitializerValueIgnored
+        [Space]
+        [SerializeField] private InteractableMode _interactableMode = InteractableMode.Interactable;
+
+        [SerializeReferenceDropdown]
+        [SerializeReference] private ICanExecuteView _customInteractable;
         
-        public T1 Param1
+        private IRelayCommand<int, T1, T2> _intCommand;
+        private IRelayCommand<long, T1, T2> _longCommand;
+        private IRelayCommand<float, T1, T2> _floatCommand;
+        private IRelayCommand<double, T1, T2> _doubleCommand;
+        
+        public virtual T1 Param1
         {
             get => _param1;
             set => _param1 = value;
         }
         
-        public T2 Param2
+        public virtual T2 Param2
         {
             get => _param2;
             set => _param2 = value;
@@ -181,14 +262,14 @@ namespace Aspid.MVVM.StarterKit.Unity
         
         public override bool IsBind => Target is not null;
         
-        public ScrollbarCommandBinder(Scrollbar target, T1 param1, T2 param2, BindMode mode)
+        public ScrollbarCommandBinder(Scrollbar target, T1 param1, T2 param2, BindMode mode = BindMode.OneWay)
             : this(target, param1, param2, InteractableMode.Interactable, mode) { }
         
         public ScrollbarCommandBinder(
             Scrollbar target, 
             T1 param1, 
             T2 param2, 
-            InteractableMode interactableMode = InteractableMode.Interactable, 
+            ICanExecuteView customInteractable, 
             BindMode mode = BindMode.OneWay)
             : base(target, mode)
         {
@@ -196,83 +277,122 @@ namespace Aspid.MVVM.StarterKit.Unity
             
             _param1 = param1;
             _param2 = param2;
-            _interactableMode = interactableMode;
-        }
-        
-        public void SetValue(IRelayCommand<float, T1, T2> command)
-        {
-            ReleaseCommand();            
-            _command = command;
             
-            Subscribe();
-            OnCanExecuteChanged(command);
+            _interactableMode = InteractableMode.Custom;
+            _customInteractable = customInteractable ?? throw new ArgumentNullException(nameof(customInteractable));
         }
         
-        private void Subscribe()
+        public ScrollbarCommandBinder(
+            Scrollbar target, 
+            T1 param1, 
+            T2 param2, 
+            InteractableMode interactableMode, 
+            BindMode mode = BindMode.OneWay)
+            : base(target, mode)
         {
-            Target.onValueChanged.AddListener(Execute);
-            _command.CanExecuteChanged += OnCanExecuteChanged;
-        }
-
-        private void Unsubscribe()
-        {
-            Target.onValueChanged.RemoveListener(Execute);
-            _command.CanExecuteChanged -= OnCanExecuteChanged;
-        }
-        
-        private void Execute(float value)
-        {
-            OnCanExecuteChanged(_command);
-            _command?.Execute(value, Param1, Param2);
-        }
-
-        protected override void OnUnbound() =>
-            ReleaseCommand();
-
-        private void ReleaseCommand()
-        {
-            if (_command is not null) Unsubscribe();
-            _command = null;
+            mode.ThrowExceptionIfTwo();
+            
+            _param1 = param1;
+            _param2 = param2;    
+            
+            _interactableMode = interactableMode is not InteractableMode.Custom
+                ? interactableMode
+                : throw new ArgumentOutOfRangeException(nameof(mode), "InteractableMode can't be Custom. Use constructor by ICanExecuteView");
         }
         
-        private void OnCanExecuteChanged(IRelayCommand<float, T1, T2> command)
+        public void SetValue(IRelayCommand<int, T1, T2> value) =>
+            CommandBinderExtensions.UpdateCommand(ref _intCommand, value, OnCanExecuteChanged);
+        
+        public void SetValue(IRelayCommand<long, T1, T2> value) =>
+            CommandBinderExtensions.UpdateCommand(ref _longCommand, value, OnCanExecuteChanged);
+        
+        public void SetValue(IRelayCommand<float, T1, T2> value) =>
+            CommandBinderExtensions.UpdateCommand(ref _floatCommand, value, OnCanExecuteChanged);
+        
+        public void SetValue(IRelayCommand<double, T1, T2> value) =>
+            CommandBinderExtensions.UpdateCommand(ref _doubleCommand, value, OnCanExecuteChanged);
+
+        protected override void OnBound() =>
+            Target.onValueChanged.AddListener(OnValueChanged);
+
+        protected override void OnUnbound()
+        {
+            Target.onValueChanged.RemoveListener(OnValueChanged);
+            
+            SetValue((IRelayCommand<int, T1, T2>)null);
+            SetValue((IRelayCommand<long, T1, T2>)null);
+            SetValue((IRelayCommand<float, T1, T2>)null);
+            SetValue((IRelayCommand<double, T1, T2>)null);
+        }
+        
+        private void OnValueChanged(float value)
+        {
+            if (_floatCommand is not null) _floatCommand.Execute(Target.value, Param1, Param2);
+            else if (_intCommand is not null) _intCommand.Execute((int)Target.value, Param1, Param2);
+            else if (_doubleCommand is not null) _doubleCommand.Execute(Target.value, Param1, Param2);
+            else if (_longCommand is not null) _longCommand.Execute((long)Target.value, Param1, Param2);
+        }
+        
+        private void OnCanExecuteChanged<TValue>(IRelayCommand<TValue, T1, T2> command)
         {
             if (_interactableMode is InteractableMode.None) return;
-            var interactable = command.CanExecute(Target.value, Param1, Param2);
+
+            var value = Target.value;
             
+            // TODO Check As
+            var castedValue = Unsafe.As<float, TValue>(ref value);
+            
+            SetInteractableMode(command.CanExecute(castedValue, Param1, Param2));
+        }
+
+        private void SetInteractableMode(bool isInteractable)
+        {
             switch (_interactableMode)
             {
-                case InteractableMode.Visible: Target.gameObject.SetActive(interactable); break;
-                case InteractableMode.Interactable: Target.interactable = interactable; break;
+                case InteractableMode.Interactable: Target.interactable = isInteractable; break;
+                case InteractableMode.Visible: Target.gameObject.SetActive(isInteractable); break;
+                case InteractableMode.Custom: _customInteractable.SetCanExecute(isInteractable); break;
             }
         }
     }
     
     [Serializable]
-    public class ScrollbarCommandBinder<T1, T2, T3> : TargetBinder<Scrollbar>, IBinder<IRelayCommand<float, T1, T2, T3>>
+    public class ScrollbarCommandBinder<T1, T2, T3> : TargetBinder<Scrollbar>, 
+        IBinder<IRelayCommand<int, T1, T2, T3>>, 
+        IBinder<IRelayCommand<long, T1, T2, T3>>, 
+        IBinder<IRelayCommand<float, T1, T2, T3>>, 
+        IBinder<IRelayCommand<double, T1, T2, T3>>
     {
-        // ReSharper disable once MemberInitializerValueIgnored
         [Header("Parameters")]
-        [SerializeField] private InteractableMode _interactableMode = InteractableMode.Interactable;
         [SerializeField] private T1 _param1;
         [SerializeField] private T2 _param2;
         [SerializeField] private T3 _param3;
         
-        private IRelayCommand<float, T1, T2, T3> _command;
+        // ReSharper disable once MemberInitializerValueIgnored
+        [Space]
+        [SerializeField] private InteractableMode _interactableMode = InteractableMode.Interactable;
+
+        [SerializeReferenceDropdown]
+        [SerializeReference] private ICanExecuteView _customInteractable;
         
-        public T1 Param1
+        private IRelayCommand<int, T1, T2, T3> _intCommand;
+        private IRelayCommand<long, T1, T2, T3> _longCommand;
+        private IRelayCommand<float, T1, T2, T3> _floatCommand;
+        private IRelayCommand<double, T1, T2, T3> _doubleCommand;
+        
+        public virtual T1 Param1
         {
             get => _param1;
             set => _param1 = value;
         }
         
-        public T2 Param2
+        public virtual T2 Param2
         {
             get => _param2;
             set => _param2 = value;
         }
         
-        public T3 Param3
+        public virtual T3 Param3
         {
             get => _param3;
             set => _param3 = value;
@@ -285,15 +405,15 @@ namespace Aspid.MVVM.StarterKit.Unity
             T1 param1, 
             T2 param2, 
             T3 param3,
-            BindMode mode)
+            BindMode mode = BindMode.OneWay)
             : this(target, param1, param2, param3, InteractableMode.Interactable, mode) { }
         
         public ScrollbarCommandBinder(
             Scrollbar target, 
-            T1 param1,
-            T2 param2,
+            T1 param1, 
+            T2 param2, 
             T3 param3,
-            InteractableMode interactableMode = InteractableMode.Interactable,
+            ICanExecuteView customInteractable, 
             BindMode mode = BindMode.OneWay)
             : base(target, mode)
         {
@@ -302,54 +422,83 @@ namespace Aspid.MVVM.StarterKit.Unity
             _param1 = param1;
             _param2 = param2;
             _param3 = param3;
-            _interactableMode = interactableMode;
-        }
-        
-        public void SetValue(IRelayCommand<float, T1, T2, T3> command)
-        {
-            ReleaseCommand();            
-            _command = command;
             
-            Subscribe();
-            OnCanExecuteChanged(command);
+            _interactableMode = InteractableMode.Custom;
+            _customInteractable = customInteractable ?? throw new ArgumentNullException(nameof(customInteractable));
         }
         
-        private void Subscribe()
+        public ScrollbarCommandBinder(
+            Scrollbar target, 
+            T1 param1,
+            T2 param2,
+            T3 param3,
+            InteractableMode interactableMode,
+            BindMode mode = BindMode.OneWay)
+            : base(target, mode)
         {
-            Target.onValueChanged.AddListener(Execute);
-            _command.CanExecuteChanged += OnCanExecuteChanged;
-        }
-
-        private void Unsubscribe()
-        {
-            Target.onValueChanged.RemoveListener(Execute);
-            _command.CanExecuteChanged -= OnCanExecuteChanged;
-        }
-        
-        private void Execute(float value)
-        {
-            OnCanExecuteChanged(_command);
-            _command?.Execute(value, Param1, Param2, Param3);
-        }
-
-        protected override void OnUnbound() => 
-            ReleaseCommand();
-
-        private void ReleaseCommand()
-        {
-            if (_command is not null) Unsubscribe();
-            _command = null;
+            mode.ThrowExceptionIfTwo();
+            
+            _param1 = param1;
+            _param2 = param2;
+            _param3 = param3;         
+            
+            _interactableMode = interactableMode is not InteractableMode.Custom
+                ? interactableMode
+                : throw new ArgumentOutOfRangeException(nameof(mode), "InteractableMode can't be Custom. Use constructor by ICanExecuteView");
         }
         
-        private void OnCanExecuteChanged(IRelayCommand<float, T1, T2, T3> command)
+        public void SetValue(IRelayCommand<int, T1, T2, T3> value) =>
+            CommandBinderExtensions.UpdateCommand(ref _intCommand, value, OnCanExecuteChanged);
+        
+        public void SetValue(IRelayCommand<long, T1, T2, T3> value) =>
+            CommandBinderExtensions.UpdateCommand(ref _longCommand, value, OnCanExecuteChanged);
+        
+        public void SetValue(IRelayCommand<float, T1, T2, T3> value) =>
+            CommandBinderExtensions.UpdateCommand(ref _floatCommand, value, OnCanExecuteChanged);
+        
+        public void SetValue(IRelayCommand<double, T1, T2, T3> value) =>
+            CommandBinderExtensions.UpdateCommand(ref _doubleCommand, value, OnCanExecuteChanged);
+        
+        protected override void OnBound() =>
+            Target.onValueChanged.AddListener(OnValueChanged);
+
+        protected override void OnUnbound()
+        {
+            Target.onValueChanged.RemoveListener(OnValueChanged);
+            
+            SetValue((IRelayCommand<int, T1, T2, T3>)null);
+            SetValue((IRelayCommand<long, T1, T2, T3>)null);
+            SetValue((IRelayCommand<float, T1, T2, T3>)null);
+            SetValue((IRelayCommand<double, T1, T2, T3>)null);
+        }
+        
+        private void OnValueChanged(float value)
+        {
+            if (_floatCommand is not null) _floatCommand.Execute(Target.value, Param1, Param2, Param3);
+            else if (_intCommand is not null) _intCommand.Execute((int)Target.value, Param1, Param2, Param3);
+            else if (_doubleCommand is not null) _doubleCommand.Execute(Target.value, Param1, Param2, Param3);
+            else if (_longCommand is not null) _longCommand.Execute((long)Target.value, Param1, Param2, Param3);
+        }
+        
+        private void OnCanExecuteChanged<TValue>(IRelayCommand<TValue, T1, T2, T3> command)
         {
             if (_interactableMode is InteractableMode.None) return;
-            var interactable = command.CanExecute(Target.value, Param1, Param2, Param3);
+
+            var value = Target.value;
             
+            // TODO Check As
+            var castedValue = Unsafe.As<float, TValue>(ref value);
+            
+            SetInteractableMode(command.CanExecute(castedValue, Param1, Param2, Param3));
+        }
+
+        private void SetInteractableMode(bool isInteractable)
+        {
             switch (_interactableMode)
             {
-                case InteractableMode.Visible: Target.gameObject.SetActive(interactable); break;
-                case InteractableMode.Interactable: Target.interactable = interactable; break;
+                case InteractableMode.Interactable: Target.interactable = isInteractable; break;
+                case InteractableMode.Visible: Target.gameObject.SetActive(isInteractable); break;
+                case InteractableMode.Custom: _customInteractable.SetCanExecute(isInteractable); break;
             }
         }
     }

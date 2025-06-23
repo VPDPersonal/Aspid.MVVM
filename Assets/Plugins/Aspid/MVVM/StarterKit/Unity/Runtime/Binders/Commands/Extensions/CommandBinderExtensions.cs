@@ -12,9 +12,12 @@ namespace Aspid.MVVM.StarterKit.Unity
                 command.CanExecuteChanged -= onCanExecuteChanged;
             
             command = value;
-            
+
             if (command is not null && onCanExecuteChanged is not null)
+            {
                 command.CanExecuteChanged += onCanExecuteChanged;
+                onCanExecuteChanged.Invoke(command);
+            }
         }
         
         public static void UpdateCommand<T>(ref IRelayCommand<T> command,
@@ -29,7 +32,10 @@ namespace Aspid.MVVM.StarterKit.Unity
             command = value;
             
             if (command is not null && onCanExecuteChanged is not null)
+            {
                 command.CanExecuteChanged += onCanExecuteChanged;
+                onCanExecuteChanged.Invoke(command);
+            }
         }
         
         public static void UpdateCommand<T1, T2>(
@@ -45,7 +51,10 @@ namespace Aspid.MVVM.StarterKit.Unity
             command = value;
             
             if (command is not null && onCanExecuteChanged is not null)
+            {
                 command.CanExecuteChanged += onCanExecuteChanged;
+                onCanExecuteChanged.Invoke(command);
+            }
         }
         
         public static void UpdateCommand<T1, T2, T3>(
@@ -61,7 +70,10 @@ namespace Aspid.MVVM.StarterKit.Unity
             command = value;
             
             if (command is not null && onCanExecuteChanged is not null)
+            {
                 command.CanExecuteChanged += onCanExecuteChanged;
+                onCanExecuteChanged.Invoke(command);
+            }
         }
         
         public static void UpdateCommand<T1, T2, T3, T4>(
@@ -77,7 +89,10 @@ namespace Aspid.MVVM.StarterKit.Unity
             command = value;
             
             if (command is not null && onCanExecuteChanged is not null)
+            {
                 command.CanExecuteChanged += onCanExecuteChanged;
+                onCanExecuteChanged.Invoke(command);
+            }
         }
     }
 }

@@ -1,5 +1,8 @@
+using System;
+
 namespace Aspid.MVVM.StarterKit
 {
+    [Serializable]
     public class SequenceConverters<T> : IConverter<T, T>
     {
         // ReSharper disable once FieldCanBeMadeReadOnly.Local

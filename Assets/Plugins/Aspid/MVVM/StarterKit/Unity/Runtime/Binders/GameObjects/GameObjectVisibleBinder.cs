@@ -8,7 +8,7 @@ namespace Aspid.MVVM.StarterKit.Unity
     public class GameObjectVisibleBinder : TargetBinder<GameObject>, IBinder<bool>
     {
         [Header("Converter")]
-        private bool _isInvert;
+        [SerializeField] private bool _isInvert;
         
         public GameObjectVisibleBinder(GameObject target, BindMode mode)
             : this(target, false, mode) { }
@@ -23,5 +23,4 @@ namespace Aspid.MVVM.StarterKit.Unity
         public void SetValue(bool value) =>
             Target.SetActive(_isInvert ? !value : value);
     }
-    
 }

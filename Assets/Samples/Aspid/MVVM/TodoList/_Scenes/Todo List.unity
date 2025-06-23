@@ -475,7 +475,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _editTodoDialogViewContainer: {fileID: 527272492}
-  _editTodoDialogViewPrefab: {fileID: 637875192883498620, guid: f224e395776a743a085cd452b48a724f, type: 3}
+  _editTextDialogViewPrefab: {fileID: 637875192883498620, guid: f224e395776a743a085cd452b48a724f, type: 3}
   _todoStorageView: {fileID: 1322158807}
   _todos:
   - Fisrt Todo

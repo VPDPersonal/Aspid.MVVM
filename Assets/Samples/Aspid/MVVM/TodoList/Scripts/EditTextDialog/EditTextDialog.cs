@@ -5,12 +5,12 @@ using Object = UnityEngine.Object;
 
 namespace Aspid.MVVM.TodoList.EditTodoDialogs
 {
-    public sealed class EditTodoDialog
+    public sealed class EditTextDialog
     {
         private readonly Transform _parent;
-        private readonly EditTodoDialogView _prefab;
+        private readonly EditTextDialogView _prefab;
 
-        public EditTodoDialog(EditTodoDialogView prefab, Transform parent)
+        public EditTextDialog(EditTextDialogView prefab, Transform parent)
         {
             _prefab = prefab;
             _parent = parent;
@@ -23,7 +23,7 @@ namespace Aspid.MVVM.TodoList.EditTodoDialogs
             cancel += () => Dispose();
             renamed += _ => Dispose();
             
-            view.Initialize(new EditTodoDialogViewModel(text, renamed, cancel));
+            view.Initialize(new EditTextDialogViewModel(text, renamed, cancel));
             return;
             
             void Dispose() =>

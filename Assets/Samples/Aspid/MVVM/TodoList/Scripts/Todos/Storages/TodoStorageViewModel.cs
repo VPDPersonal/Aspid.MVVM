@@ -10,51 +10,55 @@ namespace Aspid.MVVM.TodoList.Todos.Storages
         [TwoWayBind] private string _searchInput;
         [OneTimeBind] private readonly IReadOnlyObservableListSync<TodoItemViewModel> _todoItemViewModels;
         
+        private int _countAddedTodo;
         private readonly TodoStorage _todoStorage;
-        private readonly EditTodoDialog _editTodoDialog;
+        private readonly EditTextDialog _editTextDialog;
 
-        public TodoStorageViewModel(TodoStorage todoStorage, EditTodoDialog editTodoDialog)
+        public TodoStorageViewModel(TodoStorage todoStorage, EditTextDialog editTodoDialog)
         {
             _todoStorage = todoStorage;
-            _editTodoDialog = editTodoDialog;
+            _editTextDialog = editTodoDialog;
+            _countAddedTodo = todoStorage.Todos.Count;
             _todoItemViewModels = todoStorage.Todos.CreateSync(CreateTodoViewModel);
         }
-
-        [RelayCommand]
-        private void AddTodo() => 
-            _todoStorage.AddTodo($"New Todo {_todoStorage.CountAddedTodo + 1}");
-
-        private void SetTodoItemVisible(TodoItemViewModel viewModel) =>
-            viewModel.IsVisible = string.IsNullOrEmpty(SearchInput) || viewModel.Todo.Text.Contains((string)SearchInput);
         
         private TodoItemViewModel CreateTodoViewModel(Todo todo)
         {
-            var viewModel = new TodoItemViewModel(
-                todo,
-                new RelayCommand<TodoItemViewModel>(OnTodoItemEdited),
-                new RelayCommand<TodoItemViewModel>(OnTodoItemDeleted));
-
+            var viewModel = new TodoItemViewModel(todo, OnTodoItemEditedCommand, OnTodoItemDeletedCommand);
             SetTodoItemVisible(viewModel);
+            
             return viewModel;
         }
 
+        [RelayCommand]
+        private void AddTodo()
+        {
+            _countAddedTodo++;
+            _todoStorage.Add($"New Todo {_countAddedTodo}");
+        }
+
+        [RelayCommand]
         private void OnTodoItemEdited(TodoItemViewModel viewModel)
         {
-            _editTodoDialog.Open(viewModel.Todo.Text, text =>
+            _editTextDialog.Open(viewModel.Todo.Text, text =>
             {
                 viewModel.Todo.Text = text;
                 SetTodoItemVisible(viewModel);
             });
         }
         
+        [RelayCommand]
         private void OnTodoItemDeleted(TodoItemViewModel viewModel) =>
-            _todoStorage.RemoveTodo(viewModel.Todo.Id);
+            _todoStorage.Remove(viewModel.Todo);
 
         partial void OnSearchInputChanged(string newValue)
         {
             foreach (var viewModel in TodoItemViewModels)
                 SetTodoItemVisible(viewModel);
         }
+        
+        private void SetTodoItemVisible(TodoItemViewModel viewModel) =>
+            viewModel.IsVisible = string.IsNullOrEmpty(SearchInput) || viewModel.Todo.Text.Contains(SearchInput);
 
         public void Dispose() => 
             TodoItemViewModels?.Dispose();

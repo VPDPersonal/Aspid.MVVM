@@ -1,5 +1,4 @@
 using System;
-using UnityEngine;
 
 namespace Aspid.MVVM.TodoList.Todos
 {
@@ -9,25 +8,26 @@ namespace Aspid.MVVM.TodoList.Todos
         [Access(Access.Public)]
         [OneWayBind] private bool _isVisible;
         
-        [OneWayBind] private string _text;
+        [TwoWayBind] private string _text;
         [TwoWayBind] private bool _isCompleted;
         
+        [OneTimeBind] private readonly IRelayCommand _editCommand;
+        [OneTimeBind] private readonly IRelayCommand _deleteCommand;
+        
         public readonly Todo Todo;
-        private readonly IRelayCommand<TodoItemViewModel> _editCommand;
-        private readonly IRelayCommand<TodoItemViewModel> _deleteCommand;
         
         public TodoItemViewModel(
             Todo todo, 
-            IRelayCommand<TodoItemViewModel> editCommand,
-            IRelayCommand<TodoItemViewModel> deleteCommand)
+            IRelayCommand<TodoItemViewModel> editCommand = null,
+            IRelayCommand<TodoItemViewModel> deleteCommand = null)
         {
             Todo = todo;
             _text = todo.Text;
             _isCompleted = todo.IsCompleted;
             
-            _editCommand = editCommand;
-            _deleteCommand = deleteCommand;
-
+            _editCommand = editCommand.CreateCommandWithoutParametersOrEmpty(this);
+            _deleteCommand =  deleteCommand.CreateCommandWithoutParametersOrEmpty(this);
+            
             Subscribe();
         }
 
@@ -41,22 +41,6 @@ namespace Aspid.MVVM.TodoList.Todos
         {
             Todo.TextChanged -= SetText;
             Todo.IsCompletedChanged -= SetIsCompleted;
-        }
-
-        [RelayCommand]
-        private void Edit()
-        {
-            if (_editCommand is not null)
-                _editCommand.Execute(this);
-            else Debug.Log("There is no implementation for edit");
-        }
-
-        [RelayCommand]
-        private void Delete()
-        {
-            if (_deleteCommand is not null)
-                _deleteCommand.Execute(this);
-            else Debug.Log("There is no implementation for edit");
         }
 
         partial void OnIsCompletedChanged(bool newValue) =>

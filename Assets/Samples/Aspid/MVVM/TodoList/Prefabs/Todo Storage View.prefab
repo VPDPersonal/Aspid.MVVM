@@ -516,7 +516,14 @@ MonoBehaviour:
   - _mode: 3
     <Target>k__BackingField: {fileID: 1647855970933561101}
     _interactableMode: 1
+    _customInteractable:
+      rid: -2
   _todoItemViewModels: {fileID: 6930036194731237436}
+  references:
+    version: 2
+    RefIds:
+    - rid: -2
+      type: {class: , ns: , asm: }
 --- !u!1 &5376062593577326655
 GameObject:
   m_ObjectHideFlags: 0
@@ -689,6 +696,7 @@ MonoBehaviour:
   _log: []
   _prefab: {fileID: 5431838984888759959, guid: 5ca3370f0dcd04136bab560024ed932a, type: 3}
   _container: {fileID: 5360323505814269057}
+  _addNewElementOnTop: 0
   _initialCount: 0
   _maxCount: 2147483647
 --- !u!1 &6947782328924769429
@@ -1496,6 +1504,7 @@ MonoBehaviour:
   __view: {fileID: 6621106528252726653}
   __id: SearchInput
   _component: {fileID: 3563492015900296024}
+  _updateEvent: 0
   _converter:
     rid: -2
   _isDebug: 0

@@ -6,9 +6,9 @@ namespace Aspid.MVVM.TodoList.Bootstraps
 {
     public sealed class Bootstrap : MonoBehaviour
     {
-        [Header("Edit Todo Dialog")]
+        [Header("Edit Text Dialog")]
         [SerializeField] private Transform _editTodoDialogViewContainer;
-        [SerializeField] private EditTodoDialogView _editTodoDialogViewPrefab;
+        [SerializeField] private EditTextDialogView _editTextDialogViewPrefab;
 
         [Header("Todos")]
         [SerializeField] private TodoStorageView _todoStorageView;
@@ -18,11 +18,11 @@ namespace Aspid.MVVM.TodoList.Bootstraps
 
         private void Awake()
         {
-            var editTodoDialog = new EditTodoDialog(_editTodoDialogViewPrefab, _editTodoDialogViewContainer);
+            var editTodoDialog = new EditTextDialog(_editTextDialogViewPrefab, _editTodoDialogViewContainer);
 
             _todoStorage = new TodoStorage();
             foreach (var todo in _todos)
-                _todoStorage.AddTodo(todo);
+                _todoStorage.Add(todo);
             
             var todoStorageViewModel = new TodoStorageViewModel(_todoStorage, editTodoDialog);
             _todoStorageView.Initialize(todoStorageViewModel);

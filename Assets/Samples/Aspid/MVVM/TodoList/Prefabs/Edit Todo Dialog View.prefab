@@ -1176,6 +1176,7 @@ MonoBehaviour:
   __view: {fileID: 637875192883498620}
   __id: Text
   _component: {fileID: 3022432735548335227}
+  _updateEvent: 0
   _converter:
     rid: -2
   _isDebug: 0
@@ -1277,13 +1278,22 @@ MonoBehaviour:
   _text:
   - {fileID: 4087269476373177278}
   _cancelButton:
-    _mode: 3
+  - _mode: 3
     <Target>k__BackingField: {fileID: 7349505069928950248}
     _interactableMode: 0
+    _customInteractable:
+      rid: -2
   _renamedButton:
-    _mode: 3
+  - _mode: 3
     <Target>k__BackingField: {fileID: 2613306915063093282}
     _interactableMode: 2
+    _customInteractable:
+      rid: -2
+  references:
+    version: 2
+    RefIds:
+    - rid: -2
+      type: {class: , ns: , asm: }
 --- !u!1 &7908573707491760464
 GameObject:
   m_ObjectHideFlags: 0
@@ -1401,7 +1411,7 @@ MonoBehaviour:
     m_PressedTrigger: Pressed
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
-  m_Interactable: 1
+  m_Interactable: 0
   m_TargetGraphic: {fileID: 7364412128190926296}
   m_OnClick:
     m_PersistentCalls:

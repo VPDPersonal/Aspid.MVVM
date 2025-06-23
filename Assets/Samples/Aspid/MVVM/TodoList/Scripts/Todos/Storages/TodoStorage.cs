@@ -1,32 +1,32 @@
 using System;
-using System.Linq;
+using System.Collections;
+using System.Collections.Generic;
 using Aspid.Collections.Observable;
 
 namespace Aspid.MVVM.TodoList.Todos.Storages
 {
-    public sealed class TodoStorage
+    public sealed class TodoStorage : IEnumerable<Todo>
     {
         private readonly ObservableList<Todo> _todos = new();
         
-        public int CountAddedTodo { get; private set; }
-
         public IReadOnlyObservableList<Todo> Todos => _todos;
         
-        public Todo this[string id] => _todos.First(todo => todo.Id == id);
-
-        public void AddTodo(string text)
+        public void Add(string text = "", bool isCompleted = false)
         {
-            var newTodo = new Todo(Guid.NewGuid().ToString())
+            var id = Guid.NewGuid().ToString();
+            var newTodo = new Todo(id)
             {
                 Text = text,
-                IsCompleted = false,
+                IsCompleted = isCompleted,
             };
             
             _todos.Add(newTodo);
-            CountAddedTodo++;
         }
+
+        public void Remove(Todo todo) =>
+            Remove(todo.Id);
         
-        public void RemoveTodo(string id)
+        public void Remove(string id)
         {
             for (var i = 0; i < _todos.Count; i++)
             {
@@ -38,5 +38,11 @@ namespace Aspid.MVVM.TodoList.Todos.Storages
             
             throw new ArgumentException($"Todo with {id} id not found");
         }
+        
+        IEnumerator IEnumerable.GetEnumerator() =>
+            GetEnumerator();
+
+        public IEnumerator<Todo> GetEnumerator() =>
+            _todos.GetEnumerator();
     }
 }

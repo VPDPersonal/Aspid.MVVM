@@ -1,0 +1,17 @@
+{
+    "name": "Aspid.MVVM.Samples.HelloWorld.MVP",
+    "rootNamespace": "",
+    "references": [
+        "Unity.TextMeshPro",
+        "Aspid.MVVM.Samples.HelloWorld"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

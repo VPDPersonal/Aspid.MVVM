@@ -694,11 +694,19 @@ MonoBehaviour:
   __id: TodoItemViewModels
   _isDebug: 0
   _log: []
-  _prefab: {fileID: 5431838984888759959, guid: 5ca3370f0dcd04136bab560024ed932a, type: 3}
   _container: {fileID: 5360323505814269057}
+  _viewFactory:
+    rid: 4192322949021433955
   _addNewElementOnTop: 0
   _initialCount: 0
   _maxCount: 2147483647
+  references:
+    version: 2
+    RefIds:
+    - rid: 4192322949021433955
+      type: {class: PrefabViewFactory, ns: Aspid.MVVM.StarterKit.Unity, asm: Aspid.MVVM.StarterKit.Unity}
+      data:
+        _prefab: {fileID: 5431838984888759959, guid: 5ca3370f0dcd04136bab560024ed932a, type: 3}
 --- !u!1 &6947782328924769429
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,87 +1,121 @@
 #nullable enable
 using System;
 using UnityEngine;
-using Aspid.MVVM.Unity;
 using UnityEngine.Pool;
-using Object = UnityEngine.Object;
+using Aspid.MVVM.Unity;
+#if UNITY_2023_1_OR_NEWER
+using ViewFactory = Aspid.MVVM.StarterKit.Unity.IViewFactory<UnityEngine.Transform, Aspid.MVVM.Unity.MonoView>;
+#else
+using ViewFactory = Aspid.MVVM.StarterKit.Unity.IViewFactoryMonoView;
+#endif
 
 namespace Aspid.MVVM.StarterKit.Unity
 {
     [Serializable]
-    public class PoolViewModelObservableList : PoolViewModelObservableList<MonoView>
+    public class PoolViewModelObservableList : PoolViewModelObservableList<MonoView, ViewFactory>
     {
-        public PoolViewModelObservableList(
-            MonoView prefab, 
-            int initialCount = 0, 
-            int maxCount = int.MaxValue,
-            BindMode mode = BindMode.OneWay)
-            : this(prefab, null, initialCount, maxCount, mode) { }
+        public PoolViewModelObservableList(ViewFactory viewFactory, BindMode mode) 
+            : this(viewFactory, null, mode) { }
         
-        public PoolViewModelObservableList(
-            MonoView prefab, 
-            Transform? container,
-            int initialCount = 0,
-            int maxCount = int.MaxValue,
-            BindMode mode = BindMode.OneWay)
-            : base(prefab, container, initialCount, maxCount, mode) { }
+        public PoolViewModelObservableList(ViewFactory viewFactory, Transform? container, BindMode mode = BindMode.OneWay) 
+            : base(viewFactory, container) { }
     }
     
     [Serializable]
-    public class PoolViewModelObservableList<T> : DynamicViewModelObservableList<T> 
-        where T : MonoView
+    public class PoolViewModelObservableList<T> : PoolViewModelObservableList<T, IViewFactory<Transform, T>>
+        where T : MonoBehaviour, IView
+    {
+        public PoolViewModelObservableList(
+            IViewFactory<Transform, T> viewFactory, 
+            int initialCount = 0, 
+            int maxCount = int.MaxValue, 
+            BindMode mode = BindMode.OneWay) 
+            : base(viewFactory, initialCount, maxCount, mode) { }
+
+        public PoolViewModelObservableList(
+            IViewFactory<Transform, T> viewFactory, 
+            Transform? container, 
+            int initialCount = 0,
+            int maxCount = int.MaxValue,
+            BindMode mode = BindMode.OneWay) 
+            : base(viewFactory, container, initialCount, maxCount, mode) { }
+    }
+    
+    [Serializable]
+    public class PoolViewModelObservableList<T, TViewFactory> : DynamicViewModelObservableList<T, TViewFactory> 
+        where T : MonoBehaviour, IView
+        where TViewFactory : IViewFactory<Transform, T>
     {
         [SerializeField] [Min(0)] private int _initialCount;
-        [SerializeField] [Min(0)] private int _maxCount = int.MaxValue;
+        [SerializeField] [Min(1)] private int _maxCount = int.MaxValue;
 
         private ObjectPool<T>? _pool;
+        private IViewModel? _lastViewModel;
 
         private ObjectPool<T> Pool => _pool ??= new ObjectPool<T>(
-            () => CreateView(Prefab, Container),
-            actionOnGet: view =>
-            {
-                view.gameObject.SetActive(true);
-                view.transform.SetAsLastSibling();
-            },
-            view => view.gameObject.SetActive(false),
-            view => view.DestroyView(),
-            false,
-            _initialCount,
-            _maxCount);
+            CreateView,
+            OnPoolGet,
+            OnPoolRelease,
+            OnPoolDestroy,
+            maxSize: _maxCount,
+            collectionCheck: false,
+            defaultCapacity: _initialCount);
         
         public PoolViewModelObservableList(
-            T prefab,
+            TViewFactory viewFactory,
             int initialCount = 0,
             int maxCount = int.MaxValue,
             BindMode mode = BindMode.OneWay)
-            : this(prefab, null, initialCount, maxCount, mode) { }
+            : this(viewFactory, null, initialCount, maxCount, mode) { }
         
         public PoolViewModelObservableList(
-            T prefab,
+            TViewFactory viewFactory,
             Transform? container, 
             int initialCount = 0, 
-            int maxCount = int.MaxValue,
+            int maxCount = int.MaxValue, 
             BindMode mode = BindMode.OneWay)
-            : base(prefab, container, mode)
+            : base(viewFactory, container, mode)
         {
             _maxCount = maxCount;
             _initialCount = initialCount;
         }
         
-        protected override void OnUnbound()
+        protected sealed override void OnUnbound()
         {
             base.OnUnbound();
             Pool.Clear();
         }
 
-        protected sealed override T GetNewView() => Pool.Get();
+        protected sealed override T GetNewView(IViewModel? viewModel)
+        {
+            _lastViewModel = viewModel;
+            return Pool.Get();
+        }
 
-        protected sealed override void ReleaseView(T view)
+        protected sealed override void ReleaseView(T view) =>
+            Pool.Release(view);
+
+        private T CreateView()
+        {
+            var view = base.GetNewView(_lastViewModel);
+            _lastViewModel = null;
+
+            return view;
+        }
+
+        private static void OnPoolGet(T view)
+        {
+            view.gameObject.SetActive(true);
+            view.transform.SetAsLastSibling();
+        }
+
+        private static void OnPoolRelease(T view)
         {
             view.Deinitialize();
-            Pool.Release(view);
+            view.gameObject.SetActive(false);
         }
-        
-        protected virtual T CreateView(T prefab, Transform? container) => 
-            Object.Instantiate(prefab, container);
+
+        private void OnPoolDestroy(T view) =>
+            base.ReleaseView(view);
     }
 }

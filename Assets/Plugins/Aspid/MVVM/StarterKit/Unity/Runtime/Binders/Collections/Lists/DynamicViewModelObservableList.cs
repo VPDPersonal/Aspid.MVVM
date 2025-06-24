@@ -3,57 +3,66 @@ using System;
 using UnityEngine;
 using Aspid.MVVM.Unity;
 using System.Collections.Generic;
-using Object = UnityEngine.Object;
+#if UNITY_2023_1_OR_NEWER
+using ViewFactory = Aspid.MVVM.StarterKit.Unity.IViewFactory<UnityEngine.Transform, Aspid.MVVM.Unity.MonoView>;
+#else
+using ViewFactory = Aspid.MVVM.StarterKit.Unity.IViewFactoryMonoView;
+#endif
 
 namespace Aspid.MVVM.StarterKit.Unity
 {
     [Serializable]
-    public class DynamicViewModelObservableList : DynamicViewModelObservableList<MonoView>
+    public class DynamicViewModelObservableList : DynamicViewModelObservableList<MonoView, ViewFactory>
     {
-        public DynamicViewModelObservableList(MonoView prefab, BindMode mode) 
-            : this(prefab, null, mode) { }
+        public DynamicViewModelObservableList(ViewFactory viewFactory, BindMode mode) 
+            : this(viewFactory, null, mode) { }
         
-        public DynamicViewModelObservableList(MonoView prefab, Transform? container, BindMode mode = BindMode.OneWay) 
-            : base(prefab, container) { }
+        public DynamicViewModelObservableList(ViewFactory viewFactory, Transform? container, BindMode mode = BindMode.OneWay) 
+            : base(viewFactory, container) { }
     }
     
     [Serializable]
-    public class DynamicViewModelObservableList<T> : ObservableListBinderBase<IViewModel>
+    public class DynamicViewModelObservableList<T> : DynamicViewModelObservableList<T, IViewFactory<Transform, T>> 
         where T : MonoBehaviour, IView
     {
-        [SerializeField] private T _prefab;
+        public DynamicViewModelObservableList(IViewFactory<Transform, T> viewFactory, BindMode mode = BindMode.OneWay) 
+            : base(viewFactory, mode) { }
+
+        public DynamicViewModelObservableList(IViewFactory<Transform, T> viewFactory, Transform? container, BindMode mode = BindMode.OneWay) 
+            : base(viewFactory, container, mode) { }
+    }
+    
+    [Serializable]
+    public class DynamicViewModelObservableList<T, TViewFactory> : ObservableListBinderBase<IViewModel>
+        where T : MonoBehaviour, IView
+        where TViewFactory : IViewFactory<Transform, T>
+    {
         [SerializeField] private Transform? _container;
+        [SerializeField] private TViewFactory _viewFactory;
         [SerializeField] private bool _addNewElementOnTop;
 
         private List<T>? _views;
         
-        public T Prefab => _prefab;
-        
-        public Transform? Container => _container;
-
         private List<T> Views => _views ??= new List<T>();
         
-        public DynamicViewModelObservableList(T prefab, BindMode mode)
-            : this(prefab, null, mode) { }
+        public DynamicViewModelObservableList(TViewFactory viewFactory, BindMode mode = BindMode.OneWay)
+            : this(viewFactory, null, mode) { }
         
-        public DynamicViewModelObservableList(T prefab, Transform? container = null, BindMode mode = BindMode.OneWay)
+        public DynamicViewModelObservableList(TViewFactory viewFactory, Transform? container, BindMode mode = BindMode.OneWay)
             : base(mode)
         {
             mode.ThrowExceptionIfTwo();
             
             _container = container;
-            _prefab = prefab ?? throw new ArgumentNullException(nameof(prefab));
+            _viewFactory = viewFactory ?? throw new ArgumentNullException(nameof(viewFactory));
         }
 
         protected sealed override void OnAdded(IViewModel? newItem, int newStartingIndex)
         {
-            var view = GetNewView();
+            var view = GetNewView(newItem);
             
             if (_addNewElementOnTop)
                 view.transform.SetAsFirstSibling();
-            
-            if (newItem is not null) 
-                view.Initialize(newItem);
 
             Views.Insert(newStartingIndex, view);
         }
@@ -104,10 +113,11 @@ namespace Aspid.MVVM.StarterKit.Unity
             
             Views.Clear();
         }
+
+        protected virtual T GetNewView(IViewModel? viewModel) =>
+            _viewFactory.Create(viewModel, _container);
         
-        protected virtual T GetNewView() => 
-            Object.Instantiate(Prefab, Container);
-        
-        protected virtual void ReleaseView(T view) => view.DestroyView();
+        protected virtual void ReleaseView(T view) => 
+            _viewFactory.Release(view);
     }
 }

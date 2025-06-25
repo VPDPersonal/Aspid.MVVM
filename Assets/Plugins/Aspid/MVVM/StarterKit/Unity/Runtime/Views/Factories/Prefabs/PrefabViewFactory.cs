@@ -1,4 +1,3 @@
-#nullable enable
 using System;
 using UnityEngine;
 using Aspid.MVVM.Unity;
@@ -9,33 +8,41 @@ namespace Aspid.MVVM.StarterKit.Unity
     [Serializable]
     public sealed class PrefabViewFactory : PrefabViewFactory<MonoView>, IViewFactoryMonoView
     {
+        [Obsolete("For Unity Inspector", true)]
         public PrefabViewFactory() { }
         
-        public PrefabViewFactory(MonoView prefab)
-            : base(prefab) { }
+        public PrefabViewFactory(MonoView prefab, bool addNewElementOnTop = false) :
+            this(prefab, null, addNewElementOnTop) { }
+        
+        public PrefabViewFactory(MonoView prefab, Transform container, bool addNewElementOnTop = false)
+            : base(prefab, container, addNewElementOnTop) { }
     }
     
     [Serializable]
-    public class PrefabViewFactory<T> : IViewFactory<T>, IViewFactory<Transform, T>
+    public class PrefabViewFactory<T> : IViewFactory<T>
         where T : MonoBehaviour, IView
     {
         [SerializeField] private T _prefab;
-
-#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring as nullable.
-        public PrefabViewFactory() { }
-#pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring as nullable.
+        [SerializeField] private Transform _container;
+        [SerializeField] private bool _addNewElementOnTop;
         
-        public PrefabViewFactory(T prefab)
+        [Obsolete("For Unity Inspector", true)]
+        public PrefabViewFactory() { }
+        
+        public PrefabViewFactory(T prefab, bool addNewElementOnTop = false) :
+            this(prefab, null, addNewElementOnTop) { }
+        
+        public PrefabViewFactory(T prefab, Transform container, bool addNewElementOnTop = false)
         {
             _prefab = prefab;
+            _container = container;
+            _addNewElementOnTop = addNewElementOnTop;
         }
 
-        public T Create(IViewModel? viewModel) =>
-            Create(viewModel, null);
-
-        public T Create(IViewModel? viewModel, Transform? container)
+        public virtual T Create(IViewModel viewModel)
         {
-            var view = Object.Instantiate(_prefab, container);
+            var view = Object.Instantiate(_prefab, _container);
+            SetSibling(view);
             
             if (viewModel is not null)
                 view.Initialize(viewModel);
@@ -43,7 +50,13 @@ namespace Aspid.MVVM.StarterKit.Unity
             return view;
         }
 
-        public void Release(T view) =>
+        public virtual void Release(T view) =>
             view.DestroyView();
+
+        protected void SetSibling(T view)
+        {
+            if (_addNewElementOnTop) view.transform.SetAsFirstSibling();
+            else view.transform.SetAsLastSibling();
+        }
     }
 }

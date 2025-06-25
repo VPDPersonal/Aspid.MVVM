@@ -518,7 +518,7 @@ MonoBehaviour:
     _interactableMode: 1
     _customInteractable:
       rid: -2
-  _todoItemViewModels: {fileID: 6930036194731237436}
+  _todoItemViewModels: {fileID: 3713873847861421549}
   references:
     version: 2
     RefIds:
@@ -610,7 +610,7 @@ GameObject:
   - component: {fileID: 5360323505814269057}
   - component: {fileID: 7387185666860716760}
   - component: {fileID: 5525351040328390671}
-  - component: {fileID: 6930036194731237436}
+  - component: {fileID: 3713873847861421549}
   m_Layer: 5
   m_Name: Content
   m_TagString: Untagged
@@ -677,7 +677,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_HorizontalFit: 0
   m_VerticalFit: 2
---- !u!114 &6930036194731237436
+--- !u!114 &3713873847861421549
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -686,27 +686,27 @@ MonoBehaviour:
   m_GameObject: {fileID: 6707769351532746335}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 30e348c866ef48e881f23732bca00376, type: 3}
+  m_Script: {fileID: 11500000, guid: 451c09408eac431e9705cf38df193bc1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _mode: 3
+  _mode: 1
   __view: {fileID: 6621106528252726653}
   __id: TodoItemViewModels
   _isDebug: 0
   _log: []
-  _container: {fileID: 5360323505814269057}
   _viewFactory:
-    rid: 4192322949021433955
-  _addNewElementOnTop: 0
-  _initialCount: 0
-  _maxCount: 2147483647
+    rid: 4192322949021433959
   references:
     version: 2
     RefIds:
-    - rid: 4192322949021433955
-      type: {class: PrefabViewFactory, ns: Aspid.MVVM.StarterKit.Unity, asm: Aspid.MVVM.StarterKit.Unity}
+    - rid: 4192322949021433959
+      type: {class: PrefabViewPool, ns: Aspid.MVVM.StarterKit.Unity, asm: Aspid.MVVM.StarterKit.Unity}
       data:
         _prefab: {fileID: 5431838984888759959, guid: 5ca3370f0dcd04136bab560024ed932a, type: 3}
+        _container: {fileID: 5360323505814269057}
+        _addNewElementOnTop: 1
+        _initialCount: 0
+        _maxCount: 2147483647
 --- !u!1 &6947782328924769429
 GameObject:
   m_ObjectHideFlags: 0

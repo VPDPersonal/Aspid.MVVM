@@ -1,30 +1,17 @@
-#nullable enable
-using System;
 using UnityEngine;
 using Aspid.MVVM.Unity;
 using System.Collections.Generic;
 
 namespace Aspid.MVVM.StarterKit.Unity
 {
-    [Serializable]
-    public class StaticViewModelCollection : StaticViewModelCollection<MonoView>
-    {
-        public StaticViewModelCollection(MonoView[] views, BindMode mode = BindMode.OneWay) 
-            : base(views, mode) { }
-    }
+    [AddComponentMenu("Aspid/MVVM/Binders/Collections/Collection Binder - ViewModel")]
+    [AddComponentContextMenu(typeof(Component), "Add General Binder/Collections/Collection Binder - ViewModel")]
+    public class ViewModelCollectionMonoBinder : ViewModelCollectionMonoBinder<MonoView> { }
     
-    [Serializable]
-    public class StaticViewModelCollection<T> : CollectionBinderBase<IViewModel>
+    public abstract class ViewModelCollectionMonoBinder<T> : CollectionMonoBinder<IViewModel>
         where T : MonoBehaviour, IView
     {
         [SerializeField] private T[] _views;
-        
-        public StaticViewModelCollection(T[] views, BindMode mode = BindMode.OneWay) 
-            : base(mode)
-        {
-            _views = views;
-            mode.ThrowExceptionIfTwo();
-        }
 
         protected override void OnAdded(IReadOnlyCollection<IViewModel> values)
         {

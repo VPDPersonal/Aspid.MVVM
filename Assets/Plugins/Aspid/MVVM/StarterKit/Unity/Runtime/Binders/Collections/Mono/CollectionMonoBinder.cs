@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Aspid.MVVM.StarterKit.Unity
 {
-    public abstract partial class CollectionMonoBinderBase<T> : MonoBinder, IBinder<IReadOnlyCollection<T>>
+    public abstract partial class CollectionMonoBinder<T> : MonoBinder, IBinder<IReadOnlyCollection<T>>
     {
         protected IReadOnlyCollection<T> Collection { get; private set; }
         

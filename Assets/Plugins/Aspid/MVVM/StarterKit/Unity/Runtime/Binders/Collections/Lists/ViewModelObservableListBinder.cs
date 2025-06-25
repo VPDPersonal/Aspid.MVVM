@@ -1,43 +1,52 @@
+using System;
 using UnityEngine;
 using Aspid.MVVM.Unity;
 using System.Collections.Generic;
 #if UNITY_2023_1_OR_NEWER
-using ViewFactory = Aspid.MVVM.StarterKit.Unity.IViewFactory<UnityEngine.Transform, Aspid.MVVM.Unity.MonoView>;
+using ViewFactory = Aspid.MVVM.StarterKit.Unity.IViewFactory<Aspid.MVVM.Unity.MonoView>;
 #else
 using ViewFactory = Aspid.MVVM.StarterKit.Unity.IViewFactoryMonoView;
 #endif
 
 namespace Aspid.MVVM.StarterKit.Unity
 {
-    [AddComponentMenu("Aspid/MVVM/Binders/Collections/Observable Lists/Dynamic Observable List - ViewModel")]
-    [AddComponentContextMenu(typeof(Component), "Add General Binder/Collection/Dynamic Observable List - ViewModel")]
-    public class DynamicViewModelMonoObservableList : DynamicViewModelMonoObservableList<MonoView, ViewFactory> { }
-    
-    public abstract class DynamicViewModelMonoObservableList<T> : DynamicViewModelMonoObservableList<T, IViewFactory<Transform, T>> 
-        where T : MonoBehaviour, IView { }
-    
-    public abstract class DynamicViewModelMonoObservableList<T, TViewFactory> : ObservableListMonoBinderBase<IViewModel>
-        where T : MonoBehaviour, IView
-        where TViewFactory : IViewFactory<Transform, T>
+    [Serializable]
+    public class ViewModelObservableListBinder : ViewModelObservableListBinder<MonoView, ViewFactory>
     {
-        [SerializeField] private Transform _container;
-        
+        public ViewModelObservableListBinder(ViewFactory viewFactory, BindMode mode = BindMode.OneWay) 
+            : base(viewFactory, mode) { }
+    }
+    
+    [Serializable]
+    public class ViewModelObservableListBinder<T> : ViewModelObservableListBinder<T, IViewFactory<T>> 
+        where T : MonoBehaviour, IView
+    {
+        public ViewModelObservableListBinder(IViewFactory<T> viewFactory, BindMode mode = BindMode.OneWay) 
+            : base(viewFactory, mode) { }
+    }
+    
+    [Serializable]
+    public class ViewModelObservableListBinder<T, TViewFactory> : ObservableListBinderBase<IViewModel>
+        where T : MonoBehaviour, IView
+        where TViewFactory : IViewFactory<T>
+    {
         [SerializeReferenceDropdown]
         [SerializeReference] private TViewFactory _viewFactory;
-        
-        [SerializeField] private bool _addNewElementOnTop;
 
         private List<T> _views;
         
         private List<T> Views => _views ??= new List<T>();
+        
+        public ViewModelObservableListBinder(TViewFactory viewFactory, BindMode mode = BindMode.OneWay)
+            : base(mode)
+        {
+            mode.ThrowExceptionIfTwo();
+            _viewFactory = viewFactory ?? throw new ArgumentNullException(nameof(viewFactory));
+        }
 
         protected sealed override void OnAdded(IViewModel newItem, int newStartingIndex)
         {
-            var view = GetNewView(newItem);
-            
-            if (_addNewElementOnTop)
-                view.transform.SetAsFirstSibling();
-
+            var view = _viewFactory.Create(newItem);
             Views.Insert(newStartingIndex, view);
         }
 
@@ -51,7 +60,7 @@ namespace Aspid.MVVM.StarterKit.Unity
 
         protected sealed override void OnRemoved(IViewModel oldItem, int oldStartingIndex)
         {
-            ReleaseView(Views[oldStartingIndex]);
+            _viewFactory.Release(Views[oldStartingIndex]);
             Views.RemoveAt(oldStartingIndex);
         }
 
@@ -83,15 +92,9 @@ namespace Aspid.MVVM.StarterKit.Unity
         protected sealed override void OnReset()
         {
             foreach (var view in Views)
-                ReleaseView(view);
+                _viewFactory.Release(view);
             
             Views.Clear();
         }
-
-        protected virtual T GetNewView(IViewModel viewModel) =>
-            _viewFactory.Create(viewModel, _container);
-        
-        protected virtual void ReleaseView(T view) => 
-            _viewFactory.Release(view);
     }
 }

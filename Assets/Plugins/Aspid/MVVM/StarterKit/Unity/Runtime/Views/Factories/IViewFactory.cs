@@ -2,8 +2,6 @@
 
 namespace Aspid.MVVM.StarterKit.Unity
 {
-    public interface IViewFactory : IViewFactory<IView> { }
-
     public interface IViewFactory<T> : IViewFactoryRelease<T>
         where T : IView
     {

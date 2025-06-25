@@ -6,7 +6,7 @@ using System.Collections.Specialized;
 
 namespace Aspid.MVVM.StarterKit.Unity
 {
-    public abstract partial class ObservableListMonoBinderBase<T> : MonoBinder, IBinder<IReadOnlyObservableList<T>>
+    public abstract partial class ObservableListMonoBinder<T> : MonoBinder, IBinder<IReadOnlyObservableList<T>>
     {
         protected IReadOnlyObservableList<T> List { get; private set; }
 

@@ -656,6 +656,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1164258705}
     m_Modifications:
+    - target: {fileID: 3713873847861421549, guid: 50d0d1aaa1d114333bf2f9b8a775538b, type: 3}
+      propertyPath: _isDebug
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3713873847861421549, guid: 50d0d1aaa1d114333bf2f9b8a775538b, type: 3}
+      propertyPath: managedReferences[4192322949021433959]._addNewElementOnTop
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4441631099480086703, guid: 50d0d1aaa1d114333bf2f9b8a775538b, type: 3}
       propertyPath: m_Name
       value: Todo Storage View
@@ -760,42 +768,11 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 6621106528252726653, guid: 50d0d1aaa1d114333bf2f9b8a775538b, type: 3}
-      propertyPath: _addTodoCommand.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6621106528252726653, guid: 50d0d1aaa1d114333bf2f9b8a775538b, type: 3}
-      propertyPath: _addTodoCommand.Array.data[0]._mode
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 6621106528252726653, guid: 50d0d1aaa1d114333bf2f9b8a775538b, type: 3}
-      propertyPath: _addTodoCommand.Array.data[1]._mode
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6621106528252726653, guid: 50d0d1aaa1d114333bf2f9b8a775538b, type: 3}
-      propertyPath: _addTodoCommand.Array.data[2]._mode
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6621106528252726653, guid: 50d0d1aaa1d114333bf2f9b8a775538b, type: 3}
-      propertyPath: _addTodoCommand.Array.data[0].<Target>k__BackingField
-      value: 
-      objectReference: {fileID: 7402877119677772890}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 50d0d1aaa1d114333bf2f9b8a775538b, type: 3}
---- !u!114 &7402877119677772890 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 1647855970933561101, guid: 50d0d1aaa1d114333bf2f9b8a775538b, type: 3}
-  m_PrefabInstance: {fileID: 7402877119677772889}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

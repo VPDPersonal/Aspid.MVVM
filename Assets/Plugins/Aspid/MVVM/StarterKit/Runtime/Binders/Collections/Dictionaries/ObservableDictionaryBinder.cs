@@ -5,11 +5,11 @@ using System.Collections.Specialized;
 
 namespace Aspid.MVVM.StarterKit
 {
-    public abstract class ObservableDictionaryBinderBase<TKey, TValue> : Binder, IBinder<IReadOnlyObservableDictionary<TKey, TValue?>>
+    public abstract class ObservableDictionaryBinder<TKey, TValue> : Binder, IBinder<IReadOnlyObservableDictionary<TKey, TValue?>>
     {
         protected IReadOnlyObservableDictionary<TKey, TValue?>? Dictionary { get; private set; }
 
-        protected ObservableDictionaryBinderBase(BindMode mode) 
+        protected ObservableDictionaryBinder(BindMode mode) 
             : base(mode) { }
 
         public void SetValue(IReadOnlyObservableDictionary<TKey, TValue?>? dictionary)

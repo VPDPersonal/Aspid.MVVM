@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 
-namespace Aspid.MVVM.Stats.Models
+namespace Aspid.MVVM.Stats
 {
     public class Hero
     {
@@ -35,16 +35,6 @@ namespace Aspid.MVVM.Stats.Models
             };
             
             SkillPointsAvailable = skillPointsAvailable;
-        }
-
-        public void AddSkillPointTo(Skill skill)
-        {
-            if (SkillPointsAvailable == 0) return;
-            
-            _skills[skill]++;
-            SkillPointsAvailable--;
-            
-            SkillChanged?.Invoke(skill);
         }
 
         public void SetSkillPointTo(Skill skill, int value)

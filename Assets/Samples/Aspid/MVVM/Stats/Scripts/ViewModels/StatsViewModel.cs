@@ -1,7 +1,6 @@
 using System;
-using Aspid.MVVM.Stats.Models;
 
-namespace Aspid.MVVM.Stats.ViewModels
+namespace Aspid.MVVM.Stats
 {
     [ViewModel]
     public partial class StatsViewModel : IDisposable
@@ -20,28 +19,17 @@ namespace Aspid.MVVM.Stats.ViewModels
         public StatsViewModel(Hero hero)
         {
             _hero = hero;
-            
-            _cool = _hero.GetNumberSkillPointFrom(Skill.Cool);
-            _power = _hero.GetNumberSkillPointFrom(Skill.Cool);
-            _reflexes = _hero.GetNumberSkillPointFrom(Skill.Cool);
-            _intelligence = _hero.GetNumberSkillPointFrom(Skill.Cool);
-            _technicalAbility = _hero.GetNumberSkillPointFrom(Skill.Cool);
-            
-            _skillPointsAvailable = _hero.SkillPointsAvailable;
-            
+
+            ResetToDefault();
             Subscribe();
         }
         
-        private void Subscribe()
-        {
+        private void Subscribe() => 
             _hero.SkillChanged += OnSkillChanged;
-        }
-        
-        private void Unsubscribe()
-        {
+
+        private void Unsubscribe() =>
             _hero.SkillChanged -= OnSkillChanged;
-        }
-        
+
         private void SetSkillPointsTo(Skill skill, int points)
         {
             switch (skill)
@@ -100,7 +88,8 @@ namespace Aspid.MVVM.Stats.ViewModels
             SkillPointsAvailable--;
         }
 
-        private bool CanAddSkillPointTo() => SkillPointsAvailable > 0;
+        private bool CanAddSkillPointTo() =>
+            SkillPointsAvailable > 0;
         
         [RelayCommand(CanExecute = nameof(CanRemoveSkillPointTo))]
         private void RemoveSkillPointTo(Skill skill)
@@ -119,7 +108,6 @@ namespace Aspid.MVVM.Stats.ViewModels
         {
             SetSkillPointsTo(skill, _hero.GetNumberSkillPointFrom(skill));
             SkillPointsAvailable = _hero.SkillPointsAvailable;
-            RemoveSkillPointToCommand.NotifyCanExecuteChanged();
         }
         
         partial void OnIsDraftChanged(bool newValue)
@@ -136,6 +124,7 @@ namespace Aspid.MVVM.Stats.ViewModels
             RemoveSkillPointToCommand.NotifyCanExecuteChanged();
         }
         
-        public void Dispose() => Unsubscribe();
+        public void Dispose() =>
+            Unsubscribe();
     }
 }

@@ -290,7 +290,7 @@ MonoBehaviour:
   __id: SkillPointsAvailable
   _component: {fileID: 2184117819493737949}
   _converter:
-    rid: 4930929829536858175
+    rid: -2
   _isDebug: 0
   _log: []
   references:
@@ -298,10 +298,6 @@ MonoBehaviour:
     RefIds:
     - rid: -2
       type: {class: , ns: , asm: }
-    - rid: 4930929829536858175
-      type: {class: StringFormatConverter, ns: Aspid.UI.MVVM.StarterKit.Converters.Strings, asm: Aspid.UI.MVVM.StarterKit}
-      data:
-        _format: 
 --- !u!1 &1863818017136329706
 GameObject:
   m_ObjectHideFlags: 0
@@ -318,7 +314,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &2896256761785461889
 RectTransform:
   m_ObjectHideFlags: 0
@@ -371,52 +367,81 @@ MonoBehaviour:
   - _mode: 1
     <Target>k__BackingField: {fileID: 5444464546274840865}
     _interactableMode: 1
+    _customInteractable:
+      rid: -2
   _resetToDefaultCommand:
   - _mode: 1
     <Target>k__BackingField: {fileID: 2931516315228818707}
     _interactableMode: 2
+    _customInteractable:
+      rid: -2
   _addSkillPointToCommand:
   - _mode: 1
     <Target>k__BackingField: {fileID: 5174176717364985295}
-    _interactableMode: 2
     _param: 0
+    _interactableMode: 2
+    _customInteractable:
+      rid: -2
   - _mode: 1
     <Target>k__BackingField: {fileID: 104643719858257062}
-    _interactableMode: 2
     _param: 1
+    _interactableMode: 2
+    _customInteractable:
+      rid: -2
   - _mode: 1
     <Target>k__BackingField: {fileID: 1922244232776191990}
-    _interactableMode: 2
     _param: 2
+    _interactableMode: 2
+    _customInteractable:
+      rid: -2
   - _mode: 1
     <Target>k__BackingField: {fileID: 7846568134673888075}
-    _interactableMode: 2
     _param: 3
+    _interactableMode: 2
+    _customInteractable:
+      rid: -2
   - _mode: 1
     <Target>k__BackingField: {fileID: 4544091627993418994}
-    _interactableMode: 2
     _param: 4
+    _interactableMode: 2
+    _customInteractable:
+      rid: -2
   _removeSkillPointToCommand:
   - _mode: 1
     <Target>k__BackingField: {fileID: 1795662829568435913}
-    _interactableMode: 2
     _param: 0
+    _interactableMode: 2
+    _customInteractable:
+      rid: -2
   - _mode: 1
     <Target>k__BackingField: {fileID: 6797870773731993504}
-    _interactableMode: 2
     _param: 1
+    _interactableMode: 2
+    _customInteractable:
+      rid: -2
   - _mode: 1
     <Target>k__BackingField: {fileID: 5010264940167386352}
-    _interactableMode: 2
     _param: 2
+    _interactableMode: 2
+    _customInteractable:
+      rid: -2
   - _mode: 1
     <Target>k__BackingField: {fileID: 3729468392672634957}
-    _interactableMode: 2
     _param: 3
+    _interactableMode: 2
+    _customInteractable:
+      rid: -2
   - _mode: 1
     <Target>k__BackingField: {fileID: 6929628987986647028}
-    _interactableMode: 2
     _param: 4
+    _interactableMode: 2
+    _customInteractable:
+      rid: -2
+  references:
+    version: 2
+    RefIds:
+    - rid: -2
+      type: {class: , ns: , asm: }
 --- !u!1 &3182931967190928482
 GameObject:
   m_ObjectHideFlags: 0
@@ -1148,10 +1173,6 @@ PrefabInstance:
       propertyPath: managedReferences[4930929806020445160]._format
       value: 
       objectReference: {fileID: 0}
-    - target: {fileID: 557253933507048913, guid: 28dcd3a91ac8d478283826b5db692c5d, type: 3}
-      propertyPath: m_Name
-      value: Add Intelligence Point
-      objectReference: {fileID: 0}
     - target: {fileID: 1785872875882177319, guid: 28dcd3a91ac8d478283826b5db692c5d, type: 3}
       propertyPath: m_text
       value: Intelligence
@@ -1178,7 +1199,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2487556152624000880, guid: 28dcd3a91ac8d478283826b5db692c5d, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2487556152624000880, guid: 28dcd3a91ac8d478283826b5db692c5d, type: 3}
       propertyPath: m_AnchorMin.x
@@ -1186,11 +1207,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2487556152624000880, guid: 28dcd3a91ac8d478283826b5db692c5d, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2487556152624000880, guid: 28dcd3a91ac8d478283826b5db692c5d, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 600
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2487556152624000880, guid: 28dcd3a91ac8d478283826b5db692c5d, type: 3}
       propertyPath: m_SizeDelta.y
@@ -1226,11 +1247,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2487556152624000880, guid: 28dcd3a91ac8d478283826b5db692c5d, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 300
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2487556152624000880, guid: 28dcd3a91ac8d478283826b5db692c5d, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -172
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2487556152624000880, guid: 28dcd3a91ac8d478283826b5db692c5d, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -1264,10 +1285,6 @@ PrefabInstance:
       propertyPath: __view
       value: 
       objectReference: {fileID: 5315928923478365624}
-    - target: {fileID: 5493942966006581099, guid: 28dcd3a91ac8d478283826b5db692c5d, type: 3}
-      propertyPath: m_Name
-      value: Remove Intelligence Point
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1359,10 +1376,6 @@ PrefabInstance:
       propertyPath: managedReferences[4930929829536858201]._format
       value: 
       objectReference: {fileID: 0}
-    - target: {fileID: 557253933507048913, guid: 28dcd3a91ac8d478283826b5db692c5d, type: 3}
-      propertyPath: m_Name
-      value: Add Reflexes Point
-      objectReference: {fileID: 0}
     - target: {fileID: 1785872875882177319, guid: 28dcd3a91ac8d478283826b5db692c5d, type: 3}
       propertyPath: m_text
       value: Reflexes
@@ -1389,7 +1402,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2487556152624000880, guid: 28dcd3a91ac8d478283826b5db692c5d, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2487556152624000880, guid: 28dcd3a91ac8d478283826b5db692c5d, type: 3}
       propertyPath: m_AnchorMin.x
@@ -1397,11 +1410,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2487556152624000880, guid: 28dcd3a91ac8d478283826b5db692c5d, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2487556152624000880, guid: 28dcd3a91ac8d478283826b5db692c5d, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 600
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2487556152624000880, guid: 28dcd3a91ac8d478283826b5db692c5d, type: 3}
       propertyPath: m_SizeDelta.y
@@ -1437,11 +1450,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2487556152624000880, guid: 28dcd3a91ac8d478283826b5db692c5d, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 300
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2487556152624000880, guid: 28dcd3a91ac8d478283826b5db692c5d, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -289
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2487556152624000880, guid: 28dcd3a91ac8d478283826b5db692c5d, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -1475,10 +1488,6 @@ PrefabInstance:
       propertyPath: __view
       value: 
       objectReference: {fileID: 5315928923478365624}
-    - target: {fileID: 5493942966006581099, guid: 28dcd3a91ac8d478283826b5db692c5d, type: 3}
-      propertyPath: m_Name
-      value: Remove Reflexes Point
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1546,10 +1555,6 @@ PrefabInstance:
       propertyPath: managedReferences[4930929829536858227]._format
       value: 
       objectReference: {fileID: 0}
-    - target: {fileID: 557253933507048913, guid: 28dcd3a91ac8d478283826b5db692c5d, type: 3}
-      propertyPath: m_Name
-      value: Add Cool Point
-      objectReference: {fileID: 0}
     - target: {fileID: 1785872875882177319, guid: 28dcd3a91ac8d478283826b5db692c5d, type: 3}
       propertyPath: m_text
       value: Cool
@@ -1576,7 +1581,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2487556152624000880, guid: 28dcd3a91ac8d478283826b5db692c5d, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2487556152624000880, guid: 28dcd3a91ac8d478283826b5db692c5d, type: 3}
       propertyPath: m_AnchorMin.x
@@ -1584,11 +1589,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2487556152624000880, guid: 28dcd3a91ac8d478283826b5db692c5d, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2487556152624000880, guid: 28dcd3a91ac8d478283826b5db692c5d, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 600
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2487556152624000880, guid: 28dcd3a91ac8d478283826b5db692c5d, type: 3}
       propertyPath: m_SizeDelta.y
@@ -1624,11 +1629,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2487556152624000880, guid: 28dcd3a91ac8d478283826b5db692c5d, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 300
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2487556152624000880, guid: 28dcd3a91ac8d478283826b5db692c5d, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -523
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2487556152624000880, guid: 28dcd3a91ac8d478283826b5db692c5d, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -1662,10 +1667,6 @@ PrefabInstance:
       propertyPath: __view
       value: 
       objectReference: {fileID: 5315928923478365624}
-    - target: {fileID: 5493942966006581099, guid: 28dcd3a91ac8d478283826b5db692c5d, type: 3}
-      propertyPath: m_Name
-      value: Remove Cool Point
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1757,10 +1758,6 @@ PrefabInstance:
       propertyPath: managedReferences[4930929829536858162]._format
       value: 
       objectReference: {fileID: 0}
-    - target: {fileID: 557253933507048913, guid: 28dcd3a91ac8d478283826b5db692c5d, type: 3}
-      propertyPath: m_Name
-      value: Add Power Point
-      objectReference: {fileID: 0}
     - target: {fileID: 1852926600267366306, guid: 28dcd3a91ac8d478283826b5db692c5d, type: 3}
       propertyPath: _id
       value: _power
@@ -1783,7 +1780,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2487556152624000880, guid: 28dcd3a91ac8d478283826b5db692c5d, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2487556152624000880, guid: 28dcd3a91ac8d478283826b5db692c5d, type: 3}
       propertyPath: m_AnchorMin.x
@@ -1791,11 +1788,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2487556152624000880, guid: 28dcd3a91ac8d478283826b5db692c5d, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2487556152624000880, guid: 28dcd3a91ac8d478283826b5db692c5d, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 600
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2487556152624000880, guid: 28dcd3a91ac8d478283826b5db692c5d, type: 3}
       propertyPath: m_SizeDelta.y
@@ -1831,11 +1828,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2487556152624000880, guid: 28dcd3a91ac8d478283826b5db692c5d, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 300
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2487556152624000880, guid: 28dcd3a91ac8d478283826b5db692c5d, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -55
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2487556152624000880, guid: 28dcd3a91ac8d478283826b5db692c5d, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -1869,10 +1866,6 @@ PrefabInstance:
       propertyPath: __view
       value: 
       objectReference: {fileID: 5315928923478365624}
-    - target: {fileID: 5493942966006581099, guid: 28dcd3a91ac8d478283826b5db692c5d, type: 3}
-      propertyPath: m_Name
-      value: Remove Power Point
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1940,10 +1933,6 @@ PrefabInstance:
       propertyPath: managedReferences[4930929829536858214]._format
       value: 
       objectReference: {fileID: 0}
-    - target: {fileID: 557253933507048913, guid: 28dcd3a91ac8d478283826b5db692c5d, type: 3}
-      propertyPath: m_Name
-      value: Add Technical Ability Point
-      objectReference: {fileID: 0}
     - target: {fileID: 1785872875882177319, guid: 28dcd3a91ac8d478283826b5db692c5d, type: 3}
       propertyPath: m_text
       value: Technical ability
@@ -1970,7 +1959,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2487556152624000880, guid: 28dcd3a91ac8d478283826b5db692c5d, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2487556152624000880, guid: 28dcd3a91ac8d478283826b5db692c5d, type: 3}
       propertyPath: m_AnchorMin.x
@@ -1978,11 +1967,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2487556152624000880, guid: 28dcd3a91ac8d478283826b5db692c5d, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2487556152624000880, guid: 28dcd3a91ac8d478283826b5db692c5d, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 600
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2487556152624000880, guid: 28dcd3a91ac8d478283826b5db692c5d, type: 3}
       propertyPath: m_SizeDelta.y
@@ -2018,11 +2007,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2487556152624000880, guid: 28dcd3a91ac8d478283826b5db692c5d, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 300
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2487556152624000880, guid: 28dcd3a91ac8d478283826b5db692c5d, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -406
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2487556152624000880, guid: 28dcd3a91ac8d478283826b5db692c5d, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -2056,10 +2045,6 @@ PrefabInstance:
       propertyPath: __view
       value: 
       objectReference: {fileID: 5315928923478365624}
-    - target: {fileID: 5493942966006581099, guid: 28dcd3a91ac8d478283826b5db692c5d, type: 3}
-      propertyPath: m_Name
-      value: Remove Technical Ability Point
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

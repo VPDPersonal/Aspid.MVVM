@@ -1,8 +1,7 @@
 using UnityEngine;
-using Aspid.MVVM.Stats.Models;
 using Aspid.MVVM.StarterKit.Unity;
 
-namespace Aspid.MVVM.Stats.Views
+namespace Aspid.MVVM.Stats
 {
     [View]
     public partial class EditStatsView : ReadOnlyStatsView

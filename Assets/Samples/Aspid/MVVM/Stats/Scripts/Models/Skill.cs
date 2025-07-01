@@ -1,4 +1,4 @@
-namespace Aspid.MVVM.Stats.Models
+namespace Aspid.MVVM.Stats
 {
     public enum Skill
     {

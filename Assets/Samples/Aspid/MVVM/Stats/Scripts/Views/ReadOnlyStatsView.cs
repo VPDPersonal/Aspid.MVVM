@@ -1,8 +1,7 @@
 using UnityEngine;
 using Aspid.MVVM.Unity;
-using Aspid.MVVM.Stats.ViewModels;
 
-namespace Aspid.MVVM.Stats.Views
+namespace Aspid.MVVM.Stats
 {
     [View]
     public partial class ReadOnlyStatsView : MonoView, IView<StatsViewModel>

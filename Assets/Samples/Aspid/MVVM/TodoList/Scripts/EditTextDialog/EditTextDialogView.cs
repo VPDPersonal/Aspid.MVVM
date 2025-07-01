@@ -2,7 +2,7 @@ using UnityEngine;
 using Aspid.MVVM.Unity;
 using Aspid.MVVM.StarterKit.Unity;
 
-namespace Aspid.MVVM.Samples.TodoList.EditTodoDialogs
+namespace Aspid.MVVM.Samples.TodoList
 {
     [View]
     public sealed partial class EditTextDialogView : MonoView

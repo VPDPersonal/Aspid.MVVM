@@ -704,7 +704,7 @@ MonoBehaviour:
       data:
         _prefab: {fileID: 5431838984888759959, guid: 5ca3370f0dcd04136bab560024ed932a, type: 3}
         _container: {fileID: 5360323505814269057}
-        _addNewElementOnTop: 1
+        _addNewElementOnTop: 0
         _initialCount: 0
         _maxCount: 2147483647
 --- !u!1 &6947782328924769429

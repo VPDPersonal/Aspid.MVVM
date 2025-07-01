@@ -1,8 +1,6 @@
-using UnityEngine; 
-using Aspid.MVVM.Samples.TodoList.Todos.Storages;
-using Aspid.MVVM.Samples.TodoList.EditTodoDialogs;
+using UnityEngine;
 
-namespace Aspid.MVVM.Samples.TodoList.Bootstraps
+namespace Aspid.MVVM.Samples.TodoList
 {
     public sealed class Bootstrap : MonoBehaviour
     {

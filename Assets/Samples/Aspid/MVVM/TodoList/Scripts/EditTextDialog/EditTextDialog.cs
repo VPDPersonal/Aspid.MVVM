@@ -3,7 +3,7 @@ using UnityEngine;
 using Aspid.MVVM.Unity;
 using Object = UnityEngine.Object;
 
-namespace Aspid.MVVM.Samples.TodoList.EditTodoDialogs
+namespace Aspid.MVVM.Samples.TodoList
 {
     public sealed class EditTextDialog
     {

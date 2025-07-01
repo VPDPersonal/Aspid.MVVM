@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
-namespace Aspid.MVVM.Samples.TodoList.UiComponents
+namespace Aspid.MVVM.Samples.TodoList
 {
     [RequireComponent(typeof(Graphic))]
     public sealed class Highlighted : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler

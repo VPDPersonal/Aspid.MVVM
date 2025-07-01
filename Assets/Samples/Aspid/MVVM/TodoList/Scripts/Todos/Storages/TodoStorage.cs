@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Aspid.Collections.Observable;
 
-namespace Aspid.MVVM.Samples.TodoList.Todos.Storages
+namespace Aspid.MVVM.Samples.TodoList
 {
     public sealed class TodoStorage : IEnumerable<Todo>
     {

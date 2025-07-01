@@ -1,8 +1,7 @@
 using System;
 using Aspid.Collections.Observable.Synchronizer;
-using Aspid.MVVM.Samples.TodoList.EditTodoDialogs;
 
-namespace Aspid.MVVM.Samples.TodoList.Todos.Storages
+namespace Aspid.MVVM.Samples.TodoList
 {
     [ViewModel]
     public sealed partial class TodoStorageViewModel : IDisposable

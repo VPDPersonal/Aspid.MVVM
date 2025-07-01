@@ -1,6 +1,6 @@
 using System;
 
-namespace Aspid.MVVM.Samples.TodoList.Todos
+namespace Aspid.MVVM.Samples.TodoList
 {
     [ViewModel]
     public sealed partial class TodoItemViewModel : IDisposable

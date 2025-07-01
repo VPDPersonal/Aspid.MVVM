@@ -87,10 +87,10 @@ namespace Aspid.MVVM.StarterKit.Unity
             if (_viewComponents is not null)
             {
                 foreach (var viewComponent in _viewComponents)
-                    viewComponent.Validate();
+                    viewComponent?.Validate();
             }
             
-            _viewModelComponent.Validate();
+            _viewModelComponent?.Validate();
         }
 
         private void Awake()

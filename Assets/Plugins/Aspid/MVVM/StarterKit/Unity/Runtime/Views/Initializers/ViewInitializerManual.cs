@@ -91,7 +91,7 @@ namespace Aspid.MVVM.StarterKit.Unity
             if (_viewComponents is null) return;
             
             foreach (var viewComponent in _viewComponents)
-                viewComponent.Validate();
+                viewComponent?.Validate();
         }
 
         private void OnDestroy()

@@ -71,13 +71,8 @@ namespace Aspid.MVVM.StarterKit.Unity
         public override void Release(T view) =>
             Pool.Release(view);
         
-        private T OnCreate()
-        {
-            var view = base.Create(_lastViewModel);
-            _lastViewModel = null;
-
-            return view;
-        }
+        private T OnCreate() =>
+            base.Create(_lastViewModel);
         
         protected override void OnCreate(IViewModel viewModel, T view) { }
 
@@ -85,6 +80,7 @@ namespace Aspid.MVVM.StarterKit.Unity
         {
             view.gameObject.SetActive(true);
             base.OnCreate(_lastViewModel, view);
+            _lastViewModel = null;
         }
         
         private static void OnRelease(T view)

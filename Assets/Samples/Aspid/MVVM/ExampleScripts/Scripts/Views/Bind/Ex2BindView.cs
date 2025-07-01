@@ -1,4 +1,4 @@
-namespace Aspid.MVVM.ExampleScripts.Views.Bind
+namespace Aspid.MVVM.ExampleScripts.Views
 {
     [View]
     public partial class Ex2BindView

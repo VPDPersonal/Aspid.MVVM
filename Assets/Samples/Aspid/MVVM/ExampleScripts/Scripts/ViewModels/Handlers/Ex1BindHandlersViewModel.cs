@@ -1,4 +1,4 @@
-namespace Aspid.MVVM.ExampleScripts.NewViewModels.Handlers
+namespace Aspid.MVVM.ExampleScripts.ViewModels
 {
     [ViewModel]
     public partial class Ex1BindHandlersViewModel

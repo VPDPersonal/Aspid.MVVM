@@ -1,8 +1,10 @@
-namespace Aspid.MVVM.ExampleScripts.ViewModels.Bind
+namespace Aspid.MVVM.ExampleScripts.ViewModels
 {
     [ViewModel]
     public partial class Ex2BindViewModel
     {
+        [Bind(BindMode.OneTime)] private const int ConstOneTime = 0;
+        
         [Bind(BindMode.OneWay)] private int _oneWayValue;
         [Bind(BindMode.TwoWay)] private int _twoWayValue;
         [Bind(BindMode.OneTime)] private int _oneTimeValue1;

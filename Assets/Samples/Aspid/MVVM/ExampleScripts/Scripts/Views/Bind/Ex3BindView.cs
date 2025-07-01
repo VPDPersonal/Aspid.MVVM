@@ -1,7 +1,7 @@
 using UnityEngine.UI;
 using Aspid.MVVM.StarterKit.Unity;
 
-namespace Aspid.MVVM.ExampleScripts.Views.Bind
+namespace Aspid.MVVM.ExampleScripts.Views
 {
     [View]
     public partial class Ex3BindView

@@ -1,4 +1,4 @@
-namespace Aspid.MVVM.ExampleScripts.Views.Handlers
+namespace Aspid.MVVM.ExampleScripts.Views
 {
     [View]
     public partial class Ex2InstantiatingHandlersView

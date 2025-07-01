@@ -1,4 +1,4 @@
-namespace Aspid.MVVM.ExampleScripts.Views.Other
+namespace Aspid.MVVM.ExampleScripts.Views
 {
     [View]
     public partial class Ex1BindIgnoreView

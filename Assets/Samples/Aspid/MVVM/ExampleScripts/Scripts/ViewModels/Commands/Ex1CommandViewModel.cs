@@ -1,4 +1,4 @@
-namespace Aspid.MVVM.ExampleScripts.ViewModels.Commands
+namespace Aspid.MVVM.ExampleScripts.ViewModels
 {
     [ViewModel]
     public partial class Ex1CommandViewModel

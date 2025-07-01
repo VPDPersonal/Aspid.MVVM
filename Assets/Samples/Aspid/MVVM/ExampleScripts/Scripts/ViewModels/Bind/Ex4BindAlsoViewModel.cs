@@ -1,4 +1,4 @@
-namespace Aspid.MVVM.ExampleScripts.ViewModels.Bind
+namespace Aspid.MVVM.ExampleScripts.ViewModels
 {
     [ViewModel]
     public partial class Ex4BindAlsoViewModel
@@ -10,7 +10,7 @@ namespace Aspid.MVVM.ExampleScripts.ViewModels.Bind
         [BindAlso(nameof(FullName))]
         [Bind] private string _family;
 
-        private string Nickname => _name.ToLower();
+        private string Nickname => Name.ToLower();
         
         private string FullName => $"{Name} {Family}";
     }

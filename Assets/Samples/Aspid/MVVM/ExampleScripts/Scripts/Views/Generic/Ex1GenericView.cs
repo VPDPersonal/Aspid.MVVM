@@ -1,4 +1,4 @@
-using Aspid.MVVM.ExampleScripts.ViewModels.Bind;
+using Aspid.MVVM.ExampleScripts.ViewModels;
 
 namespace Aspid.MVVM.ExampleScripts.Views.Generic
 {

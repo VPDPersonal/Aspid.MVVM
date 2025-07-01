@@ -38,23 +38,23 @@ namespace Aspid.MVVM.StarterKit.Unity
             
             properties.resolve = property.FindPropertyRelative("Resolve");
             
-            switch ((InitializeComponent.Resolve)properties.resolve.enumValueIndex)
+            switch ((InitializeComponent.ResolveType)properties.resolve.enumValueIndex)
             {
-                case InitializeComponent.Resolve.References:
+                case InitializeComponent.ResolveType.References:
                     properties.component = property.FindPropertyRelative("References");
                     break;
 
-                case InitializeComponent.Resolve.ScriptableObject:
+                case InitializeComponent.ResolveType.ScriptableObject:
                     properties.component = property.FindPropertyRelative("Scriptable");
                     break;
 
 #if ASPID_MVVM_ZENJECT_INTEGRATION || ASPID_MVVM_VCONTAINER_INTEGRATION
-                case InitializeComponent.Resolve.Di:
+                case InitializeComponent.ResolveType.Di:
                     properties.component = property.FindPropertyRelative("Type");
                     break;
 #endif
                 
-                case InitializeComponent.Resolve.Mono:
+                case InitializeComponent.ResolveType.Mono:
                 default: 
                     properties.component = property.FindPropertyRelative("Mono");
                     break;

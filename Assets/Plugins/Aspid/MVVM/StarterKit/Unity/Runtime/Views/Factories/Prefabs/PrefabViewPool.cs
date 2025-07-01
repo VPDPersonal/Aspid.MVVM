@@ -78,15 +78,13 @@ namespace Aspid.MVVM.StarterKit.Unity
 
             return view;
         }
+        
+        protected override void OnCreate(IViewModel viewModel, T view) { }
 
         private void OnGet(T view)
         {
             view.gameObject.SetActive(true);
-            
-            if (_lastViewModel is not null)
-                view.Initialize(_lastViewModel);
-            
-            SetSibling(view);
+            base.OnCreate(_lastViewModel, view);
         }
         
         private static void OnRelease(T view)

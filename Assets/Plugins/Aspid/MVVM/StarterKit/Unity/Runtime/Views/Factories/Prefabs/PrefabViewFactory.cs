@@ -42,12 +42,17 @@ namespace Aspid.MVVM.StarterKit.Unity
         public virtual T Create(IViewModel viewModel)
         {
             var view = Object.Instantiate(_prefab, _container);
+            OnCreate(viewModel, view);
+
+            return view;
+        }
+
+        protected virtual void OnCreate(IViewModel viewModel, T view)
+        {
             SetSibling(view);
             
             if (viewModel is not null)
                 view.Initialize(viewModel);
-
-            return view;
         }
 
         public virtual void Release(T view) =>

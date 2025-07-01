@@ -34,7 +34,7 @@ namespace Aspid.MVVM.StarterKit.Unity
             
             switch (resolve)
             {
-                case InitializeComponent.Resolve.References:
+                case InitializeComponent.ResolveType.References:
                     {
                         var referencesProperty = GetReferencesProperty(property);
                         var typeName = referencesProperty.managedReferenceValue?.GetType().Name;
@@ -43,7 +43,7 @@ namespace Aspid.MVVM.StarterKit.Unity
                             ? $" ({typeName})" 
                             : string.Empty;
                     }
-                case InitializeComponent.Resolve.ScriptableObject:
+                case InitializeComponent.ResolveType.ScriptableObject:
                     {
                         var scriptableProperty = GetScriptableProperty(property);
                         
@@ -52,7 +52,7 @@ namespace Aspid.MVVM.StarterKit.Unity
                             : string.Empty;
                     }
 #if ASPID_MVVM_ZENJECT_INTEGRATION || ASPID_MVVM_VCONTAINER_INTEGRATION
-                case InitializeComponent.Resolve.Di:
+                case InitializeComponent.ResolveType.Di:
                     {
                         var typeNameProperty = GetTypeNameProperty(property);
                         var typeName = Type.GetType(typeNameProperty.stringValue)?.Name;
@@ -62,7 +62,7 @@ namespace Aspid.MVVM.StarterKit.Unity
                             : string.Empty;
                     }
 #endif
-                case InitializeComponent.Resolve.Mono:
+                case InitializeComponent.ResolveType.Mono:
                 default:
                     {
                         var monoProperty = GetMonoProperty(property);
@@ -81,12 +81,12 @@ namespace Aspid.MVVM.StarterKit.Unity
 
             switch (resolve)
             {
-                case InitializeComponent.Resolve.References:
+                case InitializeComponent.ResolveType.References:
                     {
                         var referencesProperty = GetReferencesProperty(property);
                         return referencesProperty.managedReferenceValue is not null;
                     }
-                case InitializeComponent.Resolve.ScriptableObject:
+                case InitializeComponent.ResolveType.ScriptableObject:
                     {
                         var scriptableProperty = GetScriptableProperty(property);
                         if (scriptableProperty.objectReferenceValue is not TInterface)
@@ -95,13 +95,13 @@ namespace Aspid.MVVM.StarterKit.Unity
                         return scriptableProperty.objectReferenceValue;
                     }
 #if ASPID_MVVM_ZENJECT_INTEGRATION || ASPID_MVVM_VCONTAINER_INTEGRATION
-                case InitializeComponent.Resolve.Di:
+                case InitializeComponent.ResolveType.Di:
                     {
                         var typeNameProperty = GetTypeNameProperty(property);
                         return !string.IsNullOrWhiteSpace(typeNameProperty.stringValue);
                     }
 #endif
-                case InitializeComponent.Resolve.Mono:
+                case InitializeComponent.ResolveType.Mono:
                 default:
                     {
                         var monoProperty = GetMonoProperty(property);
@@ -128,7 +128,7 @@ namespace Aspid.MVVM.StarterKit.Unity
             return type.FindPropertyRelative("_typeName"); 
         }
         
-        private static InitializeComponent.Resolve GetResolve(SerializedProperty property) =>
-            (InitializeComponent.Resolve)property.FindPropertyRelative("Resolve").enumValueIndex;
+        private static InitializeComponent.ResolveType GetResolve(SerializedProperty property) =>
+            (InitializeComponent.ResolveType)property.FindPropertyRelative("Resolve").enumValueIndex;
     }
 }

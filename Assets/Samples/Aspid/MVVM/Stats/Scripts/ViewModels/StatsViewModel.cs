@@ -3,7 +3,7 @@ using System;
 namespace Aspid.MVVM.Stats
 {
     [ViewModel]
-    public partial class StatsViewModel : IDisposable
+    public sealed partial class StatsViewModel : IDisposable
     {
         [OneWayBind] private int _cool;
         [OneWayBind] private int _power;

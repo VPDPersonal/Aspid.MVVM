@@ -4,7 +4,7 @@ using Aspid.MVVM.StarterKit.Unity;
 namespace Aspid.MVVM.Stats
 {
     [View]
-    public partial class EditStatsView : ReadOnlyStatsView
+    public sealed partial class EditStatsView : ReadOnlyStatsView
     {
         [Header("Commands")]
         [SerializeField] private ButtonCommandBinder[] _confirmCommand;

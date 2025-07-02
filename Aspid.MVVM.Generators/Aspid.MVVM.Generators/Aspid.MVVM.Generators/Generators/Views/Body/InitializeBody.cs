@@ -141,7 +141,8 @@ public static class InitializeBody
             
         code.AppendInitializeInternalDeclaration(data)
             .AppendInitializeBody(data, isOverride)
-            .AppendInitializeInternalEvents();
+            .AppendInitializeInternalEvents()
+            .AppendLine();
         
         code.AppendDeinitializeInternalDeclaration(data)
             .AppendDeinitializeBody(data, isOverride)

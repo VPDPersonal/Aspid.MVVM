@@ -48,7 +48,7 @@ public static class BindableFieldFactory
         foreach (var attribute in field.GetAttributes())
         {
             if (attribute.AttributeClass != null &&
-                attribute.AttributeClass.ToDisplayStringGlobal() == BindAlsoAttribute)
+                attribute.AttributeClass.ToDisplayStringGlobal() == BindAlsoAttribute.Global)
             {
                 var value = attribute.ConstructorArguments[0].Value;
                 if (value is null) continue;

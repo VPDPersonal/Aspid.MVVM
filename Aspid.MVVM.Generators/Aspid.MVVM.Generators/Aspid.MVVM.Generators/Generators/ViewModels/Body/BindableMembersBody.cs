@@ -49,7 +49,8 @@ public static class BindableMembersBody
         
         void AppendProperty(string interfaceType, string propertyName, BindableMember member)
         { 
-            code.AppendLine($"{IBindableMemberEventAdder} {interfaceType}.{propertyName} =>")
+            code.AppendLine(GeneratedCodeViewModelAttribute)
+                .AppendLine($"{IBindableMemberEventAdder} {interfaceType}.{propertyName} =>")
                 .IncreaseIndent()
                 .AppendLine($"{member.Event.ToInstantiateFieldString()};")
                 .DecreaseIndent();
@@ -61,7 +62,7 @@ public static class BindableMembersBody
         var members = data.Members;
 
         code.AppendLine(GeneratedCodeViewModelAttribute)
-            .Append(data.Inheritor is Inheritor.None 
+            .AppendLine(data.Inheritor is Inheritor.None 
                 ? $"public interface IBindableMembers : {IViewModel}" 
                 : $"public new interface IBindableMembers : {data.Symbol.BaseType!.ToDisplayStringGlobal()}.IBindableMembers");
 
@@ -71,7 +72,8 @@ public static class BindableMembersBody
                 .BeginBlock()
                 .AppendLoop(members, member =>
                 {
-                    code.AppendLine($"public {IBindableMemberEventAdder} {member.GeneratedName} {{ get; }}")
+                    code.AppendLine(GeneratedCodeViewModelAttribute)
+                        .AppendLine($"public {IBindableMemberEventAdder} {member.GeneratedName} {{ get; }}")
                         .AppendLine();
                 })
                 .EndBlock();

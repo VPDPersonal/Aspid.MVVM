@@ -7,6 +7,9 @@ using Aspid.MVVM.Generators.Descriptions;
 using Aspid.MVVM.Generators.ViewModels.Factories;
 using Aspid.MVVM.Generators.Views.Body.Extensions;
 using Aspid.MVVM.Generators.ViewModels.Data.Members;
+using static Aspid.MVVM.Generators.Descriptions.Classes;
+using static Aspid.MVVM.Generators.Descriptions.Defines;
+using static Aspid.MVVM.Generators.Descriptions.General;
 
 namespace Aspid.MVVM.Generators.Views.Body;
 
@@ -23,7 +26,7 @@ public static class GenericInitializeView
             var code = new CodeWriter();
             
             var baseTypes = genericView is { IsSelf: true, Type.TypeKind: not TypeKind.Interface }
-                ? new[] { $"{Classes.IView}<{genericView.Type.ToDisplayStringGlobal()}.IBindableMembers>" }
+                ? new[] { $"{IView}<{genericView.Type.ToDisplayStringGlobal()}.IBindableMembers>" }
                 : null;
 
             code.AppendClassBegin([Namespaces.Aspid_MVVM], @namespace, declaration, baseTypes)
@@ -60,13 +63,14 @@ public static class GenericInitializeView
             {
                 code.AppendMultiline(
                     $$"""
+                      {{GeneratedCodeViewAttribute}}
                       public void Initialize({{typeName}} viewModel)
                       {
-                          if (viewModel is null) throw new {{Classes.ArgumentNullException}}(nameof(viewModel));
-                          if (ViewModel is not null) throw new {{Classes.InvalidOperationException}}("View is already initialized.");
+                          if (viewModel is null) throw new {{ArgumentNullException}}(nameof(viewModel));
+                          if (ViewModel is not null) throw new {{InvalidOperationException}}("View is already initialized.");
                           
                           ViewModel = viewModel;
-                          InitializeInternal({{Classes.Unsafe}}.As<{{typeName}}, {{typeBindableMembersName}}>(ref viewModel));
+                          InitializeInternal({{Unsafe}}.As<{{typeName}}, {{typeBindableMembersName}}>(ref viewModel));
                       }
                       """);
             
@@ -75,10 +79,11 @@ public static class GenericInitializeView
         
             code.AppendMultiline(
                 $$"""
+                  {{GeneratedCodeViewAttribute}}
                   public void Initialize({{typeBindableMembersName}} viewModel)
                   {
-                      if (viewModel is null) throw new {{Classes.ArgumentNullException}}(nameof(viewModel));
-                      if (ViewModel is not null) throw new {{Classes.InvalidOperationException}}("View is already initialized.");
+                      if (viewModel is null) throw new {{ArgumentNullException}}(nameof(viewModel));
+                      if (ViewModel is not null) throw new {{InvalidOperationException}}("View is already initialized.");
                       
                       ViewModel = viewModel;
                       InitializeInternal(viewModel);
@@ -88,10 +93,13 @@ public static class GenericInitializeView
             code.AppendLine();
         }
         
-        code.AppendLine($"{modifier} void InitializeInternal({typeBindableMembersName} viewModel)");
-        code.BeginBlock();
-        
-        code.AppendLine($"#if !{Defines.ASPID_MVVM_UNITY_PROFILER_DISABLED}")
+        code.AppendMultiline(
+            $"""
+            {GeneratedCodeViewAttribute}
+            {modifier} void InitializeInternal({typeBindableMembersName} viewModel)
+            """)
+            .BeginBlock()
+            .AppendLine($"#if !{ASPID_MVVM_UNITY_PROFILER_DISABLED}")
             .AppendLine($"using (__initialize{genericView.Type.ToDisplayString().Replace(".", "_")}Marker.Auto())")
             .AppendLine("#endif")
             .BeginBlock();
@@ -171,8 +179,10 @@ public static class GenericInitializeView
         
         return code.AppendMultiline(
             $"""
-            #if !{Defines.ASPID_MVVM_UNITY_PROFILER_DISABLED}
-            private readonly static {Classes.ProfilerMarker} __initialize{viewModelTypeName.Replace(".", "_")}Marker = new("{data.Declaration.Identifier.Text}.{viewModelTypeName}.Initialize");
+            #if !{ASPID_MVVM_UNITY_PROFILER_DISABLED}
+            {GeneratedCodeViewAttribute}
+            [{EditorBrowsableAttribute}({EditorBrowsableState}.Never)]
+            private readonly static {ProfilerMarker} __initialize{viewModelTypeName.Replace(".", "_")}Marker = new("{data.Declaration.Identifier.Text}.{viewModelTypeName}.Initialize");
             #endif
             """);
     }

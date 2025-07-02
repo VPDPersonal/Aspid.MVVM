@@ -45,7 +45,7 @@ namespace Aspid.MVVM
                     anyBinder.SetValue(_value);
                     break;
                 
-                default: throw BinderInvalidCastException<T>.Class();
+                default: throw BinderInvalidCastException.Class<T>(binder);
             }
             
             return null;

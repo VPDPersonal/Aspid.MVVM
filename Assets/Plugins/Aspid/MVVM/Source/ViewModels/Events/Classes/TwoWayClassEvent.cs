@@ -58,7 +58,7 @@ namespace Aspid.MVVM
                     {
                         case IBinder<T> specificBinder: specificBinder.SetValue(_value); break;
                         case IAnyBinder anyBinder: anyBinder.SetValue(_value); break;
-                        default: throw BinderInvalidCastException<T>.Class();
+                        default: throw BinderInvalidCastException.Class<T>(binder);
                     }
 
                     return null;
@@ -82,14 +82,14 @@ namespace Aspid.MVVM
                         Changed += anyBinder.SetValue;
                         break;
                         
-                    default: throw BinderInvalidCastException<T>.Class();
+                    default: throw BinderInvalidCastException.Class<T>(binder);
                 }
             }
 
             void OneWayToSource()
             {
                 if (binder is not IReverseBinder<T> reverseBinder)
-                    throw ReverseBinderInvalidCastException<T>.Class();
+                    throw ReverseBinderInvalidCastException<T>.Class(binder);
 
                 reverseBinder.ValueChanged += _setValue;
             }
@@ -121,13 +121,13 @@ namespace Aspid.MVVM
             {
                 IBinder<T> specificBinder => specificBinder.SetValue,
                 IAnyBinder anyBinder => anyBinder.SetValue,
-                _ => throw BinderInvalidCastException<T>.Class()
+                _ => throw BinderInvalidCastException.Class<T>(binder)
             };
             
             void OneWayToSource()
             {
                 if (binder is not IReverseBinder<T> reverseBinder)
-                    throw ReverseBinderInvalidCastException<T>.Class();
+                    throw ReverseBinderInvalidCastException<T>.Class(binder);
 
                 reverseBinder.ValueChanged -= _setValue;
             }

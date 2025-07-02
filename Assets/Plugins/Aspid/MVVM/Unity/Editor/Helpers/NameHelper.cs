@@ -1,9 +1,9 @@
 using System.Reflection;
 using System.Runtime.CompilerServices;
 
-namespace Aspid.MVVM
+namespace Aspid.MVVM.Unity
 {
-    public static class NameHelpers
+    public static class NameHelper
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static string GetGeneratedPropertyName(this FieldInfo field)

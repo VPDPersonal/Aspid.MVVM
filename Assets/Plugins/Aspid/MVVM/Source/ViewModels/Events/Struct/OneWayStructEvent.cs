@@ -83,7 +83,7 @@ namespace Aspid.MVVM
                     else return null;
                     break;
                 
-                default: throw BinderInvalidCastException<T>.Struct<TBoxed>();
+                default: throw BinderInvalidCastException.Struct<T, TBoxed>(binder);
             }
             
             return this;
@@ -104,7 +104,7 @@ namespace Aspid.MVVM
                 case IBinder<T> specificBinder: Changed -= specificBinder.SetValue; break;
                 case IBinder<TBoxed> structBinder: BoxedChanged -= structBinder.SetValue; break;
                 case IAnyBinder anyBinder: Changed -= anyBinder.SetValue; break;
-                default: throw BinderInvalidCastException<T>.Struct<TBoxed>();
+                default: throw BinderInvalidCastException.Struct<T, TBoxed>(binder);
             }
         }
         

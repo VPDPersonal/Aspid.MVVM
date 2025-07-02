@@ -39,7 +39,7 @@ namespace Aspid.MVVM
                 throw new InvalidOperationException($"Mode must be OneWayToSource. Mode = {{{mode}}}");
 
             if (binder is not IReverseBinder<T> reverseBinder) 
-                throw ReverseBinderInvalidCastException<T>.Class();
+                throw ReverseBinderInvalidCastException<T>.Class(binder);
             
             reverseBinder.ValueChanged += _setValue;
             return this;
@@ -53,7 +53,7 @@ namespace Aspid.MVVM
         public void Remove(IBinder binder)
         {
             if (binder is not IReverseBinder<T> reverseBinder) 
-                throw ReverseBinderInvalidCastException<T>.Class();
+                throw ReverseBinderInvalidCastException<T>.Class(binder);
             
             reverseBinder.ValueChanged -= _setValue;
         }

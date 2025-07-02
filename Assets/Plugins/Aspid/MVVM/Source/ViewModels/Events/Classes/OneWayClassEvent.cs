@@ -56,7 +56,7 @@ namespace Aspid.MVVM
                     else return null;
                     break;
                 
-                default: throw BinderInvalidCastException<T>.Class();
+                default: throw BinderInvalidCastException.Class<T>(binder);
             }
             
             return this;
@@ -76,7 +76,7 @@ namespace Aspid.MVVM
             {
                 IBinder<T> specificBinder => specificBinder.SetValue,
                 IAnyBinder anyBinder => anyBinder.SetValue,
-                _ => throw BinderInvalidCastException<T>.Class()
+                _ => throw BinderInvalidCastException.Class<T>(binder)
             };
         }
         

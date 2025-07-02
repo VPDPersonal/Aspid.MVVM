@@ -63,7 +63,7 @@ namespace Aspid.MVVM
             {
                 case IReverseBinder<T> reverseBinder: reverseBinder.ValueChanged += _setValue; break;
                 case IReverseBinder<TBoxed> structReverseBinder: structReverseBinder.ValueChanged += SetBoxedValue; break;
-                default: throw ReverseBinderInvalidCastException<T>.Struct<TBoxed>();
+                default: throw ReverseBinderInvalidCastException<T>.Struct<TBoxed>(binder);
             }
             
             return this;
@@ -80,7 +80,7 @@ namespace Aspid.MVVM
             {
                 case IReverseBinder<T> reverseBinder: reverseBinder.ValueChanged -= _setValue; break;
                 case IReverseBinder<TBoxed> structReverseBinder: structReverseBinder.ValueChanged -= SetBoxedValue; break;
-                default: throw ReverseBinderInvalidCastException<T>.Struct<TBoxed>();
+                default: throw ReverseBinderInvalidCastException<T>.Struct<TBoxed>(binder);
             }
         }
 

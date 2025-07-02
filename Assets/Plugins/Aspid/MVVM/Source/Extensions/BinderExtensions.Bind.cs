@@ -53,7 +53,6 @@ namespace Aspid.MVVM
                 binders.BindSafely(result.Adder!);
         }
         
-        
         /// <summary>
         /// Safely binds an array of binders to the specified event adder.
         /// </summary>
@@ -71,7 +70,8 @@ namespace Aspid.MVVM
             
             foreach (var binder in binders)
             {
-                binder?.Bind(adder);
+                if (binder is null) throw new NullReferenceException($"{nameof(binder)}");
+                binder.Bind(adder);
             }
         }
         #endregion
@@ -111,7 +111,8 @@ namespace Aspid.MVVM
             
             foreach (var binder in binders)
             {
-                binder?.Bind(adder);
+                if (binder is null) throw new NullReferenceException($"{nameof(binder)}");
+                binder.Bind(adder);
             }
         }
         #endregion
@@ -151,7 +152,8 @@ namespace Aspid.MVVM
             
             foreach (var binder in binders)
             {
-                binder?.Bind(adder);
+                if (binder is null) throw new NullReferenceException($"{nameof(binder)}");
+                binder.Bind(adder);
             }
         }
         #endregion

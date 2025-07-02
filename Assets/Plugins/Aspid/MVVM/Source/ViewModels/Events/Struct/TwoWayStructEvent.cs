@@ -83,7 +83,7 @@ namespace Aspid.MVVM
                         case IBinder<T> specificBinder: specificBinder.SetValue(_value); break;
                         case IBinder<TBoxed> structBinder: structBinder.SetValue(_value); break;
                         case IAnyBinder anyBinder: anyBinder.SetValue(_value); break;
-                        default: throw BinderInvalidCastException<T>.Struct<TBoxed>();
+                        default: throw BinderInvalidCastException.Struct<T, TBoxed>(binder);
                     }
                     return null;
                 
@@ -111,7 +111,7 @@ namespace Aspid.MVVM
                         Changed += anyBinder.SetValue;
                         break;
                         
-                    default: throw BinderInvalidCastException<T>.Struct<TBoxed>();
+                    default: throw BinderInvalidCastException.Struct<T, TBoxed>(binder);
                 }
             }
 
@@ -121,7 +121,7 @@ namespace Aspid.MVVM
                 {
                     case IReverseBinder<T> reverseBinder: reverseBinder.ValueChanged += _setValue; break;
                     case IReverseBinder<TBoxed> structReverseBinder: structReverseBinder.ValueChanged += SetBoxedValue; break;
-                    default: throw ReverseBinderInvalidCastException<T>.Struct<TBoxed>();
+                    default: throw ReverseBinderInvalidCastException<T>.Struct<TBoxed>(binder);
                 }
             }
         }
@@ -155,7 +155,7 @@ namespace Aspid.MVVM
                     case IBinder<T> specificBinder: Changed -= specificBinder.SetValue; break;
                     case IBinder<TBoxed> structBinder: BoxedChanged -= structBinder.SetValue; break;
                     case IAnyBinder anyBinder: Changed -= anyBinder.SetValue; break;
-                    default: throw BinderInvalidCastException<T>.Struct<TBoxed>();
+                    default: throw BinderInvalidCastException.Struct<T, TBoxed>(binder);
                 }
             }
             
@@ -165,7 +165,7 @@ namespace Aspid.MVVM
                 {
                     case IReverseBinder<T> reverseBinder: reverseBinder.ValueChanged -= _setValue; break;
                     case IReverseBinder<TBoxed> structReverseBinder: structReverseBinder.ValueChanged -= SetBoxedValue; break;
-                    default: throw ReverseBinderInvalidCastException<T>.Struct<TBoxed>();
+                    default: throw ReverseBinderInvalidCastException<T>.Struct<TBoxed>(binder);
                 }
             }
         }

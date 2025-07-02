@@ -58,7 +58,7 @@ namespace Aspid.MVVM
                 case IBinder<T> specificBinder: specificBinder.SetValue(_value); break;
                 case IBinder<TBoxed> structBinder: structBinder.SetValue(_value); break;
                 case IAnyBinder anyBinder: anyBinder.SetValue(_value); break;
-                default: throw BinderInvalidCastException<T>.Struct<TBoxed>();
+                default: throw BinderInvalidCastException.Struct<T, TBoxed>(binder);
             }
             
             return null;

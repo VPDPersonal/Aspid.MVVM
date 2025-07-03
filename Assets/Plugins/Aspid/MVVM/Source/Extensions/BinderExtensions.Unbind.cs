@@ -26,7 +26,7 @@ namespace Aspid.MVVM
         /// </summary>
         /// <typeparam name="T">The type that implements the <see cref="IBinder"/> interface.</typeparam>
         /// <param name="binders">An array of binders to unbind from the <see cref="IViewModel"/>.</param>
-        /// <exception cref="NullReferenceException">
+        /// <exception cref="UnbindSafelyNullReferenceException">
         /// Thrown if any element in the array is <c>null</c>.
         /// </exception>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -37,7 +37,7 @@ namespace Aspid.MVVM
 
             foreach (var binder in binders)
             {
-                if (binder is null) throw new NullReferenceException($"{nameof(binder)}");
+                if (binder is null) throw new UnbindSafelyNullReferenceException($"{nameof(binder)}");
                 binder.Unbind();
             }
         }
@@ -48,7 +48,7 @@ namespace Aspid.MVVM
         /// </summary>
         /// <typeparam name="T">The type that implements the <see cref="IBinder"/> interface.</typeparam>
         /// <param name="binders">A list of binders to unbind from the <see cref="IViewModel"/>.</param>
-        /// <exception cref="NullReferenceException">
+        /// <exception cref="UnbindSafelyNullReferenceException">
         /// Thrown if any element in the list is <c>null</c>.
         /// </exception>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -59,7 +59,7 @@ namespace Aspid.MVVM
 
             foreach (var binder in binders)
             {
-                if (binder is null) throw new NullReferenceException($"{nameof(binder)}");
+                if (binder is null) throw new UnbindSafelyNullReferenceException($"{nameof(binder)}");
 	            binder.Unbind();
             }
         }
@@ -70,7 +70,7 @@ namespace Aspid.MVVM
         /// </summary>
         /// <typeparam name="T">The type that implements the <see cref="IBinder"/> interface.</typeparam>
         /// <param name="binders">An enumerable of binders to unbind from the <see cref="IViewModel"/>.</param>
-        /// <exception cref="NullReferenceException">
+        /// <exception cref="UnbindSafelyNullReferenceException">
         /// Thrown if any element in the sequence is <c>null</c>.
         /// </exception>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -81,7 +81,7 @@ namespace Aspid.MVVM
 
             foreach (var binder in binders)
             {
-                if (binder is null) throw new NullReferenceException($"{nameof(binder)}");
+                if (binder is null) throw new UnbindSafelyNullReferenceException($"{nameof(binder)}");
 	            binder.Unbind();
             }
         }

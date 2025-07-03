@@ -42,7 +42,7 @@ namespace Aspid.MVVM
         /// <typeparam name="T">The binder type.</typeparam>
         /// <param name="binders">The array of binders to bind.</param>
         /// <param name="result">The result of a bindable member lookup.</param>
-        /// <exception cref="NullReferenceException">
+        /// <exception cref="BindSafelyNullReferenceException">
         /// Thrown if any individual binder in the array is <c>null</c>.
         /// </exception>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -70,7 +70,7 @@ namespace Aspid.MVVM
             
             foreach (var binder in binders)
             {
-                if (binder is null) throw new NullReferenceException($"{nameof(binder)}");
+                if (binder is null) throw new BindSafelyNullReferenceException($"{nameof(binder)}");
                 binder.Bind(adder);
             }
         }
@@ -83,7 +83,7 @@ namespace Aspid.MVVM
         /// <typeparam name="T">The binder type.</typeparam>
         /// <param name="binders">The list of binders.</param>
         /// <param name="result">The result of a bindable member lookup.</param>
-        /// <exception cref="NullReferenceException">
+        /// <exception cref="BindSafelyNullReferenceException">
         /// Thrown if any individual binder in the list is <c>null</c>.
         /// </exception>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -100,7 +100,7 @@ namespace Aspid.MVVM
         /// <typeparam name="T">The binder type.</typeparam>
         /// <param name="binders">The list of binders.</param>
         /// <param name="adder">The event adder to bind to.</param>
-        /// <exception cref="NullReferenceException">
+        /// <exception cref="BindSafelyNullReferenceException">
         /// Thrown if any individual binder in the list is <c>null</c>.
         /// </exception>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -111,7 +111,7 @@ namespace Aspid.MVVM
             
             foreach (var binder in binders)
             {
-                if (binder is null) throw new NullReferenceException($"{nameof(binder)}");
+                if (binder is null) throw new BindSafelyNullReferenceException($"{nameof(binder)}");
                 binder.Bind(adder);
             }
         }
@@ -124,7 +124,7 @@ namespace Aspid.MVVM
         /// <typeparam name="T">The binder type.</typeparam>
         /// <param name="binders">The enumerable of binders.</param>
         /// <param name="result">The result of a bindable member lookup.</param>
-        /// <exception cref="NullReferenceException">
+        /// <exception cref="BindSafelyNullReferenceException">
         /// Thrown if any individual binder in the collection is <c>null</c>.
         /// </exception>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -141,7 +141,7 @@ namespace Aspid.MVVM
         /// <typeparam name="T">The binder type.</typeparam>
         /// <param name="binders">The enumerable of binders.</param>
         /// <param name="adder">The event adder to bind to.</param>
-        /// <exception cref="NullReferenceException">
+        /// <exception cref="BindSafelyNullReferenceException">
         /// Thrown if any individual binder in the collection is <c>null</c>.
         /// </exception>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -152,7 +152,7 @@ namespace Aspid.MVVM
             
             foreach (var binder in binders)
             {
-                if (binder is null) throw new NullReferenceException($"{nameof(binder)}");
+                if (binder is null) throw new BindSafelyNullReferenceException($"{nameof(binder)}");
                 binder.Bind(adder);
             }
         }

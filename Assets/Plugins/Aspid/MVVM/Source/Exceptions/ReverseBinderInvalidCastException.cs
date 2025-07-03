@@ -2,12 +2,12 @@ using System;
 
 namespace Aspid.MVVM
 {
-    internal sealed class ReverseBinderInvalidCastException<T> : InvalidCastException
+    public sealed class ReverseBinderInvalidCastException<T> : InvalidCastException
     {
         private ReverseBinderInvalidCastException(string message) 
             : base(message) { }
 
-        internal static ReverseBinderInvalidCastException<T> Class(IBinder binder)
+        public static ReverseBinderInvalidCastException<T> Class(IBinder binder)
         {
             var binderType = binder.GetType().Name.GetClassMessage();
             var specificBinderType = $"{"IReverseBinder".GetInterfaceMessage()}<{typeof(T).GetClassMessage()}>";
@@ -16,7 +16,7 @@ namespace Aspid.MVVM
             throw new ReverseBinderInvalidCastException<T>(message);
         }
 
-        internal static ReverseBinderInvalidCastException<T> Struct<TBoxed>(IBinder binder)
+        public static ReverseBinderInvalidCastException<T> Struct<TBoxed>(IBinder binder)
         {
             var binderType = binder.GetType().Name.GetClassMessage();
             var specificBinderType = $"{"IReverseBinder".GetInterfaceMessage()}<{typeof(T).GetClassMessage()}>";

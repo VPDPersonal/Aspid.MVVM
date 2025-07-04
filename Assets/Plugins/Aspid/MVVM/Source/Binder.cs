@@ -11,8 +11,8 @@ namespace Aspid.MVVM
     public abstract partial class Binder : IBinder
     {
 #if UNITY_2022_1_OR_NEWER && !ASPID_MVVM_UNITY_PROFILER_DISABLED
-        private static readonly global::Unity.Profiling.ProfilerMarker _bindMarker = new("Binder.Bind");
-        private static readonly global::Unity.Profiling.ProfilerMarker _unbindMarker = new("Binder.Unbind)");
+        private static readonly Unity.Profiling.ProfilerMarker _bindMarker = new("Binder.Bind");
+        private static readonly Unity.Profiling.ProfilerMarker _unbindMarker = new("Binder.Unbind)");
 #endif
         // ReSharper disable once MemberInitializerValueIgnored
 #if UNITY_2022_1_OR_NEWER

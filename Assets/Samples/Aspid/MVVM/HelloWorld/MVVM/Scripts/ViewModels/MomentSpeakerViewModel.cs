@@ -19,7 +19,7 @@ namespace Aspid.MVVM.Samples.HelloWorld.MVVM
         // For Source Generator to work, it is also necessary to mark the class with the ViewModelAttribute attribute.
         [OneWayBind] private string _outText;
         
-        // TwoWayToSourceBind is a marker for Source Generator that generates a two-way binding.
+        // TwoWayBindAttribute is a marker for Source Generator that generates a two-way binding.
         // Source Generator based on the marked field
         // creates “InputText” property, “SetInputText” method and “InputTextChanged” event for the binding.
         // Source Generator works correctly with the following name style: "s_inputText", "m_inputText", "_inputText", "inputText".

@@ -17,7 +17,6 @@ namespace Aspid.MVVM.Samples.HelloWorld.MVVM
         // and although it can be overridden, it is recommended to call it exactly the same.
         // The fields: m_outText, _outText and outText are equivalent.
         // MonoBinder is the base class for all binders that should inherit from MonoBehaviour.
-        // _outText can only accept one binder. This approach is convenient when we know for sure that there will be one binder.
         [RequireBinder(typeof(string))]
         [SerializeField] private MonoBinder[] _outText;
     }

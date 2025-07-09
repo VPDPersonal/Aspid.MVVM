@@ -89,7 +89,13 @@ public static class BinderLogBody
                             throw;
                         }
                     }
-                    else SetValue({{parameterName}});
+                    else 
+                    {
+                        using (SetValueMarker.Auto())
+                        {
+                            SetValue({{parameterName}});
+                        }
+                    }
                 }
                 """)
                 .AppendLine();

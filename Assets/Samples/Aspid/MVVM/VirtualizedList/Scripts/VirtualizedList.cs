@@ -35,17 +35,17 @@ namespace Samples.Aspid.MVVM.VirtualizedList
             }
 
             _scrollRect.onValueChanged.AddListener(OnScrollValueChanged);
-            Initialize();
+            Refresh();
         }
         
-        private void Initialize()
+        private void Refresh()
         {
             Content.sizeDelta = new Vector2(Content.sizeDelta.x, List.Count * ElementHeight);
             var viewModelTopIndex = GetCurrentViewModelTopIndex();
             _previousViewModelTopIndex = viewModelTopIndex;
 
-            foreach (var view in _views)
-                InitializeElement(view, viewModelTopIndex++, true);
+            for (var i = 0; i < _views.Count; i++)
+                RefreshElement(i, viewModelTopIndex + i, true);
         }
 
         private void RefreshListOnScrollValueChanged()
@@ -70,11 +70,11 @@ namespace Samples.Aspid.MVVM.VirtualizedList
             for (var i = 1; i < _views.Count; i++)
             {
                 _views[i - 1] = _views[i];
-                InitializeElement(_views[i], viewModelIndex + i - 1);
+                RefreshElement(i, viewModelIndex + i - 1);
             }
             
             _views[^1] = firstView;
-            InitializeElement(firstView, viewModelIndex + _views.Count - 1);
+            RefreshElement(_views.Count - 1, viewModelIndex + _views.Count - 1);
         }
         
         private void RefreshListFromBottomToTop(int viewModelIndex)
@@ -84,25 +84,19 @@ namespace Samples.Aspid.MVVM.VirtualizedList
             for (var i = _views.Count - 1; i > 0; i--)
             {
                 _views[i] = _views[i - 1];
-                InitializeElement(_views[i], viewModelIndex + i);
+                RefreshElement(i, viewModelIndex + i);
             }
                 
             _views[0] = lastView;
-            InitializeElement(lastView, viewModelIndex);
+            RefreshElement(0, viewModelIndex);
         }
         
-        private void InitializeElement(Element element, int viewModelIndex, bool force = false)
+        private void RefreshElement(int elementIndex, int viewModelIndex, bool force = false)
         {
             var hasViewModel = viewModelIndex >= 0 && viewModelIndex < List.Count;
-
-            if (!hasViewModel)
-            {
-                element.Reinitialize(null, -1);
-            }
-            else if (force || element.Index != viewModelIndex)
-            {
-                element.Reinitialize(List[viewModelIndex], viewModelIndex);
-            }
+            
+            if (!hasViewModel) _views[elementIndex].Reinitialize(null, -1, true);
+            else _views[elementIndex].Reinitialize(List[viewModelIndex], viewModelIndex, force);
         }
         
         private int GetCurrentViewModelTopIndex()
@@ -110,59 +104,59 @@ namespace Samples.Aspid.MVVM.VirtualizedList
             var scrollY = Content.anchoredPosition.y;
             return Mathf.FloorToInt(scrollY / ElementHeight);
         }
-
-        private void OnScrollValueChanged(Vector2 _) =>
-            RefreshListOnScrollValueChanged();
-
-        #region Handlers
+        
         protected override void OnAdded(IViewModel newItem, int newStartingIndex) =>
-            Initialize();
+            Refresh();
 
         protected override void OnAdded(IReadOnlyList<IViewModel> newItems, int newStartingIndex) =>
-            Initialize();
+            Refresh();
 
         protected override void OnRemoved(IViewModel oldItem, int oldStartingIndex) =>
-            Initialize();
+            Refresh();
 
         protected override void OnRemoved(IReadOnlyList<IViewModel> oldItems, int oldStartingIndex) =>
-            Initialize();
+            Refresh();
 
         protected override void OnReplace(IViewModel oldItem, IViewModel newItem, int newStartingIndex) =>
-            Initialize();
+            Refresh();
 
         protected override void OnMove(IViewModel oldItem, IViewModel newItem, int oldStartingIndex, int newStartingIndex) =>
-            Initialize();
+            Refresh();
 
         protected override void OnReset() =>
-            Initialize();
-        #endregion
+            Refresh();
         
-        private sealed class Element
+        private void OnScrollValueChanged(Vector2 _) =>
+            RefreshListOnScrollValueChanged();
+        
+        private class Element
         {
+            private int _index;
+            private readonly float _height;
             private readonly MonoView _view;
             
-            private float Height => ((RectTransform)_view.transform).rect.height;
-            
-            public int Index { get; private set; }
-
             public Element(MonoView view)
             {
-                Index = -1;
+                _index = -1;
                 _view = view;
+                _height = ((RectTransform)_view.transform).rect.height;
             }
 
-            public void Reinitialize(IViewModel viewModel, int index)
+            public void Reinitialize(IViewModel viewModel, int index, bool force = false)
             {
-                Index = index;
-                _view.Reinitialize(viewModel);
-
+                if (!force && _index == index) return;
+                
+                _index = index;
+                
                 if (index >= 0)
                 {
+                    _view.Reinitialize(viewModel);
                     _view.gameObject.SetActive(true);
-                    _view.transform.localPosition = new Vector3(0, -index * Height, 0);
+                    _view.transform.localPosition = new Vector3(0, -index * _height, 0);
                 }
                 else
                 {
+                    _view.Deinitialize();
                     _view.gameObject.SetActive(false);
                 }
             }

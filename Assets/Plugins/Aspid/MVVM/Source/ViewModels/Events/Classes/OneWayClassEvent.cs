@@ -6,7 +6,7 @@ namespace Aspid.MVVM
     /// Represents a one-way bindable member event that supports event notification and handling for values of a specified type.
     /// </summary>
     /// <typeparam name="T">The type of the value being handled in the bindable member event.</typeparam>
-    public sealed class OneWayClassEvent<T> : IBindableMemberEvent
+    public sealed class OneWayClassEvent<T> : OneWayClassEvent, IBindableMemberEvent
     {
         /// <summary>
         /// Event triggered when the value changes.
@@ -35,31 +35,36 @@ namespace Aspid.MVVM
         /// </exception>
         public IBindableMemberEventRemover? Add(IBinder binder)
         {
-            var mode = binder.Mode;
-            
-            if (mode is not (BindMode.OneWay or BindMode.OneTime))
-                throw new InvalidOperationException($"Mode must be OneWay or OneTime. Mode = {{{mode}}}");
-
-            switch (binder)
+#if UNITY_2022_1_OR_NEWER && !ASPID_MVVM_UNITY_PROFILER_DISABLED
+            using (AddMarker.Auto())
+#endif
             {
-                case IBinder<T> specificBinder:
-                    specificBinder.SetValue(_value);
-
-                    if (mode is BindMode.OneWay) Changed += specificBinder.SetValue;
-                    else return null;
-                    break;
-                
-                case IAnyBinder anyBinder:
-                    anyBinder.SetValue(_value);
-                    
-                    if (mode is BindMode.OneWay) Changed += anyBinder.SetValue;
-                    else return null;
-                    break;
-                
-                default: throw BinderInvalidCastException.Class<T>(binder);
-            }
+                var mode = binder.Mode;
             
-            return this;
+                if (mode is not (BindMode.OneWay or BindMode.OneTime))
+                    throw new InvalidOperationException($"Mode must be OneWay or OneTime. Mode = {{{mode}}}");
+
+                switch (binder)
+                {
+                    case IBinder<T> specificBinder:
+                        specificBinder.SetValue(_value);
+
+                        if (mode is BindMode.OneWay) Changed += specificBinder.SetValue;
+                        else return null;
+                        break;
+                
+                    case IAnyBinder anyBinder:
+                        anyBinder.SetValue(_value);
+                    
+                        if (mode is BindMode.OneWay) Changed += anyBinder.SetValue;
+                        else return null;
+                        break;
+                
+                    default: throw BinderInvalidCastException.Class<T>(binder);
+                }
+            
+                return this;
+            }
         }
 
         /// <inheritdoc />
@@ -69,15 +74,20 @@ namespace Aspid.MVVM
         /// <param name="binder">The binder to remove.</param>
         public void Remove(IBinder binder)
         {
-            if (binder.Mode is BindMode.OneTime)
-                return;
-
-            Changed -= binder switch
+#if UNITY_2022_1_OR_NEWER && !ASPID_MVVM_UNITY_PROFILER_DISABLED
+            using (RemoveMarker.Auto())
+#endif
             {
-                IBinder<T> specificBinder => specificBinder.SetValue,
-                IAnyBinder anyBinder => anyBinder.SetValue,
-                _ => throw BinderInvalidCastException.Class<T>(binder)
-            };
+                if (binder.Mode is BindMode.OneTime)
+                    return;
+
+                Changed -= binder switch
+                {
+                    IBinder<T> specificBinder => specificBinder.SetValue,
+                    IAnyBinder anyBinder => anyBinder.SetValue,
+                    _ => throw BinderInvalidCastException.Class<T>(binder)
+                };
+            }
         }
         
         /// <summary>
@@ -89,5 +99,13 @@ namespace Aspid.MVVM
             _value = value;
             Changed?.Invoke(value);
         }
+    }
+    
+    public abstract class OneWayClassEvent
+    {
+#if UNITY_2022_1_OR_NEWER && !ASPID_MVVM_UNITY_PROFILER_DISABLED
+        protected static readonly Unity.Profiling.ProfilerMarker AddMarker = new("OneWayClassEvent.Add");
+        protected static readonly Unity.Profiling.ProfilerMarker RemoveMarker = new("OneWayClassEvent.Remove");
+#endif
     }
 }

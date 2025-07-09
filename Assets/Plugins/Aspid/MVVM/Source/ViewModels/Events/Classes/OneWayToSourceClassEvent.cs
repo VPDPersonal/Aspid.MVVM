@@ -6,7 +6,7 @@ namespace Aspid.MVVM
     /// Represents a bindable member event that supports one-way-to-source bindings.
     /// </summary>
     /// <typeparam name="T">The type of the value to be handled in the bindable member event.</typeparam>
-    public sealed class OneWayToSourceClassEvent<T> : IBindableMemberEvent
+    public sealed class OneWayToSourceClassEvent<T> : OneWayToSourceClassEvent, IBindableMemberEvent
     {
         private readonly Action<T?> _setValue;
 
@@ -33,16 +33,21 @@ namespace Aspid.MVVM
         /// </exception>
         public IBindableMemberEventRemover Add(IBinder binder)
         {
-            var mode = binder.Mode;
+#if UNITY_2022_1_OR_NEWER && !ASPID_MVVM_UNITY_PROFILER_DISABLED
+            using (AddMarker.Auto())
+#endif
+            {
+                var mode = binder.Mode;
             
-            if (mode is not (BindMode.OneWayToSource or BindMode.TwoWay))
-                throw new InvalidOperationException($"Mode must be OneWayToSource. Mode = {{{mode}}}");
+                if (mode is not (BindMode.OneWayToSource or BindMode.TwoWay))
+                    throw new InvalidOperationException($"Mode must be OneWayToSource. Mode = {{{mode}}}");
 
-            if (binder is not IReverseBinder<T> reverseBinder) 
-                throw ReverseBinderInvalidCastException<T>.Class(binder);
+                if (binder is not IReverseBinder<T> reverseBinder) 
+                    throw ReverseBinderInvalidCastException<T>.Class(binder);
             
-            reverseBinder.ValueChanged += _setValue;
-            return this;
+                reverseBinder.ValueChanged += _setValue;
+                return this;
+            }
         }
 
         /// <inheritdoc />
@@ -52,10 +57,23 @@ namespace Aspid.MVVM
         /// <param name="binder">The binder to unsubscribe from the event.</param>
         public void Remove(IBinder binder)
         {
-            if (binder is not IReverseBinder<T> reverseBinder) 
-                throw ReverseBinderInvalidCastException<T>.Class(binder);
+#if UNITY_2022_1_OR_NEWER && !ASPID_MVVM_UNITY_PROFILER_DISABLED
+            using (RemoveMarker.Auto())
+#endif
+            {
+                if (binder is not IReverseBinder<T> reverseBinder) 
+                    throw ReverseBinderInvalidCastException<T>.Class(binder);
             
-            reverseBinder.ValueChanged -= _setValue;
+                reverseBinder.ValueChanged -= _setValue;
+            }
         }
+    }
+    
+    public abstract class OneWayToSourceClassEvent
+    {
+#if UNITY_2022_1_OR_NEWER && !ASPID_MVVM_UNITY_PROFILER_DISABLED
+        protected static readonly Unity.Profiling.ProfilerMarker AddMarker = new("OneWayToSourceClassEvent.Add");
+        protected static readonly Unity.Profiling.ProfilerMarker RemoveMarker = new("OneWayToSourceClassEvent.Remove");
+#endif
     }
 }

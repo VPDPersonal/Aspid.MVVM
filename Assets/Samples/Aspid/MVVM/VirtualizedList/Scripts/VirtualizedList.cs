@@ -1,4 +1,3 @@
-using System;
 using Aspid.MVVM;
 using UnityEngine;
 using UnityEngine.UI;
@@ -6,15 +5,15 @@ using Aspid.MVVM.Unity;
 using System.Collections.Generic;
 using Aspid.MVVM.StarterKit.Unity;
 
-namespace Samples.Aspid.MVVM.CyclicList
+namespace Samples.Aspid.MVVM.VirtualizedList
 {
-    public class NewCyclicListBinder : ObservableListMonoBinder<IViewModel>
+    public class VirtualizedList : ObservableListMonoBinder<IViewModel>
     {
         [SerializeField] private ScrollRect _scrollRect; 
         [SerializeField] private MonoView _viewPrefab;
         
-        private readonly List<Element> _views = new();
         private int _previousViewModelTopIndex = -1;
+        private readonly List<Element> _views = new();
         
         private RectTransform Content => _scrollRect.content;
         
@@ -36,70 +35,63 @@ namespace Samples.Aspid.MVVM.CyclicList
             }
 
             _scrollRect.onValueChanged.AddListener(OnScrollValueChanged);
-            Refresh();
+            Initialize();
+        }
+        
+        private void Initialize()
+        {
+            var viewModelTopIndex = GetCurrentViewModelTopIndex();
+            _previousViewModelTopIndex = viewModelTopIndex;
+
+            foreach (var view in _views)
+                InitializeElement(view, viewModelTopIndex++);
         }
 
-        private void OnScrollValueChanged(Vector2 _) =>
-            OnScrollValueChangedRefresh();
-
-        private void OnScrollValueChangedRefresh()
+        private void RefreshListOnScrollValueChanged()
         {
             var viewModelTopIndex = GetCurrentViewModelTopIndex();
             if (viewModelTopIndex == _previousViewModelTopIndex) return;
             
             var direction = viewModelTopIndex - _previousViewModelTopIndex;
-            
-            if (direction < 0)
-            {
-                if (viewModelTopIndex < 0) return;
-                
-                var lastView = _views[^1];
-                
-                for (var i = _views.Count - 1; i > 0; i--)
-                {
-                    _views[i] = _views[i - 1];
-                    ReinitializeElement(_views[i], viewModelTopIndex + i);
-                }
-                
-                _views[0] = lastView;
-                ReinitializeElement(lastView, viewModelTopIndex);
-            }
-            else if (direction > 0)
-            {
-                if (viewModelTopIndex + _views.Count - 1 >= List.Count) return;
-                
-                var firstView = _views[0];
-            
-                for (var i = 1; i < _views.Count; i++)
-                {
-                    _views[i - 1] = _views[i];
-                    ReinitializeElement(_views[i], viewModelTopIndex + i - 1);
-                }
-            
-                _views[^1] = firstView;
-                ReinitializeElement(firstView, viewModelTopIndex + _views.Count - 1);
-            }
-            
-            _previousViewModelTopIndex = viewModelTopIndex;
-        }
-        
-        private void Refresh()
-        {
-            var viewModelTopIndex = GetCurrentViewModelTopIndex();
-            if (viewModelTopIndex == _previousViewModelTopIndex) return;
-            _previousViewModelTopIndex = viewModelTopIndex;
 
-            foreach (var view in _views)
-                ReinitializeElement(view, viewModelTopIndex++);
+            switch (direction)
+            {
+                case > 0: RefreshListFromTopToBottom(viewModelTopIndex); break;
+                case < 0: RefreshListFromBottomToTop(viewModelTopIndex); break;
+            }
+            
+            _previousViewModelTopIndex = viewModelTopIndex;
         }
         
-        private int GetCurrentViewModelTopIndex()
+        private void RefreshListFromTopToBottom(int viewModelIndex)
         {
-            var scrollY = Content.anchoredPosition.y;
-            return Mathf.FloorToInt(scrollY / ElementHeight);
+            var firstView = _views[0];
+            
+            for (var i = 1; i < _views.Count; i++)
+            {
+                _views[i - 1] = _views[i];
+                InitializeElement(_views[i], viewModelIndex + i - 1);
+            }
+            
+            _views[^1] = firstView;
+            InitializeElement(firstView, viewModelIndex + _views.Count - 1);
         }
         
-        private void ReinitializeElement(Element element, int viewModelIndex)
+        private void RefreshListFromBottomToTop(int viewModelIndex)
+        {
+            var lastView = _views[^1];
+                
+            for (var i = _views.Count - 1; i > 0; i--)
+            {
+                _views[i] = _views[i - 1];
+                InitializeElement(_views[i], viewModelIndex + i);
+            }
+                
+            _views[0] = lastView;
+            InitializeElement(lastView, viewModelIndex);
+        }
+        
+        private void InitializeElement(Element element, int viewModelIndex)
         {
             var hasViewModel = viewModelIndex >= 0 && viewModelIndex < List.Count;
 
@@ -118,6 +110,15 @@ namespace Samples.Aspid.MVVM.CyclicList
                 element.SetActive(false);
             }
         }
+        
+        private int GetCurrentViewModelTopIndex()
+        {
+            var scrollY = Content.anchoredPosition.y;
+            return Mathf.FloorToInt(scrollY / ElementHeight);
+        }
+
+        private void OnScrollValueChanged(Vector2 _) =>
+            RefreshListOnScrollValueChanged();
 
         #region Handlers
         protected override void OnAdded(IViewModel newItem, int newStartingIndex)

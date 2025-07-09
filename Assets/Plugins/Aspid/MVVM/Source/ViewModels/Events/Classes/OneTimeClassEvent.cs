@@ -6,7 +6,7 @@ namespace Aspid.MVVM
     /// Represents a bindable member event that provides a single value in a one-time binding operation.
     /// </summary>
     /// <typeparam name="T">The type of the value to be bound.</typeparam>
-    public sealed class OneTimeClassEvent<T> : IBindableMemberEventAdder
+    public sealed class OneTimeClassEvent<T> : OneTimeClassEvent, IBindableMemberEventAdder
     {
         private readonly T? _value;
 
@@ -32,23 +32,35 @@ namespace Aspid.MVVM
         /// </exception>
         public IBindableMemberEventRemover? Add(IBinder binder)
         {
-            if (binder.Mode is not (BindMode.OneWay or BindMode.OneTime))
-                throw new InvalidOperationException($"Mode must be OneWay or OneTime. Mode = {{{binder.Mode}}}");
-
-            switch (binder)
+#if UNITY_2022_1_OR_NEWER && !ASPID_MVVM_UNITY_PROFILER_DISABLED
+            using (AddMarker.Auto())
+#endif
             {
-                case IBinder<T> specificBinder:
-                    specificBinder.SetValue(_value);
-                    break;
-                
-                case IAnyBinder anyBinder:
-                    anyBinder.SetValue(_value);
-                    break;
-                
-                default: throw BinderInvalidCastException.Class<T>(binder);
+                if (binder.Mode is not (BindMode.OneWay or BindMode.OneTime))
+                    throw new InvalidOperationException($"Mode must be OneWay or OneTime. Mode = {{{binder.Mode}}}");
+
+                switch (binder)
+                {
+                    case IBinder<T> specificBinder:
+                        specificBinder.SetValue(_value);
+                        break;
+
+                    case IAnyBinder anyBinder:
+                        anyBinder.SetValue(_value);
+                        break;
+
+                    default: throw BinderInvalidCastException.Class<T>(binder);
+                }
+
+                return null;
             }
-            
-            return null;
         }
+    }
+    
+    public abstract class OneTimeClassEvent
+    {
+#if UNITY_2022_1_OR_NEWER && !ASPID_MVVM_UNITY_PROFILER_DISABLED
+        protected static readonly Unity.Profiling.ProfilerMarker AddMarker = new("OneTimeClassEvent.Add");
+#endif
     }
 }

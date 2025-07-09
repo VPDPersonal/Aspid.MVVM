@@ -330,7 +330,7 @@ MonoBehaviour:
   __id: IsCompleted
   _component: {fileID: 6683951036056877947}
   _isInvert: 0
-  _isDebug: 0
+  _isDebug: 1
   _log: []
 --- !u!1 &2901238137698271161
 GameObject:
@@ -941,7 +941,7 @@ MonoBehaviour:
   _component: {fileID: 280101603313839316}
   _converter:
     rid: 1607910575253225648
-  _isDebug: 0
+  _isDebug: 1
   _log: []
   references:
     version: 2

@@ -22,7 +22,7 @@ namespace Aspid.MVVM
     /// </summary>
     /// <typeparam name="T">The type of the value to be bound.</typeparam>
     /// <typeparam name="TBoxed">Boxed type</typeparam>
-    public abstract class OneTimeStructEvent<T, TBoxed> : IBindableMemberEventAdder
+    public abstract class OneTimeStructEvent<T, TBoxed> : OneTimeStructEvent, IBindableMemberEventAdder
         where T : struct, TBoxed
         where TBoxed : class
     {
@@ -50,18 +50,30 @@ namespace Aspid.MVVM
         /// </exception>
         public IBindableMemberEventRemover? Add(IBinder binder)
         {
-            if (binder.Mode is not (BindMode.OneWay or BindMode.OneTime))
-                throw new InvalidOperationException($"Mode must be OneWay or OneTime. Mode = {{{binder.Mode}}}");
-
-            switch (binder)
+#if UNITY_2022_1_OR_NEWER && !ASPID_MVVM_UNITY_PROFILER_DISABLED
+            using (AddMarker.Auto())
+#endif
             {
-                case IBinder<T> specificBinder: specificBinder.SetValue(_value); break;
-                case IBinder<TBoxed> structBinder: structBinder.SetValue(_value); break;
-                case IAnyBinder anyBinder: anyBinder.SetValue(_value); break;
-                default: throw BinderInvalidCastException.Struct<T, TBoxed>(binder);
-            }
+                if (binder.Mode is not (BindMode.OneWay or BindMode.OneTime))
+                    throw new InvalidOperationException($"Mode must be OneWay or OneTime. Mode = {{{binder.Mode}}}");
+
+                switch (binder)
+                {
+                    case IBinder<T> specificBinder: specificBinder.SetValue(_value); break;
+                    case IBinder<TBoxed> structBinder: structBinder.SetValue(_value); break;
+                    case IAnyBinder anyBinder: anyBinder.SetValue(_value); break;
+                    default: throw BinderInvalidCastException.Struct<T, TBoxed>(binder);
+                }
             
-            return null;
+                return null;
+            }
         }
+    }
+    
+    public abstract class OneTimeStructEvent
+    {
+#if UNITY_2022_1_OR_NEWER && !ASPID_MVVM_UNITY_PROFILER_DISABLED
+        protected static readonly Unity.Profiling.ProfilerMarker AddMarker = new("OneTimeStructEvent.Add");
+#endif
     }
 }

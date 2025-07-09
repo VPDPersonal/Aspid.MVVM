@@ -6,7 +6,7 @@ namespace Aspid.MVVM
     /// Represents a two-way bindable member event that supports multiple binding modes and bidirectional updates.
     /// </summary>
     /// <typeparam name="T">The type of the value being handled in the bindable member event.</typeparam>
-    public sealed class TwoWayClassEvent<T> : IBindableMemberEvent
+    public sealed class TwoWayClassEvent<T> : TwoWayClassEvent, IBindableMemberEvent
     {
         /// <summary>
         /// Event triggered when the value changes.
@@ -41,32 +41,37 @@ namespace Aspid.MVVM
         /// </exception>
         public IBindableMemberEventRemover? Add(IBinder binder)
         {
-            var mode = binder.Mode;
-            if (mode is BindMode.None)
-                throw new InvalidOperationException("Mode can't be None.");
-
-            switch (mode)
+#if UNITY_2022_1_OR_NEWER && !ASPID_MVVM_UNITY_PROFILER_DISABLED
+            using (AddMarker.Auto())
+#endif
             {
-                case BindMode.OneWay: OneWay(); break;
-                
-                case BindMode.TwoWay:
-                    OneWay();
-                    OneWayToSource();
-                    break;
-                
-                case BindMode.OneTime: switch (binder)
-                    {
-                        case IBinder<T> specificBinder: specificBinder.SetValue(_value); break;
-                        case IAnyBinder anyBinder: anyBinder.SetValue(_value); break;
-                        default: throw BinderInvalidCastException.Class<T>(binder);
-                    }
+                var mode = binder.Mode;
+                if (mode is BindMode.None)
+                    throw new InvalidOperationException("Mode can't be None.");
 
-                    return null;
+                switch (mode)
+                {
+                    case BindMode.OneWay: OneWay(); break;
                 
-                case BindMode.OneWayToSource: OneWayToSource(); break;
+                    case BindMode.TwoWay:
+                        OneWay();
+                        OneWayToSource();
+                        break;
+                
+                    case BindMode.OneTime: switch (binder)
+                        {
+                            case IBinder<T> specificBinder: specificBinder.SetValue(_value); break;
+                            case IAnyBinder anyBinder: anyBinder.SetValue(_value); break;
+                            default: throw BinderInvalidCastException.Class<T>(binder);
+                        }
+
+                        return null;
+                
+                    case BindMode.OneWayToSource: OneWayToSource(); break;
+                }
+
+                return this;
             }
-
-            return this;
 
             void OneWay()
             {
@@ -102,20 +107,25 @@ namespace Aspid.MVVM
         /// <param name="binder">The binder instance to remove.</param>
         public void Remove(IBinder binder)
         {
-            switch (binder.Mode)
+#if UNITY_2022_1_OR_NEWER && !ASPID_MVVM_UNITY_PROFILER_DISABLED
+            using (RemoveMarker.Auto())
+#endif
             {
-                case BindMode.OneTime: return;
-                case BindMode.OneWay: OneWay(); return;
+                switch (binder.Mode)
+                {
+                    case BindMode.OneTime: return;
+                    case BindMode.OneWay: OneWay(); return;
                 
-                case BindMode.TwoWay:
-                    OneWay();
-                    OneWayToSource();
-                    return;
+                    case BindMode.TwoWay:
+                        OneWay();
+                        OneWayToSource();
+                        return;
                 
-                case BindMode.OneWayToSource: OneWayToSource(); return;
-            }
+                    case BindMode.OneWayToSource: OneWayToSource(); return;
+                }
             
-            return;
+                return;
+            }
 
             void OneWay() => Changed -= binder switch
             {
@@ -142,5 +152,13 @@ namespace Aspid.MVVM
             _value = value;
             Changed?.Invoke(value);
         }
+    }
+    
+    public abstract class TwoWayClassEvent
+    {
+#if UNITY_2022_1_OR_NEWER && !ASPID_MVVM_UNITY_PROFILER_DISABLED
+        protected static readonly Unity.Profiling.ProfilerMarker AddMarker = new("TwoWayClassEvent.Add");
+        protected static readonly Unity.Profiling.ProfilerMarker RemoveMarker = new("TwoWayClassEvent.Remove");
+#endif
     }
 }

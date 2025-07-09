@@ -25,7 +25,7 @@ namespace Aspid.MVVM
     /// </summary>
     /// <typeparam name="T">The type of the value to be handled in the bindable member event.</typeparam>
     /// <typeparam name="TBoxed">Boxed type</typeparam>
-    public abstract class OneWayToSourceStructEvent<T, TBoxed> : IBindableMemberEvent
+    public abstract class OneWayToSourceStructEvent<T, TBoxed> : OneWayToSourceStructEvent, IBindableMemberEvent
         where T : struct, TBoxed
         where TBoxed : class
     {
@@ -54,19 +54,24 @@ namespace Aspid.MVVM
         /// </exception>
         public IBindableMemberEventRemover Add(IBinder binder)
         {
-            var mode = binder.Mode;
-            
-            if (mode is not (BindMode.OneWayToSource or BindMode.TwoWay))
-                throw new InvalidOperationException($"Mode must be OneWayToSource. Mode = {{{mode}}}");
-
-            switch (binder)
+#if UNITY_2022_1_OR_NEWER && !ASPID_MVVM_UNITY_PROFILER_DISABLED
+            using (AddMarker.Auto())
+#endif
             {
-                case IReverseBinder<T> reverseBinder: reverseBinder.ValueChanged += _setValue; break;
-                case IReverseBinder<TBoxed> structReverseBinder: structReverseBinder.ValueChanged += SetBoxedValue; break;
-                default: throw ReverseBinderInvalidCastException<T>.Struct<TBoxed>(binder);
-            }
+                var mode = binder.Mode;
             
-            return this;
+                if (mode is not (BindMode.OneWayToSource or BindMode.TwoWay))
+                    throw new InvalidOperationException($"Mode must be OneWayToSource. Mode = {{{mode}}}");
+
+                switch (binder)
+                {
+                    case IReverseBinder<T> reverseBinder: reverseBinder.ValueChanged += _setValue; break;
+                    case IReverseBinder<TBoxed> structReverseBinder: structReverseBinder.ValueChanged += SetBoxedValue; break;
+                    default: throw ReverseBinderInvalidCastException<T>.Struct<TBoxed>(binder);
+                }
+            
+                return this;
+            }
         }
 
         /// <inheritdoc />
@@ -76,11 +81,16 @@ namespace Aspid.MVVM
         /// <param name="binder">The binder to unsubscribe from the event.</param>
         public void Remove(IBinder binder)
         {
-            switch (binder)
+#if UNITY_2022_1_OR_NEWER && !ASPID_MVVM_UNITY_PROFILER_DISABLED
+            using (RemoveMarker.Auto())
+#endif
             {
-                case IReverseBinder<T> reverseBinder: reverseBinder.ValueChanged -= _setValue; break;
-                case IReverseBinder<TBoxed> structReverseBinder: structReverseBinder.ValueChanged -= SetBoxedValue; break;
-                default: throw ReverseBinderInvalidCastException<T>.Struct<TBoxed>(binder);
+                switch (binder)
+                {
+                    case IReverseBinder<T> reverseBinder: reverseBinder.ValueChanged -= _setValue; break;
+                    case IReverseBinder<TBoxed> structReverseBinder: structReverseBinder.ValueChanged -= SetBoxedValue; break;
+                    default: throw ReverseBinderInvalidCastException<T>.Struct<TBoxed>(binder);
+                }
             }
         }
 
@@ -91,5 +101,13 @@ namespace Aspid.MVVM
             
             _setValue.Invoke((T)value);
         }
+    }
+    
+    public abstract class OneWayToSourceStructEvent
+    {
+#if UNITY_2022_1_OR_NEWER && !ASPID_MVVM_UNITY_PROFILER_DISABLED
+        protected static readonly Unity.Profiling.ProfilerMarker AddMarker = new("OneWayToSourceStructEvent.Add");
+        protected static readonly Unity.Profiling.ProfilerMarker RemoveMarker = new("OneWayToSourceStructEvent.Remove");
+#endif
     }
 }

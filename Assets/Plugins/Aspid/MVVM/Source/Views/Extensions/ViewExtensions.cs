@@ -7,6 +7,31 @@ namespace Aspid.MVVM
     /// </summary>
     public static class ViewExtensions
     {
+        public static IViewModel? Reinitialize(this IView view, IViewModel? newViewModel)
+        { 
+            var oldViewModel = view.DeinitializeView();
+            
+            if (newViewModel is not null)
+                view.Initialize(newViewModel);
+
+            return oldViewModel;
+        }
+        
+        /// <summary>
+        /// Deinitializes the view and returns the associated <see cref="IViewModel"/>.
+        /// </summary>
+        /// <typeparam name="T">The type of the view that implements <see cref="IView"/>.</typeparam>
+        /// <param name="view">The view to be deinitialized.</param>
+        /// <returns>The associated <see cref="IViewModel"/>, or <c>null</c> if none is present.</returns>
+        public static IViewModel? DeinitializeView<T>(this T view)
+            where T : IView
+        {
+            var viewModel = view.ViewModel;
+            view.Deinitialize();
+            
+            return viewModel;
+        }
+        
         /// <summary>
         /// Disposes the view if it implements <see cref="IDisposable"/> and returns the associated <see cref="IViewModel"/>.
         /// </summary>
@@ -34,21 +59,6 @@ namespace Aspid.MVVM
             if (view is IDisposable disposable) disposable.Dispose();
             else view.Deinitialize();
 
-            return viewModel;
-        }
-        
-        /// <summary>
-        /// Deinitializes the view and returns the associated <see cref="IViewModel"/>.
-        /// </summary>
-        /// <typeparam name="T">The type of the view that implements <see cref="IView"/>.</typeparam>
-        /// <param name="view">The view to be deinitialized.</param>
-        /// <returns>The associated <see cref="IViewModel"/>, or <c>null</c> if none is present.</returns>
-        public static IViewModel? DeinitializeView<T>(this T view)
-            where T : IView
-        {
-            var viewModel = view.ViewModel;
-            view.Deinitialize();
-            
             return viewModel;
         }
     }

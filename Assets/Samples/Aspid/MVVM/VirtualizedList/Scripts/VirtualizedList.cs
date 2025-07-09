@@ -13,6 +13,7 @@ namespace Samples.Aspid.MVVM.VirtualizedList
         [SerializeField] private MonoView _viewPrefab;
         
         private int _previousViewModelTopIndex = -1;
+        
         private readonly List<Element> _views = new();
         
         private RectTransform Content => _scrollRect.content;
@@ -25,7 +26,6 @@ namespace Samples.Aspid.MVVM.VirtualizedList
         {
             var viewportHeight = Viewport.rect.height;
             var visibleCount = Mathf.CeilToInt(viewportHeight / ElementHeight) + 2;
-            Content.sizeDelta = new Vector2(Content.sizeDelta.x, List.Count * ElementHeight);
             
             for (var i = 0; i < visibleCount; i++)
             {
@@ -40,11 +40,12 @@ namespace Samples.Aspid.MVVM.VirtualizedList
         
         private void Initialize()
         {
+            Content.sizeDelta = new Vector2(Content.sizeDelta.x, List.Count * ElementHeight);
             var viewModelTopIndex = GetCurrentViewModelTopIndex();
             _previousViewModelTopIndex = viewModelTopIndex;
 
             foreach (var view in _views)
-                InitializeElement(view, viewModelTopIndex++);
+                InitializeElement(view, viewModelTopIndex++, true);
         }
 
         private void RefreshListOnScrollValueChanged()
@@ -53,14 +54,13 @@ namespace Samples.Aspid.MVVM.VirtualizedList
             if (viewModelTopIndex == _previousViewModelTopIndex) return;
             
             var direction = viewModelTopIndex - _previousViewModelTopIndex;
+            _previousViewModelTopIndex = viewModelTopIndex;
 
             switch (direction)
             {
                 case > 0: RefreshListFromTopToBottom(viewModelTopIndex); break;
                 case < 0: RefreshListFromBottomToTop(viewModelTopIndex); break;
             }
-            
-            _previousViewModelTopIndex = viewModelTopIndex;
         }
         
         private void RefreshListFromTopToBottom(int viewModelIndex)
@@ -91,23 +91,17 @@ namespace Samples.Aspid.MVVM.VirtualizedList
             InitializeElement(lastView, viewModelIndex);
         }
         
-        private void InitializeElement(Element element, int viewModelIndex)
+        private void InitializeElement(Element element, int viewModelIndex, bool force = false)
         {
             var hasViewModel = viewModelIndex >= 0 && viewModelIndex < List.Count;
 
-            if (hasViewModel)
-            {
-                if (element.Index != viewModelIndex)
-                {
-                    element.SetActive(true);
-                    element.Reinitialize(List[viewModelIndex], viewModelIndex);
-                    element.SetPosition(0, -viewModelIndex * ElementHeight, 0);
-                }
-            }
-            else
+            if (!hasViewModel)
             {
                 element.Reinitialize(null, -1);
-                element.SetActive(false);
+            }
+            else if (force || element.Index != viewModelIndex)
+            {
+                element.Reinitialize(List[viewModelIndex], viewModelIndex);
             }
         }
         
@@ -121,46 +115,33 @@ namespace Samples.Aspid.MVVM.VirtualizedList
             RefreshListOnScrollValueChanged();
 
         #region Handlers
-        protected override void OnAdded(IViewModel newItem, int newStartingIndex)
-        {
-            // throw new System.NotImplementedException();
-        }
+        protected override void OnAdded(IViewModel newItem, int newStartingIndex) =>
+            Initialize();
 
-        protected override void OnAdded(IReadOnlyList<IViewModel> newItems, int newStartingIndex)
-        {
-            // throw new System.NotImplementedException();
-        }
+        protected override void OnAdded(IReadOnlyList<IViewModel> newItems, int newStartingIndex) =>
+            Initialize();
 
-        protected override void OnRemoved(IViewModel oldItem, int oldStartingIndex)
-        {
-            // throw new System.NotImplementedException();
-        }
+        protected override void OnRemoved(IViewModel oldItem, int oldStartingIndex) =>
+            Initialize();
 
-        protected override void OnRemoved(IReadOnlyList<IViewModel> oldItems, int oldStartingIndex)
-        {
-            // throw new System.NotImplementedException();
-        }
+        protected override void OnRemoved(IReadOnlyList<IViewModel> oldItems, int oldStartingIndex) =>
+            Initialize();
 
-        protected override void OnReplace(IViewModel oldItem, IViewModel newItem, int newStartingIndex)
-        {
-            // throw new System.NotImplementedException();
-        }
+        protected override void OnReplace(IViewModel oldItem, IViewModel newItem, int newStartingIndex) =>
+            Initialize();
 
-        protected override void OnMove(IViewModel oldItem, IViewModel newItem, int oldStartingIndex,
-            int newStartingIndex)
-        {
-            // throw new System.NotImplementedException();
-        }
+        protected override void OnMove(IViewModel oldItem, IViewModel newItem, int oldStartingIndex, int newStartingIndex) =>
+            Initialize();
 
-        protected override void OnReset()
-        {
-            // throw new System.NotImplementedException();
-        }
+        protected override void OnReset() =>
+            Initialize();
         #endregion
         
         private sealed class Element
         {
             private readonly MonoView _view;
+            
+            private float Height => ((RectTransform)_view.transform).rect.height;
             
             public int Index { get; private set; }
 
@@ -174,16 +155,17 @@ namespace Samples.Aspid.MVVM.VirtualizedList
             {
                 Index = index;
                 _view.Reinitialize(viewModel);
+
+                if (index >= 0)
+                {
+                    _view.gameObject.SetActive(true);
+                    _view.transform.localPosition = new Vector3(0, -index * Height, 0);
+                }
+                else
+                {
+                    _view.gameObject.SetActive(false);
+                }
             }
-
-            public void SetActive(bool isActive) =>
-                _view.gameObject.SetActive(isActive);
-
-            public void SetPosition(float x, float y, float z) =>
-                SetPosition(new Vector3(x, y, z));
-            
-            public void SetPosition(Vector3 position) =>
-                _view.transform.localPosition = position;
         }
     }
 }

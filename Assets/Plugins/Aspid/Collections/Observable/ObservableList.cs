@@ -179,7 +179,7 @@ namespace Aspid.Collections.Observable
                 _list.Insert(newIndex, removedItem);
                 OnMoved(oldIndex, newIndex, removedItem);
                 
-                CollectionChanged?.Invoke(NotifyCollectionChangedEventArgs<T>.Move(removedItem, newIndex, oldIndex));
+                CollectionChanged?.Invoke(NotifyCollectionChangedEventArgs<T>.Move(removedItem, oldIndex, newIndex));
             }
         }
         

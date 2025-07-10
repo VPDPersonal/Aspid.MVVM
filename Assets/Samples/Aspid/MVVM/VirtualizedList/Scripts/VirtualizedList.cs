@@ -1,3 +1,4 @@
+using System;
 using Aspid.MVVM;
 using UnityEngine;
 using UnityEngine.UI;
@@ -9,38 +10,59 @@ namespace Samples.Aspid.MVVM.VirtualizedList
 {
     public class VirtualizedList : ObservableListMonoBinder<IViewModel>
     {
-        [SerializeField] private ScrollRect _scrollRect; 
+        [SerializeField] private Direction _direction;
+        [SerializeField] private ScrollRect _scrollRect;
         [SerializeField] private MonoView _viewPrefab;
         
+        private Size? _viewSize;
+        private Size? _viewportSize;
+        private ContentTransform? _content;
         private int _previousViewModelTopIndex = -1;
         
         private readonly List<Element> _views = new();
-        
-        private RectTransform Content => _scrollRect.content;
-        
-        private RectTransform Viewport => _scrollRect.viewport;
-        
-        private float ElementHeight => ((RectTransform)_viewPrefab.transform).rect.height;
 
-        protected override void OnBound()
+        private Size ViewSize => _viewSize ??= new Size(_viewPrefab, _direction);
+        
+        private Size ViewportSize => _viewportSize ??= new Size(_scrollRect.viewport, _direction);
+        
+        private ContentTransform Content => _content ??= new ContentTransform(_scrollRect.content, ViewSize, _direction);
+
+        private void OnValidate()
         {
-            var viewportHeight = Viewport.rect.height;
-            var visibleCount = Mathf.CeilToInt(viewportHeight / ElementHeight) + 2;
+            if (!_scrollRect) return;
+            
+            Content.Validate();
+            _scrollRect.vertical = _direction is Direction.Vertical;
+            _scrollRect.horizontal = _direction is Direction.Horizontal;
+        }
+
+        protected override void OnBound() =>
+            Initialize();
+        
+        protected override void OnUnbound() =>
+            _scrollRect.onValueChanged.RemoveListener(OnScrollValueChanged);
+
+        private void Initialize()
+        { 
+            var visibleCount = CalculateVisibleCount();
             
             for (var i = 0; i < visibleCount; i++)
             {
                 var view = Instantiate(_viewPrefab, Content);
-                view.gameObject.SetActive(true);
-                _views.Add(new Element(view));
+                _views.Add(new Element(view, _direction));
             }
-
+            
             _scrollRect.onValueChanged.AddListener(OnScrollValueChanged);
             Refresh();
+            return;
+            
+            int CalculateVisibleCount() =>
+                Mathf.CeilToInt(ViewportSize.Value / ViewSize.Value) + 2;
         }
         
         private void Refresh()
         {
-            RefreshContentSize();
+            ResizeContent();
             _previousViewModelTopIndex = GetCurrentViewModelTopIndex();
 
             for (var i = 0; i < _views.Count; i++)
@@ -98,21 +120,18 @@ namespace Samples.Aspid.MVVM.VirtualizedList
             else _views[elementIndex].Reinitialize(List[viewModelIndex], viewModelIndex, force);
         }
         
-        private void RefreshContentSize() =>
-            Content.sizeDelta = new Vector2(Content.sizeDelta.x, List.Count * ElementHeight);
-        
-        private int GetCurrentViewModelTopIndex()
-        {
-            var scrollY = Content.anchoredPosition.y;
-            return Mathf.FloorToInt(scrollY / ElementHeight);
-        }
+        private void ResizeContent() =>
+            Content.Resize(List.Count);
+
+        private int GetCurrentViewModelTopIndex() =>
+            Mathf.FloorToInt(Content.ScrollValue / ViewSize.Value);
         
         protected override void OnAdded(IViewModel newItem, int newStartingIndex)
         {
             var viewIndex = newStartingIndex - _previousViewModelTopIndex;
 
             if (viewIndex < 0 || viewIndex <= List.Count) Refresh();
-            else RefreshContentSize();
+            else ResizeContent();
         }
 
         protected override void OnAdded(IReadOnlyList<IViewModel> newItems, int newStartingIndex)
@@ -126,7 +145,7 @@ namespace Samples.Aspid.MVVM.VirtualizedList
             var viewIndex = oldStartingIndex - _previousViewModelTopIndex;
 
             if (viewIndex < 0 || viewIndex <= List.Count) Refresh();
-            else RefreshContentSize();
+            else ResizeContent();
         }
 
         protected override void OnRemoved(IReadOnlyList<IViewModel> oldItems, int oldStartingIndex)
@@ -159,14 +178,25 @@ namespace Samples.Aspid.MVVM.VirtualizedList
         private class Element
         {
             private int _index;
-            private readonly float _height;
+            private readonly float _size;
             private readonly MonoView _view;
+            private readonly Direction _direction;
             
-            public Element(MonoView view)
+            public Element(MonoView view, Direction direction)
             {
                 _index = -1;
                 _view = view;
-                _height = ((RectTransform)_view.transform).rect.height;
+                _direction = direction;
+
+                var rectTransform = (RectTransform)_view.transform;
+                rectTransform.pivot = new Vector2(0, 1);
+
+                _size = direction switch
+                {
+                    Direction.Vertical => rectTransform.rect.height,
+                    Direction.Horizontal => rectTransform.rect.width,
+                    _ => throw new ArgumentOutOfRangeException(nameof(direction), direction, null)
+                };
             }
 
             public void Reinitialize(IViewModel viewModel, int index, bool force = false)
@@ -181,7 +211,7 @@ namespace Samples.Aspid.MVVM.VirtualizedList
                     
                     _view.Reinitialize(viewModel);
                     _view.gameObject.SetActive(true);
-                    _view.transform.localPosition = new Vector3(0, -index * _height, 0);
+                    _view.transform.localPosition = GetPosition(index);
                 }
                 else
                 {
@@ -189,6 +219,100 @@ namespace Samples.Aspid.MVVM.VirtualizedList
                     _view.gameObject.SetActive(false);
                 }
             }
+
+            private Vector3 GetPosition(int index) => _direction switch
+            {
+                Direction.Vertical => new Vector3(0, -index * _size, 0),
+                Direction.Horizontal => new Vector3(index * _size, 0, 0),
+                _ => throw new ArgumentOutOfRangeException(nameof(_direction), _direction, null)
+            };
+        }
+        
+        private enum Direction
+        {
+            Vertical,
+            Horizontal
+        }
+
+        private readonly struct Size
+        {
+            public readonly float Value;
+            
+            public Size(Component component, Direction direction)
+            {
+                var transform = (RectTransform)component.transform;
+                
+                Value = direction switch
+                {
+                    Direction.Vertical => transform.rect.size.y,
+                    Direction.Horizontal => transform.rect.size.x,
+                    _ => throw new ArgumentOutOfRangeException()
+                };
+            }
+        }
+
+        private readonly struct ContentTransform
+        {
+            private readonly Size _size;
+            private readonly Direction _direction;
+            private readonly RectTransform _content;
+
+            public float ScrollValue => _direction switch
+            {
+                Direction.Vertical => _content.anchoredPosition.y,
+                Direction.Horizontal => -_content.anchoredPosition.x,
+                _ => throw new ArgumentOutOfRangeException()
+            };
+            
+            public ContentTransform(RectTransform content, Size size, Direction direction)
+            {
+                Validate(content, direction);
+
+                _size = size;
+                _content = content;
+                _direction = direction;
+            }
+
+            public void Resize(int viewModelCount)
+            {
+                var size = viewModelCount * _size.Value;
+                
+                _content.sizeDelta = _direction switch
+                {
+                    Direction.Vertical => new Vector2(_content.sizeDelta.x, size),
+                    Direction.Horizontal => new Vector2(size, _content.sizeDelta.y),
+                    _ => throw new ArgumentOutOfRangeException()
+                };
+            }
+
+            public void Validate() =>
+                Validate(_content, _direction);
+
+            private static void Validate(RectTransform content, Direction direction)
+            {
+                if (content is null) return;
+                
+                content.offsetMin = Vector2.zero;
+                content.offsetMax = Vector2.zero;
+                content.pivot = new Vector2(0, 1);
+                
+                switch (direction)
+                {
+                    case Direction.Vertical:
+                        content.anchorMin = new Vector2(0, 1);
+                        content.anchorMax = new Vector2(1, 1);
+                        break;
+                    
+                    case Direction.Horizontal:
+                        content.anchorMin = new Vector2(0, 0);
+                        content.anchorMax = new Vector2(0, 1);
+                        break;
+                    
+                    default: throw new ArgumentOutOfRangeException();
+                }
+            }
+
+            public static implicit operator RectTransform(ContentTransform content) => content._content;
         }
     }
 }

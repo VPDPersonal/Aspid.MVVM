@@ -13,10 +13,10 @@ namespace Aspid.MVVM
         public BindMode Mode => BindMode.OneWay;
 
         /// <summary>
-        /// Binds the component using the specified <see cref="IBindableMemberEventAdder"/>.
+        /// Binds the component using the specified <see cref="IBinderAdder"/>.
         /// </summary>
-        /// <param name="bindableMemberEventAdder">The event adder for the component to bind to.</param>
-        public void Bind(IBindableMemberEventAdder bindableMemberEventAdder);
+        /// <param name="binderAdder">The event adder for the component to bind to.</param>
+        public void Bind(IBinderAdder binderAdder);
         
         /// <summary>
         /// Unbinds the component from the bound <see cref="IViewModel"/>.

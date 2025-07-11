@@ -21,7 +21,7 @@ namespace Aspid.CustomEditors
             var lastClickTime = 0f;
             const float doubleClickTime = 0.3f;
                 
-            element.RegisterCallback<MouseUpEvent>(ev =>
+            element.RegisterCallback<MouseUpEvent>(_ =>
             {
                 var currentTime = (float)EditorApplication.timeSinceStartup;
 

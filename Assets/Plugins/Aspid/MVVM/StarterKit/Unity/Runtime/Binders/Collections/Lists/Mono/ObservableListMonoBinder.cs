@@ -3,36 +3,58 @@ using Aspid.MVVM.Unity;
 using System.Collections.Generic;
 using Aspid.Collections.Observable;
 using System.Collections.Specialized;
+using Aspid.Collections.Observable.Filtered;
 
 namespace Aspid.MVVM.StarterKit.Unity
 {
-    public abstract partial class ObservableListMonoBinder<T> : MonoBinder, IBinder<IReadOnlyObservableList<T>>
+    public abstract partial class ObservableListMonoBinder<T> : MonoBinder, IBinder<IReadOnlyObservableList<T>>, IBinder<IReadOnlyFilteredList<T>>
     {
-        protected IReadOnlyObservableList<T> List { get; private set; }
+        protected IReadOnlyList<T> List { get; private set; }
 
         [BinderLog]
-        public void SetValue(IReadOnlyObservableList<T> list)
-        {
-            DeinitializeList();
+        public void SetValue(IReadOnlyFilteredList<T> list) =>
+            InitializeList(list);
 
-            List = list;
-            OnAdded(List, 0);
-            
-            InitializeList();
-        }
+        [BinderLog]
+        public void SetValue(IReadOnlyObservableList<T> list) =>
+            InitializeList(list);
 
         protected override void OnUnbound() =>
             DeinitializeList();
 
-        private void InitializeList() => 
-            List.CollectionChanged += OnCollectionChanged;
+        private void InitializeList(IReadOnlyList<T> list)
+        {
+            DeinitializeList();
+            
+            List = list;
+            if (List is null) return;
+            
+            OnAdded(List, 0);
+
+            switch (list)
+            {
+                case IReadOnlyFilteredList<T> filteredList: filteredList.CollectionChanged += OnCollectionChanged; break;
+                case IReadOnlyObservableList<T> observableList: observableList.CollectionChanged += OnCollectionChanged; break;
+            }
+        }
 
         private void DeinitializeList()
         {
             if (List is null) return;
                 
             OnReset();
-            List.CollectionChanged -= OnCollectionChanged;
+            
+            switch (List)
+            {
+                case IReadOnlyFilteredList<T> filteredList: filteredList.CollectionChanged -= OnCollectionChanged; break;
+                case IReadOnlyObservableList<T> observableList: observableList.CollectionChanged -= OnCollectionChanged; break;
+            }
+        }
+
+        private void OnCollectionChanged()
+        {
+            OnReset();
+            OnAdded(List, 0);
         }
 
         private void OnCollectionChanged(INotifyCollectionChangedEventArgs<T> e)

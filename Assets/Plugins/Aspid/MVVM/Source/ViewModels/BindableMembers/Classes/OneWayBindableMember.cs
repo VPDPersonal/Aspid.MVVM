@@ -6,40 +6,33 @@ namespace Aspid.MVVM
     /// Represents a one-way bindable member event that supports event notification and handling for values of a specified type.
     /// </summary>
     /// <typeparam name="T">The type of the value being handled in the bindable member event.</typeparam>
-    public sealed class OneWayStructEvent<T> : OneWayStructEvent<T, ValueType>
-        where T : struct
-    {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="OneWayStructEvent{T}"/> class with the specified initial value.
-        /// </summary>
-        /// <param name="value">The initial value of the bindable member event.</param>
-        public OneWayStructEvent(T value) 
-            : base(value) { }
-    }
-
-    /// <summary>
-    /// Represents a one-way bindable member event that supports event notification and handling for values of a specified type.
-    /// </summary>
-    /// <typeparam name="T">The type of the value being handled in the bindable member event.</typeparam>
-    /// <typeparam name="TBoxed">Boxed type</typeparam>
-    public abstract class OneWayStructEvent<T, TBoxed> : OneWayStructEvent, IBindableMemberEvent
-        where T : struct, TBoxed
-        where TBoxed : class
+    public sealed class OneWayBindableMember<T> : OneWayBindableMember, IBindableMember<T>, IBinderRemover
     {
         /// <summary>
         /// Event triggered when the value changes.
         /// </summary>
-        public event Action<T>? Changed;
-        
-        private event Action<TBoxed>? BoxedChanged;
+        public event Action<T?>? Changed;
 
-        private T _value;
+        private T? _value;
+        
+        /// <summary>
+        /// Gets or sets the current value. Setting the value will trigger the <see cref="Changed"/> event.
+        /// </summary>
+        public T? Value
+        {
+            get => _value;
+            set
+            {
+                _value = value;
+                Changed?.Invoke(value);
+            }
+        }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="OneWayStructEvent{T, TBoxed}"/> class with the specified initial value.
+        /// Initializes a new instance of the <see cref="OneWayBindableMember{T}"/> class with the specified initial value.
         /// </summary>
         /// <param name="value">The initial value of the bindable member event.</param>
-        protected OneWayStructEvent(T value)
+        public OneWayBindableMember(T? value)
         {
             _value = value;
         }
@@ -53,7 +46,7 @@ namespace Aspid.MVVM
         /// <exception cref="Exception">
         /// Thrown if the binding mode is not <see cref="BindMode.OneWay"/> or <see cref="BindMode.OneTime"/>.
         /// </exception>
-        public IBindableMemberEventRemover? Add(IBinder binder)
+        IBinderRemover? IBinderAdder.Add(IBinder binder)
         {
 #if UNITY_2022_1_OR_NEWER && !ASPID_MVVM_UNITY_PROFILER_DISABLED
             using (AddMarker.Auto())
@@ -73,21 +66,14 @@ namespace Aspid.MVVM
                         else return null;
                         break;
                 
-                    case IBinder<TBoxed> structBinder:
-                        structBinder.SetValue(_value);
-                    
-                        if (mode is BindMode.OneWay)
-                            BoxedChanged += structBinder.SetValue;
-                        break;
-                
                     case IAnyBinder anyBinder:
                         anyBinder.SetValue(_value);
-
+                    
                         if (mode is BindMode.OneWay) Changed += anyBinder.SetValue;
                         else return null;
                         break;
                 
-                    default: throw BinderInvalidCastException.Struct<T, TBoxed>(binder);
+                    default: throw BinderInvalidCastException.Class<T>(binder);
                 }
             
                 return this;
@@ -99,7 +85,7 @@ namespace Aspid.MVVM
         /// Removes the binder from the event subscription.
         /// </summary>
         /// <param name="binder">The binder to remove.</param>
-        public void Remove(IBinder binder)
+        void IBinderRemover.Remove(IBinder binder)
         {
 #if UNITY_2022_1_OR_NEWER && !ASPID_MVVM_UNITY_PROFILER_DISABLED
             using (RemoveMarker.Auto())
@@ -108,13 +94,12 @@ namespace Aspid.MVVM
                 if (binder.Mode is BindMode.OneTime)
                     return;
 
-                switch (binder)
+                Changed -= binder switch
                 {
-                    case IBinder<T> specificBinder: Changed -= specificBinder.SetValue; break;
-                    case IBinder<TBoxed> structBinder: BoxedChanged -= structBinder.SetValue; break;
-                    case IAnyBinder anyBinder: Changed -= anyBinder.SetValue; break;
-                    default: throw BinderInvalidCastException.Struct<T, TBoxed>(binder);
-                }
+                    IBinder<T> specificBinder => specificBinder.SetValue,
+                    IAnyBinder anyBinder => anyBinder.SetValue,
+                    _ => throw BinderInvalidCastException.Class<T>(binder)
+                };
             }
         }
         
@@ -122,19 +107,15 @@ namespace Aspid.MVVM
         /// Triggers the Changed event with the specified value and updates the current value.
         /// </summary>
         /// <param name="value">The new value to set and notify.</param>
-        public void Invoke(T value)
-        {
-            _value = value;
-            Changed?.Invoke(value);
-            BoxedChanged?.Invoke(value);
-        }
+        public void Invoke(T? value) =>
+            Value = value;
     }
     
-    public abstract class OneWayStructEvent
+    public abstract class OneWayBindableMember
     {
 #if UNITY_2022_1_OR_NEWER && !ASPID_MVVM_UNITY_PROFILER_DISABLED
-        protected static readonly Unity.Profiling.ProfilerMarker AddMarker = new("OneWayStructEvent.Add");
-        protected static readonly Unity.Profiling.ProfilerMarker RemoveMarker = new("OneWayStructEvent.Remove");
+        protected static readonly Unity.Profiling.ProfilerMarker AddMarker = new("OneWayClassEvent.Add");
+        protected static readonly Unity.Profiling.ProfilerMarker RemoveMarker = new("OneWayClassEvent.Remove");
 #endif
     }
 }

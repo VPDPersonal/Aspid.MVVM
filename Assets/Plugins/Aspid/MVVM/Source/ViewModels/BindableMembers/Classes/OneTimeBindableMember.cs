@@ -6,17 +6,20 @@ namespace Aspid.MVVM
     /// Represents a bindable member event that provides a single value in a one-time binding operation.
     /// </summary>
     /// <typeparam name="T">The type of the value to be bound.</typeparam>
-    public sealed class OneTimeClassEvent<T> : OneTimeClassEvent, IBindableMemberEventAdder
+    public sealed class OneTimeBindableMember<T> : OneTimeBindableMember, IReadOnlyValueBindableMember<T>
     {
-        private readonly T? _value;
+        /// <summary>
+        /// Gets or sets the current value.
+        /// </summary>
+        public T? Value { get; }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="OneTimeClassEvent{T}"/> class with the specified value.
+        /// Initializes a new instance of the <see cref="OneTimeBindableMember{T}"/> class with the specified value.
         /// </summary>
         /// <param name="value">The value to be bound in the event.</param>
-        public OneTimeClassEvent(T? value)
+        public OneTimeBindableMember(T? value)
         {
-            _value = value;
+            Value = value;
         }
 
         /// <inheritdoc />
@@ -30,7 +33,7 @@ namespace Aspid.MVVM
         /// <exception cref="InvalidOperationException">
         /// Thrown if the binding mode is either <see cref="BindMode.OneWayToSource"/> or <see cref="BindMode.OneTime"/> <see cref="BindMode.None"/>.
         /// </exception>
-        public IBindableMemberEventRemover? Add(IBinder binder)
+        IBinderRemover? IBinderAdder.Add(IBinder binder)
         {
 #if UNITY_2022_1_OR_NEWER && !ASPID_MVVM_UNITY_PROFILER_DISABLED
             using (AddMarker.Auto())
@@ -42,11 +45,11 @@ namespace Aspid.MVVM
                 switch (binder)
                 {
                     case IBinder<T> specificBinder:
-                        specificBinder.SetValue(_value);
+                        specificBinder.SetValue(Value);
                         break;
 
                     case IAnyBinder anyBinder:
-                        anyBinder.SetValue(_value);
+                        anyBinder.SetValue(Value);
                         break;
 
                     default: throw BinderInvalidCastException.Class<T>(binder);
@@ -57,7 +60,7 @@ namespace Aspid.MVVM
         }
     }
     
-    public abstract class OneTimeClassEvent
+    public abstract class OneTimeBindableMember
     {
 #if UNITY_2022_1_OR_NEWER && !ASPID_MVVM_UNITY_PROFILER_DISABLED
         protected static readonly Unity.Profiling.ProfilerMarker AddMarker = new("OneTimeClassEvent.Add");

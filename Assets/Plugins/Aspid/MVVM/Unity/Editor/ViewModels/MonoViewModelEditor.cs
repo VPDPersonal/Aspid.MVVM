@@ -1,11 +1,11 @@
 #if !ASPID_MVVM_EDITOR_DISABLED
-using System.CodeDom.Compiler;
-using System.Collections.Generic;
 using System.Linq;
+using UnityEditor;
 using System.Reflection;
 using Aspid.CustomEditors;
-using UnityEditor;
 using UnityEngine.UIElements;
+using System.CodeDom.Compiler;
+using System.Collections.Generic;
 
 namespace Aspid.MVVM.Unity
 {

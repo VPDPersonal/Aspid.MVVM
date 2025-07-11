@@ -6,14 +6,14 @@ namespace Aspid.MVVM
     /// Represents a bindable member event that provides a single value in a one-time binding operation.
     /// </summary>
     /// <typeparam name="T">The type of the value to be bound.</typeparam>
-    public sealed class OneTimeStructEvent<T> : OneTimeStructEvent<T, ValueType>
+    public sealed class OneTimeStructBindableMember<T> : OneTimeStructBindableMember<T, ValueType>
         where T : struct
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="OneTimeStructEvent{T}"/> class with the specified value.
+        /// Initializes a new instance of the <see cref="OneTimeStructBindableMember{T}"/> class with the specified value.
         /// </summary>
         /// <param name="value">The value to be bound in the event.</param>
-        public OneTimeStructEvent(T value) 
+        public OneTimeStructBindableMember(T value) 
             : base(value) { }
     }
 
@@ -22,19 +22,22 @@ namespace Aspid.MVVM
     /// </summary>
     /// <typeparam name="T">The type of the value to be bound.</typeparam>
     /// <typeparam name="TBoxed">Boxed type</typeparam>
-    public abstract class OneTimeStructEvent<T, TBoxed> : OneTimeStructEvent, IBindableMemberEventAdder
+    public abstract class OneTimeStructBindableMember<T, TBoxed> : OneTimeStructBindableMember, IReadOnlyValueBindableMember<T>
         where T : struct, TBoxed
         where TBoxed : class
     {
-        private readonly T _value;
+        /// <summary>
+        /// Gets or sets the current value.
+        /// </summary>
+        public T Value { get; }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="OneTimeStructEvent{T, TBoxed}"/> class with the specified value.
+        /// Initializes a new instance of the <see cref="OneTimeStructBindableMember{T,TBoxed}"/> class with the specified value.
         /// </summary>
         /// <param name="value">The value to be bound in the event.</param>
-        protected OneTimeStructEvent(T value)
+        protected OneTimeStructBindableMember(T value)
         {
-            _value = value;
+            Value = value;
         }
 
         /// <inheritdoc />
@@ -48,7 +51,7 @@ namespace Aspid.MVVM
         /// <exception cref="InvalidOperationException">
         /// Thrown if the binding mode is either <see cref="BindMode.OneWayToSource"/> or <see cref="BindMode.OneTime"/> <see cref="BindMode.None"/>.
         /// </exception>
-        public IBindableMemberEventRemover? Add(IBinder binder)
+        IBinderRemover? IBinderAdder.Add(IBinder binder)
         {
 #if UNITY_2022_1_OR_NEWER && !ASPID_MVVM_UNITY_PROFILER_DISABLED
             using (AddMarker.Auto())
@@ -59,9 +62,9 @@ namespace Aspid.MVVM
 
                 switch (binder)
                 {
-                    case IBinder<T> specificBinder: specificBinder.SetValue(_value); break;
-                    case IBinder<TBoxed> structBinder: structBinder.SetValue(_value); break;
-                    case IAnyBinder anyBinder: anyBinder.SetValue(_value); break;
+                    case IBinder<T> specificBinder: specificBinder.SetValue(Value); break;
+                    case IBinder<TBoxed> structBinder: structBinder.SetValue(Value); break;
+                    case IAnyBinder anyBinder: anyBinder.SetValue(Value); break;
                     default: throw BinderInvalidCastException.Struct<T, TBoxed>(binder);
                 }
             
@@ -70,7 +73,7 @@ namespace Aspid.MVVM
         }
     }
     
-    public abstract class OneTimeStructEvent
+    public abstract class OneTimeStructBindableMember
     {
 #if UNITY_2022_1_OR_NEWER && !ASPID_MVVM_UNITY_PROFILER_DISABLED
         protected static readonly Unity.Profiling.ProfilerMarker AddMarker = new("OneTimeStructEvent.Add");

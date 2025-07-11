@@ -16,7 +16,7 @@ namespace Aspid.MVVM.StarterKit.Unity
         {
             if (values is null || values.Count == 0)
             {
-                renderer.materials = default;
+                renderer.materials = null;
             }
             else if (values.Count == 1)
             {
@@ -25,7 +25,7 @@ namespace Aspid.MVVM.StarterKit.Unity
                 foreach (var value in values)
                     convertedValue = converter?.Convert(value) ?? value;
                 
-                renderer.materials = default;
+                renderer.materials = null;
                 renderer.material = convertedValue;
             }
             else

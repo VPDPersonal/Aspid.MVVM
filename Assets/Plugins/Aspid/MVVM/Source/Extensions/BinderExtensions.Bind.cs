@@ -8,9 +8,9 @@ namespace Aspid.MVVM
     {
         #region Singl BindSafely
         /// <summary>
-        /// Binds a single binder to the provided <see cref="IBindableMemberEventAdder"/> if the bindable member was found.
+        /// Binds a single binder to the provided <see cref="IBinderAdder"/> if the bindable member was found.
         /// </summary>
-        /// <typeparam name="T">The binder type, implementing <see cref="IBinder"/>.</typeparam>
+        /// <typeparam name="T">The binder type, implementing <see cref="Aspid.MVVM.IBinder"/>.</typeparam>
         /// <param name="binder">The binder instance to bind.</param>
         /// <param name="result">The result of a bindable member lookup.</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -26,18 +26,18 @@ namespace Aspid.MVVM
         /// </summary>
         /// <typeparam name="T">The binder type.</typeparam>
         /// <param name="binder">The binder instance.</param>
-        /// <param name="adder">The event adder to bind to.</param>
+        /// <param name="binderAdder">The event adder to bind to.</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void BindSafely<T>(this T? binder, IBindableMemberEventAdder adder)
+        public static void BindSafely<T>(this T? binder, IBinderAdder binderAdder)
             where T : IBinder
         {
-            binder?.Bind(adder);
+            binder?.Bind(binderAdder);
         }
         #endregion
 
         #region Array BindSafely
         /// <summary>
-        /// Binds an array of binders to the provided <see cref="IBindableMemberEventAdder"/> if the bindable member was found.
+        /// Binds an array of binders to the provided <see cref="IBinderAdder"/> if the bindable member was found.
         /// </summary>
         /// <typeparam name="T">The binder type.</typeparam>
         /// <param name="binders">The array of binders to bind.</param>
@@ -58,12 +58,12 @@ namespace Aspid.MVVM
         /// </summary>
         /// <typeparam name="T">The binder type.</typeparam>
         /// <param name="binders">The array of binders.</param>
-        /// <param name="adder">The event adder to bind to.</param>
+        /// <param name="binderAdder">The event adder to bind to.</param>
         /// <exception cref="NullReferenceException">
         /// Thrown if any individual binder in the array is <c>null</c>.
         /// </exception>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void BindSafely<T>(this T[]? binders, IBindableMemberEventAdder adder)
+        public static void BindSafely<T>(this T[]? binders, IBinderAdder binderAdder)
             where T : IBinder
         {
             if (binders is null) return;
@@ -71,14 +71,14 @@ namespace Aspid.MVVM
             foreach (var binder in binders)
             {
                 if (binder is null) throw new BindSafelyNullReferenceException($"{nameof(binder)}");
-                binder.Bind(adder);
+                binder.Bind(binderAdder);
             }
         }
         #endregion
         
         #region List BindSafely
         /// <summary>
-        /// Binds a list of binders to the provided <see cref="IBindableMemberEventAdder"/> if the bindable member was found.
+        /// Binds a list of binders to the provided <see cref="IBinderAdder"/> if the bindable member was found.
         /// </summary>
         /// <typeparam name="T">The binder type.</typeparam>
         /// <param name="binders">The list of binders.</param>
@@ -99,12 +99,12 @@ namespace Aspid.MVVM
         /// </summary>
         /// <typeparam name="T">The binder type.</typeparam>
         /// <param name="binders">The list of binders.</param>
-        /// <param name="adder">The event adder to bind to.</param>
+        /// <param name="binderAdder">The event adder to bind to.</param>
         /// <exception cref="BindSafelyNullReferenceException">
         /// Thrown if any individual binder in the list is <c>null</c>.
         /// </exception>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void BindSafely<T>(this List<T>? binders, IBindableMemberEventAdder adder)
+        public static void BindSafely<T>(this List<T>? binders, IBinderAdder binderAdder)
             where T : IBinder
         {
             if (binders is null) return;
@@ -112,14 +112,14 @@ namespace Aspid.MVVM
             foreach (var binder in binders)
             {
                 if (binder is null) throw new BindSafelyNullReferenceException($"{nameof(binder)}");
-                binder.Bind(adder);
+                binder.Bind(binderAdder);
             }
         }
         #endregion
         
         #region IEnumerable BindSafely
         /// <summary>
-        /// Binds an enumerable of binders to the provided <see cref="IBindableMemberEventAdder"/> if the bindable member was found.
+        /// Binds an enumerable of binders to the provided <see cref="IBinderAdder"/> if the bindable member was found.
         /// </summary>
         /// <typeparam name="T">The binder type.</typeparam>
         /// <param name="binders">The enumerable of binders.</param>
@@ -140,12 +140,12 @@ namespace Aspid.MVVM
         /// </summary>
         /// <typeparam name="T">The binder type.</typeparam>
         /// <param name="binders">The enumerable of binders.</param>
-        /// <param name="adder">The event adder to bind to.</param>
+        /// <param name="binderAdder">The event adder to bind to.</param>
         /// <exception cref="BindSafelyNullReferenceException">
         /// Thrown if any individual binder in the collection is <c>null</c>.
         /// </exception>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void BindSafely<T>(this IEnumerable<T>? binders, IBindableMemberEventAdder adder)
+        public static void BindSafely<T>(this IEnumerable<T>? binders, IBinderAdder binderAdder)
             where T : IBinder
         {
             if (binders is null) return;
@@ -153,7 +153,7 @@ namespace Aspid.MVVM
             foreach (var binder in binders)
             {
                 if (binder is null) throw new BindSafelyNullReferenceException($"{nameof(binder)}");
-                binder.Bind(adder);
+                binder.Bind(binderAdder);
             }
         }
         #endregion

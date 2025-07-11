@@ -26,7 +26,7 @@ namespace Aspid.MVVM.StarterKit.Unity
     }
     
     [Serializable]
-    public class ViewModelObservableListBinder<T, TViewFactory> : ObservableListBinderBase<IViewModel>
+    public class ViewModelObservableListBinder<T, TViewFactory> : ObservableListBinder<IViewModel>
         where T : MonoBehaviour, IView
         where TViewFactory : IViewFactory<T>
     {

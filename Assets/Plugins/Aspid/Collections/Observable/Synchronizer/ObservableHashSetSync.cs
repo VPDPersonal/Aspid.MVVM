@@ -4,7 +4,7 @@ using System.Collections.Specialized;
 
 namespace Aspid.Collections.Observable.Synchronizer
 {
-    public sealed class ObservableHashSetSync<TFrom, TTo> : ObservableHashSet<TTo>, IReadOnlyObservableCollectionSync<TTo>
+    internal sealed class ObservableHashSetSync<TFrom, TTo> : ObservableHashSet<TTo>, IReadOnlyObservableCollectionSync<TTo>
         where TTo : notnull 
         where TFrom : notnull
     {
@@ -49,16 +49,6 @@ namespace Aspid.Collections.Observable.Synchronizer
 
         private void Unsubscribe() =>
             _fromHasSet.CollectionChanged -= OnFromStackChanged;
-        
-        private TTo[] Convert(IReadOnlyList<TFrom> fromValues)
-        {
-            var toValues = new TTo[fromValues.Count];
-
-            for (var i = 0; i < toValues.Length; i++)
-                toValues[i] = Convert(fromValues[i]);
-
-            return toValues;
-        }
 
         private TTo Convert(TFrom fromValue) => 
             _converter.Invoke(fromValue);

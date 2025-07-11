@@ -3,6 +3,8 @@ using UnityEngine;
 using Aspid.MVVM.Unity; 
 using Aspid.Collections.Observable;
 using Aspid.Collections.Observable.Extensions;
+using Aspid.Collections.Observable.Filtered;
+using Random = UnityEngine.Random;
 
 namespace Samples.Aspid.MVVM.VirtualizedList
 {
@@ -10,8 +12,12 @@ namespace Samples.Aspid.MVVM.VirtualizedList
     public sealed partial class ElementsListViewModel : MonoViewModel
     {
         [SerializeField] [Min(0)] private int _count = 100;
+
+        [OneWayBind] 
+        private FilteredList<ElementViewModel> _items;
         
-        [OneTimeBind] private readonly ObservableList<IViewModel> _items = new();
+        [OneTimeBind] 
+        private readonly ObservableList<ElementViewModel> _itemsSource = new();
 
         private void Awake()
         {
@@ -19,47 +25,50 @@ namespace Samples.Aspid.MVVM.VirtualizedList
             {
                 var itemName = $"{i}";
                 var isCompleted = Random.Range(0, 2) is 0;
-                Items.Add(new ElementViewModel(itemName, isCompleted));
+                ItemsSource.Add(new ElementViewModel(itemName, isCompleted));
             }
+
+            
+            Items = new FilteredList<ElementViewModel>(ItemsSource, filter: vm => vm.IsCompleted);
         }
 
         [RelayCommand]
         private void AddViewModel()
         {
             var isCompleted = Random.Range(0, 2) is 0;
-            Items.Add(new ElementViewModel("New" + (Items.Count), isCompleted));
+            ItemsSource.Add(new ElementViewModel("New" + (ItemsSource.Count), isCompleted));
         }
 
         [RelayCommand]
         private void InsertViewModel()
         {
             var isCompleted = Random.Range(0, 2) is 0;
-            Items.Insert(0, new ElementViewModel("New" + (Items.Count - 1), isCompleted));
+            ItemsSource.Insert(0, new ElementViewModel("New" + (ItemsSource.Count - 1), isCompleted));
         }
         
         [RelayCommand]
         private void Move()
         {
-            Items.Move(0, Items.Count - 1);
+            ItemsSource.Move(0, ItemsSource.Count - 1);
         }
         
         [RelayCommand]
         private void Swap()
         {
-            Items.Swap(0, Items.Count - 1);
+            ItemsSource.Swap(0, ItemsSource.Count - 1);
         }
 
         [RelayCommand]
         private void Remove()
         {
-            Items.RemoveAt(Items.Count - 1);
+            ItemsSource.RemoveAt(ItemsSource.Count - 1);
         }
 
         [RelayCommand]
         private void Replace()
         {
             var isCompleted = Random.Range(0, 2) is 0;
-            Items[0] = new ElementViewModel($"Replace {Items.Count}", isCompleted);
+            ItemsSource[0] = new ElementViewModel($"Replace {ItemsSource.Count}", isCompleted);
         }
     }
 }

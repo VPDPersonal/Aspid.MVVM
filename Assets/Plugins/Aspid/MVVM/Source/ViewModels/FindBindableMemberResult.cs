@@ -13,13 +13,13 @@ namespace Aspid.MVVM
         /// <summary>
         /// The event adder for the bindable member, if found.
         /// </summary>
-        public readonly IBindableMemberEventAdder? Adder;
+        public readonly IBinderAdder? Adder;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="FindBindableMemberResult"/> struct.
         /// </summary>
         /// <param name="adder">The event adder for the bindable member, or <c>null</c> if not found.</param>
-        public FindBindableMemberResult(IBindableMemberEventAdder? adder = null)
+        public FindBindableMemberResult(IBinderAdder? adder = null)
         {
             Adder = adder;
             IsFound = adder is not null;

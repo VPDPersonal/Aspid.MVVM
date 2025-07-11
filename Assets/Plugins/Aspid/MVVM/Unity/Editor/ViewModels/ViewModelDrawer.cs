@@ -83,15 +83,11 @@ namespace Aspid.MVVM.Unity
             var type = member.Type;
             var value = member.Value;
             var label = NicifyVariableName(member.Name);
-            
-            if (type.IsGenericType)
+
+            if (typeof(OneTimeBindableMember).IsAssignableFrom(type)
+                || typeof(OneTimeStructBindableMember).IsAssignableFrom(type))
             {
-                var genericTypeDefinition = type.GetGenericTypeDefinition();
-                if (genericTypeDefinition == typeof(OneTimeClassEvent<>)
-                    || genericTypeDefinition == typeof(OneTimeStructEvent<,>))
-                {
-                    return new VisualElement();
-                }
+                return new VisualElement();
             }
             
             if (typeof(int) == type) return new IntegerField(label).SetupField((int)value, updater, member);

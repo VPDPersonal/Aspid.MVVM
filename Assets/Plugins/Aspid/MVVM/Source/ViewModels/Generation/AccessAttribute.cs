@@ -5,7 +5,9 @@ namespace Aspid.MVVM
     /// <summary>
     /// Marker attribute for fields within a class or structure marked with the <see cref="ViewModelAttribute"/>.
     /// Used by the Source Generator to change the access modifier of generated properties, which default to <c>private</c>.
-    /// For this attribute to work correctly, the <see cref="BindAttribute"/> or <see cref="ReadOnlyBindAttribute"/> must also be present.
+    /// For this attribute to work correctly, the <see cref="BindAttribute"/> or <see cref="OneWayBindAttribute"/>
+    /// or <see cref="TwoWayBindAttribute"/> or <see cref="OneTimeBindAttribute"/> or or <see cref="OneWayToSourceBindAttribute"/>
+    /// must also be present.
     /// </summary>
     [AttributeUsage(AttributeTargets.Field)]
     public sealed class AccessAttribute : Attribute

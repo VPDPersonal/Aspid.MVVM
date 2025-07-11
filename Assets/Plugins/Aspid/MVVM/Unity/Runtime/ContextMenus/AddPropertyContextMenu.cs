@@ -14,10 +14,7 @@ namespace Aspid.MVVM.Unity
         
         public string SerializePropertyName { get; }
 
-        public AddPropertyContextMenu(Type propertyType) 
-            : this(propertyType, null) { }
-        
-        public AddPropertyContextMenu(Type componentType, string serializePropertyName)
+        public AddPropertyContextMenu(Type componentType, string serializePropertyName = null)
         {
             Type = componentType;
             SerializePropertyName = serializePropertyName;

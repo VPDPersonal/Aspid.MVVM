@@ -10,8 +10,8 @@ namespace Aspid.MVVM
         [EditorBrowsable(EditorBrowsableState.Never)]
         private LastData? __bindData;
 
-        partial void OnBoundDebug(IBindableMemberEventAdder bindableMemberEventAdder) =>
-            __bindData = new LastData(_mode, bindableMemberEventAdder);
+        partial void OnBoundDebug(IBinderAdder binderAdder) =>
+            __bindData = new LastData(_mode, binderAdder);
 
         partial void OnUnboundDebug() =>
             __bindData = null;
@@ -28,19 +28,19 @@ namespace Aspid.MVVM
                 Unbind();
 
                 _mode = currentMode;
-                Bind(cachedData.BindableMemberEventAdder);
+                Bind(cachedData.Adder);
             }
         }
         
         private readonly struct LastData
         {
             public readonly BindMode Mode;
-            public readonly IBindableMemberEventAdder BindableMemberEventAdder;
+            public readonly IBinderAdder Adder;
 
-            public LastData(BindMode mode, IBindableMemberEventAdder bindableMemberEventAdder)
+            public LastData(BindMode mode, IBinderAdder adder)
             {
                 Mode = mode;
-                BindableMemberEventAdder = bindableMemberEventAdder;
+                Adder = adder;
             }
         }
     }

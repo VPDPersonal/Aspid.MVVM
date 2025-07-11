@@ -211,8 +211,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Content: {fileID: 311102549}
-  m_Horizontal: 1
-  m_Vertical: 0
+  m_Horizontal: 0
+  m_Vertical: 1
   m_MovementType: 1
   m_Elasticity: 0.1
   m_Inertia: 1
@@ -345,11 +345,11 @@ MonoBehaviour:
   _mode: 1
   __view: {fileID: 506593848}
   __id: Items
-  _isDebug: 0
+  _isDebug: 1
   _log: []
-  _direction: 1
+  _direction: 0
   _scrollRect: {fileID: 506593844}
-  _viewPrefab: {fileID: 6005543252330047322, guid: 185b81d9229504f56942afa55f1f2f2e, type: 3}
+  _viewPrefab: {fileID: 6005543252330047322, guid: e5b43f7a117e940658befc16aebcf62d, type: 3}
 --- !u!1 &1008564484
 GameObject:
   m_ObjectHideFlags: 0
@@ -652,7 +652,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1287080964
 RectTransform:
   m_ObjectHideFlags: 0
@@ -793,7 +793,7 @@ RectTransform:
   m_Father: {fileID: 1098202518}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}

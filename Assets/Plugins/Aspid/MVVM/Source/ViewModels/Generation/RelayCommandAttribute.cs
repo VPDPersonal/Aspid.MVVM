@@ -4,7 +4,7 @@ namespace Aspid.MVVM
 {
     /// <summary>
     /// Marker attribute for methods within a class or structure marked with the <see cref="ViewModelAttribute"/>.
-    /// Used by the Source Generator to generate a property of type <see cref="Aspid.MVVM.Commands.IRelayCommand"/> 
+    /// Used by the Source Generator to generate a property of type <see cref="IRelayCommand"/> 
     /// or its overloaded versions depending on the number of parameters of the method.
     /// </summary>
     [AttributeUsage(AttributeTargets.Method, AllowMultiple = true, Inherited = false)]

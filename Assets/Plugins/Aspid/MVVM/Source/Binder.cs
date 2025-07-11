@@ -21,7 +21,7 @@ namespace Aspid.MVVM
         [BindMode(BindMode.OneWay, BindMode.OneTime)]
         private BindMode _mode = BindMode.TwoWay;
         
-        private IBindableMemberEventRemover? _bindableMemberEventRemover;
+        private IBinderRemover? _binderRemover;
         
         /// <summary>
         /// Indicates whether binding is allowed.
@@ -54,11 +54,11 @@ namespace Aspid.MVVM
         }
         
         /// <summary>
-        /// Binds the component using the specified <see cref="IBindableMemberEventAdder"/>.
+        /// Binds the component using the specified <see cref="IBinderAdder"/>.
         /// </summary>
-        /// <param name="bindableMemberEventAdder">The event adder for the component to bind to.</param>
+        /// <param name="binderAdder">The event adder for the component to bind to.</param>
         /// <exception cref="Exception">Thrown if the binder is already bound.</exception>\
-        public void Bind(IBindableMemberEventAdder bindableMemberEventAdder)
+        public void Bind(IBinderAdder binderAdder)
         {
 #if UNITY_2022_1_OR_NEWER && !ASPID_MVVM_UNITY_PROFILER_DISABLED
             using (_bindMarker.Auto())
@@ -67,20 +67,20 @@ namespace Aspid.MVVM
                 if (IsBound) throw new Exception("This Binder is already bound.");
                 if (!IsBind) return;
 
-                OnBindingDebug(bindableMemberEventAdder);
+                OnBindingDebug(binderAdder);
                 OnBinding();
                 
-                _bindableMemberEventRemover = bindableMemberEventAdder.Add(this);
+                _binderRemover = binderAdder.Add(this);
                 IsBound = true;
                 
-                OnBoundDebug(bindableMemberEventAdder);
+                OnBoundDebug(binderAdder);
                 OnBound();
             }
         }
         
-        partial void OnBindingDebug(IBindableMemberEventAdder bindableMemberEventAdder);
+        partial void OnBindingDebug(IBinderAdder binderAdder);
         
-        partial void OnBoundDebug(IBindableMemberEventAdder bindableMemberEventAdder);
+        partial void OnBoundDebug(IBinderAdder binderAdder);
         
         /// <summary>
         /// Logic executed before binding, which can be overridden in derived classes.
@@ -106,8 +106,8 @@ namespace Aspid.MVVM
                 OnUnbindingDebug();
                 OnUnbinding();
                 
-                _bindableMemberEventRemover?.Remove(this);
-                _bindableMemberEventRemover = null;
+                _binderRemover?.Remove(this);
+                _binderRemover = null;
                 IsBound = false;
 
                 OnUnboundDebug();

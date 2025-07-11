@@ -8,7 +8,7 @@ namespace Aspid.MVVM.StarterKit.Unity
     {
         private readonly UnityAction<T?> _setValue;
 
-        public UnityGenericOneWayBinder(UnityAction<T?> setValue, BindMode mode = BindMode.OneWay)
+        protected UnityGenericOneWayBinder(UnityAction<T?> setValue, BindMode mode = BindMode.OneWay)
             : base(mode)
         {
             _setValue = setValue ?? throw new ArgumentNullException(nameof(setValue));
@@ -23,7 +23,7 @@ namespace Aspid.MVVM.StarterKit.Unity
         private readonly TTarget _target;
         private readonly UnityAction<TTarget, T?> _setValue;
 
-        public UnityGenericOneWayBinder(
+        protected UnityGenericOneWayBinder(
             TTarget target,
             UnityAction<TTarget, T?> setValue, 
             BindMode mode = BindMode.OneWay)

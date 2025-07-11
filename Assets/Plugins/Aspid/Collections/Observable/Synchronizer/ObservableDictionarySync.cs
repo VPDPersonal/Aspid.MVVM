@@ -4,7 +4,7 @@ using System.Collections.Specialized;
 
 namespace Aspid.Collections.Observable.Synchronizer
 {
-    public sealed class ObservableDictionarySync<TKey, TFrom, TTo> : ObservableDictionary<TKey, TTo>, IReadOnlyObservableDictionarySync<TKey, TTo>
+    internal sealed class ObservableDictionarySync<TKey, TFrom, TTo> : ObservableDictionary<TKey, TTo>, IReadOnlyObservableDictionarySync<TKey, TTo>
         where TKey : notnull
     {
         private readonly bool _isDisposable;
@@ -41,16 +41,6 @@ namespace Aspid.Collections.Observable.Synchronizer
 
         private void Unsubscribe() => 
             _fromDictionary.CollectionChanged -= OnFromListChanged;
-        
-        private TTo[] Convert(IReadOnlyList<TFrom> fromValues)
-        {
-            var toValues = new TTo[fromValues.Count];
-
-            for (var i = 0; i < toValues.Length; i++)
-                toValues[i] = Convert(fromValues[i]);
-
-            return toValues;
-        }
 
         private TTo Convert(TFrom fromValue) =>
             _converter(fromValue);

@@ -6,7 +6,7 @@ namespace Aspid.MVVM
     /// Represents a two-way bindable member event that supports multiple binding modes and bidirectional updates.
     /// </summary>
     /// <typeparam name="T">The type of the value being handled in the bindable member event.</typeparam>
-    public sealed class TwoWayClassEvent<T> : TwoWayClassEvent, IBindableMemberEvent
+    public sealed class TwoWayBindableMember<T> : TwoWayBindableMember, IBindableMember<T>, IBinderRemover
     {
         /// <summary>
         /// Event triggered when the value changes.
@@ -15,16 +15,29 @@ namespace Aspid.MVVM
 
         private T? _value;
         private readonly Action<T?> _setValue;
+        
+        /// <summary>
+        /// Gets or sets the current value. Setting the value will trigger the <see cref="Changed"/> event.
+        /// </summary>
+        public T? Value
+        {
+            get => _value;
+            set
+            {
+                _value = value;
+                Changed?.Invoke(value);
+            }
+        }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="TwoWayClassEvent{T}"/> class with the specified value and a setter action.
+        /// Initializes a new instance of the <see cref="TwoWayBindableMember{T}"/> class with the specified value and a setter action.
         /// </summary>
         /// <param name="value">The initial value of the bindable member event.</param>
         /// <param name="setValue">
         /// The action used to set the value when the event is triggered.
         /// </param>
         /// <exception cref="ArgumentNullException">Thrown if <paramref name="setValue"/> is <c>null</c>.</exception>
-        public TwoWayClassEvent(T? value, Action<T?> setValue)
+        public TwoWayBindableMember(T? value, Action<T?> setValue)
         {
             _value = value;
             _setValue = setValue ?? throw new ArgumentNullException(nameof(setValue));
@@ -39,7 +52,7 @@ namespace Aspid.MVVM
         /// <exception cref="Exception">
         /// Thrown if the binding mode is not <see cref="BindMode.OneWay"/> or <see cref="BindMode.OneTime"/>.
         /// </exception>
-        public IBindableMemberEventRemover? Add(IBinder binder)
+        IBinderRemover? IBinderAdder.Add(IBinder binder)
         {
 #if UNITY_2022_1_OR_NEWER && !ASPID_MVVM_UNITY_PROFILER_DISABLED
             using (AddMarker.Auto())
@@ -69,9 +82,9 @@ namespace Aspid.MVVM
                 
                     case BindMode.OneWayToSource: OneWayToSource(); break;
                 }
-
-                return this;
             }
+            
+            return this;
 
             void OneWay()
             {
@@ -96,7 +109,7 @@ namespace Aspid.MVVM
                 if (binder is not IReverseBinder<T> reverseBinder)
                     throw ReverseBinderInvalidCastException<T>.Class(binder);
 
-                reverseBinder.ValueChanged += _setValue;
+                reverseBinder.ValueChanged += OnValueChanged;
             }
         }
 
@@ -105,7 +118,7 @@ namespace Aspid.MVVM
         /// Removes the binder's subscription from the event based on its binding mode.
         /// </summary>
         /// <param name="binder">The binder instance to remove.</param>
-        public void Remove(IBinder binder)
+        void IBinderRemover.Remove(IBinder binder)
         {
 #if UNITY_2022_1_OR_NEWER && !ASPID_MVVM_UNITY_PROFILER_DISABLED
             using (RemoveMarker.Auto())
@@ -123,9 +136,9 @@ namespace Aspid.MVVM
                 
                     case BindMode.OneWayToSource: OneWayToSource(); return;
                 }
-            
-                return;
             }
+            
+            return;
 
             void OneWay() => Changed -= binder switch
             {
@@ -139,22 +152,22 @@ namespace Aspid.MVVM
                 if (binder is not IReverseBinder<T> reverseBinder)
                     throw ReverseBinderInvalidCastException<T>.Class(binder);
 
-                reverseBinder.ValueChanged -= _setValue;
+                reverseBinder.ValueChanged -= OnValueChanged;
             }
         }
-
+        
         /// <summary>
         /// Triggers the Changed event with the specified value and updates the current value.
         /// </summary>
         /// <param name="value">The new value to set and notify.</param>
-        public void Invoke(T? value)
-        {
-            _value = value;
-            Changed?.Invoke(value);
-        }
+        public void Invoke(T? value) =>
+            Value = value;
+        
+        private void OnValueChanged(T? value) =>
+            _setValue(value);
     }
     
-    public abstract class TwoWayClassEvent
+    public abstract class TwoWayBindableMember
     {
 #if UNITY_2022_1_OR_NEWER && !ASPID_MVVM_UNITY_PROFILER_DISABLED
         protected static readonly Unity.Profiling.ProfilerMarker AddMarker = new("TwoWayClassEvent.Add");

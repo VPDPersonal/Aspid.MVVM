@@ -6,18 +6,28 @@ namespace Aspid.MVVM
     /// Represents a bindable member event that supports one-way-to-source bindings.
     /// </summary>
     /// <typeparam name="T">The type of the value to be handled in the bindable member event.</typeparam>
-    public sealed class OneWayToSourceClassEvent<T> : OneWayToSourceClassEvent, IBindableMemberEvent
+    public sealed class OneWayToSourceBindableMember<T> : OneWayToSourceBindableMember, IReadOnlyBindableMember<T>, IBinderRemover
     {
+        /// <summary>
+        /// Event triggered when the value changes.
+        /// </summary>
+        public event Action<T?>? Changed;
+        
         private readonly Action<T?> _setValue;
+        
+        /// <summary>
+        /// Gets or sets the current value.
+        /// </summary>
+        public T? Value { get; private set; }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="OneWayToSourceClassEvent{T}"/> class with the specified value setter action.
+        /// Initializes a new instance of the <see cref="OneWayToSourceBindableMember{T}"/> class with the specified value setter action.
         /// </summary>
         /// <param name="setValue">
         /// The action used to set the value when the event is triggered.
         /// </param>
         /// <exception cref="ArgumentNullException">Thrown if <paramref name="setValue"/> is <c>null</c>.</exception>
-        public OneWayToSourceClassEvent(Action<T?> setValue)
+        public OneWayToSourceBindableMember(Action<T?> setValue)
         {
             _setValue = setValue ?? throw new ArgumentNullException(nameof(setValue));
         }
@@ -31,7 +41,7 @@ namespace Aspid.MVVM
         /// <exception cref="InvalidOperationException">
         /// Thrown if the <paramref name="binder"/> does not have a valid binding mode or is not of type <see cref="IReverseBinder{T}"/>.
         /// </exception>
-        public IBindableMemberEventRemover Add(IBinder binder)
+        IBinderRemover IBinderAdder.Add(IBinder binder)
         {
 #if UNITY_2022_1_OR_NEWER && !ASPID_MVVM_UNITY_PROFILER_DISABLED
             using (AddMarker.Auto())
@@ -45,7 +55,7 @@ namespace Aspid.MVVM
                 if (binder is not IReverseBinder<T> reverseBinder) 
                     throw ReverseBinderInvalidCastException<T>.Class(binder);
             
-                reverseBinder.ValueChanged += _setValue;
+                reverseBinder.ValueChanged += OnValueChanged;
                 return this;
             }
         }
@@ -55,7 +65,7 @@ namespace Aspid.MVVM
         /// Removes the binder's subscription from the event.
         /// </summary>
         /// <param name="binder">The binder to unsubscribe from the event.</param>
-        public void Remove(IBinder binder)
+        void IBinderRemover.Remove(IBinder binder)
         {
 #if UNITY_2022_1_OR_NEWER && !ASPID_MVVM_UNITY_PROFILER_DISABLED
             using (RemoveMarker.Auto())
@@ -64,12 +74,19 @@ namespace Aspid.MVVM
                 if (binder is not IReverseBinder<T> reverseBinder) 
                     throw ReverseBinderInvalidCastException<T>.Class(binder);
             
-                reverseBinder.ValueChanged -= _setValue;
+                reverseBinder.ValueChanged -= OnValueChanged;
             }
+        }
+
+        private void OnValueChanged(T? value)
+        {
+            Value = value;
+            _setValue(value);
+            Changed?.Invoke(value);
         }
     }
     
-    public abstract class OneWayToSourceClassEvent
+    public abstract class OneWayToSourceBindableMember
     {
 #if UNITY_2022_1_OR_NEWER && !ASPID_MVVM_UNITY_PROFILER_DISABLED
         protected static readonly Unity.Profiling.ProfilerMarker AddMarker = new("OneWayToSourceClassEvent.Add");

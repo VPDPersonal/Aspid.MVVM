@@ -18,8 +18,8 @@ namespace Samples.Aspid.MVVM.VirtualizedList
         private Size? _viewportSize;
         private ContentTransform? _content;
         private int _previousViewModelTopIndex = -1;
-        
-        private readonly List<Element> _views = new();
+        private Element[] _views = Array.Empty<Element>() ;
+
 
         private Size ViewSize => _viewSize ??= new Size(_viewPrefab, _direction);
         
@@ -45,11 +45,19 @@ namespace Samples.Aspid.MVVM.VirtualizedList
         private void Initialize()
         { 
             var visibleCount = CalculateVisibleCount();
+
+            if (_views is not null)
+            {
+                foreach (var view in _views)
+                    view.Dispose();
+            }
+            
+            _views = new Element[visibleCount];
             
             for (var i = 0; i < visibleCount; i++)
             {
                 var view = Instantiate(_viewPrefab, Content);
-                _views.Add(new Element(view, _direction));
+                _views[i] = new Element(view, _direction);
             }
             
             _scrollRect.onValueChanged.AddListener(OnScrollValueChanged);
@@ -65,7 +73,7 @@ namespace Samples.Aspid.MVVM.VirtualizedList
             ResizeContent();
             _previousViewModelTopIndex = GetCurrentViewModelTopIndex();
 
-            for (var i = 0; i < _views.Count; i++)
+            for (var i = 0; i < _views.Length; i++)
                 RefreshElement(i, _previousViewModelTopIndex + i, true);
         }
 
@@ -88,21 +96,21 @@ namespace Samples.Aspid.MVVM.VirtualizedList
         {
             var firstView = _views[0];
             
-            for (var i = 1; i < _views.Count; i++)
+            for (var i = 1; i < _views.Length; i++)
             {
                 _views[i - 1] = _views[i];
                 RefreshElement(i, viewModelIndex + i - 1);
             }
             
             _views[^1] = firstView;
-            RefreshElement(_views.Count - 1, viewModelIndex + _views.Count - 1);
+            RefreshElement(_views.Length - 1, viewModelIndex + _views.Length - 1);
         }
         
         private void RefreshListFromBackward(int viewModelIndex)
         {
             var lastView = _views[^1];
                 
-            for (var i = _views.Count - 1; i > 0; i--)
+            for (var i = _views.Length - 1; i > 0; i--)
             {
                 _views[i] = _views[i - 1];
                 RefreshElement(i, viewModelIndex + i);
@@ -165,7 +173,7 @@ namespace Samples.Aspid.MVVM.VirtualizedList
             var oldViewIndex = oldStartingIndex - _previousViewModelTopIndex;
             var newViewIndex = newStartingIndex - _previousViewModelTopIndex;
 
-            if (oldViewIndex < 0 || oldViewIndex <= _views.Count || newViewIndex < 0 || newViewIndex <= _views.Count)
+            if (oldViewIndex < 0 || oldViewIndex <= _views.Length || newViewIndex < 0 || newViewIndex <= _views.Length)
                 Refresh();
         }
 
@@ -175,7 +183,7 @@ namespace Samples.Aspid.MVVM.VirtualizedList
         private void OnScrollValueChanged(Vector2 _) =>
             RefreshListOnScrollValueChanged();
         
-        private class Element
+        private class Element : IDisposable
         {
             private int _index;
             private readonly float _size;
@@ -226,6 +234,9 @@ namespace Samples.Aspid.MVVM.VirtualizedList
                 Direction.Horizontal => new Vector3(index * _size, 0, 0),
                 _ => throw new ArgumentOutOfRangeException(nameof(_direction), _direction, null)
             };
+
+            public void Dispose() =>
+                _view.DestroyView();
         }
         
         private enum Direction

@@ -26,12 +26,18 @@ public static class CustomViewModelInterfacesFactory
             
             foreach (var property in @interface.GetMembers()
                          .OfType<IPropertySymbol>()
-                         .Where(p => p.Type.ToDisplayStringGlobal() == IBindableMemberEventAdder))
+                         .Where(p =>
+                         {
+                             var type = p.Type.ToDisplayStringGlobal();
+                             return type.Contains(IBinderAdder)
+                                 || type.Contains(IReadOnlyBindableMember)
+                                 || type.Contains(IReadOnlyValueBindableMember);
+                         }))
             {
                 if (property.HasAnyAttribute(IgnoreAttribute)) continue;
 
                 var id = property.GetId();
-                dictionary[id] = new CustomViewModelInterface(id, property.Name, @interface);
+                dictionary[id] = new CustomViewModelInterface(id, property, @interface);
             }
         }
     }

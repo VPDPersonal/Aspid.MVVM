@@ -1,7 +1,6 @@
 using Microsoft.CodeAnalysis;
 using Aspid.Generator.Helpers;
 using Aspid.MVVM.Generators.ViewModels.Data;
-using Aspid.MVVM.Generators.ViewModels.Data.Members;
 using static Aspid.MVVM.Generators.Descriptions.Classes;
 using static Aspid.MVVM.Generators.Descriptions.General;
 using BindMode = Aspid.MVVM.Generators.ViewModels.Data.BindMode;
@@ -16,12 +15,9 @@ public static class BindableMembersBody
         in DeclarationText declaration,
         in SourceProductionContext context)
     {
-        string[] baseTypes = [$"{data.Symbol.ToDisplayStringGlobal()}.IBindableMembers"];
-
         var code = new CodeWriter();
-        code.AppendClassBegin(@namespace, declaration, baseTypes)
+        code.AppendClassBegin(@namespace, declaration)
             .AppendProperties(data)
-            .AppendInterface(data)
             .AppendClassEnd(@namespace);
         
         context.AddSource(declaration.GetFileName(@namespace, "BindableMembers"), code.GetSourceText());
@@ -29,56 +25,32 @@ public static class BindableMembersBody
 
     private static CodeWriter AppendProperties(this CodeWriter code, in ViewModelData data)
     {
-        var bindableMembersInterface = data.Symbol.ToDisplayStringGlobal() + ".IBindableMembers";
-        
         foreach (var member in data.Members)
         {
             if (member.Mode is BindMode.None) return code;
+            if (!data.CustomViewModelInterfaces.TryGetValue(member.Id.SourceValue, out var customInterface)) continue;
+            
+            var property = customInterface.Property;
+            var propertyType = property.Type.ToDisplayStringGlobal();
 
-            AppendProperty(bindableMembersInterface, member.GeneratedName, member);
-            code.AppendLine();
-
-            if (data.CustomViewModelInterfaces.TryGetValue(member.Id.SourceValue, out var customInterface))
+            if (propertyType != IBinderAdder)
             {
-                AppendProperty(customInterface.Interface.ToDisplayStringGlobal(), customInterface.PropertyName, member);
-                code.AppendLine();
+                if (!propertyType.Contains(member.Type)) continue;
+
+                if (!propertyType.Contains(IReadOnlyValueBindableMember))
+                {
+                    if (!member.BindableMemberPropertyType.Contains(IReadOnlyBindableMember))
+                        continue;
+                }
             }
+            
+            var interfaceType = customInterface.Interface.ToDisplayStringGlobal();
+                
+            code.AppendLine(GeneratedCodeViewModelAttribute)
+                .AppendLine($"{propertyType} {interfaceType}.{property.Name} => {member.GeneratedName}Bindable;")
+                .AppendLine();
         }
 
         return code;
-        
-        void AppendProperty(string interfaceType, string propertyName, BindableMember member)
-        { 
-            code.AppendLine(GeneratedCodeViewModelAttribute)
-                .AppendLine($"{IBindableMemberEventAdder} {interfaceType}.{propertyName} =>")
-                .IncreaseIndent()
-                .AppendLine($"{member.Event.ToInstantiateFieldString()};")
-                .DecreaseIndent();
-        }
-    }
-    
-    private static CodeWriter AppendInterface(this CodeWriter code, in ViewModelData data)
-    {
-        var members = data.Members;
-
-        code.AppendLine(GeneratedCodeViewModelAttribute)
-            .AppendLine(data.Inheritor is Inheritor.None 
-                ? $"public interface IBindableMembers : {IViewModel}" 
-                : $"public new interface IBindableMembers : {data.Symbol.BaseType!.ToDisplayStringGlobal()}.IBindableMembers");
-
-        if (members.Length > 0)
-        {
-            return code
-                .BeginBlock()
-                .AppendLoop(members, member =>
-                {
-                    code.AppendLine(GeneratedCodeViewModelAttribute)
-                        .AppendLine($"public {IBindableMemberEventAdder} {member.GeneratedName} {{ get; }}")
-                        .AppendLine();
-                })
-                .EndBlock();
-        }
-
-        return code.AppendLine("{ }");
     }
 }

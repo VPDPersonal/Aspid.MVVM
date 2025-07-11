@@ -1,5 +1,8 @@
 using Microsoft.CodeAnalysis;
 using Aspid.MVVM.Generators.Ids.Data;
+using static Aspid.Generator.Helpers.SymbolExtensions;
+using static Aspid.MVVM.Generators.Descriptions.General;
+using static Aspid.MVVM.Generators.Descriptions.Classes;
 
 namespace Aspid.MVVM.Generators.ViewModels.Data.Members;
 
@@ -20,10 +23,13 @@ public abstract class BindableMember
     public readonly string Type;
     public readonly string SourceName;
     public readonly string GeneratedName;
+    public readonly string BindableMemberPropertyType;
 
     public readonly IdData Id;
     public readonly BindMode Mode;
-    public readonly ViewModelEvent Event;
+    
+    private readonly string? _bindableType;
+    private readonly string _bindableFieldName;
 
     protected BindableMember(ISymbol member, BindMode mode, string type, string name, string idPostfix, TypeKind typeKind = TypeKind.Class)
         : this(member, mode, type, name, name, idPostfix, typeKind) { }
@@ -43,6 +49,84 @@ public abstract class BindableMember
         GeneratedName = generatedName;
         Id = new IdData(member, idPostfix);
         
-        Event = new ViewModelEvent(mode, sourceName, generatedName, type, typeKind);
+        switch (mode)
+        {
+            case BindMode.OneWay:
+                _bindableType = typeKind switch
+                {
+                    TypeKind.Enum => OneWayEnumBindableMember,
+                    TypeKind.Struct => OneWayStructBindableMember,
+                    _ => OneWayBindableMember
+                }; 
+                break;
+            
+            case BindMode.TwoWay:
+                _bindableType = typeKind switch
+                {
+                    TypeKind.Enum => TwoWayEnumBindableMember,
+                    TypeKind.Struct => TwoWayStructBindableMember,
+                    _ => TwoWayBindableMember
+                };
+                break;
+            
+            case BindMode.OneTime:
+                _bindableType = typeKind switch
+                {
+                    TypeKind.Enum => OneTimeEnumBindableMember,
+                    TypeKind.Struct => OneTimeStructBindableMember,
+                    _ => OneTimeBindableMember
+                };
+                break;
+            
+            case BindMode.OneWayToSource:
+                _bindableType = typeKind switch
+                {
+                    TypeKind.Enum => OneWayToSourceEnumBindableMember,
+                    TypeKind.Struct => OneWayToSourceStructBindableMember,
+                    _ => OneWayToSourceBindableMember
+                };
+                break;
+        }
+        
+        BindableMemberPropertyType = Mode is BindMode.OneTime
+            ? IReadOnlyValueBindableMember
+            : IReadOnlyBindableMember;
+        
+        _bindableFieldName = $"__{RemoveFieldPrefix(GetFieldName(generatedName, null))}Bindable";
     }
+
+    // TODO Nullable?
+    public string ToBindableMemberFieldDeclarationString()
+    {
+        return _bindableType is null 
+            ? string.Empty 
+            : $"""
+              [{EditorBrowsableAttribute}({EditorBrowsableState}.Never)]
+              {GeneratedCodeViewModelAttribute}
+              private {_bindableType}<{Type}> {_bindableFieldName};
+              """;
+    }
+
+    public string ToBindableMemberPropertyDeclarationString()
+    {
+        var instantiate = Mode switch
+        {
+            BindMode.OneWay => $"{_bindableFieldName} ??= new({GeneratedName})",
+            BindMode.TwoWay => $"{_bindableFieldName} ??= new({GeneratedName}, Set{GeneratedName})",
+            BindMode.OneTime => $"{_bindableFieldName} ??= new({GeneratedName})",
+            BindMode.OneWayToSource => $"{_bindableFieldName} ??= new(Set{GeneratedName})",
+            _ => string.Empty
+        };
+        
+        return $"""
+                {GeneratedCodeViewModelAttribute}
+                public {BindableMemberPropertyType}<{Type}> {GeneratedName}Bindable => 
+                    {instantiate};
+                """;
+    }
+    
+    // TODO Nullable?
+    public string ToInvokeBindableMemberString() => Mode is not (BindMode.OneWayToSource or BindMode.OneTime)
+        ? $"this.{_bindableFieldName}?.Invoke({SourceName});" 
+        : string.Empty;
 }

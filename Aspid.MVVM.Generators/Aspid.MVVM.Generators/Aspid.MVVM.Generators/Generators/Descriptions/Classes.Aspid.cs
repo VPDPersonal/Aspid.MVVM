@@ -83,50 +83,56 @@ public static partial class Classes
     #endregion
     
     #region Bindable Member Events
-    public static readonly TypeText IBindableMemberEvent =
-        new(nameof(IBindableMemberEvent), Namespaces.Aspid_MVVM);
+    public static readonly TypeText IBindableMember =
+        new(nameof(IBindableMember), Namespaces.Aspid_MVVM);
     
-    public static readonly TypeText IBindableMemberEventAdder =
-        new(nameof(IBindableMemberEventAdder), Namespaces.Aspid_MVVM);
+    public static readonly TypeText IReadOnlyBindableMember =
+        new(nameof(IReadOnlyBindableMember), Namespaces.Aspid_MVVM);
     
-    public static readonly TypeText IBindableMemberEventRemover =
-        new(nameof(IBindableMemberEventRemover), Namespaces.Aspid_MVVM);
+    public static readonly TypeText IReadOnlyValueBindableMember =
+        new(nameof(IReadOnlyValueBindableMember), Namespaces.Aspid_MVVM);
     
-    public static readonly TypeText? OneWayClassEvent =
-        new(nameof(OneWayClassEvent), Namespaces.Aspid_MVVM);
+    public static readonly TypeText IBinderAdder =
+        new(nameof(IBinderAdder), Namespaces.Aspid_MVVM);
     
-    public static readonly TypeText? OneWayStructEvent =
-        new(nameof(OneWayStructEvent), Namespaces.Aspid_MVVM);
+    public static readonly TypeText IBinderRemover =
+        new(nameof(IBinderRemover), Namespaces.Aspid_MVVM);
     
-    public static readonly TypeText? OneWayEnumEvent =
-        new(nameof(OneWayEnumEvent), Namespaces.Aspid_MVVM);
+    public static readonly TypeText? OneWayBindableMember =
+        new(nameof(OneWayBindableMember), Namespaces.Aspid_MVVM);
     
-    public static readonly TypeText? TwoWayClassEvent =
-        new(nameof(TwoWayClassEvent), Namespaces.Aspid_MVVM);
+    public static readonly TypeText? OneWayStructBindableMember =
+        new(nameof(OneWayStructBindableMember), Namespaces.Aspid_MVVM);
     
-    public static readonly TypeText? TwoWayStructEvent =
-        new(nameof(TwoWayStructEvent), Namespaces.Aspid_MVVM);
+    public static readonly TypeText? OneWayEnumBindableMember =
+        new(nameof(OneWayEnumBindableMember), Namespaces.Aspid_MVVM);
     
-    public static readonly TypeText? TwoWayEnumEvent =
-        new(nameof(TwoWayEnumEvent), Namespaces.Aspid_MVVM);
+    public static readonly TypeText? TwoWayBindableMember =
+        new(nameof(TwoWayBindableMember), Namespaces.Aspid_MVVM);
     
-    public static readonly TypeText? OneTimeClassEvent =
-        new(nameof(OneTimeClassEvent), Namespaces.Aspid_MVVM);
+    public static readonly TypeText? TwoWayStructBindableMember =
+        new(nameof(TwoWayStructBindableMember), Namespaces.Aspid_MVVM);
     
-    public static readonly TypeText? OneTimeStructEvent =
-        new(nameof(OneTimeStructEvent), Namespaces.Aspid_MVVM);
+    public static readonly TypeText? TwoWayEnumBindableMember =
+        new(nameof(TwoWayEnumBindableMember), Namespaces.Aspid_MVVM);
     
-    public static readonly TypeText? OneTimeEnumEvent =
-        new(nameof(OneTimeEnumEvent), Namespaces.Aspid_MVVM);
+    public static readonly TypeText? OneTimeBindableMember =
+        new(nameof(OneTimeBindableMember), Namespaces.Aspid_MVVM);
     
-    public static readonly TypeText? OneWayToSourceClassEvent =
-        new(nameof(OneWayToSourceClassEvent), Namespaces.Aspid_MVVM);
+    public static readonly TypeText? OneTimeStructBindableMember =
+        new(nameof(OneTimeStructBindableMember), Namespaces.Aspid_MVVM);
     
-    public static readonly TypeText? OneWayToSourceStructEvent =
-        new(nameof(OneWayToSourceStructEvent), Namespaces.Aspid_MVVM);
+    public static readonly TypeText? OneTimeEnumBindableMember =
+        new(nameof(OneTimeEnumBindableMember), Namespaces.Aspid_MVVM);
     
-    public static readonly TypeText? OneWayToSourceEnumEvent =
-        new(nameof(OneWayToSourceEnumEvent), Namespaces.Aspid_MVVM);
+    public static readonly TypeText? OneWayToSourceBindableMember =
+        new(nameof(OneWayToSourceBindableMember), Namespaces.Aspid_MVVM);
+    
+    public static readonly TypeText? OneWayToSourceStructBindableMember =
+        new(nameof(OneWayToSourceStructBindableMember), Namespaces.Aspid_MVVM);
+    
+    public static readonly TypeText? OneWayToSourceEnumBindableMember =
+        new(nameof(OneWayToSourceEnumBindableMember), Namespaces.Aspid_MVVM);
     #endregion
 
     #region Commands

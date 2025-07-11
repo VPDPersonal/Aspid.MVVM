@@ -125,7 +125,7 @@ public static class FindBindableMembersBody
                     $$"""
                       case {{member.Id}}:
                       {
-                          return new({{member.Event.ToInstantiateFieldString()}});
+                          return new({{member.GeneratedName}}Bindable);
                       }
                       """);
                 

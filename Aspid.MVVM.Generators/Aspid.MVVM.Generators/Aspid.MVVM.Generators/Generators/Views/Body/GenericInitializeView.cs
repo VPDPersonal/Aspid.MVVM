@@ -24,12 +24,8 @@ public static class GenericInitializeView
         foreach (var genericView in data.GenericViews)
         {
             var code = new CodeWriter();
-            
-            var baseTypes = genericView is { IsSelf: true, Type.TypeKind: not TypeKind.Interface }
-                ? new[] { $"{IView}<{genericView.Type.ToDisplayStringGlobal()}.IBindableMembers>" }
-                : null;
 
-            code.AppendClassBegin([Namespaces.Aspid_MVVM], @namespace, declaration, baseTypes)
+            code.AppendClassBegin([Namespaces.Aspid_MVVM], @namespace, declaration, null)
                 .AppendGenericViews(data, genericView)
                 .AppendClassEnd(@namespace);
             
@@ -53,34 +49,13 @@ public static class GenericInitializeView
         else modifier = "protected override";
         
         var typeName = genericView.Type.ToDisplayStringGlobal();
-        var typeBindableMembersName = genericView.Type.TypeKind is not TypeKind.Interface
-            ? $"{typeName}.IBindableMembers"
-            : $"{typeName}";
 
         if (genericView.IsSelf)
         {
-            if (genericView.Type.TypeKind is not TypeKind.Interface)
-            {
-                code.AppendMultiline(
-                    $$"""
-                      {{GeneratedCodeViewAttribute}}
-                      public void Initialize({{typeName}} viewModel)
-                      {
-                          if (viewModel is null) throw new {{ArgumentNullException}}(nameof(viewModel));
-                          if (ViewModel is not null) throw new {{InvalidOperationException}}("View is already initialized.");
-                          
-                          ViewModel = viewModel;
-                          InitializeInternal({{Unsafe}}.As<{{typeName}}, {{typeBindableMembersName}}>(ref viewModel));
-                      }
-                      """);
-            
-                code.AppendLine();
-            }
-        
             code.AppendMultiline(
                 $$"""
                   {{GeneratedCodeViewAttribute}}
-                  public void Initialize({{typeBindableMembersName}} viewModel)
+                  public void Initialize({{typeName}} viewModel)
                   {
                       if (viewModel is null) throw new {{ArgumentNullException}}(nameof(viewModel));
                       if (ViewModel is not null) throw new {{InvalidOperationException}}("View is already initialized.");
@@ -96,7 +71,7 @@ public static class GenericInitializeView
         code.AppendMultiline(
             $"""
             {GeneratedCodeViewAttribute}
-            {modifier} void InitializeInternal({typeBindableMembersName} viewModel)
+            {modifier} void InitializeInternal({typeName} viewModel)
             """)
             .BeginBlock()
             .AppendLine($"#if !{ASPID_MVVM_UNITY_PROFILER_DISABLED}")
@@ -154,7 +129,7 @@ public static class GenericInitializeView
             {
                 if (customViewModelInterfaces.TryGetValue(member.Id.SourceValue, out var bindableMember))
                 {
-                    code.AppendBindSafely(member, bindableMember.PropertyName);
+                    code.AppendBindSafely(member, bindableMember.Property.Name);
                 }
                 else
                 {

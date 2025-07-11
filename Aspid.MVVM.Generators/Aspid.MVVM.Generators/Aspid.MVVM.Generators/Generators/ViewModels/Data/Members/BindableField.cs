@@ -66,14 +66,11 @@ public class BindableField : BindableMember<IFieldSymbol>
         var onMethodChanged = $"On{GeneratedName}Changed";
         var onMethodChanging = $"On{GeneratedName}Changing";
 
-        var eventInvoke = Event.ToInvokeString();
-        if (eventInvoke != string.Empty)
-            eventInvoke = $"this.{eventInvoke}";
-        
+        var eventInvoke = ToInvokeBindableMemberString();
         var keyWordThis = !Member.IsStatic ? "this." : string.Empty;
 
         foreach (var property in BindAlso)
-            eventInvoke += $"\n\tthis.{property.Event.ToInvokeString()}";
+            eventInvoke += $"\n\t{property.ToInvokeBindableMemberString()}";
 
         return
             $$"""

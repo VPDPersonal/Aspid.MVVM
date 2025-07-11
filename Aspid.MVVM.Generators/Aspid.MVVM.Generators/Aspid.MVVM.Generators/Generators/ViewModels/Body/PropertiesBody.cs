@@ -27,23 +27,20 @@ public static class PropertiesBody
     {
         if (!data.Members.IsEmpty)
         {
-            code.AppendEvents(data)
-                .AppendFieldEvents(data)
+            code.AppendFieldEvents(data)
                 .AppendProperties(data)
+                .AppendBindableMembers(data)
                 .AppendSetMethods(data);
         }
         
         return code.AppendNotifyAll(data);
     }
     
-    private static CodeWriter AppendEvents(this CodeWriter code, in ViewModelData data)
+    private static CodeWriter AppendBindableMembers(this CodeWriter code, in ViewModelData data)
     {
         foreach (var member in data.Members)
         {
-            var @event = member.Event;
-            if (!@event.IsEventExist) continue;
-
-            code.AppendMultiline(@event.ToEventDeclarationString())
+            code.AppendMultiline(member.ToBindableMemberPropertyDeclarationString())
                 .AppendLine();
         }
 
@@ -54,10 +51,7 @@ public static class PropertiesBody
     {
         foreach (var member in data.Members)
         {
-            var @event = member.Event;
-            if (!@event.IsExist) continue;
-
-            code.AppendMultiline(@event.ToFieldDeclarationString())
+            code.AppendMultiline(member.ToBindableMemberFieldDeclarationString())
                 .AppendLine();
         }
         
@@ -103,10 +97,8 @@ public static class PropertiesBody
         
         foreach (var member in data.Members)
         {
-            var e = member.Event;
-            if (!e.IsExist || member.Mode is BindMode.OneWayToSource or BindMode.OneTime) continue;
-
-            code.AppendLine(e.ToInvokeString());
+            var invoke = member.ToInvokeBindableMemberString();
+            code.AppendLineIf(string.IsNullOrWhiteSpace(invoke), invoke);
         }
 
         return code.EndBlock();

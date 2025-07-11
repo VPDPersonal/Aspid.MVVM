@@ -98,7 +98,7 @@ public static class PropertiesBody
         foreach (var member in data.Members)
         {
             var invoke = member.ToInvokeBindableMemberString();
-            code.AppendLineIf(string.IsNullOrWhiteSpace(invoke), invoke);
+            code.AppendLineIf(!string.IsNullOrWhiteSpace(invoke), invoke);
         }
 
         return code.EndBlock();

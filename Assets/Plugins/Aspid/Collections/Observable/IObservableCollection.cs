@@ -1,11 +1,8 @@
-using System.Collections.Generic;
+namespace Aspid.Collections.Observable;
 
-namespace Aspid.Collections.Observable
+public interface IObservableCollection<out T> : IReadOnlyCollection<T>
 {
-    public interface IObservableCollection<out T> : IReadOnlyCollection<T>
-    {
-        public event NotifyCollectionChangedEventHandler<T>? CollectionChanged;
+    public event NotifyCollectionChangedEventHandler<T>? CollectionChanged;
         
-        public object SyncRoot { get; }
-    }
+    public object SyncRoot { get; }
 }

@@ -1,10 +1,6 @@
-using System;
-using System.Collections.Generic;
+namespace Aspid.Collections.Observable.Filtered;
 
-namespace Aspid.Collections.Observable.Filtered
+public interface IReadOnlyFilteredList<out T> : IReadOnlyList<T>
 {
-    public interface IReadOnlyFilteredList<out T> : IReadOnlyList<T>
-    {
-        public event Action? CollectionChanged;
-    }
+    public event Action? CollectionChanged;
 }

@@ -1,16 +1,13 @@
-using System;
+namespace Aspid.MVVM;
 
-namespace Aspid.MVVM
+/// <summary>
+/// Represents a read-only bindable member that exposes a value and notifies listeners when the value changes.
+/// </summary>
+/// <typeparam name="T">The type of the value being exposed.</typeparam>
+public interface IReadOnlyBindableMember<out T> : IReadOnlyValueBindableMember<T>
 {
     /// <summary>
-    /// Represents a read-only bindable member that exposes a value and notifies listeners when the value changes.
+    /// Event triggered when the value changes.
     /// </summary>
-    /// <typeparam name="T">The type of the value being exposed.</typeparam>
-    public interface IReadOnlyBindableMember<out T> : IReadOnlyValueBindableMember<T>
-    {
-        /// <summary>
-        /// Event triggered when the value changes.
-        /// </summary>
-        public event Action<T?>? Changed;
-    }
+    public event Action<T?>? Changed;
 }

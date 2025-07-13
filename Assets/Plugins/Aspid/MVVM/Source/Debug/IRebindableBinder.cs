@@ -1,18 +1,15 @@
 #if UNITY_EDITOR || DEBUG
-using System.ComponentModel;
+namespace Aspid.MVVM;
 
-namespace Aspid.MVVM
+/// <summary>
+/// Defines a method to rebind view-model bindings, used during debugging or in the Unity editor.
+/// </summary>
+public interface IRebindableBinder
 {
     /// <summary>
-    /// Defines a method to rebind view-model bindings, used during debugging or in the Unity editor.
+    /// Rebinds the current binders. Intended for internal or debug use.
     /// </summary>
-    public interface IRebindableBinder
-    {
-        /// <summary>
-        /// Rebinds the current binders. Intended for internal or debug use.
-        /// </summary>
-        [EditorBrowsable(EditorBrowsableState.Advanced)]
-        public void Rebind();
-    }
+    [EditorBrowsable(EditorBrowsableState.Advanced)]
+    public void Rebind();
 }
 #endif

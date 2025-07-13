@@ -1,14 +1,13 @@
-namespace Aspid.MVVM
+namespace Aspid.MVVM;
+
+/// <summary>
+/// Interface for removing event bindings from a bindable member.
+/// </summary>
+public interface IBinderRemover
 {
     /// <summary>
-    /// Interface for removing event bindings from a bindable member.
+    /// Removes the binding associated with the specified binder.
     /// </summary>
-    public interface IBinderRemover
-    {
-        /// <summary>
-        /// Removes the binding associated with the specified binder.
-        /// </summary>
-        /// <param name="binder">The binder whose binding needs to be removed.</param>
-        public void Remove(IBinder binder);
-    }
+    /// <param name="binder">The binder whose binding needs to be removed.</param>
+    public void Remove(IBinder binder);
 }

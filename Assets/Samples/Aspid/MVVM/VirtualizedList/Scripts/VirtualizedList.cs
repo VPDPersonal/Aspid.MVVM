@@ -90,6 +90,7 @@ namespace Samples.Aspid.MVVM.VirtualizedList
         
         private void Refresh()
         {
+            if (List is null) return;
             if (_views is null) return;
             
             ResizeContent();
@@ -219,6 +220,7 @@ namespace Samples.Aspid.MVVM.VirtualizedList
                 View = view;
                 _direction = direction;
 
+                view.gameObject.SetActive(false);
                 var rectTransform = (RectTransform)View.transform;
                 rectTransform.pivot = new Vector2(0, 1);
 

@@ -1,9 +1,12 @@
 using UnityEngine;
 using Aspid.MVVM.Unity;
 using System.Collections.Generic;
+using Aspid.Collections.Observable.Filtered;
 #if UNITY_2023_1_OR_NEWER
+using FilterFactory = Aspid.MVVM.StarterKit.IFilterFactory<Aspid.MVVM.IViewModel>;
 using ViewFactory = Aspid.MVVM.StarterKit.Unity.IViewFactory<Aspid.MVVM.Unity.MonoView>;
 #else
+using FilterFactory = Aspid.MVVM.StarterKit.IViewModelFilterFactory;
 using ViewFactory = Aspid.MVVM.StarterKit.Unity.IViewFactoryMonoView;
 #endif
 
@@ -25,9 +28,21 @@ namespace Aspid.MVVM.StarterKit.Unity
         [SerializeReferenceDropdown]
         [SerializeReference] private TViewFactory _viewFactory;
 
+        [SerializeReferenceDropdown]
+        [SerializeReference] private FilterFactory _filterFactory;
+
         private List<T> _views;
         
         private List<T> Views => _views ??= new List<T>();
+
+        protected override void OnUnbound()
+        {
+            _filterFactory?.Release();
+            base.OnUnbound();
+        }
+
+        protected sealed override IReadOnlyFilteredList<IViewModel> GetFilter(IReadOnlyList<IViewModel> list) =>
+            _filterFactory?.Create(list);
 
         protected sealed override void OnAdded(IViewModel newItem, int newStartingIndex)
         {

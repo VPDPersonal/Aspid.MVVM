@@ -5,6 +5,12 @@ using UnityEngine.UI;
 using Aspid.MVVM.Unity;
 using System.Collections.Generic;
 using Aspid.MVVM.StarterKit.Unity;
+using Aspid.Collections.Observable.Filtered;
+#if UNITY_2023_1_OR_NEWER
+using FilterFactory = Aspid.MVVM.StarterKit.IFilterFactory<Aspid.MVVM.IViewModel>;
+#else
+using FilterFactory = Aspid.MVVM.StarterKit.IViewModelFilterFactory;
+#endif
 
 namespace Samples.Aspid.MVVM.VirtualizedList
 {
@@ -14,12 +20,14 @@ namespace Samples.Aspid.MVVM.VirtualizedList
         [SerializeField] private ScrollRect _scrollRect;
         [SerializeField] private MonoView _viewPrefab;
         
+        [SerializeReferenceDropdown]
+        [SerializeReference] private FilterFactory _filterFactory;
+        
         private Size? _viewSize;
         private Element[] _views;
         private Size? _viewportSize;
         private ContentTransform? _content;
         private int _previousViewModelTopIndex = -1;
-
 
         private Size ViewSize => _viewSize ??= new Size(_viewPrefab, _direction);
         
@@ -41,16 +49,12 @@ namespace Samples.Aspid.MVVM.VirtualizedList
         
         protected override void OnUnbound()
         {
-            foreach (var view in _views)
-                view.Deinitialize();
-            
-            _scrollRect.onValueChanged.RemoveListener(OnScrollValueChanged);
-            
+            Deinitialize();
             base.OnUnbound();
         }
 
         private void Initialize()
-        { 
+        {
             var visibleCount = CalculateVisibleCount();
 
             _views ??= new Element[visibleCount];
@@ -71,6 +75,18 @@ namespace Samples.Aspid.MVVM.VirtualizedList
             int CalculateVisibleCount() =>
                 Mathf.CeilToInt(ViewportSize.Value / ViewSize.Value) + 2;
         }
+
+        private void Deinitialize()
+        {
+            foreach (var view in _views)
+                view.Deinitialize();
+            
+            _filterFactory?.Release();
+            _scrollRect.onValueChanged.RemoveListener(OnScrollValueChanged);
+        }
+        
+        protected sealed override IReadOnlyFilteredList<IViewModel> GetFilter(IReadOnlyList<IViewModel> list) =>
+            _filterFactory?.Create(list);
         
         private void Refresh()
         {
@@ -228,15 +244,14 @@ namespace Samples.Aspid.MVVM.VirtualizedList
                     View.gameObject.SetActive(true);
                     View.transform.localPosition = GetPosition(index);
                 }
-                else
-                {
-                    Deinitialize();
-                    View.gameObject.SetActive(false);
-                }
+                else Deinitialize();
             }
             
-            public void Deinitialize() =>
+            public void Deinitialize()
+            {
                 View.Deinitialize();
+                View.gameObject.SetActive(false);
+            }
 
             private Vector3 GetPosition(int index) => _direction switch
             {

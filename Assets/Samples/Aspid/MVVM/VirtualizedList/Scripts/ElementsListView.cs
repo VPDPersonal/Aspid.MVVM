@@ -2,6 +2,7 @@ using Aspid.MVVM;
 using UnityEngine;
 using Aspid.MVVM.Unity;
 using Aspid.Collections.Observable;
+using Aspid.Collections.Observable.Filtered;
 
 namespace Samples.Aspid.MVVM.VirtualizedList
 {
@@ -14,9 +15,12 @@ namespace Samples.Aspid.MVVM.VirtualizedList
         }
 
         [RequireBinder(typeof(IReadOnlyObservableList<IViewModel>))]
+        [SerializeField] private MonoBinder[] _items;
+        
+        [RequireBinder(typeof(IReadOnlyFilteredList<IViewModel>))]
         [SerializeField] private MonoBinder[] _isOnTrueItems;
        
-        [RequireBinder(typeof(IReadOnlyObservableList<IViewModel>))]
+        [RequireBinder(typeof(IReadOnlyFilteredList<IViewModel>))]
         [SerializeField] private MonoBinder[] _isOnFalseItems;
     }
 }

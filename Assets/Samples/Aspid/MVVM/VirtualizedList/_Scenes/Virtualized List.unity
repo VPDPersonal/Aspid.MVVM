@@ -278,9 +278,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d1714851253d54aa683fca319217e47e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _isOnTrueItems: []
-  _isOnFalseItems:
+  _items:
   - {fileID: 506593851}
+  _isOnTrueItems: []
+  _isOnFalseItems: []
 --- !u!114 &506593849
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -332,12 +333,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _mode: 1
   __view: {fileID: 506593848}
-  __id: IsOnFalseItems
+  __id: Items
   _isDebug: 1
   _log: []
   _direction: 0
   _scrollRect: {fileID: 506593844}
   _viewPrefab: {fileID: 6005543252330047322, guid: e5b43f7a117e940658befc16aebcf62d, type: 3}
+  _filterFactory:
+    rid: 1607910719296372863
+  references:
+    version: 2
+    RefIds:
+    - rid: 1607910719296372863
+      type: {class: ElementFilterFactory, ns: Samples.Aspid.MVVM.VirtualizedList, asm: Assembly-CSharp}
+      data:
+        _isCompleted: 0
 --- !u!114 &506593852
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -15,10 +15,10 @@ namespace Samples.Aspid.MVVM.VirtualizedList
         [SerializeField] private MonoView _viewPrefab;
         
         private Size? _viewSize;
+        private Element[] _views;
         private Size? _viewportSize;
         private ContentTransform? _content;
         private int _previousViewModelTopIndex = -1;
-        private Element[] _views = Array.Empty<Element>() ;
 
 
         private Size ViewSize => _viewSize ??= new Size(_viewPrefab, _direction);
@@ -39,24 +39,28 @@ namespace Samples.Aspid.MVVM.VirtualizedList
         protected override void OnBound() =>
             Initialize();
         
-        protected override void OnUnbound() =>
+        protected override void OnUnbound()
+        {
+            foreach (var view in _views)
+                view.Deinitialize();
+            
             _scrollRect.onValueChanged.RemoveListener(OnScrollValueChanged);
+            
+            base.OnUnbound();
+        }
 
         private void Initialize()
         { 
             var visibleCount = CalculateVisibleCount();
 
-            if (_views is not null)
-            {
-                foreach (var view in _views)
-                    view.Dispose();
-            }
-            
-            _views = new Element[visibleCount];
+            _views ??= new Element[visibleCount];
             
             for (var i = 0; i < visibleCount; i++)
             {
-                var view = Instantiate(_viewPrefab, Content);
+                var view = _views[i] is null
+                    ? Instantiate(_viewPrefab, Content)
+                    : _views[i].View;
+
                 _views[i] = new Element(view, _direction);
             }
             
@@ -70,6 +74,8 @@ namespace Samples.Aspid.MVVM.VirtualizedList
         
         private void Refresh()
         {
+            if (_views is null) return;
+            
             ResizeContent();
             _previousViewModelTopIndex = GetCurrentViewModelTopIndex();
 
@@ -183,20 +189,21 @@ namespace Samples.Aspid.MVVM.VirtualizedList
         private void OnScrollValueChanged(Vector2 _) =>
             RefreshListOnScrollValueChanged();
         
-        private class Element : IDisposable
+        private class Element
         {
+            public readonly MonoView View;
+            
             private int _index;
             private readonly float _size;
-            private readonly MonoView _view;
             private readonly Direction _direction;
             
             public Element(MonoView view, Direction direction)
             {
                 _index = -1;
-                _view = view;
+                View = view;
                 _direction = direction;
 
-                var rectTransform = (RectTransform)_view.transform;
+                var rectTransform = (RectTransform)View.transform;
                 rectTransform.pivot = new Vector2(0, 1);
 
                 _size = direction switch
@@ -217,16 +224,19 @@ namespace Samples.Aspid.MVVM.VirtualizedList
                 {
                     // TODO Remove reinitialize and add swap data for optimize
                     
-                    _view.Reinitialize(viewModel);
-                    _view.gameObject.SetActive(true);
-                    _view.transform.localPosition = GetPosition(index);
+                    View.Reinitialize(viewModel);
+                    View.gameObject.SetActive(true);
+                    View.transform.localPosition = GetPosition(index);
                 }
                 else
                 {
-                    _view.Deinitialize();
-                    _view.gameObject.SetActive(false);
+                    Deinitialize();
+                    View.gameObject.SetActive(false);
                 }
             }
+            
+            public void Deinitialize() =>
+                View.Deinitialize();
 
             private Vector3 GetPosition(int index) => _direction switch
             {
@@ -234,9 +244,6 @@ namespace Samples.Aspid.MVVM.VirtualizedList
                 Direction.Horizontal => new Vector3(index * _size, 0, 0),
                 _ => throw new ArgumentOutOfRangeException(nameof(_direction), _direction, null)
             };
-
-            public void Dispose() =>
-                _view.DestroyView();
         }
         
         private enum Direction

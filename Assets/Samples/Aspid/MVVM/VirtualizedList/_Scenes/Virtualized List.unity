@@ -167,9 +167,9 @@ GameObject:
   - component: {fileID: 506593845}
   - component: {fileID: 506593844}
   - component: {fileID: 506593848}
-  - component: {fileID: 506593850}
   - component: {fileID: 506593849}
   - component: {fileID: 506593851}
+  - component: {fileID: 506593852}
   m_Layer: 5
   m_Name: Scroll View
   m_TagString: Untagged
@@ -278,7 +278,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d1714851253d54aa683fca319217e47e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _items:
+  _isOnTrueItems: []
+  _isOnFalseItems:
   - {fileID: 506593851}
 --- !u!114 &506593849
 MonoBehaviour:
@@ -304,7 +305,7 @@ MonoBehaviour:
   _isDisposeViewModelOnDestroy: 1
   _viewModelComponent:
     Resolve: 0
-    Mono: {fileID: 506593850}
+    Mono: {fileID: 506593852}
     Scriptable: {fileID: 0}
     Type:
       _typeName: 
@@ -317,19 +318,6 @@ MonoBehaviour:
     RefIds:
     - rid: -2
       type: {class: , ns: , asm: }
---- !u!114 &506593850
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 506593842}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 634ced1b49374a33a11f2e9d94fdcd8f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _count: 100
 --- !u!114 &506593851
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -344,12 +332,25 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _mode: 1
   __view: {fileID: 506593848}
-  __id: Items
+  __id: IsOnFalseItems
   _isDebug: 1
   _log: []
   _direction: 0
   _scrollRect: {fileID: 506593844}
   _viewPrefab: {fileID: 6005543252330047322, guid: e5b43f7a117e940658befc16aebcf62d, type: 3}
+--- !u!114 &506593852
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 506593842}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b07c384ae35b489891ce274c1361dd99, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _count: 100
 --- !u!1 &1008564484
 GameObject:
   m_ObjectHideFlags: 0

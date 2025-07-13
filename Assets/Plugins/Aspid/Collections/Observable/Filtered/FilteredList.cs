@@ -10,11 +10,11 @@ namespace Aspid.Collections.Observable.Filtered
         public event Action? CollectionChanged;
         
         private int[]? _indexes;
-        private Func<T, bool>? _filter;
+        private Predicate<T>? _filter;
         private IComparer<T>? _comparer;
         private readonly IReadOnlyList<T> _list;
         
-        public Func<T, bool>? Filter
+        public Predicate<T>? Filter
         {
             get => _filter;
             set
@@ -52,10 +52,10 @@ namespace Aspid.Collections.Observable.Filtered
             }
         }
         
-        public FilteredList(IReadOnlyList<T> list, IComparer<T>? comparer, Func<T, bool>? filter = null)
+        public FilteredList(IReadOnlyList<T> list, IComparer<T>? comparer, Predicate<T>? filter = null)
             : this(list, filter, comparer) { }
 
-        public FilteredList(IReadOnlyList<T> list, Func<T, bool>? filter, IComparer<T>? comparer = null)
+        public FilteredList(IReadOnlyList<T> list, Predicate<T>? filter, IComparer<T>? comparer = null)
             : this(list)
         {
             _filter = filter;

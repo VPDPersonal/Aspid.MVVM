@@ -14,6 +14,9 @@ namespace Samples.Aspid.MVVM.VirtualizedList
         }
 
         [RequireBinder(typeof(IReadOnlyObservableList<IViewModel>))]
-        [SerializeField] private MonoBinder[] _items;
+        [SerializeField] private MonoBinder[] _isOnTrueItems;
+       
+        [RequireBinder(typeof(IReadOnlyObservableList<IViewModel>))]
+        [SerializeField] private MonoBinder[] _isOnFalseItems;
     }
 }

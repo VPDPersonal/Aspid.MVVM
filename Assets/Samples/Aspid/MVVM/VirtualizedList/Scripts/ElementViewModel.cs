@@ -5,14 +5,15 @@ namespace Samples.Aspid.MVVM.VirtualizedList
     [ViewModel]
     public partial class ElementViewModel
     {
-        [OneWayBind] private string _name;
+        [Access(Get = Access.Public)]
+        [OneWayBind] private int _number;
         
         [Access(Get = Access.Public)]
         [OneWayBind] private bool _isCompleted;
 
-        public ElementViewModel(string name, bool isCompleted)
+        public ElementViewModel(int number, bool isCompleted)
         {
-            _name = name;
+            _number = number;
             _isCompleted = isCompleted;
         }
     }

@@ -7,6 +7,7 @@ namespace Samples.Aspid.MVVM.VirtualizedList
     [View]
     public partial class ElementView : MonoView
     {
+        [BindId("Number")]
         [RequireBinder(typeof(string))]
         [SerializeField] private MonoBinder[] _name;
         

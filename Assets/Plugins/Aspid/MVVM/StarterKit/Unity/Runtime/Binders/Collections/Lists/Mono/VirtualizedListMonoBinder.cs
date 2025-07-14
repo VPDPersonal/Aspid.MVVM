@@ -2,6 +2,7 @@ using System;
 using UnityEngine;
 using UnityEngine.UI;
 using Aspid.MVVM.Unity;
+using System.Collections;
 using System.Collections.Generic;
 using Aspid.Collections.Observable.Filtered;
 #if UNITY_2023_1_OR_NEWER
@@ -13,8 +14,8 @@ using FilterFactory = Aspid.MVVM.StarterKit.IViewModelFilterFactory;
 namespace Aspid.MVVM.StarterKit.Unity
 {
     // Beta
-    [AddComponentMenu("Aspid/MVVM/Binders/Collections/Virtualized List Binder")]
-    [AddComponentContextMenu(typeof(ScrollRect), "Add ScrollRect Binder/Virtualized List Binder")]
+    [AddComponentMenu("Aspid/MVVM/Binders/Collections/Virtualized List Binder (Beta)")]
+    [AddComponentContextMenu(typeof(ScrollRect), "Add ScrollRect Binder/Virtualized List Binder (Beta)")]
     public class VirtualizedListMonoBinder : ObservableListMonoBinder<IViewModel>
     {
         [SerializeField] private Direction _direction;
@@ -27,6 +28,7 @@ namespace Aspid.MVVM.StarterKit.Unity
         private Size? _viewSize;
         private Element[] _views;
         private Size? _viewportSize;
+        private Coroutine _coroutine;
         private ContentTransform? _content;
         private int _previousViewModelTopIndex = -1;
 
@@ -62,6 +64,13 @@ namespace Aspid.MVVM.StarterKit.Unity
 
         private void Initialize()
         {
+            _coroutine = StartCoroutine(InitializeAsync());
+        }
+
+        private IEnumerator InitializeAsync()
+        {
+            yield return new WaitForEndOfFrame();
+            
             var visibleCount = CalculateVisibleCount();
 
             _views ??= new Element[visibleCount];
@@ -77,14 +86,17 @@ namespace Aspid.MVVM.StarterKit.Unity
             
             _scrollRect.onValueChanged.AddListener(OnScrollValueChanged);
             Refresh();
-            return;
-            
+            yield break;
+
             int CalculateVisibleCount() =>
                 Mathf.CeilToInt(ViewportSize.Value / ViewSize.Value) + 2;
         }
 
         private void Deinitialize()
         {
+            StopCoroutine(_coroutine);
+            _coroutine = null;
+            
             foreach (var view in _views)
                 view.Deinitialize();
             

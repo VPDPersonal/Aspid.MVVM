@@ -8,6 +8,6 @@ namespace Aspid.MVVM.StarterKit
         public IReadOnlyFilteredList<T>? Create(IReadOnlyList<T>? list) =>
             list?.CreateFiltered();
 
-        public void Release() { }
+        public void Release();
     }
 }

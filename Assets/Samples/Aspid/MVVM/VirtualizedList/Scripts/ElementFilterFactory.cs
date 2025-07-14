@@ -2,8 +2,7 @@ using System;
 using System.Collections.Generic;
 using Aspid.Collections.Observable.Filtered;
 using Aspid.MVVM;
-using Aspid.MVVM.StarterKit;
-using TriInspector;
+using Aspid.MVVM.StarterKit; 
 using UnityEngine;
 
 namespace Samples.Aspid.MVVM.VirtualizedList
@@ -11,7 +10,6 @@ namespace Samples.Aspid.MVVM.VirtualizedList
     [Serializable]
     public class ElementFilterFactory : IViewModelFilterFactory
     {
-        [OnValueChanged(nameof(OnValidate))]
         [SerializeField] private bool _isCompleted;
 
         private FilteredList<ElementViewModel> _filter;
@@ -24,10 +22,13 @@ namespace Samples.Aspid.MVVM.VirtualizedList
             return _filter;
         }
 
+        public void Release()
+        {
+            _filter.Dispose();
+            _filter = null;
+        }
+
         private bool Check(ElementViewModel viewModel) =>
             viewModel.IsCompleted == _isCompleted;
-
-        private void OnValidate() =>
-            _filter?.Update();
     }
 }

@@ -1,10 +1,8 @@
 using System;
-using Aspid.MVVM;
 using UnityEngine;
 using UnityEngine.UI;
 using Aspid.MVVM.Unity;
 using System.Collections.Generic;
-using Aspid.MVVM.StarterKit.Unity;
 using Aspid.Collections.Observable.Filtered;
 #if UNITY_2023_1_OR_NEWER
 using FilterFactory = Aspid.MVVM.StarterKit.IFilterFactory<Aspid.MVVM.IViewModel>;
@@ -12,9 +10,12 @@ using FilterFactory = Aspid.MVVM.StarterKit.IFilterFactory<Aspid.MVVM.IViewModel
 using FilterFactory = Aspid.MVVM.StarterKit.IViewModelFilterFactory;
 #endif
 
-namespace Samples.Aspid.MVVM.VirtualizedList
+namespace Aspid.MVVM.StarterKit.Unity
 {
-    public class VirtualizedList : ObservableListMonoBinder<IViewModel>
+    // Beta
+    [AddComponentMenu("Aspid/MVVM/Binders/Collections/Virtualized List Binder")]
+    [AddComponentContextMenu(typeof(ScrollRect), "Add ScrollRect Binder/Virtualized List Binder")]
+    public class VirtualizedListMonoBinder : ObservableListMonoBinder<IViewModel>
     {
         [SerializeField] private Direction _direction;
         [SerializeField] private ScrollRect _scrollRect;
@@ -37,11 +38,17 @@ namespace Samples.Aspid.MVVM.VirtualizedList
 
         private void OnValidate()
         {
-            if (!_scrollRect) return;
+            if (!_scrollRect)
+            {
+                _scrollRect = GetComponent<ScrollRect>();
+                if (!_scrollRect) return;
+            }
             
-            Content.Validate();
             _scrollRect.vertical = _direction is Direction.Vertical;
-            _scrollRect.horizontal = _direction is Direction.Horizontal;
+            _scrollRect.horizontal = _direction is Direction.Horizontal;   
+
+            if (_viewPrefab)
+                Content.Validate();
         }
 
         protected override void OnBound() =>

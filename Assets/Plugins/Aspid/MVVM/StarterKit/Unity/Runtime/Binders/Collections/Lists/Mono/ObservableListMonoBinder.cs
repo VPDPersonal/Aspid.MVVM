@@ -41,14 +41,15 @@ namespace Aspid.MVVM.StarterKit.Unity
         private void DeinitializeList()
         {
             if (List is null) return;
-                
-            OnReset();
             
             switch (List)
             {
                 case IReadOnlyFilteredList<T> filteredList: filteredList.CollectionChanged -= OnCollectionChanged; break;
                 case IReadOnlyObservableList<T> observableList: observableList.CollectionChanged -= OnCollectionChanged; break;
             }
+            
+            List = null;
+            OnReset();
         }
 
         private void OnCollectionChanged()

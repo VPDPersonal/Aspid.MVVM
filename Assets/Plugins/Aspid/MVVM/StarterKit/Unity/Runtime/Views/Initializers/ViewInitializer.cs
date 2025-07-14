@@ -17,7 +17,6 @@ namespace Aspid.MVVM.StarterKit.Unity
         
         private IView[] _views;
         private bool _isConstructed;
-        private IViewModel _viewModel;
 
 #if ASPID_MVVM_ZENJECT_INTEGRATION
         [Zenject.Inject]
@@ -28,8 +27,6 @@ namespace Aspid.MVVM.StarterKit.Unity
         private VContainer.IObjectResolver _vcontainerContainer; 
 #endif
         
-        public bool IsInitialized { get; private set; }
-        
         private void Constructor()
         {
             if (_isConstructed) return;
@@ -38,7 +35,7 @@ namespace Aspid.MVVM.StarterKit.Unity
             for (var i = 0; i < _views.Length; i++)
                 _views[i] = Get(_viewComponents[i]);
 
-            _viewModel = Get(_viewModelComponent);
+            ViewModel = Get(_viewModelComponent);
             _isConstructed = true;
             return;
 
@@ -130,7 +127,7 @@ namespace Aspid.MVVM.StarterKit.Unity
             }
             
             if (_isDisposeViewModelOnDestroy) 
-                _viewModel.DisposeViewModel();
+                ViewModel.DisposeViewModel();
         }
 
         private void InitializeInternal()
@@ -140,7 +137,7 @@ namespace Aspid.MVVM.StarterKit.Unity
             Constructor();
 
             foreach (var view in _views)
-                view.Initialize(_viewModel);
+                view.Initialize(ViewModel);
 
             IsInitialized = true;
         }

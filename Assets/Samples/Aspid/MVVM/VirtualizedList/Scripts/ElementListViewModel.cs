@@ -34,24 +34,24 @@ namespace Samples.Aspid.MVVM.VirtualizedList
             Items.Add(CreateElement());
 
         [RelayCommand]
-        private void InsertViewModel() =>
-            Items.Insert(0, CreateElement());
+        private void InsertViewModel(int index) =>
+            Items.Insert(index, CreateElement());
         
         [RelayCommand]
-        private void Move() =>
-            Items.Move(0, Items.Count - 1);
+        private void Move(int oldIndex, int newIndex) =>
+            Items.Move(oldIndex, newIndex);
         
         [RelayCommand]
-        private void Swap() =>
-            Items.Swap(0, Items.Count - 1);
+        private void Swap(int index1, int index2) =>
+            Items.Swap(index1, index2);
 
         [RelayCommand]
-        private void Remove() =>
-            Items.RemoveAt(Items.Count - 1);
+        private void Remove(int index) =>
+            Items.RemoveAt(index);
 
         [RelayCommand]
-        private void Replace() =>
-            Items[0] = CreateElement();
+        private void Replace(int index) =>
+            Items[index] = CreateElement();
 
         private ElementViewModel CreateElement()
         {

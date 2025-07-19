@@ -8,9 +8,12 @@ namespace Aspid.MVVM.Unity
     /// Implements <see cref="IDisposable"/> to allow cleanup of resources, including the destruction of the component.
     /// </summary>
     [ViewModel]
-    public abstract partial class MonoViewModel : MonoBehaviour
+    public abstract partial class MonoViewModel : MonoBehaviour, IDisposable
     {
         protected virtual void OnValidate() =>
             NotifyAll();
+
+        public void Dispose() =>
+            Destroy(this);
     }
 }

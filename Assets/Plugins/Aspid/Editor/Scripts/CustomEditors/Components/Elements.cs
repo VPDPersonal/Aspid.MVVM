@@ -80,8 +80,7 @@ namespace Aspid.CustomEditors
         public static HelpBox CreateHelpBox(string text, HelpBoxMessageType type, string? name = "HelpBox")
         {
             var helpBox = new HelpBox(text, type)
-                .SetBackgroundColor(EditorColor.ErrorBackground)
-                .SetSize(new StyleLength(new Length(100, LengthUnit.Percent)));
+                .SetSize(width: new StyleLength(new Length(100, LengthUnit.Percent)));
             
             switch (type)
             {

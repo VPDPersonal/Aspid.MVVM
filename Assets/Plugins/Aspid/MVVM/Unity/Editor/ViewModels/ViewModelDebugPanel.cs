@@ -90,45 +90,48 @@ namespace Aspid.MVVM.Unity
             var valueType = context.Type;
             var value = context.Value;
             var label = context.Label;
-            if (value is null) return new NullField(label);
             
-            if (typeof(int) == valueType) return new IntegerField(label).SetupField(context);
-            if (typeof(long) == valueType) return new LongField(label).SetupField(context);
-            if (typeof(float) == valueType) return new FloatField(label).SetupField(context);
-            if (typeof(double) == valueType) return new DoubleField(label).SetupField(context);
-            if (typeof(bool) == valueType) return new Toggle(label).SetupField(context);
-            if (typeof(string) == valueType) return new TextField(label).SetupField(context);
-            if (typeof(Color) == valueType) return new ColorField(label).SetupField(context);
-            if (typeof(Rect) == valueType) return new RectField(label).SetupField(context);
-            if (typeof(RectInt) == valueType) return new RectIntField(label).SetupField(context);
-            if (typeof(Bounds) == valueType) return new BoundsField(label).SetupField(context);
-            if (typeof(BoundsInt) == valueType) return new BoundsIntField(label).SetupField(context);
-            if (typeof(Vector2) == valueType) return new Vector2Field(label).SetupField(context);
-            if (typeof(Vector3) == valueType) return new Vector3Field(label).SetupField(context);
-            if (typeof(Vector4) == valueType) return new Vector4Field(label).SetupField(context);
-            if (typeof(Vector2Int) == valueType) return new Vector2IntField(label).SetupField(context);
-            if (typeof(Vector3Int) == valueType) return new Vector3IntField(label).SetupField(context);
-            if (typeof(Type).IsAssignableFrom(valueType)) return new TypeField((Type)value, label);
-            if (typeof(Object).IsAssignableFrom(valueType)) return new ObjectField(label).SetupField(context);
-            if (typeof(Gradient).IsAssignableFrom(valueType)) return new GradientField(label).SetupField(context);
-            if (typeof(AnimationCurve).IsAssignableFrom(valueType)) return new CurveField(label).SetupField(context);
-            if (typeof(Delegate).IsAssignableFrom(valueType)) return new DelegateField(value as Delegate, context.LabelWithType, context.PrefsKey);
-            if (typeof(IEnumerable).IsAssignableFrom(valueType)) return BuildEnumerableField(context);
-            if (typeof(RelayCommand).IsAssignableFrom(valueType)) return BuildRelayCommandField(context);
-            if (typeof(OneWayBindableMember).IsAssignableFrom(valueType)) return BuildBindableMemberField(context);
-            if (typeof(TwoWayBindableMember).IsAssignableFrom(valueType)) return BuildBindableMemberField(context);
-            if (typeof(OneWayToSourceBindableMember).IsAssignableFrom(valueType)) return BuildBindableMemberField(context);
-            if (typeof(OneWayStructBindableMember).IsAssignableFrom(valueType)) return BuildBindableMemberField(context);
-            if (typeof(TwoWayStructBindableMember).IsAssignableFrom(valueType)) return BuildBindableMemberField(context);
-            if (typeof(OneWayToSourceBindableMember).IsAssignableFrom(valueType)) return BuildBindableMemberField(context);
-            if (typeof(Enum).IsAssignableFrom(valueType))
+            VisualElement field;
+            
+            if (value is null) field = new NullField(label);
+            else if (typeof(int) == valueType) field = new IntegerField(label).SetupField(context);
+            else if (typeof(long) == valueType) field = new LongField(label).SetupField(context);
+            else if (typeof(float) == valueType) field = new FloatField(label).SetupField(context);
+            else if (typeof(double) == valueType) field = new DoubleField(label).SetupField(context);
+            else if (typeof(bool) == valueType) field = new Toggle(label).SetupField(context);
+            else if (typeof(string) == valueType) field = new TextField(label).SetupField(context);
+            else if (typeof(Color) == valueType) field = new ColorField(label).SetupField(context);
+            else if (typeof(Rect) == valueType) field = new RectField(label).SetupField(context);
+            else if (typeof(RectInt) == valueType) field = new RectIntField(label).SetupField(context);
+            else if (typeof(Bounds) == valueType) field = new BoundsField(label).SetupField(context);
+            else if (typeof(BoundsInt) == valueType) field = new BoundsIntField(label).SetupField(context);
+            else if (typeof(Vector2) == valueType) field = new Vector2Field(label).SetupField(context);
+            else if (typeof(Vector3) == valueType) field = new Vector3Field(label).SetupField(context);
+            else if (typeof(Vector4) == valueType) field = new Vector4Field(label).SetupField(context);
+            else if (typeof(Vector2Int) == valueType) field = new Vector2IntField(label).SetupField(context);
+            else if (typeof(Vector3Int) == valueType) field = new Vector3IntField(label).SetupField(context);
+            else if (typeof(Type).IsAssignableFrom(valueType)) field = new TypeField((Type)value, label);
+            else if (typeof(Object).IsAssignableFrom(valueType)) field = new ObjectField(label).SetupField(context);
+            else if (typeof(Gradient).IsAssignableFrom(valueType)) field = new GradientField(label).SetupField(context);
+            else if (typeof(AnimationCurve).IsAssignableFrom(valueType)) field = new CurveField(label).SetupField(context);
+            else if (typeof(Delegate).IsAssignableFrom(valueType)) field = new DelegateField(value as Delegate, context.LabelWithType, context.PrefsKey);
+            else if (typeof(IEnumerable).IsAssignableFrom(valueType)) field = BuildEnumerableField(context);
+            else if (typeof(OneWayBindableMember).IsAssignableFrom(valueType)) field = BuildBindableMemberField(context);
+            else if (typeof(TwoWayBindableMember).IsAssignableFrom(valueType)) field = BuildBindableMemberField(context);
+            else if (typeof(OneWayToSourceBindableMember).IsAssignableFrom(valueType)) field = BuildBindableMemberField(context);
+            else if (typeof(OneWayStructBindableMember).IsAssignableFrom(valueType)) field = BuildBindableMemberField(context);
+            else if (typeof(TwoWayStructBindableMember).IsAssignableFrom(valueType)) field = BuildBindableMemberField(context);
+            else if (typeof(OneWayToSourceStructBindableMember).IsAssignableFrom(valueType)) field = BuildBindableMemberField(context);
+            else if (valueType.IsRelayCommandType()) field = BuildRelayCommandField(context);
+            else if (typeof(Enum).IsAssignableFrom(valueType))
             {
-                return valueType.IsDefined(typeof(FlagsAttribute), false)
+                field = valueType.IsDefined(typeof(FlagsAttribute), false)
                     ? new EnumFlagsField(label, value as Enum).SetupField(context)
                     : new EnumField(label, value as Enum).SetupField(context);
             }
-
-            return BuildCompositeValue(context);
+            else field = BuildCompositeValue(context);
+            
+            return field.SetMargin(bottom: 5);
         }
 
         private static VisualElement BuildEnumerableField(Context context)
@@ -150,8 +153,8 @@ namespace Aspid.MVVM.Unity
                         
                         var box = Elements.CreateContainer(EditorColor.LighterContainer);
 
-                        box.AddChild(BuildField(new Context(key, "Key")));
-                        box.AddChild(BuildField(new Context(elementValue, "Value")));
+                        box.AddChild(BuildField(new Context(key, "Key", context)));
+                        box.AddChild(BuildField(new Context(elementValue, "Value", context)));
 
                         container.AddChild(box);
                     }
@@ -161,7 +164,7 @@ namespace Aspid.MVVM.Unity
                     var index = 0;
                     foreach (var item in (IEnumerable)context.Value)
                     {
-                        container.AddChild(BuildField(new Context(item, index.ToString())));
+                        container.AddChild(BuildField(new Context(item, index.ToString(), context)));
                         index++;
                     }
                 }
@@ -198,16 +201,15 @@ namespace Aspid.MVVM.Unity
                 var canExecute = valueType.GetField("_canExecute", BindingAttr);
                 var canExecuteChanged = valueType.GetField("CanExecuteChanged", BindingAttr);
                 
-                var executeMethod = valueType.GetMethod("Execute", BindingAttr);
-                var notifyCanExecuteChangedMethod = valueType.GetMethod("NotifyCanExecuteChanged", BindingAttr);
-
                 var updater = context.Updaters;
                 
                 container.AddChild(BuildField(new Context(execute, context)));
                 container.AddChild(BuildField(new Context(canExecute, context)));
                 container.AddChild(BuildField(new Context(canExecuteChanged, context)));
-                container.AddChild(updater.CreateButton("Execute", () => executeMethod?.Invoke(value, new object[] { })));
-                container.AddChild(updater.CreateButton("Notify Can Execute Changed", () => notifyCanExecuteChangedMethod?.Invoke(value, new object[] { })));
+
+                container.AddChild(new RelayCommandField(context.Parent.Value, value, valueType, context.Name, false,
+                    () => updater.Update(),
+                    () => updater.Update()));
                 
                 return container;
             });
@@ -249,7 +251,10 @@ namespace Aspid.MVVM.Unity
             foldout.RegisterValueChangedCallback(e =>
             {
                 if (e.target == foldout)
+                {
                     SetValue(e.newValue);
+                    e.StopPropagation();
+                }
             });
             
             SetValue(foldout.value);
@@ -269,15 +274,14 @@ namespace Aspid.MVVM.Unity
         {
             public readonly Type Type;
             public readonly string Tag;
+            public readonly string Name;
             public readonly string Label;
             public readonly bool IsReadonly;
             public readonly string LabelWithType;
             public readonly Context Parent;
             public readonly Updaters Updaters;
-
-            private int _increment;
+            
             private readonly object _value;
-            private readonly string _prefsKey;
             private readonly FieldInfo _field;
             private readonly PropertyInfo _property;
 
@@ -296,21 +300,13 @@ namespace Aspid.MVVM.Unity
                     else throw new NotImplementedException();
                 }
             }
-
-            private int Increment
-            {
-                get => Parent?.Increment ?? _increment;
-                set
-                {
-                    if (Parent is not null) Parent.Increment = value;
-                    else _increment = value;
-                }
-            }
             
-            public string PrefsKey => $"{_prefsKey} {_increment}";
+            
+            public string PrefsKey { get; }
 
             public Context(object value, string label, Context parent = null)
             {
+                Name = label;
                 Label = label;
                 _value = value;
                 Parent = parent;
@@ -329,16 +325,13 @@ namespace Aspid.MVVM.Unity
 
                     if (parent is null)
                     {
-                        _increment = 0;
-                        _prefsKey = typeName;
+                        PrefsKey = LabelWithType;
                         Updaters = new Updaters();
                     }
                     else
                     {
-                        Increment++;
-                        _increment = Increment;
-                        _prefsKey = parent._prefsKey;
                         Updaters = parent.Updaters;
+                        PrefsKey = parent.PrefsKey + LabelWithType;
                     }
                 }
             }
@@ -348,12 +341,14 @@ namespace Aspid.MVVM.Unity
             {
                 Tag = "Field";
                 _field = field;
+                Name = field.Name;
                 IsReadonly = field.IsInitOnly;
             }
 
             public Context(PropertyInfo property, Context parent, bool isBind) :
                 this(property.GetValue(parent.Value), NicifyVariableName(property.Name), parent)
             {
+                Name = property.Name;
                 _property = property;
                 IsReadonly = !property.CanWrite;
                 Tag = isBind ? "Bind" : "Property";
@@ -382,16 +377,7 @@ namespace Aspid.MVVM.Unity
                 });
             }
             
-            public Button CreateButton(string text, Action action) => new(() =>
-            {
-                action?.Invoke();
-                Update();
-            })
-            {
-                text = text,
-            };
-            
-            private void Update()
+            public void Update()
             {
                 foreach (var updater in _updaters)
                     updater.Update();

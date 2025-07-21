@@ -7,12 +7,10 @@ using Object = UnityEngine.Object;
 
 namespace Aspid.MVVM.Unity
 {
-    public sealed class DelegateField : VisualElement
+    internal sealed class DelegateField : VisualElement
     {
-        public DelegateField(Delegate value, string label, string prefsKey = null)
+        public DelegateField(Delegate value, string label, string prefsKey)
         {
-            if (label is null) throw new ArgumentNullException(nameof(label));
-            
             if (value is null)
             {
                 this.AddChild(new NullField(label));
@@ -20,7 +18,8 @@ namespace Aspid.MVVM.Unity
             }
 
             var container = Elements.CreateContainer(EditorColor.LighterContainer);
-            var subcontainer = CreateSubcontainer(container, value, label, prefsKey);
+            var subcontainer = CreateSubcontainer(value, label, prefsKey);
+            container.AddChild(subcontainer);
 
             var delegates = value.GetInvocationList();
             
@@ -42,13 +41,13 @@ namespace Aspid.MVVM.Unity
             this.AddChild(container);
         }
 
-        private static VisualElement CreateSubcontainer(VisualElement container, Delegate value, string label, string prefsKey)
+        private static VisualElement CreateSubcontainer(Delegate value, string label, string prefsKey)
         {
             var delegates = value.GetInvocationList();
 
             if (delegates.Length is 1)
             {
-                return container
+                return new VisualElement()
                     .AddChild(new Label(label)
                         .SetMargin(bottom: 5));
             }
@@ -63,56 +62,45 @@ namespace Aspid.MVVM.Unity
                 if (e.target == foldout && !string.IsNullOrWhiteSpace(prefsKey))
                     EditorPrefs.SetBool(prefsKey, e.newValue);
             });
-                
-            container.AddChild(foldout);
+            
             return foldout;
         }
 
         private static VisualElement CreateTargetField(Delegate value)
         {
-            VisualElement field;
-            
-            if (value.Target is Object obj)
+            VisualElement field = value.Target switch
             {
-                field = new ObjectField
-                {
-                    value = obj
-                };
-            }
-            else
-            {
-                var targetType = value.Target.GetType();
-                var name = targetType.Namespace;
-                if (!string.IsNullOrEmpty(name)) name += ".";
-                name = (name ?? "") + targetType.Name;
-                
-                field = new TextField
-                {
-                    value = $"{targetType.Namespace}.{name}"
-                };
-            }
+                Object obj => new ObjectField().SetValue(obj),
+                _ => new TextField().SetValue(GetTargetValue()),
+            };
             
-            field.SetEnabled(false);
-            SetupFiled(field);
+            return SetupFiled(field);
 
-            return field;
+            string GetTargetValue()
+            {
+                var type = value.Target?.GetType();
+                
+                return type is null 
+                    ? string.Empty 
+                    : $"{type.Namespace?.TrimEnd('.')}{type.Name}";
+            }
         }
 
         private static VisualElement CreateMethodField(Delegate value)
         {
-            var field = new TextField { value = value.Method.Name };
-            SetupFiled(field);
-
-            return field;
+            var field = new TextField().SetValue(value.Method.Name);
+            return SetupFiled(field);
         }
         
-        private static void SetupFiled(VisualElement field)
+        private static VisualElement SetupFiled(VisualElement field)
         {
             var width = new StyleLength(new Length(50, LengthUnit.Percent));
             
             field.SetEnabled(false);
             field.SetSize(width: width);
             field.SetMargin(0, 0, 0, 0);
+
+            return field;
         }
     }
 }

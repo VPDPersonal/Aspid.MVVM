@@ -53,7 +53,11 @@ namespace Samples.Aspid.MVVM.VirtualizedList
             _filter = null;
         }
 
-        private bool Check(ElementViewModel viewModel) =>
-            viewModel.Number % 2 is 0 && !_isInvert;
+        private bool Check(ElementViewModel viewModel) => (viewModel.Number % 2 is 0) switch
+        {
+            true when !_isInvert => true,
+            false when _isInvert => true,
+            _ => false
+        };
     }
 }

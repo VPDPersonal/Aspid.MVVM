@@ -7,10 +7,15 @@ using Aspid.Collections.Observable.Filtered;
 
 namespace Aspid.MVVM.StarterKit.Unity
 {
-    public abstract partial class ObservableListMonoBinder<T> : MonoBinder, IBinder<IReadOnlyObservableList<T>>, IBinder<IReadOnlyFilteredList<T>>
+    public abstract partial class ObservableListMonoBinder<T> : MonoBinder, 
+        IBinder<IReadOnlyObservableList<T>>, IBinder<IReadOnlyFilteredList<T>>, IBinder<IReadOnlyList<T>>
     {
         protected IReadOnlyList<T> List { get; private set; }
 
+        [BinderLog]
+        public void SetValue(IReadOnlyList<T> list) =>
+            InitializeList(list);
+        
         [BinderLog]
         public void SetValue(IReadOnlyFilteredList<T> list) =>
             InitializeList(list);

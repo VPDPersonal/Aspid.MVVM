@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Aspid.MVVM;
 using UnityEngine;
 using Aspid.MVVM.Unity;
@@ -14,13 +15,13 @@ namespace Samples.Aspid.MVVM.VirtualizedList
             Application.targetFrameRate = 60;
         }
 
-        [RequireBinder(typeof(IReadOnlyObservableList<IViewModel>))]
+        [RequireBinder(typeof(IReadOnlyList<IViewModel>))]
         [SerializeField] private MonoBinder[] _items;
         
-        [RequireBinder(typeof(IReadOnlyFilteredList<IViewModel>))]
+        [RequireBinder(typeof(IReadOnlyList<IViewModel>))]
         [SerializeField] private MonoBinder[] _isOnTrueItems;
        
-        [RequireBinder(typeof(IReadOnlyFilteredList<IViewModel>))]
+        [RequireBinder(typeof(IReadOnlyList<IViewModel>))]
         [SerializeField] private MonoBinder[] _isOnFalseItems;
     }
 }

@@ -6,12 +6,16 @@ using Aspid.Collections.Observable.Filtered;
 
 namespace Aspid.MVVM.StarterKit
 {
-    public abstract class ObservableListBinder<T> : Binder, IBinder<IReadOnlyObservableList<T>>, IBinder<IReadOnlyFilteredList<T>>
+    public abstract class ObservableListBinder<T> : Binder,
+        IBinder<IReadOnlyObservableList<T>>, IBinder<IReadOnlyFilteredList<T>>, IBinder<IReadOnlyList<T>>
     {
         protected IReadOnlyList<T?>? List { get; private set; }
 
         protected ObservableListBinder(BindMode mode)
             : base(mode) { }
+        
+        public void SetValue(IReadOnlyList<T>? list) =>
+            InitializeList(list);
         
         public void SetValue(IReadOnlyFilteredList<T>? list) =>
             InitializeList(list);

@@ -3,11 +3,13 @@ using Aspid.MVVM.Unity;
 using System.Collections.Generic;
 using Aspid.Collections.Observable.Filtered;
 #if UNITY_2023_1_OR_NEWER
-using FilterFactory = Aspid.MVVM.StarterKit.IFilterFactory<Aspid.MVVM.IViewModel>;
+using Filter = Aspid.MVVM.StarterKit.ICollectionFilter<Aspid.MVVM.IViewModel>;
+using Comparer = Aspid.MVVM.StarterKit.ICollectionComparer<Aspid.MVVM.IViewModel>;
 using ViewFactory = Aspid.MVVM.StarterKit.Unity.IViewFactory<Aspid.MVVM.Unity.MonoView>;
 #else
-using FilterFactory = Aspid.MVVM.StarterKit.IViewModelFilterFactory;
 using ViewFactory = Aspid.MVVM.StarterKit.Unity.IViewFactoryMonoView;
+using Filter = Aspid.MVVM.StarterKit.Unity.IViewModelCollectionFilter;
+using Comparer = Aspid.MVVM.StarterKit.Unity.IViewModelCollectionComparer;
 #endif
 
 namespace Aspid.MVVM.StarterKit.Unity
@@ -29,20 +31,40 @@ namespace Aspid.MVVM.StarterKit.Unity
         [SerializeReference] private TViewFactory _viewFactory;
 
         [SerializeReferenceDropdown]
-        [SerializeReference] private FilterFactory _filterFactory;
+        [SerializeReference] private Filter _filter;
+        
+        [SerializeReferenceDropdown]
+        [SerializeReference] private Comparer _comparer;
 
         private List<T> _views;
+        private FilteredList<IViewModel> _filteredList;
         
         private List<T> Views => _views ??= new List<T>();
 
         protected override void OnUnbound()
         {
-            _filterFactory?.Release();
+            DisposeFilteredList();
             base.OnUnbound();
         }
 
-        protected sealed override IReadOnlyFilteredList<IViewModel> GetFilter(IReadOnlyList<IViewModel> list) =>
-            _filterFactory?.Create(list);
+        protected sealed override IReadOnlyFilteredList<IViewModel> GetFilterList(IReadOnlyList<IViewModel> list)
+        {
+            DisposeFilteredList();
+
+            var comparer = _comparer.Get();
+            var filter = _filter.Get();
+
+            if (comparer is not null || filter is not null)
+                _filteredList = new FilteredList<IViewModel>(list, comparer, filter);
+
+            return _filteredList;
+        }
+
+        private void DisposeFilteredList()
+        {
+            _filteredList?.Dispose();
+            _filteredList = null;
+        }
 
         protected sealed override void OnAdded(IViewModel newItem, int newStartingIndex)
         {

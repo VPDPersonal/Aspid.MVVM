@@ -1,11 +1,10 @@
-using Aspid.MVVM;
-using Aspid.MVVM.Unity;
 using UnityEngine;
+using Aspid.MVVM.Unity;
 
-namespace Samples.Aspid.MVVM.VirtualizedList
+namespace Aspid.MVVM.SamplesVirtualizedList
 {
     [View]
-    public partial class ElementView : MonoView
+    public sealed partial class ItemView : MonoView
     {
         [BindId("Number")]
         [RequireBinder(typeof(string))]

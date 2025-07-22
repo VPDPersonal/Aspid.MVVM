@@ -30,9 +30,10 @@ namespace Aspid.MVVM.StarterKit.Unity
         private void InitializeList(IReadOnlyList<T> list)
         {
             DeinitializeList();
-            
-            List = GetFilter(list) ?? list;
+
+            List = list;
             if (List is null) return;
+            List = GetFilterList(list) ?? list;
             
             OnAdded(List, 0);
 
@@ -104,7 +105,7 @@ namespace Aspid.MVVM.StarterKit.Unity
             }
         }
         
-        protected virtual IReadOnlyFilteredList<T> GetFilter(IReadOnlyList<T> list) => null;
+        protected virtual IReadOnlyFilteredList<T> GetFilterList(IReadOnlyList<T> list) => null;
         
         protected abstract void OnAdded(T newItem, int newStartingIndex);
 

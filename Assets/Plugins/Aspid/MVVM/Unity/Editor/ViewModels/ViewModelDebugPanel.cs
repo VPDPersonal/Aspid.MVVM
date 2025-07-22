@@ -76,8 +76,9 @@ namespace Aspid.MVVM.Unity
                     if (context.Type.GetExplicitInterface(property) is not null) continue;
 
                     var isBindProperty = bindNames.Contains(property.Name);
-                    if (!isBindProperty && property.IsDefined(typeof(GeneratedCodeAttribute))) continue;
+                    if (!isBindProperty) continue;
                     
+                    // TODO Add simple properties
                     container.AddChild(BuildField(new Context(property, context, isBindProperty)));
                 }
                 

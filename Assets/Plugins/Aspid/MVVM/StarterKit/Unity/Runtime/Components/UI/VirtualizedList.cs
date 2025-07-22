@@ -10,6 +10,9 @@ using Aspid.Collections.Observable.Filtered;
 
 namespace Aspid.MVVM.StarterKit.Unity
 {
+    // TODO Add support Layout
+    // TODO Add support spacings
+    // TODO Add support various views
     [AddComponentMenu("Aspid/MVVM/Components/UI/ScrollRect/VirtualizedList (Beta)")]
     public class VirtualizedList : ScrollRect
     {

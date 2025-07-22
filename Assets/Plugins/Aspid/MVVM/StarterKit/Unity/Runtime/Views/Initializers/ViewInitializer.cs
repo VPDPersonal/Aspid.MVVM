@@ -33,9 +33,22 @@ namespace Aspid.MVVM.StarterKit.Unity
             _views = new IView[_viewComponents.Length];
             
             for (var i = 0; i < _views.Length; i++)
-                _views[i] = Get(_viewComponents[i]);
+            {
+                var view = Get(_viewComponents[i]);
+                
+                if (view is IComponentInitializable viewInitializable)
+                    viewInitializable.Initialize();
+                    
+                _views[i] = view;
+            }
 
-            ViewModel = Get(_viewModelComponent);
+            var viewModel = Get(_viewModelComponent);
+            
+            if (viewModel is IComponentInitializable viewModelInitializable)
+                viewModelInitializable.Initialize();
+            
+            ViewModel = viewModel;
+            
             _isConstructed = true;
             return;
 
@@ -54,7 +67,6 @@ namespace Aspid.MVVM.StarterKit.Unity
                         return _vcontainerContainer?.Resolve(initializeComponent.Type) as T;
 #endif
 #endif
-                    
                     case InitializeComponent.ResolveType.Mono: return initializeComponent.Mono as T;
                     case InitializeComponent.ResolveType.References: return initializeComponent.References;
                     case InitializeComponent.ResolveType.ScriptableObject: return initializeComponent.Scriptable as T;

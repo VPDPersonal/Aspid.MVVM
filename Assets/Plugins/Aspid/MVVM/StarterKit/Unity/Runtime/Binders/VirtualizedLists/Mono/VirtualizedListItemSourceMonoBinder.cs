@@ -1,10 +1,13 @@
 using UnityEngine;
 using Aspid.MVVM.Unity;
 using System.Collections.Generic;
+using Aspid.Collections.Observable.Filtered;
 #if UNITY_2023_1_OR_NEWER
-using FilterFactory = Aspid.MVVM.StarterKit.IFilterFactory<Aspid.MVVM.IViewModel>;
+using Filter = Aspid.MVVM.StarterKit.ICollectionFilter<Aspid.MVVM.IViewModel>;
+using Comparer = Aspid.MVVM.StarterKit.ICollectionComparer<Aspid.MVVM.IViewModel>;
 #else
-using FilterFactory = Aspid.MVVM.StarterKit.IViewModelFilterFactory;
+using Filter = Aspid.MVVM.StarterKit.Unity.IViewModelCollectionFilter;
+using Comparer = Aspid.MVVM.StarterKit.Unity.IViewModelCollectionComparer;
 #endif
 
 namespace Aspid.MVVM.StarterKit.Unity
@@ -14,17 +17,40 @@ namespace Aspid.MVVM.StarterKit.Unity
     public sealed partial class VirtualizedListItemSourceMonoBinder : ComponentMonoBinder<VirtualizedList>, IBinder<IReadOnlyList<IViewModel>>
     {
         [SerializeReferenceDropdown]
-        [SerializeReference] private FilterFactory _filterFactory;
+        [SerializeReference] private Filter _filter;
+        
+        [SerializeReferenceDropdown]
+        [SerializeReference] private Comparer _comparer;
+
+        private FilteredList<IViewModel> _filteredList;
 
         protected override void OnUnbound() =>
-            _filterFactory?.Release();
+            DisposeFilteredList();
 
         [BinderLog]
-        public void SetValue(IReadOnlyList<IViewModel> value)
+        public void SetValue(IReadOnlyList<IViewModel> list)
         {
-            CachedComponent.ItemsSource = value is not null && _filterFactory is not null 
-                ? _filterFactory.Create(value) 
-                : value;
+            DisposeFilteredList();
+            
+            if (list is not null)
+            {
+                var comparer = _comparer?.Get();
+                var filter = _filter?.Get();
+            
+                if (comparer is not null || filter is not null)
+                {
+                    _filteredList = new FilteredList<IViewModel>(list, comparer, filter);
+                    list = _filteredList;
+                }   
+            }
+
+            CachedComponent.ItemsSource = list;
+        }
+
+        private void DisposeFilteredList()
+        {
+            _filteredList?.Dispose();
+            _filteredList = null;
         }
     }
 }

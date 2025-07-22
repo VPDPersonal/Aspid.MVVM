@@ -315,7 +315,9 @@ MonoBehaviour:
   __view: {fileID: 8769340388664083537}
   __id: Items
   _component: {fileID: 506593844}
-  _filterFactory:
+  _filter:
+    rid: -2
+  _comparer:
     rid: -2
   _isDebug: 0
   _log: []
@@ -492,17 +494,35 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _mode: 1
   __view: {fileID: 8769340388664083537}
-  __id: IsOnFalseItems
+  __id: Items
   _component: {fileID: 847237789}
-  _filterFactory:
-    rid: -2
+  _filter:
+    rid: 1607910897102881117
+  _comparer:
+    rid: 1607910897102881120
   _isDebug: 0
   _log: []
   references:
     version: 2
     RefIds:
-    - rid: -2
-      type: {class: , ns: , asm: }
+    - rid: 1607910897102881117
+      type: {class: AndViewModelCompositeCollectionFilter, ns: Aspid.MVVM.StarterKit.Unity, asm: Aspid.MVVM.StarterKit.Unity}
+      data:
+        _filters:
+        - rid: 1607910897102881118
+        - rid: 1607910897102881119
+    - rid: 1607910897102881118
+      type: {class: CompletedCollectionFilter, ns: Aspid.MVVM.SamplesVirtualizedList, asm: Assembly-CSharp}
+      data:
+        _isCompleted: 0
+    - rid: 1607910897102881119
+      type: {class: EvenCollectionFilter, ns: Aspid.MVVM.SamplesVirtualizedList, asm: Assembly-CSharp}
+      data:
+        _isInvert: 0
+    - rid: 1607910897102881120
+      type: {class: NumberCollectionComparer, ns: Aspid.MVVM.SamplesVirtualizedList, asm: Assembly-CSharp}
+      data:
+        _isInvert: 1
 --- !u!114 &847237789
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1724,7 +1744,9 @@ MonoBehaviour:
   __view: {fileID: 8769340388664083537}
   __id: IsOnTrueItems
   _component: {fileID: 1781671046}
-  _filterFactory:
+  _filter:
+    rid: -2
+  _comparer:
     rid: -2
   _isDebug: 0
   _log: []
@@ -1974,7 +1996,6 @@ GameObject:
   - component: {fileID: 4064730947820700175}
   - component: {fileID: 8769340388664083538}
   - component: {fileID: 8769340388664083537}
-  - component: {fileID: 8769340388664083539}
   - component: {fileID: 8769340388664083540}
   m_Layer: 5
   m_Name: Canvas
@@ -2148,10 +2169,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _items:
   - {fileID: 506593847}
+  - {fileID: 847237788}
   _isOnTrueItems:
   - {fileID: 1781671045}
-  _isOnFalseItems:
-  - {fileID: 847237788}
 --- !u!114 &8769340388664083538
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2178,19 +2198,6 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
---- !u!114 &8769340388664083539
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1315185193748015809}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b07c384ae35b489891ce274c1361dd99, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _count: 100
 --- !u!114 &8769340388664083540
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2214,13 +2221,13 @@ MonoBehaviour:
       rid: -2
   _isDisposeViewModelOnDestroy: 0
   _viewModelComponent:
-    Resolve: 0
-    Mono: {fileID: 8769340388664083539}
+    Resolve: 1
+    Mono: {fileID: 0}
     Scriptable: {fileID: 0}
     Type:
       _typeName: 
     References:
-      rid: -2
+      rid: 1607910897102881122
   _initializeStage: 1
   _isDeinitialize: 1
   references:
@@ -2228,6 +2235,10 @@ MonoBehaviour:
     RefIds:
     - rid: -2
       type: {class: , ns: , asm: }
+    - rid: 1607910897102881122
+      type: {class: ListViewModel, ns: Aspid.MVVM.SamplesVirtualizedList, asm: Assembly-CSharp}
+      data:
+        _count: 100
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

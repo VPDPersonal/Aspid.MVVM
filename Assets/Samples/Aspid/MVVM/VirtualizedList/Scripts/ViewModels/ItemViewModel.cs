@@ -1,9 +1,7 @@
-using Aspid.MVVM;
-
-namespace Samples.Aspid.MVVM.VirtualizedList
+namespace Aspid.MVVM.SamplesVirtualizedList
 {
     [ViewModel]
-    public partial class ElementViewModel
+    public partial class ItemViewModel
     {
         [Access(Get = Access.Public)]
         [OneWayBind] private int _number;
@@ -11,7 +9,7 @@ namespace Samples.Aspid.MVVM.VirtualizedList
         [Access(Get = Access.Public)]
         [OneWayBind] private bool _isCompleted;
 
-        public ElementViewModel(int number, bool isCompleted)
+        public ItemViewModel(int number, bool isCompleted)
         {
             _number = number;
             _isCompleted = isCompleted;

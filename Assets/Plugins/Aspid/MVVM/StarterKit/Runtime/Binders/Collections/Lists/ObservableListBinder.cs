@@ -32,6 +32,8 @@ namespace Aspid.MVVM.StarterKit
             
             List = list;
             if (List is null) return;
+            List = GetFilterList(list!) ?? list;
+            
             OnAdded(List, 0);
 
             switch (list)
@@ -44,14 +46,15 @@ namespace Aspid.MVVM.StarterKit
         private void DeinitializeList()
         {
             if (List is null) return;
-                
-            OnReset();
             
             switch (List)
             {
                 case IReadOnlyFilteredList<T> filteredList: filteredList.CollectionChanged -= OnCollectionChanged; break;
                 case IReadOnlyObservableList<T> observableList: observableList.CollectionChanged -= OnCollectionChanged; break;
             }
+            
+            List = null;
+            OnReset();
         }
         
         private void OnCollectionChanged()
@@ -100,6 +103,8 @@ namespace Aspid.MVVM.StarterKit
                 default: throw new ArgumentOutOfRangeException();
             }
         }
+        
+        protected virtual IReadOnlyFilteredList<T>? GetFilterList(IReadOnlyList<T> list) => null;
 
         protected abstract void OnAdded(T? newItem, int newStartingIndex);
 

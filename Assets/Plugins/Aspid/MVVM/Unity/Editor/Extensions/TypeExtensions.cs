@@ -35,7 +35,7 @@ namespace Aspid.MVVM.Unity
         public static IEnumerable<PropertyInfo> GetPropertyInfosIncludingBaseClasses(this Type type, BindingFlags bindingFlags, Type? baseType = null) =>
             GetMembersInfosIncludingBaseClasses(type, bindingFlags, baseType).OfType<PropertyInfo>();
         
-        public static IEnumerable<MemberInfo> GetMembersInfosIncludingBaseClasses(this Type type, BindingFlags bindingFlags, Type? baseType = null)
+        public static IReadOnlyList<MemberInfo> GetMembersInfosIncludingBaseClasses(this Type type, BindingFlags bindingFlags, Type? baseType = null)
         {
             if (type.BaseType == typeof(object)) 
                 return type.GetMembers(bindingFlags);

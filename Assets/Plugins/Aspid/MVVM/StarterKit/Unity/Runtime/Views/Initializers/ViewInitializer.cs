@@ -17,7 +17,6 @@ namespace Aspid.MVVM.StarterKit.Unity
         
         private IView[] _views;
         private bool _isConstructed;
-        private IViewModel _viewModel;
 
 #if ASPID_MVVM_ZENJECT_INTEGRATION
         [Zenject.Inject]
@@ -28,17 +27,28 @@ namespace Aspid.MVVM.StarterKit.Unity
         private VContainer.IObjectResolver _vcontainerContainer; 
 #endif
         
-        public bool IsInitialized { get; private set; }
-        
         private void Constructor()
         {
             if (_isConstructed) return;
             _views = new IView[_viewComponents.Length];
             
             for (var i = 0; i < _views.Length; i++)
-                _views[i] = Get(_viewComponents[i]);
+            {
+                var view = Get(_viewComponents[i]);
+                
+                if (view is IComponentInitializable viewInitializable)
+                    viewInitializable.Initialize();
+                    
+                _views[i] = view;
+            }
 
-            _viewModel = Get(_viewModelComponent);
+            var viewModel = Get(_viewModelComponent);
+            
+            if (viewModel is IComponentInitializable viewModelInitializable)
+                viewModelInitializable.Initialize();
+            
+            ViewModel = viewModel;
+            
             _isConstructed = true;
             return;
 
@@ -57,7 +67,6 @@ namespace Aspid.MVVM.StarterKit.Unity
                         return _vcontainerContainer?.Resolve(initializeComponent.Type) as T;
 #endif
 #endif
-                    
                     case InitializeComponent.ResolveType.Mono: return initializeComponent.Mono as T;
                     case InitializeComponent.ResolveType.References: return initializeComponent.References;
                     case InitializeComponent.ResolveType.ScriptableObject: return initializeComponent.Scriptable as T;
@@ -121,8 +130,11 @@ namespace Aspid.MVVM.StarterKit.Unity
         {
             if (_isDisposeViewOnDestroy)
             {
-                foreach (var view in _views)
-                    view.DisposeView();
+                if (_views is not null)
+                {
+                    foreach (var view in _views)
+                        view.DisposeView();
+                }
             }
             else if (_isDeinitialize)
             {
@@ -130,7 +142,7 @@ namespace Aspid.MVVM.StarterKit.Unity
             }
             
             if (_isDisposeViewModelOnDestroy) 
-                _viewModel.DisposeViewModel();
+                ViewModel.DisposeViewModel();
         }
 
         private void InitializeInternal()
@@ -140,7 +152,7 @@ namespace Aspid.MVVM.StarterKit.Unity
             Constructor();
 
             foreach (var view in _views)
-                view.Initialize(_viewModel);
+                view.Initialize(ViewModel);
 
             IsInitialized = true;
         }

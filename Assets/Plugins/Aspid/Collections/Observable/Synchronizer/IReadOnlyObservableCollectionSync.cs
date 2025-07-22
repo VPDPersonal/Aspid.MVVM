@@ -1,6 +1,3 @@
-using System;
+namespace Aspid.Collections.Observable.Synchronizer;
 
-namespace Aspid.Collections.Observable.Synchronizer
-{
-    public interface IReadOnlyObservableCollectionSync<out T> : IReadOnlyObservableCollection<T>, IDisposable { }
-}
+public interface IReadOnlyObservableCollectionSync<out T> : IObservableCollection<T>, IDisposable { }

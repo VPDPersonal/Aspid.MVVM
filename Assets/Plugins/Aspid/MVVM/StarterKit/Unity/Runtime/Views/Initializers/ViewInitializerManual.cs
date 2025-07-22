@@ -20,10 +20,6 @@ namespace Aspid.MVVM.StarterKit.Unity
         [VContainer.Inject] 
         private VContainer.IObjectResolver _vcontainerContainer; 
 #endif
-
-        public IViewModel ViewModel { get; private set; }
-        
-        public bool IsInitialized => ViewModel is not null;
         
         private void Constructor()
         {
@@ -32,7 +28,14 @@ namespace Aspid.MVVM.StarterKit.Unity
             _views = new IView[_viewComponents.Length];
             
             for (var i = 0; i < _views.Length; i++)
-                _views[i] = Get(_viewComponents[i]);
+            {
+                var view = Get(_viewComponents[i]);
+                
+                if (view is IComponentInitializable viewInitializable)
+                    viewInitializable.Initialize();
+                    
+                _views[i] = view;
+            }
 
             _isConstructed = true;
             return;
@@ -74,6 +77,8 @@ namespace Aspid.MVVM.StarterKit.Unity
             ViewModel = viewModel;
             foreach (var view in _views)
                 view.Initialize(viewModel);
+            
+            IsInitialized = true;
         }
 
         public void Deinitialize()
@@ -84,6 +89,7 @@ namespace Aspid.MVVM.StarterKit.Unity
                 view.Deinitialize();
 
             ViewModel = null;
+            IsInitialized = false;
         }
 
         private void OnValidate()

@@ -1,24 +1,20 @@
-using System.Collections.Generic;
-using System.Collections.Specialized;
+namespace Aspid.Collections.Observable;
 
-namespace Aspid.Collections.Observable
+public interface INotifyCollectionChangedEventArgs<out T>
 {
-    public interface INotifyCollectionChangedEventArgs<out T>
-    {
-        public NotifyCollectionChangedAction Action { get; }
+    public NotifyCollectionChangedAction Action { get; }
 
-        public bool IsSingleItem { get; }
+    public bool IsSingleItem { get; }
         
-        public T? OldItem { get; }
+    public T? OldItem { get; }
         
-        public T? NewItem { get; }
+    public T? NewItem { get; }
 
-        public IReadOnlyList<T>? OldItems { get; }
+    public IReadOnlyList<T>? OldItems { get; }
         
-        public IReadOnlyList<T>? NewItems { get; }
+    public IReadOnlyList<T>? NewItems { get; }
 
-        public int OldStartingIndex { get; }
+    public int OldStartingIndex { get; }
         
-        public int NewStartingIndex { get; }
-    }
+    public int NewStartingIndex { get; }
 }

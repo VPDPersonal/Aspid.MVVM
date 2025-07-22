@@ -22,11 +22,6 @@ namespace Aspid.MVVM.Unity
     /// </remarks>
     public static class ViewUtility
     {
-        private const BindingFlags BindingFlags =
-            System.Reflection.BindingFlags.Instance
-            | System.Reflection.BindingFlags.Public
-            | System.Reflection.BindingFlags.NonPublic;
-
         #region Validate Methods
         /// <summary>
         /// Finds all validable binders among the child objects of the view.

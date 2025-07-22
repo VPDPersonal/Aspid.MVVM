@@ -1,4 +1,5 @@
 using UnityEngine.UIElements;
+using System.Collections.Generic;
 
 namespace Aspid.CustomEditors
 {
@@ -22,6 +23,24 @@ namespace Aspid.CustomEditors
             where T : VisualElement
         {
             element.Add(childElement);
+            return element;
+        }
+        
+        public static T AddChildren<T>(this T element, params VisualElement[] children)
+            where T : VisualElement
+        {
+            foreach (var child in children)
+                element.Add(child);
+            
+            return element;
+        }
+        
+        public static T AddChildren<T>(this T element, IEnumerable<VisualElement> children)
+            where T : VisualElement
+        {
+            foreach (var child in children)
+                element.Add(child);
+            
             return element;
         }
     }

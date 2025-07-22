@@ -3,11 +3,12 @@ using System.Linq;
 using UnityEditor;
 using Aspid.CustomEditors;
 using UnityEngine.UIElements;
+using Object = UnityEngine.Object;
 
 namespace Aspid.MVVM.Unity
 {
     public abstract class ViewModelEditor<T> : Editor
-        where T : UnityEngine.Object, IViewModel
+        where T : Object, IViewModel
     {
         protected T ViewModel => target as T;
         
@@ -38,7 +39,8 @@ namespace Aspid.MVVM.Unity
         {
             return new VisualElement()
                 .AddChild(BuildHeader())
-                .AddChild(BuildBaseInspector());
+                .AddChild(BuildBaseInspector())
+                .AddChild(new CommandsContainer(ViewModel));
         }
         
         protected VisualElement BuildHeader() 

@@ -2,14 +2,14 @@ namespace Aspid.MVVM.StarterKit
 {
     public sealed class OneWayDynamicProperty<T> : IDynamicProperty 
     {
-        private readonly OneWayClassEvent<T> _event;
+        private readonly OneWayBindableMember<T> _binder;
         
         public OneWayDynamicProperty(T value)
         {
-            _event = new OneWayClassEvent<T>(value);
+            _binder = new OneWayBindableMember<T>(value);
         }
 
-        public IBindableMemberEventAdder GetAdder() =>
-            _event;
+        public IBinderAdder GetAdder() =>
+            _binder;
     }
 }

@@ -17,11 +17,11 @@ namespace Aspid.MVVM.Unity
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void BindSafely<T>(this T binder, IBindableMemberEventAdder adder)
+        public static void BindSafely<T>(this T binder, IBinderAdder binderAdder)
             where T : MonoBehaviour, IBinder
         {
             if (binder)
-                binder.Bind(adder);
+                binder.Bind(binderAdder);
         }
         #endregion
 
@@ -35,7 +35,7 @@ namespace Aspid.MVVM.Unity
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void BindSafely<T>(this T[] binders, IBindableMemberEventAdder adder)
+        public static void BindSafely<T>(this T[] binders, IBinderAdder binderAdder)
             where T : MonoBehaviour, IBinder
         {
             if (binders is null) return;
@@ -43,14 +43,14 @@ namespace Aspid.MVVM.Unity
             foreach (var binder in binders)
             {
                 if (!binder) throw new NullReferenceException(nameof(binder));
-                binder.Bind(adder);
+                binder.Bind(binderAdder);
             }
         }
         #endregion
         
         #region List BindSafely
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void BindSafely<T>(this List<Binder> binders, in FindBindableMemberResult result)
+        public static void BindSafely<T>(this List<T> binders, in FindBindableMemberResult result)
             where T : MonoBehaviour, IBinder
         {
             if (result.IsFound) 
@@ -58,7 +58,7 @@ namespace Aspid.MVVM.Unity
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void BindSafely<T>(this List<T> binders, IBindableMemberEventAdder adder)
+        public static void BindSafely<T>(this List<T> binders, IBinderAdder binderAdder)
             where T : MonoBehaviour, IBinder
         {
             if (binders is null) return;
@@ -66,14 +66,14 @@ namespace Aspid.MVVM.Unity
             foreach (var binder in binders)
             {
                 if (!binder) throw new NullReferenceException(nameof(binder));
-                binder.Bind(adder);
+                binder.Bind(binderAdder);
             }
         }
         #endregion
         
         #region IEnumerable BindSafely
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void BindSafely<T>(this IEnumerable<Binder> binders, in FindBindableMemberResult result)
+        public static void BindSafely<T>(this IEnumerable<T> binders, in FindBindableMemberResult result)
             where T : MonoBehaviour, IBinder
         {
             if (result.IsFound) 
@@ -81,7 +81,7 @@ namespace Aspid.MVVM.Unity
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void BindSafely<T>(this IEnumerable<T> binders, IBindableMemberEventAdder adder)
+        public static void BindSafely<T>(this IEnumerable<T> binders, IBinderAdder binderAdder)
             where T : MonoBehaviour, IBinder
         {
             if (binders is null) return;
@@ -89,7 +89,7 @@ namespace Aspid.MVVM.Unity
             foreach (var binder in binders)
             {
                 if (!binder) throw new NullReferenceException(nameof(binder));
-                binder.Bind(adder);
+                binder.Bind(binderAdder);
             }
         }
         #endregion

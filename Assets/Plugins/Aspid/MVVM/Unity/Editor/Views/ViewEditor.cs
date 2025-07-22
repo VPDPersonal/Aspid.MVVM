@@ -96,7 +96,7 @@ namespace Aspid.MVVM.Unity
             
             var viewModel = Elements.CreateContainer(EditorColor.LightContainer)
                 .AddChild(title)
-                .AddChild(ViewModelDrawer.CreateViewModelContainer(View)
+                .AddChild(ViewModelDebugPanel.Build(View)
                     .SetName("ViewModelContainer"))
                 .SetMargin(top: 10)
                 .SetName("ViewModel");
@@ -113,7 +113,7 @@ namespace Aspid.MVVM.Unity
             void Refresh()
             {
                 viewModel.Remove(viewModel.Q<VisualElement>("ViewModelContainer"));
-                viewModel.AddChild(ViewModelDrawer.CreateViewModelContainer(View)
+                viewModel.AddChild(ViewModelDebugPanel.Build(View)
                     .SetName("ViewModelContainer"));
             }
         }   

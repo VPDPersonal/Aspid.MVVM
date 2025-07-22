@@ -60,7 +60,10 @@ namespace Aspid.MVVM.StarterKit.Unity
         protected override void OnValidate()
         {
             if (_viewPrefab)
+            {
+                _viewLength = new Length(_viewPrefab, Direction);
                 ContentTransform.Validate();
+            }
             
             base.OnValidate();
         }

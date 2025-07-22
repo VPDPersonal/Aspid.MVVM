@@ -29,7 +29,7 @@ namespace Aspid.MVVM.StarterKit.Composites
 
         private bool Filter(T value)
         {
-            return _filters.Select(filter => filter.Get())
+            return _filters.Select(filter => filter?.Get())
                 .Any(predicate => predicate?.Invoke(value) ?? true);
         }
     }

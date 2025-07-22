@@ -51,8 +51,8 @@ namespace Aspid.MVVM.StarterKit.Unity
         {
             DisposeFilteredList();
 
-            var comparer = _comparer.Get();
-            var filter = _filter.Get();
+            var comparer = _comparer?.Get();
+            var filter = _filter?.Get();
 
             if (comparer is not null || filter is not null)
                 _filteredList = new FilteredList<IViewModel>(list, comparer, filter);

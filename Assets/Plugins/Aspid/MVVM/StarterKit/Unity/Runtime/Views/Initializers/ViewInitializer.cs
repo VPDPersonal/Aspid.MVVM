@@ -130,8 +130,11 @@ namespace Aspid.MVVM.StarterKit.Unity
         {
             if (_isDisposeViewOnDestroy)
             {
-                foreach (var view in _views)
-                    view.DisposeView();
+                if (_views is not null)
+                {
+                    foreach (var view in _views)
+                        view.DisposeView();
+                }
             }
             else if (_isDeinitialize)
             {

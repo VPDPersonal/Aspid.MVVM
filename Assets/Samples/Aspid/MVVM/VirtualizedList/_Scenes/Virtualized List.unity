@@ -497,32 +497,32 @@ MonoBehaviour:
   __id: Items
   _component: {fileID: 847237789}
   _filter:
-    rid: 1607910897102881117
+    rid: 1607910897102881133
   _comparer:
-    rid: 1607910897102881120
+    rid: 1607910897102881132
   _isDebug: 0
   _log: []
   references:
     version: 2
     RefIds:
-    - rid: 1607910897102881117
-      type: {class: AndViewModelCompositeCollectionFilter, ns: Aspid.MVVM.StarterKit.Unity, asm: Aspid.MVVM.StarterKit.Unity}
-      data:
-        _filters:
-        - rid: 1607910897102881118
-        - rid: 1607910897102881119
-    - rid: 1607910897102881118
-      type: {class: CompletedCollectionFilter, ns: Aspid.MVVM.SamplesVirtualizedList, asm: Assembly-CSharp}
-      data:
-        _isCompleted: 0
-    - rid: 1607910897102881119
-      type: {class: EvenCollectionFilter, ns: Aspid.MVVM.SamplesVirtualizedList, asm: Assembly-CSharp}
-      data:
-        _isInvert: 0
-    - rid: 1607910897102881120
+    - rid: 1607910897102881132
       type: {class: NumberCollectionComparer, ns: Aspid.MVVM.SamplesVirtualizedList, asm: Assembly-CSharp}
       data:
         _isInvert: 1
+    - rid: 1607910897102881133
+      type: {class: AndViewModelCompositeCollectionFilter, ns: Aspid.MVVM.StarterKit.Unity, asm: Aspid.MVVM.StarterKit.Unity}
+      data:
+        _filters:
+        - rid: 1607910897102881134
+        - rid: 1607910897102881136
+    - rid: 1607910897102881134
+      type: {class: CompletedCollectionFilter, ns: Aspid.MVVM.SamplesVirtualizedList, asm: Assembly-CSharp}
+      data:
+        _isCompleted: 0
+    - rid: 1607910897102881136
+      type: {class: EvenCollectionFilter, ns: Aspid.MVVM.SamplesVirtualizedList, asm: Assembly-CSharp}
+      data:
+        _isInvert: 0
 --- !u!114 &847237789
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2219,7 +2219,7 @@ MonoBehaviour:
       _typeName: 
     References:
       rid: -2
-  _isDisposeViewModelOnDestroy: 0
+  _isDisposeViewModelOnDestroy: 1
   _viewModelComponent:
     Resolve: 1
     Mono: {fileID: 0}
@@ -2227,7 +2227,7 @@ MonoBehaviour:
     Type:
       _typeName: 
     References:
-      rid: 1607910897102881122
+      rid: 1607910897102881131
   _initializeStage: 1
   _isDeinitialize: 1
   references:
@@ -2235,7 +2235,7 @@ MonoBehaviour:
     RefIds:
     - rid: -2
       type: {class: , ns: , asm: }
-    - rid: 1607910897102881122
+    - rid: 1607910897102881131
       type: {class: ListViewModel, ns: Aspid.MVVM.SamplesVirtualizedList, asm: Assembly-CSharp}
       data:
         _count: 100

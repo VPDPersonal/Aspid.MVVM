@@ -62,7 +62,7 @@ namespace Aspid.MVVM.StarterKit.Unity
                 OnRemoved(item);
         }
 
-        protected sealed override void OnReplace(KeyValuePair<TKey, TViewModel> oldItem, KeyValuePair<TKey, TViewModel?> newItem)
+        protected sealed override void OnReplace(KeyValuePair<TKey, TViewModel> oldItem, KeyValuePair<TKey, TViewModel> newItem)
         {
             Views[oldItem.Key].Deinitialize();
             

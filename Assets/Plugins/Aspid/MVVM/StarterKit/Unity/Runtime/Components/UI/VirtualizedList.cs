@@ -56,7 +56,8 @@ namespace Aspid.MVVM.StarterKit.Unity
         private Length ViewportLength => _viewportLength ??= new Length(viewport, Direction);
         
         private ContentTransformData ContentTransform => _contentTransform ??= new ContentTransformData(content, ViewLength, Direction);
-        
+
+#if UNITY_EDITOR
         protected override void OnValidate()
         {
             if (_viewPrefab)
@@ -67,6 +68,7 @@ namespace Aspid.MVVM.StarterKit.Unity
             
             base.OnValidate();
         }
+#endif
 
         private void Initialize()
         {

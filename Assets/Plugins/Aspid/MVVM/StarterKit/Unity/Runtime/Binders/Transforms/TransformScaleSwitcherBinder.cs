@@ -14,14 +14,14 @@ namespace Aspid.MVVM.StarterKit.Unity
             Transform target, 
             Vector3 trueValue,
             Vector3 falseValue,
-            BindMode mode) 
+            BindMode mode = BindMode.OneWay) 
             : this(target, trueValue, falseValue, null, mode) { }
         
         public TransformScaleSwitcherBinder(
             Transform target, 
             Vector3 trueValue,
             Vector3 falseValue, 
-            Vector3CombineConverter? converter = null,
+            Vector3CombineConverter? converter,
             BindMode mode = BindMode.OneWay) 
             : base(target, trueValue, falseValue, mode)
         {

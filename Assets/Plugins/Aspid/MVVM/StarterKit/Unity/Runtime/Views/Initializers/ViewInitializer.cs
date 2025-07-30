@@ -60,7 +60,7 @@ namespace Aspid.MVVM.StarterKit.Unity
 #if ASPID_MVVM_ZENJECT_INTEGRATION || ASPID_MVVM_VCONTAINER_INTEGRATION
                     case InitializeComponent.ResolveType.Di:
 #if ASPID_MVVM_ZENJECT_INTEGRATION
-                        var result = _zenjectContainer?.Resolve(initializeComponent.Type);
+                        var result = _zenjectContainer?.TryResolve(initializeComponent.Type);
                         if (result is T specificResult) return specificResult;
 #endif
 #if ASPID_MVVM_VCONTAINER_INTEGRATION

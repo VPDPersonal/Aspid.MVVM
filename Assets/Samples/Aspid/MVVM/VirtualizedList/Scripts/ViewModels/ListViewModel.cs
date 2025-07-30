@@ -47,7 +47,7 @@ namespace Aspid.MVVM.SamplesVirtualizedList
         
         [RelayCommand]
         private void Swap(int index1, int index2) =>
-            ObservableListExtensions.Swap<ItemViewModel>(Items, index1, index2);
+            Items.Swap(index1, index2);
 
         [RelayCommand]
         private void Remove(int index) =>

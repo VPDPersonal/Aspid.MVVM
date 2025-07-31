@@ -17,7 +17,9 @@ namespace Aspid.MVVM.Unity
         public virtual void Dispose()
         {
             Deinitialize();
-            Destroy(gameObject);
+            
+            if (this)
+                Destroy(gameObject);
         }
 
         protected virtual void OnDestroy() =>

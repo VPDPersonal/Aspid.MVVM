@@ -2,28 +2,28 @@ using System;
 
 namespace Aspid.MVVM.Samples.HelloWorld.MVP
 {
-    public sealed class MomentInputSpeakerPresenter : IDisposable
+    public sealed class OutPresenter : IDisposable
     {
         private readonly Speaker _model;
-        private readonly MomentInputSpeakerView _view;
-        
-        public MomentInputSpeakerPresenter(Speaker model, MomentInputSpeakerView view)
+        private readonly OutViewMVP _view;
+
+        public OutPresenter(Speaker model, OutViewMVP view)
         {
             _view = view;
             _model = model;
-            _view.Text = model.Text;
+            _view.Text = _model.Text;
 
             Subscribe();
         }
 
         private void Subscribe() =>
-            _view.TextChanged += OnTextChanged;
+            _model.TextChanged += OnTextChanged;
 
         private void Unsubscribe() =>
-            _view.TextChanged -= OnTextChanged;
+            _model.TextChanged -= OnTextChanged;
         
         private void OnTextChanged(string value) =>
-            _model.Say(value);
+            _view.Text = value;
 
         public void Dispose() =>
             Unsubscribe();

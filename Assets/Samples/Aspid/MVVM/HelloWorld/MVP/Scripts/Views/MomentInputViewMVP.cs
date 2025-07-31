@@ -1,21 +1,19 @@
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 using UnityEngine.Events;
 
 namespace Aspid.MVVM.Samples.HelloWorld.MVP
 {
-    public sealed class InputSpeakerView : MonoBehaviour
+    public sealed class MomentInputViewMVP : MonoBehaviour
     {
-        public event UnityAction Clicked
+        public event UnityAction<string> TextChanged
         {
-            add => _sayButton.onClick.AddListener(value);
-            remove => _sayButton.onClick.RemoveListener(value);       
+            add => _inputField.onValueChanged.AddListener(value);
+            remove => _inputField.onValueChanged.RemoveListener(value);
         }
-
-        [SerializeField] private Button _sayButton;
+        
         [SerializeField] private TMP_InputField _inputField;
-
+        
         public string Text
         {
             get => _inputField.text;

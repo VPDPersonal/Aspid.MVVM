@@ -6,20 +6,20 @@ namespace Aspid.MVVM.Samples.HelloWorld.MVP
     public sealed class Bootstrap : MonoBehaviour
     {
         [Header("Out View")]
-        [SerializeField] private OutSpeakerView _outSpeakerView;
+        [SerializeField] private OutViewMVP _outView;
 
         [Header("Input View")]
         [SerializeField] private ViewInputType _viewInputType;
         [SerializeField] private Transform _inputContent;
-        [SerializeField] private InputSpeakerView _inputSpeakerViewPrefab;
-        [SerializeField] private MomentInputSpeakerView _momentInputSpeakerViewPrefab;
+        [SerializeField] private InputViewMVP _inputViewPrefab;
+        [SerializeField] private MomentInputViewMVP _momentInputViewPrefab;
 
         private Speaker _speaker;
         private MonoBehaviour _instantiatedInputView;
         
-        private OutSpeakerPresenter _outSpeakerPresenter;
-        private InputSpeakerPresenter _inputSpeakerPresenter;
-        private MomentInputSpeakerPresenter _momentInputSpeakerPresenter;
+        private OutPresenter _outPresenter;
+        private InputPresenter _inputPresenter;
+        private MomentInputPresenter _momentInputPresenter;
 
         private void OnValidate()
         {
@@ -48,33 +48,33 @@ namespace Aspid.MVVM.Samples.HelloWorld.MVP
         }
 
         private void BuildOutSpeakerView() =>
-            _outSpeakerPresenter = new OutSpeakerPresenter(_speaker, _outSpeakerView);
+            _outPresenter = new OutPresenter(_speaker, _outView);
 
         private void BuildInputSpeakerView()
         {
-            var view = Instantiate(_inputSpeakerViewPrefab, _inputContent);
+            var view = Instantiate(_inputViewPrefab, _inputContent);
             _instantiatedInputView = view;
             
-            _inputSpeakerPresenter = new InputSpeakerPresenter(_speaker, view);
+            _inputPresenter = new InputPresenter(_speaker, view);
         }
 
         private void BuildMomentInputSpeakerView()
         {
-            var view = Instantiate(_momentInputSpeakerViewPrefab, _inputContent);
+            var view = Instantiate(_momentInputViewPrefab, _inputContent);
             _instantiatedInputView = view;
             
-            _momentInputSpeakerPresenter = new MomentInputSpeakerPresenter(_speaker, view);
+            _momentInputPresenter = new MomentInputPresenter(_speaker, view);
         }
 
         private void Release()
         {
-            _outSpeakerPresenter?.Dispose();
-            _inputSpeakerPresenter?.Dispose();
-            _momentInputSpeakerPresenter?.Dispose();
+            _outPresenter?.Dispose();
+            _inputPresenter?.Dispose();
+            _momentInputPresenter?.Dispose();
 
-            _outSpeakerPresenter = null;
-            _inputSpeakerPresenter = null;
-            _momentInputSpeakerPresenter = null;
+            _outPresenter = null;
+            _inputPresenter = null;
+            _momentInputPresenter = null;
             
             if (_instantiatedInputView)
                 Destroy(_instantiatedInputView.gameObject);

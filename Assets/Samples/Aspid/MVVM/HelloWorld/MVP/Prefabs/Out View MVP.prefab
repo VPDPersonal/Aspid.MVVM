@@ -720,7 +720,7 @@ GameObject:
   - component: {fileID: 3576031178565684164}
   - component: {fileID: 5384478638175700732}
   m_Layer: 5
-  m_Name: View MVP
+  m_Name: Out View MVP
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

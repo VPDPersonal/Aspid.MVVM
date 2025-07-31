@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Aspid.MVVM.Samples.HelloWorld.MVP
 {
-    public sealed class OutSpeakerView : MonoBehaviour
+    public sealed class OutViewMVP : MonoBehaviour
     {
         [SerializeField] private TMP_Text[] _texts;
 

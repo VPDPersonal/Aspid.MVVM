@@ -2,12 +2,12 @@ using System;
 
 namespace Aspid.MVVM.Samples.HelloWorld.MVP
 {
-    public sealed class InputSpeakerPresenter : IDisposable
+    public sealed class InputPresenter : IDisposable
     {
         private readonly Speaker _model;
-        private readonly InputSpeakerView _view;
+        private readonly InputViewMVP _view;
 
-        public InputSpeakerPresenter(Speaker model, InputSpeakerView view)
+        public InputPresenter(Speaker model, InputViewMVP view)
         {
             _view = view;
             _model = model;

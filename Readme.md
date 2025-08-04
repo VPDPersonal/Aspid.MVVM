@@ -110,7 +110,7 @@ The framework is easily extensible:
 This project is developed on a voluntary basis. If you find it useful, you can support its development financially. This helps allocate more time to improving and maintaining Aspid.MVVM.
 
 You can donate via the following platforms:
-*\[[Unity Asset Store]()\]
+* \[[Unity Asset Store]()\]
 
 ---
 

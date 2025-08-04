@@ -23,26 +23,30 @@ public static class BinderLogBody
         if (!hasBinderLogInBaseType)
         {
             code.AppendProfilerMarkers(data)
-                .AppendProperties();
+                .AppendProperties(data);
         }
         
         code.AppendSetValueMethods(data.Methods);
 
         if (!hasBinderLogInBaseType)
-            code.AppendAddLogMethod();
+            code.AppendAddLogMethod(data);
         
         return code;
     }
 
     private static CodeWriter AppendProfilerMarkers(this CodeWriter code, in BinderDataSpan data)
     {
+        var modifier = data.Symbol.IsSealed ? "private" : "protected";
         var className = data.Declaration.Identifier.Text;
-        code.AppendLine($"protected static readonly {Classes.ProfilerMarker.Global} SetValueMarker = new(\"{className}.SetValue\");");
+        
+        code.AppendLine($"{modifier} static readonly {Classes.ProfilerMarker.Global} SetValueMarker = new(\"{className}.SetValue\");");
         return code.AppendLine();
     }
 
-    private static CodeWriter AppendProperties(this CodeWriter code)
+    private static CodeWriter AppendProperties(this CodeWriter code, in BinderDataSpan data)
     {
+        var modifier = data.Symbol.IsSealed ? "private" : "protected";
+        
         code.AppendMultiline(
             $"""
             {GeneratedAttribute}
@@ -53,7 +57,7 @@ public static class BinderLogBody
             [{SerializeFieldAttribute}] private {Classes.List.Global}<string> _log;
             
             {GeneratedAttribute}
-            protected bool IsDebug => _isDebug;
+            {modifier} bool IsDebug => _isDebug;
             """)
             .AppendLine();
          
@@ -104,12 +108,14 @@ public static class BinderLogBody
         return code;
     }
 
-    private static CodeWriter AppendAddLogMethod(this CodeWriter code)
+    private static CodeWriter AppendAddLogMethod(this CodeWriter code, in BinderDataSpan data)
     {
+        var modifier = data.Symbol.IsSealed ? "private" : "protected";
+        
         code.AppendMultiline(
             $$"""
             {{GeneratedAttribute}}
-            protected void AddLog(string log)
+            {{modifier}} void AddLog(string log)
             {
                 _log ??= new {{List}}<string>();
                 _log.Add(log);

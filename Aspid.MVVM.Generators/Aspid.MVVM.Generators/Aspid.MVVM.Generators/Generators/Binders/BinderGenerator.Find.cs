@@ -66,6 +66,6 @@ public partial class BinderGenerator
         
         if (binderLogMethods.Count == 0) return default;
         
-        return new FoundForGenerator<BinderData>(new BinderData(candidate, hasBinderLogInBaseType, binderLogMethods));
+        return new FoundForGenerator<BinderData>(new BinderData(symbol, candidate, hasBinderLogInBaseType, binderLogMethods));
     }
 }

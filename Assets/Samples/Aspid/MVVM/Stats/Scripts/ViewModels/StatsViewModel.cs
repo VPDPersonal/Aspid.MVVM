@@ -107,7 +107,9 @@ namespace Aspid.MVVM.Stats
         private void OnSkillChanged(Skill skill) 
         {
             SetSkillPointsTo(skill, _hero.GetNumberSkillPointFrom(skill));
+
             SkillPointsAvailable = _hero.SkillPointsAvailable;
+            NotifySkillPointToCanExecuteChanged();
         }
         
         partial void OnIsDraftChanged(bool newValue)
@@ -119,7 +121,11 @@ namespace Aspid.MVVM.Stats
         partial void OnSkillPointsAvailableChanged(int newValue)
         {
             IsDraft = newValue != _hero.SkillPointsAvailable;
-            
+            NotifySkillPointToCanExecuteChanged();
+        }
+
+        private void NotifySkillPointToCanExecuteChanged()
+        {
             AddSkillPointToCommand.NotifyCanExecuteChanged();
             RemoveSkillPointToCommand.NotifyCanExecuteChanged();
         }

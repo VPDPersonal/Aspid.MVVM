@@ -6,8 +6,8 @@ namespace Aspid.MVVM.Samples.HelloWorld.MVVM
     public sealed class Bootstrap : MonoBehaviour
     {
         [Header("Views")]
-        [SerializeField] private OutSpeakerView _outSpeakerView;
-        [SerializeField] private InputSpeakerView _inputSpeakerView;
+        [SerializeField] private OutView _outView; 
+        [SerializeField] private InputView _inputView;
         
         [Header("ViewModel")]
         [SerializeField] private InputViewModelType _inputViewModelType = InputViewModelType.Command;
@@ -17,7 +17,7 @@ namespace Aspid.MVVM.Samples.HelloWorld.MVVM
         private void OnValidate()
         {
             if (!Application.isPlaying) return;
-            if (!_outSpeakerView || !_inputSpeakerView || _speaker is null) return;
+            if (!_outView || !_inputView || _speaker is null) return;
             
             DeinitializeViews();
             InitializeViews();
@@ -36,15 +36,15 @@ namespace Aspid.MVVM.Samples.HelloWorld.MVVM
         {
             var viewModel = GetViewModel();
             
-            _outSpeakerView.Initialize(viewModel);
-            _inputSpeakerView.Initialize(viewModel);
+            _outView.Initialize(viewModel);
+            _inputView.Initialize(viewModel);
         }
         
         private void DeinitializeViews()
         {
             // You can use extension methods to deinitialize the View and release the ViewModel.
-            _outSpeakerView.DeinitializeView()?.DisposeViewModel();
-            _inputSpeakerView.DeinitializeView()?.DisposeViewModel();
+            _outView.DeinitializeView()?.DisposeViewModel();
+            _inputView.DeinitializeView()?.DisposeViewModel();
             
             // Manual way to deinitialize View and release ViewModel:
             // var viewModel = _outSpeakerView.ViewModel;

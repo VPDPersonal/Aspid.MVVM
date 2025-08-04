@@ -233,7 +233,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6652419684725930071, guid: c61a9b3057b1e49e0bc7820f6dce72d4, type: 3}
       propertyPath: m_Name
-      value: View MVVM
+      value: Out View MVVM
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

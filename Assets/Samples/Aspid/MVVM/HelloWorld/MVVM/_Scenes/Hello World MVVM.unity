@@ -397,8 +397,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad92300f9cd2466e8e1c09d4df12b9ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _outSpeakerView: {fileID: 1818995788}
-  _inputSpeakerView: {fileID: 8244221533779535950}
+  _outView: {fileID: 1818995788}
+  _inputView: {fileID: 8244221533779535950}
   _inputViewModelType: 1
 --- !u!4 &1225421080
 Transform:
@@ -516,6 +516,38 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3127639666602598970, guid: 9ccbc98eef1f5400f852f9b36e79df55, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3945423860162190428, guid: 9ccbc98eef1f5400f852f9b36e79df55, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3945423860162190428, guid: 9ccbc98eef1f5400f852f9b36e79df55, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3945423860162190428, guid: 9ccbc98eef1f5400f852f9b36e79df55, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3945423860162190428, guid: 9ccbc98eef1f5400f852f9b36e79df55, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8585655932946153920, guid: 9ccbc98eef1f5400f852f9b36e79df55, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8585655932946153920, guid: 9ccbc98eef1f5400f852f9b36e79df55, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8585655932946153920, guid: 9ccbc98eef1f5400f852f9b36e79df55, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8585655932946153920, guid: 9ccbc98eef1f5400f852f9b36e79df55, type: 3}
+      propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []

@@ -7,7 +7,7 @@ namespace Aspid.MVVM.Samples.HelloWorld.MVVM
     // For Source Generator to work properly, the class must be partial.
     // Source Generator implements IView and generates bind and unbind binders in initialize and de-initialize methods.
     [View]
-    public sealed partial class OutSpeakerView : MonoView
+    public sealed partial class OutView : MonoView
     {
         // RequireBinderAttribute is an optional attribute.
         // It is only needed to filter binders that implement IMonoBinderValidable.

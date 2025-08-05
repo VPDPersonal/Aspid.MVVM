@@ -1,0 +1,27 @@
+#if ASPID_MVVM_ADDRESSABLES_INTEGRATION && ASPID_MVVM_UNITASK_INTEGRATION
+using UnityEngine;
+using UnityEngine.UI;
+using Aspid.MVVM.Unity;
+
+namespace Aspid.MVVM.StarterKit.Unity
+{
+    [AddPropertyContextMenu(typeof(RawImage), "m_Texture")]
+    [AddComponentMenu("Aspid/MVVM/Binders/UI/Raw Image/RawImage Binder - Texture Addressable")]
+    [AddComponentContextMenu(typeof(RawImage), "Add RawImage Binder/RawImage Binder - Texture Addressable")]
+    public sealed class RawImageTextureAddressableMonoBinder : AddressableMonoBinder<Texture2D, RawImage>
+    {
+        [Header("Parameters")]
+        [SerializeField] private Texture2D _defaultTexture;
+        [SerializeField] private bool _disabledWhenNull = true;
+        
+        protected override Texture2D GetDefaultAsset() => 
+            _defaultTexture;
+        
+        protected override void SetAsset(Texture2D texture)
+        {
+            CachedComponent.texture = texture;
+            CachedComponent.enabled = _disabledWhenNull || texture;
+        }
+    }
+}
+#endif

@@ -1,6 +1,7 @@
 {
   "dependencies": {
     "com.alexeytaranov.serializereferencedropdown": "https://github.com/AlexeyTaranov/SerializeReferenceDropdown.git",
+    "com.cysharp.unitask": "https://github.com/Cysharp/UniTask.git?path=src/UniTask/Assets/Plugins/UniTask#2.1.0",
     "com.unity.2d.sprite": "1.0.0",
     "com.unity.ai.navigation": "2.0.8",
     "com.unity.collections": "2.5.7",

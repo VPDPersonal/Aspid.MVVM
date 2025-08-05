@@ -24,7 +24,7 @@ namespace Aspid.MVVM.StarterKit.Unity
         private void SetValue(RawImage element, Texture2D value) 
         {
             element.texture = value;
-            if (_disabledWhenNull) element.enabled = value is not null;
+            element.enabled = !_disabledWhenNull || value;
         }
     }
 }

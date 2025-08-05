@@ -16,7 +16,7 @@ namespace Aspid.MVVM.StarterKit.Unity
         public void SetValue(Sprite value)
         {
             CachedComponent.sprite = value;
-            if (_disabledWhenNull) CachedComponent.enabled = value is not null;
+            CachedComponent.enabled = !_disabledWhenNull || value;
         }
 
         [BinderLog]

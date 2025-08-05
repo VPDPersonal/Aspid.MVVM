@@ -20,7 +20,7 @@ namespace Aspid.MVVM.StarterKit.Unity
         protected override void SetAsset(Texture2D texture)
         {
             CachedComponent.texture = texture;
-            CachedComponent.enabled = _disabledWhenNull || texture;
+            CachedComponent.enabled = !_disabledWhenNull || texture;
         }
     }
 }

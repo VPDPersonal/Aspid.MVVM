@@ -20,7 +20,7 @@ namespace Aspid.MVVM.StarterKit.Unity
         protected override void SetAsset(Sprite sprite)
         {
             CachedComponent.sprite = sprite;
-            CachedComponent.enabled = _disabledWhenNull || sprite;
+            CachedComponent.enabled = !_disabledWhenNull || sprite;
         }
     }
 }

@@ -9,12 +9,13 @@ namespace Aspid.MVVM.StarterKit.Unity
     [AddComponentContextMenu(typeof(Image),"Add Image Binder/Image Binder - Sprite Enum")]
     public sealed class ImageSpriteEnumMonoBinder : EnumComponentMonoBinder<Image, Sprite>
     {
+        [Header("Parameter")]
         [SerializeField] private bool _disabledWhenNull = true;
         
         protected override void SetValue(Sprite value) 
         {
             CachedComponent.sprite = value;
-            if (_disabledWhenNull) CachedComponent.enabled = value is not null;
+            CachedComponent.enabled = !_disabledWhenNull || value;
         }
     }
 }

@@ -9,12 +9,13 @@ namespace Aspid.MVVM.StarterKit.Unity
     [AddComponentContextMenu(typeof(LineRenderer),"Add RawImage Binder/RawImage Binder - Texture Enum")]
     public sealed class RawImageTextureEnumMonoBinder : EnumComponentMonoBinder<RawImage, Texture2D>
     {
+        [Header("Parameter")]
         [SerializeField] private bool _disabledWhenNull = true;
         
         protected override void SetValue(Texture2D value)
         {
             CachedComponent.texture = value;
-            if (_disabledWhenNull) CachedComponent.enabled = value != null;
+            CachedComponent.enabled = !_disabledWhenNull || value;
         }
     }
 }

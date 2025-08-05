@@ -24,7 +24,7 @@ namespace Aspid.MVVM.StarterKit.Unity
         private void SetValue(Image element, Sprite value) 
         {
             element.sprite = value;
-            if (_disabledWhenNull) element.enabled = value is not null;
+            element.enabled = !_disabledWhenNull || value;
         }
     }
 }

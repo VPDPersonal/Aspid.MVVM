@@ -1,14 +1,21 @@
 #nullable enable
 using System;
 using UnityEngine;
+using System.ComponentModel;
 
 namespace Aspid.MVVM.StarterKit.Unity
 {
     [Serializable]
-    public sealed class EnumValue<T> : IEnumValue<Enum, T>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public sealed class EnumValue<T>
     {
         [SerializeField] private string _key;
         [SerializeField] private T? _value;
+        
+#if UNITY_EDITOR
+        [HideInInspector]
+        [SerializeField] private string _enumType;
+#endif
 
         public T? Value => _value;
         
@@ -19,11 +26,13 @@ namespace Aspid.MVVM.StarterKit.Unity
         public EnumValue()
             : this(string.Empty, default) { }
 
+#pragma warning disable CS8618
         public EnumValue(string key, T? value)
         {
             _key = key;
             _value = value;
         }
+#pragma warning restore
 
         public void Initialize(Type type)
         {
@@ -35,29 +44,6 @@ namespace Aspid.MVVM.StarterKit.Unity
 
             Type = type;
             Key = Enum.Parse(type, _key) as Enum;
-        }
-    }
-    
-    [Serializable]
-    public sealed class EnumValue<TEnum, T>  : IEnumValue<TEnum, T>
-        where TEnum : Enum
-    {
-        [SerializeField] private TEnum? _key;
-        [SerializeField] private T? _value;
-
-        public T? Value => _value;
-        
-        public TEnum? Key => _key;
-
-        public Type Type => typeof(TEnum);
-
-        public EnumValue()
-            : this(default, default) { }
-
-        public EnumValue(TEnum? key, T? value)
-        {
-            _key = key;
-            _value = value;
         }
     }
 }

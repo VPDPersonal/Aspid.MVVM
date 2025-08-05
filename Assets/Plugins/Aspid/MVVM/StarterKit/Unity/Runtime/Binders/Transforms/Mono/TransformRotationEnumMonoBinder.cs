@@ -13,6 +13,7 @@ namespace Aspid.MVVM.StarterKit.Unity
     [AddComponentContextMenu(typeof(Transform),"Add Transform Binder/Transform Binder - Rotation Enum")]
     public sealed class TransformRotationEnumMonoBinder : EnumMonoBinder<Vector3>
     {
+        [Header("Parameter")]
         [SerializeField] private Space _space = Space.World;
 
         [Header("Converter")]

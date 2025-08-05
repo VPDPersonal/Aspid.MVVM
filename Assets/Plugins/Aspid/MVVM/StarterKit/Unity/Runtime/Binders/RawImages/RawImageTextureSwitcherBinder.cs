@@ -33,7 +33,7 @@ namespace Aspid.MVVM.StarterKit.Unity
         protected override void SetValue(Texture2D? value)
         {
             Target.texture = value;
-            if (_disabledWhenNull) Target.enabled = value is not null;
+            Target.enabled = !_disabledWhenNull || value;
         }
     }
 }

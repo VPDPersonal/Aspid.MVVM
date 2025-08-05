@@ -32,7 +32,7 @@ namespace Aspid.MVVM.StarterKit.Unity
         protected override void SetValue(Sprite? value)
         {
             Target.sprite = value;
-            if (_disabledWhenNull) Target.enabled = value is not null;
+            Target.enabled = !_disabledWhenNull || value;
         }
     }
 }

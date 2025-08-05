@@ -24,7 +24,7 @@ namespace Aspid.MVVM.StarterKit.Unity
         public void SetValue(Sprite? value)
         {
             Target.sprite = value;
-            if (_disabledWhenNull) Target.enabled = value is not null;
+            Target.enabled = !_disabledWhenNull || value;
         }
 
         public void SetValue(Texture2D? value)

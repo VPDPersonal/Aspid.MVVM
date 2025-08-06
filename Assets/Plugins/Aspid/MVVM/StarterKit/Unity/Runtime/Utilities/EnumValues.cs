@@ -1,13 +1,20 @@
 #nullable enable
 using System;
 using UnityEngine;
+using Unity.Profiling;
 using System.Collections;
 using System.Collections.Generic;
 
 namespace Aspid.MVVM.StarterKit.Unity
 {
+    public abstract class EnumValues
+    {
+        protected static readonly ProfilerMarker EqualsMarker = new("EnumValues.Equals");
+        protected static readonly ProfilerMarker HasFlagMarker = new("EnumValues.HasFlag");
+    }
+    
     [Serializable]
-    public sealed class EnumValues<T> : IEnumerable<EnumValue<T>>
+    public sealed class EnumValues<T> : EnumValues, IEnumerable<EnumValue<T>>
     {
         [SerializeField] private T? _defaultValue;
         [SerializeField] private bool _isDefaultValue;
@@ -65,16 +72,22 @@ namespace Aspid.MVVM.StarterKit.Unity
 
         public bool Equals(Enum enumValue1, Enum enumValue2)
         {
-            if (_isFlag)
+            using (EqualsMarker.Auto())
             {
-                if (!enumValue1.HasFlag(enumValue2)) return false;
+                if (_isFlag)
+                {
+                    using (HasFlagMarker.Auto())
+                    {
+                        if (!enumValue1.HasFlag(enumValue2)) return false;
                 
-                var isEnum1None = Convert.ToInt32(enumValue1) == 0;
-                var isEnum2None = Convert.ToInt32(enumValue2) == 0;
-                return isEnum1None == isEnum2None;
-            }
+                        var isEnum1None = Convert.ToInt32(enumValue1) == 0;
+                        var isEnum2None = Convert.ToInt32(enumValue2) == 0;
+                        return isEnum1None == isEnum2None;
+                    }
+                }
             
-            return enumValue1.Equals(enumValue2);
+                return enumValue1.Equals(enumValue2);
+            }
         }
 
         public IEnumerator<EnumValue<T>> GetEnumerator()

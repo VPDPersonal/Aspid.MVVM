@@ -282,7 +282,7 @@ GameObject:
   - component: {fileID: 4132880172431407721}
   - component: {fileID: 7574872048884548487}
   - component: {fileID: 5979736322491983492}
-  - component: {fileID: 363834777198584455}
+  - component: {fileID: 1838619462730909639}
   - component: {fileID: 6005543252330047322}
   m_Layer: 5
   m_Name: Vertical Item
@@ -349,7 +349,7 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 0.375
---- !u!114 &363834777198584455
+--- !u!114 &1838619462730909639
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -358,10 +358,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 3129550675525933339}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 07bd040f9861d473ab921f902672a5f3, type: 3}
+  m_Script: {fileID: 11500000, guid: 6556c0d95db14236a81abce2a5a9eac5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _highlightColor: {r: 0.8301887, g: 0.8301887, b: 0.8301887, a: 1}
+  _highlightColor: {r: 0.83137256, g: 0.83137256, b: 0.83137256, a: 1}
   _fadeDuration: 0.1
 --- !u!114 &6005543252330047322
 MonoBehaviour:

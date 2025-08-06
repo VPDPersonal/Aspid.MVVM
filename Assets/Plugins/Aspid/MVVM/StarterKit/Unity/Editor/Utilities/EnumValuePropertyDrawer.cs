@@ -22,7 +22,9 @@ namespace Aspid.MVVM.StarterKit.Unity
 
                 if (enumType is { IsEnum: true })
                 {
-                    keyProperty.stringValue = KeyPopup(rect, enumType, keyProperty.stringValue);
+                    keyProperty.stringValue = enumType.IsDefined(typeof(FlagsAttribute), false) 
+                        ? EnumFlag(rect, enumType, keyProperty.stringValue) 
+                        : KeyPopup(rect, enumType, keyProperty.stringValue);
                 }
                 else
                 {
@@ -38,11 +40,27 @@ namespace Aspid.MVVM.StarterKit.Unity
         public override float GetPropertyHeight(SerializedProperty property, GUIContent label) =>
             _newLine * 2;
 
+        private static string EnumFlag(Rect rect, Type enumType, string value)
+        {
+            Enum enumValue;
+
+            try
+            {
+                enumValue = (Enum)Enum.Parse(enumType, value);
+            }
+            catch
+            {
+                enumValue = (Enum)Enum.GetValues(enumType).GetValue(0);
+            }
+            
+            return EditorGUI.EnumFlagsField(rect, "Key", enumValue).ToString();
+        }
+        
         private static string KeyPopup(Rect rect, Type enumType, string value)
         {
             var enumNames = Enum.GetNames(enumType);
             var selectedValueIndex = Mathf.Max(0, Array.IndexOf(enumNames, value));
-                    
+ 
             selectedValueIndex = EditorGUI.Popup(rect, "Key", selectedValueIndex, enumNames);
             return enumNames[selectedValueIndex];
         }

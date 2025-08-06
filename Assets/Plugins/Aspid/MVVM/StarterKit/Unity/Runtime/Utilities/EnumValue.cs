@@ -36,14 +36,16 @@ namespace Aspid.MVVM.StarterKit.Unity
 
         public void Initialize(Type type)
         {
-            if (!Enum.IsDefined(type, _key))
+            if (Enum.TryParse(type, _key, out var parsedEnum))
+            {
+                Type = type;
+                Key = parsedEnum as Enum;
+            }
+            else
             {
                 throw new Exception($"[{nameof(EnumValue<T>)}] [{nameof(Initialize)}]" +
                     $"Couldn't parse key '{_key}' to Enum '{nameof(type)}'");
             }
-
-            Type = type;
-            Key = Enum.Parse(type, _key) as Enum;
         }
     }
 }

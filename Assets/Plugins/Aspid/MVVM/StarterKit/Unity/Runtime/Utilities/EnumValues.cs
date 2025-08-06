@@ -65,9 +65,16 @@ namespace Aspid.MVVM.StarterKit.Unity
 
         public bool Equals(Enum enumValue1, Enum enumValue2)
         {
-            return _isFlag 
-                ? enumValue1.HasFlag(enumValue2) 
-                : enumValue1.Equals(enumValue2);
+            if (_isFlag)
+            {
+                if (!enumValue1.HasFlag(enumValue2)) return false;
+                
+                var isEnum1None = Convert.ToInt32(enumValue1) == 0;
+                var isEnum2None = Convert.ToInt32(enumValue2) == 0;
+                return isEnum1None == isEnum2None;
+            }
+            
+            return enumValue1.Equals(enumValue2);
         }
 
         public IEnumerator<EnumValue<T>> GetEnumerator()

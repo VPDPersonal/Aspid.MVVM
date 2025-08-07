@@ -126,6 +126,6 @@ Here are some helpful pages to quickly and easily get started with our product:
 
 ---
 
-## $\color{#4fa35d}\large{\textbf{Aspid.MVVM makes MVVM in Unity not only possible but also convenient.}}$
+$\color{#4fa35d}\Huge{\textbf{Aspid.MVVM makes MVVM in Unity not only possible but also convenient.}}$
 
 ---

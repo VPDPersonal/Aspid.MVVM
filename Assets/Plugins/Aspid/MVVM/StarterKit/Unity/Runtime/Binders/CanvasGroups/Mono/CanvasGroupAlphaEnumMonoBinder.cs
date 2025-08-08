@@ -11,7 +11,7 @@ namespace Aspid.MVVM.StarterKit.Unity
     [AddPropertyContextMenu(typeof(CanvasGroup), "m_Alpha")]
     [AddComponentMenu("Aspid/MVVM/Binders/UI/Canvas Group/CanvasGroup Binder - Alpha Enum")]
     [AddComponentContextMenu(typeof(CanvasGroup),"Add CanvasGroup Binder/CanvasGroup Binder - Alpha Enum")]
-    public sealed class CanvasGroupAlphaEnumMonoBinder : EnumComponentMonoBinder<CanvasGroup, float>
+    public sealed class CanvasGroupAlphaEnumMonoBinder : EnumMonoBinder<CanvasGroup, float>
     {
         [Header("Converter")]
         [SerializeReferenceDropdown]

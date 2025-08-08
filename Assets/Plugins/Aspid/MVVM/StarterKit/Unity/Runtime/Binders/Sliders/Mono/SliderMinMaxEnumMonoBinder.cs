@@ -13,7 +13,7 @@ namespace Aspid.MVVM.StarterKit.Unity
     [AddPropertyContextMenu(typeof(Slider), "m_MaxValue")]
     [AddComponentMenu("Aspid/MVVM/Binders/UI/Slider/Slider Binder - MinMax Enum")]
     [AddComponentContextMenu(typeof(Slider),"Add Slider Binder/Slider Binder - MinMax Enum")]
-    public sealed class SliderMinMaxEnumMonoBinder : EnumComponentMonoBinder<Slider, Vector2>
+    public sealed class SliderMinMaxEnumMonoBinder : EnumMonoBinder<Slider, Vector2>
     {
         [Header("Parameter")]
         [SerializeField] private SliderValueMode _valueMode = SliderValueMode.Range;

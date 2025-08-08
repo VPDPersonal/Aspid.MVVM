@@ -12,7 +12,7 @@ namespace Aspid.MVVM.StarterKit.Unity
     [AddPropertyContextMenu(typeof(Graphic), "m_Color")]
     [AddComponentMenu("Aspid/MVVM/Binders/UI/Graphic/Graphic Binder - Color Enum")]
     [AddComponentContextMenu(typeof(Graphic),"Add Graphic Binder/Graphic Binder - Color Enum")]
-    public sealed class GraphicColorEnumMonoBinder : EnumComponentMonoBinder<Graphic, Color>
+    public sealed class GraphicColorEnumMonoBinder : EnumMonoBinder<Graphic, Color>
     {
         [Header("Converter")]
         [SerializeReferenceDropdown]

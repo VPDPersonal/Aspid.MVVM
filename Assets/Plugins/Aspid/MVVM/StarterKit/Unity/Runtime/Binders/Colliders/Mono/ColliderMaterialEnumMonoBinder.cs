@@ -13,7 +13,7 @@ namespace Aspid.MVVM.StarterKit.Unity
     [AddPropertyContextMenu(typeof(Collider), "m_Material")]
     [AddComponentMenu("Aspid/MVVM/Binders/Collider/Collider Binder - Material Enum")]
     [AddComponentContextMenu(typeof(Collider),"Add Binder/Collider Binder - Material Enum")]
-    public sealed class ColliderMaterialEnumMonoBinder : EnumComponentMonoBinder<Collider, PhysicsMaterial>
+    public sealed class ColliderMaterialEnumMonoBinder : EnumMonoBinder<Collider, PhysicsMaterial>
     {
         [Header("Converter")]
         [SerializeReferenceDropdown]

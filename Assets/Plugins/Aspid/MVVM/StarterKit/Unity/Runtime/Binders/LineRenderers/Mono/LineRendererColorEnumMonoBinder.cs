@@ -11,7 +11,7 @@ namespace Aspid.MVVM.StarterKit.Unity
     [AddPropertyContextMenu(typeof(LineRenderer), "colorGradient")]
     [AddComponentMenu("Aspid/MVVM/Binders/Line Renderers/LineRenderer Binder - Color Enum")]
     [AddComponentContextMenu(typeof(LineRenderer),"Add LineRenderer Binder/LineRenderer Binder - Color Enum")]
-    public sealed class LineRendererColorEnumMonoBinder : EnumComponentMonoBinder<LineRenderer, Color>
+    public sealed class LineRendererColorEnumMonoBinder : EnumMonoBinder<LineRenderer, Color>
     {
         [Header("Parameter")]
         [SerializeField] private LineRendererColorMode _colorMode = LineRendererColorMode.StartAndEnd;

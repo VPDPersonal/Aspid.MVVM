@@ -11,7 +11,7 @@ namespace Aspid.MVVM.StarterKit.Unity
     [AddPropertyContextMenu(typeof(MeshCollider), "m_Mesh")]
     [AddComponentMenu("Aspid/MVVM/Binders/Collider/Mesh/MeshCollider Binder - Mesh Enum")]
     [AddComponentContextMenu(typeof(MeshCollider),"Add MeshCollider Binder/MeshCollider Binder - Mesh Enum")]
-    public sealed class MeshColliderMeshEnumMonoBinder : EnumComponentMonoBinder<MeshCollider, Mesh>
+    public sealed class MeshColliderMeshEnumMonoBinder : EnumMonoBinder<MeshCollider, Mesh>
     {
         [Header("Converter")]
         [SerializeReferenceDropdown]

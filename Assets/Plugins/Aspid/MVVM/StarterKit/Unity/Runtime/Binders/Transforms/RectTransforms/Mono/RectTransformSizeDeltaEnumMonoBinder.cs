@@ -10,7 +10,7 @@ namespace Aspid.MVVM.StarterKit.Unity
 {
     [AddComponentMenu("Aspid/MVVM/Binders/UI/RectTransform/RectTransform Binder - SizeDelta Enum")]
     [AddComponentContextMenu(typeof(RectTransform),"Add RectTransform Binder/RectTransform Binder - SizeDelta Enum")]
-    public sealed class RectTransformSizeDeltaEnumMonoBinder : EnumComponentMonoBinder<RectTransform, Vector2>
+    public sealed class RectTransformSizeDeltaEnumMonoBinder : EnumMonoBinder<RectTransform, Vector2>
     {
         [Header("Parameter")]
         [SerializeField] private SizeDeltaMode _sizeMode = SizeDeltaMode.SizeDelta;

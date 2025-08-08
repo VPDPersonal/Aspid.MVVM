@@ -10,6 +10,7 @@ using Converter = Aspid.MVVM.StarterKit.Unity.IConverterColor;
 namespace Aspid.MVVM.StarterKit.Unity
 {
     [AddPropertyContextMenu(typeof(Graphic), "m_Color")]
+    [AddPropertyContextMenu(typeof(Graphic), "m_Color")]
     [AddComponentMenu("Aspid/MVVM/Binders/UI/Graphic/Graphic Binder - Color")]
     [AddComponentContextMenu(typeof(Graphic),"Add Graphic Binder/Graphic Binder - Color")]
     public partial class GraphicColorMonoBinder : ComponentMonoBinder<Graphic>, IColorBinder

@@ -11,7 +11,7 @@ namespace Aspid.MVVM.StarterKit.Unity
     [AddPropertyContextMenu(typeof(CapsuleCollider), "m_Radius")]
     [AddComponentMenu("Aspid/MVVM/Binders/Collider/Capsule/CapsuleCollider Binder - Radius Enum")]
     [AddComponentContextMenu(typeof(CapsuleCollider),"Add CapsuleCollider Binder/CapsuleCollider Binder - Radius Enum")]
-    public sealed class CapsuleColliderRadiusEnumMonoBinder : EnumComponentMonoBinder<CapsuleCollider, float>
+    public sealed class CapsuleColliderRadiusEnumMonoBinder : EnumMonoBinder<CapsuleCollider, float>
     {
         [Header("Converter")]
         [SerializeReferenceDropdown]

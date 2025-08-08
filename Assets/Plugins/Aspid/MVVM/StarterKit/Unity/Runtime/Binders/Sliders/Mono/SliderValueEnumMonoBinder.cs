@@ -12,7 +12,7 @@ namespace Aspid.MVVM.StarterKit.Unity
     [AddPropertyContextMenu(typeof(Slider), "m_Value")]
     [AddComponentMenu("Aspid/MVVM/Binders/UI/Slider/Slider Binder - Value Enum")]
     [AddComponentContextMenu(typeof(Slider),"Add Slider Binder/Slider Binder - Value Enum")]
-    public sealed class SliderValueEnumMonoBinder : EnumComponentMonoBinder<Slider, float>
+    public sealed class SliderValueEnumMonoBinder : EnumMonoBinder<Slider, float>
     {
         [Header("Converter")]
         [SerializeReferenceDropdown]

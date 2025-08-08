@@ -11,7 +11,7 @@ namespace Aspid.MVVM.StarterKit.Unity
     [AddPropertyContextMenu(typeof(Renderer), "m_Materials")]
     [AddComponentMenu("Aspid/MVVM/Binders/Renderer/Renderer Binder - MaterialsColor Enum")]
     [AddComponentContextMenu(typeof(Renderer),"Add Renderer Binder/Renderer Binder - MaterialsColor Enum")]
-    public sealed class RendererMaterialsColorEnumMonoBinder : EnumComponentMonoBinder<Renderer, Color>
+    public sealed class RendererMaterialsColorEnumMonoBinder : EnumMonoBinder<Renderer, Color>
     {
         [Header("Parameter")]
         [SerializeField] private string _colorPropertyName = "_BaseColor";

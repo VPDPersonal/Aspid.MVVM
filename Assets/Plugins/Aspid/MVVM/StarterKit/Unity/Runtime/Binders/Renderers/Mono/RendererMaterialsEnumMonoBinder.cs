@@ -11,7 +11,7 @@ namespace Aspid.MVVM.StarterKit.Unity
     [AddPropertyContextMenu(typeof(Renderer), "m_Materials")]
     [AddComponentMenu("Aspid/MVVM/Binders/Renderer/Renderer Binder - Materials Enum")]
     [AddComponentContextMenu(typeof(Renderer),"Add Renderer Binder/Renderer Binder - Materials Enum")]
-    public sealed class RendererMaterialsEnumMonoBinder : EnumComponentMonoBinder<Renderer, Material[]>
+    public sealed class RendererMaterialsEnumMonoBinder : EnumMonoBinder<Renderer, Material[]>
     {
         [Header("Converter")]
         [SerializeReferenceDropdown]

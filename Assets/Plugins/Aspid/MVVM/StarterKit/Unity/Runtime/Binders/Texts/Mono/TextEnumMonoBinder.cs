@@ -13,7 +13,7 @@ namespace Aspid.MVVM.StarterKit.Unity
     [AddPropertyContextMenu(typeof(TMP_Text), "m_text")]
     [AddComponentMenu("Aspid/MVVM/Binders/UI/Text/Text Binder - Text Enum")]
     [AddComponentContextMenu(typeof(TMP_Text),"Add Text Binder/Text Binder - Text Enum")]
-    public sealed class TextEnumMonoBinder : EnumComponentMonoBinder<TMP_Text, string>
+    public sealed class TextEnumMonoBinder : EnumMonoBinder<TMP_Text, string>
     {
         [Header("Converter")]
         [SerializeReferenceDropdown]

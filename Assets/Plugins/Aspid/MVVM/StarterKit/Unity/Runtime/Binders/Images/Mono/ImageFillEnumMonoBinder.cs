@@ -12,7 +12,7 @@ namespace Aspid.MVVM.StarterKit.Unity
     [AddPropertyContextMenu(typeof(Image), "m_FillAmount")]
     [AddComponentMenu("Aspid/MVVM/Binders/UI/Image/Image Binder - Fill Enum")]
     [AddComponentContextMenu(typeof(Image),"Add Image Binder/Image Binder - Fill Enum")]
-    public sealed class ImageFillEnumMonoBinder : EnumComponentMonoBinder<Image, float>
+    public sealed class ImageFillEnumMonoBinder : EnumMonoBinder<Image, float>
     {
         [Header("Converter")]
         [SerializeReferenceDropdown] 

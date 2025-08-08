@@ -13,7 +13,7 @@ namespace Aspid.MVVM.StarterKit.Unity
     [AddComponentMenu("Aspid/MVVM/Binders/UI/Text/Text Binder - Localization Enum")]
     [AddPropertyContextMenu(typeof(LocalizeStringEvent), "m_StringReference")]
     [AddComponentContextMenu(typeof(LocalizeStringEvent),"Add Text Binder/Text Binder - Localization Enum")]
-    public sealed class TextLocalizationEnumMonoBinder : EnumComponentMonoBinder<LocalizeStringEvent, string>
+    public sealed class TextLocalizationEnumMonoBinder : EnumMonoBinder<LocalizeStringEvent, string>
     {
         [Header("Converter")]
         [SerializeReferenceDropdown]

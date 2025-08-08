@@ -1,4 +1,4 @@
-![Aspid.MVVMHeaderImage.png](Documentation/Images/Aspid.MVVMHeaderImage.png)
+![Aspid.MVVMHeaderImage.png](Images/Aspid.MVVMHeaderImage.png)
 ![](https://img.shields.io/badge/2022.3%2B-000000?style=flat&logo=unity&logoColor=white&color=4fa35d)
 
 # Introduction

@@ -11,7 +11,7 @@ teams to scale projects without descending into chaos.
 
 ---
 
-### \[[Documentation]()\] \[[Unity Assets Store](https://assetstore.unity.com/packages/slug/298463)\] \[[Donate](#donate)\] \[[Get Started](#get-started)\]
+### \[[Documentation](https://vpd-inc.gitbook.io/aspid.mvvm/)\] \[[Unity Assets Store](https://assetstore.unity.com/packages/slug/298463)\] \[[Donate](#donate)\] \[[Get Started](#get-started)\]
 
 ---
 
@@ -118,12 +118,12 @@ You can donate via the following platforms:
 
 # Get Started
 Here are some helpful pages to quickly and easily get started with our product:
-* [What is MVVM?]()
-* [Getting Started]()
-* [Overview - ViewModel]()
-* [Overview - Commands]()
-* [Overview - Binders]()
-* [Overview - View]()
+* [What is MVVM?](https://vpd-inc.gitbook.io/aspid.mvvm/introduction/what-is-mvvm)
+* [Getting Started](https://vpd-inc.gitbook.io/aspid.mvvm/introduction/getting-started)
+* [Overview - ViewModel](https://vpd-inc.gitbook.io/aspid.mvvm/overview/overview-viewmodel)
+* [Overview - Commands](https://vpd-inc.gitbook.io/aspid.mvvm/overview/overview-commands)
+* [Overview - Binders](https://vpd-inc.gitbook.io/aspid.mvvm/overview/overview-binders)
+* [Overview - View](https://vpd-inc.gitbook.io/aspid.mvvm/overview/overview-view)
 
 ---
 

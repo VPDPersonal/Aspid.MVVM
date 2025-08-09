@@ -11,7 +11,7 @@ teams to scale projects without descending into chaos.
 
 ---
 
-### \[[Documentation](https://vpd-inc.gitbook.io/aspid.mvvm/)\] \[[Unity Assets Store](https://assetstore.unity.com/packages/slug/298463)\] \[[Donate](#donate)\] \[[Get Started](#get-started)\]
+### \[[Documentation](https://vpd-inc.gitbook.io/aspid.mvvm/)\] \[[Unity Assets Store](https://assetstore.unity.com/packages/slug/298463) (Soon)\] \[[Donate](#donate)\] \[[Get Started](#get-started)\]
 
 ---
 

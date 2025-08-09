@@ -112,7 +112,7 @@ $\color{#6aba7d}\large{\textbf{Aspid.MVVM}}$ works on all Unity-supported platfo
 This project is developed on a voluntary basis. If you find it useful, you can support its development financially. This helps allocate more time to improving and maintaining $\color{#6aba7d}\large{\textbf{Aspid.MVVM}}$.
 
 You can donate via the following platforms:
-* \[[Unity Asset Store](https://assetstore.unity.com/packages/slug/298463)\]
+* \[[Unity Asset Store](https://assetstore.unity.com/packages/slug/298463) (Soon)\]
 
 ---
 

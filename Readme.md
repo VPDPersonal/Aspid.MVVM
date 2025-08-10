@@ -118,6 +118,8 @@ You can donate via the following platforms:
 
 # Get Started
 Here are some helpful pages to quickly and easily get started with our product:
+
+* [Integration](https://vpd-inc.gitbook.io/aspid.mvvm/introduction/getting-started/integration)
 * [What is MVVM?](https://vpd-inc.gitbook.io/aspid.mvvm/introduction/what-is-mvvm)
 * [Getting Started](https://vpd-inc.gitbook.io/aspid.mvvm/introduction/getting-started)
 * [Overview - ViewModel](https://vpd-inc.gitbook.io/aspid.mvvm/overview/overview-viewmodel)

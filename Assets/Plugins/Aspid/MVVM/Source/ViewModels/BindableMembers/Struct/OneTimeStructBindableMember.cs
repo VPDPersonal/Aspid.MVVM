@@ -7,12 +7,15 @@ namespace Aspid.MVVM;
 public sealed class OneTimeStructBindableMember<T> : OneTimeStructBindableMember<T, ValueType>
     where T : struct
 {
-    /// <summary>
-    /// Initializes a new instance of the <see cref="OneTimeStructBindableMember{T}"/> class with the specified value.
-    /// </summary>
-    /// <param name="value">The value to be bound in the event.</param>
-    public OneTimeStructBindableMember(T value) 
-        : base(value) { }
+    private static readonly OneTimeStructBindableMember<T> _instance = new();
+    
+    private OneTimeStructBindableMember() { }
+    
+    public static OneTimeStructBindableMember<T> Get(T value)
+    {
+        _instance.Value = value;
+        return _instance;
+    }
 }
 
 /// <summary>
@@ -27,16 +30,9 @@ public abstract class OneTimeStructBindableMember<T, TBoxed> : OneTimeStructBind
     /// <summary>
     /// Gets or sets the current value.
     /// </summary>
-    public T Value { get; }
-
-    /// <summary>
-    /// Initializes a new instance of the <see cref="OneTimeStructBindableMember{T,TBoxed}"/> class with the specified value.
-    /// </summary>
-    /// <param name="value">The value to be bound in the event.</param>
-    protected OneTimeStructBindableMember(T value)
-    {
-        Value = value;
-    }
+    public T Value { get; private protected set; }
+    
+    private protected OneTimeStructBindableMember() { }
 
     /// <inheritdoc />
     /// <summary>

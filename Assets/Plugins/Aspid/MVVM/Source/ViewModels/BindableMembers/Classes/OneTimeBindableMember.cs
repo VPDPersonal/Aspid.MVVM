@@ -6,19 +6,14 @@ namespace Aspid.MVVM;
 /// <typeparam name="T">The type of the value to be bound.</typeparam>
 public sealed class OneTimeBindableMember<T> : OneTimeBindableMember, IReadOnlyValueBindableMember<T>
 {
+    private static readonly OneTimeBindableMember<T> _instance = new();
+    
     /// <summary>
     /// Gets or sets the current value.
     /// </summary>
-    public T? Value { get; }
+    public T? Value { get; private set; }
 
-    /// <summary>
-    /// Initializes a new instance of the <see cref="OneTimeBindableMember{T}"/> class with the specified value.
-    /// </summary>
-    /// <param name="value">The value to be bound in the event.</param>
-    public OneTimeBindableMember(T? value)
-    {
-        Value = value;
-    }
+    private OneTimeBindableMember() { }
 
     /// <inheritdoc />
     /// <summary>
@@ -52,9 +47,15 @@ public sealed class OneTimeBindableMember<T> : OneTimeBindableMember, IReadOnlyV
 
                 default: throw BinderInvalidCastException.Class<T>(binder);
             }
-
+            
             return null;
         }
+    }
+
+    public static OneTimeBindableMember<T> Get(T value)
+    {
+        _instance.Value = value;
+        return _instance;
     }
 }
     

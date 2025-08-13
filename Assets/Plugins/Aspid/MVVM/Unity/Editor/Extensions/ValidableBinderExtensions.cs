@@ -21,8 +21,8 @@ namespace Aspid.MVVM.Unity
         /// <returns>
         /// FieldInfo` objects representing the field that contain `IMonoBinderValidable` binders.
         /// </returns>
-        public static FieldInfo? GetMonoBinderValidableFieldById(this IView view, string id) =>
-            GetMonoBinderValidableFields(view).FirstOrDefault(field => field?.GetBinderId() == id);
+        public static FieldInfo? GetMonoBinderValidableFieldById(this IMonoBinderSource source, string id) =>
+            GetMonoBinderValidableFields(source).FirstOrDefault(field => field?.GetBinderId() == id);
         
         /// <summary>
         /// Retrieves all fields in the specified type that are of type `IMonoBinderValidable` or `IMonoBinderValidable[]`.
@@ -32,9 +32,9 @@ namespace Aspid.MVVM.Unity
         /// <returns>
         /// A collection of `FieldInfo` objects representing the fields that contain `IMonoBinderValidable` binders.
         /// </returns>
-        public static IEnumerable<FieldInfo> GetMonoBinderValidableFields(this IView view)
+        public static IEnumerable<FieldInfo> GetMonoBinderValidableFields(this IMonoBinderSource source)
         {
-            return view.GetType().GetFieldInfosIncludingBaseClasses(BindingFlags).Where(field =>
+            return source.GetType().GetFieldInfosIncludingBaseClasses(BindingFlags).Where(field =>
             {
                 var fieldType = field.FieldType;
                 return typeof(IMonoBinderValidable).IsAssignableFrom(fieldType)
@@ -43,9 +43,9 @@ namespace Aspid.MVVM.Unity
         }
         
         // TODO Write summary
-        public static bool TryGetMonoBinderValidableFieldById(this IView view, string id, out FieldInfo? field)
+        public static bool TryGetMonoBinderValidableFieldById(this IMonoBinderSource source, string id, out FieldInfo? field)
         {
-            field = GetMonoBinderValidableFieldById(view, id);
+            field = GetMonoBinderValidableFieldById(source, id);
             return field is not null;
         }
     }

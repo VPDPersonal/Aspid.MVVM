@@ -78,12 +78,12 @@ namespace Aspid.MVVM.Unity
 
             foreach (var binder in View.GetComponentsInChildren<IMonoBinderValidable>(true))
             {
-                var view = binder.View;
+                var source = binder.Source;
 
-                if (view is null && !string.IsNullOrEmpty(binder.Id))
+                if (source is null && !string.IsNullOrEmpty(binder.Id))
                     binder.Id = null;
                 
-                if (!string.IsNullOrEmpty(binder.Id) && view is not null && !view.TryGetMonoBinderValidableFieldById(binder.Id, out _)) 
+                if (!string.IsNullOrEmpty(binder.Id) && source is not null && !source.TryGetMonoBinderValidableFieldById(binder.Id, out _)) 
                     binder.Id = null;
                 
                 if (string.IsNullOrEmpty(binder.Id)) 

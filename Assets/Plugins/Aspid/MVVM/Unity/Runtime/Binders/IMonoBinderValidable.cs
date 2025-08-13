@@ -21,7 +21,7 @@ namespace Aspid.MVVM.Unity
         /// The View to which the Binder relates.
         /// </summary>
         [EditorBrowsable(EditorBrowsableState.Advanced)]
-        public IView? View { get; set; }
+        public IMonoBinderSource? Source { get; set; }
         
         /// <summary>
         /// The ID that must correspond to the name of any ViewModel property.
@@ -38,7 +38,7 @@ namespace Aspid.MVVM.Unity
             if (!IsMonoExist) return;
             
             Id = null;
-            View = null;
+            Source = null;
         }
     }
 }

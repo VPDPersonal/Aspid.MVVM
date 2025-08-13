@@ -8,7 +8,7 @@ namespace Aspid.MVVM.Unity
     /// Implements <see cref="IDisposable"/> to allow cleanup of resources, including the destruction of the associated GameObject.
     /// </summary>
     [View]
-    public abstract partial class MonoView : MonoBehaviour, IDisposable
+    public abstract partial class MonoView : MonoBehaviour, IMonoBinderSource, IDisposable
     {
         /// <summary>
         /// Destroys the GameObject of the View.

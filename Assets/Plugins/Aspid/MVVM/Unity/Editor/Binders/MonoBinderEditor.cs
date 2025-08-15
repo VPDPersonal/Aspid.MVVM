@@ -13,7 +13,7 @@ namespace Aspid.MVVM.Unity
     public class MonoBinderEditor : BinderEditorBase<MonoBinder>
     {
         private SerializedProperty _id;
-        private SerializedProperty _source;
+        private SerializedProperty _view;
         private SerializedProperty _mode;
         
         private SerializedProperty _log;
@@ -24,7 +24,7 @@ namespace Aspid.MVVM.Unity
         protected virtual string[] PropertiesExcluding => new[]
         {
             _id.name,
-            _source.name,
+            _view.name,
             _mode.name,
             "m_Script",
             _log?.name,
@@ -45,9 +45,9 @@ namespace Aspid.MVVM.Unity
         {
             if (Binder) return;
             if (_id is null) return;
-            if (_source is null) return;
+            if (_view is null) return;
         
-            var view = _source.objectReferenceValue as MonoView;
+            var view = _view.objectReferenceValue as MonoView;
 
             if (!view) return;
             if (string.IsNullOrWhiteSpace(_id.stringValue)) return;
@@ -65,21 +65,21 @@ namespace Aspid.MVVM.Unity
 
 	        void ValidateView()
 	        {
-		        if (!_source.objectReferenceValue) return;
+		        if (!_view.objectReferenceValue) return;
 		        
 		        for (var parent = ((Component)target).transform; parent is not null; parent = parent.parent)
                 {
-                    if (parent.GetComponents<MonoView>().Any(view => _source.objectReferenceValue == view)) return;
+                    if (parent.GetComponents<MonoView>().Any(view => _view.objectReferenceValue == view)) return;
                 }
 
-		        _source.objectReferenceValue = null;
+		        _view.objectReferenceValue = null;
 	        }
 
 	        void ValidateId()
 	        {
 		        if (string.IsNullOrEmpty(_id.stringValue)) return;
 
-		        var view = _source.objectReferenceValue as MonoView;
+		        var view = _view.objectReferenceValue as MonoView;
 
                 if (view && view.TryGetMonoBinderValidableFieldById(_id.stringValue, out var field))
                 {
@@ -159,7 +159,7 @@ namespace Aspid.MVVM.Unity
         protected virtual void FindProperties()
         {
             _id = serializedObject.FindProperty("__id");
-            _source = serializedObject.FindProperty("__source");
+            _view = serializedObject.FindProperty("__view");
             _mode = serializedObject.FindProperty(nameof(_mode));
             
             _log = serializedObject.FindProperty(nameof(_log));
@@ -334,10 +334,10 @@ namespace Aspid.MVVM.Unity
         {
             serializedObject.UpdateIfRequiredOrScript();
             {
-                _source.objectReferenceValue = null;
+                _view.objectReferenceValue = null;
                 foreach (var view in GetViewList().Where(view => view.name == viewName))
                 {
-                    _source.objectReferenceValue = view.view;
+                    _view.objectReferenceValue = view.view;
                     break;
                 }
             }
@@ -352,11 +352,11 @@ namespace Aspid.MVVM.Unity
                 const string noneValue = "No Id";
                 
                 var id = editor._id.stringValue;
-                var source = editor._source.objectReferenceValue;
+                var view = editor._view.objectReferenceValue;
             
-                var dropdown = !source
+                var dropdown = view == null
                     ? GetDropdown(noneValue) 
-                    : GetDropdown(noneValue, id, editor.GetIdList(source as IMonoBinderSource));
+                    : GetDropdown(noneValue, id, editor.GetIdList(view as IView));
 
                 dropdown.name = "IdDropdown";
                 return dropdown;
@@ -367,7 +367,7 @@ namespace Aspid.MVVM.Unity
                 const string noneValue = "No View";
                 
                 var views = editor.GetViewList();
-                var viewName = GetViewName(editor._source.objectReferenceValue as MonoView);
+                var viewName = GetViewName(editor._view.objectReferenceValue as MonoView);
             
                 var dropdown = views.Count == 0
                     ? GetDropdown(noneValue) 
@@ -401,7 +401,7 @@ namespace Aspid.MVVM.Unity
             {
                 _editor = editor;
                 _previousId = _editor._id.stringValue;
-                _previousView = _editor._source.objectReferenceValue as MonoView;
+                _previousView = _editor._view.objectReferenceValue as MonoView;
             }
             
             public static SyncerView Sync(MonoBinderEditor editor) => new(editor);
@@ -410,7 +410,7 @@ namespace Aspid.MVVM.Unity
             {
                 var binder = _editor.Binder;
                 var id = _editor._id.stringValue;
-                var view = _editor._source.objectReferenceValue;
+                var view = _editor._view.objectReferenceValue;
                 
                 if (_previousView?.GetInstanceID() == view?.GetInstanceID() 
                     && _previousId == id) return;

@@ -7,7 +7,7 @@ using UnityEngine.UIElements;
 namespace Aspid.MVVM.Unity
 {
     public abstract class ViewEditor<T> : Editor
-        where T : UnityEngine.Object, IView, IMonoBinderSource
+        where T : UnityEngine.Object, IView
     {
         protected T View => target as T;
         

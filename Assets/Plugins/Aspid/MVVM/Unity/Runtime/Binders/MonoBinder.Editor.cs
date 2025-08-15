@@ -1,18 +1,16 @@
 #if UNITY_EDITOR && !ASPID_MVVM_EDITOR_DISABLED
 #nullable disable
+using System;
 using UnityEngine;
 using System.ComponentModel;
-using UnityEngine.Serialization;
-using Component = UnityEngine.Component;
 
 namespace Aspid.MVVM.Unity
 {
     public abstract partial class MonoBinder : IMonoBinderValidable, IRebindableBinder
     {
         // ReSharper disable once InconsistentNaming
-        [FormerlySerializedAs("__view")]
         [EditorBrowsable(EditorBrowsableState.Never)]
-        [SerializeField] private Component __source;
+        [SerializeField] private MonoView __view;
         
         // ReSharper disable once InconsistentNaming
         [EditorBrowsable(EditorBrowsableState.Never)]
@@ -33,23 +31,27 @@ namespace Aspid.MVVM.Unity
         /// (Editor only).
         /// </summary>
         [EditorBrowsable(EditorBrowsableState.Advanced)]
-        IMonoBinderSource IMonoBinderValidable.Source
+        IView IMonoBinderValidable.View
         {
-            get => __source as IMonoBinderSource;
+            get => __view;
             set
             {
                 if (!((IMonoBinderValidable)this).IsMonoExist) return;
 
                 if (value is null)
                 {
-                    __source = null;
+                    __view = null;
                     return;
                 }
                 
-                var component = value as Component;
-                if (__source == component) return;
+                if (__view == value as MonoView) return;
                 
-                __source = component;
+                __view = value switch
+                {
+                    MonoView view => view,
+                    _ => throw new ArgumentException("View is not a MonoView")
+                };
+
                 SaveBinderDataInEditor();
             }
         }

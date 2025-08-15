@@ -27,11 +27,11 @@ namespace Aspid.MVVM.Unity
             return viewList;
         }
 
-        protected List<string> GetIdList(IMonoBinderSource source)
+        protected List<string> GetIdList(IView view)
         {
-            if (source is null) return new List<string>();
+            if (view is null) return new List<string>();
             
-            var fields = source.GetMonoBinderValidableFields();
+            var fields = view.GetMonoBinderValidableFields();
             
             var ids = fields
                 .Where(field =>

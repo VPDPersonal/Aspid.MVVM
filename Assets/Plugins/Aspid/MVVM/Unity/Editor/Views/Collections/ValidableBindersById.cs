@@ -14,7 +14,7 @@ namespace Aspid.MVVM.Unity
         /// <returns>
         /// A dictionary where the key is the field name and the value is an array of `IMonoBinderValidable` associated with that field.
         /// </returns>
-        public static ValidableBindersById GetValidableBindersById(IMonoBinderSource view)
+        public static ValidableBindersById GetValidableBindersById(IView view)
         {
             var fields = view.GetMonoBinderValidableFields();
             var bindersByFieldName = new ValidableBindersById();

@@ -1,43 +1,31 @@
-#if ASPID_MVVM_ADDRESSABLES_INTEGRATION && ASPID_MVVM_UNITASK_INTEGRATION
+#if ASPID_MVVM_ADDRESSABLES_INTEGRATION
 using UnityEngine;
-using System.Threading;
-using Cysharp.Threading.Tasks;
+using Aspid.MVVM.Unity;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
 
 namespace Aspid.MVVM.StarterKit.Unity
 {
-    public abstract partial class AddressableMonoBinder<TAsset, TComponent> : ComponentMonoBinder<TComponent>, IBinder<string>, IBinder<object>
-        where TComponent : Component
+    public abstract partial class AddressableMonoBinder<TAsset> : MonoBinder, IBinder<string>, IBinder<IKeyEvaluator>
     {
-        private CancellationTokenSource _cts;
         private AsyncOperationHandle<TAsset> _handle;
-        protected CancellationToken[] AdditionalCancellationTokensField;
-
-        protected bool IsLoading { get; private set; }
         
-        protected virtual CancellationToken[] AdditionalCancellationTokens =>
-            AdditionalCancellationTokensField ??= new[] { destroyCancellationToken };
-
-        protected virtual void OnDestroy()
-        {
-            CancelLoadAsset();
+        protected virtual void OnDestroy() =>
             TryReleaseHandle();
-        }
 
         protected override void OnUnbound()
         {
-            CancelLoadAsset();
             TryReleaseHandle();
+            SetAsset(GetDefaultAsset());
         }
 
         [BinderLog]
-        public void SetValue(object value)
+        public void SetValue(IKeyEvaluator value)
         {
             TryReleaseHandle();
             SetAsset(GetDefaultAsset());
             
-            LoadAssetAsync(value, GetCancellationToken()).Forget();
+            Load(value);
         }
         
         [BinderLog]
@@ -48,65 +36,92 @@ namespace Aspid.MVVM.StarterKit.Unity
             
             if (!string.IsNullOrWhiteSpace(value))
             {
-                LoadAssetAsync(value, GetCancellationToken()).Forget();
-            }
-            else if (IsLoading)
-            {
-                CancelLoadAsset();
-                IsLoading = false;
+                Load(value);
             }
         }
 
-        protected virtual TAsset GetDefaultAsset() => default;
-        
-        protected abstract void SetAsset(TAsset asset);
-
-        private async UniTaskVoid LoadAssetAsync(object value, CancellationToken cancellationToken)
+        private void Load(object key)
         {
-            IsLoading = true;
-            _handle = Addressables.LoadAssetAsync<TAsset>(value);
-            await _handle;
-
-            if (!cancellationToken.IsCancellationRequested)
-            {
-                SetAsset(_handle.Result);
-                IsLoading = false;
-            }
+            _handle = Addressables.LoadAssetAsync<TAsset>(key);
+            _handle.Completed += OnHandleCompleted;
         }
 
-        private CancellationToken GetCancellationToken()
+        private void OnHandleCompleted(AsyncOperationHandle<TAsset> handle)
         {
-            if (IsLoading)
-            {
-                CancelLoadAsset();
-                _cts = CancellationTokenSource.CreateLinkedTokenSource(AdditionalCancellationTokens);
-            }
-            else _cts ??= CancellationTokenSource.CreateLinkedTokenSource(AdditionalCancellationTokens);
-            
-            return _cts.Token;
-        }
-
-        private void CancelLoadAsset()
-        {
-            if (_cts is null) return;
-            
-            _cts.Cancel();
-            _cts.Dispose();
-            _cts = null;
+            if (_handle.Equals(handle)) SetAsset(_handle.Result);
+            else Addressables.Release(handle);
         }
         
         private void TryReleaseHandle()
         {
-            if (!_handle.IsValid()) return;
-            
-            if (_handle.IsDone)
-            {
+            if (_handle.IsValid() && _handle.IsDone)
                 Addressables.Release(_handle);
-            }
-            else if (_handle.Status != AsyncOperationStatus.Failed)
+            
+            _handle = default;
+        }
+        
+        protected abstract void SetAsset(TAsset asset);
+        
+        protected virtual TAsset GetDefaultAsset() => default;
+    }
+    
+    public abstract partial class AddressableMonoBinder<TAsset, TComponent> : ComponentMonoBinder<TComponent>, IBinder<string>, IBinder<IKeyEvaluator>
+        where TComponent : Component
+    {
+        private AsyncOperationHandle<TAsset> _handle;
+
+        protected virtual void OnDestroy() =>
+            TryReleaseHandle();
+
+        protected override void OnUnbound()
+        {
+            TryReleaseHandle();
+            SetAsset(GetDefaultAsset());
+        }
+
+        [BinderLog]
+        public void SetValue(IKeyEvaluator value)
+        {
+            TryReleaseHandle();
+            SetAsset(GetDefaultAsset());
+            
+            Load(value);
+        }
+        
+        [BinderLog]
+        public void SetValue(string value)
+        {
+            TryReleaseHandle();
+            SetAsset(GetDefaultAsset());
+            
+            if (!string.IsNullOrWhiteSpace(value))
             {
-                  _handle.Completed += Addressables.Release;  
+                Load(value);
             }
+        }
+
+        protected void Load(object key)
+        {
+            _handle = Addressables.LoadAssetAsync<TAsset>(key);
+            _handle.Completed += OnHandleCompleted;
+        }
+        
+        protected void TryReleaseHandle()
+        {
+            if (_handle.IsValid() && _handle.IsDone)
+                Addressables.Release(_handle);
+            
+            _handle = default;
+        }
+
+        protected abstract void SetAsset(TAsset asset);
+        
+        protected virtual TAsset GetDefaultAsset() => default;
+        
+        private void OnHandleCompleted(AsyncOperationHandle<TAsset> handle)
+        {
+            if (_handle.Equals(handle)) SetAsset(_handle.Result);
+            else Addressables.Release(handle);
         }
     }
 }

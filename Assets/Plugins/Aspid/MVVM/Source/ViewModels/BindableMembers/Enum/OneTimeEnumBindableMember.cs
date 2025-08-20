@@ -7,10 +7,13 @@ namespace Aspid.MVVM;
 public sealed class OneTimeEnumBindableMember<T> : OneTimeStructBindableMember<T, Enum>
     where T : struct, Enum
 {
-    /// <summary>
-    /// Initializes a new instance of the <see cref="OneTimeEnumBindableMember{T}"/> class with the specified value.
-    /// </summary>
-    /// <param name="value">The value to be bound in the event.</param>
-    public OneTimeEnumBindableMember(T value) 
-        : base(value) { }
+    private static readonly OneTimeEnumBindableMember<T> _instance = new();
+    
+    private OneTimeEnumBindableMember() { }
+    
+    public static OneTimeEnumBindableMember<T> Get(T value)
+    {
+        _instance.Value = value;
+        return _instance;
+    }
 }

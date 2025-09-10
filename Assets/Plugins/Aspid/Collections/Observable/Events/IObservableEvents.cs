@@ -1,10 +1,15 @@
-namespace Aspid.Collections.Observable;
+using System;
+using System.Collections.Generic;
 
-public interface IObservableEvents<out T> : IDisposable
+// ReSharper disable once CheckNamespace
+namespace Aspid.Collections.Observable
 {
-    public event Action Reset;
-    public event Action<IReadOnlyList<T?>, int> Added;
-    public event Action<IReadOnlyList<T?>, int> Removed;
-    public event Action<IReadOnlyList<T?>, int, int> Moved;
-    public event Action<IReadOnlyList<T?>, IReadOnlyList<T?>, int> Replaced;
+    public interface IObservableEvents<out T> : IDisposable
+    {
+        public event Action Reset;
+        public event Action<IReadOnlyList<T?>, int> Added;
+        public event Action<IReadOnlyList<T?>, int> Removed;
+        public event Action<IReadOnlyList<T?>, int, int> Moved;
+        public event Action<IReadOnlyList<T?>, IReadOnlyList<T?>, int> Replaced;
+    }
 }

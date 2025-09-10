@@ -1,3 +1,7 @@
-namespace Aspid.Collections.Observable.Synchronizer;
+using System;
 
-public interface IReadOnlyObservableCollectionSync<out T> : IObservableCollection<T>, IDisposable { }
+// ReSharper disable once CheckNamespace
+namespace Aspid.Collections.Observable.Synchronizer
+{
+    public interface IReadOnlyObservableCollectionSync<out T> : IObservableCollection<T>, IDisposable { }
+}

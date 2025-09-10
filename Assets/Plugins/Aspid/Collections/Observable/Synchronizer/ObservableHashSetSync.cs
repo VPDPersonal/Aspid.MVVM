@@ -1,128 +1,134 @@
-namespace Aspid.Collections.Observable.Synchronizer;
+using System;
+using System.Collections.Generic;
+using System.Collections.Specialized;
 
-internal sealed class ObservableHashSetSync<TFrom, TTo> : ObservableHashSet<TTo>, IReadOnlyObservableCollectionSync<TTo>
-    where TTo : notnull 
-    where TFrom : notnull
+// ReSharper disable once CheckNamespace
+namespace Aspid.Collections.Observable.Synchronizer
 {
-    private readonly bool _isDisposable;
-    private readonly Action<TTo>? _remove;
-    private readonly Func<TFrom, TTo> _converter;
-    private readonly Dictionary<TFrom, TTo> _sync;
-    private readonly ObservableHashSet<TFrom> _fromHasSet;
-
-    public ObservableHashSetSync(
-        ObservableHashSet<TFrom> fromHashSet, 
-        Func<TFrom, TTo> converter,
-        Action<TTo>? remove)
+    internal sealed class ObservableHashSetSync<TFrom, TTo> : ObservableHashSet<TTo>, IReadOnlyObservableCollectionSync<TTo>
+        where TTo : notnull 
+        where TFrom : notnull
     {
-        _remove = remove;
-        _converter = converter;
-        _fromHasSet = fromHashSet;
-        _sync = new Dictionary<TFrom, TTo>(fromHashSet.Count);
+        private readonly bool _isDisposable;
+        private readonly Action<TTo>? _remove;
+        private readonly Func<TFrom, TTo> _converter;
+        private readonly Dictionary<TFrom, TTo> _sync;
+        private readonly ObservableHashSet<TFrom> _fromHasSet;
 
-        foreach (var from in fromHashSet)
+        public ObservableHashSetSync(
+            ObservableHashSet<TFrom> fromHashSet, 
+            Func<TFrom, TTo> converter,
+            Action<TTo>? remove)
         {
-            var to = Convert(from);
+            _remove = remove;
+            _converter = converter;
+            _fromHasSet = fromHashSet;
+            _sync = new Dictionary<TFrom, TTo>(fromHashSet.Count);
+
+            foreach (var from in fromHashSet)
+            {
+                var to = Convert(from);
                 
-            Add(to);
-            _sync.Add(from,to );
+                Add(to);
+                _sync.Add(from,to );
+            }
+
+            Subscribe();
+        }
+        
+        public ObservableHashSetSync(
+            ObservableHashSet<TFrom> fromHashSet, 
+            Func<TFrom, TTo> converter,
+            bool isDisposable = false)
+            : this(fromHashSet, converter, null)
+        {
+            _isDisposable = isDisposable;
         }
 
-        Subscribe();
-    }
-        
-    public ObservableHashSetSync(
-        ObservableHashSet<TFrom> fromHashSet, 
-        Func<TFrom, TTo> converter,
-        bool isDisposable = false)
-        : this(fromHashSet, converter, null)
-    {
-        _isDisposable = isDisposable;
-    }
+        private void Subscribe() => 
+            _fromHasSet.CollectionChanged += OnFromStackChanged;
 
-    private void Subscribe() => 
-        _fromHasSet.CollectionChanged += OnFromStackChanged;
+        private void Unsubscribe() =>
+            _fromHasSet.CollectionChanged -= OnFromStackChanged;
 
-    private void Unsubscribe() =>
-        _fromHasSet.CollectionChanged -= OnFromStackChanged;
+        private TTo Convert(TFrom fromValue) => 
+            _converter.Invoke(fromValue);
 
-    private TTo Convert(TFrom fromValue) => 
-        _converter.Invoke(fromValue);
-
-    private void OnFromStackChanged(INotifyCollectionChangedEventArgs<TFrom> args)
-    {
-        switch (args.Action)
+        private void OnFromStackChanged(INotifyCollectionChangedEventArgs<TFrom> args)
         {
-            case NotifyCollectionChangedAction.Add:
-                {
-                    if (args.IsSingleItem)
+            switch (args.Action)
+            {
+                case NotifyCollectionChangedAction.Add:
                     {
-                        var fromItem = args.NewItem!;
-                        var item = Convert(fromItem);
+                        if (args.IsSingleItem)
+                        {
+                            var fromItem = args.NewItem!;
+                            var item = Convert(fromItem);
                             
-                        Add(item);
-                        _sync.Add(fromItem, item);
+                            Add(item);
+                            _sync.Add(fromItem, item);
+                        }
+                        else throw new NotImplementedException();
                     }
-                    else throw new NotImplementedException();
-                }
-                break;
+                    break;
                 
-            case NotifyCollectionChangedAction.Remove:
-                {
-                    if (args.IsSingleItem)
+                case NotifyCollectionChangedAction.Remove:
                     {
-                        Remove(_sync[args.OldItem!]);
-                        _sync.Remove(args.OldItem!);
+                        if (args.IsSingleItem)
+                        {
+                            Remove(_sync[args.OldItem!]);
+                            _sync.Remove(args.OldItem!);
+                        }
+                        else throw new NotImplementedException();
                     }
-                    else throw new NotImplementedException();
-                }
-                break;
+                    break;
 
-            case NotifyCollectionChangedAction.Reset:
-                {
-                    Clear();
-                    _sync.Clear();
-                }
-                break;
+                case NotifyCollectionChangedAction.Reset:
+                    {
+                        Clear();
+                        _sync.Clear();
+                    }
+                    break;
 
-            case NotifyCollectionChangedAction.Move:
-            case NotifyCollectionChangedAction.Replace:
-                throw new NotImplementedException();
+                case NotifyCollectionChangedAction.Move:
+                case NotifyCollectionChangedAction.Replace:
+                    throw new NotImplementedException();
                     
-            default: throw new ArgumentOutOfRangeException();
+                default: throw new ArgumentOutOfRangeException();
+            }
         }
-    }
         
-    protected override void OnRemoved(TTo item)
-    {
-        if (_isDisposable)
+        protected override void OnRemoved(TTo item)
         {
-            if (item is IDisposable disposable)
-                disposable.Dispose();
-        }
-        else _remove?.Invoke(item);
-    }
-
-    protected override void OnClearing()
-    {
-        if (_isDisposable)
-        {
-            foreach (var item in _sync.Values)
+            if (_isDisposable)
             {
                 if (item is IDisposable disposable)
                     disposable.Dispose();
             }
+            else _remove?.Invoke(item);
         }
-        else if (_remove is not null)
-        {
-            foreach (var item in _sync.Values)
-                _remove.Invoke(item);
-        }
-    }
 
-    public override void Dispose()
-    {
-        Unsubscribe();
-        base.Dispose();
+        protected override void OnClearing()
+        {
+            if (_isDisposable)
+            {
+                foreach (var item in _sync.Values)
+                {
+                    if (item is IDisposable disposable)
+                        disposable.Dispose();
+                }
+            }
+            else if (_remove is not null)
+            {
+                foreach (var item in _sync.Values)
+                    _remove.Invoke(item);
+            }
+        }
+
+        public override void Dispose()
+        {
+            Unsubscribe();
+            base.Dispose();
+        }
     }
 }

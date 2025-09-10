@@ -1,8 +1,12 @@
-namespace Aspid.Collections.Observable;
+using System.Collections.Generic;
 
-public interface IObservableCollection<out T> : IReadOnlyCollection<T>
+// ReSharper disable once CheckNamespace
+namespace Aspid.Collections.Observable
 {
-    public event NotifyCollectionChangedEventHandler<T>? CollectionChanged;
+    public interface IObservableCollection<out T> : IReadOnlyCollection<T>
+    {
+        public event NotifyCollectionChangedEventHandler<T>? CollectionChanged;
         
-    public object SyncRoot { get; }
+        public object SyncRoot { get; }
+    }
 }

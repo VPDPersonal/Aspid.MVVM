@@ -1,27 +1,32 @@
-namespace Aspid.Collections.Observable;
+using System;
+using System.Collections.Generic;
 
-public abstract class CollectionChangedEvent<T>
+// ReSharper disable once CheckNamespace
+namespace Aspid.Collections.Observable
 {
-    private List<NotifyCollectionChangedEventHandler<T>>? _handlers;
+    public abstract class CollectionChangedEvent<T>
+    {
+        private List<NotifyCollectionChangedEventHandler<T>>? _handlers;
         
-    public event NotifyCollectionChangedEventHandler<T>? CollectionChanged
-    {
-        add
+        public event NotifyCollectionChangedEventHandler<T>? CollectionChanged
         {
-            _handlers ??= new List<NotifyCollectionChangedEventHandler<T>>();
-            _handlers.Add(value ?? throw ThrowValueNullReferenceException());
+            add
+            {
+                _handlers ??= new List<NotifyCollectionChangedEventHandler<T>>();
+                _handlers.Add(value ?? throw ThrowValueNullReferenceException());
+            }
+            remove => _handlers?.Remove(value ?? throw ThrowValueNullReferenceException());
         }
-        remove => _handlers?.Remove(value ?? throw ThrowValueNullReferenceException());
-    }
 
-    protected void Invoke(INotifyCollectionChangedEventArgs<T> e)
-    {
-        if (_handlers is null) return;
+        protected void Invoke(INotifyCollectionChangedEventArgs<T> e)
+        {
+            if (_handlers is null) return;
             
-        foreach (var handler in _handlers)
-            handler.Invoke(e);
-    }
+            foreach (var handler in _handlers)
+                handler.Invoke(e);
+        }
 
-    private static NullReferenceException ThrowValueNullReferenceException() =>
-        throw new NullReferenceException("value");
+        private static NullReferenceException ThrowValueNullReferenceException() =>
+            throw new NullReferenceException("value");
+    }
 }

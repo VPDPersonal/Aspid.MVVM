@@ -1,6 +1,11 @@
-namespace Aspid.Collections.Observable.Filtered;
+using System;
+using System.Collections.Generic;
 
-public interface IReadOnlyFilteredList<out T> : IReadOnlyList<T>
+// ReSharper disable once CheckNamespace
+namespace Aspid.Collections.Observable.Filtered
 {
-    public event Action? CollectionChanged;
+    public interface IReadOnlyFilteredList<out T> : IReadOnlyList<T>
+    {
+        public event Action? CollectionChanged;
+    }
 }

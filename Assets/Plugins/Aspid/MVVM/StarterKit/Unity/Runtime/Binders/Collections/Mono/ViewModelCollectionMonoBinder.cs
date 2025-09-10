@@ -24,6 +24,9 @@ namespace Aspid.MVVM.StarterKit.Unity
 
                 index++;
             }
+            
+            for (var i = index; i < _views.Length; i++)
+                _views[i].gameObject.SetActive(false);
         }
 
         protected override void OnReset()

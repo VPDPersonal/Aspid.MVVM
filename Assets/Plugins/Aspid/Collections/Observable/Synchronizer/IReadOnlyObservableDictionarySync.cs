@@ -1,3 +1,7 @@
-namespace Aspid.Collections.Observable.Synchronizer;
+using System.Collections.Generic;
 
-public interface IReadOnlyObservableDictionarySync<TKey, TValue> : IReadOnlyObservableDictionary<TKey, TValue>, IReadOnlyObservableCollectionSync<KeyValuePair<TKey, TValue>> { }
+// ReSharper disable once CheckNamespace
+namespace Aspid.Collections.Observable.Synchronizer
+{
+    public interface IReadOnlyObservableDictionarySync<TKey, TValue> : IReadOnlyObservableDictionary<TKey, TValue>, IReadOnlyObservableCollectionSync<KeyValuePair<TKey, TValue>> { }
+}

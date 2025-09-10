@@ -1,28 +1,32 @@
-namespace Aspid.MVVM;
+using System;
 
-public sealed class BinderInvalidCastException : InvalidCastException
+// ReSharper disable once CheckNamespace
+namespace Aspid.MVVM
 {
-    private BinderInvalidCastException(string message) 
-        : base(message) { }
-
-    public static BinderInvalidCastException Class<T>(IBinder binder)
+    public sealed class BinderInvalidCastException : InvalidCastException
     {
-        var anyBinderType = "IAnyBinder".GetInterfaceMessage();
-        var binderType = binder.GetType().Name.GetClassMessage();
-        var specificBinderType = $"{"IBinder".GetInterfaceMessage()}<{typeof(T).GetClassMessage()}>";
-            
-        var message = binder.AddExceptionMessage($"Binder ({binderType}) must be type {specificBinderType} or {anyBinderType}.");
-        throw new BinderInvalidCastException(message);
-    }
+        private BinderInvalidCastException(string message) 
+            : base(message) { }
 
-    public static BinderInvalidCastException Struct<T, TBoxed>(IBinder binder)
-    {
-        var anyBinderType = "IAnyBinder".GetInterfaceMessage();
-        var binderType = binder.GetType().Name.GetClassMessage();
-        var specificBinderType = $"{"IBinder".GetInterfaceMessage()}<{typeof(T).GetClassMessage()}>";
-        var specificBinderBoxedType = $"{"IBinder".GetInterfaceMessage()}<{typeof(TBoxed).GetClassMessage()}>";
+        public static BinderInvalidCastException Class<T>(IBinder binder)
+        {
+            var anyBinderType = "IAnyBinder".GetInterfaceMessage();
+            var binderType = binder.GetType().Name.GetClassMessage();
+            var specificBinderType = $"{"IBinder".GetInterfaceMessage()}<{typeof(T).GetClassMessage()}>";
             
-        var message = binder.AddExceptionMessage($"Binder ({binderType}) must be type {specificBinderType} or {specificBinderBoxedType} or {anyBinderType}.");
-        throw new BinderInvalidCastException(message);
+            var message = binder.AddExceptionMessage($"Binder ({binderType}) must be type {specificBinderType} or {anyBinderType}.");
+            throw new BinderInvalidCastException(message);
+        }
+
+        public static BinderInvalidCastException Struct<T, TBoxed>(IBinder binder)
+        {
+            var anyBinderType = "IAnyBinder".GetInterfaceMessage();
+            var binderType = binder.GetType().Name.GetClassMessage();
+            var specificBinderType = $"{"IBinder".GetInterfaceMessage()}<{typeof(T).GetClassMessage()}>";
+            var specificBinderBoxedType = $"{"IBinder".GetInterfaceMessage()}<{typeof(TBoxed).GetClassMessage()}>";
+            
+            var message = binder.AddExceptionMessage($"Binder ({binderType}) must be type {specificBinderType} or {specificBinderBoxedType} or {anyBinderType}.");
+            throw new BinderInvalidCastException(message);
+        }
     }
 }

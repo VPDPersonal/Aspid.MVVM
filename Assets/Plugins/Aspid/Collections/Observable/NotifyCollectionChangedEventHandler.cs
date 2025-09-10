@@ -1,3 +1,5 @@
-namespace Aspid.Collections.Observable;
-
-public delegate void NotifyCollectionChangedEventHandler<in T>(INotifyCollectionChangedEventArgs<T> e);
+// ReSharper disable once CheckNamespace
+namespace Aspid.Collections.Observable
+{
+    public delegate void NotifyCollectionChangedEventHandler<in T>(INotifyCollectionChangedEventArgs<T> e);
+}

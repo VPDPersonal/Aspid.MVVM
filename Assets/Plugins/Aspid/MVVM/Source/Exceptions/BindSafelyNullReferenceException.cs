@@ -1,12 +1,16 @@
-namespace Aspid.MVVM;
+using System;
 
-public sealed class BindSafelyNullReferenceException : NullReferenceException
+// ReSharper disable once CheckNamespace
+namespace Aspid.MVVM
 {
-    public BindSafelyNullReferenceException() { }
+    public sealed class BindSafelyNullReferenceException : NullReferenceException
+    {
+        public BindSafelyNullReferenceException() { }
 
-    public BindSafelyNullReferenceException(string message) 
-        : base(message) { }
+        public BindSafelyNullReferenceException(string message) 
+            : base(message) { }
 
-    public BindSafelyNullReferenceException(string message, Exception innerException) 
-        : base(message, innerException) { }
+        public BindSafelyNullReferenceException(string message, Exception innerException) 
+            : base(message, innerException) { }
+    }
 }

@@ -1,3 +1,7 @@
-namespace Aspid.Collections.Observable;
+using System.Collections.Generic;
 
-public interface IReadOnlyObservableList<out T> : IObservableCollection<T>, IReadOnlyList<T> { }
+// ReSharper disable once CheckNamespace
+namespace Aspid.Collections.Observable
+{
+    public interface IReadOnlyObservableList<out T> : IObservableCollection<T>, IReadOnlyList<T> { }
+}

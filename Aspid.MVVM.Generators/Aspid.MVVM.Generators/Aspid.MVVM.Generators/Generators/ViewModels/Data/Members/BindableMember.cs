@@ -95,11 +95,12 @@ public abstract class BindableMember
         _bindableFieldName = $"__{RemoveFieldPrefix(GetFieldName(generatedName, null))}Bindable";
     }
 
-    // TODO Nullable?
-    public string ToBindableMemberFieldDeclarationString()
+    public string? ToBindableMemberFieldDeclarationString()
     {
+        if (Mode is BindMode.OneTime) return null;
+        
         return _bindableType is null 
-            ? string.Empty 
+            ? null
             : $"""
               [{EditorBrowsableAttribute}({EditorBrowsableState}.Never)]
               {GeneratedCodeViewModelAttribute}
@@ -113,7 +114,7 @@ public abstract class BindableMember
         {
             BindMode.OneWay => $"{_bindableFieldName} ??= new({GeneratedName})",
             BindMode.TwoWay => $"{_bindableFieldName} ??= new({GeneratedName}, Set{GeneratedName})",
-            BindMode.OneTime => $"{_bindableFieldName} ??= new({GeneratedName})",
+            BindMode.OneTime => $"{_bindableType}<{Type}>.Get({GeneratedName})",
             BindMode.OneWayToSource => $"{_bindableFieldName} ??= new(Set{GeneratedName})",
             _ => string.Empty
         };

@@ -51,7 +51,10 @@ public static class PropertiesBody
     {
         foreach (var member in data.Members)
         {
-            code.AppendMultiline(member.ToBindableMemberFieldDeclarationString())
+            var fieldDeclaration = member.ToBindableMemberFieldDeclarationString();
+            if (fieldDeclaration is null) continue;
+            
+            code.AppendMultiline(fieldDeclaration)
                 .AppendLine();
         }
         

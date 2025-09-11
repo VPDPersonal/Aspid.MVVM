@@ -1,6 +1,8 @@
 using UnityEngine.UI;
-using Aspid.MVVM.StarterKit.Unity;
+using Aspid.MVVM.StarterKit;
 
+// ReSharper disable once CheckNamespace
+// ReSharper disable UnassignedGetOnlyAutoProperty
 namespace Aspid.MVVM.Samples.ExampleScripts.Views.Bind
 {
     [View]

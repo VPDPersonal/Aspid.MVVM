@@ -7,7 +7,8 @@ using Object = UnityEngine.Object;
 using System.Threading;
 #endif // UNITY_2023_1_OR_NEWER
 
-namespace Aspid.MVVM.Unity
+// ReSharper disable once CheckNamespace
+namespace Aspid.MVVM
 {
     public abstract partial class MonoView
     {

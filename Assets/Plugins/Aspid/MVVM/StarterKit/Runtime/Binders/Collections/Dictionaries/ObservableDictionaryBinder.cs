@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Aspid.Collections.Observable;
 using System.Collections.Specialized;
 
+// ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
     public abstract class ObservableDictionaryBinder<TKey, TValue> : Binder, IBinder<IReadOnlyObservableDictionary<TKey, TValue?>>

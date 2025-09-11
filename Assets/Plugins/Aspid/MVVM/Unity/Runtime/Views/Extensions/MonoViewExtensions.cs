@@ -3,7 +3,8 @@ using System;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
-namespace Aspid.MVVM.Unity
+// ReSharper disable once CheckNamespace
+namespace Aspid.MVVM
 {
     /// <summary>
     /// Provides extension methods for the <see cref="IView"/> interface.

@@ -1,5 +1,6 @@
 using System;
 
+// ReSharper disable CheckNamespace
 namespace Aspid.MVVM.Samples.HelloWorld
 {
     public class Speaker

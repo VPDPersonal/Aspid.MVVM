@@ -1,6 +1,7 @@
 using UnityEngine;
 
-namespace Aspid.MVVM.Unity
+// ReSharper disable once CheckNamespace
+namespace Aspid.MVVM
 {
     public abstract partial class MonoView
     {

@@ -6,7 +6,8 @@ using UnityEditor.Callbacks;
 using System.Collections.Generic;
 using Object = UnityEngine.Object;
 
-namespace Aspid.MVVM.Unity
+// ReSharper disable once CheckNamespace
+namespace Aspid.MVVM
 {
     internal static class AddBinderContextMenu
     {

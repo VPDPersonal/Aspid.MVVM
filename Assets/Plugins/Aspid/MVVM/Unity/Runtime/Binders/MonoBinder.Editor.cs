@@ -4,7 +4,8 @@ using System;
 using UnityEngine;
 using System.ComponentModel;
 
-namespace Aspid.MVVM.Unity
+// ReSharper disable once CheckNamespace
+namespace Aspid.MVVM
 {
     public abstract partial class MonoBinder : IMonoBinderValidable, IRebindableBinder
     {

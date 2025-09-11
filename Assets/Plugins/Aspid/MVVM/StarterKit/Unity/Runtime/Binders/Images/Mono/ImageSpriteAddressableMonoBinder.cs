@@ -1,9 +1,9 @@
 #if ASPID_MVVM_ADDRESSABLES_INTEGRATION
 using UnityEngine;
 using UnityEngine.UI;
-using Aspid.MVVM.Unity;
 
-namespace Aspid.MVVM.StarterKit.Unity
+// ReSharper disable once CheckNamespace
+namespace Aspid.MVVM.StarterKit
 {
     [AddPropertyContextMenu(typeof(Image), "m_Sprite")]
     [AddComponentMenu("Aspid/MVVM/Binders/UI/Image/Image Binder - Sprite Addressable")]

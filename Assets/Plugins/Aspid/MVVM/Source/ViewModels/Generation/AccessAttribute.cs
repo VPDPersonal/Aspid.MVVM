@@ -1,6 +1,8 @@
 using System;
 
 // ReSharper disable once CheckNamespace
+// ReSharper disable UnusedParameter.Local
+// ReSharper disable UnusedAutoPropertyAccessor.Global
 namespace Aspid.MVVM
 {
     /// <summary>

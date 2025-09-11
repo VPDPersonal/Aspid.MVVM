@@ -1,9 +1,9 @@
 using System;
 using UnityEngine;
 using UnityEngine.UI;
-using Aspid.MVVM.Unity;
 
-namespace Aspid.MVVM.StarterKit.Unity
+// ReSharper disable once CheckNamespace
+namespace Aspid.MVVM.StarterKit
 {
     [BindModeOverride(IsAll = true)]
     [AddPropertyContextMenu(typeof(Toggle), "m_IsOn")]

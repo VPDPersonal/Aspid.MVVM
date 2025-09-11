@@ -4,6 +4,7 @@ using System;
 // 1. _outText field for OneWay binding to get the value from Model.
 // 2. _inputText field for TwoWay binding to set the initial value, and further get the value from View.
 // 3. Say command, uses OneTime binding and is executed from View
+// ReSharper disable CheckNamespace
 namespace Aspid.MVVM.Samples.HelloWorld.MVVM
 {
     // ViewModelAttribute is a marker for Source Generator.

@@ -5,11 +5,12 @@ using System.Reflection;
 using Aspid.CustomEditors;
 using UnityEngine.UIElements;
 
-namespace Aspid.MVVM.StarterKit.Unity
+// ReSharper disable once CheckNamespace
+namespace Aspid.MVVM.StarterKit
 {
     [CanEditMultipleObjects]
     [CustomEditor(typeof(ViewInitializerManual))]
-    public sealed class ViewInitializerManualEditor : ViewInitializerBaseEditor<ViewInitializerManual>
+    public sealed class ViewInitializerManualEditor : ViewInitializerBaseEditor
     {
         private static readonly GUIContent _disposeOnDestroyLabel = new("Dispose On Destroy");
         

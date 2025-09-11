@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 
+// ReSharper disable CheckNamespace
 namespace Aspid.MVVM.Samples.Stats
 {
     public class Hero

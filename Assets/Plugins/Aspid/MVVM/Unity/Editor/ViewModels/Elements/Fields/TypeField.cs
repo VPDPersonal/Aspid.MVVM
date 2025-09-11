@@ -1,7 +1,8 @@
 using System;
 using UnityEngine.UIElements;
 
-namespace Aspid.MVVM.Unity
+// ReSharper disable once CheckNamespace
+namespace Aspid.MVVM
 {
     internal sealed class TypeField : TextField
     {

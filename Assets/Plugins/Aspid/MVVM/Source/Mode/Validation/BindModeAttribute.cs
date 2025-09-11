@@ -7,6 +7,7 @@ using Attribute = System.Attribute;
 #endif
 
 // ReSharper disable once CheckNamespace
+// ReSharper disable UnusedAutoPropertyAccessor.Global
 namespace Aspid.MVVM
 {
     /// <summary>

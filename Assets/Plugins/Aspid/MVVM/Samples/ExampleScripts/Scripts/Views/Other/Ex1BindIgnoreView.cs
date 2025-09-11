@@ -1,3 +1,5 @@
+// ReSharper disable once CheckNamespace
+// ReSharper disable UnassignedGetOnlyAutoProperty
 namespace Aspid.MVVM.Samples.ExampleScripts.Views.Other
 {
     [View]

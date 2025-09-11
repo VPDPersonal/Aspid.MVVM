@@ -1,7 +1,9 @@
 using System;
 using UnityEngine;
 
-namespace Aspid.MVVM.StarterKit.Unity
+// ReSharper disable InconsistentNaming
+// ReSharper disable once CheckNamespace
+namespace Aspid.MVVM.StarterKit
 {
     [Serializable]
     public sealed class InitializeComponent<TInterface> : InitializeComponent

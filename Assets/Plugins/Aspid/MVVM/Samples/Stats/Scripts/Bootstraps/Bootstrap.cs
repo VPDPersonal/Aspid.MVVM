@@ -1,5 +1,6 @@
 using UnityEngine;
 
+// ReSharper disable CheckNamespace
 namespace Aspid.MVVM.Samples.Stats
 {
     public sealed class Bootstrap : MonoBehaviour

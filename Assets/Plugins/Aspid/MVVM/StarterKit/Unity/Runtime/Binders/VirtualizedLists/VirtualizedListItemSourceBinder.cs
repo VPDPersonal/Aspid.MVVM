@@ -6,11 +6,12 @@ using Aspid.Collections.Observable.Filtered;
 using Filter = Aspid.MVVM.StarterKit.ICollectionFilter<Aspid.MVVM.IViewModel>;
 using Comparer = Aspid.MVVM.StarterKit.ICollectionComparer<Aspid.MVVM.IViewModel>;
 #else
-using Filter = Aspid.MVVM.StarterKit.Unity.IViewModelCollectionFilter;
-using Comparer = Aspid.MVVM.StarterKit.Unity.IViewModelCollectionComparer;
+using Filter = Aspid.MVVM.StarterKit.IViewModelCollectionFilter;
+using Comparer = Aspid.MVVM.StarterKit.IViewModelCollectionComparer;
 #endif
 
-namespace Aspid.MVVM.StarterKit.Unity
+// ReSharper disable once CheckNamespace
+namespace Aspid.MVVM.StarterKit
 {
     [Serializable]
     public sealed class VirtualizedListItemSourceBinder : TargetBinder<VirtualizedList>, IBinder<IReadOnlyList<IViewModel>>

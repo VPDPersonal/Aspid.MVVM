@@ -1,9 +1,9 @@
 using System;
 using UnityEngine;
-using Aspid.MVVM.Unity;
 using UnityEngine.Pool;
 
-namespace Aspid.MVVM.StarterKit.Unity
+// ReSharper disable once CheckNamespace
+namespace Aspid.MVVM.StarterKit
 {
     [Serializable]
     public sealed class PrefabViewPool : PrefabViewPool<MonoView>, IViewFactoryMonoView

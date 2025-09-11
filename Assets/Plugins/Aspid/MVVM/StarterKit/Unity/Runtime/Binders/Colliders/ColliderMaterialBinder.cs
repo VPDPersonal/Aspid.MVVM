@@ -6,10 +6,11 @@ using PhysicsMaterial = UnityEngine.PhysicsMaterial;
 using Converter = Aspid.MVVM.StarterKit.IConverter<UnityEngine.PhysicsMaterial?, UnityEngine.PhysicsMaterial?>;
 #else
 using PhysicsMaterial = UnityEngine.PhysicMaterial;
-using Converter = Aspid.MVVM.StarterKit.Unity.IConverterPhysicsMaterial;
+using Converter = Aspid.MVVM.StarterKit.IConverterPhysicsMaterial;
 #endif
 
-namespace Aspid.MVVM.StarterKit.Unity
+// ReSharper disable once CheckNamespace
+namespace Aspid.MVVM.StarterKit
 {
     [Serializable]
     public class ColliderMaterialBinder : TargetBinder<Collider>, IBinder<PhysicsMaterial>

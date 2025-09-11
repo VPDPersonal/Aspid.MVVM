@@ -1,8 +1,8 @@
 using UnityEngine;
-using Aspid.MVVM.Unity;
 using System.Collections.Generic;
 
-namespace Aspid.MVVM.StarterKit.Unity
+// ReSharper disable once CheckNamespace
+namespace Aspid.MVVM.StarterKit
 {
     [AddComponentMenu("Aspid/MVVM/Binders/Collections/Collection Binder - ViewModel")]
     [AddComponentContextMenu(typeof(Component), "Add General Binder/Collections/Collection Binder - ViewModel")]

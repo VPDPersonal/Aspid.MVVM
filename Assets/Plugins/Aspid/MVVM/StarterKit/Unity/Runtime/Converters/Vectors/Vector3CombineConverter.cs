@@ -4,10 +4,11 @@ using UnityEngine;
 #if UNITY_2023_1_OR_NEWER
 using Converter = Aspid.MVVM.StarterKit.IConverter<UnityEngine.Vector3, UnityEngine.Vector3>;
 #else
-using Converter = Aspid.MVVM.StarterKit.Unity.IConverterVector3;
+using Converter = Aspid.MVVM.StarterKit.IConverterVector3;
 #endif
 
-namespace Aspid.MVVM.StarterKit.Unity
+// ReSharper disable once CheckNamespace
+namespace Aspid.MVVM.StarterKit
 {
     [Serializable]
     public sealed class Vector3CombineConverter

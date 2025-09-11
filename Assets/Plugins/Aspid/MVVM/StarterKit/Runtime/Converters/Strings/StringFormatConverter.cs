@@ -1,9 +1,10 @@
 using System;
 
+// ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
     [Serializable]
-    public class StringFormatConverter : IConverter<string, string>
+    public class StringFormatConverter : IConverterString
     {
 #if UNITY_2022_1_OR_NEWER
         [UnityEngine.SerializeField]
@@ -20,7 +21,7 @@ namespace Aspid.MVVM.StarterKit
             _format = format;
         }
 
-        public string Convert(string value) =>
+        public string? Convert(string? value) =>
             string.IsNullOrEmpty(_format) ? value : string.Format(_format, value);
     }
 }

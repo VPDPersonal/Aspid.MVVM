@@ -1,7 +1,8 @@
 using System;
 using UnityEngine;
 
-namespace Aspid.MVVM.Unity
+// ReSharper disable once CheckNamespace
+namespace Aspid.MVVM
 {
     /// <summary>
     /// Abstract class derived from <see cref="MonoBehaviour"/> that implements the basic logic for binding a component to <see cref="IViewModel"/>.
@@ -12,8 +13,8 @@ namespace Aspid.MVVM.Unity
     public abstract partial class MonoBinder : MonoBehaviour, IBinder
     {
 #if !ASPID_MVVM_UNITY_PROFILER_DISABLED
-        private static readonly global::Unity.Profiling.ProfilerMarker _bindMarker = new("MonoBinder.Bind");
-        private static readonly global::Unity.Profiling.ProfilerMarker _unbindMarker = new("MonoBinder.Unbind");
+        private static readonly Unity.Profiling.ProfilerMarker _bindMarker = new("MonoBinder.Bind");
+        private static readonly Unity.Profiling.ProfilerMarker _unbindMarker = new("MonoBinder.Unbind");
 #endif
         [BindMode(BindMode.OneWay, BindMode.OneTime)]
         [SerializeField] private BindMode _mode = BindMode.TwoWay;
@@ -51,8 +52,7 @@ namespace Aspid.MVVM.Unity
             {
                 if (IsBound) throw new Exception("This Binder is already bound.");
                 if (!IsBind) return;
-
-                OnBindingDebug(binderAdder);
+                
                 OnBinding();
                 
                 _binderRemover = binderAdder.Add(this);
@@ -62,8 +62,6 @@ namespace Aspid.MVVM.Unity
                 OnBound();
             }
         }
-
-        partial void OnBindingDebug(IBinderAdder binderAdder);
         
         partial void OnBoundDebug(IBinderAdder binderAdder);
         
@@ -88,7 +86,6 @@ namespace Aspid.MVVM.Unity
             {
                 if (!IsBound) return;
                 
-                OnUnbindingDebug();
                 OnUnbinding();
                 
                 _binderRemover?.Remove(this);
@@ -99,8 +96,6 @@ namespace Aspid.MVVM.Unity
                 OnUnbound();
             }
         }
-        
-        partial void OnUnbindingDebug();
         
         partial void OnUnboundDebug();
         

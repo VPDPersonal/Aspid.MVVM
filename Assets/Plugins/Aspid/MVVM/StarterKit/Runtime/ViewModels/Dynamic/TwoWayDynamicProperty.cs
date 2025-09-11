@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 
+// ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
     public sealed class TwoWayDynamicProperty<T> : IDynamicProperty
@@ -18,7 +19,9 @@ namespace Aspid.MVVM.StarterKit
 
         private void SetValue(T? value)
         {
+#pragma warning disable CS8604 // Possible null reference argument.
             if (EqualityComparer<T>.Default.Equals(_value, value)) return;
+#pragma warning restore CS8604 // Possible null reference argument.
             
             _value = value;
             _bindableMember.Value = value;

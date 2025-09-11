@@ -1,3 +1,4 @@
+// ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
     public sealed class OneTimeDynamicProperty<T> : IDynamicProperty 

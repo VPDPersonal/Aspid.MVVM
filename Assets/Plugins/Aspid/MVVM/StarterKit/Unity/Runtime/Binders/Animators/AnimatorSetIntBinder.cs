@@ -4,10 +4,11 @@ using UnityEngine;
 #if UNITY_2023_1_OR_NEWER
 using Converter = Aspid.MVVM.StarterKit.IConverter<int, int>;
 #else
-using Converter = Aspid.MVVM.StarterKit.Unity.IConverterInt;
+using Converter = Aspid.MVVM.StarterKit.IConverterInt;
 #endif
 
-namespace Aspid.MVVM.StarterKit.Unity
+// ReSharper disable once CheckNamespace
+namespace Aspid.MVVM.StarterKit
 {
     [Serializable]
     public class AnimatorSetIntBinder : AnimatorSetParameterBinder<int>

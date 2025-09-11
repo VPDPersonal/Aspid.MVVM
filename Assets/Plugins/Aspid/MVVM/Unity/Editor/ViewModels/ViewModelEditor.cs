@@ -5,7 +5,8 @@ using Aspid.CustomEditors;
 using UnityEngine.UIElements;
 using Object = UnityEngine.Object;
 
-namespace Aspid.MVVM.Unity
+// ReSharper disable once CheckNamespace
+namespace Aspid.MVVM
 {
     public abstract class ViewModelEditor<T> : Editor
         where T : Object, IViewModel

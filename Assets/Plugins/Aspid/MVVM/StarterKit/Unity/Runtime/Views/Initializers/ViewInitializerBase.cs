@@ -1,6 +1,7 @@
 using UnityEngine;
 
-namespace Aspid.MVVM.StarterKit.Unity
+// ReSharper disable once CheckNamespace
+namespace Aspid.MVVM.StarterKit
 {
     public abstract class ViewInitializerBase : MonoBehaviour
     {

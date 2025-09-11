@@ -1,7 +1,9 @@
 using System;
 using UnityEngine;
 
-namespace Aspid.MVVM.StarterKit.Unity
+// ReSharper disable once CheckNamespace
+// ReSharper disable SuspiciousTypeConversion.Global
+namespace Aspid.MVVM.StarterKit
 {
     [AddComponentMenu("Aspid/MVVM/View Initializers/View Initializer Manual")]
     public sealed class ViewInitializerManual : ViewInitializerBase

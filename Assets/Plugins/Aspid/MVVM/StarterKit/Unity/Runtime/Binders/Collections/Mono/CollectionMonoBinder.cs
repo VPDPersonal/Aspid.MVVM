@@ -1,7 +1,7 @@
-using Aspid.MVVM.Unity;
 using System.Collections.Generic;
 
-namespace Aspid.MVVM.StarterKit.Unity
+// ReSharper disable once CheckNamespace
+namespace Aspid.MVVM.StarterKit
 {
     public abstract partial class CollectionMonoBinder<T> : MonoBinder, IBinder<IReadOnlyCollection<T>>
     {

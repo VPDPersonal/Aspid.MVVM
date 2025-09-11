@@ -1,14 +1,14 @@
 #if UNITY_2023_1_OR_NEWER || ASPID_MVVM_TEXT_MESH_PRO_INTEGRATION
 using TMPro;
 using UnityEngine;
-using Aspid.MVVM.Unity;
 #if UNITY_2023_1_OR_NEWER
 using Converter = Aspid.MVVM.StarterKit.IConverter<float, float>;
 #else
-using Converter = Aspid.MVVM.StarterKit.Unity.IConverterFloat;
+using Converter = Aspid.MVVM.StarterKit.IConverterFloat;
 #endif
 
-namespace Aspid.MVVM.StarterKit.Unity
+// ReSharper disable once CheckNamespace
+namespace Aspid.MVVM.StarterKit
 {
     [AddPropertyContextMenu(typeof(TMP_Text), "m_fontSize")]
     [AddComponentMenu("Aspid/MVVM/Binders/UI/Text/Text Binder - FontSize Enum")]

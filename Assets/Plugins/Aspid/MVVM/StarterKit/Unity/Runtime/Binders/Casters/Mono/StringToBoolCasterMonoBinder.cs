@@ -1,13 +1,13 @@
 using UnityEngine;
-using Aspid.MVVM.Unity;
 using UnityEngine.Events;
 #if UNITY_2023_1_OR_NEWER
 using Converter = Aspid.MVVM.StarterKit.IConverter<string, bool>;
 #else
-using Converter = Aspid.MVVM.StarterKit.Unity.IConverterStringToBool;
+using Converter = Aspid.MVVM.StarterKit.IConverterStringToBool;
 #endif
 
-namespace Aspid.MVVM.StarterKit.Unity
+// ReSharper disable once CheckNamespace
+namespace Aspid.MVVM.StarterKit
 {
     [AddPropertyContextMenu(typeof(bool))]
     [AddComponentMenu("Aspid/MVVM/Binders/Casters/String To Bool Caster Binder")]

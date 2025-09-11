@@ -4,7 +4,8 @@ using UnityEditor;
 using Aspid.CustomEditors;
 using UnityEngine.UIElements;
 
-namespace Aspid.MVVM.Unity
+// ReSharper disable once CheckNamespace
+namespace Aspid.MVVM
 {
     public abstract class ViewEditor<T> : Editor
         where T : UnityEngine.Object, IView

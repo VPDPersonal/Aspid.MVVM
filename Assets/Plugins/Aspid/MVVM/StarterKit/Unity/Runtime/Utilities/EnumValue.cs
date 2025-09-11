@@ -3,7 +3,8 @@ using System;
 using UnityEngine;
 using System.ComponentModel;
 
-namespace Aspid.MVVM.StarterKit.Unity
+// ReSharper disable once CheckNamespace
+namespace Aspid.MVVM.StarterKit
 {
     [Serializable]
     [EditorBrowsable(EditorBrowsableState.Never)]

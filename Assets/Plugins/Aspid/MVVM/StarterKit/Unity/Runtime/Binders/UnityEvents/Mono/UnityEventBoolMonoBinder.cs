@@ -1,8 +1,8 @@
 using UnityEngine;
-using Aspid.MVVM.Unity;
 using UnityEngine.Events;
 
-namespace Aspid.MVVM.StarterKit.Unity
+// ReSharper disable once CheckNamespace
+namespace Aspid.MVVM.StarterKit
 {
     [AddPropertyContextMenu(typeof(bool))]
     [AddComponentMenu("Aspid/MVVM/Binders/UnityEvent/UnityEvent Binder - Bool")]

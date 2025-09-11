@@ -1,7 +1,8 @@
 using System;
 using UnityEngine;
 
-namespace Aspid.MVVM.StarterKit.Unity
+// ReSharper disable once CheckNamespace
+namespace Aspid.MVVM.StarterKit
 {
     [BindModeOverride(BindMode.OneWay, BindMode.OneTime, BindMode.OneWayToSource)]
     public abstract partial class AnimatorSetParameterMonoBinder<T> : ComponentMonoBinder<Animator>, IBinder<T>, IReverseBinder<IRelayCommand<T>>

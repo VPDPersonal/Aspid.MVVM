@@ -1,16 +1,16 @@
 using UnityEngine;
-using Aspid.MVVM.Unity;
 using System.Collections.Generic;
 using Aspid.Collections.Observable.Filtered;
 #if UNITY_2023_1_OR_NEWER
 using Filter = Aspid.MVVM.StarterKit.ICollectionFilter<Aspid.MVVM.IViewModel>;
 using Comparer = Aspid.MVVM.StarterKit.ICollectionComparer<Aspid.MVVM.IViewModel>;
 #else
-using Filter = Aspid.MVVM.StarterKit.Unity.IViewModelCollectionFilter;
-using Comparer = Aspid.MVVM.StarterKit.Unity.IViewModelCollectionComparer;
+using Filter = Aspid.MVVM.StarterKit.IViewModelCollectionFilter;
+using Comparer = Aspid.MVVM.StarterKit.IViewModelCollectionComparer;
 #endif
 
-namespace Aspid.MVVM.StarterKit.Unity
+// ReSharper disable once CheckNamespace
+namespace Aspid.MVVM.StarterKit
 {
     [AddComponentMenu("Aspid/MVVM/Binders/UI/VirtualizedList/VirtualizedList Binder - ItemSource")]
     [AddComponentContextMenu(typeof(VirtualizedList),"Add VirtualizedList Binder/VirtualizedList Binder - ItemSource")]

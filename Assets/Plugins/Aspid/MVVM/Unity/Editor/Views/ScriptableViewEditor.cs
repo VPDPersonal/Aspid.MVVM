@@ -1,7 +1,8 @@
 #if !ASPID_MVVM_EDITOR_DISABLED
 using UnityEditor;
 
-namespace Aspid.MVVM.Unity
+// ReSharper disable once CheckNamespace
+namespace Aspid.MVVM
 {
     [CanEditMultipleObjects]
     [CustomEditor(typeof(ScriptableView), editorForChildClasses: true)]

@@ -2,10 +2,10 @@ using System;
 using UnityEditor;
 using UnityEngine;
 
-namespace Aspid.MVVM.StarterKit.Unity
+// ReSharper disable once CheckNamespace
+namespace Aspid.MVVM.StarterKit
 {
-    public abstract class ViewInitializerBaseEditor<T> : Editor
-        where T : ViewInitializerBase
+    public abstract class ViewInitializerBaseEditor : Editor
     {
         protected static bool DrawInitializeComponent<TInterface>(SerializedProperty property, string label)
             where TInterface : class

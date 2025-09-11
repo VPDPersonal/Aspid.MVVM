@@ -2,7 +2,8 @@
 #nullable enable
 using System.ComponentModel;
 
-namespace Aspid.MVVM.Unity
+// ReSharper disable once CheckNamespace
+namespace Aspid.MVVM
 {
     /// <summary>
     /// Interface required for validating a Binder within the Editor.

@@ -5,7 +5,8 @@ using Aspid.CustomEditors;
 using UnityEngine.UIElements;
 using UnityEditor.AnimatedValues;
 
-namespace Aspid.MVVM.StarterKit.Unity
+// ReSharper disable once CheckNamespace
+namespace Aspid.MVVM.StarterKit
 {
     [CustomEditor(typeof(VirtualizedList), true)]
     public class VirtualizedListEditor : Editor

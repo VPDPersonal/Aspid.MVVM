@@ -2,7 +2,8 @@ using System;
 using System.Reflection;
 using System.Collections.Generic;
 
-namespace Aspid.MVVM.StarterKit.Unity
+// ReSharper disable once CheckNamespace
+namespace Aspid.MVVM.StarterKit
 {
     public static class SerializableUtility
     {

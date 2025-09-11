@@ -1,10 +1,11 @@
 using System;
 using System.Linq;
 
-namespace Aspid.MVVM.StarterKit.Composites
+// ReSharper disable once CheckNamespace
+namespace Aspid.MVVM.StarterKit
 {
     [Serializable]
-    public sealed class AndCompositeCollectionFilter<T> : OrCompositeCollectionFilter<T, ICollectionFilter<T>>
+    public sealed class AndCompositeCollectionFilter<T> : AndCompositeCollectionFilter<T, ICollectionFilter<T>>
     {
         public AndCompositeCollectionFilter(ICollectionFilter<T>[] filters) 
             : base(filters) { }

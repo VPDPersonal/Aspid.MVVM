@@ -1,11 +1,11 @@
 using System;
-using Aspid.MVVM.Unity;
 using System.Collections.Generic;
 using Aspid.Collections.Observable;
 using System.Collections.Specialized;
 using Aspid.Collections.Observable.Filtered;
 
-namespace Aspid.MVVM.StarterKit.Unity
+// ReSharper disable once CheckNamespace
+namespace Aspid.MVVM.StarterKit
 {
     public abstract partial class ObservableListMonoBinder<T> : MonoBinder, 
         IBinder<IReadOnlyObservableList<T>>, IBinder<IReadOnlyFilteredList<T>>, IBinder<IReadOnlyList<T>>

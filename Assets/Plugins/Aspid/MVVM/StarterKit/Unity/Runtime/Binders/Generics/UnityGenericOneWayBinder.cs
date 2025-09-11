@@ -2,7 +2,8 @@
 using System;
 using UnityEngine.Events;
 
-namespace Aspid.MVVM.StarterKit.Unity
+// ReSharper disable once CheckNamespace
+namespace Aspid.MVVM.StarterKit
 {
     public class UnityGenericOneWayBinder<T> : Binder, IBinder<T>
     {

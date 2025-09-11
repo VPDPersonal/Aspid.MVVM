@@ -1,13 +1,13 @@
 using UnityEngine;
-using Aspid.MVVM.Unity;
 using UnityEngine.Events;
 #if UNITY_2023_1_OR_NEWER
 using Converter = Aspid.MVVM.StarterKit.IConverter<double, double>;
 #else
-using Converter = Aspid.MVVM.StarterKit.Unity.IConverterDouble;
+using Converter = Aspid.MVVM.StarterKit.IConverterDouble;
 #endif
 
-namespace Aspid.MVVM.StarterKit.Unity
+// ReSharper disable once CheckNamespace
+namespace Aspid.MVVM.StarterKit
 {
     [AddPropertyContextMenu(typeof(double))]
     [AddComponentMenu("Aspid/MVVM/Binders/UnityEvent/UnityEvent Binder - Double")]

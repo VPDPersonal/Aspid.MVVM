@@ -1,8 +1,9 @@
 using System;
 using UnityEngine;
+using Aspid.MVVM.StarterKit;
 using System.Collections.Generic;
-using Aspid.MVVM.StarterKit.Unity;
 
+// ReSharper disable CheckNamespace
 namespace Aspid.MVVM.Samples.VirtualizedList
 {
     [Serializable]

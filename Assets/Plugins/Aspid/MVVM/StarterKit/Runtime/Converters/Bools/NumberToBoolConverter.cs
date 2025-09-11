@@ -1,13 +1,14 @@
 using System;
 
+// ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
     [Serializable]
     public class NumberToBoolConverter : 
-        IConverter<int, bool>,
-        IConverter<long, bool>, 
-        IConverter<float, bool>, 
-        IConverter<double, bool>
+        IConverterFloatToBool,
+        IConverterDoubleToBool,
+        IConverterIntToBool,
+        IConverterLongToBool
     {
 #if UNITY_2022_1_OR_NEWER
         [UnityEngine.SerializeField] 

@@ -1,12 +1,12 @@
 using UnityEngine;
-using Aspid.MVVM.Unity;
 #if UNITY_2023_1_OR_NEWER
 using Converter = Aspid.MVVM.StarterKit.IConverter<UnityEngine.Material, UnityEngine.Material>;
 #else
-using Converter = Aspid.MVVM.StarterKit.Unity.IConverterMaterial;
+using Converter = Aspid.MVVM.StarterKit.IConverterMaterial;
 #endif
 
-namespace Aspid.MVVM.StarterKit.Unity
+// ReSharper disable once CheckNamespace
+namespace Aspid.MVVM.StarterKit
 {
     [AddPropertyContextMenu(typeof(Renderer), "m_Materials")]
     [AddComponentMenu("Aspid/MVVM/Binders/Renderer/Renderer Binder - Materials Enum")]

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 
+// ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
     public abstract class CollectionBinderBase<T> : Binder, IBinder<IReadOnlyCollection<T>>, IDisposable

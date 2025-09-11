@@ -1,12 +1,12 @@
 using UnityEngine;
-using Aspid.MVVM.Unity;
 #if UNITY_2023_1_OR_NEWER
 using Converter = Aspid.MVVM.StarterKit.IConverter<UnityEngine.Quaternion, UnityEngine.Quaternion>;
 #else
-using Converter = Aspid.MVVM.StarterKit.Unity.IConverterQuaternion;
+using Converter = Aspid.MVVM.StarterKit.IConverterQuaternion;
 #endif
 
-namespace Aspid.MVVM.StarterKit.Unity
+// ReSharper disable once CheckNamespace
+namespace Aspid.MVVM.StarterKit
 {
     [AddPropertyContextMenu(typeof(Transform), "m_LocalRotation")]
     [AddComponentMenu("Aspid/MVVM/Binders/Transform/Transform Binder - Rotation Switcher")]

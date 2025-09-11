@@ -2,7 +2,8 @@
 using System;
 using UnityEngine;
 
-namespace Aspid.MVVM.StarterKit.Unity
+// ReSharper disable once CheckNamespace
+namespace Aspid.MVVM.StarterKit
 {
     [Serializable]
     public sealed class CapsuleColliderCenterSwitcherBinder : SwitcherBinder<CapsuleCollider, Vector3>

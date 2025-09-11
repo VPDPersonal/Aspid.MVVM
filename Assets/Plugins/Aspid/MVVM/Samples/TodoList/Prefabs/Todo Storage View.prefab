@@ -695,12 +695,18 @@ MonoBehaviour:
   _isDebug: 0
   _log: []
   _viewFactory:
-    rid: 4192322949021433959
+    rid: 9030169415659553743
+  _filter:
+    rid: -2
+  _comparer:
+    rid: -2
   references:
     version: 2
     RefIds:
-    - rid: 4192322949021433959
-      type: {class: PrefabViewPool, ns: Aspid.MVVM.StarterKit.Unity, asm: Aspid.MVVM.StarterKit.Unity}
+    - rid: -2
+      type: {class: , ns: , asm: }
+    - rid: 9030169415659553743
+      type: {class: PrefabViewPool, ns: Aspid.MVVM.StarterKit, asm: Aspid.MVVM.StarterKit.Unity}
       data:
         _prefab: {fileID: 5431838984888759959, guid: 5ca3370f0dcd04136bab560024ed932a, type: 3}
         _container: {fileID: 5360323505814269057}

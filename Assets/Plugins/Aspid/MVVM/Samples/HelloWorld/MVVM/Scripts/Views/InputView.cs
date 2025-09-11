@@ -1,6 +1,6 @@
 using UnityEngine;
-using Aspid.MVVM.Unity;
 
+// ReSharper disable CheckNamespace
 namespace Aspid.MVVM.Samples.HelloWorld.MVVM
 {
     // ViewAttribute is a marker for Source Generator.

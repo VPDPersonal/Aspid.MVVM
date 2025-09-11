@@ -620,7 +620,7 @@ MonoBehaviour:
   __id: Items
   _component: {fileID: 847237789}
   _filter:
-    rid: 1607910897102881133
+    rid: 9030169415659553745
   _comparer:
     rid: 7078447094558622475
   _isDebug: 0
@@ -628,24 +628,14 @@ MonoBehaviour:
   references:
     version: 2
     RefIds:
-    - rid: 1607910897102881133
-      type: {class: AndViewModelCompositeCollectionFilter, ns: Aspid.MVVM.StarterKit.Unity, asm: Aspid.MVVM.StarterKit.Unity}
-      data:
-        _filters:
-        - rid: 7078447094558622474
-        - rid: 7078447094558622473
-    - rid: 7078447094558622473
-      type: {class: EvenCollectionFilter, ns: Aspid.MVVM.Samples.VirtualizedList, asm: Aspid.MVVM.Samples.VirtualizedList}
-      data:
-        _isInvert: 1
-    - rid: 7078447094558622474
-      type: {class: CompletedCollectionFilter, ns: Aspid.MVVM.Samples.VirtualizedList, asm: Aspid.MVVM.Samples.VirtualizedList}
-      data:
-        _isCompleted: 0
     - rid: 7078447094558622475
       type: {class: NumberCollectionComparer, ns: Aspid.MVVM.Samples.VirtualizedList, asm: Aspid.MVVM.Samples.VirtualizedList}
       data:
         _isInvert: 1
+    - rid: 9030169415659553745
+      type: {class: CompletedCollectionFilter, ns: Aspid.MVVM.Samples.VirtualizedList, asm: Aspid.MVVM.Samples.VirtualizedList}
+      data:
+        _isCompleted: 0
 --- !u!114 &847237789
 MonoBehaviour:
   m_ObjectHideFlags: 0

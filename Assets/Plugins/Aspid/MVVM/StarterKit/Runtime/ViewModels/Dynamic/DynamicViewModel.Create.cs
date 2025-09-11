@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 
+// ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
     public sealed partial class DynamicViewModel

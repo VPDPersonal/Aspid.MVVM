@@ -6,10 +6,11 @@ using UnityEngine.Localization.Components;
 #if UNITY_2023_1_OR_NEWER
 using Converter = Aspid.MVVM.StarterKit.IConverter<string?, string?>;
 #else
-using Converter = Aspid.MVVM.StarterKit.Unity.IConverterString;
+using Converter = Aspid.MVVM.StarterKit.IConverterString;
 #endif
 
-namespace Aspid.MVVM.StarterKit.Unity
+// ReSharper disable once CheckNamespace
+namespace Aspid.MVVM.StarterKit
 {
     [Serializable]
     public sealed class TextLocalizationSwitcherBinder : SwitcherBinder<LocalizeStringEvent, string>

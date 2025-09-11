@@ -6,7 +6,8 @@ using Aspid.CustomEditors;
 using UnityEngine.UIElements;
 using System.Collections.Generic;
 
-namespace Aspid.MVVM.Unity
+// ReSharper disable once CheckNamespace
+namespace Aspid.MVVM
 {
     [CanEditMultipleObjects]
     [CustomEditor(typeof(MonoBinder), true)]

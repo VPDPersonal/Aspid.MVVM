@@ -1,7 +1,8 @@
 #if UNITY_2023_1_OR_NEWER || ASPID_MVVM_TEXT_MESH_PRO_INTEGRATION
 using TMPro;
 
-namespace Aspid.MVVM.StarterKit.Unity
+// ReSharper disable once CheckNamespace
+namespace Aspid.MVVM.StarterKit
 {
     public sealed class TextAlignmentSwitcherMonoBinder : SwitcherMonoBinder<TMP_Text, TextAlignmentOptions>
     {

@@ -3,7 +3,8 @@ using System.Linq;
 using UnityEditor;
 using UnityEngine;
 
-namespace Aspid.MVVM.Unity
+// ReSharper disable once CheckNamespace
+namespace Aspid.MVVM
 {
     [CustomPropertyDrawer(typeof(BindMode))]
     [CustomPropertyDrawer(typeof(BindModeAttribute))]

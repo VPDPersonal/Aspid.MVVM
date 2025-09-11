@@ -1,19 +1,19 @@
 using System;
 using UnityEngine;
-using Aspid.MVVM.Unity;
 using System.Collections.Generic;
 using Aspid.Collections.Observable.Filtered;
 #if UNITY_2023_1_OR_NEWER
 using Filter = Aspid.MVVM.StarterKit.ICollectionFilter<Aspid.MVVM.IViewModel>;
 using Comparer = Aspid.MVVM.StarterKit.ICollectionComparer<Aspid.MVVM.IViewModel>;
-using ViewFactory = Aspid.MVVM.StarterKit.Unity.IViewFactory<Aspid.MVVM.Unity.MonoView>;
+using ViewFactory = Aspid.MVVM.StarterKit.IViewFactory<Aspid.MVVM.MonoView>;
 #else
-using ViewFactory = Aspid.MVVM.StarterKit.Unity.IViewFactoryMonoView;
-using Filter = Aspid.MVVM.StarterKit.Unity.IViewModelCollectionFilter;
-using Comparer = Aspid.MVVM.StarterKit.Unity.IViewModelCollectionComparer;
+using ViewFactory = Aspid.MVVM.StarterKit.IViewFactoryMonoView;
+using Filter = Aspid.MVVM.StarterKit.IViewModelCollectionFilter;
+using Comparer = Aspid.MVVM.StarterKit.IViewModelCollectionComparer;
 #endif
 
-namespace Aspid.MVVM.StarterKit.Unity
+// ReSharper disable once CheckNamespace
+namespace Aspid.MVVM.StarterKit
 {
     [Serializable]
     public class ViewModelObservableListBinder : ViewModelObservableListBinder<MonoView, ViewFactory>

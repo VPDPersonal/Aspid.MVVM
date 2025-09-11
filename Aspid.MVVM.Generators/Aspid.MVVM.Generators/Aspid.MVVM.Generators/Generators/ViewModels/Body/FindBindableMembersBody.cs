@@ -88,7 +88,9 @@ public static class FindBindableMembersBody
                 
                 code.EndBlock()
                     .AppendLine()
-                    .AppendLine("return default;")
+                    .AppendLine(data.Inheritor is Inheritor.None
+                        ? "return default;"
+                        : "return base.FindBindableMember(parameters);")
                     .EndBlock();
             }
 

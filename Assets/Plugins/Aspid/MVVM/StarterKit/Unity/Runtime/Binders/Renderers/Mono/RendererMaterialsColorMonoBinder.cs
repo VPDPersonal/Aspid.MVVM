@@ -1,12 +1,12 @@
 using UnityEngine;
-using Aspid.MVVM.Unity;
 #if UNITY_2023_1_OR_NEWER
 using Converter = Aspid.MVVM.StarterKit.IConverter<UnityEngine.Color, UnityEngine.Color>;
 #else
-using Converter = Aspid.MVVM.StarterKit.Unity.IConverterColor;
+using Converter = Aspid.MVVM.StarterKit.IConverterColor;
 #endif
 
-namespace Aspid.MVVM.StarterKit.Unity
+// ReSharper disable once CheckNamespace
+namespace Aspid.MVVM.StarterKit
 {
     [AddPropertyContextMenu(typeof(Renderer), "m_Materials")]
     [AddComponentMenu("Aspid/MVVM/Binders/Renderer/Renderer Binder - MaterialsColor")]

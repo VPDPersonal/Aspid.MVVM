@@ -1,7 +1,7 @@
 using UnityEngine;
-using Aspid.MVVM.Unity;
 
-namespace Aspid.MVVM.StarterKit.Unity
+// ReSharper disable once CheckNamespace
+namespace Aspid.MVVM.StarterKit
 {
     [AddComponentMenu("Aspid/MVVM/Binders/Collider/Collider Binder - Enabled EnumGroup")]
     [AddComponentContextMenu(typeof(Collider),"Add Binder/Collider Binder - Enabled EnumGroup")]

@@ -1,7 +1,8 @@
 using UnityEditor;
 using UnityEngine;
 
-namespace Aspid.MVVM.StarterKit.Unity
+// ReSharper disable once CheckNamespace
+namespace Aspid.MVVM.StarterKit
 {
     [CustomPropertyDrawer(typeof(EnumValues<>))]
     public sealed class EnumValuesPropertyDrawer : PropertyDrawer

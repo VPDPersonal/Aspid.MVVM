@@ -5,10 +5,11 @@ using UnityEngine.UI;
 #if UNITY_2023_1_OR_NEWER
 using Converter = Aspid.MVVM.StarterKit.IConverter<float, float>;
 #else
-using Converter = Aspid.MVVM.StarterKit.Unity.IConverterFloat;
+using Converter = Aspid.MVVM.StarterKit.IConverterFloat;
 #endif
 
-namespace Aspid.MVVM.StarterKit.Unity
+// ReSharper disable once CheckNamespace
+namespace Aspid.MVVM.StarterKit
 {
     [Serializable]
     public sealed class ImageFillSwitcherBinder : SwitcherBinder<Image, float>

@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Aspid.Collections.Observable;
 
+// ReSharper disable CheckNamespace
 namespace Aspid.MVVM.Samples.TodoList
 {
     public sealed class TodoStorage : IEnumerable<Todo>

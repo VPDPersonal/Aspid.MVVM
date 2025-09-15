@@ -1,13 +1,13 @@
 using UnityEngine;
-using Aspid.MVVM.Unity;
 using UnityEngine.Events;
 #if UNITY_2023_1_OR_NEWER
 using Converter = Aspid.MVVM.StarterKit.IConverter<object, string>;
 #else
-using Converter = Aspid.MVVM.StarterKit.Unity.IConverterObjectToString;
+using Converter = Aspid.MVVM.StarterKit.IConverterObjectToString;
 #endif
 
-namespace Aspid.MVVM.StarterKit.Unity
+// ReSharper disable once CheckNamespace
+namespace Aspid.MVVM.StarterKit
 {
     [AddPropertyContextMenu(typeof(string))]
     [AddComponentMenu("Aspid/MVVM/Binders/Casters/Any To String Caster Binder")]

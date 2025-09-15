@@ -1,13 +1,13 @@
 using UnityEngine;
-using Aspid.MVVM.Unity;
 using UnityEngine.Events;
 #if UNITY_2023_1_OR_NEWER
 using Converter = Aspid.MVVM.StarterKit.IConverter<float, bool>;
 #else
-using Converter = Aspid.MVVM.StarterKit.Unity.IConverterFloatToBool;
+using Converter = Aspid.MVVM.StarterKit.IConverterFloatToBool;
 #endif
 
-namespace Aspid.MVVM.StarterKit.Unity
+// ReSharper disable once CheckNamespace
+namespace Aspid.MVVM.StarterKit
 {
     [AddPropertyContextMenu(typeof(bool))]
     [AddComponentMenu("Aspid/MVVM/Binders/UnityEvent/UnityEvent Binder - Number Condition Switcher")]

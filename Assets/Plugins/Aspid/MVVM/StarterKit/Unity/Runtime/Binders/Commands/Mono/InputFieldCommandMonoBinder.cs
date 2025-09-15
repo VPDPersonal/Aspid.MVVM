@@ -2,9 +2,9 @@
 using TMPro;
 using System;
 using UnityEngine;
-using Aspid.MVVM.Unity;
 
-namespace Aspid.MVVM.StarterKit.Unity
+// ReSharper disable once CheckNamespace
+namespace Aspid.MVVM.StarterKit
 {
     [AddPropertyContextMenu(typeof(TMP_InputField), "m_Calls")]
     [AddComponentMenu("Aspid/MVVM/Binders/UI/Commands/InputField Binder - Command")]

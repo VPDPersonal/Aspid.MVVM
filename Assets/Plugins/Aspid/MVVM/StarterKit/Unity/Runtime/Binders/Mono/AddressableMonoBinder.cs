@@ -1,10 +1,10 @@
 #if ASPID_MVVM_ADDRESSABLES_INTEGRATION
 using UnityEngine;
-using Aspid.MVVM.Unity;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
 
-namespace Aspid.MVVM.StarterKit.Unity
+// ReSharper disable once CheckNamespace
+namespace Aspid.MVVM.StarterKit
 {
     public abstract partial class AddressableMonoBinder<TAsset> : MonoBinder, IBinder<string>, IBinder<IKeyEvaluator>
     {

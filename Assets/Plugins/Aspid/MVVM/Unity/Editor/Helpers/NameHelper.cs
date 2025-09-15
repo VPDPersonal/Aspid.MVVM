@@ -1,7 +1,8 @@
 using System.Reflection;
 using System.Runtime.CompilerServices;
 
-namespace Aspid.MVVM.Unity
+// ReSharper disable once CheckNamespace
+namespace Aspid.MVVM
 {
     public static class NameHelper
     {

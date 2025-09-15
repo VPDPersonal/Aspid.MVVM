@@ -1,8 +1,8 @@
 using System;
 using UnityEngine;
-using Aspid.MVVM.Unity;
 using Object = UnityEngine.Object;
 
+// ReSharper disable CheckNamespace
 namespace Aspid.MVVM.Samples.TodoList
 {
     public sealed class EditTextDialog

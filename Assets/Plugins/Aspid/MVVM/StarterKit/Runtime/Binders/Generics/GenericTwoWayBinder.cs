@@ -1,5 +1,6 @@
 using System;
 
+// ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
     public class GenericTwoWayBinder<T> : Binder, IBinder<T>, IReverseBinder<T>

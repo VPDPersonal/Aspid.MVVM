@@ -1,11 +1,12 @@
 using System;
 using UnityEngine;
-using Aspid.MVVM.StarterKit.Unity;
+using Aspid.MVVM.StarterKit;
 using Aspid.Collections.Observable;
 using Aspid.Collections.Observable.Filtered;
 using Aspid.Collections.Observable.Extensions;
 using Random = UnityEngine.Random;
 
+// ReSharper disable CheckNamespace
 namespace Aspid.MVVM.Samples.VirtualizedList
 {
     [ViewModel]

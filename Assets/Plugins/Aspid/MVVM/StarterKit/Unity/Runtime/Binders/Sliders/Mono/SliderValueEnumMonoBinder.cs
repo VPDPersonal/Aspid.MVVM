@@ -1,13 +1,13 @@
 using UnityEngine;
 using UnityEngine.UI;
-using Aspid.MVVM.Unity;
 #if UNITY_2023_1_OR_NEWER
 using Converter = Aspid.MVVM.StarterKit.IConverter<float, float>;
 #else
-using Converter = Aspid.MVVM.StarterKit.Unity.IConverterFloat;
+using Converter = Aspid.MVVM.StarterKit.IConverterFloat;
 #endif
 
-namespace Aspid.MVVM.StarterKit.Unity
+// ReSharper disable once CheckNamespace
+namespace Aspid.MVVM.StarterKit
 {
     [AddPropertyContextMenu(typeof(Slider), "m_Value")]
     [AddComponentMenu("Aspid/MVVM/Binders/UI/Slider/Slider Binder - Value Enum")]

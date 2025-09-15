@@ -8,7 +8,8 @@ using System.Collections.Generic;
 using UnityEditor.SceneManagement;
 using System.Runtime.CompilerServices;
 
-namespace Aspid.MVVM.Unity
+// ReSharper disable once CheckNamespace
+namespace Aspid.MVVM
 {
     /// <summary>
     /// Utility class for handling the management, validation, and assignment of `IMonoBinderValidable` objects within views.

@@ -1,7 +1,7 @@
 using UnityEngine;
-using Aspid.MVVM.Unity;
 
-namespace Aspid.MVVM.StarterKit.Unity
+// ReSharper disable once CheckNamespace
+namespace Aspid.MVVM.StarterKit
 {
     [AddPropertyContextMenu(typeof(CanvasGroup), "m_IgnoreParentGroups")]
     [AddComponentMenu("Aspid/MVVM/Binders/UI/Canvas Group/CanvasGroup Binder - IgnoreParentGroups")]

@@ -1,7 +1,7 @@
 using UnityEngine;
-using Aspid.MVVM.Unity;
 
-namespace Aspid.MVVM.StarterKit.Unity
+// ReSharper disable once CheckNamespace
+namespace Aspid.MVVM.StarterKit
 {
     [AddPropertyContextMenu(typeof(SphereCollider), "m_Center")]
     [AddComponentMenu("Aspid/MVVM/Binders/Collider/Sphere/SphereCollider Binder - Center")]

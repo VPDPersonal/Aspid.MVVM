@@ -1,5 +1,7 @@
 using System;
 
+// ReSharper disable CheckNamespace
+// ReSharper disable UnusedParameterInPartialMethod
 namespace Aspid.MVVM.Samples.TodoList
 {
     [ViewModel]

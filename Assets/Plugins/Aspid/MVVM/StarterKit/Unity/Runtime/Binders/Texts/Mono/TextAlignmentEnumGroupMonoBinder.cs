@@ -3,7 +3,8 @@ using TMPro;
 using UnityEngine;
 using System.Runtime.CompilerServices;
 
-namespace Aspid.MVVM.StarterKit.Unity
+// ReSharper disable once CheckNamespace
+namespace Aspid.MVVM.StarterKit
 {
     public sealed class TextAlignmentEnumGroupMonoBinder : EnumGroupMonoBinder<TMP_Text>
     {

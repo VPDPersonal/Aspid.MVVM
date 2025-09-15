@@ -1,4 +1,5 @@
-namespace Aspid.MVVM.Unity
+// ReSharper disable once CheckNamespace
+namespace Aspid.MVVM
 {
     public enum ErrorType
     {

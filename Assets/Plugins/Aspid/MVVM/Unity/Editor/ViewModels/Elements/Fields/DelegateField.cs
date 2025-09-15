@@ -5,7 +5,8 @@ using UnityEditor.UIElements;
 using UnityEngine.UIElements;
 using Object = UnityEngine.Object;
 
-namespace Aspid.MVVM.Unity
+// ReSharper disable once CheckNamespace
+namespace Aspid.MVVM
 {
     internal sealed class DelegateField : VisualElement
     {

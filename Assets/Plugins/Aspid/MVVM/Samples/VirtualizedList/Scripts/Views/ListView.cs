@@ -1,7 +1,7 @@
 using UnityEngine;
-using Aspid.MVVM.Unity;
 using System.Collections.Generic;
 
+// ReSharper disable CheckNamespace
 namespace Aspid.MVVM.Samples.VirtualizedList
 {
     [View]

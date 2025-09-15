@@ -1,7 +1,9 @@
 using System;
 using System.Diagnostics;
 
-namespace Aspid.MVVM.Unity
+// ReSharper disable once CheckNamespace
+// ReSharper disable UnusedParameter.Local
+namespace Aspid.MVVM
 {
     // TODO Move To UnityFastTools
     [Conditional("UNITY_EDITOR")]

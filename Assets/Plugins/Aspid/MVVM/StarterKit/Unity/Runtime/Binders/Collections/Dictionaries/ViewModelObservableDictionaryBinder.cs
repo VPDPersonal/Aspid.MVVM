@@ -1,14 +1,14 @@
 using System;
 using UnityEngine;
-using Aspid.MVVM.Unity;
 using System.Collections.Generic;
 #if UNITY_2023_1_OR_NEWER
-using ViewFactory = Aspid.MVVM.StarterKit.Unity.IViewFactory<Aspid.MVVM.Unity.MonoView>;
+using ViewFactory = Aspid.MVVM.StarterKit.IViewFactory<Aspid.MVVM.MonoView>;
 #else
-using ViewFactory = Aspid.MVVM.StarterKit.Unity.IViewFactoryMonoView;
+using ViewFactory = Aspid.MVVM.StarterKit.IViewFactoryMonoView;
 #endif
 
-namespace Aspid.MVVM.StarterKit.Unity
+// ReSharper disable once CheckNamespace
+namespace Aspid.MVVM.StarterKit
 {
     [Serializable]
     public class ViewModelObservableDictionaryBinder<TKey, TViewModel> : ViewModelObservableDictionaryBinder<TKey, TViewModel, MonoView, ViewFactory>

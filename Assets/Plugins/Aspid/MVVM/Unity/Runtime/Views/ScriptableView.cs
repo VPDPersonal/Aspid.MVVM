@@ -1,6 +1,7 @@
 using UnityEngine;
 
-namespace Aspid.MVVM.Unity
+// ReSharper disable once CheckNamespace
+namespace Aspid.MVVM
 {
     /// <summary>
     /// Represents a base class for views in a Unity context derived from <see cref="ScriptableObject"/>.

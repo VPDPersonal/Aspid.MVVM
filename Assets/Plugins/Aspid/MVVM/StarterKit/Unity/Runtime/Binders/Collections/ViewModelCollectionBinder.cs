@@ -1,10 +1,10 @@
 #nullable enable
 using System;
 using UnityEngine;
-using Aspid.MVVM.Unity;
 using System.Collections.Generic;
 
-namespace Aspid.MVVM.StarterKit.Unity
+// ReSharper disable once CheckNamespace
+namespace Aspid.MVVM.StarterKit
 {
     [Serializable]
     public class ViewModelCollectionBinder : ViewModelCollectionBinder<MonoView>

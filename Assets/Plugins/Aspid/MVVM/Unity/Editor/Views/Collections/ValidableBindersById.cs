@@ -2,7 +2,8 @@
 using System;
 using System.Collections.Generic;
 
-namespace Aspid.MVVM.Unity
+// ReSharper disable once CheckNamespace
+namespace Aspid.MVVM
 {
     // TODO Replace array with ImmutableArray
     public sealed class ValidableBindersById : Dictionary<string, IMonoBinderValidable?[]>
@@ -21,7 +22,8 @@ namespace Aspid.MVVM.Unity
 
             foreach (var field in fields)
             {
-                var viewBinders = field?.GetValueAsArray<IMonoBinderValidable>(view) ?? Array.Empty<IMonoBinderValidable>();
+                if (field is null) continue;
+                var viewBinders = field.GetValueAsArray<IMonoBinderValidable>(view) ?? Array.Empty<IMonoBinderValidable>();
                 
                 if (viewBinders is { Length: > 0 })
                 {

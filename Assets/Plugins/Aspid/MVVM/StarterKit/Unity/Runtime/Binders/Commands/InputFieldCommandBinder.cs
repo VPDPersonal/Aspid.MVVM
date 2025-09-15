@@ -3,7 +3,8 @@ using TMPro;
 using System;
 using UnityEngine;
 
-namespace Aspid.MVVM.StarterKit.Unity
+// ReSharper disable once CheckNamespace
+namespace Aspid.MVVM.StarterKit
 {
     [Serializable]
     public sealed class InputFieldCommandBinder: TargetBinder<TMP_InputField>, 

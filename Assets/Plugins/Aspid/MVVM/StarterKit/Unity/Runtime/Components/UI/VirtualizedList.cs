@@ -1,14 +1,14 @@
 using System;
 using UnityEngine;
 using UnityEngine.UI;
-using Aspid.MVVM.Unity;
 using System.Collections;
 using System.Collections.Generic;
 using Aspid.Collections.Observable;
 using System.Collections.Specialized;
 using Aspid.Collections.Observable.Filtered;
 
-namespace Aspid.MVVM.StarterKit.Unity
+// ReSharper disable once CheckNamespace
+namespace Aspid.MVVM.StarterKit
 {
     // TODO Add support Layout
     // TODO Add support spacings

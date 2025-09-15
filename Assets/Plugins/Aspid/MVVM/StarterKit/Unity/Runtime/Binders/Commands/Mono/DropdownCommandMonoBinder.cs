@@ -1,9 +1,9 @@
 #if UNITY_2023_1_OR_NEWER || ASPID_MVVM_TEXT_MESH_PRO_INTEGRATION
 using TMPro;
 using UnityEngine;
-using Aspid.MVVM.Unity;
 
-namespace Aspid.MVVM.StarterKit.Unity
+// ReSharper disable once CheckNamespace
+namespace Aspid.MVVM.StarterKit
 {
     [AddPropertyContextMenu(typeof(TMP_Dropdown), "m_Calls")]
     [AddComponentMenu("Aspid/MVVM/Binders/UI/Commands/Dropdown Binder - Command")]

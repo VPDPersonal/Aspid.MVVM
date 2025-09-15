@@ -69,8 +69,7 @@ namespace Aspid.MVVM
             {
                 if (IsBound) throw new Exception("This Binder is already bound.");
                 if (!IsBind) return;
-
-                OnBindingDebug(binderAdder);
+                
                 OnBinding();
 
                 _binderRemover = binderAdder.Add(this);
@@ -80,8 +79,6 @@ namespace Aspid.MVVM
                 OnBound();
             }
         }
-
-        partial void OnBindingDebug(IBinderAdder binderAdder);
 
         partial void OnBoundDebug(IBinderAdder binderAdder);
 
@@ -105,8 +102,7 @@ namespace Aspid.MVVM
 #endif
             {
                 if (!IsBound) return;
-
-                OnUnbindingDebug();
+                
                 OnUnbinding();
 
                 _binderRemover?.Remove(this);
@@ -117,8 +113,6 @@ namespace Aspid.MVVM
                 OnUnbound();
             }
         }
-
-        partial void OnUnbindingDebug();
 
         partial void OnUnboundDebug();
 

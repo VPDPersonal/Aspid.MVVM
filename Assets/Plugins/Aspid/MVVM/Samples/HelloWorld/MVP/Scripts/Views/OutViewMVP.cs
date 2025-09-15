@@ -2,6 +2,8 @@ using TMPro;
 using System.Linq;
 using UnityEngine;
 
+// ReSharper disable CheckNamespace
+// ReSharper disable InconsistentNaming
 namespace Aspid.MVVM.Samples.HelloWorld.MVP
 {
     public sealed class OutViewMVP : MonoBehaviour

@@ -1,13 +1,14 @@
 using System;
 
+// ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
     [Serializable]
     public class ArithmeticNumberConverter : 
-        IConverter<double, double>, IConverter<int, double>, IConverter<long, double>, IConverter<float, double>,
-        IConverter<float, float>, IConverter<int, float>, IConverter<long, float>, IConverter<double, float>,
-        IConverter<int, int>, IConverter<long, int>, IConverter<float, int>, IConverter<double, int>,
-        IConverter<long, long>, IConverter<int, long>, IConverter<float, long>, IConverter<double, long>
+        IConverterDouble, IConverterIntToDouble, IConverterLongToDouble, IConverterFloatToDouble, 
+        IConverterFloat, IConverterIntToFloat, IConverterLongToFloat, IConverterDoubleToFloat, 
+        IConverterInt, IConverterLongToInt, IConverterFloatToInt, IConverterDoubleToInt, 
+        IConverterLong, IConverterIntToLong, IConverterFloatToLong, IConverterDoubleToLong
     {
 #if UNITY_2022_1_OR_NEWER
         [UnityEngine.SerializeField]

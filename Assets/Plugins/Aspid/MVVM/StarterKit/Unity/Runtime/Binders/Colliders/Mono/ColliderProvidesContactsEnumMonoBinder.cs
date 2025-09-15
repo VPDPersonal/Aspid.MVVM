@@ -1,7 +1,7 @@
 using UnityEngine;
-using Aspid.MVVM.Unity;
 
-namespace Aspid.MVVM.StarterKit.Unity
+// ReSharper disable once CheckNamespace
+namespace Aspid.MVVM.StarterKit
 {
     [AddPropertyContextMenu(typeof(Collider), "m_ProvidesContacts")]
     [AddComponentMenu("Aspid/MVVM/Binders/Collider/Collider Binder - ProvidesContacts Enum")]

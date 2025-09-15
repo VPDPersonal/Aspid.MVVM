@@ -4,10 +4,11 @@ using UnityEngine;
 #if UNITY_2023_1_OR_NEWER
 using Converter = Aspid.MVVM.StarterKit.IConverter<UnityEngine.Vector2, UnityEngine.Vector2>;
 #else
-using Converter = Aspid.MVVM.StarterKit.Unity.IConverterVector2;
+using Converter = Aspid.MVVM.StarterKit.IConverterVector2;
 #endif
 
-namespace Aspid.MVVM.StarterKit.Unity
+// ReSharper disable once CheckNamespace
+namespace Aspid.MVVM.StarterKit
 {
     [Serializable]
     public sealed class RectTransformSizeDeltaSwitcherBinder : SwitcherBinder<RectTransform, Vector2>

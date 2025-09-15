@@ -1,7 +1,7 @@
 using UnityEngine;
-using Aspid.MVVM.Unity;
-using Aspid.MVVM.StarterKit.Unity;
+using Aspid.MVVM.StarterKit;
 
+// ReSharper disable CheckNamespace
 namespace Aspid.MVVM.Samples.TodoList
 {
     [View]

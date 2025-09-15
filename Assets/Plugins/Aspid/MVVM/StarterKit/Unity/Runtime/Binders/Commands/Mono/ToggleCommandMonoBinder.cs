@@ -1,8 +1,8 @@
 using UnityEngine;
 using UnityEngine.UI;
-using Aspid.MVVM.Unity;
 
-namespace Aspid.MVVM.StarterKit.Unity
+// ReSharper disable once CheckNamespace
+namespace Aspid.MVVM.StarterKit
 {
     [AddPropertyContextMenu(typeof(Toggle), "m_Calls")]
     [AddComponentMenu("Aspid/MVVM/Binders/UI/Commands/Toggle Binder - Command")]

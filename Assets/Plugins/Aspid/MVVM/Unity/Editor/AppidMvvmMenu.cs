@@ -3,7 +3,9 @@ using UnityEditor;
 using UnityEditor.Build;
 using System.Collections.Generic;
 
-namespace Aspid.MVVM.Unity
+// ReSharper disable once CheckNamespace
+// ReSharper disable UnusedMethodReturnValue.Local
+namespace Aspid.MVVM
 {
     public static class AppidMvvmMenu
     {

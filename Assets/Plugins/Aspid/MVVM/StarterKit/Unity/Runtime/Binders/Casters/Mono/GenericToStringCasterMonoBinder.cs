@@ -1,9 +1,9 @@
 using System;
 using UnityEngine;
-using Aspid.MVVM.Unity;
 using UnityEngine.Events;
 
-namespace Aspid.MVVM.StarterKit.Unity
+// ReSharper disable once CheckNamespace
+namespace Aspid.MVVM.StarterKit
 {
 #if UNITY_2023_1_OR_NEWER
     public abstract partial class GenericToStringCasterMonoBinder<T> : MonoBinder, IBinder<T>

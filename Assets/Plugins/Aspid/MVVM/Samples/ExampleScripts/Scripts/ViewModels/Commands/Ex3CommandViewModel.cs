@@ -1,3 +1,4 @@
+// ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.Samples.ExampleScripts.ViewModels.Commands
 {
     [ViewModel]

@@ -1,5 +1,6 @@
 using System;
 
+// ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
     public class GenericCasterBinder<TFrom, TTo> : Binder, IBinder<TFrom>

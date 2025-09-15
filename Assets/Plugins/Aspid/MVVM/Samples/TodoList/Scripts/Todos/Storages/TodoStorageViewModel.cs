@@ -1,6 +1,8 @@
 using System;
 using Aspid.Collections.Observable.Synchronizer;
 
+// ReSharper disable CheckNamespace
+// ReSharper disable UnusedParameterInPartialMethod
 namespace Aspid.MVVM.Samples.TodoList
 {
     [ViewModel]

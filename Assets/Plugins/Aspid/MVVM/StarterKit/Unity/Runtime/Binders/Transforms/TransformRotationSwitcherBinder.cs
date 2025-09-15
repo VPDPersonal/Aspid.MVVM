@@ -4,10 +4,11 @@ using UnityEngine;
 #if UNITY_2023_1_OR_NEWER
 using Converter = Aspid.MVVM.StarterKit.IConverter<UnityEngine.Quaternion, UnityEngine.Quaternion>;
 #else
-using Converter = Aspid.MVVM.StarterKit.Unity.IConverterQuaternion;
+using Converter = Aspid.MVVM.StarterKit.IConverterQuaternion;
 #endif
 
-namespace Aspid.MVVM.StarterKit.Unity
+// ReSharper disable once CheckNamespace
+namespace Aspid.MVVM.StarterKit
 {
     [Serializable]
     public sealed class TransformRotationSwitcherBinder : SwitcherBinder<Transform, Vector3>

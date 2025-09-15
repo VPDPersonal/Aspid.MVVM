@@ -2,6 +2,8 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
 
+// ReSharper disable CheckNamespace
+// ReSharper disable InconsistentNaming
 namespace Aspid.MVVM.Samples.HelloWorld.MVP
 {
     public sealed class MomentInputViewMVP : MonoBehaviour

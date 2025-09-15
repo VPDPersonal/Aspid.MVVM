@@ -2,7 +2,8 @@ using System;
 using System.Linq;
 using System.Collections.Generic;
 
-namespace Aspid.MVVM.Unity
+// ReSharper disable once CheckNamespace
+namespace Aspid.MVVM
 {
     internal static class RelayCommandTypeExtensions
     {

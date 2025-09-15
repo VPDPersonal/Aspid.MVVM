@@ -11,7 +11,8 @@ using System.CodeDom.Compiler;
 using System.Collections.Generic;
 using Object = UnityEngine.Object;
 
-namespace Aspid.MVVM.Unity
+// ReSharper disable once CheckNamespace
+namespace Aspid.MVVM
 {
     internal static class ViewModelDebugPanel
     {
@@ -79,7 +80,7 @@ namespace Aspid.MVVM.Unity
                     if (!isBindProperty) continue;
                     
                     // TODO Add simple properties
-                    container.AddChild(BuildField(new Context(property, context, isBindProperty)));
+                    container.AddChild(BuildField(new Context(property, context, true)));
                 }
                 
                 return container;

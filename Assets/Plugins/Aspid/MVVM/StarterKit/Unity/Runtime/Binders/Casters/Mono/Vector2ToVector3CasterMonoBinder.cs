@@ -1,13 +1,13 @@
 using UnityEngine;
-using Aspid.MVVM.Unity;
 using UnityEngine.Events;
 #if UNITY_2023_1_OR_NEWER
 using Converter = Aspid.MVVM.StarterKit.IConverter<UnityEngine.Vector2, UnityEngine.Vector3>;
 #else
-using Converter = Aspid.MVVM.StarterKit.Unity.IConverterVector2ToVector3;
+using Converter = Aspid.MVVM.StarterKit.IConverterVector2ToVector3;
 #endif
 
-namespace Aspid.MVVM.StarterKit.Unity
+// ReSharper disable once CheckNamespace
+namespace Aspid.MVVM.StarterKit
 {
     [AddPropertyContextMenu(typeof(Vector3))]
     [AddComponentMenu("Aspid/MVVM/Binders/Casters/Vector2 To Vector3 Caster Binder")]

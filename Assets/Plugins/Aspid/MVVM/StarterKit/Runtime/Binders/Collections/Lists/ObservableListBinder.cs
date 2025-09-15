@@ -4,6 +4,7 @@ using Aspid.Collections.Observable;
 using System.Collections.Specialized;
 using Aspid.Collections.Observable.Filtered;
 
+// ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
     public abstract class ObservableListBinder<T> : Binder,

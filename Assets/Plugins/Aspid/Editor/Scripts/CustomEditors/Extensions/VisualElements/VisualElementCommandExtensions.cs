@@ -2,6 +2,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
 
+// ReSharper disable once CheckNamespace
 namespace Aspid.CustomEditors
 {
     public static class VisualElementCommandExtensions

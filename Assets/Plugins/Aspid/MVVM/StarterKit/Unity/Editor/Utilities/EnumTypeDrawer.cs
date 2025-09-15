@@ -4,7 +4,8 @@ using UnityEditor;
 using UnityEngine;
 using System.Collections.Generic;
 
-namespace Aspid.MVVM.StarterKit.Unity
+// ReSharper disable once CheckNamespace
+namespace Aspid.MVVM.StarterKit
 {
     internal sealed class EnumTypeDrawer
     {

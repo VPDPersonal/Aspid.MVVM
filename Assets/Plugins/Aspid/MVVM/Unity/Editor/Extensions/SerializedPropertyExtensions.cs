@@ -4,7 +4,8 @@ using UnityEditor;
 using System.Reflection;
 using System.Collections.Generic;
 
-namespace Aspid.MVVM.Unity
+// ReSharper disable once CheckNamespace
+namespace Aspid.MVVM
 {
     public static class SerializedPropertyExtensions
     {

@@ -2,7 +2,8 @@ using System.Linq;
 using UnityEngine;
 using System.Collections.Generic;
 
-namespace Aspid.MVVM.Unity
+// ReSharper disable once CheckNamespace
+namespace Aspid.MVVM
 {
     public abstract class BinderEditorBase<TBinder> : UnityEditor.Editor
         where TBinder : Component, IBinder

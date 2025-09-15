@@ -1,3 +1,6 @@
+// ReSharper disable once CheckNamespace
+// ReSharper disable UnusedParameterInPartialMethod
+// ReSharper disable RedundantPartialMethodEmptyImplementation
 namespace Aspid.MVVM.Samples.ExampleScripts.Views.Handlers
 {
     [View]

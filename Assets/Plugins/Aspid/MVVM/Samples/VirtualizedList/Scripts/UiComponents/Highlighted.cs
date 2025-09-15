@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
+// ReSharper disable CheckNamespace
 namespace Aspid.MVVM.Samples.VirtualizedList
 {
     [RequireComponent(typeof(Graphic))]

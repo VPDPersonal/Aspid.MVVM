@@ -9,7 +9,8 @@ using UnityEngine.UIElements;
 using System.Collections.Generic;
 using Object = UnityEngine.Object;
 
-namespace Aspid.MVVM.Unity
+// ReSharper disable once CheckNamespace
+namespace Aspid.MVVM
 {
     internal sealed class RelayCommandField : VisualElement
     {

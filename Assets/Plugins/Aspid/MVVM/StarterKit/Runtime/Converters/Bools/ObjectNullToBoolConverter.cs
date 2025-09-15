@@ -1,9 +1,10 @@
 using System;
 
+// ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
     [Serializable]
-    public class ObjectNullToBoolConverter : IConverter<object, bool>
+    public class ObjectNullToBoolConverter : IConverterObjectToBool
     {
 #if UNITY_2022_1_OR_NEWER
         [UnityEngine.SerializeField] 

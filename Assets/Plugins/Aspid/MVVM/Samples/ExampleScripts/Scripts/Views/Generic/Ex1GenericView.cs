@@ -1,5 +1,6 @@
 using Aspid.MVVM.Samples.ExampleScripts.ViewModels.Bind;
 
+// ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.Samples.ExampleScripts.Views.Generic
 {
     [View]

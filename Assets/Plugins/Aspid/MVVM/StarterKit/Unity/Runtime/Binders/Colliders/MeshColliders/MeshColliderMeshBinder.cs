@@ -4,10 +4,11 @@ using UnityEngine;
 #if UNITY_2023_1_OR_NEWER
 using Converter = Aspid.MVVM.StarterKit.IConverter<UnityEngine.Mesh?, UnityEngine.Mesh?>;
 #else
-using Converter = Aspid.MVVM.StarterKit.Unity.IConverterMesh;
+using Converter = Aspid.MVVM.StarterKit.IConverterMesh;
 #endif
 
-namespace Aspid.MVVM.StarterKit.Unity
+// ReSharper disable once CheckNamespace
+namespace Aspid.MVVM.StarterKit
 {
     [Serializable]
     public class MeshColliderMeshBinder : TargetBinder<MeshCollider>, IBinder<Mesh>

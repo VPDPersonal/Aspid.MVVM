@@ -1,3 +1,4 @@
+// ReSharper disable CheckNamespace
 namespace Aspid.MVVM.Samples.TodoList
 {
     public interface IReadOnlyTodo

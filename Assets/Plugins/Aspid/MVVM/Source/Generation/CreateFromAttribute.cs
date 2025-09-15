@@ -1,6 +1,7 @@
 using System;
 
 // ReSharper disable once CheckNamespace
+// ReSharper disable UnusedParameter.Local
 namespace Aspid.MVVM
 {
     // TODO Move To UnityFastTools

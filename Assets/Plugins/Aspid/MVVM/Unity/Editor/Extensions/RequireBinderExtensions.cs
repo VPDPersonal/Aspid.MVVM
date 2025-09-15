@@ -5,7 +5,8 @@ using System.Reflection;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 
-namespace Aspid.MVVM.Unity
+// ReSharper disable once CheckNamespace
+namespace Aspid.MVVM
 {
     // TODO Write summary
     public static class RequireBinderExtensions

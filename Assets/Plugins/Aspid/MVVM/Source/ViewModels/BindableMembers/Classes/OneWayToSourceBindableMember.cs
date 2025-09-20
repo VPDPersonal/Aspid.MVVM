@@ -20,6 +20,11 @@ namespace Aspid.MVVM
         /// Gets or sets the current value.
         /// </summary>
         public T? Value { get; private set; }
+        
+        /// <summary>
+        /// Gets the binding mode for this member.
+        /// </summary>
+        public BindMode Mode => BindMode.OneWayToSource;    
 
         /// <summary>
         /// Initializes a new instance of the <see cref="OneWayToSourceBindableMember{T}"/> class with the specified value setter action.
@@ -48,10 +53,7 @@ namespace Aspid.MVVM
             using (AddMarker.Auto())
 #endif
             {
-                var mode = binder.Mode;
-            
-                if (mode is not (BindMode.OneWayToSource or BindMode.TwoWay))
-                    throw new InvalidOperationException($"Mode must be OneWayToSource. Mode = {{{mode}}}");
+                binder.Mode.ThrowExceptionIfNotTwo();
 
                 if (binder is not IReverseBinder<T> reverseBinder) 
                     throw ReverseBinderInvalidCastException<T>.Class(binder);
@@ -81,17 +83,23 @@ namespace Aspid.MVVM
 
         private void OnValueChanged(T? value)
         {
-            Value = value;
-            _setValue(value);
-            Changed?.Invoke(value);
+#if UNITY_2022_1_OR_NEWER && !ASPID_MVVM_UNITY_PROFILER_DISABLED
+            using (OnValueChangedMarker.Auto())
+#endif
+            {
+                Value = value;
+                _setValue(value);
+                Changed?.Invoke(value);
+            }
         }
     }
     
     public abstract class OneWayToSourceBindableMember
     {
 #if UNITY_2022_1_OR_NEWER && !ASPID_MVVM_UNITY_PROFILER_DISABLED
-        protected static readonly Unity.Profiling.ProfilerMarker AddMarker = new("OneWayToSourceClassEvent.Add");
-        protected static readonly Unity.Profiling.ProfilerMarker RemoveMarker = new("OneWayToSourceClassEvent.Remove");
+        protected static readonly Unity.Profiling.ProfilerMarker AddMarker = new("OneWayToSourceBindableMember.Add");
+        protected static readonly Unity.Profiling.ProfilerMarker RemoveMarker = new("OneWayToSourceBindableMember.Remove");
+        protected static readonly Unity.Profiling.ProfilerMarker OnValueChangedMarker = new("OneWayToSourceBindableMember.OnValueChanged");
 #endif
     }
 }

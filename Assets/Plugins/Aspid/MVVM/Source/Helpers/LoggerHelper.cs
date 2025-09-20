@@ -13,6 +13,12 @@ namespace Aspid.MVVM
         
         internal static string GetClassMessage(this string message) =>
             message.GetMessage("4EC9B0");
+        
+        internal static string GetStructMessage(this Type type) =>
+            type.ToString().GetMessage("86C691");
+        
+        internal static string GetStructMessage(this string message) =>
+            message.GetMessage("86C691");
 
         internal static string GetInterfaceMessage(this Type type) =>
             type.ToString().GetMessage("B8D7A3");

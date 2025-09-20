@@ -14,10 +14,20 @@ namespace Aspid.MVVM
     
         private OneTimeEnumBindableMember() { }
     
+        /// <summary>
+        /// Creates a reusable instance and assigns the provided enum value for one-time binding.
+        /// </summary>
+        /// <param name="value">The enum value to provide to the binder.</param>
+        /// <returns>A singleton instance of <see cref="OneTimeEnumBindableMember{T}"/> configured with the specified value.</returns>
         public static OneTimeEnumBindableMember<T> Get(T value)
         {
-            _instance.Value = value;
-            return _instance;
+#if UNITY_2022_1_OR_NEWER && !ASPID_MVVM_UNITY_PROFILER_DISABLED
+            using (GetMarker.Auto())
+#endif
+            {
+                _instance.Value = value;
+                return _instance;
+            }
         }
     }
 }

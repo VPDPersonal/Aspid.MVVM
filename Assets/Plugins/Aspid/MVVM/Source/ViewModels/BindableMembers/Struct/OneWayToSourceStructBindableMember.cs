@@ -41,6 +41,11 @@ namespace Aspid.MVVM
         /// Gets or sets the current value.
         /// </summary>
         public T Value { get; private set; }
+        
+        /// <summary>
+        /// Gets the binding mode for this member.
+        /// </summary>
+        public BindMode Mode => BindMode.OneWayToSource;  
 
         /// <summary>
         /// Initializes a new instance of the <see cref="OneWayToSourceStructBindableMember{T,TBoxed}"/> class with the specified value setter action.
@@ -69,10 +74,7 @@ namespace Aspid.MVVM
             using (AddMarker.Auto())
 #endif
             {
-                var mode = binder.Mode;
-            
-                if (mode is not (BindMode.OneWayToSource or BindMode.TwoWay))
-                    throw new InvalidOperationException($"Mode must be OneWayToSource. Mode = {{{mode}}}");
+                binder.Mode.ThrowExceptionIfNotTwo();
 
                 switch (binder)
                 {
@@ -107,25 +109,37 @@ namespace Aspid.MVVM
         
         private void OnValueChanged(T value)
         {
-            Value = value;
-            _setValue(value);
-            Changed?.Invoke(value);
+#if UNITY_2022_1_OR_NEWER && !ASPID_MVVM_UNITY_PROFILER_DISABLED
+            using (OnValueChangedMarker.Auto())
+#endif
+            {
+                Value = value;
+                _setValue(value);
+                Changed?.Invoke(value);
+            }
         }
         
         private void OnBoxedValueChanged(TBoxed? value)
         {
-            if (value is null)
-                throw new ArgumentNullException(nameof(value));
+#if UNITY_2022_1_OR_NEWER && !ASPID_MVVM_UNITY_PROFILER_DISABLED
+            using (OnBoxedValueChangedMarker.Auto())
+#endif
+            {
+                if (value is null)
+                    throw new ArgumentNullException(nameof(value));
 
-            OnValueChanged((T)value);
+                OnValueChanged((T)value);
+            }
         }
     }
     
     public abstract class OneWayToSourceStructBindableMember
     {
 #if UNITY_2022_1_OR_NEWER && !ASPID_MVVM_UNITY_PROFILER_DISABLED
-        protected static readonly Unity.Profiling.ProfilerMarker AddMarker = new("OneWayToSourceStructEvent.Add");
-        protected static readonly Unity.Profiling.ProfilerMarker RemoveMarker = new("OneWayToSourceStructEvent.Remove");
+        protected static readonly Unity.Profiling.ProfilerMarker AddMarker = new("OneWayToSourceStructBindableMember.Add");
+        protected static readonly Unity.Profiling.ProfilerMarker RemoveMarker = new("OneWayToSourceStructBindableMember.Remove");
+        protected static readonly Unity.Profiling.ProfilerMarker OnValueChangedMarker = new("OneWayToSourceStructBindableMember.OnValueChanged");
+        protected static readonly Unity.Profiling.ProfilerMarker OnBoxedValueChangedMarker = new("OneWayToSourceStructBindableMember.OnBoxedValueChanged");
 #endif
     }
 }

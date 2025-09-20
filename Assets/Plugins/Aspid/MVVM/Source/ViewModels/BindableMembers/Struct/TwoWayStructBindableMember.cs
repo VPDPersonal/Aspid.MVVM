@@ -54,6 +54,11 @@ namespace Aspid.MVVM
                 BoxedChanged?.Invoke(value);
             }
         }
+        
+        /// <summary>
+        /// Gets the binding mode for this member.
+        /// </summary>
+        public BindMode Mode => BindMode.TwoWay;  
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TwoWayStructBindableMember{T,TBoxed}"/> class with the specified value and a setter action.
@@ -84,13 +89,11 @@ namespace Aspid.MVVM
             using (AddMarker.Auto())
 #endif
             {
-                var mode = binder.Mode;
-                if (mode is BindMode.None)
-                    throw new InvalidOperationException("Mode can't be None.");
-
-                switch (mode)
+                switch (binder.Mode)
                 {
-                    case BindMode.OneWay: OneWay(); break;
+                    case BindMode.OneWay: 
+                        OneWay();
+                        break;
                 
                     case BindMode.TwoWay:
                         OneWay();
@@ -107,6 +110,10 @@ namespace Aspid.MVVM
                         return null;
                 
                     case BindMode.OneWayToSource: OneWayToSource(); break;
+                    
+                    case BindMode.None:
+                    default: 
+                        throw new InvalidOperationException("Mode can't be None.");
                 }
             }
             
@@ -199,26 +206,40 @@ namespace Aspid.MVVM
         /// Triggers the Changed event with the specified value and updates the current value.
         /// </summary>
         /// <param name="value">The new value to set and notify.</param>
-        public void Invoke(T value) =>
-            Value = value;
+        public void Invoke(T value) => Value = value;
         
-        private void OnValueChanged(T value) =>
-            _setValue(value);
-        
+        private void OnValueChanged(T value)
+        {
+#if UNITY_2022_1_OR_NEWER && !ASPID_MVVM_UNITY_PROFILER_DISABLED
+            using (OnValueChangedMarker.Auto())
+#endif
+            {
+                _setValue(value);
+            }
+        }
+
         private void OnBoxedValueChanged(TBoxed? value)
         {
-            if (value is null)
-                throw new ArgumentNullException(nameof(value));
+#if UNITY_2022_1_OR_NEWER && !ASPID_MVVM_UNITY_PROFILER_DISABLED
+            using (OnBoxedValueChangedMarker.Auto())
+#endif
+            {
+                if (value is null)
+                    throw new ArgumentNullException(nameof(value));
 
-            OnValueChanged((T)value);
+                OnValueChanged((T)value);
+            }
         }
     }
     
     public abstract class TwoWayStructBindableMember
     {
 #if UNITY_2022_1_OR_NEWER && !ASPID_MVVM_UNITY_PROFILER_DISABLED
-        protected static readonly Unity.Profiling.ProfilerMarker AddMarker = new("TwoWayStructEvent.Add");
-        protected static readonly Unity.Profiling.ProfilerMarker RemoveMarker = new("TwoWayStructEvent.Remove");
+        protected static readonly Unity.Profiling.ProfilerMarker AddMarker = new("TwoWayStructBindableMember.Add");
+        protected static readonly Unity.Profiling.ProfilerMarker RemoveMarker = new("TwoWayStructBindableMember.Remove");
+        protected static readonly Unity.Profiling.ProfilerMarker SetValueMarker = new("TwoWayStructBindableMember.SetValue");
+        protected static readonly Unity.Profiling.ProfilerMarker OnValueChangedMarker = new("TwoWayStructBindableMember.OnValueChanged");
+        protected static readonly Unity.Profiling.ProfilerMarker OnBoxedValueChangedMarker = new("TwoWayStructBindableMember.OnBoxedValueChanged");
 #endif
     }
 }

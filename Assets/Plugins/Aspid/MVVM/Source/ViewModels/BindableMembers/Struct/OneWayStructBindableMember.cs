@@ -44,11 +44,21 @@ namespace Aspid.MVVM
             get => _value;
             set
             {
-                _value = value;
-                Changed?.Invoke(value);
-                BoxedChanged?.Invoke(value);
+#if UNITY_2022_1_OR_NEWER && !ASPID_MVVM_UNITY_PROFILER_DISABLED
+                using (SetValueMarker.Auto())
+#endif 
+                {
+                    _value = value;
+                    Changed?.Invoke(value);
+                    BoxedChanged?.Invoke(value);
+                }
             }
         }
+        
+        /// <summary>
+        /// Gets the binding mode for this member.
+        /// </summary>
+        public BindMode Mode => BindMode.OneWay;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="OneWayStructBindableMember{T,TBoxed}"/> class with the specified initial value.
@@ -75,9 +85,7 @@ namespace Aspid.MVVM
 #endif
             {
                 var mode = binder.Mode;
-            
-                if (mode is not (BindMode.OneWay or BindMode.OneTime))
-                    throw new InvalidOperationException($"Mode must be OneWay or OneTime. Mode = {{{mode}}}");
+                mode.ThrowExceptionIfNotOne();
 
                 switch (binder)
                 {
@@ -86,26 +94,27 @@ namespace Aspid.MVVM
 
                         if (mode is BindMode.OneWay) Changed += specificBinder.SetValue;
                         else return null;
-                        break;
+                        
+                        return this;
                 
                     case IBinder<TBoxed> structBinder:
                         structBinder.SetValue(_value);
                     
-                        if (mode is BindMode.OneWay)
-                            BoxedChanged += structBinder.SetValue;
-                        break;
+                        if (mode is BindMode.OneWay) BoxedChanged += structBinder.SetValue;
+                        else return null;
+                        
+                        return this;
                 
                     case IAnyBinder anyBinder:
                         anyBinder.SetValue(_value);
 
                         if (mode is BindMode.OneWay) Changed += anyBinder.SetValue;
                         else return null;
-                        break;
+                        
+                        return this;
                 
                     default: throw BinderInvalidCastException.Struct<T, TBoxed>(binder);
                 }
-            
-                return this;
             }
         }
 
@@ -120,9 +129,6 @@ namespace Aspid.MVVM
             using (RemoveMarker.Auto())
 #endif
             {
-                if (binder.Mode is BindMode.OneTime)
-                    return;
-
                 switch (binder)
                 {
                     case IBinder<T> specificBinder: Changed -= specificBinder.SetValue; break;
@@ -137,15 +143,15 @@ namespace Aspid.MVVM
         /// Triggers the Changed event with the specified value and updates the current value.
         /// </summary>
         /// <param name="value">The new value to set and notify.</param>
-        public void Invoke(T value) =>
-            Value = value;
+        public void Invoke(T value) => Value = value;
     }
     
     public abstract class OneWayStructBindableMember
     {
 #if UNITY_2022_1_OR_NEWER && !ASPID_MVVM_UNITY_PROFILER_DISABLED
-        protected static readonly Unity.Profiling.ProfilerMarker AddMarker = new("OneWayStructEvent.Add");
-        protected static readonly Unity.Profiling.ProfilerMarker RemoveMarker = new("OneWayStructEvent.Remove");
-#endif
+        protected static readonly Unity.Profiling.ProfilerMarker AddMarker = new($"OneWayStructBindableMember.Add");
+        protected static readonly Unity.Profiling.ProfilerMarker RemoveMarker = new($"OneWayStructBindableMember.Remove");
+        protected static readonly Unity.Profiling.ProfilerMarker SetValueMarker = new($"OneWayStructBindableMember.SetValue");
+#endif 
     }
 }

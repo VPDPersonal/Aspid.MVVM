@@ -9,6 +9,16 @@ namespace Aspid.MVVM
     /// </summary>
     public static partial class BindModeExtensions
     {
+        private static string None => "None".GetStructMessage();
+        
+        private static string OneWay => "OneWay".GetStructMessage();
+        
+        private static string TwoWay => "TwoWay".GetStructMessage();
+        
+        private static string OneTime => "OneTime".GetStructMessage();
+        
+        private static string OneWayToSource => "OneWayToSource".GetStructMessage();
+        
         /// <summary>
         /// Throws an <see cref="ArgumentException"/> if the binding mode is either <see cref="BindMode.OneWay"/> or <see cref="BindMode.OneTime"/>.
         /// </summary>
@@ -17,8 +27,10 @@ namespace Aspid.MVVM
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void ThrowExceptionIfOne(this BindMode mode)
         {
-            if (mode.IsOne())
-                throw new InvalidOperationException($"BindMode can't be BindMode.OneWay and BindMode.OneTime. Mode = {mode}");
+            if (!mode.IsOne()) return;
+            
+            var modeMessage = mode.ToString().GetStructMessage();
+            throw new InvalidOperationException($"Mode can't be {OneWay} and {OneTime}. Mode = {modeMessage}");
         }
         
         /// <summary>
@@ -29,8 +41,10 @@ namespace Aspid.MVVM
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void ThrowExceptionIfNotOne(this BindMode mode)
         {
-            if (!mode.IsOne())
-                throw new InvalidOperationException($"Mode must be OneWay or OneTime. Mode = {mode}");
+            if (mode.IsOne()) return;
+            
+            var modeMessage = mode.ToString().GetStructMessage();
+            throw new InvalidOperationException($"Mode must be {OneWay} or {OneTime}. Mode = {modeMessage}");
         }
         
         /// <summary>
@@ -41,8 +55,10 @@ namespace Aspid.MVVM
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void ThrowExceptionIfTwo(this BindMode mode)
         {
-            if (mode.IsTwo())
-                throw new InvalidOperationException($"BindMode can't be BindMode.TwoWay and BindMode.OneWayToSource. Mode = {mode}");
+            if (!mode.IsTwo()) return;
+            
+            var modeMessage = mode.ToString().GetStructMessage();
+            throw new InvalidOperationException($"Mode can't be {TwoWay} and {OneWayToSource}. Mode = {modeMessage}");
         }
         
         /// <summary>
@@ -53,8 +69,10 @@ namespace Aspid.MVVM
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void ThrowExceptionIfNotTwo(this BindMode mode)
         {
-            if (!mode.IsTwo())
-                throw new InvalidOperationException($"Mode must be TwoWay or OneWayToSource. Mode = {mode}");
+            if (mode.IsTwo()) return;
+            
+            var modeMessage = mode.ToString().GetStructMessage();
+            throw new InvalidOperationException($"Mode must be {TwoWay} or {OneWayToSource}. Mode = {modeMessage}");
         }
         
         /// <summary>
@@ -66,8 +84,11 @@ namespace Aspid.MVVM
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void ThrowExceptionIfNotMatches(this BindMode mode, BindMode validMode)
         {
-            if (mode != validMode)
-                throw new ArgumentException($"BindMode can be only {validMode}. Mode = {mode}");
+            if (mode == validMode) return;
+            
+            var modeMessage = mode.ToString().GetStructMessage();
+            var validModeMessage = validMode.ToString().GetStructMessage();
+            throw new ArgumentException($"Mode can be only {validModeMessage}. Mode = {modeMessage}");
         }
 
         /// <summary>
@@ -79,8 +100,10 @@ namespace Aspid.MVVM
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void ThrowExceptionIfMatches(this BindMode mode, BindMode invalidMode)
         {
-            if (mode == invalidMode)
-                throw new ArgumentException($"BindMode is not supported {invalidMode}");
+            if (mode != invalidMode) return;
+            
+            var invalidModeMessage = invalidMode.ToString().GetStructMessage();
+            throw new ArgumentException($"Mode is not supported {invalidModeMessage}");
         }
 
         /// <summary>
@@ -91,8 +114,8 @@ namespace Aspid.MVVM
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void ThrowExceptionIfNone(this BindMode mode)
         {
-            if (mode is BindMode.None) 
-                throw new ArgumentException("Mode can't be none");
+            if (mode is not BindMode.None) return;
+            throw new ArgumentException($"Mode can't be {None}");
         }
     }
 }

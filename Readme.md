@@ -1,5 +1,6 @@
 ![Aspid.MVVMHeaderImage.png](Assets/Plugins/Aspid/MVVM/Documentation/Images/Aspid.MVVMHeaderImage.png)
 ![](https://img.shields.io/badge/2022.3%2B-000000?style=flat&logo=unity&logoColor=white&color=4fa35d)
+[![Releases](https://img.shields.io/github/release/VPDPersonal/Aspid.MVVM?color=4fa35d)](https://github.com/VPDPersonal/Aspid.MVVM/releases)
 
 # Introduction
 $\color{#6aba7d}\large{\textbf{Aspid.MVVM is a high-performance MVVM framework}}$ for Unity, built on Source Generator, designed 

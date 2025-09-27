@@ -1,4 +1,6 @@
 ![Aspid.MVVMHeaderImage.png](Documentation/Images/Aspid.MVVMHeaderImage.png)
+![](https://img.shields.io/badge/2022.3%2B-000000?style=flat&logo=unity&logoColor=white&color=4fa35d)
+[![Releases](https://img.shields.io/github/release/VPDPersonal/Aspid.MVMM.Generators?color=4fa35d)](https://github.com/VPDPersonal/Aspid.MVMM.Generators/releases)
 
 # Aspid.MVVM.Generators
 

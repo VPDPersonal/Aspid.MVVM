@@ -1,0 +1,16 @@
+{
+    "name": "Aspid.UnityFastTools.ProfilerMarkers",
+    "rootNamespace": "",
+    "references": [
+        "GUID:7c010b89992542508a6b6189977e64d4"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

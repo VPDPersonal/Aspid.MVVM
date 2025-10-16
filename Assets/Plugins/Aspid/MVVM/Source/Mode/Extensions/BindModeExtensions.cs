@@ -1,71 +1,34 @@
-using System;
 using System.Runtime.CompilerServices;
 
-// ReSharper disable once CheckNamespace
 namespace Aspid.MVVM
 {
-    public static class BindModeExtensions
+    public static partial class BindModeExtensions
     {
         /// <summary>
-        /// Throws an <see cref="ArgumentException"/> if the binding mode is either <see cref="BindMode.OneWay"/> or <see cref="BindMode.OneTime"/>.
+        /// Returns true when the mode represents one-way styles: <see cref="BindMode.OneWay"/> or <see cref="BindMode.OneTime"/>.
         /// </summary>
         /// <param name="mode">The binding mode to check.</param>
-        /// <exception cref="ArgumentException">Thrown when the mode is <see cref="BindMode.OneWay"/> or <see cref="BindMode.OneTime"/>.</exception>
+        /// <returns>True if the mode is OneWay or OneTime; otherwise, false.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void ThrowExceptionIfOne(this BindMode mode)
-        {
-            if (mode is BindMode.OneWay or BindMode.OneTime)
-                throw new ArgumentException($"BindMode can't be {nameof(BindMode.OneWay)} and {nameof(BindMode.OneTime)}. Mode = {mode}");
-        }
+        public static bool IsOne(this BindMode mode) =>
+            mode is BindMode.OneWay or BindMode.OneTime;
         
         /// <summary>
-        /// Throws an <see cref="ArgumentException"/> if the binding mode is either <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.
+        /// Returns true when the mode represents two-way styles: <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.
         /// </summary>
         /// <param name="mode">The binding mode to check.</param>
-        /// <exception cref="ArgumentException">Thrown when the mode is <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</exception>
+        /// <returns>True if the mode is TwoWay or OneWayToSource; otherwise, false.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void ThrowExceptionIfTwo(this BindMode mode)
-        {
-            if (mode is BindMode.TwoWay or BindMode.OneWayToSource)
-                throw new ArgumentException($"BindMode can't be {nameof(BindMode.TwoWay)} and {nameof(BindMode.OneWayToSource)}. Mode = {mode}");
-        }
+        public static bool IsTwo(this BindMode mode) =>
+            mode is BindMode.TwoWay or BindMode.OneWayToSource;
         
         /// <summary>
-        /// Throws an <see cref="ArgumentException"/> if the binding mode does not match the specified valid mode.
-        /// </summary>
-        /// <param name="mode">The current binding mode to check.</param>
-        /// <param name="validMode">The valid binding mode to compare against.</param>
-        /// <exception cref="ArgumentException">Thrown when the mode is not equal to the valid mode.</exception>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void ThrowExceptionIfNotMatches(this BindMode mode, BindMode validMode)
-        {
-            if (mode != validMode)
-                throw new ArgumentException($"BindMode can be only {validMode}. Mode = {mode}");
-        }
-
-        /// <summary>
-        /// Throws an <see cref="ArgumentException"/> if the binding mode matches the specified invalid mode.
-        /// </summary>
-        /// <param name="mode">The current binding mode to check.</param>
-        /// <param name="invalidMode">The invalid binding mode to compare against.</param>
-        /// <exception cref="ArgumentException">Thrown when the mode matches the invalid mode.</exception>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void ThrowExceptionIfMatches(this BindMode mode, BindMode invalidMode)
-        {
-            if (mode == invalidMode)
-                throw new ArgumentException($"BindMode is not supported {invalidMode}");
-        }
-
-        /// <summary>
-        /// Throws an <see cref="ArgumentException"/> if the binding mode is <see cref="BindMode.None"/>.
+        /// Returns true when the mode is <see cref="BindMode.None"/>.
         /// </summary>
         /// <param name="mode">The binding mode to check.</param>
-        /// <exception cref="ArgumentException">Thrown when the mode is <see cref="BindMode.None"/>.</exception>
+        /// <returns>True if the mode is None; otherwise, false.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void ThrowExceptionIfNone(this BindMode mode)
-        {
-            if (mode is BindMode.None) 
-                throw new ArgumentException("Mode can't be none");
-        }
+        public static bool IsNone(this BindMode mode) =>
+            mode is BindMode.None;
     }
 }

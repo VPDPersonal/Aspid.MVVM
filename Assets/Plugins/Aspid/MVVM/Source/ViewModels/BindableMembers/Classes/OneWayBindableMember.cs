@@ -24,10 +24,20 @@ namespace Aspid.MVVM
             get => _value;
             set
             {
-                _value = value;
-                Changed?.Invoke(value);
+#if UNITY_2022_1_OR_NEWER && !ASPID_MVVM_UNITY_PROFILER_DISABLED
+                using (SetValueMarker.Auto())
+#endif 
+                {
+                    _value = value;
+                    Changed?.Invoke(value);
+                }
             }
         }
+        
+        /// <summary>
+        /// Gets the binding mode for this member.
+        /// </summary>
+        public BindMode Mode => BindMode.OneWay;    
 
         /// <summary>
         /// Initializes a new instance of the <see cref="OneWayBindableMember{T}"/> class with the specified initial value.
@@ -54,30 +64,32 @@ namespace Aspid.MVVM
 #endif
             {
                 var mode = binder.Mode;
-            
-                if (mode is not (BindMode.OneWay or BindMode.OneTime))
-                    throw new InvalidOperationException($"Mode must be OneWay or OneTime. Mode = {{{mode}}}");
-
+                mode.ThrowExceptionIfNotOne();
+                
                 switch (binder)
                 {
                     case IBinder<T> specificBinder:
-                        specificBinder.SetValue(_value);
+                        {
+                            specificBinder.SetValue(_value);
+                            
+                            if (mode is BindMode.OneWay) Changed += specificBinder.SetValue;
+                            else return null;
+                            
+                            return this;
+                        }
 
-                        if (mode is BindMode.OneWay) Changed += specificBinder.SetValue;
-                        else return null;
-                        break;
-                
                     case IAnyBinder anyBinder:
-                        anyBinder.SetValue(_value);
-                    
-                        if (mode is BindMode.OneWay) Changed += anyBinder.SetValue;
-                        else return null;
-                        break;
-                
+                        {
+                            anyBinder.SetValue(_value);
+                            
+                            if (mode is BindMode.OneWay) Changed += anyBinder.SetValue;
+                            else return null;
+                            
+                            return this;
+                        }
+
                     default: throw BinderInvalidCastException.Class<T>(binder);
                 }
-            
-                return this;
             }
         }
 
@@ -92,9 +104,6 @@ namespace Aspid.MVVM
             using (RemoveMarker.Auto())
 #endif
             {
-                if (binder.Mode is BindMode.OneTime)
-                    return;
-
                 Changed -= binder switch
                 {
                     IBinder<T> specificBinder => specificBinder.SetValue,
@@ -115,8 +124,9 @@ namespace Aspid.MVVM
     public abstract class OneWayBindableMember
     {
 #if UNITY_2022_1_OR_NEWER && !ASPID_MVVM_UNITY_PROFILER_DISABLED
-        protected static readonly Unity.Profiling.ProfilerMarker AddMarker = new("OneWayClassEvent.Add");
-        protected static readonly Unity.Profiling.ProfilerMarker RemoveMarker = new("OneWayClassEvent.Remove");
-#endif
+        protected static readonly Unity.Profiling.ProfilerMarker AddMarker = new("OneWayBindableMember.Add");
+        protected static readonly Unity.Profiling.ProfilerMarker RemoveMarker = new("OneWayBindableMember.Remove");
+        protected static readonly Unity.Profiling.ProfilerMarker SetValueMarker = new("OneWayBindableMember.SetValue");
+#endif 
     }
 }

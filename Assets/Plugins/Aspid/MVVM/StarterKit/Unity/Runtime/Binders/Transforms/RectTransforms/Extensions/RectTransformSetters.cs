@@ -15,7 +15,7 @@ namespace Aspid.MVVM.StarterKit
             var height = mode is not SizeDeltaMode.Width ? value.y : transform.sizeDelta.y;
             
             value = new Vector2(width, height);
-            transform.anchoredPosition = value;
+            transform.sizeDelta = value;
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

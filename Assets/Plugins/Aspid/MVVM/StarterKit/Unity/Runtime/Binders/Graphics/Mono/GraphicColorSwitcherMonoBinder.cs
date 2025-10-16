@@ -21,5 +21,4 @@ namespace Aspid.MVVM.StarterKit
         protected override void SetValue(Color value) =>
             CachedComponent.color = _converter?.Convert(value) ?? value;
     }
-
 }

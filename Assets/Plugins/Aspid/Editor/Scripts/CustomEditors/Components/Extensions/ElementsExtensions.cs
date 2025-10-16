@@ -1,5 +1,6 @@
 #nullable enable
 using UnityEngine;
+using Aspid.UnityFastTools;
 using UnityEngine.UIElements;
 
 // ReSharper disable once CheckNamespace

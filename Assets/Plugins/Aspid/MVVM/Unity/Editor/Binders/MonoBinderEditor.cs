@@ -3,8 +3,10 @@ using System.Linq;
 using UnityEditor;
 using UnityEngine;
 using Aspid.CustomEditors;
+using Aspid.UnityFastTools;
 using UnityEngine.UIElements;
 using System.Collections.Generic;
+using Aspid.UnityFastTools.Editors;
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM
@@ -201,7 +203,7 @@ namespace Aspid.MVVM
             var viewDropdown = DropdownFields.GetViewDropdown(this);
 
             var helpBox = Elements.CreateHelpBox("View and ID must be assigned", HelpBoxMessageType.Error)
-                .SetHelpBoxFontSize(14)
+                .SetFontSize(14)
                 .SetDisplay(IsBinderAssignedError ? DisplayStyle.Flex : DisplayStyle.None);
 
             var fieldsContainer = new VisualElement()

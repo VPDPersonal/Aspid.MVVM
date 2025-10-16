@@ -10,16 +10,17 @@ using Converter = Aspid.MVVM.StarterKit.IConverterString;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
-    [AddComponentMenu("Aspid/MVVM/Binders/UI/Text/Text Binder - Localization Enum")]
+    [AddComponentMenu("Aspid/MVVM/Binders/UI/LocalizeStringEvent/LocalizeStringEvent Binder - Entry")]
     [AddPropertyContextMenu(typeof(LocalizeStringEvent), "m_StringReference")]
-    [AddComponentContextMenu(typeof(LocalizeStringEvent),"Add Text Binder/Text Binder - Localization Enum")]
-    public sealed class TextLocalizationEnumMonoBinder : EnumMonoBinder<LocalizeStringEvent, string>
+    [AddComponentContextMenu(typeof(LocalizeStringEvent),"Add LocalizeStringEvent Binder/LocalizeStringEvent Binder - Entry")]
+    public partial class LocalizeStringEventEntryMonoBinder : ComponentMonoBinder<LocalizeStringEvent>, IBinder<string>
     {
         [Header("Converter")]
         [SerializeReferenceDropdown]
         [SerializeReference] private Converter _converter;
         
-        protected override void SetValue(string value) =>
+        [BinderLog]
+        public void SetValue(string value) =>
             CachedComponent.StringReference.TableEntryReference = _converter?.Convert(value) ?? value;
     }
 }

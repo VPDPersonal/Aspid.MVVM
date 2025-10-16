@@ -13,16 +13,16 @@ using Converter = Aspid.MVVM.StarterKit.IConverterString;
 namespace Aspid.MVVM.StarterKit
 {
     [Serializable]
-    public class TextLocalizationBinder : TargetBinder<LocalizeStringEvent>, IBinder<string>
+    public class LocalizeStringEventEntryBinder : TargetBinder<LocalizeStringEvent>, IBinder<string>
     {
         [Header("Converter")]
         [SerializeReferenceDropdown]
         [SerializeReference] private Converter? _converter;
         
-        public TextLocalizationBinder(LocalizeStringEvent target, BindMode mode)
+        public LocalizeStringEventEntryBinder(LocalizeStringEvent target, BindMode mode)
             :this(target, null, mode) { }
         
-        public TextLocalizationBinder(LocalizeStringEvent target, Converter? converter = null, BindMode mode = BindMode.OneWay)
+        public LocalizeStringEventEntryBinder(LocalizeStringEvent target, Converter? converter = null, BindMode mode = BindMode.OneWay)
             :base(target, mode)
         {
             mode.ThrowExceptionIfTwo();

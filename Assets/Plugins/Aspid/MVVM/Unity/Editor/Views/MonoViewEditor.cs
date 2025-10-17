@@ -2,8 +2,10 @@
 using UnityEditor;
 using UnityEngine;
 using Aspid.CustomEditors;
+using Aspid.UnityFastTools;
 using UnityEngine.UIElements;
 using System.Collections.Generic;
+using Aspid.UnityFastTools.Editors;
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM
@@ -44,7 +46,7 @@ namespace Aspid.MVVM
             const string unassignedBindersWarning = "It is recommended not to leave unassigned Binders";
             
             var helpBox = Elements.CreateHelpBox(unassignedBindersWarning, HelpBoxMessageType.Warning)
-                .SetHelpBoxFontSize(14);
+                .SetFontSize(14);
             
             return Elements.CreateContainer(EditorColor.LightContainer)
                 .AddTitle(EditorColor.LightText, "Other Binders")

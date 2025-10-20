@@ -99,7 +99,7 @@ namespace Aspid.MVVM
                 var id = changedBinder.Id;
                 if (!view.TryGetMonoBinderValidableFieldById(id, out var field)) return;
                 
-                var requiredTypes = field!.GetRequiredTypes().ToArray();
+                var requiredTypes = field!.GetRequiredTypes();
                 var validBinders = ValidNewBinders.Valid(view, changedBinder);
 
                 foreach (var binder in validBinders.Binders)
@@ -143,17 +143,15 @@ namespace Aspid.MVVM
                 
                 var binderCount = binders?.Length ?? 0;
                 if (binderCount is 0) continue;
-                
-                if (field.GetCustomAttributes<RequireBinderAttribute>(false) is { } requireAttributes)
+
+                if (field.GetRequiredTypes().Any())
                 {
-                    var requiredTypes = requireAttributes.Select(attribute => attribute.Type);
-        
                     binders = binders!.Where(binder => 
                         {
                             if (binder is null) return true;
 
                             var isChild = IsBinderInViewScope(view, binder);
-                            var result = isChild && requiredTypes.IsBinderMatchRequiredType(binder);
+                            var result = isChild && field.GetRequiredTypes().IsBinderMatchRequiredType(binder);
 
                             if (!result && isChild)
                                 binder.Id = null;
@@ -162,7 +160,7 @@ namespace Aspid.MVVM
                         })
                         .ToArray();
                 }
-
+                
                 var id = field.GetBinderId();
  
                 foreach (var binder in binders!)
@@ -352,7 +350,7 @@ namespace Aspid.MVVM
                 if (!view.TryGetMonoBinderValidableFieldById(id, out var field)) return result;
                 
                 var oldBinders = changedBinder.OldBinders.ToHashSet();
-                var requiredTypes = field!.GetRequiredTypes().ToArray();
+                var requiredTypes = field!.GetRequiredTypes();
                 
                 var validatingBinders = changedBinder.NewBinders.ToArray();
                 var validatedBinders = new HashSet<IMonoBinderValidable>(validatingBinders.Length);

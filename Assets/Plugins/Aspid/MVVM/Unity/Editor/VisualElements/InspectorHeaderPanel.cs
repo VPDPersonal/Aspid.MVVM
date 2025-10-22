@@ -20,7 +20,7 @@ namespace Aspid.MVVM
             Icon = new Image()
                 .SetName("InspectorHeaderPanelImage")
                 .SetImageFromResource(iconPath)
-                .SetSize(40, 40)
+                .SetSize(width: 40, height: 40)
                 .AddOpenScriptCommand(obj);
             
             Label = new Label(label)
@@ -38,8 +38,8 @@ namespace Aspid.MVVM
             this.SetName("InspectorHeaderPanel")
                 .SetBackgroundColor(EditorColor.DarkContainer)
                 .SetFlexDirection(FlexDirection.Row)
-                .SetPadding(5, 5, 10, 10)
-                .SetBorderRadius(10, 10, 10, 10);
+                .SetPadding(top: 5, bottom: 5, left: 10, right: 10)
+                .SetBorderRadius(topLeft: 10, topRight: 10, bottomLeft: 10, bottomRight: 10);
 
             this.AddChild(Icon)
                 .AddChild(Label

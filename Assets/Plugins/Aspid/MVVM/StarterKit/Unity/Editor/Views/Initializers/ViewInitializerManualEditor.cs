@@ -36,9 +36,8 @@ namespace Aspid.MVVM.StarterKit
         public override VisualElement CreateInspectorGUI()
         {
             _root = new VisualElement();
-            
-            var header = Elements.CreateHeader("Aspid Icon", GetScriptName());
-            header.Q<Image>("HeaderIcon").AddOpenScriptCommand(target);
+
+            var header = new InspectorHeaderPanel(GetScriptName(), target, "Aspid Icon");
 
             var viewHelpBox = Elements.CreateHelpBox(
                 text: "The View must be assigned",

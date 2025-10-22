@@ -77,11 +77,7 @@ namespace Aspid.MVVM
         protected virtual VisualElement BuildHeader()
         {
             var binder = _editor.TargetAsMonoBinder;
-
-            var header = Elements.CreateHeader(binder, IconPath);
-            header.Q<Image>("HeaderIcon").AddOpenScriptCommand(binder);
-
-            return header;
+            return new InspectorHeaderPanel(binder, IconPath);
         }
 
         protected virtual VisualElement BuildIdSelector()

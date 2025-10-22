@@ -76,13 +76,8 @@ namespace Aspid.MVVM
                 .AddChild(BuildViewModel());
         }
 
-        protected VisualElement BuildHeader() 
-        {
-            var header = Elements.CreateHeader(IconPath, GetScriptName());
-            header.Q<Image>("HeaderIcon").AddOpenScriptCommand(target);
-
-            return header;
-        }
+        protected VisualElement BuildHeader() =>
+            new InspectorHeaderPanel(GetScriptName(), target, IconPath);
 
         protected VisualElement BuildBaseInspector()
         {
@@ -94,7 +89,6 @@ namespace Aspid.MVVM
 
         protected VisualElement BuildViewModel()
         {
-
             var title = Elements.CreateTitle(EditorColor.LightText, "View Model");
             
             var viewModel = Elements.CreateContainer(EditorColor.LightContainer)

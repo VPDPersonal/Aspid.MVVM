@@ -10,35 +10,6 @@ namespace Aspid.CustomEditors
 {
     public static class Elements
     {
-	    public static VisualElement CreateHeader(Object obj, string iconPath) =>
-		    CreateHeader(iconPath, obj.GetScriptName());
-	    
-        public static VisualElement CreateHeader(string iconPath, string scriptName)
-        {
-            var headerIcon = new Image()
-                .SetName("HeaderIcon")
-                .SetImageFromResource(iconPath)
-                .SetSize(40, 40);
-
-            var headerText = new Label(scriptName)
-                .SetFlexGrow(1)
-                .SetFontSize(16)
-                .SetFlexShrink(1)
-                .SetName("HeaderText")
-                .SetAlignSelf(Align.Center)
-                .SetOverflow(Overflow.Hidden)
-                .SetColor(EditorColor.LightText)
-                .SetWhiteSpace(WhiteSpace.NoWrap)
-                .SetTextOverflow(TextOverflow.Ellipsis)
-                .SetUnityFontStyleAndWeight(FontStyle.Bold);
-
-            return CreateContainer(EditorColor.DarkContainer, "Header")
-                .SetFlexDirection(FlexDirection.Row)
-                .AddChild(headerIcon)
-                .AddChild(headerText
-                    .SetMargin(left: 10));
-        }
-        
         public static VisualElement CreateContainer(StyleColor color, string? name = null)
         {
             var container = new VisualElement()

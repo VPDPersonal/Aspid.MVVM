@@ -1,18 +1,17 @@
 #nullable enable
 using UnityEditor;
-using UnityEngine;
-using Aspid.CustomEditors;
 using Aspid.UnityFastTools;
 using UnityEngine.UIElements;
 using System.Collections.Generic;
 using Aspid.UnityFastTools.Editors;
+using Object = UnityEngine.Object;
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM
 {
-    public class ViewVisualElement<TView, TEditor> : VisualElement
-        where TView : Object, IView
-        where TEditor : ViewEditor<TView, TEditor>
+    public class ViewModelVisualElement<TViewModel, TEditor> : VisualElement
+        where TViewModel : Object, IViewModel
+        where TEditor : ViewModelEditor<TViewModel, TEditor>
     {
         protected readonly TEditor Editor;
         private bool _isInitialized;
@@ -29,11 +28,11 @@ namespace Aspid.MVVM
         
         protected SerializedObject SerializedObject => Editor.serializedObject;
         
-        public ViewVisualElement(TEditor editor)
+        public ViewModelVisualElement(TEditor editor)
         {
             Editor = editor;
         }
-        
+
         public void Initialize()
         {
             if (_isInitialized) return;
@@ -41,19 +40,14 @@ namespace Aspid.MVVM
             Build();
             _isInitialized = true;
         }
-
+        
         public void Update()
         {
             OnUpdate();
-            
-            this.Q<VisualElement>("ViewModelDebugPanel").style.display = Editor.TargetAsSpecific?.ViewModel is not null 
-                ? DisplayStyle.Flex
-                : DisplayStyle.None;
         }
         
         protected virtual void OnUpdate() { }
 
-        #region Build Methods
         private void Build()
         {
             Add(BuildHeader());
@@ -65,8 +59,12 @@ namespace Aspid.MVVM
                     .SetMargin(top: 10));
             }
 
-            Add(BuildBaseInspector()
-                .SetMargin(top: 10));
+            var baseInspector = BuildBaseInspector();
+            if (baseInspector.style.display != DisplayStyle.None)
+            {
+                baseInspector.SetMargin(top: 10);
+                Add(BuildBaseInspector());
+            }
 
             var onBuiltBaseInspector = OnBuiltBaseInspector();
             if (onBuiltBaseInspector is not null)
@@ -75,50 +73,33 @@ namespace Aspid.MVVM
                     .SetMargin(top: 10));
             }
             
-            Add(BuildViewModel());
+            Add(BuiltCommands()
+                .SetMargin(top: 10));
+            
+            var onBuiltCommands = OnBuiltCommands();
+            if (onBuiltCommands is not null)
+            {
+                Add(onBuiltCommands
+                    .SetMargin(top: 10));
+            }
         }
 
         private InspectorHeaderPanel BuildHeader() => 
-            new(GetScriptName(), Editor.TargetAsSpecific, IconPath);
+            new(GetScriptName(), Editor.TargetAsViewModel, IconPath);
 
         protected virtual VisualElement? OnBuiltHeader() => null;
-        
+
         private BaseInspectorVisualElement BuildBaseInspector() =>
             new(SerializedObject, PropertiesExcluding);
 
         protected virtual VisualElement? OnBuiltBaseInspector() => null;
+
+        private CommandsContainer BuiltCommands() =>
+            new(Editor.TargetAsViewModel);
         
-        // TODO Aspid Refactor
-        private VisualElement BuildViewModel()
-        {
-            var title = Elements.CreateTitle(EditorColor.LightText, "View Model");
-            
-            var viewModel = Elements.CreateContainer(EditorColor.LightContainer)
-                .SetName("ViewModelDebugPanel")
-                .AddChild(title)
-                .AddChild(ViewModelDebugPanel.Build(Editor.TargetAsSpecific)
-                    .SetName("ViewModelContainer"))
-                .SetMargin(top: 10);
-            
-            var refreshButton = new Button(Refresh)
-            {
-                text = "Refresh"
-            };
-
-            title.Q<VisualElement>("TextContainer").AddChild(refreshButton);
-
-            return viewModel;
-
-            void Refresh()
-            {
-                viewModel.Remove(viewModel.Q<VisualElement>("ViewModelContainer"));
-                viewModel.AddChild(ViewModelDebugPanel.Build(Editor.TargetAsSpecific)
-                    .SetName("ViewModelContainer"));
-            }
-        }
-        #endregion
-
+        protected virtual VisualElement? OnBuiltCommands() => null;
+        
         protected virtual string GetScriptName() =>
-            Editor.TargetAsSpecific.GetScriptName();
+            Editor.TargetAsViewModel.GetScriptName();
     }
 }

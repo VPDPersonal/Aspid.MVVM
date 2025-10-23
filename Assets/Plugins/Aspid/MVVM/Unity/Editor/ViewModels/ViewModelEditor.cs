@@ -46,13 +46,8 @@ namespace Aspid.MVVM
                 .AddChild(new CommandsContainer(ViewModel));
         }
         
-        protected VisualElement BuildHeader() 
-        {
-            var header = Elements.CreateHeader(IconPath, GetScriptName());
-            header.Q<Image>("HeaderIcon").AddOpenScriptCommand(target);
-
-            return header;
-        }
+        protected VisualElement BuildHeader() =>
+            new InspectorHeaderPanel(GetScriptName(), target, IconPath);
         
         protected VisualElement BuildBaseInspector()
         {

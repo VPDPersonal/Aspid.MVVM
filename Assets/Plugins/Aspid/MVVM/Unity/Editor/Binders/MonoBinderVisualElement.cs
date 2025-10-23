@@ -62,7 +62,7 @@ namespace Aspid.MVVM
             
             // Update Header
             this.Q<HelpBox>().SetDisplay(_editor.HasBinderId ? DisplayStyle.None : DisplayStyle.Flex);
-            this.Q<VisualElement>("Header").Q<Image>().SetImageFromResource(IconPath);
+            this.Q<InspectorHeaderPanel>().Icon.SetImageFromResource(IconPath);
         }
 
         protected virtual VisualElement Build() => new VisualElement()
@@ -77,11 +77,7 @@ namespace Aspid.MVVM
         protected virtual VisualElement BuildHeader()
         {
             var binder = _editor.TargetAsMonoBinder;
-
-            var header = Elements.CreateHeader(binder, IconPath);
-            header.Q<Image>("HeaderIcon").AddOpenScriptCommand(binder);
-
-            return header;
+            return new InspectorHeaderPanel(binder, IconPath);
         }
 
         protected virtual VisualElement BuildIdSelector()
@@ -99,9 +95,10 @@ namespace Aspid.MVVM
                  .SetFontSize(14)
                  .SetDisplay(_editor.HasBinderId ? DisplayStyle.None : DisplayStyle.Flex);
 
-             var modeField = new CorrectPropertyField(_editor.ModeProperty, string.Empty);
+             var modeField = new PropertyField(_editor.ModeProperty, string.Empty);
              
              return Elements.CreateContainer(EditorColor.DarkContainer)
+                 .SetPadding(top: 8, bottom: 8, left : 7, right: 10)
                  .SetFlexDirection(FlexDirection.Column)
                  .AddChild(dropdowns)
                  .AddChild(helpBox)
@@ -137,8 +134,8 @@ namespace Aspid.MVVM
         {
             var baseInspector = Elements.CreateContainer(EditorColor.LightContainer)
                 .SetName("BaseInspector")
-                .AddChild(Elements.CreateTitle(EditorColor.LightText, "Parameters")
-                    .SetMargin(left: -5));
+                .SetPadding(top: 5, bottom: 10)
+                .AddTitle(EditorColor.LightText, "Parameters");
             
             var enterChildren = true;
             var iterator = SerializedObject.GetIterator();
@@ -147,7 +144,7 @@ namespace Aspid.MVVM
             {
                 enterChildren = false;
                 if (PropertiesExcluding.Contains(iterator.name)) continue;
-                baseInspector.AddChild(new CorrectPropertyField(iterator));
+                baseInspector.AddChild(new AspidPropertyField(iterator));
             }
             
             baseInspector.style.display = baseInspector.childCount > 1 ? DisplayStyle.Flex : DisplayStyle.None;
@@ -158,7 +155,7 @@ namespace Aspid.MVVM
         {
             if (_editor.LogsProperty is null || _editor.IsDebugProperty is null) return new VisualElement();
 
-            var isDebugPropertyField = new CorrectPropertyField(_editor.IsDebugProperty, string.Empty);
+            var isDebugPropertyField = new PropertyField(_editor.IsDebugProperty);
             
             var title = Elements.CreateTitle(EditorColor.LightText, "Logs");
             title.Q<VisualElement>("TextContainer").AddChild(isDebugPropertyField);

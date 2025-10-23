@@ -8,13 +8,6 @@ namespace Aspid.CustomEditors
 {
     public static class ElementsExtensions
     {
-        public static T AddHeader<T>(this T element, Object obj, string iconPath)
-            where T : VisualElement
-        {
-            element.AddChild(Elements.CreateHeader(obj, iconPath));
-            return element;
-        }
-
         public static T AddContainer<T>(this T element, StyleColor color, string? name = null)
             where T : VisualElement
         {

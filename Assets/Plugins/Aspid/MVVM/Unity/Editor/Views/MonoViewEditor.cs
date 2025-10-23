@@ -1,145 +1,72 @@
 #if !ASPID_MVVM_EDITOR_DISABLED
+using System.Linq;
 using UnityEditor;
-using UnityEngine;
-using Aspid.CustomEditors;
-using Aspid.UnityFastTools;
-using UnityEngine.UIElements;
+using UnityEditor.UIElements;
 using System.Collections.Generic;
-using Aspid.UnityFastTools.Editors;
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM
 {
     [CanEditMultipleObjects]
     [CustomEditor(typeof(MonoView), editorForChildClasses: true)]
-    public class MonoViewEditor : ViewEditor<MonoView>
+    public class MonoViewEditor : ViewEditor<MonoView, MonoViewEditor>
     {
-        protected override ErrorType MessageType => 
-            Root?.Q<VisualElement>("OtherBinders").style.display != DisplayStyle.None
-                ? ErrorType.Warning 
-                : ErrorType.None;
+        public IEnumerable<IMonoBinderValidable> UnassignedBinders => TargetAsSpecific
+            .GetComponentsInChildren<IMonoBinderValidable>(true)
+                .Where(binder => binder.View is null || string.IsNullOrWhiteSpace(binder.Id));
+        
+        protected ValidableBindersById LastBinders { get; private set; }
 
-        protected StyleEnum<DisplayStyle> OtherBindersDisplay
+        #region Enable Methods
+        private void OnEnable()
         {
-            get => Root.Q<VisualElement>("OtherBinders").style.display;
-            set => Root.Q<VisualElement>("OtherBinders").style.display = value;
+            OnEnabling();
+            Validate();
+            LastBinders = ValidableBindersById.GetValidableBindersById(TargetAsSpecific);
+            OnEnabled();
         }
         
-        protected override void OnEnable()
-        {
-            ViewUtility.ValidateView(View);
-            base.OnEnable();
-        }
-
-        #region Build Methods
-        protected override VisualElement Build()
-        {
-            return new VisualElement()
-                .AddChild(BuildHeader())
-                .AddChild(BuildBaseInspector())
-                .AddChild(BuildOtherBinder())
-                .AddChild(BuildViewModel());
-        }
-
-        protected VisualElement BuildOtherBinder()
-        {
-            const string unassignedBindersWarning = "It is recommended not to leave unassigned Binders";
-            
-            var helpBox = Elements.CreateHelpBox(unassignedBindersWarning, HelpBoxMessageType.Warning)
-                .SetFontSize(14);
-            
-            return Elements.CreateContainer(EditorColor.LightContainer)
-                .AddTitle(EditorColor.LightText, "Other Binders")
-                .AddChild(helpBox)
-                .AddChild(
-                    new IMGUIContainer(DrawOtherBinders)
-                    .SetName("OtherBindersContainer"))
-                .SetMargin(top: 10)
-                .SetName("OtherBinders");
-        }
+        protected virtual void OnEnabling() { }
+        
+        protected virtual void OnEnabled() { }
         #endregion
 
-        private void DrawOtherBinders()
+        #region Disable Methods
+        private void OnDisable()
         {
-            var binders = GetOtherBinders();
-
-            if (binders.Count > 0)
-            {
-                EditorGUILayout.Space();
-                
-                foreach (var binder in binders)
-                    EditorGUILayout.ObjectField((Component)binder, binder.GetType(), false);
-            }
-
-            UpdateOtherBindersDisplay();
-            Root.Q<VisualElement>("Header").Q<Image>().SetImageFromResource(IconPath);
-        }
-
-        private IReadOnlyList<IMonoBinderValidable> GetOtherBinders()
-        {
-            var otherBinders = new List<IMonoBinderValidable>();
-
-            foreach (var binder in View.GetComponentsInChildren<IMonoBinderValidable>(true))
-            {
-                var view = binder.View;
-
-                if (view is null && !string.IsNullOrEmpty(binder.Id))
-                    binder.Id = null;
-                
-                if (!string.IsNullOrEmpty(binder.Id) && view is not null && !view.TryGetMonoBinderValidableFieldById(binder.Id, out _)) 
-                    binder.Id = null;
-                
-                if (string.IsNullOrEmpty(binder.Id)) 
-                    otherBinders.Add(binder);
-            }
-
-            return otherBinders;
+            OnDisabling();
+            Validate();
+            OnDisabled();
         }
         
-        protected override int OnDrewBaseInspector()
+        protected virtual void OnDisabling() { }
+        
+        protected virtual void OnDisabled() { }
+        #endregion
+        
+        #region CreateInspectorGUI
+        protected override ViewVisualElement<MonoView, MonoViewEditor> BuildVisualElement() =>
+            new MonoViewVisualElement(this);
+       
+        protected override void OnCreatedInspectorGUI(ViewVisualElement<MonoView, MonoViewEditor> root)
         {
-            if (OtherBindersDisplay == DisplayStyle.None)
-                UpdateOtherBindersDisplay();
-
-            return 0;
-        }
-
-        protected bool UpdateOtherBindersDisplay()
-        {
-            var binders = GetOtherBinders();
+            base.OnCreatedInspectorGUI(root);
             
-            var isShow = binders.Count > 0;
-            OtherBindersDisplay = isShow ? DisplayStyle.Flex : DisplayStyle.None;
-            
-            return isShow;
+            root.RegisterCallback<SerializedPropertyChangeEvent>(_ =>
+            {
+                var binders = ValidableBindersById.GetValidableBindersById(TargetAsSpecific);
+                ViewUtility.ValidateViewChanges(TargetAsSpecific, LastBinders, binders);
+                LastBinders = binders;
+                
+                root.Update();
+            });
         }
-
-        protected override string GetScriptName()
+        #endregion
+        
+        protected virtual void Validate()
         {
-	        if (!View) return null;
-	        
-	        var type = View.GetType();
-	        var views = View.GetComponents(type);
-	        
-	        switch (views.Length)
-	        {
-		        case 0: return null;
-		        case 1: return views[0].GetScriptName();
-		        default:
-			        {
-				        var index = 0;
-	        
-				        foreach (var component in views)
-				        {
-					        if (component.GetType() != type) continue;
-		        
-					        index++;
-					        if (component == View) return $"{View.GetScriptName()} ({index})";
-				        }
-				        
-				        return null;
-			        }
-	        }
+            if (TargetAsSpecific)
+                ViewUtility.ValidateView(TargetAsSpecific);
         }
     }
 }

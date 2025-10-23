@@ -83,7 +83,7 @@ namespace Aspid.MVVM.StarterKit
         public override VisualElement CreateInspectorGUI()
         {
             var root = new VisualElement();
-            var header = Elements.CreateHeader(target, "Aspid Icon");
+            var header = new InspectorHeaderPanel(target, "Aspid Icon");
             header.AddOpenScriptCommand(target);
             
             var container = Elements.CreateContainer(EditorColor.DarkContainer)

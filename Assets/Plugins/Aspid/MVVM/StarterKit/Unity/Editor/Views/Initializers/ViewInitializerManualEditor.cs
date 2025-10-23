@@ -70,8 +70,8 @@ namespace Aspid.MVVM.StarterKit
         
         private void UpdateHelpBoxes()
         {
-            _root.Q<VisualElement>("Header")
-                .Q<Image>().SetImageFromResource(IconPath);
+            _root.Q<InspectorHeaderPanel>()
+                .Icon.SetImageFromResource(IconPath);
             
             _root.Q<HelpBox>("ViewHelpBox")
                 .SetDisplay(_isViewSet ? DisplayStyle.None : DisplayStyle.Flex);

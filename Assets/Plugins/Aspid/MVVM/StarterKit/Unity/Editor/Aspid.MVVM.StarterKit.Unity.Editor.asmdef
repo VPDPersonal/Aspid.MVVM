@@ -4,6 +4,7 @@
     "references": [
         "Aspid.MVVM",
         "Aspid.UnityFastTools",
+        "Aspid.MVVM.Unity.Editor",
         "Aspid.CustomEditror.Editor",
         "Aspid.UnityFastTools.Editor",
         "Aspid.MVVM.StarterKit.Unity"

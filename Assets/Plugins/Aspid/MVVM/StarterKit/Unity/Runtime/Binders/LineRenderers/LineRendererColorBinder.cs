@@ -13,10 +13,8 @@ namespace Aspid.MVVM.StarterKit
     [Serializable]
     public class LineRendererColorBinder : TargetBinder<LineRenderer>, IColorBinder
     {
-        [Header("Parameter")]
         [SerializeField] private LineRendererColorMode _colorMode;
         
-        [Header("Converter")]
         [SerializeReferenceDropdown]
         [SerializeReference] private Converter? _converter;
         

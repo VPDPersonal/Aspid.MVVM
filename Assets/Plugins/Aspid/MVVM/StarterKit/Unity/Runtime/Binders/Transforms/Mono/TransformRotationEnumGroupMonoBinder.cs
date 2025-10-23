@@ -13,7 +13,7 @@ namespace Aspid.MVVM.StarterKit
     [AddComponentContextMenu(typeof(Transform),"Add Transform Binder/Transform Binder - Rotation EnumGroup")]
     public sealed class TransformRotationEnumGroupMonoBinder : EnumGroupMonoBinder<Transform>
     {
-        [Header("Parameters")]
+        [Header("Values")]
         [SerializeField] private Vector3 _defaultValue;
         [SerializeField] private Vector3 _selectedValue;
         [SerializeField] private Space _space = Space.World;

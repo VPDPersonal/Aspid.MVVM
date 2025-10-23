@@ -8,7 +8,6 @@ namespace Aspid.MVVM.StarterKit
     [Serializable]
     public class MeshColliderConvexBinder : TargetBinder<MeshCollider>, IBinder<bool>
     {
-        [Header("Converter")]
         [SerializeField] private bool _isInvert;
 
         public MeshColliderConvexBinder(MeshCollider target, BindMode bindMode)

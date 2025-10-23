@@ -5,7 +5,7 @@ namespace Aspid.MVVM.StarterKit
 {
     public abstract partial class SwitcherMonoBinder<T> : MonoBinder, IBinder<bool> 
     {
-        [Header("Parameters")]
+        [Header("Values")]
         [SerializeField] private T _trueValue;
         [SerializeField] private T _falseValue;
 
@@ -19,7 +19,7 @@ namespace Aspid.MVVM.StarterKit
     public abstract partial class SwitcherMonoBinder<TComponent, T> : ComponentMonoBinder<TComponent>, IBinder<bool> 
         where TComponent : Component
     {
-        [Header("Parameters")]
+        [Header("Values")]
         [SerializeField] private T _trueValue;
         [SerializeField] private T _falseValue;
 

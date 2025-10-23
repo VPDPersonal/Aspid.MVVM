@@ -9,7 +9,6 @@ namespace Aspid.MVVM.StarterKit
     [AddComponentContextMenu(typeof(Image),"Add Image Binder/Image Binder - Sprite Enum")]
     public sealed class ImageSpriteEnumMonoBinder : EnumMonoBinder<Image, Sprite>
     {
-        [Header("Parameter")]
         [SerializeField] private bool _disabledWhenNull = true;
         
         protected override void SetValue(Sprite value) 

@@ -14,7 +14,6 @@ namespace Aspid.MVVM.StarterKit
     [Serializable]
     public class ImageFillBinder : TargetBinder<Image>, INumberBinder
     {
-        [Header("Converter")]
         [SerializeReferenceDropdown]
         [SerializeReference] private Converter? _converter;
         

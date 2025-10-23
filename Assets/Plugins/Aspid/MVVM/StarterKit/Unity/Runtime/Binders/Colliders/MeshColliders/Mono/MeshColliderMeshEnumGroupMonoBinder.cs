@@ -13,7 +13,7 @@ namespace Aspid.MVVM.StarterKit
     [AddComponentContextMenu(typeof(MeshCollider),"Add MeshCollider Binder/MeshCollider Binder - Mesh EnumGroup")]
     public sealed class MeshColliderMeshEnumGroupMonoBinder : EnumGroupMonoBinder<MeshCollider>
     {
-        [Header("Parameters")]
+        [Header("Values")]
         [SerializeField] private Mesh _defaultValue;
         [SerializeField] private Mesh _selectedValue;
         

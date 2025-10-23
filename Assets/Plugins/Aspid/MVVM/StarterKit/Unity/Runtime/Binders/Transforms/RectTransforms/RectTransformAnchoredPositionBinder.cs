@@ -8,10 +8,7 @@ namespace Aspid.MVVM.StarterKit
     [Serializable]
     public class RectTransformAnchoredPositionBinder : TargetBinder<RectTransform>, IVectorBinder
     {
-        [Header("Parameters")]
         [SerializeField] private Space _space;
-        
-        [Header("Converter")]
         [SerializeField] private Vector3CombineConverter? _converter;
         
         public RectTransformAnchoredPositionBinder(

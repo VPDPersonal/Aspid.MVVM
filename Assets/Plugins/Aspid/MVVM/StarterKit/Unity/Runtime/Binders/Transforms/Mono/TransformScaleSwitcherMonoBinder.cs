@@ -8,7 +8,7 @@ namespace Aspid.MVVM.StarterKit
     [AddComponentContextMenu(typeof(Transform),"Add Transform Binder/Transform Binder - Scale Switcher")]
     public sealed class TransformScaleSwitcherMonoBinder : SwitcherMonoBinder<Vector3>
     {
-        [Header("Converter")]
+        [Header("Converters")]
         [SerializeField] private Vector3CombineConverter _converter = Vector3CombineConverter.Default;
 
         protected override void SetValue(Vector3 value) =>

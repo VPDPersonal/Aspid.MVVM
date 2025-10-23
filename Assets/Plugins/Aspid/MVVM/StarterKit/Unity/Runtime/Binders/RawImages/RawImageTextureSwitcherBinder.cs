@@ -10,7 +10,6 @@ namespace Aspid.MVVM.StarterKit
     public sealed class RawImageTextureSwitcherBinder : SwitcherBinder<RawImage, Texture2D?>
     {
         // ReSharper disable once MemberInitializerValueIgnored
-        [Header("Parameter")]
         [SerializeField] private bool _disabledWhenNull = true;
 
         public RawImageTextureSwitcherBinder(

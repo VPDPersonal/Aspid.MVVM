@@ -8,7 +8,7 @@ namespace Aspid.MVVM.StarterKit
     [AddComponentContextMenu(typeof(SphereCollider),"Add SphereCollider Binder/SphereCollider Binder - Center EnumGroup")]
     public sealed class SphereColliderCenterEnumGroupMonoBinder : EnumGroupMonoBinder<SphereCollider>
     {
-        [Header("Parameters")]
+        [Header("Values")]
         [SerializeField] private Vector3 _defaultValue;
         [SerializeField] private Vector3 _selectedValue;
         

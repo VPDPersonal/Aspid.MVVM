@@ -11,7 +11,6 @@ namespace Aspid.MVVM.StarterKit
         IBinder<IRelayCommand>,
         IBinder<IRelayCommand<string>>
     {
-        [Header("Parameters")]
         // ReSharper disable once MemberInitializerValueIgnored
         [SerializeField] private UpdateInputFieldEvent _updateEvent = UpdateInputFieldEvent.OnValueChanged;
         
@@ -132,7 +131,6 @@ namespace Aspid.MVVM.StarterKit
     [Serializable]
     public class InputFieldCommandBinder<T>: TargetBinder<TMP_InputField>, IBinder<IRelayCommand<string, T>>
     {
-        [Header("Parameters")]
         [SerializeField] private T _param;
         
         [Space]
@@ -255,7 +253,6 @@ namespace Aspid.MVVM.StarterKit
     [Serializable]
     public class InputFieldCommandBinder<T1, T2>: TargetBinder<TMP_InputField>, IBinder<IRelayCommand<string, T1, T2>>
     {
-        [Header("Parameters")]
         [SerializeField] private T1 _param1;
         [SerializeField] private T2 _param2;
         
@@ -389,7 +386,6 @@ namespace Aspid.MVVM.StarterKit
     [Serializable]
     public class InputFieldCommandBinder<T1, T2, T3>: TargetBinder<TMP_InputField>, IBinder<IRelayCommand<string, T1, T2, T3>>
     {
-        [Header("Parameters")]
         [SerializeField] private T1 _param1;
         [SerializeField] private T2 _param2;
         [SerializeField] private T3 _param3;

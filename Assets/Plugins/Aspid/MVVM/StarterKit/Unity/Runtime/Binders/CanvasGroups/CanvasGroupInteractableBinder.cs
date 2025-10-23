@@ -8,7 +8,6 @@ namespace Aspid.MVVM.StarterKit
     [Serializable]
     public class CanvasGroupInteractableBinder : TargetBinder<CanvasGroup>, IBinder<bool>
     {
-        [Header("Converter")]
         [SerializeField] private bool _isInvert;
 
         public CanvasGroupInteractableBinder(CanvasGroup target, BindMode mode)

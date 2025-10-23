@@ -10,7 +10,6 @@ namespace Aspid.MVVM.StarterKit
     [AddComponentContextMenu(typeof(RawImage), "Add RawImage Binder/RawImage Binder - Texture Addressable")]
     public sealed class RawImageTextureAddressableMonoBinder : AddressableMonoBinder<Texture2D, RawImage>
     {
-        [Header("Parameters")]
         [SerializeField] private Texture2D _defaultTexture;
         [SerializeField] private bool _disabledWhenNull = true;
         

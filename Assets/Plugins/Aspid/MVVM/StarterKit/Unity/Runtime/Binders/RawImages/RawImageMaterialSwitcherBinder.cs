@@ -14,7 +14,7 @@ namespace Aspid.MVVM.StarterKit
     [Serializable]
     public sealed class RawImageMaterialSwitcherBinder : SwitcherBinder<RawImage, Material>
     {
-        [Header("Converter")]
+        [Header("Converters")]
         [SerializeReferenceDropdown]
         [SerializeReference] private Converter? _converter;
         

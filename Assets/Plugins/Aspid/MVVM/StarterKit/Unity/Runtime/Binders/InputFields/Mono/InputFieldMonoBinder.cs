@@ -15,7 +15,7 @@ using Converter = Aspid.MVVM.StarterKit.IConverterString;
 namespace Aspid.MVVM.StarterKit
 {
     [BindModeOverride(IsAll = true)]
-    [AddComponentMenu("Aspid/MVVM/Binders/UI/Text/InputField Binder - Text")]
+    [AddComponentMenu("Aspid/MVVM/Binders/UI/InputField/InputField Binder - Text")]
     [AddPropertyContextMenu(typeof(TMP_InputField), "m_Text")]
     [AddComponentContextMenu(typeof(TMP_InputField),"Add InputField Binder/InputField Binder - Text")]
     public partial class InputFieldMonoBinder : ComponentMonoBinder<TMP_InputField>, 
@@ -26,11 +26,9 @@ namespace Aspid.MVVM.StarterKit
         public event Action<long> LongValueChanged;
         public event Action<float> FloatValueChanged;
         public event Action<double> DoubleValueChanged;
-
-        [Header("Parameter")]
-        [SerializeField] private UpdateInputFieldEvent _updateEvent = UpdateInputFieldEvent.OnValueChanged;
         
-        [Header("Converter")]
+        [SerializeField] private UpdateInputFieldEvent _updateEvent = UpdateInputFieldEvent.OnValueChanged;
+
         [SerializeReferenceDropdown]
         [SerializeReference] private Converter _converter;
         

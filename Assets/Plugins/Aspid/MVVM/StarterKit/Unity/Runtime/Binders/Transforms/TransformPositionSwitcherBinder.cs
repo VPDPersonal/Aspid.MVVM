@@ -10,7 +10,7 @@ namespace Aspid.MVVM.StarterKit
     {
         [SerializeField] private Space _space;
 
-        [Header("Converter")]
+        [Header("Converters")]
         [SerializeField] private Vector3CombineConverter? _converter;
        
         public TransformPositionSwitcherBinder(

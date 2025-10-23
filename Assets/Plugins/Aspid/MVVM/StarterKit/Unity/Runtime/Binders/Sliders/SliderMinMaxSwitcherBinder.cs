@@ -16,7 +16,7 @@ namespace Aspid.MVVM.StarterKit
     {
         [SerializeField] private SliderValueMode _valueMode;
         
-        [Header("Converter")]
+        [Header("Converters")]
         [SerializeReferenceDropdown]
         [SerializeReference] private Converter? _converter;
 

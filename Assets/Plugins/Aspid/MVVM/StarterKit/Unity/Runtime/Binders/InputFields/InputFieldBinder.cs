@@ -23,10 +23,8 @@ namespace Aspid.MVVM.StarterKit
         public event Action<float>? FloatValueChanged;
         public event Action<double>? DoubleValueChanged;
         
-        [Header("Parameter")]
         [SerializeField] private UpdateInputFieldEvent _updateEvent = UpdateInputFieldEvent.OnValueChanged;
         
-        [Header("Converter")]
         [SerializeReferenceDropdown]
         [SerializeReference] private Converter? _converter;
         

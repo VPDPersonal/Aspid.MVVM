@@ -10,8 +10,7 @@ namespace Aspid.MVVM.StarterKit
     public class AnimatorSetTriggerMonoBinder : ComponentMonoBinder<Animator>, IReverseBinder<IRelayCommand>
     {
         public event Action<IRelayCommand> ValueChanged;
-
-        [field: Header("Parameters")]
+        
         [field: SerializeField] 
         protected string TriggerName { get; private set; }
         

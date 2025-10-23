@@ -13,10 +13,8 @@ namespace Aspid.MVVM.StarterKit
     [Serializable]
     public class RectTransformSizeDeltaBinder : TargetBinder<RectTransform>, IBinder<Vector2>, INumberBinder
     {
-        [Header("Parameter")]
         [SerializeField] private SizeDeltaMode _sizeMode;
         
-        [Header("Converter")]
         [SerializeReferenceDropdown]
         [SerializeReference] private Converter? _converter;
         

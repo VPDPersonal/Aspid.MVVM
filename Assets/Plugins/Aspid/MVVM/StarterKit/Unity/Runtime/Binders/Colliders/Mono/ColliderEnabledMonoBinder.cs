@@ -7,7 +7,6 @@ namespace Aspid.MVVM.StarterKit
     [AddComponentContextMenu(typeof(Collider),"Add Binder/Collider Binder - Enabled")]
     public partial class ColliderEnabledMonoBinder : ComponentMonoBinder<Collider>, IBinder<bool>
     {
-        [Header("Converter")]
         [SerializeField] private bool _isInvert;
         
         [BinderLog]

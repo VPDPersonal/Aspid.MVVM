@@ -15,7 +15,6 @@ namespace Aspid.MVVM.StarterKit
     [AddComponentContextMenu(typeof(Collider),"Add Binder/Collider Binder - Material")]
     public partial class ColliderMaterialMonoBinder : ComponentMonoBinder<Collider>, IBinder<PhysicsMaterial>
     {
-        [Header("Converter")]
         [SerializeReferenceDropdown]
         [SerializeReference] private Converter _converter;
         

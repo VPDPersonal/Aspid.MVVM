@@ -8,7 +8,6 @@ namespace Aspid.MVVM.StarterKit
     [AddComponentContextMenu(typeof(Transform),"Add Transform Binder/Transform Binder - Scale")]
     public partial class TransformScaleMonoBinder : MonoBinder, IVectorBinder, INumberBinder
     {
-        [Header("Converter")]
         [SerializeField] private Vector3CombineConverter _converter = Vector3CombineConverter.Default;
         
         [BinderLog]

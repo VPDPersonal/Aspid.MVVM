@@ -15,7 +15,6 @@ namespace Aspid.MVVM.StarterKit
     [AddComponentContextMenu(typeof(TMP_Text),"Add Text Binder/Text Binder - Text Enum")]
     public sealed class TextEnumMonoBinder : EnumMonoBinder<TMP_Text, string>
     {
-        [Header("Converter")]
         [SerializeReferenceDropdown]
         [SerializeReference] private Converter _converter;
         

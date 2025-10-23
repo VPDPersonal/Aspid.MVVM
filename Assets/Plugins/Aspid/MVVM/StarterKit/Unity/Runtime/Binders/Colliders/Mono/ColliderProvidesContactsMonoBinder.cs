@@ -8,7 +8,6 @@ namespace Aspid.MVVM.StarterKit
     [AddComponentContextMenu(typeof(Collider),"Add Binder/Collider Binder - ProvidesContacts")]
     public partial class ColliderProvidesContactsMonoBinder : ComponentMonoBinder<Collider>, IBinder<bool>
     {
-        [Header("Converter")]
         [SerializeField] private bool _isInvert;
         
         [BinderLog]

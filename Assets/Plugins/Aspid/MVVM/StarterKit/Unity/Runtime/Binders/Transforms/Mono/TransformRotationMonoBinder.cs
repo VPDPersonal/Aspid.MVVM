@@ -14,8 +14,7 @@ namespace Aspid.MVVM.StarterKit
     public partial class TransformRotationMonoBinder : MonoBinder, IRotationBinder, INumberBinder
     {
         [SerializeField] private Space _space = Space.World;
-
-        [Header("Converter")]
+        
         [SerializeReferenceDropdown]
         [SerializeReference] private Converter _converter;
         

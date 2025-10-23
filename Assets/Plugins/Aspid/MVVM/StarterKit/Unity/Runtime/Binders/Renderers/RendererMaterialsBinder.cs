@@ -14,7 +14,6 @@ namespace Aspid.MVVM.StarterKit
     [Serializable]
     public class RendererMaterialsBinder : TargetBinder<Renderer>, IBinder<Material>, IBinder<Material[]>, IBinder<IReadOnlyCollection<Material>>
     {
-        [Header("Converter")]
         [SerializeReferenceDropdown]
         [SerializeReference] private Converter? _converter;
         

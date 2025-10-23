@@ -8,7 +8,6 @@ namespace Aspid.MVVM.StarterKit
     [AddComponentContextMenu(typeof(Transform),"Add Transform Binder/Transform Binder - Scale Enum")]
     public sealed class TransformScaleEnumMonoBinder : EnumMonoBinder<Vector3>
     {
-        [Header("Converter")]
         [SerializeField] private Vector3CombineConverter _converter = Vector3CombineConverter.Default;
         
         protected override void SetValue(Vector3 value) =>

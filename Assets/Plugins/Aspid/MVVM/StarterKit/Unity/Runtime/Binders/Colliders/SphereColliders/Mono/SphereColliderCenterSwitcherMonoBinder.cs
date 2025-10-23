@@ -8,7 +8,7 @@ namespace Aspid.MVVM.StarterKit
     [AddComponentContextMenu(typeof(SphereCollider),"Add SphereCollider Binder/SphereCollider Binder - Center Switcher")]
     public sealed class SphereColliderCenterSwitcherMonoBinder : SwitcherMonoBinder<SphereCollider, Vector3>
     {
-        [Header("Converter")]
+        [Header("Converters")]
         [SerializeField] private Vector3CombineConverter _converter = Vector3CombineConverter.Default;
         
         protected override void SetValue(Vector3 value) =>

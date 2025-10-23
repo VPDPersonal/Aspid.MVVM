@@ -15,7 +15,7 @@ namespace Aspid.MVVM.StarterKit
     [AddComponentContextMenu(typeof(TMP_Text),"Add Text Binder/Text Binder - FontSize EnumGroup")]
     public sealed class TextFontSizeEnumGroupMonoBinder : EnumGroupMonoBinder<TMP_Text>
     {
-        [Header("Parameters")]
+        [Header("Values")]
         [SerializeField] private float _defaultValue;
         [SerializeField] private float _selectedValue;
         

@@ -22,7 +22,6 @@ namespace Aspid.MVVM.StarterKit
 
         private bool _isNotifyValueChanged = true;
         
-        [Header("Converter")]
         [SerializeReferenceDropdown]
         [SerializeReference] private Converter? _converter;
         

@@ -14,7 +14,6 @@ namespace Aspid.MVVM.StarterKit
     [AddComponentContextMenu(typeof(Component),"Add General Binder/Casters/Vector3 To Vector2 Caster Binder")]
     public sealed partial class Vector3ToVector2CasterMonoBinder : MonoBinder, IBinder<Vector3>
     {
-        [Header("Converter")]
         [SerializeReferenceDropdown]
         [SerializeReference] private Converter _converter = new Vector3ToVector2Converter();
         

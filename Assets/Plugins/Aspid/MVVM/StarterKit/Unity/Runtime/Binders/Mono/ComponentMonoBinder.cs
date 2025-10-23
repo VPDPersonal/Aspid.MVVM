@@ -6,7 +6,6 @@ namespace Aspid.MVVM.StarterKit
     public abstract class ComponentMonoBinder<TComponent> : MonoBinder
         where TComponent : Component
     {
-        [Header("Component")]
         [SerializeField] private TComponent _component;
         
         private bool _isCached;

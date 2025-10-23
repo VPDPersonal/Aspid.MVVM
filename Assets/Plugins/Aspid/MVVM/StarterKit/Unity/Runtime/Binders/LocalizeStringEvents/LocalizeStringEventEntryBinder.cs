@@ -15,7 +15,6 @@ namespace Aspid.MVVM.StarterKit
     [Serializable]
     public class LocalizeStringEventEntryBinder : TargetBinder<LocalizeStringEvent>, IBinder<string>
     {
-        [Header("Converter")]
         [SerializeReferenceDropdown]
         [SerializeReference] private Converter? _converter;
         

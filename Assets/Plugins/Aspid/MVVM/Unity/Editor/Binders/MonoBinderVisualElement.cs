@@ -62,7 +62,7 @@ namespace Aspid.MVVM
             
             // Update Header
             this.Q<HelpBox>().SetDisplay(_editor.HasBinderId ? DisplayStyle.None : DisplayStyle.Flex);
-            this.Q<VisualElement>("Header").Q<Image>().SetImageFromResource(IconPath);
+            this.Q<InspectorHeaderPanel>().Icon.SetImageFromResource(IconPath);
         }
 
         protected virtual VisualElement Build() => new VisualElement()

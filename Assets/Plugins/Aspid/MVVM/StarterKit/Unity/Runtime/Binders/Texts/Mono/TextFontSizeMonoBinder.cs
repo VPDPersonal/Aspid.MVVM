@@ -15,7 +15,6 @@ namespace Aspid.MVVM.StarterKit
     [AddComponentContextMenu(typeof(TMP_Text),"Add Text Binder/Text Binder - FontSize")]
     public partial class TextFontSizeMonoBinder : ComponentMonoBinder<TMP_Text>, INumberBinder
     {
-        [Header("Converter")]
         [SerializeReferenceDropdown]
         [SerializeReference] private Converter _converter;
         

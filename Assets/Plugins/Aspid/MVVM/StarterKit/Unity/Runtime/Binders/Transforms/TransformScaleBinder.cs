@@ -8,7 +8,6 @@ namespace Aspid.MVVM.StarterKit
     [Serializable]
     public class TransformScaleBinder : TargetBinder<Transform>, IVectorBinder, INumberBinder
     {
-        [Header("Converter")]
         [SerializeField] private Vector3CombineConverter? _converter;
         
         public TransformScaleBinder(Transform target, BindMode mode = BindMode.OneWay)

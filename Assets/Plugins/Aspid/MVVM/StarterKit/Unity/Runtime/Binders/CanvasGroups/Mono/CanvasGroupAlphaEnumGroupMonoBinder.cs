@@ -14,7 +14,7 @@ namespace Aspid.MVVM.StarterKit
     [AddComponentContextMenu(typeof(CanvasGroup),"Add CanvasGroup Binder/CanvasGroup Binder - Alpha EnumGroup")]
     public sealed class CanvasGroupAlphaEnumGroupMonoBinder : EnumGroupMonoBinder<CanvasGroup>
     {
-        [Header("Parameters")]
+        [Header("Values")]
         [SerializeField] [Range(0f, 1f)] private float _defaultValue;
         [SerializeField] [Range(0f, 1f)] private float _selectedValue;
         

@@ -8,7 +8,7 @@ namespace Aspid.MVVM.StarterKit
     [AddComponentContextMenu(typeof(Collider),"Add Binder/Collider Binder - ProvidesContacts EnumGroup")]
     public sealed class ColliderProvidesContactsEnumGroupMonoBinder : EnumGroupMonoBinder<Collider>
     {
-        [Header("Parameters")]
+        [Header("Values")]
         [SerializeField] private bool _defaultValue;
         [SerializeField] private bool _selectedValue;
         

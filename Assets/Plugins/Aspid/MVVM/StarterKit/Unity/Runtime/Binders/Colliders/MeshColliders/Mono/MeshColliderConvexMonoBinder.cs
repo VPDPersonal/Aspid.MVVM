@@ -8,7 +8,6 @@ namespace Aspid.MVVM.StarterKit
     [AddComponentContextMenu(typeof(MeshCollider),"Add MeshCollider Binder/MeshCollider Binder - Convex")]
     public partial class MeshColliderConvexMonoBinder : ComponentMonoBinder<MeshCollider>, IBinder<bool>
     {
-        [Header("Converter")]
         [SerializeField] private bool _isInvert;
 
         [BinderLog]

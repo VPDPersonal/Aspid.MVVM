@@ -9,7 +9,6 @@ namespace Aspid.MVVM.StarterKit
     [AddComponentContextMenu(typeof(Image),"Add Image Binder/Image Binder - Sprite")]
     public partial class ImageSpriteMonoBinder : ComponentMonoBinder<Image>, IBinder<Sprite>, IBinder<Texture2D>
     {
-        [Header("Parameters")]
         [SerializeField] private bool _disabledWhenNull = true;
 
         [BinderLog]

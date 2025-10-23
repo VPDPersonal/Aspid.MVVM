@@ -8,7 +8,6 @@ namespace Aspid.MVVM.StarterKit
     [Serializable]
     public class ColliderProvidesContactsBinder : TargetBinder<Collider>, IBinder<bool>
     {
-        [Header("Converter")]
         [SerializeField] private bool _isInvert;
 
         public ColliderProvidesContactsBinder(Collider target, BindMode mode)

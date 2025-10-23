@@ -9,7 +9,6 @@ namespace Aspid.MVVM.StarterKit
     public sealed class ButtonCommandBinder : TargetBinder<Button>, IBinder<IRelayCommand>
     {
         // ReSharper disable once MemberInitializerValueIgnored
-        [Header("Parameter")]
         [SerializeField] private InteractableMode _interactableMode = InteractableMode.Interactable;
         
         [SerializeReferenceDropdown]
@@ -71,7 +70,6 @@ namespace Aspid.MVVM.StarterKit
     [Serializable]
     public class ButtonCommandBinder<T> : TargetBinder<Button>, IBinder<IRelayCommand<T>>
     {
-        [Header("Parameters")]
         [SerializeField] private T _param;
         
         // ReSharper disable once MemberInitializerValueIgnored
@@ -157,7 +155,6 @@ namespace Aspid.MVVM.StarterKit
     [Serializable]
     public class ButtonCommandBinder<T1, T2> : TargetBinder<Button>, IBinder<IRelayCommand<T1, T2>>
     {
-        [Header("Parameters")]
         [SerializeField] private T1 _param1;
         [SerializeField] private T2 _param2;
         
@@ -254,7 +251,6 @@ namespace Aspid.MVVM.StarterKit
     [Serializable]
     public class ButtonCommandBinder<T1, T2, T3> : TargetBinder<Button>, IBinder<IRelayCommand<T1, T2, T3>>
     {
-        [Header("Parameters")]
         [SerializeField] private T1 _param1;
         [SerializeField] private T2 _param2;
         [SerializeField] private T3 _param3;
@@ -350,7 +346,6 @@ namespace Aspid.MVVM.StarterKit
     [Serializable]
     public class ButtonCommandBinder<T1, T2, T3, T4> : TargetBinder<Button>, IBinder<IRelayCommand<T1, T2, T3, T4>>
     {
-        [Header("Parameters")]
         [SerializeField] private T1 _param1;
         [SerializeField] private T2 _param2;
         [SerializeField] private T3 _param3;

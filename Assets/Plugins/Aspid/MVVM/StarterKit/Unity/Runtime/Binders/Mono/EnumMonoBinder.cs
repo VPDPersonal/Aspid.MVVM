@@ -6,7 +6,6 @@ namespace Aspid.MVVM.StarterKit
 {
     public abstract partial class EnumMonoBinder<T> : MonoBinder, IBinder<Enum>
     {
-        [Header("Enum")]
         [SerializeField] private EnumValues<T> _enumValues;
         
         [BinderLog]
@@ -22,7 +21,6 @@ namespace Aspid.MVVM.StarterKit
     public abstract partial class EnumMonoBinder<TComponent, T> : ComponentMonoBinder<TComponent>, IBinder<Enum>
         where TComponent : Component
     {
-        [Header("Enum")]
         [SerializeField] private EnumValues<T> _enumValues;
         
         [BinderLog]

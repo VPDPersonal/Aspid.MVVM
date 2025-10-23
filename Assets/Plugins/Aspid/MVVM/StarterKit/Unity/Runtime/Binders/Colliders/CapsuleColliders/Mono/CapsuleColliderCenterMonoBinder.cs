@@ -8,7 +8,6 @@ namespace Aspid.MVVM.StarterKit
     [AddComponentContextMenu(typeof(CapsuleCollider),"Add CapsuleCollider Binder/CapsuleCollider Binder - Center")]
     public partial class CapsuleColliderCenterMonoBinder : ComponentMonoBinder<CapsuleCollider>, IVectorBinder, INumberBinder
     {
-        [Header("Converter")]
         [SerializeField] private Vector3CombineConverter _converter = Vector3CombineConverter.Default;
         
         [BinderLog]

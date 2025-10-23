@@ -12,7 +12,6 @@ namespace Aspid.MVVM.StarterKit
     [AddComponentContextMenu(typeof(Animator),"Add Animator Binder/Animator Binder - Set Float")]
     public partial class AnimatorSetFloatMonoBinder : AnimatorSetParameterMonoBinder<float>, INumberBinder
     {
-        [Header("Converter")]
         [SerializeReferenceDropdown]
         [SerializeReference] private Converter _converter;
         

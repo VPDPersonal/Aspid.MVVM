@@ -13,7 +13,6 @@ namespace Aspid.MVVM.StarterKit
     [Serializable]
     public class AnimatorSetFloatBinder : AnimatorSetParameterBinder<float>
     {
-        [Header("Converter")]
         [SerializeReferenceDropdown]
         [SerializeReference] private Converter? _converter;
 

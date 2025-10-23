@@ -22,7 +22,6 @@ namespace Aspid.MVVM.StarterKit
         public event Action<float> FloatValueChanged;
         public event Action<double> DoubleValueChanged;
         
-        [Header("Converter")]
         [SerializeReferenceDropdown]
         [SerializeReference] private Converter _converter;
 

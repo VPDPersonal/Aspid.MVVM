@@ -14,10 +14,8 @@ namespace Aspid.MVVM.StarterKit
     [Serializable]
     public class SliderMinMaxBinder : TargetBinder<Slider>, IBinder<Vector2>
     {
-        [Header("Parameter")]
         [SerializeField] private SliderValueMode _valueMode;
         
-        [Header("Converter")]
         [SerializeReferenceDropdown]
         [SerializeReference] private Converter? _converter;
         

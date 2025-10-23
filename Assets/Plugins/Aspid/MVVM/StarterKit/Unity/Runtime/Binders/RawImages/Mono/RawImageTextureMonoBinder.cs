@@ -9,7 +9,6 @@ namespace Aspid.MVVM.StarterKit
     [AddComponentContextMenu(typeof(RawImage),"Add RawImage Binder/RawImage Binder - Texture")]
     public partial class RawImageTextureMonoBinder : ComponentMonoBinder<RawImage>, IBinder<Texture2D>, IBinder<Sprite>
     {
-        [Header("Parameter")]
         [SerializeField] private bool _disabledWhenNull = true;
         
         [BinderLog]

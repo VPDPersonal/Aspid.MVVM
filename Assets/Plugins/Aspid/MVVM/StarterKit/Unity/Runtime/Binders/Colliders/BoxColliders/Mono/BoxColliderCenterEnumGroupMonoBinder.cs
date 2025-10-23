@@ -8,7 +8,7 @@ namespace Aspid.MVVM.StarterKit
     [AddComponentContextMenu(typeof(BoxCollider),"Add BoxCollider Binder/BoxCollider Binder - Center EnumGroup")]
     public sealed class BoxColliderCenterEnumGroupMonoBinder : EnumGroupMonoBinder<BoxCollider>
     {
-        [Header("Parameters")]
+        [Header("Values")]
         [SerializeField] private Vector3 _defaultValue;
         [SerializeField] private Vector3 _selectedValue;
         

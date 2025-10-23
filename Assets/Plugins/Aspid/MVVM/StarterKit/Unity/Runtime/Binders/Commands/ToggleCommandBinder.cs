@@ -9,7 +9,6 @@ namespace Aspid.MVVM.StarterKit
     public sealed class ToggleCommandBinder : TargetBinder<Toggle>, IBinder<IRelayCommand>, IBinder<IRelayCommand<bool>>
     {
         // ReSharper disable once MemberInitializerValueIgnored
-        [Header("Parameter")]
         [SerializeField] private InteractableMode _interactableMode = InteractableMode.Interactable;
         
         [SerializeReferenceDropdown]
@@ -89,7 +88,6 @@ namespace Aspid.MVVM.StarterKit
     [Serializable]
     public class ToggleCommandBinder<T> : TargetBinder<Toggle>, IBinder<IRelayCommand<bool, T>>
     {
-        [Header("Parameters")]
         [SerializeField] private T _param;
         
         // ReSharper disable once MemberInitializerValueIgnored
@@ -171,7 +169,6 @@ namespace Aspid.MVVM.StarterKit
     [Serializable]
     public class ToggleCommandBinder<T1, T2> : TargetBinder<Toggle>, IBinder<IRelayCommand<bool, T1, T2>>
     {
-        [Header("Parameters")]
         [SerializeField] private T1 _param1;
         [SerializeField] private T2 _param2;
         
@@ -266,7 +263,6 @@ namespace Aspid.MVVM.StarterKit
     [Serializable]
     public class ToggleCommandBinder<T1, T2, T3> : TargetBinder<Toggle>, IBinder<IRelayCommand<bool, T1, T2, T3>>
     {
-        [Header("Parameters")]
         [SerializeField] private T1 _param1;
         [SerializeField] private T2 _param2;
         [SerializeField] private T3 _param3;

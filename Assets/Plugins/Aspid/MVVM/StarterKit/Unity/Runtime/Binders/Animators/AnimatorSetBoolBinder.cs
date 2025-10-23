@@ -8,7 +8,6 @@ namespace Aspid.MVVM.StarterKit
     [Serializable]
     public class AnimatorSetBoolBinder : AnimatorSetParameterBinder<bool>
     {
-        [Header("Converter")]
         [SerializeField] private bool _isInvert;
 
         public AnimatorSetBoolBinder(Animator animator, string parameterName, BindMode mode)

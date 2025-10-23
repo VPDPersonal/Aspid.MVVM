@@ -6,7 +6,6 @@ namespace Aspid.MVVM.StarterKit
 {
     public abstract partial class EnumGroupMonoBinder<TElement> : MonoBinder, IBinder<Enum>
     {
-        [Header("Enum")]
         [SerializeField] private EnumValues<TElement> _enumValues;
         
         private bool _initialized;

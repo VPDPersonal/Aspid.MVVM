@@ -8,7 +8,6 @@ namespace Aspid.MVVM.StarterKit
     [AddComponentContextMenu(typeof(CapsuleCollider),"Add CapsuleCollider Binder/CapsuleCollider Binder - Center Enum")]
     public sealed class CapsuleColliderCenterEnumMonoBinder : EnumMonoBinder<CapsuleCollider, Vector3>
     {
-        [Header("Converter")]
         [SerializeField] private Vector3CombineConverter _converter = Vector3CombineConverter.Default;
         
         protected override void SetValue(Vector3 value) =>

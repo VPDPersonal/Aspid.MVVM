@@ -8,7 +8,6 @@ namespace Aspid.MVVM.StarterKit
     [AddComponentContextMenu(typeof(BoxCollider),"Add BoxCollider Binder/BoxCollider Binder - Size")]
     public partial class BoxColliderSizeMonoBinder : ComponentMonoBinder<BoxCollider>, IVectorBinder, INumberBinder
     {
-        [Header("Converter")]
         [SerializeField] private Vector3CombineConverter _converter = Vector3CombineConverter.Default;
         
         [BinderLog]

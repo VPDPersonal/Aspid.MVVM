@@ -15,7 +15,7 @@ namespace Aspid.MVVM.StarterKit
     [AddComponentContextMenu(typeof(Slider),"Add Slider Binder/Slider Binder - MinMax EnumGroup")]
     public sealed class SliderMinMaxEnumGroupMonoBinder : EnumGroupMonoBinder<Slider>
     {
-        [Header("Parameters")]
+        [Header("Values")]
         [SerializeField] private Vector2 _defaultValue;
         [SerializeField] private Vector2 _selectedValue;
         [SerializeField] private SliderValueMode _valueMode = SliderValueMode.Range;

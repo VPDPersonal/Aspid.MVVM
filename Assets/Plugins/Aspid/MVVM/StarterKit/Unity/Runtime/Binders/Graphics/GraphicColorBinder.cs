@@ -14,7 +14,6 @@ namespace Aspid.MVVM.StarterKit
     [Serializable]
     public class GraphicColorBinder : TargetBinder<Graphic>, IColorBinder
     {
-        [Header("Converter")]
         [SerializeReferenceDropdown]
         [SerializeReference] private Converter? _converter;
         

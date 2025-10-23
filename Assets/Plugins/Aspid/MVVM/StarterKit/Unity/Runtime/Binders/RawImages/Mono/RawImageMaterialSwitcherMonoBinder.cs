@@ -14,7 +14,7 @@ namespace Aspid.MVVM.StarterKit
     [AddComponentContextMenu(typeof(LineRenderer),"Add RawImage Binder/RawImage Binder - Material Switcher")]
     public sealed class RawImageMaterialSwitcherMonoBinder : SwitcherMonoBinder<RawImage, Material>
     {
-        [Header("Converter")]
+        [Header("Converters")]
         [SerializeReferenceDropdown]
         [SerializeReference] private Converter _converter;
         

@@ -13,7 +13,7 @@ namespace Aspid.MVVM.StarterKit
     [AddComponentContextMenu(typeof(Renderer),"Add Renderer Binder/Renderer Binder - Materials EnumGroup")]
     public sealed class RendererMaterialsEnumGroupMonoBinder : EnumGroupMonoBinder<Renderer>
     {
-        [Header("Parameters")]
+        [Header("Values")]
         [SerializeField] private Material[] _defaultValue;
         [SerializeField] private Material[] _selectedValue;
         

@@ -8,7 +8,6 @@ namespace Aspid.MVVM.StarterKit
     [AddComponentContextMenu(typeof(CanvasGroup),"Add CanvasGroup Binder/CanvasGroup Binder - Interactable")]
     public partial class CanvasGroupInteractableMonoBinder : ComponentMonoBinder<CanvasGroup>, IBinder<bool>
     {
-        [Header("Converter")]
         [SerializeField] private bool _isInvert;
         
         [BinderLog]

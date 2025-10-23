@@ -14,10 +14,8 @@ namespace Aspid.MVVM.StarterKit
     public class RendererMaterialColorBinder : TargetBinder<Renderer>, IColorBinder
     {
         // ReSharper disable once MemberInitializerValueIgnored
-        [Header("Parameter")]
         [SerializeField] private string _colorPropertyName = "_BaseColor";
         
-        [Header("Converter")]
         [SerializeReferenceDropdown]
         [SerializeReference] private Converter? _converter;
 

@@ -14,7 +14,6 @@ namespace Aspid.MVVM.StarterKit
     [AddComponentContextMenu(typeof(Image),"Add Image Binder/Image Binder - Fill")]
     public partial class ImageFillMonoBinder : ComponentMonoBinder<Image>, INumberBinder
     {
-        [Header("Converter")]
         [SerializeReferenceDropdown]
         [SerializeReference] private Converter _converter;
         

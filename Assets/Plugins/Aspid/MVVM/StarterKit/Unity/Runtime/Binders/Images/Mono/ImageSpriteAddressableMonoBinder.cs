@@ -10,7 +10,6 @@ namespace Aspid.MVVM.StarterKit
     [AddComponentContextMenu(typeof(Image), "Add Image Binder/Image Binder - Sprite Addressable")]
     public sealed class ImageSpriteAddressableMonoBinder : AddressableMonoBinder<Sprite, Image>
     {
-        [Header("Parameters")]
         [SerializeField] private Sprite _defaultSprite;
         [SerializeField] private bool _disabledWhenNull = true;
 

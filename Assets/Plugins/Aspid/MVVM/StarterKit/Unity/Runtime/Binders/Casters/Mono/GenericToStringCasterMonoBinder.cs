@@ -8,7 +8,6 @@ namespace Aspid.MVVM.StarterKit
 #if UNITY_2023_1_OR_NEWER
     public abstract partial class GenericToStringCasterMonoBinder<T> : MonoBinder, IBinder<T>
     {
-        [Header("Converter")]
         [SerializeReferenceDropdown]
         [SerializeReference] private IConverter<T, string> _converter;
         

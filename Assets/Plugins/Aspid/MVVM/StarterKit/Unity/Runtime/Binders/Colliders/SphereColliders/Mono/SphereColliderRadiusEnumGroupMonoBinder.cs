@@ -13,7 +13,7 @@ namespace Aspid.MVVM.StarterKit
     [AddComponentContextMenu(typeof(SphereCollider),"Add SphereCollider Binder/SphereCollider Binder - Radius EnumGroup")]
     public sealed class SphereColliderRadiusEnumGroupMonoBinder : EnumGroupMonoBinder<SphereCollider>
     {
-        [Header("Parameters")]
+        [Header("Values")]
         [SerializeField] [Min(0)] private float _defaultValue;
         [SerializeField] [Min(0)] private float _selectedValue;
         

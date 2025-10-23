@@ -9,7 +9,6 @@ namespace Aspid.MVVM.StarterKit
     [Serializable]
     public class RawImageTextureBinder : TargetBinder<RawImage>, IBinder<Texture2D?>, IBinder<Sprite?>
     {
-        [Header("Parameter")]
         [SerializeField] private bool _disabledWhenNull;
 
         public RawImageTextureBinder(RawImage target, BindMode mode)

@@ -6,6 +6,9 @@ namespace Aspid.MVVM
 {
     [CanEditMultipleObjects]
     [CustomEditor(typeof(ScriptableView), editorForChildClasses: true)]
-    public class ScriptableViewEditor : ViewEditor<ScriptableView> { }
+    public class ScriptableViewEditor : ViewEditor<ScriptableView, ScriptableViewEditor>
+    {
+        protected override ViewVisualElement<ScriptableView, ScriptableViewEditor> BuildVisualElement() => new(this);
+    }
 }
 #endif

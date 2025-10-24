@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM
@@ -16,29 +17,52 @@ namespace Aspid.MVVM
         public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
         {
             InitializeOverrideAttribute(property);
+            
             var availableModes = GetAvailableModes();
-
-            var currentMode = (BindMode)property.intValue;
-            var selectedIndex = Array.IndexOf(availableModes.Modes, currentMode);
-
-            if (selectedIndex < 0)
-            {
-                selectedIndex = 0;
-                property.intValue = (int)availableModes.FirstMode;
-            }
+            var selectedIndex = GetSelectedIndex(property, availableModes);
 
             EditorGUI.BeginChangeCheck();
             {
-                var displayedOptions = Array.ConvertAll(availableModes.Modes, mode => mode.ToString());
-                selectedIndex = EditorGUI.Popup(position, label.text, selectedIndex, displayedOptions);
+                var displayedOptions = availableModes.Modes.Select(mode => mode.ToString()).ToArray();
+                selectedIndex = EditorGUI.Popup(position, string.Empty, selectedIndex, displayedOptions);
             }
-            if (EditorGUI.EndChangeCheck() && _classInfo.instance is IRebindableBinder rebindable)
+            if (EditorGUI.EndChangeCheck())
             {
-                property.intValue = (int)availableModes.Modes[selectedIndex];
-                property.serializedObject.ApplyModifiedProperties();
-                
-                rebindable.Rebind();
+                SetPropertyValue(property, availableModes, selectedIndex);
             }
+        }
+
+        public override VisualElement CreatePropertyGUI(SerializedProperty property)
+        {
+            InitializeOverrideAttribute(property);
+            
+            var availableModes = GetAvailableModes();
+            var selectedIndex = GetSelectedIndex(property, availableModes);
+            
+            var displayedOptions = availableModes.Modes.Select(mode => mode.ToString()).ToList();
+            var popup = new PopupField<string>(string.Empty, displayedOptions, selectedIndex, static data => data, static data => data);
+
+            popup.RegisterValueChangedCallback(_ => SetPropertyValue(property, availableModes, popup.index));
+            return popup;
+        }
+        
+        private void InitializeOverrideAttribute(SerializedProperty property)
+        {
+            if (_wasLookingFor) return;
+            
+            var (type, classInstance) = property.GetClassInfo();
+            _classInfo.instance = classInstance;
+
+            for (; type is not null; type = type.BaseType)
+            {
+                _classInfo.overrideAttribute = type
+                    .GetCustomAttributes(typeof(BindModeOverrideAttribute), false)
+                    .FirstOrDefault() as BindModeOverrideAttribute;
+                
+                if (_classInfo.overrideAttribute is not null) break;
+            }
+            
+            _wasLookingFor = true;
         }
         
         private BindModes GetAvailableModes()
@@ -80,26 +104,33 @@ namespace Aspid.MVVM
             return BindModes.CreateAll();
         }
 
-        private void InitializeOverrideAttribute(SerializedProperty property)
+        private static int GetSelectedIndex(SerializedProperty property, BindModes availableModes)
         {
-            if (_wasLookingFor) return;
+            var currentMode = (BindMode)property.intValue;
+            var selectedIndex = Array.IndexOf(availableModes.Modes, currentMode);
             
-            var (type, classInstance) = property.GetClassInfo();
-            _classInfo.instance = classInstance;
-
-            for (; type is not null; type = type.BaseType)
+            if (selectedIndex < 0)
             {
-                _classInfo.overrideAttribute = type
-                    .GetCustomAttributes(typeof(BindModeOverrideAttribute), false)
-                    .FirstOrDefault() as BindModeOverrideAttribute;
-                
-                if (_classInfo.overrideAttribute is not null) break;
+                selectedIndex = 0;
+                property.intValue = (int)availableModes.FirstMode;
+                property.serializedObject.ApplyModifiedProperties();
             }
-            
-            _wasLookingFor = true;
-        }
 
-        private readonly ref struct BindModes
+            return selectedIndex;
+        }
+        
+        private void SetPropertyValue(SerializedProperty property, BindModes availableModes, int selectedIndex)
+        {
+            if (_classInfo.instance is IRebindableBinder rebindable)
+            {
+                property.intValue = (int)availableModes.Modes[selectedIndex];
+                property.serializedObject.ApplyModifiedProperties();
+                
+                rebindable.Rebind();
+            }
+        }
+        
+        private readonly struct BindModes
         {
             public readonly BindMode[] Modes;
             public readonly BindMode FirstMode;

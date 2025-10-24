@@ -1,96 +1,41 @@
-using System;
-using System.Linq;
 using UnityEditor;
-using Aspid.CustomEditors;
-using Aspid.UnityFastTools;
 using UnityEngine.UIElements;
-using Aspid.UnityFastTools.Editors;
+using UnityEditor.UIElements;
 using Object = UnityEngine.Object;
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM
 {
-    public abstract class ViewModelEditor<T> : Editor
+    public abstract class ViewModelEditor<T, TEditor> : Editor
         where T : Object, IViewModel
+        where TEditor : ViewModelEditor<T, TEditor>
     {
-        protected T ViewModel => target as T;
+        public T TargetAsViewModel => target as T;
         
-        protected VisualElement Root { get; private set; }
-        
-        protected string IconPath => MessageType switch
-        {
-            ErrorType.None => "Aspid Icon",
-            ErrorType.Error => "Aspid Icon Red",
-            ErrorType.Warning => "Aspid Icon Yellow",
-            _ => throw new ArgumentOutOfRangeException()
-        };
-        
-        protected virtual ErrorType MessageType => ErrorType.None;
-        
-        protected virtual string[] PropertiesExcluding => new[]
-        {
-            "m_Script",
-        };
+        protected ViewModelVisualElement<T, TEditor> Root { get; private set; }
         
         public sealed override VisualElement CreateInspectorGUI()
         {
-            Root = Build();
+            Root = BuildVisualElement();
+            Root.Initialize();
+            
+            OnCreatedInspectorGUI(Root);
             return Root;
         }
 
-        protected virtual VisualElement Build()
-        {
-            return new VisualElement()
-                .AddChild(BuildHeader())
-                .AddChild(BuildBaseInspector())
-                .AddChild(new CommandsContainer(ViewModel));
-        }
-        
-        protected VisualElement BuildHeader() =>
-            new InspectorHeaderPanel(GetScriptName(), target, IconPath);
-        
-        protected VisualElement BuildBaseInspector()
-        {
-            return Elements.CreateContainer(EditorColor.LightContainer)
-                .SetMargin(top: 10)
-                .SetName("BaseInspector")
-                .AddChild(new IMGUIContainer(DrawBaseInspector));
-        }
+        protected abstract ViewModelVisualElement<T, TEditor> BuildVisualElement();
 
-        private void DrawBaseInspector()
+        protected virtual void OnCreatedInspectorGUI(ViewModelVisualElement<T, TEditor> root)
         {
-            var propertiesCount = 0;
-
-            serializedObject.UpdateIfRequiredOrScript();
+            root.RegisterCallbackOnce<GeometryChangedEvent>(_ =>
             {
-                propertiesCount += OnDrawingBaseInspector();
-                
-                var enterChildren = true;
-                var iterator = serializedObject.GetIterator();
-                
-                while (iterator.NextVisible(enterChildren))
-                {
-                    enterChildren = false;
-                    if (PropertiesExcluding.Contains(iterator.name)) continue;
-                    
-                    propertiesCount++;
-                    EditorGUILayout.PropertyField(iterator, true);
-                }
-
-                propertiesCount += OnDrewBaseInspector();
-            }
-            serializedObject.ApplyModifiedProperties();
+                root.Update();
+            });
             
-            Root.Q<VisualElement>("BaseInspector").style.display = propertiesCount is 0 
-                ? DisplayStyle.None 
-                : DisplayStyle.Flex;
+            root.RegisterCallback<SerializedPropertyChangeEvent>(_ =>
+            {
+                root.Update();
+            });
         }
-        
-        protected virtual int OnDrawingBaseInspector() => 0;
-
-        protected virtual int OnDrewBaseInspector() => 0;
-
-        protected virtual string GetScriptName() =>
-            !ViewModel ? null : ViewModel.GetScriptName();
     }
 }

@@ -1,5 +1,4 @@
 #nullable enable
-using System.Linq;
 using UnityEngine;
 using UnityEditor;
 using Aspid.CustomEditors;
@@ -7,8 +6,6 @@ using Aspid.UnityFastTools;
 using UnityEngine.UIElements;
 using UnityEditor.UIElements;
 using System.Collections.Generic;
-using Aspid.UnityFastTools.Editors;
-using Image = UnityEngine.UIElements.Image;
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM
@@ -130,26 +127,8 @@ namespace Aspid.MVVM
                      .SetFlexGrow(1));
         }
 
-        protected VisualElement BuildBaseInspector()
-        {
-            var baseInspector = Elements.CreateContainer(EditorColor.LightContainer)
-                .SetName("BaseInspector")
-                .SetPadding(top: 5, bottom: 10)
-                .AddTitle(EditorColor.LightText, "Parameters");
-            
-            var enterChildren = true;
-            var iterator = SerializedObject.GetIterator();
-
-            while (iterator.NextVisible(enterChildren))
-            {
-                enterChildren = false;
-                if (PropertiesExcluding.Contains(iterator.name)) continue;
-                baseInspector.AddChild(new AspidPropertyField(iterator));
-            }
-            
-            baseInspector.style.display = baseInspector.childCount > 1 ? DisplayStyle.Flex : DisplayStyle.None;
-            return baseInspector;
-        }
+        private BaseInspectorVisualElement BuildBaseInspector() =>
+            new BaseInspectorVisualElement(SerializedObject, PropertiesExcluding);
 
         protected virtual VisualElement BuildLogsContainer()
         {

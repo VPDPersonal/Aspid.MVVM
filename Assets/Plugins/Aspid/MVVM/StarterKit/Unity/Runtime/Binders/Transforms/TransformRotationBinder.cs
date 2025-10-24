@@ -13,10 +13,8 @@ namespace Aspid.MVVM.StarterKit
     [Serializable]
     public class TransformRotationBinder : TargetBinder<Transform>, IRotationBinder, INumberBinder
     {
-        [Header("Parameter")]
         [SerializeField] private Space _space;
         
-        [Header("Converter")]
         [SerializeReferenceDropdown]
         [SerializeReference] private Converter? _converter;
 

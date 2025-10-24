@@ -15,7 +15,7 @@ namespace Aspid.MVVM.StarterKit
     [AddComponentContextMenu(typeof(LocalizeStringEvent),"Add LocalizeStringEvent Binder/LocalizeStringEvent Binder - Entry EnumGroup")]
     public sealed class LocalizeStringEventEntryEnumGroupMonoBinder : EnumGroupMonoBinder<LocalizeStringEvent>
     {
-        [Header("Parameters")]
+        [Header("Values")]
         [SerializeField] private string _defaultValue;
         [SerializeField] private string _selectedValue;
         

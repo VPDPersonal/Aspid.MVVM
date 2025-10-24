@@ -7,10 +7,7 @@ namespace Aspid.MVVM.StarterKit
     [AddComponentContextMenu(typeof(RectTransform),"Add RectTransform Binder/RectTransform Binder - AnchoredPosition")]
     public partial class RectTransformAnchoredPositionMonoBinder : ComponentMonoBinder<RectTransform>, IVectorBinder, INumberBinder
     {
-        [Header("Parameter")]
         [SerializeField] private Space _space = Space.World;
-
-        [Header("Converter")]
         [SerializeField] private Vector3CombineConverter _converter = Vector3CombineConverter.Default;
         
         [BinderLog]

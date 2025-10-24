@@ -13,7 +13,6 @@ namespace Aspid.MVVM.StarterKit
     [AddComponentContextMenu(typeof(SphereCollider),"Add SphereCollider Binder/SphereCollider Binder - Radius")]
     public partial class SphereColliderRadiusMonoBinder : ComponentMonoBinder<SphereCollider>, INumberBinder
     {
-        [Header("Converter")]
         [SerializeReferenceDropdown]
         [SerializeReference] private Converter _converter;
 

@@ -14,7 +14,6 @@ namespace Aspid.MVVM.StarterKit
     [AddComponentContextMenu(typeof(Component),"Add General Binder/Casters/Any To String Caster Binder")]
     public sealed class AnyToStringCasterMonoBinder : MonoBinder, IAnyBinder 
     {
-        [Header("Converter")]
         [SerializeReferenceDropdown]
         [SerializeReference] private Converter _converter = new ObjectToStringConverter();
         

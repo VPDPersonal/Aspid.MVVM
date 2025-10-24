@@ -13,7 +13,6 @@ namespace Aspid.MVVM.StarterKit
     [AddComponentContextMenu(typeof(Renderer),"Add Renderer Binder/Renderer Binder - Materials Enum")]
     public sealed class RendererMaterialsEnumMonoBinder : EnumMonoBinder<Renderer, Material[]>
     {
-        [Header("Converter")]
         [SerializeReferenceDropdown]
         [SerializeReference] private Converter _converter;
         

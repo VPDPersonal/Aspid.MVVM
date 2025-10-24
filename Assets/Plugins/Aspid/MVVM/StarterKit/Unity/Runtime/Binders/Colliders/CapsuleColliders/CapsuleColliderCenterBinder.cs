@@ -9,7 +9,6 @@ namespace Aspid.MVVM.StarterKit
     public class CapsuleColliderCenterBinder : TargetBinder<CapsuleCollider>, IVectorBinder, INumberBinder
     {
         // ReSharper disable once MemberInitializerValueIgnored
-        [Header("Converter")]
         [SerializeField] private Vector3CombineConverter? _converter = Vector3CombineConverter.Default;
 
         public CapsuleColliderCenterBinder(CapsuleCollider target, BindMode mode)

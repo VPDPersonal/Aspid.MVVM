@@ -15,7 +15,6 @@ namespace Aspid.MVVM.StarterKit
     [AddComponentContextMenu(typeof(Graphic),"Add Graphic Binder/Graphic Binder - Color")]
     public partial class GraphicColorMonoBinder : ComponentMonoBinder<Graphic>, IColorBinder
     {
-        [Header("Converter")]
         [SerializeReferenceDropdown]
         [SerializeReference] private Converter _converter;
         

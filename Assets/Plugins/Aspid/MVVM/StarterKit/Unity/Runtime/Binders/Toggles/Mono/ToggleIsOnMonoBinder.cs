@@ -13,7 +13,6 @@ namespace Aspid.MVVM.StarterKit
     {
         public event Action<bool> ValueChanged;
         
-        [Header("Converter")]
         [SerializeField] private bool _isInvert;
         
         private bool _isNotifyValueChanged = true;

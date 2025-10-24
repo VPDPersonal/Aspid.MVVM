@@ -13,7 +13,7 @@ namespace Aspid.MVVM.StarterKit
     [AddComponentContextMenu(typeof(Renderer),"Add Renderer Binder/Renderer Binder - MaterialsColor EnumGroup")]
     public sealed class RendererMaterialsColorEnumGroupMonoBinder : EnumGroupMonoBinder<Renderer>
     {
-        [Header("Parameters")]
+        [Header("Values")]
         [SerializeField] private Color _defaultValue;
         [SerializeField] private Color _selectedValues;
         [SerializeField] private string _colorPropertyName = "_BaseColor";

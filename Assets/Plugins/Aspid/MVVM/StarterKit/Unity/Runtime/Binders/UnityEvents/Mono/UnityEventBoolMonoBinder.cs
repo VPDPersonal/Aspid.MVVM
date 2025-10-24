@@ -15,7 +15,6 @@ namespace Aspid.MVVM.StarterKit
             remove => _set.RemoveListener(value);
         }
         
-        [Header("Converter")]
         [SerializeField] private bool _isInvert;
         
         [Header("Events")]

@@ -11,7 +11,6 @@ namespace Aspid.MVVM.StarterKit
         IBinder<IRelayCommand<Vector2>>, 
         IBinder<IRelayCommand<Vector3>>
     {
-        [Header("Parameter")]
         [SerializeReferenceDropdown]
         [SerializeReference] private ICanExecuteView _interactable;
         
@@ -54,7 +53,6 @@ namespace Aspid.MVVM.StarterKit
         IBinder<IRelayCommand<Vector2, T>>, 
         IBinder<IRelayCommand<Vector3, T>>
     {
-        [Header("Parameters")]
         [SerializeField] private T _param;
         
         [Space]
@@ -106,7 +104,6 @@ namespace Aspid.MVVM.StarterKit
         IBinder<IRelayCommand<Vector2, T1, T2>>, 
         IBinder<IRelayCommand<Vector3, T1, T2>>
     {
-        [Header("Parameters")]
         [SerializeField] private T1 _param1;
         [SerializeField] private T2 _param2;
         
@@ -165,7 +162,6 @@ namespace Aspid.MVVM.StarterKit
         IBinder<IRelayCommand<Vector2, T1, T2, T3>>, 
         IBinder<IRelayCommand<Vector3, T1, T2, T3>>
     {
-        [Header("Parameters")]
         [SerializeField] private T1 _param1;
         [SerializeField] private T2 _param2;
         [SerializeField] private T3 _param3;

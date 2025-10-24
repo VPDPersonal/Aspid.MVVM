@@ -14,7 +14,6 @@ namespace Aspid.MVVM.StarterKit
     [AddComponentContextMenu(typeof(Image),"Add Image Binder/Image Binder - Fill Enum")]
     public sealed class ImageFillEnumMonoBinder : EnumMonoBinder<Image, float>
     {
-        [Header("Converter")]
         [SerializeReferenceDropdown] 
         [SerializeReference] private Converter _converter;
 

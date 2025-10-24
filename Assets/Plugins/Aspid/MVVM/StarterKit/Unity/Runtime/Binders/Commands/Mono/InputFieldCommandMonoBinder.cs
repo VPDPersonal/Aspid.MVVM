@@ -13,7 +13,6 @@ namespace Aspid.MVVM.StarterKit
         IBinder<IRelayCommand>,
         IBinder<IRelayCommand<string>>
     {
-        [Header("Parameters")]
         [SerializeField] private UpdateInputFieldEvent _updateEvent = UpdateInputFieldEvent.OnValueChanged;
         [SerializeField] private InteractableMode _interactableMode = InteractableMode.Interactable;
         
@@ -117,7 +116,6 @@ namespace Aspid.MVVM.StarterKit
     public abstract partial class InputFieldCommandMonoBinder<T> : ComponentMonoBinder<TMP_InputField>,
         IBinder<IRelayCommand<string, T>>
     {
-        [Header("Parameters")]
         [SerializeField] private T _param;
         
         [Space]
@@ -212,7 +210,6 @@ namespace Aspid.MVVM.StarterKit
     public abstract partial class InputFieldCommandMonoBinder<T1, T2> : ComponentMonoBinder<TMP_InputField>,
         IBinder<IRelayCommand<string, T1, T2>>
     {
-        [Header("Parameters")]
         [SerializeField] private T1 _param1;
         [SerializeField] private T2 _param2;
         
@@ -314,7 +311,6 @@ namespace Aspid.MVVM.StarterKit
     public abstract partial class InputFieldCommandMonoBinder<T1, T2, T3> : ComponentMonoBinder<TMP_InputField>, 
         IBinder<IRelayCommand<string, T1, T2, T3>>
     {
-        [Header("Parameters")]
         [SerializeField] private T1 _param1;
         [SerializeField] private T2 _param2;
         [SerializeField] private T3 _param3;

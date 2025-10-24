@@ -8,7 +8,6 @@ namespace Aspid.MVVM.StarterKit
     [Serializable]
     public class BehaviourEnabledBinder : TargetBinder<Behaviour>, IBinder<bool>
     {
-        [Header("Converter")]
         [SerializeField] private bool _isInvert;
 
         public BehaviourEnabledBinder(Behaviour target, BindMode mode)

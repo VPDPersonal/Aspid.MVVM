@@ -25,8 +25,7 @@ namespace Aspid.MVVM.StarterKit
             add => _falseSet.AddListener(value);
             remove => _falseSet.RemoveListener(value);
         }
-        
-        [Header("Converter")]
+
         [SerializeReferenceDropdown]
         [SerializeReference] private Converter _converter;
         

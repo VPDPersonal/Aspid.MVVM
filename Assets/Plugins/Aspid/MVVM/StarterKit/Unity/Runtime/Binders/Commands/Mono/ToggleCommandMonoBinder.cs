@@ -9,7 +9,6 @@ namespace Aspid.MVVM.StarterKit
     [AddComponentContextMenu(typeof(Toggle),"Add Toggle Binder/Toggle Binder - Command")]
     public partial class ToggleCommandMonoBinder : ComponentMonoBinder<Toggle>, IBinder<IRelayCommand>, IBinder<IRelayCommand<bool>>
     {
-        [Header("Parameter")]
         [SerializeField] private InteractableMode _interactableMode = InteractableMode.Interactable;
         
         [SerializeReferenceDropdown]
@@ -76,7 +75,6 @@ namespace Aspid.MVVM.StarterKit
     
     public abstract partial class ToggleCommandMonoBinder<T> : ComponentMonoBinder<Toggle>, IBinder<IRelayCommand<bool, T>>
     {
-        [Header("Parameters")]
         [SerializeField] private T _param;
         
         [Space]
@@ -134,7 +132,6 @@ namespace Aspid.MVVM.StarterKit
     
     public abstract partial class ToggleCommandMonoBinder<T1, T2> : ComponentMonoBinder<Toggle>, IBinder<IRelayCommand<bool, T1, T2>>
     {
-        [Header("Parameters")]
         [SerializeField] private T1 _param1;
         [SerializeField] private T2 _param2;
         
@@ -199,7 +196,6 @@ namespace Aspid.MVVM.StarterKit
     
     public abstract partial class ToggleCommandMonoBinder<T1, T2, T3> : ComponentMonoBinder<Toggle>, IBinder<IRelayCommand<bool, T1, T2, T3>>
     {
-        [Header("Parameters")]
         [SerializeField] private T1 _param1;
         [SerializeField] private T2 _param2;
         [SerializeField] private T3 _param3;

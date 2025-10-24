@@ -15,7 +15,6 @@ namespace Aspid.MVVM.StarterKit
     [Serializable]
     public class ColliderMaterialBinder : TargetBinder<Collider>, IBinder<PhysicsMaterial>
     {
-        [Header("Converter")]
         [SerializeReferenceDropdown] 
         [SerializeReference] private Converter? _converter;
         

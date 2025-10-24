@@ -14,7 +14,7 @@ namespace Aspid.MVVM.StarterKit
     [AddComponentContextMenu(typeof(Slider),"Add Slider Binder/Slider Binder - Value Switcher")]
     public sealed class SliderValueSwitcherMonoBinder : SwitcherMonoBinder<Slider, float>
     {
-        [Header("Converter")]
+        [Header("Converters")]
         [SerializeReferenceDropdown]
         [SerializeReference] private Converter _converter;
         

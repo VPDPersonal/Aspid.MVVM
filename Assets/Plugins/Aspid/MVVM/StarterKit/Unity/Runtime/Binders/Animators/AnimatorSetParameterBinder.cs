@@ -11,7 +11,6 @@ namespace Aspid.MVVM.StarterKit
     {
         public event Action<IRelayCommand<T>>? ValueChanged;
         
-        [field: Header("Parameters")]
         [field: SerializeField]
         protected string ParameterName { get; private set; }
         

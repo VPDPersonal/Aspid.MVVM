@@ -12,7 +12,6 @@ namespace Aspid.MVVM.StarterKit
     [AddComponentContextMenu(typeof(Component),"Add General Binder/GameObject/GameObject Binder - Tag")]
     public partial class GameObjectTagMonoBinder : MonoBinder, IBinder<string>
     {
-        [Header("Converter")]
         [SerializeReferenceDropdown]
         [SerializeReference] private Converter _converter;
         

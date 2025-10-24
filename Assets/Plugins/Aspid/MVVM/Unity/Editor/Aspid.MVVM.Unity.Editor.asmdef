@@ -4,7 +4,9 @@
     "references": [
         "Aspid.MVVM",
         "Aspid.MVVM.Unity",
-        "Aspid.CustomEditror.Editor"
+        "Aspid.UnityFastTools",
+        "Aspid.CustomEditror.Editor",
+        "Aspid.UnityFastTools.Editor"
     ],
     "includePlatforms": [
         "Editor"

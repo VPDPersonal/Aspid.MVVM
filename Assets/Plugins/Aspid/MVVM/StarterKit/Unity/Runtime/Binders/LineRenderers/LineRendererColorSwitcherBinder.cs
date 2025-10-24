@@ -15,7 +15,7 @@ namespace Aspid.MVVM.StarterKit
     {
         [SerializeField] private LineRendererColorMode _colorMode;
         
-        [Header("Converter")]
+        [Header("Converters")]
         [SerializeReferenceDropdown]
         [SerializeReference] private Converter? _converter;
 

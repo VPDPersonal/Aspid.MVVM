@@ -12,7 +12,6 @@ namespace Aspid.MVVM.StarterKit
         IBinder<IRelayCommand<int>>,
         IBinder<IRelayCommand<long>>
     {
-        [Header("Parameter")]
         [SerializeField] private InteractableMode _interactableMode = InteractableMode.Interactable;
         
         [SerializeReferenceDropdown]
@@ -81,7 +80,6 @@ namespace Aspid.MVVM.StarterKit
         IBinder<IRelayCommand<int, T>>,
         IBinder<IRelayCommand<long, T>>
     {
-        [Header("Parameters")]
         [SerializeField] private T _param;
         
         [Space]
@@ -159,7 +157,6 @@ namespace Aspid.MVVM.StarterKit
         IBinder<IRelayCommand<int, T1, T2>>,
         IBinder<IRelayCommand<long, T1, T2>>
     {
-        [Header("Parameters")]
         [SerializeField] private T1 _param1;
         [SerializeField] private T2 _param2;
         
@@ -244,7 +241,6 @@ namespace Aspid.MVVM.StarterKit
         IBinder<IRelayCommand<int, T1, T2, T3>>,
         IBinder<IRelayCommand<long, T1, T2, T3>>
     {
-        [Header("Parameters")]
         [SerializeField] private T1 _param1;
         [SerializeField] private T2 _param2;
         [SerializeField] private T3 _param3;

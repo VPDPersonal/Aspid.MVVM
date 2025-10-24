@@ -3,7 +3,9 @@ using UnityEditor;
 using UnityEngine;
 using System.Reflection;
 using Aspid.CustomEditors;
+using Aspid.UnityFastTools;
 using UnityEngine.UIElements;
+using Aspid.UnityFastTools.Editors;
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
@@ -45,11 +47,8 @@ namespace Aspid.MVVM.StarterKit
         public override VisualElement CreateInspectorGUI()
         {
             _root = new VisualElement();
-
-            var scriptName = target.GetScriptName();
-            var header = Elements.CreateHeader("Aspid Icon", scriptName);
-            header.Q<Image>("HeaderIcon").AddOpenScriptCommand(target);
-
+            
+            var header = new InspectorHeaderPanel(target, "Aspid Icon");
             var stage = BuildStage();
             var view = BuildViewInitializeComponent();
             var viewModel = BuildViewModelInitializeComponent();
@@ -197,8 +196,8 @@ namespace Aspid.MVVM.StarterKit
 
         private void UpdateHelpBoxes()
         {
-            _root.Q<VisualElement>("Header")
-                .Q<Image>().SetImageFromResource(IconPath);
+            _root.Q<InspectorHeaderPanel>()
+                .Icon.SetImageFromResource(IconPath);
             
             _root.Q<HelpBox>("ViewHelpBox")
                 .SetDisplay(_isViewSet ? DisplayStyle.None : DisplayStyle.Flex);
@@ -210,8 +209,7 @@ namespace Aspid.MVVM.StarterKit
         private void UpdateHeaderText()
         {
             var scriptName = target.GetScriptName();
-            var headerText = _root.Q<Label>("HeaderText");
-            headerText.text = $"{scriptName}{GetInitializeComponentName(_viewModel)}";
+           _root.Q<InspectorHeaderPanel>().Label.text = $"{scriptName}{GetInitializeComponentName(_viewModel)}";
         }
     }
 }

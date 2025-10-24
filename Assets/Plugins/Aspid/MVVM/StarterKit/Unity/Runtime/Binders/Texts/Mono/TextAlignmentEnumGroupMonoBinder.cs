@@ -8,7 +8,7 @@ namespace Aspid.MVVM.StarterKit
 {
     public sealed class TextAlignmentEnumGroupMonoBinder : EnumGroupMonoBinder<TMP_Text>
     {
-        [Header("Parameters")]
+        [Header("Values")]
         [SerializeField] private TextAlignmentOptions _defaultValue;
         [SerializeField] private TextAlignmentOptions _selectedValue;
 

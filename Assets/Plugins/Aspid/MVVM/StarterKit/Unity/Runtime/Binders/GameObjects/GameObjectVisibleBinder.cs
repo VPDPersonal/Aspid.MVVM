@@ -8,7 +8,6 @@ namespace Aspid.MVVM.StarterKit
     [Serializable]
     public class GameObjectVisibleBinder : TargetBinder<GameObject>, IBinder<bool>
     {
-        [Header("Converter")]
         [SerializeField] private bool _isInvert;
         
         public GameObjectVisibleBinder(GameObject target, BindMode mode)

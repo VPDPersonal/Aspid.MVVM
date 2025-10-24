@@ -9,7 +9,6 @@ namespace Aspid.MVVM.StarterKit
     public class BoxColliderSizeBinder : TargetBinder<BoxCollider>, IVectorBinder, INumberBinder
     {
         // ReSharper disable once MemberInitializerValueIgnored
-        [Header("Converter")]
         [SerializeField] private Vector3CombineConverter? _converter = Vector3CombineConverter.Default;
 
         public BoxColliderSizeBinder(BoxCollider target, BindMode mode)

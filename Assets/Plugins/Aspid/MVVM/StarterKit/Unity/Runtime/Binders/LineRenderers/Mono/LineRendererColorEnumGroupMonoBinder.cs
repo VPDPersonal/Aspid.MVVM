@@ -13,7 +13,7 @@ namespace Aspid.MVVM.StarterKit
     [AddComponentContextMenu(typeof(LineRenderer),"Add LineRenderer Binder/LineRenderer Binder - Color EnumGroup")]
     public sealed class LineRendererColorEnumGroupMonoBinder : EnumGroupMonoBinder<LineRenderer>
     {
-        [Header("Parameters")]
+        [Header("Values")]
         [SerializeField] private Color _defaultValue;
         [SerializeField] private Color _selectedValue;
         [SerializeField] private LineRendererColorMode _colorMode = LineRendererColorMode.StartAndEnd;

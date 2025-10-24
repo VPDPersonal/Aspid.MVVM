@@ -15,7 +15,7 @@ namespace Aspid.MVVM.StarterKit
     [AddComponentContextMenu(typeof(Collider),"Add Binder/Collider Binder - Material EnumGroup")]
     public sealed class ColliderMaterialEnumGroupMonoBinder : EnumGroupMonoBinder<Collider>
     {
-        [Header("Parameters")]
+        [Header("Values")]
         [SerializeField] private PhysicsMaterial _defaultValue;
         [SerializeField] private PhysicsMaterial _selectedValue;
         

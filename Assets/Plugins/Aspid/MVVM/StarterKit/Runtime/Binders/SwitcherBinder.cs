@@ -7,7 +7,7 @@ namespace Aspid.MVVM.StarterKit
     public abstract class SwitcherBinder<T> : Binder, IBinder<bool>
     {
 #if UNITY_2022_1_OR_NEWER
-        [UnityEngine.Header("Parameters")]
+        [UnityEngine.Header("Values")]
         [UnityEngine.SerializeField] 
 #endif
         private T _trueValue;
@@ -39,7 +39,7 @@ namespace Aspid.MVVM.StarterKit
     public abstract class SwitcherBinder<TTarget, T> : TargetBinder<TTarget>, IBinder<bool>
     {
 #if UNITY_2022_1_OR_NEWER
-        [UnityEngine.Header("Parameters")]
+        [UnityEngine.Header("Values")]
         [UnityEngine.SerializeField] 
 #endif
         private T _trueValue; 

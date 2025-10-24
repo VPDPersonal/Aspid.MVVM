@@ -7,7 +7,6 @@ namespace Aspid.MVVM.StarterKit
     public abstract class TargetBinder<TTarget> : Binder
     {
 #if UNITY_2022_1_OR_NEWER
-        [field: UnityEngine.Header("Target")]
         [field: UnityEngine.SerializeField]
 #endif
         protected TTarget Target { get; private set; }

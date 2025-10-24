@@ -8,10 +8,7 @@ namespace Aspid.MVVM.StarterKit
     [Serializable]
     public class TransformPositionBinder : TargetBinder<Transform>, IVectorBinder
     {
-        [Header("Parameter")]
         [SerializeField] private Space _space;
-        
-        [Header("Converter")]
         [SerializeField] private Vector3CombineConverter? _converter;
 
         public TransformPositionBinder(Transform transform, BindMode mode)

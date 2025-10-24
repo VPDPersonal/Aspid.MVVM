@@ -7,7 +7,6 @@ namespace Aspid.MVVM.StarterKit
     [AddComponentContextMenu(typeof(Animator),"Add Animator Binder/Animator Binder - Set Bool")]
     public class AnimatorSetBoolMonoBinder : AnimatorSetParameterMonoBinder<bool>
     {
-        [Header("Converter")]
         [SerializeField] private bool _isInvert;
         
         protected sealed override void SetParameter(bool value)

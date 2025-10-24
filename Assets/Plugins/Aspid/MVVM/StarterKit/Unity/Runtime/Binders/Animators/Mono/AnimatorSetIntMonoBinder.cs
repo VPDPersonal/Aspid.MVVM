@@ -12,7 +12,6 @@ namespace Aspid.MVVM.StarterKit
     [AddComponentContextMenu(typeof(Animator),"Add Animator Binder/Animator Binder - Set Int")]
     public partial class AnimatorSetIntMonoBinder : AnimatorSetParameterMonoBinder<int>, INumberBinder
     {
-        [Header("Converter")]
         [SerializeReferenceDropdown]
         [SerializeReference] private Converter _converter;
         

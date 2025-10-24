@@ -8,7 +8,6 @@ namespace Aspid.MVVM.StarterKit
     [Serializable]
     public class CanvasGroupBlocksRaycastsBinder : TargetBinder<CanvasGroup>, IBinder<bool>
     {
-        [Header("Converter")]
         [SerializeField] private bool _isInvert;
 
         public CanvasGroupBlocksRaycastsBinder(CanvasGroup target, BindMode mode)

@@ -16,7 +16,6 @@ namespace Aspid.MVVM.StarterKit
     [Serializable]
     public class TextBinder : TargetBinder<TMP_Text>, IBinder<string?>, INumberBinder
     {
-        [Header("Converter")]
         [SerializeReferenceDropdown]
         [SerializeReference] private Converter? _converter;
 

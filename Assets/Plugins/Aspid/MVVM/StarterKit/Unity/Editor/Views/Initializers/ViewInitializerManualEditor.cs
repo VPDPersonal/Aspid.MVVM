@@ -3,7 +3,9 @@ using UnityEditor;
 using UnityEngine;
 using System.Reflection;
 using Aspid.CustomEditors;
+using Aspid.UnityFastTools;
 using UnityEngine.UIElements;
+using Aspid.UnityFastTools.Editors;
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
@@ -34,9 +36,8 @@ namespace Aspid.MVVM.StarterKit
         public override VisualElement CreateInspectorGUI()
         {
             _root = new VisualElement();
-            
-            var header = Elements.CreateHeader("Aspid Icon", GetScriptName());
-            header.Q<Image>("HeaderIcon").AddOpenScriptCommand(target);
+
+            var header = new InspectorHeaderPanel(GetScriptName(), target, "Aspid Icon");
 
             var viewHelpBox = Elements.CreateHelpBox(
                 text: "The View must be assigned",
@@ -69,8 +70,8 @@ namespace Aspid.MVVM.StarterKit
         
         private void UpdateHelpBoxes()
         {
-            _root.Q<VisualElement>("Header")
-                .Q<Image>().SetImageFromResource(IconPath);
+            _root.Q<InspectorHeaderPanel>()
+                .Icon.SetImageFromResource(IconPath);
             
             _root.Q<HelpBox>("ViewHelpBox")
                 .SetDisplay(_isViewSet ? DisplayStyle.None : DisplayStyle.Flex);

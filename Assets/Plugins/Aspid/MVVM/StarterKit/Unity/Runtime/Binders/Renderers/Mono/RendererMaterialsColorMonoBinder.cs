@@ -13,10 +13,8 @@ namespace Aspid.MVVM.StarterKit
     [AddComponentContextMenu(typeof(Renderer),"Add Renderer Binder/Renderer Binder - MaterialsColor")]
     public partial class RendererMaterialsColorMonoBinder : ComponentMonoBinder<Renderer>, IColorBinder
     {
-        [Header("Parameter")]
         [SerializeField] private string _colorPropertyName = "_BaseColor";
         
-        [Header("Converter")]
         [SerializeReferenceDropdown]
         [SerializeReference] private Converter _converter;
 

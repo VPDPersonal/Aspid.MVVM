@@ -14,7 +14,7 @@ namespace Aspid.MVVM.StarterKit
     [Serializable]
     public sealed class GraphicColorSwitcherBinder : SwitcherBinder<Graphic, Color>
     {
-        [Header("Converter")]
+        [Header("Converters")]
         [SerializeReferenceDropdown]
         [SerializeReference] private Converter? _converter;
         

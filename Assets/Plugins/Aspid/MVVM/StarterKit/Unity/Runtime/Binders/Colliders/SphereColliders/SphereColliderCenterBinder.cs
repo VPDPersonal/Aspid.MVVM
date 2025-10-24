@@ -9,7 +9,6 @@ namespace Aspid.MVVM.StarterKit
     public class SphereColliderCenterBinder : TargetBinder<SphereCollider>, IVectorBinder, INumberBinder
     {
         // ReSharper disable once MemberInitializerValueIgnored
-        [Header("Converter")]
         [SerializeField] private Vector3CombineConverter? _converter = Vector3CombineConverter.Default;
 
         public SphereColliderCenterBinder(SphereCollider target, BindMode mode)

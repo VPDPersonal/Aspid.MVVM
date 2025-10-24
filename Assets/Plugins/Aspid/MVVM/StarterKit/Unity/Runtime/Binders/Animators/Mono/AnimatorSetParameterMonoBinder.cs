@@ -11,7 +11,6 @@ namespace Aspid.MVVM.StarterKit
         
         private T _value;
         
-        [field: Header("Parameters")]
         [field: SerializeField] 
         protected string ParameterName { get; private set; }
         

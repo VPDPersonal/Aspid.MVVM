@@ -9,7 +9,6 @@ namespace Aspid.MVVM.StarterKit
     [Serializable]
     public sealed class ImageSpriteSwitcherBinder : SwitcherBinder<Image, Sprite?>
     {
-        [Header("Parameter")]
         [SerializeField] private bool _disabledWhenNull;
 
         public ImageSpriteSwitcherBinder(

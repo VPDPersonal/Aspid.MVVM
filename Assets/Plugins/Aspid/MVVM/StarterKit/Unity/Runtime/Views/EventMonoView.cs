@@ -8,7 +8,6 @@ namespace Aspid.MVVM.StarterKit
     [AddComponentMenu("Aspid/MVVM/Views/Event View")]
     public partial class EventMonoView : MonoView
     {
-        [Header("Events")]
         [SerializeField] private UnityEvent<IViewModel> _initialized;
         [SerializeField] private UnityEvent _deinitialized;
 

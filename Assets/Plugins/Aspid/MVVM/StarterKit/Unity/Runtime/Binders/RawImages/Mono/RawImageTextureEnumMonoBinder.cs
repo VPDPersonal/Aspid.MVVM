@@ -9,7 +9,6 @@ namespace Aspid.MVVM.StarterKit
     [AddComponentContextMenu(typeof(LineRenderer),"Add RawImage Binder/RawImage Binder - Texture Enum")]
     public sealed class RawImageTextureEnumMonoBinder : EnumMonoBinder<RawImage, Texture2D>
     {
-        [Header("Parameter")]
         [SerializeField] private bool _disabledWhenNull = true;
         
         protected override void SetValue(Texture2D value)

@@ -22,7 +22,7 @@ namespace Aspid.MVVM
         /// <returns>
         /// FieldInfo` objects representing the field that contain `IMonoBinderValidable` binders.
         /// </returns>
-        public static FieldInfo? GetMonoBinderValidableFieldById(this IView view, string id) =>
+        public static MonoBinderValidableFieldInfo? GetMonoBinderValidableFieldById(this IView view, string id) =>
             GetMonoBinderValidableFields(view).FirstOrDefault(field => field?.GetBinderId() == id);
         
         /// <summary>
@@ -33,18 +33,18 @@ namespace Aspid.MVVM
         /// <returns>
         /// A collection of `FieldInfo` objects representing the fields that contain `IMonoBinderValidable` binders.
         /// </returns>
-        public static IEnumerable<FieldInfo> GetMonoBinderValidableFields(this IView view)
+        public static IEnumerable<MonoBinderValidableFieldInfo> GetMonoBinderValidableFields(this IView view)
         {
             return view.GetType().GetFieldInfosIncludingBaseClasses(BindingFlags).Where(field =>
             {
                 var fieldType = field.FieldType;
                 return typeof(IMonoBinderValidable).IsAssignableFrom(fieldType)
                     || typeof(IMonoBinderValidable[]).IsAssignableFrom(fieldType);
-            });
+            }).Select(fieldInfo => new MonoBinderValidableFieldInfo(fieldInfo));
         }
         
         // TODO Write summary
-        public static bool TryGetMonoBinderValidableFieldById(this IView view, string id, out FieldInfo? field)
+        public static bool TryGetMonoBinderValidableFieldById(this IView view, string id, out MonoBinderValidableFieldInfo? field)
         {
             field = GetMonoBinderValidableFieldById(view, id);
             return field is not null;

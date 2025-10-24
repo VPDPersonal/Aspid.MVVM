@@ -91,30 +91,11 @@ namespace Aspid.MVVM
         // TODO Aspid Refactor
         private VisualElement BuildViewModel()
         {
-            var title = Elements.CreateTitle(EditorColor.LightText, "View Model");
-            
-            var viewModel = Elements.CreateContainer(EditorColor.LightContainer)
+            return Elements.CreateContainer(EditorColor.LightContainer)
                 .SetName("ViewModelDebugPanel")
-                .AddChild(title)
                 .AddChild(ViewModelDebugPanel.Build(Editor.TargetAsSpecific)
                     .SetName("ViewModelContainer"))
                 .SetMargin(top: 10);
-            
-            var refreshButton = new Button(Refresh)
-            {
-                text = "Refresh"
-            };
-
-            title.Q<VisualElement>("TextContainer").AddChild(refreshButton);
-
-            return viewModel;
-
-            void Refresh()
-            {
-                viewModel.Remove(viewModel.Q<VisualElement>("ViewModelContainer"));
-                viewModel.AddChild(ViewModelDebugPanel.Build(Editor.TargetAsSpecific)
-                    .SetName("ViewModelContainer"));
-            }
         }
         #endregion
 

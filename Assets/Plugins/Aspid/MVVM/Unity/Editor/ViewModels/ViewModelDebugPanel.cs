@@ -15,17 +15,99 @@ using Object = UnityEngine.Object;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM
 {
+    // TODO Aspid.MVVM Refactor this class
     internal static class ViewModelDebugPanel
     {
         private const BindingFlags BindingAttr = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic;
-        
-        public static VisualElement Build(IView target)
+
+        public static VisualElement Build<T>(T view)
+            where T : Object, IView
         {
-            var targetType = target.GetType();
-            var property = targetType.GetProperty("ViewModel", BindingAttr);
-            var value = property!.GetValue(target);
+            var viewType = view.GetType();
+            var viewModelProperty = viewType.GetProperty("ViewModel", BindingAttr);
+            if (viewModelProperty!.GetValue(view) is not IViewModel viewModel) return new VisualElement();
+
+            var prefs = viewModelProperty!.GetValue(view).GetType().FullName;
+
+            var toggle = new Toggle()
+            {
+                value = EditorPrefs.GetBool(prefs, false),
+            };
             
-            return BuildCompositeValue(new Context(value, null));
+            var data = BuildViewModelData(viewModel).SetName("Data");
+            var title = Elements.CreateTitle(EditorColor.LightText, viewModel.GetType().FullName!);
+
+            toggle.RegisterValueChangedCallback(e =>
+            {
+                EditorPrefs.SetBool(prefs, e.newValue);
+                data.style.display = e.newValue ? DisplayStyle.Flex : DisplayStyle.None;
+            });
+            
+            data.style.display = toggle.value ? DisplayStyle.Flex : DisplayStyle.None;
+            title.Q<VisualElement>("TextContainer").AddChild(toggle);
+
+            return Elements.CreateContainer(EditorColor.LightContainer)
+                .AddChild(title)
+                .AddChild(data);
+        }
+
+        private static VisualElement BuildViewModelData(IViewModel viewModel)
+        {
+            var context = new Context(viewModel, null);
+            var container = new VisualElement();
+            var type = viewModel.GetType();
+            
+            var baseType = viewModel switch
+            {
+                MonoBehaviour => typeof(MonoBehaviour),
+                ScriptableObject => typeof(ScriptableObject),
+                _ => typeof(object)
+            };
+            
+            var members = type.GetMembersInfosIncludingBaseClasses(BindingAttr, baseType);
+            var fields = members.OfType<FieldInfo>().ToList();
+            var properties = members.OfType<PropertyInfo>();
+
+            var bindNames = new HashSet<string>(members
+                .OfType<MethodInfo>()
+                .Where(method => method.IsDefined(typeof(RelayCommandAttribute)))
+                .Select(method => method.Name + "Command"));
+            
+            foreach (var field in fields)
+            {
+                if (field.IsDefined(typeof(BaseBindAttribute)))
+                {
+                    bindNames.Add(field.GetGeneratedPropertyName());
+                    continue;
+                }
+
+                if (field.IsDefined(typeof(GeneratedCodeAttribute)))
+                {
+                    if (field.FieldType.IsInterface) continue;
+                    if (field.FieldType.GetInterfaces().All(i => i != typeof(IBinderAdder))) continue;
+                        
+                    if (typeof(OneTimeBindableMember).IsAssignableFrom(field.FieldType)) continue;
+                    if (typeof(OneTimeStructBindableMember).IsAssignableFrom(field.FieldType)) continue;
+                }
+                
+                container.AddChild(BuildField(new Context(field, context)));
+            }
+
+            foreach (var property in properties)
+            {
+                // If property is virtual
+                if (property.GetIndexParameters().Length > 0) continue;
+                
+                if (type.GetExplicitInterface(property) is not null) continue;
+
+                var isBindProperty = bindNames.Contains(property.Name);
+                if (!isBindProperty) continue;
+                    
+                // TODO Add simple properties
+                container.AddChild(BuildField(new Context(property, context, true)));
+            }
+
+            return container;
         }
 
         private static VisualElement BuildCompositeValue(Context context)
@@ -303,7 +385,6 @@ namespace Aspid.MVVM
                     else throw new NotImplementedException();
                 }
             }
-            
             
             public string PrefsKey { get; }
 

@@ -24,6 +24,12 @@ namespace Aspid.MVVM
         public static RelayCommand Empty => _empty ??= new RelayCommand();
         
         /// <summary>
+        /// Gets an empty command that can be executed but performs no action.
+        /// Useful as a placeholder when a non-null executable command is required.
+        /// </summary>
+        public static RelayCommand EmptyExecution => _empty ?? new RelayCommand(true);
+        
+        /// <summary>
         /// Initializes a new instance of the <see cref="RelayCommand"/> class, taking an action to execute the command.
         /// </summary>
         /// <param name="execute">The action that will be executed by the command.</param>
@@ -47,7 +53,11 @@ namespace Aspid.MVVM
         }
         
 #pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring as nullable.
-        private RelayCommand() => _canExecute = () => false;
+        private RelayCommand(bool value = false)
+        {
+            if (value) _execute = () => { };
+            _canExecute = () => value;
+        }
 #pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring as nullable.
         
         /// <summary>
@@ -95,6 +105,12 @@ namespace Aspid.MVVM
         public static RelayCommand<T> Empty => _empty ??= new RelayCommand<T>();
         
         /// <summary>
+        /// Gets an empty command that can be executed but performs no action.
+        /// Useful as a placeholder when a non-null executable command is required.
+        /// </summary>
+        public static RelayCommand<T> EmptyExecution => _empty ?? new RelayCommand<T>(true);
+        
+        /// <summary>
         /// Initializes a new instance of the <see cref="RelayCommand{T}"/> class, taking an action to execute the command.
         /// </summary>
         /// <param name="execute">The action that will be executed by the command.</param>
@@ -118,7 +134,11 @@ namespace Aspid.MVVM
         }
         
 #pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring as nullable.
-        private RelayCommand() => _canExecute = _ => false;
+        private RelayCommand(bool value = false)
+        {
+            if (value) _execute = (_) => { };
+            _canExecute = (_) => value;
+        }
 #pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring as nullable.
         
         /// <summary>
@@ -169,6 +189,12 @@ namespace Aspid.MVVM
         public static RelayCommand<T1, T2> Empty => _empty ??= new RelayCommand<T1, T2>();
         
         /// <summary>
+        /// Gets an empty command that can be executed but performs no action.
+        /// Useful as a placeholder when a non-null executable command is required.
+        /// </summary>
+        public static RelayCommand<T1, T2> EmptyExecution => _empty ?? new RelayCommand<T1, T2>(true);
+        
+        /// <summary>
         /// Initializes a new instance of the <see cref="RelayCommand{T1, T2}"/> class, taking an action to execute the command.
         /// </summary>
         /// <param name="execute">The action that will be executed by the command.</param>
@@ -192,7 +218,11 @@ namespace Aspid.MVVM
         }
         
 #pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring as nullable.
-        private RelayCommand() => _canExecute = (_, _) => false;
+        private RelayCommand(bool value = false)
+        {
+            if (value) _execute = (_, _) => { };
+            _canExecute = (_, _) => value;
+        }
 #pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring as nullable.
         
         /// <summary>
@@ -246,6 +276,12 @@ namespace Aspid.MVVM
         public static RelayCommand<T1, T2, T3> Empty => _empty ??= new RelayCommand<T1, T2, T3>();
         
         /// <summary>
+        /// Gets an empty command that can be executed but performs no action.
+        /// Useful as a placeholder when a non-null executable command is required.
+        /// </summary>
+        public static RelayCommand<T1, T2, T3> EmptyExecution => _empty ?? new RelayCommand<T1, T2, T3>(true);
+        
+        /// <summary>
         /// Initializes a new instance of the <see cref="RelayCommand{T1, T2, T3}"/> class, taking an action to execute the command.
         /// </summary>
         /// <param name="execute">The action that will be executed by the command.</param>
@@ -268,7 +304,11 @@ namespace Aspid.MVVM
         }
         
 #pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring as nullable.
-        private RelayCommand() => _canExecute = (_, _, _) => false;
+        private RelayCommand(bool value = false)
+        {
+            if (value) _execute = (_, _, _) => { };
+            _canExecute = (_, _, _) => value;
+        }
 #pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring as nullable.
         
         /// <summary>
@@ -325,6 +365,12 @@ namespace Aspid.MVVM
         public static RelayCommand<T1, T2, T3, T4> Empty => _empty ??= new RelayCommand<T1, T2, T3, T4>();
         
         /// <summary>
+        /// Gets an empty command that can be executed but performs no action.
+        /// Useful as a placeholder when a non-null executable command is required.
+        /// </summary>
+        public static RelayCommand<T1, T2, T3, T4> EmptyExecution => _empty ?? new RelayCommand<T1, T2, T3, T4>(true);
+        
+        /// <summary>
         /// Initializes a new instance of the <see cref="RelayCommand{T1, T2, T3, T4}"/> class, taking an action to execute the command.
         /// </summary>
         /// <param name="execute">The action that will be executed by the command.</param>
@@ -347,7 +393,11 @@ namespace Aspid.MVVM
         }
         
 #pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring as nullable.
-        private RelayCommand() => _canExecute = (_, _, _, _) => false;
+        private RelayCommand(bool value = false)
+        {
+            if (value) _execute = (_, _, _, _) => { };
+            _canExecute = (_, _, _, _) => value;
+        }
 #pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring as nullable.
         
         /// <summary>

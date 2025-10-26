@@ -55,10 +55,13 @@ namespace Aspid.MVVM
             {
                 binder.Mode.ThrowExceptionIfNotTwo();
 
-                if (binder is not IReverseBinder<T> reverseBinder) 
-                    throw ReverseBinderInvalidCastException<T>.Class(binder);
-            
-                reverseBinder.ValueChanged += OnValueChanged;
+                switch (binder)
+                {
+                    case IReverseBinder<T> reverseBinder: reverseBinder.ValueChanged += OnValueChanged; break;
+                    case IAnyReverseBinder anyReverseBinder: anyReverseBinder.ValueChanged += OnObjectValueChanged; break;
+                    default: throw ReverseBinderInvalidCastException<T>.Class(binder);
+                }
+
                 return this;
             }
         }
@@ -74,10 +77,12 @@ namespace Aspid.MVVM
             using (RemoveMarker.Auto())
 #endif
             {
-                if (binder is not IReverseBinder<T> reverseBinder) 
-                    throw ReverseBinderInvalidCastException<T>.Class(binder);
-            
-                reverseBinder.ValueChanged -= OnValueChanged;
+                switch (binder)
+                {
+                    case IReverseBinder<T> reverseBinder: reverseBinder.ValueChanged -= OnValueChanged; break;
+                    case IAnyReverseBinder anyReverseBinder: anyReverseBinder.ValueChanged -= OnObjectValueChanged; break;
+                    default: throw ReverseBinderInvalidCastException<T>.Class(binder);
+                }
             }
         }
 
@@ -92,6 +97,19 @@ namespace Aspid.MVVM
                 Changed?.Invoke(value);
             }
         }
+        
+        private void OnObjectValueChanged(object value)
+        {
+#if UNITY_2022_1_OR_NEWER && !ASPID_MVVM_UNITY_PROFILER_DISABLED
+            using (OnObjectValueChangedMarker.Auto())
+#endif
+            {
+                if (value is not T specificValue)
+                    throw new ArgumentException("Value must be of type " + typeof(T).FullName);
+
+                OnValueChanged(specificValue);
+            }
+        }
     }
     
     public abstract class OneWayToSourceBindableMember
@@ -100,6 +118,7 @@ namespace Aspid.MVVM
         protected static readonly Unity.Profiling.ProfilerMarker AddMarker = new("OneWayToSourceBindableMember.Add");
         protected static readonly Unity.Profiling.ProfilerMarker RemoveMarker = new("OneWayToSourceBindableMember.Remove");
         protected static readonly Unity.Profiling.ProfilerMarker OnValueChangedMarker = new("OneWayToSourceBindableMember.OnValueChanged");
+        protected static readonly Unity.Profiling.ProfilerMarker OnObjectValueChangedMarker = new("OneWayToSourceBindableMember.OnObjectValueChanged");
 #endif
     }
 }

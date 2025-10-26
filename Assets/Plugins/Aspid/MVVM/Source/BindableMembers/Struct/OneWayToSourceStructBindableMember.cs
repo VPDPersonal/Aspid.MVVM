@@ -80,6 +80,7 @@ namespace Aspid.MVVM
                 {
                     case IReverseBinder<T> reverseBinder: reverseBinder.ValueChanged += OnValueChanged; break;
                     case IReverseBinder<TBoxed> structReverseBinder: structReverseBinder.ValueChanged += OnBoxedValueChanged; break;
+                    case IAnyReverseBinder anyReverseBinder: anyReverseBinder.ValueChanged += OnObjectValueChanged; break;
                     default: throw ReverseBinderInvalidCastException<T>.Struct<TBoxed>(binder);
                 }
             
@@ -102,6 +103,7 @@ namespace Aspid.MVVM
                 {
                     case IReverseBinder<T> reverseBinder: reverseBinder.ValueChanged -= OnValueChanged; break;
                     case IReverseBinder<TBoxed> structReverseBinder: structReverseBinder.ValueChanged -= OnBoxedValueChanged; break;
+                    case IAnyReverseBinder anyReverseBinder: anyReverseBinder.ValueChanged -= OnObjectValueChanged; break;
                     default: throw ReverseBinderInvalidCastException<T>.Struct<TBoxed>(binder);
                 }
             }
@@ -131,6 +133,19 @@ namespace Aspid.MVVM
                 OnValueChanged((T)value);
             }
         }
+        
+        private void OnObjectValueChanged(object value)
+        {
+#if UNITY_2022_1_OR_NEWER && !ASPID_MVVM_UNITY_PROFILER_DISABLED
+            using (OnObjectValueChangedMarker.Auto())
+#endif
+            {
+                if (value is not T specificValue)
+                    throw new ArgumentException("Value must be of type " + typeof(T).FullName);
+
+                OnValueChanged(specificValue);
+            }
+        }
     }
     
     public abstract class OneWayToSourceStructBindableMember
@@ -140,6 +155,7 @@ namespace Aspid.MVVM
         protected static readonly Unity.Profiling.ProfilerMarker RemoveMarker = new("OneWayToSourceStructBindableMember.Remove");
         protected static readonly Unity.Profiling.ProfilerMarker OnValueChangedMarker = new("OneWayToSourceStructBindableMember.OnValueChanged");
         protected static readonly Unity.Profiling.ProfilerMarker OnBoxedValueChangedMarker = new("OneWayToSourceStructBindableMember.OnBoxedValueChanged");
+        protected static readonly Unity.Profiling.ProfilerMarker OnObjectValueChangedMarker = new("OneWayToSourceStructBindableMember.OnObjectValueChanged");
 #endif
     }
 }

@@ -3,7 +3,6 @@ using Aspid.Generators.Helper;
 using Aspid.MVVM.Generators.Generators.Binders.Body;
 using Aspid.MVVM.Generators.Generators.Binders.Data;
 using Aspid.MVVM.Generators.Generators.Descriptions;
-using static Aspid.Generators.Helper.Unity.Defines;
 
 namespace Aspid.MVVM.Generators.Generators.Binders;
 
@@ -32,12 +31,12 @@ public partial class BinderGenerator
 
 #if DEBUG
         code.AppendLine($"#if !{Defines.ASPID_MVVM_BINDER_LOG_DISABLED}")
-            .AppendClassBegin(@namespace, declarationText)
+            .BeginClass(@namespace, declarationText)
             .AppendBinderLogBody(data)
-            .AppendClassEnd(@namespace)
+            .EndClass(@namespace)
             .AppendLine("#endif");
 #else
-        code.AppendLine($"#if {UNITY_EDITOR} && !{Defines.ASPID_MVVM_BINDER_LOG_DISABLED}")
+        code.AppendLine($"#if {Aspid.Generators.Helper.Unity.Defines.UNITY_EDITOR} && !{Defines.ASPID_MVVM_BINDER_LOG_DISABLED}")
             .BeginClass(@namespace, declarationText)
             .AppendBinderLogBody(data)
             .EndClass(@namespace)

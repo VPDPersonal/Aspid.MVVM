@@ -1,15 +1,15 @@
 using Microsoft.CodeAnalysis;
-using Aspid.Generator.Helpers;
-using Aspid.MVVM.Generators.Descriptions;
-using Aspid.MVVM.Generators.ViewModels.Data;
+using Aspid.Generators.Helper;
+using Aspid.MVVM.Generators.Generators.ViewModels.Data;
+using Classes = Aspid.MVVM.Generators.Generators.Descriptions.Classes;
 
-namespace Aspid.MVVM.Generators.ViewModels.Extensions;
+namespace Aspid.MVVM.Generators.Generators.ViewModels.Extensions;
 
 public static class SymbolExtensions
 {
     public static BindMode GetBindMode(this ISymbol member)
     {
-        if (member.HasAnyAttribute(out var attribute, Classes.BindAttribute, Classes.OneWayBindAttribute, 
+        if (member.TryGetAnyAttributeInSelf(out var attribute, Classes.BindAttribute, Classes.OneWayBindAttribute, 
                 Classes.TwoWayBindAttribute, Classes.OneTimeBindAttribute, Classes.OneWayToSourceBindAttribute))
         {
             var attributeName = attribute!.AttributeClass!.ToDisplayString();

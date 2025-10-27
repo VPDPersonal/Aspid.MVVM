@@ -2,7 +2,7 @@ using System.Linq;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 
-namespace Aspid.MVVM.Generators.ViewModels.Data.Members.Collections;
+namespace Aspid.MVVM.Generators.Generators.ViewModels.Data.Members.Collections;
 
 public readonly struct IdLengthMemberGroup(int length, ImmutableArray<BindableMember> members)
 {

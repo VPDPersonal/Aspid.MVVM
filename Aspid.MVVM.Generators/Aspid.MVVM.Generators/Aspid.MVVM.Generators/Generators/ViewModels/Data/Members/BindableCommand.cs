@@ -1,11 +1,13 @@
 using System.Linq;
 using System.Text;
 using Microsoft.CodeAnalysis;
-using Aspid.Generator.Helpers;
-using static Aspid.MVVM.Generators.Descriptions.Classes;
-using static Aspid.MVVM.Generators.Descriptions.General;
+using Aspid.Generators.Helper;
+using Aspid.MVVM.Generators.Helpers;
+using static Aspid.Generators.Helper.Classes;
+using static Aspid.MVVM.Generators.Generators.Descriptions.Classes;
+using static Aspid.MVVM.Generators.Generators.Descriptions.General;
 
-namespace Aspid.MVVM.Generators.ViewModels.Data.Members;
+namespace Aspid.MVVM.Generators.Generators.ViewModels.Data.Members;
 
 public sealed class BindableCommand : BindableMember<IMethodSymbol>
 {

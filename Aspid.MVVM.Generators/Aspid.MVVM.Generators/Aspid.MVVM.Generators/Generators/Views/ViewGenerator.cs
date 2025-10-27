@@ -1,10 +1,10 @@
 using System.Threading;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
-using Aspid.MVVM.Generators.Descriptions;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Aspid.MVVM.Generators.Generators.Descriptions;
 
-namespace Aspid.MVVM.Generators.Views;
+namespace Aspid.MVVM.Generators.Generators.Views;
 
 [Generator(LanguageNames.CSharp)]
 public partial class ViewGenerator : IIncrementalGenerator
@@ -12,8 +12,8 @@ public partial class ViewGenerator : IIncrementalGenerator
     public void Initialize(IncrementalGeneratorInitializationContext context)
     {
         var provider = context.SyntaxProvider.ForAttributeWithMetadataName(Classes.ViewAttribute.FullName, SyntacticPredicate, FindView)
-            .Where(foundForSourceGenerator => foundForSourceGenerator.IsNeed)
-            .Select((foundForSourceGenerator, _) => foundForSourceGenerator.Container);
+            .Where(foundForSourceGenerator => foundForSourceGenerator.HasValue)
+            .Select((foundForSourceGenerator, _) => foundForSourceGenerator!.Value);
         
         context.RegisterSourceOutput(
             source: provider,

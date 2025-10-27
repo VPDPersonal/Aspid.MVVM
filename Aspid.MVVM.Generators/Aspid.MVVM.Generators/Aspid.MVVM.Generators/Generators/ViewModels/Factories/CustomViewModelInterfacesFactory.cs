@@ -1,12 +1,12 @@
 using System.Linq;
 using Microsoft.CodeAnalysis;
-using Aspid.Generator.Helpers;
+using Aspid.Generators.Helper;
 using System.Collections.Generic;
-using Aspid.MVVM.Generators.Ids.Extensions;
-using Aspid.MVVM.Generators.ViewModels.Data.Members;
-using static Aspid.MVVM.Generators.Descriptions.Classes;
+using Aspid.MVVM.Generators.Generators.Ids.Extensions;
+using Aspid.MVVM.Generators.Generators.ViewModels.Data.Members;
+using static Aspid.MVVM.Generators.Generators.Descriptions.Classes;
 
-namespace Aspid.MVVM.Generators.ViewModels.Factories;
+namespace Aspid.MVVM.Generators.Generators.ViewModels.Factories;
 
 public static class CustomViewModelInterfacesFactory
 {
@@ -22,7 +22,7 @@ public static class CustomViewModelInterfacesFactory
         
         void AddMembers(ITypeSymbol @interface)
         {
-            if (!@interface.HasInterfaceInSelfOrBases(IViewModel)) return;
+            if (!@interface.HasAnyInterfaceInSelfAndBases(IViewModel)) return;
             
             foreach (var property in @interface.GetMembers()
                          .OfType<IPropertySymbol>()
@@ -34,7 +34,7 @@ public static class CustomViewModelInterfacesFactory
                                  || type.Contains(IReadOnlyValueBindableMember);
                          }))
             {
-                if (property.HasAnyAttribute(IgnoreAttribute)) continue;
+                if (property.HasAnyAttributeInSelf(IgnoreAttribute)) continue;
 
                 var id = property.GetId();
                 dictionary[id] = new CustomViewModelInterface(id, property, @interface);

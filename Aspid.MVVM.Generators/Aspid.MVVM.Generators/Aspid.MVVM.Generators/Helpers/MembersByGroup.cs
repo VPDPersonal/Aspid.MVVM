@@ -2,7 +2,7 @@ using Microsoft.CodeAnalysis;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 
-namespace Aspid.Generator.Helpers;
+namespace Aspid.MVVM.Generators.Helpers;
 
 public readonly struct MembersByGroup
 {

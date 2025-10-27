@@ -1,26 +1,26 @@
 using System.Threading;
 using System.Diagnostics;
 using Microsoft.CodeAnalysis;
-using Aspid.Generator.Helpers;
+using Aspid.Generators.Helper;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Runtime.CompilerServices;
-using Aspid.MVVM.Generators.Views.Data;
-using Aspid.MVVM.Generators.Descriptions;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Aspid.MVVM.Generators.Views.Factories;
+using Aspid.MVVM.Generators.Generators.Views.Data;
+using Aspid.MVVM.Generators.Generators.Views.Factories;
+using Classes = Aspid.MVVM.Generators.Generators.Descriptions.Classes;
 
-namespace Aspid.MVVM.Generators.Views;
+namespace Aspid.MVVM.Generators.Generators.Views;
 
 public partial class ViewGenerator
 {
-    private static FoundForGenerator<ViewData> FindView(
+    private static ViewData? FindView(
         GeneratorAttributeSyntaxContext context,
         CancellationToken cancellationToken)
     {
-        if (context.TargetSymbol is not INamedTypeSymbol symbol) return default;
+        if (context.TargetSymbol is not INamedTypeSymbol symbol) return null;
 
-        var inheritor = symbol.HasAttributeInBases(Classes.ViewAttribute)
+        var inheritor = symbol.HasAnyAttributeInBases(Classes.ViewAttribute)
             ? Inheritor.InheritorViewAttribute
             : Inheritor.None;
         
@@ -29,8 +29,7 @@ public partial class ViewGenerator
         Debug.Assert(context.TargetNode is TypeDeclarationSyntax);
         var candidate = Unsafe.As<TypeDeclarationSyntax>(context.TargetNode);
 
-        var viewData = new ViewData(symbol, inheritor, candidate, members, GetGenericViews(symbol));
-        return new FoundForGenerator<ViewData>(viewData);
+        return new ViewData(symbol, inheritor, candidate, members, GetGenericViews(symbol));
     }
 
     private static ImmutableArray<GenericViewData> GetGenericViews(INamedTypeSymbol symbol)

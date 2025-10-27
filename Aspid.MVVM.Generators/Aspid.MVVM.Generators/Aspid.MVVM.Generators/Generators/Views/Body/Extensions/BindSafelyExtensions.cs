@@ -1,9 +1,9 @@
 using Microsoft.CodeAnalysis;
-using Aspid.Generator.Helpers;
-using Aspid.MVVM.Generators.ViewModels.Data.Members;
-using Aspid.MVVM.Generators.Views.Data.Members;
+using Aspid.Generators.Helper;
+using Aspid.MVVM.Generators.Generators.Views.Data.Members;
+using Aspid.MVVM.Generators.Generators.ViewModels.Data.Members;
 
-namespace Aspid.MVVM.Generators.Views.Body.Extensions;
+namespace Aspid.MVVM.Generators.Generators.Views.Body.Extensions;
 
 public static class BindSafelyExtensions
 {

@@ -1,9 +1,9 @@
 using Microsoft.CodeAnalysis;
 using System.Collections.Immutable;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Aspid.MVVM.Generators.Views.Data.Members;
+using Aspid.MVVM.Generators.Generators.Views.Data.Members;
 
-namespace Aspid.MVVM.Generators.Views.Data;
+namespace Aspid.MVVM.Generators.Generators.Views.Data;
 
 public readonly struct ViewData(
     INamedTypeSymbol symbol,

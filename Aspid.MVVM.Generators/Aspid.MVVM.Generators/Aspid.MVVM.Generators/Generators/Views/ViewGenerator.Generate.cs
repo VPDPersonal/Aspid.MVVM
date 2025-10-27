@@ -1,9 +1,9 @@
 using Microsoft.CodeAnalysis;
-using Aspid.Generator.Helpers;
-using Aspid.MVVM.Generators.Views.Body;
-using Aspid.MVVM.Generators.Views.Data;
+using Aspid.Generators.Helper;
+using Aspid.MVVM.Generators.Generators.Views.Body;
+using Aspid.MVVM.Generators.Generators.Views.Data;
 
-namespace Aspid.MVVM.Generators.Views;
+namespace Aspid.MVVM.Generators.Generators.Views;
 
 public partial class ViewGenerator
 {
@@ -13,7 +13,7 @@ public partial class ViewGenerator
         
         var declaration = dataSpan.Declaration;
         var @namespace = declaration.GetNamespaceName();
-        var declarationText = declaration.GetDeclarationText();
+        var declarationText = new DeclarationText(declaration);
         
         InitializeBody.Generate(@namespace, dataSpan, declarationText, context);
         BinderCachedBody.Generate(@namespace, dataSpan, declarationText, context);

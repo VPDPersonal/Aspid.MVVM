@@ -1,29 +1,31 @@
 using Microsoft.CodeAnalysis;
-using Aspid.Generator.Helpers;
+using Aspid.Generators.Helper;
 using System.Collections.Generic;
 using System.Collections.Immutable;
-using Aspid.MVVM.Generators.ViewModels.Data;
-using Aspid.MVVM.Generators.ViewModels.Data.Members;
-using static Aspid.MVVM.Generators.Descriptions.Classes;
-using static Aspid.MVVM.Generators.Descriptions.Defines;
-using static Aspid.MVVM.Generators.Descriptions.General;
+using Aspid.MVVM.Generators.Generators.ViewModels.Data;
+using Aspid.MVVM.Generators.Generators.ViewModels.Data.Members;
+using static Aspid.Generators.Helper.Classes;
+using static Aspid.Generators.Helper.Unity.UnityClasses;
+using static Aspid.MVVM.Generators.Generators.Descriptions.Classes;
+using static Aspid.MVVM.Generators.Generators.Descriptions.Defines;
+using static Aspid.MVVM.Generators.Generators.Descriptions.General;
 
-namespace Aspid.MVVM.Generators.ViewModels.Body;
+namespace Aspid.MVVM.Generators.Generators.ViewModels.Body;
 
 public static class FindBindableMembersBody
 {
     public static void Generate(
         string @namespace,
         in ViewModelData data,
-        in DeclarationText declaration,
+        DeclarationText declaration,
         in SourceProductionContext context)
     {
         string[] baseTypes = [IViewModel];
 
         var code = new CodeWriter();
-        code.AppendClassBegin(@namespace, declaration, baseTypes)
+        code.BeginClass(@namespace, declaration, baseTypes)
             .AppendBody(data)
-            .AppendClassEnd(@namespace);
+            .EndClass(@namespace);
 
         context.AddSource(declaration.GetFileName(@namespace, "FindBindableMembers"), code.GetSourceText());
     }

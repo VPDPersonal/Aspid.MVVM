@@ -1,10 +1,11 @@
 using Microsoft.CodeAnalysis;
-using Aspid.Generator.Helpers;
-using Aspid.MVVM.Generators.Binders.Body;
-using Aspid.MVVM.Generators.Binders.Data;
-using Aspid.MVVM.Generators.Descriptions;
+using Aspid.Generators.Helper;
+using Aspid.MVVM.Generators.Generators.Binders.Body;
+using Aspid.MVVM.Generators.Generators.Binders.Data;
+using Aspid.MVVM.Generators.Generators.Descriptions;
+using static Aspid.Generators.Helper.Unity.Defines;
 
-namespace Aspid.MVVM.Generators.Binders;
+namespace Aspid.MVVM.Generators.Generators.Binders;
 
 public partial class BinderGenerator
 {
@@ -14,7 +15,7 @@ public partial class BinderGenerator
     {
         var declaration = binderData.Declaration;
         var @namespace = declaration.GetNamespaceName();
-        var declarationText = declaration.GetDeclarationText();
+        var declarationText = new DeclarationText(declaration);
 
         GenerateBinderLog(@namespace, new BinderDataSpan(binderData), context, declarationText);
     }
@@ -36,10 +37,10 @@ public partial class BinderGenerator
             .AppendClassEnd(@namespace)
             .AppendLine("#endif");
 #else
-        code.AppendLine($"#if {Defines.UNITY_EDITOR} && !{Defines.ASPID_MVVM_BINDER_LOG_DISABLED}")
-            .AppendClassBegin(@namespace, declarationText)
+        code.AppendLine($"#if {UNITY_EDITOR} && !{Defines.ASPID_MVVM_BINDER_LOG_DISABLED}")
+            .BeginClass(@namespace, declarationText)
             .AppendBinderLogBody(data)
-            .AppendClassEnd(@namespace)
+            .EndClass(@namespace)
             .Append("#endif");
 #endif
         

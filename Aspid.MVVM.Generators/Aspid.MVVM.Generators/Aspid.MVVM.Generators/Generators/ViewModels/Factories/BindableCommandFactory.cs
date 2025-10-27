@@ -1,12 +1,12 @@
 using System.Linq;
 using Microsoft.CodeAnalysis;
-using Aspid.Generator.Helpers;
+using Aspid.Generators.Helper;
 using System.Collections.Generic;
 using System.Collections.Immutable;
-using Aspid.MVVM.Generators.Descriptions;
-using Aspid.MVVM.Generators.ViewModels.Data.Members;
+using Aspid.MVVM.Generators.Generators.ViewModels.Data.Members;
+using Classes = Aspid.MVVM.Generators.Generators.Descriptions.Classes;
 
-namespace Aspid.MVVM.Generators.ViewModels.Factories;
+namespace Aspid.MVVM.Generators.Generators.ViewModels.Factories;
 
 public static class BindableCommandFactory
 {
@@ -27,7 +27,7 @@ public static class BindableCommandFactory
         
         foreach (var method in methods)
         {
-            if (!method.HasAnyAttribute(out var attribute, Classes.RelayCommandAttribute)) continue;
+            if (!method.TryGetAnyAttributeInSelf(out var attribute, Classes.RelayCommandAttribute)) continue;
             
             var canExecuteArgument = attribute!.NamedArguments
                 .Where(pair => pair.Key == "CanExecute")

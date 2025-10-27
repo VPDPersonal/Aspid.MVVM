@@ -1,8 +1,8 @@
 using Microsoft.CodeAnalysis;
-using Aspid.Generator.Helpers;
-using Aspid.MVVM.Generators.Ids.Data;
+using Aspid.Generators.Helper;
+using Aspid.MVVM.Generators.Generators.Ids.Data;
 
-namespace Aspid.MVVM.Generators.Views.Data.Members;
+namespace Aspid.MVVM.Generators.Generators.Views.Data.Members;
 
 public class BinderMember
 {

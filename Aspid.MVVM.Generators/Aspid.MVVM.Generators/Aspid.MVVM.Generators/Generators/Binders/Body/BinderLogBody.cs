@@ -1,20 +1,21 @@
 using System;
 using Microsoft.CodeAnalysis;
-using Aspid.Generator.Helpers;
-using Aspid.MVVM.Generators.Binders.Data;
-using Aspid.MVVM.Generators.Descriptions;
+using Aspid.Generators.Helper;
+using Aspid.MVVM.Generators.Generators.Binders.Data;
+using Aspid.MVVM.Generators.Generators.Descriptions;
+using static Aspid.Generators.Helper.Classes;
+using static Aspid.Generators.Helper.Unity.UnityClasses;
+using Classes = Aspid.MVVM.Generators.Generators.Descriptions.Classes;
 
-namespace Aspid.MVVM.Generators.Binders.Body;
+namespace Aspid.MVVM.Generators.Generators.Binders.Body;
 
 // ReSharper disable InconsistentNaming
 public static class BinderLogBody
 {
     private const string GeneratedAttribute = General.GeneratedCodeLogBinderAttribute;
     
-    private static readonly string List = Classes.List.Global;
-    private static readonly string IBinder = Classes.IBinder.Global;
-    private static readonly string Exception = Classes.Exception.Global;
-    private static readonly string SerializeFieldAttribute = Classes.SerializeField.Global;
+    private static readonly string IBinder = Classes.IBinder;
+    private static readonly string Exception = Aspid.Generators.Helper.Classes.Exception;
 
     public static CodeWriter AppendBinderLogBody(this CodeWriter code, in BinderDataSpan data)
     {
@@ -39,7 +40,7 @@ public static class BinderLogBody
         var modifier = data.Symbol.IsSealed ? "private" : "protected";
         var className = data.Declaration.Identifier.Text;
         
-        code.AppendLine($"{modifier} static readonly {Classes.ProfilerMarker.Global} SetValueMarker = new(\"{className}.SetValue\");");
+        code.AppendLine($"{modifier} static readonly {ProfilerMarker} SetValueMarker = new(\"{className}.SetValue\");");
         return code.AppendLine();
     }
 
@@ -50,11 +51,11 @@ public static class BinderLogBody
         code.AppendMultiline(
             $"""
             {GeneratedAttribute}
-            [{SerializeFieldAttribute}] private bool _isDebug;
+            [{SerializeField}] private bool _isDebug;
             
             // TODO Add Custom Property
             {GeneratedAttribute}
-            [{SerializeFieldAttribute}] private {Classes.List.Global}<string> _log;
+            [{SerializeField}] private {List_1}<string> _log;
             
             {GeneratedAttribute}
             {modifier} bool IsDebug => _isDebug;
@@ -66,7 +67,7 @@ public static class BinderLogBody
 
     private static CodeWriter AppendSetValueMethods(this CodeWriter code, in ReadOnlySpan<IMethodSymbol> methods)
     {
-        code.AppendLoop(methods, method =>
+        foreach (var method in methods)
         {
             var parameterName = method.Parameters[0].Name;
             var parameterType = method.Parameters[0].Type.ToDisplayStringGlobal();
@@ -103,7 +104,7 @@ public static class BinderLogBody
                 }
                 """)
                 .AppendLine();
-        });
+        }
 
         return code;
     }
@@ -117,7 +118,7 @@ public static class BinderLogBody
             {{GeneratedAttribute}}
             {{modifier}} void AddLog(string log)
             {
-                _log ??= new {{List}}<string>();
+                _log ??= new {{List_1}}<string>();
                 _log.Add(log);
             }
             """);

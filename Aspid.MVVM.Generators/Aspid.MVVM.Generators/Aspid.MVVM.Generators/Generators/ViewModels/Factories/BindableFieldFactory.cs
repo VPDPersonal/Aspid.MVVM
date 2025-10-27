@@ -1,14 +1,14 @@
 using System.Linq;
 using Microsoft.CodeAnalysis;
-using Aspid.Generator.Helpers;
+using Aspid.Generators.Helper;
 using System.Collections.Generic;
 using System.Collections.Immutable;
-using Aspid.MVVM.Generators.ViewModels.Extensions;
-using Aspid.MVVM.Generators.ViewModels.Data.Members;
-using static Aspid.MVVM.Generators.Descriptions.Classes;
-using BindMode = Aspid.MVVM.Generators.ViewModels.Data.BindMode;
+using Aspid.MVVM.Generators.Generators.ViewModels.Extensions;
+using Aspid.MVVM.Generators.Generators.ViewModels.Data.Members;
+using static Aspid.MVVM.Generators.Generators.Descriptions.Classes;
+using BindMode = Aspid.MVVM.Generators.Generators.ViewModels.Data.BindMode;
 
-namespace Aspid.MVVM.Generators.ViewModels.Factories;
+namespace Aspid.MVVM.Generators.Generators.ViewModels.Factories;
 
 public static class BindableFieldFactory
 {
@@ -48,7 +48,7 @@ public static class BindableFieldFactory
         foreach (var attribute in field.GetAttributes())
         {
             if (attribute.AttributeClass != null &&
-                attribute.AttributeClass.ToDisplayStringGlobal() == BindAlsoAttribute.Global)
+                attribute.AttributeClass.ToDisplayStringGlobal() == BindAlsoAttribute)
             {
                 var value = attribute.ConstructorArguments[0].Value;
                 if (value is null) continue;

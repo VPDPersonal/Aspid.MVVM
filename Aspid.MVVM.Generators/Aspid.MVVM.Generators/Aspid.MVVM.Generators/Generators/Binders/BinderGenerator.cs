@@ -3,16 +3,17 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-namespace Aspid.MVVM.Generators.Binders;
+namespace Aspid.MVVM.Generators.Generators.Binders;
 
 [Generator]
 public partial class BinderGenerator : IIncrementalGenerator
 {
     public void Initialize(IncrementalGeneratorInitializationContext context)
     {
+        // ReSharper disable once NullableWarningSuppressionIsUsed
         var provider = context.SyntaxProvider.CreateSyntaxProvider(SyntacticPredicate, FindBinders)
-            .Where(foundForSourceGenerator => foundForSourceGenerator.IsNeed)
-            .Select((foundForSourceGenerator, _) => foundForSourceGenerator.Container);
+            .Where(data => data.HasValue)
+            .Select((data, _) => data!.Value);
         
         context.RegisterSourceOutput(
             source: provider,

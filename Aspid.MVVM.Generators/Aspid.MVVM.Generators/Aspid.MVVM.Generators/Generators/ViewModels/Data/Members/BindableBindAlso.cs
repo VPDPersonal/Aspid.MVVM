@@ -1,8 +1,8 @@
 using System;
 using Microsoft.CodeAnalysis;
-using Aspid.Generator.Helpers;
+using Aspid.Generators.Helper;
 
-namespace Aspid.MVVM.Generators.ViewModels.Data.Members;
+namespace Aspid.MVVM.Generators.Generators.ViewModels.Data.Members;
 
 public sealed class BindableBindAlso : BindableMember<ISymbol>, IEquatable<BindableBindAlso>
 {

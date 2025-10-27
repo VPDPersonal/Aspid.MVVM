@@ -1,33 +1,34 @@
 using System.Linq;
 using Microsoft.CodeAnalysis;
-using Aspid.Generator.Helpers;
+using Aspid.Generators.Helper;
 using System.Collections.Generic;
-using Aspid.MVVM.Generators.Views.Data;
-using Aspid.MVVM.Generators.Descriptions;
-using Aspid.MVVM.Generators.ViewModels.Factories;
-using Aspid.MVVM.Generators.Views.Body.Extensions;
-using Aspid.MVVM.Generators.ViewModels.Data.Members;
-using static Aspid.MVVM.Generators.Descriptions.Classes;
-using static Aspid.MVVM.Generators.Descriptions.Defines;
-using static Aspid.MVVM.Generators.Descriptions.General;
+using Aspid.MVVM.Generators.Generators.Views.Data;
+using Aspid.MVVM.Generators.Generators.Descriptions;
+using Aspid.MVVM.Generators.Generators.ViewModels.Factories;
+using Aspid.MVVM.Generators.Generators.Views.Body.Extensions;
+using Aspid.MVVM.Generators.Generators.ViewModels.Data.Members;
+using static Aspid.Generators.Helper.Classes;
+using static Aspid.Generators.Helper.Unity.UnityClasses;
+using static Aspid.MVVM.Generators.Generators.Descriptions.Defines;
+using static Aspid.MVVM.Generators.Generators.Descriptions.General;
 
-namespace Aspid.MVVM.Generators.Views.Body;
+namespace Aspid.MVVM.Generators.Generators.Views.Body;
 
 public static class GenericInitializeView
 {
     public static void Generate(
         string @namespace,
         in ViewDataSpan data,
-        in DeclarationText declaration,
+        DeclarationText declaration,
         in SourceProductionContext context)
     {
         foreach (var genericView in data.GenericViews)
         {
             var code = new CodeWriter();
 
-            code.AppendClassBegin([Namespaces.Aspid_MVVM], @namespace, declaration, null)
+            code.BeginClass([Namespaces.Aspid_MVVM], @namespace, declaration, null)
                 .AppendGenericViews(data, genericView)
-                .AppendClassEnd(@namespace);
+                .EndClass(@namespace);
             
             context.AddSource(declaration.GetFileName(@namespace, genericView.Type.ToDisplayString()), code.GetSourceText());
         }

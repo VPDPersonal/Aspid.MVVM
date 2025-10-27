@@ -1,11 +1,11 @@
 using System.Linq;
 using Microsoft.CodeAnalysis;
-using Aspid.Generator.Helpers;
 using System.Collections.Generic;
 using System.Collections.Immutable;
-using Aspid.MVVM.Generators.ViewModels.Data.Members;
+using Aspid.MVVM.Generators.Helpers;
+using Aspid.MVVM.Generators.Generators.ViewModels.Data.Members;
 
-namespace Aspid.MVVM.Generators.ViewModels.Factories;
+namespace Aspid.MVVM.Generators.Generators.ViewModels.Factories;
 
 public static class BindableMembersFactory
 {

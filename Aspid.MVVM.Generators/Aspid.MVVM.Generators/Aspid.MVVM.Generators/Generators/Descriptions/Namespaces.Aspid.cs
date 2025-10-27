@@ -1,9 +1,9 @@
-using Aspid.Generator.Helpers;
+using Aspid.Generators.Helper;
 
-namespace Aspid.MVVM.Generators.Descriptions;
+namespace Aspid.MVVM.Generators.Generators.Descriptions;
 
 // ReSharper disable InconsistentNaming
-public static partial class Namespaces
+public static class Namespaces
 {
     public static readonly NamespaceText Aspid = new(nameof(Aspid));
     

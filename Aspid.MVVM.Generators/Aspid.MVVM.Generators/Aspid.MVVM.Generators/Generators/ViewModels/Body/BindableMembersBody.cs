@@ -1,24 +1,24 @@
 using Microsoft.CodeAnalysis;
-using Aspid.Generator.Helpers;
-using Aspid.MVVM.Generators.ViewModels.Data;
-using static Aspid.MVVM.Generators.Descriptions.Classes;
-using static Aspid.MVVM.Generators.Descriptions.General;
-using BindMode = Aspid.MVVM.Generators.ViewModels.Data.BindMode;
+using Aspid.Generators.Helper;
+using Aspid.MVVM.Generators.Generators.ViewModels.Data;
+using static Aspid.MVVM.Generators.Generators.Descriptions.General;
+using static Aspid.MVVM.Generators.Generators.Descriptions.Classes;
+using BindMode = Aspid.MVVM.Generators.Generators.ViewModels.Data.BindMode;
 
-namespace Aspid.MVVM.Generators.ViewModels.Body;
+namespace Aspid.MVVM.Generators.Generators.ViewModels.Body;
 
 public static class BindableMembersBody
 {
     public static void Generate(       
         string @namespace,
         in ViewModelData data,
-        in DeclarationText declaration,
+        DeclarationText declaration,
         in SourceProductionContext context)
     {
         var code = new CodeWriter();
-        code.AppendClassBegin(@namespace, declaration)
+        code.BeginClass(@namespace, declaration)
             .AppendProperties(data)
-            .AppendClassEnd(@namespace);
+            .EndClass(@namespace);
         
         context.AddSource(declaration.GetFileName(@namespace, "BindableMembers"), code.GetSourceText());
     }

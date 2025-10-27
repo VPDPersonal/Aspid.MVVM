@@ -1,7 +1,7 @@
 using System;
 using System.Runtime.CompilerServices;
 
-namespace Aspid.Generator.Helpers;
+namespace Aspid.MVVM.Generators.Helpers;
 
 public ref struct CastedSpan<TFrom, TTo>(ReadOnlySpan<TFrom> span)
 {

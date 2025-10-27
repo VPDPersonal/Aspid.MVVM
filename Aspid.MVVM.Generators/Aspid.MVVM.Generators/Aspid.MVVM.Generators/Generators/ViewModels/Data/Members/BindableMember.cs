@@ -1,10 +1,11 @@
 using Microsoft.CodeAnalysis;
-using Aspid.MVVM.Generators.Ids.Data;
-using static Aspid.Generator.Helpers.SymbolExtensions;
-using static Aspid.MVVM.Generators.Descriptions.General;
-using static Aspid.MVVM.Generators.Descriptions.Classes;
+using Aspid.MVVM.Generators.Generators.Ids.Data;
+using static Aspid.Generators.Helper.Classes;
+using static Aspid.MVVM.Generators.Helpers.SymbolExtensions;
+using static Aspid.MVVM.Generators.Generators.Descriptions.General;
+using static Aspid.MVVM.Generators.Generators.Descriptions.Classes;
 
-namespace Aspid.MVVM.Generators.ViewModels.Data.Members;
+namespace Aspid.MVVM.Generators.Generators.ViewModels.Data.Members;
 
 public abstract class BindableMember<T> : BindableMember
     where T : ISymbol

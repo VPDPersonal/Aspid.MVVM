@@ -1,6 +1,6 @@
-namespace Aspid.MVVM.Generators.Descriptions;
+namespace Aspid.MVVM.Generators.Generators.Descriptions;
 
-public class General
+public static class General
 {
     public const string GeneratedCodeIdAttribute =
         "[global::System.CodeDom.Compiler.GeneratedCode(\"Aspid.MVVM.Generators.IdGenerator\", \"1.0.0\")]";

@@ -3,16 +3,17 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-namespace Aspid.MVVM.Generators.Ids;
+namespace Aspid.MVVM.Generators.Generators.Ids;
 
 [Generator(LanguageNames.CSharp)]
 public partial class IdGenerator : IIncrementalGenerator
 {
     public void Initialize(IncrementalGeneratorInitializationContext context)
     {
+        // ReSharper disable once NullableWarningSuppressionIsUsed
         var provider = context.SyntaxProvider.CreateSyntaxProvider(SyntacticPredicate, GetIdsForSourceGeneration)
-            .Where(foundFor => foundFor.IsNeed)
-            .Select((foundFor, _) => foundFor.Container);
+            .Where(foundFor => foundFor is not null)
+            .Select((foundFor, _) => foundFor!);
         
         context.RegisterSourceOutput(provider.Collect(), GenerateCode);
     }

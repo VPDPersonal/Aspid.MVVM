@@ -1,11 +1,13 @@
 using Microsoft.CodeAnalysis;
-using Aspid.Generator.Helpers;
+using Aspid.Generators.Helper;
 using System.Collections.Immutable;
 using Microsoft.CodeAnalysis.CSharp;
-using static Aspid.MVVM.Generators.Descriptions.Classes;
-using static Aspid.MVVM.Generators.Descriptions.General;
+using Aspid.MVVM.Generators.Helpers;
+using static Aspid.Generators.Helper.Classes;
+using static Aspid.MVVM.Generators.Generators.Descriptions.Classes;
+using static Aspid.MVVM.Generators.Generators.Descriptions.General;
 
-namespace Aspid.MVVM.Generators.ViewModels.Data.Members;
+namespace Aspid.MVVM.Generators.Generators.ViewModels.Data.Members;
 
 public class BindableField : BindableMember<IFieldSymbol>
 {
@@ -77,7 +79,7 @@ public class BindableField : BindableMember<IFieldSymbol>
               {{GeneratedCodeViewModelAttribute}}  
               private void {{setMethod}}({{Type}} value)
               {
-                  if ({{EqualityComparer}}<{{Type}}>.Default.Equals({{SourceName}}, value)) return;
+                  if ({{EqualityComparer_1}}<{{Type}}>.Default.Equals({{SourceName}}, value)) return;
 
                   {{onMethodChanging}}({{SourceName}}, value);
                   {{keyWordThis}}{{SourceName}} = value;
@@ -104,7 +106,7 @@ public class BindableField : BindableMember<IFieldSymbol>
     private static Accessors GetAccessors(IFieldSymbol field)
     {
         var accessors = new Accessors(SyntaxKind.PrivateKeyword, SyntaxKind.PrivateKeyword);
-        if (!field.HasAnyAttribute(out var accessAttribute, AccessAttribute)) return accessors;
+        if (!field.TryGetAnyAttributeInSelf(out var accessAttribute, AccessAttribute)) return accessors;
             
         if (accessAttribute!.ConstructorArguments.Length == 1)
         {

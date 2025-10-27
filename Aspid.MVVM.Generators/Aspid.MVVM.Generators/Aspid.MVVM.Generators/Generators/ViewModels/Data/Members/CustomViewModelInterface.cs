@@ -1,6 +1,6 @@
 using Microsoft.CodeAnalysis;
 
-namespace Aspid.MVVM.Generators.ViewModels.Data.Members;
+namespace Aspid.MVVM.Generators.Generators.ViewModels.Data.Members;
 
 public readonly struct CustomViewModelInterface(string id, IPropertySymbol property, ITypeSymbol @interface)
 {

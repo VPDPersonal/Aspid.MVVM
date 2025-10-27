@@ -2,10 +2,10 @@ using Microsoft.CodeAnalysis;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Aspid.MVVM.Generators.ViewModels.Data.Members;
-using Aspid.MVVM.Generators.ViewModels.Data.Members.Collections;
+using Aspid.MVVM.Generators.Generators.ViewModels.Data.Members;
+using Aspid.MVVM.Generators.Generators.ViewModels.Data.Members.Collections;
 
-namespace Aspid.MVVM.Generators.ViewModels.Data;
+namespace Aspid.MVVM.Generators.Generators.ViewModels.Data;
 
 public readonly struct ViewModelData(
     Inheritor inheritor,

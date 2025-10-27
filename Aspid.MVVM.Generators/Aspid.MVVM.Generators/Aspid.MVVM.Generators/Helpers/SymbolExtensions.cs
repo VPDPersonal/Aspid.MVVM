@@ -1,28 +1,9 @@
 using Microsoft.CodeAnalysis;
 
-namespace Aspid.Generator.Helpers;
+namespace Aspid.MVVM.Generators.Helpers;
 
-public static partial class SymbolExtensions
+public static class SymbolExtensions
 {
-    public static string ToDisplayStringGlobal(this ISymbol symbol) =>
-        symbol.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat);
-    
-    public static ITypeSymbol? GetSymbolType(this ISymbol symbol) => symbol switch
-    {
-        ITypeSymbol type => type,
-        IFieldSymbol field => field.Type,
-        ILocalSymbol local => local.Type,
-        IEventSymbol @event => @event.Type,
-        IDiscardSymbol discard => discard.Type,
-        
-        // TODO Delete
-        IMethodSymbol method => method.ReturnType,
-        
-        IPropertySymbol property => property.Type,
-        IParameterSymbol parameter => parameter.Type,
-        _ => null
-    };
-    
     public static string GetFieldName(this ISymbol member, in string? prefix = "_") =>
         GetFieldName(member.Name, prefix);
     

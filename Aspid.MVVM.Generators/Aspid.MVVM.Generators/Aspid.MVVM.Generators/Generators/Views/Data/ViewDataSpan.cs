@@ -1,10 +1,10 @@
 using System;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Aspid.MVVM.Generators.Views.Data.Members;
-using Aspid.MVVM.Generators.Views.Data.Members.Collections;
+using Aspid.MVVM.Generators.Generators.Views.Data.Members;
+using Aspid.MVVM.Generators.Generators.Views.Data.Members.Collections;
 
-namespace Aspid.MVVM.Generators.Views.Data;
+namespace Aspid.MVVM.Generators.Generators.Views.Data;
 
 public readonly ref struct ViewDataSpan(ViewData viewData)
 {

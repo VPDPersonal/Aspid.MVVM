@@ -1,14 +1,15 @@
 using Microsoft.CodeAnalysis;
-using Aspid.Generator.Helpers;
-using Aspid.MVVM.Generators.Descriptions;
+using Aspid.Generators.Helper;
+using Classes = Aspid.MVVM.Generators.Generators.Descriptions.Classes;
+using SymbolExtensions = Aspid.MVVM.Generators.Helpers.SymbolExtensions;
 
-namespace Aspid.MVVM.Generators.Ids.Extensions;
+namespace Aspid.MVVM.Generators.Generators.Ids.Extensions;
 
 public static class IdGeneratorExtensions
 {
     public static string GetId(this ISymbol member, string prefixName = "")
     {
-        if (!member.HasAnyAttribute(out var attribute, Classes.IdAttribute))
+        if (!member.TryGetAnyAttributeInSelf(out var attribute, Classes.IdAttribute))
             return member.GetName(prefixName);
         
         var value = attribute!.ConstructorArguments[0].Value as string;

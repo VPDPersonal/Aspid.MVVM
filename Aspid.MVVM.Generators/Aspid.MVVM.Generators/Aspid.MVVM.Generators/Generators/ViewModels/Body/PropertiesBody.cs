@@ -1,24 +1,24 @@
 using Microsoft.CodeAnalysis;
-using Aspid.Generator.Helpers;
-using Aspid.MVVM.Generators.ViewModels.Data;
-using Aspid.MVVM.Generators.ViewModels.Data.Members;
-using static Aspid.MVVM.Generators.Descriptions.General;
+using Aspid.Generators.Helper;
+using Aspid.MVVM.Generators.Generators.ViewModels.Data;
+using Aspid.MVVM.Generators.Generators.ViewModels.Data.Members;
+using static Aspid.MVVM.Generators.Generators.Descriptions.General;
 
-namespace Aspid.MVVM.Generators.ViewModels.Body;
+namespace Aspid.MVVM.Generators.Generators.ViewModels.Body;
 
 public static class PropertiesBody
 {
     public static void Generate(
         string @namespace,
         in ViewModelData data,
-        in DeclarationText declaration,
+        DeclarationText declaration,
         in SourceProductionContext context)
     {
         var code = new CodeWriter();
 
-        code.AppendClassBegin(@namespace, declaration)
+        code.BeginClass(@namespace, declaration)
             .AppendBody(data)
-            .AppendClassEnd(@namespace);
+            .EndClass(@namespace);
 
         context.AddSource(declaration.GetFileName(@namespace, "Properties"), code.GetSourceText());
     }

@@ -8,7 +8,8 @@ namespace Aspid.MVVM
     [CustomEditor(typeof(ScriptableView), editorForChildClasses: true)]
     public class ScriptableViewEditor : ViewEditor<ScriptableView, ScriptableViewEditor>
     {
-        protected override ViewVisualElement<ScriptableView, ScriptableViewEditor> BuildVisualElement() => new(this);
+        protected override ViewVisualElement<ScriptableView, ScriptableViewEditor> BuildVisualElement() => 
+            new ScriptableViewVisualElement(this);
     }
 }
 #endif

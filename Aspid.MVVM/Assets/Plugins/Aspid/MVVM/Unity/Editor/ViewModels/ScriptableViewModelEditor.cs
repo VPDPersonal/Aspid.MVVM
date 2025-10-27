@@ -9,7 +9,7 @@ namespace Aspid.MVVM
     public class ScriptableViewModelEditor : ViewModelEditor<ScriptableViewModel, ScriptableViewModelEditor>
     {
         protected override ViewModelVisualElement<ScriptableViewModel, ScriptableViewModelEditor> BuildVisualElement() => 
-            new(this);
+            new ScriptableViewModelVisualElement(this);
     }
 }
 #endif

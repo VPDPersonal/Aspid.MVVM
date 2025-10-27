@@ -62,8 +62,8 @@ namespace Aspid.MVVM
             var baseInspector = BuildBaseInspector();
             if (baseInspector.style.display != DisplayStyle.None)
             {
-                baseInspector.SetMargin(top: 10);
-                Add(BuildBaseInspector());
+                Add(baseInspector
+                    .SetMargin(top: 10));
             }
 
             var onBuiltBaseInspector = OnBuiltBaseInspector();

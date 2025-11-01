@@ -83,19 +83,20 @@ namespace Aspid.MVVM
             IdDropdown = CreateDropdownId();
             
             var dropdowns = new VisualElement()
-                 .SetAlignItems(Align.Center)
-                 .SetFlexDirection(FlexDirection.Row)
-                 .AddChild(CreateFieldElement(ViewDropdown, "View"))
-                 .AddChild(CreateFieldElement(IdDropdown, "ID"));
+                .SetMargin(bottom: 1)
+                .SetAlignItems(Align.Center)
+                .SetFlexDirection(FlexDirection.Row)
+                .AddChild(CreateFieldElement(ViewDropdown, "View"))
+                .AddChild(CreateFieldElement(IdDropdown, "ID"));
              
              var helpBox = new AspidHelpBox("View and ID must be assigned", HelpBoxMessageType.Error)
-                 .SetFontSize(14)
                  .SetDisplay(_editor.HasBinderId ? DisplayStyle.None : DisplayStyle.Flex);
 
-             var modeField = new PropertyField(_editor.ModeProperty, string.Empty);
+             var modeField = new PropertyField(_editor.ModeProperty, string.Empty)
+                 .SetMargin(top: 1);
              
-             return new AspidContainer(AspidContainer.StyleType.Dark)
-                 .SetPadding(top: 8, bottom: 8, left : 7, right: 10)
+             return
+                 new AspidContainer(AspidContainer.StyleType.Dark)
                  .SetFlexDirection(FlexDirection.Column)
                  .AddChild(dropdowns)
                  .AddChild(helpBox)
@@ -104,13 +105,15 @@ namespace Aspid.MVVM
              DropdownField CreateDropdownId()
              {
                  var data = DropdownData.CreateIdDropdownData(_editor);
-                 return new DropdownField(data.Choices, data.Index);
+                 return new DropdownField(data.Choices, data.Index)
+                     .SetMargin(0, 0, 1, 0);
              }
              
              DropdownField CreateDropdownView()
              {
                  var data = DropdownData.CreateViewDropdownData(_editor);
-                 return new DropdownField(data.Choices, data.Index);
+                 return new DropdownField(data.Choices, data.Index)
+                     .SetMargin(0, 0, 0, 1);
              }
              
              VisualElement CreateFieldElement(DropdownField dropdown, string label) => new VisualElement()
@@ -119,7 +122,7 @@ namespace Aspid.MVVM
                  .SetSize(width: new StyleLength(new Length(50, LengthUnit.Percent)))
                  .AddChild(new Label(label)
                      .SetFontSize(13)
-                     .SetPadding(left: 5)
+                     .SetMargin(bottom: 1)
                      .SetAlignSelf(Align.FlexStart)
                      .SetColor(new Color(0.75f, 0.75f, 0.75f))
                      .SetUnityFontStyleAndWeight(FontStyle.Bold))

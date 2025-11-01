@@ -27,21 +27,27 @@ namespace Aspid.MVVM
             return new AspidContainer()
                 .AddChild(new AspidTitle("Unassigned Binders"))
                 .AddChild(new AspidHelpBox(Warning, HelpBoxMessageType.Warning)
-                    .SetFontSize(14))
-                .AddChild(_unassignedBindersContainer
-                    .SetMargin(top: 10));
+                    .SetMargin(bottom:5))
+                .AddChild(_unassignedBindersContainer);
         }
 
         public void Update()
         {
+            var count = 0;
             _unassignedBindersContainer.Clear();
             
             foreach (var unassignedBinder in _editor.UnassignedBinders)
             {
-                var field = new ObjectField().SetValue((Object)unassignedBinder);
+                var field = new ObjectField()
+                    .SetValue((Object)unassignedBinder)
+                    .SetMargin(count > 0 ? 2 : 0, 0, 0,0);
+                
                 field.SetEnabled(false);
+                field.style.opacity = 1;
+                field.Q<VisualElement>(className: "unity-object-field__selector").SetDisplay(DisplayStyle.None);
                 
                 _unassignedBindersContainer.AddChild(field);
+                count++;
             }
             
             style.display = _unassignedBindersContainer.childCount > 0 ? DisplayStyle.Flex : DisplayStyle.None; 

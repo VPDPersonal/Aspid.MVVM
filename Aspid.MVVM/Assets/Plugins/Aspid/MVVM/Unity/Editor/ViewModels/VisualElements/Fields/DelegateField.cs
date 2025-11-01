@@ -1,6 +1,5 @@
 using System;
 using UnityEditor;
-using Aspid.CustomEditors;
 using Aspid.UnityFastTools;
 using UnityEditor.UIElements;
 using UnityEngine.UIElements;
@@ -19,7 +18,7 @@ namespace Aspid.MVVM
                 return;
             }
 
-            var container = Elements.CreateContainer(EditorColor.LighterContainer);
+            var container = new AspidContainer(AspidContainer.StyleType.Lighter);
             var subcontainer = CreateSubcontainer(value, label, prefsKey);
             container.AddChild(subcontainer);
 
@@ -29,7 +28,7 @@ namespace Aspid.MVVM
             {
                 if (@delegate?.Target is null || @delegate.Target is Object obj && !obj)
                 {
-                    subcontainer.AddChild(Elements.CreateHelpBox("Delegate is null", HelpBoxMessageType.Error));
+                    subcontainer.AddChild(new AspidHelpBox("Delegate is null", HelpBoxMessageType.Error));
                     continue;
                 }
 

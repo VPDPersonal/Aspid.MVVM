@@ -1,7 +1,7 @@
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
-using Aspid.CustomEditors;
+using Aspid.Internal;
 using Aspid.UnityFastTools;
 using UnityEngine.UIElements;
 using UnityEditor.AnimatedValues;
@@ -83,15 +83,14 @@ namespace Aspid.MVVM.StarterKit
         public override VisualElement CreateInspectorGUI()
         {
             var root = new VisualElement();
-            var header = new InspectorHeaderPanel(target, "Aspid Icon");
+            var header = new AspidInspectorHeader(target, EditorConstants.AspidIconGreen);
             header.AddOpenScriptCommand(target);
             
-            var container = Elements.CreateContainer(EditorColor.DarkContainer)
+            var container = new AspidContainer(AspidContainer.StyleType.Dark)
                 .AddChild(new IMGUIContainer(DrawInspector));
 
             return root
-                .AddChild(header
-                    .SetMargin(bottom: 10))
+                .AddChild(header)
                 .AddChild(container);
         }
 

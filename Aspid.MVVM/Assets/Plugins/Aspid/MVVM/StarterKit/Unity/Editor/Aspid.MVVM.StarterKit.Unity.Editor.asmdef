@@ -6,7 +6,7 @@
         "Aspid.MVVM.Unity",
         "Aspid.UnityFastTools",
         "Aspid.MVVM.Unity.Editor",
-        "Aspid.CustomEditror.Editor",
+        "Aspid.Internal.Unity.Editor",
         "Aspid.UnityFastTools.Editor",
         "Aspid.MVVM.StarterKit.Unity"
     ],

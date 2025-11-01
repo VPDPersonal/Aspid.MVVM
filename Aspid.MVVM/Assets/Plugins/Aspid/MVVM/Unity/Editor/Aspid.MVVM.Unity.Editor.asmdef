@@ -5,7 +5,7 @@
         "Aspid.MVVM",
         "Aspid.MVVM.Unity",
         "Aspid.UnityFastTools",
-        "Aspid.CustomEditror.Editor",
+        "Aspid.Internal.Unity.Editor",
         "Aspid.UnityFastTools.Editor"
     ],
     "includePlatforms": [

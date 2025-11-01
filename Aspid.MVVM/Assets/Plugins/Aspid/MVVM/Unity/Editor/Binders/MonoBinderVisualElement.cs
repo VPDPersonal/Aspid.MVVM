@@ -1,7 +1,8 @@
 #nullable enable
 using UnityEngine;
 using UnityEditor;
-using Aspid.CustomEditors;
+using System.Linq;
+using Aspid.Internal;
 using Aspid.UnityFastTools;
 using UnityEngine.UIElements;
 using UnityEditor.UIElements;
@@ -38,7 +39,9 @@ namespace Aspid.MVVM
         
         protected SerializedObject SerializedObject => _editor.serializedObject; 
         
-        protected virtual string IconPath => _editor.HasBinderId ? "Aspid Icon" : "Aspid Icon Red";
+        protected virtual string IconPath => _editor.HasBinderId
+            ? EditorConstants.AspidIconGreen
+            : EditorConstants.AspidIconRed;
 
         public MonoBinderVisualElement(MonoBinderEditor editor)
         {
@@ -59,22 +62,19 @@ namespace Aspid.MVVM
             
             // Update Header
             this.Q<HelpBox>().SetDisplay(_editor.HasBinderId ? DisplayStyle.None : DisplayStyle.Flex);
-            this.Q<InspectorHeaderPanel>().Icon.SetImageFromResource(IconPath);
+            this.Q<AspidInspectorHeader>().Icon.SetImageFromResource(IconPath);
         }
 
         protected virtual VisualElement Build() => new VisualElement()
              .AddChild(BuildHeader())
-             .AddChild(BuildIdSelector()
-                 .SetMargin(top: 10))
-             .AddChild(BuildBaseInspector()
-                 .SetMargin(top: 10))
-             .AddChild(BuildLogsContainer()
-                 .SetMargin(top: 10));
+             .AddChild(BuildIdSelector())
+             .AddChild(BuildBaseInspector())
+             .AddChild(BuildLogsContainer());
 
         protected virtual VisualElement BuildHeader()
         {
             var binder = _editor.TargetAsMonoBinder;
-            return new InspectorHeaderPanel(binder, IconPath);
+            return new AspidInspectorHeader(binder, IconPath);
         }
 
         protected virtual VisualElement BuildIdSelector()
@@ -88,13 +88,13 @@ namespace Aspid.MVVM
                  .AddChild(CreateFieldElement(ViewDropdown, "View"))
                  .AddChild(CreateFieldElement(IdDropdown, "ID"));
              
-             var helpBox = Elements.CreateHelpBox("View and ID must be assigned", HelpBoxMessageType.Error)
+             var helpBox = new AspidHelpBox("View and ID must be assigned", HelpBoxMessageType.Error)
                  .SetFontSize(14)
                  .SetDisplay(_editor.HasBinderId ? DisplayStyle.None : DisplayStyle.Flex);
 
              var modeField = new PropertyField(_editor.ModeProperty, string.Empty);
              
-             return Elements.CreateContainer(EditorColor.DarkContainer)
+             return new AspidContainer(AspidContainer.StyleType.Dark)
                  .SetPadding(top: 8, bottom: 8, left : 7, right: 10)
                  .SetFlexDirection(FlexDirection.Column)
                  .AddChild(dropdowns)
@@ -121,26 +121,25 @@ namespace Aspid.MVVM
                      .SetFontSize(13)
                      .SetPadding(left: 5)
                      .SetAlignSelf(Align.FlexStart)
-                     .SetColor(EditorColor.LightText)
+                     .SetColor(new Color(0.75f, 0.75f, 0.75f))
                      .SetUnityFontStyleAndWeight(FontStyle.Bold))
                  .AddChild(dropdown
                      .SetFlexGrow(1));
         }
 
         private BaseInspectorVisualElement BuildBaseInspector() =>
-            new BaseInspectorVisualElement(SerializedObject, PropertiesExcluding);
+            new(SerializedObject, "Parameters", PropertiesExcluding.ToArray());
 
         protected virtual VisualElement BuildLogsContainer()
         {
             if (_editor.LogsProperty is null || _editor.IsDebugProperty is null) return new VisualElement();
 
             var isDebugPropertyField = new PropertyField(_editor.IsDebugProperty);
-            
-            var title = Elements.CreateTitle(EditorColor.LightText, "Logs");
+
+            var title = new AspidTitle("Logs");
             title.Q<VisualElement>("TextContainer").AddChild(isDebugPropertyField);
 
-            var container = Elements.CreateContainer(EditorColor.LightContainer)
-                .SetName("Logs")
+            var container = new AspidContainer().SetName("Logs")
                 .AddChild(title);
             
             isDebugPropertyField.RegisterValueChangeCallback(e =>

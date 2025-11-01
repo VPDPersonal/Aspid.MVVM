@@ -1,6 +1,7 @@
 #nullable enable
 using UnityEditor;
-using Aspid.UnityFastTools;
+using System.Linq;
+using Aspid.Internal;
 using UnityEngine.UIElements;
 using System.Collections.Generic;
 using Aspid.UnityFastTools.Editors;
@@ -16,7 +17,7 @@ namespace Aspid.MVVM
         protected readonly TEditor Editor;
         private bool _isInitialized;
         
-        protected virtual string IconPath => "Aspid Icon";
+        protected virtual string IconPath => EditorConstants.AspidIconGreen;
         
         protected virtual IEnumerable<string> PropertiesExcluding
         {
@@ -55,42 +56,37 @@ namespace Aspid.MVVM
             var onBuildHeader = OnBuiltHeader();
             if (onBuildHeader is not null)
             {
-                Add(onBuildHeader
-                    .SetMargin(top: 10));
+                Add(onBuildHeader);
             }
 
             var baseInspector = BuildBaseInspector();
             if (baseInspector.style.display != DisplayStyle.None)
             {
-                Add(baseInspector
-                    .SetMargin(top: 10));
+                Add(baseInspector);
             }
 
             var onBuiltBaseInspector = OnBuiltBaseInspector();
             if (onBuiltBaseInspector is not null)
             {
-                Add(onBuiltBaseInspector
-                    .SetMargin(top: 10));
+                Add(onBuiltBaseInspector);
             }
             
-            Add(BuiltCommands()
-                .SetMargin(top: 10));
+            Add(BuiltCommands());
             
             var onBuiltCommands = OnBuiltCommands();
             if (onBuiltCommands is not null)
             {
-                Add(onBuiltCommands
-                    .SetMargin(top: 10));
+                Add(onBuiltCommands);
             }
         }
 
-        private InspectorHeaderPanel BuildHeader() => 
+        private AspidInspectorHeader BuildHeader() => 
             new(GetScriptName(), Editor.TargetAsViewModel, IconPath);
 
         protected virtual VisualElement? OnBuiltHeader() => null;
 
         private BaseInspectorVisualElement BuildBaseInspector() =>
-            new(SerializedObject, PropertiesExcluding);
+            new(SerializedObject, null, PropertiesExcluding.ToArray());
 
         protected virtual VisualElement? OnBuiltBaseInspector() => null;
 

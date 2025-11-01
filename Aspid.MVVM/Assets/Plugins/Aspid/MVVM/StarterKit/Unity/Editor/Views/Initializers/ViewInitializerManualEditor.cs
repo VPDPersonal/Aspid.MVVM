@@ -1,8 +1,8 @@
 #if !ASPID_MVVM_EDITOR_DISABLED
 using UnityEditor;
 using UnityEngine;
+using Aspid.Internal;
 using System.Reflection;
-using Aspid.CustomEditors;
 using Aspid.UnityFastTools;
 using UnityEngine.UIElements;
 using Aspid.UnityFastTools.Editors;
@@ -24,8 +24,8 @@ namespace Aspid.MVVM.StarterKit
         private bool _isViewSet;
         
         private string IconPath => _isViewSet
-            ? "Aspid Icon"
-            : "Aspid Icon Red";
+            ? EditorConstants.AspidIconGreen
+            : EditorConstants.AspidIconRed;
         
         private void OnEnable()
         {
@@ -37,15 +37,13 @@ namespace Aspid.MVVM.StarterKit
         {
             _root = new VisualElement();
 
-            var header = new InspectorHeaderPanel(GetScriptName(), target, "Aspid Icon");
+            var header = new AspidInspectorHeader(GetScriptName(), target, EditorConstants.AspidIconGreen);
 
-            var viewHelpBox = Elements.CreateHelpBox(
-                text: "The View must be assigned",
-                type: HelpBoxMessageType.Error,
-                name: "ViewHelpBox");
+            var viewHelpBox = new AspidHelpBox("The View must be assigned", HelpBoxMessageType.Error)
+                .SetName("ViewHelpBox");
             
-            var view = Elements.CreateContainer(EditorColor.LightContainer)
-                .AddTitle(EditorColor.LightText, "View")
+            var view = new AspidContainer()
+                .AddChild(new AspidTitle("View"))
                 .AddChild(new IMGUIContainer(DrawViewInitializeComponent))
                 .AddChild(viewHelpBox
                     .SetMargin(top: 5));
@@ -70,7 +68,7 @@ namespace Aspid.MVVM.StarterKit
         
         private void UpdateHelpBoxes()
         {
-            _root.Q<InspectorHeaderPanel>()
+            _root.Q<AspidInspectorHeader>()
                 .Icon.SetImageFromResource(IconPath);
             
             _root.Q<HelpBox>("ViewHelpBox")

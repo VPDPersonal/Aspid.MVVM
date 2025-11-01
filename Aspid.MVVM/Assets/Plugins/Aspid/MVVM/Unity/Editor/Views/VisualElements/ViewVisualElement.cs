@@ -1,7 +1,8 @@
 #nullable enable
 using UnityEditor;
 using UnityEngine;
-using Aspid.CustomEditors;
+using System.Linq;
+using Aspid.Internal;
 using Aspid.UnityFastTools;
 using UnityEngine.UIElements;
 using System.Collections.Generic;
@@ -17,7 +18,7 @@ namespace Aspid.MVVM
         protected readonly TEditor Editor;
         private bool _isInitialized;
         
-        protected virtual string IconPath => "Aspid Icon";
+        protected virtual string IconPath => EditorConstants.AspidIconGreen;
         
         protected virtual IEnumerable<string> PropertiesExcluding
         {
@@ -61,37 +62,34 @@ namespace Aspid.MVVM
             var onBuildHeader = OnBuiltHeader();
             if (onBuildHeader is not null)
             {
-                Add(onBuildHeader
-                    .SetMargin(top: 10));
+                Add(onBuildHeader);
             }
 
-            Add(BuildBaseInspector()
-                .SetMargin(top: 10));
+            Add(BuildBaseInspector());
 
             var onBuiltBaseInspector = OnBuiltBaseInspector();
             if (onBuiltBaseInspector is not null)
             {
-                Add(onBuiltBaseInspector
-                    .SetMargin(top: 10));
+                Add(onBuiltBaseInspector);
             }
             
             Add(BuildViewModel());
         }
 
-        private InspectorHeaderPanel BuildHeader() => 
+        private AspidInspectorHeader BuildHeader() => 
             new(GetScriptName(), Editor.TargetAsSpecific, IconPath);
 
         protected virtual VisualElement? OnBuiltHeader() => null;
         
         private BaseInspectorVisualElement BuildBaseInspector() =>
-            new(SerializedObject, PropertiesExcluding);
+            new(SerializedObject, null, PropertiesExcluding.ToArray());
 
         protected virtual VisualElement? OnBuiltBaseInspector() => null;
         
         // TODO Aspid Refactor
         private VisualElement BuildViewModel()
         {
-            return Elements.CreateContainer(EditorColor.LightContainer)
+            return new AspidContainer()
                 .SetName("ViewModelDebugPanel")
                 .AddChild(ViewModelDebugPanel.Build(Editor.TargetAsSpecific)
                     .SetName("ViewModelContainer"))

@@ -1,6 +1,5 @@
 #nullable enable
 using UnityEngine;
-using Aspid.CustomEditors;
 using Aspid.UnityFastTools;
 using UnityEditor.UIElements;
 using UnityEngine.UIElements;
@@ -23,12 +22,15 @@ namespace Aspid.MVVM
             Add(Build());
         }
 
-        private VisualElement Build() => Elements.CreateContainer(EditorColor.LightContainer)
-            .AddTitle(EditorColor.LightText, "Unassigned Binders")
-            .AddChild(Elements.CreateHelpBox(Warning, HelpBoxMessageType.Warning)
-                .SetFontSize(14))
-            .AddChild(_unassignedBindersContainer
-                .SetMargin(top: 5));
+        private VisualElement Build()
+        {
+            return new AspidContainer()
+                .AddChild(new AspidTitle("Unassigned Binders"))
+                .AddChild(new AspidHelpBox(Warning, HelpBoxMessageType.Warning)
+                    .SetFontSize(14))
+                .AddChild(_unassignedBindersContainer
+                    .SetMargin(top: 10));
+        }
 
         public void Update()
         {

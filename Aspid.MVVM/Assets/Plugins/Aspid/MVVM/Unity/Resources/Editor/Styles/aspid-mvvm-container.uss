@@ -1,0 +1,31 @@
+VisualElement {}
+
+/*Dark Container*/
+.aspid-dark-container
+{
+    padding: 10px;
+    margin-top: 5px;
+    margin-left: -10px;
+    border-radius: 10px;
+    background-color: #262626;
+}
+
+/*Light Container*/
+.aspid-light-container
+{
+    padding: 10px;
+    margin-top: 5px;
+    margin-left: -10px;
+    border-radius: 10px;
+    background-color: #2E2E2E;
+}
+
+/*Lighter Container*/
+.aspid-lighter-container
+{
+    padding: 10px;
+    margin-top: 5px;
+    margin-left: -10px;
+    border-radius: 10px;
+    background-color: #383838; /*???*/
+}

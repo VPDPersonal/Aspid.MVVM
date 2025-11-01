@@ -1,0 +1,55 @@
+VisualElement {}
+
+/*Root*/
+.aspid-lighter-container.aspid-property-field
+{
+    margin-top: 0;
+    margin-left: 0;
+    border-radius: 5px;
+    padding: 2px 5px 2px 3px;
+}
+
+/*Field*/
+.aspid-lighter-container.aspid-property-field.unity-base-field__inspector-field
+{
+    margin-right: 0;
+}
+
+/*Foldout Field*/
+.aspid-lighter-container.aspid-property-field .unity-foldout__toggle--inspector
+{
+    margin-left: 0;
+}
+
+/*Property Field – IMGUIContainer*/
+.aspid-lighter-container.aspid-property-field.unity-imgui-container
+{
+    margin-bottom: 2px;
+    margin-left: 15px;
+    margin-right: 0;
+}
+
+/*Collection Field*/
+.aspid-lighter-container.aspid-property-field .unity-scroll-view
+{
+    margin-top: 3px;
+}
+
+/*Collection Field*/
+.aspid-lighter-container.aspid-property-field .unity-list-view__size-field
+{
+    margin-right: 5px;
+    width: 100px;
+}
+
+/*Foldout Collection Field*/
+.aspid-lighter-container.aspid-property-field #unity-list-view__reorderable-item__container .unity-foldout__content
+{
+    margin-left: 0;
+}
+
+/*Foldout Collection Field*/
+.aspid-lighter-container.aspid-property-field #unity-list-view__reorderable-item__container Toggle.unity-foldout__toggle--inspector
+{
+    margin-left: -12px;
+}

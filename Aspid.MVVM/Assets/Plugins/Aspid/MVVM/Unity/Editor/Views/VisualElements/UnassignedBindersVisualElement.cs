@@ -40,7 +40,7 @@ namespace Aspid.MVVM
             {
                 var field = new ObjectField()
                     .SetValue((Object)unassignedBinder)
-                    .SetMargin(count > 0 ? 2 : 0, 0, 0,0);
+                    .SetMargin(count > 0 ? 5 : 0, 0, 0,0);
                 
                 field.SetEnabled(false);
                 field.style.opacity = 1;

@@ -45,7 +45,7 @@ namespace Aspid.MVVM
             data.style.display = toggle.value ? DisplayStyle.Flex : DisplayStyle.None;
             title.Q<VisualElement>("TextContainer").AddChild(toggle);
 
-            return new AspidContainer()
+            return new VisualElement()
                 .AddChild(title)
                 .AddChild(data);
         }

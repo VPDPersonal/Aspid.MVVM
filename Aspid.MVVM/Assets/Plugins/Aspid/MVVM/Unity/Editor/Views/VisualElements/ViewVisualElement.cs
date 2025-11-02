@@ -92,8 +92,7 @@ namespace Aspid.MVVM
             return new AspidContainer()
                 .SetName("ViewModelDebugPanel")
                 .AddChild(ViewModelDebugPanel.Build(Editor.TargetAsSpecific)
-                    .SetName("ViewModelContainer"))
-                .SetMargin(top: 10);
+                    .SetName("ViewModelContainer"));
         }
         #endregion
 

@@ -38,7 +38,7 @@ namespace Aspid.MVVM
                 container.AddChild(new AspidPropertyField(iterator).SetMargin(top: marginTop));
             }
             
-            container.style.display = count > 1 ? DisplayStyle.Flex : DisplayStyle.None;
+            container.style.display = count > 0 ? DisplayStyle.Flex : DisplayStyle.None;
             return container;
         }
     }

@@ -1,10 +1,7 @@
 {
-    "name": "Aspid.CustomEditror.Editor",
+    "name": "Aspid.Internal.Unity.Editor",
     "rootNamespace": "",
-    "references": [
-        "GUID:7c010b89992542508a6b6189977e64d4",
-        "GUID:94dcbbdbbd3ca48b891ee4fc8455c434"
-    ],
+    "references": [],
     "includePlatforms": [
         "Editor"
     ],

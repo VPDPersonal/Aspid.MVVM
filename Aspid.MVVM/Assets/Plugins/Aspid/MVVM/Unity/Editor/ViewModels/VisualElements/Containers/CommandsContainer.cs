@@ -1,7 +1,6 @@
 using System.Linq;
 using UnityEditor;
 using System.Reflection;
-using Aspid.CustomEditors;
 using Aspid.UnityFastTools;
 using UnityEngine.UIElements;
 
@@ -33,8 +32,8 @@ namespace Aspid.MVVM
                 var toggle = new Toggle().SetValue(EditorPrefs.GetBool(prefsKey, true));
                 var container = new VisualElement()
                     .SetDisplay(toggle.value ? DisplayStyle.Flex : DisplayStyle.None);
-                
-                var title = Elements.CreateTitle(EditorColor.LightText, "Commands");
+
+                var title = new AspidTitle("Commands");
                 title.Q<VisualElement>("TextContainer").AddChild(toggle);
                 
                 toggle.RegisterValueChangedCallback(e =>
@@ -46,12 +45,11 @@ namespace Aspid.MVVM
                     
                     container.style.display = e.newValue ? DisplayStyle.Flex : DisplayStyle.None;
                 });
-                
-                this.AddChild(Elements.CreateContainer(EditorColor.LightContainer)
-                        .SetName("Commands")
-                        .AddChild(title)
-                        .AddChild(container
-                            .SetMargin(top: 5, bottom: 5)));
+
+                this.AddChild(new AspidContainer().SetName("Commands")
+                    .AddChild(title)
+                    .AddChild(container
+                        .SetMargin(top: 5, bottom: 5)));
 
                 var i = 0;
                 

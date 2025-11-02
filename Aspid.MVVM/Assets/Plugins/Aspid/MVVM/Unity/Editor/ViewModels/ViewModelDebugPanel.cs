@@ -4,7 +4,6 @@ using UnityEditor;
 using UnityEngine;
 using System.Reflection;
 using System.Collections;
-using Aspid.CustomEditors;
 using Aspid.UnityFastTools;
 using UnityEditor.UIElements;
 using UnityEngine.UIElements;
@@ -35,7 +34,7 @@ namespace Aspid.MVVM
             };
             
             var data = BuildViewModelData(viewModel).SetName("Data");
-            var title = Elements.CreateTitle(EditorColor.LightText, viewModel.GetType().FullName!);
+            var title = new AspidTitle(viewModel.GetType().FullName);
 
             toggle.RegisterValueChangedCallback(e =>
             {
@@ -46,7 +45,7 @@ namespace Aspid.MVVM
             data.style.display = toggle.value ? DisplayStyle.Flex : DisplayStyle.None;
             title.Q<VisualElement>("TextContainer").AddChild(toggle);
 
-            return Elements.CreateContainer(EditorColor.LightContainer)
+            return new AspidContainer()
                 .AddChild(title)
                 .AddChild(data);
         }
@@ -235,9 +234,8 @@ namespace Aspid.MVVM
 
                         var key = keyProperty!.GetValue(item);
                         var elementValue = valueProperty!.GetValue(item);
-                        
-                        var box = Elements.CreateContainer(EditorColor.LighterContainer);
 
+                        var box = new AspidContainer(AspidContainer.StyleType.Lighter);
                         box.AddChild(BuildField(new Context(key, "Key", context)));
                         box.AddChild(BuildField(new Context(elementValue, "Value", context)));
 

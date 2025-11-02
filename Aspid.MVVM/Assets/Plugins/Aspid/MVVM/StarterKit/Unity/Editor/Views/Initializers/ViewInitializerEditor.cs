@@ -1,8 +1,8 @@
 #if !ASPID_MVVM_EDITOR_DISABLED
 using UnityEditor;
 using UnityEngine;
+using Aspid.Internal;
 using System.Reflection;
-using Aspid.CustomEditors;
 using Aspid.UnityFastTools;
 using UnityEngine.UIElements;
 using Aspid.UnityFastTools.Editors;
@@ -29,8 +29,8 @@ namespace Aspid.MVVM.StarterKit
         private bool _isViewModelSet;
 
         private string IconPath => _isViewSet && _isViewModelSet
-            ? "Aspid Icon"
-            : "Aspid Icon Red";
+            ? EditorConstants.AspidIconGreen
+            : EditorConstants.AspidIconRed;
         
         private void OnEnable()
         {
@@ -48,7 +48,7 @@ namespace Aspid.MVVM.StarterKit
         {
             _root = new VisualElement();
             
-            var header = new InspectorHeaderPanel(target, "Aspid Icon");
+            var header = new AspidInspectorHeader(target, EditorConstants.AspidIconGreen);
             var stage = BuildStage();
             var view = BuildViewInitializeComponent();
             var viewModel = BuildViewModelInitializeComponent();
@@ -56,20 +56,16 @@ namespace Aspid.MVVM.StarterKit
 
             return _root
                 .AddChild(header)
-                .AddChild(view
-                    .SetMargin(top: 10))
-                .AddChild(viewModel
-                    .SetMargin(top: 10))
-                .AddChild(stage
-                    .SetMargin(top: 10))
-                .AddChild(debug
-                    ?.SetMargin(top: 10));
+                .AddChild(view)
+                .AddChild(viewModel)
+                .AddChild(stage)
+                .AddChild(debug);
         }
 
         private VisualElement BuildStage()
         {
-            return Elements.CreateContainer(EditorColor.LightContainer)
-                .AddTitle(EditorColor.LightText, "Stage")
+            return new AspidContainer()
+                .AddChild(new AspidTitle("Stage"))
                 .AddChild(new IMGUIContainer(Draw));
             
             void Draw()
@@ -87,13 +83,11 @@ namespace Aspid.MVVM.StarterKit
 
         private VisualElement BuildViewInitializeComponent()
         {
-            var viewHelpBox = Elements.CreateHelpBox(
-                text: "The View must be assigned",
-                type: HelpBoxMessageType.Error,
-                name: "ViewHelpBox");
+            var viewHelpBox = new AspidHelpBox("The View must be assigned", HelpBoxMessageType.Error)
+                .SetName("ViewHelpBox");
             
-            return Elements.CreateContainer(EditorColor.LightContainer)
-                .AddTitle(EditorColor.LightText, "View")
+            return new AspidContainer()
+                .AddChild(new AspidTitle("View"))
                 .AddChild(new IMGUIContainer(Draw))
                 .AddChild(viewHelpBox
                     .SetMargin(top: 5));
@@ -113,13 +107,11 @@ namespace Aspid.MVVM.StarterKit
 
         private VisualElement BuildViewModelInitializeComponent()
         {
-            var viewModelHelpBox = Elements.CreateHelpBox(
-                text: "The ViewModel must be assigned",
-                type: HelpBoxMessageType.Error,
-                name: "ViewModelHelpBox");
+            var viewModelHelpBox = new AspidHelpBox("The ViewModel must be assigned", HelpBoxMessageType.Error)
+                .SetName("ViewModelHelpBox");
             
-            return Elements.CreateContainer(EditorColor.LightContainer)
-                .AddTitle(EditorColor.LightText, "View Model")
+            return new AspidContainer()
+                .AddChild(new AspidTitle("ViewModel"))
                 .AddChild(new IMGUIContainer(Draw))
                 .AddChild(viewModelHelpBox
                     .SetMargin(top: 5));
@@ -145,8 +137,8 @@ namespace Aspid.MVVM.StarterKit
             if (initializer.IsInitialized 
                 || initializer is not ViewInitializerManual)
             {
-                return Elements.CreateContainer(EditorColor.LightContainer)
-                    .AddTitle(EditorColor.LightText, "Debug")
+                return new AspidContainer()
+                    .AddChild(new AspidTitle("Debug"))
                     .AddChild(new IMGUIContainer(Draw));
             }
 
@@ -196,7 +188,7 @@ namespace Aspid.MVVM.StarterKit
 
         private void UpdateHelpBoxes()
         {
-            _root.Q<InspectorHeaderPanel>()
+            _root.Q<AspidInspectorHeader>()
                 .Icon.SetImageFromResource(IconPath);
             
             _root.Q<HelpBox>("ViewHelpBox")
@@ -209,7 +201,7 @@ namespace Aspid.MVVM.StarterKit
         private void UpdateHeaderText()
         {
             var scriptName = target.GetScriptName();
-           _root.Q<InspectorHeaderPanel>().Label.text = $"{scriptName}{GetInitializeComponentName(_viewModel)}";
+           _root.Q<AspidInspectorHeader>().Label.text = $"{scriptName}{GetInitializeComponentName(_viewModel)}";
         }
     }
 }

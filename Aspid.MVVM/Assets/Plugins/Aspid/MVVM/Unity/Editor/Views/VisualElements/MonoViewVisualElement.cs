@@ -1,5 +1,6 @@
 #nullable enable
 using System.Linq;
+using Aspid.Internal;
 using UnityEngine.UIElements;
 using Aspid.UnityFastTools.Editors;
 
@@ -11,7 +12,7 @@ namespace Aspid.MVVM
         private UnassignedBindersVisualElement? _unassignedBindersVisualElement;
         
         protected override string IconPath => Editor.UnassignedBinders.Any()
-            ? "Aspid Icon Yellow"
+            ? EditorConstants.AspidIconYellow
             : base.IconPath;
         
         public MonoViewVisualElement(MonoViewEditor editor) :

@@ -3,7 +3,6 @@ using System.Linq;
 using UnityEditor;
 using UnityEngine;
 using System.Reflection;
-using Aspid.CustomEditors;
 using Aspid.UnityFastTools;
 using UnityEditor.UIElements;
 using UnityEngine.UIElements;
@@ -26,10 +25,12 @@ namespace Aspid.MVVM
             Action executeCallback = null, 
             Action notifyCanExecuteChangedCallBack = null)
         {
-            var container = Elements.CreateContainer(EditorColor.LighterContainer);
-            
+            var container = new AspidContainer(AspidContainer.StyleType.Lighter);
+
             if (isTitle)
-                container.AddTitle(EditorColor.LightText, ObjectNames.NicifyVariableName(valueName));
+            {
+                container.AddChild(new AspidTitle(ObjectNames.NicifyVariableName(valueName)));
+            }
             
             var parameters = BuildFieldsForParameters(valueContainer.GetType(), valueType, valueName);
 

@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
+using Aspid.UnityFastTools;
 using UnityEngine.UIElements;
 
 // ReSharper disable once CheckNamespace
@@ -40,7 +41,8 @@ namespace Aspid.MVVM
             var selectedIndex = GetSelectedIndex(property, availableModes);
             
             var displayedOptions = availableModes.Modes.Select(mode => mode.ToString()).ToList();
-            var popup = new PopupField<string>(string.Empty, displayedOptions, selectedIndex, static data => data, static data => data);
+            var popup = new PopupField<string>(string.Empty, displayedOptions, selectedIndex, static data => data, static data => data)
+                .SetMargin(0, 0, 0, 0);;
 
             popup.RegisterValueChangedCallback(_ => SetPropertyValue(property, availableModes, popup.index));
             return popup;

@@ -1,0 +1,32 @@
+VisualElement {}
+
+/*!*Container*!*/
+.aspid-dark-container
+{
+    margin-top: 5;
+    padding-top: 5;
+    padding-bottom: 5;
+    flex-direction: row;
+}
+
+/*Image*/
+> Image
+{
+    width: 40px;
+    height: 40px;
+}
+
+/*Label*/
+> Label
+{
+    flex-grow: 1;
+    font-size: 16;
+    flex-shrink: 1;
+    color: #c0c0c0;
+    overflow: hidden;
+    margin-left: 10px;
+    align-self: center;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    -unity-font-style: bold;
+}

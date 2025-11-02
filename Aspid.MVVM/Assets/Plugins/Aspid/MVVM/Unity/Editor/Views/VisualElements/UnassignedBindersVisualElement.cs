@@ -1,6 +1,5 @@
 #nullable enable
 using UnityEngine;
-using Aspid.CustomEditors;
 using Aspid.UnityFastTools;
 using UnityEditor.UIElements;
 using UnityEngine.UIElements;
@@ -23,23 +22,32 @@ namespace Aspid.MVVM
             Add(Build());
         }
 
-        private VisualElement Build() => Elements.CreateContainer(EditorColor.LightContainer)
-            .AddTitle(EditorColor.LightText, "Unassigned Binders")
-            .AddChild(Elements.CreateHelpBox(Warning, HelpBoxMessageType.Warning)
-                .SetFontSize(14))
-            .AddChild(_unassignedBindersContainer
-                .SetMargin(top: 5));
+        private VisualElement Build()
+        {
+            return new AspidContainer()
+                .AddChild(new AspidTitle("Unassigned Binders"))
+                .AddChild(new AspidHelpBox(Warning, HelpBoxMessageType.Warning)
+                    .SetMargin(bottom:5))
+                .AddChild(_unassignedBindersContainer);
+        }
 
         public void Update()
         {
+            var count = 0;
             _unassignedBindersContainer.Clear();
             
             foreach (var unassignedBinder in _editor.UnassignedBinders)
             {
-                var field = new ObjectField().SetValue((Object)unassignedBinder);
+                var field = new ObjectField()
+                    .SetValue((Object)unassignedBinder)
+                    .SetMargin(count > 0 ? 5 : 0, 0, 0,0);
+                
                 field.SetEnabled(false);
+                field.style.opacity = 1;
+                field.Q<VisualElement>(className: "unity-object-field__selector").SetDisplay(DisplayStyle.None);
                 
                 _unassignedBindersContainer.AddChild(field);
+                count++;
             }
             
             style.display = _unassignedBindersContainer.childCount > 0 ? DisplayStyle.Flex : DisplayStyle.None; 

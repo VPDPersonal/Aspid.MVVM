@@ -1,9 +1,9 @@
-[submodule "Aspid.MVMM.Generators"]
-	path = Aspid.MVMM.Generators
-	url = git@github.com:VPDPersonal/Aspid.MVMM.Generators.git
 [submodule "Aspid.MVVM.Unity.Generators"]
 	path = Aspid.MVVM.Unity.Generators
 	url = git@github.com:VPDPersonal/Aspid.MVVM.Unity.Generators.git
 [submodule "Aspid.MVVM.Analyzers"]
 	path = Aspid.MVVM.Analyzers
 	url = git@github.com:VPDPersonal/Aspid.MVVM.Analyzers.git
+[submodule "Aspid.MVVM.Generators"]
+	path = Aspid.MVVM.Generators
+	url = git@github.com:VPDPersonal/Aspid.MVVM.Generators.git

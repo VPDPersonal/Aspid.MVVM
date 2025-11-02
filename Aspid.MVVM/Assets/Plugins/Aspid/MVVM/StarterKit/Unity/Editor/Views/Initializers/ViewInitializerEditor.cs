@@ -74,7 +74,10 @@ namespace Aspid.MVVM.StarterKit
                 {
                     EditorGUILayout.PropertyField(_initializeStage);
 
-                    if (_initializeStage.enumValueIndex == 0) _isDeinitialize.boolValue = false;
+                    if (_initializeStage.enumValueIndex is 0 or 4)
+                    {
+                        _isDeinitialize.boolValue = false;
+                    }
                     else EditorGUILayout.PropertyField(_isDeinitialize);
                 }
                 serializedObject.ApplyModifiedProperties();

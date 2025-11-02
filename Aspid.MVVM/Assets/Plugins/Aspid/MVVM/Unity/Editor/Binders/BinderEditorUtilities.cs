@@ -24,7 +24,7 @@ namespace Aspid.MVVM
 
                     return fieldType?.IsInstanceOfType(binder) ?? false;
                 })
-                .Select(field => field.GetBinderId())
+                .Select(field => field.GetBinderId(view))
                 .ToList();
         }
         

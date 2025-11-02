@@ -39,7 +39,7 @@ namespace Aspid.MVVM
             
             foreach (var field in fields)
             {
-                var id = field.GetBinderId();
+                var id = field.GetBinderId(view);
                 
                 var assignBinders = field.GetValueAsArray<IMonoBinderValidable>(view);
                 var binders = bindersOnScene.Where(binder => id == binder.Id).ToArray();
@@ -161,7 +161,7 @@ namespace Aspid.MVVM
                         .ToArray();
                 }
                 
-                var id = field.GetBinderId();
+                var id = field.GetBinderId(view);
  
                 foreach (var binder in binders!)
                 {

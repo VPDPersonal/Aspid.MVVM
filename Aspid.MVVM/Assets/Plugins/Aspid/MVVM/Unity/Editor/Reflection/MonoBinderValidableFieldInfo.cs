@@ -7,9 +7,10 @@ namespace Aspid.MVVM
 {
     public sealed class MonoBinderValidableFieldInfo : FieldInfo
     {
+        private readonly object _target;
         private RequiredTypes _requiredTypes;
         private readonly FieldInfo _fieldInfo;
-        
+
         public override FieldAttributes Attributes => _fieldInfo.Attributes;
         
         public override RuntimeFieldHandle FieldHandle => _fieldInfo.FieldHandle;
@@ -22,14 +23,15 @@ namespace Aspid.MVVM
         
         public override Type ReflectedType => _fieldInfo.ReflectedType;
 
-        public MonoBinderValidableFieldInfo(FieldInfo field)
+        public MonoBinderValidableFieldInfo(object target, FieldInfo field)
         {
+            _target = target;
             _fieldInfo = field;
         }
 
         public RequiredTypes GetRequiredTypes()
         {
-            _requiredTypes ??= new RequiredTypes(this);
+            _requiredTypes ??= new RequiredTypes(_target, this);
             return _requiredTypes;
         }
 

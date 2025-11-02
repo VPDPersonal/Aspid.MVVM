@@ -23,7 +23,7 @@ namespace Aspid.MVVM
         /// FieldInfo` objects representing the field that contain `IMonoBinderValidable` binders.
         /// </returns>
         public static MonoBinderValidableFieldInfo? GetMonoBinderValidableFieldById(this IView view, string id) =>
-            GetMonoBinderValidableFields(view).FirstOrDefault(field => field?.GetBinderId() == id);
+            GetMonoBinderValidableFields(view).FirstOrDefault(field => field?.GetBinderId(view) == id);
         
         /// <summary>
         /// Retrieves all fields in the specified type that are of type `IMonoBinderValidable` or `IMonoBinderValidable[]`.
@@ -40,7 +40,7 @@ namespace Aspid.MVVM
                 var fieldType = field.FieldType;
                 return typeof(IMonoBinderValidable).IsAssignableFrom(fieldType)
                     || typeof(IMonoBinderValidable[]).IsAssignableFrom(fieldType);
-            }).Select(fieldInfo => new MonoBinderValidableFieldInfo(fieldInfo));
+            }).Select(fieldInfo => new MonoBinderValidableFieldInfo(view, fieldInfo));
         }
         
         // TODO Write summary

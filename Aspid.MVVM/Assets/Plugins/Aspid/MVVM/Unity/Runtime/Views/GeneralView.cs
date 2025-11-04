@@ -11,7 +11,7 @@ namespace Aspid.MVVM.StarterKit
         [SerializeField] private MonoScript _designViewModel;
 #endif
         
-        [RequireBinder]
+        [RequireBinder(Id = "General")]
         [SerializeField] private Binders[] _bindersList;
 
         protected override void InitializeInternal(IViewModel viewModel)

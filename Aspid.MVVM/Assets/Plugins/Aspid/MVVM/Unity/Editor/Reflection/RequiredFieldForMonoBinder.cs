@@ -58,11 +58,10 @@ namespace Aspid.MVVM
                     .FirstOrDefault(name => name is not null);
 
                 // If Custom id is null then GetIdFromFieldName.
-                if (id is null) return GetIdFromFieldName();
+                if (string.IsNullOrWhiteSpace(id)) return GetIdFromFieldName();
 
                 // Get members by id.
                 var nameMemberInfos = FieldContainerObjType.GetMember(id, bindingAttr);
-                if (nameMemberInfos.Length is 0 or > 1) return GetIdFromFieldName();
 
                 // Get Custom id from member value or GetIdFromFieldName.
                 return nameMemberInfos.FirstOrDefault() switch
@@ -70,7 +69,7 @@ namespace Aspid.MVVM
                     FieldInfo fieldInfo => fieldInfo.GetValue(FieldContainerObj) as string,
                     PropertyInfo propertyInfo => propertyInfo.GetValue(FieldContainerObj) as string,
                     _ => null
-                } ?? GetIdFromFieldName();
+                } ?? id!;
             }
 
             string GetIdFromFieldName() =>

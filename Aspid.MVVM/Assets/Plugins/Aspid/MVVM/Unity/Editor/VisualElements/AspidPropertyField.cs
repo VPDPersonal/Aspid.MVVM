@@ -21,6 +21,7 @@ namespace Aspid.MVVM
             : base(property, label)
         {
             Initialize();
+            styleSheets.Add(Resources.Load<StyleSheet>("Editor/Styles/aspid-mvvm-property-field"));
         }
 
         private void Initialize()

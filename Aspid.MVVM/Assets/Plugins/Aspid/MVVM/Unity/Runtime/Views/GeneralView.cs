@@ -11,17 +11,18 @@ namespace Aspid.MVVM.StarterKit
         [SerializeField] private MonoScript _designViewModel;
 #endif
         
-        [SerializeField] private Binders[] _binderList;
+        [RequireBinder]
+        [SerializeField] private Binders[] _bindersList;
 
         protected override void InitializeInternal(IViewModel viewModel)
         {
-            foreach (var binders in _binderList)
+            foreach (var binders in _bindersList)
                 binders.Bind(viewModel);
         }
 
         protected override void DeinitializeInternal()
         {
-            foreach (var binders in _binderList)
+            foreach (var binders in _bindersList)
                 binders.Unbind();
         }
 
@@ -33,7 +34,7 @@ namespace Aspid.MVVM.StarterKit
 #endif
             [SerializeField] private string _id;
             
-            [RequireBinder(nameof(_assemblyQualifiedName), Name = nameof(_id))]
+            [RequireBinder(nameof(_assemblyQualifiedName), Id = nameof(_id))]
             [SerializeField] private MonoBinder[] _monoBinders;
             
             public void Bind(IViewModel viewModel)

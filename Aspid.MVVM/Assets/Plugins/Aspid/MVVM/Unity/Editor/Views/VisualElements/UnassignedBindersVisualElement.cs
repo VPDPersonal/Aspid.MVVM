@@ -7,14 +7,16 @@ using UnityEngine.UIElements;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM
 {
-    public sealed class UnassignedBindersVisualElement : VisualElement
+    public sealed class UnassignedBindersVisualElement<TMonoView, TEditor> : VisualElement
+        where TMonoView : MonoView 
+        where TEditor : MonoViewEditor<TMonoView, TEditor>
     {
         private const string Warning = "It is recommended not to leave unassigned Binders";
         
-        private readonly MonoViewEditor _editor;
+        private readonly TEditor _editor;
         private readonly VisualElement _unassignedBindersContainer;
 
-        public UnassignedBindersVisualElement(MonoViewEditor editor)
+        public UnassignedBindersVisualElement(TEditor editor)
         {
             _editor = editor;
             _unassignedBindersContainer = new VisualElement().SetName("UnassignedBindersContainer");

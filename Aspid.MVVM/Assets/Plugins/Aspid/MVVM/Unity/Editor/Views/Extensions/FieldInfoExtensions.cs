@@ -24,14 +24,14 @@ namespace Aspid.MVVM
             field.SetValue(obj, isArray ? typedArray : typedArray.GetValue(0));
         }
 
-        public static T[]? GetValueAsArray<T>(this FieldInfo field, object obj)
+        public static T?[] GetValueAsArray<T>(this FieldInfo field, object obj)
         {
-            T[]? values;
+            T?[]? values;
                 
             if (field.FieldType.IsArray) values = field.GetValue(obj) as T[];
             else values = field.GetValue(obj) is T binder ? new[] { binder } : null;
 
-            return values;
+            return values ?? Array.Empty<T>();
         }
     }
 }

@@ -11,9 +11,11 @@ namespace Aspid.MVVM
     [AttributeUsage(AttributeTargets.Field, AllowMultiple = true)]
     public sealed class RequireBinderAttribute : Attribute
     {
-        public string? Name { get; set; }
+        public string? Id { get; set; }
         
-        public string[] AssemblyQualifiedNames { get; }
+        public string[]? AssemblyQualifiedNames { get; }
+        
+        public RequireBinderAttribute() { }
         
         public RequireBinderAttribute(Type type)
             : this(new[] { type }) { }

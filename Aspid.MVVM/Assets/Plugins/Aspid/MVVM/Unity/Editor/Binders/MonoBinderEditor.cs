@@ -1,4 +1,6 @@
 #if !ASPID_MVVM_EDITOR_DISABLED
+using System;
+using System.Collections;
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
@@ -55,8 +57,9 @@ namespace Aspid.MVVM
               
                 if (view&& !string.IsNullOrWhiteSpace(IdProperty.stringValue))
                 {
-                    // TODO Aspid Delete MonoView
-                    ViewUtility.ValidateView(view as MonoView);
+                    // TODO Aspid.MVVM – Delete MonoView
+                    if (view is not MonoView monoView) throw new NullReferenceException(nameof(monoView));
+                    ViewAndMonoBinderSyncValidator.ValidateView(monoView);
                 }
             }
             
@@ -150,21 +153,23 @@ namespace Aspid.MVVM
             {
                 if (string.IsNullOrWhiteSpace(IdProperty.stringValue)) return;
 
+                // TODO Aspid.MVVM – Fix
                 var componentView = ViewProperty.objectReferenceValue;
-                if (componentView && componentView is IView view && view.TryGetMonoBinderValidableFieldById(IdProperty.stringValue, out var field))
+                if (componentView && componentView is IView view && view.TryGetRequireBinderFieldsById(IdProperty.stringValue, out var field))
                 {
-                    var binderProperty = new SerializedObject(componentView).FindProperty(field!.Name);
-
-                    if (binderProperty is not null)
+                    if (field.FieldType.IsArray)
                     {
-                        if (binderProperty.isArray)
+                        foreach (var item in (IEnumerable)field.GetValue(field.FieldContainerObj))
                         {
-                            for (var i = 0; i < binderProperty.arraySize; i++)
+                            if ((MonoBinder)item == TargetAsMonoBinder)
                             {
-                                if (binderProperty.GetArrayElementAtIndex(i).objectReferenceValue == TargetAsMonoBinder) return;
+                                return;
                             }
                         }
-                        else if (binderProperty.objectReferenceValue == TargetAsMonoBinder) return;
+                    }
+                    else
+                    {
+                        if ((MonoBinder)field.GetValue(field.FieldContainerObj) == TargetAsMonoBinder) return;
                     }
                 }
                 
@@ -224,10 +229,10 @@ namespace Aspid.MVVM
                 if (_previousView == view && _previousId == id) return;
 
                 if (_previousView && !string.IsNullOrWhiteSpace(_previousId))
-                    ViewUtility.RemoveBinderIfExist(_previousView, binder, _previousId);
+                    ViewAndMonoBinderSyncValidator.RemoveBinderIfExistInView(binder, _previousView, _previousId);
 
                 if (view && !string.IsNullOrWhiteSpace(id))
-                    ViewUtility.SetBinderIfNotExist(binder);
+                    ViewAndMonoBinderSyncValidator.SetBinderIfNotExistInView(binder);
             }
         }
     }

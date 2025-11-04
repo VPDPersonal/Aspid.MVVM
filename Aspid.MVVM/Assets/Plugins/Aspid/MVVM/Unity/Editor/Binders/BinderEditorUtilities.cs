@@ -12,11 +12,10 @@ namespace Aspid.MVVM
         public static List<string> GetIds<T>(T binder, IView view)
             where T : Component, IBinder
         {
-            return view.GetMonoBinderValidableFields()
+            return view.GetRequireBinderFields()
                 .Where(field =>
                 {
-                    var requiredTypes = field.GetRequiredTypes();
-                    if (!requiredTypes.IsBinderMatchRequiredType(binder)) return false;
+                    if (!field.IsBinderMatchRequiredType(binder)) return false;
                     
                     var fieldType = !field.FieldType.IsArray
                         ? field.FieldType
@@ -24,7 +23,7 @@ namespace Aspid.MVVM
 
                     return fieldType?.IsInstanceOfType(binder) ?? false;
                 })
-                .Select(field => field.GetBinderId(view))
+                .Select(field => field.Id)
                 .ToList();
         }
         

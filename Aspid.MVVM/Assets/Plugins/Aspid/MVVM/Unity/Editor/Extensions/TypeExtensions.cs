@@ -54,5 +54,22 @@ namespace Aspid.MVVM
 
             return memberInfoList;
         }
+        
+        public static Type GetUnitySerializableType(this FieldInfo field)
+        {
+            var fieldType = field.FieldType;
+
+            while (fieldType.IsArray || fieldType.IsGenericType && fieldType.GetGenericTypeDefinition() == typeof(List<>))
+            {
+                fieldType = fieldType.IsArray
+                    ? fieldType.GetElementType()
+                    : fieldType.GetGenericArguments()[0];
+
+                if (fieldType is null) 
+                    throw new NullReferenceException($"Field {field.Name} of type {fieldType} cannot be null.");
+            }
+            
+            return fieldType;
+        }
     }
 }

@@ -32,14 +32,14 @@ namespace Aspid.MVVM.StarterKit
 #if UNITY_EDITOR
             [SerializeField] private string _assemblyQualifiedName;      
 #endif
-            [SerializeField] private string _id;
+            [SerializeField] private string _name;
             
-            [RequireBinder(nameof(_assemblyQualifiedName), Id = nameof(_id))]
+            [RequireBinder(nameof(_assemblyQualifiedName), Id = nameof(_name))]
             [SerializeField] private MonoBinder[] _monoBinders;
             
             public void Bind(IViewModel viewModel)
             {
-                var result = viewModel.FindBindableMember(new FindBindableMemberParameters(_id));
+                var result = viewModel.FindBindableMember(new FindBindableMemberParameters(_name));
                 if (!result.IsFound) return;
                 
                 _monoBinders.BindSafely(result);

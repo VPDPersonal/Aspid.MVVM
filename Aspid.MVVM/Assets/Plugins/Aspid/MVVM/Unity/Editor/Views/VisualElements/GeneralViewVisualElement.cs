@@ -36,6 +36,7 @@ namespace Aspid.MVVM
             if (Editor.DesignViewModel.objectReferenceValue is null)
             {
                 Editor.BindersList.arraySize = 0;
+                Editor.BindersList.serializedObject.ApplyModifiedProperties();
                 return container;
             }
 
@@ -49,26 +50,47 @@ namespace Aspid.MVVM
                     .Where(field => !field.IsDefined(typeof(GeneratedCodeAttribute)))
                     .ToArray();
 
-                Editor.BindersList.arraySize = fields.Length;
+                var methods = type.GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)
+                    .Where(method => method.IsDefined(typeof(RelayCommandAttribute)))
+                    .ToArray();
+
+                Editor.BindersList.arraySize = fields.Length + methods.Length;
+                Editor.BindersList.serializedObject.ApplyModifiedProperties();
                 if (Editor.BindersList.arraySize is 0) return container;
                 
                 for (var i = 0; i < fields.Length; i++)
                 {
                     var element = Editor.BindersList.GetArrayElementAtIndex(i);
                     var assemblyQualifiedName = element.FindPropertyRelative("_assemblyQualifiedName");
-                    var id =  element.FindPropertyRelative("_id");
+                    var id =  element.FindPropertyRelative("_name");
                     var monoBinders = element.FindPropertyRelative("_monoBinders");
 
                     assemblyQualifiedName.stringValue = fields[i].FieldType.AssemblyQualifiedName;
                     id.stringValue = fields[i].GetGeneratedPropertyName();
                 }
+                
+                for (var i = 0; i < methods.Length; i++)
+                {
+                    var property = type.GetProperty(methods[i].Name + "Command", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+                    if (property is null) continue;
+                    
+                    var element = Editor.BindersList.GetArrayElementAtIndex(fields.Length + i);
+                    var assemblyQualifiedName = element.FindPropertyRelative("_assemblyQualifiedName");
+                    var id =  element.FindPropertyRelative("_name");
+                    var monoBinders = element.FindPropertyRelative("_monoBinders");
+
+                    assemblyQualifiedName.stringValue = property.PropertyType.AssemblyQualifiedName;//methods[fields.Length + i].FieldType.AssemblyQualifiedName;
+                    id.stringValue = property.Name;
+                }
+                
+                Editor.BindersList.serializedObject.ApplyModifiedProperties();
             }
             
             for (var i = 0; i < Editor.BindersList.arraySize; i++)
             {
                 var element = Editor.BindersList.GetArrayElementAtIndex(i);
                 var assemblyQualifiedName = element.FindPropertyRelative("_assemblyQualifiedName");
-                var id =  element.FindPropertyRelative("_id");
+                var id =  element.FindPropertyRelative("_name");
                 var monoBinders = element.FindPropertyRelative("_monoBinders");
 
                 var property = new AspidPropertyField(monoBinders, id.stringValue); 

@@ -33,6 +33,19 @@ namespace Aspid.MVVM
         {
             // For Field
             var field = Children().FirstOrDefault(element => !element.ClassListContains("unity-decorator-drawers-container"));
+
+            if (parent is AspidContainer container)
+            {
+                if (container[0] == this)
+                {
+                    Children()
+                        .FirstOrDefault(element => element.ClassListContains("unity-decorator-drawers-container"))
+                        ?.Children()
+                        .FirstOrDefault(element => element.ClassListContains("unity-header-drawer__label"))
+                        ?.SetMargin(top: 0);
+                }
+            }
+            
             field?.AddToClassList("aspid-property-field");
             field?.AddToClassList("aspid-lighter-container");
             

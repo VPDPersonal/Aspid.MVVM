@@ -47,7 +47,7 @@ namespace Aspid.MVVM
         {
             OnUpdate();
             
-            this.Q<VisualElement>("ViewModelDebugPanel").style.display = Editor.TargetAsSpecific?.ViewModel is not null 
+            this.Q<VisualElement>("ViewModelDebugPanel").style.display = Editor.TargetAsSpecificView?.ViewModel is not null 
                 ? DisplayStyle.Flex
                 : DisplayStyle.None;
         }
@@ -77,7 +77,7 @@ namespace Aspid.MVVM
         }
 
         private AspidInspectorHeader BuildHeader() => 
-            new(GetScriptName(), Editor.TargetAsSpecific, IconPath);
+            new(GetScriptName(), Editor.TargetAsSpecificView, IconPath);
 
         protected virtual VisualElement? OnBuiltHeader() => null;
         
@@ -91,12 +91,11 @@ namespace Aspid.MVVM
         {
             return new AspidContainer()
                 .SetName("ViewModelDebugPanel")
-                .AddChild(ViewModelDebugPanel.Build(Editor.TargetAsSpecific)
-                    .SetName("ViewModelContainer"));
+                .AddChild(ViewModelDebugPanel.Build(Editor.TargetAsSpecificView));
         }
         #endregion
 
         protected virtual string GetScriptName() =>
-            Editor.TargetAsSpecific.GetScriptName();
+            Editor.TargetAsSpecificView.GetScriptName();
     }
 }

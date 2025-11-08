@@ -55,21 +55,29 @@ namespace Aspid.MVVM
             return memberInfoList;
         }
         
-        public static Type GetUnitySerializableType(this FieldInfo field)
+        public static Type GetUnitySerializableType(this FieldInfo field) =>
+            GetUnitySerializableType(field.FieldType, field.Name);
+
+        public static Type GetUnitySerializableType(this PropertyInfo propertyInfo) =>
+            GetUnitySerializableType(propertyInfo.PropertyType, propertyInfo.Name);
+
+        private static Type GetUnitySerializableType(Type? type, string name)
         {
-            var fieldType = field.FieldType;
-
-            while (fieldType.IsArray || fieldType.IsGenericType && fieldType.GetGenericTypeDefinition() == typeof(List<>))
+            if (type is null) throw ThrowException();
+            
+            while (type.IsArray || type.IsGenericType && type.GetGenericTypeDefinition() == typeof(List<>))
             {
-                fieldType = fieldType.IsArray
-                    ? fieldType.GetElementType()
-                    : fieldType.GetGenericArguments()[0];
+                type = type.IsArray
+                    ? type.GetElementType()
+                    : type.GetGenericArguments()[0];
 
-                if (fieldType is null) 
-                    throw new NullReferenceException($"Field {field.Name} of type {fieldType} cannot be null.");
+                if (type is null) throw ThrowException();
             }
             
-            return fieldType;
+            return type;
+            
+            NullReferenceException ThrowException() =>
+                throw new NullReferenceException($"Member {name} of type {type} cannot be null.");
         }
     }
 }

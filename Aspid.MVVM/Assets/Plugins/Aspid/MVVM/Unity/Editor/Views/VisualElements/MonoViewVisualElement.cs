@@ -40,7 +40,7 @@ namespace Aspid.MVVM
         
         protected override string GetScriptName()
         {
-            var view = Editor.TargetAsSpecific;
+            var view = Editor.TargetAsSpecificView;
             if (!view) return string.Empty;
 	        
             var type = view.GetType();

@@ -14,6 +14,14 @@ namespace Aspid.MVVM
     [AttributeUsage(AttributeTargets.Field, AllowMultiple = true)]
     public sealed class BindAlsoAttribute : Attribute
     {
-        public BindAlsoAttribute(string propertyName) { }
+#if UNITY_EDITOR || DEBUG
+        // TODO Aspid.MVVM – Write summary
+        public string PropertyName { get; }
+#endif
+
+        public BindAlsoAttribute(string propertyName)
+        {
+            PropertyName = propertyName;
+        }
     }
 }

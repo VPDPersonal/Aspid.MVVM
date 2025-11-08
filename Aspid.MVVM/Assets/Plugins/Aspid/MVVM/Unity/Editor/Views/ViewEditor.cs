@@ -10,32 +10,32 @@ namespace Aspid.MVVM
         where T : Object, IView
         where TEditor : ViewEditor<T, TEditor>
     {
-        public T TargetAsSpecific => target as T;
+        public T TargetAsSpecificView => target as T;
         
         protected ViewVisualElement<T, TEditor> Root { get; private set; }
         
         public sealed override VisualElement CreateInspectorGUI()
         {
-            Root = BuildVisualElement();
-            Root.Initialize();
+            OnCreatingInspectorGUI();
+            {
+                Root = BuildVisualElement();
+                Root.Initialize();
+
+                Root.RegisterCallbackOnce<GeometryChangedEvent>(_ => Root.Update());
+                Root.RegisterCallback<SerializedPropertyChangeEvent>(OnSerializedPropertyChange);
+            }
+            OnCreatedInspectorGUI();
             
-            OnCreatedInspectorGUI(Root);
             return Root;
         }
 
         protected abstract ViewVisualElement<T, TEditor> BuildVisualElement();
 
-        protected virtual void OnCreatedInspectorGUI(ViewVisualElement<T, TEditor> root)
-        {
-            root.RegisterCallbackOnce<GeometryChangedEvent>(_ =>
-            {
-                root.Update();
-            });
-            
-            root.RegisterCallback<SerializedPropertyChangeEvent>(_ =>
-            {
-                root.Update();
-            });
-        }
+        protected virtual void OnCreatingInspectorGUI() { }
+        
+        protected virtual void OnCreatedInspectorGUI() { }
+
+        protected virtual void OnSerializedPropertyChange(SerializedPropertyChangeEvent e) =>
+            Root.Update();
     }
 }

@@ -3,7 +3,6 @@ using System.Linq;
 using UnityEditor;
 using UnityEditor.UIElements;
 using System.Collections.Generic;
-using UnityEngine;
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM
@@ -20,7 +19,7 @@ namespace Aspid.MVVM
         where TMonoView : MonoView
         where TEditor : MonoViewEditor<TMonoView, TEditor>  
     {
-        public IEnumerable<IMonoBinderValidable> UnassignedBinders => TargetAsSpecific
+        public IEnumerable<IMonoBinderValidable> UnassignedBinders => TargetAsSpecificView
             .GetComponentsInChildren<IMonoBinderValidable>(true)
             .Where(binder => binder.View is null || string.IsNullOrWhiteSpace(binder.Id));
 
@@ -31,7 +30,7 @@ namespace Aspid.MVVM
         {
             OnEnabling();
             Validate();
-            LastBinders = ValidableBindersById.GetValidableBindersById(TargetAsSpecific);
+            LastBinders = ValidableBindersById.GetValidableBindersById(TargetAsSpecificView);
             OnEnabled();
         }
 
@@ -52,25 +51,20 @@ namespace Aspid.MVVM
 
         protected virtual void OnDisabled() { }
         #endregion
-        
-        protected override void OnCreatedInspectorGUI(ViewVisualElement<TMonoView, TEditor> root)
+
+        protected override void OnSerializedPropertyChange(SerializedPropertyChangeEvent e)
         {
-            base.OnCreatedInspectorGUI(root);
+            var binders = ValidableBindersById.GetValidableBindersById(TargetAsSpecificView);
+            ViewAndMonoBinderSyncValidator.ValidateViewChanges(TargetAsSpecificView, LastBinders, binders);
+            LastBinders = binders;
 
-            root.RegisterCallback<SerializedPropertyChangeEvent>(_ =>
-            {
-                var binders = ValidableBindersById.GetValidableBindersById(TargetAsSpecific);
-                ViewAndMonoBinderSyncValidator.ValidateViewChanges(TargetAsSpecific, LastBinders, binders);
-                LastBinders = binders;
-
-                root.Update();
-            });
+            base.OnSerializedPropertyChange(e);
         }
 
         protected virtual void Validate()
         {
-            if (TargetAsSpecific)
-                ViewAndMonoBinderSyncValidator.ValidateView(TargetAsSpecific);
+            if (TargetAsSpecificView)
+                ViewAndMonoBinderSyncValidator.ValidateView(TargetAsSpecificView);
         }
     }
 }

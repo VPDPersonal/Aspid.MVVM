@@ -5,24 +5,27 @@ namespace Aspid.MVVM
 {
     public sealed class BinderListProperty
     {
-        private readonly SerializedProperty _property;
+        private readonly SerializedObject _serializedObject;
 
         public int ArraySize
         {
-            get => _property.arraySize;
+            get => Property.arraySize;
             set
             {
-                _property.arraySize = value;
-                _property.serializedObject.ApplyModifiedProperties();
+                Property.arraySize = value;
+                Property.serializedObject.ApplyModifiedProperties();
             }
         }
         
-        public BinderListProperty(SerializedProperty property)
+        private SerializedProperty Property =>
+            _serializedObject.FindProperty("_bindersList");
+        
+        public BinderListProperty(SerializedObject serializedObject)
         {
-            _property = property;
+            _serializedObject = serializedObject;
         }
 
         public BinderListElementProperty GetArrayElementAtIndex(int index) =>
-            new(_property.GetArrayElementAtIndex(index));
+            new(Property.GetArrayElementAtIndex(index));
     }
 }

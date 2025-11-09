@@ -1,6 +1,7 @@
 using System.Linq;
 using UnityEditor;
 using Aspid.MVVM.StarterKit;
+using UnityEditor.UIElements;
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM
@@ -18,11 +19,27 @@ namespace Aspid.MVVM
         
         protected override void OnEnabled()
         {
-            BindersList = new BinderListProperty(serializedObject.FindProperty("_bindersList"));
+            BindersList = new BinderListProperty(serializedObject);
             DesignViewModel = serializedObject.FindProperty("_designViewModel");
         }
 
-        protected override void OnCreatingInspectorGUI()
+        protected override void OnCreatingInspectorGUI() =>
+            UpdateMetaData();
+
+        protected override void OnSerializedPropertyChange(SerializedPropertyChangeEvent e)
+        {
+            base.OnSerializedPropertyChange(e);
+
+            if (e.changedProperty.propertyPath == "_designViewModel")
+            {
+                UpdateMetaData();
+                ((GeneralViewVisualElement)Root).UpdateGeneralBinders();
+            }
+            
+            base.OnSerializedPropertyChange(e);
+        }
+
+        private void UpdateMetaData()
         {
             var viewModelType = (DesignViewModel.objectReferenceValue as MonoScript)?.GetClass();
             

@@ -1,8 +1,8 @@
 #nullable enable
-using UnityEngine;
 using Aspid.UnityFastTools;
 using Aspid.MVVM.StarterKit;
 using UnityEngine.UIElements;
+using UnityEditor.UIElements;
 using System.Collections.Generic;
 
 // ReSharper disable once CheckNamespace
@@ -10,7 +10,7 @@ namespace Aspid.MVVM
 {
     public class GeneralViewVisualElement : MonoViewVisualElement<GeneralView, GeneralViewEditor>
     {
-        private VisualElement? _generalBinders;
+        public const string GeneralBindersId = "general-binders";
         
         protected override IEnumerable<string> PropertiesExcluding
         {
@@ -35,26 +35,36 @@ namespace Aspid.MVVM
             var container = new AspidContainer()
                 .AddChild(new AspidPropertyField(Editor.DesignViewModel));
             
-            _generalBinders = new VisualElement();
-            FillGeneralBinders();
-            
-            return container.AddChild(_generalBinders);
+            return container
+                .AddChild(BuildGeneralBinders());
         }
 
-        private void FillGeneralBinders()
+        private VisualElement BuildGeneralBinders()
         {
+            var container = new VisualElement().SetName(GeneralBindersId);
+            
             for (var i = 0; i < Editor.BindersList.ArraySize; i++)
             {
                 var element = Editor.BindersList.GetArrayElementAtIndex(i);
-                _generalBinders.AddChild(new AspidPropertyField(element.MonoBindersProperty, element.Id)
-                    .SetMargin(top: 3));
+
+                var property = new AspidPropertyField(element.MonoBindersProperty, element.Id)
+                    .SetMargin(top: 3);
+                
+                property.Bind(Editor.serializedObject);
+                container.AddChild(property);
             }
+
+            return container;
         }
 
-        protected override void OnUpdate()
+        public void UpdateGeneralBinders()
         {
-            base.OnUpdate();
-            // FillGeneralBinders();
+            var generalBinders = this.Q<VisualElement>(GeneralBindersId);
+            if (generalBinders is null) return;
+            
+            var generalBindersParent = generalBinders.parent;
+            generalBindersParent.Remove(this.Q<VisualElement>(GeneralBindersId));
+            generalBindersParent.AddChild(BuildGeneralBinders());
         }
     }
 }

@@ -3,7 +3,6 @@ using System;
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
-using System.Reflection;
 using System.Collections.Generic;
 using UnityEditor.SceneManagement;
 using System.Runtime.CompilerServices;
@@ -304,15 +303,20 @@ namespace Aspid.MVVM
 
             public static ReadOnlySpan<ChangedBinders> GetChangedBinders(ValidableBindersById oldBinders, ValidableBindersById newBinders)
             {
-                if (oldBinders.Count != newBinders.Count) throw new Exception(/*TODO Aspid.MVVM – Write message in Exception*/);
                 var changedFields = new List<ChangedBinders>(oldBinders.Count);
+                var keys = oldBinders.Keys.Union(newBinders.Keys);
 
-                foreach (var key in oldBinders.Keys)
+                foreach (var key in keys)
                 {
-                    var oldValue = oldBinders[key] ?? Array.Empty<IMonoBinderValidable>();
-                    var newValue = newBinders[key] ?? Array.Empty<IMonoBinderValidable>();
+                    var oldValue = oldBinders.TryGetValue(key, out var oldBinder)
+                        ? oldBinder ?? Array.Empty<IMonoBinderValidable>()
+                        : Array.Empty<IMonoBinderValidable>();
+                    
+                    var newValue = newBinders.TryGetValue(key, out var newBinder)
+                        ? newBinder ?? Array.Empty<IMonoBinderValidable>()
+                        : Array.Empty<IMonoBinderValidable>();
+                    
                     if (oldValue.SequenceEqual(newValue)) continue;
-
                     changedFields.Add(new ChangedBinders(BinderFieldInfoExtensions.GetBinderId(key), oldValue, newValue));
                 }
 

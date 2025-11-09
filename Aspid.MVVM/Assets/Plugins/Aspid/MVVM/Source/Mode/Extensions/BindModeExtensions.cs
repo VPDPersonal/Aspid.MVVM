@@ -1,5 +1,6 @@
 using System.Runtime.CompilerServices;
 
+// ReSharper disable once CheckNamespace
 namespace Aspid.MVVM
 {
     public static partial class BindModeExtensions

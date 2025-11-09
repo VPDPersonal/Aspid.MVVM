@@ -3,6 +3,7 @@ using System.Runtime.CompilerServices;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM
 {
+    // TODO Aspid.MVVM – Write summary
     public static class Unsafe
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

@@ -8,6 +8,7 @@ using System.Collections.Generic;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM
 {
+    // TODO Aspid.MVVM Unity – Write summary
     public class GeneralViewVisualElement : MonoViewVisualElement<GeneralView, GeneralViewEditor>
     {
         public const string GeneralBindersId = "general-binders";
@@ -19,8 +20,8 @@ namespace Aspid.MVVM
                 foreach (var property in base.PropertiesExcluding)
                     yield return property;
                 
-                yield return "_designViewModel";
-                yield return "_bindersList";
+                yield return Editor.DesignViewModel.propertyPath;
+                yield return Editor.BindersList.Property.propertyPath;
             }
         }
         

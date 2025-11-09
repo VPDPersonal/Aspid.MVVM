@@ -1,3 +1,4 @@
+#nullable enable
 using System.Linq;
 using UnityEngine;
 using UnityEditor;
@@ -8,24 +9,27 @@ using UnityEngine.UIElements;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM
 {
+    // TODO Aspid.MVVM Unity – Write summary
     public class AspidPropertyField : PropertyField
     {
+        public const string StyleClass = "aspid-property-field";
+        public static readonly StyleSheet StyleSheet = Resources.Load<StyleSheet>("Editor/Styles/aspid-mvvm-property-field");
+        
         public AspidPropertyField(SerializedProperty property)
             : base(property)
         {
             Initialize();
-            styleSheets.Add(Resources.Load<StyleSheet>("Editor/Styles/aspid-mvvm-property-field"));
         }
 
         public AspidPropertyField(SerializedProperty property, string label) 
             : base(property, label)
         {
             Initialize();
-            styleSheets.Add(Resources.Load<StyleSheet>("Editor/Styles/aspid-mvvm-property-field"));
         }
 
         private void Initialize()
         {
+            styleSheets.Add(StyleSheet);
             RegisterCallback<GeometryChangedEvent>(SetStyles);
         }
         
@@ -46,8 +50,8 @@ namespace Aspid.MVVM
                 }
             }
             
-            field?.AddToClassList("aspid-property-field");
-            field?.AddToClassList("aspid-lighter-container");
+            field?.AddToClassList(StyleClass);
+            field?.AddToClassList(AspidContainer.GetStyleClass(AspidContainer.StyleType.Lighter));
             
             // For [SerializeReferenceDropdown]
             foreach (var dropdown in this.Query<VisualElement>("dropdown-group").Build())

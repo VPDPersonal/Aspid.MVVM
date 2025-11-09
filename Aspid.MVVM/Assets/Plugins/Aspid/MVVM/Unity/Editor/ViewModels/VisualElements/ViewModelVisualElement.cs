@@ -10,6 +10,7 @@ using Object = UnityEngine.Object;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM
 {
+    // TODO Aspid.MVVM Unity – Write summary
     public class ViewModelVisualElement<TViewModel, TEditor> : VisualElement
         where TViewModel : Object, IViewModel
         where TEditor : ViewModelEditor<TViewModel, TEditor>
@@ -85,7 +86,7 @@ namespace Aspid.MVVM
 
         protected virtual VisualElement? OnBuiltHeader() => null;
 
-        private BaseInspectorVisualElement BuildBaseInspector() =>
+        private AspidBaseInspectorVisualElement BuildBaseInspector() =>
             new(SerializedObject, null, PropertiesExcluding.ToArray());
 
         protected virtual VisualElement? OnBuiltBaseInspector() => null;

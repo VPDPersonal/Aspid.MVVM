@@ -7,6 +7,7 @@ using System.Collections.Generic;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM
 {
+    // TODO Aspid.MVVM Unity – Write summary
     [CanEditMultipleObjects]
     [CustomEditor(typeof(MonoView), editorForChildClasses: true)]
     public sealed class MonoViewEditor : MonoViewEditor<MonoView, MonoViewEditor>
@@ -15,11 +16,12 @@ namespace Aspid.MVVM
             new MonoViewVisualElement(this);
     }
     
+    // TODO Aspid.MVVM Unity – Write summary
     public abstract class MonoViewEditor<TMonoView, TEditor> : ViewEditor<TMonoView, TEditor>
         where TMonoView : MonoView
         where TEditor : MonoViewEditor<TMonoView, TEditor>  
     {
-        public IEnumerable<IMonoBinderValidable> UnassignedBinders => TargetAsSpecificView
+        public IEnumerable<IMonoBinderValidable> UnassignedBinders => TargetAsView
             .GetComponentsInChildren<IMonoBinderValidable>(true)
             .Where(binder => binder.View is null || string.IsNullOrWhiteSpace(binder.Id));
 
@@ -29,8 +31,10 @@ namespace Aspid.MVVM
         private void OnEnable()
         {
             OnEnabling();
-            Validate();
-            LastBinders = ValidableBindersById.GetValidableBindersById(TargetAsSpecificView);
+            {
+                ValidateView();
+                LastBinders = ValidableBindersById.GetValidableBindersById(TargetAsView);
+            }
             OnEnabled();
         }
 
@@ -43,7 +47,9 @@ namespace Aspid.MVVM
         private void OnDisable()
         {
             OnDisabling();
-            Validate();
+            {
+                ValidateView();
+            }
             OnDisabled();
         }
 
@@ -52,19 +58,23 @@ namespace Aspid.MVVM
         protected virtual void OnDisabled() { }
         #endregion
 
-        protected override void OnSerializedPropertyChange(SerializedPropertyChangeEvent e)
+        protected override void OnSerializedPropertyChanged(SerializedPropertyChangeEvent e)
         {
-            var binders = ValidableBindersById.GetValidableBindersById(TargetAsSpecificView);
-            ViewAndMonoBinderSyncValidator.ValidateViewChanges(TargetAsSpecificView, LastBinders, binders);
-            LastBinders = binders;
-
-            base.OnSerializedPropertyChange(e);
+            ValidateChangedInView();
+            base.OnSerializedPropertyChanged(e);
         }
 
-        protected virtual void Validate()
+        protected virtual void ValidateView()
         {
-            if (TargetAsSpecificView)
-                ViewAndMonoBinderSyncValidator.ValidateView(TargetAsSpecificView);
+            if (TargetAsView)
+                ViewAndMonoBinderSyncValidator.ValidateView(TargetAsView);
+        }
+
+        protected void ValidateChangedInView()
+        {
+            var binders = ValidableBindersById.GetValidableBindersById(TargetAsView);
+            ViewAndMonoBinderSyncValidator.ValidateViewChanges(TargetAsView, LastBinders, binders);
+            LastBinders = binders;
         }
     }
 }

@@ -6,7 +6,7 @@ using System.Collections.Generic;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM
 {
-    // TODO Aspid.MVVM – Write summary
+    // TODO Aspid.MVVM Unity – Write summary
     public static class RequiredFieldForMonoBinderExtensions
     {
         private const BindingFlags BindingFlags =

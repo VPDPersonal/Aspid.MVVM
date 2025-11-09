@@ -7,6 +7,8 @@ using System.Collections.Generic;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM
 {
+    // TODO Aspid.MVVM Unity – Refactor
+    // TODO Aspid.MVVM Unity – Write summary
     public static class BinderEditorUtilities
     {
         public static List<string> GetIds<T>(T binder, IView view)

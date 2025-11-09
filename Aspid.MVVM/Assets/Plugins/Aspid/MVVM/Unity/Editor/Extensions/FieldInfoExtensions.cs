@@ -5,6 +5,7 @@ using System.Reflection;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM
 {
+    // TODO Aspid.MVVM Unity – Write summary
     public static class FieldInfoExtensions
     {
         public static void SetValueFromCastValue<T>(this FieldInfo field, object obj, params T?[]? value)

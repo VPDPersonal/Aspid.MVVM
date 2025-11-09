@@ -1,6 +1,7 @@
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM
 {
+    // TODO Aspid.MVVM Unity – Write summary
     public class ScriptableViewModelVisualElement : ViewModelVisualElement<ScriptableViewModel, ScriptableViewModelEditor>
     {
         public ScriptableViewModelVisualElement(ScriptableViewModelEditor editor) 

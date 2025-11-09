@@ -11,6 +11,8 @@ using System.Collections.Generic;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM
 {
+    // TODO Aspid.MVVM Unity – Refactor
+    // TODO Aspid.MVVM Unity – Write summary
     public class MonoBinderVisualElement : VisualElement
     {
         private bool _isInitialized;
@@ -130,7 +132,7 @@ namespace Aspid.MVVM
                      .SetFlexGrow(1));
         }
 
-        private BaseInspectorVisualElement BuildBaseInspector() =>
+        private AspidBaseInspectorVisualElement BuildBaseInspector() =>
             new(SerializedObject, "Parameters", PropertiesExcluding.ToArray());
 
         protected virtual VisualElement BuildLogsContainer()

@@ -17,7 +17,7 @@ namespace Aspid.MVVM
             }
         }
         
-        private SerializedProperty Property =>
+        public SerializedProperty Property =>
             _serializedObject.FindProperty("_bindersList");
         
         public BinderListProperty(SerializedObject serializedObject)

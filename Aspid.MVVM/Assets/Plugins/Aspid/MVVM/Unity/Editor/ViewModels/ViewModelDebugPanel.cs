@@ -14,7 +14,8 @@ using Object = UnityEngine.Object;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM
 {
-    // TODO Aspid.MVVM Refactor this class
+    // TODO Aspid.MVVM Unity – Write summary
+    // TODO Aspid.MVVM Unity – Refactor this class
     internal static class ViewModelDebugPanel
     {
         private const BindingFlags BindingAttr = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic;

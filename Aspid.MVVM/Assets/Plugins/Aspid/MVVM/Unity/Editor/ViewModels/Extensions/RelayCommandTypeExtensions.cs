@@ -5,6 +5,7 @@ using System.Collections.Generic;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM
 {
+    // TODO Aspid.MVVM Unity – Write summary
     internal static class RelayCommandTypeExtensions
     {
         public static bool IsRelayCommandType(this Type type)

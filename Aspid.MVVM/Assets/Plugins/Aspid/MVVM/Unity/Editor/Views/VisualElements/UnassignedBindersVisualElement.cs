@@ -7,6 +7,7 @@ using UnityEngine.UIElements;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM
 {
+    // TODO Aspid.MVVM Unity – Write summary
     public sealed class UnassignedBindersVisualElement<TMonoView, TEditor> : VisualElement
         where TMonoView : MonoView 
         where TEditor : MonoViewEditor<TMonoView, TEditor>
@@ -19,6 +20,7 @@ namespace Aspid.MVVM
         public UnassignedBindersVisualElement(TEditor editor)
         {
             _editor = editor;
+            // TODO Aspid.MVVM Unity – Rename Name
             _unassignedBindersContainer = new VisualElement().SetName("UnassignedBindersContainer");
             
             Add(Build());

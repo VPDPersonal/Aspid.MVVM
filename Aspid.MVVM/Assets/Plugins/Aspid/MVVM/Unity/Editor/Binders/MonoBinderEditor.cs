@@ -10,6 +10,8 @@ using Object = UnityEngine.Object;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM
 {
+    // TODO Aspid.MVVM Unity – Refactor
+    // TODO Aspid.MVVM Unity – Write summary
     [CanEditMultipleObjects]
     [CustomEditor(typeof(MonoBinder), true)]
     public class MonoBinderEditor : Editor

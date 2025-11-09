@@ -9,6 +9,8 @@ using Object = UnityEngine.Object;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM
 {
+    // TODO Aspid.MVVM Unity – Refactor
+    // TODO Aspid.MVVM Unity – Write summary
     internal static class AddBinderContextMenu
     {
         private const string AddBinderText = "Add Binder";

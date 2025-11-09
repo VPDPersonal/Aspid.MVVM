@@ -7,6 +7,7 @@ using System.Collections.Generic;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM
 {
+    // TODO Aspid.MVVM Unity – Write summary
     public static class TypeExtensions
     {
         public static Type? GetExplicitInterface(this Type implementingType, PropertyInfo property)

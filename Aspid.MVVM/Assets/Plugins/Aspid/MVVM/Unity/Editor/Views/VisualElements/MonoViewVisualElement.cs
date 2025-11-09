@@ -7,12 +7,14 @@ using Aspid.UnityFastTools.Editors;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM
 {
-    public class MonoViewVisualElement : MonoViewVisualElement<MonoView, MonoViewEditor>
+    // TODO Aspid.MVVM Unity – Write summary
+    public sealed class MonoViewVisualElement : MonoViewVisualElement<MonoView, MonoViewEditor>
     {
         public MonoViewVisualElement(MonoViewEditor editor) :
             base(editor) { }
     }
 
+    // TODO Aspid.MVVM Unity – Write summary
     public abstract class MonoViewVisualElement<TView, TEditor> : ViewVisualElement<TView, TEditor>
         where TView : MonoView
         where TEditor : MonoViewEditor<TView, TEditor>
@@ -40,7 +42,7 @@ namespace Aspid.MVVM
         
         protected override string GetScriptName()
         {
-            var view = Editor.TargetAsSpecificView;
+            var view = Editor.TargetAsView;
             if (!view) return string.Empty;
 	        
             var type = view.GetType();

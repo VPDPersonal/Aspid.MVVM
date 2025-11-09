@@ -8,19 +8,19 @@ using System.Collections.Generic;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM
 {
-    public sealed class BaseInspectorVisualElement : VisualElement
+    // TODO Aspid.MVVM Unity – Write summary
+    public sealed class AspidBaseInspectorVisualElement : VisualElement
     {
-        public BaseInspectorVisualElement(SerializedObject serializedObject, string? title, IReadOnlyCollection<string>? propertiesExcluding = null)
+        public AspidBaseInspectorVisualElement(SerializedObject serializedObject, string? title, IReadOnlyCollection<string>? propertiesExcluding = null)
         {
             var container = Build(serializedObject, title, propertiesExcluding);
             style.display = container.style.display;
             Add(container);
         }
 
-        private VisualElement Build(SerializedObject serializedObject, string? title, IReadOnlyCollection<string>? propertiesExcluding)
+        private static VisualElement Build(SerializedObject serializedObject, string? title, IReadOnlyCollection<string>? propertiesExcluding)
         {
             var container = new AspidContainer();
-            
             
             if (!string.IsNullOrWhiteSpace(title))
                 container.AddChild(new AspidTitle(title));

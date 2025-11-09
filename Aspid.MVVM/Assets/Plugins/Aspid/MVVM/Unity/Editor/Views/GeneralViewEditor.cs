@@ -1,3 +1,4 @@
+#if !ASPID_MVVM_EDITOR_DISABLED
 using System.Linq;
 using UnityEditor;
 using Aspid.MVVM.StarterKit;
@@ -6,6 +7,7 @@ using UnityEditor.UIElements;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM
 {
+    // TODO Aspid.MVVM Unity – Write summary
     [CanEditMultipleObjects]
     [CustomEditor(typeof(GeneralView), editorForChildClasses: true)]
     public class GeneralViewEditor : MonoViewEditor<GeneralView, GeneralViewEditor>
@@ -26,17 +28,18 @@ namespace Aspid.MVVM
         protected override void OnCreatingInspectorGUI() =>
             UpdateMetaData();
 
-        protected override void OnSerializedPropertyChange(SerializedPropertyChangeEvent e)
+        protected override void OnSerializedPropertyChanged(SerializedPropertyChangeEvent e)
         {
-            base.OnSerializedPropertyChange(e);
-
-            if (e.changedProperty.propertyPath == "_designViewModel")
+            ValidateChangedInView();
+            
+            if (e.changedProperty.propertyPath == DesignViewModel.propertyPath)
             {
                 UpdateMetaData();
                 ((GeneralViewVisualElement)Root).UpdateGeneralBinders();
             }
-            
-            base.OnSerializedPropertyChange(e);
+
+            ValidateChangedInView();
+            Root.Update();
         }
 
         private void UpdateMetaData()
@@ -50,7 +53,7 @@ namespace Aspid.MVVM
             }
 
             var viewModelMeta = new ViewModelMeta(viewModelType);
-            var viewMeta = new ViewMeta(TargetAsSpecificView.GetType());
+            var viewMeta = new ViewMeta(TargetAsView.GetType());
 
             var bindableProperties = viewModelMeta.BindableProperties
                 .Where(bindableProperty => viewMeta.BinderProperties.All(binderProperty => binderProperty.Id != bindableProperty.Id))
@@ -68,3 +71,4 @@ namespace Aspid.MVVM
         }
     }
 }
+#endif

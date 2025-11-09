@@ -1,27 +1,20 @@
 #nullable enable
 using System;
-using System.Collections;
 using System.Linq;
-using System.Reflection;
-using System.Collections.Generic;
 using UnityEngine;
+using System.Reflection;
+using System.Collections;
+using System.Collections.Generic;
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM
 {
-    // TODO Aspid.MVVM – Write summary
+    // TODO Aspid.MVVM Unity – Write summary
     public sealed partial class RequiredFieldForMonoBinder : FieldInfo
     {
-        // TODO Aspid.MVVM – Write summary
         public readonly string Id;
-
-        // TODO Aspid.MVVM – Write summary
         public readonly object FieldContainerObj;
-
-        // TODO Aspid.MVVM – Write summary
         public readonly Type FieldContainerObjType;
-
-        // TODO Aspid.MVVM – Write summary
         public readonly IReadOnlyCollection<RequiredFieldForMonoBinder> Children;
 
         private bool? _isValidation;
@@ -57,7 +50,7 @@ namespace Aspid.MVVM
                     .Select(attribute => attribute.Id)
                     .FirstOrDefault(name => name is not null);
 
-                // If Custom id is null then GetIdFromFieldName.
+                // If Custom id is null, then GetIdFromFieldName.
                 if (string.IsNullOrWhiteSpace(id)) return GetIdFromFieldName();
 
                 // Get members by id.
@@ -145,8 +138,7 @@ namespace Aspid.MVVM
                 return types;
             }
         }
-
-        // TODO Aspid.MVVM – Write summary
+        
         public bool IsBinderMatchRequiredType(IBinder binder)
         {
             if (_requiredTypes.Count is 0) return true;
@@ -170,8 +162,7 @@ namespace Aspid.MVVM
 
         public bool IsValidation() =>
             IsValidation(this);
-
-        // TODO Aspid.MVVM – Write summary
+        
         public static bool IsValidation(RequiredFieldForMonoBinder field) =>
             field._isValidation ??= IsValidation(field._field);
 

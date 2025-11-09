@@ -8,6 +8,8 @@ using Object = UnityEngine.Object;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM
 {
+    // TODO Aspid.MVVM Unity – Refactor
+    // TODO Aspid.MVVM Unity – Write summary
     internal sealed class DelegateField : VisualElement
     {
         public DelegateField(Delegate value, string label, string prefsKey)

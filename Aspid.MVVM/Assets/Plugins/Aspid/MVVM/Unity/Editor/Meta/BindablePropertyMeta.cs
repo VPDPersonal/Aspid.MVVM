@@ -5,6 +5,7 @@ using System.Reflection;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM
 {
+    // TODO Aspid.MVVM Unity – Write summary
     public class BindablePropertyMeta
     {
         public readonly Type Type;

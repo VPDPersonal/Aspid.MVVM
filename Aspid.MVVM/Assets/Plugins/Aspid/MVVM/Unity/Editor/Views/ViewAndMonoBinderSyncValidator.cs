@@ -10,19 +10,20 @@ using System.Runtime.CompilerServices;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM
 {
+    // TODO Aspid.MVVM Unity – Write summary
     public static class ViewAndMonoBinderSyncValidator
     {
         #region Validate Methods
         public static void ValidateView<TView>(TView view)
             where TView : Component, IView
         {
-            // Сначала необходимо провалидировать текущие биндеры.
+            // First, you need to validate the current binders.
             ValidateBinderFromView(view);
             
-            // Получаем все поля, подходящие для валидируемых биндеров.
+            // We get all fields suitable for validatable binders.
             var fields = view.GetRequireBinderFields();
             
-            // Получаем все дочерние к данной view, валидируемые биндеры, которые связаны с данной view. 
+            // We get all child views for this view, valid binders that are associated with this view.
             var bindersOnScene = view.GetComponentsInChildren<IMonoBinderValidable>(includeInactive: true)
                 .Where(binder => binder.View is Component binderView && binderView == view).ToArray();
             
@@ -33,12 +34,12 @@ namespace Aspid.MVVM
                 var assignedBinders = field.GetValueAsArray<IMonoBinderValidable>(field.FieldContainerObj);
                 var binders = bindersOnScene.Where(binder => field.Id == binder.Id).ToArray();
 
-                // Если присоединенные биндеры и биндеры на сцене не совпадают, то установить новые присоединенные биндеры. 
+                // If the attached binders and binders on stage do not match, set new attached binders.
                 if (!EqualsBinders(assignedBinders, binders))
                     field.SetValueFromCastValueAndSaveView(view, binders);
             }
             
-            // Для полной валидации так же необходимо провалидировать новые биндеры.
+            // For complete validation, it is also necessary to validate new binders.
             ValidateBinderFromView(view);
             return;
 
@@ -57,7 +58,7 @@ namespace Aspid.MVVM
         {
             var changedBinders = ChangedBinders.GetChangedBinders(oldBinders, newBinders);
             
-            // Если Length is 0, то изменений нет.
+            // If Length is 0, then there are no changes.
             if (changedBinders.Length is 0) return;
 
             foreach (var changedBinder in changedBinders)
@@ -66,11 +67,11 @@ namespace Aspid.MVVM
                 RemoveDuplicateBinders(in changedBinder);
             }
 
-            // Валидируем биндеры установленные во View.
+            // Validate the binders set in View.
             ValidateBinderFromView(view);
             return;
             
-            // Сбрасываем Id у удаленных биндеров
+            // Reset the ID of deleted binders.
             void ResetRemovedBinders(in ChangedBinders changedBinder)
             {
                 foreach (var oldBinder in changedBinder.OldBinders)
@@ -124,7 +125,7 @@ namespace Aspid.MVVM
         {
             foreach (var field in view.GetRequireBinderFields())
             {
-                // Если это не валидируемое поле, то дальше.
+                // If this is not a valid field, then move on.
                 if (!field.IsValidation()) continue;
                 
                 var binders = field.GetValueAsArray<IMonoBinderValidable>(field.FieldContainerObj);
@@ -134,12 +135,12 @@ namespace Aspid.MVVM
 
                 binders = binders.Where(binder =>
                 {
-                    // Если поле пустое, то оставляем его.
+                    // If the field is empty, leave it blank.
                     if (binder is null) return true;
                         
                     var isChild = IsBinderInViewScope(view, binder);
                     
-                    // Проверка поддержки типа через IsBinderMatchRequiredType
+                    // Checking type support via IsBinderMatchRequiredType.
                     var result = isChild && field.IsBinderMatchRequiredType(binder);
 
                     if (!result)
@@ -155,15 +156,15 @@ namespace Aspid.MVVM
                 {
                     if (binder is null) continue; 
                     
-                    // Если биндер соответствует полю к которому присоединен, то дальше.
+                    // If the binder matches the field to which it is attached, then continue.
                     if (binder.Id == field.Id && binder.View == view) continue;
                     
-                    // Устанавливаем корректные значения для биндера
+                    // Set the correct values for the binder.
                     binder.View = view;
                     binder.Id = field.Id;
                 }
                 
-                // Если количество биндеров изменилось, то сохраняем новое значение.
+                // If the number of binders has changed, we save the new value.
                 if (binderCount != binders.Length) 
                     field.SetValueFromCastValueAndSaveView(view, binders);
             }
@@ -173,13 +174,13 @@ namespace Aspid.MVVM
         #region SetBinderIfNotExistInView Methods
         public static void SetBinderIfNotExistInView(IMonoBinderValidable binder)
         {
-            // Если Id не установлен, то мы не можем удалить этот биндер,
-            // так как мы не знаем что искать
+            // If ID is not set, we cannot delete this binder
+            // because we don't know what to look for.
             if (binder.Id is null || string.IsNullOrWhiteSpace(binder.Id))
                 throw new NullReferenceException(nameof(binder.Id));
             
-            // Если View не установлен, то мы не можем удалить этот биндер,
-            // так как мы не знаем где искать
+            // If View is not set, we cannot remove this binder
+            // because we don't know where to look.
             if (binder.View is null || (binder.View is Component viewComponent && !viewComponent))
                 throw new NullReferenceException(nameof(binder.View));
             
@@ -199,7 +200,7 @@ namespace Aspid.MVVM
                 return;
             }
             
-            // Если биндер есть, то ничего не делаем.
+            // If there is a binder, then we do nothing.
             if (viewBinders.Any(viewBinder => viewBinder == binder)) return;
 
             if (viewBinders.Length is 0)
@@ -209,14 +210,14 @@ namespace Aspid.MVVM
             }
             else if (field.FieldType.IsArray)
             {
-                // Добавляем биндер в конце массива
+                // Add a binder at the end of the array
                 Array.Resize(ref viewBinders, newSize: viewBinders.Length + 1);
                 viewBinders[^1] = binder;
                 field.SetValueFromCastValueAndSaveView(view, viewBinders);
             }
             else
             {
-                // Обнуляем Id у прошлого установленного биндера, который заменим
+                // We reset the ID of the previously installed binder, which we will replace.
                 viewBinders[0].Id = null;
                 field.SetValueFromCastValueAndSaveView(view, binder);
             }
@@ -226,13 +227,13 @@ namespace Aspid.MVVM
         #region RemoveBinderIfExistInView Methods
         public static void RemoveBinderIfExistInView(IMonoBinderValidable binder)
         {
-            // Если Id не установлен, то мы не можем удалить этот биндер,
-            // так как мы не знаем что искать
+            // If ID is not set, we cannot delete this binder
+            // because we don't know what to look for.
             if (binder.Id is null || string.IsNullOrWhiteSpace(binder.Id))
                 throw new NullReferenceException(nameof(binder.Id));
             
-            // Если View не установлен, то мы не можем удалить этот биндер,
-            // так как мы не знаем где искать
+            // If View is not set, we cannot remove this binder
+            // because we don't know where to look
             if (binder.View is null || (binder.View is Component viewComponent && !viewComponent))
                 throw new NullReferenceException(nameof(binder.View));
             
@@ -254,7 +255,7 @@ namespace Aspid.MVVM
             }
             else
             {
-                // Если биндер и так не установлен, то ничего не делаем.
+                // If the binder is not already installed, do nothing.
                 if (viewBinders.Length is 0 || viewBinders[0] != binder) return;
                 field.SetValueFromCastValueAndSaveView<IMonoBinderValidable>(view, null);
             }

@@ -1,3 +1,4 @@
+#nullable enable
 using UnityEngine;
 using Aspid.UnityFastTools;
 using UnityEngine.UIElements;
@@ -6,9 +7,10 @@ using Aspid.UnityFastTools.Editors;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM
 {
-    public sealed class AspidInspectorHeader : VisualElement
+    // TODO Aspid.MVVM Unity – Write summary
+    public class AspidInspectorHeader : VisualElement
     {
-        private const string StyleSheetPath = "Editor/Styles/aspid-mvvm-inspector-header";
+        public static readonly StyleSheet StyleSheet = Resources.Load<StyleSheet>("Editor/Styles/aspid-mvvm-inspector-header");
         
         public readonly Image Icon;
         public readonly Label Label;
@@ -20,7 +22,7 @@ namespace Aspid.MVVM
         {
             var container = new AspidContainer(AspidContainer.StyleType.Dark)
                 .SetMargin(top: 2);
-            container.styleSheets.Add(Resources.Load<StyleSheet>(StyleSheetPath));
+            container.styleSheets.Add(StyleSheet);
             
             Icon = new Image()
                 .AddOpenScriptCommand(obj)

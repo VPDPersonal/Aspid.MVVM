@@ -12,7 +12,7 @@ namespace Aspid.MVVM
     public sealed class AsBinderAttribute : Attribute
     {
 #if UNITY_EDITOR || DEBUG
-        // TODO Aspid.MVVM – Wtire summary
+        // TODO Aspid.MVVM – Write summary
         public readonly Type Type;
 #endif
 

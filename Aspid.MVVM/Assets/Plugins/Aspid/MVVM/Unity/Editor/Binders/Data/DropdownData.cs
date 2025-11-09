@@ -50,7 +50,6 @@ namespace Aspid.MVVM
             return string.IsNullOrWhiteSpace(viewName)
                 ? new DropdownData(choices, 0)
                 : new DropdownData(choices, choices.IndexOf(viewName));
-
         }
     }
 }

@@ -11,7 +11,7 @@ namespace Aspid.MVVM
     public sealed class BindIdAttribute : Attribute
     {
 #if UNITY_EDITOR || DEBUG
-        // TODO Aspid.MVVM – Wtire summary
+        // TODO Aspid.MVVM – Wrire summary
         public readonly string Id;
 #endif
 

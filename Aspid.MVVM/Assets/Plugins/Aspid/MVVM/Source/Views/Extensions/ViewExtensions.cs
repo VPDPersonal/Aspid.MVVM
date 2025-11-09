@@ -3,9 +3,6 @@ using System;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM
 {
-    /// <summary>
-    /// Provides extension methods for the <see cref="IView"/> interface.
-    /// </summary>
     public static class ViewExtensions
     {
         public static IViewModel? Reinitialize(this IView view, IViewModel? newViewModel)

@@ -4,9 +4,6 @@ using System.Runtime.CompilerServices;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM
 {
-    /// <summary>
-    /// Provides extension methods for the <see cref="IViewModel"/> interface.
-    /// </summary>
     public static class ViewModelExtensions
     {
         /// <summary>

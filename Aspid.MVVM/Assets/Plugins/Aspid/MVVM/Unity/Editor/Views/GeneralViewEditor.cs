@@ -1,4 +1,5 @@
 #if !ASPID_MVVM_EDITOR_DISABLED
+using System;
 using System.Linq;
 using UnityEditor;
 using Aspid.MVVM.StarterKit;
@@ -44,7 +45,9 @@ namespace Aspid.MVVM
 
         private void UpdateMetaData()
         {
-            var viewModelType = (DesignViewModel.objectReferenceValue as MonoScript)?.GetClass();
+            var viewModelType = string.IsNullOrWhiteSpace(DesignViewModel.stringValue) 
+                ? null
+                : Type.GetType(DesignViewModel.stringValue);
             
             if (viewModelType is null)
             {

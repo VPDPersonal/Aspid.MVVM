@@ -23,7 +23,7 @@ namespace Aspid.MVVM
                 Root = BuildVisualElement();
                 Root.Initialize();
 
-                Root.RegisterCallbackOnce<GeometryChangedEvent>(OnGeometryChangedOnce);
+                Root.RegisterCallback<GeometryChangedEvent>(OnGeometryChangedOnceInternal);
                 Root.RegisterCallback<SerializedPropertyChangeEvent>(OnSerializedPropertyChanged);
             }
             OnCreatedInspectorGUI();
@@ -36,6 +36,12 @@ namespace Aspid.MVVM
         protected virtual void OnCreatingInspectorGUI() { }
         
         protected virtual void OnCreatedInspectorGUI() { }
+
+        private void OnGeometryChangedOnceInternal(GeometryChangedEvent e)
+        {
+            OnGeometryChangedOnce(e);
+            Root.UnregisterCallback<GeometryChangedEvent>(OnGeometryChangedOnceInternal);
+        }
         
         protected virtual void OnGeometryChangedOnce(GeometryChangedEvent e) =>
             Root.Update();

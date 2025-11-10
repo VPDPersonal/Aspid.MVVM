@@ -19,6 +19,13 @@ namespace Aspid.UnityFastTools
             element.visible = visible;
             return element;
         }
+
+        public static T SetTooltip<T>(this T element, string tooltip)
+            where T : VisualElement
+        {
+            element.tooltip = tooltip;
+            return element;
+        }
         
         public static T AddChild<T>(this T element, VisualElement child)
             where T : VisualElement

@@ -41,14 +41,14 @@ namespace Aspid.MVVM
         public static void Show(Rect screenRect, string? currentAqn, Action<string?, string> onSelected)
         {
             // Create instance and show as dropdown positioned near anchor rect
-            var wnd = CreateInstance<ViewModelPickerWindow>();
-            wnd._onSelected = onSelected;
-            wnd._currentAqn = currentAqn ?? string.Empty;
+            var window = CreateInstance<ViewModelPickerWindow>();
+            window._onSelected = onSelected;
+            window._currentAqn = currentAqn ?? string.Empty;
             var size = new Vector2(Mathf.Max(350, screenRect.width), 320);
             // Build UI before showing
-            wnd.BuildUI();
-            // wnd.ShowAsDropDown(screenRect, size);
-            wnd.Show();
+            window.BuildUI();
+            window.ShowAsDropDown(screenRect, size);
+            // window.Show();
         }
 
         private void BuildUI()
@@ -58,15 +58,9 @@ namespace Aspid.MVVM
             titleContent = new GUIContent("Select ViewModel");
             minSize = new Vector2(300, 220);
 
-            var root = rootVisualElement;
-            root.style.flexGrow = 1;
-            root.style.minWidth = 300;
-            root.style.minHeight = 220;
-
-            var container = new VisualElement()
+            var root = rootVisualElement
                 .SetFlexGrow(1)
-                .SetFlexDirection(FlexDirection.Column)
-                .SetPadding(4, 4, 4, 4);
+                .SetMinSize(300, 220);
 
             // Header with back and title
             var header = new VisualElement()
@@ -77,14 +71,9 @@ namespace Aspid.MVVM
             _backButton = new Button(NavigateBack)
                 .SetText("←")
                 .SetMargin(right: 4)
-                .SetSize(width: 26, height: 20);
-            _backButton.tooltip = "Back";
-            _backButton.SetBackgroundColor(new Color(0, 0, 0, 0));
-            
-            _backButton.style.borderTopWidth = 0;
-            _backButton.style.borderLeftWidth = 0;
-            _backButton.style.borderRightWidth = 0;
-            _backButton.style.borderBottomWidth = 0;
+                .SetSize(width: 26, height: 20)
+                .SetBackgroundColor(new Color(0, 0, 0, 0))
+                .SetBorderRadius(0, 0, 0, 0);
 
             _titleLabel = new Label("Select ViewModel")
                 .SetFlexGrow(1)
@@ -103,31 +92,31 @@ namespace Aspid.MVVM
             {
                 virtualizationMethod = CollectionVirtualizationMethod.DynamicHeight,
                 selectionType = SelectionType.Single,
-                showBorder = true
-            };
-
-            _list.makeItem = () =>
+            }
+            .SetMakeItem(() =>
             {
                 var row = new VisualElement()
+                    .SetSize(height: 20)
                     .SetAlignItems(Align.Center)
                     .SetPadding(left: 6, right: 6)
                     .SetFlexDirection(FlexDirection.Row);
-                row.style.height = 20;
 
                 var label = new Label()
                     .SetName("name")
                     .SetFlexGrow(1);
 
-                var arrow = new Label("›")
-                    .SetName("arrow");
+                var arrow = new Label("›").SetName("arrow");
                 arrow.style.opacity = 0.6f;
-
-                row.Add(label);
-                row.Add(arrow);
                 
-                return row;
-            };
-            _list.bindItem = (ve, i) =>
+                return new VisualElement()
+                    .AddChild(label)
+                    .AddChild(arrow)
+                    .SetSize(height: 20)
+                    .SetAlignItems(Align.Center)
+                    .SetPadding(left: 6, right: 6)
+                    .SetFlexDirection(FlexDirection.Row);
+            })
+            .SetBindItem((ve, i) =>
             {
                 var items = _searchMode ? _searchResults : _visibleItems;
                 if (i < 0 || i >= items.Count) return;
@@ -141,7 +130,8 @@ namespace Aspid.MVVM
                 {
                     arrow.style.display = node.HasChildren && !_searchMode ? DisplayStyle.Flex : DisplayStyle.None;
                 }
-            };
+            });
+            
             _list.onItemsChosen += objs =>
             {
                 foreach (var obj in objs)
@@ -155,25 +145,21 @@ namespace Aspid.MVVM
             };
             _list.selectionChanged += _ => { };
 
-            var scrollView = _list.Q<ScrollView>();
-            scrollView.style.borderTopWidth = 0;
-            scrollView.style.borderLeftWidth = 0;
-            scrollView.style.borderRightWidth = 0;
-            scrollView.style.borderBottomWidth = 0;
-
             // Build data and initial view
             BuildHierarchy();
             NavigateToInitial();
             RefreshView();
 
-            // Layout
-            container.Add(headerContainer
-                .AddChild(header)
-                .AddChild(_searchField));
-            container.Add(_list);
-            root.Add(container);
-
+            var container = new VisualElement()
+                .SetFlexGrow(1)
+                .SetFlexDirection(FlexDirection.Column)
+                .SetPadding(4, 4, 4, 4)
+                .AddChild(headerContainer.AddChildren(header, _searchField))
+                .AddChild(_list);
+            
+            root.AddChild(container);
             root.RegisterCallback<KeyDownEvent>(OnKeyDown);
+            
             // Ensure focus
             _searchField.Focus();
         }

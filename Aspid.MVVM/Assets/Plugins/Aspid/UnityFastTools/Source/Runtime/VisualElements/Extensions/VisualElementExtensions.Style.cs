@@ -28,17 +28,6 @@ namespace Aspid.UnityFastTools
             return element;
         }
         
-        public static T SetBorderRadius<T>(this T element,
-            StyleLength? topLeft = null, 
-            StyleLength? topRight = null,
-            StyleLength? bottomLeft = null,
-            StyleLength? bottomRight = null)
-            where T : VisualElement
-        {
-            element.style.SetBorderRadius(topLeft, topRight, bottomLeft, bottomRight);
-            return element;
-        }
-        
         #region Font
         public static T SetFontSize<T>(this T element, StyleLength size)
             where T : VisualElement
@@ -65,6 +54,125 @@ namespace Aspid.UnityFastTools
             where T : VisualElement
         {
             element.style.SetUnityFontStyleAndWeight(fontStyle);
+            return element;
+        }
+        #endregion
+        
+        #region Flex
+        public static T SetFlexGrow<T>(this T element, StyleFloat flexGrow)
+            where T : VisualElement
+        {
+            element.style.SetFlexGrow(flexGrow);
+            return element;
+        }
+        
+        public static T SetFlexBasis<T>(this T element, StyleLength flexBasis)
+            where T : VisualElement
+        {
+            element.style.SetFlexBasis(flexBasis);
+            return element;
+        }
+        
+        public static T SetFlexShrink<T>(this T element, StyleFloat flexShrink)
+            where T : VisualElement
+        {
+            element.style.SetFlexShrink(flexShrink);
+            return element;
+        }
+        
+        public static T SetFlexWrap<T>(this T element, StyleEnum<Wrap> flexWrap)
+            where T : VisualElement
+        {
+            element.style.SetFlexWrap(flexWrap);
+            return element;
+        }   
+        
+        
+        public static T SetFlexDirection<T>(this T element, FlexDirection flexDirection)
+            where T : VisualElement
+        {
+            element.style.SetFlexDirection(flexDirection);
+            return element;
+        }
+        #endregion
+        
+        #region Size
+        public static T SetSize<T>(this T element, StyleLength? width = null, StyleLength? height = null)
+            where T : VisualElement
+        {
+            element.style.SetSize(width, height);
+            return element;
+        }
+        
+        public static T SetMinSize<T>(this T element, StyleLength? width = null, StyleLength? height = null)
+            where T : VisualElement
+        {
+            element.style.SetMinSize(width, height);
+            return element;
+        }
+        #endregion
+        
+        #region Text
+        public static T SetUnityTextAlign<T>(this T element, TextAnchor textAnchor)
+            where T : VisualElement
+        {
+            element.style.SetUnityTextAlign(textAnchor);
+            return element;
+        }
+        
+        public static T SetTextShadow<T>(this T element, StyleTextShadow textShadow)
+            where T : VisualElement
+        {
+            element.style.SetTextShadow(textShadow);
+            return element;
+        }
+        
+        public static T SetUnityTextOutlineColor<T>(this T element, StyleColor color)
+            where T : VisualElement
+        {
+            element.style.SetUnityTextOutlineColor(color);
+            return element;
+        }
+        
+        public static T SetUnityTextAutoSize<T>(this T element, StyleTextAutoSize textAutoSize)
+            where T : VisualElement
+        {
+            element.style.SetUnityTextAutoSize(textAutoSize);
+            return element;
+        }
+        
+        public static T SetTextOverflow<T>(this T element, StyleEnum<TextOverflow> textOverflow)
+            where T : VisualElement
+        {
+            element.style.SetTextOverflow(textOverflow);
+            return element;
+        } 
+        
+        public static T SetUnityTextGenerator<T>(this T element, TextGeneratorType textGeneratorType)
+            where T : VisualElement
+        {
+            element.style.SetUnityTextGenerator(textGeneratorType);
+            return element;
+        }
+        
+        public static T SetUnityTextOutlineWidth<T>(this T element, StyleFloat unityTextOutlineWidth)
+            where T : VisualElement
+        {
+            element.style.SetUnityTextOutlineWidth(unityTextOutlineWidth);
+            return element;
+        }
+        
+        public static T SetUnityTextOverflowPosition<T>(this T element, TextOverflowPosition unityTextOutlineWidth)
+            where T : VisualElement
+        {
+            element.style.SetUnityTextOverflowPosition(unityTextOutlineWidth);
+            return element;
+        }
+        
+        public static T SetUnityEditorTextRenderingMode<T>(this T element, EditorTextRenderingMode editorTextRenderingMode)
+            where T : VisualElement
+        {
+            element.style.SetUnityEditorTextRenderingMode(editorTextRenderingMode);
             return element;
         }
         #endregion
@@ -108,66 +216,29 @@ namespace Aspid.UnityFastTools
         }
         #endregion
         
-        #region Flex
-        public static T SetFlexGrow<T>(this T element, StyleFloat flexGrow)
+        #region Border
+        public static T SetBorderWidth<T>(this T element,
+            StyleFloat? top = null, 
+            StyleFloat? bottom = null,
+            StyleFloat? left = null,
+            StyleFloat? right = null)
             where T : VisualElement
         {
-            element.style.SetFlexGrow(flexGrow);
+            element.style.SetBorderWidth(top, bottom, left, right);
             return element;
         }
         
-        public static T SetFlexBasis<T>(this T element, StyleLength flexBasis)
+        public static T SetBorderRadius<T>(this T element,
+            StyleLength? topLeft = null, 
+            StyleLength? topRight = null,
+            StyleLength? bottomLeft = null,
+            StyleLength? bottomRight = null)
             where T : VisualElement
         {
-            element.style.SetFlexBasis(flexBasis);
-            return element;
-        }
-        
-        public static T SetFlexShrink<T>(this T element, StyleFloat flexShrink)
-            where T : VisualElement
-        {
-            element.style.SetFlexShrink(flexShrink);
-            return element;
-        }
-        
-        public static T SetFlexWrap<T>(this T element, StyleEnum<Wrap> flexWrap)
-            where T : VisualElement
-        {
-            element.style.SetFlexWrap(flexWrap);
-            return element;
-        }   
-        
-        
-        public static T SetFlexDirection<T>(this T element, FlexDirection flexDirection)
-            where T : VisualElement
-        {
-            element.style.SetFlexDirection(flexDirection);
+            element.style.SetBorderRadius(topLeft, topRight, bottomLeft, bottomRight);
             return element;
         }
         #endregion
-        
-        #region Overflow
-        public static T SetOverflow<T>(this T element, StyleEnum<Overflow> overflow)
-            where T : VisualElement
-        {
-            element.style.SetOverflow(overflow);
-            return element;
-        }
-        
-        public static T SetTextOverflow<T>(this T element, StyleEnum<TextOverflow> textOverflow)
-            where T : VisualElement
-        {
-            element.style.SetTextOverflow(textOverflow);
-            return element;
-        } 
-        #endregion
-        
-        public static T SetWhiteSpace<T>(this T element, StyleEnum<WhiteSpace> whiteSpace)
-            where T : VisualElement
-        {
-            element.style.SetWhiteSpace(whiteSpace);
-            return element;
-        }
         
         public static T SetDisplay<T>(this T element, DisplayStyle display)
             where T : VisualElement
@@ -176,10 +247,17 @@ namespace Aspid.UnityFastTools
             return element;
         }
         
-        public static T SetSize<T>(this T element, StyleLength? width = null, StyleLength? height = null)
+        public static T SetOverflow<T>(this T element, StyleEnum<Overflow> overflow)
             where T : VisualElement
         {
-            element.style.SetSize(width, height);
+            element.style.SetOverflow(overflow);
+            return element;
+        }
+        
+        public static T SetWhiteSpace<T>(this T element, StyleEnum<WhiteSpace> whiteSpace)
+            where T : VisualElement
+        {
+            element.style.SetWhiteSpace(whiteSpace);
             return element;
         }
     }

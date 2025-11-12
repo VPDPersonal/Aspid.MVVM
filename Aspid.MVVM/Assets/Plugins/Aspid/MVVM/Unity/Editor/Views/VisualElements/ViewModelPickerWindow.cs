@@ -40,101 +40,105 @@ namespace Aspid.MVVM
 
         public static void Show(Rect screenRect, string? currentAqn, Action<string?, string> onSelected)
         {
-            // Create instance and show as dropdown positioned near anchor rect
             var window = CreateInstance<ViewModelPickerWindow>();
-            window._onSelected = onSelected;
-            window._currentAqn = currentAqn ?? string.Empty;
-            var size = new Vector2(Mathf.Max(350, screenRect.width), 320);
-            // Build UI before showing
-            window.BuildUI();
-            window.ShowAsDropDown(screenRect, size);
-            // window.Show();
+            window.Constructor(screenRect, currentAqn, onSelected);
         }
 
-        private void BuildUI()
+        private void Constructor(Rect screenRect, string? currentAqn, Action<string?, string> onSelected)
         {
-            var headerContainer = new VisualElement();
+            rootVisualElement.Add(BuildWindow());
+
+            BuildHierarchy();
+            NavigateToInitial();
+            RefreshView();
             
-            titleContent = new GUIContent("Select ViewModel");
-            minSize = new Vector2(300, 220);
+            _onSelected = onSelected;
+            _currentAqn = currentAqn ?? string.Empty;
+            var size = new Vector2(Mathf.Max(350, screenRect.width), 320);
+            
+            // Show();
+            ShowAsDropDown(screenRect, size);
+            _searchField.Focus();
+        }
 
-            var root = rootVisualElement
-                .SetFlexGrow(1)
-                .SetMinSize(300, 220);
-
-            // Header with back and title
-            var header = new VisualElement()
-                .SetAlignItems(Align.Center)
-                .SetFlexDirection(FlexDirection.Row)
-                .SetMargin(bottom: 4);
-
+        private VisualElement BuildWindow()
+        {
             _backButton = new Button(NavigateBack)
                 .SetText("←")
                 .SetMargin(right: 4)
                 .SetSize(width: 26, height: 20)
-                .SetBackgroundColor(new Color(0, 0, 0, 0))
-                .SetBorderRadius(0, 0, 0, 0);
-
+                .SetBackgroundColor(new Color(r: 0, g: 0, b: 0, a: 0))
+                .SetBorderWidth(top: 0, bottom: 0, left: 0, right: 0)
+                .SetBorderRadius(topLeft: 0, topRight: 0, bottomLeft: 0, bottomRight: 0);
+            
             _titleLabel = new Label("Select ViewModel")
                 .SetFlexGrow(1)
                 .SetUnityFontStyleAndWeight(FontStyle.Bold);
-
-            header.Add(_backButton);
-            header.Add(_titleLabel);
-
+            
             _searchField = new ToolbarSearchField()
                 .SetMargin(bottom: 4)
                 .SetPadding(right: 4)
                 .SetSize(width: Length.Auto());
-            _searchField.RegisterValueChangedCallback(evt => ApplyFilter(evt.newValue ?? string.Empty));
-
-            _list = new ListView
-            {
-                virtualizationMethod = CollectionVirtualizationMethod.DynamicHeight,
-                selectionType = SelectionType.Single,
-            }
-            .SetMakeItem(() =>
-            {
-                var row = new VisualElement()
-                    .SetSize(height: 20)
-                    .SetAlignItems(Align.Center)
-                    .SetPadding(left: 6, right: 6)
-                    .SetFlexDirection(FlexDirection.Row);
-
-                var label = new Label()
-                    .SetName("name")
-                    .SetFlexGrow(1);
-
-                var arrow = new Label("›").SetName("arrow");
-                arrow.style.opacity = 0.6f;
-                
-                return new VisualElement()
-                    .AddChild(label)
-                    .AddChild(arrow)
-                    .SetSize(height: 20)
-                    .SetAlignItems(Align.Center)
-                    .SetPadding(left: 6, right: 6)
-                    .SetFlexDirection(FlexDirection.Row);
-            })
-            .SetBindItem((ve, i) =>
-            {
-                var items = _searchMode ? _searchResults : _visibleItems;
-                if (i < 0 || i >= items.Count) return;
-                var node = items[i];
-                if (ve.Q<Label>("name") is { } name)
-                {
-                    name.text = node.Item.DisplayName;
-                    name.tooltip = node.Item.Tooltip;
-                }
-                if (ve.Q<Label>("arrow") is { } arrow)
-                {
-                    arrow.style.display = node.HasChildren && !_searchMode ? DisplayStyle.Flex : DisplayStyle.None;
-                }
-            });
+            _searchField.RegisterValueChangedCallback(e => ApplyFilter(e.newValue ?? string.Empty));
             
-            _list.onItemsChosen += objs =>
+            _searchField.RegisterCallback<NavigationMoveEvent>(e =>
             {
-                foreach (var obj in objs)
+                if (e.move == Vector2.down)
+                {
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
+                    _list.Focus();
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
+                }
+            }, TrickleDown.TrickleDown);
+            
+            var header = new VisualElement()
+                .SetAlignItems(Align.Center)
+                .SetFlexDirection(FlexDirection.Row)
+                .SetMargin(bottom: 4)
+                .AddChild(_backButton)
+                .AddChild(_titleLabel);
+            
+            _list = new ListView 
+                {
+                    selectionType = SelectionType.Single,
+                    virtualizationMethod = CollectionVirtualizationMethod.DynamicHeight,
+                }
+                .SetMakeItem(() =>
+                {
+                    var label = new Label().SetName("title")
+                        .SetFlexGrow(1);
+
+                    var arrow = new Label("›").SetName("arrow");
+                    arrow.style.opacity = 0.6f;
+                
+                    return new VisualElement()
+                        .AddChild(label)
+                        .AddChild(arrow)
+                        .SetSize(height: 20)
+                        .SetAlignItems(Align.Center)
+                        .SetPadding(left: 6, right: 6)
+                        .SetFlexDirection(FlexDirection.Row);
+                })
+                .SetBindItem((element, i) =>
+                {
+                    var items = _searchMode
+                        ? _searchResults 
+                        : _visibleItems;
+                    
+                    if (i < 0 || i >= items.Count) return;
+                    var node = items[i];
+                    
+                    element.Q<Label>(name: "title")
+                        .SetText(node.Item.DisplayName)
+                        .SetTooltip(node.Item.Tooltip);
+                    
+                    element.Q<Label>(name: "arrow")
+                        .SetDisplay(node.HasChildren && !_searchMode ? DisplayStyle.Flex : DisplayStyle.None);
+                });
+            
+            _list.itemsChosen += nodes =>
+            {
+                foreach (var obj in nodes)
                 {
                     if (obj is Node node)
                     {
@@ -143,59 +147,61 @@ namespace Aspid.MVVM
                     }
                 }
             };
-            _list.selectionChanged += _ => { };
-
-            // Build data and initial view
-            BuildHierarchy();
-            NavigateToInitial();
-            RefreshView();
-
+            
             var container = new VisualElement()
                 .SetFlexGrow(1)
                 .SetFlexDirection(FlexDirection.Column)
                 .SetPadding(4, 4, 4, 4)
-                .AddChild(headerContainer.AddChildren(header, _searchField))
+                .AddChild(header)
+                .AddChild(_searchField)
                 .AddChild(_list);
-            
-            root.AddChild(container);
-            root.RegisterCallback<KeyDownEvent>(OnKeyDown);
-            
-            // Ensure focus
-            _searchField.Focus();
+
+            var root = new VisualElement().AddChild(container);
+            root.RegisterCallback<KeyDownEvent>(OnKeyDown, TrickleDown.TrickleDown);
+
+            return root;
         }
 
         private void OnKeyDown(KeyDownEvent evt)
         {
-            if (evt.keyCode == KeyCode.Escape)
+            if (evt.keyCode == KeyCode.UpArrow)
+            {
+                if (_list.selectedIndex is 0)
+                {
+                    _searchField.Focus();
+                }
+            }
+            else if (evt.keyCode == KeyCode.Escape)
             {
                 if (_searchMode && !string.IsNullOrEmpty(_searchField.value))
                 {
                     _searchField.value = string.Empty;
-                    evt.StopPropagation();
-                    return;
-                }
-                if (_navStack.Count > 0)
-                {
-                    NavigateBack();
                 }
                 else
                 {
                     Close();
                 }
+                
                 evt.StopPropagation();
             }
-            else if (evt.keyCode is KeyCode.Return or KeyCode.KeypadEnter)
+            else if (evt.keyCode is KeyCode.RightArrow)
             {
                 var index = _list.selectedIndex;
                 var items = _searchMode ? _searchResults : _visibleItems;
                 if (index >= 0 && index < items.Count)
                 {
-                    Activate(items[index]);
+                    if (items[index].HasChildren)
+                    {
+                        Activate(items[index]);    
+                    }
+                    
                     evt.StopPropagation();
                 }
             }
             else if (evt.keyCode == KeyCode.LeftArrow)
             {
+                if (_searchField.focusController.focusedElement == _searchField) return;
+
                 if (_navStack.Count > 0)
                 {
                     NavigateBack();
@@ -236,7 +242,6 @@ namespace Aspid.MVVM
                 foreach (var vm in globals.OrderBy(v => v.Name))
                 {
                     var display = counts[vm.Name] > 1 ? $"{vm.Name} ({vm.Assembly})" : vm.Name;
-                    var caption = display;
                     var vm2 = new ViewModelInfo
                     {
                         Name = vm.Name,
@@ -244,7 +249,7 @@ namespace Aspid.MVVM
                         Assembly = vm.Assembly,
                         Aqn = vm.Aqn,
                         DisplayName = display,
-                        Caption = caption
+                        Caption = display
                     };
                     var leaf = new Node(new Item(vm2.DisplayName, vm2.Aqn, vm2.Caption)
                     {
@@ -427,6 +432,7 @@ namespace Aspid.MVVM
                 _navStack.Add(_currentNode);
                 _currentNode = node;
                 RefreshView();
+                _list.selectedIndex = 0;
             }
             else if (node.Item.Aqn == null && node.Item.DisplayName == NoneChoice)
             {
@@ -514,6 +520,39 @@ namespace Aspid.MVVM
             return list;
         }
 
+        private static void CompressChains(NsNode node)
+        {
+            // First recursively compress all children
+            foreach (var key in node.Children.Keys.ToList())
+                CompressChains(node.Children[key]);
+
+            // Then compress chains at this level
+            var keys = node.Children.Keys.ToList();
+            foreach (var key in keys)
+            {
+                if (!node.Children.TryGetValue(key, out var child)) continue;
+                
+                // Merge chain: while child is not terminal and has exactly one child
+                while (!child.IsTerminal && child.Children.Count == 1)
+                {
+                    var only = child.Children.Values.First();
+                    // Update the child's name by appending the only grandchild's name
+                    child.Name = string.IsNullOrEmpty(child.Name) ? only.Name : $"{child.Name}.{only.Name}";
+                    child.IsTerminal = only.IsTerminal;
+                    child.Children.Clear();
+                    foreach (var kv in only.Children)
+                        child.Children[kv.Key] = kv.Value;
+                }
+                
+                // If the key changed, update the dictionary
+                if (child.Name != key)
+                {
+                    node.Children.Remove(key);
+                    node.Children[child.Name] = child;
+                }
+            }
+        }
+        
         private sealed class Item
         {
             public string DisplayName { get; set; }
@@ -578,39 +617,6 @@ namespace Aspid.MVVM
                     Children[name] = child;
                 }
                 return child;
-            }
-        }
-
-        private static void CompressChains(NsNode node)
-        {
-            // First recursively compress all children
-            foreach (var key in node.Children.Keys.ToList())
-                CompressChains(node.Children[key]);
-
-            // Then compress chains at this level
-            var keys = node.Children.Keys.ToList();
-            foreach (var key in keys)
-            {
-                if (!node.Children.TryGetValue(key, out var child)) continue;
-                
-                // Merge chain: while child is not terminal and has exactly one child
-                while (!child.IsTerminal && child.Children.Count == 1)
-                {
-                    var only = child.Children.Values.First();
-                    // Update the child's name by appending the only grandchild's name
-                    child.Name = string.IsNullOrEmpty(child.Name) ? only.Name : $"{child.Name}.{only.Name}";
-                    child.IsTerminal = only.IsTerminal;
-                    child.Children.Clear();
-                    foreach (var kv in only.Children)
-                        child.Children[kv.Key] = kv.Value;
-                }
-                
-                // If the key changed, update the dictionary
-                if (child.Name != key)
-                {
-                    node.Children.Remove(key);
-                    node.Children[child.Name] = child;
-                }
             }
         }
     }

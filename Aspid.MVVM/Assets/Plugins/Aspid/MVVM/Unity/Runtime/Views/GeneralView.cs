@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using Aspid.UnityFastTools;
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
@@ -7,6 +8,7 @@ namespace Aspid.MVVM.StarterKit
     public class GeneralView : MonoView
     {
 #if UNITY_EDITOR
+        [TypeSelector]
         [SerializeField] private string _designViewModel;
 #endif
         

@@ -100,10 +100,12 @@ namespace Aspid.MVVM
             {
                 var assemblyQualifiedNames = attributes
                     .SelectMany(attribute => attribute.AssemblyQualifiedNames ?? Array.Empty<string>())
+                    .Where(assemblyQualifiedName => !string.IsNullOrWhiteSpace(assemblyQualifiedName))
                     .ToArray();
-                var types = new Type[assemblyQualifiedNames.Length];
+                
+                var types = new List<Type>(assemblyQualifiedNames.Length);
 
-                for (var i = 0; i < types.Length; i++)
+                for (var i = 0; i < assemblyQualifiedNames.Length; i++)
                 {
                     string assemblyQualifiedName;
                     var directType = FieldContainerObjType.IsArray ? FieldContainerObjType.GetElementType() :
@@ -131,11 +133,11 @@ namespace Aspid.MVVM
                         assemblyQualifiedName = assemblyQualifiedNames[i];
                     }
 
-                    var type = Type.GetType(assemblyQualifiedName);
-                    types[i] = type ?? throw new Exception($"Type {assemblyQualifiedName} not found");
+                    var type = Type.GetType(assemblyQualifiedName, false);
+                    if (type is not null) types.Add(type);
                 }
 
-                return types;
+                return types.ToArray();
             }
         }
         

@@ -69,7 +69,7 @@ namespace Aspid.MVVM
                 var element = BindersList.GetArrayElementAtIndex(i);
                     
                 element.Id = bindableProperties[i].Id;
-                element.AssemblyQualifiedName = bindableProperties[i].Type.AssemblyQualifiedName;
+                element.AssemblyQualifiedName = bindableProperties[i].Type?.AssemblyQualifiedName;
             }
         }
     }

@@ -11,607 +11,707 @@ using System.Collections.Generic;
 namespace Aspid.MVVM
 {
     /// <summary>
-    /// Pure UI Toolkit window that shows a searchable hierarchical list of ViewModel types.
-    /// Replaces IMGUI AdvancedDropdown usage.
+    /// UI Toolkit window for selecting ViewModel types from a hierarchical, searchable list.
     /// </summary>
     public sealed class ViewModelPickerWindow : EditorWindow
     {
-        private const string NoneChoice = "<None>";
+        private const string NoneOption = "<None>";
         private const string GlobalNamespace = "<Global>";
-
-        private Action<string, string> _onSelected;
-        private string _currentAqn = string.Empty;
-
-        // Panel-style navigation structures
-        private Node _rootNode;
-        private Node _currentNode;
-        private readonly List<Node> _navStack = new();
-        private readonly List<Node> _searchResults = new();
-        private bool _searchMode;
-
-        private ListView _list;
+        
         private Label _titleLabel;
         private Button _backButton;
+        private ListView _listView;
         private ToolbarSearchField _searchField;
-
-        public static void Show(Rect screenRect, string? currentAqn, Action<string?, string> onSelected)
+        
+        private string _currentAqn = string.Empty;
+        private Action<string, string> _onSelected;
+        
+        private readonly NavigationController _navigation = new();
+        
+        public static void Show(Rect screenRect, string currentAqn, Action<string, string> onSelected)
         {
             var window = CreateInstance<ViewModelPickerWindow>();
-            window.Constructor(screenRect, currentAqn, onSelected);
+            window.Initialize(screenRect, currentAqn, onSelected);
         }
 
-        private void Constructor(Rect screenRect, string? currentAqn, Action<string?, string> onSelected)
+        #region Initialization
+        private void Initialize(Rect screenRect, string currentAqn, Action<string, string> onSelected)
         {
-            rootVisualElement.Add(BuildWindow());
-            rootVisualElement.SetBorderRadius(5, 5, 5, 5);
-
-            BuildHierarchy();
-            NavigateToInitial();
-            RefreshView();
-            
             _onSelected = onSelected;
             _currentAqn = currentAqn ?? string.Empty;
+
+            BuildUI();
+            BuildDataModel();
+            NavigateToCurrentSelection();
+            
             var size = new Vector2(Mathf.Max(350, screenRect.width), 320);
-       
             ShowAsDropDown(screenRect, size);
+            
             _searchField.Focus();
         }
 
-        private VisualElement BuildWindow()
+        private void BuildUI()
         {
-            _backButton = new Button(NavigateBack)
-                .SetText("←")
-                .SetMargin(right: 4)
-                .SetSize(width: 26, height: 20)
-                .SetBackgroundColor(new Color(r: 0, g: 0, b: 0, a: 0))
-                .SetBorderWidth(top: 0, bottom: 0, left: 0, right: 0)
-                .SetBorderRadius(topLeft: 0, topRight: 0, bottomLeft: 0, bottomRight: 0);
-            
-            _titleLabel = new Label("Select ViewModel")
-                .SetFlexGrow(1)
-                .SetUnityFontStyleAndWeight(FontStyle.Bold);
-            
-            _searchField = new ToolbarSearchField()
-                .SetMargin(bottom: 4)
-                .SetPadding(right: 4)
-                .SetSize(width: Length.Auto());
-            _searchField.RegisterValueChangedCallback(e => ApplyFilter(e.newValue ?? string.Empty));
-            
-            _searchField.RegisterCallback<NavigationMoveEvent>(e =>
+            rootVisualElement.Add(CreateWindowLayout());
+            return;
+
+            VisualElement CreateWindowLayout()
             {
-                if (e.move == Vector2.down)
+                var header = CreateHeader();
+                _searchField = CreateSearchField();
+                _listView = CreateListView();
+
+                var container = new VisualElement()
+                    .SetFlexGrow(1)
+                    .SetFlexDirection(FlexDirection.Column)
+                    .SetPadding(top: 4, bottom: 4, left: 4, right: 4)
+                    .AddChild(header)
+                    .AddChild(_searchField)
+                    .AddChild(_listView);
+
+                var root = new VisualElement().AddChild(container);
+                root.RegisterCallback<KeyDownEvent>(HandleKeyDown, TrickleDown.TrickleDown);
+                
+                return root;
+            }
+
+            VisualElement CreateHeader()
+            {
+                _backButton = new Button(NavigateBack)
+                    .SetText("←")
+                    .SetMargin(right: 4)
+                    .SetSize(width: 26, height: 20)
+                    .SetBackgroundColor(Color.clear)
+                    .SetBorderWidth(top: 0, bottom: 0, left: 0, right: 0);
+
+                _titleLabel = new Label("Select ViewModel")
+                    .SetFlexGrow(1)
+                    .SetUnityFontStyleAndWeight(FontStyle.Bold);
+
+                return new VisualElement()
+                    .SetBackgroundColor(new Color(0.149f, 0.149f, 0.149f))
+                    .SetAlignItems(Align.Center)
+                    .SetFlexDirection(FlexDirection.Row)
+                    .SetMargin(bottom: 4)
+                    .AddChild(_backButton)
+                    .AddChild(_titleLabel);
+            }
+
+            ToolbarSearchField CreateSearchField()
+            {
+                var field = new ToolbarSearchField()
+                    .SetMargin(bottom: 4)
+                    .SetPadding(right: 4)
+                    .SetSize(width: Length.Auto());
+
+                field.RegisterValueChangedCallback(e => HandleSearchChanged(e.newValue ?? string.Empty));
+                field.RegisterCallback<NavigationMoveEvent>(e =>
                 {
-#pragma warning disable CS8602 // Dereference of a possibly null reference.
-                    _list.Focus();
-#pragma warning restore CS8602 // Dereference of a possibly null reference.
-                }
-            }, TrickleDown.TrickleDown);
-            
-            var header = new VisualElement()
-                .SetBackgroundColor(new Color(0.1490196f, 0.1490196f, 0.1490196f))
-                .SetAlignItems(Align.Center)
-                .SetFlexDirection(FlexDirection.Row)
-                .SetMargin(bottom: 4)
-                .AddChild(_backButton)
-                .AddChild(_titleLabel);
-            
-            _list = new ListView
+                    if (e.move == Vector2.down)
+                        _listView?.Focus();
+                }, TrickleDown.TrickleDown);
+
+                return field;
+            }
+
+            ListView CreateListView()
+            {
+                var list = new ListView
                 {
                     selectionType = SelectionType.Single,
                     virtualizationMethod = CollectionVirtualizationMethod.DynamicHeight,
-                }
-                .SetMakeItem(() =>
-                {
-                    var label = new Label().SetName("title")
-                        .SetFlexGrow(1);
+                };
 
-                    var arrow = new Label("›").SetName("arrow");
-                    arrow.style.opacity = 0.6f;
-                
-                    return new VisualElement()
-                        .AddChild(label)
-                        .AddChild(arrow)
-                        .SetSize(height: 20)
-                        .SetAlignItems(Align.Center)
-                        .SetPadding(left: 6, right: 6)
-                        .SetFlexDirection(FlexDirection.Row);
-                })
-                .SetBindItem((element, i) =>
-                {
-                    var items = GetCurrentItems();
-                    
-                    if (i < 0 || i >= items.Count) return;
-                    var node = items[i];
-                    
-                    element.Q<Label>(name: "title")
-                        .SetText(node.Item.DisplayName)
-                        .SetTooltip(node.Item.Tooltip);
-                    
-                    element.Q<Label>(name: "arrow")
-                        .SetDisplay(node.HasChildren && !_searchMode ? DisplayStyle.Flex : DisplayStyle.None);
-                });
-            
-            _list.itemsChosen += nodes =>
-            {
-                foreach (var obj in nodes)
-                {
-                    if (obj is Node node)
-                    {
-                        Activate(node);
-                        break;
-                    }
-                }
-            };
-            
-            var container = new VisualElement()
-                .SetFlexGrow(1)
-                .SetFlexDirection(FlexDirection.Column)
-                .SetPadding(4, 4, 4, 4)
-                .AddChild(header)
-                .AddChild(_searchField)
-                .AddChild(_list);
+                list.SetMakeItem(CreateListItem);
+                list.SetBindItem(BindListItem);
+                list.itemsChosen += HandleItemChosen;
 
-            var root = new VisualElement().AddChild(container);
-            root.RegisterCallback<KeyDownEvent>(OnKeyDown, TrickleDown.TrickleDown);
-
-            return root;
-        }
-
-        private void OnKeyDown(KeyDownEvent evt)
-        {
-            if (evt.keyCode == KeyCode.UpArrow)
-            {
-                if (_list.selectedIndex is 0)
-                {
-                    _searchField.Focus();
-                }
+                return list;
             }
-            else if (evt.keyCode == KeyCode.Escape)
-            {
-                if (_searchMode && !string.IsNullOrEmpty(_searchField.value))
-                {
-                    _searchField.value = string.Empty;
-                }
-                else
-                {
-                    Close();
-                }
-                
-                evt.StopPropagation();
-            }
-            else if (evt.keyCode is KeyCode.RightArrow)
-            {
-                var index = _list.selectedIndex;
-                var items = GetCurrentItems();
-                if (index >= 0 && index < items.Count)
-                {
-                    if (items[index].HasChildren)
-                    {
-                        Activate(items[index]);    
-                    }
-                    
-                    evt.StopPropagation();
-                }
-            }
-            else if (evt.keyCode == KeyCode.LeftArrow)
-            {
-                if (_searchField.focusController.focusedElement == _searchField) return;
 
-                if (_navStack.Count > 0)
-                {
-                    NavigateBack();
-                    evt.StopPropagation();
-                }
+            VisualElement CreateListItem()
+            {
+                var label = new Label()
+                    .SetName("title")
+                    .SetFlexGrow(1);
+
+                var arrow = new Label("›")
+                    .SetName("arrow");
+                arrow.style.opacity = 0.6f;
+
+                return new VisualElement()
+                    .AddChild(label)
+                    .AddChild(arrow)
+                    .SetSize(height: 20)
+                    .SetAlignItems(Align.Center)
+                    .SetPadding(left: 6, right: 6)
+                    .SetFlexDirection(FlexDirection.Row);
+            }
+
+            void BindListItem(VisualElement element, int index)
+            {
+                var items = _navigation.GetCurrentItems();
+                if (index < 0 || index >= items.Count) return;
+
+                var node = items[index];
+                element.Q<Label>("title")
+                    .SetText(node.DisplayName)
+                    .SetTooltip(node.Tooltip);
+
+                element.Q<Label>("arrow")
+                    .SetDisplay(node.HasChildren && !_navigation.IsSearching
+                        ? DisplayStyle.Flex
+                        : DisplayStyle.None);
             }
         }
 
-        private void ApplyFilter(string filter)
+        private void BuildDataModel()
         {
-            _searchMode = !string.IsNullOrEmpty(filter);
-            if (_searchMode)
-            {
-                BuildSearchResults(filter.Trim());
-            }
+            var viewModels = TypeInfoScanner.GetAllTypeInfos();
+            var hierarchy = HierarchyBuilder.Build(viewModels);
+            _navigation.Initialize(hierarchy);
             RefreshView();
         }
 
-        private void BuildHierarchy()
+        private void NavigateToCurrentSelection()
         {
-            // Build data source
-            var models = GatherViewModels();
-
-            // Root node
-            _rootNode = new Node(new Item("/", null, "/"));
-
-            // None leaf at root
-            _rootNode.Children.Add(new Node(new Item(NoneChoice, null, NoneChoice)));
-
-            // Global group
-            var globals = models.Where(m => m.Namespace == GlobalNamespace).OrderBy(m => m.Name).ToList();
-            if (globals.Count > 0)
+            if (!string.IsNullOrEmpty(_currentAqn))
             {
-                var globalGroup = new Node(new Item(GlobalNamespace, null, GlobalNamespace));
-                // disambiguate duplicates by assembly within Global
-                var counts = new Dictionary<string, int>();
-                foreach (var vm in globals) counts[vm.Name] = counts.TryGetValue(vm.Name, out var c) ? c + 1 : 1;
-                foreach (var vm in globals.OrderBy(v => v.Name))
-                {
-                    var display = counts[vm.Name] > 1 ? $"{vm.Name} ({vm.Assembly})" : vm.Name;
-                    var vm2 = new ViewModelInfo
-                    {
-                        Name = vm.Name,
-                        Namespace = vm.Namespace,
-                        Assembly = vm.Assembly,
-                        Aqn = vm.Aqn,
-                        DisplayName = display,
-                        Caption = display
-                    };
-                    var leaf = new Node(new Item(vm2.DisplayName, vm2.Aqn, vm2.Caption)
-                    {
-                        Tooltip = vm2.FullName
-                    });
-                    globalGroup.Children.Add(leaf);
-                }
-                _rootNode.Children.Add(globalGroup);
-            }
-
-            // Namespace trie for others
-            var rootNs = new NsNode("");
-            var nsMap = new Dictionary<string, List<ViewModelInfo>>();
-            foreach (var vm in models.Where(vm => vm.Namespace != GlobalNamespace))
-            {
-                if (!nsMap.TryGetValue(vm.Namespace, out var list))
-                {
-                    list = new List<ViewModelInfo>();
-                    nsMap[vm.Namespace] = list;
-                }
-                list.Add(vm);
-
-                var cur = rootNs;
-                foreach (var seg in vm.Namespace.Split('.'))
-                    cur = cur.GetOrAdd(seg);
-                cur.IsTerminal = true;
-            }
-            CompressChains(rootNs);
-
-            foreach (var child in rootNs.Children.Values.OrderBy(n => n.Name, StringComparer.Ordinal))
-            {
-                var node = BuildNamespaceNode(child, prefix: string.Empty, accum: string.Empty, nsMap);
-                _rootNode.Children.Add(node);
-            }
-
-            _currentNode = _rootNode;
-            _navStack.Clear();
-        }
-
-        private static Node BuildNamespaceNode(NsNode node, string prefix, string accum, Dictionary<string, List<ViewModelInfo>> nsMap)
-        {
-            var nextPrefix = string.IsNullOrEmpty(prefix) ? node.Name : $"{prefix}.{node.Name}";
-            var nextNs = string.IsNullOrEmpty(accum) ? node.Name : $"{accum}.{node.Name}";
-
-            // DisplayName should be just the current segment, not the full path
-            var res = new Node(new Item(node.Name, null, nextPrefix));
-
-            if (node.IsTerminal && nsMap.TryGetValue(nextNs, out var vms))
-            {
-                // Disambiguate duplicates by assembly
-                var counts = new Dictionary<string, int>();
-                foreach (var vm in vms) counts[vm.Name] = counts.TryGetValue(vm.Name, out var c) ? c + 1 : 1;
-                foreach (var vm in vms.OrderBy(v => v.Name))
-                {
-                    var display = counts[vm.Name] > 1 ? $"{vm.Name} ({vm.Assembly})" : vm.Name;
-                    var caption = $"{nextNs}.{display}";
-                    var vm2 = new ViewModelInfo
-                    {
-                        Name = vm.Name,
-                        Namespace = vm.Namespace,
-                        Assembly = vm.Assembly,
-                        Aqn = vm.Aqn,
-                        DisplayName = display,
-                        Caption = caption
-                    };
-                    var leaf = new Node(new Item(vm2.DisplayName, vm2.Aqn, vm2.Caption)
-                    {
-                        Tooltip = vm2.FullName
-                    });
-                    res.Children.Add(leaf);
-                }
-            }
-
-            foreach (var ch in node.Children.Values.OrderBy(n => n.Name, StringComparer.Ordinal))
-            {
-                res.Children.Add(BuildNamespaceNode(ch, nextPrefix, nextNs, nsMap));
-            }
-
-            // If this node has only one child, merge them
-            if (res.Children.Count == 1)
-            {
-                var onlyChild = res.Children[0];
-                // Only merge if child is not a leaf (has no Aqn) OR if it's a leaf and we want to flatten single ViewModels
-                if (onlyChild.Item.Aqn == null)
-                {
-                    // Merge namespace nodes
-                    res.Item.DisplayName = $"{res.Item.DisplayName}.{onlyChild.Item.DisplayName}";
-                    res.Item.Caption = $"{res.Item.Caption}.{onlyChild.Item.Caption}";
-                    res.Children.Clear();
-                    foreach (var grandChild in onlyChild.Children)
-                    {
-                        res.Children.Add(grandChild);
-                    }
-                }
-                else
-                {
-                    // Merge namespace with single ViewModel leaf
-                    res.Item.DisplayName = $"{res.Item.DisplayName}.{onlyChild.Item.DisplayName}";
-                    res.Item.Aqn = onlyChild.Item.Aqn;
-                    res.Item.Caption = onlyChild.Item.Caption;
-                    res.Item.Tooltip = onlyChild.Item.Tooltip;
-                    res.Children.Clear();
-                }
-            }
-
-            return res;
-        }
-
-        private void BuildSearchResults(string filter)
-        {
-            _searchResults.Clear();
-            var f = filter.ToLowerInvariant();
-            foreach (var leaf in EnumerateLeaves(_rootNode))
-            {
-                if (leaf.Item.MatchesFilter(f))
-                {
-                    // Show as flattened item with caption as full path
-                    var clone = new Node(new Item(leaf.Item.Caption, leaf.Item.Aqn, leaf.Item.Caption)
-                    {
-                        Tooltip = leaf.Item.Tooltip
-                    });
-                    _searchResults.Add(clone);
-                }
-            }
-        }
-
-        private static IEnumerable<Node> EnumerateLeaves(Node node)
-        {
-            if (node is { HasChildren: false, Item: { Aqn: not null } })
-            {
-                yield return node;
-                yield break;
-            }
-            if (node.HasChildren)
-            {
-                foreach (var ch in node.Children)
-                {
-                    foreach (var leaf in EnumerateLeaves(ch))
-                        yield return leaf;
-                }
-            }
-        }
-
-        private void RefreshView()
-        {
-            _titleLabel.text = GetCurrentTitle();
-            _backButton.SetEnabled(_navStack.Count > 0);
-            RefreshList();
-        }
-
-        private void RefreshList()
-        {
-            _list.itemsSource = GetCurrentItems();
-            _list.Rebuild();
-        }
-
-        private List<Node> GetCurrentItems() => _searchMode
-            ? _searchResults
-            : _currentNode.Children;
-
-        private string GetCurrentTitle()
-        {
-            if (_searchMode) return "Search";
-            if (_navStack.Count == 0) return "Select ViewModel";
-            var parts = _navStack
-                .Select(n => n.Item.DisplayName)
-                .Concat(new[] { _currentNode.Item.DisplayName })
-                .ToList();
-            // Skip root
-            if (parts.Count > 0 && parts[0] == "/") parts.RemoveAt(0);
-            return string.Join("/", parts);
-        }
-
-        private void Activate(Node node)
-        {
-            if (node.HasChildren && !_searchMode)
-            {
-                _navStack.Add(_currentNode);
-                _currentNode = node;
+                _navigation.NavigateToAqn(_currentAqn);
                 RefreshView();
-                _list.selectedIndex = 0;
             }
-            else if (node.Item.Aqn == null && node.Item.DisplayName == NoneChoice)
+        }
+        #endregion
+        
+        #region Event Handlers
+
+        private void HandleKeyDown(KeyDownEvent evt)
+        {
+            switch (evt.keyCode)
             {
-                SelectItem(node.Item);
+                case KeyCode.UpArrow:
+                    if (_listView.selectedIndex == 0)
+                        _searchField.Focus();
+                    break;
+
+                case KeyCode.Escape:
+                    HandleEscapeKey();
+                    evt.StopPropagation();
+                    break;
+
+                case KeyCode.RightArrow:
+                    HandleRightArrow();
+                    evt.StopPropagation();
+                    break;
+
+                case KeyCode.LeftArrow:
+                    if (_searchField.focusController.focusedElement != _searchField)
+                    {
+                        NavigateBack();
+                        evt.StopPropagation();
+                    }
+                    break;
             }
-            else if (node.Item.Aqn != null)
-            {
-                SelectItem(node.Item);
-            }
+        }
+
+        private void HandleEscapeKey()
+        {
+            if (_navigation.IsSearching && !string.IsNullOrEmpty(_searchField.value))
+                _searchField.value = string.Empty;
+            else
+                Close();
+        }
+
+        private void HandleRightArrow()
+        {
+            var items = _navigation.GetCurrentItems();
+            var index = _listView.selectedIndex;
+            
+            if (index >= 0 && index < items.Count && items[index].HasChildren)
+                NavigateInto(items[index]);
+        }
+
+        private void HandleSearchChanged(string query)
+        {
+            _navigation.ApplySearch(query);
+            RefreshView();
+        }
+
+        private void HandleItemChosen(IEnumerable<object> items)
+        {
+            var node = items.OfType<TreeNode>().FirstOrDefault();
+            if (node != null)
+                ActivateNode(node);
+        }
+        #endregion
+
+        #region Navigation
+
+        private void ActivateNode(TreeNode node)
+        {
+            if (node.HasChildren && !_navigation.IsSearching)
+                NavigateInto(node);
+            else if (node.IsSelectable)
+                SelectNode(node);
+        }
+
+        private void NavigateInto(TreeNode node)
+        {
+            _navigation.NavigateInto(node);
+            RefreshView();
+            _listView.selectedIndex = 0;
         }
 
         private void NavigateBack()
         {
-            if (_navStack.Count == 0) return;
-            
-            _currentNode = _navStack[^1];
-            _navStack.RemoveAt(_navStack.Count - 1);
-            
-            RefreshView();
+            if (_navigation.CanNavigateBack())
+            {
+                _navigation.NavigateBack();
+                RefreshView();
+            }
         }
 
-        private void NavigateToInitial()
+        private void SelectNode(TreeNode node)
         {
-            if (string.IsNullOrEmpty(_currentAqn)) return;
-            var path = new List<Node>();
-            if (FindPathToAqn(_rootNode, _currentAqn, path))
+            var displayText = node.AssemblyQualifiedName == null ? NoneOption : node.Caption;
+            _onSelected?.Invoke(node.AssemblyQualifiedName, displayText);
+            Close();
+        }
+
+        #endregion
+
+        #region View Updates
+
+        private void RefreshView()
+        {
+            _titleLabel.text = _navigation.GetCurrentTitle();
+            _backButton.SetEnabled(_navigation.CanNavigateBack());
+            
+            _listView.itemsSource = _navigation.GetCurrentItems();
+            _listView.Rebuild();
+        }
+
+        #endregion
+
+        #region Navigation Controller
+
+        private class NavigationController
+        {
+            private TreeNode _rootNode;
+            private TreeNode _currentNode;
+            private readonly List<TreeNode> _breadcrumbs = new();
+            private readonly List<TreeNode> _searchResults = new();
+
+            public bool IsSearching { get; private set; }
+
+            public void Initialize(TreeNode root)
             {
-                // path includes leaf at the end
-                if (path.Count > 1)
+                _rootNode = root;
+                _currentNode = root;
+                _breadcrumbs.Clear();
+            }
+
+            public void ApplySearch(string query)
+            {
+                IsSearching = !string.IsNullOrEmpty(query);
+                
+                if (IsSearching)
                 {
-                    // navigate to parent
+                    _searchResults.Clear();
+                    var filter = query.Trim().ToLowerInvariant();
+                    
+                    foreach (var leaf in EnumerateLeaves(_rootNode))
+                    {
+                        if (leaf.MatchesFilter(filter))
+                            _searchResults.Add(leaf.CreateSearchResult());
+                    }
+                }
+            }
+
+            public List<TreeNode> GetCurrentItems()
+            {
+                return IsSearching ? _searchResults : _currentNode.Children;
+            }
+
+            public string GetCurrentTitle()
+            {
+                if (IsSearching) return "Search";
+                if (_breadcrumbs.Count == 0) return "Select ViewModel";
+
+                var parts = _breadcrumbs
+                    .Select(n => n.DisplayName)
+                    .Append(_currentNode.DisplayName)
+                    .Where(n => n != "/")
+                    .ToList();
+
+                return string.Join("/", parts);
+            }
+
+            public void NavigateInto(TreeNode node)
+            {
+                _breadcrumbs.Add(_currentNode);
+                _currentNode = node;
+            }
+
+            public void NavigateBack()
+            {
+                if (_breadcrumbs.Count > 0)
+                {
+                    _currentNode = _breadcrumbs[^1];
+                    _breadcrumbs.RemoveAt(_breadcrumbs.Count - 1);
+                }
+            }
+
+            public bool CanNavigateBack() => _breadcrumbs.Count > 0;
+
+            public void NavigateToAqn(string aqn)
+            {
+                var path = new List<TreeNode>();
+                if (FindPathToAqn(_rootNode, aqn, path) && path.Count > 1)
+                {
+                    // Navigate to parent of the target
                     for (int i = 1; i < path.Count - 1; i++)
                     {
-                        _navStack.Add(_currentNode);
+                        _breadcrumbs.Add(_currentNode);
                         _currentNode = path[i];
+                    }
+                }
+            }
+
+            private static bool FindPathToAqn(TreeNode node, string aqn, List<TreeNode> path)
+            {
+                path.Add(node);
+                
+                if (node.AssemblyQualifiedName == aqn)
+                    return true;
+
+                foreach (var child in node.Children)
+                {
+                    if (FindPathToAqn(child, aqn, path))
+                        return true;
+                }
+
+                path.RemoveAt(path.Count - 1);
+                return false;
+            }
+
+            private static IEnumerable<TreeNode> EnumerateLeaves(TreeNode node)
+            {
+                if (!node.HasChildren && node.AssemblyQualifiedName != null)
+                {
+                    yield return node;
+                }
+                else
+                {
+                    foreach (var child in node.Children)
+                    {
+                        foreach (var leaf in EnumerateLeaves(child))
+                            yield return leaf;
                     }
                 }
             }
         }
 
-        private static bool FindPathToAqn(Node node, string aqn, List<Node> path)
-        {
-            path.Add(node);
-            if (node.Item.Aqn == aqn)
-                return true;
-            if (node.HasChildren)
-            {
-                foreach (var ch in node.Children)
-                {
-                    if (FindPathToAqn(ch, aqn, path)) return true;
-                }
-            }
-            path.RemoveAt(path.Count - 1);
-            return false;
-        }
+        #endregion
 
-        private void SelectItem(Item item)
-        {
-            _onSelected?.Invoke(item.Aqn, item.Aqn == null ? NoneChoice : item.Caption);
-            Close();
-        }
+        #region Data Model
 
-        private static List<ViewModelInfo> GatherViewModels()
-        {
-            var iViewModelType = typeof(IViewModel);
-            var list = new List<ViewModelInfo>();
-            foreach (var asm in AppDomain.CurrentDomain.GetAssemblies())
-            {
-                Type[] types;
-                try { types = asm.GetTypes(); }
-                catch { continue; }
-                foreach (var t in types)
-                {
-                    if (!t.IsClass || t.IsAbstract || !iViewModelType.IsAssignableFrom(t)) continue;
-                    var ns = string.IsNullOrEmpty(t.Namespace) ? GlobalNamespace : t.Namespace;
-                    list.Add(new ViewModelInfo
-                    {
-                        Name = t.Name,
-                        Namespace = ns,
-                        Assembly = t.Assembly.GetName().Name,
-                        Aqn = t.AssemblyQualifiedName
-                    });
-                }
-            }
-            return list;
-        }
-
-        private static void CompressChains(NsNode node)
-        {
-            // First recursively compress all children
-            foreach (var key in node.Children.Keys.ToList())
-                CompressChains(node.Children[key]);
-
-            // Then compress chains at this level
-            var keys = node.Children.Keys.ToList();
-            foreach (var key in keys)
-            {
-                if (!node.Children.TryGetValue(key, out var child)) continue;
-                
-                // Merge chain: while child is not terminal and has exactly one child
-                while (!child.IsTerminal && child.Children.Count == 1)
-                {
-                    var only = child.Children.Values.First();
-                    // Update the child's name by appending the only grandchild's name
-                    child.Name = string.IsNullOrEmpty(child.Name) ? only.Name : $"{child.Name}.{only.Name}";
-                    child.IsTerminal = only.IsTerminal;
-                    child.Children.Clear();
-                    foreach (var kv in only.Children)
-                        child.Children[kv.Key] = kv.Value;
-                }
-                
-                // If the key changed, update the dictionary
-                if (child.Name != key)
-                {
-                    node.Children.Remove(key);
-                    node.Children[child.Name] = child;
-                }
-            }
-        }
-        
-        private sealed class Item
+        private class TreeNode
         {
             public string DisplayName { get; set; }
             public string Caption { get; set; }
-            public string Aqn { get; set; }
+            public string AssemblyQualifiedName { get; set; }
             public string Tooltip { get; set; }
-            public Item(string displayName, string aqn, string caption)
+            public List<TreeNode> Children { get; }
+
+            public bool HasChildren => Children.Count > 0;
+            public bool IsSelectable => AssemblyQualifiedName != null || DisplayName == NoneOption;
+
+            public TreeNode(string displayName, string aqn = null, string caption = null)
             {
                 DisplayName = displayName;
-                Aqn = aqn;
-                Caption = caption;
+                AssemblyQualifiedName = aqn;
+                Caption = caption ?? displayName;
                 Tooltip = string.Empty;
+                Children = new List<TreeNode>();
             }
+
             public bool MatchesFilter(string filter)
             {
                 if (string.IsNullOrEmpty(filter)) return true;
-                var f = filter.ToLowerInvariant();
-                return (DisplayName?.ToLowerInvariant().Contains(f) ?? false)
-                       || (Caption?.ToLowerInvariant().Contains(f) ?? false)
-                       || (Aqn?.ToLowerInvariant().Contains(f) ?? false);
+                
+                return DisplayName?.ToLowerInvariant().Contains(filter) == true
+                    || Caption?.ToLowerInvariant().Contains(filter) == true
+                    || AssemblyQualifiedName?.ToLowerInvariant().Contains(filter) == true;
             }
-        }
 
-        private sealed class Node
-        {
-            public Item Item { get; }
-            public List<Node> Children { get; }
-            public bool HasChildren => Children.Count > 0;
-            public Node(Item item)
+            public TreeNode CreateSearchResult()
             {
-                Item = item;
-                Children = new List<Node>();
-            }
-        }
-
-        private sealed class ViewModelInfo
-        {
-            public string Name { get; set; }
-            public string Namespace { get; set; }
-            public string Assembly { get; set; }
-            public string Aqn { get; set; }
-            public string DisplayName { get; set; }
-            public string Caption { get; set; }
-
-            public string FullName => !string.IsNullOrWhiteSpace(Namespace) ? $"{Namespace}.{Name}" : Name;
-        }
-
-        // Namespace trie node used to build grouped tree
-        private sealed class NsNode
-        {
-            public string Name { get; set; }
-            public bool IsTerminal { get; set; }
-            public Dictionary<string, NsNode> Children { get; }
-            public NsNode(string name)
-            {
-                Name = name;
-                Children = new Dictionary<string, NsNode>(StringComparer.Ordinal);
-            }
-            public NsNode GetOrAdd(string name)
-            {
-                if (!Children.TryGetValue(name, out var child))
+                return new TreeNode(Caption, AssemblyQualifiedName, Caption)
                 {
-                    child = new NsNode(name);
-                    Children[name] = child;
+                    Tooltip = this.Tooltip
+                };
+            }
+        }
+
+        private class TypeInfo
+        {
+            public readonly string Name;
+            public readonly string Assembly;
+            public readonly string Namespace;
+            public readonly string AssemblyQualifiedName;
+            
+            public string FullName => string.IsNullOrWhiteSpace(Namespace) 
+                ? Name 
+                : $"{Namespace}.{Name}";
+
+            public TypeInfo(Type type)
+            {
+                Name = type.Name;
+                Assembly = type.Assembly.GetName().Name;
+                AssemblyQualifiedName = type.AssemblyQualifiedName;
+                Namespace = string.IsNullOrEmpty(type.Namespace) ? GlobalNamespace : type.Namespace;
+            }
+        }
+
+        #endregion
+
+        #region Hierarchy Builder
+
+        private static class HierarchyBuilder
+        {
+            public static TreeNode Build(List<TypeInfo> viewModels)
+            {
+                var root = new TreeNode("/");
+                root.Children.Add(new TreeNode(NoneOption, null, NoneOption));
+
+                AddGlobalNamespaceGroup(root, viewModels);
+                AddNamespaceHierarchy(root, viewModels);
+
+                return root;
+            }
+
+            private static void AddGlobalNamespaceGroup(TreeNode root, List<TypeInfo> viewModels)
+            {
+                var globals = viewModels
+                    .Where(vm => vm.Namespace == GlobalNamespace)
+                    .OrderBy(vm => vm.Name)
+                    .ToList();
+
+                if (globals.Count == 0) return;
+
+                var globalGroup = new TreeNode(GlobalNamespace);
+                AddViewModelsWithDisambiguation(globalGroup, globals, includeNamespace: false);
+                root.Children.Add(globalGroup);
+            }
+
+            private static void AddNamespaceHierarchy(TreeNode root, List<TypeInfo> viewModels)
+            {
+                var namespacedVMs = viewModels
+                    .Where(vm => vm.Namespace != GlobalNamespace)
+                    .ToList();
+
+                var trie = BuildNamespaceTrie(namespacedVMs);
+                CompressNamespaceTrie(trie);
+
+                var nsToVMs = namespacedVMs
+                    .GroupBy(vm => vm.Namespace)
+                    .ToDictionary(g => g.Key, g => g.ToList());
+
+                foreach (var child in trie.Children.Values.OrderBy(n => n.Segment))
+                {
+                    var node = BuildNamespaceNode(child, "", "", nsToVMs);
+                    root.Children.Add(node);
+                }
+            }
+
+            private static NamespaceTrieNode BuildNamespaceTrie(List<TypeInfo> viewModels)
+            {
+                var root = new NamespaceTrieNode("");
+
+                foreach (var vm in viewModels)
+                {
+                    var current = root;
+                    foreach (var segment in vm.Namespace.Split('.'))
+                    {
+                        current = current.GetOrCreateChild(segment);
+                    }
+                    current.IsTerminal = true;
+                }
+
+                return root;
+            }
+
+            private static TreeNode BuildNamespaceNode(
+                NamespaceTrieNode trieNode,
+                string displayPrefix,
+                string fullNamespace,
+                Dictionary<string, List<TypeInfo>> nsToVMs)
+            {
+                var nextDisplay = string.IsNullOrEmpty(displayPrefix) 
+                    ? trieNode.Segment 
+                    : $"{displayPrefix}.{trieNode.Segment}";
+                
+                var nextNamespace = string.IsNullOrEmpty(fullNamespace)
+                    ? trieNode.Segment
+                    : $"{fullNamespace}.{trieNode.Segment}";
+
+                var node = new TreeNode(trieNode.Segment, null, nextDisplay);
+
+                // Add ViewModels at this namespace level
+                if (trieNode.IsTerminal && nsToVMs.TryGetValue(nextNamespace, out var vms))
+                {
+                    AddViewModelsWithDisambiguation(node, vms, includeNamespace: true, nextNamespace);
+                }
+
+                // Add child namespaces
+                foreach (var child in trieNode.Children.Values.OrderBy(n => n.Segment))
+                {
+                    node.Children.Add(BuildNamespaceNode(child, nextDisplay, nextNamespace, nsToVMs));
+                }
+
+                // Flatten single-child chains
+                return FlattenSingleChildChain(node);
+            }
+
+            private static TreeNode FlattenSingleChildChain(TreeNode node)
+            {
+                if (node.Children.Count != 1) return node;
+
+                var onlyChild = node.Children[0];
+
+                // Merge namespace nodes
+                if (onlyChild.AssemblyQualifiedName == null)
+                {
+                    node.DisplayName = $"{node.DisplayName}.{onlyChild.DisplayName}";
+                    node.Caption = $"{node.Caption}.{onlyChild.Caption}";
+                    node.Children.Clear();
+                    node.Children.AddRange(onlyChild.Children);
+                }
+                // Merge namespace with single ViewModel
+                else
+                {
+                    node.DisplayName = $"{node.DisplayName}.{onlyChild.DisplayName}";
+                    node.AssemblyQualifiedName = onlyChild.AssemblyQualifiedName;
+                    node.Caption = onlyChild.Caption;
+                    node.Tooltip = onlyChild.Tooltip;
+                    node.Children.Clear();
+                }
+
+                return node;
+            }
+
+            private static void AddViewModelsWithDisambiguation(
+                TreeNode parent,
+                List<TypeInfo> viewModels,
+                bool includeNamespace,
+                string namespacePath = "")
+            {
+                var nameCounts = viewModels
+                    .GroupBy(vm => vm.Name)
+                    .ToDictionary(g => g.Key, g => g.Count());
+
+                foreach (var vm in viewModels.OrderBy(vm => vm.Name))
+                {
+                    var needsAssembly = nameCounts[vm.Name] > 1;
+                    var displayName = needsAssembly ? $"{vm.Name} ({vm.Assembly})" : vm.Name;
+                    
+                    var caption = includeNamespace
+                        ? $"{namespacePath}.{displayName}"
+                        : displayName;
+
+                    var leaf = new TreeNode(displayName, vm.AssemblyQualifiedName, caption)
+                    {
+                        Tooltip = vm.FullName
+                    };
+                    
+                    parent.Children.Add(leaf);
+                }
+            }
+
+            private static void CompressNamespaceTrie(NamespaceTrieNode node)
+            {
+                // Recursively compress children first
+                foreach (var child in node.Children.Values.ToList())
+                {
+                    CompressNamespaceTrie(child);
+                }
+
+                // Compress chains at this level
+                foreach (var key in node.Children.Keys.ToList())
+                {
+                    if (!node.Children.TryGetValue(key, out var child)) continue;
+
+                    // Merge non-terminal nodes with single child
+                    while (!child.IsTerminal && child.Children.Count == 1)
+                    {
+                        var grandchild = child.Children.Values.First();
+                        child.Segment = $"{child.Segment}.{grandchild.Segment}";
+                        child.IsTerminal = grandchild.IsTerminal;
+                        child.Children.Clear();
+                        
+                        foreach (var kv in grandchild.Children)
+                            child.Children[kv.Key] = kv.Value;
+                    }
+
+                    // Update dictionary if segment changed
+                    if (child.Segment != key)
+                    {
+                        node.Children.Remove(key);
+                        node.Children[child.Segment] = child;
+                    }
+                }
+            }
+        }
+
+        private class NamespaceTrieNode
+        {
+            public string Segment { get; set; }
+            public bool IsTerminal { get; set; }
+            public Dictionary<string, NamespaceTrieNode> Children { get; }
+
+            public NamespaceTrieNode(string segment)
+            {
+                Segment = segment;
+                Children = new Dictionary<string, NamespaceTrieNode>(StringComparer.Ordinal);
+            }
+
+            public NamespaceTrieNode GetOrCreateChild(string segment)
+            {
+                if (!Children.TryGetValue(segment, out var child))
+                {
+                    child = new NamespaceTrieNode(segment);
+                    Children[segment] = child;
                 }
                 return child;
+            }
+        }
+
+        #endregion
+        
+        private static class TypeInfoScanner
+        {
+            public static List<TypeInfo> GetAllTypeInfos()
+            {
+                // TODO Aspid.UnityFastTools – Get base type from attribute.
+                var baseType = typeof(IViewModel);
+                var result = new List<TypeInfo>();
+
+                foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
+                {
+                    try
+                    {
+                        result.AddRange( assembly.GetTypes()
+                            .Where(type => baseType.IsAssignableFrom(type))
+                            .Select(type => new TypeInfo(type)));
+                    }
+                    catch
+                    {
+                        // ignored
+                    }
+                }
+
+                return result;
             }
         }
     }

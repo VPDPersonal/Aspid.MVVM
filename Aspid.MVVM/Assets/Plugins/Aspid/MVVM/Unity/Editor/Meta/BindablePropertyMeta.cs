@@ -18,10 +18,24 @@ namespace Aspid.MVVM
             if (!IsBindableProperty(memberContainerType, memberInfo))
                 throw new ArgumentException("Invalid bindable property");
 
+            Name = memberInfo.Name;
+            
             var bindIdAttribute = memberInfo.GetCustomAttribute<BindIdAttribute>();
             Id = bindIdAttribute is not null ? bindIdAttribute.Id : BinderFieldInfoExtensions.GetBinderId(memberInfo.Name);
+            
+            if (memberContainerType.IsInterface)
+            {
+                Mode = BindMode.TwoWay;
+                var propertyInfo = (PropertyInfo)memberInfo;
 
-            Name = memberInfo.Name;
+                if (propertyInfo.PropertyType == typeof(IBinderAdder)) Type = null;
+                else
+                
+                // TODO Aspid.MVVM Unity – Fix
+                Type = propertyInfo.PropertyType;
+                
+                return;
+            }
             
             switch (memberInfo)
             {
@@ -57,6 +71,15 @@ namespace Aspid.MVVM
         
         public static bool IsBindableProperty(Type memberContainerType, MemberInfo memberInfo)
         {
+            if (memberContainerType.IsInterface)
+            {
+                if (memberInfo is not PropertyInfo propertyInfo) return false;
+                if (!propertyInfo.CanRead) return false;
+                if (propertyInfo.IsDefined(typeof(IgnoreBindAttribute))) return false;
+                
+                return typeof(IBinderAdder).IsAssignableFrom(propertyInfo.PropertyType);
+            }
+            
             switch (memberInfo)
             {
                 case FieldInfo fieldInfo when fieldInfo.IsDefined(typeof(BaseBindAttribute)): return true;

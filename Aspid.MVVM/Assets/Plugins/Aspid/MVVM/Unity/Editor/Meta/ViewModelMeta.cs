@@ -15,16 +15,34 @@ namespace Aspid.MVVM
         public ViewModelMeta(Type type)
         {
             Type = type;
+
+            if (type == typeof(IViewModel))
+            {
+                BindableProperties = Array.Empty<BindablePropertyMeta>();
+                return;
+            }
             
             if (type.GetInterfaces().All(i => i != typeof(IViewModel)))
                 throw new ArgumentException($"{type} must implement {nameof(IViewModel)}");
 
             const BindingFlags bindingAttr = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance;
-            BindableProperties = type.GetMembersInfosIncludingBaseClasses(bindingAttr)
-                .Where(member => BindablePropertyMeta.IsBindableProperty(type, member))
-                .OrderBy(member => member, new MemberComparer())
-                .Select(member => new BindablePropertyMeta(type, member))
-                .ToArray();
+
+            if (type.IsInterface)
+            {
+                BindableProperties = type.GetPropertyInfosIncludingBaseClasses(bindingAttr)
+                    .Where(member => BindablePropertyMeta.IsBindableProperty(type, member))
+                    .OrderBy(member => member, new MemberComparer())
+                    .Select(member => new BindablePropertyMeta(type, member))
+                    .ToArray();
+            }
+            else
+            {
+                BindableProperties = type.GetMembersInfosIncludingBaseClasses(bindingAttr)
+                    .Where(member => BindablePropertyMeta.IsBindableProperty(type, member))
+                    .OrderBy(member => member, new MemberComparer())
+                    .Select(member => new BindablePropertyMeta(type, member))
+                    .ToArray();
+            }
         }
         
         private sealed class MemberComparer : IComparer<MemberInfo>

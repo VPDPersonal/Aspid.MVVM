@@ -1,4 +1,3 @@
-#nullable enable
 using System;
 using System.Linq;
 using UnityEditor;
@@ -17,26 +16,23 @@ namespace Aspid.MVVM
     /// </summary>
     public sealed class ViewModelPickerWindow : EditorWindow
     {
+        private const string NoneChoice = "<None>";
         private const string GlobalNamespace = "<Global>";
-        private const string NoneChoice = "Null";
 
-        private Action<string?, string>? _onSelected;
+        private Action<string, string> _onSelected;
         private string _currentAqn = string.Empty;
 
         // Panel-style navigation structures
-        private Node? _rootNode;
-        private Node? _currentNode;
+        private Node _rootNode;
+        private Node _currentNode;
         private readonly List<Node> _navStack = new();
-        private readonly List<Node> _visibleItems = new();
         private readonly List<Node> _searchResults = new();
         private bool _searchMode;
 
-        private ToolbarSearchField? _searchField;
-        private ListView? _list;
-        private Button? _backButton;
-        private Label? _titleLabel;
-        
-        private int _idGen;
+        private ListView _list;
+        private Label _titleLabel;
+        private Button _backButton;
+        private ToolbarSearchField _searchField;
 
         public static void Show(Rect screenRect, string? currentAqn, Action<string?, string> onSelected)
         {
@@ -47,6 +43,7 @@ namespace Aspid.MVVM
         private void Constructor(Rect screenRect, string? currentAqn, Action<string?, string> onSelected)
         {
             rootVisualElement.Add(BuildWindow());
+            rootVisualElement.SetBorderRadius(5, 5, 5, 5);
 
             BuildHierarchy();
             NavigateToInitial();
@@ -55,8 +52,7 @@ namespace Aspid.MVVM
             _onSelected = onSelected;
             _currentAqn = currentAqn ?? string.Empty;
             var size = new Vector2(Mathf.Max(350, screenRect.width), 320);
-            
-            // Show();
+       
             ShowAsDropDown(screenRect, size);
             _searchField.Focus();
         }
@@ -92,13 +88,14 @@ namespace Aspid.MVVM
             }, TrickleDown.TrickleDown);
             
             var header = new VisualElement()
+                .SetBackgroundColor(new Color(0.1490196f, 0.1490196f, 0.1490196f))
                 .SetAlignItems(Align.Center)
                 .SetFlexDirection(FlexDirection.Row)
                 .SetMargin(bottom: 4)
                 .AddChild(_backButton)
                 .AddChild(_titleLabel);
             
-            _list = new ListView 
+            _list = new ListView
                 {
                     selectionType = SelectionType.Single,
                     virtualizationMethod = CollectionVirtualizationMethod.DynamicHeight,
@@ -121,9 +118,7 @@ namespace Aspid.MVVM
                 })
                 .SetBindItem((element, i) =>
                 {
-                    var items = _searchMode
-                        ? _searchResults 
-                        : _visibleItems;
+                    var items = GetCurrentItems();
                     
                     if (i < 0 || i >= items.Count) return;
                     var node = items[i];
@@ -187,7 +182,7 @@ namespace Aspid.MVVM
             else if (evt.keyCode is KeyCode.RightArrow)
             {
                 var index = _list.selectedIndex;
-                var items = _searchMode ? _searchResults : _visibleItems;
+                var items = GetCurrentItems();
                 if (index >= 0 && index < items.Count)
                 {
                     if (items[index].HasChildren)
@@ -253,7 +248,7 @@ namespace Aspid.MVVM
                     };
                     var leaf = new Node(new Item(vm2.DisplayName, vm2.Aqn, vm2.Caption)
                     {
-                        Tooltip = vm2.Aqn
+                        Tooltip = vm2.FullName
                     });
                     globalGroup.Children.Add(leaf);
                 }
@@ -317,7 +312,7 @@ namespace Aspid.MVVM
                     };
                     var leaf = new Node(new Item(vm2.DisplayName, vm2.Aqn, vm2.Caption)
                     {
-                        Tooltip = vm2.Aqn
+                        Tooltip = vm2.FullName
                     });
                     res.Children.Add(leaf);
                 }
@@ -395,22 +390,20 @@ namespace Aspid.MVVM
 
         private void RefreshView()
         {
-            _backButton.SetEnabled(_navStack.Count > 0);
             _titleLabel.text = GetCurrentTitle();
+            _backButton.SetEnabled(_navStack.Count > 0);
+            RefreshList();
+        }
 
-            _visibleItems.Clear();
-            if (_searchMode)
-            {
-                _list.itemsSource = _searchResults;
-            }
-            else
-            {
-                foreach (var c in _currentNode.Children)
-                    _visibleItems.Add(c);
-                _list.itemsSource = _visibleItems;
-            }
+        private void RefreshList()
+        {
+            _list.itemsSource = GetCurrentItems();
             _list.Rebuild();
         }
+
+        private List<Node> GetCurrentItems() => _searchMode
+            ? _searchResults
+            : _currentNode.Children;
 
         private string GetCurrentTitle()
         {
@@ -557,9 +550,9 @@ namespace Aspid.MVVM
         {
             public string DisplayName { get; set; }
             public string Caption { get; set; }
-            public string? Aqn { get; set; }
+            public string Aqn { get; set; }
             public string Tooltip { get; set; }
-            public Item(string displayName, string? aqn, string caption)
+            public Item(string displayName, string aqn, string caption)
             {
                 DisplayName = displayName;
                 Aqn = aqn;
@@ -596,6 +589,8 @@ namespace Aspid.MVVM
             public string Aqn { get; set; }
             public string DisplayName { get; set; }
             public string Caption { get; set; }
+
+            public string FullName => !string.IsNullOrWhiteSpace(Namespace) ? $"{Namespace}.{Name}" : Name;
         }
 
         // Namespace trie node used to build grouped tree

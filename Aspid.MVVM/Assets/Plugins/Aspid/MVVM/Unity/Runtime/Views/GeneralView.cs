@@ -8,7 +8,7 @@ namespace Aspid.MVVM.StarterKit
     public class GeneralView : MonoView
     {
 #if UNITY_EDITOR
-        [TypeSelector]
+        [TypeSelector(typeof(IViewModel))]
         [SerializeField] private string _designViewModel;
 #endif
         

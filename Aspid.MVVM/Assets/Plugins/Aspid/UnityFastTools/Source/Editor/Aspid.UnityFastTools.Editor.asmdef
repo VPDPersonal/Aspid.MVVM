@@ -1,7 +1,9 @@
 {
     "name": "Aspid.UnityFastTools.Editor",
     "rootNamespace": "",
-    "references": [],
+    "references": [
+        "GUID:7c010b89992542508a6b6189977e64d4"
+    ],
     "includePlatforms": [
         "Editor"
     ],

@@ -2,7 +2,8 @@
     "name": "Aspid.MVVM.Unity",
     "rootNamespace": "",
     "references": [
-        "Aspid.MVVM"
+        "Aspid.MVVM",
+        "Aspid.UnityFastTools"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

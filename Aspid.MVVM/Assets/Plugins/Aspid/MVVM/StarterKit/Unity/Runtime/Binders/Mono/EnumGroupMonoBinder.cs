@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using Aspid.UnityFastTools;
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
@@ -13,8 +14,6 @@ namespace Aspid.MVVM.StarterKit
         [BinderLog]
         public void SetValue(Enum value)
         {
-            _enumValues.Initialize(value);
-            
             foreach (var enumValue in _enumValues)
             {
                 if (enumValue.Key is null)
@@ -28,8 +27,5 @@ namespace Aspid.MVVM.StarterKit
         protected abstract void SetDefaultValue(TElement element);
         
         protected abstract void SetSelectedValue(TElement element);
-        
-        protected override void OnUnbound() =>
-            _enumValues.Deinitialize();
     }
 }

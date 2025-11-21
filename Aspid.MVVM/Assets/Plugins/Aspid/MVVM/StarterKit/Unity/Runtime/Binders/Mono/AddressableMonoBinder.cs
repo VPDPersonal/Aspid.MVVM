@@ -24,8 +24,11 @@ namespace Aspid.MVVM.StarterKit
         {
             TryReleaseHandle();
             SetAsset(GetDefaultAsset());
-            
-            Load(value);
+
+            if (value is not null)
+            {
+                Load(value);
+            }
         }
         
         [BinderLog]

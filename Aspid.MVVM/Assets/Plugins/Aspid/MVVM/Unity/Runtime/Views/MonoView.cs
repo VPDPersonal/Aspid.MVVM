@@ -18,9 +18,16 @@ namespace Aspid.MVVM
         public virtual void Dispose()
         {
             Deinitialize();
-            
-            if (this)
-                Destroy(gameObject);
+            if (!this) return;
+
+#if UNITY_EDITOR
+            if (!Application.isPlaying)
+            {
+                DestroyImmediate(gameObject);
+                return;
+            }
+#endif
+            Destroy(gameObject);
         }
 
         protected virtual void OnDestroy() =>

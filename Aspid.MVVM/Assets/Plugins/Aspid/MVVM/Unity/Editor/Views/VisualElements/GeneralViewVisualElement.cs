@@ -91,7 +91,7 @@ namespace Aspid.MVVM
 
             if (!string.IsNullOrWhiteSpace(Editor.DesignViewModel.stringValue))
             {
-                return Type.GetType(Editor.DesignViewModel.stringValue).Name + " (General View)";
+                return $"General View ({Type.GetType(Editor.DesignViewModel.stringValue).Name})";
             }
 
             return "General View";

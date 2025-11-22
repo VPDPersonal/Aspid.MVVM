@@ -28,11 +28,9 @@ namespace Aspid.MVVM
                 Mode = BindMode.TwoWay;
                 var propertyInfo = (PropertyInfo)memberInfo;
 
-                if (propertyInfo.PropertyType == typeof(IBinderAdder)) Type = null;
-                else
-                
-                // TODO Aspid.MVVM Unity – Fix
-                Type = propertyInfo.PropertyType;
+                Type = propertyInfo.PropertyType == typeof(IBinderAdder)
+                    ? null 
+                    : propertyInfo.PropertyType.GetGenericArguments()[0];
                 
                 return;
             }
@@ -76,8 +74,17 @@ namespace Aspid.MVVM
                 if (memberInfo is not PropertyInfo propertyInfo) return false;
                 if (!propertyInfo.CanRead) return false;
                 if (propertyInfo.IsDefined(typeof(IgnoreBindAttribute))) return false;
+
+                var propertyType = propertyInfo.PropertyType;
+                if (propertyType == typeof(IBinderAdder)) return true;
                 
-                return typeof(IBinderAdder).IsAssignableFrom(propertyInfo.PropertyType);
+                if (!propertyType.IsGenericType) return false;
+                
+                if (propertyType.GetGenericTypeDefinition() == typeof(IReadOnlyValueBindableMember<>)) return true;
+                if (propertyType.GetGenericTypeDefinition() == typeof(IReadOnlyBindableMember<>)) return true;
+                if (propertyType.GetGenericTypeDefinition() == typeof(IBindableMember<>)) return true;
+
+                return false;
             }
             
             switch (memberInfo)

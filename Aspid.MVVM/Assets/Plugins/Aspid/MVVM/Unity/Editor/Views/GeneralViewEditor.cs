@@ -4,6 +4,7 @@ using System.Linq;
 using UnityEditor;
 using Aspid.MVVM.StarterKit;
 using UnityEditor.UIElements;
+using UnityEngine.UIElements;
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM
@@ -28,6 +29,12 @@ namespace Aspid.MVVM
 
         protected override void OnCreatingInspectorGUI() =>
             UpdateMetaData();
+
+        protected override void OnGeometryChangedOnce(GeometryChangedEvent e)
+        {
+            base.OnGeometryChangedOnce(e);
+            ((GeneralViewVisualElement)Root).UpdateGeneralBinders();
+        }
 
         protected override void OnSerializedPropertyChanged(SerializedPropertyChangeEvent e)
         {

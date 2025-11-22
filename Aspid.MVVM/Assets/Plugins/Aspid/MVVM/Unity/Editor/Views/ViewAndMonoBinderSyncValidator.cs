@@ -206,12 +206,15 @@ namespace Aspid.MVVM
             if (viewBinders.Length is 0)
             {
                 Array.Resize(ref viewBinders, newSize: 1);
+                
+                viewBinders[0] = binder;
                 field.SetValueFromCastValueAndSaveView(view, viewBinders);
             }
             else if (field.FieldType.IsArray)
             {
                 // Add a binder at the end of the array
                 Array.Resize(ref viewBinders, newSize: viewBinders.Length + 1);
+                
                 viewBinders[^1] = binder;
                 field.SetValueFromCastValueAndSaveView(view, viewBinders);
             }

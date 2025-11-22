@@ -108,8 +108,7 @@ namespace Aspid.MVVM
                 for (var i = 0; i < assemblyQualifiedNames.Length; i++)
                 {
                     string assemblyQualifiedName;
-                    var directType = FieldContainerObjType.IsArray ? FieldContainerObjType.GetElementType() :
-                        FieldContainerObjType;
+                    var directType = FieldContainerObjType.IsArray ? FieldContainerObjType.GetElementType() : FieldContainerObjType;
                     var membersInfo = directType!.GetMember(assemblyQualifiedNames[i], bindingAttr);
 
                     if (membersInfo.Length is not 0)

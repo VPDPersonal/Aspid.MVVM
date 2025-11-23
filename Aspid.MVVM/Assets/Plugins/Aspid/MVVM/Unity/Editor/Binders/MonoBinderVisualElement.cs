@@ -58,7 +58,7 @@ namespace Aspid.MVVM
             _isInitialized = true;
         }
 
-        public void UpdateHeader()
+        public void Update()
         {
             if (!_isInitialized) return;
             
@@ -67,11 +67,16 @@ namespace Aspid.MVVM
             this.Q<AspidInspectorHeader>().Icon.SetImageFromResource(IconPath);
         }
 
-        protected virtual VisualElement Build() => new VisualElement()
-             .AddChild(BuildHeader())
-             .AddChild(BuildIdSelector())
-             .AddChild(BuildBaseInspector())
-             .AddChild(BuildLogsContainer());
+        protected virtual VisualElement Build()
+        {
+            return new VisualElement()
+                .AddChild(BuildHeader())
+                .AddChild(BuildIdSelector())
+                .AddChild(new PropertyField(_editor.IdProperty).SetDisplay(DisplayStyle.None))
+                .AddChild(new PropertyField(_editor.ViewProperty).SetDisplay(DisplayStyle.None))
+                .AddChild(BuildBaseInspector())
+                .AddChild(BuildLogsContainer());
+        }
 
         protected virtual VisualElement BuildHeader()
         {

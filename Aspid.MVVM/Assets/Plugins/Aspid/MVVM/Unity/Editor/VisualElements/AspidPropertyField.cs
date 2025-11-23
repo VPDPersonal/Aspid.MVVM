@@ -18,17 +18,19 @@ namespace Aspid.MVVM
         public AspidPropertyField(SerializedProperty property)
             : base(property)
         {
-            Initialize();
+            Initialize(property);
         }
 
         public AspidPropertyField(SerializedProperty property, string label) 
             : base(property, label)
         {
-            Initialize();
+            Initialize(property);
         }
 
-        private void Initialize()
+        private void Initialize(SerializedProperty property)
         {
+            this.Bind(property.serializedObject);
+            
             styleSheets.Add(StyleSheet);
             RegisterCallback<GeometryChangedEvent>(SetStyles);
         }

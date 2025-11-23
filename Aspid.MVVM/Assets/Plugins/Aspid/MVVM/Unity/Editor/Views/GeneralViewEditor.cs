@@ -6,6 +6,10 @@ using Aspid.MVVM.StarterKit;
 using UnityEditor.UIElements;
 using UnityEngine.UIElements;
 
+#if !UNITY_6000_0_OR_NEWER
+using Aspid.UnityFastTools;
+#endif
+
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM
 {
@@ -26,15 +30,15 @@ namespace Aspid.MVVM
             BindersList = new BinderListProperty(serializedObject);
             DesignViewModel = serializedObject.FindProperty("_designViewModel");
         }
-
+        
         protected override void OnCreatingInspectorGUI() =>
             UpdateMetaData();
 
-        protected override void OnGeometryChangedOnce(GeometryChangedEvent e)
-        {
-            base.OnGeometryChangedOnce(e);
+        protected override void OnCreatedInspectorGUI() => 
+            Root.RegisterCallbackOnce<GeometryChangedEvent>(OnGeometryChangedEventOnce);
+
+        protected virtual void OnGeometryChangedEventOnce(GeometryChangedEvent e) =>
             ((GeneralViewVisualElement)Root).UpdateGeneralBinders();
-        }
 
         protected override void OnSerializedPropertyChanged(SerializedPropertyChangeEvent e)
         {
@@ -47,7 +51,6 @@ namespace Aspid.MVVM
             }
 
             ValidateChangedInView();
-            Root.Update();
         }
 
         private void UpdateMetaData()

@@ -48,6 +48,8 @@ namespace Aspid.MVVM
         {
             OnUpdate();
             
+            this.Q<AspidInspectorHeader>().Icon.SetImageFromResource(IconPath);
+            
             // TODO Aspid.MVVM Unity – Rename Name
             this.Q<VisualElement>("ViewModelDebugPanel").style.display = Editor.TargetAsView?.ViewModel is not null 
                 ? DisplayStyle.Flex

@@ -42,7 +42,6 @@ namespace Aspid.MVVM
             container.AddChild(new AspidTitle("Design ViewModel"));
             
             var propertyField = new PropertyField(Editor.DesignViewModel);
-            propertyField.Bind(Editor.serializedObject);
             
             return container.AddChild(propertyField);
         }
@@ -66,7 +65,6 @@ namespace Aspid.MVVM
                 var property = new AspidPropertyField(element.MonoBindersProperty, element.Id)
                     .SetMargin(top: 3);
                 
-                property.Bind(Editor.serializedObject);
                 container.AddChild(property);
             }
 

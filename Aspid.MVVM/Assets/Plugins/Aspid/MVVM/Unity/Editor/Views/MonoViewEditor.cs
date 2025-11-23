@@ -28,8 +28,10 @@ namespace Aspid.MVVM
         protected ValidableBindersById LastBinders { get; private set; }
 
         #region Enable Methods
-        private void OnEnable()
+        protected sealed override void OnEnable()
         {
+            base.OnEnable();
+            
             OnEnabling();
             {
                 ValidateView();
@@ -44,8 +46,10 @@ namespace Aspid.MVVM
         #endregion
 
         #region Disable Methods
-        private void OnDisable()
+        protected sealed override void OnDisable()
         {
+            base.OnDisable();
+            
             OnDisabling();
             {
                 ValidateView();
@@ -58,11 +62,11 @@ namespace Aspid.MVVM
         protected virtual void OnDisabled() { }
         #endregion
 
-        protected override void OnSerializedPropertyChanged(SerializedPropertyChangeEvent e)
-        {
+        protected override void OnCreatedInspectorGUI() =>
+            Root.RegisterCallback<SerializedPropertyChangeEvent>(OnSerializedPropertyChanged);
+
+        protected virtual void OnSerializedPropertyChanged(SerializedPropertyChangeEvent e) =>
             ValidateChangedInView();
-            base.OnSerializedPropertyChanged(e);
-        }
 
         protected virtual void ValidateView()
         {

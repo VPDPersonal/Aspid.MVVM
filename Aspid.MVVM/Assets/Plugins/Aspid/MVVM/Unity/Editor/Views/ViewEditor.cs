@@ -2,7 +2,6 @@
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
-using UnityEditor.UIElements;
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM
@@ -15,16 +14,21 @@ namespace Aspid.MVVM
         public T TargetAsView => target as T;
         
         protected ViewVisualElement<T, TEditor> Root { get; private set; }
-        
+
+        protected virtual void OnEnable() =>
+            EditorApplication.update += Update;
+
+        protected virtual void OnDisable() =>
+            EditorApplication.update -= Update;
+
+        protected virtual void Update() => Root?.Update();
+
         public sealed override VisualElement CreateInspectorGUI()
         {
             OnCreatingInspectorGUI();
             {
                 Root = BuildVisualElement();
                 Root.Initialize();
-
-                Root.RegisterCallback<GeometryChangedEvent>(OnGeometryChangedOnceInternal);
-                Root.RegisterCallback<SerializedPropertyChangeEvent>(OnSerializedPropertyChanged);
             }
             OnCreatedInspectorGUI();
             
@@ -36,18 +40,6 @@ namespace Aspid.MVVM
         protected virtual void OnCreatingInspectorGUI() { }
         
         protected virtual void OnCreatedInspectorGUI() { }
-
-        private void OnGeometryChangedOnceInternal(GeometryChangedEvent e)
-        {
-            OnGeometryChangedOnce(e);
-            Root.UnregisterCallback<GeometryChangedEvent>(OnGeometryChangedOnceInternal);
-        }
-        
-        protected virtual void OnGeometryChangedOnce(GeometryChangedEvent e) =>
-            Root.Update();
-        
-        protected virtual void OnSerializedPropertyChanged(SerializedPropertyChangeEvent e) =>
-            Root.Update();
     }
 }
 #endif

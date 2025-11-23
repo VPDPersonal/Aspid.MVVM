@@ -1,9 +1,10 @@
 #if !ASPID_MVVM_EDITOR_DISABLED
 using System;
-using System.Collections;
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
+using System.Collections;
+using UnityEditor.UIElements;
 using UnityEngine.UIElements;
 using Object = UnityEngine.Object;
 
@@ -102,12 +103,33 @@ namespace Aspid.MVVM
             var idDropdown = Root.IdDropdown;
             var viewDropdown = Root.ViewDropdown;
             
+            root.RegisterCallback<SerializedPropertyChangeEvent>(e =>
+            {
+                var dropdownDataId = DropdownData.CreateIdDropdownData(this);
+                var dropdownDataView = DropdownData.CreateViewDropdownData(this);
+
+                var idDropdown = root.IdDropdown;
+                var viewDropdown = root.ViewDropdown;
+                
+                if (idDropdown.choices[idDropdown.index] != dropdownDataId.Choices[dropdownDataId.Index]
+                    || viewDropdown.choices[viewDropdown.index] != dropdownDataView.Choices[dropdownDataView.Index])
+                {
+                    idDropdown.choices = dropdownDataId.Choices;
+                    viewDropdown.choices = dropdownDataView.Choices;
+                    
+                    idDropdown.index = dropdownDataId.Index;
+                    viewDropdown.index = dropdownDataView.Index;
+                }
+                
+                root.Update();
+            });
+            
             idDropdown.RegisterValueChangedCallback(value =>
             {
                 using (SyncerView.Sync(this))
                 {
                     SaveId(value.newValue);
-                    root.UpdateHeader();
+                    root.Update();
                 }
             });
             
@@ -123,7 +145,7 @@ namespace Aspid.MVVM
                     idDropdown.index = data.Index;
         
                     SaveId(idDropdown.value);
-                    root.UpdateHeader();
+                    root.Update();
                 }
             });
         }

@@ -137,6 +137,7 @@ namespace Aspid.MVVM
                 {
                     // If the field is empty, leave it blank.
                     if (binder is null) return true;
+                    if (binder is Component binderComponent && !binderComponent) return false;
                         
                     var isChild = IsBinderInViewScope(view, binder);
                     

@@ -34,6 +34,9 @@ namespace Aspid.MVVM
         #endregion
         
         protected MonoBinderVisualElement Root { get; private set; }
+
+        private string LastId;
+        private MonoView LastView;
         
         #region Enable
         private void OnEnable()
@@ -105,48 +108,53 @@ namespace Aspid.MVVM
             
             root.RegisterCallback<SerializedPropertyChangeEvent>(e =>
             {
+                if (e.changedProperty.propertyPath != IdProperty.propertyPath 
+                    && e.changedProperty.propertyPath != ViewProperty.propertyPath) return;
+                
                 var dropdownDataId = DropdownData.CreateIdDropdownData(this);
                 var dropdownDataView = DropdownData.CreateViewDropdownData(this);
-
-                var idDropdown = root.IdDropdown;
-                var viewDropdown = root.ViewDropdown;
                 
-                if (idDropdown.choices[idDropdown.index] != dropdownDataId.Choices[dropdownDataId.Index]
-                    || viewDropdown.choices[viewDropdown.index] != dropdownDataView.Choices[dropdownDataView.Index])
+                root.IdDropdown.choices = dropdownDataId.Choices;
+                root.ViewDropdown.choices = dropdownDataView.Choices;
+
+                var id = IdProperty.stringValue;
+                var view = ViewProperty.objectReferenceValue;
+
+                if (id != LastId || view != LastView)
                 {
-                    idDropdown.choices = dropdownDataId.Choices;
-                    viewDropdown.choices = dropdownDataView.Choices;
-                    
-                    idDropdown.index = dropdownDataId.Index;
-                    viewDropdown.index = dropdownDataView.Index;
+                    if (LastView && !string.IsNullOrWhiteSpace(LastId))
+                        ViewAndMonoBinderSyncValidator.RemoveBinderIfExistInView(TargetAsMonoBinder, LastView, LastId);
+                
+                    if (view && !string.IsNullOrWhiteSpace(id))
+                        ViewAndMonoBinderSyncValidator.SetBinderIfNotExistInView(TargetAsMonoBinder);
                 }
+                
+                root.IdDropdown.SetValueWithoutNotify(dropdownDataId.Choices[dropdownDataId.Index]);
+                root.ViewDropdown.SetValueWithoutNotify(dropdownDataView.Choices[dropdownDataView.Index]);
+
+                LastId = IdProperty.stringValue;
+                LastView = ViewProperty.objectReferenceValue as MonoView;
                 
                 root.Update();
             });
             
             idDropdown.RegisterValueChangedCallback(value =>
             {
-                using (SyncerView.Sync(this))
-                {
-                    SaveId(value.newValue);
-                    root.Update();
-                }
+                SaveId(value.newValue);
+                root.Update();
             });
             
             viewDropdown.RegisterValueChangedCallback(value =>
             {
-                using (SyncerView.Sync(this))
-                {
-                    SaveView(value.newValue);
+                SaveView(value.newValue);
+                    
+                IdProperty.stringValue = string.Empty;
+                var data = DropdownData.CreateIdDropdownData(this);
+                idDropdown.choices = data.Choices;
+                idDropdown.index = data.Index;
         
-                    IdProperty.stringValue = string.Empty;
-                    var data = DropdownData.CreateIdDropdownData(this);
-                    idDropdown.choices = data.Choices;
-                    idDropdown.index = data.Index;
-        
-                    SaveId(idDropdown.value);
-                    root.Update();
-                }
+                SaveId(idDropdown.value);
+                root.Update();
             });
         }
         #endregion
@@ -228,37 +236,6 @@ namespace Aspid.MVVM
             serializedObject.ApplyModifiedProperties();
         }
         #endregion
-
-        protected readonly ref struct SyncerView
-        {
-            private readonly string _previousId;
-            private readonly MonoView _previousView;
-            private readonly MonoBinderEditor _editor;
-
-            private SyncerView(MonoBinderEditor editor)
-            {
-                _editor = editor;
-                _previousId = _editor.IdProperty.stringValue;
-                _previousView = _editor.ViewProperty.objectReferenceValue as MonoView;
-            }
-
-            public static SyncerView Sync(MonoBinderEditor editor) => new(editor);
-
-            public void Dispose()
-            {
-                var binder = _editor.TargetAsMonoBinder;
-                var id = _editor.IdProperty.stringValue;
-                var view = _editor.ViewProperty.objectReferenceValue;
-
-                if (_previousView == view && _previousId == id) return;
-
-                if (_previousView && !string.IsNullOrWhiteSpace(_previousId))
-                    ViewAndMonoBinderSyncValidator.RemoveBinderIfExistInView(binder, _previousView, _previousId);
-
-                if (view && !string.IsNullOrWhiteSpace(id))
-                    ViewAndMonoBinderSyncValidator.SetBinderIfNotExistInView(binder);
-            }
-        }
     }
 }
 #endif

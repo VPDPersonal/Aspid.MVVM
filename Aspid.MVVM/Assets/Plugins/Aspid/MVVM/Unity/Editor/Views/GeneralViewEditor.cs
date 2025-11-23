@@ -34,8 +34,11 @@ namespace Aspid.MVVM
         protected override void OnCreatingInspectorGUI() =>
             UpdateMetaData();
 
-        protected override void OnCreatedInspectorGUI() => 
+        protected override void OnCreatedInspectorGUI()
+        {
+            base.OnCreatedInspectorGUI();
             Root.RegisterCallbackOnce<GeometryChangedEvent>(OnGeometryChangedEventOnce);
+        }
 
         protected virtual void OnGeometryChangedEventOnce(GeometryChangedEvent e) =>
             ((GeneralViewVisualElement)Root).UpdateGeneralBinders();

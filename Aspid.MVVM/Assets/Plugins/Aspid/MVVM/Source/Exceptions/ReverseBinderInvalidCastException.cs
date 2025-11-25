@@ -3,6 +3,7 @@ using System;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM
 {
+    // TODO Aspid.MVVM – Write summary
     public sealed class ReverseBinderInvalidCastException<T> : InvalidCastException
     {
         private ReverseBinderInvalidCastException(string message) 

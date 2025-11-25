@@ -1,11 +1,10 @@
 #nullable enable
-using System;
 using System.Collections.Generic;
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM
 {
-    // TODO Replace array with ImmutableArray
+    // TODO Aspid.MVVM Unity – Replace array with ImmutableArray
     public sealed class ValidableBindersById : Dictionary<string, IMonoBinderValidable?[]>
     {
         /// <summary>
@@ -17,24 +16,24 @@ namespace Aspid.MVVM
         /// </returns>
         public static ValidableBindersById GetValidableBindersById(IView view)
         {
-            var fields = view.GetMonoBinderValidableFields();
+            var fields = view.GetRequireBinderFields();
             var bindersByFieldName = new ValidableBindersById();
 
             foreach (var field in fields)
             {
-                if (field is null) continue;
-                var viewBinders = field.GetValueAsArray<IMonoBinderValidable>(view) ?? Array.Empty<IMonoBinderValidable>();
+                if (!field.IsValidation()) continue;
+                var viewBinders = field.GetValueAsArray<IMonoBinderValidable>(field.FieldContainerObj);
                 
                 if (viewBinders is { Length: > 0 })
                 {
                     var copyViewBinders = new IMonoBinderValidable[viewBinders.Length];
                     viewBinders.CopyTo(copyViewBinders, 0);
                     
-                    bindersByFieldName.Add(field.Name, copyViewBinders);
+                    bindersByFieldName.Add(field.Id, copyViewBinders);
                 }
                 else
                 {
-                    bindersByFieldName.Add(field.Name, viewBinders);
+                    bindersByFieldName.Add(field.Id, viewBinders);
                 }
             }
             

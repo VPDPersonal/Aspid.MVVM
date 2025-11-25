@@ -43,9 +43,7 @@ namespace Aspid.MVVM
         public BindMode Mode => _mode;
 
         internal Binder()
-            : this(BindMode.OneWay)
-        {
-        }
+            : this(BindMode.OneWay) { }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Binder"/> class with the specified binding mode.

@@ -7,16 +7,17 @@ using System.Collections.Generic;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM
 {
+    // TODO Aspid.MVVM Unity – Refactor
+    // TODO Aspid.MVVM Unity – Write summary
     public static class BinderEditorUtilities
     {
         public static List<string> GetIds<T>(T binder, IView view)
             where T : Component, IBinder
         {
-            return view.GetMonoBinderValidableFields()
+            return view.GetRequireBinderFields()
                 .Where(field =>
                 {
-                    var requiredTypes = field.GetRequiredTypes();
-                    if (!requiredTypes.IsBinderMatchRequiredType(binder)) return false;
+                    if (!field.IsBinderMatchRequiredType(binder)) return false;
                     
                     var fieldType = !field.FieldType.IsArray
                         ? field.FieldType
@@ -24,7 +25,7 @@ namespace Aspid.MVVM
 
                     return fieldType?.IsInstanceOfType(binder) ?? false;
                 })
-                .Select(field => field.GetBinderId())
+                .Select(field => field.Id)
                 .ToList();
         }
         

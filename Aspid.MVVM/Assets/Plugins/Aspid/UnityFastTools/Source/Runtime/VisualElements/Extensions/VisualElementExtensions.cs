@@ -1,6 +1,7 @@
 using UnityEngine.UIElements;
 using System.Collections.Generic;
 
+// TODO Aspid.UnityFastTools
 // ReSharper disable once CheckNamespace
 namespace Aspid.UnityFastTools
 {
@@ -17,6 +18,13 @@ namespace Aspid.UnityFastTools
             where T : VisualElement
         {
             element.visible = visible;
+            return element;
+        }
+
+        public static T SetTooltip<T>(this T element, string tooltip)
+            where T : VisualElement
+        {
+            element.tooltip = tooltip;
             return element;
         }
         
@@ -44,5 +52,38 @@ namespace Aspid.UnityFastTools
             
             return element;
         }
+
+#if !UNITY_2023_1_OR_NEWER
+        public static void RegisterCallbackOnce<TEventType>(this VisualElement element, 
+            EventCallback<TEventType> callback,
+            TrickleDown useTrickleDown = TrickleDown.NoTrickleDown)
+            where TEventType : EventBase<TEventType>, new()
+        {
+            element.RegisterCallback<TEventType>(Once, useTrickleDown);
+            return;
+
+            void Once(TEventType evt)
+            {
+                callback?.Invoke(evt);
+                element.UnregisterCallback<TEventType>(Once, useTrickleDown);
+            }
+        }
+        
+        public static void RegisterCallbackOnce<TEventType, TUserArgsType>(this VisualElement element, 
+            TUserArgsType userArgs,
+            EventCallback<TEventType, TUserArgsType> callback,
+            TrickleDown useTrickleDown = TrickleDown.NoTrickleDown)
+            where TEventType : EventBase<TEventType>, new()
+        {
+            element.RegisterCallback<TEventType, TUserArgsType>(Once, userArgs, useTrickleDown);
+            return;
+
+            void Once(TEventType evt, TUserArgsType args)
+            {
+                callback?.Invoke(evt, args);
+                element.UnregisterCallback<TEventType, TUserArgsType>(Once, useTrickleDown);
+            }
+        }
+#endif
     }
 }

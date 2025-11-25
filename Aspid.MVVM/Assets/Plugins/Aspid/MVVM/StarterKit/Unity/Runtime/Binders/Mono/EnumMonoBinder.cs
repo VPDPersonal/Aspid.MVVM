@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using Aspid.UnityFastTools;
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
@@ -13,9 +14,6 @@ namespace Aspid.MVVM.StarterKit
             SetValue(_enumValues.GetValue(value));
         
         protected abstract void SetValue(T value);
-        
-        protected override void OnUnbound() =>
-            _enumValues.Deinitialize();
     }
     
     public abstract partial class EnumMonoBinder<TComponent, T> : ComponentMonoBinder<TComponent>, IBinder<Enum>
@@ -28,8 +26,5 @@ namespace Aspid.MVVM.StarterKit
             SetValue(_enumValues.GetValue(value));
         
         protected abstract void SetValue(T value);
-        
-        protected override void OnUnbound() =>
-            _enumValues.Deinitialize();
     }
 }

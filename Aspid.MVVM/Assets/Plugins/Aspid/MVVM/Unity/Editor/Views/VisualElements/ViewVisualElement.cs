@@ -11,6 +11,7 @@ using Aspid.UnityFastTools.Editors;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM
 {
+    // TODO Aspid.MVVM Unity – Write summary
     public class ViewVisualElement<TView, TEditor> : VisualElement
         where TView : Object, IView
         where TEditor : ViewEditor<TView, TEditor>
@@ -47,7 +48,10 @@ namespace Aspid.MVVM
         {
             OnUpdate();
             
-            this.Q<VisualElement>("ViewModelDebugPanel").style.display = Editor.TargetAsSpecific?.ViewModel is not null 
+            this.Q<AspidInspectorHeader>().Icon.SetImageFromResource(IconPath);
+            
+            // TODO Aspid.MVVM Unity – Rename Name
+            this.Q<VisualElement>("ViewModelDebugPanel").style.display = Editor.TargetAsView?.ViewModel is not null 
                 ? DisplayStyle.Flex
                 : DisplayStyle.None;
         }
@@ -77,26 +81,26 @@ namespace Aspid.MVVM
         }
 
         private AspidInspectorHeader BuildHeader() => 
-            new(GetScriptName(), Editor.TargetAsSpecific, IconPath);
+            new(GetScriptName(), Editor.TargetAsView, IconPath);
 
         protected virtual VisualElement? OnBuiltHeader() => null;
         
-        private BaseInspectorVisualElement BuildBaseInspector() =>
+        private AspidBaseInspectorVisualElement BuildBaseInspector() =>
             new(SerializedObject, null, PropertiesExcluding.ToArray());
 
         protected virtual VisualElement? OnBuiltBaseInspector() => null;
         
-        // TODO Aspid Refactor
+        // TODO Aspid Aspid.MVVM Unity – Refactor
         private VisualElement BuildViewModel()
         {
+            // TODO Aspid.MVVM Unity – Rename Name
             return new AspidContainer()
                 .SetName("ViewModelDebugPanel")
-                .AddChild(ViewModelDebugPanel.Build(Editor.TargetAsSpecific)
-                    .SetName("ViewModelContainer"));
+                .AddChild(ViewModelDebugPanel.Build(Editor.TargetAsView));
         }
         #endregion
 
         protected virtual string GetScriptName() =>
-            Editor.TargetAsSpecific.GetScriptName();
+            Editor.TargetAsView.GetScriptName();
     }
 }

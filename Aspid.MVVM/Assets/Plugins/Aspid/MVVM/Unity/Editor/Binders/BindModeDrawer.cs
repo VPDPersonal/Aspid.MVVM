@@ -8,6 +8,8 @@ using UnityEngine.UIElements;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM
 {
+    // TODO Aspid.MVVM Unity – Refactor
+    // TODO Aspid.MVVM Unity – Write summary
     [CustomPropertyDrawer(typeof(BindMode))]
     [CustomPropertyDrawer(typeof(BindModeAttribute))]
     internal sealed class BindModeDrawer : PropertyDrawer

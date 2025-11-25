@@ -7,16 +7,26 @@ using Aspid.UnityFastTools.Editors;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM
 {
-    public class MonoViewVisualElement : ViewVisualElement<MonoView, MonoViewEditor>
+    // TODO Aspid.MVVM Unity – Write summary
+    public sealed class MonoViewVisualElement : MonoViewVisualElement<MonoView, MonoViewEditor>
     {
-        private UnassignedBindersVisualElement? _unassignedBindersVisualElement;
+        public MonoViewVisualElement(MonoViewEditor editor) :
+            base(editor) { }
+    }
+
+    // TODO Aspid.MVVM Unity – Write summary
+    public abstract class MonoViewVisualElement<TView, TEditor> : ViewVisualElement<TView, TEditor>
+        where TView : MonoView
+        where TEditor : MonoViewEditor<TView, TEditor>
+    {
+        private UnassignedBindersVisualElement<TView, TEditor>? _unassignedBindersVisualElement;
         
         protected override string IconPath => Editor.UnassignedBinders.Any()
             ? EditorConstants.AspidIconYellow
             : base.IconPath;
         
-        public MonoViewVisualElement(MonoViewEditor editor) :
-            base(editor) { }
+        public MonoViewVisualElement(TEditor editor)
+            : base(editor) { }
         
         protected override void OnUpdate() =>
             _unassignedBindersVisualElement!.Update();
@@ -24,15 +34,15 @@ namespace Aspid.MVVM
         protected override VisualElement OnBuiltBaseInspector() =>
             BuildUnassignedBinders();
 
-        private UnassignedBindersVisualElement BuildUnassignedBinders()
+        private UnassignedBindersVisualElement<TView, TEditor> BuildUnassignedBinders()
         {
-            _unassignedBindersVisualElement = new UnassignedBindersVisualElement(Editor);
+            _unassignedBindersVisualElement = new UnassignedBindersVisualElement<TView, TEditor>(Editor);
             return _unassignedBindersVisualElement;
         }
         
         protected override string GetScriptName()
         {
-            var view = Editor.TargetAsSpecific;
+            var view = Editor.TargetAsView;
             if (!view) return string.Empty;
 	        
             var type = view.GetType();

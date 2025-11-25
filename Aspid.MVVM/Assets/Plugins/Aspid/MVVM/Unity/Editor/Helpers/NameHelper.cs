@@ -4,6 +4,7 @@ using System.Runtime.CompilerServices;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM
 {
+    // TODO Aspid.MVVM Unity – Write summary
     public static class NameHelper
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

@@ -12,6 +12,8 @@ using Object = UnityEngine.Object;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM
 {
+    // TODO Aspid.MVVM Unity – Refactor
+    // TODO Aspid.MVVM Unity – Write summary
     internal sealed class RelayCommandField : VisualElement
     {
         private const BindingFlags BindingAttr = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static;

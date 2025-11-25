@@ -13,7 +13,8 @@
         "Aspid.MVVM.StarterKit",
         "Unity.ResourceManager",
         "Aspid.Collections.Observable",
-        "SerializeReferenceDropdownRuntime"
+        "SerializeReferenceDropdownRuntime",
+        "Aspid.UnityFastTools"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

@@ -1,13 +1,18 @@
 #if !ASPID_MVVM_EDITOR_DISABLED
+using System;
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
+using System.Collections;
+using UnityEditor.UIElements;
 using UnityEngine.UIElements;
 using Object = UnityEngine.Object;
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM
 {
+    // TODO Aspid.MVVM Unity – Refactor
+    // TODO Aspid.MVVM Unity – Write summary
     [CanEditMultipleObjects]
     [CustomEditor(typeof(MonoBinder), true)]
     public class MonoBinderEditor : Editor
@@ -29,6 +34,9 @@ namespace Aspid.MVVM
         #endregion
         
         protected MonoBinderVisualElement Root { get; private set; }
+
+        private string LastId;
+        private MonoView LastView;
         
         #region Enable
         private void OnEnable()
@@ -55,8 +63,9 @@ namespace Aspid.MVVM
               
                 if (view&& !string.IsNullOrWhiteSpace(IdProperty.stringValue))
                 {
-                    // TODO Aspid Delete MonoView
-                    ViewUtility.ValidateView(view as MonoView);
+                    // TODO Aspid.MVVM – Delete MonoView
+                    if (view is not MonoView monoView) throw new NullReferenceException(nameof(monoView));
+                    ViewAndMonoBinderSyncValidator.ValidateView(monoView);
                 }
             }
             
@@ -97,29 +106,55 @@ namespace Aspid.MVVM
             var idDropdown = Root.IdDropdown;
             var viewDropdown = Root.ViewDropdown;
             
+            root.RegisterCallback<SerializedPropertyChangeEvent>(e =>
+            {
+                if (e.changedProperty.propertyPath != IdProperty.propertyPath 
+                    && e.changedProperty.propertyPath != ViewProperty.propertyPath) return;
+                
+                var dropdownDataId = DropdownData.CreateIdDropdownData(this);
+                var dropdownDataView = DropdownData.CreateViewDropdownData(this);
+                
+                root.IdDropdown.choices = dropdownDataId.Choices;
+                root.ViewDropdown.choices = dropdownDataView.Choices;
+
+                var id = IdProperty.stringValue;
+                var view = ViewProperty.objectReferenceValue;
+
+                if (id != LastId || view != LastView)
+                {
+                    if (LastView && !string.IsNullOrWhiteSpace(LastId))
+                        ViewAndMonoBinderSyncValidator.RemoveBinderIfExistInView(TargetAsMonoBinder, LastView, LastId);
+                
+                    if (view && !string.IsNullOrWhiteSpace(id))
+                        ViewAndMonoBinderSyncValidator.SetBinderIfNotExistInView(TargetAsMonoBinder);
+                }
+                
+                root.IdDropdown.SetValueWithoutNotify(dropdownDataId.Choices[dropdownDataId.Index]);
+                root.ViewDropdown.SetValueWithoutNotify(dropdownDataView.Choices[dropdownDataView.Index]);
+
+                LastId = IdProperty.stringValue;
+                LastView = ViewProperty.objectReferenceValue as MonoView;
+                
+                root.Update();
+            });
+            
             idDropdown.RegisterValueChangedCallback(value =>
             {
-                using (SyncerView.Sync(this))
-                {
-                    SaveId(value.newValue);
-                    root.UpdateHeader();
-                }
+                SaveId(value.newValue);
+                root.Update();
             });
             
             viewDropdown.RegisterValueChangedCallback(value =>
             {
-                using (SyncerView.Sync(this))
-                {
-                    SaveView(value.newValue);
+                SaveView(value.newValue);
+                    
+                IdProperty.stringValue = string.Empty;
+                var data = DropdownData.CreateIdDropdownData(this);
+                idDropdown.choices = data.Choices;
+                idDropdown.index = data.Index;
         
-                    IdProperty.stringValue = string.Empty;
-                    var data = DropdownData.CreateIdDropdownData(this);
-                    idDropdown.choices = data.Choices;
-                    idDropdown.index = data.Index;
-        
-                    SaveId(idDropdown.value);
-                    root.UpdateHeader();
-                }
+                SaveId(idDropdown.value);
+                root.Update();
             });
         }
         #endregion
@@ -150,21 +185,23 @@ namespace Aspid.MVVM
             {
                 if (string.IsNullOrWhiteSpace(IdProperty.stringValue)) return;
 
+                // TODO Aspid.MVVM – Fix
                 var componentView = ViewProperty.objectReferenceValue;
-                if (componentView && componentView is IView view && view.TryGetMonoBinderValidableFieldById(IdProperty.stringValue, out var field))
+                if (componentView && componentView is IView view && view.TryGetRequireBinderFieldsById(IdProperty.stringValue, out var field))
                 {
-                    var binderProperty = new SerializedObject(componentView).FindProperty(field!.Name);
-
-                    if (binderProperty is not null)
+                    if (field.FieldType.IsArray)
                     {
-                        if (binderProperty.isArray)
+                        foreach (var item in (IEnumerable)field.GetValue(field.FieldContainerObj))
                         {
-                            for (var i = 0; i < binderProperty.arraySize; i++)
+                            if ((MonoBinder)item == TargetAsMonoBinder)
                             {
-                                if (binderProperty.GetArrayElementAtIndex(i).objectReferenceValue == TargetAsMonoBinder) return;
+                                return;
                             }
                         }
-                        else if (binderProperty.objectReferenceValue == TargetAsMonoBinder) return;
+                    }
+                    else
+                    {
+                        if ((MonoBinder)field.GetValue(field.FieldContainerObj) == TargetAsMonoBinder) return;
                     }
                 }
                 
@@ -199,37 +236,6 @@ namespace Aspid.MVVM
             serializedObject.ApplyModifiedProperties();
         }
         #endregion
-
-        protected readonly ref struct SyncerView
-        {
-            private readonly string _previousId;
-            private readonly MonoView _previousView;
-            private readonly MonoBinderEditor _editor;
-
-            private SyncerView(MonoBinderEditor editor)
-            {
-                _editor = editor;
-                _previousId = _editor.IdProperty.stringValue;
-                _previousView = _editor.ViewProperty.objectReferenceValue as MonoView;
-            }
-
-            public static SyncerView Sync(MonoBinderEditor editor) => new(editor);
-
-            public void Dispose()
-            {
-                var binder = _editor.TargetAsMonoBinder;
-                var id = _editor.IdProperty.stringValue;
-                var view = _editor.ViewProperty.objectReferenceValue;
-
-                if (_previousView == view && _previousId == id) return;
-
-                if (_previousView && !string.IsNullOrWhiteSpace(_previousId))
-                    ViewUtility.RemoveBinderIfExist(_previousView, binder, _previousId);
-
-                if (view && !string.IsNullOrWhiteSpace(id))
-                    ViewUtility.SetBinderIfNotExist(binder);
-            }
-        }
     }
 }
 #endif

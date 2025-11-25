@@ -7,66 +7,100 @@ using System.Collections.Generic;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM
 {
+    // TODO Aspid.MVVM Unity – Write summary
     [CanEditMultipleObjects]
     [CustomEditor(typeof(MonoView), editorForChildClasses: true)]
-    public class MonoViewEditor : ViewEditor<MonoView, MonoViewEditor>
+    public sealed class MonoViewEditor : MonoViewEditor<MonoView, MonoViewEditor>
     {
-        public IEnumerable<IMonoBinderValidable> UnassignedBinders => TargetAsSpecific
+        protected override ViewVisualElement<MonoView, MonoViewEditor> BuildVisualElement() =>
+            new MonoViewVisualElement(this);
+    }
+    
+    // TODO Aspid.MVVM Unity – Write summary
+    public abstract class MonoViewEditor<TMonoView, TEditor> : ViewEditor<TMonoView, TEditor>
+        where TMonoView : MonoView
+        where TEditor : MonoViewEditor<TMonoView, TEditor>  
+    {
+        public IEnumerable<IMonoBinderValidable> UnassignedBinders => TargetAsView
             .GetComponentsInChildren<IMonoBinderValidable>(true)
-                .Where(binder => binder.View is null || string.IsNullOrWhiteSpace(binder.Id));
-        
+            .Where(binder => binder.View is null || string.IsNullOrWhiteSpace(binder.Id));
+
         protected ValidableBindersById LastBinders { get; private set; }
 
         #region Enable Methods
-        private void OnEnable()
+        protected sealed override void OnEnable()
         {
+            base.OnEnable();
+            
             OnEnabling();
-            Validate();
-            LastBinders = ValidableBindersById.GetValidableBindersById(TargetAsSpecific);
+            {
+                ValidateView();
+                LastBinders = ValidableBindersById.GetValidableBindersById(TargetAsView);
+            }
             OnEnabled();
         }
-        
+
         protected virtual void OnEnabling() { }
-        
+
         protected virtual void OnEnabled() { }
         #endregion
 
         #region Disable Methods
-        private void OnDisable()
+        protected sealed override void OnDisable()
         {
+            base.OnDisable();
+            
             OnDisabling();
-            Validate();
+            {
+                ValidateView();
+            }
             OnDisabled();
         }
-        
+
         protected virtual void OnDisabling() { }
-        
+
         protected virtual void OnDisabled() { }
         #endregion
         
-        #region CreateInspectorGUI
-        protected override ViewVisualElement<MonoView, MonoViewEditor> BuildVisualElement() =>
-            new MonoViewVisualElement(this);
-       
-        protected override void OnCreatedInspectorGUI(ViewVisualElement<MonoView, MonoViewEditor> root)
+        protected override void Update()
         {
-            base.OnCreatedInspectorGUI(root);
+            base.Update();
             
-            root.RegisterCallback<SerializedPropertyChangeEvent>(_ =>
+            // This is a temp solution.
             {
-                var binders = ValidableBindersById.GetValidableBindersById(TargetAsSpecific);
-                ViewUtility.ValidateViewChanges(TargetAsSpecific, LastBinders, binders);
-                LastBinders = binders;
+                var binders = ValidableBindersById.GetValidableBindersById(TargetAsView);
                 
-                root.Update();
-            });
+                if (LastBinders is null)
+                {
+                    LastBinders = binders;
+                    return;
+                }
+
+                var areEqual = binders.Count == LastBinders.Count && binders.All(pair =>
+                        LastBinders.ContainsKey(pair.Key) &&
+                        pair.Value.SequenceEqual(LastBinders[pair.Key]));
+
+                if (!areEqual)
+                {
+                    LastBinders = binders;
+                }
+            }
         }
-        #endregion
-        
-        protected virtual void Validate()
+
+        protected override void OnSerializedPropertyChanged(SerializedPropertyChangeEvent e) =>
+            ValidateChangedInView();
+
+        protected virtual void ValidateView()
         {
-            if (TargetAsSpecific)
-                ViewUtility.ValidateView(TargetAsSpecific);
+            if (TargetAsView)
+                ViewAndMonoBinderSyncValidator.ValidateView(TargetAsView);
+        }
+
+        protected void ValidateChangedInView()
+        {
+            var binders = ValidableBindersById.GetValidableBindersById(TargetAsView);
+            ViewAndMonoBinderSyncValidator.ValidateViewChanges(TargetAsView, LastBinders, binders);
+            LastBinders = binders;
         }
     }
 }

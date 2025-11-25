@@ -7,7 +7,8 @@ using UnityEngine.UIElements;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM
 {
-    // TODO Aspid Refactor
+    // TODO Aspid.MVVM Unity – Refactor
+    // TODO Aspid.MVVM Unity – Write summary
     internal sealed class CommandsContainer : VisualElement
     {
         private const BindingFlags BindingAttr = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static;

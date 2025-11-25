@@ -7,6 +7,7 @@ using System.Collections.Generic;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM
 {
+    // TODO Aspid.MVVM Unity – Write summary
     public static class TypeExtensions
     {
         public static Type? GetExplicitInterface(this Type implementingType, PropertyInfo property)
@@ -53,6 +54,31 @@ namespace Aspid.MVVM
             }
 
             return memberInfoList;
+        }
+        
+        public static Type GetUnitySerializableType(this FieldInfo field) =>
+            GetUnitySerializableType(field.FieldType, field.Name);
+
+        public static Type GetUnitySerializableType(this PropertyInfo propertyInfo) =>
+            GetUnitySerializableType(propertyInfo.PropertyType, propertyInfo.Name);
+
+        private static Type GetUnitySerializableType(Type? type, string name)
+        {
+            if (type is null) throw ThrowException();
+            
+            while (type.IsArray || type.IsGenericType && type.GetGenericTypeDefinition() == typeof(List<>))
+            {
+                type = type.IsArray
+                    ? type.GetElementType()
+                    : type.GetGenericArguments()[0];
+
+                if (type is null) throw ThrowException();
+            }
+            
+            return type;
+            
+            NullReferenceException ThrowException() =>
+                throw new NullReferenceException($"Member {name} of type {type} cannot be null.");
         }
     }
 }

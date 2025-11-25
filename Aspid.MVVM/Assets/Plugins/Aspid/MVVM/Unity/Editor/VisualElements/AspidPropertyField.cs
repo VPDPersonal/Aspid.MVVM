@@ -1,3 +1,4 @@
+#nullable enable
 using System.Linq;
 using UnityEngine;
 using UnityEditor;
@@ -8,23 +9,29 @@ using UnityEngine.UIElements;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM
 {
+    // TODO Aspid.MVVM Unity – Write summary
     public class AspidPropertyField : PropertyField
     {
+        public const string StyleClass = "aspid-property-field";
+        public static readonly StyleSheet StyleSheet = Resources.Load<StyleSheet>("Editor/Styles/aspid-mvvm-property-field");
+        
         public AspidPropertyField(SerializedProperty property)
             : base(property)
         {
-            Initialize();
-            styleSheets.Add(Resources.Load<StyleSheet>("Editor/Styles/aspid-mvvm-property-field"));
+            Initialize(property);
         }
 
         public AspidPropertyField(SerializedProperty property, string label) 
             : base(property, label)
         {
-            Initialize();
+            Initialize(property);
         }
 
-        private void Initialize()
+        private void Initialize(SerializedProperty property)
         {
+            this.Bind(property.serializedObject);
+            
+            styleSheets.Add(StyleSheet);
             RegisterCallback<GeometryChangedEvent>(SetStyles);
         }
         
@@ -32,8 +39,21 @@ namespace Aspid.MVVM
         {
             // For Field
             var field = Children().FirstOrDefault(element => !element.ClassListContains("unity-decorator-drawers-container"));
-            field?.AddToClassList("aspid-property-field");
-            field?.AddToClassList("aspid-lighter-container");
+
+            if (parent is AspidContainer container)
+            {
+                if (container[0] == this)
+                {
+                    Children()
+                        .FirstOrDefault(element => element.ClassListContains("unity-decorator-drawers-container"))
+                        ?.Children()
+                        .FirstOrDefault(element => element.ClassListContains("unity-header-drawer__label"))
+                        ?.SetMargin(top: 0);
+                }
+            }
+            
+            field?.AddToClassList(StyleClass);
+            field?.AddToClassList(AspidContainer.GetStyleClass(AspidContainer.StyleType.Lighter));
             
             // For [SerializeReferenceDropdown]
             foreach (var dropdown in this.Query<VisualElement>("dropdown-group").Build())

@@ -6,10 +6,6 @@ using Aspid.MVVM.StarterKit;
 using UnityEditor.UIElements;
 using UnityEngine.UIElements;
 
-#if !UNITY_6000_0_OR_NEWER
-using Aspid.UnityFastTools;
-#endif
-
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM
 {
@@ -34,13 +30,7 @@ namespace Aspid.MVVM
         protected override void OnCreatingInspectorGUI() =>
             UpdateMetaData();
 
-        protected override void OnCreatedInspectorGUI()
-        {
-            base.OnCreatedInspectorGUI();
-            Root.RegisterCallbackOnce<GeometryChangedEvent>(OnGeometryChangedEventOnce);
-        }
-
-        protected virtual void OnGeometryChangedEventOnce(GeometryChangedEvent e) =>
+        protected override void OnGeometryChangedEventOnce(GeometryChangedEvent e) =>
             ((GeneralViewVisualElement)Root).UpdateGeneralBinders();
 
         protected override void OnSerializedPropertyChanged(SerializedPropertyChangeEvent e)

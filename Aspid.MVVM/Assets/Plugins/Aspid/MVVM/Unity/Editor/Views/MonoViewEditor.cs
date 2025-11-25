@@ -61,11 +61,33 @@ namespace Aspid.MVVM
 
         protected virtual void OnDisabled() { }
         #endregion
+        
+        protected override void Update()
+        {
+            base.Update();
+            
+            // This is a temp solution.
+            {
+                var binders = ValidableBindersById.GetValidableBindersById(TargetAsView);
+                
+                if (LastBinders is null)
+                {
+                    LastBinders = binders;
+                    return;
+                }
 
-        protected override void OnCreatedInspectorGUI() =>
-            Root.RegisterCallback<SerializedPropertyChangeEvent>(OnSerializedPropertyChanged);
+                var areEqual = binders.Count == LastBinders.Count && binders.All(pair =>
+                        LastBinders.ContainsKey(pair.Key) &&
+                        pair.Value.SequenceEqual(LastBinders[pair.Key]));
 
-        protected virtual void OnSerializedPropertyChanged(SerializedPropertyChangeEvent e) =>
+                if (!areEqual)
+                {
+                    LastBinders = binders;
+                }
+            }
+        }
+
+        protected override void OnSerializedPropertyChanged(SerializedPropertyChangeEvent e) =>
             ValidateChangedInView();
 
         protected virtual void ValidateView()

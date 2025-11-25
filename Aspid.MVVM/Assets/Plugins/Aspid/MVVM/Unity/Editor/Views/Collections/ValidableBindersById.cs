@@ -1,5 +1,4 @@
 #nullable enable
-using System;
 using System.Collections.Generic;
 
 // ReSharper disable once CheckNamespace
@@ -23,7 +22,7 @@ namespace Aspid.MVVM
             foreach (var field in fields)
             {
                 if (!field.IsValidation()) continue;
-                var viewBinders = field.GetValueAsArray<IMonoBinderValidable>(field.FieldContainerObj) ?? Array.Empty<IMonoBinderValidable>();
+                var viewBinders = field.GetValueAsArray<IMonoBinderValidable>(field.FieldContainerObj);
                 
                 if (viewBinders is { Length: > 0 })
                 {

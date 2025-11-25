@@ -23,6 +23,7 @@ namespace Aspid.MVVM
             // TODO Aspid.MVVM Unity – Rename Name
             _unassignedBindersContainer = new VisualElement().SetName("UnassignedBindersContainer");
             
+            style.display = DisplayStyle.None;
             Add(Build());
         }
 

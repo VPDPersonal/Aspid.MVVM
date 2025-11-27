@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.Serialization;
 using Object = UnityEngine.Object;
 
 // ReSharper disable once CheckNamespace
@@ -11,11 +12,11 @@ namespace Aspid.MVVM.StarterKit
         [Obsolete("For Unity Inspector", true)]
         public PrefabViewFactory() { }
         
-        public PrefabViewFactory(MonoView prefab, bool addNewElementOnTop = false) :
-            this(prefab, null, addNewElementOnTop) { }
+        public PrefabViewFactory(MonoView prefab, bool overrideSibling = false, int siblingIndex = 0) :
+            this(prefab, null, overrideSibling, siblingIndex) { }
         
-        public PrefabViewFactory(MonoView prefab, Transform container, bool addNewElementOnTop = false)
-            : base(prefab, container, addNewElementOnTop) { }
+        public PrefabViewFactory(MonoView prefab, Transform container, bool overrideSibling = false, int siblingIndex = 0)
+            : base(prefab, container, overrideSibling, siblingIndex) { }
     }
     
     [Serializable]
@@ -24,19 +25,24 @@ namespace Aspid.MVVM.StarterKit
     {
         [SerializeField] private T _prefab;
         [SerializeField] private Transform _container;
-        [SerializeField] private bool _addNewElementOnTop;
+        
+        [FormerlySerializedAs("_addNewElementOnTop")] 
+        [SerializeField] private bool _overrideSibling;
+        
+        [SerializeField] private int _siblingIndex;
         
         [Obsolete("For Unity Inspector", true)]
         public PrefabViewFactory() { }
         
-        public PrefabViewFactory(T prefab, bool addNewElementOnTop = false) :
-            this(prefab, null, addNewElementOnTop) { }
+        public PrefabViewFactory(T prefab, bool overrideSibling = false, int siblingIndex = 0) :
+            this(prefab, null, overrideSibling, siblingIndex) { }
         
-        public PrefabViewFactory(T prefab, Transform container, bool addNewElementOnTop = false)
+        public PrefabViewFactory(T prefab, Transform container, bool overrideSibling = false, int siblingIndex = 0)
         {
             _prefab = prefab;
             _container = container;
-            _addNewElementOnTop = addNewElementOnTop;
+            _siblingIndex = siblingIndex;
+            _overrideSibling = overrideSibling;
         }
 
         public virtual T Create(IViewModel viewModel)
@@ -60,7 +66,7 @@ namespace Aspid.MVVM.StarterKit
 
         protected void SetSibling(T view)
         {
-            if (_addNewElementOnTop) view.transform.SetAsFirstSibling();
+            if (_overrideSibling) view.transform.SetSiblingIndex(_siblingIndex);
             else view.transform.SetAsLastSibling();
         }
     }

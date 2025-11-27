@@ -11,17 +11,17 @@ namespace Aspid.MVVM.StarterKit
         [Obsolete("For Unity Inspector", true)]
         public PrefabViewPool() { }
         
-        public PrefabViewPool(MonoView prefab, bool addNewElementOnTop = false) :
-            this(prefab, null, addNewElementOnTop) { }
+        public PrefabViewPool(MonoView prefab, bool overrideSibling = false, int siblingIndex = 0) :
+            this(prefab, null, overrideSibling, siblingIndex) { }
         
-        public PrefabViewPool(MonoView prefab, PoolSettings settings, bool addNewElementOnTop = false) :
-            this(prefab, null, settings, addNewElementOnTop) { }
+        public PrefabViewPool(MonoView prefab, PoolSettings settings, bool overrideSibling = false, int siblingIndex = 0) :
+            this(prefab, null, settings, overrideSibling, siblingIndex) { }
         
-        public PrefabViewPool(MonoView prefab, Transform container, bool addNewElementOnTop = false)
-            : this(prefab, container, new PoolSettings(0), addNewElementOnTop) { }
+        public PrefabViewPool(MonoView prefab, Transform container, bool overrideSibling = false, int siblingIndex = 0)
+            : this(prefab, container, new PoolSettings(0), overrideSibling, siblingIndex) { }
         
-        public PrefabViewPool(MonoView prefab, Transform container, PoolSettings settings, bool addNewElementOnTop = false)
-            : base(prefab, container, settings, addNewElementOnTop) { }
+        public PrefabViewPool(MonoView prefab, Transform container, PoolSettings settings, bool overrideSibling = false, int siblingIndex = 0)
+            : base(prefab, container, settings, overrideSibling, siblingIndex) { }
     }
     
     [Serializable]
@@ -46,17 +46,17 @@ namespace Aspid.MVVM.StarterKit
         [Obsolete("For Unity Inspector", true)]
         public PrefabViewPool() { }
         
-        public PrefabViewPool(T prefab, bool addNewElementOnTop = false) :
-            this(prefab, null, addNewElementOnTop) { }
+        public PrefabViewPool(T prefab, bool overrideSibling = false, int siblingIndex = 0) :
+            this(prefab, null, overrideSibling, siblingIndex) { }
         
-        public PrefabViewPool(T prefab, PoolSettings settings, bool addNewElementOnTop = false) :
-            this(prefab, null, settings, addNewElementOnTop) { }
+        public PrefabViewPool(T prefab, PoolSettings settings, bool overrideSibling = false, int siblingIndex = 0) :
+            this(prefab, null, settings, overrideSibling, siblingIndex) { }
         
-        public PrefabViewPool(T prefab, Transform container, bool addNewElementOnTop = false)
-            : this(prefab, container, new PoolSettings(0), addNewElementOnTop) { }
+        public PrefabViewPool(T prefab, Transform container, bool overrideSibling = false, int siblingIndex = 0)
+            : this(prefab, container, new PoolSettings(0), overrideSibling, siblingIndex) { }
 
-        public PrefabViewPool(T prefab, Transform container, PoolSettings settings, bool addNewElementOnTop = false)
-            : base(prefab, container, addNewElementOnTop)
+        public PrefabViewPool(T prefab, Transform container, PoolSettings settings, bool overrideSibling = false, int siblingIndex = 0)
+            : base(prefab, container, overrideSibling, siblingIndex)
         {
             _maxCount = settings.MaxCount;
             _initialCount = settings.InitialCount;

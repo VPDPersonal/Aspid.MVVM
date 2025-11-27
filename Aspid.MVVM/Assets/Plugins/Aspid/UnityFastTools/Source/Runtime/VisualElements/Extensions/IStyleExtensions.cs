@@ -170,7 +170,8 @@ namespace Aspid.UnityFastTools
             style.unityParagraphSpacing = value;
             return style;
         }
-        
+
+#if UNITY_6000_0_OR_NEWER
         public static T SetUnityTextAutoSize<T>(this T style, StyleTextAutoSize value)
             where T : IStyle
         {
@@ -185,6 +186,14 @@ namespace Aspid.UnityFastTools
             return style;
         }
         
+        public static T SetUnityEditorTextRenderingMode<T>(this T style, EditorTextRenderingMode value)
+            where T : IStyle
+        {
+            style.unityEditorTextRenderingMode = value;
+            return style;
+        }
+#endif
+        
         public static T SetTextOverflow<T>(this T style, StyleEnum<TextOverflow> value)
             where T : IStyle
         {
@@ -196,13 +205,6 @@ namespace Aspid.UnityFastTools
             where T : IStyle
         {
             style.unityTextOverflowPosition = value;
-            return style;
-        }
-        
-        public static T SetUnityEditorTextRenderingMode<T>(this T style, EditorTextRenderingMode value)
-            where T : IStyle
-        {
-            style.unityEditorTextRenderingMode = value;
             return style;
         }
         #endregion

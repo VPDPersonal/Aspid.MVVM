@@ -21,7 +21,8 @@ namespace Aspid.UnityFastTools
             element.makeItem = makeItem;
             return element;
         }
-        
+
+#if UNITY_6000_0_OR_NEWER
         public static T SetMakeFooter<T>(this T element, Func<VisualElement> makeFooter)
             where T : ListView
         {
@@ -42,6 +43,7 @@ namespace Aspid.UnityFastTools
             element.makeNoneElement = makeNoneElement;
             return element;
         }
+#endif
         #endregion
     }
 }

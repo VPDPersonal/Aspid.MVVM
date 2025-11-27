@@ -1,6 +1,7 @@
 using System;
 using UnityEditor;
 using UnityEngine;
+using UnityEditor.UIElements;
 using UnityEngine.UIElements;
 
 // ReSharper disable once CheckNamespace
@@ -36,8 +37,11 @@ namespace Aspid.UnityFastTools
         
         internal static VisualElement DrawUIToolkit(SerializedProperty property, string label, Type type)
         {
+            var propertyField = new PropertyField(property);
+            
             var typeSelector = new VisualElement()
-                .SetFlexDirection(FlexDirection.Row);
+                .SetFlexDirection(FlexDirection.Row)
+                .AddChild(new PropertyField(property).SetDisplay(DisplayStyle.None));
             
             var button = new Button()
                 .SetMargin(0)
@@ -46,20 +50,25 @@ namespace Aspid.UnityFastTools
                 .SetText(GetCaption(property.stringValue))
                 .SetTooltip(GetTooltip(property.stringValue));
 
+            var propertyPath = property.propertyPath;
+            var serializedObject = property.serializedObject;
+
             button.clicked += () =>
             {
+                
                 var window = EditorWindow.focusedWindow;
                 var worldBound = button.worldBound;
                 var screenRect = new Rect(window.position.x + worldBound.xMin, window.position.y + worldBound.yMin, worldBound.width, worldBound.height);
 
-                var current = property.stringValue ?? string.Empty;
+                var current = GetProperty(serializedObject, propertyPath).stringValue ?? string.Empty;
                 
                 TypeSelectorWindow.Show(type, screenRect, current, onSelected: assemblyQualifiedName =>
                 {
-                    property.SetStringAndApply(assemblyQualifiedName ?? string.Empty);
+                    var currentProperty = GetProperty(serializedObject, propertyPath);
+                    currentProperty.SetStringAndApply(assemblyQualifiedName ?? string.Empty);
                     
-                    button.SetText(GetCaption(property.stringValue));
-                    button.SetTooltip(GetTooltip(property.stringValue));
+                    button.SetText(GetCaption(currentProperty.stringValue));
+                    button.SetTooltip(GetTooltip(currentProperty.stringValue));
                 });
             };
 
@@ -72,6 +81,9 @@ namespace Aspid.UnityFastTools
 
             return typeSelector.AddChild(button);
         }
+
+        private static SerializedProperty GetProperty(SerializedObject serializedObject, string propertyPath) =>
+            serializedObject.FindProperty(propertyPath);
         
         private static string GetTooltip(string assemblyQualifiedName)
         {

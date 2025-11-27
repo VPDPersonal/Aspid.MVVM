@@ -168,6 +168,7 @@ namespace Aspid.UnityFastTools
             return element;
         }
         
+#if UNITY_6000_0_OR_NEWER
         public static T SetUnityTextAutoSize<T>(this T element, StyleTextAutoSize value)
             where T : VisualElement
         {
@@ -182,6 +183,14 @@ namespace Aspid.UnityFastTools
             return element;
         }
         
+        public static T SetUnityEditorTextRenderingMode<T>(this T element, EditorTextRenderingMode value)
+            where T : VisualElement
+        {
+            element.style.SetUnityEditorTextRenderingMode(value);
+            return element;
+        }
+#endif
+        
         public static T SetTextOverflow<T>(this T element, StyleEnum<TextOverflow> value)
             where T : VisualElement
         {
@@ -193,13 +202,6 @@ namespace Aspid.UnityFastTools
             where T : VisualElement
         {
             element.style.SetUnityTextOverflowPosition(value);
-            return element;
-        }
-        
-        public static T SetUnityEditorTextRenderingMode<T>(this T element, EditorTextRenderingMode value)
-            where T : VisualElement
-        {
-            element.style.SetUnityEditorTextRenderingMode(value);
             return element;
         }
         #endregion
@@ -532,12 +534,14 @@ namespace Aspid.UnityFastTools
             return element;
         }
         
+#if UNITY_6000_0_OR_NEWER
         public static T SetUnitySliceType<T>(this T element, StyleEnum<SliceType> value)
             where T : VisualElement
         {
             element.style.SetUnitySliceType(value);
             return element;
         }
+#endif
         #endregion
         
         #region Visibility

@@ -68,6 +68,60 @@ internal static class __MyBehaviourProfilerMarkerExtensions
 
 ![Aspid.UnityFastTools.ProfilerMarkers.png](Images/Aspid.UnityFastTools.ProfilerMarkers.png)
 
+## SerializedProperty Extensions
+``` csharp
+SerializedProperty property = GetProperty();
+
+property.ApplyModifiedProperties();
+// property.serializedObject.ApplyModifiedProperties();
+
+property.SetValue(10).ApplyModifiedProperties();
+// Or
+property.SetValueAndApply(10);
+// Or
+property.SetInt(10).ApplyModifiedProperties();
+// Or
+property.SetIntAndApply(10);
+// property.intValue = 10;
+// property.serializedObject.ApplyModifiedProperties();
+
+property.SetValue(intValue).SetInt(intValue).SetValueAndApply(intValue).SetIntAndApply(intValue);
+property.SetValue(uintValue).SetUint(uintValue).SetValueAndApply(uintValue).SetUintAndApply(uintValue);
+property.SetValue(longValue).SetLong(longValue).SetValueAndApply(longValue).SetLongAndApply(longValue);
+property.SetValue(ulongValue).SetUlong(ulongValue).SetValueAndApply(ulongValue).SetUlongAndApply(ulongValue);
+property.SetValue(floatValue).SetFloat(floatValue).SetValueAndApply(floatValue).SetFloatAndApply(floatValue);
+property.SetValue(doubleValue).SetDouble(doubleValue).SetValueAndApply(doubleValue).SetDoubleAndApply(doubleValue);
+property.SetValue(boolValue).SetBool(boolValue).SetValueAndApply(boolValue).SetBoolAndApply(boolValue);
+property.SetValue(rectValue).SetRect(rectValue).SetValueAndApply(rectValue).SetRectAndApply(rectValue);
+property.SetValue(rectIntValue).SetRectInt(rectIntValue).SetValueAndApply(rectIntValue).SetRectIntAndApply(rectIntValue);
+property.SetValue(boundsValue).SetBounds(boundsValue).SetValueAndApply(boundsValue).SetBoundsAndApply(boundsValue);
+property.SetValue(boundsIntValue).SetBoundsInt(boundsIntValue).SetValueAndApply(boundsIntValue).SetBoundsIntAndApply(boundsIntValue);
+property.SetValue(colorValue).SetColor(colorValue).SetValueAndApply(colorValue).SetColorAndApply(colorValue);
+property.SetValue(gradientValue).SetGradient(gradientValue).SetValueAndApply(gradientValue).SetGradientAndApply(gradientValue);
+property.SetValue(hash128Value).SetHash128(hash128Value).SetValueAndApply(hash128Value).SetHash128AndApply(hash128Value);
+property.SetValue(vactor4Value).SetVector4(vactor4Value).SetValueAndApply(vactor4Value).SetVector4AndApply(vactor4Value);
+property.SetValue(vactor3Value).SetVector3(vactor3Value).SetValueAndApply(vactor3Value).SetVector3AndApply(vactor3Value);
+property.SetValue(vactor3IntValue).SetVector3Int(vactor3IntValue).SetValueAndApply(vactor3IntValue).SetVector3IntAndApply(vactor3IntValue);
+property.SetValue(vactor2Value).SetVector2(vactor2Value).SetValueAndApply(vactor2Value).SetVector2AndApply(vactor2Value);
+property.SetValue(vactor2IntValue).SetVector2Int(vactor2IntValue).SetValueAndApply(vactor2IntValue).SetVector2IntAndApply(vactor2IntValue);
+property.SetValue(quaternionValue).SetQuaternion(quaternionValue).SetValueAndApply(quaternionValue).SetQuaternionAndApply(quaternionValue);
+property.SetValue(stringValue).SetString(stringValue).SetValueAndApply(stringValue).SetStringAndApply(stringValue);
+property.SetValue(animationCurveValue).SetAnimationCurveValue(animationCurveValue).SetValueAndApply(animationCurveValue).SetAnimationCurveValueAndApply(animationCurveValue);
+
+property.SetEnumFlag(intValue).SetEnumFlagAndApply(intValue);
+property.SetEnumIndex(intValue).SetEnumIndexAndApply(intValue);
+property.SetArraySize(intValue).SetArraySizeAndApply(intValue);
+property.SetManagedReference(objectValue).SetManagedReferenceAndApply(objectValue);
+property.SetObjectReference(unityObjectValue).SetObjectReferenceAndApply(unityObjectValue);
+property.SetExposedReference(unityObjectValue).SetExposedReferenceAndApply(unityObjectValue);
+
+// For Unity 6
+property.SetBoxed(objectValue).SetBoxedAndApply(objectValue);
+
+// For Unity 6.2
+property.SetValue(entityIdValue).SetEntityId(entityIdValue).SetValueAndApply(entityIdValue).SetEntityIdAndApply(entityIdValue);
+```
+
 ## IMGUI Extensions
 ``` csharp
 usign UnityEditor;

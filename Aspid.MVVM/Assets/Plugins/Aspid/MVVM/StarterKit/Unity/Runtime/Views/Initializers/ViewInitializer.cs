@@ -44,15 +44,6 @@ namespace Aspid.MVVM.StarterKit
         #region Di Integration
 #if ASPID_MVVM_ZENJECT_INTEGRATION
         [Zenject.Inject]
-        private Zenject.DiContainer _zenjectContainer;
-#endif
-#if ASPID_MVVM_VCONTAINER_INTEGRATION
-        [VContainer.Inject] 
-        private VContainer.IObjectResolver _vcontainerContainer; 
-#endif
-        
-#if ASPID_MVVM_ZENJECT_INTEGRATION
-        [Zenject.Inject]
         private void ZenjectConstructor()
         {
             if (_initializeStage is not InitializeStage.DiConstructor) return;

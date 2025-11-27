@@ -12,19 +12,15 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Aspid.Generators.Helper" Version="0.0.1-alpha.3" GeneratePathProperty="true" PrivateAssets="all"/>
-        <PackageReference Include="Aspid.Generators.Helper.Unity" Version="0.0.1-alpha.3" GeneratePathProperty="true" PrivateAssets="all"/>
+        <PackageReference Include="Aspid.Generators.Helper" Version="0.0.1-alpha.3" />
+        <PackageReference Include="Aspid.Generators.Helper.Unity" Version="0.0.1-alpha.3" />
         <PackageReference ExcludeAssets="runtime" Include="Microsoft.CodeAnalysis.Analyzers" Version="3.3.4">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
         <PackageReference ExcludeAssets="runtime" Include="Microsoft.CodeAnalysis.CSharp" Version="4.3.0"/>
         <PackageReference ExcludeAssets="runtime" Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="4.3.0"/>
-    <!-- <PackageReference Include="SourceGenerator.Foundations" Version="2.0.13" />-->
+        <PackageReference Include="SourceGenerator.Foundations" Version="2.0.13" />
     </ItemGroup>
-
-<!--    <ItemGroup>-->
-<!--        <EmbeddedResource Include="$(PKGNewtonsoft_Json)\lib\netstandard2.0\Newtonsoft.Json.dll" Visible="false" />-->
-<!--    </ItemGroup>-->
     
 </Project>

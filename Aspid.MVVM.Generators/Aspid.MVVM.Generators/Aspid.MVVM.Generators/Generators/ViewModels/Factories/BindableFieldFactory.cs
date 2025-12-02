@@ -3,6 +3,7 @@ using Microsoft.CodeAnalysis;
 using Aspid.Generators.Helper;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using Aspid.MVVM.Generators.Generators.ViewModels.Data.Infos;
 using Aspid.MVVM.Generators.Generators.ViewModels.Extensions;
 using Aspid.MVVM.Generators.Generators.ViewModels.Data.Members;
 using static Aspid.MVVM.Generators.Generators.Descriptions.Classes;
@@ -12,7 +13,7 @@ namespace Aspid.MVVM.Generators.Generators.ViewModels.Factories;
 
 public static class BindableFieldFactory
 {
-    public static IReadOnlyCollection<BindableField> Create(ImmutableArray<IFieldSymbol> fields, IReadOnlyCollection<BindableBindAlso> bindableBindAlsos)
+    public static IReadOnlyCollection<BindableField> Create(ImmutableArray<IFieldSymbol> fields, IReadOnlyCollection<BindableBindAlsoInfo> bindableBindAlsos)
     {
         var bindableFields = new List<BindableField>();
 
@@ -41,7 +42,7 @@ public static class BindableFieldFactory
         return bindableFields;
     }
 
-    private static ImmutableArray<BindableBindAlso> GetBindableBindAlso(IFieldSymbol field, IReadOnlyCollection<BindableBindAlso> allBindableBindAlsos)
+    private static ImmutableArray<BindableBindAlsoInfo> GetBindableBindAlso(IFieldSymbol field, IReadOnlyCollection<BindableBindAlsoInfo> allBindableBindAlsos)
     {
         var set = new HashSet<string>();
 
@@ -58,6 +59,6 @@ public static class BindableFieldFactory
         }
 
         return allBindableBindAlsos.Where(bindableBindAlso => 
-            set.Contains(bindableBindAlso.SourceName) || set.Contains(bindableBindAlso.GeneratedName)).ToImmutableArray();
+            set.Contains(bindableBindAlso.Name)).ToImmutableArray();
     }
 }

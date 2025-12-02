@@ -47,7 +47,7 @@ public static class BindableMembersBody
             var interfaceType = customInterface.Interface.ToDisplayStringGlobal();
                 
             code.AppendLine(GeneratedCodeViewModelAttribute)
-                .AppendLine($"{propertyType} {interfaceType}.{property.Name} => {member.GeneratedName}Bindable;")
+                .AppendLine($"{propertyType} {interfaceType}.{property.Name} => {member.Bindable.PropertyName};")
                 .AppendLine();
         }
 

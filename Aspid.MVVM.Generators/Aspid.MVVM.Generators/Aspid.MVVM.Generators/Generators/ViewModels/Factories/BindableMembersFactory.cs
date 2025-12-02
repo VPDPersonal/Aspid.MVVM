@@ -3,13 +3,13 @@ using Microsoft.CodeAnalysis;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using Aspid.MVVM.Generators.Helpers;
-using Aspid.MVVM.Generators.Generators.ViewModels.Data.Members;
+using Aspid.MVVM.Generators.Generators.ViewModels.Data.Infos;
 
 namespace Aspid.MVVM.Generators.Generators.ViewModels.Factories;
 
 public static class BindableMembersFactory
 {
-    public static ImmutableArray<BindableMember> Create(ITypeSymbol symbol)
+    public static ImmutableArray<IBindableMemberInfo> Create(ITypeSymbol symbol)
     {
         var members = new MembersByGroup(symbol);
 
@@ -22,7 +22,7 @@ public static class BindableMembersFactory
             .ToImmutableArray();
         
         var bindableCommands = BindableCommandFactory.Create(members.Methods, members.Properties, generatedProperties);
-        var bindableMembers = new List<BindableMember>(bindableBindAlso.Count + bindableFields.Count + bindableCommands.Count);
+        var bindableMembers = new List<IBindableMemberInfo>(bindableBindAlso.Count + bindableFields.Count + bindableCommands.Count);
         
         bindableMembers.AddRange(bindableFields);
         bindableMembers.AddRange(bindableCommands);

@@ -4,9 +4,9 @@ using Aspid.Generators.Helper;
 using System.Collections.Generic;
 using Aspid.MVVM.Generators.Generators.Views.Data;
 using Aspid.MVVM.Generators.Generators.Descriptions;
+using Aspid.MVVM.Generators.Generators.ViewModels.Data.Infos;
 using Aspid.MVVM.Generators.Generators.ViewModels.Factories;
 using Aspid.MVVM.Generators.Generators.Views.Body.Extensions;
-using Aspid.MVVM.Generators.Generators.ViewModels.Data.Members;
 using static Aspid.Generators.Helper.Classes;
 using static Aspid.Generators.Helper.Unity.UnityClasses;
 using static Aspid.MVVM.Generators.Generators.Descriptions.Defines;
@@ -98,7 +98,7 @@ public static class GenericInitializeView
 
         if (genericView.Type.TypeKind is not TypeKind.Interface)
         {
-            var bindableMembers = new Dictionary<string, BindableMember>();
+            var bindableMembers = new Dictionary<string, IBindableMemberInfo>();
 
             for (var viewModelType = genericView.Type; viewModelType is not null; viewModelType = viewModelType.BaseType)
             {

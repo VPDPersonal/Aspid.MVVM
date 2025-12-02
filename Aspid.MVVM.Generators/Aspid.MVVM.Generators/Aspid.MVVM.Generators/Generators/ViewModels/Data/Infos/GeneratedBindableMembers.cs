@@ -11,18 +11,20 @@ namespace Aspid.MVVM.Generators.Generators.ViewModels.Data.Infos;
 public readonly struct GeneratedBindableMembers
 {
     // TODO Aspid.MVVM.Generators – Write summary
-    public readonly string Declaration;
     public readonly string? Invoke;
-    
+    public readonly string Declaration;
+    public readonly string PropertyName;
     public readonly string PropertyType;
 
     private GeneratedBindableMembers(
         string? invoke, 
-        string propertyType,
-        string declaration)
+        string declaration,
+        string propertyName,
+        string propertyType)
     {
         Invoke = invoke;
         Declaration = declaration;
+        PropertyName = propertyName;
         PropertyType = propertyType;
     }
 
@@ -35,10 +37,11 @@ public readonly struct GeneratedBindableMembers
         
         var fieldType = $"{OneTimeBindableMember}<{type}>";
         var propertyType = $"{IReadOnlyValueBindableMember}<{type}>";
+        var bindablePropertyName = $"{propertyName}Bindable";
 
-        var declaration = RecognizeDeclaration(mode, fieldName, null, fieldType, $"{propertyName}Bindable", propertyType);
+        var declaration = RecognizeDeclaration(mode, fieldName, null, fieldType, bindablePropertyName, propertyType);
         
-        return new GeneratedBindableMembers(null, propertyType, declaration);
+        return new GeneratedBindableMembers(null, declaration, bindablePropertyName, propertyType);
     }
     
     public static GeneratedBindableMembers CreateForField(IFieldSymbol fieldSymbol)
@@ -57,7 +60,7 @@ public readonly struct GeneratedBindableMembers
         var invoke = RecognizeInvoke(mode, memberName, fieldName);
         var declaration = RecognizeDeclaration(mode, memberName, fieldName, fieldType, propertyName, propertyType);
         
-        return new GeneratedBindableMembers(invoke, propertyType, declaration);
+        return new GeneratedBindableMembers(invoke, declaration, propertyName, propertyType);
     }
     
     public static GeneratedBindableMembers CreateForBindAlso(IPropertySymbol propertySymbol)
@@ -76,7 +79,7 @@ public readonly struct GeneratedBindableMembers
         var invoke = RecognizeInvoke(mode, memberName, fieldName);
         var declaration = RecognizeDeclaration(mode, memberName, fieldName, fieldType, propertyName, propertyType);
         
-        return new GeneratedBindableMembers(invoke, propertyType, declaration);
+        return new GeneratedBindableMembers(invoke, declaration, propertyName, propertyType);
     }
 
     private static string RecognizeFieldType(ITypeSymbol type, BindMode mode)

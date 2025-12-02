@@ -1,15 +1,16 @@
 using System.Linq;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using Aspid.MVVM.Generators.Generators.ViewModels.Data.Infos;
 
 namespace Aspid.MVVM.Generators.Generators.ViewModels.Data.Members.Collections;
 
-public readonly struct IdLengthMemberGroup(int length, ImmutableArray<BindableMember> members)
+public readonly struct IdLengthMemberGroup(int length, ImmutableArray<IBindableMemberInfo> members)
 {
     public readonly int Length = length;
-    public readonly ImmutableArray<BindableMember> Members = members;
+    public readonly ImmutableArray<IBindableMemberInfo> Members = members;
     
-    public static ImmutableArray<IdLengthMemberGroup> Create(ImmutableArray<BindableMember> bindableMembers)
+    public static ImmutableArray<IdLengthMemberGroup> Create(ImmutableArray<IBindableMemberInfo> bindableMembers)
     {
         var bindableMembersCountByLength = new Dictionary<int, int>();
         
@@ -22,7 +23,7 @@ public readonly struct IdLengthMemberGroup(int length, ImmutableArray<BindableMe
             bindableMembersCountByLength[length] += 1;
         }
         
-        var idGroups = new Dictionary<int, List<BindableMember>>();
+        var idGroups = new Dictionary<int, List<IBindableMemberInfo>>();
 
         foreach (var bindableMember in bindableMembers)
         {

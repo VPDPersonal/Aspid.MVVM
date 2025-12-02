@@ -2,17 +2,17 @@ using Microsoft.CodeAnalysis;
 using Aspid.Generators.Helper;
 using System.Collections.Generic;
 using System.Collections.Immutable;
-using Aspid.MVVM.Generators.Generators.ViewModels.Data.Members;
+using Aspid.MVVM.Generators.Generators.ViewModels.Data.Infos;
 using static Aspid.MVVM.Generators.Generators.Descriptions.Classes;
 
 namespace Aspid.MVVM.Generators.Generators.ViewModels.Factories;
 
 public static class BindableBindAlsoFactory
 {
-    public static IReadOnlyCollection<BindableBindAlso> Create(ImmutableArray<ISymbol> members)
+    public static IReadOnlyCollection<BindableBindAlsoInfo> Create(ImmutableArray<ISymbol> members)
     {
         var set = new HashSet<string>();
-        var bindableBindAlso = new List<BindableBindAlso>();
+        var bindableBindAlso = new List<BindableBindAlsoInfo>();
 
         foreach (var member in members)
         {
@@ -30,7 +30,7 @@ public static class BindableBindAlsoFactory
             if (member is not IPropertySymbol propertySymbol) continue;
             
             if (set.Contains(member.Name))
-                bindableBindAlso.Add(new BindableBindAlso(propertySymbol));
+                bindableBindAlso.Add(new BindableBindAlsoInfo(propertySymbol));
         }
 
         return bindableBindAlso;

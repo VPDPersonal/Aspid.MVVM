@@ -16,15 +16,19 @@ public abstract class BindableMember<T> : BindableMember
     }
 }
 
-public abstract class BindableMember
+public abstract class BindableMember : IBindableMemberInfo
 {
-    public readonly string Type;
-    public readonly string SourceName;
     public readonly string GeneratedName;
-    public readonly GeneratedBindableMembers Bindable;
+    
+    public string Type { get; }
+    
+    public string Name { get; }
 
-    public readonly IdData Id;
-    public readonly BindMode Mode;
+    public IdData Id { get; }
+    
+    public BindMode Mode { get; }
+    
+    public GeneratedBindableMembers Bindable { get; }
     
     protected BindableMember(
         ISymbol member,
@@ -37,7 +41,7 @@ public abstract class BindableMember
     {
         Type = type;
         Mode = mode;
-        SourceName = sourceName;
+        Name = sourceName;
         GeneratedName = generatedName;
         Id = new IdData(member, idPostfix);
         Bindable = bindable;

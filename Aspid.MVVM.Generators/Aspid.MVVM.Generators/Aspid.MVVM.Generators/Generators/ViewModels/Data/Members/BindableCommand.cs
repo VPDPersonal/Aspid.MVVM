@@ -29,10 +29,10 @@ public sealed class BindableCommand : BindableMember<IMethodSymbol>
             $"""
             {GeneratedCodeViewModelAttribute}
             [{EditorBrowsableAttribute}({EditorBrowsableState}.Never)]
-            private {Type} {SourceName};
+            private {Type} {Name};
             
             {GeneratedCodeViewModelAttribute}
-            private {Type} {GeneratedName} => {SourceName} ??= new {Type}({Member.Name}{CanExecute});
+            private {Type} {GeneratedName} => {Name} ??= new {Type}({Member.Name}{CanExecute});
             """;
     }
     

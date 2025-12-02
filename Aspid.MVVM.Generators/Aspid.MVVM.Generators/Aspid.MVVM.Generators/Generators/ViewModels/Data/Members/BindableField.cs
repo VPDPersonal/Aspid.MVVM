@@ -16,9 +16,9 @@ public class BindableField : BindableMember<IFieldSymbol>
     public readonly string GetAccessAsText;
     public readonly string SetAccessAsText;
     public readonly string GeneralAccessAsText;
-    public readonly ImmutableArray<BindableBindAlso> BindAlso;
+    public readonly ImmutableArray<BindableBindAlsoInfo> BindAlso;
     
-    public BindableField(IFieldSymbol field, BindMode mode, ImmutableArray<BindableBindAlso> bindAlso)
+    public BindableField(IFieldSymbol field, BindMode mode, ImmutableArray<BindableBindAlsoInfo> bindAlso)
         : base(field, 
             mode,
             field.Type.ToDisplayStringGlobal(), 
@@ -48,13 +48,13 @@ public class BindableField : BindableMember<IFieldSymbol>
         return IsReadOnly
             ? $"""
                {GeneratedCodeViewModelAttribute}
-               {GeneralAccessAsText}{Type} {GeneratedName} => {SourceName};
+               {GeneralAccessAsText}{Type} {GeneratedName} => {Name};
                """
             : $$"""
                 {{GeneratedCodeViewModelAttribute}}
                 {{GeneralAccessAsText}}{{Type}} {{GeneratedName}}
                 {
-                    {{GetAccessAsText}}get => {{SourceName}};
+                    {{GetAccessAsText}}get => {{Name}};
                     {{SetAccessAsText}}set => Set{{GeneratedName}}(value);
                 }
                 """;
@@ -80,10 +80,10 @@ public class BindableField : BindableMember<IFieldSymbol>
               {{GeneratedCodeViewModelAttribute}}  
               private void {{setMethod}}({{Type}} value)
               {
-                  if ({{EqualityComparer_1}}<{{Type}}>.Default.Equals({{SourceName}}, value)) return;
+                  if ({{EqualityComparer_1}}<{{Type}}>.Default.Equals({{Name}}, value)) return;
 
-                  {{onMethodChanging}}({{SourceName}}, value);
-                  {{keyWordThis}}{{SourceName}} = value;
+                  {{onMethodChanging}}({{Name}}, value);
+                  {{keyWordThis}}{{Name}} = value;
                   {{eventInvoke}}
                   {{onMethodChanged}}(value);
               }

@@ -3,6 +3,7 @@ using Aspid.Generators.Helper;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using Aspid.MVVM.Generators.Generators.ViewModels.Data;
+using Aspid.MVVM.Generators.Generators.ViewModels.Data.Infos;
 using Aspid.MVVM.Generators.Generators.ViewModels.Data.Members;
 using static Aspid.Generators.Helper.Classes;
 using static Aspid.Generators.Helper.Unity.UnityClasses;
@@ -54,7 +55,7 @@ public static class FindBindableMembersBody
 
     private static CodeWriter AppendFindBindableMember(this CodeWriter code, in ViewModelData data)
     {
-        var addedMembers = new HashSet<BindableMember>();
+        var addedMembers = new HashSet<IBindableMemberInfo>();
         
         var modifiers = "public";
         if (data.Inheritor is not Inheritor.None) modifiers = "public override";
@@ -119,7 +120,7 @@ public static class FindBindableMembersBody
         
         return code;
 
-        void AppendIdBlock(ImmutableArray<BindableMember> members)
+        void AppendIdBlock(ImmutableArray<IBindableMemberInfo> members)
         {
             foreach (var member in members)
             {
@@ -129,7 +130,7 @@ public static class FindBindableMembersBody
                     $$"""
                       case {{member.Id}}:
                       {
-                          return new({{member.GeneratedName}}Bindable);
+                          return new({{member.Bindable.PropertyName}});
                       }
                       """);
                 

@@ -2,6 +2,7 @@ using System.Linq;
 using Microsoft.CodeAnalysis;
 using Aspid.Generators.Helper;
 using Aspid.MVVM.Generators.Generators.ViewModels.Data;
+using Aspid.MVVM.Generators.Generators.ViewModels.Data.Infos;
 using Aspid.MVVM.Generators.Generators.ViewModels.Data.Members;
 
 namespace Aspid.MVVM.Generators.Generators.ViewModels.Body;
@@ -14,7 +15,7 @@ public static class RelayCommandBody
         DeclarationText declaration,
         in SourceProductionContext context)
     {
-        if (!data.Members.OfType<BindableCommand>().Any()) return;
+        if (!data.Members.OfType<BindableCommandInfo>().Any()) return;
         
         var code = new CodeWriter();
             
@@ -27,9 +28,9 @@ public static class RelayCommandBody
     
     private static CodeWriter AppendBody(this CodeWriter code, in ViewModelData data)
     {
-        foreach (var command in data.Members.OfType<BindableCommand>())
+        foreach (var command in data.Members.OfType<BindableCommandInfo>())
         {
-            code.AppendMultiline(command.ToDeclarationCommandString())
+            code.AppendMultiline(command.CommandDeclaration)
                 .AppendLine();
         }
         

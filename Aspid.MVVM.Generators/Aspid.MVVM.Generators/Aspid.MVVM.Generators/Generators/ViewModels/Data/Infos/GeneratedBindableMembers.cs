@@ -30,18 +30,17 @@ public readonly struct GeneratedBindableMembers
 
     public static GeneratedBindableMembers CreateForRelayCommand(
         string type, 
-        string fieldName,
-        string propertyName)
+        string memberName)
     {
         const BindMode mode = BindMode.OneTime;
         
         var fieldType = $"{OneTimeBindableMember}<{type}>";
         var propertyType = $"{IReadOnlyValueBindableMember}<{type}>";
-        var bindablePropertyName = $"{propertyName}Bindable";
+        var propertyName = $"{memberName}Bindable";
 
-        var declaration = RecognizeDeclaration(mode, fieldName, null, fieldType, bindablePropertyName, propertyType);
+        var declaration = RecognizeDeclaration(mode, memberName, null, fieldType, propertyName, propertyType);
         
-        return new GeneratedBindableMembers(null, declaration, bindablePropertyName, propertyType);
+        return new GeneratedBindableMembers(null, declaration, propertyName, propertyType);
     }
     
     public static GeneratedBindableMembers CreateForField(IFieldSymbol fieldSymbol)

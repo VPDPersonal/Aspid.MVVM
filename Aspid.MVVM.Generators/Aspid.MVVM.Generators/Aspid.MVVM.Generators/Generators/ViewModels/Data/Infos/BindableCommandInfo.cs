@@ -1,41 +1,50 @@
 using System.Linq;
 using System.Text;
-using Microsoft.CodeAnalysis;
 using Aspid.Generators.Helper;
+using Aspid.MVVM.Generators.Generators.Ids.Data;
 using Aspid.MVVM.Generators.Helpers;
-using Aspid.MVVM.Generators.Generators.ViewModels.Data.Infos;
+using Microsoft.CodeAnalysis;
 using static Aspid.Generators.Helper.Classes;
 using static Aspid.MVVM.Generators.Generators.Descriptions.Classes;
 using static Aspid.MVVM.Generators.Generators.Descriptions.General;
 
-namespace Aspid.MVVM.Generators.Generators.ViewModels.Data.Members;
+namespace Aspid.MVVM.Generators.Generators.ViewModels.Data.Infos;
 
-public sealed class BindableCommand : BindableMember<IMethodSymbol>
+public sealed class BindableCommandInfo : IBindableMemberInfo
 {
-    public readonly string CanExecute;
+    public string Type { get; }
+    
+    public string Name { get; }
+    
+    public IdData Id { get; }
 
-    public BindableCommand(IMethodSymbol command, string? canExecute, bool isLambda, bool isMethod)
-        : this(command, GetTypeName(command), $"{command.GetFieldName("__")}Command", $"{command.GetPropertyName()}Command", canExecute, isLambda, isMethod) { }
+    public BindMode Mode => BindMode.OneTime;
+    
+    public GeneratedBindableMembers Bindable { get; }
+    
+    public string CommandDeclaration { get; }
 
-    private BindableCommand(IMethodSymbol command, string type, string fieldName, string propertyName, string? canExecute, bool isLambda, bool isMethod)
-        : base(command, BindMode.OneTime, type, fieldName, propertyName, "Command", GeneratedBindableMembers.CreateForRelayCommand(type, fieldName, propertyName))
+    public BindableCommandInfo(IMethodSymbol methodSymbol, string? canExecute, bool isLambda, bool isMethod)
     {
-        CanExecute = GetCanExecuteAction(command, isLambda, isMethod, canExecute);
-    }
+        Type = GetTypeName(methodSymbol);
+        Id = new IdData(methodSymbol, "Command");
+        Name = $"{methodSymbol.GetPropertyName()}Command";
+        Bindable = GeneratedBindableMembers.CreateForRelayCommand(Type, Name);
 
-    public string ToDeclarationCommandString()
-    {
-        return
+        var fieldName = $"{methodSymbol.GetFieldName("__")}Command";
+        canExecute = GetCanExecuteAction(methodSymbol, isLambda, isMethod, canExecute);
+        
+        CommandDeclaration = 
             $"""
             {GeneratedCodeViewModelAttribute}
             [{EditorBrowsableAttribute}({EditorBrowsableState}.Never)]
-            private {Type} {Name};
-            
+            private {Type} {fieldName};
+
             {GeneratedCodeViewModelAttribute}
-            private {Type} {GeneratedName} => {Name} ??= new {Type}({Member.Name}{CanExecute});
+            private {Type} {Name} => {fieldName} ??= new {Type}({methodSymbol.Name}{canExecute});
             """;
     }
-    
+
     private static string GetTypeName(IMethodSymbol command)
     {
         var type = new StringBuilder(RelayCommand);

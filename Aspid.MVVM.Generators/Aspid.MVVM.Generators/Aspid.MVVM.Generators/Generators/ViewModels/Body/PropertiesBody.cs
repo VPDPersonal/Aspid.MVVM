@@ -27,8 +27,7 @@ public static class PropertiesBody
     {
         if (!data.Members.IsEmpty)
         {
-            code.AppendFieldEvents(data)
-                .AppendProperties(data)
+            code.AppendProperties(data)
                 .AppendBindableMembers(data)
                 .AppendSetMethods(data);
         }
@@ -40,24 +39,10 @@ public static class PropertiesBody
     {
         foreach (var member in data.Members)
         {
-            code.AppendMultiline(member.ToBindableMemberPropertyDeclarationString())
+            code.AppendMultiline(member.Bindable.Declaration)
                 .AppendLine();
         }
 
-        return code;
-    }
-
-    private static CodeWriter AppendFieldEvents(this CodeWriter code, in ViewModelData data)
-    {
-        foreach (var member in data.Members)
-        {
-            var fieldDeclaration = member.ToBindableMemberFieldDeclarationString();
-            if (fieldDeclaration is null) continue;
-            
-            code.AppendMultiline(fieldDeclaration)
-                .AppendLine();
-        }
-        
         return code;
     }
 
@@ -100,7 +85,7 @@ public static class PropertiesBody
         
         foreach (var member in data.Members)
         {
-            var invoke = member.ToInvokeBindableMemberString();
+            var invoke = member.Bindable.Invoke;
             code.AppendLineIf(!string.IsNullOrWhiteSpace(invoke), invoke);
         }
 

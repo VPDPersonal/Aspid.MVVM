@@ -14,4 +14,514 @@
         <None Remove="DDD.UbiquitousLanguageRegistry.txt"/>
     </ItemGroup>
 
+    <ItemGroup>
+      <Content Include="..\..\..\Aspid.MVVM\Assets\Plugins\Aspid\MVVM\Source\.DS_Store">
+        <Link>Source\.DS_Store</Link>
+      </Content>
+      <Content Include="..\..\..\Aspid.MVVM\Assets\Plugins\Aspid\MVVM\Source\Aspid.MVVM.asmdef">
+        <Link>Source\Aspid.MVVM.asmdef</Link>
+      </Content>
+      <Content Include="..\..\..\Aspid.MVVM\Assets\Plugins\Aspid\MVVM\Source\Aspid.MVVM.asmdef.meta">
+        <Link>Source\Aspid.MVVM.asmdef.meta</Link>
+      </Content>
+      <Content Include="..\..\..\Aspid.MVVM\Assets\Plugins\Aspid\MVVM\Source\BindableMembers.meta">
+        <Link>Source\BindableMembers.meta</Link>
+      </Content>
+      <Content Include="..\..\..\Aspid.MVVM\Assets\Plugins\Aspid\MVVM\Source\BindableMembers\.DS_Store">
+        <Link>Source\BindableMembers\.DS_Store</Link>
+      </Content>
+      <Content Include="..\..\..\Aspid.MVVM\Assets\Plugins\Aspid\MVVM\Source\BindableMembers\Classes.meta">
+        <Link>Source\BindableMembers\Classes.meta</Link>
+      </Content>
+      <Content Include="..\..\..\Aspid.MVVM\Assets\Plugins\Aspid\MVVM\Source\BindableMembers\Classes\OneTimeBindableMember.cs.meta">
+        <Link>Source\BindableMembers\Classes\OneTimeBindableMember.cs.meta</Link>
+      </Content>
+      <Content Include="..\..\..\Aspid.MVVM\Assets\Plugins\Aspid\MVVM\Source\BindableMembers\Classes\OneWayBindableMember.cs.meta">
+        <Link>Source\BindableMembers\Classes\OneWayBindableMember.cs.meta</Link>
+      </Content>
+      <Content Include="..\..\..\Aspid.MVVM\Assets\Plugins\Aspid\MVVM\Source\BindableMembers\Classes\OneWayToSourceBindableMember.cs.meta">
+        <Link>Source\BindableMembers\Classes\OneWayToSourceBindableMember.cs.meta</Link>
+      </Content>
+      <Content Include="..\..\..\Aspid.MVVM\Assets\Plugins\Aspid\MVVM\Source\BindableMembers\Classes\TwoWayBindableMember.cs.meta">
+        <Link>Source\BindableMembers\Classes\TwoWayBindableMember.cs.meta</Link>
+      </Content>
+      <Content Include="..\..\..\Aspid.MVVM\Assets\Plugins\Aspid\MVVM\Source\BindableMembers\Enum.meta">
+        <Link>Source\BindableMembers\Enum.meta</Link>
+      </Content>
+      <Content Include="..\..\..\Aspid.MVVM\Assets\Plugins\Aspid\MVVM\Source\BindableMembers\Enum\OneTimeEnumBindableMember.cs.meta">
+        <Link>Source\BindableMembers\Enum\OneTimeEnumBindableMember.cs.meta</Link>
+      </Content>
+      <Content Include="..\..\..\Aspid.MVVM\Assets\Plugins\Aspid\MVVM\Source\BindableMembers\Enum\OneWayEnumBindableMember.cs.meta">
+        <Link>Source\BindableMembers\Enum\OneWayEnumBindableMember.cs.meta</Link>
+      </Content>
+      <Content Include="..\..\..\Aspid.MVVM\Assets\Plugins\Aspid\MVVM\Source\BindableMembers\Enum\OneWayToSourceEnumBindableMember.cs.meta">
+        <Link>Source\BindableMembers\Enum\OneWayToSourceEnumBindableMember.cs.meta</Link>
+      </Content>
+      <Content Include="..\..\..\Aspid.MVVM\Assets\Plugins\Aspid\MVVM\Source\BindableMembers\Enum\TwoWayEnumBindableMember.cs.meta">
+        <Link>Source\BindableMembers\Enum\TwoWayEnumBindableMember.cs.meta</Link>
+      </Content>
+      <Content Include="..\..\..\Aspid.MVVM\Assets\Plugins\Aspid\MVVM\Source\BindableMembers\IBindableMember.cs.meta">
+        <Link>Source\BindableMembers\IBindableMember.cs.meta</Link>
+      </Content>
+      <Content Include="..\..\..\Aspid.MVVM\Assets\Plugins\Aspid\MVVM\Source\BindableMembers\IBinderAdder.cs.meta">
+        <Link>Source\BindableMembers\IBinderAdder.cs.meta</Link>
+      </Content>
+      <Content Include="..\..\..\Aspid.MVVM\Assets\Plugins\Aspid\MVVM\Source\BindableMembers\IBinderRemover.cs.meta">
+        <Link>Source\BindableMembers\IBinderRemover.cs.meta</Link>
+      </Content>
+      <Content Include="..\..\..\Aspid.MVVM\Assets\Plugins\Aspid\MVVM\Source\BindableMembers\IReadOnlyBindableMember.cs.meta">
+        <Link>Source\BindableMembers\IReadOnlyBindableMember.cs.meta</Link>
+      </Content>
+      <Content Include="..\..\..\Aspid.MVVM\Assets\Plugins\Aspid\MVVM\Source\BindableMembers\IReadOnlyValueBindableMember.cs.meta">
+        <Link>Source\BindableMembers\IReadOnlyValueBindableMember.cs.meta</Link>
+      </Content>
+      <Content Include="..\..\..\Aspid.MVVM\Assets\Plugins\Aspid\MVVM\Source\BindableMembers\Struct.meta">
+        <Link>Source\BindableMembers\Struct.meta</Link>
+      </Content>
+      <Content Include="..\..\..\Aspid.MVVM\Assets\Plugins\Aspid\MVVM\Source\BindableMembers\Struct\OneTimeStructBindableMember.cs.meta">
+        <Link>Source\BindableMembers\Struct\OneTimeStructBindableMember.cs.meta</Link>
+      </Content>
+      <Content Include="..\..\..\Aspid.MVVM\Assets\Plugins\Aspid\MVVM\Source\BindableMembers\Struct\OneWayStructBindableMember.cs.meta">
+        <Link>Source\BindableMembers\Struct\OneWayStructBindableMember.cs.meta</Link>
+      </Content>
+      <Content Include="..\..\..\Aspid.MVVM\Assets\Plugins\Aspid\MVVM\Source\BindableMembers\Struct\OneWayToSourceStructBindableMember.cs.meta">
+        <Link>Source\BindableMembers\Struct\OneWayToSourceStructBindableMember.cs.meta</Link>
+      </Content>
+      <Content Include="..\..\..\Aspid.MVVM\Assets\Plugins\Aspid\MVVM\Source\BindableMembers\Struct\TwoWayStructBindableMember.cs.meta">
+        <Link>Source\BindableMembers\Struct\TwoWayStructBindableMember.cs.meta</Link>
+      </Content>
+      <Content Include="..\..\..\Aspid.MVVM\Assets\Plugins\Aspid\MVVM\Source\Binders.meta">
+        <Link>Source\Binders.meta</Link>
+      </Content>
+      <Content Include="..\..\..\Aspid.MVVM\Assets\Plugins\Aspid\MVVM\Source\Binders\Binder.cs.meta">
+        <Link>Source\Binders\Binder.cs.meta</Link>
+      </Content>
+      <Content Include="..\..\..\Aspid.MVVM\Assets\Plugins\Aspid\MVVM\Source\Binders\Binder.Debug.cs.meta">
+        <Link>Source\Binders\Binder.Debug.cs.meta</Link>
+      </Content>
+      <Content Include="..\..\..\Aspid.MVVM\Assets\Plugins\Aspid\MVVM\Source\Binders\Debug.meta">
+        <Link>Source\Binders\Debug.meta</Link>
+      </Content>
+      <Content Include="..\..\..\Aspid.MVVM\Assets\Plugins\Aspid\MVVM\Source\Binders\Debug\Extensions.meta">
+        <Link>Source\Binders\Debug\Extensions.meta</Link>
+      </Content>
+      <Content Include="..\..\..\Aspid.MVVM\Assets\Plugins\Aspid\MVVM\Source\Binders\Debug\Extensions\RebindableBinderExtensions.cs.meta">
+        <Link>Source\Binders\Debug\Extensions\RebindableBinderExtensions.cs.meta</Link>
+      </Content>
+      <Content Include="..\..\..\Aspid.MVVM\Assets\Plugins\Aspid\MVVM\Source\Binders\Debug\IRebindableBinder.cs.meta">
+        <Link>Source\Binders\Debug\IRebindableBinder.cs.meta</Link>
+      </Content>
+      <Content Include="..\..\..\Aspid.MVVM\Assets\Plugins\Aspid\MVVM\Source\Binders\Extensions.meta">
+        <Link>Source\Binders\Extensions.meta</Link>
+      </Content>
+      <Content Include="..\..\..\Aspid.MVVM\Assets\Plugins\Aspid\MVVM\Source\Binders\Extensions\BinderExtensions.Bind.cs.meta">
+        <Link>Source\Binders\Extensions\BinderExtensions.Bind.cs.meta</Link>
+      </Content>
+      <Content Include="..\..\..\Aspid.MVVM\Assets\Plugins\Aspid\MVVM\Source\Binders\Extensions\BinderExtensions.Unbind.cs.meta">
+        <Link>Source\Binders\Extensions\BinderExtensions.Unbind.cs.meta</Link>
+      </Content>
+      <Content Include="..\..\..\Aspid.MVVM\Assets\Plugins\Aspid\MVVM\Source\Binders\Generation.meta">
+        <Link>Source\Binders\Generation.meta</Link>
+      </Content>
+      <Content Include="..\..\..\Aspid.MVVM\Assets\Plugins\Aspid\MVVM\Source\Binders\Generation\BinderLogAttribute.cs.meta">
+        <Link>Source\Binders\Generation\BinderLogAttribute.cs.meta</Link>
+      </Content>
+      <Content Include="..\..\..\Aspid.MVVM\Assets\Plugins\Aspid\MVVM\Source\Binders\IAnyBinder.cs.meta">
+        <Link>Source\Binders\IAnyBinder.cs.meta</Link>
+      </Content>
+      <Content Include="..\..\..\Aspid.MVVM\Assets\Plugins\Aspid\MVVM\Source\Binders\IAnyReverseBinder.cs.meta">
+        <Link>Source\Binders\IAnyReverseBinder.cs.meta</Link>
+      </Content>
+      <Content Include="..\..\..\Aspid.MVVM\Assets\Plugins\Aspid\MVVM\Source\Binders\IBinder.cs.meta">
+        <Link>Source\Binders\IBinder.cs.meta</Link>
+      </Content>
+      <Content Include="..\..\..\Aspid.MVVM\Assets\Plugins\Aspid\MVVM\Source\Binders\IReverseBinder.cs.meta">
+        <Link>Source\Binders\IReverseBinder.cs.meta</Link>
+      </Content>
+      <Content Include="..\..\..\Aspid.MVVM\Assets\Plugins\Aspid\MVVM\Source\Commands.meta">
+        <Link>Source\Commands.meta</Link>
+      </Content>
+      <Content Include="..\..\..\Aspid.MVVM\Assets\Plugins\Aspid\MVVM\Source\Commands\.DS_Store">
+        <Link>Source\Commands\.DS_Store</Link>
+      </Content>
+      <Content Include="..\..\..\Aspid.MVVM\Assets\Plugins\Aspid\MVVM\Source\Commands\Extensions.meta">
+        <Link>Source\Commands\Extensions.meta</Link>
+      </Content>
+      <Content Include="..\..\..\Aspid.MVVM\Assets\Plugins\Aspid\MVVM\Source\Commands\Extensions\RelayCommandExtensions.Action.cs.meta">
+        <Link>Source\Commands\Extensions\RelayCommandExtensions.Action.cs.meta</Link>
+      </Content>
+      <Content Include="..\..\..\Aspid.MVVM\Assets\Plugins\Aspid\MVVM\Source\Commands\Extensions\RelayCommandExtensions.cs.meta">
+        <Link>Source\Commands\Extensions\RelayCommandExtensions.cs.meta</Link>
+      </Content>
+      <Content Include="..\..\..\Aspid.MVVM\Assets\Plugins\Aspid\MVVM\Source\Commands\Extensions\RelayCommandExtensions.WithoutParameters.cs.meta">
+        <Link>Source\Commands\Extensions\RelayCommandExtensions.WithoutParameters.cs.meta</Link>
+      </Content>
+      <Content Include="..\..\..\Aspid.MVVM\Assets\Plugins\Aspid\MVVM\Source\Commands\IRelayCommand.cs.meta">
+        <Link>Source\Commands\IRelayCommand.cs.meta</Link>
+      </Content>
+      <Content Include="..\..\..\Aspid.MVVM\Assets\Plugins\Aspid\MVVM\Source\Commands\RelayCommand.cs.meta">
+        <Link>Source\Commands\RelayCommand.cs.meta</Link>
+      </Content>
+      <Content Include="..\..\..\Aspid.MVVM\Assets\Plugins\Aspid\MVVM\Source\csc.rsp">
+        <Link>Source\csc.rsp</Link>
+      </Content>
+      <Content Include="..\..\..\Aspid.MVVM\Assets\Plugins\Aspid\MVVM\Source\csc.rsp.meta">
+        <Link>Source\csc.rsp.meta</Link>
+      </Content>
+      <Content Include="..\..\..\Aspid.MVVM\Assets\Plugins\Aspid\MVVM\Source\Exceptions.meta">
+        <Link>Source\Exceptions.meta</Link>
+      </Content>
+      <Content Include="..\..\..\Aspid.MVVM\Assets\Plugins\Aspid\MVVM\Source\Exceptions\BinderInvalidCastException.cs.meta">
+        <Link>Source\Exceptions\BinderInvalidCastException.cs.meta</Link>
+      </Content>
+      <Content Include="..\..\..\Aspid.MVVM\Assets\Plugins\Aspid\MVVM\Source\Exceptions\BindSafelyNullReferenceException.cs.meta">
+        <Link>Source\Exceptions\BindSafelyNullReferenceException.cs.meta</Link>
+      </Content>
+      <Content Include="..\..\..\Aspid.MVVM\Assets\Plugins\Aspid\MVVM\Source\Exceptions\Extensions.meta">
+        <Link>Source\Exceptions\Extensions.meta</Link>
+      </Content>
+      <Content Include="..\..\..\Aspid.MVVM\Assets\Plugins\Aspid\MVVM\Source\Exceptions\Extensions\BinderExceptionExtensions.cs.meta">
+        <Link>Source\Exceptions\Extensions\BinderExceptionExtensions.cs.meta</Link>
+      </Content>
+      <Content Include="..\..\..\Aspid.MVVM\Assets\Plugins\Aspid\MVVM\Source\Exceptions\ReverseBinderInvalidCastException.cs.meta">
+        <Link>Source\Exceptions\ReverseBinderInvalidCastException.cs.meta</Link>
+      </Content>
+      <Content Include="..\..\..\Aspid.MVVM\Assets\Plugins\Aspid\MVVM\Source\Exceptions\UnbindSafelyNullReferenceException.cs.meta">
+        <Link>Source\Exceptions\UnbindSafelyNullReferenceException.cs.meta</Link>
+      </Content>
+      <Content Include="..\..\..\Aspid.MVVM\Assets\Plugins\Aspid\MVVM\Source\Generation.meta">
+        <Link>Source\Generation.meta</Link>
+      </Content>
+      <Content Include="..\..\..\Aspid.MVVM\Assets\Plugins\Aspid\MVVM\Source\Generation\BindIdAttribute.cs.meta">
+        <Link>Source\Generation\BindIdAttribute.cs.meta</Link>
+      </Content>
+      <Content Include="..\..\..\Aspid.MVVM\Assets\Plugins\Aspid\MVVM\Source\Generation\IgnoreBindAttribute.cs.meta">
+        <Link>Source\Generation\IgnoreBindAttribute.cs.meta</Link>
+      </Content>
+      <Content Include="..\..\..\Aspid.MVVM\Assets\Plugins\Aspid\MVVM\Source\Helpers.meta">
+        <Link>Source\Helpers.meta</Link>
+      </Content>
+      <Content Include="..\..\..\Aspid.MVVM\Assets\Plugins\Aspid\MVVM\Source\Helpers\LoggerHelper.cs.meta">
+        <Link>Source\Helpers\LoggerHelper.cs.meta</Link>
+      </Content>
+      <Content Include="..\..\..\Aspid.MVVM\Assets\Plugins\Aspid\MVVM\Source\Helpers\Unsafe.cs.meta">
+        <Link>Source\Helpers\Unsafe.cs.meta</Link>
+      </Content>
+      <Content Include="..\..\..\Aspid.MVVM\Assets\Plugins\Aspid\MVVM\Source\Mode.meta">
+        <Link>Source\Mode.meta</Link>
+      </Content>
+      <Content Include="..\..\..\Aspid.MVVM\Assets\Plugins\Aspid\MVVM\Source\Mode\.DS_Store">
+        <Link>Source\Mode\.DS_Store</Link>
+      </Content>
+      <Content Include="..\..\..\Aspid.MVVM\Assets\Plugins\Aspid\MVVM\Source\Mode\BindMode.cs.meta">
+        <Link>Source\Mode\BindMode.cs.meta</Link>
+      </Content>
+      <Content Include="..\..\..\Aspid.MVVM\Assets\Plugins\Aspid\MVVM\Source\Mode\Extensions.meta">
+        <Link>Source\Mode\Extensions.meta</Link>
+      </Content>
+      <Content Include="..\..\..\Aspid.MVVM\Assets\Plugins\Aspid\MVVM\Source\Mode\Extensions\BindModeExtensions.cs.meta">
+        <Link>Source\Mode\Extensions\BindModeExtensions.cs.meta</Link>
+      </Content>
+      <Content Include="..\..\..\Aspid.MVVM\Assets\Plugins\Aspid\MVVM\Source\Mode\Extensions\BindModeExtensions.Throw.cs.meta">
+        <Link>Source\Mode\Extensions\BindModeExtensions.Throw.cs.meta</Link>
+      </Content>
+      <Content Include="..\..\..\Aspid.MVVM\Assets\Plugins\Aspid\MVVM\Source\Mode\Validation.meta">
+        <Link>Source\Mode\Validation.meta</Link>
+      </Content>
+      <Content Include="..\..\..\Aspid.MVVM\Assets\Plugins\Aspid\MVVM\Source\Mode\Validation\BindModeAttribute.cs.meta">
+        <Link>Source\Mode\Validation\BindModeAttribute.cs.meta</Link>
+      </Content>
+      <Content Include="..\..\..\Aspid.MVVM\Assets\Plugins\Aspid\MVVM\Source\Mode\Validation\BindModeOverrideAttribute.cs.meta">
+        <Link>Source\Mode\Validation\BindModeOverrideAttribute.cs.meta</Link>
+      </Content>
+      <Content Include="..\..\..\Aspid.MVVM\Assets\Plugins\Aspid\MVVM\Source\ViewModels.meta">
+        <Link>Source\ViewModels.meta</Link>
+      </Content>
+      <Content Include="..\..\..\Aspid.MVVM\Assets\Plugins\Aspid\MVVM\Source\ViewModels\.DS_Store">
+        <Link>Source\ViewModels\.DS_Store</Link>
+      </Content>
+      <Content Include="..\..\..\Aspid.MVVM\Assets\Plugins\Aspid\MVVM\Source\ViewModels\Extensions.meta">
+        <Link>Source\ViewModels\Extensions.meta</Link>
+      </Content>
+      <Content Include="..\..\..\Aspid.MVVM\Assets\Plugins\Aspid\MVVM\Source\ViewModels\Extensions\ViewModelExtensions.cs.meta">
+        <Link>Source\ViewModels\Extensions\ViewModelExtensions.cs.meta</Link>
+      </Content>
+      <Content Include="..\..\..\Aspid.MVVM\Assets\Plugins\Aspid\MVVM\Source\ViewModels\FindBindableMemberParameters.cs.meta">
+        <Link>Source\ViewModels\FindBindableMemberParameters.cs.meta</Link>
+      </Content>
+      <Content Include="..\..\..\Aspid.MVVM\Assets\Plugins\Aspid\MVVM\Source\ViewModels\FindBindableMemberResult.cs.meta">
+        <Link>Source\ViewModels\FindBindableMemberResult.cs.meta</Link>
+      </Content>
+      <Content Include="..\..\..\Aspid.MVVM\Assets\Plugins\Aspid\MVVM\Source\ViewModels\Generation.meta">
+        <Link>Source\ViewModels\Generation.meta</Link>
+      </Content>
+      <Content Include="..\..\..\Aspid.MVVM\Assets\Plugins\Aspid\MVVM\Source\ViewModels\Generation\Access.cs.meta">
+        <Link>Source\ViewModels\Generation\Access.cs.meta</Link>
+      </Content>
+      <Content Include="..\..\..\Aspid.MVVM\Assets\Plugins\Aspid\MVVM\Source\ViewModels\Generation\AccessAttribute.cs.meta">
+        <Link>Source\ViewModels\Generation\AccessAttribute.cs.meta</Link>
+      </Content>
+      <Content Include="..\..\..\Aspid.MVVM\Assets\Plugins\Aspid\MVVM\Source\ViewModels\Generation\BaseBindAttribute.cs.meta">
+        <Link>Source\ViewModels\Generation\BaseBindAttribute.cs.meta</Link>
+      </Content>
+      <Content Include="..\..\..\Aspid.MVVM\Assets\Plugins\Aspid\MVVM\Source\ViewModels\Generation\BindAlsoAttribute.cs.meta">
+        <Link>Source\ViewModels\Generation\BindAlsoAttribute.cs.meta</Link>
+      </Content>
+      <Content Include="..\..\..\Aspid.MVVM\Assets\Plugins\Aspid\MVVM\Source\ViewModels\Generation\BindAttribute.cs.meta">
+        <Link>Source\ViewModels\Generation\BindAttribute.cs.meta</Link>
+      </Content>
+      <Content Include="..\..\..\Aspid.MVVM\Assets\Plugins\Aspid\MVVM\Source\ViewModels\Generation\OneTimeBindAttribute.cs.meta">
+        <Link>Source\ViewModels\Generation\OneTimeBindAttribute.cs.meta</Link>
+      </Content>
+      <Content Include="..\..\..\Aspid.MVVM\Assets\Plugins\Aspid\MVVM\Source\ViewModels\Generation\OneWayBindAttribute.cs.meta">
+        <Link>Source\ViewModels\Generation\OneWayBindAttribute.cs.meta</Link>
+      </Content>
+      <Content Include="..\..\..\Aspid.MVVM\Assets\Plugins\Aspid\MVVM\Source\ViewModels\Generation\OneWayToSourceBindAttribute.cs.meta">
+        <Link>Source\ViewModels\Generation\OneWayToSourceBindAttribute.cs.meta</Link>
+      </Content>
+      <Content Include="..\..\..\Aspid.MVVM\Assets\Plugins\Aspid\MVVM\Source\ViewModels\Generation\RelayCommandAttribute.cs.meta">
+        <Link>Source\ViewModels\Generation\RelayCommandAttribute.cs.meta</Link>
+      </Content>
+      <Content Include="..\..\..\Aspid.MVVM\Assets\Plugins\Aspid\MVVM\Source\ViewModels\Generation\TwoWayBindAttribute.cs.meta">
+        <Link>Source\ViewModels\Generation\TwoWayBindAttribute.cs.meta</Link>
+      </Content>
+      <Content Include="..\..\..\Aspid.MVVM\Assets\Plugins\Aspid\MVVM\Source\ViewModels\Generation\ViewModelAttribute.cs.meta">
+        <Link>Source\ViewModels\Generation\ViewModelAttribute.cs.meta</Link>
+      </Content>
+      <Content Include="..\..\..\Aspid.MVVM\Assets\Plugins\Aspid\MVVM\Source\ViewModels\IViewModel.cs.meta">
+        <Link>Source\ViewModels\IViewModel.cs.meta</Link>
+      </Content>
+      <Content Include="..\..\..\Aspid.MVVM\Assets\Plugins\Aspid\MVVM\Source\Views.meta">
+        <Link>Source\Views.meta</Link>
+      </Content>
+      <Content Include="..\..\..\Aspid.MVVM\Assets\Plugins\Aspid\MVVM\Source\Views\.DS_Store">
+        <Link>Source\Views\.DS_Store</Link>
+      </Content>
+      <Content Include="..\..\..\Aspid.MVVM\Assets\Plugins\Aspid\MVVM\Source\Views\Extensions.meta">
+        <Link>Source\Views\Extensions.meta</Link>
+      </Content>
+      <Content Include="..\..\..\Aspid.MVVM\Assets\Plugins\Aspid\MVVM\Source\Views\Extensions\ViewExtensions.cs.meta">
+        <Link>Source\Views\Extensions\ViewExtensions.cs.meta</Link>
+      </Content>
+      <Content Include="..\..\..\Aspid.MVVM\Assets\Plugins\Aspid\MVVM\Source\Views\Generation.meta">
+        <Link>Source\Views\Generation.meta</Link>
+      </Content>
+      <Content Include="..\..\..\Aspid.MVVM\Assets\Plugins\Aspid\MVVM\Source\Views\Generation\AsBinderAttribute.cs.meta">
+        <Link>Source\Views\Generation\AsBinderAttribute.cs.meta</Link>
+      </Content>
+      <Content Include="..\..\..\Aspid.MVVM\Assets\Plugins\Aspid\MVVM\Source\Views\Generation\ViewAttribute.cs.meta">
+        <Link>Source\Views\Generation\ViewAttribute.cs.meta</Link>
+      </Content>
+      <Content Include="..\..\..\Aspid.MVVM\Assets\Plugins\Aspid\MVVM\Source\Views\IView.cs.meta">
+        <Link>Source\Views\IView.cs.meta</Link>
+      </Content>
+      <Content Include="..\..\..\Aspid.MVVM\Assets\Plugins\Aspid\MVVM\Source\Views\ViewBinder.cs.meta">
+        <Link>Source\Views\ViewBinder.cs.meta</Link>
+      </Content>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Include="..\..\..\Aspid.MVVM\Assets\Plugins\Aspid\MVVM\Source\BindableMembers\Classes\OneTimeBindableMember.cs">
+        <Link>Source\BindableMembers\Classes\OneTimeBindableMember.cs</Link>
+      </Compile>
+      <Compile Include="..\..\..\Aspid.MVVM\Assets\Plugins\Aspid\MVVM\Source\BindableMembers\Classes\OneWayBindableMember.cs">
+        <Link>Source\BindableMembers\Classes\OneWayBindableMember.cs</Link>
+      </Compile>
+      <Compile Include="..\..\..\Aspid.MVVM\Assets\Plugins\Aspid\MVVM\Source\BindableMembers\Classes\OneWayToSourceBindableMember.cs">
+        <Link>Source\BindableMembers\Classes\OneWayToSourceBindableMember.cs</Link>
+      </Compile>
+      <Compile Include="..\..\..\Aspid.MVVM\Assets\Plugins\Aspid\MVVM\Source\BindableMembers\Classes\TwoWayBindableMember.cs">
+        <Link>Source\BindableMembers\Classes\TwoWayBindableMember.cs</Link>
+      </Compile>
+      <Compile Include="..\..\..\Aspid.MVVM\Assets\Plugins\Aspid\MVVM\Source\BindableMembers\Enum\OneTimeEnumBindableMember.cs">
+        <Link>Source\BindableMembers\Enum\OneTimeEnumBindableMember.cs</Link>
+      </Compile>
+      <Compile Include="..\..\..\Aspid.MVVM\Assets\Plugins\Aspid\MVVM\Source\BindableMembers\Enum\OneWayEnumBindableMember.cs">
+        <Link>Source\BindableMembers\Enum\OneWayEnumBindableMember.cs</Link>
+      </Compile>
+      <Compile Include="..\..\..\Aspid.MVVM\Assets\Plugins\Aspid\MVVM\Source\BindableMembers\Enum\OneWayToSourceEnumBindableMember.cs">
+        <Link>Source\BindableMembers\Enum\OneWayToSourceEnumBindableMember.cs</Link>
+      </Compile>
+      <Compile Include="..\..\..\Aspid.MVVM\Assets\Plugins\Aspid\MVVM\Source\BindableMembers\Enum\TwoWayEnumBindableMember.cs">
+        <Link>Source\BindableMembers\Enum\TwoWayEnumBindableMember.cs</Link>
+      </Compile>
+      <Compile Include="..\..\..\Aspid.MVVM\Assets\Plugins\Aspid\MVVM\Source\BindableMembers\IBindableMember.cs">
+        <Link>Source\BindableMembers\IBindableMember.cs</Link>
+      </Compile>
+      <Compile Include="..\..\..\Aspid.MVVM\Assets\Plugins\Aspid\MVVM\Source\BindableMembers\IBinderAdder.cs">
+        <Link>Source\BindableMembers\IBinderAdder.cs</Link>
+      </Compile>
+      <Compile Include="..\..\..\Aspid.MVVM\Assets\Plugins\Aspid\MVVM\Source\BindableMembers\IBinderRemover.cs">
+        <Link>Source\BindableMembers\IBinderRemover.cs</Link>
+      </Compile>
+      <Compile Include="..\..\..\Aspid.MVVM\Assets\Plugins\Aspid\MVVM\Source\BindableMembers\IReadOnlyBindableMember.cs">
+        <Link>Source\BindableMembers\IReadOnlyBindableMember.cs</Link>
+      </Compile>
+      <Compile Include="..\..\..\Aspid.MVVM\Assets\Plugins\Aspid\MVVM\Source\BindableMembers\IReadOnlyValueBindableMember.cs">
+        <Link>Source\BindableMembers\IReadOnlyValueBindableMember.cs</Link>
+      </Compile>
+      <Compile Include="..\..\..\Aspid.MVVM\Assets\Plugins\Aspid\MVVM\Source\BindableMembers\Struct\OneTimeStructBindableMember.cs">
+        <Link>Source\BindableMembers\Struct\OneTimeStructBindableMember.cs</Link>
+      </Compile>
+      <Compile Include="..\..\..\Aspid.MVVM\Assets\Plugins\Aspid\MVVM\Source\BindableMembers\Struct\OneWayStructBindableMember.cs">
+        <Link>Source\BindableMembers\Struct\OneWayStructBindableMember.cs</Link>
+      </Compile>
+      <Compile Include="..\..\..\Aspid.MVVM\Assets\Plugins\Aspid\MVVM\Source\BindableMembers\Struct\OneWayToSourceStructBindableMember.cs">
+        <Link>Source\BindableMembers\Struct\OneWayToSourceStructBindableMember.cs</Link>
+      </Compile>
+      <Compile Include="..\..\..\Aspid.MVVM\Assets\Plugins\Aspid\MVVM\Source\BindableMembers\Struct\TwoWayStructBindableMember.cs">
+        <Link>Source\BindableMembers\Struct\TwoWayStructBindableMember.cs</Link>
+      </Compile>
+      <Compile Include="..\..\..\Aspid.MVVM\Assets\Plugins\Aspid\MVVM\Source\Binders\Binder.cs">
+        <Link>Source\Binders\Binder.cs</Link>
+      </Compile>
+      <Compile Include="..\..\..\Aspid.MVVM\Assets\Plugins\Aspid\MVVM\Source\Binders\Binder.Debug.cs">
+        <Link>Source\Binders\Binder.Debug.cs</Link>
+      </Compile>
+      <Compile Include="..\..\..\Aspid.MVVM\Assets\Plugins\Aspid\MVVM\Source\Binders\Debug\Extensions\RebindableBinderExtensions.cs">
+        <Link>Source\Binders\Debug\Extensions\RebindableBinderExtensions.cs</Link>
+      </Compile>
+      <Compile Include="..\..\..\Aspid.MVVM\Assets\Plugins\Aspid\MVVM\Source\Binders\Debug\IRebindableBinder.cs">
+        <Link>Source\Binders\Debug\IRebindableBinder.cs</Link>
+      </Compile>
+      <Compile Include="..\..\..\Aspid.MVVM\Assets\Plugins\Aspid\MVVM\Source\Binders\Extensions\BinderExtensions.Bind.cs">
+        <Link>Source\Binders\Extensions\BinderExtensions.Bind.cs</Link>
+      </Compile>
+      <Compile Include="..\..\..\Aspid.MVVM\Assets\Plugins\Aspid\MVVM\Source\Binders\Extensions\BinderExtensions.Unbind.cs">
+        <Link>Source\Binders\Extensions\BinderExtensions.Unbind.cs</Link>
+      </Compile>
+      <Compile Include="..\..\..\Aspid.MVVM\Assets\Plugins\Aspid\MVVM\Source\Binders\Generation\BinderLogAttribute.cs">
+        <Link>Source\Binders\Generation\BinderLogAttribute.cs</Link>
+      </Compile>
+      <Compile Include="..\..\..\Aspid.MVVM\Assets\Plugins\Aspid\MVVM\Source\Binders\IAnyBinder.cs">
+        <Link>Source\Binders\IAnyBinder.cs</Link>
+      </Compile>
+      <Compile Include="..\..\..\Aspid.MVVM\Assets\Plugins\Aspid\MVVM\Source\Binders\IAnyReverseBinder.cs">
+        <Link>Source\Binders\IAnyReverseBinder.cs</Link>
+      </Compile>
+      <Compile Include="..\..\..\Aspid.MVVM\Assets\Plugins\Aspid\MVVM\Source\Binders\IBinder.cs">
+        <Link>Source\Binders\IBinder.cs</Link>
+      </Compile>
+      <Compile Include="..\..\..\Aspid.MVVM\Assets\Plugins\Aspid\MVVM\Source\Binders\IReverseBinder.cs">
+        <Link>Source\Binders\IReverseBinder.cs</Link>
+      </Compile>
+      <Compile Include="..\..\..\Aspid.MVVM\Assets\Plugins\Aspid\MVVM\Source\Commands\Extensions\RelayCommandExtensions.Action.cs">
+        <Link>Source\Commands\Extensions\RelayCommandExtensions.Action.cs</Link>
+      </Compile>
+      <Compile Include="..\..\..\Aspid.MVVM\Assets\Plugins\Aspid\MVVM\Source\Commands\Extensions\RelayCommandExtensions.cs">
+        <Link>Source\Commands\Extensions\RelayCommandExtensions.cs</Link>
+      </Compile>
+      <Compile Include="..\..\..\Aspid.MVVM\Assets\Plugins\Aspid\MVVM\Source\Commands\Extensions\RelayCommandExtensions.WithoutParameters.cs">
+        <Link>Source\Commands\Extensions\RelayCommandExtensions.WithoutParameters.cs</Link>
+      </Compile>
+      <Compile Include="..\..\..\Aspid.MVVM\Assets\Plugins\Aspid\MVVM\Source\Commands\IRelayCommand.cs">
+        <Link>Source\Commands\IRelayCommand.cs</Link>
+      </Compile>
+      <Compile Include="..\..\..\Aspid.MVVM\Assets\Plugins\Aspid\MVVM\Source\Commands\RelayCommand.cs">
+        <Link>Source\Commands\RelayCommand.cs</Link>
+      </Compile>
+      <Compile Include="..\..\..\Aspid.MVVM\Assets\Plugins\Aspid\MVVM\Source\Exceptions\BinderInvalidCastException.cs">
+        <Link>Source\Exceptions\BinderInvalidCastException.cs</Link>
+      </Compile>
+      <Compile Include="..\..\..\Aspid.MVVM\Assets\Plugins\Aspid\MVVM\Source\Exceptions\BindSafelyNullReferenceException.cs">
+        <Link>Source\Exceptions\BindSafelyNullReferenceException.cs</Link>
+      </Compile>
+      <Compile Include="..\..\..\Aspid.MVVM\Assets\Plugins\Aspid\MVVM\Source\Exceptions\Extensions\BinderExceptionExtensions.cs">
+        <Link>Source\Exceptions\Extensions\BinderExceptionExtensions.cs</Link>
+      </Compile>
+      <Compile Include="..\..\..\Aspid.MVVM\Assets\Plugins\Aspid\MVVM\Source\Exceptions\ReverseBinderInvalidCastException.cs">
+        <Link>Source\Exceptions\ReverseBinderInvalidCastException.cs</Link>
+      </Compile>
+      <Compile Include="..\..\..\Aspid.MVVM\Assets\Plugins\Aspid\MVVM\Source\Exceptions\UnbindSafelyNullReferenceException.cs">
+        <Link>Source\Exceptions\UnbindSafelyNullReferenceException.cs</Link>
+      </Compile>
+      <Compile Include="..\..\..\Aspid.MVVM\Assets\Plugins\Aspid\MVVM\Source\Generation\BindIdAttribute.cs">
+        <Link>Source\Generation\BindIdAttribute.cs</Link>
+      </Compile>
+      <Compile Include="..\..\..\Aspid.MVVM\Assets\Plugins\Aspid\MVVM\Source\Generation\IgnoreBindAttribute.cs">
+        <Link>Source\Generation\IgnoreBindAttribute.cs</Link>
+      </Compile>
+      <Compile Include="..\..\..\Aspid.MVVM\Assets\Plugins\Aspid\MVVM\Source\Helpers\LoggerHelper.cs">
+        <Link>Source\Helpers\LoggerHelper.cs</Link>
+      </Compile>
+      <Compile Include="..\..\..\Aspid.MVVM\Assets\Plugins\Aspid\MVVM\Source\Helpers\Unsafe.cs">
+        <Link>Source\Helpers\Unsafe.cs</Link>
+      </Compile>
+      <Compile Include="..\..\..\Aspid.MVVM\Assets\Plugins\Aspid\MVVM\Source\Mode\BindMode.cs">
+        <Link>Source\Mode\BindMode.cs</Link>
+      </Compile>
+      <Compile Include="..\..\..\Aspid.MVVM\Assets\Plugins\Aspid\MVVM\Source\Mode\Extensions\BindModeExtensions.cs">
+        <Link>Source\Mode\Extensions\BindModeExtensions.cs</Link>
+      </Compile>
+      <Compile Include="..\..\..\Aspid.MVVM\Assets\Plugins\Aspid\MVVM\Source\Mode\Extensions\BindModeExtensions.Throw.cs">
+        <Link>Source\Mode\Extensions\BindModeExtensions.Throw.cs</Link>
+      </Compile>
+      <Compile Include="..\..\..\Aspid.MVVM\Assets\Plugins\Aspid\MVVM\Source\Mode\Validation\BindModeAttribute.cs">
+        <Link>Source\Mode\Validation\BindModeAttribute.cs</Link>
+      </Compile>
+      <Compile Include="..\..\..\Aspid.MVVM\Assets\Plugins\Aspid\MVVM\Source\Mode\Validation\BindModeOverrideAttribute.cs">
+        <Link>Source\Mode\Validation\BindModeOverrideAttribute.cs</Link>
+      </Compile>
+      <Compile Include="..\..\..\Aspid.MVVM\Assets\Plugins\Aspid\MVVM\Source\ViewModels\Extensions\ViewModelExtensions.cs">
+        <Link>Source\ViewModels\Extensions\ViewModelExtensions.cs</Link>
+      </Compile>
+      <Compile Include="..\..\..\Aspid.MVVM\Assets\Plugins\Aspid\MVVM\Source\ViewModels\FindBindableMemberParameters.cs">
+        <Link>Source\ViewModels\FindBindableMemberParameters.cs</Link>
+      </Compile>
+      <Compile Include="..\..\..\Aspid.MVVM\Assets\Plugins\Aspid\MVVM\Source\ViewModels\FindBindableMemberResult.cs">
+        <Link>Source\ViewModels\FindBindableMemberResult.cs</Link>
+      </Compile>
+      <Compile Include="..\..\..\Aspid.MVVM\Assets\Plugins\Aspid\MVVM\Source\ViewModels\Generation\Access.cs">
+        <Link>Source\ViewModels\Generation\Access.cs</Link>
+      </Compile>
+      <Compile Include="..\..\..\Aspid.MVVM\Assets\Plugins\Aspid\MVVM\Source\ViewModels\Generation\AccessAttribute.cs">
+        <Link>Source\ViewModels\Generation\AccessAttribute.cs</Link>
+      </Compile>
+      <Compile Include="..\..\..\Aspid.MVVM\Assets\Plugins\Aspid\MVVM\Source\ViewModels\Generation\BaseBindAttribute.cs">
+        <Link>Source\ViewModels\Generation\BaseBindAttribute.cs</Link>
+      </Compile>
+      <Compile Include="..\..\..\Aspid.MVVM\Assets\Plugins\Aspid\MVVM\Source\ViewModels\Generation\BindAlsoAttribute.cs">
+        <Link>Source\ViewModels\Generation\BindAlsoAttribute.cs</Link>
+      </Compile>
+      <Compile Include="..\..\..\Aspid.MVVM\Assets\Plugins\Aspid\MVVM\Source\ViewModels\Generation\BindAttribute.cs">
+        <Link>Source\ViewModels\Generation\BindAttribute.cs</Link>
+      </Compile>
+      <Compile Include="..\..\..\Aspid.MVVM\Assets\Plugins\Aspid\MVVM\Source\ViewModels\Generation\OneTimeBindAttribute.cs">
+        <Link>Source\ViewModels\Generation\OneTimeBindAttribute.cs</Link>
+      </Compile>
+      <Compile Include="..\..\..\Aspid.MVVM\Assets\Plugins\Aspid\MVVM\Source\ViewModels\Generation\OneWayBindAttribute.cs">
+        <Link>Source\ViewModels\Generation\OneWayBindAttribute.cs</Link>
+      </Compile>
+      <Compile Include="..\..\..\Aspid.MVVM\Assets\Plugins\Aspid\MVVM\Source\ViewModels\Generation\OneWayToSourceBindAttribute.cs">
+        <Link>Source\ViewModels\Generation\OneWayToSourceBindAttribute.cs</Link>
+      </Compile>
+      <Compile Include="..\..\..\Aspid.MVVM\Assets\Plugins\Aspid\MVVM\Source\ViewModels\Generation\RelayCommandAttribute.cs">
+        <Link>Source\ViewModels\Generation\RelayCommandAttribute.cs</Link>
+      </Compile>
+      <Compile Include="..\..\..\Aspid.MVVM\Assets\Plugins\Aspid\MVVM\Source\ViewModels\Generation\TwoWayBindAttribute.cs">
+        <Link>Source\ViewModels\Generation\TwoWayBindAttribute.cs</Link>
+      </Compile>
+      <Compile Include="..\..\..\Aspid.MVVM\Assets\Plugins\Aspid\MVVM\Source\ViewModels\Generation\ViewModelAttribute.cs">
+        <Link>Source\ViewModels\Generation\ViewModelAttribute.cs</Link>
+      </Compile>
+      <Compile Include="..\..\..\Aspid.MVVM\Assets\Plugins\Aspid\MVVM\Source\ViewModels\IViewModel.cs">
+        <Link>Source\ViewModels\IViewModel.cs</Link>
+      </Compile>
+      <Compile Include="..\..\..\Aspid.MVVM\Assets\Plugins\Aspid\MVVM\Source\Views\Extensions\ViewExtensions.cs">
+        <Link>Source\Views\Extensions\ViewExtensions.cs</Link>
+      </Compile>
+      <Compile Include="..\..\..\Aspid.MVVM\Assets\Plugins\Aspid\MVVM\Source\Views\Generation\AsBinderAttribute.cs">
+        <Link>Source\Views\Generation\AsBinderAttribute.cs</Link>
+      </Compile>
+      <Compile Include="..\..\..\Aspid.MVVM\Assets\Plugins\Aspid\MVVM\Source\Views\Generation\ViewAttribute.cs">
+        <Link>Source\Views\Generation\ViewAttribute.cs</Link>
+      </Compile>
+      <Compile Include="..\..\..\Aspid.MVVM\Assets\Plugins\Aspid\MVVM\Source\Views\IView.cs">
+        <Link>Source\Views\IView.cs</Link>
+      </Compile>
+      <Compile Include="..\..\..\Aspid.MVVM\Assets\Plugins\Aspid\MVVM\Source\Views\ViewBinder.cs">
+        <Link>Source\Views\ViewBinder.cs</Link>
+      </Compile>
+    </ItemGroup>
+
 </Project>

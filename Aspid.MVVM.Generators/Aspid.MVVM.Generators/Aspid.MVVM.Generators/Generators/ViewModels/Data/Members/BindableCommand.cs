@@ -3,6 +3,7 @@ using System.Text;
 using Microsoft.CodeAnalysis;
 using Aspid.Generators.Helper;
 using Aspid.MVVM.Generators.Helpers;
+using Aspid.MVVM.Generators.Generators.ViewModels.Data.Infos;
 using static Aspid.Generators.Helper.Classes;
 using static Aspid.MVVM.Generators.Generators.Descriptions.Classes;
 using static Aspid.MVVM.Generators.Generators.Descriptions.General;
@@ -14,7 +15,10 @@ public sealed class BindableCommand : BindableMember<IMethodSymbol>
     public readonly string CanExecute;
 
     public BindableCommand(IMethodSymbol command, string? canExecute, bool isLambda, bool isMethod)
-        : base(command, BindMode.OneTime, GetTypeName(command), $"{command.GetFieldName("__")}Command", $"{command.GetPropertyName()}Command", "Command")
+        : this(command, GetTypeName(command), $"{command.GetFieldName("__")}Command", $"{command.GetPropertyName()}Command", canExecute, isLambda, isMethod) { }
+
+    private BindableCommand(IMethodSymbol command, string type, string fieldName, string propertyName, string? canExecute, bool isLambda, bool isMethod)
+        : base(command, BindMode.OneTime, type, fieldName, propertyName, "Command", GeneratedBindableMembers.CreateForRelayCommand(type, fieldName, propertyName))
     {
         CanExecute = GetCanExecuteAction(command, isLambda, isMethod, canExecute);
     }

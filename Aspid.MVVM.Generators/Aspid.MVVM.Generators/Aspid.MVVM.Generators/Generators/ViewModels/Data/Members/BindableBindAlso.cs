@@ -1,13 +1,14 @@
 using System;
 using Microsoft.CodeAnalysis;
 using Aspid.Generators.Helper;
+using Aspid.MVVM.Generators.Generators.ViewModels.Data.Infos;
 
 namespace Aspid.MVVM.Generators.Generators.ViewModels.Data.Members;
 
 public sealed class BindableBindAlso : BindableMember<ISymbol>, IEquatable<BindableBindAlso>
 {
-    public BindableBindAlso(ISymbol member) 
-        : base(member, BindMode.OneWay, member.GetSymbolType()?.ToDisplayStringGlobal() ?? string.Empty, member.Name, member.Name, string.Empty, member.GetSymbolType()?.TypeKind ?? TypeKind.Class) { }
+    public BindableBindAlso(IPropertySymbol member) 
+        : base(member, BindMode.OneWay, member.GetSymbolType()?.ToDisplayStringGlobal() ?? string.Empty, member.Name, member.Name, string.Empty, GeneratedBindableMembers.CreateForBindAlso(member)) { }
 
     public override bool Equals(object? obj) =>
         obj is BindableBindAlso other && Equals(other);

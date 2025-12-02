@@ -39,7 +39,7 @@ public static class BindableMembersBody
 
                 if (!propertyType.Contains(IReadOnlyValueBindableMember))
                 {
-                    if (!member.BindableMemberPropertyType.Contains(IReadOnlyBindableMember))
+                    if (!member.Bindable.PropertyType.Contains(IReadOnlyBindableMember))
                         continue;
                 }
             }

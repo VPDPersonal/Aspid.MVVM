@@ -27,8 +27,10 @@ public static class BindableBindAlsoFactory
 
         foreach (var member in members)
         {
+            if (member is not IPropertySymbol propertySymbol) continue;
+            
             if (set.Contains(member.Name))
-                bindableBindAlso.Add(new BindableBindAlso(member));
+                bindableBindAlso.Add(new BindableBindAlso(propertySymbol));
         }
 
         return bindableBindAlso;

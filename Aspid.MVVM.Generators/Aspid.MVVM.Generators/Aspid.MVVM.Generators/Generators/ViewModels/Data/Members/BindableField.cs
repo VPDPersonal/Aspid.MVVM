@@ -3,6 +3,7 @@ using Aspid.Generators.Helper;
 using System.Collections.Immutable;
 using Microsoft.CodeAnalysis.CSharp;
 using Aspid.MVVM.Generators.Helpers;
+using Aspid.MVVM.Generators.Generators.ViewModels.Data.Infos;
 using static Aspid.Generators.Helper.Classes;
 using static Aspid.MVVM.Generators.Generators.Descriptions.Classes;
 using static Aspid.MVVM.Generators.Generators.Descriptions.General;
@@ -24,7 +25,7 @@ public class BindableField : BindableMember<IFieldSymbol>
             field.Name, 
             field.IsConst ? field.Name : field.GetPropertyName(), 
             string.Empty,
-            field.Type.TypeKind)
+            GeneratedBindableMembers.CreateForField(field))
     {
         BindAlso = bindAlso;
         IsReadOnly = mode is BindMode.OneTime;
@@ -68,11 +69,11 @@ public class BindableField : BindableMember<IFieldSymbol>
         var onMethodChanged = $"On{GeneratedName}Changed";
         var onMethodChanging = $"On{GeneratedName}Changing";
 
-        var eventInvoke = ToInvokeBindableMemberString();
+        var eventInvoke = Bindable.Invoke;
         var keyWordThis = !Member.IsStatic ? "this." : string.Empty;
 
         foreach (var property in BindAlso)
-            eventInvoke += $"\n\t{property.ToInvokeBindableMemberString()}";
+            eventInvoke += $"\n\t{property.Bindable.Invoke}";
 
         return
             $$"""

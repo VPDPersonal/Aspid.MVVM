@@ -13,9 +13,9 @@ namespace Aspid.MVVM.Generators.Generators.ViewModels.Factories;
 
 public static class BindableFieldFactory
 {
-    public static IReadOnlyCollection<BindableField> Create(ImmutableArray<IFieldSymbol> fields, IReadOnlyCollection<BindableBindAlsoInfo> bindableBindAlsos)
+    public static IReadOnlyCollection<BindableFieldInfo> Create(ImmutableArray<IFieldSymbol> fields, IReadOnlyCollection<BindableBindAlsoInfo> bindableBindAlsos)
     {
-        var bindableFields = new List<BindableField>();
+        var bindableFields = new List<BindableFieldInfo>();
 
         foreach (var field in fields)
         {
@@ -36,7 +36,7 @@ public static class BindableFieldFactory
                 default: continue;
             }
             
-            bindableFields.Add(new BindableField(field, mode, GetBindableBindAlso(field, bindableBindAlsos)));
+            bindableFields.Add(new BindableFieldInfo(field, mode, GetBindableBindAlso(field, bindableBindAlsos)));
         }
 
         return bindableFields;

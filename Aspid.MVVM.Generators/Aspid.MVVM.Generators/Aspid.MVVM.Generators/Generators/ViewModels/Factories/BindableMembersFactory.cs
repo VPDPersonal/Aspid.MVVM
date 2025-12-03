@@ -18,7 +18,7 @@ public static class BindableMembersFactory
         
         var generatedProperties = bindableFields
             .Where(field => field.Type.ToString() == "bool")
-            .Select(field => field.GeneratedName)
+            .Select(field => field.Name)
             .ToImmutableArray();
         
         var bindableCommands = BindableCommandFactory.Create(members.Methods, members.Properties, generatedProperties);

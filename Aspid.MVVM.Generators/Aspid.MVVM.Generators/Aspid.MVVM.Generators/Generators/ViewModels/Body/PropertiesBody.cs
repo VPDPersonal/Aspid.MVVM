@@ -1,7 +1,7 @@
 using Microsoft.CodeAnalysis;
 using Aspid.Generators.Helper;
 using Aspid.MVVM.Generators.Generators.ViewModels.Data;
-using Aspid.MVVM.Generators.Generators.ViewModels.Data.Members;
+using Aspid.MVVM.Generators.Generators.ViewModels.Data.Infos;
 using static Aspid.MVVM.Generators.Generators.Descriptions.General;
 
 namespace Aspid.MVVM.Generators.Generators.ViewModels.Body;
@@ -23,72 +23,58 @@ public static class PropertiesBody
         context.AddSource(declaration.GetFileName(@namespace, "Properties"), code.GetSourceText());
     }
     
-    private static CodeWriter AppendBody(this CodeWriter code, in ViewModelData data)
+    extension(CodeWriter code)
     {
-        if (!data.Members.IsEmpty)
+        private CodeWriter AppendBody(in ViewModelData data)
         {
-            code.AppendProperties(data)
-                .AppendBindableMembers(data)
-                .AppendSetMethods(data);
-        }
+            if (!data.Members.IsEmpty)
+            {
+                code.AppendProperties(data)
+                    .AppendBindableMembers(data);
+            }
         
-        return code.AppendNotifyAll(data);
-    }
-    
-    private static CodeWriter AppendBindableMembers(this CodeWriter code, in ViewModelData data)
-    {
-        foreach (var member in data.Members)
-        {
-            code.AppendMultiline(member.Bindable.Declaration)
-                .AppendLine();
+            return code.AppendNotifyAll(data);
         }
 
-        return code;
-    }
-
-    private static CodeWriter AppendProperties(this CodeWriter code, in ViewModelData data)
-    {
-        foreach (var field in data.Members.OfType<BindableField>())
+        private CodeWriter AppendBindableMembers(in ViewModelData data)
         {
-            if (field.Member.IsConst) continue;
-            
-            code.AppendMultiline(field.ToDeclarationPropertyString())
-                .AppendLine();
+            foreach (var member in data.Members)
+            {
+                code.AppendMultiline(member.Bindable.Declaration)
+                    .AppendLine();
+            }
+
+            return code;
         }
 
-        return code;
-    }
-    
-    private static CodeWriter AppendSetMethods(this CodeWriter code, in ViewModelData data)
-    {
-        foreach (var field in data.Members.OfType<BindableField>())
+        private CodeWriter AppendProperties(in ViewModelData data)
         {
-            if (field.Mode is BindMode.OneTime) continue;
-            
-            code.AppendMultiline(field.ToSetMethodString())
-                .AppendLine();
-        }
-
-        return code;
-    }
-
-    private static CodeWriter AppendNotifyAll(this CodeWriter code, in ViewModelData data)
-    {
-        var modifiers = "private";
-        if (data.Inheritor is not Inheritor.None) modifiers = "protected override";
-        else if (!data.Symbol.IsSealed) modifiers = "protected virtual";
+            foreach (var field in data.Members.OfType<BindableFieldInfo>())
+            {
+                code.AppendMultiline(field.Declaration);
+            }
         
-        code.AppendLine(GeneratedCodeViewModelAttribute)
-            .AppendLine($"{modifiers} void NotifyAll()")
-            .BeginBlock()
-            .AppendLineIf(data.Inheritor is Inheritor.Inheritor, "base.NotifyAll();");
-        
-        foreach (var member in data.Members)
-        {
-            var invoke = member.Bindable.Invoke;
-            code.AppendLineIf(!string.IsNullOrWhiteSpace(invoke), invoke);
+            return code;
         }
 
-        return code.EndBlock();
+        private CodeWriter AppendNotifyAll(in ViewModelData data)
+        {
+            var modifiers = "private";
+            if (data.Inheritor is not Inheritor.None) modifiers = "protected override";
+            else if (!data.Symbol.IsSealed) modifiers = "protected virtual";
+        
+            code.AppendLine(GeneratedCodeViewModelAttribute)
+                .AppendLine($"{modifiers} void NotifyAll()")
+                .BeginBlock()
+                .AppendLineIf(data.Inheritor is Inheritor.Inheritor, "base.NotifyAll();");
+        
+            foreach (var member in data.Members)
+            {
+                var invoke = member.Bindable.Invoke;
+                code.AppendLineIf(!string.IsNullOrWhiteSpace(invoke), invoke);
+            }
+
+            return code.EndBlock();
+        }
     }
 }

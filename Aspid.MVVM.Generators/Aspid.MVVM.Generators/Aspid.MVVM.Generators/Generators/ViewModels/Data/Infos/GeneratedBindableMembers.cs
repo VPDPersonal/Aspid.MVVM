@@ -164,13 +164,17 @@ public readonly struct GeneratedBindableMembers
         string propertyName,
         string propertyType)
     {
+        
+        
         if (mode is BindMode.OneTime)
         {
             return
                 $"""
+                #region {propertyName}
                 {GeneratedCodeViewModelAttribute}
                 public {propertyType} {propertyName} => 
                     {fieldType}.Get({memberName});
+                #endregion
                 """;
         }
 
@@ -184,6 +188,7 @@ public readonly struct GeneratedBindableMembers
         
         return
             $"""
+            #region {propertyName}
             [{EditorBrowsableAttribute}({EditorBrowsableState}.Never)]
             {GeneratedCodeViewModelAttribute}
             private {fieldType} {fieldName};
@@ -191,6 +196,7 @@ public readonly struct GeneratedBindableMembers
             {GeneratedCodeViewModelAttribute}
             public {propertyType} {propertyName} => 
                 {instantiate};
+            #endregion
             """;
     }
 

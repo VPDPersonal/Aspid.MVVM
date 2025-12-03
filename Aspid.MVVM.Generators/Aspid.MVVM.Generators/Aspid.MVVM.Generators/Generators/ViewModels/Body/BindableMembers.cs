@@ -1,12 +1,11 @@
 using Microsoft.CodeAnalysis;
 using Aspid.Generators.Helper;
 using Aspid.MVVM.Generators.Generators.ViewModels.Data;
-using Aspid.MVVM.Generators.Generators.ViewModels.Data.Infos;
 using static Aspid.MVVM.Generators.Generators.Descriptions.General;
 
 namespace Aspid.MVVM.Generators.Generators.ViewModels.Body;
 
-public static class PropertiesBody
+public static class BindableMembers
 {
     public static void Generate(
         string @namespace,
@@ -20,7 +19,7 @@ public static class PropertiesBody
             .AppendBody(data)
             .EndClass(@namespace);
 
-        context.AddSource(declaration.GetFileName(@namespace, "Properties"), code.GetSourceText());
+        context.AddSource(declaration.GetFileName(@namespace, "BindableMembers"), code.GetSourceText());
     }
     
     extension(CodeWriter code)
@@ -29,8 +28,7 @@ public static class PropertiesBody
         {
             if (!data.Members.IsEmpty)
             {
-                code.AppendProperties(data)
-                    .AppendBindableMembers(data);
+                code.AppendBindableMembers(data);
             }
         
             return code.AppendNotifyAll(data);
@@ -47,21 +45,11 @@ public static class PropertiesBody
             return code;
         }
 
-        private CodeWriter AppendProperties(in ViewModelData data)
-        {
-            foreach (var field in data.Members.OfType<BindableFieldInfo>())
-            {
-                code.AppendMultiline(field.Declaration);
-            }
-        
-            return code;
-        }
-
         private CodeWriter AppendNotifyAll(in ViewModelData data)
         {
-            var modifiers = "private";
-            if (data.Inheritor is not Inheritor.None) modifiers = "protected override";
-            else if (!data.Symbol.IsSealed) modifiers = "protected virtual";
+            var modifiers = "public";
+            if (data.Inheritor is not Inheritor.None) modifiers += " override";
+            else if (!data.Symbol.IsSealed) modifiers += " virtual";
         
             code.AppendLine(GeneratedCodeViewModelAttribute)
                 .AppendLine($"{modifiers} void NotifyAll()")

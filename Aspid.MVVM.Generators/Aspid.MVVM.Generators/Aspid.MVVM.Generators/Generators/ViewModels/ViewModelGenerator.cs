@@ -62,9 +62,10 @@ public sealed class ViewModelGenerator : IIncrementalGenerator
         var @namespace = declaration.GetNamespaceName();
         var declarationText = new DeclarationText(declaration);
 
-        PropertiesBody.Generate(@namespace, data, declarationText, context);
+        BindableMembers.Generate(@namespace, data, declarationText, context);
         RelayCommandBody.Generate(@namespace, data, declarationText, context);
-        BindableMembersBody.Generate(@namespace, data, declarationText, context);
         FindBindableMembersBody.Generate(@namespace, data, declarationText, context);
+        GeneratedPropertiesBody.Generate(@namespace, data, declarationText, context);
+        BindableInterfaceMembersBody.Generate(@namespace, data, declarationText, context);
     }
 }

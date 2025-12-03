@@ -3,7 +3,6 @@ using Microsoft.CodeAnalysis;
 using Aspid.Generators.Helper;
 using Aspid.MVVM.Generators.Generators.ViewModels.Data;
 using Aspid.MVVM.Generators.Generators.ViewModels.Data.Infos;
-using Aspid.MVVM.Generators.Generators.ViewModels.Data.Members;
 
 namespace Aspid.MVVM.Generators.Generators.ViewModels.Body;
 

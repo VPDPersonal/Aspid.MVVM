@@ -36,12 +36,14 @@ public sealed class BindableCommandInfo : IBindableMemberInfo
         
         CommandDeclaration = 
             $"""
+            #region {Name}
             {GeneratedCodeViewModelAttribute}
             [{EditorBrowsableAttribute}({EditorBrowsableState}.Never)]
             private {Type} {fieldName};
 
             {GeneratedCodeViewModelAttribute}
             private {Type} {Name} => {fieldName} ??= new {Type}({methodSymbol.Name}{canExecute});
+            #endregion
             """;
     }
 

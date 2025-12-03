@@ -7,7 +7,7 @@ using BindMode = Aspid.MVVM.Generators.Generators.ViewModels.Data.BindMode;
 
 namespace Aspid.MVVM.Generators.Generators.ViewModels.Body;
 
-public static class BindableMembersBody
+public static class BindableInterfaceMembersBody
 {
     public static void Generate(       
         string @namespace,
@@ -20,7 +20,7 @@ public static class BindableMembersBody
             .AppendProperties(data)
             .EndClass(@namespace);
         
-        context.AddSource(declaration.GetFileName(@namespace, "BindableMembers"), code.GetSourceText());
+        context.AddSource(declaration.GetFileName(@namespace, "BindableInterfaceMembers"), code.GetSourceText());
     }
 
     private static CodeWriter AppendProperties(this CodeWriter code, in ViewModelData data)

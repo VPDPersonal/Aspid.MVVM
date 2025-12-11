@@ -16,8 +16,9 @@ namespace Aspid.MVVM
         where TView : Object, IView
         where TEditor : ViewEditor<TView, TEditor>
     {
-        protected readonly TEditor Editor;
         private bool _isInitialized;
+        protected readonly TEditor Editor;
+        private List<IUpdatableField> _updatableFields;
         
         protected virtual string IconPath => EditorConstants.AspidIconGreen;
         
@@ -34,6 +35,7 @@ namespace Aspid.MVVM
         public ViewVisualElement(TEditor editor)
         {
             Editor = editor;
+            _updatableFields = new List<IUpdatableField>();
         }
         
         public void Initialize()
@@ -47,6 +49,11 @@ namespace Aspid.MVVM
         public void Update()
         {
             OnUpdate();
+
+            foreach (var update in _updatableFields)
+            {
+                update.UpdateValue();
+            }
             
             this.Q<AspidInspectorHeader>().Icon.SetImageFromResource(IconPath);
             
@@ -96,7 +103,7 @@ namespace Aspid.MVVM
             // TODO Aspid.MVVM Unity – Rename Name
             return new AspidContainer()
                 .SetName("ViewModelDebugPanel")
-                .AddChild(ViewModelDebugPanel.Build(Editor.TargetAsView));
+                .AddChild(ViewModelDebugPanel.Build(Editor.TargetAsView, out _updatableFields));
         }
         #endregion
 

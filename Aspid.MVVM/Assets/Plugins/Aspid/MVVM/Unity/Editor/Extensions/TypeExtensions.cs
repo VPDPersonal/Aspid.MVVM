@@ -10,6 +10,29 @@ namespace Aspid.MVVM
     // TODO Aspid.MVVM Unity – Write summary
     public static class TypeExtensions
     {
+        public static string GetTypeDisplayName(this Type type)
+        {
+            if (!type.IsGenericType)
+            {
+                return !string.IsNullOrWhiteSpace(type.Namespace)
+                    ? $"{type.Namespace}.{type.Name}"
+                    : type.Name;
+            }
+
+            var genericTypeName = type.Name;
+            var tickIndex = genericTypeName.IndexOf('`');
+            if (tickIndex >= 0) genericTypeName = genericTypeName[..tickIndex];
+
+            var genericArguments = type.GetGenericArguments()
+                .Select(GetTypeDisplayName);
+
+            var prefix = !string.IsNullOrWhiteSpace(type.Namespace)
+                ? $"{type.Namespace}.{genericTypeName}"
+                : genericTypeName;
+
+            return $"{prefix}<{string.Join(", ", genericArguments)}>";
+        }
+        
         public static Type? GetExplicitInterface(this Type implementingType, PropertyInfo property)
         {
             foreach (var inter in implementingType.GetInterfaces())

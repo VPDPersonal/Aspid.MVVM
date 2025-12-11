@@ -6,7 +6,8 @@
         "Aspid.MVVM.Unity",
         "Aspid.UnityFastTools",
         "Aspid.Internal.Unity.Editor",
-        "Aspid.UnityFastTools.Editor"
+        "Aspid.UnityFastTools.Editor",
+        "Aspid.Collections.Observable"
     ],
     "includePlatforms": [
         "Editor"

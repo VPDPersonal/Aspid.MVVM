@@ -25,6 +25,14 @@ namespace Aspid.MVVM
 
             return fieldName;
         }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static string RemovePrefix(this FieldInfo field) =>
+            field.Name.RemovePrefix();
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private static string RemovePrefix(this string fieldName) =>
+            fieldName.Remove(0, GetPrefixCount(fieldName));
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static int GetPrefixCount(this FieldInfo field)

@@ -54,6 +54,8 @@ namespace Aspid.MVVM
 
         private static VisualElement BuildDataContainer(IViewModel viewModel, List<IUpdatableField> updatableFields)
         {
+            if (viewModel is null) return new VisualElement();
+            
             var viewModelType = viewModel.GetType();
             var viewModelBaseType = viewModel switch
             {
@@ -72,12 +74,10 @@ namespace Aspid.MVVM
             {
                 if (field.IsDefined(typeof(BaseBindAttribute)))
                 {
-                    var fieldElement = DebugViewModelField.Create(viewModel, field);
-                    if (fieldElement is not null)
-                    {
-                        container.AddChild(fieldElement);
-                        updatableFields.Add(fieldElement);
-                    }
+                    var fieldElement = new DebugField(viewModel, field);
+                    
+                    container.AddChild(fieldElement);
+                    updatableFields.Add(fieldElement);
                 }
             }
             
@@ -85,12 +85,10 @@ namespace Aspid.MVVM
             {
                 if (!field.IsDefined(typeof(BaseBindAttribute)) && !field.IsDefined(typeof(GeneratedCodeAttribute)))
                 {
-                    var fieldElement = DebugViewModelField.Create(viewModel, field);
-                    if (fieldElement is not null)
-                    {
-                        updatableFields.Add(fieldElement);
-                        container.AddChild(fieldElement);
-                    }
+                    var fieldElement = new DebugField(viewModel, field);
+                    
+                    updatableFields.Add(fieldElement);
+                    container.AddChild(fieldElement);
                 }
             }
             

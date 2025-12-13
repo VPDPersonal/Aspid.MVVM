@@ -67,7 +67,7 @@ namespace Aspid.MVVM
                 {
                     foreach (var fieldInfo in _value.GetType().GetFieldInfosIncludingBaseClasses(BindingFlags.Public | BindingFlags.Instance | BindingFlags.NonPublic))
                     {
-                        var field = DebugViewModelField.Create(_value, fieldInfo, !context.IsAlternativeColor);
+                        var field = new DebugField(_value, fieldInfo, !context.IsAlternativeColor);
                         _updatableFields.Add(field);
                         
                         content.AddChild(field);

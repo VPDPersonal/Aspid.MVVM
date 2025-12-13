@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using UnityEngine;
+using System.Reflection;
 using Aspid.UnityFastTools;
 using UnityEngine.UIElements;
 using System.Collections.Generic;
@@ -13,21 +14,39 @@ namespace Aspid.MVVM
     {
         private readonly IUpdatableField _updatableField;
         
-        internal DebugField(string label, FieldContext bindFieldContext)
-            : this(label, (IFieldContext)bindFieldContext) { }
-        
-        internal DebugField(string label, BindFieldContext bindFieldContext)
-            : this(label, (IFieldContext)bindFieldContext) { }
+        internal DebugField(object obj, MemberInfo memberInfo, bool isAlternativeColor = false)
+        {
+            var label = GetLabel(memberInfo);
+            var context = FieldContextFactory.Create(obj, memberInfo, isAlternativeColor);
+
+            var inputField = GetInputField(label, context);
+            _updatableField = inputField as IUpdatableField;
+            Add(Settings(inputField, context));
+
+            this.SetMargin(top: 2, bottom: 2);
+        }
 
         internal DebugField(string label, IFieldContext context)
         {
             var inputField = GetInputField(label, context);
             _updatableField = inputField as IUpdatableField;
             Add(Settings(inputField, context));
+            
+            this.SetMargin(top: 2, bottom: 2);
         }
         
         public void UpdateValue() =>
             _updatableField?.UpdateValue();
+
+        private static string GetLabel(MemberInfo memberInfo)
+        {
+            if (memberInfo is FieldInfo fieldInfo && fieldInfo.IsDefined(typeof(BaseBindAttribute)))
+            {
+               return fieldInfo.GetGeneratedPropertyName();
+            }
+            
+            return memberInfo.Name;
+        }
 
         private static VisualElement Settings(VisualElement field, IFieldContext context)
         {

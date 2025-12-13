@@ -67,8 +67,16 @@ namespace Aspid.MVVM
             var members = viewModelType.GetMembersInfosIncludingBaseClasses(BindingAttr, viewModelBaseType);
             var fields = members.OfType<FieldInfo>().ToArray();
             
+            var bindFieldsContainer = new VisualElement().SetName("BindFields");
+            var otherFieldsContainer = new VisualElement().SetName("OtherFields");
+            
+            var prefsKeyPrefix = viewModelType.FullName + "_DebugTab_";
+            var tabView = new ViewModelDebugTabView(prefsKeyPrefix, bindFieldsContainer, otherFieldsContainer);
+            
             var container = new VisualElement()
-                .AddChild(CreateTabContainer());
+                .AddChild(tabView)
+                .AddChild(bindFieldsContainer)
+                .AddChild(otherFieldsContainer);
 
             foreach (var field in fields)
             {
@@ -76,7 +84,7 @@ namespace Aspid.MVVM
                 {
                     var fieldElement = new DebugField(viewModel, field);
                     
-                    container.AddChild(fieldElement);
+                    bindFieldsContainer.AddChild(fieldElement);
                     updatableFields.Add(fieldElement);
                 }
             }
@@ -88,37 +96,73 @@ namespace Aspid.MVVM
                     var fieldElement = new DebugField(viewModel, field);
                     
                     updatableFields.Add(fieldElement);
-                    container.AddChild(fieldElement);
+                    otherFieldsContainer.AddChild(fieldElement);
                 }
             }
             
             return container;
         }
-
-        private static VisualElement CreateTabContainer()
-        {
-            return new ViewModelDebugTabView();
-        }
         
         public class ViewModelDebugTabView : VisualElement
         {
             private readonly Color _normalColor = new(0.15f, 0.15f, 0.15f, 1f);
-            private readonly Color _selectedColor = new(0.05f, 0.55f , 0.37f, 1f);
+            private readonly Color _selectedColor = new(0.05f, 0.55f, 0.37f, 1f);
+            
+            private readonly Button _bindButton;
+            private readonly Button _otherButton;
+            private readonly VisualElement _bindContainer;
+            private readonly VisualElement _otherContainer;
+            private readonly string _prefsKeyPrefix;
+            
+            private bool _bindSelected;
+            private bool _otherSelected;
 
-            public ViewModelDebugTabView()
+            public ViewModelDebugTabView(string prefsKeyPrefix, VisualElement bindContainer, VisualElement otherContainer)
             {
+                _prefsKeyPrefix = prefsKeyPrefix;
+                _bindContainer = bindContainer;
+                _otherContainer = otherContainer;
+                
+                _bindSelected = EditorPrefs.GetBool(_prefsKeyPrefix + "Bind", true);
+                _otherSelected = EditorPrefs.GetBool(_prefsKeyPrefix + "Other", false);
+                
+                _bindButton = new Button(OnBindClicked)
+                    .SetText("Bind")
+                    .SetFlexGrow(1);
+                    
+                _otherButton = new Button(OnOtherClicked)
+                    .SetText("Other")
+                    .SetFlexGrow(1);
+                
                 this.SetSize(height: 25)
                     .SetFlexDirection(FlexDirection.Row)
-                    .AddChild(new Button()
-                        .SetText("All")
-                        .SetFlexGrow(1))
-                    .AddChild(new Button()
-                        .SetText("Bind")
-                        .SetFlexGrow(1)
-                        .SetBackgroundColor(_selectedColor))
-                    .AddChild(new Button()
-                        .SetText("Bindable")
-                        .SetFlexGrow(1));
+                    .AddChild(_bindButton)
+                    .AddChild(_otherButton);
+                    
+                UpdateVisuals();
+            }
+            
+            private void OnBindClicked()
+            {
+                _bindSelected = !_bindSelected;
+                EditorPrefs.SetBool(_prefsKeyPrefix + "Bind", _bindSelected);
+                UpdateVisuals();
+            }
+            
+            private void OnOtherClicked()
+            {
+                _otherSelected = !_otherSelected;
+                EditorPrefs.SetBool(_prefsKeyPrefix + "Other", _otherSelected);
+                UpdateVisuals();
+            }
+            
+            private void UpdateVisuals()
+            {
+                _bindButton.SetBackgroundColor(_bindSelected ? _selectedColor : _normalColor);
+                _otherButton.SetBackgroundColor(_otherSelected ? _selectedColor : _normalColor);
+                
+                _bindContainer.style.display = _bindSelected ? DisplayStyle.Flex : DisplayStyle.None;
+                _otherContainer.style.display = _otherSelected ? DisplayStyle.Flex : DisplayStyle.None;
             }
         }
     }

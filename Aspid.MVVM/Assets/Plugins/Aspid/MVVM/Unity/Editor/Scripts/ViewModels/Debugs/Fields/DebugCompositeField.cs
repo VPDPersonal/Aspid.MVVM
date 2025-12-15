@@ -114,16 +114,9 @@ namespace Aspid.MVVM
         
         public bool Search(string searchPath)
         {
-            if (string.IsNullOrEmpty(searchPath))
-            {
-                ClearSearch();
-                return true;
-            }
-            
             _isSearchMode = true;
             
             // Expand the foldout to show nested fields during search
-            // This will trigger the callback which builds content if needed
             if (_foldout != null && !_foldout.value)
             {
                 _foldout.SetValueWithoutNotify(true);
@@ -131,6 +124,16 @@ namespace Aspid.MVVM
                 _searchableFields.Clear();
                 _content?.Clear();
                 BuildContent(_content);
+            }
+            
+            // If searchPath is empty, show all nested fields (e.g., from "h." query)
+            if (string.IsNullOrEmpty(searchPath))
+            {
+                foreach (var searchableField in _searchableFields)
+                {
+                    searchableField.ClearSearch();
+                }
+                return true;
             }
             
             // Search in all nested fields

@@ -13,20 +13,19 @@ namespace Aspid.MVVM
 {
     internal sealed class DebugField : VisualElement, IUpdatableDebugField, ISearchableDebugField
     {
+        private readonly string _label;
         private readonly IUpdatableDebugField _updatableField;
         private readonly ISearchableDebugField _searchableField;
-        
-        public string FieldName { get; }
+
         
         public DebugField(object obj, MemberInfo memberInfo, bool isAlternativeColor = false)
         {
             try
             {
-                var label = GetLabel(memberInfo);
-                FieldName = label;
+                _label = GetLabel(memberInfo);
                 var context = FieldContextFactory.Create(obj, memberInfo, isAlternativeColor);
 
-                var inputField = GetInputField(label, context);
+                var inputField = GetInputField(_label, context);
                 _updatableField = inputField as IUpdatableDebugField;
                 _searchableField = inputField as ISearchableDebugField;
                 Add(Settings(inputField, context));
@@ -44,7 +43,7 @@ namespace Aspid.MVVM
         {
             try
             {
-                FieldName = label;
+                _label = label;
                 var inputField = GetInputField(label, context);
                 _updatableField = inputField as IUpdatableDebugField;
                 _searchableField = inputField as ISearchableDebugField;
@@ -73,27 +72,37 @@ namespace Aspid.MVVM
             var parts = searchPath.Split(new[] { '.' }, 2);
             var currentSearch = parts[0];
             var remainingPath = parts.Length > 1 ? parts[1] : null;
+            var hasDotInQuery = searchPath.Contains('.');
             
-            // Check if current field name matches (partial match, case-insensitive)
-            var currentMatches = FieldName.IndexOf(currentSearch, StringComparison.OrdinalIgnoreCase) >= 0;
+            // Check if the current field name matches (partial match, case-insensitive)
+            var currentMatches = _label.IndexOf(currentSearch, StringComparison.OrdinalIgnoreCase) >= 0;
             
             if (currentMatches)
             {
-                // If there's a remaining path, search in nested fields
-                if (!string.IsNullOrEmpty(remainingPath) && _searchableField != null)
+                // If query contains dot (e.g. "h." or "h.skill"), we're looking for nested fields
+                if (hasDotInQuery)
                 {
-                    var nestedMatches = _searchableField.Search(remainingPath);
-                    style.display = nestedMatches ? DisplayStyle.Flex : DisplayStyle.None;
-                    return nestedMatches;
+                    // This field matches, but we need nested fields
+                    if (_searchableField is not null)
+                    {
+                        // Pass the remaining path (empty string for "h." means show all nested)
+                        var pathToSearch = remainingPath ?? string.Empty;
+                        var nestedMatches = _searchableField.Search(pathToSearch);
+                        style.display = nestedMatches ? DisplayStyle.Flex : DisplayStyle.None;
+                        return nestedMatches;
+                    }
+                    
+                    // Query has dot but this field has no nested fields - hide it
+                    style.display = DisplayStyle.None;
+                    return false;
                 }
                 
-                // Current field matches and no more path to search
-                // Don't search nested - just show this field
+                // Simple query without dot - show matching field
                 style.display = DisplayStyle.Flex;
                 return true;
             }
             
-            // Current field doesn't match - hide it
+            // The current field doesn't match - hide it
             // Don't search nested fields for simple queries (optimization)
             style.display = DisplayStyle.None;
             return false;

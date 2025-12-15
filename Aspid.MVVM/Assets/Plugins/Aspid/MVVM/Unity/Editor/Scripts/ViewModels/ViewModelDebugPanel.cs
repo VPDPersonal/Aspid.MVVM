@@ -84,6 +84,7 @@ namespace Aspid.MVVM
             searchField.RegisterValueChangedCallback(e =>
             {
                 var searchQuery = e.newValue?.Trim();
+                EditorPrefs.SetString(prefsKeyPrefix + "Search", searchQuery ?? string.Empty);
                 PerformSearch(searchQuery, tabView, 
                     bindSearchableFields, otherSearchableFields, commandsSearchableFields);
             });
@@ -135,6 +136,14 @@ namespace Aspid.MVVM
                     commandsContainer.AddChild(fieldElement);
                     commandsSearchableFields.Add(fieldElement);
                 }
+            }
+            
+            // Restore saved search query after all fields are created
+            var savedSearch = EditorPrefs.GetString(prefsKeyPrefix + "Search", string.Empty);
+            if (!string.IsNullOrEmpty(savedSearch))
+            {
+                searchField.SetValueWithoutNotify(savedSearch);
+                PerformSearch(savedSearch, tabView, bindSearchableFields, otherSearchableFields, commandsSearchableFields);
             }
             
             return container;

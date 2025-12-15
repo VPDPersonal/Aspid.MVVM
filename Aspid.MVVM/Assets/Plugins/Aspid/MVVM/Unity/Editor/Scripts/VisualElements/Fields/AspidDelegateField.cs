@@ -35,13 +35,21 @@ namespace Aspid.MVVM
 
         private static VisualElement CreateTargetField(Delegate value)
         {
-            VisualElement field = value.Target switch
+            VisualElement field ;
+
+            if (value.Target is Object obj)
             {
-                Object obj => new ObjectField().SetValue(obj),
-                _ => new TextField().SetValue(GetTargetValue()),
-            };
+                field = new ObjectField().SetValue(obj);
+                field.SetEnabled(false);
+            }
+            else
+            {
+                var textField = new TextField().SetValue(GetTargetValue());
+                textField.isReadOnly = true;
+                
+                field = textField;
+            }
             
-            field.SetEnabled(false);
             return field;
 
             string GetTargetValue()
@@ -58,8 +66,8 @@ namespace Aspid.MVVM
         {
             var field = new TextField()
                 .SetValue(value.Method.Name);
-            
-            field.SetEnabled(false);
+
+            field.isReadOnly = true;
             return field;
         }
     }

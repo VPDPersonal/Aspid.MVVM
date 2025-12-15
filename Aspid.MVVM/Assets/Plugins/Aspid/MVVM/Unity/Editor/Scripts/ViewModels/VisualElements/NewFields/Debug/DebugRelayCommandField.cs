@@ -166,7 +166,11 @@ namespace Aspid.MVVM
                 return new EnumField(paramName, Enum.GetValues(type).GetValue(index: 0) as Enum);
             }
 
-            return new TextField(paramName) { isReadOnly = true, value = $"Unsupported type: {type.Name}" };
+            return new TextField(paramName)
+            {
+                isReadOnly = true, 
+                value = $"Unsupported type: {type.Name}"
+            };
         }
             
         private static object GetValueFromField(VisualElement field, Type type)

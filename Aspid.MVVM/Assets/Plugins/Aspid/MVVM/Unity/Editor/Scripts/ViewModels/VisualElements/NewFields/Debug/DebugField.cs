@@ -11,19 +11,24 @@ using Object = UnityEngine.Object;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM
 {
-    internal sealed class DebugField : VisualElement, IUpdatableDebugField
+    internal sealed class DebugField : VisualElement, IUpdatableDebugField, ISearchableDebugField
     {
         private readonly IUpdatableDebugField _updatableField;
+        private readonly ISearchableDebugField _searchableField;
+        
+        public string FieldName { get; }
         
         public DebugField(object obj, MemberInfo memberInfo, bool isAlternativeColor = false)
         {
             try
             {
                 var label = GetLabel(memberInfo);
+                FieldName = label;
                 var context = FieldContextFactory.Create(obj, memberInfo, isAlternativeColor);
 
                 var inputField = GetInputField(label, context);
                 _updatableField = inputField as IUpdatableDebugField;
+                _searchableField = inputField as ISearchableDebugField;
                 Add(Settings(inputField, context));
             }
             catch (Exception e)
@@ -39,8 +44,10 @@ namespace Aspid.MVVM
         {
             try
             {
+                FieldName = label;
                 var inputField = GetInputField(label, context);
                 _updatableField = inputField as IUpdatableDebugField;
+                _searchableField = inputField as ISearchableDebugField;
                 Add(Settings(inputField, context));
             }
             catch (Exception e)
@@ -54,6 +61,49 @@ namespace Aspid.MVVM
         
         public void UpdateValue() =>
             _updatableField?.UpdateValue();
+        
+        public bool Search(string searchPath)
+        {
+            if (string.IsNullOrEmpty(searchPath))
+            {
+                ClearSearch();
+                return true;
+            }
+            
+            var parts = searchPath.Split(new[] { '.' }, 2);
+            var currentSearch = parts[0];
+            var remainingPath = parts.Length > 1 ? parts[1] : null;
+            
+            // Check if current field name matches (partial match, case-insensitive)
+            var currentMatches = FieldName.IndexOf(currentSearch, StringComparison.OrdinalIgnoreCase) >= 0;
+            
+            if (currentMatches)
+            {
+                // If there's a remaining path, search in nested fields
+                if (!string.IsNullOrEmpty(remainingPath) && _searchableField != null)
+                {
+                    var nestedMatches = _searchableField.Search(remainingPath);
+                    style.display = nestedMatches ? DisplayStyle.Flex : DisplayStyle.None;
+                    return nestedMatches;
+                }
+                
+                // Current field matches and no more path to search
+                // Don't search nested - just show this field
+                style.display = DisplayStyle.Flex;
+                return true;
+            }
+            
+            // Current field doesn't match - hide it
+            // Don't search nested fields for simple queries (optimization)
+            style.display = DisplayStyle.None;
+            return false;
+        }
+        
+        public void ClearSearch()
+        {
+            style.display = DisplayStyle.Flex;
+            _searchableField?.ClearSearch();
+        }
 
         private static string GetLabel(MemberInfo memberInfo)
         {

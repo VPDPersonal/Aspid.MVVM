@@ -1,11 +1,11 @@
-using System.CodeDom.Compiler;
-using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
 using System.Reflection;
 using Aspid.UnityFastTools;
 using UnityEngine.UIElements;
+using System.CodeDom.Compiler;
+using System.Collections.Generic;
 using Object = UnityEngine.Object;
 
 // ReSharper disable once CheckNamespace
@@ -70,11 +70,27 @@ namespace Aspid.MVVM
             var otherFieldsContainer = new VisualElement().SetName("OtherFields");
             var commandsContainer = new VisualElement().SetName("Commands");
             
+            var bindSearchableFields = new List<ISearchableDebugField>();
+            var otherSearchableFields = new List<ISearchableDebugField>();
+            var commandsSearchableFields = new List<ISearchableDebugField>();
+            
             var prefsKeyPrefix = viewModelType.FullName + "_DebugTab_";
             var tabView = new ViewModelDebugTabView(prefsKeyPrefix, bindFieldsContainer, otherFieldsContainer, commandsContainer);
             
+            var searchField = new TextField("Search")
+                .SetMargin(top: 5, bottom: 5, left: 2, right: 2);
+            searchField.textEdition.placeholder = "Search fields... (e.g. _hero._points)";
+            
+            searchField.RegisterValueChangedCallback(e =>
+            {
+                var searchQuery = e.newValue?.Trim();
+                PerformSearch(searchQuery, tabView, 
+                    bindSearchableFields, otherSearchableFields, commandsSearchableFields);
+            });
+            
             var container = new VisualElement()
                 .AddChild(tabView)
+                .AddChild(searchField)
                 .AddChild(bindFieldsContainer)
                 .AddChild(commandsContainer)
                 .AddChild(otherFieldsContainer);
@@ -91,6 +107,7 @@ namespace Aspid.MVVM
                     
                     bindFieldsContainer.AddChild(fieldElement);
                     updatableFields.Add(fieldElement);
+                    bindSearchableFields.Add(fieldElement);
                 }
             }
             
@@ -106,6 +123,7 @@ namespace Aspid.MVVM
                     
                     updatableFields.Add(fieldElement);
                     otherFieldsContainer.AddChild(fieldElement);
+                    otherSearchableFields.Add(fieldElement);
                 }
             }
             
@@ -115,10 +133,54 @@ namespace Aspid.MVVM
                 {
                     var fieldElement = new DebugField(viewModel, field);
                     commandsContainer.AddChild(fieldElement);
+                    commandsSearchableFields.Add(fieldElement);
                 }
             }
             
             return container;
+        }
+        
+        private static void PerformSearch(
+            string searchQuery, 
+            ViewModelDebugTabView tabView,
+            List<ISearchableDebugField> bindFields,
+            List<ISearchableDebugField> otherFields,
+            List<ISearchableDebugField> commandsFields)
+        {
+            if (string.IsNullOrEmpty(searchQuery))
+            {
+                // Clear search - show all fields in active tabs
+                ClearSearchInList(bindFields);
+                ClearSearchInList(otherFields);
+                ClearSearchInList(commandsFields);
+                return;
+            }
+            
+            // Search only in active tabs
+            if (tabView.IsBindSelected)
+                SearchInList(bindFields, searchQuery);
+            
+            if (tabView.IsOtherSelected)
+                SearchInList(otherFields, searchQuery);
+            
+            if (tabView.IsCommandsSelected)
+                SearchInList(commandsFields, searchQuery);
+        }
+        
+        private static void SearchInList(List<ISearchableDebugField> fields, string searchQuery)
+        {
+            foreach (var field in fields)
+            {
+                field.Search(searchQuery);
+            }
+        }
+        
+        private static void ClearSearchInList(List<ISearchableDebugField> fields)
+        {
+            foreach (var field in fields)
+            {
+                field.ClearSearch();
+            }
         }
         
         public class ViewModelDebugTabView : VisualElement
@@ -137,6 +199,10 @@ namespace Aspid.MVVM
             private bool _bindSelected;
             private bool _otherSelected;
             private bool _commandsSelected;
+            
+            public bool IsBindSelected => _bindSelected;
+            public bool IsOtherSelected => _otherSelected;
+            public bool IsCommandsSelected => _commandsSelected;
 
             public ViewModelDebugTabView(string prefsKeyPrefix, VisualElement bindContainer, VisualElement otherContainer, VisualElement commandsContainer)
             {
@@ -153,20 +219,17 @@ namespace Aspid.MVVM
                     .SetText("Bind")
                     .SetFontSize(14)
                     .SetUnityFontStyleAndWeight(FontStyle.Bold)
-                    // .SetColor(Color.black)
                     .SetFlexGrow(1);
                     
                 _otherButton = new Button(OnOtherClicked)
                     .SetText("Other")
                     .SetFontSize(14)
-                    // .SetColor(Color.black)
                     .SetUnityFontStyleAndWeight(FontStyle.Bold)
                     .SetFlexGrow(1);
                 
                 _commandsButton = new Button(OnCommandsClicked)
                     .SetText("Commands")
                     .SetFontSize(14)
-                    // .SetColor(Color.black)
                     .SetUnityFontStyleAndWeight(FontStyle.Bold)
                     .SetFlexGrow(1);
                 

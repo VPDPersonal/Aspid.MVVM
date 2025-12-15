@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using System.Collections;
 using Aspid.UnityFastTools;
@@ -8,22 +9,29 @@ using System.Linq;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM
 {
-    internal sealed class DebugEnumerableField : VisualElement, IUpdatableDebugField
+    internal sealed class DebugEnumerableField : VisualElement, IUpdatableDebugField, ISearchableDebugField
     {
         private const string StyleSheetPath = "Styles/Debug/Fields/aspid-debug-enumerable-field";
         
         private object _value;
         private bool _isExpanded;
+        private bool _isSearchMode;
+        private Foldout _foldout;
+        private VisualElement _content;
         
         private readonly string _label;
         private readonly IFieldContext _context;
         private readonly List<IUpdatableDebugField> _updatableFields;
+        private readonly List<ISearchableDebugField> _searchableFields;
+        
+        public string FieldName => _label;
         
         public DebugEnumerableField(string label, IFieldContext context)
         {
             _label = label;
             _context = context;
             _updatableFields = new List<IUpdatableDebugField>();
+            _searchableFields = new List<ISearchableDebugField>();
             styleSheets.Add(styleSheet: Resources.Load<StyleSheet>(StyleSheetPath));
             
             Build(label, context.GetValue(), context);
@@ -59,32 +67,35 @@ namespace Aspid.MVVM
                 return;
             }
             
-            var foldout = new Foldout()
+            _foldout = new Foldout()
                 .SetValue(_isExpanded)
                 .SetText(label);
 
-            var content = new VisualElement();
-            foldout.AddChild(content);
+            _content = new VisualElement();
+            _foldout.AddChild(_content);
             
             if (_isExpanded) 
-                BuildContent(content);
+                BuildContent(_content);
             
-            foldout.RegisterValueChangedCallback(e =>
+            _foldout.RegisterValueChangedCallback(e =>
             {
-                if (e.target != foldout) return;
+                if (e.target != _foldout) return;
                     
                 if (e.newValue)
                 {
-                    BuildContent(content);
+                    BuildContent(_content);
                 }
                 else
                 {
-                    content.Clear();
+                    _content.Clear();
                     _updatableFields.Clear();
+                    _searchableFields.Clear();
                 }
+                
+                _isExpanded = e.newValue;
             });
             
-            this.AddChild(foldout);
+            this.AddChild(_foldout);
         }
 
         private void BuildContent(VisualElement content)
@@ -121,9 +132,66 @@ namespace Aspid.MVVM
                 var field = new DebugField(itemLabel, childContext);
                         
                 _updatableFields.Add(field);
+                _searchableFields.Add(field);
                 content.AddChild(field.SetMargin(bottom: 5));
 
                 index++;
+            }
+        }
+        
+        public bool Search(string searchPath)
+        {
+            if (string.IsNullOrEmpty(searchPath))
+            {
+                ClearSearch();
+                return true;
+            }
+            
+            _isSearchMode = true;
+            
+            // Expand the foldout to show nested fields during search
+            // Use SetValueWithoutNotify to avoid triggering the callback
+            if (_foldout != null && !_foldout.value)
+            {
+                _foldout.SetValueWithoutNotify(true);
+                _updatableFields.Clear();
+                _searchableFields.Clear();
+                _content?.Clear();
+                BuildContent(_content);
+            }
+            
+            // Search in all nested fields
+            var anyMatch = false;
+            foreach (var searchableField in _searchableFields)
+            {
+                if (searchableField.Search(searchPath))
+                {
+                    anyMatch = true;
+                }
+            }
+            
+            return anyMatch;
+        }
+        
+        public void ClearSearch()
+        {
+            if (!_isSearchMode) return;
+            
+            _isSearchMode = false;
+            
+            // Clear search state in nested fields first
+            foreach (var searchableField in _searchableFields)
+            {
+                searchableField.ClearSearch();
+            }
+            
+            // Collapse back if it was expanded by search (not manually)
+            if (_foldout != null && !_isExpanded)
+            {
+                _foldout.SetValueWithoutNotify(false);
+                _content?.Clear();
+                _updatableFields.Clear();
+                _searchableFields.Clear();
             }
         }
     }

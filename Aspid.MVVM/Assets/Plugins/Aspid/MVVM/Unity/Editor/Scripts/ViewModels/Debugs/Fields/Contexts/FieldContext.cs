@@ -11,8 +11,10 @@ namespace Aspid.MVVM
         public Type MemberType { get; }
 
         public MemberInfo Member { get; }
-
+        
         public bool IsAlternativeColor { get; }
+
+        public bool IsReadonly => Member.IsReadonly();
 
         public FieldContext(object target, MemberInfo member, bool isAlternativeColor = false)
         {

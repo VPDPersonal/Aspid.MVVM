@@ -19,7 +19,7 @@ namespace Aspid.MVVM
             var max = double.MaxValue;
             var value = (double)context.GetValue();
             
-            SetEnabled(!context.Member.IsReadonly());
+            SetEnabled(!context.IsReadonly);
             
             if (context.IsDefined(typeof(MinAttribute)))
             {

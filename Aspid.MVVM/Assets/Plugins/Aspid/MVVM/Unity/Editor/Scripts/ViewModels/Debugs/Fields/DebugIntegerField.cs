@@ -26,7 +26,7 @@ namespace Aspid.MVVM
             var max = maxValue;
             var value = (int)GetValue();
             
-            SetEnabled(!context.Member.IsReadonly());
+            SetEnabled(!context.IsReadonly);
             
             if (context.IsDefined(typeof(MinAttribute)))
             {
@@ -62,7 +62,7 @@ namespace Aspid.MVVM
         public void UpdateValue()
         {
             var newValue = (int)GetValue();
-
+            
             if (_slider is not null)
             {
                 if (EqualityComparer<int>.Default.Equals(newValue, _slider.Value)) return;

@@ -5,6 +5,7 @@ using System.Reflection;
 using Aspid.UnityFastTools;
 using UnityEditor.UIElements;
 using UnityEngine.UIElements;
+using System.CodeDom.Compiler;
 using System.Collections.Generic;
 using Object = UnityEngine.Object;
 
@@ -13,36 +14,48 @@ namespace Aspid.MVVM
 {
     internal sealed class DebugRelayCommandField : VisualElement
     {
+        private const string StyleSheetPath = "Styles/Fields/aspid-relay-command";
+        
         private const BindingFlags BindingAttr = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static;
         
-        internal DebugRelayCommandField(string label, IFieldContext context)
+        public DebugRelayCommandField(string label, IFieldContext context)
         {
             var commandValue = context.GetValue();
             var commandType = context.MemberType;
             
-            Add(BuildCommandField(context.Target, commandValue, commandType, label));
+            styleSheets.Add(styleSheet: Resources.Load<StyleSheet>(StyleSheetPath));
+            BuildCommandField(context, commandValue, commandType, label);
         }
 
-        private static VisualElement BuildCommandField(object valueContainer, object commandValue, Type commandType, string label)
+        private void BuildCommandField(IFieldContext context, object commandValue, Type commandType, string label)
         {
-            var container = new VisualElement()
-                .SetPadding(4)
-                .SetBorderRadius(4);
-
-            container.AddChild(new Label(label)
-                .SetMargin(bottom: 4));
+            var container = new VisualElement().SetName("aspid-relay-command-container")
+                .AddChild(new Label(label).SetName("label"));
 
             if (commandValue is null)
             {
-                container.AddChild(new Label("null")
-                    .SetColor(new Color(0.6f, 0.6f, 0.6f)));
-                return container;
+                if (TryFindRelayCommandProperty(context, out var propertyInfo))
+                {
+                    var initializeButton = new Button(() =>
+                        {
+                            propertyInfo.GetValue(context.Target);
+                            
+                            Clear();
+                            BuildCommandField(context, context.GetValue(), commandType, label);
+                        })
+                        .SetName("initialize-button")
+                        .SetText("Initialize");
+                    
+                    container.SetFlexDirection(FlexDirection.Row)
+                        .AddChild(initializeButton);
+                }
+                
+                Add(container);
+                return;
             }
 
-            var parameters = BuildFieldsForParameters(valueContainer.GetType(), commandType, label);
+            var parameters = BuildFieldsForParameters(context.Target.GetType(), commandType, label);
             container.AddChildren(parameters.Select(parameter => parameter.Item2));
-
-            var width = new StyleLength(new Length(50, LengthUnit.Percent));
             
             var executeButton = new Button(() =>
             {
@@ -56,29 +69,20 @@ namespace Aspid.MVVM
 
                 var execute = commandValue.GetType().GetMethod("Execute", BindingFlags.Public | BindingFlags.Instance);
                 execute?.Invoke(commandValue, arguments);
-            })
-                .SetText("Execute")
-                .SetSize(width: width)
-                .SetMargin(0);
+            }).SetText("Execute");
 
             var notifyButton = new Button(() =>
             {
                 var notifyMethod = commandValue.GetType().GetMethod("NotifyCanExecuteChanged", BindingFlags.Public | BindingFlags.Instance);
                 notifyMethod?.Invoke(commandValue, Array.Empty<object>());
-            }).SetText("Notify Can Execute Changed")
-                .SetSize(width: width)
-                .SetMargin(0);
+            }).SetText("Notify Can Execute Changed");
+
+            var horizontalContainer = new VisualElement().SetName("aspid-relay-command-horizontal-container")
+                .AddChild(executeButton)
+                .AddChild(notifyButton);
             
-            var horizontalContainer = new VisualElement()
-                .SetAlignItems(Align.Center)
-                .SetFlexDirection(FlexDirection.Row)
-                .SetMargin(top: 4);
-            
-            horizontalContainer.AddChild(executeButton);
-            horizontalContainer.AddChild(notifyButton);
             container.AddChild(horizontalContainer);
-            
-            return container;
+            Add(container);
         }
         
         private static List<(Type, VisualElement)> BuildFieldsForParameters(Type containerType, Type valueType, string valueName)
@@ -116,6 +120,21 @@ namespace Aspid.MVVM
                 .Where(method => method.GetParameters().Length > 0)
                 .Where(method => method.IsDefined(typeof(RelayCommandAttribute)))
                 .ToDictionary(method => $"{method.Name}Command", method => method.GetParameters());
+        }
+
+        private static bool TryFindRelayCommandProperty(IFieldContext context, out PropertyInfo propertyInfo)
+        {
+            propertyInfo = null;
+            if (context.Member is not FieldInfo fieldInfo) return false;
+            if (!fieldInfo.IsDefined(typeof(GeneratedCodeAttribute))) return false;
+            
+            var propertyName = fieldInfo.GetGeneratedPropertyName();
+            
+            propertyInfo = context.Target.GetType()
+                .GetPropertyInfosIncludingBaseClasses(BindingAttr)
+                .FirstOrDefault(property => property.Name == propertyName);
+            
+            return propertyInfo is not null;
         }
         
         private static VisualElement BuildFieldByParameter(Type type, string paramName)

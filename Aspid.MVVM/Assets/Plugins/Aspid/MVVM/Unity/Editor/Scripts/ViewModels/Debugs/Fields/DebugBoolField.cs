@@ -13,7 +13,7 @@ namespace Aspid.MVVM
         {
             _context = context;
             
-            SetEnabled(!context.Member.IsReadonly());
+            SetEnabled(!context.IsReadonly);
             SetValueWithoutNotify((bool)context.GetValue());
             this.RegisterValueChangedCallback(e => context.SetValue(e.newValue));
         }

@@ -15,7 +15,7 @@ namespace Aspid.MVVM
         {
             _label = label;
             _context = context;
-            _isReadonly = !context.Member.IsReadonly();
+            _isReadonly = !context.IsReadonly;
             
             SetEnabled(_isReadonly);
             Build(label, context.GetValue()?.ToString(), context);

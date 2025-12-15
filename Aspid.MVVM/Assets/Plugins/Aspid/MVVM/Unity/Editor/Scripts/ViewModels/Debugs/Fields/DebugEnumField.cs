@@ -36,7 +36,7 @@ namespace Aspid.MVVM
                 Add(_enumField);
             }
 
-            SetEnabled(!context.Member.IsReadonly());
+            SetEnabled(!context.IsReadonly);
         }
         
         public void UpdateValue()

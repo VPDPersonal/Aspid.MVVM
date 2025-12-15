@@ -15,6 +15,8 @@ namespace Aspid.MVVM
 
         public bool IsAlternativeColor { get; }
         
+        public bool IsReadonly => false;
+        
         private readonly FieldInfo _bindField;
         private readonly PropertyInfo _generatedProperty;
 

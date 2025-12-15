@@ -15,7 +15,6 @@ namespace Aspid.MVVM
     // TODO Aspid.MVVM Unity – Refactor this class
     internal static class ViewModelDebugPanel
     {
-        
         private const BindingFlags BindingAttr = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic;
         
         public static VisualElement Build<T>(T view, out List<IUpdatableDebugField> updatableFields)

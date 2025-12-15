@@ -4,6 +4,7 @@ using UnityEngine;
 using System.Reflection;
 using Aspid.UnityFastTools;
 using UnityEngine.UIElements;
+using System.CodeDom.Compiler;
 using System.Collections.Generic;
 using Object = UnityEngine.Object;
 
@@ -14,23 +15,39 @@ namespace Aspid.MVVM
     {
         private readonly IUpdatableDebugField _updatableField;
         
-        internal DebugField(object obj, MemberInfo memberInfo, bool isAlternativeColor = false)
+        public DebugField(object obj, MemberInfo memberInfo, bool isAlternativeColor = false)
         {
-            var label = GetLabel(memberInfo);
-            var context = FieldContextFactory.Create(obj, memberInfo, isAlternativeColor);
+            try
+            {
+                var label = GetLabel(memberInfo);
+                var context = FieldContextFactory.Create(obj, memberInfo, isAlternativeColor);
 
-            var inputField = GetInputField(label, context);
-            _updatableField = inputField as IUpdatableDebugField;
-            Add(Settings(inputField, context));
-
+                var inputField = GetInputField(label, context);
+                _updatableField = inputField as IUpdatableDebugField;
+                Add(Settings(inputField, context));
+            }
+            catch (Exception e)
+            {
+                Clear();
+                Add(new HelpBox(text: e.ToString(), HelpBoxMessageType.Error));
+            }
+            
             this.SetMargin(top: 2, bottom: 2);
         }
 
-        internal DebugField(string label, IFieldContext context)
+        public DebugField(string label, IFieldContext context)
         {
-            var inputField = GetInputField(label, context);
-            _updatableField = inputField as IUpdatableDebugField;
-            Add(Settings(inputField, context));
+            try
+            {
+                var inputField = GetInputField(label, context);
+                _updatableField = inputField as IUpdatableDebugField;
+                Add(Settings(inputField, context));
+            }
+            catch (Exception e)
+            {
+                Clear();
+                Add(new HelpBox(text: e.ToString(), HelpBoxMessageType.Error));
+            }
             
             this.SetMargin(top: 2, bottom: 2);
         }
@@ -40,9 +57,13 @@ namespace Aspid.MVVM
 
         private static string GetLabel(MemberInfo memberInfo)
         {
-            if (memberInfo is FieldInfo fieldInfo && fieldInfo.IsDefined(typeof(BaseBindAttribute)))
+            if (memberInfo is FieldInfo fieldInfo)
             {
-               return fieldInfo.GetGeneratedPropertyName();
+                if (fieldInfo.IsDefined(typeof(BaseBindAttribute))
+                    || (fieldInfo.FieldType.IsRelayCommandType() 
+                    && fieldInfo.IsDefined(typeof(GeneratedCodeAttribute))
+                    && fieldInfo.Name.StartsWith("__")))
+                    return fieldInfo.GetGeneratedPropertyName();
             }
             
             return memberInfo.Name;

@@ -16,7 +16,7 @@ namespace Aspid.MVVM
             _context = context;
             objectType = context.MemberType;
             
-            SetEnabled(!context.Member.IsReadonly());
+            SetEnabled(!context.IsReadonly);
             SetValueWithoutNotify((Object)context.GetValue());
             this.RegisterValueChangedCallback(e => context.SetValue(e.newValue));
         }

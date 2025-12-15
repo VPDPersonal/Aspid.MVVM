@@ -14,12 +14,18 @@ namespace Aspid.MVVM
         
         public bool IsAlternativeColor { get; }
 
+        public bool IsReadonly => Member.IsReadonly();
+        
         private object _value;
         private readonly int _index;
         private readonly object _collection;
         private readonly IFieldContext _parentContext;
 
-        public CollectionElementContext(IFieldContext parentContext, object collection, object value, int index)
+        public CollectionElementContext(
+            IFieldContext parentContext, 
+            object collection, 
+            object value,
+            int index)
         {
             _index = index;
             _value = value;

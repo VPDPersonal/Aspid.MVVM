@@ -12,6 +12,8 @@ namespace Aspid.MVVM
         
         public MemberInfo Member { get; }
         
+        public bool IsReadonly { get; }
+        
         public bool IsAlternativeColor { get; }
         
         public object GetValue();

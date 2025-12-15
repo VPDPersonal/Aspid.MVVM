@@ -7,24 +7,30 @@ namespace Aspid.MVVM
     internal sealed class DebugStringField : VisualElement, IUpdatableDebugField
     {
         private string _value;
+        private TextField _textField;
+        
         private readonly string _label;
         private readonly bool _isReadonly;
         private readonly IFieldContext _context;
-        
+
+        public string Value => _textField is null
+            ? _value
+            : _textField.value;
+
         public DebugStringField(string label, IFieldContext context)
         {
             _label = label;
             _context = context;
-            _isReadonly = !context.IsReadonly;
+            _isReadonly = context.IsReadonly;
             
-            SetEnabled(_isReadonly);
+            SetEnabled(!_isReadonly);
             Build(label, context.GetValue()?.ToString(), context);
         }
         
         public void UpdateValue()
         {
             var newValue = _context.GetValue()?.ToString();
-            if (EqualityComparer<string>.Default.Equals(_value, newValue)) return;
+            if (EqualityComparer<string>.Default.Equals(Value, newValue)) return;
             
             Clear();
             Build(_label, newValue, _context);
@@ -36,20 +42,24 @@ namespace Aspid.MVVM
             
             if (!_isReadonly)
             {
-                var textField = new TextField(label);
-                textField.SetValueWithoutNotify(_value ?? string.Empty);
-                textField.RegisterValueChangedCallback(e => context.SetValue(e.newValue));
+                _textField = new TextField(label);
+                _textField.SetValueWithoutNotify(_value ?? string.Empty);
+                _textField.RegisterValueChangedCallback(e => context.SetValue(e.newValue));
                 
-                Add(textField);
+                Add(_textField);
             }
             else if (_value is not null)
             {
-                var field = new DebugDisableTextField(label);
-                field.SetValueWithoutNotify(_value);
+                _textField = new DebugDisableTextField(label);
+                _textField.SetValueWithoutNotify(_value);
                 
-                Add(field);
+                Add(_textField);
             }
-            else Add(new DebugNullField(label, typeof(string)));
+            else
+            {
+                _textField = null;
+                Add(new DebugNullField(label, typeof(string)));
+            }
         }
     }
 }

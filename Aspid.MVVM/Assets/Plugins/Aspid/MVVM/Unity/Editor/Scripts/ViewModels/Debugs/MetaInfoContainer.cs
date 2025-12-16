@@ -64,30 +64,17 @@ namespace Aspid.MVVM
                 if (fieldInfo.IsDefined(typeof(BaseBindAttribute)))
                     return CreateCells(label, fieldInfo.GetGeneratedPropertyName());
 
-                if (fieldInfo.IsDefined(typeof(GeneratedCodeAttribute))
-                    && fieldInfo.Name.StartsWith("__"))
-                {
-                    var target = context.Target;
-                    var fieldName = fieldInfo.GetGeneratedPropertyName();
+                if (!fieldInfo.FieldType.IsRelayCommandType()) return null;
+                
+                var method = context.Target.FindCommandMethodByName(fieldInfo);
+                if (method is null) return null;
+                
+                bindIdAttribute = method.GetCustomAttribute<BindIdAttribute>();
 
-                    var method = target
-                        .GetType()
-                        .GetMembersInfosIncludingBaseClasses(BindingFlags)
-                        .OfType<MethodInfo>()
-                        .Where(method => method.IsDefined(typeof(RelayCommand)))
-                        .FirstOrDefault(method => method.Name == fieldName[..fieldName.IndexOf("Command", StringComparison.Ordinal)]);
-
-                    if (method is null) return null;
-                    
-                    bindIdAttribute = memberInfo.GetCustomAttribute<BindIdAttribute>();
-                    if (bindIdAttribute is not null) 
-                        return CreateCells(label, bindIdAttribute.Id);
-
-                    return CreateCells(label, fieldName);
-                }
+                return CreateCells(label, bindIdAttribute is not null 
+                    ? bindIdAttribute.Id
+                    : $"{method.Name}Command");
             }
-            
-            
             
             if (memberInfo is MethodInfo methodInfo && methodInfo.IsDefined(typeof(RelayCommand))) 
                 return CreateCells(label, methodInfo.Name + "Command");
@@ -129,11 +116,6 @@ namespace Aspid.MVVM
                     var firstChar = char.ToLower(fieldNameWithoutPrefix[0]);
                     bindableName = $"__{firstChar + fieldNameWithoutPrefix[1..]}Bindable";
                 }
-            }
-            else if (memberInfo is MethodInfo methodInfo && methodInfo.IsDefined(typeof(RelayCommand)))
-            {
-                var firstChar = char.ToLower(methodInfo.Name[0]);
-                bindableName = $"__{firstChar + methodInfo.Name[1..]}Bindable";
             }
             
             if (bindableName is null) return null;

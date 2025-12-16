@@ -24,7 +24,7 @@ namespace Aspid.MVVM
                     .AddChild(new VisualElement().SetName("title")
                         .AddChild(new Label(text: "Meta"))
                         .AddChild(CreateButton(closeCallback)))
-                    .AddChildIfNotNull(CreateIdField(context.Member))
+                    .AddChildIfNotNull(CreateIdField(context))
                     .AddChildIfNotNull(CreateTypeField(context))
                     .AddChildIfNotNull(CreateAttributes(context.Member))
                     .AddChildIfNotNull(CreateBindableField(context.Target, context.Member));
@@ -49,15 +49,45 @@ namespace Aspid.MVVM
                 .SetText("▼");
         }
 
-        private static VisualElement CreateIdField(MemberInfo memberInfo)
+        private static VisualElement CreateIdField(IFieldContext context)
         {
             const string label = "Id";
+            
+            var memberInfo = context.Member;
             var bindIdAttribute = memberInfo.GetCustomAttribute<BindIdAttribute>();
             
-            if (bindIdAttribute is not null) return CreateCells(label, bindIdAttribute.Id);
+            if (bindIdAttribute is not null) 
+                return CreateCells(label, bindIdAttribute.Id);
+
+            if (memberInfo is FieldInfo fieldInfo)
+            {
+                if (fieldInfo.IsDefined(typeof(BaseBindAttribute)))
+                    return CreateCells(label, fieldInfo.GetGeneratedPropertyName());
+
+                if (fieldInfo.IsDefined(typeof(GeneratedCodeAttribute))
+                    && fieldInfo.Name.StartsWith("__"))
+                {
+                    var target = context.Target;
+                    var fieldName = fieldInfo.GetGeneratedPropertyName();
+
+                    var method = target
+                        .GetType()
+                        .GetMembersInfosIncludingBaseClasses(BindingFlags)
+                        .OfType<MethodInfo>()
+                        .Where(method => method.IsDefined(typeof(RelayCommand)))
+                        .FirstOrDefault(method => method.Name == fieldName[..fieldName.IndexOf("Command", StringComparison.Ordinal)]);
+
+                    if (method is null) return null;
+                    
+                    bindIdAttribute = memberInfo.GetCustomAttribute<BindIdAttribute>();
+                    if (bindIdAttribute is not null) 
+                        return CreateCells(label, bindIdAttribute.Id);
+
+                    return CreateCells(label, fieldName);
+                }
+            }
             
-            if (memberInfo is FieldInfo fieldInfo && fieldInfo.IsDefined(typeof(BaseBindAttribute))) 
-                return CreateCells(label, fieldInfo.GetGeneratedPropertyName());
+            
             
             if (memberInfo is MethodInfo methodInfo && methodInfo.IsDefined(typeof(RelayCommand))) 
                 return CreateCells(label, methodInfo.Name + "Command");

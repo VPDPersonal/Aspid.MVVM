@@ -23,7 +23,6 @@ namespace Aspid.MVVM
             _context = context;
             _isReadonly = context.IsReadonly;
             
-            SetEnabled(!_isReadonly);
             Build(label, context.GetValue()?.ToString(), context);
         }
         

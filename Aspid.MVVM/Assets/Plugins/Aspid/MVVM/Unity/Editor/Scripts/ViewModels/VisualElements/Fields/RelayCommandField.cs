@@ -1,6 +1,5 @@
 using System;
 using System.Linq;
-using UnityEditor;
 using UnityEngine;
 using System.Reflection;
 using Aspid.UnityFastTools;
@@ -12,107 +11,115 @@ using Object = UnityEngine.Object;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM
 {
-    // TODO Aspid.MVVM Unity – Refactor
-    // TODO Aspid.MVVM Unity – Write summary
-    internal sealed class RelayCommandField : VisualElement
+    public class RelayCommandField : VisualElement
     {
+        private const string StyleSheetPath = "Styles/Fields/aspid-relay-command";
         private const BindingFlags BindingAttr = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static;
         
-        public RelayCommandField(
-            object valueContainer, 
-            object value,
-            Type valueType,
-            string valueName, 
-            bool isTitle = true,
-            Action executeCallback = null, 
-            Action notifyCanExecuteChangedCallBack = null)
+        public RelayCommandField(string label, object target, FieldInfo fieldInfo)
         {
-            var container = new AspidContainer(AspidContainer.StyleType.Lighter);
+            styleSheets.Add(styleSheet: Resources.Load<StyleSheet>(StyleSheetPath));
+            Build(label, target, fieldInfo);
+        }
 
-            if (isTitle)
-            {
-                container.AddChild(new AspidTitle(ObjectNames.NicifyVariableName(valueName)));
-            }
+        private void Build(string label, object target, FieldInfo fieldInfo)
+        {
+            var value = fieldInfo.GetValue(target);
             
-            var parameters = BuildFieldsForParameters(valueContainer.GetType(), valueType, valueName);
+            var container = new VisualElement()
+                .SetName("aspid-relay-command-container")
+                .AddChild(new Label(label).SetName("label"));
 
-            var width = new StyleLength(new Length(50, LengthUnit.Percent));
+            if (value is null)
+            {
+                var generatedProperty = target.FindRelayCommandGeneratedProperty(fieldInfo);
+
+                if (generatedProperty is not null)
+                {
+                    var initializeButton = new Button(clickEvent: () =>
+                    {
+                        generatedProperty.GetValue(target);
+                            
+                        Clear();
+                        Build(label, target, fieldInfo);
+                    });
+                    
+                    initializeButton
+                        .SetName("initialize-button")
+                        .SetText("Initialize");
+                    
+                    container.SetFlexDirection(FlexDirection.Row)
+                        .AddChild(initializeButton);
+                }
+                
+                Add(container);
+                return;
+            }
+
+            var parameters = BuildFieldsForParameters(target, fieldInfo);
             container.AddChildren(parameters.Select(parameter => parameter.Item2));
 
             var executeButton = new Button(() =>
             {
                 var arguments = new object[parameters.Count];
-
+                
                 for (var i = 0; i < parameters.Count; i++)
                 {
                     var (parameterType, field) = parameters[i];
                     arguments[i] = GetValueFromField(field, parameterType);
                 }
-
-                var execute = value.GetType().GetMethod("Execute", BindingFlags.Public | BindingFlags.Instance);
-                execute!.Invoke(value, arguments);
-
-                executeCallback?.Invoke();
-            }).SetText("Execute")
-                .SetSize(width)
-                .SetMargin(0, 0, 0, 0);
-
-            var notifyCanExecuteChanged = new Button(() =>
-            {
-                var notifyCanExecuteChanged = value.GetType().GetMethod("NotifyCanExecuteChanged", BindingFlags.Public | BindingFlags.Instance);
-                notifyCanExecuteChanged!.Invoke(value, new object[] { });
                 
-                notifyCanExecuteChangedCallBack?.Invoke();
-            }).SetText("Notify Can Execute Changed")
-                .SetSize(width)
-                .SetMargin(0, 0, 0, 0);
+                value.GetType().GetMethod(name: "Execute", BindingAttr)
+                    ?.Invoke(value, arguments);
+            }).SetText("Execute");
+            
+            var notifyButton = new Button(() =>
+            {
+                value.GetType().GetMethod("NotifyCanExecuteChanged", BindingAttr)
+                    ?.Invoke(value, Array.Empty<object>());
+            }).SetText("Notify Can Execute Changed");
             
             var horizontalContainer = new VisualElement()
-                .SetAlignItems(Align.Center)
-                .SetFlexDirection(FlexDirection.Row);
+                .SetName("aspid-relay-command-horizontal-container")
+                .AddChild(executeButton)
+                .AddChild(notifyButton);
             
-            horizontalContainer.AddChild(executeButton);
-            horizontalContainer.AddChild(notifyCanExecuteChanged);
-            container.AddChild(horizontalContainer);
-            
-            this.AddChild(container);
+            Add(container.AddChild(horizontalContainer));
         }
         
-        private static List<(Type, VisualElement)> BuildFieldsForParameters(Type containerType, Type valueType, string valueName)
+        private static List<(Type, VisualElement)> BuildFieldsForParameters(object target, FieldInfo fieldInfo)
         {
             var parameters = new List<(Type, VisualElement)>();
-            var methods = GetMethods();
-            
-            if (valueType.IsGenericType)
+            var methodParameters = GetMethod()?.GetParameters();
+
+            if (fieldInfo.FieldType.IsGenericType)
             {
-                var parameterTypes = valueType.GenericTypeArguments;
-                    
+                var parameterTypes = fieldInfo.FieldType.GenericTypeArguments;
+                
                 for (var i = 0; i < parameterTypes.Length; i++)
                 {
                     var type = parameterTypes[i];
-                    var field = BuildFieldByParameter(type, GetParameterName(i));
-                    parameters.Add((type, field));
+                    var field = BuildFieldByParameter(GetParameterName(i), type);
+
+                    if (field is not null)
+                        parameters.Add((type, field));
                 }
             }
 
             return parameters;
 
-            string GetParameterName(int index)
-            {
-                return methods.TryGetValue(valueName, out var methodParameters) 
+            string GetParameterName(int index) => methodParameters is not null 
                     ? methodParameters[index].Name 
                     : $"param {index + 1}";
+
+            MethodInfo GetMethod()
+            {
+                var method = target.FindCommandMethodByName(fieldInfo);
+                return method?.GetParameters().Length is 0 ? null : method;
             }
-            
-            Dictionary<string, ParameterInfo[]> GetMethods() => containerType
-                .GetMembersInfosIncludingBaseClasses(BindingAttr)
-                .OfType<MethodInfo>()
-                .Where(method => method.GetParameters().Length > 0)
-                .Where(method => method.IsDefined(typeof(RelayCommandAttribute)))
-                .ToDictionary(method => $"{method.Name}Command", method => method.GetParameters());
         }
         
-        private static VisualElement BuildFieldByParameter(Type type, string paramName)
+        private static VisualElement BuildFieldByParameter(string paramName, Type type)
         {
             if (typeof(int) == type) return new IntegerField(paramName);
             if (typeof(long) == type) return new LongField(paramName);
@@ -130,11 +137,22 @@ namespace Aspid.MVVM
             if (typeof(Vector4) == type) return new Vector4Field(paramName);
             if (typeof(Vector2Int) == type) return new Vector2IntField(paramName);
             if (typeof(Vector3Int) == type) return new Vector3IntField(paramName);
-            if (typeof(Object).IsAssignableFrom(type)) return new ObjectField(paramName);
+            if (typeof(Object).IsAssignableFrom(type)) return new ObjectField(paramName) { objectType = type };
             if (typeof(Gradient).IsAssignableFrom(type)) return new GradientField(paramName);
             if (typeof(AnimationCurve).IsAssignableFrom(type)) return new CurveField(paramName);
+            if (typeof(Enum).IsAssignableFrom(type))
+            {
+                if (type.IsDefined(typeof(FlagsAttribute), inherit: false))
+                    return new EnumFlagsField(paramName, Enum.GetValues(type).GetValue(index: 0) as Enum);
+                
+                return new EnumField(paramName, Enum.GetValues(type).GetValue(index: 0) as Enum);
+            }
 
-            return null;
+            return new TextField(paramName)
+            {
+                isReadOnly = true, 
+                value = $"Unsupported type: {type.Name}"
+            };
         }
             
         private static object GetValueFromField(VisualElement field, Type type)
@@ -158,6 +176,11 @@ namespace Aspid.MVVM
             if (typeof(Object).IsAssignableFrom(type)) return ((ObjectField)field).value;
             if (typeof(Gradient).IsAssignableFrom(type)) return ((GradientField)field).value;
             if (typeof(AnimationCurve).IsAssignableFrom(type)) return ((CurveField)field).value;
+            if (typeof(Enum).IsAssignableFrom(type))
+            {
+                if (field is EnumField fieldAsEnum) return fieldAsEnum.value;
+                return ((EnumFlagsField)field).value;
+            }
 
             return null;
         }

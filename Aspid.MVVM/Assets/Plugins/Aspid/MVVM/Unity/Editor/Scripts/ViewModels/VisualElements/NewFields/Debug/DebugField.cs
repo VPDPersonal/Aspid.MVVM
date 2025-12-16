@@ -16,7 +16,6 @@ namespace Aspid.MVVM
         private readonly string _label;
         private readonly IUpdatableDebugField _updatableField;
         private readonly ISearchableDebugField _searchableField;
-
         
         public DebugField(object obj, MemberInfo memberInfo, bool isAlternativeColor = false)
         {

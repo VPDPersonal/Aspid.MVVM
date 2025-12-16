@@ -1,0 +1,13 @@
+#container
+{
+    margin-top: 5;
+    margin-bottom: 5;
+}
+
+#container > RelayCommandField
+{
+    margin-top: 5;
+    border-radius: 5;
+    padding: 2 5 2 2;
+    background-color: #383838;
+}

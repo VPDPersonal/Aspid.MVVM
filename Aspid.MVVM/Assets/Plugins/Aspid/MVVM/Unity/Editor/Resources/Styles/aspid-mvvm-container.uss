@@ -27,5 +27,5 @@ VisualElement {}
     margin-top: 5px;
     margin-left: -10px;
     border-radius: 10px;
-    background-color: #383838; /*???*/
+    background-color: #383838;
 }

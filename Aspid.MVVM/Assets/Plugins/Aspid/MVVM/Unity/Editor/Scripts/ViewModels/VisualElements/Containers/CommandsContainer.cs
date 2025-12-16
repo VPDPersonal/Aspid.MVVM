@@ -1,5 +1,6 @@
 using System.Linq;
 using UnityEditor;
+using UnityEngine;
 using System.Reflection;
 using Aspid.UnityFastTools;
 using UnityEngine.UIElements;
@@ -7,10 +8,9 @@ using UnityEngine.UIElements;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM
 {
-    // TODO Aspid.MVVM Unity – Refactor
-    // TODO Aspid.MVVM Unity – Write summary
     internal sealed class CommandsContainer : VisualElement
     {
+        private const string StyleSheetPath = "Styles/aspid-command-container";
         private const BindingFlags BindingAttr = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static;
         
         public CommandsContainer(object value)
@@ -26,14 +26,17 @@ namespace Aspid.MVVM
                 return;
             }
             
+            styleSheets.Add(styleSheet: Resources.Load<StyleSheet>(StyleSheetPath));
             var prefsKey = type.Name + "Commands";
             
-            var toggle = new Toggle().SetValue(EditorPrefs.GetBool(prefsKey, true));
-            var container = new VisualElement()
+            var toggle = new Toggle()
+                .SetValue(EditorPrefs.GetBool(prefsKey, true));
+            
+            var container = new VisualElement().SetName("container")
                 .SetDisplay(toggle.value ? DisplayStyle.Flex : DisplayStyle.None);
             
-            var title = new AspidTitle("Commands");
-            title.Q<VisualElement>("TextContainer").AddChild(toggle);
+            var title = new AspidTitle(text: "Commands");
+            title.Q<VisualElement>(name: "TextContainer").AddChild(toggle);
             
             toggle.RegisterValueChangedCallback(e =>
             {
@@ -47,15 +50,11 @@ namespace Aspid.MVVM
             
             this.AddChild(new AspidContainer().SetName("Commands")
                 .AddChild(title)
-                .AddChild(container
-                    .SetMargin(top: 5, bottom: 5)));
-            
-            var i = 0;
+                .AddChild(container));
             
             foreach (var field in fields)
             {
                 var command = new RelayCommandField(field.GetGeneratedPropertyName(), value, field);
-                if (i++ is not 0) command.SetMargin(top: 10);
                 container.AddChild(command);
             }  
         }

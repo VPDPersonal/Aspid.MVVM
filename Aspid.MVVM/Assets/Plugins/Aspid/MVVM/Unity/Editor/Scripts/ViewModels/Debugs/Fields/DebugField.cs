@@ -13,48 +13,34 @@ namespace Aspid.MVVM
 {
     internal sealed class DebugField : VisualElement, IUpdatableDebugField, ISearchableDebugField
     {
+        private const string StyleSheetPath = "Styles/Debug/Fields/aspid-debug-field"; 
+        
         private readonly string _label;
         private readonly IUpdatableDebugField _updatableField;
         private readonly ISearchableDebugField _searchableField;
         
         public DebugField(object obj, MemberInfo memberInfo, bool isAlternativeColor = false)
-        {
-            try
-            {
-                _label = GetLabel(memberInfo);
-                var context = FieldContextFactory.Create(obj, memberInfo, isAlternativeColor);
-
-                var inputField = GetInputField(_label, context);
-                _updatableField = inputField as IUpdatableDebugField;
-                _searchableField = inputField as ISearchableDebugField;
-                Add(Settings(inputField, context));
-            }
-            catch (Exception e)
-            {
-                Clear();
-                Add(new HelpBox(text: e.ToString(), HelpBoxMessageType.Error));
-            }
-            
-            this.SetMargin(top: 2, bottom: 2);
-        }
+            : this(GetLabel(memberInfo), FieldContextFactory.Create(obj, memberInfo, isAlternativeColor)) { }
 
         public DebugField(string label, IFieldContext context)
         {
             try
             {
+                styleSheets.Add(Resources.Load<StyleSheet>(StyleSheetPath));
+                
                 _label = label;
                 var inputField = GetInputField(label, context);
+                
                 _updatableField = inputField as IUpdatableDebugField;
                 _searchableField = inputField as ISearchableDebugField;
-                Add(Settings(inputField, context));
+                
+                Add(Setup(inputField, context));
             }
             catch (Exception e)
             {
                 Clear();
                 Add(new HelpBox(text: e.ToString(), HelpBoxMessageType.Error));
             }
-            
-            this.SetMargin(top: 2, bottom: 2);
         }
         
         public void UpdateValue() =>
@@ -78,7 +64,7 @@ namespace Aspid.MVVM
             
             if (currentMatches)
             {
-                // If query contains dot (e.g. "h." or "h.skill"), we're looking for nested fields
+                // If a query contains a dot (e.g. "h." or "h.skill"), we're looking for nested fields
                 if (hasDotInQuery)
                 {
                     // This field matches, but we need nested fields
@@ -91,12 +77,12 @@ namespace Aspid.MVVM
                         return nestedMatches;
                     }
                     
-                    // Query has dot but this field has no nested fields - hide it
+                    // Query has a dot, but this field has no nested fields - hide it
                     style.display = DisplayStyle.None;
                     return false;
                 }
                 
-                // Simple query without dot - show matching field
+                // Simple query without a dot-show matching field
                 style.display = DisplayStyle.Flex;
                 return true;
             }
@@ -127,21 +113,15 @@ namespace Aspid.MVVM
             return memberInfo.Name;
         }
 
-        private static VisualElement Settings(VisualElement field, IFieldContext context)
+        private static VisualElement Setup(VisualElement field, IFieldContext context)
         {
-            var button = CreateToggleButton();
-            
+            var button = CreateMetaButton();
+
             var metaContainer = new MetaInfoContainer(context, () =>
-                {
-                    field.SetMargin(right: 0);
-                    button.SetDisplay(DisplayStyle.Flex);
-                })
-                .SetBorderRadius(5)
-                .SetPadding(5)
-                .SetBorderWidth(1)
-                .SetBorderColor(Color.gray1)
-                .SetBackgroundColor(Color.gray3)
-                .SetMargin(top: 2, bottom: 5, left: 2, right: 2);
+            {
+                field.SetMargin(right: 0);
+                button.SetDisplay(DisplayStyle.Flex);
+            });
             
             button.clicked += () =>
             {
@@ -150,40 +130,38 @@ namespace Aspid.MVVM
                 metaContainer.SetDisplay(DisplayStyle.Flex);
             };
             
-            var fieldContainer = new VisualElement().SetFlexDirection(FlexDirection.Row);
+            var fieldContainer = new VisualElement()
+                .SetFlexDirection(FlexDirection.Row);
 
+            var marker = new VisualElement();
+            marker.AddToClassList("marker");
+            
             if (context.MemberType.IsRelayCommandType())
             {
-                fieldContainer.AddChild(CreateBindMarker(new Color(1f, 0.45f, 0f, 1f)));
+                marker.AddToClassList("command-marker");
+                fieldContainer.AddChild(marker);
             }
             else if (context is BindFieldContext)
             {
-                fieldContainer.AddChild(CreateBindMarker(new Color(0.05f, 0.55f, 0.37f, 1f)));
+                marker.AddToClassList("bind-marker");
+                fieldContainer.AddChild(marker);
             }
             
             fieldContainer
                 .AddChild(field.SetFlexGrow(1f))
                 .AddChild(button);
-            
-            return new VisualElement()
-                .SetPadding(2)
-                .SetBorderRadius(5)
-                .SetBackgroundColor(context.IsAlternativeColor
-                    ? new Color(0.18f, 0.18f, 0.18f, 1)
-                    : new Color(0.22f, 0.22f, 0.22f, 1))
+
+            var debugFieldContainer = new VisualElement()
+                .SetName("debug-field-container")
                 .AddChild(metaContainer)
                 .AddChild(fieldContainer);
             
-            Button CreateToggleButton() => new Button()
-                .SetText("▲")
-                .SetMargin(left: 6)
-                .SetSize(width: 24, height: 20);
-            
-            VisualElement CreateBindMarker(Color color) => new VisualElement()
-                .SetFlexShrink(0)
-                .SetSize(width: 4)
-                .SetMargin(left: 2, right: 5)
-                .SetBackgroundColor(color);
+            if (context.IsAlternativeColor)
+                debugFieldContainer.AddToClassList("alternative-color");
+
+            return debugFieldContainer;
+
+            Button CreateMetaButton() => new Button().SetName("meta-button").SetText("▲");
         }
         
         private static VisualElement GetInputField(string label, IFieldContext context)

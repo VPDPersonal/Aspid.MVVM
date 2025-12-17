@@ -30,6 +30,7 @@ namespace Aspid.MVVM
         {
             var newValue = _context.GetValue()?.ToString();
             if (EqualityComparer<string>.Default.Equals(Value, newValue)) return;
+            if (string.IsNullOrWhiteSpace(newValue) && string.IsNullOrWhiteSpace(_value)) return;
             
             Clear();
             Build(_label, newValue, _context);

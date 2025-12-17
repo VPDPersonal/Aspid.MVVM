@@ -192,15 +192,22 @@ namespace Aspid.MVVM
             if (typeof(Vector4) == type) return new DebugVector4Field(label, context);
             if (typeof(Vector2Int) == type) return new DebugVector2IntField(label, context);
             if (typeof(Vector3Int) == type) return new DebugVector3IntField(label, context);
-            if (type.IsRelayCommandType()) return new DebugRelayCommandField(label, context);
             if (typeof(Type) == type) return new DebugTypeField(label, context);
             if (typeof(Enum).IsAssignableFrom(type)) return new DebugEnumField(label, context);
             if (typeof(Object).IsAssignableFrom(type)) return new DebugUnityObjectField(label, context);
             if (typeof(Delegate).IsAssignableFrom(type)) return new DebugDelegateField(label, context);
+            if (IsViewModel(type)) return new DebugViewModelField(label, context);
+            if (type.IsRelayCommandType()) return new DebugRelayCommandField(label, context);
             if (typeof(Gradient).IsAssignableFrom(type)) return new DebugGradientField(label, context);
             if (typeof(AnimationCurve).IsAssignableFrom(type)) return new DebugAnimationCurveField(label, context);
             if (IsCollection(type)) return new DebugEnumerableField(label, context);
             return new DebugCompositeField(label, context);
+        }
+
+        private static bool IsViewModel(Type type)
+        {
+            return type.GetInterfaces()
+                .Any(i => i== typeof(IViewModel));
         }
 
         private static bool IsCollection(Type type)
@@ -211,4 +218,5 @@ namespace Aspid.MVVM
                 .Any(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(IReadOnlyCollection<>));
         }
     }
+
 }

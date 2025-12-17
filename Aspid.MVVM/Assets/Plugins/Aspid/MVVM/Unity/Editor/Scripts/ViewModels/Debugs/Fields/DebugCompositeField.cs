@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 using System.Reflection;
 using Aspid.UnityFastTools;
@@ -8,27 +7,27 @@ using System.Collections.Generic;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM
 {
-    internal sealed class DebugCompositeField : VisualElement, IUpdatableDebugField, ISearchableDebugField
+    internal class DebugCompositeField : VisualElement, IUpdatableDebugField, ISearchableDebugField
     {
         private const string StyleSheetPath = "Styles/Debug/Fields/aspid-debug-composite-field";
         
-        private object _value;
         private bool _isExpanded;
-        private bool _isSearchMode;
         private Foldout _foldout;
+        private bool _isSearchMode;
         private VisualElement _content;
         
         private readonly string _label;
-        private readonly IFieldContext _context;
         private readonly List<IUpdatableDebugField> _updatableFields;
         private readonly List<ISearchableDebugField> _searchableFields;
+
+        public object Value { get; private set; }
         
-        public string FieldName => _label;
+        protected IFieldContext Context { get; private set; }
         
         public DebugCompositeField(string label, IFieldContext context)
         {
             _label = label;
-            _context = context;
+            Context = context;
             _updatableFields = new List<IUpdatableDebugField>();
             _searchableFields = new List<ISearchableDebugField>();
             styleSheets.Add(styleSheet: Resources.Load<StyleSheet>(StyleSheetPath));
@@ -38,14 +37,14 @@ namespace Aspid.MVVM
 
         public void UpdateValue()
         {
-            var newValue = _context.GetValue();
+            var newValue = Context.GetValue();
             
-            if (!EqualityComparer<object>.Default.Equals(newValue, _value))
+            if (!EqualityComparer<object>.Default.Equals(newValue, Value))
             {
                 Clear();
                 _updatableFields.Clear();
                 
-                Build(_label, newValue, _context);   
+                Build(_label, newValue, Context);   
             }
             else
             {
@@ -58,7 +57,7 @@ namespace Aspid.MVVM
 
         private void Build(string label, object value, IFieldContext context)
         {
-            _value = value;
+            Value = value;
 
             if (value is null)
             {
@@ -97,19 +96,25 @@ namespace Aspid.MVVM
             this.AddChild(_foldout);
         }
 
-        private void BuildContent(VisualElement content)
+        protected virtual void BuildContent(VisualElement content)
         {
-            var type = _value.GetType();
+            var type = Value.GetType();
             var fields = type.GetFieldInfosIncludingBaseClasses(BindingFlags.Public | BindingFlags.Instance | BindingFlags.NonPublic);
             
             foreach (var fieldInfo in fields)
             {
-                var field = new DebugField(_value, fieldInfo, !_context.IsAlternativeColor);
-                _updatableFields.Add(field);
-                _searchableFields.Add(field);
-                        
-                content.AddChild(field);
+                BuildDebugField(content, fieldInfo);
             }
+        }
+
+        protected void BuildDebugField(VisualElement content, FieldInfo fieldInfo)
+        {
+            var field = new DebugField(Value, fieldInfo, !Context.IsAlternativeColor);
+            
+            _updatableFields.Add(field);
+            _searchableFields.Add(field);
+            
+            content.AddChild(field);
         }
         
         public bool Search(string searchPath)

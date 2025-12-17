@@ -1,0 +1,25 @@
+#search-field
+{
+    margin: 5px 2px;
+}
+
+DebugViewModelTabView
+{
+    height: 25px;
+    flex-direction: row;
+    margin-left: -1;
+    margin-right: -1;
+}
+
+DebugViewModelTabView > Button
+{
+    flex-grow: 1;
+    font-size: 14;
+    -unity-font-style: bold;
+    background-color: #404040;
+}
+
+Button.debug-tab-button-selected
+{
+    background-color: #0D8C5E;
+}

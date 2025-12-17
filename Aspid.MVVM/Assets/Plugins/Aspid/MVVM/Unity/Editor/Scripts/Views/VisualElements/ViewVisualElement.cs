@@ -18,7 +18,6 @@ namespace Aspid.MVVM
     {
         private bool _isInitialized;
         protected readonly TEditor Editor;
-        private List<IUpdatableDebugField> _updatableFields;
         
         protected virtual string IconPath => EditorConstants.AspidIconGreen;
         
@@ -35,7 +34,6 @@ namespace Aspid.MVVM
         public ViewVisualElement(TEditor editor)
         {
             Editor = editor;
-            _updatableFields = new List<IUpdatableDebugField>();
         }
         
         public void Initialize()
@@ -49,16 +47,11 @@ namespace Aspid.MVVM
         public void Update()
         {
             OnUpdate();
-
-            foreach (var update in _updatableFields)
-            {
-                update.UpdateValue();
-            }
             
+            this.Q<DebugViewModelPanel>()?.UpdateValue();
             this.Q<AspidInspectorHeader>().Icon.SetImageFromResource(IconPath);
             
-            // TODO Aspid.MVVM Unity – Rename Name
-            this.Q<VisualElement>("ViewModelDebugPanel").style.display = Editor.TargetAsView?.ViewModel is not null 
+            this.Q<VisualElement>(name: "view-model-debug-panel").style.display = Editor.TargetAsView?.ViewModel is not null 
                 ? DisplayStyle.Flex
                 : DisplayStyle.None;
         }
@@ -102,8 +95,8 @@ namespace Aspid.MVVM
         {
             // TODO Aspid.MVVM Unity – Rename Name
             return new AspidContainer()
-                .SetName("ViewModelDebugPanel")
-                .AddChild(ViewModelDebugPanel.Build(Editor.TargetAsView, out _updatableFields));
+                .SetName("view-model-debug-panel")
+                .AddChild(new DebugViewModelPanel(Editor.TargetAsView));
         }
         #endregion
 

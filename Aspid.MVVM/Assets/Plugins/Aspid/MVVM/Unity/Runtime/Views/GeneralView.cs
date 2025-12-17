@@ -35,7 +35,9 @@ namespace Aspid.MVVM.StarterKit
 #endif
             [SerializeField] private string _name;
             
+#if UNITY_EDITOR
             [RequireBinder(nameof(_assemblyQualifiedName), Id = nameof(_name))]
+#endif
             [SerializeField] private MonoBinder[] _monoBinders;
             
             public void Bind(IViewModel viewModel)

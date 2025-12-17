@@ -42,8 +42,12 @@ namespace Aspid.MVVM
         private void OnEnable()
         {
             OnEnabling();
-            FindProperties();
-            Validate();
+            {
+                FindProperties();
+                Validate();
+
+                EditorApplication.update += Update;
+            }
             OnEnabled();
         }
         
@@ -56,19 +60,21 @@ namespace Aspid.MVVM
         private void OnDisable()
         {
             OnDisabling();
-
-            if (TargetAsMonoBinder && IdProperty is not null && ViewProperty is not null)
             {
-                var view = ViewProperty.objectReferenceValue;
-              
-                if (view&& !string.IsNullOrWhiteSpace(IdProperty.stringValue))
+                EditorApplication.update -= Update;
+
+                if (TargetAsMonoBinder && IdProperty is not null && ViewProperty is not null)
                 {
-                    // TODO Aspid.MVVM – Delete MonoView
-                    if (view is not MonoView monoView) throw new NullReferenceException(nameof(monoView));
-                    ViewAndMonoBinderSyncValidator.ValidateView(monoView);
+                    var view = ViewProperty.objectReferenceValue;
+
+                    if (view && !string.IsNullOrWhiteSpace(IdProperty.stringValue))
+                    {
+                        // TODO Aspid.MVVM – Delete MonoView
+                        if (view is not MonoView monoView) throw new NullReferenceException(nameof(monoView));
+                        ViewAndMonoBinderSyncValidator.ValidateView(monoView);
+                    }
                 }
             }
-            
             OnDisabled();
         }
         
@@ -76,6 +82,8 @@ namespace Aspid.MVVM
         
         protected virtual void OnDisabled() { }
         #endregion
+        
+        protected virtual void Update() => Root?.Update();
 
         protected virtual void FindProperties()
         {

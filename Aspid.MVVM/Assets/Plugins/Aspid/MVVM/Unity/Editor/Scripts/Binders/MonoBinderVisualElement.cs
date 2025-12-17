@@ -1,4 +1,3 @@
-#nullable enable
 using UnityEngine;
 using UnityEditor;
 using System.Linq;
@@ -15,12 +14,15 @@ namespace Aspid.MVVM
     // TODO Aspid.MVVM Unity – Write summary
     public class MonoBinderVisualElement : VisualElement
     {
+        private int _logsSize;
         private bool _isInitialized;
+        private ListView _logsListView;
+        private VisualElement _logsContainer;
         private readonly MonoBinderEditor _editor;
         
-        public DropdownField? IdDropdown { get; private set; }
+        public DropdownField IdDropdown { get; private set; }
         
-        public DropdownField? ViewDropdown { get; private set; }
+        public DropdownField ViewDropdown { get; private set; }
         
         protected virtual IEnumerable<string> PropertiesExcluding
         {
@@ -61,6 +63,8 @@ namespace Aspid.MVVM
         public void Update()
         {
             if (!_isInitialized) return;
+            
+            FillLogList();
             
             // Update Header
             this.Q<HelpBox>().SetDisplay(_editor.HasBinderId ? DisplayStyle.None : DisplayStyle.Flex);
@@ -142,48 +146,79 @@ namespace Aspid.MVVM
 
         protected virtual VisualElement BuildLogsContainer()
         {
-            if (_editor.LogsProperty is null || _editor.IsDebugProperty is null) return new VisualElement();
-
+            if (_editor.LogsProperty is null || _editor.IsDebugProperty is null) 
+                return new VisualElement();
+            
             var isDebugPropertyField = new PropertyField(_editor.IsDebugProperty);
+            isDebugPropertyField.Bind(_editor.serializedObject);
+            
+            var title = new AspidTitle(text: "Logs");
+            title.Q<VisualElement>(name: "TextContainer").AddChild(isDebugPropertyField);
 
-            var title = new AspidTitle("Logs");
-            title.Q<VisualElement>("TextContainer").AddChild(isDebugPropertyField);
-
-            var container = new AspidContainer().SetName("Logs")
+            _logsContainer = new AspidContainer().SetName("Logs")
                 .AddChild(title);
             
             isDebugPropertyField.RegisterValueChangeCallback(e =>
             {
                 if (e.changedProperty.name is not "_isDebug") return;
 
-                var scrollViewIndex = container.IndexOf(container.Q<ScrollView>());
-                if (scrollViewIndex > -1) container.RemoveAt(scrollViewIndex);
-                
-                if (!e.changedProperty.boolValue) return;
-                
-                var logs = new List<string>();
-
-                for (var i = 0; i < _editor.LogsProperty.arraySize; i++)
+                if (_logsListView is not null)
                 {
-                    logs.Add(_editor.LogsProperty.GetArrayElementAtIndex(i).stringValue);
+                    _logsListView?.SetDisplay(e.changedProperty.boolValue ? DisplayStyle.Flex : DisplayStyle.None);
+           
+                    _logsListView.schedule.Execute(() =>
+                    {
+                        _logsListView.ScrollToItem(_logsSize - 1);
+                
+                    }).ExecuteLater(-1);
                 }
-                
-                var list = new ListView(logs)
-                {
-                    makeItem = () => new HelpBox(string.Empty, HelpBoxMessageType.None),
-                    bindItem = (element, index) => ((HelpBox)element).text = logs[index]
-                };
-
-                var height = logs.Count < 6
-                    ? list.style.height
-                    : new StyleLength(110);
-                
-                container.Add(new ScrollView()
-                    .SetSize(height: height)
-                    .AddChild(list));
             });
 
-            return container;
+            return _logsContainer;
+        }
+        
+        private void FillLogList()
+        {
+            if (_logsSize != _editor.LogsProperty.arraySize)
+            {
+                _logsSize = _editor.LogsProperty.arraySize;
+                var logs = new string[_logsSize];
+
+                for (var i = 0; i < logs.Length; i++)
+                {
+                    logs[i] = _editor.LogsProperty.GetArrayElementAtIndex(i).stringValue;
+                }
+
+                if (_logsListView is not null)
+                {
+                    _logsContainer.Remove(_logsListView);
+                }
+                
+                _logsListView = new ListView(logs)
+                {
+                    makeItem = () => new TextField(string.Empty) 
+                    { 
+                        isReadOnly = true 
+                    }
+                    .SetPadding(bottom: 2, right: 4),
+
+                    bindItem = (element, index) => ((TextField)element).value = logs[index],
+                };
+                
+                var height = logs.Length < 6
+                    ? _logsListView.style.height
+                    : new StyleLength(110);
+                
+                _logsContainer
+                    .AddChild(_logsListView
+                        .SetSize(height: height));
+                
+                // Scroll to bottom after layout is ready
+                _logsListView.schedule.Execute(() =>
+                {
+                    _logsListView.ScrollToItem(logs.Length - 1);
+                }).ExecuteLater(-1);
+            }
         }
     }
 }

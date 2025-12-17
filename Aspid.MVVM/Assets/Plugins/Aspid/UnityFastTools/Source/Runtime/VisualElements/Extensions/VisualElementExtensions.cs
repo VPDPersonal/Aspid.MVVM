@@ -34,6 +34,13 @@ namespace Aspid.UnityFastTools
             element.Add(child);
             return element;
         }
+
+        public static T AddChildIfNotNull<T>(this T element, VisualElement child)
+            where T : VisualElement
+        {
+            if (child is not null) element.Add(child);
+            return element;
+        }
         
         public static T AddChildren<T>(this T element, params VisualElement[] children)
             where T : VisualElement

@@ -1,0 +1,52 @@
+MetaInfoContainer > #title
+{
+    margin-top: -7;
+    margin-bottom: 2;
+    margin-right: -9;
+    
+    flex-direction: row;
+}
+
+MetaInfoContainer > VisualElement > Label
+{
+    flex-grow: 1;
+    -unity-text-align: middle-left;
+}
+
+MetaInfoContainer > VisualElement > Button
+{
+    width: 24;
+    height: 20;
+    border-color: #1a1a1a;
+    border-top-right-radius: 5;
+    border-bottom-right-radius: 0;
+}
+
+#bindable-field
+{
+    margin-top: -1;
+    border-width: 1;
+    border-color: #1a1a1a;
+}
+
+#cell
+{
+    margin-top: -1;
+    flex-direction: row;
+}
+
+#cell > Label
+{
+    width: 50%;
+    padding: 2;
+    border-width: 1;
+    overflow: hidden;
+    border-color: #1a1a1a;
+    text-overflow: ellipsis;
+}
+
+#cell > #value
+{
+    flex-grow: 1;
+    margin-left: -1;
+}

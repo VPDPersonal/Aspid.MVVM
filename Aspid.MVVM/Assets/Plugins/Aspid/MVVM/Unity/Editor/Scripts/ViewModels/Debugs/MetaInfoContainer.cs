@@ -41,12 +41,11 @@ namespace Aspid.MVVM
 
         private Button CreateButton(Action closeCallback)
         {
-            return new Button(() => 
-                {
-                    this.SetDisplay(DisplayStyle.None);
-                    closeCallback?.Invoke();
-                })
-                .SetText("▼");
+            return new Button(clickEvent: () => 
+            {
+                this.SetDisplay(DisplayStyle.None);
+                closeCallback?.Invoke();
+            }).SetText("▼");
         }
 
         private static VisualElement CreateIdField(IFieldContext context)

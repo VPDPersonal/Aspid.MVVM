@@ -22,7 +22,7 @@ namespace Aspid.MVVM
 
         public object Value { get; private set; }
         
-        protected IFieldContext Context { get; private set; }
+        protected IFieldContext Context { get; }
         
         public DebugCompositeField(string label, IFieldContext context)
         {
@@ -160,7 +160,7 @@ namespace Aspid.MVVM
             
             _isSearchMode = false;
             
-            // Clear search state in nested fields first
+            // Clear the search state in nested fields first
             foreach (var searchableField in _searchableFields)
             {
                 searchableField.ClearSearch();

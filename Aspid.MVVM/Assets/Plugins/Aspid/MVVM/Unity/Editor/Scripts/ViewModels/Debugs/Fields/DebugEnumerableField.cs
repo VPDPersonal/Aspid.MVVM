@@ -1,10 +1,9 @@
-using System;
+using System.Linq;
 using UnityEngine;
 using System.Collections;
 using Aspid.UnityFastTools;
 using UnityEngine.UIElements;
 using System.Collections.Generic;
-using System.Linq;
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM
@@ -23,8 +22,6 @@ namespace Aspid.MVVM
         private readonly IFieldContext _context;
         private readonly List<IUpdatableDebugField> _updatableFields;
         private readonly List<ISearchableDebugField> _searchableFields;
-        
-        public string FieldName => _label;
         
         public DebugEnumerableField(string label, IFieldContext context)
         {

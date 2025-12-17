@@ -218,5 +218,4 @@ namespace Aspid.MVVM
                 .Any(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(IReadOnlyCollection<>));
         }
     }
-
 }

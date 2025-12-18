@@ -105,7 +105,9 @@ namespace Aspid.MVVM
             var tabView = new DebugViewModelTabView(prefsKeyPrefix, bindFieldsContainer, otherFieldsContainer, commandFieldsContainer);
             
             var searchField = new TextField(label: "Search").SetName("search-field");
+#if UNITY_6000_0_OR_NEWER
             searchField.textEdition.placeholder = "Search fields... (e.g. hero.points)";
+#endif
             
             searchField.RegisterValueChangedCallback(e =>
             {

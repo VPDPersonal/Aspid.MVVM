@@ -23,7 +23,9 @@ namespace Aspid.MVVM
         /// <param name="arguments">Additional arguments that can be passed to the constructor of the <see cref="IBinder"/> type.</param>
         public AsBinderAttribute(Type type, params object[] arguments)
         {
+#if UNITY_EDITOR || DEBUG
             Type = type;
+#endif
         }
     }
 }

@@ -21,7 +21,9 @@ namespace Aspid.MVVM
 
         public BindAlsoAttribute(string propertyName)
         {
+#if UNITY_EDITOR || DEBUG
             PropertyName = propertyName;
+#endif
         }
     }
 }

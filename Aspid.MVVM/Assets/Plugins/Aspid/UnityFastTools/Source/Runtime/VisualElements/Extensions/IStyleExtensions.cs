@@ -566,12 +566,14 @@ namespace Aspid.UnityFastTools
             return style;
         }
         
+#if UNITY_6000_0_OR_NEWER
         public static T SetUnitySliceType<T>(this T style, StyleEnum<SliceType> value)
             where T : IStyle
         {
             style.unitySliceType = value;
             return style;
         }
+#endif
         #endregion
         
         #region Visibility

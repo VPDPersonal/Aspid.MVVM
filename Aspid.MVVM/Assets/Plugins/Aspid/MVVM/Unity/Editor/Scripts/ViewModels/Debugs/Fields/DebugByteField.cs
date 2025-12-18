@@ -1,4 +1,3 @@
-using UnityEngine;
 using UnityEngine.UIElements;
 using System.Collections.Generic;
 
@@ -14,22 +13,12 @@ namespace Aspid.MVVM
         {
             _context = context;
             
-            var min = byte.MinValue;
-            var max = byte.MaxValue;
+            double min = byte.MinValue;
+            double max = byte.MaxValue;
+
+            NumberRestrictions.CalculateMinAndMax(context, ref min, ref max);
             
-            if (context.IsDefined(typeof(MinAttribute)))
-            {
-                var minAttribute = context.GetCustomAttribute<MinAttribute>();
-                min = (byte)Mathf.Min(Mathf.Max(min, minAttribute.min), max);
-            }
-            if (context.IsDefined(typeof(RangeAttribute)))
-            {
-                var rangeAttribute = context.GetCustomAttribute<RangeAttribute>();
-                max = (byte)Mathf.Min(max, rangeAttribute.max);
-                min = (byte)Mathf.Min(Mathf.Max(min, rangeAttribute.min), max);
-            }
-            
-            _slider = new AspidSliderInt(label, min, max);
+            _slider = new AspidSliderInt(label, (byte)min, (byte)max);
             _slider.SetValueWithoutNotify((byte)context.GetValue());
             _slider.RegisterValueChangedCallback(e => context.SetValue((byte)e.newValue));
             

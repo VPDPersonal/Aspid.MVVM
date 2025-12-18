@@ -1,4 +1,3 @@
-using UnityEngine;
 using UnityEngine.UIElements;
 using System.Collections.Generic;
 
@@ -20,36 +19,28 @@ namespace Aspid.MVVM
             var value = (double)context.GetValue();
             
             SetEnabled(!context.IsReadonly);
-            
-            if (context.IsDefined(typeof(MinAttribute)))
+
+            if (NumberRestrictions.CalculateMinAndMax(context, ref min, ref max))
             {
-                var minAttribute = context.GetCustomAttribute<MinAttribute>();
-                min = Mathf.Min(Mathf.Max((float)min, minAttribute.min), (float)max);
-            }
-            if (context.IsDefined(typeof(RangeAttribute)))
-            {
-                var rangeAttribute = context.GetCustomAttribute<RangeAttribute>();
-                max = Mathf.Min((float)max, rangeAttribute.max);
-                min = Mathf.Min(Mathf.Max((float)min, rangeAttribute.min), (float)max);
-                
                 _slider = new AspidSlider(label, (float)min, (float)max);
                 _slider.SetValueWithoutNotify((float)value);
                 _slider.RegisterValueChangedCallback(e => context.SetValue((double)e.newValue));
                 
                 Add(_slider);
-                return;
             }
-
-            _field = new DoubleField(label);
-            _field.SetValueWithoutNotify(value);
-            _field.RegisterValueChangedCallback(e =>
+            else
             {
-                if (e.newValue < min) _field.value = min;
-                else if (e.newValue > max) _field.value = max;
-                else context.SetValue(e.newValue);
-            });
+                _field = new DoubleField(label);
+                _field.SetValueWithoutNotify(value);
+                _field.RegisterValueChangedCallback(e =>
+                {
+                    if (e.newValue < min) _field.value = min;
+                    else if (e.newValue > max) _field.value = max;
+                    else context.SetValue(e.newValue);
+                });
             
-            Add(_field);
+                Add(_field);
+            }
         }
         
         public void UpdateValue()

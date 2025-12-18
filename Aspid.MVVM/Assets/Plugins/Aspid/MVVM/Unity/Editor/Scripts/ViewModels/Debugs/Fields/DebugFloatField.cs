@@ -1,4 +1,3 @@
-using UnityEngine;
 using UnityEngine.UIElements;
 using System.Collections.Generic;
 
@@ -15,41 +14,33 @@ namespace Aspid.MVVM
         {
             _context = context;
             
-            var min = float.MinValue;
-            var max = float.MaxValue;
+            double min = float.MinValue;
+            double max = float.MaxValue;
             var value = (float)context.GetValue();
             
             SetEnabled(!context.IsReadonly);
-            
-            if (context.IsDefined(typeof(MinAttribute)))
-            {
-                var minAttribute = context.GetCustomAttribute<MinAttribute>();
-                min = Mathf.Min(Mathf.Max(min, minAttribute.min), max);
-            }
-            if (context.IsDefined(typeof(RangeAttribute)))
-            {
-                var rangeAttribute = context.GetCustomAttribute<RangeAttribute>();
-                max = Mathf.Min(max, rangeAttribute.max);
-                min = Mathf.Min(Mathf.Max(min, rangeAttribute.min), max);
 
-                _slider = new AspidSlider(label, min, max);
+            if (NumberRestrictions.CalculateMinAndMax(context, ref min, ref max))
+            {
+                _slider = new AspidSlider(label, (float)min, (float)max);
                 _slider.SetValueWithoutNotify(value);
                 _slider.RegisterValueChangedCallback(e => context.SetValue(e.newValue));
                 
                 Add(_slider);
-                return;
             }
-
-            _field = new FloatField(label);
-            _field.SetValueWithoutNotify(value);
-            _field.RegisterValueChangedCallback(e =>
+            else
             {
-                if (e.newValue < min) _field.value = min;
-                else if (e.newValue > max) _field.value = max;
-                else context.SetValue(e.newValue);
-            });
+                _field = new FloatField(label);
+                _field.SetValueWithoutNotify(value);
+                _field.RegisterValueChangedCallback(e =>
+                {
+                    if (e.newValue < min) _field.value = (float)min;
+                    else if (e.newValue > max) _field.value = (float)max;
+                    else context.SetValue(e.newValue);
+                });
 
-            Add(_field);
+                Add(_field);
+            }
         }
         
         public void UpdateValue()

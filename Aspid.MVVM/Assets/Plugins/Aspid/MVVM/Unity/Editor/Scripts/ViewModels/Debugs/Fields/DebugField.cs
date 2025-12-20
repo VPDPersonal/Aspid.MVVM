@@ -141,7 +141,7 @@ namespace Aspid.MVVM
                 marker.AddToClassList("command-marker");
                 fieldContainer.AddChild(marker);
             }
-            else if (context is BindFieldContext)
+            else if (context is BindFieldContext or BindPropertyContext)
             {
                 marker.AddToClassList("bind-marker");
                 fieldContainer.AddChild(marker);

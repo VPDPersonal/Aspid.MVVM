@@ -1,3 +1,4 @@
+using System.Linq;
 using UnityEditor;
 using UnityEngine;
 using System.Reflection;
@@ -74,6 +75,19 @@ namespace Aspid.MVVM
             var otherFieldsContainer = new VisualElement().SetName("OtherFields");
             var commandFieldsContainer = new VisualElement().SetName("CommandFields");
             
+            // Collect backing fields from bind properties to hide them
+            var backingFieldNames = new HashSet<string>();
+            var bindProperties = viewModelType
+                .GetPropertyInfosIncludingBaseClasses(BindingAttr, viewModelBaseType)
+                .Where(p => p.IsDefined(typeof(BaseBindAttribute)))
+                .ToArray();
+            
+            foreach (var property in bindProperties)
+            {
+                if (NameHelper.TryGetBackingFieldName(property, viewModelType, out var backingFieldName))
+                    backingFieldNames.Add(backingFieldName);
+            }
+            
             foreach (var field in viewModelType.GetFieldInfosIncludingBaseClasses(BindingAttr, viewModelBaseType))
             {
                 if (field.FieldType.IsRelayCommandType())
@@ -92,7 +106,7 @@ namespace Aspid.MVVM
                     
                     bindFieldsContainer.AddChild(debugField);
                 }
-                else if (!field.IsDefined(typeof(GeneratedCodeAttribute)))
+                else if (!field.IsDefined(typeof(GeneratedCodeAttribute)) && !backingFieldNames.Contains(field.Name))
                 {
                     var debugField = new DebugField(viewModel, field);
                     _updatableFields.Add(debugField);
@@ -100,6 +114,15 @@ namespace Aspid.MVVM
                     
                     otherFieldsContainer.AddChild(debugField);
                 }
+            }
+            
+            foreach (var property in bindProperties)
+            {
+                var debugField = new DebugField(viewModel, property);
+                _updatableFields.Add(debugField);
+                bindSearchableFields.Add(debugField);
+                
+                bindFieldsContainer.AddChild(debugField);
             }
             
             var tabView = new DebugViewModelTabView(prefsKeyPrefix, bindFieldsContainer, otherFieldsContainer, commandFieldsContainer);

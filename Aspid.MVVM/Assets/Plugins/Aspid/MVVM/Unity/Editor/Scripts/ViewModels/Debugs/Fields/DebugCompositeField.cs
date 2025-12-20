@@ -107,9 +107,9 @@ namespace Aspid.MVVM
             }
         }
 
-        protected void BuildDebugField(VisualElement content, FieldInfo fieldInfo)
+        protected void BuildDebugField(VisualElement content, MemberInfo memberInfo)
         {
-            var field = new DebugField(Value, fieldInfo, !Context.IsAlternativeColor);
+            var field = new DebugField(Value, memberInfo, !Context.IsAlternativeColor);
             
             _updatableFields.Add(field);
             _searchableFields.Add(field);

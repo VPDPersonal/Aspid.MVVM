@@ -1,3 +1,5 @@
+using System;
+using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 
@@ -7,6 +9,8 @@ namespace Aspid.MVVM
     // TODO Aspid.MVVM Unity – Write summary
     public static class NameHelper
     {
+        private const BindingFlags BackingFieldBindingFlags = BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public;
+        
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static string GetGeneratedPropertyName(this FieldInfo field)
             => GetGeneratedPropertyName(field.Name);
@@ -43,6 +47,52 @@ namespace Aspid.MVVM
         {
             if (name.StartsWith("__") || name.StartsWith("m_")) return 2;
             return name.StartsWith("_") ? 1 : 0;
+        }
+        
+        /// <summary>
+        /// Tries to find a backing field name for a property.
+        /// Checks for auto-property backing field and common naming conventions.
+        /// </summary>
+        /// <param name="property">The property to find a backing field for.</param>
+        /// <param name="declaringType">The type that declares the property.</param>
+        /// <param name="backingFieldName">The name of the backing field if found.</param>
+        /// <returns>True if the backing field was found, false otherwise.</returns>
+        public static bool TryGetBackingFieldName(PropertyInfo property, Type declaringType, out string backingFieldName)
+        {
+            backingFieldName = null;
+            if (property is null || declaringType is null) return false;
+
+            var propertyName = property.Name;
+            var fields = declaringType.GetFieldInfosIncludingBaseClasses(BackingFieldBindingFlags).ToArray();
+            
+            // Check for the auto-property backing field: <PropertyName>k__BackingField
+            var autoBackingFieldName = $"<{propertyName}>k__BackingField";
+            if (fields.Any(f => f.Name == autoBackingFieldName))
+            {
+                backingFieldName = autoBackingFieldName;
+                return true;
+            }
+            
+            // Check common naming conventions
+            var lowerFirstChar = char.ToLower(propertyName[0]) + propertyName[1..];
+            var possibleNames = new[]
+            {
+                $"_{lowerFirstChar}",       // _propertyName
+                $"_{propertyName}",         // _PropertyName
+                lowerFirstChar,             // propertyName
+                $"m_{lowerFirstChar}",      // m_propertyName
+            };
+
+            foreach (var possibleName in possibleNames)
+            {
+                if (fields.Any(field => field.Name == possibleName))
+                {
+                    backingFieldName = possibleName;
+                    return true;
+                }
+            }
+
+            return false;
         }
     }
 }

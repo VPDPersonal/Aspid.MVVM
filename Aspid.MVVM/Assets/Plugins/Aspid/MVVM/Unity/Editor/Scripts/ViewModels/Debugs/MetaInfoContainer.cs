@@ -75,6 +75,9 @@ namespace Aspid.MVVM
                     : $"{method.Name}Command");
             }
             
+            if (memberInfo is PropertyInfo propertyInfo && propertyInfo.IsDefined(typeof(BaseBindAttribute)))
+                return CreateCells(label, propertyInfo.Name);
+            
             if (memberInfo is MethodInfo methodInfo && methodInfo.IsDefined(typeof(RelayCommand))) 
                 return CreateCells(label, methodInfo.Name + "Command");
 
@@ -114,6 +117,15 @@ namespace Aspid.MVVM
                     var fieldNameWithoutPrefix = fieldInfo.RemovePrefix();
                     var firstChar = char.ToLower(fieldNameWithoutPrefix[0]);
                     bindableName = $"__{firstChar + fieldNameWithoutPrefix[1..]}Bindable";
+                }
+            }
+            else if (memberInfo is PropertyInfo propertyInfo)
+            {
+                if (propertyInfo.IsDefined(typeof(BaseBindAttribute)))
+                {
+                    var propertyName = propertyInfo.Name;
+                    var firstChar = char.ToLower(propertyName[0]);
+                    bindableName = $"__{firstChar + propertyName[1..]}Bindable";
                 }
             }
             

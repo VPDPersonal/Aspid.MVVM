@@ -148,7 +148,7 @@ namespace Aspid.MVVM
             
             var searchField = new TextField(label: "Search").SetName("search-field");
 #if UNITY_6000_0_OR_NEWER
-            searchField.textEdition.placeholder = "Search fields... (e.g. hero.points)";
+            searchField.textEdition.placeholder = "Search fields... (e.g. hero.points, t:int, _todos.0. t:string)";
 #endif
             
             searchField.RegisterValueChangedCallback(e =>
@@ -189,22 +189,25 @@ namespace Aspid.MVVM
                 return;
             }
             
+            // Parse the search query to extract name and type filter
+            ParseSearchQuery(searchQuery, out var nameQuery, out var typeFilter);
+            
             if (tabView.IsBindSelected)
-                SearchInList(bindFields);
+                SearchInList(bindFields, nameQuery, typeFilter);
             
             if (tabView.IsOtherSelected)
-                SearchInList(otherFields);
+                SearchInList(otherFields, nameQuery, typeFilter);
             
             if (tabView.IsCommandsSelected)
-                SearchInList(commandsFields);
+                SearchInList(commandsFields, nameQuery, typeFilter);
             
             return;
             
-            void SearchInList(IReadOnlyCollection<ISearchableDebugField> fields)
+            void SearchInList(IReadOnlyCollection<ISearchableDebugField> fields, string name, string type)
             {
                 foreach (var field in fields)
                 {
-                    field.Search(searchQuery);
+                    field.Search(name, type);
                 }
             }
             
@@ -215,6 +218,83 @@ namespace Aspid.MVVM
                     field.ClearSearch();
                 }
             }
+        }
+        
+        /// <summary>
+        /// Parses search query to extract name and type filter.
+        /// Supports formats like:
+        /// - "t: string" or "T: string" or "t:string" or "T:string"
+        /// - "name t: string" or "t: string name"
+        /// - "hero.points t: int"
+        /// </summary>
+        private static void ParseSearchQuery(string query, out string nameQuery, out string typeFilter)
+        {
+            nameQuery = string.Empty;
+            typeFilter = null;
+            
+            if (string.IsNullOrWhiteSpace(query))
+                return;
+            
+            // Pattern to match "t:" or "T:" (with optional space after colon)
+            var typeMarkerIndex = -1;
+            var typeMarkerLength = 0;
+            
+            for (var i = 0; i < query.Length - 1; i++)
+            {
+                if ((query[i] == 't' || query[i] == 'T') && query[i + 1] == ':')
+                {
+                    typeMarkerIndex = i;
+                    typeMarkerLength = 2;
+                    
+                    // Check if there's a space after colon
+                    if (i + 2 < query.Length && query[i + 2] == ' ')
+                    {
+                        typeMarkerLength = 3;
+                    }
+                    break;
+                }
+            }
+            
+            if (typeMarkerIndex == -1)
+            {
+                // No type filter found
+                nameQuery = query;
+                return;
+            }
+            
+            // Extract parts before and after type marker
+            var beforeType = query.Substring(0, typeMarkerIndex).Trim();
+            var afterTypeStart = typeMarkerIndex + typeMarkerLength;
+            var afterType = afterTypeStart < query.Length ? query.Substring(afterTypeStart).Trim() : string.Empty;
+            
+            // Determine which part is the type and which is the name
+            // The part immediately after "t:" is the type
+            var typePart = string.Empty;
+            var namePart = beforeType;
+            
+            if (!string.IsNullOrEmpty(afterType))
+            {
+                // Find where the type ends (at next space or end of string)
+                var spaceIndex = afterType.IndexOf(' ');
+                if (spaceIndex > 0)
+                {
+                    typePart = afterType.Substring(0, spaceIndex).Trim();
+                    var remainingAfterType = afterType.Substring(spaceIndex).Trim();
+                    
+                    // Combine name parts
+                    if (!string.IsNullOrEmpty(namePart) && !string.IsNullOrEmpty(remainingAfterType))
+                        namePart = namePart + " " + remainingAfterType;
+                    else if (!string.IsNullOrEmpty(remainingAfterType))
+                        namePart = remainingAfterType;
+                }
+                else
+                {
+                    typePart = afterType;
+                }
+            }
+            
+            nameQuery = namePart;
+            typeFilter = string.IsNullOrEmpty(typePart) ? null : typePart;
         }
     }
 }

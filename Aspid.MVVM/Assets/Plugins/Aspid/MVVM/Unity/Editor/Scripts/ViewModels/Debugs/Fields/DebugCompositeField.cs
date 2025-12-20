@@ -135,7 +135,7 @@ namespace Aspid.MVVM
             content.AddChild(field);
         }
         
-        public bool Search(string searchPath)
+        public bool Search(string searchPath, string typeFilter = null)
         {
             _isSearchMode = true;
             
@@ -149,9 +149,24 @@ namespace Aspid.MVVM
                 BuildContent(_content);
             }
             
-            // If searchPath is empty, show all nested fields (e.g., from "h." query)
+            // If searchPath is empty, search all nested fields with type filter if provided
             if (string.IsNullOrEmpty(searchPath))
             {
+                if (!string.IsNullOrEmpty(typeFilter))
+                {
+                    // Type-only search: search all nested fields with the type filter
+                    var anyMatch = false;
+                    foreach (var searchableField in _searchableFields)
+                    {
+                        if (searchableField.Search(string.Empty, typeFilter))
+                        {
+                            anyMatch = true;
+                        }
+                    }
+                    return anyMatch;
+                }
+                
+                // No filter - show all nested fields
                 foreach (var searchableField in _searchableFields)
                 {
                     searchableField.ClearSearch();
@@ -159,17 +174,17 @@ namespace Aspid.MVVM
                 return true;
             }
             
-            // Search in all nested fields
-            var anyMatch = false;
+            // Search in all nested fields with both name and type filter
+            var anyMatch2 = false;
             foreach (var searchableField in _searchableFields)
             {
-                if (searchableField.Search(searchPath))
+                if (searchableField.Search(searchPath, typeFilter))
                 {
-                    anyMatch = true;
+                    anyMatch2 = true;
                 }
             }
             
-            return anyMatch;
+            return anyMatch2;
         }
         
         public void ClearSearch()

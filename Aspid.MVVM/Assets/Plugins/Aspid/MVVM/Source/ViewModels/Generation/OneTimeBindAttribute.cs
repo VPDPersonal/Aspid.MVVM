@@ -1,5 +1,3 @@
-using System;
-
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM
 {
@@ -8,6 +6,5 @@ namespace Aspid.MVVM
     /// Used by the Source Generator to generate a property based on the marked field.
     /// This attribute enforces <see cref="BindMode.OneTime"/> binding mode.
     /// </summary>
-    [AttributeUsage(AttributeTargets.Field)]
     public sealed class OneTimeBindAttribute : BaseBindAttribute { }
 }

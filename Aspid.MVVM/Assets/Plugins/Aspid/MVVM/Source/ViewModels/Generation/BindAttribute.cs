@@ -1,5 +1,3 @@
-using System;
-
 // ReSharper disable once CheckNamespace
 // ReSharper disable UnusedParameter.Local
 namespace Aspid.MVVM
@@ -13,7 +11,6 @@ namespace Aspid.MVVM
     /// <see cref="BindMode.OneWay"/> will both function as <see cref="BindMode.OneTime"/>. All other modes for 
     /// <c>readonly</c> fields will not be supported.
     /// </summary>
-    [AttributeUsage(AttributeTargets.Field)]
     public sealed class BindAttribute : BaseBindAttribute
     {
         /// <summary>

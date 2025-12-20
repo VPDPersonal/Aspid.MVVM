@@ -11,7 +11,7 @@ namespace Aspid.MVVM
     /// or <see cref="TwoWayBindAttribute"/> or <see cref="OneWayToSourceBindAttribute"/>
     /// must also be present.
     /// </summary>
-    [AttributeUsage(AttributeTargets.Field, AllowMultiple = true)]
+    [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property, AllowMultiple = true)]
     public sealed class BindAlsoAttribute : Attribute
     {
 #if UNITY_EDITOR || DEBUG

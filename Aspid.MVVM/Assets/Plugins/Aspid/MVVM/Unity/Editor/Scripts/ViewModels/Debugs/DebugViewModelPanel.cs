@@ -1,4 +1,3 @@
-using System.Linq;
 using UnityEditor;
 using UnityEngine;
 using System.Reflection;
@@ -77,15 +76,26 @@ namespace Aspid.MVVM
             
             // Collect backing fields from bind properties to hide them
             var backingFieldNames = new HashSet<string>();
-            var bindProperties = viewModelType
-                .GetPropertyInfosIncludingBaseClasses(BindingAttr, viewModelBaseType)
-                .Where(p => p.IsDefined(typeof(BaseBindAttribute)))
-                .ToArray();
             
-            foreach (var property in bindProperties)
+            var bindProperties = new List<PropertyInfo>();
+            var autoProperties = new List<PropertyInfo>();
+
+            foreach (var property in viewModelType.GetPropertyInfosIncludingBaseClasses(BindingAttr, viewModelBaseType))
             {
-                if (NameHelper.TryGetBackingFieldName(property, viewModelType, out var backingFieldName))
+                if (property.IsDefined(typeof(BaseBindAttribute)))
+                {
+                    bindProperties.Add(property);
+                    
+                    if (NameHelper.TryGetBackingFieldName(property, viewModelType, out var backingFieldName))
+                        backingFieldNames.Add(backingFieldName);
+                }
+                else if (NameHelper.IsAutoProperty(property, viewModelType))
+                {
+                    autoProperties.Add(property);
+                    
+                    var backingFieldName = NameHelper.GetAutoPropertyBackingFieldName(property.Name);
                     backingFieldNames.Add(backingFieldName);
+                }
             }
             
             foreach (var field in viewModelType.GetFieldInfosIncludingBaseClasses(BindingAttr, viewModelBaseType))
@@ -123,6 +133,15 @@ namespace Aspid.MVVM
                 bindSearchableFields.Add(debugField);
                 
                 bindFieldsContainer.AddChild(debugField);
+            }
+            
+            foreach (var property in autoProperties)
+            {
+                var debugField = new DebugField(viewModel, property);
+                _updatableFields.Add(debugField);
+                otherSearchableFields.Add(debugField);
+                
+                otherFieldsContainer.AddChild(debugField);
             }
             
             var tabView = new DebugViewModelTabView(prefsKeyPrefix, bindFieldsContainer, otherFieldsContainer, commandFieldsContainer);

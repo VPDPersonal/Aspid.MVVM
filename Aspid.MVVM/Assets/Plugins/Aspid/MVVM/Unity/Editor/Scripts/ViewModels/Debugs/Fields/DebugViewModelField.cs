@@ -19,17 +19,27 @@ namespace Aspid.MVVM
             var type = Value.GetType();
             var fields = type.GetFieldInfosIncludingBaseClasses(BindingAttr).ToArray();
             
-            // Collect backing fields from bind properties to hide them
             var backingFieldNames = new HashSet<string>();
-            var bindProperties = type
-                .GetPropertyInfosIncludingBaseClasses(BindingAttr)
-                .Where(p => p.IsDefined(typeof(BaseBindAttribute)))
-                .ToArray();
             
-            foreach (var property in bindProperties)
+            var bindProperties = new List<PropertyInfo>();
+            var autoProperties = new List<PropertyInfo>();
+            
+            foreach (var property in type.GetPropertyInfosIncludingBaseClasses(BindingAttr, type))
             {
-                if (NameHelper.TryGetBackingFieldName(property, type, out var backingFieldName))
+                if (property.IsDefined(typeof(BaseBindAttribute)))
+                {
+                    bindProperties.Add(property);
+                    
+                    if (NameHelper.TryGetBackingFieldName(property, type, out var backingFieldName))
+                        backingFieldNames.Add(backingFieldName);
+                }
+                else if (NameHelper.IsAutoProperty(property, type))
+                {
+                    autoProperties.Add(property);
+                    
+                    var backingFieldName = NameHelper.GetAutoPropertyBackingFieldName(property.Name);
                     backingFieldNames.Add(backingFieldName);
+                }
             }
          
             var fieldsByGroup = new[]
@@ -55,11 +65,11 @@ namespace Aspid.MVVM
                 }
             }
             
-            // Add bind properties to group 0
             foreach (var property in bindProperties)
-            {
                 fieldsByGroup[0].Add(property);
-            }
+            
+            foreach (var property in autoProperties)
+                fieldsByGroup[2].Add(property);
 
             foreach (var group in fieldsByGroup)
             {

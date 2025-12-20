@@ -94,5 +94,31 @@ namespace Aspid.MVVM
 
             return false;
         }
+        
+        /// <summary>
+        /// Checks if a property is an auto-property (has compiler-generated backing field).
+        /// </summary>
+        /// <param name="property">The property to check.</param>
+        /// <param name="declaringType">The type that declares the property.</param>
+        /// <returns>True if the property is an auto-property, false otherwise.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static bool IsAutoProperty(PropertyInfo property, Type declaringType)
+        {
+            if (property is null || declaringType is null) return false;
+            
+            var autoBackingFieldName = GetAutoPropertyBackingFieldName(property.Name);
+            var fields = declaringType.GetFieldInfosIncludingBaseClasses(BackingFieldBindingFlags);
+            
+            return fields.Any(f => f.Name == autoBackingFieldName);
+        }
+        
+        /// <summary>
+        /// Gets the auto-property backing field name.
+        /// </summary>
+        /// <param name="propertyName">The property name.</param>
+        /// <returns>The backing field name in format &lt;PropertyName&gt;k__BackingField.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static string GetAutoPropertyBackingFieldName(string propertyName) =>
+            $"<{propertyName}>k__BackingField";
     }
 }

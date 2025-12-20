@@ -101,10 +101,28 @@ namespace Aspid.MVVM
             var type = Value.GetType();
             var fields = type.GetFieldInfosIncludingBaseClasses(BindingFlags.Public | BindingFlags.Instance | BindingFlags.NonPublic);
             
+            var backingFieldNames = new HashSet<string>();
+            var autoProperties = new List<PropertyInfo>();
+            
+            foreach (var property in type.GetPropertyInfosIncludingBaseClasses(BindingFlags.Public | BindingFlags.Instance | BindingFlags.NonPublic, type))
+            {
+                if (NameHelper.IsAutoProperty(property, type))
+                {
+                    autoProperties.Add(property);
+                    
+                    var backingFieldName = NameHelper.GetAutoPropertyBackingFieldName(property.Name);
+                    backingFieldNames.Add(backingFieldName);
+                }
+            }
+            
             foreach (var fieldInfo in fields)
             {
+                if (backingFieldNames.Contains(fieldInfo.Name)) continue;
                 BuildDebugField(content, fieldInfo);
             }
+            
+            foreach (var property in autoProperties)
+                BuildDebugField(content, property);
         }
 
         protected void BuildDebugField(VisualElement content, MemberInfo memberInfo)

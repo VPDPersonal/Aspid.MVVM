@@ -1,8 +1,8 @@
 using Microsoft.CodeAnalysis;
 using System.Collections.Generic;
 using System.Collections.Immutable;
-using Aspid.MVVM.Generators.Generators.ViewModels.Data.Infos;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Aspid.MVVM.Generators.Generators.ViewModels.Data.Infos;
 using Aspid.MVVM.Generators.Generators.ViewModels.Data.Members;
 using Aspid.MVVM.Generators.Generators.ViewModels.Data.Members.Collections;
 
@@ -24,5 +24,6 @@ public readonly struct ViewModelData(
 
     public readonly ImmutableArray<IBindableMemberInfo> Members = members;
     public readonly ImmutableArray<IdLengthMemberGroup> IdGroups = idGroups;
+    
     public readonly Dictionary<string, CustomViewModelInterface> CustomViewModelInterfaces = customViewModelInterfaces;
 }

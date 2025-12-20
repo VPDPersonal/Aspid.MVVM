@@ -5,6 +5,7 @@ using Aspid.MVVM.Generators.Generators.ViewModels.Extensions;
 using static Aspid.Generators.Helper.Classes;
 using static Aspid.MVVM.Generators.Generators.Descriptions.General;
 using static Aspid.MVVM.Generators.Generators.Descriptions.Classes;
+using SymbolExtensions = Aspid.MVVM.Generators.Helpers.SymbolExtensions;
 
 namespace Aspid.MVVM.Generators.Generators.ViewModels.Data.Infos;
 
@@ -15,17 +16,20 @@ public readonly struct GeneratedBindableMembers
     public readonly string Declaration;
     public readonly string PropertyName;
     public readonly string PropertyType;
+    public readonly string? OnPropertyChangedName;
 
     private GeneratedBindableMembers(
         string? invoke, 
         string declaration,
         string propertyName,
-        string propertyType)
+        string propertyType,
+        string? onPropertyChangedName)
     {
         Invoke = invoke;
         Declaration = declaration;
         PropertyName = propertyName;
         PropertyType = propertyType;
+        OnPropertyChangedName = onPropertyChangedName;
     }
 
     public static GeneratedBindableMembers CreateForRelayCommand(
@@ -40,7 +44,7 @@ public readonly struct GeneratedBindableMembers
 
         var declaration = RecognizeDeclaration(mode, memberName, null, fieldType, propertyName, propertyType);
         
-        return new GeneratedBindableMembers(null, declaration, propertyName, propertyType);
+        return new GeneratedBindableMembers(null, declaration, propertyName, propertyType, null);
     }
     
     public static GeneratedBindableMembers CreateForField(IFieldSymbol fieldSymbol)
@@ -57,9 +61,36 @@ public readonly struct GeneratedBindableMembers
         var propertyType = RecognizePropertyType(fieldSymbol.Type, mode);
 
         var invoke = RecognizeInvoke(mode, memberName, fieldName);
+        var declaration = RecognizeDeclaration(mode, memberName, fieldName, fieldType, propertyName, propertyType, $"Set{SymbolExtensions.GetPropertyName(memberName)}");
+
+        var onPropertyChangedName = mode is not BindMode.OneTime and not BindMode.OneWayToSource and not BindMode.None
+            ? $"On{fieldSymbol.GetPropertyName()}PropertyChanged"
+            : null;
+        
+        return new GeneratedBindableMembers(invoke, declaration, propertyName, propertyType, onPropertyChangedName);
+    }
+    
+    public static GeneratedBindableMembers CreateForProperty(IPropertySymbol propertySymbol)
+    {
+        var mode = propertySymbol.GetBindMode();
+        var memberName = propertySymbol.Name;
+        
+        // PropertyName -> __propertyNameBindable
+        var fieldName = $"{propertySymbol.GetFieldName(prefix: "__")}Bindable";
+        var fieldType = RecognizeFieldType(propertySymbol.Type, mode);
+        
+        // PropertyName -> PropertyNameBindable
+        var propertyName = $"{propertySymbol.Name}Bindable";
+        var propertyType = RecognizePropertyType(propertySymbol.Type, mode);
+
+        var invoke = RecognizeInvoke(mode, memberName, fieldName);
         var declaration = RecognizeDeclaration(mode, memberName, fieldName, fieldType, propertyName, propertyType);
         
-        return new GeneratedBindableMembers(invoke, declaration, propertyName, propertyType);
+        var onPropertyChangedName = mode is not BindMode.OneTime and not BindMode.OneWayToSource and not BindMode.None
+            ? $"On{propertySymbol.Name}PropertyChanged"
+            : null;
+        
+        return new GeneratedBindableMembers(invoke, declaration, propertyName, propertyType, onPropertyChangedName);
     }
     
     public static GeneratedBindableMembers CreateForBindAlso(IPropertySymbol propertySymbol)
@@ -78,7 +109,7 @@ public readonly struct GeneratedBindableMembers
         var invoke = RecognizeInvoke(mode, memberName, fieldName);
         var declaration = RecognizeDeclaration(mode, memberName, fieldName, fieldType, propertyName, propertyType);
         
-        return new GeneratedBindableMembers(invoke, declaration, propertyName, propertyType);
+        return new GeneratedBindableMembers(invoke, declaration, propertyName, propertyType, $"On{propertySymbol.Name}PropertyChanged");
     }
 
     private static string RecognizeFieldType(ITypeSymbol type, BindMode mode)
@@ -156,39 +187,45 @@ public readonly struct GeneratedBindableMembers
             : $"{result}<{type.ToDisplayStringGlobal()}>";
     }
 
+    private static string? RecognizeInvoke(BindMode mode, string memberName, string fieldName)
+    {
+        return mode is not (BindMode.OneWayToSource or BindMode.OneTime) 
+            ? $"this.{fieldName}?.Invoke({memberName});" 
+            : null;
+    }
+    
     private static string RecognizeDeclaration(
         BindMode mode,
         string memberName,
         string? fieldName, 
         string fieldType,
         string propertyName,
-        string propertyType)
+        string propertyType,
+        string? setMethod = null)
     {
-        
-        
         if (mode is BindMode.OneTime)
         {
             return
                 $"""
-                #region {propertyName}
                 {GeneratedCodeViewModelAttribute}
                 public {propertyType} {propertyName} => 
                     {fieldType}.Get({memberName});
-                #endregion
                 """;
         }
 
+        setMethod ??= $"value => {memberName} = value";
+
+        // For properties, we use a property setter directly instead of a method reference
         var instantiate = mode switch
         {
             BindMode.OneWay => $"{fieldName} ??= new({memberName})",
-            BindMode.TwoWay => $"{fieldName} ??= new({memberName}, Set{memberName})",
-            BindMode.OneWayToSource => $"{fieldName} ??= new(Set{memberName})",
+            BindMode.TwoWay => $"{fieldName} ??= new({memberName}, {setMethod})",
+            BindMode.OneWayToSource => $"{fieldName} ??= new({setMethod})",
             _ => string.Empty
         };
         
         return
             $"""
-            #region {propertyName}
             [{EditorBrowsableAttribute}({EditorBrowsableState}.Never)]
             {GeneratedCodeViewModelAttribute}
             private {fieldType} {fieldName};
@@ -196,14 +233,6 @@ public readonly struct GeneratedBindableMembers
             {GeneratedCodeViewModelAttribute}
             public {propertyType} {propertyName} => 
                 {instantiate};
-            #endregion
             """;
-    }
-
-    private static string? RecognizeInvoke(BindMode mode, string memberName, string fieldName)
-    {
-        return mode is not (BindMode.OneWayToSource or BindMode.OneTime) 
-            ? $"this.{fieldName}?.Invoke({memberName});" 
-            : null;
     }
 }

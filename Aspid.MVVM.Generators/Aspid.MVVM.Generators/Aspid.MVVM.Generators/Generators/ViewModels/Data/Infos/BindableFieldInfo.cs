@@ -1,7 +1,6 @@
 using System.Text;
 using Microsoft.CodeAnalysis;
 using Aspid.Generators.Helper;
-using System.Collections.Immutable;
 using Microsoft.CodeAnalysis.CSharp;
 using Aspid.MVVM.Generators.Helpers;
 using Aspid.MVVM.Generators.Generators.Ids.Data;
@@ -13,6 +12,8 @@ namespace Aspid.MVVM.Generators.Generators.ViewModels.Data.Infos;
 
 public sealed class BindableFieldInfo : IBindableMemberInfo
 {
+    public ISymbol Member { get; }
+    
     public string Type { get; }
     
     public string Name { get; }
@@ -25,9 +26,10 @@ public sealed class BindableFieldInfo : IBindableMemberInfo
     
     public string Declaration { get; }
 
-    public BindableFieldInfo(IFieldSymbol fieldSymbol, BindMode mode, ImmutableArray<BindableBindAlsoInfo> bindAlso)
+    public BindableFieldInfo(IFieldSymbol fieldSymbol, BindMode mode)
     {
         Mode = mode;
+        Member = fieldSymbol;
         Id = new IdData(fieldSymbol);
         Type = fieldSymbol.Type.ToDisplayStringGlobal();
         Name = fieldSymbol.IsConst ? fieldSymbol.Name : fieldSymbol.GetPropertyName();
@@ -61,11 +63,10 @@ public sealed class BindableFieldInfo : IBindableMemberInfo
                 var onChangingMethod = $"On{Name}Changing";
                 var methodModifier = Accessors.ConvertAccessorToString(accessors.SetKind);
                 var keywordThis = !fieldSymbol.IsStatic ? "this." : string.Empty;
-
-                var eventInvoke = Bindable.Invoke;
-
-                foreach (var property in bindAlso)
-                    eventInvoke += $"\n\t\t{property.Bindable.Invoke}";
+                
+                var invoke = !string.IsNullOrWhiteSpace(Bindable.OnPropertyChangedName)
+                    ? $"{Bindable.OnPropertyChangedName}();"
+                    : string.Empty;
 
                 declaration.AppendLine();
                 declaration.AppendLine(
@@ -81,21 +82,25 @@ public sealed class BindableFieldInfo : IBindableMemberInfo
                           {{onChangingMethod}}(oldValue, value);
                           {
                               {{keywordThis}}{{fieldSymbol.Name}} = value;
-                              {{eventInvoke}}
+                              {{invoke}}
                           }
                           {{onChangedMethod}}(value);
                           {{onChangedMethod}}(oldValue, value);
                       }
 
+                      [{{EditorBrowsableAttribute}}({{EditorBrowsableState}}.Never)]
                       {{GeneratedCodeViewModelAttribute}}
                       partial void {{onChangingMethod}}({{Type}} newValue);
 
+                      [{{EditorBrowsableAttribute}}({{EditorBrowsableState}}.Never)]
                       {{GeneratedCodeViewModelAttribute}}
                       partial void {{onChangingMethod}}({{Type}} oldValue, {{Type}} newValue);
 
+                      [{{EditorBrowsableAttribute}}({{EditorBrowsableState}}.Never)]
                       {{GeneratedCodeViewModelAttribute}}
                       partial void {{onChangedMethod}}({{Type}} newValue);
 
+                      [{{EditorBrowsableAttribute}}({{EditorBrowsableState}}.Never)]
                       {{GeneratedCodeViewModelAttribute}}
                       partial void {{onChangedMethod}}({{Type}} oldValue, {{Type}} newValue);
                       """);

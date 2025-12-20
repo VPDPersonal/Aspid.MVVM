@@ -66,6 +66,7 @@ public sealed class ViewModelGenerator : IIncrementalGenerator
         RelayCommandBody.Generate(@namespace, data, declarationText, context);
         FindBindableMembersBody.Generate(@namespace, data, declarationText, context);
         GeneratedPropertiesBody.Generate(@namespace, data, declarationText, context);
+        GeneratedPropertyMethodsBody.Generate(@namespace, data, declarationText, context);
         BindableInterfaceMembersBody.Generate(@namespace, data, declarationText, context);
     }
 }

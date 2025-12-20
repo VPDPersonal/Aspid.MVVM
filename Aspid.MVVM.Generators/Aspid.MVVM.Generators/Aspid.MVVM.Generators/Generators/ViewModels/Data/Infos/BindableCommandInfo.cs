@@ -1,9 +1,9 @@
 using System.Linq;
 using System.Text;
-using Aspid.Generators.Helper;
-using Aspid.MVVM.Generators.Generators.Ids.Data;
-using Aspid.MVVM.Generators.Helpers;
 using Microsoft.CodeAnalysis;
+using Aspid.Generators.Helper;
+using Aspid.MVVM.Generators.Helpers;
+using Aspid.MVVM.Generators.Generators.Ids.Data;
 using static Aspid.Generators.Helper.Classes;
 using static Aspid.MVVM.Generators.Generators.Descriptions.Classes;
 using static Aspid.MVVM.Generators.Generators.Descriptions.General;
@@ -12,6 +12,8 @@ namespace Aspid.MVVM.Generators.Generators.ViewModels.Data.Infos;
 
 public sealed class BindableCommandInfo : IBindableMemberInfo
 {
+    public ISymbol Member { get; }
+    
     public string Type { get; }
     
     public string Name { get; }
@@ -26,6 +28,7 @@ public sealed class BindableCommandInfo : IBindableMemberInfo
 
     public BindableCommandInfo(IMethodSymbol methodSymbol, string? canExecute, bool isLambda, bool isMethod)
     {
+        Member = methodSymbol;
         Type = GetTypeName(methodSymbol);
         Id = new IdData(methodSymbol, "Command");
         Name = $"{methodSymbol.GetPropertyName()}Command";

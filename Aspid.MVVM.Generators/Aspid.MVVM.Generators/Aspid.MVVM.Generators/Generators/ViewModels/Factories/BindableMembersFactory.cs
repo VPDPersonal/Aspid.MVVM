@@ -13,20 +13,27 @@ public static class BindableMembersFactory
     {
         var members = new MembersByGroup(symbol);
 
+        var bindableFields = BindableFieldFactory.Create(members.Fields);
         var bindableBindAlso = BindableBindAlsoFactory.Create(members.All);
-        var bindableFields = BindableFieldFactory.Create(members.Fields, bindableBindAlso);
+        var bindableProperties = BindablePropertyFactory.Create(members.Properties);
         
         var generatedProperties = bindableFields
             .Where(field => field.Type.ToString() == "bool")
             .Select(field => field.Name)
+            .Concat(bindableProperties
+                .Where(property => property.Type.ToString() == "bool")
+                .Select(property => property.Name))
             .ToImmutableArray();
         
         var bindableCommands = BindableCommandFactory.Create(members.Methods, members.Properties, generatedProperties);
-        var bindableMembers = new List<IBindableMemberInfo>(bindableBindAlso.Count + bindableFields.Count + bindableCommands.Count);
+        
+        var filteredBindableBindAlso = bindableBindAlso.Where(b => !b.HasBindAttribute).ToList();
+        var bindableMembers = new List<IBindableMemberInfo>(filteredBindableBindAlso.Count + bindableFields.Count + bindableProperties.Count + bindableCommands.Count);
         
         bindableMembers.AddRange(bindableFields);
+        bindableMembers.AddRange(bindableProperties);
         bindableMembers.AddRange(bindableCommands);
-        bindableMembers.AddRange(bindableBindAlso);
+        bindableMembers.AddRange(filteredBindableBindAlso);
             
         return bindableMembers.ToImmutableArray();
     }

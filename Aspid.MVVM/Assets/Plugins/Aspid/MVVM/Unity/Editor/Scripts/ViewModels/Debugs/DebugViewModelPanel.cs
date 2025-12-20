@@ -221,7 +221,7 @@ namespace Aspid.MVVM
         }
         
         /// <summary>
-        /// Parses search query to extract name and type filter.
+        /// Parses a search query to extract name and type filter.
         /// Supports formats like:
         /// - "t: string" or "T: string" or "t:string" or "T:string"
         /// - "name t: string" or "t: string name"

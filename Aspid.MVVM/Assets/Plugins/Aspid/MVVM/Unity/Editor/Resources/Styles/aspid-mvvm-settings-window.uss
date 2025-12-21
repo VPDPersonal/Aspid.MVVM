@@ -96,37 +96,6 @@
     background-color: rgba(60, 60, 65, 0.8);
 }
 
-/* Toggle styling */
-.setting-toggle {
-    flex-grow: 1;
-}
-
-.setting-toggle > .unity-toggle__input {
-    flex-direction: row-reverse;
-    justify-content: space-between;
-}
-
-.setting-toggle > .unity-toggle__input > .unity-toggle__checkmark {
-    width: 40px;
-    height: 22px;
-    border-radius: 11px;
-    background-color: #3a3a3a;
-    border-width: 2px;
-    border-color: #555555;
-}
-
-.setting-toggle:checked > .unity-toggle__input > .unity-toggle__checkmark {
-    background-color: #50c878;
-    border-color: #3da861;
-}
-
-.setting-toggle > .unity-toggle__input > .unity-label {
-    color: #c0c0c0;
-    font-size: 13px;
-    margin-left: 0;
-    -unity-text-align: middle-left;
-}
-
 /* Action buttons section */
 .action-buttons {
     flex-direction: row;
@@ -183,66 +152,6 @@
     color: rgba(200, 80, 80, 0.4);
 }
 
-/* Footer section */
-.footer {
-    flex-direction: row;
-    align-items: center;
-    padding: 15px 20px;
-    margin-top: 20px;
-    border-radius: 12px;
-    background-color: rgba(25, 25, 25, 0.5);
-    border-width: 1px;
-    border-color: rgba(255, 255, 255, 0.1);
-}
-
-.action-button {
-    padding: 10px 24px;
-    /*margin-left: 10px;*/
-    border-radius: 6px;
-    font-size: 13px;
-    min-width: 80px;
-    border-width: 1px;
-}
-
-.apply-button {
-    background-color: rgba(80, 200, 120, 0.3);
-    border-color: rgba(80, 200, 120, 0.6);
-    color: #50c878;
-}
-
-.apply-button:hover:enabled {
-    background-color: rgba(80, 200, 120, 0.4);
-}
-
-.apply-button:active:enabled {
-    background-color: rgba(80, 200, 120, 0.5);
-}
-
-.apply-button:disabled {
-    background-color: rgba(80, 200, 120, 0.1);
-    border-color: rgba(80, 200, 120, 0.2);
-    color: rgba(80, 200, 120, 0.4);
-}
-
-.revert-button {
-    background-color: rgba(200, 80, 80, 0.2);
-    border-color: rgba(200, 80, 80, 0.5);
-    color: #c85050;
-}
-
-.revert-button:hover:enabled {
-    background-color: rgba(200, 80, 80, 0.3);
-}
-
-.revert-button:active:enabled {
-    background-color: rgba(200, 80, 80, 0.4);
-}
-
-.revert-button:disabled {
-    background-color: rgba(200, 80, 80, 0.1);
-    border-color: rgba(200, 80, 80, 0.2);
-    color: rgba(200, 80, 80, 0.4);
-}
 
 /* Footer section */
 .footer {

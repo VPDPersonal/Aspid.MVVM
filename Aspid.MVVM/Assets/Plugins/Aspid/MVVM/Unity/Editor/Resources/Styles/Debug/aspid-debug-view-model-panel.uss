@@ -23,3 +23,14 @@ Button.debug-tab-button-selected
 {
     background-color: #0D8C5E;
 }
+
+DebugBoolField > VisualElement
+{
+    scale: 0.8;
+    margin-right: -5px;
+}
+
+DebugBoolField > Label
+{
+    font-size: 12;
+}

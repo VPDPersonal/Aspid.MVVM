@@ -1,10 +1,9 @@
-using UnityEngine.UIElements;
 using System.Collections.Generic;
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM
 {
-    internal sealed class DebugBoolField : Toggle, IUpdatableDebugField
+    internal sealed class DebugBoolField : AspidToggle, IUpdatableDebugField
     {
         private readonly IFieldContext _context;
         
@@ -15,15 +14,15 @@ namespace Aspid.MVVM
             
             SetEnabled(!context.IsReadonly);
             SetValueWithoutNotify((bool)context.GetValue());
-            this.RegisterValueChangedCallback(e => context.SetValue(e.newValue));
+            OnValueChanged += e => context.SetValue(e);
         }
         
         public void UpdateValue()
         {
             var newValue = (bool)_context.GetValue();
-            if (EqualityComparer<bool>.Default.Equals(newValue, value)) return;
+            if (EqualityComparer<bool>.Default.Equals(newValue, Value)) return;
             
-            value = newValue;
+            Value = newValue;
         }
     }
 }

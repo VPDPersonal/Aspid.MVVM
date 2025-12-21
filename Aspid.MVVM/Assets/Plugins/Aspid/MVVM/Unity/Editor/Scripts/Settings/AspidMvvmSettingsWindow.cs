@@ -21,9 +21,9 @@ namespace Aspid.MVVM
         private static StyleSheet? _styleSheet;
         private static StyleSheet SettingsStyleSheet => _styleSheet ??= Resources.Load<StyleSheet>("Styles/aspid-mvvm-settings-window");
         
-        private Toggle? _profilerToggle;
-        private Toggle? _binderLogToggle;
-        private Toggle? _editorChecksToggle;
+        private AspidToggle? _profilerToggle;
+        private AspidToggle? _binderLogToggle;
+        private AspidToggle? _editorChecksToggle;
         
         private Button? _applyButton;
         private Button? _revertButton;
@@ -180,23 +180,14 @@ namespace Aspid.MVVM
             return section;
         }
 
-        private Toggle CreateSettingToggle(string label, string tooltip, bool initialValue, System.Action<bool> onValueChanged)
+        private AspidToggle CreateSettingToggle(string label, string tooltip, bool initialValue, System.Action<bool> onValueChanged)
         {
-            var container = new VisualElement()
-                .SetFlexDirection(FlexDirection.Row)
-                .SetAlignItems(Align.Center);
-            container.AddToClassList("setting-row");
-            
-            var toggle = new Toggle(label)
+            var toggle = new AspidToggle(label, initialValue)
             {
-                value = initialValue,
                 tooltip = tooltip
             };
-            toggle.AddToClassList("setting-toggle");
-            
-            toggle.RegisterValueChangedCallback(evt => onValueChanged(evt.newValue));
-            
-            container.Add(toggle);
+            toggle.AddToClassList("setting-row");
+            toggle.OnValueChanged += onValueChanged;
             
             return toggle;
         }

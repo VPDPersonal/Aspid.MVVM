@@ -3,7 +3,7 @@
 /* Root container */
 .settings-window-root {
     flex-grow: 1;
-    background-color: #1a1a1a;
+    background-color: #1e1e1e;
 }
 
 /* Animated background layer with grid */
@@ -13,7 +13,7 @@
     right: 0;
     top: 0;
     bottom: 0;
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: rgba(0, 0, 0, 0.3);
 }
 
 /* Content container */
@@ -38,9 +38,9 @@
     padding: 15px 20px;
     margin-bottom: 20px;
     border-radius: 12px;
-    background-color: rgba(25, 25, 25, 0.5);
+    background-color: rgba(40, 40, 45, 0.6);
     border-width: 1px;
-    border-color: rgba(80, 200, 120, 0.3);
+    border-color: rgba(255, 255, 255, 0.08);
 }
 
 .header-icon {
@@ -67,19 +67,19 @@
     flex-shrink: 0;
     padding: 20px;
     border-radius: 12px;
-    background-color: rgba(25, 25, 25, 0.5);
+    background-color: rgba(40, 40, 45, 0.6);
     border-width: 1px;
-    border-color: rgba(128, 128, 128, 0.75);
+    border-color: rgba(255, 255, 255, 0.08);
 }
 
 .section-title {
     font-size: 14px;
-    color: #50c878;
+    color: #a0a0a0;
     -unity-font-style: bold;
     margin-bottom: 15px;
     padding-bottom: 10px;
     border-bottom-width: 1px;
-    border-bottom-color: rgba(80, 200, 120, 0.3);
+    border-bottom-color: rgba(255, 255, 255, 0.1);
 }
 
 /* Setting row */
@@ -89,11 +89,11 @@
     padding: 8px 12px;
     margin-bottom: 8px;
     border-radius: 8px;
-    background-color: rgba(50, 50, 55, 0.6);
+    background-color: rgba(55, 55, 60, 0.5);
 }
 
 .setting-row:hover {
-    background-color: rgba(60, 60, 65, 0.8);
+    background-color: rgba(65, 65, 70, 0.7);
 }
 
 /* Action buttons section */
@@ -113,43 +113,43 @@
 }
 
 .apply-button {
-    background-color: rgba(80, 200, 120, 0.3);
-    border-color: rgba(80, 200, 120, 0.6);
-    color: #50c878;
+    background-color: rgba(100, 150, 200, 0.25);
+    border-color: rgba(100, 150, 200, 0.5);
+    color: #7eb0d5;
 }
 
 .apply-button:hover:enabled {
-    background-color: rgba(80, 200, 120, 0.4);
+    background-color: rgba(100, 150, 200, 0.35);
 }
 
 .apply-button:active:enabled {
-    background-color: rgba(80, 200, 120, 0.5);
+    background-color: rgba(100, 150, 200, 0.45);
 }
 
 .apply-button:disabled {
-    background-color: rgba(80, 200, 120, 0.1);
-    border-color: rgba(80, 200, 120, 0.2);
-    color: rgba(80, 200, 120, 0.4);
+    background-color: rgba(100, 150, 200, 0.08);
+    border-color: rgba(100, 150, 200, 0.15);
+    color: rgba(100, 150, 200, 0.35);
 }
 
 .revert-button {
-    background-color: rgba(200, 80, 80, 0.2);
-    border-color: rgba(200, 80, 80, 0.5);
-    color: #c85050;
+    background-color: rgba(180, 100, 100, 0.15);
+    border-color: rgba(180, 100, 100, 0.4);
+    color: #c49090;
 }
 
 .revert-button:hover:enabled {
-    background-color: rgba(200, 80, 80, 0.3);
+    background-color: rgba(180, 100, 100, 0.25);
 }
 
 .revert-button:active:enabled {
-    background-color: rgba(200, 80, 80, 0.4);
+    background-color: rgba(180, 100, 100, 0.35);
 }
 
 .revert-button:disabled {
-    background-color: rgba(200, 80, 80, 0.1);
-    border-color: rgba(200, 80, 80, 0.2);
-    color: rgba(200, 80, 80, 0.4);
+    background-color: rgba(180, 100, 100, 0.08);
+    border-color: rgba(180, 100, 100, 0.15);
+    color: rgba(180, 100, 100, 0.35);
 }
 
 
@@ -161,9 +161,9 @@
     margin-top: auto;
     flex-shrink: 0;
     border-radius: 12px;
-    background-color: rgba(25, 25, 25, 0.5);
+    background-color: rgba(40, 40, 45, 0.6);
     border-width: 1px;
-    border-color: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.08);
 }
 
 .version-label {
@@ -174,18 +174,18 @@
 .footer-button {
     padding: 8px 16px;
     border-radius: 6px;
-    background-color: rgba(80, 200, 120, 0.2);
+    background-color: rgba(100, 150, 200, 0.15);
     border-width: 1px;
-    border-color: rgba(80, 200, 120, 0.5);
-    color: #50c878;
+    border-color: rgba(100, 150, 200, 0.4);
+    color: #7eb0d5;
     font-size: 12px;
 }
 
 .footer-button:hover {
-    background-color: rgba(80, 200, 120, 0.3);
+    background-color: rgba(100, 150, 200, 0.25);
 }
 
 .footer-button:active {
-    background-color: rgba(80, 200, 120, 0.4);
+    background-color: rgba(100, 150, 200, 0.35);
 }
 

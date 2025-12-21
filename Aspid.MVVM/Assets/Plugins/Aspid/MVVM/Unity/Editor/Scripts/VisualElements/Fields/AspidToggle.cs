@@ -18,11 +18,11 @@ namespace Aspid.MVVM
         private const float HandleMargin = 2f;
         private const float AnimationDuration = 0.15f;
         
-        private static readonly Color _trackOffColor = new(0.25f, 0.25f, 0.25f, 1f);
-        private static readonly Color _trackOnColor = new(0.314f, 0.784f, 0.471f, 1f); // #50C878
+        private static readonly Color _trackOffColor = new(0.28f, 0.28f, 0.30f, 1f);
+        private static readonly Color _trackOnColor = new(0.40f, 0.60f, 0.80f, 1f);
         
-        private static readonly Color _handleColor = Color.white;
-        private static readonly Color _handleShadowColor = new(0f, 0f, 0f, 0.2f);
+        private static readonly Color _handleColor = new(0.95f, 0.95f, 0.95f, 1f);
+        private static readonly Color _handleShadowColor = new(0f, 0f, 0f, 0.15f);
         
         private readonly Label _label;
         private readonly VisualElement _track;

@@ -21,6 +21,14 @@
     flex-grow: 1;
     padding: 20px;
     position: relative;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+/* Main content area (grows to fill space) */
+.main-content {
+    flex-grow: 1;
+    flex-direction: column;
 }
 
 /* Header section */
@@ -55,7 +63,8 @@
 
 /* Settings section */
 .settings-section {
-    flex-grow: 1;
+    flex-grow: 0;
+    flex-shrink: 0;
     padding: 20px;
     border-radius: 12px;
     background-color: rgba(25, 25, 25, 0.5);
@@ -118,12 +127,130 @@
     -unity-text-align: middle-left;
 }
 
+/* Action buttons section */
+.action-buttons {
+    flex-direction: row;
+    justify-content: flex-end;
+    margin-top: 10px;
+}
+
+.action-button {
+    padding: 10px 24px;
+    margin-left: 10px;
+    border-radius: 6px;
+    font-size: 13px;
+    min-width: 80px;
+    border-width: 1px;
+}
+
+.apply-button {
+    background-color: rgba(80, 200, 120, 0.3);
+    border-color: rgba(80, 200, 120, 0.6);
+    color: #50c878;
+}
+
+.apply-button:hover:enabled {
+    background-color: rgba(80, 200, 120, 0.4);
+}
+
+.apply-button:active:enabled {
+    background-color: rgba(80, 200, 120, 0.5);
+}
+
+.apply-button:disabled {
+    background-color: rgba(80, 200, 120, 0.1);
+    border-color: rgba(80, 200, 120, 0.2);
+    color: rgba(80, 200, 120, 0.4);
+}
+
+.revert-button {
+    background-color: rgba(200, 80, 80, 0.2);
+    border-color: rgba(200, 80, 80, 0.5);
+    color: #c85050;
+}
+
+.revert-button:hover:enabled {
+    background-color: rgba(200, 80, 80, 0.3);
+}
+
+.revert-button:active:enabled {
+    background-color: rgba(200, 80, 80, 0.4);
+}
+
+.revert-button:disabled {
+    background-color: rgba(200, 80, 80, 0.1);
+    border-color: rgba(200, 80, 80, 0.2);
+    color: rgba(200, 80, 80, 0.4);
+}
+
 /* Footer section */
 .footer {
     flex-direction: row;
     align-items: center;
     padding: 15px 20px;
     margin-top: 20px;
+    border-radius: 12px;
+    background-color: rgba(25, 25, 25, 0.5);
+    border-width: 1px;
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+.action-button {
+    padding: 10px 24px;
+    /*margin-left: 10px;*/
+    border-radius: 6px;
+    font-size: 13px;
+    min-width: 80px;
+    border-width: 1px;
+}
+
+.apply-button {
+    background-color: rgba(80, 200, 120, 0.3);
+    border-color: rgba(80, 200, 120, 0.6);
+    color: #50c878;
+}
+
+.apply-button:hover:enabled {
+    background-color: rgba(80, 200, 120, 0.4);
+}
+
+.apply-button:active:enabled {
+    background-color: rgba(80, 200, 120, 0.5);
+}
+
+.apply-button:disabled {
+    background-color: rgba(80, 200, 120, 0.1);
+    border-color: rgba(80, 200, 120, 0.2);
+    color: rgba(80, 200, 120, 0.4);
+}
+
+.revert-button {
+    background-color: rgba(200, 80, 80, 0.2);
+    border-color: rgba(200, 80, 80, 0.5);
+    color: #c85050;
+}
+
+.revert-button:hover:enabled {
+    background-color: rgba(200, 80, 80, 0.3);
+}
+
+.revert-button:active:enabled {
+    background-color: rgba(200, 80, 80, 0.4);
+}
+
+.revert-button:disabled {
+    background-color: rgba(200, 80, 80, 0.1);
+    border-color: rgba(200, 80, 80, 0.2);
+    color: rgba(200, 80, 80, 0.4);
+}
+
+/* Footer section */
+.footer {
+    flex-direction: row;
+    align-items: center;
+    padding: 15px 20px;
+    margin-top: auto;
+    flex-shrink: 0;
     border-radius: 12px;
     background-color: rgba(25, 25, 25, 0.5);
     border-width: 1px;

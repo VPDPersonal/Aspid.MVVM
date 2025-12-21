@@ -92,8 +92,8 @@ namespace Aspid.MVVM
                 "ViewModel",
                 "MonoBinder", 
                 "MonoView",
+                "GeneralView",
                 "ViewInitializer",
-                "Property"
             };
             
             private static readonly string[] _iconPaths =

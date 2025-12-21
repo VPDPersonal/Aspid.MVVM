@@ -24,6 +24,21 @@ namespace Aspid.MVVM
         private Toggle? _profilerToggle;
         private Toggle? _binderLogToggle;
         private Toggle? _editorChecksToggle;
+        
+        private Button? _applyButton;
+        private Button? _revertButton;
+        
+        // Temporary values for changes
+        private bool _tempProfilerValue;
+        private bool _tempBinderLogValue;
+        private bool _tempEditorChecksValue;
+        
+        private bool _hasChanges;
+        
+        // Original values for comparison
+        private bool _originalProfilerValue;
+        private bool _originalBinderLogValue;
+        private bool _originalEditorChecksValue;
 
         [MenuItem("Tools/Aspid/Mvvm/Settings Window", priority = 100)]
         public static void ShowWindow()
@@ -57,17 +72,32 @@ namespace Aspid.MVVM
                 .SetFlexDirection(FlexDirection.Column);
             container.AddToClassList("content-container");
             
+            // Main content area (header + settings)
+            var mainContent = new VisualElement()
+                .SetFlexGrow(1)
+                .SetFlexDirection(FlexDirection.Column);
+            mainContent.AddToClassList("main-content");
+            
             // Header
             var header = CreateHeader();
-            container.Add(header);
+            mainContent.Add(header);
             
             // Settings section
             var settingsSection = CreateSettingsSection();
-            container.Add(settingsSection);
+            mainContent.Add(settingsSection);
             
-            // Footer
+            // Action buttons (Apply/Revert)
+            var actionButtons = CreateActionButtons();
+            settingsSection.Add(actionButtons);
+            
+            container.Add(mainContent);
+            
+            // Footer - always at bottom
             var footer = CreateFooter();
             container.Add(footer);
+            
+            // Initialize values
+            LoadCurrentValues();
             
             return container;
         }
@@ -108,8 +138,7 @@ namespace Aspid.MVVM
         private VisualElement CreateSettingsSection()
         {
             var section = new VisualElement()
-                .SetName("settings-section")
-                .SetFlexGrow(1);
+                .SetName("settings-section");
             section.AddToClassList("settings-section");
             
             var sectionTitle = new Label("Build Settings");
@@ -121,16 +150,21 @@ namespace Aspid.MVVM
                 "Enable Profiler",
                 "Enable profiler markers for performance monitoring in the Unity Profiler.",
                 AspidMvvmSettings.IsEnabledProfiler,
-                value => AspidMvvmSettings.IsEnabledProfiler = value
+                value => { _tempProfilerValue = value; CheckForChanges(); }
             );
             section.Add(_profilerToggle);
+            
+            var sectionTitle2 = new Label("Editor Settings")
+                .SetMargin(top: 10);
+            sectionTitle2.AddToClassList("section-title");
+            section.Add(sectionTitle2);
             
             // Binder Log Toggle
             _binderLogToggle = CreateSettingToggle(
                 "Enable Binder Log",
                 "Enable detailed logging for binder operations. Useful for debugging bindings.",
                 AspidMvvmSettings.IsEnabledBinderLog,
-                value => AspidMvvmSettings.IsEnabledBinderLog = value
+                value => { _tempBinderLogValue = value; CheckForChanges(); }
             );
             section.Add(_binderLogToggle);
             
@@ -139,7 +173,7 @@ namespace Aspid.MVVM
                 "Checks for Editor",
                 "Enable additional validation checks in the Editor. Helps catch errors early.",
                 AspidMvvmSettings.IsEnabledCheckForEditor,
-                value => AspidMvvmSettings.IsEnabledCheckForEditor = value
+                value => { _tempEditorChecksValue = value; CheckForChanges(); }
             );
             section.Add(_editorChecksToggle);
             
@@ -193,17 +227,108 @@ namespace Aspid.MVVM
             return footer;
         }
 
+        private VisualElement CreateActionButtons()
+        {
+            var container = new VisualElement()
+                .SetName("action-buttons")
+                .SetFlexDirection(FlexDirection.Row)
+                .SetJustifyContent(Justify.FlexEnd);
+            container.AddToClassList("action-buttons");
+            
+            _revertButton = new Button(OnRevert)
+            {
+                text = "Revert"
+            };
+            _revertButton.AddToClassList("action-button");
+            _revertButton.AddToClassList("revert-button");
+            _revertButton.SetEnabled(false);
+            
+            _applyButton = new Button(OnApply)
+            {
+                text = "Apply"
+            };
+            _applyButton.AddToClassList("action-button");
+            _applyButton.AddToClassList("apply-button");
+            _applyButton.SetEnabled(false);
+            
+            container.Add(_revertButton);
+            container.Add(_applyButton);
+            
+            return container;
+        }
+
+        private void LoadCurrentValues()
+        {
+            _originalProfilerValue = AspidMvvmSettings.IsEnabledProfiler;
+            _originalBinderLogValue = AspidMvvmSettings.IsEnabledBinderLog;
+            _originalEditorChecksValue = AspidMvvmSettings.IsEnabledCheckForEditor;
+            
+            _tempProfilerValue = _originalProfilerValue;
+            _tempBinderLogValue = _originalBinderLogValue;
+            _tempEditorChecksValue = _originalEditorChecksValue;
+            
+            _hasChanges = false;
+            UpdateButtonStates();
+        }
+
+        private void CheckForChanges()
+        {
+            _hasChanges = _tempProfilerValue != _originalProfilerValue ||
+                         _tempBinderLogValue != _originalBinderLogValue ||
+                         _tempEditorChecksValue != _originalEditorChecksValue;
+            
+            UpdateButtonStates();
+        }
+
+        private void UpdateButtonStates()
+        {
+            _applyButton?.SetEnabled(_hasChanges);
+            _revertButton?.SetEnabled(_hasChanges);
+        }
+
+        private void OnApply()
+        {
+            AspidMvvmSettings.IsEnabledProfiler = _tempProfilerValue;
+            AspidMvvmSettings.IsEnabledBinderLog = _tempBinderLogValue;
+            AspidMvvmSettings.IsEnabledCheckForEditor = _tempEditorChecksValue;
+            
+            _originalProfilerValue = _tempProfilerValue;
+            _originalBinderLogValue = _tempBinderLogValue;
+            _originalEditorChecksValue = _tempEditorChecksValue;
+            
+            _hasChanges = false;
+            UpdateButtonStates();
+            
+            Debug.Log("Aspid MVVM settings applied successfully.");
+        }
+
+        private void OnRevert()
+        {
+            _tempProfilerValue = _originalProfilerValue;
+            _tempBinderLogValue = _originalBinderLogValue;
+            _tempEditorChecksValue = _originalEditorChecksValue;
+            
+            _profilerToggle?.SetValueWithoutNotify(_originalProfilerValue);
+            _binderLogToggle?.SetValueWithoutNotify(_originalBinderLogValue);
+            _editorChecksToggle?.SetValueWithoutNotify(_originalEditorChecksValue);
+            
+            _hasChanges = false;
+            UpdateButtonStates();
+        }
+
         private void OnFocus()
         {
-            // Refresh toggle states when window gains focus
+            // Refresh values when window gains focus
+            LoadCurrentValues();
+            
             if (_profilerToggle != null)
-                _profilerToggle.SetValueWithoutNotify(AspidMvvmSettings.IsEnabledProfiler);
+                _profilerToggle.SetValueWithoutNotify(_tempProfilerValue);
             
             if (_binderLogToggle != null)
-                _binderLogToggle.SetValueWithoutNotify(AspidMvvmSettings.IsEnabledBinderLog);
+                _binderLogToggle.SetValueWithoutNotify(_tempBinderLogValue);
             
             if (_editorChecksToggle != null)
-                _editorChecksToggle.SetValueWithoutNotify(AspidMvvmSettings.IsEnabledCheckForEditor);
+                _editorChecksToggle.SetValueWithoutNotify(_tempEditorChecksValue);
         }
     }
 }

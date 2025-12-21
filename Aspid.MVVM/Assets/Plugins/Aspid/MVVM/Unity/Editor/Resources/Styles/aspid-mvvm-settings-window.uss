@@ -1,0 +1,155 @@
+/* Aspid MVVM Settings Window Styles */
+
+/* Root container */
+.settings-window-root {
+    flex-grow: 1;
+    background-color: #1a1a1a;
+}
+
+/* Animated background layer with grid */
+.settings-background {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+/* Content container */
+.content-container {
+    flex-grow: 1;
+    padding: 20px;
+    position: relative;
+}
+
+/* Header section */
+.header {
+    flex-direction: row;
+    align-items: center;
+    padding: 15px 20px;
+    margin-bottom: 20px;
+    border-radius: 12px;
+    background-color: rgba(25, 25, 25, 0.5);
+    border-width: 1px;
+    border-color: rgba(80, 200, 120, 0.3);
+}
+
+.header-icon {
+    width: 48px;
+    height: 48px;
+    margin-right: 15px;
+}
+
+.header-title {
+    font-size: 20px;
+    color: #e0e0e0;
+    -unity-font-style: bold;
+    margin-bottom: 2px;
+}
+
+.header-subtitle {
+    font-size: 12px;
+    color: #888888;
+}
+
+/* Settings section */
+.settings-section {
+    flex-grow: 1;
+    padding: 20px;
+    border-radius: 12px;
+    background-color: rgba(25, 25, 25, 0.5);
+    border-width: 1px;
+    border-color: rgba(128, 128, 128, 0.75);
+}
+
+.section-title {
+    font-size: 14px;
+    color: #50c878;
+    -unity-font-style: bold;
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom-width: 1px;
+    border-bottom-color: rgba(80, 200, 120, 0.3);
+}
+
+/* Setting row */
+.setting-row {
+    flex-direction: row;
+    align-items: center;
+    padding: 8px 12px;
+    margin-bottom: 8px;
+    border-radius: 8px;
+    background-color: rgba(50, 50, 55, 0.6);
+}
+
+.setting-row:hover {
+    background-color: rgba(60, 60, 65, 0.8);
+}
+
+/* Toggle styling */
+.setting-toggle {
+    flex-grow: 1;
+}
+
+.setting-toggle > .unity-toggle__input {
+    flex-direction: row-reverse;
+    justify-content: space-between;
+}
+
+.setting-toggle > .unity-toggle__input > .unity-toggle__checkmark {
+    width: 40px;
+    height: 22px;
+    border-radius: 11px;
+    background-color: #3a3a3a;
+    border-width: 2px;
+    border-color: #555555;
+}
+
+.setting-toggle:checked > .unity-toggle__input > .unity-toggle__checkmark {
+    background-color: #50c878;
+    border-color: #3da861;
+}
+
+.setting-toggle > .unity-toggle__input > .unity-label {
+    color: #c0c0c0;
+    font-size: 13px;
+    margin-left: 0;
+    -unity-text-align: middle-left;
+}
+
+/* Footer section */
+.footer {
+    flex-direction: row;
+    align-items: center;
+    padding: 15px 20px;
+    margin-top: 20px;
+    border-radius: 12px;
+    background-color: rgba(25, 25, 25, 0.5);
+    border-width: 1px;
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+.version-label {
+    font-size: 11px;
+    color: #666666;
+}
+
+.footer-button {
+    padding: 8px 16px;
+    border-radius: 6px;
+    background-color: rgba(80, 200, 120, 0.2);
+    border-width: 1px;
+    border-color: rgba(80, 200, 120, 0.5);
+    color: #50c878;
+    font-size: 12px;
+}
+
+.footer-button:hover {
+    background-color: rgba(80, 200, 120, 0.3);
+}
+
+.footer-button:active {
+    background-color: rgba(80, 200, 120, 0.4);
+}
+

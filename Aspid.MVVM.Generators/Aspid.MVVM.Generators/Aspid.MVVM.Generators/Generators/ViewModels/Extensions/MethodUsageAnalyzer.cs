@@ -12,7 +12,7 @@ public static class MethodUsageAnalyzer
 
         foreach (var invocation in declaration.DescendantNodes().OfType<InvocationExpressionSyntax>())
         {
-            var invokedMethodName = GetMethodName(invocation);
+            var invokedMethodName = invocation.GetMethodName();
             
             if (invokedMethodName is not null && methodNames.Contains(invokedMethodName))
                 usedMethods.Add(invokedMethodName);
@@ -20,12 +20,5 @@ public static class MethodUsageAnalyzer
 
         return usedMethods;
     }
-    
-    private static string? GetMethodName(InvocationExpressionSyntax invocation) => invocation.Expression switch
-    {
-        IdentifierNameSyntax identifier => identifier.Identifier.Text,
-        MemberAccessExpressionSyntax memberAccess => memberAccess.Name.Identifier.Text,
-        _ => null
-    };
 }
 

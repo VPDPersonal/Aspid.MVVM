@@ -1,22 +1,29 @@
 using System.Linq;
 using Microsoft.CodeAnalysis;
+using Aspid.Generators.Helper;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using Aspid.MVVM.Generators.Helpers;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Aspid.MVVM.Generators.Generators.ViewModels.Data;
 using Aspid.MVVM.Generators.Generators.ViewModels.Data.Infos;
+using Aspid.MVVM.Generators.Generators.ViewModels.Extensions;
 
 namespace Aspid.MVVM.Generators.Generators.ViewModels.Factories;
 
 public static class BindableMembersFactory
 {
-    public static ImmutableArray<IBindableMemberInfo> Create(ITypeSymbol symbol, TypeDeclarationSyntax declaration)
+    public static ImmutableArray<IBindableMemberInfo> Create(
+        ITypeSymbol symbol, 
+        TypeDeclarationSyntax declaration,
+        out PropertyNotificationData propertyNotificationData)
     {
         var members = new MembersByGroup(symbol);
+        propertyNotificationData = CreatePropertyNotificationData(symbol, declaration);
 
         var bindableFields = BindableFieldFactory.Create(members.Fields);
         var bindableBindAlso = BindableBindAlsoFactory.Create(members.All);
-        var bindableProperties = BindablePropertyFactory.Create(declaration, members.Properties);
+        var bindableProperties = BindablePropertyFactory.Create(declaration, members.Properties, propertyNotificationData);
         
         var generatedProperties = bindableFields
             .Where(field => field.Type.ToString() == "bool")
@@ -37,5 +44,25 @@ public static class BindableMembersFactory
         bindableMembers.AddRange(filteredBindableBindAlso);
             
         return bindableMembers.ToImmutableArray();
+    }
+    
+    private static PropertyNotificationData CreatePropertyNotificationData(ITypeSymbol symbol, TypeDeclarationSyntax candidate)
+    {
+        var members = new MembersByGroup(symbol);
+        
+        var bindablePropertiesDict = members.Properties
+            .Where(property => property.GetBindMode() is not BindMode.None)
+            .ToDictionary(property => property.Name, property => property.Type.ToDisplayStringGlobal());
+        
+        var bindableFieldsDict = members.Fields
+            .Where(field => field.GetBindMode() is not BindMode.None)
+            .ToDictionary(field => field.GetPropertyName(), field => field.Type.ToDisplayStringGlobal());
+        
+        foreach (var pair in bindableFieldsDict)
+        {
+            bindablePropertiesDict[pair.Key] = pair.Value;
+        }
+
+        return PropertyNotificationAnalyzer.Analyze(candidate, bindablePropertiesDict);
     }
 }

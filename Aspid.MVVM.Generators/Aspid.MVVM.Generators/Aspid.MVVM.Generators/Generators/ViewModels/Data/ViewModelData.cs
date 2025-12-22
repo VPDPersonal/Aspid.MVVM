@@ -14,7 +14,8 @@ public readonly struct ViewModelData(
     ClassDeclarationSyntax declaration,
     ImmutableArray<IBindableMemberInfo> members,
     ImmutableArray<IdLengthMemberGroup> idGroups,
-    Dictionary<string, CustomViewModelInterface> customViewModelInterfaces)
+    Dictionary<string, CustomViewModelInterface> customViewModelInterfaces,
+    PropertyNotificationData propertyNotificationData)
 {
     public readonly string Name = symbol.Name;
     
@@ -26,4 +27,5 @@ public readonly struct ViewModelData(
     public readonly ImmutableArray<IdLengthMemberGroup> IdGroups = idGroups;
     
     public readonly Dictionary<string, CustomViewModelInterface> CustomViewModelInterfaces = customViewModelInterfaces;
+    public readonly PropertyNotificationData PropertyNotificationData = propertyNotificationData;
 }

@@ -3,6 +3,7 @@ using Microsoft.CodeAnalysis;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Aspid.MVVM.Generators.Generators.ViewModels.Data;
 using Aspid.MVVM.Generators.Generators.ViewModels.Data.Infos;
 using Aspid.MVVM.Generators.Generators.ViewModels.Extensions;
 using BindMode = Aspid.MVVM.Generators.Generators.ViewModels.Data.BindMode;
@@ -11,7 +12,10 @@ namespace Aspid.MVVM.Generators.Generators.ViewModels.Factories;
 
 public static class BindablePropertyFactory
 {
-    public static IReadOnlyCollection<BindablePropertyInfo> Create(TypeDeclarationSyntax declaration, ImmutableArray<IPropertySymbol> properties)
+    public static IReadOnlyCollection<BindablePropertyInfo> Create(
+        TypeDeclarationSyntax declaration, 
+        ImmutableArray<IPropertySymbol> properties,
+        PropertyNotificationData propertyNotificationData)
     {
         var bindableProperties = new List<BindablePropertyInfo>();
         
@@ -40,7 +44,8 @@ public static class BindablePropertyFactory
             }
             
             var setMethodName = $"Set{property.Name}Field";
-            var isSetMethodUsed = usedSetMethods.Contains(setMethodName);
+            var isSetMethodUsed = usedSetMethods.Contains(setMethodName) 
+                || propertyNotificationData.PropertiesRequiringSetFieldBody.Contains(property.Name);
             
             bindableProperties.Add(new BindablePropertyInfo(property, mode, isSetMethodUsed));
         }

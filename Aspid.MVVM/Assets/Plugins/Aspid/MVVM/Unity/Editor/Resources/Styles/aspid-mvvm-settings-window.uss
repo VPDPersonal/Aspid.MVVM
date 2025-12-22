@@ -1,191 +1,268 @@
-/* Aspid MVVM Settings Window Styles */
+/* Aspid.MVVM Settings Window Styles */
 
 /* Root container */
-.settings-window-root {
+.settings-window-root 
+{
     flex-grow: 1;
+    min-width: 320px;
     background-color: #1e1e1e;
 }
 
-/* Animated background layer with grid */
-.settings-background {
-    position: absolute;
+FloatingBackgroundElement
+{
+    top: 0;
     left: 0;
     right: 0;
-    top: 0;
     bottom: 0;
+    position: absolute;
     background-color: rgba(0, 0, 0, 0.3);
 }
 
 /* Content container */
-.content-container {
+.content-container 
+{
     flex-grow: 1;
     padding: 20px;
+    min-width: 280px;
     position: relative;
     flex-direction: column;
     justify-content: space-between;
 }
 
-/* Main content area (grows to fill space) */
-.main-content {
+.content-container > ScrollView
+{
     flex-grow: 1;
+    flex-shrink: 1;
+    padding-right: 0;
+    margin-bottom: 20px;
+    margin-right: -12px;
+}
+
+/* Scroller positioned outside content */
+.content-container > ScrollView .unity-scroller--vertical
+{
+    top: 0;
+    right: 0;
+    bottom: 0;
+    position: absolute;
+}
+
+.content-container > ScrollView #unity-content-viewport
+{
+    padding-right: 12px;
+}
+
+.content-container > ScrollView > * > * 
+{
+    flex-shrink: 0;
+}
+
+/* Main content area */
+.main-content 
+{
+    flex-shrink: 0;
     flex-direction: column;
 }
 
 /* Header section */
-.header {
+.header 
+{
+    flex-shrink: 0;
+    min-width: 240px;
+    border-width: 1px;
+    padding: 15px 20px;
     flex-direction: row;
     align-items: center;
-    padding: 15px 20px;
     margin-bottom: 20px;
     border-radius: 12px;
     background-color: rgba(40, 40, 45, 0.6);
-    border-width: 1px;
     border-color: rgba(255, 255, 255, 0.08);
 }
 
-.header-icon {
+.header > Image 
+{
     width: 48px;
     height: 48px;
+    min-width: 48px;
+    min-height: 48px;
+    flex-shrink: 0;
     margin-right: 15px;
 }
 
-.header-title {
-    font-size: 20px;
+.header-title 
+{
     color: #e0e0e0;
-    -unity-font-style: bold;
+    font-size: 20px;
+    overflow: hidden;
     margin-bottom: 2px;
+    white-space: nowrap;
+    -unity-font-style: bold;
+    text-overflow: ellipsis;
 }
 
-.header-subtitle {
-    font-size: 12px;
+.header-subtitle 
+{
     color: #888888;
+    font-size: 12px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
 }
 
 /* Settings section */
-.settings-section {
-    flex-grow: 0;
-    flex-shrink: 0;
+.settings-section
+{
     padding: 20px;
+    flex-shrink: 0;
+    min-width: 240px;
+    border-width: 1px;
     border-radius: 12px;
     background-color: rgba(40, 40, 45, 0.6);
-    border-width: 1px;
     border-color: rgba(255, 255, 255, 0.08);
 }
 
-.section-title {
-    font-size: 14px;
+.section-title
+{
     color: #a0a0a0;
-    -unity-font-style: bold;
+    font-size: 14px;
+    overflow: hidden;
+    white-space: nowrap;
     margin-bottom: 15px;
     padding-bottom: 10px;
+    -unity-font-style: bold;
+    text-overflow: ellipsis;
     border-bottom-width: 1px;
     border-bottom-color: rgba(255, 255, 255, 0.1);
 }
 
 /* Setting row */
-.setting-row {
-    flex-direction: row;
-    align-items: center;
+.setting-row 
+{
+    flex-shrink: 0;
+    min-height: 36px;
     padding: 8px 12px;
     margin-bottom: 8px;
     border-radius: 8px;
+    flex-direction: row;
+    align-items: center;
     background-color: rgba(55, 55, 60, 0.5);
 }
 
-.setting-row:hover {
+.setting-row:hover
+{
     background-color: rgba(65, 65, 70, 0.7);
 }
 
 /* Action buttons section */
-.action-buttons {
+.action-buttons 
+{
+    flex-wrap: wrap;
+    margin-top: 10px;
     flex-direction: row;
     justify-content: flex-end;
-    margin-top: 10px;
 }
 
-.action-button {
-    padding: 10px 24px;
-    margin-left: 10px;
-    border-radius: 6px;
+.action-button 
+{
+    flex-shrink: 0;
     font-size: 13px;
     min-width: 80px;
+    margin-top: 5px;
     border-width: 1px;
+    margin-left: 10px;
+    padding: 10px 24px;
+    border-radius: 6px;
 }
 
-.apply-button {
-    background-color: rgba(100, 150, 200, 0.25);
-    border-color: rgba(100, 150, 200, 0.5);
+.apply-button 
+{
     color: #7eb0d5;
+    border-color: rgba(100, 150, 200, 0.5);
+    background-color: rgba(100, 150, 200, 0.25);
 }
 
-.apply-button:hover:enabled {
+.apply-button:hover:enabled 
+{
     background-color: rgba(100, 150, 200, 0.35);
 }
 
-.apply-button:active:enabled {
+.apply-button:active:enabled 
+{
     background-color: rgba(100, 150, 200, 0.45);
 }
 
-.apply-button:disabled {
-    background-color: rgba(100, 150, 200, 0.08);
-    border-color: rgba(100, 150, 200, 0.15);
+.apply-button:disabled 
+{
     color: rgba(100, 150, 200, 0.35);
+    border-color: rgba(100, 150, 200, 0.15);
+    background-color: rgba(100, 150, 200, 0.08);
 }
 
-.revert-button {
-    background-color: rgba(180, 100, 100, 0.15);
-    border-color: rgba(180, 100, 100, 0.4);
+.revert-button 
+{
     color: #c49090;
+    border-color: rgba(180, 100, 100, 0.4);
+    background-color: rgba(180, 100, 100, 0.15);
 }
 
-.revert-button:hover:enabled {
+.revert-button:hover:enabled 
+{
     background-color: rgba(180, 100, 100, 0.25);
 }
 
-.revert-button:active:enabled {
+.revert-button:active:enabled 
+{
     background-color: rgba(180, 100, 100, 0.35);
 }
 
-.revert-button:disabled {
-    background-color: rgba(180, 100, 100, 0.08);
-    border-color: rgba(180, 100, 100, 0.15);
+.revert-button:disabled 
+{
     color: rgba(180, 100, 100, 0.35);
+    border-color: rgba(180, 100, 100, 0.15);
+    background-color: rgba(180, 100, 100, 0.08);
 }
 
-
 /* Footer section */
-.footer {
-    flex-direction: row;
-    align-items: center;
-    padding: 15px 20px;
-    margin-top: auto;
+.footer 
+{
     flex-shrink: 0;
-    border-radius: 12px;
-    background-color: rgba(40, 40, 45, 0.6);
+    flex-wrap: wrap;
     border-width: 1px;
+    padding: 15px 20px;
+    border-radius: 12px;
+    align-items: center;
+    flex-direction: row;
+    background-color: rgba(40, 40, 45, 0.6);
     border-color: rgba(255, 255, 255, 0.08);
 }
 
-.version-label {
-    font-size: 11px;
+.footer > Label
+{
+    flex-grow: 1;
     color: #666666;
+    flex-shrink: 0;
+    font-size: 14px;
 }
 
-.footer-button {
-    padding: 8px 16px;
-    border-radius: 6px;
-    background-color: rgba(100, 150, 200, 0.15);
-    border-width: 1px;
-    border-color: rgba(100, 150, 200, 0.4);
+.footer > Button 
+{
     color: #7eb0d5;
+    flex-shrink: 0;
     font-size: 12px;
+    padding: 8px 16px;
+    border-width: 1px;
+    border-radius: 6px;
+    white-space: nowrap;
+    border-color: rgba(100, 150, 200, 0.4);
+    background-color: rgba(100, 150, 200, 0.15);
 }
 
-.footer-button:hover {
+.footer > Button:hover 
+{
     background-color: rgba(100, 150, 200, 0.25);
 }
 
-.footer-button:active {
+.Footer > Button:active 
+{
     background-color: rgba(100, 150, 200, 0.35);
 }
-

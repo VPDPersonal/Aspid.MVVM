@@ -30,10 +30,8 @@ namespace Aspid.MVVM
                 var target = GetTarget();
                 var defines = GetDefines(target);
                 
-                if (value)
-                    RemoveDefine(target, ProfilerDefine, defines);
-                else
-                    AddDefine(target, ProfilerDefine, defines);
+                if (value) RemoveDefine(target, ProfilerDefine, defines);
+                else AddDefine(target, ProfilerDefine, defines);
             }
         }
 
@@ -49,10 +47,8 @@ namespace Aspid.MVVM
                 var target = GetTarget();
                 var defines = GetDefines(target);
                 
-                if (value)
-                    RemoveDefine(target, BinderLogDefine, defines);
-                else
-                    AddDefine(target, BinderLogDefine, defines);
+                if (value) RemoveDefine(target, BinderLogDefine, defines);
+                else AddDefine(target, BinderLogDefine, defines);
             }
         }
 
@@ -68,10 +64,8 @@ namespace Aspid.MVVM
                 var target = GetTarget();
                 var defines = GetDefines(target);
                 
-                if (value)
-                    RemoveDefine(target, CheckForEditorDefine, defines);
-                else
-                    AddDefine(target, CheckForEditorDefine, defines);
+                if (value) RemoveDefine(target, CheckForEditorDefine, defines);
+                else AddDefine(target, CheckForEditorDefine, defines);
             }
         }
 

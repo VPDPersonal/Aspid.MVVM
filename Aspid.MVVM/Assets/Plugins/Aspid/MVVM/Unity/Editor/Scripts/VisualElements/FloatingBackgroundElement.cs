@@ -8,42 +8,43 @@ using UnityEngine.UIElements;
 namespace Aspid.MVVM
 {
     /// <summary>
-    /// A visual element that displays animated floating AspidInspectorHeader-style elements on the background.
+    /// A visual element that displays animated floating AspidInspectorHeader-style elements in the background.
     /// Elements smoothly move left-to-right and back, creating a dynamic visual effect.
     /// </summary>
-    public sealed class FloatingBackgroundElement : VisualElement
+    internal sealed class FloatingBackgroundElement : VisualElement
     {
+        private const int GridSize = 40;
         private const int FloatingItemCount = 25;
         private const float AnimationInterval = 16f; // ~60fps
-        private const int GridSize = 40; // Grid cell size in pixels
         
         private readonly FloatingItem[] _items;
         
         public FloatingBackgroundElement()
         {
             pickingMode = PickingMode.Ignore;
-            
-            this.SetPosition(Position.Absolute)
-                .SetDistance(0)
-                .SetOverflow(Overflow.Hidden);
+
+            this.SetDistance(0)
+                .SetOverflow(Overflow.Hidden)
+                .SetPosition(Position.Absolute);
             
             // Draw grid directly on this element's background
             generateVisualContent += OnGenerateVisualContent;
             
             _items = new FloatingItem[FloatingItemCount];
             
-            // Add floating items - they will be rendered on top of the grid
             for (var i = 0; i < FloatingItemCount; i++)
             {
                 _items[i] = new FloatingItem(i);
                 Add(_items[i].Element);
             }
             
-            var scheduledAnimation = schedule.Execute(UpdateAnimation).Every((long)AnimationInterval);
+            var scheduledAnimation = schedule
+                .Execute(UpdateAnimation)
+                .Every((long)AnimationInterval);
             
-            RegisterCallback<DetachFromPanelEvent>(_ => scheduledAnimation?.Pause());
-            RegisterCallback<AttachToPanelEvent>(_ => scheduledAnimation?.Resume());
             RegisterCallback<GeometryChangedEvent>(_ => MarkDirtyRepaint());
+            RegisterCallback<AttachToPanelEvent>(_ => scheduledAnimation?.Resume());
+            RegisterCallback<DetachFromPanelEvent>(_ => scheduledAnimation?.Pause());
         }
         
         private void OnGenerateVisualContent(MeshGenerationContext ctx)
@@ -74,8 +75,6 @@ namespace Aspid.MVVM
             }
         }
         
-        // ...existing code...
-        
         private void UpdateAnimation()
         {
             var bounds = contentRect;
@@ -89,28 +88,31 @@ namespace Aspid.MVVM
         {
             private static readonly string[] _labels = 
             {
+                "MonoView",
                 "ViewModel",
                 "MonoBinder", 
-                "MonoView",
                 "GeneralView",
+                "RelayCommand",
+                "ObservableList",
                 "ViewInitializer",
             };
             
             private static readonly string[] _iconPaths =
             {
+                EditorConstants.AspidIconRed,
                 EditorConstants.AspidIconGreen,
                 EditorConstants.AspidIconYellow,
-                EditorConstants.AspidIconRed
             };
             
+            private const int RowCount = 4; 
             private const float BaseSpeed = 0.4f;
-            private const int RowCount = 4; // Number of horizontal rows
             
             private float _x;
+            private float _verticalOffset;
+            
             private readonly float _baseY;
             private readonly float _speed;
             private readonly float _direction;
-            private float _verticalOffset;
             private readonly float _verticalSpeed;
             private readonly float _verticalAmplitude;
             
@@ -118,7 +120,7 @@ namespace Aspid.MVVM
 
             public FloatingItem(int index)
             {
-                var random = new System.Random(index * 137 + 42);
+                var random = new System.Random(Seed: index * 137 + 42);
                 
                 // Constant speed per item (no slowdown)
                 _speed = BaseSpeed + (float)random.NextDouble() * 0.3f;
@@ -131,15 +133,16 @@ namespace Aspid.MVVM
                 
                 // More chaotic horizontal distribution
                 // Use golden ratio for better spacing
-                var goldenRatio = 1.618033988749895f;
-                var baseX = (index * goldenRatio) % 1.0f;
+                const float goldenRatio = 1.618033988749895f;
+                var baseX = index * goldenRatio % 1.0f;
                 var xOffset = ((float)random.NextDouble() - 0.5f) * 0.15f;
                 _x = baseX + xOffset;
                 
                 // Assign to row with offset for visual variety
                 var row = index % RowCount;
-                var rowHeight = 1.0f / RowCount;
+                const float rowHeight = 1.0f / RowCount;
                 var rowCenter = (row + 0.5f) * rowHeight;
+                
                 // Add larger random offset within row for more natural look
                 var yOffset = ((float)random.NextDouble() - 0.5f) * rowHeight * 0.6f;
                 _baseY = Mathf.Clamp(rowCenter + yOffset, 0.05f, 0.95f);
@@ -149,7 +152,7 @@ namespace Aspid.MVVM
                 var opacity = 0.08f + (float)random.NextDouble() * 0.07f;
                 var scale = 0.6f + (float)random.NextDouble() * 0.3f;
                 
-                // Create header-style element
+                // Create a header-style element
                 Element = CreateHeaderElement(label, iconPath, opacity, scale);
                 Element.name = $"floating-header-{index}";
                 Element.pickingMode = PickingMode.Ignore;
@@ -158,33 +161,34 @@ namespace Aspid.MVVM
             private static VisualElement CreateHeaderElement(string label, string iconPath, float opacity, float scale)
             {
                 var container = new VisualElement()
+                    .SetPadding(8)
+                    .SetBorderWidth(1)
+                    .SetBorderRadius(8)
+                    .SetOpacity(opacity * 10f) // Scale up since the container already has opacity
+                    .SetAlignItems(Align.Center)
                     .SetPosition(Position.Absolute)
                     .SetFlexDirection(FlexDirection.Row)
-                    .SetAlignItems(Align.Center)
-                    .SetPadding(8)
-                    .SetBorderRadius(8)
+                    .SetScale(new Scale(new Vector2(scale, scale)))
                     .SetBackgroundColor(new Color(0.15f, 0.15f, 0.17f, opacity))
-                    .SetBorderColor(new Color(0.31f, 0.78f, 0.47f, opacity * 0.5f))
-                    .SetBorderWidth(1)
-                    .SetOpacity(opacity * 10f) // Scale up since container already has opacity
-                    .SetScale(new Scale(new Vector2(scale, scale)));
+                    .SetBorderColor(new Color(0.75f, 0.75f, 0.75f, opacity * 0.5f));
                 
                 var icon = new Image()
                     .SetSize(28)
                     .SetMargin(right: 8)
                     .SetImageFromResource(iconPath);
-                icon.pickingMode = PickingMode.Ignore;
                 
+                icon.pickingMode = PickingMode.Ignore;
+
                 var labelElement = new Label(label)
-                    .SetColor(new Color(0.75f, 0.75f, 0.75f, 1f))
                     .SetFontSize(12)
-                    .SetUnityFontStyleAndWeight(FontStyle.Bold);
+                    .SetUnityFontStyleAndWeight(FontStyle.Bold)
+                    .SetColor(new Color(0.75f, 0.75f, 0.75f, 1f));
+                
                 labelElement.pickingMode = PickingMode.Ignore;
                 
-                container.Add(icon);
-                container.Add(labelElement);
-                
-                return container;
+                return container
+                    .AddChild(icon)
+                    .AddChild(labelElement);
             }
 
             public void Update(Rect bounds)

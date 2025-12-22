@@ -16,8 +16,11 @@ namespace Aspid.MVVM.Samples.TodoList
             get => _searchInput;
             private set
             {
-                if (string.IsNullOrWhiteSpace(value)) SetSearchInput(ref _searchInput, string.Empty);
-                else SetSearchInput(ref _searchInput, value);
+                var newValue = string.IsNullOrWhiteSpace(value)
+                    ? string.Empty
+                    : value;
+                
+                SetSearchInputField(ref _searchInput, newValue);
             }
         }
 

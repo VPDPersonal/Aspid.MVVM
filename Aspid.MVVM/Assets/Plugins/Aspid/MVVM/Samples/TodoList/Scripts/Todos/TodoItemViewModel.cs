@@ -48,8 +48,5 @@ namespace Aspid.MVVM.Samples.TodoList
             _editCommand = editCommand.CreateCommandWithoutParametersOrEmpty(this);
             _deleteCommand =  deleteCommand.CreateCommandWithoutParametersOrEmpty(this);
         }
-
-        partial void OnIsCompletedChanged(bool newValue) =>
-            Todo.IsCompleted = newValue;
     }
 }

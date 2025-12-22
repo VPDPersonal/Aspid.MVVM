@@ -8,8 +8,24 @@ namespace Aspid.MVVM.Samples.TodoList
     [ViewModel]
     public sealed partial class TodoStorageViewModel : IDisposable
     {
-        [TwoWayBind] private string _searchInput;
-        [OneTimeBind] private readonly IReadOnlyObservableListSync<TodoItemViewModel> _todoItemViewModels;
+        private string _searchInput;
+
+        [TwoWayBind] 
+        public string SearchInput
+        {
+            get => _searchInput;
+            private set
+            {
+                var newValue = string.IsNullOrWhiteSpace(value)
+                    ? string.Empty
+                    : value;
+                
+                SetSearchInputField(ref _searchInput, newValue);
+            }
+        }
+
+        [OneTimeBind] 
+        private IReadOnlyObservableListSync<TodoItemViewModel> TodoItemViewModels { get; }
         
         private int _countAddedTodo;
         private readonly TodoStorage _todoStorage;
@@ -20,7 +36,7 @@ namespace Aspid.MVVM.Samples.TodoList
             _todoStorage = todoStorage;
             _editTextDialog = editTodoDialog;
             _countAddedTodo = todoStorage.Todos.Count;
-            _todoItemViewModels = todoStorage.Todos.CreateSync(CreateTodoViewModel);
+            TodoItemViewModels = todoStorage.Todos.CreateSync(CreateTodoViewModel);
         }
         
         private TodoItemViewModel CreateTodoViewModel(Todo todo)
@@ -43,7 +59,7 @@ namespace Aspid.MVVM.Samples.TodoList
         {
             _editTextDialog.Open(viewModel.Todo.Text, text =>
             {
-                viewModel.Todo.Text = text;
+                viewModel.Text = text;
                 SetTodoItemVisible(viewModel);
             });
         }

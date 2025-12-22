@@ -54,6 +54,81 @@ namespace Aspid.MVVM
                 }
             }
         }
+        
+        #region Search
+        public bool Search(string searchPath, string typeFilter = null)
+        {
+            _isSearchMode = true;
+            
+            if (_foldout is { value: false })
+            {
+                _foldout.SetValueWithoutNotify(true);
+                _content?.Clear();
+                _updatableFields.Clear();
+                _searchableFields.Clear();
+                
+                BuildContent(_content);
+            }
+            
+            // If searchPath is empty, search all nested fields with type filter if provided
+            if (string.IsNullOrEmpty(searchPath))
+            {
+                if (!string.IsNullOrEmpty(typeFilter))
+                {
+                    // Type-only search: search all nested fields with the type filter
+                    var anyMatch = false;
+                    
+                    foreach (var searchableField in _searchableFields)
+                    {
+                        if (searchableField.Search(string.Empty, typeFilter))
+                            anyMatch = true;
+                    }
+                    
+                    return anyMatch;
+                }
+                
+                // No filter - show all nested fields
+                foreach (var searchableField in _searchableFields)
+                    searchableField.ClearSearch();
+                
+                return true;
+            }
+            {
+                // Search in all nested fields with both name and type filter
+                var anyMatch = false;
+                
+                foreach (var searchableField in _searchableFields)
+                {
+                    if (searchableField.Search(searchPath, typeFilter))
+                    {
+                        anyMatch = true;
+                    }
+                }
+            
+                return anyMatch;
+            }
+        }
+        
+        public void ClearSearch()
+        {
+            if (!_isSearchMode) return;
+            
+            _isSearchMode = false;
+            
+            // Clear the search state in nested fields first
+            foreach (var searchableField in _searchableFields)
+                searchableField.ClearSearch();
+            
+            // Collapse back if it was expanded by search (not manually)
+            if (_foldout is not null && !_isExpanded)
+            {
+                _foldout.SetValueWithoutNotify(false);
+                _content?.Clear();
+                _updatableFields.Clear();
+                _searchableFields.Clear();
+            }
+        }
+        #endregion
 
         private void Build(string label, object value, IFieldContext context)
         {
@@ -101,79 +176,38 @@ namespace Aspid.MVVM
             var type = Value.GetType();
             var fields = type.GetFieldInfosIncludingBaseClasses(BindingFlags.Public | BindingFlags.Instance | BindingFlags.NonPublic);
             
+            var backingFieldNames = new HashSet<string>();
+            var autoProperties = new List<PropertyInfo>();
+            
+            foreach (var property in type.GetPropertyInfosIncludingBaseClasses(BindingFlags.Public | BindingFlags.Instance | BindingFlags.NonPublic, type))
+            {
+                if (NameHelper.IsAutoProperty(property, type))
+                {
+                    autoProperties.Add(property);
+                    
+                    var backingFieldName = NameHelper.GetAutoPropertyBackingFieldName(property.Name);
+                    backingFieldNames.Add(backingFieldName);
+                }
+            }
+            
             foreach (var fieldInfo in fields)
             {
+                if (backingFieldNames.Contains(fieldInfo.Name)) continue;
                 BuildDebugField(content, fieldInfo);
             }
+            
+            foreach (var property in autoProperties)
+                BuildDebugField(content, property);
         }
 
-        protected void BuildDebugField(VisualElement content, FieldInfo fieldInfo)
+        protected void BuildDebugField(VisualElement content, MemberInfo memberInfo)
         {
-            var field = new DebugField(Value, fieldInfo, !Context.IsAlternativeColor);
+            var field = new DebugField(Value, memberInfo, !Context.IsAlternativeColor);
             
             _updatableFields.Add(field);
             _searchableFields.Add(field);
             
             content.AddChild(field);
-        }
-        
-        public bool Search(string searchPath)
-        {
-            _isSearchMode = true;
-            
-            // Expand the foldout to show nested fields during search
-            if (_foldout != null && !_foldout.value)
-            {
-                _foldout.SetValueWithoutNotify(true);
-                _updatableFields.Clear();
-                _searchableFields.Clear();
-                _content?.Clear();
-                BuildContent(_content);
-            }
-            
-            // If searchPath is empty, show all nested fields (e.g., from "h." query)
-            if (string.IsNullOrEmpty(searchPath))
-            {
-                foreach (var searchableField in _searchableFields)
-                {
-                    searchableField.ClearSearch();
-                }
-                return true;
-            }
-            
-            // Search in all nested fields
-            var anyMatch = false;
-            foreach (var searchableField in _searchableFields)
-            {
-                if (searchableField.Search(searchPath))
-                {
-                    anyMatch = true;
-                }
-            }
-            
-            return anyMatch;
-        }
-        
-        public void ClearSearch()
-        {
-            if (!_isSearchMode) return;
-            
-            _isSearchMode = false;
-            
-            // Clear the search state in nested fields first
-            foreach (var searchableField in _searchableFields)
-            {
-                searchableField.ClearSearch();
-            }
-            
-            // Collapse back if it was expanded by search (not manually)
-            if (_foldout != null && !_isExpanded)
-            {
-                _foldout.SetValueWithoutNotify(false);
-                _content?.Clear();
-                _updatableFields.Clear();
-                _searchableFields.Clear();
-            }
         }
     }
 }

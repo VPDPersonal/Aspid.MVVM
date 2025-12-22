@@ -16,6 +16,7 @@ namespace Aspid.MVVM
         private const string StyleSheetPath = "Styles/Debug/Fields/aspid-debug-field"; 
         
         private readonly string _label;
+        private readonly Type _memberType;
         private readonly IUpdatableDebugField _updatableField;
         private readonly ISearchableDebugField _searchableField;
         
@@ -29,6 +30,7 @@ namespace Aspid.MVVM
                 styleSheets.Add(Resources.Load<StyleSheet>(StyleSheetPath));
                 
                 _label = label;
+                _memberType = context.MemberType;
                 var inputField = GetInputField(label, context);
                 
                 _updatableField = inputField as IUpdatableDebugField;
@@ -46,10 +48,25 @@ namespace Aspid.MVVM
         public void UpdateValue() =>
             _updatableField?.UpdateValue();
         
-        public bool Search(string searchPath)
+        public bool Search(string searchPath, string typeFilter = null)
         {
+            // If only type filter is provided (no name search), check the type and show/hide
             if (string.IsNullOrEmpty(searchPath))
             {
+                if (!string.IsNullOrEmpty(typeFilter))
+                {
+                    // Type-only filter: check if this field's type matches
+                    if (TypeMatches())
+                    {
+                        style.display = DisplayStyle.Flex;
+                        return true;
+                    }
+                    
+                    style.display = DisplayStyle.None;
+                    return false;
+                }
+                
+                // No filter at all, clear search
                 ClearSearch();
                 return true;
             }
@@ -59,6 +76,45 @@ namespace Aspid.MVVM
             var remainingPath = parts.Length > 1 ? parts[1] : null;
             var hasDotInQuery = searchPath.Contains('.');
             
+            // If the currentSearch is empty (e.g., path like "." or ".."), we need nested fields
+            if (string.IsNullOrEmpty(currentSearch))
+            {
+                // This field must have nested content to match
+                if (_searchableField is not null)
+                {
+                    // Search in nested fields - pass a remaining path and type filter
+                    var pathToSearch = remainingPath ?? string.Empty;
+                    var nestedMatches = _searchableField.Search(pathToSearch, typeFilter);
+                    style.display = nestedMatches ? DisplayStyle.Flex : DisplayStyle.None;
+                    return nestedMatches;
+                }
+                
+                // No nested fields - check if this is the final level (no more dots in a remaining path)
+                // If there's still a remaining path (e.g., ".."), hide this leaf field
+                if (!string.IsNullOrEmpty(remainingPath))
+                {
+                    style.display = DisplayStyle.None;
+                    return false;
+                }
+                
+                // This is the final level (e.g., single ".") - apply type filter if provided
+                if (!string.IsNullOrEmpty(typeFilter))
+                {
+                    if (TypeMatches())
+                    {
+                        style.display = DisplayStyle.Flex;
+                        return true;
+                    }
+                    
+                    style.display = DisplayStyle.None;
+                    return false;
+                }
+                
+                // No type filter and final level, show the field
+                style.display = DisplayStyle.Flex;
+                return true;
+            }
+            
             // Check if the current field name matches (partial match, case-insensitive)
             var currentMatches = _label.IndexOf(currentSearch, StringComparison.OrdinalIgnoreCase) >= 0;
             
@@ -67,12 +123,12 @@ namespace Aspid.MVVM
                 // If a query contains a dot (e.g. "h." or "h.skill"), we're looking for nested fields
                 if (hasDotInQuery)
                 {
-                    // This field matches, but we need nested fields
+                    // This field matches, but we need to navigate deeper
                     if (_searchableField is not null)
                     {
-                        // Pass the remaining path (empty string for "h." means show all nested)
+                        // Pass the remaining path - type filter will be applied at the leaf level
                         var pathToSearch = remainingPath ?? string.Empty;
-                        var nestedMatches = _searchableField.Search(pathToSearch);
+                        var nestedMatches = _searchableField.Search(pathToSearch, typeFilter);
                         style.display = nestedMatches ? DisplayStyle.Flex : DisplayStyle.None;
                         return nestedMatches;
                     }
@@ -82,15 +138,41 @@ namespace Aspid.MVVM
                     return false;
                 }
                 
-                // Simple query without a dot-show matching field
+                // Simple query without a dot - this is a leaf match
+                // Apply type filter if provided
+                if (!string.IsNullOrEmpty(typeFilter))
+                {
+                    if (TypeMatches())
+                    {
+                        style.display = DisplayStyle.Flex;
+                        return true;
+                    }
+                    
+                    style.display = DisplayStyle.None;
+                    return false;
+                }
+                
+                // No type filter, show matching field
                 style.display = DisplayStyle.Flex;
                 return true;
             }
             
             // The current field doesn't match - hide it
-            // Don't search nested fields for simple queries (optimization)
             style.display = DisplayStyle.None;
             return false;
+            
+            bool TypeMatches()
+            {
+                if (_memberType == null || string.IsNullOrEmpty(typeFilter))
+                    return true;
+            
+                var typeName = _memberType.Name;
+                var typeFullName = _memberType.FullName ?? typeName;
+            
+                // Support both simple name and full name matching (case-insensitive)
+                return typeName.IndexOf(typeFilter, StringComparison.OrdinalIgnoreCase) >= 0 ||
+                    typeFullName.IndexOf(typeFilter, StringComparison.OrdinalIgnoreCase) >= 0;
+            }
         }
         
         public void ClearSearch()
@@ -141,7 +223,7 @@ namespace Aspid.MVVM
                 marker.AddToClassList("command-marker");
                 fieldContainer.AddChild(marker);
             }
-            else if (context is BindFieldContext)
+            else if (context is BindFieldContext or BindPropertyContext)
             {
                 marker.AddToClassList("bind-marker");
                 fieldContainer.AddChild(marker);

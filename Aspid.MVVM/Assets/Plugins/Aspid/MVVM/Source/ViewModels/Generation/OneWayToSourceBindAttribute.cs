@@ -1,5 +1,3 @@
-using System;
-
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM
 {
@@ -9,6 +7,5 @@ namespace Aspid.MVVM
     /// This attribute enforces <see cref="BindMode.OneWayToSource"/> binding mode.
     /// Note: This attribute does not work with readonly fields.
     /// </summary>
-    [AttributeUsage(AttributeTargets.Field)]
     public sealed class OneWayToSourceBindAttribute : BaseBindAttribute { }
 }

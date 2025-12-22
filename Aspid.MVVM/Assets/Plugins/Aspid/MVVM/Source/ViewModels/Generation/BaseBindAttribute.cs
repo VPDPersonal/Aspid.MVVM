@@ -10,5 +10,6 @@ namespace Aspid.MVVM
     /// Classes that inherit from <see cref="BaseBindAttribute"/> must be manually added to the Source Generator 
     /// to generate the appropriate binding logic. This process does not happen automatically.
     /// </summary>
+    [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property)]
     public abstract class BaseBindAttribute : Attribute { }
 }

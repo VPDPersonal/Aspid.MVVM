@@ -1,6 +1,8 @@
+using System.Linq;
 using Microsoft.CodeAnalysis;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Aspid.MVVM.Generators.Generators.ViewModels.Data.Infos;
 using Aspid.MVVM.Generators.Generators.ViewModels.Extensions;
 using BindMode = Aspid.MVVM.Generators.Generators.ViewModels.Data.BindMode;
@@ -9,9 +11,14 @@ namespace Aspid.MVVM.Generators.Generators.ViewModels.Factories;
 
 public static class BindablePropertyFactory
 {
-    public static IReadOnlyCollection<BindablePropertyInfo> Create(ImmutableArray<IPropertySymbol> properties)
+    public static IReadOnlyCollection<BindablePropertyInfo> Create(TypeDeclarationSyntax declaration, ImmutableArray<IPropertySymbol> properties)
     {
         var bindableProperties = new List<BindablePropertyInfo>();
+        
+        var setMethodNames = new HashSet<string>(properties
+            .Select(p => $"Set{p.Name}Field"));
+        
+        var usedSetMethods = MethodUsageAnalyzer.GetUsedMethods(declaration, setMethodNames);
 
         foreach (var property in properties)
         {
@@ -32,7 +39,10 @@ public static class BindablePropertyFactory
                 default: continue;
             }
             
-            bindableProperties.Add(new BindablePropertyInfo(property, mode));
+            var setMethodName = $"Set{property.Name}Field";
+            var isSetMethodUsed = usedSetMethods.Contains(setMethodName);
+            
+            bindableProperties.Add(new BindablePropertyInfo(property, mode, isSetMethodUsed));
         }
 
         return bindableProperties;

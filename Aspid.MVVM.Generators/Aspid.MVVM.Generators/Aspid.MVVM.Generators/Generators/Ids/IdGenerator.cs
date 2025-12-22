@@ -22,7 +22,7 @@ public partial class IdGenerator : IIncrementalGenerator
     {
         var candidate = node switch
         {
-            ClassDeclarationSyntax or StructDeclarationSyntax => node as TypeDeclarationSyntax,
+            ClassDeclarationSyntax => node as TypeDeclarationSyntax,
             _ => null
         };
 

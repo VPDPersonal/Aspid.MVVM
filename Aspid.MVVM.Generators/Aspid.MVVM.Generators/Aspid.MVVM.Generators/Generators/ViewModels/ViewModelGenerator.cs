@@ -49,7 +49,7 @@ public sealed class ViewModelGenerator : IIncrementalGenerator
             ? Inheritor.Inheritor
             : Inheritor.None;
 
-        var bindableMembers = BindableMembersFactory.Create(symbol);
+        var bindableMembers = BindableMembersFactory.Create(symbol, candidate);
         var memberByGroups = IdLengthMemberGroup.Create(bindableMembers);
         var customViewModelInterfaces = CustomViewModelInterfacesFactory.Create(symbol);
         

@@ -3,19 +3,20 @@ using Microsoft.CodeAnalysis;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using Aspid.MVVM.Generators.Helpers;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Aspid.MVVM.Generators.Generators.ViewModels.Data.Infos;
 
 namespace Aspid.MVVM.Generators.Generators.ViewModels.Factories;
 
 public static class BindableMembersFactory
 {
-    public static ImmutableArray<IBindableMemberInfo> Create(ITypeSymbol symbol)
+    public static ImmutableArray<IBindableMemberInfo> Create(ITypeSymbol symbol, TypeDeclarationSyntax declaration)
     {
         var members = new MembersByGroup(symbol);
 
         var bindableFields = BindableFieldFactory.Create(members.Fields);
         var bindableBindAlso = BindableBindAlsoFactory.Create(members.All);
-        var bindableProperties = BindablePropertyFactory.Create(members.Properties);
+        var bindableProperties = BindablePropertyFactory.Create(declaration, members.Properties);
         
         var generatedProperties = bindableFields
             .Where(field => field.Type.ToString() == "bool")

@@ -7,7 +7,7 @@ using BindMode = Aspid.MVVM.Generators.Generators.ViewModels.Data.BindMode;
 
 namespace Aspid.MVVM.Generators.Generators.ViewModels.Body;
 
-public static class BindableMembersBody
+public static class BindableInterfaceMembersBody
 {
     public static void Generate(       
         string @namespace,
@@ -20,7 +20,7 @@ public static class BindableMembersBody
             .AppendProperties(data)
             .EndClass(@namespace);
         
-        context.AddSource(declaration.GetFileName(@namespace, "BindableMembers"), code.GetSourceText());
+        context.AddSource(declaration.GetFileName(@namespace, "BindableInterfaceMembers"), code.GetSourceText());
     }
 
     private static CodeWriter AppendProperties(this CodeWriter code, in ViewModelData data)
@@ -39,7 +39,7 @@ public static class BindableMembersBody
 
                 if (!propertyType.Contains(IReadOnlyValueBindableMember))
                 {
-                    if (!member.BindableMemberPropertyType.Contains(IReadOnlyBindableMember))
+                    if (!member.Bindable.PropertyType.Contains(IReadOnlyBindableMember))
                         continue;
                 }
             }
@@ -47,7 +47,7 @@ public static class BindableMembersBody
             var interfaceType = customInterface.Interface.ToDisplayStringGlobal();
                 
             code.AppendLine(GeneratedCodeViewModelAttribute)
-                .AppendLine($"{propertyType} {interfaceType}.{property.Name} => {member.GeneratedName}Bindable;")
+                .AppendLine($"{propertyType} {interfaceType}.{property.Name} => {member.Bindable.PropertyName};")
                 .AppendLine();
         }
 

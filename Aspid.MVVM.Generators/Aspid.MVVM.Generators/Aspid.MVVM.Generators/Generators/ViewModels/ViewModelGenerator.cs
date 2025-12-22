@@ -48,12 +48,12 @@ public sealed class ViewModelGenerator : IIncrementalGenerator
         var inheritor = symbol.HasAnyAttributeInBases(ViewModelAttribute) 
             ? Inheritor.Inheritor
             : Inheritor.None;
-
-        var bindableMembers = BindableMembersFactory.Create(symbol);
+        
+        var bindableMembers = BindableMembersFactory.Create(symbol, candidate, out var propertyNotificationData);
         var memberByGroups = IdLengthMemberGroup.Create(bindableMembers);
         var customViewModelInterfaces = CustomViewModelInterfacesFactory.Create(symbol);
         
-        return new ViewModelData(inheritor, symbol, candidate, bindableMembers, memberByGroups, customViewModelInterfaces);
+        return new ViewModelData(inheritor, symbol, candidate, bindableMembers, memberByGroups, customViewModelInterfaces, propertyNotificationData);
     }
     
     private static void GenerateCode(SourceProductionContext context, ViewModelData data)
@@ -62,9 +62,12 @@ public sealed class ViewModelGenerator : IIncrementalGenerator
         var @namespace = declaration.GetNamespaceName();
         var declarationText = new DeclarationText(declaration);
 
-        PropertiesBody.Generate(@namespace, data, declarationText, context);
+        BindableMembers.Generate(@namespace, data, declarationText, context);
         RelayCommandBody.Generate(@namespace, data, declarationText, context);
-        BindableMembersBody.Generate(@namespace, data, declarationText, context);
         FindBindableMembersBody.Generate(@namespace, data, declarationText, context);
+        GeneratedPropertiesBody.Generate(@namespace, data, declarationText, context);
+        PropertyNotificationBody.Generate(@namespace, data, declarationText, context);
+        GeneratedPropertyMethodsBody.Generate(@namespace, data, declarationText, context);
+        BindableInterfaceMembersBody.Generate(@namespace, data, declarationText, context);
     }
 }

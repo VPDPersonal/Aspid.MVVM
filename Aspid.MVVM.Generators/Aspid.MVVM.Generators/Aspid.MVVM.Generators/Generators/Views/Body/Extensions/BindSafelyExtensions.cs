@@ -1,14 +1,14 @@
 using Microsoft.CodeAnalysis;
 using Aspid.Generators.Helper;
 using Aspid.MVVM.Generators.Generators.Views.Data.Members;
-using Aspid.MVVM.Generators.Generators.ViewModels.Data.Members;
+using Aspid.MVVM.Generators.Generators.ViewModels.Data.Infos;
 
 namespace Aspid.MVVM.Generators.Generators.Views.Body.Extensions;
 
 public static class BindSafelyExtensions
 {
-    public static CodeWriter AppendBindSafely(this CodeWriter code, BinderMember member, BindableMember bindableMember) =>
-        code.AppendBindSafely(member, bindableMember?.GeneratedName + "Bindable");
+    public static CodeWriter AppendBindSafely(this CodeWriter code, BinderMember member, IBindableMemberInfo bindableMember) =>
+        code.AppendBindSafely(member, bindableMember.Bindable.PropertyName);
     
     public static CodeWriter AppendBindSafely(this CodeWriter code, BinderMember member, string? bindableMemberName = null)
     {

@@ -1,20 +1,17 @@
-using System.Linq;
 using Microsoft.CodeAnalysis;
-using Aspid.Generators.Helper;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using Aspid.MVVM.Generators.Generators.ViewModels.Data.Infos;
 using Aspid.MVVM.Generators.Generators.ViewModels.Extensions;
-using Aspid.MVVM.Generators.Generators.ViewModels.Data.Members;
-using static Aspid.MVVM.Generators.Generators.Descriptions.Classes;
 using BindMode = Aspid.MVVM.Generators.Generators.ViewModels.Data.BindMode;
 
 namespace Aspid.MVVM.Generators.Generators.ViewModels.Factories;
 
 public static class BindableFieldFactory
 {
-    public static IReadOnlyCollection<BindableField> Create(ImmutableArray<IFieldSymbol> fields, IReadOnlyCollection<BindableBindAlso> bindableBindAlsos)
+    public static IReadOnlyCollection<BindableFieldInfo> Create(ImmutableArray<IFieldSymbol> fields)
     {
-        var bindableFields = new List<BindableField>();
+        var bindableFields = new List<BindableFieldInfo>();
 
         foreach (var field in fields)
         {
@@ -31,33 +28,14 @@ public static class BindableFieldFactory
                         if (field.IsReadOnly) continue;
                         break;
                     }
-                
+
+                case BindMode.None:
                 default: continue;
             }
             
-            bindableFields.Add(new BindableField(field, mode, GetBindableBindAlso(field, bindableBindAlsos)));
+            bindableFields.Add(new BindableFieldInfo(field, mode));
         }
 
         return bindableFields;
-    }
-
-    private static ImmutableArray<BindableBindAlso> GetBindableBindAlso(IFieldSymbol field, IReadOnlyCollection<BindableBindAlso> allBindableBindAlsos)
-    {
-        var set = new HashSet<string>();
-
-        foreach (var attribute in field.GetAttributes())
-        {
-            if (attribute.AttributeClass != null &&
-                attribute.AttributeClass.ToDisplayStringGlobal() == BindAlsoAttribute)
-            {
-                var value = attribute.ConstructorArguments[0].Value;
-                if (value is null) continue;
-
-                set.Add(value.ToString());
-            }
-        }
-
-        return allBindableBindAlsos.Where(bindableBindAlso => 
-            set.Contains(bindableBindAlso.SourceName) || set.Contains(bindableBindAlso.GeneratedName)).ToImmutableArray();
     }
 }

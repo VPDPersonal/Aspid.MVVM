@@ -33,7 +33,7 @@ public partial class IdGenerator
             }
             else
             {
-                var members = BindableMembersFactory.Create(symbol);
+                var members = BindableMembersFactory.Create(symbol, syntax, out _);
 
                 foreach (var member in members)
                     ids.Add(member.Id.SourceValue);

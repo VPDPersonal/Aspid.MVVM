@@ -3,35 +3,53 @@ using System.Text;
 using Microsoft.CodeAnalysis;
 using Aspid.Generators.Helper;
 using Aspid.MVVM.Generators.Helpers;
+using Aspid.MVVM.Generators.Generators.Ids.Data;
 using static Aspid.Generators.Helper.Classes;
 using static Aspid.MVVM.Generators.Generators.Descriptions.Classes;
 using static Aspid.MVVM.Generators.Generators.Descriptions.General;
 
-namespace Aspid.MVVM.Generators.Generators.ViewModels.Data.Members;
+namespace Aspid.MVVM.Generators.Generators.ViewModels.Data.Infos;
 
-public sealed class BindableCommand : BindableMember<IMethodSymbol>
+public sealed class BindableCommandInfo : IBindableMemberInfo
 {
-    public readonly string CanExecute;
+    public ISymbol Member { get; }
+    
+    public string Type { get; }
+    
+    public string Name { get; }
+    
+    public IdData Id { get; }
 
-    public BindableCommand(IMethodSymbol command, string? canExecute, bool isLambda, bool isMethod)
-        : base(command, BindMode.OneTime, GetTypeName(command), $"{command.GetFieldName("__")}Command", $"{command.GetPropertyName()}Command", "Command")
-    {
-        CanExecute = GetCanExecuteAction(command, isLambda, isMethod, canExecute);
-    }
+    public BindMode Mode => BindMode.OneTime;
+    
+    public GeneratedBindableMembers Bindable { get; }
+    
+    public string CommandDeclaration { get; }
 
-    public string ToDeclarationCommandString()
+    public BindableCommandInfo(IMethodSymbol methodSymbol, string? canExecute, bool isLambda, bool isMethod)
     {
-        return
+        Member = methodSymbol;
+        Type = GetTypeName(methodSymbol);
+        Id = new IdData(methodSymbol, "Command");
+        Name = $"{methodSymbol.GetPropertyName()}Command";
+        Bindable = GeneratedBindableMembers.CreateForRelayCommand(Type, Name);
+
+        var fieldName = $"{methodSymbol.GetFieldName("__")}Command";
+        canExecute = GetCanExecuteAction(methodSymbol, isLambda, isMethod, canExecute);
+        
+        CommandDeclaration = 
             $"""
+            #region {Name}
             {GeneratedCodeViewModelAttribute}
             [{EditorBrowsableAttribute}({EditorBrowsableState}.Never)]
-            private {Type} {SourceName};
-            
+            private {Type} {fieldName};
+
             {GeneratedCodeViewModelAttribute}
-            private {Type} {GeneratedName} => {SourceName} ??= new {Type}({Member.Name}{CanExecute});
+            private {Type} {Name} => {fieldName} ??= new {Type}({methodSymbol.Name}{canExecute});
+            #endregion
             """;
     }
-    
+
     private static string GetTypeName(IMethodSymbol command)
     {
         var type = new StringBuilder(RelayCommand);

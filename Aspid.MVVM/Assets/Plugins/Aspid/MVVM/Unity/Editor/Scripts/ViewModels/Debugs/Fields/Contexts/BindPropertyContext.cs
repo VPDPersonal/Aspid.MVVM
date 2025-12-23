@@ -35,9 +35,12 @@ namespace Aspid.MVVM
         public object GetValue() => 
             _bindProperty.GetValue(Target);
 
-        public void SetValue(object value) =>
+        public void SetValue(object value)
+        {
+            if (IsReadonly) return;
             _bindProperty.SetValue(Target, value);
-        
+        }
+
         public bool IsDefined(Type attributeType, bool inherit = false) =>
             Member.IsDefined(attributeType, inherit);
         

@@ -23,14 +23,14 @@ namespace Aspid.MVVM
             
             double min = minValue;
             double max = maxValue;
-            var value = (int)GetValue();
+            var value = (long)GetValue();
             
             SetEnabled(!context.IsReadonly);
 
             if (NumberRestrictions.CalculateMinAndMax(context, ref min, ref max))
             {
                 _slider = new AspidSliderInt(label, (int)min, (int)max);
-                _slider.SetValueWithoutNotify(value);
+                _slider.SetValueWithoutNotify((int)value);
                 _slider.RegisterValueChangedCallback(e => context.SetValue((long)e.newValue));
                 
                 Add(_slider);

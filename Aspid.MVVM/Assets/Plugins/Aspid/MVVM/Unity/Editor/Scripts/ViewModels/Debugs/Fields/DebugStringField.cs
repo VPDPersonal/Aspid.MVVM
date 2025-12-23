@@ -58,7 +58,7 @@ namespace Aspid.MVVM
             else
             {
                 _textField = null;
-                Add(new DebugNullField(label, typeof(string)));
+                Add(new DebugNullField(label, typeof(string)) { isReadOnly = _isReadonly});
             }
         }
     }

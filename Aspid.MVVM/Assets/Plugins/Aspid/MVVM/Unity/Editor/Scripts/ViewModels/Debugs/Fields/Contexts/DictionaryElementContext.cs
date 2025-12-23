@@ -42,8 +42,11 @@ namespace Aspid.MVVM
             return Activator.CreateInstance(MemberType, _key, value);
         }
 
-        public void SetValue(object value) =>
+        public void SetValue(object value)
+        {
+            if (IsReadonly) return;
             ((IDictionary)Target)[_key] = value;
+        }
 
         public bool IsDefined(Type attributeType, bool inherit = false) => 
             Member?.IsDefined(attributeType, inherit) ?? false;

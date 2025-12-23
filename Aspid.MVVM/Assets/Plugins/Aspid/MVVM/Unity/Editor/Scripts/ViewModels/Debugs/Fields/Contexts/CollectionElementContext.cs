@@ -39,6 +39,8 @@ namespace Aspid.MVVM
 
         public void SetValue(object value)
         {
+            if (IsReadonly) return;
+            
             _value = value;
             
             switch (_collection)

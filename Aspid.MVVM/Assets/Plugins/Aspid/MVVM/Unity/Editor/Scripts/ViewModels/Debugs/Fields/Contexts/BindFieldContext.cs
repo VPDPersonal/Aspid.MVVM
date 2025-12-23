@@ -15,7 +15,7 @@ namespace Aspid.MVVM
 
         public bool IsAlternativeColor { get; }
         
-        public bool IsReadonly => false;
+        public bool IsReadonly => !_generatedProperty.CanWrite;
         
         private readonly FieldInfo _bindField;
         private readonly PropertyInfo _generatedProperty;
@@ -45,9 +45,12 @@ namespace Aspid.MVVM
         public object GetValue() => 
             _bindField.GetValue(Target);
 
-        public void SetValue(object value) =>
+        public void SetValue(object value)
+        {
+            if (IsReadonly) return;
             _generatedProperty.SetValue(Target, value);
-        
+        }
+
         public bool IsDefined(Type attributeType, bool inherit = false) =>
             Member.IsDefined(attributeType, inherit);
         

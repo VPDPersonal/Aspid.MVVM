@@ -25,6 +25,9 @@ namespace Aspid.MVVM
 
         public static IEnumerable<RequiredFieldForMonoBinder> GetRequireBinderFields(this IView view)
         {
+            if (view is null)
+                return Enumerable.Empty<RequiredFieldForMonoBinder>();
+            
             var fields = view.GetType()
                 .GetFieldInfosIncludingBaseClasses(BindingFlags)
                 .Where(RequiredFieldForMonoBinder.IsRequireBinderField)

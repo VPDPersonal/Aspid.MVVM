@@ -91,7 +91,6 @@ namespace Aspid.MVVM
                 "MonoView",
                 "ViewModel",
                 "MonoBinder", 
-                "GeneralView",
                 "RelayCommand",
                 "ObservableList",
                 "ViewInitializer",

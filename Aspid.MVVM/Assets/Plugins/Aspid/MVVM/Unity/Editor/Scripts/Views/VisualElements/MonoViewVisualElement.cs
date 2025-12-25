@@ -1,25 +1,41 @@
 #nullable enable
+using System;
 using System.Linq;
 using Aspid.Internal;
+using Aspid.UnityFastTools;
 using UnityEngine.UIElements;
+using UnityEditor.UIElements;
+using System.Collections.Generic;
 using Aspid.UnityFastTools.Editors;
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM
 {
-    // TODO Aspid.MVVM Unity – Write summary
     public sealed class MonoViewVisualElement : MonoViewVisualElement<MonoView, MonoViewEditor>
     {
         public MonoViewVisualElement(MonoViewEditor editor) :
             base(editor) { }
     }
-
-    // TODO Aspid.MVVM Unity – Write summary
+    
     public abstract class MonoViewVisualElement<TView, TEditor> : ViewVisualElement<TView, TEditor>
         where TView : MonoView
         where TEditor : MonoViewEditor<TView, TEditor>
     {
+        private const string GeneralBindersId = "general-binders";
+        
         private UnassignedBindersVisualElement<TView, TEditor>? _unassignedBindersVisualElement;
+        
+        protected override IEnumerable<string> PropertiesExcluding
+        {
+            get
+            {
+                foreach (var property in base.PropertiesExcluding)
+                    yield return property;
+                
+                yield return Editor.BindersList.Property.propertyPath;
+                yield return Editor.DesignViewModel.propertyPath;
+            }
+        }
         
         protected override string IconPath => Editor.UnassignedBinders.Any()
             ? EditorConstants.AspidIconYellow
@@ -27,12 +43,76 @@ namespace Aspid.MVVM
         
         public MonoViewVisualElement(TEditor editor)
             : base(editor) { }
+
+        #region Update
+        public void UpdateGeneralBinders()
+        {
+            var generalBinders = this.Q<VisualElement>(GeneralBindersId);
+            if (generalBinders is null) return;
+            
+            var generalBindersParent = generalBinders.parent;
+            generalBindersParent.Remove(this.Q<VisualElement>(GeneralBindersId));
+            generalBindersParent.AddChild(BuildGeneralBinders());
+
+            generalBindersParent.SetDisplay(this.Q<VisualElement>(GeneralBindersId).childCount > 0 ? DisplayStyle.Flex : DisplayStyle.None);
+        }
         
         protected override void OnUpdate() =>
             _unassignedBindersVisualElement!.Update();
+        #endregion
+        
+        protected override VisualElement? OnBuiltHeader()
+        {
+            var type = Editor.TargetAsView.GetType();
+            
+            if (type == typeof(MonoView)
+                || type.IsDefined(typeof(ShowDesignViewModelAttribute), false))
+            {
+                return new VisualElement()
+                    .AddChild(BuildDesignViewModel())
+                    .AddChild(BuiltGeneralBinders());
+            }
+
+            return null;
+        }
         
         protected override VisualElement OnBuiltBaseInspector() =>
             BuildUnassignedBinders();
+        
+        private VisualElement BuildDesignViewModel()
+        {
+            var container = new AspidContainer(AspidContainer.StyleType.Dark);
+            container.AddChild(new AspidTitle("Design ViewModel"));
+            
+            var propertyField = new PropertyField(Editor.DesignViewModel);
+            
+            return container.AddChild(propertyField);
+        }
+        
+        private VisualElement BuiltGeneralBinders()
+        {
+            var container = new AspidContainer();
+            
+            return container
+                .AddChild(BuildGeneralBinders());
+        }
+
+        private VisualElement BuildGeneralBinders()
+        {
+            var container = new VisualElement().SetName(GeneralBindersId);
+            
+            for (var i = 0; i < Editor.BindersList.ArraySize; i++)
+            {
+                var element = Editor.BindersList.GetArrayElementAtIndex(i);
+
+                var property = new AspidPropertyField(element.MonoBindersProperty, element.Id)
+                    .SetMargin(top: 3);
+                
+                container.AddChild(property);
+            }
+
+            return container;
+        }
 
         private UnassignedBindersVisualElement<TView, TEditor> BuildUnassignedBinders()
         {
@@ -44,28 +124,39 @@ namespace Aspid.MVVM
         {
             var view = Editor.TargetAsView;
             if (!view) return string.Empty;
-	        
-            var type = view.GetType();
-            var views = view.GetComponents(type);
-	        
-            switch (views.Length)
+            
+            if (!string.IsNullOrWhiteSpace(Editor.DesignViewModel.stringValue))
             {
-                case 0: return string.Empty;
-                case 1: return views[0].GetScriptName();
-                default:
-                    {
-                        var index = 0;
-	        
-                        foreach (var component in views)
+                var viewModelType = Type.GetType(Editor.DesignViewModel.stringValue);
+                if (viewModelType is not null) return $"{GetName()} ({viewModelType.Name})";
+            }
+
+            return GetName();
+
+            string GetName()
+            {
+                var type = view.GetType();
+                var views = view.GetComponents(type);
+                
+                switch (views.Length)
+                {
+                    case 0: return string.Empty;
+                    case 1: return views[0].GetScriptName();
+                    default:
                         {
-                            if (component.GetType() != type) continue;
-		        
-                            index++;
-                            if (component == view) return $"{view.GetScriptName()} ({index})";
+                            var index = 0;
+
+                            foreach (var component in views)
+                            {
+                                if (component.GetType() != type) continue;
+
+                                index++;
+                                if (component == view) return $"{view.GetScriptName()} ({index})";
+                            }
+
+                            return string.Empty;
                         }
-				        
-                        return string.Empty;
-                    }
+                }
             }
         }
     }

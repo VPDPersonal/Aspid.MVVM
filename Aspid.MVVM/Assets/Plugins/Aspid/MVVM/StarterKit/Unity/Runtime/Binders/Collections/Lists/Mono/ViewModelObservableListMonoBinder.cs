@@ -75,9 +75,11 @@ namespace Aspid.MVVM.StarterKit
         protected sealed override void OnAdded(IReadOnlyList<IViewModel> newItems, int newStartingIndex)
         {
             if (newItems is null) return;
-
-            for (var i = 0; i < newItems.Count; i++)
-                OnAdded(newItems[i], newStartingIndex + i);
+            
+            var index = 0;
+            
+            foreach (var item in newItems)
+                OnAdded(item, newStartingIndex + index++);
         }
 
         protected sealed override void OnRemoved(IViewModel oldItem, int oldStartingIndex)

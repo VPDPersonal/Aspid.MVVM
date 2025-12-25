@@ -180,6 +180,8 @@ namespace Aspid.MVVM
         
         private void FillLogList()
         {
+            if (_editor?.LogsProperty is null) return;
+            
             if (_logsSize != _editor.LogsProperty.arraySize)
             {
                 _logsSize = _editor.LogsProperty.arraySize;

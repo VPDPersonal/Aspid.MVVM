@@ -21,7 +21,7 @@ namespace Aspid.UnityFastTools
 
         private void Initialize()
         {
-            if (!_isInitialized) return;
+            if (_isInitialized) return;
 
             // TODO Aspid.UnityFastTools – Add Define for Marker
             using (InitializeMarker.Auto())

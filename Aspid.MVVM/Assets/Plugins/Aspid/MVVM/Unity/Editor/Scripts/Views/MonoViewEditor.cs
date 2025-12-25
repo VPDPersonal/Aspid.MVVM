@@ -27,9 +27,10 @@ namespace Aspid.MVVM
         
         protected ValidableBindersById LastBinders { get; private set; }
         
-        public IEnumerable<IMonoBinderValidable> UnassignedBinders => TargetAsView
-            .GetComponentsInChildren<IMonoBinderValidable>(true)
-            .Where(binder => binder.View is null || string.IsNullOrWhiteSpace(binder.Id));
+        public IEnumerable<IMonoBinderValidable> UnassignedBinders => TargetAsView?
+            .GetComponentsInChildren<IMonoBinderValidable>(includeInactive: true)
+            .Where(binder => binder.View is null || string.IsNullOrWhiteSpace(binder.Id))
+            ?? Enumerable.Empty<IMonoBinderValidable>();
 
         #region Enable Methods
         protected sealed override void OnEnable()
@@ -73,6 +74,7 @@ namespace Aspid.MVVM
         {
             base.Update();
             
+            // TODO Aspid.MVVM Refactor
             // This is a temp solution.
             {
                 var binders = ValidableBindersById.GetValidableBindersById(TargetAsView);

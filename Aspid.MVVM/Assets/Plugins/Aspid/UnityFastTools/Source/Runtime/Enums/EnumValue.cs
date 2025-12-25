@@ -9,6 +9,7 @@ namespace Aspid.UnityFastTools
     [Serializable]
     public sealed class EnumValue<TValue> : EnumValue
     {
+        [SerializeField] private int _index;
         [SerializeField] private string _key;
         [SerializeField] private TValue _value;
         
@@ -34,7 +35,8 @@ namespace Aspid.UnityFastTools
                 }
                 else
                 {
-                    throw new Exception($"[{nameof(EnumValue<TValue>)}] [{nameof(Initialize)}]" +
+                    // Not Exception. Because this is a visual error.
+                    Debug.LogError($"[{nameof(EnumValue<TValue>)}] [{nameof(Initialize)}]" +
                         $"Couldn't parse key '{_key}' to Enum '{nameof(type)}'");
                 }   
             }

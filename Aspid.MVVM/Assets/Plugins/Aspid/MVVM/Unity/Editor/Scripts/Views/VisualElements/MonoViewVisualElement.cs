@@ -1,3 +1,4 @@
+#if !ASPID_MVVM_EDITOR_DISABLED
 #nullable enable
 using System;
 using System.Linq;
@@ -161,3 +162,4 @@ namespace Aspid.MVVM
         }
     }
 }
+#endif

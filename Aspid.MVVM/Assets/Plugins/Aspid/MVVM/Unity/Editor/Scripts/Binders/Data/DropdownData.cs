@@ -1,3 +1,4 @@
+#if !ASPID_MVVM_EDITOR_DISABLED
 using System.Linq;
 using System.Collections.Generic;
 
@@ -55,3 +56,4 @@ namespace Aspid.MVVM
         }
     }
 }
+#endif

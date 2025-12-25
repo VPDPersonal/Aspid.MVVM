@@ -1,3 +1,4 @@
+#if !ASPID_MVVM_EDITOR_DISABLED
 using UnityEngine;
 using UnityEditor;
 using System.Linq;
@@ -222,3 +223,4 @@ namespace Aspid.MVVM
         }
     }
 }
+#endif

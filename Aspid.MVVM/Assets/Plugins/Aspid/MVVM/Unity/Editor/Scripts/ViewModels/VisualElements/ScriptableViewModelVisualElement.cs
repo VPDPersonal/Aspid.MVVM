@@ -1,3 +1,4 @@
+#if !ASPID_MVVM_EDITOR_DISABLED
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM
 {
@@ -11,3 +12,4 @@ namespace Aspid.MVVM
             $"{Editor.TargetAsViewModel.name} ({base.GetScriptName()})";
     }
 }
+#endif

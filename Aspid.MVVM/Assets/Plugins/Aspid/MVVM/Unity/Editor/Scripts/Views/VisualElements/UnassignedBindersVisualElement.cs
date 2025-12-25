@@ -1,3 +1,4 @@
+#if !ASPID_MVVM_EDITOR_DISABLED
 #nullable enable
 using UnityEngine;
 using Aspid.UnityFastTools;
@@ -59,3 +60,4 @@ namespace Aspid.MVVM
         }
     }
 }
+#endif

@@ -1,3 +1,4 @@
+#if !ASPID_MVVM_EDITOR_DISABLED
 #nullable enable
 using UnityEditor;
 using UnityEngine;
@@ -104,3 +105,4 @@ namespace Aspid.MVVM
             Editor.TargetAsView.GetScriptName();
     }
 }
+#endif

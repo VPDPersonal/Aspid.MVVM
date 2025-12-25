@@ -129,36 +129,10 @@ namespace Aspid.MVVM
             if (!string.IsNullOrWhiteSpace(Editor.DesignViewModel.stringValue))
             {
                 var viewModelType = Type.GetType(Editor.DesignViewModel.stringValue);
-                if (viewModelType is not null) return $"{GetName()} ({viewModelType.Name})";
+                if (viewModelType is not null) return $"{view.GetScriptNameWithIndex()} ({viewModelType.Name})";
             }
 
-            return GetName();
-
-            string GetName()
-            {
-                var type = view.GetType();
-                var views = view.GetComponents(type);
-                
-                switch (views.Length)
-                {
-                    case 0: return string.Empty;
-                    case 1: return views[0].GetScriptName();
-                    default:
-                        {
-                            var index = 0;
-
-                            foreach (var component in views)
-                            {
-                                if (component.GetType() != type) continue;
-
-                                index++;
-                                if (component == view) return $"{view.GetScriptName()} ({index})";
-                            }
-
-                            return string.Empty;
-                        }
-                }
-            }
+            return view.GetScriptNameWithIndex();
         }
     }
 }

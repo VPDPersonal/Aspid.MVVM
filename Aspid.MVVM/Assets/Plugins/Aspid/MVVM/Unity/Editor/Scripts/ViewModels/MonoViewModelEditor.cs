@@ -10,7 +10,7 @@ namespace Aspid.MVVM
     public sealed class MonoViewModelEditor : MonoViewModelEditor<MonoViewModel, MonoViewModelEditor>
     {
         protected override ViewModelVisualElement<MonoViewModel, MonoViewModelEditor> BuildVisualElement() => 
-            new(this);
+            new MonoViewModelVisualElement(this);
     }
     
     // TODO Aspid.MVVM Unity – Write summary

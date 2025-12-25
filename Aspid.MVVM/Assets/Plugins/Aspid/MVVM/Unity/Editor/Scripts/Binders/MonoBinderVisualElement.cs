@@ -7,6 +7,7 @@ using Aspid.UnityFastTools;
 using UnityEngine.UIElements;
 using UnityEditor.UIElements;
 using System.Collections.Generic;
+using Aspid.UnityFastTools.Editors;
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM
@@ -86,7 +87,7 @@ namespace Aspid.MVVM
         protected virtual VisualElement BuildHeader()
         {
             var binder = _editor.TargetAsMonoBinder;
-            return new AspidInspectorHeader(binder, IconPath);
+            return new AspidInspectorHeader(label: GetScriptName(), binder, IconPath);
         }
 
         protected virtual VisualElement BuildIdSelector()
@@ -222,6 +223,12 @@ namespace Aspid.MVVM
                     _logsListView.ScrollToItem(logs.Length - 1);
                 }).ExecuteLater(-1);
             }
+        }
+        
+        protected virtual string GetScriptName()
+        {
+            var monoBinder = _editor.TargetAsMonoBinder;
+            return !monoBinder ? string.Empty : monoBinder.GetScriptNameWithIndex();
         }
     }
 }

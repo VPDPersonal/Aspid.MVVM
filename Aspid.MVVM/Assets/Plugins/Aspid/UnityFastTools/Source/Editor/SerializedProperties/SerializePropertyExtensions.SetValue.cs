@@ -482,7 +482,7 @@ namespace Aspid.UnityFastTools
         public static T SetVector3Int<T>(this T property, Vector3Int value)
             where T : SerializedProperty
         {
-            property.vector3Value = value;
+            property.vector3IntValue = value;
             return property;
         }
         

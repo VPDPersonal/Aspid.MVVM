@@ -10,7 +10,7 @@ using System.Threading;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM
 {
-    public abstract partial class MonoView
+    public partial class MonoView
     {
         /// <summary>
         /// Asynchronously creates an instance of the View and initializes it with the specified <see cref="IViewModel"/>.

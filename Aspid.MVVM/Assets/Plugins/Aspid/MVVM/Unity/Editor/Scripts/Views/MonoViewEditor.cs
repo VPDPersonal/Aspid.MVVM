@@ -1,13 +1,14 @@
 #if !ASPID_MVVM_EDITOR_DISABLED
+using System;
 using System.Linq;
 using UnityEditor;
 using UnityEditor.UIElements;
+using UnityEngine.UIElements;
 using System.Collections.Generic;
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM
 {
-    // TODO Aspid.MVVM Unity – Write summary
     [CanEditMultipleObjects]
     [CustomEditor(typeof(MonoView), editorForChildClasses: true)]
     public sealed class MonoViewEditor : MonoViewEditor<MonoView, MonoViewEditor>
@@ -16,16 +17,19 @@ namespace Aspid.MVVM
             new MonoViewVisualElement(this);
     }
     
-    // TODO Aspid.MVVM Unity – Write summary
     public abstract class MonoViewEditor<TMonoView, TEditor> : ViewEditor<TMonoView, TEditor>
         where TMonoView : MonoView
         where TEditor : MonoViewEditor<TMonoView, TEditor>  
     {
+        public BinderListProperty BindersList { get; private set; }
+        
+        public SerializedProperty DesignViewModel { get; private set; }
+        
+        protected ValidableBindersById LastBinders { get; private set; }
+        
         public IEnumerable<IMonoBinderValidable> UnassignedBinders => TargetAsView
             .GetComponentsInChildren<IMonoBinderValidable>(true)
             .Where(binder => binder.View is null || string.IsNullOrWhiteSpace(binder.Id));
-
-        protected ValidableBindersById LastBinders { get; private set; }
 
         #region Enable Methods
         protected sealed override void OnEnable()
@@ -35,6 +39,9 @@ namespace Aspid.MVVM
             OnEnabling();
             {
                 ValidateView();
+                
+                BindersList = new BinderListProperty(serializedObject);
+                DesignViewModel = serializedObject.FindProperty("_designViewModel");
                 LastBinders = ValidableBindersById.GetValidableBindersById(TargetAsView);
             }
             OnEnabled();
@@ -86,9 +93,23 @@ namespace Aspid.MVVM
                 }
             }
         }
+        
+        protected override void OnCreatingInspectorGUI() =>
+            UpdateMetaData();
+        
+        protected override void OnGeometryChangedEventOnce(GeometryChangedEvent e) =>
+            ((MonoViewVisualElement<TMonoView, TEditor>)Root).UpdateGeneralBinders();
 
-        protected override void OnSerializedPropertyChanged(SerializedPropertyChangeEvent e) =>
+        protected override void OnSerializedPropertyChanged(SerializedPropertyChangeEvent e)
+        {
             ValidateChangedInView();
+            
+            if (e.changedProperty.propertyPath == DesignViewModel.propertyPath)
+            {
+                UpdateMetaData();
+                ((MonoViewVisualElement<TMonoView, TEditor>)Root).UpdateGeneralBinders();
+            }
+        }
 
         protected virtual void ValidateView()
         {
@@ -101,6 +122,36 @@ namespace Aspid.MVVM
             var binders = ValidableBindersById.GetValidableBindersById(TargetAsView);
             ViewAndMonoBinderSyncValidator.ValidateViewChanges(TargetAsView, LastBinders, binders);
             LastBinders = binders;
+        }
+        
+        private void UpdateMetaData()
+        {
+            var viewModelType = string.IsNullOrWhiteSpace(DesignViewModel.stringValue) 
+                ? null
+                : Type.GetType(DesignViewModel.stringValue);
+            
+            if (viewModelType is null)
+            {
+                BindersList.ArraySize = 0;
+                return;
+            }
+
+            var viewModelMeta = new ViewModelMeta(viewModelType);
+            var viewMeta = new ViewMeta(TargetAsView.GetType());
+
+            var bindableProperties = viewModelMeta.BindableProperties
+                .Where(bindableProperty => viewMeta.BinderProperties.All(binderProperty => binderProperty.Id != bindableProperty.Id))
+                .ToArray();
+
+            BindersList.ArraySize = bindableProperties.Length;
+                
+            for (var i = 0; i < bindableProperties.Length; i++)
+            {
+                var element = BindersList.GetArrayElementAtIndex(i);
+                    
+                element.Id = bindableProperties[i].Id;
+                element.AssemblyQualifiedName = bindableProperties[i].Type?.AssemblyQualifiedName;
+            }
         }
     }
 }

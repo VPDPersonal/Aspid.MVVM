@@ -9,9 +9,9 @@ namespace Aspid.MVVM.StarterKit
     public sealed class ViewInitializer : ViewInitializerBase
     {
         [SerializeField] private bool _isDisposeViewModelOnDestroy;
-        [SerializeField] private InitializeComponent<IViewModel> _viewModelComponent;
+        [SerializeField] private ViewModelInitializeComponent _viewModelComponent;
         
-        [SerializeField] private InitializeStage _initializeStage  = InitializeStage.Manual;
+        [SerializeField] private InitializeStage _initializeStage = InitializeStage.Awake;
         [SerializeField] private bool _isDeinitialize = true;
         
         private IViewModel _viewModel;

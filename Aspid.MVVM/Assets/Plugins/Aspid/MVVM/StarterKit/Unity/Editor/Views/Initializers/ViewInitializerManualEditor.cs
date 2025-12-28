@@ -10,6 +10,7 @@ using Aspid.UnityFastTools.Editors;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
+    // TODO Aspid.MVVM – Refactor
     [CanEditMultipleObjects]
     [CustomEditor(typeof(ViewInitializerManual))]
     public sealed class ViewInitializerManualEditor : ViewInitializerBaseEditor

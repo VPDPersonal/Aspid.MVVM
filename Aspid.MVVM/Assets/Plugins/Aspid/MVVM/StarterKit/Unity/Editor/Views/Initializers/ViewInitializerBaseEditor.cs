@@ -5,6 +5,7 @@ using UnityEngine;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
+    // TODO Aspid.MVVM – Refactor
     public abstract class ViewInitializerBaseEditor : Editor
     {
         protected static bool DrawInitializeComponent<TInterface>(SerializedProperty property, string label)
@@ -34,7 +35,7 @@ namespace Aspid.MVVM.StarterKit
             
             switch (resolve)
             {
-                case InitializeComponent.ResolveType.References:
+                case ResolveType.References:
                     {
                         var referencesProperty = GetReferencesProperty(property);
                         var typeName = referencesProperty.managedReferenceValue?.GetType().Name;
@@ -43,7 +44,7 @@ namespace Aspid.MVVM.StarterKit
                             ? $" ({typeName})" 
                             : string.Empty;
                     }
-                case InitializeComponent.ResolveType.ScriptableObject:
+                case ResolveType.ScriptableObject:
                     {
                         var scriptableProperty = GetScriptableProperty(property);
                         
@@ -52,7 +53,7 @@ namespace Aspid.MVVM.StarterKit
                             : string.Empty;
                     }
 #if ASPID_MVVM_ZENJECT_INTEGRATION || ASPID_MVVM_VCONTAINER_INTEGRATION
-                case InitializeComponent.ResolveType.Di:
+                case ResolveType.Di:
                     {
                         var typeNameProperty = GetTypeNameProperty(property);
                         var typeName = Type.GetType(typeNameProperty.stringValue)?.Name;
@@ -62,7 +63,7 @@ namespace Aspid.MVVM.StarterKit
                             : string.Empty;
                     }
 #endif
-                case InitializeComponent.ResolveType.Mono:
+                case ResolveType.Mono:
                 default:
                     {
                         var monoProperty = GetMonoProperty(property);
@@ -81,12 +82,12 @@ namespace Aspid.MVVM.StarterKit
 
             switch (resolve)
             {
-                case InitializeComponent.ResolveType.References:
+                case ResolveType.References:
                     {
                         var referencesProperty = GetReferencesProperty(property);
                         return referencesProperty.managedReferenceValue is not null;
                     }
-                case InitializeComponent.ResolveType.ScriptableObject:
+                case ResolveType.ScriptableObject:
                     {
                         var scriptableProperty = GetScriptableProperty(property);
                         if (scriptableProperty.objectReferenceValue is not TInterface)
@@ -95,13 +96,13 @@ namespace Aspid.MVVM.StarterKit
                         return scriptableProperty.objectReferenceValue;
                     }
 #if ASPID_MVVM_ZENJECT_INTEGRATION || ASPID_MVVM_VCONTAINER_INTEGRATION
-                case InitializeComponent.ResolveType.Di:
+                case ResolveType.Di:
                     {
                         var typeNameProperty = GetTypeNameProperty(property);
                         return !string.IsNullOrWhiteSpace(typeNameProperty.stringValue);
                     }
 #endif
-                case InitializeComponent.ResolveType.Mono:
+                case ResolveType.Mono:
                 default:
                     {
                         var monoProperty = GetMonoProperty(property);
@@ -114,21 +115,18 @@ namespace Aspid.MVVM.StarterKit
         }
 
         private static SerializedProperty GetMonoProperty(SerializedProperty property) =>
-            property.FindPropertyRelative("Mono");
+            property.FindPropertyRelative("_mono");
         
         private static SerializedProperty GetScriptableProperty(SerializedProperty property) =>
-            property.FindPropertyRelative("Scriptable");
+            property.FindPropertyRelative("_scriptableObject");
         
         private static SerializedProperty GetReferencesProperty(SerializedProperty property) =>
-            property.FindPropertyRelative("References");
+            property.FindPropertyRelative("_reference");
         
-        private static SerializedProperty GetTypeNameProperty(SerializedProperty property)
-        {
-            var type = property.FindPropertyRelative("Type");
-            return type.FindPropertyRelative("_typeName"); 
-        }
+        private static SerializedProperty GetTypeNameProperty(SerializedProperty property) =>
+            property.FindPropertyRelative("_typeName");
         
-        private static InitializeComponent.ResolveType GetResolve(SerializedProperty property) =>
-            (InitializeComponent.ResolveType)property.FindPropertyRelative("Resolve").enumValueIndex;
+        private static ResolveType GetResolve(SerializedProperty property) =>
+            (ResolveType)property.FindPropertyRelative("_resolve").enumValueIndex;
     }
 }

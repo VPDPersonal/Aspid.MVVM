@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 
 // ReSharper disable once CheckNamespace
@@ -7,7 +6,7 @@ namespace Aspid.MVVM.StarterKit
     public abstract class ViewInitializerBase : MonoBehaviour
     { 
         [SerializeField] private bool _isDisposeViewOnDestroy = true;
-        [SerializeField] private InitializeComponent<IView>[] _viewComponents;
+        [SerializeField] private ViewInitializeComponent[] _viewComponents;
         
         private IView[] _views;
         
@@ -70,25 +69,14 @@ namespace Aspid.MVVM.StarterKit
         protected T GetFromInitializeComponent<T>(InitializeComponent<T> initializeComponent)
             where T : class
         {
-            switch (initializeComponent.Resolve)
-            {
-#if ASPID_MVVM_ZENJECT_INTEGRATION || ASPID_MVVM_VCONTAINER_INTEGRATION
-                case InitializeComponent.ResolveType.Di:
 #if ASPID_MVVM_ZENJECT_INTEGRATION
-                    var zenjectResult = _zenjectContainer?.TryResolve(initializeComponent.Type);
-                    if (zenjectResult is T specificZenjectResult) return specificZenjectResult;
+            initializeComponent.ZenjectContainer = _zenjectContainer;
 #endif
 #if ASPID_MVVM_VCONTAINER_INTEGRATION
-                    if (_vcontainerContainer?.TryResolve(initializeComponent.Type, out var specificVContainerResult) ?? false)
-                        return specificVContainerResult as T;
+            initializeComponent.VContainerContainer = _vcontainerContainer;
 #endif
-                    throw new Exception("Unknown initialize component type: " + initializeComponent.Type);
-#endif
-                case InitializeComponent.ResolveType.Mono: return initializeComponent.Mono as T;
-                case InitializeComponent.ResolveType.References: return initializeComponent.References;
-                case InitializeComponent.ResolveType.ScriptableObject: return initializeComponent.Scriptable as T;
-                default: throw new ArgumentOutOfRangeException();
-            }
+
+            return initializeComponent.GetComponent();
         }
     }
 }

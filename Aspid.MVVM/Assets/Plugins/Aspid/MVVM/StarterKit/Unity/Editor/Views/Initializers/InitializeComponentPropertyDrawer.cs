@@ -4,6 +4,7 @@ using UnityEngine;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
+    // TODO Aspid.MVVM – Refactor
     [CustomPropertyDrawer(typeof(InitializeComponent<>), true)]
     public sealed class InitializeComponentPropertyDrawer : PropertyDrawer
     {
@@ -36,28 +37,28 @@ namespace Aspid.MVVM.StarterKit
         private static (SerializedProperty resolve, SerializedProperty component) GetProperties(SerializedProperty property)
         {
             (SerializedProperty resolve, SerializedProperty component) properties = default;
-            
-            properties.resolve = property.FindPropertyRelative("Resolve");
-            
-            switch ((InitializeComponent.ResolveType)properties.resolve.enumValueIndex)
+
+            properties.resolve = property.FindPropertyRelative("_resolve");
+
+            switch ((ResolveType)properties.resolve.enumValueIndex)
             {
-                case InitializeComponent.ResolveType.References:
-                    properties.component = property.FindPropertyRelative("References");
+                case ResolveType.References:
+                    properties.component = property.FindPropertyRelative("_reference");
                     break;
 
-                case InitializeComponent.ResolveType.ScriptableObject:
-                    properties.component = property.FindPropertyRelative("Scriptable");
+                case ResolveType.ScriptableObject:
+                    properties.component = property.FindPropertyRelative("_scriptableObject");
                     break;
 
 #if ASPID_MVVM_ZENJECT_INTEGRATION || ASPID_MVVM_VCONTAINER_INTEGRATION
-                case InitializeComponent.ResolveType.Di:
-                    properties.component = property.FindPropertyRelative("Type");
+                case ResolveType.Di:
+                    properties.component = property.FindPropertyRelative("_typeName");
                     break;
 #endif
-                
-                case InitializeComponent.ResolveType.Mono:
-                default: 
-                    properties.component = property.FindPropertyRelative("Mono");
+
+                case ResolveType.Mono:
+                default:
+                    properties.component = property.FindPropertyRelative("_mono");
                     break;
             }
 

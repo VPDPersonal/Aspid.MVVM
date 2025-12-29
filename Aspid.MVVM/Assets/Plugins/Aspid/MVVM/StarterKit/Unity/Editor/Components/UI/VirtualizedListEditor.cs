@@ -19,6 +19,8 @@ namespace Aspid.MVVM.StarterKit
         private SerializedProperty _content;
         private SerializedProperty _viewport;
         private SerializedProperty _viewPrefab;
+        private SerializedProperty _padding;
+        private SerializedProperty _spacing;
         
         private SerializedProperty _inertia;
         private SerializedProperty _elasticity;
@@ -50,6 +52,8 @@ namespace Aspid.MVVM.StarterKit
             _content = serializedObject.FindProperty("m_Content");
             _viewport = serializedObject.FindProperty("m_Viewport");
             _viewPrefab = serializedObject.FindProperty("_viewPrefab");
+            _padding = serializedObject.FindProperty("_padding");
+            _spacing = serializedObject.FindProperty("_spacing");
             
             _inertia = serializedObject.FindProperty("m_Inertia");
             _elasticity = serializedObject.FindProperty("m_Elasticity");
@@ -106,6 +110,9 @@ namespace Aspid.MVVM.StarterKit
                 EditorGUILayout.PropertyField(_content);
                 EditorGUILayout.PropertyField(_viewPrefab);
                 
+                DrawPadding();
+                EditorGUILayout.PropertyField(_spacing);
+                
                 DrawDirection();
                 DrawMovement();
                 DrawInertia();
@@ -126,6 +133,35 @@ namespace Aspid.MVVM.StarterKit
             }
             serializedObject.ApplyModifiedProperties();
             return;
+
+            void DrawPadding()
+            {
+                _padding.isExpanded = EditorGUILayout.Foldout(_padding.isExpanded, "Padding", true);
+                
+                if (!_padding.isExpanded) return;
+                
+                EditorGUI.indentLevel++;
+                {
+                    var left = _padding.FindPropertyRelative("m_Left");
+                    var right = _padding.FindPropertyRelative("m_Right");
+                    var top = _padding.FindPropertyRelative("m_Top");
+                    var bottom = _padding.FindPropertyRelative("m_Bottom");
+                    
+                    if (_vertical.boolValue)
+                    {
+                        // Vertical: top, bottom
+                        EditorGUILayout.PropertyField(top);
+                        EditorGUILayout.PropertyField(bottom);
+                    }
+                    else
+                    {
+                        // Horizontal: left, right
+                        EditorGUILayout.PropertyField(left);
+                        EditorGUILayout.PropertyField(right);
+                    }
+                }
+                EditorGUI.indentLevel--;
+            }
 
             void DrawDirection()
             {

@@ -10,13 +10,12 @@ using Aspid.Collections.Observable.Filtered;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
-    // TODO Add support Layout
-    // TODO Add support spacings
-    // TODO Add support various views
     [AddComponentMenu("Aspid/MVVM/Components/UI/ScrollRect/VirtualizedList (Beta)")]
     public class VirtualizedList : ScrollRect
     {
         [SerializeField] private MonoView _viewPrefab;
+        [SerializeField] private RectOffset _padding = new();
+        [SerializeField] private float _spacing;
         
         private Element[] _views;
         private Coroutine _initializing;
@@ -39,6 +38,26 @@ namespace Aspid.MVVM.StarterKit
             }
         }
 
+        public RectOffset Padding
+        {
+            get => _padding;
+            set
+            {
+                _padding = value;
+                Refresh();
+            }
+        }
+
+        public float Spacing
+        {
+            get => _spacing;
+            set
+            {
+                _spacing = value;
+                Refresh();
+            }
+        }
+
         private DirectionType Direction
         {
             get
@@ -52,6 +71,8 @@ namespace Aspid.MVVM.StarterKit
         }
         
         private Length ViewLength => _viewLength ??= new Length(_viewPrefab, Direction);
+        
+        private float ItemStride => ViewLength.Value + _spacing;
         
         private Length ViewportLength => _viewportLength ??= new Length(viewport, Direction);
         
@@ -96,7 +117,7 @@ namespace Aspid.MVVM.StarterKit
                     ? Instantiate(_viewPrefab, ContentTransform)
                     : _views[i].View;
 
-                _views[i] = new Element(view, Direction);
+                _views[i] = new Element(view, Direction, _spacing, StartPadding);
             }
             
             onValueChanged.AddListener(OnScrollValueChanged);
@@ -104,7 +125,7 @@ namespace Aspid.MVVM.StarterKit
             yield break;
 
             int CalculateVisibleCount() =>
-                Mathf.CeilToInt(ViewportLength.Value / ViewLength.Value) + 2;
+                Mathf.CeilToInt(ViewportLength.Value / ItemStride) + 2;
         }
 
         private void Deinitialize()
@@ -192,11 +213,19 @@ namespace Aspid.MVVM.StarterKit
         }
         
         private void ResizeContent() =>
-            ContentTransform.Resize(ItemsSource.Count);
+            ContentTransform.Resize(ItemsSource.Count, _padding, _spacing);
 
         private int GetCurrentViewModelTopIndex() =>
-            Mathf.FloorToInt(ContentTransform.ScrollValue / ViewLength.Value);
+            Mathf.FloorToInt(Mathf.Max(0, ContentTransform.ScrollValue - StartPadding) / ItemStride);
         
+        private float StartPadding => Direction switch
+        {
+            DirectionType.Vertical => _padding.top,
+            DirectionType.Horizontal => _padding.left,
+            _ => 0
+        };
+        
+
         private void OnCollectionChanged()
         {
             OnReset();
@@ -299,13 +328,17 @@ namespace Aspid.MVVM.StarterKit
             
             private int _index;
             private readonly float _size;
+            private readonly float _spacing;
+            private readonly float _startPadding;
             private readonly DirectionType _direction;
             
-            public Element(MonoView view, DirectionType direction)
+            public Element(MonoView view, DirectionType direction, float spacing, float startPadding)
             {
                 _index = -1;
                 View = view;
+                _spacing = spacing;
                 _direction = direction;
+                _startPadding = startPadding;
 
                 view.gameObject.SetActive(false);
                 var rectTransform = (RectTransform)View.transform;
@@ -342,12 +375,17 @@ namespace Aspid.MVVM.StarterKit
                 View.gameObject.SetActive(false);
             }
 
-            private Vector3 GetPosition(int index) => _direction switch
+            private Vector3 GetPosition(int index)
             {
-                DirectionType.Vertical => new Vector3(0, -index * _size, 0),
-                DirectionType.Horizontal => new Vector3(index * _size, 0, 0),
-                _ => throw new ArgumentOutOfRangeException(nameof(_direction), _direction, null)
-            };
+                var stride = _size + _spacing;
+                
+                return _direction switch
+                {
+                    DirectionType.Vertical => new Vector3(0, -(_startPadding + index * stride), 0),
+                    DirectionType.Horizontal => new Vector3(_startPadding + index * stride, 0, 0),
+                    _ => throw new ArgumentOutOfRangeException(nameof(_direction), _direction, null)
+                };
+            }
         }
         
         private readonly struct Length
@@ -391,9 +429,18 @@ namespace Aspid.MVVM.StarterKit
                 _direction = direction;
             }
 
-            public void Resize(int viewModelCount)
+            public void Resize(int viewModelCount, RectOffset padding, float spacing)
             {
-                var size = viewModelCount * _length.Value;
+                var paddingTotal = _direction switch
+                {
+                    DirectionType.Vertical => padding.top + padding.bottom,
+                    DirectionType.Horizontal => padding.left + padding.right,
+                    _ => 0f
+                };
+                
+                var itemsSize = viewModelCount * _length.Value;
+                var spacingTotal = viewModelCount > 1 ? (viewModelCount - 1) * spacing : 0f;
+                var size = itemsSize + spacingTotal + paddingTotal;
                 
                 _content.sizeDelta = _direction switch
                 {

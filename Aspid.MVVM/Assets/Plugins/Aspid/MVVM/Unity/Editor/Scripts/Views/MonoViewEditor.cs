@@ -5,6 +5,7 @@ using UnityEditor;
 using UnityEditor.UIElements;
 using UnityEngine.UIElements;
 using System.Collections.Generic;
+using Object = UnityEngine.Object;
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM
@@ -27,10 +28,10 @@ namespace Aspid.MVVM
         
         protected ValidableBindersById LastBinders { get; private set; }
         
-        public IEnumerable<IMonoBinderValidable> UnassignedBinders => TargetAsView?
-            .GetComponentsInChildren<IMonoBinderValidable>(includeInactive: true)
-            .Where(binder => binder.View is null || string.IsNullOrWhiteSpace(binder.Id))
-            ?? Enumerable.Empty<IMonoBinderValidable>();
+        public IEnumerable<IMonoBinderValidable> UnassignedBinders => TargetAsView 
+            ? TargetAsView.GetComponentsInChildren<IMonoBinderValidable>(includeInactive: true)
+                .Where(binder => binder.View is null || string.IsNullOrWhiteSpace(binder.Id)) 
+            : Enumerable.Empty<IMonoBinderValidable>();
 
         #region Enable Methods
         protected sealed override void OnEnable()
@@ -144,12 +145,37 @@ namespace Aspid.MVVM
             var bindableProperties = viewModelMeta.BindableProperties
                 .Where(bindableProperty => viewMeta.BinderProperties.All(binderProperty => binderProperty.Id != bindableProperty.Id))
                 .ToArray();
+            
+            Dictionary<string, Object[]> fieldsById = new();
 
-            BindersList.ArraySize = bindableProperties.Length;
-                
-            for (var i = 0; i < bindableProperties.Length; i++)
+            for (var i = 0; i < BindersList.ArraySize; i++)
             {
                 var element = BindersList.GetArrayElementAtIndex(i);
+                
+                var array = new Object[element.MonoBindersProperty.arraySize];
+                for (var j = 0; j < array.Length; j++)
+                    array[j] = element.MonoBindersProperty.GetArrayElementAtIndex(j).objectReferenceValue;
+                
+                fieldsById.Add(element.Id, array);
+            }
+            
+            BindersList.ArraySize = bindableProperties.Length;
+                
+            for (var i = 0; i < BindersList.ArraySize; i++)
+            {
+                var element = BindersList.GetArrayElementAtIndex(i);
+
+                if (fieldsById.TryGetValue(bindableProperties[i].Id, out var array))
+                {
+                    element.MonoBindersProperty.arraySize = array.Length;
+
+                    for (var j = 0; j < array.Length; j++)
+                        element.MonoBindersProperty.GetArrayElementAtIndex(j).objectReferenceValue = array[j];
+                }
+                else
+                {
+                    element.MonoBindersProperty.arraySize = 0;
+                }
                     
                 element.Id = bindableProperties[i].Id;
                 element.AssemblyQualifiedName = bindableProperties[i].Type?.AssemblyQualifiedName;

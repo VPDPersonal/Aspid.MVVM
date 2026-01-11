@@ -12,7 +12,6 @@ namespace Aspid.MVVM.StarterKit
     [AddComponentMenu("Aspid/MVVM/Binders/Collider/Mesh/MeshCollider Binder – Mesh Switcher")]
     public sealed class MeshColliderMeshSwitcherMonoBinder : SwitcherMonoBinder<MeshCollider, Mesh>
     {
-        [Header("Converters")]
         [SerializeReferenceDropdown]
         [SerializeReference] private Converter _converter;
         

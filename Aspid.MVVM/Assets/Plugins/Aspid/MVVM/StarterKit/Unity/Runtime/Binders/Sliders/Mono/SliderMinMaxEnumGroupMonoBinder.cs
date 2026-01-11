@@ -13,12 +13,11 @@ namespace Aspid.MVVM.StarterKit
     [AddBinderContextMenu(typeof(Slider), "m_MinValue", "m_MaxValue")]
     public sealed class SliderMinMaxEnumGroupMonoBinder : EnumGroupMonoBinder<Slider>
     {
-        [Header("Values")]
         [SerializeField] private Vector2 _defaultValue;
         [SerializeField] private Vector2 _selectedValue;
+        
         [SerializeField] private SliderValueMode _valueMode = SliderValueMode.Range;
         
-        [Header("Converters")]
         [SerializeReferenceDropdown]
         [SerializeReference] private Converter _defaultValueConverter;
         

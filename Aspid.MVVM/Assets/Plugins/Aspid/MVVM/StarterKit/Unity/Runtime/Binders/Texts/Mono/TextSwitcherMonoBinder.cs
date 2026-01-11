@@ -14,7 +14,6 @@ namespace Aspid.MVVM.StarterKit
     [AddComponentMenu("Aspid/MVVM/Binders/UI/Text/Text Binder – Text Switcher")]
     public sealed class TextSwitcherMonoBinder : SwitcherMonoBinder<TMP_Text, string>
     {
-        [Header("Converters")]
         [SerializeReferenceDropdown]
         [SerializeReference] private Converter _converter;
         

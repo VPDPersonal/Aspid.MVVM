@@ -12,11 +12,9 @@ namespace Aspid.MVVM.StarterKit
     [AddComponentMenu("Aspid/MVVM/Binders/Collider/Capsule/CapsuleCollider Binder – Radius EnumGroup")]
     public sealed class CapsuleColliderRadiusEnumGroupMonoBinder : EnumGroupMonoBinder<CapsuleCollider>
     {
-        [Header("Values")]
         [SerializeField] private float _defaultValue;
         [SerializeField] private float _selectedValue;
         
-        [Header("Converters")]
         [SerializeReferenceDropdown]
         [SerializeReference] private Converter _defaultValueConverter;
         

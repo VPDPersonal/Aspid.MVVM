@@ -12,12 +12,11 @@ namespace Aspid.MVVM.StarterKit
     [AddComponentMenu("Aspid/MVVM/Binders/UI/RectTransform/RectTransform Binder – SizeDelta EnumGroup")]
     public sealed class RectTransformSizeDeltaEnumGroupMonoBinder : EnumGroupMonoBinder<RectTransform>
     {
-        [Header("Values")]
         [SerializeField] private Vector3 _defaultValue;
         [SerializeField] private Vector3 _selectedValue;
+     
         [SerializeField] private SizeDeltaMode _sizeMode = SizeDeltaMode.SizeDelta;
         
-        [Header("Converters")]
         [SerializeReferenceDropdown]
         [SerializeReference] private Converter _defaultValueConverter;
         

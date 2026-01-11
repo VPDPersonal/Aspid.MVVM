@@ -12,11 +12,9 @@ namespace Aspid.MVVM.StarterKit
     [AddComponentMenu("Aspid/MVVM/Binders/Collider/Sphere/SphereCollider Binder – Radius EnumGroup")]
     public sealed class SphereColliderRadiusEnumGroupMonoBinder : EnumGroupMonoBinder<SphereCollider>
     {
-        [Header("Values")]
         [SerializeField] [Min(0)] private float _defaultValue;
         [SerializeField] [Min(0)] private float _selectedValue;
         
-        [Header("Converters")]
         [SerializeReferenceDropdown]
         [SerializeReference] private Converter _defaultValueConverter;
         

@@ -12,12 +12,11 @@ namespace Aspid.MVVM.StarterKit
     [AddComponentMenu("Aspid/MVVM/Binders/Renderer/Renderer Binder – MaterialsColor EnumGroup")]
     public sealed class RendererMaterialsColorEnumGroupMonoBinder : EnumGroupMonoBinder<Renderer>
     {
-        [Header("Values")]
         [SerializeField] private Color _defaultValue;
         [SerializeField] private Color _selectedValues;
+        
         [SerializeField] private string _colorPropertyName = "_BaseColor";
-
-        [Header("Converters")]
+        
         [SerializeReferenceDropdown]
         [SerializeReference] private Converter _defaultValueConverter;
         

@@ -7,7 +7,6 @@ namespace Aspid.MVVM.StarterKit
     [AddBinderContextMenu(typeof(Component), Path = "Add General Binder/GameObject/GameObject Binder – Visible EnumGroup")]
     public sealed class GameObjectVisibleEnumGroupMonoBinder : EnumGroupMonoBinder<GameObject>
     {
-        [Header("Values")]
         [SerializeField] private bool _defaultValue;
         [SerializeField] private bool _selectedValue;
         

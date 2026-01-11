@@ -13,7 +13,6 @@ namespace Aspid.MVVM.StarterKit
     [AddComponentMenu("Aspid/MVVM/Binders/UI/Graphic/Graphic Binder – Color Switcher")]
     public sealed class GraphicColorSwitcherMonoBinder : SwitcherMonoBinder<Graphic, Color>
     {
-        [Header("Converters")]
         [SerializeReferenceDropdown]
         [SerializeReference] private Converter _converter;
         

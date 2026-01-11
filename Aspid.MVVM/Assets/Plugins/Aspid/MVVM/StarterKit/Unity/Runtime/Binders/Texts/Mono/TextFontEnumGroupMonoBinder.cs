@@ -9,7 +9,6 @@ namespace Aspid.MVVM.StarterKit
     [AddBinderContextMenu(typeof(TMP_Text), serializePropertyNames: "m_fontAsset")]
     public sealed class TextFontEnumGroupMonoBinder : EnumGroupMonoBinder<TMP_Text>
     {
-        [Header("Values")]
         [SerializeField] private TMP_FontAsset _defaultValue;
         [SerializeField] private TMP_FontAsset _selectedValue;
             

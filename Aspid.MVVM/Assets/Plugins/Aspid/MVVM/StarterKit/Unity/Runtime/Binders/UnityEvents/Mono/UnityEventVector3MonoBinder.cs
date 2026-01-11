@@ -17,7 +17,6 @@ namespace Aspid.MVVM.StarterKit
         [SerializeReferenceDropdown]
         [SerializeReference] private Converter _converter;
         
-        [Header("Events")]
         [SerializeField] private UnityEvent<Vector3> _set;
 
         [BinderLog]

@@ -15,7 +15,6 @@ namespace Aspid.MVVM.StarterKit
     {
         [SerializeField] private SizeDeltaMode _sizeMode;
         
-        [Header("Converters")]
         [SerializeReferenceDropdown]
         [SerializeReference] private Converter? _converter;
         

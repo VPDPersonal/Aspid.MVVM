@@ -17,7 +17,6 @@ namespace Aspid.MVVM.StarterKit
         [SerializeReferenceDropdown]
         [SerializeReference] private Converter _converter = new ObjectToStringConverter();
         
-        [Header("Events")]
         [SerializeField] private UnityEvent<string> _casted;
 
         private void OnValidate() =>

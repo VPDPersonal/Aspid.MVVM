@@ -8,7 +8,6 @@ namespace Aspid.MVVM.StarterKit
     [AddComponentMenu("Aspid/MVVM/Binders/UI/Image/Image Binder – Sprite EnumGroup")]
     public sealed class ImageSpriteEnumGroupMonoBinder : EnumGroupMonoBinder<Image>
     {
-        [Header("Values")]
         [SerializeField] private Sprite _defaultValue;
         [SerializeField] private Sprite _selectedValue;
         

@@ -20,8 +20,7 @@ namespace Aspid.MVVM.StarterKit
     {
         [SerializeField] private LocalizedString _stringReference = new();
         [SerializeField] private List<Object> _formatArguments = new();
-        
-        [Header("Converters")]
+
         [SerializeReferenceDropdown]
         [SerializeReference] private Converter? _converter;
 

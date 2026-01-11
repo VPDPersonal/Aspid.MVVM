@@ -14,7 +14,6 @@ namespace Aspid.MVVM.StarterKit
     [Serializable]
     public sealed class ImageFillSwitcherBinder : SwitcherBinder<Image, float>
     {
-        [Header("Converters")]
         [SerializeReferenceDropdown]
         [SerializeReference] private Converter? _converter;
         

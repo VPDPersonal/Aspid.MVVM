@@ -13,11 +13,9 @@ namespace Aspid.MVVM.StarterKit
     [AddComponentMenu("Aspid/MVVM/Binders/UI/Graphic/Graphic Binder – Color EnumGroup")]
     public sealed class GraphicColorEnumGroupMonoBinder : EnumGroupMonoBinder<Graphic>
     {
-        [Header("Values")]
         [SerializeField] private Color _defaultValue;
         [SerializeField] private Color _selectedValue;
         
-        [Header("Converters")]
         [SerializeReferenceDropdown]
         [SerializeReference] private Converter _defaultValueConverter;
         

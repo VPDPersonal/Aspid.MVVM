@@ -9,7 +9,6 @@ namespace Aspid.MVVM.StarterKit
     [AddComponentMenu("Aspid/MVVM/Binders/UI/InputField/InputField Binder - CharacterValidation EnumGroup")]
     public sealed class InputFieldCharacterValidationEnumGroupMonoBinder : EnumGroupMonoBinder<TMP_InputField>
     {
-        [Header("Values")]
         [SerializeField] private TMP_InputField.CharacterValidation _defaultValue;
         [SerializeField] private TMP_InputField.CharacterValidation _selectedValue;
         

@@ -7,7 +7,6 @@ namespace Aspid.MVVM.StarterKit
     [AddComponentMenu("Aspid/MVVM/Binders/Collider/Collider Binder – Enabled EnumGroup")]
     public sealed class ColliderEnabledEnumGroupMonoBinder : EnumGroupMonoBinder<Collider>
     {
-        [Header("Values")]
         [SerializeField] private bool _defaultValue;
         [SerializeField] private bool _selectedValue;
         

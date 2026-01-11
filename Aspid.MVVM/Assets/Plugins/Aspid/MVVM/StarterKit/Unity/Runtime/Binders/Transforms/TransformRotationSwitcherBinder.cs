@@ -15,7 +15,6 @@ namespace Aspid.MVVM.StarterKit
     {
         [SerializeField] private Space _space;
         
-        [Header("Converters")]
         [SerializeReferenceDropdown]
         [SerializeReference] private Converter? _converter;
         

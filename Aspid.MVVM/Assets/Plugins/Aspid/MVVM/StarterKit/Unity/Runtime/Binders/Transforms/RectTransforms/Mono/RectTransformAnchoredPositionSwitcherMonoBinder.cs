@@ -8,8 +8,6 @@ namespace Aspid.MVVM.StarterKit
     public sealed class RectTransformAnchoredPositionSwitcherMonoBinder : SwitcherMonoBinder<RectTransform, Vector3>
     {
         [SerializeField] private Space _space = Space.World;       
-        
-        [Header("Converters")]
         [SerializeField] private Vector3CombineConverter _converter = Vector3CombineConverter.Default;
 
         protected override void SetValue(Vector3 value) =>

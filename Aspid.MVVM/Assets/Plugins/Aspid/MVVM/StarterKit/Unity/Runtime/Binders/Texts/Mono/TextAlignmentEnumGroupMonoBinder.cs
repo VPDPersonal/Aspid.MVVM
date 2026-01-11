@@ -10,7 +10,6 @@ namespace Aspid.MVVM.StarterKit
     [AddBinderContextMenu(typeof(TMP_Text), serializePropertyNames: "m_textAlignment")]
     public sealed class TextAlignmentEnumGroupMonoBinder : EnumGroupMonoBinder<TMP_Text>
     {
-        [Header("Values")]
         [SerializeField] private TextAlignmentOptions _defaultValue;
         [SerializeField] private TextAlignmentOptions _selectedValue;
 

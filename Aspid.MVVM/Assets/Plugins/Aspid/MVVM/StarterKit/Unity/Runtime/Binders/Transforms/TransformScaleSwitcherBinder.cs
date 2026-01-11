@@ -8,7 +8,6 @@ namespace Aspid.MVVM.StarterKit
     [Serializable]
     public sealed class TransformScaleSwitcherBinder : SwitcherBinder<Transform, Vector3>
     {
-        [Header("Converters")]
         [SerializeField] private Vector3CombineConverter? _converter;
 
         public TransformScaleSwitcherBinder(

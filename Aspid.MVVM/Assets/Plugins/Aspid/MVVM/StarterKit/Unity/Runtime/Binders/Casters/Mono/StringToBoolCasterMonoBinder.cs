@@ -17,7 +17,6 @@ namespace Aspid.MVVM.StarterKit
         [SerializeReferenceDropdown]
         [SerializeReference] private Converter _converter = new StringEmptyToBoolConverter();
         
-        [Header("Events")]
         [SerializeField] private UnityEvent<bool> _casted;
         
         private void OnValidate() =>

@@ -14,11 +14,9 @@ namespace Aspid.MVVM.StarterKit
     [AddComponentMenu("Aspid/MVVM/Binders/UI/Text/Text Binder – FontSize EnumGroup")]
     public sealed class TextFontSizeEnumGroupMonoBinder : EnumGroupMonoBinder<TMP_Text>
     {
-        [Header("Values")]
         [SerializeField] private float _defaultValue;
         [SerializeField] private float _selectedValue;
         
-        [Header("Converters")]
         [SerializeReferenceDropdown]
         [SerializeReference] private Converter _defaultValueConverter;
         

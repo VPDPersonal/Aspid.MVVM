@@ -16,7 +16,6 @@ namespace Aspid.MVVM.StarterKit
     {
         [SerializeField] private ColorComponent _component = ColorComponent.A;
         
-        [Header("Converters")]
         [SerializeReferenceDropdown]
         [SerializeReference] private Converter? _converter;
         

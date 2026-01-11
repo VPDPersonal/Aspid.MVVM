@@ -9,7 +9,6 @@ namespace Aspid.MVVM.StarterKit
     public sealed class SphereColliderCenterSwitcherBinder : SwitcherBinder<SphereCollider, Vector3>
     {
         // ReSharper disable once MemberInitializerValueIgnored
-        [Header("Converters")]
         [SerializeField] private Vector3CombineConverter? _converter = Vector3CombineConverter.Default;
         
         public SphereColliderCenterSwitcherBinder(

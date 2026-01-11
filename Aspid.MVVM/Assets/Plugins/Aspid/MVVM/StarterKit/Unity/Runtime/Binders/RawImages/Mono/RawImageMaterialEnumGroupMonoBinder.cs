@@ -13,11 +13,9 @@ namespace Aspid.MVVM.StarterKit
     [AddComponentMenu("Aspid/MVVM/Binders/UI/Raw Image/RawImage Binder – Material EnumGroup")]
     public sealed class RawImageMaterialEnumGroupMonoBinder : EnumGroupMonoBinder<RawImage>
     {
-        [Header("Values")]
         [SerializeField] private Material _defaultValue;
         [SerializeField] private Material _selectedValue;
         
-        [Header("Converters")]
         [SerializeReferenceDropdown]
         [SerializeReference] private Converter _defaultValueConverter;
         

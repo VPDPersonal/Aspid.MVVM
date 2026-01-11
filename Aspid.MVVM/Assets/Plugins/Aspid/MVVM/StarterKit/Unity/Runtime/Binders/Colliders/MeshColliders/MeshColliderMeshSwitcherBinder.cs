@@ -13,7 +13,6 @@ namespace Aspid.MVVM.StarterKit
     [Serializable]
     public sealed class MeshColliderMeshSwitcherBinder : SwitcherBinder<MeshCollider, Mesh>
     {
-        [Header("Converters")]
         [SerializeReferenceDropdown]
         [SerializeReference] private Converter? _converter;
         

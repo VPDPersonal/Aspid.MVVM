@@ -14,11 +14,9 @@ namespace Aspid.MVVM.StarterKit
     [AddComponentMenu("Aspid/MVVM/Binders/UI/Image/Image Binder – Fill EnumGroup")]
     public sealed class ImageFillEnumGroupMonoBinder : EnumGroupMonoBinder<Image>
     {
-        [Header("Values")]
         [SerializeField] [Range(0, 1)] private float _defaultValue;
         [SerializeField] [Range(0, 1)] private float _selectedValue;
         
-        [Header("Converters")]
         [SerializeReferenceDropdown]
         [SerializeReference] private Converter _defaultValueConverter;
         

@@ -7,7 +7,6 @@ namespace Aspid.MVVM.StarterKit
     [AddComponentMenu("Aspid/MVVM/Binders/UI/Canvas Group/CanvasGroup Binder – IgnoreParentGroups EnumGroup")]
     public sealed class CanvasGroupIgnoreParentGroupsEnumGroupMonoBinder : EnumGroupMonoBinder<CanvasGroup>
     {
-        [Header("Values")]
         [SerializeField] private bool _defaultValue;
         [SerializeField] private bool _selectedValue;
         

@@ -14,7 +14,6 @@ namespace Aspid.MVVM.StarterKit
     {
         [SerializeField] private string _colorPropertyName = "_BaseColor";
         
-        [Header("Converters")]
         [SerializeReferenceDropdown]
         [SerializeReference] private Converter _converter;
 

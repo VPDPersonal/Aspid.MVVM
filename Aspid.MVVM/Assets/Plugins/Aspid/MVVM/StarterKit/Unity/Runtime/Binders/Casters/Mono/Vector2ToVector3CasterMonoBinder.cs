@@ -17,7 +17,6 @@ namespace Aspid.MVVM.StarterKit
         [SerializeReferenceDropdown]
         [SerializeReference] private Converter _converter = new Vector2ToVector3Converter();
         
-        [Header("Events")]
         [SerializeField] private UnityEvent<Vector3> _casted;
         
         private void OnValidate() =>

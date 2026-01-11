@@ -13,7 +13,6 @@ namespace Aspid.MVVM.StarterKit
     [Serializable]
     public sealed class CapsuleColliderRadiusSwitcherBinder : SwitcherBinder<CapsuleCollider, float>
     {
-        [Header("Converters")]
         [SerializeReferenceDropdown]
         [SerializeReference] private Converter? _converter;
 

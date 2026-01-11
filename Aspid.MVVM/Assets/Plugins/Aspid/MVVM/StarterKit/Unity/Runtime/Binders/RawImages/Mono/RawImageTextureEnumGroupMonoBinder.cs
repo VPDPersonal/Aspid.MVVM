@@ -8,7 +8,6 @@ namespace Aspid.MVVM.StarterKit
     [AddComponentMenu("Aspid/MVVM/Binders/UI/Raw Image/RawImage Binder – Texture EnumGroup")]
     public sealed class RawImageTextureEnumGroupMonoBinder : EnumGroupMonoBinder<RawImage>
     {
-        [Header("Values")]
         [SerializeField] private Texture2D _defaultValue;
         [SerializeField] private Texture2D _selectedValue;
         

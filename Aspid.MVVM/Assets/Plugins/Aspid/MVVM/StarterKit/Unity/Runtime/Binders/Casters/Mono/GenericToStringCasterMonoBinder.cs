@@ -10,7 +10,6 @@ namespace Aspid.MVVM.StarterKit
         [SerializeReferenceDropdown]
         [SerializeReference] private IConverter<T, string> _converter;
         
-        [Header("Events")]
         [SerializeField] private UnityEvent<string> _casted;
         
         [BinderLog]
@@ -28,7 +27,6 @@ namespace Aspid.MVVM.StarterKit
 #else
     public abstract partial class GenericToStringCasterMonoBinder<T> : MonoBinder, IBinder<T>
     {
-        [Header("Events")]
         [SerializeField] private UnityEvent<string> _casted;
         
         protected abstract IConverter<T, string> Converter { get; }

@@ -7,7 +7,6 @@ namespace Aspid.MVVM.StarterKit
     [AddComponentMenu("Aspid/MVVM/Binders/Behaviour/Behaviour Binder – Enabled EnumGroup")]
     public sealed class BehaviourEnabledEnumGroupMonoBinder : EnumGroupMonoBinder<Behaviour>
     {
-        [Header("Values")]
         [SerializeField] private bool _defaultValue;
         [SerializeField] private bool _selectedValue;
         

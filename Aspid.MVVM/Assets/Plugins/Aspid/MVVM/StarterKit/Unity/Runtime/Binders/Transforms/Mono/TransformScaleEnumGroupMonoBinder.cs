@@ -7,11 +7,9 @@ namespace Aspid.MVVM.StarterKit
     [AddComponentMenu("Aspid/MVVM/Binders/Transform/Transform Binder – Scale EnumGroup")]
     public sealed class TransformScaleEnumGroupMonoBinder : EnumGroupMonoBinder<Transform>
     {
-        [Header("Values")]
         [SerializeField] private Vector3 _defaultValue;
         [SerializeField] private Vector3 _selectedValue;
         
-        [Header("Converters")]
         [SerializeField] private Vector3CombineConverter _converter = Vector3CombineConverter.Default;
 
         protected override void SetDefaultValue(Transform element) =>

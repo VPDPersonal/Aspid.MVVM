@@ -13,9 +13,8 @@ namespace Aspid.MVVM.StarterKit
     [AddComponentMenu("Aspid/MVVM/Binders/UI/Graphic/Graphic Binder – Color Component")]
     public class GraphicColorComponentMonoBinder : ComponentMonoBinder<Graphic>, INumberBinder
     {
-        [SerializeField] private ColorComponent _component = ColorComponent.A;
+        [SerializeField] private ColorComponent _colorComponent = ColorComponent.A;
         
-        [Header("Converters")]
         [SerializeReferenceDropdown]
         [SerializeReference] private Converter _converter;
         
@@ -26,7 +25,7 @@ namespace Aspid.MVVM.StarterKit
             SetValue((float)value);
 
         public void SetValue(float value) =>
-            CachedComponent.SetColor(_component, _converter?.Convert(value) ?? value);
+            CachedComponent.SetColor(_colorComponent, _converter?.Convert(value) ?? value);
 
         public void SetValue(double value) =>
             SetValue((float)value);

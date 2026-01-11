@@ -16,7 +16,6 @@ namespace Aspid.MVVM.StarterKit
         // ReSharper disable once MemberInitializerValueIgnored
         [SerializeField] private string _colorPropertyName = "_BaseColor";
         
-        [Header("Converters")]
         [SerializeReferenceDropdown]
         [SerializeReference] private Converter? _converter;
 

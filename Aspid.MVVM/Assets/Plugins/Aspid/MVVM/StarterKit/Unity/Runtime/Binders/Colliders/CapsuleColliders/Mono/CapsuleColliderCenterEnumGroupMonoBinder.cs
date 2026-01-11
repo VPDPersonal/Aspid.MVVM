@@ -7,11 +7,9 @@ namespace Aspid.MVVM.StarterKit
     [AddComponentMenu("Aspid/MVVM/Binders/Collider/Capsule/CapsuleCollider Binder – Center EnumGroup")]
     public sealed class CapsuleColliderCenterEnumGroupMonoBinder : EnumGroupMonoBinder<CapsuleCollider>
     {
-        [Header("Values")]
         [SerializeField] private Vector3 _defaultValue;
         [SerializeField] private Vector3 _selectedValue;
         
-        [Header("Converters")]
         [SerializeField] private Vector3CombineConverter _defaultValueConverter = Vector3CombineConverter.Default;
         [SerializeField] private Vector3CombineConverter _selectedValueConverter = Vector3CombineConverter.Default;
         

@@ -10,8 +10,6 @@ namespace Aspid.MVVM.StarterKit
     public sealed class UnityEventBoolByBindMonoBinder : MonoBinder, IAnyBinder
     {
         [SerializeField] private bool _isInvert;
-        
-        [Header("Events")]
         [SerializeField] private UnityEvent<bool> _set;
 
         private void OnValidate() =>

@@ -13,7 +13,6 @@ namespace Aspid.MVVM.StarterKit
     [Serializable]
     public sealed class CanvasGroupAlphaSwitcherBinder : SwitcherBinder<CanvasGroup, float>
     {
-        [Header("Converters")]
         [SerializeReferenceDropdown]
         [SerializeReference] private Converter? _converter;
         

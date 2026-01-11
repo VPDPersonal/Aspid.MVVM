@@ -9,7 +9,6 @@ namespace Aspid.MVVM.StarterKit
     [AddComponentMenu("Aspid/MVVM/Binders/UI/InputField/InputField Binder - InputType EnumGroup")]
     public sealed class InputFieldInputTypeEnumGroupMonoBinder : EnumGroupMonoBinder<TMP_InputField>
     {
-        [Header("Values")]
         [SerializeField] private TMP_InputField.InputType _defaultValue;
         [SerializeField] private TMP_InputField.InputType _selectedValue;
         

@@ -15,7 +15,6 @@ namespace Aspid.MVVM.StarterKit
     [Serializable]
     public sealed class TextFontSizeSwitcherBinder : SwitcherBinder<TMP_Text, float>
     {
-        [Header("Converters")]
         [SerializeReferenceDropdown]
         [SerializeReference] private Converter? _converter;
 

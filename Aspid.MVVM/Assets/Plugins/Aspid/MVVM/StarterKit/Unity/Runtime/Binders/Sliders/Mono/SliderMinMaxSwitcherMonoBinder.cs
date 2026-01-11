@@ -14,8 +14,7 @@ namespace Aspid.MVVM.StarterKit
     public sealed class SliderMinMaxSwitcherMonoBinder : SwitcherMonoBinder<Slider, Vector2>
     {
         [SerializeField] private SliderValueMode _valueMode = SliderValueMode.Range;
-        
-        [Header("Converters")]
+
         [SerializeReferenceDropdown]
         [SerializeReference] private Converter _converter;
 

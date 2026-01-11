@@ -9,8 +9,6 @@ namespace Aspid.MVVM.StarterKit
     public sealed class TransformEulerAnglesSwitcherBinder : SwitcherBinder<Transform, Vector3>
     {
         [SerializeField] private Space _space;
-        
-        [Header("Converters")]
         [SerializeField] private Vector3CombineConverter? _converter;
         
         public TransformEulerAnglesSwitcherBinder(

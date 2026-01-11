@@ -8,14 +8,12 @@ using Converter = Aspid.MVVM.StarterKit.IConverterQuaternion;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
-    [AddPropertyContextMenu(typeof(Transform), "m_LocalRotation")]
-    [AddComponentMenu("Aspid/MVVM/Binders/Transform/Transform Binder - Rotation Switcher")]
-    [AddComponentContextMenu(typeof(Transform),"Add Transform Binder/Transform Binder - Rotation Switcher")]
+    [AddBinderContextMenu(typeof(Transform), serializePropertyNames: "m_LocalRotation")]
+    [AddComponentMenu("Aspid/MVVM/Binders/Transform/Transform Binder – Rotation Switcher")]
     public sealed class TransformRotationSwitcherMonoBinder : SwitcherMonoBinder<Vector3>
     {
         [SerializeField] private Space _space = Space.World;
         
-        [Header("Converters")]
         [SerializeReferenceDropdown]
         [SerializeReference] private Converter _converter;
 

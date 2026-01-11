@@ -9,7 +9,6 @@ namespace Aspid.MVVM.StarterKit
     public sealed class CapsuleColliderCenterSwitcherBinder : SwitcherBinder<CapsuleCollider, Vector3>
     {
         // ReSharper disable once MemberInitializerValueIgnored
-        [Header("Converters")]
         [SerializeField] private Vector3CombineConverter? _converter = Vector3CombineConverter.Default;
         
         public CapsuleColliderCenterSwitcherBinder(
@@ -17,7 +16,7 @@ namespace Aspid.MVVM.StarterKit
             Vector3 trueValue, 
             Vector3 falseValue,
             BindMode mode) 
-            : this(target, trueValue, falseValue, null, mode) { }
+            : this(target, trueValue, falseValue, converter: null, mode) { }
         
         public CapsuleColliderCenterSwitcherBinder(
             CapsuleCollider target,

@@ -10,9 +10,8 @@ using Converter = Aspid.MVVM.StarterKit.IConverterFloat;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
-    [AddPropertyContextMenu(typeof(TMP_Text), "m_fontSize")]
-    [AddComponentMenu("Aspid/MVVM/Binders/UI/Text/Text Binder - FontSize Enum")]
-    [AddComponentContextMenu(typeof(TMP_Text),"Add Text Binder/Text Binder - FontSize Enum")]
+    [AddComponentMenu("Aspid/MVVM/Binders/UI/Text/Text Binder – FontSize Enum")]
+    [AddBinderContextMenu(typeof(TMP_Text), serializePropertyNames: "m_fontSize")]
     public sealed class TextFontSizeEnumMonoBinder : EnumMonoBinder<TMP_Text, float>
     {
         [SerializeReferenceDropdown]

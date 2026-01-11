@@ -17,7 +17,7 @@ namespace Aspid.MVVM.StarterKit
             Texture2D trueValue, 
             Texture2D falseValue,
             BindMode mode) 
-            : this(target, trueValue, falseValue, true, mode) { }
+            : this(target, trueValue, falseValue, disabledWhenNull: true, mode) { }
         
         public RawImageTextureSwitcherBinder(
             RawImage target,

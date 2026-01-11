@@ -9,21 +9,14 @@ using Converter = Aspid.MVVM.StarterKit.IConverterDouble;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
-    [AddPropertyContextMenu(typeof(double))]
-    [AddComponentMenu("Aspid/MVVM/Binders/UnityEvent/UnityEvent Binder - Double")]
-    [AddComponentContextMenu(typeof(Component),"Add General Binder/UnityEvent/UnityEvent Binder - Double")]
+    [AddBinderContextMenuByType(typeof(double))]
+    [AddComponentMenu("Aspid/MVVM/Binders/UnityEvent/UnityEvent Binder – Double")]
+    [AddBinderContextMenu(typeof(Component), Path = "Add General Binder/UnityEvent/UnityEvent Binder – Double")]
     public sealed partial class UnityEventDoubleMonoBinder : MonoBinder, INumberBinder
     {
-        public event UnityAction<double> Set
-        {
-            add => _set.AddListener(value);
-            remove => _set.RemoveListener(value);
-        }
-        
         [SerializeReferenceDropdown]
         [SerializeReference] private Converter _converter;
         
-        [Header("Events")]
         [SerializeField] private UnityEvent<double> _set;
         
         [BinderLog]
@@ -39,10 +32,7 @@ namespace Aspid.MVVM.StarterKit
             SetValue((double)value);
         
         [BinderLog]
-        public void SetValue(double value)
-        {
-            value = _converter?.Convert(value) ?? value;
-            _set?.Invoke(value);
-        }
+        public void SetValue(double value) =>
+            _set?.Invoke(_converter?.Convert(value) ?? value);
     }
 }

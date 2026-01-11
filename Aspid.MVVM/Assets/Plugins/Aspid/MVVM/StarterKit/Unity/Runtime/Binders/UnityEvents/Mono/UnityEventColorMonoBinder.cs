@@ -9,28 +9,18 @@ using Converter = Aspid.MVVM.StarterKit.IConverterColor;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
-    [AddPropertyContextMenu(typeof(Color))]
-    [AddComponentMenu("Aspid/MVVM/Binders/UnityEvent/UnityEvent Binder - Color")]
-    [AddComponentContextMenu(typeof(Component),"Add General Binder/UnityEvent/UnityEvent Binder Color")]
+    [AddBinderContextMenuByType(typeof(Color))]
+    [AddComponentMenu("Aspid/MVVM/Binders/UnityEvent/UnityEvent Binder – Color")]
+    [AddBinderContextMenu(typeof(Component), Path = "Add General Binder/UnityEvent/UnityEvent Binder – Color")]
     public sealed partial class UnityEventColorMonoBinder : MonoBinder, IColorBinder
     {
-        public event UnityAction<Color> Set
-        {
-            add => _set.AddListener(value);
-            remove => _set.RemoveListener(value);
-        }
-        
         [SerializeReferenceDropdown]
         [SerializeReference] private Converter _converter;
         
-        [Header("Events")]
         [SerializeField] private UnityEvent<Color> _set;
         
         [BinderLog]
-        public void SetValue(Color value)
-        {
-            value = _converter?.Convert(value) ?? value;
-            _set?.Invoke(value);
-        }
+        public void SetValue(Color value) =>
+            _set?.Invoke(_converter?.Convert(value) ?? value);
     }
 }

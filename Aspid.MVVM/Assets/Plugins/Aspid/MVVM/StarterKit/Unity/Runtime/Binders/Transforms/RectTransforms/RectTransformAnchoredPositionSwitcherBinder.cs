@@ -9,8 +9,6 @@ namespace Aspid.MVVM.StarterKit
     public sealed class RectTransformAnchoredPositionSwitcherBinder : SwitcherBinder<RectTransform, Vector3>
     {
         [SerializeField] private Space _space;
-        
-        [Header("Converters")]
         [SerializeField] private Vector3CombineConverter? _converter;
 
         public RectTransformAnchoredPositionSwitcherBinder(
@@ -18,7 +16,7 @@ namespace Aspid.MVVM.StarterKit
             Vector3 trueValue,
             Vector3 falseValue,
             BindMode mode) 
-            : this(target, trueValue, falseValue, Space.World, null, mode) { }
+            : this(target, trueValue, falseValue, Space.World, converter: null, mode) { }
         
         public RectTransformAnchoredPositionSwitcherBinder(
             RectTransform target,
@@ -26,7 +24,7 @@ namespace Aspid.MVVM.StarterKit
             Vector3 falseValue,
             Space space,
             BindMode mode = BindMode.OneWay) 
-            : this(target, trueValue, falseValue, space, null, mode) { }
+            : this(target, trueValue, falseValue, space, converter: null, mode) { }
         
         public RectTransformAnchoredPositionSwitcherBinder(
             RectTransform target,

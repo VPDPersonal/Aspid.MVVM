@@ -15,7 +15,6 @@ namespace Aspid.MVVM.StarterKit
     [Serializable]
     public sealed class LocalizeStringEventEntrySwitcherBinder : SwitcherBinder<LocalizeStringEvent, string>
     { 
-        [Header("Converters")]
         [SerializeReferenceDropdown]
         [SerializeReference] private Converter? _converter;
         
@@ -24,7 +23,7 @@ namespace Aspid.MVVM.StarterKit
             string trueValue, 
             string falseValue,
             BindMode mode = BindMode.OneWay) 
-            : this(target, trueValue, falseValue, null, mode) { }
+            : this(target, trueValue, falseValue, converter: null, mode) { }
         
         public LocalizeStringEventEntrySwitcherBinder(
             LocalizeStringEvent target,

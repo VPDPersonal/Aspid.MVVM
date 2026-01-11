@@ -13,7 +13,6 @@ namespace Aspid.MVVM.StarterKit
     [Serializable]
     public sealed class RendererMaterialsSwitcherBinder : SwitcherBinder<Renderer, Material[]?>
     {
-        [Header("Converters")]
         [SerializeReferenceDropdown]
         [SerializeReference] private Converter? _converter;
         
@@ -22,7 +21,7 @@ namespace Aspid.MVVM.StarterKit
             Material[]? trueValue,
             Material[]? falseValue,
             BindMode mode)
-            : this(target, trueValue, falseValue, null, mode) { }
+            : this(target, trueValue, falseValue, converter: null, mode) { }
         
         public RendererMaterialsSwitcherBinder(
             Renderer target, 

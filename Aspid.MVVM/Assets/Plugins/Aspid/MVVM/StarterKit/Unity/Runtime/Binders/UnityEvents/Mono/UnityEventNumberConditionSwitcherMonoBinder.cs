@@ -9,27 +9,14 @@ using Converter = Aspid.MVVM.StarterKit.IConverterFloatToBool;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
-    [AddPropertyContextMenu(typeof(bool))]
-    [AddComponentMenu("Aspid/MVVM/Binders/UnityEvent/UnityEvent Binder - Number Condition Switcher")]
-    [AddComponentContextMenu(typeof(Component),"Add General Binder/UnityEvent/UnityEvent Binder - Number Condition Switcher")]
+    [AddBinderContextMenuByType(typeof(bool))]
+    [AddComponentMenu("Aspid/MVVM/Binders/UnityEvent/UnityEvent Binder – Number Condition Switcher")]
+    [AddBinderContextMenu(typeof(Component), Path = "Add General Binder/UnityEvent/UnityEvent Binder – Number Condition Switcher")]
     public sealed partial class UnityEventNumberConditionSwitcherMonoBinder : MonoBinder, INumberBinder
     {
-        public event UnityAction TrueSet
-        {
-            add => _trueSet.AddListener(value);
-            remove => _trueSet.RemoveListener(value);
-        }
-        
-        public event UnityAction FalseSet
-        {
-            add => _falseSet.AddListener(value);
-            remove => _falseSet.RemoveListener(value);
-        }
-
         [SerializeReferenceDropdown]
         [SerializeReference] private Converter _converter;
         
-        [Header("Events")]
         [SerializeField] private UnityEvent _trueSet;
         [SerializeField] private UnityEvent _falseSet;
         
@@ -44,6 +31,12 @@ namespace Aspid.MVVM.StarterKit
         [BinderLog]
         public void SetValue(float value)
         {
+            if (_converter is null)
+            {
+                Debug.LogError($"No converter assigned to {nameof(UnityEventNumberConditionSwitcherMonoBinder)}");
+                return;
+            }
+            
             if (_converter.Convert(value)) _trueSet?.Invoke();
             else _falseSet?.Invoke();
         }

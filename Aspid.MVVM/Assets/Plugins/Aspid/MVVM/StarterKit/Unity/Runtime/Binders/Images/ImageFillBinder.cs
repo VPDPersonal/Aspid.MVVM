@@ -18,7 +18,7 @@ namespace Aspid.MVVM.StarterKit
         [SerializeReference] private Converter? _converter;
         
         public ImageFillBinder(Image target, BindMode mode)
-            : this(target, null, mode) { }
+            : this(target, converter: null, mode) { }
         
         public ImageFillBinder(Image target, Converter? converter = null, BindMode mode = BindMode.OneWay)
             : base(target, mode)

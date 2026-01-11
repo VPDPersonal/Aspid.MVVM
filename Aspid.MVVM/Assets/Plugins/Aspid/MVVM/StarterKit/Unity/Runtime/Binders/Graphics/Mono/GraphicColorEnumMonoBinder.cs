@@ -9,9 +9,8 @@ using Converter = Aspid.MVVM.StarterKit.IConverterColor;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
-    [AddPropertyContextMenu(typeof(Graphic), "m_Color")]
-    [AddComponentMenu("Aspid/MVVM/Binders/UI/Graphic/Graphic Binder - Color Enum")]
-    [AddComponentContextMenu(typeof(Graphic),"Add Graphic Binder/Graphic Binder - Color Enum")]
+    [AddBinderContextMenu(typeof(Graphic), serializePropertyNames: "m_Color")]
+    [AddComponentMenu("Aspid/MVVM/Binders/UI/Graphic/Graphic Binder – Color Enum")]
     public sealed class GraphicColorEnumMonoBinder : EnumMonoBinder<Graphic, Color>
     {
         [SerializeReferenceDropdown]

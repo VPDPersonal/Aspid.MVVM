@@ -16,7 +16,7 @@ namespace Aspid.MVVM.StarterKit
             Vector3 trueValue, 
             Vector3 falseValue,
             BindMode mode) 
-            : this(target, trueValue, falseValue, null, mode) { }
+            : this(target, trueValue, falseValue, converter: null, mode) { }
         
         public BoxColliderCenterSwitcherBinder(
             BoxCollider target,

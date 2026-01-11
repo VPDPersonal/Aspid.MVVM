@@ -14,7 +14,6 @@ namespace Aspid.MVVM.StarterKit
     [Serializable]
     public sealed class RawImageMaterialSwitcherBinder : SwitcherBinder<RawImage, Material>
     {
-        [Header("Converters")]
         [SerializeReferenceDropdown]
         [SerializeReference] private Converter? _converter;
         
@@ -23,7 +22,7 @@ namespace Aspid.MVVM.StarterKit
             Material trueValue, 
             Material falseValue,
             BindMode mode = BindMode.OneWay) 
-            : this(target, trueValue, falseValue, null, mode) { }
+            : this(target, trueValue, falseValue, converter: null, mode) { }
         
         public RawImageMaterialSwitcherBinder(
             RawImage target, 

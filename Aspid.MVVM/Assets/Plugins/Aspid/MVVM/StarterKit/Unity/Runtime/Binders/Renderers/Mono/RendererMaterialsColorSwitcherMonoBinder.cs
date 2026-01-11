@@ -8,14 +8,12 @@ using Converter = Aspid.MVVM.StarterKit.IConverterColor;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
-    [AddPropertyContextMenu(typeof(Renderer), "m_Materials")]
-    [AddComponentMenu("Aspid/MVVM/Binders/Renderer/Renderer Binder - MaterialsColor Switcher")]
-    [AddComponentContextMenu(typeof(Renderer),"Add Renderer Binder/Renderer Binder - MaterialsColor Switcher")]
+    [AddBinderContextMenu(typeof(Renderer), serializePropertyNames: "m_Materials")]
+    [AddComponentMenu("Aspid/MVVM/Binders/Renderer/Renderer Binder – MaterialsColor Switcher")]
     public sealed class RendererMaterialsColorSwitcherMonoBinder : SwitcherMonoBinder<Renderer, Color>
     {
         [SerializeField] private string _colorPropertyName = "_BaseColor";
         
-        [Header("Converters")]
         [SerializeReferenceDropdown]
         [SerializeReference] private Converter _converter;
 

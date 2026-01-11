@@ -4,9 +4,8 @@ using UnityEngine.UI;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
-    [AddPropertyContextMenu(typeof(Slider), "m_Calls")]
-    [AddComponentMenu("Aspid/MVVM/Binders/UI/Commands/Slider Binder - Command")]
-    [AddComponentContextMenu(typeof(Slider),"Add Slider Binder/Slider Binder - Command")]
+    [AddBinderContextMenu(typeof(Slider), serializePropertyNames: "m_Calls")]
+    [AddComponentMenu("Aspid/MVVM/Binders/UI/Commands/Slider Binder – Command")]
     public sealed partial class SliderCommandMonoBinder : ComponentMonoBinder<Slider>, 
         IBinder<IRelayCommand<int>>, 
         IBinder<IRelayCommand<long>>,

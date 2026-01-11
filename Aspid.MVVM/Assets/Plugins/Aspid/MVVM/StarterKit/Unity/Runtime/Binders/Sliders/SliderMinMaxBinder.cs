@@ -22,13 +22,13 @@ namespace Aspid.MVVM.StarterKit
         public SliderMinMaxBinder(
             Slider target, 
             BindMode mode)
-            : this(target, SliderValueMode.Range, null, mode) { }
+            : this(target, SliderValueMode.Range, converter: null, mode) { }
         
         public SliderMinMaxBinder(
             Slider target, 
             SliderValueMode valueMode, 
             BindMode mode)
-            : this(target, valueMode, null, mode) { }
+            : this(target, valueMode, converter: null, mode) { }
         
         public SliderMinMaxBinder(
             Slider target, 

@@ -11,7 +11,7 @@ namespace Aspid.MVVM.StarterKit
         [SerializeField] private bool _isInvert;
         
         public GameObjectVisibleBinder(GameObject target, BindMode mode)
-            : this(target, false, mode) { }
+            : this(target, isInvert: false, mode) { }
         
         public GameObjectVisibleBinder(GameObject target, bool isInvert = false, BindMode mode = BindMode.OneWay)
             : base(target, mode)

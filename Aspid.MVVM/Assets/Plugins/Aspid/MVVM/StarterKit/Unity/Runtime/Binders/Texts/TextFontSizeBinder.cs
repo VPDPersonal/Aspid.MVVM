@@ -19,7 +19,7 @@ namespace Aspid.MVVM.StarterKit
         [SerializeReference] private Converter? _converter;
         
         public TextFontSizeBinder(TMP_Text target, BindMode mode)
-            : this(target, null, mode) { }
+            : this(target, converter: null, mode) { }
         
         public TextFontSizeBinder(TMP_Text target, Converter? converter = null, BindMode mode = BindMode.OneWay) 
             : base(target, mode)

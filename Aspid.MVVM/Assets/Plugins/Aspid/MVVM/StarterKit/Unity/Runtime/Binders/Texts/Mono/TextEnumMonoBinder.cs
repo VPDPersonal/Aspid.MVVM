@@ -10,9 +10,8 @@ using Converter = Aspid.MVVM.StarterKit.IConverterString;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
-    [AddPropertyContextMenu(typeof(TMP_Text), "m_text")]
-    [AddComponentMenu("Aspid/MVVM/Binders/UI/Text/Text Binder - Text Enum")]
-    [AddComponentContextMenu(typeof(TMP_Text),"Add Text Binder/Text Binder - Text Enum")]
+    [AddComponentMenu("Aspid/MVVM/Binders/UI/Text/Text Binder – Text Enum")]
+    [AddBinderContextMenu(typeof(TMP_Text), serializePropertyNames: "m_text")]
     public sealed class TextEnumMonoBinder : EnumMonoBinder<TMP_Text, string>
     {
         [SerializeReferenceDropdown]

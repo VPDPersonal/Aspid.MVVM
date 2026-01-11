@@ -12,7 +12,7 @@ namespace Aspid.MVVM.StarterKit
         [SerializeField] private Vector3CombineConverter? _converter = Vector3CombineConverter.Default;
         
         public BoxColliderCenterBinder(BoxCollider target, BindMode mode)
-            : this(target, null, mode) { }
+            : this(target, converter: null, mode) { }
         
         public BoxColliderCenterBinder(BoxCollider target, Vector3CombineConverter? converter = null, BindMode mode = BindMode.OneWay)
             : base(target, mode)

@@ -19,7 +19,7 @@ namespace Aspid.MVVM.StarterKit
         [SerializeReference] private Converter? _converter;
         
         public LocalizeStringEventEntryBinder(LocalizeStringEvent target, BindMode mode)
-            :this(target, null, mode) { }
+            :this(target, converter: null, mode) { }
         
         public LocalizeStringEventEntryBinder(LocalizeStringEvent target, Converter? converter = null, BindMode mode = BindMode.OneWay)
             :base(target, mode)

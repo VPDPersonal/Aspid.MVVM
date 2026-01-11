@@ -3,11 +3,10 @@ using UnityEngine;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
-    [AddComponentMenu("Aspid/MVVM/Binders/Collider/Collider Binder - Enabled EnumGroup")]
-    [AddComponentContextMenu(typeof(Collider),"Add Binder/Collider Binder - Enabled EnumGroup")]
+    [AddBinderContextMenu(typeof(Collider))]
+    [AddComponentMenu("Aspid/MVVM/Binders/Collider/Collider Binder – Enabled EnumGroup")]
     public sealed class ColliderEnabledEnumGroupMonoBinder : EnumGroupMonoBinder<Collider>
     {
-        [Header("Values")]
         [SerializeField] private bool _defaultValue;
         [SerializeField] private bool _selectedValue;
         

@@ -9,12 +9,10 @@ using Converter = Aspid.MVVM.StarterKit.IConverterColor;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
-    [AddPropertyContextMenu(typeof(Graphic), "m_Color")]
-    [AddComponentMenu("Aspid/MVVM/Binders/UI/Graphic/Graphic Binder - Color Switcher")]
-    [AddComponentContextMenu(typeof(Graphic),"Add Graphic Binder/Graphic Binder - Color Switcher")]
+    [AddBinderContextMenu(typeof(Graphic), serializePropertyNames: "m_Color")]
+    [AddComponentMenu("Aspid/MVVM/Binders/UI/Graphic/Graphic Binder – Color Switcher")]
     public sealed class GraphicColorSwitcherMonoBinder : SwitcherMonoBinder<Graphic, Color>
     {
-        [Header("Converters")]
         [SerializeReferenceDropdown]
         [SerializeReference] private Converter _converter;
         

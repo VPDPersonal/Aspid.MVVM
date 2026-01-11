@@ -11,7 +11,7 @@ namespace Aspid.MVVM.StarterKit
         [SerializeField] private bool _isInvert;
 
         public CanvasGroupIgnoreParentGroupsBinder(CanvasGroup target, BindMode mode)
-            : this(target, false, mode) { }
+            : this(target, isInvert: false, mode) { }
         
         public CanvasGroupIgnoreParentGroupsBinder(
             CanvasGroup target, 

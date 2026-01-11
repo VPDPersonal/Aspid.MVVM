@@ -4,9 +4,8 @@ using UnityEngine.UI;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
-    [AddPropertyContextMenu(typeof(Scrollbar), "m_Calls")]
-    [AddComponentMenu("Aspid/MVVM/Binders/UI/Commands/Scrollbar Binder - Command")]
-    [AddComponentContextMenu(typeof(Scrollbar),"Add Scrollbar Binder/Scrollbar Binder - Command")]
+    [AddBinderContextMenu(typeof(Scrollbar), serializePropertyNames: "m_Calls")]
+    [AddComponentMenu("Aspid/MVVM/Binders/UI/Commands/Scrollbar Binder – Command")]
     public sealed partial class ScrollBarCommandMonoBinder : ComponentMonoBinder<Scrollbar>, 
         IBinder<IRelayCommand<int>>, 
         IBinder<IRelayCommand<long>>, 

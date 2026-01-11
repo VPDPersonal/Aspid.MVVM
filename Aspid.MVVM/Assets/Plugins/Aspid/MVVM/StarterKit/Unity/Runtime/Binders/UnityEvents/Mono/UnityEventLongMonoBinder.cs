@@ -9,21 +9,14 @@ using Converter = Aspid.MVVM.StarterKit.IConverterLong;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
-    [AddPropertyContextMenu(typeof(long))]
-    [AddComponentMenu("Aspid/MVVM/Binders/UnityEvent/UnityEvent Binder - Long")]
-    [AddComponentContextMenu(typeof(Component),"Add General Binder/UnityEvent/UnityEvent Binder - Long")]
+    [AddBinderContextMenuByType(typeof(long))]
+    [AddComponentMenu("Aspid/MVVM/Binders/UnityEvent/UnityEvent Binder – Long")]
+    [AddBinderContextMenu(typeof(Component), Path = "Add General Binder/UnityEvent/UnityEvent Binder – Long")]
     public sealed partial class UnityEventLongMonoBinder : MonoBinder, INumberBinder
     {
-        public event UnityAction<long> Set
-        {
-            add => _set.AddListener(value);
-            remove => _set.RemoveListener(value);
-        }
-        
         [SerializeReferenceDropdown]
         [SerializeReference] private Converter _converter;
         
-        [Header("Events")]
         [SerializeField] private UnityEvent<long> _set;
         
         [BinderLog]
@@ -31,11 +24,8 @@ namespace Aspid.MVVM.StarterKit
             SetValue((long)value);
         
         [BinderLog]
-        public void SetValue(long value)
-        {
-            value = _converter?.Convert(value) ?? value;
-            _set?.Invoke(value);
-        }
+        public void SetValue(long value) =>
+            _set?.Invoke(_converter?.Convert(value) ?? value);
 
         [BinderLog]
         public void SetValue(float value) =>

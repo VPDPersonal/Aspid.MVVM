@@ -18,7 +18,7 @@ namespace Aspid.MVVM.StarterKit
         [SerializeReference] private Converter? _converter;
         
         public RawImageMaterialBinder(RawImage target, BindMode mode = BindMode.OneWay)
-            : this(target, null, mode) { }
+            : this(target, converter: null, mode) { }
         
         public RawImageMaterialBinder(RawImage target, Converter? converter = null, BindMode mode = BindMode.OneWay)
             : base(target, mode)

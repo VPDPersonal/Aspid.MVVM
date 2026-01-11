@@ -12,8 +12,8 @@ using Comparer = Aspid.MVVM.StarterKit.IViewModelCollectionComparer;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
-    [AddComponentMenu("Aspid/MVVM/Binders/UI/VirtualizedList/VirtualizedList Binder - ItemSource")]
-    [AddComponentContextMenu(typeof(VirtualizedList),"Add VirtualizedList Binder/VirtualizedList Binder - ItemSource")]
+    [AddBinderContextMenu(typeof(VirtualizedList))]
+    [AddComponentMenu("Aspid/MVVM/Binders/UI/VirtualizedList/VirtualizedList Binder – ItemSource")]
     public sealed partial class VirtualizedListItemSourceMonoBinder : ComponentMonoBinder<VirtualizedList>, IBinder<IReadOnlyList<IViewModel>>
     {
         [SerializeReferenceDropdown]

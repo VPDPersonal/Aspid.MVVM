@@ -12,9 +12,8 @@ using Converter = Aspid.MVVM.StarterKit.IConverterFloat;
 namespace Aspid.MVVM.StarterKit
 {
     [BindModeOverride(IsAll = true)]
-    [AddPropertyContextMenu(typeof(Slider), "m_Value")]
-    [AddComponentMenu("Aspid/MVVM/Binders/UI/Slider/Slider Binder - Value")]
-    [AddComponentContextMenu(typeof(Slider),"Add Slider Binder/Slider Binder - Value")]
+    [AddComponentMenu("Aspid/MVVM/Binders/UI/Slider/Slider Binder – Value")]
+    [AddBinderContextMenu(typeof(Slider), serializePropertyNames: "m_Value")]
     public class SliderValueMonoBinder : ComponentMonoBinder<Slider>, INumberBinder, INumberReverseBinder
     {
         public event Action<int> IntValueChanged;

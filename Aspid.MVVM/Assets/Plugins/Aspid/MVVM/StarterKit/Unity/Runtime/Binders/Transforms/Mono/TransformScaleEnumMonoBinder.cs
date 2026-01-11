@@ -3,9 +3,8 @@ using UnityEngine;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
-    [AddPropertyContextMenu(typeof(Transform), "m_LocalScale")]
-    [AddComponentMenu("Aspid/MVVM/Binders/Transform/Transform Binder - Scale Enum")]
-    [AddComponentContextMenu(typeof(Transform),"Add Transform Binder/Transform Binder - Scale Enum")]
+    [AddComponentMenu("Aspid/MVVM/Binders/Transform/Transform Binder – Scale Enum")]
+    [AddBinderContextMenu(typeof(Transform), serializePropertyNames: "m_LocalScale")]
     public sealed class TransformScaleEnumMonoBinder : EnumMonoBinder<Vector3>
     {
         [SerializeField] private Vector3CombineConverter _converter = Vector3CombineConverter.Default;

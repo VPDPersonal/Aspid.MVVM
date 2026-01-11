@@ -21,13 +21,13 @@ namespace Aspid.MVVM.StarterKit
         public LineRendererColorBinder(
             LineRenderer target,
             BindMode mode)
-            : this(target, LineRendererColorMode.StartAndEnd, null, mode) { }
+            : this(target, LineRendererColorMode.StartAndEnd, converter: null, mode) { }
         
         public LineRendererColorBinder(
             LineRenderer target,
             LineRendererColorMode colorMode,
             BindMode mode)
-            : this(target, colorMode, null, mode) { }
+            : this(target, colorMode, converter: null, mode) { }
         
         public LineRendererColorBinder(
             LineRenderer target,

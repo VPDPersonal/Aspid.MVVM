@@ -12,15 +12,13 @@ using Converter = Aspid.MVVM.StarterKit.IConverterString;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
-    [AddComponentMenu("Aspid/MVVM/Binders/UI/Text/Text Binder - Localization Entry Switcher")]
-    [AddPropertyContextMenu(typeof(TMP_Text), "m_text")]
-    [AddComponentContextMenu(typeof(TMP_Text),"Add Text Binder/Text Binder - Localization Entry Switcher")]
+    [AddBinderContextMenu(typeof(TMP_Text), serializePropertyNames:"m_text")]
+    [AddComponentMenu("Aspid/MVVM/Binders/UI/Text/Text Binder – Localization Entry Switcher")]
     public class TextLocalizationEntrySwitcherMonoBinder : SwitcherMonoBinder<TMP_Text, string>
     {
         [SerializeField] private LocalizedString _stringReference = new();
         [SerializeField] private List<Object> _formatArguments = new();
         
-        [Header("Converters")]
         [SerializeReferenceDropdown]
         [SerializeReference] private Converter _converter;
         

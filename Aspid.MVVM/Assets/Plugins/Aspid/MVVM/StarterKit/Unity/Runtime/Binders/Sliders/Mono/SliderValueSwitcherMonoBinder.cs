@@ -9,12 +9,10 @@ using Converter = Aspid.MVVM.StarterKit.IConverterFloat;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
-    [AddPropertyContextMenu(typeof(Slider), "m_Value")]
-    [AddComponentMenu("Aspid/MVVM/Binders/UI/Slider/Slider Binder - Value Switcher")]
-    [AddComponentContextMenu(typeof(Slider),"Add Slider Binder/Slider Binder - Value Switcher")]
+    [AddBinderContextMenu(typeof(Slider), serializePropertyNames: "m_Value")]
+    [AddComponentMenu("Aspid/MVVM/Binders/UI/Slider/Slider Binder – Value Switcher")]
     public sealed class SliderValueSwitcherMonoBinder : SwitcherMonoBinder<Slider, float>
     {
-        [Header("Converters")]
         [SerializeReferenceDropdown]
         [SerializeReference] private Converter _converter;
         

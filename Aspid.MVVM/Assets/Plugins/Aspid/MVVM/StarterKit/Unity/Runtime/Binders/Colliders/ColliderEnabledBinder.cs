@@ -11,7 +11,7 @@ namespace Aspid.MVVM.StarterKit
         [SerializeField] private bool _isInvert;
 
         public ColliderEnabledBinder(Collider target, BindMode mode)
-            : this(target, false, mode) { }
+            : this(target, isInvert: false, mode) { }
         
         public ColliderEnabledBinder(Collider target, bool isInvert, BindMode mode = BindMode.OneWay)
             : base(target, mode)

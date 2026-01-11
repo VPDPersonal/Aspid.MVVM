@@ -9,21 +9,14 @@ using Converter = Aspid.MVVM.StarterKit.IConverterQuaternion;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
-    [AddPropertyContextMenu(typeof(Quaternion))]
-    [AddComponentMenu("Aspid/MVVM/Binders/UnityEvent/UnityEvent Binder - Quaternion")]
-    [AddComponentContextMenu(typeof(Component),"Add General Binder/UnityEvent/UnityEvent Binder - Quaternion")]
+    [AddBinderContextMenuByType(typeof(Quaternion))]
+    [AddComponentMenu("Aspid/MVVM/Binders/UnityEvent/UnityEvent Binder – Quaternion")]
+    [AddBinderContextMenu(typeof(Component), Path = "Add General Binder/UnityEvent/UnityEvent Binder – Quaternion")]
     public sealed partial class UnityEventQuaternionMonoBinder : MonoBinder, IBinder<Quaternion>
     {
-        public event UnityAction<Quaternion> Set
-        {
-            add => _set.AddListener(value);
-            remove => _set.RemoveListener(value);
-        }
-        
         [SerializeReferenceDropdown]
         [SerializeReference] private Converter _converter;
         
-        [Header("Events")]
         [SerializeField] private UnityEvent<Quaternion> _set;
         
         [BinderLog]

@@ -9,7 +9,7 @@ namespace Aspid.MVVM.StarterKit
         private readonly IConverter<string?, bool> _converter;
         
         public StringToBoolCasterBinder(Action<bool> setValue, BindMode mode)
-            : this(setValue, false, mode) { }
+            : this(setValue, isInvert: false, mode) { }
         
         public StringToBoolCasterBinder(Action<bool> setValue, bool isInvert = false, BindMode mode = BindMode.OneWay)
             : this(setValue, new StringEmptyToBoolConverter(isInvert), mode) { }

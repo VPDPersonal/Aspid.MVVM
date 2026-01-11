@@ -11,11 +11,11 @@ using static Aspid.MVVM.Generators.Descriptions.General;
 namespace Aspid.MVVM.Unity.Generators.ContextMenu;
 
 [Generator(LanguageNames.CSharp)]
-public sealed class AddComponentContextMenuGenerator : IIncrementalGenerator
+public sealed class AddBinderContextMenuGenerator : IIncrementalGenerator
 {
     public void Initialize(IncrementalGeneratorInitializationContext context)
     {
-        var provider = context.SyntaxProvider.ForAttributeWithMetadataName(AddComponentContextMenuAttribute.FullName, SyntacticPredicate, Find)
+        var provider = context.SyntaxProvider.ForAttributeWithMetadataName(AddBinderContextMenuAttribute.FullName, SyntacticPredicate, Find)
             .Where(foundForSourceGenerator => foundForSourceGenerator.IsNeed)
             .Select((foundForSourceGenerator, _) => foundForSourceGenerator.Container);
         
@@ -32,25 +32,30 @@ public sealed class AddComponentContextMenuGenerator : IIncrementalGenerator
         var declaration = (ClassDeclarationSyntax)context.TargetNode;
         if (context.TargetSymbol is not INamedTypeSymbol symbol) return default;
 
-        if (symbol.HasAnyAttribute(out var attribute, AddComponentContextMenuAttribute))
+        if (symbol.HasAnyAttribute(out var attribute, AddBinderContextMenuAttribute))
         {
             if (attribute!.ConstructorArguments[0].Value is not ITypeSymbol type) return default;
-
-            string? path = null;
             
-            if (attribute.ConstructorArguments.Length > 1)
-                path = attribute.ConstructorArguments[1].Value?.ToString();
-
             var arguments = attribute.NamedArguments;
-            var priority = (int)(arguments.FirstOrDefault(pair => pair.Key == "Priority").Value.Value ?? 100001);
+            var path = arguments.FirstOrDefault(pair => pair.Key == "Path").Value.Value as string;
 
-            return new FoundForGenerator<ContextMenuData>(new ContextMenuData(declaration, symbol, symbol.Name, type.Name, path, priority));
+            if (path is null)
+            {
+                if (symbol.HasAnyAttribute(out var addComponentMenuAttribute, "UnityEngine.AddComponentMenu"))
+                {
+                    path = addComponentMenuAttribute!.ConstructorArguments[0].Value as string;
+
+                    if (path is not null)
+                        path = $"Add {type.Name} Binder" + path.Substring(path.LastIndexOf("/", StringComparison.Ordinal));
+                }
+
+                path ??= $"Add {type.Name} Binder/{symbol.Name}";
+            }
+
+            return new FoundForGenerator<ContextMenuData>(new ContextMenuData(declaration, symbol, symbol.Name, type.Name, path, 100001));
         }
 
         return default;
-
-        string? GetName(string? path) =>
-            path?.Substring(path.LastIndexOf("/", StringComparison.Ordinal) + 1);
     }
 
     private static void GenerateCode(SourceProductionContext context, ContextMenuData data)

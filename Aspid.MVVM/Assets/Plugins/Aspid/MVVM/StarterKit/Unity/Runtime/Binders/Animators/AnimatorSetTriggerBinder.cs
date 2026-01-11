@@ -9,12 +9,12 @@ namespace Aspid.MVVM.StarterKit
     [BindModeOverride(BindMode.OneWayToSource)]
     public class AnimatorSetTriggerBinder : TargetBinder<Animator>, IReverseBinder<IRelayCommand>
     {
-        public event Action<IRelayCommand>? ValueChanged;
+        public event Action<IRelayCommand?>? ValueChanged;
+        
+        private IRelayCommand? _command;
         
         [field: SerializeField]
         protected string TriggerName { get; private set; }
-        
-        protected IRelayCommand? Command { get; private set; }
         
         public AnimatorSetTriggerBinder(Animator target, string triggerName)
             : base(target, BindMode.OneWayToSource)
@@ -23,7 +23,7 @@ namespace Aspid.MVVM.StarterKit
         }
 
         public void NotifyCanExecuteChanged() =>
-            Command?.NotifyCanExecuteChanged();
+            _command?.NotifyCanExecuteChanged();
         
         private void SetTrigger()
         {
@@ -33,12 +33,18 @@ namespace Aspid.MVVM.StarterKit
         
         protected override void OnBound()
         {
-            Command = new RelayCommand(SetTrigger, CanExecute);
-            ValueChanged?.Invoke(Command);
+            if (ValueChanged is not null)
+            {
+                _command = new RelayCommand(SetTrigger, CanExecute);
+                ValueChanged.Invoke(_command);
+            }
         }
-        
-        protected override void OnUnbound() => 
-            Command = null;
+
+        protected override void OnUnbinding()
+        {
+            _command = null;
+            ValueChanged?.Invoke(_command);
+        }
 
         protected virtual bool CanExecute() => 
             Target.gameObject.activeInHierarchy;

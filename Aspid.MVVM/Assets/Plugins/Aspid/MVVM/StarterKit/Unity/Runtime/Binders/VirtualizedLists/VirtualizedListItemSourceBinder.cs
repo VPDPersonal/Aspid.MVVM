@@ -34,13 +34,13 @@ namespace Aspid.MVVM.StarterKit
         }
         
         public VirtualizedListItemSourceBinder(VirtualizedList target, Filter filter, BindMode mode = BindMode.OneWay) :
-            this(target, null, filter, mode) { }
+            this(target, comparer: null, filter, mode) { }
         
         public VirtualizedListItemSourceBinder(VirtualizedList target, Filter filter, Comparer comparer, BindMode mode = BindMode.OneWay) :
             this(target, comparer, filter, mode) { }
         
         public VirtualizedListItemSourceBinder(VirtualizedList target, Comparer comparer, BindMode mode = BindMode.OneWay) :
-            this(target, comparer, null, mode) { }
+            this(target, comparer, filter: null, mode) { }
         
         public VirtualizedListItemSourceBinder(VirtualizedList target, Comparer comparer, Filter filter, BindMode mode = BindMode.OneWay)
             : this(target, mode)

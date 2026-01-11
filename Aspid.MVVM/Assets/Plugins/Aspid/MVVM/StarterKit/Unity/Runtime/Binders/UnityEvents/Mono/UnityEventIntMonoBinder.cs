@@ -9,17 +9,11 @@ using Converter = Aspid.MVVM.StarterKit.IConverterInt;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
-    [AddPropertyContextMenu(typeof(int))]
-    [AddComponentMenu("Aspid/MVVM/Binders/UnityEvent/UnityEvent Binder - Int")]
-    [AddComponentContextMenu(typeof(Component),"Add General Binder/UnityEvent/UnityEvent Binder - Int")]
+    [AddBinderContextMenuByType(typeof(int))]
+    [AddComponentMenu("Aspid/MVVM/Binders/UnityEvent/UnityEvent Binder – Int")]
+    [AddBinderContextMenu(typeof(Component), Path = "Add General Binder/UnityEvent/UnityEvent Binder – Int")]
     public sealed partial class UnityEventIntMonoBinder : MonoBinder, INumberBinder
     {
-        public event UnityAction<int> Set
-        {
-            add => _set.AddListener(value);
-            remove => _set.RemoveListener(value);
-        }
-        
         [SerializeReferenceDropdown]
         [SerializeReference] private Converter _converter;
         
@@ -27,11 +21,8 @@ namespace Aspid.MVVM.StarterKit
         [SerializeField] private UnityEvent<int> _set;
 
         [BinderLog]
-        public void SetValue(int value)
-        {
-            value = _converter?.Convert(value) ?? value;
-            _set?.Invoke(value);
-        }
+        public void SetValue(int value) =>
+            _set?.Invoke(_converter?.Convert(value) ?? value);
 
         [BinderLog]
         public void SetValue(long value) =>

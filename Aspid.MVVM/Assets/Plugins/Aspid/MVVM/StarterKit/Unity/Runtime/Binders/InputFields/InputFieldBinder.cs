@@ -3,7 +3,6 @@
 using TMPro;
 using System;
 using UnityEngine;
-using System.Globalization;
 #if UNITY_2023_1_OR_NEWER
 using Converter = Aspid.MVVM.StarterKit.IConverter<string?, string?>;
 #else
@@ -22,7 +21,8 @@ namespace Aspid.MVVM.StarterKit
         public event Action<long>? LongValueChanged;
         public event Action<float>? FloatValueChanged;
         public event Action<double>? DoubleValueChanged;
-        
+     
+        [SerializeField] private CultureInfoMode _cultureInfoMode = CultureInfoMode.CurrentCulture;
         [SerializeField] private UpdateInputFieldEvent _updateEvent = UpdateInputFieldEvent.OnValueChanged;
         
         [SerializeReferenceDropdown]
@@ -31,7 +31,7 @@ namespace Aspid.MVVM.StarterKit
         private bool _isNotifyValueChanged = true;
 
         public InputFieldBinder(TMP_InputField target, BindMode mode)
-            : this(target, null, mode) { }
+            : this(target, converter: null, mode) { }
         
         public InputFieldBinder(TMP_InputField target, Converter? converter = null, BindMode mode = BindMode.TwoWay)
             : base(target, mode)
@@ -62,16 +62,16 @@ namespace Aspid.MVVM.StarterKit
         }
 
         public void SetValue(int value) =>
-            SetValue(value.ToString());
+            SetValue(value.ToCultureString(_cultureInfoMode));
         
         public void SetValue(long value) =>
-            SetValue(value.ToString());
+            SetValue(value.ToCultureString(_cultureInfoMode));
         
         public void SetValue(float value) =>
-            SetValue(value.ToString(CultureInfo.InvariantCulture));
+            SetValue(value.ToCultureString(_cultureInfoMode));
         
         public void SetValue(double value) =>
-            SetValue(value.ToString(CultureInfo.InvariantCulture));
+            SetValue(value.ToCultureString(_cultureInfoMode));
         
         private void Subscribe()
         {

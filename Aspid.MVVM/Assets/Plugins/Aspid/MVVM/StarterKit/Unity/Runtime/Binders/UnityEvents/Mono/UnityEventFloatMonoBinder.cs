@@ -9,17 +9,11 @@ using Converter = Aspid.MVVM.StarterKit.IConverterFloat;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
-    [AddPropertyContextMenu(typeof(float))]
-    [AddComponentMenu("Aspid/MVVM/Binders/UnityEvent/UnityEvent Binder - Float")]
-    [AddComponentContextMenu(typeof(Component),"Add General Binder/UnityEvent/UnityEvent Binder - Float")]
+    [AddBinderContextMenuByType(typeof(float))]
+    [AddComponentMenu("Aspid/MVVM/Binders/UnityEvent/UnityEvent Binder – Float")]
+    [AddBinderContextMenu(typeof(Component), Path = "Add General Binder/UnityEvent/UnityEvent Binder – Float")]
     public sealed partial class UnityEventFloatMonoBinder : MonoBinder, INumberBinder
     {
-        public event UnityAction<float> Set
-        {
-            add => _set.AddListener(value);
-            remove => _set.RemoveListener(value);
-        }
-        
         [SerializeReferenceDropdown]
         [SerializeReference] private Converter _converter;
         
@@ -35,11 +29,8 @@ namespace Aspid.MVVM.StarterKit
             SetValue((float)value);
         
         [BinderLog]
-        public void SetValue(float value)
-        {
-            value = _converter?.Convert(value) ?? value;
-            _set?.Invoke(value);
-        }
+        public void SetValue(float value) =>
+            _set?.Invoke(_converter?.Convert(value) ?? value);
 
         [BinderLog]
         public void SetValue(double value) =>

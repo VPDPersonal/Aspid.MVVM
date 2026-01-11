@@ -24,7 +24,7 @@ namespace Aspid.MVVM.StarterKit
             Color trueValue,
             Color falseValue,
             BindMode mode)
-            : this(target, trueValue, falseValue, LineRendererColorMode.StartAndEnd, null, mode) { }
+            : this(target, trueValue, falseValue, LineRendererColorMode.StartAndEnd, converter: null, mode) { }
         
         public LineRendererColorSwitcherBinder(
             LineRenderer target,
@@ -32,7 +32,7 @@ namespace Aspid.MVVM.StarterKit
             Color falseValue,
             LineRendererColorMode colorMode,
             BindMode mode)
-            : this(target, trueValue, falseValue, colorMode, null, mode) { }
+            : this(target, trueValue, falseValue, colorMode, converter: null, mode) { }
         
         public LineRendererColorSwitcherBinder(
             LineRenderer target,

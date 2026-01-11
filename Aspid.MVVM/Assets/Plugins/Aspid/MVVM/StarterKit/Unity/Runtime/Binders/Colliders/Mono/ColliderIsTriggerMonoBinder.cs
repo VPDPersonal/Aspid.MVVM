@@ -3,9 +3,8 @@ using UnityEngine;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
-    [AddPropertyContextMenu(typeof(Collider), "m_IsTrigger")]   
-    [AddComponentMenu("Aspid/MVVM/Binders/Collider/Collider Binder - IsTrigger")]
-    [AddComponentContextMenu(typeof(Collider),"Add Binder/Collider Binder - IsTrigger")]
+    [AddComponentMenu("Aspid/MVVM/Binders/Collider/Collider Binder – IsTrigger")]
+    [AddBinderContextMenu(typeof(Collider), serializePropertyNames: "m_IsTrigger")]
     public partial class ColliderIsTriggerMonoBinder : ComponentMonoBinder<Collider>, IBinder<bool>
     {
         [SerializeField] private bool _isInvert;

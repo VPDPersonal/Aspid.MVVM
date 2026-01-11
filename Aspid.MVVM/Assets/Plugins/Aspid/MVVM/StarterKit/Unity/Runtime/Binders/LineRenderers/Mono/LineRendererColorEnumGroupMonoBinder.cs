@@ -8,9 +8,8 @@ using Converter = Aspid.MVVM.StarterKit.IConverterColor;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
-    [AddPropertyContextMenu(typeof(LineRenderer), "colorGradient")]
-    [AddComponentMenu("Aspid/MVVM/Binders/Line Renderers/LineRenderer Binder - Color EnumGroup")]
-    [AddComponentContextMenu(typeof(LineRenderer),"Add LineRenderer Binder/LineRenderer Binder - Color EnumGroup")]
+    [AddBinderContextMenu(typeof(LineRenderer), serializePropertyNames: "colorGradient")]
+    [AddComponentMenu("Aspid/MVVM/Binders/Line Renderers/LineRenderer Binder – Color EnumGroup")]
     public sealed class LineRendererColorEnumGroupMonoBinder : EnumGroupMonoBinder<LineRenderer>
     {
         [Header("Values")]

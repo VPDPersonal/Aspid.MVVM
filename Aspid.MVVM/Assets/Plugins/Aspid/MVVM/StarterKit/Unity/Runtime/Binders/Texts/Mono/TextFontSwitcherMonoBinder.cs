@@ -5,9 +5,8 @@ using UnityEngine;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
-    [AddComponentMenu("Aspid/MVVM/Binders/UI/Text/Text Binder - Font Switcher")]
-    [AddPropertyContextMenu(typeof(TMP_Text), "m_text")]
-    [AddComponentContextMenu(typeof(TMP_Text),"Add Text Binder/Text Binder - Font Switcher")]
+    [AddComponentMenu("Aspid/MVVM/Binders/UI/Text/Text Binder – Font Switcher")]
+    [AddBinderContextMenu(typeof(TMP_Text), serializePropertyNames: "m_fontAsset")]
     public sealed class TextFontSwitcherMonoBinder : SwitcherMonoBinder<TMP_Text, TMP_FontAsset>
     {
         protected override void SetValue(TMP_FontAsset value) =>

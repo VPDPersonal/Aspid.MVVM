@@ -11,7 +11,7 @@ namespace Aspid.MVVM.StarterKit
         [SerializeField] private bool _isInvert;
 
         public MeshColliderConvexBinder(MeshCollider target, BindMode bindMode)
-            : this(target, false, bindMode) { }
+            : this(target, isInvert: false, bindMode) { }
         
         public MeshColliderConvexBinder(MeshCollider target, bool isInvert = false, BindMode bindMode = BindMode.OneWay)
             : base(target, bindMode)

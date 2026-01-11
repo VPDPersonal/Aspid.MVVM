@@ -3,9 +3,8 @@ using UnityEngine;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
-    [AddPropertyContextMenu(typeof(Transform), "m_LocalScale")]
-    [AddComponentMenu("Aspid/MVVM/Binders/Transform/Transform Binder - Scale Switcher")]
-    [AddComponentContextMenu(typeof(Transform),"Add Transform Binder/Transform Binder - Scale Switcher")]
+    [AddBinderContextMenu(typeof(Transform), serializePropertyNames: "m_LocalScale")]
+    [AddComponentMenu("Aspid/MVVM/Binders/Transform/Transform Binder – Scale Switcher")]
     public sealed class TransformScaleSwitcherMonoBinder : SwitcherMonoBinder<Vector3>
     {
         [Header("Converters")]

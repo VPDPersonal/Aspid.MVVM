@@ -15,6 +15,10 @@ namespace Aspid.MVVM
         public static Type GetPropertyType(this SerializedProperty serializedProperty)
         {
             var type = serializedProperty.GetClassInfo().type;
+            
+            if (type is null) 
+                return null;
+            
             var member = type.GetMembersInfosIncludingBaseClasses(Flags)
                 .FirstOrDefault(member => member.Name == serializedProperty.name);
 
@@ -81,7 +85,7 @@ namespace Aspid.MVVM
                     }
                 }
                 
-                return (field.FieldType, field.GetValue(current.classInstance));
+                return (field?.FieldType, field?.GetValue(current.classInstance));
             }
 
             FieldInfo FindField(Type type, string name)

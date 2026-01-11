@@ -5,9 +5,8 @@ using UnityEngine;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
-    [AddComponentMenu("Aspid/MVVM/Binders/UI/Text/Text Binder - Font Enum Group")]
-    [AddPropertyContextMenu(typeof(TMP_Text), "m_text")]
-    [AddComponentContextMenu(typeof(TMP_Text),"Add Text Binder/Text Binder - Font Enum Group")]
+    [AddComponentMenu("Aspid/MVVM/Binders/UI/Text/Text Binder – Font Enum Group")]
+    [AddBinderContextMenu(typeof(TMP_Text), serializePropertyNames: "m_fontAsset")]
     public sealed class TextFontEnumGroupMonoBinder : EnumGroupMonoBinder<TMP_Text>
     {
         [Header("Values")]

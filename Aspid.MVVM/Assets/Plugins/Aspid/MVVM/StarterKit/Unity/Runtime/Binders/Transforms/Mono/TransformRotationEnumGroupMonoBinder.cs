@@ -8,9 +8,8 @@ using Converter = Aspid.MVVM.StarterKit.IConverterQuaternion;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
-    [AddPropertyContextMenu(typeof(Transform), "m_LocalRotation")]
-    [AddComponentMenu("Aspid/MVVM/Binders/Transform/Transform Binder - Rotation EnumGroup")]
-    [AddComponentContextMenu(typeof(Transform),"Add Transform Binder/Transform Binder - Rotation EnumGroup")]
+    [AddBinderContextMenu(typeof(Transform), serializePropertyNames: "m_LocalRotation")]
+    [AddComponentMenu("Aspid/MVVM/Binders/Transform/Transform Binder – Rotation EnumGroup")]
     public sealed class TransformRotationEnumGroupMonoBinder : EnumGroupMonoBinder<Transform>
     {
         [Header("Values")]

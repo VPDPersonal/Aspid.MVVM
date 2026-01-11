@@ -3,7 +3,6 @@
 using TMPro;
 using System;
 using UnityEngine;
-using System.Globalization;
 #if UNITY_2023_1_OR_NEWER
 using Converter = Aspid.MVVM.StarterKit.IConverter<string?, string?>;
 #else
@@ -16,11 +15,13 @@ namespace Aspid.MVVM.StarterKit
     [Serializable]
     public class TextBinder : TargetBinder<TMP_Text>, IBinder<string?>, INumberBinder
     {
+        [SerializeField] private CultureInfoMode _cultureInfoMode = CultureInfoMode.CurrentCulture;
+
         [SerializeReferenceDropdown]
         [SerializeReference] private Converter? _converter;
 
         public TextBinder(TMP_Text target, BindMode mode)
-            : this(target, null, mode) { }
+            : this(target, converter: null, mode) { }
         
         public TextBinder(TMP_Text target, Converter? converter = null, BindMode mode = BindMode.OneWay)
             : base(target, mode)
@@ -36,16 +37,16 @@ namespace Aspid.MVVM.StarterKit
         }
         
         public void SetValue(int value) =>
-            SetValue(value.ToString());
+            SetValue(value.ToCultureString(_cultureInfoMode));
         
         public void SetValue(long value) =>
-            SetValue(value.ToString());
+            SetValue(value.ToCultureString(_cultureInfoMode));
         
         public void SetValue(float value) =>
-            SetValue(value.ToString(CultureInfo.InvariantCulture));
+            SetValue(value.ToCultureString(_cultureInfoMode));
         
         public void SetValue(double value) =>
-            SetValue(value.ToString(CultureInfo.InvariantCulture));
+            SetValue(value.ToCultureString(_cultureInfoMode));
     }
 }
 #endif

@@ -3,9 +3,8 @@ using UnityEngine;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
-    [AddPropertyContextMenu(typeof(Transform), "m_LocalPosition")]
-    [AddComponentMenu("Aspid/MVVM/Binders/Transform/Transform Binder - Position EnumGroup")]
-    [AddComponentContextMenu(typeof(Transform),"Add Transform Binder/Transform Binder - Position EnumGroup")]
+    [AddBinderContextMenu(typeof(Transform), serializePropertyNames: "m_LocalPosition")]
+    [AddComponentMenu("Aspid/MVVM/Binders/Transform/Transform Binder – Position EnumGroup")]
     public sealed class TransformPositionEnumGroupMonoBinder : EnumGroupMonoBinder<Transform>
     {
         [Header("Values")]

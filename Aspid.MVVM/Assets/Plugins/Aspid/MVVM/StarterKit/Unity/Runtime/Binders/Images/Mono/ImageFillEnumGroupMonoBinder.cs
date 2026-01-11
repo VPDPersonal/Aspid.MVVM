@@ -10,9 +10,8 @@ using Converter = Aspid.MVVM.StarterKit.IConverterFloat;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
-    [AddPropertyContextMenu(typeof(Image), "m_FillAmount")]
-    [AddComponentMenu("Aspid/MVVM/Binders/UI/Image/Image Binder - Fill EnumGroup")]
-    [AddComponentContextMenu(typeof(Image),"Add Image Binder/Image Binder - Fill EnumGroup")]
+    [AddBinderContextMenu(typeof(Image), serializePropertyNames: "m_FillAmount")]
+    [AddComponentMenu("Aspid/MVVM/Binders/UI/Image/Image Binder – Fill EnumGroup")]
     public sealed class ImageFillEnumGroupMonoBinder : EnumGroupMonoBinder<Image>
     {
         [Header("Values")]

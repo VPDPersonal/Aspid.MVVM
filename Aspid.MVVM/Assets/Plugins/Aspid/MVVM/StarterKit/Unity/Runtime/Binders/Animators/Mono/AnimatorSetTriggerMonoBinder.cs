@@ -4,23 +4,23 @@ using UnityEngine;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
-    [BindModeOverride(BindMode.OneWayToSource)]
-    [AddComponentMenu("Aspid/MVVM/Binders/Animator/Animator Binder - Set Trigger")]
-    [AddComponentContextMenu(typeof(Animator),"Add Animator Binder/Animator Binder - Set Trigger")]
+    [BindModeOverride(modes: BindMode.OneWayToSource)]
+    [AddBinderContextMenu(typeof(Animator))]
+    [AddComponentMenu("Aspid/MVVM/Binders/Animator/Animator Binder – Set Trigger")]
     public class AnimatorSetTriggerMonoBinder : ComponentMonoBinder<Animator>, IReverseBinder<IRelayCommand>
     {
         public event Action<IRelayCommand> ValueChanged;
         
+        private IRelayCommand _command;
+        
         [field: SerializeField] 
         protected string TriggerName { get; private set; }
-        
-        protected IRelayCommand Command { get; private set; }
 
         protected virtual void OnEnable() => 
-            Command?.NotifyCanExecuteChanged();
+            _command?.NotifyCanExecuteChanged();
         
         protected virtual void OnDisable() =>
-            Command?.NotifyCanExecuteChanged();
+            _command?.NotifyCanExecuteChanged();
 
         private void SetTrigger()
         {
@@ -30,13 +30,19 @@ namespace Aspid.MVVM.StarterKit
         
         protected override void OnBound()
         {
-            Command ??= new RelayCommand(SetTrigger, CanExecute);
-            ValueChanged?.Invoke(Command);
+            if (ValueChanged is not null)
+            {
+                _command = new RelayCommand(SetTrigger, CanExecute);
+                ValueChanged.Invoke(_command);
+            }
         }
         
-        protected override void OnUnbound() => 
-            Command = null;
-        
+        protected override void OnUnbinding()
+        {
+            _command = null;
+            ValueChanged?.Invoke(_command);
+        }
+
         protected virtual bool CanExecute() =>
             CachedComponent.gameObject.activeInHierarchy;
     }

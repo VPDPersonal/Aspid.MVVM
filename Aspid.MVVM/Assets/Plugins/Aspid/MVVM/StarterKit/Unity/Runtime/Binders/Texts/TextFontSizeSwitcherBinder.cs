@@ -24,7 +24,7 @@ namespace Aspid.MVVM.StarterKit
             float trueValue, 
             float falseValue,
             BindMode mode = BindMode.OneWay) 
-            : this(target, trueValue, falseValue, null, mode) { }
+            : this(target, trueValue, falseValue, converter: null, mode) { }
         
         public TextFontSizeSwitcherBinder(
             TMP_Text target, 

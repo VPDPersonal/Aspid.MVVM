@@ -22,7 +22,7 @@ namespace Aspid.MVVM.StarterKit
             Mesh trueValue, 
             Mesh falseValue, 
             BindMode mode)
-            : this(target, trueValue, falseValue, null, mode) { }
+            : this(target, trueValue, falseValue, converter: null, mode) { }
         
         public MeshColliderMeshSwitcherBinder(
             MeshCollider target,

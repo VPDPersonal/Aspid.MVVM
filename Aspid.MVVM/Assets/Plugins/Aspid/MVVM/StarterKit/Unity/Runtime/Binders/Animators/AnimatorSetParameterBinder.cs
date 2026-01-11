@@ -9,14 +9,14 @@ namespace Aspid.MVVM.StarterKit
     [BindModeOverride(BindMode.OneWay, BindMode.OneTime, BindMode.OneWayToSource)]
     public abstract class AnimatorSetParameterBinder<T> : TargetBinder<Animator>, IBinder<T>, IReverseBinder<IRelayCommand<T>>
     {
-        public event Action<IRelayCommand<T>>? ValueChanged;
+        public event Action<IRelayCommand<T>?>? ValueChanged;
+        
+        private IRelayCommand<T>? _command;
         
         [field: SerializeField]
         protected string ParameterName { get; private set; }
         
-        protected IRelayCommand<T>? Command { get; private set; }
-        
-        protected AnimatorSetParameterBinder(Animator target, string parameterName, BindMode mode)
+        protected AnimatorSetParameterBinder(Animator target, string parameterName, BindMode mode = BindMode.OneWay)
             : base(target, mode)
         {
             mode.ThrowExceptionIfMatches(BindMode.TwoWay);
@@ -24,7 +24,7 @@ namespace Aspid.MVVM.StarterKit
         }
         
         public void NotifyCanExecuteChanged() =>
-            Command?.NotifyCanExecuteChanged();
+            _command?.NotifyCanExecuteChanged();
 
         public void SetValue(T? value)
         {
@@ -36,12 +36,18 @@ namespace Aspid.MVVM.StarterKit
         
         protected override void OnBound()
         {
-            Command = new RelayCommand<T>(SetParameter, CanExecute);
-            ValueChanged?.Invoke(Command);
+            if (ValueChanged is not null)
+            {
+                _command = new RelayCommand<T>(SetParameter, CanExecute);
+                ValueChanged.Invoke(_command);
+            }
         }
-        
-        protected override void OnUnbound() => 
-            Command = null;
+
+        protected override void OnUnbinding()
+        {
+            _command = null;
+            ValueChanged?.Invoke(_command);
+        }
         
         protected virtual bool CanExecute(T? value) => 
             Target.gameObject.activeInHierarchy;

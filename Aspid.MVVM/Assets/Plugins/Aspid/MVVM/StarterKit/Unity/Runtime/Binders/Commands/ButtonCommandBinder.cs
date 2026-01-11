@@ -47,7 +47,7 @@ namespace Aspid.MVVM.StarterKit
         protected override void OnUnbound()
         {
             Target.onClick.RemoveListener(OnClicked);
-            SetValue(null);
+            SetValue(command: null);
         }
         
         private void OnClicked() =>
@@ -132,7 +132,7 @@ namespace Aspid.MVVM.StarterKit
         protected override void OnUnbound()
         {
             Target.onClick.RemoveListener(OnClicked);
-            SetValue(null);
+            SetValue(command: null);
         }
         
         private void OnClicked() => 
@@ -228,7 +228,7 @@ namespace Aspid.MVVM.StarterKit
         protected override void OnUnbound()
         {
             Target.onClick.RemoveListener(OnClicked);
-            SetValue(null);
+            SetValue(command: null);
         }
 
         private void OnClicked() => 
@@ -323,7 +323,7 @@ namespace Aspid.MVVM.StarterKit
         protected override void OnUnbound()
         {
             Target.onClick.RemoveListener(OnClicked);
-            SetValue(null);
+            SetValue(command: null);
         }
         
         private void OnClicked() =>
@@ -427,7 +427,7 @@ namespace Aspid.MVVM.StarterKit
         protected override void OnUnbound()
         {
             Target.onClick.RemoveListener(OnClicked);
-            SetValue(null);
+            SetValue(command: null);
         }
         
         private void OnClicked() => 

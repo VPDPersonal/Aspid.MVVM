@@ -9,9 +9,8 @@ using Converter = Aspid.MVVM.StarterKit.IConverterMaterial;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
-    [AddPropertyContextMenu(typeof(Renderer), "m_Materials")]
-    [AddComponentMenu("Aspid/MVVM/Binders/Renderer/Renderer Binder - Materials")]
-    [AddComponentContextMenu(typeof(Renderer),"Add Renderer Binder/Renderer Binder - Materials")]
+    [AddComponentMenu("Aspid/MVVM/Binders/Renderer/Renderer Binder – Materials")]
+    [AddBinderContextMenu(typeof(Renderer), serializePropertyNames: "m_Materials")]
     public partial class RendererMaterialsMonoBinder : ComponentMonoBinder<Renderer>, IBinder<Material>, IBinder<Material[]>, IBinder<IReadOnlyCollection<Material>>
     {
         [SerializeReferenceDropdown]

@@ -24,7 +24,7 @@ namespace Aspid.MVVM.StarterKit
             Vector2 trueValue, 
             Vector2 falseValue,
             BindMode mode)
-            : this(target, trueValue, falseValue, SizeDeltaMode.SizeDelta, null, mode) { }
+            : this(target, trueValue, falseValue, SizeDeltaMode.SizeDelta, converter: null, mode) { }
         
         public RectTransformSizeDeltaSwitcherBinder(
             RectTransform target, 
@@ -32,7 +32,7 @@ namespace Aspid.MVVM.StarterKit
             Vector2 falseValue,
             SizeDeltaMode sizeMode,
             BindMode mode = BindMode.OneWay)
-            : this(target, trueValue, falseValue, sizeMode, null, mode) { }
+            : this(target, trueValue, falseValue, sizeMode, converter: null, mode) { }
         
         public RectTransformSizeDeltaSwitcherBinder(
             RectTransform target, 

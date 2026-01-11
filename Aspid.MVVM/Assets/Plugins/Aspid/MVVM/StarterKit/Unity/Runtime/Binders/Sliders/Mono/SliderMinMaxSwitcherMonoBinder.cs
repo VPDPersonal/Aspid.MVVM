@@ -9,10 +9,8 @@ using Converter = Aspid.MVVM.StarterKit.IConverterVector2;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
-    [AddPropertyContextMenu(typeof(Slider), "m_MinValue")]
-    [AddPropertyContextMenu(typeof(Slider), "m_MaxValue")]
-    [AddComponentMenu("Aspid/MVVM/Binders/UI/Slider/Slider Binder - MinMax Switcher")]
-    [AddComponentContextMenu(typeof(Slider),"Add Slider Binder/Slider Binder - MinMax Switcher")]
+    [AddComponentMenu("Aspid/MVVM/Binders/UI/Slider/Slider Binder – MinMax Switcher")]
+    [AddBinderContextMenu(typeof(Slider), "m_MinValue", "m_MaxValue")]
     public sealed class SliderMinMaxSwitcherMonoBinder : SwitcherMonoBinder<Slider, Vector2>
     {
         [SerializeField] private SliderValueMode _valueMode = SliderValueMode.Range;

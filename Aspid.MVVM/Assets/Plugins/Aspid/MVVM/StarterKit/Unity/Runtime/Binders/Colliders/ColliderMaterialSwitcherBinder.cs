@@ -24,7 +24,7 @@ namespace Aspid.MVVM.StarterKit
             PhysicsMaterial trueValue, 
             PhysicsMaterial falseValue, 
             BindMode mode)
-            : this(target, trueValue, falseValue, null, mode) { }
+            : this(target, trueValue, falseValue, converter: null, mode) { }
         
         public ColliderMaterialSwitcherBinder(
             Collider target,

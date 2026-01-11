@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -17,7 +16,12 @@ namespace Aspid.MVVM.StarterKit
         [BinderLog]
         public void SetValue(T value)
         {
-            if (_converter is null) throw new NullReferenceException(nameof(_converter));
+            if (_converter is null)
+            {
+                Debug.LogError($"No converter assigned to {nameof(GenericToStringCasterMonoBinder<T>)}");
+                return;
+            }
+            
             _casted.Invoke(_converter.Convert(value));
         }
     }
@@ -32,7 +36,12 @@ namespace Aspid.MVVM.StarterKit
         [BinderLog]
         public void SetValue(T value)
         {
-	        if (Converter is null) throw new NullReferenceException(nameof(Converter));
+            if (_converter is null)
+            {
+                Debug.LogError($"No converter assigned to {nameof(GenericToStringCasterMonoBinder<T>)}");
+                return;
+            }
+
 	        _casted.Invoke(Converter.Convert(value));
         }
     }

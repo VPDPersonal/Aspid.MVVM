@@ -4,9 +4,8 @@ using UnityEngine.UI;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
-    [AddPropertyContextMenu(typeof(Image), "m_Sprite")]
-    [AddComponentMenu("Aspid/MVVM/Binders/UI/Image/Image Binder - Sprite")]
-    [AddComponentContextMenu(typeof(Image),"Add Image Binder/Image Binder - Sprite")]
+    [AddComponentMenu("Aspid/MVVM/Binders/UI/Image/Image Binder – Sprite")]
+    [AddBinderContextMenu(typeof(Image), serializePropertyNames: "m_Sprite")]
     public partial class ImageSpriteMonoBinder : ComponentMonoBinder<Image>, IBinder<Sprite>, IBinder<Texture2D>
     {
         [SerializeField] private bool _disabledWhenNull = true;

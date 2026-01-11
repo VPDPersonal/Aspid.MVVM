@@ -17,7 +17,7 @@ namespace Aspid.MVVM.StarterKit
         [SerializeReference] private Converter? _converter;
 
         public CanvasGroupAlphaBinder(CanvasGroup target, BindMode mode)
-            : this(target, null, mode) { }
+            : this(target, converter: null, mode) { }
         
         public CanvasGroupAlphaBinder(CanvasGroup target, Converter? converter = null, BindMode mode = BindMode.OneWay)
             : base(target, mode)

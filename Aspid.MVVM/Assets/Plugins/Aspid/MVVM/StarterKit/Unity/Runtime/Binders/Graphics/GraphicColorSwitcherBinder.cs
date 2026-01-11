@@ -23,7 +23,7 @@ namespace Aspid.MVVM.StarterKit
             Color trueColor, 
             Color falseColor,
             BindMode mode)
-            : this(target, trueColor, falseColor, null, mode) { }
+            : this(target, trueColor, falseColor, converter: null, mode) { }
         
         public GraphicColorSwitcherBinder(
             Graphic target,

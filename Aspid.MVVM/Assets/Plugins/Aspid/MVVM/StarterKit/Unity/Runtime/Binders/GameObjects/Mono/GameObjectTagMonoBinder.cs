@@ -8,8 +8,8 @@ using Converter = Aspid.MVVM.StarterKit.IConverterString;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
-    [AddComponentMenu("Aspid/MVVM/Binders/GameObject/GameObject Binder - Tag")]
-    [AddComponentContextMenu(typeof(Component),"Add General Binder/GameObject/GameObject Binder - Tag")]
+    [AddComponentMenu("Aspid/MVVM/Binders/GameObject/GameObject Binder – Tag")]
+    [AddBinderContextMenu(typeof(Component), Path = "Add General Binder/GameObject/GameObject Binder – Tag")]
     public partial class GameObjectTagMonoBinder : MonoBinder, IBinder<string>
     {
         [SerializeReferenceDropdown]

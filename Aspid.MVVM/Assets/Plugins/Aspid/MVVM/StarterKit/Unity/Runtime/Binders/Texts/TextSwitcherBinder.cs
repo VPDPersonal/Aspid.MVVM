@@ -24,7 +24,7 @@ namespace Aspid.MVVM.StarterKit
             string trueValue, 
             string falseValue,
             BindMode mode) 
-            : this(target, trueValue, falseValue, null, mode) { }
+            : this(target, trueValue, falseValue, converter: null, mode) { }
         
         public TextSwitcherBinder(
             TMP_Text target, 

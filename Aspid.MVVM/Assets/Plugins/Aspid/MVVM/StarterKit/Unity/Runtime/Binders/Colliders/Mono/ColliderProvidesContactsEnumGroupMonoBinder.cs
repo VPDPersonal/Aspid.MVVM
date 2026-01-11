@@ -3,9 +3,8 @@ using UnityEngine;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
-    [AddPropertyContextMenu(typeof(Collider), "m_ProvidesContacts")]
-    [AddComponentMenu("Aspid/MVVM/Binders/Collider/Collider Binder - ProvidesContacts EnumGroup")]
-    [AddComponentContextMenu(typeof(Collider),"Add Binder/Collider Binder - ProvidesContacts EnumGroup")]
+    [AddBinderContextMenu(typeof(Collider), serializePropertyNames: "m_ProvidesContacts")]
+    [AddComponentMenu("Aspid/MVVM/Binders/Collider/Collider Binder – ProvidesContacts EnumGroup")]
     public sealed class ColliderProvidesContactsEnumGroupMonoBinder : EnumGroupMonoBinder<Collider>
     {
         [Header("Values")]

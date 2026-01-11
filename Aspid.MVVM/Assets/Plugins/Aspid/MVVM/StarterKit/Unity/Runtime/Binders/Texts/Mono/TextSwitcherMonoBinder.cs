@@ -10,9 +10,8 @@ using Converter = Aspid.MVVM.StarterKit.IConverterString;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
-    [AddPropertyContextMenu(typeof(TMP_Text), "m_text")]
-    [AddComponentMenu("Aspid/MVVM/Binders/UI/Text/Text Binder - Text Switcher")]
-    [AddComponentContextMenu(typeof(TMP_Text),"Add Text Binder/Text Binder - Text Switcher")]
+    [AddBinderContextMenu(typeof(TMP_Text), serializePropertyNames: "m_text")]
+    [AddComponentMenu("Aspid/MVVM/Binders/UI/Text/Text Binder – Text Switcher")]
     public sealed class TextSwitcherMonoBinder : SwitcherMonoBinder<TMP_Text, string>
     {
         [Header("Converters")]

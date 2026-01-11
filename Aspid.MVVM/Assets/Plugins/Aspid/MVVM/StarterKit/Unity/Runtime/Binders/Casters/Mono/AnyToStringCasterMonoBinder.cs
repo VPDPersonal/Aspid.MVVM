@@ -9,9 +9,9 @@ using Converter = Aspid.MVVM.StarterKit.IConverterObjectToString;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
-    [AddPropertyContextMenu(typeof(string))]
+    [AddBinderContextMenuByType(typeof(string))]
     [AddComponentMenu("Aspid/MVVM/Binders/Casters/Any To String Caster Binder")]
-    [AddComponentContextMenu(typeof(Component),"Add General Binder/Casters/Any To String Caster Binder")]
+    [AddBinderContextMenu(typeof(Component), Path = "Add General Binder/Casters/Any To String Caster Binder")]
     public sealed class AnyToStringCasterMonoBinder : MonoBinder, IAnyBinder 
     {
         [SerializeReferenceDropdown]
@@ -19,12 +19,20 @@ namespace Aspid.MVVM.StarterKit
         
         [Header("Events")]
         [SerializeField] private UnityEvent<string> _casted;
-        
+
+        private void OnValidate() =>
+            _converter ??= new ObjectToStringConverter();
+
         [BinderLog]
         public void SetValue<T>(T value)
         {
-            var castedValue = _converter.Convert(value);
-            _casted?.Invoke(castedValue);
+            if (_converter is null)
+            {
+                Debug.LogError($"No converter assigned to {nameof(AnyToStringCasterMonoBinder)}");
+                return;
+            }
+            
+            _casted?.Invoke(_converter.Convert(value));
         }
     }
 }

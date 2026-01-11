@@ -18,7 +18,7 @@ namespace Aspid.MVVM.StarterKit
             Vector3 trueValue,
             Vector3 falseValue, 
             BindMode mode) 
-            : this(target, trueValue, falseValue, Space.World, null, mode) { }
+            : this(target, trueValue, falseValue, Space.World, converter: null, mode) { }
         
         public TransformPositionSwitcherBinder(
             Transform target,
@@ -26,7 +26,7 @@ namespace Aspid.MVVM.StarterKit
             Vector3 falseValue, 
             Space space,
             BindMode mode) 
-            : this(target, trueValue, falseValue, space, null, mode) { }
+            : this(target, trueValue, falseValue, space, converter: null, mode) { }
         
         public TransformPositionSwitcherBinder(
             Transform target,

@@ -10,9 +10,8 @@ using Converter = Aspid.MVVM.StarterKit.IConverterFloat;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
-    [AddComponentMenu("Aspid/MVVM/Binders/UI/Text/Text Binder - FontSize")]
-    [AddPropertyContextMenu(typeof(TMP_Text), "m_fontSize")]
-    [AddComponentContextMenu(typeof(TMP_Text),"Add Text Binder/Text Binder - FontSize")]
+    [AddComponentMenu("Aspid/MVVM/Binders/UI/Text/Text Binder – FontSize")]
+    [AddBinderContextMenu(typeof(TMP_Text), serializePropertyNames: "m_fontSize")]
     public partial class TextFontSizeMonoBinder : ComponentMonoBinder<TMP_Text>, INumberBinder
     {
         [SerializeReferenceDropdown]

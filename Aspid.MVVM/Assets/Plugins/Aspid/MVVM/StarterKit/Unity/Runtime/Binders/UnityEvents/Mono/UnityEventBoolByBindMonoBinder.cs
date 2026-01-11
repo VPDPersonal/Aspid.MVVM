@@ -4,17 +4,11 @@ using UnityEngine.Events;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
-    [AddPropertyContextMenu(typeof(bool))]
-    [AddComponentMenu("Aspid/MVVM/Binders/UnityEvent/UnityEvent Binder - Bool By Bind")]
-    [AddComponentContextMenu(typeof(Component),"Add General Binder/UnityEvent/UnityEvent Binder - Bool By Bind")]
+    [AddBinderContextMenuByType(typeof(bool))]
+    [AddComponentMenu("Aspid/MVVM/Binders/UnityEvent/UnityEvent Binder – Bool By Bind")]
+    [AddBinderContextMenu(typeof(Component), Path = "Add General Binder/UnityEvent/UnityEvent Binder – Bool By Bind")]
     public sealed class UnityEventBoolByBindMonoBinder : MonoBinder, IAnyBinder
     {
-        public event UnityAction<bool> Set
-        {
-            add => _set.AddListener(value);
-            remove => _set.RemoveListener(value);
-        }
-        
         [SerializeField] private bool _isInvert;
         
         [Header("Events")]
@@ -26,9 +20,11 @@ namespace Aspid.MVVM.StarterKit
         private void OnEnable() =>
             SetVisible();
 
-        protected override void OnBound() => SetVisible();
+        protected override void OnBound() => 
+            SetVisible();
 
-        protected override void OnUnbound() => SetVisible();
+        protected override void OnUnbound() => 
+            SetVisible();
 
         public void SetValue<T>(T value) { }
 

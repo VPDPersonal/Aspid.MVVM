@@ -9,21 +9,22 @@ namespace Aspid.MVVM.StarterKit
     {
         public event Action<IRelayCommand<T>> ValueChanged;
         
+        [NonSerialized]
         private T _value;
+        
+        private IRelayCommand<T> _command;
         
         [field: SerializeField] 
         protected string ParameterName { get; private set; }
-        
-        protected IRelayCommand<T> Command { get; private set; }
 
         protected virtual void OnEnable()
         {
             SetParameter(_value);
-            Command?.NotifyCanExecuteChanged();
+            _command?.NotifyCanExecuteChanged();
         }
 
         protected virtual void OnDisable() =>
-            Command?.NotifyCanExecuteChanged();
+            _command?.NotifyCanExecuteChanged();
 
         [BinderLog]
         public void SetValue(T value)
@@ -40,17 +41,23 @@ namespace Aspid.MVVM.StarterKit
             SetParameter(value);
         }
         
-        protected abstract void SetParameter(T value);
-        
         protected override void OnBound()
         {
-            Command ??= new RelayCommand<T>(SetParameter, CanExecute);
-            ValueChanged?.Invoke(Command);
+            if (ValueChanged is not null)
+            {
+                _command = new RelayCommand<T>(SetParameter, CanExecute);
+                ValueChanged.Invoke(_command);
+            }
+        }
+
+        protected override void OnUnbinding()
+        {
+            _command = null;
+            ValueChanged?.Invoke(_command);
         }
         
-        protected override void OnUnbound() => 
-            Command = null;
-        
+        protected abstract void SetParameter(T value);
+
         protected virtual bool CanExecute(T value) => 
             CachedComponent.gameObject.activeInHierarchy;
     }

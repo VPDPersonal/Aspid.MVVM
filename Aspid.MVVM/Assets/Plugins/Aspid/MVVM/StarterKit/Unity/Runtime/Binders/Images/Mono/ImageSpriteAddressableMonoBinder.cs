@@ -5,9 +5,8 @@ using UnityEngine.UI;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
-    [AddPropertyContextMenu(typeof(Image), "m_Sprite")]
-    [AddComponentMenu("Aspid/MVVM/Binders/UI/Image/Image Binder - Sprite Addressable")]
-    [AddComponentContextMenu(typeof(Image), "Add Image Binder/Image Binder - Sprite Addressable")]
+    [AddBinderContextMenu(typeof(Image), serializePropertyNames: "m_Sprite")]
+    [AddComponentMenu("Aspid/MVVM/Binders/UI/Image/Image Binder – Sprite Addressable")]
     public sealed class ImageSpriteAddressableMonoBinder : AddressableMonoBinder<Sprite, Image>
     {
         [SerializeField] private Sprite _defaultSprite;

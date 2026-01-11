@@ -3,9 +3,8 @@ using UnityEngine;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
-    [AddPropertyContextMenu(typeof(BoxCollider), "m_Center")]
-    [AddComponentMenu("Aspid/MVVM/Binders/Collider/Box/BoxCollider Binder - Center EnumGroup")]
-    [AddComponentContextMenu(typeof(BoxCollider),"Add BoxCollider Binder/BoxCollider Binder - Center EnumGroup")]
+    [AddBinderContextMenu(typeof(BoxCollider), serializePropertyNames: "m_Center")]
+    [AddComponentMenu("Aspid/MVVM/Binders/Collider/Box/BoxCollider Binder – Center EnumGroup")]
     public sealed class BoxColliderCenterEnumGroupMonoBinder : EnumGroupMonoBinder<BoxCollider>
     {
         [Header("Values")]

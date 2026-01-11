@@ -6,15 +6,15 @@ using UnityEngine.UI;
 namespace Aspid.MVVM.StarterKit
 {
     [BindModeOverride(IsAll = true)]
-    [AddPropertyContextMenu(typeof(Toggle), "m_IsOn")]
-    [AddComponentMenu("Aspid/MVVM/Binders/UI/Toggles/Toggle Binder - IsOn")]
-    [AddComponentContextMenu(typeof(Toggle),"Add Toggle Binder/Toggle Binder - IsOn")]
+    [AddComponentMenu("Aspid/MVVM/Binders/UI/Toggles/Toggle Binder – IsOn")]
+    [AddBinderContextMenu(typeof(Toggle), serializePropertyNames: "m_IsOn")]
     public partial class ToggleIsOnMonoBinder : ComponentMonoBinder<Toggle>, IBinder<bool>, IReverseBinder<bool>
     {
         public event Action<bool> ValueChanged;
         
         [SerializeField] private bool _isInvert;
-        
+      
+        [NonSerialized] 
         private bool _isNotifyValueChanged = true;
         
         [BinderLog]

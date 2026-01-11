@@ -25,7 +25,7 @@ namespace Aspid.MVVM.StarterKit
             Vector2 trueValue, 
             Vector2 falseValue,
             BindMode mode) 
-            : this(target, trueValue, falseValue, SliderValueMode.Range, null, mode) { }
+            : this(target, trueValue, falseValue, SliderValueMode.Range, converter: null, mode) { }
         
         public SliderMinMaxSwitcherBinder(
             Slider target, 
@@ -33,7 +33,7 @@ namespace Aspid.MVVM.StarterKit
             Vector2 falseValue,
             SliderValueMode valueMode,
             BindMode mode) 
-            : this(target, trueValue, falseValue, valueMode, null, mode) { }
+            : this(target, trueValue, falseValue, valueMode, converter: null, mode) { }
         
         public SliderMinMaxSwitcherBinder(
             Slider target, 

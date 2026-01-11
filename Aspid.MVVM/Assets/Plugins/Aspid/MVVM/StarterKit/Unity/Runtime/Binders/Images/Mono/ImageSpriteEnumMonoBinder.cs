@@ -4,9 +4,8 @@ using UnityEngine.UI;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
-    [AddPropertyContextMenu(typeof(Image), "m_Sprite")]
-    [AddComponentMenu("Aspid/MVVM/Binders/UI/Image/Image Binder - Sprite Enum")]
-    [AddComponentContextMenu(typeof(Image),"Add Image Binder/Image Binder - Sprite Enum")]
+    [AddBinderContextMenu(typeof(Image), serializePropertyNames: "m_Sprite")]
+    [AddComponentMenu("Aspid/MVVM/Binders/UI/Image/Image Binder – Sprite Enum")]
     public sealed class ImageSpriteEnumMonoBinder : EnumMonoBinder<Image, Sprite>
     {
         [SerializeField] private bool _disabledWhenNull = true;

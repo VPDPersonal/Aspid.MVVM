@@ -9,17 +9,11 @@ using Converter = Aspid.MVVM.StarterKit.IConverterVector3;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
-    [AddPropertyContextMenu(typeof(Vector3))]
-    [AddComponentMenu("Aspid/MVVM/Binders/UnityEvent/UnityEvent Binder - Vector3")]
-    [AddComponentContextMenu(typeof(Component),"Add General Binder/UnityEvent/UnityEvent Binder - Vector3")]
+    [AddBinderContextMenuByType(typeof(Vector3))]
+    [AddComponentMenu("Aspid/MVVM/Binders/UnityEvent/UnityEvent Binder – Vector3")]
+    [AddBinderContextMenu(typeof(Component), Path = "Add General Binder/UnityEvent/UnityEvent Binder – Vector3")]
     public sealed partial class UnityEventVector3MonoBinder : MonoBinder, IBinder<Vector3>
     {
-        public event UnityAction<Vector3> Vector3ValueSet
-        {
-            add => _set.AddListener(value);
-            remove => _set.RemoveListener(value);
-        }
-        
         [SerializeReferenceDropdown]
         [SerializeReference] private Converter _converter;
         
@@ -27,10 +21,7 @@ namespace Aspid.MVVM.StarterKit
         [SerializeField] private UnityEvent<Vector3> _set;
 
         [BinderLog]
-        public void SetValue(Vector3 value)
-        {
-            value = _converter?.Convert(value) ?? value;
-            _set?.Invoke(value);
-        }
+        public void SetValue(Vector3 value) =>
+            _set?.Invoke(_converter?.Convert(value) ?? value);
     }
 }

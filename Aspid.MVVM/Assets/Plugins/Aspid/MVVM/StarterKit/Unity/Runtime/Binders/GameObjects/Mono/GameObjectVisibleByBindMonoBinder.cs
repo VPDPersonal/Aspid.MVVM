@@ -3,25 +3,21 @@ using UnityEngine;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
-    [BindModeOverride(BindMode.OneTime)]
-    [AddComponentMenu("Aspid/MVVM/Binders/GameObject/GameObject Binder - Visible By Bind")]
-    [AddComponentContextMenu(typeof(Component),"Add General Binder/GameObject/GameObject Binder - Visible By Bind")]
+    [BindModeOverride(modes: BindMode.OneTime)]
+    [AddComponentMenu("Aspid/MVVM/Binders/GameObject/GameObject Binder – Visible By Bind")]
+    [AddBinderContextMenu(typeof(Component), Path = "Add General Binder/GameObject/GameObject Binder – Visible By Bind")]
     public sealed class GameObjectVisibleByBindMonoBinder : MonoBinder, IAnyBinder
     {
         [SerializeField] private bool _isInvert;
-
-        private void OnValidate()
-        {
-            if (Application.isPlaying)
-                SetVisible();
-        }
-
+        
         private void OnEnable() =>
             SetVisible();
 
-        protected override void OnBound() => SetVisible();
+        protected override void OnBound() => 
+            SetVisible();
 
-        protected override void OnUnbound() => SetVisible();
+        protected override void OnUnbound() => 
+            SetVisible();
 
         public void SetValue<T>(T value) { }
         

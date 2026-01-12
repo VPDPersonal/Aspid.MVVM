@@ -56,7 +56,10 @@ public static class BindableMembers
                 code.AppendBindableMembers(data);
             }
         
-            return code.AppendNotifyAll(data);
+            return code
+                .AppendNotifyAll(data)
+                .AppendLine()
+                .AppendNotifyCanExecuteChangedAll(data);
         }
 
         private CodeWriter AppendBindableMembers(in ViewModelData data)
@@ -106,6 +109,25 @@ public static class BindableMembers
                 code.AppendLineIf(!string.IsNullOrWhiteSpace(invoke), invoke);
             }
 
+            return code.EndBlock();
+        }
+
+        private CodeWriter AppendNotifyCanExecuteChangedAll(in ViewModelData data)
+        {
+            var modifiers = "public";
+            if (data.Inheritor is not Inheritor.None) modifiers += " override";
+            else if (!data.Symbol.IsSealed) modifiers += " virtual";
+            
+            code.AppendLine(GeneratedCodeViewModelAttribute)
+                .AppendLine($"{modifiers} void NotifyCanExecuteChangedAll()")
+                .BeginBlock()
+                .AppendLineIf(data.Inheritor is Inheritor.Inheritor, "base.NotifyCanExecuteChangedAll();");
+            
+            foreach (var command in data.Members.OfType<BindableCommandInfo>())
+            {
+                code.AppendLine($"{command.Name}.NotifyCanExecuteChanged();");
+            }
+            
             return code.EndBlock();
         }
     }

@@ -32,7 +32,7 @@ namespace Aspid.MVVM.StarterKit
         {
             if (_converter is null)
             {
-                Debug.LogError($"No converter assigned to {nameof(UnityEventNumberConditionMonoBinder)}");
+                Debug.LogError($"No converter assigned to {nameof(UnityEventNumberConditionMonoBinder)}", context: this);
                 return;
             }
             

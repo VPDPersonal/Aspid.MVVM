@@ -9,7 +9,7 @@ using Converter = Aspid.MVVM.StarterKit.IConverterMaterial;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
-    [AddBinderContextMenu(typeof(LineRenderer), serializePropertyNames: "m_Material")]
+    [AddBinderContextMenu(typeof(RawImage), serializePropertyNames: "m_Material")]
     [AddComponentMenu("Aspid/MVVM/Binders/UI/Raw Image/RawImage Binder – Material Enum")]
     public sealed class RawImageMaterialEnumMonoBinder : EnumMonoBinder<RawImage, Material>
     {

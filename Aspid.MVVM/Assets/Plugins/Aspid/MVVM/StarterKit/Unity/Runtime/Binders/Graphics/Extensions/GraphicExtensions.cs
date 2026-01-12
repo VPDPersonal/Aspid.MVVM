@@ -16,7 +16,7 @@ namespace Aspid.MVVM.StarterKit
                 case ColorComponent.G: color.g = value; break;
                 case ColorComponent.B: color.b = value; break;
                 case ColorComponent.A: color.a = value; break;
-                default: Debug.LogError($"Invalid color component {color}"); return;
+                default: Debug.LogError($"Invalid color component {component}", context: graphic); return;
             }
             
             graphic.color = color;

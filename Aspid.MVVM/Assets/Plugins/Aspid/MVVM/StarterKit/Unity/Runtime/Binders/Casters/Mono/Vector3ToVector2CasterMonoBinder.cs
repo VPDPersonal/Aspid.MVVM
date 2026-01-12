@@ -27,7 +27,7 @@ namespace Aspid.MVVM.StarterKit
         {
             if (_converter is null)
             {
-                Debug.LogError($"No converter assigned to {nameof(Vector3ToVector2CasterMonoBinder)}");
+                Debug.LogError($"No converter assigned to {nameof(Vector3ToVector2CasterMonoBinder)}", context: this);
                 return;
             }
             

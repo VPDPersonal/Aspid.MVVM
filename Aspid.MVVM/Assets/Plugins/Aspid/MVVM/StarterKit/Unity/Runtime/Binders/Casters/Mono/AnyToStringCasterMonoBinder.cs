@@ -27,7 +27,7 @@ namespace Aspid.MVVM.StarterKit
         {
             if (_converter is null)
             {
-                Debug.LogError($"No converter assigned to {nameof(AnyToStringCasterMonoBinder)}");
+                Debug.LogError($"No converter assigned to {nameof(AnyToStringCasterMonoBinder)}", context: this);
                 return;
             }
             

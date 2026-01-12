@@ -17,7 +17,7 @@ namespace Aspid.MVVM.StarterKit
         {
             if (_converter is null)
             {
-                Debug.LogError($"No converter assigned to {nameof(GenericToStringCasterMonoBinder<T>)}");
+                Debug.LogError($"No converter assigned to {nameof(GenericToStringCasterMonoBinder<T>)}", context: this);
                 return;
             }
             
@@ -36,7 +36,7 @@ namespace Aspid.MVVM.StarterKit
         {
             if (Converter is null)
             {
-                Debug.LogError($"No converter assigned to {nameof(GenericToStringCasterMonoBinder<T>)}");
+                Debug.LogError($"No converter assigned to {nameof(GenericToStringCasterMonoBinder<T>)}", context: this);
                 return;
             }
 

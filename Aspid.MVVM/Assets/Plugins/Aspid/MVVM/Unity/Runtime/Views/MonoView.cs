@@ -10,6 +10,7 @@ namespace Aspid.MVVM
     /// Implements <see cref="IDisposable"/> to allow cleanup of resources, including the destruction of the associated GameObject.
     /// </summary>
     [View]
+    [AddComponentMenu("Aspid/MVVM/Views/Mono View")]
     public partial class MonoView : MonoBehaviour, IDisposable
     {
 #if UNITY_EDITOR

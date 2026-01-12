@@ -34,7 +34,7 @@ namespace Aspid.MVVM.StarterKit
         [BinderLog]
         public void SetValue(T value)
         {
-            if (_converter is null)
+            if (Converter is null)
             {
                 Debug.LogError($"No converter assigned to {nameof(GenericToStringCasterMonoBinder<T>)}");
                 return;

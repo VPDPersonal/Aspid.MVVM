@@ -170,15 +170,17 @@ namespace Aspid.UnityFastTools
             style.unityParagraphSpacing = value;
             return style;
         }
-
-#if UNITY_6000_0_OR_NEWER
+        
+#if UNITY_6000_2_OR_NEWER
         public static T SetUnityTextAutoSize<T>(this T style, StyleTextAutoSize value)
             where T : IStyle
         {
             style.unityTextAutoSize = value;
             return style;
         }
+#endif
         
+#if UNITY_6000_0_OR_NEWER
         public static T SetUnityTextGenerator<T>(this T style, TextGeneratorType value)
             where T : IStyle
         {

@@ -168,14 +168,16 @@ namespace Aspid.UnityFastTools
             return element;
         }
         
-#if UNITY_6000_0_OR_NEWER
+#if UNITY_6000_2_OR_NEWER
         public static T SetUnityTextAutoSize<T>(this T element, StyleTextAutoSize value)
             where T : VisualElement
         {
             element.style.SetUnityTextAutoSize(value);
             return element;
         }
-        
+#endif
+       
+#if UNITY_6000_0_OR_NEWER
         public static T SetUnityTextGenerator<T>(this T element, TextGeneratorType value)
             where T : VisualElement
         {

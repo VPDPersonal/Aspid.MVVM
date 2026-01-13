@@ -47,7 +47,8 @@ namespace Aspid.MVVM
                         OneTimeBindAttribute => BindMode.OneTime,
                         OneWayToSourceBindAttribute => BindMode.OneWayToSource,
                         _ => Mode
-                    }; break;
+                    };
+                    break;
                 
                 case PropertyInfo propertyInfo:
                     Mode = BindMode.OneWay;
@@ -61,8 +62,8 @@ namespace Aspid.MVVM
                     Mode = BindMode.OneTime;
                     Name += "Command";
                     
-                    // ReSharper disable once PossibleNullReferenceException
-                    Type = memberContainerType.GetProperty(Name, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance).PropertyType;
+                    Type = memberContainerType.GetPropertyInfosIncludingBaseClasses(bindingFlags: BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)
+                        .FirstOrDefault(property => property.Name == Name)?.PropertyType;
                     break;
             }
         }

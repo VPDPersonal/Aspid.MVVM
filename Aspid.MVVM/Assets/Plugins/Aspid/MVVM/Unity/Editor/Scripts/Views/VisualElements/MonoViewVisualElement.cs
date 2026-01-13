@@ -86,7 +86,7 @@ namespace Aspid.MVVM
             var container = new AspidContainer(AspidContainer.StyleType.Dark);
             container.AddChild(new AspidTitle("Design ViewModel"));
             
-            var propertyField = new PropertyField(Editor.DesignViewModel);
+            var propertyField = new PropertyField(Editor.DesignViewModel, label: string.Empty);
             
             return container.AddChild(propertyField);
         }

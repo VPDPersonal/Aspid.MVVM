@@ -24,8 +24,14 @@ namespace Aspid.MVVM
         {
             _serializedObject = serializedObject;
         }
+        
+        public void ApplyModifiedProperties() =>
+            _serializedObject.ApplyModifiedProperties();
 
         public BinderListElementProperty GetArrayElementAtIndex(int index) =>
             new(Property.GetArrayElementAtIndex(index));
+
+        public void DeleteArrayElementAtIndex(int index) =>
+            Property.DeleteArrayElementAtIndex(index);
     }
 }

@@ -37,8 +37,6 @@ namespace Aspid.UnityFastTools
         
         internal static VisualElement DrawUIToolkit(SerializedProperty property, string label, Type type)
         {
-            var propertyField = new PropertyField(property);
-            
             var typeSelector = new VisualElement()
                 .SetFlexDirection(FlexDirection.Row)
                 .AddChild(new PropertyField(property).SetDisplay(DisplayStyle.None));

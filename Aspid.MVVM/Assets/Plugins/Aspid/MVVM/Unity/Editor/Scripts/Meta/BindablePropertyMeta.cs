@@ -70,11 +70,12 @@ namespace Aspid.MVVM
         
         public static bool IsBindableProperty(Type memberContainerType, MemberInfo memberInfo)
         {
+            if (memberInfo.IsDefined(typeof(IgnoreBindAttribute))) return false;
+            
             if (memberContainerType.IsInterface)
             {
                 if (memberInfo is not PropertyInfo propertyInfo) return false;
                 if (!propertyInfo.CanRead) return false;
-                if (propertyInfo.IsDefined(typeof(IgnoreBindAttribute))) return false;
 
                 var propertyType = propertyInfo.PropertyType;
                 if (propertyType == typeof(IBinderAdder)) return true;
@@ -93,18 +94,18 @@ namespace Aspid.MVVM
                 case FieldInfo fieldInfo when fieldInfo.IsDefined(typeof(BaseBindAttribute)): return true;
                 case PropertyInfo propertyInfo:
                     {
-                        var propertyNames = memberContainerType.GetMembers(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly)
+                        if (propertyInfo.IsDefined(typeof(BaseBindAttribute))) return true;
+                        
+                        return memberContainerType.GetMembers(bindingAttr: BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly)
                             .Where(member => member.IsDefined(typeof(BindAlsoAttribute)))
                             .SelectMany(member => member
                                 .GetCustomAttributes<BindAlsoAttribute>()
-                                .Select(attribute => attribute.PropertyName));
-            
-                        return propertyNames.Any(propertyName => propertyInfo.Name == propertyName);
+                                .Select(attribute => attribute.PropertyName))
+                            .Any(propertyName => propertyInfo.Name == propertyName);
                     }
                 case MethodInfo methodInfo: return methodInfo.IsDefined(typeof(RelayCommandAttribute));
                 default: return false;
             }
-
         }
     }
 }

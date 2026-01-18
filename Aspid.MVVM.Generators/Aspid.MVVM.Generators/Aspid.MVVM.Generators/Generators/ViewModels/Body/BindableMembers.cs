@@ -6,6 +6,7 @@ using Aspid.MVVM.Generators.Generators.ViewModels.Data;
 using Aspid.MVVM.Generators.Generators.ViewModels.Data.Infos;
 using static Aspid.MVVM.Generators.Generators.Descriptions.Classes;
 using static Aspid.MVVM.Generators.Generators.Descriptions.General;
+using SymbolExtensions = Aspid.MVVM.Generators.Helpers.SymbolExtensions;
 using BindMode = Aspid.MVVM.Generators.Generators.ViewModels.Data.BindMode;
 
 namespace Aspid.MVVM.Generators.Generators.ViewModels.Body;
@@ -123,9 +124,28 @@ public static class BindableMembers
                 .BeginBlock()
                 .AppendLineIf(data.Inheritor is Inheritor.Inheritor, "base.NotifyCanExecuteChangedAll();");
             
-            foreach (var command in data.Members.OfType<BindableCommandInfo>())
+            foreach (var member in data.Members)
             {
-                code.AppendLine($"{command.Name}.NotifyCanExecuteChanged();");
+                var name = member.Name;
+                
+                if (member is BindableCommandInfo command)
+                {
+                    if (string.IsNullOrWhiteSpace(command.CanExecute)) continue;
+                    name = $"{SymbolExtensions.GetFieldName(name, prefix: "__")}";
+                }
+                else
+                {
+                    var memberType = member.Member.GetSymbolType();
+                    if (memberType is null) continue;
+
+                    if (!memberType.ToDisplayStringGlobal().Contains(IRelayCommand))
+                    {
+                       if (!memberType.AllInterfaces.Any(i => i.ToDisplayStringGlobal().Contains(IRelayCommand)))
+                           continue;
+                    }
+                }
+                
+                code.AppendLine($"{name}?.NotifyCanExecuteChanged();");
             }
             
             return code.EndBlock();

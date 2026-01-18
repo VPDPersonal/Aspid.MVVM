@@ -18,6 +18,8 @@ public sealed class BindableCommandInfo : IBindableMemberInfo
     
     public string Name { get; }
     
+    public string CanExecute { get; }
+    
     public IdData Id { get; }
 
     public BindMode Mode => BindMode.OneTime;
@@ -35,7 +37,7 @@ public sealed class BindableCommandInfo : IBindableMemberInfo
         Bindable = GeneratedBindableMembers.CreateForRelayCommand(Type, Name);
 
         var fieldName = $"{methodSymbol.GetFieldName("__")}Command";
-        canExecute = GetCanExecuteAction(methodSymbol, isLambda, isMethod, canExecute);
+        CanExecute = GetCanExecuteAction(methodSymbol, isLambda, isMethod, canExecute);
         
         CommandDeclaration = 
             $"""
@@ -45,7 +47,7 @@ public sealed class BindableCommandInfo : IBindableMemberInfo
             private {Type} {fieldName};
 
             {GeneratedCodeViewModelAttribute}
-            private {Type} {Name} => {fieldName} ??= new {Type}({methodSymbol.Name}{canExecute});
+            private {Type} {Name} => {fieldName} ??= new {Type}({methodSymbol.Name}{CanExecute});
             #endregion
             """;
     }
@@ -69,22 +71,21 @@ public sealed class BindableCommandInfo : IBindableMemberInfo
     
     private static string GetCanExecuteAction(IMethodSymbol command, bool isLambda, bool isMethod, string? canExecute)
     {
-        var canExecuteName = new StringBuilder(canExecute ?? "");
+        if (canExecute is null || string.IsNullOrWhiteSpace(canExecute)) return string.Empty;
+
+        var canExecuteName = new StringBuilder(canExecute);
             
-        if (canExecuteName.Length != 0)
+        if (!isLambda)
         {
-            if (!isLambda)
-            {
-                canExecuteName.Insert(0, ", ");
-            }
-            else
-            {
-                var parameters = command.Parameters;
-                var missingParameters = string.Join(", ", Enumerable.Repeat("_", parameters.Length));
+            canExecuteName.Insert(0, ", ");
+        }
+        else
+        {
+            var parameters = command.Parameters;
+            var missingParameters = string.Join(", ", Enumerable.Repeat("_", parameters.Length));
                 
-                canExecuteName.Insert(0, $", ({missingParameters}) => ");
-                if (isLambda && isMethod) canExecuteName.Append("()");
-            }
+            canExecuteName.Insert(0, $", ({missingParameters}) => ");
+            if (isLambda && isMethod) canExecuteName.Append("()");
         }
 
         return canExecuteName.ToString();

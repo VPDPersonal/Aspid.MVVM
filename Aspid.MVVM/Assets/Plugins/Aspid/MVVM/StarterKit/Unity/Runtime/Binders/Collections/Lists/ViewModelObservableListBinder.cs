@@ -94,7 +94,7 @@ namespace Aspid.MVVM.StarterKit
             var index = 0;
             
             foreach (var item in newItems)
-                OnAdded(item, newStartingIndex + index++);
+                OnAdded(item, newStartingIndex: newStartingIndex + index++);
         }
 
         protected sealed override void OnRemoved(IViewModel oldItem, int oldStartingIndex)

@@ -11,7 +11,7 @@ namespace Aspid.MVVM.StarterKit
         [SerializeField] private bool _isInvert;
 
         public CanvasGroupBlocksRaycastsBinder(CanvasGroup target, BindMode mode)
-            : this(target, false, mode) { }
+            : this(target, isInvert: false, mode) { }
         
         public CanvasGroupBlocksRaycastsBinder(CanvasGroup target, bool isInvert = false, BindMode mode = BindMode.OneTime)
             : base(target, mode)

@@ -33,46 +33,60 @@ namespace Aspid.MVVM
         {
             menu.AddSeparator("/");
             var target = property.serializedObject.targetObject;
-            var types = FindTypesWithTargetPropertyTypeAttribute(target, property);
+            var items = FindTypesWithTargetPropertyTypeAttribute(target, property);
 
-            foreach (var type in types)
+            foreach (var item in items)
             {
-                menu.AddItem(new GUIContent($"{AddBinderText}/{type.Name}"), false, () =>
+                menu.AddItem(new GUIContent($"{AddBinderText}/{item.Item2}"), false, () =>
                 {
                     if (target is Component component)
-                        component.gameObject.AddComponent(type);
+                        component.gameObject.AddComponent(item.Item1);
                 }); 
             }
         }
 
-        private static IReadOnlyList<Type> FindTypesWithTargetPropertyTypeAttribute(Object target, SerializedProperty property)
+        private static IReadOnlyList<(Type, string)> FindTypesWithTargetPropertyTypeAttribute(Object target, SerializedProperty property)
         {
             var propertyName = property.name;
             var targetType = target.GetType();
             var propertyType = property.GetPropertyType();
+            
+            if (propertyType is null) 
+                return Array.Empty<(Type, string)>();
         
-            var result = new List<Type>();
+            var result = new List<(Type, string)>();
             var assemblies = AppDomain.CurrentDomain.GetAssemblies();
 
             foreach (var assembly in assemblies)
             {
                 foreach (var type in assembly.GetTypes())
                 {
-                    var attributes = type.GetCustomAttributes<AddPropertyContextMenu>(true);
-
-                    foreach (var attribute in attributes)
+                    var addComponentMenu = type.GetCustomAttribute<AddComponentMenu>();
+                    var name = addComponentMenu?.componentMenu;
+                    
+                    if (!string.IsNullOrWhiteSpace(name))
+                        name = name[(name.LastIndexOf('/') + 1)..];
+                    
+                    if (string.IsNullOrWhiteSpace(name))
+                        name = type.Name;
+                    
+                    foreach (var attribute in type.GetCustomAttributes<AddBinderContextMenuAttribute>(true))
                     {
-                        var serializePropertyName = attribute.SerializePropertyName;
+                        var serializePropertyNames = attribute.SerializePropertyNames;
                         
-                        if (!string.IsNullOrWhiteSpace(serializePropertyName))
+                        foreach (var serializePropertyName in serializePropertyNames)
                         {
+                            if (string.IsNullOrWhiteSpace(serializePropertyName)) continue;
+                            
                             if (serializePropertyName == propertyName && attribute.Type.IsAssignableFrom(targetType))
-                                result.Add(type);
+                                result.Add((type, name));
                         }
-                        else  if (attribute.Type.IsAssignableFrom(propertyType))
-                        {
-                            result.Add(type);
-                        }
+                    }
+
+                    foreach (var attribute in type.GetCustomAttributes<AddBinderContextMenuByTypeAttribute>(true))
+                    {
+                        if (attribute.Type.IsAssignableFrom(propertyType))
+                            result.Add((type, name));
                     }
                 }
             }

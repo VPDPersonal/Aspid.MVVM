@@ -8,9 +8,8 @@ using Converter = Aspid.MVVM.StarterKit.IConverterMaterial;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
-    [AddPropertyContextMenu(typeof(Renderer), "m_Materials")]
-    [AddComponentMenu("Aspid/MVVM/Binders/Renderer/Renderer Binder - Materials Enum")]
-    [AddComponentContextMenu(typeof(Renderer),"Add Renderer Binder/Renderer Binder - Materials Enum")]
+    [AddBinderContextMenu(typeof(Renderer), serializePropertyNames: "m_Materials")]
+    [AddComponentMenu("Aspid/MVVM/Binders/Renderer/Renderer Binder – Materials Enum")]
     public sealed class RendererMaterialsEnumMonoBinder : EnumMonoBinder<Renderer, Material[]>
     {
         [SerializeReferenceDropdown]

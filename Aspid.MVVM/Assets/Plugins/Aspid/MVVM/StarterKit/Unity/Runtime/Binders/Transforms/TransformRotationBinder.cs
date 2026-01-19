@@ -19,10 +19,10 @@ namespace Aspid.MVVM.StarterKit
         [SerializeReference] private Converter? _converter;
 
         public TransformRotationBinder(Transform target, BindMode mode) 
-            : this(target, Space.World, null, mode) { }
+            : this(target, Space.World, converter: null, mode) { }
         
         public TransformRotationBinder(Transform target, Space space, BindMode mode) 
-            : this(target, space, null, mode) { }
+            : this(target, space, converter: null, mode) { }
         
         public TransformRotationBinder(Transform target, Converter? converter, BindMode mode = BindMode.OneWay) 
             : this(target, Space.World, converter, mode) { }

@@ -2,6 +2,7 @@
 #nullable enable
 using System;
 using System.Linq;
+using UnityEditor;
 using Aspid.Internal;
 using Aspid.UnityFastTools;
 using UnityEngine.UIElements;
@@ -85,7 +86,7 @@ namespace Aspid.MVVM
             var container = new AspidContainer(AspidContainer.StyleType.Dark);
             container.AddChild(new AspidTitle("Design ViewModel"));
             
-            var propertyField = new PropertyField(Editor.DesignViewModel);
+            var propertyField = new PropertyField(Editor.DesignViewModel, label: string.Empty);
             
             return container.AddChild(propertyField);
         }
@@ -106,7 +107,7 @@ namespace Aspid.MVVM
             {
                 var element = Editor.BindersList.GetArrayElementAtIndex(i);
 
-                var property = new AspidPropertyField(element.MonoBindersProperty, element.Id)
+                var property = new AspidPropertyField(element.MonoBindersProperty, label: ObjectNames.NicifyVariableName(element.Id))
                     .SetMargin(top: 3);
                 
                 container.AddChild(property);

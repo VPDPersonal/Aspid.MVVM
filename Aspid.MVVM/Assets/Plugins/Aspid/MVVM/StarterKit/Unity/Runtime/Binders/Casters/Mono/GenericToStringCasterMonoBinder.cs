@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -11,20 +10,23 @@ namespace Aspid.MVVM.StarterKit
         [SerializeReferenceDropdown]
         [SerializeReference] private IConverter<T, string> _converter;
         
-        [Header("Events")]
         [SerializeField] private UnityEvent<string> _casted;
         
         [BinderLog]
         public void SetValue(T value)
         {
-            if (_converter is null) throw new NullReferenceException(nameof(_converter));
+            if (_converter is null)
+            {
+                Debug.LogError($"No converter assigned to {nameof(GenericToStringCasterMonoBinder<T>)}", context: this);
+                return;
+            }
+            
             _casted.Invoke(_converter.Convert(value));
         }
     }
 #else
     public abstract partial class GenericToStringCasterMonoBinder<T> : MonoBinder, IBinder<T>
     {
-        [Header("Events")]
         [SerializeField] private UnityEvent<string> _casted;
         
         protected abstract IConverter<T, string> Converter { get; }
@@ -32,7 +34,12 @@ namespace Aspid.MVVM.StarterKit
         [BinderLog]
         public void SetValue(T value)
         {
-	        if (Converter is null) throw new NullReferenceException(nameof(Converter));
+            if (Converter is null)
+            {
+                Debug.LogError($"No converter assigned to {nameof(GenericToStringCasterMonoBinder<T>)}", context: this);
+                return;
+            }
+
 	        _casted.Invoke(Converter.Convert(value));
         }
     }

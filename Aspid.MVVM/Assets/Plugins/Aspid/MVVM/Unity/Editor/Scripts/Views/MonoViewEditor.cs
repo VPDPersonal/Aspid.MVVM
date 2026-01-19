@@ -5,6 +5,7 @@ using UnityEditor;
 using UnityEditor.UIElements;
 using UnityEngine.UIElements;
 using System.Collections.Generic;
+using Object = UnityEngine.Object;
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM
@@ -27,10 +28,10 @@ namespace Aspid.MVVM
         
         protected ValidableBindersById LastBinders { get; private set; }
         
-        public IEnumerable<IMonoBinderValidable> UnassignedBinders => TargetAsView?
-            .GetComponentsInChildren<IMonoBinderValidable>(includeInactive: true)
-            .Where(binder => binder.View is null || string.IsNullOrWhiteSpace(binder.Id))
-            ?? Enumerable.Empty<IMonoBinderValidable>();
+        public IEnumerable<IMonoBinderValidable> UnassignedBinders => TargetAsView 
+            ? TargetAsView.GetComponentsInChildren<IMonoBinderValidable>(includeInactive: true)
+                .Where(binder => binder.View is null || string.IsNullOrWhiteSpace(binder.Id)) 
+            : Enumerable.Empty<IMonoBinderValidable>();
 
         #region Enable Methods
         protected sealed override void OnEnable()
@@ -134,7 +135,23 @@ namespace Aspid.MVVM
             
             if (viewModelType is null)
             {
-                BindersList.ArraySize = 0;
+                for (var i = 0; i < BindersList.ArraySize; i++)
+                {
+                    var hasBinder = false;
+                    var property = BindersList.GetArrayElementAtIndex(i);
+                    var monoBindersProperty = property.MonoBindersProperty;
+                    
+                    for (var j = 0; j < monoBindersProperty.arraySize; j++)
+                    {
+                        hasBinder = monoBindersProperty.GetArrayElementAtIndex(j).objectReferenceValue;
+                        if (hasBinder) break;
+                    }
+
+                    if (!hasBinder)
+                        BindersList.DeleteArrayElementAtIndex(i--);
+                }
+                
+                BindersList.ApplyModifiedProperties();
                 return;
             }
 
@@ -144,16 +161,53 @@ namespace Aspid.MVVM
             var bindableProperties = viewModelMeta.BindableProperties
                 .Where(bindableProperty => viewMeta.BinderProperties.All(binderProperty => binderProperty.Id != bindableProperty.Id))
                 .ToArray();
+            
+            Dictionary<string, Object[]> fieldsById = new();
 
-            BindersList.ArraySize = bindableProperties.Length;
-                
-            for (var i = 0; i < bindableProperties.Length; i++)
+            for (var i = 0; i < BindersList.ArraySize; i++)
             {
                 var element = BindersList.GetArrayElementAtIndex(i);
-                    
-                element.Id = bindableProperties[i].Id;
-                element.AssemblyQualifiedName = bindableProperties[i].Type?.AssemblyQualifiedName;
+                
+                var array = new Object[element.MonoBindersProperty.arraySize];
+                for (var j = 0; j < array.Length; j++)
+                    array[j] = element.MonoBindersProperty.GetArrayElementAtIndex(j).objectReferenceValue;
+                
+                fieldsById.Add(element.Id, array);
             }
+            
+            BindersList.ArraySize = bindableProperties.Length;
+                
+            for (var i = 0; i < BindersList.ArraySize; i++)
+            {
+                var property = BindersList.GetArrayElementAtIndex(i);
+                var monoBindersProperty = property.MonoBindersProperty;
+
+                if (fieldsById.TryGetValue(bindableProperties[i].Id, out var array))
+                {
+                    monoBindersProperty.arraySize = array.Length;
+
+                    for (var j = 0; j < array.Length; j++)
+                        monoBindersProperty.GetArrayElementAtIndex(j).objectReferenceValue = array[j];
+                }
+                else
+                {
+                    if (!fieldsById.ContainsKey(property.Id))
+                    {
+                        for (var j = 0; j < monoBindersProperty.arraySize; j++)
+                        {
+                            if (monoBindersProperty.GetArrayElementAtIndex(j).objectReferenceValue is IMonoBinderValidable monoBinder)
+                                monoBinder.Reset();
+                        }
+                    }
+                    
+                    monoBindersProperty.arraySize = 0;
+                }
+                    
+                property.Id = bindableProperties[i].Id;
+                property.AssemblyQualifiedName = bindableProperties[i].Type?.AssemblyQualifiedName;
+            }
+            
+            BindersList.ApplyModifiedProperties();
         }
     }
 }

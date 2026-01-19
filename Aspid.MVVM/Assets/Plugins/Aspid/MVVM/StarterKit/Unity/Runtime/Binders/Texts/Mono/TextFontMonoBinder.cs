@@ -6,9 +6,8 @@ using UnityEngine;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
-    [AddComponentMenu("Aspid/MVVM/Binders/UI/Text/Text Binder - Font")]
-    [AddPropertyContextMenu(typeof(TMP_Text), "m_text")]
-    [AddComponentContextMenu(typeof(TMP_Text),"Add Text Binder/Text Binder - Font")]
+    [AddComponentMenu("Aspid/MVVM/Binders/UI/Text/Text Binder – Font")]
+    [AddBinderContextMenu(typeof(TMP_Text), serializePropertyNames: "m_fontAsset")]
     public partial class TextFontMonoBinder : ComponentMonoBinder<TMP_Text>, IBinder<TMP_FontAsset>
     {
         [BinderLog]

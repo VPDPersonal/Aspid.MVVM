@@ -3,16 +3,13 @@ using UnityEngine;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
-    [AddPropertyContextMenu(typeof(SphereCollider), "m_Center")]
-    [AddComponentMenu("Aspid/MVVM/Binders/Collider/Sphere/SphereCollider Binder - Center EnumGroup")]
-    [AddComponentContextMenu(typeof(SphereCollider),"Add SphereCollider Binder/SphereCollider Binder - Center EnumGroup")]
+    [AddBinderContextMenu(typeof(SphereCollider), serializePropertyNames: "m_Center")]
+    [AddComponentMenu("Aspid/MVVM/Binders/Collider/Sphere/SphereCollider Binder – Center EnumGroup")]
     public sealed class SphereColliderCenterEnumGroupMonoBinder : EnumGroupMonoBinder<SphereCollider>
     {
-        [Header("Values")]
         [SerializeField] private Vector3 _defaultValue;
         [SerializeField] private Vector3 _selectedValue;
         
-        [Header("Converters")]
         [SerializeField] private Vector3CombineConverter _defaultValueConverter = Vector3CombineConverter.Default;
         [SerializeField] private Vector3CombineConverter _selectedValueConverter = Vector3CombineConverter.Default;
         

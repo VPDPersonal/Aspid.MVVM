@@ -4,9 +4,8 @@ using UnityEngine.UI;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
-    [AddPropertyContextMenu(typeof(Toggle), "m_Calls")]
-    [AddComponentMenu("Aspid/MVVM/Binders/UI/Commands/Toggle Binder - Command")]
-    [AddComponentContextMenu(typeof(Toggle),"Add Toggle Binder/Toggle Binder - Command")]
+    [AddBinderContextMenu(typeof(Toggle), serializePropertyNames: "m_Calls")]
+    [AddComponentMenu("Aspid/MVVM/Binders/UI/Commands/Toggle Binder – Command")]
     public partial class ToggleCommandMonoBinder : ComponentMonoBinder<Toggle>, IBinder<IRelayCommand>, IBinder<IRelayCommand<bool>>
     {
         [SerializeField] private InteractableMode _interactableMode = InteractableMode.Interactable;

@@ -8,8 +8,8 @@ using Converter = Aspid.MVVM.StarterKit.IConverterFloat;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
-    [AddComponentMenu("Aspid/MVVM/Binders/Animator/Animator Binder - Set Float")]
-    [AddComponentContextMenu(typeof(Animator),"Add Animator Binder/Animator Binder - Set Float")]
+    [AddBinderContextMenu(typeof(Animator))]
+    [AddComponentMenu("Aspid/MVVM/Binders/Animator/Animator Binder – Set Float")]
     public partial class AnimatorSetFloatMonoBinder : AnimatorSetParameterMonoBinder<float>, INumberBinder
     {
         [SerializeReferenceDropdown]

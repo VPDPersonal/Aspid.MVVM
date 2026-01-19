@@ -20,8 +20,7 @@ namespace Aspid.MVVM.StarterKit
     {
         [SerializeField] private LocalizedString _stringReference = new();
         [SerializeField] private List<Object> _formatArguments = new();
-        
-        [Header("Converters")]
+
         [SerializeReferenceDropdown]
         [SerializeReference] private Converter? _converter;
 
@@ -30,7 +29,7 @@ namespace Aspid.MVVM.StarterKit
             string trueValue, 
             string falseValue,
             BindMode mode)
-            : this(target, trueValue, falseValue, null, mode) { }
+            : this(target, trueValue, falseValue, converter: null, mode) { }
         
         public TextLocalizationEntrySwitcherBinder(
             TMP_Text target, 
@@ -38,7 +37,7 @@ namespace Aspid.MVVM.StarterKit
             string falseValue,
             Converter? converter = null,
             BindMode mode = BindMode.OneWay)
-            : this(target, trueValue, falseValue, null, null, converter, mode) { }
+            : this(target, trueValue, falseValue, entry: null, formatArguments: null, converter, mode) { }
         
         public TextLocalizationEntrySwitcherBinder(
             TMP_Text target, 
@@ -47,7 +46,7 @@ namespace Aspid.MVVM.StarterKit
             List<Object>? formatArguments,
             Converter? converter = null,
             BindMode mode = BindMode.OneWay)
-            : this(target, trueValue, falseValue, null, formatArguments, converter, mode) { }
+            : this(target, trueValue, falseValue, entry: null, formatArguments, converter, mode) { }
         
         public TextLocalizationEntrySwitcherBinder(
             TMP_Text target, 

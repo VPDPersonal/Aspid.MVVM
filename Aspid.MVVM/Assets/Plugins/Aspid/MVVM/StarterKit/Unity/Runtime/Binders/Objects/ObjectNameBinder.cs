@@ -12,13 +12,13 @@ using Converter = Aspid.MVVM.StarterKit.IConverterString;
 namespace Aspid.MVVM.StarterKit
 {
     [Serializable]
-    public sealed class ObjectNameBinder : TargetBinder<Object>
+    public class ObjectNameBinder : TargetBinder<Object>
     {
         [SerializeReferenceDropdown]
         [SerializeReference] private Converter? _converter;
 
         public ObjectNameBinder(GameObject target, BindMode mode)
-            : this(target, null, mode) { }
+            : this(target, converter: null, mode) { }
         
         public ObjectNameBinder(GameObject target, Converter? converter = null, BindMode mode = BindMode.OneWay)
             : base(target, mode)

@@ -16,7 +16,6 @@ namespace Aspid.MVVM.StarterKit
         // ReSharper disable once MemberInitializerValueIgnored
         [SerializeField] private string _colorPropertyName = "_BaseColor";
         
-        [Header("Converters")]
         [SerializeReferenceDropdown]
         [SerializeReference] private Converter? _converter;
 
@@ -29,7 +28,7 @@ namespace Aspid.MVVM.StarterKit
             Color trueValue,
             Color falseValue,
             BindMode mode) 
-            : this(target, trueValue, falseValue, "_BaseColor", null, mode) { }
+            : this(target, trueValue, falseValue, colorPropertyName: "_BaseColor", converter: null, mode) { }
         
         public RendererMaterialColorSwitcherBinder(
             Renderer target, 
@@ -37,7 +36,7 @@ namespace Aspid.MVVM.StarterKit
             Color falseValue,
             Converter converter,
             BindMode mode = BindMode.OneWay) 
-            : this(target, trueValue, falseValue, "_BaseColor", converter, mode) { }
+            : this(target, trueValue, falseValue, colorPropertyName: "_BaseColor", converter, mode) { }
         
         public RendererMaterialColorSwitcherBinder(
             Renderer target, 
@@ -45,7 +44,7 @@ namespace Aspid.MVVM.StarterKit
             Color falseValue,
             string colorPropertyName,
             BindMode mode) 
-            : this(target, trueValue, falseValue, colorPropertyName, null, mode) { }
+            : this(target, trueValue, falseValue, colorPropertyName, converter: null, mode) { }
         
         public RendererMaterialColorSwitcherBinder(
             Renderer target,

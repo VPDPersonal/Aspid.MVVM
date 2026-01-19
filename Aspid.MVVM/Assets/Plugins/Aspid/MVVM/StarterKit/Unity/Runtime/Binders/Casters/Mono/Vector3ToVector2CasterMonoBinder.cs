@@ -9,19 +9,29 @@ using Converter = Aspid.MVVM.StarterKit.IConverterVector3ToVector2;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
-    [AddPropertyContextMenu(typeof(Vector2))]
+    [AddBinderContextMenuByType(typeof(Vector2))]
     [AddComponentMenu("Aspid/MVVM/Binders/Casters/Vector3 To Vector2 Caster Binder")]
-    [AddComponentContextMenu(typeof(Component),"Add General Binder/Casters/Vector3 To Vector2 Caster Binder")]
+    [AddBinderContextMenu(typeof(Component), Path = "Add General Binder/Casters/Vector3 To Vector2 Caster Binder")]
     public sealed partial class Vector3ToVector2CasterMonoBinder : MonoBinder, IBinder<Vector3>
     {
         [SerializeReferenceDropdown]
         [SerializeReference] private Converter _converter = new Vector3ToVector2Converter();
         
-        [Header("Events")]
         [SerializeField] private UnityEvent<Vector2> _casted;
         
+        private void OnValidate() =>
+            _converter ??= new Vector3ToVector2Converter();
+        
         [BinderLog]
-        public void SetValue(Vector3 value) =>
+        public void SetValue(Vector3 value)
+        {
+            if (_converter is null)
+            {
+                Debug.LogError($"No converter assigned to {nameof(Vector3ToVector2CasterMonoBinder)}", context: this);
+                return;
+            }
+            
             _casted?.Invoke(_converter.Convert(value));
+        }
     }
 }

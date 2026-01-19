@@ -6,9 +6,8 @@ using UnityEngine;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
-    [AddPropertyContextMenu(typeof(TMP_InputField), "m_Calls")]
-    [AddComponentMenu("Aspid/MVVM/Binders/UI/Commands/InputField Binder - Command")]
-    [AddComponentContextMenu(typeof(TMP_InputField), "Add InputField Binder/InputField Binder - Command")]
+    [AddComponentMenu("Aspid/MVVM/Binders/UI/Commands/InputField Binder – Command")]
+    [AddBinderContextMenu(typeof(TMP_InputField), serializePropertyNames: "m_Calls")]
     public sealed partial class InputFieldCommandMonoBinder : ComponentMonoBinder<TMP_InputField>, 
         IBinder<IRelayCommand>,
         IBinder<IRelayCommand<string>>

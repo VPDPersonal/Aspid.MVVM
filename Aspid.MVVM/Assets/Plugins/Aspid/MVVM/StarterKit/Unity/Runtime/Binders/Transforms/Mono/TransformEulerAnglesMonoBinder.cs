@@ -3,9 +3,8 @@ using UnityEngine;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
-    [AddPropertyContextMenu(typeof(Transform), "m_LocalRotation")]
-    [AddComponentMenu("Aspid/MVVM/Binders/Transform/Transform Binder - Euler Angles")]
-    [AddComponentContextMenu(typeof(Transform),"Add Transform Binder/Transform Binder - EulerAngles")]
+    [AddComponentMenu("Aspid/MVVM/Binders/Transform/Transform Binder – Euler Angles")]
+    [AddBinderContextMenu(typeof(Transform), serializePropertyNames: "m_LocalRotation")]
     public partial class TransformEulerAnglesMonoBinder : MonoBinder, IVectorBinder, INumberBinder
     {
         [SerializeField] private Space _space = Space.World;

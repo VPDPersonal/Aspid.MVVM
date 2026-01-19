@@ -35,7 +35,7 @@ namespace Aspid.MVVM.StarterKit
             if (List is null) return;
             List = GetFilterList(list!) ?? list;
             
-            OnAdded(List, 0);
+            OnAdded(List, newStartingIndex: 0);
 
             switch (list)
             {
@@ -61,7 +61,7 @@ namespace Aspid.MVVM.StarterKit
         private void OnCollectionChanged()
         {
             OnReset();
-            OnAdded(List, 0);
+            OnAdded(List, newStartingIndex: 0);
         }
 
         private void OnCollectionChanged(INotifyCollectionChangedEventArgs<T?> e)

@@ -2,7 +2,6 @@
 using TMPro;
 using System;
 using UnityEngine;
-using System.Globalization;
 #if UNITY_2023_1_OR_NEWER
 using Converter = Aspid.MVVM.StarterKit.IConverter<string, string>;
 #else
@@ -15,9 +14,8 @@ using Converter = Aspid.MVVM.StarterKit.IConverterString;
 namespace Aspid.MVVM.StarterKit
 {
     [BindModeOverride(IsAll = true)]
-    [AddComponentMenu("Aspid/MVVM/Binders/UI/InputField/InputField Binder - Text")]
-    [AddPropertyContextMenu(typeof(TMP_InputField), "m_Text")]
-    [AddComponentContextMenu(typeof(TMP_InputField),"Add InputField Binder/InputField Binder - Text")]
+    [AddComponentMenu("Aspid/MVVM/Binders/UI/InputField/InputField Binder – Text")]
+    [AddBinderContextMenu(typeof(TMP_InputField), serializePropertyNames: "m_Text")]
     public partial class InputFieldMonoBinder : ComponentMonoBinder<TMP_InputField>, 
         IBinder<string>, INumberBinder, IReverseBinder<string>, INumberReverseBinder
     {
@@ -27,6 +25,7 @@ namespace Aspid.MVVM.StarterKit
         public event Action<float> FloatValueChanged;
         public event Action<double> DoubleValueChanged;
         
+        [SerializeField] private CultureInfoMode _cultureInfoMode = CultureInfoMode.CurrentCulture;
         [SerializeField] private UpdateInputFieldEvent _updateEvent = UpdateInputFieldEvent.OnValueChanged;
 
         [SerializeReferenceDropdown]
@@ -75,19 +74,19 @@ namespace Aspid.MVVM.StarterKit
 
         [BinderLog]
         public void SetValue(int value) =>
-            SetValue(value.ToString());
+            SetValue(value.ToCultureString(_cultureInfoMode));
 
         [BinderLog]
         public void SetValue(long value) =>
-            SetValue(value.ToString());
+            SetValue(value.ToCultureString(_cultureInfoMode));
 
         [BinderLog]
         public void SetValue(float value) =>
-            SetValue(value.ToString(CultureInfo.InvariantCulture));
+            SetValue(value.ToCultureString(_cultureInfoMode));
 
         [BinderLog]
         public void SetValue(double value) =>
-            SetValue(value.ToString(CultureInfo.InvariantCulture));
+            SetValue(value.ToCultureString(_cultureInfoMode));
 
         private void Subscribe()
         {

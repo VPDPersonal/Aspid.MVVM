@@ -17,7 +17,7 @@ namespace Aspid.MVVM.StarterKit
         [SerializeReference] private Converter? _converter;
 
         public AnimatorSetFloatBinder(Animator animator, string parameterName, BindMode mode)
-            : this(animator, parameterName, null, mode) { }
+            : this(animator, parameterName, converter: null, mode) { }
         
         public AnimatorSetFloatBinder(
             Animator animator,

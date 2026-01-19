@@ -14,8 +14,8 @@ using Comparer = Aspid.MVVM.StarterKit.IViewModelCollectionComparer;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
-    [AddComponentMenu("Aspid/MVVM/Binders/Collections/Observable List Binder - ViewModel")]
-    [AddComponentContextMenu(typeof(Component), "Add General Binder/Collections/Observable List Binder - ViewModel")]
+    [AddComponentMenu("Aspid/MVVM/Binders/Collections/Observable List Binder – ViewModel")]
+    [AddBinderContextMenu(typeof(Component), Path = "Add General Binder/Collections/Observable List Binder – ViewModel")]
     public class ViewModelObservableListMonoBinder : ViewModelObservableListMonoBinder<MonoView, ViewFactory> { }
 
 #if UNITY_2023_1_OR_NEWER
@@ -79,7 +79,7 @@ namespace Aspid.MVVM.StarterKit
             var index = 0;
             
             foreach (var item in newItems)
-                OnAdded(item, newStartingIndex + index++);
+                OnAdded(item, newStartingIndex: newStartingIndex + index++);
         }
 
         protected sealed override void OnRemoved(IViewModel oldItem, int oldStartingIndex)

@@ -7,18 +7,13 @@ namespace Aspid.MVVM
     // TODO Move To UnityFastTools
     [Conditional("UNITY_EDITOR")]
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
-    public sealed class AddPropertyContextMenu : Attribute
+    public sealed class AddBinderContextMenuByTypeAttribute : Attribute
     {
         public Type Type { get; }
-        
-        public string Path { get; set; }
-        
-        public string SerializePropertyName { get; }
 
-        public AddPropertyContextMenu(Type componentType, string serializePropertyName = null)
+        public AddBinderContextMenuByTypeAttribute(Type componentType)
         {
             Type = componentType;
-            SerializePropertyName = serializePropertyName;
         }
     }
 }

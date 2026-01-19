@@ -9,12 +9,10 @@ using Converter = Aspid.MVVM.StarterKit.IConverterMaterial;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
-    [AddPropertyContextMenu(typeof(RawImage), "m_Material")]
-    [AddComponentMenu("Aspid/MVVM/Binders/UI/Raw Image/RawImage Binder - Material Switcher")]
-    [AddComponentContextMenu(typeof(LineRenderer),"Add RawImage Binder/RawImage Binder - Material Switcher")]
+    [AddBinderContextMenu(typeof(RawImage), serializePropertyNames: "m_Material")]
+    [AddComponentMenu("Aspid/MVVM/Binders/UI/Raw Image/RawImage Binder – Material Switcher")]
     public sealed class RawImageMaterialSwitcherMonoBinder : SwitcherMonoBinder<RawImage, Material>
     {
-        [Header("Converters")]
         [SerializeReferenceDropdown]
         [SerializeReference] private Converter _converter;
         

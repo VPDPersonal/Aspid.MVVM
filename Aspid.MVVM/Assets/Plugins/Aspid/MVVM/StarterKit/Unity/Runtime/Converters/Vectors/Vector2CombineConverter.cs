@@ -14,8 +14,7 @@ namespace Aspid.MVVM.StarterKit
     public sealed class Vector2CombineConverter
     {
         [SerializeField] private Mode _mode;
-
-        [Header("Converters")]
+        
         [SerializeReferenceDropdown]
         [SerializeReference] private Converter? _preConvertor;
       

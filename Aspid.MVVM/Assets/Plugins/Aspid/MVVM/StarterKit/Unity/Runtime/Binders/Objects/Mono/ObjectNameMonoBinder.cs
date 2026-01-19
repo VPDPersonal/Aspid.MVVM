@@ -8,9 +8,9 @@ using Converter = Aspid.MVVM.StarterKit.IConverterString;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
-    [AddComponentMenu("Aspid/MVVM/Binders/Object/Object Binder - Name")]
-    [AddComponentContextMenu(typeof(Component),"Add General Binder/Object/Object Binder - Name")]
-    public sealed partial class ObjectNameMonoBinder : MonoBinder, IBinder<string>
+    [AddComponentMenu("Aspid/MVVM/Binders/Object/Object Binder – Name")]
+    [AddBinderContextMenu(typeof(Component), Path = "Add General Binder/Object/Object Binder – Name")]
+    public partial class ObjectNameMonoBinder : MonoBinder, IBinder<string>
     {
         [SerializeField] private Object _object;
         

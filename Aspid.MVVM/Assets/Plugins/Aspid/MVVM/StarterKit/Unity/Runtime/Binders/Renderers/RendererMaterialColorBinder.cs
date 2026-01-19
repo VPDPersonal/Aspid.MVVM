@@ -24,13 +24,13 @@ namespace Aspid.MVVM.StarterKit
         private int ColorPropertyId => _colorPropertyId ??= Shader.PropertyToID(_colorPropertyName);
         
         public RendererMaterialColorBinder(Renderer target, BindMode mode) 
-            : this(target, "_BaseColor", null, mode) { }
+            : this(target, colorPropertyName: "_BaseColor", converter: null, mode) { }
         
         public RendererMaterialColorBinder(Renderer target, Converter converter, BindMode mode = BindMode.OneWay) 
-            : this(target, "_BaseColor", converter, mode) { }
+            : this(target, colorPropertyName: "_BaseColor", converter, mode) { }
         
         public RendererMaterialColorBinder(Renderer target, string colorPropertyName, BindMode mode) 
-            : this(target, colorPropertyName, null, mode) { }
+            : this(target, colorPropertyName, converter: null, mode) { }
         
         public RendererMaterialColorBinder(
             Renderer target,

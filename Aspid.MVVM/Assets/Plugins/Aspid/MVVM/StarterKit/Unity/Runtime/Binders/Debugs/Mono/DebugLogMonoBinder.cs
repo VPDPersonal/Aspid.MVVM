@@ -10,7 +10,9 @@ using Converter = Aspid.MVVM.StarterKit.IConverterObjectToString;
 namespace Aspid.MVVM.StarterKit
 {
     [BindModeOverride(IsAll = true)]
-    public sealed class DebugLogMonoBinder : MonoBinder, IAnyBinder, IAnyReverseBinder
+    [AddComponentMenu("Aspid/MVVM/Binders/Debug/Debug Binder – Log")]
+    [AddBinderContextMenu(typeof(Component), Path = "Add General Binder/Debug/Debug Binder – Log")]
+    public sealed partial class DebugLogMonoBinder : MonoBinder, IAnyBinder, IAnyReverseBinder
     {
         [SerializeReferenceDropdown]
         [SerializeReference] private Converter _converter = new ObjectToStringConverter();
@@ -21,6 +23,7 @@ namespace Aspid.MVVM.StarterKit
             remove => Debug.Log($"Remove ValueChanged: {GetMessage(value)}");
         }
 
+        [BinderLog]
         public void SetValue<T>(T value) =>
             Debug.Log($"SetValue: {GetMessage(value)}");
 

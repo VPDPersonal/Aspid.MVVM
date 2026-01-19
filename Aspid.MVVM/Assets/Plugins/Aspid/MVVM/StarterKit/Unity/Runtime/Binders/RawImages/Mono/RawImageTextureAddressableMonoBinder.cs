@@ -5,9 +5,8 @@ using UnityEngine.UI;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
-    [AddPropertyContextMenu(typeof(RawImage), "m_Texture")]
-    [AddComponentMenu("Aspid/MVVM/Binders/UI/Raw Image/RawImage Binder - Texture Addressable")]
-    [AddComponentContextMenu(typeof(RawImage), "Add RawImage Binder/RawImage Binder - Texture Addressable")]
+    [AddBinderContextMenu(typeof(RawImage), serializePropertyNames: "m_Texture")]
+    [AddComponentMenu("Aspid/MVVM/Binders/UI/Raw Image/RawImage Binder – Texture Addressable")]
     public sealed class RawImageTextureAddressableMonoBinder : AddressableMonoBinder<Texture2D, RawImage>
     {
         [SerializeField] private Texture2D _defaultTexture;

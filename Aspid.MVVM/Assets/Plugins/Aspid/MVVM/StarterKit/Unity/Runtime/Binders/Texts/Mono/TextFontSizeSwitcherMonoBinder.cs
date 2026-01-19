@@ -10,12 +10,10 @@ using Converter = Aspid.MVVM.StarterKit.IConverterFloat;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
-    [AddPropertyContextMenu(typeof(TMP_Text), "m_fontSize")]
-    [AddComponentMenu("Aspid/MVVM/Binders/UI/Text/Text Binder - FontSize Switcher")]
-    [AddComponentContextMenu(typeof(TMP_Text),"Add Text Binder/Text Binder - FontSize Switcher")]
+    [AddBinderContextMenu(typeof(TMP_Text), serializePropertyNames: "m_fontSize")]
+    [AddComponentMenu("Aspid/MVVM/Binders/UI/Text/Text Binder – FontSize Switcher")]
     public sealed class TextFontSizeSwitcherMonoBinder : SwitcherMonoBinder<TMP_Text, float>
     {
-        [Header("Converters")]
         [SerializeReferenceDropdown]
         [SerializeReference] private Converter _converter;
         

@@ -43,7 +43,7 @@ namespace Aspid.MVVM
         private bool _originalBinderLogValue;
         private bool _originalEditorChecksValue;
 
-        [MenuItem("Tools/Aspid/Aspid.Mvvm Settings", priority = 100)]
+        [MenuItem("Tools/🐍 Aspid/Aspid.Mvvm Settings", priority = 100)]
         public static void ShowWindow()
         {
             var window = GetWindow<AspidMvvmSettingsWindow>();

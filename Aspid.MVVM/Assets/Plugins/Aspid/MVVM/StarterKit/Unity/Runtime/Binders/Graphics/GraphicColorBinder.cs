@@ -18,7 +18,7 @@ namespace Aspid.MVVM.StarterKit
         [SerializeReference] private Converter? _converter;
         
         public GraphicColorBinder(Graphic target, BindMode mode)
-            : this(target,null,  mode) { }
+            : this(target, converter: null,  mode) { }
         
         public GraphicColorBinder(Graphic target, Converter? converter = null, BindMode mode = BindMode.OneWay)
             : base(target, mode)

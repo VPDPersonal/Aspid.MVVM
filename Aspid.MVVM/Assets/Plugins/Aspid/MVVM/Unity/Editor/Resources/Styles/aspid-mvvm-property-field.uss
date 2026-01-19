@@ -9,6 +9,23 @@ VisualElement {}
     padding: 2px 5px 2px 3px;
 }
 
+/*UnityEvent*/
+.aspid-property-field.unity-event__container
+{
+    margin-right: 0;
+}
+
+.aspid-property-field.unity-event__container > Label
+{
+    margin-right: -2;
+    margin-bottom: -4;
+}
+
+.aspid-property-field.unity-event__container > ListView
+{
+    margin-right: -2;
+}
+
 /*Field*/
 .aspid-lighter-container.aspid-property-field.unity-base-field__inspector-field
 {
@@ -52,4 +69,11 @@ VisualElement {}
 .aspid-lighter-container.aspid-property-field #unity-list-view__reorderable-item__container Toggle.unity-foldout__toggle--inspector
 {
     margin-left: -12px;
+}
+
+/*Header*/
+AspidPropertyField > .unity-decorator-drawers-container
+{
+    margin-left: 0;
+    margin-bottom: 3;
 }

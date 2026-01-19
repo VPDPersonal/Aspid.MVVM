@@ -12,10 +12,10 @@ namespace Aspid.MVVM.StarterKit
         [SerializeField] private Vector3CombineConverter? _converter;
 
         public TransformPositionBinder(Transform transform, BindMode mode)
-            : this(transform, Space.World, null, mode) { }
+            : this(transform, Space.World, converter: null, mode) { }
         
         public TransformPositionBinder(Transform transform, Space space, BindMode mode)
-            : this(transform, space, null, mode) { }
+            : this(transform, space, converter: null, mode) { }
         
         public TransformPositionBinder(
             Transform transform,

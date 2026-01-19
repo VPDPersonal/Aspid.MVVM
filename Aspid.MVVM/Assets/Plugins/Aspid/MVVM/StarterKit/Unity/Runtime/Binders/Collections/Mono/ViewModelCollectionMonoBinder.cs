@@ -4,8 +4,8 @@ using System.Collections.Generic;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
-    [AddComponentMenu("Aspid/MVVM/Binders/Collections/Collection Binder - ViewModel")]
-    [AddComponentContextMenu(typeof(Component), "Add General Binder/Collections/Collection Binder - ViewModel")]
+    [AddComponentMenu("Aspid/MVVM/Binders/Collections/Collection Binder – ViewModel")]
+    [AddBinderContextMenu(typeof(Component), Path = "Add General Binder/Collections/Collection Binder – ViewModel")]
     public class ViewModelCollectionMonoBinder : ViewModelCollectionMonoBinder<MonoView> { }
     
     public abstract class ViewModelCollectionMonoBinder<T> : CollectionMonoBinder<IViewModel>

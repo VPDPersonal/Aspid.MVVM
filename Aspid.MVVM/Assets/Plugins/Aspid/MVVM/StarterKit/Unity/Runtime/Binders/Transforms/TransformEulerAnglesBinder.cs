@@ -12,10 +12,10 @@ namespace Aspid.MVVM.StarterKit
         [SerializeField] private Vector3CombineConverter? _converter;
 
         public TransformEulerAnglesBinder(Transform target, BindMode mode)
-            : this(target, Space.World, null, mode) { }
+            : this(target, Space.World, converter: null, mode) { }
         
         public TransformEulerAnglesBinder(Transform target, Space space, BindMode mode)
-            : this(target, space, null, mode) { }
+            : this(target, space, converter: null, mode) { }
         
         public TransformEulerAnglesBinder(
             Transform target,

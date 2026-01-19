@@ -48,13 +48,13 @@ namespace Aspid.UnityFastTools
 
             container
                 .AddChild(new PropertyField(values)
-                    .SetMargin(top: 5, bottom: 2, left: 17, right: 5))
+                    .SetMargin(top: 5, bottom: 2, left: 10, right: 5))
                 .AddChild(new PropertyField(defaultValueProperty)
                 .SetMargin(bottom: 5, left: 7, right: 7));
             
             return root
                 .AddChild(container)
-                .SetMargin(top: 2, bottom: 2, right: -2);
+                .SetMargin(top: 2, bottom: 2, right: 0);
 
             void UpdateValues()
             {

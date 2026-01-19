@@ -10,9 +10,8 @@ using Converter = Aspid.MVVM.StarterKit.IConverterString;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
-    [AddComponentMenu("Aspid/MVVM/Binders/UI/LocalizeStringEvent/LocalizeStringEvent Binder - Entry")]
-    [AddPropertyContextMenu(typeof(LocalizeStringEvent), "m_StringReference")]
-    [AddComponentContextMenu(typeof(LocalizeStringEvent),"Add LocalizeStringEvent Binder/LocalizeStringEvent Binder - Entry")]
+    [AddBinderContextMenu(typeof(LocalizeStringEvent), serializePropertyNames: "m_StringReference")]
+    [AddComponentMenu("Aspid/MVVM/Binders/UI/LocalizeStringEvent/LocalizeStringEvent Binder – Entry")]
     public partial class LocalizeStringEventEntryMonoBinder : ComponentMonoBinder<LocalizeStringEvent>, IBinder<string>
     {
         [SerializeReferenceDropdown]

@@ -4,9 +4,8 @@ using UnityEngine.UI;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
-    [AddPropertyContextMenu(typeof(ScrollRect), "m_Calls")]
-    [AddComponentMenu("Aspid/MVVM/Binders/UI/Commands/ScrollRect Binder - Command")]
-    [AddComponentContextMenu(typeof(ScrollRect),"Add ScrollRect Binder/ScrollRect Binder - Command")]
+    [AddBinderContextMenu(typeof(ScrollRect), serializePropertyNames: "m_Calls")]
+    [AddComponentMenu("Aspid/MVVM/Binders/UI/Commands/ScrollRect Binder – Command")]
     public sealed partial class ScrollRectCommandMonoBinder : ComponentMonoBinder<ScrollRect>, 
         IBinder<IRelayCommand<Vector2>>, 
         IBinder<IRelayCommand<Vector3>>

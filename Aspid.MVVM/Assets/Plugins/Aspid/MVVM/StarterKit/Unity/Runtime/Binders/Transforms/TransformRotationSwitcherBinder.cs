@@ -15,7 +15,6 @@ namespace Aspid.MVVM.StarterKit
     {
         [SerializeField] private Space _space;
         
-        [Header("Converters")]
         [SerializeReferenceDropdown]
         [SerializeReference] private Converter? _converter;
         
@@ -24,7 +23,7 @@ namespace Aspid.MVVM.StarterKit
             Vector3 trueValue, 
             Vector3 falseValue,
             BindMode mode) 
-            : this(target, trueValue, falseValue, Space.World, null, mode) { }
+            : this(target, trueValue, falseValue, Space.World, converter: null, mode) { }
         
         public TransformRotationSwitcherBinder(
             Transform target, 
@@ -32,7 +31,7 @@ namespace Aspid.MVVM.StarterKit
             Vector3 falseValue, 
             Space space,
             BindMode mode) 
-            : this(target, trueValue, falseValue, space, null, mode) { }
+            : this(target, trueValue, falseValue, space, converter: null, mode) { }
         
         public TransformRotationSwitcherBinder(
             Transform target, 

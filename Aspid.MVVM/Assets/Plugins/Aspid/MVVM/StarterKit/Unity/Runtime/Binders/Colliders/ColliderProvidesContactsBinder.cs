@@ -11,7 +11,7 @@ namespace Aspid.MVVM.StarterKit
         [SerializeField] private bool _isInvert;
 
         public ColliderProvidesContactsBinder(Collider target, BindMode mode)
-            : this(target, false, mode) { }
+            : this(target, isInvert: false, mode) { }
         
         public ColliderProvidesContactsBinder(Collider target, bool isInvert = false, BindMode mode = BindMode.OneWay)
             : base(target, mode)

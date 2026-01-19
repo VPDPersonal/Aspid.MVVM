@@ -4,9 +4,8 @@ using UnityEngine.UI;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
-    [AddPropertyContextMenu(typeof(Button), "m_Calls")]
-    [AddComponentMenu("Aspid/MVVM/Binders/UI/Commands/Button Binder - Command")]
-    [AddComponentContextMenu(typeof(Button),"Add Button Binder/Button Binder - Command")]
+    [AddBinderContextMenu(typeof(Button), serializePropertyNames: "m_Calls")]
+    [AddComponentMenu("Aspid/MVVM/Binders/UI/Commands/Button Binder – Command")]
     public sealed partial class ButtonCommandMonoBinder : ComponentMonoBinder<Button>,
         IBinder<IRelayCommand>,
         IBinder<IRelayCommand<bool>>

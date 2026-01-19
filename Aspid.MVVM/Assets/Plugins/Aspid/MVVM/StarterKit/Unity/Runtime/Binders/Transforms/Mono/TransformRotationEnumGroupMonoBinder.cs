@@ -8,17 +8,15 @@ using Converter = Aspid.MVVM.StarterKit.IConverterQuaternion;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
-    [AddPropertyContextMenu(typeof(Transform), "m_LocalRotation")]
-    [AddComponentMenu("Aspid/MVVM/Binders/Transform/Transform Binder - Rotation EnumGroup")]
-    [AddComponentContextMenu(typeof(Transform),"Add Transform Binder/Transform Binder - Rotation EnumGroup")]
+    [AddBinderContextMenu(typeof(Transform), serializePropertyNames: "m_LocalRotation")]
+    [AddComponentMenu("Aspid/MVVM/Binders/Transform/Transform Binder – Rotation EnumGroup")]
     public sealed class TransformRotationEnumGroupMonoBinder : EnumGroupMonoBinder<Transform>
     {
-        [Header("Values")]
         [SerializeField] private Vector3 _defaultValue;
         [SerializeField] private Vector3 _selectedValue;
+        
         [SerializeField] private Space _space = Space.World;
-
-        [Header("Converters")]
+        
         [SerializeReferenceDropdown]
         [SerializeReference] private Converter _defaultValueConverter;
         

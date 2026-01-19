@@ -3,9 +3,8 @@ using UnityEngine;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
-    [AddPropertyContextMenu(typeof(BoxCollider), "m_Size")]
-    [AddComponentMenu("Aspid/MVVM/Binders/Collider/Box/BoxCollider Binder - Size")]
-    [AddComponentContextMenu(typeof(BoxCollider),"Add BoxCollider Binder/BoxCollider Binder - Size")]
+    [AddBinderContextMenu(typeof(BoxCollider), serializePropertyNames: "m_Size")]
+    [AddComponentMenu("Aspid/MVVM/Binders/Collider/Box/BoxCollider Binder – Size")]
     public partial class BoxColliderSizeMonoBinder : ComponentMonoBinder<BoxCollider>, IVectorBinder, INumberBinder
     {
         [SerializeField] private Vector3CombineConverter _converter = Vector3CombineConverter.Default;

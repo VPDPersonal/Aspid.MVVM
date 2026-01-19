@@ -15,7 +15,6 @@ namespace Aspid.MVVM.StarterKit
     [Serializable]
     public sealed class TextSwitcherBinder : SwitcherBinder<TMP_Text, string>
     {
-        [Header("Converters")]
         [SerializeReferenceDropdown]
         [SerializeReference] private Converter? _converter;
 
@@ -24,7 +23,7 @@ namespace Aspid.MVVM.StarterKit
             string trueValue, 
             string falseValue,
             BindMode mode) 
-            : this(target, trueValue, falseValue, null, mode) { }
+            : this(target, trueValue, falseValue, converter: null, mode) { }
         
         public TextSwitcherBinder(
             TMP_Text target, 

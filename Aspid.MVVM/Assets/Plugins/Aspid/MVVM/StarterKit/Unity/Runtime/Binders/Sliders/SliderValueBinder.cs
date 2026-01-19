@@ -26,7 +26,7 @@ namespace Aspid.MVVM.StarterKit
         [SerializeReference] private Converter? _converter;
         
         public SliderValueBinder(Slider target, BindMode mode)
-            : this(target, null, mode) { }
+            : this(target, converter: null, mode) { }
         
         public SliderValueBinder(Slider target, Converter? converter = null, BindMode mode = BindMode.TwoWay)
             : base(target, mode)

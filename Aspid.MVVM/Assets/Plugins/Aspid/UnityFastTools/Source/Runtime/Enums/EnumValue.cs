@@ -9,7 +9,6 @@ namespace Aspid.UnityFastTools
     [Serializable]
     public sealed class EnumValue<TValue> : EnumValue
     {
-        [SerializeField] private int _index;
         [SerializeField] private string _key;
         [SerializeField] private TValue _value;
         

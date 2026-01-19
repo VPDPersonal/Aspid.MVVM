@@ -25,20 +25,20 @@ namespace Aspid.MVVM.StarterKit
         [SerializeReference] private Converter? _converter;
 
         public TextLocalizationEntryBinder(TMP_Text target, BindMode mode)
-            : this(target, null, mode) { }
+            : this(target, converter: null, mode) { }
         
         public TextLocalizationEntryBinder(
             TMP_Text target, 
             Converter? converter = null,
             BindMode mode = BindMode.OneWay)
-            : this(target, null, null, converter, mode) { }
+            : this(target, entry: null, formatArguments: null, converter, mode) { }
         
         public TextLocalizationEntryBinder(
             TMP_Text target, 
             List<Object>? formatArguments,
             Converter? converter = null,
             BindMode mode = BindMode.OneWay)
-            : this(target, null, formatArguments, converter, mode) { }
+            : this(target, entry: null, formatArguments, converter, mode) { }
         
         public TextLocalizationEntryBinder(
             TMP_Text target, 

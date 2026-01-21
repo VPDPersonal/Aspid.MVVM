@@ -36,8 +36,8 @@ namespace Aspid.MVVM
         {
             switch (viewModel)
             {
-                case IDisposable disposable: disposable.Dispose(); break;
                 case Component component: return DestroyViewModel(component);
+                case IDisposable disposable: disposable.Dispose(); break;
             }
 
             return null;
@@ -52,15 +52,12 @@ namespace Aspid.MVVM
             var gameObject = component.gameObject;
             
             if (component is IDisposable disposable)
-            {
                 disposable.Dispose();
-                
-                // There is no guarantee that the GameObject is not destroyed by Dispose
-                return gameObject ? gameObject : null;
-            }
-
-            Object.Destroy(component);
-            return gameObject;
+            
+            if (component)
+                Object.Destroy(component);
+            
+            return gameObject ? gameObject : null;
         }
     }
 }

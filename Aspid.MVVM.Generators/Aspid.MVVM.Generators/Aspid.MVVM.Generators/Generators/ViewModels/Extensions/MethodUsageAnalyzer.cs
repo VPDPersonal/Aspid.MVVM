@@ -21,4 +21,3 @@ public static class MethodUsageAnalyzer
         return usedMethods;
     }
 }
-

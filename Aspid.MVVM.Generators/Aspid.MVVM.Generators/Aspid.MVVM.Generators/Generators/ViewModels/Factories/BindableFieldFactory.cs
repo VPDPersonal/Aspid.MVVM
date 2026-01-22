@@ -25,6 +25,7 @@ public static class BindableFieldFactory
                 case BindMode.TwoWay:
                 case BindMode.OneWayToSource:
                     {
+                        if (field.IsConst) continue;
                         if (field.IsReadOnly) continue;
                         break;
                     }

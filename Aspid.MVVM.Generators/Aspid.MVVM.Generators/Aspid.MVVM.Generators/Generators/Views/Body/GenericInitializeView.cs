@@ -4,13 +4,13 @@ using Aspid.Generators.Helper;
 using System.Collections.Generic;
 using Aspid.MVVM.Generators.Generators.Views.Data;
 using Aspid.MVVM.Generators.Generators.Descriptions;
-using Aspid.MVVM.Generators.Generators.ViewModels.Data.Infos;
 using Aspid.MVVM.Generators.Generators.ViewModels.Factories;
+using Aspid.MVVM.Generators.Generators.ViewModels.Data.Infos;
 using Aspid.MVVM.Generators.Generators.Views.Body.Extensions;
 using static Aspid.Generators.Helper.Classes;
 using static Aspid.Generators.Helper.Unity.UnityClasses;
 using static Aspid.MVVM.Generators.Generators.Descriptions.Defines;
-using static Aspid.MVVM.Generators.Generators.Descriptions.General;
+using static Aspid.MVVM.Generators.Generators.Descriptions.Constants;
 
 namespace Aspid.MVVM.Generators.Generators.Views.Body;
 
@@ -157,7 +157,7 @@ public static class GenericInitializeView
             $"""
             #if !{ASPID_MVVM_UNITY_PROFILER_DISABLED}
             {GeneratedCodeViewAttribute}
-            [{EditorBrowsableAttribute}({EditorBrowsableState}.Never)]
+            {EditorBrowsableAttributeNever}
             private readonly static {ProfilerMarker} __initialize{viewModelTypeName.Replace(".", "_")}Marker = new("{data.Declaration.Identifier.Text}.{viewModelTypeName}.Initialize");
             #endif
             """);

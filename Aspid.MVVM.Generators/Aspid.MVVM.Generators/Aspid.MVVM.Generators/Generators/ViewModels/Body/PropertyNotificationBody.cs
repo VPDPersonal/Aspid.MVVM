@@ -3,14 +3,12 @@ using Microsoft.CodeAnalysis;
 using Aspid.Generators.Helper;
 using Aspid.MVVM.Generators.Generators.ViewModels.Data;
 using static Aspid.Generators.Helper.Classes;
-using static Aspid.MVVM.Generators.Generators.Descriptions.General;
+using static Aspid.MVVM.Generators.Generators.Descriptions.Constants;
 
 namespace Aspid.MVVM.Generators.Generators.ViewModels.Body;
 
 public static class PropertyNotificationBody
 {
-    private const string CallerLineNumberAttribute = "[global::System.Runtime.CompilerServices.CallerLineNumber]";
-    
     public static void Generate(
         string namespaceName,
         in ViewModelData data,
@@ -137,4 +135,3 @@ public static class PropertyNotificationBody
         }
     }
 }
-

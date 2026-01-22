@@ -2,9 +2,9 @@ using System;
 using Microsoft.CodeAnalysis;
 using Aspid.Generators.Helper;
 using Aspid.MVVM.Generators.Generators.Binders.Data;
-using Aspid.MVVM.Generators.Generators.Descriptions;
 using static Aspid.Generators.Helper.Classes;
 using static Aspid.Generators.Helper.Unity.UnityClasses;
+using static Aspid.MVVM.Generators.Generators.Descriptions.Constants;
 using Classes = Aspid.MVVM.Generators.Generators.Descriptions.Classes;
 
 namespace Aspid.MVVM.Generators.Generators.Binders.Body;
@@ -12,8 +12,6 @@ namespace Aspid.MVVM.Generators.Generators.Binders.Body;
 // ReSharper disable InconsistentNaming
 public static class BinderLogBody
 {
-    private const string GeneratedAttribute = General.GeneratedCodeLogBinderAttribute;
-    
     private static readonly string IBinder = Classes.IBinder;
     private static readonly string Exception = Aspid.Generators.Helper.Classes.Exception;
 
@@ -50,14 +48,14 @@ public static class BinderLogBody
         
         code.AppendMultiline(
             $"""
-            {GeneratedAttribute}
+            {GeneratedCodeLogBinderAttribute}
             [{SerializeField}] private bool _isDebug;
             
             // TODO Add Custom Property
-            {GeneratedAttribute}
+            {GeneratedCodeLogBinderAttribute}
             [{SerializeField}] private {List_1}<string> _log;
             
-            {GeneratedAttribute}
+            {GeneratedCodeLogBinderAttribute}
             {modifier} bool IsDebug => _isDebug;
             """)
             .AppendLine();
@@ -74,7 +72,7 @@ public static class BinderLogBody
             
             code.AppendMultiline(
                 $$"""
-                {{GeneratedAttribute}}
+                {{GeneratedCodeLogBinderAttribute}}
                 void {{IBinder}}<{{parameterType}}>.{{method.Name}}({{parameterType}} {{parameterName}})
                 {
                     if (IsDebug)
@@ -115,7 +113,7 @@ public static class BinderLogBody
         
         code.AppendMultiline(
             $$"""
-            {{GeneratedAttribute}}
+            {{GeneratedCodeLogBinderAttribute}}
             {{modifier}} void AddLog(string log)
             {
                 _log ??= new {{List_1}}<string>();

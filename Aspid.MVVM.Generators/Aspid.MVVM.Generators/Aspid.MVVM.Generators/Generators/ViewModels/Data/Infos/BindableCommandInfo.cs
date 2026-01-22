@@ -4,9 +4,8 @@ using Microsoft.CodeAnalysis;
 using Aspid.Generators.Helper;
 using Aspid.MVVM.Generators.Helpers;
 using Aspid.MVVM.Generators.Generators.Ids.Data;
-using static Aspid.Generators.Helper.Classes;
 using static Aspid.MVVM.Generators.Generators.Descriptions.Classes;
-using static Aspid.MVVM.Generators.Generators.Descriptions.General;
+using static Aspid.MVVM.Generators.Generators.Descriptions.Constants;
 
 namespace Aspid.MVVM.Generators.Generators.ViewModels.Data.Infos;
 
@@ -42,8 +41,8 @@ public sealed class BindableCommandInfo : IBindableMemberInfo
         CommandDeclaration = 
             $"""
             #region {Name}
+            {EditorBrowsableAttributeNever}
             {GeneratedCodeViewModelAttribute}
-            [{EditorBrowsableAttribute}({EditorBrowsableState}.Never)]
             private {Type} {fieldName};
 
             {GeneratedCodeViewModelAttribute}

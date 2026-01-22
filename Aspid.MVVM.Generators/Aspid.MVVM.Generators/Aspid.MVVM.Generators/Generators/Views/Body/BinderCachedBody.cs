@@ -1,16 +1,13 @@
 using Microsoft.CodeAnalysis;
 using Aspid.Generators.Helper;
 using Aspid.MVVM.Generators.Generators.Views.Data;
-using Aspid.MVVM.Generators.Generators.Descriptions;
 using Aspid.MVVM.Generators.Generators.Views.Data.Members;
-using static Aspid.Generators.Helper.Classes;
+using static Aspid.MVVM.Generators.Generators.Descriptions.Constants;
 
 namespace Aspid.MVVM.Generators.Generators.Views.Body;
 
 public static class BinderCachedBody
 {
-    private const string GeneratedAttribute = General.GeneratedCodeViewAttribute;
-
     public static void Generate(
         string @namespace,
         in ViewDataSpan data,
@@ -43,8 +40,8 @@ public static class BinderCachedBody
 
     private static CodeWriter AppendCachedBinderMember(this CodeWriter code, in CachedBinderMember cashedBinderMember)
     {
-        code.AppendLine($"[{EditorBrowsableAttribute}({EditorBrowsableState}.Never)]")
-            .AppendLine(GeneratedAttribute)
+        code.AppendLine(GeneratedCodeViewAttribute)
+            .AppendLine(EditorBrowsableAttributeNever)
             .AppendLine($"private {cashedBinderMember.Type?.ToDisplayStringGlobal()} {cashedBinderMember.CachedName};")
             .AppendLine();
 
@@ -53,8 +50,8 @@ public static class BinderCachedBody
     
     private static CodeWriter AppendAsBinderMember(this CodeWriter code, AsBinderMember asBinderMember)
     {
-        code.AppendLine($"[{EditorBrowsableAttribute}({EditorBrowsableState}.Never)]")
-            .AppendLine(GeneratedAttribute)
+        code.AppendLine(GeneratedCodeViewAttribute)
+            .AppendLine(EditorBrowsableAttributeNever)
             .AppendLine(asBinderMember.Type is IArrayTypeSymbol
                 ? $"private {asBinderMember.AsBinderType}[] {asBinderMember.CachedName};"
                 : $"private {asBinderMember.AsBinderType} {asBinderMember.CachedName};")

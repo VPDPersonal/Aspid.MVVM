@@ -2,9 +2,8 @@ using Microsoft.CodeAnalysis;
 using Aspid.Generators.Helper;
 using Aspid.MVVM.Generators.Helpers;
 using Aspid.MVVM.Generators.Generators.ViewModels.Extensions;
-using static Aspid.Generators.Helper.Classes;
-using static Aspid.MVVM.Generators.Generators.Descriptions.General;
 using static Aspid.MVVM.Generators.Generators.Descriptions.Classes;
+using static Aspid.MVVM.Generators.Generators.Descriptions.Constants;
 using SymbolExtensions = Aspid.MVVM.Generators.Helpers.SymbolExtensions;
 
 namespace Aspid.MVVM.Generators.Generators.ViewModels.Data.Infos;
@@ -190,7 +189,7 @@ public readonly struct GeneratedBindableMembers
     private static string? RecognizeInvoke(BindMode mode, string memberName, string fieldName)
     {
         return mode is not (BindMode.OneWayToSource or BindMode.OneTime) 
-            ? $"this.{fieldName}?.Invoke({memberName});" 
+            ? $"{fieldName}?.Invoke({memberName});" 
             : null;
     }
     
@@ -226,7 +225,7 @@ public readonly struct GeneratedBindableMembers
         
         return
             $"""
-            [{EditorBrowsableAttribute}({EditorBrowsableState}.Never)]
+            {EditorBrowsableAttributeNever}
             {GeneratedCodeViewModelAttribute}
             private {fieldType} {fieldName};
             

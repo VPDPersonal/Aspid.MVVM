@@ -31,15 +31,23 @@ public static class BindablePropertyFactory
             switch (mode)
             {
                 case BindMode.OneTime:
-                case BindMode.OneWay: break;
-
+                case BindMode.OneWay:
+                    {
+                        if (property.IsWriteOnly) continue;
+                        break;
+                    }
                 case BindMode.TwoWay:
+                    {
+                        if (property.IsReadOnly || property.IsWriteOnly) continue;
+                        break;
+                    }
                 case BindMode.OneWayToSource:
                     {
                         if (property.IsReadOnly) continue;
                         break;
                     }
-                
+
+                case BindMode.None:
                 default: continue;
             }
             

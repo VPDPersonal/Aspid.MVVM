@@ -24,8 +24,11 @@ namespace Aspid.MVVM.StarterKit
 
         private FilteredList<IViewModel> _filteredList;
 
-        protected override void OnUnbound() =>
+        protected override void OnUnbound()
+        {
+            Target.ItemsSource = null;
             DisposeFilteredList();
+        }
 
         public VirtualizedListItemSourceBinder(VirtualizedList target, BindMode mode = BindMode.OneWay)
             : base(target, mode)

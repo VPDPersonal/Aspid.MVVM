@@ -21,6 +21,9 @@ namespace Aspid.MVVM
         [RequireBinder(Id = "DesignViewModel")]
         [SerializeField] private Binders[] _bindersList;
 
+        protected virtual void OnDestroy() =>
+            Dispose();
+        
         partial void OnInitializingInternal(IViewModel viewModel)
         {
             foreach (var binders in _bindersList)
@@ -37,22 +40,7 @@ namespace Aspid.MVVM
         /// Destroys the GameObject of the View.
         /// May be overridden by a derived class.
         /// </summary>
-        public virtual void Dispose()
-        {
-            Deinitialize();
-            if (!this) return;
-
-#if UNITY_EDITOR
-            if (!Application.isPlaying)
-            {
-                DestroyImmediate(gameObject);
-                return;
-            }
-#endif
-            Destroy(gameObject);
-        }
-
-        protected virtual void OnDestroy() =>
+        public virtual void Dispose() =>
             Deinitialize();
         
         [Serializable]

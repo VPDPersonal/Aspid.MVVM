@@ -36,12 +36,14 @@ namespace Aspid.Collections.Observable
             add => _replaced += value;
             remove => _replaced -= value;
         }
-
+        
         private Action? _reset;
         private Action<IReadOnlyList<T>, int>? _added;
         private Action<IReadOnlyList<T>, int>? _removed;
         private Action<IReadOnlyList<T>, int, int>? _moved;
         private Action<IReadOnlyList<T>, IReadOnlyList<T?>, int>? _replaced;
+        
+        private readonly IObservableCollection<T> _list;
         
         public ObservableCollectionEvents(
             IObservableCollection<T> list,
@@ -51,12 +53,14 @@ namespace Aspid.Collections.Observable
             Action<IReadOnlyList<T?>, IReadOnlyList<T?>, int>? replaced = null,
             Action? reset = null)
         {
+            _list = list;
             _reset = reset;
             _added = added;
             _moved = moved;
             _removed = removed;
             _replaced = replaced;
-            list.CollectionChanged += OnCollectionChanged;
+            
+            _list.CollectionChanged += OnCollectionChanged;
         }
 
         private void OnCollectionChanged(INotifyCollectionChangedEventArgs<T> e)
@@ -103,6 +107,8 @@ namespace Aspid.Collections.Observable
             _moved = null;
             _removed = null;
             _replaced = null;
+            
+            _list.CollectionChanged -= OnCollectionChanged;
         }
     }
 }

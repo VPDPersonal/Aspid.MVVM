@@ -6,7 +6,7 @@ using System.Collections.Generic;
 // ReSharper disable once CheckNamespace
 namespace Aspid.Collections.Observable
 {
-    public class ObservableList<T> : CollectionChangedEvent<T>, IList<T>, IReadOnlyObservableList<T>, IDisposable
+    public class ObservableList<T> : CollectionChangedEvent<T>, IList<T>, IReadOnlyObservableList<T>
     {
         private readonly List<T> _list;
 
@@ -243,7 +243,10 @@ namespace Aspid.Collections.Observable
         
         protected virtual void OnClearing() { }
 
-        public virtual void Dispose() =>
+        public override void Dispose()
+        {
             Clear();
+            base.Dispose();
+        }
     }
 }

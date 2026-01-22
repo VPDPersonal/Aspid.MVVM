@@ -131,6 +131,8 @@ namespace Aspid.Collections.Observable.Filtered
                 case IReadOnlyFilteredList<T> filteredList: filteredList.CollectionChanged -= Update; break;
                 case IReadOnlyObservableList<T> observableList: observableList.CollectionChanged -= OnCollectionChanged; break;
             }
+            
+            CollectionChanged = null;
         }
     }
 }

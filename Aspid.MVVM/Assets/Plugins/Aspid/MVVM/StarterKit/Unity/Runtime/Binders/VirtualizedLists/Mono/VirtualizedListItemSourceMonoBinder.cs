@@ -24,8 +24,11 @@ namespace Aspid.MVVM.StarterKit
 
         private FilteredList<IViewModel> _filteredList;
 
-        protected override void OnUnbound() =>
+        protected override void OnUnbound()
+        {
+            CachedComponent.ItemsSource = null;
             DisposeFilteredList();
+        }
 
         [BinderLog]
         public void SetValue(IReadOnlyList<IViewModel> list)

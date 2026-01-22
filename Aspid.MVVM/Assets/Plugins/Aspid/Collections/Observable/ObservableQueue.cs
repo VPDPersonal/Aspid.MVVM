@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -6,7 +5,7 @@ using System.Diagnostics.CodeAnalysis;
 // ReSharper disable once CheckNamespace
 namespace Aspid.Collections.Observable
 {
-    public class ObservableQueue<T> : CollectionChangedEvent<T>, IObservableCollection<T>, IDisposable
+    public class ObservableQueue<T> : CollectionChangedEvent<T>, IObservableCollection<T>
     {
         private readonly Queue<T> _queue;
 
@@ -197,7 +196,10 @@ namespace Aspid.Collections.Observable
         
         protected virtual void OnClearing() { }
 
-        public virtual void Dispose() =>
+        public override void Dispose()
+        {
             Clear();
+            base.Dispose();
+        }
     }
 }

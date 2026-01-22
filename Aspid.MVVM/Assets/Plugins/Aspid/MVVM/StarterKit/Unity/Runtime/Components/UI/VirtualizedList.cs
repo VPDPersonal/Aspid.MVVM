@@ -70,8 +70,16 @@ namespace Aspid.MVVM.StarterKit
         }
 #endif
 
+        protected override void OnEnable()
+        {
+            base.OnEnable();
+            Initialize();
+        }
+
         private void Initialize()
         {
+            if (_initializing is not null || !gameObject.activeInHierarchy) return;
+            
             switch (ItemsSource)
             {
                 case IReadOnlyFilteredList<IViewModel> filteredList: filteredList.CollectionChanged += OnCollectionChanged; break;
@@ -109,23 +117,25 @@ namespace Aspid.MVVM.StarterKit
 
         private void Deinitialize()
         {
-            if (ItemsSource is null) return;
-            StopCoroutine(_initializing);
-            _initializing = null;
-            
-            foreach (var view in _views)
-                view.Deinitialize();
-            
-            onValueChanged.RemoveListener(OnScrollValueChanged);
-            
-            switch (ItemsSource)
+            if (_initializing is not null)
             {
-                case IReadOnlyFilteredList<IViewModel> filteredList: filteredList.CollectionChanged -= OnCollectionChanged; break;
-                case IReadOnlyObservableList<IViewModel> observableList: observableList.CollectionChanged -= OnCollectionChanged; break;
+                StopCoroutine(_initializing);
+                _initializing = null;
+                
+                switch (ItemsSource)
+                {
+                    case IReadOnlyFilteredList<IViewModel> filteredList: filteredList.CollectionChanged -= OnCollectionChanged; break;
+                    case IReadOnlyObservableList<IViewModel> observableList: observableList.CollectionChanged -= OnCollectionChanged; break;
+                }
+                
+                foreach (var view in _views)
+                    view.Deinitialize();
+            
+                onValueChanged.RemoveListener(OnScrollValueChanged);
+                
+                _itemsSource = null;
+                OnReset();
             }
-
-            _itemsSource = null;
-            OnReset();
         }
         
         private void Refresh()

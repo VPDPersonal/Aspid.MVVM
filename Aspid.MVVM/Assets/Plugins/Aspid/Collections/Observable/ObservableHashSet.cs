@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -6,7 +5,7 @@ using System.Collections.Generic;
 namespace Aspid.Collections.Observable
 {
     // can not implements ISet<T> because set operation can not get added/removed values.
-    public class ObservableHashSet<T> : CollectionChangedEvent<T>, IObservableCollection<T>, IDisposable
+    public class ObservableHashSet<T> : CollectionChangedEvent<T>, IObservableCollection<T>
         where T : notnull
     {
         private readonly HashSet<T> _set;
@@ -172,7 +171,10 @@ namespace Aspid.Collections.Observable
             }
         }
 
-        public virtual void Dispose() =>
+        public override void Dispose()
+        {
             Clear();
+            base.Dispose();
+        }
     }
 }

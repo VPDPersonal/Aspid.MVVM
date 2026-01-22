@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -9,8 +8,7 @@ namespace Aspid.Collections.Observable
     public class ObservableDictionary<TKey, TValue> :
         CollectionChangedEvent<KeyValuePair<TKey, TValue>>, 
         IDictionary<TKey, TValue>,
-        IReadOnlyObservableDictionary<TKey, TValue>,
-        IDisposable
+        IReadOnlyObservableDictionary<TKey, TValue>
         where TKey : notnull
     {
         private readonly Dictionary<TKey, TValue> _dictionary;
@@ -250,7 +248,10 @@ namespace Aspid.Collections.Observable
         
         protected virtual void OnClearing() { }
 
-        public virtual void Dispose() =>
+        public override void Dispose()
+        {
             Clear();
+            base.Dispose();
+        }
     }
 }

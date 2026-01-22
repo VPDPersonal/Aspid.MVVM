@@ -4,7 +4,7 @@ using System.Collections.Generic;
 // ReSharper disable once CheckNamespace
 namespace Aspid.Collections.Observable
 {
-    public abstract class CollectionChangedEvent<T>
+    public abstract class CollectionChangedEvent<T> : IDisposable
     {
         private List<NotifyCollectionChangedEventHandler<T>>? _handlers;
         
@@ -28,5 +28,8 @@ namespace Aspid.Collections.Observable
 
         private static NullReferenceException ThrowValueNullReferenceException() =>
             throw new NullReferenceException("value");
+
+        public virtual void Dispose() =>
+            _handlers?.Clear();
     }
 }

@@ -2,7 +2,7 @@ using Microsoft.CodeAnalysis;
 using Aspid.Generators.Helper;
 using System.Collections.Generic;
 using System.Collections.Immutable;
-using static Aspid.MVVM.Generators.Generators.Descriptions.General;
+using static Aspid.MVVM.Generators.Generators.Descriptions.Constants;
 
 namespace Aspid.MVVM.Generators.Generators.Ids;
 

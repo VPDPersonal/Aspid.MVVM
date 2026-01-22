@@ -134,4 +134,3 @@ public static class PropertyNotificationAnalyzer
         };
     }
 }
-

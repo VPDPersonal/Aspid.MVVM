@@ -3,7 +3,7 @@ using Microsoft.CodeAnalysis;
 using Aspid.Generators.Helper;
 using Aspid.MVVM.Generators.Generators.Ids.Data;
 using static Aspid.Generators.Helper.Classes;
-using static Aspid.MVVM.Generators.Generators.Descriptions.General;
+using static Aspid.MVVM.Generators.Generators.Descriptions.Constants;
 
 namespace Aspid.MVVM.Generators.Generators.ViewModels.Data.Infos;
 
@@ -69,19 +69,19 @@ public sealed class BindablePropertyInfo : IBindableMemberInfo
                             return true;
                         }
 
-                        [{{EditorBrowsableAttribute}}({{EditorBrowsableState}}.Never)]
+                        {{EditorBrowsableAttributeNever}}
                         {{GeneratedCodeViewModelAttribute}}
                         partial void {{onChangingMethod}}({{Type}} newValue);
 
-                        [{{EditorBrowsableAttribute}}({{EditorBrowsableState}}.Never)]
+                        {{EditorBrowsableAttributeNever}}
                         {{GeneratedCodeViewModelAttribute}}
                         partial void {{onChangingMethod}}({{Type}} oldValue, {{Type}} newValue);
 
-                        [{{EditorBrowsableAttribute}}({{EditorBrowsableState}}.Never)]
+                        {{EditorBrowsableAttributeNever}}
                         {{GeneratedCodeViewModelAttribute}}
                         partial void {{onChangedMethod}}({{Type}} newValue);
 
-                        [{{EditorBrowsableAttribute}}({{EditorBrowsableState}}.Never)]
+                        {{EditorBrowsableAttributeNever}}
                         {{GeneratedCodeViewModelAttribute}}
                         partial void {{onChangedMethod}}({{Type}} oldValue, {{Type}} newValue);
                         """);
@@ -103,4 +103,3 @@ public sealed class BindablePropertyInfo : IBindableMemberInfo
         Declaration = declaration.ToString();
     }
 }
-

@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using Aspid.MVVM.Generators.Generators.ViewModels.Data;
 using Aspid.MVVM.Generators.Generators.ViewModels.Data.Infos;
 using static Aspid.MVVM.Generators.Generators.Descriptions.Classes;
-using static Aspid.MVVM.Generators.Generators.Descriptions.General;
+using static Aspid.MVVM.Generators.Generators.Descriptions.Constants;
 using SymbolExtensions = Aspid.MVVM.Generators.Helpers.SymbolExtensions;
 using BindMode = Aspid.MVVM.Generators.Generators.ViewModels.Data.BindMode;
 

@@ -6,7 +6,7 @@ using Aspid.MVVM.Generators.Helpers;
 using Aspid.MVVM.Generators.Generators.Ids.Data;
 using static Aspid.Generators.Helper.Classes;
 using static Aspid.MVVM.Generators.Generators.Descriptions.Classes;
-using static Aspid.MVVM.Generators.Generators.Descriptions.General;
+using static Aspid.MVVM.Generators.Generators.Descriptions.Constants;
 
 namespace Aspid.MVVM.Generators.Generators.ViewModels.Data.Infos;
 
@@ -43,16 +43,19 @@ public sealed class BindableFieldInfo : IBindableMemberInfo
         {
             declaration.AppendLine($"#region {Name}");
             
+            var keywordThis = !fieldSymbol.IsStatic ? "this." : string.Empty;
+            var fieldInvoke = $"{keywordThis}{fieldSymbol.Name}";
+            
             declaration.AppendLine(Mode is BindMode.OneTime
                 ? $"""
                    {GeneratedCodeViewModelAttribute}
-                   {accessors.General}{Type} {Name} => {fieldSymbol.Name};
+                   {accessors.General}{Type} {Name} => {fieldInvoke};
                    """
                 : $$"""
                     {{GeneratedCodeViewModelAttribute}}
                     {{accessors.General}}{{Type}} {{Name}}
                     {
-                        {{accessors.Get}}get => {{fieldSymbol.Name}}; 
+                        {{accessors.Get}}get => {{fieldInvoke}}; 
                         {{accessors.Set}}set => {{setMethodName}}(value); 
                     }
                     """);
@@ -62,7 +65,6 @@ public sealed class BindableFieldInfo : IBindableMemberInfo
                 var onChangedMethod = $"On{Name}Changed";
                 var onChangingMethod = $"On{Name}Changing";
                 var methodModifier = Accessors.ConvertAccessorToString(accessors.SetKind);
-                var keywordThis = !fieldSymbol.IsStatic ? "this." : string.Empty;
                 
                 var invoke = !string.IsNullOrWhiteSpace(Bindable.OnPropertyChangedName)
                     ? $"{Bindable.OnPropertyChangedName}();"
@@ -74,33 +76,33 @@ public sealed class BindableFieldInfo : IBindableMemberInfo
                       {{GeneratedCodeViewModelAttribute}} 
                       {{methodModifier}}void {{setMethodName}}({{Type}} value)
                       {
-                          if ({{EqualityComparer_1}}<{{Type}}>.Default.Equals({{fieldSymbol.Name}}, value)) return;
+                          if ({{EqualityComparer_1}}<{{Type}}>.Default.Equals({{fieldInvoke}}, value)) return;
                           
-                          {{Type}} oldValue = {{fieldSymbol.Name}};
+                          {{Type}} oldValue = {{fieldInvoke}};
                           
                           {{onChangingMethod}}(value);
                           {{onChangingMethod}}(oldValue, value);
                           {
-                              {{keywordThis}}{{fieldSymbol.Name}} = value;
+                              {{fieldInvoke}} = value;
                               {{invoke}}
                           }
                           {{onChangedMethod}}(value);
                           {{onChangedMethod}}(oldValue, value);
                       }
 
-                      [{{EditorBrowsableAttribute}}({{EditorBrowsableState}}.Never)]
+                      {{EditorBrowsableAttributeNever}}
                       {{GeneratedCodeViewModelAttribute}}
                       partial void {{onChangingMethod}}({{Type}} newValue);
 
-                      [{{EditorBrowsableAttribute}}({{EditorBrowsableState}}.Never)]
+                      {{EditorBrowsableAttributeNever}}
                       {{GeneratedCodeViewModelAttribute}}
                       partial void {{onChangingMethod}}({{Type}} oldValue, {{Type}} newValue);
 
-                      [{{EditorBrowsableAttribute}}({{EditorBrowsableState}}.Never)]
+                      {{EditorBrowsableAttributeNever}}
                       {{GeneratedCodeViewModelAttribute}}
                       partial void {{onChangedMethod}}({{Type}} newValue);
 
-                      [{{EditorBrowsableAttribute}}({{EditorBrowsableState}}.Never)]
+                      {{EditorBrowsableAttributeNever}}
                       {{GeneratedCodeViewModelAttribute}}
                       partial void {{onChangedMethod}}({{Type}} oldValue, {{Type}} newValue);
                       """);

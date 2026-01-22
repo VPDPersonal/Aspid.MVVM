@@ -4,12 +4,10 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using Aspid.MVVM.Generators.Generators.ViewModels.Data;
 using Aspid.MVVM.Generators.Generators.ViewModels.Data.Infos;
-using Aspid.MVVM.Generators.Generators.ViewModels.Data.Members;
-using static Aspid.Generators.Helper.Classes;
 using static Aspid.Generators.Helper.Unity.UnityClasses;
 using static Aspid.MVVM.Generators.Generators.Descriptions.Classes;
 using static Aspid.MVVM.Generators.Generators.Descriptions.Defines;
-using static Aspid.MVVM.Generators.Generators.Descriptions.General;
+using static Aspid.MVVM.Generators.Generators.Descriptions.Constants;
 
 namespace Aspid.MVVM.Generators.Generators.ViewModels.Body;
 
@@ -46,8 +44,8 @@ public static class FindBindableMembersBody
         return code.AppendMultiline(
             $"""
             #if !{ASPID_MVVM_UNITY_PROFILER_DISABLED}
+            {EditorBrowsableAttributeNever}
             {GeneratedCodeViewModelAttribute}
-            [{EditorBrowsableAttribute}({EditorBrowsableState}.Never)]
             private static readonly {ProfilerMarker} __findBindableMemberMarker = new("{className}.FindBindableMember");
             #endif
             """);

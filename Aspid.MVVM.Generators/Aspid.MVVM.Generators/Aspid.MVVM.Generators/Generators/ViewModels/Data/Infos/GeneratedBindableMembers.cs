@@ -189,7 +189,7 @@ public readonly struct GeneratedBindableMembers
     private static string? RecognizeInvoke(BindMode mode, string memberName, string fieldName)
     {
         return mode is not (BindMode.OneWayToSource or BindMode.OneTime) 
-            ? $"this.{fieldName}?.Invoke({memberName});" 
+            ? $"{fieldName}?.Invoke({memberName});" 
             : null;
     }
     

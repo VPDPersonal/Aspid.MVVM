@@ -31,7 +31,6 @@ namespace Aspid.MVVM.StarterKit
         {
             switch (_resolve)
             {
-
                 case ResolveType.Mono: return _mono as T;
                 case ResolveType.References: return _reference;
                 case ResolveType.ScriptableObject: return _scriptableObject as T;

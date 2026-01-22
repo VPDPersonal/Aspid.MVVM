@@ -165,4 +165,3 @@ namespace Aspid.MVVM
         #endregion
     }
 }
-

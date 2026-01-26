@@ -45,7 +45,8 @@ namespace Aspid.MVVM
             {
                 FindProperties();
                 Validate();
-
+                
+                RefreshViewEditorIfNeeded();
                 EditorApplication.update += Update;
             }
             OnEnabled();
@@ -242,8 +243,20 @@ namespace Aspid.MVVM
                 }
             }
             serializedObject.ApplyModifiedProperties();
+
+            RefreshViewEditorIfNeeded();
         }
         #endregion
+        
+        private void RefreshViewEditorIfNeeded()
+        {
+            if (ViewProperty?.objectReferenceValue is not MonoView monoView) return;
+            
+            // Create a temporary editor for MonoView to trigger its OnEnable,
+            // which will update BindersList based on DesignViewModel
+            var viewEditor = CreateEditor(monoView);
+            if (viewEditor) DestroyImmediate(viewEditor);
+        }
     }
 }
 #endif

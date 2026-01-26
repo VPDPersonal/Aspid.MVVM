@@ -45,6 +45,8 @@ namespace Aspid.MVVM
                 BindersList = new BinderListProperty(serializedObject);
                 DesignViewModel = serializedObject.FindProperty("_designViewModel");
                 LastBinders = ValidableBindersById.GetValidableBindersById(TargetAsView);
+                
+                UpdateMetaData();
             }
             OnEnabled();
         }

@@ -5,6 +5,7 @@ using UnityEngine.Events;
 namespace Aspid.MVVM.StarterKit
 {
     [View]
+    [ShowDesignViewModel]
     [AddComponentMenu("Aspid/MVVM/Views/Event View")]
     public partial class EventMonoView : MonoView
     {

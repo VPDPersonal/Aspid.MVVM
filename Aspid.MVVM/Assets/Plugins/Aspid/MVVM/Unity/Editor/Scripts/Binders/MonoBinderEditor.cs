@@ -63,8 +63,8 @@ namespace Aspid.MVVM
             OnDisabling();
             {
                 EditorApplication.update -= Update;
-
-                if (TargetAsMonoBinder && IdProperty is not null && ViewProperty is not null)
+                
+                if (IdProperty is not null && ViewProperty is not null)
                 {
                     var view = ViewProperty.objectReferenceValue;
 
@@ -131,10 +131,10 @@ namespace Aspid.MVVM
 
                 if (id != LastId || view != LastView)
                 {
-                    if (LastView && !string.IsNullOrWhiteSpace(LastId))
+                    if (LastView && !string.IsNullOrWhiteSpace(LastId) && dropdownDataId.Choices.Contains(LastId))
                         ViewAndMonoBinderSyncValidator.RemoveBinderIfExistInView(TargetAsMonoBinder, LastView, LastId);
                 
-                    if (view && !string.IsNullOrWhiteSpace(id))
+                    if (view && !string.IsNullOrWhiteSpace(id) && dropdownDataId.Choices.Contains(id))
                         ViewAndMonoBinderSyncValidator.SetBinderIfNotExistInView(TargetAsMonoBinder);
                 }
                 
@@ -219,6 +219,9 @@ namespace Aspid.MVVM
         }
         
         #region Save Methods
+        private void SetDefaultId() =>
+            SaveId("No Id");
+        
         private void SaveId(string id)
         {
             serializedObject.UpdateIfRequiredOrScript();
@@ -250,12 +253,19 @@ namespace Aspid.MVVM
         
         private void RefreshViewEditorIfNeeded()
         {
-            if (ViewProperty?.objectReferenceValue is not MonoView monoView) return;
+            if (ViewProperty?.objectReferenceValue is not MonoView monoView)
+            {
+                SetDefaultId();
+                return;
+            }
             
             // Create a temporary editor for MonoView to trigger its OnEnable,
             // which will update BindersList based on DesignViewModel
             var viewEditor = CreateEditor(monoView);
             if (viewEditor) DestroyImmediate(viewEditor);
+
+            var ids = BinderEditorUtilities.GetIds(TargetAsMonoBinder, monoView);
+            if (!ids.Contains(IdProperty.stringValue)) SetDefaultId();
         }
     }
 }

@@ -42,7 +42,8 @@ namespace Aspid.MVVM.StarterKit
                     if (zenjectResult is T specificZenjectResult) return specificZenjectResult;
 #endif
 #if ASPID_MVVM_VCONTAINER_INTEGRATION
-                    if (VContainerContainer?.TryResolve(type, out var specificVContainerResult) ?? false)
+                    object specificVContainerResult = null;
+                    if (VContainerContainer?.TryResolve(type, out specificVContainerResult) ?? false)
                         return specificVContainerResult as T;
 #endif
                     throw new Exception("Unknown initialize component type: " + type);

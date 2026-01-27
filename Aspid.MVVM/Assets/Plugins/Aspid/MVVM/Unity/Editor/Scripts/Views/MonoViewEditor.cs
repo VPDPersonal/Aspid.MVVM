@@ -164,7 +164,7 @@ namespace Aspid.MVVM
                 .Where(bindableProperty => viewMeta.BinderProperties.All(binderProperty => binderProperty.Id != bindableProperty.Id))
                 .ToArray();
             
-            Dictionary<string, Object[]> fieldsById = new();
+            var fieldsById = new Dictionary<string, Object[]>();
 
             for (var i = 0; i < BindersList.ArraySize; i++)
             {
@@ -181,15 +181,18 @@ namespace Aspid.MVVM
                 
             for (var i = 0; i < BindersList.ArraySize; i++)
             {
+                var id = bindableProperties[i].Id;
                 var property = BindersList.GetArrayElementAtIndex(i);
                 var monoBindersProperty = property.MonoBindersProperty;
 
-                if (fieldsById.TryGetValue(bindableProperties[i].Id, out var array))
+                if (fieldsById.TryGetValue(id, out var array))
                 {
                     monoBindersProperty.arraySize = array.Length;
 
                     for (var j = 0; j < array.Length; j++)
                         monoBindersProperty.GetArrayElementAtIndex(j).objectReferenceValue = array[j];
+                    
+                    fieldsById.Remove(id);
                 }
                 else
                 {
@@ -204,9 +207,15 @@ namespace Aspid.MVVM
                     
                     monoBindersProperty.arraySize = 0;
                 }
-                    
-                property.Id = bindableProperties[i].Id;
+                
+                property.Id = id;
                 property.AssemblyQualifiedName = bindableProperties[i].Type?.AssemblyQualifiedName;
+            }
+            
+            foreach (var value in fieldsById.Values.SelectMany(values => values))
+            {
+                if (value is IMonoBinderValidable monoBinder)
+                    monoBinder.Reset();
             }
             
             BindersList.ApplyModifiedProperties();

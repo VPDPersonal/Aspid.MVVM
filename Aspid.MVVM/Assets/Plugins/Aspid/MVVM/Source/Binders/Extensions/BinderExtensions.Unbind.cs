@@ -37,7 +37,16 @@ namespace Aspid.MVVM
 
             foreach (var binder in binders)
             {
-                if (binder is null) throw new UnbindSafelyNullReferenceException($"{nameof(binder)}");
+                if (binder is null)
+                {
+#if UNITY_2020_3_OR_NEWER
+#if DEBUG
+                    UnityEngine.Debug.LogError("[UnbindSafely] Binder in array can't be null");
+#endif // DEBUG
+                    continue;
+#endif // UNITY_2020_3_OR_NEWER
+                    throw new UnbindSafelyNullReferenceException("Binder in array can't be null");
+                }
                 binder.Unbind();
             }
         }
@@ -59,7 +68,16 @@ namespace Aspid.MVVM
 
             foreach (var binder in binders)
             {
-                if (binder is null) throw new UnbindSafelyNullReferenceException($"{nameof(binder)}");
+                if (binder is null)
+                {
+#if UNITY_2020_3_OR_NEWER
+#if DEBUG
+                    UnityEngine.Debug.LogError("[UnbindSafely] Binder in list can't be null");
+#endif // DEBUG
+                    continue;
+#endif // UNITY_2020_3_OR_NEWER
+                    throw new UnbindSafelyNullReferenceException("Binder in list can't be null");
+                }
                 binder.Unbind();
             }
         }
@@ -81,7 +99,16 @@ namespace Aspid.MVVM
 
             foreach (var binder in binders)
             {
-                if (binder is null) throw new UnbindSafelyNullReferenceException($"{nameof(binder)}");
+                if (binder is null)
+                {
+#if UNITY_2020_3_OR_NEWER
+#if DEBUG
+                    UnityEngine.Debug.LogError("[UnbindSafely] Binder in enumerable can't be null");
+#endif // DEBUG
+                    continue;
+#endif // UNITY_2020_3_OR_NEWER
+                    throw new UnbindSafelyNullReferenceException("Binder in enumerable can't be null");
+                }
                 binder.Unbind();
             }
         }

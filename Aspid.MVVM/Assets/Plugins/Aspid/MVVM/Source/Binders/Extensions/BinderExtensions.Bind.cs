@@ -73,7 +73,16 @@ namespace Aspid.MVVM
             
             foreach (var binder in binders)
             {
-                if (binder is null) throw new BindSafelyNullReferenceException($"{nameof(binder)}");
+                if (binder is null)
+                {
+#if UNITY_2020_3_OR_NEWER
+#if DEBUG
+                    UnityEngine.Debug.LogError("[BindSafely] Binder in array can't be null");
+#endif // DEBUG
+                    continue;
+#endif // UNITY_2020_3_OR_NEWER
+                    throw new BindSafelyNullReferenceException("Binder in array can't be null");
+                }
                 binder.Bind(binderAdder);
             }
         }
@@ -115,7 +124,16 @@ namespace Aspid.MVVM
             
             foreach (var binder in binders)
             {
-                if (binder is null) throw new BindSafelyNullReferenceException($"{nameof(binder)}");
+                if (binder is null)
+                {
+#if UNITY_2020_3_OR_NEWER
+#if DEBUG
+                    UnityEngine.Debug.LogError("[BindSafely] Binder in list can't be null");
+#endif // DEBUG
+                    continue;
+#endif // UNITY_2020_3_OR_NEWER
+                    throw new BindSafelyNullReferenceException("Binder in list can't be null");
+                }
                 binder.Bind(binderAdder);
             }
         }
@@ -157,7 +175,17 @@ namespace Aspid.MVVM
             
             foreach (var binder in binders)
             {
-                if (binder is null) throw new BindSafelyNullReferenceException($"{nameof(binder)}");
+                if (binder is null)
+                {
+#if UNITY_2020_3_OR_NEWER
+#if DEBUG
+                    UnityEngine.Debug.LogError("[BindSafely] Binder in enumerable can't be null");
+#endif // DEBUG
+                    continue;
+                    
+#endif // UNITY_2020_3_OR_NEWER
+                    throw new BindSafelyNullReferenceException("Binder in enumerable can't be null");
+                }
                 binder.Bind(binderAdder);
             }
         }

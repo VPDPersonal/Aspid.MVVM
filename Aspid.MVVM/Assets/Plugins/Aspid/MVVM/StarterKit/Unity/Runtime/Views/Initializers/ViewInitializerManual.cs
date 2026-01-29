@@ -6,6 +6,7 @@ using UnityEngine;
 namespace Aspid.MVVM.StarterKit
 {
     [AddComponentMenu("Aspid/MVVM/View Initializers/View Initializer Manual")]
+    [AddBinderContextMenu(typeof(MonoView), Path = "Add View Initializers/View Initializer Manual")]
     public sealed class ViewInitializerManual : ViewInitializerBase
     {
         private IViewModel _viewModel;

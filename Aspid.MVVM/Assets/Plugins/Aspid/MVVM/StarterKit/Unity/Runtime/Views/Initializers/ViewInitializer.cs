@@ -6,6 +6,7 @@ using UnityEngine;
 namespace Aspid.MVVM.StarterKit
 {
     [AddComponentMenu("Aspid/MVVM/View Initializers/View Initializer")]
+    [AddBinderContextMenu(typeof(MonoView), Path = "Add View Initializers/View Initializer")]
     public sealed class ViewInitializer : ViewInitializerBase
     {
         [SerializeField] private bool _isDisposeViewModelOnDestroy;

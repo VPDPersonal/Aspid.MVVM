@@ -84,6 +84,8 @@ namespace Aspid.UnityFastTools
                     if (enumType.IsDefined(typeof(FlagsAttribute), false))
                     {
                         keyEnumFlagField.SetDisplay(DisplayStyle.Flex);
+
+                        keyEnumFlagField.value = null;
                         keyEnumFlagField.Init(enumValue);
                     }
                     else

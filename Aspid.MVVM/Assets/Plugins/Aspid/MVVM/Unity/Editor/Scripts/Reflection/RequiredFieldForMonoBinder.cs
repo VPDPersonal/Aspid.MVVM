@@ -20,6 +20,8 @@ namespace Aspid.MVVM
         private bool? _isValidation;
         private readonly FieldInfo _field;
         private readonly IReadOnlyCollection<Type> _requiredTypes;
+        
+        public IReadOnlyCollection<Type> RequiredTypes => _requiredTypes;
 
         public RequiredFieldForMonoBinder(object fieldContainerObj, FieldInfo field)
             : this(fieldContainerObj, field, null) { }

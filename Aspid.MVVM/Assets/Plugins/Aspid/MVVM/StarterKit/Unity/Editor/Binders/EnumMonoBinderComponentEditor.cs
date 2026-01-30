@@ -74,6 +74,7 @@ namespace Aspid.MVVM.StarterKit
                 .Where(propertyField => propertyField.bindingPath is "_enumValues._enumType")
                 .First();
             
+            propertyField?.Bind(serializedObject);
             propertyField?.SetEnabled(RequiredEnumType is null);
         }
     }

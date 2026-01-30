@@ -11,7 +11,7 @@ namespace Aspid.MVVM.StarterKit
     [CustomEditor(typeof(EnumMonoBinder<>), editorForChildClasses: true)]
     public class EnumMonoBinderEditor : MonoBinderEditor
     {
-         private Type _requiredEnumType;
+        private Type _requiredEnumType;
         private SerializedProperty _enumTypeProperty;
 
         private Type RequiredEnumType

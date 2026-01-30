@@ -46,8 +46,11 @@ namespace Aspid.UnityFastTools
                 .SetBorderRadius(bottomLeft: _borderRadius, bottomRight: _borderRadius)
                 .SetBorderWidth(bottom: _borderWidth, left: _borderWidth, right: _borderWidth);
 
+            var valuesField = new PropertyField(values);
+            valuesField.RegisterValueChangeCallback(_ => UpdateValues());
+
             container
-                .AddChild(new PropertyField(values)
+                .AddChild(valuesField
                     .SetMargin(top: 5, bottom: 2, left: 10, right: 5))
                 .AddChild(new PropertyField(defaultValueProperty)
                 .SetMargin(bottom: 5, left: 7, right: 7));

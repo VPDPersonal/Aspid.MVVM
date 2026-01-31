@@ -15,6 +15,8 @@ namespace Aspid.UnityFastTools
         
         internal static void DrawIMGUI(Rect position, SerializedProperty property, GUIContent label, Type type)
         {
+            const float openButtonWidth = 50f;
+            
             if (!string.IsNullOrWhiteSpace(label.text))
             {
                 EditorGUI.LabelField(position, label);
@@ -22,12 +24,10 @@ namespace Aspid.UnityFastTools
                 position.width -= EditorGUIUtility.labelWidth;
             }
 
-            var currentType = GetType(property.stringValue);
-            var hasValidType = currentType != null;
-            
-            // Резервируем место для кнопки Open если тип валидный
-            const float openButtonWidth = 50f;
             var dropdownRect = position;
+            var currentType = GetType(property.stringValue);
+            var hasValidType = currentType is not null;
+            
             if (hasValidType)
                 dropdownRect.width -= openButtonWidth + 2f;
                 
@@ -43,16 +43,12 @@ namespace Aspid.UnityFastTools
                     property.SetStringAndApply(assemblyQualifiedName ?? string.Empty);
                 });    
             }
+
+            if (!hasValidType) return;
             
-            // Рисуем кнопку Open если тип валидный
-            if (hasValidType)
-            {
-                var openButtonRect = new Rect(dropdownRect.xMax + 2f, position.y, openButtonWidth, position.height);
-                if (GUI.Button(openButtonRect, "Open"))
-                {
-                    OpenScript(currentType);
-                }
-            }
+            var openButtonRect = new Rect(dropdownRect.xMax + 2f, position.y, openButtonWidth, position.height);
+            if (GUI.Button(openButtonRect, text: "Open"))
+                OpenScript(currentType);
         }
         
         internal static VisualElement DrawUIToolkit(SerializedProperty property, string label, Type type)
@@ -70,17 +66,14 @@ namespace Aspid.UnityFastTools
 
             var propertyPath = property.propertyPath;
             var serializedObject = property.serializedObject;
-            
+
             var openButton = new Button()
-            {
-                text = "Open"
-            };
-            openButton.SetMargin(left: 4);
-            openButton.SetDisplay(DisplayStyle.None);
+                .SetText("Open")
+                .SetMargin(left: 4)
+                .SetDisplay(DisplayStyle.None);
 
             button.clicked += () =>
             {
-                
                 var window = EditorWindow.focusedWindow;
                 var worldBound = button.worldBound;
                 var screenRect = new Rect(window.position.x + worldBound.xMin, window.position.y + worldBound.yMin, worldBound.width, worldBound.height);
@@ -92,8 +85,9 @@ namespace Aspid.UnityFastTools
                     var currentProperty = GetProperty(serializedObject, propertyPath);
                     currentProperty.SetStringAndApply(assemblyQualifiedName ?? string.Empty);
                     
-                    button.SetText(GetCaption(currentProperty.stringValue));
-                    button.SetTooltip(GetTooltip(currentProperty.stringValue));
+                    button
+                        .SetText(GetCaption(currentProperty.stringValue))
+                        .SetTooltip(GetTooltip(currentProperty.stringValue));
                     
                     UpdateOpenButtonVisibility(openButton, currentProperty.stringValue);
                 });
@@ -103,94 +97,79 @@ namespace Aspid.UnityFastTools
             {
                 var currentProperty = GetProperty(serializedObject, propertyPath);
                 var currentType = GetType(currentProperty.stringValue);
-                if (currentType != null)
+                
+                if (currentType is not null)
                     OpenScript(currentType);
             };
 
             if (!string.IsNullOrEmpty(label))
             {
-                typeSelector.AddChild(new Label(label)
+                typeSelector
+                    .AddChild(new Label(label)
                     .SetUnityTextAlign(TextAnchor.MiddleLeft)
                     .SetMargin(right: 15));
             }
             
-            typeSelector.AddChild(button);
-            typeSelector.AddChild(openButton);
+            typeSelector
+                .AddChild(button)
+                .AddChild(openButton);
             
-            // Обновляем видимость кнопки Open сразу
             UpdateOpenButtonVisibility(openButton, property.stringValue);
-
             return typeSelector;
         }
         
         private static void UpdateOpenButtonVisibility(Button openButton, string assemblyQualifiedName)
         {
-            var hasValidType = !string.IsNullOrWhiteSpace(assemblyQualifiedName) && GetType(assemblyQualifiedName) != null;
+            var hasValidType = !string.IsNullOrWhiteSpace(assemblyQualifiedName) && GetType(assemblyQualifiedName) is not null;
             openButton.SetDisplay(hasValidType ? DisplayStyle.Flex : DisplayStyle.None);
         }
         
         private static void OpenScript(Type type)
         {
             var (monoScript, lineNumber) = GetMonoScriptFromType(type);
-            if (monoScript != null)
+            
+            if (monoScript is not null)
                 AssetDatabase.OpenAsset(monoScript, lineNumber);
         }
         
         private static (MonoScript script, int lineNumber) GetMonoScriptFromType(Type type)
         {
-            var scripts = Resources.FindObjectsOfTypeAll<MonoScript>();
+            var isEnum = type.IsEnum;
             var typeName = type.Name;
             var typeNamespace = type.Namespace;
-            var isEnum = type.IsEnum;
+            var scripts = Resources.FindObjectsOfTypeAll<MonoScript>();
+
+            var regex = new Regex(GetPattern(isEnum, typeName));
             
-            // Regex для точного поиска объявления типа (с границами слова)
-            var pattern = isEnum 
-                ? $@"\benum\s+{Regex.Escape(typeName)}\b"
-                : $@"\b(class|struct|record)\s+{Regex.Escape(typeName)}\b";
-            var regex = new Regex(pattern);
-            
-            // Сначала пробуем найти по GetClass() - это работает когда имя класса совпадает с именем файла
             foreach (var script in scripts)
             {
-                if (script.GetClass() == type)
-                {
-                    var line = FindTypeLineNumber(script.text, typeName, isEnum);
-                    return (script, line);
-                }
+                if (script.GetClass() != type) continue;
+                
+                var line = FindTypeLineNumber(script.text, typeName, isEnum);
+                return (script, line);
             }
             
-            // Если не нашли, ищем по имени типа в тексте скрипта
             foreach (var script in scripts)
             {
                 var text = script.text;
-                if (string.IsNullOrEmpty(text)) continue;
-                
-                // Проверяем namespace если есть
-                if (!string.IsNullOrEmpty(typeNamespace) && !text.Contains($"namespace {typeNamespace}"))
-                    continue;
-                
-                // Ищем объявление типа с помощью regex
-                if (regex.IsMatch(text))
-                {
-                    var line = FindTypeLineNumber(text, typeName, isEnum);
-                    return (script, line);
-                }
+                if (string.IsNullOrWhiteSpace(text)) continue;
+                if (!string.IsNullOrWhiteSpace(typeNamespace) && !text.Contains($"namespace {typeNamespace}")) continue;
+                if (!regex.IsMatch(text)) continue;
+
+                var line = FindTypeLineNumber(text, typeName, isEnum);
+                return (script, line);
             }
             
-            return (null, 1);
+            return (script: null, lineNumber: 1);
         }
         
         private static int FindTypeLineNumber(string text, string typeName, bool isEnum)
         {
             if (string.IsNullOrEmpty(text)) return 1;
             
-            // Regex для точного поиска объявления типа
-            var pattern = isEnum 
-                ? $@"\enum\s+{Regex.Escape(typeName)}\b"
-                : $@"\b(class|struct|record)\s+{Regex.Escape(typeName)}\b";
-            var regex = new Regex(pattern);
-            
+            var regex = new Regex(GetPattern(isEnum, typeName));
             var lines = text.Split('\n');
+            
             for (var i = 0; i < lines.Length; i++)
             {
                 if (regex.IsMatch(lines[i]))
@@ -217,6 +196,10 @@ namespace Aspid.UnityFastTools
             var type = GetType(assemblyQualifiedName);
             return type is null ? MissingOption : type.Name;
         }
+        
+        private static string GetPattern(bool isEnum, string typeName) => isEnum 
+            ? $@"\benum\s+{Regex.Escape(typeName)}\b"
+            : $@"\b(class|struct|record)\s+{Regex.Escape(typeName)}\b";
         
         private static Type GetType(string assemblyQualifiedName) =>
             Type.GetType(assemblyQualifiedName, throwOnError: false);

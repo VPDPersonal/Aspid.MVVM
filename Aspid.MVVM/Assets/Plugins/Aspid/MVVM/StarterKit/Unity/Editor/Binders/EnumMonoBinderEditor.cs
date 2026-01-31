@@ -42,7 +42,7 @@ namespace Aspid.MVVM.StarterKit
             root.IdDropdown.RegisterValueChangedCallback(_ => SyncEnumTypeFromRequireBinder());
             root.ViewDropdown.RegisterValueChangedCallback(_ => SyncEnumTypeFromRequireBinder());
             
-            root.RegisterCallbackOnce<GeometryChangedEvent>(_ => DisableEnumTypeFieldIfNeeded(root));
+            root.RegisterCallback<GeometryChangedEvent>(_ => DisableEnumTypeFieldIfNeeded(root));
         }
         
         private void SyncEnumTypeFromRequireBinder()
@@ -75,7 +75,7 @@ namespace Aspid.MVVM.StarterKit
                 .First();
             
             propertyField?.Bind(serializedObject);
-            propertyField?.SetEnabled(RequiredEnumType is null);
+            propertyField?.Q<Button>()?.SetEnabled(RequiredEnumType is null);
         }
     }
 }

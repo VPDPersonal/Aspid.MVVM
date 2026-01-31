@@ -75,7 +75,7 @@ namespace Aspid.MVVM.StarterKit
                 .First();
             
             propertyField?.Bind(serializedObject);
-            propertyField?.SetEnabled(RequiredEnumType is null);
+            propertyField?.Q<Button>()?.SetEnabled(RequiredEnumType is null);
         }
     }
 }

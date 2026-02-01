@@ -60,8 +60,12 @@ namespace Aspid.UnityFastTools
             var button = new Button()
                 .SetMargin(0)
                 .SetFlexGrow(1)
+                .SetFlexShrink(1)
+                .SetOverflow(Overflow.Hidden)
+                .SetWhiteSpace(WhiteSpace.NoWrap)
                 .SetUnityTextAlign(TextAnchor.MiddleLeft)
                 .SetText(GetCaption(property.stringValue))
+                .SetTextOverflow(TextOverflow.Ellipsis)
                 .SetTooltip(GetTooltip(property.stringValue));
 
             var propertyPath = property.propertyPath;

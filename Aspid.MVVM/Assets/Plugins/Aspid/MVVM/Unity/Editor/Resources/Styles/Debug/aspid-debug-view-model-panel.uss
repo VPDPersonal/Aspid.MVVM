@@ -15,6 +15,10 @@ DebugViewModelTabView > Button
 {
     flex-grow: 1;
     font-size: 14;
+    flex-shrink: 1;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
     -unity-font-style: bold;
     background-color: #404040;
 }

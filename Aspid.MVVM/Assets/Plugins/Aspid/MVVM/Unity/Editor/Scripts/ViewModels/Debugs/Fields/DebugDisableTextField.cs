@@ -7,13 +7,13 @@ namespace Aspid.MVVM
     {
         public DebugDisableTextField()
         {
-            isReadOnly = false;
+            isReadOnly = true;
         }
 
         public DebugDisableTextField(string label) 
             : base(label)
         {
-            isReadOnly = false;
+            isReadOnly = true;
         }
     }
 }

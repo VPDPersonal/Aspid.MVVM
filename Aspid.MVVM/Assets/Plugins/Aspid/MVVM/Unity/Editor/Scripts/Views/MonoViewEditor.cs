@@ -95,6 +95,7 @@ namespace Aspid.MVVM
                 if (!areEqual)
                 {
                     LastBinders = binders;
+                    ValidateView();
                 }
             }
         }

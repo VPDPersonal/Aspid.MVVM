@@ -131,9 +131,13 @@ namespace Aspid.MVVM
 
                 if (id != LastId || view != LastView)
                 {
-                    if (LastView && !string.IsNullOrWhiteSpace(LastId) && dropdownDataId.Choices.Contains(LastId))
-                        ViewAndMonoBinderSyncValidator.RemoveBinderIfExistInView(TargetAsMonoBinder, LastView, LastId);
-                
+                    
+                    if (LastView && !string.IsNullOrWhiteSpace(LastId))
+                    {
+                        if (BinderEditorUtilities.GetIds(TargetAsMonoBinder, LastView).Contains(LastId))
+                            ViewAndMonoBinderSyncValidator.RemoveBinderIfExistInView(TargetAsMonoBinder, LastView, LastId);
+                    }
+                    
                     if (view && !string.IsNullOrWhiteSpace(id) && dropdownDataId.Choices.Contains(id))
                         ViewAndMonoBinderSyncValidator.SetBinderIfNotExistInView(TargetAsMonoBinder);
                 }

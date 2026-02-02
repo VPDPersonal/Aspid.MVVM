@@ -70,23 +70,28 @@ namespace Aspid.MVVM.StarterKit
         }
 #endif
 
-        protected override void OnEnable()
-        {
-            base.OnEnable();
-            Initialize();
-        }
+	    protected override void OnEnable()
+	    {
+		    base.OnEnable();
+		    
+		    if (ItemsSource is not null)
+		    {
+			    _initializing = StartCoroutine(InitializeAsync());
+		    }
+	    }
 
-        private void Initialize()
+	    private void Initialize()
         {
-            if (_initializing is not null || !gameObject.activeInHierarchy) return;
-            
             switch (ItemsSource)
             {
                 case IReadOnlyFilteredList<IViewModel> filteredList: filteredList.CollectionChanged += OnCollectionChanged; break;
                 case IReadOnlyObservableList<IViewModel> observableList: observableList.CollectionChanged += OnCollectionChanged; break;
             }
-            
-            _initializing = StartCoroutine(InitializeAsync());
+
+            if (gameObject.activeInHierarchy)
+            {
+	            _initializing = StartCoroutine(InitializeAsync());
+            }
         }
 
         private IEnumerator InitializeAsync()
@@ -109,6 +114,7 @@ namespace Aspid.MVVM.StarterKit
             
             onValueChanged.AddListener(OnScrollValueChanged);
             Refresh();
+            
             yield break;
 
             int CalculateVisibleCount() =>
@@ -117,25 +123,26 @@ namespace Aspid.MVVM.StarterKit
 
         private void Deinitialize()
         {
-            if (_initializing is not null)
+            if (ItemsSource is null) return;
+            StopCoroutine(_initializing);
+            _initializing = null;
+
+            if (_views is not null)
             {
-                StopCoroutine(_initializing);
-                _initializing = null;
-                
-                switch (ItemsSource)
-                {
-                    case IReadOnlyFilteredList<IViewModel> filteredList: filteredList.CollectionChanged -= OnCollectionChanged; break;
-                    case IReadOnlyObservableList<IViewModel> observableList: observableList.CollectionChanged -= OnCollectionChanged; break;
-                }
-                
                 foreach (var view in _views)
                     view.Deinitialize();
-            
-                onValueChanged.RemoveListener(OnScrollValueChanged);
-                
-                _itemsSource = null;
-                OnReset();
             }
+            
+            onValueChanged.RemoveListener(OnScrollValueChanged);
+            
+            switch (ItemsSource)
+            {
+                case IReadOnlyFilteredList<IViewModel> filteredList: filteredList.CollectionChanged -= OnCollectionChanged; break;
+                case IReadOnlyObservableList<IViewModel> observableList: observableList.CollectionChanged -= OnCollectionChanged; break;
+            }
+
+            _itemsSource = null;
+            OnReset();
         }
         
         private void Refresh()

@@ -19,12 +19,6 @@ namespace Aspid.MVVM
             var fields = type.GetFieldInfosIncludingBaseClasses(BindingAttr)
                 .Where(field => field.FieldType.IsRelayCommandType())
                 .ToArray();
-
-            if (fields.Length is 0)
-            {
-                style.display = DisplayStyle.None;
-                return;
-            }
             
             styleSheets.Add(styleSheet: Resources.Load<StyleSheet>(StyleSheetPath));
             var prefsKey = type.Name + "Commands";
@@ -51,12 +45,37 @@ namespace Aspid.MVVM
             this.AddChild(new AspidContainer().SetName("Commands")
                 .AddChild(title)
                 .AddChild(container));
-            
-            foreach (var field in fields)
+
+            if (fields.Length is 0)
             {
-                var command = new RelayCommandField(field.GetGeneratedPropertyName(), value, field);
-                container.AddChild(command);
-            }  
+                var methods = type.GetMembersInfosIncludingBaseClasses(BindingAttr)
+                    .OfType<MethodInfo>()
+                    .Where(method => method.IsDefined(typeof(RelayCommandAttribute)))
+                    .ToArray();
+
+                if (methods.Length is 0)
+                {
+                    style.display = DisplayStyle.None;
+                }
+                else
+                {
+                    foreach (var method in methods)
+                    {
+                        var button = new Button(() => method.Invoke(value, new object[] { }))
+                            .SetText(method.Name);
+                        
+                        container.AddChild(button);
+                    }  
+                }
+            }
+            else
+            {
+                foreach (var field in fields)
+                {
+                    var command = new RelayCommandField(field.GetGeneratedPropertyName(), value, field);
+                    container.AddChild(command);
+                }  
+            }
         }
     }
 }

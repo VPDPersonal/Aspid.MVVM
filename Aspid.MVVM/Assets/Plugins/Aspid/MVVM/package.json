@@ -4,6 +4,12 @@
   "displayName": "Aspid.MVVM",
   "description": "Aspid.MVVM is a powerful, high-performance MVVM framework for Unity, eliminating reflection, minimizing GC allocations, and removing boilerplate code for faster, streamlined development.",
   "unity": "2022.3",
+  "dependencies":
+  {
+    "com.aspid.collections": "https://github.com/VPDPersonal/Aspid.Collections.git",
+    "com.aspid.internal.unity": "https://github.com/VPDPersonal/Aspid.Internal.Unity.git",
+    "com.aspid.unityfasttools": "https://github.com/VPDPersonal/Aspid.UnityFastTools.git?path=Aspid.UnityFastTools/Assets/Plugins/Aspid/UnityFastTools#Develop",
+  },
   "author":
   {
     "name": "Vladislav Panin",

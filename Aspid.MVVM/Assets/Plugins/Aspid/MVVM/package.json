@@ -8,7 +8,7 @@
   {
     "com.aspid.collections": "https://github.com/VPDPersonal/Aspid.Collections.git",
     "com.aspid.internal.unity": "https://github.com/VPDPersonal/Aspid.Internal.Unity.git",
-    "com.aspid.unityfasttools": "https://github.com/VPDPersonal/Aspid.UnityFastTools.git?path=Aspid.UnityFastTools/Assets/Plugins/Aspid/UnityFastTools#Develop",
+    "com.aspid.unityfasttools": "https://github.com/VPDPersonal/Aspid.UnityFastTools.git?path=Aspid.UnityFastTools/Assets/Plugins/Aspid/UnityFastTools#Develop"
   },
   "author":
   {

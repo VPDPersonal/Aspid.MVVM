@@ -142,10 +142,17 @@ namespace Aspid.MVVM
             if (typeof(AnimationCurve).IsAssignableFrom(type)) return new CurveField(paramName);
             if (typeof(Enum).IsAssignableFrom(type))
             {
-                if (type.IsDefined(typeof(FlagsAttribute), inherit: false))
-                    return new EnumFlagsField(paramName, Enum.GetValues(type).GetValue(index: 0) as Enum);
-                
-                return new EnumField(paramName, Enum.GetValues(type).GetValue(index: 0) as Enum);
+                try
+                {
+                    if (type.IsDefined(typeof(FlagsAttribute), inherit: false))
+                        return new EnumFlagsField(paramName, Enum.GetValues(type).GetValue(index: 0) as Enum);
+
+                    return new EnumField(paramName, Enum.GetValues(type).GetValue(index: 0) as Enum);
+                }
+                catch
+                {
+                    // Ignored.
+                }
             }
 
             return new TextField(paramName)

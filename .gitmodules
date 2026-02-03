@@ -10,6 +10,3 @@
 [submodule "Aspid.MVVM/Assets/Plugins/Aspid/Internal/Unity"]
 	path = Aspid.MVVM/Assets/Plugins/Aspid/Internal/Unity
 	url = git@github.com:VPDPersonal/Aspid.Internal.Unity.git
-[submodule "Aspid.MVVM/Assets/Plugins/Aspid/Collections"]
-	path = Aspid.MVVM/Assets/Plugins/Aspid/Collections
-	url = https://github.com/VPDPersonal/Aspid.Collections

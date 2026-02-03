@@ -77,7 +77,7 @@ namespace Aspid.Collections.Observable
         
         protected virtual void OnAdded(in T item) { }
 
-        public void AddRange(T[] items)
+        public void AddRange(params T[] items)
         {
             lock (SyncRoot)
             {
@@ -116,7 +116,7 @@ namespace Aspid.Collections.Observable
             }
         }
 
-        public void InsertRange(int index, T[] items)
+        public void InsertRange(int index, params T[] items)
         {
             lock (SyncRoot)
             {

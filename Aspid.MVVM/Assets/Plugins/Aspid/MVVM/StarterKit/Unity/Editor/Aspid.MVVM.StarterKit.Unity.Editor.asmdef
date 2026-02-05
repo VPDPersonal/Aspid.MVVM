@@ -1,0 +1,30 @@
+{
+    "name": "Aspid.MVVM.StarterKit.Unity.Editor",
+    "rootNamespace": "",
+    "references": [
+        "Aspid.MVVM",
+        "Aspid.MVVM.Unity",
+        "Aspid.UnityFastTools",
+        "Aspid.MVVM.Unity.Editor",
+        "Aspid.Internal.Unity.Editor",
+        "Aspid.UnityFastTools.Editor",
+        "Aspid.MVVM.StarterKit.Unity"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [
+        {
+            "name": "jp.hadashikick.vcontainer",
+            "expression": "",
+            "define": "ASPID_MVVM_VCONTAINER_INTEGRATION"
+        }
+    ],
+    "noEngineReferences": false
+}

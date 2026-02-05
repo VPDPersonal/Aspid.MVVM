@@ -1,0 +1,15 @@
+[submodule "Aspid.MVVM.Unity.Generators"]
+	path = Aspid.MVVM.Unity.Generators
+	url = git@github.com:VPDPersonal/Aspid.MVVM.Unity.Generators.git
+[submodule "Aspid.MVVM.Analyzers"]
+	path = Aspid.MVVM.Analyzers
+	url = git@github.com:VPDPersonal/Aspid.MVVM.Analyzers.git
+[submodule "Aspid.MVVM.Generators"]
+	path = Aspid.MVVM.Generators
+	url = git@github.com:VPDPersonal/Aspid.MVVM.Generators.git
+[submodule "Aspid.MVVM/Assets/Plugins/Aspid/Internal/Unity"]
+	path = Aspid.MVVM/Assets/Plugins/Aspid/Internal/Unity
+	url = git@github.com:VPDPersonal/Aspid.Internal.Unity.git
+[submodule "Aspid.MVVM/Assets/Plugins/Aspid/Collections"]
+	path = Aspid.MVVM/Assets/Plugins/Aspid/Collections
+	url = https://github.com/VPDPersonal/Aspid.Collections

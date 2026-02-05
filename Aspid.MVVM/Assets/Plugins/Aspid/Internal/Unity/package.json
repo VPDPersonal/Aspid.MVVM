@@ -1,0 +1,12 @@
+{
+  "name": "com.aspid.internal.unity",
+  "version": "1.0.0",
+  "displayName": "Aspid.Internal.Unity",
+  "description": "Shared Resources for Aspid Packages in Unity",
+  "unity": "2022.3",
+  "author":
+  {
+    "name": "Vladislav Panin",
+    "email": "vpd.aspid@gmail.com"
+  }
+}

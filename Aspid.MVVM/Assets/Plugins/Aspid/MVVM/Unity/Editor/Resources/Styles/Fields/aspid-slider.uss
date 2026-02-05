@@ -1,0 +1,26 @@
+AspidSliderInt
+{
+    flex-direction: row;
+}
+
+> Slider
+{
+    flex-grow: 1;
+    margin-right: 5px;
+}
+
+> SliderInt
+{
+    flex-grow: 1;
+    margin-right: 5px;
+}
+
+> FloatField
+{
+    width: 60px;
+}
+
+> IntegerField
+{
+    width: 60px;
+}

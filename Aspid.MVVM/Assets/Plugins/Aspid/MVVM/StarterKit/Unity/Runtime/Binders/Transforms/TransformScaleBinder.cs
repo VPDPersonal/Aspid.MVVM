@@ -1,0 +1,41 @@
+#nullable enable
+using System;
+using UnityEngine;
+
+// ReSharper disable once CheckNamespace
+namespace Aspid.MVVM.StarterKit
+{
+    [Serializable]
+    public class TransformScaleBinder : TargetBinder<Transform>, IVectorBinder, INumberBinder
+    {
+        [SerializeField] private Vector3CombineConverter? _converter;
+        
+        public TransformScaleBinder(Transform target, BindMode mode = BindMode.OneWay)
+            : this(target, converter: null, mode) { }
+        
+        public TransformScaleBinder(Transform target, Vector3CombineConverter? converter, BindMode mode = BindMode.OneWay)
+            : base(target, mode)
+        {
+            mode.ThrowExceptionIfTwo();
+            _converter = converter;
+        }
+
+        public void SetValue(Vector2 value) => 
+            SetValue((Vector3)value);
+
+        public void SetValue(Vector3 value) =>
+            Target.SetScale(value, _converter);
+
+        public void SetValue(int value) => 
+            SetValue(Vector3.one * value);
+
+        public void SetValue(long value) => 
+            SetValue(Vector3.one * value);
+        
+        public void SetValue(float value) => 
+            SetValue(Vector3.one * value);
+        
+        public void SetValue(double value) => 
+            SetValue(Vector3.one * (float)value);
+    }
+}

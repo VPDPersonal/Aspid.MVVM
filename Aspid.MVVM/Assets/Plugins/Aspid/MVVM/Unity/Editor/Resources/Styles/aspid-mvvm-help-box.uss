@@ -1,0 +1,31 @@
+VisualElement {}
+
+AspidHelpBox
+{
+    margin: 0;
+}
+
+AspidHelpBox > Label
+{
+    font-size: 14;
+}
+
+.aspid-help-box-none
+{
+    
+}
+
+.aspid-help-box-info
+{
+
+}
+
+.aspid-help-box-warning
+{
+    background-color: #7b6c05;
+}
+
+.aspid-help-box-error
+{
+    background-color: #780a0a;
+}

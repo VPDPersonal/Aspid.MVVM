@@ -1,0 +1,30 @@
+using UnityEngine;
+#if UNITY_2023_1_OR_NEWER
+using Converter = Aspid.MVVM.StarterKit.IConverter<float, float>;
+#else
+using Converter = Aspid.MVVM.StarterKit.IConverterFloat;
+#endif
+
+// ReSharper disable once CheckNamespace
+namespace Aspid.MVVM.StarterKit
+{
+    [AddBinderContextMenu(typeof(SphereCollider), serializePropertyNames: "m_Radius")]
+    [AddComponentMenu("Aspid/MVVM/Binders/Collider/Sphere/SphereCollider Binder – Radius EnumGroup")]
+    public sealed class SphereColliderRadiusEnumGroupMonoBinder : EnumGroupMonoBinder<SphereCollider>
+    {
+        [SerializeField] [Min(0)] private float _defaultValue;
+        [SerializeField] [Min(0)] private float _selectedValue;
+        
+        [SerializeReferenceDropdown]
+        [SerializeReference] private Converter _defaultValueConverter;
+        
+        [SerializeReferenceDropdown]
+        [SerializeReference] private Converter _selectedValueConverter;
+        
+        protected override void SetDefaultValue(SphereCollider element) =>
+            element.radius = _defaultValueConverter?.Convert(_defaultValue) ?? _defaultValue;
+
+        protected override void SetSelectedValue(SphereCollider element) =>
+            element.radius = _selectedValueConverter?.Convert(_selectedValue) ?? _selectedValue;
+    }
+}

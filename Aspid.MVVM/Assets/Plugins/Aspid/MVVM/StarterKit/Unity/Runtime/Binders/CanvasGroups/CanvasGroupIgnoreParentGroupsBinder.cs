@@ -1,0 +1,29 @@
+#nullable enable
+using System;
+using UnityEngine;
+
+// ReSharper disable once CheckNamespace
+namespace Aspid.MVVM.StarterKit
+{
+    [Serializable]
+    public class CanvasGroupIgnoreParentGroupsBinder : TargetBinder<CanvasGroup>, IBinder<bool>
+    {
+        [SerializeField] private bool _isInvert;
+
+        public CanvasGroupIgnoreParentGroupsBinder(CanvasGroup target, BindMode mode)
+            : this(target, isInvert: false, mode) { }
+        
+        public CanvasGroupIgnoreParentGroupsBinder(
+            CanvasGroup target, 
+            bool isInvert = false, 
+            BindMode mode = BindMode.OneTime)
+            : base(target, mode)
+        {
+            mode.ThrowExceptionIfTwo();
+            _isInvert = isInvert;
+        }
+        
+        public void SetValue(bool value) =>
+            Target.ignoreParentGroups = _isInvert ? !value : value;
+    }
+}

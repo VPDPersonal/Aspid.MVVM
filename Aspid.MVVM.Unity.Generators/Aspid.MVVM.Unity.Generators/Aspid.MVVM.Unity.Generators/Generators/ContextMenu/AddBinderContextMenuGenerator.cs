@@ -38,7 +38,9 @@ public sealed class AddBinderContextMenuGenerator : IIncrementalGenerator
             
             var arguments = attribute.NamedArguments;
             var path = arguments.FirstOrDefault(pair => pair.Key == "Path").Value.Value as string;
-
+            var suPath = arguments.FirstOrDefault(pair => pair.Key == "SubPath").Value.Value as string;
+            suPath = suPath is not null ? $"{suPath}/" : string.Empty;
+            
             if (path is null)
             {
                 if (symbol.HasAnyAttribute(out var addComponentMenuAttribute, "UnityEngine.AddComponentMenu"))
@@ -50,6 +52,16 @@ public sealed class AddBinderContextMenuGenerator : IIncrementalGenerator
                 }
 
                 path ??= $"Add {type.Name} Binder/{symbol.Name}";
+            }
+
+            if (!string.IsNullOrWhiteSpace(path) && !string.IsNullOrWhiteSpace(suPath))
+            {
+                var index = path.IndexOf('/');
+                if (index is -1) index = path.Length - 2;
+                
+                index++;
+                if (index >= 0 && index < path.Length)
+                    path = path.Insert(path.IndexOf('/') + 1, suPath);
             }
 
             return new FoundForGenerator<ContextMenuData>(new ContextMenuData(declaration, symbol, symbol.Name, type.Name, path, 100001));

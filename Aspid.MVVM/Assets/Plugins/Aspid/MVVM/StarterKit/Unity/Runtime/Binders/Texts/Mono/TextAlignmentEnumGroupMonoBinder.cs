@@ -8,19 +8,9 @@ namespace Aspid.MVVM.StarterKit
 {
     [AddComponentMenu("Aspid/MVVM/Binders/UI/Text/Text Binder – Alignment EnumGroup")]
     [AddBinderContextMenu(typeof(TMP_Text), serializePropertyNames: "m_textAlignment")]
-    public sealed class TextAlignmentEnumGroupMonoBinder : EnumGroupMonoBinder<TMP_Text>
+    public sealed class TextAlignmentEnumGroupMonoBinder : EnumGroupMonoBinder<TMP_Text, TextAlignmentOptions>
     {
-        [SerializeField] private TextAlignmentOptions _defaultValue;
-        [SerializeField] private TextAlignmentOptions _selectedValue;
-
-        protected override void SetDefaultValue(TMP_Text element) =>
-            SetValue(element, _defaultValue);
-
-        protected override void SetSelectedValue(TMP_Text element) =>
-            SetValue(element, _selectedValue);
-        
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static void SetValue(TMP_Text element, TextAlignmentOptions value) =>
+        protected override void SetValue(TMP_Text element, TextAlignmentOptions value) =>
             element.alignment = value;
     }
 }

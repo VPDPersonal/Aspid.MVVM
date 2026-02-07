@@ -28,4 +28,18 @@ namespace Aspid.MVVM.StarterKit
         
         protected abstract void SetSelectedValue(TElement element);
     }
+
+    public abstract class EnumGroupMonoBinder<TElement, TValue> : EnumGroupMonoBinder<TElement>
+    {
+        [SerializeField] private TValue _defaultValue;
+        [SerializeField] private TValue _selectedValue;
+
+        protected sealed override void SetDefaultValue(TElement element) =>
+            SetValue(element, _defaultValue);
+
+        protected sealed override void SetSelectedValue(TElement element) =>
+            SetValue(element, _selectedValue);
+        
+        protected abstract void SetValue(TElement element, TValue value);
+    }
 }

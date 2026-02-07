@@ -5,15 +5,9 @@ namespace Aspid.MVVM.StarterKit
 {
     [AddBinderContextMenu(typeof(CanvasGroup), serializePropertyNames: "m_IgnoreParentGroups")]
     [AddComponentMenu("Aspid/MVVM/Binders/UI/Canvas Group/CanvasGroup Binder – IgnoreParentGroups EnumGroup")]
-    public sealed class CanvasGroupIgnoreParentGroupsEnumGroupMonoBinder : EnumGroupMonoBinder<CanvasGroup>
+    public sealed class CanvasGroupIgnoreParentGroupsEnumGroupMonoBinder : EnumGroupMonoBinder<CanvasGroup, bool>
     {
-        [SerializeField] private bool _defaultValue;
-        [SerializeField] private bool _selectedValue;
-        
-        protected override void SetDefaultValue(CanvasGroup element) =>
-            element.ignoreParentGroups = _defaultValue;
-
-        protected override void SetSelectedValue(CanvasGroup element) =>
-            element.ignoreParentGroups = _selectedValue;
+        protected override void SetValue(CanvasGroup element, bool value) =>
+            element.ignoreParentGroups = value;
     }
 }

@@ -7,18 +7,9 @@ namespace Aspid.MVVM.StarterKit
 {
     [AddBinderContextMenu(typeof(TMP_InputField), serializePropertyNames: "m_InputType")]
     [AddComponentMenu("Aspid/MVVM/Binders/UI/InputField/InputField Binder - InputType EnumGroup")]
-    public sealed class InputFieldInputTypeEnumGroupMonoBinder : EnumGroupMonoBinder<TMP_InputField>
+    public sealed class InputFieldInputTypeEnumGroupMonoBinder : EnumGroupMonoBinder<TMP_InputField, TMP_InputField.InputType>
     {
-        [SerializeField] private TMP_InputField.InputType _defaultValue;
-        [SerializeField] private TMP_InputField.InputType _selectedValue;
-        
-        protected override void SetDefaultValue(TMP_InputField element) =>
-            SetValue(element, _defaultValue);
-
-        protected override void SetSelectedValue(TMP_InputField element) =>
-            SetValue(element, _selectedValue);
-        
-        private static void SetValue(TMP_InputField element, TMP_InputField.InputType value) 
+        protected override void SetValue(TMP_InputField element, TMP_InputField.InputType value) 
         {
             element.inputType = value;
             element.ForceLabelUpdate();

@@ -4,7 +4,7 @@ using UnityEngine;
 namespace Aspid.MVVM.StarterKit
 {
     [AddComponentMenu("Aspid/MVVM/Binders/Transform/Transform Binder – Position Enum")]
-    [AddBinderContextMenu(typeof(Transform), serializePropertyNames: "m_LocalPosition")]
+    [AddBinderContextMenu(typeof(Transform), serializePropertyNames: "m_LocalPosition", SubPath = "Enum")]
     public sealed class TransformPositionEnumMonoBinder : EnumMonoBinder<Vector3>
     {
         [SerializeField] private Space _space = Space.World;    

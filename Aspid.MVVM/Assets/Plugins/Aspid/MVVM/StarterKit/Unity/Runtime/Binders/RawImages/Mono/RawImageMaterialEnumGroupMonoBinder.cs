@@ -9,8 +9,8 @@ using Converter = Aspid.MVVM.StarterKit.IConverterMaterial;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
-    [AddBinderContextMenu(typeof(RawImage), serializePropertyNames: "m_Material")]
     [AddComponentMenu("Aspid/MVVM/Binders/UI/Raw Image/RawImage Binder – Material EnumGroup")]
+    [AddBinderContextMenu(typeof(RawImage), serializePropertyNames: "m_Material", SubPath = "EnumGroup")]
     public sealed class RawImageMaterialEnumGroupMonoBinder : EnumGroupMonoBinder<RawImage>
     {
         [SerializeField] private Material _defaultValue;

@@ -9,8 +9,8 @@ using Converter = Aspid.MVVM.StarterKit.IConverterRectOffset;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
-    [AddBinderContextMenu(typeof(LayoutGroup), serializePropertyNames: "m_Padding")]
     [AddComponentMenu("Aspid/MVVM/Binders/UI/Layout/LayoutGroup Binder – Padding EnumGroup")]
+    [AddBinderContextMenu(typeof(LayoutGroup), serializePropertyNames: "m_Padding", SubPath = "EnumGroup")]
     public sealed class LayoutGroupPaddingEnumGroupMonoBinder : EnumGroupMonoBinder<LayoutGroup>
     {
         [SerializeField] private RectOffset _defaultValue;

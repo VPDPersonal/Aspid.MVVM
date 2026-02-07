@@ -4,7 +4,7 @@ using UnityEngine;
 namespace Aspid.MVVM.StarterKit
 {
     [AddComponentMenu("Aspid/MVVM/Binders/GameObject/GameObject Binder – Tag Switcher")]
-    [AddBinderContextMenu(typeof(Component), Path = "Add General Binder/GameObject/GameObject Binder – Tag Switcher")]
+    [AddBinderContextMenu(typeof(Component), Path = "Add General Binder/GameObject/Switcher/GameObject Binder – Tag Switcher")]
     public sealed class GameObjectTagSwitcherMonoBinder : SwitcherMonoBinder<string>
     {
         protected override void SetValue(string value) =>

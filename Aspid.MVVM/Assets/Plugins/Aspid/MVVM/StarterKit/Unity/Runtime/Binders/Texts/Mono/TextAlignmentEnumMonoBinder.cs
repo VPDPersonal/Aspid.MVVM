@@ -6,7 +6,7 @@ using UnityEngine;
 namespace Aspid.MVVM.StarterKit
 {
     [AddComponentMenu("Aspid/MVVM/Binders/UI/Text/Text Binder – Alignment Enum")]
-    [AddBinderContextMenu(typeof(TMP_Text), serializePropertyNames: "m_textAlignment")]
+    [AddBinderContextMenu(typeof(TMP_Text), serializePropertyNames: "m_textAlignment", SubPath = "Enum")]
     public sealed class TextAlignmentEnumMonoBinder : EnumMonoBinder<TMP_Text, TextAlignmentOptions>
     {
         protected override void SetValue(TextAlignmentOptions value) =>

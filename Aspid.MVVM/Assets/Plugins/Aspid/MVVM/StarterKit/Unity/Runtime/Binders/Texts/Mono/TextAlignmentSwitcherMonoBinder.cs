@@ -6,7 +6,7 @@ using UnityEngine;
 namespace Aspid.MVVM.StarterKit
 {
     [AddComponentMenu("Aspid/MVVM/Binders/UI/Text/Text Binder – Alignment Switcher")]
-    [AddBinderContextMenu(typeof(TMP_Text), serializePropertyNames: "m_textAlignment")]
+    [AddBinderContextMenu(typeof(TMP_Text), serializePropertyNames: "m_textAlignment", SubPath = "Switcher")]
     public sealed class TextAlignmentSwitcherMonoBinder : SwitcherMonoBinder<TMP_Text, TextAlignmentOptions>
     {
         protected override void SetValue(TextAlignmentOptions value) =>

@@ -14,6 +14,8 @@ namespace Aspid.MVVM
         
         public string Path { get; set; }
         
+        public string SubPath { get; set; }
+        
         public string[] SerializePropertyNames { get; }
 
         public AddBinderContextMenuAttribute(Type type, params string[] serializePropertyNames)

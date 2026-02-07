@@ -3,7 +3,7 @@ using UnityEngine;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
-    [AddBinderContextMenu(typeof(Collider))]
+    [AddBinderContextMenu(typeof(Collider), SubPath = "Enum")]
     [AddComponentMenu("Aspid/MVVM/Binders/Collider/Collider Binder – Enabled Enum")]
     public sealed class ColliderEnabledEnumMonoBinder : EnumMonoBinder<Collider, bool>
     {

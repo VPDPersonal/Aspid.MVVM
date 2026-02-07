@@ -10,8 +10,8 @@ using Converter = Aspid.MVVM.StarterKit.IConverterPhysicsMaterial;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
-    [AddBinderContextMenu(typeof(Collider), serializePropertyNames: "m_Material")]
     [AddComponentMenu("Aspid/MVVM/Binders/Collider/Collider Binder – Material EnumGroup")]
+    [AddBinderContextMenu(typeof(Collider), serializePropertyNames: "m_Material", SubPath = "EnumGroup")]
     public sealed class ColliderMaterialEnumGroupMonoBinder : EnumGroupMonoBinder<Collider>
     {
         [SerializeField] private PhysicsMaterial _defaultValue;

@@ -8,8 +8,8 @@ using Converter = Aspid.MVVM.StarterKit.IConverterColor;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
-    [AddBinderContextMenu(typeof(Renderer), serializePropertyNames: "m_Materials")]
     [AddComponentMenu("Aspid/MVVM/Binders/Renderer/Renderer Binder – MaterialsColor Enum")]
+    [AddBinderContextMenu(typeof(Renderer), serializePropertyNames: "m_Materials", SubPath = "Enum")]
     public sealed class RendererMaterialsColorEnumMonoBinder : EnumMonoBinder<Renderer, Color>
     {
         [SerializeField] private string _colorPropertyName = "_BaseColor";

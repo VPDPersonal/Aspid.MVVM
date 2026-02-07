@@ -10,7 +10,7 @@ using Converter = Aspid.MVVM.StarterKit.IConverterFloat;
 namespace Aspid.MVVM.StarterKit
 {
     [AddComponentMenu("Aspid/MVVM/Binders/UI/Image/Image Binder – Fill Enum")]
-    [AddBinderContextMenu(typeof(Image), serializePropertyNames: "m_FillAmount")]
+    [AddBinderContextMenu(typeof(Image), serializePropertyNames: "m_FillAmount", SubPath = "Enum")]
     public sealed class ImageFillEnumMonoBinder : EnumMonoBinder<Image, float>
     {
         [SerializeReferenceDropdown] 

@@ -8,7 +8,7 @@ using Converter = Aspid.MVVM.StarterKit.IConverterVector2;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
-    [AddBinderContextMenu(typeof(RectTransform))]
+    [AddBinderContextMenu(typeof(RectTransform), SubPath = "Switcher")]
     [AddComponentMenu("Aspid/MVVM/Binders/UI/RectTransform/RectTransform Binder – SizeDelta Switcher")]
     public sealed class RectTransformSizeDeltaSwitcherMonoBinder : SwitcherMonoBinder<RectTransform, Vector2>
     {

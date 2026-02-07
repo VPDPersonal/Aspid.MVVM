@@ -9,7 +9,7 @@ using Converter = Aspid.MVVM.StarterKit.IConverterQuaternion;
 namespace Aspid.MVVM.StarterKit
 {
     [AddComponentMenu("Aspid/MVVM/Binders/Transform/Transform Binder – Rotation Enum")]
-    [AddBinderContextMenu(typeof(Transform), serializePropertyNames: "m_LocalRotation")]
+    [AddBinderContextMenu(typeof(Transform), serializePropertyNames: "m_LocalRotation", SubPath = "Enum")]
     public sealed class TransformRotationEnumMonoBinder : EnumMonoBinder<Vector3>
     {
         [SerializeField] private Space _space = Space.World;

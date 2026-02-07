@@ -5,8 +5,8 @@ using UnityEngine;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
-    [AddBinderContextMenu(typeof(TMP_InputField), serializePropertyNames: "m_ContentType")]
     [AddComponentMenu("Aspid/MVVM/Binders/UI/InputField/InputField Binder - ContentType Switcher")]
+    [AddBinderContextMenu(typeof(TMP_InputField), serializePropertyNames: "m_ContentType", SubPath = "Switcher")]
     public sealed class InputFieldContentTypeSwitcherMonoBinder : SwitcherMonoBinder<TMP_InputField, TMP_InputField.ContentType>
     {
         protected override void SetValue(TMP_InputField.ContentType value)

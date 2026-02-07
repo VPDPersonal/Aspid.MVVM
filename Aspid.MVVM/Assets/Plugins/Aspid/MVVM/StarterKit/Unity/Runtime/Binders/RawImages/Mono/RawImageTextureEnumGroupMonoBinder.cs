@@ -9,8 +9,8 @@ using Converter = Aspid.MVVM.StarterKit.IConverterTexture2D;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
-    [AddBinderContextMenu(typeof(RawImage), serializePropertyNames: "m_Texture")]
     [AddComponentMenu("Aspid/MVVM/Binders/UI/Raw Image/RawImage Binder – Texture EnumGroup")]
+    [AddBinderContextMenu(typeof(RawImage), serializePropertyNames: "m_Texture", SubPath = "EnumGroup")]
     public sealed class RawImageTextureEnumGroupMonoBinder : EnumGroupMonoBinder<RawImage>
     {
         [SerializeField] private Texture2D _defaultValue;

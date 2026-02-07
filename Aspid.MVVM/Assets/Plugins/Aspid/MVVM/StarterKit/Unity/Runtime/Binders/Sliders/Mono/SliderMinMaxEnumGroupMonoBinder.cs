@@ -10,7 +10,7 @@ using Converter = Aspid.MVVM.StarterKit.IConverterVector2;
 namespace Aspid.MVVM.StarterKit
 {
     [AddComponentMenu("Aspid/MVVM/Binders/UI/Slider/Slider Binder – MinMax EnumGroup")]
-    [AddBinderContextMenu(typeof(Slider), "m_MinValue", "m_MaxValue")]
+    [AddBinderContextMenu(typeof(Slider), "m_MinValue", "m_MaxValue", SubPath = "EnumGroup")]
     public sealed class SliderMinMaxEnumGroupMonoBinder : EnumGroupMonoBinder<Slider>
     {
         [SerializeField] private Vector2 _defaultValue;

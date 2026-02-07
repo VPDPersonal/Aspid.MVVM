@@ -5,8 +5,8 @@ using UnityEngine;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
-    [AddBinderContextMenu(typeof(TMP_InputField), serializePropertyNames: "m_InputType")]
     [AddComponentMenu("Aspid/MVVM/Binders/UI/InputField/InputField Binder - InputType Enum")]
+    [AddBinderContextMenu(typeof(TMP_InputField), serializePropertyNames: "m_InputType", SubPath = "Enum")]
     public sealed class InputFieldInputTypeEnumMonoBinder : EnumMonoBinder<TMP_InputField, TMP_InputField.InputType>
     {
         protected override void SetValue(TMP_InputField.InputType value)

@@ -3,8 +3,8 @@ using UnityEngine;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
-    [AddBinderContextMenu(typeof(Transform), serializePropertyNames: "m_LocalRotation")]
     [AddComponentMenu("Aspid/MVVM/Binders/Transform/Transform Binder – EulerAngles Enum")]
+    [AddBinderContextMenu(typeof(Transform), serializePropertyNames: "m_LocalRotation", SubPath = "Enum")]
     public sealed class TransformEulerAnglesEnumMonoBinder : EnumMonoBinder<Vector3>
     {
         [SerializeField] private Space _space = Space.World;

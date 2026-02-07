@@ -11,7 +11,7 @@ using Converter = Aspid.MVVM.StarterKit.IConverterString;
 namespace Aspid.MVVM.StarterKit
 {
     [AddComponentMenu("Aspid/MVVM/Binders/UI/Text/Text Binder – Text Enum")]
-    [AddBinderContextMenu(typeof(TMP_Text), serializePropertyNames: "m_text")]
+    [AddBinderContextMenu(typeof(TMP_Text), serializePropertyNames: "m_text", SubPath = "Enum")]
     public sealed class TextEnumMonoBinder : EnumMonoBinder<TMP_Text, string>
     {
         [SerializeReferenceDropdown]

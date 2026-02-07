@@ -10,8 +10,8 @@ using Converter = Aspid.MVVM.StarterKit.IConverterString;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
-    [AddBinderContextMenu(typeof(TMP_Text), serializePropertyNames: "m_text")]
     [AddComponentMenu("Aspid/MVVM/Binders/UI/Text/Text Binder – Text EnumGroup")]
+    [AddBinderContextMenu(typeof(TMP_Text), serializePropertyNames: "m_text", SubPath = "EnumGroup")]
     public sealed class TextEnumGroupMonoBinder : EnumGroupMonoBinder<TMP_Text>
     {
         [SerializeField] private string _defaultValue;

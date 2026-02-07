@@ -5,8 +5,8 @@ using UnityEngine;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
-    [AddBinderContextMenu(typeof(TMP_InputField), serializePropertyNames: "m_LineType")]
     [AddComponentMenu("Aspid/MVVM/Binders/UI/InputField/InputField Binder - LineType Switcher")]
+    [AddBinderContextMenu(typeof(TMP_InputField), serializePropertyNames: "m_LineType", SubPath = "Switcher")]
     public sealed class InputFieldLineTypeSwitcherMonoBinder : SwitcherMonoBinder<TMP_InputField, TMP_InputField.LineType>
     {
         protected override void SetValue(TMP_InputField.LineType value)

@@ -9,8 +9,8 @@ using Converter = Aspid.MVVM.StarterKit.IConverterFloat;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
-    [AddBinderContextMenu(typeof(Slider), serializePropertyNames: "m_Value")]
     [AddComponentMenu("Aspid/MVVM/Binders/UI/Slider/Slider Binder – Value EnumGroup")]
+    [AddBinderContextMenu(typeof(Slider), serializePropertyNames: "m_Value", SubPath = "EnumGroup")]
     public sealed class SliderValueEnumGroupMonoBinder : EnumGroupMonoBinder<Slider>
     {
         [SerializeField] private float _defaultValue;

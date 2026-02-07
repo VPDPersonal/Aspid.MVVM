@@ -3,8 +3,8 @@ using UnityEngine;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
-    [AddBinderContextMenu(typeof(Transform), serializePropertyNames: "m_LocalScale")]
     [AddComponentMenu("Aspid/MVVM/Binders/Transform/Transform Binder – Scale EnumGroup")]
+    [AddBinderContextMenu(typeof(Transform), serializePropertyNames: "m_LocalScale", SubPath = "EnumGroup")]
     public sealed class TransformScaleEnumGroupMonoBinder : EnumGroupMonoBinder<Transform>
     {
         [SerializeField] private Vector3 _defaultValue;

@@ -3,8 +3,8 @@ using UnityEngine;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
-    [AddBinderContextMenu(typeof(Transform), serializePropertyNames: "m_LocalPosition")]
     [AddComponentMenu("Aspid/MVVM/Binders/Transform/Transform Binder – Position Switcher")]
+    [AddBinderContextMenu(typeof(Transform), serializePropertyNames: "m_LocalPosition", SubPath = "Switcher")]
     public sealed class TransformPositionSwitcherMonoBinder : SwitcherMonoBinder<Vector3>
     {
         [SerializeField] private Space _space = Space.World;    

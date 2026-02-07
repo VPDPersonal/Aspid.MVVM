@@ -8,7 +8,7 @@ using Converter = Aspid.MVVM.StarterKit.IConverterVector2;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
-    [AddBinderContextMenu(typeof(RectTransform))]
+    [AddBinderContextMenu(typeof(RectTransform), SubPath = "Enum")]
     [AddComponentMenu("Aspid/MVVM/Binders/UI/RectTransform/RectTransform Binder – SizeDelta Enum")]
     public sealed class RectTransformSizeDeltaEnumMonoBinder : EnumMonoBinder<RectTransform, Vector2>
     {

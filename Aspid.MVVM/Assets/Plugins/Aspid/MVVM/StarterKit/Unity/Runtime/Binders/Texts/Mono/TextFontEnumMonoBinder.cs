@@ -6,7 +6,7 @@ using UnityEngine;
 namespace Aspid.MVVM.StarterKit
 {
     [AddComponentMenu("Aspid/MVVM/Binders/UI/Text/Text Binder – Font Enum")]
-    [AddBinderContextMenu(typeof(TMP_Text), serializePropertyNames: "m_fontAsset")]
+    [AddBinderContextMenu(typeof(TMP_Text), serializePropertyNames: "m_fontAsset", SubPath = "Enum")]
     public sealed class TextFontEnumMonoBinder : EnumMonoBinder<TMP_Text, TMP_FontAsset>
     {
         protected override void SetValue(TMP_FontAsset value) =>

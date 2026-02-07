@@ -11,7 +11,7 @@ using Converter = Aspid.MVVM.StarterKit.IConverterFloat;
 namespace Aspid.MVVM.StarterKit
 {
     [AddComponentMenu("Aspid/MVVM/Binders/UI/Text/Text Binder – FontSize Enum")]
-    [AddBinderContextMenu(typeof(TMP_Text), serializePropertyNames: "m_fontSize")]
+    [AddBinderContextMenu(typeof(TMP_Text), serializePropertyNames: "m_fontSize", SubPath = "Enum")]
     public sealed class TextFontSizeEnumMonoBinder : EnumMonoBinder<TMP_Text, float>
     {
         [SerializeReferenceDropdown]

@@ -6,7 +6,7 @@ using UnityEngine;
 namespace Aspid.MVVM.StarterKit
 {
     [AddComponentMenu("Aspid/MVVM/Binders/UI/Text/Text Binder – Font Switcher")]
-    [AddBinderContextMenu(typeof(TMP_Text), serializePropertyNames: "m_fontAsset")]
+    [AddBinderContextMenu(typeof(TMP_Text), serializePropertyNames: "m_fontAsset", SubPath = "Switcher")]
     public sealed class TextFontSwitcherMonoBinder : SwitcherMonoBinder<TMP_Text, TMP_FontAsset>
     {
         protected override void SetValue(TMP_FontAsset value) =>

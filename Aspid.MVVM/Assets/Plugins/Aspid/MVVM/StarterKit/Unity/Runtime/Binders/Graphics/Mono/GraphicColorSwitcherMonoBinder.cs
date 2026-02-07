@@ -9,8 +9,8 @@ using Converter = Aspid.MVVM.StarterKit.IConverterColor;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
-    [AddBinderContextMenu(typeof(Graphic), serializePropertyNames: "m_Color")]
     [AddComponentMenu("Aspid/MVVM/Binders/UI/Graphic/Graphic Binder – Color Switcher")]
+    [AddBinderContextMenu(typeof(Graphic), serializePropertyNames: "m_Color", SubPath = "Switcher")]
     public sealed class GraphicColorSwitcherMonoBinder : SwitcherMonoBinder<Graphic, Color>
     {
         [SerializeReferenceDropdown]

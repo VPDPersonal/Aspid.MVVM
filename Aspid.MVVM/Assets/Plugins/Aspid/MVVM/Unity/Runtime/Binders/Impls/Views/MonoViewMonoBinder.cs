@@ -1,10 +1,10 @@
 using UnityEngine;
 
 // ReSharper disable once CheckNamespace
-namespace Aspid.MVVM.StarterKit
+namespace Aspid.MVVM
 {
-    public abstract partial class ViewMonoBinder<TView> : ComponentMonoBinder<TView>, IBinder<IViewModel>
-        where TView : Component, IView
+    public abstract class MonoViewMonoBinder<TView> : ComponentMonoBinder<TView>
+        where TView : Object, IView
     {
         [BinderLog]
         public void SetValue(IViewModel viewModel)
@@ -24,4 +24,8 @@ namespace Aspid.MVVM.StarterKit
         protected void DeinitializeView() => 
             CachedComponent.Deinitialize();
     }
+
+    [AddBinderContextMenu(typeof(MonoView))]
+    [AddComponentMenu("Aspid/MVVM/Binders/Views/MonoView Binder")]
+    public class MonoViewMonoBinder : MonoViewMonoBinder<MonoView> { }
 }

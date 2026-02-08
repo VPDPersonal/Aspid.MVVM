@@ -55,6 +55,11 @@ namespace Aspid.MVVM
             [RequireBinder(nameof(_assemblyQualifiedName), Id = nameof(_name))]
 #endif
             [SerializeField] private MonoBinder[] _monoBinders;
+
+            // TODO Aspid.MVVM – Add for Aspid.MVVM 1.3.0
+// #if UNITY_6000_0_OR_NEWER
+//             [SerializeReference] private IBinder[] _binders;
+// #endif
             
             public void Bind(IViewModel viewModel)
             {
@@ -62,10 +67,22 @@ namespace Aspid.MVVM
                 if (!result.IsFound) return;
                 
                 _monoBinders.BindSafely(result);
+                
+                // TODO Aspid.MVVM – Add for Aspid.MVVM 1.3.0
+// #if UNITY_6000_0_OR_NEWER
+//                 _binders.BindSafely(result);
+// #endif
             }
 
-            public void Unbind() =>
+            public void Unbind()
+            {
                 _monoBinders.UnbindSafely();
+
+                // TODO Aspid.MVVM – Add for Aspid.MVVM 1.3.0
+// #if UNITY_6000_0_OR_NEWER
+//                 _binders.UnbindSafely();
+// #endif
+            }
         }
     }
 }

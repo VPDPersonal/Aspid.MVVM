@@ -1,10 +1,10 @@
 using UnityEngine;
 
 // ReSharper disable once CheckNamespace
-namespace Aspid.MVVM.StarterKit
+namespace Aspid.MVVM
 {
     public abstract class ComponentMonoBinder<TComponent> : MonoBinder
-        where TComponent : Component
+        where TComponent : Object
     {
         [SerializeField] private TComponent _component;
         

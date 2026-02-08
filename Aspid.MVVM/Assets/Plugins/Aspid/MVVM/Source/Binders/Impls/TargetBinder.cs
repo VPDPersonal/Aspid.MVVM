@@ -1,7 +1,7 @@
 using System;
 
 // ReSharper disable once CheckNamespace
-namespace Aspid.MVVM.StarterKit
+namespace Aspid.MVVM
 {
     [Serializable]
     public abstract class TargetBinder<TTarget> : Binder

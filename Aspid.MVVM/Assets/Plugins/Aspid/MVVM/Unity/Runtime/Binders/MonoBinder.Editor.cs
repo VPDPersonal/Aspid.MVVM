@@ -19,7 +19,7 @@ namespace Aspid.MVVM
         
         // ReSharper disable once InconsistentNaming
         [EditorBrowsable(EditorBrowsableState.Never)]
-        private LastData? __bindData;
+        [NonSerialized] private LastData? __bindData;
         
         /// <summary>
         /// Is there a component?

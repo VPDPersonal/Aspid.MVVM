@@ -13,7 +13,7 @@ namespace Aspid.MVVM
         /// <summary>
         /// Event triggered when the value changes in the View and is propagated back to the ViewModel.
         /// </summary>
-        public event Action<object> ValueChanged;
+        public event Action<object>? ValueChanged;
         
         /// <summary>
         /// The binding mode that defines the direction of data flow.

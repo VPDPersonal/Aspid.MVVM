@@ -3,8 +3,8 @@ using UnityEngine;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM
 {
-    public abstract class MonoViewMonoBinder<TView> : ComponentMonoBinder<TView>
-        where TView : Object, IView
+    public abstract class MonoViewMonoBinder<TView> : ComponentMonoBinder<TView>, IBinder<IViewModel>
+        where TView : Component, IView
     {
         [BinderLog]
         public void SetValue(IViewModel viewModel)

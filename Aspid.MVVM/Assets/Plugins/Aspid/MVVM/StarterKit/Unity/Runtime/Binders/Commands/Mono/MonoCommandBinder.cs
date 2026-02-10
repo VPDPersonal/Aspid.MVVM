@@ -3,8 +3,8 @@ using UnityEngine;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
-    [AddComponentMenu("Aspid/MVVM/Binders/Commands/Binder – Command")]
-    [AddBinderContextMenu(typeof(Component), serializePropertyNames: "m_Calls", Path = "Add General Binder/Commands/Binder – Command")]
+    [AddComponentMenu("Aspid/MVVM/Binders/Command/Binder – Command")]
+    [AddBinderContextMenu(typeof(Component), serializePropertyNames: "m_Calls", Path = "Add General Binder/Command/Command Binder")]
     public partial class MonoCommandBinder : MonoBinder, IBinder<IRelayCommand>
     {
         private IRelayCommand _command;

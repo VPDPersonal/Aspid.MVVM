@@ -5,7 +5,7 @@ using UnityEngine.UI;
 namespace Aspid.MVVM.StarterKit
 {
     [AddBinderContextMenu(typeof(Slider), serializePropertyNames: "m_Calls")]
-    [AddComponentMenu("Aspid/MVVM/Binders/UI/Commands/Slider Binder – Command")]
+    [AddComponentMenu("Aspid/MVVM/Binders/UI/Command/Slider Binder – Command")]
     public sealed partial class SliderCommandMonoBinder : ComponentMonoBinder<Slider>, 
         IBinder<IRelayCommand<int>>, 
         IBinder<IRelayCommand<long>>,

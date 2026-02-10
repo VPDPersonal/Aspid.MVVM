@@ -4,7 +4,7 @@ using UnityEngine;
 namespace Aspid.MVVM
 {
     public abstract class ComponentMonoBinder<TComponent> : MonoBinder
-        where TComponent : Object
+        where TComponent : Component
     {
         [SerializeField] private TComponent _component;
         

@@ -10,7 +10,7 @@ using Converter = Aspid.MVVM.StarterKit.IConverterMaterial;
 namespace Aspid.MVVM.StarterKit
 {
     [AddBinderContextMenu(typeof(RawImage), serializePropertyNames: "m_Material")]
-    [AddComponentMenu("Aspid/MVVM/Binders/UI/Raw Image/RawImage Binder – Material")]
+    [AddComponentMenu("Aspid/MVVM/Binders/UI/RawImage/RawImage Binder – Material")]
     public partial class RawImageMaterialMonoBinder : ComponentMonoBinder<RawImage>, IBinder<Material>
     {
         [SerializeReferenceDropdown]

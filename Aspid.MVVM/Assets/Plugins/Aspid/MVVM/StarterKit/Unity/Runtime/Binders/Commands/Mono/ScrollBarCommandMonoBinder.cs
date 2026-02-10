@@ -5,7 +5,7 @@ using UnityEngine.UI;
 namespace Aspid.MVVM.StarterKit
 {
     [AddBinderContextMenu(typeof(Scrollbar), serializePropertyNames: "m_Calls")]
-    [AddComponentMenu("Aspid/MVVM/Binders/UI/Commands/Scrollbar Binder – Command")]
+    [AddComponentMenu("Aspid/MVVM/Binders/UI/Command/Scrollbar Binder – Command")]
     public sealed partial class ScrollBarCommandMonoBinder : ComponentMonoBinder<Scrollbar>, 
         IBinder<IRelayCommand<int>>, 
         IBinder<IRelayCommand<long>>, 

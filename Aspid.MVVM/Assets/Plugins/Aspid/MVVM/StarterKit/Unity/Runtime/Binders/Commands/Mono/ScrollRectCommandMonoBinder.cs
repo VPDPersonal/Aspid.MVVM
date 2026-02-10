@@ -5,7 +5,7 @@ using UnityEngine.UI;
 namespace Aspid.MVVM.StarterKit
 {
     [AddBinderContextMenu(typeof(ScrollRect), serializePropertyNames: "m_Calls")]
-    [AddComponentMenu("Aspid/MVVM/Binders/UI/Commands/ScrollRect Binder – Command")]
+    [AddComponentMenu("Aspid/MVVM/Binders/UI/Command/ScrollRect Binder – Command")]
     public sealed partial class ScrollRectCommandMonoBinder : ComponentMonoBinder<ScrollRect>, 
         IBinder<IRelayCommand<Vector2>>, 
         IBinder<IRelayCommand<Vector3>>

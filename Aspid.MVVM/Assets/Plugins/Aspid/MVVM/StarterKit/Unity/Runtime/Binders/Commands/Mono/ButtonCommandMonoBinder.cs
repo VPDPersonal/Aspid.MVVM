@@ -5,7 +5,7 @@ using UnityEngine.UI;
 namespace Aspid.MVVM.StarterKit
 {
     [AddBinderContextMenu(typeof(Button), serializePropertyNames: "m_Calls")]
-    [AddComponentMenu("Aspid/MVVM/Binders/UI/Commands/Button Binder – Command")]
+    [AddComponentMenu("Aspid/MVVM/Binders/UI/Command/Button Binder – Command")]
     public sealed partial class ButtonCommandMonoBinder : ComponentMonoBinder<Button>,
         IBinder<IRelayCommand>,
         IBinder<IRelayCommand<bool>>

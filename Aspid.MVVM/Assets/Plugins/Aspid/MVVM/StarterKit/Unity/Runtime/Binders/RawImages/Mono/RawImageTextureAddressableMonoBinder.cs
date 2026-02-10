@@ -6,7 +6,7 @@ using UnityEngine.UI;
 namespace Aspid.MVVM.StarterKit
 {
     [AddBinderContextMenu(typeof(RawImage), serializePropertyNames: "m_Texture")]
-    [AddComponentMenu("Aspid/MVVM/Binders/UI/Raw Image/RawImage Binder – Texture Addressable")]
+    [AddComponentMenu("Aspid/MVVM/Binders/UI/RawImage/RawImage Binder – Texture Addressable")]
     public sealed class RawImageTextureAddressableMonoBinder : AddressableMonoBinder<Texture2D, RawImage>
     {
         [SerializeField] private Texture2D _defaultTexture;

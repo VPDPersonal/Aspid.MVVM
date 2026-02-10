@@ -4,7 +4,7 @@ using UnityEngine.UI;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
-    [AddComponentMenu("Aspid/MVVM/Binders/UI/Layout/LayoutGroup Binder – Padding")]
+    [AddComponentMenu("Aspid/MVVM/Binders/UI/LayoutGroup/LayoutGroup Binder – Padding")]
     [AddBinderContextMenu(typeof(LayoutGroup), serializePropertyNames: "m_Padding")]
     public partial class LayoutGroupPaddingMonoBinder : ComponentMonoBinder<LayoutGroup>, IBinder<RectOffset>, INumberBinder
     {

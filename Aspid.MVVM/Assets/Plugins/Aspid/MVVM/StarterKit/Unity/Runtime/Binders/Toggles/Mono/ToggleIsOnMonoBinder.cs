@@ -6,7 +6,7 @@ using UnityEngine.UI;
 namespace Aspid.MVVM.StarterKit
 {
     [BindModeOverride(IsAll = true)]
-    [AddComponentMenu("Aspid/MVVM/Binders/UI/Toggles/Toggle Binder – IsOn")]
+    [AddComponentMenu("Aspid/MVVM/Binders/UI/Toggle/Toggle Binder – IsOn")]
     [AddBinderContextMenu(typeof(Toggle), serializePropertyNames: "m_IsOn")]
     public partial class ToggleIsOnMonoBinder : ComponentMonoBinder<Toggle>, IBinder<bool>, IReverseBinder<bool>
     {

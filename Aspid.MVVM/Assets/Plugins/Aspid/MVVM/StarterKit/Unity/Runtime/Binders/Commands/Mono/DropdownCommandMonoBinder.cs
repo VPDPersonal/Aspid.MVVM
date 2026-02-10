@@ -5,7 +5,7 @@ using UnityEngine;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
-    [AddComponentMenu("Aspid/MVVM/Binders/UI/Commands/Dropdown Binder – Command")]
+    [AddComponentMenu("Aspid/MVVM/Binders/UI/Command/Dropdown Binder – Command")]
     [AddBinderContextMenu(typeof(TMP_Dropdown), serializePropertyNames: "m_Calls")]
     public sealed partial class DropdownCommandMonoBinder : ComponentMonoBinder<TMP_Dropdown>,
         IBinder<IRelayCommand<int>>,

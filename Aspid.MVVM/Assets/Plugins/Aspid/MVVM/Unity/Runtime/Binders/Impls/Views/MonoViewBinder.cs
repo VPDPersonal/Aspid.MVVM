@@ -4,7 +4,7 @@ using UnityEngine;
 namespace Aspid.MVVM
 {
     public class MonoViewBinder<TView> : TargetBinder<TView>, IBinder<IViewModel>
-        where TView : Object, IView
+        where TView : Component, IView
     {
         public MonoViewBinder(TView target, BindMode mode = BindMode.OneWay)
             : base(target, mode)

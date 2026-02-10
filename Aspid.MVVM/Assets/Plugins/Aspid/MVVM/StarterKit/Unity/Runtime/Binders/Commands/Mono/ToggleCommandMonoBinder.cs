@@ -5,7 +5,7 @@ using UnityEngine.UI;
 namespace Aspid.MVVM.StarterKit
 {
     [AddBinderContextMenu(typeof(Toggle), serializePropertyNames: "m_Calls")]
-    [AddComponentMenu("Aspid/MVVM/Binders/UI/Commands/Toggle Binder – Command")]
+    [AddComponentMenu("Aspid/MVVM/Binders/UI/Command/Toggle Binder – Command")]
     public partial class ToggleCommandMonoBinder : ComponentMonoBinder<Toggle>, IBinder<IRelayCommand>, IBinder<IRelayCommand<bool>>
     {
         [SerializeField] private InteractableMode _interactableMode = InteractableMode.Interactable;

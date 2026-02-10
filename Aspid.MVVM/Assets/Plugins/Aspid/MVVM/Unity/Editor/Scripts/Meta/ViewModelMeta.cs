@@ -25,7 +25,7 @@ namespace Aspid.MVVM
             if (type.GetInterfaces().All(i => i != typeof(IViewModel)))
                 throw new ArgumentException($"{type} must implement {nameof(IViewModel)}");
 
-            const BindingFlags bindingAttr = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance;
+            const BindingFlags bindingAttr = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static;
 
             if (type.IsInterface)
             {

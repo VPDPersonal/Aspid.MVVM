@@ -14,9 +14,6 @@ namespace Aspid.MVVM.StarterKit
     {
         [SerializeField] private Space _space = Space.World;
         
-        [SerializeReferenceDropdown]
-        [SerializeReference] private Converter _converter;
-
         protected override void SetValue(Vector3 value) => 
             transform.SetRotation(Quaternion.Euler(value), _space);
     }

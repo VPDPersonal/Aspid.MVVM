@@ -11,11 +11,8 @@ using Converter = Aspid.MVVM.StarterKit.IConverterFloat;
 namespace Aspid.MVVM.StarterKit
 {
     [Serializable]
-    public sealed class AudioSourceReverbZoneMixSwitcherBinder : SwitcherBinder<AudioSource, float>
+    public sealed class AudioSourceReverbZoneMixSwitcherBinder : SwitcherBinder<AudioSource, float, Converter>
     {
-        [SerializeReferenceDropdown]
-        [SerializeReference] private Converter? _converter;
-        
         public AudioSourceReverbZoneMixSwitcherBinder(
             AudioSource target,
             float trueValue, 
@@ -29,12 +26,9 @@ namespace Aspid.MVVM.StarterKit
             float falseValue,
             Converter? converter = null,
             BindMode mode = BindMode.OneWay)
-            : base(target, trueValue, falseValue, mode)
-        {
-            _converter = converter;
-        }
+            : base(target, trueValue, falseValue, converter, mode) { }
 
         protected override void SetValue(float value) =>
-            Target.reverbZoneMix = _converter?.Convert(value) ?? value;
+            Target.reverbZoneMix = Mathf.Clamp(value, min: 0, max: 1.1f);
     }
 }

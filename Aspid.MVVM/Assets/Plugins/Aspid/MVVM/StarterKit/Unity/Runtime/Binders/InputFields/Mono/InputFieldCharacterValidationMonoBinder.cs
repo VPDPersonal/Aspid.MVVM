@@ -7,13 +7,16 @@ namespace Aspid.MVVM.StarterKit
 {
     [AddComponentMenu("Aspid/MVVM/Binders/UI/InputField/InputField Binder - CharacterValidation")]
     [AddBinderContextMenu(typeof(TMP_InputField), serializePropertyNames: "m_CharacterValidation")]
-    public partial class InputFieldCharacterValidationMonoBinder : ComponentMonoBinder<TMP_InputField>, IBinder<TMP_InputField.CharacterValidation>
+    public class InputFieldCharacterValidationMonoBinder : ComponentMonoBinder<TMP_InputField, TMP_InputField.CharacterValidation>
     {
-        [BinderLog]
-        public void SetValue(TMP_InputField.CharacterValidation value)
+        protected sealed override TMP_InputField.CharacterValidation Property
         {
-            CachedComponent.characterValidation = value;
-            CachedComponent.ForceLabelUpdate();
+            get => CachedComponent.characterValidation;
+            set
+            {
+                CachedComponent.characterValidation = value;
+                CachedComponent.ForceLabelUpdate();
+            }
         }
     }
 }

@@ -6,21 +6,21 @@ using UnityEngine;
 namespace Aspid.MVVM.StarterKit
 {
     [Serializable]
-    public class MeshColliderConvexBinder : TargetBinder<MeshCollider>, IBinder<bool>
+    public class MeshColliderConvexBinder : TargetBoolBinder<MeshCollider>
     {
-        [SerializeField] private bool _isInvert;
-
+        protected sealed override bool Property
+        {
+            get => Target.convex;
+            set => Target.convex = value;
+        }
+        
         public MeshColliderConvexBinder(MeshCollider target, BindMode bindMode)
             : this(target, isInvert: false, bindMode) { }
         
         public MeshColliderConvexBinder(MeshCollider target, bool isInvert = false, BindMode bindMode = BindMode.OneWay)
-            : base(target, bindMode)
+            : base(target, isInvert, bindMode)
         {
-            Mode.ThrowExceptionIfTwo();
-            _isInvert = isInvert;
+            Mode.ThrowExceptionIfMatches(BindMode.TwoWay);
         }
-
-        public void SetValue(bool value) =>
-            Target.convex = _isInvert ? !value : value;
     }
 }

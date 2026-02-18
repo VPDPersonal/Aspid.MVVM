@@ -9,9 +9,16 @@ using Converter = Aspid.MVVM.StarterKit.IConverterObjectToString;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
+    [Serializable]
     [BindModeOverride(IsAll = true)]
     public sealed class DebugLogBinder : Binder, IAnyBinder, IAnyReverseBinder
     {
+        public event Action<object> ValueChanged
+        {
+            add => Debug.Log($"Add ValueChanged: {GetMessage(value)}");
+            remove => Debug.Log($"Remove ValueChanged: {GetMessage(value)}");
+        }
+        
         // ReSharper disable once FieldCanBeMadeReadOnly.Local
         // ReSharper disable once MemberInitializerValueIgnored
         [SerializeReferenceDropdown]
@@ -20,12 +27,6 @@ namespace Aspid.MVVM.StarterKit
         public DebugLogBinder(Converter converter = null) : base(BindMode.TwoWay)
         {
             _converter = converter;
-        }
-
-        public event Action<object> ValueChanged
-        {
-            add => Debug.Log($"Add ValueChanged: {GetMessage(value)}");
-            remove => Debug.Log($"Remove ValueChanged: {GetMessage(value)}");
         }
 
         public void SetValue<T>(T value) =>

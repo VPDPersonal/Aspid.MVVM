@@ -5,10 +5,12 @@ using UnityEngine.UI;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
-    [BindModeOverride(IsAll = true)]
     [AddComponentMenu("Aspid/MVVM/Binders/UI/Toggle/Toggle Binder – IsOn")]
     [AddBinderContextMenu(typeof(Toggle), serializePropertyNames: "m_IsOn")]
-    public partial class ToggleIsOnMonoBinder : ComponentMonoBinder<Toggle>, IBinder<bool>, IReverseBinder<bool>
+    [BindModeOverride(IsAll = true)]
+    public sealed partial class ToggleIsOnMonoBinder : ComponentMonoBinder<Toggle>, 
+        IBinder<bool>,
+        IReverseBinder<bool>
     {
         public event Action<bool> ValueChanged;
         

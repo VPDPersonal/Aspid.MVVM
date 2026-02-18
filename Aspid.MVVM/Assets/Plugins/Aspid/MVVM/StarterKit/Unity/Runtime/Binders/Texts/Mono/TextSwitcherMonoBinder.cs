@@ -12,13 +12,10 @@ namespace Aspid.MVVM.StarterKit
 {
     [AddComponentMenu("Aspid/MVVM/Binders/UI/Text/Text Binder – Text Switcher")]
     [AddBinderContextMenu(typeof(TMP_Text), serializePropertyNames: "m_text", SubPath = "Switcher")]
-    public sealed class TextSwitcherMonoBinder : SwitcherMonoBinder<TMP_Text, string>
+    public sealed class TextSwitcherMonoBinder : SwitcherMonoBinder<TMP_Text, string, Converter>
     {
-        [SerializeReferenceDropdown]
-        [SerializeReference] private Converter _converter;
-        
         protected override void SetValue(string value) =>
-            CachedComponent.text = _converter?.Convert(value) ?? value;
+            CachedComponent.text = value;
     }
 }
 #endif

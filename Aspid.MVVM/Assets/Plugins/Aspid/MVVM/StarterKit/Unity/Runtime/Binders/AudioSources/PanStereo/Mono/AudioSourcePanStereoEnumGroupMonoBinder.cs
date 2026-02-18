@@ -10,21 +10,9 @@ namespace Aspid.MVVM.StarterKit
 {
     [AddBinderContextMenu(typeof(AudioSource), SubPath = "EnumGroup")]
     [AddComponentMenu("Aspid/MVVM/Binders/Audio/AudioSource/AudioSource Binder – PanStereo EnumGroup")]
-    public sealed class AudioSourcePanStereoEnumGroupMonoBinder : EnumGroupMonoBinder<AudioSource>
+    public sealed class AudioSourcePanStereoEnumGroupMonoBinder : EnumGroupMonoBinder<AudioSource, float, Converter>
     {
-        [SerializeField] [Range(-1, 1)] private float _defaultValue;
-        [SerializeField] [Range(-1, 1)] private float _selectedValue;
-        
-        [SerializeReferenceDropdown]
-        [SerializeReference] private Converter _defaultConverter;
-        
-        [SerializeReferenceDropdown]
-        [SerializeReference] private Converter _selectedConverter;
-        
-        protected override void SetDefaultValue(AudioSource element) =>
-            element.panStereo = _defaultConverter?.Convert(_defaultValue) ?? _defaultValue;
-
-        protected override void SetSelectedValue(AudioSource element) =>
-            element.panStereo = _selectedConverter?.Convert(_selectedValue) ?? _selectedValue;
+        protected override void SetValue(AudioSource element, float value) =>
+            element.panStereo = Mathf.Clamp(value, min: -1, max: 1);
     }
 }

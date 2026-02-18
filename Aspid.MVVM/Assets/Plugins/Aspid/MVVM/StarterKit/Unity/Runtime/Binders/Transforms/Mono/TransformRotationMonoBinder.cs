@@ -10,26 +10,16 @@ namespace Aspid.MVVM.StarterKit
 {
     [AddComponentMenu("Aspid/MVVM/Binders/Transform/Transform Binder – Rotation")]
     [AddBinderContextMenu(typeof(Transform), serializePropertyNames: "m_LocalRotation")]
-    public partial class TransformRotationMonoBinder : MonoBinder, IRotationBinder, INumberBinder
+    public partial class TransformRotationMonoBinder : ComponentMonoBinder<Transform, Quaternion, Converter>,
+        INumberBinder,
+        IRotationBinder
     {
         [SerializeField] private Space _space = Space.World;
         
-        [SerializeReferenceDropdown]
-        [SerializeReference] private Converter _converter;
-        
-        [BinderLog]
-        public void SetValue(Vector2 value) =>
-            SetValue((Vector3)value);
-        
-        [BinderLog]
-        public void SetValue(Vector3 value) =>
-            SetValue(Quaternion.Euler(value));
-        
-        [BinderLog]
-        public void SetValue(Quaternion value)
+        protected sealed override Quaternion Property
         {
-            value = _converter?.Convert(value) ?? value;
-            transform.SetRotation(value, _space);
+            get => transform.GetRotation(_space);
+            set => transform.SetRotation(value, _space);
         }
         
         [BinderLog]
@@ -46,6 +36,6 @@ namespace Aspid.MVVM.StarterKit
         
         [BinderLog]
         public void SetValue(float value) =>
-            SetValue(new Vector3(value, value, value));
+            base.SetValue(Quaternion.Euler(new Vector3(value, value, value)));
     }
 }

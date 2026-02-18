@@ -6,21 +6,21 @@ using UnityEngine;
 namespace Aspid.MVVM.StarterKit
 {
     [Serializable]
-    public class ColliderIsTriggerBinder : TargetBinder<Collider>, IBinder<bool>
+    public sealed class ColliderIsTriggerBinder : TargetBoolBinder<Collider>
     {
-        [SerializeField] private bool _isInvert;
+        protected override bool Property
+        {
+            get => Target.isTrigger;
+            set => Target.isTrigger = value;
+        }
 
         public ColliderIsTriggerBinder(Collider target, BindMode mode)
             : this(target, isInvert: false, mode) { }
         
         public ColliderIsTriggerBinder(Collider target, bool isInvert, BindMode mode = BindMode.OneWay)
-            : base(target, mode)
+            : base(target, isInvert, mode)
         {
-            mode.ThrowExceptionIfTwo();
-            _isInvert = isInvert;
+            mode.ThrowExceptionIfMatches(BindMode.TwoWay);
         }
-
-        public void SetValue(bool value) =>
-            Target.isTrigger = _isInvert ? !value : value;
     }
 }

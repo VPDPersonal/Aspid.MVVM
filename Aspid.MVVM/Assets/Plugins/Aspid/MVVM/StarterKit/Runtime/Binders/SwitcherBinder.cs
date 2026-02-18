@@ -55,13 +55,51 @@ namespace Aspid.MVVM.StarterKit
             _trueValue = trueValue;
             _falseValue = falseValue;
         }
-
+        
         public void SetValue(bool value) =>
-            SetValue(GetValue(value));
+            SetValue(value ? _trueValue : _falseValue);
 
         protected abstract void SetValue(T value);
+    }
+    
+    [Serializable]
+    public abstract class SwitcherBinder<TTarget, T, TConverter> : TargetBinder<TTarget>, IBinder<bool>
+        where TConverter : class, IConverter<T?, T?>
+    {
+#if UNITY_2022_1_OR_NEWER
+        [UnityEngine.SerializeField] 
+#endif
+        private T _trueValue; 
         
-        private T GetValue(bool value) =>
-            value ? _trueValue : _falseValue;
+#if UNITY_2022_1_OR_NEWER
+        [UnityEngine.SerializeField] 
+#endif
+        private T _falseValue;
+        
+#if UNITY_2022_1_OR_NEWER
+        [SerializeReferenceDropdown]
+        [UnityEngine.SerializeReference] 
+#endif
+        private TConverter? _converter;
+        
+        protected SwitcherBinder(
+            TTarget target,
+            T trueValue,
+            T falseValue,
+            TConverter? converter,
+            BindMode mode = BindMode.OneWay)
+            : base(target, mode)
+        {
+            mode.ThrowExceptionIfTwo();
+            
+            _converter = converter;
+            _trueValue = trueValue;
+            _falseValue = falseValue;
+        }
+        
+        public void SetValue(bool value) =>
+            SetValue(value ? _trueValue : _falseValue);
+
+        protected abstract void SetValue(T value);
     }
 }

@@ -6,33 +6,21 @@ using UnityEngine;
 namespace Aspid.MVVM.StarterKit
 {
     [Serializable]
-    [BindModeOverride(BindMode.OneWay, BindMode.OneTime, BindMode.OneWayToSource)]
-    public class AudioSourceBypassEffectsBinder : TargetBinder<AudioSource>, IBinder<bool>, IReverseBinder<bool>
+    public class AudioSourceBypassEffectsBinder : TargetBoolBinder<AudioSource>
     {
-        public event Action<bool>? ValueChanged;
-        
-        [SerializeField] private bool _isInvert;
+        protected sealed override bool Property
+        {
+            get => Target.bypassEffects;
+            set => Target.bypassEffects = value;
+        }
         
         public AudioSourceBypassEffectsBinder(AudioSource target, BindMode mode)
             : this(target, isInvert: false, mode) { }
         
         public AudioSourceBypassEffectsBinder(AudioSource target, bool isInvert = false, BindMode mode = BindMode.OneWay)
-            : base(target, mode)
+            : base(target, isInvert, mode)
         {
-            mode.ThrowExceptionIfTwo();
-            _isInvert = isInvert;
+            mode.ThrowExceptionIfMatches(BindMode.TwoWay);
         }
-
-        public void SetValue(bool value) =>
-            Target.bypassEffects = GetConvertedValue(value);
-        
-        protected override void OnBound()
-        {
-            if (Mode is BindMode.OneWayToSource)
-                ValueChanged?.Invoke(GetConvertedValue(Target.bypassEffects));
-        }
-        
-        private bool GetConvertedValue(bool value) =>
-            _isInvert ? !value : value;
     }
 }

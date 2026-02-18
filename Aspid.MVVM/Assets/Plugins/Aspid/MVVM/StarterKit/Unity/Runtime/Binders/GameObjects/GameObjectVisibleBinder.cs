@@ -6,8 +6,13 @@ using UnityEngine;
 namespace Aspid.MVVM.StarterKit
 {
     [Serializable]
-    public class GameObjectVisibleBinder : TargetBinder<GameObject>, IBinder<bool>
+    [BindModeOverride(BindMode.OneWay, BindMode.OneTime, BindMode.OneWayToSource)]
+    public sealed class GameObjectVisibleBinder : TargetBinder<GameObject>, 
+        IBinder<bool>,
+        IReverseBinder<bool>
     {
+        public event Action<bool>? ValueChanged;
+        
         [SerializeField] private bool _isInvert;
         
         public GameObjectVisibleBinder(GameObject target, BindMode mode)
@@ -16,11 +21,20 @@ namespace Aspid.MVVM.StarterKit
         public GameObjectVisibleBinder(GameObject target, bool isInvert = false, BindMode mode = BindMode.OneWay)
             : base(target, mode)
         {
-            mode.ThrowExceptionIfTwo();
+            mode.ThrowExceptionIfMatches(BindMode.TwoWay);
             _isInvert = isInvert;
         }
         
         public void SetValue(bool value) =>
-            Target.SetActive(_isInvert ? !value : value);
+            Target.SetActive(GetConvertedValue(value));
+        
+        protected override void OnBound()
+        {
+            if (Mode is BindMode.OneWayToSource)
+                ValueChanged?.Invoke(GetConvertedValue(Target.activeSelf));
+        }
+
+        private bool GetConvertedValue(bool value) =>
+            _isInvert ? !value : value;
     }
 }

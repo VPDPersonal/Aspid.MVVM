@@ -11,14 +11,11 @@ namespace Aspid.MVVM.StarterKit
 {
     [AddComponentMenu("Aspid/MVVM/Binders/UI/Graphic/Graphic Binder – Color Component Enum")]
     [AddBinderContextMenu(typeof(Graphic), serializePropertyNames: "m_Color", SubPath = "Enum")]
-    public sealed class GraphicColorComponentEnumMonoBinder : EnumMonoBinder<Graphic, float>
+    public sealed class GraphicColorComponentEnumMonoBinder : EnumMonoBinder<Graphic, float, Converter>
     {
         [SerializeField] private ColorComponent _colorComponent = ColorComponent.A;
         
-        [SerializeReferenceDropdown]
-        [SerializeReference] private Converter _converter;
-        
         protected override void SetValue(float value) =>
-            CachedComponent.SetColor(_colorComponent, _converter?.Convert(value) ?? value);
+            CachedComponent.SetColorComponent(_colorComponent, value);
     }
 }

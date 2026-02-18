@@ -11,26 +11,11 @@ namespace Aspid.MVVM.StarterKit
 {
     [AddComponentMenu("Aspid/MVVM/Binders/UI/LayoutGroup/LayoutGroup Binder – Padding EnumGroup")]
     [AddBinderContextMenu(typeof(LayoutGroup), serializePropertyNames: "m_Padding", SubPath = "EnumGroup")]
-    public sealed class LayoutGroupPaddingEnumGroupMonoBinder : EnumGroupMonoBinder<LayoutGroup>
+    public sealed class LayoutGroupPaddingEnumGroupMonoBinder : EnumGroupMonoBinder<LayoutGroup, RectOffset, Converter>
     {
-        [SerializeField] private RectOffset _defaultValue;
-        [SerializeField] private RectOffset _selectedValue;
-        
         [SerializeField] private PaddingMode _paddingMode;
         
-        [SerializeReferenceDropdown]
-        [SerializeReference] private Converter _defaultValueConverter;
-        
-        [SerializeReferenceDropdown]
-        [SerializeReference] private Converter _selectedValueConverter;
-
-        protected override void SetDefaultValue(LayoutGroup element) =>
-            SetValue(element, _defaultValueConverter?.Convert(_defaultValue) ?? _defaultValue);
-
-        protected override void SetSelectedValue(LayoutGroup element) =>
-            SetValue(element, _selectedValueConverter?.Convert(_selectedValue) ?? _selectedValue);
-        
-        private void SetValue(LayoutGroup element, RectOffset value) =>
+        protected override void SetValue(LayoutGroup element, RectOffset value) =>
             element.SetPadding(value.top, value.right, value.bottom, value.left, _paddingMode);
     }
 }

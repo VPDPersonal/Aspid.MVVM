@@ -10,12 +10,9 @@ namespace Aspid.MVVM.StarterKit
 {
     [AddBinderContextMenu(typeof(AudioSource), SubPath = "Switcher")]
     [AddComponentMenu("Aspid/MVVM/Binders/Audio/AudioSource/AudioSource Binder – Volume Switcher")]
-    public sealed class AudioSourceVolumeSwitcherMonoBinder : SwitcherMonoBinder<AudioSource, float>
+    public sealed class AudioSourceVolumeSwitcherMonoBinder : SwitcherMonoBinder<AudioSource, float, Converter>
     {
-        [SerializeReferenceDropdown]
-        [SerializeReference] private Converter _converter;
-        
         protected override void SetValue(float value) =>
-            CachedComponent.volume = _converter?.Convert(value) ?? value;
+            CachedComponent.volume = Mathf.Clamp(value, min: 0, max: 1);
     }
 }

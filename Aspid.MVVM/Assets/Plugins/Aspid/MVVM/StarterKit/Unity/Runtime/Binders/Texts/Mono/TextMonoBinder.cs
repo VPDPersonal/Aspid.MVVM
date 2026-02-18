@@ -12,17 +12,17 @@ namespace Aspid.MVVM.StarterKit
 {
     [AddComponentMenu("Aspid/MVVM/Binders/UI/Text/Text Binder – Text")]
     [AddBinderContextMenu(typeof(TMP_Text), serializePropertyNames: "m_text")]
-    public partial class TextMonoBinder : ComponentMonoBinder<TMP_Text>, IBinder<string>, INumberBinder
+    [BindModeOverride(BindMode.OneWay, BindMode.OneTime, BindMode.OneWayToSource)]
+    public partial class TextMonoBinder : ComponentMonoBinder<TMP_Text, string, Converter>, INumberBinder
     {
+        protected sealed override string Property
+        {
+            get => CachedComponent.text;
+            set => CachedComponent.text = value;
+        }
+
         [SerializeField] private CultureInfoMode _cultureInfoMode = CultureInfoMode.CurrentCulture;
-        
-        [SerializeReferenceDropdown]
-        [SerializeReference] private Converter _converter = new StringFormatConverter();
-        
-        [BinderLog]
-        public void SetValue(string value) =>
-            CachedComponent.text = _converter?.Convert(value) ?? value;
-        
+
         [BinderLog]
         public void SetValue(int value) =>
             SetValue(value.ToCultureString(_cultureInfoMode));

@@ -7,24 +7,28 @@ using UnityEngine.UI;
 namespace Aspid.MVVM.StarterKit
 {
     [Serializable]
-    public class ImageSpriteBinder : TargetBinder<Image>, IBinder<Sprite?>, IBinder<Texture2D?>
+    public class ImageSpriteBinder : TargetBinder<Image, Sprite>, IBinder<Texture2D?>
     {
         [SerializeField] private bool _disabledWhenNull;
         
+        protected sealed override Sprite? Property
+        {
+            get => Target.sprite;
+            set
+            {
+                Target.sprite = value;
+                Target.enabled = !_disabledWhenNull || value;
+            }
+        }
+
         public ImageSpriteBinder(Image target, BindMode mode)
             : this(target, disabledWhenNull: true, mode) { }
         
         public ImageSpriteBinder(Image target, bool disabledWhenNull = true, BindMode mode = BindMode.OneWay)
             : base(target, mode)
         {
-            mode.ThrowExceptionIfTwo();
+            mode.ThrowExceptionIfMatches(BindMode.TwoWay);
             _disabledWhenNull = disabledWhenNull;
-        }
-
-        public void SetValue(Sprite? value)
-        {
-            Target.sprite = value;
-            Target.enabled = !_disabledWhenNull || value;
         }
 
         public void SetValue(Texture2D? value)

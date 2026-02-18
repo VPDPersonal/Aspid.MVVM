@@ -12,21 +12,9 @@ namespace Aspid.MVVM.StarterKit
 {
     [AddComponentMenu("Aspid/MVVM/Binders/Collider/Collider Binder – Material EnumGroup")]
     [AddBinderContextMenu(typeof(Collider), serializePropertyNames: "m_Material", SubPath = "EnumGroup")]
-    public sealed class ColliderMaterialEnumGroupMonoBinder : EnumGroupMonoBinder<Collider>
+    public sealed class ColliderMaterialEnumGroupMonoBinder : EnumGroupMonoBinder<Collider, PhysicsMaterial, Converter>
     {
-        [SerializeField] private PhysicsMaterial _defaultValue;
-        [SerializeField] private PhysicsMaterial _selectedValue;
-        
-        [SerializeReferenceDropdown]
-        [SerializeReference] private Converter _defaultValueConverter;
-        
-        [SerializeReferenceDropdown]
-        [SerializeReference] private Converter _selectedValueConverter;
-
-        protected override void SetDefaultValue(Collider element) =>
-            element.material = _defaultValueConverter?.Convert(_defaultValue) ?? _defaultValue;
-
-        protected override void SetSelectedValue(Collider element) =>
-            element.material = _selectedValueConverter?.Convert(_selectedValue) ?? _selectedValue;
+        protected override void SetValue(Collider element, PhysicsMaterial value) =>
+            element.material = value;
     }
 }

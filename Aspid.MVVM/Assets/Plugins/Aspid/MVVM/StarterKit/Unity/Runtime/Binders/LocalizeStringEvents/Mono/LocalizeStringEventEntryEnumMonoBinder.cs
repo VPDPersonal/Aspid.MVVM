@@ -12,13 +12,10 @@ namespace Aspid.MVVM.StarterKit
 {
     [AddComponentMenu("Aspid/MVVM/Binders/UI/LocalizeStringEvent/LocalizeStringEvent Binder – Entry Enum")]
     [AddBinderContextMenu(typeof(LocalizeStringEvent), serializePropertyNames: "m_StringReference", SubPath = "Enum")]
-    public sealed class LocalizeStringEventEntryEnumMonoBinder : EnumMonoBinder<LocalizeStringEvent, string>
+    public sealed class LocalizeStringEventEntryEnumMonoBinder : EnumMonoBinder<LocalizeStringEvent, string, Converter>
     {
-        [SerializeReferenceDropdown]
-        [SerializeReference] private Converter _converter;
-        
         protected override void SetValue(string value) =>
-            CachedComponent.StringReference.TableEntryReference = _converter?.Convert(value) ?? value;
+            CachedComponent.StringReference.TableEntryReference = value;
     }
 }
 #endif

@@ -12,12 +12,9 @@ using Converter = Aspid.MVVM.StarterKit.IConverterFloat;
 namespace Aspid.MVVM.StarterKit
 {
     [Serializable]
-    public sealed class GraphicColorComponentSwitcherBinder : SwitcherBinder<Graphic, float>
+    public sealed class GraphicColorComponentSwitcherBinder : SwitcherBinder<Graphic, float, Converter>
     {
         [SerializeField] private ColorComponent _component = ColorComponent.A;
-        
-        [SerializeReferenceDropdown]
-        [SerializeReference] private Converter? _converter;
         
         public GraphicColorComponentSwitcherBinder(
             Graphic target,
@@ -34,13 +31,12 @@ namespace Aspid.MVVM.StarterKit
             ColorComponent component = ColorComponent.A,
             Converter? converter = null,
             BindMode mode = BindMode.OneWay)
-            : base(target, trueColor, falseColor, mode)
+            : base(target, trueColor, falseColor, converter, mode)
         {
             _component = component;
-            _converter = converter;
         }
 
         protected override void SetValue(float value) =>
-            Target.SetColor(_component, _converter?.Convert(value) ?? value);
+            Target.SetColorComponent(_component, value);
     }
 }

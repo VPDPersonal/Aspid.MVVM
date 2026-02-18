@@ -1,32 +1,37 @@
 #nullable enable
 using System;
 using UnityEngine.UI;
+#if UNITY_2023_1_OR_NEWER
+using Converter = Aspid.MVVM.StarterKit.IConverter<float, float>;
+#else
+using Converter = Aspid.MVVM.StarterKit.IConverterFloat;
+#endif
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
     [Serializable]
-    public class HorizontalOrVerticalLayoutSpacingBinder : TargetBinder<HorizontalOrVerticalLayoutGroup>, INumberBinder
+    public class HorizontalOrVerticalLayoutSpacingBinder : TargetFloatBinder<HorizontalOrVerticalLayoutGroup>, INumberBinder
     {
+        protected sealed override float Property
+        {
+            get => Target.spacing;
+            set => Target.spacing = value;
+        }
+        
         public HorizontalOrVerticalLayoutSpacingBinder(
             HorizontalOrVerticalLayoutGroup target, 
             BindMode bindMode = BindMode.OneWay)
-            : base(target, bindMode)
+            : this(target, converter: null, bindMode) { }
+        
+        public HorizontalOrVerticalLayoutSpacingBinder(
+            HorizontalOrVerticalLayoutGroup target, 
+            Converter? converter = null,
+            BindMode bindMode = BindMode.OneWay)
+            : base(target, converter, bindMode)
         {
-            bindMode.ThrowExceptionIfTwo();
+            bindMode.ThrowExceptionIfMatches(BindMode.TwoWay);
         }
-
-        public void SetValue(int value) => 
-            Target.spacing = value;
-
-        public void SetValue(long value) =>
-            SetValue((int)value);
-
-        public void SetValue(float value) =>
-            Target.spacing = value;
-
-        public void SetValue(double value) =>
-            SetValue((float)value);
     }
 }
 

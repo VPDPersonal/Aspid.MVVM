@@ -2,7 +2,6 @@
 #nullable enable
 using TMPro;
 using System;
-using UnityEngine;
 #if UNITY_2023_1_OR_NEWER
 using Converter = Aspid.MVVM.StarterKit.IConverter<float, float>;
 #else
@@ -13,32 +12,22 @@ using Converter = Aspid.MVVM.StarterKit.IConverterFloat;
 namespace Aspid.MVVM.StarterKit
 {
     [Serializable]
-    public class TextFontSizeBinder : TargetBinder<TMP_Text>, INumberBinder
+    public class TextFontSizeBinder : TargetFloatBinder<TMP_Text>
     {
-        [SerializeReferenceDropdown]
-        [SerializeReference] private Converter? _converter;
+        protected sealed override float Property
+        {
+            get => Target.fontSize;
+            set => Target.fontSize = value;
+        }
         
         public TextFontSizeBinder(TMP_Text target, BindMode mode)
             : this(target, converter: null, mode) { }
         
         public TextFontSizeBinder(TMP_Text target, Converter? converter = null, BindMode mode = BindMode.OneWay) 
-            : base(target, mode)
+            : base(target, converter, mode)
         {
-            mode.ThrowExceptionIfTwo();
-            _converter = converter;
+            mode.ThrowExceptionIfMatches(BindMode.TwoWay);
         }
-        
-        public void SetValue(int value) =>
-            SetValue((float)value);
-        
-        public void SetValue(long value) =>
-            SetValue((float)value);
-        
-        public void SetValue(float value) =>
-            Target.fontSize = _converter?.Convert(value) ?? value;
-        
-        public void SetValue(double value) =>
-            SetValue((float)value);
     }
 }
 #endif

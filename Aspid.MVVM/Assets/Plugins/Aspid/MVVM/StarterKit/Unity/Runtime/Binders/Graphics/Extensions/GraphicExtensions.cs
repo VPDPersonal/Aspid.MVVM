@@ -6,7 +6,7 @@ namespace Aspid.MVVM.StarterKit
 {
     public static class GraphicExtensions
     {
-        public static void SetColor(this Graphic graphic, ColorComponent component, float value)
+        public static void SetColorComponent(this Graphic graphic, ColorComponent component, float value)
         {
             var color = graphic.color;
 
@@ -20,6 +20,20 @@ namespace Aspid.MVVM.StarterKit
             }
             
             graphic.color = color;
+        }
+
+        public static float GetColorComponent(this Graphic graphic, ColorComponent component)
+        {
+            switch (component)
+            {
+                case ColorComponent.R: return graphic.color.r;
+                case ColorComponent.G: return graphic.color.g;
+                case ColorComponent.B: return graphic.color.b;
+                case ColorComponent.A: return graphic.color.a;
+                default: Debug.LogError($"Invalid color component {component}", context: graphic); break;
+            }
+
+            return 0;
         }
     }
 }

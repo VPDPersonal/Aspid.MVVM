@@ -2,22 +2,19 @@
 using System;
 using UnityEngine;
 #if UNITY_2023_1_OR_NEWER
-using Converter = Aspid.MVVM.StarterKit.IConverter<UnityEngine.Vector2, UnityEngine.Vector2>;
+using Converter = Aspid.MVVM.StarterKit.IConverter<UnityEngine.Vector3, UnityEngine.Vector3>;
 #else
-using Converter = Aspid.MVVM.StarterKit.IConverterVector2;
+using Converter = Aspid.MVVM.StarterKit.IConverterVector3;
 #endif
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
     [Serializable]
-    public sealed class RectTransformSizeDeltaSwitcherBinder : SwitcherBinder<RectTransform, Vector2>
+    public sealed class RectTransformSizeDeltaSwitcherBinder : SwitcherBinder<RectTransform, Vector3, Converter>
     {
         [SerializeField] private SizeDeltaMode _sizeMode;
-        
-        [SerializeReferenceDropdown]
-        [SerializeReference] private Converter? _converter;
-        
+
         public RectTransformSizeDeltaSwitcherBinder(
             RectTransform target, 
             Vector2 trueValue, 
@@ -48,16 +45,12 @@ namespace Aspid.MVVM.StarterKit
             SizeDeltaMode sizeMode = SizeDeltaMode.SizeDelta,
             Converter? converter = null,
             BindMode mode = BindMode.OneWay)
-            : base(target, trueValue, falseValue, mode)
+            : base(target, trueValue, falseValue, converter, mode)
         {
             _sizeMode = sizeMode;
-            _converter = converter; 
         }
 
-        protected override void SetValue(Vector2 value)
-        {
-            value = _converter?.Convert(value) ?? value;
+        protected override void SetValue(Vector3 value) =>
             Target.SetSizeDelta(value, _sizeMode);
-        }
     }
 }

@@ -1,15 +1,18 @@
 #nullable enable
 using System;
 using UnityEngine;
+#if UNITY_2023_1_OR_NEWER
+using Converter = Aspid.MVVM.StarterKit.IConverter<UnityEngine.Vector3, UnityEngine.Vector3>;
+#else
+using Converter = Aspid.MVVM.StarterKit.IConverterVector3;
+#endif
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
     [Serializable]
-    public sealed class TransformScaleSwitcherBinder : SwitcherBinder<Transform, Vector3>
+    public sealed class TransformScaleSwitcherBinder : SwitcherBinder<Transform, Vector3, Converter>
     {
-        [SerializeField] private Vector3CombineConverter? _converter;
-
         public TransformScaleSwitcherBinder(
             Transform target, 
             Vector3 trueValue,
@@ -21,14 +24,11 @@ namespace Aspid.MVVM.StarterKit
             Transform target, 
             Vector3 trueValue,
             Vector3 falseValue, 
-            Vector3CombineConverter? converter,
+            Converter? converter,
             BindMode mode = BindMode.OneWay) 
-            : base(target, trueValue, falseValue, mode)
-        {
-            _converter = converter;
-        }
+            : base(target, trueValue, falseValue, converter, mode) { }
 
         protected override void SetValue(Vector3 value) =>
-            Target.SetScale(value, _converter);
+            Target.localScale = value;
     }
 }

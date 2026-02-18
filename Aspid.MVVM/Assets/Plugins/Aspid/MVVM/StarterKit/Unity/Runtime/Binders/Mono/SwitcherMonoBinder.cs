@@ -27,4 +27,26 @@ namespace Aspid.MVVM.StarterKit
 
         protected abstract void SetValue(T value);
     }
+    
+    public abstract partial class SwitcherMonoBinder<TComponent, T, TConverter> : ComponentMonoBinder<TComponent>, IBinder<bool> 
+        where TComponent : Component
+        where TConverter : IConverter<T, T>
+    {
+        [SerializeField] private T _trueValue;
+        [SerializeField] private T _falseValue;
+        
+        [SerializeReferenceDropdown]
+        [SerializeReference] private TConverter _converter;
+
+        [BinderLog]
+        public void SetValue(bool value)
+        {
+            var chooseValue = value ? _trueValue : _falseValue;
+            chooseValue = _converter is null ? chooseValue : _converter.Convert(chooseValue);
+            
+            SetValue(chooseValue);
+        }
+
+        protected abstract void SetValue(T value);
+    }
 }

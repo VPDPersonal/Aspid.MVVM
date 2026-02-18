@@ -11,11 +11,8 @@ using Converter = Aspid.MVVM.StarterKit.IConverterFloat;
 namespace Aspid.MVVM.StarterKit
 {
     [Serializable]
-    public sealed class AudioSourcePanStereoSwitcherBinder : SwitcherBinder<AudioSource, float>
+    public sealed class AudioSourcePanStereoSwitcherBinder : SwitcherBinder<AudioSource, float, Converter>
     {
-        [SerializeReferenceDropdown]
-        [SerializeReference] private Converter? _converter;
-        
         public AudioSourcePanStereoSwitcherBinder(
             AudioSource target,
             float trueValue, 
@@ -29,12 +26,9 @@ namespace Aspid.MVVM.StarterKit
             float falseValue,
             Converter? converter = null,
             BindMode mode = BindMode.OneWay)
-            : base(target, trueValue, falseValue, mode)
-        {
-            _converter = converter;
-        }
+            : base(target, trueValue, falseValue, converter, mode) { }
 
         protected override void SetValue(float value) =>
-            Target.panStereo = _converter?.Convert(value) ?? value;
+            Target.panStereo = value;
     }
 }

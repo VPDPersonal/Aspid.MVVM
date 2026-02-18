@@ -11,34 +11,24 @@ using Converter = Aspid.MVVM.StarterKit.IConverterFloat;
 namespace Aspid.MVVM.StarterKit
 {
     [Serializable]
-    public class CanvasGroupAlphaBinder : TargetBinder<CanvasGroup>, INumberBinder
+    public class CanvasGroupAlphaBinder : TargetFloatBinder<CanvasGroup>
     {
-        [SerializeReferenceDropdown]
-        [SerializeReference] private Converter? _converter;
+        protected sealed override float Property
+        {
+            get => Target.alpha;
+            set => Target.alpha = value;
+        }
 
         public CanvasGroupAlphaBinder(CanvasGroup target, BindMode mode)
             : this(target, converter: null, mode) { }
         
         public CanvasGroupAlphaBinder(CanvasGroup target, Converter? converter = null, BindMode mode = BindMode.OneWay)
-            : base(target, mode)
+            : base(target, converter, mode)
         {
-            mode.ThrowExceptionIfTwo();
-            _converter = converter;
+            mode.ThrowExceptionIfMatches(BindMode.TwoWay);
         }
 
-        public void SetValue(int value) => 
-            SetValue((float)value);
-
-        public void SetValue(long value) => 
-            SetValue((float)value);
-        
-        public void SetValue(float value)
-        {
-            value = _converter?.Convert(value) ?? value;
-            Target.alpha = Mathf.Clamp01(value);
-        }
-
-        public void SetValue(double value) => 
-            SetValue((float)value);
+        protected override float GetConvertedValue(float value) =>
+            Mathf.Clamp01(base.GetConvertedValue(value));
     }
 }

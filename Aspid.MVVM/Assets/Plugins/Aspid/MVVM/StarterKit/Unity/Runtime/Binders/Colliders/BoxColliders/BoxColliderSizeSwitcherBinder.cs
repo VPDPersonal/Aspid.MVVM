@@ -1,16 +1,18 @@
 #nullable enable
 using System;
 using UnityEngine;
+#if UNITY_2023_1_OR_NEWER
+using Converter = Aspid.MVVM.StarterKit.IConverter<UnityEngine.Vector3, UnityEngine.Vector3>;
+#else
+using Converter = Aspid.MVVM.StarterKit.IConverterVector3;
+#endif
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
     [Serializable]
-    public sealed class BoxColliderSizeSwitcherBinder : SwitcherBinder<BoxCollider, Vector3>
+    public sealed class BoxColliderSizeSwitcherBinder : SwitcherBinder<BoxCollider, Vector3, Converter>
     {
-        // ReSharper disable once MemberInitializerValueIgnored
-        [SerializeField] private Vector3CombineConverter? _converter = Vector3CombineConverter.Default;
-        
         public BoxColliderSizeSwitcherBinder(
             BoxCollider target,
             Vector3 trueValue, 
@@ -22,14 +24,11 @@ namespace Aspid.MVVM.StarterKit
             BoxCollider target,
             Vector3 trueValue, 
             Vector3 falseValue, 
-            Vector3CombineConverter? converter = null,
+            Converter? converter = null,
             BindMode mode = BindMode.OneWay) 
-            : base(target, trueValue, falseValue, mode)
-        {
-            _converter = converter;
-        }
+            : base(target, trueValue, falseValue, converter, mode) { }
 
         protected override void SetValue(Vector3 value) =>
-            Target.size = _converter?.Convert(value, Target.size) ?? value;
+            Target.size = value;
     }
 }

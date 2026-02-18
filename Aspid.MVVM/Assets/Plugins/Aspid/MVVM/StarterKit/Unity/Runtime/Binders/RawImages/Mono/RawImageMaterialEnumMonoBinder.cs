@@ -11,12 +11,9 @@ namespace Aspid.MVVM.StarterKit
 {
     [AddComponentMenu("Aspid/MVVM/Binders/UI/RawImage/RawImage Binder – Material Enum")]
     [AddBinderContextMenu(typeof(RawImage), serializePropertyNames: "m_Material", SubPath = "Enum")]
-    public sealed class RawImageMaterialEnumMonoBinder : EnumMonoBinder<RawImage, Material>
+    public sealed class RawImageMaterialEnumMonoBinder : EnumMonoBinder<RawImage, Material, Converter>
     {
-        [SerializeReferenceDropdown]
-        [SerializeReference] private Converter _converter;
-        
         protected override void SetValue(Material value) =>
-            CachedComponent.material = _converter?.Convert(value) ?? value;
+            CachedComponent.material = value;
     }
 }

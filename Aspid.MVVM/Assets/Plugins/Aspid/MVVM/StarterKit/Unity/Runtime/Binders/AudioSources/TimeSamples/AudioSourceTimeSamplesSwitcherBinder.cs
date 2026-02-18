@@ -11,11 +11,8 @@ using Converter = Aspid.MVVM.StarterKit.IConverterInt;
 namespace Aspid.MVVM.StarterKit
 {
     [Serializable]
-    public sealed class AudioSourceTimeSamplesSwitcherBinder : SwitcherBinder<AudioSource, int>
+    public sealed class AudioSourceTimeSamplesSwitcherBinder : SwitcherBinder<AudioSource, int, Converter>
     {
-        [SerializeReferenceDropdown]
-        [SerializeReference] private Converter? _converter;
-        
         public AudioSourceTimeSamplesSwitcherBinder(
             AudioSource target,
             int trueValue, 
@@ -29,12 +26,9 @@ namespace Aspid.MVVM.StarterKit
             int falseValue,
             Converter? converter = null,
             BindMode mode = BindMode.OneWay)
-            : base(target, trueValue, falseValue, mode)
-        {
-            _converter = converter;
-        }
+            : base(target, trueValue, falseValue, converter, mode) { }
 
         protected override void SetValue(int value) =>
-            Target.timeSamples = _converter?.Convert(value) ?? value;
+            Target.timeSamples = value;
     }
 }

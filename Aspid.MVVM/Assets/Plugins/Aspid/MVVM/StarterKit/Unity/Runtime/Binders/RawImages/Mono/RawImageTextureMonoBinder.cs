@@ -1,20 +1,28 @@
 using UnityEngine;
 using UnityEngine.UI;
+#if UNITY_2023_1_OR_NEWER
+using Converter = Aspid.MVVM.StarterKit.IConverter<UnityEngine.Texture, UnityEngine.Texture>;
+#else
+using Converter = Aspid.MVVM.StarterKit.IConverterTexture;
+#endif
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
     [AddBinderContextMenu(typeof(RawImage), serializePropertyNames: "m_Texture")]
     [AddComponentMenu("Aspid/MVVM/Binders/UI/RawImage/RawImage Binder – Texture")]
-    public partial class RawImageTextureMonoBinder : ComponentMonoBinder<RawImage>, IBinder<Texture2D>, IBinder<Sprite>
+    public sealed partial class RawImageTextureMonoBinder : ComponentMonoBinder<RawImage, Texture, Converter>, IBinder<Sprite>
     {
         [SerializeField] private bool _disabledWhenNull = true;
         
-        [BinderLog]
-        public void SetValue(Texture2D value)
+        protected override Texture Property
         {
-            CachedComponent.texture = value;
-            CachedComponent.enabled = !_disabledWhenNull || value;
+            get => CachedComponent.texture;
+            set
+            {
+                CachedComponent.texture = value;
+                CachedComponent.enabled = !_disabledWhenNull || value;
+            }
         }
 
         [BinderLog]

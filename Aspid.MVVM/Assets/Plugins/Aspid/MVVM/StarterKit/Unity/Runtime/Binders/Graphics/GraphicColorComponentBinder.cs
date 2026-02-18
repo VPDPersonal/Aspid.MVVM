@@ -12,35 +12,24 @@ using Converter = Aspid.MVVM.StarterKit.IConverterFloat;
 namespace Aspid.MVVM.StarterKit
 {
     [Serializable]
-    public class GraphicColorComponentBinder : TargetBinder<Graphic>, INumberBinder
+    public class GraphicColorComponentBinder : TargetFloatBinder<Graphic>
     {
-        [SerializeField] private ColorComponent _component = ColorComponent.A;
-        
-        [SerializeReferenceDropdown]
-        [SerializeReference] private Converter? _converter;
-        
-        public GraphicColorComponentBinder(Graphic target, ColorComponent component, BindMode mode)
-            : this(target, component, converter: null,  mode) { }
-        
-        public GraphicColorComponentBinder(Graphic target, ColorComponent component = ColorComponent.A, Converter? converter = null, BindMode mode = BindMode.OneWay)
-            : base(target, mode)
+        [SerializeField] private ColorComponent _colorComponent = ColorComponent.A;
+
+        protected sealed override float Property
         {
-            mode.ThrowExceptionIfTwo();
-            
-            _component = component;
-            _converter = converter;
+            get => GetConvertedValue(Target.GetColorComponent(_colorComponent));
+            set => Target.SetColorComponent(_colorComponent, GetConvertedValue(value));
         }
-        
-        public void SetValue(int value) =>
-            SetValue((float)value);
 
-        public void SetValue(long value) =>
-            SetValue((float)value);
+        public GraphicColorComponentBinder(Graphic target, ColorComponent colorComponent, BindMode mode)
+            : this(target, colorComponent, converter: null,  mode) { }
 
-        public void SetValue(float value) =>
-            Target.SetColor(_component, _converter?.Convert(value) ?? value);
-
-        public void SetValue(double value) =>
-            SetValue((float)value);
+        public GraphicColorComponentBinder(Graphic target, ColorComponent colorComponent = ColorComponent.A, Converter? converter = null, BindMode mode = BindMode.OneWay)
+            : base(target, converter, mode)
+        {
+            mode.ThrowExceptionIfMatches(BindMode.TwoWay);
+            _colorComponent = colorComponent;
+        }
     }
 }

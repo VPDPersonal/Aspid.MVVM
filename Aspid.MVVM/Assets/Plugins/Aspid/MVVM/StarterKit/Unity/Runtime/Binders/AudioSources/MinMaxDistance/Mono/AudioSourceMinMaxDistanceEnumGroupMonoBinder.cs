@@ -10,29 +10,11 @@ namespace Aspid.MVVM.StarterKit
 {
     [AddBinderContextMenu(typeof(AudioSource), SubPath = "EnumGroup")]
     [AddComponentMenu("Aspid/MVVM/Binders/Audio/AudioSource/AudioSource Binder – MinMaxDistance EnumGroup")]
-    public sealed class AudioSourceMinMaxDistanceEnumGroupMonoBinder : EnumGroupMonoBinder<AudioSource>
+    public sealed class AudioSourceMinMaxDistanceEnumGroupMonoBinder : EnumGroupMonoBinder<AudioSource, Vector2, Converter>
     {
-        [SerializeField] private Vector2 _defaultValue;
-        [SerializeField] private Vector2 _selectedValue;
-        
         [SerializeField] private AudioSourceDistanceMode _distanceMode = AudioSourceDistanceMode.Range;
-        
-        [SerializeReferenceDropdown]
-        [SerializeReference] private Converter _defaultConverter;
-        
-        [SerializeReferenceDropdown]
-        [SerializeReference] private Converter _selectedConverter;
-        
-        protected override void SetDefaultValue(AudioSource element)
-        {
-            var value = _defaultConverter?.Convert(_defaultValue) ?? _defaultValue;
-            element.SetMinMaxDistance(value, _distanceMode);
-        }
 
-        protected override void SetSelectedValue(AudioSource element)
-        {
-            var value = _selectedConverter?.Convert(_selectedValue) ?? _selectedValue;
+        protected override void SetValue(AudioSource element, Vector2 value) =>
             element.SetMinMaxDistance(value, _distanceMode);
-        }
     }
 }

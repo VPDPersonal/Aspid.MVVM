@@ -13,11 +13,8 @@ using Converter = Aspid.MVVM.StarterKit.IConverterFloat;
 namespace Aspid.MVVM.StarterKit
 {
     [Serializable]
-    public sealed class TextFontSizeSwitcherBinder : SwitcherBinder<TMP_Text, float>
+    public sealed class TextFontSizeSwitcherBinder : SwitcherBinder<TMP_Text, float, Converter>
     {
-        [SerializeReferenceDropdown]
-        [SerializeReference] private Converter? _converter;
-
         public TextFontSizeSwitcherBinder(
             TMP_Text target, 
             float trueValue, 
@@ -31,13 +28,10 @@ namespace Aspid.MVVM.StarterKit
             float falseValue,
             Converter? converter = null,
             BindMode mode = BindMode.OneWay) 
-            : base(target, trueValue, falseValue, mode)
-        {
-            _converter = converter;
-        }
+            : base(target, trueValue, falseValue, converter, mode) { }
 
         protected override void SetValue(float value) =>
-            Target.fontSize = _converter?.Convert(value) ?? value;
+            Target.fontSize = value;
     }
 }
 #endif

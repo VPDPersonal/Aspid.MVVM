@@ -2,29 +2,38 @@
 using System;
 using UnityEngine;
 using UnityEngine.UI;
+#if UNITY_2023_1_OR_NEWER
+using Converter = Aspid.MVVM.StarterKit.IConverter<UnityEngine.Texture?, UnityEngine.Texture?>;
+#else
+using Converter = Aspid.MVVM.StarterKit.IConverterTexture;
+#endif
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
     [Serializable]
-    public class RawImageTextureBinder : TargetBinder<RawImage>, IBinder<Texture2D?>, IBinder<Sprite?>
+    public class RawImageTextureBinder : TargetBinder<RawImage, Texture, Converter>, IBinder<Sprite?>
     {
         [SerializeField] private bool _disabledWhenNull;
-
-        public RawImageTextureBinder(RawImage target, BindMode mode)
-            : this(target, disabledWhenNull: true, mode) { }
         
-        public RawImageTextureBinder(RawImage target, bool disabledWhenNull = true, BindMode mode = BindMode.OneWay)
-            : base(target, mode)
+        protected sealed override Texture? Property
         {
-            mode.ThrowExceptionIfTwo();
-            _disabledWhenNull = disabledWhenNull;
+            get => Target.texture;
+            set
+            {
+                Target.texture = value;
+                Target.enabled = !_disabledWhenNull || value;
+            }
         }
 
-        public void SetValue(Texture2D? value)
+        public RawImageTextureBinder(RawImage target, BindMode mode)
+            : this(target, disabledWhenNull: true, null, mode) { }
+        
+        public RawImageTextureBinder(RawImage target, bool disabledWhenNull = true, Converter? converter = null, BindMode mode = BindMode.OneWay)
+            : base(target, converter, mode)
         {
-            Target.texture = value;
-            Target.enabled = !_disabledWhenNull || value;
+            mode.ThrowExceptionIfMatches(BindMode.TwoWay);
+            _disabledWhenNull = disabledWhenNull;
         }
 
         public void SetValue(Sprite? value) =>

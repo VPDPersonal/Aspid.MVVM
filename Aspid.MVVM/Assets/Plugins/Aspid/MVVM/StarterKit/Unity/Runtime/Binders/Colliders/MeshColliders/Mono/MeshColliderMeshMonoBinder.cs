@@ -10,13 +10,15 @@ namespace Aspid.MVVM.StarterKit
 {
     [AddBinderContextMenu(typeof(MeshCollider), serializePropertyNames: "m_Mesh")]
     [AddComponentMenu("Aspid/MVVM/Binders/Collider/Mesh/MeshCollider Binder – Mesh")]
-    public partial class MeshColliderMeshMonoBinder : ComponentMonoBinder<MeshCollider>, IBinder<Mesh>
+    public class MeshColliderMeshMonoBinder : ComponentMonoBinder<MeshCollider, Mesh, Converter>
     {
         [SerializeReferenceDropdown]
         [SerializeReference] private Converter _converter;
 
-        [BinderLog]
-        public void SetValue(Mesh value) =>
-            CachedComponent.sharedMesh = _converter?.Convert(value) ?? value;
+        protected sealed override Mesh Property
+        {
+            get => CachedComponent.sharedMesh;
+            set => CachedComponent.sharedMesh = value;
+        }
     }
 }

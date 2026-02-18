@@ -12,13 +12,10 @@ namespace Aspid.MVVM.StarterKit
 {
     [AddComponentMenu("Aspid/MVVM/Binders/UI/Text/Text Binder – FontSize Enum")]
     [AddBinderContextMenu(typeof(TMP_Text), serializePropertyNames: "m_fontSize", SubPath = "Enum")]
-    public sealed class TextFontSizeEnumMonoBinder : EnumMonoBinder<TMP_Text, float>
+    public sealed class TextFontSizeEnumMonoBinder : EnumMonoBinder<TMP_Text, float, Converter>
     {
-        [SerializeReferenceDropdown]
-        [SerializeReference] private Converter _converter;
-        
         protected override void SetValue(float value) =>
-            CachedComponent.fontSize = _converter?.Convert(value) ?? value;
+            CachedComponent.fontSize = value;
     }
 }
 #endif

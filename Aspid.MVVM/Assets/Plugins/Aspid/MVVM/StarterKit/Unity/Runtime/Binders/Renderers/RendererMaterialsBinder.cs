@@ -12,10 +12,30 @@ using Converter = Aspid.MVVM.StarterKit.IConverterMaterial;
 namespace Aspid.MVVM.StarterKit
 {
     [Serializable]
-    public class RendererMaterialsBinder : TargetBinder<Renderer>, IBinder<Material>, IBinder<Material[]>, IBinder<IReadOnlyCollection<Material>>
+    [BindModeOverride(BindMode.OneWay, BindMode.OneTime, BindMode.OneWayToSource)]
+    public sealed class RendererMaterialsBinder : TargetBinder<Renderer>, 
+        IBinder<Material>,
+        IReverseBinder<Material>,
+        IReverseBinder<Material[]>,
+        IBinder<IReadOnlyCollection<Material>>
     {
+        event Action<Material?>? IReverseBinder<Material>.ValueChanged
+        {
+            add => _reverseMaterial += value;
+            remove => _reverseMaterial -= value;
+        }
+        
+        event Action<Material[]?>? IReverseBinder<Material[]>.ValueChanged
+        {
+            add => _reverseMaterials += value;
+            remove => _reverseMaterials -= value;
+        }
+        
         [SerializeReferenceDropdown]
         [SerializeReference] private Converter? _converter;
+        
+        private Action<Material?>? _reverseMaterial;
+        private Action<Material[]?>? _reverseMaterials;
         
         public RendererMaterialsBinder(Renderer target, BindMode mode)
             : this(target, converter: null, mode) { }
@@ -23,17 +43,46 @@ namespace Aspid.MVVM.StarterKit
         public RendererMaterialsBinder(Renderer target, Converter? converter = null, BindMode mode = BindMode.OneWay)
             : base(target, mode)
         {
-            mode.ThrowExceptionIfTwo();
+            mode.ThrowExceptionIfMatches(BindMode.TwoWay);
             _converter = converter;
         }
-        
+
         public void SetValue(Material? value) =>
-            Target.material = _converter?.Convert(value) ?? value;
-        
-        public void SetValue(Material[]? values) =>
-            Target.SetMaterials(_converter, values);
+            Target.material = GetConvertedValue(value);
         
         public void SetValue(IReadOnlyCollection<Material>? values) =>
             Target.SetMaterials(_converter, values);
+        
+        protected override void OnBound()
+        {
+            if (Mode is BindMode.OneWayToSource)
+            {
+                _reverseMaterial?.Invoke(Target.material);
+
+                if (_reverseMaterials is not null)
+                {
+                    var materials = Target.materials;
+                    
+                    if (_converter is not null)
+                    {
+                        materials = new Material[Target.materials.Length];
+
+                        for (var i = 0; i < materials.Length; i++)
+                            materials[i] = GetConvertedValue(Target.materials[i]);
+                    }
+                    
+                    _reverseMaterials?.Invoke(materials);
+                }
+            }
+        }
+
+        protected override void OnUnbound()
+        {
+            _reverseMaterial?.Invoke(null);
+            _reverseMaterials?.Invoke(null);
+        }
+
+        private Material? GetConvertedValue(Material? value) =>
+            _converter?.Convert(value) ?? value;
     }
 }

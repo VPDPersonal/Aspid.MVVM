@@ -12,13 +12,12 @@ namespace Aspid.MVVM.StarterKit
 {
     [AddComponentMenu("Aspid/MVVM/Binders/Collider/Collider Binder – Material")]
     [AddBinderContextMenu(typeof(Collider), serializePropertyNames: "m_Material")]
-    public partial class ColliderMaterialMonoBinder : ComponentMonoBinder<Collider>, IBinder<PhysicsMaterial>
+    public class ColliderMaterialMonoBinder : ComponentMonoBinder<Collider, PhysicsMaterial, Converter>
     {
-        [SerializeReferenceDropdown]
-        [SerializeReference] private Converter _converter;
-        
-        [BinderLog]
-        public void SetValue(PhysicsMaterial value) =>
-            CachedComponent.material = _converter?.Convert(value) ?? value;
+        protected sealed override PhysicsMaterial Property
+        {
+            get => CachedComponent.material;
+            set => CachedComponent.material = value;
+        }
     }
 }

@@ -1,57 +1,47 @@
 #nullable enable
 using System;
 using UnityEngine;
+#if UNITY_2023_1_OR_NEWER
+using Converter = Aspid.MVVM.StarterKit.IConverter<UnityEngine.Vector3, UnityEngine.Vector3>;
+#else
+using Converter = Aspid.MVVM.StarterKit.IConverterVector3;
+#endif
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
     [Serializable]
-    public class TransformEulerAnglesBinder : TargetBinder<Transform>, IVectorBinder, INumberBinder
+    public class TransformEulerAnglesBinder : TargetVector3Binder<Transform>
     {
         [SerializeField] private Space _space;
-        [SerializeField] private Vector3CombineConverter? _converter;
+
+        protected sealed override Vector3 Property
+        {
+            get => Target.GetEulerAngles(_space);
+            set => Target.SetEulerAngles(value, _space);
+        }
 
         public TransformEulerAnglesBinder(Transform target, BindMode mode)
             : this(target, Space.World, converter: null, mode) { }
-        
+
         public TransformEulerAnglesBinder(Transform target, Space space, BindMode mode)
             : this(target, space, converter: null, mode) { }
-        
+
         public TransformEulerAnglesBinder(
             Transform target,
-            Vector3CombineConverter? converter,
+            Converter? converter,
             BindMode mode = BindMode.OneWay)
             : this(target, Space.World, converter, mode) { }
-        
+
         public TransformEulerAnglesBinder(
             Transform target,
             Space space = Space.World,
-            Vector3CombineConverter? converter = null,
+            Converter? converter = null,
             BindMode mode = BindMode.OneWay)
-            : base(target, mode)
+            : base(target, converter, mode)
         {
-            mode.ThrowExceptionIfTwo();
-            
+            mode.ThrowExceptionIfMatches(BindMode.TwoWay);
             _space = space;
-            _converter = converter;
         }
-        
-        public void SetValue(Vector2 value) =>
-            SetValue((Vector3)value);
-        
-        public void SetValue(Vector3 value) =>
-            Target.SetEulerAngles(value, _space, _converter);
-        
-        public void SetValue(int value) =>
-            SetValue((float)value);
-        
-        public void SetValue(long value) =>
-            SetValue((float)value);
-        
-        public void SetValue(double value) =>
-            SetValue((float)value);
-        
-        public void SetValue(float value) =>
-            SetValue(new Vector3(value, value, value));
     }
 }

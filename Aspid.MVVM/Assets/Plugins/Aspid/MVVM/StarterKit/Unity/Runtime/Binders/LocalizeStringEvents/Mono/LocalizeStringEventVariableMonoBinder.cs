@@ -11,7 +11,10 @@ namespace Aspid.MVVM.StarterKit
     [AddBinderContextMenu(typeof(LocalizeStringEvent), serializePropertyNames: "m_StringReference")]
     [AddComponentMenu("Aspid/MVVM/Binders/UI/LocalizeStringEvent/LocalizeStringEvent Binder – Variable")]
     public partial class LocalizeStringEventVariableMonoBinder : ComponentMonoBinder<LocalizeStringEvent>,
-        IBinder<bool>, IBinder<string>, IBinder<Object>, INumberBinder
+        INumberBinder,
+        IBinder<bool>, 
+        IBinder<string>,
+        IBinder<Object>
     {
         [SerializeField] private string _variableName;
         

@@ -11,12 +11,9 @@ namespace Aspid.MVVM.StarterKit
 {
     [AddComponentMenu("Aspid/MVVM/Binders/UI/Slider/Slider Binder – Value Switcher")]
     [AddBinderContextMenu(typeof(Slider), serializePropertyNames: "m_Value", SubPath = "Switcher")]
-    public sealed class SliderValueSwitcherMonoBinder : SwitcherMonoBinder<Slider, float>
+    public sealed class SliderValueSwitcherMonoBinder : SwitcherMonoBinder<Slider, float, Converter>
     {
-        [SerializeReferenceDropdown]
-        [SerializeReference] private Converter _converter;
-        
         protected override void SetValue(float value) =>
-            CachedComponent.value = _converter?.Convert(value) ?? value;
+            CachedComponent.value = value;
     }
 }

@@ -11,53 +11,21 @@ using Converter = Aspid.MVVM.StarterKit.IConverterInt;
 namespace Aspid.MVVM.StarterKit
 {
     [Serializable]
-    [BindModeOverride(BindMode.OneWay, BindMode.OneTime, BindMode.OneWayToSource)]
-    public class AudioSourcePriorityBinder : TargetBinder<AudioSource>, INumberBinder, INumberReverseBinder
+    public class AudioSourcePriorityBinder : TargetIntBinder<AudioSource>
     {
-        public event Action<int>? IntValueChanged;
-        public event Action<long>? LongValueChanged;
-        public event Action<float>? FloatValueChanged;
-        public event Action<double>? DoubleValueChanged;
-        
-        [SerializeReferenceDropdown]
-        [SerializeReference] private Converter? _converter;
-        
-        public AudioSourcePriorityBinder(AudioSource target, BindMode mode)
-            : this(target, converter: null, mode) { }
-        
-        public AudioSourcePriorityBinder(AudioSource target, Converter? converter = null, BindMode mode = BindMode.OneWay)
-            : base(target, mode)
+        protected sealed override int Property
         {
-            mode.ThrowExceptionIfTwo();
-            _converter = converter;
-        }
-
-        public void SetValue(int value) =>
-            Target.priority = GetConvertedValue(value);
-
-        public void SetValue(float value) =>
-            SetValue((int)value);
-
-        public void SetValue(long value) =>
-            SetValue((int)value);
-
-        public void SetValue(double value) => 
-            SetValue((int)value);
-        
-        protected override void OnBound()
-        {
-            if (Mode is BindMode.OneWayToSource)
-            {
-                var value = GetConvertedValue(Target.priority);
-                
-                IntValueChanged?.Invoke(value);
-                LongValueChanged?.Invoke(value);
-                FloatValueChanged?.Invoke(value);
-                DoubleValueChanged?.Invoke(value);
-            }
+            get => Target.priority;
+            set => Target.priority = value;
         }
         
-        private int GetConvertedValue(int value) =>
-            _converter?.Convert(value) ?? value;
+        public AudioSourcePriorityBinder(AudioSource target, Converter? converter, BindMode mode = BindMode.OneWay)
+            : base(target, converter, mode)
+        {
+            mode.ThrowExceptionIfMatches(BindMode.TwoWay);
+        }
+
+        protected override int GetConvertedValue(int value) =>
+            Mathf.Clamp(base.GetConvertedValue(value), min: 0, max: 256);
     }
 }

@@ -12,31 +12,24 @@ using Converter = Aspid.MVVM.StarterKit.IConverterFloat;
 namespace Aspid.MVVM.StarterKit
 {
     [Serializable]
-    public class ImageFillBinder : TargetBinder<Image>, INumberBinder
+    public class ImageFillBinder : TargetFloatBinder<Image>
     {
-        [SerializeReferenceDropdown]
-        [SerializeReference] private Converter? _converter;
+        protected sealed override float Property
+        {
+            get => Target.fillAmount;
+            set => Target.fillAmount = value;
+        }
         
         public ImageFillBinder(Image target, BindMode mode)
             : this(target, converter: null, mode) { }
         
         public ImageFillBinder(Image target, Converter? converter = null, BindMode mode = BindMode.OneWay)
-            : base(target, mode)
+            : base(target, converter, mode)
         {
-            mode.ThrowExceptionIfTwo();
-            _converter = converter;
+            mode.ThrowExceptionIfMatches(BindMode.TwoWay);
         }
-
-        public void SetValue(int value) => SetValue((float)value);
-
-        public void SetValue(long value) => SetValue((float)value);
         
-        public void SetValue(float value)
-        {
-            value = _converter?.Convert(value) ?? value;
-            Target.fillAmount = Mathf.Clamp01(value);
-        }
-
-        public void SetValue(double value) => SetValue((float)value);
+        protected override float GetConvertedValue(float value) =>
+            Mathf.Clamp01(base.GetConvertedValue(value));
     }
 }

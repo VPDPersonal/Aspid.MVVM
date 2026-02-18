@@ -5,12 +5,12 @@ namespace Aspid.MVVM.StarterKit
 {
     [AddBinderContextMenu(typeof(MeshCollider), serializePropertyNames: "m_Convex")]
     [AddComponentMenu("Aspid/MVVM/Binders/Collider/Mesh/MeshCollider Binder – Convex")]
-    public partial class MeshColliderConvexMonoBinder : ComponentMonoBinder<MeshCollider>, IBinder<bool>
+    public class MeshColliderConvexMonoBinder : ComponentBoolMonoBinder<MeshCollider>
     {
-        [SerializeField] private bool _isInvert;
-
-        [BinderLog]
-        public void SetValue(bool value) =>
-            CachedComponent.convex = _isInvert ? !value : value;
+        protected sealed override bool Property
+        {
+            get => CachedComponent.convex;
+            set => CachedComponent.convex = value;
+        }
     }
 }

@@ -1,8 +1,8 @@
 using UnityEngine;
 #if UNITY_2023_1_OR_NEWER
-using Converter = Aspid.MVVM.StarterKit.IConverter<UnityEngine.Quaternion, UnityEngine.Quaternion>;
+using Converter = Aspid.MVVM.StarterKit.IConverter<UnityEngine.Vector3, UnityEngine.Vector3>;
 #else
-using Converter = Aspid.MVVM.StarterKit.IConverterQuaternion;
+using Converter = Aspid.MVVM.StarterKit.IConverterVector3;
 #endif
 
 // ReSharper disable once CheckNamespace
@@ -10,18 +10,11 @@ namespace Aspid.MVVM.StarterKit
 {
     [AddComponentMenu("Aspid/MVVM/Binders/Transform/Transform Binder – Rotation Enum")]
     [AddBinderContextMenu(typeof(Transform), serializePropertyNames: "m_LocalRotation", SubPath = "Enum")]
-    public sealed class TransformRotationEnumMonoBinder : EnumMonoBinder<Vector3>
+    public sealed class TransformRotationEnumMonoBinder : EnumMonoBinder<Transform, Vector3, Converter>
     {
         [SerializeField] private Space _space = Space.World;
-        
-        [SerializeReferenceDropdown]
-        [SerializeReference] private Converter _converter;
 
-        protected override void SetValue(Vector3 value)
-        {
-            var rotation = Quaternion.Euler(value);
-            rotation = _converter?.Convert(rotation) ?? rotation;
-            transform.SetRotation(rotation, _space);
-        }
+        protected override void SetValue(Vector3 value) =>
+            transform.SetRotation(Quaternion.Euler(value), _space);
     }
 }

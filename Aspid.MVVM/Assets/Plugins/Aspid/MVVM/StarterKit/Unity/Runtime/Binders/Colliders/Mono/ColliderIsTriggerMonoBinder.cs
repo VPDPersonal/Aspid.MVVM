@@ -5,12 +5,12 @@ namespace Aspid.MVVM.StarterKit
 {
     [AddComponentMenu("Aspid/MVVM/Binders/Collider/Collider Binder – IsTrigger")]
     [AddBinderContextMenu(typeof(Collider), serializePropertyNames: "m_IsTrigger")]
-    public partial class ColliderIsTriggerMonoBinder : ComponentMonoBinder<Collider>, IBinder<bool>
+    public class ColliderIsTriggerMonoBinder : ComponentBoolMonoBinder<Collider>
     {
-        [SerializeField] private bool _isInvert;
-        
-        [BinderLog]
-        public void SetValue(bool value) =>
-            CachedComponent.isTrigger = _isInvert ? !value : value;
+        protected sealed override bool Property
+        {
+            get => CachedComponent.isTrigger;
+            set => CachedComponent.isTrigger = value;
+        }
     }
 }

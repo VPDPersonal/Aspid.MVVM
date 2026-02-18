@@ -13,27 +13,23 @@ using Converter = Aspid.MVVM.StarterKit.IConverterString;
 namespace Aspid.MVVM.StarterKit
 {
     [Serializable]
-    public class TextBinder : TargetBinder<TMP_Text>, IBinder<string?>, INumberBinder
+    public class TextBinder : TargetBinder<TMP_Text, string, Converter>, INumberBinder
     {
+        protected sealed override string? Property
+        {
+            get => Target.text;
+            set => Target.text = value;
+        }
+
         [SerializeField] private CultureInfoMode _cultureInfoMode = CultureInfoMode.CurrentCulture;
-
-        [SerializeReferenceDropdown]
-        [SerializeReference] private Converter? _converter;
-
+        
         public TextBinder(TMP_Text target, BindMode mode)
             : this(target, converter: null, mode) { }
         
         public TextBinder(TMP_Text target, Converter? converter = null, BindMode mode = BindMode.OneWay)
-            : base(target, mode)
+            : base(target, converter, mode)
         {
             mode.ThrowExceptionIfTwo();
-            _converter = converter; 
-        }
-
-        public void SetValue(string? value)
-        {
-            if (value is null) Target.text = null;
-            else Target.text = _converter?.Convert(value) ?? value;
         }
         
         public void SetValue(int value) =>

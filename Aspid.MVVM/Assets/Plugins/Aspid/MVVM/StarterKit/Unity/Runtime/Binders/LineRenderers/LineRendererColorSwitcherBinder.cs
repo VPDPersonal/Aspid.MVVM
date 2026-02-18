@@ -11,13 +11,10 @@ using Converter = Aspid.MVVM.StarterKit.IConverterColor;
 namespace Aspid.MVVM.StarterKit
 {
     [Serializable]
-    public sealed class LineRendererColorSwitcherBinder : SwitcherBinder<LineRenderer, Color>
+    public sealed class LineRendererColorSwitcherBinder : SwitcherBinder<LineRenderer, Color, Converter>
     {
         [SerializeField] private LineRendererColorMode _colorMode;
         
-        [SerializeReferenceDropdown]
-        [SerializeReference] private Converter? _converter;
-
         public LineRendererColorSwitcherBinder(
             LineRenderer target,
             Color trueValue,
@@ -48,16 +45,12 @@ namespace Aspid.MVVM.StarterKit
             LineRendererColorMode colorMode = LineRendererColorMode.StartAndEnd,
             Converter? converter = null,
             BindMode mode = BindMode.OneWay)
-            : base(target, trueValue, falseValue, mode)
+            : base(target, trueValue, falseValue, converter, mode)
         {
             _colorMode = colorMode;
-            _converter = converter;
         }
 
-        protected override void SetValue(Color value)
-        {
-            value = _converter?.Convert(value) ?? value;
+        protected override void SetValue(Color value) =>
             Target.SetColor(value, _colorMode);
-        }
     }
 }

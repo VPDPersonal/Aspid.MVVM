@@ -1,38 +1,20 @@
 using UnityEngine;
 using UnityEngine.UI;
-#if UNITY_2023_1_OR_NEWER
-using Converter = Aspid.MVVM.StarterKit.IConverter<float, float>;
-#else
-using Converter = Aspid.MVVM.StarterKit.IConverterFloat;
-#endif
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
     [AddComponentMenu("Aspid/MVVM/Binders/UI/Image/Image Binder – Fill")]
     [AddBinderContextMenu(typeof(Image), serializePropertyNames: "m_FillAmount")]
-    public partial class ImageFillMonoBinder : ComponentMonoBinder<Image>, INumberBinder
+    public class ImageFillMonoBinder : ComponentFloatMonoBinder<Image>
     {
-        [SerializeReferenceDropdown]
-        [SerializeReference] private Converter _converter;
-        
-        [BinderLog]
-        public void SetValue(int value) =>
-            SetValue((float)value);
-
-        [BinderLog]
-        public void SetValue(long value) =>
-            SetValue((float)value);
-        
-        [BinderLog]
-        public void SetValue(float value)
+        protected sealed override float Property
         {
-            value = _converter?.Convert(value) ?? value;
-            CachedComponent.fillAmount = Mathf.Clamp01(value);
+            get => CachedComponent.fillAmount;
+            set => CachedComponent.fillAmount = value;
         }
-
-        [BinderLog]
-        public void SetValue(double value) =>
-            SetValue((float)value);
+        
+        protected override float GetConvertedValue(float value) =>
+            Mathf.Clamp01(base.GetConvertedValue(value));
     }
 }

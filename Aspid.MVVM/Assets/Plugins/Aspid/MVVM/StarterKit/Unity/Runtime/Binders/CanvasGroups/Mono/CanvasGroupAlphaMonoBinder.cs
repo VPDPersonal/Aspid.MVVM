@@ -1,37 +1,19 @@
 using UnityEngine;
-#if UNITY_2023_1_OR_NEWER
-using Converter = Aspid.MVVM.StarterKit.IConverter<float, float>;
-#else
-using Converter = Aspid.MVVM.StarterKit.IConverterFloat;
-#endif
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
     [AddBinderContextMenu(typeof(CanvasGroup), serializePropertyNames: "m_Alpha")]
     [AddComponentMenu("Aspid/MVVM/Binders/UI/CanvasGroup/CanvasGroup Binder – Alpha")]
-    public partial class CanvasGroupAlphaMonoBinder : ComponentMonoBinder<CanvasGroup>, INumberBinder
+    public class CanvasGroupAlphaMonoBinder : ComponentFloatMonoBinder<CanvasGroup>
     {
-        [SerializeReferenceDropdown]
-        [SerializeReference] private Converter _converter;
-        
-        [BinderLog]  
-        public void SetValue(int value) => 
-            SetValue((float)value);
-        
-        [BinderLog]
-        public void SetValue(long value) => 
-            SetValue((float)value);
-        
-        [BinderLog]
-        public void SetValue(float value)
+        protected sealed override float Property
         {
-            value = _converter?.Convert(value) ?? value;
-            CachedComponent.alpha = Mathf.Clamp01(value);
+            get => CachedComponent.alpha;
+            set => CachedComponent.alpha = value;
         }
-        
-        [BinderLog]
-        public void SetValue(double value) =>
-            SetValue((float)value);
+
+        protected override float GetConvertedValue(float value) =>
+            Mathf.Clamp01(base.GetConvertedValue(value));
     }
 }

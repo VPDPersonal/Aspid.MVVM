@@ -7,11 +7,13 @@ namespace Aspid.MVVM.StarterKit
 {
     [AddComponentMenu("Aspid/MVVM/Binders/UI/Text/Text Binder – Alignment")]
     [AddBinderContextMenu(typeof(TMP_Text), serializePropertyNames: "m_textAlignment")]
-    public partial class TextAlignmentMonoBinder : ComponentMonoBinder<TMP_Text>, IBinder<TextAlignmentOptions>
+    public class TextAlignmentMonoBinder : ComponentMonoBinder<TMP_Text, TextAlignmentOptions>
     {
-        [BinderLog]
-        public void SetValue(TextAlignmentOptions value) =>
-            CachedComponent.alignment = value;
+        protected sealed override TextAlignmentOptions Property
+        {
+            get => CachedComponent.alignment;
+            set => CachedComponent.alignment = value;
+        }
     }
 }
 #endif

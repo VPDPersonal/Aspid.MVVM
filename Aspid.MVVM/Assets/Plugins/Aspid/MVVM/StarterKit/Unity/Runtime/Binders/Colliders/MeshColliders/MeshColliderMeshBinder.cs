@@ -11,22 +11,21 @@ using Converter = Aspid.MVVM.StarterKit.IConverterMesh;
 namespace Aspid.MVVM.StarterKit
 {
     [Serializable]
-    public class MeshColliderMeshBinder : TargetBinder<MeshCollider>, IBinder<Mesh>
+    public class MeshColliderMeshBinder : TargetBinder<MeshCollider, Mesh, Converter>
     {
-        [SerializeReferenceDropdown]
-        [SerializeReference] private Converter? _converter;
+        protected sealed override Mesh? Property
+        {
+            get => Target.sharedMesh;
+            set => Target.sharedMesh = value;
+        }
         
         public MeshColliderMeshBinder(MeshCollider target, BindMode mode)
             : this(target, converter: null, mode) { }
         
         public MeshColliderMeshBinder(MeshCollider target, Converter? converter = null, BindMode mode = BindMode.OneWay)
-            : base(target, mode)
+            : base(target, converter, mode)
         {
-            mode.ThrowExceptionIfTwo();
-            _converter = converter;
+            mode.ThrowExceptionIfMatches(BindMode.TwoWay);
         }
-
-        public void SetValue(Mesh? value) =>
-            Target.sharedMesh = _converter?.Convert(value) ?? value;
     }
 }

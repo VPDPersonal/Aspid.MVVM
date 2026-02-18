@@ -11,15 +11,9 @@ namespace Aspid.MVVM.StarterKit
 {
     [AddComponentMenu("Aspid/MVVM/Binders/UI/Image/Image Binder – Fill Switcher")]
     [AddBinderContextMenu(typeof(Image), serializePropertyNames: "m_FillAmount", SubPath = "Switcher")]
-    public sealed class ImageFillSwitcherMonoBinder : SwitcherMonoBinder<Image, float>
+    public sealed class ImageFillSwitcherMonoBinder : SwitcherMonoBinder<Image, float, Converter>
     {
-        [SerializeReferenceDropdown]
-        [SerializeReference] private Converter _converter;
-        
-        protected override void SetValue(float value) 
-        {
-            value = _converter?.Convert(value) ?? value;
+        protected override void SetValue(float value) =>
             CachedComponent.fillAmount = Mathf.Clamp01(value);
-        }
     }
 }

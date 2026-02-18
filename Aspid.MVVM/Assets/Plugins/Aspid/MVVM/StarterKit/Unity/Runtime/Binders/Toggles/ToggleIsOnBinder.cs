@@ -8,7 +8,7 @@ namespace Aspid.MVVM.StarterKit
 {
     [Serializable]
     [BindModeOverride(IsAll = true)]
-    public class ToggleIsOnBinder : TargetBinder<Toggle>, IBinder<bool>, IReverseBinder<bool>
+    public sealed class ToggleIsOnBinder : TargetBinder<Toggle>, IBinder<bool>, IReverseBinder<bool>
     {
         public event Action<bool>? ValueChanged;
         

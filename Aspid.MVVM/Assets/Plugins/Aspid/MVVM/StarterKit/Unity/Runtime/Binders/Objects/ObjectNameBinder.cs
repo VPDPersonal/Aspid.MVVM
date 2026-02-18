@@ -12,8 +12,13 @@ using Converter = Aspid.MVVM.StarterKit.IConverterString;
 namespace Aspid.MVVM.StarterKit
 {
     [Serializable]
-    public class ObjectNameBinder : TargetBinder<Object>
+    [BindModeOverride(BindMode.OneWay, BindMode.OneTime, BindMode.OneWayToSource)]
+    public sealed class ObjectNameBinder : TargetBinder<Object>,
+        IBinder<string>, 
+        IReverseBinder<string>
     {
+        public event Action<string?>? ValueChanged;
+        
         [SerializeReferenceDropdown]
         [SerializeReference] private Converter? _converter;
 
@@ -23,11 +28,21 @@ namespace Aspid.MVVM.StarterKit
         public ObjectNameBinder(GameObject target, Converter? converter = null, BindMode mode = BindMode.OneWay)
             : base(target, mode)
         {
-            mode.ThrowExceptionIfTwo();
+            mode.ThrowExceptionIfMatches(BindMode.TwoWay);
             _converter = converter;
         }
 
         public void SetValue(string? value) =>
-            Target.name = _converter?.Convert(value) ?? value ?? string.Empty;
+            Target.name = GetConvertedValue(value);
+        
+        
+        protected override void OnBound()
+        {
+            if (Mode is BindMode.OneWayToSource)
+                ValueChanged?.Invoke(GetConvertedValue(Target.name));
+        }
+        
+        private string GetConvertedValue(string value) =>
+            _converter?.Convert(value) ?? value ?? string.Empty;
     }
 }

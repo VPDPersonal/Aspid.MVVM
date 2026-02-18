@@ -2,22 +2,19 @@
 using System;
 using UnityEngine;
 #if UNITY_2023_1_OR_NEWER
-using Converter = Aspid.MVVM.StarterKit.IConverter<UnityEngine.Quaternion, UnityEngine.Quaternion>;
+using Converter = Aspid.MVVM.StarterKit.IConverter<UnityEngine.Vector3, UnityEngine.Vector3>;
 #else
-using Converter = Aspid.MVVM.StarterKit.IConverterQuaternion;
+using Converter = Aspid.MVVM.StarterKit.IConverterVector3;
 #endif
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
     [Serializable]
-    public sealed class TransformRotationSwitcherBinder : SwitcherBinder<Transform, Vector3>
+    public sealed class TransformRotationSwitcherBinder : SwitcherBinder<Transform, Vector3, Converter>
     {
         [SerializeField] private Space _space;
-        
-        [SerializeReferenceDropdown]
-        [SerializeReference] private Converter? _converter;
-        
+
         public TransformRotationSwitcherBinder(
             Transform target, 
             Vector3 trueValue, 
@@ -48,18 +45,12 @@ namespace Aspid.MVVM.StarterKit
             Space space = Space.World,
             Converter? converter = null,
             BindMode mode = BindMode.OneWay) 
-            : base(target, trueValue, falseValue, mode)
+            : base(target, trueValue, falseValue, converter, mode)
         {
             _space = space;
-            _converter = converter; 
         }
 
-        protected override void SetValue(Vector3 value) 
-        {
-            var rotation = Quaternion.Euler(value);
-            rotation = _converter?.Convert(rotation) ?? rotation;
-            
-            Target.SetRotation(rotation, _space);
-        }
+        protected override void SetValue(Vector3 value) =>
+            Target.SetRotation(Quaternion.Euler(value), _space);
     }
 }

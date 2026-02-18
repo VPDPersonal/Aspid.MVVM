@@ -16,13 +16,10 @@ using Converter = Aspid.MVVM.StarterKit.IConverterString;
 namespace Aspid.MVVM.StarterKit
 {
     [Serializable]
-    public class TextLocalizationEntrySwitcherBinder : SwitcherBinder<TMP_Text, string>
+    public class TextLocalizationEntrySwitcherBinder : SwitcherBinder<TMP_Text, string, Converter>
     {
         [SerializeField] private LocalizedString _stringReference = new();
         [SerializeField] private List<Object> _formatArguments = new();
-
-        [SerializeReferenceDropdown]
-        [SerializeReference] private Converter? _converter;
 
         public TextLocalizationEntrySwitcherBinder(
             TMP_Text target,
@@ -56,11 +53,10 @@ namespace Aspid.MVVM.StarterKit
             List<Object>? formatArguments = null,
             Converter? converter = null,
             BindMode mode = BindMode.OneWay)
-            : base(target, trueValue, falseValue, mode)
+            : base(target, trueValue, falseValue, converter, mode)
         {
             mode.ThrowExceptionIfTwo();
             
-            _converter = converter;
             _formatArguments = formatArguments ?? _formatArguments;
             _stringReference.TableEntryReference = entry;
         }
@@ -78,7 +74,7 @@ namespace Aspid.MVVM.StarterKit
             _stringReference.Unsubscribe(UpdateString);
         
         protected override void SetValue(string value) =>
-            _stringReference.TableEntryReference = _converter?.Convert(value) ?? value;
+            _stringReference.TableEntryReference = value;
 
         protected virtual void UpdateString(string value) =>
             Target.text = value;

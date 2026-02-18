@@ -11,12 +11,9 @@ using Converter = Aspid.MVVM.StarterKit.IConverterVector2;
 namespace Aspid.MVVM.StarterKit
 {
     [Serializable]
-    public sealed class AudioSourceMinMaxDistanceSwitcherBinder : SwitcherBinder<AudioSource, Vector2>
+    public sealed class AudioSourceMinMaxDistanceSwitcherBinder : SwitcherBinder<AudioSource, Vector2, Converter>
     {
         [SerializeField] private AudioSourceDistanceMode _distanceMode = AudioSourceDistanceMode.Range;
-        
-        [SerializeReferenceDropdown]
-        [SerializeReference] private Converter? _converter;
         
         public AudioSourceMinMaxDistanceSwitcherBinder(
             AudioSource target,
@@ -48,16 +45,12 @@ namespace Aspid.MVVM.StarterKit
             AudioSourceDistanceMode distanceMode = AudioSourceDistanceMode.Range,
             Converter? converter = null,
             BindMode mode = BindMode.OneWay)
-            : base(target, trueValue, falseValue, mode)
+            : base(target, trueValue, falseValue, converter, mode)
         {
             _distanceMode = distanceMode;
-            _converter = converter;
         }
 
-        protected override void SetValue(Vector2 value)
-        {
-            value = _converter?.Convert(value) ?? value;
+        protected override void SetValue(Vector2 value) =>
             Target.SetMinMaxDistance(value, _distanceMode);
-        }
     }
 }

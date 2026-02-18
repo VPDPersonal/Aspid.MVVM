@@ -1,15 +1,19 @@
 #nullable enable
 using System;
 using UnityEngine;
+#if UNITY_2023_1_OR_NEWER
+using Converter = Aspid.MVVM.StarterKit.IConverter<UnityEngine.Vector3, UnityEngine.Vector3>;
+#else
+using Converter = Aspid.MVVM.StarterKit.IConverterVector3;
+#endif
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
     [Serializable]
-    public sealed class TransformPositionSwitcherBinder : SwitcherBinder<Transform, Vector3>
+    public sealed class TransformPositionSwitcherBinder : SwitcherBinder<Transform, Vector3, Converter>
     {
         [SerializeField] private Space _space;
-        [SerializeField] private Vector3CombineConverter? _converter;
        
         public TransformPositionSwitcherBinder(
             Transform target,
@@ -30,7 +34,7 @@ namespace Aspid.MVVM.StarterKit
             Transform target,
             Vector3 trueValue,
             Vector3 falseValue, 
-            Vector3CombineConverter? converter,
+            Converter? converter,
             BindMode mode = BindMode.OneWay) 
             : this(target, trueValue, falseValue, Space.World, converter, mode) { }
         
@@ -39,15 +43,14 @@ namespace Aspid.MVVM.StarterKit
             Vector3 trueValue,
             Vector3 falseValue, 
             Space space = Space.World,
-            Vector3CombineConverter? converter = null,
+            Converter? converter = null,
             BindMode mode = BindMode.OneWay) 
-            : base(target, trueValue, falseValue, mode)
+            : base(target, trueValue, falseValue, converter, mode)
         {
             _space = space;
-            _converter = converter;
         }
 
         protected override void SetValue(Vector3 value) =>
-            Target.SetPosition(value, _space, _converter);
+            Target.SetPosition(value, _space);
     }
 }

@@ -29,7 +29,7 @@ namespace Aspid.MVVM.StarterKit
         public TextBinder(TMP_Text target, Converter? converter = null, BindMode mode = BindMode.OneWay)
             : base(target, converter, mode)
         {
-            mode.ThrowExceptionIfTwo();
+            mode.ThrowExceptionIfMatches(BindMode.TwoWay);
         }
         
         public void SetValue(int value) =>

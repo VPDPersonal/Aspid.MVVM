@@ -55,8 +55,6 @@ namespace Aspid.MVVM.StarterKit
             BindMode mode = BindMode.OneWay)
             : base(target, trueValue, falseValue, converter, mode)
         {
-            mode.ThrowExceptionIfTwo();
-            
             _formatArguments = formatArguments ?? _formatArguments;
             _stringReference.TableEntryReference = entry;
         }

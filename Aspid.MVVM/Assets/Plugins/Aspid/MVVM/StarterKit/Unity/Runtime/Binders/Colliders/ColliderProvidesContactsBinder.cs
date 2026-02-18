@@ -20,7 +20,7 @@ namespace Aspid.MVVM.StarterKit
         public ColliderProvidesContactsBinder(Collider target, bool isInvert = false, BindMode mode = BindMode.OneWay)
             : base(target, isInvert, mode)
         {
-            mode.ThrowExceptionIfTwo();
+            mode.ThrowExceptionIfMatches(BindMode.TwoWay);
         }
     }
 }

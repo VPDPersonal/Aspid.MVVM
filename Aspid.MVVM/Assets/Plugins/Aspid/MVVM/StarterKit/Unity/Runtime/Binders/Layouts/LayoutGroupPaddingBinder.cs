@@ -36,7 +36,7 @@ namespace Aspid.MVVM.StarterKit
             BindMode bindMode = BindMode.OneWay)
             : base(target, converter, bindMode)
         {
-            bindMode.ThrowExceptionIfTwo();
+            bindMode.ThrowExceptionIfMatches(BindMode.TwoWay);
             _paddingMode = paddingMode;
         }
         

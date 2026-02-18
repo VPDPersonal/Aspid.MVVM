@@ -26,7 +26,7 @@ namespace Aspid.MVVM.StarterKit
         public LocalizeStringEventEntryBinder(LocalizeStringEvent target, Converter? converter = null, BindMode mode = BindMode.OneWay)
             :base(target, converter, mode)
         {
-            mode.ThrowExceptionIfTwo();
+            mode.ThrowExceptionIfMatches(BindMode.TwoWay);
         }
     }
 }

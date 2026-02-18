@@ -14,9 +14,6 @@ namespace Aspid.MVVM.StarterKit
     [AddComponentMenu("Aspid/MVVM/Binders/UI/LocalizeStringEvent/LocalizeStringEvent Binder – Entry")]
     public class LocalizeStringEventEntryMonoBinder : ComponentMonoBinder<LocalizeStringEvent, string, Converter>
     {
-        [SerializeReferenceDropdown]
-        [SerializeReference] private Converter _converter;
-
         protected sealed override string Property
         {
             get => CachedComponent.StringReference.TableEntryReference;

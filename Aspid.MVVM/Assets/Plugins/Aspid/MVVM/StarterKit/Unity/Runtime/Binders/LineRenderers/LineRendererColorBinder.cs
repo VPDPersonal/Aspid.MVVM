@@ -17,8 +17,8 @@ namespace Aspid.MVVM.StarterKit
         
         protected sealed override Color Property
         {
-            get =>  Target.GetColor(_colorMode);
-            set =>  Target.SetColor(value, _colorMode);
+            get => Target.GetColor(_colorMode);
+            set => Target.SetColor(value, _colorMode);
         }
         
         public LineRendererColorBinder(

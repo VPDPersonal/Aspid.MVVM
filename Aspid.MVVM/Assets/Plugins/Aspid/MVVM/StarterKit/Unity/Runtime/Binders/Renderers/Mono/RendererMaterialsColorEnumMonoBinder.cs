@@ -10,12 +10,9 @@ namespace Aspid.MVVM.StarterKit
 {
     [AddComponentMenu("Aspid/MVVM/Binders/Renderer/Renderer Binder – MaterialsColor Enum")]
     [AddBinderContextMenu(typeof(Renderer), serializePropertyNames: "m_Materials", SubPath = "Enum")]
-    public sealed class RendererMaterialsColorEnumMonoBinder : EnumMonoBinder<Renderer, Color>
+    public sealed class RendererMaterialsColorEnumMonoBinder : EnumMonoBinder<Renderer, Color, Converter>
     {
         [SerializeField] private string _colorPropertyName = "_BaseColor";
-        
-        [SerializeReferenceDropdown]
-        [SerializeReference] private Converter _converter;
         
         private int? _colorPropertyId;
         
@@ -23,8 +20,6 @@ namespace Aspid.MVVM.StarterKit
 
         protected override void SetValue(Color value) 
         {
-            value = _converter?.Convert(value) ?? value;
-            
             foreach (var material in CachedComponent.materials)
                 material.SetColor(ColorPropertyId, value);
         }

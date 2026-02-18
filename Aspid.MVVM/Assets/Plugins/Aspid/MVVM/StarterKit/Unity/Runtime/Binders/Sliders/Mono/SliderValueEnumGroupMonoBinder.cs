@@ -11,21 +11,9 @@ namespace Aspid.MVVM.StarterKit
 {
     [AddComponentMenu("Aspid/MVVM/Binders/UI/Slider/Slider Binder – Value EnumGroup")]
     [AddBinderContextMenu(typeof(Slider), serializePropertyNames: "m_Value", SubPath = "EnumGroup")]
-    public sealed class SliderValueEnumGroupMonoBinder : EnumGroupMonoBinder<Slider>
+    public sealed class SliderValueEnumGroupMonoBinder : EnumGroupMonoBinder<Slider, float, Converter>
     {
-        [SerializeField] private float _defaultValue;
-        [SerializeField] private float _selectedValue;
-
-        [SerializeReferenceDropdown]
-        [SerializeReference] private Converter _defaultValueConverter;
-        
-        [SerializeReferenceDropdown]
-        [SerializeReference] private Converter _selectedValueConverter;
-        
-        protected override void SetDefaultValue(Slider element) =>
-            element.value = _defaultValueConverter?.Convert(_defaultValue) ?? _defaultValue;
-
-        protected override void SetSelectedValue(Slider element) =>
-            element.value = _selectedValueConverter?.Convert(_selectedValue) ?? _selectedValue;
+        protected override void SetValue(Slider element, float value) =>
+            element.value = value;
     }
 }

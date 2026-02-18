@@ -11,12 +11,9 @@ namespace Aspid.MVVM.StarterKit
 {
     [AddComponentMenu("Aspid/MVVM/Binders/UI/Slider/Slider Binder – Value Enum")]
     [AddBinderContextMenu(typeof(Slider), serializePropertyNames: "m_Value", SubPath = "Enum")]
-    public sealed class SliderValueEnumMonoBinder : EnumMonoBinder<Slider, float>
+    public sealed class SliderValueEnumMonoBinder : EnumMonoBinder<Slider, float, Converter>
     {
-        [SerializeReferenceDropdown]
-        [SerializeReference] private Converter _converter;
-
         protected override void SetValue(float value) =>
-            CachedComponent.value = _converter?.Convert(value) ?? value;
+            CachedComponent.value = value;
     }
 }

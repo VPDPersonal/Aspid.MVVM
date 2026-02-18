@@ -2,7 +2,6 @@
 #nullable enable
 using TMPro;
 using System;
-using UnityEngine;
 #if UNITY_2023_1_OR_NEWER
 using Converter = Aspid.MVVM.StarterKit.IConverter<string?, string?>;
 #else
@@ -13,11 +12,8 @@ using Converter = Aspid.MVVM.StarterKit.IConverterString;
 namespace Aspid.MVVM.StarterKit
 {
     [Serializable]
-    public sealed class TextSwitcherBinder : SwitcherBinder<TMP_Text, string>
+    public sealed class TextSwitcherBinder : SwitcherBinder<TMP_Text, string, Converter>
     {
-        [SerializeReferenceDropdown]
-        [SerializeReference] private Converter? _converter;
-
         public TextSwitcherBinder(
             TMP_Text target, 
             string trueValue, 
@@ -31,13 +27,10 @@ namespace Aspid.MVVM.StarterKit
             string falseValue,
             Converter? converter = null,
             BindMode mode = BindMode.OneWay) 
-            : base(target, trueValue, falseValue, mode)
-        {
-            _converter = converter;
-        }
+            : base(target, trueValue, falseValue, converter, mode) { }
 
         protected override void SetValue(string value) =>
-            Target.text = _converter?.Convert(value) ?? value;
+            Target.text = value;
     }
 }
 #endif

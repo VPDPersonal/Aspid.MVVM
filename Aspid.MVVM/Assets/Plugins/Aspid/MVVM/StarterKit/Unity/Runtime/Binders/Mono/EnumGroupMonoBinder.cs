@@ -42,4 +42,37 @@ namespace Aspid.MVVM.StarterKit
         
         protected abstract void SetValue(TElement element, TValue value);
     }
+    
+    public abstract class EnumGroupMonoBinder<TElement, TValue, TConverter> : EnumGroupMonoBinder<TElement>
+        where TConverter : IConverter<TValue, TValue>
+    {
+        [SerializeField] private TValue _defaultValue;
+        [SerializeField] private TValue _selectedValue;
+        
+        [SerializeReferenceDropdown]
+        [SerializeReference] private TConverter _defaultConverter;
+        
+        [SerializeReferenceDropdown]
+        [SerializeReference] private TConverter _selectedConverter;
+
+        protected sealed override void SetDefaultValue(TElement element)
+        {
+            var value = _defaultConverter is null
+                ? _defaultValue
+                : _defaultConverter.Convert(_defaultValue);
+            
+            SetValue(element, value);
+        }
+
+        protected sealed override void SetSelectedValue(TElement element)
+        {
+            var value = _selectedConverter is null
+                ? _selectedValue
+                : _selectedConverter.Convert(_selectedValue);
+            
+            SetValue(element, value);
+        }
+
+        protected abstract void SetValue(TElement element, TValue value);
+    }
 }

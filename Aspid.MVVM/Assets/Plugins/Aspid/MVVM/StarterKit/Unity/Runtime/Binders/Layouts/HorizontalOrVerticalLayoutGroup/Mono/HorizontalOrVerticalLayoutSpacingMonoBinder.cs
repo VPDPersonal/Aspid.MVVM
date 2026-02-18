@@ -1,27 +1,22 @@
 using UnityEngine;
 using UnityEngine.UI;
+#if UNITY_2023_1_OR_NEWER
+using Converter = Aspid.MVVM.StarterKit.IConverter<float, float>;
+#else
+using Converter = Aspid.MVVM.StarterKit.IConverterFloat;
+#endif
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
     [AddBinderContextMenu(typeof(HorizontalOrVerticalLayoutGroup), serializePropertyNames: "m_Spacing")]
     [AddComponentMenu("Aspid/MVVM/Binders/UI/LayoutGroup/HorizontalOrVertical/HorizontalOrVerticalLayoutGroup Binder – Spacing")]
-    public partial class HorizontalOrVerticalLayoutSpacingMonoBinder : ComponentMonoBinder<HorizontalOrVerticalLayoutGroup>, INumberBinder
+    public class HorizontalOrVerticalLayoutSpacingMonoBinder : ComponentFloatMonoBinder<HorizontalOrVerticalLayoutGroup>, INumberBinder
     {
-        [BinderLog]
-        public void SetValue(int value) =>
-            CachedComponent.spacing = value;
-
-        [BinderLog]
-        public void SetValue(long value) =>
-            SetValue((int)value);
-
-        [BinderLog]
-        public void SetValue(float value) =>
-            CachedComponent.spacing = value;
-
-        [BinderLog]
-        public void SetValue(double value) =>
-            SetValue((float)value);
+        protected sealed override float Property
+        {
+            get => CachedComponent.spacing;
+            set => CachedComponent.spacing = value;
+        }
     }
 }

@@ -11,17 +11,24 @@ using Converter = Aspid.MVVM.StarterKit.IConverterColor;
 namespace Aspid.MVVM.StarterKit
 {
     [Serializable]
-    public class RendererMaterialColorBinder : TargetBinder<Renderer>, IColorBinder
+    public class RendererMaterialColorBinder : TargetColorBinder<Renderer>
     {
         // ReSharper disable once MemberInitializerValueIgnored
         [SerializeField] private string _colorPropertyName = "_BaseColor";
         
-        [SerializeReferenceDropdown]
-        [SerializeReference] private Converter? _converter;
-
         private int? _colorPropertyId;
         
         private int ColorPropertyId => _colorPropertyId ??= Shader.PropertyToID(_colorPropertyName);
+        
+        protected sealed override Color Property
+        {
+            get => Target.material.GetColor(ColorPropertyId);
+            set
+            {
+                foreach (var material in Target.materials)
+                    material.SetColor(ColorPropertyId, value);
+            }
+        }
         
         public RendererMaterialColorBinder(Renderer target, BindMode mode) 
             : this(target, colorPropertyName: "_BaseColor", converter: null, mode) { }
@@ -37,18 +44,10 @@ namespace Aspid.MVVM.StarterKit
             string colorPropertyName = "_BaseColor",
             Converter? converter = null,
             BindMode mode = BindMode.OneWay)
-            : base(target, mode)
+            : base(target, converter, mode)
         {
             mode.ThrowExceptionIfTwo();
-            
-            _converter = converter;
             _colorPropertyName = colorPropertyName;
-        }
-        
-        public void SetValue(Color value)
-        {
-            value = _converter?.Convert(value) ?? value;
-            Target.material.SetColor(ColorPropertyId, value);
         }
     }
 }

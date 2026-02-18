@@ -7,24 +7,18 @@ using UnityEngine.Audio;
 namespace Aspid.MVVM.StarterKit
 {
     [Serializable]
-    [BindModeOverride(BindMode.OneWay, BindMode.OneTime, BindMode.OneWayToSource)]
-    public class AudioSourceOutputAudioMixerGroupBinder : TargetBinder<AudioSource>, IBinder<AudioMixerGroup?>, IReverseBinder<AudioMixerGroup?>
+    public class AudioSourceOutputAudioMixerGroupBinder : TargetBinder<AudioSource, AudioMixerGroup>
     {
-        public event Action<AudioMixerGroup?>? ValueChanged;
+        protected sealed override AudioMixerGroup? Property
+        {
+            get => Target.outputAudioMixerGroup;
+            set => Target.outputAudioMixerGroup = value;
+        }
         
         public AudioSourceOutputAudioMixerGroupBinder(AudioSource target, BindMode mode = BindMode.OneWay)
             : base(target, mode)
         {
-            mode.ThrowExceptionIfTwo();
-        }
-
-        public void SetValue(AudioMixerGroup? value) =>
-            Target.outputAudioMixerGroup = value;
-        
-        protected override void OnBound()
-        {
-            if (Mode is BindMode.OneWayToSource)
-                ValueChanged?.Invoke(Target.outputAudioMixerGroup);
+            mode.ThrowExceptionIfMatches(BindMode.TwoWay);
         }
     }
 }

@@ -6,18 +6,22 @@ using System;
 namespace Aspid.MVVM.StarterKit
 {
     [Serializable]
-    public class InputFieldInputTypeBinder : TargetBinder<TMP_InputField>, IBinder<TMP_InputField.InputType>
+    public class InputFieldInputTypeBinder : TargetBinder<TMP_InputField, TMP_InputField.InputType>
     {
+        protected sealed override TMP_InputField.InputType Property
+        {
+            get => Target.inputType;
+            set
+            {
+                Target.inputType = value;
+                Target.ForceLabelUpdate();
+            }
+        }
+
         public InputFieldInputTypeBinder(TMP_InputField target, BindMode mode = BindMode.OneWay) 
             : base(target, mode)
         {
             mode.ThrowExceptionIfNotOne();
-        }
-
-        public void SetValue(TMP_InputField.InputType value)
-        {
-            Target.inputType = value;
-            Target.ForceLabelUpdate();
         }
     }
 }

@@ -11,7 +11,10 @@ namespace Aspid.MVVM.StarterKit
 {
     [Serializable]
     public class LocalizeStringEventVariableBinder : TargetBinder<LocalizeStringEvent>,
-        IBinder<bool>, IBinder<string>, IBinder<Object>, INumberBinder
+        INumberBinder,
+        IBinder<bool>,
+        IBinder<string>, 
+        IBinder<Object>
     {
         [SerializeField] private string _variableName;
         

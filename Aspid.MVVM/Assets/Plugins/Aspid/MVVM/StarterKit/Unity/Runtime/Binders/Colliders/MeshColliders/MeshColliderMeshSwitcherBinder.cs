@@ -11,11 +11,8 @@ using Converter = Aspid.MVVM.StarterKit.IConverterMesh;
 namespace Aspid.MVVM.StarterKit
 {
     [Serializable]
-    public sealed class MeshColliderMeshSwitcherBinder : SwitcherBinder<MeshCollider, Mesh>
+    public sealed class MeshColliderMeshSwitcherBinder : SwitcherBinder<MeshCollider, Mesh, Converter>
     {
-        [SerializeReferenceDropdown]
-        [SerializeReference] private Converter? _converter;
-        
         public MeshColliderMeshSwitcherBinder(
             MeshCollider target,
             Mesh trueValue, 
@@ -29,12 +26,9 @@ namespace Aspid.MVVM.StarterKit
             Mesh falseValue, 
             Converter? converter = null,
             BindMode mode = BindMode.OneWay)
-            : base(target, trueValue, falseValue, mode)
-        {
-            _converter = converter; 
-        }
+            : base(target, trueValue, falseValue, converter, mode) { }
 
         protected override void SetValue(Mesh value) =>
-            Target.sharedMesh = _converter?.Convert(value) ?? value;
+            Target.sharedMesh = value;
     }
 }

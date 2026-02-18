@@ -10,12 +10,9 @@ namespace Aspid.MVVM.StarterKit
 {
     [AddBinderContextMenu(typeof(AudioSource), SubPath = "Switcher")]
     [AddComponentMenu("Aspid/MVVM/Binders/Audio/AudioSource/AudioSource Binder – SpatialBlend Switcher")]
-    public sealed class AudioSourceSpatialBlendSwitcherMonoBinder : SwitcherMonoBinder<AudioSource, float>
+    public sealed class AudioSourceSpatialBlendSwitcherMonoBinder : SwitcherMonoBinder<AudioSource, float, Converter>
     {
-        [SerializeReferenceDropdown]
-        [SerializeReference] private Converter _converter;
-        
         protected override void SetValue(float value) =>
-            CachedComponent.spatialBlend = _converter?.Convert(value) ?? value;
+            CachedComponent.spatialBlend = value;
     }
 }

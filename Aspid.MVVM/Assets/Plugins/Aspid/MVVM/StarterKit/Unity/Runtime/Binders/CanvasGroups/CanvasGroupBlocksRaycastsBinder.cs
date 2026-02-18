@@ -6,21 +6,21 @@ using UnityEngine;
 namespace Aspid.MVVM.StarterKit
 {
     [Serializable]
-    public class CanvasGroupBlocksRaycastsBinder : TargetBinder<CanvasGroup>, IBinder<bool>
+    public class CanvasGroupBlocksRaycastsBinder : TargetBoolBinder<CanvasGroup>
     {
-        [SerializeField] private bool _isInvert;
+        protected sealed override bool Property
+        {
+            get => Target.blocksRaycasts;
+            set => Target.blocksRaycasts = value;
+        }
 
         public CanvasGroupBlocksRaycastsBinder(CanvasGroup target, BindMode mode)
             : this(target, isInvert: false, mode) { }
         
         public CanvasGroupBlocksRaycastsBinder(CanvasGroup target, bool isInvert = false, BindMode mode = BindMode.OneTime)
-            : base(target, mode)
+            : base(target, isInvert, mode)
         {
-            mode.ThrowExceptionIfTwo();
-            _isInvert = isInvert;
+            mode.ThrowExceptionIfMatches(BindMode.TwoWay);
         }
-        
-        public void SetValue(bool value) =>
-            Target.blocksRaycasts = _isInvert ? !value : value;
     }
 }

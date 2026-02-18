@@ -6,24 +6,18 @@ using UnityEngine;
 namespace Aspid.MVVM.StarterKit
 {
     [Serializable]
-    [BindModeOverride(BindMode.OneWay, BindMode.OneTime, BindMode.OneWayToSource)]
-    public class AudioSourceClipBinder : TargetBinder<AudioSource>, IBinder<AudioClip?>, IReverseBinder<AudioClip>
+    public class AudioSourceClipBinder : TargetBinder<AudioSource, AudioClip>
     {
-        public event Action<AudioClip?>? ValueChanged;
+        protected sealed override AudioClip? Property
+        {
+            get => Target.clip;
+            set => Target.clip = value;
+        }
         
         public AudioSourceClipBinder(AudioSource target, BindMode mode = BindMode.OneWay)
             : base(target, mode)
         {
-            mode.ThrowExceptionIfTwo();
-        }
-
-        public void SetValue(AudioClip? value) =>
-            Target.clip = value;
-        
-        protected override void OnBound()
-        {
-            if (Mode is BindMode.OneWayToSource)
-                ValueChanged?.Invoke(Target.clip);
+            mode.ThrowExceptionIfMatches(BindMode.TwoWay);
         }
     }
 }

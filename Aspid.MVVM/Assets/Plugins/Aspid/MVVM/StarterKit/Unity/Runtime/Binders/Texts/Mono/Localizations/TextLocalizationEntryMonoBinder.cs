@@ -15,14 +15,17 @@ namespace Aspid.MVVM.StarterKit
 {
     [AddBinderContextMenu(typeof(TMP_Text), serializePropertyNames: "m_text")]
     [AddComponentMenu("Aspid/MVVM/Binders/UI/Text/Text Binder – Localization Entry")]
-    public partial class TextLocalizationEntryMonoBinder : ComponentMonoBinder<TMP_Text>, IBinder<string>
+    public class TextLocalizationEntryMonoBinder : ComponentMonoBinder<TMP_Text, string, Converter>
     {
         [SerializeField] private LocalizedString _stringReference = new();
         [SerializeField] private List<Object> _formatArguments = new();
-        
-        [SerializeReferenceDropdown]
-        [SerializeReference] private Converter _converter;
 
+        protected override string Property
+        {
+            get => _stringReference.TableEntryReference;
+            set => _stringReference.TableEntryReference = value;
+        }
+        
         protected override void OnValidate()
         {
             base.OnValidate();
@@ -40,10 +43,6 @@ namespace Aspid.MVVM.StarterKit
 
         private void Unsubscribe() =>
             _stringReference.Unsubscribe(UpdateString);
-        
-        [BinderLog]
-        public void SetValue(string value) =>
-            _stringReference.TableEntryReference = _converter?.Convert(value) ?? value;
 
         protected virtual void UpdateString(string value) =>
             CachedComponent.text = value;

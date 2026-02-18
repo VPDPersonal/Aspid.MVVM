@@ -10,12 +10,9 @@ namespace Aspid.MVVM.StarterKit
 {
     [AddBinderContextMenu(typeof(AudioSource), SubPath = "Enum")]
     [AddComponentMenu("Aspid/MVVM/Binders/Audio/AudioSource/AudioSource Binder – ReverbZoneMix Enum")]
-    public sealed class AudioSourceReverbZoneMixEnumMonoBinder : EnumMonoBinder<AudioSource, float>
+    public sealed class AudioSourceReverbZoneMixEnumMonoBinder : EnumMonoBinder<AudioSource, float, Converter>
     {
-        [SerializeReferenceDropdown]
-        [SerializeReference] private Converter _converter;
-        
         protected override void SetValue(float value) =>
-            CachedComponent.reverbZoneMix = _converter?.Convert(value) ?? value;
+            CachedComponent.reverbZoneMix = Mathf.Clamp(value, min: 0, max: 1.1f);
     }
 }

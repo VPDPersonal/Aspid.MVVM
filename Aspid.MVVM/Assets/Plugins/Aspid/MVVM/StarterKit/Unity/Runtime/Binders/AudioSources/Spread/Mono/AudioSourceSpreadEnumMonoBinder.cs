@@ -10,12 +10,9 @@ namespace Aspid.MVVM.StarterKit
 {
     [AddBinderContextMenu(typeof(AudioSource), SubPath = "Enum")]
     [AddComponentMenu("Aspid/MVVM/Binders/Audio/AudioSource/AudioSource Binder – Spread Enum")]
-    public sealed class AudioSourceSpreadEnumMonoBinder : EnumMonoBinder<AudioSource, float>
+    public sealed class AudioSourceSpreadEnumMonoBinder : EnumMonoBinder<AudioSource, float, Converter>
     {
-        [SerializeReferenceDropdown]
-        [SerializeReference] private Converter _converter;
-        
         protected override void SetValue(float value) =>
-            CachedComponent.spread = _converter?.Convert(value) ?? value;
+            CachedComponent.spread = value;
     }
 }

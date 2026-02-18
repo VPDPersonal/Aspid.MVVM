@@ -10,12 +10,9 @@ namespace Aspid.MVVM.StarterKit
 {
     [AddBinderContextMenu(typeof(AudioSource), SubPath = "Switcher")]
     [AddComponentMenu("Aspid/MVVM/Binders/Audio/AudioSource/AudioSource Binder – TimeSamples Switcher")]
-    public sealed class AudioSourceTimeSamplesSwitcherMonoBinder : SwitcherMonoBinder<AudioSource, int>
+    public sealed class AudioSourceTimeSamplesSwitcherMonoBinder : SwitcherMonoBinder<AudioSource, int, Converter>
     {
-        [SerializeReferenceDropdown]
-        [SerializeReference] private Converter _converter;
-        
         protected override void SetValue(int value) =>
-            CachedComponent.timeSamples = _converter?.Convert(value) ?? value;
+            CachedComponent.timeSamples = value;
     }
 }

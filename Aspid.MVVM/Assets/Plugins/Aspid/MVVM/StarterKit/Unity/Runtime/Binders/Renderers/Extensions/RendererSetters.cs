@@ -15,11 +15,11 @@ namespace Aspid.MVVM.StarterKit
           
         public static void SetMaterials(this Renderer renderer, IConverter<Material?, Material?>? converter, IReadOnlyCollection<Material>? values)
         {
-            if (values is null || values.Count == 0)
+            if (values is null || values.Count is 0)
             {
                 renderer.materials = null;
             }
-            else if (values.Count == 1)
+            else if (values.Count is 1)
             {
                 Material? convertedValue = null;
 

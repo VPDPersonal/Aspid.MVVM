@@ -12,11 +12,8 @@ using Converter = Aspid.MVVM.StarterKit.IConverterColor;
 namespace Aspid.MVVM.StarterKit
 {
     [Serializable]
-    public sealed class GraphicColorSwitcherBinder : SwitcherBinder<Graphic, Color>
+    public sealed class GraphicColorSwitcherBinder : SwitcherBinder<Graphic, Color, Converter>
     {
-        [SerializeReferenceDropdown]
-        [SerializeReference] private Converter? _converter;
-        
         public GraphicColorSwitcherBinder(
             Graphic target,
             Color trueColor, 
@@ -30,12 +27,9 @@ namespace Aspid.MVVM.StarterKit
             Color falseColor, 
             Converter? converter = null,
             BindMode mode = BindMode.OneWay)
-            : base(target, trueColor, falseColor, mode)
-        {
-            _converter = converter;
-        }
+            : base(target, trueColor, falseColor, converter, mode) { }
 
         protected override void SetValue(Color value) =>
-            Target.color = _converter?.Convert(value) ?? value;
+            Target.color = value;
     }
 }

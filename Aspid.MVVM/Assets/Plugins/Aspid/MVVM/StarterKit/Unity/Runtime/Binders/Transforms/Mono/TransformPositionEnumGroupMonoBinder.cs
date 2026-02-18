@@ -1,24 +1,20 @@
 using UnityEngine;
+#if UNITY_2023_1_OR_NEWER
+using Converter = Aspid.MVVM.StarterKit.IConverter<UnityEngine.Vector3, UnityEngine.Vector3>;
+#else
+using Converter = Aspid.MVVM.StarterKit.IConverterVector3;
+#endif
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
     [AddComponentMenu("Aspid/MVVM/Binders/Transform/Transform Binder – Position EnumGroup")]
     [AddBinderContextMenu(typeof(Transform), serializePropertyNames: "m_LocalPosition", SubPath = "EnumGroup")]
-    public sealed class TransformPositionEnumGroupMonoBinder : EnumGroupMonoBinder<Transform>
+    public sealed class TransformPositionEnumGroupMonoBinder : EnumGroupMonoBinder<Transform, Vector3, Converter>
     {
-        [SerializeField] private Vector3 _defaultValue;
-        [SerializeField] private Vector3 _selectedValue;
-       
-        [SerializeField] private Space _space = Space.World;    
-        
-        [SerializeField] private Vector3CombineConverter _defaultValueConverter = Vector3CombineConverter.Default;
-        [SerializeField] private Vector3CombineConverter _selectedValueConverter = Vector3CombineConverter.Default;
+        [SerializeField] private Space _space = Space.World;
 
-        protected override void SetDefaultValue(Transform element) =>
-            element.SetPosition(_defaultValue, _space, _defaultValueConverter);
-
-        protected override void SetSelectedValue(Transform element) =>
-            element.SetPosition(_selectedValue, _space, _selectedValueConverter);
+        protected override void SetValue(Transform element, Vector3 value) =>
+            element.SetPosition(value, _space);
     }
 }

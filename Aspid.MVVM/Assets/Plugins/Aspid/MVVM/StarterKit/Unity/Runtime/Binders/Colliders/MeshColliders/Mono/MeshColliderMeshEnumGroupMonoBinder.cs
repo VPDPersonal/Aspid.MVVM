@@ -10,21 +10,9 @@ namespace Aspid.MVVM.StarterKit
 {
     [AddComponentMenu("Aspid/MVVM/Binders/Collider/Mesh/MeshCollider Binder – Mesh EnumGroup")]
     [AddBinderContextMenu(typeof(MeshCollider), serializePropertyNames: "m_Mesh", SubPath = "EnumGroup")]
-    public sealed class MeshColliderMeshEnumGroupMonoBinder : EnumGroupMonoBinder<MeshCollider>
+    public sealed class MeshColliderMeshEnumGroupMonoBinder : EnumGroupMonoBinder<MeshCollider, Mesh, Converter>
     {
-        [SerializeField] private Mesh _defaultValue;
-        [SerializeField] private Mesh _selectedValue;
-        
-        [SerializeReferenceDropdown]
-        [SerializeReference] private Converter _defaultValueConverter;
-        
-        [SerializeReferenceDropdown]
-        [SerializeReference] private Converter _selectedValueConverter;
-        
-        protected override void SetDefaultValue(MeshCollider element) =>
-            element.sharedMesh = _defaultValueConverter?.Convert(_defaultValue) ?? _defaultValue;
-
-        protected override void SetSelectedValue(MeshCollider element) =>
-            element.sharedMesh = _selectedValueConverter?.Convert(_selectedValue) ?? _selectedValue;
+        protected override void SetValue(MeshCollider element, Mesh value) =>
+            element.sharedMesh = value;
     }
 }

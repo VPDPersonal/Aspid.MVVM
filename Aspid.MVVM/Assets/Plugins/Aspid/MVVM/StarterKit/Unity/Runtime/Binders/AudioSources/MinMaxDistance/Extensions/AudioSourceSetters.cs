@@ -23,4 +23,3 @@ namespace Aspid.MVVM.StarterKit
         }
     }
 }
-

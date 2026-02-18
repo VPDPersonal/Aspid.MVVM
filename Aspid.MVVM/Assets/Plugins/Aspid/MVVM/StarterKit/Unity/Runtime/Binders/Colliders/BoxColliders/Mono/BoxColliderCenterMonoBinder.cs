@@ -5,32 +5,12 @@ namespace Aspid.MVVM.StarterKit
 {
     [AddBinderContextMenu(typeof(BoxCollider), serializePropertyNames: "m_Center")]
     [AddComponentMenu("Aspid/MVVM/Binders/Collider/Box/BoxCollider Binder – Center")]
-    public partial class BoxColliderCenterMonoBinder : ComponentMonoBinder<BoxCollider>, IVectorBinder, INumberBinder
+    public class BoxColliderCenterMonoBinder : ComponentVector3MonoBinder<BoxCollider>
     {
-        [SerializeField] private Vector3CombineConverter _converter = Vector3CombineConverter.Default;
-
-        [BinderLog]
-        public void SetValue(Vector2 value) =>
-            SetValue((Vector3)value);
-
-        [BinderLog]
-        public void SetValue(Vector3 value) =>
-            CachedComponent.center = _converter.Convert(value, CachedComponent.center);
-
-        [BinderLog]
-        public void SetValue(int value) =>
-            SetValue(new Vector3(value, value, value));
-
-        [BinderLog]
-        public void SetValue(long value) =>
-            SetValue(new Vector3(value, value, value));
-
-        [BinderLog]
-        public void SetValue(float value) =>
-            SetValue(new Vector3(value, value, value));
-
-        [BinderLog]
-        public void SetValue(double value) =>
-            SetValue((float)value);
+        protected sealed override Vector3 Property
+        {
+            get => CachedComponent.center;
+            set => CachedComponent.center = value;
+        }
     }
 }

@@ -25,5 +25,17 @@ namespace Aspid.MVVM.StarterKit
                 default: throw new ArgumentOutOfRangeException();
             }
         }
+
+        public static Color GetColor(this LineRenderer lineRenderer, LineRendererColorMode mode)
+        {
+            switch (mode)
+            {
+                case LineRendererColorMode.Start: return lineRenderer.startColor;
+                case LineRendererColorMode.End:  return lineRenderer.endColor;
+                
+                case LineRendererColorMode.StartAndEnd:
+                default: throw new ArgumentOutOfRangeException(nameof(mode), mode, null);
+            }
+        }
     }
 }

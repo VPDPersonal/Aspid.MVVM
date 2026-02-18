@@ -11,41 +11,38 @@ using Converter = Aspid.MVVM.StarterKit.IConverterQuaternion;
 namespace Aspid.MVVM.StarterKit
 {
     [Serializable]
-    public class TransformRotationBinder : TargetBinder<Transform>, IRotationBinder, INumberBinder
+    public class TransformRotationBinder : TargetBinder<Transform, Quaternion, Converter>,
+        INumberBinder,
+        IRotationBinder
     {
         [SerializeField] private Space _space;
         
-        [SerializeReferenceDropdown]
-        [SerializeReference] private Converter? _converter;
+        protected sealed override Quaternion Property
+        {
+            get => Target.GetRotation(_space);
+            set => Target.SetRotation(value, _space);
+        }
 
         public TransformRotationBinder(Transform target, BindMode mode) 
             : this(target, Space.World, converter: null, mode) { }
-        
+
         public TransformRotationBinder(Transform target, Space space, BindMode mode) 
             : this(target, space, converter: null, mode) { }
-        
+
         public TransformRotationBinder(Transform target, Converter? converter, BindMode mode = BindMode.OneWay) 
             : this(target, Space.World, converter, mode) { }
-        
+
         public TransformRotationBinder(
             Transform target,
             Space space = Space.World, 
             Converter? converter = null,
             BindMode mode = BindMode.OneWay)    
-            : base(target, mode)
+            : base(target, converter, mode)
         {
-            mode.ThrowExceptionIfTwo();
-            
+            mode.ThrowExceptionIfMatches(BindMode.TwoWay);
             _space = space;
-            _converter = converter; 
         }
-        
-        public void SetValue(Quaternion value)
-        {
-            value = _converter?.Convert(value) ?? value;
-            Target.SetRotation(value, _space);
-        }
-        
+
         public void SetValue(int value) =>
             SetValue((float)value);
         
@@ -56,6 +53,6 @@ namespace Aspid.MVVM.StarterKit
             SetValue((float)value);
         
         public void SetValue(float value) =>
-            SetValue(Quaternion.Euler(new Vector3(value, value, value)));
+            base.SetValue(Quaternion.Euler(new Vector3(value, value, value)));
     }
 }

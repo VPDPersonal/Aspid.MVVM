@@ -13,22 +13,21 @@ using Converter = Aspid.MVVM.StarterKit.IConverterPhysicsMaterial;
 namespace Aspid.MVVM.StarterKit
 {
     [Serializable]
-    public class ColliderMaterialBinder : TargetBinder<Collider>, IBinder<PhysicsMaterial>
+    public class ColliderMaterialBinder : TargetBinder<Collider, PhysicsMaterial, Converter>
     {
-        [SerializeReferenceDropdown] 
-        [SerializeReference] private Converter? _converter;
+        protected sealed override PhysicsMaterial? Property
+        {
+            get => Target.material;
+            set => Target.material = value;
+        }
         
         public ColliderMaterialBinder(Collider target, BindMode mode)
             : this(target, converter: null, mode) { }
         
         public ColliderMaterialBinder(Collider target, Converter? converter = null, BindMode mode = BindMode.OneWay)
-            : base(target, mode)
+            : base(target, converter, mode)
         {
-            mode.ThrowExceptionIfTwo();
-            _converter = converter;
+            mode.ThrowExceptionIfMatches(BindMode.TwoWay);
         }
-
-        public void SetValue(PhysicsMaterial? value) =>
-            Target.material = _converter?.Convert(value) ?? value;
     }
 }

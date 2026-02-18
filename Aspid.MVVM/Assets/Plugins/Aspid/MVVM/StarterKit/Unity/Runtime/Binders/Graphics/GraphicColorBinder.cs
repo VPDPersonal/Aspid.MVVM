@@ -12,22 +12,21 @@ using Converter = Aspid.MVVM.StarterKit.IConverterColor;
 namespace Aspid.MVVM.StarterKit
 {
     [Serializable]
-    public class GraphicColorBinder : TargetBinder<Graphic>, IColorBinder
+    public class GraphicColorBinder : TargetColorBinder<Graphic>
     {
-        [SerializeReferenceDropdown]
-        [SerializeReference] private Converter? _converter;
+        protected sealed override Color Property
+        {
+            get => Target.color;
+            set => Target.color = value;
+        }
         
         public GraphicColorBinder(Graphic target, BindMode mode)
             : this(target, converter: null,  mode) { }
         
         public GraphicColorBinder(Graphic target, Converter? converter = null, BindMode mode = BindMode.OneWay)
-            : base(target, mode)
+            : base(target, converter, mode)
         {
-            mode.ThrowExceptionIfTwo();
-            _converter = converter;
+            mode.ThrowExceptionIfMatches(BindMode.TwoWay);
         }
-
-        public void SetValue(Color value) => 
-            Target.color = _converter?.Convert(value) ?? value;
     }
 }

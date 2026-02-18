@@ -1,24 +1,20 @@
 using UnityEngine;
+#if UNITY_2023_1_OR_NEWER
+using Converter = Aspid.MVVM.StarterKit.IConverter<UnityEngine.Vector3, UnityEngine.Vector3>;
+#else
+using Converter = Aspid.MVVM.StarterKit.IConverterVector3;
+#endif
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
     [AddBinderContextMenu(typeof(RectTransform), SubPath = "EnumGroup")]
     [AddComponentMenu("Aspid/MVVM/Binders/UI/RectTransform/RectTransform Binder – AnchoredPosition EnumGroup")]
-    public sealed class RectTransformAnchoredPositionEnumGroupMonoBinder : EnumGroupMonoBinder<RectTransform>
+    public sealed class RectTransformAnchoredPositionEnumGroupMonoBinder : EnumGroupMonoBinder<RectTransform, Vector3, Converter>
     {
-        [SerializeField] private Vector3 _defaultValue;
-        [SerializeField] private Vector3 _selectedValue;
-        
         [SerializeField] private Space _space = Space.World;
-        
-        [SerializeField] private Vector3CombineConverter _defaultValueConverter = Vector3CombineConverter.Default;
-        [SerializeField] private Vector3CombineConverter _selectedValueConverter = Vector3CombineConverter.Default;
-        
-        protected override void SetDefaultValue(RectTransform element) =>
-            element.SetAnchoredPosition(_defaultValue, _space, _defaultValueConverter);
 
-        protected override void SetSelectedValue(RectTransform element) =>
-            element.SetAnchoredPosition(_selectedValue, _space, _selectedValueConverter);
+        protected override void SetValue(RectTransform element, Vector3 value) =>
+            element.SetAnchoredPosition(value, _space);
     }
 }

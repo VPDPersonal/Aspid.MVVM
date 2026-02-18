@@ -6,24 +6,21 @@ using UnityEngine;
 namespace Aspid.MVVM.StarterKit
 {
     [Serializable]
-    public class CanvasGroupIgnoreParentGroupsBinder : TargetBinder<CanvasGroup>, IBinder<bool>
+    public sealed class CanvasGroupIgnoreParentGroupsBinder : TargetBoolBinder<CanvasGroup>
     {
-        [SerializeField] private bool _isInvert;
+        protected override bool Property
+        {
+            get => Target.ignoreParentGroups;
+            set => Target.ignoreParentGroups = value;
+        }
 
         public CanvasGroupIgnoreParentGroupsBinder(CanvasGroup target, BindMode mode)
             : this(target, isInvert: false, mode) { }
         
-        public CanvasGroupIgnoreParentGroupsBinder(
-            CanvasGroup target, 
-            bool isInvert = false, 
-            BindMode mode = BindMode.OneTime)
-            : base(target, mode)
+        public CanvasGroupIgnoreParentGroupsBinder(CanvasGroup target, bool isInvert = false, BindMode mode = BindMode.OneTime)
+            : base(target, isInvert, mode)
         {
-            mode.ThrowExceptionIfTwo();
-            _isInvert = isInvert;
+            mode.ThrowExceptionIfMatches(BindMode.TwoWay);
         }
-        
-        public void SetValue(bool value) =>
-            Target.ignoreParentGroups = _isInvert ? !value : value;
     }
 }

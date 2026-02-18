@@ -10,18 +10,14 @@ namespace Aspid.MVVM.StarterKit
 {
     [AddComponentMenu("Aspid/MVVM/Binders/LineRenderer/LineRenderer Binder – Color")]
     [AddBinderContextMenu(typeof(LineRenderer), serializePropertyNames: "colorGradient")]
-    public partial class LineRendererColorMonoBinder : ComponentMonoBinder<LineRenderer>, IColorBinder
+    public class LineRendererColorMonoBinder : ComponentColorMonoBinder<LineRenderer>
     {
         [SerializeField] private LineRendererColorMode _colorMode = LineRendererColorMode.StartAndEnd;
-        
-        [SerializeReferenceDropdown]
-        [SerializeReference] private Converter _converter;
-        
-        [BinderLog]
-        public void SetValue(Color value)
+
+        protected sealed override Color Property
         {
-            value = _converter?.Convert(value) ?? value;
-            CachedComponent.SetColor(value, _colorMode);
+            get =>  CachedComponent.GetColor(_colorMode);
+            set =>  CachedComponent.SetColor(value, _colorMode);
         }
     }
 }

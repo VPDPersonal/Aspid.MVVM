@@ -11,17 +11,11 @@ namespace Aspid.MVVM.StarterKit
 {
     [AddComponentMenu("Aspid/MVVM/Binders/UI/Slider/Slider Binder – MinMax Enum")]
     [AddBinderContextMenu(typeof(Slider), "m_MinValue", "m_MaxValue", SubPath = "Enum")]
-    public sealed class SliderMinMaxEnumMonoBinder : EnumMonoBinder<Slider, Vector2>
+    public sealed class SliderMinMaxEnumMonoBinder : EnumMonoBinder<Slider, Vector2, Converter>
     {
         [SerializeField] private SliderValueMode _valueMode = SliderValueMode.Range;
         
-        [SerializeReferenceDropdown]
-        [SerializeReference] private Converter _converter;
-        
-        protected override void SetValue(Vector2 value)
-        {
-            value = _converter?.Convert(value) ?? value;
+        protected override void SetValue(Vector2 value) =>
             CachedComponent.SetMinMax(value, _valueMode);
-        }
     }
 }

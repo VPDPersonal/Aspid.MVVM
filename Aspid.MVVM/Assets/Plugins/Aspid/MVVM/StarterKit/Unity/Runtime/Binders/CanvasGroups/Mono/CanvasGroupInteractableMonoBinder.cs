@@ -5,12 +5,12 @@ namespace Aspid.MVVM.StarterKit
 {
     [AddBinderContextMenu(typeof(CanvasGroup), serializePropertyNames: "m_Interactable")]
     [AddComponentMenu("Aspid/MVVM/Binders/UI/CanvasGroup/CanvasGroup Binder – Interactable")]
-    public partial class CanvasGroupInteractableMonoBinder : ComponentMonoBinder<CanvasGroup>, IBinder<bool>
+    public class CanvasGroupInteractableMonoBinder : ComponentBoolMonoBinder<CanvasGroup>
     {
-        [SerializeField] private bool _isInvert;
-        
-        [BinderLog]
-        public void SetValue(bool value) =>
-            CachedComponent.interactable = _isInvert ? !value : value;
+        protected sealed override bool Property
+        {
+            get => CachedComponent.interactable;
+            set => CachedComponent.interactable = value;
+        }
     }
 }

@@ -5,12 +5,12 @@ namespace Aspid.MVVM.StarterKit
 {
     [AddBinderContextMenu(typeof(CanvasGroup), serializePropertyNames: "m_IgnoreParentGroups")]
     [AddComponentMenu("Aspid/MVVM/Binders/UI/CanvasGroup/CanvasGroup Binder – IgnoreParentGroups")]
-    public partial class CanvasGroupIgnoreParentGroupsMonoBinder : ComponentMonoBinder<CanvasGroup>, IBinder<bool>
+    public class CanvasGroupIgnoreParentGroupsMonoBinder : ComponentBoolMonoBinder<CanvasGroup>
     {
-        [SerializeField] private bool _isInvert;
-        
-        [BinderLog]
-        public void SetValue(bool value) =>
-            CachedComponent.ignoreParentGroups = _isInvert ? !value : value;
+        protected sealed override bool Property
+        {
+            get => CachedComponent.ignoreParentGroups;
+            set => CachedComponent.ignoreParentGroups = value;
+        }
     }
 }

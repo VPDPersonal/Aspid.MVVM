@@ -11,15 +11,9 @@ namespace Aspid.MVVM.StarterKit
 {
     [AddComponentMenu("Aspid/MVVM/Binders/UI/Image/Image Binder – Fill Enum")]
     [AddBinderContextMenu(typeof(Image), serializePropertyNames: "m_FillAmount", SubPath = "Enum")]
-    public sealed class ImageFillEnumMonoBinder : EnumMonoBinder<Image, float>
+    public sealed class ImageFillEnumMonoBinder : EnumMonoBinder<Image, float, Converter>
     {
-        [SerializeReferenceDropdown] 
-        [SerializeReference] private Converter _converter;
-
-        protected override void SetValue(float value)
-        {
-            value = _converter?.Convert(value) ?? value;
+        protected override void SetValue(float value) =>
             CachedComponent.fillAmount = Mathf.Clamp01(value);
-        }
     }
 }

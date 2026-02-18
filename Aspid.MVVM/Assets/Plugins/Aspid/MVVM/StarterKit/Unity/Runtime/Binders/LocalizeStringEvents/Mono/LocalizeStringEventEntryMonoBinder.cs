@@ -12,14 +12,16 @@ namespace Aspid.MVVM.StarterKit
 {
     [AddBinderContextMenu(typeof(LocalizeStringEvent), serializePropertyNames: "m_StringReference")]
     [AddComponentMenu("Aspid/MVVM/Binders/UI/LocalizeStringEvent/LocalizeStringEvent Binder – Entry")]
-    public partial class LocalizeStringEventEntryMonoBinder : ComponentMonoBinder<LocalizeStringEvent>, IBinder<string>
+    public class LocalizeStringEventEntryMonoBinder : ComponentMonoBinder<LocalizeStringEvent, string, Converter>
     {
         [SerializeReferenceDropdown]
         [SerializeReference] private Converter _converter;
-        
-        [BinderLog]
-        public void SetValue(string value) =>
-            CachedComponent.StringReference.TableEntryReference = _converter?.Convert(value) ?? value;
+
+        protected sealed override string Property
+        {
+            get => CachedComponent.StringReference.TableEntryReference;
+            set => CachedComponent.StringReference.TableEntryReference = value;
+        }
     }
 }
 #endif

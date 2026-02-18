@@ -10,12 +10,9 @@ namespace Aspid.MVVM.StarterKit
 {
     [AddBinderContextMenu(typeof(AudioSource), SubPath = "Switcher")]
     [AddComponentMenu("Aspid/MVVM/Binders/Audio/AudioSource/AudioSource Binder – PanStereo Switcher")]
-    public sealed class AudioSourcePanStereoSwitcherMonoBinder : SwitcherMonoBinder<AudioSource, float>
+    public sealed class AudioSourcePanStereoSwitcherMonoBinder : SwitcherMonoBinder<AudioSource, float, Converter>
     {
-        [SerializeReferenceDropdown]
-        [SerializeReference] private Converter _converter;
-        
         protected override void SetValue(float value) =>
-            CachedComponent.panStereo = _converter?.Convert(value) ?? value;
+            CachedComponent.panStereo = value;
     }
 }

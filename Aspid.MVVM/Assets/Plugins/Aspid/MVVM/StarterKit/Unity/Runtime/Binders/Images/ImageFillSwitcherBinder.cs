@@ -12,11 +12,8 @@ using Converter = Aspid.MVVM.StarterKit.IConverterFloat;
 namespace Aspid.MVVM.StarterKit
 {
     [Serializable]
-    public sealed class ImageFillSwitcherBinder : SwitcherBinder<Image, float>
+    public sealed class ImageFillSwitcherBinder : SwitcherBinder<Image, float, Converter>
     {
-        [SerializeReferenceDropdown]
-        [SerializeReference] private Converter? _converter;
-        
         public ImageFillSwitcherBinder(
             Image target,
             float trueValue, 
@@ -30,15 +27,9 @@ namespace Aspid.MVVM.StarterKit
             float falseValue,
             Converter? converter = null,
             BindMode mode = BindMode.OneWay)
-            : base(target, trueValue, falseValue, mode)
-        {
-            _converter = converter;
-        }
+            : base(target, trueValue, falseValue, converter, mode) { }
 
-        protected override void SetValue(float value)
-        {
-            value = _converter?.Convert(value) ?? value;
+        protected override void SetValue(float value) =>
             Target.fillAmount = Mathf.Clamp01(value);
-        }
     }
 }

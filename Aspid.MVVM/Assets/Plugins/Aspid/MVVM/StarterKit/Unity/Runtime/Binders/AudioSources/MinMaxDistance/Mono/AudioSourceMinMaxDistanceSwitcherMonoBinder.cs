@@ -10,17 +10,11 @@ namespace Aspid.MVVM.StarterKit
 {
     [AddBinderContextMenu(typeof(AudioSource), SubPath = "Switcher")]
     [AddComponentMenu("Aspid/MVVM/Binders/Audio/AudioSource/AudioSource Binder – MinMaxDistance Switcher")]
-    public sealed class AudioSourceMinMaxDistanceSwitcherMonoBinder : SwitcherMonoBinder<AudioSource, Vector2>
+    public sealed class AudioSourceMinMaxDistanceSwitcherMonoBinder : SwitcherMonoBinder<AudioSource, Vector2, Converter>
     {
         [SerializeField] private AudioSourceDistanceMode _distanceMode = AudioSourceDistanceMode.Range;
         
-        [SerializeReferenceDropdown]
-        [SerializeReference] private Converter _converter;
-        
-        protected override void SetValue(Vector2 value)
-        {
-            value = _converter?.Convert(value) ?? value;
+        protected override void SetValue(Vector2 value) =>
             CachedComponent.SetMinMaxDistance(value, _distanceMode);
-        }
     }
 }

@@ -11,34 +11,24 @@ using Converter = Aspid.MVVM.StarterKit.IConverterFloat;
 namespace Aspid.MVVM.StarterKit
 {
     [Serializable]
-    public class SphereColliderRadiusBinder : TargetBinder<SphereCollider>, INumberBinder
+    public class SphereColliderRadiusBinder : TargetFloatBinder<SphereCollider>
     {
-        [SerializeReferenceDropdown]
-        [SerializeReference] private Converter? _converter;
-        
+        protected sealed override float Property
+        {
+            get => Target.radius;
+            set => Target.radius = value;
+        }
+
         public SphereColliderRadiusBinder(SphereCollider target, BindMode mode)
             : this(target, converter: null,  mode) { }
-        
+
         public SphereColliderRadiusBinder(
             SphereCollider target,
             Converter? converter = null, 
             BindMode mode = BindMode.OneWay)
-            : base(target, mode)
+            : base(target, converter, mode)
         {
-            mode.ThrowExceptionIfTwo();
-            _converter = converter;
+            mode.ThrowExceptionIfMatches(BindMode.TwoWay);
         }
-
-        public void SetValue(int value) =>
-            SetValue((float)value);
-
-        public void SetValue(long value) =>
-            SetValue((float)value);
-        
-        public void SetValue(float value) =>
-            Target.radius = _converter?.Convert(value) ?? value;
-
-        public void SetValue(double value) =>
-            SetValue((float)value);
     }
 }

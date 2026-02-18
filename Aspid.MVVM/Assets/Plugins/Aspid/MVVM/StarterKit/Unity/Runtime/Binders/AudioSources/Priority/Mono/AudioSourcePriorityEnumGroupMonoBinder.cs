@@ -10,21 +10,9 @@ namespace Aspid.MVVM.StarterKit
 {
     [AddBinderContextMenu(typeof(AudioSource), SubPath = "EnumGroup")]
     [AddComponentMenu("Aspid/MVVM/Binders/Audio/AudioSource/AudioSource Binder – Priority EnumGroup")]
-    public sealed class AudioSourcePriorityEnumGroupMonoBinder : EnumGroupMonoBinder<AudioSource>
+    public sealed class AudioSourcePriorityEnumGroupMonoBinder : EnumGroupMonoBinder<AudioSource, int, Converter>
     {
-        [SerializeField] [Range(0, 256)] private int _defaultValue;
-        [SerializeField] [Range(0, 256)] private int _selectedValue;
-        
-        [SerializeReferenceDropdown]
-        [SerializeReference] private Converter _defaultConverter;
-        
-        [SerializeReferenceDropdown]
-        [SerializeReference] private Converter _selectedConverter;
-
-        protected override void SetDefaultValue(AudioSource element) =>
-            element.priority = _defaultConverter?.Convert(_defaultValue) ?? _defaultValue;
-
-        protected override void SetSelectedValue(AudioSource element) =>
-            element.priority = _selectedConverter?.Convert(_selectedValue) ?? _selectedValue;
+        protected override void SetValue(AudioSource element, int value) =>
+            element.priority = Mathf.Clamp(value, min: 0, max: 256);
     }
 }

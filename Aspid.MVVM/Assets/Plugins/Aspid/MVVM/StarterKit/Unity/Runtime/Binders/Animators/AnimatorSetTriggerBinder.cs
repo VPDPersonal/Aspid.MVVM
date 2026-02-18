@@ -7,11 +7,24 @@ namespace Aspid.MVVM.StarterKit
 {
     [Serializable]
     [BindModeOverride(BindMode.OneWayToSource)]
-    public class AnimatorSetTriggerBinder : TargetBinder<Animator>, IReverseBinder<IRelayCommand>
+    public class AnimatorSetTriggerBinder : TargetBinder<Animator>,
+        IReverseBinder<Action?>,
+        IReverseBinder<IRelayCommand?>
     {
-        public event Action<IRelayCommand?>? ValueChanged;
+        event Action<Action?>? IReverseBinder<Action?>.ValueChanged
+        {
+            add => _reverseAction += value;
+            remove => _reverseAction -= value;
+        }
+        event Action<IRelayCommand?>? IReverseBinder<IRelayCommand?>.ValueChanged
+        {
+            add => _reverseCommand += value;
+            remove => _reverseCommand -= value;
+        }
         
         private IRelayCommand? _command;
+        private Action<Action?>? _reverseAction;
+        private Action<IRelayCommand?>? _reverseCommand;
         
         [field: SerializeField]
         protected string TriggerName { get; private set; }
@@ -31,19 +44,24 @@ namespace Aspid.MVVM.StarterKit
             Target.SetTrigger(TriggerName);
         }
         
-        protected override void OnBound()
+        protected sealed override void OnBound()
         {
-            if (ValueChanged is not null)
+            if (_reverseCommand is not null)
             {
                 _command = new RelayCommand(SetTrigger, CanExecute);
-                ValueChanged.Invoke(_command);
+                _reverseCommand.Invoke(_command);
+            }
+            else
+            {
+                _reverseAction?.Invoke(SetTrigger);
             }
         }
 
-        protected override void OnUnbinding()
+        protected sealed override void OnUnbinding()
         {
             _command = null;
-            ValueChanged?.Invoke(_command);
+            _reverseAction?.Invoke(null);
+            _reverseCommand?.Invoke(null);
         }
 
         protected virtual bool CanExecute() => 

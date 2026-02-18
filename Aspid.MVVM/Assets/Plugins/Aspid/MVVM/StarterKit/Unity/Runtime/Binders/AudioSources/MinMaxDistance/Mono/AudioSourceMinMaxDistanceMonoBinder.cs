@@ -10,19 +10,17 @@ namespace Aspid.MVVM.StarterKit
 {
     [AddBinderContextMenu(typeof(AudioSource))]
     [AddComponentMenu("Aspid/MVVM/Binders/Audio/AudioSource/AudioSource Binder – MinMaxDistance")]
-    [BindModeOverride(BindMode.OneWay, BindMode.OneTime, BindMode.OneWayToSource)]
-    public partial class AudioSourceMinMaxDistanceMonoBinder : ComponentMonoBinder<AudioSource>, IBinder<Vector2>, INumberBinder
+    public partial class AudioSourceMinMaxDistanceMonoBinder : ComponentMonoBinder<AudioSource, Vector2>, INumberBinder
     {
         [SerializeField] private AudioSourceDistanceMode _distanceMode = AudioSourceDistanceMode.Range;
         
         [SerializeReferenceDropdown]
         [SerializeReference] private Converter _converter;
-        
-        [BinderLog]
-        public void SetValue(Vector2 value)
+
+        protected sealed override Vector2 Property
         {
-            value = _converter?.Convert(value) ?? value;
-            CachedComponent.SetMinMaxDistance(value, _distanceMode);
+            get => new(CachedComponent.minDistance, CachedComponent.maxDistance);
+            set => CachedComponent.SetMinMaxDistance(value, _distanceMode);
         }
         
         [BinderLog]
@@ -40,5 +38,8 @@ namespace Aspid.MVVM.StarterKit
         [BinderLog]
         public void SetValue(double value) =>
             SetValue((float)value);
+
+        protected override Vector2 GetConvertedValue(Vector2 value) =>
+            _converter?.Convert(value) ?? value;
     }
 }

@@ -11,7 +11,9 @@ using Converter = Aspid.MVVM.StarterKit.IConverterVector3;
 namespace Aspid.MVVM.StarterKit
 {
     [Serializable]
-    public sealed class Vector3CombineConverter
+    public abstract class Vector3CombineConverter :
+        IConverterVector3,
+        IConverterVector2ToVector3
     {
         [SerializeField] private Mode _mode;
         
@@ -47,16 +49,15 @@ namespace Aspid.MVVM.StarterKit
             _postConvertor = postConvertor;
         }
         
-        public Vector3 Convert(Vector3 from, Vector2 to) =>
-            Convert(from, (Vector3)to);
+        protected abstract Vector3 VectorTo { get; }
         
-        public Vector3 Convert(Vector2 from, Vector3 to) =>
-            Convert((Vector3)from, to);
+        public Vector3 Convert(Vector2 value) =>
+            Convert(value, VectorTo);
         
-        public Vector3 Convert(Vector2 from, Vector2 to) =>
-            Convert((Vector3)from, (Vector3)to);
+        public Vector3 Convert(Vector3 value) =>
+            Convert(value, VectorTo);
         
-        public Vector3 Convert(Vector3 from, Vector3 to)
+        private Vector3 Convert(Vector3 from, Vector3 to)
         {
             from = _preConvertor?.Convert(from) ?? from;
             
@@ -74,8 +75,6 @@ namespace Aspid.MVVM.StarterKit
             
             return _postConvertor?.Convert(from) ?? from;
         }
-
-        public static Vector3CombineConverter Default => new(Mode.XYZ);
         
         public enum Mode
         {

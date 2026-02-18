@@ -12,13 +12,10 @@ using Converter = Aspid.MVVM.StarterKit.IConverterVector2;
 namespace Aspid.MVVM.StarterKit
 {
     [Serializable]
-    public sealed class SliderMinMaxSwitcherBinder : SwitcherBinder<Slider, Vector2>
+    public sealed class SliderMinMaxSwitcherBinder : SwitcherBinder<Slider, Vector2, Converter>
     {
         [SerializeField] private SliderValueMode _valueMode;
         
-        [SerializeReferenceDropdown]
-        [SerializeReference] private Converter? _converter;
-
         public SliderMinMaxSwitcherBinder(
             Slider target, 
             Vector2 trueValue, 
@@ -49,16 +46,12 @@ namespace Aspid.MVVM.StarterKit
             SliderValueMode valueMode = SliderValueMode.Range,
             Converter? converter = null,
             BindMode mode = BindMode.OneWay) 
-            : base(target, trueValue, falseValue, mode)
+            : base(target, trueValue, falseValue, converter, mode)
         {
             _valueMode = valueMode;
-            _converter = converter;
         }
 
-        protected override void SetValue(Vector2 value)
-        {
-            value = _converter?.Convert(value) ?? value;
+        protected override void SetValue(Vector2 value) =>
             Target.SetMinMax(value, _valueMode);
-        }
     }
 }

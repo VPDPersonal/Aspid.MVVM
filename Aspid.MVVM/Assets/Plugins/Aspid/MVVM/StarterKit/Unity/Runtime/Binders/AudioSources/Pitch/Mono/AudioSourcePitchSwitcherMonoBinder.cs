@@ -10,12 +10,9 @@ namespace Aspid.MVVM.StarterKit
 {
     [AddBinderContextMenu(typeof(AudioSource), SubPath = "Switcher")]
     [AddComponentMenu("Aspid/MVVM/Binders/Audio/AudioSource/AudioSource Binder – Pitch Switcher")]
-    public sealed class AudioSourcePitchSwitcherMonoBinder : SwitcherMonoBinder<AudioSource, float>
+    public sealed class AudioSourcePitchSwitcherMonoBinder : SwitcherMonoBinder<AudioSource, float, Converter>
     {     
-        [SerializeReferenceDropdown]
-        [SerializeReference] private Converter _converter;
-
         protected override void SetValue(float value) =>
-            CachedComponent.pitch = _converter?.Convert(value) ?? value;
+            CachedComponent.pitch = Mathf.Clamp(value, min: -3, max:  3);
     }
 }

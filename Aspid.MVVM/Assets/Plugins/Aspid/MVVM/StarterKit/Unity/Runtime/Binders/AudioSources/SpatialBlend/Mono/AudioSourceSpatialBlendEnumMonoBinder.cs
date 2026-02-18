@@ -10,12 +10,9 @@ namespace Aspid.MVVM.StarterKit
 {
     [AddBinderContextMenu(typeof(AudioSource), SubPath = "Enum")]
     [AddComponentMenu("Aspid/MVVM/Binders/Audio/AudioSource/AudioSource Binder – SpatialBlend Enum")]
-    public sealed class AudioSourceSpatialBlendEnumMonoBinder : EnumMonoBinder<AudioSource, float>
+    public sealed class AudioSourceSpatialBlendEnumMonoBinder : EnumMonoBinder<AudioSource, float, Converter>
     {
-        [SerializeReferenceDropdown]
-        [SerializeReference] private Converter _converter;
-        
         protected override void SetValue(float value) =>
-            CachedComponent.spatialBlend = _converter?.Convert(value) ?? value;
+            CachedComponent.spatialBlend = value;
     }
 }

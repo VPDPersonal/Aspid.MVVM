@@ -10,24 +10,22 @@ namespace Aspid.MVVM.StarterKit
 {
     [AddBinderContextMenu(typeof(Renderer), serializePropertyNames: "m_Materials")]
     [AddComponentMenu("Aspid/MVVM/Binders/Renderer/Renderer Binder – MaterialsColor")]
-    public partial class RendererMaterialsColorMonoBinder : ComponentMonoBinder<Renderer>, IColorBinder
+    public class RendererMaterialsColorMonoBinder : ComponentColorMonoBinder<Renderer>, IColorBinder
     {
         [SerializeField] private string _colorPropertyName = "_BaseColor";
         
-        [SerializeReferenceDropdown]
-        [SerializeReference] private Converter _converter;
-
         private int? _colorPropertyId;
         
         private int ColorPropertyId => _colorPropertyId ??= Shader.PropertyToID(_colorPropertyName);
-        
-        [BinderLog]
-        public void SetValue(Color value)
+
+        protected sealed override Color Property
         {
-            value = _converter?.Convert(value) ?? value;
-            
-            foreach (var material in CachedComponent.materials)
-                material.SetColor(ColorPropertyId, value);
+            get => CachedComponent.material.GetColor(ColorPropertyId);
+            set
+            {
+                foreach (var material in CachedComponent.materials)
+                    material.SetColor(ColorPropertyId, value);
+            }
         }
     }
 }

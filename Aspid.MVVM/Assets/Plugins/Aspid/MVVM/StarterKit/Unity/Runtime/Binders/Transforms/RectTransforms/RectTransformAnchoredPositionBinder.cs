@@ -1,50 +1,53 @@
 #nullable enable
 using System;
 using UnityEngine;
+#if UNITY_2023_1_OR_NEWER
+using Converter = Aspid.MVVM.StarterKit.IConverter<UnityEngine.Vector3, UnityEngine.Vector3>;
+#else
+using Converter = Aspid.MVVM.StarterKit.IConverterVector3;
+#endif
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
     [Serializable]
-    public class RectTransformAnchoredPositionBinder : TargetBinder<RectTransform>, IVectorBinder
+    public class RectTransformAnchoredPositionBinder : TargetVector3Binder<RectTransform>
     {
         [SerializeField] private Space _space;
-        [SerializeField] private Vector3CombineConverter? _converter;
-        
+
+        protected sealed override Vector3 Property
+        {
+            get => Target.GetAnchoredPosition(_space);
+            set => Target.SetAnchoredPosition(value, _space);
+        }
+
         public RectTransformAnchoredPositionBinder(
             RectTransform transform,
             BindMode mode)
             : this(transform, Space.World, converter: null, mode) { }
-        
+
         public RectTransformAnchoredPositionBinder(
             RectTransform transform,
             Space space,
             BindMode mode)
             : this(transform, space, converter: null, mode) { }
-        
+
         public RectTransformAnchoredPositionBinder(
             RectTransform transform,
-            Vector3CombineConverter? converter,
+            Converter? converter,
             BindMode mode = BindMode.OneWay)
             : this(transform, Space.World, converter, mode) { }
-        
+
         public RectTransformAnchoredPositionBinder(
             RectTransform target,
             Space space = Space.World, 
-            Vector3CombineConverter? converter = null,
+            Converter? converter = null,
             BindMode mode = BindMode.OneWay)
-            : base(target, mode)
+            : base(target, converter, mode)
         {
-            mode.ThrowExceptionIfTwo();
+            mode.ThrowExceptionIfMatches(BindMode.TwoWay);
             _space = space;
-            _converter = converter;
         }
-
-        public void SetValue(Vector2 value) =>
-            SetValue((Vector3)value);
-
-        public void SetValue(Vector3 value) =>
-            Target.SetAnchoredPosition(value, _space, _converter);
     }
 
 }

@@ -10,12 +10,9 @@ namespace Aspid.MVVM.StarterKit
 {
     [AddBinderContextMenu(typeof(AudioSource), SubPath = "Enum")]
     [AddComponentMenu("Aspid/MVVM/Binders/Audio/AudioSource/AudioSource Binder – Time Enum")]
-    public sealed class AudioSourceTimeEnumMonoBinder : EnumMonoBinder<AudioSource, float>
+    public sealed class AudioSourceTimeEnumMonoBinder : EnumMonoBinder<AudioSource, float, Converter>
     {
-        [SerializeReferenceDropdown]
-        [SerializeReference] private Converter _converter;
-        
         protected override void SetValue(float value) =>
-            CachedComponent.time = _converter?.Convert(value) ?? value;
+            CachedComponent.time = value;
     }
 }

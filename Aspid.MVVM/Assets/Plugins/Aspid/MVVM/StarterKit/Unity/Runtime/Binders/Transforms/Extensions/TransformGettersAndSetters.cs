@@ -5,20 +5,19 @@ using System.Runtime.CompilerServices;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
-    public static class TransformSetters
+    public static class TransformGettersAndSetters
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void SetPosition(this Transform transform, Vector3 value, Space space, Vector3CombineConverter converter = null)
+        public static Vector3 GetPosition(this Transform transform, Space space) => space switch
         {
-            var currentValue = space switch
-            {
-                Space.Self => transform.localPosition,
-                Space.World => transform.position,
-                _ => throw new ArgumentOutOfRangeException()
-            };
+            Space.Self => transform.localPosition,
+            Space.World => transform.position,
+            _ => throw new ArgumentOutOfRangeException()
+        };
 
-            value = converter?.Convert(value, currentValue) ?? value;
-            
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void SetPosition(this Transform transform, Vector3 value, Space space)
+        {
             switch (space)
             {
                 case Space.Self: transform.localPosition = value; break;
@@ -27,6 +26,14 @@ namespace Aspid.MVVM.StarterKit
             }
         }
         
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Quaternion GetRotation(this Transform transform, Space space) => space switch
+        {
+            Space.Self => transform.localRotation,
+            Space.World => transform.rotation,
+            _ => throw new ArgumentOutOfRangeException()
+        };
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void SetRotation(this Transform transform, Quaternion value, Space space)
         {
@@ -39,21 +46,16 @@ namespace Aspid.MVVM.StarterKit
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void SetScale(this Transform transform, Vector3 value, Vector3CombineConverter converter = null) =>
-            transform.localScale = converter?.Convert(value, transform.localScale) ?? value;
-        
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void SetEulerAngles(this Transform transform, Vector3 value, Space space, Vector3CombineConverter converter = null)
+        public static Vector3 GetEulerAngles(this Transform transform, Space space) => space switch
         {
-            var currentValue = space switch
-            {
-                Space.Self => transform.localEulerAngles,
-                Space.World => transform.eulerAngles,
-                _ => throw new ArgumentOutOfRangeException()
-            };
-            
-            value = converter?.Convert(value, currentValue) ?? value;
-            
+            Space.Self => transform.localEulerAngles,
+            Space.World => transform.eulerAngles,
+            _ => throw new ArgumentOutOfRangeException()
+        };
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void SetEulerAngles(this Transform transform, Vector3 value, Space space)
+        {
             switch (space)
             {
                 case Space.Self: transform.localEulerAngles = value; break;

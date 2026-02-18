@@ -11,11 +11,8 @@ using Converter = Aspid.MVVM.StarterKit.IConverterFloat;
 namespace Aspid.MVVM.StarterKit
 {
     [Serializable]
-    public sealed class AudioSourceSpreadSwitcherBinder : SwitcherBinder<AudioSource, float>
+    public sealed class AudioSourceSpreadSwitcherBinder : SwitcherBinder<AudioSource, float, Converter>
     {
-        [SerializeReferenceDropdown]
-        [SerializeReference] private Converter? _converter;
-        
         public AudioSourceSpreadSwitcherBinder(
             AudioSource target,
             float trueValue, 
@@ -29,12 +26,9 @@ namespace Aspid.MVVM.StarterKit
             float falseValue,
             Converter? converter = null,
             BindMode mode = BindMode.OneWay)
-            : base(target, trueValue, falseValue, mode)
-        {
-            _converter = converter;
-        }
+            : base(target, trueValue, falseValue, converter, mode) { }
 
         protected override void SetValue(float value) =>
-            Target.spread = _converter?.Convert(value) ?? value;
+            Target.spread = value;
     }
 }

@@ -10,26 +10,12 @@ namespace Aspid.MVVM.StarterKit
 {
     [AddBinderContextMenu(typeof(SphereCollider), serializePropertyNames: "m_Radius")]
     [AddComponentMenu("Aspid/MVVM/Binders/Collider/Sphere/SphereCollider Binder – Radius")]
-    public partial class SphereColliderRadiusMonoBinder : ComponentMonoBinder<SphereCollider>, INumberBinder
+    public class SphereColliderRadiusMonoBinder : ComponentFloatMonoBinder<SphereCollider>
     {
-        [SerializeReferenceDropdown]
-        [SerializeReference] private Converter _converter;
-
-        [BinderLog]
-        public void SetValue(int value) =>
-            SetValue((float)value);
-
-        [BinderLog]
-        public void SetValue(long value) =>
-            SetValue((float)value);
-        
-        [BinderLog]
-        public void SetValue(float value) =>
-            CachedComponent.radius = _converter?.Convert(value) ?? value;
-
-        [BinderLog]
-        public void SetValue(double value) =>
-            SetValue((float)value);
+        protected sealed override float Property
+        {
+            get =>  CachedComponent.radius;
+            set => CachedComponent.radius = value;
+        }
     }
-
 }

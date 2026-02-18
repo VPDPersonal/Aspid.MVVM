@@ -13,11 +13,14 @@ using Converter = Aspid.MVVM.StarterKit.IConverterString;
 // ReSharper disable NotNullOrRequiredMemberIsNotInitialized
 namespace Aspid.MVVM.StarterKit
 {
-    [BindModeOverride(IsAll = true)]
     [AddComponentMenu("Aspid/MVVM/Binders/UI/InputField/InputField Binder – Text")]
     [AddBinderContextMenu(typeof(TMP_InputField), serializePropertyNames: "m_Text")]
-    public partial class InputFieldMonoBinder : ComponentMonoBinder<TMP_InputField>, 
-        IBinder<string>, INumberBinder, IReverseBinder<string>, INumberReverseBinder
+    [BindModeOverride(IsAll = true)]
+    public sealed partial class InputFieldMonoBinder : ComponentMonoBinder<TMP_InputField>, 
+        INumberBinder, 
+        IBinder<string>,
+        INumberReverseBinder,
+        IReverseBinder<string> 
     {
         public event Action<string> ValueChanged;
         public event Action<int> IntValueChanged;

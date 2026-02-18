@@ -11,50 +11,21 @@ using Converter = Aspid.MVVM.StarterKit.IConverterFloat;
 namespace Aspid.MVVM.StarterKit
 {
     [Serializable]
-    [BindModeOverride(BindMode.OneWay, BindMode.OneTime, BindMode.OneWayToSource)]
-    public class AudioSourcePanStereoBinder : TargetBinder<AudioSource>, INumberBinder, INumberReverseBinder
+    public class AudioSourcePanStereoBinder : TargetFloatBinder<AudioSource>
     {
-        public event Action<int>? IntValueChanged;
-        public event Action<long>? LongValueChanged;
-        public event Action<float>? FloatValueChanged;
-        public event Action<double>? DoubleValueChanged;
-        
-        [SerializeReferenceDropdown]
-        [SerializeReference] private Converter? _converter;
+        protected sealed override float Property
+        {
+            get => Target.panStereo;
+            set => Target.panStereo = value;
+        }
         
         public AudioSourcePanStereoBinder(AudioSource target, BindMode mode)
             : this(target, converter: null, mode) { }
         
         public AudioSourcePanStereoBinder(AudioSource target, Converter? converter = null, BindMode mode = BindMode.OneWay)
-            : base(target, mode)
+            : base(target, converter, mode)
         {
-            mode.ThrowExceptionIfTwo();
-            _converter = converter;
+            mode.ThrowExceptionIfMatches(BindMode.TwoWay);
         }
-
-        public void SetValue(int value) => SetValue((float)value);
-
-        public void SetValue(long value) => SetValue((float)value);
-
-        public void SetValue(float value) =>
-            Target.panStereo = GetConvertedValue(value);
-
-        public void SetValue(double value) => SetValue((float)value);
-        
-        protected override void OnBound()
-        {
-            if (Mode is BindMode.OneWayToSource)
-            {
-                var value = GetConvertedValue(Target.panStereo);
-                
-                IntValueChanged?.Invoke((int)value);
-                LongValueChanged?.Invoke((long)value);
-                FloatValueChanged?.Invoke(value);
-                DoubleValueChanged?.Invoke(value);
-            }
-        }
-        
-        private float GetConvertedValue(float value) =>
-            _converter?.Convert(value) ?? value;
     }
 }

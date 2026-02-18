@@ -11,21 +11,9 @@ namespace Aspid.MVVM.StarterKit
 {
     [AddBinderContextMenu(typeof(HorizontalOrVerticalLayoutGroup), serializePropertyNames: "m_Spacing", SubPath = "EnumGroup")]
     [AddComponentMenu("Aspid/MVVM/Binders/UI/LayoutGroup/HorizontalOrVertical/HorizontalOrVerticalLayoutGroup Binder – Spacing EnumGroup")]
-    public sealed class HorizontalOrVerticalLayoutGroupSpacingEnumGroupMonoBinder : EnumGroupMonoBinder<HorizontalOrVerticalLayoutGroup>
+    public sealed class HorizontalOrVerticalLayoutGroupSpacingEnumGroupMonoBinder : EnumGroupMonoBinder<HorizontalOrVerticalLayoutGroup, float, Converter>
     {
-        [SerializeField] private float _defaultValue;
-        [SerializeField] private float _selectedValue;
-        
-        [SerializeReferenceDropdown]
-        [SerializeReference] private Converter _defaultValueConverter;
-        
-        [SerializeReferenceDropdown]
-        [SerializeReference] private Converter _selectedValueConverter;
-
-        protected override void SetDefaultValue(HorizontalOrVerticalLayoutGroup element) =>
-            element.spacing = _defaultValueConverter?.Convert(_defaultValue) ?? _defaultValue;
-
-        protected override void SetSelectedValue(HorizontalOrVerticalLayoutGroup element) =>
-            element.spacing = _defaultValueConverter?.Convert(_selectedValue) ?? _selectedValue;
+        protected override void SetValue(HorizontalOrVerticalLayoutGroup element, float value) =>
+            element.spacing = value;
     }
 }

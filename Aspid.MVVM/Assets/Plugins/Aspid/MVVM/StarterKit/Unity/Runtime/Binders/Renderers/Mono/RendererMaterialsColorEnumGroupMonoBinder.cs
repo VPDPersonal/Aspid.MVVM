@@ -10,36 +10,15 @@ namespace Aspid.MVVM.StarterKit
 {
     [AddComponentMenu("Aspid/MVVM/Binders/Renderer/Renderer Binder – MaterialsColor EnumGroup")]
     [AddBinderContextMenu(typeof(Renderer), serializePropertyNames: "m_Materials", SubPath = "EnumGroup")]
-    public sealed class RendererMaterialsColorEnumGroupMonoBinder : EnumGroupMonoBinder<Renderer>
+    public sealed class RendererMaterialsColorEnumGroupMonoBinder : EnumGroupMonoBinder<Renderer, Color, Converter>
     {
-        [SerializeField] private Color _defaultValue;
-        [SerializeField] private Color _selectedValues;
-        
         [SerializeField] private string _colorPropertyName = "_BaseColor";
-        
-        [SerializeReferenceDropdown]
-        [SerializeReference] private Converter _defaultValueConverter;
-        
-        [SerializeReferenceDropdown]
-        [SerializeReference] private Converter _selectedValuerConverter;
         
         private int? _colorPropertyId;
         
         private int ColorPropertyId => _colorPropertyId ??= Shader.PropertyToID(_colorPropertyName);
         
-        protected override void SetDefaultValue(Renderer element)
-        {
-            var value = _defaultValueConverter?.Convert(_defaultValue) ?? _defaultValue;
-            SetValue(element, value);
-        }
-
-        protected override void SetSelectedValue(Renderer element)
-        {
-            var value = _selectedValuerConverter?.Convert(_selectedValues) ?? _selectedValues;
-            SetValue(element, value);
-        }
-
-        private void SetValue(Renderer element, Color value)
+        protected override void SetValue(Renderer element, Color value)
         {
             foreach (var material in element.materials)
                 material.SetColor(ColorPropertyId, value);

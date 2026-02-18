@@ -12,11 +12,8 @@ using Converter = Aspid.MVVM.StarterKit.IConverterMaterial;
 namespace Aspid.MVVM.StarterKit
 {
     [Serializable]
-    public sealed class RawImageMaterialSwitcherBinder : SwitcherBinder<RawImage, Material>
+    public sealed class RawImageMaterialSwitcherBinder : SwitcherBinder<RawImage, Material, Converter>
     {
-        [SerializeReferenceDropdown]
-        [SerializeReference] private Converter? _converter;
-        
         public RawImageMaterialSwitcherBinder(
             RawImage target, 
             Material trueValue, 
@@ -30,12 +27,9 @@ namespace Aspid.MVVM.StarterKit
             Material falseValue, 
             Converter? converter = null,
             BindMode mode = BindMode.OneWay) 
-            : base(target, trueValue, falseValue, mode)
-        {
-            _converter = converter;
-        }
+            : base(target, trueValue, falseValue, converter, mode) { }
 
         protected override void SetValue(Material value) =>
-            Target.material = _converter?.Convert(value) ?? value;
+            Target.material = value;
     }
 }

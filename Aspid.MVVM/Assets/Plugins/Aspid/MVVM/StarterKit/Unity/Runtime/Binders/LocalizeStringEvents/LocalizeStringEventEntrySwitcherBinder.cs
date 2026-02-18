@@ -1,7 +1,6 @@
 #if ASPID_MVVM_UNITY_LOCALIZATION_INTEGRATION
 #nullable enable
 using System;
-using UnityEngine;
 using UnityEngine.Localization.Components;
 #if UNITY_2023_1_OR_NEWER
 using Converter = Aspid.MVVM.StarterKit.IConverter<string?, string?>;
@@ -13,11 +12,8 @@ using Converter = Aspid.MVVM.StarterKit.IConverterString;
 namespace Aspid.MVVM.StarterKit
 {
     [Serializable]
-    public sealed class LocalizeStringEventEntrySwitcherBinder : SwitcherBinder<LocalizeStringEvent, string>
+    public sealed class LocalizeStringEventEntrySwitcherBinder : SwitcherBinder<LocalizeStringEvent, string, Converter>
     { 
-        [SerializeReferenceDropdown]
-        [SerializeReference] private Converter? _converter;
-        
         public LocalizeStringEventEntrySwitcherBinder(
             LocalizeStringEvent target,
             string trueValue, 
@@ -31,13 +27,10 @@ namespace Aspid.MVVM.StarterKit
             string falseValue,
             Converter? converter = null,
             BindMode mode = BindMode.OneWay) 
-            : base(target, trueValue, falseValue, mode)
-        {
-            _converter = converter;
-        }
+            : base(target, trueValue, falseValue, converter, mode) { }
 
         protected override void SetValue(string value) =>
-            Target.StringReference.TableEntryReference = _converter?.Convert(value) ?? value;
+            Target.StringReference.TableEntryReference = value;
     }
 }
 #endif

@@ -6,15 +6,18 @@ namespace Aspid.MVVM.StarterKit
 {
     [AddComponentMenu("Aspid/MVVM/Binders/UI/Image/Image Binder – Sprite")]
     [AddBinderContextMenu(typeof(Image), serializePropertyNames: "m_Sprite")]
-    public partial class ImageSpriteMonoBinder : ComponentMonoBinder<Image>, IBinder<Sprite>, IBinder<Texture2D>
+    public partial class ImageSpriteMonoBinder : ComponentMonoBinder<Image, Sprite>, IBinder<Texture2D>
     {
         [SerializeField] private bool _disabledWhenNull = true;
-
-        [BinderLog]
-        public void SetValue(Sprite value)
+        
+        protected sealed override Sprite Property
         {
-            CachedComponent.sprite = value;
-            CachedComponent.enabled = !_disabledWhenNull || value;
+            get => CachedComponent.sprite;
+            set
+            {
+                CachedComponent.sprite = value;
+                CachedComponent.enabled = !_disabledWhenNull || value;
+            }
         }
 
         [BinderLog]

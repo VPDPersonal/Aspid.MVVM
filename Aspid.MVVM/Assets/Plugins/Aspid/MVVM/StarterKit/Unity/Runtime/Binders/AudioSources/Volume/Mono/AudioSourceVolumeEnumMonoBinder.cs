@@ -10,12 +10,9 @@ namespace Aspid.MVVM.StarterKit
 {
     [AddBinderContextMenu(typeof(AudioSource), SubPath = "Enum")]
     [AddComponentMenu("Aspid/MVVM/Binders/Audio/AudioSource/AudioSource Binder – Volume Enum")]
-    public sealed class AudioSourceVolumeEnumMonoBinder : EnumMonoBinder<AudioSource, float>
+    public sealed class AudioSourceVolumeEnumMonoBinder : EnumMonoBinder<AudioSource, float, Converter>
     {
-        [SerializeReferenceDropdown]
-        [SerializeReference] private Converter _converter;
-        
         protected override void SetValue(float value) =>
-            CachedComponent.volume = _converter?.Convert(value) ?? value;
+            CachedComponent.volume = Mathf.Clamp(value, min: 0, max: 1);
     }
 }

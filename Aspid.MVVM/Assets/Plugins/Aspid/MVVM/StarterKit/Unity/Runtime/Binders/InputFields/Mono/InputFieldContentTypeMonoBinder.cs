@@ -7,13 +7,16 @@ namespace Aspid.MVVM.StarterKit
 {
     [AddComponentMenu("Aspid/MVVM/Binders/UI/InputField/InputField Binder - ContentType")]
     [AddBinderContextMenu(typeof(TMP_InputField), serializePropertyNames: "m_ContentType")]
-    public partial class InputFieldContentTypeMonoBinder : ComponentMonoBinder<TMP_InputField>, IBinder<TMP_InputField.ContentType>
+    public class InputFieldContentTypeMonoBinder : ComponentMonoBinder<TMP_InputField, TMP_InputField.ContentType>
     {
-        [BinderLog]
-        public void SetValue(TMP_InputField.ContentType value)
+        protected sealed override TMP_InputField.ContentType Property
         {
-            CachedComponent.contentType = value;
-            CachedComponent.ForceLabelUpdate();
+            get => CachedComponent.contentType;
+            set
+            {
+                CachedComponent.contentType = value;
+                CachedComponent.ForceLabelUpdate();
+            }
         }
     }
 }

@@ -10,12 +10,9 @@ namespace Aspid.MVVM.StarterKit
 {
     [AddBinderContextMenu(typeof(AudioSource), SubPath = "Switcher")]
     [AddComponentMenu("Aspid/MVVM/Binders/Audio/AudioSource/AudioSource Binder – DopplerLevel Switcher")]
-    public sealed class AudioSourceDopplerLevelSwitcherMonoBinder : SwitcherMonoBinder<AudioSource, float>
+    public sealed class AudioSourceDopplerLevelSwitcherMonoBinder : SwitcherMonoBinder<AudioSource, float, Converter>
     {
-        [SerializeReferenceDropdown]
-        [SerializeReference] private Converter _converter;
-        
         protected override void SetValue(float value) =>
-            CachedComponent.dopplerLevel = _converter?.Convert(value) ?? value;
+            CachedComponent.dopplerLevel = value;
     }
 }

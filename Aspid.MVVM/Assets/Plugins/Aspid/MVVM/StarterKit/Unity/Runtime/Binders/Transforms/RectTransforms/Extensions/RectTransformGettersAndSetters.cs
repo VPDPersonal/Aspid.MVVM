@@ -6,8 +6,9 @@ using System.Runtime.CompilerServices;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
-    public static class RectTransformSetters
+    public static class RectTransformGettersAndSetters
     {
+        
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void SetSizeDelta(this RectTransform transform, Vector3 value, SizeDeltaMode mode)
         {
@@ -19,17 +20,16 @@ namespace Aspid.MVVM.StarterKit
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void SetAnchoredPosition(this RectTransform transform, Vector3 value, Space space, Vector3CombineConverter? converter = null)
+        public static Vector3 GetAnchoredPosition(this RectTransform transform, Space space) => space switch
         {
-            var currentValue = space switch
-            {
-                Space.Self => (Vector3)transform.anchoredPosition,
-                Space.World => transform.anchoredPosition3D,
-                _ => throw new ArgumentOutOfRangeException()
-            };
+            Space.Self => transform.anchoredPosition,
+            Space.World => transform.anchoredPosition3D,
+            _ => throw new ArgumentOutOfRangeException()
+        };
 
-            value = converter?.Convert(value, currentValue) ?? value;
-            
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void SetAnchoredPosition(this RectTransform transform, Vector3 value, Space space)
+        {
             switch (space)
             {
                 case Space.Self: transform.anchoredPosition = value; break;

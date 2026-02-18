@@ -12,22 +12,10 @@ namespace Aspid.MVVM.StarterKit
 {
     [AddComponentMenu("Aspid/MVVM/Binders/UI/Text/Text Binder – Text EnumGroup")]
     [AddBinderContextMenu(typeof(TMP_Text), serializePropertyNames: "m_text", SubPath = "EnumGroup")]
-    public sealed class TextEnumGroupMonoBinder : EnumGroupMonoBinder<TMP_Text>
+    public sealed class TextEnumGroupMonoBinder : EnumGroupMonoBinder<TMP_Text, string, Converter>
     {
-        [SerializeField] private string _defaultValue;
-        [SerializeField] private string _selectedValue;
-        
-        [SerializeReferenceDropdown]
-        [SerializeReference] private Converter _defaultValueConverter;
-        
-        [SerializeReferenceDropdown]
-        [SerializeReference] private Converter _selectedValueConverter;
-
-        protected override void SetDefaultValue(TMP_Text element) =>
-            element.text = _defaultValueConverter?.Convert(_defaultValue) ?? _defaultValue;
-
-        protected override void SetSelectedValue(TMP_Text element) =>
-            element.text = _selectedValueConverter?.Convert(_selectedValue) ?? _selectedValue;
+        protected override void SetValue(TMP_Text element, string value) =>
+            element.text = value;
     }
 }
 #endif

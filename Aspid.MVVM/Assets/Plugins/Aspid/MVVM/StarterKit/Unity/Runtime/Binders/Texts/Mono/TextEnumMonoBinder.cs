@@ -12,13 +12,10 @@ namespace Aspid.MVVM.StarterKit
 {
     [AddComponentMenu("Aspid/MVVM/Binders/UI/Text/Text Binder – Text Enum")]
     [AddBinderContextMenu(typeof(TMP_Text), serializePropertyNames: "m_text", SubPath = "Enum")]
-    public sealed class TextEnumMonoBinder : EnumMonoBinder<TMP_Text, string>
+    public sealed class TextEnumMonoBinder : EnumMonoBinder<TMP_Text, string, Converter>
     {
-        [SerializeReferenceDropdown]
-        [SerializeReference] private Converter _converter;
-        
         protected override void SetValue(string value) =>
-            CachedComponent.text = _converter?.Convert(value) ?? value;
+            CachedComponent.text = value;
     }
 }
 #endif

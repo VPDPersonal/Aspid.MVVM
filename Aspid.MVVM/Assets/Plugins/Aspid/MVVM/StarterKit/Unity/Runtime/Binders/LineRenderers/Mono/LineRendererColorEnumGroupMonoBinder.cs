@@ -10,29 +10,11 @@ namespace Aspid.MVVM.StarterKit
 {
     [AddComponentMenu("Aspid/MVVM/Binders/LineRenderer/LineRenderer Binder – Color EnumGroup")]
     [AddBinderContextMenu(typeof(LineRenderer), serializePropertyNames: "colorGradient", SubPath = "EnumGroup")]
-    public sealed class LineRendererColorEnumGroupMonoBinder : EnumGroupMonoBinder<LineRenderer>
+    public sealed class LineRendererColorEnumGroupMonoBinder : EnumGroupMonoBinder<LineRenderer, Color, Converter>
     {
-        [SerializeField] private Color _defaultValue;
-        [SerializeField] private Color _selectedValue;
-        
         [SerializeField] private LineRendererColorMode _colorMode = LineRendererColorMode.StartAndEnd;
         
-        [SerializeReferenceDropdown]
-        [SerializeReference] private Converter _defaultValueConverter;
-        
-        [SerializeReferenceDropdown]
-        [SerializeReference] private Converter _selectedValueConverter;
-        
-        protected override void SetDefaultValue(LineRenderer element)
-        {
-            var value = _defaultValueConverter?.Convert(_defaultValue) ?? _defaultValue;
+        protected override void SetValue(LineRenderer element, Color value) =>
             element.SetColor(value, _colorMode);
-        }
-
-        protected override void SetSelectedValue(LineRenderer element)
-        {
-            var value = _selectedValueConverter?.Convert(_selectedValue) ?? _selectedValue;
-            element.SetColor(value, _colorMode);
-        }
     }
 }

@@ -14,7 +14,12 @@ namespace Aspid.MVVM
     public partial class MonoView : MonoBehaviour, IDisposable
     {
 #if UNITY_EDITOR
-        [TypeSelector(typeof(IViewModel))]
+        [SerializeField] private string[] _designViewModelAssemblyQualifiedNames =
+        {
+            typeof(IViewModel).AssemblyQualifiedName,
+        };
+
+        [TypeSelector(nameof(_designViewModelAssemblyQualifiedNames))]
         [SerializeField] private string _designViewModel;
 #endif
         

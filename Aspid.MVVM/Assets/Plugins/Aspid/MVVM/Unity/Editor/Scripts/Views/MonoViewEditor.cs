@@ -26,6 +26,10 @@ namespace Aspid.MVVM
         
         public SerializedProperty DesignViewModel { get; private set; }
         
+        public ShowDesignViewModelAttribute ShowDesignViewModelAttribute { get; private set; }
+        
+        public SerializedProperty DesignViewModelAssemblyQualifiedNameProperty { get; private set; }
+        
         protected ValidableBindersById LastBinders { get; private set; }
         
         public IEnumerable<IMonoBinderValidable> UnassignedBinders => TargetAsView 
@@ -45,10 +49,42 @@ namespace Aspid.MVVM
                 BindersList = new BinderListProperty(serializedObject);
                 DesignViewModel = serializedObject.FindProperty("_designViewModel");
                 LastBinders = ValidableBindersById.GetValidableBindersById(TargetAsView);
+                DesignViewModelAssemblyQualifiedNameProperty = serializedObject.FindProperty("_designViewModelAssemblyQualifiedNames");
                 
+                InitializeShowDesignViewModelAttribute();
                 UpdateMetaData();
             }
             OnEnabled();
+        }
+        
+        private void InitializeShowDesignViewModelAttribute()
+        {
+            var viewType = TargetAsView.GetType();
+            
+            ShowDesignViewModelAttribute = (ShowDesignViewModelAttribute)Attribute.GetCustomAttribute(viewType, typeof(ShowDesignViewModelAttribute));
+            if (ShowDesignViewModelAttribute is null) return;
+            
+            var attributeTypes = ShowDesignViewModelAttribute.Types;
+            DesignViewModelAssemblyQualifiedNameProperty.arraySize = attributeTypes.Length;
+            
+            for (var i = 0; i < attributeTypes.Length; i++)
+            {
+                DesignViewModelAssemblyQualifiedNameProperty.GetArrayElementAtIndex(i).stringValue = 
+                    attributeTypes[i].AssemblyQualifiedName;
+            }
+            
+            if (attributeTypes.Length is 1)
+            {
+                var singleType = attributeTypes[0];
+                if (typeof(IViewModel).IsAssignableFrom(singleType) 
+                    && !singleType.IsInterface 
+                    && !singleType.IsAbstract)
+                {
+                    DesignViewModel.stringValue = singleType.AssemblyQualifiedName;
+                }
+            }
+            
+            serializedObject.ApplyModifiedPropertiesWithoutUndo();
         }
 
         protected virtual void OnEnabling() { }

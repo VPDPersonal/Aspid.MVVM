@@ -34,8 +34,9 @@ namespace Aspid.MVVM
                 foreach (var property in base.PropertiesExcluding)
                     yield return property;
                 
-                yield return Editor.BindersList.Property.propertyPath;
                 yield return Editor.DesignViewModel.propertyPath;
+                yield return Editor.BindersList.Property.propertyPath;
+                yield return Editor.DesignViewModelAssemblyQualifiedNameProperty.propertyPath;
             }
         }
         
@@ -84,9 +85,16 @@ namespace Aspid.MVVM
         private VisualElement BuildDesignViewModel()
         {
             var container = new AspidContainer(AspidContainer.StyleType.Dark);
-            container.AddChild(new AspidTitle("Design ViewModel"));
+            container.AddChild(new AspidTitle(text: "Design ViewModel"));
             
+            var attribute = Editor.ShowDesignViewModelAttribute;
             var propertyField = new PropertyField(Editor.DesignViewModel, label: string.Empty);
+
+            if (attribute is not null)
+            {
+                propertyField.RegisterCallback<GeometryChangedEvent>(_ =>
+                    propertyField.Q<Button>()?.SetEnabled(!attribute.StrictType));
+            }
             
             return container.AddChild(propertyField);
         }

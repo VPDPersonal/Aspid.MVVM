@@ -39,14 +39,12 @@ namespace Aspid.MVVM.StarterKit
         [SerializeReference] private TConverter _converter;
 
         [BinderLog]
-        public void SetValue(bool value)
-        {
-            var chooseValue = value ? _trueValue : _falseValue;
-            chooseValue = _converter is null ? chooseValue : _converter.Convert(chooseValue);
-            
-            SetValue(chooseValue);
-        }
+        public void SetValue(bool value) =>
+            SetValue(GetConvertedValue(value ? _trueValue : _falseValue));
 
         protected abstract void SetValue(T value);
+        
+        protected virtual T GetConvertedValue(T value) =>
+            _converter is null ? value : _converter.Convert(value);
     }
 }

@@ -16,4 +16,3 @@ namespace Aspid.MVVM.StarterKit
             CachedComponent.panStereo = value;
     }
 }
-

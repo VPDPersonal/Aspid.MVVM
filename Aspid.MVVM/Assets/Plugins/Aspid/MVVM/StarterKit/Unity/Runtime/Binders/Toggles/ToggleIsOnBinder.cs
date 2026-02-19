@@ -13,9 +13,7 @@ namespace Aspid.MVVM.StarterKit
         public event Action<bool>? ValueChanged;
         
         [SerializeField] private bool _isInvert;
-      
-        [NonSerialized] 
-        private bool _isNotifyValueChanged = true;
+        [NonSerialized] private bool _isNotifyValueChanged = true;
         
         public ToggleIsOnBinder(Toggle target, BindMode mode) 
             : this(target, false, mode) { }

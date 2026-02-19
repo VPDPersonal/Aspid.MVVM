@@ -26,21 +26,21 @@ namespace Aspid.UnityFastTools
         private Action<string> _onSelected;
         private string _currentAqn = string.Empty;
         
-        public static void Show(Type type, Rect screenRect, string currentAqn, Action<string> onSelected)
+        public static void Show(Type[] types, Rect screenRect, string currentAqn, Action<string> onSelected)
         {
             var window = CreateInstance<TypeSelectorWindow>();
-            window.Initialize(type, screenRect, currentAqn, onSelected);
+            window.Initialize(types, screenRect, currentAqn, onSelected);
         }
 
         #region Initialization
-        private void Initialize(Type type, Rect screenRect, string currentAqn, Action<string> onSelected)
+        private void Initialize(Type[] types, Rect screenRect, string currentAqn, Action<string> onSelected)
         {
             _onSelected = onSelected;
             _currentAqn = currentAqn ?? string.Empty;
 
             BuildUI();
             
-            var hierarchy = HierarchyBuilder.Build(type);
+            var hierarchy = HierarchyBuilder.Build(types);
             InitializeNavigation(hierarchy, _currentAqn);
             
             RefreshView();
@@ -287,16 +287,16 @@ namespace Aspid.UnityFastTools
         #region Hierarchy Builder
         private static class HierarchyBuilder
         {
-            public static TreeNode Build(Type type)
+            public static TreeNode Build(Type[] types)
             {
                 // TODO Aspid.UnityFastTools – Get base type from attribute.
-                var types = TypeInfoScanner.GetAllTypeInfos(type);
+                var allTypes = TypeInfoScanner.GetAllTypeInfos(types);
                 
                 var root = new TreeNode("/");
                 root.Children.Add(new TreeNode(NoneOption, null, NoneOption));
 
-                AddGlobalNamespaceGroup(root, types);
-                AddNamespaceHierarchy(root, types);
+                AddGlobalNamespaceGroup(root, allTypes);
+                AddNamespaceHierarchy(root, allTypes);
 
                 return root;
             }
@@ -522,7 +522,7 @@ namespace Aspid.UnityFastTools
         
         private static class TypeInfoScanner
         {
-            public static List<TypeInfo> GetAllTypeInfos(Type baseType)
+            public static List<TypeInfo> GetAllTypeInfos(Type[] baseTypes)
             {
                 var result = new List<TypeInfo>();
 
@@ -531,7 +531,7 @@ namespace Aspid.UnityFastTools
                     try
                     {
                         result.AddRange(assembly.GetTypes()
-                            .Where(t => baseType.IsAssignableFrom(t) && 
+                            .Where(t => baseTypes.All(baseType => baseType.IsAssignableFrom(t)) && 
                                 !t.IsDefined(typeof(CompilerGeneratedAttribute), false) &&
                                 !t.Name.Contains("<") &&
                                 !t.Name.Contains(">"))

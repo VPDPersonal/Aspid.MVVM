@@ -13,7 +13,7 @@ namespace Aspid.UnityFastTools
         private const string NoneOption = "<None>";
         private const string MissingOption = "<Missing>";
         
-        internal static void DrawIMGUI(Rect position, SerializedProperty property, GUIContent label, Type type)
+        internal static void DrawIMGUI(Rect position, SerializedProperty property, GUIContent label, params Type[] types)
         {
             const float openButtonWidth = 50f;
             
@@ -38,7 +38,7 @@ namespace Aspid.UnityFastTools
                 var screenPosition = GUIUtility.GUIToScreenPoint(new Vector2(dropdownRect.x, dropdownRect.y));
                 var screenRect = new Rect(screenPosition.x, screenPosition.y, dropdownRect.width, dropdownRect.height);
                 
-                TypeSelectorWindow.Show(type, screenRect, current, onSelected: assemblyQualifiedName =>
+                TypeSelectorWindow.Show(types, screenRect, current, onSelected: assemblyQualifiedName =>
                 {
                     property.SetStringAndApply(assemblyQualifiedName ?? string.Empty);
                 });    
@@ -51,7 +51,7 @@ namespace Aspid.UnityFastTools
                 OpenScript(currentType);
         }
         
-        internal static VisualElement DrawUIToolkit(SerializedProperty property, string label, Type type)
+        internal static VisualElement DrawUIToolkit(SerializedProperty property, string label, params Type[] types)
         {
             var typeSelector = new VisualElement()
                 .SetFlexDirection(FlexDirection.Row)
@@ -84,7 +84,7 @@ namespace Aspid.UnityFastTools
 
                 var current = GetProperty(serializedObject, propertyPath).stringValue ?? string.Empty;
                 
-                TypeSelectorWindow.Show(type, screenRect, current, onSelected: assemblyQualifiedName =>
+                TypeSelectorWindow.Show(types, screenRect, current, onSelected: assemblyQualifiedName =>
                 {
                     var currentProperty = GetProperty(serializedObject, propertyPath);
                     currentProperty.SetStringAndApply(assemblyQualifiedName ?? string.Empty);

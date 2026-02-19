@@ -15,9 +15,7 @@ namespace Aspid.MVVM.StarterKit
         public event Action<bool> ValueChanged;
         
         [SerializeField] private bool _isInvert;
-      
-        [NonSerialized] 
-        private bool _isNotifyValueChanged = true;
+        [NonSerialized] private bool _isNotifyValueChanged = true;
         
         [BinderLog]
         public void SetValue(bool value)

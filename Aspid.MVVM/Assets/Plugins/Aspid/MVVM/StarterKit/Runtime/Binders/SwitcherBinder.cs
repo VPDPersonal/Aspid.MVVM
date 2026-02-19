@@ -98,8 +98,11 @@ namespace Aspid.MVVM.StarterKit
         }
         
         public void SetValue(bool value) =>
-            SetValue(value ? _trueValue : _falseValue);
+            SetValue(GetConvertedValue(value ? _trueValue : _falseValue));
 
-        protected abstract void SetValue(T value);
+        protected abstract void SetValue(T? value);
+        
+        protected virtual T? GetConvertedValue(T value) =>
+            _converter is null ? value : _converter.Convert(value);
     }
 }

@@ -20,4 +20,3 @@ namespace Aspid.MVVM.StarterKit
             Target.outputAudioMixerGroup = value;
     }
 }
-

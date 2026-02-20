@@ -1,0 +1,27 @@
+AspidDelegateField
+{
+    margin-left: 12;
+}
+
+AspidDelegateField > #unity-content
+{
+    margin-left: 0;
+}
+
+AspidDelegateField > #delegate-content
+{
+    flex-direction: row;
+}
+
+AspidDelegateField > #delegate-content > #content-1
+{
+    width: 50%;
+    flex-shrink: 1;
+}
+
+AspidDelegateField > #delegate-content > #content-2
+{
+    width: 50%;
+    flex-shrink: 1;
+    margin-right: 3;
+}

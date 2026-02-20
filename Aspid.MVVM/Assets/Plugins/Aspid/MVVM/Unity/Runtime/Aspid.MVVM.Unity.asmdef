@@ -1,0 +1,17 @@
+{
+    "name": "Aspid.MVVM.Unity",
+    "rootNamespace": "",
+    "references": [
+        "Aspid.MVVM",
+        "Aspid.UnityFastTools"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

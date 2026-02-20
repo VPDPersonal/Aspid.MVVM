@@ -1,0 +1,95 @@
+using System;
+using UnityEngine;
+using UnityEngine.Pool;
+
+// ReSharper disable once CheckNamespace
+namespace Aspid.MVVM.StarterKit
+{
+    [Serializable]
+    public sealed class PrefabViewPool : PrefabViewPool<MonoView>, IViewFactoryMonoView
+    {
+        [Obsolete("For Unity Inspector", true)]
+        public PrefabViewPool() { }
+        
+        public PrefabViewPool(MonoView prefab, bool overrideSibling = false, int siblingIndex = 0) :
+            this(prefab, null, overrideSibling, siblingIndex) { }
+        
+        public PrefabViewPool(MonoView prefab, PoolSettings settings, bool overrideSibling = false, int siblingIndex = 0) :
+            this(prefab, null, settings, overrideSibling, siblingIndex) { }
+        
+        public PrefabViewPool(MonoView prefab, Transform container, bool overrideSibling = false, int siblingIndex = 0)
+            : this(prefab, container, new PoolSettings(0), overrideSibling, siblingIndex) { }
+        
+        public PrefabViewPool(MonoView prefab, Transform container, PoolSettings settings, bool overrideSibling = false, int siblingIndex = 0)
+            : base(prefab, container, settings, overrideSibling, siblingIndex) { }
+    }
+    
+    [Serializable]
+    public class PrefabViewPool<T> : PrefabViewFactory<T>
+        where T : MonoBehaviour, IView
+    {
+        [SerializeField] [Min(0)] private int _initialCount;
+        [SerializeField] [Min(1)] private int _maxCount = int.MaxValue;
+        
+        private ObjectPool<T> _pool;
+        private IViewModel _lastViewModel;
+        
+        private ObjectPool<T> Pool => _pool ??= new ObjectPool<T>(
+            OnCreate,
+            OnGet,
+            OnRelease,
+            OnDestroy,
+            maxSize: _maxCount,
+            collectionCheck: false,
+            defaultCapacity: _initialCount);
+        
+        [Obsolete("For Unity Inspector", true)]
+        public PrefabViewPool() { }
+        
+        public PrefabViewPool(T prefab, bool overrideSibling = false, int siblingIndex = 0) :
+            this(prefab, null, overrideSibling, siblingIndex) { }
+        
+        public PrefabViewPool(T prefab, PoolSettings settings, bool overrideSibling = false, int siblingIndex = 0) :
+            this(prefab, null, settings, overrideSibling, siblingIndex) { }
+        
+        public PrefabViewPool(T prefab, Transform container, bool overrideSibling = false, int siblingIndex = 0)
+            : this(prefab, container, new PoolSettings(0), overrideSibling, siblingIndex) { }
+
+        public PrefabViewPool(T prefab, Transform container, PoolSettings settings, bool overrideSibling = false, int siblingIndex = 0)
+            : base(prefab, container, overrideSibling, siblingIndex)
+        {
+            _maxCount = settings.MaxCount;
+            _initialCount = settings.InitialCount;
+        }
+
+        public override T Create(IViewModel viewModel)
+        {
+            _lastViewModel = viewModel;
+            return Pool.Get();
+        }
+
+        public override void Release(T view) =>
+            Pool.Release(view);
+        
+        private T OnCreate() =>
+            base.Create(_lastViewModel);
+        
+        protected override void OnCreate(IViewModel viewModel, T view) { }
+
+        private void OnGet(T view)
+        {
+            view.gameObject.SetActive(true);
+            base.OnCreate(_lastViewModel, view);
+            _lastViewModel = null;
+        }
+        
+        private static void OnRelease(T view)
+        {
+            view.Deinitialize();
+            view.gameObject.SetActive(false);
+        }
+        
+        private void OnDestroy(T view) =>
+            base.Release(view);
+    }
+}

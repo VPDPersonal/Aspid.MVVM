@@ -1,0 +1,43 @@
+#nullable enable
+using System.Collections.Generic;
+
+// ReSharper disable once CheckNamespace
+namespace Aspid.MVVM
+{
+    // TODO Aspid.MVVM Unity – Replace array with ImmutableArray
+    public sealed class ValidableBindersById : Dictionary<string, IMonoBinderValidable?[]>
+    {
+        /// <summary>
+        /// Retrieves all `IMonoBinderValidable` binders from a view and associates them with the field names they are assigned to.
+        /// </summary>
+        /// <param name="view">The view object containing the binders.</param>
+        /// <returns>
+        /// A dictionary where the key is the field name and the value is an array of `IMonoBinderValidable` associated with that field.
+        /// </returns>
+        public static ValidableBindersById GetValidableBindersById(IView view)
+        {
+            var fields = view.GetRequireBinderFields();
+            var bindersByFieldName = new ValidableBindersById();
+
+            foreach (var field in fields)
+            {
+                if (!field.IsValidation()) continue;
+                var viewBinders = field.GetValueAsArray<IMonoBinderValidable>(field.FieldContainerObj);
+                
+                if (viewBinders is { Length: > 0 })
+                {
+                    var copyViewBinders = new IMonoBinderValidable[viewBinders.Length];
+                    viewBinders.CopyTo(copyViewBinders, 0);
+                    
+                    bindersByFieldName.Add(field.Id, copyViewBinders);
+                }
+                else
+                {
+                    bindersByFieldName.Add(field.Id, viewBinders);
+                }
+            }
+            
+            return bindersByFieldName;
+        }
+    }
+}

@@ -1,0 +1,56 @@
+#nullable enable
+using System;
+using UnityEngine;
+#if UNITY_2023_1_OR_NEWER
+using Converter = Aspid.MVVM.StarterKit.IConverter<UnityEngine.Color, UnityEngine.Color>;
+#else
+using Converter = Aspid.MVVM.StarterKit.IConverterColor;
+#endif
+
+// ReSharper disable once CheckNamespace
+namespace Aspid.MVVM.StarterKit
+{
+    [Serializable]
+    public sealed class LineRendererColorSwitcherBinder : SwitcherBinder<LineRenderer, Color, Converter>
+    {
+        [SerializeField] private LineRendererColorMode _colorMode;
+        
+        public LineRendererColorSwitcherBinder(
+            LineRenderer target,
+            Color trueValue,
+            Color falseValue,
+            BindMode mode)
+            : this(target, trueValue, falseValue, LineRendererColorMode.StartAndEnd, converter: null, mode) { }
+        
+        public LineRendererColorSwitcherBinder(
+            LineRenderer target,
+            Color trueValue,
+            Color falseValue,
+            LineRendererColorMode colorMode,
+            BindMode mode)
+            : this(target, trueValue, falseValue, colorMode, converter: null, mode) { }
+        
+        public LineRendererColorSwitcherBinder(
+            LineRenderer target,
+            Color trueValue,
+            Color falseValue,
+            Converter? converter,
+            BindMode mode = BindMode.OneWay)
+            : this(target, trueValue, falseValue, LineRendererColorMode.StartAndEnd, converter, mode) { }
+        
+        public LineRendererColorSwitcherBinder(
+            LineRenderer target,
+            Color trueValue,
+            Color falseValue,
+            LineRendererColorMode colorMode = LineRendererColorMode.StartAndEnd,
+            Converter? converter = null,
+            BindMode mode = BindMode.OneWay)
+            : base(target, trueValue, falseValue, converter, mode)
+        {
+            _colorMode = colorMode;
+        }
+
+        protected override void SetValue(Color value) =>
+            Target.SetColor(value, _colorMode);
+    }
+}

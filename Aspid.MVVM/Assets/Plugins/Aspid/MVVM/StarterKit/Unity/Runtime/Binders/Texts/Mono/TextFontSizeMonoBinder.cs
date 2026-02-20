@@ -1,0 +1,25 @@
+#if UNITY_2023_1_OR_NEWER || ASPID_MVVM_TEXT_MESH_PRO_INTEGRATION
+using TMPro;
+using System;
+using UnityEngine;
+#if UNITY_2023_1_OR_NEWER
+using Converter = Aspid.MVVM.StarterKit.IConverter<float, float>;
+#else
+using Converter = Aspid.MVVM.StarterKit.IConverterFloat;
+#endif
+
+// ReSharper disable once CheckNamespace
+namespace Aspid.MVVM.StarterKit
+{
+    [AddComponentMenu("Aspid/MVVM/Binders/UI/Text/Text Binder – FontSize")]
+    [AddBinderContextMenu(typeof(TMP_Text), serializePropertyNames: "m_fontSize")]
+    public class TextFontSizeMonoBinder : ComponentFloatMonoBinder<TMP_Text>
+    {
+        protected sealed override float Property
+        {
+            get => CachedComponent.fontSize;
+            set => CachedComponent.fontSize = value;
+        }
+    }
+}
+#endif

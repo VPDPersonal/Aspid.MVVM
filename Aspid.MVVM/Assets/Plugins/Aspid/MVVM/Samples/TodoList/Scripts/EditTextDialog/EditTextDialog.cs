@@ -27,7 +27,7 @@ namespace Aspid.MVVM.Samples.TodoList
             return;
             
             void Dispose() =>
-                view.DestroyView()?.DisposeViewModel();
+                view.DestroyViewAndGameObject()?.DisposeViewModel();
         }
     }
 }

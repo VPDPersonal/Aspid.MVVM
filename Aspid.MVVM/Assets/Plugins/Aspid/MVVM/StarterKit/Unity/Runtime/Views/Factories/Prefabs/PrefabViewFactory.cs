@@ -62,7 +62,7 @@ namespace Aspid.MVVM.StarterKit
         }
 
         public virtual void Release(T view) =>
-            view.DestroyView();
+            view.DestroyViewAndGameObject();
 
         protected void SetSibling(T view)
         {

@@ -1,5 +1,3 @@
-#if UNITY_2023_1_OR_NEWER || ASPID_MVVM_TEXT_MESH_PRO_INTEGRATION
-using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 #if UNITY_2023_1_OR_NEWER
@@ -11,9 +9,9 @@ using Converter = Aspid.MVVM.StarterKit.IConverterColorBlock;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
-    [AddBinderContextMenu(typeof(TMP_Dropdown))]
-    [AddComponentMenu("Aspid/MVVM/Binders/UI/Dropdown/Dropdown Binder – ColorBlock")]
-    public class DropdownColorBlockMonoBinder : ComponentMonoBinder<TMP_Dropdown, ColorBlock, Converter>
+    [AddBinderContextMenu(typeof(Selectable))]
+    [AddComponentMenu("Aspid/MVVM/Binders/UI/Selectable/Selectable Binder – ColorBlock")]
+    public class SelectableColorBlockMonoBinder : ComponentMonoBinder<Selectable, ColorBlock, Converter>
     {
         protected sealed override ColorBlock Property
         {
@@ -22,4 +20,3 @@ namespace Aspid.MVVM.StarterKit
         }
     }
 }
-#endif

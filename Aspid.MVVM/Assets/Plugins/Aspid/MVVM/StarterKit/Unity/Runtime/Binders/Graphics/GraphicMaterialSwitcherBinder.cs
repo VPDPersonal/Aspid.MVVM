@@ -12,16 +12,16 @@ using Converter = Aspid.MVVM.StarterKit.IConverterMaterial;
 namespace Aspid.MVVM.StarterKit
 {
     [Serializable]
-    public sealed class RawImageMaterialSwitcherBinder : SwitcherBinder<RawImage, Material, Converter>
+    public sealed class GraphicMaterialSwitcherBinder : SwitcherBinder<Graphic, Material, Converter>
     {
-        public RawImageMaterialSwitcherBinder(
+        public GraphicMaterialSwitcherBinder(
             RawImage target, 
             Material trueValue, 
             Material falseValue,
             BindMode mode = BindMode.OneWay) 
             : this(target, trueValue, falseValue, converter: null, mode) { }
         
-        public RawImageMaterialSwitcherBinder(
+        public GraphicMaterialSwitcherBinder(
             RawImage target, 
             Material trueValue, 
             Material falseValue, 
@@ -29,7 +29,7 @@ namespace Aspid.MVVM.StarterKit
             BindMode mode = BindMode.OneWay) 
             : base(target, trueValue, falseValue, converter, mode) { }
 
-        protected override void SetValue(Material value) =>
+        protected override void SetValue(Material? value) =>
             Target.material = value;
     }
 }

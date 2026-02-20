@@ -12,7 +12,7 @@ using Converter = Aspid.MVVM.StarterKit.IConverterMaterial;
 namespace Aspid.MVVM.StarterKit
 {
     [Serializable]
-    public class RawImageMaterialBinder : TargetBinder<RawImage, Material, Converter>
+    public class GraphicMaterialBinder : TargetBinder<Graphic, Material, Converter>
     {
         protected sealed override Material? Property
         {
@@ -20,10 +20,10 @@ namespace Aspid.MVVM.StarterKit
             set => Target.material = value;
         }
         
-        public RawImageMaterialBinder(RawImage target, BindMode mode = BindMode.OneWay)
+        public GraphicMaterialBinder(RawImage target, BindMode mode = BindMode.OneWay)
             : this(target, converter: null, mode) { }
         
-        public RawImageMaterialBinder(RawImage target, Converter? converter = null, BindMode mode = BindMode.OneWay)
+        public GraphicMaterialBinder(RawImage target, Converter? converter = null, BindMode mode = BindMode.OneWay)
             : base(target, converter, mode)
         {
             mode.ThrowExceptionIfMatches(BindMode.TwoWay);

@@ -1,7 +1,6 @@
 #if UNITY_2023_1_OR_NEWER || ASPID_MVVM_TEXT_MESH_PRO_INTEGRATION
 #nullable enable
 using System;
-using TMPro;
 using UnityEngine.UI;
 #if UNITY_2023_1_OR_NEWER
 using Converter = Aspid.MVVM.StarterKit.IConverter<UnityEngine.UI.ColorBlock, UnityEngine.UI.ColorBlock>;
@@ -13,17 +12,17 @@ using Converter = Aspid.MVVM.StarterKit.IConverterColorBlock;
 namespace Aspid.MVVM.StarterKit
 {
     [Serializable]
-    public sealed class DropdownColorBlockSwitcherBinder : SwitcherBinder<TMP_Dropdown, ColorBlock, Converter>
+    public sealed class SelectableColorBlockSwitcherBinder : SwitcherBinder<Selectable, ColorBlock, Converter>
     {
-        public DropdownColorBlockSwitcherBinder(
-            TMP_Dropdown target, 
+        public SelectableColorBlockSwitcherBinder(
+            Selectable target, 
             ColorBlock trueValue, 
             ColorBlock falseValue,
             BindMode mode = BindMode.OneWay) 
             : this(target, trueValue, falseValue, converter: null, mode) { }
 
-        public DropdownColorBlockSwitcherBinder(
-            TMP_Dropdown target, 
+        public SelectableColorBlockSwitcherBinder(
+            Selectable target, 
             ColorBlock trueValue, 
             ColorBlock falseValue,
             Converter? converter,

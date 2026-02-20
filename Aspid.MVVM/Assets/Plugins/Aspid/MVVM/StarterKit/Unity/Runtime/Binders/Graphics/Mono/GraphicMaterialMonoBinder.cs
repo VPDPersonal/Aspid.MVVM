@@ -9,9 +9,9 @@ using Converter = Aspid.MVVM.StarterKit.IConverterMaterial;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
-    [AddBinderContextMenu(typeof(RawImage), serializePropertyNames: "m_Material")]
-    [AddComponentMenu("Aspid/MVVM/Binders/UI/RawImage/RawImage Binder – Material")]
-    public class RawImageMaterialMonoBinder : ComponentMonoBinder<RawImage, Material, Converter>
+    [AddBinderContextMenu(typeof(Graphic), serializePropertyNames: "m_Material")]
+    [AddComponentMenu("Aspid/MVVM/Binders/UI/Graphic/Graphic Binder – Material")]
+    public class GraphicMaterialMonoBinder : ComponentMonoBinder<Graphic, Material, Converter>
     {
         protected sealed override Material Property
         {

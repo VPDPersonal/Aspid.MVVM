@@ -1,6 +1,4 @@
-#if UNITY_2023_1_OR_NEWER || ASPID_MVVM_TEXT_MESH_PRO_INTEGRATION
 #nullable enable
-using TMPro;
 using System;
 using UnityEngine.UI;
 #if UNITY_2023_1_OR_NEWER
@@ -13,7 +11,7 @@ using Converter = Aspid.MVVM.StarterKit.IConverterColorBlock;
 namespace Aspid.MVVM.StarterKit
 {
     [Serializable]
-    public class DropdownColorBlockBinder : TargetBinder<TMP_Dropdown, ColorBlock, Converter>
+    public class SelectableColorBlockBinder : TargetBinder<Selectable, ColorBlock, Converter>
     {
         protected sealed override ColorBlock Property
         {
@@ -21,14 +19,13 @@ namespace Aspid.MVVM.StarterKit
             set => Target.colors = value;
         }
         
-        public DropdownColorBlockBinder(TMP_Dropdown target, BindMode mode) 
+        public SelectableColorBlockBinder(Selectable target, BindMode mode) 
             : this(target, converter: null, mode) { }
 
-        public DropdownColorBlockBinder(TMP_Dropdown target, Converter converter = null, BindMode mode = BindMode.OneWay) 
+        public SelectableColorBlockBinder(Selectable target, Converter? converter = null, BindMode mode = BindMode.OneWay) 
             : base(target, converter, mode)
         {
             mode.ThrowExceptionIfMatches(BindMode.TwoWay);
         }
     }
 }
-#endif

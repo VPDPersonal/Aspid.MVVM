@@ -1,6 +1,7 @@
 using System.Text;
 using Microsoft.CodeAnalysis;
 using Aspid.Generators.Helper;
+using Aspid.MVVM.Generators.Helpers;
 using Aspid.MVVM.Generators.Generators.Ids.Data;
 using static Aspid.Generators.Helper.Classes;
 using static Aspid.MVVM.Generators.Generators.Descriptions.Constants;
@@ -10,25 +11,25 @@ namespace Aspid.MVVM.Generators.Generators.ViewModels.Data.Infos;
 public sealed class BindablePropertyInfo : IBindableMemberInfo
 {
     public ISymbol Member { get; }
-    
+
     public string Type { get; }
-    
+
     public string Name { get; }
-    
+
     public IdData Id { get; }
-    
+
     public BindMode Mode { get; }
-    
+
     public GeneratedBindableMembers Bindable { get; }
-    
+
     public string Declaration { get; }
 
     public BindablePropertyInfo(IPropertySymbol propertySymbol, BindMode mode, bool isSetMethodUsed)
     {
         Mode = mode;
         Member = propertySymbol;
-        Name = propertySymbol.Name;
         Id = new IdData(propertySymbol);
+        Name = propertySymbol.Name.CapitalizeFirstLetter();
         Type = propertySymbol.Type.ToDisplayStringGlobal();
         Bindable = GeneratedBindableMembers.CreateForProperty(propertySymbol);
 
@@ -92,7 +93,7 @@ public sealed class BindablePropertyInfo : IBindableMemberInfo
                         $"""
                         {GeneratedCodeViewModelAttribute} 
                         private bool {setMethodName}(ref {Type} field, {Type} value) =>
-                            throw new {Classes.NotImplementedException}("Generator Error: SetMethod is not used.");
+                            throw new {NotImplementedException}("Generator Error: SetMethod is not used.");
                         """);
                 }
                 

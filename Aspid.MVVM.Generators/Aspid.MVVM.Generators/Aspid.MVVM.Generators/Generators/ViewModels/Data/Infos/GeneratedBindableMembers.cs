@@ -79,36 +79,38 @@ public readonly struct GeneratedBindableMembers
         var fieldType = RecognizeFieldType(propertySymbol.Type, mode);
         
         // PropertyName -> PropertyNameBindable
-        var propertyName = $"{propertySymbol.Name}Bindable";
+        var capitalizedName = propertySymbol.Name.CapitalizeFirstLetter();
+        var propertyName = $"{capitalizedName}Bindable";
         var propertyType = RecognizePropertyType(propertySymbol.Type, mode);
 
         var invoke = RecognizeInvoke(mode, memberName, fieldName);
         var declaration = RecognizeDeclaration(mode, memberName, fieldName, fieldType, propertyName, propertyType);
-        
+
         var onPropertyChangedName = mode is not BindMode.OneTime and not BindMode.OneWayToSource and not BindMode.None
-            ? $"On{propertySymbol.Name}PropertyChanged"
+            ? $"On{capitalizedName}PropertyChanged"
             : null;
-        
+
         return new GeneratedBindableMembers(invoke, declaration, propertyName, propertyType, onPropertyChangedName);
     }
-    
+
     public static GeneratedBindableMembers CreateForBindAlso(IPropertySymbol propertySymbol)
     {
         const BindMode mode = BindMode.OneWay;
         var memberName = propertySymbol.Name;
-        
+
         // PropertyName -> __propertyNameBindable
         var fieldName = $"{propertySymbol.GetFieldName(prefix: "__")}Bindable";
         var fieldType = RecognizeFieldType(propertySymbol.Type, mode);
-        
+
         // PropertyName -> PropertyNameBindable
-        var propertyName = $"{propertySymbol.Name}Bindable";
+        var capitalizedName = propertySymbol.Name.CapitalizeFirstLetter();
+        var propertyName = $"{capitalizedName}Bindable";
         var propertyType = RecognizePropertyType(propertySymbol.Type, mode);
 
         var invoke = RecognizeInvoke(mode, memberName, fieldName);
         var declaration = RecognizeDeclaration(mode, memberName, fieldName, fieldType, propertyName, propertyType);
-        
-        return new GeneratedBindableMembers(invoke, declaration, propertyName, propertyType, $"On{propertySymbol.Name}PropertyChanged");
+
+        return new GeneratedBindableMembers(invoke, declaration, propertyName, propertyType, $"On{capitalizedName}PropertyChanged");
     }
 
     private static string RecognizeFieldType(ITypeSymbol type, BindMode mode)

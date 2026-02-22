@@ -40,14 +40,17 @@ public static class SymbolExtensions
 
     public static string RemoveFieldPrefix(in string name)
     {
-        var prefixCount = name.StartsWith("_") 
+        var prefixCount = name.StartsWith("_")
             ? 1
-            : name.StartsWith("m_") || name.StartsWith("s_")  
-                ? 2 
+            : name.StartsWith("m_") || name.StartsWith("s_")
+                ? 2
                 : 0;
-        
-        return prefixCount > 0 
-            ? name.Remove(0, prefixCount) 
+
+        return prefixCount > 0
+            ? name.Remove(0, prefixCount)
             : name;
     }
+
+    public static string CapitalizeFirstLetter(this string name) =>
+        name.Length == 0 ? name : char.ToUpper(name[0]) + name.Substring(1);
 }

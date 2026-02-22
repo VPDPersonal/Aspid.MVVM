@@ -25,7 +25,10 @@ public static class Classes
     
     public static readonly TypeText IBinder =
         new(nameof(IBinder), Namespaces.Aspid_MVVM);
-    
+
+    public static readonly TypeText IAnyBinder =
+        new(nameof(IAnyBinder), Namespaces.Aspid_MVVM);
+
     public static readonly TypeText IReverseBinder =
         new(nameof(IReverseBinder), Namespaces.Aspid_MVVM);
     

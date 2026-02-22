@@ -1,9 +1,11 @@
 using System.Linq;
 using Microsoft.CodeAnalysis;
 using Aspid.Generators.Helper;
+using Aspid.MVVM.Generators.Helpers;
 using Aspid.MVVM.Generators.Generators.ViewModels.Data;
 using static Aspid.Generators.Helper.Classes;
 using static Aspid.MVVM.Generators.Generators.Descriptions.Constants;
+using SymbolExtensions = Aspid.MVVM.Generators.Helpers.SymbolExtensions;
 
 namespace Aspid.MVVM.Generators.Generators.ViewModels.Body;
 
@@ -56,7 +58,7 @@ public static class PropertyNotificationBody
                     var keyword = first ? "if" : "else if";
                     
                     first = false;
-                    code.AppendLine($"{keyword} (line is {linesPattern}) On{propertyName}PropertyChanged();");
+                    code.AppendLine($"{keyword} (line is {linesPattern}) On{propertyName.CapitalizeFirstLetter()}PropertyChanged();");
                 }
                 
                 code.AppendLine($"else throw new {NotImplementedException}($\"OnPropertyChanged: No property found for line {{line}}\");");
@@ -116,7 +118,7 @@ public static class PropertyNotificationBody
                         var keyword = first ? "if" : "else if";
                         first = false;
                         
-                        code.AppendLine($"{keyword} (line is {linesPattern}) return Set{propertyName}Field(ref field, newValue);");
+                        code.AppendLine($"{keyword} (line is {linesPattern}) return Set{propertyName.CapitalizeFirstLetter()}Field(ref field, newValue);");
                     }
 
                     code.AppendLine($"else throw new {NotImplementedException}($\"SetField: No property found for line {{line}}\");")

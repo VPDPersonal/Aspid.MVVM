@@ -35,14 +35,20 @@ public partial class BinderGenerator
                     .Any(binderMethod =>
                     {
                         if (binderMethod.Name is not setValueName) return false;
-                        
+
                         return binderMethod.EqualsSignature(method) &&
                             method.ExplicitInterfaceImplementations.Length != 0;
                     });
-                    
+
                 if (methodsExplicitImplemented) return null;
 
-                if (!hasBinderLogInBaseType 
+                // Check if IAnyBinder.SetValue<T> is already explicitly implemented
+                if (method.IsGenericMethod && method.Name == setValueName
+                    && method.ExplicitInterfaceImplementations.Any(m =>
+                        m.ContainingType.Name is "IAnyBinder"))
+                    return null;
+
+                if (!hasBinderLogInBaseType
                     && !SymbolEqualityComparer.Default.Equals(type, symbol)
                     && method.HasAnyAttributeInSelf(Classes.BinderLogAttribute))
                 {
@@ -55,10 +61,18 @@ public partial class BinderGenerator
         
         foreach (var method in symbol.GetMembers().OfType<IMethodSymbol>())
         {
-            if (method.Parameters.Length != 1) continue;
+            if (method.Parameters.Length is not 1) continue;
             if (method.NameFromExplicitImplementation() != setValueName) continue;
-            if (!symbol.HasAnyInterfaceInSelfAndBases($"{Classes.IBinder.FullName}<{method.Parameters[0].Type.ToDisplayString()}>")) continue;
-            
+
+            var isIBinderMethod = !method.IsGenericMethod
+                && symbol.HasAnyInterfaceInSelfAndBases(
+                    $"{Classes.IBinder.FullName}<{method.Parameters[0].Type.ToDisplayString()}>");
+
+            var isIAnyBinderMethod = method is { IsGenericMethod: true, TypeParameters.Length: 1 }
+                && symbol.HasAnyInterfaceInSelfAndBases(Classes.IAnyBinder.FullName);
+
+            if (!isIBinderMethod && !isIAnyBinderMethod) continue;
+
             if (method.HasAnyAttributeInSelf(Classes.BinderLogAttribute) &&
                 !method.ExplicitInterfaceImplementations.Any())
                 binderLogMethods.Add(method);

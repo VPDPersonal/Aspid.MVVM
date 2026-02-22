@@ -7,7 +7,12 @@ using Object = UnityEngine.Object;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM
 {
-    // TODO Aspid.MVVM Unity – Write summary
+    /// <summary>
+    /// Abstract base Unity Editor for <see cref="IViewModel"/> objects.
+    /// Manages the UIElements inspector lifecycle and delegates visual element construction to derived editors.
+    /// </summary>
+    /// <typeparam name="T">The concrete <see cref="IViewModel"/> type being inspected.</typeparam>
+    /// <typeparam name="TEditor">The derived editor type (self-referencing).</typeparam>
     public abstract class ViewModelEditor<T, TEditor> : Editor
         where T : Object, IViewModel
         where TEditor : ViewModelEditor<T, TEditor>

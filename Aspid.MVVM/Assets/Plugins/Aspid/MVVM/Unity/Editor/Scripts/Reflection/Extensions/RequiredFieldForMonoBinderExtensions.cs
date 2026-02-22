@@ -6,7 +6,10 @@ using System.Collections.Generic;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM
 {
-    // TODO Aspid.MVVM Unity – Write summary
+    /// <summary>
+    /// Extension methods for <see cref="IView"/> that enumerate and look up
+    /// <see cref="RequiredFieldForMonoBinder"/> entries by binding ID.
+    /// </summary>
     public static class RequiredFieldForMonoBinderExtensions
     {
         private const BindingFlags BindingFlags =

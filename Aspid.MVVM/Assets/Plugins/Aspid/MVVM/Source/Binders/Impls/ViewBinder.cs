@@ -7,10 +7,13 @@ namespace Aspid.MVVM
     /// </summary>
     public class ViewBinder : Binder, IBinder<IViewModel?>
     {
+        /// <summary>
+        /// The <see cref="IView"/> instance that this binder manages.
+        /// </summary>
         protected readonly IView View;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ViewBinder"/> class with the specified view
+        /// Initializes a new instance of the <see cref="ViewBinder"/> class with the specified view.
         /// </summary>
         /// <param name="view">The view that will be bound to the ViewModel.</param>
         public ViewBinder(IView view)
@@ -26,17 +29,28 @@ namespace Aspid.MVVM
         public void SetValue(IViewModel? viewModel)
         {
             DeinitializeView();
-            
-            if (viewModel is not null) 
+
+            if (viewModel is not null)
                 InitializeView(viewModel);
         }
-        
-        protected override void OnUnbound() => 
+
+        /// <inheritdoc />
+        /// <summary>
+        /// Deinitializes the view when the binder is unbound.
+        /// </summary>
+        protected override void OnUnbound() =>
             DeinitializeView();
-        
-        protected void InitializeView(IViewModel viewModel) => 
+
+        /// <summary>
+        /// Initializes the <see cref="View"/> with the specified <see cref="IViewModel"/>.
+        /// </summary>
+        /// <param name="viewModel">The ViewModel to initialize the view with.</param>
+        protected void InitializeView(IViewModel viewModel) =>
             View.Initialize(viewModel);
-        
+
+        /// <summary>
+        /// Deinitializes the <see cref="View"/>, clearing its current ViewModel.
+        /// </summary>
         protected void DeinitializeView() =>
             View.Deinitialize();
     }

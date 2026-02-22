@@ -7,7 +7,10 @@ using Aspid.UnityFastTools.Editors;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM
 {
-    // TODO Aspid.MVVM Unity – Write summary
+    /// <summary>
+    /// A styled inspector header visual element used in the Aspid MVVM inspector UI.
+    /// Displays an icon alongside a label derived from the inspected object's type name.
+    /// </summary>
     public class AspidInspectorHeader : VisualElement
     {
         public static readonly StyleSheet StyleSheet = Resources.Load<StyleSheet>("Styles/aspid-mvvm-inspector-header");

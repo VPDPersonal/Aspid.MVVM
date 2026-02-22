@@ -6,7 +6,10 @@ using UnityEngine.UIElements;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM
 {
-    // TODO Aspid.MVVM Unity – Write summary
+    /// <summary>
+    /// A styled help box visual element used in the Aspid MVVM inspector UI.
+    /// Extends <see cref="HelpBox"/> with the <c>aspid-mvvm-help-box</c> style sheet and type-specific style classes.
+    /// </summary>
     public class AspidHelpBox : HelpBox
     {
         public static readonly StyleSheet StyleSheet = Resources.Load<StyleSheet>("Styles/aspid-mvvm-help-box");

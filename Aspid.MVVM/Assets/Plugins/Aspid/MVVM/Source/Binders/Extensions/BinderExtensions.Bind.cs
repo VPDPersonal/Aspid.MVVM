@@ -5,6 +5,10 @@ using System.Runtime.CompilerServices;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM
 {
+    /// <summary>
+    /// Extension methods for safely binding and unbinding <see cref="IBinder"/> instances to <see cref="IBinderAdder"/> targets.
+    /// Null-safe variants guard against <c>null</c> binders or collections.
+    /// </summary>
     public static partial class BinderExtensions
     {
         #region Singl BindSafely

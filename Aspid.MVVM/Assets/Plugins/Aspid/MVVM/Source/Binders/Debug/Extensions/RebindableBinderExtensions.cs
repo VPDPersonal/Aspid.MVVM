@@ -3,6 +3,10 @@ using System.Diagnostics;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM
 {
+    /// <summary>
+    /// Extension methods for rebinding <see cref="IBinder"/> instances that implement <see cref="IRebindableBinder"/>.
+    /// Only active in <c>DEBUG</c> or <c>UNITY_EDITOR</c> builds.
+    /// </summary>
     public static class RebindableBinderExtensions
     {
         /// <summary>
@@ -10,8 +14,8 @@ namespace Aspid.MVVM
         /// This method is only included in builds with <c>DEBUG</c> or <c>UNITY_EDITOR</c> defined.
         /// </summary>
         /// <param name="binder">The binder instance to attempt to rebind.</param>
-        [Conditional("DEBUG")]
-        [Conditional("UNITY_EDITOR")]
+        [Conditional(conditionString: "DEBUG")]
+        [Conditional(conditionString: "UNITY_EDITOR")]
         public static void Rebind(this IBinder binder)
         {
 #if UNITY_EDITOR || DEBUG

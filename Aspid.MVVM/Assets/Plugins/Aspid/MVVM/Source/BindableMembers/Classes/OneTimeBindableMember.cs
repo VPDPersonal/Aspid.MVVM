@@ -7,7 +7,7 @@ namespace Aspid.MVVM
     /// Represents a bindable member event that provides a single value in a one-time binding operation.
     /// </summary>
     /// <typeparam name="T">The type of the value to be bound.</typeparam>
-    public sealed class OneTimeBindableMember<T> : OneTimeBindableMember, IReadOnlyValueBindableMember<T>
+    public sealed class OneTimeBindableMember<T> : IReadOnlyValueBindableMember<T>
     {
         private static readonly OneTimeBindableMember<T> _instance = new();
     
@@ -37,7 +37,7 @@ namespace Aspid.MVVM
         IBinderRemover? IBinderAdder.Add(IBinder binder)
         {
 #if UNITY_2022_1_OR_NEWER && !ASPID_MVVM_UNITY_PROFILER_DISABLED
-            using (AddMarker.Auto())
+            using (OneTimeBindableMember.AddMarker.Auto())
 #endif
             {
                 binder.Mode.ThrowExceptionIfNotOne();
@@ -67,7 +67,7 @@ namespace Aspid.MVVM
         public static OneTimeBindableMember<T> Get(T value)
         {
 #if UNITY_2022_1_OR_NEWER && !ASPID_MVVM_UNITY_PROFILER_DISABLED
-            using (GetMarker.Auto())
+            using (OneTimeBindableMember.GetMarker.Auto())
 #endif
             {
                 _instance.Value = value;
@@ -75,12 +75,12 @@ namespace Aspid.MVVM
             }
         }
     }
-    
-    public abstract class OneTimeBindableMember
-    {
+
 #if UNITY_2022_1_OR_NEWER && !ASPID_MVVM_UNITY_PROFILER_DISABLED
-        protected static readonly Unity.Profiling.ProfilerMarker AddMarker = new("OneTimeBindableMember.Add");
-        protected static readonly Unity.Profiling.ProfilerMarker GetMarker = new("OneTimeBindableMember.Get");
-#endif
+    internal static class OneTimeBindableMember
+    {
+        public static readonly Unity.Profiling.ProfilerMarker AddMarker = new(name: "OneTimeBindableMember.Add");
+        public static readonly Unity.Profiling.ProfilerMarker GetMarker = new(name: "OneTimeBindableMember.Get");
     }
+#endif
 }

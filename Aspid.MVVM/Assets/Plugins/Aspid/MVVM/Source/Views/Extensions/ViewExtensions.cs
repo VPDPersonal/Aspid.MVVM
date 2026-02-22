@@ -3,13 +3,22 @@ using System;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM
 {
+    /// <summary>
+    /// Extension methods for <see cref="IView"/> providing helpers for reinitialization and safe disposal.
+    /// </summary>
     public static class ViewExtensions
     {
+        /// <summary>
+        /// Deinitializes the view from its current ViewModel and optionally reinitializes it with a new one.
+        /// </summary>
+        /// <param name="view">The view to reinitialize.</param>
+        /// <param name="newViewModel">The new ViewModel to initialize the view with, or <c>null</c> to only deinitialize.</param>
+        /// <returns>The previously associated <see cref="IViewModel"/>, or <c>null</c> if none was present.</returns>
         public static IViewModel? Reinitialize(this IView? view, IViewModel? newViewModel)
-        { 
+        {
             if (view is null) return null;
             var oldViewModel = view.DeinitializeView();
-            
+
             if (newViewModel is not null)
                 view.Initialize(newViewModel);
 

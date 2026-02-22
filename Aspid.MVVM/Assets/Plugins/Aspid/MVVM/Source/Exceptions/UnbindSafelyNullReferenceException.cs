@@ -3,15 +3,29 @@ using System;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM
 {
-    // TODO Aspid.MVVM – Write summary
+    /// <summary>
+    /// Exception thrown when a <c>null</c> binder is encountered during an <c>UnbindSafely</c> operation.
+    /// </summary>
     public sealed class UnbindSafelyNullReferenceException : NullReferenceException
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="UnbindSafelyNullReferenceException"/> class.
+        /// </summary>
         public UnbindSafelyNullReferenceException() { }
 
-        public UnbindSafelyNullReferenceException(string message) 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="UnbindSafelyNullReferenceException"/> class with the specified message.
+        /// </summary>
+        /// <param name="message">The message that describes the error.</param>
+        public UnbindSafelyNullReferenceException(string message)
             : base(message) { }
 
-        public UnbindSafelyNullReferenceException(string message, Exception innerException) 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="UnbindSafelyNullReferenceException"/> class with the specified message and inner exception.
+        /// </summary>
+        /// <param name="message">The message that describes the error.</param>
+        /// <param name="innerException">The exception that is the cause of the current exception.</param>
+        public UnbindSafelyNullReferenceException(string message, Exception innerException)
             : base(message, innerException) { }
     }
 }

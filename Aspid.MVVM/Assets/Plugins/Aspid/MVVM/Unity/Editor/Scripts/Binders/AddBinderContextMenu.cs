@@ -10,7 +10,10 @@ using Object = UnityEngine.Object;
 namespace Aspid.MVVM
 {
     // TODO Aspid.MVVM Unity – Refactor
-    // TODO Aspid.MVVM Unity – Write summary
+    /// <summary>
+    /// Registers a Unity Editor context menu entry that allows adding compatible <see cref="MonoBinder"/> components
+    /// directly from a serialized property's right-click menu.
+    /// </summary>
     internal static class AddBinderContextMenu
     {
         private const string AddBinderText = "Add Binder";

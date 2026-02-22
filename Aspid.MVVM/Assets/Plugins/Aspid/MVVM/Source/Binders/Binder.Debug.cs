@@ -32,6 +32,7 @@ namespace Aspid.MVVM
             }
         }
         
+        [EditorBrowsable(EditorBrowsableState.Never)]
         private readonly struct LastData
         {
             public readonly BindMode Mode;

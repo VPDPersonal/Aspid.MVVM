@@ -6,7 +6,10 @@ using UnityEngine.UIElements;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM
 {
-    // TODO Aspid.MVVM Unity – Write summary
+    /// <summary>
+    /// A styled container visual element used in the Aspid MVVM inspector UI.
+    /// Supports dark, light, and lighter visual style variants.
+    /// </summary>
     public class AspidContainer : VisualElement
     {
         public static readonly StyleSheet StyleSheet = Resources.Load<StyleSheet>("Styles/aspid-mvvm-container");

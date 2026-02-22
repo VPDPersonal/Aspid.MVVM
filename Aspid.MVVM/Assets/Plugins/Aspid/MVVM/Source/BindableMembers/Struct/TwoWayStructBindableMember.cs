@@ -27,7 +27,7 @@ namespace Aspid.MVVM
     /// </summary>
     /// <typeparam name="T">The type of the value being handled in the bindable member event.</typeparam>
     /// <typeparam name="TBoxed">Boxed type</typeparam>
-    public abstract class TwoWayStructBindableMember<T, TBoxed> : TwoWayStructBindableMember, IBindableMember<T>, IBinderRemover
+    public abstract class TwoWayStructBindableMember<T, TBoxed> : IBindableMember<T>, IBinderRemover
         where T : struct, TBoxed
         where TBoxed : class
     {
@@ -49,9 +49,14 @@ namespace Aspid.MVVM
             get => _value;
             set
             {
-                _value = value;
-                Changed?.Invoke(value);
-                BoxedChanged?.Invoke(value);
+#if UNITY_2022_1_OR_NEWER && !ASPID_MVVM_UNITY_PROFILER_DISABLED
+                using (TwoWayStructBindableMember.SetValueMarker.Auto())
+#endif
+                {
+                    _value = value;
+                    Changed?.Invoke(value);
+                    BoxedChanged?.Invoke(value);
+                }
             }
         }
         
@@ -86,7 +91,7 @@ namespace Aspid.MVVM
         IBinderRemover? IBinderAdder.Add(IBinder binder)
         {
 #if UNITY_2022_1_OR_NEWER && !ASPID_MVVM_UNITY_PROFILER_DISABLED
-            using (AddMarker.Auto())
+            using (TwoWayStructBindableMember.AddMarker.Auto())
 #endif
             {
                 switch (binder.Mode)
@@ -162,7 +167,7 @@ namespace Aspid.MVVM
         void IBinderRemover.Remove(IBinder binder)
         {
 #if UNITY_2022_1_OR_NEWER && !ASPID_MVVM_UNITY_PROFILER_DISABLED
-            using (RemoveMarker.Auto())
+            using (TwoWayStructBindableMember.RemoveMarker.Auto())
 #endif
             {
                 switch (binder.Mode)
@@ -213,7 +218,7 @@ namespace Aspid.MVVM
         private void OnValueChanged(T value)
         {
 #if UNITY_2022_1_OR_NEWER && !ASPID_MVVM_UNITY_PROFILER_DISABLED
-            using (OnValueChangedMarker.Auto())
+            using (TwoWayStructBindableMember.OnValueChangedMarker.Auto())
 #endif
             {
                 _setValue(value);
@@ -223,7 +228,7 @@ namespace Aspid.MVVM
         private void OnBoxedValueChanged(TBoxed? value)
         {
 #if UNITY_2022_1_OR_NEWER && !ASPID_MVVM_UNITY_PROFILER_DISABLED
-            using (OnBoxedValueChangedMarker.Auto())
+            using (TwoWayStructBindableMember.OnBoxedValueChangedMarker.Auto())
 #endif
             {
                 if (value is null)
@@ -236,7 +241,7 @@ namespace Aspid.MVVM
         private void OnObjectValueChanged(object value)
         {
 #if UNITY_2022_1_OR_NEWER && !ASPID_MVVM_UNITY_PROFILER_DISABLED
-            using (OnObjectValueChangedMarker.Auto())
+            using (TwoWayStructBindableMember.OnObjectValueChangedMarker.Auto())
 #endif
             {
                 if (value is not T specificValue)
@@ -247,15 +252,15 @@ namespace Aspid.MVVM
         }
     }
     
-    public abstract class TwoWayStructBindableMember
-    {
 #if UNITY_2022_1_OR_NEWER && !ASPID_MVVM_UNITY_PROFILER_DISABLED
-        protected static readonly Unity.Profiling.ProfilerMarker AddMarker = new("TwoWayStructBindableMember.Add");
-        protected static readonly Unity.Profiling.ProfilerMarker RemoveMarker = new("TwoWayStructBindableMember.Remove");
-        protected static readonly Unity.Profiling.ProfilerMarker SetValueMarker = new("TwoWayStructBindableMember.SetValue");
-        protected static readonly Unity.Profiling.ProfilerMarker OnValueChangedMarker = new("TwoWayStructBindableMember.OnValueChanged");
-        protected static readonly Unity.Profiling.ProfilerMarker OnBoxedValueChangedMarker = new("TwoWayStructBindableMember.OnBoxedValueChanged");
-        protected static readonly Unity.Profiling.ProfilerMarker OnObjectValueChangedMarker = new("TwoWayStructBindableMember.OnObjectValueChanged");
-#endif
+    internal static class TwoWayStructBindableMember
+    {
+        public static readonly Unity.Profiling.ProfilerMarker AddMarker = new(name: "TwoWayStructBindableMember.Add");
+        public static readonly Unity.Profiling.ProfilerMarker RemoveMarker = new(name: "TwoWayStructBindableMember.Remove");
+        public static readonly Unity.Profiling.ProfilerMarker SetValueMarker = new(name: "TwoWayStructBindableMember.SetValue");
+        public static readonly Unity.Profiling.ProfilerMarker OnValueChangedMarker = new(name: "TwoWayStructBindableMember.OnValueChanged");
+        public static readonly Unity.Profiling.ProfilerMarker OnBoxedValueChangedMarker = new(name: "TwoWayStructBindableMember.OnBoxedValueChanged");
+        public static readonly Unity.Profiling.ProfilerMarker OnObjectValueChangedMarker = new(name: "TwoWayStructBindableMember.OnObjectValueChanged");
     }
+    #endif
 }

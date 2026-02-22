@@ -3,6 +3,10 @@ using System.Runtime.CompilerServices;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM
 {
+    /// <summary>
+    /// Extension methods for <see cref="IRelayCommand"/> and its generic variants.
+    /// Provides helpers for null-safe fallback to empty commands and for creating commands from delegates.
+    /// </summary>
     public static partial class RelayCommandExtensions
     {
         #region Get Empty RelayCommand Methods

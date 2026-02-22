@@ -10,7 +10,10 @@ using System.Runtime.CompilerServices;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM
 {
-    // TODO Aspid.MVVM Unity – Write summary
+    /// <summary>
+    /// Editor utility that validates and synchronizes the assignment of <see cref="IMonoBinderValidable"/>
+    /// binders between a view's required binder slots, adding or removing binder references as the inspector changes.
+    /// </summary>
     public static class ViewAndMonoBinderSyncValidator
     {
         #region Validate Methods

@@ -7,7 +7,10 @@ using System.Collections.Generic;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM
 {
-    // TODO Aspid.MVVM Unity – Write summary
+    /// <summary>
+    /// Editor extension methods for <see cref="UnityEditor.SerializedProperty"/> providing
+    /// runtime type resolution and class instance navigation along the serialized property path.
+    /// </summary>
     public static class SerializedPropertyExtensions
     {
         private const BindingFlags Flags = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic;

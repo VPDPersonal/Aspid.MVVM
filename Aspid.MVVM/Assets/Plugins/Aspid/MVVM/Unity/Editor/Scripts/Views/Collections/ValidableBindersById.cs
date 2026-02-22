@@ -5,6 +5,10 @@ using System.Collections.Generic;
 namespace Aspid.MVVM
 {
     // TODO Aspid.MVVM Unity – Replace array with ImmutableArray
+    /// <summary>
+    /// A dictionary mapping binder IDs to their corresponding <see cref="IMonoBinderValidable"/> slot arrays,
+    /// built from a view's required binder fields.
+    /// </summary>
     public sealed class ValidableBindersById : Dictionary<string, IMonoBinderValidable?[]>
     {
         /// <summary>

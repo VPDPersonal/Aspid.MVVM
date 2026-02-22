@@ -1,4 +1,5 @@
 using System;
+using System.ComponentModel;
 
 // ReSharper disable once CheckNamespace
 // ReSharper disable UnusedParameter.Local
@@ -15,10 +16,17 @@ namespace Aspid.MVVM
     public sealed class BindAlsoAttribute : Attribute
     {
 #if UNITY_EDITOR || DEBUG
-        // TODO Aspid.MVVM – Write summary
+        /// <summary>
+        /// The name of the generated property whose change event should also be triggered.
+        /// </summary>
+        [EditorBrowsable(EditorBrowsableState.Advanced)]
         public string PropertyName { get; }
 #endif
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="BindAlsoAttribute"/> with the specified property name.
+        /// </summary>
+        /// <param name="propertyName">The name of the generated property whose change event should also be triggered.</param>
         public BindAlsoAttribute(string propertyName)
         {
 #if UNITY_EDITOR || DEBUG

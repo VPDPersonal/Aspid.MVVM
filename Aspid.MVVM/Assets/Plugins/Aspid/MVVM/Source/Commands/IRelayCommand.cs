@@ -48,9 +48,9 @@ namespace Aspid.MVVM
         public bool CanExecute(T? param);
 
         /// <summary>
-        /// Выполняет команду с переданным параметром.
+        /// Executes the command with the given parameter.
         /// </summary>
-        /// <param name="param">Параметр, используемый для выполнения команды.</param>
+        /// <param name="param">The parameter used to execute the command.</param>
         public void Execute(T param);
         
         /// <summary>

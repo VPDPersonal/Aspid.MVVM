@@ -7,7 +7,10 @@ using System.Collections.Generic;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM
 {
-    // TODO Aspid.MVVM Unity – Write summary
+    /// <summary>
+    /// Editor extension methods for <see cref="System.Type"/> providing display name formatting,
+    /// explicit interface resolution, and recursive member enumeration across base class hierarchies.
+    /// </summary>
     public static class TypeExtensions
     {
         public static string GetTypeDisplayName(this Type type)

@@ -3,6 +3,9 @@ using System.Runtime.CompilerServices;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM
 {
+    /// <summary>
+    /// Extension methods for <see cref="BindMode"/> providing mode classification checks and validation helpers.
+    /// </summary>
     public static partial class BindModeExtensions
     {
         /// <summary>

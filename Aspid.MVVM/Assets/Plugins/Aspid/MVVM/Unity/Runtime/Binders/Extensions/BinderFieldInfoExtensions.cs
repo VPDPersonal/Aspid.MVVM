@@ -1,7 +1,10 @@
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM
 {
-    // TODO Aspid.MVVM – Rewrite comments 
+    /// <summary>
+    /// Extension methods for deriving binder IDs from field names at runtime.
+    /// Strips common naming convention prefixes (<c>_</c>, <c>m_</c>) and normalizes casing.
+    /// </summary>
     public static class BinderFieldInfoExtensions
     {
         /// <summary>

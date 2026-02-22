@@ -6,7 +6,10 @@ using System.Runtime.CompilerServices;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM
 {
-    // TODO Aspid.MVVM Unity – Write summary
+    /// <summary>
+    /// Editor helper for deriving generated property names from field names,
+    /// and for resolving auto-property backing fields via reflection.
+    /// </summary>
     public static class NameHelper
     {
         private const BindingFlags BackingFieldBindingFlags = BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public;

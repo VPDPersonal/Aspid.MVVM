@@ -12,7 +12,11 @@ using Object = UnityEngine.Object;
 namespace Aspid.MVVM
 {
     // TODO Aspid.MVVM Unity – Refactor
-    // TODO Aspid.MVVM Unity – Write summary
+    /// <summary>
+    /// Custom Unity Editor for <see cref="MonoBinder"/> components.
+    /// Builds a UIElements-based inspector with ID and View dropdown selectors.
+    /// Can be extended by derived editors for specialized binder types.
+    /// </summary>
     [CanEditMultipleObjects]
     [CustomEditor(typeof(MonoBinder), true)]
     public class MonoBinderEditor : Editor

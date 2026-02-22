@@ -12,7 +12,12 @@ using Aspid.UnityFastTools.Editors;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM
 {
-    // TODO Aspid.MVVM Unity – Write summary
+    /// <summary>
+    /// Base UIElements visual element for <see cref="IView"/> inspectors.
+    /// Renders header, base inspector fields, and supports incremental updates.
+    /// </summary>
+    /// <typeparam name="TView">The concrete <see cref="IView"/> type being inspected.</typeparam>
+    /// <typeparam name="TEditor">The corresponding <see cref="ViewEditor{T,TEditor}"/> type.</typeparam>
     public class ViewVisualElement<TView, TEditor> : VisualElement
         where TView : Object, IView
         where TEditor : ViewEditor<TView, TEditor>

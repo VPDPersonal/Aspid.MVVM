@@ -9,7 +9,11 @@ using System.Collections.Generic;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM
 {
-    // TODO Aspid.MVVM Unity – Write summary
+    /// <summary>
+    /// Represents a reflected field on a view object that is marked with <see cref="RequireBinderAttribute"/>,
+    /// carrying its binding ID, required binder types, and any child nested binder fields.
+    /// Used by the editor to validate that binder slots are correctly populated.
+    /// </summary>
     public sealed partial class RequiredFieldForMonoBinder : FieldInfo
     {
         public readonly string Id;
@@ -183,11 +187,15 @@ namespace Aspid.MVVM
                 : typeof(IMonoBinderValidable[]).IsAssignableFrom(fieldType);
         }
 
-        // IMonoBinderValidable
-        // IMonoBinderValidable[]
-        // List<IMonoBinderValidable>
-        // List<IMonoBinderValidable[]>
-        // TODO Aspid.MVVM – Write summary
+        /// <summary>
+        /// Determines whether the given field is a required binder field eligible for validation.
+        /// A field qualifies if it is serializable, either public or marked with <c>[SerializeField]</c>,
+        /// explicitly decorated with <c>[RequireBinder]</c>, or its type is assignable to one of:
+        /// <c>IMonoBinderValidable</c>, <c>IMonoBinderValidable[]</c>,
+        /// <c>List&lt;IMonoBinderValidable&gt;</c>, or <c>List&lt;IMonoBinderValidable[]&gt;</c>.
+        /// </summary>
+        /// <param name="field">The field to inspect, or <c>null</c>.</param>
+        /// <returns><c>true</c> if the field requires a binder to be assigned; otherwise, <c>false</c>.</returns>
         public static bool IsRequireBinderField(FieldInfo? field)
         {
             if (field is null) return false;

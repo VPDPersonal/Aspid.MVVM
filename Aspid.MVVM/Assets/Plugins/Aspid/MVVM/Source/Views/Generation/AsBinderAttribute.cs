@@ -1,4 +1,5 @@
 using System;
+using System.ComponentModel;
 
 // ReSharper disable once CheckNamespace
 // ReSharper disable UnusedParameter.Local
@@ -12,7 +13,10 @@ namespace Aspid.MVVM
     public sealed class AsBinderAttribute : Attribute
     {
 #if UNITY_EDITOR || DEBUG
-        // TODO Aspid.MVVM – Write summary
+        /// <summary>
+        /// The <see cref="IBinder"/> type used to bind the field or property.
+        /// </summary>
+        [EditorBrowsable(EditorBrowsableState.Advanced)]
         public readonly Type Type;
 #endif
 

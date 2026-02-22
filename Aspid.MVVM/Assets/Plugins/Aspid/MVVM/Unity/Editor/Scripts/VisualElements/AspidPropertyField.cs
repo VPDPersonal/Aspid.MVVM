@@ -9,7 +9,10 @@ using UnityEngine.UIElements;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM
 {
-    // TODO Aspid.MVVM Unity – Write summary
+    /// <summary>
+    /// A styled property field visual element used in the Aspid MVVM inspector UI.
+    /// Extends <see cref="PropertyField"/> with the <c>aspid-mvvm-property-field</c> style sheet and class.
+    /// </summary>
     public class AspidPropertyField : PropertyField
     {
         public const string StyleClass = "aspid-property-field";

@@ -5,7 +5,10 @@ using System.Reflection;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM
 {
-    // TODO Aspid.MVVM Unity – Write summary
+    /// <summary>
+    /// Editor extension methods for <see cref="System.Reflection.FieldInfo"/> that support
+    /// typed value assignment and array retrieval for serialized fields.
+    /// </summary>
     public static class FieldInfoExtensions
     {
         public static void SetValueFromCastValue<T>(this FieldInfo field, object obj, params T?[]? value)

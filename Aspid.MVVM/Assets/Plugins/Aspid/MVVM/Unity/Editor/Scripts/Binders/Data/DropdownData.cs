@@ -6,7 +6,10 @@ using System.Collections.Generic;
 namespace Aspid.MVVM
 {
     // TODO Aspid.MVVM Unity – Refactor
-    // TODO Aspid.MVVM Unity – Write summary
+    /// <summary>
+    /// Immutable data structure carrying the selected index and available choices for a dropdown field
+    /// in the <see cref="MonoBinderVisualElement"/> inspector.
+    /// </summary>
     public readonly struct DropdownData
     {
         public readonly int Index;

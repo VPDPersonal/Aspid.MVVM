@@ -6,7 +6,10 @@ using System.Collections.Generic;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM
 {
-    // TODO Aspid.MVVM Unity – Write summary
+    /// <summary>
+    /// Metadata for an <see cref="IViewModel"/> type, aggregating all of its <see cref="BindablePropertyMeta"/> entries
+    /// discovered through reflection.
+    /// </summary>
     public class ViewModelMeta
     {
         public readonly Type Type;

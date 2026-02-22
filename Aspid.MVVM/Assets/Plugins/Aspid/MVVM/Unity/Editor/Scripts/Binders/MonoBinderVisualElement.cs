@@ -13,7 +13,10 @@ using Aspid.UnityFastTools.Editors;
 namespace Aspid.MVVM
 {
     // TODO Aspid.MVVM Unity – Refactor
-    // TODO Aspid.MVVM Unity – Write summary
+    /// <summary>
+    /// UIElements visual element that renders the inspector UI for a <see cref="MonoBinder"/>,
+    /// including header, ID selector, View selector, and logs.
+    /// </summary>
     public class MonoBinderVisualElement : VisualElement
     {
         private int _logsSize;

@@ -5,7 +5,10 @@ using System.Reflection;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM
 {
-    // TODO Aspid.MVVM Unity – Write summary
+    /// <summary>
+    /// Metadata describing a single bindable property on an <see cref="IViewModel"/> type,
+    /// including its resolved type, binding ID, generated property name, and supported <see cref="BindMode"/>.
+    /// </summary>
     public class BindablePropertyMeta
     {
         public readonly Type Type;

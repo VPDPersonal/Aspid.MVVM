@@ -26,7 +26,7 @@ namespace Aspid.MVVM
     /// </summary>
     /// <typeparam name="T">The type of the value to be handled in the bindable member event.</typeparam>
     /// <typeparam name="TBoxed">Boxed type</typeparam>
-    public abstract class OneWayToSourceStructBindableMember<T, TBoxed> : OneWayToSourceStructBindableMember, IReadOnlyBindableMember<T>, IBinderRemover
+    public abstract class OneWayToSourceStructBindableMember<T, TBoxed> : IReadOnlyBindableMember<T>, IBinderRemover
         where T : struct, TBoxed
         where TBoxed : class
     {
@@ -71,7 +71,7 @@ namespace Aspid.MVVM
         IBinderRemover IBinderAdder.Add(IBinder binder)
         {
 #if UNITY_2022_1_OR_NEWER && !ASPID_MVVM_UNITY_PROFILER_DISABLED
-            using (AddMarker.Auto())
+            using (OneWayToSourceStructBindableMember.AddMarker.Auto())
 #endif
             {
                 binder.Mode.ThrowExceptionIfNotTwo();
@@ -96,7 +96,7 @@ namespace Aspid.MVVM
         void IBinderRemover.Remove(IBinder binder)
         {
 #if UNITY_2022_1_OR_NEWER && !ASPID_MVVM_UNITY_PROFILER_DISABLED
-            using (RemoveMarker.Auto())
+            using (OneWayToSourceStructBindableMember.RemoveMarker.Auto())
 #endif
             {
                 switch (binder)
@@ -112,7 +112,7 @@ namespace Aspid.MVVM
         private void OnValueChanged(T value)
         {
 #if UNITY_2022_1_OR_NEWER && !ASPID_MVVM_UNITY_PROFILER_DISABLED
-            using (OnValueChangedMarker.Auto())
+            using (OneWayToSourceStructBindableMember.OnValueChangedMarker.Auto())
 #endif
             {
                 Value = value;
@@ -124,7 +124,7 @@ namespace Aspid.MVVM
         private void OnBoxedValueChanged(TBoxed? value)
         {
 #if UNITY_2022_1_OR_NEWER && !ASPID_MVVM_UNITY_PROFILER_DISABLED
-            using (OnBoxedValueChangedMarker.Auto())
+            using (OneWayToSourceStructBindableMember.OnBoxedValueChangedMarker.Auto())
 #endif
             {
                 if (value is null)
@@ -137,7 +137,7 @@ namespace Aspid.MVVM
         private void OnObjectValueChanged(object value)
         {
 #if UNITY_2022_1_OR_NEWER && !ASPID_MVVM_UNITY_PROFILER_DISABLED
-            using (OnObjectValueChangedMarker.Auto())
+            using (OneWayToSourceStructBindableMember.OnObjectValueChangedMarker.Auto())
 #endif
             {
                 if (value is not T specificValue)
@@ -148,14 +148,14 @@ namespace Aspid.MVVM
         }
     }
     
-    public abstract class OneWayToSourceStructBindableMember
-    {
 #if UNITY_2022_1_OR_NEWER && !ASPID_MVVM_UNITY_PROFILER_DISABLED
-        protected static readonly Unity.Profiling.ProfilerMarker AddMarker = new("OneWayToSourceStructBindableMember.Add");
-        protected static readonly Unity.Profiling.ProfilerMarker RemoveMarker = new("OneWayToSourceStructBindableMember.Remove");
-        protected static readonly Unity.Profiling.ProfilerMarker OnValueChangedMarker = new("OneWayToSourceStructBindableMember.OnValueChanged");
-        protected static readonly Unity.Profiling.ProfilerMarker OnBoxedValueChangedMarker = new("OneWayToSourceStructBindableMember.OnBoxedValueChanged");
-        protected static readonly Unity.Profiling.ProfilerMarker OnObjectValueChangedMarker = new("OneWayToSourceStructBindableMember.OnObjectValueChanged");
-#endif
+    internal static class OneWayToSourceStructBindableMember
+    {
+        public static readonly Unity.Profiling.ProfilerMarker AddMarker = new(name: "OneWayToSourceStructBindableMember.Add");
+        public static readonly Unity.Profiling.ProfilerMarker RemoveMarker = new(name: "OneWayToSourceStructBindableMember.Remove");
+        public static readonly Unity.Profiling.ProfilerMarker OnValueChangedMarker = new(name: "OneWayToSourceStructBindableMember.OnValueChanged");
+        public static readonly Unity.Profiling.ProfilerMarker OnBoxedValueChangedMarker = new(name: "OneWayToSourceStructBindableMember.OnBoxedValueChanged");
+        public static readonly Unity.Profiling.ProfilerMarker OnObjectValueChangedMarker = new(name: "OneWayToSourceStructBindableMember.OnObjectValueChanged");
     }
+#endif
 }

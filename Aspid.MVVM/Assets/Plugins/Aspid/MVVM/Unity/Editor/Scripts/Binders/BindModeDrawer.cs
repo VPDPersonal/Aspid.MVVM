@@ -9,7 +9,10 @@ using UnityEngine.UIElements;
 namespace Aspid.MVVM
 {
     // TODO Aspid.MVVM Unity – Refactor
-    // TODO Aspid.MVVM Unity – Write summary
+    /// <summary>
+    /// Custom Unity property drawer for <see cref="BindMode"/> and <see cref="BindModeAttribute"/> fields.
+    /// Renders an inline dropdown populated with the modes permitted by any <see cref="BindModeOverrideAttribute"/> on the owning class.
+    /// </summary>
     [CustomPropertyDrawer(typeof(BindMode))]
     [CustomPropertyDrawer(typeof(BindModeAttribute))]
     internal sealed class BindModeDrawer : PropertyDrawer

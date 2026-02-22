@@ -7,7 +7,7 @@ namespace Aspid.MVVM
     /// Represents a two-way bindable member event that supports multiple binding modes and bidirectional updates.
     /// </summary>
     /// <typeparam name="T">The type of the value being handled in the bindable member event.</typeparam>
-    public sealed class TwoWayBindableMember<T> : TwoWayBindableMember, IBindableMember<T>, IBinderRemover
+    public sealed class TwoWayBindableMember<T> : IBindableMember<T>, IBinderRemover
     {
         /// <summary>
         /// Event triggered when the value changes.
@@ -26,7 +26,7 @@ namespace Aspid.MVVM
             set
             {
 #if UNITY_2022_1_OR_NEWER && !ASPID_MVVM_UNITY_PROFILER_DISABLED
-                using (SetValueMarker.Auto())
+                using (TwoWayBindableMember.SetValueMarker.Auto())
 #endif
                 {
                     _value = value;
@@ -66,7 +66,7 @@ namespace Aspid.MVVM
         IBinderRemover? IBinderAdder.Add(IBinder binder)
         {
 #if UNITY_2022_1_OR_NEWER && !ASPID_MVVM_UNITY_PROFILER_DISABLED
-            using (AddMarker.Auto())
+            using (TwoWayBindableMember.AddMarker.Auto())
 #endif
             {
                 switch (binder.Mode)
@@ -134,7 +134,7 @@ namespace Aspid.MVVM
         void IBinderRemover.Remove(IBinder binder)
         {
 #if UNITY_2022_1_OR_NEWER && !ASPID_MVVM_UNITY_PROFILER_DISABLED
-            using (RemoveMarker.Auto())
+            using (TwoWayBindableMember.RemoveMarker.Auto())
 #endif
             {
                 switch (binder.Mode)
@@ -180,7 +180,7 @@ namespace Aspid.MVVM
         private void OnValueChanged(T? value)
         {
 #if UNITY_2022_1_OR_NEWER && !ASPID_MVVM_UNITY_PROFILER_DISABLED
-            using (OnValueChangedMarker.Auto())
+            using (TwoWayBindableMember.OnValueChangedMarker.Auto())
 #endif
             {
                 _setValue(value);
@@ -190,7 +190,7 @@ namespace Aspid.MVVM
         private void OnObjectValueChanged(object value)
         {
 #if UNITY_2022_1_OR_NEWER && !ASPID_MVVM_UNITY_PROFILER_DISABLED
-            using (OnObjectValueChangedMarker.Auto())
+            using (TwoWayBindableMember.OnObjectValueChangedMarker.Auto())
 #endif
             {
                 if (value is not T specificValue)
@@ -201,14 +201,14 @@ namespace Aspid.MVVM
         }
     }
     
-    public abstract class TwoWayBindableMember
-    {
 #if UNITY_2022_1_OR_NEWER && !ASPID_MVVM_UNITY_PROFILER_DISABLED
-        protected static readonly Unity.Profiling.ProfilerMarker AddMarker = new("TwoWayBindableMember.Add");
-        protected static readonly Unity.Profiling.ProfilerMarker RemoveMarker = new("TwoWayBindableMember.Remove");
-        protected static readonly Unity.Profiling.ProfilerMarker SetValueMarker = new("TwoWayBindableMember.SetValue");
-        protected static readonly Unity.Profiling.ProfilerMarker OnValueChangedMarker = new("TwoWayBindableMember.OnValueChanged");
-        protected static readonly Unity.Profiling.ProfilerMarker OnObjectValueChangedMarker = new("TwoWayBindableMember.OnObjectValueChanged");
-#endif
+    internal static class TwoWayBindableMember
+    {
+        public static readonly Unity.Profiling.ProfilerMarker AddMarker = new(name: "TwoWayBindableMember.Add");
+        public static readonly Unity.Profiling.ProfilerMarker RemoveMarker = new(name: "TwoWayBindableMember.Remove");
+        public static readonly Unity.Profiling.ProfilerMarker SetValueMarker = new(name: "TwoWayBindableMember.SetValue");
+        public static readonly Unity.Profiling.ProfilerMarker OnValueChangedMarker = new(name: "TwoWayBindableMember.OnValueChanged");
+        public static readonly Unity.Profiling.ProfilerMarker OnObjectValueChangedMarker = new(name: "TwoWayBindableMember.OnObjectValueChanged");
     }
+#endif
 }

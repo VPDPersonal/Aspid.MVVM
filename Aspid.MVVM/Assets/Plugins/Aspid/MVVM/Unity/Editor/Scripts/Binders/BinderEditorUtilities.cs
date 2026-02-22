@@ -8,7 +8,9 @@ using System.Collections.Generic;
 namespace Aspid.MVVM
 {
     // TODO Aspid.MVVM Unity – Refactor
-    // TODO Aspid.MVVM Unity – Write summary
+    /// <summary>
+    /// Editor utility methods for resolving available binder IDs and parent views for a given <see cref="MonoBinder"/> component.
+    /// </summary>
     public static class BinderEditorUtilities
     {
         public static List<string> GetIds<T>(T binder, IView view)

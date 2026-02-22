@@ -1,4 +1,5 @@
 using System;
+using System.ComponentModel;
 
 // ReSharper disable once CheckNamespace
 // ReSharper disable UnusedParameter.Local
@@ -11,7 +12,10 @@ namespace Aspid.MVVM
     public sealed class BindIdAttribute : Attribute
     {
 #if UNITY_EDITOR || DEBUG
-        // TODO Aspid.MVVM – Wrire summary
+        /// <summary>
+        /// The binding ID associated with the target field, property, or <c>[RelayCommand]</c>.
+        /// </summary>
+        [EditorBrowsable(EditorBrowsableState.Advanced)]
         public readonly string Id;
 #endif
 

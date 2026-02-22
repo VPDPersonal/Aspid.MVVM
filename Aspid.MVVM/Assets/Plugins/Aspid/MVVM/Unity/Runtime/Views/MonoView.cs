@@ -41,10 +41,6 @@ namespace Aspid.MVVM
                 binders.Unbind();
         }
         
-        /// <summary>
-        /// Destroys the GameObject of the View.
-        /// May be overridden by a derived class.
-        /// </summary>
         public virtual void Dispose() =>
             Deinitialize();
         

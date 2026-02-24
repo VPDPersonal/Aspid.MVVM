@@ -2,6 +2,7 @@ using System.Linq;
 using Microsoft.CodeAnalysis;
 using Aspid.Generators.Helper;
 using System.Collections.Generic;
+using Aspid.MVVM.Generators.Helpers;
 using Aspid.MVVM.Generators.Generators.ViewModels.Data;
 using Aspid.MVVM.Generators.Generators.ViewModels.Data.Infos;
 using static Aspid.MVVM.Generators.Generators.Descriptions.Classes;
@@ -67,14 +68,16 @@ public static class BindableMembers
         {
             foreach (var member in data.Members)
             {
-                code.AppendLine($"#region {member.Name}")
+                var capitalizeName = member.Name.CapitalizeFirstLetter();
+                
+                code.AppendLine($"#region {capitalizeName}")
                     .AppendMultiline(member.Bindable.Declaration)
                     .AppendLine();
 
                 if (!string.IsNullOrWhiteSpace(member.Bindable.OnPropertyChangedName))
                 {
                     code.AppendLine($"{GeneratedCodeViewModelAttribute}")
-                        .AppendLine($"private void On{member.Name}PropertyChanged()")
+                        .AppendLine($"private void On{capitalizeName}PropertyChanged()")
                         .BeginBlock()
                         .AppendLineIf(!string.IsNullOrWhiteSpace(member.Bindable.Invoke), member.Bindable.Invoke);
                     

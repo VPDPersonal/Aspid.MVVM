@@ -2,6 +2,7 @@
 using System;
 using System.Linq;
 using UnityEditor;
+using UnityEngine;
 using UnityEditor.UIElements;
 using UnityEngine.UIElements;
 using System.Collections.Generic;
@@ -34,7 +35,16 @@ namespace Aspid.MVVM
         
         public IEnumerable<IMonoBinderValidable> UnassignedBinders => TargetAsView 
             ? TargetAsView.GetComponentsInChildren<IMonoBinderValidable>(includeInactive: true)
-                .Where(binder => binder.View is null || string.IsNullOrWhiteSpace(binder.Id)) 
+                .Where(binder =>
+                {
+                    switch (binder.View)
+                    {
+                        case null:
+                        case Component componentView when !componentView: return true;
+                    }
+                    
+                    return string.IsNullOrWhiteSpace(binder.Id);
+                }) 
             : Enumerable.Empty<IMonoBinderValidable>();
 
         #region Enable Methods

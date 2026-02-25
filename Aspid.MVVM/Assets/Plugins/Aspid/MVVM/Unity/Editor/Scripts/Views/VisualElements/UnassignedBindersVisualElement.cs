@@ -1,9 +1,11 @@
 #if !ASPID_MVVM_EDITOR_DISABLED
 #nullable enable
-using UnityEngine;
+using System;
+using System.Linq;
 using Aspid.UnityFastTools;
 using UnityEditor.UIElements;
 using UnityEngine.UIElements;
+using Object = UnityEngine.Object;
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM
@@ -19,16 +21,21 @@ namespace Aspid.MVVM
         where TEditor : MonoViewEditor<TMonoView, TEditor>
     {
         private const string Warning = "It is recommended not to leave unassigned Binders";
-        
+
         private readonly TEditor _editor;
         private readonly VisualElement _unassignedBindersContainer;
+        private readonly Action<IMonoBinderValidable>? _onBinderClicked;
 
-        public UnassignedBindersVisualElement(TEditor editor)
+        private IMonoBinderValidable[]? LastBinders;
+        
+        public UnassignedBindersVisualElement(TEditor editor, Action<IMonoBinderValidable>? onBinderClicked = null)
         {
             _editor = editor;
+            _onBinderClicked = onBinderClicked;
+            
             // TODO Aspid.MVVM Unity – Rename Name
             _unassignedBindersContainer = new VisualElement().SetName("UnassignedBindersContainer");
-            
+
             style.display = DisplayStyle.None;
             Add(Build());
         }
@@ -44,24 +51,44 @@ namespace Aspid.MVVM
 
         public void Update()
         {
-            var count = 0;
+            var binders = _editor.UnassignedBinders.ToArray();
+            if (binders.Length == LastBinders?.Length)
+            {
+                if (LastBinders.SequenceEqual(binders))
+                {
+                    return;
+                }
+            }
+
+            LastBinders = binders;
+            var count = binders.Length;
             _unassignedBindersContainer.Clear();
             
-            foreach (var unassignedBinder in _editor.UnassignedBinders)
+            foreach (var unassignedBinder in LastBinders)
             {
                 var field = new ObjectField()
+                    .SetOpacity(1)
                     .SetValue((Object)unassignedBinder)
-                    .SetMargin(count > 0 ? 5 : 0, 0, 0,0);
+                    .SetMargin(top: count > 0 ? 5 : 0, bottom: 0, left: 0, right: 0);
                 
-                field.SetEnabled(false);
-                field.style.opacity = 1;
-                field.Q<VisualElement>(className: "unity-object-field__selector").SetDisplay(DisplayStyle.None);
+                field.Q<VisualElement>(className: "unity-object-field__selector")
+                    .SetDisplay(DisplayStyle.None);
+
+                if (_onBinderClicked is not null)
+                {
+                    var capturedBinder = unassignedBinder;
+                    
+                    field.RegisterCallback<MouseUpEvent>(_ =>
+                    {
+                        _onBinderClicked(capturedBinder);
+                    });
+                }
                 
                 _unassignedBindersContainer.AddChild(field);
                 count++;
             }
-            
-            style.display = _unassignedBindersContainer.childCount > 0 ? DisplayStyle.Flex : DisplayStyle.None; 
+
+            style.SetDisplay(_unassignedBindersContainer.childCount > 0 ? DisplayStyle.Flex : DisplayStyle.None);
         }
     }
 }

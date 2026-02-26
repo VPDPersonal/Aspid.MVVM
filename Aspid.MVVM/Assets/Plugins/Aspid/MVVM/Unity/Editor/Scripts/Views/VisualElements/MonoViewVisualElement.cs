@@ -2,7 +2,6 @@
 #nullable enable
 using System;
 using System.Linq;
-using UnityEngine;
 using UnityEditor;
 using Aspid.Internal;
 using Aspid.UnityFastTools;
@@ -27,7 +26,6 @@ namespace Aspid.MVVM
         private const string GeneralBindersId = "general-binders";
         
         private UnassignedBindersVisualElement<TView, TEditor>? _unassignedBindersVisualElement;
-        private readonly List<(IVisualElementScheduledItem scheduledItem, VisualElement element)> _activeHighlightAnimations = new();
         
         protected override IEnumerable<string> PropertiesExcluding
         {
@@ -112,15 +110,16 @@ namespace Aspid.MVVM
         private VisualElement BuildGeneralBinders()
         {
             var container = new VisualElement().SetName(GeneralBindersId);
-            
+
             for (var i = 0; i < Editor.BindersList.ArraySize; i++)
             {
                 var element = Editor.BindersList.GetArrayElementAtIndex(i);
+                var capturedAssemblyQualifiedName = element.AssemblyQualifiedName;
 
-                var property = new AspidPropertyField(element.MonoBindersProperty, label: ObjectNames.NicifyVariableName(element.Id))
+                var property = new MonoBinderPropertyField(element.MonoBindersProperty, label: ObjectNames.NicifyVariableName(element.Id), capturedAssemblyQualifiedName)
                     .SetMargin(top: 3);
                 
-                container.AddChild(property);
+                container.Add(property);
             }
 
             return container;
@@ -131,77 +130,21 @@ namespace Aspid.MVVM
             _unassignedBindersVisualElement = new UnassignedBindersVisualElement<TView, TEditor>(Editor, OnUnassignedBinderClicked);
             return _unassignedBindersVisualElement;
         }
-
-        #region Unassigned Binders
+        
         private void OnUnassignedBinderClicked(IMonoBinderValidable binder)
         {
             var generalBinders = this.Q<VisualElement>(name: GeneralBindersId);
             if (generalBinders is null) return;
 
-            StopHighlightAnimations();
-
             for (var i = 0; i < generalBinders.childCount && i < Editor.BindersList.ArraySize; i++)
             {
                 var assemblyQualifiedName = Editor.BindersList.GetArrayElementAtIndex(i).AssemblyQualifiedName;
-                if (!IsCompatible(binder, assemblyQualifiedName)) continue;
+                if (!MonoBinderPropertyField.IsCompatibleBinderWithField(binder, assemblyQualifiedName)) continue;
                 
                 var element = generalBinders[i];
-                _activeHighlightAnimations.Add((AnimateHighlight(element), element));
+                ((MonoBinderPropertyField)element).AnimateHighlight();
             }
         }
-
-        private void StopHighlightAnimations()
-        {
-            foreach (var (scheduledItem, element) in _activeHighlightAnimations)
-            {
-                scheduledItem.Pause();
-                element[0].style.backgroundColor = new StyleColor(StyleKeyword.Null);
-            }
-            _activeHighlightAnimations.Clear();
-        }
-
-        private static IVisualElementScheduledItem AnimateHighlight(VisualElement element)
-        {
-            const int totalSteps = 50;
-            var step = 0;
-            var initialColor = element[0].resolvedStyle.backgroundColor;
-
-            IVisualElementScheduledItem? scheduledItem = null;
-            scheduledItem = element.schedule.Execute(() =>
-            {
-                step++;
-                if (step >= totalSteps)
-                {
-                    element[0].style.backgroundColor = new StyleColor(StyleKeyword.Null);
-                    scheduledItem?.Pause();
-                    return;
-                }
-
-                var time = 1f - (float)step / totalSteps;
-                element[0].style.backgroundColor = Color.Lerp(initialColor, new Color(0.2f, 0.8f, 0.2f, 0.2f), time);
-            }).Every(15);
-
-            return scheduledItem!;
-        }
-        
-        private static bool IsCompatible(IMonoBinderValidable binder, string? assemblyQualifiedName)
-        {
-            var binderType = ((Component)binder).GetType();
-
-            if (typeof(IAnyBinder).IsAssignableFrom(binderType)) return true;
-            if (string.IsNullOrEmpty(assemblyQualifiedName)) return false;
-
-            var propertyType = Type.GetType(assemblyQualifiedName);
-            if (propertyType is null) return false;
-
-            return binderType.GetInterfaces()
-                .Where(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(IBinder<>))
-                .Select(i => i.GetGenericArguments()[0])
-                .Any(binderTypeArg =>
-                    binderTypeArg.IsAssignableFrom(propertyType) ||
-                    propertyType.IsAssignableFrom(binderTypeArg));
-        }
-        #endregion
         
         protected override string GetScriptName()
         {

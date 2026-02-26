@@ -2,6 +2,7 @@
 #nullable enable
 using System;
 using System.Linq;
+using UnityEditor;
 using Aspid.UnityFastTools;
 using UnityEditor.UIElements;
 using UnityEngine.UIElements;
@@ -70,20 +71,32 @@ namespace Aspid.MVVM
                     .SetOpacity(1)
                     .SetValue((Object)unassignedBinder)
                     .SetMargin(top: count > 0 ? 5 : 0, bottom: 0, left: 0, right: 0);
-                
+
+                // Disable the object field's dropdown
                 field.Q<VisualElement>(className: "unity-object-field__selector")
                     .SetDisplay(DisplayStyle.None);
-
-                if (_onBinderClicked is not null)
-                {
-                    var capturedBinder = unassignedBinder;
-                    
-                    field.RegisterCallback<MouseUpEvent>(_ =>
-                    {
-                        _onBinderClicked(capturedBinder);
-                    });
-                }
                 
+                var isDraggingBinder = false;
+                
+                field.RegisterCallback<MouseDownEvent>(evt =>
+                {
+                    if (evt.button is not 0) return;
+                    
+                    _onBinderClicked?.Invoke(unassignedBinder);
+                    isDraggingBinder = false;
+                }, TrickleDown.TrickleDown);
+
+                field.RegisterCallback<MouseMoveEvent>(evt =>
+                {
+                    if (evt.pressedButtons is not 1 || isDraggingBinder) return;
+
+                    isDraggingBinder = true;
+                    DragAndDrop.PrepareStartDrag();
+                    DragAndDrop.objectReferences = new[] { (Object)unassignedBinder };
+                    DragAndDrop.StartDrag(((Object)unassignedBinder).name);
+                    evt.StopPropagation();
+                }, TrickleDown.TrickleDown);
+
                 _unassignedBindersContainer.AddChild(field);
                 count++;
             }

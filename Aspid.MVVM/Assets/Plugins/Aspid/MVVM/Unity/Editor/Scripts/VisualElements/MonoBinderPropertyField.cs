@@ -29,11 +29,11 @@ namespace Aspid.MVVM
             
             RegisterCallback<DragUpdatedEvent>(evt =>
             {
-                var droppedBinder = DragAndDrop.objectReferences
+                var hasCompatibleBinder = DragAndDrop.objectReferences
                     .OfType<IMonoBinderValidable>()
-                    .FirstOrDefault();
-                
-                if (droppedBinder is null || !IsCompatibleBinderWithField(droppedBinder, assemblyQualifiedName))
+                    .Any(b => IsCompatibleBinderWithField(b, assemblyQualifiedName));
+
+                if (!hasCompatibleBinder)
                 {
                     slotWrapper.RemoveFromClassList(DropHighlightStyle);
                     return;
@@ -41,35 +41,43 @@ namespace Aspid.MVVM
 
                 DragAndDrop.visualMode = DragAndDropVisualMode.Link;
                 slotWrapper.AddToClassList(DropHighlightStyle);
-                
+
                 evt.StopPropagation();
             });
-            
+
             RegisterCallback<DragLeaveEvent>(_ => slotWrapper.RemoveFromClassList(DropHighlightStyle));
             RegisterCallback<DragExitedEvent>(_ => slotWrapper.RemoveFromClassList(DropHighlightStyle));
-            
+
             RegisterCallback<DragPerformEvent>(evt =>
             {
-                var droppedBinder = DragAndDrop.objectReferences.OfType<IMonoBinderValidable>().FirstOrDefault();
-                if (droppedBinder is not Object unityObjectDropped) return;
-                if (!IsCompatibleBinderWithField(droppedBinder, assemblyQualifiedName)) return;
-                
+                var compatibleBinders = DragAndDrop.objectReferences
+                    .OfType<IMonoBinderValidable>()
+                    .Where(b => IsCompatibleBinderWithField(b, assemblyQualifiedName))
+                    .ToArray();
+
+                if (compatibleBinders.Length is 0) return;
+
+                // Stop propagation before processing so that child elements (e.g. the inner
+                // PropertyField/ObjectField) do not also handle these drop and duplicate items.
+                evt.StopPropagation();
                 DragAndDrop.AcceptDrag();
                 slotWrapper.RemoveFromClassList(DropHighlightStyle);
 
                 if (property.isArray)
                 {
-                    property.arraySize++;
-                    property.GetArrayElementAtIndex(property.arraySize - 1).objectReferenceValue = unityObjectDropped;
+                    var startIndex = property.arraySize;
+                    property.arraySize += compatibleBinders.Length;
+                    
+                    for (var i = 0; i < compatibleBinders.Length; i++)
+                        property.GetArrayElementAtIndex(startIndex + i).objectReferenceValue = (Object)compatibleBinders[i];
+                 
                     property.ApplyModifiedProperties();
                 }
                 else
                 {
-                    property.objectReferenceValue = unityObjectDropped;
+                    property.objectReferenceValue = (Object)compatibleBinders[0];
                 }
-                
-                evt.StopPropagation();
-            });
+            }, TrickleDown.TrickleDown);
         }
         
         public void AnimateHighlight()

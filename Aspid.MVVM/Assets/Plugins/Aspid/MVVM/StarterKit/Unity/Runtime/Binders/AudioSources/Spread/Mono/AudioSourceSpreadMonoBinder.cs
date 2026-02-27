@@ -12,5 +12,8 @@ namespace Aspid.MVVM.StarterKit
             get => CachedComponent.spread;
             set => CachedComponent.spread = value;
         }
+        
+        protected override float GetConvertedValue(float value) =>
+            Mathf.Clamp(base.GetConvertedValue(value), min: 0, max: 360);
     }
 }

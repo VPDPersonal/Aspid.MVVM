@@ -27,5 +27,8 @@ namespace Aspid.MVVM.StarterKit
         {
             mode.ThrowExceptionIfMatches(BindMode.TwoWay);
         }
+        
+        protected override float GetConvertedValue(float value) =>
+            Mathf.Clamp(base.GetConvertedValue(value), min: 0, max: 360);
     }
 }

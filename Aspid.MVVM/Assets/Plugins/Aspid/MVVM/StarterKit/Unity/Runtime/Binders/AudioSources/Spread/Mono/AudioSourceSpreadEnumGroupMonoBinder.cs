@@ -13,6 +13,6 @@ namespace Aspid.MVVM.StarterKit
     public sealed class AudioSourceSpreadEnumGroupMonoBinder : EnumGroupMonoBinder<AudioSource, float, Converter>
     {
         protected override void SetValue(AudioSource element, float value) =>
-            element.spread = value;
+            element.spread = Mathf.Clamp(value, min: 0, max: 1f);
     }
 }

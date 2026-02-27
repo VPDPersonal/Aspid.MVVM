@@ -24,7 +24,10 @@ namespace Aspid.MVVM
         {
             styleSheets.Add(_styleSheet);
 
-            var slotWrapper = new AspidPropertyField(property, label);
+            var slotWrapper = string.IsNullOrWhiteSpace(label)
+                ? new AspidPropertyField(property)
+                : new AspidPropertyField(property, label);
+            
             Add(slotWrapper);
             
             RegisterCallback<DragUpdatedEvent>(evt =>

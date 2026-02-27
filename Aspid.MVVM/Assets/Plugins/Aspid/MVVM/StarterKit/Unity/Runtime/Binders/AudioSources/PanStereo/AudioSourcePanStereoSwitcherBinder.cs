@@ -30,5 +30,8 @@ namespace Aspid.MVVM.StarterKit
 
         protected override void SetValue(float value) =>
             Target.panStereo = value;
+        
+        protected override float GetConvertedValue(float value) =>
+            Mathf.Clamp(base.GetConvertedValue(value), min: -1, max: 1);
     }
 }

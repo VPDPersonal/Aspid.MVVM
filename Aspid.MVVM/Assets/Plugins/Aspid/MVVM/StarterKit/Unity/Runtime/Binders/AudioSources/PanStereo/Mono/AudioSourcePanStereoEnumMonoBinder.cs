@@ -13,6 +13,6 @@ namespace Aspid.MVVM.StarterKit
     public sealed class AudioSourcePanStereoEnumMonoBinder : EnumMonoBinder<AudioSource, float, Converter>
     {
         protected override void SetValue(float value) =>
-            CachedComponent.panStereo = value;
+            CachedComponent.panStereo = Mathf.Clamp(value, min: -1, max: 1);
     }
 }

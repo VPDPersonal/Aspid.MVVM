@@ -14,5 +14,8 @@ namespace Aspid.MVVM.StarterKit
     {
         protected override void SetValue(float value) =>
             CachedComponent.spatialBlend = value;
+        
+        protected override float GetConvertedValue(float value) =>
+            Mathf.Clamp(base.GetConvertedValue(value), min: 0, max: 1);
     }
 }

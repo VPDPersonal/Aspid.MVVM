@@ -13,6 +13,6 @@ namespace Aspid.MVVM.StarterKit
     public sealed class AudioSourceSpatialBlendEnumMonoBinder : EnumMonoBinder<AudioSource, float, Converter>
     {
         protected override void SetValue(float value) =>
-            CachedComponent.spatialBlend = value;
+            CachedComponent.spatialBlend = Mathf.Clamp(value, min: 0, max: 1f);
     }
 }

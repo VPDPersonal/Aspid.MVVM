@@ -17,8 +17,11 @@ namespace Aspid.MVVM.StarterKit
 
         protected override void SetAsset(Sprite sprite)
         {
-            CachedComponent.sprite = sprite;
-            CachedComponent.enabled = !_disabledWhenNull || sprite;
+            var component = CachedComponent;
+            if (component is null) return;
+            
+            component.sprite = sprite;
+            component.enabled = !_disabledWhenNull || sprite;
         }
     }
 }

@@ -17,8 +17,11 @@ namespace Aspid.MVVM.StarterKit
         
         protected override void SetAsset(Texture2D texture)
         {
-            CachedComponent.texture = texture;
-            CachedComponent.enabled = !_disabledWhenNull || texture;
+            var component = CachedComponent;
+            if (component is null) return;
+            
+            component.texture = texture;
+            component.enabled = !_disabledWhenNull || texture;
         }
     }
 }

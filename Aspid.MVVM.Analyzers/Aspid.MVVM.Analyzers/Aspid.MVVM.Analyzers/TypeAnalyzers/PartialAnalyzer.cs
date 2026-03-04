@@ -11,7 +11,7 @@ namespace Aspid.MVVM.Analyzers.TypeAnalyzers;
 public sealed class PartialAnalyzer : DiagnosticAnalyzer
 {
     private static readonly DiagnosticDescriptor _classViewRule = new(
-        id: "AU0003",
+        id: "AM0003",
         title: "Class with View attribute should be partial",
         messageFormat: "Class '{0}' with View attribute must be declared as partial",
         category: "Usage",
@@ -19,7 +19,7 @@ public sealed class PartialAnalyzer : DiagnosticAnalyzer
         isEnabledByDefault: true);
     
     private static readonly DiagnosticDescriptor _structViewRule = new(
-        id: "AU0004",
+        id: "AM0004",
         title: "Struct with View attribute should be partial",
         messageFormat: "Struct '{0}' with View attribute must be declared as partial",
         category: "Usage",
@@ -27,7 +27,7 @@ public sealed class PartialAnalyzer : DiagnosticAnalyzer
         isEnabledByDefault: true);
     
     private static readonly DiagnosticDescriptor _classViewModelRule = new(
-        id: "AU0005",
+        id: "AM0005",
         title: "Class with ViewModel attribute should be partial",
         messageFormat: "Class '{0}' with ViewModel attribute must be declared as partial",
         category: "Usage",
@@ -35,7 +35,7 @@ public sealed class PartialAnalyzer : DiagnosticAnalyzer
         isEnabledByDefault: true);
     
     private static readonly DiagnosticDescriptor _structViewModelRule = new(
-        id: "AU0006",
+        id: "AM0006",
         title: "Struct with ViewModel attribute should be partial",
         messageFormat: "Struct '{0}' with ViewModel attribute must be declared as partial",
         category: "Usage",

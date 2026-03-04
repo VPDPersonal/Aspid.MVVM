@@ -2,10 +2,10 @@
 using UnityEditor;
 using UnityEngine;
 using Aspid.Internal;
+using Aspid.FastTools;
 using System.Reflection;
-using Aspid.UnityFastTools;
 using UnityEngine.UIElements;
-using Aspid.UnityFastTools.Editors;
+using Aspid.FastTools.Editors;
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit

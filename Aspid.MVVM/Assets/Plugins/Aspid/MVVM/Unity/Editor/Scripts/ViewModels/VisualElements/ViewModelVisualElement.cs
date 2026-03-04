@@ -4,8 +4,8 @@ using UnityEditor;
 using System.Linq;
 using Aspid.Internal;
 using UnityEngine.UIElements;
+using Aspid.FastTools.Editors;
 using System.Collections.Generic;
-using Aspid.UnityFastTools.Editors;
 using Object = UnityEngine.Object;
 
 // ReSharper disable once CheckNamespace

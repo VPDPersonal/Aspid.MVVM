@@ -1,7 +1,7 @@
 #nullable enable
 using UnityEngine;
 using Aspid.Internal;
-using Aspid.UnityFastTools;
+using Aspid.FastTools;
 using UnityEngine.UIElements;
 
 // ReSharper disable once CheckNamespace

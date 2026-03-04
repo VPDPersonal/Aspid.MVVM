@@ -4,11 +4,11 @@ using System;
 using System.Linq;
 using UnityEditor;
 using Aspid.Internal;
-using Aspid.UnityFastTools;
+using Aspid.FastTools;
 using UnityEngine.UIElements;
 using UnityEditor.UIElements;
+using Aspid.FastTools.Editors;
 using System.Collections.Generic;
-using Aspid.UnityFastTools.Editors;
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM

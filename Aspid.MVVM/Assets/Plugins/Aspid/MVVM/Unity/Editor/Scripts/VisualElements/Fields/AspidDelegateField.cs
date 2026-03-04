@@ -1,6 +1,6 @@
 using System;
 using UnityEngine;
-using Aspid.UnityFastTools;
+using Aspid.FastTools;
 using UnityEditor.UIElements;
 using UnityEngine.UIElements;
 using Object = UnityEngine.Object;

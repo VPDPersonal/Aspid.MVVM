@@ -1,0 +1,27 @@
+{
+  "name": "com.aspid.fasttools",
+  "version": "0.0.1",
+  "displayName": "Aspid.FastTools",
+  "description": "Aspid.FastTools is a set of tools designed to minimize routine code writing in Unity",
+  "unity": "2022.3",
+  "author":
+  {
+    "name": "Vladislav Panin",
+    "email": "vpd.aspid@gmail.com"
+  },
+  "samples": 
+  [
+    {
+      "displayName": "ProfilerMarkers",
+      "path": "Samples~/ProfilerMarkers"
+    },
+    {
+      "displayName": "Types",
+      "path": "Samples~/Types"
+    },
+    {
+      "displayName": "VisualElements",
+      "path": "Samples~/VisualElements"
+    }
+  ]
+}

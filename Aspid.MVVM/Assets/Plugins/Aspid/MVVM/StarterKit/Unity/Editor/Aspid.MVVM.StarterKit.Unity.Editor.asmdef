@@ -3,11 +3,11 @@
     "rootNamespace": "",
     "references": [
         "Aspid.MVVM",
+        "Aspid.FastTools",
         "Aspid.MVVM.Unity",
-        "Aspid.UnityFastTools",
+        "Aspid.FastTools.Editor",
         "Aspid.MVVM.Unity.Editor",
         "Aspid.Internal.Unity.Editor",
-        "Aspid.UnityFastTools.Editor",
         "Aspid.MVVM.StarterKit.Unity"
     ],
     "includePlatforms": [

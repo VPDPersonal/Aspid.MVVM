@@ -1,0 +1,21 @@
+{
+    "name": "Aspid.FastTools.VisualElements.Editor",
+    "rootNamespace": "",
+    "references": [
+        "GUID:7c010b89992542508a6b6189977e64d4",
+        "GUID:94dcbbdbbd3ca48b891ee4fc8455c434",
+        "GUID:2490c3d9222b240a9a266351d52abca5",
+        "GUID:0acbb74fa21d2442393a327f6c8d5639"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

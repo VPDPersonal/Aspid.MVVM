@@ -1,5 +1,5 @@
 #if !ASPID_MVVM_EDITOR_DISABLED
-using Aspid.UnityFastTools.Editors;
+using Aspid.FastTools.Editors;
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM

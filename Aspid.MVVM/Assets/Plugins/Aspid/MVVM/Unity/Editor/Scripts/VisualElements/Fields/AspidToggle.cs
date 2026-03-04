@@ -1,7 +1,7 @@
 #nullable enable
 using System;
 using UnityEngine;
-using Aspid.UnityFastTools;
+using Aspid.FastTools;
 using UnityEngine.UIElements;
 using System.Collections.Generic;
 

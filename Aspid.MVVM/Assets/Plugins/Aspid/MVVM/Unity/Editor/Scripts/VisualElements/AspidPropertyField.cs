@@ -2,7 +2,7 @@
 using System.Linq;
 using UnityEngine;
 using UnityEditor;
-using Aspid.UnityFastTools;
+using Aspid.FastTools;
 using UnityEditor.UIElements;
 using UnityEngine.UIElements;
 

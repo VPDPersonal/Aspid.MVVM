@@ -2,7 +2,7 @@ using System;
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
-using Aspid.UnityFastTools;
+using Aspid.FastTools;
 using UnityEngine.UIElements;
 
 // ReSharper disable once CheckNamespace

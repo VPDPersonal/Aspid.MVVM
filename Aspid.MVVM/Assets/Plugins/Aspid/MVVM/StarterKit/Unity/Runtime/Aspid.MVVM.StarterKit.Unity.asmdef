@@ -6,6 +6,7 @@
         "UniTask",
         "VContainer",
         "Aspid.MVVM",
+        "Aspid.FastTools",
         "Unity.Localization",
         "Aspid.MVVM.Unity",
         "Unity.Addressables",
@@ -13,8 +14,7 @@
         "Aspid.MVVM.StarterKit",
         "Unity.ResourceManager",
         "Aspid.Collections.Observable",
-        "SerializeReferenceDropdownRuntime",
-        "Aspid.UnityFastTools"
+        "SerializeReferenceDropdownRuntime"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

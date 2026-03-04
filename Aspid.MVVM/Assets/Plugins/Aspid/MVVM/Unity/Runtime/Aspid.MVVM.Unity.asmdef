@@ -3,7 +3,7 @@
     "rootNamespace": "",
     "references": [
         "Aspid.MVVM",
-        "Aspid.UnityFastTools"
+        "Aspid.FastTools"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

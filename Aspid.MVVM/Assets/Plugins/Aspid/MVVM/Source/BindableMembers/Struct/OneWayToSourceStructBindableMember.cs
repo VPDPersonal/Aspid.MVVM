@@ -30,6 +30,14 @@ namespace Aspid.MVVM
         where T : struct, TBoxed
         where TBoxed : class
     {
+#if UNITY_2022_1_OR_NEWER && !ASPID_MVVM_UNITY_PROFILER_DISABLED
+        private static readonly Unity.Profiling.ProfilerMarker _addMarker = new(name: $"OneWayToSourceStructBindableMember<{typeof(T).Name}, {typeof(TBoxed).Name}>.Add");
+        private static readonly Unity.Profiling.ProfilerMarker _removeMarker = new(name: $"OneWayToSourceStructBindableMember<{typeof(T).Name}, {typeof(TBoxed).Name}>.Remove");
+        private static readonly Unity.Profiling.ProfilerMarker _onValueChangedMarker = new(name: $"OneWayToSourceStructBindableMember<{typeof(T).Name}, {typeof(TBoxed).Name}>.OnValueChanged");
+        private static readonly Unity.Profiling.ProfilerMarker _onBoxedValueChangedMarker = new(name: $"OneWayToSourceStructBindableMember<{typeof(T).Name}, {typeof(TBoxed).Name}>.OnBoxedValueChanged");
+        private static readonly Unity.Profiling.ProfilerMarker _onObjectValueChangedMarker = new(name: $"OneWayToSourceStructBindableMember<{typeof(T).Name}, {typeof(TBoxed).Name}>.OnObjectValueChanged");
+#endif
+        
         /// <summary>
         /// Event triggered when the value changes.
         /// </summary>
@@ -71,7 +79,7 @@ namespace Aspid.MVVM
         IBinderRemover IBinderAdder.Add(IBinder binder)
         {
 #if UNITY_2022_1_OR_NEWER && !ASPID_MVVM_UNITY_PROFILER_DISABLED
-            using (OneWayToSourceStructBindableMember.AddMarker.Auto())
+            using (_addMarker.Auto())
 #endif
             {
                 binder.Mode.ThrowExceptionIfNotTwo();
@@ -96,7 +104,7 @@ namespace Aspid.MVVM
         void IBinderRemover.Remove(IBinder binder)
         {
 #if UNITY_2022_1_OR_NEWER && !ASPID_MVVM_UNITY_PROFILER_DISABLED
-            using (OneWayToSourceStructBindableMember.RemoveMarker.Auto())
+            using (_removeMarker.Auto())
 #endif
             {
                 switch (binder)
@@ -112,7 +120,7 @@ namespace Aspid.MVVM
         private void OnValueChanged(T value)
         {
 #if UNITY_2022_1_OR_NEWER && !ASPID_MVVM_UNITY_PROFILER_DISABLED
-            using (OneWayToSourceStructBindableMember.OnValueChangedMarker.Auto())
+            using (_onValueChangedMarker.Auto())
 #endif
             {
                 Value = value;
@@ -124,7 +132,7 @@ namespace Aspid.MVVM
         private void OnBoxedValueChanged(TBoxed? value)
         {
 #if UNITY_2022_1_OR_NEWER && !ASPID_MVVM_UNITY_PROFILER_DISABLED
-            using (OneWayToSourceStructBindableMember.OnBoxedValueChangedMarker.Auto())
+            using (_onBoxedValueChangedMarker.Auto())
 #endif
             {
                 if (value is null)
@@ -137,7 +145,7 @@ namespace Aspid.MVVM
         private void OnObjectValueChanged(object value)
         {
 #if UNITY_2022_1_OR_NEWER && !ASPID_MVVM_UNITY_PROFILER_DISABLED
-            using (OneWayToSourceStructBindableMember.OnObjectValueChangedMarker.Auto())
+            using (_onObjectValueChangedMarker.Auto())
 #endif
             {
                 if (value is not T specificValue)
@@ -147,15 +155,4 @@ namespace Aspid.MVVM
             }
         }
     }
-    
-#if UNITY_2022_1_OR_NEWER && !ASPID_MVVM_UNITY_PROFILER_DISABLED
-    internal static class OneWayToSourceStructBindableMember
-    {
-        public static readonly Unity.Profiling.ProfilerMarker AddMarker = new(name: "OneWayToSourceStructBindableMember.Add");
-        public static readonly Unity.Profiling.ProfilerMarker RemoveMarker = new(name: "OneWayToSourceStructBindableMember.Remove");
-        public static readonly Unity.Profiling.ProfilerMarker OnValueChangedMarker = new(name: "OneWayToSourceStructBindableMember.OnValueChanged");
-        public static readonly Unity.Profiling.ProfilerMarker OnBoxedValueChangedMarker = new(name: "OneWayToSourceStructBindableMember.OnBoxedValueChanged");
-        public static readonly Unity.Profiling.ProfilerMarker OnObjectValueChangedMarker = new(name: "OneWayToSourceStructBindableMember.OnObjectValueChanged");
-    }
-#endif
 }

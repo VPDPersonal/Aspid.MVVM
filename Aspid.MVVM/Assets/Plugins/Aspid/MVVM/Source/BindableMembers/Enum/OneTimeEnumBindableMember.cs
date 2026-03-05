@@ -22,7 +22,7 @@ namespace Aspid.MVVM
         public static OneTimeEnumBindableMember<T> Get(T value)
         {
 #if UNITY_2022_1_OR_NEWER && !ASPID_MVVM_UNITY_PROFILER_DISABLED
-            using (OneTimeStructBindableMember.GetMarker.Auto())
+            using (GetMarker.Auto())
 #endif
             {
                 _instance.Value = value;

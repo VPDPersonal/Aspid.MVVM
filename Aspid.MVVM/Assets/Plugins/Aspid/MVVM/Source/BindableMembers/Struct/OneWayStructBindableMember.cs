@@ -27,6 +27,12 @@ namespace Aspid.MVVM
         where T : struct, TBoxed
         where TBoxed : class
     {
+#if UNITY_2022_1_OR_NEWER && !ASPID_MVVM_UNITY_PROFILER_DISABLED
+        private static readonly Unity.Profiling.ProfilerMarker _addMarker = new(name: $"OneWayStructBindableMember<{typeof(T).Name}, {typeof(TBoxed).Name}>.Add");
+        private static readonly Unity.Profiling.ProfilerMarker _removeMarker = new(name: $"OneWayStructBindableMember<{typeof(T).Name}, {typeof(TBoxed).Name}>.Remove");
+        private static readonly Unity.Profiling.ProfilerMarker _setValueMarker = new(name: $"OneWayStructBindableMember<{typeof(T).Name}, {typeof(TBoxed).Name}>.SetValue");
+#endif 
+        
         /// <summary>
         /// Event triggered when the value changes.
         /// </summary>
@@ -45,7 +51,7 @@ namespace Aspid.MVVM
             set
             {
 #if UNITY_2022_1_OR_NEWER && !ASPID_MVVM_UNITY_PROFILER_DISABLED
-                using (OneWayStructBindableMember.SetValueMarker.Auto())
+                using (_setValueMarker.Auto())
 #endif 
                 {
                     _value = value;
@@ -81,7 +87,7 @@ namespace Aspid.MVVM
         IBinderRemover? IBinderAdder.Add(IBinder binder)
         {
 #if UNITY_2022_1_OR_NEWER && !ASPID_MVVM_UNITY_PROFILER_DISABLED
-            using (OneWayStructBindableMember.AddMarker.Auto())
+            using (_addMarker.Auto())
 #endif
             {
                 var mode = binder.Mode;
@@ -126,7 +132,7 @@ namespace Aspid.MVVM
         void IBinderRemover.Remove(IBinder binder)
         {
 #if UNITY_2022_1_OR_NEWER && !ASPID_MVVM_UNITY_PROFILER_DISABLED
-            using (OneWayStructBindableMember.RemoveMarker.Auto())
+            using (_removeMarker.Auto())
 #endif
             {
                 switch (binder)
@@ -145,13 +151,4 @@ namespace Aspid.MVVM
         /// <param name="value">The new value to set and notify.</param>
         public void Invoke(T value) => Value = value;
     }
-    
-#if UNITY_2022_1_OR_NEWER && !ASPID_MVVM_UNITY_PROFILER_DISABLED
-    internal static class OneWayStructBindableMember
-    {
-        public static readonly Unity.Profiling.ProfilerMarker AddMarker = new(name: "OneWayStructBindableMember.Add");
-        public static readonly Unity.Profiling.ProfilerMarker RemoveMarker = new(name: "OneWayStructBindableMember.Remove");
-        public static readonly Unity.Profiling.ProfilerMarker SetValueMarker = new(name: "OneWayStructBindableMember.SetValue");
-    }
-#endif 
 }

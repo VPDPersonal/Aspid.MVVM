@@ -9,6 +9,12 @@ namespace Aspid.MVVM
     /// </summary>
     public sealed class RelayCommand : IRelayCommand
     {
+#if UNITY_2022_1_OR_NEWER && !ASPID_MVVM_UNITY_PROFILER_DISABLED
+        private static readonly Unity.Profiling.ProfilerMarker _executeMarker = new(name: "RelayCommand.Execute");
+        private static readonly Unity.Profiling.ProfilerMarker _canExecuteMarker = new(name: "RelayCommand.CanExecute");
+        private static readonly Unity.Profiling.ProfilerMarker _notifyCanExecuteChangedMarker = new(name: "RelayCommand.NotifyCanExecuteChanged");
+#endif
+        
         /// <summary>
         /// Event that is raised when the ability to execute the command changes.
         /// </summary>
@@ -64,23 +70,42 @@ namespace Aspid.MVVM
         /// Determines whether the command can be executed.
         /// </summary>
         /// <returns><c>true</c> if the command can be executed; otherwise, <c>false</c>.</returns>
-        public bool CanExecute() =>
-            _canExecute?.Invoke() ?? true;
+        public bool CanExecute()
+        {
+#if UNITY_2022_1_OR_NEWER && !ASPID_MVVM_UNITY_PROFILER_DISABLED
+            using (_canExecuteMarker.Auto())
+#endif
+            {
+                return _canExecute?.Invoke() ?? true;
+            }
+        }
 
         /// <summary>
         /// Executes the command if it can be executed.
         /// </summary>
         public void Execute()
         {
-            if (CanExecute()) 
-                _execute.Invoke();
+#if UNITY_2022_1_OR_NEWER && !ASPID_MVVM_UNITY_PROFILER_DISABLED
+            using (_executeMarker.Auto())
+#endif
+            {
+                if (CanExecute()) 
+                    _execute.Invoke();
+            }
         }
         
         /// <summary>
         /// Notifies that the ability to execute the command has changed.
         /// </summary>
-        public void NotifyCanExecuteChanged() =>
-            CanExecuteChanged?.Invoke(this);
+        public void NotifyCanExecuteChanged()
+        {
+#if UNITY_2022_1_OR_NEWER && !ASPID_MVVM_UNITY_PROFILER_DISABLED
+            using (_notifyCanExecuteChangedMarker.Auto())
+#endif
+            {
+                CanExecuteChanged?.Invoke(this);
+            }
+        }
     }
     
     /// <summary>
@@ -90,6 +115,12 @@ namespace Aspid.MVVM
     /// <typeparam name="T">The type of the command parameter.</typeparam>
     public sealed class RelayCommand<T> : IRelayCommand<T>
     {
+#if UNITY_2022_1_OR_NEWER && !ASPID_MVVM_UNITY_PROFILER_DISABLED
+        private static readonly Unity.Profiling.ProfilerMarker _executeMarker = new(name: $"RelayCommand<{typeof(T).Name}>.Execute");
+        private static readonly Unity.Profiling.ProfilerMarker _canExecuteMarker = new(name: $"RelayCommand<{typeof(T).Name}>.CanExecute");
+        private static readonly Unity.Profiling.ProfilerMarker _notifyCanExecuteChangedMarker = new(name: $"RelayCommand<{typeof(T).Name}>.NotifyCanExecuteChanged");
+#endif
+        
         /// <summary>
         /// Event that is raised when the ability to execute the command changes.
         /// </summary>
@@ -146,24 +177,43 @@ namespace Aspid.MVVM
         /// </summary>
         /// <param name="param">The parameter passed for checking the ability to execute the command.</param>
         /// <returns><c>true</c> if the command can be executed; otherwise, <c>false</c>.</returns>
-        public bool CanExecute(T? param) =>
-            _canExecute?.Invoke(param) ?? true;
-        
+        public bool CanExecute(T? param)
+        {
+#if UNITY_2022_1_OR_NEWER && !ASPID_MVVM_UNITY_PROFILER_DISABLED
+            using (_canExecuteMarker.Auto())
+#endif
+            {
+                return _canExecute?.Invoke(param) ?? true;
+            }
+        }
+
         /// <summary>
         /// Executes the command with the specified parameter if it can be executed.
         /// </summary>
         /// <param name="param">The parameter passed to the command for execution.</param>
         public void Execute(T? param)
         {
-            if (CanExecute(param)) 
-                _execute.Invoke(param);
+#if UNITY_2022_1_OR_NEWER && !ASPID_MVVM_UNITY_PROFILER_DISABLED
+            using (_executeMarker.Auto())
+#endif
+            {
+                if (CanExecute(param)) 
+                    _execute.Invoke(param);
+            }
         }
         
         /// <summary>
         /// Notifies that the ability to execute the command has changed.
         /// </summary>
-        public void NotifyCanExecuteChanged() =>
-            CanExecuteChanged?.Invoke(this);
+        public void NotifyCanExecuteChanged()
+        {
+#if UNITY_2022_1_OR_NEWER && !ASPID_MVVM_UNITY_PROFILER_DISABLED
+            using (_notifyCanExecuteChangedMarker.Auto())
+#endif
+            {
+                CanExecuteChanged?.Invoke(this);
+            }
+        }
     }
     
     /// <summary>
@@ -174,6 +224,12 @@ namespace Aspid.MVVM
     /// <typeparam name="T2">The type of the second command parameter.</typeparam>
     public sealed class RelayCommand<T1, T2> : IRelayCommand<T1, T2>
     {
+#if UNITY_2022_1_OR_NEWER && !ASPID_MVVM_UNITY_PROFILER_DISABLED
+        private static readonly Unity.Profiling.ProfilerMarker _executeMarker = new(name: $"RelayCommand<{typeof(T1).Name}, {typeof(T2).Name}>.Execute");
+        private static readonly Unity.Profiling.ProfilerMarker _canExecuteMarker = new(name: $"RelayCommand<{typeof(T1).Name}, {typeof(T2).Name}>.CanExecute");
+        private static readonly Unity.Profiling.ProfilerMarker _notifyCanExecuteChangedMarker = new(name: $"RelayCommand<{typeof(T1).Name}, {typeof(T2).Name}>.NotifyCanExecuteChanged");
+#endif
+        
         /// <summary>
         /// Event that is raised when the ability to execute the command changes.
         /// </summary>
@@ -231,9 +287,16 @@ namespace Aspid.MVVM
         /// <param name="param1">The first parameter passed for checking the ability to execute the command.</param>
         /// <param name="param2">The second parameter passed for checking the ability to execute the command.</param>
         /// <returns><c>true</c> if the command can be executed; otherwise, <c>false</c>.</returns>
-        public bool CanExecute(T1? param1, T2? param2) =>
-            _canExecute?.Invoke(param1, param2) ?? true;
-        
+        public bool CanExecute(T1? param1, T2? param2)
+        {
+#if UNITY_2022_1_OR_NEWER && !ASPID_MVVM_UNITY_PROFILER_DISABLED
+            using (_canExecuteMarker.Auto())
+#endif
+            {
+                return _canExecute?.Invoke(param1, param2) ?? true;
+            }
+        }
+
         /// <summary>
         /// Executes the command with the specified parameters if it can be executed.
         /// </summary>
@@ -241,15 +304,27 @@ namespace Aspid.MVVM
         /// <param name="param2">The second parameter passed to the command for execution.</param>
         public void Execute(T1? param1, T2? param2)
         {
-            if (CanExecute(param1, param2)) 
-                _execute.Invoke(param1, param2);
+#if UNITY_2022_1_OR_NEWER && !ASPID_MVVM_UNITY_PROFILER_DISABLED
+            using (_executeMarker.Auto())
+#endif
+            {
+                if (CanExecute(param1, param2)) 
+                    _execute.Invoke(param1, param2);
+            }
         }
         
         /// <summary>
         /// Notifies that the ability to execute the command has changed.
         /// </summary>
-        public void NotifyCanExecuteChanged() =>
-            CanExecuteChanged?.Invoke(this);
+        public void NotifyCanExecuteChanged()
+        {
+#if UNITY_2022_1_OR_NEWER && !ASPID_MVVM_UNITY_PROFILER_DISABLED
+            using (_notifyCanExecuteChangedMarker.Auto())
+#endif
+            {
+                CanExecuteChanged?.Invoke(this);
+            }
+        }
     }
     
     /// <summary>
@@ -261,6 +336,12 @@ namespace Aspid.MVVM
     /// <typeparam name="T3">The type of the third command parameter.</typeparam>
     public sealed class RelayCommand<T1, T2, T3> : IRelayCommand<T1, T2, T3>
     {
+#if UNITY_2022_1_OR_NEWER && !ASPID_MVVM_UNITY_PROFILER_DISABLED
+        private static readonly Unity.Profiling.ProfilerMarker _executeMarker = new(name: $"RelayCommand<{typeof(T1).Name}, {typeof(T2).Name}, {typeof(T3).Name}>.Execute");
+        private static readonly Unity.Profiling.ProfilerMarker _canExecuteMarker = new(name: $"RelayCommand<{typeof(T1).Name}, {typeof(T2).Name}, {typeof(T3).Name}>.CanExecute");
+        private static readonly Unity.Profiling.ProfilerMarker _notifyCanExecuteChangedMarker = new(name: $"RelayCommand<{typeof(T1).Name}, {typeof(T2).Name}, {typeof(T3).Name}>.NotifyCanExecuteChanged");
+#endif
+        
         /// <summary>
         /// Event that is raised when the ability to execute the command changes.
         /// </summary>
@@ -318,9 +399,16 @@ namespace Aspid.MVVM
         /// <param name="param2">The second parameter passed to check if the command can execute.</param>
         /// <param name="param3">The third parameter passed to check if the command can execute.</param>
         /// <returns><c>true</c> if the command can be executed; otherwise, <c>false</c>.</returns>
-        public bool CanExecute(T1? param1, T2? param2, T3? param3) =>
-            _canExecute?.Invoke(param1, param2, param3) ?? true;
-        
+        public bool CanExecute(T1? param1, T2? param2, T3? param3)
+        {
+#if UNITY_2022_1_OR_NEWER && !ASPID_MVVM_UNITY_PROFILER_DISABLED
+            using (_canExecuteMarker.Auto())
+#endif
+            {
+                return _canExecute?.Invoke(param1, param2, param3) ?? true;
+            }
+        }
+
         /// <summary>
         /// Executes the command with the specified parameters if it can be executed.
         /// </summary>
@@ -329,15 +417,27 @@ namespace Aspid.MVVM
         /// <param name="param3">The third parameter passed to the command for execution.</param>
         public void Execute(T1? param1, T2? param2, T3? param3)
         {
-            if (CanExecute(param1, param2, param3)) 
-                _execute.Invoke(param1, param2, param3);
+#if UNITY_2022_1_OR_NEWER && !ASPID_MVVM_UNITY_PROFILER_DISABLED
+            using (_executeMarker.Auto())
+#endif
+            {
+                if (CanExecute(param1, param2, param3)) 
+                    _execute.Invoke(param1, param2, param3);
+            }
         }
         
         /// <summary>
         /// Notifies that the ability to execute the command has changed.
         /// </summary>
-        public void NotifyCanExecuteChanged() =>
-            CanExecuteChanged?.Invoke(this);
+        public void NotifyCanExecuteChanged()
+        {
+#if UNITY_2022_1_OR_NEWER && !ASPID_MVVM_UNITY_PROFILER_DISABLED
+            using (_notifyCanExecuteChangedMarker.Auto())
+#endif
+            {
+                CanExecuteChanged?.Invoke(this);
+            }
+        }
     }
     
     /// <summary>
@@ -350,6 +450,12 @@ namespace Aspid.MVVM
     /// <typeparam name="T4">The type of the fourth command parameter.</typeparam>
     public sealed class RelayCommand<T1, T2, T3, T4> : IRelayCommand<T1, T2, T3, T4>
     {
+#if UNITY_2022_1_OR_NEWER && !ASPID_MVVM_UNITY_PROFILER_DISABLED
+        private static readonly Unity.Profiling.ProfilerMarker _executeMarker = new(name: $"RelayCommand<{typeof(T1).Name}, {typeof(T2).Name}, {typeof(T3).Name}, {typeof(T4).Name}>.Execute");
+        private static readonly Unity.Profiling.ProfilerMarker _canExecuteMarker = new(name: $"RelayCommand<{typeof(T1).Name}, {typeof(T2).Name}, {typeof(T3).Name}, {typeof(T4).Name}>.CanExecute");
+        private static readonly Unity.Profiling.ProfilerMarker _notifyCanExecuteChangedMarker = new(name: $"RelayCommand<{typeof(T1).Name}, {typeof(T2).Name}, {typeof(T3).Name}, {typeof(T4).Name}>.NotifyCanExecuteChanged");
+#endif
+        
         /// <summary>
         /// Event that is raised when the ability to execute the command changes.
         /// </summary>
@@ -408,9 +514,16 @@ namespace Aspid.MVVM
         /// <param name="param3">The third parameter passed to check if the command can execute.</param>
         /// <param name="param4">The fourth parameter passed to check if the command can execute.</param>
         /// <returns><c>true</c> if the command can be executed; otherwise, <c>false</c>.</returns>
-        public bool CanExecute(T1? param1, T2? param2, T3? param3, T4? param4) =>
-            _canExecute?.Invoke(param1, param2, param3, param4) ?? true;
-        
+        public bool CanExecute(T1? param1, T2? param2, T3? param3, T4? param4)
+        {
+#if UNITY_2022_1_OR_NEWER && !ASPID_MVVM_UNITY_PROFILER_DISABLED
+            using (_canExecuteMarker.Auto())
+#endif
+            {
+                return _canExecute?.Invoke(param1, param2, param3, param4) ?? true;
+            }
+        }
+
         /// <summary>
         /// Executes the command with the specified parameters if it can be executed.
         /// </summary>
@@ -420,14 +533,26 @@ namespace Aspid.MVVM
         /// <param name="param4">The fourth parameter passed to the command for execution.</param>
         public void Execute(T1? param1, T2? param2, T3? param3, T4? param4)
         {
-            if (CanExecute(param1, param2, param3, param4)) 
-                _execute.Invoke(param1, param2, param3, param4);
+#if UNITY_2022_1_OR_NEWER && !ASPID_MVVM_UNITY_PROFILER_DISABLED
+            using (_executeMarker.Auto())
+#endif
+            {
+                if (CanExecute(param1, param2, param3, param4)) 
+                    _execute.Invoke(param1, param2, param3, param4);
+            }
         }
         
         /// <summary>
         /// Notifies that the ability to execute the command has changed.
         /// </summary>
-        public void NotifyCanExecuteChanged() =>
-            CanExecuteChanged?.Invoke(this);
+        public void NotifyCanExecuteChanged()
+        {
+#if UNITY_2022_1_OR_NEWER && !ASPID_MVVM_UNITY_PROFILER_DISABLED
+            using (_notifyCanExecuteChangedMarker.Auto())
+#endif
+            {
+                CanExecuteChanged?.Invoke(this);
+            }
+        }
     }
 }

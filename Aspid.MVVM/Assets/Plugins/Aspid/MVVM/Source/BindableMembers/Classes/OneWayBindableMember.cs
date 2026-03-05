@@ -9,6 +9,12 @@ namespace Aspid.MVVM
     /// <typeparam name="T">The type of the value being handled in the bindable member event.</typeparam>
     public sealed class OneWayBindableMember<T> : IBindableMember<T>, IBinderRemover
     {
+#if UNITY_2022_1_OR_NEWER && !ASPID_MVVM_UNITY_PROFILER_DISABLED
+        private static readonly Unity.Profiling.ProfilerMarker _addMarker = new(name: $"OneWayBindableMember<{typeof(T).Name}>.Add");
+        private static readonly Unity.Profiling.ProfilerMarker _removeMarker = new(name: $"OneWayBindableMember<{typeof(T).Name}>.Remove");
+        private static readonly Unity.Profiling.ProfilerMarker _setValueMarker = new(name: $"OneWayBindableMember<{typeof(T).Name}>.SetValue");
+#endif 
+        
         /// <summary>
         /// Event triggered when the value changes.
         /// </summary>
@@ -25,7 +31,7 @@ namespace Aspid.MVVM
             set
             {
 #if UNITY_2022_1_OR_NEWER && !ASPID_MVVM_UNITY_PROFILER_DISABLED
-                using (OneWayBindableMember.SetValueMarker.Auto())
+                using (_setValueMarker.Auto())
 #endif 
                 {
                     _value = value;
@@ -60,7 +66,7 @@ namespace Aspid.MVVM
         IBinderRemover? IBinderAdder.Add(IBinder binder)
         {
 #if UNITY_2022_1_OR_NEWER && !ASPID_MVVM_UNITY_PROFILER_DISABLED
-            using (OneWayBindableMember.AddMarker.Auto())
+            using (_addMarker.Auto())
 #endif
             {
                 var mode = binder.Mode;
@@ -101,7 +107,7 @@ namespace Aspid.MVVM
         void IBinderRemover.Remove(IBinder binder)
         {
 #if UNITY_2022_1_OR_NEWER && !ASPID_MVVM_UNITY_PROFILER_DISABLED
-            using (OneWayBindableMember.RemoveMarker.Auto())
+            using (_removeMarker.Auto())
 #endif
             {
                 Changed -= binder switch
@@ -120,13 +126,4 @@ namespace Aspid.MVVM
         public void Invoke(T? value) =>
             Value = value;
     }
-    
-#if UNITY_2022_1_OR_NEWER && !ASPID_MVVM_UNITY_PROFILER_DISABLED
-    internal static class OneWayBindableMember
-    {
-        public static readonly Unity.Profiling.ProfilerMarker AddMarker = new(name: "OneWayBindableMember.Add");
-        public static readonly Unity.Profiling.ProfilerMarker RemoveMarker = new(name: "OneWayBindableMember.Remove");
-        public static readonly Unity.Profiling.ProfilerMarker SetValueMarker = new(name: "OneWayBindableMember.SetValue");
-    }
-#endif 
 }

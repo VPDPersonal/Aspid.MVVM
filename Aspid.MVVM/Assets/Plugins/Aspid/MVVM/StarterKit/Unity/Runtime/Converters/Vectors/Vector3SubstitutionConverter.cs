@@ -6,19 +6,34 @@ using UnityEngine;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
+    /// <summary>
+    /// Converts <see cref="Vector3"/> values by substituting and rearranging their components.
+    /// </summary>
     [Serializable]
     public sealed class Vector3SubstitutionConverter : IConverterVector3
     {
         [SerializeField] private Mode _mode;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Vector3SubstitutionConverter"/> class with XYZ mode.
+        /// </summary>
         public Vector3SubstitutionConverter()
             : this(Mode.XYZ) { }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Vector3SubstitutionConverter"/> class.
+        /// </summary>
+        /// <param name="mode">The substitution mode.</param>
         public Vector3SubstitutionConverter(Mode mode)
         {
             _mode = mode;
         }
 
+        /// <summary>
+        /// Converts a <see cref="Vector3"/> by applying the configured substitution mode.
+        /// </summary>
+        /// <param name="value">The vector to convert.</param>
+        /// <returns>The converted vector with components rearranged according to the mode.</returns>
         public Vector3 Convert(Vector3 value) => _mode switch
         {
             Mode.XYZ => new Vector3(value.x, value.y, value.z),
@@ -60,11 +75,14 @@ namespace Aspid.MVVM.StarterKit
             _ => throw new ArgumentOutOfRangeException()
         };
 
+        /// <summary>
+        /// Specifies how to rearrange vector components.
+        /// </summary>
         public enum Mode
         {
             XYZ,
             XZY,
-            
+
             YXZ,
             YZX,
             

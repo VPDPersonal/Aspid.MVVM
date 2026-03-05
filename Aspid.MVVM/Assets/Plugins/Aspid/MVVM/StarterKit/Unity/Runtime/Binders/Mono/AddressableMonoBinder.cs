@@ -30,8 +30,16 @@ namespace Aspid.MVVM.StarterKit
 		{
 			SetDefault();
 			
-			if (value is not null)
-				Load(value);
+			if (value is null) return;
+			var key = value.RuntimeKey;
+				
+			switch (key)
+			{
+				case null:
+				case string stringKey when string.IsNullOrWhiteSpace(stringKey): return;
+					
+				default: Load(value); break;
+			}
 		}
 		
 		private void SetDefault()
@@ -70,7 +78,9 @@ namespace Aspid.MVVM.StarterKit
 		protected virtual TAsset GetDefaultAsset() => default;
 	}
 
-	public abstract partial class AddressableMonoBinder<TAsset, TComponent> : ComponentMonoBinder<TComponent>, IBinder<string>, IBinder<IKeyEvaluator>
+	public abstract partial class AddressableMonoBinder<TAsset, TComponent> : ComponentMonoBinder<TComponent>, 
+		IBinder<string>,
+		IBinder<IKeyEvaluator>
 		where TComponent : Component
 	{
 		private AsyncOperationHandle<TAsset> _lastHandle;
@@ -94,7 +104,16 @@ namespace Aspid.MVVM.StarterKit
 		{
 			SetDefault();
 
-			if (value is not null) Load(value);
+			if (value is null) return;
+			var key = value.RuntimeKey;
+				
+			switch (key)
+			{
+				case null:
+				case string stringKey when string.IsNullOrWhiteSpace(stringKey): return;
+					
+				default: Load(value); break;
+			}
 		}
 
 		private void SetDefault()
@@ -131,6 +150,10 @@ namespace Aspid.MVVM.StarterKit
 		protected abstract void SetAsset(TAsset asset);
 
 		protected virtual TAsset GetDefaultAsset() => default;
+		public void SetValue(AssetReference value)
+		{
+			throw new System.NotImplementedException();
+		}
 	}
 }
 #endif

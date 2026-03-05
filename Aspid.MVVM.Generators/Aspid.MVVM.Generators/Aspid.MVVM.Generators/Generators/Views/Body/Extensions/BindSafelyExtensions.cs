@@ -1,4 +1,3 @@
-using Microsoft.CodeAnalysis;
 using Aspid.Generators.Helper;
 using Aspid.MVVM.Generators.Generators.Views.Data.Members;
 using Aspid.MVVM.Generators.Generators.ViewModels.Data.Infos;
@@ -19,15 +18,5 @@ public static class BindSafelyExtensions
             ? $"{name}.BindSafely(viewModel.{bindableMemberName});"
             : $"{name}.BindSafely(viewModel.FindBindableMember({parameters}));");
 
-    }
-
-    private static string GetBinderMemberType(this BinderMember member)
-    {
-        if (member is AsBinderMember asBinderMember)
-            return asBinderMember.AsBinderType;
-        
-        return member.Type is IArrayTypeSymbol arrayType 
-            ? arrayType.ElementType.ToDisplayStringGlobal()
-            : member.Type.ToDisplayStringGlobal();
     }
 }

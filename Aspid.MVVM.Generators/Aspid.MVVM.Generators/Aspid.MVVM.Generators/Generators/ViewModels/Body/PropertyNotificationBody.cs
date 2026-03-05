@@ -5,7 +5,6 @@ using Aspid.MVVM.Generators.Helpers;
 using Aspid.MVVM.Generators.Generators.ViewModels.Data;
 using static Aspid.Generators.Helper.Classes;
 using static Aspid.MVVM.Generators.Generators.Descriptions.Constants;
-using SymbolExtensions = Aspid.MVVM.Generators.Helpers.SymbolExtensions;
 
 namespace Aspid.MVVM.Generators.Generators.ViewModels.Body;
 
@@ -43,7 +42,7 @@ public static class PropertyNotificationBody
             code.AppendLine("#region OnPropertyChanged");
             
             code.AppendLine(GeneratedCodeViewModelAttribute)
-                .AppendLine($"private void OnPropertyChanged({CallerLineNumberAttribute} int line = -1)")
+                .AppendLine($"private void OnPropertyChanged([{CallerLineNumberAttribute}] int line = -1)")
                 .BeginBlock();
 
             if (notificationData.HasOnPropertyChangedCalls)
@@ -74,7 +73,7 @@ public static class PropertyNotificationBody
             code.AppendMultiline(
                 $"""
                 {GeneratedCodeViewModelAttribute}
-                private void OnPropertyChanged(string propertyName, {CallerLineNumberAttribute} int line = -1) =>
+                private void OnPropertyChanged(string propertyName, [{CallerLineNumberAttribute}] int line = -1) =>
                     OnPropertyChanged(line);
                 """)
                 .AppendLine("#endregion");
@@ -90,11 +89,11 @@ public static class PropertyNotificationBody
                 .AppendMultiline(
                 $$"""
                 {{GeneratedCodeViewModelAttribute}}
-                private bool SetField<T>(ref T field, T newValue, {{CallerLineNumberAttribute}} int line = -1) =>
+                private bool SetField<T>(ref T field, T newValue, [{{CallerLineNumberAttribute}}] int line = -1) =>
                     throw new {{NotImplementedException}}("SetField<T>: No property found for line {line}. Use typed overload.");
                     
                 {{GeneratedCodeViewModelAttribute}}
-                private bool SetField<T>(ref T field, T newValue, string propertyName, {{CallerLineNumberAttribute}} int line = -1) =>
+                private bool SetField<T>(ref T field, T newValue, string propertyName, [{{CallerLineNumberAttribute}}] int line = -1) =>
                     throw new {{NotImplementedException}}($"SetField<T>: No property {propertyName} found for line {line}. Use typed overload.");
                 """);
             
@@ -106,7 +105,7 @@ public static class PropertyNotificationBody
                     var propertyCalls = typeGroup.Value;
 
                     code.AppendLine(GeneratedCodeViewModelAttribute)
-                        .AppendLine($"private bool SetField(ref {type} field, {type} newValue, {CallerLineNumberAttribute} int line = -1)")
+                        .AppendLine($"private bool SetField(ref {type} field, {type} newValue, [{CallerLineNumberAttribute}] int line = -1)")
                         .BeginBlock();
 
                     var first = true;
@@ -127,7 +126,7 @@ public static class PropertyNotificationBody
                         .AppendMultiline(
                             $"""
                             {GeneratedCodeViewModelAttribute}
-                            private bool SetField(ref {type} field, {type} newValue, string propertyName, {CallerLineNumberAttribute} int line = -1) =>
+                            private bool SetField(ref {type} field, {type} newValue, string propertyName, [{CallerLineNumberAttribute}] int line = -1) =>
                                 SetField(ref field, newValue, line);
                             """);
                 }

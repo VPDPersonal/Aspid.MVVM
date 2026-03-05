@@ -16,7 +16,5 @@ public static class Constants
     public const string GeneratedCodeViewModelAttribute =
         "[global::System.CodeDom.Compiler.GeneratedCode(\"Aspid.MVVM.Generators.ViewModelGenerator\", \"1.1.0\")]";
     
-    public const string CallerLineNumberAttribute = "[global::System.Runtime.CompilerServices.CallerLineNumber]";
-    
     public static readonly string EditorBrowsableAttributeNever = $"[{EditorBrowsableAttribute}({EditorBrowsableState}.Never)]";
 }

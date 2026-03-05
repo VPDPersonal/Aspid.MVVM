@@ -4,7 +4,6 @@ using Aspid.Generators.Helper;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using Aspid.MVVM.Generators.Generators.ViewModels.Data.Infos;
-using Aspid.MVVM.Generators.Generators.ViewModels.Data.Members;
 using Classes = Aspid.MVVM.Generators.Generators.Descriptions.Classes;
 
 namespace Aspid.MVVM.Generators.Generators.ViewModels.Factories;

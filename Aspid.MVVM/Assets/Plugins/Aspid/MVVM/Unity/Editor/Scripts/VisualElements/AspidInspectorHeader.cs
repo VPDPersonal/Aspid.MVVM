@@ -48,8 +48,8 @@ namespace Aspid.MVVM
         {
             _color = messageType switch
             {
-                MessageType.Error => new Color(0.27f, 0.04f, 0.04f),
-                MessageType.Warning => new Color(0.27f, 0.27f, 0.04f),
+                MessageType.Error => new Color(0.41f, 0.05f, 0.05f),
+                MessageType.Warning => new Color(0.5f, 0.36f, 0.1f),
                 _ => new Color(0.04f, 0.27f, 0.17f)
             };
             

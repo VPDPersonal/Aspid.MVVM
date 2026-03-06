@@ -1,7 +1,6 @@
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
-using Aspid.Internal;
 using Aspid.FastTools;
 using UnityEngine.UIElements;
 using Aspid.FastTools.Editors;
@@ -83,7 +82,7 @@ namespace Aspid.MVVM.StarterKit
         public override VisualElement CreateInspectorGUI()
         {
             var root = new VisualElement();
-            var header = new AspidInspectorHeader(target, EditorConstants.AspidIconGreen);
+            var header = new AspidInspectorHeader(target);
             header.AddOpenScriptCommand(target);
             
             var container = new AspidContainer(AspidContainer.StyleType.Dark)

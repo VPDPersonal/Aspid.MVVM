@@ -2,7 +2,6 @@
 #nullable enable
 using UnityEditor;
 using System.Linq;
-using Aspid.Internal;
 using UnityEngine.UIElements;
 using Aspid.FastTools.Editors;
 using System.Collections.Generic;
@@ -23,8 +22,6 @@ namespace Aspid.MVVM
     {
         protected readonly TEditor Editor;
         private bool _isInitialized;
-        
-        protected virtual string IconPath => EditorConstants.AspidIconGreen;
         
         protected virtual IEnumerable<string> PropertiesExcluding
         {
@@ -88,7 +85,7 @@ namespace Aspid.MVVM
         }
 
         private AspidInspectorHeader BuildHeader() => 
-            new(GetScriptName(), Editor.TargetAsViewModel, IconPath);
+            new(GetScriptName(), Editor.TargetAsViewModel);
 
         protected virtual VisualElement? OnBuiltHeader() => null;
 

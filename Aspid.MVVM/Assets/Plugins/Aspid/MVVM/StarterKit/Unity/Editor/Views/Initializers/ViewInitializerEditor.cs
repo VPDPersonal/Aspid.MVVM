@@ -1,7 +1,6 @@
 #if !ASPID_MVVM_EDITOR_DISABLED
 using UnityEditor;
 using UnityEngine;
-using Aspid.Internal;
 using Aspid.FastTools;
 using System.Reflection;
 using UnityEngine.UIElements;
@@ -29,9 +28,9 @@ namespace Aspid.MVVM.StarterKit
         private bool _isViewSet;
         private bool _isViewModelSet;
 
-        private string IconPath => _isViewSet && _isViewModelSet
-            ? EditorConstants.AspidIconGreen
-            : EditorConstants.AspidIconRed;
+        private MessageType MessageType => _isViewSet && _isViewModelSet
+            ? MessageType.None
+            : MessageType.Error;
         
         private void OnEnable()
         {
@@ -49,7 +48,7 @@ namespace Aspid.MVVM.StarterKit
         {
             _root = new VisualElement();
             
-            var header = new AspidInspectorHeader(target, EditorConstants.AspidIconGreen);
+            var header = new AspidInspectorHeader(target);
             var stage = BuildStage();
             var view = BuildViewInitializeComponent();
             var viewModel = BuildViewModelInitializeComponent();
@@ -192,8 +191,7 @@ namespace Aspid.MVVM.StarterKit
 
         private void UpdateHelpBoxes()
         {
-            _root.Q<AspidInspectorHeader>()
-                .Icon.SetImageFromResource(IconPath);
+            _root.Q<AspidInspectorHeader>().SetMessageType(MessageType);
             
             _root.Q<HelpBox>("ViewHelpBox")
                 .SetDisplay(_isViewSet ? DisplayStyle.None : DisplayStyle.Flex);

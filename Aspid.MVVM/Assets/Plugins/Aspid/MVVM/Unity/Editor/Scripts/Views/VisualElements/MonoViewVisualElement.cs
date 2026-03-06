@@ -3,7 +3,6 @@
 using System;
 using System.Linq;
 using UnityEditor;
-using Aspid.Internal;
 using Aspid.FastTools;
 using UnityEngine.UIElements;
 using UnityEditor.UIElements;
@@ -40,9 +39,9 @@ namespace Aspid.MVVM
             }
         }
         
-        protected override string IconPath => Editor.UnassignedBinders.Any()
-            ? EditorConstants.AspidIconYellow
-            : base.IconPath;
+        protected override MessageType MessageType => Editor.UnassignedBinders.Any()
+            ? MessageType.Warning
+            : base.MessageType;
         
         public MonoViewVisualElement(TEditor editor)
             : base(editor) { }

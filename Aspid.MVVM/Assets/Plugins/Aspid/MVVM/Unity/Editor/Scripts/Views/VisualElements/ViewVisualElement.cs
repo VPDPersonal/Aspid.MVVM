@@ -3,7 +3,6 @@
 using UnityEditor;
 using UnityEngine;
 using System.Linq;
-using Aspid.Internal;
 using Aspid.FastTools;
 using UnityEngine.UIElements;
 using Aspid.FastTools.Editors;
@@ -25,7 +24,7 @@ namespace Aspid.MVVM
         private bool _isInitialized;
         protected readonly TEditor Editor;
         
-        protected virtual string IconPath => EditorConstants.AspidIconGreen;
+        protected virtual MessageType MessageType => MessageType.None;
         
         protected virtual IEnumerable<string> PropertiesExcluding
         {
@@ -55,7 +54,7 @@ namespace Aspid.MVVM
             OnUpdate();
             
             this.Q<DebugViewModelPanel>()?.UpdateValue();
-            this.Q<AspidInspectorHeader>().Icon.SetImageFromResource(IconPath);
+            this.Q<AspidInspectorHeader>().SetMessageType(MessageType);
             
             this.Q<VisualElement>(name: "view-model-debug-panel").style.display = Editor.TargetAsView?.ViewModel is not null 
                 ? DisplayStyle.Flex
@@ -87,7 +86,7 @@ namespace Aspid.MVVM
         }
 
         private AspidInspectorHeader BuildHeader() => 
-            new(GetScriptName(), Editor.TargetAsView, IconPath);
+            new(GetScriptName(), Editor.TargetAsView, MessageType);
 
         protected virtual VisualElement? OnBuiltHeader() => null;
         

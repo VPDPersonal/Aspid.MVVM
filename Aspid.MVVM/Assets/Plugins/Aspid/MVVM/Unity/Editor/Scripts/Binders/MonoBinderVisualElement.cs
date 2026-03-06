@@ -2,7 +2,6 @@
 using UnityEngine;
 using UnityEditor;
 using System.Linq;
-using Aspid.Internal;
 using Aspid.FastTools;
 using UnityEngine.UIElements;
 using UnityEditor.UIElements;
@@ -48,9 +47,9 @@ namespace Aspid.MVVM
         
         protected SerializedObject SerializedObject => _editor.serializedObject; 
         
-        protected virtual string IconPath => _editor.HasBinderId
-            ? EditorConstants.AspidIconGreen
-            : EditorConstants.AspidIconRed;
+        protected virtual MessageType MessageType => _editor.HasBinderId
+            ? MessageType.None
+            : MessageType.Error;
 
         public MonoBinderVisualElement(MonoBinderEditor editor)
         {
@@ -73,7 +72,7 @@ namespace Aspid.MVVM
             
             // Update Header
             this.Q<HelpBox>().SetDisplay(_editor.HasBinderId ? DisplayStyle.None : DisplayStyle.Flex);
-            this.Q<AspidInspectorHeader>().Icon.SetImageFromResource(IconPath);
+            this.Q<AspidInspectorHeader>().SetMessageType(MessageType);
         }
 
         protected virtual VisualElement Build()
@@ -90,7 +89,7 @@ namespace Aspid.MVVM
         protected virtual VisualElement BuildHeader()
         {
             var binder = _editor.TargetAsMonoBinder;
-            return new AspidInspectorHeader(label: GetScriptName(), binder, IconPath);
+            return new AspidInspectorHeader(label: GetScriptName(), binder, MessageType);
         }
 
         protected virtual VisualElement BuildIdSelector()

@@ -41,12 +41,13 @@ namespace Aspid.MVVM
                 var marginTop = count++ > 0 ? 4 : 0;
 
                 VisualElement field;
-                var fieldType = targetType.GetField(iterator.name, bindingAttr: BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)?.FieldType;
+                var fieldInfo = FindFieldInHierarchy(targetType, iterator.name);
+                var fieldType = fieldInfo?.FieldType;
 
                 if (IsMonoBinderType(fieldType))
                 {
-                    var elementType = fieldType.IsArray ? fieldType.GetElementType() : fieldType;
-                    field = new MonoBinderPropertyField(iterator.Copy(), elementType?.AssemblyQualifiedName ?? string.Empty).SetMargin(top: marginTop);
+                    var assemblyQualifiedName = GetAssemblyQualifiedName(fieldType, fieldInfo);
+                    field = new MonoBinderPropertyField(iterator.Copy(), assemblyQualifiedName).SetMargin(top: marginTop);
                 }
                 else
                 {
@@ -82,6 +83,31 @@ namespace Aspid.MVVM
 
             container.style.display = count > 0 ? DisplayStyle.Flex : DisplayStyle.None;
             return container;
+        }
+
+        private static FieldInfo? FindFieldInHierarchy(Type? type, string name)
+        {
+            var current = type;
+            
+            while (current is not null && current != typeof(object))
+            {
+                var field = current.GetField(name, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.DeclaredOnly);
+                if (field is not null) return field;
+                
+                current = current.BaseType;
+            }
+
+            return null;
+        }
+
+        private static string? GetAssemblyQualifiedName(Type? fieldType, FieldInfo? fieldInfo)
+        {
+            var requireBinderAttribute = fieldInfo?.GetCustomAttribute<RequireBinderAttribute>();
+            
+            return requireBinderAttribute?.AssemblyQualifiedNames?.Any() is true 
+                ? requireBinderAttribute.AssemblyQualifiedNames.First()
+                : fieldType?.AssemblyQualifiedName;
+
         }
 
         private static bool IsMonoBinderType(Type? type)

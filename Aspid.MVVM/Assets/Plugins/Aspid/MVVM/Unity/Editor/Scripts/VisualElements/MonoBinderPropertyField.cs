@@ -12,14 +12,20 @@ namespace Aspid.MVVM
     {
         private static readonly StyleSheet _styleSheet = Resources.Load<StyleSheet>("Styles/aspid-mvvm-mono-binder-property-field");
 
+        private readonly string? _assemblyQualifiedName;
         private readonly MonoBinderHighlightGradient _highlightGradient;
 
-        public MonoBinderPropertyField(SerializedProperty property, string assemblyQualifiedName)
+        public SerializedProperty Property { get; }
+        
+        public MonoBinderPropertyField(SerializedProperty property, string? assemblyQualifiedName)
             : this(property, label: string.Empty, assemblyQualifiedName) { }
 
-        public MonoBinderPropertyField(SerializedProperty property, string label, string assemblyQualifiedName)
+        public MonoBinderPropertyField(SerializedProperty property, string label, string? assemblyQualifiedName)
         {
             styleSheets.Add(_styleSheet);
+
+            Property = property;
+            _assemblyQualifiedName = assemblyQualifiedName;
 
             var slotWrapper = string.IsNullOrWhiteSpace(label)
                 ? new AspidPropertyField(property)
@@ -30,8 +36,8 @@ namespace Aspid.MVVM
             _highlightGradient = new MonoBinderHighlightGradient();
 
             slotWrapper.RegisterCallback<GeometryChangedEvent>(AttachGradientToInnerPanel);
-
-            _ = new MonoBinderDragHandler(this, slotWrapper, property, assemblyQualifiedName);
+            _ = new MonoBinderDragHandler(field: this, slotWrapper);
+            return;
 
             void AttachGradientToInnerPanel(GeometryChangedEvent _)
             {
@@ -54,14 +60,14 @@ namespace Aspid.MVVM
         public void AnimateHighlight() =>
             _highlightGradient.AnimateHighlight();
         
-        public static bool IsCompatibleBinderWithField(IMonoBinderValidable binder, string? assemblyQualifiedName)
+        public bool IsCompatibleBinderWithField(IMonoBinderValidable binder)
         {
             var binderType = ((Component)binder).GetType();
 
             if (typeof(IAnyBinder).IsAssignableFrom(binderType)) return true;
-            if (string.IsNullOrEmpty(assemblyQualifiedName)) return false;
+            if (string.IsNullOrEmpty(_assemblyQualifiedName)) return false;
 
-            var propertyType = Type.GetType(assemblyQualifiedName);
+            var propertyType = Type.GetType(_assemblyQualifiedName);
             if (propertyType is null) return false;
 
             return binderType.GetInterfaces()

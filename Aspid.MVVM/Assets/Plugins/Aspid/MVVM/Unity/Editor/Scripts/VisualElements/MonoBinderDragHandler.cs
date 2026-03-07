@@ -11,32 +11,28 @@ namespace Aspid.MVVM
     internal sealed class MonoBinderDragHandler
     {
         private const string DropHighlightStyle = "mono-binder-property__drop-highlight";
-
+        
         private readonly VisualElement _highlightTarget;
-        private readonly SerializedProperty _property;
-        private readonly string _assemblyQualifiedName;
+        private readonly MonoBinderPropertyField _field; 
 
         public MonoBinderDragHandler(
-            VisualElement eventTarget,
-            VisualElement highlightTarget,
-            SerializedProperty property,
-            string assemblyQualifiedName)
+            MonoBinderPropertyField field,
+            VisualElement highlightTarget)
         {
+            _field = field;
             _highlightTarget = highlightTarget;
-            _property = property;
-            _assemblyQualifiedName = assemblyQualifiedName;
 
-            eventTarget.RegisterCallback<DragUpdatedEvent>(OnDragUpdated);
-            eventTarget.RegisterCallback<DragLeaveEvent>(_ => RemoveHighlight());
-            eventTarget.RegisterCallback<DragExitedEvent>(_ => RemoveHighlight());
-            eventTarget.RegisterCallback<DragPerformEvent>(OnDragPerformed, TrickleDown.TrickleDown);
+            field.RegisterCallback<DragUpdatedEvent>(OnDragUpdated);
+            field.RegisterCallback<DragLeaveEvent>(_ => RemoveHighlight());
+            field.RegisterCallback<DragExitedEvent>(_ => RemoveHighlight());
+            field.RegisterCallback<DragPerformEvent>(OnDragPerformed, TrickleDown.TrickleDown);
         }
 
         private void OnDragUpdated(DragUpdatedEvent evt)
         {
             var hasCompatibleBinder = DragAndDrop.objectReferences
                 .OfType<IMonoBinderValidable>()
-                .Any(b => MonoBinderPropertyField.IsCompatibleBinderWithField(b, _assemblyQualifiedName));
+                .Any(b => _field.IsCompatibleBinderWithField(b));
 
             if (!hasCompatibleBinder)
             {
@@ -53,7 +49,7 @@ namespace Aspid.MVVM
         {
             var compatibleBinders = DragAndDrop.objectReferences
                 .OfType<IMonoBinderValidable>()
-                .Where(b => MonoBinderPropertyField.IsCompatibleBinderWithField(b, _assemblyQualifiedName))
+                .Where(b => _field.IsCompatibleBinderWithField(b))
                 .ToArray();
 
             if (compatibleBinders.Length is 0) return;
@@ -63,20 +59,22 @@ namespace Aspid.MVVM
             evt.StopPropagation();
             DragAndDrop.AcceptDrag();
             RemoveHighlight();
+            
+            var property = _field.Property;
 
-            if (_property.isArray)
+            if (property.isArray)
             {
-                var startIndex = _property.arraySize;
-                _property.arraySize += compatibleBinders.Length;
+                var startIndex = property.arraySize;
+                property.arraySize += compatibleBinders.Length;
 
                 for (var i = 0; i < compatibleBinders.Length; i++)
-                    _property.GetArrayElementAtIndex(startIndex + i).objectReferenceValue = (Object)compatibleBinders[i];
+                    property.GetArrayElementAtIndex(startIndex + i).objectReferenceValue = (Object)compatibleBinders[i];
 
-                _property.ApplyModifiedProperties();
+                property.ApplyModifiedProperties();
             }
             else
             {
-                _property.objectReferenceValue = (Object)compatibleBinders[0];
+                property.objectReferenceValue = (Object)compatibleBinders[0];
             }
         }
 

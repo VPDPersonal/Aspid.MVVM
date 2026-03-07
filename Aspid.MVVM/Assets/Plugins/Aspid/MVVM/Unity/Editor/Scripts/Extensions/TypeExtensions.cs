@@ -65,19 +65,26 @@ namespace Aspid.MVVM
         
         public static IReadOnlyList<MemberInfo> GetMembersInfosIncludingBaseClasses(this Type type, BindingFlags bindingFlags, Type? baseType = null)
         {
-            if (type.BaseType == typeof(object)) 
+            if (type.BaseType == typeof(object))
                 return type.GetMembers(bindingFlags);
 
+            var stopAt = baseType ?? typeof(object);
+            var typeChain = new List<Type>();
             var currentType = type;
-            var memberInfoList = new List<MemberInfo>();
-            
-            while (currentType != (baseType ?? typeof(object)))
+
+            while (currentType != stopAt)
             {
                 if (currentType is null) break;
-                
-                memberInfoList.AddRange(currentType.GetMembers(bindingFlags | BindingFlags.DeclaredOnly));
+                typeChain.Add(currentType);
                 currentType = currentType.BaseType;
             }
+
+            // Iterate base → derived so members appear in declaration order (matches Unity inspector)
+            typeChain.Reverse();
+
+            var memberInfoList = new List<MemberInfo>();
+            foreach (var t in typeChain)
+                memberInfoList.AddRange(t.GetMembers(bindingFlags | BindingFlags.DeclaredOnly));
 
             return memberInfoList;
         }

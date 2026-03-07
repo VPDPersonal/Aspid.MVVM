@@ -129,22 +129,16 @@ namespace Aspid.MVVM
             _unassignedBindersVisualElement = new UnassignedBindersVisualElement<TView, TEditor>(Editor, OnUnassignedBinderClicked);
             return _unassignedBindersVisualElement;
         }
-        
+
         private void OnUnassignedBinderClicked(IMonoBinderValidable binder)
         {
-            var generalBinders = this.Q<VisualElement>(name: GeneralBindersId);
-            if (generalBinders is null) return;
-
-            for (var i = 0; i < generalBinders.childCount && i < Editor.BindersList.ArraySize; i++)
+            this.Query<MonoBinderPropertyField>().ForEach(field =>
             {
-                var assemblyQualifiedName = Editor.BindersList.GetArrayElementAtIndex(i).AssemblyQualifiedName;
-                if (!MonoBinderPropertyField.IsCompatibleBinderWithField(binder, assemblyQualifiedName)) continue;
-                
-                var element = generalBinders[i];
-                ((MonoBinderPropertyField)element).AnimateHighlight();
-            }
+                if (!field.IsCompatibleBinderWithField(binder)) return;
+                field.AnimateHighlight();
+            });
         }
-        
+
         protected override string GetScriptName()
         {
             var view = Editor.TargetAsView;

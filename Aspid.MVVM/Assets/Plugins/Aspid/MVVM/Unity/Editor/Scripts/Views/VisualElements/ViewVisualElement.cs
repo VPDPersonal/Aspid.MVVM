@@ -54,7 +54,10 @@ namespace Aspid.MVVM
             OnUpdate();
             
             this.Q<DebugViewModelPanel>()?.UpdateValue();
-            this.Q<AspidInspectorHeader>().SetMessageType(MessageType);
+            
+            var header = this.Q<AspidInspectorHeader>();
+            header.SetMessageType(MessageType);
+            header.Label.text = GetScriptName();
             
             this.Q<VisualElement>(name: "view-model-debug-panel").style.display = Editor.TargetAsView?.ViewModel is not null 
                 ? DisplayStyle.Flex
@@ -86,7 +89,7 @@ namespace Aspid.MVVM
         }
 
         private AspidInspectorHeader BuildHeader() => 
-            new(GetScriptName(), Editor.TargetAsView, MessageType);
+            new(label: GetScriptName(), Editor.TargetAsView, MessageType);
 
         protected virtual VisualElement? OnBuiltHeader() => null;
         

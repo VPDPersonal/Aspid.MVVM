@@ -24,7 +24,10 @@ namespace Aspid.FastTools.Editors
             if (targetComponent is null) return null;
             
             var type = targetComponent.GetType();
-            var components = targetComponent.GetComponents(type);
+            var components = targetComponent
+                .GetComponents(type)
+                .Where(component => component.GetType() == targetComponent.GetType())
+                .ToArray();
             
             switch (components.Length)
             {

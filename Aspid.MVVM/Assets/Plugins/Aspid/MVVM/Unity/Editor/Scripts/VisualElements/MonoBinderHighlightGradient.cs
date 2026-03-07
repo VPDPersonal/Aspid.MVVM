@@ -1,5 +1,6 @@
 #nullable enable
 using UnityEngine;
+using Aspid.Internal;
 using UnityEngine.UIElements;
 
 // ReSharper disable once CheckNamespace
@@ -55,8 +56,8 @@ namespace Aspid.MVVM
             if (_highlightProgress <= 0.01f) return;
 
             const int strips = 75;
-            var painter = ctx.painter2D;
             var rect = contentRect;
+            var painter = ctx.painter2D;
             var stripWidth = rect.width / strips;
 
             for (var i = 0; i < strips; i++)
@@ -65,7 +66,10 @@ namespace Aspid.MVVM
                 var alpha = (1f - t) * (1f - t) * _highlightProgress * 0.35f;
                 if (alpha < 0.005f) continue;
 
-                painter.fillColor = new Color(0.61f, 0.44f, 0.11f, alpha);
+                var color = EditorConstants.WarningColor;
+                color.a = alpha;
+
+                painter.fillColor = color;
                 painter.BeginPath();
                 {
                     painter.MoveTo(new Vector2(i * stripWidth, 0));

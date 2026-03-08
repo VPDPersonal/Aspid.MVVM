@@ -8,6 +8,10 @@ using Converter = Aspid.MVVM.StarterKit.IConverterColor;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
+    /// <summary>
+    /// MonoBehaviour binder that sets the gradient color on a <see cref="UnityEngine.LineRenderer"/>
+    /// to a value resolved from an enum bound on the ViewModel.
+    /// </summary>
     [AddComponentMenu("Aspid/MVVM/Binders/LineRenderer/LineRenderer Binder – Color Enum")]
     [AddBinderContextMenu(typeof(LineRenderer), serializePropertyNames: "colorGradient", SubPath = "Enum")]
     public sealed class LineRendererColorEnumMonoBinder : EnumMonoBinder<LineRenderer, Color, Converter>

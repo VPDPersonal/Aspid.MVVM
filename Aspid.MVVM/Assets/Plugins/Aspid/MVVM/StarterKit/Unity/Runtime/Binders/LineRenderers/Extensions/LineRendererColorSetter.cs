@@ -5,6 +5,9 @@ using System.Runtime.CompilerServices;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
+    /// <summary>
+    /// Extension methods for setting gradient color properties on a <see cref="UnityEngine.LineRenderer"/>.
+    /// </summary>
     public static class LineRendererSetters
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -14,14 +17,14 @@ namespace Aspid.MVVM.StarterKit
             {
                 case LineRendererColorMode.Start: lineRenderer.startColor = value; break;
                 case LineRendererColorMode.End: lineRenderer.endColor = value; break;
-                
+
                 case LineRendererColorMode.StartAndEnd:
                     {
                         lineRenderer.startColor = value;
                         lineRenderer.endColor = value;
                         break;
                     }
-                
+
                 default: throw new ArgumentOutOfRangeException();
             }
         }
@@ -31,8 +34,8 @@ namespace Aspid.MVVM.StarterKit
             switch (mode)
             {
                 case LineRendererColorMode.Start: return lineRenderer.startColor;
-                case LineRendererColorMode.End:  return lineRenderer.endColor;
-                
+                case LineRendererColorMode.End: return lineRenderer.endColor;
+
                 case LineRendererColorMode.StartAndEnd:
                 default: throw new ArgumentOutOfRangeException(nameof(mode), mode, null);
             }

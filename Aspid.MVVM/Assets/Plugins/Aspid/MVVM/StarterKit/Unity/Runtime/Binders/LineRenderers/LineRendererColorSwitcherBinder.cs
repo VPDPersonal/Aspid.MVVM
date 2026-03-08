@@ -10,18 +10,22 @@ using Converter = Aspid.MVVM.StarterKit.IConverterColor;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
+    /// <summary>
+    /// Binder that switches the gradient color on a <see cref="UnityEngine.LineRenderer"/>
+    /// between two colors based on a bound boolean ViewModel value.
+    /// </summary>
     [Serializable]
     public sealed class LineRendererColorSwitcherBinder : SwitcherBinder<LineRenderer, Color, Converter>
     {
         [SerializeField] private LineRendererColorMode _colorMode;
-        
+
         public LineRendererColorSwitcherBinder(
             LineRenderer target,
             Color trueValue,
             Color falseValue,
             BindMode mode)
             : this(target, trueValue, falseValue, LineRendererColorMode.StartAndEnd, converter: null, mode) { }
-        
+
         public LineRendererColorSwitcherBinder(
             LineRenderer target,
             Color trueValue,
@@ -29,7 +33,7 @@ namespace Aspid.MVVM.StarterKit
             LineRendererColorMode colorMode,
             BindMode mode)
             : this(target, trueValue, falseValue, colorMode, converter: null, mode) { }
-        
+
         public LineRendererColorSwitcherBinder(
             LineRenderer target,
             Color trueValue,
@@ -37,7 +41,7 @@ namespace Aspid.MVVM.StarterKit
             Converter? converter,
             BindMode mode = BindMode.OneWay)
             : this(target, trueValue, falseValue, LineRendererColorMode.StartAndEnd, converter, mode) { }
-        
+
         public LineRendererColorSwitcherBinder(
             LineRenderer target,
             Color trueValue,

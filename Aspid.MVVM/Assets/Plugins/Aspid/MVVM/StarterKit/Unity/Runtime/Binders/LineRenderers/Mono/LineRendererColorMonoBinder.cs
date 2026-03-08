@@ -8,6 +8,12 @@ using Converter = Aspid.MVVM.StarterKit.IConverterColor;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
+    /// <summary>
+    /// MonoBehaviour binder that sets the gradient color on a <see cref="UnityEngine.LineRenderer"/>
+    /// when the bound ViewModel value changes.
+    /// Supports <see cref="BindMode.OneWayToSource"/>: when binding is established the current value
+    /// is sent back to the ViewModel.
+    /// </summary>
     [AddComponentMenu("Aspid/MVVM/Binders/LineRenderer/LineRenderer Binder – Color")]
     [AddBinderContextMenu(typeof(LineRenderer), serializePropertyNames: "colorGradient")]
     public class LineRendererColorMonoBinder : ComponentColorMonoBinder<LineRenderer>
@@ -16,8 +22,8 @@ namespace Aspid.MVVM.StarterKit
 
         protected sealed override Color Property
         {
-            get =>  CachedComponent.GetColor(_colorMode);
-            set =>  CachedComponent.SetColor(value, _colorMode);
+            get => CachedComponent.GetColor(_colorMode);
+            set => CachedComponent.SetColor(value, _colorMode);
         }
     }
 }

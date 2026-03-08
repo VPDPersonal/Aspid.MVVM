@@ -11,22 +11,26 @@ using Converter = Aspid.MVVM.StarterKit.IConverterFloat;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
+    /// <summary>
+    /// Binder that switches a specific color channel (R, G, B, or A) on a <see cref="UnityEngine.UI.Graphic"/>
+    /// between two values based on a bound boolean ViewModel value.
+    /// </summary>
     [Serializable]
     public sealed class GraphicColorComponentSwitcherBinder : SwitcherBinder<Graphic, float, Converter>
     {
         [SerializeField] private ColorComponent _component = ColorComponent.A;
-        
+
         public GraphicColorComponentSwitcherBinder(
             Graphic target,
-            float trueColor, 
+            float trueColor,
             float falseColor,
             ColorComponent component,
             BindMode mode)
             : this(target, trueColor, falseColor, component, converter: null, mode) { }
-        
+
         public GraphicColorComponentSwitcherBinder(
             Graphic target,
-            float trueColor, 
+            float trueColor,
             float falseColor,
             ColorComponent component = ColorComponent.A,
             Converter? converter = null,

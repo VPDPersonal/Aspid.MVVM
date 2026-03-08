@@ -9,6 +9,11 @@ using Converter = Aspid.MVVM.StarterKit.IConverterFloat;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
+    /// <summary>
+    /// MonoBehaviour binder that sets a specific color channel (R, G, B, or A) on a group of <see cref="UnityEngine.UI.Graphic"/>
+    /// components, applying the configured selected or default value to each entry based on the bound
+    /// enum ViewModel value.
+    /// </summary>
     [AddComponentMenu("Aspid/MVVM/Binders/UI/Graphic/Graphic Binder – Color Component EnumGroup")]
     [AddBinderContextMenu(typeof(Graphic), serializePropertyNames: "m_Color", SubPath = "EnumGroup")]
     public sealed class GraphicColorComponentEnumGroupMonoBinder : EnumGroupMonoBinder<Graphic, float, Converter>

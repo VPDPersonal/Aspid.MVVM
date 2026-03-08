@@ -11,20 +11,24 @@ using Converter = Aspid.MVVM.StarterKit.IConverterColor;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
+    /// <summary>
+    /// Binder that switches the <see cref="Graphic.color"/> property on a <see cref="Graphic"/>
+    /// between two values based on a bound boolean ViewModel value.
+    /// </summary>
     [Serializable]
     public sealed class GraphicColorSwitcherBinder : SwitcherBinder<Graphic, Color, Converter>
     {
         public GraphicColorSwitcherBinder(
             Graphic target,
-            Color trueColor, 
+            Color trueColor,
             Color falseColor,
             BindMode mode)
             : this(target, trueColor, falseColor, converter: null, mode) { }
-        
+
         public GraphicColorSwitcherBinder(
             Graphic target,
-            Color trueColor, 
-            Color falseColor, 
+            Color trueColor,
+            Color falseColor,
             Converter? converter = null,
             BindMode mode = BindMode.OneWay)
             : base(target, trueColor, falseColor, converter, mode) { }

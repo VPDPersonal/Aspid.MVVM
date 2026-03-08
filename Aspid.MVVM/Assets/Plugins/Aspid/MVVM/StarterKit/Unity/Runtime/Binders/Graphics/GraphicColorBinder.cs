@@ -11,6 +11,10 @@ using Converter = Aspid.MVVM.StarterKit.IConverterColor;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
+    /// <summary>
+    /// Binder that sets the <see cref="Graphic.color"/> property on a <see cref="Graphic"/>
+    /// when the bound ViewModel value changes.
+    /// </summary>
     [Serializable]
     public class GraphicColorBinder : TargetColorBinder<Graphic>
     {
@@ -19,10 +23,10 @@ namespace Aspid.MVVM.StarterKit
             get => Target.color;
             set => Target.color = value;
         }
-        
+
         public GraphicColorBinder(Graphic target, BindMode mode)
-            : this(target, converter: null,  mode) { }
-        
+            : this(target, converter: null, mode) { }
+
         public GraphicColorBinder(Graphic target, Converter? converter = null, BindMode mode = BindMode.OneWay)
             : base(target, converter, mode)
         {

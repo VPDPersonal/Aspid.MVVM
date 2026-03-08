@@ -9,6 +9,10 @@ using Converter = Aspid.MVVM.StarterKit.IConverterFloat;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
+    /// <summary>
+    /// MonoBehaviour binder that switches a specific color channel (R, G, B, or A) on a <see cref="UnityEngine.UI.Graphic"/>
+    /// between two values based on a bound boolean ViewModel property.
+    /// </summary>
     [AddComponentMenu("Aspid/MVVM/Binders/UI/Graphic/Graphic Binder – Color Component Switcher")]
     [AddBinderContextMenu(typeof(Graphic), serializePropertyNames: "m_Color", SubPath = "Switcher")]
     public sealed class GraphicColorComponentSwitcherMonoBinder : SwitcherMonoBinder<Graphic, float, Converter>

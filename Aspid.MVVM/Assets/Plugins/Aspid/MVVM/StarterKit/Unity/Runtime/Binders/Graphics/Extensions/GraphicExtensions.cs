@@ -4,6 +4,9 @@ using UnityEngine.UI;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
+    /// <summary>
+    /// Extension methods for setting color and material properties on <see cref="UnityEngine.UI.Graphic"/> components.
+    /// </summary>
     public static class GraphicExtensions
     {
         public static void SetColorComponent(this Graphic graphic, ColorComponent component, float value)

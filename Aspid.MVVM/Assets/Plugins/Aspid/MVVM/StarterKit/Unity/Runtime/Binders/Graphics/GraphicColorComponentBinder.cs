@@ -11,6 +11,10 @@ using Converter = Aspid.MVVM.StarterKit.IConverterFloat;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
+    /// <summary>
+    /// Binder that sets a specific color channel (R, G, B, or A) on a <see cref="UnityEngine.UI.Graphic"/>
+    /// when the bound ViewModel value changes.
+    /// </summary>
     [Serializable]
     public class GraphicColorComponentBinder : TargetFloatBinder<Graphic>
     {
@@ -23,7 +27,7 @@ namespace Aspid.MVVM.StarterKit
         }
 
         public GraphicColorComponentBinder(Graphic target, ColorComponent colorComponent, BindMode mode)
-            : this(target, colorComponent, converter: null,  mode) { }
+            : this(target, colorComponent, converter: null, mode) { }
 
         public GraphicColorComponentBinder(Graphic target, ColorComponent colorComponent = ColorComponent.A, Converter? converter = null, BindMode mode = BindMode.OneWay)
             : base(target, converter, mode)

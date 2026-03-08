@@ -10,6 +10,10 @@ using Converter = Aspid.MVVM.StarterKit.IConverterInt;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
+    /// <summary>
+    /// Binder that sets the <see cref="AudioSource.priority"/> property on an <see cref="AudioSource"/>
+    /// when the bound ViewModel value changes. The value is clamped to the range [0, 256].
+    /// </summary>
     [Serializable]
     public class AudioSourcePriorityBinder : TargetIntBinder<AudioSource>
     {
@@ -24,7 +28,7 @@ namespace Aspid.MVVM.StarterKit
         {
             mode.ThrowExceptionIfMatches(BindMode.TwoWay);
         }
-
+        
         protected override int GetConvertedValue(int value) =>
             Mathf.Clamp(base.GetConvertedValue(value), min: 0, max: 256);
     }

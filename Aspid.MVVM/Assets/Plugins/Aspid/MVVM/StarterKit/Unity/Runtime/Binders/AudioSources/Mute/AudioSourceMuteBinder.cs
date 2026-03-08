@@ -5,6 +5,10 @@ using UnityEngine;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
+    /// <summary>
+    /// Binder that sets the <see cref="AudioSource.mute"/> property on an <see cref="AudioSource"/>
+    /// when the bound ViewModel value changes. Supports optional value inversion.
+    /// </summary>
     [Serializable]
     public class AudioSourceMuteBinder : TargetBoolBinder<AudioSource>
     {

@@ -10,6 +10,10 @@ using Converter = Aspid.MVVM.StarterKit.IConverterInt;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
+    /// <summary>
+    /// Binder that sets the <see cref="AudioSource.timeSamples"/> property on an <see cref="AudioSource"/>
+    /// when the bound ViewModel value changes.
+    /// </summary>
     [Serializable]
     public class AudioSourceTimeSamplesBinder : TargetIntBinder<AudioSource>
     {
@@ -18,10 +22,10 @@ namespace Aspid.MVVM.StarterKit
             get => Target.timeSamples;
             set => Target.timeSamples = value;
         }
-
+        
         public AudioSourceTimeSamplesBinder(AudioSource target, BindMode mode)
             : this(target, converter: null, mode) { }
-        
+
         public AudioSourceTimeSamplesBinder(AudioSource target, Converter? converter = null, BindMode mode = BindMode.OneWay)
             : base(target, converter, mode)
         {

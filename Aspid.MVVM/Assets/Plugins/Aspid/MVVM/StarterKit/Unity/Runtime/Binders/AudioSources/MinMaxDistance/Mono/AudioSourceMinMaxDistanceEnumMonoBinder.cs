@@ -8,6 +8,10 @@ using Converter = Aspid.MVVM.StarterKit.IConverterVector2;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
+    /// <summary>
+    /// MonoBehaviour binder that sets the min/max distance (<see cref="AudioSource.minDistance"/> and <see cref="AudioSource.maxDistance"/>)
+    /// on an <see cref="AudioSource"/> to a value resolved from an enum bound on the ViewModel.
+    /// </summary>
     [AddBinderContextMenu(typeof(AudioSource), SubPath = "Enum")]
     [AddComponentMenu("Aspid/MVVM/Binders/Audio/AudioSource/AudioSource Binder – MinMaxDistance Enum")]
     public sealed class AudioSourceMinMaxDistanceEnumMonoBinder : EnumMonoBinder<AudioSource, Vector2, Converter>

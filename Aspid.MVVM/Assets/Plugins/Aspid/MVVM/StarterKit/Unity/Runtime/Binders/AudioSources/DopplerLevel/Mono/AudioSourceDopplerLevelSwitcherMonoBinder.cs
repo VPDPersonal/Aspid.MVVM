@@ -8,6 +8,10 @@ using Converter = Aspid.MVVM.StarterKit.IConverterFloat;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
+    /// <summary>
+    /// MonoBehaviour binder that switches the <see cref="AudioSource.dopplerLevel"/> property on an <see cref="AudioSource"/>
+    /// between two values based on a bound boolean ViewModel property.
+    /// </summary>
     [AddBinderContextMenu(typeof(AudioSource), SubPath = "Switcher")]
     [AddComponentMenu("Aspid/MVVM/Binders/Audio/AudioSource/AudioSource Binder – DopplerLevel Switcher")]
     public sealed class AudioSourceDopplerLevelSwitcherMonoBinder : SwitcherMonoBinder<AudioSource, float, Converter>

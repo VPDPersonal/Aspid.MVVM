@@ -5,6 +5,10 @@ using UnityEngine;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
+    /// <summary>
+    /// Binder that sets the <see cref="AudioSource.clip"/> property on an <see cref="AudioSource"/>
+    /// when the bound ViewModel value changes.
+    /// </summary>
     [Serializable]
     public class AudioSourceClipBinder : TargetBinder<AudioSource, AudioClip>
     {

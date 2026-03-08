@@ -10,11 +10,16 @@ using Converter = Aspid.MVVM.StarterKit.IConverterVector2;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
+    /// <summary>
+    /// Binder that sets the min/max distance of an <see cref="AudioSource"/> when the bound
+    /// ViewModel value changes. Accepts numeric source types (int, float, etc.) and
+    /// <see cref="Vector2"/> values (x = min, y = max).
+    /// </summary>
     [Serializable]
     public class AudioSourceMinMaxDistanceBinder : TargetBinder<AudioSource, Vector2>, INumberBinder
     {
         [SerializeField] private AudioSourceDistanceMode _distanceMode = AudioSourceDistanceMode.Range;
-        
+
         [SerializeReferenceDropdown]
         [SerializeReference] private Converter? _converter;
         
@@ -23,45 +28,45 @@ namespace Aspid.MVVM.StarterKit
             get => new(Target.minDistance, Target.maxDistance);
             set => Target.SetMinMaxDistance(value, _distanceMode);
         }
-        
+
         public AudioSourceMinMaxDistanceBinder(
-            AudioSource target, 
+            AudioSource target,
             BindMode mode)
             : this(target, AudioSourceDistanceMode.Range, converter: null, mode) { }
-        
+
         public AudioSourceMinMaxDistanceBinder(
-            AudioSource target, 
-            AudioSourceDistanceMode distanceMode, 
+            AudioSource target,
+            AudioSourceDistanceMode distanceMode,
             BindMode mode)
             : this(target, distanceMode, converter: null, mode) { }
-        
+
         public AudioSourceMinMaxDistanceBinder(
-            AudioSource target, 
+            AudioSource target,
             Converter? converter,
             BindMode mode = BindMode.OneWay)
             : this(target, AudioSourceDistanceMode.Range, converter, mode) { }
         
         public AudioSourceMinMaxDistanceBinder(
-            AudioSource target, 
-            AudioSourceDistanceMode distanceMode = AudioSourceDistanceMode.Range, 
+            AudioSource target,
+            AudioSourceDistanceMode distanceMode = AudioSourceDistanceMode.Range,
             Converter? converter = null,
             BindMode mode = BindMode.OneWay)
             : base(target, mode)
         {
             mode.ThrowExceptionIfMatches(BindMode.TwoWay);
             _distanceMode = distanceMode;
-            _converter = converter; 
+            _converter = converter;
         }
-        
+
         public void SetValue(float value) =>
             SetValue(new Vector2(value, value));
-
+        
         public void SetValue(int value) =>
             SetValue((float)value);
-
+        
         public void SetValue(long value) =>
             SetValue((float)value);
-
+        
         public void SetValue(double value) =>
             SetValue((float)value);
         

@@ -10,6 +10,10 @@ using Converter = Aspid.MVVM.StarterKit.IConverterFloat;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
+    /// <summary>
+    /// Binder that sets the <see cref="AudioSource.pitch"/> property on an <see cref="AudioSource"/>
+    /// when the bound ViewModel value changes. The value is clamped to the range [-3, 3].
+    /// </summary>
     [Serializable]
     public class AudioSourcePitchBinder : TargetFloatBinder<AudioSource>
     {
@@ -18,7 +22,7 @@ namespace Aspid.MVVM.StarterKit
             get => Target.pitch;
             set => Target.pitch = value;
         }
-        
+
         public AudioSourcePitchBinder(AudioSource target, BindMode mode)
             : this(target, converter: null, mode) { }
         
@@ -29,6 +33,6 @@ namespace Aspid.MVVM.StarterKit
         }
         
         protected override float GetConvertedValue(float value) =>
-            Mathf.Clamp(base.GetConvertedValue(value), min: -3, max:  3);
+            Mathf.Clamp(base.GetConvertedValue(value), min: -3, max: 3);
     }
 }

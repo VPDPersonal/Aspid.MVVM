@@ -10,24 +10,28 @@ using Converter = Aspid.MVVM.StarterKit.IConverterFloat;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
+    /// <summary>
+    /// Binder that switches the <see cref="AudioSource.time"/> between two float values based
+    /// on a bound boolean ViewModel property.
+    /// </summary>
     [Serializable]
     public sealed class AudioSourceTimeSwitcherBinder : SwitcherBinder<AudioSource, float, Converter>
     {
         public AudioSourceTimeSwitcherBinder(
             AudioSource target,
-            float trueValue, 
+            float trueValue,
             float falseValue,
             BindMode mode)
             : this(target, trueValue, falseValue, converter: null, mode) { }
         
         public AudioSourceTimeSwitcherBinder(
             AudioSource target,
-            float trueValue, 
+            float trueValue,
             float falseValue,
             Converter? converter = null,
             BindMode mode = BindMode.OneWay)
             : base(target, trueValue, falseValue, converter, mode) { }
-
+        
         protected override void SetValue(float value) =>
             Target.time = value;
     }

@@ -10,6 +10,10 @@ using Converter = Aspid.MVVM.StarterKit.IConverterFloat;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
+    /// <summary>
+    /// Binder that sets the <see cref="AudioSource.time"/> property on an <see cref="AudioSource"/>
+    /// when the bound ViewModel value changes.
+    /// </summary>
     [Serializable]
     public class AudioSourceTimeBinder : TargetFloatBinder<AudioSource>
     {
@@ -18,7 +22,7 @@ namespace Aspid.MVVM.StarterKit
             get => Target.time;
             set => Target.time = value;
         }
-
+        
         public AudioSourceTimeBinder(AudioSource target, BindMode mode)
             : this(target, converter: null, mode) { }
         

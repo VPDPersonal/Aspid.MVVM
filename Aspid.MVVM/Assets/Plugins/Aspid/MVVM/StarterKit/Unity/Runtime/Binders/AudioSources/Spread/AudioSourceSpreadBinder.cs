@@ -10,8 +10,12 @@ using Converter = Aspid.MVVM.StarterKit.IConverterFloat;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
+    /// <summary>
+    /// Binder that sets the <see cref="AudioSource.spread"/> property on an <see cref="AudioSource"/>
+    /// when the bound ViewModel value changes. The value is clamped to the range [0, 360].
+    /// </summary>
     [Serializable]
-    public class AudioSourceSpreadBinder : TargetFloatBinder<AudioSource> 
+    public class AudioSourceSpreadBinder : TargetFloatBinder<AudioSource>
     {
         protected sealed override float Property
         {

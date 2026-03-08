@@ -10,6 +10,10 @@ using Converter = Aspid.MVVM.StarterKit.IConverterVector2;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
+    /// <summary>
+    /// Binder that switches the min/max distance of an <see cref="AudioSource"/> between two
+    /// <see cref="Vector2"/> values based on a bound boolean ViewModel property.
+    /// </summary>
     [Serializable]
     public sealed class AudioSourceMinMaxDistanceSwitcherBinder : SwitcherBinder<AudioSource, Vector2, Converter>
     {
@@ -17,14 +21,14 @@ namespace Aspid.MVVM.StarterKit
         
         public AudioSourceMinMaxDistanceSwitcherBinder(
             AudioSource target,
-            Vector2 trueValue, 
+            Vector2 trueValue,
             Vector2 falseValue,
             BindMode mode)
             : this(target, trueValue, falseValue, AudioSourceDistanceMode.Range, converter: null, mode) { }
         
         public AudioSourceMinMaxDistanceSwitcherBinder(
             AudioSource target,
-            Vector2 trueValue, 
+            Vector2 trueValue,
             Vector2 falseValue,
             AudioSourceDistanceMode distanceMode,
             BindMode mode)
@@ -32,7 +36,7 @@ namespace Aspid.MVVM.StarterKit
         
         public AudioSourceMinMaxDistanceSwitcherBinder(
             AudioSource target,
-            Vector2 trueValue, 
+            Vector2 trueValue,
             Vector2 falseValue,
             Converter? converter,
             BindMode mode = BindMode.OneWay)
@@ -40,7 +44,7 @@ namespace Aspid.MVVM.StarterKit
         
         public AudioSourceMinMaxDistanceSwitcherBinder(
             AudioSource target,
-            Vector2 trueValue, 
+            Vector2 trueValue,
             Vector2 falseValue,
             AudioSourceDistanceMode distanceMode = AudioSourceDistanceMode.Range,
             Converter? converter = null,
@@ -49,7 +53,7 @@ namespace Aspid.MVVM.StarterKit
         {
             _distanceMode = distanceMode;
         }
-
+        
         protected override void SetValue(Vector2 value) =>
             Target.SetMinMaxDistance(value, _distanceMode);
     }

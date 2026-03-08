@@ -5,6 +5,10 @@ using UnityEngine;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
+    /// <summary>
+    /// Binder that sets the <see cref="AudioSource.bypassReverbZones"/> property on an <see cref="AudioSource"/>
+    /// when the bound ViewModel value changes. Supports optional value inversion.
+    /// </summary>
     [Serializable]
     public class AudioSourceBypassReverbZonesBinder : TargetBoolBinder<AudioSource>
     {
@@ -13,7 +17,7 @@ namespace Aspid.MVVM.StarterKit
             get => Target.bypassReverbZones;
             set => Target.bypassReverbZones = value;
         }
-        
+
         public AudioSourceBypassReverbZonesBinder(AudioSource target, BindMode mode)
             : this(target, isInvert: false, mode) { }
         

@@ -8,6 +8,12 @@ using Converter = Aspid.MVVM.StarterKit.IConverterVector2;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
+    /// <summary>
+    /// MonoBehaviour binder that sets the min/max distance (<see cref="AudioSource.minDistance"/> and <see cref="AudioSource.maxDistance"/>)
+    /// on an <see cref="AudioSource"/> when the bound ViewModel <see cref="UnityEngine.Vector2"/> value changes.
+    /// Supports <see cref="BindMode.OneWayToSource"/>: when binding is established the current value
+    /// is sent back to the ViewModel.
+    /// </summary>
     [AddBinderContextMenu(typeof(AudioSource))]
     [AddComponentMenu("Aspid/MVVM/Binders/Audio/AudioSource/AudioSource Binder – MinMaxDistance")]
     public partial class AudioSourceMinMaxDistanceMonoBinder : ComponentMonoBinder<AudioSource, Vector2, Converter>, INumberBinder
@@ -19,7 +25,7 @@ namespace Aspid.MVVM.StarterKit
             get => new(CachedComponent.minDistance, CachedComponent.maxDistance);
             set => CachedComponent.SetMinMaxDistance(value, _distanceMode);
         }
-        
+
         [BinderLog]
         public void SetValue(float value) =>
             SetValue(new Vector2(value, value));

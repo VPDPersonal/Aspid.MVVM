@@ -10,6 +10,10 @@ using Converter = Aspid.MVVM.StarterKit.IConverterFloat;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
+    /// <summary>
+    /// Binder that sets the <see cref="AudioSource.spatialBlend"/> property on an <see cref="AudioSource"/>
+    /// when the bound ViewModel value changes. The value is clamped to the range [0, 1].
+    /// </summary>
     [Serializable]
     public class AudioSourceSpatialBlendBinder : TargetFloatBinder<AudioSource>
     {
@@ -18,10 +22,10 @@ namespace Aspid.MVVM.StarterKit
             get => Target.spatialBlend;
             set => Target.spatialBlend = value;
         }
-
+        
         public AudioSourceSpatialBlendBinder(AudioSource target, BindMode mode)
             : this(target, converter: null, mode) { }
-        
+
         public AudioSourceSpatialBlendBinder(AudioSource target, Converter? converter = null, BindMode mode = BindMode.OneWay)
             : base(target, converter, mode)
         {

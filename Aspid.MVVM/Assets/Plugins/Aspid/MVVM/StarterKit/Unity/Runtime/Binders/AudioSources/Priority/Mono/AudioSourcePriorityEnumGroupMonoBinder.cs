@@ -8,6 +8,11 @@ using Converter = Aspid.MVVM.StarterKit.IConverterInt;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
+    /// <summary>
+    /// MonoBehaviour binder that sets the <see cref="AudioSource.priority"/> property on a group of <see cref="AudioSource"/>
+    /// components, applying the configured selected or default value to each entry based on the bound
+    /// enum ViewModel value. The value is clamped to the range [0, 256].
+    /// </summary>
     [AddBinderContextMenu(typeof(AudioSource), SubPath = "EnumGroup")]
     [AddComponentMenu("Aspid/MVVM/Binders/Audio/AudioSource/AudioSource Binder – Priority EnumGroup")]
     public sealed class AudioSourcePriorityEnumGroupMonoBinder : EnumGroupMonoBinder<AudioSource, int, Converter>

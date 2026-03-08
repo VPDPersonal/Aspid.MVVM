@@ -11,41 +11,45 @@ using Converter = Aspid.MVVM.StarterKit.IConverterVector2;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
+    /// <summary>
+    /// Binder that switches the minimum and maximum values of a <see cref="UnityEngine.UI.Slider"/>
+    /// between two ranges based on a bound boolean ViewModel value.
+    /// </summary>
     [Serializable]
     public sealed class SliderMinMaxSwitcherBinder : SwitcherBinder<Slider, Vector2, Converter>
     {
         [SerializeField] private SliderValueMode _valueMode;
-        
+
         public SliderMinMaxSwitcherBinder(
-            Slider target, 
-            Vector2 trueValue, 
+            Slider target,
+            Vector2 trueValue,
             Vector2 falseValue,
-            BindMode mode) 
+            BindMode mode)
             : this(target, trueValue, falseValue, SliderValueMode.Range, converter: null, mode) { }
-        
+
         public SliderMinMaxSwitcherBinder(
-            Slider target, 
-            Vector2 trueValue, 
+            Slider target,
+            Vector2 trueValue,
             Vector2 falseValue,
             SliderValueMode valueMode,
-            BindMode mode) 
+            BindMode mode)
             : this(target, trueValue, falseValue, valueMode, converter: null, mode) { }
-        
+
         public SliderMinMaxSwitcherBinder(
-            Slider target, 
-            Vector2 trueValue, 
+            Slider target,
+            Vector2 trueValue,
             Vector2 falseValue,
             Converter? converter,
-            BindMode mode = BindMode.OneWay) 
+            BindMode mode = BindMode.OneWay)
             : this(target, trueValue, falseValue, SliderValueMode.Range, converter, mode) { }
-        
+
         public SliderMinMaxSwitcherBinder(
-            Slider target, 
-            Vector2 trueValue, 
+            Slider target,
+            Vector2 trueValue,
             Vector2 falseValue,
             SliderValueMode valueMode = SliderValueMode.Range,
             Converter? converter = null,
-            BindMode mode = BindMode.OneWay) 
+            BindMode mode = BindMode.OneWay)
             : base(target, trueValue, falseValue, converter, mode)
         {
             _valueMode = valueMode;

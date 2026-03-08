@@ -11,6 +11,9 @@ using Converter = Aspid.MVVM.StarterKit.IConverterFloat;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
+    /// <summary>
+    /// A code-facing binder that synchronizes the value of a <see cref="Slider"/> with a numeric ViewModel property.
+    /// </summary>
     [Serializable]
     [BindModeOverride(IsAll = true)]
     public class SliderValueBinder : TargetBinder<Slider>, INumberBinder, INumberReverseBinder
@@ -21,28 +24,28 @@ namespace Aspid.MVVM.StarterKit
         public event Action<double>? DoubleValueChanged;
 
         private bool _isNotifyValueChanged = true;
-        
+
         [SerializeReferenceDropdown]
         [SerializeReference] private Converter? _converter;
         
         public SliderValueBinder(Slider target, BindMode mode)
             : this(target, converter: null, mode) { }
-        
+
         public SliderValueBinder(Slider target, Converter? converter = null, BindMode mode = BindMode.TwoWay)
             : base(target, mode)
         {
             mode.ThrowExceptionIfNone();
             _converter = converter;
         }
-
+        
         protected override void OnBound()
         {
             if (Mode is not (BindMode.TwoWay or BindMode.OneWayToSource)) return;
-            
+
             Target.onValueChanged.AddListener(OnValueChanged);
             if (Mode is BindMode.OneWayToSource) OnValueChanged(Target.value);
         }
-
+        
         protected override void OnUnbound()
         {
             if (Mode is not (BindMode.TwoWay or BindMode.OneWayToSource)) return;
@@ -51,7 +54,7 @@ namespace Aspid.MVVM.StarterKit
         
         public void SetValue(int value) =>
             SetValue((float)value);
-
+        
         public void SetValue(long value) =>
             SetValue((float)value);
         
@@ -61,7 +64,7 @@ namespace Aspid.MVVM.StarterKit
         public void SetValue(float value)
         {
             value = _converter?.Convert(value) ?? value;
-            
+
             _isNotifyValueChanged = false;
             Target.value = value;
             _isNotifyValueChanged = true;
@@ -70,7 +73,7 @@ namespace Aspid.MVVM.StarterKit
         private void OnValueChanged(float value)
         {
             if (!_isNotifyValueChanged) return;
-            
+
             IntValueChanged?.Invoke((int)value);
             LongValueChanged?.Invoke((long)value);
             FloatValueChanged?.Invoke(value);

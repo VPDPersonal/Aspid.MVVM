@@ -11,6 +11,9 @@ using Converter = Aspid.MVVM.StarterKit.IConverterFloat;
 // ReSharper disable NotNullOrRequiredMemberIsNotInitialized
 namespace Aspid.MVVM.StarterKit
 {
+    /// <summary>
+    /// A MonoBehaviour binder that synchronizes the value of a <see cref="Slider"/> with a numeric ViewModel property.
+    /// </summary>
     [BindModeOverride(IsAll = true)]
     [AddComponentMenu("Aspid/MVVM/Binders/UI/Slider/Slider Binder – Value")]
     [AddBinderContextMenu(typeof(Slider), serializePropertyNames: "m_Value")]
@@ -20,7 +23,7 @@ namespace Aspid.MVVM.StarterKit
         public event Action<long> LongValueChanged;
         public event Action<float> FloatValueChanged;
         public event Action<double> DoubleValueChanged;
-        
+
         [SerializeReferenceDropdown]
         [SerializeReference] private Converter _converter;
 
@@ -29,11 +32,11 @@ namespace Aspid.MVVM.StarterKit
         [BinderLog]
         public void SetValue(int value) =>
             SetValueInternal(value);
-
+        
         [BinderLog]
         public void SetValue(long value) =>
             SetValueInternal(value);
-
+        
         [BinderLog]
         public void SetValue(float value) =>
             SetValueInternal(value);
@@ -41,15 +44,15 @@ namespace Aspid.MVVM.StarterKit
         [BinderLog]
         public void SetValue(double value) =>
             SetValueInternal((float)value);
-
+        
         protected override void OnBound()
         {
             if (Mode is not (BindMode.TwoWay or BindMode.OneWayToSource)) return;
-            
+
             CachedComponent.onValueChanged.AddListener(OnValueChanged);
             if (Mode is BindMode.OneWayToSource) OnValueChanged(CachedComponent.value);
         }
-
+        
         protected override void OnUnbound()
         {
             if (Mode is not (BindMode.TwoWay or BindMode.OneWayToSource)) return;
@@ -62,11 +65,11 @@ namespace Aspid.MVVM.StarterKit
             CachedComponent.value = _converter?.Convert(value) ?? value;
             _isNotifyValueChanged = true;
         }
-        
+
         private void OnValueChanged(float value)
         {
             if (!_isNotifyValueChanged) return;
-            
+
             IntValueChanged?.Invoke((int)value);
             LongValueChanged?.Invoke((long)value);
             FloatValueChanged?.Invoke(value);

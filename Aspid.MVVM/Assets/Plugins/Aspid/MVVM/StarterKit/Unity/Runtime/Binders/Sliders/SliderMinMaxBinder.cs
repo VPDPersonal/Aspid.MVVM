@@ -11,37 +11,41 @@ using Converter = Aspid.MVVM.StarterKit.IConverterVector2;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
+    /// <summary>
+    /// Binder that sets the minimum and maximum values of a <see cref="UnityEngine.UI.Slider"/>
+    /// when the bound ViewModel value changes.
+    /// </summary>
     [Serializable]
     public class SliderMinMaxBinder : TargetBinder<Slider, Vector2, Converter>, INumberBinder
     {
         [SerializeField] private SliderValueMode _valueMode;
-        
+
         protected sealed override Vector2 Property
         {
             get => new(Target.minValue, Target.maxValue);
             set => Target.SetMinMax(value, _valueMode);
         }
-        
+
         public SliderMinMaxBinder(
-            Slider target, 
+            Slider target,
             BindMode mode)
             : this(target, SliderValueMode.Range, converter: null, mode) { }
-        
+
         public SliderMinMaxBinder(
-            Slider target, 
-            SliderValueMode valueMode, 
+            Slider target,
+            SliderValueMode valueMode,
             BindMode mode)
             : this(target, valueMode, converter: null, mode) { }
-        
+
         public SliderMinMaxBinder(
-            Slider target, 
+            Slider target,
             Converter? converter,
             BindMode mode = BindMode.OneWay)
             : this(target, SliderValueMode.Range, converter, mode) { }
-        
+
         public SliderMinMaxBinder(
-            Slider target, 
-            SliderValueMode valueMode = SliderValueMode.Range, 
+            Slider target,
+            SliderValueMode valueMode = SliderValueMode.Range,
             Converter? converter = null,
             BindMode mode = BindMode.OneWay)
             : base(target, converter, mode)
@@ -49,7 +53,7 @@ namespace Aspid.MVVM.StarterKit
             mode.ThrowExceptionIfMatches(BindMode.TwoWay);
             _valueMode = valueMode;
         }
-        
+
         [BinderLog]
         public void SetValue(float value) =>
             SetValue(new Vector2(value, value));

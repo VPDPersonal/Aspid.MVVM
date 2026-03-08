@@ -4,6 +4,11 @@ using UnityEngine;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
+    /// <summary>
+    /// Abstract base MonoBehaviour binder that binds a single property on a Unity <see cref="UnityEngine.Component"/>
+    /// using get/set accessors. Supports <see cref="BindMode.OneWayToSource"/>: when binding is established
+    /// the current property value is sent back to the ViewModel.
+    /// </summary>
     [BindModeOverride(BindMode.OneWay, BindMode.OneTime, BindMode.OneWayToSource)]
     public abstract partial class ComponentMonoBinder<TComponent, TProperty> : ComponentMonoBinder<TComponent>, IBinder<TProperty>, IReverseBinder<TProperty>
         where TComponent : Component
@@ -25,6 +30,10 @@ namespace Aspid.MVVM.StarterKit
         protected virtual TProperty GetConvertedValue(TProperty value) => value;
     }
 
+    /// <summary>
+    /// Abstract base MonoBehaviour binder that binds a single property on a Unity <see cref="UnityEngine.Component"/>
+    /// using get/set accessors, with value conversion and one-way-to-source support.
+    /// </summary>
     public abstract class ComponentMonoBinder<TComponent, TProperty, TConverter> : ComponentMonoBinder<TComponent, TProperty>
         where TComponent : Component
         where TConverter : IConverter<TProperty, TProperty>

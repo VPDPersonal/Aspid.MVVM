@@ -8,6 +8,11 @@ using Converter = Aspid.MVVM.StarterKit.IConverterVector3;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
+    /// <summary>
+    /// Abstract base MonoBehaviour binder for binding a <see cref="UnityEngine.Vector3"/> property on a Unity <see cref="UnityEngine.Component"/>.
+    /// Implements <see cref="IVectorBinder"/> and <see cref="INumberBinder"/>: scalar values (int, long, float, double)
+    /// are broadcast to all three parts as <c>new Vector3(value, value, value)</c>.
+    /// </summary>
     public abstract class ComponentVector3MonoBinder<TComponent> : ComponentMonoBinder<TComponent, Vector3, Converter>,
         IVectorBinder,
         INumberBinder

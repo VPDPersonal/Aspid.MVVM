@@ -6,6 +6,10 @@ using UnityEngine.ResourceManagement.AsyncOperations;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
+	/// <summary>
+	/// Abstract base MonoBehaviour binder that loads an Addressable asset by key or <see cref="UnityEngine.AddressableAssets.IKeyEvaluator"/>
+	/// and applies it when the asset is ready. Requires the Addressables integration.
+	/// </summary>
 	public abstract partial class AddressableMonoBinder<TAsset> : MonoBinder, IBinder<string>, IBinder<IKeyEvaluator>
 	{
 		private AsyncOperationHandle<TAsset> _lastHandle;
@@ -78,7 +82,13 @@ namespace Aspid.MVVM.StarterKit
 		protected virtual TAsset GetDefaultAsset() => default;
 	}
 
-	public abstract partial class AddressableMonoBinder<TAsset, TComponent> : ComponentMonoBinder<TComponent>, 
+	/// <summary>
+	/// Abstract base MonoBehaviour binder that loads an Addressable asset of type <typeparamref name="TAsset"/> by key
+	/// and applies it to a specific <typeparamref name="TComponent"/> on the GameObject. Requires the Addressables integration.
+	/// </summary>
+	/// <typeparam name="TAsset">The type of Addressable asset to load.</typeparam>
+	/// <typeparam name="TComponent">The Unity component to apply the loaded asset to.</typeparam>
+	public abstract partial class AddressableMonoBinder<TAsset, TComponent> : ComponentMonoBinder<TComponent>,
 		IBinder<string>,
 		IBinder<IKeyEvaluator>
 		where TComponent : Component

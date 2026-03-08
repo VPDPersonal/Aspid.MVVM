@@ -9,6 +9,11 @@ using Converter = Aspid.MVVM.StarterKit.IConverterFloat;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
+    /// <summary>
+    /// Abstract base MonoBehaviour binder for binding a <see langword="float"/> property on a Unity <see cref="UnityEngine.Component"/>.
+    /// Implements <see cref="INumberBinder"/> to accept int, long, float, and double values.
+    /// Supports <see cref="BindMode.OneWayToSource"/>: when binding is established the current value is sent back to the ViewModel.
+    /// </summary>
     public abstract partial class ComponentFloatMonoBinder<TComponent> : ComponentMonoBinder<TComponent, float, Converter>,
         INumberBinder,
         INumberReverseBinder

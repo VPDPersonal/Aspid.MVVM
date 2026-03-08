@@ -3,7 +3,11 @@ using UnityEngine;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
-    public abstract partial class SwitcherMonoBinder<T> : MonoBinder, IBinder<bool> 
+    /// <summary>
+    /// Abstract base MonoBehaviour binder that switches a target value between two serialized options
+    /// based on a bound boolean ViewModel property.
+    /// </summary>
+    public abstract partial class SwitcherMonoBinder<T> : MonoBinder, IBinder<bool>
     {
         [SerializeField] private T _trueValue;
         [SerializeField] private T _falseValue;
@@ -14,8 +18,12 @@ namespace Aspid.MVVM.StarterKit
 
         protected abstract void SetValue(T value);
     }
-    
-    public abstract partial class SwitcherMonoBinder<TComponent, T> : ComponentMonoBinder<TComponent>, IBinder<bool> 
+
+    /// <summary>
+    /// Abstract base switcher binder that sets a property on a specific Unity <typeparamref name="TComponent"/>,
+    /// choosing between the serialized <c>_trueValue</c> and <c>_falseValue</c> based on the bound boolean.
+    /// </summary>
+    public abstract partial class SwitcherMonoBinder<TComponent, T> : ComponentMonoBinder<TComponent>, IBinder<bool>
         where TComponent : Component
     {
         [SerializeField] private T _trueValue;
@@ -27,8 +35,13 @@ namespace Aspid.MVVM.StarterKit
 
         protected abstract void SetValue(T value);
     }
-    
-    public abstract partial class SwitcherMonoBinder<TComponent, T, TConverter> : ComponentMonoBinder<TComponent>, IBinder<bool> 
+
+    /// <summary>
+    /// Abstract base switcher binder that sets a property on a specific Unity <typeparamref name="TComponent"/>,
+    /// choosing between <c>_trueValue</c> and <c>_falseValue</c> and optionally converting the result
+    /// via a serialized <typeparamref name="TConverter"/> before applying it.
+    /// </summary>
+    public abstract partial class SwitcherMonoBinder<TComponent, T, TConverter> : ComponentMonoBinder<TComponent>, IBinder<bool>
         where TComponent : Component
         where TConverter : IConverter<T, T>
     {

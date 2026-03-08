@@ -21,9 +21,7 @@ namespace Aspid.MVVM.StarterKit
             Sprite trueValue,
             Sprite falseValue,
             BindMode mode)
-            : this(target, trueValue, falseValue, disabledWhenNull: true, mode)
-        {
-        }
+            : this(target, trueValue, falseValue, disabledWhenNull: true, mode) { }
 
         public ImageSpriteSwitcherBinder(
             Image target,

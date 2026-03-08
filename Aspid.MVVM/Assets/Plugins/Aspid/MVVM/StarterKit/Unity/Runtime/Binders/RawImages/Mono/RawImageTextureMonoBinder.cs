@@ -9,6 +9,13 @@ using Converter = Aspid.MVVM.StarterKit.IConverterTexture;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
+    /// <summary>
+    /// MonoBehaviour binder that sets the <see cref="RawImage.texture"/> property on a <see cref="RawImage"/> component
+    /// when the bound ViewModel value changes.
+    /// Supports <see cref="BindMode.OneWayToSource"/>: when binding is established the current value
+    /// is sent back to the ViewModel.
+    /// Optionally disables the <see cref="RawImage"/> when the bound texture is <see langword="null"/>.
+    /// </summary>
     [AddBinderContextMenu(typeof(RawImage), serializePropertyNames: "m_Texture")]
     [AddComponentMenu("Aspid/MVVM/Binders/UI/RawImage/RawImage Binder – Texture")]
     public sealed partial class RawImageTextureMonoBinder : ComponentMonoBinder<RawImage, Texture, Converter>, IBinder<Sprite>

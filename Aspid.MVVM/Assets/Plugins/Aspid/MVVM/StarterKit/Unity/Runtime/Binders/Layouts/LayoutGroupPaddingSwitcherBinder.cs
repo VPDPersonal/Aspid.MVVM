@@ -11,22 +11,26 @@ using Converter = Aspid.MVVM.StarterKit.IConverterRectOffset;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
+    /// <summary>
+    /// Binder that switches the <see cref="UnityEngine.UI.LayoutGroup.padding"/> on a <see cref="UnityEngine.UI.LayoutGroup"/>
+    /// between two values based on a bound boolean ViewModel value.
+    /// </summary>
     [Serializable]
     public sealed class LayoutGroupPaddingSwitcherBinder : SwitcherBinder<LayoutGroup, RectOffset, Converter>
     {
         [SerializeField] private PaddingMode _paddingMode;
-        
+
         public LayoutGroupPaddingSwitcherBinder(
             LayoutGroup target,
-            RectOffset trueValue, 
+            RectOffset trueValue,
             RectOffset falseValue,
             PaddingMode paddingMode,
             BindMode bindMode = BindMode.OneWay)
             : this(target, trueValue, falseValue, paddingMode, null, bindMode) { }
-        
+
         public LayoutGroupPaddingSwitcherBinder(
             LayoutGroup target,
-            RectOffset trueValue, 
+            RectOffset trueValue,
             RectOffset falseValue,
             PaddingMode paddingMode,
             Converter? converter = null,

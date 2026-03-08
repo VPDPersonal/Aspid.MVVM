@@ -11,26 +11,30 @@ using Converter = Aspid.MVVM.StarterKit.IConverterRectOffset;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
+    /// <summary>
+    /// Binder that sets the <see cref="UnityEngine.UI.LayoutGroup.padding"/> on a <see cref="UnityEngine.UI.LayoutGroup"/>
+    /// when the bound ViewModel value changes.
+    /// </summary>
     [Serializable]
     public class LayoutGroupPaddingBinder : TargetBinder<LayoutGroup, RectOffset, Converter>, INumberBinder
     {
         [SerializeField] private PaddingMode _paddingMode;
         [NonSerialized] private RectOffset? _cachedRectOffset;
-        
+
         protected sealed override RectOffset Property
         {
             get => Target.padding;
             set => Target.SetPadding(value.top, value.right, value.bottom, value.left, _paddingMode);
         }
-        
+
         public LayoutGroupPaddingBinder(
-            LayoutGroup target, 
+            LayoutGroup target,
             PaddingMode paddingMode,
             BindMode bindMode = BindMode.OneWay)
             : this(target, paddingMode, converter: null, bindMode) { }
-        
+
         public LayoutGroupPaddingBinder(
-            LayoutGroup target, 
+            LayoutGroup target,
             PaddingMode paddingMode,
             Converter? converter = null,
             BindMode bindMode = BindMode.OneWay)
@@ -39,7 +43,7 @@ namespace Aspid.MVVM.StarterKit
             bindMode.ThrowExceptionIfMatches(BindMode.TwoWay);
             _paddingMode = paddingMode;
         }
-        
+
         public void SetValue(int value)
         {
             _cachedRectOffset ??= new RectOffset();
@@ -47,16 +51,16 @@ namespace Aspid.MVVM.StarterKit
             _cachedRectOffset.right = value;
             _cachedRectOffset.top = value;
             _cachedRectOffset.bottom = value;
-            
+
             base.SetValue(_cachedRectOffset);
         }
-        
+
         public void SetValue(long value) =>
             SetValue((int)value);
-        
+
         public void SetValue(float value) =>
             SetValue((int)value);
-        
+
         public void SetValue(double value) =>
             SetValue((int)value);
     }

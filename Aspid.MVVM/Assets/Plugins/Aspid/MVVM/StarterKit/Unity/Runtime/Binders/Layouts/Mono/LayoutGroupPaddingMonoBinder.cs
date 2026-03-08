@@ -9,6 +9,12 @@ using Converter = Aspid.MVVM.StarterKit.IConverterRectOffset;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
+    /// <summary>
+    /// MonoBehaviour binder that sets the <see cref="UnityEngine.UI.LayoutGroup.padding"/> on a <see cref="UnityEngine.UI.LayoutGroup"/>
+    /// when the bound ViewModel value changes.
+    /// Supports <see cref="BindMode.OneWayToSource"/>: when binding is established the current value
+    /// is sent back to the ViewModel.
+    /// </summary>
     [AddComponentMenu("Aspid/MVVM/Binders/UI/LayoutGroup/LayoutGroup Binder – Padding")]
     [AddBinderContextMenu(typeof(LayoutGroup), serializePropertyNames: "m_Padding")]
     public partial class LayoutGroupPaddingMonoBinder : ComponentMonoBinder<LayoutGroup, RectOffset, Converter>, INumberBinder
@@ -21,7 +27,7 @@ namespace Aspid.MVVM.StarterKit
             get => CachedComponent.padding;
             set => CachedComponent.SetPadding(value.top, value.right, value.bottom, value.left, _paddingMode);
         }
-        
+
         [BinderLog]
         public void SetValue(int value)
         {
@@ -30,7 +36,7 @@ namespace Aspid.MVVM.StarterKit
             _cachedRectOffset.right = value;
             _cachedRectOffset.top = value;
             _cachedRectOffset.bottom = value;
-            
+
             base.SetValue(_cachedRectOffset);
         }
 

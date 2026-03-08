@@ -9,6 +9,11 @@ using Converter = Aspid.MVVM.StarterKit.IConverterFloat;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
+    /// <summary>
+    /// MonoBehaviour binder that sets the <see cref="UnityEngine.UI.HorizontalOrVerticalLayoutGroup.spacing"/> property
+    /// on a group of <see cref="UnityEngine.UI.HorizontalOrVerticalLayoutGroup"/> components, applying the configured
+    /// selected or default value to each entry based on the bound enum ViewModel value.
+    /// </summary>
     [AddBinderContextMenu(typeof(HorizontalOrVerticalLayoutGroup), serializePropertyNames: "m_Spacing", SubPath = "EnumGroup")]
     [AddComponentMenu("Aspid/MVVM/Binders/UI/LayoutGroup/HorizontalOrVertical/HorizontalOrVerticalLayoutGroup Binder – Spacing EnumGroup")]
     public sealed class HorizontalOrVerticalLayoutGroupSpacingEnumGroupMonoBinder : EnumGroupMonoBinder<HorizontalOrVerticalLayoutGroup, float, Converter>

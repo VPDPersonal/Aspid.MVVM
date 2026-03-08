@@ -9,12 +9,16 @@ using Converter = Aspid.MVVM.StarterKit.IConverterRectOffset;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
+    /// <summary>
+    /// MonoBehaviour binder that sets the <see cref="UnityEngine.UI.LayoutGroup.padding"/> on a <see cref="UnityEngine.UI.LayoutGroup"/>
+    /// to a value resolved from an enum bound on the ViewModel.
+    /// </summary>
     [AddComponentMenu("Aspid/MVVM/Binders/UI/LayoutGroup/LayoutGroup Binder – Padding Enum")]
     [AddBinderContextMenu(typeof(LayoutGroup), serializePropertyNames: "m_Padding", SubPath = "Enum")]
     public sealed class LayoutGroupPaddingEnumMonoBinder : EnumMonoBinder<LayoutGroup, RectOffset, Converter>
     {
         [SerializeField] private PaddingMode _paddingMode;
-        
+
         protected override void SetValue(RectOffset value) =>
             CachedComponent.SetPadding(value.top, value.right, value.bottom, value.left, _paddingMode);
     }

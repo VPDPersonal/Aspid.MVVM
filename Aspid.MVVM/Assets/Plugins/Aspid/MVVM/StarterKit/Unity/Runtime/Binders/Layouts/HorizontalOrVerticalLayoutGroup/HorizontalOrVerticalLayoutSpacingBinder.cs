@@ -10,6 +10,10 @@ using Converter = Aspid.MVVM.StarterKit.IConverterFloat;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
+    /// <summary>
+    /// Binder that sets the <see cref="UnityEngine.UI.HorizontalOrVerticalLayoutGroup.spacing"/> property
+    /// on a <see cref="UnityEngine.UI.HorizontalOrVerticalLayoutGroup"/> when the bound ViewModel value changes.
+    /// </summary>
     [Serializable]
     public class HorizontalOrVerticalLayoutSpacingBinder : TargetFloatBinder<HorizontalOrVerticalLayoutGroup>, INumberBinder
     {
@@ -18,14 +22,14 @@ namespace Aspid.MVVM.StarterKit
             get => Target.spacing;
             set => Target.spacing = value;
         }
-        
+
         public HorizontalOrVerticalLayoutSpacingBinder(
-            HorizontalOrVerticalLayoutGroup target, 
+            HorizontalOrVerticalLayoutGroup target,
             BindMode bindMode = BindMode.OneWay)
             : this(target, converter: null, bindMode) { }
-        
+
         public HorizontalOrVerticalLayoutSpacingBinder(
-            HorizontalOrVerticalLayoutGroup target, 
+            HorizontalOrVerticalLayoutGroup target,
             Converter? converter = null,
             BindMode bindMode = BindMode.OneWay)
             : base(target, converter, bindMode)

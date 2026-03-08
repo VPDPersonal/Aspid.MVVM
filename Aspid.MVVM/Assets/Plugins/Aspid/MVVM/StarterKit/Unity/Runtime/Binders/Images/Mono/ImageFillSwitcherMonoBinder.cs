@@ -9,6 +9,10 @@ using Converter = Aspid.MVVM.StarterKit.IConverterFloat;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
+    /// <summary>
+    /// MonoBehaviour binder that switches the <see cref="Image.fillAmount"/> property on an <see cref="Image"/> component
+    /// between two values based on a bound boolean ViewModel property.
+    /// </summary>
     [AddComponentMenu("Aspid/MVVM/Binders/UI/Image/Image Binder – Fill Switcher")]
     [AddBinderContextMenu(typeof(Image), serializePropertyNames: "m_FillAmount", SubPath = "Switcher")]
     public sealed class ImageFillSwitcherMonoBinder : SwitcherMonoBinder<Image, float, Converter>

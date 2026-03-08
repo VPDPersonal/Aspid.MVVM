@@ -4,6 +4,13 @@ using UnityEngine.UI;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
+    /// <summary>
+    /// MonoBehaviour binder that sets the <see cref="Image.sprite"/> property on an <see cref="Image"/> component
+    /// when the bound ViewModel value changes.
+    /// Supports <see cref="BindMode.OneWayToSource"/>: when binding is established the current value
+    /// is sent back to the ViewModel.
+    /// Optionally disables the <see cref="Image"/> when the bound sprite is <see langword="null"/>.
+    /// </summary>
     [AddComponentMenu("Aspid/MVVM/Binders/UI/Image/Image Binder – Sprite")]
     [AddBinderContextMenu(typeof(Image), serializePropertyNames: "m_Sprite")]
     public partial class ImageSpriteMonoBinder : ComponentMonoBinder<Image, Sprite>, IBinder<Texture2D>

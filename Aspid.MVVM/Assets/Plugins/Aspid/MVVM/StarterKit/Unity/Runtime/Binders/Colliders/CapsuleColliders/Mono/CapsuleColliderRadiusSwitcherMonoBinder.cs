@@ -8,6 +8,10 @@ using Converter = Aspid.MVVM.StarterKit.IConverterFloat;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
+    /// <summary>
+    /// MonoBehaviour binder that switches the <see cref="CapsuleCollider.radius"/> property on a <see cref="CapsuleCollider"/>
+    /// between two values based on a bound boolean ViewModel property.
+    /// </summary>
     [AddComponentMenu("Aspid/MVVM/Binders/Collider/Capsule/CapsuleCollider Binder – Radius Switcher")]
     [AddBinderContextMenu(typeof(CapsuleCollider), serializePropertyNames: "m_Radius", SubPath = "Switcher")]
     public sealed class CapsuleColliderRadiusSwitcherMonoBinder : SwitcherMonoBinder<CapsuleCollider, float, Converter>

@@ -8,6 +8,10 @@ using Converter = Aspid.MVVM.StarterKit.IConverterVector3;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
+    /// <summary>
+    /// MonoBehaviour binder that sets the <see cref="CapsuleCollider.center"/> property on a <see cref="CapsuleCollider"/>
+    /// to a value resolved from an enum bound on the ViewModel.
+    /// </summary>
     [AddComponentMenu("Aspid/MVVM/Binders/Collider/Capsule/CapsuleCollider Binder – Center Enum")]
     [AddBinderContextMenu(typeof(CapsuleCollider), serializePropertyNames: "m_Center", SubPath = "Enum")]
     public sealed class CapsuleColliderCenterEnumMonoBinder : EnumMonoBinder<CapsuleCollider, Vector3, Converter>

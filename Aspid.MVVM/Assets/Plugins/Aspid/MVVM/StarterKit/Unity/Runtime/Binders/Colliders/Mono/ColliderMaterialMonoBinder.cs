@@ -10,6 +10,12 @@ using Converter = Aspid.MVVM.StarterKit.IConverterPhysicsMaterial;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
+    /// <summary>
+    /// MonoBehaviour binder that sets the <see cref="Collider.material"/> property on a <see cref="Collider"/>
+    /// when the bound ViewModel value changes.
+    /// Supports <see cref="BindMode.OneWayToSource"/>: when binding is established the current value
+    /// is sent back to the ViewModel. Supports optional value inversion.
+    /// </summary>
     [AddComponentMenu("Aspid/MVVM/Binders/Collider/Collider Binder – Material")]
     [AddBinderContextMenu(typeof(Collider), serializePropertyNames: "m_Material")]
     public class ColliderMaterialMonoBinder : ComponentMonoBinder<Collider, PhysicsMaterial, Converter>

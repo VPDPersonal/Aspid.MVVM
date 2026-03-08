@@ -10,20 +10,24 @@ using Converter = Aspid.MVVM.StarterKit.IConverterFloat;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
+    /// <summary>
+    /// Binder that switches the <see cref="SphereCollider.radius"/> property on a <see cref="SphereCollider"/>
+    /// between two values based on a bound boolean ViewModel value.
+    /// </summary>
     [Serializable]
     public sealed class SphereColliderRadiusSwitcherBinder : SwitcherBinder<CapsuleCollider, float, Converter>
     {
         public SphereColliderRadiusSwitcherBinder(
             CapsuleCollider target,
-            float trueValue, 
-            float falseValue, 
+            float trueValue,
+            float falseValue,
             BindMode mode)
             : this(target, trueValue, falseValue, converter: null, mode) { }
-        
+
         public SphereColliderRadiusSwitcherBinder(
             CapsuleCollider target,
-            float trueValue, 
-            float falseValue, 
+            float trueValue,
+            float falseValue,
             Converter? converter = null,
             BindMode mode = BindMode.OneWay)
             : base(target, trueValue, falseValue, converter, mode) { }

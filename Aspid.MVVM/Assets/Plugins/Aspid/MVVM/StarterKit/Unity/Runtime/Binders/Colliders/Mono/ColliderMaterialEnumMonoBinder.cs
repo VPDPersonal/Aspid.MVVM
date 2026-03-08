@@ -10,6 +10,10 @@ using Converter = Aspid.MVVM.StarterKit.IConverterPhysicsMaterial;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
+    /// <summary>
+    /// MonoBehaviour binder that sets the <see cref="Collider.material"/> property on a <see cref="Collider"/>
+    /// to a value resolved from an enum bound on the ViewModel.
+    /// </summary>
     [AddComponentMenu("Aspid/MVVM/Binders/Collider/Collider Binder – Material Enum")]
     [AddBinderContextMenu(typeof(Collider), serializePropertyNames: "m_Material", SubPath = "Enum")]
     public sealed class ColliderMaterialEnumMonoBinder : EnumMonoBinder<Collider, PhysicsMaterial, Converter>

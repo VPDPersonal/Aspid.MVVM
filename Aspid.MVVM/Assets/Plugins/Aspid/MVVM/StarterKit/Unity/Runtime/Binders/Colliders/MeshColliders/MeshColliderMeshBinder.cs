@@ -10,6 +10,10 @@ using Converter = Aspid.MVVM.StarterKit.IConverterMesh;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
+    /// <summary>
+    /// Binder that sets the <see cref="MeshCollider.sharedMesh"/> property on a <see cref="MeshCollider"/>
+    /// when the bound ViewModel value changes.
+    /// </summary>
     [Serializable]
     public class MeshColliderMeshBinder : TargetBinder<MeshCollider, Mesh, Converter>
     {
@@ -18,10 +22,10 @@ namespace Aspid.MVVM.StarterKit
             get => Target.sharedMesh;
             set => Target.sharedMesh = value;
         }
-        
+
         public MeshColliderMeshBinder(MeshCollider target, BindMode mode)
             : this(target, converter: null, mode) { }
-        
+
         public MeshColliderMeshBinder(MeshCollider target, Converter? converter = null, BindMode mode = BindMode.OneWay)
             : base(target, converter, mode)
         {

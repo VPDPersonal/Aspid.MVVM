@@ -10,6 +10,10 @@ using Converter = Aspid.MVVM.StarterKit.IConverterVector3;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
+    /// <summary>
+    /// Binder that sets the <see cref="BoxCollider.size"/> property on a <see cref="BoxCollider"/>
+    /// when the bound ViewModel value changes.
+    /// </summary>
     [Serializable]
     public class BoxColliderSizeBinder : TargetVector3Binder<BoxCollider>
     {
@@ -18,12 +22,12 @@ namespace Aspid.MVVM.StarterKit
             get => Target.size;
             set => Target.size = value;
         }
-        
+
         public BoxColliderSizeBinder(BoxCollider target, BindMode mode)
             : this(target, converter: null, mode) { }
-        
+
         public BoxColliderSizeBinder(
-            BoxCollider target, 
+            BoxCollider target,
             Converter? converter = null,
             BindMode mode = BindMode.OneWay)
             : base(target, converter, mode)

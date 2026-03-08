@@ -8,6 +8,10 @@ using Converter = Aspid.MVVM.StarterKit.IConverterVector3;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
+    /// <summary>
+    /// MonoBehaviour binder that switches the <see cref="BoxCollider.center"/> property on a <see cref="BoxCollider"/>
+    /// between two values based on a bound boolean ViewModel property.
+    /// </summary>
     [AddComponentMenu("Aspid/MVVM/Binders/Collider/Box/BoxCollider Binder – Center Switcher")]
     [AddBinderContextMenu(typeof(BoxCollider), serializePropertyNames: "m_Center", SubPath = "Switcher")]
     public sealed class BoxColliderCenterSwitcherMonoBinder : SwitcherMonoBinder<BoxCollider, Vector3, Converter>

@@ -12,6 +12,10 @@ using Converter = Aspid.MVVM.StarterKit.IConverterPhysicsMaterial;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
+    /// <summary>
+    /// Binder that sets the <see cref="Collider.material"/> property on a <see cref="Collider"/>
+    /// when the bound ViewModel value changes.
+    /// </summary>
     [Serializable]
     public class ColliderMaterialBinder : TargetBinder<Collider, PhysicsMaterial, Converter>
     {
@@ -20,10 +24,10 @@ namespace Aspid.MVVM.StarterKit
             get => Target.material;
             set => Target.material = value;
         }
-        
+
         public ColliderMaterialBinder(Collider target, BindMode mode)
             : this(target, converter: null, mode) { }
-        
+
         public ColliderMaterialBinder(Collider target, Converter? converter = null, BindMode mode = BindMode.OneWay)
             : base(target, converter, mode)
         {

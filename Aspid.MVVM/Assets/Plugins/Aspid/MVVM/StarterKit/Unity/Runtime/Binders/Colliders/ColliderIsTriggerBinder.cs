@@ -5,6 +5,10 @@ using UnityEngine;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
+    /// <summary>
+    /// Binder that sets the <see cref="Collider.isTrigger"/> property on a <see cref="Collider"/>
+    /// when the bound ViewModel value changes. Supports optional value inversion.
+    /// </summary>
     [Serializable]
     public sealed class ColliderIsTriggerBinder : TargetBoolBinder<Collider>
     {
@@ -16,7 +20,7 @@ namespace Aspid.MVVM.StarterKit
 
         public ColliderIsTriggerBinder(Collider target, BindMode mode)
             : this(target, isInvert: false, mode) { }
-        
+
         public ColliderIsTriggerBinder(Collider target, bool isInvert, BindMode mode = BindMode.OneWay)
             : base(target, isInvert, mode)
         {

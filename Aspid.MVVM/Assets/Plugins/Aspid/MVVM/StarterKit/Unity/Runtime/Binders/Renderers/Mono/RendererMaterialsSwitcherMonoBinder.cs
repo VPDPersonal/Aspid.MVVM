@@ -8,6 +8,10 @@ using Converter = Aspid.MVVM.StarterKit.IConverterMaterial;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
+    /// <summary>
+    /// A MonoBehaviour binder that switches the materials array of a <see cref="Renderer"/> between two predefined
+    /// <see cref="Material"/> arrays based on a boolean ViewModel property.
+    /// </summary>
     [AddComponentMenu("Aspid/MVVM/Binders/Renderer/Renderer Binder – Materials Switcher")]
     [AddBinderContextMenu(typeof(Renderer), serializePropertyNames: "m_Materials", SubPath = "Switcher")]
     public sealed class RendererMaterialsSwitcherMonoBinder : SwitcherMonoBinder<Renderer, Material[]>

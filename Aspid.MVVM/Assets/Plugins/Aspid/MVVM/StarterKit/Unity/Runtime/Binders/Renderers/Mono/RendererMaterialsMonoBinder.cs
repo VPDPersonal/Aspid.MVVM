@@ -10,6 +10,10 @@ using Converter = Aspid.MVVM.StarterKit.IConverterMaterial;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
+    /// <summary>
+    /// MonoBehaviour binder that sets the material or materials on a <see cref="Renderer"/> component
+    /// when the bound ViewModel value changes.
+    /// </summary>
     [AddComponentMenu("Aspid/MVVM/Binders/Renderer/Renderer Binder – Materials")]
     [AddBinderContextMenu(typeof(Renderer), serializePropertyNames: "m_Materials")]
     [BindModeOverride(BindMode.OneWay, BindMode.OneTime, BindMode.OneWayToSource)]

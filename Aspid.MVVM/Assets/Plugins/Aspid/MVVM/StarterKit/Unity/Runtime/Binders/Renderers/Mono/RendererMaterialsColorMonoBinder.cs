@@ -8,6 +8,12 @@ using Converter = Aspid.MVVM.StarterKit.IConverterColor;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
+    /// <summary>
+    /// MonoBehaviour binder that sets a color property on all materials of a <see cref="Renderer"/> component
+    /// when the bound ViewModel value changes.
+    /// Supports <see cref="BindMode.OneWayToSource"/>: when binding is established the current value
+    /// is sent back to the ViewModel.
+    /// </summary>
     [AddBinderContextMenu(typeof(Renderer), serializePropertyNames: "m_Materials")]
     [AddComponentMenu("Aspid/MVVM/Binders/Renderer/Renderer Binder – MaterialsColor")]
     public class RendererMaterialsColorMonoBinder : ComponentColorMonoBinder<Renderer>, IColorBinder

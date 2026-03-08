@@ -5,6 +5,9 @@ using System.Collections.Generic;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
+    /// <summary>
+    /// Extension methods for setting materials on a <see cref="Renderer"/> with an optional converter.
+    /// </summary>
     public static class RendererSetters
     {
         public static void SetMaterials(this Renderer renderer, IConverter<Material?, Material?>? converter, params Material[]? values)

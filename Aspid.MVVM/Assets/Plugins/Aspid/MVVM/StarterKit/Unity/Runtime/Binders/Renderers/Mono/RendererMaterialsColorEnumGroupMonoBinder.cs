@@ -8,6 +8,11 @@ using Converter = Aspid.MVVM.StarterKit.IConverterColor;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
+    /// <summary>
+    /// MonoBehaviour binder that sets a color property on materials of a group of <see cref="UnityEngine.Renderer"/>
+    /// components, applying the configured selected or default value to each entry based on the bound
+    /// enum ViewModel value.
+    /// </summary>
     [AddComponentMenu("Aspid/MVVM/Binders/Renderer/Renderer Binder – MaterialsColor EnumGroup")]
     [AddBinderContextMenu(typeof(Renderer), serializePropertyNames: "m_Materials", SubPath = "EnumGroup")]
     public sealed class RendererMaterialsColorEnumGroupMonoBinder : EnumGroupMonoBinder<Renderer, Color, Converter>

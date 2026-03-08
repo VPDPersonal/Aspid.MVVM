@@ -10,21 +10,25 @@ using Converter = Aspid.MVVM.StarterKit.IConverterMaterial;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
+    /// <summary>
+    /// A code-facing switcher binder that toggles the materials array of a <see cref="Renderer"/> between two
+    /// <see cref="Material"/> arrays based on a boolean ViewModel property.
+    /// </summary>
     [Serializable]
     public sealed class RendererMaterialsSwitcherBinder : SwitcherBinder<Renderer, Material[]?>
     {
         [SerializeReferenceDropdown]
         [SerializeReference] private Converter? _converter;
-        
+
         public RendererMaterialsSwitcherBinder(
-            Renderer target, 
+            Renderer target,
             Material[]? trueValue,
             Material[]? falseValue,
             BindMode mode)
             : this(target, trueValue, falseValue, converter: null, mode) { }
         
         public RendererMaterialsSwitcherBinder(
-            Renderer target, 
+            Renderer target,
             Material[]? trueValue,
             Material[]? falseValue,
             Converter? converter = null,
@@ -33,7 +37,7 @@ namespace Aspid.MVVM.StarterKit
         {
             _converter = converter;
         }
-
+        
         protected override void SetValue(Material[]? values) =>
             Target.SetMaterials(_converter, values);
     }

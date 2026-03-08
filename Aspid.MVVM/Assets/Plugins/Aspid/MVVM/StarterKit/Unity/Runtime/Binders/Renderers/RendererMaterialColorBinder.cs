@@ -10,6 +10,10 @@ using Converter = Aspid.MVVM.StarterKit.IConverterColor;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
+    /// <summary>
+    /// Binder that sets a color property on all materials of a <see cref="Renderer"/> when the bound ViewModel value changes.
+    /// The color property name defaults to <c>"_BaseColor"</c> and can be customized via the constructor.
+    /// </summary>
     [Serializable]
     public class RendererMaterialColorBinder : TargetColorBinder<Renderer>
     {

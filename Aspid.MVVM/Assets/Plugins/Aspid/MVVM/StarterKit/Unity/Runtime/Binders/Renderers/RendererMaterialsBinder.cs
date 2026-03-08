@@ -11,6 +11,11 @@ using Converter = Aspid.MVVM.StarterKit.IConverterMaterial;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
+    /// <summary>
+    /// Binder that sets the material or materials on a <see cref="Renderer"/> when the bound ViewModel value changes.
+    /// Supports binding a single <see cref="Material"/> or a collection of materials. Supports <see cref="BindMode.OneWayToSource"/>
+    /// to read the current material(s) back to the ViewModel on bind.
+    /// </summary>
     [Serializable]
     [BindModeOverride(BindMode.OneWay, BindMode.OneTime, BindMode.OneWayToSource)]
     public sealed class RendererMaterialsBinder : TargetBinder<Renderer>, 

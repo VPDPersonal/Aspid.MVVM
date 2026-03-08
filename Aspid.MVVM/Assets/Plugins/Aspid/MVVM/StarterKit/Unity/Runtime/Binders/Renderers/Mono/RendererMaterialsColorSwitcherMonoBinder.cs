@@ -8,6 +8,10 @@ using Converter = Aspid.MVVM.StarterKit.IConverterColor;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
+    /// <summary>
+    /// MonoBehaviour binder that switches the material color property on a <see cref="Renderer"/> component
+    /// between two values based on a bound boolean ViewModel property.
+    /// </summary>
     [AddComponentMenu("Aspid/MVVM/Binders/Renderer/Renderer Binder – MaterialsColor Switcher")]
     [AddBinderContextMenu(typeof(Renderer), serializePropertyNames: "m_Materials", SubPath = "Switcher")]
     public sealed class RendererMaterialsColorSwitcherMonoBinder : SwitcherMonoBinder<Renderer, Color, Converter>

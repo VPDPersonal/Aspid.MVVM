@@ -10,40 +10,44 @@ using Converter = Aspid.MVVM.StarterKit.IConverterColor;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
+    /// <summary>
+    /// A code-facing switcher binder that toggles the material color of a <see cref="Renderer"/> between two
+    /// <see cref="Color"/> values based on a boolean ViewModel property.
+    /// </summary>
     [Serializable]
     public sealed class RendererMaterialColorSwitcherBinder : SwitcherBinder<Renderer, Color>
     {
         // ReSharper disable once MemberInitializerValueIgnored
         [SerializeField] private string _colorPropertyName = "_BaseColor";
-        
+
         [SerializeReferenceDropdown]
         [SerializeReference] private Converter? _converter;
 
         private int? _colorPropertyId;
-        
+
         private int ColorPropertyId => _colorPropertyId ??= Shader.PropertyToID(_colorPropertyName);
         
         public RendererMaterialColorSwitcherBinder(
-            Renderer target, 
+            Renderer target,
             Color trueValue,
             Color falseValue,
-            BindMode mode) 
+            BindMode mode)
             : this(target, trueValue, falseValue, colorPropertyName: "_BaseColor", converter: null, mode) { }
-        
+
         public RendererMaterialColorSwitcherBinder(
-            Renderer target, 
+            Renderer target,
             Color trueValue,
             Color falseValue,
             Converter converter,
-            BindMode mode = BindMode.OneWay) 
+            BindMode mode = BindMode.OneWay)
             : this(target, trueValue, falseValue, colorPropertyName: "_BaseColor", converter, mode) { }
-        
+
         public RendererMaterialColorSwitcherBinder(
-            Renderer target, 
+            Renderer target,
             Color trueValue,
             Color falseValue,
             string colorPropertyName,
-            BindMode mode) 
+            BindMode mode)
             : this(target, trueValue, falseValue, colorPropertyName, converter: null, mode) { }
         
         public RendererMaterialColorSwitcherBinder(
@@ -56,7 +60,7 @@ namespace Aspid.MVVM.StarterKit
             : base(target, trueValue, falseValue, mode)
         {
             _converter = converter;
-            _colorPropertyName = colorPropertyName; 
+            _colorPropertyName = colorPropertyName;
         }
         
         protected override void SetValue(Color value)

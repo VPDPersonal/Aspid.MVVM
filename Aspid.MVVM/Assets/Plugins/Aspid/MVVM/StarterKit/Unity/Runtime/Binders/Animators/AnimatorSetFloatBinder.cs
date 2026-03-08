@@ -10,6 +10,10 @@ using Converter = Aspid.MVVM.StarterKit.IConverterFloat;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
+    /// <summary>
+    /// Binder that sets a float parameter on a Unity <see cref="Animator"/> when the bound
+    /// ViewModel value changes.
+    /// </summary>
     [Serializable]
     public class AnimatorSetFloatBinder : AnimatorSetParameterBinder<float>
     {
@@ -21,19 +25,19 @@ namespace Aspid.MVVM.StarterKit
         
         public AnimatorSetFloatBinder(
             Animator animator,
-            string parameterName, 
+            string parameterName,
             Converter? converter = null,
             BindMode mode = BindMode.OneWay)
             : base(animator, parameterName, mode)
         {
             _converter = converter;
         }
-
+        
         protected sealed override void SetParameter(float value)
         {
             value = _converter?.Convert(value) ?? value;
             if (Mathf.Approximately(value, Target.GetFloat(ParameterName))) return;
-            
+
             Target.SetFloat(ParameterName, value);
         }
     }

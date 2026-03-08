@@ -4,6 +4,10 @@ using UnityEngine;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
+    /// <summary>
+    /// MonoBehaviour binder that sets a trigger parameter on a Unity <see cref="Animator"/> component
+    /// when invoked from a ViewModel command or action in one-way-to-source mode.
+    /// </summary>
     [AddBinderContextMenu(typeof(Animator))]
     [AddComponentMenu("Aspid/MVVM/Binders/Animator/Animator Binder – Set Trigger")]
     [BindModeOverride(modes: BindMode.OneWayToSource)]

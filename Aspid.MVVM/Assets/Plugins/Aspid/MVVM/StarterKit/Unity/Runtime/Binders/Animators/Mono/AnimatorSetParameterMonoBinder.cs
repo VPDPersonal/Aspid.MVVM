@@ -4,6 +4,11 @@ using UnityEngine;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
+    /// <summary>
+    /// Abstract base MonoBehaviour binder that sets a typed parameter on a Unity <see cref="Animator"/> component
+    /// when the bound ViewModel value changes, with support for one-way-to-source mode via a relay command or action.
+    /// </summary>
+    /// <typeparam name="T">The type of the Animator parameter value.</typeparam>
     [BindModeOverride(BindMode.OneWay, BindMode.OneTime, BindMode.OneWayToSource)]
     public abstract partial class AnimatorSetParameterMonoBinder<T> : ComponentMonoBinder<Animator>, 
         IBinder<T>,

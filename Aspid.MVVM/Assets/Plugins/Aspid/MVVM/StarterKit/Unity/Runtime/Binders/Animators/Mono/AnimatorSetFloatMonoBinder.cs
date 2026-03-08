@@ -8,6 +8,11 @@ using Converter = Aspid.MVVM.StarterKit.IConverterFloat;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
+    /// <summary>
+    /// MonoBehaviour binder that sets a float parameter on a Unity <see cref="Animator"/> when
+    /// the bound ViewModel value changes. Also implements <see cref="INumberBinder"/> to accept
+    /// <see cref="int"/>, <see cref="long"/>, and <see cref="double"/> values.
+    /// </summary>
     [AddBinderContextMenu(typeof(Animator))]
     [AddComponentMenu("Aspid/MVVM/Binders/Animator/Animator Binder – Set Float")]
     public partial class AnimatorSetFloatMonoBinder : AnimatorSetParameterMonoBinder<float>, INumberBinder
@@ -19,18 +24,18 @@ namespace Aspid.MVVM.StarterKit
         {
             value = _converter?.Convert(value) ?? value;
             if (Mathf.Approximately(value, CachedComponent.GetFloat(ParameterName))) return;
-            
+
             CachedComponent.SetFloat(ParameterName, value);
         }
-
+        
         [BinderLog]
         public void SetValue(int value) =>
             base.SetValue(value);
-
+        
         [BinderLog]
         public void SetValue(long value) =>
             base.SetValue(value);
-
+        
         [BinderLog]
         public void SetValue(double value) =>
             base.SetValue((float)value);

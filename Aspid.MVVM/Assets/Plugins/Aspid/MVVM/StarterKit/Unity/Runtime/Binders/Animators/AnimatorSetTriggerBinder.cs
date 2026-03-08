@@ -5,6 +5,10 @@ using UnityEngine;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
+    /// <summary>
+    /// Binder that sets a trigger parameter on a Unity <see cref="Animator"/> when a bound
+    /// ViewModel command or action is invoked.
+    /// </summary>
     [Serializable]
     [BindModeOverride(BindMode.OneWayToSource)]
     public class AnimatorSetTriggerBinder : TargetBinder<Animator>,
@@ -16,12 +20,13 @@ namespace Aspid.MVVM.StarterKit
             add => _reverseAction += value;
             remove => _reverseAction -= value;
         }
+        
         event Action<IRelayCommand?>? IReverseBinder<IRelayCommand?>.ValueChanged
         {
             add => _reverseCommand += value;
             remove => _reverseCommand -= value;
         }
-        
+
         private IRelayCommand? _command;
         private Action<Action?>? _reverseAction;
         private Action<IRelayCommand?>? _reverseCommand;
@@ -31,13 +36,13 @@ namespace Aspid.MVVM.StarterKit
         
         public AnimatorSetTriggerBinder(Animator target, string triggerName)
             : base(target, BindMode.OneWayToSource)
-        { 
+        {
             TriggerName = triggerName ?? throw new ArgumentNullException(nameof(triggerName));
         }
-
+        
         public void NotifyCanExecuteChanged() =>
             _command?.NotifyCanExecuteChanged();
-        
+
         private void SetTrigger()
         {
             if (!CanExecute()) return;
@@ -56,15 +61,15 @@ namespace Aspid.MVVM.StarterKit
                 _reverseAction?.Invoke(SetTrigger);
             }
         }
-
+        
         protected sealed override void OnUnbinding()
         {
             _command = null;
             _reverseAction?.Invoke(null);
             _reverseCommand?.Invoke(null);
         }
-
-        protected virtual bool CanExecute() => 
+        
+        protected virtual bool CanExecute() =>
             Target.gameObject.activeInHierarchy;
     }
 }

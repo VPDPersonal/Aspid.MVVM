@@ -10,30 +10,34 @@ using Converter = Aspid.MVVM.StarterKit.IConverterInt;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
+    /// <summary>
+    /// Binder that sets an integer parameter on a Unity <see cref="Animator"/> when the bound
+    /// ViewModel value changes.
+    /// </summary>
     [Serializable]
     public class AnimatorSetIntBinder : AnimatorSetParameterBinder<int>
     {
         [SerializeReferenceDropdown]
         [SerializeReference] private Converter? _converter;
-
+        
         public AnimatorSetIntBinder(Animator animator, string parameterName, BindMode mode)
             : this(animator, parameterName, converter: null, mode) { }
-        
+
         public AnimatorSetIntBinder(
             Animator animator,
-            string parameterName, 
-            Converter? converter = null, 
+            string parameterName,
+            Converter? converter = null,
             BindMode mode = BindMode.OneWay)
             : base(animator, parameterName, mode)
         {
             _converter = converter;
         }
-
+        
         protected sealed override void SetParameter(int value)
         {
             value = _converter?.Convert(value) ?? value;
             if (Mathf.Approximately(value, Target.GetInteger(ParameterName))) return;
-            
+
             Target.SetInteger(ParameterName, value);
         }
     }

@@ -5,6 +5,11 @@ using UnityEngine;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
+    /// <summary>
+    /// Abstract base binder that sets a typed parameter on a Unity <see cref="Animator"/> when the
+    /// bound ViewModel value changes.
+    /// </summary>
+    /// <typeparam name="T">The type of the Animator parameter value.</typeparam>
     [Serializable]
     [BindModeOverride(BindMode.OneWay, BindMode.OneTime, BindMode.OneWayToSource)]
     public abstract class AnimatorSetParameterBinder<T> : TargetBinder<Animator>,
@@ -23,14 +28,14 @@ namespace Aspid.MVVM.StarterKit
             add => _reverseCommand += value;
             remove => _reverseCommand -= value;
         }
-        
+
         private IRelayCommand<T>? _command;
         private Action<Action<T>?>? _reverseAction;
         private Action<IRelayCommand<T>?>? _reverseCommand;
         
         [field: SerializeField]
         protected string ParameterName { get; private set; }
-        
+
         protected AnimatorSetParameterBinder(Animator target, string parameterName, BindMode mode = BindMode.OneWay)
             : base(target, mode)
         {
@@ -40,19 +45,19 @@ namespace Aspid.MVVM.StarterKit
         
         public void NotifyCanExecuteChanged() =>
             _command?.NotifyCanExecuteChanged();
-
+        
         public void SetValue(T? value)
         {
             if (!CanExecute(value)) return;
             SetParameter(value);
         }
-        
+
         protected abstract void SetParameter(T? value);
         
         protected sealed override void OnBound()
         {
             if (Mode is not BindMode.OneWayToSource) return;
-            
+
             if (_reverseCommand is not null)
             {
                 _command = new RelayCommand<T>(SetParameter, CanExecute);
@@ -63,7 +68,7 @@ namespace Aspid.MVVM.StarterKit
                 _reverseAction?.Invoke(SetParameter);
             }
         }
-
+        
         protected sealed override void OnUnbinding()
         {
             _command = null;
@@ -71,7 +76,7 @@ namespace Aspid.MVVM.StarterKit
             _reverseCommand?.Invoke(null);
         }
         
-        protected virtual bool CanExecute(T? value) => 
+        protected virtual bool CanExecute(T? value) =>
             Target.gameObject.activeInHierarchy;
     }
 }

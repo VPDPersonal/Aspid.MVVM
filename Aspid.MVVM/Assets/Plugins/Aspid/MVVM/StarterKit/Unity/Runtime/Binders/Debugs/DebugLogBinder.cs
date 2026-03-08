@@ -9,6 +9,10 @@ using Converter = Aspid.MVVM.StarterKit.IConverterObjectToString;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
+    /// <summary>
+    /// A diagnostic binder that logs all binding events and incoming values to the Unity console.
+    /// Useful for debugging ViewModel bindings without writing custom code.
+    /// </summary>
     [Serializable]
     [BindModeOverride(IsAll = true)]
     public sealed class DebugLogBinder : Binder, IAnyBinder, IAnyReverseBinder
@@ -18,7 +22,7 @@ namespace Aspid.MVVM.StarterKit
             add => Debug.Log($"Add ValueChanged: {GetMessage(value)}");
             remove => Debug.Log($"Remove ValueChanged: {GetMessage(value)}");
         }
-        
+
         // ReSharper disable once FieldCanBeMadeReadOnly.Local
         // ReSharper disable once MemberInitializerValueIgnored
         [SerializeReferenceDropdown]
@@ -28,7 +32,7 @@ namespace Aspid.MVVM.StarterKit
         {
             _converter = converter;
         }
-
+        
         public void SetValue<T>(T value) =>
             Debug.Log($"SetValue: {GetMessage(value)}");
 

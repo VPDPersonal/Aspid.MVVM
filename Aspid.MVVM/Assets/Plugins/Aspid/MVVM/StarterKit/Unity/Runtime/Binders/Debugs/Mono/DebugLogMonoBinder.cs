@@ -9,6 +9,10 @@ using Converter = Aspid.MVVM.StarterKit.IConverterObjectToString;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
+    /// <summary>
+    /// MonoBehaviour binder that logs bound ViewModel values to the Unity console
+    /// for debugging purposes.
+    /// </summary>
     [BindModeOverride(IsAll = true)]
     [AddComponentMenu("Aspid/MVVM/Binders/Debug/Debug Binder – Log")]
     [AddBinderContextMenu(typeof(Component), Path = "Add General Binder/Debug/Debug Binder – Log")]
@@ -16,7 +20,7 @@ namespace Aspid.MVVM.StarterKit
     {
         [SerializeReferenceDropdown]
         [SerializeReference] private Converter _converter = new ObjectToStringConverter();
-        
+
         public event Action<object> ValueChanged
         {
             add => Debug.Log($"Add ValueChanged: {GetMessage(value)}");

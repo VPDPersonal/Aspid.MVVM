@@ -8,6 +8,10 @@ using Object = UnityEngine.Object;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 { 
+    /// <summary>
+    /// MonoBehaviour binder that sets a named variable on a <see cref="LocalizeStringEvent"/> component
+    /// when the bound ViewModel value changes, then refreshes the localized string.
+    /// </summary>
     [AddBinderContextMenu(typeof(LocalizeStringEvent), serializePropertyNames: "m_StringReference")]
     [AddComponentMenu("Aspid/MVVM/Binders/UI/LocalizeStringEvent/LocalizeStringEvent Binder – Variable")]
     public partial class LocalizeStringEventVariableMonoBinder : ComponentMonoBinder<LocalizeStringEvent>,

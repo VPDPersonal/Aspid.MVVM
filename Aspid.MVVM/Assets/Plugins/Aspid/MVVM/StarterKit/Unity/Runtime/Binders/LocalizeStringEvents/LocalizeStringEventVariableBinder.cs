@@ -9,6 +9,11 @@ using Object = UnityEngine.Object;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
+    /// <summary>
+    /// Binder that updates a named Smart String variable on a <see cref="LocalizeStringEvent"/> when the bound
+    /// ViewModel value changes, then refreshes the localized string. Supports numeric, boolean, string, and
+    /// <see cref="Object"/> value types via <see cref="INumberBinder"/> and additional <see cref="IBinder{T}"/> implementations.
+    /// </summary>
     [Serializable]
     public class LocalizeStringEventVariableBinder : TargetBinder<LocalizeStringEvent>,
         INumberBinder,

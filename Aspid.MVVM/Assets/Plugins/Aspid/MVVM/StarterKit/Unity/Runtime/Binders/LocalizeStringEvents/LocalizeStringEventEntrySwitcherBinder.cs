@@ -11,6 +11,10 @@ using Converter = Aspid.MVVM.StarterKit.IConverterString;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
+    /// <summary>
+    /// Binder that switches the <c>TableEntryReference</c> of a <see cref="LocalizeStringEvent"/> between two
+    /// string values based on a bound boolean ViewModel property.
+    /// </summary>
     [Serializable]
     public sealed class LocalizeStringEventEntrySwitcherBinder : SwitcherBinder<LocalizeStringEvent, string, Converter>
     { 

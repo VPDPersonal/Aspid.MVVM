@@ -10,6 +10,12 @@ using Converter = Aspid.MVVM.StarterKit.IConverterString;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
+    /// <summary>
+    /// MonoBehaviour binder that sets the table entry reference on a <see cref="LocalizeStringEvent"/> component
+    /// when the bound ViewModel value changes.
+    /// Supports <see cref="BindMode.OneWayToSource"/>: when binding is established the current value
+    /// is sent back to the ViewModel.
+    /// </summary>
     [AddBinderContextMenu(typeof(LocalizeStringEvent), serializePropertyNames: "m_StringReference")]
     [AddComponentMenu("Aspid/MVVM/Binders/UI/LocalizeStringEvent/LocalizeStringEvent Binder – Entry")]
     public class LocalizeStringEventEntryMonoBinder : ComponentMonoBinder<LocalizeStringEvent, string, Converter>

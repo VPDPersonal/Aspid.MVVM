@@ -10,6 +10,10 @@ using Converter = Aspid.MVVM.StarterKit.IConverterInt;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
+    /// <summary>
+    /// MonoBehaviour binder that switches the <see cref="TMP_Dropdown.value"/> property on a <see cref="TMP_Dropdown"/>
+    /// between two values based on a bound boolean ViewModel property.
+    /// </summary>
     [AddBinderContextMenu(typeof(TMP_Dropdown), SubPath = "Switcher")]
     [AddComponentMenu("Aspid/MVVM/Binders/UI/Dropdown/Dropdown Binder – Value Switcher")]
     public sealed class DropdownValueSwitcherMonoBinder : SwitcherMonoBinder<TMP_Dropdown, int, Converter>

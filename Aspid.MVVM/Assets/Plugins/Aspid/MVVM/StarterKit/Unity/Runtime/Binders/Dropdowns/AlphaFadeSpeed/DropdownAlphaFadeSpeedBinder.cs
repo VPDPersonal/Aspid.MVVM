@@ -12,6 +12,10 @@ using Converter = Aspid.MVVM.StarterKit.IConverterFloat;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
+    /// <summary>
+    /// Binder that sets the <see cref="TMP_Dropdown.alphaFadeSpeed"/> property on a <see cref="TMP_Dropdown"/>
+    /// when the bound ViewModel value changes.
+    /// </summary>
     [Serializable]
     public class DropdownAlphaFadeSpeedBinder : TargetFloatBinder<TMP_Dropdown>
     {
@@ -23,7 +27,7 @@ namespace Aspid.MVVM.StarterKit
 
         public DropdownAlphaFadeSpeedBinder(TMP_Dropdown target, BindMode mode)
             : this(target, converter: null, mode) { }
-        
+
         public DropdownAlphaFadeSpeedBinder(TMP_Dropdown target, Converter? converter = null, BindMode mode = BindMode.OneWay)
             : base(target, converter, mode)
         {

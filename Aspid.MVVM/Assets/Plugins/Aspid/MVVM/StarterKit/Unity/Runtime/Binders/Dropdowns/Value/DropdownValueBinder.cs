@@ -11,6 +11,10 @@ using Converter = Aspid.MVVM.StarterKit.IConverterInt;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
+    /// <summary>
+    /// Binder that sets the <see cref="TMP_Dropdown.value"/> property on a <see cref="TMP_Dropdown"/>
+    /// when the bound ViewModel value changes.
+    /// </summary>
     [Serializable]
     public class DropdownValueBinder : TargetIntBinder<TMP_Dropdown>
     {

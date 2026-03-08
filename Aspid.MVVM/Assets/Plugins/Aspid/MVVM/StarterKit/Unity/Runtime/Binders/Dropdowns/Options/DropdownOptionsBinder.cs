@@ -8,6 +8,10 @@ using System.Collections.Generic;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
+    /// <summary>
+    /// Binder that sets the options list on a <see cref="TMPro.TMP_Dropdown"/>
+    /// when the bound ViewModel value changes.
+    /// </summary>
     [Serializable]
     [BindModeOverride(BindMode.OneWay, BindMode.OneTime, BindMode.OneWayToSource)]
     public class DropdownOptionsBinder : TargetBinder<TMP_Dropdown>,
@@ -23,11 +27,11 @@ namespace Aspid.MVVM.StarterKit
         {
             mode.ThrowExceptionIfMatches(BindMode.TwoWay);
         }
-        
+
         public void SetValue(List<string>? values)
         {
             Target.ClearOptions();
-            
+
             if (values is null) return;
             Target.AddOptions(values);
         }
@@ -35,18 +39,18 @@ namespace Aspid.MVVM.StarterKit
         public void SetValue(List<Sprite>? values)
         {
             Target.ClearOptions();
-            
+
             if (values is null) return;
             Target.AddOptions(values);
         }
-        
+
         public void SetValue(IEnumerable<TMP_Dropdown.OptionData>? values)
         {
             Target.options ??= new List<TMP_Dropdown.OptionData>();
             Target.options.Clear();
-            
+
             if (values is null) return;
-            
+
             foreach (var value in values)
                 Target.options.Add(value);
         }

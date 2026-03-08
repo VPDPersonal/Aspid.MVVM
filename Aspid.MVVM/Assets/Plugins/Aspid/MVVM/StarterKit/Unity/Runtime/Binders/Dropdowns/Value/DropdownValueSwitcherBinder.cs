@@ -11,6 +11,10 @@ using Converter = Aspid.MVVM.StarterKit.IConverterInt;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
+    /// <summary>
+    /// Binder that switches the <see cref="TMP_Dropdown.value"/> property on a <see cref="TMP_Dropdown"/>
+    /// between two values based on a bound boolean ViewModel value.
+    /// </summary>
     [Serializable]
     public sealed class DropdownValueSwitcherBinder : SwitcherBinder<TMP_Dropdown, int, Converter>
     {
@@ -18,15 +22,15 @@ namespace Aspid.MVVM.StarterKit
             TMP_Dropdown target,
             int trueValue,
             int falseValue,
-            BindMode mode = BindMode.OneWay) 
+            BindMode mode = BindMode.OneWay)
             : this(target, trueValue, falseValue, converter: null, mode) { }
-        
+
         public DropdownValueSwitcherBinder(
             TMP_Dropdown target,
             int trueValue,
-            int falseValue, 
+            int falseValue,
             Converter? converter,
-            BindMode mode = BindMode.OneWay) 
+            BindMode mode = BindMode.OneWay)
             : base(target, trueValue, falseValue, converter, mode) { }
 
         protected override void SetValue(int value) =>

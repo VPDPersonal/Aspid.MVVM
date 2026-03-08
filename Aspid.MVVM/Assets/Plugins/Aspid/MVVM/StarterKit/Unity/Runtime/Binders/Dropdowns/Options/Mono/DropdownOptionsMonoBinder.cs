@@ -7,6 +7,10 @@ using System.Collections.Generic;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
+    /// <summary>
+    /// MonoBehaviour binder that sets the options list on a <see cref="TMPro.TMP_Dropdown"/>
+    /// when the bound ViewModel value changes.
+    /// </summary>
     [AddBinderContextMenu(typeof(TMP_Dropdown))]
     [AddComponentMenu("Aspid/MVVM/Binders/UI/Dropdown/Dropdown Binder – Options")]
     [BindModeOverride(BindMode.OneWay, BindMode.OneTime, BindMode.OneWayToSource)]
@@ -17,11 +21,11 @@ namespace Aspid.MVVM.StarterKit
         IReverseBinder<List<TMP_Dropdown.OptionData>>
     {
         public event Action<List<TMP_Dropdown.OptionData>> ValueChanged;
-        
+
         public void SetValue(List<string> values)
         {
             CachedComponent.ClearOptions();
-            
+
             if (values is null) return;
             CachedComponent.AddOptions(values);
         }
@@ -29,15 +33,15 @@ namespace Aspid.MVVM.StarterKit
         public void SetValue(List<Sprite> values)
         {
             CachedComponent.ClearOptions();
-            
+
             if (values is null) return;
             CachedComponent.AddOptions(values);
         }
-        
+
         public void SetValue(IEnumerable<TMP_Dropdown.OptionData> values)
         {
             CachedComponent.ClearOptions();
-            
+
             if (values is null) return;
 
             foreach (var value in values)

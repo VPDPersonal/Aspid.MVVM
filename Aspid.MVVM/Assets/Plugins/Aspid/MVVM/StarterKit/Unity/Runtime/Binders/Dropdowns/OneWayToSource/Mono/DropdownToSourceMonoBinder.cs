@@ -5,6 +5,10 @@ using UnityEngine;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
+    /// <summary>
+    /// MonoBehaviour binder that reads the current state of a <see cref="TMP_Dropdown"/> component
+    /// back to the ViewModel in one-way-to-source mode when binding is established.
+    /// </summary>
     [AddBinderContextMenu(typeof(TMP_Dropdown))]
     [AddComponentMenu("Aspid/MVVM/Binders/UI/Dropdown/Dropdown To Source Binder")]
     public sealed class DropdownToSourceMonoBinder : ComponentToSourceMonoBinder<TMP_Dropdown> { }

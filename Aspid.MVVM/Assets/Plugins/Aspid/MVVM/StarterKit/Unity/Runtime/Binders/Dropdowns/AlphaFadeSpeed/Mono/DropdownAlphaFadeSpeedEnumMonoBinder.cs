@@ -10,6 +10,10 @@ using Converter = Aspid.MVVM.StarterKit.IConverterFloat;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
+    /// <summary>
+    /// MonoBehaviour binder that sets the <see cref="TMP_Dropdown.alphaFadeSpeed"/> property on a <see cref="TMP_Dropdown"/>
+    /// to a value resolved from an enum bound on the ViewModel.
+    /// </summary>
     [AddBinderContextMenu(typeof(TMP_Dropdown), SubPath = "Enum")]
     [AddComponentMenu("Aspid/MVVM/Binders/UI/Dropdown/Dropdown Binder – AlphaFadeSpeed Enum")]
     public sealed class DropdownAlphaFadeSpeedEnumMonoBinder : EnumMonoBinder<TMP_Dropdown, float, Converter>

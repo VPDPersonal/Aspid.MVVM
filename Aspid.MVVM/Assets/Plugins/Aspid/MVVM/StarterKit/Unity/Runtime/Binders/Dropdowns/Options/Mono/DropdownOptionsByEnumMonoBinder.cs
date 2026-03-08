@@ -12,22 +12,26 @@ using Converter = Aspid.MVVM.StarterKit.IConverterEnumToDropdownOptionData;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
+    /// <summary>
+    /// MonoBehaviour binder that populates <see cref="TMPro.TMP_Dropdown"/> options
+    /// automatically from the values of a bound enum type.
+    /// </summary>
     [AddBinderContextMenu(typeof(TMP_Dropdown))]
     [AddComponentMenu("Aspid/MVVM/Binders/UI/Dropdown/Dropdown Binder – Options By Enum")]
     public class DropdownOptionsByEnumMonoBinder : ComponentMonoBinder<TMP_Dropdown>, IBinder<Enum>
     {
         [SerializeReferenceDropdown]
         [SerializeReference] private Converter _converter;
-        
+
         public void SetValue(Enum value)
         {
             CachedComponent.options ??= new List<TMP_Dropdown.OptionData>();
             CachedComponent.ClearOptions();
-            
+
             if (_converter is null)
             {
                 var values = Enum.GetValues(value.GetType());
-                
+
                 foreach (var enumObj in values)
                     CachedComponent.options.Add(new TMP_Dropdown.OptionData(text: enumObj.ToString()));
             }

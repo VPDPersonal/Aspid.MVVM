@@ -6,13 +6,17 @@ using System.Collections.Generic;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
+    /// <summary>
+    /// Binder that switches the options list on a <see cref="TMPro.TMP_Dropdown"/>
+    /// between two lists based on a bound boolean ViewModel value.
+    /// </summary>
     public sealed class DropdownOptionsSwitcherBinder : SwitcherBinder<TMP_Dropdown, List<TMP_Dropdown.OptionData>>
     {
         public DropdownOptionsSwitcherBinder(
             TMP_Dropdown target,
-            List<TMP_Dropdown.OptionData> trueValue, 
-            List<TMP_Dropdown.OptionData> falseValue, 
-            BindMode mode = BindMode.OneWay) 
+            List<TMP_Dropdown.OptionData> trueValue,
+            List<TMP_Dropdown.OptionData> falseValue,
+            BindMode mode = BindMode.OneWay)
             : base(target, trueValue, falseValue, mode) { }
 
         protected override void SetValue(List<TMP_Dropdown.OptionData> value) =>

@@ -12,27 +12,31 @@ using Converter = Aspid.MVVM.StarterKit.IConverterFloat;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
+    /// <summary>
+    /// Binder that switches the <see cref="TMP_Dropdown.alphaFadeSpeed"/> property on a <see cref="TMP_Dropdown"/>
+    /// between two values based on a bound boolean ViewModel value.
+    /// </summary>
     [Serializable]
     public class DropdownAlphaFadeSpeedSwitcherBinder : SwitcherBinder<TMP_Dropdown, float, Converter>
     {
         public DropdownAlphaFadeSpeedSwitcherBinder(
             TMP_Dropdown target,
-            float trueValue, 
+            float trueValue,
             float falseValue,
             BindMode mode = BindMode.OneWay)
             : this(target, trueValue, falseValue, converter: null, mode) { }
-        
+
         public DropdownAlphaFadeSpeedSwitcherBinder(
             TMP_Dropdown target,
-            float trueValue, 
+            float trueValue,
             float falseValue,
             Converter? converter,
             BindMode mode = BindMode.OneWay)
             : base(target, trueValue, falseValue, converter, mode) { }
 
-        protected override void SetValue(float value) => 
+        protected override void SetValue(float value) =>
             Target.alphaFadeSpeed = value;
-        
+
         protected override float GetConvertedValue(float value) =>
             Mathf.Max(base.GetConvertedValue(value), 0);
     }

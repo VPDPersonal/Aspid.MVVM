@@ -10,6 +10,11 @@ using Converter = Aspid.MVVM.StarterKit.IConverterInt;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
+    /// <summary>
+    /// MonoBehaviour binder that sets the <see cref="TMP_Dropdown.value"/> property on a group of <see cref="TMP_Dropdown"/>
+    /// components, applying the configured selected or default value to each entry based on the bound
+    /// enum ViewModel value.
+    /// </summary>
     [AddBinderContextMenu(typeof(TMP_Dropdown), SubPath = "EnumGroup")]
     [AddComponentMenu("Aspid/MVVM/Binders/UI/Dropdown/Dropdown Binder – Value EnumGroup")]
     public sealed class DropdownValueEnumGroupMonoBinder : EnumGroupMonoBinder<TMP_Dropdown, int, Converter>

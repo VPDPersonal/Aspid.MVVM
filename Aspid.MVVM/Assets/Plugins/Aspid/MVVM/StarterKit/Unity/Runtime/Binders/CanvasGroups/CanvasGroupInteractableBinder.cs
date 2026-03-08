@@ -5,6 +5,10 @@ using UnityEngine;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
+    /// <summary>
+    /// Binder that sets the <see cref="CanvasGroup.interactable"/> property on a <see cref="CanvasGroup"/>
+    /// when the bound ViewModel value changes. Supports optional value inversion.
+    /// </summary>
     [Serializable]
     public class CanvasGroupInteractableBinder : TargetBoolBinder<CanvasGroup>
     {
@@ -16,7 +20,7 @@ namespace Aspid.MVVM.StarterKit
 
         public CanvasGroupInteractableBinder(CanvasGroup target, BindMode mode)
             : this(target, isInvert: false, mode) { }
-        
+
         public CanvasGroupInteractableBinder(CanvasGroup target, bool isInvert = false, BindMode mode = BindMode.OneTime)
             : base(target, isInvert, mode)
         {

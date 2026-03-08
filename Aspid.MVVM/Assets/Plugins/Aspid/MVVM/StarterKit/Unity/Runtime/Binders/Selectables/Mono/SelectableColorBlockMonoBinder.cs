@@ -9,6 +9,12 @@ using Converter = Aspid.MVVM.StarterKit.IConverterColorBlock;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
+    /// <summary>
+    /// MonoBehaviour binder that sets the <see cref="Selectable.colors"/> property on a <see cref="Selectable"/>
+    /// when the bound ViewModel value changes.
+    /// Supports <see cref="BindMode.OneWayToSource"/>: when binding is established the current value
+    /// is sent back to the ViewModel.
+    /// </summary>
     [AddBinderContextMenu(typeof(Selectable))]
     [AddComponentMenu("Aspid/MVVM/Binders/UI/Selectable/Selectable Binder – ColorBlock")]
     public class SelectableColorBlockMonoBinder : ComponentMonoBinder<Selectable, ColorBlock, Converter>

@@ -11,24 +11,28 @@ using Converter = Aspid.MVVM.StarterKit.IConverterColorBlock;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
+    /// <summary>
+    /// Binder that switches the <see cref="Selectable.colors"/> property on a <see cref="Selectable"/>
+    /// between two values based on a bound boolean ViewModel value.
+    /// </summary>
     [Serializable]
     public sealed class SelectableColorBlockSwitcherBinder : SwitcherBinder<Selectable, ColorBlock, Converter>
     {
         public SelectableColorBlockSwitcherBinder(
-            Selectable target, 
-            ColorBlock trueValue, 
+            Selectable target,
+            ColorBlock trueValue,
             ColorBlock falseValue,
-            BindMode mode = BindMode.OneWay) 
+            BindMode mode = BindMode.OneWay)
             : this(target, trueValue, falseValue, converter: null, mode) { }
-
+        
         public SelectableColorBlockSwitcherBinder(
-            Selectable target, 
-            ColorBlock trueValue, 
+            Selectable target,
+            ColorBlock trueValue,
             ColorBlock falseValue,
             Converter? converter,
-            BindMode mode = BindMode.OneWay) 
+            BindMode mode = BindMode.OneWay)
             : base(target, trueValue, falseValue, converter, mode) { }
-
+        
         protected override void SetValue(ColorBlock value) =>
             Target.colors = value;
     }

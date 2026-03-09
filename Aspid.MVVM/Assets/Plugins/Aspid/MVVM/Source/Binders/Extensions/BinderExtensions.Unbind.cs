@@ -7,11 +7,10 @@ namespace Aspid.MVVM
     public static partial class BinderExtensions
     {
         /// <summary>
-        /// Safely unbinds a single <see cref="Aspid.MVVM.IBinder"/> instance.
-        /// If the binder is <c>null</c>, the call is ignored.
+        /// Safely unbinds a single binder.
         /// </summary>
-        /// <typeparam name="T">The type that implements the <see cref="Aspid.MVVM.IBinder"/> interface.</typeparam>
-        /// <param name="binder">The binder to unbind from the <see cref="IViewModel"/>.</param>
+        /// <typeparam name="T">The binder type that implements <see cref="IBinder"/>.</typeparam>
+        /// <param name="binder">The binder instance to unbind.</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void UnbindSafely<T>(this T? binder)
             where T : IBinder
@@ -19,15 +18,16 @@ namespace Aspid.MVVM
             if (binder is null) return;
             binder.Unbind();
         }
-        
+
         /// <summary>
-        /// Safely unbinds an array of <see cref="Aspid.MVVM.IBinder"/> instances.
-        /// If <paramref name="binders"/> is <c>null</c>, unbinding is skipped.
+        /// Safely unbinds an array of binders.
         /// </summary>
-        /// <typeparam name="T">The type that implements the <see cref="Aspid.MVVM.IBinder"/> interface.</typeparam>
-        /// <param name="binders">An array of binders to unbind from the <see cref="IViewModel"/>.</param>
+        /// <typeparam name="T">The binder type that implements <see cref="IBinder"/>.</typeparam>
+        /// <param name="binders">The array of binders to unbind.</param>
         /// <exception cref="UnbindSafelyNullReferenceException">
-        /// Thrown if any element in the array is <c>null</c>.
+        /// Thrown if any element in the sequence is <see langword="null"/>.
+        /// In builds (<c>UNITY_2020_3_OR_NEWER</c>), skips the <see langword="null"/> binder instead of throwing.
+        /// When <c>DEBUG</c> is also defined, additionally logs an error via <c>UnityEngine.Debug.LogError</c>.
         /// </exception>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void UnbindSafely<T>(this T[]? binders)
@@ -37,6 +37,7 @@ namespace Aspid.MVVM
 
             foreach (var binder in binders)
             {
+                // ReSharper disable once ConditionIsAlwaysTrueOrFalseAccordingToNullableAPIContract
                 if (binder is null)
                 {
 #if UNITY_2020_3_OR_NEWER
@@ -50,15 +51,16 @@ namespace Aspid.MVVM
                 binder.Unbind();
             }
         }
-        
+
         /// <summary>
-        /// Safely unbinds a list of <see cref="Aspid.MVVM.IBinder"/> instances.
-        /// If <paramref name="binders"/> is <c>null</c>, unbinding is skipped.
+        /// Safely unbinds a list of binders.
         /// </summary>
-        /// <typeparam name="T">The type that implements the <see cref="Aspid.MVVM.IBinder"/> interface.</typeparam>
-        /// <param name="binders">A list of binders to unbind from the <see cref="IViewModel"/>.</param>
+        /// <typeparam name="T">The binder type that implements <see cref="IBinder"/>.</typeparam>
+        /// <param name="binders">The list of binders to unbind.</param>
         /// <exception cref="UnbindSafelyNullReferenceException">
-        /// Thrown if any element in the list is <c>null</c>.
+        /// Thrown if any element in the sequence is <see langword="null"/>.
+        /// In builds (<c>UNITY_2020_3_OR_NEWER</c>), skips the <see langword="null"/> binder instead of throwing.
+        /// When <c>DEBUG</c> is also defined, additionally logs an error via <c>UnityEngine.Debug.LogError</c>.
         /// </exception>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void UnbindSafely<T>(this List<T>? binders)
@@ -81,15 +83,16 @@ namespace Aspid.MVVM
                 binder.Unbind();
             }
         }
-        
+
         /// <summary>
-        /// Safely unbinds a sequence of <see cref="Aspid.MVVM.IBinder"/> instances.
-        /// If <paramref name="binders"/> is <c>null</c>, unbinding is skipped.
+        /// Safely unbinds a sequence of binders.
         /// </summary>
-        /// <typeparam name="T">The type that implements the <see cref="Aspid.MVVM.IBinder"/> interface.</typeparam>
-        /// <param name="binders">An enumerable of binders to unbind from the <see cref="IViewModel"/>.</param>
+        /// <typeparam name="T">The binder type that implements <see cref="IBinder"/>.</typeparam>
+        /// <param name="binders">The enumerable of binders to unbind.</param>
         /// <exception cref="UnbindSafelyNullReferenceException">
-        /// Thrown if any element in the sequence is <c>null</c>.
+        /// Thrown if any element in the sequence is <see langword="null"/>.
+        /// In builds (<c>UNITY_2020_3_OR_NEWER</c>), skips the <see langword="null"/> binder instead of throwing.
+        /// When <c>DEBUG</c> is also defined, additionally logs an error via <c>UnityEngine.Debug.LogError</c>.
         /// </exception>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void UnbindSafely<T>(this IEnumerable<T>? binders)

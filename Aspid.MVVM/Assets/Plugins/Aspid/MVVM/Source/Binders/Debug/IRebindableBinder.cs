@@ -5,12 +5,15 @@ using System.ComponentModel;
 namespace Aspid.MVVM
 {
     /// <summary>
-    /// Defines a method to rebind view-model bindings, used during debugging or in the Unity editor.
+    /// Provides the ability to force a rebind, re-establishing the connection to the current ViewModel.
     /// </summary>
+    /// <remarks>
+    /// Only available when <c>UNITY_EDITOR</c> or <c>DEBUG</c> is defined.
+    /// </remarks>
     public interface IRebindableBinder
     {
         /// <summary>
-        /// Rebinds the current binders. Intended for internal or debug use.
+        /// Rebinds the binder, re-establishing its connection to the current ViewModel.
         /// </summary>
         [EditorBrowsable(EditorBrowsableState.Advanced)]
         public void Rebind();

@@ -2,17 +2,16 @@
 namespace Aspid.MVVM
 {
     /// <summary>
-    /// Extension methods for deriving binder IDs from field names at runtime.
-    /// Strips common naming convention prefixes (<c>_</c>, <c>m_</c>) and normalizes casing.
+    /// Provides utility methods for deriving binder IDs from field names.
     /// </summary>
     public static class BinderFieldInfoExtensions
     {
         /// <summary>
-        /// Generates an ID for a binder based on its field name.
-        /// Removes common prefixes like "_" or "m_" and ensures the first character is uppercase.
+        /// Derives a binder ID from a field name by stripping the <c>_</c> or <c>m_</c> prefix
+        /// and capitalizing the first character.
         /// </summary>
-        /// <param name="fieldName">The original field name of the binder.</param>
-        /// <returns>The processed ID string based on the field name.</returns>
+        /// <param name="fieldName">The field name to convert.</param>
+        /// <returns>The field name with the prefix removed and the first letter capitalized.</returns>
         public static string GetBinderId(string fieldName)
         {
             var prefixCount = GetPrefixCount();

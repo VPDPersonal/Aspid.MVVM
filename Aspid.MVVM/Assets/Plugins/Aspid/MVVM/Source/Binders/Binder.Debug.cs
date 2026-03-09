@@ -1,4 +1,5 @@
 #if (UNITY_EDITOR || DEBUG) && !ASPID_MVVM_EDITOR_DISABLED
+using System;
 using System.ComponentModel;
 
 // ReSharper disable once CheckNamespace
@@ -8,7 +9,7 @@ namespace Aspid.MVVM
     {
         // ReSharper disable once InconsistentNaming
         [EditorBrowsable(EditorBrowsableState.Never)]
-        private LastData? __bindData;
+        [NonSerialized] private LastData? __bindData;
 
         partial void OnBoundDebug(IBinderAdder binderAdder) =>
             __bindData = new LastData(_mode, binderAdder);

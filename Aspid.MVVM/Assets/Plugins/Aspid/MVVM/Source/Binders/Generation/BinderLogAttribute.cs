@@ -5,12 +5,15 @@ using System.Diagnostics;
 namespace Aspid.MVVM
 {
     /// <summary>
-    /// Marker attribute for methods in partial classes or structures that implement <see cref="IBinder{T}"/>.
-    /// Applicable only to <c>SetValue</c> methods that are implicit implementations of the <see cref="IBinder{T}"/> interface.
-    /// Used for logging during development.
-    /// Used by the Source Generator to generate an explicit implementation of the <c>SetValue</c> method with added logging logic.
+    /// Instructs the Source Generator to generate an explicit <see cref="IBinder{T}"/> <c>SetValue</c> implementation
+    /// with added logging, wrapping the annotated method.
     /// </summary>
-    [Conditional("UNITY_EDITOR")]
-    [AttributeUsage(AttributeTargets.Method)]
+    /// <remarks>
+    /// Must be applied only to <c>SetValue</c> methods that implicitly implement <see cref="IBinder{T}"/>
+    /// in a <see langword="partial"/> class.
+    /// The attribute is stripped in non-<c>UNITY_EDITOR</c> builds, so no logging is generated outside the Editor.
+    /// </remarks>
+    [Conditional(conditionString: "UNITY_EDITOR")]
+    [AttributeUsage(validOn: AttributeTargets.Method)]
     public sealed class BinderLogAttribute : Attribute { }
 }

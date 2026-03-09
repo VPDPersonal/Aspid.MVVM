@@ -4,20 +4,21 @@ using UnityEngine;
 namespace Aspid.MVVM
 {
     /// <summary>
-    /// Abstract <see cref="MonoBinder"/> that binds a serialized <typeparamref name="TView"/> ScriptableObject view
-    /// to an <see cref="IViewModel"/> property.
+    /// Abstract base <see cref="MonoBinder"/> that holds a serialized <typeparamref name="TView"/> <see cref="ScriptableObject"/> view
+    /// and initializes it when a bound <see cref="IViewModel"/> is received.
     /// </summary>
-    /// <typeparam name="TView">The type of the ScriptableObject view. Must inherit from <see cref="ScriptableObject"/> and implement <see cref="IView"/>.</typeparam>
+    /// <typeparam name="TView">The type of <see cref="ScriptableObject"/> that implements <see cref="IView"/>.</typeparam>
     public abstract partial class ScriptableViewMonoBinder<TView> : MonoBinder, IBinder<IViewModel>
         where TView : ScriptableObject, IView
     {
+        [Tooltip("The ScriptableObject view to initialize with the bound ViewModel.")]
         [SerializeField] private TView _view;
 
         /// <summary>
-        /// Called when the bound ViewModel value changes.
-        /// Deinitializes the current view and initializes it with the new ViewModel if it is not <c>null</c>.
+        /// Called when the bound <see cref="IViewModel"/> value is received.
+        /// Deinitializes the current view and initializes it with the new ViewModel if it is not <see langword="null"/>.
         /// </summary>
-        /// <param name="viewModel">The new ViewModel value, or <c>null</c> to deinitialize.</param>
+        /// <param name="viewModel">The new ViewModel value, or <see langword="null"/> to deinitialize.</param>
         [BinderLog]
         public void SetValue(IViewModel viewModel)
         {
@@ -27,7 +28,10 @@ namespace Aspid.MVVM
                 InitializeView(viewModel);
         }
 
-        /// <inheritdoc/>
+        /// <summary>
+        /// Called after unbinding is complete.
+        /// Deinitializes the view, detaching any bound <see cref="IViewModel"/>.
+        /// </summary>
         protected override void OnUnbound() =>
             DeinitializeView();
 
@@ -46,7 +50,7 @@ namespace Aspid.MVVM
     }
 
     /// <summary>
-    /// Concrete <see cref="MonoBinder"/> for <see cref="ScriptableView"/> assets.
+    /// <see cref="ScriptableViewMonoBinder{TView}"/> specialized for <see cref="ScriptableView"/> assets.
     /// </summary>
     [AddComponentMenu("Aspid/MVVM/Binders/Views/ScriptableView Binder")]
     public class ScriptableViewMonoBinder : ScriptableViewMonoBinder<ScriptableView> { }

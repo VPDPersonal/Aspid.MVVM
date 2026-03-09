@@ -2,8 +2,8 @@
 namespace Aspid.MVVM
 {
     /// <summary>
-    /// Binds an <see cref="IView"/> to its <see cref="IViewModel"/>.
-    /// Implements the <see cref="IBinder{T}"/> interface to work with <see cref="IViewModel"/> objects.
+    /// <see cref="Binder"/> that initializes an <see cref="IView"/> when a bound <see cref="IViewModel"/> is received,
+    /// and deinitializes it on unbind.
     /// </summary>
     public class ViewBinder : Binder, IBinder<IViewModel?>
     {
@@ -22,10 +22,10 @@ namespace Aspid.MVVM
         }
 
         /// <summary>
-        /// Sets the ViewModel for the bound view.
-        /// Deinitializes the current view before setting the new ViewModel.
+        /// Called when the bound <see cref="IViewModel"/> value is received.
+        /// Deinitializes the view first, then initializes it with <paramref name="viewModel"/> if it is not <see langword="null"/>.
         /// </summary>
-        /// <param name="viewModel">The ViewModel to bind to the view.</param>
+        /// <param name="viewModel">The new ViewModel, or <see langword="null"/> to deinitialize without reinitializing.</param>
         public void SetValue(IViewModel? viewModel)
         {
             DeinitializeView();
@@ -34,15 +34,14 @@ namespace Aspid.MVVM
                 InitializeView(viewModel);
         }
 
-        /// <inheritdoc />
         /// <summary>
-        /// Deinitializes the view when the binder is unbound.
+        /// Called after unbinding. Deinitializes the view.
         /// </summary>
         protected override void OnUnbound() =>
             DeinitializeView();
 
         /// <summary>
-        /// Initializes the <see cref="View"/> with the specified <see cref="IViewModel"/>.
+        /// Initializes <see cref="View"/> with <paramref name="viewModel"/>.
         /// </summary>
         /// <param name="viewModel">The ViewModel to initialize the view with.</param>
         protected void InitializeView(IViewModel viewModel) =>

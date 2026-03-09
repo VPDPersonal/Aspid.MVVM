@@ -106,6 +106,7 @@ namespace Aspid.MVVM
             UnityEditor.SceneManagement.EditorSceneManager.MarkSceneDirty(gameObject.scene);
         }
         
+        [EditorBrowsable(EditorBrowsableState.Never)]
         private readonly struct LastData
         {
             public readonly BindMode Mode;

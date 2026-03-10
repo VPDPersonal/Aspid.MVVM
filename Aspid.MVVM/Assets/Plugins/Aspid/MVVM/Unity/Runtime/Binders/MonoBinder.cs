@@ -19,7 +19,7 @@ namespace Aspid.MVVM
 
         /// <summary>
         /// Indicates whether binding is allowed.
-        /// The default value is <c>true</c>.
+        /// The default value is <see langword="true"/>.
         /// </summary>
         public virtual bool IsBind => true;
         

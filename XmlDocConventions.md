@@ -250,6 +250,80 @@ Use `<remarks>` for implementation details that do not belong in `<summary>`.
 
 ---
 
+## `<example>` on Non-MonoBinder Classes
+
+Pure C# binder classes (non-`MonoBehaviour`) **must** include an `<example>` block showing typical usage inside a `[View]` class.
+
+**Placement:** After `<remarks>`, before the class declaration.
+
+**Format:** Short description text immediately after `<example>` (outside `<code>`), then the code block.
+
+```csharp
+/// <example>
+/// Short description of what the example demonstrates.
+/// <code>
+/// [View]
+/// public partial class ExampleView
+/// {
+///     [SerializeField] private TComponent _field;
+///
+///
+///     private BinderType&lt;T&gt; BinderId => new(
+///         value => _field.property = value);
+/// }
+/// </code>
+/// </example>
+```
+
+**Rules:**
+- Description goes as plain text **before** `<code>`, not inside it.
+- The example class is always `[View] public partial class ExampleView`.
+- Show the relevant `[SerializeField]` field above the binder declaration.
+- Leave one blank `///` line between the field and the binder (where `[Bind]` would typically appear).
+- Use `BinderId` as the placeholder binder field/property name.
+- Use `&lt;` and `&gt;` to escape generic type brackets inside `<code>`.
+- Short single-argument binders use `=> new(...)` (property syntax).
+- Multi-argument binders use `= new\n(\n    ...\n);` (field syntax with indented arguments).
+
+```csharp
+// CORRECT — short binder, property syntax
+/// <example>
+/// Update a score label each time the ViewModel value changes
+/// <code>
+/// [View]
+/// public partial class ExampleView
+/// {
+///     [SerializeField] private TMP_Text _scoreLabel;
+///
+///
+///     private GenericOneWayBinder&lt;int&gt; BinderId => new(
+///         value => _scoreLabel.text = value.ToString());
+/// }
+/// </code>
+/// </example>
+
+// CORRECT — multi-argument binder, field syntax
+/// <example>
+/// Synchronize a slider with a ViewModel float property in both directions
+/// <code>
+/// [View]
+/// public partial class ExampleView
+/// {
+///     [SerializeField] private Slider _slider;
+///
+///
+///     private GenericTwoWayBinder&lt;float&gt; BinderId = new
+///     (
+///         onChanged => _slider.onValueChanged.AddListener(onChanged),
+///         value => _slider.value = value
+///     );
+/// }
+/// </code>
+/// </example>
+```
+
+---
+
 ## Null References and Keywords
 
 Always use `<see langword="..."/>` — never `<c>...</c>` for C# keywords.
@@ -435,6 +509,7 @@ Use `"Provides utility methods"` for static helper classes without extension met
 Before committing, verify each public/protected member:
 
 - [ ] Class summary uses hierarchy style (starts with `<see cref="Parent"/>` or `"Concrete <see cref="..."/>"`)
+- [ ] Non-MonoBehaviour binder classes have an `<example>` block with a `[View]` class context
 - [ ] No `<inheritdoc/>` on constructors
 - [ ] No `<inheritdoc/>` where behavior differs from the base
 - [ ] `<see langword="null"/>` / `<see langword="true"/>` / `<see langword="false"/>` — never `<c>null</c>` / `<c>true</c>` / `<c>false</c>`

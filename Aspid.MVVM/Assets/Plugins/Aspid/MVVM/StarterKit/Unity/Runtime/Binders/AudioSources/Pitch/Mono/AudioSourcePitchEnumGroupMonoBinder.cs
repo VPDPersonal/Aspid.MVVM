@@ -1,22 +1,23 @@
 using UnityEngine;
-#if UNITY_2023_1_OR_NEWER
-using Converter = Aspid.MVVM.StarterKit.IConverter<float, float>;
-#else
-using Converter = Aspid.MVVM.StarterKit.IConverterFloat;
-#endif
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// MonoBehaviour binder that sets the <see cref="AudioSource.pitch"/> property on a group of <see cref="AudioSource"/>
-    /// components, applying the configured selected or default value to each entry based on the bound
-    /// enum ViewModel value. The value is clamped to the range [-3, 3].
+    /// <see cref="EnumGroupFloatMonoBinder{AudioSource}"/> that sets the <see cref="AudioSource.pitch"/>
+    /// property on each element based on the bound enum ViewModel value.
     /// </summary>
+    /// <remarks>
+    /// The bound value is clamped to [−3, 3] before being applied to <see cref="AudioSource.pitch"/>.
+    /// </remarks>
     [AddBinderContextMenu(typeof(AudioSource), SubPath = "EnumGroup")]
     [AddComponentMenu("Aspid/MVVM/Binders/Audio/AudioSource/AudioSource Binder – Pitch EnumGroup")]
-    public sealed class AudioSourcePitchEnumGroupMonoBinder : EnumGroupMonoBinder<AudioSource, float, Converter>
+    public sealed class AudioSourcePitchEnumGroupMonoBinder : EnumGroupFloatMonoBinder<AudioSource>
     {
+        /// <summary>
+        /// Called when the bound enum resolves to a value for the specified element.
+        /// Sets <see cref="AudioSource.pitch"/> clamped to the valid range of −3 to 3.
+        /// </summary>
         protected override void SetValue(AudioSource element, float value) =>
             element.pitch = Mathf.Clamp(value, min: -3, max: 3);
     }

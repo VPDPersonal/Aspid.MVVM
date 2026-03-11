@@ -5,13 +5,14 @@ using UnityEngine.Audio;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// MonoBehaviour binder that sets the <see cref="AudioSource.outputAudioMixerGroup"/> property on an <see cref="AudioSource"/>
-    /// to a value resolved from an enum bound on the ViewModel.
+    /// <see cref="EnumMonoBinder{AudioSource, AudioMixerGroup}"/> that sets the <see cref="AudioSource.outputAudioMixerGroup"/>
+    /// property to a value resolved from the bound enum ViewModel value.
     /// </summary>
     [AddBinderContextMenu(typeof(AudioSource), SubPath = "Enum")]
     [AddComponentMenu("Aspid/MVVM/Binders/Audio/AudioSource/AudioSource Binder – OutputAudioMixerGroup Enum")]
     public sealed class AudioSourceOutputAudioMixerGroupEnumMonoBinder : EnumMonoBinder<AudioSource, AudioMixerGroup>
     {
+        /// <inheritdoc/>
         protected override void SetValue(AudioMixerGroup value) =>
             CachedComponent.outputAudioMixerGroup = value;
     }

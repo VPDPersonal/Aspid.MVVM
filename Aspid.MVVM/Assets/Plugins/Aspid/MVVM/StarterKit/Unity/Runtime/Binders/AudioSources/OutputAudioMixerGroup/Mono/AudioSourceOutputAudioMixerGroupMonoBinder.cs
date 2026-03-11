@@ -5,15 +5,17 @@ using UnityEngine.Audio;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// MonoBehaviour binder that sets the <see cref="AudioSource.outputAudioMixerGroup"/> property on an <see cref="AudioSource"/>
-    /// when the bound ViewModel value changes.
-    /// Supports <see cref="BindMode.OneWayToSource"/>: when binding is established the current value
-    /// is sent back to the ViewModel.
+    /// <see cref="ComponentMonoBinder{AudioSource, AudioMixerGroup}"/> that binds the <see cref="AudioSource.outputAudioMixerGroup"/> property.
     /// </summary>
+    /// <remarks>
+    /// Supports <see cref="BindMode.OneWayToSource"/>: when binding is established, the current outputAudioMixerGroup value
+    /// is sent back to the ViewModel.
+    /// </remarks>
     [AddBinderContextMenu(typeof(AudioSource))]
     [AddComponentMenu("Aspid/MVVM/Binders/Audio/AudioSource/AudioSource Binder – OutputAudioMixerGroup")]
     public class AudioSourceOutputAudioMixerGroupMonoBinder : ComponentMonoBinder<AudioSource, AudioMixerGroup>
     {
+        /// <inheritdoc/>
         protected sealed override AudioMixerGroup Property
         {
             get => CachedComponent.outputAudioMixerGroup;

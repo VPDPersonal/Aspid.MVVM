@@ -1,24 +1,27 @@
 using UnityEngine;
-#if UNITY_2023_1_OR_NEWER
-using Converter = Aspid.MVVM.StarterKit.IConverter<float, float>;
-#else
-using Converter = Aspid.MVVM.StarterKit.IConverterFloat;
-#endif
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// MonoBehaviour binder that switches the <see cref="AudioSource.spread"/> property on an <see cref="AudioSource"/>
-    /// between two values based on a bound boolean ViewModel property. The value is clamped to the range [0, 360].
+    /// <see cref="SwitcherFloatMonoBinder{AudioSource}"/> that switches the <see cref="AudioSource.spread"/>
+    /// property between two values based on the bound boolean ViewModel value.
     /// </summary>
+    /// <remarks>
+    /// The bound value is clamped to [0, 360] before being applied to <see cref="AudioSource.spread"/>.
+    /// </remarks>
     [AddBinderContextMenu(typeof(AudioSource), SubPath = "Switcher")]
     [AddComponentMenu("Aspid/MVVM/Binders/Audio/AudioSource/AudioSource Binder – Spread Switcher")]
-    public sealed class AudioSourceSpreadSwitcherMonoBinder : SwitcherMonoBinder<AudioSource, float, Converter>
+    public sealed class AudioSourceSpreadSwitcherMonoBinder : SwitcherFloatMonoBinder<AudioSource>
     {
+        /// <inheritdoc/>
         protected override void SetValue(float value) =>
             CachedComponent.spread = value;
 
+        /// <summary>
+        /// Called when converting the selected value before applying it to the <see cref="AudioSource.spread"/> property.
+        /// Clamps the converted value to the valid range of 0 to 360.
+        /// </summary>
         protected override float GetConvertedValue(float value) =>
             Mathf.Clamp(base.GetConvertedValue(value), min: 0, max: 360);
     }

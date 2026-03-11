@@ -4,15 +4,17 @@ using UnityEngine;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// MonoBehaviour binder that sets the <see cref="AudioSource.loop"/> property on an <see cref="AudioSource"/>
-    /// when the bound ViewModel value changes.
-    /// Supports <see cref="BindMode.OneWayToSource"/>: when binding is established the current value
-    /// is sent back to the ViewModel. Supports optional value inversion.
+    /// <see cref="ComponentBoolMonoBinder{AudioSource}"/> that binds the <see cref="AudioSource.loop"/> property.
     /// </summary>
+    /// <remarks>
+    /// Supports <see cref="BindMode.OneWayToSource"/>: when binding is established, the current loop value
+    /// is sent back to the ViewModel.
+    /// </remarks>
     [AddBinderContextMenu(typeof(AudioSource))]
     [AddComponentMenu("Aspid/MVVM/Binders/Audio/AudioSource/AudioSource Binder – Loop")]
     public class AudioSourceLoopMonoBinder : ComponentBoolMonoBinder<AudioSource>
     {
+        /// <inheritdoc/>
         protected sealed override bool Property
         {
             get => CachedComponent.loop;

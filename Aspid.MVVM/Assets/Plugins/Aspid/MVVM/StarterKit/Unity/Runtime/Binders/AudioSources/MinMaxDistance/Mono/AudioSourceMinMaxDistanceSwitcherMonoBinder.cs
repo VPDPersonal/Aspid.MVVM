@@ -9,8 +9,9 @@ using Converter = Aspid.MVVM.StarterKit.IConverterVector2;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// MonoBehaviour binder that switches the min/max distance (<see cref="AudioSource.minDistance"/> and <see cref="AudioSource.maxDistance"/>)
-    /// on an <see cref="AudioSource"/> between two values based on a bound boolean ViewModel property.
+    /// <see cref="SwitcherMonoBinder{AudioSource, Vector2, IConverter{Vector2, Vector2}}"/> that switches the
+    /// min/max distance of an <see cref="AudioSource"/> between two <see cref="Vector2"/> values
+    /// based on the bound boolean ViewModel value.
     /// </summary>
     [AddBinderContextMenu(typeof(AudioSource), SubPath = "Switcher")]
     [AddComponentMenu("Aspid/MVVM/Binders/Audio/AudioSource/AudioSource Binder – MinMaxDistance Switcher")]
@@ -18,6 +19,11 @@ namespace Aspid.MVVM.StarterKit
     {
         [SerializeField] private AudioSourceDistanceMode _distanceMode = AudioSourceDistanceMode.Range;
 
+        /// <summary>
+        /// Called when applying the selected <see cref="Vector2"/> to the <see cref="AudioSource"/> min/max distance.
+        /// Dispatches to <see cref="AudioSource.minDistance"/>, <see cref="AudioSource.maxDistance"/>, or both
+        /// according to the configured <see cref="AudioSourceDistanceMode"/>.
+        /// </summary>
         protected override void SetValue(Vector2 value) =>
             CachedComponent.SetMinMaxDistance(value, _distanceMode);
     }

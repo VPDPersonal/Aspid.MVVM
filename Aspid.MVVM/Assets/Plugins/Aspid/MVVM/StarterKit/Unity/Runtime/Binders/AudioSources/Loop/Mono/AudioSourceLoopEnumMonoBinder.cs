@@ -4,13 +4,14 @@ using UnityEngine;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// MonoBehaviour binder that sets the <see cref="AudioSource.loop"/> property on an <see cref="AudioSource"/>
-    /// to a value resolved from an enum bound on the ViewModel.
+    /// <see cref="EnumMonoBinder{AudioSource, bool}"/> that sets the <see cref="AudioSource.loop"/>
+    /// property to a value resolved from the bound enum ViewModel value.
     /// </summary>
     [AddBinderContextMenu(typeof(AudioSource), SubPath = "Enum")]
     [AddComponentMenu("Aspid/MVVM/Binders/Audio/AudioSource/AudioSource Binder – Loop Enum")]
     public sealed class AudioSourceLoopEnumMonoBinder : EnumMonoBinder<AudioSource, bool>
     {
+        /// <inheritdoc/>
         protected override void SetValue(bool value) =>
             CachedComponent.loop = value;
     }

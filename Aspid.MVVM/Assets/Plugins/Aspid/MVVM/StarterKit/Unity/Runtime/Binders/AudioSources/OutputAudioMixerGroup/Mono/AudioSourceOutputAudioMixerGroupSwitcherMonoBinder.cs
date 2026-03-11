@@ -5,13 +5,14 @@ using UnityEngine.Audio;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// MonoBehaviour binder that switches the <see cref="AudioSource.outputAudioMixerGroup"/> property on an <see cref="AudioSource"/>
-    /// between two values based on a bound boolean ViewModel property.
+    /// <see cref="SwitcherMonoBinder{AudioSource, AudioMixerGroup}"/> that switches the <see cref="AudioSource.outputAudioMixerGroup"/>
+    /// property between two values based on the bound boolean ViewModel value.
     /// </summary>
     [AddBinderContextMenu(typeof(AudioSource), SubPath = "Switcher")]
     [AddComponentMenu("Aspid/MVVM/Binders/Audio/AudioSource/AudioSource Binder – OutputAudioMixerGroup Switcher")]
     public sealed class AudioSourceOutputAudioMixerGroupSwitcherMonoBinder : SwitcherMonoBinder<AudioSource, AudioMixerGroup>
     {
+        /// <inheritdoc/>
         protected override void SetValue(AudioMixerGroup value) =>
             CachedComponent.outputAudioMixerGroup = value;
     }

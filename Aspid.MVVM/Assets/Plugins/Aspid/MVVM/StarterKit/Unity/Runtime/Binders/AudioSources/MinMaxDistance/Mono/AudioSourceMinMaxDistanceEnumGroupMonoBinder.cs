@@ -9,9 +9,8 @@ using Converter = Aspid.MVVM.StarterKit.IConverterVector2;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// MonoBehaviour binder that sets the <see cref="AudioSource.minDistance"/> and <see cref="AudioSource.maxDistance"/> properties
-    /// on a group of <see cref="AudioSource"/> components, applying the configured selected or default value to each entry
-    /// based on the bound enum ViewModel value.
+    /// <see cref="EnumGroupMonoBinder{AudioSource, Vector2, IConverter{Vector2, Vector2}}"/> that sets the
+    /// min/max distance on each <see cref="AudioSource"/> element to a <see cref="Vector2"/> resolved from the bound enum ViewModel value.
     /// </summary>
     [AddBinderContextMenu(typeof(AudioSource), SubPath = "EnumGroup")]
     [AddComponentMenu("Aspid/MVVM/Binders/Audio/AudioSource/AudioSource Binder – MinMaxDistance EnumGroup")]
@@ -19,6 +18,11 @@ namespace Aspid.MVVM.StarterKit
     {
         [SerializeField] private AudioSourceDistanceMode _distanceMode = AudioSourceDistanceMode.Range;
 
+        /// <summary>
+        /// Called when the bound enum resolves to a value for the specified element.
+        /// Applies the <see cref="Vector2"/> to <see cref="AudioSource.minDistance"/>, <see cref="AudioSource.maxDistance"/>,
+        /// or both according to the configured <see cref="AudioSourceDistanceMode"/>.
+        /// </summary>
         protected override void SetValue(AudioSource element, Vector2 value) =>
             element.SetMinMaxDistance(value, _distanceMode);
     }

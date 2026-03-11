@@ -11,19 +11,73 @@ using Converter = Aspid.MVVM.StarterKit.IConverterFloat;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// Binder that switches the <see cref="AudioSource.panStereo"/> between two float values based
-    /// on a bound boolean ViewModel property. The value is clamped to the range [-1, 1].
+    /// <see cref="SwitcherBinder{AudioSource, float, IConverter{float, float}}"/> that switches the <see cref="AudioSource.panStereo"/>
+    /// property between two <see cref="float"/> values based on the bound boolean ViewModel value.
     /// </summary>
+    /// <remarks>
+    /// The bound value is clamped to [−1, 1] before being applied to <see cref="AudioSource.panStereo"/>.
+    /// </remarks>
+    /// <example>
+    /// Switch the AudioSource panStereo between two values based on a boolean ViewModel property.
+    /// <code>
+    /// [View]
+    /// public partial class ExampleView
+    /// {
+    ///     [SerializeField]
+    ///     private AudioSourcePanStereoSwitcherBinder _isPanLeft;
+    /// }
+    ///    
+    /// [ViewModel]
+    /// public partial class ExampleViewModel
+    /// {
+    ///     [Bind] public bool _isPanLeft;
+    /// }
+    /// </code>
+    /// <code>
+    /// [View]
+    /// public partial class ExampleView
+    /// {
+    ///     [SerializeField] private AudioSource _audioSource;
+    ///     [SerializeField] private float _panLeft;
+    ///     [SerializeField] private float _panRight;
+    ///    
+    ///     private AudioSourcePanStereoSwitcherBinder IsPanLeft => new(
+    ///         _audioSource, _panLeft, _panRight);
+    /// }
+    ///    
+    /// [ViewModel]
+    /// public partial class ExampleViewModel
+    /// {
+    ///     [Bind] public bool _isPanLeft;
+    /// }
+    /// </code>
+    /// </example>
     [Serializable]
     public sealed class AudioSourcePanStereoSwitcherBinder : SwitcherBinder<AudioSource, float, Converter>
     {
+        /// <summary>
+        /// Initializes a new instance of <see cref="AudioSourcePanStereoSwitcherBinder"/> targeting the specified <see cref="AudioSource"/>
+        /// with no converter.
+        /// </summary>
+        /// <param name="target">The <see cref="AudioSource"/> whose <see cref="AudioSource.panStereo"/> property is switched.</param>
+        /// <param name="trueValue">The pan position assigned when the bound value is <see langword="true"/>.</param>
+        /// <param name="falseValue">The pan position assigned when the bound value is <see langword="false"/>.</param>
+        /// <param name="mode">The binding mode to use.</param>
         public AudioSourcePanStereoSwitcherBinder(
             AudioSource target,
             float trueValue,
             float falseValue,
             BindMode mode)
             : this(target, trueValue, falseValue, converter: null, mode) { }
-        
+
+        /// <summary>
+        /// Initializes a new instance of <see cref="AudioSourcePanStereoSwitcherBinder"/> targeting the specified <see cref="AudioSource"/>.
+        /// </summary>
+        /// <param name="target">The <see cref="AudioSource"/> whose <see cref="AudioSource.panStereo"/> property is switched.</param>
+        /// <param name="trueValue">The pan position assigned when the bound value is <see langword="true"/>.</param>
+        /// <param name="falseValue">The pan position assigned when the bound value is <see langword="false"/>.</param>
+        /// <param name="converter">The converter used to transform the bound float value, or <see langword="null"/> to use the default.</param>
+        /// <param name="mode">The binding mode to use.</param>
         public AudioSourcePanStereoSwitcherBinder(
             AudioSource target,
             float trueValue,
@@ -32,9 +86,14 @@ namespace Aspid.MVVM.StarterKit
             BindMode mode = BindMode.OneWay)
             : base(target, trueValue, falseValue, converter, mode) { }
 
+        /// <inheritdoc/>
         protected override void SetValue(float value) =>
             Target.panStereo = value;
 
+        /// <summary>
+        /// Called when converting the bound value before applying it to the <see cref="AudioSource.panStereo"/> property.
+        /// Clamps the converted value to the valid range of −1 to 1.
+        /// </summary>
         protected override float GetConvertedValue(float value) =>
             Mathf.Clamp(base.GetConvertedValue(value), min: -1, max: 1);
     }

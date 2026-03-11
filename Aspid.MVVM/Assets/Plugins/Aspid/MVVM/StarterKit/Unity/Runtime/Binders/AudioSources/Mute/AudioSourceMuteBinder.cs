@@ -6,21 +6,66 @@ using UnityEngine;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// Binder that sets the <see cref="AudioSource.mute"/> property on an <see cref="AudioSource"/>
-    /// when the bound ViewModel value changes. Supports optional value inversion.
+    /// <see cref="TargetBoolBinder{AudioSource}"/> that sets the <see cref="AudioSource.mute"/> property.
     /// </summary>
+    /// <example>
+    /// Set the AudioSource mute property based on a boolean ViewModel value.
+    /// <code>
+    /// [View]
+    /// public partial class ExampleView
+    /// {
+    ///     [SerializeField]
+    ///     private AudioSourceMuteBinder _mute;
+    /// }
+    ///    
+    /// [ViewModel]
+    /// public partial class ExampleViewModel
+    /// {
+    ///     [Bind] public bool _mute;
+    /// }
+    /// </code>
+    /// <code>
+    /// [View]
+    /// public partial class ExampleView
+    /// {
+    ///     [SerializeField] private AudioSource _audioSource;
+    ///    
+    ///     private AudioSourceMuteBinder Mute =>
+    ///         new(_audioSource);
+    /// }
+    ///    
+    /// [ViewModel]
+    /// public partial class ExampleViewModel
+    /// {
+    ///     [Bind] public bool _mute;
+    /// }
+    /// </code>
+    /// </example>
     [Serializable]
     public class AudioSourceMuteBinder : TargetBoolBinder<AudioSource>
     {
+        /// <inheritdoc/>
         protected sealed override bool Property
         {
             get => Target.mute;
             set => Target.mute = value;
         }
-        
+
+        /// <summary>
+        /// Initializes a new instance of <see cref="AudioSourceMuteBinder"/> targeting the specified <see cref="AudioSource"/>
+        /// with inversion disabled.
+        /// </summary>
+        /// <param name="target">The <see cref="AudioSource"/> whose <see cref="AudioSource.mute"/> property is bound.</param>
+        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/>.</param>
         public AudioSourceMuteBinder(AudioSource target, BindMode mode)
             : this(target, isInvert: false, mode) { }
-        
+
+        /// <summary>
+        /// Initializes a new instance of <see cref="AudioSourceMuteBinder"/> targeting the specified <see cref="AudioSource"/>.
+        /// </summary>
+        /// <param name="target">The <see cref="AudioSource"/> whose <see cref="AudioSource.mute"/> property is bound.</param>
+        /// <param name="isInvert">When <see langword="true"/>, the bound boolean value is inverted before being applied.</param>
+        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/>.</param>
         public AudioSourceMuteBinder(AudioSource target, bool isInvert = false, BindMode mode = BindMode.OneWay)
             : base(target, isInvert, mode)
         {

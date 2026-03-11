@@ -1,22 +1,24 @@
 using UnityEngine;
-#if UNITY_2023_1_OR_NEWER
-using Converter = Aspid.MVVM.StarterKit.IConverter<int, int>;
-#else
-using Converter = Aspid.MVVM.StarterKit.IConverterInt;
-#endif
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// MonoBehaviour binder that sets the <see cref="AudioSource.priority"/> property on an <see cref="AudioSource"/>
-    /// to a value resolved from an enum bound on the ViewModel. The value is clamped to the range [0, 256].
+    /// <see cref="EnumIntMonoBinder{AudioSource}"/> that sets the <see cref="AudioSource.priority"/>
+    /// property to a value resolved from the bound enum ViewModel value.
     /// </summary>
+    /// <remarks>
+    /// The bound value is clamped to [0, 256] before being applied to <see cref="AudioSource.priority"/>.
+    /// </remarks>
     [AddBinderContextMenu(typeof(AudioSource), SubPath = "Enum")]
     [AddComponentMenu("Aspid/MVVM/Binders/Audio/AudioSource/AudioSource Binder – Priority Enum")]
-    public sealed class AudioSourcePriorityEnumMonoBinder : EnumMonoBinder<AudioSource, int, Converter>
+    public sealed class AudioSourcePriorityEnumMonoBinder : EnumIntMonoBinder<AudioSource>
     {
+        /// <summary>
+        /// Called when the bound enum resolves to a value.
+        /// Sets <see cref="AudioSource.priority"/> clamped to the valid range of 0 to 256.
+        /// </summary>
         protected override void SetValue(int value) =>
-            CachedComponent.priority = Mathf.Clamp(value, 0, 256);
+            CachedComponent.priority = Mathf.Clamp(value, min: 0, max: 256);
     }
 }

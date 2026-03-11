@@ -9,14 +9,17 @@ using Converter = Aspid.MVVM.StarterKit.IConverterFloat;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// MonoBehaviour binder that sets the <see cref="CanvasGroup.alpha"/> property on a group of <see cref="CanvasGroup"/>
-    /// components, applying the configured selected or default value to each entry based on the bound
-    /// enum ViewModel value.
+    /// <see cref="EnumGroupMonoBinder{CanvasGroup, float}"/> that sets the <see cref="CanvasGroup.alpha"/>
+    /// property on each <see cref="CanvasGroup"/> in the group based on the bound enum ViewModel value.
     /// </summary>
+    /// <remarks>
+    /// The bound value is clamped to [0, 1] before being applied to <see cref="CanvasGroup.alpha"/>.
+    /// </remarks>
     [AddComponentMenu("Aspid/MVVM/Binders/UI/CanvasGroup/CanvasGroup Binder – Alpha EnumGroup")]
     [AddBinderContextMenu(typeof(CanvasGroup), serializePropertyNames: "m_Alpha", SubPath = "EnumGroup")]
     public sealed class CanvasGroupAlphaEnumGroupMonoBinder : EnumGroupMonoBinder<CanvasGroup, float, Converter>
     {
+        /// <inheritdoc/>
         protected override void SetValue(CanvasGroup element, float value) =>
             element.alpha = Mathf.Clamp01(value);
     }

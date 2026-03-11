@@ -9,13 +9,17 @@ using Converter = Aspid.MVVM.StarterKit.IConverterFloat;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// MonoBehaviour binder that switches the <see cref="CanvasGroup.alpha"/> property on a <see cref="CanvasGroup"/>
-    /// between two values based on a bound boolean ViewModel property.
+    /// <see cref="SwitcherFloatMonoBinder{CanvasGroup}"/> that switches the <see cref="CanvasGroup.alpha"/>
+    /// property between two values based on the bound boolean ViewModel value.
     /// </summary>
+    /// <remarks>
+    /// The bound value is clamped to [0, 1] before being applied to <see cref="CanvasGroup.alpha"/>.
+    /// </remarks>
     [AddComponentMenu("Aspid/MVVM/Binders/UI/CanvasGroup/CanvasGroup Binder – Alpha Switcher")]
     [AddBinderContextMenu(typeof(CanvasGroup), serializePropertyNames: "m_Alpha", SubPath = "Switcher")]
     public sealed class CanvasGroupAlphaSwitcherMonoBinder : SwitcherMonoBinder<CanvasGroup, float, Converter>
     {
+        /// <inheritdoc/>
         protected override void SetValue(float value) =>
             CachedComponent.alpha = Mathf.Clamp01(value);
     }

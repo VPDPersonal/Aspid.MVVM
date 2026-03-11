@@ -4,13 +4,14 @@ using UnityEngine;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// MonoBehaviour binder that sets the <see cref="CanvasGroup.blocksRaycasts"/> property on a <see cref="CanvasGroup"/>
-    /// to a value resolved from an enum bound on the ViewModel.
+    /// <see cref="EnumMonoBinder{CanvasGroup, bool}"/> that sets the <see cref="CanvasGroup.blocksRaycasts"/>
+    /// property to a value resolved from the bound enum ViewModel value.
     /// </summary>
     [AddComponentMenu("Aspid/MVVM/Binders/UI/CanvasGroup/CanvasGroup Binder – BlocksRaycasts Enum")]
     [AddBinderContextMenu(typeof(CanvasGroup), serializePropertyNames: "m_BlocksRaycasts", SubPath = "Enum")]
     public sealed class CanvasGroupBlocksRaycastsEnumMonoBinder : EnumMonoBinder<CanvasGroup, bool>
     {
+        /// <inheritdoc/>
         protected override void SetValue(bool value) =>
             CachedComponent.blocksRaycasts = value;
     }

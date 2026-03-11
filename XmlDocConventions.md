@@ -258,51 +258,40 @@ Pure C# binder classes (non-`MonoBehaviour`) **must** include an `<example>` blo
 
 **Format:** Short description text immediately after `<example>` (outside `<code>`), then the code block.
 
-```csharp
-/// <example>
-/// Short description of what the example demonstrates.
-/// <code>
-/// [View]
-/// public partial class ExampleView
-/// {
-///     [SerializeField] private TComponent _field;
-///
-///
-///     private BinderType&lt;T&gt; BinderId => new(
-///         value => _field.property = value);
-/// }
-/// </code>
-/// </example>
-```
-
 **Rules:**
 - Description goes as plain text **before** `<code>`, not inside it.
 - The example class is always `[View] public partial class ExampleView`.
-- Show the relevant `[SerializeField]` field above the binder declaration.
-- Leave one blank `///` line between the field and the binder (where `[Bind]` would typically appear).
-- Use `BinderId` as the placeholder binder field/property name.
+- Always end with a `[ViewModel]` block showing the matching `[Bind]` field.
+- Leave **two blank** `///` lines between all sections (fields/binder, method groups, View/ViewModel).
 - Use `&lt;` and `&gt;` to escape generic type brackets inside `<code>`.
-- Short single-argument binders use `=> new(...)` (property syntax).
-- Multi-argument binders use `= new\n(\n    ...\n);` (field syntax with indented arguments).
+- **Closure-based binders** (e.g., `Generic*Binder`): declare as a private property named after the VM field. Single-arg: `=> new(...)`. Multi-arg: `= new\n(\n    ...\n)`. Show the target `[SerializeField]` field above the binder.
+- **Serialized field binders** (e.g., `*Value`): declare as a private field with `= new()`. Add `[SerializeField]` only when the initial value is set in the Inspector. Use `OnInitializedInternal` / `OnDeinitializingInternal` (not `OnEnable` / `OnDisable`) for subscribe/unsubscribe.
 
 ```csharp
-// CORRECT — short binder, property syntax
+// CORRECT — closure-based, single-argument
 /// <example>
 /// Update a score label each time the ViewModel value changes
 /// <code>
 /// [View]
 /// public partial class ExampleView
 /// {
-///     [SerializeField] private TMP_Text _scoreLabel;
+///     [SerializeField] private TMP_Text _label;
 ///
 ///
-///     private GenericOneWayBinder&lt;int&gt; BinderId => new(
-///         value => _scoreLabel.text = value.ToString());
+///     private GenericOneWayBinder&lt;int&gt; Score => new(
+///         value => _label.text = value.ToString());
+/// }
+///
+///
+/// [ViewModel]
+/// public partial class ExampleViewModel
+/// {
+///     [Bind] public int _score;
 /// }
 /// </code>
 /// </example>
 
-// CORRECT — multi-argument binder, field syntax
+// CORRECT — closure-based, multi-argument
 /// <example>
 /// Synchronize a slider with a ViewModel float property in both directions
 /// <code>
@@ -312,11 +301,72 @@ Pure C# binder classes (non-`MonoBehaviour`) **must** include an `<example>` blo
 ///     [SerializeField] private Slider _slider;
 ///
 ///
-///     private GenericTwoWayBinder&lt;float&gt; BinderId = new
+///     private GenericTwoWayBinder&lt;float&gt; Value = new
 ///     (
 ///         onChanged => _slider.onValueChanged.AddListener(onChanged),
 ///         value => _slider.value = value
 ///     );
+/// }
+///
+///
+/// [ViewModel]
+/// public partial class ExampleViewModel
+/// {
+///     [Bind] public float _value;
+/// }
+/// </code>
+/// </example>
+
+// CORRECT — serialized field binder, receive-only (no [SerializeField] on binder)
+/// <example>
+/// Subscribe to ViewModel value changes and update the View on each update.
+/// <code>
+/// [View]
+/// public partial class ExampleView
+/// {
+///     [SerializeField] private TMP_Text _label;
+///     private OneWayValue&lt;int&gt; _score = new();
+///
+///
+///     private void OnInitializedInternal(IViewModel viewModel)
+///     {
+///         OnScoreChanged(_score.Value);
+///         _score.Changed += OnScoreChanged;
+///     }
+///
+///
+///     private void OnDeinitializingInternal() =>
+///         _score.Changed -= OnScoreChanged;
+///
+///
+///     private void OnScoreChanged(int? value) =>
+///         _label.text = value.ToString();
+/// }
+///
+///
+/// [ViewModel]
+/// public partial class ExampleViewModel
+/// {
+///     [Bind] public int _score;
+/// }
+/// </code>
+/// </example>
+
+// CORRECT — serialized field binder, Inspector-initialized ([SerializeField] on binder)
+/// <example>
+/// Push an Inspector-set value to the ViewModel when binding is established.
+/// <code>
+/// [View]
+/// public partial class ExampleView
+/// {
+///     [SerializeField] private OneWayToSourceValue&lt;string&gt; _name;
+/// }
+///
+///
+/// [ViewModel]
+/// public partial class ExampleViewModel
+/// {
+///     [Bind] public string _name;
 /// }
 /// </code>
 /// </example>

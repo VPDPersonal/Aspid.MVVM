@@ -4,8 +4,8 @@ using UnityEngine;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// MonoBehaviour binder that reads the current state of a <see cref="SphereCollider"/> component
-    /// back to the ViewModel in one-way-to-source mode when binding is established.
+    /// <see cref="ComponentToSourceMonoBinder{SphereCollider}"/> that sends the cached <see cref="SphereCollider"/>
+    /// component reference to the ViewModel when binding is established.
     /// </summary>
     [AddBinderContextMenu(typeof(SphereCollider))]
     [AddComponentMenu("Aspid/MVVM/Binders/Collider/Sphere/SphereCollider To Source Binder")]

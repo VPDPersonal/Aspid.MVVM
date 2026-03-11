@@ -9,14 +9,14 @@ using Converter = Aspid.MVVM.StarterKit.IConverterMesh;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// MonoBehaviour binder that sets the <see cref="MeshCollider.sharedMesh"/> property on a group of <see cref="MeshCollider"/>
-    /// components, applying the configured selected or default value to each entry based on the bound
-    /// enum ViewModel value.
+    /// <see cref="EnumGroupMonoBinder{MeshCollider, Mesh, IConverter{Mesh, Mesh}}"/> that sets the <see cref="MeshCollider.sharedMesh"/>
+    /// property on each element based on the bound enum ViewModel value.
     /// </summary>
     [AddComponentMenu("Aspid/MVVM/Binders/Collider/Mesh/MeshCollider Binder – Mesh EnumGroup")]
     [AddBinderContextMenu(typeof(MeshCollider), serializePropertyNames: "m_Mesh", SubPath = "EnumGroup")]
     public sealed class MeshColliderMeshEnumGroupMonoBinder : EnumGroupMonoBinder<MeshCollider, Mesh, Converter>
     {
+        /// <inheritdoc/>
         protected override void SetValue(MeshCollider element, Mesh value) =>
             element.sharedMesh = value;
     }

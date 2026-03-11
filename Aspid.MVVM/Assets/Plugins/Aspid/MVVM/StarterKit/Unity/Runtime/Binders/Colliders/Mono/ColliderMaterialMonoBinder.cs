@@ -11,15 +11,17 @@ using Converter = Aspid.MVVM.StarterKit.IConverterPhysicsMaterial;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// MonoBehaviour binder that sets the <see cref="Collider.material"/> property on a <see cref="Collider"/>
-    /// when the bound ViewModel value changes.
-    /// Supports <see cref="BindMode.OneWayToSource"/>: when binding is established the current value
-    /// is sent back to the ViewModel. Supports optional value inversion.
+    /// <see cref="ComponentMonoBinder{Collider, PhysicsMaterial, IConverter{PhysicsMaterial, PhysicsMaterial}}"/> that binds the <see cref="Collider.material"/> property.
     /// </summary>
+    /// <remarks>
+    /// Supports <see cref="BindMode.OneWayToSource"/>: when binding is established, the current shared mesh value
+    /// is sent back to the ViewModel.
+    /// </remarks>
     [AddComponentMenu("Aspid/MVVM/Binders/Collider/Collider Binder – Material")]
     [AddBinderContextMenu(typeof(Collider), serializePropertyNames: "m_Material")]
     public class ColliderMaterialMonoBinder : ComponentMonoBinder<Collider, PhysicsMaterial, Converter>
     {
+        /// <inheritdoc/>
         protected sealed override PhysicsMaterial Property
         {
             get => CachedComponent.material;

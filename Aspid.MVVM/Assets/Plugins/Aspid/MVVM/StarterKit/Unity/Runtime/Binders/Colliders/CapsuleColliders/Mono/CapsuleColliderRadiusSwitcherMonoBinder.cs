@@ -1,21 +1,17 @@
 using UnityEngine;
-#if UNITY_2023_1_OR_NEWER
-using Converter = Aspid.MVVM.StarterKit.IConverter<float, float>;
-#else
-using Converter = Aspid.MVVM.StarterKit.IConverterFloat;
-#endif
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// MonoBehaviour binder that switches the <see cref="CapsuleCollider.radius"/> property on a <see cref="CapsuleCollider"/>
-    /// between two values based on a bound boolean ViewModel property.
+    /// <see cref="SwitcherFloatMonoBinder{CapsuleCollider}"/> that switches the <see cref="CapsuleCollider.radius"/>
+    /// property between two values based on the bound boolean ViewModel value.
     /// </summary>
     [AddComponentMenu("Aspid/MVVM/Binders/Collider/Capsule/CapsuleCollider Binder – Radius Switcher")]
     [AddBinderContextMenu(typeof(CapsuleCollider), serializePropertyNames: "m_Radius", SubPath = "Switcher")]
-    public sealed class CapsuleColliderRadiusSwitcherMonoBinder : SwitcherMonoBinder<CapsuleCollider, float, Converter>
+    public sealed class CapsuleColliderRadiusSwitcherMonoBinder : SwitcherFloatMonoBinder<CapsuleCollider>
     {
+        /// <inheritdoc/>
         protected override void SetValue(float value) =>
             CachedComponent.radius = value;
     }

@@ -11,13 +11,14 @@ using Converter = Aspid.MVVM.StarterKit.IConverterPhysicsMaterial;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// MonoBehaviour binder that switches the <see cref="Collider.material"/> property on a <see cref="Collider"/>
-    /// between two values based on a bound boolean ViewModel property.
+    /// <see cref="SwitcherMonoBinder{Collider, PhysicsMaterial, IConverter{PhysicsMaterial, PhysicsMaterial}}"/> that switches the <see cref="Collider.material"/>
+    /// property between two values based on the bound boolean ViewModel value.
     /// </summary>
     [AddComponentMenu("Aspid/MVVM/Binders/Collider/Collider Binder – Material Switcher")]
     [AddBinderContextMenu(typeof(Collider), serializePropertyNames: "m_Material", SubPath = "Switcher")]
     public sealed class ColliderMaterialSwitcherMonoBinder : SwitcherMonoBinder<Collider, PhysicsMaterial, Converter>
     {
+        /// <inheritdoc/>
         protected override void SetValue(PhysicsMaterial value) =>
             CachedComponent.material = value;
     }

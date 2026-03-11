@@ -1,21 +1,17 @@
 using UnityEngine;
-#if UNITY_2023_1_OR_NEWER
-using Converter = Aspid.MVVM.StarterKit.IConverter<UnityEngine.Vector3, UnityEngine.Vector3>;
-#else
-using Converter = Aspid.MVVM.StarterKit.IConverterVector3;
-#endif
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// MonoBehaviour binder that sets the <see cref="BoxCollider.size"/> property on a <see cref="BoxCollider"/>
-    /// to a value resolved from an enum bound on the ViewModel.
+    /// <see cref="EnumVector3MonoBinder{BoxCollider}"/> that sets the <see cref="BoxCollider.size"/>
+    /// property based on the bound enum ViewModel value.
     /// </summary>
     [AddComponentMenu("Aspid/MVVM/Binders/Collider/Box/BoxCollider Binder – Size Enum")]
     [AddBinderContextMenu(typeof(BoxCollider), serializePropertyNames: "m_Size", SubPath = "Enum")]
-    public sealed class BoxColliderSizeEnumMonoBinder : EnumMonoBinder<BoxCollider, Vector3, Converter>
+    public sealed class BoxColliderSizeEnumMonoBinder : EnumVector3MonoBinder<BoxCollider>
     {
+        /// <inheritdoc/>
         protected override void SetValue(Vector3 value) =>
             CachedComponent.size = value;
     }

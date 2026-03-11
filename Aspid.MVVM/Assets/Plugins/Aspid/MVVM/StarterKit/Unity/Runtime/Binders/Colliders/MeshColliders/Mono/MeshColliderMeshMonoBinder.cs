@@ -9,15 +9,17 @@ using Converter = Aspid.MVVM.StarterKit.IConverterMesh;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// MonoBehaviour binder that sets the <see cref="MeshCollider.sharedMesh"/> property on a <see cref="MeshCollider"/>
-    /// when the bound ViewModel value changes.
-    /// Supports <see cref="BindMode.OneWayToSource"/>: when binding is established the current value
-    /// is sent back to the ViewModel.
+    /// <see cref="ComponentMonoBinder{MeshCollider, Mesh, IConverter{Mesh, Mesh}}"/> that binds the <see cref="MeshCollider.sharedMesh"/> property.
     /// </summary>
+    /// <remarks>
+    /// Supports <see cref="BindMode.OneWayToSource"/>: when binding is established, the current shared mesh value
+    /// is sent back to the ViewModel.
+    /// </remarks>
     [AddBinderContextMenu(typeof(MeshCollider), serializePropertyNames: "m_Mesh")]
     [AddComponentMenu("Aspid/MVVM/Binders/Collider/Mesh/MeshCollider Binder – Mesh")]
     public class MeshColliderMeshMonoBinder : ComponentMonoBinder<MeshCollider, Mesh, Converter>
     {
+        /// <inheritdoc/>
         protected sealed override Mesh Property
         {
             get => CachedComponent.sharedMesh;

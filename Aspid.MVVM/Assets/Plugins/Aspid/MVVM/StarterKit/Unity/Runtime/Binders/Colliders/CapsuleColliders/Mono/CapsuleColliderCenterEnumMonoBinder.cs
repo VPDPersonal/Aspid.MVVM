@@ -1,21 +1,17 @@
 using UnityEngine;
-#if UNITY_2023_1_OR_NEWER
-using Converter = Aspid.MVVM.StarterKit.IConverter<UnityEngine.Vector3, UnityEngine.Vector3>;
-#else
-using Converter = Aspid.MVVM.StarterKit.IConverterVector3;
-#endif
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// MonoBehaviour binder that sets the <see cref="CapsuleCollider.center"/> property on a <see cref="CapsuleCollider"/>
-    /// to a value resolved from an enum bound on the ViewModel.
+    /// <see cref="EnumVector3MonoBinder{CapsuleCollider}"/> that sets the <see cref="CapsuleCollider.center"/>
+    /// property based on the bound enum ViewModel value.
     /// </summary>
     [AddComponentMenu("Aspid/MVVM/Binders/Collider/Capsule/CapsuleCollider Binder – Center Enum")]
     [AddBinderContextMenu(typeof(CapsuleCollider), serializePropertyNames: "m_Center", SubPath = "Enum")]
-    public sealed class CapsuleColliderCenterEnumMonoBinder : EnumMonoBinder<CapsuleCollider, Vector3, Converter>
+    public sealed class CapsuleColliderCenterEnumMonoBinder : EnumVector3MonoBinder<CapsuleCollider>
     {
+        /// <inheritdoc/>
         protected override void SetValue(Vector3 value) =>
             CachedComponent.center = value;
     }

@@ -11,12 +11,55 @@ using Converter = Aspid.MVVM.StarterKit.IConverterVector3;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// Binder that switches the <see cref="SphereCollider.center"/> property on a <see cref="SphereCollider"/>
-    /// between two values based on a bound boolean ViewModel value.
+    /// <see cref="SwitcherBinder{SphereCollider, Vector3, Converter{Vector3, Vector3}}"/> that switches the <see cref="SphereCollider.center"/>
+    /// property between two <see cref="Vector3"/> values based on the bound boolean ViewModel value.
     /// </summary>
+    /// <example>
+    /// Switch the SphereCollider center between two Vector3 values based on a boolean ViewModel value.
+    /// <code>
+    /// [View]
+    /// public partial class ExampleView
+    /// {
+    ///     [SerializeField]
+    ///     private SphereColliderCenterSwitcherBinder _isActive;
+    /// }
+    ///    
+    /// [ViewModel]
+    /// public partial class ExampleViewModel
+    /// {
+    ///     [Bind] public bool _isActive;
+    /// }
+    /// </code>
+    /// <code>
+    /// [View]
+    /// public partial class ExampleView
+    /// {
+    ///     [SerializeField] private SphereCollider _sphereCollider;
+    ///    
+    ///     private SphereColliderCenterSwitcherBinder IsActive => new(
+    ///         _sphereCollider,
+    ///         trueValue: new Vector3(0, 1, 0),
+    ///         falseValue: Vector3.zero);
+    /// }
+    ///    
+    /// [ViewModel]
+    /// public partial class ExampleViewModel
+    /// {
+    ///     [Bind] public bool _isActive;
+    /// }
+    /// </code>
+    /// </example>
     [Serializable]
     public sealed class SphereColliderCenterSwitcherBinder : SwitcherBinder<SphereCollider, Vector3, Converter>
     {
+        /// <summary>
+        /// Initializes a new instance of <see cref="SphereColliderCenterSwitcherBinder"/> targeting the specified <see cref="SphereCollider"/>
+        /// with no converter.
+        /// </summary>
+        /// <param name="target">The <see cref="SphereCollider"/> whose <see cref="SphereCollider.center"/> property is switched.</param>
+        /// <param name="trueValue">The <see cref="Vector3"/> center value applied when the bound boolean is <see langword="true"/>.</param>
+        /// <param name="falseValue">The <see cref="Vector3"/> center value applied when the bound boolean is <see langword="false"/>.</param>
+        /// <param name="mode">The binding mode.</param>
         public SphereColliderCenterSwitcherBinder(
             SphereCollider target,
             Vector3 trueValue,
@@ -24,6 +67,14 @@ namespace Aspid.MVVM.StarterKit
             BindMode mode)
             : this(target, trueValue, falseValue, converter: null, mode) { }
 
+        /// <summary>
+        /// Initializes a new instance of <see cref="SphereColliderCenterSwitcherBinder"/> targeting the specified <see cref="SphereCollider"/>.
+        /// </summary>
+        /// <param name="target">The <see cref="SphereCollider"/> whose <see cref="SphereCollider.center"/> property is switched.</param>
+        /// <param name="trueValue">The <see cref="Vector3"/> center value applied when the bound boolean is <see langword="true"/>.</param>
+        /// <param name="falseValue">The <see cref="Vector3"/> center value applied when the bound boolean is <see langword="false"/>.</param>
+        /// <param name="converter">The converter used to transform the bound boolean value, or <see langword="null"/> to use the default.</param>
+        /// <param name="mode">The binding mode.</param>
         public SphereColliderCenterSwitcherBinder(
             SphereCollider target,
             Vector3 trueValue,
@@ -32,6 +83,7 @@ namespace Aspid.MVVM.StarterKit
             BindMode mode = BindMode.OneWay)
             : base(target, trueValue, falseValue, converter, mode) { }
 
+        /// <inheritdoc/>
         protected override void SetValue(Vector3 value) =>
             Target.center = value;
     }

@@ -9,8 +9,8 @@ using Converter = Aspid.MVVM.StarterKit.IConverterInt;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// MonoBehaviour binder that sets an integer parameter on a Unity <see cref="Animator"/> when
-    /// the bound ViewModel value changes. Also implements <see cref="INumberBinder"/> to accept
+    /// <see cref="AnimatorSetParameterMonoBinder{T}"/> that sets an integer parameter on a <see cref="Animator"/>
+    /// when the bound ViewModel value changes. Also implements <see cref="INumberBinder"/> to accept
     /// <see cref="long"/>, <see cref="float"/>, and <see cref="double"/> values via truncating cast.
     /// </summary>
     [AddBinderContextMenu(typeof(Animator))]
@@ -20,6 +20,11 @@ namespace Aspid.MVVM.StarterKit
         [SerializeReferenceDropdown]
         [SerializeReference] private Converter _converter;
 
+        /// <summary>
+        /// Applies <paramref name="value"/> (optionally converted) to the integer Animator parameter.
+        /// Skips the call if the parameter already holds an approximately equal value.
+        /// </summary>
+        /// <param name="value">The integer value to apply.</param>
         protected sealed override void SetParameter(int value)
         {
             value = _converter?.Convert(value) ?? value;
@@ -27,17 +32,26 @@ namespace Aspid.MVVM.StarterKit
 
             CachedComponent.SetInteger(ParameterName, value);
         }
-        
+
+        /// <summary>
+        /// Forwards <paramref name="value"/> truncated to <see cref="int"/>.
+        /// </summary>
         [BinderLog]
         public void SetValue(long value) =>
             base.SetValue((int)value);
-        
+
+        /// <summary>
+        /// Forwards <paramref name="value"/> truncated to <see cref="int"/>.
+        /// </summary>
         [BinderLog]
-        public void SetValue(float value)=>
+        public void SetValue(float value) =>
             base.SetValue((int)value);
 
+        /// <summary>
+        /// Forwards <paramref name="value"/> truncated to <see cref="int"/>.
+        /// </summary>
         [BinderLog]
-        public void SetValue(double value)=>
+        public void SetValue(double value) =>
             base.SetValue((int)value);
     }
 }

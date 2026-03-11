@@ -4,15 +4,20 @@ using UnityEngine;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// MonoBehaviour binder that sets a boolean parameter on a Unity <see cref="Animator"/> when
-    /// the bound ViewModel value changes.
+    /// <see cref="AnimatorSetParameterMonoBinder{T}"/> that sets a boolean parameter on a <see cref="Animator"/>
+    /// when the bound ViewModel value changes.
     /// </summary>
     [AddBinderContextMenu(typeof(Animator))]
     [AddComponentMenu("Aspid/MVVM/Binders/Animator/Animator Binder – Set Bool")]
     public class AnimatorSetBoolMonoBinder : AnimatorSetParameterMonoBinder<bool>
     {
         [SerializeField] private bool _isInvert;
-        
+
+        /// <summary>
+        /// Applies <paramref name="value"/> (optionally inverted) to the boolean Animator parameter.
+        /// Skips the call if the parameter already holds the same value.
+        /// </summary>
+        /// <param name="value">The boolean value to apply.</param>
         protected sealed override void SetParameter(bool value)
         {
             value = _isInvert ? !value : value;

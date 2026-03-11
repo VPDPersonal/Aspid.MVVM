@@ -9,8 +9,8 @@ using Converter = Aspid.MVVM.StarterKit.IConverterFloat;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// MonoBehaviour binder that sets a float parameter on a Unity <see cref="Animator"/> when
-    /// the bound ViewModel value changes. Also implements <see cref="INumberBinder"/> to accept
+    /// <see cref="AnimatorSetParameterMonoBinder{T}"/> that sets a float parameter on a <see cref="Animator"/>
+    /// when the bound ViewModel value changes. Also implements <see cref="INumberBinder"/> to accept
     /// <see cref="int"/>, <see cref="long"/>, and <see cref="double"/> values.
     /// </summary>
     [AddBinderContextMenu(typeof(Animator))]
@@ -19,7 +19,12 @@ namespace Aspid.MVVM.StarterKit
     {
         [SerializeReferenceDropdown]
         [SerializeReference] private Converter _converter;
-        
+
+        /// <summary>
+        /// Applies <paramref name="value"/> (optionally converted) to the float Animator parameter.
+        /// Skips the call if the parameter already holds an approximately equal value.
+        /// </summary>
+        /// <param name="value">The float value to apply.</param>
         protected sealed override void SetParameter(float value)
         {
             value = _converter?.Convert(value) ?? value;
@@ -27,15 +32,24 @@ namespace Aspid.MVVM.StarterKit
 
             CachedComponent.SetFloat(ParameterName, value);
         }
-        
+
+        /// <summary>
+        /// Forwards <paramref name="value"/> cast to <see cref="float"/>.
+        /// </summary>
         [BinderLog]
         public void SetValue(int value) =>
             base.SetValue(value);
-        
+
+        /// <summary>
+        /// Forwards <paramref name="value"/> cast to <see cref="float"/>.
+        /// </summary>
         [BinderLog]
         public void SetValue(long value) =>
             base.SetValue(value);
-        
+
+        /// <summary>
+        /// Forwards <paramref name="value"/> cast to <see cref="float"/>.
+        /// </summary>
         [BinderLog]
         public void SetValue(double value) =>
             base.SetValue((float)value);

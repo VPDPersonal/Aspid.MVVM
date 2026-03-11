@@ -1,9 +1,4 @@
 using UnityEngine;
-#if UNITY_2023_1_OR_NEWER
-using Converter = Aspid.MVVM.StarterKit.IConverter<float, float>;
-#else
-using Converter = Aspid.MVVM.StarterKit.IConverterFloat;
-#endif
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
@@ -17,7 +12,7 @@ namespace Aspid.MVVM.StarterKit
     /// </remarks>
     [AddComponentMenu("Aspid/MVVM/Binders/UI/CanvasGroup/CanvasGroup Binder – Alpha Enum")]
     [AddBinderContextMenu(typeof(CanvasGroup), serializePropertyNames: "m_Alpha", SubPath = "Enum")]
-    public sealed class CanvasGroupAlphaEnumMonoBinder : EnumMonoBinder<CanvasGroup, float, Converter>
+    public sealed class CanvasGroupAlphaEnumMonoBinder : EnumFloatMonoBinder<CanvasGroup>
     {
         /// <summary>
         /// Called when the bound enum resolves to a value.

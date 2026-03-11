@@ -10,13 +10,14 @@ using Converter = Aspid.MVVM.StarterKit.IConverterColorBlock;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// MonoBehaviour binder that sets the <see cref="Selectable.colors"/> property on a <see cref="Selectable"/>
-    /// to a value resolved from an enum bound on the ViewModel.
+    /// <see cref="EnumMonoBinder{Selectable, ColorBlock, Converter}"/> that sets the <see cref="Selectable.colors"/>
+    /// property to a value resolved from the bound enum ViewModel value.
     /// </summary>
     [AddBinderContextMenu(typeof(Selectable), SubPath = "Enum")]
     [AddComponentMenu("Aspid/MVVM/Binders/UI/Selectable/Selectable Binder – ColorBlock Enum")]
     public sealed class SelectableColorBlockEnumMonoBinder : EnumMonoBinder<Selectable, ColorBlock, Converter>
     {
+        /// <inheritdoc/>
         protected override void SetValue(ColorBlock value) =>
             CachedComponent.colors = value;
     }

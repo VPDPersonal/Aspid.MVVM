@@ -10,13 +10,14 @@ using Converter = Aspid.MVVM.StarterKit.IConverterColorBlock;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// MonoBehaviour binder that switches the <see cref="Selectable.colors"/> property on a <see cref="Selectable"/>
-    /// between two values based on a bound boolean ViewModel property.
+    /// <see cref="SwitcherMonoBinder{Selectable, ColorBlock, Converter}"/> that switches the <see cref="Selectable.colors"/>
+    /// property between two values based on the bound boolean ViewModel value.
     /// </summary>
     [AddBinderContextMenu(typeof(Selectable), SubPath = "Switcher")]
     [AddComponentMenu("Aspid/MVVM/Binders/UI/Selectable/Selectable Binder – ColorBlock Switcher")]
     public sealed class SelectableColorBlockSwitcherMonoBinder : SwitcherMonoBinder<Selectable, ColorBlock, Converter>
     {
+        /// <inheritdoc/>
         protected override void SetValue(ColorBlock value) =>
             CachedComponent.colors = value;
     }

@@ -2,8 +2,7 @@
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// Identifies a single component of a <see cref="UnityEngine.Color"/> value.
-    /// Used by graphic color-component binders to specify which channel to read or write.
+    /// Identifies a single channel of a <see cref="UnityEngine.Color"/> value.
     /// </summary>
     public enum ColorComponent
     {
@@ -23,7 +22,7 @@ namespace Aspid.MVVM.StarterKit
         B,
         
         /// <summary>
-        /// The alpha (opacity) channel.
+        /// The alpha channel.
         /// </summary>
         A,
     }

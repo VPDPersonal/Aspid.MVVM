@@ -5,14 +5,17 @@ using UnityEngine.UI;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// MonoBehaviour binder that sets the <see cref="Graphic.color"/> property on a <see cref="Graphic"/>
-    /// when the bound ViewModel value changes. Supports <see cref="BindMode.OneWayToSource"/>: when binding
-    /// is established the current <see cref="Graphic.color"/> value is sent back to the ViewModel.
+    /// <see cref="ComponentColorMonoBinder{Graphic}"/> that binds the <see cref="Graphic.color"/> property.
     /// </summary>
+    /// <remarks>
+    /// Supports <see cref="BindMode.OneWayToSource"/>: when binding is established, the current color value
+    /// is sent back to the ViewModel.
+    /// </remarks>
     [AddComponentMenu("Aspid/MVVM/Binders/UI/Graphic/Graphic Binder – Color")]
     [AddBinderContextMenu(typeof(Graphic), serializePropertyNames: "m_Color")]
     public class GraphicColorMonoBinder : ComponentColorMonoBinder<Graphic>
     {
+        /// <inheritdoc/>
         protected sealed override Color Property
         {
             get => CachedComponent.color;

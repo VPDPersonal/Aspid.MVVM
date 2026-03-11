@@ -10,15 +10,17 @@ using Converter = Aspid.MVVM.StarterKit.IConverterMaterial;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// MonoBehaviour binder that sets the <see cref="Graphic.material"/> property on a <see cref="Graphic"/>
-    /// when the bound ViewModel value changes.
-    /// Supports <see cref="BindMode.OneWayToSource"/>: when binding is established the current value
-    /// is sent back to the ViewModel.
+    /// <see cref="ComponentMonoBinder{Graphic, Material, Converter}"/> that binds the <see cref="Graphic.material"/> property.
     /// </summary>
+    /// <remarks>
+    /// Supports <see cref="BindMode.OneWayToSource"/>: when binding is established, the current material value
+    /// is sent back to the ViewModel.
+    /// </remarks>
     [AddBinderContextMenu(typeof(Graphic), serializePropertyNames: "m_Material")]
     [AddComponentMenu("Aspid/MVVM/Binders/UI/Graphic/Graphic Binder – Material")]
     public class GraphicMaterialMonoBinder : ComponentMonoBinder<Graphic, Material, Converter>
     {
+        /// <inheritdoc/>
         protected sealed override Material Property
         {
             get => CachedComponent.material;

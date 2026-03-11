@@ -10,13 +10,14 @@ using Converter = Aspid.MVVM.StarterKit.IConverterMaterial;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// MonoBehaviour binder that sets the <see cref="Graphic.material"/> property on a <see cref="Graphic"/>
-    /// to a value resolved from an enum bound on the ViewModel.
+    /// <see cref="EnumMonoBinder{Graphic, Material, Converter}"/> that sets the <see cref="Graphic.material"/>
+    /// property to a value resolved from the bound enum ViewModel value.
     /// </summary>
     [AddComponentMenu("Aspid/MVVM/Binders/UI/Graphic/Graphic Binder – Material Enum")]
     [AddBinderContextMenu(typeof(Graphic), serializePropertyNames: "m_Material", SubPath = "Enum")]
     public sealed class GraphicMaterialEnumMonoBinder : EnumMonoBinder<Graphic, Material, Converter>
     {
+        /// <inheritdoc/>
         protected override void SetValue(Material value) =>
             CachedComponent.material = value;
     }

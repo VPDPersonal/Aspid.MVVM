@@ -3,14 +3,83 @@ using System;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
+    /// <summary>
+    /// <see cref="GenericOneWayBinder{T}"/> pre-configured with <see cref="BindMode.OneTime"/>,
+    /// applying the bound value exactly once.
+    /// </summary>
+    /// <typeparam name="T">The type of the value to bind.</typeparam>
+    /// <remarks>
+    /// The setter is called only for the first value pushed from the ViewModel.
+    /// </remarks>
+    /// <example>
+    /// Apply the player name from the ViewModel exactly once at binding time
+    /// <code>
+    /// [View]
+    /// public partial class ExampleView
+    /// {
+    ///     [SerializeField] private TMP_Text _label;
+    ///     
+    ///     private GenericOneTimeBinder&lt;string&gt; Name =>
+    ///         new(value => _label.text = value);
+    /// }
+    ///     
+    /// [ViewModel]
+    /// public partial class ExampleViewModel
+    /// {
+    ///     [Bind] public string _name;
+    /// }
+    /// </code>
+    /// </example>
     public class GenericOneTimeBinder<T> : GenericOneWayBinder<T>
     {
+        /// <summary>
+        /// Initializes a new instance of <see cref="GenericOneTimeBinder{T}"/>.
+        /// </summary>
+        /// <param name="setValue">The action invoked once with the bound value.</param>
         public GenericOneTimeBinder(Action<T?> setValue)
             : base(setValue, BindMode.OneTime) { }
     }
-    
+
+    /// <summary>
+    /// <see cref="GenericOneWayBinder{TTarget,T}"/> pre-configured with <see cref="BindMode.OneTime"/>,
+    /// applying the bound value exactly once.
+    /// </summary>
+    /// <typeparam name="TTarget">The type of the target object whose property is being set.</typeparam>
+    /// <typeparam name="T">The type of the value to bind.</typeparam>
+    /// <remarks>
+    /// The setter is called only for the first value pushed from the ViewModel.
+    /// </remarks>
+    /// <example>
+    /// Target-scoped variant — no closure over the label
+    /// <code>
+    /// [View]
+    /// public partial class ExampleView
+    /// {
+    ///     [SerializeField] private TMP_Text _label;
+    ///
+    /// 
+    ///     private GenericOneTimeBinder&lt;TMP_Text, string&gt; Name => new
+    ///     (
+    ///         _label,
+    ///         (label, value) => label.text = value
+    ///     );
+    /// }
+    ///
+    /// 
+    /// [ViewModel]
+    /// public partial class ExampleViewModel
+    /// {
+    ///     [Bind] public string _name;
+    /// }
+    /// </code>
+    /// </example>
     public class GenericOneTimeBinder<TTarget, T> : GenericOneWayBinder<TTarget, T>
     {
+        /// <summary>
+        /// Initializes a new instance of <see cref="GenericOneTimeBinder{TTarget,T}"/>.
+        /// </summary>
+        /// <param name="target">The target object whose property is updated.</param>
+        /// <param name="setValue">The action invoked once with the target and the bound value.</param>
         public GenericOneTimeBinder(TTarget target, Action<TTarget, T?> setValue)
             : base(target, setValue, BindMode.OneTime) { }
     }

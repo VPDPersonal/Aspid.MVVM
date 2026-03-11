@@ -9,6 +9,14 @@ using Converter = Aspid.MVVM.StarterKit.IConverterString;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
+    /// <summary>
+    /// <see cref="MonoBinder"/> that sets the <see cref="GameObject.tag"/> property of the
+    /// <see cref="GameObject"/> this component is attached to.
+    /// </summary>
+    /// <remarks>
+    /// Supports <see cref="BindMode.OneWayToSource"/>: when binding is established, the current
+    /// <see cref="GameObject.tag"/> value is sent back to the ViewModel.
+    /// </remarks>
     [AddComponentMenu("Aspid/MVVM/Binders/GameObject/GameObject Binder – Tag")]
     [AddBinderContextMenu(typeof(Component), Path = "Add General Binder/GameObject/GameObject Binder – Tag")]
     [BindModeOverride(BindMode.OneWay, BindMode.OneTime, BindMode.OneWayToSource)]
@@ -16,11 +24,16 @@ namespace Aspid.MVVM.StarterKit
         IBinder<string>,
         IReverseBinder<string>
     {
+        /// <inheritdoc/>
         public event Action<string> ValueChanged;
         
         [SerializeReferenceDropdown]
         [SerializeReference] private Converter _converter;
 
+        /// <summary>
+        /// Sets <see cref="GameObject.tag"/> to <paramref name="value"/> (optionally converted).
+        /// </summary>
+        /// <param name="value">The string value received from the ViewModel.</param>
         [BinderLog]
         public void SetValue(string value) =>
             gameObject.tag = GetConvertedValue(value);

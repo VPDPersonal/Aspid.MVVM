@@ -21,22 +21,15 @@ namespace Aspid.MVVM.StarterKit
     [BindModeOverride(modes: BindMode.OneTime)]
     public sealed partial class BehaviourEnabledByBindMonoBinder : MonoBinder, IAnyBinder
     {
+        [Tooltip("When enabled, inverts the bound bool value before applying it.")]
         [SerializeField] private bool _isInvert;
 
         private void OnEnable() =>
             SetEnable();
-
-        /// <summary>
-        /// Called when the ViewModel exposes a matching binding field.
-        /// Enables this <see cref="Behaviour"/> (or disables it when <c>_isInvert</c> is <see langword="true"/>).
-        /// </summary>
+        
         protected override void OnBound() => 
             SetEnable();
 
-        /// <summary>
-        /// Called when the binder is unbound from a ViewModel property.
-        /// Disables this <see cref="Behaviour"/> (or enables it when <c>_isInvert</c> is <see langword="true"/>).
-        /// </summary>
         protected override void OnUnbound() => 
             SetEnable();
         

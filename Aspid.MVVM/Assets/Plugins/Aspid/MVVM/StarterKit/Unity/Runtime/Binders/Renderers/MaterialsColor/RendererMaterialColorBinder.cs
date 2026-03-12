@@ -1,23 +1,20 @@
 #nullable enable
 using System;
 using UnityEngine;
-#if UNITY_2023_1_OR_NEWER
-using Converter = Aspid.MVVM.StarterKit.IConverter<UnityEngine.Color, UnityEngine.Color>;
-#else
-using Converter = Aspid.MVVM.StarterKit.IConverterColor;
-#endif
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// Binder that sets a color property on all materials of a <see cref="Renderer"/> when the bound ViewModel value changes.
+    /// <see cref="TargetColorBinder{Renderer}"/> that sets a named color property on all materials of a <see cref="Renderer"/>.
     /// The color property name defaults to <c>"_BaseColor"</c> and can be customized via the constructor.
     /// </summary>
+    /// <include file="XmlExampleDoc-Renderer-MaterialsColor-1.1.0.xml" path="doc//member[@name='RendererMaterialColorBinder']/*" />
     [Serializable]
     public class RendererMaterialColorBinder : TargetColorBinder<Renderer>
     {
         // ReSharper disable once MemberInitializerValueIgnored
+        [Tooltip("The name of the shader color property to set on all materials. Defaults to \"_BaseColor\".")]
         [SerializeField] private string _colorPropertyName = "_BaseColor";
         
         private int? _colorPropertyId;
@@ -34,19 +31,17 @@ namespace Aspid.MVVM.StarterKit
             }
         }
         
-        public RendererMaterialColorBinder(Renderer target, BindMode mode) 
-            : this(target, colorPropertyName: "_BaseColor", converter: null, mode) { }
-        
-        public RendererMaterialColorBinder(Renderer target, Converter converter, BindMode mode = BindMode.OneWay) 
-            : this(target, colorPropertyName: "_BaseColor", converter, mode) { }
-        
-        public RendererMaterialColorBinder(Renderer target, string colorPropertyName, BindMode mode) 
-            : this(target, colorPropertyName, converter: null, mode) { }
-        
+        /// <summary>
+        /// Initializes a new instance of <see cref="RendererMaterialColorBinder"/>.
+        /// </summary>
+        /// <param name="target">The <see cref="Renderer"/> to bind.</param>
+        /// <param name="colorPropertyName">The name of the shader color property to set. Defaults to <c>"_BaseColor"</c>.</param>
+        /// <param name="converter">The converter used to transform the bound <see cref="Color"/> value, or <see langword="null"/> to use the value as-is.</param>
+        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/>.</param>
         public RendererMaterialColorBinder(
             Renderer target,
             string colorPropertyName = "_BaseColor",
-            Converter? converter = null,
+            IConverter<Color, Color>? converter = null,
             BindMode mode = BindMode.OneWay)
             : base(target, converter, mode)
         {

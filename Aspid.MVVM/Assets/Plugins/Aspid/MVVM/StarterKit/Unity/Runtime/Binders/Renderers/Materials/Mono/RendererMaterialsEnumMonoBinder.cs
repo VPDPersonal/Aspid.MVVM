@@ -9,16 +9,21 @@ using Converter = Aspid.MVVM.StarterKit.IConverterMaterial;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// MonoBehaviour binder that sets the material color property on a <see cref="Renderer"/> component
-    /// to a value resolved from an enum bound on the ViewModel.
+    /// <see cref="EnumMonoBinder{Renderer, Material[]}"/> that sets the <see cref="Renderer.materials"/> array
+    /// based on the bound enum ViewModel value.
     /// </summary>
     [AddComponentMenu("Aspid/MVVM/Binders/Renderer/Renderer Binder – Materials Enum")]
     [AddBinderContextMenu(typeof(Renderer), serializePropertyNames: "m_Materials", SubPath = "Enum")]
     public sealed class RendererMaterialsEnumMonoBinder : EnumMonoBinder<Renderer, Material[]>
     {
+        [Tooltip("The optional converter applied to each material before it is assigned to the Renderer.")]
         [SerializeReferenceDropdown]
         [SerializeReference] private Converter _converter;
-        
+
+        /// <summary>
+        /// Called when the bound enum resolves to a value for the current element.
+        /// Sets the <see cref="Renderer.materials"/> array, applying the optional converter to each material.
+        /// </summary>
         protected override void SetValue(Material[] values) =>
             CachedComponent.SetMaterials(_converter, values);
     }

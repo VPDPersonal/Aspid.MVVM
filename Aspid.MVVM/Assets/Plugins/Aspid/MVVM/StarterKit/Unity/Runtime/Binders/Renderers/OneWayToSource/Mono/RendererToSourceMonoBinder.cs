@@ -4,8 +4,8 @@ using UnityEngine;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// MonoBehaviour binder that reads the current state of a <see cref="Renderer"/> component
-    /// back to the ViewModel in one-way-to-source mode.
+    /// <see cref="ComponentToSourceMonoBinder{Renderer}"/> that sends the cached <see cref="Renderer"/>
+    /// component reference to the ViewModel when binding is established.
     /// </summary>
     [AddBinderContextMenu(typeof(Renderer))]
     [AddComponentMenu("Aspid/MVVM/Binders/Renderer/Renderer To Source Binder")]

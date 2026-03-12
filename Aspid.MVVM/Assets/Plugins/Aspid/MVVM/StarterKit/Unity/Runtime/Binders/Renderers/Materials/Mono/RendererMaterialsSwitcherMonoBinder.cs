@@ -9,16 +9,21 @@ using Converter = Aspid.MVVM.StarterKit.IConverterMaterial;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// A MonoBehaviour binder that switches the materials array of a <see cref="Renderer"/> between two predefined
-    /// <see cref="Material"/> arrays based on a boolean ViewModel property.
+    /// <see cref="SwitcherMonoBinder{Renderer, Material[]}"/> that switches the <see cref="Renderer.materials"/> array
+    /// between two predefined <see cref="Material"/> arrays based on the bound boolean ViewModel value.
     /// </summary>
     [AddComponentMenu("Aspid/MVVM/Binders/Renderer/Renderer Binder – Materials Switcher")]
     [AddBinderContextMenu(typeof(Renderer), serializePropertyNames: "m_Materials", SubPath = "Switcher")]
     public sealed class RendererMaterialsSwitcherMonoBinder : SwitcherMonoBinder<Renderer, Material[]>
     {
+        [Tooltip("The optional converter applied to each material before it is assigned to the Renderer.")]
         [SerializeReferenceDropdown]
         [SerializeReference] private Converter _converter;
 
+        /// <summary>
+        /// Called when applying the selected value to the <see cref="Renderer.materials"/> array.
+        /// Applies the optional converter to each material before assignment.
+        /// </summary>
         protected override void SetValue(Material[] values) =>
             CachedComponent.SetMaterials(_converter, values);
     }

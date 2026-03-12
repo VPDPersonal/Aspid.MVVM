@@ -11,9 +11,12 @@ using Converter = Aspid.MVVM.StarterKit.IConverterMaterial;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// MonoBehaviour binder that sets the material or materials on a <see cref="Renderer"/> component
-    /// when the bound ViewModel value changes.
+    /// <see cref="ComponentMonoBinder{Renderer}"/> that sets the <see cref="Renderer.material"/> or <see cref="Renderer.materials"/> array.
     /// </summary>
+    /// <remarks>
+    /// Supports <see cref="BindMode.OneWayToSource"/>: when binding is established, the current material(s)
+    /// are sent back to the ViewModel.
+    /// </remarks>
     [AddComponentMenu("Aspid/MVVM/Binders/Renderer/Renderer Binder – Materials")]
     [AddBinderContextMenu(typeof(Renderer), serializePropertyNames: "m_Materials")]
     [BindModeOverride(BindMode.OneWay, BindMode.OneTime, BindMode.OneWayToSource)]
@@ -35,6 +38,7 @@ namespace Aspid.MVVM.StarterKit
             remove => _reverseMaterials -= value;
         }
         
+        [Tooltip("The optional converter applied to each material before it is assigned to the Renderer.")]
         [SerializeReferenceDropdown]
         [SerializeReference] private Converter _converter;
         
@@ -49,6 +53,10 @@ namespace Aspid.MVVM.StarterKit
         public void SetValue(IReadOnlyCollection<Material> values) =>
             CachedComponent.SetMaterials(_converter, values);
 
+        /// <summary>
+        /// Called after binding is established.
+        /// Sends the current material(s) back to the ViewModel when in <see cref="BindMode.OneWayToSource"/> mode.
+        /// </summary>
         protected override void OnBound()
         {
             if (Mode is BindMode.OneWayToSource)
@@ -72,6 +80,10 @@ namespace Aspid.MVVM.StarterKit
             }
         }
 
+        /// <summary>
+        /// Called when the binding is removed.
+        /// Sends <see langword="null"/> to all reverse subscribers.
+        /// </summary>
         protected override void OnUnbound()
         {
             _reverseMaterial?.Invoke(null);

@@ -1,23 +1,21 @@
 using UnityEngine;
-#if UNITY_2023_1_OR_NEWER
-using Converter = Aspid.MVVM.StarterKit.IConverter<UnityEngine.Color, UnityEngine.Color>;
-#else
-using Converter = Aspid.MVVM.StarterKit.IConverterColor;
-#endif
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// MonoBehaviour binder that sets a color property on all materials of a <see cref="Renderer"/> component
-    /// when the bound ViewModel value changes.
-    /// Supports <see cref="BindMode.OneWayToSource"/>: when binding is established the current value
-    /// is sent back to the ViewModel.
+    /// <see cref="ComponentColorMonoBinder{Renderer}"/> that sets a named color property on all materials of a <see cref="Renderer"/> component.
+    /// The color property name defaults to <c>"_BaseColor"</c> and can be configured in the Inspector.
     /// </summary>
+    /// <remarks>
+    /// Supports <see cref="BindMode.OneWayToSource"/>: when binding is established, the current color value
+    /// is sent back to the ViewModel.
+    /// </remarks>
     [AddBinderContextMenu(typeof(Renderer), serializePropertyNames: "m_Materials")]
     [AddComponentMenu("Aspid/MVVM/Binders/Renderer/Renderer Binder – MaterialsColor")]
-    public class RendererMaterialsColorMonoBinder : ComponentColorMonoBinder<Renderer>, IColorBinder
+    public class RendererMaterialsColorMonoBinder : ComponentColorMonoBinder<Renderer>
     {
+        [Tooltip("The name of the shader color property to set on all materials. Defaults to \"_BaseColor\".")]
         [SerializeField] private string _colorPropertyName = "_BaseColor";
         
         private int? _colorPropertyId;

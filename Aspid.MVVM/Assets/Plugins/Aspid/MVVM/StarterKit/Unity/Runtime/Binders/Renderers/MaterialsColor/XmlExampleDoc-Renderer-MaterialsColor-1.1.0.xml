@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doc>
+    <member name="RendererMaterialColorBinder">
+        <example>
+            Bind a Renderer material color property using a serialized binder field — the target Renderer is assigned in the Inspector.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField]
+                    private RendererMaterialColorBinder _color;
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [Bind] public Color _color;
+                }
+            </code>
+            &#xD;
+            Bind a Renderer material color property by constructing the binder in code.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField] private Renderer _renderer;
+                    &#xD;
+                    private RendererMaterialColorBinder Color =&gt;
+                        new(_renderer);
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [Bind] public Color _color;
+                }
+            </code>
+        </example>
+    </member>
+    <member name="RendererMaterialColorSwitcherBinder">
+        <example>
+            Switch a Renderer material color between two values using a serialized binder field — the target Renderer is assigned in the Inspector.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField]
+                    private RendererMaterialColorSwitcherBinder _isHighlighted;
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [Bind] public bool _isHighlighted;
+                }
+            </code>
+            &#xD;
+            Switch a Renderer material color between two values by constructing the binder in code.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField]
+                    private Renderer _renderer;
+                    &#xD;
+                    [SerializeField]
+                    private Color _highlightedColor;
+                    &#xD;
+                    [SerializeField]
+                    private Color _defaultColor;
+                    &#xD;
+                    private RendererMaterialColorSwitcherBinder IsHighlighted =&gt; new(
+                        _renderer, _highlightedColor, _defaultColor);
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [Bind] public bool _isHighlighted;
+                }
+            </code>
+        </example>
+    </member>
+</doc>

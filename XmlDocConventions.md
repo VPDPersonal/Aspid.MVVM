@@ -36,6 +36,21 @@ Use the `"Concrete"` prefix when the sealed class is a specific non-generic inst
 - Never start with `"A"`, `"The"`, or `"This"`.
 - Never describe what the parent already does — only what *this class adds*.
 - Do not repeat what is visible from the class declaration (e.g., `": IBinder<T>"` is already there).
+- **When a binder sets specific named properties** on a component, reference those properties by name instead of the component class alone. Use `<see cref="Component.PropertyName"/>` (without namespace prefix when already imported). If there are two affected properties, list both:
+
+```csharp
+// CORRECT — references specific properties
+/// <summary>
+/// <see cref="ComponentColorMonoBinder{LineRenderer}"/> that sets the <see cref="LineRenderer.startColor"/>
+/// and <see cref="LineRenderer.endColor"/> depending on the configured <see cref="LineRendererColorMode"/>.
+/// </summary>
+
+// WRONG — too vague, only references the component class
+/// <summary>
+/// <see cref="ComponentColorMonoBinder{LineRenderer}"/> that sets the <see cref="UnityEngine.LineRenderer"/>
+/// color depending on the configured <see cref="LineRendererColorMode"/>.
+/// </summary>
+```
 
 **Examples:**
 ```csharp

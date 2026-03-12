@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doc>
+    <member name="GraphicColorComponentBinder">
+        <example>
+            Bind a single color channel of the Graphic color property using a serialized binder field — the target Graphic is assigned in the Inspector.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField]
+                    private GraphicColorComponentBinder _alpha;
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [Bind] public float _alpha;
+                }
+            </code>
+            &#xD;
+            Bind a single color channel of the Graphic color property by constructing the binder in code.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField] private Graphic _graphic;
+                    &#xD;
+                    private GraphicColorComponentBinder Alpha =&gt;
+                        new(_graphic, ColorComponent.A);
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [Bind] public float _alpha;
+                }
+            </code>
+        </example>
+    </member>
+    <member name="GraphicColorComponentSwitcherBinder">
+        <example>
+            Switch a single color channel of the Graphic color between two values using a serialized binder field — the target Graphic is assigned in the Inspector.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField]
+                    private GraphicColorComponentSwitcherBinder _isVisible;
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [Bind] public bool _isVisible;
+                }
+            </code>
+            &#xD;
+            Switch a single color channel of the Graphic color between two values by constructing the binder in code.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField] private Graphic _graphic;
+                    &#xD;
+                    private GraphicColorComponentSwitcherBinder IsVisible =&gt; new(
+                        _graphic, trueColor: 1f, falseColor: 0f, ColorComponent.A);
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [Bind] public bool _isVisible;
+                }
+            </code>
+        </example>
+    </member>
+</doc>
+

@@ -15,25 +15,7 @@ namespace Aspid.MVVM.StarterKit
     /// instead of a plain <see cref="System.Action{T}"/>.
     /// Only non-two-way bind modes are supported; passing <see cref="BindMode.TwoWay"/> will throw.
     /// </remarks>
-    /// <example>
-    /// Update a score label each time the ViewModel value changes
-    /// <code>
-    /// [View]
-    /// public partial class ExampleView
-    /// {
-    ///     [SerializeField] private TMP_Text _label;
-    ///     
-    ///     private UnityGenericOneWayBinder&lt;int&gt; Score => new(
-    ///         value => _label.text = value.ToString());
-    /// }
-    ///     
-    /// [ViewModel]
-    /// public partial class ExampleViewModel
-    /// {
-    ///     [Bind] public int _score;
-    /// }
-    /// </code>
-    /// </example>
+    /// <include file="XmlExampleDoc-UnityGenerics-1.1.0.xml" path="doc//member[@name='UnityGenericOneWayBinder{1}']/*" />
     public class UnityGenericOneWayBinder<T> : Binder, IBinder<T>
     {
         private readonly UnityAction<T?> _setValue;
@@ -71,28 +53,7 @@ namespace Aspid.MVVM.StarterKit
     /// method-group-style setters on Unity components.
     /// Only non-two-way bind modes are supported; passing <see cref="BindMode.TwoWay"/> will throw.
     /// </remarks>
-    /// <example>
-    /// Target-scoped variant avoids capturing the label in a closure
-    /// <code>
-    /// [View]
-    /// public partial class ExampleView
-    /// {
-    ///     [SerializeField] private TMP_Text _label;
-    ///     
-    ///     private UnityGenericOneWayBinder&lt;TMP_Text, int&gt; Score => new
-    ///     (
-    ///         _label,
-    ///         (label, value) => label.text = value.ToString()
-    ///     );
-    /// }
-    ///     
-    /// [ViewModel]
-    /// public partial class ExampleViewModel
-    /// {
-    ///     [Bind] public int _score;
-    /// }
-    /// </code>
-    /// </example>
+    /// <include file="XmlExampleDoc-UnityGenerics-1.1.0.xml" path="doc//member[@name='UnityGenericOneWayBinder{2}']/*" />
     public class UnityGenericOneWayBinder<TTarget, T> : Binder, IBinder<T>
     {
         private readonly TTarget _target;

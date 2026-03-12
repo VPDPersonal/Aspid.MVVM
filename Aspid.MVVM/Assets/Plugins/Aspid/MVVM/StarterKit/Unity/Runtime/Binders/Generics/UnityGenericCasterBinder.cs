@@ -17,28 +17,7 @@ namespace Aspid.MVVM.StarterKit
     /// <see cref="UnityAction{T}"/> instead of a plain <see cref="System.Action{T}"/>.
     /// Only non-two-way bind modes are supported; passing <see cref="BindMode.TwoWay"/> will throw.
     /// </remarks>
-    /// <example>
-    /// Convert a float ViewModel value to a formatted string for a label
-    /// <code>
-    /// [View]
-    /// public partial class ExampleView
-    /// {
-    ///     [SerializeField] private TMP_Text _label;
-    ///     
-    ///     private UnityGenericCasterBinder&lt;float, string&gt; Distance = new
-    ///     (
-    ///         value => _label.text = value,
-    ///         new FloatToStringConverter("F1")
-    ///     );
-    /// }
-    ///     
-    /// [ViewModel]
-    /// public partial class ExampleViewModel
-    /// {
-    ///     [Bind] public float _distance;
-    /// }
-    /// </code>
-    /// </example>
+    /// <include file="XmlExampleDoc-UnityGenerics-1.1.0.xml" path="doc//member[@name='UnityGenericCasterBinder{2}']/*" />
     public class UnityGenericCasterBinder<TFrom, TTo> : Binder, IBinder<TFrom>
     {
         private readonly UnityAction<TTo?> _setValue;
@@ -87,29 +66,7 @@ namespace Aspid.MVVM.StarterKit
     /// without capturing them in a closure.
     /// Only non-two-way bind modes are supported; passing <see cref="BindMode.TwoWay"/> will throw.
     /// </remarks>
-    /// <example>
-    /// Target-scoped variant avoids capturing the label in a closure
-    /// <code>
-    /// [View]
-    /// public partial class ExampleView
-    /// {
-    ///     [SerializeField] private TMP_Text _label;
-    ///     
-    ///     private UnityGenericCasterBinder&lt;TMP_Text, float, string&gt; Distance = new
-    ///     (
-    ///         _label,
-    ///         (label, value) => label.text = value,
-    ///         new FloatToStringConverter("F1")
-    ///     );
-    /// }
-    ///     
-    /// [ViewModel]
-    /// public partial class ExampleViewModel
-    /// {
-    ///     [Bind] public float _distance;
-    /// }
-    /// </code>
-    /// </example>
+    /// <include file="XmlExampleDoc-UnityGenerics-1.1.0.xml" path="doc//member[@name='UnityGenericCasterBinder{3}']/*" />
     public class UnityGenericCasterBinder<TTarget, TFrom, TTo> : Binder, IBinder<TFrom>
     {
         private readonly TTarget _target;

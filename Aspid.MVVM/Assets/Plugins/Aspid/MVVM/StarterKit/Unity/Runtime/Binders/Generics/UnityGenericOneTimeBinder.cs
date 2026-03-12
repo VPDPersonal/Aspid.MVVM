@@ -13,25 +13,7 @@ namespace Aspid.MVVM.StarterKit
     /// Unity-specific variant of <see cref="GenericOneTimeBinder{T}"/> that accepts a <see cref="UnityAction{T}"/>.
     /// The setter is called only for the first value pushed from the ViewModel.
     /// </remarks>
-    /// <example>
-    /// Apply the player name from the ViewModel exactly once at binding time
-    /// <code>
-    /// [View]
-    /// public partial class ExampleView
-    /// {
-    ///     [SerializeField] private TMP_Text _label;
-    ///     
-    ///     private UnityGenericOneTimeBinder&lt;string&gt; Name =>
-    ///         new(value => _label.text = value);
-    /// }
-    ///     
-    /// [ViewModel]
-    /// public partial class ExampleViewModel
-    /// {
-    ///     [Bind] public string _name;
-    /// }
-    /// </code>
-    /// </example>
+    /// <include file="XmlExampleDoc-UnityGenerics-1.1.0.xml" path="doc//member[@name='UnityGenericOneTimeBinder{1}']/*" />
     public class UnityGenericOneTimeBinder<T> : UnityGenericOneWayBinder<T>
     {
         /// <summary>
@@ -52,30 +34,7 @@ namespace Aspid.MVVM.StarterKit
     /// Unity-specific variant of <see cref="GenericOneTimeBinder{TTarget,T}"/> that accepts a <see cref="UnityAction{T0,T1}"/>.
     /// The setter is called only for the first value pushed from the ViewModel.
     /// </remarks>
-    /// <example>
-    /// Target-scoped variant — no closure over the label
-    /// <code>
-    /// [View]
-    /// public partial class ExampleView
-    /// {
-    ///     [SerializeField] private TMP_Text _label;
-    ///
-    /// 
-    ///     private UnityGenericOneTimeBinder&lt;TMP_Text, string&gt; Name => new
-    ///     (
-    ///         _label,
-    ///         (label, value) => label.text = value
-    ///     );
-    /// }
-    ///
-    /// 
-    /// [ViewModel]
-    /// public partial class ExampleViewModel
-    /// {
-    ///     [Bind] public string _name;
-    /// }
-    /// </code>
-    /// </example>
+    /// <include file="XmlExampleDoc-UnityGenerics-1.1.0.xml" path="doc//member[@name='UnityGenericOneTimeBinder{2}']/*" />
     public class UnityGenericOneTimeBinder<TTarget, T> : UnityGenericOneWayBinder<TTarget, T>
     {
         /// <summary>

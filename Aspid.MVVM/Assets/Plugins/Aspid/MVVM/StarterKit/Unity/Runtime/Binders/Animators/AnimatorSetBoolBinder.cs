@@ -9,6 +9,7 @@ namespace Aspid.MVVM.StarterKit
     /// <see cref="AnimatorSetParameterBinder{T}"/> that sets a boolean parameter on a <see cref="Animator"/>
     /// when the bound ViewModel value changes.
     /// </summary>
+    /// <include file="XmlExampleDoc-Animator-1.1.0.xml" path="doc//member[@name='AnimatorSetBoolBinder']/*" />
     [Serializable]
     public class AnimatorSetBoolBinder : AnimatorSetParameterBinder<bool>
     {

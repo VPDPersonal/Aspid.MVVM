@@ -14,6 +14,7 @@ namespace Aspid.MVVM.StarterKit
     /// exposes an internal <c>SetTrigger</c> action to the ViewModel either as a plain <see cref="Action"/>
     /// or as an <see cref="IRelayCommand"/> whose <c>CanExecute</c> mirrors <see cref="CanExecute"/>.
     /// </remarks>
+    /// <include file="XmlExampleDoc-Animator-1.1.0.xml" path="doc//member[@name='AnimatorSetTriggerBinder']/*" />
     [Serializable]
     [BindModeOverride(BindMode.OneWayToSource)]
     public class AnimatorSetTriggerBinder : TargetBinder<Animator>,

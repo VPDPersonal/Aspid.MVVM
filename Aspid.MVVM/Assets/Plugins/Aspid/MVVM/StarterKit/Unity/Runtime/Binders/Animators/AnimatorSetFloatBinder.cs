@@ -14,6 +14,7 @@ namespace Aspid.MVVM.StarterKit
     /// <see cref="AnimatorSetParameterBinder{T}"/> that sets a float parameter on a <see cref="Animator"/>
     /// when the bound ViewModel value changes.
     /// </summary>
+    /// <include file="XmlExampleDoc-Animator-1.1.0.xml" path="doc//member[@name='AnimatorSetFloatBinder']/*" />
     [Serializable]
     public class AnimatorSetFloatBinder : AnimatorSetParameterBinder<float>
     {

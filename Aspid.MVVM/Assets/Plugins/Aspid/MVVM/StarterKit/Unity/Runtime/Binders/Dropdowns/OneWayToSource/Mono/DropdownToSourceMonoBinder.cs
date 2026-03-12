@@ -6,8 +6,8 @@ using UnityEngine;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// MonoBehaviour binder that reads the current state of a <see cref="TMP_Dropdown"/> component
-    /// back to the ViewModel in one-way-to-source mode when binding is established.
+    /// Concrete <see cref="ComponentToSourceMonoBinder{TMP_Dropdown}"/> that reads the current
+    /// <see cref="TMP_Dropdown"/> state back to the ViewModel when binding is established.
     /// </summary>
     [AddBinderContextMenu(typeof(TMP_Dropdown))]
     [AddComponentMenu("Aspid/MVVM/Binders/UI/Dropdown/Dropdown To Source Binder")]

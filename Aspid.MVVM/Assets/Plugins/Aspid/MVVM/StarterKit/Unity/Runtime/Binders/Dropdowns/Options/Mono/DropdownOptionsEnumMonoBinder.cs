@@ -14,6 +14,7 @@ namespace Aspid.MVVM.StarterKit
     [AddComponentMenu("Aspid/MVVM/Binders/UI/Dropdown/Dropdown Binder – Options Enum")]
     public sealed class DropdownOptionsEnumMonoBinder : EnumMonoBinder<TMP_Dropdown, List<TMP_Dropdown.OptionData>>
     {
+        /// <inheritdoc/>
         protected override void SetValue(List<TMP_Dropdown.OptionData> value) =>
             CachedComponent.options = value;
     }

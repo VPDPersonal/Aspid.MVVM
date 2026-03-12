@@ -3,40 +3,44 @@
 using TMPro;
 using System;
 using UnityEngine;
-#if UNITY_2023_1_OR_NEWER
-using Converter = Aspid.MVVM.StarterKit.IConverter<float, float>;
-#else
-using Converter = Aspid.MVVM.StarterKit.IConverterFloat;
-#endif
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// Binder that switches the <see cref="TMP_Dropdown.alphaFadeSpeed"/> property on a <see cref="TMP_Dropdown"/>
-    /// between two values based on a bound boolean ViewModel value.
+    /// <see cref="SwitcherFloatBinder{TMP_Dropdown}"/> that switches the <see cref="TMP_Dropdown.alphaFadeSpeed"/>
+    /// property between two <see cref="float"/> values based on the bound boolean ViewModel value.
     /// </summary>
+    /// <remarks>
+    /// The applied value is clamped to a minimum of 0.
+    /// </remarks>
+    /// <include file="XmlExampleDoc-Dropdown-AlphaFadeSpeed-1.1.0.xml" path="doc//member[@name='DropdownAlphaFadeSpeedSwitcherBinder']/*" />
     [Serializable]
-    public class DropdownAlphaFadeSpeedSwitcherBinder : SwitcherBinder<TMP_Dropdown, float, Converter>
+    public class DropdownAlphaFadeSpeedSwitcherBinder : SwitcherFloatBinder<TMP_Dropdown>
     {
+        /// <inheritdoc/>
         public DropdownAlphaFadeSpeedSwitcherBinder(
             TMP_Dropdown target,
             float trueValue,
             float falseValue,
-            BindMode mode = BindMode.OneWay)
-            : this(target, trueValue, falseValue, converter: null, mode) { }
-
-        public DropdownAlphaFadeSpeedSwitcherBinder(
-            TMP_Dropdown target,
-            float trueValue,
-            float falseValue,
-            Converter? converter,
+            IConverter<float, float>? converter,
             BindMode mode = BindMode.OneWay)
             : base(target, trueValue, falseValue, converter, mode) { }
 
+        /// <inheritdoc/>
         protected override void SetValue(float value) =>
             Target.alphaFadeSpeed = value;
 
+        /// <summary>
+        /// Called when converting the bound value before applying it to the <see cref="TMP_Dropdown.alphaFadeSpeed"/> property.
+        /// Clamps the converted value to a minimum of 0.
+        /// </summary>
+        /// <remarks>
+        /// When overriding this method, always call <c>base.GetConvertedValue(value)</c> to preserve
+        /// the clamping behavior.
+        /// </remarks>
+        /// <param name="value">The value to convert.</param>
+        /// <returns>The converted and clamped value.</returns>
         protected override float GetConvertedValue(float value) =>
             Mathf.Max(base.GetConvertedValue(value), 0);
     }

@@ -15,6 +15,7 @@ namespace Aspid.MVVM.StarterKit
     [AddComponentMenu("Aspid/MVVM/Binders/UI/Dropdown/Dropdown Binder – Options EnumGroup")]
     public sealed class DropdownOptionsEnumGroupMonoBinder : EnumGroupMonoBinder<TMP_Dropdown, List<TMP_Dropdown.OptionData>>
     {
+        /// <inheritdoc/>
         protected override void SetValue(TMP_Dropdown element, List<TMP_Dropdown.OptionData> value) =>
             element.options = value;
     }

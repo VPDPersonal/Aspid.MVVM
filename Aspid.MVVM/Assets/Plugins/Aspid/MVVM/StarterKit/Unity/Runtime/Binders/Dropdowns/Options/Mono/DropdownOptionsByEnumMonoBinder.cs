@@ -20,9 +20,16 @@ namespace Aspid.MVVM.StarterKit
     [AddComponentMenu("Aspid/MVVM/Binders/UI/Dropdown/Dropdown Binder – Options By Enum")]
     public class DropdownOptionsByEnumMonoBinder : ComponentMonoBinder<TMP_Dropdown>, IBinder<Enum>
     {
+        [Tooltip("The converter used to transform the enum value to dropdown option data. When null, the default string representation of each enum value is used.")]
         [SerializeReferenceDropdown]
         [SerializeReference] private Converter _converter;
 
+        /// <summary>
+        /// Clears the current options and repopulates <see cref="TMPro.TMP_Dropdown.options"/> from all values
+        /// of the enum type of <paramref name="value"/>, using the configured converter when assigned,
+        /// or the default string representation of each enum value otherwise.
+        /// </summary>
+        /// <param name="value">The bound enum value received from the ViewModel.</param>
         public void SetValue(Enum value)
         {
             CachedComponent.options ??= new List<TMP_Dropdown.OptionData>();

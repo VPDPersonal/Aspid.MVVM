@@ -7,11 +7,13 @@ using System.Collections.Generic;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// Binder that switches the options list on a <see cref="TMPro.TMP_Dropdown"/>
-    /// between two lists based on a bound boolean ViewModel value.
+    /// <see cref="SwitcherBinder{TMP_Dropdown, List{TMP_Dropdown.OptionData}}"/> that switches the
+    /// <see cref="TMP_Dropdown.options"/> list between two <see cref="List{T}"/> values based on the bound boolean ViewModel value.
     /// </summary>
+    /// <include file="XmlExampleDoc-Dropdown-Options-1.1.0.xml" path="doc//member[@name='DropdownOptionsSwitcherBinder']/*" />
     public sealed class DropdownOptionsSwitcherBinder : SwitcherBinder<TMP_Dropdown, List<TMP_Dropdown.OptionData>>
     {
+        /// <inheritdoc/>
         public DropdownOptionsSwitcherBinder(
             TMP_Dropdown target,
             List<TMP_Dropdown.OptionData> trueValue,
@@ -19,6 +21,7 @@ namespace Aspid.MVVM.StarterKit
             BindMode mode = BindMode.OneWay)
             : base(target, trueValue, falseValue, mode) { }
 
+        /// <inheritdoc/>
         protected override void SetValue(List<TMP_Dropdown.OptionData> value) =>
             Target.options = value;
     }

@@ -20,8 +20,10 @@ namespace Aspid.MVVM.StarterKit
         IBinder<IEnumerable<TMP_Dropdown.OptionData>>,
         IReverseBinder<List<TMP_Dropdown.OptionData>>
     {
+        /// <inheritdoc/>
         public event Action<List<TMP_Dropdown.OptionData>> ValueChanged;
 
+        /// <inheritdoc/>
         public void SetValue(List<string> values)
         {
             CachedComponent.ClearOptions();
@@ -30,6 +32,7 @@ namespace Aspid.MVVM.StarterKit
             CachedComponent.AddOptions(values);
         }
 
+        /// <inheritdoc/>
         public void SetValue(List<Sprite> values)
         {
             CachedComponent.ClearOptions();
@@ -38,6 +41,7 @@ namespace Aspid.MVVM.StarterKit
             CachedComponent.AddOptions(values);
         }
 
+        /// <inheritdoc/>
         public void SetValue(IEnumerable<TMP_Dropdown.OptionData> values)
         {
             CachedComponent.ClearOptions();
@@ -48,6 +52,10 @@ namespace Aspid.MVVM.StarterKit
                 CachedComponent.options.Add(value);
         }
 
+        /// <summary>
+        /// Called after binding is established.
+        /// In <see cref="BindMode.OneWayToSource"/> mode, propagates the current <see cref="TMP_Dropdown.options"/> list to the ViewModel.
+        /// </summary>
         protected override void OnBound()
         {
             if (Mode is BindMode.OneWayToSource)

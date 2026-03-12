@@ -19,7 +19,7 @@ namespace Aspid.MVVM.StarterKit
             set => Target.mute = value;
         }
 
-        /// <inheritdoc />
+        /// <inheritdoc/>
         public AudioSourceMuteBinder(AudioSource target, bool isInvert = false, BindMode mode = BindMode.OneWay)
             : base(target, isInvert, mode)
         {

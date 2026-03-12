@@ -19,7 +19,7 @@ namespace Aspid.MVVM.StarterKit
             set => Target.timeSamples = value;
         }
 
-        /// <inheritdoc />
+        /// <inheritdoc/>
         public AudioSourceTimeSamplesBinder(AudioSource target, IConverter<int, int>? converter = null, BindMode mode = BindMode.OneWay)
             : base(target, converter, mode)
         {

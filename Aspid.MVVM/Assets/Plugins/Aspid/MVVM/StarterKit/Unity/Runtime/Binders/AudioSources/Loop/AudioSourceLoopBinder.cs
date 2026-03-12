@@ -19,7 +19,7 @@ namespace Aspid.MVVM.StarterKit
             set => Target.loop = value;
         }
 
-        /// <inheritdoc />
+        /// <inheritdoc/>
         public AudioSourceLoopBinder(AudioSource target, bool isInvert = false, BindMode mode = BindMode.OneWay)
             : base(target, isInvert, mode)
         {

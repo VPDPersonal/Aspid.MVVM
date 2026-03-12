@@ -19,7 +19,7 @@ namespace Aspid.MVVM.StarterKit
             set => Target.dopplerLevel = value;
         }
 
-        /// <inheritdoc />
+        /// <inheritdoc/>
         public AudioSourceDopplerLevelBinder(AudioSource target, IConverter<float, float>? converter = null, BindMode mode = BindMode.OneWay)
             : base(target, converter, mode)
         {

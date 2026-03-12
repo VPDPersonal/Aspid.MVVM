@@ -16,7 +16,7 @@ namespace Aspid.MVVM.StarterKit
     [Serializable]
     public sealed class AudioSourceReverbZoneMixSwitcherBinder : SwitcherFloatBinder<AudioSource>
     {
-        /// <inheritdoc />
+        /// <inheritdoc/>
         public AudioSourceReverbZoneMixSwitcherBinder(
             AudioSource target,
             float trueValue,

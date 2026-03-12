@@ -22,7 +22,7 @@ namespace Aspid.MVVM.StarterKit
             set => Target.spatialBlend = value;
         }
         
-        /// <inheritdoc />
+        /// <inheritdoc/>
         public AudioSourceSpatialBlendBinder(AudioSource target, IConverter<float, float>? converter = null, BindMode mode = BindMode.OneWay)
             : base(target, converter, mode)
         {

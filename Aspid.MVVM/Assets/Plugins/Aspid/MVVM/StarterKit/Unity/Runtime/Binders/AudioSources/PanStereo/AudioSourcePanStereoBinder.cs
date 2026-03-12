@@ -22,7 +22,7 @@ namespace Aspid.MVVM.StarterKit
             set => Target.panStereo = value;
         }
 
-        /// <inheritdoc />
+        /// <inheritdoc/>
         public AudioSourcePanStereoBinder(AudioSource target, IConverter<float, float>? converter = null, BindMode mode = BindMode.OneWay)
             : base(target, converter, mode)
         {

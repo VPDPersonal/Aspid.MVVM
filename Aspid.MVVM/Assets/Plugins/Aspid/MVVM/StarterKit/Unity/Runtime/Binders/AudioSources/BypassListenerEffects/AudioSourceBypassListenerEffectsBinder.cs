@@ -19,7 +19,7 @@ namespace Aspid.MVVM.StarterKit
             set => Target.bypassListenerEffects = value;
         }
 
-        /// <inheritdoc />
+        /// <inheritdoc/>
         public AudioSourceBypassListenerEffectsBinder(AudioSource target, bool isInvert = false, BindMode mode = BindMode.OneWay)
             : base(target, isInvert, mode)
         {

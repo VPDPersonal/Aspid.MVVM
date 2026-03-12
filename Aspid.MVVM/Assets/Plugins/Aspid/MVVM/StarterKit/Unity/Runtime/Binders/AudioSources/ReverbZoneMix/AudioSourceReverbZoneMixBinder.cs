@@ -22,7 +22,7 @@ namespace Aspid.MVVM.StarterKit
             set => Target.reverbZoneMix = value;
         }
 
-        /// <inheritdoc />
+        /// <inheritdoc/>
         public AudioSourceReverbZoneMixBinder(AudioSource target, IConverter<float, float>? converter = null, BindMode mode = BindMode.OneWay)
             : base(target, converter, mode)
         {

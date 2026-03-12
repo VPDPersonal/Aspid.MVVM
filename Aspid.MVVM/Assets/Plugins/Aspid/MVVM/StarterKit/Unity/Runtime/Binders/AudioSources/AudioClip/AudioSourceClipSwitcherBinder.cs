@@ -13,7 +13,7 @@ namespace Aspid.MVVM.StarterKit
     [Serializable]
     public sealed class AudioSourceClipSwitcherBinder : SwitcherBinder<AudioSource, AudioClip?>
     {
-        /// <inheritdoc />
+        /// <inheritdoc/>
         public AudioSourceClipSwitcherBinder(
             AudioSource target,
             AudioClip? trueValue,

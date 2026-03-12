@@ -17,7 +17,7 @@ namespace Aspid.MVVM.StarterKit
     /// <typeparam name="TTarget">The type of target object that exposes the target property.</typeparam>
     public abstract class SwitcherColorBinder<TTarget> : SwitcherBinder<TTarget, Color, Converter>
     {
-        /// <inheritdoc />
+        /// <inheritdoc/>
         protected SwitcherColorBinder(
             TTarget target, 
             Color trueValue, 

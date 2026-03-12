@@ -19,7 +19,7 @@ namespace Aspid.MVVM.StarterKit
             set => Target.clip = value;
         }
 
-        /// <inheritdoc />
+        /// <inheritdoc/>
         public AudioSourceClipBinder(AudioSource target, BindMode mode = BindMode.OneWay)
             : base(target, mode)
         {

@@ -20,7 +20,7 @@ namespace Aspid.MVVM.StarterKit
             set => Target.outputAudioMixerGroup = value;
         }
 
-        /// <inheritdoc />
+        /// <inheritdoc/>
         public AudioSourceOutputAudioMixerGroupBinder(AudioSource target, BindMode mode = BindMode.OneWay)
             : base(target, mode)
         {

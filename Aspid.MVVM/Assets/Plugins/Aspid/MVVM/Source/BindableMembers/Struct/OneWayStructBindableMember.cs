@@ -75,7 +75,7 @@ namespace Aspid.MVVM
             _value = value;
         }
 
-        /// <inheritdoc />
+        /// <inheritdoc/>
         /// <summary>
         /// Adds the binder to the event with the current value and subscribes to the value change event.
         /// </summary>
@@ -124,7 +124,7 @@ namespace Aspid.MVVM
             }
         }
 
-        /// <inheritdoc />
+        /// <inheritdoc/>
         /// <summary>
         /// Removes the binder from the event subscription.
         /// </summary>

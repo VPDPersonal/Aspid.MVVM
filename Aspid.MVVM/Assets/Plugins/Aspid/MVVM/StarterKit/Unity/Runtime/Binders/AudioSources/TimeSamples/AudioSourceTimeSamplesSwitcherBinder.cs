@@ -13,7 +13,7 @@ namespace Aspid.MVVM.StarterKit
     [Serializable]
     public sealed class AudioSourceTimeSamplesSwitcherBinder : SwitcherIntBinder<AudioSource>
     {
-        /// <inheritdoc />
+        /// <inheritdoc/>
         public AudioSourceTimeSamplesSwitcherBinder(
             AudioSource target,
             int trueValue,

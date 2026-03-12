@@ -13,7 +13,7 @@ namespace Aspid.MVVM.StarterKit
     [Serializable]
     public sealed class AudioSourceDopplerLevelSwitcherBinder : SwitcherFloatBinder<AudioSource>
     {
-        /// <inheritdoc />
+        /// <inheritdoc/>
         public AudioSourceDopplerLevelSwitcherBinder(
             AudioSource target,
             float trueValue,

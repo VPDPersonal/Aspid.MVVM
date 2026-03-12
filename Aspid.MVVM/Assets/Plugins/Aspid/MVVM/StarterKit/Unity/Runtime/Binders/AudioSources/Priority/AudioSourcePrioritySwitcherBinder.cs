@@ -16,7 +16,7 @@ namespace Aspid.MVVM.StarterKit
     [Serializable]
     public sealed class AudioSourcePrioritySwitcherBinder : SwitcherIntBinder<AudioSource>
     {
-        /// <inheritdoc />
+        /// <inheritdoc/>
         public AudioSourcePrioritySwitcherBinder(
             AudioSource target,
             int trueValue,

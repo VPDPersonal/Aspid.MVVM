@@ -14,7 +14,7 @@ namespace Aspid.MVVM.StarterKit
     [Serializable]
     public sealed class AudioSourceOutputAudioMixerGroupSwitcherBinder : SwitcherBinder<AudioSource, AudioMixerGroup?>
     {
-        /// <inheritdoc />
+        /// <inheritdoc/>
         public AudioSourceOutputAudioMixerGroupSwitcherBinder(
             AudioSource target,
             AudioMixerGroup? trueValue,

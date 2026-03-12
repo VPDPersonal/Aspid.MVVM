@@ -16,7 +16,7 @@ namespace Aspid.MVVM.StarterKit
     [Serializable]
     public sealed class AudioSourceVolumeSwitcherBinder : SwitcherFloatBinder<AudioSource>
     {
-        /// <inheritdoc />
+        /// <inheritdoc/>
         public AudioSourceVolumeSwitcherBinder(
             AudioSource target,
             float trueValue,

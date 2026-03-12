@@ -22,7 +22,7 @@ namespace Aspid.MVVM.StarterKit
             set => Target.pitch = value;
         }
 
-        /// <inheritdoc />
+        /// <inheritdoc/>
         public AudioSourcePitchBinder(AudioSource target, IConverter<float, float>? converter = null, BindMode mode = BindMode.OneWay)
             : base(target, converter, mode)
         {

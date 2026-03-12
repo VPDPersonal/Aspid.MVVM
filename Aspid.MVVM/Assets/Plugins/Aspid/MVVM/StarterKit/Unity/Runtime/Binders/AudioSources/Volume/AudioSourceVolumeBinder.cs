@@ -22,7 +22,7 @@ namespace Aspid.MVVM.StarterKit
             set => Target.volume = value;
         }
 
-        /// <inheritdoc />
+        /// <inheritdoc/>
         public AudioSourceVolumeBinder(AudioSource target, IConverter<float, float>? converter = null, BindMode mode = BindMode.OneWay)
             : base(target, converter, mode)
         {

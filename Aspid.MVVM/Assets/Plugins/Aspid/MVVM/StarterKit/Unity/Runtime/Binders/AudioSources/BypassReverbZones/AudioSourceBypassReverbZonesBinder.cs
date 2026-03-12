@@ -19,7 +19,7 @@ namespace Aspid.MVVM.StarterKit
             set => Target.bypassReverbZones = value;
         }
 
-        /// <inheritdoc />
+        /// <inheritdoc/>
         public AudioSourceBypassReverbZonesBinder(AudioSource target, bool isInvert = false, BindMode mode = BindMode.OneWay)
             : base(target, isInvert, mode)
         {

@@ -15,7 +15,7 @@ namespace Aspid.MVVM.StarterKit
     /// <typeparam name="TTarget">The type of target object that exposes the target property.</typeparam>
     public abstract class SwitcherFloatBinder<TTarget> : SwitcherBinder<TTarget, float, Converter>
     {
-        /// <inheritdoc />
+        /// <inheritdoc/>
         protected SwitcherFloatBinder(
             TTarget target, 
             float trueValue, 

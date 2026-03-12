@@ -22,7 +22,7 @@ namespace Aspid.MVVM.StarterKit
             set => Target.priority = value;
         }
         
-        /// <inheritdoc />
+        /// <inheritdoc/>
         public AudioSourcePriorityBinder(AudioSource target, IConverter<int, int>? converter, BindMode mode = BindMode.OneWay)
             : base(target, converter, mode)
         {

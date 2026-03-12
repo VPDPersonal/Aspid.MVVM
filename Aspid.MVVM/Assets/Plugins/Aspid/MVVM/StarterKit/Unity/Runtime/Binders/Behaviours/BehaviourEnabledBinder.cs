@@ -19,7 +19,7 @@ namespace Aspid.MVVM.StarterKit
             set => Target.enabled = value;
         }
 
-        /// <inheritdoc />
+        /// <inheritdoc/>
         public BehaviourEnabledBinder(Behaviour target, bool isInvert = false, BindMode mode = BindMode.OneWay)
             : base(target, isInvert, mode)
         {

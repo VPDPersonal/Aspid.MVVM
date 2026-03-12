@@ -17,39 +17,7 @@ namespace Aspid.MVVM.StarterKit
     /// Supports <see cref="BindMode.OneWayToSource"/>: when binding is established, the current
     /// <see cref="GameObject.tag"/> value is sent back to the ViewModel.
     /// </remarks>
-    /// <example>
-    /// Set the GameObject tag based on a string ViewModel value.
-    /// <code>
-    /// [View]
-    /// public partial class ExampleView
-    /// {
-    ///     [SerializeField]
-    ///     private GameObjectTagBinder _tag;
-    /// }
-    ///    
-    /// [ViewModel]
-    /// public partial class ExampleViewModel
-    /// {
-    ///     [Bind] public string _tag;
-    /// }
-    /// </code>
-    /// <code>
-    /// [View]
-    /// public partial class ExampleView
-    /// {
-    ///     [SerializeField] private GameObject _target;
-    ///    
-    ///     private GameObjectTagBinder Tag =>
-    ///         new(_target);
-    /// }
-    ///    
-    /// [ViewModel]
-    /// public partial class ExampleViewModel
-    /// {
-    ///     [Bind] public string _tag;
-    /// }
-    /// </code>
-    /// </example>
+    /// <include file="XmlExampleDoc-GameObject-Tag-1.1.0.xml" path="doc//member[@name='GameObjectTagBinder']/*" />
     [Serializable]
     [BindModeOverride(BindMode.OneWay, BindMode.OneTime, BindMode.OneWayToSource)]
     public sealed class GameObjectTagBinder : TargetBinder<GameObject>,
@@ -62,15 +30,6 @@ namespace Aspid.MVVM.StarterKit
         [SerializeReferenceDropdown]
         [SerializeReference] private Converter? _converter;
         
-        /// <summary>
-        /// Initializes a new instance of <see cref="GameObjectTagBinder"/> targeting the specified <see cref="GameObject"/>
-        /// with no converter.
-        /// </summary>
-        /// <param name="target">The <see cref="GameObject"/> whose <see cref="GameObject.tag"/> property is bound.</param>
-        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/>.</param>
-        public GameObjectTagBinder(GameObject target, BindMode mode)
-            : this(target, converter: null, mode) { }
-
         /// <summary>
         /// Initializes a new instance of <see cref="GameObjectTagBinder"/> targeting the specified <see cref="GameObject"/>.
         /// </summary>

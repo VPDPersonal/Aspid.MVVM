@@ -14,39 +14,7 @@ namespace Aspid.MVVM.StarterKit
     /// <see cref="GameObject.activeSelf"/> value is sent back to the ViewModel.
     /// Supports optional value inversion via <c>_isInvert</c>.
     /// </remarks>
-    /// <example>
-    /// Show or hide a GameObject based on a boolean ViewModel value.
-    /// <code>
-    /// [View]
-    /// public partial class ExampleView
-    /// {
-    ///     [SerializeField]
-    ///     private GameObjectVisibleBinder _isVisible;
-    /// }
-    ///    
-    /// [ViewModel]
-    /// public partial class ExampleViewModel
-    /// {
-    ///     [Bind] public bool _isVisible;
-    /// }
-    /// </code>
-    /// <code>
-    /// [View]
-    /// public partial class ExampleView
-    /// {
-    ///     [SerializeField] private GameObject _panel;
-    ///    
-    ///     private GameObjectVisibleBinder IsVisible =>
-    ///         new(_panel);
-    /// }
-    ///    
-    /// [ViewModel]
-    /// public partial class ExampleViewModel
-    /// {
-    ///     [Bind] public bool _isVisible;
-    /// }
-    /// </code>
-    /// </example>
+    /// <include file="XmlExampleDoc-GameObject-Visible-1.1.0.xml" path="doc//member[@name='GameObjectVisibleBinder']/*" />
     [Serializable]
     [BindModeOverride(BindMode.OneWay, BindMode.OneTime, BindMode.OneWayToSource)]
     public sealed class GameObjectVisibleBinder : TargetBinder<GameObject>, 
@@ -58,16 +26,7 @@ namespace Aspid.MVVM.StarterKit
         
         [Tooltip("When enabled, inverts the bound bool value before applying it.")]
         [SerializeField] private bool _isInvert;
-
-        /// <summary>
-        /// Initializes a new instance of <see cref="GameObjectVisibleBinder"/> targeting the specified <see cref="GameObject"/>
-        /// with inversion disabled.
-        /// </summary>
-        /// <param name="target">The <see cref="GameObject"/> whose active state is bound.</param>
-        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/>.</param>
-        public GameObjectVisibleBinder(GameObject target, BindMode mode)
-            : this(target, isInvert: false, mode) { }
-
+        
         /// <summary>
         /// Initializes a new instance of <see cref="GameObjectVisibleBinder"/> targeting the specified <see cref="GameObject"/>.
         /// </summary>

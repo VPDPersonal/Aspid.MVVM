@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doc>
+    <member name="GameObjectTagBinder">
+        <example>
+            Bind the GameObject tag property using a serialized binder field — the target GameObject is assigned in the Inspector.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField]
+                    private GameObjectTagBinder _tag;
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [Bind] public string _tag;
+                }
+            </code>
+            &#xD;
+            Bind the GameObject tag property by constructing the binder in code.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField] private GameObject _target;
+                    &#xD;
+                    private GameObjectTagBinder Tag =>
+                        new(_target);
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [Bind] public string _tag;
+                }
+            </code>
+        </example>
+    </member>
+    <member name="GameObjectTagSwitcherBinder">
+        <example>
+            Switch the GameObject tag between two string values using a serialized binder field — the target GameObject is assigned in the Inspector.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField]
+                    private GameObjectTagSwitcherBinder _isPlayer;
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [Bind] public bool _isPlayer;
+                }
+            </code>
+            &#xD;
+            Switch the GameObject tag between two string values by constructing the binder in code.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField]
+                    private GameObject _target;
+                    &#xD;
+                    private GameObjectTagSwitcherBinder IsPlayer => new(
+                        _target, trueValue: "Player", falseValue: "Untagged");
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [Bind] public bool _isPlayer;
+                }
+            </code>
+        </example>
+    </member>
+</doc>

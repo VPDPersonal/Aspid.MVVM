@@ -186,20 +186,40 @@ Use `<inheritdoc/>` **only** when the behavior is trivially identical to the bas
 - Overrides that do exactly what the base/interface describes with no side effects.
 - `sealed override` methods whose only purpose is to delegate to an abstract method.
 
+**Constructors:**
+- Use `<inheritdoc/>` when the constructor's parameter list matches the parent's and the body only delegates (`base(...)`) or adds minor validation already implied by the parent docs (e.g., `ThrowExceptionIfMatches`).
+- Write full `<summary>` + `<param>` + `<exception>` when the constructor changes the effective API: fewer parameters, hardcoded arguments, or behavior not covered by the parent doc.
+
 **Do NOT use `<inheritdoc/>`:**
-- **Constructors** — constructors are not inherited members; `<inheritdoc/>` is unreliable here.
-  Always write full `<summary>` + `<param>` + `<exception>` on every constructor.
 - Overrides that have **additional or different behavior** not described by the interface/base.
 - Members where the inherited description would be misleading.
 
 ```csharp
-// CORRECT — full doc on constructor
+// CORRECT — <inheritdoc/> on pass-through constructor (same params, direct delegation)
+/// <inheritdoc/>
+public AudioSourceVolumeSwitcherBinder(
+    AudioSource target,
+    float trueValue,
+    float falseValue,
+    IConverter<float, float>? converter = null,
+    BindMode mode = BindMode.OneWay)
+    : base(target, trueValue, falseValue, converter, mode) { }
+
+// CORRECT — <inheritdoc/> with minor validation (ThrowExceptionIfMatches is implied by parent)
+/// <inheritdoc/>
+public AudioSourceVolumeBinder(AudioSource target, IConverter<float, float>? converter = null, BindMode mode = BindMode.OneWay)
+    : base(target, converter, mode)
+{
+    mode.ThrowExceptionIfMatches(BindMode.TwoWay);
+}
+
+// CORRECT — full doc because BindMode is hardcoded (API differs from parent)
 /// <summary>
-/// Initializes a new instance of <see cref="MyBinder"/> for the specified target.
+/// Initializes a new instance of <see cref="UnityGenericOneTimeBinder{T}"/>.
 /// </summary>
-/// <param name="target">The component to bind.</param>
-/// <param name="mode">The binding mode.</param>
-public MyBinder(Transform target, BindMode mode = BindMode.OneWay) : base(target, mode) { }
+/// <param name="setValue">The <see cref="UnityAction{T}"/> invoked once with the bound value.</param>
+public UnityGenericOneTimeBinder(UnityAction<T?> setValue)
+    : base(setValue, BindMode.OneTime) { }
 
 // CORRECT — inheritdoc on trivial explicit implementation
 /// <inheritdoc/>
@@ -252,124 +272,189 @@ Use `<remarks>` for implementation details that do not belong in `<summary>`.
 
 ## `<example>` on Non-MonoBinder Classes
 
-Pure C# binder classes (non-`MonoBehaviour`) **must** include an `<example>` block showing typical usage inside a `[View]` class.
+Pure C# binder classes (non-`MonoBehaviour`) **must** include an `<example>` block. Examples live in a **dedicated XML file** alongside the `.cs` file; the `.cs` file references it via `<include>`.
+
+### File layout
+
+Each binder folder contains one `XmlExampleDoc-[Category]-[SubCategory]-1.1.0.xml` file placed in the same directory as the `.cs` files. Related binders in the same folder (e.g., a binder and its switcher variant) share a single XML file:
+
+```
+AudioSources/Volume/
+    AudioSourceVolumeBinder.cs
+    AudioSourceVolumeSwitcherBinder.cs
+    XmlExampleDoc-AudioSource-Volume-1.1.0.xml
+```
+
+### Referencing from C# (`<include>`)
 
 **Placement:** After `<remarks>`, before the class declaration.
 
-**Format:** Short description text immediately after `<example>` (outside `<code>`), then the code block.
-
-**Rules:**
-- Description goes as plain text **before** `<code>`, not inside it.
-- The example class is always `[View] public partial class ExampleView`.
-- Always end with a `[ViewModel]` block showing the matching `[Bind]` field.
-- Leave **two blank** `///` lines between all sections (fields/binder, method groups, View/ViewModel).
-- Use `&lt;` and `&gt;` to escape generic type brackets inside `<code>`.
-- **Closure-based binders** (e.g., `Generic*Binder`): declare as a private property named after the VM field. Single-arg: `=> new(...)`. Multi-arg: `= new\n(\n    ...\n)`. Show the target `[SerializeField]` field above the binder.
-- **Serialized field binders** (e.g., `*Value`): declare as a private field with `= new()`. Add `[SerializeField]` only when the initial value is set in the Inspector. Use `OnInitializedInternal` / `OnDeinitializingInternal` (not `OnEnable` / `OnDisable`) for subscribe/unsubscribe.
+Replace the inline `<example>` block with an `<include>` tag:
 
 ```csharp
-// CORRECT — closure-based, single-argument
-/// <example>
-/// Update a score label each time the ViewModel value changes
-/// <code>
-/// [View]
-/// public partial class ExampleView
-/// {
-///     [SerializeField] private TMP_Text _label;
-///
-///
-///     private GenericOneWayBinder&lt;int&gt; Score => new(
-///         value => _label.text = value.ToString());
-/// }
-///
-///
-/// [ViewModel]
-/// public partial class ExampleViewModel
-/// {
-///     [Bind] public int _score;
-/// }
-/// </code>
-/// </example>
+/// <include file="XmlExampleDoc-AudioSource-Volume-1.1.0.xml" path="doc//member[@name='AudioSourceVolumeBinder']/*" />
+public class AudioSourceVolumeBinder ...
+```
 
-// CORRECT — closure-based, multi-argument
-/// <example>
-/// Synchronize a slider with a ViewModel float property in both directions
-/// <code>
-/// [View]
-/// public partial class ExampleView
-/// {
-///     [SerializeField] private Slider _slider;
-///
-///
-///     private GenericTwoWayBinder&lt;float&gt; Value = new
-///     (
-///         onChanged => _slider.onValueChanged.AddListener(onChanged),
-///         value => _slider.value = value
-///     );
-/// }
-///
-///
-/// [ViewModel]
-/// public partial class ExampleViewModel
-/// {
-///     [Bind] public float _value;
-/// }
-/// </code>
-/// </example>
+For **generic classes**, the member name uses `{N}` where N is the number of type parameters:
 
-// CORRECT — serialized field binder, receive-only (no [SerializeField] on binder)
-/// <example>
-/// Subscribe to ViewModel value changes and update the View on each update.
-/// <code>
-/// [View]
-/// public partial class ExampleView
-/// {
-///     [SerializeField] private TMP_Text _label;
-///     private OneWayValue&lt;int&gt; _score = new();
-///
-///
-///     private void OnInitializedInternal(IViewModel viewModel)
-///     {
-///         OnScoreChanged(_score.Value);
-///         _score.Changed += OnScoreChanged;
-///     }
-///
-///
-///     private void OnDeinitializingInternal() =>
-///         _score.Changed -= OnScoreChanged;
-///
-///
-///     private void OnScoreChanged(int? value) =>
-///         _label.text = value.ToString();
-/// }
-///
-///
-/// [ViewModel]
-/// public partial class ExampleViewModel
-/// {
-///     [Bind] public int _score;
-/// }
-/// </code>
-/// </example>
+```csharp
+/// <include file="XmlExampleDoc-Generics-1.1.0.xml" path="doc//member[@name='GenericOneWayBinder{1}']/*" />
+public class GenericOneWayBinder<T> ...
 
-// CORRECT — serialized field binder, Inspector-initialized ([SerializeField] on binder)
-/// <example>
-/// Push an Inspector-set value to the ViewModel when binding is established.
-/// <code>
-/// [View]
-/// public partial class ExampleView
-/// {
-///     [SerializeField] private OneWayToSourceValue&lt;string&gt; _name;
-/// }
-///
-///
-/// [ViewModel]
-/// public partial class ExampleViewModel
-/// {
-///     [Bind] public string _name;
-/// }
-/// </code>
-/// </example>
+/// <include file="XmlExampleDoc-Generics-1.1.0.xml" path="doc//member[@name='GenericOneWayBinder{2}']/*" />
+public class GenericOneWayBinder<TTarget, T> ...
+```
+
+### XML file structure
+
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<doc>
+    <member name="AudioSourceVolumeBinder">
+        <example>
+            Bind the AudioSource volume property using a serialized binder field — the target AudioSource is assigned in the Inspector.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField]
+                    private AudioSourceVolumeBinder _volume;
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [Bind] public float _volume;
+                }
+            </code>
+            &#xD;
+            Bind the AudioSource volume property by constructing the binder in code.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField] private AudioSource _audioSource;
+                    &#xD;
+                    private AudioSourceVolumeBinder Volume =&gt;
+                        new(_audioSource);
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [Bind] public float _volume;
+                }
+            </code>
+        </example>
+    </member>
+</doc>
+```
+
+**XML encoding rules:**
+- Blank lines between sections (fields/binder, View/ViewModel) → `&#xD;`
+- Lambda arrows (`=>`) → `=&gt;`
+- Generic angle brackets (`<`, `>`) → `&lt;` / `&gt;`
+- Code inside `<code>` uses 4-space indentation relative to the tag (16 spaces for class body, 20 spaces for members)
+
+### Content rules
+
+- Description text goes **before** `<code>`, not inside it.
+- The example class is always `[View] public partial class ExampleView`.
+- Always end with a `[ViewModel]` block showing the matching `[Bind]` field.
+- Use `&#xD;` for blank lines between all sections (fields/binder, View/ViewModel).
+- **Closure-based binders** (e.g., `Generic*Binder`): one `<code>` block. Declare as a private property named after the VM field. Single-arg: `=&gt; new(...)`. Multi-arg: `= new\n(\n    ...\n)`. Show the target `[SerializeField]` field above the binder, separated by `&#xD;`.
+- **Serialized field binders** (e.g., `*Value`): one `<code>` block. Declare as a private field with `= new()`. Add `[SerializeField]` only when the initial value is set in the Inspector. Use `OnInitializedInternal` / `OnDeinitializingInternal` (not `OnEnable` / `OnDisable`) for subscribe/unsubscribe.
+- **Target-based binders** (e.g., `TargetBinder<TTarget, T>` subclasses): **two `<code>` blocks** within one `<example>`, separated by a description + `&#xD;`. The first shows the serialized-field form — `[SerializeField]` on its own line, then the field; description: `"Bind the [X] property using a serialized binder field — the target [T] is assigned in the Inspector."`. The second shows the constructor form — target `[SerializeField]` inline, `&#xD;`, then a property `=&gt; new(target[, ...])`.
+- **Switcher binders**: same two-block structure. Description begins with `"Switch the [X] between two values"` instead of `"Bind the [X] property"`.
+
+**Examples:**
+
+```xml
+<!-- CORRECT — closure-based, single-argument (GenericOneWayBinder{1}) -->
+<member name="GenericOneWayBinder{1}">
+    <example>
+        Update a score label each time the ViewModel value changes
+        <code>
+            [View]
+            public partial class ExampleView
+            {
+                [SerializeField] private TMP_Text _label;
+                &#xD;
+                private GenericOneWayBinder&lt;int&gt; Score =&gt; new(
+                    value =&gt; _label.text = value.ToString());
+            }
+            &#xD;
+            [ViewModel]
+            public partial class ExampleViewModel
+            {
+                [Bind] public int _score;
+            }
+        </code>
+    </example>
+</member>
+
+<!-- CORRECT — closure-based, multi-argument (GenericTwoWayBinder{1}) -->
+<member name="GenericTwoWayBinder{1}">
+    <example>
+        Synchronize a slider with a ViewModel float property in both directions
+        <code>
+            [View]
+            public partial class ExampleView
+            {
+                [SerializeField] private Slider _slider;
+                &#xD;
+                private GenericTwoWayBinder&lt;float&gt; Value = new(
+                    onChanged =&gt; _slider.onValueChanged.AddListener(onChanged),
+                    value =&gt; _slider.value = value);
+            }
+            &#xD;
+            [ViewModel]
+            public partial class ExampleViewModel
+            {
+                [Bind] public float _value;
+            }
+        </code>
+    </example>
+</member>
+
+<!-- CORRECT — target-based binder: two <code> blocks -->
+<member name="AudioSourceClipBinder">
+    <example>
+        Bind the AudioSource clip property using a serialized binder field — the target AudioSource is assigned in the Inspector.
+        <code>
+            [View]
+            public partial class ExampleView
+            {
+                [SerializeField]
+                private AudioSourceClipBinder _clip;
+            }
+            &#xD;
+            [ViewModel]
+            public partial class ExampleViewModel
+            {
+                [Bind] public AudioClip _clip;
+            }
+        </code>
+        &#xD;
+        Bind the AudioSource clip property by constructing the binder in code.
+        <code>
+            [View]
+            public partial class ExampleView
+            {
+                [SerializeField] private AudioSource _audioSource;
+                &#xD;
+                private AudioSourceClipBinder Clip =&gt; new(_audioSource);
+            }
+            &#xD;
+            [ViewModel]
+            public partial class ExampleViewModel
+            {
+                [Bind] public AudioClip _clip;
+            }
+        </code>
+    </example>
+</member>
 ```
 
 ---
@@ -559,8 +644,8 @@ Use `"Provides utility methods"` for static helper classes without extension met
 Before committing, verify each public/protected member:
 
 - [ ] Class summary uses hierarchy style (starts with `<see cref="Parent"/>` or `"Concrete <see cref="..."/>"`)
-- [ ] Non-MonoBehaviour binder classes have an `<example>` block with a `[View]` class context
-- [ ] No `<inheritdoc/>` on constructors
+- [ ] Non-MonoBehaviour binder classes: examples are in a `XmlExampleDoc-*.xml` file in the same folder, referenced via `<include file="..." path="doc//member[@name='...']/*" />` in the `.cs` file
+- [ ] Constructors: `<inheritdoc/>` when the signature matches the parent (direct delegation ± minor validation); full `<summary>` + `<param>` + `<exception>` when the API changes (hardcoded args, fewer params, new behavior)
 - [ ] No `<inheritdoc/>` where behavior differs from the base
 - [ ] `<see langword="null"/>` / `<see langword="true"/>` / `<see langword="false"/>` — never `<c>null</c>` / `<c>true</c>` / `<c>false</c>`
 - [ ] Enum members referenced with `<see cref="Enum.Member"/>`

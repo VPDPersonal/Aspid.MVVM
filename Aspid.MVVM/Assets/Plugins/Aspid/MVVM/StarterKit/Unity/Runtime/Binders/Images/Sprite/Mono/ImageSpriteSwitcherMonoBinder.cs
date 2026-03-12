@@ -5,16 +5,21 @@ using UnityEngine.UI;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// MonoBehaviour binder that sets the sprite of the host <see cref="Image"/> component,
-    /// toggling between two pre-configured <see cref="Sprite"/> assets based on a bound boolean value.
-    /// Optionally disables the image when the selected sprite is <see langword="null"/>.
+    /// <see cref="SwitcherMonoBinder{Image, Sprite}"/> that switches the <see cref="Image.sprite"/> property
+    /// between two <see cref="Sprite"/> assets based on the bound boolean ViewModel value.
+    /// Optionally disables the <see cref="Image"/> when the selected sprite is <see langword="null"/>.
     /// </summary>
     [AddComponentMenu("Aspid/MVVM/Binders/UI/Image/Image Binder – Sprite Switcher")]
     [AddBinderContextMenu(typeof(Image), serializePropertyNames: "m_Sprite", SubPath = "Switcher")]
     public sealed class ImageSpriteSwitcherMonoBinder : SwitcherMonoBinder<Image, Sprite>
     {
+        [Tooltip("When enabled, disables the Image component when the selected sprite is null.")]
         [SerializeField] private bool _disabledWhenNull = true;
         
+        /// <summary>
+        /// Called when applying the selected value to the <see cref="Image.sprite"/> property.
+        /// Disables the <see cref="Image"/> when <paramref name="value"/> is <see langword="null"/> and <c>_disabledWhenNull</c> is <see langword="true"/>.
+        /// </summary>
         protected override void SetValue(Sprite value)
         {
             CachedComponent.sprite = value;

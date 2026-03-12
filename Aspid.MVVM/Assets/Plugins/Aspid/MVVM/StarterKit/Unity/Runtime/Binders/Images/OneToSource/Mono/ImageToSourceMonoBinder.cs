@@ -5,8 +5,8 @@ using UnityEngine.UI;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// MonoBehaviour binder that reads the current state of an <see cref="Image"/> component
-    /// back to the ViewModel in one-way-to-source mode.
+    /// <see cref="ComponentToSourceMonoBinder{Image}"/> that sends the cached <see cref="Image"/>
+    /// component reference to the ViewModel when binding is established.
     /// </summary>
     [AddBinderContextMenu(typeof(Image))]
     [AddComponentMenu("Aspid/MVVM/Binders/UI/Image/Image To Source Binder")]

@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doc>
+    <member name="ImageSpriteBinder">
+        <example>
+            Bind the Image sprite property using a serialized binder field — the target Image is assigned in the Inspector.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField]
+                    private ImageSpriteBinder _icon;
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [Bind] public Sprite _icon;
+                }
+            </code>
+            &#xD;
+            Bind the Image sprite property by constructing the binder in code.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField] private Image _image;
+                    &#xD;
+                    private ImageSpriteBinder Icon =&gt;
+                        new(_image);
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [Bind] public Sprite _icon;
+                }
+            </code>
+        </example>
+    </member>
+    <member name="ImageSpriteSwitcherBinder">
+        <example>
+            Switch the Image sprite between two values using a serialized binder field — the target Image is assigned in the Inspector.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField]
+                    private ImageSpriteSwitcherBinder _isSelected;
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [Bind] public bool _isSelected;
+                }
+            </code>
+            &#xD;
+            Switch the Image sprite between two values by constructing the binder in code.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField]
+                    private Image _image;
+                    &#xD;
+                    [SerializeField]
+                    private Sprite _selectedSprite;
+                    &#xD;
+                    [SerializeField]
+                    private Sprite _defaultSprite;
+                    &#xD;
+                    private ImageSpriteSwitcherBinder IsSelected =&gt; new(
+                        _image, _selectedSprite, _defaultSprite);
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [Bind] public bool _isSelected;
+                }
+            </code>
+        </example>
+    </member>
+</doc>

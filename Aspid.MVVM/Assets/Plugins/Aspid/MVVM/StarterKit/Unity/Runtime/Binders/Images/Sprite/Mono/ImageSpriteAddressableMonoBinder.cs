@@ -6,15 +6,17 @@ using UnityEngine.UI;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// MonoBehaviour binder that sets the <see cref="Image.sprite"/> property on an <see cref="Image"/> component
-    /// by loading a <see cref="Sprite"/> asset from the Addressables system when the bound ViewModel value changes.
+    /// <see cref="AddressableMonoBinder{Sprite, Image}"/> that sets the <see cref="Image.sprite"/> property
+    /// by loading a <see cref="Sprite"/> asset from the Addressables system based on the bound ViewModel value.
     /// Optionally disables the <see cref="Image"/> when the loaded sprite is <see langword="null"/>.
     /// </summary>
     [AddBinderContextMenu(typeof(Image), serializePropertyNames: "m_Sprite")]
     [AddComponentMenu("Aspid/MVVM/Binders/UI/Image/Image Binder – Sprite Addressable")]
     public sealed class ImageSpriteAddressableMonoBinder : AddressableMonoBinder<Sprite, Image>
     {
+        [Tooltip("The sprite displayed while the Addressable asset is loading or if loading fails.")]
         [SerializeField] private Sprite _defaultSprite;
+        [Tooltip("When enabled, disables the Image component when the loaded sprite is null.")]
         [SerializeField] private bool _disabledWhenNull = true;
 
         protected override Sprite GetDefaultAsset() => 

@@ -7,15 +7,18 @@ using UnityEngine.UI;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// Binder that switches the <see cref="UnityEngine.UI.Image.sprite"/> property on an <see cref="UnityEngine.UI.Image"/>
-    /// between two sprites based on a bound boolean ViewModel value.
-    /// Optionally disables the image when the selected sprite is <see langword="null"/>.
+    /// <see cref="SwitcherBinder{Image, Sprite?}"/> that switches the <see cref="Image.sprite"/> property
+    /// between two <see cref="Sprite"/> assets based on the bound boolean ViewModel value.
+    /// Optionally disables the <see cref="Image"/> when the selected sprite is <see langword="null"/>.
     /// </summary>
+    /// <include file="XmlExampleDoc-Image-Sprite-1.1.0.xml" path="doc//member[@name='ImageSpriteSwitcherBinder']/*" />
     [Serializable]
     public sealed class ImageSpriteSwitcherBinder : SwitcherBinder<Image, Sprite?>
     {
+        [Tooltip("When enabled, disables the Image component when the selected sprite is null.")]
         [SerializeField] private bool _disabledWhenNull;
 
+        /// <inheritdoc/>
         public ImageSpriteSwitcherBinder(
             Image target,
             Sprite trueValue,
@@ -34,6 +37,10 @@ namespace Aspid.MVVM.StarterKit
             _disabledWhenNull = disabledWhenNull;
         }
 
+        /// <summary>
+        /// Called when applying the selected value to the <see cref="Image.sprite"/> property.
+        /// Disables the <see cref="Image"/> when <paramref name="value"/> is <see langword="null"/> and <c>_disabledWhenNull</c> is <see langword="true"/>.
+        /// </summary>
         protected override void SetValue(Sprite? value)
         {
             Target.sprite = value;

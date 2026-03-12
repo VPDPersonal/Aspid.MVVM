@@ -7,12 +7,14 @@ using UnityEngine.UI;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// Binder that sets the <see cref="UnityEngine.UI.Image.sprite"/> property on an <see cref="UnityEngine.UI.Image"/>
-    /// when the bound ViewModel value changes. Optionally disables the Image when the sprite is null.
+    /// <see cref="TargetBinder{Image, Sprite}"/> that sets the <see cref="Image.sprite"/> property.
+    /// Optionally disables the <see cref="Image"/> when the bound sprite is <see langword="null"/>.
     /// </summary>
+    /// <include file="XmlExampleDoc-Image-Sprite-1.1.0.xml" path="doc//member[@name='ImageSpriteBinder']/*" />
     [Serializable]
     public class ImageSpriteBinder : TargetBinder<Image, Sprite>, IBinder<Texture2D?>
     {
+        [Tooltip("When enabled, disables the Image component when the bound sprite is null.")]
         [SerializeField] private bool _disabledWhenNull;
 
         protected sealed override Sprite? Property
@@ -25,9 +27,7 @@ namespace Aspid.MVVM.StarterKit
             }
         }
 
-        public ImageSpriteBinder(Image target, BindMode mode)
-            : this(target, disabledWhenNull: true, mode) { }
-
+        /// <inheritdoc/>
         public ImageSpriteBinder(Image target, bool disabledWhenNull = true, BindMode mode = BindMode.OneWay)
             : base(target, mode)
         {

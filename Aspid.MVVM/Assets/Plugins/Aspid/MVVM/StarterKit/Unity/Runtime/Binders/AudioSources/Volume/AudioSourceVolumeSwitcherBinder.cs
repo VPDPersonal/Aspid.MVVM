@@ -1,11 +1,6 @@
 #nullable enable
 using System;
 using UnityEngine;
-#if UNITY_2023_1_OR_NEWER
-using Converter = Aspid.MVVM.StarterKit.IConverter<float, float>;
-#else
-using Converter = Aspid.MVVM.StarterKit.IConverterFloat;
-#endif
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
@@ -17,72 +12,16 @@ namespace Aspid.MVVM.StarterKit
     /// <remarks>
     /// The bound value is clamped to [0, 1] before being applied to <see cref="AudioSource.volume"/>.
     /// </remarks>
-    /// <example>
-    /// Switch the AudioSource volume between two values based on a boolean ViewModel property.
-    /// <code>
-    /// [View]
-    /// public partial class ExampleView
-    /// {
-    ///     [SerializeField]
-    ///     private AudioSourceVolumeSwitcherBinder _isHighVolume;
-    /// }
-    ///    
-    /// [ViewModel]
-    /// public partial class ExampleViewModel
-    /// {
-    ///     [Bind] public bool _isHighVolume;
-    /// }
-    /// </code>
-    /// <code>
-    /// [View]
-    /// public partial class ExampleView
-    /// {
-    ///     [SerializeField] private AudioSource _audioSource;
-    ///     [SerializeField] private float _highVolume;
-    ///     [SerializeField] private float _lowVolume;
-    ///    
-    ///     private AudioSourceVolumeSwitcherBinder IsHighVolume => new(
-    ///         _audioSource, _highVolume, _lowVolume);
-    /// }
-    ///    
-    /// [ViewModel]
-    /// public partial class ExampleViewModel
-    /// {
-    ///     [Bind] public bool _isHighVolume;
-    /// }
-    /// </code>
-    /// </example>
+    /// <include file="XmlExampleDoc-AudioSource-Volume-1.1.0.xml" path="doc//member[@name='AudioSourceVolumeSwitcherBinder']/*" />
     [Serializable]
-    public sealed class AudioSourceVolumeSwitcherBinder : SwitcherBinder<AudioSource, float, Converter>
+    public sealed class AudioSourceVolumeSwitcherBinder : SwitcherFloatBinder<AudioSource>
     {
-        /// <summary>
-        /// Initializes a new instance of <see cref="AudioSourceVolumeSwitcherBinder"/> targeting the specified <see cref="AudioSource"/>
-        /// with no converter.
-        /// </summary>
-        /// <param name="target">The <see cref="AudioSource"/> whose <see cref="AudioSource.volume"/> property is switched.</param>
-        /// <param name="trueValue">The volume assigned when the bound value is <see langword="true"/>.</param>
-        /// <param name="falseValue">The volume assigned when the bound value is <see langword="false"/>.</param>
-        /// <param name="mode">The binding mode to use.</param>
+        /// <inheritdoc />
         public AudioSourceVolumeSwitcherBinder(
             AudioSource target,
             float trueValue,
             float falseValue,
-            BindMode mode)
-            : this(target, trueValue, falseValue, converter: null, mode) { }
-
-        /// <summary>
-        /// Initializes a new instance of <see cref="AudioSourceVolumeSwitcherBinder"/> targeting the specified <see cref="AudioSource"/>.
-        /// </summary>
-        /// <param name="target">The <see cref="AudioSource"/> whose <see cref="AudioSource.volume"/> property is switched.</param>
-        /// <param name="trueValue">The volume assigned when the bound value is <see langword="true"/>.</param>
-        /// <param name="falseValue">The volume assigned when the bound value is <see langword="false"/>.</param>
-        /// <param name="converter">The converter used to transform the bound float value, or <see langword="null"/> to use the default.</param>
-        /// <param name="mode">The binding mode to use.</param>
-        public AudioSourceVolumeSwitcherBinder(
-            AudioSource target,
-            float trueValue,
-            float falseValue,
-            Converter? converter = null,
+            IConverter<float, float>? converter = null,
             BindMode mode = BindMode.OneWay)
             : base(target, trueValue, falseValue, converter, mode) { }
 

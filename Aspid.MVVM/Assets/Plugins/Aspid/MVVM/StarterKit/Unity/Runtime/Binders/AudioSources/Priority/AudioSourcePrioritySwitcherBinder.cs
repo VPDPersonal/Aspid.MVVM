@@ -1,11 +1,6 @@
 #nullable enable
 using System;
 using UnityEngine;
-#if UNITY_2023_1_OR_NEWER
-using Converter = Aspid.MVVM.StarterKit.IConverter<int, int>;
-#else
-using Converter = Aspid.MVVM.StarterKit.IConverterInt;
-#endif
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
@@ -17,72 +12,16 @@ namespace Aspid.MVVM.StarterKit
     /// <remarks>
     /// The bound value is clamped to [0, 256] before being applied to <see cref="AudioSource.priority"/>.
     /// </remarks>
-    /// <example>
-    /// Switch the AudioSource priority between two values based on a boolean ViewModel property.
-    /// <code>
-    /// [View]
-    /// public partial class ExampleView
-    /// {
-    ///     [SerializeField]
-    ///     private AudioSourcePrioritySwitcherBinder _isHighPriority;
-    /// }
-    ///    
-    /// [ViewModel]
-    /// public partial class ExampleViewModel
-    /// {
-    ///     [Bind] public bool _isHighPriority;
-    /// }
-    /// </code>
-    /// <code>
-    /// [View]
-    /// public partial class ExampleView
-    /// {
-    ///     [SerializeField] private AudioSource _audioSource;
-    ///     [SerializeField] private int _highPriority;
-    ///     [SerializeField] private int _lowPriority;
-    ///    
-    ///     private AudioSourcePrioritySwitcherBinder IsHighPriority => new(
-    ///         _audioSource, _highPriority, _lowPriority);
-    /// }
-    ///    
-    /// [ViewModel]
-    /// public partial class ExampleViewModel
-    /// {
-    ///     [Bind] public bool _isHighPriority;
-    /// }
-    /// </code>
-    /// </example>
+    /// <include file="XmlExampleDoc-AudioSource-Priority-1.1.0.xml" path="doc//member[@name='AudioSourcePrioritySwitcherBinder']/*" />
     [Serializable]
-    public sealed class AudioSourcePrioritySwitcherBinder : SwitcherBinder<AudioSource, int, Converter>
+    public sealed class AudioSourcePrioritySwitcherBinder : SwitcherIntBinder<AudioSource>
     {
-        /// <summary>
-        /// Initializes a new instance of <see cref="AudioSourcePrioritySwitcherBinder"/> targeting the specified <see cref="AudioSource"/>
-        /// with no converter.
-        /// </summary>
-        /// <param name="target">The <see cref="AudioSource"/> whose <see cref="AudioSource.priority"/> property is switched.</param>
-        /// <param name="trueValue">The priority assigned when the bound value is <see langword="true"/>.</param>
-        /// <param name="falseValue">The priority assigned when the bound value is <see langword="false"/>.</param>
-        /// <param name="mode">The binding mode to use.</param>
+        /// <inheritdoc />
         public AudioSourcePrioritySwitcherBinder(
             AudioSource target,
             int trueValue,
             int falseValue,
-            BindMode mode)
-            : this(target, trueValue, falseValue, converter: null, mode) { }
-
-        /// <summary>
-        /// Initializes a new instance of <see cref="AudioSourcePrioritySwitcherBinder"/> targeting the specified <see cref="AudioSource"/>.
-        /// </summary>
-        /// <param name="target">The <see cref="AudioSource"/> whose <see cref="AudioSource.priority"/> property is switched.</param>
-        /// <param name="trueValue">The priority assigned when the bound value is <see langword="true"/>.</param>
-        /// <param name="falseValue">The priority assigned when the bound value is <see langword="false"/>.</param>
-        /// <param name="converter">The converter used to transform the bound integer value, or <see langword="null"/> to use the default.</param>
-        /// <param name="mode">The binding mode to use.</param>
-        public AudioSourcePrioritySwitcherBinder(
-            AudioSource target,
-            int trueValue,
-            int falseValue,
-            Converter? converter = null,
+            IConverter<int, int>? converter = null,
             BindMode mode = BindMode.OneWay)
             : base(target, trueValue, falseValue, converter, mode) { }
 

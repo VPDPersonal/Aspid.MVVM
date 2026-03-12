@@ -1,11 +1,6 @@
 #nullable enable
 using System;
 using UnityEngine;
-#if UNITY_2023_1_OR_NEWER
-using Converter = Aspid.MVVM.StarterKit.IConverter<float, float>;
-#else
-using Converter = Aspid.MVVM.StarterKit.IConverterFloat;
-#endif
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
@@ -16,39 +11,7 @@ namespace Aspid.MVVM.StarterKit
     /// <remarks>
     /// The bound value is clamped to [−3, 3] before being applied to <see cref="AudioSource.pitch"/>.
     /// </remarks>
-    /// <example>
-    /// Set the AudioSource pitch based on a float ViewModel value.
-    /// <code>
-    /// [View]
-    /// public partial class ExampleView
-    /// {
-    ///     [SerializeField]
-    ///     private AudioSourcePitchBinder _pitch;
-    /// }
-    ///    
-    /// [ViewModel]
-    /// public partial class ExampleViewModel
-    /// {
-    ///     [Bind] public float _pitch;
-    /// }
-    /// </code>
-    /// <code>
-    /// [View]
-    /// public partial class ExampleView
-    /// {
-    ///     [SerializeField] private AudioSource _audioSource;
-    ///    
-    ///     private AudioSourcePitchBinder Pitch =>
-    ///         new(_audioSource);
-    /// }
-    ///    
-    /// [ViewModel]
-    /// public partial class ExampleViewModel
-    /// {
-    ///     [Bind] public float _pitch;
-    /// }
-    /// </code>
-    /// </example>
+    /// <include file="XmlExampleDoc-AudioSource-Pitch-1.1.0.xml" path="doc//member[@name='AudioSourcePitchBinder']/*" />
     [Serializable]
     public class AudioSourcePitchBinder : TargetFloatBinder<AudioSource>
     {
@@ -59,22 +22,8 @@ namespace Aspid.MVVM.StarterKit
             set => Target.pitch = value;
         }
 
-        /// <summary>
-        /// Initializes a new instance of <see cref="AudioSourcePitchBinder"/> targeting the specified <see cref="AudioSource"/>
-        /// with no converter.
-        /// </summary>
-        /// <param name="target">The <see cref="AudioSource"/> whose <see cref="AudioSource.pitch"/> property is bound.</param>
-        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/>.</param>
-        public AudioSourcePitchBinder(AudioSource target, BindMode mode)
-            : this(target, converter: null, mode) { }
-
-        /// <summary>
-        /// Initializes a new instance of <see cref="AudioSourcePitchBinder"/> targeting the specified <see cref="AudioSource"/>.
-        /// </summary>
-        /// <param name="target">The <see cref="AudioSource"/> whose <see cref="AudioSource.pitch"/> property is bound.</param>
-        /// <param name="converter">The converter used to transform the bound float value, or <see langword="null"/> to use the default.</param>
-        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/>.</param>
-        public AudioSourcePitchBinder(AudioSource target, Converter? converter = null, BindMode mode = BindMode.OneWay)
+        /// <inheritdoc />
+        public AudioSourcePitchBinder(AudioSource target, IConverter<float, float>? converter = null, BindMode mode = BindMode.OneWay)
             : base(target, converter, mode)
         {
             mode.ThrowExceptionIfMatches(BindMode.TwoWay);

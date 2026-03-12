@@ -8,39 +8,7 @@ namespace Aspid.MVVM.StarterKit
     /// <summary>
     /// <see cref="TargetBoolBinder{AudioSource}"/> that sets the <see cref="AudioSource.bypassListenerEffects"/> property.
     /// </summary>
-    /// <example>
-    /// Set the AudioSource bypassListenerEffects property based on a boolean ViewModel value.
-    /// <code>
-    /// [View]
-    /// public partial class ExampleView
-    /// {
-    ///     [SerializeField]
-    ///     private AudioSourceBypassListenerEffectsBinder _bypassListenerEffects;
-    /// }
-    ///     
-    /// [ViewModel]
-    /// public partial class ExampleViewModel
-    /// {
-    ///     [Bind] public bool _bypassListenerEffects;
-    /// }
-    /// </code>
-    /// <code>
-    /// [View]
-    /// public partial class ExampleView
-    /// {
-    ///     [SerializeField] private AudioSource _audioSource;
-    ///     
-    ///     private AudioSourceBypassListenerEffectsBinder BypassListenerEffects =>
-    ///         new(_audioSource);
-    /// }
-    ///     
-    /// [ViewModel]
-    /// public partial class ExampleViewModel
-    /// {
-    ///     [Bind] public bool _bypassListenerEffects;
-    /// }
-    /// </code>
-    /// </example>
+    /// <include file="XmlExampleDoc-AudioSource-BypassListenerEffects-1.1.0.xml" path="doc//member[@name='AudioSourceBypassListenerEffectsBinder']/*"></include>
     [Serializable]
     public class AudioSourceBypassListenerEffectsBinder : TargetBoolBinder<AudioSource>
     {
@@ -51,21 +19,7 @@ namespace Aspid.MVVM.StarterKit
             set => Target.bypassListenerEffects = value;
         }
 
-        /// <summary>
-        /// Initializes a new instance of <see cref="AudioSourceBypassListenerEffectsBinder"/> targeting the specified <see cref="AudioSource"/>
-        /// with inversion disabled.
-        /// </summary>
-        /// <param name="target">The <see cref="AudioSource"/> whose <see cref="AudioSource.bypassListenerEffects"/> property is bound.</param>
-        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/>.</param>
-        public AudioSourceBypassListenerEffectsBinder(AudioSource target, BindMode mode)
-            : this(target, isInvert: false, mode) { }
-
-        /// <summary>
-        /// Initializes a new instance of <see cref="AudioSourceBypassListenerEffectsBinder"/> targeting the specified <see cref="AudioSource"/>.
-        /// </summary>
-        /// <param name="target">The <see cref="AudioSource"/> whose <see cref="AudioSource.bypassListenerEffects"/> property is bound.</param>
-        /// <param name="isInvert">When <see langword="true"/>, the bound boolean value is inverted before being applied.</param>
-        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/>.</param>
+        /// <inheritdoc />
         public AudioSourceBypassListenerEffectsBinder(AudioSource target, bool isInvert = false, BindMode mode = BindMode.OneWay)
             : base(target, isInvert, mode)
         {

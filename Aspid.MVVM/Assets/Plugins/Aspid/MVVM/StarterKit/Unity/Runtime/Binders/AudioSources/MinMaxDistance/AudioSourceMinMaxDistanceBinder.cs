@@ -18,39 +18,7 @@ namespace Aspid.MVVM.StarterKit
     /// Also implements <see cref="INumberBinder"/>, allowing scalar numeric values to set both
     /// <see cref="AudioSource.minDistance"/> and <see cref="AudioSource.maxDistance"/> simultaneously.
     /// </remarks>
-    /// <example>
-    /// Set the AudioSource min/max distance based on a Vector2 ViewModel value.
-    /// <code>
-    /// [View]
-    /// public partial class ExampleView
-    /// {
-    ///     [SerializeField]
-    ///     private AudioSourceMinMaxDistanceBinder _minMaxDistance;
-    /// }
-    ///    
-    /// [ViewModel]
-    /// public partial class ExampleViewModel
-    /// {
-    ///     [Bind] public Vector2 _minMaxDistance;
-    /// }
-    /// </code>
-    /// <code>
-    /// [View]
-    /// public partial class ExampleView
-    /// {
-    ///     [SerializeField] private AudioSource _audioSource;
-    ///    
-    ///     private AudioSourceMinMaxDistanceBinder MinMaxDistance =>
-    ///         new(_audioSource);
-    /// }
-    ///    
-    /// [ViewModel]
-    /// public partial class ExampleViewModel
-    /// {
-    ///     [Bind] public Vector2 _minMaxDistance;
-    /// }
-    /// </code>
-    /// </example>
+    /// <include file="XmlExampleDoc-AudioSource-MinMaxDistance-1.1.0.xml" path="doc//member[@name='AudioSourceMinMaxDistanceBinder']/*" />
     [Serializable]
     public class AudioSourceMinMaxDistanceBinder : TargetBinder<AudioSource, Vector2>, INumberBinder
     {
@@ -67,43 +35,6 @@ namespace Aspid.MVVM.StarterKit
         }
 
         /// <summary>
-        /// Initializes a new instance of <see cref="AudioSourceMinMaxDistanceBinder"/> targeting the specified <see cref="AudioSource"/>
-        /// with the default distance mode (<see cref="AudioSourceDistanceMode.Range"/>) and no converter.
-        /// </summary>
-        /// <param name="target">The <see cref="AudioSource"/> whose min/max distance is bound.</param>
-        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/>.</param>
-        public AudioSourceMinMaxDistanceBinder(
-            AudioSource target,
-            BindMode mode)
-            : this(target, AudioSourceDistanceMode.Range, converter: null, mode) { }
-
-        /// <summary>
-        /// Initializes a new instance of <see cref="AudioSourceMinMaxDistanceBinder"/> targeting the specified <see cref="AudioSource"/>
-        /// with the specified distance mode and no converter.
-        /// </summary>
-        /// <param name="target">The <see cref="AudioSource"/> whose min/max distance is bound.</param>
-        /// <param name="distanceMode">The <see cref="AudioSourceDistanceMode"/> that determines which distance component is updated.</param>
-        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/>.</param>
-        public AudioSourceMinMaxDistanceBinder(
-            AudioSource target,
-            AudioSourceDistanceMode distanceMode,
-            BindMode mode)
-            : this(target, distanceMode, converter: null, mode) { }
-
-        /// <summary>
-        /// Initializes a new instance of <see cref="AudioSourceMinMaxDistanceBinder"/> targeting the specified <see cref="AudioSource"/>
-        /// with the default distance mode (<see cref="AudioSourceDistanceMode.Range"/>) and the specified converter.
-        /// </summary>
-        /// <param name="target">The <see cref="AudioSource"/> whose min/max distance is bound.</param>
-        /// <param name="converter">The converter used to transform the bound <see cref="Vector2"/> value, or <see langword="null"/> to use none.</param>
-        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/>.</param>
-        public AudioSourceMinMaxDistanceBinder(
-            AudioSource target,
-            Converter? converter,
-            BindMode mode = BindMode.OneWay)
-            : this(target, AudioSourceDistanceMode.Range, converter, mode) { }
-
-        /// <summary>
         /// Initializes a new instance of <see cref="AudioSourceMinMaxDistanceBinder"/> targeting the specified <see cref="AudioSource"/>.
         /// </summary>
         /// <param name="target">The <see cref="AudioSource"/> whose min/max distance is bound.</param>
@@ -118,8 +49,8 @@ namespace Aspid.MVVM.StarterKit
             : base(target, mode)
         {
             mode.ThrowExceptionIfMatches(BindMode.TwoWay);
-            _distanceMode = distanceMode;
             _converter = converter;
+            _distanceMode = distanceMode;
         }
 
         /// <summary>

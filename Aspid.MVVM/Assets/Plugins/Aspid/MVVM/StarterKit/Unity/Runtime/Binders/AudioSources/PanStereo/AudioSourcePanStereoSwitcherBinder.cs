@@ -1,11 +1,6 @@
 #nullable enable
 using System;
 using UnityEngine;
-#if UNITY_2023_1_OR_NEWER
-using Converter = Aspid.MVVM.StarterKit.IConverter<float, float>;
-#else
-using Converter = Aspid.MVVM.StarterKit.IConverterFloat;
-#endif
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
@@ -17,72 +12,16 @@ namespace Aspid.MVVM.StarterKit
     /// <remarks>
     /// The bound value is clamped to [−1, 1] before being applied to <see cref="AudioSource.panStereo"/>.
     /// </remarks>
-    /// <example>
-    /// Switch the AudioSource panStereo between two values based on a boolean ViewModel property.
-    /// <code>
-    /// [View]
-    /// public partial class ExampleView
-    /// {
-    ///     [SerializeField]
-    ///     private AudioSourcePanStereoSwitcherBinder _isPanLeft;
-    /// }
-    ///    
-    /// [ViewModel]
-    /// public partial class ExampleViewModel
-    /// {
-    ///     [Bind] public bool _isPanLeft;
-    /// }
-    /// </code>
-    /// <code>
-    /// [View]
-    /// public partial class ExampleView
-    /// {
-    ///     [SerializeField] private AudioSource _audioSource;
-    ///     [SerializeField] private float _panLeft;
-    ///     [SerializeField] private float _panRight;
-    ///    
-    ///     private AudioSourcePanStereoSwitcherBinder IsPanLeft => new(
-    ///         _audioSource, _panLeft, _panRight);
-    /// }
-    ///    
-    /// [ViewModel]
-    /// public partial class ExampleViewModel
-    /// {
-    ///     [Bind] public bool _isPanLeft;
-    /// }
-    /// </code>
-    /// </example>
+    /// <include file="XmlExampleDoc-AudioSource-PanStereo-1.1.0.xml" path="doc//member[@name='AudioSourcePanStereoSwitcherBinder']/*" />
     [Serializable]
-    public sealed class AudioSourcePanStereoSwitcherBinder : SwitcherBinder<AudioSource, float, Converter>
+    public sealed class AudioSourcePanStereoSwitcherBinder : SwitcherFloatBinder<AudioSource>
     {
-        /// <summary>
-        /// Initializes a new instance of <see cref="AudioSourcePanStereoSwitcherBinder"/> targeting the specified <see cref="AudioSource"/>
-        /// with no converter.
-        /// </summary>
-        /// <param name="target">The <see cref="AudioSource"/> whose <see cref="AudioSource.panStereo"/> property is switched.</param>
-        /// <param name="trueValue">The pan position assigned when the bound value is <see langword="true"/>.</param>
-        /// <param name="falseValue">The pan position assigned when the bound value is <see langword="false"/>.</param>
-        /// <param name="mode">The binding mode to use.</param>
+        /// <inheritdoc />
         public AudioSourcePanStereoSwitcherBinder(
             AudioSource target,
             float trueValue,
             float falseValue,
-            BindMode mode)
-            : this(target, trueValue, falseValue, converter: null, mode) { }
-
-        /// <summary>
-        /// Initializes a new instance of <see cref="AudioSourcePanStereoSwitcherBinder"/> targeting the specified <see cref="AudioSource"/>.
-        /// </summary>
-        /// <param name="target">The <see cref="AudioSource"/> whose <see cref="AudioSource.panStereo"/> property is switched.</param>
-        /// <param name="trueValue">The pan position assigned when the bound value is <see langword="true"/>.</param>
-        /// <param name="falseValue">The pan position assigned when the bound value is <see langword="false"/>.</param>
-        /// <param name="converter">The converter used to transform the bound float value, or <see langword="null"/> to use the default.</param>
-        /// <param name="mode">The binding mode to use.</param>
-        public AudioSourcePanStereoSwitcherBinder(
-            AudioSource target,
-            float trueValue,
-            float falseValue,
-            Converter? converter = null,
+            IConverter<float, float>? converter = null,
             BindMode mode = BindMode.OneWay)
             : base(target, trueValue, falseValue, converter, mode) { }
 

@@ -5,8 +5,9 @@ using UnityEngine.UI;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// MonoBehaviour binder that reads the current state of a <see cref="UnityEngine.UI.LayoutGroup"/> component
-    /// back to the ViewModel in one-way-to-source mode when binding is established.
+    /// <see cref="ComponentToSourceMonoBinder{LayoutGroup}"/> that sends the
+    /// <see cref="UnityEngine.UI.LayoutGroup"/> component reference back to the ViewModel
+    /// when binding is established.
     /// </summary>
     [AddBinderContextMenu(typeof(LayoutGroup))]
     [AddComponentMenu("Aspid/MVVM/Binders/UI/LayoutGroup/LayoutGroup To Source Binder")]

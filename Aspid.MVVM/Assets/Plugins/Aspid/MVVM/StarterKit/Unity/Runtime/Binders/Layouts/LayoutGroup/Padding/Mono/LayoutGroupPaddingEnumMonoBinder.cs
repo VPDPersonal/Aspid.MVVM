@@ -10,13 +10,17 @@ using Converter = Aspid.MVVM.StarterKit.IConverterRectOffset;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// MonoBehaviour binder that sets the <see cref="UnityEngine.UI.LayoutGroup.padding"/> on a <see cref="UnityEngine.UI.LayoutGroup"/>
-    /// to a value resolved from an enum bound on the ViewModel.
+    /// <see cref="EnumMonoBinder{LayoutGroup, RectOffset, Converter}"/> that sets the
+    /// <see cref="UnityEngine.UI.LayoutGroup.padding"/> property to a value resolved from the bound enum ViewModel value.
     /// </summary>
+    /// <remarks>
+    /// The affected padding sides are determined by the configured <see cref="PaddingMode"/>.
+    /// </remarks>
     [AddComponentMenu("Aspid/MVVM/Binders/UI/LayoutGroup/LayoutGroup Binder – Padding Enum")]
     [AddBinderContextMenu(typeof(LayoutGroup), serializePropertyNames: "m_Padding", SubPath = "Enum")]
     public sealed class LayoutGroupPaddingEnumMonoBinder : EnumMonoBinder<LayoutGroup, RectOffset, Converter>
     {
+        [Tooltip("Determines which sides of the padding are updated when a value is applied.")]
         [SerializeField] private PaddingMode _paddingMode;
 
         protected override void SetValue(RectOffset value) =>

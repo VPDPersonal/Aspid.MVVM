@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doc>
+    <member name="ColliderIsTriggerBinder">
+        <example>
+            Bind the Collider isTrigger property using a serialized binder field — the target Collider is assigned in the Inspector.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField]
+                    private ColliderIsTriggerBinder _isTrigger;
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [Bind] public bool _isTrigger;
+                }
+            </code>
+            &#xD;
+            Bind the Collider isTrigger property by constructing the binder in code.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField] private Collider _collider;
+                    &#xD;
+                    private ColliderIsTriggerBinder IsTrigger =>
+                        new(_collider);
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [Bind] public bool _isTrigger;
+                }
+            </code>
+        </example>
+    </member>
+</doc>
+

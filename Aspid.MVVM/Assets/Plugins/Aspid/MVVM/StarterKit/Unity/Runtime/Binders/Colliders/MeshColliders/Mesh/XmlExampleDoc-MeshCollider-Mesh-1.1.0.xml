@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doc>
+    <member name="MeshColliderMeshBinder">
+        <example>
+            Bind the MeshCollider sharedMesh property using a serialized binder field — the target MeshCollider is assigned in the Inspector.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField]
+                    private MeshColliderMeshBinder _mesh;
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [Bind] public Mesh _mesh;
+                }
+            </code>
+            &#xD;
+            Bind the MeshCollider sharedMesh property by constructing the binder in code.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField] private MeshCollider _meshCollider;
+                    &#xD;
+                    private MeshColliderMeshBinder Mesh =>
+                        new(_meshCollider);
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [Bind] public Mesh _mesh;
+                }
+            </code>
+        </example>
+    </member>
+    <member name="MeshColliderMeshSwitcherBinder">
+        <example>
+            Switch the MeshCollider sharedMesh between two Mesh assets using a serialized binder field — the target MeshCollider is assigned in the Inspector.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField]
+                    private MeshColliderMeshSwitcherBinder _isActive;
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [Bind] public bool _isActive;
+                }
+            </code>
+            &#xD;
+            Switch the MeshCollider sharedMesh between two Mesh assets by constructing the binder in code.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField] private MeshCollider _meshCollider;
+                    [SerializeField] private Mesh _activeMesh;
+                    [SerializeField] private Mesh _inactiveMesh;
+                    &#xD;
+                    private MeshColliderMeshSwitcherBinder IsActive => new(
+                        _meshCollider,
+                        trueValue: _activeMesh,
+                        falseValue: _inactiveMesh);
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [Bind] public bool _isActive;
+                }
+            </code>
+        </example>
+    </member>
+</doc>
+

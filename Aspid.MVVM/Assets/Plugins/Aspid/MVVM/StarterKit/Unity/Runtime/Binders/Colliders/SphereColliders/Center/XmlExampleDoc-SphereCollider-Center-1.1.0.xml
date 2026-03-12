@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doc>
+    <member name="SphereColliderCenterBinder">
+        <example>
+            Bind the SphereCollider center property using a serialized binder field — the target SphereCollider is assigned in the Inspector.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField]
+                    private SphereColliderCenterBinder _center;
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [Bind] public Vector3 _center;
+                }
+            </code>
+            &#xD;
+            Bind the SphereCollider center property by constructing the binder in code.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField] private SphereCollider _sphereCollider;
+                    &#xD;
+                    private SphereColliderCenterBinder Center =>
+                        new(_sphereCollider);
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [Bind] public Vector3 _center;
+                }
+            </code>
+        </example>
+    </member>
+    <member name="SphereColliderCenterSwitcherBinder">
+        <example>
+            Switch the SphereCollider center between two Vector3 values using a serialized binder field — the target SphereCollider is assigned in the Inspector.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField]
+                    private SphereColliderCenterSwitcherBinder _isActive;
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [Bind] public bool _isActive;
+                }
+            </code>
+            &#xD;
+            Switch the SphereCollider center between two Vector3 values by constructing the binder in code.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField] private SphereCollider _sphereCollider;
+                    &#xD;
+                    private SphereColliderCenterSwitcherBinder IsActive => new(
+                        _sphereCollider,
+                        trueValue: new Vector3(0, 1, 0),
+                        falseValue: Vector3.zero);
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [Bind] public bool _isActive;
+                }
+            </code>
+        </example>
+    </member>
+</doc>
+

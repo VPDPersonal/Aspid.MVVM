@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doc>
+    <member name="MeshColliderConvexBinder">
+        <example>
+            Bind the MeshCollider convex property using a serialized binder field — the target MeshCollider is assigned in the Inspector.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField]
+                    private MeshColliderConvexBinder _convex;
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [Bind] public bool _convex;
+                }
+            </code>
+            &#xD;
+            Bind the MeshCollider convex property by constructing the binder in code.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField] private MeshCollider _meshCollider;
+                    &#xD;
+                    private MeshColliderConvexBinder Convex =>
+                        new(_meshCollider);
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [Bind] public bool _convex;
+                }
+            </code>
+        </example>
+    </member>
+</doc>
+

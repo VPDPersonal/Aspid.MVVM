@@ -12,22 +12,22 @@ using Converter = Aspid.MVVM.StarterKit.IConverterTexture;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// Binder that switches the <see cref="UnityEngine.UI.RawImage.texture"/> property on a <see cref="UnityEngine.UI.RawImage"/>
-    /// between two textures based on a bound boolean ViewModel value.
+    /// <see cref="SwitcherBinder{RawImage, Texture, Converter}"/> that switches the <see cref="RawImage.texture"/>
+    /// property between two <see cref="Texture"/> values based on the bound boolean ViewModel value.
     /// </summary>
+    /// <remarks>
+    /// Disables the <see cref="RawImage"/> component when the selected texture is <see langword="null"/> and
+    /// the <c>disabledWhenNull</c> option is set to <see langword="true"/> (the default).
+    /// </remarks>
+    /// <include file="XmlExampleDoc-RawImage-Texture-1.1.0.xml" path="doc//member[@name='RawImageTextureSwitcherBinder']/*" />
     [Serializable]
     public sealed class RawImageTextureSwitcherBinder : SwitcherBinder<RawImage, Texture?, Converter>
     {
         // ReSharper disable once MemberInitializerValueIgnored
+        [Tooltip("When true, disables the RawImage component automatically when the selected texture is null.")]
         [SerializeField] private bool _disabledWhenNull = true;
-
-        public RawImageTextureSwitcherBinder(
-            RawImage target,
-            Texture trueValue,
-            Texture falseValue,
-            BindMode mode)
-            : this(target, trueValue, falseValue, disabledWhenNull: true, converter: null, mode) { }
-
+        
+        /// <inheritdoc/>
         public RawImageTextureSwitcherBinder(
             RawImage target,
             Texture trueValue,
@@ -40,6 +40,10 @@ namespace Aspid.MVVM.StarterKit
             _disabledWhenNull = disabledWhenNull;
         }
 
+        /// <summary>
+        /// Applies the selected value to the <see cref="RawImage.texture"/> property.
+        /// Disables the <see cref="RawImage"/> component when the texture is <see langword="null"/> and the <c>Disable When Null</c> option is enabled.
+        /// </summary>
         protected override void SetValue(Texture? value)
         {
             Target.texture = value;

@@ -10,16 +10,21 @@ using Converter = Aspid.MVVM.StarterKit.IConverterTexture;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// MonoBehaviour binder that sets the texture of the host <see cref="RawImage"/> component,
-    /// toggling between two pre-configured <see cref="Texture"/> assets based on a bound boolean value.
-    /// Optionally disables the <see cref="RawImage"/> when the selected texture is <see langword="null"/>.
+    /// <see cref="SwitcherMonoBinder{RawImage, Texture, Converter}"/> that switches the <see cref="RawImage.texture"/>
+    /// property between two <see cref="Texture"/> values based on the bound boolean ViewModel value.
     /// </summary>
+    /// <remarks>
+    /// Disables the <see cref="RawImage"/> component when the selected texture is <see langword="null"/> and
+    /// the <c>Disable When Null</c> option is enabled.
+    /// </remarks>
     [AddComponentMenu("Aspid/MVVM/Binders/UI/RawImage/RawImage Binder – Texture Switcher")]
     [AddBinderContextMenu(typeof(RawImage), serializePropertyNames: "m_Texture", SubPath = "Switcher")]
     public sealed class RawImageTextureSwitcherMonoBinder : SwitcherMonoBinder<RawImage, Texture, Converter>
     {
+        [Tooltip("When true, disables the RawImage component automatically when the selected texture is null.")]
         [SerializeField] private bool _disabledWhenNull = true;
         
+        /// <inheritdoc/>
         protected override void SetValue(Texture value)
         {
             CachedComponent.texture = value;

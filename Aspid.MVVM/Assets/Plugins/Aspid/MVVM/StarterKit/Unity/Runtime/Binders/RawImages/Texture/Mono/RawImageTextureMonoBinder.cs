@@ -10,18 +10,22 @@ using Converter = Aspid.MVVM.StarterKit.IConverterTexture;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// MonoBehaviour binder that sets the <see cref="RawImage.texture"/> property on a <see cref="RawImage"/> component
-    /// when the bound ViewModel value changes.
-    /// Supports <see cref="BindMode.OneWayToSource"/>: when binding is established the current value
-    /// is sent back to the ViewModel.
-    /// Optionally disables the <see cref="RawImage"/> when the bound texture is <see langword="null"/>.
+    /// <see cref="ComponentMonoBinder{RawImage, Texture, Converter}"/> that sets the <see cref="RawImage.texture"/> property.
     /// </summary>
+    /// <remarks>
+    /// Supports <see cref="BindMode.OneWayToSource"/>: when binding is established, the current value
+    /// is sent back to the ViewModel.
+    /// Disables the <see cref="RawImage"/> component when the bound texture is <see langword="null"/> and
+    /// the <c>Disable When Null</c> option is enabled.
+    /// </remarks>
     [AddBinderContextMenu(typeof(RawImage), serializePropertyNames: "m_Texture")]
     [AddComponentMenu("Aspid/MVVM/Binders/UI/RawImage/RawImage Binder – Texture")]
     public sealed partial class RawImageTextureMonoBinder : ComponentMonoBinder<RawImage, Texture, Converter>, IBinder<Sprite>
     {
+        [Tooltip("When true, disables the RawImage component automatically when the bound texture is null.")]
         [SerializeField] private bool _disabledWhenNull = true;
         
+        /// <inheritdoc/>
         protected override Texture Property
         {
             get => CachedComponent.texture;
@@ -32,6 +36,7 @@ namespace Aspid.MVVM.StarterKit
             }
         }
 
+        /// <inheritdoc/>
         [BinderLog]
         public void SetValue(Sprite value) =>
             SetValue(value?.texture);

@@ -12,14 +12,21 @@ using Converter = Aspid.MVVM.StarterKit.IConverterTexture;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// Binder that sets the <see cref="UnityEngine.UI.RawImage.texture"/> property on a <see cref="UnityEngine.UI.RawImage"/>
-    /// when the bound ViewModel value changes.
+    /// <see cref="TargetBinder{RawImage, Texture, Converter}"/> that sets the <see cref="RawImage.texture"/> property,
+    /// also accepting <see cref="Sprite"/> values by extracting their underlying texture.
     /// </summary>
+    /// <remarks>
+    /// Disables the <see cref="RawImage"/> component when the bound texture is <see langword="null"/> and
+    /// the <c>disabledWhenNull</c> option is set to <see langword="true"/> (the default).
+    /// </remarks>
+    /// <include file="XmlExampleDoc-RawImage-Texture-1.1.0.xml" path="doc//member[@name='RawImageTextureBinder']/*" />
     [Serializable]
     public class RawImageTextureBinder : TargetBinder<RawImage, Texture, Converter>, IBinder<Sprite?>
     {
+        [Tooltip("When true, disables the RawImage component automatically when the bound texture is null.")]
         [SerializeField] private bool _disabledWhenNull;
 
+        /// <inheritdoc/>
         protected sealed override Texture? Property
         {
             get => Target.texture;
@@ -29,10 +36,8 @@ namespace Aspid.MVVM.StarterKit
                 Target.enabled = !_disabledWhenNull || value;
             }
         }
-
-        public RawImageTextureBinder(RawImage target, BindMode mode)
-            : this(target, disabledWhenNull: true, null, mode) { }
-
+        
+        /// <inheritdoc/>
         public RawImageTextureBinder(RawImage target, bool disabledWhenNull = true, Converter? converter = null, BindMode mode = BindMode.OneWay)
             : base(target, converter, mode)
         {
@@ -40,6 +45,7 @@ namespace Aspid.MVVM.StarterKit
             _disabledWhenNull = disabledWhenNull;
         }
 
+        /// <inheritdoc/>
         public void SetValue(Sprite? value) =>
             SetValue(value?.texture);
     }

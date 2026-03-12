@@ -13,28 +13,7 @@ namespace Aspid.MVVM.StarterKit
     /// or just before it is released (<see cref="OnUnbinding"/>), controlled by the
     /// <c>onBoundValueChanged</c> and <c>onUnboundValueChanged</c> factory functions respectively.
     /// </remarks>
-    /// <example>
-    /// Synchronize a slider with a ViewModel float property in both directions
-    /// <code>
-    /// [View]
-    /// public partial class ExampleView
-    /// {
-    ///     [SerializeField] private Slider _slider;
-    ///     
-    ///     private GenericTwoWayBinder&lt;float&gt; Value = new
-    ///     (
-    ///         onChanged => _slider.onValueChanged.AddListener(onChanged),
-    ///         value => _slider.value = value
-    ///     );
-    /// }
-    ///     
-    /// [ViewModel]
-    /// public partial class ExampleViewModel
-    /// {
-    ///     [Bind] public float _value;
-    /// }
-    /// </code>
-    /// </example>
+    /// <include file="XmlExampleDoc-Generics-1.1.0.xml" path="doc//member[@name='GenericTwoWayBinder{1}']/*" />
     public class GenericTwoWayBinder<T> : Binder, IBinder<T>, IReverseBinder<T>
     {
         /// <summary>
@@ -139,29 +118,7 @@ namespace Aspid.MVVM.StarterKit
     /// functions, avoiding closures over Unity component references.
     /// Otherwise behaves identically to <see cref="GenericTwoWayBinder{T}"/>.
     /// </remarks>
-    /// <example>
-    /// Target-scoped variant avoids capturing the slider in a closure
-    /// <code>
-    /// [View]
-    /// public partial class ExampleView
-    /// {
-    ///     [SerializeField] private Slider _slider;
-    ///     
-    ///     private GenericTwoWayBinder&lt;Slider, float&gt; Value = new
-    ///     (
-    ///         _slider,
-    ///         (slider, onChanged) => slider.onValueChanged.AddListener(onChanged),
-    ///         (slider, value) => slider.value = value
-    ///     );
-    /// }
-    ///     
-    /// [ViewModel]
-    /// public partial class ExampleViewModel
-    /// {
-    ///     [Bind] public float _value;
-    /// }
-    /// </code>
-    /// </example>
+    /// <include file="XmlExampleDoc-Generics-1.1.0.xml" path="doc//member[@name='GenericTwoWayBinder{2}']/*" />
     public class GenericTwoWayBinder<TTarget, T> : Binder, IBinder<T>, IReverseBinder<T>
     {
         /// <summary>

@@ -12,44 +12,12 @@ namespace Aspid.MVVM.StarterKit
     /// <see langword="true"/>. The result can be inverted via the <c>isInvert</c> flag, or replaced entirely with
     /// a custom <see cref="IConverter{TFrom,TTo}"/>.
     /// </remarks>
-    /// <example>
-    /// Show a warning panel when a ViewModel error message is non-empty.
-    /// <code>
-    /// [View]
-    /// public partial class ExampleView
-    /// {
-    ///     [SerializeField] private GameObject _warningPanel;
-    ///
-    ///     private StringToBoolCasterBinder ErrorMessage => new
-    ///     (
-    ///         value => _warningPanel.SetActive(value),
-    ///         isInvert: true
-    ///     );
-    /// }
-    ///
-    ///
-    /// [ViewModel]
-    /// public partial class ExampleViewModel
-    /// {
-    ///     [Bind] public string _errorMessage;
-    /// }
-    /// </code>
-    /// </example>
+    /// <include file="XmlExampleDoc-Casters-1.1.0.xml" path="doc//member[@name='StringToBoolCasterBinder']/*" />
     public sealed class StringToBoolCasterBinder : Binder, IBinder<string>
     {
         private readonly Action<bool> _setValue;
         private readonly IConverter<string?, bool> _converter;
-
-        /// <summary>
-        /// Initializes a new instance of <see cref="StringToBoolCasterBinder"/> using the default
-        /// non-inverted <see cref="StringEmptyToBoolConverter"/>.
-        /// </summary>
-        /// <param name="setValue">The action invoked with the converted <see cref="bool"/> value.</param>
-        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/>.</param>
-        /// <exception cref="ArgumentNullException">Thrown when <paramref name="setValue"/> is <see langword="null"/>.</exception>
-        public StringToBoolCasterBinder(Action<bool> setValue, BindMode mode)
-            : this(setValue, isInvert: false, mode) { }
-
+        
         /// <summary>
         /// Initializes a new instance of <see cref="StringToBoolCasterBinder"/> with an optional inversion flag.
         /// </summary>

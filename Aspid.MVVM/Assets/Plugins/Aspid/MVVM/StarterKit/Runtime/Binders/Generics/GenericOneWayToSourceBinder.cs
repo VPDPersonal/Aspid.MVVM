@@ -15,25 +15,7 @@ namespace Aspid.MVVM.StarterKit
     /// (<see cref="OnBound"/>) or when it is being released (<see cref="OnUnbinding"/>), controlled
     /// by the <c>onBoundValueChanged</c> and <c>onUnboundValueChanged</c> factory functions respectively.
     /// </remarks>
-    /// <example>
-    /// Forward toggle state changes back to the ViewModel
-    /// <code>
-    /// [View]
-    /// public partial class ExampleView
-    /// {
-    ///     [SerializeField] private Toggle _toggle;
-    ///     
-    ///     private GenericOneWayToSourceBinder&lt;bool&gt; IsOn => new(
-    ///         onChanged => _toggle.onValueChanged.AddListener(onChanged));
-    /// }
-    ///     
-    /// [ViewModel]
-    /// public partial class ExampleViewModel
-    /// {
-    ///     [Bind] public bool _isOn;
-    /// }
-    /// </code>
-    /// </example>
+    /// <include file="XmlExampleDoc-Generics-1.1.0.xml" path="doc//member[@name='GenericOneWayToSourceBinder{1}']/*" />
     public class GenericOneWayToSourceBinder<T> : Binder, IReverseBinder<T>
     {
         /// <summary>
@@ -132,28 +114,7 @@ namespace Aspid.MVVM.StarterKit
     /// Holds a reference to a <typeparamref name="TTarget"/> instance and passes it to all factory
     /// functions, avoiding closures. Otherwise behaves identically to <see cref="GenericOneWayToSourceBinder{T}"/>.
     /// </remarks>
-    /// <example>
-    /// Target-scoped variant — toggle is passed to the factory, avoiding a closure
-    /// <code>
-    /// [View]
-    /// public partial class ExampleView
-    /// {
-    ///     [SerializeField] private Toggle _toggle;
-    ///     
-    ///     private GenericOneWayToSourceBinder&lt;Toggle, bool&gt; IsOn = new
-    ///     (
-    ///         _toggle,
-    ///         (toggle, onChanged) => toggle.onValueChanged.AddListener(onChanged)
-    ///     );
-    /// }
-    ///     
-    /// [ViewModel]
-    /// public partial class ExampleViewModel
-    /// {
-    ///     [Bind] public bool _isOn;
-    /// }
-    /// </code>
-    /// </example>
+    /// <include file="XmlExampleDoc-Generics-1.1.0.xml" path="doc//member[@name='GenericOneWayToSourceBinder{2}']/*" />
     public class GenericOneWayToSourceBinder<TTarget, T> : Binder, IReverseBinder<T>
     {
         /// <summary>

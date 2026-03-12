@@ -11,25 +11,7 @@ namespace Aspid.MVVM.StarterKit
     /// <remarks>
     /// A <see cref="GenericToString{T}"/> with an optional format string is used by default.
     /// </remarks>
-    /// <example>
-    /// Format a float ViewModel value with a specific number format before displaying it.
-    /// <code>
-    /// [View]
-    /// public partial class ExampleView
-    /// {
-    ///     [SerializeField] private TMP_Text _label;
-    ///     
-    ///     private GenericToStringCasterBinder&lt;float&gt; Distance => new(
-    ///         value => _label.text = value, "F1");
-    /// }
-    ///     
-    /// [ViewModel]
-    /// public partial class ExampleViewModel
-    /// {
-    ///     [Bind] public float _distance;
-    /// }
-    /// </code>
-    /// </example>
+    /// <include file="XmlExampleDoc-Casters-1.1.0.xml" path="doc//member[@name='GenericToStringCasterBinder{1}']/*" />
     public sealed class GenericToStringCasterBinder<T> : Binder, IBinder<T>
     {
         private readonly Action<string?> _setValue;

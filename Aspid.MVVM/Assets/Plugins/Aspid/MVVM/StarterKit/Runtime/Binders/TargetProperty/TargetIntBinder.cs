@@ -1,4 +1,5 @@
 using System;
+using System.Runtime.CompilerServices;
 #if UNITY_2023_1_OR_NEWER
 using Converter = Aspid.MVVM.StarterKit.IConverter<int, int>;
 #else
@@ -9,7 +10,7 @@ using Converter = Aspid.MVVM.StarterKit.IConverterInt;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// Abstract base <see cref="TargetBinder{TTarget,TProperty,TConverter}"/> that binds an <see langword="int"/> property,
+    /// Abstract base <see cref="TargetBinder{TTarget, int, IConverter{int, int}}"/> that binds an <see langword="int"/> property,
     /// implementing <see cref="INumberBinder"/> to accept all numeric types
     /// and <see cref="INumberReverseBinder"/> to broadcast to all numeric event types.
     /// </summary>
@@ -19,26 +20,21 @@ namespace Aspid.MVVM.StarterKit
         INumberBinder,
         INumberReverseBinder
     {
-        /// <inheritdoc cref="INumberReverseBinder.IntValueChanged"/>
+        /// <inheritdoc/>
         public event Action<int>? IntValueChanged;
 
-        /// <inheritdoc cref="INumberReverseBinder.LongValueChanged"/>
+        /// <inheritdoc/>
         public event Action<long>? LongValueChanged;
 
-        /// <inheritdoc cref="INumberReverseBinder.FloatValueChanged"/>
+        /// <inheritdoc/>
         public event Action<float>? FloatValueChanged;
 
-        /// <inheritdoc cref="INumberReverseBinder.DoubleValueChanged"/>
+        /// <inheritdoc/>
         public event Action<double>? DoubleValueChanged;
 
-        /// <summary>
-        /// Initializes a new instance of <see cref="TargetIntBinder{TTarget}"/>.
-        /// </summary>
-        /// <param name="target">The target object whose int property is managed by this binder.</param>
-        /// <param name="converter">An optional int-to-int converter applied before the value is stored.</param>
-        /// <param name="mode">The binding mode to use.</param>
-        protected TargetIntBinder(TTarget target, Converter? converter, BindMode mode = BindMode.OneWay)
-            : base(target, converter, mode) { }
+        /// <inheritdoc/>
+        protected TargetIntBinder(TTarget target, IConverter<int, int>? converter, BindMode mode = BindMode.OneWay)
+            : base(target, GetConverter(converter), mode) { }
 
         /// <summary>
         /// Sets the target int property from a <see cref="long"/> value, truncating to <see cref="int"/>.
@@ -77,6 +73,16 @@ namespace Aspid.MVVM.StarterKit
                 FloatValueChanged?.Invoke(value);
                 DoubleValueChanged?.Invoke(value);
             }
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private static Converter? GetConverter(IConverter<int, int>? converter)
+        {
+            #if UNITY_2023_1_OR_NEWER
+            return converter;
+            #else
+            return converter?.ToConvertSpecific();
+            #endif
         }
     }
 }

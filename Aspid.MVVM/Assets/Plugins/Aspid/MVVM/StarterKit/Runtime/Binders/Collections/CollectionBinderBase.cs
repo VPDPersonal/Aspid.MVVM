@@ -26,7 +26,7 @@ namespace Aspid.MVVM.StarterKit
         /// Initializes a new instance of <see cref="CollectionBinderBase{T}"/> with the specified binding mode.
         /// </summary>
         /// <param name="mode">The binding mode to use.</param>
-        protected CollectionBinderBase(BindMode mode)
+        protected CollectionBinderBase(BindMode mode = BindMode.OneWay)
             : base(mode) { }
 
         /// <summary>

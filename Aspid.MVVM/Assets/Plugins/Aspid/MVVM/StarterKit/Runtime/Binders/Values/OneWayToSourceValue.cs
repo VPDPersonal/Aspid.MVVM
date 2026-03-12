@@ -16,22 +16,7 @@ namespace Aspid.MVVM.StarterKit
     /// An optional <see cref="IConverter{TFrom,TTo}"/> can be supplied to transform the incoming value
     /// before it is stored.
     /// </remarks>
-    /// <example>
-    /// Push an Inspector-set value to the ViewModel when binding is established.
-    /// <code>
-    /// [View]
-    /// public partial class ExampleView
-    /// {
-    ///     [SerializeField] private OneWayToSourceValue&lt;string&gt; _name;
-    /// }
-    ///     
-    /// [ViewModel]
-    /// public partial class ExampleViewModel
-    /// {
-    ///     [Bind] public string _name;
-    /// }
-    /// </code>
-    /// </example>
+    /// <include file="XmlExampleDoc-Values-1.1.0.xml" path="doc//member[@name='OneWayToSourceValue{1}']/*" />
     [Serializable]
     [BindModeOverride(BindMode.OneWayToSource)]
     public class OneWayToSourceValue<T> : TwoWayValue<T>

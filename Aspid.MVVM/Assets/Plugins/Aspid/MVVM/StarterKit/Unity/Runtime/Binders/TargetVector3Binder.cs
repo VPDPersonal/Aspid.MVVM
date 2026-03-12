@@ -1,5 +1,6 @@
 #nullable enable
 using UnityEngine;
+using System.Runtime.CompilerServices;
 #if UNITY_2023_1_OR_NEWER
 using Converter = Aspid.MVVM.StarterKit.IConverter<UnityEngine.Vector3, UnityEngine.Vector3>;
 #else
@@ -10,7 +11,7 @@ using Converter = Aspid.MVVM.StarterKit.IConverterVector3;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// Abstract base <see cref="TargetBinder{TTarget,TProperty,TConverter}"/> that binds a <see cref="Vector3"/> property,
+    /// Abstract base <see cref="TargetBinder{TTarget, Vector3, IConverter{Vector3, Vector3}}"/> that binds a <see cref="Vector3"/> property,
     /// implementing <see cref="IVectorBinder"/> and <see cref="INumberBinder"/>.
     /// Scalar values (<see langword="int"/>, <see langword="long"/>, <see langword="float"/>, <see langword="double"/>)
     /// are broadcast to all three vector components as <c>new Vector3(value, value, value)</c>.
@@ -20,14 +21,9 @@ namespace Aspid.MVVM.StarterKit
         IVectorBinder,
         INumberBinder
     {
-        /// <summary>
-        /// Initializes a new instance of <see cref="TargetVector3Binder{TTarget}"/>.
-        /// </summary>
-        /// <param name="target">The target object whose Vector3 property is managed by this binder.</param>
-        /// <param name="converter">An optional Vector3-to-Vector3 converter applied before the value is stored.</param>
-        /// <param name="mode">The binding mode to use.</param>
-        protected TargetVector3Binder(TTarget target, Converter? converter, BindMode mode = BindMode.OneWay)
-            : base(target, converter, mode) { }
+        /// <inheritdoc/>
+        protected TargetVector3Binder(TTarget target, IConverter<Vector3, Vector3>? converter, BindMode mode = BindMode.OneWay)
+            : base(target, GetConverter(converter), mode) { }
 
         /// <summary>
         /// Sets the bound property by promoting <paramref name="value"/> to a <see cref="Vector3"/> with Z set to zero.
@@ -63,5 +59,15 @@ namespace Aspid.MVVM.StarterKit
         /// <param name="value">The scalar value applied to all three vector components. Narrowed to <see langword="float"/> — precision may be lost.</param>
         public void SetValue(double value) =>
             SetValue((float)value);
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private static Converter? GetConverter(IConverter<Vector3, Vector3>? converter)
+        {
+            #if UNITY_2023_1_OR_NEWER
+            return converter;
+            #else
+            return converter?.ToConvertSpecific();
+            #endif
+        }
     }
 }

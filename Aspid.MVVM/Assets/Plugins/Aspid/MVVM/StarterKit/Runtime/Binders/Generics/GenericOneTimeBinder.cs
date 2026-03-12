@@ -11,25 +11,7 @@ namespace Aspid.MVVM.StarterKit
     /// <remarks>
     /// The setter is called only for the first value pushed from the ViewModel.
     /// </remarks>
-    /// <example>
-    /// Apply the player name from the ViewModel exactly once at binding time
-    /// <code>
-    /// [View]
-    /// public partial class ExampleView
-    /// {
-    ///     [SerializeField] private TMP_Text _label;
-    ///     
-    ///     private GenericOneTimeBinder&lt;string&gt; Name =>
-    ///         new(value => _label.text = value);
-    /// }
-    ///     
-    /// [ViewModel]
-    /// public partial class ExampleViewModel
-    /// {
-    ///     [Bind] public string _name;
-    /// }
-    /// </code>
-    /// </example>
+    /// <include file="XmlExampleDoc-Generics-1.1.0.xml" path="doc//member[@name='GenericOneTimeBinder{1}']/*" />
     public class GenericOneTimeBinder<T> : GenericOneWayBinder<T>
     {
         /// <summary>
@@ -49,30 +31,7 @@ namespace Aspid.MVVM.StarterKit
     /// <remarks>
     /// The setter is called only for the first value pushed from the ViewModel.
     /// </remarks>
-    /// <example>
-    /// Target-scoped variant — no closure over the label
-    /// <code>
-    /// [View]
-    /// public partial class ExampleView
-    /// {
-    ///     [SerializeField] private TMP_Text _label;
-    ///
-    /// 
-    ///     private GenericOneTimeBinder&lt;TMP_Text, string&gt; Name => new
-    ///     (
-    ///         _label,
-    ///         (label, value) => label.text = value
-    ///     );
-    /// }
-    ///
-    /// 
-    /// [ViewModel]
-    /// public partial class ExampleViewModel
-    /// {
-    ///     [Bind] public string _name;
-    /// }
-    /// </code>
-    /// </example>
+    /// <include file="XmlExampleDoc-Generics-1.1.0.xml" path="doc//member[@name='GenericOneTimeBinder{2}']/*" />
     public class GenericOneTimeBinder<TTarget, T> : GenericOneWayBinder<TTarget, T>
     {
         /// <summary>

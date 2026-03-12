@@ -36,7 +36,7 @@ namespace Aspid.MVVM.StarterKit
         /// with the specified binding mode.
         /// </summary>
         /// <param name="mode">The binding mode to use.</param>
-        protected ObservableDictionaryBinder(BindMode mode)
+        protected ObservableDictionaryBinder(BindMode mode = BindMode.OneWay)
             : base(mode) { }
 
         /// <summary>

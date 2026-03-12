@@ -24,7 +24,7 @@ namespace Aspid.MVVM.StarterKit
         private T _falseValue;
 
         /// <summary>
-        /// Initializes a new instance of <see cref="SwitcherBinder{T}"/>.
+        /// Initializes a new instance of SwitcherBinder/>.
         /// </summary>
         /// <param name="trueValue">The value forwarded when the bound boolean is <see langword="true"/>.</param>
         /// <param name="falseValue">The value forwarded when the bound boolean is <see langword="false"/>.</param>
@@ -78,7 +78,7 @@ namespace Aspid.MVVM.StarterKit
         private T _falseValue;
 
         /// <summary>
-        /// Initializes a new instance of <see cref="SwitcherBinder{TTarget,T}"/>.
+        /// Initializes a new instance of SwitcherBinder/>.
         /// </summary>
         /// <param name="target">The target object that receives the resolved value.</param>
         /// <param name="trueValue">The value forwarded when the bound boolean is <see langword="true"/>.</param>
@@ -139,7 +139,7 @@ namespace Aspid.MVVM.StarterKit
         private TConverter? _converter;
 
         /// <summary>
-        /// Initializes a new instance of <see cref="SwitcherBinder{TTarget,T,TConverter}"/>.
+        /// Initializes a new instance of SwitcherBinder with Converter/>.
         /// </summary>
         /// <param name="target">The target object that receives the resolved value.</param>
         /// <param name="trueValue">The value forwarded when the bound boolean is <see langword="true"/>.</param>

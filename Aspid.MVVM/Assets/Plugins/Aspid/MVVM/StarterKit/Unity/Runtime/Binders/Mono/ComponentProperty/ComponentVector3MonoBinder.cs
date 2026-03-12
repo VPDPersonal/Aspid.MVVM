@@ -9,7 +9,7 @@ using Converter = Aspid.MVVM.StarterKit.IConverterVector3;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// Abstract base <see cref="ComponentMonoBinder{TComponent, TProperty, TConverter}"/> that binds a <see cref="Vector3"/> property,
+    /// Abstract base <see cref="ComponentMonoBinder{TComponent, Vector3, IConverter{Vector3, Vector3}}"/> that binds a <see cref="Vector3"/> property,
     /// implementing <see cref="IVectorBinder"/> and <see cref="INumberBinder"/>.
     /// Scalar values (<see langword="int"/>, <see langword="long"/>, <see langword="float"/>, <see langword="double"/>)
     /// are broadcast to all three vector components as <c>new Vector3(value, value, value)</c>.
@@ -59,6 +59,5 @@ namespace Aspid.MVVM.StarterKit
         [BinderLog]
         public void SetValue(double value) =>
             SetValue((float)value);
-        
     }
 }

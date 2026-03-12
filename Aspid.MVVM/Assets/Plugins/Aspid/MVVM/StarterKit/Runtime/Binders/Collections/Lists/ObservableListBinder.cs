@@ -39,7 +39,7 @@ namespace Aspid.MVVM.StarterKit
         /// Initializes a new instance of <see cref="ObservableListBinder{T}"/> with the specified binding mode.
         /// </summary>
         /// <param name="mode">The binding mode to use.</param>
-        protected ObservableListBinder(BindMode mode)
+        protected ObservableListBinder(BindMode mode = BindMode.OneWay)
             : base(mode) { }
 
         /// <summary>

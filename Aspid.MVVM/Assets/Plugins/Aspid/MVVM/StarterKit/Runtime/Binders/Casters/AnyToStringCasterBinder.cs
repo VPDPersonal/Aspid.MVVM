@@ -11,25 +11,7 @@ namespace Aspid.MVVM.StarterKit
     /// By default, uses <see cref="GenericToString{T}"/> for the conversion.
     /// A custom <see cref="IConverter{TFrom,TTo}"/> can be supplied for specialized formatting.
     /// </remarks>
-    /// <example>
-    /// Format any ViewModel value as text without knowing its exact type at compile time.
-    /// <code>
-    /// [View]
-    /// public partial class ExampleView
-    /// {
-    ///     [SerializeField] private TMP_Text _label;
-    ///     
-    ///     private AnyToStringCasterBinder Score => new(
-    ///         value => _label.text = value);
-    /// }
-    ///  
-    /// [ViewModel]
-    /// public partial class ExampleViewModel
-    /// {
-    ///     [Bind] public int _score;
-    /// }
-    /// </code>
-    /// </example>
+    /// <include file="XmlExampleDoc-Casters-1.1.0.xml" path="doc//member[@name='AnyToStringCasterBinder']/*" />
     public sealed class AnyToStringCasterBinder : Binder, IAnyBinder
     {
         private readonly Action<string?> _setValue;

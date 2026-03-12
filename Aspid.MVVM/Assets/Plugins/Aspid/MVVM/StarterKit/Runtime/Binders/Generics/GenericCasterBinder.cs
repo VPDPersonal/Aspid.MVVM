@@ -12,28 +12,7 @@ namespace Aspid.MVVM.StarterKit
     /// <remarks>
     /// Only non-two-way bind modes are supported; passing <see cref="BindMode.TwoWay"/> will throw.
     /// </remarks>
-    /// <example>
-    /// Convert a float ViewModel value to a formatted string for a label
-    /// <code>
-    /// [View]
-    /// public partial class ExampleView
-    /// {
-    ///     [SerializeField] private TMP_Text _label;
-    ///     
-    ///     private GenericCasterBinder&lt;float, string&gt; Distance = new
-    ///     (
-    ///         value => _label.text = value,
-    ///         new FloatToStringConverter("F1")
-    ///     );
-    /// }
-    ///     
-    /// [ViewModel]
-    /// public partial class ExampleViewModel
-    /// {
-    ///     [Bind] public float _distance;
-    /// }
-    /// </code>
-    /// </example>
+    /// <include file="XmlExampleDoc-Generics-1.1.0.xml" path="doc//member[@name='GenericCasterBinder{2}']/*" />
     public class GenericCasterBinder<TFrom, TTo> : Binder, IBinder<TFrom>
     {
         private readonly Action<TTo?> _setValue;
@@ -80,29 +59,7 @@ namespace Aspid.MVVM.StarterKit
     /// without capturing them in a closure.
     /// Only non-two-way bind modes are supported; passing <see cref="BindMode.TwoWay"/> will throw.
     /// </remarks>
-    /// <example>
-    /// Target-scoped variant avoids capturing the label in a closure
-    /// <code>
-    /// [View]
-    /// public partial class ExampleView
-    /// {
-    ///     [SerializeField] private TMP_Text _label;
-    ///     
-    ///     private GenericCasterBinder&lt;TMP_Text, float, string&gt; Distance = new
-    ///     (
-    ///         _label,
-    ///         (label, value) => label.text = value,
-    ///         new FloatToStringConverter("F1")
-    ///     );
-    /// }
-    ///     
-    /// [ViewModel]
-    /// public partial class ExampleViewModel
-    /// {
-    ///     [Bind] public float _distance;
-    /// }
-    /// </code>
-    /// </example>
+    /// <include file="XmlExampleDoc-Generics-1.1.0.xml" path="doc//member[@name='GenericCasterBinder{3}']/*" />
     public class GenericCasterBinder<TTarget, TFrom, TTo> : Binder, IBinder<TFrom>
     {
         private readonly TTarget _target;

@@ -16,35 +16,7 @@ namespace Aspid.MVVM.StarterKit
     /// <typeparamref name="T"/> value is expected.
     /// Only non-two-way bind modes are supported; passing <see cref="BindMode.TwoWay"/> will throw.
     /// </remarks>
-    /// <example>
-    /// Subscribe to ViewModel value changes and update the View on each update.
-    /// <code>
-    /// [View]
-    /// public partial class ExampleView
-    /// {
-    ///     [SerializeField] private TMP_Text _label;
-    ///     private OneWayValue&lt;int&gt; _score = new();
-    ///     
-    ///     private void OnInitializedInternal(IViewModel viewModel)
-    ///     {
-    ///         OnScoreChanged(_score.Value);
-    ///         _score.Changed += OnScoreChanged;
-    ///     }
-    ///     
-    ///     private void OnDeinitializingInternal()
-    ///         _score.Changed -= OnScoreChanged;
-    ///     
-    ///     private void OnScoreChanged(int? value) =>
-    ///         _label.text = value.ToString();
-    /// }
-    ///     
-    /// [ViewModel]
-    /// public partial class ExampleViewModel
-    /// {
-    ///     [Bind] public string _score;
-    /// }
-    /// </code>
-    /// </example>
+    /// <include file="XmlExampleDoc-Values-1.1.0.xml" path="doc//member[@name='OneWayValue{1}']/*" />
     [Serializable]
     public class OneWayValue<T> : Binder, IBinder<T>
     {

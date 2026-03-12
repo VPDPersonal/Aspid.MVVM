@@ -14,26 +14,7 @@ namespace Aspid.MVVM.StarterKit
     /// An optional <see cref="IConverter{TFrom,TTo}"/> can be supplied to transform the incoming value
     /// before it is stored.
     /// </remarks>
-    /// <example>
-    /// Read a ViewModel value exactly once at initialization time.
-    /// <code>
-    /// [View]
-    /// public partial class ExampleView
-    /// {
-    ///     [SerializeField] private TMP_Text _label;
-    ///     private OneTimeValue&lt;string&gt; _name = new();
-    ///     
-    ///     partial void OnInitializedInternal(IViewModel viewModel) =>
-    ///         _label.text = _name.Value;
-    /// }
-    ///     
-    /// [ViewModel]
-    /// public partial class ExampleViewModel
-    /// {
-    ///     [Bind] public string _name;
-    /// }
-    /// </code>
-    /// </example>
+    /// <include file="XmlExampleDoc-Values-1.1.0.xml" path="doc//member[@name='OneTimeValue{1}']/*" />
     [Serializable]
     [BindModeOverride(BindMode.OneTime)]
     public class OneTimeValue<T> : OneWayValue<T>

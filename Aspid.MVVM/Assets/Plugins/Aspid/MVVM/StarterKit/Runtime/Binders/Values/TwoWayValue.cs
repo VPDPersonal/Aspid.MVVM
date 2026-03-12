@@ -30,42 +30,7 @@ namespace Aspid.MVVM.StarterKit
     /// <typeparamref name="T"/> value is expected.
     /// </para>
     /// </remarks>
-    /// <example>
-    /// Synchronize a slider with a ViewModel float property in both directions.
-    /// <code>
-    /// [View]
-    /// public partial class ExampleView
-    /// {
-    ///     [SerializeField] private Slider _slider;
-    ///     [SerializeField] private TwoWayValue&lt;float&gt; _health;
-    ///     
-    ///     private void OnInitializedInternal(IViewModel viewModel)
-    ///     {
-    ///         _slider.value = _health.Value;
-    ///         _health.Changed += OnHealthChanged;
-    ///         _healthSlider.onValueChanged.AddListener(OnSliderChanged);
-    ///     }
-    ///     
-    ///     private void OnDeinitializingInternal()
-    ///     {
-    ///         _health.Changed -= OnHealthChanged;
-    ///         _healthSlider.onValueChanged.RemoveListener(OnSliderChanged);
-    ///     }
-    ///     
-    ///     private void OnHealthChanged(float? value) =>
-    ///         _slider.value = value ?? 0f;
-    ///     
-    ///     private void OnSliderChanged(float value) =>
-    ///         _health.Value = value;
-    /// }
-    ///     
-    /// [ViewModel]
-    /// public partial class ExampleViewModel
-    /// {
-    ///     [Bind] public float _health;
-    /// }
-    /// </code>
-    /// </example>
+    /// <include file="XmlExampleDoc-Values-1.1.0.xml" path="doc//member[@name='TwoWayValue{1}']/*" />
     [Serializable]
     [BindModeOverride(IsAll = true)]
     public class TwoWayValue<T> : Binder, IBinder<T>, IReverseBinder<T>

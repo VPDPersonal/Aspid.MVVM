@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doc>
+    <member name="SelectableInteractableBinder">
+        <example>
+            Bind the Selectable interactable property using a serialized binder field — the target Selectable is assigned in the Inspector.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField]
+                    private SelectableInteractableBinder _interactable;
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [Bind] public bool _interactable;
+                }
+            </code>
+            &#xD;
+            Bind the Selectable interactable property by constructing the binder in code.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField] private Selectable _selectable;
+                    &#xD;
+                    private SelectableInteractableBinder Interactable =&gt;
+                        new(_selectable);
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [Bind] public bool _interactable;
+                }
+            </code>
+        </example>
+    </member>
+</doc>
+

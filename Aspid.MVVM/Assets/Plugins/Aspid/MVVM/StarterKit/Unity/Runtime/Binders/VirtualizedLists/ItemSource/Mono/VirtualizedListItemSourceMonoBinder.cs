@@ -12,6 +12,12 @@ using Comparer = Aspid.MVVM.StarterKit.IViewModelCollectionComparer;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
+    /// <summary>
+    /// <see cref="ComponentMonoBinder{VirtualizedList}"/> that sets the item source of a <see cref="VirtualizedList"/>
+    /// to the bound <see cref="IReadOnlyList{IViewModel}"/> value.
+    /// Supports optional filtering and sorting via <see cref="ICollectionFilter{IViewModel}"/> and
+    /// <see cref="ICollectionComparer{IViewModel}"/>.
+    /// </summary>
     [AddBinderContextMenu(typeof(VirtualizedList))]
     [AddComponentMenu("Aspid/MVVM/Binders/UI/VirtualizedList/VirtualizedList Binder – ItemSource")]
     public sealed partial class VirtualizedListItemSourceMonoBinder : ComponentMonoBinder<VirtualizedList>, IBinder<IReadOnlyList<IViewModel>>
@@ -24,12 +30,19 @@ namespace Aspid.MVVM.StarterKit
 
         private FilteredList<IViewModel> _filteredList;
 
+        /// <summary>
+        /// Called when the binder is unbound. Clears the item source and disposes the filtered list if one was created.
+        /// </summary>
         protected override void OnUnbound()
         {
             CachedComponent.ItemsSource = null;
             DisposeFilteredList();
         }
 
+        /// <summary>
+        /// Sets <see cref="VirtualizedList.ItemsSource"/> to the specified list,
+        /// wrapping it in a <see cref="FilteredList{IViewModel}"/> when a filter or comparer is configured.
+        /// </summary>
         [BinderLog]
         public void SetValue(IReadOnlyList<IViewModel> list)
         {

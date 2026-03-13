@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doc>
+    <member name="ToggleCommandBinder">
+        <example>
+            Bind a relay command to a Toggle's value change using a serialized binder field — the target is assigned in the Inspector.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField]
+                    private ToggleCommandBinder _onAccepted;
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [RelayCommand]
+                    private void OnAccepted() { }
+                    &#xD;
+                    [RelayCommand]
+                    private void OnAccepted(bool isOn) { }
+                }
+            </code>
+            &#xD;
+            Bind a relay command to a Toggle's value change by constructing the binder in code.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField] private Toggle _target;
+                    &#xD;
+                    private ToggleCommandBinder AcceptedCommand =&gt; new(_target);
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [RelayCommand]
+                    private void OnAccepted(bool isOn) { }
+                }
+            </code>
+        </example>
+    </member>
+    <member name="ToggleCommandMonoBinder">
+        <example>
+            Bind a relay command to a Toggle's value change using a MonoBinder component assigned in the Inspector.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField]
+                    private ToggleCommandMonoBinder _onAccepted;
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [RelayCommand]
+                    private void OnAccepted() { }
+                    &#xD;
+                    [RelayCommand]
+                    private void OnAccepted(bool isOn) { }
+                }
+            </code>
+        </example>
+    </member>
+    <member name="ToggleCommandBinderT">
+        <example>
+            Bind a relay command with one additional parameter to a Toggle's value change.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField]
+                    private ToggleCommandBinder&lt;string&gt; _onAccepted;
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [RelayCommand]
+                    private void OnAccepted(bool isOn, string source) { }
+                }
+            </code>
+        </example>
+    </member>
+    <member name="ToggleCommandMonoBinderT">
+        <example>
+            Bind a relay command with one additional parameter using a MonoBinder component.
+            Because ToggleCommandMonoBinder&lt;T&gt; is abstract, a concrete derived class is required.
+            <code>
+                [AddComponentMenu("MyGame/Binders/AcceptedCommandBinder")]
+                public sealed class AcceptedCommandMonoBinder : ToggleCommandMonoBinder&lt;string&gt; { }
+                &#xD;
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField]
+                    private AcceptedCommandMonoBinder _onAccepted;
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [RelayCommand]
+                    private void OnAccepted(bool isOn, string source) { }
+                }
+            </code>
+        </example>
+    </member>
+    <member name="ToggleCommandBinderT1T2">
+        <example>
+            Bind a relay command with two additional parameters to a Toggle's value change.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField]
+                    private ToggleCommandBinder&lt;string, int&gt; _onAccepted;
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [RelayCommand]
+                    private void OnAccepted(bool isOn, string source, int index) { }
+                }
+            </code>
+        </example>
+    </member>
+    <member name="ToggleCommandMonoBinderT1T2">
+        <example>
+            Bind a relay command with two additional parameters using a MonoBinder component.
+            Because ToggleCommandMonoBinder&lt;T1, T2&gt; is abstract, a concrete derived class is required.
+            <code>
+                [AddComponentMenu("MyGame/Binders/AcceptedCommandBinder")]
+                public sealed class AcceptedCommandMonoBinder : ToggleCommandMonoBinder&lt;string, int&gt; { }
+                &#xD;
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField]
+                    private AcceptedCommandMonoBinder _onAccepted;
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [RelayCommand]
+                    private void OnAccepted(bool isOn, string source, int index) { }
+                }
+            </code>
+        </example>
+    </member>
+    <member name="ToggleCommandBinderT1T2T3">
+        <example>
+            Bind a relay command with three additional parameters to a Toggle's value change.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField]
+                    private ToggleCommandBinder&lt;string, int, bool&gt; _onAccepted;
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [RelayCommand]
+                    private void OnAccepted(bool isOn, string source, int index, bool confirmed) { }
+                }
+            </code>
+        </example>
+    </member>
+    <member name="ToggleCommandMonoBinderT1T2T3">
+        <example>
+            Bind a relay command with three additional parameters using a MonoBinder component.
+            Because ToggleCommandMonoBinder&lt;T1, T2, T3&gt; is abstract, a concrete derived class is required.
+            <code>
+                [AddComponentMenu("MyGame/Binders/AcceptedCommandBinder")]
+                public sealed class AcceptedCommandMonoBinder : ToggleCommandMonoBinder&lt;string, int, bool&gt; { }
+                &#xD;
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField]
+                    private AcceptedCommandMonoBinder _onAccepted;
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [RelayCommand]
+                    private void OnAccepted(bool isOn, string source, int index, bool confirmed) { }
+                }
+            </code>
+        </example>
+    </member>
+</doc>

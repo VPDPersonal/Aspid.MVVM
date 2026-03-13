@@ -6,9 +6,9 @@ using UnityEngine.UI;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// A MonoBehaviour binder that binds a boolean ViewModel value to the <see cref="Toggle.isOn"/> property of a <see cref="Toggle"/> target.
-    /// Supports all binding modes, including two-way and one-way-to-source.
-    /// An optional inversion flag allows the logical value to be flipped before it is applied.
+    /// <see cref="ComponentMonoBinder{Toggle}"/> that binds a boolean ViewModel value to <see cref="Toggle.isOn"/>,
+    /// supporting all binding modes.
+    /// An optional inversion flag flips the logical value before it is applied to the toggle or propagated back to the source.
     /// </summary>
     [AddComponentMenu("Aspid/MVVM/Binders/UI/Toggle/Toggle Binder – IsOn")]
     [AddBinderContextMenu(typeof(Toggle), serializePropertyNames: "m_IsOn")]
@@ -22,6 +22,9 @@ namespace Aspid.MVVM.StarterKit
         [SerializeField] private bool _isInvert;
         [NonSerialized] private bool _isNotifyValueChanged = true;
 
+        /// <summary>
+        /// Sets <see cref="Toggle.isOn"/> to the specified value, applying inversion if configured.
+        /// </summary>
         [BinderLog]
         public void SetValue(bool value)
         {
@@ -29,7 +32,14 @@ namespace Aspid.MVVM.StarterKit
             CachedComponent.isOn = _isInvert ? !value : value;
             _isNotifyValueChanged = true;
         }
-        
+
+        /// <summary>
+        /// Called when the binder is bound. Subscribes to <see cref="Toggle.onValueChanged"/> when the mode supports it.
+        /// </summary>
+        /// <remarks>
+        /// Subscription is skipped for <see cref="BindMode.OneWay"/>. For <see cref="BindMode.OneWayToSource"/>,
+        /// <c>OnValueChanged</c> is invoked immediately to propagate the current toggle state to the source.
+        /// </remarks>
         protected override void OnBound()
         {
             if (Mode is not (BindMode.TwoWay or BindMode.OneWayToSource)) return;
@@ -37,7 +47,13 @@ namespace Aspid.MVVM.StarterKit
             CachedComponent.onValueChanged.AddListener(OnValueChanged);
             if (Mode is BindMode.OneWayToSource) OnValueChanged(CachedComponent.isOn);
         }
-        
+
+        /// <summary>
+        /// Called when the binder is unbound. Unsubscribes from <see cref="Toggle.onValueChanged"/> when the mode supports it.
+        /// </summary>
+        /// <remarks>
+        /// Unsubscription is skipped for <see cref="BindMode.OneWay"/>.
+        /// </remarks>
         protected override void OnUnbound()
         {
             if (Mode is not (BindMode.TwoWay or BindMode.OneWayToSource)) return;

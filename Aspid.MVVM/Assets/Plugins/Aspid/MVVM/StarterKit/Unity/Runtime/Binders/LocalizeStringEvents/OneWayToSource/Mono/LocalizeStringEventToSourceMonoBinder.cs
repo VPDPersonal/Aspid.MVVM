@@ -6,8 +6,8 @@ using UnityEngine.Localization.Components;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// MonoBehaviour binder that reads the current state of a <see cref="LocalizeStringEvent"/> component
-    /// back to the ViewModel in one-way-to-source mode.
+    /// <see cref="ComponentToSourceMonoBinder{LocalizeStringEvent}"/> that sends the current bound property value
+    /// of a <see cref="LocalizeStringEvent"/> back to the ViewModel when binding is established.
     /// </summary>
     [AddBinderContextMenu(typeof(LocalizeStringEvent))]
     [AddComponentMenu("Aspid/MVVM/Binders/LocalizeStringEvent/LocalizeStringEvent To Source Binder")]

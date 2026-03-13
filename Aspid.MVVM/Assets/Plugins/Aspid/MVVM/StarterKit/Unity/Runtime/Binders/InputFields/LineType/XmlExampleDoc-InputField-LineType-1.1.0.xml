@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doc>
+    <member name="InputFieldLineTypeBinder">
+        <example>
+            Bind the line type of a TMP_InputField using a serialized binder field — the target is assigned in the Inspector.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField]
+                    private InputFieldLineTypeBinder _lineType;
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [Bind] public TMP_InputField.LineType _lineType;
+                }
+            </code>
+            &#xD;
+            Bind the line type of a TMP_InputField by constructing the binder in code.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField] private TMP_InputField _inputField;
+                    &#xD;
+                    private InputFieldLineTypeBinder LineType =&gt;
+                        new(_inputField);
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [Bind] public TMP_InputField.LineType _lineType;
+                }
+            </code>
+        </example>
+    </member>
+    <member name="InputFieldLineTypeSwitcherBinder">
+        <example>
+            Switch the line type of a TMP_InputField between two values using a serialized binder field — the target is assigned in the Inspector.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField]
+                    private InputFieldLineTypeSwitcherBinder _isMultiLine;
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [Bind] public bool _isMultiLine;
+                }
+            </code>
+            &#xD;
+            Switch the line type of a TMP_InputField between two values by constructing the binder in code.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField] private TMP_InputField _inputField;
+                    &#xD;
+                    private InputFieldLineTypeSwitcherBinder IsMultiLine =&gt; new(
+                        _inputField,
+                        TMP_InputField.LineType.MultiLineNewline,
+                        TMP_InputField.LineType.SingleLine);
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [Bind] public bool _isMultiLine;
+                }
+            </code>
+        </example>
+    </member>
+</doc>

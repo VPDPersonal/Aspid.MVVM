@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doc>
+    <member name="InputFieldCharacterValidationBinder">
+        <example>
+            Bind the character validation of a TMP_InputField using a serialized binder field — the target is assigned in the Inspector.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField]
+                    private InputFieldCharacterValidationBinder _characterValidation;
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [Bind] public TMP_InputField.CharacterValidation _characterValidation;
+                }
+            </code>
+            &#xD;
+            Bind the character validation of a TMP_InputField by constructing the binder in code.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField] private TMP_InputField _inputField;
+                    &#xD;
+                    private InputFieldCharacterValidationBinder CharacterValidation =&gt;
+                        new(_inputField);
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [Bind] public TMP_InputField.CharacterValidation _characterValidation;
+                }
+            </code>
+        </example>
+    </member>
+    <member name="InputFieldCharacterValidationSwitcherBinder">
+        <example>
+            Switch the character validation of a TMP_InputField between two values using a serialized binder field — the target is assigned in the Inspector.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField]
+                    private InputFieldCharacterValidationSwitcherBinder _isEmailValidation;
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [Bind] public bool _isEmailValidation;
+                }
+            </code>
+            &#xD;
+            Switch the character validation of a TMP_InputField between two values by constructing the binder in code.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField] private TMP_InputField _inputField;
+                    &#xD;
+                    private InputFieldCharacterValidationSwitcherBinder IsEmailValidation =&gt; new(
+                        _inputField,
+                        TMP_InputField.CharacterValidation.EmailAddress,
+                        TMP_InputField.CharacterValidation.None);
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [Bind] public bool _isEmailValidation;
+                }
+            </code>
+        </example>
+    </member>
+</doc>

@@ -1,0 +1,16 @@
+#if UNITY_2023_1_OR_NEWER || ASPID_MVVM_TEXT_MESH_PRO_INTEGRATION
+using TMPro;
+using UnityEngine;
+
+// ReSharper disable once CheckNamespace
+namespace Aspid.MVVM.StarterKit
+{
+    /// <summary>
+    /// <see cref="ComponentToSourceMonoBinder{TMP_Text}"/> that sends the current bound property value
+    /// of a <see cref="TMP_Text"/> back to the ViewModel when binding is established.
+    /// </summary>
+    [AddBinderContextMenu(typeof(TMP_Text))]
+    [AddComponentMenu("Aspid/MVVM/Binders/UI/Text/Text To Source Binder")]
+    public sealed class TextToSourceMonoBinder : ComponentToSourceMonoBinder<TMP_Text> { }
+}
+#endif

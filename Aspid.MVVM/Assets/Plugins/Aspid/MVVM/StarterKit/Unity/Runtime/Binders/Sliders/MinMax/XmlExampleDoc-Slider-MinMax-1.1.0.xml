@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doc>
+    <member name="SliderMinMaxBinder">
+        <example>
+            Bind the slider's full range to a Vector2 ViewModel property using a serialized binder field — the target is assigned in the Inspector.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField]
+                    private SliderMinMaxBinder _range;
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [Bindable]
+                    private Vector2 _range;
+                }
+            </code>
+            &#xD;
+            Bind only the minimum endpoint of the slider range in code.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField] private Slider _slider;
+                    &#xD;
+                    private SliderMinMaxBinder MinRange =&gt; new(_slider, SliderValueMode.Min);
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [Bindable]
+                    private Vector2 _range;
+                }
+            </code>
+        </example>
+    </member>
+    <member name="SliderMinMaxMonoBinder">
+        <example>
+            Bind the slider's range to a Vector2 ViewModel property using a MonoBinder component assigned in the Inspector.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField]
+                    private SliderMinMaxMonoBinder _range;
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [Bindable]
+                    private Vector2 _range;
+                }
+            </code>
+        </example>
+    </member>
+    <member name="SliderMinMaxSwitcherBinder">
+        <example>
+            Switch the slider's min/max range between two values using a serialized binder field — the target is assigned in the Inspector.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField]
+                    private SliderMinMaxSwitcherBinder _isDifficult;
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [Bindable]
+                    private bool _isDifficult;
+                }
+            </code>
+            &#xD;
+            Switch the slider's min/max range between two values by constructing the binder in code.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField] 
+                    private Slider _slider;
+                    &#xD;
+                    [SerializeField]    
+                    private Vector2 _hardRange;
+                    &#xD;
+                    [SerializeField] 
+                    private Vector2 _easyRange;
+                    &#xD;
+                    private SliderMinMaxSwitcherBinder IsDifficult => new(
+                        _slider, _hardRange, _easyRange);
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [Bindable]
+                    private bool _isDifficult;
+                }
+            </code>
+        </example>
+    </member>
+</doc>

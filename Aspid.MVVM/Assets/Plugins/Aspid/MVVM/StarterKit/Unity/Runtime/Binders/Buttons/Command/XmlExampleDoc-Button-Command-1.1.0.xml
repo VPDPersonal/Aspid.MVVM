@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doc>
+    <member name="ButtonCommandBinder">
+        <example>
+            Bind a relay command to a Button's click using a serialized binder field — the target is assigned in the Inspector.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField]
+                    private ButtonCommandBinder _onConfirm;
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [RelayCommand]
+                    private void OnConfirm() { }
+                }
+            </code>
+            &#xD;
+            Bind a relay command to a Button's click by constructing the binder in code.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField] private Button _target;
+                    &#xD;
+                    private ButtonCommandBinder ConfirmCommand =&gt; new(_target);
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [RelayCommand]
+                    private void OnConfirm() { }
+                }
+            </code>
+        </example>
+    </member>
+    <member name="ButtonCommandMonoBinder">
+        <example>
+            Bind a relay command to a Button's click using a MonoBinder component assigned in the Inspector.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField]
+                    private ButtonCommandMonoBinder _onConfirm;
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [RelayCommand]
+                    private void OnConfirm() { }
+                    &#xD;
+                    [RelayCommand]
+                    private void OnConfirm(bool isClicked) { }
+                }
+            </code>
+        </example>
+    </member>
+    <member name="ButtonCommandBinderT">
+        <example>
+            Bind a relay command with one additional parameter to a Button's click.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField]
+                    private ButtonCommandBinder&lt;string&gt; _onItemSelected;
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [RelayCommand]
+                    private void OnItemSelected(string itemId) { }
+                }
+            </code>
+        </example>
+    </member>
+    <member name="ButtonCommandMonoBinderT">
+        <example>
+            Bind a relay command with one additional parameter using a MonoBinder component.
+            Because ButtonCommandMonoBinder&lt;T&gt; is abstract, a concrete derived class is required.
+            <code>
+                [AddComponentMenu("MyGame/Binders/ItemSelectedCommandBinder")]
+                public sealed class ItemSelectedCommandMonoBinder : ButtonCommandMonoBinder&lt;string&gt; { }
+                &#xD;
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField]
+                    private ItemSelectedCommandMonoBinder _onItemSelected;
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [RelayCommand]
+                    private void OnItemSelected(string itemId) { }
+                }
+            </code>
+        </example>
+    </member>
+    <member name="ButtonCommandBinderT1T2">
+        <example>
+            Bind a relay command with two additional parameters to a Button's click.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField]
+                    private ButtonCommandBinder&lt;string, bool&gt; _onItemSelected;
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [RelayCommand]
+                    private void OnItemSelected(string itemId, bool confirmed) { }
+                }
+            </code>
+        </example>
+    </member>
+    <member name="ButtonCommandMonoBinderT1T2">
+        <example>
+            Bind a relay command with two additional parameters using a MonoBinder component.
+            Because ButtonCommandMonoBinder&lt;T1, T2&gt; is abstract, a concrete derived class is required.
+            <code>
+                [AddComponentMenu("MyGame/Binders/ItemSelectedCommandBinder")]
+                public sealed class ItemSelectedCommandMonoBinder : ButtonCommandMonoBinder&lt;string, bool&gt; { }
+                &#xD;
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField]
+                    private ItemSelectedCommandMonoBinder _onItemSelected;
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [RelayCommand]
+                    private void OnItemSelected(string itemId, bool confirmed) { }
+                }
+            </code>
+        </example>
+    </member>
+    <member name="ButtonCommandBinderT1T2T3">
+        <example>
+            Bind a relay command with three additional parameters to a Button's click.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField]
+                    private ButtonCommandBinder&lt;string, bool, int&gt; _onItemSelected;
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [RelayCommand]
+                    private void OnItemSelected(string itemId, bool confirmed, int index) { }
+                }
+            </code>
+        </example>
+    </member>
+    <member name="ButtonCommandMonoBinderT1T2T3">
+        <example>
+            Bind a relay command with three additional parameters using a MonoBinder component.
+            Because ButtonCommandMonoBinder&lt;T1, T2, T3&gt; is abstract, a concrete derived class is required.
+            <code>
+                [AddComponentMenu("MyGame/Binders/ItemSelectedCommandBinder")]
+                public sealed class ItemSelectedCommandMonoBinder : ButtonCommandMonoBinder&lt;string, bool, int&gt; { }
+                &#xD;
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField]
+                    private ItemSelectedCommandMonoBinder _onItemSelected;
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [RelayCommand]
+                    private void OnItemSelected(string itemId, bool confirmed, int index) { }
+                }
+            </code>
+        </example>
+    </member>
+    <member name="ButtonCommandBinderT1T2T3T4">
+        <example>
+            Bind a relay command with four additional parameters to a Button's click.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField]
+                    private ButtonCommandBinder&lt;string, bool, int, float&gt; _onItemSelected;
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [RelayCommand]
+                    private void OnItemSelected(string itemId, bool confirmed, int index, float score) { }
+                }
+            </code>
+        </example>
+    </member>
+    <member name="ButtonCommandMonoBinderT1T2T3T4">
+        <example>
+            Bind a relay command with four additional parameters using a MonoBinder component.
+            Because ButtonCommandMonoBinder&lt;T1, T2, T3, T4&gt; is abstract, a concrete derived class is required.
+            <code>
+                [AddComponentMenu("MyGame/Binders/ItemSelectedCommandBinder")]
+                public sealed class ItemSelectedCommandMonoBinder : ButtonCommandMonoBinder&lt;string, bool, int, float&gt; { }
+                &#xD;
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField]
+                    private ItemSelectedCommandMonoBinder _onItemSelected;
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [RelayCommand]
+                    private void OnItemSelected(string itemId, bool confirmed, int index, float score) { }
+                }
+            </code>
+        </example>
+    </member>
+</doc>

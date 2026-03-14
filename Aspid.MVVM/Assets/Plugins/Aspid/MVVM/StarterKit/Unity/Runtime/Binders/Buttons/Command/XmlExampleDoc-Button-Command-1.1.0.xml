@@ -8,14 +8,14 @@
                 public partial class ExampleView
                 {
                     [SerializeField]
-                    private ButtonCommandBinder _onConfirm;
+                    private ButtonCommandBinder _Confirm;
                 }
                 &#xD;
                 [ViewModel]
                 public partial class ExampleViewModel
                 {
                     [RelayCommand]
-                    private void OnConfirm() { }
+                    private void Confirm() { }
                 }
             </code>
             &#xD;
@@ -33,7 +33,7 @@
                 public partial class ExampleViewModel
                 {
                     [RelayCommand]
-                    private void OnConfirm() { }
+                    private void Confirm() { }
                 }
             </code>
         </example>
@@ -46,17 +46,17 @@
                 public partial class ExampleView
                 {
                     [SerializeField]
-                    private ButtonCommandMonoBinder _onConfirm;
+                    private ButtonCommandMonoBinder _Confirm;
                 }
                 &#xD;
                 [ViewModel]
                 public partial class ExampleViewModel
                 {
                     [RelayCommand]
-                    private void OnConfirm() { }
+                    private void Confirm() { }
                     &#xD;
                     [RelayCommand]
-                    private void OnConfirm(bool isClicked) { }
+                    private void Confirm(bool isClicked) { }
                 }
             </code>
         </example>

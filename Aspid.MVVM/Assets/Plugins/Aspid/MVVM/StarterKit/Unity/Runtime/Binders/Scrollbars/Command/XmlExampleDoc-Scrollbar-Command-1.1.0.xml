@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doc>
+    <member name="ScrollbarCommandBinder">
+        <example>
+            Bind a relay command to a Scrollbar's value change using a serialized binder field — the target is assigned in the Inspector.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField]
+                    private ScrollbarCommandBinder _scrollCommand;
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [RelayCommand]
+                    private void Scroll(float value) { }
+                }
+            </code>
+            &#xD;
+            Bind a relay command in code, receiving the scrollbar value as an int.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField] private Scrollbar _scrollbar;
+                    &#xD;
+                    private ScrollbarCommandBinder ScrollCommand =&gt; new(_scrollbar);
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [RelayCommand]
+                    private void Scroll(int value) { }
+                }
+            </code>
+        </example>
+    </member>
+    <member name="ScrollbarCommandBinder{1}">
+        <example>
+            Bind a relay command with one additional parameter to a Scrollbar's value change using a serialized binder field — the target is assigned in the Inspector.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField]
+                    private ScrollbarCommandBinder&lt;string&gt; _scrollCommand;
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [RelayCommand]
+                    private void Scroll(float value, string tag) { }
+                }
+            </code>
+            &#xD;
+            Bind a relay command with one additional parameter in code.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField] private Scrollbar _scrollbar;
+                    &#xD;
+                    private ScrollbarCommandBinder&lt;string&gt; ScrollCommand =&gt; new(_scrollbar, "tag");
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [RelayCommand]
+                    private void Scroll(float value, string tag) { }
+                }
+            </code>
+        </example>
+    </member>
+    <member name="ScrollbarCommandBinder{2}">
+        <example>
+            Bind a relay command with two additional parameters to a Scrollbar's value change using a serialized binder field — the target is assigned in the Inspector.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField]
+                    private ScrollbarCommandBinder&lt;string, bool&gt; _scrollCommand;
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [RelayCommand]
+                    private void Scroll(float value, string tag, bool active) { }
+                }
+            </code>
+            &#xD;
+            Bind a relay command with two additional parameters in code.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField] private Scrollbar _scrollbar;
+                    &#xD;
+                    private ScrollbarCommandBinder&lt;string, bool&gt; ScrollCommand =&gt; new(_scrollbar, "tag", true);
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [RelayCommand]
+                    private void Scroll(float value, string tag, bool active) { }
+                }
+            </code>
+        </example>
+    </member>
+    <member name="ScrollbarCommandBinder{3}">
+        <example>
+            Bind a relay command with three additional parameters to a Scrollbar's value change using a serialized binder field — the target is assigned in the Inspector.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField]
+                    private ScrollbarCommandBinder&lt;string, bool, int&gt; _scrollCommand;
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [RelayCommand]
+                    private void Scroll(float value, string tag, bool active, int priority) { }
+                }
+            </code>
+            &#xD;
+            Bind a relay command with three additional parameters in code.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField] private Scrollbar _scrollbar;
+                    &#xD;
+                    private ScrollbarCommandBinder&lt;string, bool, int&gt; ScrollCommand =&gt; new(_scrollbar, "tag", true, 1);
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [RelayCommand]
+                    private void Scroll(float value, string tag, bool active, int priority) { }
+                }
+            </code>
+        </example>
+    </member>
+</doc>

@@ -6,7 +6,7 @@ using UnityEngine;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="SwitcherBinder{CanvasGroup, float, IConverter{float, float}}"/> that switches the <see cref="CanvasGroup.alpha"/>
+    /// <see cref="SwitcherFloatBinder{CanvasGroup}"/> that switches the <see cref="CanvasGroup.alpha"/>
     /// property between two <see cref="float"/> values based on the bound boolean ViewModel value.
     /// </summary>
     /// <remarks>
@@ -25,7 +25,10 @@ namespace Aspid.MVVM.StarterKit
             BindMode mode = BindMode.OneWay)
             : base(target, trueValue, falseValue, converter, mode) { }
 
-        /// <inheritdoc/>
+        /// <summary>
+        /// Called when applying the selected <see cref="float"/> value to the <see cref="CanvasGroup.alpha"/> property.
+        /// Clamps the value to the valid range of 0 to 1.
+        /// </summary>
         protected override void SetValue(float value) =>
             Target.alpha = Mathf.Clamp01(value);
     }

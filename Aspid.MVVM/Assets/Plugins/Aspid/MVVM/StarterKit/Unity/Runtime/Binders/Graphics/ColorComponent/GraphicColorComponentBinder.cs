@@ -14,6 +14,7 @@ namespace Aspid.MVVM.StarterKit
     [Serializable]
     public class GraphicColorComponentBinder : TargetFloatBinder<Graphic>
     {
+        [Tooltip("The color channel of the Graphic's color property to bind.")]
         [SerializeField] private ColorComponent _colorComponent = ColorComponent.A;
 
         /// <inheritdoc/>

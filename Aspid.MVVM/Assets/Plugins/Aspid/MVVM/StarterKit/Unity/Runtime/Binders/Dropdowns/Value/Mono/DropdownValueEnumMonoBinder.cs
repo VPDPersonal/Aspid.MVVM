@@ -6,8 +6,8 @@ using UnityEngine;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// MonoBehaviour binder that sets the <see cref="TMP_Dropdown.value"/> property on a <see cref="TMP_Dropdown"/>
-    /// to a value resolved from an enum bound on the ViewModel.
+    /// <see cref="EnumIntMonoBinder{TMP_Dropdown}"/> that sets the <see cref="TMP_Dropdown.value"/>
+    /// property to a value resolved from a bound enum ViewModel property.
     /// </summary>
     [AddBinderContextMenu(typeof(TMP_Dropdown), SubPath = "Enum")]
     [AddComponentMenu("Aspid/MVVM/Binders/UI/Dropdown/Dropdown Binder – Value Enum")]

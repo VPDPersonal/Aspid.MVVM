@@ -43,8 +43,7 @@ namespace Aspid.MVVM.StarterKit
         /// <typeparam name="T">The runtime type of the incoming value.</typeparam>
         /// <param name="value">The value received from the ViewModel.</param>
         /// <remarks>
-        /// If no converter is assigned, logs an error via <c>UnityEngine.Debug.LogError</c> and returns
-        /// without invoking the event.
+        /// If no converter is assigned, logs a Unity error and returns without invoking the event.
         /// </remarks>
         [BinderLog]
         public void SetValue<T>(T value)

@@ -27,10 +27,16 @@ namespace Aspid.MVVM.StarterKit
         private void OnEnable() =>
             SetEnable();
         
-        protected override void OnBound() => 
+        /// <summary>
+        /// Called when the binder is bound. Enables or disables itself based on the updated binding state.
+        /// </summary>
+        protected override void OnBound() =>
             SetEnable();
 
-        protected override void OnUnbound() => 
+        /// <summary>
+        /// Called when the binder is unbound. Enables or disables itself based on the updated binding state.
+        /// </summary>
+        protected override void OnUnbound() =>
             SetEnable();
         
         /// <inheritdoc/>

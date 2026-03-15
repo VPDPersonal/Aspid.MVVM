@@ -13,15 +13,15 @@ using Converter = Aspid.MVVM.StarterKit.IConverterEnumToDropdownOptionData;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// MonoBehaviour binder that populates <see cref="TMPro.TMP_Dropdown"/> options
+    /// <see cref="ComponentMonoBinder{TMP_Dropdown}"/> that populates <see cref="TMP_Dropdown.options"/>
     /// automatically from the values of a bound enum type.
     /// </summary>
     [AddBinderContextMenu(typeof(TMP_Dropdown))]
     [AddComponentMenu("Aspid/MVVM/Binders/UI/Dropdown/Dropdown Binder – Options By Enum")]
     public class DropdownOptionsByEnumMonoBinder : ComponentMonoBinder<TMP_Dropdown>, IBinder<Enum>
     {
-        [Tooltip("The converter used to transform the enum value to dropdown option data. When null, the default string representation of each enum value is used.")]
         [SerializeReferenceDropdown]
+        [Tooltip("The converter used to transform the enum value to dropdown option data. When null, the default string representation of each enum value is used.")]
         [SerializeReference] private Converter _converter;
 
         /// <summary>

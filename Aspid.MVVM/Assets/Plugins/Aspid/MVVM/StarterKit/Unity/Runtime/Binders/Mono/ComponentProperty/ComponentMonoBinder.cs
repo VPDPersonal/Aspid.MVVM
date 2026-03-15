@@ -37,7 +37,7 @@ namespace Aspid.MVVM.StarterKit
         /// Sends the initial property value to the ViewModel when in <see cref="BindMode.OneWayToSource"/> mode.
         /// </summary>
         /// <remarks>
-        /// When overriding this method, always call <c>base.OnBound()</c> to preserve
+        /// When overriding this method, always call the base implementation to preserve
         /// the <see cref="BindMode.OneWayToSource"/> initialization behavior.
         /// </remarks>
         protected override void OnBound()

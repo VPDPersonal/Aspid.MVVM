@@ -17,6 +17,7 @@ namespace Aspid.MVVM.StarterKit
         IBinder<bool>,
         IReverseBinder<bool>
     {
+        /// <inheritdoc/>
         public event Action<bool> ValueChanged;
 
         [SerializeField] private bool _isInvert;
@@ -38,7 +39,7 @@ namespace Aspid.MVVM.StarterKit
         /// </summary>
         /// <remarks>
         /// Subscription is skipped for <see cref="BindMode.OneWay"/>. For <see cref="BindMode.OneWayToSource"/>,
-        /// <c>OnValueChanged</c> is invoked immediately to propagate the current toggle state to the source.
+        /// OnValueChanged is invoked immediately to propagate the current toggle state to the source.
         /// </remarks>
         protected override void OnBound()
         {

@@ -29,14 +29,14 @@ namespace Aspid.MVVM.StarterKit
         }
 
         /// <summary>
-        /// Binds an <see cref="IRelayCommand"/> and subscribes to its <c>CanExecuteChanged</c> event.
+        /// Binds an <see cref="IRelayCommand"/> and subscribes to its <see cref="IRelayCommand.CanExecuteChanged"/> event.
         /// </summary>
         [BinderLog]
         public void SetValue(IRelayCommand value) =>
             CommandBinderExtensions.UpdateCommand(ref _command, value, OnCanExecuteChanged);
 
         /// <summary>
-        /// Binds an <see cref="IRelayCommand{bool}"/> and subscribes to its <c>CanExecuteChanged</c> event.
+        /// Binds an <see cref="IRelayCommand{bool}"/> and subscribes to its <see cref="IRelayCommand.CanExecuteChanged"/> event.
         /// </summary>
         [BinderLog]
         public void SetValue(IRelayCommand<bool> value) =>
@@ -47,7 +47,7 @@ namespace Aspid.MVVM.StarterKit
         /// every value change executes the bound command.
         /// </summary>
         /// <remarks>
-        /// The subscription connects the toggle's value change event to <c>OnValueChanged</c>, which
+        /// The subscription connects the toggle's value change event to OnValueChanged, which
         /// dispatches to the first non-null command among all bound command types.
         /// </remarks>
         protected override void OnBound() =>
@@ -58,8 +58,8 @@ namespace Aspid.MVVM.StarterKit
         /// and releases all bound command references.
         /// </summary>
         /// <remarks>
-        /// Passes <see langword="null"/> to each <c>SetValue</c> overload to detach command
-        /// references and unsubscribe from their <c>CanExecuteChanged</c> events.
+        /// Passes <see langword="null"/> to each SetValue overload to detach command
+        /// references and unsubscribe from their <see cref="IRelayCommand.CanExecuteChanged"/> events.
         /// </remarks>
         protected override void OnUnbound()
         {
@@ -99,10 +99,9 @@ namespace Aspid.MVVM.StarterKit
     }
     
     /// <summary>
-    /// <see cref="ComponentMonoBinder{Toggle}"/> that executes a command with one additional parameter
+    /// Abstract base <see cref="ComponentMonoBinder{Toggle}"/> that executes a command with one additional parameter
     /// each time <see cref="Toggle.onValueChanged"/> fires.
     /// Accepts commands typed as <see cref="IRelayCommand{bool, T}"/> (receiving the isOn state and the configured parameter).
-    /// Because this class is abstract, a concrete sealed subclass is required for use.
     /// </summary>
     /// <typeparam name="T">The type of the additional parameter forwarded alongside the isOn value.</typeparam>
     public abstract partial class ToggleCommandMonoBinder<T> : ComponentMonoBinder<Toggle>, IBinder<IRelayCommand<bool, T>>
@@ -133,7 +132,7 @@ namespace Aspid.MVVM.StarterKit
         }
         
         /// <summary>
-        /// Binds an <see cref="IRelayCommand{bool, T}"/> and subscribes to its <c>CanExecuteChanged</c> event.
+        /// Binds an <see cref="IRelayCommand{bool, T}"/> and subscribes to its <see cref="IRelayCommand.CanExecuteChanged"/> event.
         /// </summary>
         [BinderLog]
         public void SetValue(IRelayCommand<bool, T> value) =>
@@ -144,7 +143,7 @@ namespace Aspid.MVVM.StarterKit
         /// every value change executes the bound command with the current isOn value and the configured parameter.
         /// </summary>
         /// <remarks>
-        /// The subscription connects the toggle's value change event to <c>OnValueChanged</c>,
+        /// The subscription connects the toggle's value change event to OnValueChanged,
         /// which executes the bound command with the isOn state and <see cref="Param"/>.
         /// </remarks>
         protected override void OnBound() =>
@@ -155,8 +154,8 @@ namespace Aspid.MVVM.StarterKit
         /// and releases the bound command reference.
         /// </summary>
         /// <remarks>
-        /// Passes <see langword="null"/> to <c>SetValue</c> to detach the command reference
-        /// and unsubscribe from its <c>CanExecuteChanged</c> event.
+        /// Passes <see langword="null"/> to SetValue to detach the command reference
+        /// and unsubscribe from its <see cref="IRelayCommand.CanExecuteChanged"/> event.
         /// </remarks>
         protected override void OnUnbound()
         {
@@ -185,10 +184,9 @@ namespace Aspid.MVVM.StarterKit
     }
     
     /// <summary>
-    /// <see cref="ComponentMonoBinder{Toggle}"/> that executes a command with two additional parameters
+    /// Abstract base <see cref="ComponentMonoBinder{Toggle}"/> that executes a command with two additional parameters
     /// each time <see cref="Toggle.onValueChanged"/> fires.
     /// Accepts commands typed as <see cref="IRelayCommand{bool, T1, T2}"/> (receiving the isOn state and the configured parameters).
-    /// Because this class is abstract, a concrete sealed subclass is required for use.
     /// </summary>
     /// <typeparam name="T1">The type of the first additional parameter forwarded alongside the isOn value.</typeparam>
     /// <typeparam name="T2">The type of the second additional parameter forwarded alongside the isOn value.</typeparam>
@@ -230,7 +228,7 @@ namespace Aspid.MVVM.StarterKit
         }
         
         /// <summary>
-        /// Binds an <see cref="IRelayCommand{bool, T1, T2}"/> and subscribes to its <c>CanExecuteChanged</c> event.
+        /// Binds an <see cref="IRelayCommand{bool, T1, T2}"/> and subscribes to its <see cref="IRelayCommand.CanExecuteChanged"/> event.
         /// </summary>
         [BinderLog]
         public void SetValue(IRelayCommand<bool, T1, T2> value) =>
@@ -241,7 +239,7 @@ namespace Aspid.MVVM.StarterKit
         /// every value change executes the bound command with the current isOn value and the configured parameters.
         /// </summary>
         /// <remarks>
-        /// The subscription connects the toggle's value change event to <c>OnValueChanged</c>,
+        /// The subscription connects the toggle's value change event to OnValueChanged,
         /// which executes the bound command with the isOn state, <see cref="Param1"/>, and <see cref="Param2"/>.
         /// </remarks>
         protected override void OnBound() =>
@@ -252,8 +250,8 @@ namespace Aspid.MVVM.StarterKit
         /// and releases the bound command reference.
         /// </summary>
         /// <remarks>
-        /// Passes <see langword="null"/> to <c>SetValue</c> to detach the command reference
-        /// and unsubscribe from its <c>CanExecuteChanged</c> event.
+        /// Passes <see langword="null"/> to SetValue to detach the command reference
+        /// and unsubscribe from its <see cref="IRelayCommand.CanExecuteChanged"/> event.
         /// </remarks>
         protected override void OnUnbound()
         {
@@ -282,10 +280,9 @@ namespace Aspid.MVVM.StarterKit
     }
     
     /// <summary>
-    /// <see cref="ComponentMonoBinder{Toggle}"/> that executes a command with three additional parameters
+    /// Abstract base <see cref="ComponentMonoBinder{Toggle}"/> that executes a command with three additional parameters
     /// each time <see cref="Toggle.onValueChanged"/> fires.
     /// Accepts commands typed as <see cref="IRelayCommand{bool, T1, T2, T3}"/> (receiving the isOn state and the configured parameters).
-    /// Because this class is abstract, a concrete sealed subclass is required for use.
     /// </summary>
     /// <typeparam name="T1">The type of the first additional parameter forwarded alongside the isOn value.</typeparam>
     /// <typeparam name="T2">The type of the second additional parameter forwarded alongside the isOn value.</typeparam>
@@ -338,7 +335,7 @@ namespace Aspid.MVVM.StarterKit
         }
         
         /// <summary>
-        /// Binds an <see cref="IRelayCommand{bool, T1, T2, T3}"/> and subscribes to its <c>CanExecuteChanged</c> event.
+        /// Binds an <see cref="IRelayCommand{bool, T1, T2, T3}"/> and subscribes to its <see cref="IRelayCommand.CanExecuteChanged"/> event.
         /// </summary>
         [BinderLog]
         public void SetValue(IRelayCommand<bool, T1, T2, T3> value) =>
@@ -349,7 +346,7 @@ namespace Aspid.MVVM.StarterKit
         /// every value change executes the bound command with the current isOn value and the configured parameters.
         /// </summary>
         /// <remarks>
-        /// The subscription connects the toggle's value change event to <c>OnValueChanged</c>,
+        /// The subscription connects the toggle's value change event to OnValueChanged,
         /// which executes the bound command with the isOn state, <see cref="Param1"/>, <see cref="Param2"/>, and <see cref="Param3"/>.
         /// </remarks>
         protected override void OnBound() =>
@@ -360,8 +357,8 @@ namespace Aspid.MVVM.StarterKit
         /// and releases the bound command reference.
         /// </summary>
         /// <remarks>
-        /// Passes <see langword="null"/> to <c>SetValue</c> to detach the command reference
-        /// and unsubscribe from its <c>CanExecuteChanged</c> event.
+        /// Passes <see langword="null"/> to SetValue to detach the command reference
+        /// and unsubscribe from its <see cref="IRelayCommand.CanExecuteChanged"/> event.
         /// </remarks>
         protected override void OnUnbound()
         {

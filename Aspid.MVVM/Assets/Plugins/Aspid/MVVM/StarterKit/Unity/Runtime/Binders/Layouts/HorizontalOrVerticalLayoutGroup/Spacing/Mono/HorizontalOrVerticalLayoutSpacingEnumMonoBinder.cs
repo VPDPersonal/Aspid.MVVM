@@ -5,7 +5,7 @@ using UnityEngine.UI;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="EnumMonoBinder{HorizontalOrVerticalLayoutGroup, float, Converter}"/> that sets the
+    /// <see cref="EnumFloatMonoBinder{HorizontalOrVerticalLayoutGroup}"/> that sets the
     /// <see cref="UnityEngine.UI.HorizontalOrVerticalLayoutGroup.spacing"/> property to a value
     /// resolved from the bound enum ViewModel value.
     /// </summary>

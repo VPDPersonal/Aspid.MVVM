@@ -5,7 +5,7 @@ using UnityEngine.UI;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// MonoBehaviour binder that executes a command each time <see cref="Scrollbar.onValueChanged"/> fires,
+    /// <see cref="ComponentMonoBinder{Scrollbar}"/> that executes a command each time <see cref="Scrollbar.onValueChanged"/> fires,
     /// passing the current scrollbar value as the command argument.
     /// Accepts commands typed as <see cref="IRelayCommand{T}">IRelayCommand&lt;int&gt;</see>,
     /// <see cref="IRelayCommand{T}">IRelayCommand&lt;long&gt;</see>,
@@ -43,28 +43,28 @@ namespace Aspid.MVVM.StarterKit
         }
 
         /// <summary>
-        /// Binds an <see cref="IRelayCommand{T}">IRelayCommand&lt;int&gt;</see> and subscribes to its <c>CanExecuteChanged</c> event.
+        /// Binds an <see cref="IRelayCommand{T}">IRelayCommand&lt;int&gt;</see> and subscribes to its <see cref="IRelayCommand.CanExecuteChanged"/> event.
         /// </summary>
         [BinderLog]
         public void SetValue(IRelayCommand<int> value) =>
             CommandBinderExtensions.UpdateCommand(ref _intCommand, value, OnCanExecuteChanged);
 
         /// <summary>
-        /// Binds an <see cref="IRelayCommand{T}">IRelayCommand&lt;long&gt;</see> and subscribes to its <c>CanExecuteChanged</c> event.
+        /// Binds an <see cref="IRelayCommand{T}">IRelayCommand&lt;long&gt;</see> and subscribes to its <see cref="IRelayCommand.CanExecuteChanged"/> event.
         /// </summary>
         [BinderLog]
         public void SetValue(IRelayCommand<long> value) =>
             CommandBinderExtensions.UpdateCommand(ref _longCommand, value, OnCanExecuteChanged);
 
         /// <summary>
-        /// Binds an <see cref="IRelayCommand{T}">IRelayCommand&lt;float&gt;</see> and subscribes to its <c>CanExecuteChanged</c> event.
+        /// Binds an <see cref="IRelayCommand{T}">IRelayCommand&lt;float&gt;</see> and subscribes to its <see cref="IRelayCommand.CanExecuteChanged"/> event.
         /// </summary>
         [BinderLog]
         public void SetValue(IRelayCommand<float> value) =>
             CommandBinderExtensions.UpdateCommand(ref _floatCommand, value, OnCanExecuteChanged);
 
         /// <summary>
-        /// Binds an <see cref="IRelayCommand{T}">IRelayCommand&lt;double&gt;</see> and subscribes to its <c>CanExecuteChanged</c> event.
+        /// Binds an <see cref="IRelayCommand{T}">IRelayCommand&lt;double&gt;</see> and subscribes to its <see cref="IRelayCommand.CanExecuteChanged"/> event.
         /// </summary>
         [BinderLog]
         public void SetValue(IRelayCommand<double> value) =>
@@ -82,8 +82,8 @@ namespace Aspid.MVVM.StarterKit
         /// and releases all bound command references.
         /// </summary>
         /// <remarks>
-        /// Passes <see langword="null"/> to each <c>SetValue</c> overload to detach command
-        /// references and unsubscribe from their <c>CanExecuteChanged</c> events.
+        /// Passes <see langword="null"/> to each SetValue overload to detach command
+        /// references and unsubscribe from their <see cref="IRelayCommand.CanExecuteChanged"/> events.
         /// </remarks>
         protected override void OnUnbound()
         {
@@ -127,7 +127,7 @@ namespace Aspid.MVVM.StarterKit
     }
 
     /// <summary>
-    /// Abstract MonoBehaviour binder that executes a command each time <see cref="Scrollbar.onValueChanged"/> fires,
+    /// Abstract base <see cref="ComponentMonoBinder{Scrollbar}"/> that executes a command each time <see cref="Scrollbar.onValueChanged"/> fires,
     /// passing the current scrollbar value and an additional parameter as the command arguments.
     /// Accepts commands typed as <see cref="IRelayCommand{T1, T2}">IRelayCommand&lt;int, T&gt;</see>,
     /// <see cref="IRelayCommand{T1, T2}">IRelayCommand&lt;long, T&gt;</see>,
@@ -177,28 +177,28 @@ namespace Aspid.MVVM.StarterKit
         }
 
         /// <summary>
-        /// Binds an <see cref="IRelayCommand{T1, T2}">IRelayCommand&lt;int, T&gt;</see> and subscribes to its <c>CanExecuteChanged</c> event.
+        /// Binds an <see cref="IRelayCommand{T1, T2}">IRelayCommand&lt;int, T&gt;</see> and subscribes to its <see cref="IRelayCommand.CanExecuteChanged"/> event.
         /// </summary>
         [BinderLog]
         public void SetValue(IRelayCommand<int, T> value) =>
             CommandBinderExtensions.UpdateCommand(ref _intCommand, value, OnCanExecuteChanged);
 
         /// <summary>
-        /// Binds an <see cref="IRelayCommand{T1, T2}">IRelayCommand&lt;long, T&gt;</see> and subscribes to its <c>CanExecuteChanged</c> event.
+        /// Binds an <see cref="IRelayCommand{T1, T2}">IRelayCommand&lt;long, T&gt;</see> and subscribes to its <see cref="IRelayCommand.CanExecuteChanged"/> event.
         /// </summary>
         [BinderLog]
         public void SetValue(IRelayCommand<long, T> value) =>
             CommandBinderExtensions.UpdateCommand(ref _longCommand, value, OnCanExecuteChanged);
 
         /// <summary>
-        /// Binds an <see cref="IRelayCommand{T1, T2}">IRelayCommand&lt;float, T&gt;</see> and subscribes to its <c>CanExecuteChanged</c> event.
+        /// Binds an <see cref="IRelayCommand{T1, T2}">IRelayCommand&lt;float, T&gt;</see> and subscribes to its <see cref="IRelayCommand.CanExecuteChanged"/> event.
         /// </summary>
         [BinderLog]
         public void SetValue(IRelayCommand<float, T> value) =>
             CommandBinderExtensions.UpdateCommand(ref _floatCommand, value, OnCanExecuteChanged);
 
         /// <summary>
-        /// Binds an <see cref="IRelayCommand{T1, T2}">IRelayCommand&lt;double, T&gt;</see> and subscribes to its <c>CanExecuteChanged</c> event.
+        /// Binds an <see cref="IRelayCommand{T1, T2}">IRelayCommand&lt;double, T&gt;</see> and subscribes to its <see cref="IRelayCommand.CanExecuteChanged"/> event.
         /// </summary>
         [BinderLog]
         public void SetValue(IRelayCommand<double, T> value) =>
@@ -216,8 +216,8 @@ namespace Aspid.MVVM.StarterKit
         /// and releases all bound command references.
         /// </summary>
         /// <remarks>
-        /// Passes <see langword="null"/> to each <c>SetValue</c> overload to detach command
-        /// references and unsubscribe from their <c>CanExecuteChanged</c> events.
+        /// Passes <see langword="null"/> to each SetValue overload to detach command
+        /// references and unsubscribe from their <see cref="IRelayCommand.CanExecuteChanged"/> events.
         /// </remarks>
         protected override void OnUnbound()
         {
@@ -261,7 +261,7 @@ namespace Aspid.MVVM.StarterKit
     }
 
     /// <summary>
-    /// Abstract MonoBehaviour binder that executes a command each time <see cref="Scrollbar.onValueChanged"/> fires,
+    /// Abstract base <see cref="ComponentMonoBinder{Scrollbar}"/> that executes a command each time <see cref="Scrollbar.onValueChanged"/> fires,
     /// passing the current scrollbar value and two additional parameters as the command arguments.
     /// Accepts commands typed as <see cref="IRelayCommand{T1, T2, T3}">IRelayCommand&lt;int, T1, T2&gt;</see>,
     /// <see cref="IRelayCommand{T1, T2, T3}">IRelayCommand&lt;long, T1, T2&gt;</see>,
@@ -323,28 +323,28 @@ namespace Aspid.MVVM.StarterKit
         }
 
         /// <summary>
-        /// Binds an <see cref="IRelayCommand{T1, T2, T3}">IRelayCommand&lt;int, T1, T2&gt;</see> and subscribes to its <c>CanExecuteChanged</c> event.
+        /// Binds an <see cref="IRelayCommand{T1, T2, T3}">IRelayCommand&lt;int, T1, T2&gt;</see> and subscribes to its <see cref="IRelayCommand.CanExecuteChanged"/> event.
         /// </summary>
         [BinderLog]
         public void SetValue(IRelayCommand<int, T1, T2> value) =>
             CommandBinderExtensions.UpdateCommand(ref _intCommand, value, OnCanExecuteChanged);
 
         /// <summary>
-        /// Binds an <see cref="IRelayCommand{T1, T2, T3}">IRelayCommand&lt;long, T1, T2&gt;</see> and subscribes to its <c>CanExecuteChanged</c> event.
+        /// Binds an <see cref="IRelayCommand{T1, T2, T3}">IRelayCommand&lt;long, T1, T2&gt;</see> and subscribes to its <see cref="IRelayCommand.CanExecuteChanged"/> event.
         /// </summary>
         [BinderLog]
         public void SetValue(IRelayCommand<long, T1, T2> value) =>
             CommandBinderExtensions.UpdateCommand(ref _longCommand, value, OnCanExecuteChanged);
 
         /// <summary>
-        /// Binds an <see cref="IRelayCommand{T1, T2, T3}">IRelayCommand&lt;float, T1, T2&gt;</see> and subscribes to its <c>CanExecuteChanged</c> event.
+        /// Binds an <see cref="IRelayCommand{T1, T2, T3}">IRelayCommand&lt;float, T1, T2&gt;</see> and subscribes to its <see cref="IRelayCommand.CanExecuteChanged"/> event.
         /// </summary>
         [BinderLog]
         public void SetValue(IRelayCommand<float, T1, T2> value) =>
             CommandBinderExtensions.UpdateCommand(ref _floatCommand, value, OnCanExecuteChanged);
 
         /// <summary>
-        /// Binds an <see cref="IRelayCommand{T1, T2, T3}">IRelayCommand&lt;double, T1, T2&gt;</see> and subscribes to its <c>CanExecuteChanged</c> event.
+        /// Binds an <see cref="IRelayCommand{T1, T2, T3}">IRelayCommand&lt;double, T1, T2&gt;</see> and subscribes to its <see cref="IRelayCommand.CanExecuteChanged"/> event.
         /// </summary>
         [BinderLog]
         public void SetValue(IRelayCommand<double, T1, T2> value) =>
@@ -362,8 +362,8 @@ namespace Aspid.MVVM.StarterKit
         /// and releases all bound command references.
         /// </summary>
         /// <remarks>
-        /// Passes <see langword="null"/> to each <c>SetValue</c> overload to detach command
-        /// references and unsubscribe from their <c>CanExecuteChanged</c> events.
+        /// Passes <see langword="null"/> to each SetValue overload to detach command
+        /// references and unsubscribe from their <see cref="IRelayCommand.CanExecuteChanged"/> events.
         /// </remarks>
         protected override void OnUnbound()
         {
@@ -407,7 +407,7 @@ namespace Aspid.MVVM.StarterKit
     }
 
     /// <summary>
-    /// Abstract MonoBehaviour binder that executes a command each time <see cref="Scrollbar.onValueChanged"/> fires,
+    /// Abstract base <see cref="ComponentMonoBinder{Scrollbar}"/> that executes a command each time <see cref="Scrollbar.onValueChanged"/> fires,
     /// passing the current scrollbar value and three additional parameters as the command arguments.
     /// Accepts commands typed as <see cref="IRelayCommand{T1, T2, T3, T4}">IRelayCommand&lt;int, T1, T2, T3&gt;</see>,
     /// <see cref="IRelayCommand{T1, T2, T3, T4}">IRelayCommand&lt;long, T1, T2, T3&gt;</see>,
@@ -481,28 +481,28 @@ namespace Aspid.MVVM.StarterKit
         }
 
         /// <summary>
-        /// Binds an <see cref="IRelayCommand{T1, T2, T3, T4}">IRelayCommand&lt;int, T1, T2, T3&gt;</see> and subscribes to its <c>CanExecuteChanged</c> event.
+        /// Binds an <see cref="IRelayCommand{T1, T2, T3, T4}">IRelayCommand&lt;int, T1, T2, T3&gt;</see> and subscribes to its <see cref="IRelayCommand.CanExecuteChanged"/> event.
         /// </summary>
         [BinderLog]
         public void SetValue(IRelayCommand<int, T1, T2, T3> value) =>
             CommandBinderExtensions.UpdateCommand(ref _intCommand, value, OnCanExecuteChanged);
 
         /// <summary>
-        /// Binds an <see cref="IRelayCommand{T1, T2, T3, T4}">IRelayCommand&lt;long, T1, T2, T3&gt;</see> and subscribes to its <c>CanExecuteChanged</c> event.
+        /// Binds an <see cref="IRelayCommand{T1, T2, T3, T4}">IRelayCommand&lt;long, T1, T2, T3&gt;</see> and subscribes to its <see cref="IRelayCommand.CanExecuteChanged"/> event.
         /// </summary>
         [BinderLog]
         public void SetValue(IRelayCommand<long, T1, T2, T3> value) =>
             CommandBinderExtensions.UpdateCommand(ref _longCommand, value, OnCanExecuteChanged);
 
         /// <summary>
-        /// Binds an <see cref="IRelayCommand{T1, T2, T3, T4}">IRelayCommand&lt;float, T1, T2, T3&gt;</see> and subscribes to its <c>CanExecuteChanged</c> event.
+        /// Binds an <see cref="IRelayCommand{T1, T2, T3, T4}">IRelayCommand&lt;float, T1, T2, T3&gt;</see> and subscribes to its <see cref="IRelayCommand.CanExecuteChanged"/> event.
         /// </summary>
         [BinderLog]
         public void SetValue(IRelayCommand<float, T1, T2, T3> value) =>
             CommandBinderExtensions.UpdateCommand(ref _floatCommand, value, OnCanExecuteChanged);
 
         /// <summary>
-        /// Binds an <see cref="IRelayCommand{T1, T2, T3, T4}">IRelayCommand&lt;double, T1, T2, T3&gt;</see> and subscribes to its <c>CanExecuteChanged</c> event.
+        /// Binds an <see cref="IRelayCommand{T1, T2, T3, T4}">IRelayCommand&lt;double, T1, T2, T3&gt;</see> and subscribes to its <see cref="IRelayCommand.CanExecuteChanged"/> event.
         /// </summary>
         [BinderLog]
         public void SetValue(IRelayCommand<double, T1, T2, T3> value) =>
@@ -520,8 +520,8 @@ namespace Aspid.MVVM.StarterKit
         /// and releases all bound command references.
         /// </summary>
         /// <remarks>
-        /// Passes <see langword="null"/> to each <c>SetValue</c> overload to detach command
-        /// references and unsubscribe from their <c>CanExecuteChanged</c> events.
+        /// Passes <see langword="null"/> to each SetValue overload to detach command
+        /// references and unsubscribe from their <see cref="IRelayCommand.CanExecuteChanged"/> events.
         /// </remarks>
         protected override void OnUnbound()
         {

@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 using System.Collections.Generic;
 using Aspid.Collections.Observable.Filtered;
@@ -15,29 +14,22 @@ using Comparer = Aspid.MVVM.StarterKit.IViewModelCollectionComparer;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
-    [Serializable]
-    public class ViewModelObservableListBinder : ViewModelObservableListBinder<MonoView, ViewFactory>
-    {
-        public ViewModelObservableListBinder(ViewFactory viewFactory, BindMode mode = BindMode.OneWay) 
-            : base(viewFactory, mode) { }
-    }
+    [AddComponentMenu("Aspid/MVVM/Binders/Collection/Observable List Binder – ViewModel")]
+    [AddBinderContextMenu(typeof(Component), Path = "Add General Binder/Collection/Observable List Binder – ViewModel")]
+    public class ObservableListViewModelMonoBinder : ObservableListViewModelMonoBinder<MonoView, ViewFactory> { }
+
+#if UNITY_2023_1_OR_NEWER
+    public abstract class ObservableListViewModelMonoBinder<T> : ObservableListViewModelMonoBinder<T, IViewFactory<T>> 
+        where T : MonoBehaviour, IView { }
+#endif
     
-    [Serializable]
-    public class ViewModelObservableListBinder<T> : ViewModelObservableListBinder<T, IViewFactory<T>> 
-        where T : MonoBehaviour, IView
-    {
-        public ViewModelObservableListBinder(IViewFactory<T> viewFactory, BindMode mode = BindMode.OneWay) 
-            : base(viewFactory, mode) { }
-    }
-    
-    [Serializable]
-    public class ViewModelObservableListBinder<T, TViewFactory> : ObservableListBinder<IViewModel>
+    public abstract class ObservableListViewModelMonoBinder<T, TViewFactory> : ObservableListMonoBinder<IViewModel>
         where T : MonoBehaviour, IView
         where TViewFactory : IViewFactory<T>
     {
         [SerializeReferenceDropdown]
         [SerializeReference] private TViewFactory _viewFactory;
-        
+
         [SerializeReferenceDropdown]
         [SerializeReference] private Filter _filter;
         
@@ -48,20 +40,13 @@ namespace Aspid.MVVM.StarterKit
         private FilteredList<IViewModel> _filteredList;
         
         private List<T> Views => _views ??= new List<T>();
-        
-        public ViewModelObservableListBinder(TViewFactory viewFactory, BindMode mode = BindMode.OneWay)
-            : base(mode)
-        {
-            mode.ThrowExceptionIfTwo();
-            _viewFactory = viewFactory ?? throw new ArgumentNullException(nameof(viewFactory));
-        }
-        
+
         protected override void OnUnbound()
         {
             DisposeFilteredList();
             base.OnUnbound();
         }
-        
+
         protected sealed override IReadOnlyFilteredList<IViewModel> GetFilterList(IReadOnlyList<IViewModel> list)
         {
             DisposeFilteredList();
@@ -90,7 +75,7 @@ namespace Aspid.MVVM.StarterKit
         protected sealed override void OnAdded(IReadOnlyList<IViewModel> newItems, int newStartingIndex)
         {
             if (newItems is null) return;
-
+            
             var index = 0;
             
             foreach (var item in newItems)

@@ -8,8 +8,8 @@ using System.Collections.Generic;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// MonoBehaviour binder that sets the options list on a <see cref="TMPro.TMP_Dropdown"/>
-    /// when the bound ViewModel value changes.
+    /// <see cref="ComponentMonoBinder{TMP_Dropdown}"/> that manages the <see cref="TMP_Dropdown.options"/>
+    /// list when the bound ViewModel value changes.
     /// </summary>
     [AddBinderContextMenu(typeof(TMP_Dropdown))]
     [AddComponentMenu("Aspid/MVVM/Binders/UI/Dropdown/Dropdown Binder – Options")]

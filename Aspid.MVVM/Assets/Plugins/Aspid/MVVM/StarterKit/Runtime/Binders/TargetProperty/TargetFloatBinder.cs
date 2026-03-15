@@ -10,7 +10,7 @@ using Converter = Aspid.MVVM.StarterKit.IConverterFloat;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// Abstract base <see cref="TargetBinder{TTarget, float, IConverter{flaot, float}}"/> that binds a <see langword="float"/> property,
+    /// Abstract base <see cref="TargetBinder{TTarget, float, IConverter{float, float}}"/> that binds a <see langword="float"/> property,
     /// implementing <see cref="INumberBinder"/> to accept all numeric types
     /// and <see cref="INumberReverseBinder"/> to broadcast to all numeric event types.
     /// </summary>
@@ -62,6 +62,12 @@ namespace Aspid.MVVM.StarterKit
         /// In <see cref="BindMode.OneWayToSource"/> mode, broadcasts the current value to all numeric event types:
         /// <see cref="IntValueChanged"/>, <see cref="LongValueChanged"/>, <see cref="FloatValueChanged"/>, and <see cref="DoubleValueChanged"/>.
         /// </summary>
+        /// <remarks>
+        /// Does not call <c>base.OnBound()</c>: provides a complete implementation of the
+        /// <see cref="BindMode.OneWayToSource"/> initialization that broadcasts to all numeric event types
+        /// via <see cref="INumberReverseBinder"/> instead of the single typed
+        /// <see cref="IReverseBinder{T}.ValueChanged"/> event.
+        /// </remarks>
         protected override void OnBound()
         {
             if (Mode is BindMode.OneWayToSource)

@@ -32,7 +32,7 @@ namespace Aspid.MVVM.StarterKit
         /// Subscribes to localization string changes.
         /// </summary>
         /// <remarks>
-        /// When overriding this method, always call <c>base.OnEnable()</c> to preserve
+        /// When overriding this method, always call base.OnEnable() to preserve
         /// the localization string subscription behavior.
         /// </remarks>
         protected virtual void OnEnable() =>
@@ -43,7 +43,7 @@ namespace Aspid.MVVM.StarterKit
         /// Unsubscribes from localization string changes.
         /// </summary>
         /// <remarks>
-        /// When overriding this method, always call <c>base.OnDisable()</c> to preserve
+        /// When overriding this method, always call base.OnDisable() to preserve
         /// the localization string unsubscription behavior.
         /// </remarks>
         protected virtual void OnDisable() =>

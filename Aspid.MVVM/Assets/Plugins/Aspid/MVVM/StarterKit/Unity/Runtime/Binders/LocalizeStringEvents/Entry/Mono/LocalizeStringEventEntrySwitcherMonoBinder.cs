@@ -6,8 +6,8 @@ using UnityEngine.Localization.Components;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="SwitcherStringMonoBinder{LocalizeStringEvent}"/> that switches the <c>TableEntryReference</c>
-    /// of the component's <c>StringReference</c> between two values based on the bound boolean ViewModel value.
+    /// <see cref="SwitcherStringMonoBinder{LocalizeStringEvent}"/> that switches the TableEntryReference
+    /// of the component's StringReference between two values based on the bound boolean ViewModel value.
     /// </summary>
     [AddComponentMenu("Aspid/MVVM/Binders/UI/LocalizeStringEvent/LocalizeStringEvent Binder – Entry Switcher")]
     [AddBinderContextMenu(typeof(LocalizeStringEvent), serializePropertyNames: "m_StringReference", SubPath = "Switcher")]
@@ -15,7 +15,7 @@ namespace Aspid.MVVM.StarterKit
     {
         /// <summary>
         /// Called when applying the selected entry key.
-        /// Sets the <c>TableEntryReference</c> of the component's <c>StringReference</c>.
+        /// Sets the TableEntryReference of the component's StringReference.
         /// </summary>
         protected override void SetValue(string value) =>
             CachedComponent.StringReference.TableEntryReference = value;

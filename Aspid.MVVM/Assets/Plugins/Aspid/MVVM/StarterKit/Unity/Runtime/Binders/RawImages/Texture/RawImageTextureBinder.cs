@@ -17,7 +17,7 @@ namespace Aspid.MVVM.StarterKit
     /// </summary>
     /// <remarks>
     /// Disables the <see cref="RawImage"/> component when the bound texture is <see langword="null"/> and
-    /// the <c>disabledWhenNull</c> option is set to <see langword="true"/> (the default).
+    /// the disabledWhenNull option is set to <see langword="true"/> (the default).
     /// </remarks>
     /// <include file="XmlExampleDoc-RawImage-Texture-1.1.0.xml" path="doc//member[@name='RawImageTextureBinder']/*" />
     [Serializable]

@@ -6,7 +6,7 @@ using UnityEngine;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// Abstract base <see cref="TargetBinder{Animator}"/> that sets a typed parameter on a
+    /// Abstract base <see cref="TargetBinder{Animator}"/> that sets a typed parameter on an
     /// <see cref="Animator"/> when the bound ViewModel value changes.
     /// </summary>
     /// <typeparam name="T">The type of the Animator parameter value.</typeparam>
@@ -15,7 +15,7 @@ namespace Aspid.MVVM.StarterKit
     /// <see cref="BindMode.OneWayToSource"/>. In <see cref="BindMode.OneWayToSource"/> mode the binder
     /// exposes <see cref="SetParameter"/> to the ViewModel either as a plain <see cref="Action{T}"/>
     /// or as an <see cref="IRelayCommand{T}"/> whose <c>CanExecute</c> mirrors
-    /// <see cref="CanExecute"/>.
+    /// <see cref="CanExecute(T?)"/>.
     /// </remarks>
     [Serializable]
     [BindModeOverride(BindMode.OneWay, BindMode.OneTime, BindMode.OneWayToSource)]

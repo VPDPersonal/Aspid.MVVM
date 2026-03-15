@@ -12,7 +12,7 @@ namespace Aspid.MVVM.StarterKit
     /// <remarks>
     /// Supports <see cref="BindMode.OneWayToSource"/>: when binding is established, the current
     /// <see cref="GameObject.activeSelf"/> value is sent back to the ViewModel.
-    /// Supports optional value inversion via <c>_isInvert</c>.
+    /// Supports optional value inversion.
     /// </remarks>
     /// <include file="XmlExampleDoc-GameObject-Visible-1.1.0.xml" path="doc//member[@name='GameObjectVisibleBinder']/*" />
     [Serializable]

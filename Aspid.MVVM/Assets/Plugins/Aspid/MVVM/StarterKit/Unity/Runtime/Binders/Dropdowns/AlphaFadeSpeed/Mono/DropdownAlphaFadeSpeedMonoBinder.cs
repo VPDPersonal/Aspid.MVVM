@@ -30,7 +30,7 @@ namespace Aspid.MVVM.StarterKit
         /// Clamps the converted value to a minimum of 0.
         /// </summary>
         /// <remarks>
-        /// When overriding this method, always call <c>base.GetConvertedValue(value)</c> to preserve
+        /// When overriding this method, always call the base implementation to preserve
         /// the clamping behavior.
         /// </remarks>
         /// <param name="value">The value to convert.</param>

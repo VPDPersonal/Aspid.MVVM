@@ -11,7 +11,7 @@ using Converter = Aspid.MVVM.StarterKit.IConverterColor;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// Abstract base <see cref="TargetBinder{TTarget, Color, IConverter{Color, Color]}"/> that binds a <see cref="Color"/> property,
+    /// Abstract base <see cref="TargetBinder{TTarget, Color, IConverter{Color, Color}}"/> that binds a <see cref="Color"/> property,
     /// implementing <see cref="IColorBinder"/> to accept both <see cref="Color"/> values and HTML color strings.
     /// </summary>
     /// <typeparam name="TTarget">The type of the target object that exposes the target <see cref="Color"/> property.</typeparam>

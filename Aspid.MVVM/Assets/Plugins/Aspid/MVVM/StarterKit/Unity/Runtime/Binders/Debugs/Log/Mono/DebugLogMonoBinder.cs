@@ -10,8 +10,8 @@ using Converter = Aspid.MVVM.StarterKit.IConverterObjectToString;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// MonoBehaviour binder that logs bound ViewModel values to the Unity console
-    /// for debugging purposes.
+    /// <see cref="MonoBinder"/> implementing <see cref="IAnyBinder"/> and <see cref="IAnyReverseBinder"/>
+    /// that logs all binding events and incoming values to the Unity console.
     /// </summary>
     [BindModeOverride(IsAll = true)]
     [AddComponentMenu("Aspid/MVVM/Binders/Debug/Debug Binder – Log")]
@@ -19,14 +19,24 @@ namespace Aspid.MVVM.StarterKit
     public sealed partial class DebugLogMonoBinder : MonoBinder, IAnyBinder, IAnyReverseBinder
     {
         [SerializeReferenceDropdown]
+        [Tooltip("Converter used to format bound values as log messages. Defaults to ObjectToStringConverter.")]
         [SerializeReference] private Converter _converter = new ObjectToStringConverter();
 
+        /// <summary>
+        /// Raised with the bound value when propagating back to the ViewModel in <see cref="BindMode.OneWayToSource"/>.
+        /// Both <see langword="add"/> and <see langword="remove"/> operations log the subscriber reference to the Unity console.
+        /// </summary>
         public event Action<object> ValueChanged
         {
             add => Debug.Log($"Add ValueChanged: {GetMessage(value)}");
             remove => Debug.Log($"Remove ValueChanged: {GetMessage(value)}");
         }
 
+        /// <summary>
+        /// Logs the received value to the Unity console.
+        /// </summary>
+        /// <typeparam name="T">The runtime type of the incoming value.</typeparam>
+        /// <param name="value">The bound value received from the ViewModel.</param>
         [BinderLog]
         public void SetValue<T>(T value) =>
             Debug.Log($"SetValue: {GetMessage(value)}");

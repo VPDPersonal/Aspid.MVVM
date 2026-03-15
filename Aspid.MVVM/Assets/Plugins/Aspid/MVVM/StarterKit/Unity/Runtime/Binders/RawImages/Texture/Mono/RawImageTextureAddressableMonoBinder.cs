@@ -11,7 +11,7 @@ namespace Aspid.MVVM.StarterKit
     /// </summary>
     /// <remarks>
     /// Disables the <see cref="RawImage"/> component when the loaded texture is <see langword="null"/> and
-    /// the <c>Disable When Null</c> option is enabled.
+    /// the Disable When Null option is enabled.
     /// </remarks>
     [AddBinderContextMenu(typeof(RawImage), serializePropertyNames: "m_Texture")]
     [AddComponentMenu("Aspid/MVVM/Binders/UI/RawImage/RawImage Binder – Texture Addressable")]

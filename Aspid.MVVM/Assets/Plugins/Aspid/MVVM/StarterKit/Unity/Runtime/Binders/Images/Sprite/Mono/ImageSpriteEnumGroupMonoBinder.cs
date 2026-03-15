@@ -18,7 +18,7 @@ namespace Aspid.MVVM.StarterKit
         
         /// <summary>
         /// Called when the bound enum resolves to a value for the specified element.
-        /// Sets <see cref="Image.sprite"/> and disables the element when <paramref name="value"/> is <see langword="null"/> and <c>_disabledWhenNull</c> is <see langword="true"/>.
+        /// Sets <see cref="Image.sprite"/> and disables the element when <paramref name="value"/> is <see langword="null"/> and the disable-when-null option is enabled.
         /// </summary>
         protected override void SetValue(Image element, Sprite value)
         {

@@ -25,7 +25,7 @@ namespace Aspid.MVVM.StarterKit
         protected abstract TProperty? Property { get; set; }
 
         /// <summary>
-        /// Initializes a new instance of TargetBinder/>.
+        /// Initializes a new instance of <see cref="TargetBinder{TTarget, TProperty}"/>.
         /// </summary>
         /// <param name="target">The target object that owns the property.</param>
         /// <param name="mode">The binding mode to use.</param>
@@ -94,7 +94,7 @@ namespace Aspid.MVVM.StarterKit
         [SerializeReference] private TConverter? _converter;
 
         /// <summary>
-        /// Initializes a new instance of TargetBinder/>.
+        /// Initializes a new instance of <see cref="TargetBinder{TTarget, TProperty, TConverter}"/>.
         /// </summary>
         /// <param name="target">The target object that owns the property.</param>
         /// <param name="converter">

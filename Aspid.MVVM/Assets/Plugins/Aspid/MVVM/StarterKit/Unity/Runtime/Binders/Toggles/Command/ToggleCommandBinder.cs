@@ -33,7 +33,7 @@ namespace Aspid.MVVM.StarterKit
         /// Initializes a new instance of <see cref="ToggleCommandBinder"/> with a custom interactable view.
         /// </summary>
         /// <param name="target">The <see cref="Toggle"/> to bind.</param>
-        /// <param name="customInteractable">A custom view that reflects the command's <c>CanExecute</c> state.</param>
+        /// <param name="customInteractable">A custom view that reflects the command's CanExecute state.</param>
         /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/>.</param>
         public ToggleCommandBinder(Toggle target, ICanExecuteView customInteractable, BindMode mode = BindMode.OneWay)
             : this(target, InteractableMode.Custom, mode)
@@ -47,7 +47,7 @@ namespace Aspid.MVVM.StarterKit
         /// Initializes a new instance of <see cref="ToggleCommandBinder"/>.
         /// </summary>
         /// <param name="target">The <see cref="Toggle"/> to bind.</param>
-        /// <param name="interactableMode">Controls how the toggle's interactable state reflects <c>CanExecute</c>.</param>
+        /// <param name="interactableMode">Controls how the toggle's interactable state reflects CanExecute.</param>
         /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/>.</param>
         public ToggleCommandBinder(Toggle target, InteractableMode interactableMode, BindMode mode = BindMode.OneWay)
             : base(target, mode)
@@ -59,13 +59,13 @@ namespace Aspid.MVVM.StarterKit
         }
         
         /// <summary>
-        /// Binds an <see cref="IRelayCommand"/> and subscribes to its <c>CanExecuteChanged</c> event.
+        /// Binds an <see cref="IRelayCommand"/> and subscribes to its <see cref="IRelayCommand.CanExecuteChanged"/> event.
         /// </summary>
         public void SetValue(IRelayCommand value) =>
             CommandBinderExtensions.UpdateCommand(ref _command, value, OnCanExecuteChanged);
         
         /// <summary>
-        /// Binds an <see cref="IRelayCommand{bool}"/> and subscribes to its <c>CanExecuteChanged</c> event.
+        /// Binds an <see cref="IRelayCommand{bool}"/> and subscribes to its <see cref="IRelayCommand.CanExecuteChanged"/> event.
         /// </summary>
         public void SetValue(IRelayCommand<bool> value) =>
             CommandBinderExtensions.UpdateCommand(ref _isOnCommand, value, OnCanExecuteChanged);
@@ -75,7 +75,7 @@ namespace Aspid.MVVM.StarterKit
         /// every value change executes the bound command.
         /// </summary>
         /// <remarks>
-        /// The subscription connects the toggle's value change event to <c>OnValueChanged</c>, which
+        /// The subscription connects the toggle's value change event to OnValueChanged, which
         /// dispatches to the first non-null command among all bound command types.
         /// </remarks>
         protected override void OnBound() =>
@@ -86,8 +86,8 @@ namespace Aspid.MVVM.StarterKit
         /// and releases all bound command references.
         /// </summary>
         /// <remarks>
-        /// Passes <see langword="null"/> to each <c>SetValue</c> overload to detach command
-        /// references and unsubscribe from their <c>CanExecuteChanged</c> events.
+        /// Passes <see langword="null"/> to each SetValue overload to detach command
+        /// references and unsubscribe from their <see cref="IRelayCommand.CanExecuteChanged"/> events.
         /// </remarks>
         protected override void OnUnbound()
         {
@@ -168,7 +168,7 @@ namespace Aspid.MVVM.StarterKit
         /// </summary>
         /// <param name="target">The <see cref="Toggle"/> to bind.</param>
         /// <param name="param">The additional parameter forwarded alongside the isOn value.</param>
-        /// <param name="customInteractable">A custom view that reflects the command's <c>CanExecute</c> state.</param>
+        /// <param name="customInteractable">A custom view that reflects the command's CanExecute state.</param>
         /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/>.</param>
         public ToggleCommandBinder(Toggle target, T param, ICanExecuteView customInteractable, BindMode mode = BindMode.OneWay)
             : base(target, mode)
@@ -186,7 +186,7 @@ namespace Aspid.MVVM.StarterKit
         /// </summary>
         /// <param name="target">The <see cref="Toggle"/> to bind.</param>
         /// <param name="param">The additional parameter forwarded alongside the isOn value.</param>
-        /// <param name="interactableMode">Controls how the toggle's interactable state reflects <c>CanExecute</c>.</param>
+        /// <param name="interactableMode">Controls how the toggle's interactable state reflects CanExecute.</param>
         /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/>.</param>
         public ToggleCommandBinder(
             Toggle target, T param, InteractableMode interactableMode, BindMode mode = BindMode.OneWay)
@@ -202,7 +202,7 @@ namespace Aspid.MVVM.StarterKit
         }
         
         /// <summary>
-        /// Binds an <see cref="IRelayCommand{bool, T}"/> and subscribes to its <c>CanExecuteChanged</c> event.
+        /// Binds an <see cref="IRelayCommand{bool, T}"/> and subscribes to its <see cref="IRelayCommand.CanExecuteChanged"/> event.
         /// </summary>
         public void SetValue(IRelayCommand<bool, T> value) =>
             CommandBinderExtensions.UpdateCommand(ref _command, value, OnCanExecuteChanged);
@@ -212,7 +212,7 @@ namespace Aspid.MVVM.StarterKit
         /// every value change executes the bound command with the current isOn value and the configured parameter.
         /// </summary>
         /// <remarks>
-        /// The subscription connects the toggle's value change event to <c>OnValueChanged</c>,
+        /// The subscription connects the toggle's value change event to OnValueChanged,
         /// which executes the bound command with the isOn state and <see cref="Param"/>.
         /// </remarks>
         protected override void OnBound() =>
@@ -223,8 +223,8 @@ namespace Aspid.MVVM.StarterKit
         /// and releases the bound command reference.
         /// </summary>
         /// <remarks>
-        /// Passes <see langword="null"/> to <c>SetValue</c> to detach the command reference
-        /// and unsubscribe from its <c>CanExecuteChanged</c> event.
+        /// Passes <see langword="null"/> to SetValue to detach the command reference
+        /// and unsubscribe from its <see cref="IRelayCommand.CanExecuteChanged"/> event.
         /// </remarks>
         protected override void OnUnbound()
         {
@@ -306,7 +306,7 @@ namespace Aspid.MVVM.StarterKit
         /// <param name="target">The <see cref="Toggle"/> to bind.</param>
         /// <param name="param1">The first additional parameter forwarded alongside the isOn value.</param>
         /// <param name="param2">The second additional parameter forwarded alongside the isOn value.</param>
-        /// <param name="customInteractable">A custom view that reflects the command's <c>CanExecute</c> state.</param>
+        /// <param name="customInteractable">A custom view that reflects the command's CanExecute state.</param>
         /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/>.</param>
         public ToggleCommandBinder(Toggle target, T1 param1, T2 param2, ICanExecuteView customInteractable, BindMode mode = BindMode.OneWay)
             : base(target, mode)
@@ -326,7 +326,7 @@ namespace Aspid.MVVM.StarterKit
         /// <param name="target">The <see cref="Toggle"/> to bind.</param>
         /// <param name="param1">The first additional parameter forwarded alongside the isOn value.</param>
         /// <param name="param2">The second additional parameter forwarded alongside the isOn value.</param>
-        /// <param name="interactableMode">Controls how the toggle's interactable state reflects <c>CanExecute</c>.</param>
+        /// <param name="interactableMode">Controls how the toggle's interactable state reflects CanExecute.</param>
         /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/>.</param>
         public ToggleCommandBinder(
             Toggle target,
@@ -347,7 +347,7 @@ namespace Aspid.MVVM.StarterKit
         }
         
         /// <summary>
-        /// Binds an <see cref="IRelayCommand{bool, T1, T2}"/> and subscribes to its <c>CanExecuteChanged</c> event.
+        /// Binds an <see cref="IRelayCommand{bool, T1, T2}"/> and subscribes to its <see cref="IRelayCommand.CanExecuteChanged"/> event.
         /// </summary>
         public void SetValue(IRelayCommand<bool, T1, T2> value) =>
             CommandBinderExtensions.UpdateCommand(ref _command, value, OnCanExecuteChanged);
@@ -357,7 +357,7 @@ namespace Aspid.MVVM.StarterKit
         /// every value change executes the bound command with the current isOn value and the configured parameters.
         /// </summary>
         /// <remarks>
-        /// The subscription connects the toggle's value change event to <c>OnValueChanged</c>,
+        /// The subscription connects the toggle's value change event to OnValueChanged,
         /// which executes the bound command with the isOn state, <see cref="Param1"/>, and <see cref="Param2"/>.
         /// </remarks>
         protected override void OnBound() =>
@@ -368,8 +368,8 @@ namespace Aspid.MVVM.StarterKit
         /// and releases the bound command reference.
         /// </summary>
         /// <remarks>
-        /// Passes <see langword="null"/> to <c>SetValue</c> to detach the command reference
-        /// and unsubscribe from its <c>CanExecuteChanged</c> event.
+        /// Passes <see langword="null"/> to SetValue to detach the command reference
+        /// and unsubscribe from its <see cref="IRelayCommand.CanExecuteChanged"/> event.
         /// </remarks>
         protected override void OnUnbound()
         {
@@ -463,7 +463,7 @@ namespace Aspid.MVVM.StarterKit
         /// <param name="param1">The first additional parameter forwarded alongside the isOn value.</param>
         /// <param name="param2">The second additional parameter forwarded alongside the isOn value.</param>
         /// <param name="param3">The third additional parameter forwarded alongside the isOn value.</param>
-        /// <param name="customInteractable">A custom view that reflects the command's <c>CanExecute</c> state.</param>
+        /// <param name="customInteractable">A custom view that reflects the command's CanExecute state.</param>
         /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/>.</param>
         public ToggleCommandBinder(Toggle target, T1 param1, T2 param2, T3 param3, ICanExecuteView customInteractable, BindMode mode = BindMode.OneWay)
             : base(target, mode)
@@ -485,7 +485,7 @@ namespace Aspid.MVVM.StarterKit
         /// <param name="param1">The first additional parameter forwarded alongside the isOn value.</param>
         /// <param name="param2">The second additional parameter forwarded alongside the isOn value.</param>
         /// <param name="param3">The third additional parameter forwarded alongside the isOn value.</param>
-        /// <param name="interactableMode">Controls how the toggle's interactable state reflects <c>CanExecute</c>.</param>
+        /// <param name="interactableMode">Controls how the toggle's interactable state reflects CanExecute.</param>
         /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/>.</param>
         public ToggleCommandBinder(
             Toggle target,
@@ -508,7 +508,7 @@ namespace Aspid.MVVM.StarterKit
         }
         
         /// <summary>
-        /// Binds an <see cref="IRelayCommand{bool, T1, T2, T3}"/> and subscribes to its <c>CanExecuteChanged</c> event.
+        /// Binds an <see cref="IRelayCommand{bool, T1, T2, T3}"/> and subscribes to its <see cref="IRelayCommand.CanExecuteChanged"/> event.
         /// </summary>
         public void SetValue(IRelayCommand<bool, T1, T2, T3> value) =>
             CommandBinderExtensions.UpdateCommand(ref _command, value, OnCanExecuteChanged);
@@ -518,7 +518,7 @@ namespace Aspid.MVVM.StarterKit
         /// every value change executes the bound command with the current isOn value and the configured parameters.
         /// </summary>
         /// <remarks>
-        /// The subscription connects the toggle's value change event to <c>OnValueChanged</c>,
+        /// The subscription connects the toggle's value change event to OnValueChanged,
         /// which executes the bound command with the isOn state, <see cref="Param1"/>, <see cref="Param2"/>, and <see cref="Param3"/>.
         /// </remarks>
         protected override void OnBound() =>
@@ -529,8 +529,8 @@ namespace Aspid.MVVM.StarterKit
         /// and releases the bound command reference.
         /// </summary>
         /// <remarks>
-        /// Passes <see langword="null"/> to <c>SetValue</c> to detach the command reference
-        /// and unsubscribe from its <c>CanExecuteChanged</c> event.
+        /// Passes <see langword="null"/> to SetValue to detach the command reference
+        /// and unsubscribe from its <see cref="IRelayCommand.CanExecuteChanged"/> event.
         /// </remarks>
         protected override void OnUnbound()
         {

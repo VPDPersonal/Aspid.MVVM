@@ -7,7 +7,7 @@ namespace Aspid.MVVM.StarterKit
     /// <see cref="ComponentBoolMonoBinder{Collider}"/> that binds the <see cref="Collider.providesContacts"/> property.
     /// </summary>
     /// <remarks>
-    /// Supports <see cref="BindMode.OneWayToSource"/>: when binding is established, the current convex value
+    /// Supports <see cref="BindMode.OneWayToSource"/>: when binding is established, the current providesContacts value
     /// is sent back to the ViewModel.
     /// </remarks>
     [AddComponentMenu("Aspid/MVVM/Binders/Collider/Collider Binder – ProvidesContacts")]

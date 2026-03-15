@@ -57,7 +57,7 @@ namespace Aspid.MVVM.StarterKit
         /// Called before binding is established. Subscribes to localization string changes.
         /// </summary>
         /// <remarks>
-        /// When overriding this method, always call <c>base.OnBinding()</c> to preserve
+        /// When overriding this method, always call base.OnBinding() to preserve
         /// the localization string subscription behavior.
         /// </remarks>
         protected override void OnBinding() =>
@@ -67,7 +67,7 @@ namespace Aspid.MVVM.StarterKit
         /// Called after unbinding. Unsubscribes from localization string changes.
         /// </summary>
         /// <remarks>
-        /// When overriding this method, always call <c>base.OnUnbound()</c> to preserve
+        /// When overriding this method, always call base.OnUnbound() to preserve
         /// the localization string unsubscription behavior.
         /// </remarks>
         protected override void OnUnbound() =>

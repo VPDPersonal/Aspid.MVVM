@@ -9,19 +9,18 @@ using Converter = Aspid.MVVM.StarterKit.IConverterVector2;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="ComponentMonoBinder{AudioSource, Vector2, IConverter{Vector2, Vector2}}"/> that binds the
-    /// min/max distance of an <see cref="AudioSource"/> as a <see cref="Vector2"/>.
+    /// Concrete <see cref="ComponentMonoBinder{AudioSource, Vector2, IConverter{Vector2, Vector2}}"/> that also implements <see cref="INumberBinder"/>,
+    /// binding the <see cref="AudioSource.minDistance"/> and <see cref="AudioSource.maxDistance"/> as a <see cref="Vector2"/>.
     /// </summary>
     /// <remarks>
     /// Supports <see cref="BindMode.OneWayToSource"/>: when binding is established, the current min/max distance
     /// is sent back to the ViewModel.
-    /// Also implements <see cref="INumberBinder"/>, allowing scalar numeric values to set both
-    /// <see cref="AudioSource.minDistance"/> and <see cref="AudioSource.maxDistance"/> simultaneously.
     /// </remarks>
     [AddBinderContextMenu(typeof(AudioSource))]
     [AddComponentMenu("Aspid/MVVM/Binders/Audio/AudioSource/AudioSource Binder – MinMaxDistance")]
     public partial class AudioSourceMinMaxDistanceMonoBinder : ComponentMonoBinder<AudioSource, Vector2, Converter>, INumberBinder
     {
+        [Tooltip("Determines which distance component (min, max, or both) is updated when the bound value changes.")]
         [SerializeField] private AudioSourceDistanceMode _distanceMode = AudioSourceDistanceMode.Range;
 
         /// <inheritdoc/>

@@ -6,8 +6,8 @@ using UnityEngine;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// MonoBehaviour binder that switches the <see cref="TMP_Dropdown.value"/> property on a <see cref="TMP_Dropdown"/>
-    /// between two values based on a bound boolean ViewModel property.
+    /// <see cref="SwitcherIntMonoBinder{TMP_Dropdown}"/> that switches the <see cref="TMP_Dropdown.value"/>
+    /// property between two <see cref="int"/> values based on the bound boolean ViewModel value.
     /// </summary>
     [AddBinderContextMenu(typeof(TMP_Dropdown), SubPath = "Switcher")]
     [AddComponentMenu("Aspid/MVVM/Binders/UI/Dropdown/Dropdown Binder – Value Switcher")]

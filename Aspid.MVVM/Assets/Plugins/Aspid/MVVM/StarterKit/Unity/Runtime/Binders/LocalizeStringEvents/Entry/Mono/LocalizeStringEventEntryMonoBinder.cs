@@ -6,8 +6,8 @@ using UnityEngine.Localization.Components;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="ComponentStringMonoBinder{LocalizeStringEvent}"/> that sets the <c>TableEntryReference</c>
-    /// of the component's <c>StringReference</c> when the bound ViewModel string value changes.
+    /// <see cref="ComponentStringMonoBinder{LocalizeStringEvent}"/> that sets the TableEntryReference
+    /// of the component's StringReference when the bound ViewModel string value changes.
     /// </summary>
     /// <remarks>
     /// Supports <see cref="BindMode.OneWayToSource"/>: when binding is established, the current

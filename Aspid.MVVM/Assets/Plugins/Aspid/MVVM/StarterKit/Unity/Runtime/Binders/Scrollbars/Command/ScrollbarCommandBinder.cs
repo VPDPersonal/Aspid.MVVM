@@ -45,7 +45,7 @@ namespace Aspid.MVVM.StarterKit
         /// Initializes a new instance of <see cref="ScrollbarCommandBinder"/> with a custom interactable view.
         /// </summary>
         /// <param name="target">The <see cref="Scrollbar"/> to bind.</param>
-        /// <param name="customInteractable">A custom view that reflects the command's <c>CanExecute</c> state.</param>
+        /// <param name="customInteractable">A custom view that reflects the command's CanExecute state.</param>
         /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/>.</param>
         public ScrollbarCommandBinder(Scrollbar target,
             ICanExecuteView customInteractable,
@@ -61,7 +61,7 @@ namespace Aspid.MVVM.StarterKit
         /// Initializes a new instance of <see cref="ScrollbarCommandBinder"/>.
         /// </summary>
         /// <param name="target">The <see cref="Scrollbar"/> to bind.</param>
-        /// <param name="interactableMode">Controls how the scrollbar's interactable state reflects <c>CanExecute</c>.</param>
+        /// <param name="interactableMode">Controls how the scrollbar's interactable state reflects CanExecute.</param>
         /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/>.</param>
         public ScrollbarCommandBinder(Scrollbar target,
             InteractableMode interactableMode,
@@ -75,28 +75,28 @@ namespace Aspid.MVVM.StarterKit
         }
 
         /// <summary>
-        /// Binds an <see cref="IRelayCommand{T}">IRelayCommand&lt;int&gt;</see> and subscribes to its <c>CanExecuteChanged</c> event.
+        /// Binds an <see cref="IRelayCommand{T}">IRelayCommand&lt;int&gt;</see> and subscribes to its <see cref="IRelayCommand.CanExecuteChanged"/> event.
         /// On <see cref="Scrollbar.onValueChanged"/>, the command receives the scrollbar value cast to <see cref="int"/>.
         /// </summary>
         public void SetValue(IRelayCommand<int> value) =>
             CommandBinderExtensions.UpdateCommand(ref _intCommand, value, OnCanExecuteChanged);
 
         /// <summary>
-        /// Binds an <see cref="IRelayCommand{T}">IRelayCommand&lt;long&gt;</see> and subscribes to its <c>CanExecuteChanged</c> event.
+        /// Binds an <see cref="IRelayCommand{T}">IRelayCommand&lt;long&gt;</see> and subscribes to its <see cref="IRelayCommand.CanExecuteChanged"/> event.
         /// On <see cref="Scrollbar.onValueChanged"/>, the command receives the scrollbar value cast to <see cref="long"/>.
         /// </summary>
         public void SetValue(IRelayCommand<long> value) =>
             CommandBinderExtensions.UpdateCommand(ref _longCommand, value, OnCanExecuteChanged);
 
         /// <summary>
-        /// Binds an <see cref="IRelayCommand{T}">IRelayCommand&lt;float&gt;</see> and subscribes to its <c>CanExecuteChanged</c> event.
+        /// Binds an <see cref="IRelayCommand{T}">IRelayCommand&lt;float&gt;</see> and subscribes to its <see cref="IRelayCommand.CanExecuteChanged"/> event.
         /// On <see cref="Scrollbar.onValueChanged"/>, the command receives the scrollbar value as <see cref="float"/>.
         /// </summary>
         public void SetValue(IRelayCommand<float> value) =>
             CommandBinderExtensions.UpdateCommand(ref _floatCommand, value, OnCanExecuteChanged);
 
         /// <summary>
-        /// Binds an <see cref="IRelayCommand{T}">IRelayCommand&lt;double&gt;</see> and subscribes to its <c>CanExecuteChanged</c> event.
+        /// Binds an <see cref="IRelayCommand{T}">IRelayCommand&lt;double&gt;</see> and subscribes to its <see cref="IRelayCommand.CanExecuteChanged"/> event.
         /// On <see cref="Scrollbar.onValueChanged"/>, the command receives the scrollbar value cast to <see cref="double"/>.
         /// </summary>
         public void SetValue(IRelayCommand<double> value) =>
@@ -114,8 +114,8 @@ namespace Aspid.MVVM.StarterKit
         /// and releases all bound command references.
         /// </summary>
         /// <remarks>
-        /// Passes <see langword="null"/> to all <c>SetValue</c> overloads to detach command references
-        /// and unsubscribe from their <c>CanExecuteChanged</c> events.
+        /// Passes <see langword="null"/> to all SetValue overloads to detach command references
+        /// and unsubscribe from their <see cref="IRelayCommand.CanExecuteChanged"/> events.
         /// </remarks>
         protected override void OnUnbound()
         {
@@ -213,7 +213,7 @@ namespace Aspid.MVVM.StarterKit
         /// </summary>
         /// <param name="target">The <see cref="Scrollbar"/> to bind.</param>
         /// <param name="param">The additional parameter forwarded alongside the scrollbar value when the command is executed.</param>
-        /// <param name="customInteractable">A custom view that reflects the command's <c>CanExecute</c> state.</param>
+        /// <param name="customInteractable">A custom view that reflects the command's CanExecute state.</param>
         /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/>.</param>
         public ScrollbarCommandBinder(
             Scrollbar target,
@@ -235,7 +235,7 @@ namespace Aspid.MVVM.StarterKit
         /// </summary>
         /// <param name="target">The <see cref="Scrollbar"/> to bind.</param>
         /// <param name="param">The additional parameter forwarded alongside the scrollbar value when the command is executed.</param>
-        /// <param name="interactableMode">Controls how the scrollbar's interactable state reflects <c>CanExecute</c>.</param>
+        /// <param name="interactableMode">Controls how the scrollbar's interactable state reflects CanExecute.</param>
         /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/>.</param>
         public ScrollbarCommandBinder(
             Scrollbar target,
@@ -254,28 +254,28 @@ namespace Aspid.MVVM.StarterKit
         }
 
         /// <summary>
-        /// Binds an <see cref="IRelayCommand{T1, T2}">IRelayCommand&lt;int, T&gt;</see> and subscribes to its <c>CanExecuteChanged</c> event.
+        /// Binds an <see cref="IRelayCommand{T1, T2}">IRelayCommand&lt;int, T&gt;</see> and subscribes to its <see cref="IRelayCommand.CanExecuteChanged"/> event.
         /// On <see cref="Scrollbar.onValueChanged"/>, the command receives the scrollbar value cast to <see cref="int"/> followed by <see cref="Param"/>.
         /// </summary>
         public void SetValue(IRelayCommand<int, T> value) =>
             CommandBinderExtensions.UpdateCommand(ref _intCommand, value, OnCanExecuteChanged);
 
         /// <summary>
-        /// Binds an <see cref="IRelayCommand{T1, T2}">IRelayCommand&lt;long, T&gt;</see> and subscribes to its <c>CanExecuteChanged</c> event.
+        /// Binds an <see cref="IRelayCommand{T1, T2}">IRelayCommand&lt;long, T&gt;</see> and subscribes to its <see cref="IRelayCommand.CanExecuteChanged"/> event.
         /// On <see cref="Scrollbar.onValueChanged"/>, the command receives the scrollbar value cast to <see cref="long"/> followed by <see cref="Param"/>.
         /// </summary>
         public void SetValue(IRelayCommand<long, T> value) =>
             CommandBinderExtensions.UpdateCommand(ref _longCommand, value, OnCanExecuteChanged);
 
         /// <summary>
-        /// Binds an <see cref="IRelayCommand{T1, T2}">IRelayCommand&lt;float, T&gt;</see> and subscribes to its <c>CanExecuteChanged</c> event.
+        /// Binds an <see cref="IRelayCommand{T1, T2}">IRelayCommand&lt;float, T&gt;</see> and subscribes to its <see cref="IRelayCommand.CanExecuteChanged"/> event.
         /// On <see cref="Scrollbar.onValueChanged"/>, the command receives the scrollbar value as <see cref="float"/> followed by <see cref="Param"/>.
         /// </summary>
         public void SetValue(IRelayCommand<float, T> value) =>
             CommandBinderExtensions.UpdateCommand(ref _floatCommand, value, OnCanExecuteChanged);
 
         /// <summary>
-        /// Binds an <see cref="IRelayCommand{T1, T2}">IRelayCommand&lt;double, T&gt;</see> and subscribes to its <c>CanExecuteChanged</c> event.
+        /// Binds an <see cref="IRelayCommand{T1, T2}">IRelayCommand&lt;double, T&gt;</see> and subscribes to its <see cref="IRelayCommand.CanExecuteChanged"/> event.
         /// On <see cref="Scrollbar.onValueChanged"/>, the command receives the scrollbar value cast to <see cref="double"/> followed by <see cref="Param"/>.
         /// </summary>
         public void SetValue(IRelayCommand<double, T> value) =>
@@ -293,8 +293,8 @@ namespace Aspid.MVVM.StarterKit
         /// and releases all bound command references.
         /// </summary>
         /// <remarks>
-        /// Passes <see langword="null"/> to all <c>SetValue</c> overloads to detach command references
-        /// and unsubscribe from their <c>CanExecuteChanged</c> events.
+        /// Passes <see langword="null"/> to all SetValue overloads to detach command references
+        /// and unsubscribe from their <see cref="IRelayCommand.CanExecuteChanged"/> events.
         /// </remarks>
         protected override void OnUnbound()
         {
@@ -405,7 +405,7 @@ namespace Aspid.MVVM.StarterKit
         /// <param name="target">The <see cref="Scrollbar"/> to bind.</param>
         /// <param name="param1">The first additional parameter forwarded alongside the scrollbar value when the command is executed.</param>
         /// <param name="param2">The second additional parameter forwarded alongside the scrollbar value when the command is executed.</param>
-        /// <param name="customInteractable">A custom view that reflects the command's <c>CanExecute</c> state.</param>
+        /// <param name="customInteractable">A custom view that reflects the command's CanExecute state.</param>
         /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/>.</param>
         public ScrollbarCommandBinder(
             Scrollbar target,
@@ -430,7 +430,7 @@ namespace Aspid.MVVM.StarterKit
         /// <param name="target">The <see cref="Scrollbar"/> to bind.</param>
         /// <param name="param1">The first additional parameter forwarded alongside the scrollbar value when the command is executed.</param>
         /// <param name="param2">The second additional parameter forwarded alongside the scrollbar value when the command is executed.</param>
-        /// <param name="interactableMode">Controls how the scrollbar's interactable state reflects <c>CanExecute</c>.</param>
+        /// <param name="interactableMode">Controls how the scrollbar's interactable state reflects CanExecute.</param>
         /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/>.</param>
         public ScrollbarCommandBinder(
             Scrollbar target,
@@ -451,28 +451,28 @@ namespace Aspid.MVVM.StarterKit
         }
 
         /// <summary>
-        /// Binds an <see cref="IRelayCommand{T1, T2, T3}">IRelayCommand&lt;int, T1, T2&gt;</see> and subscribes to its <c>CanExecuteChanged</c> event.
+        /// Binds an <see cref="IRelayCommand{T1, T2, T3}">IRelayCommand&lt;int, T1, T2&gt;</see> and subscribes to its <see cref="IRelayCommand.CanExecuteChanged"/> event.
         /// On <see cref="Scrollbar.onValueChanged"/>, the command receives the scrollbar value cast to <see cref="int"/> followed by <see cref="Param1"/> and <see cref="Param2"/>.
         /// </summary>
         public void SetValue(IRelayCommand<int, T1, T2> value) =>
             CommandBinderExtensions.UpdateCommand(ref _intCommand, value, OnCanExecuteChanged);
 
         /// <summary>
-        /// Binds an <see cref="IRelayCommand{T1, T2, T3}">IRelayCommand&lt;long, T1, T2&gt;</see> and subscribes to its <c>CanExecuteChanged</c> event.
+        /// Binds an <see cref="IRelayCommand{T1, T2, T3}">IRelayCommand&lt;long, T1, T2&gt;</see> and subscribes to its <see cref="IRelayCommand.CanExecuteChanged"/> event.
         /// On <see cref="Scrollbar.onValueChanged"/>, the command receives the scrollbar value cast to <see cref="long"/> followed by <see cref="Param1"/> and <see cref="Param2"/>.
         /// </summary>
         public void SetValue(IRelayCommand<long, T1, T2> value) =>
             CommandBinderExtensions.UpdateCommand(ref _longCommand, value, OnCanExecuteChanged);
 
         /// <summary>
-        /// Binds an <see cref="IRelayCommand{T1, T2, T3}">IRelayCommand&lt;float, T1, T2&gt;</see> and subscribes to its <c>CanExecuteChanged</c> event.
+        /// Binds an <see cref="IRelayCommand{T1, T2, T3}">IRelayCommand&lt;float, T1, T2&gt;</see> and subscribes to its <see cref="IRelayCommand.CanExecuteChanged"/> event.
         /// On <see cref="Scrollbar.onValueChanged"/>, the command receives the scrollbar value as <see cref="float"/> followed by <see cref="Param1"/> and <see cref="Param2"/>.
         /// </summary>
         public void SetValue(IRelayCommand<float, T1, T2> value) =>
             CommandBinderExtensions.UpdateCommand(ref _floatCommand, value, OnCanExecuteChanged);
 
         /// <summary>
-        /// Binds an <see cref="IRelayCommand{T1, T2, T3}">IRelayCommand&lt;double, T1, T2&gt;</see> and subscribes to its <c>CanExecuteChanged</c> event.
+        /// Binds an <see cref="IRelayCommand{T1, T2, T3}">IRelayCommand&lt;double, T1, T2&gt;</see> and subscribes to its <see cref="IRelayCommand.CanExecuteChanged"/> event.
         /// On <see cref="Scrollbar.onValueChanged"/>, the command receives the scrollbar value cast to <see cref="double"/> followed by <see cref="Param1"/> and <see cref="Param2"/>.
         /// </summary>
         public void SetValue(IRelayCommand<double, T1, T2> value) =>
@@ -490,8 +490,8 @@ namespace Aspid.MVVM.StarterKit
         /// and releases all bound command references.
         /// </summary>
         /// <remarks>
-        /// Passes <see langword="null"/> to all <c>SetValue</c> overloads to detach command references
-        /// and unsubscribe from their <c>CanExecuteChanged</c> events.
+        /// Passes <see langword="null"/> to all SetValue overloads to detach command references
+        /// and unsubscribe from their <see cref="IRelayCommand.CanExecuteChanged"/> events.
         /// </remarks>
         protected override void OnUnbound()
         {
@@ -620,7 +620,7 @@ namespace Aspid.MVVM.StarterKit
         /// <param name="param1">The first additional parameter forwarded alongside the scrollbar value when the command is executed.</param>
         /// <param name="param2">The second additional parameter forwarded alongside the scrollbar value when the command is executed.</param>
         /// <param name="param3">The third additional parameter forwarded alongside the scrollbar value when the command is executed.</param>
-        /// <param name="customInteractable">A custom view that reflects the command's <c>CanExecute</c> state.</param>
+        /// <param name="customInteractable">A custom view that reflects the command's CanExecute state.</param>
         /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/>.</param>
         public ScrollbarCommandBinder(
             Scrollbar target,
@@ -648,7 +648,7 @@ namespace Aspid.MVVM.StarterKit
         /// <param name="param1">The first additional parameter forwarded alongside the scrollbar value when the command is executed.</param>
         /// <param name="param2">The second additional parameter forwarded alongside the scrollbar value when the command is executed.</param>
         /// <param name="param3">The third additional parameter forwarded alongside the scrollbar value when the command is executed.</param>
-        /// <param name="interactableMode">Controls how the scrollbar's interactable state reflects <c>CanExecute</c>.</param>
+        /// <param name="interactableMode">Controls how the scrollbar's interactable state reflects CanExecute.</param>
         /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/>.</param>
         public ScrollbarCommandBinder(
             Scrollbar target,
@@ -671,28 +671,28 @@ namespace Aspid.MVVM.StarterKit
         }
 
         /// <summary>
-        /// Binds an <see cref="IRelayCommand{T1, T2, T3, T4}">IRelayCommand&lt;int, T1, T2, T3&gt;</see> and subscribes to its <c>CanExecuteChanged</c> event.
+        /// Binds an <see cref="IRelayCommand{T1, T2, T3, T4}">IRelayCommand&lt;int, T1, T2, T3&gt;</see> and subscribes to its <see cref="IRelayCommand.CanExecuteChanged"/> event.
         /// On <see cref="Scrollbar.onValueChanged"/>, the command receives the scrollbar value cast to <see cref="int"/> followed by <see cref="Param1"/>, <see cref="Param2"/>, and <see cref="Param3"/>.
         /// </summary>
         public void SetValue(IRelayCommand<int, T1, T2, T3> value) =>
             CommandBinderExtensions.UpdateCommand(ref _intCommand, value, OnCanExecuteChanged);
 
         /// <summary>
-        /// Binds an <see cref="IRelayCommand{T1, T2, T3, T4}">IRelayCommand&lt;long, T1, T2, T3&gt;</see> and subscribes to its <c>CanExecuteChanged</c> event.
+        /// Binds an <see cref="IRelayCommand{T1, T2, T3, T4}">IRelayCommand&lt;long, T1, T2, T3&gt;</see> and subscribes to its <see cref="IRelayCommand.CanExecuteChanged"/> event.
         /// On <see cref="Scrollbar.onValueChanged"/>, the command receives the scrollbar value cast to <see cref="long"/> followed by <see cref="Param1"/>, <see cref="Param2"/>, and <see cref="Param3"/>.
         /// </summary>
         public void SetValue(IRelayCommand<long, T1, T2, T3> value) =>
             CommandBinderExtensions.UpdateCommand(ref _longCommand, value, OnCanExecuteChanged);
 
         /// <summary>
-        /// Binds an <see cref="IRelayCommand{T1, T2, T3, T4}">IRelayCommand&lt;float, T1, T2, T3&gt;</see> and subscribes to its <c>CanExecuteChanged</c> event.
+        /// Binds an <see cref="IRelayCommand{T1, T2, T3, T4}">IRelayCommand&lt;float, T1, T2, T3&gt;</see> and subscribes to its <see cref="IRelayCommand.CanExecuteChanged"/> event.
         /// On <see cref="Scrollbar.onValueChanged"/>, the command receives the scrollbar value as <see cref="float"/> followed by <see cref="Param1"/>, <see cref="Param2"/>, and <see cref="Param3"/>.
         /// </summary>
         public void SetValue(IRelayCommand<float, T1, T2, T3> value) =>
             CommandBinderExtensions.UpdateCommand(ref _floatCommand, value, OnCanExecuteChanged);
 
         /// <summary>
-        /// Binds an <see cref="IRelayCommand{T1, T2, T3, T4}">IRelayCommand&lt;double, T1, T2, T3&gt;</see> and subscribes to its <c>CanExecuteChanged</c> event.
+        /// Binds an <see cref="IRelayCommand{T1, T2, T3, T4}">IRelayCommand&lt;double, T1, T2, T3&gt;</see> and subscribes to its <see cref="IRelayCommand.CanExecuteChanged"/> event.
         /// On <see cref="Scrollbar.onValueChanged"/>, the command receives the scrollbar value cast to <see cref="double"/> followed by <see cref="Param1"/>, <see cref="Param2"/>, and <see cref="Param3"/>.
         /// </summary>
         public void SetValue(IRelayCommand<double, T1, T2, T3> value) =>
@@ -710,8 +710,8 @@ namespace Aspid.MVVM.StarterKit
         /// and releases all bound command references.
         /// </summary>
         /// <remarks>
-        /// Passes <see langword="null"/> to all <c>SetValue</c> overloads to detach command references
-        /// and unsubscribe from their <c>CanExecuteChanged</c> events.
+        /// Passes <see langword="null"/> to all SetValue overloads to detach command references
+        /// and unsubscribe from their <see cref="IRelayCommand.CanExecuteChanged"/> events.
         /// </remarks>
         protected override void OnUnbound()
         {

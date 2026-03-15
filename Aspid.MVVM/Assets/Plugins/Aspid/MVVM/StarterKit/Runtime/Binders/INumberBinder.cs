@@ -10,8 +10,8 @@ namespace Aspid.MVVM.StarterKit
     /// </summary>
     /// <remarks>
     /// Default interface method implementations handle the widening/narrowing conversions so that
-    /// implementors only need to provide <c>SetValue(int)</c>, <c>SetValue(long)</c>,
-    /// <c>SetValue(float)</c>, and <c>SetValue(double)</c>. Unsigned and shorter integer types
+    /// implementors only need to provide <see cref="SetValue(int)"/>, <see cref="SetValue(long)"/>,
+    /// <see cref="SetValue(float)"/>, and <see cref="SetValue(double)"/>. Unsigned and shorter integer types
     /// are automatically cast to the nearest appropriate signed type before dispatch:
     /// <list type="bullet">
     ///   <item><see cref="uint"/> and <see cref="ulong"/> are cast to <see cref="long"/>.</item>

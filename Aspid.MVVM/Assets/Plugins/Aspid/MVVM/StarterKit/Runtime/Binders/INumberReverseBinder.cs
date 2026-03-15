@@ -11,7 +11,7 @@ namespace Aspid.MVVM.StarterKit
     /// Exposes four strongly typed events — <see cref="IntValueChanged"/>, <see cref="LongValueChanged"/>,
     /// <see cref="FloatValueChanged"/>, and <see cref="DoubleValueChanged"/> — that implementors raise when
     /// the View value changes. Default interface method implementations bridge these concrete events to the
-    /// generic <see cref="IReverseBinder{T}.ValueChanged"/> event required by each <c>IReverseBinder</c>
+    /// generic <see cref="IReverseBinder{T}.ValueChanged"/> event required by each <see cref="IReverseBinder{T}"/>
     /// base interface, so the binding infrastructure can subscribe via a single, type-safe surface.
     /// Typically implemented alongside <see cref="INumberBinder"/> on numeric UI binders such as slider
     /// or input-field binders.

@@ -38,17 +38,19 @@ namespace Aspid.MVVM.StarterKit
             remove => _reverseMaterials -= value;
         }
         
-        [Tooltip("The optional converter applied to each material before it is assigned to the Renderer.")]
         [SerializeReferenceDropdown]
+        [Tooltip("The optional converter applied to each material before it is assigned to the Renderer.")]
         [SerializeReference] private Converter _converter;
         
         private Action<Material> _reverseMaterial;
         private Action<Material[]> _reverseMaterials;
         
+        /// <inheritdoc/>
         [BinderLog]
         public void SetValue(Material value) =>
             CachedComponent.material = GetConvertedValue(value);
-        
+
+        /// <inheritdoc/>
         [BinderLog]
         public void SetValue(IReadOnlyCollection<Material> values) =>
             CachedComponent.SetMaterials(_converter, values);

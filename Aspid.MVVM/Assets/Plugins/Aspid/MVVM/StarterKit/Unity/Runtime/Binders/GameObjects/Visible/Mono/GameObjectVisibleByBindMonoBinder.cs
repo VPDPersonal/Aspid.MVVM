@@ -11,7 +11,7 @@ namespace Aspid.MVVM.StarterKit
     /// Unlike conventional binders, this binder does not forward ViewModel values to a property.
     /// Instead, it calls <see cref="GameObject.SetActive"/> with <see langword="true"/> when the ViewModel
     /// contains the expected binding field, and with <see langword="false"/> when it does not
-    /// (or vice-versa when <c>_isInvert</c> is enabled).
+    /// (or vice-versa when inversion is enabled).
     /// <para>
     /// Only <see cref="BindMode.OneTime"/> is supported.
     /// </para>

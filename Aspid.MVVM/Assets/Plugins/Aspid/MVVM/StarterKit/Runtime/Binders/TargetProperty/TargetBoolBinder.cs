@@ -5,7 +5,7 @@ using UnityEngine;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// Abstract base <see cref="TargetBinder{TTarget, boold}"/> that adds optional value inversion.
+    /// Abstract base <see cref="TargetBinder{TTarget, bool}"/> that adds optional value inversion.
     /// </summary>
     /// <typeparam name="TTarget">The type of the target object that exposes the target <see langword="bool"/> property.</typeparam>
     [Serializable]
@@ -15,7 +15,7 @@ namespace Aspid.MVVM.StarterKit
         [SerializeField] private bool _isInvert;
 
         /// <summary>
-        /// Initializes a new instance of TargetBoolBinder.
+        /// Initializes a new instance of <see cref="TargetBoolBinder{TTarget}"/>.
         /// </summary>
         /// <param name="target">The target object whose boolean property is managed by this binder.</param>
         /// <param name="isInvert">

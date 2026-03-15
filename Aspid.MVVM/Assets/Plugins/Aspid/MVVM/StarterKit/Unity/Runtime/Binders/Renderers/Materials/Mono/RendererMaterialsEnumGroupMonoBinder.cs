@@ -21,12 +21,12 @@ namespace Aspid.MVVM.StarterKit
         [Tooltip("The materials array applied to the element matching the selected enum value.")]
         [SerializeField] private Material[] _selectedValue;
 
-        [Tooltip("The optional converter applied to each material in the default value before assignment.")]
         [SerializeReferenceDropdown]
+        [Tooltip("The optional converter applied to each material in the default value before assignment.")]
         [SerializeReference] private Converter _defaultValueConverter;
 
-        [Tooltip("The optional converter applied to each material in the selected value before assignment.")]
         [SerializeReferenceDropdown]
+        [Tooltip("The optional converter applied to each material in the selected value before assignment.")]
         [SerializeReference] private Converter _selectedValueConverter;
 
         /// <summary>

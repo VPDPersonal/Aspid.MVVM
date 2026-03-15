@@ -11,7 +11,7 @@ using Converter = Aspid.MVVM.StarterKit.IConverterFloat;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="AnimatorSetParameterBinder{T}"/> that sets a float parameter on a <see cref="Animator"/>
+    /// <see cref="AnimatorSetParameterBinder{T}"/> that sets a float parameter on an <see cref="Animator"/>
     /// when the bound ViewModel value changes.
     /// </summary>
     /// <include file="XmlExampleDoc-Animator-1.1.0.xml" path="doc//member[@name='AnimatorSetFloatBinder']/*" />
@@ -19,6 +19,7 @@ namespace Aspid.MVVM.StarterKit
     public class AnimatorSetFloatBinder : AnimatorSetParameterBinder<float>
     {
         [SerializeReferenceDropdown]
+        [Tooltip("Optional converter applied to the bound float value before setting the Animator parameter.")]
         [SerializeReference] private Converter? _converter;
 
         /// <summary>

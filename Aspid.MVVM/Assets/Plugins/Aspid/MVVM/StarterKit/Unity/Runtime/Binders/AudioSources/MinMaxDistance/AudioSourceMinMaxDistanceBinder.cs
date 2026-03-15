@@ -11,20 +11,18 @@ using Converter = Aspid.MVVM.StarterKit.IConverterVector2;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="TargetBinder{AudioSource, Vector2}"/> that sets the min/max distance of an <see cref="AudioSource"/>
-    /// as a <see cref="Vector2"/>.
+    /// Concrete <see cref="TargetBinder{AudioSource, Vector2}"/> that also implements <see cref="INumberBinder"/>,
+    /// setting the <see cref="AudioSource.minDistance"/> and <see cref="AudioSource.maxDistance"/> from a <see cref="Vector2"/>.
     /// </summary>
-    /// <remarks>
-    /// Also implements <see cref="INumberBinder"/>, allowing scalar numeric values to set both
-    /// <see cref="AudioSource.minDistance"/> and <see cref="AudioSource.maxDistance"/> simultaneously.
-    /// </remarks>
     /// <include file="XmlExampleDoc-AudioSource-MinMaxDistance-1.1.0.xml" path="doc//member[@name='AudioSourceMinMaxDistanceBinder']/*" />
     [Serializable]
     public class AudioSourceMinMaxDistanceBinder : TargetBinder<AudioSource, Vector2>, INumberBinder
     {
+        [Tooltip("Determines which distance component (min, max, or both) is updated when the bound value changes.")]
         [SerializeField] private AudioSourceDistanceMode _distanceMode = AudioSourceDistanceMode.Range;
 
         [SerializeReferenceDropdown]
+        [Tooltip("Optional converter applied to the bound Vector2 value before setting the min/max distance.")]
         [SerializeReference] private Converter? _converter;
 
         /// <inheritdoc/>

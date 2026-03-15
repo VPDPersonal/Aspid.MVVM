@@ -7,8 +7,8 @@ using System.Collections.Generic;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// MonoBehaviour binder that sets the options list on a <see cref="TMPro.TMP_Dropdown"/>
-    /// to a value resolved from an enum bound on the ViewModel.
+    /// <see cref="EnumMonoBinder{TMP_Dropdown, List{TMP_Dropdown.OptionData}}"/> that sets the
+    /// <see cref="TMP_Dropdown.options"/> list based on the bound enum ViewModel value.
     /// </summary>
     [AddBinderContextMenu(typeof(TMP_Dropdown), SubPath = "Enum")]
     [AddComponentMenu("Aspid/MVVM/Binders/UI/Dropdown/Dropdown Binder – Options Enum")]

@@ -24,6 +24,7 @@ namespace Aspid.MVVM.StarterKit
         IBinder<string>, 
         IBinder<Object>
     {
+        [Tooltip("The name of the Smart String variable to update on the LocalizeStringEvent.")]
         [SerializeField] private string _variableName;
         
         /// <summary>

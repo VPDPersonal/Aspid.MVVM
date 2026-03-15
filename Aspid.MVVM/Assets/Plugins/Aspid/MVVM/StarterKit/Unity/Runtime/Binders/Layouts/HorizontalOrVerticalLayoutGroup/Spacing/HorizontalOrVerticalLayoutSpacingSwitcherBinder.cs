@@ -6,7 +6,7 @@ using UnityEngine.UI;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="SwitcherBinder{HorizontalOrVerticalLayoutGroup, float, Converter}"/> that switches the
+    /// <see cref="SwitcherFloatBinder{HorizontalOrVerticalLayoutGroup}"/> that switches the
     /// <see cref="UnityEngine.UI.HorizontalOrVerticalLayoutGroup.spacing"/> property between two values
     /// based on the bound boolean ViewModel value.
     /// </summary>

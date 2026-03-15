@@ -7,7 +7,7 @@ namespace Aspid.MVVM.StarterKit
     /// <see cref="ComponentBoolMonoBinder{Collider}"/> that binds the <see cref="Collider.isTrigger"/> property.
     /// </summary>
     /// <remarks>
-    /// Supports <see cref="BindMode.OneWayToSource"/>: when binding is established, the current convex value
+    /// Supports <see cref="BindMode.OneWayToSource"/>: when binding is established, the current isTrigger value
     /// is sent back to the ViewModel.
     /// </remarks>
     [AddComponentMenu("Aspid/MVVM/Binders/Collider/Collider Binder – IsTrigger")]

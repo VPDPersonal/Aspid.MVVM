@@ -72,8 +72,8 @@ namespace Aspid.MVVM.StarterKit
         [Tooltip("Lookup table mapping each enum value to the resolved target value.")]
         [SerializeField] private EnumValues<TValue> _enumValues;
 
-        [Tooltip("Optional converter applied to the resolved value before it is set.")]
         [SerializeReferenceDropdown]
+        [Tooltip("Optional converter applied to the resolved value before it is set.")]
         [SerializeReference] private TConverter _converter;
 
         /// <summary>

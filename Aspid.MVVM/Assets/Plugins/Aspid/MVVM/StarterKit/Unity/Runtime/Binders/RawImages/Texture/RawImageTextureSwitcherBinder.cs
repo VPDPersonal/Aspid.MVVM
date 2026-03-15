@@ -17,7 +17,7 @@ namespace Aspid.MVVM.StarterKit
     /// </summary>
     /// <remarks>
     /// Disables the <see cref="RawImage"/> component when the selected texture is <see langword="null"/> and
-    /// the <c>disabledWhenNull</c> option is set to <see langword="true"/> (the default).
+    /// the disabledWhenNull option is set to <see langword="true"/> (the default).
     /// </remarks>
     /// <include file="XmlExampleDoc-RawImage-Texture-1.1.0.xml" path="doc//member[@name='RawImageTextureSwitcherBinder']/*" />
     [Serializable]
@@ -42,7 +42,7 @@ namespace Aspid.MVVM.StarterKit
 
         /// <summary>
         /// Applies the selected value to the <see cref="RawImage.texture"/> property.
-        /// Disables the <see cref="RawImage"/> component when the texture is <see langword="null"/> and the <c>Disable When Null</c> option is enabled.
+        /// Disables the <see cref="RawImage"/> component when the texture is <see langword="null"/> and the Disable When Null option is enabled.
         /// </summary>
         protected override void SetValue(Texture? value)
         {

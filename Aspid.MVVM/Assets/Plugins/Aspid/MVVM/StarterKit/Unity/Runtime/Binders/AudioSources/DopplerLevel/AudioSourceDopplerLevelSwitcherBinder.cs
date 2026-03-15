@@ -6,7 +6,7 @@ using UnityEngine;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="SwitcherBinder{AudioSource, float, Converter}"/> that switches the <see cref="AudioSource.dopplerLevel"/>
+    /// <see cref="SwitcherFloatBinder{AudioSource}"/> that switches the <see cref="AudioSource.dopplerLevel"/>
     /// property between two <see cref="float"/> values based on the bound boolean ViewModel value.
     /// </summary>
     /// <include file="XmlExampleDoc-AudioSource-DopplerLevel-1.1.0.xml" path="doc//member[@name='AudioSourceDopplerLevelSwitcherBinder']/*" />

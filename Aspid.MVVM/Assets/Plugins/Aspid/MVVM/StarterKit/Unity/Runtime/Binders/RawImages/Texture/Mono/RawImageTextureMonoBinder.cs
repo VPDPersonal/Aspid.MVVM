@@ -16,7 +16,7 @@ namespace Aspid.MVVM.StarterKit
     /// Supports <see cref="BindMode.OneWayToSource"/>: when binding is established, the current value
     /// is sent back to the ViewModel.
     /// Disables the <see cref="RawImage"/> component when the bound texture is <see langword="null"/> and
-    /// the <c>Disable When Null</c> option is enabled.
+    /// the Disable When Null option is enabled.
     /// </remarks>
     [AddBinderContextMenu(typeof(RawImage), serializePropertyNames: "m_Texture")]
     [AddComponentMenu("Aspid/MVVM/Binders/UI/RawImage/RawImage Binder – Texture")]

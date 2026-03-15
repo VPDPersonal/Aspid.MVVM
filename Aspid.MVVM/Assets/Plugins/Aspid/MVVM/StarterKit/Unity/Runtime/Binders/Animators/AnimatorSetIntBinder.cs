@@ -11,7 +11,7 @@ using Converter = Aspid.MVVM.StarterKit.IConverterInt;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="AnimatorSetParameterBinder{T}"/> that sets an integer parameter on a <see cref="Animator"/>
+    /// <see cref="AnimatorSetParameterBinder{T}"/> that sets an integer parameter on an <see cref="Animator"/>
     /// when the bound ViewModel value changes.
     /// </summary>
     /// <include file="XmlExampleDoc-Animator-1.1.0.xml" path="doc//member[@name='AnimatorSetIntBinder']/*" />
@@ -19,6 +19,7 @@ namespace Aspid.MVVM.StarterKit
     public class AnimatorSetIntBinder : AnimatorSetParameterBinder<int>
     {
         [SerializeReferenceDropdown]
+        [Tooltip("Optional converter applied to the bound integer value before setting the Animator parameter.")]
         [SerializeReference] private Converter? _converter;
 
         /// <summary>
@@ -49,7 +50,7 @@ namespace Aspid.MVVM.StarterKit
 
         /// <summary>
         /// Applies <paramref name="value"/> (optionally converted) to the integer Animator parameter.
-        /// Skips the call if the parameter already holds an approximately equal value.
+        /// Skips the call if the parameter already holds the same value.
         /// </summary>
         /// <param name="value">The integer value to apply.</param>
         protected sealed override void SetParameter(int value)

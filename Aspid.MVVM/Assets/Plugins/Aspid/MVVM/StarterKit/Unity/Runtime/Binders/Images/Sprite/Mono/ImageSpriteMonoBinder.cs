@@ -29,6 +29,10 @@ namespace Aspid.MVVM.StarterKit
             }
         }
 
+        /// <summary>
+        /// Creates a <see cref="UnityEngine.Sprite"/> from <paramref name="value"/> and sets the <see cref="Image.sprite"/> property.
+        /// </summary>
+        /// <param name="value">The <see cref="Texture2D"/> to convert into a sprite, or <see langword="null"/> to clear the sprite.</param>
         [BinderLog]
         public void SetValue(Texture2D value)
         {

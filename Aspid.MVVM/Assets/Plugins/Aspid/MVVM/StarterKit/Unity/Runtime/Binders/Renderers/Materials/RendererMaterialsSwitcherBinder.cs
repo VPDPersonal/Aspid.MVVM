@@ -18,8 +18,8 @@ namespace Aspid.MVVM.StarterKit
     [Serializable]
     public sealed class RendererMaterialsSwitcherBinder : SwitcherBinder<Renderer, Material[]?>
     {
-        [Tooltip("The optional converter applied to each material before it is assigned to the Renderer.")]
         [SerializeReferenceDropdown]
+        [Tooltip("The optional converter applied to each material before it is assigned to the Renderer.")]
         [SerializeReference] private Converter? _converter;
 
         /// <summary>

@@ -6,7 +6,7 @@ using UnityEngine;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="SwitcherBinder{SphereCollider, Vector3, Converter{Vector3, Vector3}}"/> that switches the <see cref="SphereCollider.center"/>
+    /// <see cref="SwitcherVector3Binder{SphereCollider}"/> that switches the <see cref="SphereCollider.center"/>
     /// property between two <see cref="Vector3"/> values based on the bound boolean ViewModel value.
     /// </summary>
     /// <include file="XmlExampleDoc-SphereCollider-Center-1.1.0.xml" path="doc//member[@name='SphereColliderCenterSwitcherBinder']/*" />

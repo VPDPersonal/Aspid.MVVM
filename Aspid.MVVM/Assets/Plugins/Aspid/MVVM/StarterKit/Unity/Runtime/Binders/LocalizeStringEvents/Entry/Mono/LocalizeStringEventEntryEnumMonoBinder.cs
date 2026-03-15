@@ -6,8 +6,8 @@ using UnityEngine.Localization.Components;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="EnumStringMonoBinder{LocalizeStringEvent}"/> that sets the <c>TableEntryReference</c>
-    /// of the component's <c>StringReference</c> based on the bound enum ViewModel value.
+    /// <see cref="EnumStringMonoBinder{LocalizeStringEvent}"/> that sets the TableEntryReference
+    /// of the component's StringReference based on the bound enum ViewModel value.
     /// </summary>
     [AddComponentMenu("Aspid/MVVM/Binders/UI/LocalizeStringEvent/LocalizeStringEvent Binder – Entry Enum")]
     [AddBinderContextMenu(typeof(LocalizeStringEvent), serializePropertyNames: "m_StringReference", SubPath = "Enum")]
@@ -15,7 +15,7 @@ namespace Aspid.MVVM.StarterKit
     {
         /// <summary>
         /// Called when the bound enum resolves to a value for the current element.
-        /// Sets the <c>TableEntryReference</c> of the component's <c>StringReference</c>.
+        /// Sets the TableEntryReference of the component's StringReference.
         /// </summary>
         protected override void SetValue(string value) =>
             CachedComponent.StringReference.TableEntryReference = value;

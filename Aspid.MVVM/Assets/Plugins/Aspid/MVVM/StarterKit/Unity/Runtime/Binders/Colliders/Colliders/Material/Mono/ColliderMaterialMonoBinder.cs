@@ -14,7 +14,7 @@ namespace Aspid.MVVM.StarterKit
     /// <see cref="ComponentMonoBinder{Collider, PhysicsMaterial, IConverter{PhysicsMaterial, PhysicsMaterial}}"/> that binds the <see cref="Collider.material"/> property.
     /// </summary>
     /// <remarks>
-    /// Supports <see cref="BindMode.OneWayToSource"/>: when binding is established, the current shared mesh value
+    /// Supports <see cref="BindMode.OneWayToSource"/>: when binding is established, the current material value
     /// is sent back to the ViewModel.
     /// </remarks>
     [AddComponentMenu("Aspid/MVVM/Binders/Collider/Collider Binder – Material")]

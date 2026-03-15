@@ -18,7 +18,7 @@ namespace Aspid.MVVM.StarterKit
         
         /// <summary>
         /// Called when applying the selected value to the <see cref="Image.sprite"/> property.
-        /// Disables the <see cref="Image"/> when <paramref name="value"/> is <see langword="null"/> and <c>_disabledWhenNull</c> is <see langword="true"/>.
+        /// Disables the <see cref="Image"/> when <paramref name="value"/> is <see langword="null"/> and the disable-when-null option is enabled.
         /// </summary>
         protected override void SetValue(Sprite value)
         {

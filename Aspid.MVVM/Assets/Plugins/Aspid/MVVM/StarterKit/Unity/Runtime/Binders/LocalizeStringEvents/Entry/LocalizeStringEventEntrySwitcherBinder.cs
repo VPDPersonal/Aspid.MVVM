@@ -7,8 +7,8 @@ using UnityEngine.Localization.Components;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="SwitcherStringBinder{LocalizeStringEvent}"/> that switches the <c>TableEntryReference</c>
-    /// of the component's <c>StringReference</c> between two values based on the bound boolean ViewModel value.
+    /// <see cref="SwitcherStringBinder{LocalizeStringEvent}"/> that switches the TableEntryReference
+    /// of the component's StringReference between two values based on the bound boolean ViewModel value.
     /// </summary>
     /// <include file="XmlExampleDoc-LocalizeStringEvent-Entry-1.1.0.xml" path="doc//member[@name='LocalizeStringEventEntrySwitcherBinder']/*" />
     [Serializable]
@@ -25,7 +25,7 @@ namespace Aspid.MVVM.StarterKit
 
         /// <summary>
         /// Called when applying the selected entry key.
-        /// Sets the <c>TableEntryReference</c> of the component's <c>StringReference</c>.
+        /// Sets the TableEntryReference of the component's StringReference.
         /// </summary>
         protected override void SetValue(string? value) =>
             Target.StringReference.TableEntryReference = value;

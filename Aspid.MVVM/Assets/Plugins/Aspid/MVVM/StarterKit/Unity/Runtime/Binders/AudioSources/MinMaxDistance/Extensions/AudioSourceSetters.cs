@@ -6,7 +6,7 @@ using System.Runtime.CompilerServices;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// Extension methods for applying distance values to an <see cref="AudioSource"/>.
+    /// Provides extension methods for <see cref="AudioSource"/> that apply distance values.
     /// </summary>
     public static class AudioSourceSetters
     {

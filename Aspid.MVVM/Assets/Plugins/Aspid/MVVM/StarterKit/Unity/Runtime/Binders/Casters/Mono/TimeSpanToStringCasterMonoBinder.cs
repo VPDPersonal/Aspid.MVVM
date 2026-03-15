@@ -15,8 +15,8 @@ namespace Aspid.MVVM.StarterKit
 #else
     public sealed class TimeSpanToStringCasterMonoBinder : GenericToStringCasterMonoBinder<TimeSpan>
     {
-        [Tooltip("The converter used to transform the bound TimeSpan to a string.")]
         [SerializeReferenceDropdown]
+        [Tooltip("The converter used to transform the bound TimeSpan to a string.")]
         [SerializeReference] private IConverterTimeSpanToString _converter = new TimeSpanToStringConverter();
 
         /// <inheritdoc/>

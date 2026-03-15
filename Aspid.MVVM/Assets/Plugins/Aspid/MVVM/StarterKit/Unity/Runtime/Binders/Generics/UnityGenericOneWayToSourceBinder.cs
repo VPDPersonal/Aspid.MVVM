@@ -17,7 +17,7 @@ namespace Aspid.MVVM.StarterKit
     /// <see cref="ValueChanged"/> whenever the View value changes.
     /// Optionally, a value can be pushed to the ViewModel immediately when the binding is established
     /// (<see cref="OnBound"/>) or when it is being released (<see cref="OnUnbinding"/>), controlled
-    /// by the <c>onBoundValueChanged</c> and <c>onUnboundValueChanged</c> factory functions respectively.
+    /// by the onBoundValueChanged and onUnboundValueChanged factory functions respectively.
     /// </remarks>
     /// <include file="XmlExampleDoc-UnityGenerics-1.1.0.xml" path="doc//member[@name='UnityGenericOneWayToSourceBinder{1}']/*" />
     public class UnityGenericOneWayToSourceBinder<T> : Binder, IReverseBinder<T>
@@ -35,7 +35,7 @@ namespace Aspid.MVVM.StarterKit
         /// wires up the View-side event via <paramref name="initialize"/>.
         /// </summary>
         /// <param name="initialize">
-        /// A <see cref="UnityAction{T}"/> that receives the internal <c>OnValueChanged</c> callback and registers it with the View event.
+        /// A <see cref="UnityAction{T}"/> that receives the internal <see cref="OnValueChanged"/> callback and registers it with the View event.
         /// </param>
         /// <param name="onBoundValueChanged">
         /// Optional factory invoked when the binding is established; the returned value is pushed to the ViewModel.
@@ -84,7 +84,7 @@ namespace Aspid.MVVM.StarterKit
 
         /// <summary>
         /// Called after binding is established.
-        /// Invokes the <c>onBoundValueChanged</c> factory and pushes the returned value to the ViewModel,
+        /// Invokes the onBoundValueChanged factory and pushes the returned value to the ViewModel,
         /// if the factory was provided.
         /// </summary>
         protected override void OnBound()
@@ -95,7 +95,7 @@ namespace Aspid.MVVM.StarterKit
 
         /// <summary>
         /// Called just before the binding is released.
-        /// Invokes the <c>onUnboundValueChanged</c> factory and pushes the returned value to the ViewModel,
+        /// Invokes the onUnboundValueChanged factory and pushes the returned value to the ViewModel,
         /// if the factory was provided.
         /// </summary>
         protected override void OnUnbinding()
@@ -138,7 +138,7 @@ namespace Aspid.MVVM.StarterKit
         /// </summary>
         /// <param name="target">The target object whose event or value is monitored.</param>
         /// <param name="initialize">
-        /// A <see cref="UnityAction{T0,T1}"/> that receives <paramref name="target"/> and the internal <c>OnValueChanged</c>
+        /// A <see cref="UnityAction{T0,T1}"/> that receives <paramref name="target"/> and the internal <see cref="OnValueChanged"/>
         /// callback, and registers it with the appropriate View event.
         /// </param>
         /// <param name="onBoundValueChanged">
@@ -199,7 +199,7 @@ namespace Aspid.MVVM.StarterKit
 
         /// <summary>
         /// Called after binding is established.
-        /// Invokes the <c>onBoundValueChanged</c> factory with the stored <typeparamref name="TTarget"/>
+        /// Invokes the onBoundValueChanged factory with the stored <typeparamref name="TTarget"/>
         /// and pushes the returned value to the ViewModel, if the factory was provided.
         /// </summary>
         protected override void OnBound()
@@ -210,7 +210,7 @@ namespace Aspid.MVVM.StarterKit
 
         /// <summary>
         /// Called just before the binding is released.
-        /// Invokes the <c>onUnboundValueChanged</c> factory with the stored <typeparamref name="TTarget"/>
+        /// Invokes the onUnboundValueChanged factory with the stored <typeparamref name="TTarget"/>
         /// and pushes the returned value to the ViewModel, if the factory was provided.
         /// </summary>
         protected override void OnUnbinding()

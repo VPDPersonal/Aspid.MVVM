@@ -7,8 +7,8 @@ using System.Collections.Generic;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// MonoBehaviour binder that switches the options list on a <see cref="TMPro.TMP_Dropdown"/>
-    /// between two lists based on a bound boolean ViewModel property.
+    /// <see cref="SwitcherMonoBinder{TMP_Dropdown, List{TMP_Dropdown.OptionData}}"/> that switches the
+    /// <see cref="TMP_Dropdown.options"/> list between two values based on the bound boolean ViewModel value.
     /// </summary>
     [AddBinderContextMenu(typeof(TMP_Dropdown), SubPath = "Switcher")]
     [AddComponentMenu("Aspid/MVVM/Binders/UI/Dropdown/Dropdown Binder – Options Switcher")]

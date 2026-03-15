@@ -23,7 +23,7 @@ namespace Aspid.MVVM.StarterKit
         /// Raises <see cref="ValueChanged"/> with the cached <typeparamref name="TComponent"/> reference.
         /// </summary>
         /// <remarks>
-        /// When overriding this method, always call <c>base.OnBound()</c> to ensure
+        /// When overriding this method, always call the base implementation to ensure
         /// <see cref="ValueChanged"/> is raised with the component reference.
         /// </remarks>
         protected override void OnBound() =>

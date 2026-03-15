@@ -27,8 +27,7 @@ namespace Aspid.MVVM.StarterKit
         /// Clamps the converted value to the valid range of 0 to 1.
         /// </summary>
         /// <remarks>
-        /// When overriding this method, always call <c>base.GetConvertedValue(value)</c> to preserve
-        /// the clamping behavior.
+        /// When overriding this method, always call the base implementation to preserve the clamping behavior.
         /// </remarks>
         protected override float GetConvertedValue(float value) =>
             Mathf.Clamp01(base.GetConvertedValue(value));

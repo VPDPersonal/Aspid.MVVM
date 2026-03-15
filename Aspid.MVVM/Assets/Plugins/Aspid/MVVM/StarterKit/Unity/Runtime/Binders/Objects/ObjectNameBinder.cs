@@ -29,8 +29,8 @@ namespace Aspid.MVVM.StarterKit
         /// <inheritdoc/>
         public event Action<string?>? ValueChanged;
         
-        [Tooltip("Optional converter applied to the string value before it is set on the target or sent back to the ViewModel.")]
         [SerializeReferenceDropdown]
+        [Tooltip("Optional converter applied to the string value before it is set on the target or sent back to the ViewModel.")]
         [SerializeReference] private Converter? _converter;
 
         /// <summary>

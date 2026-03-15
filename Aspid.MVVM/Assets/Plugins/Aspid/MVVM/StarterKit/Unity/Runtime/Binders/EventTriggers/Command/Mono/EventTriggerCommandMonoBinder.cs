@@ -41,14 +41,14 @@ namespace Aspid.MVVM.StarterKit
         }
 
         /// <summary>
-        /// Binds an <see cref="IRelayCommand"/> and subscribes to its <c>CanExecuteChanged</c> event.
+        /// Binds an <see cref="IRelayCommand"/> and subscribes to its <see cref="IRelayCommand.CanExecuteChanged"/> event.
         /// </summary>
         [BinderLog]
         public void SetValue(IRelayCommand value) =>
             CommandBinderExtensions.UpdateCommand(ref _command, value, OnCanExecuteChanged);
 
         /// <summary>
-        /// Binds an <see cref="IRelayCommand{T}">IRelayCommand&lt;BaseEventData&gt;</see> and subscribes to its <c>CanExecuteChanged</c> event.
+        /// Binds an <see cref="IRelayCommand{T}">IRelayCommand&lt;BaseEventData&gt;</see> and subscribes to its <see cref="IRelayCommand.CanExecuteChanged"/> event.
         /// On trigger, the command receives the <see cref="BaseEventData"/> of the fired event.
         /// </summary>
         [BinderLog]
@@ -56,7 +56,7 @@ namespace Aspid.MVVM.StarterKit
             CommandBinderExtensions.UpdateCommand(ref _commandWithData, value, OnCanExecuteChanged);
 
         /// <summary>
-        /// Binds an <see cref="IRelayCommand{T}">IRelayCommand&lt;EventTriggerType&gt;</see> and subscribes to its <c>CanExecuteChanged</c> event.
+        /// Binds an <see cref="IRelayCommand{T}">IRelayCommand&lt;EventTriggerType&gt;</see> and subscribes to its <see cref="IRelayCommand.CanExecuteChanged"/> event.
         /// On trigger, the command receives the configured <see cref="EventTriggerType"/>.
         /// </summary>
         [BinderLog]
@@ -68,7 +68,7 @@ namespace Aspid.MVVM.StarterKit
         /// and registers it on the component's triggers list.
         /// </summary>
         /// <remarks>
-        /// A new <see cref="EventTrigger.Entry"/> is created, <c>OnTrigger</c> is added to its callback,
+        /// A new <see cref="EventTrigger.Entry"/> is created, <see cref="OnTrigger(BaseEventData)"/> is added to its callback,
         /// and the entry is appended to <see cref="EventTrigger.triggers"/>.
         /// </remarks>
         protected override void OnBound()
@@ -88,8 +88,8 @@ namespace Aspid.MVVM.StarterKit
         /// </summary>
         /// <remarks>
         /// Removes the <see cref="EventTrigger.Entry"/> from the triggers list, unsubscribes the callback,
-        /// clears the entry reference, and passes <see langword="null"/> to all <c>SetValue</c> overloads
-        /// to detach command references and unsubscribe from their <c>CanExecuteChanged</c> events.
+        /// clears the entry reference, and passes <see langword="null"/> to all <see cref="SetValue"/> overloads
+        /// to detach command references and unsubscribe from their <see cref="IRelayCommand.CanExecuteChanged"/> events.
         /// </remarks>
         protected override void OnUnbound()
         {
@@ -122,7 +122,7 @@ namespace Aspid.MVVM.StarterKit
     }
 
     /// <summary>
-    /// <see cref="ComponentMonoBinder{EventTrigger}"/> that executes commands with one additional parameter when an <see cref="EventTrigger"/> event fires.
+    /// Abstract base <see cref="ComponentMonoBinder{EventTrigger}"/> that executes commands with one additional parameter when an <see cref="EventTrigger"/> event fires.
     /// Accepts commands typed as <see cref="IRelayCommand{T1}"/>,
     /// <see cref="IRelayCommand{T1, T2}">IRelayCommand&lt;BaseEventData, T1&gt;</see> (receives the event data first),
     /// or <see cref="IRelayCommand{T1, T2}">IRelayCommand&lt;EventTriggerType, T1&gt;</see> (receives the event type first).
@@ -169,14 +169,14 @@ namespace Aspid.MVVM.StarterKit
         }
 
         /// <summary>
-        /// Binds an <see cref="IRelayCommand{T1}"/> and subscribes to its <c>CanExecuteChanged</c> event.
+        /// Binds an <see cref="IRelayCommand{T1}"/> and subscribes to its <see cref="IRelayCommand.CanExecuteChanged"/> event.
         /// </summary>
         [BinderLog]
         public void SetValue(IRelayCommand<T1> value) =>
             CommandBinderExtensions.UpdateCommand(ref _command, value, OnCanExecuteChanged);
 
         /// <summary>
-        /// Binds an <see cref="IRelayCommand{T1, T2}">IRelayCommand&lt;BaseEventData, T1&gt;</see> and subscribes to its <c>CanExecuteChanged</c> event.
+        /// Binds an <see cref="IRelayCommand{T1, T2}">IRelayCommand&lt;BaseEventData, T1&gt;</see> and subscribes to its <see cref="IRelayCommand.CanExecuteChanged"/> event.
         /// On trigger, the command receives the <see cref="BaseEventData"/> of the fired event followed by <see cref="Param1"/>.
         /// </summary>
         [BinderLog]
@@ -184,7 +184,7 @@ namespace Aspid.MVVM.StarterKit
             CommandBinderExtensions.UpdateCommand(ref _commandWithData, value, OnCanExecuteChanged);
 
         /// <summary>
-        /// Binds an <see cref="IRelayCommand{T1, T2}">IRelayCommand&lt;EventTriggerType, T1&gt;</see> and subscribes to its <c>CanExecuteChanged</c> event.
+        /// Binds an <see cref="IRelayCommand{T1, T2}">IRelayCommand&lt;EventTriggerType, T1&gt;</see> and subscribes to its <see cref="IRelayCommand.CanExecuteChanged"/> event.
         /// On trigger, the command receives the configured <see cref="EventTriggerType"/> followed by <see cref="Param1"/>.
         /// </summary>
         [BinderLog]
@@ -196,7 +196,7 @@ namespace Aspid.MVVM.StarterKit
         /// and registers it on the component's triggers list.
         /// </summary>
         /// <remarks>
-        /// A new <see cref="EventTrigger.Entry"/> is created, <c>OnTrigger</c> is added to its callback,
+        /// A new <see cref="EventTrigger.Entry"/> is created, <see cref="OnTrigger(BaseEventData)"/> is added to its callback,
         /// and the entry is appended to <see cref="EventTrigger.triggers"/>.
         /// </remarks>
         protected override void OnBound()
@@ -216,8 +216,8 @@ namespace Aspid.MVVM.StarterKit
         /// </summary>
         /// <remarks>
         /// Removes the <see cref="EventTrigger.Entry"/> from the triggers list, unsubscribes the callback,
-        /// clears the entry reference, and passes <see langword="null"/> to all <c>SetValue</c> overloads
-        /// to detach command references and unsubscribe from their <c>CanExecuteChanged</c> events.
+        /// clears the entry reference, and passes <see langword="null"/> to all <see cref="SetValue"/> overloads
+        /// to detach command references and unsubscribe from their <see cref="IRelayCommand.CanExecuteChanged"/> events.
         /// </remarks>
         protected override void OnUnbound()
         {
@@ -250,7 +250,7 @@ namespace Aspid.MVVM.StarterKit
     }
 
     /// <summary>
-    /// <see cref="ComponentMonoBinder{EventTrigger}"/> that executes commands with two additional parameters when an <see cref="EventTrigger"/> event fires.
+    /// Abstract base <see cref="ComponentMonoBinder{EventTrigger}"/> that executes commands with two additional parameters when an <see cref="EventTrigger"/> event fires.
     /// Accepts commands typed as <see cref="IRelayCommand{T1, T2}"/>,
     /// <see cref="IRelayCommand{T1, T2, T3}">IRelayCommand&lt;BaseEventData, T1, T2&gt;</see> (receives the event data first),
     /// or <see cref="IRelayCommand{T1, T2, T3}">IRelayCommand&lt;EventTriggerType, T1, T2&gt;</see> (receives the event type first).
@@ -310,14 +310,14 @@ namespace Aspid.MVVM.StarterKit
         }
 
         /// <summary>
-        /// Binds an <see cref="IRelayCommand{T1, T2}"/> and subscribes to its <c>CanExecuteChanged</c> event.
+        /// Binds an <see cref="IRelayCommand{T1, T2}"/> and subscribes to its <see cref="IRelayCommand.CanExecuteChanged"/> event.
         /// </summary>
         [BinderLog]
         public void SetValue(IRelayCommand<T1, T2> value) =>
             CommandBinderExtensions.UpdateCommand(ref _command, value, OnCanExecuteChanged);
 
         /// <summary>
-        /// Binds an <see cref="IRelayCommand{T1, T2, T3}">IRelayCommand&lt;BaseEventData, T1, T2&gt;</see> and subscribes to its <c>CanExecuteChanged</c> event.
+        /// Binds an <see cref="IRelayCommand{T1, T2, T3}">IRelayCommand&lt;BaseEventData, T1, T2&gt;</see> and subscribes to its <see cref="IRelayCommand.CanExecuteChanged"/> event.
         /// On trigger, the command receives the <see cref="BaseEventData"/> of the fired event followed by <see cref="Param1"/> and <see cref="Param2"/>.
         /// </summary>
         [BinderLog]
@@ -325,7 +325,7 @@ namespace Aspid.MVVM.StarterKit
             CommandBinderExtensions.UpdateCommand(ref _commandWithData, value, OnCanExecuteChanged);
 
         /// <summary>
-        /// Binds an <see cref="IRelayCommand{T1, T2, T3}">IRelayCommand&lt;EventTriggerType, T1, T2&gt;</see> and subscribes to its <c>CanExecuteChanged</c> event.
+        /// Binds an <see cref="IRelayCommand{T1, T2, T3}">IRelayCommand&lt;EventTriggerType, T1, T2&gt;</see> and subscribes to its <see cref="IRelayCommand.CanExecuteChanged"/> event.
         /// On trigger, the command receives the configured <see cref="EventTriggerType"/> followed by <see cref="Param1"/> and <see cref="Param2"/>.
         /// </summary>
         [BinderLog]
@@ -337,7 +337,7 @@ namespace Aspid.MVVM.StarterKit
         /// and registers it on the component's triggers list.
         /// </summary>
         /// <remarks>
-        /// A new <see cref="EventTrigger.Entry"/> is created, <c>OnTrigger</c> is added to its callback,
+        /// A new <see cref="EventTrigger.Entry"/> is created, <see cref="OnTrigger(BaseEventData)"/> is added to its callback,
         /// and the entry is appended to <see cref="EventTrigger.triggers"/>.
         /// </remarks>
         protected override void OnBound()
@@ -357,8 +357,8 @@ namespace Aspid.MVVM.StarterKit
         /// </summary>
         /// <remarks>
         /// Removes the <see cref="EventTrigger.Entry"/> from the triggers list, unsubscribes the callback,
-        /// clears the entry reference, and passes <see langword="null"/> to all <c>SetValue</c> overloads
-        /// to detach command references and unsubscribe from their <c>CanExecuteChanged</c> events.
+        /// clears the entry reference, and passes <see langword="null"/> to all <see cref="SetValue"/> overloads
+        /// to detach command references and unsubscribe from their <see cref="IRelayCommand.CanExecuteChanged"/> events.
         /// </remarks>
         protected override void OnUnbound()
         {
@@ -391,7 +391,7 @@ namespace Aspid.MVVM.StarterKit
     }
 
     /// <summary>
-    /// <see cref="ComponentMonoBinder{EventTrigger}"/> that executes commands with three additional parameters when an <see cref="EventTrigger"/> event fires.
+    /// Abstract base <see cref="ComponentMonoBinder{EventTrigger}"/> that executes commands with three additional parameters when an <see cref="EventTrigger"/> event fires.
     /// Accepts commands typed as <see cref="IRelayCommand{T1, T2, T3}"/>,
     /// <see cref="IRelayCommand{T1, T2, T3, T4}">IRelayCommand&lt;BaseEventData, T1, T2, T3&gt;</see> (receives the event data first),
     /// or <see cref="IRelayCommand{T1, T2, T3, T4}">IRelayCommand&lt;EventTriggerType, T1, T2, T3&gt;</see> (receives the event type first).
@@ -463,14 +463,14 @@ namespace Aspid.MVVM.StarterKit
         }
 
         /// <summary>
-        /// Binds an <see cref="IRelayCommand{T1, T2, T3}"/> and subscribes to its <c>CanExecuteChanged</c> event.
+        /// Binds an <see cref="IRelayCommand{T1, T2, T3}"/> and subscribes to its <see cref="IRelayCommand.CanExecuteChanged"/> event.
         /// </summary>
         [BinderLog]
         public void SetValue(IRelayCommand<T1, T2, T3> value) =>
             CommandBinderExtensions.UpdateCommand(ref _command, value, OnCanExecuteChanged);
 
         /// <summary>
-        /// Binds an <see cref="IRelayCommand{T1, T2, T3, T4}">IRelayCommand&lt;BaseEventData, T1, T2, T3&gt;</see> and subscribes to its <c>CanExecuteChanged</c> event.
+        /// Binds an <see cref="IRelayCommand{T1, T2, T3, T4}">IRelayCommand&lt;BaseEventData, T1, T2, T3&gt;</see> and subscribes to its <see cref="IRelayCommand.CanExecuteChanged"/> event.
         /// On trigger, the command receives the <see cref="BaseEventData"/> of the fired event followed by <see cref="Param1"/>, <see cref="Param2"/>, and <see cref="Param3"/>.
         /// </summary>
         [BinderLog]
@@ -478,7 +478,7 @@ namespace Aspid.MVVM.StarterKit
             CommandBinderExtensions.UpdateCommand(ref _commandWithData, value, OnCanExecuteChanged);
 
         /// <summary>
-        /// Binds an <see cref="IRelayCommand{T1, T2, T3, T4}">IRelayCommand&lt;EventTriggerType, T1, T2, T3&gt;</see> and subscribes to its <c>CanExecuteChanged</c> event.
+        /// Binds an <see cref="IRelayCommand{T1, T2, T3, T4}">IRelayCommand&lt;EventTriggerType, T1, T2, T3&gt;</see> and subscribes to its <see cref="IRelayCommand.CanExecuteChanged"/> event.
         /// On trigger, the command receives the configured <see cref="EventTriggerType"/> followed by <see cref="Param1"/>, <see cref="Param2"/>, and <see cref="Param3"/>.
         /// </summary>
         [BinderLog]
@@ -490,7 +490,7 @@ namespace Aspid.MVVM.StarterKit
         /// and registers it on the component's triggers list.
         /// </summary>
         /// <remarks>
-        /// A new <see cref="EventTrigger.Entry"/> is created, <c>OnTrigger</c> is added to its callback,
+        /// A new <see cref="EventTrigger.Entry"/> is created, <see cref="OnTrigger(BaseEventData)"/> is added to its callback,
         /// and the entry is appended to <see cref="EventTrigger.triggers"/>.
         /// </remarks>
         protected override void OnBound()
@@ -510,8 +510,8 @@ namespace Aspid.MVVM.StarterKit
         /// </summary>
         /// <remarks>
         /// Removes the <see cref="EventTrigger.Entry"/> from the triggers list, unsubscribes the callback,
-        /// clears the entry reference, and passes <see langword="null"/> to all <c>SetValue</c> overloads
-        /// to detach command references and unsubscribe from their <c>CanExecuteChanged</c> events.
+        /// clears the entry reference, and passes <see langword="null"/> to all <see cref="SetValue"/> overloads
+        /// to detach command references and unsubscribe from their <see cref="IRelayCommand.CanExecuteChanged"/> events.
         /// </remarks>
         protected override void OnUnbound()
         {
@@ -544,7 +544,7 @@ namespace Aspid.MVVM.StarterKit
     }
 
     /// <summary>
-    /// <see cref="ComponentMonoBinder{EventTrigger}"/> that executes a command with four additional parameters when an <see cref="EventTrigger"/> event fires.
+    /// Abstract base <see cref="ComponentMonoBinder{EventTrigger}"/> that executes a command with four additional parameters when an <see cref="EventTrigger"/> event fires.
     /// Accepts commands typed as <see cref="IRelayCommand{T1, T2, T3, T4}"/>.
     /// Because this class is abstract, a concrete sealed subclass is required for use.
     /// </summary>
@@ -617,7 +617,7 @@ namespace Aspid.MVVM.StarterKit
         }
 
         /// <summary>
-        /// Binds an <see cref="IRelayCommand{T1, T2, T3, T4}"/> and subscribes to its <c>CanExecuteChanged</c> event.
+        /// Binds an <see cref="IRelayCommand{T1, T2, T3, T4}"/> and subscribes to its <see cref="IRelayCommand.CanExecuteChanged"/> event.
         /// </summary>
         [BinderLog]
         public void SetValue(IRelayCommand<T1, T2, T3, T4> value) =>
@@ -628,7 +628,7 @@ namespace Aspid.MVVM.StarterKit
         /// and registers it on the component's triggers list.
         /// </summary>
         /// <remarks>
-        /// A new <see cref="EventTrigger.Entry"/> is created, <c>OnTrigger</c> is added to its callback,
+        /// A new <see cref="EventTrigger.Entry"/> is created, <see cref="OnTrigger(BaseEventData)"/> is added to its callback,
         /// and the entry is appended to <see cref="EventTrigger.triggers"/>.
         /// </remarks>
         protected override void OnBound()
@@ -648,8 +648,8 @@ namespace Aspid.MVVM.StarterKit
         /// </summary>
         /// <remarks>
         /// Removes the <see cref="EventTrigger.Entry"/> from the triggers list, unsubscribes the callback,
-        /// clears the entry reference, and passes <see langword="null"/> to <c>SetValue</c>
-        /// to detach the command reference and unsubscribe from its <c>CanExecuteChanged</c> event.
+        /// clears the entry reference, and passes <see langword="null"/> to <see cref="SetValue"/>
+        /// to detach the command reference and unsubscribe from its <see cref="IRelayCommand.CanExecuteChanged"/> event.
         /// </remarks>
         protected override void OnUnbound()
         {

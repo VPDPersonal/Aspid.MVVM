@@ -6,7 +6,7 @@ using UnityEngine;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="SwitcherBinder{CapsuleCollider, float, IConverter{float, float}}"/> that switches the <see cref="CapsuleCollider.radius"/>
+    /// <see cref="SwitcherFloatBinder{CapsuleCollider}"/> that switches the <see cref="CapsuleCollider.radius"/>
     /// property between two <see langword="float"/> values based on the bound boolean ViewModel value.
     /// </summary>
     /// <include file="XmlExampleDoc-CapsuleCollider-Radius-1.1.0.xml" path="doc//member[@name='CapsuleColliderRadiusSwitcherBinder']/*" />

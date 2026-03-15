@@ -6,7 +6,7 @@ using UnityEngine;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="SwitcherBinder{AudioSource, float, IConverter{float, float}}"/> that switches the <see cref="AudioSource.spatialBlend"/>
+    /// <see cref="SwitcherFloatBinder{AudioSource}"/> that switches the <see cref="AudioSource.spatialBlend"/>
     /// property between two <see cref="float"/> values based on the bound boolean ViewModel value.
     /// </summary>
     /// <remarks>

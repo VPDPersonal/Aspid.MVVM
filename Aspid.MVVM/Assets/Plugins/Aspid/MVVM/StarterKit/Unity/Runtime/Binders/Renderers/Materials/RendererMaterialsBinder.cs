@@ -40,8 +40,8 @@ namespace Aspid.MVVM.StarterKit
             remove => _reverseMaterials -= value;
         }
         
-        [Tooltip("The optional converter applied to each material before it is assigned to the Renderer.")]
         [SerializeReferenceDropdown]
+        [Tooltip("The optional converter applied to each material before it is assigned to the Renderer.")]
         [SerializeReference] private Converter? _converter;
         
         private Action<Material?>? _reverseMaterial;
@@ -68,9 +68,11 @@ namespace Aspid.MVVM.StarterKit
             _converter = converter;
         }
 
+        /// <inheritdoc/>
         public void SetValue(Material? value) =>
             Target.material = GetConvertedValue(value);
-        
+
+        /// <inheritdoc/>
         public void SetValue(IReadOnlyCollection<Material>? values) =>
             Target.SetMaterials(_converter, values);
         

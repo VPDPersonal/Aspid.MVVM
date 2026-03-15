@@ -62,6 +62,12 @@ namespace Aspid.MVVM.StarterKit
         /// In <see cref="BindMode.OneWayToSource"/> mode, broadcasts the current value to all numeric event types:
         /// <see cref="IntValueChanged"/>, <see cref="LongValueChanged"/>, <see cref="FloatValueChanged"/>, and <see cref="DoubleValueChanged"/>.
         /// </summary>
+        /// <remarks>
+        /// Does not call <c>base.OnBound()</c>: provides a complete implementation of the
+        /// <see cref="BindMode.OneWayToSource"/> initialization that broadcasts to all numeric event types
+        /// via <see cref="INumberReverseBinder"/> instead of the single typed
+        /// <see cref="IReverseBinder{T}.ValueChanged"/> event.
+        /// </remarks>
         protected override void OnBound()
         {
             if (Mode is BindMode.OneWayToSource)

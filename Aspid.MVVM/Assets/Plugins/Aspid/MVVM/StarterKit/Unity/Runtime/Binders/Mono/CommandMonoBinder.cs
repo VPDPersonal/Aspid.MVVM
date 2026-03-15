@@ -58,14 +58,14 @@ namespace Aspid.MVVM.StarterKit
             Command?.Execute();
 
         /// <summary>
-        /// Called when the bound command's <c>CanExecute</c> state changes.
+        /// Called when the bound command's <see cref="IRelayCommand.CanExecuteChanged"/> event fires.
         /// </summary>
         /// <param name="command">The command whose state changed.</param>
         protected virtual void OnCanExecuteChanged(IRelayCommand command) { }
     }
 
     /// <summary>
-    /// Abstract <see cref="MonoBinder"/> that binds an <see cref="IRelayCommand{T}"/> and exposes
+    /// Abstract base <see cref="MonoBinder"/> that binds an <see cref="IRelayCommand{T}"/> and exposes
     /// <see cref="CanExecute"/> and <see cref="Execute"/> as pass-through helpers.
     /// </summary>
     /// <typeparam name="T">The type of the parameter passed to the command.</typeparam>
@@ -120,14 +120,14 @@ namespace Aspid.MVVM.StarterKit
             Command?.Execute(param1);
 
         /// <summary>
-        /// Called when the bound command's <c>CanExecute</c> state changes.
+        /// Called when the bound command's <see cref="IRelayCommand.CanExecuteChanged"/> event fires.
         /// </summary>
         /// <param name="command">The command whose state changed.</param>
         protected virtual void OnCanExecuteChanged(IRelayCommand<T> command) { }
     }
 
     /// <summary>
-    /// Abstract <see cref="MonoBinder"/> that binds an <see cref="IRelayCommand{T1, T2}"/> and exposes
+    /// Abstract base <see cref="MonoBinder"/> that binds an <see cref="IRelayCommand{T1, T2}"/> and exposes
     /// <see cref="CanExecute"/> and <see cref="Execute"/> as pass-through helpers.
     /// </summary>
     /// <typeparam name="T1">The type of the first parameter passed to the command.</typeparam>
@@ -185,14 +185,14 @@ namespace Aspid.MVVM.StarterKit
             Command?.Execute(param1, param2);
 
         /// <summary>
-        /// Called when the bound command's <c>CanExecute</c> state changes.
+        /// Called when the bound command's <see cref="IRelayCommand.CanExecuteChanged"/> event fires.
         /// </summary>
         /// <param name="command">The command whose state changed.</param>
         protected virtual void OnCanExecuteChanged(IRelayCommand<T1, T2> command) { }
     }
 
     /// <summary>
-    /// Abstract <see cref="MonoBinder"/> that binds an <see cref="IRelayCommand{T1, T2, T3}"/> and exposes
+    /// Abstract base <see cref="MonoBinder"/> that binds an <see cref="IRelayCommand{T1, T2, T3}"/> and exposes
     /// <see cref="CanExecute"/> and <see cref="Execute"/> as pass-through helpers.
     /// </summary>
     /// <typeparam name="T1">The type of the first parameter passed to the command.</typeparam>
@@ -253,14 +253,14 @@ namespace Aspid.MVVM.StarterKit
             Command?.Execute(param1, param2, param3);
 
         /// <summary>
-        /// Called when the bound command's <c>CanExecute</c> state changes.
+        /// Called when the bound command's <see cref="IRelayCommand.CanExecuteChanged"/> event fires.
         /// </summary>
         /// <param name="command">The command whose state changed.</param>
         protected virtual void OnCanExecuteChanged(IRelayCommand<T1, T2, T3> command) { }
     }
 
     /// <summary>
-    /// Abstract <see cref="MonoBinder"/> that binds an <see cref="IRelayCommand{T1, T2, T3, T4}"/> and exposes
+    /// Abstract base <see cref="MonoBinder"/> that binds an <see cref="IRelayCommand{T1, T2, T3, T4}"/> and exposes
     /// <see cref="CanExecute"/> and <see cref="Execute"/> as pass-through helpers.
     /// </summary>
     /// <typeparam name="T1">The type of the first parameter passed to the command.</typeparam>
@@ -324,7 +324,7 @@ namespace Aspid.MVVM.StarterKit
             Command?.Execute(param1, param2, param3, param4);
 
         /// <summary>
-        /// Called when the bound command's <c>CanExecute</c> state changes.
+        /// Called when the bound command's <see cref="IRelayCommand.CanExecuteChanged"/> event fires.
         /// </summary>
         /// <param name="command">The command whose state changed.</param>
         protected virtual void OnCanExecuteChanged(IRelayCommand<T1, T2, T3, T4> command) { }

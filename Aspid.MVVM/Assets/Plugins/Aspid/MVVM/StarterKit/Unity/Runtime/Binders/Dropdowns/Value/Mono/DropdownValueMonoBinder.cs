@@ -6,7 +6,7 @@ using UnityEngine;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// MonoBehaviour binder that sets the <see cref="TMP_Dropdown.value"/> property on a <see cref="TMP_Dropdown"/>
+    /// <see cref="ComponentIntMonoBinder{TMP_Dropdown}"/> that sets the <see cref="TMP_Dropdown.value"/> property
     /// when the bound ViewModel value changes.
     /// </summary>
     /// <remarks>

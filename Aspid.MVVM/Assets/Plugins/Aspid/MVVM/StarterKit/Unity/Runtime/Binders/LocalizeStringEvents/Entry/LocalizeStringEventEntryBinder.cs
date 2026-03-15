@@ -7,8 +7,8 @@ using UnityEngine.Localization.Components;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="TargetStringBinder{LocalizeStringEvent}"/> that sets the <c>TableEntryReference</c>
-    /// of the component's <c>StringReference</c> when the bound ViewModel string value changes.
+    /// <see cref="TargetStringBinder{LocalizeStringEvent}"/> that sets the TableEntryReference
+    /// of the component's StringReference when the bound ViewModel string value changes.
     /// </summary>
     /// <include file="XmlExampleDoc-LocalizeStringEvent-Entry-1.1.0.xml" path="doc//member[@name='LocalizeStringEventEntryBinder']/*" />
     [Serializable]

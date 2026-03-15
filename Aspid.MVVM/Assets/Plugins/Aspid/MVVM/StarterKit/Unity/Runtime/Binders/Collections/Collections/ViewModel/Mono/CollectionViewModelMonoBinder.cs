@@ -6,9 +6,9 @@ namespace Aspid.MVVM.StarterKit
 {
     [AddComponentMenu("Aspid/MVVM/Binders/Collection/Collection Binder – ViewModel")]
     [AddBinderContextMenu(typeof(Component), Path = "Add General Binder/Collection/Collection Binder – ViewModel")]
-    public class ViewModelCollectionMonoBinder : ViewModelCollectionMonoBinder<MonoView> { }
+    public class CollectionViewModelMonoBinder : CollectionViewModelMonoBinder<MonoView> { }
     
-    public abstract class ViewModelCollectionMonoBinder<T> : CollectionMonoBinder<IViewModel>
+    public abstract class CollectionViewModelMonoBinder<T> : CollectionMonoBinder<IViewModel>
         where T : MonoBehaviour, IView
     {
         [SerializeField] private T[] _views;

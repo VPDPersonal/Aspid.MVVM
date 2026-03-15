@@ -7,7 +7,7 @@ using UnityEngine.UI;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="SwitcherBinder{Graphic, float, Converter}"/> that switches a single <see cref="ColorComponent"/>
+    /// <see cref="SwitcherFloatBinder{Graphic}"/> that switches a single <see cref="ColorComponent"/>
     /// channel of the <see cref="Graphic.color"/> property between two <see cref="float"/> values
     /// based on the bound boolean ViewModel value.
     /// </summary>

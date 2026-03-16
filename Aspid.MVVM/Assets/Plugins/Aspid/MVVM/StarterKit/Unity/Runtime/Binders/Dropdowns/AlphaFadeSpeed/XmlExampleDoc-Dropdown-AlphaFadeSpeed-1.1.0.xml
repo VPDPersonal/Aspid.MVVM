@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doc>
+    <member name="DropdownAlphaFadeSpeedBinder">
+        <example>
+            Bind the TMP_Dropdown alphaFadeSpeed property using a serialized binder field — the target TMP_Dropdown is assigned in the Inspector.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField]
+                    private DropdownAlphaFadeSpeedBinder _alphaFadeSpeed;
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [Bind] public float _alphaFadeSpeed;
+                }
+            </code>
+            &#xD;
+            Bind the TMP_Dropdown alphaFadeSpeed property by constructing the binder in code.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField] private TMP_Dropdown _dropdown;
+                    &#xD;
+                    private DropdownAlphaFadeSpeedBinder AlphaFadeSpeed =>
+                        new(_dropdown);
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [Bind] public float _alphaFadeSpeed;
+                }
+            </code>
+        </example>
+    </member>
+    <member name="DropdownAlphaFadeSpeedSwitcherBinder">
+        <example>
+            Switch the TMP_Dropdown alphaFadeSpeed between two values using a serialized binder field — the target TMP_Dropdown is assigned in the Inspector.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField]
+                    private DropdownAlphaFadeSpeedSwitcherBinder _isFastFade;
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [Bind] public bool _isFastFade;
+                }
+            </code>
+            &#xD;
+            Switch the TMP_Dropdown alphaFadeSpeed between two values by constructing the binder in code.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField]
+                    private TMP_Dropdown _dropdown;
+                    &#xD;
+                    [SerializeField]
+                    private float _fastFadeSpeed;
+                    &#xD;
+                    [SerializeField]
+                    private float _slowFadeSpeed;
+                    &#xD;
+                    private DropdownAlphaFadeSpeedSwitcherBinder IsFastFade => new(
+                        _dropdown, _fastFadeSpeed, _slowFadeSpeed, null);
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [Bind] public bool _isFastFade;
+                }
+            </code>
+        </example>
+    </member>
+</doc>

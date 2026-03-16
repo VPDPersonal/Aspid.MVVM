@@ -4,8 +4,17 @@ using UnityEngine.UI;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
+    /// <summary>
+    /// Extension methods for <see cref="Graphic"/> that provide per-channel color access.
+    /// </summary>
     public static class GraphicExtensions
     {
+        /// <summary>
+        /// Sets a single <see cref="ColorComponent"/> channel of <paramref name="graphic"/>'s color.
+        /// </summary>
+        /// <param name="graphic">The <see cref="Graphic"/> whose color channel is updated.</param>
+        /// <param name="component">The color channel to set.</param>
+        /// <param name="value">The new channel value.</param>
         public static void SetColorComponent(this Graphic graphic, ColorComponent component, float value)
         {
             var color = graphic.color;
@@ -22,6 +31,12 @@ namespace Aspid.MVVM.StarterKit
             graphic.color = color;
         }
 
+        /// <summary>
+        /// Returns the value of a single <see cref="ColorComponent"/> channel of <paramref name="graphic"/>'s color.
+        /// </summary>
+        /// <param name="graphic">The <see cref="Graphic"/> whose color channel is read.</param>
+        /// <param name="component">The color channel to read.</param>
+        /// <returns>The current channel value, or <c>0</c> if <paramref name="component"/> is invalid.</returns>
         public static float GetColorComponent(this Graphic graphic, ColorComponent component)
         {
             switch (component)

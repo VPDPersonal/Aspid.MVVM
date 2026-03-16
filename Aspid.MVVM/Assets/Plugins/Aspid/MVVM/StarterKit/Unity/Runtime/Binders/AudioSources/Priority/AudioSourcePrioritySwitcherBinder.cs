@@ -1,33 +1,34 @@
 #nullable enable
 using System;
 using UnityEngine;
-#if UNITY_2023_1_OR_NEWER
-using Converter = Aspid.MVVM.StarterKit.IConverter<int, int>;
-#else
-using Converter = Aspid.MVVM.StarterKit.IConverterInt;
-#endif
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
+    /// <summary>
+    /// <see cref="SwitcherIntBinder{AudioSource}"/> that switches the <see cref="AudioSource.priority"/>
+    /// property between two <see cref="int"/> values based on the bound boolean ViewModel value.
+    /// </summary>
+    /// <remarks>
+    /// The bound value is clamped to [0, 256] before being applied to <see cref="AudioSource.priority"/>.
+    /// </remarks>
+    /// <include file="XmlExampleDoc-AudioSource-Priority-1.1.0.xml" path="doc//member[@name='AudioSourcePrioritySwitcherBinder']/*" />
     [Serializable]
-    public sealed class AudioSourcePrioritySwitcherBinder : SwitcherBinder<AudioSource, int, Converter>
+    public sealed class AudioSourcePrioritySwitcherBinder : SwitcherIntBinder<AudioSource>
     {
+        /// <inheritdoc/>
         public AudioSourcePrioritySwitcherBinder(
             AudioSource target,
-            int trueValue, 
+            int trueValue,
             int falseValue,
-            BindMode mode)
-            : this(target, trueValue, falseValue, converter: null, mode) { }
-        
-        public AudioSourcePrioritySwitcherBinder(
-            AudioSource target,
-            int trueValue, 
-            int falseValue,
-            Converter? converter = null,
+            IConverter<int, int>? converter = null,
             BindMode mode = BindMode.OneWay)
             : base(target, trueValue, falseValue, converter, mode) { }
 
+        /// <summary>
+        /// Called when applying the selected value to the <see cref="AudioSource.priority"/> property.
+        /// Clamps the value to the valid range of 0 to 256.
+        /// </summary>
         protected override void SetValue(int value) =>
             Target.priority = Mathf.Clamp(value, min: 0, max: 256);
     }

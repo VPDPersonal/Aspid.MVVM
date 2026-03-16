@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doc>
+    <member name="TextFontSizeBinder">
+        <example>
+            Bind the TMP_Text font size using a serialized binder field — the target TMP_Text is assigned in the Inspector.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField]
+                    private TextFontSizeBinder _fontSize;
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [Bind] public float _fontSize;
+                }
+            </code>
+            &#xD;
+            Bind the TMP_Text font size by constructing the binder in code.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField] private TMP_Text _target;
+                    &#xD;
+                    private TextFontSizeBinder FontSize =&gt;
+                        new(_target);
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [Bind] public float _fontSize;
+                }
+            </code>
+        </example>
+    </member>
+    <member name="TextFontSizeSwitcherBinder">
+        <example>
+            Switch the TMP_Text font size between two values using a serialized binder field — the target TMP_Text is assigned in the Inspector.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField]
+                    private TextFontSizeSwitcherBinder _isLarge;
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [Bind] public bool _isLarge;
+                }
+            </code>
+            &#xD;
+            Switch the TMP_Text font size between two values by constructing the binder in code.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField] private TMP_Text _target;
+                    &#xD;
+                    private TextFontSizeSwitcherBinder IsLarge =&gt; new(
+                        _target, trueValue: 24f, falseValue: 14f);
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [Bind] public bool _isLarge;
+                }
+            </code>
+        </example>
+    </member>
+</doc>

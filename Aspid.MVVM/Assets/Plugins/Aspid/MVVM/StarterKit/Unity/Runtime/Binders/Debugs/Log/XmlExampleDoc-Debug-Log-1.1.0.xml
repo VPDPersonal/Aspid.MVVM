@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doc>
+    <member name="DebugLogBinder">
+        <example>
+            Bind a <c>DebugLogBinder</c> using a serialized field — the binder logs every incoming value to the Unity console.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField]
+                    private DebugLogBinder _debugLog;
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [Bind] public string _message;
+                }
+            </code>
+        </example>
+    </member>
+</doc>

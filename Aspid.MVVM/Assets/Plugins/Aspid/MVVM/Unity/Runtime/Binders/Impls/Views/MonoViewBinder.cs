@@ -4,11 +4,10 @@ using UnityEngine;
 namespace Aspid.MVVM
 {
     /// <summary>
-    /// Non-MonoBehaviour binder that binds a <typeparamref name="TView"/> component to an <see cref="IViewModel"/> property.
-    /// Initializes the view when a ViewModel is set and deinitializes it when unbound or when <c>null</c> is assigned.
+    /// <see cref="ViewTargetBinder{TView}"/> restricted to <see cref="Component"/>-based views.
     /// </summary>
-    /// <typeparam name="TView">The type of the view component. Must inherit from <see cref="Component"/> and implement <see cref="IView"/>.</typeparam>
-    public class MonoViewBinder<TView> : TargetBinder<TView>, IBinder<IViewModel>
+    /// <typeparam name="TView">The type of <see cref="Component"/> that implements <see cref="IView"/>.</typeparam>
+    public class MonoViewBinder<TView> : ViewTargetBinder<TView>
         where TView : Component, IView
     {
         /// <summary>
@@ -17,44 +16,11 @@ namespace Aspid.MVVM
         /// <param name="target">The view component to bind.</param>
         /// <param name="mode">The binding mode. Only one-directional modes are supported.</param>
         public MonoViewBinder(TView target, BindMode mode = BindMode.OneWay)
-            : base(target, mode)
-        {
-            mode.ThrowExceptionIfNotOne();
-        }
-
-        /// <summary>
-        /// Called when the bound ViewModel value changes.
-        /// Deinitializes the current view and initializes it with the new ViewModel if it is not <c>null</c>.
-        /// </summary>
-        /// <param name="viewModel">The new ViewModel value, or <c>null</c> to deinitialize.</param>
-        public void SetValue(IViewModel viewModel)
-        {
-            DeinitializeView();
-
-            if (viewModel is not null)
-                InitializeView(viewModel);
-        }
-
-        /// <inheritdoc/>
-        protected override void OnUnbound() =>
-            DeinitializeView();
-
-        /// <summary>
-        /// Initializes the target view with the specified ViewModel.
-        /// </summary>
-        /// <param name="viewModel">The ViewModel to bind to the view.</param>
-        protected void InitializeView(IViewModel viewModel) =>
-            Target.Initialize(viewModel);
-
-        /// <summary>
-        /// Deinitializes the target view, detaching any bound ViewModel.
-        /// </summary>
-        protected void DeinitializeView() =>
-            Target.Deinitialize();
+            : base(target, mode) { }
     }
 
     /// <summary>
-    /// Concrete binder for <see cref="MonoView"/> components.
+    /// <see cref="MonoViewBinder{TView}"/> specialized for <see cref="MonoView"/> components.
     /// </summary>
     public class MonoViewBinder : MonoViewBinder<MonoView>
     {

@@ -121,6 +121,7 @@ Submodules:
 
 - Full docs: https://vpd-inc.gitbook.io/aspid.mvvm/
 - Unity Asset Store: https://assetstore.unity.com/packages/slug/298463
+- **XML doc conventions**: `XmlDocConventions.md` — rules for writing XML documentation comments
 - Key entry points for new contributors:
   - `Readme.md` — project overview
   - `Aspid.MVVM/Assets/Plugins/Aspid/MVVM/Samples/HelloWorld/` — minimal examples

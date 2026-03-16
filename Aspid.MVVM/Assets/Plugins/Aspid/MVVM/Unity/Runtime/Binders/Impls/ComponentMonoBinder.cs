@@ -4,13 +4,14 @@ using UnityEngine;
 namespace Aspid.MVVM
 {
     /// <summary>
-    /// Abstract base class for <see cref="MonoBinder"/> implementations that operate on a Unity <see cref="Component"/>.
+    /// Abstract base class for <see cref="MonoBinder"/> implementations that operate on a <see cref="Component"/>.
     /// Provides lazy resolution of the target component — either from the serialized field or via <see cref="Component.GetComponent{T}"/>.
     /// </summary>
-    /// <typeparam name="TComponent">The type of Unity component this binder targets.</typeparam>
+    /// <typeparam name="TComponent">The type of <see cref="Component"/> this binder targets.</typeparam>
     public abstract class ComponentMonoBinder<TComponent> : MonoBinder
         where TComponent : Component
     {
+        [Tooltip("Target component this binder operates on. Resolved automatically via GetComponent<TComponent> if left empty.")]
         [SerializeField] private TComponent _component;
 
         private bool _isCached;
@@ -24,10 +25,9 @@ namespace Aspid.MVVM
             get
             {
                 if (_isCached) return _component;
-
                 _isCached = true;
 
-                if (_component) return _component;
+                if (_component is not null) return _component;
                 return _component = GetComponent<TComponent>();
             }
         }
@@ -36,10 +36,14 @@ namespace Aspid.MVVM
         /// Called by Unity in the Editor when a serialized field value changes.
         /// Automatically resolves and assigns the component if it is not yet set and the application is not playing.
         /// </summary>
+        /// <remarks>
+        /// When overriding this method, always call <c>base.OnValidate()</c> to preserve
+        /// automatic component resolution in the Editor.
+        /// </remarks>
         protected virtual void OnValidate()
         {
             if (Application.isPlaying) return;
-            if (_component) return;
+            if (_component is not null) return;
 
             _component = GetComponent<TComponent>();
         }

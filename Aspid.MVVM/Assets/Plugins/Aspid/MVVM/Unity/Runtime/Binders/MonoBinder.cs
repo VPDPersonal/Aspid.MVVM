@@ -1,21 +1,17 @@
-using System;
 using UnityEngine;
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM
 {
     /// <summary>
-    /// Abstract class derived from <see cref="MonoBehaviour"/> that implements the basic logic for binding a component to <see cref="IViewModel"/>.
-    /// Includes methods for binding and unbinding the component from the ViewModel.
-    /// Derivatives must implement one or more interfaces <see cref="IBinder{T}"/> to complete the implementation of specific binding logic.
+    /// Abstract base <see cref="MonoBehaviour"/> for binder implementations.
+    /// Manages the binding lifecycle — binding to and unbinding from an <see cref="IViewModel"/>.
+    /// Derived classes must implement <see cref="IBinder{T}"/> to define the specific binding behavior.
     /// </summary>
     // ReSharper disable once RedundantExtendsListEntry
     public abstract partial class MonoBinder : MonoBehaviour, IBinder
     {
-#if !ASPID_MVVM_UNITY_PROFILER_DISABLED
-        private static readonly Unity.Profiling.ProfilerMarker _bindMarker = new("MonoBinder.Bind");
-        private static readonly Unity.Profiling.ProfilerMarker _unbindMarker = new("MonoBinder.Unbind");
-#endif
+        [Tooltip("Binding mode that controls the direction of data flow between the View and ViewModel.")]
         [BindMode(BindMode.OneWay, BindMode.OneTime)]
         [SerializeField] private BindMode _mode = BindMode.TwoWay;
         
@@ -23,42 +19,42 @@ namespace Aspid.MVVM
 
         /// <summary>
         /// Indicates whether binding is allowed.
-        /// The default value is <c>true</c>.
+        /// The default value is <see langword="true"/>.
         /// </summary>
         public virtual bool IsBind => true;
         
         /// <summary>
-        /// Indicates whether the object is currently bound.
-        /// This value can only be set within the class.
+        /// Indicates whether the binder is currently bound to a ViewModel.
         /// </summary>
         public bool IsBound { get; private set; }
 
         /// <summary>
         /// Gets the binding mode that determines the direction of data flow.
-        /// Default is <see cref="BindMode.OneWay"/>.
         /// </summary>
         public BindMode Mode => _mode;
         
-        /// <summary>
-        /// Binds the component using the specified <see cref="IBinderAdder"/>.
-        /// </summary>
-        /// <param name="binderAdder">The event adder for the component to bind to.</param>
-        /// <exception cref="Exception">Thrown if the binder is already bound.</exception>\
+        /// <inheritdoc/>
         public void Bind(IBinderAdder binderAdder)
         {
 #if UNITY_2022_1_OR_NEWER && !ASPID_MVVM_UNITY_PROFILER_DISABLED
-            using (_bindMarker.Auto())
+            using (this.Marker())
 #endif
             {
-                if (IsBound) throw new Exception("This Binder is already bound.");
+                if (IsBound)
+                {
+                    Debug.LogError($"Binder is already bound. Type: {GetType().Name}, Name: {name}");
+                    return;
+                }
+                
                 if (!IsBind) return;
                 
                 OnBinding();
-                
-                _binderRemover = binderAdder.Add(this);
-                IsBound = true;
-                
-                OnBoundDebug(binderAdder);
+                {
+                    _binderRemover = binderAdder.Add(binder: this);
+                  
+                    IsBound = true;
+                    OnBoundDebug(binderAdder);
+                }
                 OnBound();
             }
         }
@@ -66,33 +62,35 @@ namespace Aspid.MVVM
         partial void OnBoundDebug(IBinderAdder binderAdder);
         
         /// <summary>
-        /// Logic executed before binding, which can be overridden in derived classes.
+        /// Called before binding is established. Override to add pre-binding logic.
         /// </summary>
         protected virtual void OnBinding() { }
-        
+
         /// <summary>
-        /// Logic executed after binding, which can be overridden in derived classes.
+        /// Called after binding is established. Override to add post-binding logic.
         /// </summary>
         protected virtual void OnBound() { }
         
-        /// <summary>
-        /// Unbinds the component from the bound s<see cref="IViewModel"/>.
-        /// </summary>
+        /// <inheritdoc/>
         public void Unbind()
         {
 #if !ASPID_MVVM_UNITY_PROFILER_DISABLED
-            using (_unbindMarker.Auto())
+            using (this.Marker())
 #endif
             {
                 if (!IsBound) return;
                 
                 OnUnbinding();
-                
-                _binderRemover?.Remove(this);
-                _binderRemover = null;
-                IsBound = false;
-                
-                OnUnboundDebug();
+                {
+                    if (_binderRemover is not null)
+                    {
+                        _binderRemover.Remove(binder: this);
+                        _binderRemover = null;
+                    }
+                    
+                    IsBound = false;
+                    OnUnboundDebug();
+                }
                 OnUnbound();
             }
         }
@@ -100,12 +98,12 @@ namespace Aspid.MVVM
         partial void OnUnboundDebug();
         
         /// <summary>
-        /// Logic executed before unbinding, which can be overridden in derived classes.
+        /// Called before unbinding. Override to add pre-unbinding logic.
         /// </summary>
         protected virtual void OnUnbinding() { }
-        
+
         /// <summary>
-        /// Logic executed after unbinding, which can be overridden in derived classes.
+        /// Called after unbinding. Override to add post-unbinding logic.
         /// </summary>
         protected virtual void OnUnbound() { }
     }

@@ -6,38 +6,42 @@ using System.ComponentModel;
 namespace Aspid.MVVM
 {
     /// <summary>
-    /// Interface required for validating a Binder within the Editor.
-    /// It must be implemented inside #if UNITY_EDITOR.
+    /// Extends <see cref="IBinder"/> with Editor-only properties and reset capability
+    /// for validating and configuring <see cref="MonoBinder"/> components.
     /// </summary>
+    /// <remarks>
+    /// Implementations must be guarded with <c>#if UNITY_EDITOR</c>.
+    /// </remarks>
     [EditorBrowsable(EditorBrowsableState.Advanced)]
     public interface IMonoBinderValidable : IBinder
     {
         /// <summary>
-        /// Is there a component?
+        /// <see langword="true"/> if the underlying MonoBehaviour component exists; otherwise, <see langword="false"/>.
         /// </summary>
         [EditorBrowsable(EditorBrowsableState.Advanced)]
         public bool IsMonoExist { get; }
-        
+
         /// <summary>
-        /// The View to which the Binder relates.
+        /// Gets or sets the <see cref="IView"/> associated with this binder.
         /// </summary>
         [EditorBrowsable(EditorBrowsableState.Advanced)]
         public IView? View { get; set; }
-        
+
         /// <summary>
-        /// The ID that must correspond to the name of any ViewModel property.
+        /// Gets or sets the binding ID, which must match the name of a ViewModel property.
         /// </summary>
         [EditorBrowsable(EditorBrowsableState.Advanced)]
         public string? Id { get; set; }
 
         /// <summary>
-        /// Resets the parameters.
+        /// Sets <see cref="Id"/> and <see cref="View"/> to <see langword="null"/>, clearing the binder's configuration.
+        /// Has no effect if <see cref="IsMonoExist"/> is <see langword="false"/>.
         /// </summary>
         [EditorBrowsable(EditorBrowsableState.Advanced)]
         public void Reset()
         {
             if (!IsMonoExist) return;
-            
+
             Id = null;
             View = null;
         }

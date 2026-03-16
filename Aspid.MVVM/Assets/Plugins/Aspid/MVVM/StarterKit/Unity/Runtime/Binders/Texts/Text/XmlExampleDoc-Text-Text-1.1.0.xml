@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doc>
+    <member name="TextBinder">
+        <example>
+            Bind the TMP_Text content using a serialized binder field — the target TMP_Text is assigned in the Inspector.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField]
+                    private TextBinder _label;
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [Bind] public string _label;
+                }
+            </code>
+            &#xD;
+            Bind the TMP_Text content by constructing the binder in code.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField] private TMP_Text _target;
+                    &#xD;
+                    private TextBinder Label =&gt;
+                        new(_target);
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [Bind] public string _label;
+                }
+            </code>
+        </example>
+    </member>
+    <member name="TextSwitcherBinder">
+        <example>
+            Switch the TMP_Text content between two string values using a serialized binder field — the target TMP_Text is assigned in the Inspector.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField]
+                    private TextSwitcherBinder _isEnabled;
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [Bind] public bool _isEnabled;
+                }
+            </code>
+            &#xD;
+            Switch the TMP_Text content between two string values by constructing the binder in code.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField] private TMP_Text _target;
+                    &#xD;
+                    private TextSwitcherBinder IsEnabled =&gt; new(
+                        _target, trueValue: "Enabled", falseValue: "Disabled");
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [Bind] public bool _isEnabled;
+                }
+            </code>
+        </example>
+    </member>
+</doc>

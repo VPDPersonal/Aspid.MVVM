@@ -2,8 +2,8 @@
 namespace Aspid.MVVM
 {
     /// <summary>
-    /// Interface for binding a component with a <see cref="IViewModel"/>
-    /// to provide data binding functionality without the ability to set values.
+    /// Base interface for binder implementations.
+    /// Defines the binding lifecycle — binding to and unbinding from an <see cref="IViewModel"/>.
     /// </summary>
     public interface IBinder
     {
@@ -14,28 +14,27 @@ namespace Aspid.MVVM
         public BindMode Mode => BindMode.OneWay;
 
         /// <summary>
-        /// Binds the component using the specified <see cref="IBinderAdder"/>.
+        /// Binds this binder using the specified <see cref="IBinderAdder"/>.
         /// </summary>
-        /// <param name="binderAdder">The event adder for the component to bind to.</param>
+        /// <param name="binderAdder">The binder adder that registers this binder with the ViewModel.</param>
         public void Bind(IBinderAdder binderAdder);
-        
+
         /// <summary>
-        /// Unbinds the component from the bound <see cref="IViewModel"/>.
+        /// Unbinds this binder from the bound <see cref="IViewModel"/>.
         /// </summary>
         public void Unbind();
     }
-    
+
     /// <summary>
-    /// Interface for binding a component with a <see cref="IViewModel"/>
-    /// to provide data binding functionality with value setting capability.
+    /// Extends <see cref="IBinder"/> with the ability to receive typed values from the ViewModel.
     /// </summary>
-    /// <typeparam name="T">The type of value that will be set.</typeparam>
+    /// <typeparam name="T">The type of value that can be received from the ViewModel.</typeparam>
     public interface IBinder<in T> : IBinder
     {
         /// <summary>
-        /// Sets the value for the bound component.
+        /// Sets the bound property to <paramref name="value"/>.
         /// </summary>
-        /// <param name="value">The value to be set.</param>
+        /// <param name="value">The value received from the ViewModel.</param>
         public void SetValue(T? value);
     }
 }

@@ -5,8 +5,21 @@ using System.Runtime.CompilerServices;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
+    /// <summary>
+    /// Provides extension methods for <see cref="AudioSource"/> that apply distance values.
+    /// </summary>
     public static class AudioSourceSetters
     {
+        /// <summary>
+        /// Applies the min/max distance from <paramref name="value"/> to <paramref name="audioSource"/>
+        /// according to the specified <paramref name="mode"/>.
+        /// </summary>
+        /// <param name="audioSource">The <see cref="AudioSource"/> whose distance properties are updated.</param>
+        /// <param name="value">
+        /// A <see cref="Vector2"/> where <see cref="Vector2.x"/> is treated as the minimum distance
+        /// and <see cref="Vector2.y"/> as the maximum distance.
+        /// </param>
+        /// <param name="mode">Determines which distance component(s) are updated.</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void SetMinMaxDistance(this AudioSource audioSource, Vector2 value, AudioSourceDistanceMode mode)
         {

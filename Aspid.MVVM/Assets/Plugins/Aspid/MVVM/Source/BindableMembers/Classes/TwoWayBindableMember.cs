@@ -62,7 +62,7 @@ namespace Aspid.MVVM
             _setValue = setValue ?? throw new ArgumentNullException(nameof(setValue));
         }
 
-        /// <inheritdoc />
+        /// <inheritdoc/>
         /// <summary>
         /// Adds the binder to the event with the current value and subscribes to the value change event.
         /// </summary>
@@ -134,7 +134,7 @@ namespace Aspid.MVVM
             }
         }
 
-        /// <inheritdoc />
+        /// <inheritdoc/>
         /// <summary>
         /// Removes the binder's subscription from the event based on its binding mode.
         /// </summary>

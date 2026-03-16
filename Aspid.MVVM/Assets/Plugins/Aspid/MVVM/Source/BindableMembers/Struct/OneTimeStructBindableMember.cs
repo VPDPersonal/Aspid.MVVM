@@ -57,7 +57,7 @@ namespace Aspid.MVVM
     
         private protected OneTimeStructBindableMember() { }
 
-        /// <inheritdoc />
+        /// <inheritdoc/>
         /// <summary>
         /// Adds a one-time binding to the specified binder with the associated value.
         /// </summary>

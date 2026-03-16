@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doc>
+    <member name="ScrollRectCommandBinder">
+        <example>
+            Bind a relay command to a ScrollRect's value change using a serialized binder field — the target is assigned in the Inspector.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField]
+                    private ScrollRectCommandBinder _Scroll;
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [RelayCommand]
+                    private void Scroll(Vector2 position) { }
+                }
+            </code>
+            &#xD;
+            Bind a relay command in code.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField] private ScrollRect _scrollRect;
+                    &#xD;
+                    private ScrollRectCommandBinder ScrollCommand =&gt; new(_scrollRect);
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [RelayCommand]
+                    private void Scroll(Vector2 position) { }
+                }
+            </code>
+        </example>
+    </member>
+    <member name="ScrollRectCommandBinder{1}">
+        <example>
+            Bind a relay command with one additional parameter to a ScrollRect's value change using a serialized binder field — the target is assigned in the Inspector.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField]
+                    private ScrollRectCommandBinder&lt;string&gt; _Scroll;
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [RelayCommand]
+                    private void Scroll(Vector2 position, string tag) { }
+                }
+            </code>
+            &#xD;
+            Bind a relay command with one additional parameter in code.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField] private ScrollRect _scrollRect;
+                    &#xD;
+                    private ScrollRectCommandBinder&lt;string&gt; ScrollCommand =&gt; new(_scrollRect, "tag");
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [RelayCommand]
+                    private void Scroll(Vector2 position, string tag) { }
+                }
+            </code>
+        </example>
+    </member>
+    <member name="ScrollRectCommandBinder{2}">
+        <example>
+            Bind a relay command with two additional parameters to a ScrollRect's value change using a serialized binder field — the target is assigned in the Inspector.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField]
+                    private ScrollRectCommandBinder&lt;string, bool&gt; _Scroll;
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [RelayCommand]
+                    private void Scroll(Vector2 position, string tag, bool active) { }
+                }
+            </code>
+            &#xD;
+            Bind a relay command with two additional parameters in code.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField] private ScrollRect _scrollRect;
+                    &#xD;
+                    private ScrollRectCommandBinder&lt;string, bool&gt; ScrollCommand =&gt; new(_scrollRect, "tag", true);
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [RelayCommand]
+                    private void Scroll(Vector2 position, string tag, bool active) { }
+                }
+            </code>
+        </example>
+    </member>
+    <member name="ScrollRectCommandBinder{3}">
+        <example>
+            Bind a relay command with three additional parameters to a ScrollRect's value change using a serialized binder field — the target is assigned in the Inspector.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField]
+                    private ScrollRectCommandBinder&lt;string, bool, int&gt; _Scroll;
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [RelayCommand]
+                    private void Scroll(Vector2 position, string tag, bool active, int priority) { }
+                }
+            </code>
+            &#xD;
+            Bind a relay command with three additional parameters in code.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField] private ScrollRect _scrollRect;
+                    &#xD;
+                    private ScrollRectCommandBinder&lt;string, bool, int&gt; ScrollCommand =&gt; new(_scrollRect, "tag", true, 1);
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [RelayCommand]
+                    private void Scroll(Vector2 position, string tag, bool active, int priority) { }
+                }
+            </code>
+        </example>
+    </member>
+</doc>

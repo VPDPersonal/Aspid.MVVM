@@ -4,20 +4,23 @@ using System;
 namespace Aspid.MVVM
 {
     /// <summary>
-    /// Interface for creating reverse data binding from View to ViewModel.
-    /// Reverse data binding is used to pass modified data from a View component back to the ViewModel.
-    /// The binding mode is determined by the <see cref="BindMode"/> property, where the default mode is <c>TwoWay</c>.
+    /// Extends <see cref="IBinder"/> with reverse data binding capability — propagating non-generic values from the View back to the ViewModel.
     /// </summary>
+    /// <remarks>
+    /// Use with caution: since <see cref="ValueChanged"/> carries a non-generic <see langword="object"/>,
+    /// the type contract between the View and ViewModel is not enforced at compile time.
+    /// A type mismatch will only be detected at runtime.
+    /// </remarks>
     public interface IAnyReverseBinder : IBinder
     {
         /// <summary>
-        /// Event triggered when the value changes in the View and is propagated back to the ViewModel.
+        /// Raised when the View's value changes and needs to be propagated back to the ViewModel.
         /// </summary>
         public event Action<object>? ValueChanged;
-        
+
         /// <summary>
-        /// The binding mode that defines the direction of data flow.
-        /// In the case of reverse binding, this is set to <c>TwoWay</c>, allowing updates to flow in both directions.
+        /// Gets the binding mode that determines the direction of data flow.
+        /// Default is <see cref="BindMode.TwoWay"/>.
         /// </summary>
         BindMode IBinder.Mode => BindMode.TwoWay;
     }

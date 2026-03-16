@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doc>
+    <member name="DropdownCommandBinder">
+        <example>
+            Bind a relay command to a Dropdown's selection change using a serialized binder field — the target is assigned in the Inspector.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField]
+                    private SelectionCommandBinder _selectionCommand;
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [RelayCommand]
+                    private void Selection(int index) { }
+                }
+            </code>
+            &#xD;
+            Bind a relay command to a Dropdown in code.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField] private TMP_Dropdown _dropdown;
+                    &#xD;
+                    private SelectionCommandBinder SelectionCommand =&gt; new(_dropdown);
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [RelayCommand]
+                    private void Selection(int index) { }
+                }
+            </code>
+        </example>
+    </member>
+    <member name="DropdownCommandBinder{1}">
+        <example>
+            Bind a relay command with one additional parameter to a Dropdown's selection change using a serialized binder field — the target is assigned in the Inspector.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField]
+                    private SelectionCommandBinder&lt;string&gt; _selectionCommand;
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [RelayCommand]
+                    private void Selection(int index, string tag) { }
+                }
+            </code>
+            &#xD;
+            Bind a relay command with one additional parameter to a Dropdown in code.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField] private TMP_Dropdown _dropdown;
+                    &#xD;
+                    private SelectionCommandBinder&lt;string&gt; SelectionCommand =&gt; new(_dropdown, "tag");
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [RelayCommand]
+                    private void Selection(int index, string tag) { }
+                }
+            </code>
+        </example>
+    </member>
+    <member name="DropdownCommandBinder{2}">
+        <example>
+            Bind a relay command with two additional parameters to a Dropdown's selection change using a serialized binder field — the target is assigned in the Inspector.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField]
+                    private SelectionCommandBinder&lt;string, bool&gt; _selectionCommand;
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [RelayCommand]
+                    private void Selection(int index, string tag, bool active) { }
+                }
+            </code>
+            &#xD;
+            Bind a relay command with two additional parameters to a Dropdown in code.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField] private TMP_Dropdown _dropdown;
+                    &#xD;
+                    private SelectionCommandBinder&lt;string, bool&gt; SelectionCommand =&gt; new(_dropdown, "tag", true);
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [RelayCommand]
+                    private void Selection(int index, string tag, bool active) { }
+                }
+            </code>
+        </example>
+    </member>
+    <member name="DropdownCommandBinder{3}">
+        <example>
+            Bind a relay command with three additional parameters to a Dropdown's selection change using a serialized binder field — the target is assigned in the Inspector.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField]
+                    private SelectionCommandBinder&lt;string, bool, int&gt; _selectionCommand;
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [RelayCommand]
+                    private void Selection(int index, string tag, bool active, int priority) { }
+                }
+            </code>
+            &#xD;
+            Bind a relay command with three additional parameters to a Dropdown in code.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField] private TMP_Dropdown _dropdown;
+                    &#xD;
+                    private SelectionCommandBinder&lt;string, bool, int&gt; SelectionCommand =&gt; new(_dropdown, "tag", true, 1);
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [RelayCommand]
+                    private void Selection(int index, string tag, bool active, int priority) { }
+                }
+            </code>
+        </example>
+    </member>
+</doc>

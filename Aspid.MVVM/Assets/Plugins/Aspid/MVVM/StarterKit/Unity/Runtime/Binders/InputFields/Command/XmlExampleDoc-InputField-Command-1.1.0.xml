@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doc>
+    <member name="InputFieldCommandBinder">
+        <example>
+            Bind a relay command to a TMP_InputField using a serialized binder field — the target is assigned in the Inspector.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField]
+                    private InputFieldCommandBinder _submitCommand;
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [RelayCommand]
+                    private void Submit() { }
+                }
+            </code>
+            &#xD;
+            Bind a relay command that receives the input text to a TMP_InputField by constructing the binder in code.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField] private TMP_InputField _inputField;
+                    &#xD;
+                    private InputFieldCommandBinder SubmitCommand =&gt; new(
+                        _inputField, UpdateInputFieldEvent.OnEndEdit);
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [RelayCommand]
+                    private void Submit(string value) { }
+                }
+            </code>
+        </example>
+    </member>
+    <member name="InputFieldCommandMonoBinder">
+        <example>
+            Bind a relay command to a TMP_InputField using a MonoBinder component assigned in the Inspector.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField]
+                    private InputFieldCommandMonoBinder _submitCommand;
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [RelayCommand]
+                    private void Submit() { }
+                    &#xD;
+                    [RelayCommand]
+                    private void Submit(string text) { }
+                }
+            </code>
+        </example>
+    </member>
+    <member name="InputFieldCommandBinderT">
+        <example>
+            Bind a relay command with one additional parameter to a TMP_InputField.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField]
+                    private InputFieldCommandBinder&lt;int&gt; _searchCommand;
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [RelayCommand]
+                    private void Search(string query, int maxResults) { }
+                }
+            </code>
+        </example>
+    </member>
+    <member name="InputFieldCommandMonoBinderT">
+        <example>
+            Bind a relay command with one additional parameter using a MonoBinder component.
+            Because InputFieldCommandMonoBinder&lt;T&gt; is abstract, a concrete derived class is required.
+            <code>
+                [AddComponentMenu("MyGame/Binders/SearchCommandBinder")]
+                public sealed class SearchCommandMonoBinder : InputFieldCommandMonoBinder&lt;int&gt; { }
+                &#xD;
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField]
+                    private SearchCommandMonoBinder _searchCommand;
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [RelayCommand]
+                    private void Search(string query, int maxResults) { }
+                }
+            </code>
+        </example>
+    </member>
+    <member name="InputFieldCommandBinderT1T2">
+        <example>
+            Bind a relay command with two additional parameters to a TMP_InputField.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField]
+                    private InputFieldCommandBinder&lt;int, bool&gt; _searchCommand;
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [RelayCommand]
+                    private void Search(string query, int maxResults, bool caseSensitive) { }
+                }
+            </code>
+        </example>
+    </member>
+    <member name="InputFieldCommandMonoBinderT1T2">
+        <example>
+            Bind a relay command with two additional parameters using a MonoBinder component.
+            Because InputFieldCommandMonoBinder&lt;T1, T2&gt; is abstract, a concrete derived class is required.
+            <code>
+                [AddComponentMenu("MyGame/Binders/SearchCommandBinder")]
+                public sealed class SearchCommandMonoBinder : InputFieldCommandMonoBinder&lt;int, bool&gt; { }
+                &#xD;
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField]
+                    private SearchCommandMonoBinder _searchCommand;
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [RelayCommand]
+                    private void Search(string query, int maxResults, bool caseSensitive) { }
+                }
+            </code>
+        </example>
+    </member>
+    <member name="InputFieldCommandBinderT1T2T3">
+        <example>
+            Bind a relay command with three additional parameters to a TMP_InputField.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField]
+                    private InputFieldCommandBinder&lt;int, bool, string&gt; _searchCommand;
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [RelayCommand]
+                    private void Search(string query, int maxResults, bool caseSensitive, string category) { }
+                }
+            </code>
+        </example>
+    </member>
+    <member name="InputFieldCommandMonoBinderT1T2T3">
+        <example>
+            Bind a relay command with three additional parameters using a MonoBinder component.
+            Because InputFieldCommandMonoBinder&lt;T1, T2, T3&gt; is abstract, a concrete derived class is required.
+            <code>
+                [AddComponentMenu("MyGame/Binders/SearchCommandBinder")]
+                public sealed class SearchCommandMonoBinder : InputFieldCommandMonoBinder&lt;int, bool, string&gt; { }
+                &#xD;
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField]
+                    private SearchCommandMonoBinder _searchCommand;
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [RelayCommand]
+                    private void Search(string query, int maxResults, bool caseSensitive, string category) { }
+                }
+            </code>
+        </example>
+    </member>
+</doc>

@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doc>
+    <member name="UnityGenericCasterBinder{2}">
+        <example>
+            Convert a float ViewModel value to a formatted string for a label
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField] private TMP_Text _label;
+                    &#xD;
+                    private UnityGenericCasterBinder&lt;float, string&gt; Distance = new
+                    (
+                        value =&gt; _label.text = value,
+                        new FloatToStringConverter("F1")
+                    );
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [Bind] public float _distance;
+                }
+            </code>
+        </example>
+    </member>
+    <member name="UnityGenericCasterBinder{3}">
+        <example>
+            Target-scoped variant avoids capturing the label in a closure
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField] private TMP_Text _label;
+                    &#xD;
+                    private UnityGenericCasterBinder&lt;TMP_Text, float, string&gt; Distance = new
+                    (
+                        _label,
+                        (label, value) =&gt; label.text = value,
+                        new FloatToStringConverter("F1")
+                    );
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [Bind] public float _distance;
+                }
+            </code>
+        </example>
+    </member>
+    <member name="UnityGenericOneTimeBinder{1}">
+        <example>
+            Apply the player name from the ViewModel exactly once at binding time
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField] private TMP_Text _label;
+                    &#xD;
+                    private UnityGenericOneTimeBinder&lt;string&gt; Name =&gt;
+                        new(value =&gt; _label.text = value);
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [Bind] public string _name;
+                }
+            </code>
+        </example>
+    </member>
+    <member name="UnityGenericOneTimeBinder{2}">
+        <example>
+            Target-scoped variant — no closure over the label
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField] private TMP_Text _label;
+                    &#xD;
+                    private UnityGenericOneTimeBinder&lt;TMP_Text, string&gt; Name =&gt; new
+                    (
+                        _label,
+                        (label, value) =&gt; label.text = value
+                    );
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [Bind] public string _name;
+                }
+            </code>
+        </example>
+    </member>
+    <member name="UnityGenericOneWayBinder{1}">
+        <example>
+            Update a score label each time the ViewModel value changes
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField] private TMP_Text _label;
+                    &#xD;
+                    private UnityGenericOneWayBinder&lt;int&gt; Score =&gt; new(
+                        value =&gt; _label.text = value.ToString());
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [Bind] public int _score;
+                }
+            </code>
+        </example>
+    </member>
+    <member name="UnityGenericOneWayBinder{2}">
+        <example>
+            Target-scoped variant avoids capturing the label in a closure
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField] private TMP_Text _label;
+                    &#xD;
+                    private UnityGenericOneWayBinder&lt;TMP_Text, int&gt; Score =&gt; new
+                    (
+                        _label,
+                        (label, value) =&gt; label.text = value.ToString()
+                    );
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [Bind] public int _score;
+                }
+            </code>
+        </example>
+    </member>
+    <member name="UnityGenericOneWayToSourceBinder{1}">
+        <example>
+            Forward toggle state changes back to the ViewModel
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField] private Toggle _toggle;
+                    &#xD;
+                    private UnityGenericOneWayToSourceBinder&lt;bool&gt; IsOn =&gt; new(
+                        onChanged =&gt; _toggle.onValueChanged.AddListener(onChanged));
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [Bind] public bool _isOn;
+                }
+            </code>
+        </example>
+    </member>
+    <member name="UnityGenericOneWayToSourceBinder{2}">
+        <example>
+            Target-scoped variant — toggle is passed to the factory, avoiding a closure
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField] private Toggle _toggle;
+                    &#xD;
+                    private UnityGenericOneWayToSourceBinder&lt;Toggle, bool&gt; IsOn = new
+                    (
+                        _toggle,
+                        (toggle, onChanged) =&gt; toggle.onValueChanged.AddListener(onChanged)
+                    );
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [Bind] public bool _isOn;
+                }
+            </code>
+        </example>
+    </member>
+    <member name="UnityGenericTwoWayBinder{1}">
+        <example>
+            Synchronize a slider with a ViewModel float property in both directions
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField] private Slider _slider;
+                    &#xD;
+                    private UnityGenericTwoWayBinder&lt;float&gt; Value = new
+                    (
+                        onChanged =&gt; _slider.onValueChanged.AddListener(onChanged),
+                        value =&gt; _slider.value = value
+                    );
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [Bind] public float _value;
+                }
+            </code>
+        </example>
+    </member>
+    <member name="UnityGenericTwoWayBinder{2}">
+        <example>
+            Target-scoped variant avoids capturing the slider in a closure
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField] private Slider _slider;
+                    &#xD;
+                    private UnityGenericTwoWayBinder&lt;Slider, float&gt; Value = new
+                    (
+                        _slider,
+                        (slider, onChanged) =&gt; slider.onValueChanged.AddListener(onChanged),
+                        (slider, value) =&gt; slider.value = value
+                    );
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [Bind] public float _value;
+                }
+            </code>
+        </example>
+    </member>
+</doc>
+

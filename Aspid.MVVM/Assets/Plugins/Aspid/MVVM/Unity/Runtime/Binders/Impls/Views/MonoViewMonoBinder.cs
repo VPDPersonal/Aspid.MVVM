@@ -4,19 +4,18 @@ using UnityEngine;
 namespace Aspid.MVVM
 {
     /// <summary>
-    /// Abstract <see cref="MonoBinder"/> that binds a <typeparamref name="TView"/> component
-    /// to an <see cref="IViewModel"/> property.
-    /// Resolves the view component via <see cref="ComponentMonoBinder{TComponent}.CachedComponent"/>.
+    /// Abstract base <see cref="ComponentMonoBinder{TComponent}"/> that adds <see cref="IViewModel"/> binding support,
+    /// initializing the cached <typeparamref name="TView"/> component view when a bound <see cref="IViewModel"/> is received.
     /// </summary>
-    /// <typeparam name="TView">The type of the view component. Must inherit from <see cref="Component"/> and implement <see cref="IView"/>.</typeparam>
+    /// <typeparam name="TView">The type of <see cref="Component"/> that implements <see cref="IView"/>.</typeparam>
     public abstract class MonoViewMonoBinder<TView> : ComponentMonoBinder<TView>, IBinder<IViewModel>
         where TView : Component, IView
     {
         /// <summary>
-        /// Called when the bound ViewModel value changes.
-        /// Deinitializes the current view and initializes it with the new ViewModel if it is not <c>null</c>.
+        /// Called when the bound <see cref="IViewModel"/> value is received.
+        /// Deinitializes the current view and initializes it with the new ViewModel if it is not <see langword="null"/>.
         /// </summary>
-        /// <param name="viewModel">The new ViewModel value, or <c>null</c> to deinitialize.</param>
+        /// <param name="viewModel">The new ViewModel value, or <see langword="null"/> to deinitialize.</param>
         [BinderLog]
         public void SetValue(IViewModel viewModel)
         {
@@ -26,7 +25,10 @@ namespace Aspid.MVVM
                 InitializeView(viewModel);
         }
 
-        /// <inheritdoc/>
+        /// <summary>
+        /// Called after unbinding is complete.
+        /// Deinitializes the view, detaching any bound <see cref="IViewModel"/>.
+        /// </summary>
         protected override void OnUnbound() =>
             DeinitializeView();
 
@@ -45,7 +47,7 @@ namespace Aspid.MVVM
     }
 
     /// <summary>
-    /// Concrete <see cref="MonoBinder"/> for <see cref="MonoView"/> components.
+    /// <see cref="MonoViewMonoBinder{TView}"/> specialized for <see cref="MonoView"/> components.
     /// </summary>
     [AddBinderContextMenu(typeof(MonoView))]
     [AddComponentMenu("Aspid/MVVM/Binders/Views/MonoView Binder")]

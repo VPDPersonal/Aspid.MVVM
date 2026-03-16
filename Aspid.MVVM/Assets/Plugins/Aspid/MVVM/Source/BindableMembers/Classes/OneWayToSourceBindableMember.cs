@@ -45,7 +45,7 @@ namespace Aspid.MVVM
             _setValue = setValue ?? throw new ArgumentNullException(nameof(setValue));
         }
 
-        /// <inheritdoc />
+        /// <inheritdoc/>
         /// <summary>
         /// Adds a binder to the event if it supports reverse binding for one-way-to-source or two-way modes.
         /// </summary>
@@ -73,7 +73,7 @@ namespace Aspid.MVVM
             }
         }
 
-        /// <inheritdoc />
+        /// <inheritdoc/>
         /// <summary>
         /// Removes the binder's subscription from the event.
         /// </summary>

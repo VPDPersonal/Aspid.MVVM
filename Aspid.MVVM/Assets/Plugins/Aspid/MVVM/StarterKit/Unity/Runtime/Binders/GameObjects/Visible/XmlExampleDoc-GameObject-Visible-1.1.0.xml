@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doc>
+    <member name="GameObjectVisibleBinder">
+        <example>
+            Bind the GameObject active state using a serialized binder field — the target GameObject is assigned in the Inspector.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField]
+                    private GameObjectVisibleBinder _isVisible;
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [Bind] public bool _isVisible;
+                }
+            </code>
+            &#xD;
+            Bind the GameObject active state by constructing the binder in code.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField] private GameObject _panel;
+                    &#xD;
+                    private GameObjectVisibleBinder IsVisible =>
+                        new(_panel);
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [Bind] public bool _isVisible;
+                }
+            </code>
+        </example>
+    </member>
+</doc>
+

@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doc>
+    <member name="TextLocalizationEntryBinder">
+        <example>
+            Bind the TMP_Text content to a localization table entry using a serialized binder field — the target TMP_Text is assigned in the Inspector.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField]
+                    private TextLocalizationEntryBinder _label;
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [Bind] public string _label; // bound value is used as the table entry key
+                }
+            </code>
+            &#xD;
+            Bind the TMP_Text content to a localization entry by constructing the binder in code.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField] private TMP_Text _target;
+                    &#xD;
+                    private TextLocalizationEntryBinder Label =&gt;
+                        new(_target, entry: "ui_label_key");
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [Bind] public string _label;
+                }
+            </code>
+        </example>
+    </member>
+    <member name="TextLocalizationEntrySwitcherBinder">
+        <example>
+            Switch the TMP_Text localization entry between two keys using a serialized binder field — the target TMP_Text is assigned in the Inspector.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField]
+                    private TextLocalizationEntrySwitcherBinder _isActive;
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [Bind] public bool _isActive;
+                }
+            </code>
+            &#xD;
+            Switch the TMP_Text localization entry between two keys by constructing the binder in code.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField] private TMP_Text _target;
+                    &#xD;
+                    private TextLocalizationEntrySwitcherBinder IsActive =&gt; new(
+                        _target, trueValue: "ui_active_key", falseValue: "ui_inactive_key");
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [Bind] public bool _isActive;
+                }
+            </code>
+        </example>
+    </member>
+</doc>

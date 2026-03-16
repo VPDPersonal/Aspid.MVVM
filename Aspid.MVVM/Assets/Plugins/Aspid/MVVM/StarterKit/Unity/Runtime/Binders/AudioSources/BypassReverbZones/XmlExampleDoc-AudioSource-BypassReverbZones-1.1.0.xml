@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doc>
+    <member name="AudioSourceBypassReverbZonesBinder">
+        <example>
+            Bind the AudioSource bypassReverbZones property using a serialized binder field — the target AudioSource is assigned in the Inspector.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField]
+                    private AudioSourceBypassReverbZonesBinder _bypassReverbZones;
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [Bind] public bool _bypassReverbZones;
+                }
+            </code>
+            &#xD;
+            Bind the AudioSource bypassReverbZones property by constructing the binder in code.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField] private AudioSource _audioSource;
+                    &#xD;
+                    private AudioSourceBypassReverbZonesBinder BypassReverbZones =>
+                        new(_audioSource);
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [Bind] public bool _bypassReverbZones;
+                }
+            </code>
+        </example>
+    </member>
+</doc>

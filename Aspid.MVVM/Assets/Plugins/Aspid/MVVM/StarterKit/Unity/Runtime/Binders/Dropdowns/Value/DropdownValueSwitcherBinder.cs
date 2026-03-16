@@ -2,33 +2,28 @@
 #nullable enable
 using TMPro;
 using System;
-#if UNITY_2023_1_OR_NEWER
-using Converter = Aspid.MVVM.StarterKit.IConverter<int, int>;
-#else
-using Converter = Aspid.MVVM.StarterKit.IConverterInt;
-#endif
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
+    /// <summary>
+    /// <see cref="SwitcherIntBinder{TMP_Dropdown}"/> that switches the <see cref="TMP_Dropdown.value"/>
+    /// property between two <see cref="int"/> values based on the bound boolean ViewModel value.
+    /// </summary>
+    /// <include file="XmlExampleDoc-Dropdown-Value-1.1.0.xml" path="doc//member[@name='DropdownValueSwitcherBinder']/*" />
     [Serializable]
-    public sealed class DropdownValueSwitcherBinder : SwitcherBinder<TMP_Dropdown, int, Converter>
+    public sealed class DropdownValueSwitcherBinder : SwitcherIntBinder<TMP_Dropdown>
     {
+        /// <inheritdoc/>
         public DropdownValueSwitcherBinder(
             TMP_Dropdown target,
             int trueValue,
             int falseValue,
-            BindMode mode = BindMode.OneWay) 
-            : this(target, trueValue, falseValue, converter: null, mode) { }
-        
-        public DropdownValueSwitcherBinder(
-            TMP_Dropdown target,
-            int trueValue,
-            int falseValue, 
-            Converter? converter,
-            BindMode mode = BindMode.OneWay) 
+            IConverter<int, int>? converter,
+            BindMode mode = BindMode.OneWay)
             : base(target, trueValue, falseValue, converter, mode) { }
 
+        /// <inheritdoc/>
         protected override void SetValue(int value) =>
             Target.value = value;
     }

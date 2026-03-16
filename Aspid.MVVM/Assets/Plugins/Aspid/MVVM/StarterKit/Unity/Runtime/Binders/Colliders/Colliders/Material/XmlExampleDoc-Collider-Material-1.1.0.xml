@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doc>
+    <member name="ColliderMaterialBinder">
+        <example>
+            Bind the Collider material property using a serialized binder field — the target Collider is assigned in the Inspector.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField]
+                    private ColliderMaterialBinder _material;
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [Bind] public PhysicsMaterial _material;
+                }
+            </code>
+            &#xD;
+            Bind the Collider material property by constructing the binder in code.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField] private Collider _collider;
+                    &#xD;
+                    private ColliderMaterialBinder Material =>
+                        new(_collider);
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [Bind] public PhysicsMaterial _material;
+                }
+            </code>
+        </example>
+    </member>
+    <member name="ColliderMaterialSwitcherBinder">
+        <example>
+            Switch the Collider material between two PhysicsMaterial assets using a serialized binder field — the target Collider is assigned in the Inspector.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField]
+                    private ColliderMaterialSwitcherBinder _isActive;
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [Bind] public bool _isActive;
+                }
+            </code>
+            &#xD;
+            Switch the Collider material between two PhysicsMaterial assets by constructing the binder in code.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField] private Collider _collider;
+                    [SerializeField] private PhysicsMaterial _activeMaterial;
+                    [SerializeField] private PhysicsMaterial _inactiveMaterial;
+                    &#xD;
+                    private ColliderMaterialSwitcherBinder IsActive => new(
+                        _collider,
+                        trueValue: _activeMaterial,
+                        falseValue: _inactiveMaterial);
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [Bind] public bool _isActive;
+                }
+            </code>
+        </example>
+    </member>
+</doc>
+

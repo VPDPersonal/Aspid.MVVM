@@ -8,11 +8,11 @@ namespace Aspid.MVVM
 {
     /// <summary>
     /// A styled title visual element used in the Aspid MVVM inspector UI.
-    /// Loads the <c>aspid-mvvm-title</c> style sheet and wraps the title text in a labeled container.
+    /// Loads the <c>Aspid-MVVM-AspidTitle</c> style sheet and wraps the title text in a labeled container.
     /// </summary>
     public class AspidTitle : VisualElement
     {
-        public static readonly StyleSheet StyleSheet = Resources.Load<StyleSheet>("Styles/aspid-mvvm-title");
+        public static readonly StyleSheet StyleSheet = Resources.Load<StyleSheet>(path: "Styles/Aspid-MVVM-AspidTitle");
         
         public AspidTitle(string? text)
         {

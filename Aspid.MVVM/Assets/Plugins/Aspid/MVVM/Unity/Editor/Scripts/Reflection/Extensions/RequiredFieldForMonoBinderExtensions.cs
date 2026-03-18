@@ -1,5 +1,6 @@
 #nullable enable
 using System.Linq;
+using Aspid.FastTools;
 using System.Reflection;
 using System.Collections.Generic;
 
@@ -32,7 +33,8 @@ namespace Aspid.MVVM
                 return Enumerable.Empty<RequiredFieldForMonoBinder>();
             
             var fields = view.GetType()
-                .GetFieldInfosIncludingBaseClasses(BindingFlags)
+                .GetMembersInfosIncludingBaseClasses(BindingFlags)
+                .OfType<FieldInfo>()
                 .Where(RequiredFieldForMonoBinder.IsRequireBinderField)
                 .Select(field => new RequiredFieldForMonoBinder(view, field));
 

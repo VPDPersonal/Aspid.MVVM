@@ -1,4 +1,5 @@
 using System.Linq;
+using Aspid.FastTools;
 using System.Reflection;
 using UnityEngine.UIElements;
 using System.CodeDom.Compiler;
@@ -17,14 +18,17 @@ namespace Aspid.MVVM
         protected override void BuildContent(VisualElement content)
         {
             var type = Value.GetType();
-            var fields = type.GetFieldInfosIncludingBaseClasses(BindingAttr).ToArray();
+            var fields = type.GetMembersInfosIncludingBaseClasses(BindingAttr)
+                .OfType<FieldInfo>()
+                .ToArray();
             
             var backingFieldNames = new HashSet<string>();
             
             var bindProperties = new List<PropertyInfo>();
             var autoProperties = new List<PropertyInfo>();
             
-            foreach (var property in type.GetPropertyInfosIncludingBaseClasses(BindingAttr, type))
+            foreach (var property in type.GetMembersInfosIncludingBaseClasses(BindingAttr, type)
+                         .OfType<PropertyInfo>())
             {
                 if (property.IsDefined(typeof(BaseBindAttribute)))
                 {

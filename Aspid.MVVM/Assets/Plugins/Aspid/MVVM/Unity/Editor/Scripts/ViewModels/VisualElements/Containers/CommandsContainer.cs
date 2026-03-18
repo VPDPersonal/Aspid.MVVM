@@ -10,13 +10,14 @@ namespace Aspid.MVVM
 {
     internal sealed class CommandsContainer : VisualElement
     {
-        private const string StyleSheetPath = "Styles/aspid-command-container";
+        private const string StyleSheetPath = "Styles/Aspid-MVVM-CommandContainer";
         private const BindingFlags BindingAttr = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static;
         
         public CommandsContainer(object value)
         {
             var type = value.GetType();
-            var fields = type.GetFieldInfosIncludingBaseClasses(BindingAttr)
+            var fields = type.GetMembersInfosIncludingBaseClasses(BindingAttr)
+                .OfType<FieldInfo>()
                 .Where(field => field.FieldType.IsRelayCommandType())
                 .ToArray();
             

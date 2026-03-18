@@ -37,8 +37,6 @@ namespace Aspid.MVVM.StarterKit
 
         protected override void OnCreatedInspectorGUI(MonoBinderVisualElement root)
         {
-            base.OnCreatedInspectorGUI(root);
-            
             root.IdDropdown.RegisterValueChangedCallback(_ => SyncEnumTypeFromRequireBinder());
             root.ViewDropdown.RegisterValueChangedCallback(_ => SyncEnumTypeFromRequireBinder());
             
@@ -50,9 +48,9 @@ namespace Aspid.MVVM.StarterKit
             RequiredEnumType = null;
             DisableEnumTypeFieldIfNeeded(Root);
             
-            if (ViewProperty?.objectReferenceValue is not IView view) return;
-            if (string.IsNullOrWhiteSpace(IdProperty?.stringValue)) return;
-            if (!view.TryGetRequireBinderFieldsById(IdProperty.stringValue, out var field)) return;
+            if (ViewProperty?.Value is null) return;
+            if (string.IsNullOrWhiteSpace(IdProperty?.Value)) return;
+            if (!ViewProperty.Value.TryGetRequireBinderFieldsById(IdProperty.Value, out var field)) return;
             
             var enumType = field!.RequiredTypes.FirstOrDefault(t => t.IsEnum);
             if (enumType is null) return;

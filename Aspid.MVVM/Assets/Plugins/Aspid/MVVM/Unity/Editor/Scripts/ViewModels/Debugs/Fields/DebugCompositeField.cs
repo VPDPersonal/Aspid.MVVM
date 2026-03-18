@@ -1,3 +1,4 @@
+using System.Linq;
 using UnityEngine;
 using Aspid.FastTools;
 using System.Reflection;
@@ -174,12 +175,16 @@ namespace Aspid.MVVM
         protected virtual void BuildContent(VisualElement content)
         {
             var type = Value.GetType();
-            var fields = type.GetFieldInfosIncludingBaseClasses(BindingFlags.Public | BindingFlags.Instance | BindingFlags.NonPublic);
+            var fields = type
+                .GetMembersInfosIncludingBaseClasses(BindingFlags.Public | BindingFlags.Instance | BindingFlags.NonPublic)
+                .OfType<FieldInfo>();
             
             var backingFieldNames = new HashSet<string>();
             var autoProperties = new List<PropertyInfo>();
             
-            foreach (var property in type.GetPropertyInfosIncludingBaseClasses(BindingFlags.Public | BindingFlags.Instance | BindingFlags.NonPublic, type))
+            foreach (var property in type
+                         .GetMembersInfosIncludingBaseClasses(BindingFlags.Public | BindingFlags.Instance | BindingFlags.NonPublic, type)
+                         .OfType<PropertyInfo>())
             {
                 if (NameHelper.IsAutoProperty(property, type))
                 {

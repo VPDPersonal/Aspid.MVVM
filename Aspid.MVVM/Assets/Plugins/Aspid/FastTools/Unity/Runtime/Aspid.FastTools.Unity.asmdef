@@ -1,12 +1,8 @@
 {
-    "name": "Aspid.FastTools.Editor",
+    "name": "Aspid.FastTools.Unity",
     "rootNamespace": "",
-    "references": [
-        "GUID:7c010b89992542508a6b6189977e64d4"
-    ],
-    "includePlatforms": [
-        "Editor"
-    ],
+    "references": [],
+    "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
     "overrideReferences": false,

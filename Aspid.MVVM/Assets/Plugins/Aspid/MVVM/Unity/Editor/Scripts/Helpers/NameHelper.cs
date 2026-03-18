@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using Aspid.FastTools;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 
@@ -66,7 +67,10 @@ namespace Aspid.MVVM
             if (property is null || declaringType is null) return false;
 
             var propertyName = property.Name;
-            var fields = declaringType.GetFieldInfosIncludingBaseClasses(BackingFieldBindingFlags).ToArray();
+            var fields = declaringType
+                .GetMembersInfosIncludingBaseClasses(BackingFieldBindingFlags)
+                .OfType<FieldInfo>()
+                .ToArray();
             
             // Check for the auto-property backing field: <PropertyName>k__BackingField
             var autoBackingFieldName = $"<{propertyName}>k__BackingField";
@@ -110,7 +114,7 @@ namespace Aspid.MVVM
             if (property is null || declaringType is null) return false;
             
             var autoBackingFieldName = GetAutoPropertyBackingFieldName(property.Name);
-            var fields = declaringType.GetFieldInfosIncludingBaseClasses(BackingFieldBindingFlags);
+            var fields = declaringType.GetMembersInfosIncludingBaseClasses(BackingFieldBindingFlags).OfType<FieldInfo>();
             
             return fields.Any(f => f.Name == autoBackingFieldName);
         }

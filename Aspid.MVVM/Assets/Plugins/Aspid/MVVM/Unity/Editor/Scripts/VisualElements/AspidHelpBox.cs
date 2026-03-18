@@ -8,25 +8,25 @@ namespace Aspid.MVVM
 {
     /// <summary>
     /// A styled help box visual element used in the Aspid MVVM inspector UI.
-    /// Extends <see cref="HelpBox"/> with the <c>aspid-mvvm-help-box</c> style sheet and type-specific style classes.
+    /// Extends <see cref="HelpBox"/> with the <c>aspid__mvvm__aspid-help-box</c> style sheet and type-specific style classes.
     /// </summary>
     public class AspidHelpBox : HelpBox
     {
-        public static readonly StyleSheet StyleSheet = Resources.Load<StyleSheet>("Styles/aspid-mvvm-help-box");
+        private static readonly StyleSheet _styleSheet = Resources.Load<StyleSheet>(path: "Styles/Aspid-MVVM-AspidHelpBox");
         
         public AspidHelpBox(string message, HelpBoxMessageType type)
             : base(message, type)
         {
-            styleSheets.Add(StyleSheet);
+            styleSheets.Add(_styleSheet);
             AddToClassList(GetStyleClass(type));
         }
-        
-        public static string GetStyleClass(HelpBoxMessageType type) => type switch
+
+        private static string GetStyleClass(HelpBoxMessageType type) => type switch
         {
             HelpBoxMessageType.None => "aspid-help-box-none",
             HelpBoxMessageType.Info => "aspid-help-box-info",
-            HelpBoxMessageType.Warning => "aspid-help-box-warning",
             HelpBoxMessageType.Error => "aspid-help-box-error",
+            HelpBoxMessageType.Warning => "aspid-help-box-warning",
             _ => throw new ArgumentOutOfRangeException(nameof(type), type, null)
         };
     }

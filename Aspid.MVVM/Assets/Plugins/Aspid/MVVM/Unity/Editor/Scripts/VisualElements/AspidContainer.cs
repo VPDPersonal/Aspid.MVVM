@@ -12,7 +12,7 @@ namespace Aspid.MVVM
     /// </summary>
     public class AspidContainer : VisualElement
     {
-        public static readonly StyleSheet StyleSheet = Resources.Load<StyleSheet>("Styles/aspid-mvvm-container");
+        public static readonly StyleSheet StyleSheet = Resources.Load<StyleSheet>("Styles/Aspid-MVVM-AspidContainer");
         
         public AspidContainer(StyleType style = StyleType.Light)
         {

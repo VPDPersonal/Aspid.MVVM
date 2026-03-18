@@ -11,13 +11,14 @@ using System.Collections.Generic;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM
 {
-    // TODO Aspid.MVVM Unity – Refactor
     /// <summary>
     /// UIElements visual element that renders the inspector UI for a <see cref="MonoBinder"/>,
     /// including header, ID selector, View selector, and logs.
     /// </summary>
     public class MonoBinderVisualElement : VisualElement
     {
+        private static readonly StyleSheet _idSelectorStyleSheet = Resources.Load<StyleSheet>("Styles/Aspid-MVVM-MonoBinder");
+
         private int _logsSize;
         private bool _isInitialized;
         private ListView _logsListView;
@@ -33,9 +34,11 @@ namespace Aspid.MVVM
             get
             {
                 yield return "m_Script";
-                yield return _editor.IdProperty.name;
-                yield return _editor.ViewProperty.name;
                 yield return _editor.ModeProperty.name;
+                yield return _editor.IdProperty.ValueProperty.name;
+                yield return _editor.ViewProperty.ValueProperty.name;
+                yield return _editor.IdProperty.PreviousProperty.name;
+                yield return _editor.ViewProperty.PreviousProperty.name;
                 
                 if (_editor.LogsProperty is not null)
                     yield return _editor.LogsProperty.name;
@@ -80,8 +83,8 @@ namespace Aspid.MVVM
             return new VisualElement()
                 .AddChild(BuildHeader())
                 .AddChild(BuildIdSelector())
-                .AddChild(new PropertyField(_editor.IdProperty).SetDisplay(DisplayStyle.None))
-                .AddChild(new PropertyField(_editor.ViewProperty).SetDisplay(DisplayStyle.None))
+                .AddChild(new PropertyField(_editor.IdProperty.ValueProperty).SetDisplay(DisplayStyle.None))
+                .AddChild(new PropertyField(_editor.ViewProperty.ValueProperty).SetDisplay(DisplayStyle.None))
                 .AddChild(BuildBaseInspector())
                 .AddChild(BuildLogsContainer());
         }
@@ -96,53 +99,80 @@ namespace Aspid.MVVM
         {
             ViewDropdown = CreateDropdownView();
             IdDropdown = CreateDropdownId();
-            
-            var dropdowns = new VisualElement()
-                .SetMargin(bottom: 1)
-                .SetAlignItems(Align.Center)
-                .SetFlexDirection(FlexDirection.Row)
-                .AddChild(CreateFieldElement(ViewDropdown, "View"))
-                .AddChild(CreateFieldElement(IdDropdown, "ID"));
-             
-             var helpBox = new AspidHelpBox("View and ID must be assigned", HelpBoxMessageType.Error)
+
+            var dropdowns = new VisualElement();
+            dropdowns.AddToClassList("aspid-mono-binder-id-selector-dropdowns");
+            dropdowns
+                .AddChild(CreateFieldElement(ViewDropdown, label: "View"))
+                .AddChild(CreateFieldElement(IdDropdown, label: "ID"));
+
+             var helpBox = new AspidHelpBox(message: "View and ID must be assigned", HelpBoxMessageType.Error)
                  .SetDisplay(_editor.HasBinderId ? DisplayStyle.None : DisplayStyle.Flex);
 
-             var modeField = new PropertyField(_editor.ModeProperty, string.Empty)
-                 .SetMargin(top: 1);
-             
-             return
-                 new AspidContainer(AspidContainer.StyleType.Dark)
-                 .SetFlexDirection(FlexDirection.Column)
+             var modeField = new PropertyField(_editor.ModeProperty, label: string.Empty);
+             modeField.AddToClassList("aspid-mono-binder-id-selector-mode");
+
+             var container = new AspidContainer(AspidContainer.StyleType.Dark);
+             container.styleSheets.Add(_idSelectorStyleSheet);
+             container.AddToClassList("aspid-mono-binder-id-selector");
+
+             return container
                  .AddChild(dropdowns)
                  .AddChild(helpBox)
                  .AddChild(modeField);
 
              DropdownField CreateDropdownId()
              {
-                 var data = DropdownData.CreateIdDropdownData(_editor);
-                 return new DropdownField(data.Choices, data.Index)
-                     .SetMargin(0, 0, 1, 0);
+                 var data = BinderDropdownData.CreateIdDropdownData(_editor);
+                 var dropdown = new DropdownField(data.Choices, data.Index)
+                 {
+                     formatSelectedValueCallback = value =>
+                     {
+                         var previousId = _editor.IdProperty.PreviousValue;
+                         return value is "No Id" or null or "" && !string.IsNullOrWhiteSpace(previousId)
+                             ? previousId
+                             : value;
+                     }
+                 };
+
+                 dropdown.AddToClassList("aspid-mono-binder-id-selector-dropdown");
+                 dropdown.AddToClassList("aspid-mono-binder-id-selector-dropdown-id");
+                 return dropdown;
              }
-             
+
              DropdownField CreateDropdownView()
              {
-                 var data = DropdownData.CreateViewDropdownData(_editor);
-                 return new DropdownField(data.Choices, data.Index)
-                     .SetMargin(0, 0, 0, 1);
+                 var data = BinderDropdownData.CreateViewDropdownData(_editor);
+                 var dropdown = new DropdownField(data.Choices, data.Index)
+                 {
+                     formatSelectedValueCallback = value =>
+                     {
+                         var previousView = _editor.ViewProperty.PreviousValue as Component;
+                         var previousName = BinderViewData.GetViewName(previousView);
+                     
+                         return value is "No View" or null or "" && !string.IsNullOrWhiteSpace(previousName)
+                             ? previousName
+                             : value;
+                     }
+                 };
+
+                 dropdown.AddToClassList("aspid-mono-binder-id-selector-dropdown");
+                 dropdown.AddToClassList("aspid-mono-binder-id-selector-dropdown-view");
+                 return dropdown;
              }
-             
-             VisualElement CreateFieldElement(DropdownField dropdown, string label) => new VisualElement()
-                 .SetFlexGrow(1)
-                 .SetFlexDirection(FlexDirection.Column)
-                 .SetSize(width: new StyleLength(new Length(50, LengthUnit.Percent)))
-                 .AddChild(new Label(label)
-                     .SetFontSize(13)
-                     .SetMargin(bottom: 1)
-                     .SetAlignSelf(Align.FlexStart)
-                     .SetColor(new Color(0.75f, 0.75f, 0.75f))
-                     .SetUnityFontStyleAndWeight(FontStyle.Bold))
-                 .AddChild(dropdown
-                     .SetFlexGrow(1));
+
+             VisualElement CreateFieldElement(DropdownField dropdown, string label)
+             {
+                 var elementLabel = new Label(label);
+                 elementLabel.AddToClassList("aspid-mono-binder-id-selector-dropdown-label");
+
+                 var wrapper = new VisualElement();
+                 wrapper.AddToClassList("aspid-mono-binder-id-selector-dropdown-column");
+
+                 return wrapper
+                     .AddChild(elementLabel)
+                     .AddChild(dropdown);
+             }
         }
 
         private AspidBaseInspectorVisualElement BuildBaseInspector() =>
@@ -219,7 +249,7 @@ namespace Aspid.MVVM
                     .AddChild(_logsListView
                         .SetSize(height: height));
                 
-                // Scroll to bottom after layout is ready
+                // Scroll to the bottom after the layout is ready
                 _logsListView.schedule.Execute(() =>
                 {
                     _logsListView.ScrollToItem(logs.Length - 1);
@@ -227,6 +257,16 @@ namespace Aspid.MVVM
             }
         }
         
+        public void UpdateDropdownColor(DropdownField dropdown, bool hasPrevious)
+        {
+            const string previousClass = "aspid-mono-binder-id-selector-dropdown--previous";
+
+            if (hasPrevious)
+                dropdown.AddToClassList(previousClass);
+            else
+                dropdown.RemoveFromClassList(previousClass);
+        }
+
         protected virtual string GetScriptName()
         {
             var monoBinder = _editor.TargetAsMonoBinder;

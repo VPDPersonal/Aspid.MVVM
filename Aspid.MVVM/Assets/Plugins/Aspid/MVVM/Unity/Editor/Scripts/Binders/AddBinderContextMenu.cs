@@ -1,100 +1,175 @@
 using System;
 using UnityEditor;
 using UnityEngine;
+using System.Linq;
 using System.Reflection;
 using UnityEditor.Callbacks;
+using Aspid.FastTools.Editors;
 using System.Collections.Generic;
 using Object = UnityEngine.Object;
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM
 {
-    // TODO Aspid.MVVM Unity – Refactor
     /// <summary>
     /// Registers a Unity Editor context menu entry that allows adding compatible <see cref="MonoBinder"/> components
-    /// directly from a serialized property's right-click menu.
+    /// directly from a serialized properties right-click menu.
     /// </summary>
     internal static class AddBinderContextMenu
     {
         private const string AddBinderText = "Add Binder";
-
-        private static bool _initialized;
+        
+        private static Context[] _contexts;
     
         [DidReloadScripts]
         [InitializeOnLoadMethod]
         [InitializeOnEnterPlayMode]
-        public static void Initialize()
+        private static void Initialize()
         {
-            if (_initialized) return;
-            _initialized = true;
+            if (_contexts is not null) return;
         
+            _contexts = AppDomain.CurrentDomain
+                .GetAssemblies()
+                .SelectMany(assembly => assembly.GetTypes())
+                .Where(Context.IsValid)
+                .Select(type => new Context(type))
+                .ToArray();
+            
             EditorApplication.contextualPropertyMenu -= OnContextualPropertyMenu;
             EditorApplication.contextualPropertyMenu += OnContextualPropertyMenu;
         }
     
         private static void OnContextualPropertyMenu(GenericMenu menu, SerializedProperty property)
         {
-            menu.AddSeparator("/");
+            menu.AddSeparator(path: "/");
             var target = property.serializedObject.targetObject;
-            var items = FindTypesWithTargetPropertyTypeAttribute(target, property);
+            var results = FindTypesWithTargetPropertyTypeAttribute(target, property);
 
-            foreach (var item in items)
+            foreach (var item in results)
             {
-                menu.AddItem(new GUIContent($"{AddBinderText}/{item.Item2}"), false, () =>
+                foreach (var type in item.Types)
                 {
-                    if (target is Component component)
-                        component.gameObject.AddComponent(item.Item1);
-                }); 
+                    menu.AddItem(new GUIContent(text: $"{AddBinderText}/{item.Name}"), false, () =>
+                    {
+                        if (target is Component component)
+                            component.gameObject.AddComponent(type);
+                    }); 
+                }
             }
         }
 
-        private static IReadOnlyList<(Type, string)> FindTypesWithTargetPropertyTypeAttribute(Object target, SerializedProperty property)
+        private static IReadOnlyList<Result> FindTypesWithTargetPropertyTypeAttribute(Object target, SerializedProperty property)
         {
             var propertyName = property.name;
             var targetType = target.GetType();
             var propertyType = property.GetPropertyType();
             
             if (propertyType is null) 
-                return Array.Empty<(Type, string)>();
+                return Array.Empty<Result>();
         
-            var result = new List<(Type, string)>();
-            var assemblies = AppDomain.CurrentDomain.GetAssemblies();
+            var results = new List<Result>();
 
-            foreach (var assembly in assemblies)
+            foreach (var context in _contexts)
             {
-                foreach (var type in assembly.GetTypes())
+                var name = context.Name;
+                var types = new List<Type>();
+                
+                foreach (var contextMenu in context.ContextMenus)
                 {
-                    var addComponentMenu = type.GetCustomAttribute<AddComponentMenu>();
-                    var name = addComponentMenu?.componentMenu;
-                    
-                    if (!string.IsNullOrWhiteSpace(name))
-                        name = name[(name.LastIndexOf('/') + 1)..];
-                    
-                    if (string.IsNullOrWhiteSpace(name))
-                        name = type.Name;
-                    
-                    foreach (var attribute in type.GetCustomAttributes<AddBinderContextMenuAttribute>(true))
+                    foreach (var serializePropertyName in contextMenu.SerializePropertyNames)
                     {
-                        var serializePropertyNames = attribute.SerializePropertyNames;
-                        
-                        foreach (var serializePropertyName in serializePropertyNames)
-                        {
-                            if (string.IsNullOrWhiteSpace(serializePropertyName)) continue;
+                        if (string.IsNullOrWhiteSpace(serializePropertyName)) continue;
+                        if (serializePropertyName != propertyName) continue;
+                        if (!contextMenu.Type.IsAssignableFrom(targetType)) continue;
                             
-                            if (serializePropertyName == propertyName && attribute.Type.IsAssignableFrom(targetType))
-                                result.Add((type, name));
-                        }
-                    }
-
-                    foreach (var attribute in type.GetCustomAttributes<AddBinderContextMenuByTypeAttribute>(true))
-                    {
-                        if (attribute.Type.IsAssignableFrom(propertyType))
-                            result.Add((type, name));
+                        types.Add(contextMenu.Type);
                     }
                 }
+
+                types.AddRange(collection: context.ContextMenuByTypes
+                    .Select(c => c.Type)
+                    .Where(type => type.IsAssignableFrom(propertyType)));
+
+                results.Add(new Result(name, types));
             }
 
-            return result;
+            return results;
+        }
+        
+        private readonly struct Result
+        {
+            public readonly string Name;
+            public readonly IReadOnlyList<Type> Types;
+            
+            public Result(string name, IReadOnlyList<Type> types)
+            {
+                Name = name;
+                Types = types;
+            }
+        }
+        
+        private readonly struct Context
+        {
+            private const bool Inherit = true;
+            
+            public readonly string Name;
+            public readonly IReadOnlyList<ContextMenu> ContextMenus;
+            public readonly IReadOnlyList<ContextMenuByType> ContextMenuByTypes;
+            
+            public Context(Type type)
+            {
+                Name = GetName(type);
+                
+                ContextMenus = type
+                    .GetCustomAttributes<AddBinderContextMenuAttribute>(Inherit)
+                    .Select(attribute => new ContextMenu(attribute))
+                    .ToArray();
+
+                ContextMenuByTypes = type
+                    .GetCustomAttributes<AddBinderContextMenuByTypeAttribute>(Inherit)
+                    .Select(attribute => new ContextMenuByType(attribute))
+                    .ToArray();
+            }
+
+            private static string GetName(Type type)
+            {
+                var addComponentMenu = type.GetCustomAttribute<AddComponentMenu>();
+                var name = addComponentMenu?.componentMenu;
+                    
+                if (!string.IsNullOrWhiteSpace(name))
+                    name = name[(name.LastIndexOf('/') + 1)..];
+                    
+                if (string.IsNullOrWhiteSpace(name))
+                    name = type.Name;
+
+                return name;
+            }
+
+            public static bool IsValid(Type type)
+            {
+                return type.IsDefined(typeof(AddBinderContextMenuAttribute), Inherit) 
+                    || type.IsDefined(typeof(AddBinderContextMenuByTypeAttribute), Inherit);
+            }
+        }
+
+        private readonly struct ContextMenu
+        {
+            public readonly Type Type;
+            public readonly IReadOnlyList<string> SerializePropertyNames;
+            
+            public ContextMenu(AddBinderContextMenuAttribute attribute)
+            {
+                Type = attribute.Type;
+                SerializePropertyNames = attribute.SerializePropertyNames;;
+            }
+        }
+
+        private readonly struct ContextMenuByType
+        {
+            public readonly Type Type;
+
+            public ContextMenuByType(AddBinderContextMenuByTypeAttribute attribute) =>
+                Type = attribute.Type;
         }
     }
 }

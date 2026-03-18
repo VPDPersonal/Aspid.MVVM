@@ -4,11 +4,11 @@ using UnityEditor;
 using UnityEngine;
 using Aspid.FastTools;
 using UnityEngine.UIElements;
+using Aspid.FastTools.Editors;
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM
 {
-    // TODO Aspid.MVVM Unity – Refactor
     /// <summary>
     /// Custom Unity property drawer for <see cref="BindMode"/> and <see cref="BindModeAttribute"/> fields.
     /// Renders an inline dropdown populated with the modes permitted by any <see cref="BindModeOverrideAttribute"/> on the owning class.
@@ -18,7 +18,8 @@ namespace Aspid.MVVM
     internal sealed class BindModeDrawer : PropertyDrawer
     {
         private bool _wasLookingFor;
-        private (BindModeOverrideAttribute overrideAttribute, object instance) _classInfo;
+        private object _classInstance;
+        private BindModeOverrideAttribute _overrideAttribute;
         
         public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
         {
@@ -57,16 +58,16 @@ namespace Aspid.MVVM
         {
             if (_wasLookingFor) return;
             
-            var (type, classInstance) = property.GetClassInfo();
-            _classInfo.instance = classInstance;
+            _classInstance = property.GetClassInstance();
+            var type = _classInstance.GetType();
 
             for (; type is not null; type = type.BaseType)
             {
-                _classInfo.overrideAttribute = type
-                    .GetCustomAttributes(typeof(BindModeOverrideAttribute), false)
+                _overrideAttribute = type
+                    .GetCustomAttributes(typeof(BindModeOverrideAttribute), inherit: false)
                     .FirstOrDefault() as BindModeOverrideAttribute;
                 
-                if (_classInfo.overrideAttribute is not null) break;
+                if (_overrideAttribute is not null) break;
             }
             
             _wasLookingFor = true;
@@ -74,7 +75,7 @@ namespace Aspid.MVVM
         
         private BindModes GetAvailableModes()
         {
-            var overrideAttribute = _classInfo.overrideAttribute;
+            var overrideAttribute = _overrideAttribute;
             
             if (overrideAttribute is not null)
             {
@@ -128,7 +129,7 @@ namespace Aspid.MVVM
         
         private void SetPropertyValue(SerializedProperty property, BindModes availableModes, int selectedIndex)
         {
-            if (_classInfo.instance is IRebindableBinder rebindable)
+            if (_classInstance is IRebindableBinder rebindable)
             {
                 property.intValue = (int)availableModes.Modes[selectedIndex];
                 property.serializedObject.ApplyModifiedProperties();

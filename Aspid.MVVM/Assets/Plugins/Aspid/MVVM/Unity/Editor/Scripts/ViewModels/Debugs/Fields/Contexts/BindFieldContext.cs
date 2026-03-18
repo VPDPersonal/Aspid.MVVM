@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using Aspid.FastTools;
 using System.Reflection;
 
 // ReSharper disable once CheckNamespace
@@ -35,7 +36,8 @@ namespace Aspid.MVVM
 
             // Find generated property.
             _generatedProperty = viewModel.GetType()
-                .GetPropertyInfosIncludingBaseClasses(bindingFlags: BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)
+                .GetMembersInfosIncludingBaseClasses(bindingFlags: BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)
+                .OfType<PropertyInfo>()
                 .FirstOrDefault(property => property.Name == bindField.GetGeneratedPropertyName());
             
             if (_generatedProperty is null)

@@ -3,6 +3,7 @@ using System;
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
+using Aspid.MVVM.Validation;
 using UnityEditor.UIElements;
 using UnityEngine.UIElements;
 using System.Collections.Generic;
@@ -42,7 +43,7 @@ namespace Aspid.MVVM
                         case null:
                         case Component componentView when !componentView: return true;
                     }
-                    
+
                     return string.IsNullOrWhiteSpace(binder.Id);
                 }) 
             : Enumerable.Empty<IMonoBinderValidable>();
@@ -248,7 +249,7 @@ namespace Aspid.MVVM
                         for (var j = 0; j < monoBindersProperty.arraySize; j++)
                         {
                             if (monoBindersProperty.GetArrayElementAtIndex(j).objectReferenceValue is IMonoBinderValidable monoBinder)
-                                monoBinder.Reset();
+                                monoBinder.Reset(MonoBinderResetMode.Soft);
                         }
                     }
                     
@@ -262,7 +263,7 @@ namespace Aspid.MVVM
             foreach (var value in fieldsById.Values.SelectMany(values => values))
             {
                 if (value is IMonoBinderValidable monoBinder)
-                    monoBinder.Reset();
+                    monoBinder.Reset(MonoBinderResetMode.Soft);
             }
             
             BindersList.ApplyModifiedProperties();

@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using Aspid.FastTools;
 using System.Reflection;
 using System.CodeDom.Compiler;
 using System.Collections.Generic;
@@ -53,7 +54,8 @@ namespace Aspid.MVVM
             var propertyName = generatedField.GetGeneratedPropertyName();
             
             return target.GetType()
-                .GetPropertyInfosIncludingBaseClasses(BindingAttr)
+                .GetMembersInfosIncludingBaseClasses(BindingAttr)
+                .OfType<PropertyInfo>()
                 .FirstOrDefault(property => property.Name == propertyName);
         }
     }

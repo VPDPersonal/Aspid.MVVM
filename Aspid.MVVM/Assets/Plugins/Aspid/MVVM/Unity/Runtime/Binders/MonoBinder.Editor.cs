@@ -3,85 +3,140 @@
 using System;
 using UnityEngine;
 using System.ComponentModel;
+using Aspid.MVVM.Validation;
+using Component = UnityEngine.Component;
 
+// ReSharper disable InconsistentNaming
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM
 {
     public abstract partial class MonoBinder : IMonoBinderValidable, IRebindableBinder
     {
-        // ReSharper disable once InconsistentNaming
+        #region View Fields
         [EditorBrowsable(EditorBrowsableState.Never)]
-        [SerializeField] private MonoView __view;
+        [SerializeField] private Component __view;
         
-        // ReSharper disable once InconsistentNaming
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        [SerializeField] private MonoBinderPreviousView __previousView;
+        #endregion
+
+        #region Id Fields
         [EditorBrowsable(EditorBrowsableState.Never)]
         [SerializeField] private string __id;
         
-        // ReSharper disable once InconsistentNaming
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        [SerializeField] private MonoBinderPreviousId __previousId;
+        #endregion
+        
         [EditorBrowsable(EditorBrowsableState.Never)]
         [NonSerialized] private LastData? __bindData;
         
-        /// <summary>
-        /// Is there a component?
-        /// </summary>
         [EditorBrowsable(EditorBrowsableState.Advanced)]
         bool IMonoBinderValidable.IsMonoExist => this;
-        
-        /// <summary>
-        /// The View to which the Binder relates.
-        /// (Editor only).
-        /// </summary>
+
+        #region View Properties
         [EditorBrowsable(EditorBrowsableState.Advanced)]
-        IView IMonoBinderValidable.View
-        {
-            get => __view;
-            set
-            {
-                if (!((IMonoBinderValidable)this).IsMonoExist) return;
-
-                if (value is null)
-                {
-                    __view = null;
-                    return;
-                }
-                
-                if (__view == value as MonoView) return;
-                
-                __view = value switch
-                {
-                    MonoView view => view,
-                    _ => throw new ArgumentException("View is not a MonoView")
-                };
-
-                SaveBinderDataInEditor();
-            }
-        }
+        IView IMonoBinderValidable.View => __view as IView;
         
-        /// <summary>
-        /// The ID that must correspond to the name of any ViewModel property.
-        /// (Editor only).
-        /// </summary>
         [EditorBrowsable(EditorBrowsableState.Advanced)]
-        string IMonoBinderValidable.Id
-        {
-            get => __id;
-            set
-            {
-                if (!((IMonoBinderValidable)this).IsMonoExist) return;
-                if (__id == value) return;
-                
-                __id = value;
-                SaveBinderDataInEditor();
-            }
-        }
+        MonoBinderPreviousView IMonoBinderValidable.PreviousView => __previousView;
+        #endregion
 
+        #region Id Properties
+        [EditorBrowsable(EditorBrowsableState.Advanced)]
+        string IMonoBinderValidable.Id => __id;
+        
+        [EditorBrowsable(EditorBrowsableState.Advanced)]
+        MonoBinderPreviousId IMonoBinderValidable.PreviousId => __previousId;
+        #endregion
+
+        #region Bound Handlers
         partial void OnBoundDebug(IBinderAdder binderAdder) =>
             __bindData = new LastData(_mode, binderAdder);
 
         partial void OnUnboundDebug() =>
             __bindData = null;
-        
+        #endregion
+
+        #region Set Methods
+        [EditorBrowsable(EditorBrowsableState.Advanced)]
+        void IMonoBinderValidable.SetView(IView view)
+        {
+            if (view is null)
+            {
+                ((IMonoBinderValidable)this).ResetView();
+            }
+            else
+            {
+                SetViewInternal(view);   
+            }
+        }
+
         [EditorBrowsable(EditorBrowsableState.Never)]
+        private void SetViewInternal(IView view)
+        {
+            if (!((IMonoBinderValidable)this).IsMonoExist) return;
+            
+            var componentView = view as Component;
+            if (__view == componentView) return;
+            
+            __previousView = componentView 
+                ? new MonoBinderPreviousView(componentView) 
+                : new MonoBinderPreviousView(__view);
+            
+            __view = componentView;
+            SaveBinderDataInEditor();
+        }
+
+        [EditorBrowsable(EditorBrowsableState.Advanced)]
+        void IMonoBinderValidable.SetId(string id)
+        {
+            if (string.IsNullOrWhiteSpace(id))
+            {
+                ((IMonoBinderValidable)this).ResetId();
+            }
+            else
+            {
+                SetIdInternal(id);
+            }
+        }
+
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        private void SetIdInternal(string id)
+        {
+            if (!((IMonoBinderValidable)this).IsMonoExist) return;
+            if (__id == id) return;
+            
+            __previousId = string.IsNullOrWhiteSpace(id) 
+                ? new MonoBinderPreviousId(__id) 
+                : new MonoBinderPreviousId(id);
+            
+            __id = id;
+            SaveBinderDataInEditor();
+        }
+        #endregion
+
+        #region Reset Methods
+        [EditorBrowsable(EditorBrowsableState.Advanced)]
+        void IMonoBinderValidable.ResetView(MonoBinderResetMode mode)
+        {
+            SetViewInternal(null);
+            
+            if (mode is MonoBinderResetMode.Hard)
+                __previousView = default;
+        }
+
+        [EditorBrowsable(EditorBrowsableState.Advanced)]
+        void IMonoBinderValidable.ResetId(MonoBinderResetMode mode)
+        {
+            SetIdInternal(string.Empty);
+            
+            if (mode is MonoBinderResetMode.Hard)
+                __previousId = default;
+        }
+        #endregion
+        
+        [EditorBrowsable(EditorBrowsableState.Advanced)]
         void IRebindableBinder.Rebind()
         {
             if (__bindData is not null)
@@ -96,13 +151,14 @@ namespace Aspid.MVVM
                 Bind(cachedData.Adder);
             }
         }
-
+        
         [EditorBrowsable(EditorBrowsableState.Never)]
         private void SaveBinderDataInEditor()
         {
-	        if (!((IMonoBinderValidable)this).IsMonoExist) return;
+            if (Application.isPlaying) return;
+            if (!((IMonoBinderValidable)this).IsMonoExist) return;
 	        
-            UnityEditor.EditorUtility.SetDirty(this);
+            UnityEditor.EditorUtility.SetDirty(target: this);
             UnityEditor.SceneManagement.EditorSceneManager.MarkSceneDirty(gameObject.scene);
         }
         

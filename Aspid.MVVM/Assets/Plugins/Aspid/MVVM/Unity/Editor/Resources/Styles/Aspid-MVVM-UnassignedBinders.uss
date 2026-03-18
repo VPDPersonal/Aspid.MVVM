@@ -1,0 +1,10 @@
+
+.aspid-unassigned-binders-previous-id
+{
+    flex-shrink: 0;
+    align-self: center;
+    margin-left: 4px;
+    margin-right: 4px;
+    -unity-font-style: bold-and-italic;
+    color: rgb(255, 191, 0);
+}

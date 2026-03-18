@@ -11,12 +11,12 @@ namespace Aspid.MVVM
 {
     /// <summary>
     /// A styled property field visual element used in the Aspid MVVM inspector UI.
-    /// Extends <see cref="PropertyField"/> with the <c>aspid-mvvm-property-field</c> style sheet and class.
+    /// Extends <see cref="PropertyField"/> with the <c>Styles/Aspid-MVVM-AspidPropertyField</c> style sheet and class.
     /// </summary>
     public class AspidPropertyField : PropertyField
     {
         public const string StyleClass = "aspid-property-field";
-        public static readonly StyleSheet StyleSheet = Resources.Load<StyleSheet>("Styles/aspid-mvvm-property-field");
+        public static readonly StyleSheet StyleSheet = Resources.Load<StyleSheet>("Styles/Aspid-MVVM-AspidPropertyField");
         
         public AspidPropertyField(SerializedProperty property)
             : base(property)

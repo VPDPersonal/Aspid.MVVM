@@ -5,9 +5,10 @@
         "Aspid.MVVM",
         "Aspid.FastTools",
         "Aspid.MVVM.Unity",
-        "Aspid.FastTools.Editor",
+        "Aspid.FastTools.Unity",
         "Aspid.MVVM.Unity.Editor",
         "Aspid.Internal.Unity.Editor",
+        "Aspid.FastTools.Unity.Editor",
         "Aspid.MVVM.StarterKit.Unity"
     ],
     "includePlatforms": [

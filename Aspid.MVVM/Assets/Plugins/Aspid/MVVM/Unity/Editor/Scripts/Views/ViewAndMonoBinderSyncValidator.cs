@@ -3,6 +3,7 @@ using System;
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
+using Aspid.MVVM.Validation;
 using System.Collections.Generic;
 using UnityEditor.SceneManagement;
 using System.Runtime.CompilerServices;
@@ -81,9 +82,9 @@ namespace Aspid.MVVM
                 {
                     if (oldBinder is null) continue;
                     if (changedBinder.NewBinders.Contains(oldBinder)) continue;
-                    
-                    oldBinder.Id = null;
-                    if (view.IsBinderInViewScope(oldBinder)) oldBinder.View = null;
+
+                    oldBinder.ResetId(MonoBinderResetMode.Soft);
+                    if (view.IsBinderInViewScope(oldBinder)) oldBinder.ResetView(MonoBinderResetMode.Soft);
                 }
             }
 
@@ -149,8 +150,8 @@ namespace Aspid.MVVM
 
                     if (!result)
                     {
-                        binder.Id = null;
-                        if (!isChild) binder.View = null;
+                        binder.ResetId(MonoBinderResetMode.Soft);
+                        if (!isChild) binder.ResetView(MonoBinderResetMode.Soft);
                     }
 
                     return result;
@@ -164,8 +165,8 @@ namespace Aspid.MVVM
                     if (binder.Id == field.Id && binder.View == view) continue;
                     
                     // Set the correct values for the binder.
-                    binder.View = view;
-                    binder.Id = field.Id;
+                    binder.SetView(view);
+                    binder.SetId(field.Id);
                 }
                 
                 // If the number of binders has changed, we save the new value.
@@ -222,7 +223,7 @@ namespace Aspid.MVVM
             else
             {
                 // We reset the ID of the previously installed binder, which we will replace.
-                viewBinders[0].Id = null;
+                viewBinders[0]?.ResetId(MonoBinderResetMode.Soft);
                 field.SetValueFromCastValueAndSaveView(view, binder);
             }
         }

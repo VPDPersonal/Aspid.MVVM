@@ -1,5 +1,6 @@
 using UnityEditor;
 using UnityEngine;
+using System.Linq;
 using Aspid.FastTools;
 using System.Reflection;
 using UnityEngine.UIElements;
@@ -80,7 +81,9 @@ namespace Aspid.MVVM
             var bindProperties = new List<PropertyInfo>();
             var autoProperties = new List<PropertyInfo>();
 
-            foreach (var property in viewModelType.GetPropertyInfosIncludingBaseClasses(BindingAttr, viewModelBaseType))
+            foreach (var property in viewModelType
+                         .GetMembersInfosIncludingBaseClasses(BindingAttr, viewModelBaseType)
+                         .OfType<PropertyInfo>())
             {
                 if (property.IsDefined(typeof(BaseBindAttribute)))
                 {
@@ -98,7 +101,9 @@ namespace Aspid.MVVM
                 }
             }
             
-            foreach (var field in viewModelType.GetFieldInfosIncludingBaseClasses(BindingAttr, viewModelBaseType))
+            foreach (var field in viewModelType
+                         .GetMembersInfosIncludingBaseClasses(BindingAttr, viewModelBaseType)
+                         .OfType<FieldInfo>())
             {
                 if (field.FieldType.IsRelayCommandType())
                 {

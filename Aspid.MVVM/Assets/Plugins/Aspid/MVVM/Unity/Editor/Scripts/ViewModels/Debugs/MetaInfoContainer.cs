@@ -133,13 +133,16 @@ namespace Aspid.MVVM
             
             var bindableField = obj
                 .GetType()
-                .GetFieldInfosIncludingBaseClasses(BindingFlags)
+                .GetMembersInfosIncludingBaseClasses(BindingFlags)
+                .OfType<FieldInfo>()
                 .FirstOrDefault(field => field.IsDefined(typeof(GeneratedCodeAttribute)) && field.Name == bindableName);
             
             var bindableValue = bindableField?.GetValue(obj);
             if (bindableValue is null) return null;
             
-            var changedEvent = bindableField.FieldType.GetFieldInfosIncludingBaseClasses(BindingFlags)
+            var changedEvent = bindableField.FieldType
+                .GetMembersInfosIncludingBaseClasses(BindingFlags)
+                .OfType<FieldInfo>()
                 .FirstOrDefault(field => field.Name == "Changed");
             
             if (changedEvent is null) return null;

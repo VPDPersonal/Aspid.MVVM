@@ -1,34 +1,37 @@
 #if !ASPID_MVVM_EDITOR_DISABLED
 using System;
 using System.Linq;
-using UnityEditor;
 using UnityEngine;
-using System.Collections;
+using UnityEditor;
+using Aspid.FastTools;
 using UnityEditor.UIElements;
 using UnityEngine.UIElements;
-using Object = UnityEngine.Object;
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM
 {
-    // TODO Aspid.MVVM Unity – Refactor
     /// <summary>
     /// Custom Unity Editor for <see cref="MonoBinder"/> components.
     /// Builds a UIElements-based inspector with ID and View dropdown selectors.
     /// Can be extended by derived editors for specialized binder types.
     /// </summary>
     [CanEditMultipleObjects]
-    [CustomEditor(typeof(MonoBinder), true)]
+    [CustomEditor(typeof(MonoBinder), editorForChildClasses: true)]
     public class MonoBinderEditor : Editor
     {
+        private string _lastId;
+        private IView _lastView;
+        
         public MonoBinder TargetAsMonoBinder => target as MonoBinder;
 
-        public bool HasBinderId => !string.IsNullOrWhiteSpace(IdProperty?.stringValue);
+        public bool HasBinderId => 
+            ViewProperty.Value is not null
+            && !string.IsNullOrWhiteSpace(IdProperty.Value);
         
         #region Serialized Properties
-        public SerializedProperty IdProperty { get; private set; }
+        public MonoBinderIdProperty IdProperty { get; private set; }
         
-        public SerializedProperty ViewProperty { get; private set; }
+        public MonoBinderViewProperty ViewProperty { get; private set; }
         
         public SerializedProperty ModeProperty { get; private set; }
         
@@ -38,9 +41,6 @@ namespace Aspid.MVVM
         #endregion
         
         protected MonoBinderVisualElement Root { get; private set; }
-
-        private string LastId;
-        private MonoView LastView;
         
         #region Enable
         private void OnEnable()
@@ -50,7 +50,7 @@ namespace Aspid.MVVM
                 FindProperties();
                 Validate();
                 
-                RefreshViewEditorIfNeeded();
+                EditorApplication.update -= Update;
                 EditorApplication.update += Update;
             }
             OnEnabled();
@@ -70,11 +70,10 @@ namespace Aspid.MVVM
                 
                 if (IdProperty is not null && ViewProperty is not null)
                 {
-                    var view = ViewProperty.objectReferenceValue;
+                    var view = ViewProperty.Value;
 
-                    if (view && !string.IsNullOrWhiteSpace(IdProperty.stringValue))
+                    if (view is not null && string.IsNullOrEmpty(IdProperty.Value))
                     {
-                        // TODO Aspid.MVVM – Delete MonoView
                         if (view is not MonoView monoView) throw new NullReferenceException(nameof(monoView));
                         ViewAndMonoBinderSyncValidator.ValidateView(monoView);
                     }
@@ -88,12 +87,13 @@ namespace Aspid.MVVM
         protected virtual void OnDisabled() { }
         #endregion
         
-        protected virtual void Update() => Root?.Update();
+        protected virtual void Update() => 
+            Root?.Update();
 
         protected virtual void FindProperties()
         {
-            IdProperty = serializedObject.FindProperty("__id");
-            ViewProperty = serializedObject.FindProperty("__view");
+            IdProperty = new MonoBinderIdProperty(serializedObject);
+            ViewProperty = new MonoBinderViewProperty(serializedObject);
             ModeProperty = serializedObject.FindProperty("_mode");
              
             LogsProperty = serializedObject.FindProperty("_log");
@@ -103,138 +103,125 @@ namespace Aspid.MVVM
         #region CreateInspectorGUI
         public sealed override VisualElement CreateInspectorGUI()
         {
-            var monoBinderVisualElement = BuildVisualElement();
-            monoBinderVisualElement.Initialize();
-
-            Root = monoBinderVisualElement;
-            OnCreatedInspectorGUI(monoBinderVisualElement);
+            var root = BuildVisualElement();
+            root.Initialize();
             
-            return monoBinderVisualElement;
-        }
-        
-        protected virtual MonoBinderVisualElement BuildVisualElement() => new(this);
-
-        protected virtual void OnCreatedInspectorGUI(MonoBinderVisualElement root)
-        {
-            var idDropdown = Root.IdDropdown;
-            var viewDropdown = Root.ViewDropdown;
-            
-            root.RegisterCallback<SerializedPropertyChangeEvent>(e =>
+            OnCreatingInspectorGUI(root);
             {
-                if (e.changedProperty.propertyPath != IdProperty.propertyPath 
-                    && e.changedProperty.propertyPath != ViewProperty.propertyPath) return;
+                Root = root;
                 
-                var dropdownDataId = DropdownData.CreateIdDropdownData(this);
-                var dropdownDataView = DropdownData.CreateViewDropdownData(this);
+                var idDropdown = root.IdDropdown;
+                var viewDropdown = root.ViewDropdown;
                 
-                root.IdDropdown.choices = dropdownDataId.Choices;
-                root.ViewDropdown.choices = dropdownDataView.Choices;
-
-                var id = IdProperty.stringValue;
-                var view = ViewProperty.objectReferenceValue;
-
-                if (id != LastId || view != LastView)
+                root.RegisterCallback<SerializedPropertyChangeEvent>(e =>
                 {
-                    
-                    if (LastView && !string.IsNullOrWhiteSpace(LastId))
+                    if (e.changedProperty.propertyPath != IdProperty.ValueProperty.propertyPath 
+                        && e.changedProperty.propertyPath != ViewProperty.ValueProperty.propertyPath) return;
+                
+                    var dropdownDataId = BinderDropdownData.CreateIdDropdownData(this);
+                    var dropdownDataView = BinderDropdownData.CreateViewDropdownData(this);
+                
+                    root.IdDropdown.choices = dropdownDataId.Choices;
+                    root.ViewDropdown.choices = dropdownDataView.Choices;
+
+                    var currentView = ViewProperty.Value;
+                    var currentId = IdProperty.Value;
+
+                    if (currentId != _lastId || currentView != _lastView)
                     {
-                        if (BinderEditorUtilities.GetIds(TargetAsMonoBinder, LastView).Contains(LastId))
-                            ViewAndMonoBinderSyncValidator.RemoveBinderIfExistInView(TargetAsMonoBinder, LastView, LastId);
-                    }
-                    
-                    if (view && !string.IsNullOrWhiteSpace(id) && dropdownDataId.Choices.Contains(id))
-                        ViewAndMonoBinderSyncValidator.SetBinderIfNotExistInView(TargetAsMonoBinder);
-                }
-                
-                root.IdDropdown.SetValueWithoutNotify(dropdownDataId.Choices[dropdownDataId.Index]);
-                root.ViewDropdown.SetValueWithoutNotify(dropdownDataView.Choices[dropdownDataView.Index]);
-
-                LastId = IdProperty.stringValue;
-                LastView = ViewProperty.objectReferenceValue as MonoView;
-                
-                root.Update();
-            });
-            
-            idDropdown.RegisterValueChangedCallback(value =>
-            {
-                SaveId(value.newValue);
-                root.Update();
-            });
-            
-            viewDropdown.RegisterValueChangedCallback(value =>
-            {
-                SaveView(value.newValue);
-                    
-                IdProperty.stringValue = string.Empty;
-                var data = DropdownData.CreateIdDropdownData(this);
-                idDropdown.choices = data.Choices;
-                idDropdown.index = data.Index;
-        
-                SaveId(idDropdown.value);
-                root.Update();
-            });
-        }
-        #endregion
-
-        private void Validate()
-        {
-            serializedObject.Update();
-            {
-                ValidateView();
-                ValidateId();
-            }
-            serializedObject.ApplyModifiedProperties();
-            return;
-
-            void ValidateView()
-            {
-                if (!ViewProperty.objectReferenceValue) return;
-		        
-                for (var parent = ((Component)target).transform; parent is not null; parent = parent.parent)
-                {
-                    if (parent.GetComponents<IView>().Any(view => ViewProperty.objectReferenceValue == view as Object)) return;
-                }
-
-                ViewProperty.objectReferenceValue = null;
-            }
-
-            void ValidateId()
-            {
-                if (string.IsNullOrWhiteSpace(IdProperty.stringValue)) return;
-
-                // TODO Aspid.MVVM – Fix
-                var componentView = ViewProperty.objectReferenceValue;
-                if (componentView && componentView is IView view && view.TryGetRequireBinderFieldsById(IdProperty.stringValue, out var field))
-                {
-                    if (field.FieldType.IsArray)
-                    {
-                        foreach (var item in (IEnumerable)field.GetValue(field.FieldContainerObj))
+                        if (_lastView is not null && !string.IsNullOrWhiteSpace(_lastId))
                         {
-                            if ((MonoBinder)item == TargetAsMonoBinder)
-                            {
-                                return;
-                            }
+                            var ids = BinderEditorUtilities
+                                .GetIds(TargetAsMonoBinder, _lastView)
+                                .Select(data => data.Id);
+                            
+                            if (ids.Contains(_lastId)) 
+                                ViewAndMonoBinderSyncValidator.RemoveBinderIfExistInView(TargetAsMonoBinder, _lastView, _lastId);
+                        }
+                    
+                        if (currentView is not null && !string.IsNullOrWhiteSpace(currentId))
+                        {
+                            if (dropdownDataId.Contains(currentId))
+                                ViewAndMonoBinderSyncValidator.SetBinderIfNotExistInView(TargetAsMonoBinder);
                         }
                     }
-                    else
-                    {
-                        if ((MonoBinder)field.GetValue(field.FieldContainerObj) == TargetAsMonoBinder) return;
-                    }
-                }
                 
-                IdProperty.stringValue = null;
+                    root.IdDropdown.SetValueWithoutNotify(dropdownDataId.Choices[dropdownDataId.Index]);
+                    root.ViewDropdown.SetValueWithoutNotify(dropdownDataView.Choices[dropdownDataView.Index]);
+
+                    root.UpdateDropdownColor(root.IdDropdown, dropdownDataId.HasPrevious);
+                    root.UpdateDropdownColor(root.ViewDropdown, dropdownDataView.HasPrevious);
+
+                    _lastId = IdProperty.Value;
+                    _lastView = ViewProperty.Value as MonoView;
+                
+                    root.Update();
+                });
+                
+                idDropdown.RegisterValueChangedCallback(value =>
+                {
+                    SaveId(value.newValue);
+
+                    var data = BinderDropdownData.CreateIdDropdownData(this);
+                    idDropdown.SetValueWithoutNotify(data.Choices[data.Index]);
+                    root.UpdateDropdownColor(idDropdown, data.HasPrevious);
+
+                    root.Update();
+                });
+
+                viewDropdown.RegisterValueChangedCallback(value =>
+                {
+                    SaveView(value.newValue);
+
+                    var idData = BinderDropdownData.CreateIdDropdownData(this);
+                    idDropdown.choices = idData.Choices;
+                    idDropdown.SetValueWithoutNotify(idData.Choices[idData.Index]);
+
+                    var viewData = BinderDropdownData.CreateViewDropdownData(this);
+                    root.UpdateDropdownColor(viewDropdown, viewData.HasPrevious);
+                    root.UpdateDropdownColor(idDropdown, idData.HasPrevious);
+
+                    root.Update();
+                });
+
+                idDropdown.RegisterCallback<PointerDownEvent>(_ =>
+                {
+                    if (!string.IsNullOrWhiteSpace(IdProperty.PreviousValue)
+                        && string.IsNullOrWhiteSpace(IdProperty.Value))
+                    {
+                        idDropdown.SetValueWithoutNotify(string.Empty);
+                    }
+                }, TrickleDown.TrickleDown);
+
+                viewDropdown.RegisterCallback<PointerDownEvent>(_ =>
+                {
+                    var previousView = ViewProperty.PreviousValue as MonoView;
+                    if (previousView && ViewProperty.Value is null)
+                    {
+                        viewDropdown.SetValueWithoutNotify(string.Empty);
+                    }
+                }, TrickleDown.TrickleDown);
             }
+            OnCreatedInspectorGUI(root);
+            
+            return root;
         }
         
+        protected virtual MonoBinderVisualElement BuildVisualElement() =>
+            new(editor: this);
+
+        protected virtual void OnCreatingInspectorGUI(MonoBinderVisualElement root) { }
+
+        protected virtual void OnCreatedInspectorGUI(MonoBinderVisualElement root) { }
+
+        #endregion
+
         #region Save Methods
-        private void SetDefaultId() =>
-            SaveId("No Id");
-        
         private void SaveId(string id)
         {
             serializedObject.UpdateIfRequiredOrScript();
             {
-                IdProperty.stringValue = id == "No Id" ? string.Empty : id;
+                IdProperty.Value = id is "No Id" ? string.Empty : id;
             }
             serializedObject.ApplyModifiedProperties();
         }
@@ -243,37 +230,47 @@ namespace Aspid.MVVM
         {
             serializedObject.UpdateIfRequiredOrScript();
             {
-                ViewProperty.objectReferenceValue = null;
-                var views = BinderEditorUtilities.GetViews(TargetAsMonoBinder)
-                    .Where(view => view.name == viewName);
-                
-                foreach (var view in views)
+                if (viewName is "No View")
                 {
-                    ViewProperty.objectReferenceValue = view.view as Object;
-                    break;
+                    ViewProperty.Value = null;
+                }
+                else
+                {
+                    var view = BinderEditorUtilities
+                        .GetViews(TargetAsMonoBinder)
+                        .FirstOrDefault(view => view.Name == viewName);
+
+                    ViewProperty.Value = view.View;
                 }
             }
             serializedObject.ApplyModifiedProperties();
 
-            RefreshViewEditorIfNeeded();
+            Validate();
         }
         #endregion
         
-        private void RefreshViewEditorIfNeeded()
+        private void Validate()
         {
-            if (ViewProperty?.objectReferenceValue is not MonoView monoView)
+            serializedObject.Update();
             {
-                SetDefaultId();
-                return;
-            }
-            
-            // Create a temporary editor for MonoView to trigger its OnEnable,
-            // which will update BindersList based on DesignViewModel
-            var viewEditor = CreateEditor(monoView);
-            if (viewEditor) DestroyImmediate(viewEditor);
+                ViewProperty.Validate();
+                IdProperty.Validate(ViewProperty);
 
-            var ids = BinderEditorUtilities.GetIds(TargetAsMonoBinder, monoView);
-            if (!ids.Contains(IdProperty.stringValue)) SetDefaultId();
+                if (ViewProperty?.Value is MonoView monoView)
+                {
+                    // Create a temporary editor for MonoView to trigger its OnEnable,
+                    // which will update BindersList based on DesignViewModel
+                    var viewEditor = CreateEditor(monoView);
+                    if (viewEditor) DestroyImmediate(viewEditor);
+                    
+                    var ids = BinderEditorUtilities.GetIds(TargetAsMonoBinder, monoView)
+                        .Select(data => data.Id);
+                    
+                    if (!string.IsNullOrWhiteSpace(IdProperty.Value) && !ids.Contains(IdProperty.Value))
+                        IdProperty.Value = string.Empty;
+                }
+            }
+            serializedObject.ApplyModifiedProperties();
         }
     }
 }

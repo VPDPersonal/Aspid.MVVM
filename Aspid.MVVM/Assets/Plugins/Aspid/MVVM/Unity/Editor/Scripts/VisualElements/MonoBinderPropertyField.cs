@@ -3,6 +3,7 @@ using System;
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
+using Aspid.MVVM.Validation;
 using UnityEngine.UIElements;
 
 // ReSharper disable once CheckNamespace
@@ -10,7 +11,7 @@ namespace Aspid.MVVM
 {
     public class MonoBinderPropertyField : VisualElement
     {
-        private static readonly StyleSheet _styleSheet = Resources.Load<StyleSheet>("Styles/aspid-mvvm-mono-binder-property-field");
+        private static readonly StyleSheet _styleSheet = Resources.Load<StyleSheet>("Styles/Aspid-MVVM-MonoBinderPropertyField");
 
         private readonly string? _assemblyQualifiedName;
         private readonly MonoBinderHighlightGradient _highlightGradient;

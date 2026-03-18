@@ -5,6 +5,7 @@ using System.Linq;
 using UnityEditor;
 using UnityEngine;
 using Aspid.FastTools;
+using Aspid.MVVM.Validation;
 using UnityEditor.UIElements;
 using UnityEngine.UIElements;
 using System.Collections.Generic;
@@ -25,6 +26,8 @@ namespace Aspid.MVVM
         where TEditor : MonoViewEditor<TMonoView, TEditor>
     {
         private const string Warning = "It is recommended not to leave unassigned Binders";
+
+        private static readonly StyleSheet _styleSheet = Resources.Load<StyleSheet>("Styles/Aspid-MVVM-UnassignedBinders");
 
         private readonly TEditor _editor;
         private readonly VisualElement _unassignedBindersContainer;
@@ -57,6 +60,7 @@ namespace Aspid.MVVM
             RegisterCallback<DetachFromPanelEvent>(evt =>
                 evt.originPanel.visualTree.UnregisterCallback<MouseDownEvent>(OnPanelMouseDown));
 
+            styleSheets.Add(_styleSheet);
             style.display = DisplayStyle.None;
             Add(Build());
         }
@@ -92,6 +96,7 @@ namespace Aspid.MVVM
             foreach (var unassignedBinder in LastBinders)
             {
                 var capturedIndex = _currentFields.Count;
+                var previousId = unassignedBinder.PreviousId.Id;
 
                 var field = new ObjectField()
                     .SetOpacity(1)
@@ -101,6 +106,15 @@ namespace Aspid.MVVM
                 // Disable the object field's dropdown
                 field.Q<VisualElement>(className: "unity-object-field__selector")
                     .SetDisplay(DisplayStyle.None);
+
+                if (!string.IsNullOrWhiteSpace(previousId))
+                {
+                    var missingLabel = new Label(previousId);
+                    missingLabel.AddToClassList("aspid-unassigned-binders-previous-id");
+
+                    var input = field.Q<VisualElement>(className: "unity-base-field__input");
+                    input?.Add(missingLabel);
+                }
 
                 if (_selectedBinders.Contains(unassignedBinder))
                     SetFieldSelectedStyle(field, true);

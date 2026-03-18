@@ -15,7 +15,7 @@ namespace Aspid.MVVM
     /// </summary>
     public class AspidInspectorHeader : VisualElement
     {
-        private static readonly StyleSheet _styleSheet = Resources.Load<StyleSheet>(path: "Styles/aspid-mvvm-inspector-header");
+        private static readonly StyleSheet _styleSheet = Resources.Load<StyleSheet>(path: "Styles/Aspid-MVVM-AspidInspectorHeader");
         
         private Color _color;
         public readonly Label Label;

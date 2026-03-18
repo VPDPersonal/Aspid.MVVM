@@ -22,7 +22,7 @@ namespace Aspid.MVVM
         private static StyleSheet? _styleSheet;
         
         private static StyleSheet SettingsStyleSheet =>
-            _styleSheet ??= Resources.Load<StyleSheet>("Styles/aspid-mvvm-settings-window");
+            _styleSheet ??= Resources.Load<StyleSheet>("Styles/Aspid-MVVM-AspidMvvmSettingsWindow");
         
         private AspidToggle? _profilerToggle;
         private AspidToggle? _binderLogToggle;

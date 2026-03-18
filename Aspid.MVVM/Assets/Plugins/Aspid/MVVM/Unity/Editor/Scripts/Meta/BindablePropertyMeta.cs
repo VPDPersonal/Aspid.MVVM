@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using Aspid.FastTools;
 using System.Reflection;
 
 // ReSharper disable once CheckNamespace
@@ -65,7 +66,8 @@ namespace Aspid.MVVM
                     Mode = BindMode.OneTime;
                     Name += "Command";
                     
-                    Type = memberContainerType.GetPropertyInfosIncludingBaseClasses(bindingFlags: BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)
+                    Type = memberContainerType.GetMembersInfosIncludingBaseClasses(bindingFlags: BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)
+                        .OfType<PropertyInfo>()
                         .FirstOrDefault(property => property.Name == Name)?.PropertyType;
                     break;
             }

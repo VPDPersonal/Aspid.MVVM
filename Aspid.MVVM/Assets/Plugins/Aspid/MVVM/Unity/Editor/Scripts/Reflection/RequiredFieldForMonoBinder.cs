@@ -4,6 +4,7 @@ using System.Linq;
 using UnityEngine;
 using System.Reflection;
 using System.Collections;
+using Aspid.MVVM.Validation;
 using System.Collections.Generic;
 
 // ReSharper disable once CheckNamespace

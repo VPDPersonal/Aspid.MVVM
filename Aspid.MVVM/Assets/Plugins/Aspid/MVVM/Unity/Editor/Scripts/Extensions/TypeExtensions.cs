@@ -36,59 +36,6 @@ namespace Aspid.MVVM
             return $"{prefix}<{string.Join(", ", genericArguments)}>";
         }
         
-        public static Type? GetExplicitInterface(this Type implementingType, PropertyInfo property)
-        {
-            foreach (var inter in implementingType.GetInterfaces())
-            {
-                var map = implementingType.GetInterfaceMap(inter);
-                
-                for (var i = 0; i < map.InterfaceMethods.Length; i++)
-                {
-                    var targetMethod = map.TargetMethods[i];
-                    
-                    if (property.GetMethod != null && targetMethod == property.GetMethod 
-                        || property.SetMethod != null && targetMethod == property.SetMethod)
-                    {
-                        return inter;
-                    }
-                }
-            }
-
-            return null;
-        }
-        
-        public static IEnumerable<FieldInfo> GetFieldInfosIncludingBaseClasses(this Type type, BindingFlags bindingFlags, Type? baseType = null) =>
-            GetMembersInfosIncludingBaseClasses(type, bindingFlags, baseType).OfType<FieldInfo>();
-        
-        public static IEnumerable<PropertyInfo> GetPropertyInfosIncludingBaseClasses(this Type type, BindingFlags bindingFlags, Type? baseType = null) =>
-            GetMembersInfosIncludingBaseClasses(type, bindingFlags, baseType).OfType<PropertyInfo>();
-        
-        public static IReadOnlyList<MemberInfo> GetMembersInfosIncludingBaseClasses(this Type type, BindingFlags bindingFlags, Type? baseType = null)
-        {
-            if (type.BaseType == typeof(object))
-                return type.GetMembers(bindingFlags);
-
-            var stopAt = baseType ?? typeof(object);
-            var typeChain = new List<Type>();
-            var currentType = type;
-
-            while (currentType != stopAt)
-            {
-                if (currentType is null) break;
-                typeChain.Add(currentType);
-                currentType = currentType.BaseType;
-            }
-
-            // Iterate base → derived so members appear in declaration order (matches Unity inspector)
-            typeChain.Reverse();
-
-            var memberInfoList = new List<MemberInfo>();
-            foreach (var t in typeChain)
-                memberInfoList.AddRange(t.GetMembers(bindingFlags | BindingFlags.DeclaredOnly));
-
-            return memberInfoList;
-        }
-        
         public static Type GetUnitySerializableType(this FieldInfo field) =>
             GetUnitySerializableType(field.FieldType, field.Name);
 

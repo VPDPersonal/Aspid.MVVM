@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using Aspid.FastTools;
 using System.Reflection;
 using System.Collections.Generic;
 
@@ -32,7 +33,8 @@ namespace Aspid.MVVM
 
             if (type.IsInterface)
             {
-                BindableProperties = type.GetPropertyInfosIncludingBaseClasses(bindingAttr)
+                BindableProperties = type.GetMembersInfosIncludingBaseClasses(bindingAttr)
+                    .OfType<PropertyInfo>()
                     .Where(member => BindablePropertyMeta.IsBindableProperty(type, member))
                     .OrderBy(member => member, new MemberComparer())
                     .Select(member => new BindablePropertyMeta(type, member))

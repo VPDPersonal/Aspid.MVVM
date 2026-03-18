@@ -78,13 +78,13 @@ namespace Aspid.MVVM
 
                 for (var i = 0; i < compatibleBinders.Length; i++)
                     property.GetArrayElementAtIndex(startIndex + i).objectReferenceValue = (Object)compatibleBinders[i];
-
-                property.ApplyModifiedProperties();
             }
             else
             {
                 property.objectReferenceValue = (Object)compatibleBinders[0];
             }
+            
+            property.ApplyModifiedProperties();
         }
 
         private void RemoveHighlight()

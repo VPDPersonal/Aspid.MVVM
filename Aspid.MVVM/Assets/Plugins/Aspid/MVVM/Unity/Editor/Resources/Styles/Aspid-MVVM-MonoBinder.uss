@@ -48,6 +48,11 @@
     margin-top: 1px;
 }
 
+.aspid-mono-binder-id-selector-dropdown--previous VisualElement
+{
+    background-color: #680C0C;
+}
+
 .aspid-mono-binder-id-selector-dropdown--previous .unity-base-popup-field__text
 {
     color: rgb(255, 191, 64);

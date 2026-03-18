@@ -12,6 +12,7 @@ namespace Aspid.MVVM
     internal sealed class MonoBinderDragHandler
     {
         private const string DropHighlightStyle = "mono-binder-property__drop-highlight";
+        private const string DropHighlightSuccessStyle = "mono-binder-property__drop-highlight--success";
         
         private readonly VisualElement _highlightTarget;
         private readonly MonoBinderPropertyField _field; 
@@ -31,11 +32,13 @@ namespace Aspid.MVVM
 
         private void OnDragUpdated(DragUpdatedEvent evt)
         {
-            var hasCompatibleBinder = DragAndDrop.objectReferences
+            var best = DragAndDrop.objectReferences
                 .OfType<IMonoBinderValidable>()
-                .Any(b => _field.IsCompatibleBinderWithField(b));
+                .Select(b => _field.IsCompatibleBinderWithField(b))
+                .DefaultIfEmpty(CompatibleBinderWithField.None)
+                .Max();
 
-            if (!hasCompatibleBinder)
+            if (best is CompatibleBinderWithField.None)
             {
                 RemoveHighlight();
                 return;
@@ -43,6 +46,11 @@ namespace Aspid.MVVM
 
             DragAndDrop.visualMode = DragAndDropVisualMode.Link;
             _highlightTarget.AddToClassList(DropHighlightStyle);
+
+            if (best is CompatibleBinderWithField.TypeAndId) 
+                _highlightTarget.AddToClassList(DropHighlightSuccessStyle);
+            else _highlightTarget.RemoveFromClassList(DropHighlightSuccessStyle);
+
             evt.StopPropagation();
         }
 
@@ -50,7 +58,7 @@ namespace Aspid.MVVM
         {
             var compatibleBinders = DragAndDrop.objectReferences
                 .OfType<IMonoBinderValidable>()
-                .Where(b => _field.IsCompatibleBinderWithField(b))
+                .Where(b => _field.IsCompatibleBinderWithField(b) is not CompatibleBinderWithField.None)
                 .ToArray();
 
             if (compatibleBinders.Length is 0) return;
@@ -79,6 +87,10 @@ namespace Aspid.MVVM
             }
         }
 
-        private void RemoveHighlight() => _highlightTarget.RemoveFromClassList(DropHighlightStyle);
+        private void RemoveHighlight()
+        {
+            _highlightTarget.RemoveFromClassList(DropHighlightStyle);
+            _highlightTarget.RemoveFromClassList(DropHighlightSuccessStyle);
+        }
     }
 }

@@ -46,8 +46,13 @@ namespace Aspid.MVVM
 
                 if (IsMonoBinderType(fieldType))
                 {
+                    var binderId = fieldInfo is not null
+                        ? BinderFieldInfoExtensions.GetBinderId(fieldInfo.Name)
+                        : string.Empty;
+                    
                     var assemblyQualifiedName = GetAssemblyQualifiedName(fieldType, fieldInfo);
-                    field = new MonoBinderPropertyField(iterator.Copy(), assemblyQualifiedName).SetMargin(top: marginTop);
+                    
+                    field = new MonoBinderPropertyField(iterator.Copy(), binderId, assemblyQualifiedName).SetMargin(top: marginTop);
                 }
                 else
                 {
@@ -107,7 +112,6 @@ namespace Aspid.MVVM
             return requireBinderAttribute?.AssemblyQualifiedNames?.Any() is true 
                 ? requireBinderAttribute.AssemblyQualifiedNames.First()
                 : fieldType?.AssemblyQualifiedName;
-
         }
 
         private static bool IsMonoBinderType(Type? type)

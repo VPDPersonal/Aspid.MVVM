@@ -32,6 +32,8 @@ namespace Aspid.MVVM
         private readonly TEditor _editor;
         private readonly VisualElement _unassignedBindersContainer;
         private readonly Action<IMonoBinderValidable>? _onBinderClicked;
+        private readonly Func<IMonoBinderValidable, bool>? _canAutoAssign;
+        private readonly Action<IMonoBinderValidable>? _onAutoAssign;
 
         private IMonoBinderValidable[]? LastBinders;
 
@@ -39,9 +41,11 @@ namespace Aspid.MVVM
         private readonly List<ObjectField> _currentFields = new();
         private int _lastClickedIndex = -1;
 
-        public UnassignedBindersVisualElement(TEditor editor, Action<IMonoBinderValidable>? onBinderClicked = null)
+        public UnassignedBindersVisualElement(TEditor editor, Action<IMonoBinderValidable>? onBinderClicked = null, Func<IMonoBinderValidable, bool>? canAutoAssign = null, Action<IMonoBinderValidable>? onAutoAssign = null)
         {
             _editor = editor;
+            _onAutoAssign = onAutoAssign;
+            _canAutoAssign = canAutoAssign;
             _onBinderClicked = onBinderClicked;
 
             // TODO Aspid.MVVM Unity – Rename Name
@@ -227,7 +231,29 @@ namespace Aspid.MVVM
                 }, TrickleDown.TrickleDown);
 
                 _currentFields.Add(field);
-                _unassignedBindersContainer.AddChild(field);
+
+                if (_canAutoAssign != null && _onAutoAssign != null && _canAutoAssign(unassignedBinder))
+                {
+                    var capturedBinder = unassignedBinder;
+                    var autoAssignButton = new Button(() => _onAutoAssign(capturedBinder)) { text = "→" };
+                    autoAssignButton.AddToClassList("aspid-unassigned-binders-auto-assign-button");
+
+                    field.SetMargin(top: 0);
+                    var row = new VisualElement()
+                        .SetFlexGrow(1)
+                        .SetAlignItems(Align.Center)
+                        .SetFlexDirection(FlexDirection.Row)
+                        .SetMargin(top: count > 0 ? 5 : 0)
+                        .AddChild(field)
+                        .AddChild(autoAssignButton);
+
+                    _unassignedBindersContainer.AddChild(row);
+                }
+                else
+                {
+                    _unassignedBindersContainer.AddChild(field);
+                }
+
                 count++;
             }
 

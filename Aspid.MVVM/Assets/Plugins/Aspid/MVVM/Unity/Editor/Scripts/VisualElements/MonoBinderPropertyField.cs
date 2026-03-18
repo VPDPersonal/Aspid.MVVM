@@ -13,19 +13,25 @@ namespace Aspid.MVVM
     {
         private static readonly StyleSheet _styleSheet = Resources.Load<StyleSheet>("Styles/Aspid-MVVM-MonoBinderPropertyField");
 
+        private readonly string _binderId;
         private readonly string? _assemblyQualifiedName;
         private readonly MonoBinderHighlightGradient _highlightGradient;
 
         public SerializedProperty Property { get; }
         
-        public MonoBinderPropertyField(SerializedProperty property, string? assemblyQualifiedName)
-            : this(property, label: string.Empty, assemblyQualifiedName) { }
+        public MonoBinderPropertyField(
+            SerializedProperty property, 
+            string binderId,
+            string? assemblyQualifiedName)
+            : this(property, label: string.Empty, binderId, assemblyQualifiedName) { }
 
-        public MonoBinderPropertyField(SerializedProperty property, string label, string? assemblyQualifiedName)
+        public MonoBinderPropertyField(SerializedProperty property, string label, string binderId, string? assemblyQualifiedName)
         {
             styleSheets.Add(_styleSheet);
 
             Property = property;
+
+            _binderId = binderId;
             _assemblyQualifiedName = assemblyQualifiedName;
 
             var slotWrapper = string.IsNullOrWhiteSpace(label)
@@ -58,25 +64,37 @@ namespace Aspid.MVVM
             }
         }
 
-        public void AnimateHighlight() =>
-            _highlightGradient.AnimateHighlight();
+        public void AnimateHighlight(Color color) =>
+            _highlightGradient.AnimateHighlight(color);
         
-        public bool IsCompatibleBinderWithField(IMonoBinderValidable binder)
+        public CompatibleBinderWithField IsCompatibleBinderWithField(IMonoBinderValidable binder)
         {
             var binderType = ((Component)binder).GetType();
 
-            if (typeof(IAnyBinder).IsAssignableFrom(binderType)) return true;
-            if (string.IsNullOrEmpty(_assemblyQualifiedName)) return false;
+            if (typeof(IAnyBinder).IsAssignableFrom(binderType))
+            {
+                return binder.PreviousId.Id.Contains(_binderId) 
+                    ? CompatibleBinderWithField.TypeAndId
+                    : CompatibleBinderWithField.Type;
+            }
+            
+            if (string.IsNullOrEmpty(_assemblyQualifiedName)) return CompatibleBinderWithField.None;
 
             var propertyType = Type.GetType(_assemblyQualifiedName);
-            if (propertyType is null) return false;
+            if (propertyType is null) return CompatibleBinderWithField.None;
 
-            return binderType.GetInterfaces()
+            var hasType = binderType.GetInterfaces()
                 .Where(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(IBinder<>))
                 .Select(i => i.GetGenericArguments()[0])
                 .Any(binderTypeArg =>
                     binderTypeArg.IsAssignableFrom(propertyType) ||
                     propertyType.IsAssignableFrom(binderTypeArg));
+
+            if (!hasType) return CompatibleBinderWithField.None;
+            
+            return binder.PreviousId.Id.Contains(_binderId) 
+                ? CompatibleBinderWithField.TypeAndId
+                : CompatibleBinderWithField.Type;
         }
     }
 }

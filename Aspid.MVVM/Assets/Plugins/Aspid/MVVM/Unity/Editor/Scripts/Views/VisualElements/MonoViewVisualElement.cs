@@ -3,6 +3,7 @@
 using System;
 using System.Linq;
 using UnityEditor;
+using Aspid.Internal;
 using Aspid.FastTools;
 using Aspid.MVVM.Validation;
 using UnityEngine.UIElements;
@@ -116,7 +117,7 @@ namespace Aspid.MVVM
                 var element = Editor.BindersList.GetArrayElementAtIndex(i);
                 var capturedAssemblyQualifiedName = element.AssemblyQualifiedName;
 
-                var property = new MonoBinderPropertyField(element.MonoBindersProperty, label: ObjectNames.NicifyVariableName(element.Id), capturedAssemblyQualifiedName)
+                var property = new MonoBinderPropertyField(element.MonoBindersProperty, label: ObjectNames.NicifyVariableName(element.Id), element.Id, capturedAssemblyQualifiedName)
                     .SetMargin(top: 3);
                 
                 container.Add(property);
@@ -127,16 +128,60 @@ namespace Aspid.MVVM
 
         private UnassignedBindersVisualElement<TView, TEditor> BuildUnassignedBinders()
         {
-            _unassignedBindersVisualElement = new UnassignedBindersVisualElement<TView, TEditor>(Editor, OnUnassignedBinderClicked);
+            _unassignedBindersVisualElement = new UnassignedBindersVisualElement<TView, TEditor>(Editor, OnUnassignedBinderClicked, CanAutoAssign, OnAutoAssign);
             return _unassignedBindersVisualElement;
+        }
+
+        private bool CanAutoAssign(IMonoBinderValidable binder)
+        {
+            var result = false;
+            
+            this.Query<MonoBinderPropertyField>().ForEach(field =>
+            {
+                if (!result && field.IsCompatibleBinderWithField(binder) is CompatibleBinderWithField.TypeAndId)
+                    result = true;
+            });
+            
+            return result;
+        }
+
+        private void OnAutoAssign(IMonoBinderValidable binder)
+        {
+            MonoBinderPropertyField? targetField = null;
+            
+            this.Query<MonoBinderPropertyField>().ForEach(field =>
+            {
+                if (targetField is null && field.IsCompatibleBinderWithField(binder) == CompatibleBinderWithField.TypeAndId)
+                    targetField = field;
+            });
+
+            if (targetField is null) return;
+
+            var property = targetField.Property;
+            if (property.isArray)
+            {
+                var startIndex = property.arraySize;
+                property.arraySize += 1;
+                property.GetArrayElementAtIndex(startIndex).objectReferenceValue = (UnityEngine.Object)binder;
+            }
+            else
+            {
+                property.objectReferenceValue = (UnityEngine.Object)binder;
+            }
+            
+            property.ApplyModifiedProperties();
         }
 
         private void OnUnassignedBinderClicked(IMonoBinderValidable binder)
         {
             this.Query<MonoBinderPropertyField>().ForEach(field =>
             {
-                if (!field.IsCompatibleBinderWithField(binder)) return;
-                field.AnimateHighlight();
+                var result = field.IsCompatibleBinderWithField(binder);
+                if (result is CompatibleBinderWithField.None) return;
+                
+                field.AnimateHighlight(result is CompatibleBinderWithField.Type 
+                    ? EditorConstants.WarningColor
+                    : EditorConstants.SuccessColor);
             });
         }
 

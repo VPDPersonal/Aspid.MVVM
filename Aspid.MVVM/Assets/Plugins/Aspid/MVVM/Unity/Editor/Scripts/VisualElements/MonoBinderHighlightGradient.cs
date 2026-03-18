@@ -1,6 +1,5 @@
 #nullable enable
 using UnityEngine;
-using Aspid.Internal;
 using UnityEngine.UIElements;
 
 // ReSharper disable once CheckNamespace
@@ -8,6 +7,7 @@ namespace Aspid.MVVM
 {
     internal sealed class MonoBinderHighlightGradient : VisualElement
     {
+        private Color _color;
         private float _highlightProgress;
         private IVisualElementScheduledItem? _highlightAnimation;
 
@@ -22,9 +22,11 @@ namespace Aspid.MVVM
             generateVisualContent += DrawHighlightGradient;
         }
 
-        public void AnimateHighlight()
+        public void AnimateHighlight(Color color)
         {
             const int totalSteps = 50;
+
+            _color = color;
             _highlightAnimation?.Pause();
             _highlightAnimation = null;
 
@@ -66,7 +68,7 @@ namespace Aspid.MVVM
                 var alpha = (1f - t) * (1f - t) * _highlightProgress * 0.35f;
                 if (alpha < 0.005f) continue;
 
-                var color = EditorConstants.WarningColor;
+                var color = _color;
                 color.a = alpha;
 
                 painter.fillColor = color;

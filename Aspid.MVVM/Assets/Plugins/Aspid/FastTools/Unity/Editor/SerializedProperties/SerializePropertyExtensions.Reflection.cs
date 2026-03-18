@@ -14,20 +14,20 @@ namespace Aspid.FastTools.Editors
             | System.Reflection.BindingFlags.Public
             | System.Reflection.BindingFlags.NonPublic;
         
-        public static Type GetPropertyType(this SerializedProperty serializedProperty)
+        public static Type GetPropertyType(this SerializedProperty serializedProperty) => GetMemberInfo(serializedProperty) switch
+        {
+            FieldInfo field => field.FieldType,
+            PropertyInfo property => property.PropertyType,
+            _ => null
+        };
+
+        public static MemberInfo GetMemberInfo(this SerializedProperty serializedProperty)
         {
             var type = serializedProperty.GetClassInstance().GetType();
             
-            var member = type
+            return type
                 .GetMembersInfosIncludingBaseClasses(BindingFlags)
                 .FirstOrDefault(member => member.Name == serializedProperty.name);
-
-            return member switch
-            {
-                FieldInfo field => field.FieldType,
-                PropertyInfo property => property.PropertyType,
-                _ => null
-            };
         }
         
         public static object GetClassInstance(this SerializedProperty property)

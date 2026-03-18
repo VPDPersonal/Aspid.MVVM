@@ -7,3 +7,8 @@ VisualElement {}
     border-radius: 5px;
     border-color: #FFB742;
 }
+
+.mono-binder-property__drop-highlight--success
+{
+    border-color: rgba(44, 191, 103, 0.81);
+}

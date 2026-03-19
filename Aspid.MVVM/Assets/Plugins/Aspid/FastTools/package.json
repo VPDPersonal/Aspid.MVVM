@@ -1,6 +1,6 @@
 {
   "name": "com.aspid.fasttools",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "displayName": "Aspid.FastTools",
   "description": "Aspid.FastTools is a set of tools designed to minimize routine code writing in Unity",
   "unity": "2022.3",

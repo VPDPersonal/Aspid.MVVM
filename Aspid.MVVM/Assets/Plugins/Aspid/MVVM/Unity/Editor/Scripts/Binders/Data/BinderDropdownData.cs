@@ -53,7 +53,7 @@ namespace Aspid.MVVM
                     return new BinderDropdownData(choices, choices.IndexOf(id));
 
                 var previousId = editor.IdProperty.PreviousValue;
-                var hasPrevious = !string.IsNullOrWhiteSpace(previousId) && choices.Contains(previousId);
+                var hasPrevious = !string.IsNullOrWhiteSpace(previousId);
                 return new BinderDropdownData(choices, index: 0, hasPrevious);
             }
         }
@@ -64,9 +64,10 @@ namespace Aspid.MVVM
 
             var views = BinderEditorUtilities.GetViews(editor.TargetAsMonoBinder);
             var viewName = BinderViewData.GetViewName(editor.ViewProperty.Value as MonoView);
+            var hasPrevious = !string.IsNullOrWhiteSpace(editor.ViewProperty.PreviousName);
 
             if (views.Count is 0)
-                return new BinderDropdownData(choices: new List<string> { noneValue }, index: 0);
+                return new BinderDropdownData(choices: new List<string> { noneValue }, index: 0, hasPrevious);
 
             var choices = views
                 .Select(view => view.Name)
@@ -77,10 +78,7 @@ namespace Aspid.MVVM
 
             if (!string.IsNullOrWhiteSpace(viewName))
                 return new BinderDropdownData(choices, index: choices.IndexOf(viewName));
-
-            var previousView = editor.ViewProperty.PreviousValue as MonoView;
-            var previousName = BinderViewData.GetViewName(previousView);
-            var hasPrevious = !string.IsNullOrWhiteSpace(previousName) && choices.Contains(previousName);
+            
             return new BinderDropdownData(choices, index: 0, hasPrevious);
         }
     }

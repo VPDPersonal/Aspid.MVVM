@@ -1,4 +1,5 @@
 #if !ASPID_MVVM_EDITOR_DISABLED
+using System;
 using UnityEngine;
 using UnityEditor;
 using System.Linq;
@@ -25,8 +26,14 @@ namespace Aspid.MVVM
         private VisualElement _logsContainer;
         private readonly MonoBinderEditor _editor;
         
-        public DropdownField IdDropdown { get; private set; }
+        private Button RestoreIdButton { get; set; }
         
+        private Button SelectViewButton { get; set; }
+        
+        private Button RestoreViewButton { get; set; }
+        
+        public DropdownField IdDropdown { get; private set; }
+
         public DropdownField ViewDropdown { get; private set; }
         
         protected virtual IEnumerable<string> PropertiesExcluding
@@ -70,12 +77,16 @@ namespace Aspid.MVVM
         public void Update()
         {
             if (!_isInitialized) return;
-            
+
             FillLogList();
-            
+
             // Update Header
             this.Q<HelpBox>().SetDisplay(_editor.HasBinderId ? DisplayStyle.None : DisplayStyle.Flex);
             this.Q<AspidInspectorHeader>().SetMessageType(MessageType);
+
+            RestoreIdButton?.SetDisplay(_editor.CanRestoreId() ? DisplayStyle.Flex : DisplayStyle.None);
+            RestoreViewButton?.SetDisplay(_editor.CanRestoreView() ? DisplayStyle.Flex : DisplayStyle.None);
+            SelectViewButton?.SetDisplay(_editor.ViewProperty?.Value is not null ? DisplayStyle.Flex : DisplayStyle.None);
         }
 
         protected virtual VisualElement Build()
@@ -99,13 +110,16 @@ namespace Aspid.MVVM
         {
             ViewDropdown = CreateDropdownView();
             IdDropdown = CreateDropdownId();
+            SelectViewButton = CreateSelectViewButton();
+            RestoreIdButton = CreateRestoreButton(_editor.RestoreId);
+            RestoreViewButton = CreateRestoreButton(_editor.RestoreView);
 
             var dropdowns = new VisualElement();
             dropdowns.AddToClassList("aspid-mono-binder-id-selector-dropdowns");
-            dropdowns
-                .AddChild(CreateFieldElement(ViewDropdown, label: "View"))
-                .AddChild(CreateFieldElement(IdDropdown, label: "ID"));
-
+            dropdowns.style.flexGrow = 1;
+            dropdowns.AddChild(CreateFieldView(ViewDropdown, SelectViewButton, RestoreViewButton))
+                .AddChild(CreateFieldId(IdDropdown, RestoreIdButton));
+            
              var helpBox = new AspidHelpBox(message: "View and ID must be assigned", HelpBoxMessageType.Error)
                  .SetDisplay(_editor.HasBinderId ? DisplayStyle.None : DisplayStyle.Flex);
 
@@ -147,8 +161,7 @@ namespace Aspid.MVVM
                  {
                      formatSelectedValueCallback = value =>
                      {
-                         var previousView = _editor.ViewProperty.PreviousValue as Component;
-                         var previousName = BinderViewData.GetViewName(previousView);
+                         var previousName = _editor.ViewProperty.PreviousName;
                      
                          return value is "No View" or null or "" && !string.IsNullOrWhiteSpace(previousName)
                              ? previousName
@@ -161,17 +174,74 @@ namespace Aspid.MVVM
                  return dropdown;
              }
 
-             VisualElement CreateFieldElement(DropdownField dropdown, string label)
+             Button CreateSelectViewButton()
              {
-                 var elementLabel = new Label(label);
-                 elementLabel.AddToClassList("aspid-mono-binder-id-selector-dropdown-label");
+                 var button = new Button(clickEvent: () =>
+                     {
+                         if (_editor.ViewProperty.Value is not Component view) return;
+                         EditorGUIUtility.PingObject(view.gameObject);
+                     })
+                     .AddChild(new Image()
+                         .SetImage(EditorGUIUtility.IconContent(name: "d_pick_uielements@2x").image as Texture2D));
+            
+                 button.SetDisplay(_editor.ViewProperty.Value is not null ? DisplayStyle.Flex : DisplayStyle.None);
+                 button.AddToClassList("aspid-mono-binder-id-selector-view-select-button");
+                 button.RegisterCallback<ClickEvent>(clickEvent =>
+                 {
+                     if (clickEvent.clickCount < 2) return;
+                     if (_editor.ViewProperty.Value is not Component view) return;
+                
+                     Selection.activeGameObject = view.gameObject;
+                 });
 
-                 var wrapper = new VisualElement();
-                 wrapper.AddToClassList("aspid-mono-binder-id-selector-dropdown-column");
+                 return button;
+             }
+             
+             Button CreateRestoreButton(Action restore)
+             {
+                 var button = new Button(restore)
+                     .AddChild(new Image()
+                         .SetImage(EditorGUIUtility.IconContent(name: "d_Refresh").image as Texture2D));
+                 
+                 button.AddToClassList("aspid-mono-binder-id-selector-restore-button");
+                 return button;
+             }
 
-                 return wrapper
-                     .AddChild(elementLabel)
-                     .AddChild(dropdown);
+             VisualElement CreateFieldView(DropdownField dropdown, Button selectViewButton, Button restoreButton)
+             {
+                 var label = new Label(text: "View");
+                 label.AddToClassList("aspid-mono-binder-id-selector-dropdown-label");
+                 
+                 var row = new VisualElement()
+                     .AddChild(dropdown)
+                     .AddChild(selectViewButton)
+                     .AddChild(restoreButton);
+                 row.AddToClassList("aspid-mono-binder-id-selector-row");
+                 
+                 var column = new VisualElement()
+                     .AddChild(label)
+                     .AddChild(row);
+                 column.AddToClassList("aspid-mono-binder-id-selector-dropdown-column");
+
+                 return column;
+             }
+             
+             VisualElement CreateFieldId(DropdownField dropdown, Button restoreButton)
+             {
+                 var label = new Label(text: "ID");
+                 label.AddToClassList("aspid-mono-binder-id-selector-dropdown-label");
+                 
+                 var row = new VisualElement()
+                     .AddChild(dropdown)
+                     .AddChild(restoreButton);
+                 row.AddToClassList("aspid-mono-binder-id-selector-row");
+
+                 var column = new VisualElement()
+                     .AddChild(label)
+                     .AddChild(row);
+                 column.AddToClassList("aspid-mono-binder-id-selector-dropdown-column");
+
+                 return column;
              }
         }
 

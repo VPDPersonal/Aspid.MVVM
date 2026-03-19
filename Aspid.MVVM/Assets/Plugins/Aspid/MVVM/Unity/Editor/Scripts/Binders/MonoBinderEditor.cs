@@ -3,7 +3,6 @@ using System;
 using System.Linq;
 using UnityEngine;
 using UnityEditor;
-using Aspid.FastTools;
 using UnityEditor.UIElements;
 using UnityEngine.UIElements;
 
@@ -195,8 +194,8 @@ namespace Aspid.MVVM
 
                 viewDropdown.RegisterCallback<PointerDownEvent>(_ =>
                 {
-                    var previousView = ViewProperty.PreviousValue as MonoView;
-                    if (previousView && ViewProperty.Value is null)
+                    var previousView = ViewProperty.PreviousName;
+                    if (!string.IsNullOrWhiteSpace(previousView) && ViewProperty.Value is null)
                     {
                         viewDropdown.SetValueWithoutNotify(string.Empty);
                     }
@@ -213,7 +212,45 @@ namespace Aspid.MVVM
         protected virtual void OnCreatingInspectorGUI(MonoBinderVisualElement root) { }
 
         protected virtual void OnCreatedInspectorGUI(MonoBinderVisualElement root) { }
+        #endregion
 
+        #region Restore Methods
+        public bool CanRestoreView()
+        {
+            if (ViewProperty.Value is not null) return false;
+            
+            var previousView = ViewProperty.PreviousValue;
+            return previousView is not null && previousView.IsBinderInViewScope(TargetAsMonoBinder);
+        }
+        
+        public void RestoreView()
+        {
+            if (!CanRestoreView()) return;
+
+            var viewName = BinderViewData.GetViewName(ViewProperty.PreviousValue as Component);
+            if (string.IsNullOrWhiteSpace(viewName)) return;
+            
+            SaveView(viewName);
+        }
+        
+        public bool CanRestoreId()
+        {
+            if (!string.IsNullOrWhiteSpace(IdProperty.Value)) return false;
+            
+            var view = ViewProperty.Value;
+            if (view is null) return false;
+
+            var previousId = IdProperty.PreviousValue;
+            var ids = BinderEditorUtilities.GetIds(TargetAsMonoBinder, view);
+            
+            return ids.Any(id => id.Id == previousId);
+        }
+        
+        public void RestoreId()
+        {
+            if (!CanRestoreId()) return;
+            SaveId(IdProperty.PreviousValue);
+        }
         #endregion
 
         #region Save Methods

@@ -287,7 +287,7 @@ namespace Aspid.MVVM
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static bool IsBinderInViewScope(this IView view, IBinder binder)
+        public static bool IsBinderInViewScope(this IView view, IBinder binder)
         {
             if (view is not Component viewComponent || binder is not Component binderComponent) return false;
             return binderComponent.transform.IsChildOf(viewComponent.transform) || binderComponent.transform == viewComponent.transform;

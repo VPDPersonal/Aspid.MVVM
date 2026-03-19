@@ -4,11 +4,29 @@
     flex-direction: column;
 }
 
+
 .aspid-mono-binder-id-selector-dropdowns
 {
-    margin-bottom: 1px;
     align-items: center;
     flex-direction: row;
+}
+
+.aspid-mono-binder-id-selector-restore-button
+{
+    margin: 0;
+    padding: 0;
+    width: 18px;
+    height: 18px;
+    min-width: 18px;
+    align-items: center;
+    background-color: #680C0C;
+}
+
+.aspid-mono-binder-id-selector-restore-button > Image
+{
+    width: 200%;
+    height: 200%;
+    flex-grow: 1;
 }
 
 .aspid-mono-binder-id-selector-dropdown-column
@@ -31,6 +49,7 @@
 {
     margin: 0;
     flex-grow: 1;
+    flex-shrink: 1;
 }
 
 .aspid-mono-binder-id-selector-dropdown-id
@@ -41,6 +60,29 @@
 .aspid-mono-binder-id-selector-dropdown-view
 {
     margin-right: 1;
+}
+
+.aspid-mono-binder-id-selector-row
+{
+    flex-direction: row;
+    align-items: flex-end;
+}
+
+.aspid-mono-binder-id-selector-view-select-button
+{
+    margin: 0;
+    padding: 0;
+    width: 18px;
+    height: 18px;
+    min-width: 18px;
+    align-items: center;
+}
+
+.aspid-mono-binder-id-selector-view-select-button > Image
+{
+    width: 200%;
+    height: 200%;
+    flex-grow: 1;
 }
 
 .aspid-mono-binder-id-selector-mode

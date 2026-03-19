@@ -11,6 +11,6 @@ namespace Aspid.MVVM.Samples.TodoList
         [SerializeField] private MonoBinder _searchInput;
         
         [SerializeField] private ButtonCommandBinder[] _addTodoCommand;
-        [SerializeField] private ViewModelObservableListMonoBinder _todoItemViewModels;
+        [SerializeField] private ObservableListViewModelMonoBinder _todoItemViewModels;
     }
 }

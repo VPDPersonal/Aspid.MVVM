@@ -86,7 +86,7 @@ namespace Aspid.MVVM.StarterKit
         {
             _entry = new EventTrigger.Entry
             {
-                eventID = EventTriggerType.PointerEnter,
+                eventID = _event,
             };
 
             _entry.callback.AddListener(OnTrigger);
@@ -226,7 +226,7 @@ namespace Aspid.MVVM.StarterKit
         {
             _entry = new EventTrigger.Entry
             {
-                eventID = EventTriggerType.PointerEnter,
+                eventID = _event,
             };
 
             _entry.callback.AddListener(OnTrigger);
@@ -381,7 +381,7 @@ namespace Aspid.MVVM.StarterKit
         {
             _entry = new EventTrigger.Entry
             {
-                eventID = EventTriggerType.PointerEnter,
+                eventID = _event,
             };
 
             _entry.callback.AddListener(OnTrigger);
@@ -550,7 +550,7 @@ namespace Aspid.MVVM.StarterKit
         {
             _entry = new EventTrigger.Entry
             {
-                eventID = EventTriggerType.PointerEnter,
+                eventID = _event,
             };
 
             _entry.callback.AddListener(OnTrigger);
@@ -709,7 +709,7 @@ namespace Aspid.MVVM.StarterKit
         {
             _entry = new EventTrigger.Entry
             {
-                eventID = EventTriggerType.PointerEnter,
+                eventID = _event,
             };
 
             _entry.callback.AddListener(OnTrigger);

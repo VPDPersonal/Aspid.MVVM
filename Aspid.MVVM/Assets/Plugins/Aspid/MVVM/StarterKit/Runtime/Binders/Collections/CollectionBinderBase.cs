@@ -15,7 +15,9 @@ namespace Aspid.MVVM.StarterKit
     /// is non-empty.
     /// The class also implements <see cref="IDisposable"/>; disposing it calls <see cref="OnReset"/>.
     /// </remarks>
-    public abstract class CollectionBinderBase<T> : Binder, IBinder<IReadOnlyCollection<T>>, IDisposable
+    public abstract class CollectionBinderBase<T> : Binder, 
+        IBinder<IReadOnlyCollection<T>>,
+        IDisposable
     {
         /// <summary>
         /// Gets the currently bound collection, or <see langword="null"/> if no collection is set.

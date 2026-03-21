@@ -7,11 +7,11 @@ using System.Collections.Generic;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// Concrete <see cref="ViewModelCollectionBinder{T}"/> that uses <see cref="MonoView"/> as the view type.
+    /// Concrete <see cref="CollectionViewModelBinder{T}"/> that uses <see cref="MonoView"/> as the view type.
     /// </summary>
     /// <include file="XmlExampleDoc-Collection-ViewModel-1.1.0.xml" path="doc//member[@name='CollectionViewModelBinder']/*" />
     [Serializable]
-    public class CollectionViewModelBinder : ViewModelCollectionBinder<MonoView>
+    public class CollectionViewModelBinder : CollectionViewModelBinder<MonoView>
     {
         /// <inheritdoc/>
         public CollectionViewModelBinder(MonoView[] views, BindMode mode = BindMode.OneWay)
@@ -26,18 +26,18 @@ namespace Aspid.MVVM.StarterKit
     /// <typeparam name="T">The type of pre-instantiated <see cref="MonoBehaviour"/> view objects in the collection.</typeparam>
     /// <include file="XmlExampleDoc-Collection-ViewModel-1.1.0.xml" path="doc//member[@name='ViewModelCollectionBinder{1}']/*" />
     [Serializable]
-    public class ViewModelCollectionBinder<T> : CollectionBinderBase<IViewModel>
+    public class CollectionViewModelBinder<T> : CollectionBinderBase<IViewModel>
         where T : MonoBehaviour, IView
     {
         [Tooltip("The pre-instantiated view objects assigned to bound ViewModel items in order.")]
         [SerializeField] private T[] _views;
 
         /// <summary>
-        /// Initializes a new instance of <see cref="ViewModelCollectionBinder{T}"/>.
+        /// Initializes a new instance of <see cref="CollectionViewModelBinder{T}"/>.
         /// </summary>
         /// <param name="views">The pre-instantiated view objects to assign bound ViewModel items to.</param>
         /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/>.</param>
-        public ViewModelCollectionBinder(T[] views, BindMode mode = BindMode.OneWay)
+        public CollectionViewModelBinder(T[] views, BindMode mode = BindMode.OneWay)
             : base(mode)
         {
             _views = views;

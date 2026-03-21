@@ -239,17 +239,33 @@ namespace Aspid.MVVM
             
             var view = ViewProperty.Value;
             if (view is null) return false;
-
-            var previousId = IdProperty.PreviousValue;
-            var ids = BinderEditorUtilities.GetIds(TargetAsMonoBinder, view);
             
-            return ids.Any(id => id.Id == previousId);
+            var previousId = Cut(IdProperty.PreviousValue);
+            
+            var ids = BinderEditorUtilities.GetIds(TargetAsMonoBinder, view);
+            return ids.Any(id => Cut(id.Id) == previousId);
+
+            string Cut(string id)
+            {
+                id ??= string.Empty;
+                return id.Contains("DesignViewModel.") ? id[16..] : id;
+            }
         }
         
         public void RestoreId()
         {
             if (!CanRestoreId()) return;
-            SaveId(IdProperty.PreviousValue);
+            var previousId = IdProperty.PreviousValue;
+            var view = ViewProperty.Value;
+
+            if (!BinderEditorUtilities.GetIds(TargetAsMonoBinder, view)
+                    .Any(id => id.Id != previousId))
+            {
+                if (previousId.Contains("DesignViewModel."))
+                    previousId = previousId[16..];
+            }
+            
+            SaveId(previousId);
         }
         #endregion
 

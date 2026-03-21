@@ -50,7 +50,14 @@ namespace Aspid.MVVM
                 choices.Insert(index: 0, noneValue);
 
                 if (!string.IsNullOrWhiteSpace(id))
-                    return new BinderDropdownData(choices, choices.IndexOf(id));
+                {
+                    var index = choices.IndexOf(id);
+                    if (index < 0) index = choices.IndexOf(id.Contains("DesignViewModel.") ? id[16..] : id);
+                    
+                    return index >= 0 
+                        ? new BinderDropdownData(choices, index)
+                        : new BinderDropdownData(choices, index: 0, hasPrevious: true);
+                }
 
                 var previousId = editor.IdProperty.PreviousValue;
                 var hasPrevious = !string.IsNullOrWhiteSpace(previousId);

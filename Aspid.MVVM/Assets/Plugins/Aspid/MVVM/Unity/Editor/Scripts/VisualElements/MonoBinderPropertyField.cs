@@ -70,10 +70,14 @@ namespace Aspid.MVVM
         public CompatibleBinderWithField IsCompatibleBinderWithField(IMonoBinderValidable binder)
         {
             var binderType = ((Component)binder).GetType();
+            
+            var previousId = binder.PreviousId.Id ?? string.Empty;
+            if (previousId.Contains("DesignViewModel."))
+                previousId = previousId[16..];
 
             if (typeof(IAnyBinder).IsAssignableFrom(binderType))
             {
-                return binder.PreviousId.Id.Contains(_binderId) 
+                return previousId == _binderId 
                     ? CompatibleBinderWithField.TypeAndId
                     : CompatibleBinderWithField.Type;
             }
@@ -92,7 +96,7 @@ namespace Aspid.MVVM
 
             if (!hasType) return CompatibleBinderWithField.None;
             
-            return binder.PreviousId.Id?.Contains(_binderId) ?? false
+            return previousId == _binderId
                 ? CompatibleBinderWithField.TypeAndId
                 : CompatibleBinderWithField.Type;
         }

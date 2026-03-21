@@ -92,7 +92,7 @@ namespace Aspid.MVVM
 
             if (!hasType) return CompatibleBinderWithField.None;
             
-            return binder.PreviousId.Id.Contains(_binderId) 
+            return binder.PreviousId.Id?.Contains(_binderId) ?? false
                 ? CompatibleBinderWithField.TypeAndId
                 : CompatibleBinderWithField.Type;
         }

@@ -257,12 +257,14 @@ namespace Aspid.MVVM
             if (!CanRestoreId()) return;
             var previousId = IdProperty.PreviousValue;
             var view = ViewProperty.Value;
+            
+            if (!previousId.Contains("DesignViewModel."))
+                previousId = "DesignViewModel." + previousId;
 
-            if (!BinderEditorUtilities.GetIds(TargetAsMonoBinder, view)
-                    .Any(id => id.Id != previousId))
+            if (BinderEditorUtilities.GetIds(TargetAsMonoBinder, view)
+                    .All(id => id.Id != previousId))
             {
-                if (previousId.Contains("DesignViewModel."))
-                    previousId = previousId[16..];
+                previousId = previousId[16..];
             }
             
             SaveId(previousId);

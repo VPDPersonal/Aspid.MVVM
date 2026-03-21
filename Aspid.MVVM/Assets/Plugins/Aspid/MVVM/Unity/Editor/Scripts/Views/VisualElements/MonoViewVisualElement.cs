@@ -59,6 +59,7 @@ namespace Aspid.MVVM
             generalBindersParent.AddChild(BuildGeneralBinders());
 
             generalBindersParent.SetDisplay(this.Q<VisualElement>(GeneralBindersId).childCount > 0 ? DisplayStyle.Flex : DisplayStyle.None);
+            _unassignedBindersVisualElement?.Invalidate();
         }
         
         protected override void OnUpdate() =>

@@ -78,6 +78,8 @@ namespace Aspid.MVVM
                 .AddChild(_unassignedBindersContainer);
         }
 
+        public void Invalidate() => LastBinders = null;
+
         public void Update()
         {
             var binders = _editor.UnassignedBinders.ToArray();

@@ -85,6 +85,7 @@ namespace Aspid.MVVM
                 Add(onBuiltBaseInspector);
             }
             
+            Add(new CommandsContainer(Editor.TargetAsView));
             Add(BuildViewModel());
         }
 

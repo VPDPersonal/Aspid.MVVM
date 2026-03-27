@@ -117,8 +117,8 @@ namespace Aspid.MVVM
             var dropdowns = new VisualElement();
             dropdowns.AddToClassList("aspid-mono-binder-id-selector-dropdowns");
             dropdowns.style.flexGrow = 1;
-            dropdowns.AddChild(CreateFieldView(ViewDropdown, SelectViewButton, RestoreViewButton))
-                .AddChild(CreateFieldId(IdDropdown, RestoreIdButton));
+            dropdowns.AddChild(CreateFieldContainer("View", ViewDropdown, SelectViewButton, RestoreViewButton))
+                .AddChild(CreateFieldContainer("ID", IdDropdown, RestoreIdButton));
             
              var helpBox = new AspidHelpBox(message: "View and ID must be assigned", HelpBoxMessageType.Error)
                  .SetDisplay(_editor.HasBinderId ? DisplayStyle.None : DisplayStyle.Flex);
@@ -143,7 +143,7 @@ namespace Aspid.MVVM
                      formatSelectedValueCallback = value =>
                      {
                          var previousId = _editor.IdProperty.PreviousValue;
-                         return value is "No Id" or null or "" && !string.IsNullOrWhiteSpace(previousId)
+                         return value is BinderEditorConstants.NoId or null or "" && !string.IsNullOrWhiteSpace(previousId)
                              ? previousId
                              : value;
                      }
@@ -162,8 +162,8 @@ namespace Aspid.MVVM
                      formatSelectedValueCallback = value =>
                      {
                          var previousName = _editor.ViewProperty.PreviousName;
-                     
-                         return value is "No View" or null or "" && !string.IsNullOrWhiteSpace(previousName)
+
+                         return value is BinderEditorConstants.NoView or null or "" && !string.IsNullOrWhiteSpace(previousName)
                              ? previousName
                              : value;
                      }
@@ -202,38 +202,19 @@ namespace Aspid.MVVM
                  var button = new Button(restore)
                      .AddChild(new Image()
                          .SetImage(EditorGUIUtility.IconContent(name: "d_Refresh").image as Texture2D));
-                 
+
                  button.AddToClassList("aspid-mono-binder-id-selector-restore-button");
                  return button;
              }
 
-             VisualElement CreateFieldView(DropdownField dropdown, Button selectViewButton, Button restoreButton)
+             static VisualElement CreateFieldContainer(string labelText, DropdownField dropdown, params Button[] buttons)
              {
-                 var label = new Label(text: "View");
+                 var label = new Label(text: labelText);
                  label.AddToClassList("aspid-mono-binder-id-selector-dropdown-label");
-                 
-                 var row = new VisualElement()
-                     .AddChild(dropdown)
-                     .AddChild(selectViewButton)
-                     .AddChild(restoreButton);
-                 row.AddToClassList("aspid-mono-binder-id-selector-row");
-                 
-                 var column = new VisualElement()
-                     .AddChild(label)
-                     .AddChild(row);
-                 column.AddToClassList("aspid-mono-binder-id-selector-dropdown-column");
 
-                 return column;
-             }
-             
-             VisualElement CreateFieldId(DropdownField dropdown, Button restoreButton)
-             {
-                 var label = new Label(text: "ID");
-                 label.AddToClassList("aspid-mono-binder-id-selector-dropdown-label");
-                 
-                 var row = new VisualElement()
-                     .AddChild(dropdown)
-                     .AddChild(restoreButton);
+                 var row = new VisualElement().AddChild(dropdown);
+                 foreach (var button in buttons)
+                     row.AddChild(button);
                  row.AddToClassList("aspid-mono-binder-id-selector-row");
 
                  var column = new VisualElement()
@@ -327,7 +308,7 @@ namespace Aspid.MVVM
             }
         }
         
-        public void UpdateDropdownColor(DropdownField dropdown, bool hasPrevious)
+        public static void UpdateDropdownColor(DropdownField dropdown, bool hasPrevious)
         {
             const string previousClass = "aspid-mono-binder-id-selector-dropdown--previous";
 

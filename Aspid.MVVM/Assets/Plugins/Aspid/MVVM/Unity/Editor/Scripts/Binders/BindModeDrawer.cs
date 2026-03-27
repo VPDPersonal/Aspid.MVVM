@@ -75,67 +75,50 @@ namespace Aspid.MVVM
         
         private BindModes GetAvailableModes()
         {
-            var overrideAttribute = _overrideAttribute;
-            
-            if (overrideAttribute is not null)
-            {
-                if (overrideAttribute.IsAll || (overrideAttribute.IsOne && overrideAttribute.IsTwo))
-                    return BindModes.CreateAll(overrideAttribute.Modes);
-                
-                if (overrideAttribute.IsOne)
-                    return BindModes.CreateOne(overrideAttribute.Modes);
-                
-                if (overrideAttribute.IsTwo)
-                    return BindModes.CreateTwo(overrideAttribute.Modes);
+            if (_overrideAttribute is not null)
+                return ResolveBindModes(new BindModeProviderAdapter(_overrideAttribute));
 
-                return overrideAttribute.Modes.Length == 0 
-                    ? BindModes.CreateAll() 
-                    : BindModes.Create(overrideAttribute.Modes);
-            }
-            
             if (attribute is BindModeAttribute bindModeAttribute)
-            {
-                if (bindModeAttribute.IsAll || (bindModeAttribute.IsOne && bindModeAttribute.IsTwo))
-                    return BindModes.CreateAll(bindModeAttribute.Modes);
-                
-                if (bindModeAttribute.IsOne)
-                    return BindModes.CreateOne(bindModeAttribute.Modes);
-                
-                if (bindModeAttribute.IsTwo)
-                    return BindModes.CreateTwo(bindModeAttribute.Modes);
-
-                return bindModeAttribute.Modes.Length == 0 
-                    ? BindModes.CreateAll() 
-                    : BindModes.Create(bindModeAttribute.Modes);
-            }
+                return ResolveBindModes(new BindModeProviderAdapter(bindModeAttribute));
 
             return BindModes.CreateAll();
+        }
+
+        private static BindModes ResolveBindModes(BindModeProviderAdapter provider)
+        {
+            if (provider.IsAll || (provider.IsOne && provider.IsTwo))
+                return BindModes.CreateAll(provider.Modes);
+
+            if (provider.IsOne)
+                return BindModes.CreateOne(provider.Modes);
+
+            if (provider.IsTwo)
+                return BindModes.CreateTwo(provider.Modes);
+
+            return provider.Modes.Length is 0
+                ? BindModes.CreateAll()
+                : BindModes.Create(provider.Modes);
         }
 
         private static int GetSelectedIndex(SerializedProperty property, BindModes availableModes)
         {
             var currentMode = (BindMode)property.intValue;
             var selectedIndex = Array.IndexOf(availableModes.Modes, currentMode);
+            if (selectedIndex >= 0) return selectedIndex;
             
-            if (selectedIndex < 0)
-            {
-                selectedIndex = 0;
-                property.intValue = (int)availableModes.FirstMode;
-                property.serializedObject.ApplyModifiedProperties();
-            }
-
+            selectedIndex = 0;
+            property.intValue = (int)availableModes.FirstMode;
+            property.serializedObject.ApplyModifiedProperties();
             return selectedIndex;
         }
         
         private void SetPropertyValue(SerializedProperty property, BindModes availableModes, int selectedIndex)
         {
-            if (_classInstance is IRebindableBinder rebindable)
-            {
-                property.intValue = (int)availableModes.Modes[selectedIndex];
-                property.serializedObject.ApplyModifiedProperties();
+            if (_classInstance is not IRebindableBinder rebindable) return;
+            property.intValue = (int)availableModes.Modes[selectedIndex];
+            property.serializedObject.ApplyModifiedProperties();
                 
-                rebindable.Rebind();
-            }
+            rebindable.Rebind();
         }
         
         private readonly struct BindModes
@@ -180,6 +163,49 @@ namespace Aspid.MVVM
                 
                 return Create(list.ToArray());
             }
+        }
+
+        private readonly struct BindModeProviderAdapter
+        {
+            private readonly object _attribute;
+
+            public BindModeProviderAdapter(BindModeAttribute attribute)
+            {
+                _attribute = attribute;
+            }
+            
+            public BindModeProviderAdapter(BindModeOverrideAttribute attribute)
+            {
+                _attribute = attribute;
+            }
+
+            public bool IsAll => _attribute switch
+            {
+                BindModeAttribute a => a.IsAll,
+                BindModeOverrideAttribute a => a.IsAll,
+                _ => false
+            };
+
+            public bool IsOne => _attribute switch
+            {
+                BindModeAttribute a => a.IsOne,
+                BindModeOverrideAttribute a => a.IsOne,
+                _ => false
+            };
+
+            public bool IsTwo => _attribute switch
+            {
+                BindModeAttribute a => a.IsTwo,
+                BindModeOverrideAttribute a => a.IsTwo,
+                _ => false
+            };
+
+            public BindMode[] Modes => _attribute switch
+            {
+                BindModeAttribute a => a.Modes,
+                BindModeOverrideAttribute a => a.Modes,
+                _ => Array.Empty<BindMode>()
+            };
         }
     }
 }

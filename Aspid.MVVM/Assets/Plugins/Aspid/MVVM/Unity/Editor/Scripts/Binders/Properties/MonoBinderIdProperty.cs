@@ -9,11 +9,11 @@ namespace Aspid.MVVM
 {
     public class MonoBinderIdProperty
     {
-        public SerializedProperty ValueProperty { get; private set; }
-        
-        public SerializedProperty PreviousProperty { get; private set; }
-        
-        public SerializedProperty PreviousValueProperty { get; private set; }
+        public SerializedProperty ValueProperty { get; }
+
+        public SerializedProperty PreviousProperty { get; }
+
+        public SerializedProperty PreviousValueProperty { get; }
 
         public string Value
         {
@@ -30,22 +30,22 @@ namespace Aspid.MVVM
             get => PreviousValueProperty.stringValue;
             private set => PreviousValueProperty.SetStringAndApply(value);
         }
-        
+
         public MonoBinderIdProperty(SerializedObject serializedObject)
         {
             ValueProperty = serializedObject.FindProperty("__id");
             PreviousProperty = serializedObject.FindProperty("__previousId");
             PreviousValueProperty = PreviousProperty.FindPropertyRelative("_id");
         }
-        
+
         public void Validate(MonoBinderViewProperty validViewProperty)
         {
             if (string.IsNullOrWhiteSpace(Value)) return;
-            
+
             PreviousValue = Value;
             var view = validViewProperty.Value;
             var target = (Component)ValueProperty.serializedObject.targetObject;
-                
+
             if (view is not null && view.TryGetRequireBinderFieldsById(Value, out var field))
             {
                 if (field!.FieldType.IsArray)
@@ -66,7 +66,7 @@ namespace Aspid.MVVM
                     }
                 }
             }
-            
+
             ValueProperty.stringValue = string.Empty;
         }
     }

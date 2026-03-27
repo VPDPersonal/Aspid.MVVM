@@ -32,12 +32,13 @@ namespace Aspid.MVVM
             foreach (var component in views)
             {
                 if (component.GetType() != type) continue;
-		        
+
                 index++;
                 if (component == view) return $"{view.name} ({typeName} ({index}))";
             }
-            
-            throw new Exception();
+
+            throw new InvalidOperationException(
+                $"View component not found in hierarchy. View: {view?.name}, Type: {type?.Name}");
         }
     }
 }

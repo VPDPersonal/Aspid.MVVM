@@ -11,6 +11,8 @@ namespace Aspid.MVVM
     /// </summary>
     public readonly struct BinderDropdownData
     {
+        private const int NoneValueIndex = 0;
+
         public readonly int Index;
         public readonly bool HasPrevious;
         public readonly List<string> Choices;
@@ -28,7 +30,7 @@ namespace Aspid.MVVM
 
         public static BinderDropdownData CreateIdDropdownData(MonoBinderEditor editor)
         {
-            const string noneValue = "No Id";
+            const string noneValue = BinderEditorConstants.NoId;
 
             var view = editor.ViewProperty.Value;
             var id = editor.IdProperty.Value;
@@ -37,7 +39,7 @@ namespace Aspid.MVVM
             {
                 var choices = new List<string> { noneValue };
                 var hasPrevious = !string.IsNullOrWhiteSpace(editor.IdProperty.PreviousValue);
-                return new BinderDropdownData(choices, index: 0, hasPrevious);
+                return new BinderDropdownData(choices, NoneValueIndex, hasPrevious);
             }
             else
             {
@@ -46,47 +48,52 @@ namespace Aspid.MVVM
                     .Select(data => data.Id)
                     .ToList();
 
-                choices.Insert(index: 0, null);
-                choices.Insert(index: 0, noneValue);
+                choices.Insert(NoneValueIndex, null);
+                choices.Insert(NoneValueIndex, noneValue);
 
                 if (!string.IsNullOrWhiteSpace(id))
                 {
                     var index = choices.IndexOf(id);
-                    if (index < 0) index = choices.IndexOf(id.Contains("DesignViewModel.") ? id[16..] : id);
+                    if (index < 0)
+                    {
+                        index = choices.IndexOf(id.Contains(BinderEditorConstants.DesignViewModelPrefix) 
+                            ? id[BinderEditorConstants.DesignViewModelPrefix.Length..]
+                            : id);
+                    }
                     
-                    return index >= 0 
+                    return index >= 0
                         ? new BinderDropdownData(choices, index)
-                        : new BinderDropdownData(choices, index: 0, hasPrevious: true);
+                        : new BinderDropdownData(choices, NoneValueIndex, hasPrevious: true);
                 }
 
                 var previousId = editor.IdProperty.PreviousValue;
                 var hasPrevious = !string.IsNullOrWhiteSpace(previousId);
-                return new BinderDropdownData(choices, index: 0, hasPrevious);
+                return new BinderDropdownData(choices, NoneValueIndex, hasPrevious);
             }
         }
 
         public static BinderDropdownData CreateViewDropdownData(MonoBinderEditor editor)
         {
-            const string noneValue = "No View";
+            const string noneValue = BinderEditorConstants.NoView;
 
             var views = BinderEditorUtilities.GetViews(editor.TargetAsMonoBinder);
             var viewName = BinderViewData.GetViewName(editor.ViewProperty.Value as MonoView);
             var hasPrevious = !string.IsNullOrWhiteSpace(editor.ViewProperty.PreviousName);
 
             if (views.Count is 0)
-                return new BinderDropdownData(choices: new List<string> { noneValue }, index: 0, hasPrevious);
+                return new BinderDropdownData(choices: new List<string> { noneValue }, NoneValueIndex, hasPrevious);
 
             var choices = views
                 .Select(view => view.Name)
                 .ToList();
 
-            choices.Insert(index: 0, null);
-            choices.Insert(index: 0, noneValue);
+            choices.Insert(NoneValueIndex, null);
+            choices.Insert(NoneValueIndex, noneValue);
 
             if (!string.IsNullOrWhiteSpace(viewName))
                 return new BinderDropdownData(choices, index: choices.IndexOf(viewName));
-            
-            return new BinderDropdownData(choices, index: 0, hasPrevious);
+
+            return new BinderDropdownData(choices, NoneValueIndex, hasPrevious);
         }
     }
 }

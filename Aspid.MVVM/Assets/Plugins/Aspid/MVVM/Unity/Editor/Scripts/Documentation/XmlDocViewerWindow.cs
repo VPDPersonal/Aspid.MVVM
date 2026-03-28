@@ -60,6 +60,8 @@ namespace Aspid.FastTools.XmlDoc
             public string Namespace    = string.Empty;
             public TypeDocumentation? Doc;
             public VisualElement?     TabButton;
+
+            public bool IsEmpty => string.IsNullOrEmpty(Aqn);
         }
 
         private readonly List<TabEntry> _tabs = new();
@@ -80,7 +82,6 @@ namespace Aspid.FastTools.XmlDoc
         private VisualElement? _tabPanelWrapper;
         private VisualElement? _tabPanelElement;
         private VisualElement? _dragHandle;
-        private Button?        _toggleButton;
         private bool           _tabPanelVisible = true;
         private float          _tabPanelWidth   = TabPanelDefaultWidth;
         private bool           _isDragging;
@@ -95,6 +96,8 @@ namespace Aspid.FastTools.XmlDoc
         private Button?        _openInIdeButton;
         private VisualElement? _docContainer;
         private VisualElement? _tabList;
+        private Button?        _showPanelButton;
+        private Button?        _addTabButton;
 
         // ── Window lifecycle ──────────────────────────────────────────────────
 
@@ -116,6 +119,9 @@ namespace Aspid.FastTools.XmlDoc
             rootVisualElement.Add(CreateGridBackground());
             rootVisualElement.Add(CreateLayout());
 
+            // Always start with at least one tab
+            AddNewTab();
+
             if (_pendingAqn != null)
             {
                 var aqn = _pendingAqn;
@@ -131,14 +137,13 @@ namespace Aspid.FastTools.XmlDoc
                 .SetFlexDirection(FlexDirection.Row)
                 .SetPadding(top: 20, bottom: 20, left: 20, right: 20);
 
-            // Left wrapper: toggle strip + tab panel
+            // Left wrapper: tab panel (expanded) or collapsed toggle (when hidden)
             var wrapper = new VisualElement()
                 .SetFlexDirection(FlexDirection.Column)
                 .SetFlexShrink(0);
             wrapper.style.width = _tabPanelWidth;
             _tabPanelWrapper = wrapper;
 
-            wrapper.Add(CreateToggleStrip());
             wrapper.Add(CreateTabPanel());
             root.Add(wrapper);
 
@@ -161,34 +166,31 @@ namespace Aspid.FastTools.XmlDoc
             return root;
         }
 
-        private VisualElement CreateToggleStrip()
-        {
-            var strip = new VisualElement();
-            strip.AddToClassList("doc-tab-toggle-strip");
-
-            _toggleButton = new Button(ToggleTabPanel);
-            _toggleButton.AddToClassList("doc-tab-toggle-btn");
-            _toggleButton.text = "\u2039"; // ‹
-
-            strip.Add(_toggleButton);
-            return strip;
-        }
-
         private void ToggleTabPanel()
         {
             _tabPanelVisible = !_tabPanelVisible;
 
+            if (_tabPanelWrapper != null)
+            {
+                if (_tabPanelVisible)
+                {
+                    _tabPanelWrapper.SetDisplay(DisplayStyle.Flex);
+                    _tabPanelWrapper.style.width = _tabPanelWidth;
+                }
+                else
+                {
+                    _tabPanelWrapper.SetDisplay(DisplayStyle.None);
+                }
+            }
+
             if (_tabPanelElement != null)
                 _tabPanelElement.SetDisplay(_tabPanelVisible ? DisplayStyle.Flex : DisplayStyle.None);
-
-            if (_tabPanelWrapper != null)
-                _tabPanelWrapper.style.width = _tabPanelVisible ? _tabPanelWidth : 26f;
 
             if (_dragHandle != null)
                 _dragHandle.SetDisplay(_tabPanelVisible ? DisplayStyle.Flex : DisplayStyle.None);
 
-            if (_toggleButton != null)
-                _toggleButton.text = _tabPanelVisible ? "\u2039" : "\u203a"; // ‹ or ›
+            if (_showPanelButton != null)
+                _showPanelButton.text = _tabPanelVisible ? "\u2039" : "\u203a"; // ‹ or ›
         }
 
         private void SetupDragHandle(VisualElement handle)
@@ -209,7 +211,7 @@ namespace Aspid.FastTools.XmlDoc
                 var newWidth = Mathf.Max(0f, _dragStartWidth + (evt.position.x - _dragStartX));
 
                 if (_tabPanelWrapper != null)
-                    _tabPanelWrapper.style.width = Mathf.Max(26f, newWidth);
+                    _tabPanelWrapper.style.width = Mathf.Max(0f, newWidth);
 
                 // Live-preview: hide/show the panel contents while dragging
                 if (_tabPanelElement != null)
@@ -231,18 +233,19 @@ namespace Aspid.FastTools.XmlDoc
                     // Collapse
                     _tabPanelVisible = false;
                     _tabPanelWidth   = TabPanelDefaultWidth; // restore default for next expand
-                    if (_tabPanelElement != null) _tabPanelElement.SetDisplay(DisplayStyle.None);
-                    if (_tabPanelWrapper != null) _tabPanelWrapper.style.width = 26f;
-                    if (_dragHandle != null)      _dragHandle.SetDisplay(DisplayStyle.None);
-                    if (_toggleButton != null)    _toggleButton.text = "\u203a"; // ›
+                    if (_tabPanelWrapper != null)  _tabPanelWrapper.SetDisplay(DisplayStyle.None);
+                    if (_tabPanelElement != null)  _tabPanelElement.SetDisplay(DisplayStyle.None);
+                    if (_dragHandle != null)       _dragHandle.SetDisplay(DisplayStyle.None);
+                    if (_showPanelButton != null)  _showPanelButton.text = "\u203a"; // ›
                 }
                 else
                 {
                     _tabPanelVisible = true;
                     _tabPanelWidth   = finalWidth;
-                    if (_tabPanelElement != null) _tabPanelElement.SetDisplay(DisplayStyle.Flex);
-                    if (_tabPanelWrapper != null) _tabPanelWrapper.style.width = finalWidth;
-                    if (_toggleButton != null)    _toggleButton.text = "\u2039"; // ‹
+                    if (_tabPanelWrapper != null)  { _tabPanelWrapper.SetDisplay(DisplayStyle.Flex); _tabPanelWrapper.style.width = finalWidth; }
+                    if (_tabPanelElement != null)  _tabPanelElement.SetDisplay(DisplayStyle.Flex);
+                    if (_dragHandle != null)       _dragHandle.SetDisplay(DisplayStyle.Flex);
+                    if (_showPanelButton != null)  _showPanelButton.text = "\u2039"; // ‹
                 }
 
                 evt.StopPropagation();
@@ -300,12 +303,20 @@ namespace Aspid.FastTools.XmlDoc
 
             var scroll = new ScrollView(ScrollViewMode.Vertical);
             scroll.SetFlexGrow(1);
-            scroll.verticalScrollerVisibility = ScrollerVisibility.Auto;
+            scroll.verticalScrollerVisibility = ScrollerVisibility.AlwaysVisible;
             scroll.horizontalScrollerVisibility = ScrollerVisibility.Hidden;
 
             _tabList = new VisualElement();
             _tabList.AddToClassList("doc-tab-list");
             scroll.Add(_tabList);
+
+            // Add tab button inside scroll, right after the tab list
+            var addTabBtn = new Button(AddNewTab);
+            addTabBtn.AddToClassList("doc-add-tab-btn");
+            addTabBtn.text = "+ New Tab";
+            _addTabButton = addTabBtn;
+            scroll.Add(addTabBtn);
+
             panel.Add(scroll);
 
             _tabPanelElement = panel;
@@ -317,11 +328,14 @@ namespace Aspid.FastTools.XmlDoc
             var item = new VisualElement();
             item.AddToClassList("doc-tab");
 
-            var name = new Label(tab.TypeName);
+            var displayName = tab.IsEmpty ? "New Tab" : tab.TypeName;
+            var name = new Label(displayName);
             name.AddToClassList("doc-tab-name");
-            name.tooltip = string.IsNullOrEmpty(tab.Namespace)
-                ? tab.TypeName
-                : $"{tab.Namespace}.{tab.TypeName}";
+            name.tooltip = tab.IsEmpty
+                ? "New Tab"
+                : string.IsNullOrEmpty(tab.Namespace)
+                    ? tab.TypeName
+                    : $"{tab.Namespace}.{tab.TypeName}";
 
             var close = new Button();
             close.AddToClassList("doc-tab-close");
@@ -364,20 +378,49 @@ namespace Aspid.FastTools.XmlDoc
         {
             if (index < 0 || index >= _tabs.Count) return;
 
-            _tabs[index].TabButton?.RemoveFromHierarchy();
-            _tabs.RemoveAt(index);
-
-            if (_tabs.Count == 0)
+            // If closing the last tab, reset it to empty instead of removing
+            if (_tabs.Count == 1)
             {
+                var tab = _tabs[0];
+                tab.Aqn       = string.Empty;
+                tab.TypeName  = string.Empty;
+                tab.Namespace = string.Empty;
+                tab.Doc       = null;
+
+                var nameLabel = tab.TabButton?.Q<Label>(className: "doc-tab-name");
+                if (nameLabel != null)
+                {
+                    nameLabel.text    = "New Tab";
+                    nameLabel.tooltip = "New Tab";
+                }
+
                 _activeTabIndex = -1;
-                ResetHeader();
-                RefreshDocDisplay();
+                SetActiveTab(0);
+                UpdateAddTabButtonVisibility();
                 return;
             }
+
+            _tabs[index].TabButton?.RemoveFromHierarchy();
+            _tabs.RemoveAt(index);
 
             var newIndex = Mathf.Clamp(index, 0, _tabs.Count - 1);
             _activeTabIndex = -1; // force SetActiveTab to apply styles
             SetActiveTab(newIndex);
+            UpdateAddTabButtonVisibility();
+        }
+
+        private void AddNewTab()
+        {
+            var tab = new TabEntry();
+            _tabs.Add(tab);
+            _tabList?.Add(BuildTabItem(tab));
+            SetActiveTab(_tabs.Count - 1);
+            UpdateAddTabButtonVisibility();
+        }
+
+        private void UpdateAddTabButtonVisibility()
+        {
+            // Always visible
         }
 
         // ── Opening types ─────────────────────────────────────────────────────
@@ -395,17 +438,42 @@ namespace Aspid.FastTools.XmlDoc
             var type = Type.GetType(aqn);
             if (type == null) return;
 
-            var tab = new TabEntry
+            // If the active tab is empty (New Tab), update it in-place
+            if (ActiveTab is { IsEmpty: true })
+            {
+                var tab = ActiveTab;
+                tab.Aqn       = aqn;
+                tab.TypeName  = type.Name;
+                tab.Namespace = GetTypeNamespace(type);
+                tab.Doc       = LoadDocForType(type);
+
+                var nameLabel = tab.TabButton?.Q<Label>(className: "doc-tab-name");
+                if (nameLabel != null)
+                {
+                    nameLabel.text    = tab.TypeName;
+                    nameLabel.tooltip = string.IsNullOrEmpty(tab.Namespace)
+                        ? tab.TypeName
+                        : $"{tab.Namespace}.{tab.TypeName}";
+                }
+
+                UpdateHeaderForTab(tab);
+                RefreshDocDisplay();
+                UpdateAddTabButtonVisibility();
+                return;
+            }
+
+            var newTab = new TabEntry
             {
                 Aqn       = aqn,
                 TypeName  = type.Name,
                 Namespace = GetTypeNamespace(type),
                 Doc       = LoadDocForType(type),
             };
-            _tabs.Add(tab);
-            _tabList?.Add(BuildTabItem(tab));
+            _tabs.Add(newTab);
+            _tabList?.Add(BuildTabItem(newTab));
 
             SetActiveTab(_tabs.Count - 1);
+            UpdateAddTabButtonVisibility();
         }
 
         private static void OpenInNewWindow(string aqn)
@@ -424,10 +492,24 @@ namespace Aspid.FastTools.XmlDoc
             var header = new VisualElement();
             header.AddToClassList("doc-header");
 
+            // Toggle button — always in top-left of header
+            _showPanelButton = new Button(ToggleTabPanel);
+            _showPanelButton.AddToClassList("doc-show-panel-btn");
+            _showPanelButton.text = "\u2039"; // ‹ (changes to › when collapsed)
+
             _namespaceLabel = new Label();
             _namespaceLabel.AddToClassList("doc-header-namespace");
             _namespaceLabel.SetDisplay(DisplayStyle.None);
 
+            // Top row: toggle button + namespace label
+            var topRow = new VisualElement()
+                .SetFlexDirection(FlexDirection.Row)
+                .SetAlignItems(Align.Center);
+            topRow.style.marginBottom = 4;
+            topRow.Add(_showPanelButton);
+            topRow.Add(_namespaceLabel);
+
+            // Bottom row: type name + action buttons
             _typeLabel = new Label("No type selected");
             _typeLabel.AddToClassList("doc-header-typename");
             _typeLabel.AddToClassList("doc-header-typename--empty");
@@ -441,6 +523,15 @@ namespace Aspid.FastTools.XmlDoc
             _selectButton.AddToClassList("doc-select-btn");
             _selectButton.text = "Select Type\u2026";
 
+            var buttonGroup = new VisualElement()
+                .SetFlexDirection(FlexDirection.Column);
+            buttonGroup.style.marginLeft = 12;
+            _selectButton.style.marginLeft = 0;
+            _openInIdeButton.style.marginLeft = 0;
+            _openInIdeButton.style.marginTop = 4;
+            buttonGroup.Add(_selectButton);
+            buttonGroup.Add(_openInIdeButton);
+
             var titleRow = new VisualElement()
                 .SetFlexDirection(FlexDirection.Row)
                 .SetAlignItems(Align.Center);
@@ -449,10 +540,9 @@ namespace Aspid.FastTools.XmlDoc
             titleText.Add(_typeLabel);
 
             titleRow.Add(titleText);
-            titleRow.Add(_openInIdeButton);
-            titleRow.Add(_selectButton);
+            titleRow.Add(buttonGroup);
 
-            header.Add(_namespaceLabel);
+            header.Add(topRow);
             header.Add(titleRow);
 
             return header;
@@ -476,6 +566,12 @@ namespace Aspid.FastTools.XmlDoc
 
         private void UpdateHeaderForTab(TabEntry tab)
         {
+            if (tab.IsEmpty)
+            {
+                ResetHeader();
+                return;
+            }
+
             if (_namespaceLabel != null)
             {
                 if (!string.IsNullOrEmpty(tab.Namespace))
@@ -555,6 +651,7 @@ namespace Aspid.FastTools.XmlDoc
 
                 UpdateHeaderForTab(tab);
                 RefreshDocDisplay();
+                UpdateAddTabButtonVisibility();
             }
             else
             {

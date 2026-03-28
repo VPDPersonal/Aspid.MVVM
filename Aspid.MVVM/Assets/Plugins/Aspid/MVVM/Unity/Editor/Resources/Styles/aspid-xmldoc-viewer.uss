@@ -4,7 +4,7 @@
 
 .doc-tab-panel
 {
-    width: 148px;
+    flex-grow: 1;
     flex-shrink: 0;
     flex-direction: column;
     border-radius: 12px;
@@ -12,6 +12,50 @@
     border-color: rgba(255, 255, 255, 0.06);
     background-color: rgba(22, 28, 24, 0.7);
     overflow: hidden;
+}
+
+/* ── Tab panel toggle button ──────────────────────────────────────────────── */
+
+.doc-tab-toggle-btn
+{
+    color: #4a5a4e;
+    font-size: 14px;
+    width: 18px;
+    height: 18px;
+    min-width: 18px;
+    border-radius: 4px;
+    border-width: 0;
+    background-color: rgba(0, 0, 0, 0);
+    padding: 0;
+    flex-shrink: 0;
+    -unity-text-align: middle-center;
+    cursor: link;
+}
+
+.doc-tab-toggle-btn:hover
+{
+    color: #c0d4c6;
+    background-color: rgba(255, 255, 255, 0.08);
+}
+
+/* ── Drag resize handle ────────────────────────────────────────────────────── */
+
+.doc-drag-handle
+{
+    width: 4px;
+    flex-shrink: 0;
+    margin-left: 0;
+    margin-right: 8px;
+    border-radius: 2px;
+    background-color: rgba(0, 0, 0, 0);
+    transition-property: background-color;
+    transition-duration: 0.15s;
+    cursor: resize-horizontal;
+}
+
+.doc-drag-handle:hover
+{
+    background-color: rgba(74, 191, 106, 0.2);
 }
 
 .doc-tab-list
@@ -30,6 +74,7 @@
     border-width: 1px;
     border-color: rgba(0, 0, 0, 0);
     background-color: rgba(0, 0, 0, 0);
+    overflow: hidden;
     cursor: link;
 }
 
@@ -55,6 +100,7 @@
     color: #7a8a7e;
     font-size: 11px;
     flex-grow: 1;
+    min-width: 0;
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
@@ -400,4 +446,58 @@
     font-size: 13px;
     margin-bottom: 16px;
     -unity-text-align: upper-center;
+}
+
+/* ── Add tab button (inside sidebar scroll, after tabs) ───────────────────── */
+
+.doc-add-tab-btn
+{
+    color: #5a7060;
+    font-size: 11px;
+    flex-shrink: 0;
+    padding: 5px 8px;
+    margin: 2px 6px 6px 6px;
+    border-width: 1px;
+    border-radius: 6px;
+    border-color: rgba(74, 191, 106, 0.18);
+    background-color: rgba(74, 191, 106, 0.06);
+    -unity-text-align: middle-center;
+    cursor: link;
+}
+
+.doc-add-tab-btn:hover
+{
+    color: #7DE0A0;
+    background-color: rgba(74, 191, 106, 0.14);
+    border-color: rgba(74, 191, 106, 0.3);
+}
+
+.doc-add-tab-btn:active
+{
+    background-color: rgba(74, 191, 106, 0.22);
+}
+
+/* ── Show/hide panel button (always in top-left of header) ───────────────── */
+
+.doc-show-panel-btn
+{
+    color: #5a7060;
+    font-size: 13px;
+    width: 20px;
+    height: 20px;
+    min-width: 20px;
+    border-radius: 4px;
+    border-width: 0;
+    background-color: rgba(0, 0, 0, 0);
+    padding: 0;
+    flex-shrink: 0;
+    margin-right: 6px;
+    -unity-text-align: middle-center;
+    cursor: link;
+}
+
+.doc-show-panel-btn:hover
+{
+    color: #c0d4c6;
+    background-color: rgba(255, 255, 255, 0.08);
 }

@@ -1,17 +1,15 @@
 #nullable enable
-using System.Collections.Generic;
 using System.Xml.Linq;
+using System.Collections.Generic;
 
-namespace Aspid.XmlDoc
+// ReSharper disable once CheckNamespace
+namespace Aspid.FastTools.XmlDoc
 {
     /// <summary>
     /// Documentation extracted from C# XML doc comments for a single type.
     /// </summary>
     public class TypeDocumentation
     {
-        /// <summary>The simple name of the type (without namespace).</summary>
-        public string TypeName = string.Empty;
-
         /// <summary>Plain-text content of the <c>&lt;summary&gt;</c> tag (inline tags stripped).</summary>
         public string? Summary;
 
@@ -25,17 +23,17 @@ namespace Aspid.XmlDoc
         public XElement? RemarksXml;
 
         /// <summary>Contents of all <c>&lt;example&gt;</c> tags on the type.</summary>
-        public List<XElement> Examples = new();
+        public readonly List<XElement> Examples = new();
 
         /// <summary>Documentation for members (methods, properties, constructors) keyed by member name.</summary>
-        public Dictionary<string, MemberDocumentation> Members = new();
+        public readonly Dictionary<string, MemberDocumentation> Members = new();
 
         /// <summary>
         /// Any unrecognized or custom tags on the type, keyed by tag name.
         /// Each value is the list of raw <see cref="XElement"/> instances for that tag name,
         /// preserving attributes and nested structure.
         /// </summary>
-        public Dictionary<string, List<XElement>> CustomTags = new();
+        public readonly Dictionary<string, List<XElement>> CustomTags = new();
     }
 
     /// <summary>
@@ -62,16 +60,13 @@ namespace Aspid.XmlDoc
         public string? Returns;
 
         /// <summary>Contents of <c>&lt;param&gt;</c> tags, keyed by parameter name.</summary>
-        public Dictionary<string, string> Parameters = new();
+        public readonly Dictionary<string, string> Parameters = new();
 
         /// <summary>Contents of <c>&lt;typeparam&gt;</c> tags, keyed by type parameter name.</summary>
-        public Dictionary<string, string> TypeParameters = new();
-
-        /// <summary>Contents of all <c>&lt;example&gt;</c> tags.</summary>
-        public List<XElement> Examples = new();
+        public readonly Dictionary<string, string> TypeParameters = new();
 
         /// <summary>All <c>&lt;see&gt;</c> and <c>&lt;seealso&gt;</c> references found in this member's doc block.</summary>
-        public List<SeeReference> SeeAlso = new();
+        public readonly List<SeeReference> SeeAlso = new();
 
         /// <summary>
         /// Whether the member is marked with <c>&lt;inheritdoc/&gt;</c>.
@@ -79,22 +74,16 @@ namespace Aspid.XmlDoc
         public bool InheritsDoc;
 
         /// <summary>
+        /// When docs are resolved via <c>&lt;inheritdoc/&gt;</c>, stores the source type's name.
+        /// </summary>
+        public string? InheritedFrom;
+
+        /// <summary>
         /// Any unrecognized or custom tags, keyed by tag name.
         /// Each value is the list of raw <see cref="XElement"/> instances for that tag name,
         /// preserving attributes and nested structure.
         /// </summary>
-        public Dictionary<string, List<XElement>> CustomTags = new();
+        public readonly Dictionary<string, List<XElement>> CustomTags = new();
     }
 
-    /// <summary>
-    /// Represents a <c>&lt;see cref="..."&gt;</c> or <c>&lt;seealso cref="..."&gt;</c> reference.
-    /// </summary>
-    public class SeeReference
-    {
-        /// <summary>The <c>cref</c> attribute value, e.g. <c>"T:System.String"</c> or <c>"AudioSource.pitch"</c>.</summary>
-        public string? Cref;
-
-        /// <summary>The inner text of the element, or <see langword="null"/> if self-closing.</summary>
-        public string? Text;
-    }
 }

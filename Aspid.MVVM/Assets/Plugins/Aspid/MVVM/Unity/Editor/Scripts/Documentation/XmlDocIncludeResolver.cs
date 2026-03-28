@@ -1,12 +1,13 @@
 #nullable enable
 using System;
-using System.Collections.Generic;
 using System.IO;
+using UnityEngine;
 using System.Xml.Linq;
 using System.Xml.XPath;
-using UnityEngine;
+using System.Collections.Generic;
 
-namespace Aspid.XmlDoc
+// ReSharper disable once CheckNamespace
+namespace Aspid.FastTools.XmlDoc
 {
     /// <summary>
     /// Resolves <c>&lt;include file="..." path="..."/&gt;</c> tags in C# XML documentation,
@@ -32,21 +33,7 @@ namespace Aspid.XmlDoc
                 : Path.GetFullPath(Path.Combine(baseDirectory, includeFile));
 
             var doc = LoadXmlFile(absolutePath);
-            if (doc == null)
-                return Array.Empty<XElement>();
-
-            return doc.XPathSelectElements(xpath);
-        }
-
-        /// <summary>
-        /// Registers XML content for a given file path, bypassing disk I/O.
-        /// Useful for unit testing without touching the filesystem.
-        /// </summary>
-        /// <param name="filePath">The key used when resolving include paths (should match exactly what the include tag uses after path resolution).</param>
-        /// <param name="xmlContent">Valid XML string to parse and cache.</param>
-        public void RegisterContent(string filePath, string xmlContent)
-        {
-            _cache[filePath] = XDocument.Parse(xmlContent);
+            return doc == null ? Array.Empty<XElement>() : doc.XPathSelectElements(xpath);
         }
 
         private XDocument? LoadXmlFile(string absolutePath)

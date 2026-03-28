@@ -2,45 +2,42 @@
 using System;
 using System.IO;
 using System.Linq;
-using System.Xml.Linq;
+using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
+using System.Xml.Linq;
 using UnityEngine.UIElements;
-using Aspid.FastTools;
 using Aspid.FastTools.Editors;
-using Aspid.XmlDoc;
 
 // ReSharper disable once CheckNamespace
-namespace Aspid.MVVM
+namespace Aspid.FastTools.XmlDoc
 {
     /// <summary>
     /// Editor window that displays parsed XML documentation for a type selected via <see cref="TypeSelectorWindow"/>.
-    /// Inline <c>&lt;see cref="..."/&gt;</c> references are rendered as clickable chips
-    /// that navigate to the referenced type within the viewer.
+    /// Supports multiple tabs in the left panel and opening types in new windows.
+    /// Inline <c>&lt;see cref="..."/&gt;</c> references are rendered as clickable chips.
     /// </summary>
     public sealed class XmlDocViewerWindow : EditorWindow
     {
         private const string WindowTitle = "XML Doc Viewer";
 
-        private const float MinWidth = 480f;
+        private const float MinWidth = 560f;
         private const float MinHeight = 360f;
 
         private static StyleSheet? _styleSheet;
 
         private static StyleSheet? DocStyleSheet =>
-            _styleSheet ??= Resources.Load<StyleSheet>("Styles/aspid-mvvm-binder-reference");
+            _styleSheet ??= Resources.Load<StyleSheet>("Styles/aspid-xmldoc-viewer");
 
         private static readonly XmlDocParser _parser = new();
 
         private static readonly System.Text.RegularExpressions.Regex _whitespaceRun =
-            new System.Text.RegularExpressions.Regex(@"\s+",
-                System.Text.RegularExpressions.RegexOptions.Compiled);
+            new(@"\s+", System.Text.RegularExpressions.RegexOptions.Compiled);
 
         // Groups: 1=line comment, 2=block comment, 3=verbatim string, 4=string, 5=char,
-        //         6=keyword, 7=camelCase method (before '('), 8=PascalCase ctor after 'new' (before '('),
-        //         9=PascalCase method (before '('), 10=PascalCase type, 11=number
-        private static readonly System.Text.RegularExpressions.Regex _csharpTokenRegex =
-            new System.Text.RegularExpressions.Regex(
+        //         6=keyword, 7=camelCase method, 8=PascalCase ctor, 9=PascalCase method,
+        //         10=PascalCase type, 11=number
+        private static readonly System.Text.RegularExpressions.Regex _csharpTokenRegex = new(
                 @"(//[^\n]*)" +
                 @"|(\/\*[\s\S]*?\*\/)" +
                 @"|(@""(?:[^""]|"""")*"")" +
@@ -54,14 +51,54 @@ namespace Aspid.MVVM
                 @"|\b(\d+(?:\.\d+)?(?:[fFdDmMlLuU]*)?)\b",
                 System.Text.RegularExpressions.RegexOptions.Compiled);
 
-        private string? _currentAqn;
-        private TypeDocumentation? _currentDoc;
+        // ── Tab system ────────────────────────────────────────────────────────
 
-        private Label? _typeLabel;
-        private Button? _selectButton;
+        private sealed class TabEntry
+        {
+            public string Aqn          = string.Empty;
+            public string TypeName     = string.Empty;
+            public string Namespace    = string.Empty;
+            public TypeDocumentation? Doc;
+            public VisualElement?     TabButton;
+        }
+
+        private readonly List<TabEntry> _tabs = new();
+        private int _activeTabIndex = -1;
+
+        /// <summary>AQN of the type shown during the next CreateGUI (used when opening a new window).</summary>
+        private string? _pendingAqn;
+
+        private TabEntry? ActiveTab =>
+            _activeTabIndex >= 0 && _activeTabIndex < _tabs.Count
+                ? _tabs[_activeTabIndex] : null;
+
+        // ── Panel resize state ────────────────────────────────────────────────
+
+        private const float TabPanelCollapseThreshold = 60f;
+        private const float TabPanelDefaultWidth      = 148f;
+
+        private VisualElement? _tabPanelWrapper;
+        private VisualElement? _tabPanelElement;
+        private VisualElement? _dragHandle;
+        private Button?        _toggleButton;
+        private bool           _tabPanelVisible = true;
+        private float          _tabPanelWidth   = TabPanelDefaultWidth;
+        private bool           _isDragging;
+        private float          _dragStartX;
+        private float          _dragStartWidth;
+
+        // ── UI references ─────────────────────────────────────────────────────
+
+        private Label?         _namespaceLabel;
+        private Label?         _typeLabel;
+        private Button?        _selectButton;
+        private Button?        _openInIdeButton;
         private VisualElement? _docContainer;
+        private VisualElement? _tabList;
 
-        [MenuItem("Tools/🐍 Aspid/XML Doc Viewer", priority = 200)]
+        // ── Window lifecycle ──────────────────────────────────────────────────
+
+        [MenuItem("Tools/\U0001f40d Aspid/XML Doc Viewer", priority = 200)]
         public static void ShowWindow()
         {
             var window = GetWindow<XmlDocViewerWindow>();
@@ -72,40 +109,353 @@ namespace Aspid.MVVM
 
         private void CreateGUI()
         {
+            rootVisualElement.AddToClassList("doc-root");
             if (DocStyleSheet != null)
                 rootVisualElement.styleSheets.Add(DocStyleSheet);
 
+            rootVisualElement.Add(CreateGridBackground());
             rootVisualElement.Add(CreateLayout());
+
+            if (_pendingAqn != null)
+            {
+                var aqn = _pendingAqn;
+                _pendingAqn = null;
+                rootVisualElement.schedule.Execute(() => OpenInTab(aqn)).StartingIn(0);
+            }
         }
 
         private VisualElement CreateLayout()
         {
             var root = new VisualElement()
                 .SetFlexGrow(1)
-                .SetFlexDirection(FlexDirection.Column)
-                .SetPadding(top: 12, bottom: 12, left: 12, right: 12);
+                .SetFlexDirection(FlexDirection.Row)
+                .SetPadding(top: 20, bottom: 20, left: 20, right: 20);
 
-            root.Add(CreateSelectorRow());
-            root.Add(CreateDocScrollView());
+            // Left wrapper: toggle strip + tab panel
+            var wrapper = new VisualElement()
+                .SetFlexDirection(FlexDirection.Column)
+                .SetFlexShrink(0);
+            wrapper.style.width = _tabPanelWidth;
+            _tabPanelWrapper = wrapper;
+
+            wrapper.Add(CreateToggleStrip());
+            wrapper.Add(CreateTabPanel());
+            root.Add(wrapper);
+
+            // Drag handle
+            var handle = new VisualElement();
+            handle.AddToClassList("doc-drag-handle");
+            // handle.style.cursor = new StyleCursor(MouseCursor.ResizeHorizontal);
+            _dragHandle = handle;
+            SetupDragHandle(handle);
+            root.Add(handle);
+
+            var content = new VisualElement()
+                .SetFlexGrow(1)
+                .SetFlexDirection(FlexDirection.Column);
+
+            content.Add(CreateHeader());
+            content.Add(CreateDocScrollView());
+            root.Add(content);
 
             return root;
         }
 
-        private VisualElement CreateSelectorRow()
+        private VisualElement CreateToggleStrip()
         {
-            _typeLabel = new Label("— no type selected —")
-                .SetFlexGrow(1);
-            _typeLabel.style.color = new Color(0.6f, 0.6f, 0.6f);
-            _typeLabel.style.unityFontStyleAndWeight = FontStyle.Italic;
+            var strip = new VisualElement();
+            strip.AddToClassList("doc-tab-toggle-strip");
 
-            _selectButton = new Button(OpenTypeSelector).SetText("Select Type…");
+            _toggleButton = new Button(ToggleTabPanel);
+            _toggleButton.AddToClassList("doc-tab-toggle-btn");
+            _toggleButton.text = "\u2039"; // ‹
 
-            return new VisualElement()
+            strip.Add(_toggleButton);
+            return strip;
+        }
+
+        private void ToggleTabPanel()
+        {
+            _tabPanelVisible = !_tabPanelVisible;
+
+            if (_tabPanelElement != null)
+                _tabPanelElement.SetDisplay(_tabPanelVisible ? DisplayStyle.Flex : DisplayStyle.None);
+
+            if (_tabPanelWrapper != null)
+                _tabPanelWrapper.style.width = _tabPanelVisible ? _tabPanelWidth : 26f;
+
+            if (_dragHandle != null)
+                _dragHandle.SetDisplay(_tabPanelVisible ? DisplayStyle.Flex : DisplayStyle.None);
+
+            if (_toggleButton != null)
+                _toggleButton.text = _tabPanelVisible ? "\u2039" : "\u203a"; // ‹ or ›
+        }
+
+        private void SetupDragHandle(VisualElement handle)
+        {
+            handle.RegisterCallback<PointerDownEvent>(evt =>
+            {
+                if (evt.button != 0) return;
+                _isDragging    = true;
+                _dragStartX    = evt.position.x;
+                _dragStartWidth = _tabPanelWidth;
+                handle.CapturePointer(evt.pointerId);
+                evt.StopPropagation();
+            });
+
+            handle.RegisterCallback<PointerMoveEvent>(evt =>
+            {
+                if (!_isDragging) return;
+                var newWidth = Mathf.Max(0f, _dragStartWidth + (evt.position.x - _dragStartX));
+
+                if (_tabPanelWrapper != null)
+                    _tabPanelWrapper.style.width = Mathf.Max(26f, newWidth);
+
+                // Live-preview: hide/show the panel contents while dragging
+                if (_tabPanelElement != null)
+                    _tabPanelElement.SetDisplay(newWidth >= TabPanelCollapseThreshold ? DisplayStyle.Flex : DisplayStyle.None);
+
+                evt.StopPropagation();
+            });
+
+            handle.RegisterCallback<PointerUpEvent>(evt =>
+            {
+                if (!_isDragging) return;
+                _isDragging = false;
+                handle.ReleasePointer(evt.pointerId);
+
+                var finalWidth = Mathf.Max(0f, _dragStartWidth + (evt.position.x - _dragStartX));
+
+                if (finalWidth < TabPanelCollapseThreshold)
+                {
+                    // Collapse
+                    _tabPanelVisible = false;
+                    _tabPanelWidth   = TabPanelDefaultWidth; // restore default for next expand
+                    if (_tabPanelElement != null) _tabPanelElement.SetDisplay(DisplayStyle.None);
+                    if (_tabPanelWrapper != null) _tabPanelWrapper.style.width = 26f;
+                    if (_dragHandle != null)      _dragHandle.SetDisplay(DisplayStyle.None);
+                    if (_toggleButton != null)    _toggleButton.text = "\u203a"; // ›
+                }
+                else
+                {
+                    _tabPanelVisible = true;
+                    _tabPanelWidth   = finalWidth;
+                    if (_tabPanelElement != null) _tabPanelElement.SetDisplay(DisplayStyle.Flex);
+                    if (_tabPanelWrapper != null) _tabPanelWrapper.style.width = finalWidth;
+                    if (_toggleButton != null)    _toggleButton.text = "\u2039"; // ‹
+                }
+
+                evt.StopPropagation();
+            });
+        }
+
+        // ── Grid background ───────────────────────────────────────────────────
+
+        private static VisualElement CreateGridBackground()
+        {
+            const int gridSize = 40;
+
+            var grid = new VisualElement();
+            grid.pickingMode = PickingMode.Ignore;
+            grid.SetDistance(0)
+                .SetOverflow(Overflow.Hidden)
+                .SetPosition(Position.Absolute);
+
+            grid.generateVisualContent += ctx =>
+            {
+                var bounds = grid.contentRect;
+                if (bounds.width <= 0 || bounds.height <= 0) return;
+
+                var painter = ctx.painter2D;
+                painter.strokeColor = new Color(1f, 1f, 1f, 0.04f);
+                painter.lineWidth = 1f;
+
+                for (var x = gridSize; x < bounds.width; x += gridSize)
+                {
+                    painter.BeginPath();
+                    painter.MoveTo(new Vector2(x, 0));
+                    painter.LineTo(new Vector2(x, bounds.height));
+                    painter.Stroke();
+                }
+
+                for (var y = gridSize; y < bounds.height; y += gridSize)
+                {
+                    painter.BeginPath();
+                    painter.MoveTo(new Vector2(0, y));
+                    painter.LineTo(new Vector2(bounds.width, y));
+                    painter.Stroke();
+                }
+            };
+
+            grid.RegisterCallback<GeometryChangedEvent>(_ => grid.MarkDirtyRepaint());
+            return grid;
+        }
+
+        // ── Tab panel ─────────────────────────────────────────────────────────
+
+        private VisualElement CreateTabPanel()
+        {
+            var panel = new VisualElement();
+            panel.AddToClassList("doc-tab-panel");
+
+            var scroll = new ScrollView(ScrollViewMode.Vertical);
+            scroll.SetFlexGrow(1);
+            scroll.verticalScrollerVisibility = ScrollerVisibility.Auto;
+            scroll.horizontalScrollerVisibility = ScrollerVisibility.Hidden;
+
+            _tabList = new VisualElement();
+            _tabList.AddToClassList("doc-tab-list");
+            scroll.Add(_tabList);
+            panel.Add(scroll);
+
+            _tabPanelElement = panel;
+            return panel;
+        }
+
+        private VisualElement BuildTabItem(TabEntry tab)
+        {
+            var item = new VisualElement();
+            item.AddToClassList("doc-tab");
+
+            var name = new Label(tab.TypeName);
+            name.AddToClassList("doc-tab-name");
+            name.tooltip = string.IsNullOrEmpty(tab.Namespace)
+                ? tab.TypeName
+                : $"{tab.Namespace}.{tab.TypeName}";
+
+            var close = new Button();
+            close.AddToClassList("doc-tab-close");
+            close.text = "\u00d7"; // ×
+            close.clicked += () =>
+            {
+                var idx = _tabs.IndexOf(tab);
+                if (idx >= 0) CloseTab(idx);
+            };
+
+            item.Add(name);
+            item.Add(close);
+
+            item.RegisterCallback<ClickEvent>(evt =>
+            {
+                if (evt.target is Button) return; // let close button handle itself
+                var idx = _tabs.IndexOf(tab);
+                if (idx >= 0) SetActiveTab(idx);
+            });
+
+            tab.TabButton = item;
+            return item;
+        }
+
+        private void SetActiveTab(int index)
+        {
+            if (index < 0 || index >= _tabs.Count) return;
+
+            if (_activeTabIndex >= 0 && _activeTabIndex < _tabs.Count)
+                _tabs[_activeTabIndex].TabButton?.RemoveFromClassList("doc-tab--active");
+
+            _activeTabIndex = index;
+            _tabs[index].TabButton?.AddToClassList("doc-tab--active");
+
+            UpdateHeaderForTab(_tabs[index]);
+            RefreshDocDisplay();
+        }
+
+        private void CloseTab(int index)
+        {
+            if (index < 0 || index >= _tabs.Count) return;
+
+            _tabs[index].TabButton?.RemoveFromHierarchy();
+            _tabs.RemoveAt(index);
+
+            if (_tabs.Count == 0)
+            {
+                _activeTabIndex = -1;
+                ResetHeader();
+                RefreshDocDisplay();
+                return;
+            }
+
+            var newIndex = Mathf.Clamp(index, 0, _tabs.Count - 1);
+            _activeTabIndex = -1; // force SetActiveTab to apply styles
+            SetActiveTab(newIndex);
+        }
+
+        // ── Opening types ─────────────────────────────────────────────────────
+
+        private void OpenInTab(string aqn)
+        {
+            // Reuse existing tab if already open
+            var existing = _tabs.FindIndex(t => t.Aqn == aqn);
+            if (existing >= 0)
+            {
+                SetActiveTab(existing);
+                return;
+            }
+
+            var type = Type.GetType(aqn);
+            if (type == null) return;
+
+            var tab = new TabEntry
+            {
+                Aqn       = aqn,
+                TypeName  = type.Name,
+                Namespace = GetTypeNamespace(type),
+                Doc       = LoadDocForType(type),
+            };
+            _tabs.Add(tab);
+            _tabList?.Add(BuildTabItem(tab));
+
+            SetActiveTab(_tabs.Count - 1);
+        }
+
+        private static void OpenInNewWindow(string aqn)
+        {
+            var window = CreateInstance<XmlDocViewerWindow>();
+            window._pendingAqn = aqn;
+            window.titleContent = new GUIContent(WindowTitle);
+            window.minSize = new Vector2(MinWidth, MinHeight);
+            window.Show();
+        }
+
+        // ── Header ───────────────────────────────────────────────────────────
+
+        private VisualElement CreateHeader()
+        {
+            var header = new VisualElement();
+            header.AddToClassList("doc-header");
+
+            _namespaceLabel = new Label();
+            _namespaceLabel.AddToClassList("doc-header-namespace");
+            _namespaceLabel.SetDisplay(DisplayStyle.None);
+
+            _typeLabel = new Label("No type selected");
+            _typeLabel.AddToClassList("doc-header-typename");
+            _typeLabel.AddToClassList("doc-header-typename--empty");
+
+            _openInIdeButton = new Button(OpenCurrentTypeInIde);
+            _openInIdeButton.AddToClassList("doc-open-btn");
+            _openInIdeButton.text = "Open";
+            _openInIdeButton.SetDisplay(DisplayStyle.None);
+
+            _selectButton = new Button(OpenTypeSelector);
+            _selectButton.AddToClassList("doc-select-btn");
+            _selectButton.text = "Select Type\u2026";
+
+            var titleRow = new VisualElement()
                 .SetFlexDirection(FlexDirection.Row)
-                .SetAlignItems(Align.Center)
-                .SetMargin(bottom: 12)
-                .AddChild(_typeLabel)
-                .AddChild(_selectButton);
+                .SetAlignItems(Align.Center);
+
+            var titleText = new VisualElement().SetFlexGrow(1);
+            titleText.Add(_typeLabel);
+
+            titleRow.Add(titleText);
+            titleRow.Add(_openInIdeButton);
+            titleRow.Add(_selectButton);
+
+            header.Add(_namespaceLabel);
+            header.Add(titleRow);
+
+            return header;
         }
 
         private VisualElement CreateDocScrollView()
@@ -115,10 +465,50 @@ namespace Aspid.MVVM
             scroll.verticalScrollerVisibility = ScrollerVisibility.Auto;
             scroll.horizontalScrollerVisibility = ScrollerVisibility.Hidden;
 
-            _docContainer = new VisualElement().SetFlexDirection(FlexDirection.Column);
+            _docContainer = new VisualElement()
+                .SetFlexDirection(FlexDirection.Column)
+                .SetFlexGrow(1);
             scroll.Add(_docContainer);
 
+            _docContainer.Add(CreateEmptyState());
             return scroll;
+        }
+
+        private void UpdateHeaderForTab(TabEntry tab)
+        {
+            if (_namespaceLabel != null)
+            {
+                if (!string.IsNullOrEmpty(tab.Namespace))
+                {
+                    _namespaceLabel.text = tab.Namespace;
+                    _namespaceLabel.SetDisplay(DisplayStyle.Flex);
+                }
+                else
+                {
+                    _namespaceLabel.SetDisplay(DisplayStyle.None);
+                }
+            }
+
+            if (_typeLabel != null)
+            {
+                _typeLabel.text = tab.TypeName;
+                _typeLabel.RemoveFromClassList("doc-header-typename--empty");
+            }
+
+            _openInIdeButton?.SetDisplay(DisplayStyle.Flex);
+        }
+
+        private void ResetHeader()
+        {
+            _namespaceLabel?.SetDisplay(DisplayStyle.None);
+
+            if (_typeLabel != null)
+            {
+                _typeLabel.text = "No type selected";
+                _typeLabel.AddToClassList("doc-header-typename--empty");
+            }
+
+            _openInIdeButton?.SetDisplay(DisplayStyle.None);
         }
 
         // ── Type selection ────────────────────────────────────────────────────
@@ -135,56 +525,81 @@ namespace Aspid.MVVM
             TypeSelectorWindow.Show(
                 types: new[] { typeof(MonoBehaviour) },
                 screenRect: screenRect,
-                currentAqn: _currentAqn ?? string.Empty,
+                currentAqn: ActiveTab?.Aqn ?? string.Empty,
                 onSelected: OnTypeSelected);
         }
 
         private void OnTypeSelected(string aqn)
         {
-            _currentAqn = aqn;
-            _currentDoc = null;
-
-            var type = Type.GetType(aqn);
-            if (type != null)
+            if (_activeTabIndex >= 0 && _activeTabIndex < _tabs.Count)
             {
-                if (_typeLabel != null)
+                // Navigate in-place within the current tab
+                var type = Type.GetType(aqn);
+                if (type == null) return;
+
+                var tab = _tabs[_activeTabIndex];
+                tab.Aqn       = aqn;
+                tab.TypeName  = type.Name;
+                tab.Namespace = GetTypeNamespace(type);
+                tab.Doc       = LoadDocForType(type);
+
+                // Refresh the tab button label
+                var nameLabel = tab.TabButton?.Q<Label>(className: "doc-tab-name");
+                if (nameLabel != null)
                 {
-                    _typeLabel.text = type.FullName ?? type.Name;
-                    _typeLabel.style.unityFontStyleAndWeight = FontStyle.Normal;
-                    _typeLabel.style.color = new Color(0.85f, 0.85f, 0.85f);
+                    nameLabel.text    = tab.TypeName;
+                    nameLabel.tooltip = string.IsNullOrEmpty(tab.Namespace)
+                        ? tab.TypeName
+                        : $"{tab.Namespace}.{tab.TypeName}";
                 }
 
-                var sourcePath = FindSourceFile(type.Name);
-                if (sourcePath != null)
-                    _currentDoc = _parser.ParseType(sourcePath);
+                UpdateHeaderForTab(tab);
+                RefreshDocDisplay();
             }
-
-            RefreshDocDisplay();
+            else
+            {
+                OpenInTab(aqn);
+            }
         }
 
         // ── Cref navigation ───────────────────────────────────────────────────
 
-        private void OpenCrefInViewer(string cref)
+        private void OpenCrefInTab(string cref)
+        {
+            var type = ResolveCrefType(cref);
+            if (type?.AssemblyQualifiedName is { } aqn)
+                OpenInTab(aqn);
+        }
+
+        private static void OpenCrefInNewWindow(string cref)
+        {
+            var type = ResolveCrefType(cref);
+            if (type?.AssemblyQualifiedName is { } aqn)
+                OpenInNewWindow(aqn);
+        }
+
+        private static Type? ResolveCrefType(string cref)
         {
             var typeName = XmlDocParser.CrefToTypeName(cref);
-            if (string.IsNullOrEmpty(typeName)) return;
-
-            var type = FindTypeByName(typeName);
-            if (type == null) return;
-
-            var sourcePath = FindSourceFile(type.Name);
-            if (sourcePath == null) return;
-
-            var aqn = type.AssemblyQualifiedName;
-            if (aqn != null)
-                OnTypeSelected(aqn);
+            return string.IsNullOrEmpty(typeName) ? null : FindTypeByName(typeName);
         }
 
         private static void OpenCrefInIde(string cref)
         {
             var typeName = XmlDocParser.CrefToTypeName(cref);
-            if (string.IsNullOrEmpty(typeName)) return;
+            if (!string.IsNullOrEmpty(typeName))
+                OpenTypeNameInIde(typeName);
+        }
 
+        private void OpenCurrentTypeInIde()
+        {
+            var type = ActiveTab != null ? Type.GetType(ActiveTab.Aqn) : null;
+            if (type != null)
+                OpenTypeNameInIde(type.Name);
+        }
+
+        private static void OpenTypeNameInIde(string typeName)
+        {
             var guids = AssetDatabase.FindAssets($"t:Script {typeName}");
             foreach (var guid in guids)
             {
@@ -198,6 +613,72 @@ namespace Aspid.MVVM
                     return;
                 }
             }
+        }
+
+        private void ShowCrefMenu(string cref)
+        {
+            var menu = new GenericMenu();
+            menu.AddItem(new GUIContent("Open in Tab"),        false, () => OpenCrefInTab(cref));
+            menu.AddItem(new GUIContent("Open in New Window"), false, () => OpenCrefInNewWindow(cref));
+            menu.AddSeparator(string.Empty);
+            menu.AddItem(new GUIContent("Open in IDE"),        false, () => OpenCrefInIde(cref));
+            menu.ShowAsContext();
+        }
+
+        // ── Inheritdoc resolution ─────────────────────────────────────────────
+
+        private static void ResolveInheritedDocs(Type type, TypeDocumentation doc)
+        {
+            var pending = doc.Members.Values
+                .Where(m => m.InheritsDoc && m.Summary == null && m.SummaryXml == null)
+                .ToList();
+
+            if (pending.Count == 0) return;
+
+            foreach (var baseType in EnumerateBaseTypes(type))
+            {
+                if (pending.Count == 0) break;
+
+                var sourcePath = FindSourceFile(baseType.Name);
+                if (sourcePath == null) continue;
+
+                var baseDoc = _parser.ParseType(sourcePath);
+                if (baseDoc == null) continue;
+
+                for (var i = pending.Count - 1; i >= 0; i--)
+                {
+                    var member = pending[i];
+                    if (!baseDoc.Members.TryGetValue(member.Name, out var baseMember)) continue;
+                    if (baseMember.Summary == null && baseMember.SummaryXml == null) continue;
+
+                    member.Summary       = baseMember.Summary;
+                    member.SummaryXml    = baseMember.SummaryXml;
+                    member.Remarks       = baseMember.Remarks;
+                    member.RemarksXml    = baseMember.RemarksXml;
+                    member.Returns       = baseMember.Returns;
+                    member.InheritedFrom = baseType.Name;
+
+                    foreach (var (k, v) in baseMember.Parameters)
+                        member.Parameters.TryAdd(k, v);
+
+                    foreach (var (k, v) in baseMember.TypeParameters)
+                        member.TypeParameters.TryAdd(k, v);
+
+                    pending.RemoveAt(i);
+                }
+            }
+        }
+
+        private static IEnumerable<Type> EnumerateBaseTypes(Type type)
+        {
+            var current = type.BaseType;
+            while (current != null && current != typeof(object))
+            {
+                yield return current;
+                current = current.BaseType;
+            }
+            foreach (var iface in type.GetInterfaces())
+                yield return iface;
         }
 
         private static Type? FindTypeByName(string typeName)
@@ -217,6 +698,38 @@ namespace Aspid.MVVM
             return null;
         }
 
+        // ── Helpers ───────────────────────────────────────────────────────────
+
+        private static TypeDocumentation? LoadDocForType(Type type)
+        {
+            var sourcePath = FindSourceFile(type.Name);
+            if (sourcePath == null) return null;
+
+            var doc = _parser.ParseType(sourcePath);
+            if (doc != null)
+                ResolveInheritedDocs(type, doc);
+            return doc;
+        }
+
+        private static string GetTypeNamespace(Type type)
+        {
+            var fullName = type.FullName ?? type.Name;
+            var dot = fullName.LastIndexOf('.');
+            return dot >= 0 ? fullName[..dot] : string.Empty;
+        }
+
+        private static string? FindSourceFile(string typeName)
+        {
+            var guids = AssetDatabase.FindAssets($"t:Script {typeName}");
+            foreach (var guid in guids)
+            {
+                var assetPath = AssetDatabase.GUIDToAssetPath(guid);
+                if (Path.GetFileNameWithoutExtension(assetPath) == typeName)
+                    return assetPath;
+            }
+            return null;
+        }
+
         // ── Documentation display ─────────────────────────────────────────────
 
         private void RefreshDocDisplay()
@@ -224,37 +737,35 @@ namespace Aspid.MVVM
             if (_docContainer == null) return;
             _docContainer.Clear();
 
-            if (_currentDoc == null)
+            var doc = ActiveTab?.Doc;
+
+            if (doc == null)
             {
-                var empty = new Label("No documentation found for this type.")
-                    .SetMargin(top: 24);
-                empty.style.color = new Color(0.4f, 0.4f, 0.4f);
-                empty.style.unityTextAlign = TextAnchor.UpperCenter;
-                _docContainer.Add(empty);
+                _docContainer.Add(CreateEmptyState());
                 return;
             }
 
-            if (_currentDoc.SummaryXml != null)
-                AddRichSection(_docContainer, "Summary", _currentDoc.SummaryXml);
-            else if (!string.IsNullOrWhiteSpace(_currentDoc.Summary))
-                AddPlainSection(_docContainer, "Summary", _currentDoc.Summary!);
+            if (doc.SummaryXml != null)
+                AddRichSection(_docContainer, "Summary", doc.SummaryXml);
+            else if (!string.IsNullOrWhiteSpace(doc.Summary))
+                AddPlainSection(_docContainer, "Summary", doc.Summary!);
 
-            if (_currentDoc.RemarksXml != null)
-                AddRichSection(_docContainer, "Remarks", _currentDoc.RemarksXml);
-            else if (!string.IsNullOrWhiteSpace(_currentDoc.Remarks))
-                AddPlainSection(_docContainer, "Remarks", _currentDoc.Remarks!);
+            if (doc.RemarksXml != null)
+                AddRichSection(_docContainer, "Remarks", doc.RemarksXml);
+            else if (!string.IsNullOrWhiteSpace(doc.Remarks))
+                AddPlainSection(_docContainer, "Remarks", doc.Remarks!);
 
-            if (_currentDoc.Examples.Count > 0)
+            if (doc.Examples.Count > 0)
             {
-                _docContainer.Add(CreateSectionLabel("Examples"));
-                foreach (var example in _currentDoc.Examples)
+                _docContainer.Add(CreateSectionHeader("Examples"));
+                foreach (var example in doc.Examples)
                     _docContainer.Add(RenderExampleElement(example));
             }
 
-            if (_currentDoc.Members.Count > 0)
+            if (doc.Members.Count > 0)
             {
-                _docContainer.Add(CreateSectionLabel("Members").SetMargin(top: 16));
-                foreach (var (_, memberDoc) in _currentDoc.Members)
+                _docContainer.Add(CreateSectionHeader("Members"));
+                foreach (var (_, memberDoc) in doc.Members)
                     _docContainer.Add(CreateMemberCard(memberDoc));
             }
         }
@@ -263,30 +774,60 @@ namespace Aspid.MVVM
 
         private void AddRichSection(VisualElement container, string title, XElement xml)
         {
-            container.Add(CreateSectionLabel(title));
+            container.Add(CreateSectionHeader(title));
             container.Add(RenderXmlElement(xml));
         }
 
         private static void AddPlainSection(VisualElement container, string title, string text)
         {
-            container.Add(CreateSectionLabel(title));
-            container.Add(CreateDescriptionLabel(text));
+            container.Add(CreateSectionHeader(title));
+            container.Add(CreateTextLabel(text));
         }
 
-        private static Label CreateSectionLabel(string title)
+        private static VisualElement CreateSectionHeader(string title)
         {
-            var label = new Label(title);
-            label.AddToClassList("binder-name");
-            label.SetMargin(top: 8, bottom: 4);
-            return label;
+            var container = new VisualElement();
+            container.AddToClassList("doc-section-header");
+
+            var label = new Label(title.ToUpperInvariant());
+            label.AddToClassList("doc-section-title");
+            container.Add(label);
+
+            var divider = new VisualElement();
+            divider.AddToClassList("doc-section-divider");
+            container.Add(divider);
+
+            return container;
         }
 
-        private static Label CreateDescriptionLabel(string text)
+        private static Label CreateTextLabel(string text)
         {
             var label = new Label(text);
-            label.AddToClassList("binder-description");
-            label.style.whiteSpace = WhiteSpace.Normal;
+            label.AddToClassList("doc-text");
             return label;
+        }
+
+        // ── Empty state ──────────────────────────────────────────────────────
+
+        private VisualElement CreateEmptyState()
+        {
+            var container = new VisualElement();
+            container.AddToClassList("doc-empty");
+
+            var icon = new Label("{ }");
+            icon.AddToClassList("doc-empty-icon");
+
+            var title = new Label("Select a type to view its documentation");
+            title.AddToClassList("doc-empty-title");
+
+            var btn = new Button(OpenTypeSelector);
+            btn.AddToClassList("doc-select-btn");
+            btn.text = "Select Type\u2026";
+
+            container.Add(icon);
+            container.Add(title);
+            container.Add(btn);
+            return container;
         }
 
         // ── Example renderer ──────────────────────────────────────────────────
@@ -305,7 +846,7 @@ namespace Aspid.MVVM
                     {
                         var text = textNode.Value.Trim();
                         if (!string.IsNullOrEmpty(text))
-                            container.Add(CreateDescriptionLabel(text));
+                            container.Add(CreateTextLabel(text));
                         break;
                     }
                     case XElement child:
@@ -326,7 +867,7 @@ namespace Aspid.MVVM
         private static VisualElement CreateCodeBlock(string code)
         {
             var label = new Label(HighlightCSharp(code.Trim()));
-            label.AddToClassList("code-block");
+            label.AddToClassList("doc-code-block");
             label.enableRichText = true;
             label.style.whiteSpace = WhiteSpace.Normal;
             return label;
@@ -334,8 +875,6 @@ namespace Aspid.MVVM
 
         private static string HighlightCSharp(string code)
         {
-            // Preserve indentation: replace leading whitespace per line with non-breaking spaces
-            // so UIElements WhiteSpace.Normal doesn't collapse them.
             var lines = code.Replace("\r\n", "\n").Split('\n');
             var indentBuilder = new System.Text.StringBuilder();
             for (var i = 0; i < lines.Length; i++)
@@ -360,15 +899,15 @@ namespace Aspid.MVVM
                     return $"<color=#CE9178>{match.Value}</color>";
                 if (match.Groups[6].Success)
                     return $"<color=#569CD6>{match.Value}</color>";
-                if (match.Groups[7].Success)  // camelCase method
+                if (match.Groups[7].Success)
                     return $"<color=#DCDCAA>{match.Value}</color>";
-                if (match.Groups[8].Success)  // PascalCase ctor after 'new' → type color
+                if (match.Groups[8].Success)
                     return $"<color=#4EC9B0>{match.Value}</color>";
-                if (match.Groups[9].Success)  // PascalCase method
+                if (match.Groups[9].Success)
                     return $"<color=#DCDCAA>{match.Value}</color>";
-                if (match.Groups[10].Success) // PascalCase type
+                if (match.Groups[10].Success)
                     return $"<color=#4EC9B0>{match.Value}</color>";
-                if (match.Groups[11].Success) // number
+                if (match.Groups[11].Success)
                     return $"<color=#B5CEA8>{match.Value}</color>";
                 return match.Value;
             });
@@ -376,20 +915,14 @@ namespace Aspid.MVVM
 
         // ── Rich XML renderer ─────────────────────────────────────────────────
 
-        /// <summary>
-        /// Renders an XElement as a flow-layout VisualElement.
-        /// Text nodes become Labels; <c>&lt;see cref&gt;</c> nodes become clickable chips.
-        /// Falls back to a plain Label when no inline elements are present.
-        /// </summary>
         private VisualElement RenderXmlElement(XElement xml)
         {
             var hasInlineRefs = xml.Descendants()
                 .Any(e => e.Name.LocalName is "see" or "seealso");
 
             if (!hasInlineRefs)
-                return CreateDescriptionLabel(XmlDocParser.GetInnerTextStatic(xml));
+                return CreateTextLabel(XmlDocParser.GetInnerTextStatic(xml));
 
-            // Flow container: row-direction with wrapping for inline mixed content.
             var flow = new VisualElement()
                 .SetFlexDirection(FlexDirection.Row)
                 .SetFlexWrap(Wrap.Wrap)
@@ -397,7 +930,6 @@ namespace Aspid.MVVM
                 .SetMargin(bottom: 4);
 
             RenderNodesInto(flow, xml);
-
             return flow;
         }
 
@@ -409,7 +941,6 @@ namespace Aspid.MVVM
                 {
                     case XText textNode:
                     {
-                        // Collapse whitespace runs that come from doc-comment indentation.
                         var text = _whitespaceRun.Replace(textNode.Value, " ");
                         if (!string.IsNullOrEmpty(text))
                             container.Add(CreateInlineTextLabel(text));
@@ -419,19 +950,11 @@ namespace Aspid.MVVM
                     {
                         var tag = child.Name.LocalName.ToLowerInvariant();
                         if (tag is "see" or "seealso")
-                        {
                             container.Add(CreateCrefChip(child));
-                        }
                         else if (tag is "code")
-                        {
                             container.Add(CreateCodeBlock(child.Value));
-                        }
                         else
-                        {
-                            // For <c>, <langword>, <paramref>, <typeparamref> and any
-                            // future inline elements — recurse into children.
                             RenderNodesInto(container, child);
-                        }
                         break;
                     }
                 }
@@ -441,10 +964,9 @@ namespace Aspid.MVVM
         private static Label CreateInlineTextLabel(string text)
         {
             var label = new Label(text);
-            label.AddToClassList("binder-description");
+            label.AddToClassList("doc-text");
             label.style.marginTop = 0;
             label.style.marginBottom = 0;
-            label.style.whiteSpace = WhiteSpace.Normal;
             return label;
         }
 
@@ -456,9 +978,7 @@ namespace Aspid.MVVM
                 : element.Value.Trim();
 
             var chip = new Label(displayText);
-            chip.AddToClassList("binder-tag");
-            chip.AddToClassList("binder-tag-mode");
-            chip.AddToClassList("cref-link");
+            chip.AddToClassList("doc-cref-chip");
             chip.tooltip = cref;
 
             if (!string.IsNullOrEmpty(cref))
@@ -467,44 +987,43 @@ namespace Aspid.MVVM
             return chip;
         }
 
-        private void ShowCrefMenu(string cref)
-        {
-            var menu = new GenericMenu();
-            menu.AddItem(new GUIContent("Open in Viewer"), false, () => OpenCrefInViewer(cref));
-            menu.AddItem(new GUIContent("Open in IDE"), false, () => OpenCrefInIde(cref));
-            menu.ShowAsContext();
-        }
-
         // ── Member card ───────────────────────────────────────────────────────
 
         private VisualElement CreateMemberCard(MemberDocumentation doc)
         {
             var card = new VisualElement();
-            card.AddToClassList("binder-card");
+            card.AddToClassList("doc-member-card");
 
-            // Name row with optional inheritdoc badge.
             var nameRow = new VisualElement()
                 .SetFlexDirection(FlexDirection.Row)
                 .SetAlignItems(Align.Center)
-                .SetMargin(bottom: 4);
+                .SetMargin(bottom: 6);
 
             var nameLabel = new Label(doc.Name);
-            nameLabel.AddToClassList("binder-name");
-            nameLabel.style.marginBottom = 0;
+            nameLabel.AddToClassList("doc-member-name");
             nameRow.Add(nameLabel);
 
             if (doc.InheritsDoc)
-                nameRow.Add(CreateTag("inheritdoc", "binder-tag-mode"));
+            {
+                var badge = new Label("inheritdoc");
+                badge.AddToClassList("doc-badge-inherited");
+                nameRow.Add(badge);
+            }
+
+            if (!string.IsNullOrEmpty(doc.InheritedFrom))
+            {
+                var fromLabel = new Label($"from {doc.InheritedFrom}");
+                fromLabel.AddToClassList("doc-inherited-from");
+                nameRow.Add(fromLabel);
+            }
 
             card.Add(nameRow);
 
-            // Summary (rich).
             if (doc.SummaryXml != null)
                 card.Add(RenderXmlElement(doc.SummaryXml));
             else if (!string.IsNullOrWhiteSpace(doc.Summary))
-                card.Add(CreateDescriptionLabel(doc.Summary!));
+                card.Add(CreateTextLabel(doc.Summary!));
 
-            // Remarks (rich).
             if (doc.RemarksXml != null)
             {
                 var remarks = RenderXmlElement(doc.RemarksXml);
@@ -512,66 +1031,73 @@ namespace Aspid.MVVM
                 card.Add(remarks);
             }
             else if (!string.IsNullOrWhiteSpace(doc.Remarks))
-                card.Add(CreateDescriptionLabel(doc.Remarks!));
+                card.Add(CreateTextLabel(doc.Remarks!));
 
-            // Returns.
-            if (!string.IsNullOrWhiteSpace(doc.Returns))
-                card.Add(CreateLabelValueRow("Returns", doc.Returns!));
-
-            // Parameters.
-            foreach (var (paramName, paramText) in doc.Parameters)
-                card.Add(CreateLabelValueRow(paramName, paramText));
-
-            // Type parameters.
-            foreach (var (typeName, typeText) in doc.TypeParameters)
-                card.Add(CreateLabelValueRow($"<{typeName}>", typeText));
-
-            // See-also references.
-            foreach (var see in doc.SeeAlso)
+            if (doc.Parameters.Count > 0 || doc.TypeParameters.Count > 0)
             {
-                if (!string.IsNullOrEmpty(see.Cref))
-                    card.Add(CreateTag(see.Cref!, "binder-tag-type"));
+                var paramsContainer = new VisualElement().SetMargin(top: 6);
+                foreach (var (paramName, paramText) in doc.Parameters)
+                    paramsContainer.Add(CreateParamRow(paramName, paramText));
+                foreach (var (typeName, typeText) in doc.TypeParameters)
+                    paramsContainer.Add(CreateParamRow($"<{typeName}>", typeText));
+                card.Add(paramsContainer);
+            }
+
+            if (!string.IsNullOrWhiteSpace(doc.Returns))
+                card.Add(CreateReturnsRow(doc.Returns!));
+
+            if (doc.SeeAlso.Count > 0)
+            {
+                var seeAlsoRow = new VisualElement()
+                    .SetFlexDirection(FlexDirection.Row)
+                    .SetFlexWrap(Wrap.Wrap)
+                    .SetMargin(top: 6);
+
+                foreach (var see in doc.SeeAlso)
+                {
+                    if (string.IsNullOrEmpty(see.Cref)) continue;
+                    var chip = new Label(XmlDocParser.CrefToDisplayName(see.Cref));
+                    chip.AddToClassList("doc-seealso-chip");
+                    chip.tooltip = see.Cref;
+                    seeAlsoRow.Add(chip);
+                }
+
+                card.Add(seeAlsoRow);
             }
 
             return card;
         }
 
-        private static VisualElement CreateLabelValueRow(string label, string value)
+        private static VisualElement CreateParamRow(string name, string description)
         {
-            var row = new VisualElement().SetFlexDirection(FlexDirection.Row);
-            row.AddToClassList("binder-row");
+            var row = new VisualElement();
+            row.AddToClassList("doc-param-row");
 
-            var lbl = new Label(label);
-            lbl.AddToClassList("binder-label");
+            var nameLabel = new Label(name);
+            nameLabel.AddToClassList("doc-param-name");
 
-            var val = new Label(value);
-            val.AddToClassList("binder-value");
-            val.style.whiteSpace = WhiteSpace.Normal;
-            val.SetFlexGrow(1);
+            var descLabel = new Label(description);
+            descLabel.AddToClassList("doc-param-desc");
 
-            return row.AddChild(lbl).AddChild(val);
+            row.Add(nameLabel);
+            row.Add(descLabel);
+            return row;
         }
 
-        private static Label CreateTag(string text, string extraClass)
+        private static VisualElement CreateReturnsRow(string description)
         {
-            var tag = new Label(text);
-            tag.AddToClassList("binder-tag");
-            tag.AddToClassList(extraClass);
-            return tag;
-        }
+            var row = new VisualElement();
+            row.AddToClassList("doc-param-row");
 
-        // ── Source file lookup ────────────────────────────────────────────────
+            var label = new Label("Returns");
+            label.AddToClassList("doc-returns-label");
 
-        private static string? FindSourceFile(string typeName)
-        {
-            var guids = AssetDatabase.FindAssets($"t:Script {typeName}");
-            foreach (var guid in guids)
-            {
-                var assetPath = AssetDatabase.GUIDToAssetPath(guid);
-                if (Path.GetFileNameWithoutExtension(assetPath) == typeName)
-                    return assetPath;
-            }
-            return null;
+            var desc = new Label(description);
+            desc.AddToClassList("doc-param-desc");
+
+            row.Add(label);
+            row.Add(desc);
+            return row;
         }
     }
 }

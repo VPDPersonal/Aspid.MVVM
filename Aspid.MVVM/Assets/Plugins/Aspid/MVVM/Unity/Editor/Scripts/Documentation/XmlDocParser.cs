@@ -8,7 +8,8 @@ using System.Text.RegularExpressions;
 using System.Xml.Linq;
 using UnityEngine;
 
-namespace Aspid.XmlDoc
+// ReSharper disable once CheckNamespace
+namespace Aspid.FastTools.XmlDoc
 {
     /// <summary>
     /// Parses C# XML documentation comments from <c>.cs</c> source files into <see cref="TypeDocumentation"/> objects.
@@ -23,17 +24,9 @@ namespace Aspid.XmlDoc
             "example", "see", "seealso", "inheritdoc", "include",
         };
 
-        private static readonly Regex _xmlCommentLine =
-            new Regex(@"^\s*///\s?", RegexOptions.Compiled);
-
-        private static readonly Regex _typeNameFromFile =
-            new Regex(@"(?:class|struct|interface|enum|record)\s+(\w+)", RegexOptions.Compiled);
-
-        private static readonly Regex _memberNameRegex =
-            new Regex(@"\b(\w+)\s*(?:<[^>]*>)?\s*[\(\{]", RegexOptions.Compiled);
-
-        private static readonly Regex _whitespaceRun =
-            new Regex(@"\s+", RegexOptions.Compiled);
+        private static readonly Regex _xmlCommentLine = new(@"^\s*///\s?", RegexOptions.Compiled);
+        private static readonly Regex _memberNameRegex = new(@"\b(\w+)\s*(?:<[^>]*>)?\s*[\(\{]", RegexOptions.Compiled);
+        private static readonly Regex _whitespaceRun = new(@"\s+", RegexOptions.Compiled);
 
         private readonly XmlDocIncludeResolver _includeResolver;
 
@@ -57,42 +50,13 @@ namespace Aspid.XmlDoc
 
             var content = File.ReadAllText(csFilePath);
             var baseDir = Path.GetDirectoryName(Path.GetFullPath(csFilePath)) ?? string.Empty;
-            var typeName = ExtractTypeName(content, csFilePath);
 
-            return ParseTypeFromContent(content, typeName, baseDir);
+            return ParseTypeFromContent(content, baseDir);
         }
-
-        /// <summary>
-        /// Parses all <c>.cs</c> files in the given directory.
-        /// Files without XML comments are skipped.
-        /// </summary>
-        /// <param name="directoryPath">Directory to search.</param>
-        /// <param name="searchPattern">File glob pattern (default: <c>*.cs</c>).</param>
-        /// <param name="recursive">Whether to search subdirectories.</param>
-        public Dictionary<string, TypeDocumentation> ParseDirectory(
-            string directoryPath,
-            string searchPattern = "*.cs",
-            bool recursive = true)
-        {
-            var result = new Dictionary<string, TypeDocumentation>();
-
-            if (!Directory.Exists(directoryPath))
-                return result;
-
-            var option = recursive ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly;
-            foreach (var file in Directory.EnumerateFiles(directoryPath, searchPattern, option))
-            {
-                var doc = ParseType(file);
-                if (doc != null)
-                    result[doc.TypeName] = doc;
-            }
-
-            return result;
-        }
-
+        
         // ── Internal ──────────────────────────────────────────────────────────
 
-        private TypeDocumentation? ParseTypeFromContent(string content, string typeName, string baseDir)
+        private TypeDocumentation? ParseTypeFromContent(string content, string baseDir)
         {
             // Extract the leading doc block (before the class/struct declaration)
             var typeCommentBlock = ExtractLeadingXmlComments(content);
@@ -105,7 +69,7 @@ namespace Aspid.XmlDoc
 
             ResolveIncludes(root, baseDir);
 
-            var doc = new TypeDocumentation { TypeName = typeName };
+            var doc = new TypeDocumentation();
             PopulateFromElement(root, doc.Examples, doc.CustomTags,
                 out doc.Summary, out doc.Remarks,
                 out doc.SummaryXml, out doc.RemarksXml);
@@ -186,15 +150,11 @@ namespace Aspid.XmlDoc
                         if (!string.IsNullOrEmpty(typeParamName))
                             doc.TypeParameters[typeParamName] = GetInnerText(element);
                         break;
-                    case "example":
-                        doc.Examples.Add(element);
-                        break;
                     case "see":
                     case "seealso":
                         doc.SeeAlso.Add(new SeeReference
                         {
                             Cref = element.Attribute("cref")?.Value,
-                            Text = string.IsNullOrWhiteSpace(element.Value) ? null : element.Value.Trim(),
                         });
                         break;
                     case "inheritdoc":
@@ -214,7 +174,7 @@ namespace Aspid.XmlDoc
             return doc;
         }
 
-        private void PopulateFromElement(XElement root,
+        private static void PopulateFromElement(XElement root,
             List<XElement> examples,
             Dictionary<string, List<XElement>> customTags,
             out string? summary,
@@ -339,15 +299,7 @@ namespace Aspid.XmlDoc
                 return null;
             }
         }
-
-        private static string ExtractTypeName(string content, string filePath)
-        {
-            var match = _typeNameFromFile.Match(content);
-            return match.Success
-                ? match.Groups[1].Value
-                : Path.GetFileNameWithoutExtension(filePath);
-        }
-
+        
         private static string? TryExtractMemberName(string line)
         {
             // Match: [access modifier(s)] [return type] MemberName( or {

@@ -4,6 +4,8 @@
     "references": [
         "Aspid.MVVM",
         "Aspid.FastTools",
+        "Unity.Collections",
+        "Unity.Mathematics",
         "Aspid.MVVM.Unity",
         "Aspid.FastTools.Unity",
         "Aspid.Internal.Unity.Editor",

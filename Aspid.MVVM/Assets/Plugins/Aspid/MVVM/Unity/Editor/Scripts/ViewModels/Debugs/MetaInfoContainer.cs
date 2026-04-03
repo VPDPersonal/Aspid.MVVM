@@ -24,10 +24,10 @@ namespace Aspid.MVVM
                     .AddChild(new VisualElement().SetName("title")
                         .AddChild(new Label(text: "Meta"))
                         .AddChild(CreateButton(closeCallback)))
-                    .AddChildIfNotNull(CreateIdField(context))
-                    .AddChildIfNotNull(CreateTypeField(context))
-                    .AddChildIfNotNull(CreateAttributes(context.Member))
-                    .AddChildIfNotNull(CreateBindableField(context.Target, context.Member));
+                    .AddChild(CreateIdField(context))
+                    .AddChild(CreateTypeField(context))
+                    .AddChild(CreateAttributes(context.Member))
+                    .AddChild(CreateBindableField(context.Target, context.Member));
                 
                 styleSheets.Add(styleSheet: Resources.Load<StyleSheet>(StyleSheetPath));
             }

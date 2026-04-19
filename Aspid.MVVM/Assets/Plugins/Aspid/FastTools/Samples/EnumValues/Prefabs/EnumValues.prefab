@@ -1,0 +1,112 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1234567890123456789
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2234567890123456789}
+  - component: {fileID: 3234567890123456789}
+  m_Layer: 0
+  m_Name: DamageDealer
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2234567890123456789
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1234567890123456789}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3234567890123456789
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1234567890123456789}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3bd9644f273549748da7b083e4de1b37, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Aspid.FastTools.Samples.EnumValues::Aspid.FastTools.Samples.EnumValues.DamageDealer
+  _damageMultipliers:
+    _enumType: Aspid.FastTools.Samples.EnumValues.DamageType, Aspid.FastTools.Samples.EnumValues,
+      Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    _defaultValue: 1
+    _values:
+    - _key: Physical
+      _value: 1
+      _enumType: Aspid.FastTools.Samples.EnumValues.DamageType, Aspid.FastTools.Samples.EnumValues,
+        Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    - _key: Fire
+      _value: 1.5
+      _enumType: Aspid.FastTools.Samples.EnumValues.DamageType, Aspid.FastTools.Samples.EnumValues,
+        Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    - _key: Ice
+      _value: 0.8
+      _enumType: Aspid.FastTools.Samples.EnumValues.DamageType, Aspid.FastTools.Samples.EnumValues,
+        Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    - _key: Poison
+      _value: 0.6
+      _enumType: Aspid.FastTools.Samples.EnumValues.DamageType, Aspid.FastTools.Samples.EnumValues,
+        Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+  _damageColors:
+    _enumType: Aspid.FastTools.Samples.EnumValues.DamageType, Aspid.FastTools.Samples.EnumValues,
+      Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    _defaultValue: {r: 1, g: 1, b: 1, a: 1}
+    _values:
+    - _key: Physical
+      _value: {r: 0.85, g: 0.85, b: 0.85, a: 1}
+      _enumType: Aspid.FastTools.Samples.EnumValues.DamageType, Aspid.FastTools.Samples.EnumValues,
+        Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    - _key: Fire
+      _value: {r: 1, g: 0.5, b: 0.1, a: 1}
+      _enumType: Aspid.FastTools.Samples.EnumValues.DamageType, Aspid.FastTools.Samples.EnumValues,
+        Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    - _key: Ice
+      _value: {r: 0.4, g: 0.8, b: 1, a: 1}
+      _enumType: Aspid.FastTools.Samples.EnumValues.DamageType, Aspid.FastTools.Samples.EnumValues,
+        Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    - _key: Poison
+      _value: {r: 0.5, g: 0.9, b: 0.3, a: 1}
+      _enumType: Aspid.FastTools.Samples.EnumValues.DamageType, Aspid.FastTools.Samples.EnumValues,
+        Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+  _speedMultipliersByStatus:
+    _enumType: Aspid.FastTools.Samples.EnumValues.StatusEffect, Aspid.FastTools.Samples.EnumValues,
+      Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    _defaultValue: 1
+    _values:
+    - _key: Burning, Slowed
+      _value: 0.4
+      _enumType: Aspid.FastTools.Samples.EnumValues.StatusEffect, Aspid.FastTools.Samples.EnumValues,
+        Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    - _key: Burning
+      _value: 1
+      _enumType: Aspid.FastTools.Samples.EnumValues.StatusEffect, Aspid.FastTools.Samples.EnumValues,
+        Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    - _key: Frozen
+      _value: 0.2
+      _enumType: Aspid.FastTools.Samples.EnumValues.StatusEffect, Aspid.FastTools.Samples.EnumValues,
+        Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    - _key: Slowed
+      _value: 0.5
+      _enumType: Aspid.FastTools.Samples.EnumValues.StatusEffect, Aspid.FastTools.Samples.EnumValues,
+        Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+  _currentDamageType: 1
+  _activeEffects: 5
+  _baseDamage: 10

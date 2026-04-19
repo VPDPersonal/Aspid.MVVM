@@ -1,11 +1,11 @@
 using System;
 using System.Linq;
 using UnityEngine;
-using Aspid.FastTools;
 using System.Reflection;
 using UnityEngine.UIElements;
 using System.CodeDom.Compiler;
 using System.Collections.Generic;
+using Aspid.FastTools.UIElements;
 using Object = UnityEngine.Object;
 
 // ReSharper disable once CheckNamespace

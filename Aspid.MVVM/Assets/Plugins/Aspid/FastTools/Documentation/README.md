@@ -6,6 +6,7 @@
 
 [[Aspid.FastTools](https://github.com/VPDPersonal/Aspid.FastTools)]
 
+
 ---
 
 ## Integration
@@ -124,6 +125,27 @@ public class MyBehaviour : MonoBehaviour
 }
 ```
 ![Aspid.FastTools.SerializableType.png](Images/Aspid.FastTools.SerializableType.png)
+### ComponentTypeSelector
+
+A serializable struct that renders a type-switching dropdown in the Inspector. Add it as a field to a base class — picking a subtype rewrites `m_Script` on the `SerializedObject`, effectively changing the component or ScriptableObject to the chosen subtype.
+
+The dropdown is automatically constrained to subtypes of the class that declares the field. No additional configuration is required.
+
+```csharp
+using UnityEngine;
+using Aspid.FastTools;
+
+public abstract class BaseEnemy : MonoBehaviour
+{
+    [SerializeField] private ComponentTypeSelector _typeSelector;
+}
+
+public class FastEnemy : BaseEnemy { }
+public class TankEnemy : BaseEnemy { }
+```
+
+---
+
 ### TypeSelectorAttribute
 
 An editor-only `PropertyAttribute` that restricts the type selection popup to specific base types. Applied to `string` fields that store assembly-qualified type names.
@@ -137,8 +159,16 @@ public sealed class TypeSelectorAttribute : PropertyAttribute
     public TypeSelectorAttribute(params Type[] types)
     public TypeSelectorAttribute(string assemblyQualifiedName)
     public TypeSelectorAttribute(params string[] assemblyQualifiedNames)
+
+    public bool AllowAbstractTypes { get; set; } // default: false
+    public bool AllowInterfaces    { get; set; } // default: false
 }
 ```
+
+| Property | Description |
+|----------|-------------|
+| `AllowAbstractTypes` | Includes abstract classes in the picker. Default: `false` |
+| `AllowInterfaces` | Includes interface types in the picker. Default: `false` |
 
 ```csharp
 using UnityEngine;
@@ -148,6 +178,10 @@ public class MyBehaviour : MonoBehaviour
 {
     [TypeSelector(typeof(IMyInterface))]
     [SerializeField] private string _typeName;
+
+    // Include abstract types and interfaces in the picker
+    [TypeSelector(typeof(object), AllowAbstractTypes = true, AllowInterfaces = true)]
+    [SerializeField] private string _anyType;
 }
 ```
 
@@ -202,7 +236,84 @@ public class MyBehaviour : MonoBehaviour
 }
 ```
 
-In the Inspector, select the enum type in the `EnumValues` header, then assign a value for each enum member.
+In the Inspector, select the enum type in the `EnumValues` header, then assign a value for each enum member. Right-click the property to open a context menu with **Populate Missing Enum Members** — it appends an entry for every enum member not yet in the list, seeded with the current Default Value.
+
+---
+
+## String ID System
+
+Maps string names to stable integer IDs. Designed for data-driven setups where assets need a reliable, editor-assignable identifier that can be safely used in switch statements and dictionaries.
+
+### Setup
+
+**1.** Declare a `partial struct` implementing `IId`. The source generator adds the required fields and property automatically:
+
+```csharp
+using Aspid.FastTools;
+
+public partial struct EnemyId : IId { }
+```
+
+Generated code:
+
+```csharp
+public partial struct EnemyId
+{
+    [SerializeField] private string __stringId;
+    [SerializeField] private int _id;
+
+    public int Id => _id;
+}
+```
+
+**2.** Create an `IdRegistry` asset via *Assets → Create → Aspid → FastTools → String Id Registry* and bind it to the struct type in the Inspector.
+
+**3.** Use the struct as a serialized field. The Inspector shows a dropdown of registered names with a **Create** button to add new entries inline:
+
+```csharp
+using UnityEngine;
+using Aspid.FastTools;
+
+[CreateAssetMenu]
+public class EnemyDefinition : ScriptableObject
+{
+    [UniqueId] [SerializeField] private EnemyId _id;
+}
+```
+
+```csharp
+public class EnemySpawner : MonoBehaviour
+{
+    [SerializeField] private EnemyId _targetEnemy;
+
+    private void Spawn()
+    {
+        int id = _targetEnemy.Id; // stable integer, safe for switch / Dictionary
+    }
+}
+```
+
+### UniqueIdAttribute
+
+Marks a field as requiring a unique value across all assets of the declaring type. The Inspector shows a warning if two assets share the same ID.
+
+```csharp
+[Conditional("UNITY_EDITOR")]
+public sealed class UniqueIdAttribute : PropertyAttribute { }
+```
+
+### IdRegistry
+
+A `ScriptableObject` that stores name ↔ integer pairs. Each name is assigned a stable, auto-incrementing ID that never changes even when other entries are added or removed.
+
+| Member | Description |
+|--------|-------------|
+| `bool Contains(string name)` | Returns whether a name is registered |
+| `int Add(string name)` | Registers a name and returns its ID; returns the existing ID if already registered |
+| `void Remove(string name)` | Removes an entry by name |
+| `void Rename(string oldName, string newName)` | Renames an entry |
+| `int GetId(string name)` | Returns the ID for a name, or `0` if not found |
+| `string? GetName(int id)` | Returns the name for an ID, or `null` if not found |
 
 ---
 
@@ -334,23 +445,57 @@ element
     .SetVisible(true)
     .SetTooltip("Tooltip text")
     .AddChild(new Label("Hello"))
-    .AddChildIfNotNull(optionalChild)
     .AddChildren(child1, child2, child3);
 ```
 
 | Method | Description |
 |--------|-------------|
 | `SetName(string)` | Sets `element.name` |
-| `SetVisible(bool)` | Sets `display` style to `Flex` or `None` |
+| `SetVisible(bool)` | Sets `element.visible` |
 | `SetTooltip(string)` | Sets `element.tooltip` |
+| `SetUserData(object)` | Sets `element.userData` |
+| `SetEnabledSelf(bool)` | Sets `element.enabledSelf` |
+| `SetPickingMode(PickingMode)` | Sets `element.pickingMode` |
+| `SetUsageHints(UsageHints)` | Sets `element.usageHints` |
+| `SetViewDataKey(string)` | Sets `element.viewDataKey` |
+| `SetLanguageDirection(LanguageDirection)` | Sets `element.languageDirection` |
+| `SetDisablePlayModeTint(bool)` | Sets `element.disablePlayModeTint` |
+| `SetDataSource(object)` | Sets `element.dataSource` |
+| `SetDataSourceType(Type)` | Sets `element.dataSourceType` |
+| `SetDataSourcePath(PropertyPath)` | Sets `element.dataSourcePath` |
 | `AddChild(VisualElement)` | Appends a child, returns the parent |
-| `AddChildIfNotNull(VisualElement)` | Appends only if not null |
 | `AddChildren(params VisualElement[])` | Appends multiple children |
 | `AddChildren(IEnumerable<VisualElement>)` | Appends from a sequence |
-| `SetFocus()` | Focuses the element |
-| `IsFocus()` | Returns whether the element is focused |
+| `AddChildren(List<VisualElement>)` | Appends from a list |
+| `AddChildren(Span<VisualElement>)` | Appends from a span |
+| `AddChildren(ReadOnlySpan<VisualElement>)` | Appends from a read-only span |
 
-> `RegisterCallbackOnce<TEventType>` and `RegisterCallbackOnce<TEventType, TUserArgsType>` are available on Unity 2023.1+.
+> `RegisterCallbackOnce<TEventType>` and `RegisterCallbackOnce<TEventType, TUserArgsType>` are available on all Unity versions (polyfill included for versions prior to 2023.1).
+
+### Focusable
+
+| Method | Description |
+|--------|-------------|
+| `SetFocus()` | Attempts to give focus to the element |
+| `SetBlur()` | Tells the element to release focus |
+| `IsFocus()` | Returns whether the element currently has keyboard focus |
+| `SetTabIndex(int)` | Sets `element.tabIndex` |
+| `SetFocusable(bool)` | Sets `element.focusable` |
+| `SetDelegatesFocus(bool)` | Sets `element.delegatesFocus` |
+
+### USS & class operations
+
+| Method | Description |
+|--------|-------------|
+| `AddClass(string)` | Adds a USS class |
+| `RemoveClass(string)` | Removes a USS class |
+| `ClearClasses()` | Removes all USS classes |
+| `ToggleInClass(string)` | Toggles a USS class on/off |
+| `EnableInClass(string, bool)` | Adds or removes a USS class based on a condition |
+| `AddStyleSheets(StyleSheet)` | Adds a `StyleSheet` |
+| `RemoveStyleSheets(StyleSheet)` | Removes a `StyleSheet` |
+| `AddStyleSheetsFromResource(string)` | Adds a stylesheet loaded via `Resources.Load` |
+| `RemoveStyleSheetsFromResource(string)` | Removes a stylesheet loaded via `Resources.Load` |
 
 ### Style extensions — by category
 
@@ -400,6 +545,18 @@ All spacing methods have a uniform-value overload and a per-side overload (`top`
 | `SetFontSize(StyleLength)` | `fontSize` |
 | `SetUnityFontDefinition(StyleFontDefinition)` | `unityFontDefinition` |
 | `SetUnityFontStyleAndWeight(StyleEnum<FontStyle>)` | `unityFontStyleAndWeight` |
+
+#### Font style presets
+
+Convenience methods for toggling bold / italic without overwriting the other flag:
+
+| Method | Description |
+|--------|-------------|
+| `SetNormalUnityFontStyleAndWeight()` | Resets to `FontStyle.Normal` |
+| `AddBoldUnityFontStyleAndWeight()` | Adds bold, preserving italic |
+| `RemoveBoldUnityFontStyleAndWeight()` | Removes bold, preserving italic |
+| `AddItalicUnityFontStyleAndWeight()` | Adds italic, preserving bold |
+| `RemoveItalicUnityFontStyleAndWeight()` | Removes italic, preserving bold |
 
 #### Text
 
@@ -505,6 +662,69 @@ field.SetLabel("My Field");
 field.SetValue(42);
 ```
 
+#### INotifyValueChanged\<T\>
+
+```csharp
+field.SetValue(42, notify: false); // sets value without raising ChangeEvent
+field.AddValueChanged(evt => Debug.Log(evt.newValue));
+field.RemoveValueChanged(myCallback);
+```
+
+Typed overloads are provided for `int`, `uint`, `long`, `ulong`, `short`, `ushort`, `byte`, `sbyte`, `float`, `double`, `string`, `bool`, `Color`, `Vector2/3/4`, `Vector2Int/3Int`, `Rect/RectInt`, `Bounds/BoundsInt`, `Hash128`, `Enum`, `Object`, and more.
+
+#### IMixedValueSupport
+
+```csharp
+field.SetShowMixedValue(true); // shows the mixed-value indicator
+```
+
+#### Button
+
+```csharp
+button
+    .AddClicked(() => Debug.Log("Clicked"))
+    .SetClickable(new Clickable(() => { }))
+    .SetIconImage(myBackground);
+```
+
+| Method | Description |
+|--------|-------------|
+| `AddClicked(Action)` | Subscribes to `Button.clicked` |
+| `RemoveClicked(Action)` | Unsubscribes from `Button.clicked` |
+| `SetClickable(Clickable)` | Sets `Button.clickable` |
+| `SetIconImage(Background)` | Sets `Button.iconImage` |
+
+#### Slider / BaseSlider\<TValue\>
+
+```csharp
+slider
+    .SetLowValue(0f)
+    .SetHighValue(100f)
+    .SetShowInputField<SliderFloat, float>(true);
+```
+
+| Method | Description |
+|--------|-------------|
+| `SetLowValue(TValue)` | Sets the minimum slider value |
+| `SetHighValue(TValue)` | Sets the maximum slider value |
+| `SetFill(bool)` | Whether the track is filled up to the current value |
+| `SetInverted(bool)` | Reverses the slider direction |
+| `SetPageSize(float)` | Controls how much the value changes per page step |
+| `SetShowInputField(bool)` | Shows a numeric input field alongside the slider |
+| `SetDirection(SliderDirection)` | Sets the slider orientation |
+
+#### ProgressBar
+
+```csharp
+progressBar.SetTitle("Loading...").SetLowValue(0f).SetHighValue(100f);
+```
+
+| Method | Description |
+|--------|-------------|
+| `SetTitle(string)` | Sets the title displayed in the center |
+| `SetLowValue(float)` | Sets the minimum value |
+| `SetHighValue(float)` | Sets the maximum value |
+
 #### HelpBox
 
 ```csharp
@@ -525,6 +745,22 @@ foldout.SetValue(true);
 image.SetImage(myTexture);
 image.SetImageFromResource("Editor/MyIcon"); // loads via Resources.Load
 ```
+
+#### IMGUIContainer
+
+```csharp
+container
+    .SetOnGUIHandler(() => GUILayout.Label("IMGUI"))
+    .SetCullingEnabled(true);
+```
+
+| Method | Description |
+|--------|-------------|
+| `SetOnGUIHandler(Action)` | Replaces the `onGUIHandler` callback |
+| `AddOnGUIHandler(Action)` | Subscribes to `onGUIHandler` |
+| `RemoveOnGUIHandler(Action)` | Unsubscribes from `onGUIHandler` |
+| `SetCullingEnabled(bool)` | Skips `onGUIHandler` when the element is offscreen |
+| `SetContextType(ContextType)` | Sets the IMGUI context type |
 
 #### ListView / CollectionView
 

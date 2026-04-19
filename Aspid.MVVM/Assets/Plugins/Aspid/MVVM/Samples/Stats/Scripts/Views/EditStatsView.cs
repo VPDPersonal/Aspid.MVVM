@@ -12,5 +12,11 @@ namespace Aspid.MVVM.Samples.Stats
         [SerializeField] private ButtonCommandBinder[] _resetToDefaultCommand;
         [SerializeField] private ButtonCommandBinder<Skill>[] _addSkillPointToCommand;
         [SerializeField] private ButtonCommandBinder<Skill>[] _removeSkillPointToCommand;
+
+        [RelayCommand]
+        public void Debug()
+        {
+            UnityEngine.Debug.Log("Log");
+        }
     }
 }

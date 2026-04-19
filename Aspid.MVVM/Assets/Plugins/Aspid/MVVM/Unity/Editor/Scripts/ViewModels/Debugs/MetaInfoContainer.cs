@@ -6,6 +6,7 @@ using System.Reflection;
 using System.Diagnostics;
 using UnityEngine.UIElements;
 using System.CodeDom.Compiler;
+using Aspid.FastTools.UIElements;
 using System.Runtime.CompilerServices;
 
 // ReSharper disable once CheckNamespace

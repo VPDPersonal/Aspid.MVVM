@@ -9,15 +9,23 @@
     "name": "Vladislav Panin",
     "email": "vpd.aspid@gmail.com"
   },
-  "samples": 
+  "samples":
   [
-    {
-      "displayName": "ProfilerMarkers",
-      "path": "Samples~/ProfilerMarkers"
-    },
     {
       "displayName": "Types",
       "path": "Samples~/Types"
+    },
+    {
+      "displayName": "EnumValues",
+      "path": "Samples~/EnumValues"
+    },
+    {
+      "displayName": "Ids",
+      "path": "Samples~/Ids"
+    },
+    {
+      "displayName": "ProfilerMarkers",
+      "path": "Samples~/ProfilerMarkers"
     },
     {
       "displayName": "VisualElements",

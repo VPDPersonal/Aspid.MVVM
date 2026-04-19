@@ -1,6 +1,6 @@
 using System;
 using UnityEngine;
-using Aspid.FastTools;
+using Aspid.FastTools.Types;
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM

@@ -1,4 +1,6 @@
 using System;
+using Aspid.MVVM.StarterKit;
+using UnityEngine;
 
 // ReSharper disable CheckNamespace
 // ReSharper disable UnusedParameterInPartialMethod
@@ -7,6 +9,8 @@ namespace Aspid.MVVM.Samples.Stats
     [ViewModel]
     public sealed partial class StatsViewModel : IDisposable
     {
+        [OneWayBind] private Space m_sapce;
+        
         [OneWayBind] private int _cool;
         [OneWayBind] private int _power;
         [OneWayBind] private int _reflexes;

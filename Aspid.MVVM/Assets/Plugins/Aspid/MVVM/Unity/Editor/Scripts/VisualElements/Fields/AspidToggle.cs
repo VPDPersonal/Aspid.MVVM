@@ -1,9 +1,9 @@
 #nullable enable
 using System;
 using UnityEngine;
-using Aspid.FastTools;
 using UnityEngine.UIElements;
 using System.Collections.Generic;
+using Aspid.FastTools.UIElements;
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM

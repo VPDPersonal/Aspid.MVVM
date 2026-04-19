@@ -1,0 +1,484 @@
+/*–––––––––––––––––––––––––––––––––––– Vars ––––––––––––––––––––––––––––––––––––*/
+:root {
+    /* Icons */
+    --aspid-icon-success: resource("aspid_icon_medium_green_1020x1008");
+    --aspid-icon-warning: resource("aspid_icon_medium_yellow_1020x1008");
+    --aspid-icon-error: resource("aspid_icon_medium_red_1020x1008");
+
+    /* Background shades */
+    --aspid-darkness: #1A1A1A;
+    --aspid-dark: #262626;
+    --aspid-light: #2E2E2E;
+    --aspid-lightness: #D2D2D2;
+
+    /* Status base */
+    --aspid-success: #0c5830;
+    --aspid-warning: #78580c;
+    --aspid-error: #580c0c;
+    --aspid-info: #0c5878;
+
+    /* Neutral shades */
+    --aspid-shade-darkness: #3c3c3c;
+    --aspid-shade-dark: #787878;
+    --aspid-shade-light: #C0C0C0;
+    --aspid-shade-lightness: #ffffff;
+
+    /* Success shades */
+    --aspid-success-darkness: #1e3c1e;
+    --aspid-success-dark: #3c783c;
+    --aspid-success-light: #60c060;
+    --aspid-success-lightness: #7fff7f;
+
+    /* Warning shades */
+    --aspid-warning-darkness: #463c1e;
+    --aspid-warning-dark: #8c783c;
+    --aspid-warning-light: #c0a030;
+    --aspid-warning-lightness: #ffd440;
+
+    /* Error shades */
+    --aspid-error-darkness: #4f1e1e;
+    --aspid-error-dark: #9e3c3c;
+    --aspid-error-light: #c03030;
+    --aspid-error-lightness: #ff4040;
+
+    /* Error shades */
+    --aspid-info-darkness: #1e3c46;
+    --aspid-info-dark: #3c788c;
+    --aspid-info-light: #30a0c0;
+    --aspid-info-lightness: #40d4ff;
+}
+
+/*––––––––––––––––––––––––––––––––––– General –––––––––––––––––––––––––––––––––––*/
+.aspid-fasttools-inspector-container {
+    margin-left: -10px;
+}
+
+.aspid-fasttools-draw-adapter.aspid-fasttools-draw-adapter-margin {
+    margin: 0;
+}
+
+/*––––––––––––––––––––––––––––––––– Background –––––––––––––––––––––––––––––––––*/
+.aspid-fasttools-background {
+    padding: 10px;
+    border-radius: 10px;
+}
+
+.aspid-fasttools-background.aspid-fasttools-darkness {
+    background-color: var(--aspid-darkness);
+}
+
+.aspid-fasttools-background.aspid-fasttools-dark {
+    background-color: var(--aspid-dark);
+}
+
+.aspid-fasttools-background.aspid-fasttools-light {
+    background-color: var(--aspid-light);
+}
+
+.aspid-fasttools-background.aspid-fasttools-lightness {
+    background-color: var(--aspid-lightness);
+}
+
+.aspid-fasttools-background.aspid-fasttools-status-success {
+    background-color: var(--aspid-success);
+}
+
+.aspid-fasttools-background.aspid-fasttools-status-warning {
+    background-color: var(--aspid-warning);
+}
+
+.aspid-fasttools-background.aspid-fasttools-status-error {
+    background-color: var(--aspid-error);
+}
+
+/*–––––––––––––––––––––––––––––––––– AspidBox ––––––––––––––––––––––––––––––––––*/
+AspidBox {
+    flex-grow: 1;
+}
+
+/*–––––––––––––––––––––––––––––– AspidDividingLine ––––––––––––––––––––––––––––––*/
+AspidDividingLine {
+    flex-grow: 1;
+    display: none;
+}
+
+/*Thin Horizontal Line*/
+AspidDividingLine.aspid-fasttools-thin-line.aspid-fasttools-horizontal-line {
+    height: 1px;
+    display: flex;
+}
+
+/*Medium Horizontal Line*/
+AspidDividingLine.aspid-fasttools-medium-line.aspid-fasttools-horizontal-line {
+    height: 2px;
+    display: flex;
+}
+
+/*Bold Horizontal Line*/
+AspidDividingLine.aspid-fasttools-bold-line.aspid-fasttools-horizontal-line {
+    height: 3px;
+    display: flex;
+}
+
+/*Thin Vertical Line*/
+AspidDividingLine.aspid-fasttools-thin-line.aspid-fasttools-vertical-line {
+    width: 1px;
+    display: flex;
+}
+
+/*Medium Vertical Line*/
+AspidDividingLine.aspid-fasttools-medium-line.aspid-fasttools-vertical-line {
+    width: 2px;
+    display: flex;
+}
+
+/*Bold Vertical Line*/
+AspidDividingLine.aspid-fasttools-bold-line.aspid-fasttools-vertical-line {
+    width: 3px;
+    display: flex;
+}
+
+/*Darkness*/
+AspidDividingLine.aspid-fasttools-darkness {
+    background-color: var(--aspid-shade-darkness);
+}
+
+/*Dark*/
+AspidDividingLine.aspid-fasttools-dark {
+    background-color: var(--aspid-shade-dark);
+}
+
+/*Light*/
+AspidDividingLine.aspid-fasttools-light {
+    background-color: var(--aspid-shade-light);
+}
+
+/*Lightness*/
+AspidDividingLine.aspid-fasttools-lightness {
+    background-color: var(--aspid-shade-lightness);
+}
+
+/*Darkness Success*/
+AspidDividingLine.aspid-fasttools-darkness.aspid-fasttools-status-success {
+    background-color: var(--aspid-success-darkness);
+}
+
+/*Dark Success*/
+AspidDividingLine.aspid-fasttools-dark.aspid-fasttools-status-success {
+    background-color: var(--aspid-success-dark);
+}
+
+/*Light Success*/
+AspidDividingLine.aspid-fasttools-light.aspid-fasttools-status-success {
+    background-color: var(--aspid-success-light);
+}
+
+/*Lightness Success*/
+AspidDividingLine.aspid-fasttools-lightness.aspid-fasttools-status-success {
+    background-color: var(--aspid-success-lightness);
+}
+
+/*Darkness Warning*/
+AspidDividingLine.aspid-fasttools-darkness.aspid-fasttools-status-warning {
+    background-color: var(--aspid-warning-darkness);
+}
+
+/*Dark Warning*/
+AspidDividingLine.aspid-fasttools-dark.aspid-fasttools-status-warning {
+    background-color: var(--aspid-warning-dark);
+}
+
+/*Light Warning*/
+AspidDividingLine.aspid-fasttools-light.aspid-fasttools-status-warning {
+    background-color: var(--aspid-warning-light);
+}
+
+/*Lightness Warning*/
+AspidDividingLine.aspid-fasttools-lightness.aspid-fasttools-status-warning {
+    background-color: var(--aspid-warning-lightness);
+}
+
+/*Darkness Error*/
+AspidDividingLine.aspid-fasttools-darkness.aspid-fasttools-status-error {
+    background-color: var(--aspid-error-darkness);
+}
+
+/*Dark Error*/
+AspidDividingLine.aspid-fasttools-dark.aspid-fasttools-status-error {
+    background-color: var(--aspid-error-dark);
+}
+
+/*Light Error*/
+AspidDividingLine.aspid-fasttools-light.aspid-fasttools-status-error {
+    background-color: var(--aspid-error-light);
+}
+
+/*Lightness Error*/
+AspidDividingLine.aspid-fasttools-lightness.aspid-fasttools-status-error {
+    background-color: var(--aspid-error-lightness);
+}
+
+/*Darkness Info*/
+AspidDividingLine.aspid-fasttools-darkness.aspid-fasttools-status-info {
+    background-color: var(--aspid-info-darkness);
+}
+
+/*Dark Info*/
+AspidDividingLine.aspid-fasttools-dark.aspid-fasttools-status-info {
+    background-color: var(--aspid-info-dark);
+}
+
+/*Light Info*/
+AspidDividingLine.aspid-fasttools-light.aspid-fasttools-status-info {
+    background-color: var(--aspid-info-light);
+}
+
+/*Lightness Info*/
+AspidDividingLine.aspid-fasttools-lightness.aspid-fasttools-status-info {
+    background-color: var(--aspid-info-lightness);
+}
+
+/*––––––––––––––––––––-–––––--––––– AspidLabel ––––––––––––––-–-–––––––––––––––-*/
+AspidLabel {
+    flex-direction: column;
+}
+
+AspidLabel > Label {
+    padding: 0;
+    flex-grow: 1;
+    white-space: normal;
+}
+
+/*Darkness*/
+AspidLabel.aspid-fasttools-darkness {
+    color: var(--aspid-shade-darkness);
+}
+
+/*Dark*/
+AspidLabel.aspid-fasttools-dark {
+    color: var(--aspid-shade-dark);
+}
+
+/*Light*/
+AspidLabel.aspid-fasttools-light {
+    color: var(--aspid-shade-light);
+}
+
+/*Lightness*/
+AspidLabel.aspid-fasttools-lightness {
+    color: var(--aspid-shade-lightness);
+}
+
+/*Darkness Success*/
+AspidLabel.aspid-fasttools-darkness.aspid-fasttools-status-success {
+    color: var(--aspid-success-darkness);
+}
+
+/*Dark Success*/
+AspidLabel.aspid-fasttools-dark.aspid-fasttools-status-success {
+    color: var(--aspid-success-dark);
+}
+
+/*Light Success*/
+AspidLabel.aspid-fasttools-light.aspid-fasttools-status-success {
+    color: var(--aspid-success-light);
+}
+
+/*Lightness Success*/
+AspidLabel.aspid-fasttools-lightness.aspid-fasttools-status-success {
+    color: var(--aspid-success-lightness);
+}
+
+/*Darkness Warning*/
+AspidLabel.aspid-fasttools-darkness.aspid-fasttools-status-warning {
+    color: var(--aspid-warning-darkness);
+}
+
+/*Dark Warning*/
+AspidLabel.aspid-fasttools-dark.aspid-fasttools-status-warning {
+    color: var(--aspid-warning-dark);
+}
+
+/*Light Warning*/
+AspidLabel.aspid-fasttools-light.aspid-fasttools-status-warning {
+    color: var(--aspid-warning-light);
+}
+
+/*Lightness Warning*/
+AspidLabel.aspid-fasttools-lightness.aspid-fasttools-status-warning {
+    color: var(--aspid-warning-lightness);
+}
+
+/*Darkness Error*/
+AspidLabel.aspid-fasttools-darkness.aspid-fasttools-status-error {
+    color: var(--aspid-error-darkness);
+}
+
+/*Dark Error*/
+AspidLabel.aspid-fasttools-dark.aspid-fasttools-status-error {
+    color: var(--aspid-error-dark);
+}
+
+/*Light Error*/
+AspidLabel.aspid-fasttools-light.aspid-fasttools-status-error {
+    color: var(--aspid-error-light);
+}
+
+/*Lightness Error*/
+AspidLabel.aspid-fasttools-lightness.aspid-fasttools-status-error {
+    color: var(--aspid-error-lightness);
+}
+
+/*Darkness Info*/
+AspidLabel.aspid-fasttools-darkness.aspid-fasttools-status-info {
+    color: var(--aspid-info-darkness);
+}
+
+/*Dark Info*/
+AspidLabel.aspid-fasttools-dark.aspid-fasttools-status-info {
+    color: var(--aspid-info-dark);
+}
+
+/*Light Info*/
+AspidLabel.aspid-fasttools-light.aspid-fasttools-status-info {
+    color: var(--aspid-info-light);
+}
+
+/*Lightness Info*/
+AspidLabel.aspid-fasttools-lightness.aspid-fasttools-status-info {
+    color: var(--aspid-info-lightness);
+}
+
+AspidLabel > AspidDividingLine {
+    margin: 5px 0 0 0;
+}
+
+/*–––––––––––––––––––––--––––– AspidInspectorHeader –––––––––––-–––––––––––––––-*/
+AspidInspectorHeader > AspidBox.aspid-fasttools-background {
+    overflow: hidden;
+    padding: 5px 10px;
+    flex-direction: row;
+}
+
+/*Success Gradient*/
+AspidInspectorHeader.aspid-fasttools-status-success {
+    --aspid-gradient-color: var(--aspid-success);
+}
+
+/*Warning Gradient*/
+AspidInspectorHeader.aspid-fasttools-status-warning {
+    --aspid-gradient-color: var(--aspid-warning);
+}
+
+/*Error Gradient*/
+AspidInspectorHeader.aspid-fasttools-status-error {
+    --aspid-gradient-color: var(--aspid-error);
+}
+
+/*Image*/
+AspidInspectorHeader > AspidBox > Image {
+    width: 40px;
+    height: 40px;
+    display: none;
+    flex-shrink: 0;
+    margin: 0 10px 0 0;
+}
+
+/*Success Image*/
+AspidInspectorHeader > AspidBox > Image {
+    display: flex;
+    background-image: var(--aspid-icon-success);
+}
+
+/*Warning Image*/
+AspidInspectorHeader.aspid-fasttools-status-warning > AspidBox > Image {
+    display: flex;
+    background-image: var(--aspid-icon-warning);
+}
+
+/*Error Image*/
+AspidInspectorHeader.aspid-fasttools-status-error > AspidBox > Image {
+    display: flex;
+    background-image: var(--aspid-icon-error);
+}
+
+/*Labels*/
+AspidInspectorHeader #text-container {
+    flex-grow: 1;
+    flex-shrink: 1;
+    overflow: hidden;
+    align-self: center;
+}
+
+/*Label*/
+AspidInspectorHeader AspidLabel {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    --aspid-fasttools-label-size: H1;
+}
+AspidInspectorHeader {
+    --aspid-fasttools-status: success;
+}
+
+AspidInspectorHeader AspidLabel AspidDividingLine {
+    --aspid-fasttools-line-size: None;
+}
+
+/*Subtext*/
+AspidLabel#subtext {
+    --aspid-fasttools-theme: Dark;
+    --aspid-fasttools-label-size: H3;
+}
+
+/*–––––––––––––––––––––––––––––––– AspidHelpBox ––––––––––––––––––––––––––––––––*/
+AspidHelpBox {
+    padding: 5px 10px;
+    border-width: 1px;
+    border-radius: 10px;
+    flex-direction: row;
+    align-items: center;
+    border-color: var(--aspid-lightness);
+    background-color: var(--aspid-darkness);
+}
+
+AspidHelpBox.aspid-fasttools-status-success {
+    background-color: var(--aspid-success);
+    border-color: var(--aspid-success-lightness);
+}
+
+AspidHelpBox.aspid-fasttools-status-warning {
+    background-color: var(--aspid-warning);
+    border-color: var(--aspid-warning-lightness);
+}
+
+AspidHelpBox.aspid-fasttools-status-error {
+    background-color: var(--aspid-error);
+    border-color: var(--aspid-error-lightness);
+}
+
+AspidHelpBox.aspid-fasttools-status-info {
+    background-color: var(--aspid-info);
+    border-color: var(--aspid-info-lightness);
+}
+
+AspidHelpBox > #icon {
+    min-width: 34px;
+    max-width: 34px;
+    min-height: 32px;
+    max-height: 32px;
+    margin-right: 9px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position-x: center;
+    background-position-y: center;
+}
+
+AspidHelpBox > #text-container {
+    flex-grow: 1;
+}
+
+AspidHelpBox AspidLabel > Label {
+    cursor: text;
+    overflow: hidden;
+}

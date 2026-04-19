@@ -1,8 +1,8 @@
 using System;
 using UnityEngine;
-using Aspid.FastTools;
 using UnityEditor.UIElements;
 using UnityEngine.UIElements;
+using Aspid.FastTools.UIElements;
 using Object = UnityEngine.Object;
 
 // ReSharper disable once CheckNamespace

@@ -1,13 +1,13 @@
 using System;
 using UnityEngine;
-using Aspid.FastTools;
+using Aspid.FastTools.Enums;
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
     /// Abstract base <see cref="MonoBinder"/> that maps a bound enum ViewModel value to a concrete typed value
-    /// using a configurable <see cref="EnumValues{T}"/> lookup table.
+    /// using a configurable <see cref="EnumValues{TValue}"/> lookup table.
     /// </summary>
     /// <typeparam name="T">The type of value resolved from the enum lookup table.</typeparam>
     public abstract partial class EnumMonoBinder<T> : MonoBinder, IBinder<Enum>

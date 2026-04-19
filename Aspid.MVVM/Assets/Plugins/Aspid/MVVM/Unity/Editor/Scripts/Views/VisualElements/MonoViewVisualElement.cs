@@ -10,6 +10,7 @@ using UnityEditor.UIElements;
 using Aspid.FastTools.Editors;
 using System.Collections.Generic;
 using Aspid.FastTools.UIElements;
+using Aspid.FastTools.UIElements.Editors.Internal;
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM
@@ -41,9 +42,9 @@ namespace Aspid.MVVM
             }
         }
         
-        protected override MessageType MessageType => Editor.UnassignedBinders.Any()
-            ? MessageType.Warning
-            : base.MessageType;
+        protected override StatusStyle Status => Editor.UnassignedBinders.Any()
+            ? StatusStyle.Warning
+            : base.Status;
         
         public MonoViewVisualElement(TEditor editor)
             : base(editor) { }
@@ -86,8 +87,9 @@ namespace Aspid.MVVM
         
         private VisualElement BuildDesignViewModel()
         {
-            var container = new AspidContainer(AspidContainer.StyleType.Dark);
-            container.AddChild(new AspidTitle(text: "Design ViewModel"));
+            var container = new AspidBox(ThemeStyle.Dark)
+                .SetMargin(top: 5, left: -10f);
+            container.AddChild(new AspidLabel(text: "Design ViewModel").SetMarginBottom(5));
             
             var attribute = Editor.ShowDesignViewModelAttribute;
             var propertyField = new PropertyField(Editor.DesignViewModel, label: string.Empty);
@@ -103,8 +105,9 @@ namespace Aspid.MVVM
         
         private VisualElement BuiltGeneralBinders()
         {
-            var container = new AspidContainer();
-            
+            var container = new AspidBox()
+                .SetMargin(top: 5, left: -10f);
+
             return container
                 .AddChild(BuildGeneralBinders());
         }

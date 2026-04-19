@@ -5,6 +5,7 @@ using UnityEngine.UIElements;
 using UnityEditor.AnimatedValues;
 using Aspid.FastTools.UIElements;
 using Aspid.FastTools.UIElements.Editors;
+using Aspid.FastTools.UIElements.Editors.Internal;
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
@@ -81,11 +82,15 @@ namespace Aspid.MVVM.StarterKit
         
         public override VisualElement CreateInspectorGUI()
         {
-            var root = new VisualElement();
-            var header = new AspidInspectorHeader(target);
+            var root = new VisualElement()
+                .AddStyleSheetsFromResource(StyleClasses.DefaultStyleSheet);
+
+            var header = new AspidInspectorHeader(target)
+                .SetMargin(top: 5, left: -10f);
             header.AddOpenScriptCommand(target);
             
-            var container = new AspidContainer(AspidContainer.StyleType.Dark)
+            var container = new AspidBox(ThemeStyle.Dark)
+                .SetMargin(top: 5, left: -10f)
                 .AddChild(new IMGUIContainer(DrawInspector));
 
             return root

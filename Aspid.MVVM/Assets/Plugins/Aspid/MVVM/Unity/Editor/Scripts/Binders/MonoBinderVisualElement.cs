@@ -8,6 +8,7 @@ using UnityEditor.UIElements;
 using Aspid.FastTools.Editors;
 using System.Collections.Generic;
 using Aspid.FastTools.UIElements;
+using Aspid.FastTools.UIElements.Editors.Internal;
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM
@@ -57,9 +58,9 @@ namespace Aspid.MVVM
         
         protected SerializedObject SerializedObject => _editor.serializedObject; 
         
-        protected virtual MessageType MessageType => _editor.HasBinderId
-            ? MessageType.None
-            : MessageType.Error;
+        protected virtual StatusStyle Status => _editor.HasBinderId
+            ? StatusStyle.Success
+            : StatusStyle.Error;
 
         public MonoBinderVisualElement(MonoBinderEditor editor)
         {
@@ -81,8 +82,8 @@ namespace Aspid.MVVM
             FillLogList();
 
             // Update Header
-            this.Q<HelpBox>().SetDisplay(_editor.HasBinderId ? DisplayStyle.None : DisplayStyle.Flex);
-            this.Q<AspidInspectorHeader>().SetMessageType(MessageType);
+            this.Q<AspidHelpBox>().SetDisplay(_editor.HasBinderId ? DisplayStyle.None : DisplayStyle.Flex);
+            this.Q<AspidInspectorHeader>().Status = Status;
 
             RestoreIdButton?.SetDisplay(_editor.CanRestoreId() ? DisplayStyle.Flex : DisplayStyle.None);
             RestoreViewButton?.SetDisplay(_editor.CanRestoreView() ? DisplayStyle.Flex : DisplayStyle.None);
@@ -92,6 +93,7 @@ namespace Aspid.MVVM
         protected virtual VisualElement Build()
         {
             return new VisualElement()
+                .AddStyleSheetsFromResource(StyleClasses.DefaultStyleSheet)
                 .AddChild(BuildHeader())
                 .AddChild(BuildIdSelector())
                 .AddChild(new PropertyField(_editor.IdProperty.ValueProperty).SetDisplay(DisplayStyle.None))
@@ -103,7 +105,8 @@ namespace Aspid.MVVM
         protected virtual VisualElement BuildHeader()
         {
             var binder = _editor.TargetAsMonoBinder;
-            return new AspidInspectorHeader(label: GetScriptName(), binder, MessageType);
+            return new AspidInspectorHeader(label: GetScriptName(), binder) { Status = Status }
+                .SetMargin(top: 5, left: -10f);
         }
 
         protected virtual VisualElement BuildIdSelector()
@@ -120,13 +123,18 @@ namespace Aspid.MVVM
             dropdowns.AddChild(CreateFieldContainer("View", ViewDropdown, SelectViewButton, RestoreViewButton))
                 .AddChild(CreateFieldContainer("ID", IdDropdown, RestoreIdButton));
             
-             var helpBox = new AspidHelpBox(message: "View and ID must be assigned", HelpBoxMessageType.Error)
+             var helpBox = new AspidHelpBox(
+                     title: "Incomplete Binder Configuration",
+                     message: "Both the View and the binding ID must be set for this binder to resolve at runtime. Select a View above and choose an ID exposed by its ViewModel.",
+                     HelpBoxMessageType.Error)
+                 .SetMargin(top: 5, bottom: 5)
                  .SetDisplay(_editor.HasBinderId ? DisplayStyle.None : DisplayStyle.Flex);
 
              var modeField = new PropertyField(_editor.ModeProperty, label: string.Empty);
              modeField.AddToClassList("aspid-mono-binder-id-selector-mode");
 
-             var container = new AspidContainer(AspidContainer.StyleType.Dark);
+             var container = new AspidBox(ThemeStyle.Dark)
+                 .SetMargin(top: 5, left: -10f);
              container.styleSheets.Add(_idSelectorStyleSheet);
              container.AddToClassList("aspid-mono-binder-id-selector");
 
@@ -237,10 +245,17 @@ namespace Aspid.MVVM
             var isDebugPropertyField = new PropertyField(_editor.IsDebugProperty);
             isDebugPropertyField.Bind(_editor.serializedObject);
             
-            var title = new AspidTitle(text: "Logs");
-            title.Q<VisualElement>(name: "TextContainer").AddChild(isDebugPropertyField);
+            var title = new AspidLabel(text: "Logs").SetMarginBottom(5);
+            var titleLabel = title[0];
+            title.RemoveAt(0);
+            title.Insert(index: 0, new VisualElement()
+                .SetFlexDirection(FlexDirection.Row)
+                .SetJustifyContent(Justify.SpaceBetween)
+                .AddChild(titleLabel)
+                .AddChild(isDebugPropertyField));
 
-            _logsContainer = new AspidContainer().SetName("Logs")
+            _logsContainer = new AspidBox().SetName("Logs")
+                .SetMargin(top: 5, left: -10f)
                 .AddChild(title);
             
             isDebugPropertyField.RegisterValueChangeCallback(e =>

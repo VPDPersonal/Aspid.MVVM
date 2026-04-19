@@ -5,6 +5,7 @@ using System.Reflection;
 using UnityEngine.UIElements;
 using Aspid.FastTools.Editors;
 using Aspid.FastTools.UIElements;
+using Aspid.FastTools.UIElements.Editors.Internal;
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
@@ -23,9 +24,9 @@ namespace Aspid.MVVM.StarterKit
         
         private bool _isViewSet;
 
-        private MessageType MessageType => _isViewSet
-            ? MessageType.None
-            : MessageType.Error;
+        private StatusStyle Status => _isViewSet
+            ? StatusStyle.Success
+            : StatusStyle.Error;
         
         private void OnEnable()
         {
@@ -35,23 +36,28 @@ namespace Aspid.MVVM.StarterKit
         
         public override VisualElement CreateInspectorGUI()
         {
-            _root = new VisualElement();
+            _root = new VisualElement()
+                .AddStyleSheetsFromResource(StyleClasses.DefaultStyleSheet);
 
-            var header = new AspidInspectorHeader(GetScriptName(), target);
+            var header = new AspidInspectorHeader(GetScriptName(), target)
+                .SetMargin(top: 5, left: -10f);
 
-            var viewHelpBox = new AspidHelpBox("The View must be assigned", HelpBoxMessageType.Error)
+            var viewHelpBox = new AspidHelpBox(
+                    title: "Missing View Reference",
+                    message: "This manual initializer needs a View component to bind the ViewModel to. Assign at least one View in the field above before calling Initialize at runtime.",
+                    HelpBoxMessageType.Error)
                 .SetName("ViewHelpBox");
             
-            var view = new AspidContainer()
-                .AddChild(new AspidTitle("View"))
+            var view = new AspidBox()
+                .SetMargin(top: 5, left: -10f)
+                .AddChild(new AspidLabel("View").SetMarginBottom(5))
                 .AddChild(new IMGUIContainer(DrawViewInitializeComponent))
                 .AddChild(viewHelpBox
                     .SetMargin(top: 5));
-            
+
             return _root
                 .AddChild(header)
-                .AddChild(view
-                    .SetMargin(top: 10));
+                .AddChild(view);
         }
         
         private void DrawViewInitializeComponent()
@@ -68,9 +74,9 @@ namespace Aspid.MVVM.StarterKit
         
         private void UpdateHelpBoxes()
         {
-            _root.Q<AspidInspectorHeader>().SetMessageType(MessageType);
+            _root.Q<AspidInspectorHeader>().Status = Status;
             
-            _root.Q<HelpBox>("ViewHelpBox")
+            _root.Q<AspidHelpBox>("ViewHelpBox")
                 .SetDisplay(_isViewSet ? DisplayStyle.None : DisplayStyle.Flex);
         }
 

@@ -5,6 +5,7 @@ using UnityEditor;
 using UnityEditor.UIElements;
 using UnityEngine.UIElements;
 using Aspid.FastTools.UIElements;
+using Aspid.FastTools.UIElements.Editors.Internal;
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM
@@ -43,7 +44,7 @@ namespace Aspid.MVVM
             // For Field
             var field = Children().FirstOrDefault(element => !element.ClassListContains("unity-decorator-drawers-container"));
 
-            if (parent is AspidContainer container)
+            if (parent is AspidBox container)
             {
                 if (container[0] == this)
                 {
@@ -56,7 +57,7 @@ namespace Aspid.MVVM
             }
             
             field?.AddToClassList(StyleClass);
-            field?.AddToClassList(AspidContainer.GetStyleClass(AspidContainer.StyleType.Lighter));
+            field?.AddToClassList(StyleClasses.Theme.Lightness);
             
             // For [SerializeReferenceDropdown]
             foreach (var dropdown in this.Query<VisualElement>("dropdown-group").Build())

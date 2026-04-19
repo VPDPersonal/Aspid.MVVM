@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEditor.UIElements;
 using UnityEngine.UIElements;
 using Aspid.FastTools.UIElements;
+using Aspid.FastTools.UIElements.Editors.Internal;
 using Object = UnityEngine.Object;
 
 // ReSharper disable once CheckNamespace

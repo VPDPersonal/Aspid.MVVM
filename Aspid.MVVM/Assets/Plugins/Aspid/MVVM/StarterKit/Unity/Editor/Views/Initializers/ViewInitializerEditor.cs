@@ -5,6 +5,7 @@ using System.Reflection;
 using UnityEngine.UIElements;
 using Aspid.FastTools.Editors;
 using Aspid.FastTools.UIElements;
+using Aspid.FastTools.UIElements.Editors.Internal;
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
@@ -28,9 +29,9 @@ namespace Aspid.MVVM.StarterKit
         private bool _isViewSet;
         private bool _isViewModelSet;
 
-        private MessageType MessageType => _isViewSet && _isViewModelSet
-            ? MessageType.None
-            : MessageType.Error;
+        private StatusStyle Status => _isViewSet && _isViewModelSet
+            ? StatusStyle.Success
+            : StatusStyle.Error;
         
         private void OnEnable()
         {
@@ -46,9 +47,11 @@ namespace Aspid.MVVM.StarterKit
 
         public override VisualElement CreateInspectorGUI()
         {
-            _root = new VisualElement();
-            
-            var header = new AspidInspectorHeader(target);
+            _root = new VisualElement()
+                .AddStyleSheetsFromResource(StyleClasses.DefaultStyleSheet);
+
+            var header = new AspidInspectorHeader(target)
+                .SetMargin(top: 5, left: -10f);
             var stage = BuildStage();
             var view = BuildViewInitializeComponent();
             var viewModel = BuildViewModelInitializeComponent();
@@ -64,8 +67,9 @@ namespace Aspid.MVVM.StarterKit
 
         private VisualElement BuildStage()
         {
-            return new AspidContainer()
-                .AddChild(new AspidTitle("Stage"))
+            return new AspidBox()
+                .SetMargin(top: 5, left: -10f)
+                .AddChild(new AspidLabel("Stage").SetMarginBottom(5))
                 .AddChild(new IMGUIContainer(Draw));
             
             void Draw()
@@ -86,11 +90,15 @@ namespace Aspid.MVVM.StarterKit
 
         private VisualElement BuildViewInitializeComponent()
         {
-            var viewHelpBox = new AspidHelpBox("The View must be assigned", HelpBoxMessageType.Error)
+            var viewHelpBox = new AspidHelpBox(
+                    title: "Missing View Reference",
+                    message: "This initializer requires a View component to drive bindings. Assign at least one View in the field above, otherwise the initializer will skip binding on enter play mode.",
+                    HelpBoxMessageType.Error)
                 .SetName("ViewHelpBox");
             
-            return new AspidContainer()
-                .AddChild(new AspidTitle("View"))
+            return new AspidBox()
+                .SetMargin(top: 5, left: -10f)
+                .AddChild(new AspidLabel("View").SetMarginBottom(5))
                 .AddChild(new IMGUIContainer(Draw))
                 .AddChild(viewHelpBox
                     .SetMargin(top: 5));
@@ -110,11 +118,15 @@ namespace Aspid.MVVM.StarterKit
 
         private VisualElement BuildViewModelInitializeComponent()
         {
-            var viewModelHelpBox = new AspidHelpBox("The ViewModel must be assigned", HelpBoxMessageType.Error)
+            var viewModelHelpBox = new AspidHelpBox(
+                    title: "Missing ViewModel Reference",
+                    message: "This initializer requires a ViewModel to supply data to the View. Assign a ViewModel using the resolve strategy above, otherwise bindings will not receive values.",
+                    HelpBoxMessageType.Error)
                 .SetName("ViewModelHelpBox");
             
-            return new AspidContainer()
-                .AddChild(new AspidTitle("ViewModel"))
+            return new AspidBox()
+                .SetMargin(top: 5, left: -10f)
+                .AddChild(new AspidLabel("ViewModel").SetMarginBottom(5))
                 .AddChild(new IMGUIContainer(Draw))
                 .AddChild(viewModelHelpBox
                     .SetMargin(top: 5));
@@ -140,8 +152,9 @@ namespace Aspid.MVVM.StarterKit
             if (initializer.IsInitialized 
                 || initializer is not ViewInitializerManual)
             {
-                return new AspidContainer()
-                    .AddChild(new AspidTitle("Debug"))
+                return new AspidBox()
+                    .SetMargin(top: 5, left: -10f)
+                    .AddChild(new AspidLabel("Debug").SetMarginBottom(5))
                     .AddChild(new IMGUIContainer(Draw));
             }
 
@@ -191,19 +204,19 @@ namespace Aspid.MVVM.StarterKit
 
         private void UpdateHelpBoxes()
         {
-            _root.Q<AspidInspectorHeader>().SetMessageType(MessageType);
-            
-            _root.Q<HelpBox>("ViewHelpBox")
+            _root.Q<AspidInspectorHeader>().Status = Status;
+
+            _root.Q<AspidHelpBox>("ViewHelpBox")
                 .SetDisplay(_isViewSet ? DisplayStyle.None : DisplayStyle.Flex);
-            
-            _root.Q<HelpBox>("ViewModelHelpBox")
+
+            _root.Q<AspidHelpBox>("ViewModelHelpBox")
                 .SetDisplay(_isViewModelSet ? DisplayStyle.None : DisplayStyle.Flex);
         }
         
         private void UpdateHeaderText()
         {
             var scriptName = target.GetScriptName();
-           _root.Q<AspidInspectorHeader>().Label.text = $"{scriptName}{GetInitializeComponentName(_viewModel)}";
+           _root.Q<AspidInspectorHeader>().Text = $"{scriptName}{GetInitializeComponentName(_viewModel)}";
         }
     }
 }

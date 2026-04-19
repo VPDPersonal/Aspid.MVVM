@@ -7,6 +7,7 @@ using UnityEngine.UIElements;
 using Aspid.FastTools.Editors;
 using Aspid.FastTools.UIElements;
 using System.Collections.Generic;
+using Aspid.FastTools.UIElements.Editors.Internal;
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM
@@ -24,8 +25,8 @@ namespace Aspid.MVVM
         private bool _isInitialized;
         protected readonly TEditor Editor;
         
-        protected virtual MessageType MessageType => MessageType.None;
-        
+        protected virtual StatusStyle Status => StatusStyle.Success;
+
         protected virtual IEnumerable<string> PropertiesExcluding
         {
             get
@@ -56,8 +57,8 @@ namespace Aspid.MVVM
             this.Q<DebugViewModelPanel>()?.UpdateValue();
             
             var header = this.Q<AspidInspectorHeader>();
-            header.SetMessageType(MessageType);
-            header.Label.text = GetScriptName();
+            header.Status = Status;
+            header.Text = GetScriptName();
             
             this.Q<VisualElement>(name: "view-model-debug-panel").style.display = Editor.TargetAsView?.ViewModel is not null 
                 ? DisplayStyle.Flex
@@ -69,6 +70,8 @@ namespace Aspid.MVVM
         #region Build Methods
         private void Build()
         {
+            this.AddStyleSheetsFromResource(StyleClasses.DefaultStyleSheet);
+
             Add(BuildHeader());
             
             var onBuildHeader = OnBuiltHeader();
@@ -89,8 +92,9 @@ namespace Aspid.MVVM
             Add(BuildViewModel());
         }
 
-        private AspidInspectorHeader BuildHeader() => 
-            new(label: GetScriptName(), Editor.TargetAsView, MessageType);
+        private AspidInspectorHeader BuildHeader() =>
+            new AspidInspectorHeader(label: GetScriptName(), Editor.TargetAsView) { Status = Status }
+                .SetMargin(top: 5, left: -10f);
 
         protected virtual VisualElement? OnBuiltHeader() => null;
         
@@ -103,8 +107,9 @@ namespace Aspid.MVVM
         private VisualElement BuildViewModel()
         {
             // TODO Aspid.MVVM Unity – Rename Name
-            return new AspidContainer()
+            return new AspidBox()
                 .SetName("view-model-debug-panel")
+                .SetMargin(top: 5, left: -10f)
                 .AddChild(new DebugViewModelPanel(Editor.TargetAsView));
         }
         #endregion

@@ -5,6 +5,7 @@ using Aspid.FastTools;
 using System.Reflection;
 using UnityEngine.UIElements;
 using Aspid.FastTools.UIElements;
+using Aspid.FastTools.UIElements.Editors.Internal;
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM
@@ -31,8 +32,14 @@ namespace Aspid.MVVM
             var container = new VisualElement().SetName("container")
                 .SetDisplay(toggle.value ? DisplayStyle.Flex : DisplayStyle.None);
             
-            var title = new AspidTitle(text: "Commands");
-            title.Q<VisualElement>(name: "TextContainer").AddChild(toggle);
+            var title = new AspidLabel(text: "Commands").SetMarginBottom(5);
+            var titleLabel = title[0];
+            title.RemoveAt(0);
+            title.Insert(index: 0, new VisualElement()
+                .SetFlexDirection(FlexDirection.Row)
+                .SetJustifyContent(Justify.SpaceBetween)
+                .AddChild(titleLabel)
+                .AddChild(toggle));
             
             toggle.RegisterValueChangedCallback(e =>
             {
@@ -44,7 +51,8 @@ namespace Aspid.MVVM
                 container.style.display = e.newValue ? DisplayStyle.Flex : DisplayStyle.None;
             });
             
-            this.AddChild(new AspidContainer().SetName("Commands")
+            this.AddChild(new AspidBox().SetName("Commands")
+                .SetMargin(top: 5, left: -10f)
                 .AddChild(title)
                 .AddChild(container));
 

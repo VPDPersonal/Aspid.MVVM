@@ -5,6 +5,7 @@ using UnityEditor;
 using UnityEngine;
 using Aspid.MVVM.Validation;
 using UnityEngine.UIElements;
+using Aspid.FastTools.UIElements.Editors.Internal;
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM
@@ -48,7 +49,7 @@ namespace Aspid.MVVM
 
             void AttachGradientToInnerPanel(GeometryChangedEvent _)
             {
-                var panelClass = AspidContainer.GetStyleClass(AspidContainer.StyleType.Lighter);
+                var panelClass = StyleClasses.Theme.Lightness;
                 var innerPanel = slotWrapper.Q(className: panelClass);
                 if (innerPanel is null) return;
 

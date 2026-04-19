@@ -9,6 +9,7 @@ using UnityEditor.UIElements;
 using UnityEngine.UIElements;
 using System.Collections.Generic;
 using Aspid.FastTools.UIElements;
+using Aspid.FastTools.UIElements.Editors.Internal;
 using Object = UnityEngine.Object;
 
 // ReSharper disable once CheckNamespace
@@ -25,7 +26,9 @@ namespace Aspid.MVVM
         where TMonoView : MonoView
         where TEditor : MonoViewEditor<TMonoView, TEditor>
     {
-        private const string Warning = "It is recommended not to leave unassigned Binders";
+        private const string WarningTitle = "Unassigned Binders Detected";
+
+        private const string WarningMessage = "Some binders on this View are not wired to a field. Drag each binder onto a matching slot above, or use auto-assign to keep the View fully connected — unassigned binders will be silently ignored at runtime.";
 
         private static readonly StyleSheet _styleSheet = Resources.Load<StyleSheet>("Styles/Aspid-MVVM-UnassignedBinders");
 
@@ -71,10 +74,10 @@ namespace Aspid.MVVM
 
         private VisualElement Build()
         {
-            return new AspidContainer()
-                .AddChild(new AspidTitle("Unassigned Binders"))
-                .AddChild(new AspidHelpBox(Warning, HelpBoxMessageType.Warning)
-                    .SetMargin(bottom:5))
+            return new AspidBox()
+                .SetMargin(top: 5, left: -10f)
+                .AddChild(new AspidHelpBox(WarningTitle, WarningMessage, HelpBoxMessageType.Warning)
+                    .SetMargin(bottom: 5))
                 .AddChild(_unassignedBindersContainer);
         }
 

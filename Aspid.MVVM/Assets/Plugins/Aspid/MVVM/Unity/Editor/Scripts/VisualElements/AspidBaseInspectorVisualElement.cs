@@ -8,6 +8,7 @@ using UnityEngine.UIElements;
 using UnityEditor.UIElements;
 using System.Collections.Generic;
 using Aspid.FastTools.UIElements;
+using Aspid.FastTools.UIElements.Editors.Internal;
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM
@@ -23,10 +24,11 @@ namespace Aspid.MVVM
 
         private static VisualElement Build(SerializedObject serializedObject, string? title, IReadOnlyCollection<string>? propertiesExcluding)
         {
-            var container = new AspidContainer();
+            var container = new AspidBox()
+                .SetMargin(top: 5, left: -10f);
 
             if (!string.IsNullOrWhiteSpace(title))
-                container.AddChild(new AspidTitle(title));
+                container.AddChild(new AspidLabel(title).SetMarginBottom(5));
 
             var count = 0;
             var enterChildren = true;

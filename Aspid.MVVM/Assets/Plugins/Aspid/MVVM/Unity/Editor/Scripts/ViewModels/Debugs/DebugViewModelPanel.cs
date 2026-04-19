@@ -7,6 +7,7 @@ using UnityEngine.UIElements;
 using System.CodeDom.Compiler;
 using System.Collections.Generic;
 using Aspid.FastTools.UIElements;
+using Aspid.FastTools.UIElements.Editors.Internal;
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM
@@ -35,8 +36,14 @@ namespace Aspid.MVVM
                 SetDataContainerDisplay();
             });
             
-            var title = new AspidTitle(titleText); 
-            title.Q<VisualElement>("TextContainer").AddChild(showViewModelToggle);
+            var title = new AspidLabel(titleText).SetMarginBottom(5);
+            var titleLabel = title[0];
+            title.RemoveAt(0);
+            title.Insert(index: 0, new VisualElement()
+                .SetFlexDirection(FlexDirection.Row)
+                .SetJustifyContent(Justify.SpaceBetween)
+                .AddChild(titleLabel)
+                .AddChild(showViewModelToggle));
 
             this.AddChild(title)
                 .AddChild(dataContainer);

@@ -4,7 +4,9 @@ using UnityEditor;
 using System.Linq;
 using UnityEngine.UIElements;
 using Aspid.FastTools.Editors;
+using Aspid.FastTools.UIElements;
 using System.Collections.Generic;
+using Aspid.FastTools.UIElements.Editors.Internal;
 using Object = UnityEngine.Object;
 
 // ReSharper disable once CheckNamespace
@@ -55,6 +57,8 @@ namespace Aspid.MVVM
 
         private void Build()
         {
+            this.AddStyleSheetsFromResource(StyleClasses.DefaultStyleSheet);
+
             Add(BuildHeader());
             
             var onBuildHeader = OnBuiltHeader();
@@ -84,8 +88,9 @@ namespace Aspid.MVVM
             }
         }
 
-        private AspidInspectorHeader BuildHeader() => 
-            new(GetScriptName(), Editor.TargetAsViewModel);
+        private AspidInspectorHeader BuildHeader() =>
+            new AspidInspectorHeader(GetScriptName(), Editor.TargetAsViewModel)
+                .SetMargin(top: 5, left: -10f);
 
         protected virtual VisualElement? OnBuiltHeader() => null;
 

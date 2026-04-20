@@ -215,8 +215,9 @@ namespace Aspid.MVVM.StarterKit
         
         private void UpdateHeaderText()
         {
-            var scriptName = target.GetScriptName();
-           _root.Q<AspidInspectorHeader>().Text = $"{scriptName}{GetInitializeComponentName(_viewModel)}";
+            var header = _root.Q<AspidInspectorHeader>();
+            header.Text = target.GetScriptName();
+            header.Subtext = GetInitializeComponentName(_viewModel);
         }
     }
 }

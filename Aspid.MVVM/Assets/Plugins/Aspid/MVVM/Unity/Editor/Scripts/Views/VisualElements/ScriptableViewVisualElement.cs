@@ -12,7 +12,10 @@ namespace Aspid.MVVM
         public ScriptableViewVisualElement(ScriptableViewEditor editor) : base(editor) { }
 
         protected override string GetScriptName() =>
-            $"{Editor.TargetAsView.name} ({base.GetScriptName()})";
+            Editor.TargetAsView.name;
+
+        protected override string GetScriptSubtext() =>
+            base.GetScriptName();
     }
 }
 #endif

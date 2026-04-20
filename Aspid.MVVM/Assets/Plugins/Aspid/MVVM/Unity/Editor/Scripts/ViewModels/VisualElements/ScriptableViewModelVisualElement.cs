@@ -11,7 +11,10 @@ namespace Aspid.MVVM
             : base(editor) { }
 
         protected override string GetScriptName() =>
-            $"{Editor.TargetAsViewModel.name} ({base.GetScriptName()})";
+            Editor.TargetAsViewModel.name;
+
+        protected override string GetScriptSubtext() =>
+            base.GetScriptName();
     }
 }
 #endif

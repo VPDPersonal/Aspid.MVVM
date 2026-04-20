@@ -32,44 +32,34 @@ namespace Aspid.MVVM.StarterKit
         protected static string GetInitializeComponentName(SerializedProperty property)
         {
             var resolve = GetResolve(property);
-            
+
             switch (resolve)
             {
                 case ResolveType.References:
                     {
                         var referencesProperty = GetReferencesProperty(property);
-                        var typeName = referencesProperty.managedReferenceValue?.GetType().Name;
-                        
-                        return !string.IsNullOrWhiteSpace(typeName) 
-                            ? $" ({typeName})" 
-                            : string.Empty;
+                        return referencesProperty.managedReferenceValue?.GetType().Name ?? string.Empty;
                     }
                 case ResolveType.ScriptableObject:
                     {
                         var scriptableProperty = GetScriptableProperty(property);
-                        
-                        return scriptableProperty.objectReferenceValue 
-                            ? $" ({scriptableProperty.objectReferenceValue.GetType().Name})" 
+                        return scriptableProperty.objectReferenceValue
+                            ? scriptableProperty.objectReferenceValue.GetType().Name
                             : string.Empty;
                     }
 #if ASPID_MVVM_ZENJECT_INTEGRATION || ASPID_MVVM_VCONTAINER_INTEGRATION
                 case ResolveType.Di:
                     {
                         var typeNameProperty = GetTypeNameProperty(property);
-                        var typeName = Type.GetType(typeNameProperty.stringValue)?.Name;
-                        
-                        return !string.IsNullOrWhiteSpace(typeName) 
-                            ? $" ({typeName})" 
-                            : string.Empty;
+                        return Type.GetType(typeNameProperty.stringValue)?.Name ?? string.Empty;
                     }
 #endif
                 case ResolveType.Mono:
                 default:
                     {
                         var monoProperty = GetMonoProperty(property);
-                        
                         return monoProperty.objectReferenceValue
-                            ? $" ({monoProperty.objectReferenceValue.GetType().Name})"
+                            ? monoProperty.objectReferenceValue.GetType().Name
                             : string.Empty;
                     }
             }

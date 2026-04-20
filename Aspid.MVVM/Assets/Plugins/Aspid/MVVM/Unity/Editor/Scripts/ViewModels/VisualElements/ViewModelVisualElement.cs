@@ -89,7 +89,7 @@ namespace Aspid.MVVM
         }
 
         private AspidInspectorHeader BuildHeader() =>
-            new AspidInspectorHeader(GetScriptName(), Editor.TargetAsViewModel)
+            new AspidInspectorHeader(GetScriptName(), Editor.TargetAsViewModel) { Subtext = GetScriptSubtext() }
                 .SetMargin(top: 3, left: -10f);
 
         protected virtual VisualElement? OnBuiltHeader() => null;
@@ -106,6 +106,9 @@ namespace Aspid.MVVM
         
         protected virtual string GetScriptName() =>
             Editor.TargetAsViewModel.GetScriptName();
+
+        protected virtual string GetScriptSubtext() =>
+            string.Empty;
     }
 }
 #endif

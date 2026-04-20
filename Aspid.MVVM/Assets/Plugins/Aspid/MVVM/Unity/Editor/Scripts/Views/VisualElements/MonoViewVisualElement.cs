@@ -192,15 +192,15 @@ namespace Aspid.MVVM
         protected override string GetScriptName()
         {
             var view = Editor.TargetAsView;
-            if (!view) return string.Empty;
-            
-            if (!string.IsNullOrWhiteSpace(Editor.DesignViewModel.stringValue))
-            {
-                var viewModelType = Type.GetType(Editor.DesignViewModel.stringValue);
-                if (viewModelType is not null) return $"{view.GetScriptNameWithIndex()} ({viewModelType.Name})";
-            }
+            return view ? view.GetScriptNameWithIndex() : string.Empty;
+        }
 
-            return view.GetScriptNameWithIndex();
+        protected override string GetScriptSubtext()
+        {
+            if (string.IsNullOrWhiteSpace(Editor.DesignViewModel.stringValue)) return string.Empty;
+
+            var viewModelType = Type.GetType(Editor.DesignViewModel.stringValue);
+            return viewModelType?.Name ?? string.Empty;
         }
     }
 }

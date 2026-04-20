@@ -39,7 +39,7 @@ namespace Aspid.MVVM.StarterKit
             _root = new VisualElement()
                 .AddStyleSheetsFromResource(StyleClasses.DefaultStyleSheet);
 
-            var header = new AspidInspectorHeader(GetScriptName(), target)
+            var header = new AspidInspectorHeader(GetScriptName(), target) { Subtext = GetScriptSubtext() }
                 .SetMargin(top: 3, left: -10f);
 
             var viewHelpBox = new AspidHelpBox(
@@ -80,15 +80,17 @@ namespace Aspid.MVVM.StarterKit
                 .SetDisplay(_isViewSet ? DisplayStyle.None : DisplayStyle.Flex);
         }
 
-        private string GetScriptName()
+        private string GetScriptName() =>
+            target.GetScriptName();
+
+        private string GetScriptSubtext()
         {
             const BindingFlags bindingFlags = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic;
-           
-            var scriptName = target.GetScriptName();
+
             var property = typeof(ViewInitializerManual).GetProperty("ViewModel", bindingFlags);
             var viewModel = property!.GetValue(target);
-            
-            return viewModel is null ? scriptName : $"{scriptName} ({viewModel.GetType().Name})";
+
+            return viewModel?.GetType().Name ?? string.Empty;
         }
     }
 }

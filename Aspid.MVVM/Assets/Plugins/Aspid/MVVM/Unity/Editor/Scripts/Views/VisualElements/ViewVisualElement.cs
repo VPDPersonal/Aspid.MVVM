@@ -59,6 +59,7 @@ namespace Aspid.MVVM
             var header = this.Q<AspidInspectorHeader>();
             header.Status = Status;
             header.Text = GetScriptName();
+            header.Subtext = GetScriptSubtext();
             
             this.Q<VisualElement>(name: "view-model-debug-panel").style.display = Editor.TargetAsView?.ViewModel is not null 
                 ? DisplayStyle.Flex
@@ -93,7 +94,7 @@ namespace Aspid.MVVM
         }
 
         private AspidInspectorHeader BuildHeader() =>
-            new AspidInspectorHeader(label: GetScriptName(), Editor.TargetAsView) { Status = Status }
+            new AspidInspectorHeader(label: GetScriptName(), Editor.TargetAsView) { Status = Status, Subtext = GetScriptSubtext() }
                 .SetMargin(top: 3, left: -10f);
 
         protected virtual VisualElement? OnBuiltHeader() => null;
@@ -116,6 +117,9 @@ namespace Aspid.MVVM
 
         protected virtual string GetScriptName() =>
             Editor.TargetAsView.GetScriptName();
+
+        protected virtual string GetScriptSubtext() =>
+            string.Empty;
     }
 }
 #endif

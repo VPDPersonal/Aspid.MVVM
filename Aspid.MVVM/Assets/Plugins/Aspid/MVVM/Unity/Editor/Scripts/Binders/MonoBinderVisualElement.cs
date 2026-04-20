@@ -106,7 +106,7 @@ namespace Aspid.MVVM
         {
             var binder = _editor.TargetAsMonoBinder;
             return new AspidInspectorHeader(label: GetScriptName(), binder) { Status = Status }
-                .SetMargin(top: 5, left: -10f);
+                .SetMargin(top: 3, left: -10f);
         }
 
         protected virtual VisualElement BuildIdSelector()

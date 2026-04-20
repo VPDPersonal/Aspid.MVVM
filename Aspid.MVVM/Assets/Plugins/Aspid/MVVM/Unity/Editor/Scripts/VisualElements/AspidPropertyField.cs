@@ -44,16 +44,17 @@ namespace Aspid.MVVM
             // For Field
             var field = Children().FirstOrDefault(element => !element.ClassListContains("unity-decorator-drawers-container"));
 
-            if (parent is AspidBox container)
+            var wrapper = (VisualElement)this;
+            while (wrapper.parent is not null and not AspidBox)
+                wrapper = wrapper.parent;
+
+            if (wrapper.parent is AspidBox container && container[0] == wrapper)
             {
-                if (container[0] == this)
-                {
-                    Children()
-                        .FirstOrDefault(element => element.ClassListContains("unity-decorator-drawers-container"))
-                        ?.Children()
-                        .FirstOrDefault(element => element.ClassListContains("unity-header-drawer__label"))
-                        ?.SetMargin(top: 0);
-                }
+                Children()
+                    .FirstOrDefault(element => element.ClassListContains("unity-decorator-drawers-container"))
+                    ?.Children()
+                    .FirstOrDefault(element => element.ClassListContains("unity-header-drawer__label"))
+                    ?.SetMargin(top: 0);
             }
             
             field?.AddToClassList(StyleClass);

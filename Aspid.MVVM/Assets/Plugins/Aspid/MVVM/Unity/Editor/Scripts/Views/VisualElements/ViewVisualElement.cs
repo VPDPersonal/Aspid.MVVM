@@ -94,7 +94,7 @@ namespace Aspid.MVVM
 
         private AspidInspectorHeader BuildHeader() =>
             new AspidInspectorHeader(label: GetScriptName(), Editor.TargetAsView) { Status = Status }
-                .SetMargin(top: 5, left: -10f);
+                .SetMargin(top: 3, left: -10f);
 
         protected virtual VisualElement? OnBuiltHeader() => null;
         

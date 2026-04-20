@@ -51,7 +51,7 @@ namespace Aspid.MVVM.StarterKit
                 .AddStyleSheetsFromResource(StyleClasses.DefaultStyleSheet);
 
             var header = new AspidInspectorHeader(target)
-                .SetMargin(top: 5, left: -10f);
+                .SetMargin(top: 3, left: -10f);
             var stage = BuildStage();
             var view = BuildViewInitializeComponent();
             var viewModel = BuildViewModelInitializeComponent();

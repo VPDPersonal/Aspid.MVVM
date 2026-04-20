@@ -86,7 +86,7 @@ namespace Aspid.MVVM.StarterKit
                 .AddStyleSheetsFromResource(StyleClasses.DefaultStyleSheet);
 
             var header = new AspidInspectorHeader(target)
-                .SetMargin(top: 5, left: -10f);
+                .SetMargin(top: 3, left: -10f);
             header.AddOpenScriptCommand(target);
             
             var container = new AspidBox(ThemeStyle.Dark)

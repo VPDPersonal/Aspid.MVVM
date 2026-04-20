@@ -40,7 +40,7 @@ namespace Aspid.MVVM.StarterKit
                 .AddStyleSheetsFromResource(StyleClasses.DefaultStyleSheet);
 
             var header = new AspidInspectorHeader(GetScriptName(), target)
-                .SetMargin(top: 5, left: -10f);
+                .SetMargin(top: 3, left: -10f);
 
             var viewHelpBox = new AspidHelpBox(
                     title: "Missing View Reference",

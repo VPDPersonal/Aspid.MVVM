@@ -24,30 +24,36 @@ namespace Aspid.MVVM
         /// </summary>
         /// <typeparam name="T">The binder type that implements <see cref="IBinder"/>.</typeparam>
         /// <param name="binders">The array of binders to unbind.</param>
+        /// <param name="owner">Optional owner object (typically the View instance) used to enrich diagnostics; if it is a Unity object it is also used as the log context.</param>
+        /// <param name="memberName">Optional name of the field that holds <paramref name="binders"/>, used in diagnostics.</param>
         /// <exception cref="UnbindSafelyNullReferenceException">
         /// Thrown if any element in the sequence is <see langword="null"/>.
         /// In builds (<c>UNITY_2020_3_OR_NEWER</c>), skips the <see langword="null"/> binder instead of throwing.
         /// When <c>DEBUG</c> is also defined, additionally logs an error via <c>UnityEngine.Debug.LogError</c>.
         /// </exception>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void UnbindSafely<T>(this T[]? binders)
+        public static void UnbindSafely<T>(this T[]? binders, object? owner = null, string? memberName = null)
             where T : IBinder
         {
             if (binders is null) return;
 
-            foreach (var binder in binders)
+            for (var i = 0; i < binders.Length; i++)
             {
+                var binder = binders[i];
                 // ReSharper disable once ConditionIsAlwaysTrueOrFalseAccordingToNullableAPIContract
                 if (binder is null)
                 {
-#if UNITY_2020_3_OR_NEWER
 #if DEBUG
-                    UnityEngine.Debug.LogError("[UnbindSafely] Binder in array can't be null");
+                    var message = BuildUnbindSafelyBinderNullMessage(i, owner, memberName);
+#if UNITY_2020_3_OR_NEWER
+                    UnityEngine.Debug.LogError(message, owner as UnityEngine.Object);
+#else
+                    throw new UnbindSafelyNullReferenceException(message);
+#endif // UNITY_2020_3_OR_NEWER
 #endif // DEBUG
                     continue;
-#endif // UNITY_2020_3_OR_NEWER
-                    throw new UnbindSafelyNullReferenceException("Binder in array can't be null");
                 }
+                
                 binder.Unbind();
             }
         }
@@ -57,29 +63,35 @@ namespace Aspid.MVVM
         /// </summary>
         /// <typeparam name="T">The binder type that implements <see cref="IBinder"/>.</typeparam>
         /// <param name="binders">The list of binders to unbind.</param>
+        /// <param name="owner">Optional owner object (typically the View instance) used to enrich diagnostics; if it is a Unity object it is also used as the log context.</param>
+        /// <param name="memberName">Optional name of the field that holds <paramref name="binders"/>, used in diagnostics.</param>
         /// <exception cref="UnbindSafelyNullReferenceException">
         /// Thrown if any element in the sequence is <see langword="null"/>.
         /// In builds (<c>UNITY_2020_3_OR_NEWER</c>), skips the <see langword="null"/> binder instead of throwing.
         /// When <c>DEBUG</c> is also defined, additionally logs an error via <c>UnityEngine.Debug.LogError</c>.
         /// </exception>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void UnbindSafely<T>(this List<T>? binders)
+        public static void UnbindSafely<T>(this List<T>? binders, object? owner = null, string? memberName = null)
             where T : IBinder
         {
             if (binders is null) return;
 
-            foreach (var binder in binders)
+            for (var i = 0; i < binders.Count; i++)
             {
+                var binder = binders[i];
                 if (binder is null)
                 {
-#if UNITY_2020_3_OR_NEWER
 #if DEBUG
-                    UnityEngine.Debug.LogError("[UnbindSafely] Binder in list can't be null");
+                    var message = BuildUnbindSafelyBinderNullMessage(i, owner, memberName);
+#if UNITY_2020_3_OR_NEWER
+                    UnityEngine.Debug.LogError(message, owner as UnityEngine.Object);
+#else
+                    throw new UnbindSafelyNullReferenceException(message);
+#endif // UNITY_2020_3_OR_NEWER
 #endif // DEBUG
                     continue;
-#endif // UNITY_2020_3_OR_NEWER
-                    throw new UnbindSafelyNullReferenceException("Binder in list can't be null");
                 }
+                
                 binder.Unbind();
             }
         }
@@ -89,31 +101,41 @@ namespace Aspid.MVVM
         /// </summary>
         /// <typeparam name="T">The binder type that implements <see cref="IBinder"/>.</typeparam>
         /// <param name="binders">The enumerable of binders to unbind.</param>
+        /// <param name="owner">Optional owner object (typically the View instance) used to enrich diagnostics; if it is a Unity object it is also used as the log context.</param>
+        /// <param name="memberName">Optional name of the field that holds <paramref name="binders"/>, used in diagnostics.</param>
         /// <exception cref="UnbindSafelyNullReferenceException">
         /// Thrown if any element in the sequence is <see langword="null"/>.
         /// In builds (<c>UNITY_2020_3_OR_NEWER</c>), skips the <see langword="null"/> binder instead of throwing.
         /// When <c>DEBUG</c> is also defined, additionally logs an error via <c>UnityEngine.Debug.LogError</c>.
         /// </exception>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void UnbindSafely<T>(this IEnumerable<T>? binders)
+        public static void UnbindSafely<T>(this IEnumerable<T>? binders, object? owner = null, string? memberName = null)
             where T : IBinder
         {
             if (binders is null) return;
 
+            var index = 0;
             foreach (var binder in binders)
             {
                 if (binder is null)
                 {
-#if UNITY_2020_3_OR_NEWER
 #if DEBUG
-                    UnityEngine.Debug.LogError("[UnbindSafely] Binder in enumerable can't be null");
+                    var message = BuildUnbindSafelyBinderNullMessage(index, owner, memberName);
+#if UNITY_2020_3_OR_NEWER
+                    UnityEngine.Debug.LogError(message, owner as UnityEngine.Object);
+#else
+                    throw new UnbindSafelyNullReferenceException(message);
+#endif // UNITY_2020_3_OR_NEWER
 #endif // DEBUG
                     continue;
-#endif // UNITY_2020_3_OR_NEWER
-                    throw new UnbindSafelyNullReferenceException("Binder in enumerable can't be null");
                 }
+                
                 binder.Unbind();
+                index++;
             }
         }
+        
+        private static string BuildUnbindSafelyBinderNullMessage(int index, object? owner, string? memberName) =>
+            BuildBinderNullMessage("UnbindSafely", index, owner, memberName);
     }
 }

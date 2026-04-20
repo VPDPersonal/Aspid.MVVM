@@ -32,13 +32,13 @@ namespace Aspid.MVVM
         partial void OnInitializingInternal(IViewModel viewModel)
         {
             foreach (var binders in _bindersList)
-                binders.Bind(viewModel);
+                binders.Bind(viewModel, this);
         }
 
         partial void OnDeinitializingInternal()
         {
             foreach (var binders in _bindersList)
-                binders.Unbind();
+                binders.Unbind(this);
         }
         
         public virtual void Dispose() =>
@@ -62,26 +62,26 @@ namespace Aspid.MVVM
 //             [SerializeReference] private IBinder[] _binders;
 // #endif
             
-            public void Bind(IViewModel viewModel)
+            public void Bind(IViewModel viewModel, MonoView owner)
             {
                 var result = viewModel.FindBindableMember(new FindBindableMemberParameters(_name));
                 if (!result.IsFound) return;
-                
-                _monoBinders.BindSafely(result);
-                
+
+                _monoBinders.BindSafely(result, owner, _name);
+
                 // TODO Aspid.MVVM – Add for Aspid.MVVM 1.3.0
 // #if UNITY_6000_0_OR_NEWER
-//                 _binders.BindSafely(result);
+//                 _binders.BindSafely(result, owner, _name);
 // #endif
             }
 
-            public void Unbind()
+            public void Unbind(MonoView owner)
             {
-                _monoBinders.UnbindSafely();
+                _monoBinders.UnbindSafely(owner, _name);
 
                 // TODO Aspid.MVVM – Add for Aspid.MVVM 1.3.0
 // #if UNITY_6000_0_OR_NEWER
-//                 _binders.UnbindSafely();
+//                 _binders.UnbindSafely(owner, _name);
 // #endif
             }
         }

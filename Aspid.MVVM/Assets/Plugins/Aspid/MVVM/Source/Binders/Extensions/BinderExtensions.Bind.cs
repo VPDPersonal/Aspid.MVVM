@@ -17,8 +17,10 @@ namespace Aspid.MVVM
         /// <typeparam name="T">The binder type that implements <see cref="IBinder"/>.</typeparam>
         /// <param name="binder">The binder instance to bind.</param>
         /// <param name="result">The result of a bindable member lookup.</param>
+        /// <param name="owner">Unused; accepted for signature parity with the collection overloads.</param>
+        /// <param name="memberName">Unused; accepted for signature parity with the collection overloads.</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void BindSafely<T>(this T? binder, in FindBindableMemberResult result)
+        public static void BindSafely<T>(this T? binder, in FindBindableMemberResult result, object? owner = null, string? memberName = null)
             where T : IBinder
         {
             // ReSharper disable once NullableWarningSuppressionIsUsed
@@ -32,8 +34,10 @@ namespace Aspid.MVVM
         /// <typeparam name="T">The binder type that implements <see cref="IBinder"/>.</typeparam>
         /// <param name="binder">The binder instance to bind.</param>
         /// <param name="binderAdder">The event adder to bind to.</param>
+        /// <param name="owner">Unused; accepted for signature parity with the collection overloads.</param>
+        /// <param name="memberName">Unused; accepted for signature parity with the collection overloads.</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void BindSafely<T>(this T? binder, IBinderAdder binderAdder)
+        public static void BindSafely<T>(this T? binder, IBinderAdder binderAdder, object? owner = null, string? memberName = null)
             where T : IBinder
         {
             binder?.Bind(binderAdder);

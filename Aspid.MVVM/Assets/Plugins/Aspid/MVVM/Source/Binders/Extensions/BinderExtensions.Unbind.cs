@@ -11,8 +11,10 @@ namespace Aspid.MVVM
         /// </summary>
         /// <typeparam name="T">The binder type that implements <see cref="IBinder"/>.</typeparam>
         /// <param name="binder">The binder instance to unbind.</param>
+        /// <param name="owner">Unused; accepted for signature parity with the collection overloads.</param>
+        /// <param name="memberName">Unused; accepted for signature parity with the collection overloads.</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void UnbindSafely<T>(this T? binder)
+        public static void UnbindSafely<T>(this T? binder, object? owner = null, string? memberName = null)
             where T : IBinder
         {
             if (binder is null) return;

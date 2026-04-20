@@ -260,11 +260,11 @@ public static class InitializeBody
         {
             if (member is CachedBinderMember cachedBinderMember)
             {
-                code.AppendLine($"{cachedBinderMember.CachedName}.UnbindSafely();");
+                code.AppendLine($"{cachedBinderMember.CachedName}.UnbindSafely(this, {member.Id});");
             }
             else
             {
-                code.AppendLine($"{member.Name}.UnbindSafely();");
+                code.AppendLine($"{member.Name}.UnbindSafely(this, {member.Id});");
             }
         }
 

@@ -57,8 +57,27 @@ namespace Aspid.MVVM
                     ?.SetMargin(top: 0);
             }
             
-            field?.AddToClassList(StyleClass);
-            field?.AddToClassList(StyleClasses.Theme.Lightness);
+            // IMGUI drawers (e.g. AssetReferenceSprite) are hosted in an IMGUIContainer that
+            // paints over its own UIElements background, hiding the Aspid frame. Wrap the
+            // IMGUIContainer in a styled VisualElement so the frame renders around the IMGUI
+            // content, while keeping any decorator drawers (e.g. [Header]) above the frame –
+            // matching the layout of non-IMGUI fields.
+            if (field is IMGUIContainer imgui)
+            {
+                var index = IndexOf(imgui);
+                imgui.RemoveFromHierarchy();
+
+                var imguiWrapper = new VisualElement();
+                imguiWrapper.AddToClassList(StyleClass);
+                imguiWrapper.AddToClassList(StyleClasses.Theme.Lightness);
+                imguiWrapper.Add(imgui);
+                Insert(index, imguiWrapper);
+            }
+            else
+            {
+                field?.AddToClassList(StyleClass);
+                field?.AddToClassList(StyleClasses.Theme.Lightness);
+            }
             
             // For [SerializeReferenceDropdown]
             foreach (var dropdown in this.Query<VisualElement>("dropdown-group").Build())

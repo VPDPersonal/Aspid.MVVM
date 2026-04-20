@@ -1,5 +1,11 @@
 VisualElement {}
 
+/*AspidPropertyField Root*/
+AspidPropertyField
+{
+    margin-left: 0;
+}
+
 /*Root*/
 .aspid-fasttools-lightness.aspid-property-field
 {
@@ -40,11 +46,10 @@ VisualElement {}
 }
 
 /*Property Field – IMGUIContainer*/
-.aspid-fasttools-lightness.aspid-property-field.unity-imgui-container
+.aspid-fasttools-lightness.aspid-property-field > IMGUIContainer
 {
-    margin-bottom: 2px;
-    margin-left: 15px;
-    margin-right: 0;
+    margin-left: -15px;
+    margin-right: -4px;
 }
 
 /*Collection Field*/

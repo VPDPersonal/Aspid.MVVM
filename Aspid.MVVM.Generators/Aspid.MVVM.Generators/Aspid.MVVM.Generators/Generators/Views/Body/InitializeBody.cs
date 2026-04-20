@@ -258,14 +258,13 @@ public static class InitializeBody
         
         foreach (var member in data.Members)
         {
-            var diagnostics = BindSafelyExtensions.IsBinderCollection(member.Type) ? $"this, {member.Id}" : string.Empty;
             if (member is CachedBinderMember cachedBinderMember)
             {
-                code.AppendLine($"{cachedBinderMember.CachedName}.UnbindSafely({diagnostics});");
+                code.AppendLine($"{cachedBinderMember.CachedName}.UnbindSafely(this, {member.Id});");
             }
             else
             {
-                code.AppendLine($"{member.Name}.UnbindSafely({diagnostics});");
+                code.AppendLine($"{member.Name}.UnbindSafely(this, {member.Id});");
             }
         }
 

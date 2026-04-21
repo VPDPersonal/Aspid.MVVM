@@ -1,3 +1,4 @@
+using UnityEditor;
 using UnityEngine.UIElements;
 
 // ReSharper disable once CheckNamespace
@@ -54,6 +55,9 @@ namespace Aspid.FastTools.UIElements.Editors.Internal
         public AspidDividingLine(DividingLinePreset preset)
         {
             this.AddClass(preset.Direction.ToUss());
+
+            if (EditorGUIUtility.pixelsPerPoint < 2f)
+                this.AddClass(StyleClasses.DividingLine.LowDpi);
 
             _theme = new StyleOverride<ThemeStyle>(preset.Theme, (oldValue, newValue) =>
             {

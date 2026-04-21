@@ -135,6 +135,12 @@ namespace Aspid.FastTools.UIElements.Editors.Internal
             /// USS class for the <see cref="DividingLineDirection.Vertical"/> orientation.
             /// </summary>
             public const string Vertical = "aspid-fasttools-vertical-line";
+
+            /// <summary>
+            /// USS class applied when the editor runs at low DPI (<c>pixelsPerPoint &lt; 2</c>),
+            /// so thin strokes stay visible.
+            /// </summary>
+            public const string LowDpi = "aspid-fasttools-low-dpi";
         }
 
         /// <summary>

@@ -138,6 +138,38 @@ AspidDividingLine.aspid-fasttools-bold-line.aspid-fasttools-vertical-line {
     display: flex;
 }
 
+/* Low-DPI overrides: sub-pixel lines anti-alias into invisibility on 1x displays, so bump each size by 1px. */
+
+/*Thin Horizontal Line — Low DPI*/
+AspidDividingLine.aspid-fasttools-low-dpi.aspid-fasttools-thin-line.aspid-fasttools-horizontal-line {
+    height: 2px;
+}
+
+/*Medium Horizontal Line — Low DPI*/
+AspidDividingLine.aspid-fasttools-low-dpi.aspid-fasttools-medium-line.aspid-fasttools-horizontal-line {
+    height: 3px;
+}
+
+/*Bold Horizontal Line — Low DPI*/
+AspidDividingLine.aspid-fasttools-low-dpi.aspid-fasttools-bold-line.aspid-fasttools-horizontal-line {
+    height: 4px;
+}
+
+/*Thin Vertical Line — Low DPI*/
+AspidDividingLine.aspid-fasttools-low-dpi.aspid-fasttools-thin-line.aspid-fasttools-vertical-line {
+    width: 2px;
+}
+
+/*Medium Vertical Line — Low DPI*/
+AspidDividingLine.aspid-fasttools-low-dpi.aspid-fasttools-medium-line.aspid-fasttools-vertical-line {
+    width: 3px;
+}
+
+/*Bold Vertical Line — Low DPI*/
+AspidDividingLine.aspid-fasttools-low-dpi.aspid-fasttools-bold-line.aspid-fasttools-vertical-line {
+    width: 4px;
+}
+
 /*Darkness*/
 AspidDividingLine.aspid-fasttools-darkness {
     background-color: var(--aspid-shade-darkness);

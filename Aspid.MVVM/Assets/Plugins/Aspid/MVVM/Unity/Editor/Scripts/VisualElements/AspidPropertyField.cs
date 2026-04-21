@@ -36,7 +36,8 @@ namespace Aspid.MVVM
 
         private void Initialize(SerializedProperty property)
         {
-            _property = property;
+            // Copy so external iteration (e.g. NextVisible in the caller) can't move our iterator past end.
+            _property = property.Copy();
             this.Bind(property.serializedObject);
 
             styleSheets.Add(StyleSheet);

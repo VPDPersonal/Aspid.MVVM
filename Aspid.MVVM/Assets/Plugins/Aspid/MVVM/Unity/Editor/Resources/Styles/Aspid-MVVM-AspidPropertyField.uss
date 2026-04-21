@@ -48,8 +48,7 @@ AspidPropertyField
 /*Property Field – IMGUIContainer*/
 .aspid-fasttools-lightness.aspid-property-field > IMGUIContainer
 {
-    margin-left: -18px;
-    margin-right: -4px;
+    margin: -2px -4px -2px -18px;
 }
 
 /*Collection Field*/

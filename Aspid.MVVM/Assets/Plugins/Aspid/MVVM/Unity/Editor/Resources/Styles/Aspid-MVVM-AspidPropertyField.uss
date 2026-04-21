@@ -51,6 +51,12 @@ AspidPropertyField
     margin: -2px -4px -2px -18px;
 }
 
+/*Property Field – IMGUIContainer (expanded foldout)*/
+.aspid-fasttools-lightness.aspid-property-field.aspid-property-field-imgui-foldout > IMGUIContainer
+{
+    margin-left: -5px;
+}
+
 /*Collection Field*/
 .aspid-fasttools-lightness.aspid-property-field .unity-scroll-view
 {

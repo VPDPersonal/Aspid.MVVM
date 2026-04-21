@@ -17,15 +17,18 @@ namespace Aspid.MVVM
     public class AspidPropertyField : PropertyField
     {
         public const string StyleClass = "aspid-property-field";
+        private const string ImguiFoldoutStyleClass = "aspid-property-field-imgui-foldout";
         public static readonly StyleSheet StyleSheet = Resources.Load<StyleSheet>("Styles/Aspid-MVVM-AspidPropertyField");
-        
+
+        private SerializedProperty? _property;
+
         public AspidPropertyField(SerializedProperty property)
             : base(property)
         {
             Initialize(property);
         }
 
-        public AspidPropertyField(SerializedProperty property, string label) 
+        public AspidPropertyField(SerializedProperty property, string label)
             : base(property, label)
         {
             Initialize(property);
@@ -33,8 +36,9 @@ namespace Aspid.MVVM
 
         private void Initialize(SerializedProperty property)
         {
+            _property = property;
             this.Bind(property.serializedObject);
-            
+
             styleSheets.Add(StyleSheet);
             RegisterCallback<GeometryChangedEvent>(SetStyles);
         }
@@ -70,6 +74,10 @@ namespace Aspid.MVVM
                 var imguiWrapper = new VisualElement();
                 imguiWrapper.AddToClassList(StyleClass);
                 imguiWrapper.AddToClassList(StyleClasses.Theme.Lightness);
+                
+                if (_property is not null && IsImguiFoldoutDrawer(_property))
+                    imguiWrapper.AddToClassList(ImguiFoldoutStyleClass);
+                
                 imguiWrapper.Add(imgui);
                 Insert(index, imguiWrapper);
             }
@@ -88,6 +96,29 @@ namespace Aspid.MVVM
                 var size = labelElement.MeasureTextSize(labelElement.text, 0, MeasureMode.Undefined, 0, MeasureMode.Undefined);
                 dropdown.style.left = Mathf.Max(75, size.x);
                 dropdown.SetMargin(left: 15);
+            }
+        }
+        
+        // A foldout-style IMGUI drawer (e.g. Localization StringReference) reports a different
+        // height when isExpanded flips because it lays children out below the foldout arrow.
+        // Single-line drawers (e.g. AssetReferenceSprite) return the same height either way.
+        private static bool IsImguiFoldoutDrawer(SerializedProperty property)
+        {
+            var wasExpanded = property.isExpanded;
+            
+            try
+            {
+                property.isExpanded = false;
+                var collapsed = EditorGUI.GetPropertyHeight(property);
+
+                property.isExpanded = true;
+                var expanded = EditorGUI.GetPropertyHeight(property);
+
+                return expanded > collapsed + 5f;
+            }
+            finally
+            {
+                property.isExpanded = wasExpanded;
             }
         }
     }

@@ -8,7 +8,8 @@ using Aspid.FastTools.Editors;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
-    public abstract class EnumMonoBinderEditorBase : MonoBinderEditor
+    [CustomEditor(typeof(EnumMonoBinder<>), editorForChildClasses: true)]
+    public class EnumMonoBinderEditor : MonoBinderEditor
     {
         private Type _requiredEnumType;
         private SerializedProperty _enumTypeProperty;
@@ -25,6 +26,9 @@ namespace Aspid.MVVM.StarterKit
 
         protected override void OnEnabled() =>
             SyncEnumTypeFromRequireBinder();
+
+        protected override MonoBinderVisualElement BuildVisualElement() =>
+            new EnumMonoBinderVisualElement(editor: this);
 
         protected override void FindProperties()
         {

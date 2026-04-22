@@ -62,6 +62,12 @@ namespace Aspid.MVVM
             ? StatusStyle.Success
             : StatusStyle.Error;
 
+        /// <summary>
+        /// Optional subtext rendered under the main header label.
+        /// Returning <c>null</c> keeps the header single-line (default).
+        /// </summary>
+        protected virtual string ScriptSubtext => null;
+
         public MonoBinderVisualElement(MonoBinderEditor editor)
         {
             _editor = editor;
@@ -105,7 +111,11 @@ namespace Aspid.MVVM
         protected virtual VisualElement BuildHeader()
         {
             var binder = _editor.TargetAsMonoBinder;
-            return new AspidInspectorHeader(label: GetScriptName(), binder) { Status = Status }
+            return new AspidInspectorHeader(label: GetScriptName(), binder) 
+                {
+                    Status = Status,
+                    Subtext = ScriptSubtext,
+                }
                 .SetMargin(top: 3, left: -10f);
         }
 

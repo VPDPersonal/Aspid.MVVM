@@ -81,8 +81,19 @@ namespace Aspid.MVVM.StarterKit
 
                 case NotifyCollectionChangedAction.Replace:
                     {
-                        if (e.IsSingleItem) OnReplace(e.OldItem, e.NewItem, e.OldStartingIndex);
-                        else throw new NotImplementedException();
+                        if (e.IsSingleItem)
+                        {
+                            OnReplace(e.OldItem, e.NewItem, e.OldStartingIndex);
+                        }
+                        else if (e.OldItems is not null && e.NewItems is not null)
+                        {
+                            var oldItems = e.OldItems;
+                            var newItems = e.NewItems;
+                            var startIndex = e.OldStartingIndex;
+
+                            for (var i = 0; i < newItems.Count; i++)
+                                OnReplace(oldItems[i], newItems[i], startIndex + i);
+                        }
                     } break;
                 
                 case NotifyCollectionChangedAction.Move:

@@ -14,7 +14,7 @@ namespace Aspid.MVVM
         protected virtual void OnValidate() =>
             NotifyAll();
 
-        public void Dispose() =>
+        public virtual void Dispose() =>
             Destroy(this);
     }
 }

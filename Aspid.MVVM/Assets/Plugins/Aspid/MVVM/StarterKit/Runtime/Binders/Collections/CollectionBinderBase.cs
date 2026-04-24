@@ -1,5 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
+using Aspid.Collections.Observable;
+using Aspid.Collections.Observable.Filtered;
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
@@ -42,10 +45,51 @@ namespace Aspid.MVVM.StarterKit
         {
             if (Collection is not null)
                 OnReset();
-
+            
+            switch (Collection)
+            {
+                case IReadOnlyFilteredList<T> filteredList: filteredList.CollectionChanged -= OnCollectionChanged; break;
+                case IReadOnlyObservableList<T> observableList: observableList.CollectionChanged -= OnCollectionChanged; break;
+            }
+            
             Collection = collection;
             if (Collection is null) return;
             if (Collection.Count > 0) OnAdded(Collection);
+            
+            switch (Collection)
+            {
+                case IReadOnlyFilteredList<T> filteredList: filteredList.CollectionChanged += OnCollectionChanged; break;
+                case IReadOnlyObservableList<T> observableList: observableList.CollectionChanged += OnCollectionChanged; break;
+            }
+        }
+        
+        private void OnCollectionChanged()
+        {
+            OnReset();
+            
+            if (Collection is null) return;
+            if (Collection.Count > 0) OnAdded(Collection);
+        }
+        
+        private void OnCollectionChanged(INotifyCollectionChangedEventArgs<T?> e)
+        {
+            switch (e.Action)
+            {
+                case NotifyCollectionChangedAction.Add:
+                case NotifyCollectionChangedAction.Reset:
+                case NotifyCollectionChangedAction.Remove: break;
+
+                case NotifyCollectionChangedAction.Replace:
+                    {
+                        if (e.IsSingleItem) OnReplace(e.OldItem, e.NewItem, e.OldStartingIndex);
+                        else throw new NotImplementedException();
+                    } break;
+                
+                case NotifyCollectionChangedAction.Move:
+                    {
+                        OnMove(e.OldItem, e.NewItem, e.OldStartingIndex, e.NewStartingIndex);
+                    } break;
+            }
         }
 
         /// <summary>
@@ -53,6 +97,25 @@ namespace Aspid.MVVM.StarterKit
         /// </summary>
         /// <param name="values">The items that were added.</param>
         protected abstract void OnAdded(IReadOnlyCollection<T> values);
+
+        /// <summary>
+        /// Called when a single item in the bound collection has been replaced and the change
+        /// must be reflected in the View.
+        /// </summary>
+        /// <param name="oldItem">The item that was replaced, or <see langword="null"/> if the previous slot was empty.</param>
+        /// <param name="newItem">The replacement item, or <see langword="null"/> if the slot is now empty.</param>
+        /// <param name="newStartingIndex">The index of the replaced item in the collection.</param>
+        protected abstract void OnReplace(T? oldItem, T? newItem, int newStartingIndex);
+
+        /// <summary>
+        /// Called when an item in the bound collection has been moved from one index to another and
+        /// the change must be reflected in the View.
+        /// </summary>
+        /// <param name="oldItem">The item at <paramref name="oldStartingIndex"/> before the move.</param>
+        /// <param name="newItem">The item at <paramref name="newStartingIndex"/> after the move.</param>
+        /// <param name="oldStartingIndex">The index of the item before the move.</param>
+        /// <param name="newStartingIndex">The index of the item after the move.</param>
+        protected abstract void OnMove(T? oldItem, T? newItem, int oldStartingIndex, int newStartingIndex);
 
         /// <summary>
         /// Called when the collection is cleared or replaced, signaling that the View representation should be reset.

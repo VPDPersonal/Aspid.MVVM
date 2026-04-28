@@ -19,6 +19,7 @@ namespace Aspid.MVVM.StarterKit
     {
         [Tooltip("The texture to display while the Addressable asset is loading or when no address is set.")]
         [SerializeField] private Texture2D _defaultTexture;
+        
         [Tooltip("When true, disables the RawImage component automatically when the loaded texture is null.")]
         [SerializeField] private bool _disabledWhenNull = true;
 

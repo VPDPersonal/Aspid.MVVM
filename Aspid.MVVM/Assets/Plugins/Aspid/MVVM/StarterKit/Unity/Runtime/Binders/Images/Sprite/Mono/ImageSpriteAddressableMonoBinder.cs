@@ -16,6 +16,7 @@ namespace Aspid.MVVM.StarterKit
     {
         [Tooltip("The sprite displayed while the Addressable asset is loading or if loading fails.")]
         [SerializeField] private Sprite _defaultSprite;
+        
         [Tooltip("When enabled, disables the Image component when the loaded sprite is null.")]
         [SerializeField] private bool _disabledWhenNull = true;
 

@@ -12,59 +12,91 @@ namespace Aspid.MVVM.StarterKit
 	/// </summary>
 	/// <remarks>
 	/// Only available when <c>ASPID_MVVM_ADDRESSABLES_INTEGRATION</c> is defined.
+	/// When <see cref="_seamlessSwap"/> is enabled, the currently displayed asset is kept on screen
+	/// until the next load completes, providing a seamless swap. Otherwise the asset is immediately
+	/// reset to the default value before the new load starts.
 	/// </remarks>
 	/// <typeparam name="TAsset">The type of Addressable asset to load and apply.</typeparam>
 	public abstract partial class AddressableMonoBinder<TAsset> : MonoBinder, IBinder<string>, IBinder<IKeyEvaluator>
 	{
-		private AsyncOperationHandle<TAsset> _lastHandle;
+		[SerializeField] private bool _seamlessSwap;
+
+		private AsyncOperationHandle<TAsset> _currentHandle;
+		private AsyncOperationHandle<TAsset> _pendingHandle;
 
 		/// <summary>
-		/// Called when the MonoBehaviour is destroyed. Releases the current Addressable asset handle.
+		/// Called when the MonoBehaviour is destroyed. Releases both the current and any pending Addressable asset handles.
 		/// </summary>
-		protected virtual void OnDestroy() =>
+		protected virtual void OnDestroy()
+		{
+			ReleasePendingHandle();
 			ReleaseCurrentHandle();
+		}
 
 		/// <summary>
-		/// Called after unbinding is complete. Resets to the default asset and releases the current Addressable asset handle.
+		/// Called after unbinding is complete. Resets to the default asset and releases all Addressable asset handles.
 		/// </summary>
 		protected override void OnUnbound() =>
 			SetDefault();
 
 		/// <summary>
-		/// Resets to the default asset and loads a new one by the given address key.
-		/// Does nothing if <paramref name="value"/> is <see langword="null"/> or whitespace.
+		/// Loads a new asset by the given address key. When seamless swap is enabled the currently displayed asset
+		/// is kept on screen until the load completes; otherwise the asset is immediately reset to the default.
+		/// Resets to the default asset if <paramref name="value"/> is <see langword="null"/> or whitespace.
 		/// </summary>
 		/// <param name="value">The Addressable address string.</param>
 		[BinderLog]
 		public void SetValue(string value)
 		{
-			SetDefault();
-			if (!string.IsNullOrWhiteSpace(value)) Load(value);
+			if (string.IsNullOrWhiteSpace(value))
+			{
+				SetDefault();
+				return;
+			}
+
+			if (!_seamlessSwap) ResetToDefault();
+			Load(value);
 		}
 
 		/// <summary>
-		/// Resets to the default asset and loads a new one using the runtime key from <paramref name="value"/>.
-		/// Does nothing if <paramref name="value"/> is <see langword="null"/> or its key is <see langword="null"/> or invalid.
+		/// Loads a new asset using the runtime key from <paramref name="value"/>. When seamless swap is enabled the
+		/// currently displayed asset is kept on screen until the load completes; otherwise the asset is immediately
+		/// reset to the default. Resets to the default asset if <paramref name="value"/> is <see langword="null"/>
+		/// or its key is <see langword="null"/> or invalid.
 		/// </summary>
 		/// <param name="value">The key evaluator providing the Addressable runtime key.</param>
 		[BinderLog]
 		public void SetValue(IKeyEvaluator value)
 		{
-			SetDefault();
+			if (value is null)
+			{
+				SetDefault();
+				return;
+			}
 
-			if (value is null) return;
 			var key = value.RuntimeKey;
 
 			switch (key)
 			{
 				case null:
-				case string stringKey when string.IsNullOrWhiteSpace(stringKey): return;
+				case string stringKey when string.IsNullOrWhiteSpace(stringKey):
+					SetDefault();
+					return;
 
-				default: Load(value); break;
+				default:
+					if (!_seamlessSwap) ResetToDefault();
+					Load(value);
+					break;
 			}
 		}
 
 		private void SetDefault()
+		{
+			ReleasePendingHandle();
+			ResetToDefault();
+		}
+
+		private void ResetToDefault()
 		{
 			ReleaseCurrentHandle();
 			SetAsset(GetDefaultAsset());
@@ -72,27 +104,40 @@ namespace Aspid.MVVM.StarterKit
 
 		private void Load(object key)
 		{
-			_lastHandle = Addressables.LoadAssetAsync<TAsset>(key);
+			ReleasePendingHandle();
 
-			if (_lastHandle.IsDone) OnHandleCompleted(_lastHandle);
-			else _lastHandle.Completed += OnHandleCompleted;
+			_pendingHandle = Addressables.LoadAssetAsync<TAsset>(key);
+
+			if (_pendingHandle.IsDone) OnPendingHandleCompleted(_pendingHandle);
+			else _pendingHandle.Completed += OnPendingHandleCompleted;
+		}
+
+		private void OnPendingHandleCompleted(AsyncOperationHandle<TAsset> handle)
+		{
+			handle.Completed -= OnPendingHandleCompleted;
+
+			ReleaseCurrentHandle();
+			_currentHandle = handle;
+			_pendingHandle = default;
+
+			SetAsset(handle.Result);
 		}
 
 		private void ReleaseCurrentHandle()
 		{
-			if (_lastHandle.IsValid())
-			{
-				_lastHandle.Completed -= OnHandleCompleted;
-				_lastHandle.Release();
-			}
-
-			_lastHandle = default;
+			if (_currentHandle.IsValid()) _currentHandle.Release();
+			_currentHandle = default;
 		}
 
-		private void OnHandleCompleted(AsyncOperationHandle<TAsset> handle)
+		private void ReleasePendingHandle()
 		{
-			handle.Completed -= OnHandleCompleted;
-			SetAsset(handle.Result);
+			if (_pendingHandle.IsValid())
+			{
+				_pendingHandle.Completed -= OnPendingHandleCompleted;
+				_pendingHandle.Release();
+			}
+
+			_pendingHandle = default;
 		}
 
 		/// <summary>
@@ -116,6 +161,9 @@ namespace Aspid.MVVM.StarterKit
 	/// </summary>
 	/// <remarks>
 	/// Only available when <c>ASPID_MVVM_ADDRESSABLES_INTEGRATION</c> is defined.
+	/// When <see cref="_seamlessSwap"/> is enabled, the currently displayed asset is kept on screen
+	/// until the next load completes, providing a seamless swap. Otherwise the asset is immediately
+	/// reset to the default value before the new load starts.
 	/// </remarks>
 	/// <typeparam name="TAsset">The type of Addressable asset to load.</typeparam>
 	/// <typeparam name="TComponent">The type of <see cref="Component"/> to apply the loaded asset to.</typeparam>
@@ -124,55 +172,84 @@ namespace Aspid.MVVM.StarterKit
 		IBinder<IKeyEvaluator>
 		where TComponent : Component
 	{
-		private AsyncOperationHandle<TAsset> _lastHandle;
+		[SerializeField] private bool _seamlessSwap;
+
+		private AsyncOperationHandle<TAsset> _currentHandle;
+		private AsyncOperationHandle<TAsset> _pendingHandle;
 
 		/// <summary>
-		/// Called when the MonoBehaviour is destroyed. Releases the current Addressable asset handle.
+		/// Called when the MonoBehaviour is destroyed. Releases both the current and any pending Addressable asset handles.
 		/// </summary>
-		protected virtual void OnDestroy() =>
+		protected virtual void OnDestroy()
+		{
+			ReleasePendingHandle();
 			ReleaseCurrentHandle();
+		}
 
 		/// <summary>
-		/// Called after unbinding is complete. Resets to the default asset and releases the current Addressable asset handle.
+		/// Called after unbinding is complete. Resets to the default asset and releases all Addressable asset handles.
 		/// </summary>
 		protected override void OnUnbound() =>
 			SetDefault();
 
 		/// <summary>
-		/// Resets to the default asset and loads a new one by the given address key.
-		/// Does nothing if <paramref name="value"/> is <see langword="null"/> or whitespace.
+		/// Loads a new asset by the given address key. When seamless swap is enabled the currently displayed asset
+		/// is kept on screen until the load completes; otherwise the asset is immediately reset to the default.
+		/// Resets to the default asset if <paramref name="value"/> is <see langword="null"/> or whitespace.
 		/// </summary>
 		/// <param name="value">The Addressable address string.</param>
 		[BinderLog]
 		public void SetValue(string value)
 		{
-			SetDefault();
-			if (!string.IsNullOrWhiteSpace(value)) Load(value);
+			if (string.IsNullOrWhiteSpace(value))
+			{
+				SetDefault();
+				return;
+			}
+
+			if (!_seamlessSwap) ResetToDefault();
+			Load(value);
 		}
 
 		/// <summary>
-		/// Resets to the default asset and loads a new one using the runtime key from <paramref name="value"/>.
-		/// Does nothing if <paramref name="value"/> is <see langword="null"/> or its key is <see langword="null"/> or invalid.
+		/// Loads a new asset using the runtime key from <paramref name="value"/>. When seamless swap is enabled the
+		/// currently displayed asset is kept on screen until the load completes; otherwise the asset is immediately
+		/// reset to the default. Resets to the default asset if <paramref name="value"/> is <see langword="null"/>
+		/// or its key is <see langword="null"/> or invalid.
 		/// </summary>
 		/// <param name="value">The key evaluator providing the Addressable runtime key.</param>
 		[BinderLog]
 		public void SetValue(IKeyEvaluator value)
 		{
-			SetDefault();
+			if (value is null)
+			{
+				SetDefault();
+				return;
+			}
 
-			if (value is null) return;
 			var key = value.RuntimeKey;
 
 			switch (key)
 			{
 				case null:
-				case string stringKey when string.IsNullOrWhiteSpace(stringKey): return;
+				case string stringKey when string.IsNullOrWhiteSpace(stringKey):
+					SetDefault();
+					return;
 
-				default: Load(value); break;
+				default:
+					if (!_seamlessSwap) ResetToDefault();
+					Load(value);
+					break;
 			}
 		}
 
 		private void SetDefault()
+		{
+			ReleasePendingHandle();
+			ResetToDefault();
+		}
+
+		private void ResetToDefault()
 		{
 			ReleaseCurrentHandle();
 			SetAsset(GetDefaultAsset());
@@ -180,27 +257,40 @@ namespace Aspid.MVVM.StarterKit
 
 		private void Load(object key)
 		{
-			_lastHandle = Addressables.LoadAssetAsync<TAsset>(key);
+			ReleasePendingHandle();
 
-			if (_lastHandle.IsDone) OnHandleCompleted(_lastHandle);
-			else _lastHandle.Completed += OnHandleCompleted;
+			_pendingHandle = Addressables.LoadAssetAsync<TAsset>(key);
+
+			if (_pendingHandle.IsDone) OnPendingHandleCompleted(_pendingHandle);
+			else _pendingHandle.Completed += OnPendingHandleCompleted;
+		}
+
+		private void OnPendingHandleCompleted(AsyncOperationHandle<TAsset> handle)
+		{
+			handle.Completed -= OnPendingHandleCompleted;
+
+			ReleaseCurrentHandle();
+			_currentHandle = handle;
+			_pendingHandle = default;
+
+			SetAsset(handle.Result);
 		}
 
 		private void ReleaseCurrentHandle()
 		{
-			if (_lastHandle.IsValid())
-			{
-				_lastHandle.Completed -= OnHandleCompleted;
-				_lastHandle.Release();
-			}
-
-			_lastHandle = default;
+			if (_currentHandle.IsValid()) _currentHandle.Release();
+			_currentHandle = default;
 		}
 
-		private void OnHandleCompleted(AsyncOperationHandle<TAsset> handle)
+		private void ReleasePendingHandle()
 		{
-			handle.Completed -= OnHandleCompleted;
-			SetAsset(handle.Result);
+			if (_pendingHandle.IsValid())
+			{
+				_pendingHandle.Completed -= OnPendingHandleCompleted;
+				_pendingHandle.Release();
+			}
+
+			_pendingHandle = default;
 		}
 
 		/// <summary>

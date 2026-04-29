@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Skeleton
   m_EditorClassIdentifier: Aspid.FastTools.Samples.Ids::Aspid.FastTools.Samples.Ids.EnemyDefinition
   _id:
-    __stringId: Skeleton
+    __stringId: walk_skeleton
     _id: 4
   _displayName: Skeleton
   _maxHealth: 60

@@ -11,7 +11,7 @@ namespace Aspid.FastTools.Samples.VisualElements.Editors
     [CustomEditor(typeof(AbilityConfig))]
     internal sealed class AbilityConfigEditor : Editor
     {
-        private const string StyleSheetPath = "Styles/Aspid-FastTools-Default-Dark";
+        private const string StyleSheetPath = "UI/Aspid-FastTools-Default-Dark";
         
         public override VisualElement CreateInspectorGUI()
         {
@@ -26,14 +26,14 @@ namespace Aspid.FastTools.Samples.VisualElements.Editors
 
             var helpBox = new AspidHelpBox(
                     title: "Zero mana cost",
-                    message: "This ability costs no mana — is that intentional?", 
-                    messageType: HelpBoxMessageType.Warning)
+                    message: "This ability costs no mana — is that intentional?",
+                    preset: AspidHelpBoxPreset.Default.SetMessageType(HelpBoxMessageType.Warning))
                 .SetMarginTop(5);
             
             var manaConstField = new PropertyField(serializedObject.FindProperty("_manaCost"))
                 .AddValueChanged(_ => UpdateState());
 
-            var box = new AspidBox(ThemeStyle.Dark)
+            var box = new AspidBox(AspidBoxPreset.Default.SetTheme(ThemeStyle.Type.Dark))
                 .SetPadding(8)
                 .SetMarginTop(5)
                 .AddChild(new PropertyField(serializedObject.FindProperty("_abilityName")))
@@ -50,7 +50,7 @@ namespace Aspid.FastTools.Samples.VisualElements.Editors
             {
                 var isValid = config.ManaCost is not 0;
                 helpBox.SetDisplay(isValid ? DisplayStyle.None : DisplayStyle.Flex);
-                header.SetStatus(isValid ? StatusStyle.Success : StatusStyle.Warning);
+                header.SetStatus(isValid ? StatusStyle.Type.Success : StatusStyle.Type.Warning);
             }
         }
     }

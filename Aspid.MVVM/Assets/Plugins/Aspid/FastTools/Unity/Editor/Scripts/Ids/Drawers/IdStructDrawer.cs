@@ -17,21 +17,24 @@ namespace Aspid.FastTools.Ids.Editors
 
         public static float GetIMGUIHeight(SerializedProperty property)
         {
-            var h = EditorGUIUtility.singleLineHeight;
-            if (_imguiState.TryGetValue(PropertyKey(property), out var s) && s.creating)
-                h += EditorGUIUtility.singleLineHeight + EditorGUIUtility.standardVerticalSpacing;
-            return h;
+            var height = EditorGUIUtility.singleLineHeight;
+            var key = PropertyKey(property);
+            
+            if (_imguiState.TryGetValue(key, out var s) && s.creating)
+                height += EditorGUIUtility.singleLineHeight + EditorGUIUtility.standardVerticalSpacing;
+            
+            return height;
         }
 
         public static void DrawIMGUI(Rect position, SerializedProperty property, GUIContent label, Type fieldType)
         {
+            var intIdProp = property.FindPropertyRelative(Constants.IntIdFieldName);
             var stringIdProp = property.FindPropertyRelative(Constants.StringIdFieldName);
-            var intIdProp    = property.FindPropertyRelative(Constants.IntIdFieldName);
 
             var currentId = intIdProp?.intValue ?? 0;
             if (currentId > 0 && stringIdProp != null)
             {
-                var reg          = StringIdRegistryHelper.FindRegistry(fieldType);
+                var reg = IdRegistryResolver.FindStringMapped(fieldType);
                 var registryName = reg?.GetNameId(currentId);
                 if (registryName != null && registryName != stringIdProp.stringValue)
                 {
@@ -50,19 +53,37 @@ namespace Aspid.FastTools.Ids.Editors
             var key = PropertyKey(property);
             _imguiState.TryGetValue(key, out var state);
 
+            const float OpenButtonWidth = 22f;
+            const float Gap = 2f;
+
             var mainRect = new Rect(position.x, position.y, position.width, EditorGUIUtility.singleLineHeight);
-            var dropRect = new Rect(mainRect.x, mainRect.y, mainRect.width - CreateButtonWidth - 2f, mainRect.height);
-            var btnRect  = new Rect(dropRect.xMax + 2f, mainRect.y, CreateButtonWidth, mainRect.height);
+            var dropRect = new Rect(mainRect.x, mainRect.y,
+                mainRect.width - CreateButtonWidth - OpenButtonWidth - Gap * 2f, mainRect.height);
+            var openRect = new Rect(dropRect.xMax + Gap, mainRect.y, OpenButtonWidth, mainRect.height);
+            var btnRect  = new Rect(openRect.xMax + Gap, mainRect.y, CreateButtonWidth, mainRect.height);
 
             var currentName = stringIdProp?.stringValue ?? string.Empty;
 
             if (EditorGUI.DropdownButton(dropRect, new GUIContent(Caption(currentName)), FocusType.Passive))
             {
-                var reg = StringIdRegistryHelper.FindRegistry(fieldType);
-                var sp  = GUIUtility.GUIToScreenPoint(new Vector2(dropRect.x, dropRect.y));
-                var sr  = new Rect(sp.x, sp.y, dropRect.width, dropRect.height);
-                StringIdSelectorWindow.Show(reg?.Ids ?? Array.Empty<string>(), sr, currentName,
+                var reg = IdRegistryResolver.FindStringMapped(fieldType);
+                var sp = GUIUtility.GUIToScreenPoint(new Vector2(dropRect.x, dropRect.y));
+                var sr = new Rect(sp.x, sp.y, dropRect.width, dropRect.height);
+                StringIdSelectorWindow.Show(reg, sr, currentName,
                     selected => ApplySelection(property, stringIdProp, intIdProp, fieldType, selected));
+            }
+
+            using (new EditorGUI.DisabledScope(IdRegistryResolver.Find(fieldType) == null))
+            {
+                if (GUI.Button(openRect, EditorGUIUtility.IconContent("d_ScriptableObject Icon")))
+                {
+                    var reg = IdRegistryResolver.Find(fieldType);
+                    if (reg != null)
+                    {
+                        EditorGUIUtility.PingObject(reg);
+                        Selection.activeObject = reg;
+                    }
+                }
             }
 
             if (GUI.Button(btnRect, state.creating ? "Cancel" : "Create"))
@@ -76,11 +97,11 @@ namespace Aspid.FastTools.Ids.Editors
             const float gap = 2f;
             const float addW = 40f;
             const float cancelW = 22f;
-            var rowY    = mainRect.yMax + EditorGUIUtility.standardVerticalSpacing;
-            var inputW  = position.width - addW - cancelW - gap * 2f;
+            var rowY = mainRect.yMax + EditorGUIUtility.standardVerticalSpacing;
+            var inputW = position.width - addW - cancelW - gap * 2f;
 
-            var inputRect  = new Rect(position.x, rowY, inputW, EditorGUIUtility.singleLineHeight);
-            var addRect    = new Rect(inputRect.xMax + gap, rowY, addW, EditorGUIUtility.singleLineHeight);
+            var inputRect = new Rect(position.x, rowY, inputW, EditorGUIUtility.singleLineHeight);
+            var addRect = new Rect(inputRect.xMax + gap, rowY, addW, EditorGUIUtility.singleLineHeight);
             var cancelRect = new Rect(addRect.xMax + gap, rowY, cancelW, EditorGUIUtility.singleLineHeight);
 
             var newInput = EditorGUI.TextField(inputRect, state.input ?? string.Empty);
@@ -90,17 +111,19 @@ namespace Aspid.FastTools.Ids.Editors
                 _imguiState[key] = state;
             }
 
-            var reg2    = StringIdRegistryHelper.FindRegistry(fieldType);
+            var reg2 = IdRegistryResolver.FindStringMapped(fieldType);
             var trimmed = state.input?.Trim() ?? string.Empty;
-            var canAdd  = !string.IsNullOrEmpty(trimmed) && (reg2 == null || !reg2.Contains(trimmed));
+            var canAdd = !string.IsNullOrEmpty(trimmed) && (reg2 == null || !reg2.Contains(trimmed));
 
             using (new EditorGUI.DisabledScope(!canAdd))
             {
                 if (GUI.Button(addRect, "+"))
                 {
-                    var registry   = reg2 ?? StringIdRegistryHelper.CreateRegistry(fieldType);
-                    var assignedId = registry.Add(trimmed);
-                    EditorUtility.SetDirty(registry);
+                    var registry = reg2 ?? IdRegistryResolver.CreateStringMapped(fieldType);
+                    var accessor = new StringIdRegistryAccessor(registry);
+                    accessor.Record("Add string id");
+                    var assignedId = accessor.Add(trimmed);
+                    accessor.Commit();
                     AssetDatabase.SaveAssetIfDirty(registry);
                     SetFields(property, stringIdProp, intIdProp, trimmed, assignedId);
                     _imguiState[key] = (false, string.Empty);
@@ -114,10 +137,10 @@ namespace Aspid.FastTools.Ids.Editors
         public static VisualElement DrawUIToolkit(SerializedProperty property, string label, Type fieldType)
         {
             var stringIdProp = property.FindPropertyRelative(Constants.StringIdFieldName);
-            var intIdProp    = property.FindPropertyRelative(Constants.IntIdFieldName);
+            var intIdProp = property.FindPropertyRelative(Constants.IntIdFieldName);
 
             var root = new VisualElement()
-                .AddStyleSheetsFromResource(Constants.StyleSheetPath)
+                .AddStyleSheetsFromResource(Constants.Drawer.StyleSheetPath)
                 .AddClass(Constants.Drawer.Root)
                 .AddChild(new PropertyField(property).SetDisplay(DisplayStyle.None));
 
@@ -125,27 +148,59 @@ namespace Aspid.FastTools.Ids.Editors
 
             var currentName = stringIdProp?.stringValue ?? string.Empty;
 
-            var dropdownButton     = new Button().AddClass(Constants.Drawer.Dropdown).SetText(Caption(currentName));
+            var dropdownButton = new Button().AddClass(Constants.Drawer.Dropdown).SetText(Caption(currentName));
             var createToggleButton = new Button().AddClass(Constants.Drawer.CreateButton).SetText("Create");
 
-            var createRow       = new VisualElement().AddClass(Constants.Drawer.CreateRow);
-            var inputField      = new TextField().AddClass(Constants.Drawer.Input);
-            var addButton       = new Button().AddClass(Constants.Drawer.AddButton).SetText("+");
+            var openButton = new Button().AddClass(Constants.Drawer.OpenButton);
+            var openIcon = new Image { image = EditorGUIUtility.IconContent("d_ScriptableObject Icon").image };
+            openButton.Add(openIcon);
+            openButton.tooltip = "Open the registry asset in Inspector";
+            openButton.clicked += () =>
+            {
+                var reg = IdRegistryResolver.Find(fieldType);
+                if (reg == null) return;
+                EditorGUIUtility.PingObject(reg);
+                Selection.activeObject = reg;
+            };
+
+            var intOnlyHint = new Label("Bound to an int-only IdRegistry — names unavailable")
+                .AddClass(Constants.Drawer.IntOnlyHint)
+                .SetDisplay(DisplayStyle.None);
+
+            var createRow = new VisualElement().AddClass(Constants.Drawer.CreateRow);
+            var inputField = new TextField().AddClass(Constants.Drawer.Input);
+            var addButton = new Button().AddClass(Constants.Drawer.AddButton).SetText("+");
             var cancelRowButton = new Button().AddClass(Constants.Drawer.CancelButton).SetText("✗");
-            var errorLabel      = new Label().AddClass(Constants.Drawer.Error);
+            var errorLabel = new Label().AddClass(Constants.Drawer.Error);
 
             addButton.SetEnabled(false);
 
-            var propertyPath     = property.propertyPath;
+            var propertyPath = property.propertyPath;
             var serializedObject = property.serializedObject;
 
             dropdownButton.schedule.Execute(SyncStringFromInt).StartingIn(0);
-            dropdownButton.TrackPropertyValue(intIdProp, _ => SyncStringFromInt());
+            openButton.SetEnabled(IdRegistryResolver.Find(fieldType) != null);
+            dropdownButton.TrackPropertyValue(intIdProp, _ =>
+            {
+                SyncStringFromInt();
+                openButton.SetEnabled(IdRegistryResolver.Find(fieldType) != null);
+            });
+
+            void RefreshIntOnlyHint()
+            {
+                var found = IdRegistryResolver.Find(fieldType);
+                var isIntOnly = found is IdRegistry;
+                intOnlyHint.SetDisplay(isIntOnly ? DisplayStyle.Flex : DisplayStyle.None);
+                dropdownButton.SetEnabled(!isIntOnly);
+                createToggleButton.SetEnabled(!isIntOnly);
+            }
+
+            root.schedule.Execute(RefreshIntOnlyHint).StartingIn(0);
 
             inputField.RegisterValueChangedCallback(e =>
             {
                 var val = e.newValue?.Trim() ?? string.Empty;
-                var reg = StringIdRegistryHelper.FindRegistry(fieldType);
+                var reg = IdRegistryResolver.FindStringMapped(fieldType);
 
                 if (string.IsNullOrEmpty(val))
                 {
@@ -183,12 +238,14 @@ namespace Aspid.FastTools.Ids.Editors
                 var name = inputField.value?.Trim();
                 if (string.IsNullOrEmpty(name)) return;
 
-                var reg = StringIdRegistryHelper.FindRegistry(fieldType) ?? StringIdRegistryHelper.CreateRegistry(fieldType);
-                var assignedId = reg.Add(name);
-                EditorUtility.SetDirty(reg);
+                var reg = IdRegistryResolver.FindStringMapped(fieldType) ?? IdRegistryResolver.CreateStringMapped(fieldType);
+                var accessor = new StringIdRegistryAccessor(reg);
+                accessor.Record("Add string id");
+                var assignedId = accessor.Add(name);
+                accessor.Commit();
                 AssetDatabase.SaveAssetIfDirty(reg);
 
-                var p       = serializedObject.FindProperty(propertyPath);
+                var p = serializedObject.FindProperty(propertyPath);
                 var strProp = p.FindPropertyRelative(Constants.StringIdFieldName);
                 var intProp = p.FindPropertyRelative(Constants.IntIdFieldName);
                 SetFields(p, strProp, intProp, name, assignedId);
@@ -208,18 +265,18 @@ namespace Aspid.FastTools.Ids.Editors
 
             dropdownButton.clicked += () =>
             {
-                var reg    = StringIdRegistryHelper.FindRegistry(fieldType);
+                var reg = IdRegistryResolver.FindStringMapped(fieldType);
                 var window = EditorWindow.focusedWindow;
-                var wb     = dropdownButton.worldBound;
-                var sr     = new Rect(window.position.x + wb.xMin, window.position.y + wb.yMin, wb.width, wb.height);
+                var wb = dropdownButton.worldBound;
+                var sr = new Rect(window.position.x + wb.xMin, window.position.y + wb.yMin, wb.width, wb.height);
 
-                var p       = serializedObject.FindProperty(propertyPath);
+                var p = serializedObject.FindProperty(propertyPath);
                 var strProp = p.FindPropertyRelative(Constants.StringIdFieldName);
                 var current = strProp?.stringValue ?? string.Empty;
 
-                StringIdSelectorWindow.Show(reg?.Ids ?? Array.Empty<string>(), sr, current, selected =>
+                StringIdSelectorWindow.Show(reg, sr, current, selected =>
                 {
-                    var p2       = serializedObject.FindProperty(propertyPath);
+                    var p2 = serializedObject.FindProperty(propertyPath);
                     var strProp2 = p2.FindPropertyRelative(Constants.StringIdFieldName);
                     var intProp2 = p2.FindPropertyRelative(Constants.IntIdFieldName);
                     ApplySelection(p2, strProp2, intProp2, fieldType, selected);
@@ -230,19 +287,19 @@ namespace Aspid.FastTools.Ids.Editors
             if (!string.IsNullOrEmpty(label))
                 mainRow.AddChild(new Label(label).AddClass(Constants.Drawer.Label));
 
-            mainRow.AddChild(dropdownButton).AddChild(createToggleButton);
+            mainRow.AddChild(dropdownButton).AddChild(openButton).AddChild(createToggleButton);
             createRow.AddChild(inputField).AddChild(addButton).AddChild(cancelRowButton);
 
-            return root.AddChild(mainRow).AddChild(createRow).AddChild(errorLabel);
+            return root.AddChild(mainRow).AddChild(createRow).AddChild(errorLabel).AddChild(intOnlyHint);
 
             void SyncStringFromInt()
             {
-                var p       = serializedObject.FindProperty(propertyPath);
+                var p = serializedObject.FindProperty(propertyPath);
                 var strProp = p?.FindPropertyRelative(Constants.StringIdFieldName);
                 var intProp = p?.FindPropertyRelative(Constants.IntIdFieldName);
                 if (intProp == null || strProp == null || intProp.intValue <= 0) return;
 
-                var reg          = StringIdRegistryHelper.FindRegistry(fieldType);
+                var reg = IdRegistryResolver.FindStringMapped(fieldType);
                 var registryName = reg?.GetNameId(intProp.intValue);
                 if (registryName == null || registryName == strProp.stringValue) return;
 
@@ -260,10 +317,10 @@ namespace Aspid.FastTools.Ids.Editors
             string selected)
         {
             var name = selected ?? string.Empty;
-            var id   = 0;
+            var id = 0;
             if (!string.IsNullOrEmpty(name))
             {
-                var reg = StringIdRegistryHelper.FindRegistry(fieldType);
+                var reg = IdRegistryResolver.FindStringMapped(fieldType);
                 id = reg?.GetId(name) ?? 0;
             }
             SetFields(property, stringIdProp, intIdProp, name, id);

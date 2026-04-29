@@ -42,8 +42,8 @@ namespace Aspid.MVVM
             }
         }
         
-        protected override StatusStyle Status => Editor.UnassignedBinders.Any()
-            ? StatusStyle.Warning
+        protected override StatusStyle.Type Status => Editor.UnassignedBinders.Any()
+            ? StatusStyle.Type.Warning
             : base.Status;
         
         public MonoViewVisualElement(TEditor editor)
@@ -87,7 +87,7 @@ namespace Aspid.MVVM
         
         private VisualElement BuildDesignViewModel()
         {
-            var container = new AspidBox(ThemeStyle.Dark)
+            var container = new AspidBox(AspidBoxPreset.Default.SetTheme(ThemeStyle.Type.Dark))
                 .SetMargin(top: 5, left: -10f);
             container.AddChild(new AspidLabel(text: "Design ViewModel").SetMarginBottom(5));
             

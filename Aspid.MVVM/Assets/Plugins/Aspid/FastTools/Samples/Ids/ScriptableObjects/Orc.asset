@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: Orc
   m_EditorClassIdentifier: Aspid.FastTools.Samples.Ids::Aspid.FastTools.Samples.Ids.EnemyDefinition
   _id:
-    __stringId: Orc
-    _id: 2
+    __stringId: walk_orc
+    _id: 3
   _displayName: Orc
   _maxHealth: 150
   _moveSpeed: 2

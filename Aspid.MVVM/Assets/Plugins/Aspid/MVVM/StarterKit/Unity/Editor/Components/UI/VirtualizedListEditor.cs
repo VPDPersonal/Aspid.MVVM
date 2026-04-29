@@ -83,13 +83,13 @@ namespace Aspid.MVVM.StarterKit
         public override VisualElement CreateInspectorGUI()
         {
             var root = new VisualElement()
-                .AddStyleSheetsFromResource(StyleClasses.DefaultStyleSheet);
+                .AddStyleSheetsFromResource(AspidStyles.DefaultStyleSheet);
 
             var header = new AspidInspectorHeader(target)
                 .SetMargin(top: 3, left: -10f);
             header.AddOpenScriptCommand(target);
             
-            var container = new AspidBox(ThemeStyle.Dark)
+            var container = new AspidBox(AspidBoxPreset.Default.SetTheme(ThemeStyle.Type.Dark))
                 .SetMargin(top: 5, left: -10f)
                 .AddChild(new IMGUIContainer(DrawInspector));
 

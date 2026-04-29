@@ -1,0 +1,275 @@
+:root {
+    /* ---------------------------------- ICONS ----------------------------------- */
+    --aspid-icons-status-success: resource("Icons/aspid_icon_medium_green_1020x1008");  /**/
+    --aspid-icons-status-warning: resource("Icons/aspid_icon_medium_yellow_1020x1008"); /**/
+    --aspid-icons-status-error:   resource("Icons/aspid_icon_medium_red_1020x1008");    /**/
+    --aspid-icons-status-info:    resource("Icons/aspid_icon_medium_blue_1020x1008");   /**/
+                                                                                  /**/
+    /* ------------------------------- BACKGROUNDS -------------------------------- */
+    --aspid-colors-bg-darkness:                    rgb(26, 26, 26);      /* #1A1A1A */
+    --aspid-colors-bg-dark:                        rgb(36, 36, 36);      /* #242424 */
+    --aspid-colors-bg-light:                       rgb(46, 46, 46);      /* #2E2E2E */
+    --aspid-colors-bg-lightness:                   rgb(56, 56, 56);      /* #383838 */
+                                                                                  /**/
+    /* ---------------------- TEXT: GENERAL (High Contrast) ----------------------- */
+    --aspid-colors-text-lightness:                 rgb(220, 220, 220);   /* #DCDCDC */
+    --aspid-colors-text-light:                     rgb(190, 190, 190);   /* #BEBEBE */
+    --aspid-colors-text-dark:                      rgb(150, 150, 150);   /* #969696 */
+    --aspid-colors-text-darkness:                  rgb(110, 110, 110);   /* #6E6E6E */
+                                                                                  /**/
+    /* -------------------- SHADES: GENERAL (Lines & Borders) --------------------- */
+    --aspid-colors-shade-darkness:                 rgb(45, 45, 45);      /* #2D2D2D */
+    --aspid-colors-shade-dark:                     rgb(60, 60, 60);      /* #3C3C3C */
+    --aspid-colors-shade-light:                    rgb(80, 80, 80);      /* #505050 */
+    --aspid-colors-shade-lightness:                rgb(100, 100, 100);   /* #646464 */
+                                                                                  /**/
+    /* ---------------- STATUS: BACKGROUNDS (Deep Gemstone Bases) ----------------- */
+    --aspid-colors-status-success-darkness:        rgb(8, 40, 20);       /* #082814 */
+    --aspid-colors-status-success-dark:            rgb(12, 65, 30);      /* #0C411E */
+    --aspid-colors-status-success-light:           rgb(20, 90, 45);      /* #145A2D */
+    --aspid-colors-status-success-lightness:       rgb(30, 120, 60);     /* #1E783C */
+                                                                                  /**/
+    --aspid-colors-status-warning-darkness:        rgb(45, 30, 5);       /* #2D1E05 */
+    --aspid-colors-status-warning-dark:            rgb(85, 55, 10);      /* #55370A */
+    --aspid-colors-status-warning-light:           rgb(125, 85, 20);     /* #7D5514 */
+    --aspid-colors-status-warning-lightness:       rgb(165, 115, 30);    /* #A5731E */
+                                                                                  /**/
+    --aspid-colors-status-error-darkness:          rgb(50, 10, 10);      /* #320A0A */
+    --aspid-colors-status-error-dark:              rgb(85, 20, 20);      /* #551414 */
+    --aspid-colors-status-error-light:             rgb(125, 35, 35);     /* #7D2323 */
+    --aspid-colors-status-error-lightness:         rgb(165, 50, 50);     /* #A53232 */
+                                                                                  /**/
+    --aspid-colors-status-info-darkness:           rgb(8, 25, 50);       /* #081932 */
+    --aspid-colors-status-info-dark:               rgb(15, 45, 85);      /* #0F2D55 */
+    --aspid-colors-status-info-light:              rgb(25, 75, 130);     /* #194B82 */
+    --aspid-colors-status-info-lightness:          rgb(35, 105, 180);    /* #2369B4 */
+                                                                                  /**/
+    /* ---------------- STATUS ACCENTS: TEXT (Gemstone Brilliance) ---------------- */
+    --aspid-colors-status-success-text-darkness:   rgb(55, 110, 65);     /* #376E41 */
+    --aspid-colors-status-success-text-dark:       rgb(85, 175, 100);    /* #55AF64 */
+    --aspid-colors-status-success-text-light:      rgb(120, 235, 145);   /* #78EB91 */
+    --aspid-colors-status-success-text-lightness:  rgb(180, 255, 200);   /* #B4FFC8 */
+                                                                                  /**/
+    --aspid-colors-status-warning-text-darkness:   rgb(120, 85, 35);     /* #785523 */
+    --aspid-colors-status-warning-text-dark:       rgb(185, 135, 60);    /* #B9873C */
+    --aspid-colors-status-warning-text-light:      rgb(245, 185, 85);    /* #F5B955 */
+    --aspid-colors-status-warning-text-lightness:  rgb(255, 235, 175);   /* #FFEBAF */
+                                                                                  /**/
+    --aspid-colors-status-error-text-darkness:     rgb(125, 45, 45);     /* #7D2D2D */
+    --aspid-colors-status-error-text-dark:         rgb(185, 65, 65);     /* #B94141 */
+    --aspid-colors-status-error-text-light:        rgb(235, 95, 95);     /* #EB5F5F */
+    --aspid-colors-status-error-text-lightness:    rgb(255, 175, 175);   /* #FFAFAF */
+                                                                                  /**/
+    --aspid-colors-status-info-text-darkness:      rgb(40, 80, 125);     /* #28507D */
+    --aspid-colors-status-info-text-dark:          rgb(65, 130, 185);    /* #4182B9 */
+    --aspid-colors-status-info-text-light:         rgb(90, 185, 240);    /* #5AB9F0 */
+    --aspid-colors-status-info-text-lightness:     rgb(190, 240, 255);   /* #BEF0FF */
+                                                                                  /**/
+    /* ----------------- STATUS ACCENTS: SHADES (Muted Gemstones) ----------------- */
+    --aspid-colors-status-success-shade-darkness:  rgb(25, 55, 30);      /* #19371E */
+    --aspid-colors-status-success-shade-dark:      rgb(40, 85, 50);      /* #285532 */
+    --aspid-colors-status-success-shade-light:     rgb(65, 130, 80);     /* #418250 */
+    --aspid-colors-status-success-shade-lightness: rgb(95, 190, 115);    /* #5FBE73 */
+                                                                                  /**/
+    --aspid-colors-status-warning-shade-darkness:  rgb(55, 40, 20);      /* #372814 */
+    --aspid-colors-status-warning-shade-dark:      rgb(90, 65, 30);      /* #5A411E */
+    --aspid-colors-status-warning-shade-light:     rgb(135, 100, 50);    /* #876432 */
+    --aspid-colors-status-warning-shade-lightness: rgb(185, 140, 75);    /* #B98C4B */
+                                                                                  /**/
+    --aspid-colors-status-error-shade-darkness:    rgb(55, 25, 25);      /* #371919 */
+    --aspid-colors-status-error-shade-dark:        rgb(90, 45, 45);      /* #5A2D2D */
+    --aspid-colors-status-error-shade-light:       rgb(135, 65, 65);     /* #874141 */
+    --aspid-colors-status-error-shade-lightness:   rgb(190, 95, 95);     /* #BE5F5F */
+                                                                                  /**/
+    --aspid-colors-status-info-shade-darkness:     rgb(20, 35, 55);      /* #142337 */
+    --aspid-colors-status-info-shade-dark:         rgb(35, 65, 95);      /* #23415F */
+    --aspid-colors-status-info-shade-light:        rgb(55, 100, 145);    /* #376491 */
+    --aspid-colors-status-info-shade-lightness:    rgb(85, 145, 200);    /* #5591C8 */
+}
+
+.aspid-fasttools-inspector-container {
+    margin-left: -10px;
+}
+
+.aspid-fasttools-draw-adapter.aspid-fasttools-draw-adapter--margin {
+    margin: 0;
+}
+
+/* -------------------------------------------------- BACKGROUNDS --------------------------------------------------- */
+.aspid-fasttools-background { }
+
+.aspid-fasttools-background--rounded {
+    padding:       10px;
+    border-radius: 10px;
+}
+
+.aspid-fasttools-background.aspid-fasttools-theme--darkness {
+    background-color: var(--aspid-colors-bg-darkness);
+}
+
+.aspid-fasttools-background.aspid-fasttools-theme--dark {
+    background-color: var(--aspid-colors-bg-dark);
+}
+
+.aspid-fasttools-background.aspid-fasttools-theme--light {
+    background-color: var(--aspid-colors-bg-light);
+}
+
+.aspid-fasttools-background.aspid-fasttools-theme--lightness {
+    background-color: var(--aspid-colors-bg-lightness);
+}
+
+/* -------------------------------- SUCCESS: BACKGROUNDS -------------------------------- */
+.aspid-fasttools-background.aspid-fasttools-theme--darkness.aspid-fasttools-status--success {
+    background-color: var(--aspid-colors-status-success-darkness);
+}
+
+.aspid-fasttools-background.aspid-fasttools-theme--dark.aspid-fasttools-status--success {
+    background-color: var(--aspid-colors-status-success-dark);
+}
+
+.aspid-fasttools-background.aspid-fasttools-theme--light.aspid-fasttools-status--success {
+    background-color: var(--aspid-colors-status-success-light);
+}
+
+.aspid-fasttools-background.aspid-fasttools-theme--lightness.aspid-fasttools-status--success {
+    background-color: var(--aspid-colors-status-success-lightness);
+}
+
+/* -------------------------------- WARNING: BACKGROUNDS -------------------------------- */
+.aspid-fasttools-background.aspid-fasttools-theme--darkness.aspid-fasttools-status--warning {
+    background-color: var(--aspid-colors-status-warning-darkness);
+}
+
+.aspid-fasttools-background.aspid-fasttools-theme--dark.aspid-fasttools-status--warning {
+    background-color: var(--aspid-colors-status-warning-dark);
+}
+
+.aspid-fasttools-background.aspid-fasttools-theme--light.aspid-fasttools-status--warning {
+    background-color: var(--aspid-colors-status-warning-light);
+}
+
+.aspid-fasttools-background.aspid-fasttools-theme--lightness.aspid-fasttools-status--warning {
+    background-color: var(--aspid-colors-status-warning-lightness);
+}
+
+/* --------------------------------- ERROR: BACKGROUNDS --------------------------------- */
+.aspid-fasttools-background.aspid-fasttools-theme--darkness.aspid-fasttools-status--error {
+    background-color: var(--aspid-colors-status-error-darkness);
+}
+
+.aspid-fasttools-background.aspid-fasttools-theme--dark.aspid-fasttools-status--error {
+    background-color: var(--aspid-colors-status-error-dark);
+}
+
+.aspid-fasttools-background.aspid-fasttools-theme--light.aspid-fasttools-status--error {
+    background-color: var(--aspid-colors-status-error-light);
+}
+
+.aspid-fasttools-background.aspid-fasttools-theme--lightness.aspid-fasttools-status--error {
+    background-color: var(--aspid-colors-status-error-lightness);
+}
+
+/* --------------------------------- INFO: BACKGROUNDS ---------------------------------- */
+.aspid-fasttools-background.aspid-fasttools-theme--darkness.aspid-fasttools-status--info {
+    background-color: var(--aspid-colors-status-info-darkness);
+}
+
+.aspid-fasttools-background.aspid-fasttools-theme--dark.aspid-fasttools-status--info {
+    background-color: var(--aspid-colors-status-info-dark);
+}
+
+.aspid-fasttools-background.aspid-fasttools-theme--light.aspid-fasttools-status--info {
+    background-color: var(--aspid-colors-status-info-light);
+}
+
+.aspid-fasttools-background.aspid-fasttools-theme--lightness.aspid-fasttools-status--info {
+    background-color: var(--aspid-colors-status-info-lightness);
+}
+/*--------------------------------------------------------------------------------------------------------------------*/
+
+/* ---------------------------------------------------- LABELS ------------------------------------------------------ */
+Label.aspid-fasttools-theme--darkness {
+    color: var(--aspid-colors-text-darkness);
+}
+
+Label.aspid-fasttools-theme--dark {
+    color: var(--aspid-colors-text-dark);
+}
+
+Label.aspid-fasttools-theme--light {
+    color: var(--aspid-colors-text-light);
+}
+
+Label.aspid-fasttools-theme--lightness {
+    color: var(--aspid-colors-text-lightness);
+}
+
+/* ------------------------ SUCCESS: LABELS ------------------------*/
+Label.aspid-fasttools-theme--darkness.aspid-fasttools-status--success {
+    color: var(--aspid-colors-status-success-text-darkness);
+}
+
+Label.aspid-fasttools-theme--dark.aspid-fasttools-status--success {
+    color: var(--aspid-colors-status-success-text-dark);
+}
+
+Label.aspid-fasttools-theme--light.aspid-fasttools-status--success {
+    color: var(--aspid-colors-status-success-text-light);
+}
+
+Label.aspid-fasttools-theme--lightness.aspid-fasttools-status--success {
+    color: var(--aspid-colors-status-success-text-lightness);
+}
+
+/* ------------------------ WARNING: LABELS ------------------------*/
+Label.aspid-fasttools-theme--darkness.aspid-fasttools-status--warning {
+    color: var(--aspid-colors-status-warning-text-darkness);
+}
+
+Label.aspid-fasttools-theme--dark.aspid-fasttools-status--warning {
+    color: var(--aspid-colors-status-warning-text-dark);
+}
+
+Label.aspid-fasttools-theme--light.aspid-fasttools-status--warning {
+    color: var(--aspid-colors-status-warning-text-light);
+}
+
+Label.aspid-fasttools-theme--lightness.aspid-fasttools-status--warning {
+    color: var(--aspid-colors-status-warning-text-lightness);
+}
+
+/* ------------------------- ERROR: LABELS -------------------------*/
+Label.aspid-fasttools-theme--darkness.aspid-fasttools-status--error {
+    color: var(--aspid-colors-status-error-text-darkness);
+}
+
+Label.aspid-fasttools-theme--dark.aspid-fasttools-status--error {
+    color: var(--aspid-colors-status-error-text-dark);
+}
+
+Label.aspid-fasttools-theme--light.aspid-fasttools-status--error {
+    color: var(--aspid-colors-status-error-text-light);
+}
+
+Label.aspid-fasttools-theme--lightness.aspid-fasttools-status--error {
+    color: var(--aspid-colors-status-error-text-lightness);
+}
+
+/* ------------------------- INFO: LABELS --------------------------*/
+Label.aspid-fasttools-theme--darkness.aspid-fasttools-status--info {
+    color: var(--aspid-colors-status-info-text-darkness);
+}
+
+Label.aspid-fasttools-theme--dark.aspid-fasttools-status--info {
+    color: var(--aspid-colors-status-info-text-dark);
+}
+
+Label.aspid-fasttools-theme--light.aspid-fasttools-status--info {
+    color: var(--aspid-colors-status-info-text-light);
+}
+
+Label.aspid-fasttools-theme--lightness.aspid-fasttools-status--info {
+    color: var(--aspid-colors-status-info-text-lightness);
+}
+/*--------------------------------------------------------------------------------------------------------------------*/

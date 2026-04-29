@@ -1,11 +1,11 @@
 # Ids Sample
 
-Demonstrates the `IId` / `IdRegistry` / `[UniqueId]` trio: fields show a human-readable string in the Inspector while serializing as a stable integer, and the Inspector catches collisions at edit-time.
+Demonstrates the `IId` / `StringIdRegistry` / `[UniqueId]` trio: fields show a human-readable string in the Inspector while serializing as a stable integer, and the Inspector catches collisions at edit-time.
 
 ## How it works
 
 - `IId` — a marker interface declaring the `int Id { get; }` property.
-- `IdRegistry` — a `ScriptableObject` that binds a struct type to a list of `(Id, Name)` entries. The property drawer renders a dropdown sourced from this registry.
+- `StringIdRegistry` — a `ScriptableObject` that binds a struct type to a list of `(Id, Name)` entries and keeps the name ↔ int map available at runtime. The property drawer renders a dropdown sourced from this registry. (Use `IdRegistry` instead when names are only needed in the editor — it strips them from player builds.)
 - `[UniqueId]` — validates at edit-time that no two `ScriptableObject` assets share the same resolved integer ID.
 
 ## Scenario

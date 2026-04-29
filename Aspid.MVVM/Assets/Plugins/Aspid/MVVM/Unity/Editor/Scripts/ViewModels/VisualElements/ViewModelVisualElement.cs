@@ -57,7 +57,7 @@ namespace Aspid.MVVM
 
         private void Build()
         {
-            this.AddStyleSheetsFromResource(StyleClasses.DefaultStyleSheet);
+            this.AddStyleSheetsFromResource(AspidStyles.DefaultStyleSheet);
 
             Add(BuildHeader());
             

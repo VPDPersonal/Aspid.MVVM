@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: Dragon
   m_EditorClassIdentifier: Aspid.FastTools.Samples.Ids::Aspid.FastTools.Samples.Ids.EnemyDefinition
   _id:
-    __stringId: Dragon
-    _id: 3
+    __stringId: fly_dragon
+    _id: 1
   _displayName: Dragon
   _maxHealth: 500
   _moveSpeed: 4

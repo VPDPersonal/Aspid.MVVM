@@ -58,9 +58,9 @@ namespace Aspid.MVVM
         
         protected SerializedObject SerializedObject => _editor.serializedObject; 
         
-        protected virtual StatusStyle Status => _editor.HasBinderId
-            ? StatusStyle.Success
-            : StatusStyle.Error;
+        protected virtual StatusStyle.Type Status => _editor.HasBinderId
+            ? StatusStyle.Type.Success
+            : StatusStyle.Type.Error;
 
         /// <summary>
         /// Optional subtext rendered under the main header label.
@@ -99,7 +99,7 @@ namespace Aspid.MVVM
         protected virtual VisualElement Build()
         {
             return new VisualElement()
-                .AddStyleSheetsFromResource(StyleClasses.DefaultStyleSheet)
+                .AddStyleSheetsFromResource(AspidStyles.DefaultStyleSheet)
                 .AddChild(BuildHeader())
                 .AddChild(BuildIdSelector())
                 .AddChild(new PropertyField(_editor.IdProperty.ValueProperty).SetDisplay(DisplayStyle.None))
@@ -136,14 +136,14 @@ namespace Aspid.MVVM
              var helpBox = new AspidHelpBox(
                      title: "Incomplete Binder Configuration",
                      message: "Both the View and the binding ID must be set for this binder to resolve at runtime. Select a View above and choose an ID exposed by its ViewModel.",
-                     HelpBoxMessageType.Error)
+                     AspidHelpBoxPreset.Default.SetMessageType(HelpBoxMessageType.Error))
                  .SetMargin(top: 5, bottom: 5)
                  .SetDisplay(_editor.HasBinderId ? DisplayStyle.None : DisplayStyle.Flex);
 
              var modeField = new PropertyField(_editor.ModeProperty, label: string.Empty);
              modeField.AddToClassList("aspid-mono-binder-id-selector-mode");
 
-             var container = new AspidBox(ThemeStyle.Dark)
+             var container = new AspidBox(AspidBoxPreset.Default.SetTheme(ThemeStyle.Type.Dark))
                  .SetMargin(top: 5, left: -10f);
              container.styleSheets.Add(_idSelectorStyleSheet);
              container.AddToClassList("aspid-mono-binder-id-selector");

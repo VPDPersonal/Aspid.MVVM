@@ -49,7 +49,7 @@ namespace Aspid.MVVM
 
             void AttachGradientToInnerPanel(GeometryChangedEvent _)
             {
-                var panelClass = StyleClasses.Theme.Lightness;
+                var panelClass = ThemeStyle.LightnessClass;
                 var innerPanel = slotWrapper.Q(className: panelClass);
                 if (innerPanel is null) return;
 

@@ -74,7 +74,7 @@ namespace Aspid.MVVM
 
                 var imguiWrapper = new VisualElement();
                 imguiWrapper.AddToClassList(StyleClass);
-                imguiWrapper.AddToClassList(StyleClasses.Theme.Lightness);
+                imguiWrapper.AddToClassList(ThemeStyle.LightnessClass);
                 
                 if (_property is not null && IsImguiFoldoutDrawer(_property))
                     imguiWrapper.AddToClassList(ImguiFoldoutStyleClass);
@@ -85,7 +85,7 @@ namespace Aspid.MVVM
             else
             {
                 field?.AddToClassList(StyleClass);
-                field?.AddToClassList(StyleClasses.Theme.Lightness);
+                field?.AddToClassList(ThemeStyle.LightnessClass);
             }
             
             // For [SerializeReferenceDropdown]

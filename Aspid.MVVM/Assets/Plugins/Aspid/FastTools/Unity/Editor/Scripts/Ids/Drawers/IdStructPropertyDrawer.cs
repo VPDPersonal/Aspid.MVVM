@@ -13,19 +13,20 @@ namespace Aspid.FastTools.Ids.Editors
     internal sealed class IdStructPropertyDrawer : PropertyDrawer
     {
         private static readonly System.Collections.Generic.Dictionary<string, (double time, bool isUnique)> _cache = new();
-        private const double CacheLifetime = 2.0;
+        // Bumped to 10s pending a full rework of CheckIsUnique (see spec §4 row 11).
+        private const double CacheLifetime = 10.0;
 
         private bool? _isUnique;
         private bool IsUnique => _isUnique ??= fieldInfo.GetCustomAttributes(typeof(UniqueIdAttribute), false).Length > 0;
 
         public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
         {
-            var h = IdStructDrawer.GetIMGUIHeight(property);
+            var height = IdStructDrawer.GetIMGUIHeight(property);
 
             if (IsUnique && !string.IsNullOrEmpty(property.FindPropertyRelative(Constants.StringIdFieldName)?.stringValue) && !GetIsUnique(property))
-                h += EditorGUIUtility.singleLineHeight + EditorGUIUtility.standardVerticalSpacing;
+                height += EditorGUIUtility.singleLineHeight + EditorGUIUtility.standardVerticalSpacing;
 
-            return h;
+            return height;
         }
 
         public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)

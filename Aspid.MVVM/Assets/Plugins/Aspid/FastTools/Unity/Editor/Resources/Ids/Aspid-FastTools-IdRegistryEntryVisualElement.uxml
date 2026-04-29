@@ -1,0 +1,17 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="True">
+    <Style src="project://database/Assets/Plugins/Aspid/FastTools/Unity/Editor/Resources/Styles/Aspid-FastTools-Id-Registry.uss?fileID=7433441132597879392&amp;guid=3fba5ca171f36413d8d2a664d3e00fec&amp;type=3#Aspid-FastTools-Id-Registry"/>
+    <Style src="project://database/Assets/Plugins/Aspid/FastTools/Unity/Editor/Resources/Styles/Aspid-FastTools-Default-Dark.uss?fileID=7433441132597879392&amp;guid=a58072b37b804991bbb887d0fd65e2f8&amp;type=3#Aspid-FastTools-Default-Dark"/>
+    <Style src="project://database/Assets/Plugins/Aspid/FastTools/Unity/Editor/Resources/Ids/Aspid-FastTools-IdRegistryEntryVisualElement.uss?fileID=7433441132597879392&amp;guid=2f53f6d0dcdf84e52a03a737160b66a1&amp;type=3#Aspid-FastTools-IdRegistryEntryVisualElement"/>
+    <ui:VisualElement class="aspid-fasttools-background" style="height: 40px;">
+        <ui:VisualElement name="VisualElement" style="flex-grow: 1; flex-direction: row;">
+            <ui:Label name="IdBadge" text="100" class="aspid-fasttools__id-registry-entry-field__id-badge"/>
+            <ui:TextField/>
+            <ui:Button text="×" class="aspid-fasttools__id-registry-entry-field__remove-button"/>
+            <ui:Button text="✓" class="aspid-fasttools__id-registry-entry-field__add-button" style="display: none;"/>
+        </ui:VisualElement>
+        <ui:VisualElement name="VisualElement" class="aspid-fasttools__id-registry-entry-field__error" style="flex-grow: 1; flex-direction: row;">
+            <ui:VisualElement class="aspid-fasttools__id-registry-entry-field__error-image" style="flex-grow: 0;"/>
+            <ui:Label text="ERROR!!! Some Message" class="aspid-fasttools-status--error"/>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

@@ -1,0 +1,19 @@
+:root {
+    --aspid-fasttools-prop-animated_logo-pulse_speed: 5;
+    --aspid-fasttools-prop-animated_logo-pulse_hover_amplitude: 0.04;
+}
+
+.aspid-fasttools-animated-logo__layer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    opacity: 0;
+    transition-duration: 1.4s;
+    transition-timing-function: ease-in-out;
+}
+
+.aspid-fasttools-animated-logo__layer--visible {
+    opacity: 1;
+}

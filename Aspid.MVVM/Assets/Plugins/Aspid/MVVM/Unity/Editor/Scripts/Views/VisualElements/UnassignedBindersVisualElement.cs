@@ -76,7 +76,7 @@ namespace Aspid.MVVM
         {
             return new AspidBox()
                 .SetMargin(top: 5, left: -10f)
-                .AddChild(new AspidHelpBox(WarningTitle, WarningMessage, HelpBoxMessageType.Warning)
+                .AddChild(new AspidHelpBox(WarningTitle, WarningMessage, AspidHelpBoxPreset.Default.SetMessageType(HelpBoxMessageType.Warning))
                     .SetMargin(bottom: 5))
                 .AddChild(_unassignedBindersContainer);
         }

@@ -1,17 +1,14 @@
 :root {
-    --aspid-shade-light: #C0C0C0;
-    --aspid-shade-light-hover: #e1e1e1;
-    
-    --aspid-old-button-color: #585858;
-    --aspid-old-button-color-hover: #757575;
+    --aspid-colors-shade-light: #C0C0C0;
+    --aspid-colors-shade-hover-light: #e1e1e1;
 
-    --aspid-open-button-icon : resource("open_button_icon");
+    --aspid-fasttools-icons-open_button: resource("Icons/open_button_icon");
 
     align-items: center;
     flex-direction: row;
 }
 
-.aspid-fasttools-draw-adapter-margin {
+.aspid-fasttools-draw-adapter--margin {
     margin: 1px -2px 1px 3px;
 }
 
@@ -59,10 +56,10 @@ Button {
 .aspid-fasttools-serializable-type-open-button > VisualElement {
     width: 100%;
     height: 100%;
-    background-image: var(--aspid-open-button-icon);
-    -unity-background-image-tint-color: var(--aspid-shade-light);
+    background-image: var(--aspid-fasttools-icons-open_button);
+    -unity-background-image-tint-color: var(--aspid-colors-shade-light);
 }
 
 .aspid-fasttools-serializable-type-open-button > VisualElement :hover {
-    -unity-background-image-tint-color: var(--aspid-shade-light-hover);
+    -unity-background-image-tint-color: var(--aspid-colors-shade-hover-light);
 }

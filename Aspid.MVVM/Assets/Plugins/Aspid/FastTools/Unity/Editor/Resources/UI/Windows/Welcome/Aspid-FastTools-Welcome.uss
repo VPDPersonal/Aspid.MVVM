@@ -1,0 +1,103 @@
+:root {
+    --aspid-fasttools-colors-bg: rgb(0, 0, 0);
+}
+
+AspidAnimatedDotsBackground {
+    background-color: var(--aspid-fasttools-colors-bg);
+}
+
+.aspid-fasttools-welcome__scroll {
+    flex-grow: 1;
+}
+
+.aspid-fasttools-welcome__content {
+    padding: 10px;
+    flex-grow: 1;
+    align-items: stretch;
+}
+
+.aspid-fasttools-welcome__hero {
+    padding: 10px;
+    align-items: center;
+    flex-direction: row;
+}
+
+.aspid-fasttools-welcome__logo {
+    width: 100px;
+    height: 100px;
+    flex-shrink: 1;
+    margin-right: 15px;
+}
+
+.aspid-fasttools-welcome__hero-text {
+    flex-grow: 1;
+}
+
+AspidAnimatedTitle {
+    margin-bottom: 5px;
+    font-size: 36px;
+    -unity-font-style: bold;
+}
+
+.aspid-fasttools-welcome__description {
+    white-space: normal;
+    border-radius: 10px;
+    background-color: var(--aspid-fasttools-colors-bg);
+}
+
+.aspid-fasttools-welcome__card {
+    padding: 10px;
+    border-radius: 10px;
+}
+
+.aspid-fasttools-welcome__footer-link:hover {
+    color: var(--aspid-colors-status-success-text-light);
+}
+
+.aspid-fasttools-welcome__card-header {
+    margin-bottom: 10px;
+    --aspid-fasttools-metrics-label_size: h2;
+}
+
+AspidDividingLine {
+    opacity: 0.5;
+}
+
+.aspid-fasttools-welcome__footer {
+}
+
+.aspid-fasttools-welcome__footer-link {
+    color: var(--aspid-colors-status-success-text-dark);
+    font-size: 14px;
+    -unity-font-style: bold;
+}
+
+.aspid-fasttools-welcome__footer-version {
+    color: var(--aspid-colors-text-darkness);
+    font-size: 14px;
+}
+
+.aspid-fasttools-welcome__footer-version:hover {
+    color: var(--aspid-colors-text-light);
+}
+
+.aspid-fasttools-welcome__toast {
+    color: var(--aspid-colors-status-info-text-lightness);
+    opacity: 0;
+    padding: 10px;
+    position: absolute;
+    max-width: 80%;
+    font-size: 14px;
+    white-space: normal;
+    border-width: 1px;
+    border-radius: 10px;
+    background-color: var(--aspid-colors-status-info-dark);
+    -unity-font-style: bold;
+    -unity-text-align: middle-center;
+    transition-duration: 0.3s;
+    transition-timing-function: ease-out;
+}
+
+.aspid-fasttools-welcome__toast--visible {
+    opacity: 0.75;
+}

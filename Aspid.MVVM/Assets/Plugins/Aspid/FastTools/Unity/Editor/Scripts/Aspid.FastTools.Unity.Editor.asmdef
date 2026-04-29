@@ -2,7 +2,6 @@
     "name": "Aspid.FastTools.Unity.Editor",
     "references": [
         "Aspid.FastTools",
-        "Unity.Mathematics",
         "Aspid.FastTools.Unity"
     ],
     "includePlatforms": [

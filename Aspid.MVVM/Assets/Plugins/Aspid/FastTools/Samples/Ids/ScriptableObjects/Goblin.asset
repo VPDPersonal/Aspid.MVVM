@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: Goblin
   m_EditorClassIdentifier: Aspid.FastTools.Samples.Ids::Aspid.FastTools.Samples.Ids.EnemyDefinition
   _id:
-    __stringId: Goblin
-    _id: 1
+    __stringId: walk_goblin
+    _id: 2
   _displayName: Goblin
   _maxHealth: 80
   _moveSpeed: 3.5

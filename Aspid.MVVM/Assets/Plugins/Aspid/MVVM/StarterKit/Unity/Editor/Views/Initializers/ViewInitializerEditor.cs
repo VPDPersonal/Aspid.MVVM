@@ -29,9 +29,9 @@ namespace Aspid.MVVM.StarterKit
         private bool _isViewSet;
         private bool _isViewModelSet;
 
-        private StatusStyle Status => _isViewSet && _isViewModelSet
-            ? StatusStyle.Success
-            : StatusStyle.Error;
+        private StatusStyle.Type Status => _isViewSet && _isViewModelSet
+            ? StatusStyle.Type.Success
+            : StatusStyle.Type.Error;
         
         private void OnEnable()
         {
@@ -48,7 +48,7 @@ namespace Aspid.MVVM.StarterKit
         public override VisualElement CreateInspectorGUI()
         {
             _root = new VisualElement()
-                .AddStyleSheetsFromResource(StyleClasses.DefaultStyleSheet);
+                .AddStyleSheetsFromResource(AspidStyles.DefaultStyleSheet);
 
             var header = new AspidInspectorHeader(target)
                 .SetMargin(top: 3, left: -10f);
@@ -93,7 +93,7 @@ namespace Aspid.MVVM.StarterKit
             var viewHelpBox = new AspidHelpBox(
                     title: "Missing View Reference",
                     message: "This initializer requires a View component to drive bindings. Assign at least one View in the field above, otherwise the initializer will skip binding on enter play mode.",
-                    HelpBoxMessageType.Error)
+                    AspidHelpBoxPreset.Default.SetMessageType(HelpBoxMessageType.Error))
                 .SetName("ViewHelpBox");
             
             return new AspidBox()
@@ -121,7 +121,7 @@ namespace Aspid.MVVM.StarterKit
             var viewModelHelpBox = new AspidHelpBox(
                     title: "Missing ViewModel Reference",
                     message: "This initializer requires a ViewModel to supply data to the View. Assign a ViewModel using the resolve strategy above, otherwise bindings will not receive values.",
-                    HelpBoxMessageType.Error)
+                    AspidHelpBoxPreset.Default.SetMessageType(HelpBoxMessageType.Error))
                 .SetName("ViewModelHelpBox");
             
             return new AspidBox()

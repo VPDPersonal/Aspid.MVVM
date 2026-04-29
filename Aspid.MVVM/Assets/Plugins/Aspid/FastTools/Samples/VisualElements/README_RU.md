@@ -12,4 +12,4 @@
 
 1. Выберите `ScriptableObjects/AbilityConfigAsset.asset` в окне Project — кастомный inspector появится в панели Inspector.
 2. Отредактируйте поля. Установите `Mana Cost` в `0`, чтобы увидеть, как акцент статуса переключится на Warning, и появится встроенный help box.
-3. Или создайте свой через `Assets > Create > Aspid > FastTools > Samples > Ability Config`.
+3. Или создайте свой через `Assets > Create > Aspid > Samples > FastTools > Ability Config`.

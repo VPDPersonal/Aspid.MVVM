@@ -24,8 +24,13 @@
 
 | Пространство имён | Описание |
 |-------------------|----------|
-| `Aspid.FastTools` | Runtime API — типы, расширения VisualElement |
-| `Aspid.FastTools.Editors` | Editor-only API — property drawers, IMGUI-области, расширения редактора |
+| `Aspid.FastTools` | `IId`, `UniqueIdAttribute`, `StringIdRegistry` |
+| `Aspid.FastTools.Types` | `SerializableType`, `SerializableType<T>`, `ComponentTypeSelector`, `TypeSelectorAttribute` |
+| `Aspid.FastTools.Enums` | `EnumValues<T>` |
+| `Aspid.FastTools.Ids` | `IdRegistry` (int-only во рантайме) |
+| `Aspid.FastTools.UIElements` | Runtime fluent-расширения `VisualElement` |
+| `Aspid.FastTools.Editors` | Редакторские утилиты — расширения `SerializedProperty`, IMGUI-области, `GetScriptName` |
+| `Aspid.FastTools.Types.Editors` · `.Enums.Editors` · `.Ids.Editors` · `.UIElements.Editors` | Редакторский код по фичам (property drawers, инспектор реестров, editor-only расширения `VisualElement`) |
 
 ---
 
@@ -108,7 +113,7 @@ internal static class __MyBehaviourProfilerMarkerExtensions
 
 ```csharp
 using UnityEngine;
-using Aspid.FastTools;
+using Aspid.FastTools.Types;
 
 public class MyBehaviour : MonoBehaviour
 {
@@ -133,7 +138,7 @@ public class MyBehaviour : MonoBehaviour
 
 ```csharp
 using UnityEngine;
-using Aspid.FastTools;
+using Aspid.FastTools.Types;
 
 public abstract class BaseEnemy : MonoBehaviour
 {
@@ -172,7 +177,7 @@ public sealed class TypeSelectorAttribute : PropertyAttribute
 
 ```csharp
 using UnityEngine;
-using Aspid.FastTools;
+using Aspid.FastTools.Types;
 
 public class MyBehaviour : MonoBehaviour
 {
@@ -220,7 +225,7 @@ public sealed class EnumValues<TValue> : IEnumerable<KeyValuePair<Enum, TValue>>
 
 ```csharp
 using UnityEngine;
-using Aspid.FastTools;
+using Aspid.FastTools.Enums;
 
 public enum Direction { Left, Right, Up, Down }
 
@@ -240,9 +245,18 @@ public class MyBehaviour : MonoBehaviour
 
 ---
 
-## Система строковых ID
+## Система ID
 
-Отображает строковые имена в стабильные целочисленные ID. Предназначена для data-driven проектов, где ассетам нужен надёжный, назначаемый из редактора идентификатор, безопасный для использования в `switch` и `Dictionary`.
+Сопоставляет имя, назначаемое в активе, со стабильным целочисленным ID. Получившийся `int` подходит для `switch` и ключей `Dictionary` без затрат на строковые поиски в рантайме.
+
+Доступны два варианта реестра — выбирается по одному на каждый `IId`-struct:
+
+| Реестр | Контракт во рантайме | Когда использовать |
+|---|---|---|
+| `StringIdRegistry` (`Aspid.FastTools`) | Полное отображение `int ↔ string` доступно во рантайме | Нужны поиски по имени в player-сборках (логи, сейвы, дебаг) |
+| `IdRegistry` (`Aspid.FastTools.Ids`) | Во рантайме только int; имена хранятся в editor-only partial и вырезаются из player-сборок | Имена нужны только в редакторе |
+
+Каждый `IId`-struct привязан ровно к одному реестру любого вида — уникальность гарантируется во время поиска через `IdRegistryResolver`, который ищет в обоих видах реестров.
 
 ### Использование
 
@@ -259,14 +273,16 @@ public partial struct EnemyId : IId { }
 ```csharp
 public partial struct EnemyId
 {
-    [SerializeField] private string __stringId;
+    [SerializeField] private string __stringId; // editor-only поле, вырезается из player-сборок
     [SerializeField] private int _id;
 
     public int Id => _id;
 }
 ```
 
-**2.** Создайте ассет `IdRegistry` через меню *Assets → Create → Aspid → FastTools → String Id Registry* и привяжите его к вашему типу структуры в Inspector.
+**2.** Создайте ассет реестра и привяжите его к вашему типу структуры в Inspector:
+- `Assets → Create → Aspid → FastTools → String Id Registry` — для `StringIdRegistry`;
+- `Assets → Create → Aspid → FastTools → Id Registry` — для int-only `IdRegistry`.
 
 **3.** Используйте структуру как сериализуемое поле. В Inspector отображается выпадающий список зарегистрированных имён с кнопкой **Create** для добавления новых записей прямо там:
 
@@ -282,6 +298,9 @@ public class EnemyDefinition : ScriptableObject
 ```
 
 ```csharp
+using UnityEngine;
+using Aspid.FastTools;
+
 public class EnemySpawner : MonoBehaviour
 {
     [SerializeField] private EnemyId _targetEnemy;
@@ -302,87 +321,59 @@ public class EnemySpawner : MonoBehaviour
 public sealed class UniqueIdAttribute : PropertyAttribute { }
 ```
 
-### IdRegistry
+### StringIdRegistry
 
-`ScriptableObject`, хранящий пары имя ↔ целое число. Каждому имени назначается стабильный, автоинкрементный ID, который не изменяется даже при добавлении или удалении других записей.
+`ScriptableObject` из `Aspid.FastTools`, хранящий записи `(int, string)` и поддерживающий таблицы поиска доступными во рантайме. Каждому имени назначается стабильный, автоинкрементный ID, который не изменяется даже при добавлении или удалении других записей.
 
 | Член | Описание |
 |------|----------|
-| `bool Contains(string name)` | Возвращает, зарегистрировано ли имя |
-| `int Add(string name)` | Регистрирует имя и возвращает ID; если имя уже есть — возвращает существующий ID |
-| `void Remove(string name)` | Удаляет запись по имени |
-| `void Rename(string oldName, string newName)` | Переименовывает запись |
-| `int GetId(string name)` | Возвращает ID для имени или `0`, если не найдено |
-| `string? GetName(int id)` | Возвращает имя для ID или `null`, если не найдено |
+| `int GetId(string name)` | Возвращает ID для имени или `-1`, если не найдено |
+| `string? GetNameId(int id)` | Возвращает имя для ID или `null`, если не найдено |
+| `bool Contains(int id)` | Зарегистрирован ли ID |
+| `bool Contains(string name)` | Зарегистрировано ли имя |
+| `IEnumerable<int> Ids` · `IEnumerable<string> IdNames` | Перечисление зарегистрированных ID / имён |
+| `IEnumerator<KeyValuePair<int, string>> GetEnumerator()` | Итерация по парам `(id, name)` |
+
+### IdRegistry
+
+`ScriptableObject` из `Aspid.FastTools.Ids`, хранящий во рантайме только целочисленные ID — имена существуют как метаданные редактора и вырезаются из player-сборок.
+
+| Член | Описание |
+|------|----------|
+| `int Count` | Количество зарегистрированных ID |
+| `bool Contains(int id)` | Зарегистрирован ли ID |
+| `IEnumerator<int> GetEnumerator()` | Итерация по зарегистрированным ID |
+
+У обоих реестров есть генерик-аналог (`StringIdRegistry<T>` / `IdRegistry<T>` с `T : struct, IId`), добавляющий типизированную перегрузку `Contains(T)`. Редактирование — добавление, переименование, удаление записей — выполняется через инспектор реестра и `RegistryEditorCore`, а не через публичный runtime API.
 
 ---
 
 ## Расширения SerializedProperty
 
-Цепочечные методы расширения для `SerializedProperty`, позволяющие задавать значения и применять изменения.
+Цепочные расширения над `SerializedProperty` для синхронизации владеющего `SerializedObject`, записи типизированных значений и рефлексии над полем-источником.
 
 ```csharp
 using Aspid.FastTools.Editors;
 ```
 
-### Update и Apply
-
 ```csharp
-property.Update();
-property.UpdateIfRequiredOrScript();
-property.ApplyModifiedProperties();
+property
+    .Update()
+    .SetVector3(Vector3.up)
+    .SetBool(true)
+    .ApplyModifiedProperties();
 ```
 
-Все методы возвращают `SerializedProperty`, что позволяет строить цепочки вызовов.
+Пакет покрывает:
 
-### SetValue / SetXxx
+- **Update / Apply** — `Update`, `UpdateIfRequiredOrScript`, `ApplyModifiedProperties`.
+- **Типизированные сеттеры** — `SetValue` (обобщённый диспетчер) и `SetXxx` для `int`/`uint`/`long`/`ulong`/`float`/`double`/`bool`/`string`/`Color`/`Gradient`/`Hash128`/`Rect`/`RectInt`/`Bounds`/`BoundsInt`/`Vector2..4` (и `Vector2/3Int`)/`Quaternion`/`AnimationCurve`/`EntityId` (Unity 6.2+). К каждому идёт парный вариант `SetXxxAndApply`.
+- **Enum-сеттеры** — `SetEnumFlag` и `SetEnumIndex` (каждый + `AndApply`).
+- **Массивы** — `SetArraySize`, `AddArraySize`, `RemoveArraySize` (каждый + `AndApply`).
+- **Ссылки** — `SetManagedReference`, `SetObjectReference`, `SetExposedReference`, а также `SetBoxed` (Unity 6+).
+- **Рефлексионные хелперы** — `GetPropertyType`, `GetMemberInfo`, `GetClassInstance` для разрешения C#-члена и runtime-экземпляра, стоящих за property.
 
-Для каждого поддерживаемого типа доступны два метода:
-
-- `SetXxx(value)` — устанавливает значение, возвращает `property` для цепочки
-- `SetXxxAndApply(value)` — устанавливает значение и сразу вызывает `ApplyModifiedProperties()`
-
-`SetValue(value)` автоматически направляет вызов к соответствующему типизированному сеттеру.
-
-| Семейство методов | Тип Unity |
-|-------------------|-----------|
-| `SetInt` / `SetUint` / `SetLong` / `SetUlong` | Целочисленные типы |
-| `SetFloat` / `SetDouble` | Вещественные типы |
-| `SetBool` | `bool` |
-| `SetString` | `string` |
-| `SetColor` | `Color` |
-| `SetRect` / `SetRectInt` | `Rect` / `RectInt` |
-| `SetBounds` / `SetBoundsInt` | `Bounds` / `BoundsInt` |
-| `SetVector2` / `SetVector2Int` | `Vector2` / `Vector2Int` |
-| `SetVector3` / `SetVector3Int` | `Vector3` / `Vector3Int` |
-| `SetVector4` | `Vector4` |
-| `SetQuaternion` | `Quaternion` |
-| `SetGradient` | `Gradient` |
-| `SetHash128` | `Hash128` |
-| `SetAnimationCurveValue` | `AnimationCurve` |
-| `SetEnumFlag` / `SetEnumIndex` | Флаг/индекс перечисления |
-| `SetArraySize` | Размер массива |
-| `SetManagedReference` | Управляемая ссылка |
-| `SetObjectReference` | `UnityEngine.Object` |
-| `SetExposedReference` | Exposed reference |
-| `SetBoxed` | Упакованное значение *(Unity 6+)* |
-| `SetEntityId` | Entity ID *(Unity 6.2+)* |
-
-```csharp
-SerializedProperty property = GetProperty();
-
-// Простое применение
-property.ApplyModifiedProperties();
-
-// Установка и применение — эквивалентные формы
-property.SetValue(10).ApplyModifiedProperties();
-property.SetValueAndApply(10);
-property.SetInt(10).ApplyModifiedProperties();
-property.SetIntAndApply(10);
-
-// Цепочка нескольких сеттеров
-property.SetVector3(Vector3.up).SetBool(true).ApplyModifiedProperties();
-```
+> Полный справочник по методам: [SerializedPropertyExtensions_RU.md](SerializedPropertyExtensions_RU.md)
 
 ---
 
@@ -392,39 +383,39 @@ property.SetVector3(Vector3.up).SetBool(true).ApplyModifiedProperties();
 using Aspid.FastTools.Editors;
 ```
 
-Доступны три типа областей: `VerticalScope`, `HorizontalScope`, `ScrollViewScope`. Каждая предоставляет свойство `Rect` и вызывает соответствующий метод `EditorGUILayout.End*` в `Dispose`.
-
-### Использование через AspidEditorGUILayout
+Три `ref struct`-области — `VerticalScope`, `HorizontalScope`, `ScrollViewScope` — оборачивают `EditorGUILayout.Begin*` / `End*`. Каждая предоставляет свойство `Rect` и вызывает соответствующий метод `End*` в `Dispose`:
 
 ```csharp
-using (AspidEditorGUILayout.BeginVertical())
+using (VerticalScope.Begin())
 {
     EditorGUILayout.LabelField("Item 1");
     EditorGUILayout.LabelField("Item 2");
 }
 
-using (AspidEditorGUILayout.BeginHorizontal())
+using (HorizontalScope.Begin())
 {
     EditorGUILayout.LabelField("Left");
     EditorGUILayout.LabelField("Right");
 }
 
 var scrollPos = Vector2.zero;
-using (AspidEditorGUILayout.BeginScrollView(ref scrollPos))
+using (ScrollViewScope.Begin(ref scrollPos))
 {
     EditorGUILayout.LabelField("Scrollable content");
 }
 ```
 
-### Использование через структуры областей напрямую
+Получить rect области через перегрузку с `out`-параметром:
 
 ```csharp
-using (VerticalScope.Begin()) { /* ... */ }
-using (HorizontalScope.Begin()) { /* ... */ }
-using (ScrollViewScope.Begin(ref scrollPos)) { /* ... */ }
+using (VerticalScope.Begin(out var rect, GUI.skin.box))
+{
+    EditorGUI.DrawRect(rect, new Color(0, 0, 0, 0.1f));
+    EditorGUILayout.LabelField("Boxed content");
+}
 ```
 
-Все перегрузки `Begin` соответствуют сигнатурам `EditorGUILayout.Begin*` (с опциональными `GUIStyle`, `GUILayoutOption[]`, параметрами scroll view и т.д.).
+Все перегрузки `Begin` соответствуют сигнатурам `EditorGUILayout.Begin*` (опциональные `GUIStyle`, `GUILayoutOption[]`, параметры scroll view и т.д.).
 
 ---
 
@@ -433,361 +424,32 @@ using (ScrollViewScope.Begin(ref scrollPos)) { /* ... */ }
 Fluent-методы расширения для построения UIToolkit-деревьев в коде. Все методы возвращают `T` (сам элемент) для цепочки вызовов.
 
 ```csharp
-using Aspid.FastTools;         // runtime-расширения
-using Aspid.FastTools.Editors; // editor-only расширения
+using Aspid.FastTools.UIElements;         // runtime-расширения
+using Aspid.FastTools.UIElements.Editors; // editor-only расширения (например, AddOpenScriptCommand)
 ```
 
-### Основные операции с элементами
-
-```csharp
-element
-    .SetName("MyElement")
-    .SetVisible(true)
-    .SetTooltip("Текст подсказки")
-    .AddChild(new Label("Hello"))
-    .AddChildren(child1, child2, child3);
-```
-
-| Метод | Описание |
-|-------|----------|
-| `SetName(string)` | Устанавливает `element.name` |
-| `SetVisible(bool)` | Устанавливает `element.visible` |
-| `SetTooltip(string)` | Устанавливает `element.tooltip` |
-| `SetUserData(object)` | Устанавливает `element.userData` |
-| `SetEnabledSelf(bool)` | Устанавливает `element.enabledSelf` |
-| `SetPickingMode(PickingMode)` | Устанавливает `element.pickingMode` |
-| `SetUsageHints(UsageHints)` | Устанавливает `element.usageHints` |
-| `SetViewDataKey(string)` | Устанавливает `element.viewDataKey` |
-| `SetLanguageDirection(LanguageDirection)` | Устанавливает `element.languageDirection` |
-| `SetDisablePlayModeTint(bool)` | Устанавливает `element.disablePlayModeTint` |
-| `SetDataSource(object)` | Устанавливает `element.dataSource` |
-| `SetDataSourceType(Type)` | Устанавливает `element.dataSourceType` |
-| `SetDataSourcePath(PropertyPath)` | Устанавливает `element.dataSourcePath` |
-| `AddChild(VisualElement)` | Добавляет дочерний элемент, возвращает родителя |
-| `AddChildren(params VisualElement[])` | Добавляет несколько дочерних элементов |
-| `AddChildren(IEnumerable<VisualElement>)` | Добавляет из последовательности |
-| `AddChildren(List<VisualElement>)` | Добавляет из списка |
-| `AddChildren(Span<VisualElement>)` | Добавляет из span |
-| `AddChildren(ReadOnlySpan<VisualElement>)` | Добавляет из read-only span |
-
-> `RegisterCallbackOnce<TEventType>` и `RegisterCallbackOnce<TEventType, TUserArgsType>` доступны на всех версиях Unity (пакет содержит polyfill для версий до 2023.1).
-
-### Focusable
-
-| Метод | Описание |
-|-------|----------|
-| `SetFocus()` | Устанавливает фокус на элемент |
-| `SetBlur()` | Снимает фокус с элемента |
-| `IsFocus()` | Возвращает, находится ли элемент в фокусе |
-| `SetTabIndex(int)` | Устанавливает `element.tabIndex` |
-| `SetFocusable(bool)` | Устанавливает `element.focusable` |
-| `SetDelegatesFocus(bool)` | Устанавливает `element.delegatesFocus` |
-
-### USS и операции с классами
-
-| Метод | Описание |
-|-------|----------|
-| `AddClass(string)` | Добавляет USS-класс |
-| `RemoveClass(string)` | Удаляет USS-класс |
-| `ClearClasses()` | Удаляет все USS-классы |
-| `ToggleInClass(string)` | Переключает USS-класс вкл/выкл |
-| `EnableInClass(string, bool)` | Добавляет или удаляет USS-класс по условию |
-| `AddStyleSheets(StyleSheet)` | Добавляет `StyleSheet` |
-| `RemoveStyleSheets(StyleSheet)` | Удаляет `StyleSheet` |
-| `AddStyleSheetsFromResource(string)` | Добавляет таблицу стилей через `Resources.Load` |
-| `RemoveStyleSheetsFromResource(string)` | Удаляет таблицу стилей, загруженную через `Resources.Load` |
-
-### Расширения стилей — по категориям
-
-Все методы стилей также доступны напрямую на `IStyle` (те же имена методов, работают с объектом стиля).
-
-#### Разметка
-
-| Метод | Свойство стиля |
-|-------|----------------|
-| `SetFlexBasis(StyleLength)` | `flexBasis` |
-| `SetFlexGrow(StyleFloat)` | `flexGrow` |
-| `SetFlexShrink(StyleFloat)` | `flexShrink` |
-| `SetFlexWrap(StyleEnum<Wrap>)` | `flexWrap` |
-| `SetFlexDirection(FlexDirection)` | `flexDirection` |
-| `SetAlignSelf(StyleEnum<Align>)` | `alignSelf` |
-| `SetAlignItems(StyleEnum<Align>)` | `alignItems` |
-| `SetAlignContent(StyleEnum<Align>)` | `alignContent` |
-| `SetJustifyContent(StyleEnum<Justify>)` | `justifyContent` |
-| `SetPosition(StyleEnum<Position>)` | `position` |
-
-#### Размер
-
-| Метод | Описание |
-|-------|----------|
-| `SetSize(StyleLength)` | Устанавливает ширину и высоту одновременно |
-| `SetSize(width?, height?)` | Устанавливает ширину и/или высоту независимо |
-| `SetMinSize(StyleLength)` | Устанавливает minWidth и minHeight одновременно |
-| `SetMinSize(width?, height?)` | |
-| `SetMaxSize(StyleLength)` | Устанавливает maxWidth и maxHeight одновременно |
-| `SetMaxSize(width?, height?)` | |
-
-#### Отступы
-
-Все методы отступов имеют перегрузку с единым значением и перегрузку по сторонам (`top`, `bottom`, `left`, `right`).
-
-| Метод | Свойства стиля |
-|-------|----------------|
-| `SetMargin(…)` | `Top/Bottom/Left/Right` |
-| `SetPadding(…)` | `Top/Bottom/Left/Right` |
-| `SetDistance(…)` | `Top/Bottom/Left/Right` (смещение для абсолютного позиционирования) |
-
-#### Шрифт
-
-| Метод | Свойство стиля |
-|-------|----------------|
-| `SetUnityFont(StyleFont)` | `unityFont` |
-| `SetFontSize(StyleLength)` | `fontSize` |
-| `SetUnityFontDefinition(StyleFontDefinition)` | `unityFontDefinition` |
-| `SetUnityFontStyleAndWeight(StyleEnum<FontStyle>)` | `unityFontStyleAndWeight` |
-
-#### Пресеты стиля шрифта
-
-Удобные методы для переключения bold / italic без перезаписи другого флага:
-
-| Метод | Описание |
-|-------|----------|
-| `SetNormalUnityFontStyleAndWeight()` | Сбрасывает в `FontStyle.Normal` |
-| `AddBoldUnityFontStyleAndWeight()` | Добавляет bold, сохраняя italic |
-| `RemoveBoldUnityFontStyleAndWeight()` | Убирает bold, сохраняя italic |
-| `AddItalicUnityFontStyleAndWeight()` | Добавляет italic, сохраняя bold |
-| `RemoveItalicUnityFontStyleAndWeight()` | Убирает italic, сохраняя bold |
-
-#### Текст
-
-| Метод | Свойство стиля | Примечания |
-|-------|---------------|------------|
-| `SetWorldSpacing(StyleLength)` | `wordSpacing` | |
-| `SetLetterSpacing(StyleLength)` | `letterSpacing` | |
-| `SetUnityTextAlign(TextAnchor)` | `unityTextAlign` | |
-| `SetTextShadow(StyleTextShadow)` | `textShadow` | |
-| `SetUnityTextOutlineColor(StyleColor)` | `unityTextOutlineColor` | |
-| `SetUnityTextOutlineWidth(StyleFloat)` | `unityTextOutlineWidth` | |
-| `SetUnityParagraphSpacing(StyleLength)` | `unityParagraphSpacing` | |
-| `SetTextOverflow(StyleEnum<TextOverflow>)` | `textOverflow` | |
-| `SetUnityTextOverflowPosition(TextOverflowPosition)` | `unityTextOverflowPosition` | |
-| `SetUnityTextGenerator(TextGeneratorType)` | `unityTextGenerator` | Unity 6+ |
-| `SetUnityEditorTextRenderingMode(EditorTextRenderingMode)` | `unityEditorTextRenderingMode` | Unity 6+ |
-| `SetUnityTextAutoSize(StyleTextAutoSize)` | `unityTextAutoSize` | Unity 6.2+ |
-| `SetWhiteSpace(StyleEnum<WhiteSpace>)` | `whiteSpace` | |
-
-#### Цвет и прозрачность
-
-| Метод | Свойство стиля |
-|-------|----------------|
-| `SetColor(StyleColor)` | `color` |
-| `SetOpacity(StyleFloat)` | `opacity` |
-
-#### Рамка
-
-| Метод | Описание |
-|-------|----------|
-| `SetBorderColor(StyleColor)` | Все стороны |
-| `SetBorderColor(top?, bottom?, left?, right?)` | По стороне |
-| `SetBorderRadius(StyleLength)` | Все углы |
-| `SetBorderRadius(topLeft?, topRight?, bottomLeft?, bottomRight?)` | По углу |
-| `SetBorderWidth(StyleFloat)` | Все стороны |
-| `SetBorderWidth(top?, bottom?, left?, right?)` | По стороне |
-
-#### Фон
-
-| Метод | Свойство стиля |
-|-------|----------------|
-| `SetBackgroundColor(StyleColor)` | `backgroundColor` |
-| `SetBackgroundImage(StyleBackground)` | `backgroundImage` |
-| `SetBackgroundSize(StyleBackgroundSize)` | `backgroundSize` |
-| `SetBackgroundRepeat(StyleBackgroundRepeat)` | `backgroundRepeat` |
-| `SetBackgroundPosition(StyleBackgroundPosition)` | X и Y одновременно |
-| `SetBackgroundPosition(x?, y?)` | Независимо |
-| `SetUnityBackgroundImageTintColor(StyleColor)` | `unityBackgroundImageTintColor` |
-
-#### Трансформации
-
-| Метод | Свойство стиля |
-|-------|----------------|
-| `SetScale(StyleScale)` | `scale` |
-| `SetRotate(StyleRotate)` | `rotate` |
-| `SetTranslate(StyleTranslate)` | `translate` |
-| `SetTransformOrigin(StyleTransformOrigin)` | `transformOrigin` |
-
-#### Анимации переходов
-
-| Метод | Свойство стиля |
-|-------|----------------|
-| `SetTransitionDelay(StyleList<TimeValue>)` | `transitionDelay` |
-| `SetTransitionDuration(StyleList<TimeValue>)` | `transitionDuration` |
-| `SetTransitionProperty(StyleList<StylePropertyName>)` | `transitionProperty` |
-| `SetTransitionTimingFunction(StyleList<EasingFunction>)` | `transitionTimingFunction` |
-
-#### Переполнение и видимость
-
-| Метод | Свойство стиля |
-|-------|----------------|
-| `SetOverflow(StyleEnum<Overflow>)` | `overflow` |
-| `SetUnityOverflowClipBox(StyleEnum<OverflowClipBox>)` | `unityOverflowClipBox` |
-| `SetVisibility(StyleEnum<Visibility>)` | `visibility` |
-| `SetDisplay(DisplayStyle)` | `display` |
-
-#### Unity Slice
-
-| Метод | Описание |
-|-------|----------|
-| `SetUnitySlice(StyleInt)` | Все стороны |
-| `SetUnitySlice(top?, bottom?, left?, right?)` | По стороне |
-| `SetUnitySliceType(StyleEnum<SliceType>)` | Unity 6+ |
-
-#### Курсор
-
-| Метод | Свойство стиля |
-|-------|----------------|
-| `SetCursor(StyleCursor)` | `cursor` |
-
-### Расширения для специализированных элементов
-
-#### TextElement
-
-```csharp
-label.SetText("Hello World");
-```
-
-#### BaseField\<TValueType\>
-
-```csharp
-field.SetLabel("My Field");
-field.SetValue(42);
-```
-
-#### INotifyValueChanged\<T\>
-
-```csharp
-field.SetValue(42, notify: false); // устанавливает значение без генерации ChangeEvent
-field.AddValueChanged(evt => Debug.Log(evt.newValue));
-field.RemoveValueChanged(myCallback);
-```
-
-Типизированные перегрузки доступны для `int`, `uint`, `long`, `ulong`, `short`, `ushort`, `byte`, `sbyte`, `float`, `double`, `string`, `bool`, `Color`, `Vector2/3/4`, `Vector2Int/3Int`, `Rect/RectInt`, `Bounds/BoundsInt`, `Hash128`, `Enum`, `Object` и других типов.
-
-#### IMixedValueSupport
-
-```csharp
-field.SetShowMixedValue(true); // показывает индикатор смешанного значения
-```
-
-#### Button
-
-```csharp
-button
-    .AddClicked(() => Debug.Log("Clicked"))
-    .SetClickable(new Clickable(() => { }))
-    .SetIconImage(myBackground);
-```
-
-| Метод | Описание |
-|-------|----------|
-| `AddClicked(Action)` | Подписка на `Button.clicked` |
-| `RemoveClicked(Action)` | Отписка от `Button.clicked` |
-| `SetClickable(Clickable)` | Устанавливает `Button.clickable` |
-| `SetIconImage(Background)` | Устанавливает `Button.iconImage` |
-
-#### Slider / BaseSlider\<TValue\>
-
-```csharp
-slider
-    .SetLowValue(0f)
-    .SetHighValue(100f)
-    .SetShowInputField<SliderFloat, float>(true);
-```
-
-| Метод | Описание |
-|-------|----------|
-| `SetLowValue(TValue)` | Устанавливает минимальное значение слайдера |
-| `SetHighValue(TValue)` | Устанавливает максимальное значение слайдера |
-| `SetFill(bool)` | Заполнение трека до текущего значения |
-| `SetInverted(bool)` | Инвертирует направление слайдера |
-| `SetPageSize(float)` | Шаг изменения значения при постраничной навигации |
-| `SetShowInputField(bool)` | Показывает числовое поле ввода рядом со слайдером |
-| `SetDirection(SliderDirection)` | Устанавливает ориентацию слайдера |
-
-#### ProgressBar
-
-```csharp
-progressBar.SetTitle("Загрузка...").SetLowValue(0f).SetHighValue(100f);
-```
-
-| Метод | Описание |
-|-------|----------|
-| `SetTitle(string)` | Устанавливает заголовок, отображаемый в центре |
-| `SetLowValue(float)` | Устанавливает минимальное значение |
-| `SetHighValue(float)` | Устанавливает максимальное значение |
-
-#### HelpBox
-
-```csharp
-helpBox.SetHelpBoxFontSize(14);
-helpBox.SetMessageType(14, HelpBoxMessageType.Warning);
-```
-
-#### Foldout
-
-```csharp
-foldout.SetText("Section Title");
-foldout.SetValue(true);
-```
-
-#### Image
-
-```csharp
-image.SetImage(myTexture);
-image.SetImageFromResource("Editor/MyIcon"); // загрузка через Resources.Load
-```
-
-#### IMGUIContainer
-
-```csharp
-container
-    .SetOnGUIHandler(() => GUILayout.Label("IMGUI"))
-    .SetCullingEnabled(true);
-```
-
-| Метод | Описание |
-|-------|----------|
-| `SetOnGUIHandler(Action)` | Заменяет коллбэк `onGUIHandler` |
-| `AddOnGUIHandler(Action)` | Подписка на `onGUIHandler` |
-| `RemoveOnGUIHandler(Action)` | Отписка от `onGUIHandler` |
-| `SetCullingEnabled(bool)` | Пропускает `onGUIHandler`, когда элемент за пределами экрана |
-| `SetContextType(ContextType)` | Устанавливает тип контекста IMGUI |
-
-#### ListView / CollectionView
-
-| Метод | Описание | Примечания |
-|-------|----------|------------|
-| `SetBindItem(Action<VisualElement, int>)` | Коллбэк привязки элемента | |
-| `SetMakeItem(Func<VisualElement>)` | Фабрика элементов | |
-| `SetMakeFooter(Func<VisualElement>)` | Фабрика подвала | Unity 6+ |
-| `SetMakeHeader(Func<VisualElement>)` | Фабрика заголовка | Unity 6+ |
-| `SetMakeNoneElement(Func<VisualElement>)` | Фабрика элемента пустого состояния | Unity 6+ |
-
-### Команды редактора (только для редактора)
-
-```csharp
-using Aspid.FastTools.Editors;
-
-image.AddOpenScriptCommand(target);
-// Двойной клик на элемент открывает скрипт 'target' в IDE
-```
+### Краткий справочник
+
+Пакет покрывает:
+
+- **Основные операции с элементом** — имя, видимость, tooltip, user data, picking mode, data source, а также хелперы `AddChild`/`InsertChild`.
+- **Фокус** — `SetFocus`, `SetBlur`, `SetTabIndex`, `SetFocusable`.
+- **USS** — `AddClass`/`RemoveClass`/`ToggleInClass`/`EnableInClass`, `AddStyleSheets[FromResource]`.
+- **Стили** — все свойства `IStyle`: разметка, размер, отступы, шрифт, текст, цвет, рамка, фон, трансформации (вкл. aspect/filter/material с Unity 6.3+), переходы, overflow, slice, cursor.
+- **Специализированные элементы** — `TextElement`, `ITextEdition`, `ITextSelection`, `BaseField`, `BaseBoolField` (Toggle), `INotifyValueChanged` (с опциональными типами `Unity.Mathematics`), `IMixedValueSupport`, `Button`, `Slider`/`BaseSlider`, `ProgressBar`, `HelpBox`, `Foldout`, `Image`, `IMGUIContainer`, а также полная поверхность `ListView`/`TreeView`/`MultiColumn*`.
+- **Editor-only команды** — `AddOpenScriptCommand`, `BindTo`/`BindPropertyTo`, `Initialize` для `EnumField`/`EnumFlagsField`, подписка на изменения у `PropertyField`.
+- **USS custom-style helpers** — `ICustomStyle.TryGetByEnum` для парсинга строковых USS-свойств в enum.
+
+> Полный справочник по методам: [VisualElementExtensions_RU.md](VisualElementExtensions_RU.md)
 
 ### Полный пример
 
 ```csharp
 using UnityEditor;
 using UnityEngine;
-using Aspid.FastTools;
-using Aspid.FastTools.Editors;
+using Aspid.FastTools.Editors;          // GetScriptName
+using Aspid.FastTools.UIElements;       // runtime-расширения VisualElement
+using Aspid.FastTools.UIElements.Editors; // AddOpenScriptCommand
 using UnityEngine.UIElements;
 
 [CustomEditor(typeof(MyBehaviour))]

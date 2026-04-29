@@ -12,4 +12,4 @@ To try it:
 
 1. Select `ScriptableObjects/AbilityConfigAsset.asset` in the Project window — the custom inspector appears in the Inspector panel.
 2. Edit the fields. Set `Mana Cost` to `0` to see the status accent flip to Warning and a help box appear inline.
-3. Or create your own via `Assets > Create > Aspid > FastTools > Samples > Ability Config`.
+3. Or create your own via `Assets > Create > Aspid > Samples > FastTools > Ability Config`.

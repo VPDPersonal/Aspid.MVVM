@@ -6,8 +6,8 @@
     margin: -5px -5px 5px;
     background-color: #262626;
 
-    --aspid-shade-dark: #787878;
-    --aspid-shade-light: #C0C0C0;
+    --aspid-colors-shade-dark: #787878;
+    --aspid-colors-shade-light: #C0C0C0;
 }
 
 :root {
@@ -46,9 +46,9 @@ ToolbarSearchField {
 
 .aspid-fasttools-type-selector-item-title {
     flex-grow: 1;
-    color: var(--aspid-shade-light);
+    color: var(--aspid-colors-shade-light);
 }
 
 .aspid-fasttools-type-selector-item-arrow {
-    color: var(--aspid-shade-dark);
+    color: var(--aspid-colors-shade-dark);
 }

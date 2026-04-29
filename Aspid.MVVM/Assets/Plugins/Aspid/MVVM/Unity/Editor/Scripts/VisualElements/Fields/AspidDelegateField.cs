@@ -24,7 +24,7 @@ namespace Aspid.MVVM
             {
                 if (@delegate?.Target is null || @delegate.Target is Object obj && !obj)
                 {
-                    this.AddChild(new AspidHelpBox(message: "Delegate is null", HelpBoxMessageType.Error));
+                    this.AddChild(new AspidHelpBox(message: "Delegate is null", AspidHelpBoxPreset.Default.SetMessageType(HelpBoxMessageType.Error)));
                     continue;
                 }
 

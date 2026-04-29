@@ -11,16 +11,16 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 70e390d14588e72409a6a95aca1461a7, type: 3}
   m_Name: EnemyId StringIdRegistry
-  m_EditorClassIdentifier: Aspid.FastTools.Unity::Aspid.FastTools.IdRegistry
+  m_EditorClassIdentifier: Aspid.FastTools.Unity::Aspid.FastTools.StringIdRegistry
   _targetStructType: Aspid.FastTools.Samples.Ids.EnemyId, Aspid.FastTools.Samples.Ids,
     Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-  _nextId: 5
+  _nextId: 1
   _entries:
   - Id: 1
-    Name: Goblin
+    Name: fly_dragon
   - Id: 2
-    Name: Orc
+    Name: walk_goblin
   - Id: 3
-    Name: Dragon
+    Name: walk_orc
   - Id: 4
-    Name: Skeleton
+    Name: walk_skeleton

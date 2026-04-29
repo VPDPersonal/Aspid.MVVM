@@ -16,21 +16,21 @@ namespace Aspid.FastTools.Ids.Editors
         private ToolbarSearchField _searchField = null!;
         private ListView _listView = null!;
         private Action<string>? _onSelected;
-        private string[] _allIds = Array.Empty<string>();
-        private readonly List<string> _filteredIds = new();
+        private KeyValuePair<int, string>[] _allEntries = Array.Empty<KeyValuePair<int, string>>();
+        private readonly List<KeyValuePair<int, string>> _filteredEntries = new();
         private string _current = string.Empty;
 
-        public static void Show(IReadOnlyList<string> ids, Rect screenRect, string current, Action<string> onSelected)
+        public static void Show(IEnumerable<KeyValuePair<int, string>>? entries, Rect screenRect, string current, Action<string> onSelected)
         {
             var window = CreateInstance<StringIdSelectorWindow>();
-            window.Initialize(ids, screenRect, current, onSelected);
+            window.Initialize(entries, screenRect, current, onSelected);
         }
 
-        private void Initialize(IReadOnlyList<string> ids, Rect screenRect, string current, Action<string> onSelected)
+        private void Initialize(IEnumerable<KeyValuePair<int, string>>? entries, Rect screenRect, string? current, Action<string> onSelected)
         {
             _onSelected = onSelected;
-            _current    = current ?? string.Empty;
-            _allIds     = ids.ToArray();
+            _current = current ?? string.Empty;
+            _allEntries = entries?.ToArray() ?? Array.Empty<KeyValuePair<int, string>>();
 
             BuildUI();
             RefreshList(string.Empty);
@@ -53,17 +53,17 @@ namespace Aspid.FastTools.Ids.Editors
 
             _listView = new ListView
             {
-                selectionType        = SelectionType.Single,
+                selectionType = SelectionType.Single,
                 virtualizationMethod = CollectionVirtualizationMethod.DynamicHeight,
-                itemsSource          = _filteredIds,
+                itemsSource = _filteredEntries,
             };
 
             _listView.SetMakeItem(CreateItem);
             _listView.SetBindItem(BindItem);
-            _listView.itemsChosen += items => SelectItem(items.OfType<string>().FirstOrDefault());
+            _listView.itemsChosen += items => SelectItem(items.OfType<KeyValuePair<int, string>>().FirstOrDefault());
 
             var container = new VisualElement()
-                .AddStyleSheetsFromResource(Constants.StyleSheetPath)
+                .AddStyleSheetsFromResource(Constants.Selector.StyleSheetPath)
                 .AddClass(Constants.Selector.Container)
                 .AddChild(_searchField)
                 .AddChild(_listView);
@@ -72,38 +72,59 @@ namespace Aspid.FastTools.Ids.Editors
             rootVisualElement.RegisterCallback<KeyDownEvent>(OnKeyDown, TrickleDown.TrickleDown);
         }
 
-        private VisualElement CreateItem()
+        private static VisualElement CreateItem()
         {
-            return new Label().AddClass(Constants.Selector.Item);
+            var nameLabel = new Label().AddClass(Constants.Selector.ItemName);
+            var idLabel = new Label().AddClass(Constants.Selector.ItemId);
+
+            return new VisualElement()
+                .AddClass(Constants.Selector.Item)
+                .AddChild(nameLabel)
+                .AddChild(idLabel);
         }
 
         private void BindItem(VisualElement element, int index)
         {
-            if (index < 0 || index >= _filteredIds.Count) return;
-            var label = (Label)element;
-            var id    = _filteredIds[index];
-            label.text = id;
-            label.style.unityFontStyleAndWeight = id == _current ? FontStyle.Bold : FontStyle.Normal;
+            if (index < 0 || index >= _filteredEntries.Count) return;
+
+            var entry = _filteredEntries[index];
+            var nameLabel = (Label)element[0];
+            var idLabel = (Label)element[1];
+
+            nameLabel.text = entry.Value;
+            nameLabel.style.unityFontStyleAndWeight = entry.Value == _current ? FontStyle.Bold : FontStyle.Normal;
+
+            var isNone = entry.Value == Constants.NoneOption;
+            idLabel.text = isNone ? string.Empty : entry.Key.ToString();
+            idLabel.SetDisplay(isNone ? DisplayStyle.None : DisplayStyle.Flex);
         }
 
         private void RefreshList(string search)
         {
-            _filteredIds.Clear();
-            _filteredIds.Add(Constants.NoneOption);
+            _filteredEntries.Clear();
+            _filteredEntries.Add(new KeyValuePair<int, string>(0, Constants.NoneOption));
 
-            foreach (var id in _allIds)
+            foreach (var entry in _allEntries)
             {
-                if (string.IsNullOrEmpty(search) || id.IndexOf(search, StringComparison.OrdinalIgnoreCase) >= 0)
-                    _filteredIds.Add(id);
+                if (Matches(entry, search))
+                    _filteredEntries.Add(entry);
             }
 
             _listView.Rebuild();
         }
 
-        private void SelectItem(string? item)
+        private static bool Matches(KeyValuePair<int, string> entry, string search)
         {
-            if (item == null) return;
-            _onSelected?.Invoke(item == Constants.NoneOption ? string.Empty : item);
+            if (string.IsNullOrEmpty(search)) return true;
+            if (entry.Value != null && entry.Value.IndexOf(search, StringComparison.OrdinalIgnoreCase) >= 0) return true;
+            return entry.Key.ToString().IndexOf(search, StringComparison.OrdinalIgnoreCase) >= 0;
+        }
+
+        private void SelectItem(KeyValuePair<int, string> entry)
+        {
+            var name = entry.Value;
+            if (name == null) return;
+            _onSelected?.Invoke(name == Constants.NoneOption ? string.Empty : name);
             Close();
         }
 

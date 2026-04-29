@@ -1,0 +1,215 @@
+AspidInspectorHeader {
+    margin-top: 2px;
+}
+
+ToolbarSearchField {
+    width: auto;
+    padding-right: 4px;
+    margin: 5px -1px 0 -1px;
+}
+
+.aspid-fasttools-id-registry-toolbar {
+    margin: 5px -1;
+    padding-bottom: 5px;
+    flex-direction: row;
+    border-width: 0;
+    border-bottom-width: 1px;
+    border-bottom-color: rgb(56, 56, 56);
+}
+
+.aspid-fasttools-id-registry-toolbar > EnumField {
+    margin: 0;
+    flex-grow: 1;
+    flex-basis: 0;
+}
+
+.aspid-fasttools-id-registry-group-foldout {
+    margin-top: 5px;
+}
+
+.aspid-fasttools-id-registry-group-foldout > Toggle {
+    margin-left: 0;
+}
+
+IdRegistryEntryVisualElement {
+    margin-bottom: 0;
+    flex-direction: column;
+}
+
+IdRegistryEntryVisualElement > VisualElement {
+    padding: 5;
+    margin-right: 5;
+    margin-bottom: 3;
+    min-height: 22px;
+    flex-direction: row;
+    align-items: center;
+    border-radius: 10px;
+    background-color: rgb(60, 60, 60);
+}
+
+IdRegistryEntryVisualElement > VisualElement > Label {
+    margin: 0;
+    flex-shrink: 0;
+    font-size: 11px;
+    min-width: 50px;
+    padding: 2px 8px;
+    border-width: 1px;
+    border-radius: 10px;
+    border-color: rgb(26, 26, 26);
+    -unity-text-align: middle-center;
+    
+    color: rgb(192, 192, 192);
+    background-color: rgb(46, 46, 46);
+}
+
+IdRegistryEntryVisualElement > VisualElement > Label.aspid-fasttools-status--error {
+    color: rgb(255, 64, 64);
+    background-color: rgb(79, 30, 30);
+}
+
+IdRegistryEntryVisualElement TextField {
+    flex-grow: 1;
+    flex-shrink: 1;
+    margin: 0 0 0 5px;
+}
+
+IdRegistryEntryVisualElement Button {
+    margin: 0;
+    padding: 0;
+    color: rgb(210, 210, 210);
+    flex-shrink: 0;
+    min-width: 20px;
+    max-width: 20px;
+    min-height: 18px;
+    max-height: 18px;
+    margin-left: 5px;
+    font-size: 14px;
+    border-radius: 3px;
+    padding-bottom: 2px;
+    border-color: rgb(26, 26, 26);
+    background-color: rgb(46, 46, 46);
+}
+
+IdRegistryEntryVisualElement .aspid-fasttools-id-registry-delete:hover {
+    color: rgb(255, 64, 64);
+    border-color: rgb(255, 64, 64);
+    background-color: rgb(79, 30, 30);
+}
+
+IdRegistryEntryVisualElement .aspid-fasttools-id-registry-confirm:enabled:hover {
+    color: rgb(127, 255, 127);
+    border-color: rgb(127, 255, 127);
+    background-color: rgb(30, 60, 30);
+}
+
+IdRegistryEntryVisualElement > Label {
+    color: rgb(255, 102, 102);
+    font-size: 11px;
+    margin: 0 0 3px 0;
+}
+
+.aspid-fasttools-id-registry-next-id {
+    border-width: 0;
+    margin: 5px 0 0 0;
+    border-top-width: 1px;
+    border-top-color: rgb(56, 56, 56);
+}
+
+.aspid-fasttools-id-registry-next-id > VisualElement {
+    padding: 5px;
+    margin: 5px 0 0 0;
+    align-items: center;
+    flex-direction: row;
+    border-radius: 10px;
+    background-color: rgb(60, 60, 60);
+}
+
+.aspid-fasttools-id-registry-next-id PropertyField {
+    flex-grow: 1;
+    margin-right: 2px;
+    margin-left: -3px;
+}
+
+.aspid-fasttools-id-registry-next-id Image {
+    width: 16px;
+    height: 16px;
+    display: none;
+    margin-left: 5px;
+}
+
+.aspid-fasttools-id-registry-next-id Image:enabled {
+    display: flex;
+}
+
+.aspid-fasttools-id-registry-add {
+    padding: 5;
+    margin: 5px 0 0 0;
+    border-radius: 10px;
+    background-color: rgb(60, 60, 60);
+}
+
+.aspid-fasttools-id-registry-add > VisualElement {
+    border-width: 0;
+    flex-direction: row;
+}
+
+.aspid-fasttools-id-registry-add TextField {
+    margin: 0;
+    flex-grow: 1;
+    flex-shrink: 1;
+}
+
+.aspid-fasttools-id-registry-add Button {
+    margin: 0;
+    padding: 0;
+    color: rgb(210, 210, 210);
+    flex-shrink: 0;
+    min-width: 20px;
+    max-width: 20px;
+    min-height: 18px;
+    max-height: 18px;
+    margin-left: 5px;
+    font-size: 14px;
+    border-radius: 3px;
+    padding-bottom: 2px;
+    border-color: rgb(26, 26, 26);
+    background-color: rgb(46, 46, 46);
+}
+
+.aspid-fasttools-id-registry-add Button:enabled:hover {
+    color: rgb(127, 255, 127);
+    border-color: rgb(127, 255, 127);
+    background-color: rgb(30, 60, 30);
+}
+
+.aspid-fasttools-id-registry-add > Label {
+    color: rgb(255, 102, 102);
+    font-size: 11px;
+    margin: 3px 0 0 0;
+}
+
+.aspid-fasttools-id-registry-warning {
+    display: none;
+    flex-direction: row;
+    align-items: center;
+    padding: 5px 8px;
+    margin-bottom: 4px;
+    background-color: rgb(79, 30, 30);
+    border-radius: 6px;
+}
+
+.aspid-fasttools-id-registry-warning--visible {
+    display: flex;
+}
+
+.aspid-fasttools-id-registry-warning-label {
+    flex-grow: 1;
+    color: rgb(255, 153, 153);
+    font-size: 11px;
+}
+
+.aspid-fasttools-id-registry-warning-button {
+    flex-shrink: 0;
+    margin-left: 8px;
+    padding: 2px 8px;
+}

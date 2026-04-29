@@ -24,9 +24,9 @@ namespace Aspid.MVVM.StarterKit
         
         private bool _isViewSet;
 
-        private StatusStyle Status => _isViewSet
-            ? StatusStyle.Success
-            : StatusStyle.Error;
+        private StatusStyle.Type Status => _isViewSet
+            ? StatusStyle.Type.Success
+            : StatusStyle.Type.Error;
         
         private void OnEnable()
         {
@@ -37,7 +37,7 @@ namespace Aspid.MVVM.StarterKit
         public override VisualElement CreateInspectorGUI()
         {
             _root = new VisualElement()
-                .AddStyleSheetsFromResource(StyleClasses.DefaultStyleSheet);
+                .AddStyleSheetsFromResource(AspidStyles.DefaultStyleSheet);
 
             var header = new AspidInspectorHeader(GetScriptName(), target) { Subtext = GetScriptSubtext() }
                 .SetMargin(top: 3, left: -10f);
@@ -45,7 +45,7 @@ namespace Aspid.MVVM.StarterKit
             var viewHelpBox = new AspidHelpBox(
                     title: "Missing View Reference",
                     message: "This manual initializer needs a View component to bind the ViewModel to. Assign at least one View in the field above before calling Initialize at runtime.",
-                    HelpBoxMessageType.Error)
+                    AspidHelpBoxPreset.Default.SetMessageType(HelpBoxMessageType.Error))
                 .SetName("ViewHelpBox");
             
             var view = new AspidBox()

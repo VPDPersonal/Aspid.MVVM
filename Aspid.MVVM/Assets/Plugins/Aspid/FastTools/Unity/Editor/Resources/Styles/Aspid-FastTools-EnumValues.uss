@@ -1,11 +1,11 @@
 :root {
-    --aspid-dark: #262626;
-    --aspid-light: #2E2E2E;
-    --aspid-shade-darkness: #3c3c3c;
+    --aspid-colors-bg-dark: #262626;
+    --aspid-colors-bg-light: #2E2E2E;
+    --aspid-colors-shade-darkness: #3c3c3c;
     margin: 2px 0 2px 0;
 }
 
-.aspid-fasttools-draw-adapter.aspid-fasttools-draw-adapter-margin {
+.aspid-fasttools-draw-adapter.aspid-fasttools-draw-adapter--margin {
     margin: 0;
 }
 
@@ -17,8 +17,8 @@
     padding: 2px;
     border-width: 1px;
     border-radius: 5px 5px 0 0;
-    border-color: var(--aspid-dark);
-    background-color: var(--aspid-light);
+    border-color: var(--aspid-colors-bg-dark);
+    background-color: var(--aspid-colors-bg-light);
 }
 
 .aspid-fasttools-enum-values-container {
@@ -27,8 +27,8 @@
     border-right-width: 1px;
     border-bottom-width: 1px;
     border-radius: 0 0 5px 5px;
-    border-color: var(--aspid-dark);
-    background-color: var(--aspid-shade-darkness);
+    border-color: var(--aspid-colors-bg-dark);
+    background-color: var(--aspid-colors-shade-darkness);
 }
 
 .aspid-fasttools-enum-values-values {

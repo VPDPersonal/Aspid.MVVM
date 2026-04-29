@@ -25,7 +25,7 @@ namespace Aspid.MVVM
         private bool _isInitialized;
         protected readonly TEditor Editor;
         
-        protected virtual StatusStyle Status => StatusStyle.Success;
+        protected virtual StatusStyle.Type Status => StatusStyle.Type.Success;
 
         protected virtual IEnumerable<string> PropertiesExcluding
         {
@@ -71,7 +71,7 @@ namespace Aspid.MVVM
         #region Build Methods
         private void Build()
         {
-            this.AddStyleSheetsFromResource(StyleClasses.DefaultStyleSheet);
+            this.AddStyleSheetsFromResource(AspidStyles.DefaultStyleSheet);
 
             Add(BuildHeader());
             

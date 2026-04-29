@@ -11,6 +11,7 @@ using Aspid.FastTools.Editors;
 using System.Collections.Generic;
 using Aspid.FastTools.UIElements;
 using Aspid.FastTools.UIElements.Editors.Internal;
+using UnityEngine;
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM
@@ -184,8 +185,8 @@ namespace Aspid.MVVM
                 if (result is CompatibleBinderWithField.None) return;
                 
                 field.AnimateHighlight(result is CompatibleBinderWithField.Type 
-                    ? EditorConstants.WarningColor
-                    : EditorConstants.SuccessColor);
+                    ? new Color(r: 0.61f, g: 0.44f, b: 0.11f)
+                    : new Color(r: 0.04f, g: 0.27f, b: 0.17f));
             });
         }
 

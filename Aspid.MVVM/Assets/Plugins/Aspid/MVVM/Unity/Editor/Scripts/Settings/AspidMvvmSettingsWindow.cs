@@ -4,6 +4,7 @@ using UnityEngine;
 using Aspid.Internal;
 using UnityEngine.UIElements;
 using Aspid.FastTools.UIElements;
+using Aspid.FastTools.UIElements.Editors.Internal;
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM
@@ -47,7 +48,7 @@ namespace Aspid.MVVM
         public static void ShowWindow()
         {
             var window = GetWindow<AspidMvvmSettingsWindow>();
-            window.titleContent = new GUIContent(WindowTitle, Resources.Load<Texture2D>(EditorConstants.AspidIconGreen));
+            window.titleContent = new GUIContent(WindowTitle, Resources.Load<Texture2D>("Icons/aspid_icon_medium_green_1020x1008"));
             window.minSize = new Vector2(MinWidth, MinHeight);
             window.Show();
         }
@@ -98,7 +99,7 @@ namespace Aspid.MVVM
             var header = new VisualElement();
             header.AddToClassList("header");
 
-            var icon = new Image().SetImageFromResource(EditorConstants.AspidIconGreen);
+            var icon = new Image().SetImageFromResource("Icons/aspid_icon_medium_green_1020x1008");
             
             var titleContainer = new VisualElement()
                 .SetFlexDirection(FlexDirection.Column)

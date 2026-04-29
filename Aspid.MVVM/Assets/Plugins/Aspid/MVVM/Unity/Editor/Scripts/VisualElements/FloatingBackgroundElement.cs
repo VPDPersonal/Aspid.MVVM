@@ -98,9 +98,9 @@ namespace Aspid.MVVM
             
             private static readonly string[] _iconPaths =
             {
-                EditorConstants.AspidIconRed,
-                EditorConstants.AspidIconGreen,
-                EditorConstants.AspidIconYellow,
+                "Icons/aspid_icon_medium_red_1020x1008",
+                "Icons/aspid_icon_medium_green_1020x1008",
+                "Icons/aspid_icon_medium_yellow_1020x1008",
             };
             
             private const int RowCount = 4; 

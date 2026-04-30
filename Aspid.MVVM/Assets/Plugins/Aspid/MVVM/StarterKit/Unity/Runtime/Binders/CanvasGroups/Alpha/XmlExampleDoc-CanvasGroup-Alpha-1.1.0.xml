@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doc>
+    <member name="CanvasGroupAlphaBinder">
+        <example>
+            Bind the CanvasGroup alpha property using a serialized binder field — the target CanvasGroup is assigned in the Inspector.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField]
+                    private CanvasGroupAlphaBinder _alpha;
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [Bind] public float _alpha;
+                }
+            </code>
+            &#xD;
+            Bind the CanvasGroup alpha property by constructing the binder in code.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField] private CanvasGroup _canvasGroup;
+                    &#xD;
+                    private CanvasGroupAlphaBinder Alpha =>
+                        new(_canvasGroup);
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [Bind] public float _alpha;
+                }
+            </code>
+        </example>
+    </member>
+    <member name="CanvasGroupAlphaSwitcherBinder">
+        <example>
+            Switch the CanvasGroup alpha between two values using a serialized binder field — the target CanvasGroup is assigned in the Inspector.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField]
+                    private CanvasGroupAlphaSwitcherBinder _isVisible;
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [Bind] public bool _isVisible;
+                }
+            </code>
+            &#xD;
+            Switch the CanvasGroup alpha between two values by constructing the binder in code.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField] private CanvasGroup _canvasGroup;
+                    &#xD;
+                    private CanvasGroupAlphaSwitcherBinder IsVisible => new(
+                        _canvasGroup, trueValue: 1f, falseValue: 0f);
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [Bind] public bool _isVisible;
+                }
+            </code>
+        </example>
+    </member>
+</doc>
+

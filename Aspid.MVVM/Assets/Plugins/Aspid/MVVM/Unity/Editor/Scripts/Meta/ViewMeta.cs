@@ -1,0 +1,33 @@
+using System;
+using System.Linq;
+using System.Reflection;
+using System.Collections.Generic;
+using Aspid.FastTools.Reflection;
+
+// ReSharper disable once CheckNamespace
+namespace Aspid.MVVM
+{
+    /// <summary>
+    /// Metadata for an <see cref="IView"/> type, aggregating all of its <see cref="BinderPropertyMeta"/> entries
+    /// discovered through reflection.
+    /// </summary>
+    public class ViewMeta
+    {
+        public readonly Type Type;
+        public readonly IReadOnlyList<BinderPropertyMeta> BinderProperties;
+        
+        public ViewMeta(Type type)
+        {
+            Type = type;
+            
+            if (type.GetInterfaces().All(i => i != typeof(IView)))
+                throw new ArgumentException($"{type} must implement {nameof(IView)}");
+
+            const BindingFlags bindingAttr = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance;
+            BinderProperties = type.GetMembersInfosIncludingBaseClasses(bindingAttr)
+                .Where(BinderPropertyMeta.IsBinderProperty)
+                .Select(member => new BinderPropertyMeta(member))
+                .ToArray();
+        }
+    }
+}

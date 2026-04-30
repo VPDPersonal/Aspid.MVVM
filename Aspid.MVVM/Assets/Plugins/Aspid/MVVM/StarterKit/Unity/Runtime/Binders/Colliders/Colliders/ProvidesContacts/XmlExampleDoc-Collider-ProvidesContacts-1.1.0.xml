@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doc>
+    <member name="ColliderProvidesContactsBinder">
+        <example>
+            Bind the Collider providesContacts property using a serialized binder field — the target Collider is assigned in the Inspector.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField]
+                    private ColliderProvidesContactsBinder _providesContacts;
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [Bind] public bool _providesContacts;
+                }
+            </code>
+            &#xD;
+            Bind the Collider providesContacts property by constructing the binder in code.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField] private Collider _collider;
+                    &#xD;
+                    private ColliderProvidesContactsBinder ProvidesContacts =>
+                        new(_collider);
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [Bind] public bool _providesContacts;
+                }
+            </code>
+        </example>
+    </member>
+</doc>
+

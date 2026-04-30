@@ -1,0 +1,27 @@
+using UnityEngine;
+
+// ReSharper disable CheckNamespace
+namespace Aspid.MVVM.Samples.Stats
+{
+    [View]
+    public partial class ReadOnlyStatsView : MonoView, IView<StatsViewModel>
+    {
+        [RequireBinder(typeof(int))]
+        [SerializeField] private MonoBinder[] _cool;
+        
+        [RequireBinder(typeof(int))]
+        [SerializeField] private MonoBinder[] _power;
+        
+        [RequireBinder(typeof(int))]
+        [SerializeField] private MonoBinder[] _reflexes;
+        
+        [RequireBinder(typeof(int))]
+        [SerializeField] private MonoBinder[] _intelligence;
+        
+        [RequireBinder(typeof(int))]
+        [SerializeField] private MonoBinder[] _technicalAbility;
+        
+        [RequireBinder(typeof(int))]
+        [SerializeField] private MonoBinder[] _skillPointsAvailable;
+    }
+}

@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doc>
+    <member name="OneWayValue{1}">
+        <example>
+            Subscribe to ViewModel value changes and update the View on each update.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField] private TMP_Text _label;
+                    private OneWayValue&lt;int&gt; _score = new();
+                    &#xD;
+                    private void OnInitializedInternal(IViewModel viewModel)
+                    {
+                        OnScoreChanged(_score.Value);
+                        _score.Changed += OnScoreChanged;
+                    }
+                    &#xD;
+                    private void OnDeinitializingInternal()
+                        _score.Changed -= OnScoreChanged;
+                    &#xD;
+                    private void OnScoreChanged(int? value) =&gt;
+                        _label.text = value.ToString();
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [Bind] public string _score;
+                }
+            </code>
+        </example>
+    </member>
+    <member name="TwoWayValue{1}">
+        <example>
+            Synchronize a slider with a ViewModel float property in both directions.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField] private Slider _slider;
+                    [SerializeField] private TwoWayValue&lt;float&gt; _health;
+                    &#xD;
+                    private void OnInitializedInternal(IViewModel viewModel)
+                    {
+                        _slider.value = _health.Value;
+                        _health.Changed += OnHealthChanged;
+                        _healthSlider.onValueChanged.AddListener(OnSliderChanged);
+                    }
+                    &#xD;
+                    private void OnDeinitializingInternal()
+                    {
+                        _health.Changed -= OnHealthChanged;
+                        _healthSlider.onValueChanged.RemoveListener(OnSliderChanged);
+                    }
+                    &#xD;
+                    private void OnHealthChanged(float? value) =&gt;
+                        _slider.value = value ?? 0f;
+                    &#xD;
+                    private void OnSliderChanged(float value) =&gt;
+                        _health.Value = value;
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [Bind] public float _health;
+                }
+            </code>
+        </example>
+    </member>
+    <member name="OneTimeValue{1}">
+        <example>
+            Read a ViewModel value exactly once at initialization time.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField] private TMP_Text _label;
+                    private OneTimeValue&lt;string&gt; _name = new();
+                    &#xD;
+                    partial void OnInitializedInternal(IViewModel viewModel) =&gt;
+                        _label.text = _name.Value;
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [Bind] public string _name;
+                }
+            </code>
+        </example>
+    </member>
+    <member name="OneWayToSourceValue{1}">
+        <example>
+            Push an Inspector-set value to the ViewModel when binding is established.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField] private OneWayToSourceValue&lt;string&gt; _name;
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [Bind] public string _name;
+                }
+            </code>
+        </example>
+    </member>
+</doc>
+

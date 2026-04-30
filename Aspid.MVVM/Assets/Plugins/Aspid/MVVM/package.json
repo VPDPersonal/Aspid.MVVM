@@ -1,0 +1,12 @@
+{
+  "name": "com.aspid.mvvm",
+  "version": "1.1.0",
+  "displayName": "Aspid.MVVM",
+  "description": "Aspid.MVVM is a powerful, high-performance MVVM framework for Unity, eliminating reflection, minimizing GC allocations, and removing boilerplate code for faster, streamlined development.",
+  "unity": "2022.3",
+  "author":
+  {
+    "name": "Vladislav Panin",
+    "email": "vpd.aspid@gmail.com"
+  }
+}

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doc>
+    <member name="BehaviourEnabledBinder">
+        <example>
+            Bind the Behaviour enabled property using a serialized binder field — the target Behaviour is assigned in the Inspector.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField]
+                    private BehaviourEnabledBinder _enabled;
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [Bind] public bool _enabled;
+                }
+            </code>
+            &#xD;
+            Bind the Behaviour enabled property by constructing the binder in code.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField] private Behaviour _behaviour;
+                    &#xD;
+                    private BehaviourEnabledBinder Enabled =>
+                        new(_behaviour);
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [Bind] public bool _enabled;
+                }
+            </code>
+        </example>
+    </member>
+</doc>
+

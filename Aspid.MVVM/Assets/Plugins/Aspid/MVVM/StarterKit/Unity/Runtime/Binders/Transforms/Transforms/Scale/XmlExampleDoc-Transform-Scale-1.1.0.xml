@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doc>
+    <member name="TransformScaleBinder">
+        <example>
+            Bind the Transform local scale using a serialized binder field — the target Transform is assigned in the Inspector.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField]
+                    private TransformScaleBinder _scale;
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [Bind] public Vector3 _scale;
+                }
+            </code>
+            &#xD;
+            Bind the Transform local scale by constructing the binder in code.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField] private Transform _target;
+                    &#xD;
+                    private TransformScaleBinder Scale =&gt;
+                        new(_target, converter: null);
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [Bind] public Vector3 _scale;
+                }
+            </code>
+        </example>
+    </member>
+    <member name="TransformScaleSwitcherBinder">
+        <example>
+            Switch the Transform local scale between two values using a serialized binder field — the target Transform is assigned in the Inspector.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField]
+                    private TransformScaleSwitcherBinder _isVisible;
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [Bind] public bool _isVisible;
+                }
+            </code>
+            &#xD;
+            Switch the Transform local scale between two values by constructing the binder in code.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField]
+                    private Transform _target;
+                    &#xD;
+                    [SerializeField]
+                    private Vector3 _visibleScale;
+                    &#xD;
+                    [SerializeField]
+                    private Vector3 _hiddenScale;
+                    &#xD;
+                    private TransformScaleSwitcherBinder IsVisible =&gt; new(
+                        _target, _visibleScale, _hiddenScale, converter: null);
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [Bind] public bool _isVisible;
+                }
+            </code>
+        </example>
+    </member>
+</doc>

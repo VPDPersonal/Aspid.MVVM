@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doc>
+    <member name="InputFieldBinder">
+        <example>
+            Bind the TMP_InputField text in TwoWay mode using a serialized binder field — the target is assigned in the Inspector.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField]
+                    private InputFieldBinder _username;
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [Bind] public string _username;
+                }
+            </code>
+            &#xD;
+            Bind the TMP_InputField text in TwoWay mode by constructing the binder in code — changes in the input field are forwarded through the ValueChanged event.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField] private TMP_InputField _inputField;
+                    &#xD;
+                    private InputFieldBinder Username =&gt;
+                        new(_inputField);
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [Bind] public string _username;
+                }
+            </code>
+        </example>
+    </member>
+</doc>

@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doc>
+    <member name="CapsuleColliderRadiusBinder">
+        <example>
+            Bind the CapsuleCollider radius property using a serialized binder field — the target CapsuleCollider is assigned in the Inspector.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField]
+                    private CapsuleColliderRadiusBinder _radius;
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [Bind] public float _radius;
+                }
+            </code>
+            &#xD;
+            Bind the CapsuleCollider radius property by constructing the binder in code.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField] private CapsuleCollider _capsuleCollider;
+                    &#xD;
+                    private CapsuleColliderRadiusBinder Radius =>
+                        new(_capsuleCollider);
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [Bind] public float _radius;
+                }
+            </code>
+        </example>
+    </member>
+    <member name="CapsuleColliderRadiusSwitcherBinder">
+        <example>
+            Switch the CapsuleCollider radius between two float values using a serialized binder field — the target CapsuleCollider is assigned in the Inspector.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField]
+                    private CapsuleColliderRadiusSwitcherBinder _isExpanded;
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [Bind] public bool _isExpanded;
+                }
+            </code>
+            &#xD;
+            Switch the CapsuleCollider radius between two float values by constructing the binder in code.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField] private CapsuleCollider _capsuleCollider;
+                    &#xD;
+                    private CapsuleColliderRadiusSwitcherBinder IsExpanded => new(
+                        _capsuleCollider,
+                        trueValue: 1f,
+                        falseValue: 0.5f);
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [Bind] public bool _isExpanded;
+                }
+            </code>
+        </example>
+    </member>
+</doc>
+

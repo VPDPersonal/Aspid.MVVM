@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doc>
+    <member name="LocalizeStringEventEntryBinder">
+        <example>
+            Bind the LocalizeStringEvent localization entry to a string ViewModel property using a serialized binder field — the target LocalizeStringEvent is assigned in the Inspector.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField]
+                    private LocalizeStringEventEntryBinder _label;
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [Bind] public string _label; // bound value is used as the table entry key
+                }
+            </code>
+            &#xD;
+            Bind the LocalizeStringEvent localization entry to a string ViewModel property by constructing the binder in code.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField] private LocalizeStringEvent _target;
+                    &#xD;
+                    private LocalizeStringEventEntryBinder Label =&gt;
+                        new(_target);
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [Bind] public string _label;
+                }
+            </code>
+        </example>
+    </member>
+    <member name="LocalizeStringEventEntrySwitcherBinder">
+        <example>
+            Switch the LocalizeStringEvent localization entry between two keys using a serialized binder field — the target LocalizeStringEvent is assigned in the Inspector.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField]
+                    private LocalizeStringEventEntrySwitcherBinder _isActive;
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [Bind] public bool _isActive;
+                }
+            </code>
+            &#xD;
+            Switch the LocalizeStringEvent localization entry between two keys by constructing the binder in code.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField] private LocalizeStringEvent _target;
+                    &#xD;
+                    private LocalizeStringEventEntrySwitcherBinder IsActive =&gt; new(
+                        _target, trueValue: "ui_active_key", falseValue: "ui_inactive_key");
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [Bind] public bool _isActive;
+                }
+            </code>
+        </example>
+    </member>
+</doc>

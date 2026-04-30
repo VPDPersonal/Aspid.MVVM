@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doc>
+    <member name="AnyToStringCasterBinder">
+        <example>
+            Format any ViewModel value as text without knowing its exact type at compile time.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField] 
+                    private TMP_Text _label;
+                    &#xD;
+                    private AnyToStringCasterBinder Score =&gt; new(
+                        value =&gt; _label.text = value);
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [Bind] public int _score;
+                }
+            </code>
+        </example>
+    </member>
+    <member name="GenericToStringCasterBinder{1}">
+        <example>
+            Format a float ViewModel value with a specific number format before displaying it.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField] 
+                    private TMP_Text _label;
+                    &#xD;
+                    private GenericToStringCasterBinder&lt;float&gt; Distance =&gt; new(
+                        value =&gt; _label.text = value, "F1");
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [Bind] public float _distance;
+                }
+            </code>
+        </example>
+    </member>
+    <member name="StringToBoolCasterBinder">
+        <example>
+            Show a warning panel when a ViewModel error message is non-empty.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField] 
+                    private GameObject _warningPanel;
+                    &#xD;
+                    private StringToBoolCasterBinder ErrorMessage =&gt; new(
+                        value =&gt; _warningPanel.SetActive(value),
+                        isInvert: true);
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [Bind] public string _errorMessage;
+                }
+            </code>
+        </example>
+    </member>
+</doc>

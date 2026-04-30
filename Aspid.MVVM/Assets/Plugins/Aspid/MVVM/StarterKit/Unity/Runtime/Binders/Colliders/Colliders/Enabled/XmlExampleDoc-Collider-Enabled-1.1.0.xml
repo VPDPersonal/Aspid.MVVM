@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doc>
+    <member name="ColliderEnabledBinder">
+        <example>
+            Bind the Collider enabled property using a serialized binder field — the target Collider is assigned in the Inspector.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField]
+                    private ColliderEnabledBinder _enabled;
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [Bind] public bool _enabled;
+                }
+            </code>
+            &#xD;
+            Bind the Collider enabled property by constructing the binder in code.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField] private Collider _collider;
+                    &#xD;
+                    private ColliderEnabledBinder Enabled =>
+                        new(_collider);
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [Bind] public bool _enabled;
+                }
+            </code>
+        </example>
+    </member>
+</doc>
+

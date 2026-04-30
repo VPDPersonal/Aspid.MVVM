@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doc>
+    <member name="AudioSourceMuteBinder">
+        <example>
+            Bind the AudioSource mute property using a serialized binder field — the target AudioSource is assigned in the Inspector.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField]
+                    private AudioSourceMuteBinder _mute;
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [Bind] public bool _mute;
+                }
+            </code>
+            &#xD;
+            Bind the AudioSource mute property by constructing the binder in code.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField] 
+                    private AudioSource _audioSource;
+                    &#xD;
+                    private AudioSourceMuteBinder Mute =>
+                        new(_audioSource);
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [Bind] public bool _mute;
+                }
+            </code>
+        </example>
+    </member>
+</doc>

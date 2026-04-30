@@ -14,13 +14,13 @@ namespace Aspid.MVVM
 {
     [CanEditMultipleObjects]
     [CustomEditor(typeof(MonoView), editorForChildClasses: true)]
-    public sealed class MonoViewEditor : MonoViewEditor<MonoView, MonoViewEditor>
+    internal sealed class MonoViewEditor : MonoViewEditor<MonoView, MonoViewEditor>
     {
         protected override ViewVisualElement<MonoView, MonoViewEditor> BuildVisualElement() =>
             new MonoViewVisualElement(this);
     }
     
-    public abstract class MonoViewEditor<TMonoView, TEditor> : ViewEditor<TMonoView, TEditor>
+    internal abstract class MonoViewEditor<TMonoView, TEditor> : ViewEditor<TMonoView, TEditor>
         where TMonoView : MonoView
         where TEditor : MonoViewEditor<TMonoView, TEditor>  
     {

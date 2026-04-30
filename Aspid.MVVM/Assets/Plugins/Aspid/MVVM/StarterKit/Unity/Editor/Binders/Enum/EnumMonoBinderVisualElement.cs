@@ -1,7 +1,7 @@
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
-    public class EnumMonoBinderVisualElement : MonoBinderVisualElement
+    internal class EnumMonoBinderVisualElement : MonoBinderVisualElement
     {
         protected override string ScriptSubtext => "Enum";
         

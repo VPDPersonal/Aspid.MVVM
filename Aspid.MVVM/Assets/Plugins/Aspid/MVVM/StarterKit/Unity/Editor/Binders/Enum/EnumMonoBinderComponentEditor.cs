@@ -4,5 +4,5 @@ using UnityEditor;
 namespace Aspid.MVVM.StarterKit
 {
     [CustomEditor(typeof(EnumMonoBinder<,>), editorForChildClasses: true)]
-    public class EnumMonoBinderComponentEditor : EnumMonoBinderEditor { }
+    internal class EnumMonoBinderComponentEditor : EnumMonoBinderEditor { }
 }

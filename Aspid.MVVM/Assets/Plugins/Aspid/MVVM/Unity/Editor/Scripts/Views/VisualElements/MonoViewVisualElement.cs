@@ -15,13 +15,13 @@ using Aspid.FastTools.UIElements.Editors.Internal;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM
 {
-    public sealed class MonoViewVisualElement : MonoViewVisualElement<MonoView, MonoViewEditor>
+    internal sealed class MonoViewVisualElement : MonoViewVisualElement<MonoView, MonoViewEditor>
     {
         public MonoViewVisualElement(MonoViewEditor editor) :
             base(editor) { }
     }
     
-    public abstract class MonoViewVisualElement<TView, TEditor> : ViewVisualElement<TView, TEditor>
+    internal abstract class MonoViewVisualElement<TView, TEditor> : ViewVisualElement<TView, TEditor>
         where TView : MonoView
         where TEditor : MonoViewEditor<TView, TEditor>
     {

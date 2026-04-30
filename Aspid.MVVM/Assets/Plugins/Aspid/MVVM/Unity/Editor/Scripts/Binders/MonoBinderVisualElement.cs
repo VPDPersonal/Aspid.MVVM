@@ -17,7 +17,7 @@ namespace Aspid.MVVM
     /// UIElements visual element that renders the inspector UI for a <see cref="MonoBinder"/>,
     /// including header, ID selector, View selector, and logs.
     /// </summary>
-    public class MonoBinderVisualElement : VisualElement
+    internal class MonoBinderVisualElement : VisualElement
     {
         private static readonly StyleSheet _idSelectorStyleSheet = Resources.Load<StyleSheet>("Styles/Aspid-MVVM-MonoBinder");
 

@@ -5,7 +5,7 @@ namespace Aspid.MVVM.StarterKit
 {
     [CanEditMultipleObjects]
     [CustomEditor(typeof(EnumGroupMonoBinder<>), editorForChildClasses: true)]
-    public class EnumGroupMonoBinderEditor : MonoBinderEditor
+    internal class EnumGroupMonoBinderEditor : MonoBinderEditor
     {
         protected override MonoBinderVisualElement BuildVisualElement() =>
             new EnumGroupMonoBinderVisualElement(editor: this);

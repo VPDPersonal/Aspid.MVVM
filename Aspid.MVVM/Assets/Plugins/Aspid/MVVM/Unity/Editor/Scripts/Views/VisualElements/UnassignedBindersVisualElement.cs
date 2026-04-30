@@ -22,7 +22,7 @@ namespace Aspid.MVVM
     /// </summary>
     /// <typeparam name="TMonoView">The concrete <see cref="MonoView"/> type being inspected.</typeparam>
     /// <typeparam name="TEditor">The corresponding <see cref="MonoViewEditor{TMonoView,TEditor}"/> type.</typeparam>
-    public sealed class UnassignedBindersVisualElement<TMonoView, TEditor> : VisualElement
+    internal sealed class UnassignedBindersVisualElement<TMonoView, TEditor> : VisualElement
         where TMonoView : MonoView
         where TEditor : MonoViewEditor<TMonoView, TEditor>
     {

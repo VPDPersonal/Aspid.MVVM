@@ -5,5 +5,5 @@ namespace Aspid.MVVM.StarterKit
 {
     [CanEditMultipleObjects]
     [CustomEditor(typeof(SwitcherMonoBinder<,,>), editorForChildClasses: true)]
-    public class SwitcherMonoBinderComponentConverterEditor : SwitcherMonoBinderEditor { }
+    internal class SwitcherMonoBinderComponentConverterEditor : SwitcherMonoBinderEditor { }
 }

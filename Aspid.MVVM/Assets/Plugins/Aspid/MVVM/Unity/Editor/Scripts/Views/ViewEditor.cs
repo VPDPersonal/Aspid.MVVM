@@ -16,7 +16,7 @@ namespace Aspid.MVVM
     /// </summary>
     /// <typeparam name="T">The concrete <see cref="IView"/> type being inspected.</typeparam>
     /// <typeparam name="TEditor">The derived editor type (self-referencing).</typeparam>
-    public abstract class ViewEditor<T, TEditor> : Editor
+    internal abstract class ViewEditor<T, TEditor> : Editor
         where T : Object, IView
         where TEditor : ViewEditor<T, TEditor>
     {

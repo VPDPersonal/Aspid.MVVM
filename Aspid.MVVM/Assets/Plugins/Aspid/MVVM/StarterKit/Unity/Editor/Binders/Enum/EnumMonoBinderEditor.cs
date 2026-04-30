@@ -9,7 +9,7 @@ using Aspid.FastTools.Editors;
 namespace Aspid.MVVM.StarterKit
 {
     [CustomEditor(typeof(EnumMonoBinder<>), editorForChildClasses: true)]
-    public class EnumMonoBinderEditor : MonoBinderEditor
+    internal class EnumMonoBinderEditor : MonoBinderEditor
     {
         private Type _requiredEnumType;
         private SerializedProperty _enumTypeProperty;

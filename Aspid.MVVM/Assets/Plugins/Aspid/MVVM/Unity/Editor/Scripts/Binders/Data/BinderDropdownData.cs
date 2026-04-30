@@ -9,7 +9,7 @@ namespace Aspid.MVVM
     /// Immutable data structure carrying the selected index and available choices for a dropdown field
     /// in the <see cref="MonoBinderVisualElement"/> inspector.
     /// </summary>
-    public readonly struct BinderDropdownData
+    internal readonly struct BinderDropdownData
     {
         private const int NoneValueIndex = 0;
 

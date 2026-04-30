@@ -18,7 +18,7 @@ namespace Aspid.MVVM
     /// </summary>
     /// <typeparam name="TView">The concrete <see cref="IView"/> type being inspected.</typeparam>
     /// <typeparam name="TEditor">The corresponding <see cref="ViewEditor{T,TEditor}"/> type.</typeparam>
-    public class ViewVisualElement<TView, TEditor> : VisualElement
+    internal class ViewVisualElement<TView, TEditor> : VisualElement
         where TView : Object, IView
         where TEditor : ViewEditor<TView, TEditor>
     {

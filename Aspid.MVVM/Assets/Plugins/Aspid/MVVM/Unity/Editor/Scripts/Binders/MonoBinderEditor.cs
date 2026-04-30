@@ -16,7 +16,7 @@ namespace Aspid.MVVM
     /// </summary>
     [CanEditMultipleObjects]
     [CustomEditor(typeof(MonoBinder), editorForChildClasses: true)]
-    public class MonoBinderEditor : Editor
+    internal class MonoBinderEditor : Editor
     {
         private string _lastId;
         private IView _lastView;

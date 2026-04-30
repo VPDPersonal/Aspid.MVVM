@@ -1,7 +1,7 @@
 using System;
 using System.Linq;
-using Aspid.FastTools;
 using System.Reflection;
+using Aspid.FastTools.Reflection;
 using System.Runtime.CompilerServices;
 
 // ReSharper disable once CheckNamespace

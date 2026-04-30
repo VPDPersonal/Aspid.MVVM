@@ -20,7 +20,7 @@ teams to scale projects without descending into chaos.
 
 ## Source Code
 
-### [[Aspid.MVVM](https://github.com/VPDPersonal/Aspid.MVVM/tree/main)] [[Aspid.MVVM.Generators](https://github.com/VPDPersonal/Aspid.MVMM.Generators)]
+### [[Aspid.MVVM](https://github.com/VPDPersonal/Aspid.MVVM/tree/main)] [[Aspid.MVVM.Generators](https://github.com/VPDPersonal/Aspid.MVVM.Generators)]
 
 ### [[Aspid.MVVM.Unity.Generators](https://github.com/VPDPersonal/Aspid.MVVM.Unity.Generators)] [[Aspid.MVVM.Analyzers](https://github.com/VPDPersonal/Aspid.MVVM.Analyzers)]
 

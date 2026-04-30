@@ -19,7 +19,7 @@
     height: 18px;
     min-width: 18px;
     align-items: center;
-    background-color: var(--aspid-error);
+    background-color: var(--aspid-colors-status-error-dark);
 }
 
 .aspid-mono-binder-id-selector-restore-button > Image
@@ -92,11 +92,11 @@
 
 .aspid-mono-binder-id-selector-dropdown--previous VisualElement
 {
-    background-color: var(--aspid-error);
+    background-color: var(--aspid-colors-status-error-dark);
 }
 
 .aspid-mono-binder-id-selector-dropdown--previous .unity-base-popup-field__text
 {
-    color: var(--aspid-error-lightness);
+    color: var(--aspid-colors-status-error-text-lightness);
     -unity-font-style: bold-and-italic;
 }

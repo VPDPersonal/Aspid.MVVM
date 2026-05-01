@@ -1,3 +1,8 @@
+#if UNITY_2022_1_OR_NEWER && !ASPID_MVVM_UNITY_PROFILER_DISABLED                                                                                                                                                                                                                    
+#define PROFILER
+#endif
+
+using System.Diagnostics;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 
@@ -6,6 +11,14 @@ namespace Aspid.MVVM
 {
     public static partial class BinderExtensions
     {
+#if PROFILER
+        private static partial class Markers<T>
+            where T : IBinder
+        {
+            public static readonly Unity.Profiling.ProfilerMarker UnbindSafelyMarker = new(name: $"UnbindSafely<{typeof(T)}>");
+        }
+#endif
+        
         /// <summary>
         /// Safely unbinds a single binder.
         /// </summary>
@@ -17,8 +30,13 @@ namespace Aspid.MVVM
         public static void UnbindSafely<T>(this T? binder, object? owner = null, string? memberName = null)
             where T : IBinder
         {
-            if (binder is null) return;
-            binder.Unbind();
+#if PROFILER
+            using (Markers<T>.UnbindSafelyMarker.Auto())
+#endif
+            {
+                if (binder is null) return;
+                binder.Unbind();
+            }
         }
 
         /// <summary>
@@ -37,26 +55,26 @@ namespace Aspid.MVVM
         public static void UnbindSafely<T>(this T[]? binders, object? owner = null, string? memberName = null)
             where T : IBinder
         {
-            if (binders is null) return;
-
-            for (var i = 0; i < binders.Length; i++)
+#if PROFILER
+            using (Markers<T>.UnbindSafelyMarker.Auto())
+#endif
             {
-                var binder = binders[i];
-                // ReSharper disable once ConditionIsAlwaysTrueOrFalseAccordingToNullableAPIContract
-                if (binder is null)
+                if (binders is null) return;
+
+                for (var i = 0; i < binders.Length; i++)
                 {
-#if DEBUG
-                    var message = BuildUnbindSafelyBinderNullMessage(i, owner, memberName);
-#if UNITY_2020_3_OR_NEWER
-                    UnityEngine.Debug.LogError(message, owner as UnityEngine.Object);
-#else
-                    throw new UnbindSafelyNullReferenceException(message);
-#endif // UNITY_2020_3_OR_NEWER
-#endif // DEBUG
-                    continue;
+                    var binder = binders[i];
+                    
+                    // ReSharper disable once ConditionIsAlwaysTrueOrFalseAccordingToNullableAPIContract
+                    if (binder is null)
+                    {
+                        BuildUnbindSafelyBinderNullMessage(i, owner, memberName);
+                    }
+                    else
+                    {
+                        binder.Unbind();
+                    }
                 }
-                
-                binder.Unbind();
             }
         }
 
@@ -76,25 +94,25 @@ namespace Aspid.MVVM
         public static void UnbindSafely<T>(this List<T>? binders, object? owner = null, string? memberName = null)
             where T : IBinder
         {
-            if (binders is null) return;
-
-            for (var i = 0; i < binders.Count; i++)
+#if PROFILER
+            using (Markers<T>.UnbindSafelyMarker.Auto())
+#endif
             {
-                var binder = binders[i];
-                if (binder is null)
+                if (binders is null) return;
+
+                for (var i = 0; i < binders.Count; i++)
                 {
-#if DEBUG
-                    var message = BuildUnbindSafelyBinderNullMessage(i, owner, memberName);
-#if UNITY_2020_3_OR_NEWER
-                    UnityEngine.Debug.LogError(message, owner as UnityEngine.Object);
-#else
-                    throw new UnbindSafelyNullReferenceException(message);
-#endif // UNITY_2020_3_OR_NEWER
-#endif // DEBUG
-                    continue;
+                    var binder = binders[i];
+                    
+                    if (binder is null)
+                    {
+                        BuildUnbindSafelyBinderNullMessage(i, owner, memberName);
+                    }
+                    else
+                    {
+                        binder.Unbind();
+                    }
                 }
-                
-                binder.Unbind();
             }
         }
 
@@ -114,30 +132,39 @@ namespace Aspid.MVVM
         public static void UnbindSafely<T>(this IEnumerable<T>? binders, object? owner = null, string? memberName = null)
             where T : IBinder
         {
-            if (binders is null) return;
-
-            var index = 0;
-            foreach (var binder in binders)
+#if PROFILER
+            using (Markers<T>.UnbindSafelyMarker.Auto())
+#endif
             {
-                if (binder is null)
+                if (binders is null) return;
+
+                var index = 0;
+                foreach (var binder in binders)
                 {
-#if DEBUG
-                    var message = BuildUnbindSafelyBinderNullMessage(index, owner, memberName);
-#if UNITY_2020_3_OR_NEWER
-                    UnityEngine.Debug.LogError(message, owner as UnityEngine.Object);
-#else
-                    throw new UnbindSafelyNullReferenceException(message);
-#endif // UNITY_2020_3_OR_NEWER
-#endif // DEBUG
-                    continue;
+                    if (binder is null)
+                    {
+                        BuildUnbindSafelyBinderNullMessage(index, owner, memberName);
+                    }
+                    else
+                    {
+                        binder.Unbind();
+                    }
+                    
+                    index++;
                 }
-                
-                binder.Unbind();
-                index++;
             }
         }
         
-        private static string BuildUnbindSafelyBinderNullMessage(int index, object? owner, string? memberName) =>
-            BuildBinderNullMessage("UnbindSafely", index, owner, memberName);
+        [Conditional(conditionString: "DEBUG")]
+        private static void BuildUnbindSafelyBinderNullMessage(int index, object? owner, string? memberName)
+        {
+            var message = BuildBinderNullMessage(operation: "UnbindSafely", index, owner, memberName);
+            
+#if UNITY_2020_3_OR_NEWER
+            UnityEngine.Debug.LogError(message, owner as UnityEngine.Object);
+#else
+            throw new BindSafelyNullReferenceException(message);
+#endif
+        }
     }
 }

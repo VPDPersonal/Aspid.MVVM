@@ -28,11 +28,9 @@ namespace Aspid.MVVM
 
         private static string GetMessage(this string message, string color)
         {
-#if UNITY_2022_1_OR_NEWER
-            if (UnityEngine.Application.isEditor)
-                return $"<color=#{color}>{message}</color>";
+#if UNITY_EDITOR
+            return $"<color=#{color}>{message}</color>";
 #endif
-
             return message;
         }
     }

@@ -6,13 +6,12 @@ using System.ComponentModel;
 namespace Aspid.MVVM
 {
     /// <summary>
-    /// Marker attribute for fields within a class or structure marked with the <see cref="ViewModelAttribute"/>.
-    /// Used by the Source Generator to generate an event call in the generated property named propertyName.
-    /// For this attribute to work correctly, the <see cref="BindAttribute"/> or <see cref="OneWayBindAttribute"/>
-    /// or <see cref="TwoWayBindAttribute"/> or <see cref="OneWayToSourceBindAttribute"/>
-    /// must also be present.
+    /// Sealed <see cref="Attribute"/> applied to fields of a type carrying <see cref="ViewModelAttribute"/>;
+    /// directs the Source Generator to also raise the change event of the property named <see cref="PropertyName"/>
+    /// when the decorated field changes. Requires a companion <see cref="BindAttribute"/>, <see cref="OneWayBindAttribute"/>,
+    /// <see cref="TwoWayBindAttribute"/>, or <see cref="OneWayToSourceBindAttribute"/> on the same field.
     /// </summary>
-    [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property, AllowMultiple = true)]
+    [AttributeUsage(validOn: AttributeTargets.Field | AttributeTargets.Property, AllowMultiple = true)]
     public sealed class BindAlsoAttribute : Attribute
     {
 #if UNITY_EDITOR || DEBUG

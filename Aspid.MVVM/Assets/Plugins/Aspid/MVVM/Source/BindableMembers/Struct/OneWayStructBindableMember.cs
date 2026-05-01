@@ -1,12 +1,17 @@
+#if UNITY_2022_1_OR_NEWER && !ASPID_MVVM_UNITY_PROFILER_DISABLED                                                                                                                                                                                                                    
+#define PROFILER
+#endif
+
 using System;
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM
 {
     /// <summary>
-    /// Represents a one-way bindable member event that supports event notification and handling for values of a specified type.
+    /// Concrete <see cref="OneWayStructBindableMember{T,TBoxed}"/> that fixes <c>TBoxed</c> to <see cref="ValueType"/>
+    /// for any value-type payload that does not need a more specific boxing target.
     /// </summary>
-    /// <typeparam name="T">The type of the value being handled in the bindable member event.</typeparam>
+    /// <typeparam name="T">The struct type of the bound value.</typeparam>
     public sealed class OneWayStructBindableMember<T> : OneWayStructBindableMember<T, ValueType>
         where T : struct
     {
@@ -19,22 +24,20 @@ namespace Aspid.MVVM
     }
 
     /// <summary>
-    /// Represents a one-way bindable member event that supports event notification and handling for values of a specified type.
+    /// Abstract base <see cref="IBinderAdder"/> for struct-valued one-way bindings that dispatches changes to
+    /// both <see cref="IBinder{T}"/> and <see cref="IBinder{TBoxed}"/> subscribers — the latter receive the
+    /// value pre-boxed as <typeparamref name="TBoxed"/>. Additionally exposes a get/set <see cref="Value"/>
+    /// and a <see cref="Changed"/> event. Accepts only <see cref="BindMode.OneWay"/> and
+    /// <see cref="BindMode.OneTime"/> binders.
     /// </summary>
-    /// <typeparam name="T">The type of the value being handled in the bindable member event.</typeparam>
-    /// <typeparam name="TBoxed">Boxed type</typeparam>
+    /// <typeparam name="T">The struct type of the bound value.</typeparam>
+    /// <typeparam name="TBoxed">The reference type used as the boxing target for <typeparamref name="T"/> (typically <see cref="ValueType"/> or <see cref="Enum"/>).</typeparam>
     public abstract class OneWayStructBindableMember<T, TBoxed> : IBindableMember<T>, IBinderRemover
         where T : struct, TBoxed
         where TBoxed : class
     {
-#if UNITY_2022_1_OR_NEWER && !ASPID_MVVM_UNITY_PROFILER_DISABLED
-        private static readonly Unity.Profiling.ProfilerMarker _addMarker = new(name: $"OneWayStructBindableMember<{typeof(T).Name}, {typeof(TBoxed).Name}>.Add");
-        private static readonly Unity.Profiling.ProfilerMarker _removeMarker = new(name: $"OneWayStructBindableMember<{typeof(T).Name}, {typeof(TBoxed).Name}>.Remove");
-        private static readonly Unity.Profiling.ProfilerMarker _setValueMarker = new(name: $"OneWayStructBindableMember<{typeof(T).Name}, {typeof(TBoxed).Name}>.SetValue");
-#endif 
-        
         /// <summary>
-        /// Event triggered when the value changes.
+        /// Raised when the value changes.
         /// </summary>
         public event Action<T>? Changed;
         
@@ -50,8 +53,8 @@ namespace Aspid.MVVM
             get => _value;
             set
             {
-#if UNITY_2022_1_OR_NEWER && !ASPID_MVVM_UNITY_PROFILER_DISABLED
-                using (_setValueMarker.Auto())
+#if PROFILER
+                using (this.Marker())
 #endif 
                 {
                     _value = value;
@@ -75,7 +78,6 @@ namespace Aspid.MVVM
             _value = value;
         }
 
-        /// <inheritdoc/>
         /// <summary>
         /// Adds the binder to the event with the current value and subscribes to the value change event.
         /// </summary>
@@ -86,8 +88,8 @@ namespace Aspid.MVVM
         /// </exception>
         IBinderRemover? IBinderAdder.Add(IBinder binder)
         {
-#if UNITY_2022_1_OR_NEWER && !ASPID_MVVM_UNITY_PROFILER_DISABLED
-            using (_addMarker.Auto())
+#if PROFILER
+            using (this.Marker())
 #endif
             {
                 var mode = binder.Mode;
@@ -124,15 +126,14 @@ namespace Aspid.MVVM
             }
         }
 
-        /// <inheritdoc/>
         /// <summary>
         /// Removes the binder from the event subscription.
         /// </summary>
         /// <param name="binder">The binder to remove.</param>
         void IBinderRemover.Remove(IBinder binder)
         {
-#if UNITY_2022_1_OR_NEWER && !ASPID_MVVM_UNITY_PROFILER_DISABLED
-            using (_removeMarker.Auto())
+#if PROFILER
+            using (this.Marker())
 #endif
             {
                 switch (binder)
@@ -149,6 +150,7 @@ namespace Aspid.MVVM
         /// Triggers the Changed event with the specified value and updates the current value.
         /// </summary>
         /// <param name="value">The new value to set and notify.</param>
-        public void Invoke(T value) => Value = value;
+        public void Invoke(T value) => 
+            Value = value;
     }
 }

@@ -19,7 +19,7 @@ namespace Aspid.MVVM
         /// <summary>
         /// Initializes a new instance of the <see cref="FindBindableMemberResult"/> struct.
         /// </summary>
-        /// <param name="adder">The event adder for the bindable member, or <c>null</c> if not found.</param>
+        /// <param name="adder">The event adder for the bindable member, or <see langword="null"/> if not found.</param>
         public FindBindableMemberResult(IBinderAdder? adder = null)
         {
             Adder = adder;

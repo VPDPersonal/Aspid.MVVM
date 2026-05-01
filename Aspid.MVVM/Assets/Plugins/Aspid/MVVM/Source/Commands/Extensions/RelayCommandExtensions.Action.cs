@@ -71,12 +71,12 @@ namespace Aspid.MVVM
         #region CreateCommand Or Get Empty RelayCommand Methods
         /// <summary>
         /// Creates a <see cref="RelayCommand"/> using the provided delegates.
-        /// If <paramref name="execute"/> is <c>null</c>, returns a non-executable empty command.
+        /// If <paramref name="execute"/> is <see langword="null"/>, returns a non-executable empty command.
         /// </summary>
-        /// <param name="execute">The action to execute. If <c>null</c>, a non-executable empty command will be returned.</param>
+        /// <param name="execute">The action to execute. If <see langword="null"/>, a non-executable empty command will be returned.</param>
         /// <param name="canExecute">The function that determines whether the command can execute. Optional.</param>
         /// <returns>
-        /// A new <see cref="RelayCommand"/> instance, or <see cref="RelayCommand.Empty"/> if <paramref name="execute"/> is <c>null</c>.
+        /// A new <see cref="RelayCommand"/> instance, or <see cref="RelayCommand.Empty"/> if <paramref name="execute"/> is <see langword="null"/>.
         /// </returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static RelayCommand CreateCommandOrEmpty(
@@ -86,12 +86,12 @@ namespace Aspid.MVVM
         
         /// <summary>
         /// Creates a <see cref="RelayCommand"/> using the provided delegates.
-        /// If <paramref name="execute"/> is <c>null</c>, returns an executable empty command.
+        /// If <paramref name="execute"/> is <see langword="null"/>, returns an executable empty command.
         /// </summary>
-        /// <param name="execute">The action to execute. If <c>null</c>, an executable empty command will be returned.</param>
+        /// <param name="execute">The action to execute. If <see langword="null"/>, an executable empty command will be returned.</param>
         /// <param name="canExecute">The function that determines whether the command can execute. Optional.</param>
         /// <returns>
-        /// A new <see cref="RelayCommand"/> instance, or <see cref="RelayCommand.EmptyExecution"/> if <paramref name="execute"/> is <c>null</c>.
+        /// A new <see cref="RelayCommand"/> instance, or <see cref="RelayCommand.EmptyExecution"/> if <paramref name="execute"/> is <see langword="null"/>.
         /// </returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static RelayCommand CreateCommandOrEmptyExecution(
@@ -103,12 +103,12 @@ namespace Aspid.MVVM
         #region CreateCommand Or Get Empty RelayCommand<T> Methods
         /// <summary>
         /// Creates a <see cref="RelayCommand{T}"/> using the provided delegates.
-        /// If <paramref name="execute"/> is <c>null</c>, returns a non-executable empty command.
+        /// If <paramref name="execute"/> is <see langword="null"/>, returns a non-executable empty command.
         /// </summary>
-        /// <param name="execute">The action to execute. If <c>null</c>, a non-executable empty command will be returned.</param>
+        /// <param name="execute">The action to execute. If <see langword="null"/>, a non-executable empty command will be returned.</param>
         /// <param name="canExecute">Optional function to determine whether the command can execute.</param>
         /// <returns>
-        /// A new <see cref="RelayCommand{T}"/> instance, or  <see cref="RelayCommand{T}.Empty"/> if <paramref name="execute"/> is <c>null</c>.
+        /// A new <see cref="RelayCommand{T}"/> instance, or  <see cref="RelayCommand{T}.Empty"/> if <paramref name="execute"/> is <see langword="null"/>.
         /// </returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static RelayCommand<T?> CreateCommandOrEmpty<T>(
@@ -118,12 +118,12 @@ namespace Aspid.MVVM
         
         /// <summary>
         /// Creates a <see cref="RelayCommand{T}"/> using the provided delegates.
-        /// If <paramref name="execute"/> is <c>null</c>, returns an executable empty command.
+        /// If <paramref name="execute"/> is <see langword="null"/>, returns an executable empty command.
         /// </summary>
-        /// <param name="execute">The action to execute. If <c>null</c>, an executable empty command will be returned.</param>
+        /// <param name="execute">The action to execute. If <see langword="null"/>, an executable empty command will be returned.</param>
         /// <param name="canExecute">Optional function to determine whether the command can execute.</param>
         /// <returns>
-        /// A new <see cref="RelayCommand{T}"/> instance, or  <see cref="RelayCommand{T}.EmptyExecution"/> if <paramref name="execute"/> is <c>null</c>.
+        /// A new <see cref="RelayCommand{T}"/> instance, or  <see cref="RelayCommand{T}.EmptyExecution"/> if <paramref name="execute"/> is <see langword="null"/>.
         /// </returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static RelayCommand<T?> CreateCommandOrEmptyExecution<T>(
@@ -135,12 +135,12 @@ namespace Aspid.MVVM
         #region CreateCommand Or Get Empty RelayCommand<T1, T2> Methods
         /// <summary>
         /// Creates a <see cref="RelayCommand{T1, T2}"/> using the provided delegates.
-        /// If <paramref name="execute"/> is <c>null</c>, returns a non-executable empty command.
+        /// If <paramref name="execute"/> is <see langword="null"/>, returns a non-executable empty command.
         /// </summary>
-        /// <param name="execute">The action to execute. If <c>null</c>, a non-executable empty command will be returned.</param>
+        /// <param name="execute">The action to execute. If <see langword="null"/>, a non-executable empty command will be returned.</param>
         /// <param name="canExecute">Optional function to determine whether the command can execute.</param>
         /// <returns>
-        /// A new <see cref="RelayCommand{T1, T2}"/> instance, or <see cref="RelayCommand{T1, T2}.Empty"/> if <paramref name="execute"/> is <c>null</c>.
+        /// A new <see cref="RelayCommand{T1, T2}"/> instance, or <see cref="RelayCommand{T1, T2}.Empty"/> if <paramref name="execute"/> is <see langword="null"/>.
         /// </returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static RelayCommand<T1?, T2?> CreateCommandOrEmpty<T1, T2>(
@@ -150,12 +150,12 @@ namespace Aspid.MVVM
         
         /// <summary>
         /// Creates a <see cref="RelayCommand{T1, T2}"/> using the provided delegates.
-        /// If <paramref name="execute"/> is <c>null</c>, returns an executable empty command.
+        /// If <paramref name="execute"/> is <see langword="null"/>, returns an executable empty command.
         /// </summary>
-        /// <param name="execute">The action to execute. If <c>null</c>, an executable empty command will be returned.</param>
+        /// <param name="execute">The action to execute. If <see langword="null"/>, an executable empty command will be returned.</param>
         /// <param name="canExecute">Optional function to determine whether the command can execute.</param>
         /// <returns>
-        /// A new <see cref="RelayCommand{T1, T2}"/> instance, or <see cref="RelayCommand{T1, T2}.EmptyExecution"/> if <paramref name="execute"/> is <c>null</c>.
+        /// A new <see cref="RelayCommand{T1, T2}"/> instance, or <see cref="RelayCommand{T1, T2}.EmptyExecution"/> if <paramref name="execute"/> is <see langword="null"/>.
         /// </returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static RelayCommand<T1?, T2?> CreateCommandOrEmptyExecution<T1, T2>(
@@ -167,12 +167,12 @@ namespace Aspid.MVVM
         #region CreateCommand Or Get Empty RelayCommand<T1, T2, T3> Methods
         /// <summary>
         /// Creates a <see cref="RelayCommand{T1, T2, T3}"/> using the provided delegates.
-        /// If <paramref name="execute"/> is <c>null</c>, returns a non-executable empty command.
+        /// If <paramref name="execute"/> is <see langword="null"/>, returns a non-executable empty command.
         /// </summary>
-        /// <param name="execute">The action to execute. If <c>null</c>, a non-executable empty command will be returned.</param>
+        /// <param name="execute">The action to execute. If <see langword="null"/>, a non-executable empty command will be returned.</param>
         /// <param name="canExecute">Optional function to determine whether the command can execute.</param>
         /// <returns>
-        /// A new <see cref="RelayCommand{T1, T2, T3}"/> instance, or <see cref="RelayCommand{T1, T2, T3}.Empty"/> if <paramref name="execute"/> is <c>null</c>.
+        /// A new <see cref="RelayCommand{T1, T2, T3}"/> instance, or <see cref="RelayCommand{T1, T2, T3}.Empty"/> if <paramref name="execute"/> is <see langword="null"/>.
         /// </returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static RelayCommand<T1?, T2?, T3?> CreateCommandOrEmpty<T1, T2, T3>(
@@ -182,12 +182,12 @@ namespace Aspid.MVVM
 
         /// <summary>
         /// Creates a <see cref="RelayCommand{T1, T2, T3}"/> using the provided delegates.
-        /// If <paramref name="execute"/> is <c>null</c>, returns an executable empty command.
+        /// If <paramref name="execute"/> is <see langword="null"/>, returns an executable empty command.
         /// </summary>
-        /// <param name="execute">The action to execute. If <c>null</c>, an executable empty command will be returned.</param>
+        /// <param name="execute">The action to execute. If <see langword="null"/>, an executable empty command will be returned.</param>
         /// <param name="canExecute">Optional function to determine whether the command can execute.</param>
         /// <returns>
-        /// A new <see cref="RelayCommand{T1, T2, T3}"/> instance, or <see cref="RelayCommand{T1, T2, T3}.EmptyExecution"/> if <paramref name="execute"/> is <c>null</c>.
+        /// A new <see cref="RelayCommand{T1, T2, T3}"/> instance, or <see cref="RelayCommand{T1, T2, T3}.EmptyExecution"/> if <paramref name="execute"/> is <see langword="null"/>.
         /// </returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static RelayCommand<T1?, T2?, T3?> CreateCommandOrEmptyExecution<T1, T2, T3>(
@@ -199,12 +199,12 @@ namespace Aspid.MVVM
         #region CreateCommand Or Get Empty RelayCommand<T1, T2, T3, T4> Methods
         /// <summary>
         /// Creates a <see cref="RelayCommand{T1, T2, T3, T4}"/> using the provided delegates.
-        /// If <paramref name="execute"/> is <c>null</c>, returns a non-executable empty command.
+        /// If <paramref name="execute"/> is <see langword="null"/>, returns a non-executable empty command.
         /// </summary>
-        /// <param name="execute">The action to execute. If <c>null</c>, a non-executable empty command will be returned.</param>
+        /// <param name="execute">The action to execute. If <see langword="null"/>, a non-executable empty command will be returned.</param>
         /// <param name="canExecute">Optional function to determine whether the command can execute.</param>
         /// <returns>
-        /// A new <see cref="RelayCommand{T1, T2, T3, T4}"/> instance, or <see cref="RelayCommand{T1, T2, T3, T4}.Empty"/> if <paramref name="execute"/> is <c>null</c>.
+        /// A new <see cref="RelayCommand{T1, T2, T3, T4}"/> instance, or <see cref="RelayCommand{T1, T2, T3, T4}.Empty"/> if <paramref name="execute"/> is <see langword="null"/>.
         /// </returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static RelayCommand<T1?, T2?, T3?, T4?> CreateCommandOrEmpty<T1, T2, T3, T4>(
@@ -214,12 +214,12 @@ namespace Aspid.MVVM
         
         /// <summary>
         /// Creates a <see cref="RelayCommand{T1, T2, T3, T4}"/> using the provided delegates.
-        /// If <paramref name="execute"/> is <c>null</c>, returns an executable empty command.
+        /// If <paramref name="execute"/> is <see langword="null"/>, returns an executable empty command.
         /// </summary>
-        /// <param name="execute">The action to execute. If <c>null</c>, an executable empty command will be returned.</param>
+        /// <param name="execute">The action to execute. If <see langword="null"/>, an executable empty command will be returned.</param>
         /// <param name="canExecute">Optional function to determine whether the command can execute.</param>
         /// <returns>
-        /// A new <see cref="RelayCommand{T1, T2, T3, T4}"/> instance, or <see cref="RelayCommand{T1, T2, T3, T4}.EmptyExecution"/> if <paramref name="execute"/> is <c>null</c>.
+        /// A new <see cref="RelayCommand{T1, T2, T3, T4}"/> instance, or <see cref="RelayCommand{T1, T2, T3, T4}.EmptyExecution"/> if <paramref name="execute"/> is <see langword="null"/>.
         /// </returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static RelayCommand<T1?, T2?, T3?, T4?> CreateCommandOrEmptyExecution<T1, T2, T3, T4>(

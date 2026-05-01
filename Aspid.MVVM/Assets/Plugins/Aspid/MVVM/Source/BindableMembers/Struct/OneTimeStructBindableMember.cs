@@ -1,12 +1,17 @@
+#if UNITY_2022_1_OR_NEWER && !ASPID_MVVM_UNITY_PROFILER_DISABLED                                                                                                                                                                                                                    
+#define PROFILER
+#endif
+
 using System;
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM
 {
     /// <summary>
-    /// Represents a bindable member event that provides a single value in a one-time binding operation.
+    /// Concrete <see cref="OneTimeStructBindableMember{T,TBoxed}"/> that fixes <c>TBoxed</c> to <see cref="ValueType"/>,
+    /// exposed as a per-type singleton via <see cref="Get(T)"/>.
     /// </summary>
-    /// <typeparam name="T">The type of the value to be bound.</typeparam>
+    /// <typeparam name="T">The struct type of the bound value.</typeparam>
     public sealed class OneTimeStructBindableMember<T> : OneTimeStructBindableMember<T, ValueType>
         where T : struct
     {
@@ -21,7 +26,7 @@ namespace Aspid.MVVM
         /// <returns>A singleton instance of <see cref="OneTimeStructBindableMember{T}"/> configured with the specified value.</returns>
         public static OneTimeStructBindableMember<T> Get(T value)
         {
-#if UNITY_2022_1_OR_NEWER && !ASPID_MVVM_UNITY_PROFILER_DISABLED
+#if PROFILER
             using (GetMarker.Auto())
 #endif  
             {
@@ -32,16 +37,17 @@ namespace Aspid.MVVM
     }
 
     /// <summary>
-    /// Represents a bindable member event that provides a single value in a one-time binding operation.
+    /// Abstract base <see cref="IBinderAdder"/> for struct-valued one-time bindings that pushes a single
+    /// <see cref="Value"/> to the binder and then releases it; supports binders typed against
+    /// <typeparamref name="T"/>, <typeparamref name="TBoxed"/>, or <see cref="IAnyBinder"/>.
     /// </summary>
-    /// <typeparam name="T">The type of the value to be bound.</typeparam>
-    /// <typeparam name="TBoxed">Boxed type</typeparam>
+    /// <typeparam name="T">The struct type of the bound value.</typeparam>
+    /// <typeparam name="TBoxed">The reference type used as the boxing target for <typeparamref name="T"/> (typically <see cref="ValueType"/> or <see cref="Enum"/>).</typeparam>
     public abstract class OneTimeStructBindableMember<T, TBoxed> : IReadOnlyValueBindableMember<T>
         where T : struct, TBoxed
         where TBoxed : class
     {
-#if UNITY_2022_1_OR_NEWER && !ASPID_MVVM_UNITY_PROFILER_DISABLED
-        private static readonly Unity.Profiling.ProfilerMarker _addMarker = new(name: $"OneTimeStructBindableMember<{typeof(T).Name}, {typeof(TBoxed).Name}>.Add");
+#if PROFILER
         protected static readonly Unity.Profiling.ProfilerMarker GetMarker = new(name: $"OneTimeStructBindableMember<{typeof(T).Name}, {typeof(TBoxed).Name}>.Get");
 #endif  
         
@@ -57,21 +63,20 @@ namespace Aspid.MVVM
     
         private protected OneTimeStructBindableMember() { }
 
-        /// <inheritdoc/>
         /// <summary>
         /// Adds a one-time binding to the specified binder with the associated value.
         /// </summary>
         /// <param name="binder">The binder to be used for the binding.</param>
         /// <returns>
-        /// Always returns <c>null</c> because removal of this binding is not supported.
+        /// Always returns <see langword="null"/> because removal of this binding is not supported.
         /// </returns>
         /// <exception cref="InvalidOperationException">
-        /// Thrown if the binding mode is either <see cref="BindMode.OneWayToSource"/> or <see cref="BindMode.OneTime"/> <see cref="BindMode.None"/>.
+        /// Thrown if the binding mode is <see cref="BindMode.OneWayToSource"/>, <see cref="BindMode.TwoWay"/>, or <see cref="BindMode.None"/>.
         /// </exception>
         IBinderRemover? IBinderAdder.Add(IBinder binder)
         {
-#if UNITY_2022_1_OR_NEWER && !ASPID_MVVM_UNITY_PROFILER_DISABLED
-            using (_addMarker.Auto())
+#if PROFILER
+            using (this.Marker())
 #endif
             {
                 binder.Mode.ThrowExceptionIfNotOne();

@@ -1,12 +1,17 @@
+#if UNITY_2022_1_OR_NEWER && !ASPID_MVVM_UNITY_PROFILER_DISABLED                                                                                                                                                                                                                    
+#define PROFILER
+#endif
+
 using System;
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM
 {
     /// <summary>
-    /// Represents a two-way bindable member event that supports multiple binding modes and bidirectional updates.
+    /// Concrete <see cref="TwoWayStructBindableMember{T,TBoxed}"/> that fixes <c>TBoxed</c> to <see cref="ValueType"/>
+    /// for any value-type payload that does not need a more specific boxing target.
     /// </summary>
-    /// <typeparam name="T">The type of the value being handled in the bindable member event.</typeparam>
+    /// <typeparam name="T">The struct type of the bound value.</typeparam>
     public sealed class TwoWayStructBindableMember<T> : TwoWayStructBindableMember<T, ValueType>
         where T : struct
     {
@@ -17,31 +22,26 @@ namespace Aspid.MVVM
         /// <param name="setValue">
         /// The action used to set the value when the event is triggered.
         /// </param>
-        /// <exception cref="ArgumentNullException">Thrown if <paramref name="setValue"/> is <c>null</c>.</exception>
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="setValue"/> is <see langword="null"/>.</exception>
         public TwoWayStructBindableMember(T value, Action<T> setValue) 
             : base(value, setValue) { }
     }
 
     /// <summary>
-    /// Represents a two-way bindable member event that supports multiple binding modes and bidirectional updates.
+    /// Abstract base <see cref="IBinderAdder"/> for struct-valued two-way bindings that supports every
+    /// <see cref="BindMode"/> except <see cref="BindMode.None"/>, dispatching forward updates through
+    /// <see cref="IBinder{T}"/> / <see cref="IBinder{TBoxed}"/> / <see cref="IAnyBinder"/> and reverse updates
+    /// through <see cref="IReverseBinder{T}"/> / <see cref="IReverseBinder{TBoxed}"/> / <see cref="IAnyReverseBinder"/>.
+    /// Additionally exposes a get/set <see cref="Value"/> and a <see cref="Changed"/> event.
     /// </summary>
-    /// <typeparam name="T">The type of the value being handled in the bindable member event.</typeparam>
-    /// <typeparam name="TBoxed">Boxed type</typeparam>
+    /// <typeparam name="T">The struct type of the bound value.</typeparam>
+    /// <typeparam name="TBoxed">The reference type used as the boxing target for <typeparamref name="T"/> (typically <see cref="ValueType"/> or <see cref="Enum"/>).</typeparam>
     public abstract class TwoWayStructBindableMember<T, TBoxed> : IBindableMember<T>, IBinderRemover
         where T : struct, TBoxed
         where TBoxed : class
     {
-#if UNITY_2022_1_OR_NEWER && !ASPID_MVVM_UNITY_PROFILER_DISABLED
-        private static readonly Unity.Profiling.ProfilerMarker _addMarker = new(name: $"TwoWayStructBindableMember<{typeof(T).Name}, {typeof(TBoxed).Name}>.Add");
-        private static readonly Unity.Profiling.ProfilerMarker _removeMarker = new(name: $"TwoWayStructBindableMember<{typeof(T).Name}, {typeof(TBoxed).Name}>.Remove");
-        private static readonly Unity.Profiling.ProfilerMarker _setValueMarker = new(name: $"TwoWayStructBindableMember<{typeof(T).Name}, {typeof(TBoxed).Name}>.SetValue");
-        private static readonly Unity.Profiling.ProfilerMarker _onValueChangedMarker = new(name: $"TwoWayStructBindableMember<{typeof(T).Name}, {typeof(TBoxed).Name}>.OnValueChanged");
-        private static readonly Unity.Profiling.ProfilerMarker _onBoxedValueChangedMarker = new(name: $"TwoWayStructBindableMember<{typeof(T).Name}, {typeof(TBoxed).Name}>.OnBoxedValueChanged");
-        private static readonly Unity.Profiling.ProfilerMarker _onObjectValueChangedMarker = new(name: $"TwoWayStructBindableMember<{typeof(T).Name}, {typeof(TBoxed).Name}>.OnObjectValueChanged");
-#endif
-        
         /// <summary>
-        /// Event triggered when the value changes.
+        /// Raised when the value changes.
         /// </summary>
         public event Action<T>? Changed;
         
@@ -58,8 +58,8 @@ namespace Aspid.MVVM
             get => _value;
             set
             {
-#if UNITY_2022_1_OR_NEWER && !ASPID_MVVM_UNITY_PROFILER_DISABLED
-                using (_setValueMarker.Auto())
+#if PROFILER
+                using (this.Marker())
 #endif
                 {
                     _value = value;
@@ -81,26 +81,33 @@ namespace Aspid.MVVM
         /// <param name="setValue">
         /// The action used to set the value when the event is triggered.
         /// </param>
-        /// <exception cref="ArgumentNullException">Thrown if <paramref name="setValue"/> is <c>null</c>.</exception>
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="setValue"/> is <see langword="null"/>.</exception>
         protected TwoWayStructBindableMember(T value, Action<T> setValue)
         {
             _value = value;
             _setValue = setValue ?? throw new ArgumentNullException(nameof(setValue));
         }
 
-        /// <inheritdoc/>
         /// <summary>
         /// Adds the binder to the event with the current value and subscribes to the value change event.
         /// </summary>
         /// <param name="binder">The binder to bind to the event.</param>
-        /// <returns>Returns itself to enable removal of the binder later.</returns>
-        /// <exception cref="Exception">
-        /// Thrown if the binding mode is not <see cref="BindMode.OneWay"/> or <see cref="BindMode.OneTime"/>.
+        /// <returns>Returns itself to enable removal of the binder later, or <see langword="null"/> for <see cref="BindMode.OneTime"/>.</returns>
+        /// <exception cref="InvalidOperationException">
+        /// Thrown if <paramref name="binder"/>'s <see cref="IBinder.Mode"/> is <see cref="BindMode.None"/> or an unknown value.
+        /// </exception>
+        /// <exception cref="BinderInvalidCastException">
+        /// Thrown if the forward direction is required (<see cref="BindMode.OneWay"/>, <see cref="BindMode.TwoWay"/>, <see cref="BindMode.OneTime"/>)
+        /// and <paramref name="binder"/> is neither <see cref="IBinder{T}"/>, <see cref="IBinder{TBoxed}"/> nor <see cref="IAnyBinder"/>.
+        /// </exception>
+        /// <exception cref="ReverseBinderInvalidCastException{T}">
+        /// Thrown if the reverse direction is required (<see cref="BindMode.TwoWay"/>, <see cref="BindMode.OneWayToSource"/>)
+        /// and <paramref name="binder"/> is neither <see cref="IReverseBinder{T}"/>, <see cref="IReverseBinder{TBoxed}"/> nor <see cref="IAnyReverseBinder"/>.
         /// </exception>
         IBinderRemover? IBinderAdder.Add(IBinder binder)
         {
-#if UNITY_2022_1_OR_NEWER && !ASPID_MVVM_UNITY_PROFILER_DISABLED
-            using (_addMarker.Auto())
+#if PROFILER
+            using (this.Marker())
 #endif
             {
                 switch (binder.Mode)
@@ -168,15 +175,14 @@ namespace Aspid.MVVM
             }
         }
 
-        /// <inheritdoc/>
         /// <summary>
         /// Removes the binder's subscription from the event based on its binding mode.
         /// </summary>
         /// <param name="binder">The binder instance to remove.</param>
         void IBinderRemover.Remove(IBinder binder)
         {
-#if UNITY_2022_1_OR_NEWER && !ASPID_MVVM_UNITY_PROFILER_DISABLED
-            using (_removeMarker.Auto())
+#if PROFILER
+            using (this.Marker())
 #endif
             {
                 switch (binder.Mode)
@@ -222,12 +228,13 @@ namespace Aspid.MVVM
         /// Triggers the Changed event with the specified value and updates the current value.
         /// </summary>
         /// <param name="value">The new value to set and notify.</param>
-        public void Invoke(T value) => Value = value;
+        public void Invoke(T value) => 
+            Value = value;
         
         private void OnValueChanged(T value)
         {
-#if UNITY_2022_1_OR_NEWER && !ASPID_MVVM_UNITY_PROFILER_DISABLED
-            using (_onValueChangedMarker.Auto())
+#if PROFILER
+            using (this.Marker())
 #endif
             {
                 _setValue(value);
@@ -236,8 +243,8 @@ namespace Aspid.MVVM
 
         private void OnBoxedValueChanged(TBoxed? value)
         {
-#if UNITY_2022_1_OR_NEWER && !ASPID_MVVM_UNITY_PROFILER_DISABLED
-            using (_onBoxedValueChangedMarker.Auto())
+#if PROFILER
+            using (this.Marker())
 #endif
             {
                 if (value is null)
@@ -249,8 +256,8 @@ namespace Aspid.MVVM
         
         private void OnObjectValueChanged(object value)
         {
-#if UNITY_2022_1_OR_NEWER && !ASPID_MVVM_UNITY_PROFILER_DISABLED
-            using (_onObjectValueChangedMarker.Auto())
+#if PROFILER
+            using (this.Marker())
 #endif
             {
                 if (value is not T specificValue)

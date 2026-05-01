@@ -1,23 +1,23 @@
+#if UNITY_2022_1_OR_NEWER && !ASPID_MVVM_UNITY_PROFILER_DISABLED                                                                                                                                                                                                                    
+#define PROFILER
+#endif
+
 using System;
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM
 {
     /// <summary>
-    /// Represents a bindable member event that supports one-way-to-source bindings.
+    /// Sealed <see cref="IBinderAdder"/> that forwards View-side value changes back to the ViewModel through a
+    /// captured setter <see cref="Action{T}"/>; additionally exposes the latest <see cref="Value"/> and a
+    /// <see cref="Changed"/> event. Accepts only <see cref="BindMode.OneWayToSource"/> and
+    /// <see cref="BindMode.TwoWay"/> reverse binders.
     /// </summary>
-    /// <typeparam name="T">The type of the value to be handled in the bindable member event.</typeparam>
+    /// <typeparam name="T">The reference type of the bound value.</typeparam>
     public sealed class OneWayToSourceBindableMember<T> : IReadOnlyBindableMember<T>, IBinderRemover
     {
-#if UNITY_2022_1_OR_NEWER && !ASPID_MVVM_UNITY_PROFILER_DISABLED
-        private static readonly Unity.Profiling.ProfilerMarker _addMarker = new(name: $"OneWayToSourceBindableMember<{typeof(T).Name}>.Add");
-        private static readonly Unity.Profiling.ProfilerMarker _removeMarker = new(name: $"OneWayToSourceBindableMember<{typeof(T).Name}>.Remove");
-        private static readonly Unity.Profiling.ProfilerMarker _onValueChangedMarker = new(name: $"OneWayToSourceBindableMember<{typeof(T).Name}>.OnValueChanged");
-        private static readonly Unity.Profiling.ProfilerMarker _onObjectValueChangedMarker = new(name: $"OneWayToSourceBindableMember<{typeof(T).Name}>.OnObjectValueChanged");
-#endif
-        
         /// <summary>
-        /// Event triggered when the value changes.
+        /// Raised when the value changes.
         /// </summary>
         public event Action<T?>? Changed;
         
@@ -39,13 +39,12 @@ namespace Aspid.MVVM
         /// <param name="setValue">
         /// The action used to set the value when the event is triggered.
         /// </param>
-        /// <exception cref="ArgumentNullException">Thrown if <paramref name="setValue"/> is <c>null</c>.</exception>
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="setValue"/> is <see langword="null"/>.</exception>
         public OneWayToSourceBindableMember(Action<T?> setValue)
         {
             _setValue = setValue ?? throw new ArgumentNullException(nameof(setValue));
         }
 
-        /// <inheritdoc/>
         /// <summary>
         /// Adds a binder to the event if it supports reverse binding for one-way-to-source or two-way modes.
         /// </summary>
@@ -56,8 +55,8 @@ namespace Aspid.MVVM
         /// </exception>
         IBinderRemover IBinderAdder.Add(IBinder binder)
         {
-#if UNITY_2022_1_OR_NEWER && !ASPID_MVVM_UNITY_PROFILER_DISABLED
-            using (_addMarker.Auto())
+#if PROFILER
+            using (this.Marker())
 #endif
             {
                 binder.Mode.ThrowExceptionIfNotTwo();
@@ -73,15 +72,14 @@ namespace Aspid.MVVM
             }
         }
 
-        /// <inheritdoc/>
         /// <summary>
         /// Removes the binder's subscription from the event.
         /// </summary>
         /// <param name="binder">The binder to unsubscribe from the event.</param>
         void IBinderRemover.Remove(IBinder binder)
         {
-#if UNITY_2022_1_OR_NEWER && !ASPID_MVVM_UNITY_PROFILER_DISABLED
-            using (_removeMarker.Auto())
+#if PROFILER
+            using (this.Marker())
 #endif
             {
                 switch (binder)
@@ -95,8 +93,8 @@ namespace Aspid.MVVM
 
         private void OnValueChanged(T? value)
         {
-#if UNITY_2022_1_OR_NEWER && !ASPID_MVVM_UNITY_PROFILER_DISABLED
-            using (_onValueChangedMarker.Auto())
+#if PROFILER
+            using (this.Marker())
 #endif
             {
                 Value = value;
@@ -107,8 +105,8 @@ namespace Aspid.MVVM
         
         private void OnObjectValueChanged(object value)
         {
-#if UNITY_2022_1_OR_NEWER && !ASPID_MVVM_UNITY_PROFILER_DISABLED
-            using (_onObjectValueChangedMarker.Auto())
+#if PROFILER
+            using (this.Marker())
 #endif
             {
                 if (value is not T specificValue)

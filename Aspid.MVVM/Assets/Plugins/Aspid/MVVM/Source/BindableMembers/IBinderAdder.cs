@@ -17,7 +17,7 @@ namespace Aspid.MVVM
         /// <param name="binder">The binder to be used for adding the binding.</param>
         /// <returns>
         /// An <see cref="IBinderRemover"/> that can remove the added binding, 
-        /// or <c>null</c> if the binding could not be added.
+        /// or <see langword="null"/> if the binding could not be added.
         /// </returns>
         public IBinderRemover? Add(IBinder binder);
     }

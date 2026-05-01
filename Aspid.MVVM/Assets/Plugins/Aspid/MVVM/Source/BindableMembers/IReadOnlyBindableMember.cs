@@ -10,7 +10,7 @@ namespace Aspid.MVVM
     public interface IReadOnlyBindableMember<out T> : IReadOnlyValueBindableMember<T>
     {
         /// <summary>
-        /// Event triggered when the value changes.
+        /// Raised when the value changes.
         /// </summary>
         public event Action<T?>? Changed;
     }

@@ -1,3 +1,7 @@
+#if UNITY_2022_1_OR_NEWER && !ASPID_MVVM_UNITY_PROFILER_DISABLED                                                                                                                                                                                                                    
+#define PROFILER
+#endif
+
 using System;
 
 // ReSharper disable once CheckNamespace
@@ -11,10 +15,6 @@ namespace Aspid.MVVM
     [Serializable]
     public abstract partial class Binder : IBinder
     {
-#if UNITY_2022_1_OR_NEWER && !ASPID_MVVM_UNITY_PROFILER_DISABLED
-        private static readonly Unity.Profiling.ProfilerMarker _bindMarker = new("Binder.Bind");
-        private static readonly Unity.Profiling.ProfilerMarker _unbindMarker = new("Binder.Unbind)");
-#endif
         // ReSharper disable once MemberInitializerValueIgnored
 #if UNITY_2022_1_OR_NEWER
         [UnityEngine.SerializeField]
@@ -55,8 +55,8 @@ namespace Aspid.MVVM
         /// <inheritdoc/>
         public void Bind(IBinderAdder binderAdder)
         {
-#if UNITY_2022_1_OR_NEWER && !ASPID_MVVM_UNITY_PROFILER_DISABLED
-            using (_bindMarker.Auto())
+#if PROFILER
+            using (this.Marker())
 #endif
             {
                 if (IsBound)
@@ -98,8 +98,8 @@ namespace Aspid.MVVM
         /// <inheritdoc/>
         public void Unbind()
         {
-#if UNITY_2022_1_OR_NEWER && !ASPID_MVVM_UNITY_PROFILER_DISABLED
-            using (_unbindMarker.Auto())
+#if PROFILER
+            using (this.Marker())
 #endif
             {
                 if (!IsBound) return;

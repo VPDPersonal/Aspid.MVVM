@@ -4,7 +4,7 @@ using System;
 namespace Aspid.MVVM
 {
     /// <summary>
-    /// Exception thrown when a <c>null</c> binder is encountered during an <c>UnbindSafely</c> operation.
+    /// Exception thrown when a <see langword="null"/> binder is encountered during an <c>UnbindSafely</c> operation.
     /// </summary>
     public sealed class UnbindSafelyNullReferenceException : NullReferenceException
     {

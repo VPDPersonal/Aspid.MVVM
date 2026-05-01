@@ -6,10 +6,10 @@ using System.ComponentModel;
 namespace Aspid.MVVM
 {
     /// <summary>
-    /// Marker attribute for fields and properties within a class or structure marked with the <see cref="ViewAttribute"/>.
-    /// Used by the Source Generator to generate binding code based on the provided <see cref="IBinder"/> type in the View.
+    /// Sealed <see cref="Attribute"/> applied to fields or properties of a type carrying <see cref="ViewAttribute"/>;
+    /// directs the Source Generator to emit binding code that wires the member to the supplied <see cref="IBinder"/> type.
     /// </summary>
-    [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property)]
+    [AttributeUsage(validOn: AttributeTargets.Field | AttributeTargets.Property)]
     public sealed class AsBinderAttribute : Attribute
     {
 #if UNITY_EDITOR || DEBUG

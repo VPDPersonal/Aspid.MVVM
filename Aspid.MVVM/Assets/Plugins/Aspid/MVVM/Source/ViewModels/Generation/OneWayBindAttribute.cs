@@ -2,10 +2,10 @@
 namespace Aspid.MVVM
 {
     /// <summary>
-    /// Marker attribute for fields within a class or structure marked with the <see cref="ViewModelAttribute"/>.
-    /// Used by the Source Generator to generate a property based on the marked field.
-    /// This attribute enforces <see cref="BindMode.OneWay"/> binding mode.
-    /// For readonly fields, this attribute behaves identically to <see cref="BindAttribute"/> with <see cref="BindMode.OneTime"/> or <see cref="OneWayBindAttribute"/>/>.
+    /// Sealed <see cref="BaseBindAttribute"/> applied to fields of a type carrying <see cref="ViewModelAttribute"/>;
+    /// directs the Source Generator to emit a bindable property locked to <see cref="BindMode.OneWay"/>.
+    /// On <see langword="readonly"/> fields the mode resolves to <see cref="BindMode.OneTime"/>, matching
+    /// <see cref="BindAttribute"/> with <see cref="BindMode.OneTime"/>.
     /// </summary>
     public sealed class OneWayBindAttribute : BaseBindAttribute { }
 }

@@ -4,10 +4,9 @@ using System;
 namespace Aspid.MVVM
 {
     /// <summary>
-    /// Marker attribute for classes and structures.
-    /// Used by the Source Generator to generate the implementation of the <see cref="IViewModel"/> interface.
-    /// Also allows the Source Generator to analyze code blocks within the marked class or structure.
+    /// Sealed marker <see cref="Attribute"/> that drives the Source Generator to emit an <see cref="IViewModel"/>
+    /// implementation for the decorated class or struct and to analyze code blocks within the type.
     /// </summary>
-    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Struct, Inherited = false)]
+    [AttributeUsage(validOn: AttributeTargets.Class | AttributeTargets.Struct, Inherited = false)]
     public sealed class ViewModelAttribute : Attribute { }
 }

@@ -8,7 +8,7 @@ namespace Aspid.MVVM
     {
         /// <summary>
         /// Gets the associated ViewModel.
-        /// If the view is not initialized, it may return <c>null</c>.
+        /// If the view is not initialized, it may return <see langword="null"/>.
         /// </summary>
         public IViewModel? ViewModel { get; }
         

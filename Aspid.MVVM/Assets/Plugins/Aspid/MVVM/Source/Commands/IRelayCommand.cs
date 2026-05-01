@@ -9,14 +9,14 @@ namespace Aspid.MVVM
     public interface IRelayCommand
     {
         /// <summary>
-        /// Event that is raised when the ability to execute the command changes.
+        /// Raised when the ability to execute the command changes.
         /// </summary>
         public event Action<IRelayCommand> CanExecuteChanged;
         
         /// <summary>
         /// Determines whether the command can be executed.
         /// </summary>
-        /// <returns><c>true</c> if the command can be executed; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the command can be executed; otherwise, <see langword="false"/>.</returns>
         public bool CanExecute();
 
         /// <summary>
@@ -37,7 +37,7 @@ namespace Aspid.MVVM
     public interface IRelayCommand<in T>
     {
         /// <summary>
-        /// Event that is raised when the ability to execute the command changes.
+        /// Raised when the ability to execute the command changes.
         /// </summary>
         public event Action<IRelayCommand<T>> CanExecuteChanged;
         
@@ -51,7 +51,7 @@ namespace Aspid.MVVM
         /// Executes the command with the given parameter.
         /// </summary>
         /// <param name="param">The parameter used to execute the command.</param>
-        public void Execute(T param);
+        public void Execute(T? param);
         
         /// <summary>
         /// Notifies that the execution state of the command has changed, raising the <see cref="CanExecuteChanged"/> event.
@@ -67,7 +67,7 @@ namespace Aspid.MVVM
     public interface IRelayCommand<in T1, in T2>
     {
         /// <summary>
-        /// Event that is raised when the ability to execute the command changes.
+        /// Raised when the ability to execute the command changes.
         /// </summary>
         public event Action<IRelayCommand<T1, T2>> CanExecuteChanged;
         
@@ -76,7 +76,7 @@ namespace Aspid.MVVM
         /// </summary>
         /// <param name="param1">The first parameter used to execute the command.</param>
         /// <param name="param2">The second parameter used to execute the command.</param>
-        /// <returns><c>true</c> if the command can be executed; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the command can be executed; otherwise, <see langword="false"/>.</returns>
         public bool CanExecute(T1? param1, T2? param2);
 
         /// <summary>
@@ -84,7 +84,7 @@ namespace Aspid.MVVM
         /// </summary>
         /// <param name="param1">The first parameter used to execute the command.</param>
         /// <param name="param2">The second parameter used to execute the command.</param>
-        public void Execute(T1 param1, T2 param2);
+        public void Execute(T1? param1, T2? param2);
         
         /// <summary>
         /// Notifies that the execution state of the command has changed, raising the <see cref="CanExecuteChanged"/> event.
@@ -101,7 +101,7 @@ namespace Aspid.MVVM
     public interface IRelayCommand<in T1, in T2, in T3>
     {
         /// <summary>
-        /// Event that is raised when the ability to execute the command changes.
+        /// Raised when the ability to execute the command changes.
         /// </summary>
         public event Action<IRelayCommand<T1, T2, T3>> CanExecuteChanged;
         
@@ -111,7 +111,7 @@ namespace Aspid.MVVM
         /// <param name="param1">The first parameter used to execute the command.</param>
         /// <param name="param2">The second parameter used to execute the command.</param>
         /// <param name="param3">The third parameter used to execute the command.</param>
-        /// <returns><c>true</c> if the command can be executed; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the command can be executed; otherwise, <see langword="false"/>.</returns>
         public bool CanExecute(T1? param1, T2? param2, T3? param3);
 
         /// <summary>
@@ -120,7 +120,7 @@ namespace Aspid.MVVM
         /// <param name="param1">The first parameter used to execute the command.</param>
         /// <param name="param2">The second parameter used to execute the command.</param>
         /// <param name="param3">The third parameter used to execute the command.</param>
-        public void Execute(T1 param1, T2 param2, T3 param3);
+        public void Execute(T1? param1, T2? param2, T3? param3);
         
         /// <summary>
         /// Notifies that the execution state of the command has changed, raising the <see cref="CanExecuteChanged"/> event.
@@ -138,7 +138,7 @@ namespace Aspid.MVVM
     public interface IRelayCommand<in T1, in T2, in T3, in T4>
     {
         /// <summary>
-        /// Event that is raised when the ability to execute the command changes.
+        /// Raised when the ability to execute the command changes.
         /// </summary>
         public event Action<IRelayCommand<T1, T2, T3, T4>> CanExecuteChanged;
         
@@ -149,7 +149,7 @@ namespace Aspid.MVVM
         /// <param name="param2">The second parameter used to execute the command.</param>
         /// <param name="param3">The third parameter used to execute the command.</param>
         /// <param name="param4">The fourth parameter used to execute the command.</param>
-        /// <returns><c>true</c> if the command can be executed; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the command can be executed; otherwise, <see langword="false"/>.</returns>
         public bool CanExecute(T1? param1, T2? param2, T3? param3, T4? param4);
 
         /// <summary>
@@ -159,7 +159,7 @@ namespace Aspid.MVVM
         /// <param name="param2">The second parameter used to execute the command.</param>
         /// <param name="param3">The third parameter used to execute the command.</param>
         /// <param name="param4">The fourth parameter used to execute the command.</param>
-        public void Execute(T1 param1, T2 param2, T3 param3, T4 param4);
+        public void Execute(T1? param1, T2? param2, T3? param3, T4? param4);
         
         /// <summary>
         /// Notifies that the execution state of the command has changed, raising the <see cref="CanExecuteChanged"/> event.

@@ -4,9 +4,10 @@ using System;
 namespace Aspid.MVVM
 {
     /// <summary>
-    /// Represents a two-way bindable member event that supports multiple binding modes and bidirectional updates.
+    /// Concrete <see cref="TwoWayStructBindableMember{T,TBoxed}"/> that fixes <c>TBoxed</c> to <see cref="Enum"/>
+    /// for two-way enum bindings, supporting both strongly-typed and boxed-enum binders.
     /// </summary>
-    /// <typeparam name="T">The type of the value being handled in the bindable member event.</typeparam>
+    /// <typeparam name="T">The enum type of the bound value.</typeparam>
     public sealed class TwoWayEnumBindableMember<T> : TwoWayStructBindableMember<T, Enum>
         where T : struct, Enum
     {
@@ -17,7 +18,7 @@ namespace Aspid.MVVM
         /// <param name="setValue">
         /// The action used to set the value when the event is triggered.
         /// </param>
-        /// <exception cref="ArgumentNullException">Thrown if <paramref name="setValue"/> is <c>null</c>.</exception>
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="setValue"/> is <see langword="null"/>.</exception>
         public TwoWayEnumBindableMember(T value, Action<T> setValue) 
             : base(value, setValue) { }
     }

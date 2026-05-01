@@ -4,11 +4,11 @@ using System;
 namespace Aspid.MVVM
 {
     /// <summary>
-    /// Marker attribute for methods within a class or structure marked with the <see cref="ViewModelAttribute"/>.
-    /// Used by the Source Generator to generate a property of type <see cref="IRelayCommand"/> 
-    /// or its overloaded versions depending on the number of parameters of the method.
+    /// Sealed <see cref="Attribute"/> applied to methods of a type carrying <see cref="ViewModelAttribute"/>;
+    /// directs the Source Generator to emit a matching <see cref="IRelayCommand"/> (or one of its generic
+    /// overloads, picked by the method's parameter count) that wraps the decorated method.
     /// </summary>
-    [AttributeUsage(AttributeTargets.Method, AllowMultiple = true, Inherited = false)]
+    [AttributeUsage(validOn: AttributeTargets.Method, AllowMultiple = true, Inherited = false)]
     public sealed class RelayCommandAttribute : Attribute
     {
         /// <summary>

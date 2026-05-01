@@ -3,13 +3,12 @@
 namespace Aspid.MVVM
 {
     /// <summary>
-    /// Marker attribute for fields within a class or structure marked with the <see cref="ViewModelAttribute"/>.
-    /// Used by the Source Generator to generate a property based on the marked field.
-    /// If the default constructor is used, the field will be set with <see cref="BindMode.TwoWay"/>.
-    /// For <c>readonly</c> fields, the binding mode will be set to <see cref="BindMode.OneTime"/>.
-    /// If the constructor with one parameter is used for a <c>readonly</c> field, <see cref="BindMode.OneTime"/> and
-    /// <see cref="BindMode.OneWay"/> will both function as <see cref="BindMode.OneTime"/>. All other modes for 
-    /// <c>readonly</c> fields will not be supported.
+    /// Sealed <see cref="BaseBindAttribute"/> applied to fields of a type carrying <see cref="ViewModelAttribute"/>;
+    /// directs the Source Generator to emit a bindable property for the field.
+    /// The default constructor selects <see cref="BindMode.TwoWay"/> for mutable fields and <see cref="BindMode.OneTime"/>
+    /// for <see langword="readonly"/> fields. When the mode-taking constructor is used on a <see langword="readonly"/> field,
+    /// <see cref="BindMode.OneTime"/> and <see cref="BindMode.OneWay"/> both resolve to <see cref="BindMode.OneTime"/>;
+    /// any other mode is rejected.
     /// </summary>
     public sealed class BindAttribute : BaseBindAttribute
     {
@@ -17,7 +16,7 @@ namespace Aspid.MVVM
         /// Initializes a new instance of the <see cref="BindAttribute"/> class with the default binding mode.
         /// For non-readonly fields, the default mode is <see cref="BindMode.TwoWay"/>.
         /// For readonly fields, the default mode is <see cref="BindMode.OneTime"/>.
-        /// /// </summary>
+        /// </summary>
         public BindAttribute() { }
 
         /// <summary>

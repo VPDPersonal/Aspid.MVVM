@@ -15,7 +15,7 @@ namespace Aspid.MVVM
         /// <summary>
         /// Rebinds the binder, re-establishing its connection to the current ViewModel.
         /// </summary>
-        [EditorBrowsable(EditorBrowsableState.Advanced)]
+        [EditorBrowsable(EditorBrowsableState.Never)]
         public void Rebind();
     }
 }

@@ -1,3 +1,8 @@
+#if UNITY_2022_1_OR_NEWER && !ASPID_MVVM_UNITY_PROFILER_DISABLED                                                                                                                                                                                                                    
+#define PROFILER
+#endif
+
+using System.Diagnostics;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 
@@ -10,6 +15,14 @@ namespace Aspid.MVVM
     /// </summary>
     public static partial class BinderExtensions
     {
+#if PROFILER
+        private static partial class Markers<T>
+            where T : IBinder
+        {
+            public static readonly Unity.Profiling.ProfilerMarker BindSafelyMarker = new(name: $"BindSafely<{typeof(T)}>");
+        }
+#endif
+        
         #region Singl BindSafely
         /// <summary>
         /// Binds a single binder to the provided <see cref="IBinderAdder"/> if the bindable member was found.
@@ -23,9 +36,14 @@ namespace Aspid.MVVM
         public static void BindSafely<T>(this T? binder, in FindBindableMemberResult result, object? owner = null, string? memberName = null)
             where T : IBinder
         {
-            // ReSharper disable once NullableWarningSuppressionIsUsed
-            if (result.IsFound)
-                binder?.Bind(result.Adder!);
+#if PROFILER
+            using (Markers<T>.BindSafelyMarker.Auto())
+#endif
+            {
+                // ReSharper disable once NullableWarningSuppressionIsUsed
+                if (result.IsFound)
+                    binder?.Bind(result.Adder!);
+            }
         }
 
         /// <summary>
@@ -40,7 +58,12 @@ namespace Aspid.MVVM
         public static void BindSafely<T>(this T? binder, IBinderAdder binderAdder, object? owner = null, string? memberName = null)
             where T : IBinder
         {
-            binder?.Bind(binderAdder);
+#if PROFILER
+            using (Markers<T>.BindSafelyMarker.Auto())
+#endif
+            {
+                binder?.Bind(binderAdder);
+            }
         }
         #endregion
 
@@ -62,9 +85,14 @@ namespace Aspid.MVVM
         public static void BindSafely<T>(this T[]? binders, in FindBindableMemberResult result, object? owner = null, string? memberName = null)
             where T : IBinder
         {
-            // ReSharper disable once NullableWarningSuppressionIsUsed
-            if (result.IsFound)
-                binders.BindSafely(result.Adder!, owner, memberName);
+#if PROFILER
+            using (Markers<T>.BindSafelyMarker.Auto())
+#endif
+            {
+                // ReSharper disable once NullableWarningSuppressionIsUsed
+                if (result.IsFound)
+                    binders.BindSafely(result.Adder!, owner, memberName);
+            }
         }
 
         /// <summary>
@@ -84,26 +112,26 @@ namespace Aspid.MVVM
         public static void BindSafely<T>(this T[]? binders, IBinderAdder binderAdder, object? owner = null, string? memberName = null)
             where T : IBinder
         {
-            if (binders is null) return;
-
-            for (var i = 0; i < binders.Length; i++)
+#if PROFILER
+            using (Markers<T>.BindSafelyMarker.Auto())
+#endif
             {
-                var binder = binders[i];
-                // ReSharper disable once ConditionIsAlwaysTrueOrFalseAccordingToNullableAPIContract
-                if (binder is null)
+                if (binders is null) return;
+
+                for (var i = 0; i < binders.Length; i++)
                 {
-#if DEBUG
-                    var message = BuildBindSafelyBinderNullMessage(i, owner, memberName);
-#if UNITY_2020_3_OR_NEWER
-                    UnityEngine.Debug.LogError(message, owner as UnityEngine.Object);
-#else
-                    throw new BindSafelyNullReferenceException(message);
-#endif // UNITY_2020_3_OR_NEWER
-#endif // DEBUG
-                    continue;
+                    var binder = binders[i];
+                    
+                    // ReSharper disable once ConditionIsAlwaysTrueOrFalseAccordingToNullableAPIContract
+                    if (binder is null)
+                    {
+                        BuildBindSafelyBinderNullMessage(i, owner, memberName);
+                    }
+                    else
+                    {
+                        binder.Bind(binderAdder);
+                    }
                 }
-                
-                binder.Bind(binderAdder);
             }
         }
         #endregion
@@ -126,9 +154,14 @@ namespace Aspid.MVVM
         public static void BindSafely<T>(this List<T>? binders, in FindBindableMemberResult result, object? owner = null, string? memberName = null)
             where T : IBinder
         {
-            // ReSharper disable once NullableWarningSuppressionIsUsed
-            if (result.IsFound)
-                binders.BindSafely(result.Adder!, owner, memberName);
+#if PROFILER
+            using (Markers<T>.BindSafelyMarker.Auto())
+#endif
+            {
+                // ReSharper disable once NullableWarningSuppressionIsUsed
+                if (result.IsFound)
+                    binders.BindSafely(result.Adder!, owner, memberName);
+            }
         }
 
         /// <summary>
@@ -148,25 +181,25 @@ namespace Aspid.MVVM
         public static void BindSafely<T>(this List<T>? binders, IBinderAdder binderAdder, object? owner = null, string? memberName = null)
             where T : IBinder
         {
-            if (binders is null) return;
-
-            for (var i = 0; i < binders.Count; i++)
+#if PROFILER
+            using (Markers<T>.BindSafelyMarker.Auto())
+#endif
             {
-                var binder = binders[i];
-                if (binder is null)
+                if (binders is null) return;
+
+                for (var i = 0; i < binders.Count; i++)
                 {
-#if DEBUG
-                    var message = BuildBindSafelyBinderNullMessage(i, owner, memberName);
-#if UNITY_2020_3_OR_NEWER
-                    UnityEngine.Debug.LogError(message, owner as UnityEngine.Object);
-#else
-                    throw new BindSafelyNullReferenceException(message);
-#endif // UNITY_2020_3_OR_NEWER
-#endif // DEBUG
-                    continue;
+                    var binder = binders[i];
+                    
+                    if (binder is null)
+                    {
+                        BuildBindSafelyBinderNullMessage(i, owner, memberName);
+                    }
+                    else
+                    {
+                        binder.Bind(binderAdder);
+                    }
                 }
-                
-                binder.Bind(binderAdder);
             }
         }
         #endregion
@@ -189,9 +222,14 @@ namespace Aspid.MVVM
         public static void BindSafely<T>(this IEnumerable<T>? binders, in FindBindableMemberResult result, object? owner = null, string? memberName = null)
             where T : IBinder
         {
-            // ReSharper disable once NullableWarningSuppressionIsUsed
-            if (result.IsFound)
-                binders.BindSafely(result.Adder!, owner, memberName);
+#if PROFILER
+            using (Markers<T>.BindSafelyMarker.Auto())
+#endif
+            {
+                // ReSharper disable once NullableWarningSuppressionIsUsed
+                if (result.IsFound)
+                    binders.BindSafely(result.Adder!, owner, memberName);
+            }
         }
 
         /// <summary>
@@ -211,33 +249,42 @@ namespace Aspid.MVVM
         public static void BindSafely<T>(this IEnumerable<T>? binders, IBinderAdder binderAdder, object? owner = null, string? memberName = null)
             where T : IBinder
         {
-            if (binders is null) return;
-
-            var index = 0;
-            foreach (var binder in binders)
+#if PROFILER
+            using (Markers<T>.BindSafelyMarker.Auto())
+#endif
             {
-                if (binder is null)
+                if (binders is null) return;
+
+                var index = 0;
+                foreach (var binder in binders)
                 {
-#if DEBUG
-                    var message = BuildBindSafelyBinderNullMessage(index, owner, memberName);
-#if UNITY_2020_3_OR_NEWER
-                    UnityEngine.Debug.LogError(message, owner as UnityEngine.Object);
-#else
-                    throw new BindSafelyNullReferenceException(message);
-#endif // UNITY_2020_3_OR_NEWER
-#endif // DEBUG
-                    continue;
+                    if (binder is null)
+                    {
+                        BuildBindSafelyBinderNullMessage(index, owner, memberName);
+                    }
+                    else
+                    {
+                        binder.Bind(binderAdder);
+                    }
+                    
+                    index++;
                 }
-                
-                binder.Bind(binderAdder);
-                index++;
             }
         }
         #endregion
 
-        private static string BuildBindSafelyBinderNullMessage(int index, object? owner, string? memberName) =>
-            BuildBinderNullMessage("BindSafely", index, owner, memberName);
-        
+        [Conditional(conditionString: "DEBUG")]
+        private static void BuildBindSafelyBinderNullMessage(int index, object? owner, string? memberName)
+        {
+            var message = BuildBinderNullMessage(operation: "BindSafely", index, owner, memberName);
+            
+#if UNITY_2020_3_OR_NEWER
+            UnityEngine.Debug.LogError(message, owner as UnityEngine.Object);
+#else
+            throw new BindSafelyNullReferenceException(message);
+#endif
+        }
+
         private static string BuildBinderNullMessage(string operation, int index, object? owner, string? memberName)
         {
             var memberPart = memberName ?? "<unknown>";

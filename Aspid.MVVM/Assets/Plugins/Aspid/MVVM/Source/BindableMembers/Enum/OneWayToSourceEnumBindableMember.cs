@@ -4,9 +4,10 @@ using System;
 namespace Aspid.MVVM
 {
     /// <summary>
-    /// Represents a bindable member event that supports one-way-to-source bindings.
+    /// Concrete <see cref="OneWayToSourceStructBindableMember{T,TBoxed}"/> that fixes <c>TBoxed</c> to <see cref="Enum"/>
+    /// for one-way-to-source enum bindings, forwarding View-side enum changes back to the ViewModel.
     /// </summary>
-    /// <typeparam name="T">The type of the value to be handled in the bindable member event.</typeparam>
+    /// <typeparam name="T">The enum type of the bound value.</typeparam>
     public sealed class OneWayToSourceEnumBindableMember<T> : OneWayToSourceStructBindableMember<T, Enum>
         where T : struct, Enum
     {
@@ -16,7 +17,7 @@ namespace Aspid.MVVM
         /// <param name="setValue">
         /// The action used to set the value when the event is triggered.
         /// </param>
-        /// <exception cref="ArgumentNullException">Thrown if <paramref name="setValue"/> is <c>null</c>.</exception>
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="setValue"/> is <see langword="null"/>.</exception>
         public OneWayToSourceEnumBindableMember(Action<T> setValue) 
             : base(setValue) { }
     }

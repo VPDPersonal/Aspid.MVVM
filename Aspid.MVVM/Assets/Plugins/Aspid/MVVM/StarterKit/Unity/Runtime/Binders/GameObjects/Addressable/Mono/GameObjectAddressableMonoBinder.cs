@@ -53,9 +53,9 @@ namespace Aspid.MVVM.StarterKit
         protected override void SetAsset(GameObject prefab)
         {
             DestroyCurrentInstance();
-            if (prefab is null) return;
+            if (!prefab) return;
 
-            var parent = _container != null ? _container : transform;
+            var parent = _container ? _container : transform;
             _currentInstance = Instantiate(prefab, parent);
 
             var instanceTransform = _currentInstance.transform;
@@ -65,7 +65,8 @@ namespace Aspid.MVVM.StarterKit
 
         private void DestroyCurrentInstance()
         {
-            if (_currentInstance == null) return;
+            if (!_currentInstance) return;
+            
             Destroy(_currentInstance);
             _currentInstance = null;
         }

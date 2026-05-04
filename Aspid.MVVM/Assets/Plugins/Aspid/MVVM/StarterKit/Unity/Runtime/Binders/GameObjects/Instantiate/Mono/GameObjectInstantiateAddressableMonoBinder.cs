@@ -13,9 +13,9 @@ namespace Aspid.MVVM.StarterKit
     /// Position and rotation are applied in the chosen <see cref="Space"/> after instantiation —
     /// <see cref="Space.Self"/> values are local to the container, <see cref="Space.World"/> values are absolute.
     /// </remarks>
-    [AddComponentMenu("Aspid/MVVM/Binders/GameObject/GameObject Binder – Addressable")]
+    [AddComponentMenu("Aspid/MVVM/Binders/GameObject/GameObject Binder – Instantiate Addressable")]
     [AddBinderContextMenu(typeof(Component), Path = "Add General Binder/GameObject/GameObject Binder – Addressable")]
-    public sealed class GameObjectAddressableMonoBinder : AddressableMonoBinder<GameObject>
+    public sealed class GameObjectInstantiateAddressableMonoBinder : AddressableMonoBinder<GameObject>
     {
         [Tooltip("Parent transform under which loaded prefabs are spawned. Defaults to this object on Reset.")]
         [SerializeField] private Transform _container;

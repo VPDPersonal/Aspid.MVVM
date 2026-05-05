@@ -26,7 +26,7 @@ namespace Aspid.MVVM.StarterKit
         protected override void SetAsset(Sprite sprite)
         {
             var component = CachedComponent;
-            if (component is null) return;
+            if (!component) return;
             
             component.sprite = sprite;
             component.enabled = !_disabledWhenNull || sprite;

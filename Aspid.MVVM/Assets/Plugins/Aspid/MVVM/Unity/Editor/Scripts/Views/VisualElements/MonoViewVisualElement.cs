@@ -89,7 +89,7 @@ namespace Aspid.MVVM
         private VisualElement BuildDesignViewModel()
         {
             var container = new AspidBox(AspidBoxPreset.Default.SetTheme(ThemeStyle.Type.Dark))
-                .SetMargin(top: 5, left: -10f);
+                .SetMargin(top: 5);
             container.AddChild(new AspidLabel(text: "Design ViewModel").SetMarginBottom(5));
             
             var attribute = Editor.ShowDesignViewModelAttribute;
@@ -107,7 +107,7 @@ namespace Aspid.MVVM
         private VisualElement BuiltGeneralBinders()
         {
             var container = new AspidBox()
-                .SetMargin(top: 5, left: -10f);
+                .SetMargin(top: 5);
 
             return container
                 .AddChild(BuildGeneralBinders());

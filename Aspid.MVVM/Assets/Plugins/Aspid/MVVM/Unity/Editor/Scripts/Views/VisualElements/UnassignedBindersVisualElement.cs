@@ -75,7 +75,7 @@ namespace Aspid.MVVM
         private VisualElement Build()
         {
             return new AspidBox()
-                .SetMargin(top: 5, left: -10f)
+                .SetMargin(top: 5)
                 .AddChild(new AspidHelpBox(WarningTitle, WarningMessage, AspidHelpBoxPreset.Default.SetMessageType(HelpBoxMessageType.Warning))
                     .SetMargin(bottom: 5))
                 .AddChild(_unassignedBindersContainer);

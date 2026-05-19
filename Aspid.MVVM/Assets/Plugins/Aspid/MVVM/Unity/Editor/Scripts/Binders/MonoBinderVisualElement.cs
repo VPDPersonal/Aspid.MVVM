@@ -100,6 +100,7 @@ namespace Aspid.MVVM
         {
             return new VisualElement()
                 .AddStyleSheetsFromResource(AspidStyles.DefaultStyleSheet)
+                .AddClass(AspidStyles.InspectorStyleClass)
                 .AddChild(BuildHeader())
                 .AddChild(BuildIdSelector())
                 .AddChild(new PropertyField(_editor.IdProperty.ValueProperty).SetDisplay(DisplayStyle.None))
@@ -116,7 +117,7 @@ namespace Aspid.MVVM
                     Status = Status,
                     Subtext = ScriptSubtext,
                 }
-                .SetMargin(top: 3, left: -10f);
+                .SetMargin(top: 3);
         }
 
         protected virtual VisualElement BuildIdSelector()
@@ -144,7 +145,7 @@ namespace Aspid.MVVM
              modeField.AddToClassList("aspid-mono-binder-id-selector-mode");
 
              var container = new AspidBox(AspidBoxPreset.Default.SetTheme(ThemeStyle.Type.Dark))
-                 .SetMargin(top: 5, left: -10f);
+                 .SetMargin(top: 5);
              container.styleSheets.Add(_idSelectorStyleSheet);
              container.AddToClassList("aspid-mono-binder-id-selector");
 
@@ -265,7 +266,7 @@ namespace Aspid.MVVM
                 .AddChild(isDebugPropertyField));
 
             _logsContainer = new AspidBox().SetName("Logs")
-                .SetMargin(top: 5, left: -10f)
+                .SetMargin(top: 5)
                 .AddChild(title);
             
             isDebugPropertyField.RegisterValueChangeCallback(e =>

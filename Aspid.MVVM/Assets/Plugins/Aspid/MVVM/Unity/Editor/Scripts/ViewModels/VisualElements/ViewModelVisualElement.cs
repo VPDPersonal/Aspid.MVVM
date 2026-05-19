@@ -57,7 +57,8 @@ namespace Aspid.MVVM
 
         private void Build()
         {
-            this.AddStyleSheetsFromResource(AspidStyles.DefaultStyleSheet);
+            this.AddStyleSheetsFromResource(AspidStyles.DefaultStyleSheet)
+                .AddClass(AspidStyles.InspectorStyleClass);
 
             Add(BuildHeader());
             
@@ -90,7 +91,7 @@ namespace Aspid.MVVM
 
         private AspidInspectorHeader BuildHeader() =>
             new AspidInspectorHeader(GetScriptName(), Editor.TargetAsViewModel) { Subtext = GetScriptSubtext() }
-                .SetMargin(top: 3, left: -10f);
+                .SetMargin(top: 3);
 
         protected virtual VisualElement? OnBuiltHeader() => null;
 

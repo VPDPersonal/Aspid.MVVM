@@ -71,7 +71,8 @@ namespace Aspid.MVVM
         #region Build Methods
         private void Build()
         {
-            this.AddStyleSheetsFromResource(AspidStyles.DefaultStyleSheet);
+            this.AddStyleSheetsFromResource(AspidStyles.DefaultStyleSheet)
+                .AddClass(AspidStyles.InspectorStyleClass);
 
             Add(BuildHeader());
             
@@ -95,7 +96,7 @@ namespace Aspid.MVVM
 
         private AspidInspectorHeader BuildHeader() =>
             new AspidInspectorHeader(label: GetScriptName(), Editor.TargetAsView) { Status = Status, Subtext = GetScriptSubtext() }
-                .SetMargin(top: 3, left: -10f);
+                .SetMargin(top: 3);
 
         protected virtual VisualElement? OnBuiltHeader() => null;
         
@@ -110,7 +111,7 @@ namespace Aspid.MVVM
             // TODO Aspid.MVVM Unity – Rename Name
             return new AspidBox()
                 .SetName("view-model-debug-panel")
-                .SetMargin(top: 5, left: -10f)
+                .SetMargin(top: 5)
                 .AddChild(new DebugViewModelPanel(Editor.TargetAsView));
         }
         #endregion

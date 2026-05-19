@@ -52,7 +52,7 @@ namespace Aspid.MVVM
             });
             
             this.AddChild(new AspidBox().SetName("Commands")
-                .SetMargin(top: 5, left: -10f)
+                .SetMargin(top: 5)
                 .AddChild(title)
                 .AddChild(container));
 

@@ -8,7 +8,9 @@ namespace Aspid.MVVM
 {
     /// <summary>
     /// Metadata describing a single bindable property on an <see cref="IViewModel"/> type,
-    /// including its resolved type, binding ID, generated property name, and supported <see cref="BindMode"/>.
+    /// including its resolved type, binding ID, generated property name, supported <see cref="BindMode"/>,
+    /// and inspector layout hints (header text and vertical spacing read from Unity's
+    /// <see cref="UnityEngine.HeaderAttribute"/> and <see cref="UnityEngine.SpaceAttribute"/>).
     /// </summary>
     public class BindablePropertyMeta
     {
@@ -16,13 +18,18 @@ namespace Aspid.MVVM
         public readonly string Id;
         public readonly string Name;
         public readonly BindMode Mode;
-        
+        public readonly string Header;
+        public readonly bool IsCommand;
+
         public BindablePropertyMeta(Type memberContainerType, MemberInfo memberInfo)
         {
             if (!IsBindableProperty(memberContainerType, memberInfo))
                 throw new ArgumentException("Invalid bindable property");
 
             Name = memberInfo.Name;
+
+            var unityHeader = memberInfo.GetCustomAttribute<UnityEngine.HeaderAttribute>();
+            Header = string.IsNullOrWhiteSpace(unityHeader?.header) ? null : unityHeader.header;
             
             var bindIdAttribute = memberInfo.GetCustomAttribute<BindIdAttribute>();
             Id = bindIdAttribute is not null ? bindIdAttribute.Id : BinderFieldInfoExtensions.GetBinderId(memberInfo.Name);
@@ -62,7 +69,8 @@ namespace Aspid.MVVM
                 case MethodInfo methodInfo:
                     if (bindIdAttribute is null)
                         Id += "Command";
-                    
+
+                    IsCommand = true;
                     Mode = BindMode.OneTime;
                     Name += "Command";
                     

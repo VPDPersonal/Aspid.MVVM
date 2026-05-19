@@ -31,7 +31,10 @@ namespace Aspid.MVVM
         public ShowDesignViewModelAttribute ShowDesignViewModelAttribute { get; private set; }
         
         public SerializedProperty DesignViewModelAssemblyQualifiedNameProperty { get; private set; }
-        
+
+        public IReadOnlyDictionary<string, BindablePropertyMeta> MetaById { get; private set; }
+            = new Dictionary<string, BindablePropertyMeta>();
+
         protected ValidableBindersById LastBinders { get; private set; }
         
         public IEnumerable<IMonoBinderValidable> UnassignedBinders => TargetAsView 
@@ -185,6 +188,8 @@ namespace Aspid.MVVM
             
             if (viewModelType is null)
             {
+                MetaById = new Dictionary<string, BindablePropertyMeta>();
+
                 for (var i = 0; i < BindersList.ArraySize; i++)
                 {
                     var hasBinder = false;
@@ -193,8 +198,9 @@ namespace Aspid.MVVM
                     
                     for (var j = 0; j < monoBindersProperty.arraySize; j++)
                     {
-                        hasBinder = monoBindersProperty.GetArrayElementAtIndex(j).objectReferenceValue;
-                        if (hasBinder) break;
+                        if (monoBindersProperty.GetArrayElementAtIndex(j).objectReferenceValue == null) continue;
+                        hasBinder = true;
+                        break;
                     }
 
                     if (!hasBinder)
@@ -207,6 +213,12 @@ namespace Aspid.MVVM
 
             var viewModelMeta = new ViewModelMeta(viewModelType);
             var viewMeta = new ViewMeta(TargetAsView.GetType());
+
+            var metaById = new Dictionary<string, BindablePropertyMeta>(viewModelMeta.BindableProperties.Count);
+            foreach (var meta in viewModelMeta.BindableProperties)
+                metaById[meta.Id] = meta;
+            
+            MetaById = metaById;
 
             var bindableProperties = viewModelMeta.BindableProperties
                 .Where(bindableProperty => viewMeta.BinderProperties.All(binderProperty => binderProperty.Id != bindableProperty.Id))
@@ -221,8 +233,9 @@ namespace Aspid.MVVM
                 var array = new Object[element.MonoBindersProperty.arraySize];
                 for (var j = 0; j < array.Length; j++)
                     array[j] = element.MonoBindersProperty.GetArrayElementAtIndex(j).objectReferenceValue;
-                
-                fieldsById.Add(element.Id, array);
+
+                if (!fieldsById.ContainsKey(element.Id))
+                    fieldsById.Add(element.Id, array);
             }
             
             BindersList.ArraySize = bindableProperties.Length;
@@ -244,15 +257,6 @@ namespace Aspid.MVVM
                 }
                 else
                 {
-                    if (!fieldsById.ContainsKey(property.Id))
-                    {
-                        for (var j = 0; j < monoBindersProperty.arraySize; j++)
-                        {
-                            if (monoBindersProperty.GetArrayElementAtIndex(j).objectReferenceValue is IMonoBinderValidable monoBinder)
-                                monoBinder.Reset(MonoBinderResetMode.Soft);
-                        }
-                    }
-                    
                     monoBindersProperty.arraySize = 0;
                 }
                 

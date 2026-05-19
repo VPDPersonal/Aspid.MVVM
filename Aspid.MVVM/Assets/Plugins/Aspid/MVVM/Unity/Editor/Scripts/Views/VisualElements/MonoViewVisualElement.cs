@@ -26,6 +26,7 @@ namespace Aspid.MVVM
         where TEditor : MonoViewEditor<TView, TEditor>
     {
         private const string GeneralBindersId = "general-binders";
+        private const string HeaderFoldoutViewDataKeyPrefix = "AspidMonoView.Header";
         
         private UnassignedBindersVisualElement<TView, TEditor>? _unassignedBindersVisualElement;
         
@@ -114,20 +115,118 @@ namespace Aspid.MVVM
 
         private VisualElement BuildGeneralBinders()
         {
-            var container = new VisualElement().SetName(GeneralBindersId);
+            var rootContainer = new VisualElement()
+                .SetName(GeneralBindersId);
+
+            var currentGroupCount = 0;
+            string? currentGroup = null;
+            IntegerField? currentCounter = null;
+            var target = rootContainer;
+            var metaById = Editor.MetaById;
+            var viewTypeName = Editor.TargetAsView ? Editor.TargetAsView.GetType().FullName : "Unknown";
 
             for (var i = 0; i < Editor.BindersList.ArraySize; i++)
             {
                 var element = Editor.BindersList.GetArrayElementAtIndex(i);
                 var capturedAssemblyQualifiedName = element.AssemblyQualifiedName;
 
-                var property = new MonoBinderPropertyField(element.MonoBindersProperty, label: ObjectNames.NicifyVariableName(element.Id), element.Id, capturedAssemblyQualifiedName)
+                metaById.TryGetValue(element.Id, out var meta);
+
+                if (meta?.IsCommand is true)
+                {
+                    if (currentGroup is not null)
+                    {
+                        FinalizeFoldoutCount();
+                        target = rootContainer;
+                        currentGroup = null;
+                        currentCounter = null;
+                        currentGroupCount = 0;
+                    }
+                }
+                else
+                {
+                    var header = string.IsNullOrWhiteSpace(meta?.Header) ? null : meta!.Header;
+                    if (header is not null && header != currentGroup)
+                    {
+                        FinalizeFoldoutCount();
+
+                        var (foldout, counter) = BuildHeaderFoldout(header, viewTypeName);
+                        rootContainer.Add(foldout);
+                        target = foldout.contentContainer;
+                        currentGroup = header;
+                        currentCounter = counter;
+                        currentGroupCount = 0;
+                    }
+                }
+
+                var property = new MonoBinderPropertyField(
+                        element.MonoBindersProperty,
+                        label: ObjectNames.NicifyVariableName(element.Id), 
+                        binderId: element.Id,
+                        assemblyQualifiedName: capturedAssemblyQualifiedName)
                     .SetMargin(top: 3);
-                
-                container.Add(property);
+
+                target.Add(property);
+
+                if (currentCounter is not null)
+                    currentGroupCount++;
             }
 
-            return container;
+            FinalizeFoldoutCount();
+            return rootContainer;
+
+            void FinalizeFoldoutCount() =>
+                currentCounter?.SetValueWithoutNotify(currentGroupCount);
+        }
+
+        private static (Foldout foldout, IntegerField counter) BuildHeaderFoldout(string header, string viewTypeName)
+        {
+            var foldout = new Foldout()
+            .SetValue(true)
+            .SetText(header)
+            .SetPadding(left: 0)
+            .SetMargin(top: 3, right: 0)
+            .SetViewDataKey($"{HeaderFoldoutViewDataKeyPrefix}.{viewTypeName}.{header}");
+            
+            foldout.contentContainer
+                .SetMargin(left: 0)
+                .SetPadding(left: 10)
+                .AddChild(new AspidDividingLine()
+                    .SetPosition(Position.Absolute)
+                    .SetDistance(top: 3, bottom: 0, left: 3)
+                    .SetDirection(AspidDividingLineDirectionStyle.Type.Vertical));
+
+            var counter = new IntegerField()
+                .SetMargin(0)
+                .SetWidth(50)
+                .SetMinWidth(50)
+                .SetMaxWidth(50)
+                .SetEnabledSelf(false)
+                .SetPickingMode(PickingMode.Ignore);
+            
+            counter.Q<TextElement>().SetMarginLeft(0).SetPaddingLeft(2);
+            counter.RegisterCallback<AttachToPanelEvent>(_ =>
+            {
+                IgnorePickingRecursive(counter);
+            });
+
+            foldout.Q<Toggle>()
+                .SetMargin(0)
+                .SetBorderRadius(5)
+                .SetAlignItems(Align.Center)
+                .SetFlexDirection(FlexDirection.Row)
+                .SetPadding(top: 2, right: 5, bottom: 2, left: 3)
+                .SetBackgroundColor(new Color(0x38 / 255f, 0x38 / 255f, 0x38 / 255f))
+                .AddChild(counter);
+
+            return (foldout, counter);
+        }
+
+        private static void IgnorePickingRecursive(VisualElement element)
+        {
+            element.pickingMode = PickingMode.Ignore;
+            foreach (var child in element.Children())
+                IgnorePickingRecursive(child);
         }
 
         private UnassignedBindersVisualElement<TView, TEditor> BuildUnassignedBinders()

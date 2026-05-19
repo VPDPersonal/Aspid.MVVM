@@ -25,7 +25,7 @@ namespace Aspid.MVVM
         private static VisualElement Build(SerializedObject serializedObject, string? title, IReadOnlyCollection<string>? propertiesExcluding)
         {
             var container = new AspidBox()
-                .SetMargin(top: 5, left: -10f);
+                .SetMargin(top: 5);
 
             if (!string.IsNullOrWhiteSpace(title))
                 container.AddChild(new AspidLabel(title).SetMarginBottom(5));

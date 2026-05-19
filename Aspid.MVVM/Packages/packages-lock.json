@@ -10,11 +10,11 @@
       "hash": "7cf843ddcefaa4a9d0b68beff50878d82f61c68f"
     },
     "com.aspid.fasttools": {
-      "version": "https://github.com/VPDPersonal/Aspid.FastTools.git?path=Aspid.FastTools/Assets/Plugins/Aspid/FastTools#Develop",
+      "version": "https://github.com/VPDPersonal/Aspid.FastTools.git#upm",
       "depth": 0,
       "source": "git",
       "dependencies": {},
-      "hash": "ef83ae4bab1b31764b16dd0355c13ce340a7939f"
+      "hash": "34e2a921fbd88427441411d90915ef467a5949c4"
     },
     "com.cysharp.unitask": {
       "version": "https://github.com/Cysharp/UniTask.git?path=src/UniTask/Assets/Plugins/UniTask#2.1.0",

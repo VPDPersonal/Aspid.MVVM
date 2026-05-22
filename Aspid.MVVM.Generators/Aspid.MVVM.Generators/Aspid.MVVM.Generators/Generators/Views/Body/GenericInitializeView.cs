@@ -4,6 +4,7 @@ using Aspid.Generators.Helper;
 using System.Collections.Generic;
 using Aspid.MVVM.Generators.Generators.Views.Data;
 using Aspid.MVVM.Generators.Generators.Descriptions;
+using Aspid.MVVM.Generators.Generators.Views.Helpers;
 using Aspid.MVVM.Generators.Generators.ViewModels.Factories;
 using Aspid.MVVM.Generators.Generators.ViewModels.Data.Infos;
 using Aspid.MVVM.Generators.Generators.Views.Body.Extensions;
@@ -120,6 +121,13 @@ public static class GenericInitializeView
                 {
                     code.AppendBindSafely(member);
                 }
+            }
+
+            var virtualFields = VirtualBinderFields.Collect(data);
+            foreach (var info in virtualFields.Values)
+            {
+                if (bindableMembers.TryGetValue(info.Id.SourceValue, out var bindableMember))
+                    code.AppendLine($"{info.FieldName}.BindSafely(viewModel.{bindableMember.Bindable.PropertyName}, this, {info.Id.Value});");
             }
         }
         else

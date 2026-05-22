@@ -14,6 +14,7 @@ public readonly ref struct ViewDataSpan(ViewData viewData)
     public readonly ReadOnlySpan<BinderMember> Members = viewData.Members.AsSpan();
     public readonly BinderMembersCollectionSpanByType MembersByType = new(viewData.Members);
     public readonly ReadOnlySpan<GenericViewData> GenericViews = viewData.GenericViews.AsSpan();
+    public readonly ReadOnlySpan<string> InheritedDeclaredIds = viewData.InheritedDeclaredIds.AsSpan();
 
     public bool IsInstantiateBinders => MembersByType.AsBinders.Length + MembersByType.PropertyBinders.Length > 0;
 }

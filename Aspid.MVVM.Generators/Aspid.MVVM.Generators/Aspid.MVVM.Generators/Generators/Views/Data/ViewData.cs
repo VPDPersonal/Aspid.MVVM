@@ -7,14 +7,16 @@ namespace Aspid.MVVM.Generators.Generators.Views.Data;
 
 public readonly struct ViewData(
     INamedTypeSymbol symbol,
-    Inheritor inheritor, 
+    Inheritor inheritor,
     TypeDeclarationSyntax declaration,
     ImmutableArray<BinderMember> members,
-    ImmutableArray<GenericViewData> genericViews)
+    ImmutableArray<GenericViewData> genericViews,
+    ImmutableArray<string> inheritedDeclaredIds)
 {
-    public readonly INamedTypeSymbol Symbol = symbol; 
+    public readonly INamedTypeSymbol Symbol = symbol;
     public readonly Inheritor Inheritor = inheritor;
     public readonly ImmutableArray<BinderMember> Members = members;
     public readonly TypeDeclarationSyntax Declaration = declaration;
     public readonly ImmutableArray<GenericViewData> GenericViews = genericViews;
+    public readonly ImmutableArray<string> InheritedDeclaredIds = inheritedDeclaredIds;
 }

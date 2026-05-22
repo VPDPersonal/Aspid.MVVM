@@ -2,6 +2,7 @@ using Microsoft.CodeAnalysis;
 using Aspid.Generators.Helper;
 using Aspid.MVVM.Generators.Generators.Views.Data;
 using Aspid.MVVM.Generators.Generators.Descriptions;
+using Aspid.MVVM.Generators.Generators.Views.Helpers;
 using Aspid.MVVM.Generators.Generators.Views.Data.Members;
 using Aspid.MVVM.Generators.Generators.Views.Body.Extensions;
 using static Aspid.Generators.Helper.Classes;
@@ -233,7 +234,11 @@ public static class InitializeBody
 
         foreach (var member in data.Members)
             code.AppendBindSafely(member);
-        
+
+        var virtualFields = VirtualBinderFields.Collect(data);
+        foreach (var info in virtualFields.Values)
+            code.AppendLine($"{info.FieldName}.BindSafely(viewModel.FindBindableMember(new({info.Id.Value})), this, {info.Id.Value});");
+
         return code.AppendLine()
             .AppendLine("OnInitializedInternal(viewModel);")
             .AppendLine("__isInitializing = false;")
@@ -267,6 +272,10 @@ public static class InitializeBody
                 code.AppendLine($"{member.Name}.UnbindSafely(this, {member.Id});");
             }
         }
+
+        var virtualFields = VirtualBinderFields.Collect(data);
+        foreach (var info in virtualFields.Values)
+            code.AppendLine($"{info.FieldName}.UnbindSafely(this, {info.Id.Value});");
 
         code.AppendLine()
             .AppendLine("OnDeinitializedInternal();")

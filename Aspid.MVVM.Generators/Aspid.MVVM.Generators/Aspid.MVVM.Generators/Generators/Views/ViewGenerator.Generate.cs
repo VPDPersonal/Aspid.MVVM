@@ -17,6 +17,7 @@ public partial class ViewGenerator
         
         InitializeBody.Generate(@namespace, dataSpan, declarationText, context);
         BinderCachedBody.Generate(@namespace, dataSpan, declarationText, context);
+        BinderFieldsBody.Generate(@namespace, dataSpan, declarationText, context);
         GenericInitializeView.Generate(@namespace, dataSpan, declarationText, context);
     }
 }

@@ -2,8 +2,8 @@
 #nullable enable
 using System;
 using System.Linq;
-using UnityEditor;
 using UnityEngine;
+using UnityEditor;
 using Aspid.MVVM.Validation;
 using UnityEngine.UIElements;
 using UnityEditor.UIElements;
@@ -20,13 +20,12 @@ namespace Aspid.MVVM
         public MonoViewVisualElement(MonoViewEditor editor) :
             base(editor) { }
     }
-    
+
     internal abstract class MonoViewVisualElement<TView, TEditor> : ViewVisualElement<TView, TEditor>
         where TView : MonoView
         where TEditor : MonoViewEditor<TView, TEditor>
     {
         private const string GeneralBindersId = "general-binders";
-        private const string HeaderFoldoutViewDataKeyPrefix = "AspidMonoView.Header";
         
         private UnassignedBindersVisualElement<TView, TEditor>? _unassignedBindersVisualElement;
         
@@ -36,17 +35,17 @@ namespace Aspid.MVVM
             {
                 foreach (var property in base.PropertiesExcluding)
                     yield return property;
-                
+
                 yield return Editor.DesignViewModel.propertyPath;
                 yield return Editor.BindersList.Property.propertyPath;
                 yield return Editor.DesignViewModelAssemblyQualifiedNameProperty.propertyPath;
             }
         }
-        
+
         protected override StatusStyle.Type Status => Editor.UnassignedBinders.Any()
             ? StatusStyle.Type.Warning
             : base.Status;
-        
+
         public MonoViewVisualElement(TEditor editor)
             : base(editor) { }
 
@@ -55,17 +54,16 @@ namespace Aspid.MVVM
         {
             var generalBinders = this.Q<VisualElement>(GeneralBindersId);
             if (generalBinders is null) return;
-            
+
             var generalBindersParent = generalBinders.parent;
-            generalBindersParent.Remove(this.Q<VisualElement>(GeneralBindersId));
+            generalBindersParent.Remove(generalBinders);
             generalBindersParent.AddChild(BuildGeneralBinders());
 
-            generalBindersParent.SetDisplay(this.Q<VisualElement>(GeneralBindersId).childCount > 0 ? DisplayStyle.Flex : DisplayStyle.None);
             _unassignedBindersVisualElement?.Invalidate();
         }
         
         protected override void OnUpdate() =>
-            _unassignedBindersVisualElement!.Update();
+            _unassignedBindersVisualElement?.Update();
         #endregion
         
         protected override VisualElement? OnBuiltHeader()
@@ -77,7 +75,7 @@ namespace Aspid.MVVM
             {
                 return new VisualElement()
                     .AddChild(BuildDesignViewModel())
-                    .AddChild(BuiltGeneralBinders());
+                    .AddChild(BuildGeneralBinders());
             }
 
             return null;
@@ -91,7 +89,7 @@ namespace Aspid.MVVM
             var container = new AspidBox(AspidBoxPreset.Default.SetTheme(ThemeStyle.Type.Dark))
                 .SetMargin(top: 5);
             container.AddChild(new AspidLabel(text: "Design ViewModel").SetMarginBottom(5));
-            
+
             var attribute = Editor.ShowDesignViewModelAttribute;
             var propertyField = new PropertyField(Editor.DesignViewModel, label: string.Empty);
 
@@ -100,30 +98,20 @@ namespace Aspid.MVVM
                 propertyField.RegisterCallback<GeometryChangedEvent>(_ =>
                     propertyField.Q<Button>()?.SetEnabled(!attribute.StrictType));
             }
-            
-            return container.AddChild(propertyField);
-        }
-        
-        private VisualElement BuiltGeneralBinders()
-        {
-            var container = new AspidBox()
-                .SetMargin(top: 5);
 
-            return container
-                .AddChild(BuildGeneralBinders());
+            return container.AddChild(propertyField);
         }
 
         private VisualElement BuildGeneralBinders()
         {
-            var rootContainer = new VisualElement()
-                .SetName(GeneralBindersId);
+            var container = new AspidBox()
+                .SetName(GeneralBindersId)
+                .SetMargin(top: 5);
 
-            var currentGroupCount = 0;
-            string? currentGroup = null;
-            IntegerField? currentCounter = null;
-            var target = rootContainer;
+            var targetType = SerializedObject.targetObject.GetType();
+            var router = new HeaderGroupRouter(container, targetType);
+
             var metaById = Editor.MetaById;
-            var viewTypeName = Editor.TargetAsView ? Editor.TargetAsView.GetType().FullName : "Unknown";
 
             for (var i = 0; i < Editor.BindersList.ArraySize; i++)
             {
@@ -132,101 +120,19 @@ namespace Aspid.MVVM
 
                 metaById.TryGetValue(element.Id, out var meta);
 
-                if (meta?.IsCommand is true)
-                {
-                    if (currentGroup is not null)
-                    {
-                        FinalizeFoldoutCount();
-                        target = rootContainer;
-                        currentGroup = null;
-                        currentCounter = null;
-                        currentGroupCount = 0;
-                    }
-                }
-                else
-                {
-                    var header = string.IsNullOrWhiteSpace(meta?.Header) ? null : meta!.Header;
-                    if (header is not null && header != currentGroup)
-                    {
-                        FinalizeFoldoutCount();
+                var binderField = new MonoBinderPropertyField(
+                    element.MonoBindersProperty,
+                    label: ObjectNames.NicifyVariableName(element.Id),
+                    binderId: element.Id,
+                    assemblyQualifiedName: capturedAssemblyQualifiedName);
 
-                        var (foldout, counter) = BuildHeaderFoldout(header, viewTypeName);
-                        rootContainer.Add(foldout);
-                        target = foldout.contentContainer;
-                        currentGroup = header;
-                        currentCounter = counter;
-                        currentGroupCount = 0;
-                    }
-                }
-
-                var property = new MonoBinderPropertyField(
-                        element.MonoBindersProperty,
-                        label: ObjectNames.NicifyVariableName(element.Id), 
-                        binderId: element.Id,
-                        assemblyQualifiedName: capturedAssemblyQualifiedName)
-                    .SetMargin(top: 3);
-
-                target.Add(property);
-
-                if (currentCounter is not null)
-                    currentGroupCount++;
+                router.Add(binderField, meta);
             }
 
-            FinalizeFoldoutCount();
-            return rootContainer;
+            if (container.childCount == 0)
+                container.SetDisplay(DisplayStyle.None);
 
-            void FinalizeFoldoutCount() =>
-                currentCounter?.SetValueWithoutNotify(currentGroupCount);
-        }
-
-        private static (Foldout foldout, IntegerField counter) BuildHeaderFoldout(string header, string viewTypeName)
-        {
-            var foldout = new Foldout()
-            .SetValue(true)
-            .SetText(header)
-            .SetPadding(left: 0)
-            .SetMargin(top: 3, right: 0)
-            .SetViewDataKey($"{HeaderFoldoutViewDataKeyPrefix}.{viewTypeName}.{header}");
-            
-            foldout.contentContainer
-                .SetMargin(left: 0)
-                .SetPadding(left: 10)
-                .AddChild(new AspidDividingLine()
-                    .SetPosition(Position.Absolute)
-                    .SetDistance(top: 3, bottom: 0, left: 3)
-                    .SetDirection(AspidDividingLineDirectionStyle.Type.Vertical));
-
-            var counter = new IntegerField()
-                .SetMargin(0)
-                .SetWidth(50)
-                .SetMinWidth(50)
-                .SetMaxWidth(50)
-                .SetEnabledSelf(false)
-                .SetPickingMode(PickingMode.Ignore);
-            
-            counter.Q<TextElement>().SetMarginLeft(0).SetPaddingLeft(2);
-            counter.RegisterCallback<AttachToPanelEvent>(_ =>
-            {
-                IgnorePickingRecursive(counter);
-            });
-
-            foldout.Q<Toggle>()
-                .SetMargin(0)
-                .SetBorderRadius(5)
-                .SetAlignItems(Align.Center)
-                .SetFlexDirection(FlexDirection.Row)
-                .SetPadding(top: 2, right: 5, bottom: 2, left: 3)
-                .SetBackgroundColor(new Color(0x38 / 255f, 0x38 / 255f, 0x38 / 255f))
-                .AddChild(counter);
-
-            return (foldout, counter);
-        }
-
-        private static void IgnorePickingRecursive(VisualElement element)
-        {
-            element.pickingMode = PickingMode.Ignore;
-            foreach (var child in element.Children())
-                IgnorePickingRecursive(child);
+            return container;
         }
 
         private UnassignedBindersVisualElement<TView, TEditor> BuildUnassignedBinders()
@@ -238,20 +144,20 @@ namespace Aspid.MVVM
         private bool CanAutoAssign(IMonoBinderValidable binder)
         {
             var result = false;
-            
+
             this.Query<MonoBinderPropertyField>().ForEach(field =>
             {
                 if (!result && field.IsCompatibleBinderWithField(binder) is CompatibleBinderWithField.TypeAndId)
                     result = true;
             });
-            
+
             return result;
         }
 
         private void OnAutoAssign(IMonoBinderValidable binder)
         {
             MonoBinderPropertyField? targetField = null;
-            
+
             this.Query<MonoBinderPropertyField>().ForEach(field =>
             {
                 if (targetField is null && field.IsCompatibleBinderWithField(binder) == CompatibleBinderWithField.TypeAndId)
@@ -271,7 +177,7 @@ namespace Aspid.MVVM
             {
                 property.objectReferenceValue = (UnityEngine.Object)binder;
             }
-            
+
             property.ApplyModifiedProperties();
         }
 
@@ -281,8 +187,8 @@ namespace Aspid.MVVM
             {
                 var result = field.IsCompatibleBinderWithField(binder);
                 if (result is CompatibleBinderWithField.None) return;
-                
-                field.AnimateHighlight(result is CompatibleBinderWithField.Type 
+
+                field.AnimateHighlight(result is CompatibleBinderWithField.Type
                     ? new Color(r: 0.61f, g: 0.44f, b: 0.11f)
                     : new Color(r: 0.04f, g: 0.27f, b: 0.17f));
             });

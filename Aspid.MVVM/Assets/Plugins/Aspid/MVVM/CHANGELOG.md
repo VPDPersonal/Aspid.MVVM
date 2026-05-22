@@ -33,6 +33,7 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and 
 - `EmptyExecution` static instance on `RelayCommand`; try/catch in `RelayCommandField`.
 - Interface support for `ViewModel` (`IMyVm` can now be picked as a design ViewModel).
 - Profiler markers expanded across binder lifecycle.
+- **Virtual binder fields** — generator auto-emits `MonoBinder[]` slots for `IView<TViewModel>` bindable members that are not declared on the View. Opt out via `[View(AutoBinderFields = false)]`; `ScriptableObject`-derived views are always skipped (PR #74, generator PR `Aspid.MVVM.Generators#13`).
 
 #### Views
 - **`GeneralView`** added (PR #43), then merged into `MonoView` (PR #48). `MonoView` is now non-abstract and self-contained.
@@ -53,6 +54,7 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and 
 - Drag & Drop for unassigned and general binders (groups + Auto-Assign + Select / Restore buttons).
 - `RequireBinder` and child View / Binder validation (alpha).
 - `Aspid.MVVM Settings` window prototype (PR #47).
+- **`HeaderGroup` foldout attributes** — `HeaderGroupAttribute` (single field), `HeaderGroupStartAttribute` / `HeaderGroupEndAttribute` (range) tag binder fields and VM members into named, collapsible inspector foldouts. New `HeaderGroupRouter` is consumed by `MonoViewVisualElement` / `AspidBaseInspectorVisualElement` instead of inline foldout layout. Stripped from non-`DEBUG` / non-`UNITY_EDITOR` builds (PR #74).
 
 #### ViewModel Debug Panel (PR #45)
 - Rewritten on UI Toolkit, with tabs.

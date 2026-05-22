@@ -101,7 +101,8 @@ namespace Aspid.MVVM
         protected virtual VisualElement? OnBuiltHeader() => null;
         
         private AspidBaseInspectorVisualElement BuildBaseInspector() =>
-            new(SerializedObject, null, PropertiesExcluding.ToArray());
+            new AspidBaseInspectorVisualElement(SerializedObject, null, PropertiesExcluding.ToArray())
+                .SetMargin(top: 5);
 
         protected virtual VisualElement? OnBuiltBaseInspector() => null;
         

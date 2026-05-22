@@ -9,8 +9,10 @@ namespace Aspid.MVVM
     /// <summary>
     /// Metadata describing a single bindable property on an <see cref="IViewModel"/> type,
     /// including its resolved type, binding ID, generated property name, supported <see cref="BindMode"/>,
-    /// and inspector layout hints (header text and vertical spacing read from Unity's
-    /// <see cref="UnityEngine.HeaderAttribute"/> and <see cref="UnityEngine.SpaceAttribute"/>).
+    /// and inspector layout hints (Unity <see cref="UnityEngine.HeaderAttribute"/> rendered as a
+    /// plain header, plus the MVVM-specific <see cref="HeaderGroupAttribute"/>,
+    /// <see cref="HeaderGroupStartAttribute"/>, and <see cref="HeaderGroupEndAttribute"/> that drive
+    /// collapsible foldout grouping in the inspector).
     /// </summary>
     public class BindablePropertyMeta
     {
@@ -19,7 +21,9 @@ namespace Aspid.MVVM
         public readonly string Name;
         public readonly BindMode Mode;
         public readonly string Header;
-        public readonly bool IsCommand;
+        public readonly string HeaderGroup;
+        public readonly string HeaderGroupStart;
+        public readonly bool HeaderGroupEnd;
 
         public BindablePropertyMeta(Type memberContainerType, MemberInfo memberInfo)
         {
@@ -30,6 +34,14 @@ namespace Aspid.MVVM
 
             var unityHeader = memberInfo.GetCustomAttribute<UnityEngine.HeaderAttribute>();
             Header = string.IsNullOrWhiteSpace(unityHeader?.header) ? null : unityHeader.header;
+
+            var headerGroup = memberInfo.GetCustomAttribute<HeaderGroupAttribute>();
+            HeaderGroup = string.IsNullOrWhiteSpace(headerGroup?.Title) ? null : headerGroup.Title;
+
+            var headerGroupStart = memberInfo.GetCustomAttribute<HeaderGroupStartAttribute>();
+            HeaderGroupStart = string.IsNullOrWhiteSpace(headerGroupStart?.Title) ? null : headerGroupStart.Title;
+
+            HeaderGroupEnd = memberInfo.IsDefined(typeof(HeaderGroupEndAttribute));
             
             var bindIdAttribute = memberInfo.GetCustomAttribute<BindIdAttribute>();
             Id = bindIdAttribute is not null ? bindIdAttribute.Id : BinderFieldInfoExtensions.GetBinderId(memberInfo.Name);
@@ -66,11 +78,10 @@ namespace Aspid.MVVM
                     Type =  propertyInfo.PropertyType;
                     break;
                 
-                case MethodInfo methodInfo:
+                case MethodInfo:
                     if (bindIdAttribute is null)
                         Id += "Command";
-
-                    IsCommand = true;
+                    
                     Mode = BindMode.OneTime;
                     Name += "Command";
                     

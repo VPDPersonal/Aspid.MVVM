@@ -4,7 +4,7 @@ using UnityEngine;
 namespace Aspid.MVVM.Samples.Stats
 {
     [View]
-    public partial class ReadOnlyStatsView : MonoView, IView<StatsViewModel>
+    public partial class ReadOnlyStatsView : MonoView
     {
         [RequireBinder(typeof(int))]
         [SerializeField] private MonoBinder[] _cool;

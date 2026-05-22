@@ -159,11 +159,15 @@ namespace Aspid.MVVM
         protected override void OnSerializedPropertyChanged(SerializedPropertyChangeEvent e)
         {
             ValidateChangedInView();
-            
+
             if (e.changedProperty.propertyPath == DesignViewModel.propertyPath)
             {
-                UpdateMetaData();
-                ((MonoViewVisualElement<TMonoView, TEditor>)Root).UpdateGeneralBinders();
+                Root.schedule.Execute(() =>
+                {
+                    serializedObject.Update();
+                    UpdateMetaData();
+                    ((MonoViewVisualElement<TMonoView, TEditor>)Root).UpdateGeneralBinders();
+                }).ExecuteLater(0);
             }
         }
 

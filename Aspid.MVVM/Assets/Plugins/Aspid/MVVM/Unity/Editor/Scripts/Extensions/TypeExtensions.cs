@@ -1,8 +1,10 @@
 #nullable enable
 using System;
 using System.Linq;
+using UnityEngine;
 using System.Reflection;
 using System.Collections.Generic;
+using Aspid.FastTools.Reflection;
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM
@@ -41,6 +43,12 @@ namespace Aspid.MVVM
 
         public static Type GetUnitySerializableType(this PropertyInfo propertyInfo) =>
             GetUnitySerializableType(propertyInfo.PropertyType, propertyInfo.Name);
+        
+        internal static Dictionary<string, FieldInfo> GetInstanceFieldMap(this Type type) => type
+            .GetMembersInfosIncludingBaseClasses(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
+            .OfType<FieldInfo>()
+            .Where(field => field.IsPublic || field.IsDefined(typeof(SerializeField)))
+            .ToDictionary(field => field.Name);
 
         private static Type GetUnitySerializableType(Type? type, string name)
         {

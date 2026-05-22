@@ -1,11 +1,12 @@
 #nullable enable
 using System;
-using UnityEditor;
 using System.Linq;
+using UnityEditor;
 using UnityEngine;
 using System.Reflection;
+using UnityEditor.Search;
 using UnityEngine.UIElements;
-using UnityEditor.UIElements;
+using System.CodeDom.Compiler;
 using System.Collections.Generic;
 using Aspid.FastTools.UIElements;
 using Aspid.FastTools.UIElements.Editors.Internal;
@@ -15,112 +16,125 @@ namespace Aspid.MVVM
 {
     public sealed class AspidBaseInspectorVisualElement : VisualElement
     {
-        public AspidBaseInspectorVisualElement(SerializedObject serializedObject, string? title, IReadOnlyCollection<string>? propertiesExcluding = null)
+        public AspidBaseInspectorVisualElement(
+            SerializedObject serializedObject,
+            string? title,
+            IReadOnlyCollection<string>? propertiesExcluding = null)
         {
             var container = Build(serializedObject, title, propertiesExcluding);
+
             style.display = container.style.display;
-            Add(container);
-        }
-
-        private static VisualElement Build(SerializedObject serializedObject, string? title, IReadOnlyCollection<string>? propertiesExcluding)
-        {
-            var container = new AspidBox()
-                .SetMargin(top: 5);
-
-            if (!string.IsNullOrWhiteSpace(title))
-                container.AddChild(new AspidLabel(title).SetMarginBottom(5));
-
-            var count = 0;
-            var enterChildren = true;
-            var targetType = serializedObject.targetObject.GetType();
-            var iterator = serializedObject.GetIterator();
-
-            while (iterator.NextVisible(enterChildren))
+            this.AddChild(container);
+            
+            RegisterCallback<GeometryChangedEvent>(_ =>
             {
-                enterChildren = false;
-                if (propertiesExcluding?.Contains(iterator.name) ?? false) continue;
-
-                var marginTop = count++ > 0 ? 4 : 0;
-
-                VisualElement field;
-                var fieldInfo = FindFieldInHierarchy(targetType, iterator.name);
-                var fieldType = fieldInfo?.FieldType;
-
-                if (IsMonoBinderType(fieldType))
+                foreach (var field in container.Query<ObjectField>().Build())
                 {
-                    var binderId = fieldInfo is not null
-                        ? BinderFieldInfoExtensions.GetBinderId(fieldInfo.Name)
-                        : string.Empty;
-                    
-                    var assemblyQualifiedName = GetAssemblyQualifiedName(fieldType, fieldInfo);
-                    
-                    field = new MonoBinderPropertyField(iterator.Copy(), binderId, assemblyQualifiedName).SetMargin(top: marginTop);
-                }
-                else
-                {
-                    var propertyField = new AspidPropertyField(iterator).SetMargin(top: marginTop);
-                    field = propertyField;
-                }
+                    if (field?.value is not Component valueComponent) return;
+                    if (field.childCount < 2) return;
                 
-                field.RegisterCallback<GeometryChangedEvent>(_ =>
-                {
-                    var objectField = field.Q<ObjectField>();
-                    if (objectField?.value is not Component valueComponent) return;
-                    if (objectField.childCount < 2) return;
-
-                    var components = valueComponent.GetComponents(objectField.objectType);
+                    var components = valueComponent.GetComponents(field.objectType);
                     if (components.Length < 2) return;
-
+                
                     var index = 0;
-
+                
                     foreach (var component in components)
                     {
                         index++;
                         if (valueComponent != component) continue;
-
-                        var label = objectField[1].Q<Label>();
+                
+                        var label = field[1].Q<Label>();
                         if (label is null) break;
-
+                
                         label.text = $"{valueComponent.name} ({ObjectNames.NicifyVariableName(valueComponent.GetType().Name)}) ({index})";
                     }
-                });
-
-                container.AddChild(field);
-            }
-
-            container.style.display = count > 0 ? DisplayStyle.Flex : DisplayStyle.None;
-            return container;
+                }
+            });
         }
 
-        private static FieldInfo? FindFieldInHierarchy(Type? type, string name)
+        private static VisualElement Build(
+            SerializedObject serializedObject,
+            string? title,
+            IReadOnlyCollection<string>? propertiesExcluding)
         {
-            var current = type;
+            var container = new AspidBox();
+
+            if (!string.IsNullOrWhiteSpace(title))
+                container.AddChild(new AspidLabel(title).SetMarginBottom(5));
             
-            while (current is not null && current != typeof(object))
+            var targetType = serializedObject.targetObject.GetType();
+
+            var router = new HeaderGroupRouter(container, targetType);
+            var fieldMap = targetType.GetInstanceFieldMap();
+
+            var enterChildren = true;
+            var iterator = serializedObject.GetIterator();
+            while (iterator.NextVisible(enterChildren))
             {
-                var field = current.GetField(name, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.DeclaredOnly);
-                if (field is not null) return field;
-                
-                current = current.BaseType;
+                enterChildren = false;
+                BuildProperty(isGenerated: true);
             }
 
-            return null;
-        }
-
-        private static string? GetAssemblyQualifiedName(Type? fieldType, FieldInfo? fieldInfo)
-        {
-            var requireBinderAttribute = fieldInfo?.GetCustomAttribute<RequireBinderAttribute>();
+            enterChildren = true;
+            iterator = serializedObject.GetIterator();
+            while (iterator.NextVisible(enterChildren))
+            {
+                enterChildren = false;
+                BuildProperty(isGenerated:false);
+            }
             
-            return requireBinderAttribute?.AssemblyQualifiedNames?.Any() is true 
-                ? requireBinderAttribute.AssemblyQualifiedNames.First()
-                : fieldType?.AssemblyQualifiedName;
+            return container.SetDisplay(container.childCount > 0 ? DisplayStyle.Flex : DisplayStyle.None);
+            
+            void BuildProperty(bool isGenerated)
+            {
+                if (propertiesExcluding?.Contains(iterator.name) ?? false) return;
+                
+                fieldMap.TryGetValue(iterator.name, out var fieldInfo);
+                if (fieldInfo?.IsDefined(typeof(GeneratedCodeAttribute)) != isGenerated) return;
+                
+                var field = GetPropertyField(fieldInfo, iterator.Copy());
+                router.Add(field, fieldInfo);
+            }
         }
-
-        private static bool IsMonoBinderType(Type? type)
+        
+        private static VisualElement GetPropertyField(FieldInfo? fieldInfo, SerializedProperty propertyCopy)
         {
-            if (type is null) return false;
-            if (type.IsArray) return IsMonoBinderType(type.GetElementType());
-            return typeof(MonoBinder).IsAssignableFrom(type);
+            var fieldType = fieldInfo?.FieldType;
+            
+            if (IsMonoBinderType(fieldType))
+            {
+                var binderId = fieldInfo is not null
+                    ? BinderFieldInfoExtensions.GetBinderId(fieldInfo.Name)
+                    : string.Empty;
+
+                var assemblyQualifiedName = GetAssemblyQualifiedName(fieldInfo);
+                return new MonoBinderPropertyField(propertyCopy, binderId, assemblyQualifiedName);
+            }
+            
+            return new AspidPropertyField(propertyCopy);
+            
+            bool IsMonoBinderType(Type? type)
+            {
+                if (type is null) return false;
+                if (type.IsArray) return IsMonoBinderType(type.GetElementType());
+                return typeof(MonoBinder).IsAssignableFrom(type);
+            }
+        }
+        
+        private static string? GetAssemblyQualifiedName(FieldInfo? field)
+        {
+            if (field is null) return null;
+
+            var requireBinder = field.GetCustomAttributes<RequireBinderAttribute>()
+                .SelectMany(a => a.AssemblyQualifiedNames ?? Array.Empty<string>())
+                .FirstOrDefault(name => !string.IsNullOrWhiteSpace(name));
+
+            if (!string.IsNullOrWhiteSpace(requireBinder))
+                return requireBinder;
+
+            var fieldType = field.FieldType;
+            var elementType = fieldType.IsArray ? fieldType.GetElementType() : fieldType;
+            return elementType?.AssemblyQualifiedName;
         }
     }
 }

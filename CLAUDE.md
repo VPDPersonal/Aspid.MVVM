@@ -7,7 +7,7 @@ A high-performance Source Generator-based MVVM framework for Unity. Enables clea
 ```
 Projects/Aspid.MVVM/
 ├── Aspid.MVVM/                        # Main Unity project
-│   └── Assets/Plugins/Aspid/
+│   └── Assets/Aspid/
 │       ├── MVVM/
 │       │   ├── Source/                # Core framework implementation
 │       │   │   ├── ViewModels/        # IViewModel interface, attributes, extensions
@@ -27,9 +27,7 @@ Projects/Aspid.MVVM/
 │       │   │   └── ViewModels/        # DynamicViewModel
 │       │   ├── Unity/                 # Unity integration layer
 │       │   └── Samples/               # HelloWorld, Stats, TodoList, VirtualizedList, 01. Counter, 02. Greeter, ExampleScripts
-│       ├── Collections/                # Observable collections (submodule → Aspid.Collections)
-│       ├── Internal/Unity/             # Internal editor utilities (submodule)
-│       └── FastTools/                  # Performance utilities (UI Toolkit, etc.)
+│       └── Collections/                # Observable collections (submodule → Aspid.Collections)
 ├── Aspid.MVVM.Generators/             # Roslyn source generator (submodule)
 │   ├── Aspid.MVVM.Generators/         # Generator implementation
 │   └── Aspid.MVVM.Generators.Tests/   # Generator unit tests
@@ -115,14 +113,14 @@ The Unity project is opened via the Unity Editor (2022.3+); there is no CLI buil
 
 ## Gotchas
 
-- **Generator artifacts are committed.** Built DLLs (`Aspid.MVVM.Generators.dll`, `Aspid.MVVM.Analyzers.dll`, `Aspid.MVVM.Unity.Generators.dll`) live under `Aspid.MVVM/Assets/Plugins/Aspid/MVVM/` and are checked into the repo. After changing a generator, rebuild its solution and commit the refreshed DLL — Unity consumes the DLL, not source.
-- **Submodules are required.** Cloning without `--recurse-submodules` leaves `Aspid.Collections`, `Aspid.Internal.Unity`, and the generator/analyzer repos empty; Unity won't compile.
+- **Generator artifacts are committed.** Built DLLs (`Aspid.MVVM.Generators.dll`, `Aspid.MVVM.Analyzers.dll`, `Aspid.MVVM.Unity.Generators.dll`) live under `Aspid.MVVM/Assets/Aspid/MVVM/` and are checked into the repo. After changing a generator, rebuild its solution and commit the refreshed DLL — Unity consumes the DLL, not source.
+- **Submodules are required.** Cloning without `--recurse-submodules` leaves `Aspid.Collections` and the generator/analyzer repos empty; Unity won't compile.
 - **`.NET 9.0 SDK` is pinned** via `global.json` in each generator/analyzer root. Older SDKs fail to build.
 - **Classes using `[ViewModel]`, `[Bind]`, `[RelayCommand]` must be `partial`** — the generator emits a second partial; without the modifier you get compile errors instead of generated members.
 
 ## Git Submodules
 
-The project uses 5 git submodules. After cloning, initialize with:
+The project uses 4 git submodules. After cloning, initialize with:
 
 ```bash
 git submodule update --init --recursive
@@ -132,7 +130,6 @@ Submodules:
 - `Aspid.MVVM.Generators`
 - `Aspid.MVVM.Analyzers`
 - `Aspid.MVVM.Unity.Generators`
-- `Aspid.Internal.Unity`
 - `Aspid.Collections`
 
 ## Branch Strategy
@@ -148,6 +145,6 @@ Submodules:
 - **XML doc conventions**: skill `aspid-mvvm-xmldoc` in `.claude/skills/` — rules for writing XML documentation comments
 - Key entry points for new contributors:
   - `Readme.md` — project overview
-  - `Aspid.MVVM/Assets/Plugins/Aspid/MVVM/Samples/HelloWorld/` — minimal examples
+  - `Aspid.MVVM/Assets/Aspid/MVVM/Samples/HelloWorld/` — minimal examples
   - `Aspid.MVVM.Generators/Aspid.MVVM.Generators/Aspid.MVVM.Generators/Generators/ViewModels/ViewModelGenerator.cs` — source generator pipeline
   - `Source/ViewModels/IViewModel.cs` — core interface

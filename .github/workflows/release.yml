@@ -1,0 +1,230 @@
+name: Release
+
+# Stable releases (1.2.0) update the `upm` branch.
+# Pre-release versions (1.2.0-rc.1, 1.2.0-alpha.3, 1.2.0-preview.2, ...) update `upm-preview`.
+# Both create an immutable upm/<version> tag for pinning.
+#
+# Trigger: push a `v*` tag, or run manually via "Run workflow" with the version as input.
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version to release (e.g. 1.2.0 or 1.2.0-rc.1)'
+        required: true
+        type: string
+
+env:
+  PACKAGE_PATH: Aspid.MVVM/Assets/Aspid/MVVM
+  CHANGELOG_PATH: Aspid.MVVM/Assets/Aspid/MVVM/CHANGELOG.md
+  STABLE_BRANCH: upm
+  PREVIEW_BRANCH: upm-preview
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Determine version and channel
+        id: version
+        run: |
+          set -euo pipefail
+          if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
+            VERSION="${{ inputs.version }}"
+          else
+            VERSION="${GITHUB_REF_NAME}"
+          fi
+          VERSION="${VERSION#v}"
+
+          if ! [[ "$VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+(-[0-9A-Za-z.-]+)?$ ]]; then
+            echo "::error::Invalid SemVer version: '$VERSION'"
+            exit 1
+          fi
+
+          TAG="v$VERSION"
+          if [[ "$VERSION" == *-* ]]; then
+            CHANNEL="preview"
+            TARGET_BRANCH="${PREVIEW_BRANCH}"
+            PRERELEASE="true"
+          else
+            CHANNEL="stable"
+            TARGET_BRANCH="${STABLE_BRANCH}"
+            PRERELEASE="false"
+          fi
+
+          {
+            echo "version=$VERSION"
+            echo "tag=$TAG"
+            echo "channel=$CHANNEL"
+            echo "target_branch=$TARGET_BRANCH"
+            echo "prerelease=$PRERELEASE"
+          } >> "$GITHUB_OUTPUT"
+
+          echo "Releasing $VERSION (channel=$CHANNEL, branch=$TARGET_BRANCH, tag=$TAG)"
+
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          # Submodules are initialized manually in the next step. The default
+          # checkout would try the SSH URLs from .gitmodules; we rewrite them
+          # to HTTPS first so the anonymous public clones work.
+
+      - name: Initialize submodules over HTTPS
+        # The three Roslyn submodules use git@github.com:... in .gitmodules.
+        # Workflow only has the default GITHUB_TOKEN, so we rewrite to HTTPS.
+        # If any of these submodules becomes private later, this step must be
+        # updated to use a PAT / Deploy Key with read access.
+        run: |
+          set -euo pipefail
+          git config --global url."https://github.com/".insteadOf "git@github.com:"
+          git submodule update --init --recursive
+
+      - name: Configure git identity
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      - name: Ensure release tag does not already exist
+        if: github.event_name == 'workflow_dispatch'
+        run: |
+          set -euo pipefail
+          TAG="${{ steps.version.outputs.tag }}"
+          if git rev-parse --verify --quiet "refs/tags/$TAG" >/dev/null; then
+            echo "::error::Tag $TAG already exists locally"
+            exit 1
+          fi
+          if git ls-remote --exit-code --tags origin "$TAG" >/dev/null 2>&1; then
+            echo "::error::Tag $TAG already exists on origin"
+            exit 1
+          fi
+
+      - name: Ensure UPM tag does not already exist
+        run: |
+          set -euo pipefail
+          UPM_TAG="upm/${{ steps.version.outputs.version }}"
+          if git ls-remote --exit-code --tags origin "$UPM_TAG" >/dev/null 2>&1; then
+            echo "::error::Tag $UPM_TAG already exists on origin"
+            exit 1
+          fi
+
+      - name: Validate package.json version
+        run: |
+          set -euo pipefail
+          VERSION="${{ steps.version.outputs.version }}"
+          PKG_VERSION=$(jq -r .version "$PACKAGE_PATH/package.json")
+          if [[ "$PKG_VERSION" != "$VERSION" ]]; then
+            echo "::error::package.json version ($PKG_VERSION) does not match release version ($VERSION)"
+            exit 1
+          fi
+          echo "package.json version matches: $PKG_VERSION"
+
+      - name: Extract CHANGELOG section
+        id: changelog
+        run: |
+          set -euo pipefail
+          VERSION="${{ steps.version.outputs.version }}"
+          if [[ ! -f "$CHANGELOG_PATH" ]]; then
+            echo "::error::CHANGELOG file not found at $CHANGELOG_PATH"
+            exit 1
+          fi
+          NOTES=$(awk -v ver="$VERSION" '
+            BEGIN { capture = 0 }
+            /^## \[/ {
+              if (capture) { exit }
+              if ($0 ~ "^## \\[" ver "\\]([^0-9A-Za-z.-]|$)") { capture = 1; next }
+            }
+            capture { print }
+          ' "$CHANGELOG_PATH")
+          if [[ -z "$(echo "$NOTES" | tr -d '[:space:]')" ]]; then
+            echo "::error::No CHANGELOG section found for version $VERSION (expected '## [$VERSION]' in $CHANGELOG_PATH)"
+            exit 1
+          fi
+          {
+            echo "notes<<__CHANGELOG_EOF__"
+            echo "$NOTES"
+            echo "__CHANGELOG_EOF__"
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Set up .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '9.0.x'
+
+      - name: Build Roslyn generators and analyzer
+        run: |
+          set -euo pipefail
+          dotnet build -c Release Aspid.MVVM.Generators/Aspid.MVVM.Generators.sln
+          dotnet build -c Release Aspid.MVVM.Analyzers/Aspid.MVVM.Analyzers.sln
+          dotnet build -c Release Aspid.MVVM.Unity.Generators/Aspid.MVVM.Unity.Generators.sln
+
+      - name: Verify committed generator DLLs match the freshly-built ones
+        # Directory.Build.targets / CopyToUnity copies the built DLLs over the
+        # committed ones. If git sees no diff afterwards, the source tree and
+        # the shipped binaries are in sync; if it sees a diff, somebody forgot
+        # to commit the latest DLL refresh and we abort before publishing.
+        run: |
+          set -euo pipefail
+          DLLS=(
+            "$PACKAGE_PATH/Aspid.MVVM.Generators.dll"
+            "$PACKAGE_PATH/Aspid.MVVM.Analyzers.dll"
+            "$PACKAGE_PATH/Unity/Aspid.MVVM.Unity.Generators.dll"
+          )
+          for dll in "${DLLS[@]}"; do
+            if [[ ! -s "$dll" ]]; then
+              echo "::error::Generator DLL is missing or empty: $dll"
+              exit 1
+            fi
+            echo "  ok: $dll ($(wc -c < "$dll") bytes)"
+          done
+          if ! git diff --quiet -- "${DLLS[@]}"; then
+            echo "::error::Committed generator DLLs differ from the freshly-built output."
+            echo "::error::Rebuild the generator solutions locally and commit the refreshed DLLs before tagging."
+            git diff --stat -- "${DLLS[@]}"
+            exit 1
+          fi
+          echo "All generator DLLs match the build output."
+
+      - name: Create and push release tag
+        if: github.event_name == 'workflow_dispatch'
+        run: |
+          set -euo pipefail
+          TAG="${{ steps.version.outputs.tag }}"
+          git tag -a "$TAG" -m "Release $TAG"
+          git push origin "$TAG"
+
+      - name: Checkout release tag
+        run: |
+          set -euo pipefail
+          TAG="${{ steps.version.outputs.tag }}"
+          git fetch origin "refs/tags/$TAG:refs/tags/$TAG" --no-tags 2>/dev/null || true
+          git checkout "$TAG"
+
+      - name: Publish UPM subtree
+        run: |
+          set -euo pipefail
+          VERSION="${{ steps.version.outputs.version }}"
+          TARGET_BRANCH="${{ steps.version.outputs.target_branch }}"
+          UPM_TAG="upm/$VERSION"
+
+          SPLIT_SHA=$(git subtree split --prefix="$PACKAGE_PATH" HEAD)
+          echo "Subtree split SHA: $SPLIT_SHA"
+
+          git push --force origin "$SPLIT_SHA:refs/heads/$TARGET_BRANCH"
+          git tag "$UPM_TAG" "$SPLIT_SHA"
+          git push origin "$UPM_TAG"
+
+          echo "Published $UPM_TAG to branch '$TARGET_BRANCH' (channel: ${{ steps.version.outputs.channel }})"
+
+      - name: Create GitHub release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.version.outputs.tag }}
+          name: ${{ steps.version.outputs.tag }}
+          body: ${{ steps.changelog.outputs.notes }}
+          prerelease: ${{ steps.version.outputs.prerelease == 'true' }}

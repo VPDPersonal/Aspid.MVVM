@@ -12,6 +12,21 @@ namespace Aspid.MVVM.Generators.Generators.Views.Factories;
 
 public static class BinderMembersFactory
 {
+    public static ImmutableArray<string> CollectInheritedIds(INamedTypeSymbol symbol, SemanticModel semanticModel)
+    {
+        var ids = ImmutableArray.CreateBuilder<string>();
+
+        for (var baseType = symbol.BaseType; baseType is not null; baseType = baseType.BaseType)
+        {
+            if (!baseType.HasAnyAttributeInSelf(Classes.ViewAttribute)) continue;
+
+            foreach (var member in Create(baseType, semanticModel))
+                ids.Add(member.Id.SourceValue);
+        }
+
+        return ids.ToImmutable();
+    }
+
     public static ImmutableArray<BinderMember> Create(INamedTypeSymbol symbolClass, SemanticModel semanticModel)
     {
         var binderMembers = new List<BinderMember>();

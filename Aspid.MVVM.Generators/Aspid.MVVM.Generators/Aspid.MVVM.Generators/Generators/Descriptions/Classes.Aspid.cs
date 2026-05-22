@@ -18,6 +18,20 @@ public static class Classes
     public static readonly TypeText ViewBinder =
         new (nameof(ViewBinder), Namespaces.Aspid_MVVM);
     #endregion
+
+    #region Headers
+    public static readonly AttributeText HeaderAttribute =
+        new(nameof(HeaderAttribute), "UnityEngine");
+       
+    public static readonly AttributeText HeaderGroupAttribute =
+        new (nameof(HeaderGroupAttribute), Namespaces.Aspid_MVVM);
+
+    public static readonly AttributeText HeaderGroupStartAttribute =
+        new (nameof(HeaderGroupStartAttribute), Namespaces.Aspid_MVVM);
+    
+    public static readonly AttributeText HeaderGroupEndAttribute = 
+        new (nameof(HeaderGroupEndAttribute), Namespaces.Aspid_MVVM);
+    #endregion
     
     #region Binders
     public static readonly TypeText BindMode =
@@ -33,7 +47,7 @@ public static class Classes
         new(nameof(IReverseBinder), Namespaces.Aspid_MVVM);
     
     public static readonly TypeText MonoBinder =
-        new(nameof(MonoBinder), Namespaces.Aspid_MVVM_UNITY);
+        new(nameof(MonoBinder), Namespaces.Aspid_MVVM);
     
     public static readonly AttributeText BinderLogAttribute =
         new("BinderLogAttribute", Namespaces.Aspid_MVVM);
@@ -159,5 +173,5 @@ public static class Classes
         new("CreateFromAttribute", Namespaces.Aspid_MVVM);
     
     public static readonly AttributeText AddComponentContextMenuAttribute =
-        new ("AddComponentContextMenuAttribute", Namespaces.Aspid_MVVM_UNITY);
+        new ("AddComponentContextMenuAttribute", Namespaces.Aspid_MVVM);
 }

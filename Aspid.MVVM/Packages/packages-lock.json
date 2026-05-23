@@ -300,6 +300,15 @@
       "dependencies": {},
       "hash": "e75c3d407af049e5bb2bc87dbdb0338ecddfedbd"
     },
+    "tech.aspid.collections": {
+      "version": "https://github.com/VPDPersonal/Aspid.Collections.git#upm",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {
+        "com.unity.test-framework": "1.6.0"
+      },
+      "hash": "c050c3cee1c9a322d378d705d2af709ee85bc429"
+    },
     "com.unity.modules.accessibility": {
       "version": "1.0.0",
       "depth": 0,

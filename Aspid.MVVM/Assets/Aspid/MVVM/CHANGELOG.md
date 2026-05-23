@@ -19,7 +19,7 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and 
 - `GeneralView` merged into `MonoView` — single non-abstract base view.
 - New `ValueViewModel`, `AnyReverseBinder`, `OneWayToSourceComponentBinders`, AudioSource / LayoutGroup / Dropdown / Selectable / Object-Name binders.
 - `Aspid.UnityFastTools` integrated, many editor visuals migrated to FastTools equivalents.
-- All sub-projects extracted into git submodules: `Aspid.Collections`, `Aspid.Internal.Unity`, `Aspid.MVVM.Generators`, `Aspid.MVVM.Analyzers`, `Aspid.MVVM.Unity.Generators`.
+- All sub-projects extracted into git submodules (`Aspid.MVVM.Generators`, `Aspid.MVVM.Analyzers`, `Aspid.MVVM.Unity.Generators`); `Aspid.Collections` later moved to a UPM git package.
 - Target Unity raised to `6000.3.0f1` (minimum stays `2022.3`).
 - Mass XML documentation pass over the entire binder catalog plus `XmlDocConventions.md`.
 
@@ -72,6 +72,7 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and 
 - Additional InputField binders + large refactor (PR #51).
 - Dropdown / Selectable binders (PR #61).
 - `Addressable` binders gained an opt-in seamless swap mode.
+- `GameObjectInstantiateAddressableMonoBinder` for prefab spawning via Addressables.
 
 #### Binders — improvements
 - `OnReplace` / `OnMove` events forwarded to binder hooks; batch `Replace` unrolled into per-item `OnReplace` calls.
@@ -85,17 +86,20 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and 
 - `IAnyBinder` BinderLog support.
 
 #### Collections
-- `Aspid.Collections` extracted into a git submodule.
+- `Aspid.Collections` initially extracted into a git submodule, then replaced with a UPM git package (`tech.aspid.collections`) (PR #79).
 - `FilteredList` and `BindAlso` fixes.
 - New collections tests.
 - `Replace` / `Move` notifications surfaced to binders.
 
 #### Project structure / infrastructure
-- Submodules wired in (PR #38): `Aspid.Internal.Unity`, `Aspid.MVVM.Generators`, `Aspid.MVVM.Analyzers`, `Aspid.MVVM.Unity.Generators`, `Aspid.Collections`.
+- Submodules wired in (PR #38): `Aspid.MVVM.Generators`, `Aspid.MVVM.Analyzers`, `Aspid.MVVM.Unity.Generators`.
+- `Aspid.Internal.Unity` submodule added, then removed — functionality absorbed into the main project.
 - Unity project relocated from repo root into `Aspid.MVVM/`.
+- MVVM package moved from `Plugins/Aspid/` to `Assets/Aspid/` (PR #77).
 - `package.json` placed inside the package; `unity` field set to `2022.3`; version `1.1.0`.
 - Root `CLAUDE.md` describing structure and conventions.
 - GitHub Actions: Claude PR Assistant + Code Review workflows (PR #64).
+- GitHub Actions: Release workflow for stable and preview UPM branches with DLL verification (PR #78).
 
 #### Integrations / dependencies
 - `Aspid.UnityFastTools` integration `0.0.1-alpha.3` (PR #26); subsequent bumps to `alpha.5` / `alpha.7`.

@@ -7,6 +7,3 @@
 [submodule "Aspid.MVVM.Generators"]
 	path = Aspid.MVVM.Generators
 	url = git@github.com:VPDPersonal/Aspid.MVVM.Generators.git
-[submodule "Aspid.MVVM/Assets/Plugins/Aspid/Collections"]
-	path = Aspid.MVVM/Assets/Aspid/Collections
-	url = https://github.com/VPDPersonal/Aspid.Collections

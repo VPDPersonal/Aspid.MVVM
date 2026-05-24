@@ -30,29 +30,29 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and 
 - **`NotifyCanExecuteChangedAll()`** generator method (PR #52, fixed in #54).
 - **`ValueViewModel`** — minimal ViewModel wrapper around a single value with full XML docs (PR #63).
 - Keyword field support in the generator (PR #55).
-- `EmptyExecution` static instance on `RelayCommand`; try/catch in `RelayCommandField`.
-- Interface support for `ViewModel` (`IMyVm` can now be picked as a design ViewModel).
-- Profiler markers expanded across binder lifecycle.
+- `EmptyExecution` static instance on `RelayCommand` (PR #36); try/catch in `RelayCommandField` (PR #43).
+- Interface support for `ViewModel` (`IMyVm` can now be picked as a design ViewModel) (PR #53).
+- Profiler markers expanded across binder lifecycle (PR #15).
 - **Virtual binder fields** — generator auto-emits `MonoBinder[]` slots for `IView<TViewModel>` bindable members that are not declared on the View. Opt out via `[View(AutoBinderFields = false)]`; `ScriptableObject`-derived views are always skipped (PR #74, generator PR `Aspid.MVVM.Generators#13`).
 
 #### Views
 - **`GeneralView`** added (PR #43), then merged into `MonoView` (PR #48). `MonoView` is now non-abstract and self-contained.
-- `RelayCommand` support inside `View` / `MonoView`; `CommandsContainer` refactor; `CommandContainer in View`.
+- `RelayCommand` support inside `View` / `MonoView`; `CommandsContainer` refactor; `CommandContainer in View` (PR #43).
 - `ViewInitializer` overhaul (PR #41, #50) — context for `ViewInitializers`.
-- `DestroyView` mode in editor; `DestroyViewModel` extension fixes.
+- `DestroyView` mode in editor; `DestroyViewModel` extension fixes (PR #43, #53).
 - `PrefabViewFactory` / `PrefabViewPool` upgraded.
-- `ViewModelPickerWindow` with dropdown + improved navigation.
-- `[AddComponentMenu]` for `MonoView`, snake-style for settings menu.
-- `MonoView` editor refactor; fixed generated fields and base inspector display.
+- `ViewModelPickerWindow` with dropdown + improved navigation (PR #53).
+- `[AddComponentMenu]` for `MonoView`; snake-style for settings menu (PR #47).
+- `MonoView` editor refactor; fixed generated fields and base inspector display (PR #32).
 - `DesignViewModel` upgrade (PR #53) including legacy Unity support.
 
 #### Editor / Inspector
 - New UI Toolkit inspectors for `MonoBinder`, `MonoView`, `MonoViewModel` (PR #31, #32, #35).
-- `InspectorHeaderPanel`, `AspidInspectorHeader`, `AspidPropertyField`, `AspidDividingLine` shared visuals.
-- USS-driven theme: `AspidToggle`, IMGUI foldout drawer margin fix, IMGUIContainer wrapping in styled `AspidPropertyField`.
+- `InspectorHeaderPanel`, `AspidInspectorHeader`, `AspidPropertyField`, `AspidDividingLine` shared visuals (PR #32, #40).
+- USS-driven theme: `AspidToggle` (PR #47), IMGUI foldout drawer margin fix, IMGUIContainer wrapping in styled `AspidPropertyField`.
 - `EnumMonoBinderEditor` (PR #57); `EnumValuesPropertyDrawer` fixes; `EnumValues` sample and `ComponentTypeSelector` documentation.
-- Drag & Drop for unassigned and general binders (groups + Auto-Assign + Select / Restore buttons).
-- `RequireBinder` and child View / Binder validation (alpha).
+- Drag & Drop for unassigned and general binders (groups + Auto-Assign + Select / Restore buttons) (PR #43).
+- `RequireBinder` and child View / Binder validation (alpha) (PR #43).
 - `Aspid.MVVM Settings` window prototype (PR #47).
 - **`HeaderGroup` foldout attributes** — `HeaderGroupAttribute` (single field), `HeaderGroupStartAttribute` / `HeaderGroupEndAttribute` (range) tag binder fields and VM members into named, collapsible inspector foldouts. New `HeaderGroupRouter` is consumed by `MonoViewVisualElement` / `AspidBaseInspectorVisualElement` instead of inline foldout layout. Stripped from non-`DEBUG` / non-`UNITY_EDITOR` builds (PR #74).
 
@@ -110,16 +110,16 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and 
 
 #### Documentation
 - `XmlDocConventions.md` added and refined.
-- Mass XML doc pass across all binder families: AudioSource, CanvasGroup, Collider, Animator, Behaviour, GameObject, Layout, UnityGeneric, Selectable, Graphic, Image, RawImage, Renderer, Transform, Slider, InputField, Toggle, Button, EventTrigger, ScrollBar, ScrollRect, Dropdown, Object, LineRenderer, Casters, LocalizeStringEvent, VirtualizedList plus base `MonoBinder` / Behaviour subfolders.
+- Mass XML doc pass across all binder families: AudioSource, CanvasGroup, Collider, Animator, Behaviour, GameObject, Layout, UnityGeneric, Selectable, Graphic, Image, RawImage, Renderer, Transform, Slider, InputField, Toggle, Button, EventTrigger, ScrollBar, ScrollRect, Dropdown, Object, LineRenderer, Casters, LocalizeStringEvent, VirtualizedList plus base `MonoBinder` / Behaviour subfolders (PR #62).
 - XML docs for converters.
 - `ComponentTypeSelector` documentation and `EnumValues` sample.
-- `Readme.md` relocated and tweaked.
+- `Readme.md` relocated (PR #77) and tweaked (PR #71).
 
 ### Changed (behaviour)
 
-- `MonoView` is no longer `abstract`; it is a concrete component with its own serialized binders list and `[RequireBinder]` validation. Existing subclasses still work.
-- `MonoView.Dispose()` no longer destroys the host GameObject — it only calls `Deinitialize()`. Call `Object.Destroy(gameObject)` explicitly if needed.
-- `MonoBinder.Bind()` no longer throws when called on an already-bound binder; it logs an error and returns instead.
+- `MonoView` is no longer `abstract`; it is a concrete component with its own serialized binders list and `[RequireBinder]` validation. Existing subclasses still work (PR #48).
+- `MonoView.Dispose()` no longer destroys the host GameObject — it only calls `Deinitialize()`. Call `Object.Destroy(gameObject)` explicitly if needed (PR #48).
+- `MonoBinder.Bind()` no longer throws when called on an already-bound binder; it logs an error and returns instead (PR #62).
 - `[AddComponentMenu]` paths reorganized — for example `Collections/Observable List Binder - ViewModel` → `Collection/Observable List Binder – ViewModel` (singular form, en-dash).
 
 ### Removed
@@ -143,10 +143,10 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and 
 ### Fixed
 
 - `MonoView`: generated field handling, validation, infinite-loop validation.
-- `ViewInitializers` — multiple fixes.
+- `ViewInitializers` — multiple fixes (PR #41, #50).
 - `AddressableMonoBinder` — multiple fixes.
 - `EnumValue`, `EnumValuesPropertyDrawer`, `SerializableTypeDrawer`, `SerializePropertyExtensions`.
-- `BindAlso`, `MonoBinders`, base `Binder` — assorted fixes.
+- `BindAlso`, `MonoBinders`, base `Binder` — assorted fixes (PR #62).
 - `EnumValue` validation downgraded from exception to `Debug.LogError`.
 - Removed stray `Header("Target")` and obsolete files (`NewFields`, `Commands.meta`, `DebugViewModel`).
 - `#if !ASPID_MVVM_EDITOR_DISABLED` guards added in missing places.

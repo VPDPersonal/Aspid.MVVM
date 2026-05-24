@@ -2,9 +2,8 @@
 
 All notable changes to **Aspid.MVVM** are documented in this file.
 
-The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and the project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
-
-> Migration instructions for upgrading from 1.0 to 1.1 are in [MIGRATION.md](MIGRATION.md).
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
+and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ---
 

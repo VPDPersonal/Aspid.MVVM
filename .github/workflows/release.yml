@@ -163,6 +163,12 @@ jobs:
           dotnet build -c Release Aspid.MVVM.Analyzers/Aspid.MVVM.Analyzers.sln
           dotnet build -c Release Aspid.MVVM.Unity.Generators/Aspid.MVVM.Unity.Generators.sln
 
+      - name: Run generator and analyzer tests
+        run: |
+          set -euo pipefail
+          dotnet test -c Release Aspid.MVVM.Generators/Aspid.MVVM.Generators.sln --no-build
+          dotnet test -c Release Aspid.MVVM.Analyzers/Aspid.MVVM.Analyzers.sln --no-build
+
       - name: Verify committed generator DLLs match the freshly-built ones
         # Directory.Build.targets / CopyToUnity copies the built DLLs over the
         # committed ones. If git sees no diff afterwards, the source tree and

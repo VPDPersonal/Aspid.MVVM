@@ -63,25 +63,25 @@ namespace Aspid.MVVM.StarterKit
         protected override void OnAdded(IViewModel? newItem)
         {
             OnReset();
-            if (Collection is not null && Collection.Count > 0) OnAdded(Collection);
+            if (Collection?.Count > 0) OnAdded(Collection!);
         }
 
         protected override void OnAdded(IReadOnlyList<IViewModel?> newItems)
         {
             OnReset();
-            if (Collection is not null && Collection.Count > 0) OnAdded(Collection);
+            if (Collection?.Count > 0) OnAdded(Collection!);
         }
 
         protected override void OnRemoved(IViewModel? oldItem)
         {
             OnReset();
-            if (Collection is not null && Collection.Count > 0) OnAdded(Collection);
+            if (Collection?.Count > 0) OnAdded(Collection!);
         }
 
         protected override void OnRemoved(IReadOnlyList<IViewModel?> oldItems)
         {
             OnReset();
-            if (Collection is not null && Collection.Count > 0) OnAdded(Collection);
+            if (Collection?.Count > 0) OnAdded(Collection!);
         }
 
         protected override void OnReplace(IViewModel? oldItem, IViewModel? newItem, int newStartingIndex)

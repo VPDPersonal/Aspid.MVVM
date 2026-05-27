@@ -112,9 +112,9 @@ namespace Aspid.MVVM.StarterKit
 
             var value = CachedComponent.value;
             
-            // Safe only when sizeof(T) <= sizeof(float) (i.e. T is int or float).
-            // Unsafe.As throws at runtime for T = long or double (8 bytes > 4 bytes).
-            var castedValue = Unsafe.As<float, T>(ref value);
+            // Numeric conversion from float to the command parameter type.
+            
+            var castedValue = (T)Convert.ChangeType(value, typeof(T));
             
             SetInteractableMode(command.CanExecute(castedValue));
         }
@@ -250,9 +250,9 @@ namespace Aspid.MVVM.StarterKit
 
             var value = CachedComponent.value;
             
-            // Safe only when sizeof(T) <= sizeof(float) (i.e. T is int or float).
-            // Unsafe.As throws at runtime for T = long or double (8 bytes > 4 bytes).
-            var castedValue = Unsafe.As<float, TValue>(ref value);
+            // Numeric conversion from float to the command parameter type.
+            
+            var castedValue = (TValue)Convert.ChangeType(value, typeof(TValue));
             
             SetInteractableMode(command.CanExecute(castedValue, Param));
         }
@@ -400,9 +400,9 @@ namespace Aspid.MVVM.StarterKit
 
             var value = CachedComponent.value;
             
-            // Safe only when sizeof(T) <= sizeof(float) (i.e. T is int or float).
-            // Unsafe.As throws at runtime for T = long or double (8 bytes > 4 bytes).
-            var castedValue = Unsafe.As<float, TValue>(ref value);
+            // Numeric conversion from float to the command parameter type.
+            
+            var castedValue = (TValue)Convert.ChangeType(value, typeof(TValue));
             
             SetInteractableMode(command.CanExecute(castedValue, Param1, Param2));
         }
@@ -562,9 +562,9 @@ namespace Aspid.MVVM.StarterKit
 
             var value = CachedComponent.value;
             
-            // Safe only when sizeof(T) <= sizeof(float) (i.e. T is int or float).
-            // Unsafe.As throws at runtime for T = long or double (8 bytes > 4 bytes).
-            var castedValue = Unsafe.As<float, TValue>(ref value);
+            // Numeric conversion from float to the command parameter type.
+            
+            var castedValue = (TValue)Convert.ChangeType(value, typeof(TValue));
             
             SetInteractableMode(command.CanExecute(castedValue, Param1, Param2, Param3));
         }

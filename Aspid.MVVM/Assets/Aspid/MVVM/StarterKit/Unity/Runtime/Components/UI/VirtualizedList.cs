@@ -265,7 +265,7 @@ namespace Aspid.MVVM.StarterKit
         {
             var viewIndex = newStartingIndex - _previousViewModelTopIndex;
 
-            if (viewIndex < 0 || viewIndex <= ItemsSource.Count) Refresh();
+            if (viewIndex < 0 || viewIndex < _views.Length) Refresh();
             else ResizeContent();
         }
 
@@ -279,7 +279,7 @@ namespace Aspid.MVVM.StarterKit
         {
             var viewIndex = oldStartingIndex - _previousViewModelTopIndex;
 
-            if (viewIndex < 0 || viewIndex <= ItemsSource.Count) Refresh();
+            if (viewIndex < 0 || viewIndex < _views.Length) Refresh();
             else ResizeContent();
         }
 

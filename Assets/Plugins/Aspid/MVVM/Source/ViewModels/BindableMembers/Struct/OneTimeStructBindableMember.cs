@@ -10,23 +10,20 @@ namespace Aspid.MVVM
     public sealed class OneTimeStructBindableMember<T> : OneTimeStructBindableMember<T, ValueType>
         where T : struct
     {
-        private static readonly OneTimeStructBindableMember<T> _instance = new();
-        
-        private OneTimeStructBindableMember() { }
-    
+        private OneTimeStructBindableMember(T value) : base(value) { }
+
         /// <summary>
-        /// Creates a reusable instance and assigns the provided value for one-time binding.
+        /// Creates a new instance configured with the provided value for one-time binding.
         /// </summary>
         /// <param name="value">The value to be provided to the binder.</param>
-        /// <returns>A singleton instance of <see cref="OneTimeStructBindableMember{T}"/> configured with the specified value.</returns>
+        /// <returns>A new <see cref="OneTimeStructBindableMember{T}"/> instance configured with the specified value.</returns>
         public static OneTimeStructBindableMember<T> Get(T value)
         {
 #if UNITY_2022_1_OR_NEWER && !ASPID_MVVM_UNITY_PROFILER_DISABLED
             using (GetMarker.Auto())
-#endif  
+#endif
             {
-                _instance.Value = value;
-                return _instance;
+                return new(value);
             }
         }
     }
@@ -41,16 +38,19 @@ namespace Aspid.MVVM
         where TBoxed : class
     {
         /// <summary>
-        /// Gets or sets the current value.
+        /// Gets the current value.
         /// </summary>
-        public T Value { get; private protected set; }
-        
+        public T Value { get; }
+
         /// <summary>
         /// Gets the binding mode for this member.
         /// </summary>
-        public BindMode Mode => BindMode.OneTime;    
-    
-        private protected OneTimeStructBindableMember() { }
+        public BindMode Mode => BindMode.OneTime;
+
+        private protected OneTimeStructBindableMember(T value)
+        {
+            Value = value;
+        }
 
         /// <inheritdoc />
         /// <summary>

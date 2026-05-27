@@ -9,19 +9,20 @@ namespace Aspid.MVVM
     /// <typeparam name="T">The type of the value to be bound.</typeparam>
     public sealed class OneTimeBindableMember<T> : OneTimeBindableMember, IReadOnlyValueBindableMember<T>
     {
-        private static readonly OneTimeBindableMember<T> _instance = new();
-    
         /// <summary>
-        /// Gets or sets the current value.
+        /// Gets the current value.
         /// </summary>
         public T? Value { get; private set; }
-        
+
         /// <summary>
         /// Gets the binding mode for this member.
         /// </summary>
         public BindMode Mode => BindMode.OneTime;
 
-        private OneTimeBindableMember() { }
+        private OneTimeBindableMember(T? value)
+        {
+            Value = value;
+        }
 
         /// <inheritdoc />
         /// <summary>
@@ -60,18 +61,17 @@ namespace Aspid.MVVM
         }
 
         /// <summary>
-        /// Creates a reusable instance and assigns the provided value for one-time binding.
+        /// Creates a new instance configured with the provided value for one-time binding.
         /// </summary>
         /// <param name="value">The value to be provided to the binder.</param>
-        /// <returns>A singleton instance of <see cref="OneTimeBindableMember{T}"/> configured with the specified value.</returns>
+        /// <returns>A new <see cref="OneTimeBindableMember{T}"/> instance configured with the specified value.</returns>
         public static OneTimeBindableMember<T> Get(T value)
         {
 #if UNITY_2022_1_OR_NEWER && !ASPID_MVVM_UNITY_PROFILER_DISABLED
             using (GetMarker.Auto())
 #endif
             {
-                _instance.Value = value;
-                return _instance;
+                return new(value);
             }
         }
     }

@@ -46,7 +46,7 @@ namespace Aspid.MVVM
         /// <returns>The original command if not null; otherwise, an empty execution command.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IRelayCommand<T?> GetSelfOrEmptyExecution<T>(this IRelayCommand<T?>? command) =>
-            command ?? RelayCommand<T?>.Empty;
+            command ?? RelayCommand<T?>.EmptyExecution;
         #endregion
 
         #region Get Empty RelayCommand<T1, T2> Methods
@@ -66,7 +66,7 @@ namespace Aspid.MVVM
         /// <returns>The original command if not null; otherwise, an empty execution command.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IRelayCommand<T1?, T2?> GetSelfOrEmptyExecution<T1, T2>(this IRelayCommand<T1?, T2?>? command) =>
-            command ?? RelayCommand<T1?, T2?>.Empty;
+            command ?? RelayCommand<T1?, T2?>.EmptyExecution;
         #endregion
 
         #region Get Empty RelayCommand<T1, T2, T3> Methods
@@ -88,7 +88,7 @@ namespace Aspid.MVVM
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IRelayCommand<T1?, T2?, T3?> GetSelfOrEmptyExecution<T1, T2, T3>(
             this IRelayCommand<T1?, T2?, T3?>? command) =>
-            command ?? RelayCommand<T1?, T2?, T3?>.Empty;
+            command ?? RelayCommand<T1?, T2?, T3?>.EmptyExecution;
         #endregion
         
         #region Get Empty RelayCommand<T1, T2, T3, T4> Methods
@@ -110,7 +110,7 @@ namespace Aspid.MVVM
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IRelayCommand<T1?, T2?, T3?, T4?> GetSelfOrEmptyExecution<T1, T2, T3, T4>(
             this IRelayCommand<T1?, T2?, T3?, T4?>? command) =>
-            command ?? RelayCommand<T1?, T2?, T3?, T4?>.Empty;
+            command ?? RelayCommand<T1?, T2?, T3?, T4?>.EmptyExecution;
         #endregion
     }
 }

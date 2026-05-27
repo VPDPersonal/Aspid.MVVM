@@ -16,9 +16,13 @@ namespace Aspid.MVVM.StarterKit
     /// When a new collection is assigned via <see cref="SetValue"/>, the previously held collection is reset
     /// first via <see cref="OnReset"/>, then the new items are passed to <see cref="OnAdded"/> if the collection
     /// is non-empty.
-    /// The class also implements <see cref="IDisposable"/>; disposing it calls <see cref="OnReset"/>.
+    /// When the binder is unbound (via <see cref="Binder.Unbind"/>), <see cref="OnUnbound"/> unsubscribes from
+    /// the collection's <c>CollectionChanged</c> event to prevent handler leaks.
+    /// The class also implements <see cref="IDisposable"/>; disposing it calls <see cref="SetValue"/> with
+    /// <see langword="null"/>, which unsubscribes from <c>CollectionChanged</c>, clears <see cref="Collection"/>,
+    /// and calls <see cref="OnReset"/>.
     /// </remarks>
-    public abstract class CollectionBinderBase<T> : Binder, 
+    public abstract class CollectionBinderBase<T> : Binder,
         IBinder<IReadOnlyCollection<T>>,
         IDisposable
     {
@@ -45,32 +49,28 @@ namespace Aspid.MVVM.StarterKit
         {
             if (Collection is not null)
                 OnReset();
-            
-            switch (Collection)
-            {
-                case IReadOnlyFilteredList<T> filteredList: filteredList.CollectionChanged -= OnCollectionChanged; break;
-                case IReadOnlyObservableList<T> observableList: observableList.CollectionChanged -= OnCollectionChanged; break;
-            }
-            
+
+            UnsubscribeFromCollection();
+
             Collection = collection;
             if (Collection is null) return;
             if (Collection.Count > 0) OnAdded(Collection);
-            
+
             switch (Collection)
             {
                 case IReadOnlyFilteredList<T> filteredList: filteredList.CollectionChanged += OnCollectionChanged; break;
                 case IReadOnlyObservableList<T> observableList: observableList.CollectionChanged += OnCollectionChanged; break;
             }
         }
-        
+
         private void OnCollectionChanged()
         {
             OnReset();
-            
+
             if (Collection is null) return;
             if (Collection.Count > 0) OnAdded(Collection);
         }
-        
+
         private void OnCollectionChanged(INotifyCollectionChangedEventArgs<T?> e)
         {
             switch (e.Action)
@@ -95,7 +95,7 @@ namespace Aspid.MVVM.StarterKit
                                 OnReplace(oldItems[i], newItems[i], startIndex + i);
                         }
                     } break;
-                
+
                 case NotifyCollectionChangedAction.Move:
                     {
                         OnMove(e.OldItem, e.NewItem, e.OldStartingIndex, e.NewStartingIndex);
@@ -134,9 +134,27 @@ namespace Aspid.MVVM.StarterKit
         protected abstract void OnReset();
 
         /// <summary>
+        /// Called after unbinding. Unsubscribes from <see cref="INotifyCollectionChanged"/> on the
+        /// currently bound collection to prevent event-handler leaks.
+        /// </summary>
+        protected override void OnUnbound()
+        {
+            UnsubscribeFromCollection();
+        }
+
+        /// <summary>
         /// Unsubscribes from <see cref="INotifyCollectionChanged"/> on the currently bound collection,
         /// clears the binding, and resets the binder by calling <see cref="OnReset"/>.
         /// </summary>
         public virtual void Dispose() => SetValue(null);
+
+        private void UnsubscribeFromCollection()
+        {
+            switch (Collection)
+            {
+                case IReadOnlyFilteredList<T> filteredList: filteredList.CollectionChanged -= OnCollectionChanged; break;
+                case IReadOnlyObservableList<T> observableList: observableList.CollectionChanged -= OnCollectionChanged; break;
+            }
+        }
     }
 }

@@ -114,13 +114,9 @@ namespace Aspid.MVVM.StarterKit
 
 		private void OnPendingHandleCompleted(AsyncOperationHandle<TAsset> handle)
 		{
-			if (this == null)
-			{
-				handle.Completed -= OnPendingHandleCompleted;
-				return;
-			}
-
 			handle.Completed -= OnPendingHandleCompleted;
+
+			if (this == null) return;
 
 			ReleaseCurrentHandle();
 			_currentHandle = handle;
@@ -273,13 +269,9 @@ namespace Aspid.MVVM.StarterKit
 
 		private void OnPendingHandleCompleted(AsyncOperationHandle<TAsset> handle)
 		{
-			if (this == null)
-			{
-				handle.Completed -= OnPendingHandleCompleted;
-				return;
-			}
-
 			handle.Completed -= OnPendingHandleCompleted;
+
+			if (this == null) return;
 
 			ReleaseCurrentHandle();
 			_currentHandle = handle;

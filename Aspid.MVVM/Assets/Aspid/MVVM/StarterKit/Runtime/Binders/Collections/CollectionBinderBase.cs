@@ -134,9 +134,9 @@ namespace Aspid.MVVM.StarterKit
         protected abstract void OnReset();
 
         /// <summary>
-        /// Resets the binder by calling <see cref="OnReset"/>.
+        /// Unsubscribes from <see cref="INotifyCollectionChanged"/> on the currently bound collection,
+        /// clears the binding, and resets the binder by calling <see cref="OnReset"/>.
         /// </summary>
-        public virtual void Dispose() =>
-            OnReset();
+        public virtual void Dispose() => SetValue(null);
     }
 }

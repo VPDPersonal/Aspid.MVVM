@@ -109,6 +109,12 @@ namespace Aspid.MVVM
             using (this.Marker())
 #endif
             {
+                if (value is null)
+                {
+                    OnValueChanged(default);
+                    return;
+                }
+
                 if (value is not T specificValue)
                     throw new ArgumentException("Value must be of type " + typeof(T).FullName);
 

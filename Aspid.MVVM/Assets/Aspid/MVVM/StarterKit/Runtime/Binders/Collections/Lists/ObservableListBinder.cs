@@ -80,7 +80,7 @@ namespace Aspid.MVVM.StarterKit
 
             OnAdded(List, newStartingIndex: 0);
 
-            switch (list)
+            switch (List)
             {
                 case IReadOnlyFilteredList<T> filteredList: filteredList.CollectionChanged += OnCollectionChanged; break;
                 case IReadOnlyObservableList<T> observableList: observableList.CollectionChanged += OnCollectionChanged; break;

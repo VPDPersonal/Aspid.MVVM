@@ -116,6 +116,8 @@ namespace Aspid.MVVM.StarterKit
 		{
 			handle.Completed -= OnPendingHandleCompleted;
 
+			if (this == null) return;
+
 			ReleaseCurrentHandle();
 			_currentHandle = handle;
 			_pendingHandle = default;
@@ -268,6 +270,8 @@ namespace Aspid.MVVM.StarterKit
 		private void OnPendingHandleCompleted(AsyncOperationHandle<TAsset> handle)
 		{
 			handle.Completed -= OnPendingHandleCompleted;
+
+			if (this == null) return;
 
 			ReleaseCurrentHandle();
 			_currentHandle = handle;

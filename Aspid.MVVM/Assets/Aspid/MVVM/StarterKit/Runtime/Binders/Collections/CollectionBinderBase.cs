@@ -18,10 +18,11 @@ namespace Aspid.MVVM.StarterKit
     /// is non-empty.
     /// When the binder is unbound (via <see cref="Binder.Unbind"/>), <see cref="OnUnbound"/> unsubscribes from
     /// the collection's <c>CollectionChanged</c> event to prevent handler leaks.
-    /// The class also implements <see cref="IDisposable"/>; disposing it unsubscribes from
-    /// <c>CollectionChanged</c> and then calls <see cref="OnReset"/>.
+    /// The class also implements <see cref="IDisposable"/>; disposing it calls <see cref="SetValue"/> with
+    /// <see langword="null"/>, which unsubscribes from <c>CollectionChanged</c>, clears <see cref="Collection"/>,
+    /// and calls <see cref="OnReset"/>.
     /// </remarks>
-    public abstract class CollectionBinderBase<T> : Binder, 
+    public abstract class CollectionBinderBase<T> : Binder,
         IBinder<IReadOnlyCollection<T>>,
         IDisposable
     {
@@ -50,26 +51,26 @@ namespace Aspid.MVVM.StarterKit
                 OnReset();
 
             UnsubscribeFromCollection();
-            
+
             Collection = collection;
             if (Collection is null) return;
             if (Collection.Count > 0) OnAdded(Collection);
-            
+
             switch (Collection)
             {
                 case IReadOnlyFilteredList<T> filteredList: filteredList.CollectionChanged += OnCollectionChanged; break;
                 case IReadOnlyObservableList<T> observableList: observableList.CollectionChanged += OnCollectionChanged; break;
             }
         }
-        
+
         private void OnCollectionChanged()
         {
             OnReset();
-            
+
             if (Collection is null) return;
             if (Collection.Count > 0) OnAdded(Collection);
         }
-        
+
         private void OnCollectionChanged(INotifyCollectionChangedEventArgs<T?> e)
         {
             switch (e.Action)
@@ -107,7 +108,7 @@ namespace Aspid.MVVM.StarterKit
                                 OnReplace(oldItems[i], newItems[i], startIndex + i);
                         }
                     } break;
-                
+
                 case NotifyCollectionChangedAction.Move:
                     {
                         OnMove(e.OldItem, e.NewItem, e.OldStartingIndex, e.NewStartingIndex);
@@ -180,13 +181,9 @@ namespace Aspid.MVVM.StarterKit
 
         /// <summary>
         /// Unsubscribes from <see cref="INotifyCollectionChanged"/> on the currently bound collection,
-        /// then resets the binder by calling <see cref="OnReset"/>.
+        /// clears the binding, and resets the binder by calling <see cref="OnReset"/>.
         /// </summary>
-        public virtual void Dispose()
-        {
-            UnsubscribeFromCollection();
-            OnReset();
-        }
+        public virtual void Dispose() => SetValue(null);
 
         private void UnsubscribeFromCollection()
         {

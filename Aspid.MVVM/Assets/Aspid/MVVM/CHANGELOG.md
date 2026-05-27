@@ -150,6 +150,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Removed stray `Header("Target")` and obsolete files (`NewFields`, `Commands.meta`, `DebugViewModel`).
 - `#if !ASPID_MVVM_EDITOR_DISABLED` guards added in missing places.
 - Numerous meta-file fixes.
+- `NumberToBoolConverter`: `Inequality` comparison was inverted — always returned the same result as `Equal` (PR #81).
+- `CollectionBinderBase.Dispose()`: `CollectionChanged` subscription was not unsubscribed, causing callbacks to fire on disposed binders and preventing GC. `Dispose()` now delegates to `SetValue(null)` which handles full cleanup (PR #91).
+- `CollectionBinderBase.OnCollectionChanged`: granular `Add`, `Remove`, and `Reset` events are now forwarded to the new abstract hooks `OnAdded(T?)`, `OnAdded(IReadOnlyList<T?>)`, `OnRemoved(T?)`, `OnRemoved(IReadOnlyList<T?>)` (PR #94).
 
 ### Migration
 

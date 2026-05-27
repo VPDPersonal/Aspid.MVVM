@@ -114,13 +114,13 @@ The Unity project is opened via the Unity Editor (2022.3+); there is no CLI buil
 ## Gotchas
 
 - **Generator artifacts are committed.** Built DLLs (`Aspid.MVVM.Generators.dll`, `Aspid.MVVM.Analyzers.dll`, `Aspid.MVVM.Unity.Generators.dll`) live under `Aspid.MVVM/Assets/Aspid/MVVM/` and are checked into the repo. After changing a generator, rebuild its solution and commit the refreshed DLL — Unity consumes the DLL, not source.
-- **Submodules are required.** Cloning without `--recurse-submodules` leaves `Aspid.Collections` and the generator/analyzer repos empty; Unity won't compile.
+- **Submodules are required.** Cloning without `--recurse-submodules` leaves the generator/analyzer repos empty; Unity won't compile. `Aspid.Collections` is consumed as a UPM git package (not a submodule).
 - **`.NET 9.0 SDK` is pinned** via `global.json` in each generator/analyzer root. Older SDKs fail to build.
 - **Classes using `[ViewModel]`, `[Bind]`, `[RelayCommand]` must be `partial`** — the generator emits a second partial; without the modifier you get compile errors instead of generated members.
 
 ## Git Submodules
 
-The project uses 4 git submodules. After cloning, initialize with:
+The project uses 3 git submodules. After cloning, initialize with:
 
 ```bash
 git submodule update --init --recursive
@@ -130,7 +130,8 @@ Submodules:
 - `Aspid.MVVM.Generators`
 - `Aspid.MVVM.Analyzers`
 - `Aspid.MVVM.Unity.Generators`
-- `Aspid.Collections`
+
+`Aspid.Collections` is consumed as a UPM git package (`tech.aspid.collections`).
 
 ## Branch Strategy
 

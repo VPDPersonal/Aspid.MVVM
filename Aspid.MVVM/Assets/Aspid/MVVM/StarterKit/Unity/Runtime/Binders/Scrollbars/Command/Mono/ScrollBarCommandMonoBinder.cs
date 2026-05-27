@@ -109,7 +109,8 @@ namespace Aspid.MVVM.StarterKit
 
             var value = CachedComponent.value;
 
-            // TODO Check As
+            // Safe only when sizeof(T) <= sizeof(float) (i.e. T is int or float).
+            // Unsafe.As throws at runtime for T = long or double (8 bytes > 4 bytes).
             var castedValue = Unsafe.As<float, T>(ref value);
 
             SetInteractableMode(command.CanExecute(castedValue));
@@ -243,7 +244,8 @@ namespace Aspid.MVVM.StarterKit
 
             var value = CachedComponent.value;
 
-            // TODO Check As
+            // Safe only when sizeof(T) <= sizeof(float) (i.e. T is int or float).
+            // Unsafe.As throws at runtime for T = long or double (8 bytes > 4 bytes).
             var castedValue = Unsafe.As<float, TValue>(ref value);
 
             SetInteractableMode(command.CanExecute(castedValue, Param));
@@ -389,7 +391,8 @@ namespace Aspid.MVVM.StarterKit
 
             var value = CachedComponent.value;
 
-            // TODO Check As
+            // Safe only when sizeof(T) <= sizeof(float) (i.e. T is int or float).
+            // Unsafe.As throws at runtime for T = long or double (8 bytes > 4 bytes).
             var castedValue = Unsafe.As<float, TValue>(ref value);
 
             SetInteractableMode(command.CanExecute(castedValue, Param1, Param2));
@@ -547,7 +550,8 @@ namespace Aspid.MVVM.StarterKit
 
             var value = CachedComponent.value;
 
-            // TODO Check As
+            // Safe only when sizeof(T) <= sizeof(float) (i.e. T is int or float).
+            // Unsafe.As throws at runtime for T = long or double (8 bytes > 4 bytes).
             var castedValue = Unsafe.As<float, TValue>(ref value);
 
             SetInteractableMode(command.CanExecute(castedValue, Param1, Param2, Param3));

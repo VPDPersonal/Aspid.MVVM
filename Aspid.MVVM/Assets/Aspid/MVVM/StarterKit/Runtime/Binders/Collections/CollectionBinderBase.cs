@@ -16,7 +16,10 @@ namespace Aspid.MVVM.StarterKit
     /// When a new collection is assigned via <see cref="SetValue"/>, the previously held collection is reset
     /// first via <see cref="OnReset"/>, then the new items are passed to <see cref="OnAdded"/> if the collection
     /// is non-empty.
-    /// The class also implements <see cref="IDisposable"/>; disposing it calls <see cref="OnReset"/>.
+    /// When the binder is unbound (via <see cref="Binder.Unbind"/>), <see cref="OnUnbound"/> unsubscribes from
+    /// the collection's <c>CollectionChanged</c> event to prevent handler leaks.
+    /// The class also implements <see cref="IDisposable"/>; disposing it unsubscribes from
+    /// <c>CollectionChanged</c> and then calls <see cref="OnReset"/>.
     /// </remarks>
     public abstract class CollectionBinderBase<T> : Binder, 
         IBinder<IReadOnlyCollection<T>>,
@@ -134,9 +137,31 @@ namespace Aspid.MVVM.StarterKit
         protected abstract void OnReset();
 
         /// <summary>
-        /// Resets the binder by calling <see cref="OnReset"/>.
+        /// Called after unbinding. Unsubscribes from <see cref="INotifyCollectionChanged"/> on the
+        /// currently bound collection to prevent event-handler leaks.
         /// </summary>
-        public virtual void Dispose() =>
+        protected override void OnUnbound()
+        {
+            switch (Collection)
+            {
+                case IReadOnlyFilteredList<T> filteredList: filteredList.CollectionChanged -= OnCollectionChanged; break;
+                case IReadOnlyObservableList<T> observableList: observableList.CollectionChanged -= OnCollectionChanged; break;
+            }
+        }
+
+        /// <summary>
+        /// Unsubscribes from <see cref="INotifyCollectionChanged"/> on the currently bound collection,
+        /// then resets the binder by calling <see cref="OnReset"/>.
+        /// </summary>
+        public virtual void Dispose()
+        {
+            switch (Collection)
+            {
+                case IReadOnlyFilteredList<T> filteredList: filteredList.CollectionChanged -= OnCollectionChanged; break;
+                case IReadOnlyObservableList<T> observableList: observableList.CollectionChanged -= OnCollectionChanged; break;
+            }
+
             OnReset();
+        }
     }
 }

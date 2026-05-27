@@ -48,12 +48,8 @@ namespace Aspid.MVVM.StarterKit
         {
             if (Collection is not null)
                 OnReset();
-            
-            switch (Collection)
-            {
-                case IReadOnlyFilteredList<T> filteredList: filteredList.CollectionChanged -= OnCollectionChanged; break;
-                case IReadOnlyObservableList<T> observableList: observableList.CollectionChanged -= OnCollectionChanged; break;
-            }
+
+            UnsubscribeFromCollection();
             
             Collection = collection;
             if (Collection is null) return;
@@ -142,11 +138,7 @@ namespace Aspid.MVVM.StarterKit
         /// </summary>
         protected override void OnUnbound()
         {
-            switch (Collection)
-            {
-                case IReadOnlyFilteredList<T> filteredList: filteredList.CollectionChanged -= OnCollectionChanged; break;
-                case IReadOnlyObservableList<T> observableList: observableList.CollectionChanged -= OnCollectionChanged; break;
-            }
+            UnsubscribeFromCollection();
         }
 
         /// <summary>
@@ -155,13 +147,17 @@ namespace Aspid.MVVM.StarterKit
         /// </summary>
         public virtual void Dispose()
         {
+            UnsubscribeFromCollection();
+            OnReset();
+        }
+
+        private void UnsubscribeFromCollection()
+        {
             switch (Collection)
             {
                 case IReadOnlyFilteredList<T> filteredList: filteredList.CollectionChanged -= OnCollectionChanged; break;
                 case IReadOnlyObservableList<T> observableList: observableList.CollectionChanged -= OnCollectionChanged; break;
             }
-
-            OnReset();
         }
     }
 }

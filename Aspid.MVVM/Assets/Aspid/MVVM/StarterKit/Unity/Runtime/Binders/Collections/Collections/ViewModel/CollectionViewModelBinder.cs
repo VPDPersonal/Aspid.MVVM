@@ -47,7 +47,7 @@ namespace Aspid.MVVM.StarterKit
         protected override void OnAdded(IReadOnlyCollection<IViewModel> values)
         {
             var index = 0;
-            
+
             foreach (var value in values)
             {
                 _views[index].gameObject.SetActive(true);
@@ -59,7 +59,31 @@ namespace Aspid.MVVM.StarterKit
             for (var i = index; i < _views.Length; i++)
                 _views[i].gameObject.SetActive(false);
         }
-        
+
+        protected override void OnAdded(IViewModel? newItem)
+        {
+            OnReset();
+            if (Collection?.Count > 0) OnAdded(Collection!);
+        }
+
+        protected override void OnAdded(IReadOnlyList<IViewModel?> newItems)
+        {
+            OnReset();
+            if (Collection?.Count > 0) OnAdded(Collection!);
+        }
+
+        protected override void OnRemoved(IViewModel? oldItem)
+        {
+            OnReset();
+            if (Collection?.Count > 0) OnAdded(Collection!);
+        }
+
+        protected override void OnRemoved(IReadOnlyList<IViewModel?> oldItems)
+        {
+            OnReset();
+            if (Collection?.Count > 0) OnAdded(Collection!);
+        }
+
         protected override void OnReplace(IViewModel? oldItem, IViewModel? newItem, int newStartingIndex)
         {
             _views[newStartingIndex].Deinitialize();

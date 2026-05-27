@@ -75,8 +75,21 @@ namespace Aspid.MVVM.StarterKit
             switch (e.Action)
             {
                 case NotifyCollectionChangedAction.Add:
+                    {
+                        if (e.IsSingleItem) OnAdded(e.NewItem);
+                        else OnAdded(e.NewItems!);
+                    } break;
+
+                case NotifyCollectionChangedAction.Remove:
+                    {
+                        if (e.IsSingleItem) OnRemoved(e.OldItem);
+                        else OnRemoved(e.OldItems!);
+                    } break;
+
                 case NotifyCollectionChangedAction.Reset:
-                case NotifyCollectionChangedAction.Remove: break;
+                    {
+                        OnReset();
+                    } break;
 
                 case NotifyCollectionChangedAction.Replace:
                     {
@@ -107,6 +120,30 @@ namespace Aspid.MVVM.StarterKit
         /// </summary>
         /// <param name="values">The items that were added.</param>
         protected abstract void OnAdded(IReadOnlyCollection<T> values);
+
+        /// <summary>
+        /// Called when a single item has been added to the collection via a granular change notification.
+        /// </summary>
+        /// <param name="newItem">The item that was added, or <see langword="null"/> if the slot was empty.</param>
+        protected abstract void OnAdded(T? newItem);
+
+        /// <summary>
+        /// Called when multiple items have been added to the collection in a single batch via a granular change notification.
+        /// </summary>
+        /// <param name="newItems">The items that were added.</param>
+        protected abstract void OnAdded(IReadOnlyList<T?> newItems);
+
+        /// <summary>
+        /// Called when a single item has been removed from the collection via a granular change notification.
+        /// </summary>
+        /// <param name="oldItem">The item that was removed, or <see langword="null"/> if the slot was empty.</param>
+        protected abstract void OnRemoved(T? oldItem);
+
+        /// <summary>
+        /// Called when multiple items have been removed from the collection in a single batch via a granular change notification.
+        /// </summary>
+        /// <param name="oldItems">The items that were removed.</param>
+        protected abstract void OnRemoved(IReadOnlyList<T?> oldItems);
 
         /// <summary>
         /// Called when a single item in the bound collection has been replaced and the change

@@ -163,7 +163,7 @@ namespace Aspid.MVVM
 #if UNITY_2020_3_OR_NEWER
             UnityEngine.Debug.LogError(message, owner as UnityEngine.Object);
 #else
-            throw new BindSafelyNullReferenceException(message);
+            throw new UnbindSafelyNullReferenceException(message);
 #endif
         }
     }

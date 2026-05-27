@@ -52,7 +52,7 @@ namespace Aspid.MVVM
 #endif  
         
         /// <summary>
-        /// Gets or sets the current value.
+        /// Gets the current value.
         /// </summary>
         public T Value { get; private protected set; }
         

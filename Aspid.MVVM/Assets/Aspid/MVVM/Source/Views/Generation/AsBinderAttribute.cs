@@ -14,7 +14,7 @@ namespace Aspid.MVVM
     {
 #if UNITY_EDITOR || DEBUG
         /// <summary>
-        /// The <see cref="IBinder"/> type used to bind the field or property.
+        /// Gets the <see cref="IBinder"/> type used to bind the field or property.
         /// </summary>
         [EditorBrowsable(EditorBrowsableState.Advanced)]
         public readonly Type Type;

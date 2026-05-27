@@ -12,11 +12,8 @@ namespace Aspid.MVVM
     public sealed class OneWayEnumBindableMember<T> : OneWayStructBindableMember<T, Enum>
         where T : struct, Enum
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="OneWayEnumBindableMember{T}"/> class with the specified initial value.
-        /// </summary>
-        /// <param name="value">The initial value of the bindable member event.</param>
-        public OneWayEnumBindableMember(T value) 
+        /// <inheritdoc/>
+        public OneWayEnumBindableMember(T value)
             : base(value) { }
     }
 }

@@ -48,7 +48,7 @@ namespace Aspid.MVVM
         /// <param name="memberName">Optional name of the field that holds <paramref name="binders"/>, used in diagnostics.</param>
         /// <exception cref="UnbindSafelyNullReferenceException">
         /// Thrown if any element in the sequence is <see langword="null"/>.
-        /// In builds (<c>UNITY_2020_3_OR_NEWER</c>), skips the <see langword="null"/> binder instead of throwing.
+        /// In Unity builds (<c>UNITY_2020_3_OR_NEWER</c>), skips the <see langword="null"/> binder instead of throwing.
         /// When <c>DEBUG</c> is also defined, additionally logs an error via <c>UnityEngine.Debug.LogError</c>.
         /// </exception>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -87,7 +87,7 @@ namespace Aspid.MVVM
         /// <param name="memberName">Optional name of the field that holds <paramref name="binders"/>, used in diagnostics.</param>
         /// <exception cref="UnbindSafelyNullReferenceException">
         /// Thrown if any element in the sequence is <see langword="null"/>.
-        /// In builds (<c>UNITY_2020_3_OR_NEWER</c>), skips the <see langword="null"/> binder instead of throwing.
+        /// In Unity builds (<c>UNITY_2020_3_OR_NEWER</c>), skips the <see langword="null"/> binder instead of throwing.
         /// When <c>DEBUG</c> is also defined, additionally logs an error via <c>UnityEngine.Debug.LogError</c>.
         /// </exception>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -125,7 +125,7 @@ namespace Aspid.MVVM
         /// <param name="memberName">Optional name of the field that holds <paramref name="binders"/>, used in diagnostics.</param>
         /// <exception cref="UnbindSafelyNullReferenceException">
         /// Thrown if any element in the sequence is <see langword="null"/>.
-        /// In builds (<c>UNITY_2020_3_OR_NEWER</c>), skips the <see langword="null"/> binder instead of throwing.
+        /// In Unity builds (<c>UNITY_2020_3_OR_NEWER</c>), skips the <see langword="null"/> binder instead of throwing.
         /// When <c>DEBUG</c> is also defined, additionally logs an error via <c>UnityEngine.Debug.LogError</c>.
         /// </exception>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

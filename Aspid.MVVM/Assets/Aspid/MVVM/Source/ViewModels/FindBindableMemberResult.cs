@@ -12,7 +12,7 @@ namespace Aspid.MVVM
         public readonly bool IsFound;
         
         /// <summary>
-        /// The event adder for the bindable member, if found.
+        /// Gets the binder adder for the bindable member, if found.
         /// </summary>
         public readonly IBinderAdder? Adder;
 

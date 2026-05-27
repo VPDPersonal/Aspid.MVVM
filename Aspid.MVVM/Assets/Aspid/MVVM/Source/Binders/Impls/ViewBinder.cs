@@ -22,8 +22,8 @@ namespace Aspid.MVVM
         }
 
         /// <summary>
-        /// Called when the bound <see cref="IViewModel"/> value is received.
-        /// Deinitializes the view first, then initializes it with <paramref name="viewModel"/> if it is not <see langword="null"/>.
+        /// Deinitializes the current view and reinitializes it with the received ViewModel value.
+        /// If <paramref name="viewModel"/> is <see langword="null"/>, only deinitialization is performed.
         /// </summary>
         /// <param name="viewModel">The new ViewModel, or <see langword="null"/> to deinitialize without reinitializing.</param>
         public void SetValue(IViewModel? viewModel)

@@ -10,7 +10,7 @@ using System.Runtime.CompilerServices;
 namespace Aspid.MVVM
 {
     /// <summary>
-    /// Extension methods for safely binding and unbinding <see cref="IBinder"/> instances to <see cref="IBinderAdder"/> targets.
+    /// Provides extension methods for safely binding and unbinding <see cref="IBinder"/> instances to <see cref="IBinderAdder"/> targets.
     /// Null-safe variants guard against <see langword="null"/> binders or collections.
     /// </summary>
     public static partial class BinderExtensions
@@ -23,7 +23,7 @@ namespace Aspid.MVVM
         }
 #endif
         
-        #region Singl BindSafely
+        #region Single BindSafely
         /// <summary>
         /// Binds a single binder to the provided <see cref="IBinderAdder"/> if the bindable member was found.
         /// </summary>
@@ -47,11 +47,11 @@ namespace Aspid.MVVM
         }
 
         /// <summary>
-        /// Safely binds a single binder to the specified event adder.
+        /// Safely binds a single binder to the specified binder adder.
         /// </summary>
         /// <typeparam name="T">The binder type that implements <see cref="IBinder"/>.</typeparam>
         /// <param name="binder">The binder instance to bind.</param>
-        /// <param name="binderAdder">The event adder to bind to.</param>
+        /// <param name="binderAdder">The binder adder to bind to.</param>
         /// <param name="owner">Unused; accepted for signature parity with the collection overloads.</param>
         /// <param name="memberName">Unused; accepted for signature parity with the collection overloads.</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -96,11 +96,11 @@ namespace Aspid.MVVM
         }
 
         /// <summary>
-        /// Safely binds an array of binders to the specified event adder.
+        /// Safely binds an array of binders to the specified binder adder.
         /// </summary>
         /// <typeparam name="T">The binder type that implements <see cref="IBinder"/>.</typeparam>
         /// <param name="binders">The array of binders.</param>
-        /// <param name="binderAdder">The event adder to bind to.</param>
+        /// <param name="binderAdder">The binder adder to bind to.</param>
         /// <param name="owner">Optional owner object (typically the View instance) used to enrich diagnostics; if it is a Unity object it is also used as the log context.</param>
         /// <param name="memberName">Optional name of the field that holds <paramref name="binders"/>, used in diagnostics.</param>
         /// <exception cref="BindSafelyNullReferenceException">
@@ -165,11 +165,11 @@ namespace Aspid.MVVM
         }
 
         /// <summary>
-        /// Safely binds a list of binders to the specified event adder.
+        /// Safely binds a list of binders to the specified binder adder.
         /// </summary>
         /// <typeparam name="T">The binder type that implements <see cref="IBinder"/>.</typeparam>
         /// <param name="binders">The list of binders.</param>
-        /// <param name="binderAdder">The event adder to bind to.</param>
+        /// <param name="binderAdder">The binder adder to bind to.</param>
         /// <param name="owner">Optional owner object (typically the View instance) used to enrich diagnostics; if it is a Unity object it is also used as the log context.</param>
         /// <param name="memberName">Optional name of the field that holds <paramref name="binders"/>, used in diagnostics.</param>
         /// <exception cref="BindSafelyNullReferenceException">
@@ -233,11 +233,11 @@ namespace Aspid.MVVM
         }
 
         /// <summary>
-        /// Safely binds an enumerable of binders to the specified event adder.
+        /// Safely binds an enumerable of binders to the specified binder adder.
         /// </summary>
         /// <typeparam name="T">The binder type that implements <see cref="IBinder"/>.</typeparam>
         /// <param name="binders">The enumerable of binders.</param>
-        /// <param name="binderAdder">The event adder to bind to.</param>
+        /// <param name="binderAdder">The binder adder to bind to.</param>
         /// <param name="owner">Optional owner object (typically the View instance) used to enrich diagnostics; if it is a Unity object it is also used as the log context.</param>
         /// <param name="memberName">Optional name of the field that holds <paramref name="binders"/>, used in diagnostics.</param>
         /// <exception cref="BindSafelyNullReferenceException">

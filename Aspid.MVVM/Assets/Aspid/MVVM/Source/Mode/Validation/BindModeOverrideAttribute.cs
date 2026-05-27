@@ -15,25 +15,25 @@ namespace Aspid.MVVM
     public sealed class BindModeOverrideAttribute : Attribute
     {
         /// <summary>
-        /// Gets or sets a value indicating whether all binding modes (except <see cref="BindMode.None"/>) are allowed.
+        /// Indicates whether all binding modes (except <see cref="BindMode.None"/>) are allowed.
         /// If <see langword="true"/>, all modes except <see cref="BindMode.None"/> are enabled.
         /// </summary>
         public bool IsAll { get; set; }
-        
+
         /// <summary>
-        /// Gets or sets a value indicating whether only <see cref="BindMode.OneWay"/> and <see cref="BindMode.OneTime"/> are allowed.
+        /// Indicates whether only <see cref="BindMode.OneWay"/> and <see cref="BindMode.OneTime"/> are allowed.
         /// If <see langword="true"/>, only these two modes are enabled.
         /// </summary>
         public bool IsOne { get; set; }
-        
+
         /// <summary>
-        /// Gets or sets a value indicating whether only <see cref="BindMode.TwoWay"/> and <see cref="BindMode.OneWayToSource"/> are allowed.
+        /// Indicates whether only <see cref="BindMode.TwoWay"/> and <see cref="BindMode.OneWayToSource"/> are allowed.
         /// If <see langword="true"/>, only these two modes are enabled.
         /// </summary>
         public bool IsTwo { get; set; }
         
         /// <summary>
-        /// Gets the array of allowed binding modes for the property.
+        /// Gets the array of allowed binding modes for the class.
         /// </summary>
         public BindMode[] Modes { get; }
 
@@ -43,7 +43,7 @@ namespace Aspid.MVVM
         /// If <see cref="IsOne"/> and <see cref="IsTwo"/> are both <see langword="true"/>, the behavior is equivalent to <see cref="IsAll"/>.
         /// If <see cref="IsOne"/> or <see cref="IsTwo"/> is <see langword="true"/> and modes are provided, the allowed modes are a combination of the specified modes and the modes defined by the properties.
         /// </summary>
-        /// <param name="modes">The binding modes that are allowed for the property.</param>
+        /// <param name="modes">The binding modes that are allowed for the class.</param>
         public BindModeOverrideAttribute(params BindMode[] modes)
         {
             Modes = modes;

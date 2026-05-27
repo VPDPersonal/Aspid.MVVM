@@ -16,7 +16,7 @@ namespace Aspid.MVVM
     {
 #if UNITY_EDITOR || DEBUG
         /// <summary>
-        /// The name of the generated property whose change event should also be triggered.
+        /// Gets the name of the generated property whose change event should also be triggered.
         /// </summary>
         [EditorBrowsable(EditorBrowsableState.Advanced)]
         public string PropertyName { get; }

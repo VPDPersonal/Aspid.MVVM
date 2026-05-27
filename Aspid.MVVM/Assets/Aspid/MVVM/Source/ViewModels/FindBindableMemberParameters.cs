@@ -7,7 +7,7 @@ namespace Aspid.MVVM
     public readonly ref struct FindBindableMemberParameters
     {
         /// <summary>
-        /// The identifier of the bindable member to search for.
+        /// Gets the identifier of the bindable member to search for.
         /// </summary>
         public readonly string Id;
 

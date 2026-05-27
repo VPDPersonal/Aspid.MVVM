@@ -13,7 +13,7 @@ namespace Aspid.MVVM
     {
         /// <summary>
         /// The name of the method that determines whether the command can be executed (CanExecute).
-        /// This method must return a value of type <see cref="bool"/>.
+        /// This method must return a value of type <see langword="bool"/>.
         /// If not specified, the command can always be executed.
         /// </summary>
         public string? CanExecute;

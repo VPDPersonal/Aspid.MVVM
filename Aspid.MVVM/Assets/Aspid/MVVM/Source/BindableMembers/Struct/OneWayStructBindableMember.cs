@@ -18,8 +18,8 @@ namespace Aspid.MVVM
         /// <summary>
         /// Initializes a new instance of the <see cref="OneWayStructBindableMember{T}"/> class with the specified initial value.
         /// </summary>
-        /// <param name="value">The initial value of the bindable member event.</param>
-        public OneWayStructBindableMember(T value) 
+        /// <param name="value">The initial value of the bindable member.</param>
+        public OneWayStructBindableMember(T value)
             : base(value) { }
     }
 
@@ -72,7 +72,7 @@ namespace Aspid.MVVM
         /// <summary>
         /// Initializes a new instance of the <see cref="OneWayStructBindableMember{T,TBoxed}"/> class with the specified initial value.
         /// </summary>
-        /// <param name="value">The initial value of the bindable member event.</param>
+        /// <param name="value">The initial value of the bindable member.</param>
         protected OneWayStructBindableMember(T value)
         {
             _value = value;
@@ -82,8 +82,8 @@ namespace Aspid.MVVM
         /// Adds the binder to the event with the current value and subscribes to the value change event.
         /// </summary>
         /// <param name="binder">The binder to bind to the event.</param>
-        /// <returns>Returns itself to enable removal of the binder later.</returns>
-        /// <exception cref="Exception">
+        /// <returns>An <see cref="IBinderRemover"/> to enable removal of the binder later, or <see langword="null"/> for <see cref="BindMode.OneTime"/> binders.</returns>
+        /// <exception cref="InvalidOperationException">
         /// Thrown if the binding mode is not <see cref="BindMode.OneWay"/> or <see cref="BindMode.OneTime"/>.
         /// </exception>
         IBinderRemover? IBinderAdder.Add(IBinder binder)
@@ -147,7 +147,7 @@ namespace Aspid.MVVM
         }
         
         /// <summary>
-        /// Triggers the Changed event with the specified value and updates the current value.
+        /// Sets the current value and raises the <see cref="Changed"/> event.
         /// </summary>
         /// <param name="value">The new value to set and notify.</param>
         public void Invoke(T value) => 

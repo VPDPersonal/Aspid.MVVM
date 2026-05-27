@@ -8,7 +8,7 @@ using System;
 namespace Aspid.MVVM
 {
     /// <summary>
-    /// Extension methods for <see cref="IView"/> providing helpers for reinitialization and safe disposal.
+    /// Provides extension methods for <see cref="IView"/> providing helpers for reinitialization and safe disposal.
     /// </summary>
     public static class ViewExtensions
     {
@@ -58,7 +58,7 @@ namespace Aspid.MVVM
         }
         
         /// <summary>
-        /// Disposes the view if it implements <see cref="IDisposable"/> and returns the associated <see cref="IViewModel"/>.
+        /// Disposes the view and returns the associated <see cref="IViewModel"/>.
         /// </summary>
         /// <param name="view">The view to be disposed.</param>
         /// <typeparam name="T">The type of the view that implements <see cref="IView"/> and <see cref="IDisposable"/>.</typeparam>

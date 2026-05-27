@@ -17,10 +17,10 @@ namespace Aspid.MVVM
         private static string OneWayToSource => "OneWayToSource".GetStructMessage();
         
         /// <summary>
-        /// Throws an <see cref="ArgumentException"/> if the binding mode is either <see cref="BindMode.OneWay"/> or <see cref="BindMode.OneTime"/>.
+        /// Throws an <see cref="InvalidOperationException"/> if the binding mode is either <see cref="BindMode.OneWay"/> or <see cref="BindMode.OneTime"/>.
         /// </summary>
         /// <param name="mode">The binding mode to check.</param>
-        /// <exception cref="ArgumentException">Thrown when the mode is <see cref="BindMode.OneWay"/> or <see cref="BindMode.OneTime"/>.</exception>
+        /// <exception cref="InvalidOperationException">Thrown when the mode is <see cref="BindMode.OneWay"/> or <see cref="BindMode.OneTime"/>.</exception>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void ThrowExceptionIfOne(this BindMode mode)
         {
@@ -34,7 +34,7 @@ namespace Aspid.MVVM
         /// Throws if the binding mode is not one-way style (<see cref="BindMode.OneWay"/> or <see cref="BindMode.OneTime"/>).
         /// </summary>
         /// <param name="mode">The binding mode to validate.</param>
-        /// <exception cref="InvalidOperationException">Thrown when the mode is not OneWay or OneTime.</exception>
+        /// <exception cref="InvalidOperationException">Thrown when the mode is not <see cref="BindMode.OneWay"/> or <see cref="BindMode.OneTime"/>.</exception>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void ThrowExceptionIfNotOne(this BindMode mode)
         {
@@ -45,10 +45,10 @@ namespace Aspid.MVVM
         }
         
         /// <summary>
-        /// Throws an <see cref="ArgumentException"/> if the binding mode is either <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.
+        /// Throws an <see cref="InvalidOperationException"/> if the binding mode is either <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.
         /// </summary>
         /// <param name="mode">The binding mode to check.</param>
-        /// <exception cref="ArgumentException">Thrown when the mode is <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</exception>
+        /// <exception cref="InvalidOperationException">Thrown when the mode is <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</exception>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void ThrowExceptionIfTwo(this BindMode mode)
         {
@@ -62,7 +62,7 @@ namespace Aspid.MVVM
         /// Throws if the binding mode is not two-way style (<see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>).
         /// </summary>
         /// <param name="mode">The binding mode to validate.</param>
-        /// <exception cref="InvalidOperationException">Thrown when the mode is not TwoWay or OneWayToSource.</exception>
+        /// <exception cref="InvalidOperationException">Thrown when the mode is not <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</exception>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void ThrowExceptionIfNotTwo(this BindMode mode)
         {

@@ -147,6 +147,8 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and 
 - Removed stray `Header("Target")` and obsolete files (`NewFields`, `Commands.meta`, `DebugViewModel`).
 - `#if !ASPID_MVVM_EDITOR_DISABLED` guards added in missing places.
 - Numerous meta-file fixes.
+- `NumberToBoolConverter`: `Inequality` comparison was inverted — always returned the same result as `Equal` (PR #81).
+- `CollectionBinderBase.Dispose()`: `CollectionChanged` subscription was not unsubscribed, causing callbacks to fire on disposed binders and preventing GC. `Dispose()` now delegates to `SetValue(null)` which handles full cleanup (PR #91).
 
 ### Migration
 

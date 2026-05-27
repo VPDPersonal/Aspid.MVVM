@@ -1,0 +1,36 @@
+name: PR Ready Labels
+
+on:
+  pull_request:
+    types: [ready_for_review, converted_to_draft]
+
+permissions:
+  pull-requests: write
+
+jobs:
+  update-labels:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ready for review
+        if: github.event.action == 'ready_for_review'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const { owner, repo } = context.repo;
+            const issue_number = context.payload.pull_request.number;
+            try {
+              await github.rest.issues.removeLabel({ owner, repo, issue_number, name: 'status: work-in-progress' });
+            } catch {}
+            await github.rest.issues.addLabels({ owner, repo, issue_number, labels: ['status: needs-review'] });
+
+      - name: Converted to draft
+        if: github.event.action == 'converted_to_draft'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const { owner, repo } = context.repo;
+            const issue_number = context.payload.pull_request.number;
+            try {
+              await github.rest.issues.removeLabel({ owner, repo, issue_number, name: 'status: needs-review' });
+            } catch {}
+            await github.rest.issues.addLabels({ owner, repo, issue_number, labels: ['status: work-in-progress'] });

@@ -149,6 +149,7 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and 
 - Numerous meta-file fixes.
 - `NumberToBoolConverter`: `Inequality` comparison was inverted — always returned the same result as `Equal` (PR #81).
 - `CollectionBinderBase.Dispose()`: `CollectionChanged` subscription was not unsubscribed, causing callbacks to fire on disposed binders and preventing GC. `Dispose()` now delegates to `SetValue(null)` which handles full cleanup (PR #91).
+- `CollectionBinderBase.OnCollectionChanged`: granular `Add`, `Remove`, and `Reset` events are now forwarded to the new abstract hooks `OnAdded(T?)`, `OnAdded(IReadOnlyList<T?>)`, `OnRemoved(T?)`, `OnRemoved(IReadOnlyList<T?>)` (PR #94).
 
 ### Migration
 

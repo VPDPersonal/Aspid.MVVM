@@ -74,7 +74,7 @@ namespace Aspid.MVVM
         /// <inheritdoc/>
         public void Unbind()
         {
-#if !ASPID_MVVM_UNITY_PROFILER_DISABLED
+#if UNITY_2022_1_OR_NEWER && !ASPID_MVVM_UNITY_PROFILER_DISABLED
             using (this.Marker())
 #endif
             {

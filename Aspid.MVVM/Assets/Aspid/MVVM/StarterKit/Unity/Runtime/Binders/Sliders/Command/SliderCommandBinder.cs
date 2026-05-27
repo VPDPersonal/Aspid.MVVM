@@ -125,10 +125,17 @@ namespace Aspid.MVVM.StarterKit
             else if (_longCommand is not null) _longCommand.Execute((long)Target.value);
         }
         
-        private void OnCanExecuteChanged(IRelayCommand<int> command) => ApplyCanExecute(command, (int)Target.value);
-        private void OnCanExecuteChanged(IRelayCommand<long> command) => ApplyCanExecute(command, (long)Target.value);
-        private void OnCanExecuteChanged(IRelayCommand<float> command) => ApplyCanExecute(command, Target.value);
-        private void OnCanExecuteChanged(IRelayCommand<double> command) => ApplyCanExecute(command, (double)Target.value);
+        private void OnCanExecuteChanged(IRelayCommand<int> command) =>
+            ApplyCanExecute(command, (int)Target.value);
+
+        private void OnCanExecuteChanged(IRelayCommand<long> command) =>
+            ApplyCanExecute(command, (long)Target.value);
+
+        private void OnCanExecuteChanged(IRelayCommand<float> command) =>
+            ApplyCanExecute(command, Target.value);
+
+        private void OnCanExecuteChanged(IRelayCommand<double> command) =>
+            ApplyCanExecute(command, (double)Target.value);
 
         private void ApplyCanExecute<T>(IRelayCommand<T> command, T value)
         {
@@ -289,10 +296,17 @@ namespace Aspid.MVVM.StarterKit
             else if (_longCommand is not null) _longCommand.Execute((long)Target.value, Param);
         }
         
-        private void OnCanExecuteChanged(IRelayCommand<int, T> command) => ApplyCanExecute(command, (int)Target.value);
-        private void OnCanExecuteChanged(IRelayCommand<long, T> command) => ApplyCanExecute(command, (long)Target.value);
-        private void OnCanExecuteChanged(IRelayCommand<float, T> command) => ApplyCanExecute(command, Target.value);
-        private void OnCanExecuteChanged(IRelayCommand<double, T> command) => ApplyCanExecute(command, (double)Target.value);
+        private void OnCanExecuteChanged(IRelayCommand<int, T> command) =>
+            ApplyCanExecute(command, (int)Target.value);
+
+        private void OnCanExecuteChanged(IRelayCommand<long, T> command) =>
+            ApplyCanExecute(command, (long)Target.value);
+
+        private void OnCanExecuteChanged(IRelayCommand<float, T> command) =>
+            ApplyCanExecute(command, Target.value);
+
+        private void OnCanExecuteChanged(IRelayCommand<double, T> command) =>
+            ApplyCanExecute(command, (double)Target.value);
 
         private void ApplyCanExecute<TValue>(IRelayCommand<TValue, T> command, TValue value)
         {
@@ -469,10 +483,17 @@ namespace Aspid.MVVM.StarterKit
             else if (_longCommand is not null) _longCommand.Execute((long)Target.value, Param1, Param2);
         }
         
-        private void OnCanExecuteChanged(IRelayCommand<int, T1, T2> command) => ApplyCanExecute(command, (int)Target.value);
-        private void OnCanExecuteChanged(IRelayCommand<long, T1, T2> command) => ApplyCanExecute(command, (long)Target.value);
-        private void OnCanExecuteChanged(IRelayCommand<float, T1, T2> command) => ApplyCanExecute(command, Target.value);
-        private void OnCanExecuteChanged(IRelayCommand<double, T1, T2> command) => ApplyCanExecute(command, (double)Target.value);
+        private void OnCanExecuteChanged(IRelayCommand<int, T1, T2> command) =>
+            ApplyCanExecute(command, (int)Target.value);
+
+        private void OnCanExecuteChanged(IRelayCommand<long, T1, T2> command) =>
+            ApplyCanExecute(command, (long)Target.value);
+
+        private void OnCanExecuteChanged(IRelayCommand<float, T1, T2> command) =>
+            ApplyCanExecute(command, Target.value);
+
+        private void OnCanExecuteChanged(IRelayCommand<double, T1, T2> command) =>
+            ApplyCanExecute(command, (double)Target.value);
 
         private void ApplyCanExecute<TValue>(IRelayCommand<TValue, T1, T2> command, TValue value)
         {
@@ -665,10 +686,17 @@ namespace Aspid.MVVM.StarterKit
             else if (_longCommand is not null) _longCommand.Execute((long)Target.value, Param1, Param2, Param3);
         }
         
-        private void OnCanExecuteChanged(IRelayCommand<int, T1, T2, T3> command) => ApplyCanExecute(command, (int)Target.value);
-        private void OnCanExecuteChanged(IRelayCommand<long, T1, T2, T3> command) => ApplyCanExecute(command, (long)Target.value);
-        private void OnCanExecuteChanged(IRelayCommand<float, T1, T2, T3> command) => ApplyCanExecute(command, Target.value);
-        private void OnCanExecuteChanged(IRelayCommand<double, T1, T2, T3> command) => ApplyCanExecute(command, (double)Target.value);
+        private void OnCanExecuteChanged(IRelayCommand<int, T1, T2, T3> command) =>
+            ApplyCanExecute(command, (int)Target.value);
+
+        private void OnCanExecuteChanged(IRelayCommand<long, T1, T2, T3> command) =>
+            ApplyCanExecute(command, (long)Target.value);
+
+        private void OnCanExecuteChanged(IRelayCommand<float, T1, T2, T3> command) =>
+            ApplyCanExecute(command, Target.value);
+
+        private void OnCanExecuteChanged(IRelayCommand<double, T1, T2, T3> command) =>
+            ApplyCanExecute(command, (double)Target.value);
 
         private void ApplyCanExecute<TValue>(IRelayCommand<TValue, T1, T2, T3> command, TValue value)
         {

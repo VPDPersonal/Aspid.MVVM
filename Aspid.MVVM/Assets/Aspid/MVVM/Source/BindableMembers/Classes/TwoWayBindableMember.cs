@@ -50,7 +50,7 @@ namespace Aspid.MVVM
         /// <summary>
         /// Initializes a new instance of the <see cref="TwoWayBindableMember{T}"/> class with the specified value and a setter action.
         /// </summary>
-        /// <param name="value">The initial value of the bindable member event.</param>
+        /// <param name="value">The initial value of the bindable member.</param>
         /// <param name="setValue">
         /// The action used to set the value when the event is triggered.
         /// </param>
@@ -185,7 +185,7 @@ namespace Aspid.MVVM
         }
         
         /// <summary>
-        /// Triggers the Changed event with the specified value and updates the current value.
+        /// Sets the current value and raises the <see cref="Changed"/> event.
         /// </summary>
         /// <param name="value">The new value to set and notify.</param>
         public void Invoke(T? value) =>

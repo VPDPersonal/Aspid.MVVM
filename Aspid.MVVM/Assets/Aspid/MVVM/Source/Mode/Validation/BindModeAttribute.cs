@@ -20,19 +20,19 @@ namespace Aspid.MVVM
     public sealed class BindModeAttribute : Attribute
     {
         /// <summary>
-        /// Gets or sets a value indicating whether all binding modes (except <see cref="BindMode.None"/>) are allowed.
+        /// Indicates whether all binding modes (except <see cref="BindMode.None"/>) are allowed.
         /// If <see langword="true"/>, all modes except <see cref="BindMode.None"/> are enabled.
         /// </summary>
         public bool IsAll { get; set; }
-        
+
         /// <summary>
-        /// Gets or sets a value indicating whether only <see cref="BindMode.OneWay"/> and <see cref="BindMode.OneTime"/> are allowed.
+        /// Indicates whether only <see cref="BindMode.OneWay"/> and <see cref="BindMode.OneTime"/> are allowed.
         /// If <see langword="true"/>, only these two modes are enabled.
         /// </summary>
         public bool IsOne { get; set; }
-        
+
         /// <summary>
-        /// Gets or sets a value indicating whether only <see cref="BindMode.TwoWay"/> and <see cref="BindMode.OneWayToSource"/> are allowed.
+        /// Indicates whether only <see cref="BindMode.TwoWay"/> and <see cref="BindMode.OneWayToSource"/> are allowed.
         /// If <see langword="true"/>, only these two modes are enabled.
         /// </summary>
         public bool IsTwo { get; set; }

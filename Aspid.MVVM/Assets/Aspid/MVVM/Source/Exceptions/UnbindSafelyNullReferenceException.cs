@@ -4,27 +4,19 @@ using System;
 namespace Aspid.MVVM
 {
     /// <summary>
-    /// Exception thrown when a <see langword="null"/> binder is encountered during an <c>UnbindSafely</c> operation.
+    /// Exception thrown when a <see langword="null"/> binder is encountered during an
+    /// <see cref="BinderExtensions.UnbindSafely{T}(T, object, string)"/> operation.
     /// </summary>
     public sealed class UnbindSafelyNullReferenceException : NullReferenceException
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="UnbindSafelyNullReferenceException"/> class.
-        /// </summary>
+        /// <inheritdoc/>
         public UnbindSafelyNullReferenceException() { }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="UnbindSafelyNullReferenceException"/> class with the specified message.
-        /// </summary>
-        /// <param name="message">The message that describes the error.</param>
+        /// <inheritdoc/>
         public UnbindSafelyNullReferenceException(string message)
             : base(message) { }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="UnbindSafelyNullReferenceException"/> class with the specified message and inner exception.
-        /// </summary>
-        /// <param name="message">The message that describes the error.</param>
-        /// <param name="innerException">The exception that is the cause of the current exception.</param>
+        /// <inheritdoc/>
         public UnbindSafelyNullReferenceException(string message, Exception innerException)
             : base(message, innerException) { }
     }

@@ -42,9 +42,10 @@ namespace Aspid.MVVM
         public event Action<IRelayCommand<T>> CanExecuteChanged;
         
         /// <summary>
-        /// Executes the command with the given parameter.
+        /// Determines whether the command can be executed with the given parameter.
         /// </summary>
-        /// <param name="param">The parameter used to execute the command.</param>
+        /// <param name="param">The parameter used to determine whether the command can be executed.</param>
+        /// <returns><see langword="true"/> if the command can be executed; otherwise, <see langword="false"/>.</returns>
         public bool CanExecute(T? param);
 
         /// <summary>

@@ -19,7 +19,7 @@ namespace Aspid.MVVM
         public void Initialize(IViewModel viewModel);
         
         /// <summary>
-        /// Deinitializes the view, resetting the ViewModel property to null.
+        /// Deinitializes the view, resetting the ViewModel property to <see langword="null"/>.
         /// </summary>
         public void Deinitialize();
     }

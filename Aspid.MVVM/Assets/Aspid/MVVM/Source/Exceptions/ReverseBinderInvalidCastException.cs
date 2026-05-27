@@ -18,7 +18,7 @@ namespace Aspid.MVVM
         /// <see cref="IReverseBinder{T}"/>.
         /// </summary>
         /// <param name="binder">The binder that failed the type check.</param>
-        /// <returns>Never returns; always throws.</returns>
+        /// <returns>This method never returns; the return type exists to support <see langword="throw"/> expressions.</returns>
         /// <exception cref="ReverseBinderInvalidCastException{T}">Always thrown.</exception>
         public static ReverseBinderInvalidCastException<T> Class(IBinder binder)
         {
@@ -35,7 +35,7 @@ namespace Aspid.MVVM
         /// </summary>
         /// <typeparam name="TBoxed">The expected boxed type.</typeparam>
         /// <param name="binder">The binder that failed the type check.</param>
-        /// <returns>Never returns; always throws.</returns>
+        /// <returns>This method never returns; the return type exists to support <see langword="throw"/> expressions.</returns>
         /// <exception cref="ReverseBinderInvalidCastException{T}">Always thrown.</exception>
         public static ReverseBinderInvalidCastException<T> Struct<TBoxed>(IBinder binder)
         {

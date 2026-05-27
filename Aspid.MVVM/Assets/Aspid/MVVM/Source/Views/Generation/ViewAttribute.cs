@@ -11,7 +11,7 @@ namespace Aspid.MVVM
     public sealed class ViewAttribute : Attribute
     {
         /// <summary>
-        /// Controls whether the Source Generator should emit binder fields for
+        /// Indicates whether the Source Generator should emit binder fields for
         /// <see cref="IView{TViewModel}"/> bindable members that are not already declared on the View.
         /// Defaults to <see langword="true"/>. Set to <see langword="false"/> to suppress this generation
         /// for the decorated View — useful for Views that wire binders manually or do not need an

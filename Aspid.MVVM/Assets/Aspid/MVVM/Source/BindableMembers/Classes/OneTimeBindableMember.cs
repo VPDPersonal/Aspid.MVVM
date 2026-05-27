@@ -22,7 +22,7 @@ namespace Aspid.MVVM
         private static readonly OneTimeBindableMember<T> _instance = new();
     
         /// <summary>
-        /// Gets or sets the current value.
+        /// Gets the current value.
         /// </summary>
         public T? Value { get; private set; }
         

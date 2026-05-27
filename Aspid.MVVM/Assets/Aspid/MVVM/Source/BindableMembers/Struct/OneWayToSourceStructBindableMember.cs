@@ -47,7 +47,7 @@ namespace Aspid.MVVM
         private readonly Action<T> _setValue;
         
         /// <summary>
-        /// Gets or sets the current value.
+        /// Gets the current value.
         /// </summary>
         public T Value { get; private set; }
         
@@ -74,7 +74,7 @@ namespace Aspid.MVVM
         /// <param name="binder">The binder to bind to the event.</param>
         /// <returns>Returns itself to allow unsubscription later.</returns>
         /// <exception cref="InvalidOperationException">
-        /// Thrown if the <paramref name="binder"/> does not have a valid binding mode or is not of type <see cref="IReverseBinder{T}"/>.
+        /// Thrown if the <paramref name="binder"/> does not have a valid binding mode or is not of type <see cref="IReverseBinder{T}"/>, <see cref="IReverseBinder{TBoxed}"/>, or <see cref="IAnyReverseBinder"/>.
         /// </exception>
         IBinderRemover IBinderAdder.Add(IBinder binder)
         {

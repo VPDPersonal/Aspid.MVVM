@@ -16,12 +16,12 @@ namespace Aspid.MVVM
     public sealed class AccessAttribute : Attribute
     {
         /// <summary>
-        /// Access modifier for the get accessor.
+        /// Gets or sets the access modifier for the get accessor.
         /// </summary>
         public Access Get { get; set; }
         
         /// <summary>
-        /// Access modifier for the set accessor.
+        /// Gets or sets the access modifier for the set accessor.
         /// </summary>
         public Access Set { get; set; }
         

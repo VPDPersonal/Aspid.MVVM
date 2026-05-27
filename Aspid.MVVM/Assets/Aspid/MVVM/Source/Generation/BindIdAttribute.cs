@@ -13,7 +13,7 @@ namespace Aspid.MVVM
     {
 #if UNITY_EDITOR || DEBUG
         /// <summary>
-        /// The binding ID associated with the target field, property, or <c>[RelayCommand]</c>.
+        /// Gets the binding ID associated with the target field, property, or <c>[RelayCommand]</c>.
         /// </summary>
         [EditorBrowsable(EditorBrowsableState.Advanced)]
         public readonly string Id;

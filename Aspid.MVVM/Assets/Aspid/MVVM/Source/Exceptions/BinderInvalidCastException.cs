@@ -18,7 +18,7 @@ namespace Aspid.MVVM
         /// </summary>
         /// <typeparam name="T">The expected bound value type.</typeparam>
         /// <param name="binder">The binder that failed the type check.</param>
-        /// <returns>Never returns; always throws.</returns>
+        /// <returns>This method never returns; the return type exists to support <see langword="throw"/> expressions.</returns>
         /// <exception cref="BinderInvalidCastException">Always thrown.</exception>
         public static BinderInvalidCastException Class<T>(IBinder binder)
         {
@@ -37,7 +37,7 @@ namespace Aspid.MVVM
         /// <typeparam name="T">The expected unboxed struct type.</typeparam>
         /// <typeparam name="TBoxed">The expected boxed type.</typeparam>
         /// <param name="binder">The binder that failed the type check.</param>
-        /// <returns>Never returns; always throws.</returns>
+        /// <returns>This method never returns; the return type exists to support <see langword="throw"/> expressions.</returns>
         /// <exception cref="BinderInvalidCastException">Always thrown.</exception>
         public static BinderInvalidCastException Struct<T, TBoxed>(IBinder binder)
         {

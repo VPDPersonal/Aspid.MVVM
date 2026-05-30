@@ -30,7 +30,7 @@ namespace Aspid.MVVM
         
             _contexts = AppDomain.CurrentDomain
                 .GetAssemblies()
-                .SelectMany(assembly => assembly.GetTypes())
+                .SelectMany(SafeGetTypes)
                 .Where(Context.IsValid)
                 .Select(type => new Context(type))
                 .ToArray();
@@ -38,7 +38,19 @@ namespace Aspid.MVVM
             EditorApplication.contextualPropertyMenu -= OnContextualPropertyMenu;
             EditorApplication.contextualPropertyMenu += OnContextualPropertyMenu;
         }
-    
+
+        private static IEnumerable<Type> SafeGetTypes(Assembly assembly)
+        {
+            try
+            {
+                return assembly.GetTypes();
+            }
+            catch (ReflectionTypeLoadException ex)
+            {
+                return ex.Types.Where(type => type != null);
+            }
+        }
+
         private static void OnContextualPropertyMenu(GenericMenu menu, SerializedProperty property)
         {
             menu.AddSeparator(path: "/");

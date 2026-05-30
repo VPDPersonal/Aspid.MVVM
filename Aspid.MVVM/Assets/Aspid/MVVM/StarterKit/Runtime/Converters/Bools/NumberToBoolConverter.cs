@@ -44,7 +44,38 @@ namespace Aspid.MVVM.StarterKit
         /// </summary>
         /// <param name="value">The value to compare.</param>
         /// <returns>The result of the comparison operation.</returns>
-        public bool Convert(float value) => _comparison switch
+        public bool Convert(float value) =>
+            Compare(value);
+
+        /// <summary>
+        /// Converts a double value to boolean using the configured comparison.
+        /// </summary>
+        /// <param name="value">The value to compare.</param>
+        /// <returns>The result of the comparison operation.</returns>
+        public bool Convert(double value) =>
+            Compare(value);
+
+        /// <summary>
+        /// Converts an int value to boolean using the configured comparison.
+        /// </summary>
+        /// <param name="value">The value to compare.</param>
+        /// <returns>The result of the comparison operation.</returns>
+        public bool Convert(int value) =>
+            Compare(value);
+
+        /// <summary>
+        /// Converts a long value to boolean using the configured comparison.
+        /// </summary>
+        /// <param name="value">The value to compare.</param>
+        /// <returns>The result of the comparison operation.</returns>
+        public bool Convert(long value) =>
+            Compare(value);
+
+        /// <summary>
+        /// Performs the configured comparison in double precision so that large
+        /// integer and double magnitudes compare exactly without float rounding.
+        /// </summary>
+        private bool Compare(double value) => _comparison switch
         {
             Comparisons.LessThan => value < _value,
             Comparisons.GreaterThan => value > _value,
@@ -54,30 +85,6 @@ namespace Aspid.MVVM.StarterKit
             Comparisons.Inequality => !Approximately(_value, value),
             _ => throw new ArgumentOutOfRangeException()
         };
-
-        /// <summary>
-        /// Converts a double value to boolean by casting to float.
-        /// </summary>
-        /// <param name="value">The value to compare.</param>
-        /// <returns>The result of the comparison operation.</returns>
-        public bool Convert(double value) =>
-            Convert((float)value);
-
-        /// <summary>
-        /// Converts an int value to boolean by casting to float.
-        /// </summary>
-        /// <param name="value">The value to compare.</param>
-        /// <returns>The result of the comparison operation.</returns>
-        public bool Convert(int value) =>
-            Convert((float)value);
-
-        /// <summary>
-        /// Converts a long value to boolean by casting to float.
-        /// </summary>
-        /// <param name="value">The value to compare.</param>
-        /// <returns>The result of the comparison operation.</returns>
-        public bool Convert(long value) =>
-            Convert((float)value);
 
         /// <summary>
         /// Checks if two float values are approximately equal with tolerance for floating-point precision.

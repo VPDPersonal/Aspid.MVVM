@@ -180,7 +180,7 @@ namespace Aspid.MVVM
 
             while (fieldType.IsGenericType && fieldType.GetGenericTypeDefinition() == typeof(List<>))
             {
-                fieldType = field.FieldType;
+                fieldType = fieldType.GetGenericArguments()[0];
             }
 
             return !fieldType.IsArray

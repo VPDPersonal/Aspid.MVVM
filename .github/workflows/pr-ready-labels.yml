@@ -2,7 +2,7 @@ name: PR Ready Labels
 
 on:
   pull_request_target:
-    types: [ready_for_review, converted_to_draft]
+    types: [ready_for_review, converted_to_draft, closed]
 
 permissions:
   pull-requests: write
@@ -34,3 +34,14 @@ jobs:
               await github.rest.issues.removeLabel({ owner, repo, issue_number, name: 'status: needs-review' });
             } catch {}
             await github.rest.issues.addLabels({ owner, repo, issue_number, labels: ['status: work-in-progress'] });
+
+      - name: Closed
+        if: github.event.action == 'closed'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const { owner, repo } = context.repo;
+            const issue_number = context.payload.pull_request.number;
+            try {
+              await github.rest.issues.removeLabel({ owner, repo, issue_number, name: 'status: needs-review' });
+            } catch {}

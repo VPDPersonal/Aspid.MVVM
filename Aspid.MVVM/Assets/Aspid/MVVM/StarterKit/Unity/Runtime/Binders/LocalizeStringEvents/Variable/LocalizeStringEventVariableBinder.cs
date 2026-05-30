@@ -167,10 +167,10 @@ namespace Aspid.MVVM.StarterKit
             IVariable? variable = null;
             var stringReference = Target.StringReference;
 
-            if (stringReference?.TryGetValue(_variableName, out variable) ?? false)
+            if (!(stringReference?.TryGetValue(_variableName, out variable) ?? false))
             {
                 variable = new T();
-                stringReference.Add(_variableName, variable);
+                stringReference?.Add(_variableName, variable);
             }
             
             return variable is T specificVariable 

@@ -22,7 +22,7 @@ namespace Aspid.MVVM.StarterKit
         protected sealed override float Property
         {
             get => CachedComponent.GetColorComponent(_colorComponent);
-            set => CachedComponent.SetColorComponent(_colorComponent, GetConvertedValue(value));
+            set => CachedComponent.SetColorComponent(_colorComponent, value);
         }
     }
 }

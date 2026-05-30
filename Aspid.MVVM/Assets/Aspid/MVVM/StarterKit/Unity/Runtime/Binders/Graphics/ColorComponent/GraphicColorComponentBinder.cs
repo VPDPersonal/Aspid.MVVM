@@ -20,8 +20,8 @@ namespace Aspid.MVVM.StarterKit
         /// <inheritdoc/>
         protected sealed override float Property
         {
-            get => GetConvertedValue(Target.GetColorComponent(_colorComponent));
-            set => Target.SetColorComponent(_colorComponent, GetConvertedValue(value));
+            get => Target.GetColorComponent(_colorComponent);
+            set => Target.SetColorComponent(_colorComponent, value);
         }
         
         /// <summary>

@@ -6,6 +6,17 @@ namespace Aspid.MVVM.StarterKit
 {
     public static class ToCultureStringExtensions
     {
+        public static CultureInfo ToCultureInfo(this CultureInfoMode mode) => mode switch
+        {
+            CultureInfoMode.CurrentCulture => CultureInfo.CurrentCulture,
+            CultureInfoMode.CurrentUICulture => CultureInfo.CurrentUICulture,
+            CultureInfoMode.InvariantCulture => CultureInfo.InvariantCulture,
+            CultureInfoMode.InstalledUICulture => CultureInfo.InstalledUICulture,
+            CultureInfoMode.DefaultThreadCurrentCulture => CultureInfo.DefaultThreadCurrentCulture,
+            CultureInfoMode.DefaultThreadCurrentUICulture => CultureInfo.DefaultThreadCurrentUICulture,
+            _ => throw new ArgumentOutOfRangeException(nameof(mode), mode, null)
+        };
+
         public static string ToCultureString(this int number, CultureInfoMode mode) => mode switch
         {
             CultureInfoMode.CurrentCulture => number.ToString(CultureInfo.CurrentCulture),

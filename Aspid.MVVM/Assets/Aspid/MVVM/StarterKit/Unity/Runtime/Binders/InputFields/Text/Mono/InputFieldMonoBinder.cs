@@ -2,6 +2,7 @@
 using TMPro;
 using System;
 using UnityEngine;
+using System.Globalization;
 #if UNITY_2023_1_OR_NEWER
 using Converter = Aspid.MVVM.StarterKit.IConverter<string, string>;
 #else
@@ -182,7 +183,7 @@ namespace Aspid.MVVM.StarterKit
            
             if (IntValueChanged != null || LongValueChanged != null)
             {
-                if (!long.TryParse(value, out var integerValue)) return;
+                if (!long.TryParse(value, NumberStyles.Any, _cultureInfoMode.ToCultureInfo(), out var integerValue)) return;
 
                 if (integerValue is <= int.MaxValue and >= int.MinValue)
                     IntValueChanged?.Invoke((int)integerValue);
@@ -192,7 +193,7 @@ namespace Aspid.MVVM.StarterKit
             
             if (FloatValueChanged != null || DoubleValueChanged != null)
             {
-                if (!double.TryParse(value, out var decimalValue)) return;
+                if (!double.TryParse(value, NumberStyles.Any, _cultureInfoMode.ToCultureInfo(), out var decimalValue)) return;
                 
                 if (decimalValue is <= float.MaxValue and >= float.MinValue)
                     FloatValueChanged?.Invoke((float)decimalValue);

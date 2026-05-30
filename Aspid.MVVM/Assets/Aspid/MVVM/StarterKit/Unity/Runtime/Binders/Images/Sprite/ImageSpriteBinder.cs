@@ -17,6 +17,8 @@ namespace Aspid.MVVM.StarterKit
         [Tooltip("When enabled, disables the Image component when the bound sprite is null.")]
         [SerializeField] private bool _disabledWhenNull;
 
+        private Sprite? _createdSprite;
+
         protected sealed override Sprite? Property
         {
             get => Target.sprite;
@@ -41,11 +43,20 @@ namespace Aspid.MVVM.StarterKit
         /// <param name="value">The <see cref="Texture2D"/> to convert into a sprite, or <see langword="null"/> to clear the sprite.</param>
         public void SetValue(Texture2D? value)
         {
-            var sprite = !value
+            if (_createdSprite) UnityEngine.Object.Destroy(_createdSprite);
+
+            _createdSprite = !value
                 ? null
                 : Sprite.Create(value, new Rect(0, 0, value!.width, value.height), new Vector2(0.5f, 0.5f));
 
-            SetValue(sprite);
+            SetValue(_createdSprite);
+        }
+
+        /// <inheritdoc/>
+        protected override void OnUnbound()
+        {
+            if (_createdSprite) UnityEngine.Object.Destroy(_createdSprite);
+            _createdSprite = null;
         }
     }
 }

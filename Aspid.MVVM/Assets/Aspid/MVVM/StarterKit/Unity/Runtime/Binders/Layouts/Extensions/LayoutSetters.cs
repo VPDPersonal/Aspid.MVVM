@@ -1,4 +1,5 @@
 using System;
+using UnityEngine;
 using UnityEngine.UI;
 using System.Runtime.CompilerServices;
 
@@ -41,6 +42,8 @@ namespace Aspid.MVVM.StarterKit
                 
                 default: throw new ArgumentOutOfRangeException();
             }
+
+            LayoutRebuilder.MarkLayoutForRebuild(layout.transform as RectTransform);
         }
     }
 }

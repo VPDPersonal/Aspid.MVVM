@@ -45,11 +45,12 @@ namespace Aspid.MVVM.StarterKit
 
         /// <summary>
         /// Called when applying the selected value to the material color property.
-        /// Sets the named color property on the first Renderer material.
+        /// Sets the named color property on all Renderer materials.
         /// </summary>
         protected override void SetValue(Color value)
         {
-            Target.material.SetColor(ColorPropertyId, value);
+            foreach (var material in Target.materials)
+                material.SetColor(ColorPropertyId, value);
         }
     }
 }

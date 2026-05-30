@@ -18,7 +18,9 @@ namespace Aspid.MVVM.StarterKit
     {
         [Tooltip("When enabled, disables the Image component when the bound sprite is null.")]
         [SerializeField] private bool _disabledWhenNull = true;
-        
+
+        private Sprite _createdSprite;
+
         protected sealed override Sprite Property
         {
             get => CachedComponent.sprite;
@@ -36,11 +38,20 @@ namespace Aspid.MVVM.StarterKit
         [BinderLog]
         public void SetValue(Texture2D value)
         {
-            var sprite = !value 
-                ? null 
+            if (_createdSprite) Object.Destroy(_createdSprite);
+
+            _createdSprite = !value
+                ? null
                 : Sprite.Create(value, new Rect(0, 0, value.width, value.height), new Vector2(0.5f, 0.5f));
-            
-            SetValue(sprite);
+
+            SetValue(_createdSprite);
+        }
+
+        /// <inheritdoc/>
+        protected override void OnUnbound()
+        {
+            if (_createdSprite) Object.Destroy(_createdSprite);
+            _createdSprite = null;
         }
     }
 }

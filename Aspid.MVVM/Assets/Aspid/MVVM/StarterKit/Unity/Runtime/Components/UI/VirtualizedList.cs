@@ -80,6 +80,12 @@ namespace Aspid.MVVM.StarterKit
 		    }
 	    }
 
+	    protected override void OnDisable()
+	    {
+		    onValueChanged.RemoveListener(OnScrollValueChanged);
+		    base.OnDisable();
+	    }
+
 	    private void Initialize()
         {
             switch (ItemsSource)
@@ -112,6 +118,7 @@ namespace Aspid.MVVM.StarterKit
                 _views[i] = new Element(view, Direction);
             }
             
+            onValueChanged.RemoveListener(OnScrollValueChanged);
             onValueChanged.AddListener(OnScrollValueChanged);
             Refresh();
             

@@ -4,27 +4,21 @@ Upgrade notes for moving an existing project from **Aspid.MVVM 1.0** to **Aspid.
 
 For the full list of changes see [CHANGELOG.md](CHANGELOG.md).
 
-> **BREAKING — package id renamed.** The UPM package id changed from `com.aspid.mvvm` to `tech.aspid.mvvm`. Update the entry in `Packages/manifest.json` and any UPM git URL that referenced the old id.
+> 🌐 Русская версия: [MIGRATION.ru.md](MIGRATION.ru.md)
 
 > Unity asset references (prefabs, scenes, ScriptableObjects) survive the upgrade because every relocated script kept its original `.meta` GUID. Source-code references to renamed classes do **not** survive — search-and-replace is required.
+
+> **Minimum Unity is now `6000.0`**.
 
 ---
 
 ## TL;DR
 
-```bash
-git pull
-git submodule update --init --recursive
-```
-
-Then in your codebase:
-
-1. Rename `ViewModelObservableList*` → `ObservableList*ViewModel`, and the same shape for Dictionary / Collection — see the table below.
-2. Replace every `[AddComponentContextMenu(typeof(X), "path")]` with `[AddBinderContextMenu(typeof(X), Path = "path")]`.
-3. Drop any `[AddPropertyContextMenu]` attributes — the API was removed.
-4. Audit every `view.Dispose()` call: the GameObject is no longer destroyed automatically.
-5. If you ever caught the `"This Binder is already bound."` exception, switch to checking `binder.IsBound` first — it now logs and returns silently.
-6. Rebuild generators with .NET 9 SDK (only if you modify generator source; the bundled DLLs are already up to date).
+1. Add the required git packages `tech.aspid.collections` and `tech.aspid.fasttools` to your `manifest.json` — they are not auto-resolved (see § 3.1).
+2. Rename `ViewModelObservableList*` → `ObservableList*ViewModel`, and the same shape for Dictionary / Collection (see § 1.1).
+3. Replace every `[AddComponentContextMenu(typeof(X), "path")]` with `[AddBinderContextMenu(typeof(X), Path = "path")]`, and fold any `[AddPropertyContextMenu(typeof(X), "m_Field")]` into the same attribute's `serializePropertyNames` argument (see § 1.2).
+4. Audit every `view.Dispose()` call: the GameObject is no longer destroyed automatically (see § 2.2).
+5. Audit every `view.DestroyView()` call: it now destroys only the View component, not the GameObject — use `view.DestroyViewAndGameObject()` for the old behaviour (see § 2.3).
 
 ---
 
@@ -40,43 +34,25 @@ Then in your codebase:
 | `ViewModelObservableListBinder` | `ObservableListViewModelBinder` |
 | `ViewModelObservableDictionaryBinder` | `ObservableDictionaryViewModelBinder` |
 | `ViewModelCollectionMonoBinder` | `CollectionViewModelMonoBinder` |
-| `EnumMonoBinderEditorBase` | `EnumMonoBinderEditor` |
 
 Suggested approach: a single global rename per row (regex / IDE refactor). Namespace `Aspid.MVVM.StarterKit` is unchanged.
 
 ### 1.2 `AddComponentContextMenuAttribute` removed
 
-The attribute was replaced with `AddBinderContextMenuAttribute` (and the byte-type variant `AddBinderContextMenuByTypeAttribute`). The signature changed: the path is now a named property.
+`AddComponentContextMenuAttribute` and `AddPropertyContextMenuAttribute` were both removed and merged into a single `AddBinderContextMenuAttribute` (plus the type-only variant `AddBinderContextMenuByTypeAttribute`, which registers a binder purely by its target component type). The menu path moves to the named `Path` property; the serialized-property name(s) that `[AddPropertyContextMenu]` provided move into the `serializePropertyNames` constructor parameter (`params string[]`, so several are allowed).
 
 ```csharp
 // BEFORE — Aspid.MVVM 1.0
-[AddComponentContextMenu(typeof(Component), "Add General Binder/My/Path")]
-public class MyBinder : MonoBinder { }
+[AddPropertyContextMenu(typeof(CanvasGroup), "m_Alpha")]        // optional
+[AddComponentContextMenu(typeof(CanvasGroup), "Add CanvasGroup Binder/Alpha")]
+public partial class MyAlphaBinder : MonoBinder { }
 
-// AFTER — Aspid.MVVM 1.1
-[AddBinderContextMenu(typeof(Component), Path = "Add General Binder/My/Path")]
-public class MyBinder : MonoBinder { }
+// AFTER — Aspid.MVVM 1.1 (one attribute; both arguments carry over, Path is optional)
+[AddBinderContextMenu(typeof(CanvasGroup), serializePropertyNames: "m_Alpha", Path = "Add CanvasGroup Binder/Alpha")]
+public partial class MyAlphaBinder : MonoBinder { }
 ```
 
-`AddPropertyContextMenuAttribute` has no replacement and should be removed; the new editor pipeline handles property menus internally.
-
-### 1.3 Submodules are required
-
-`Aspid.MVVM.Generators`, `Aspid.MVVM.Analyzers`, `Aspid.MVVM.Unity.Generators` are now consumed via git submodules. Run:
-
-```bash
-git submodule update --init --recursive
-```
-
-after pulling. Without this Unity will not compile. `Aspid.Collections` is no longer a submodule — it is consumed as a UPM git package (`tech.aspid.collections`).
-
-### 1.4 `Aspid.FastTools` namespace pulled in
-
-`MonoView`, the new editor visuals and several runtime helpers reference types under `Aspid.FastTools.Types` (`TypeSelector`, `EnumValue`, `ComponentTypeSelector`, `SerializableType`, `IId`, `IdRegistry`, `UniqueIdAttribute`).
-
-Risks:
-- Name collisions if your project ships its own `TypeSelector` / `EnumValue` / `IId`.
-- Custom IMGUI drawers referencing the old `Aspid.MVVM.*` versions of these types must switch to `Aspid.FastTools.*`.
+If a binder only had `[AddComponentContextMenu(typeof(X), "path")]`, the mechanical replacement is `[AddBinderContextMenu(typeof(X), Path = "path")]`.
 
 ---
 
@@ -116,32 +92,44 @@ Object.Destroy(view.gameObject);
 
 (or override `Dispose` in your subclass to restore the old behaviour).
 
-### 2.3 `MonoBinder.Bind()` no longer throws on double-bind
+### 2.3 `DestroyView()` no longer destroys the GameObject
+
+Mirroring § 2.2, the `DestroyView` extension method changed. In 1.0 `view.DestroyView()` tore down the whole GameObject; in 1.1 it deinitializes the View (or calls `Dispose()` if the View is `IDisposable`) and destroys only the View **component**, leaving the GameObject alive. A new `DestroyViewAndGameObject()` restores the old behaviour.
 
 ```csharp
-// 1.0
-if (IsBound) throw new Exception("This Binder is already bound.");
+// 1.0 — destroyed the GameObject
+view.DestroyView();
 
-// 1.1
-if (IsBound) {
-    Debug.LogError($"Binder is already bound. Type: {GetType().Name}, Name: {name}");
-    return;
-}
+// 1.1 — destroys only the View component; to also destroy the GameObject:
+view.DestroyViewAndGameObject();
 ```
 
-If you had a `try / catch` around `Bind()`, replace it with an `if (!binder.IsBound)` guard.
+Both methods are now null/destroyed-safe (they return `null` instead of throwing) and, in the Editor outside play mode, use `DestroyImmediate`. The same pair exists for the generic `DestroyView<T>()` / `DestroyViewAndGameObject<T>()` overloads.
 
-### 2.4 `OnReplace` / `OnMove` hooks fire natively
+### 2.4 `CollectionBinderBase<T>` forwards granular change events
 
-`CollectionMonoBinder<T>` derivatives now receive `OnReplace` / `OnMove` directly (instead of the previous `Remove + Insert` translation). Custom binders that hand-rolled `Replace` may need to override the new hooks or accept the default behaviour.
+In 1.0, `CollectionBinderBase<T>` exposed only `OnAdded(IReadOnlyCollection<T>)` and `OnReset()`, and did not subscribe to `CollectionChanged`. In 1.1 it subscribes to `CollectionChanged` and adds six new abstract hooks:
 
-Batch `Replace` events are also unrolled into per-item `OnReplace` calls.
+- `OnAdded(T?)`, `OnAdded(IReadOnlyList<T?>)`
+- `OnRemoved(T?)`, `OnRemoved(IReadOnlyList<T?>)`
+- `OnReplace(T? oldItem, T? newItem, int newStartingIndex)`
+- `OnMove(T? oldItem, T? newItem, int oldStartingIndex, int newStartingIndex)`
 
-### 2.5 Addressable seamless swap
+Batch `Replace` events are unrolled into per-item `OnReplace` calls.
 
-`AddressableMonoBinder` ships an opt-in seamless-swap mode. Default behaviour is unchanged. If you subclass an Addressable binder and override the swap path, double-check the new flag and lifecycle.
+**Compile impact:** any class deriving from `CollectionBinderBase<T>` must implement all six new abstract methods or it will not compile. Empty bodies preserve the 1.0 behaviour. `CollectionMonoBinder<T>` itself is unchanged (still only `OnAdded` / `OnReset`).
 
-### 2.6 `[AddComponentMenu]` paths
+### 2.5 `ViewInitializer` overhaul
+
+The `ViewInitializer` family was reworked: view/container resolution moved into `ViewInitializerBase`, edit-mode `Views` / `ViewModel` resolve lazily, and container `Resolve` became `TryResolve` (a failed DI resolve no longer throws). A new `InitializeStage.DiConstructor` stage was added (compiled only when a Zenject or VContainer integration define is set). The default initialization stage is **unchanged** — it is still `Awake`.
+
+The serialized resolution data was also restructured: the per-target resolution entries are now `ViewInitializeComponent` items (with the target type stored as a type-name string) instead of the old inline `InitializeComponent<IView>` fields. Re-check the resolution settings on existing `ViewInitializer` / `ViewInitializerManual` components in the inspector after upgrading.
+
+### 2.6 Addressable seamless swap
+
+`AddressableMonoBinder<TAsset>` / `AddressableMonoBinder<TAsset, TComponent>` gain a serialized `_seamlessSwap` flag (default `false`, so opt-in). With it off, a new bind still resets to the default asset before loading, as in 1.0; with it on, the previously loaded asset stays on screen until the new load completes. The load lifecycle was rewritten even on the default path (a single internal handle became separate current/pending handles), so if you subclass an Addressable binder and override the asset-set or release flow, re-check it against the new field and handle lifecycle.
+
+### 2.7 `[AddComponentMenu]` paths
 
 A number of menu paths were normalised:
 
@@ -150,66 +138,73 @@ A number of menu paths were normalised:
 
 Tooling that searches the Add Component dialog or menu paths by exact string needs to be updated.
 
+### 2.8 Behavioural fixes that change runtime output
+
+Two 1.0 bugs were fixed, so the same source now behaves differently at runtime — no recompile needed:
+
+- **`NumberToBoolConverter` with `Comparisons.Inequality`** returned the same result as `Comparisons.Equal` in 1.0 (the comparison was inverted). It now correctly returns `true` when the values are *not* approximately equal. Review binders configured with `Inequality` and remove any compensating inversion you added downstream.
+- **`DynamicViewModel.Create<…>`** forced every property to `BindMode.OneTime` in 1.0, discarding the configured mode. It now honours each `DynamicPropertyData`'s `BindMode`, so properties created without an explicit mode update live. Pass `BindMode.OneTime` explicitly if you relied on bind-once behaviour.
+
 ---
 
 ## 3. Project / infrastructure
 
-### 3.1 Unity project relocated
+### 3.1 Required packages
 
-The Unity project tree moved from the repository root into `Aspid.MVVM/`:
+1.1 is distributed as a UPM package (`tech.aspid.mvvm`). Its assemblies depend on two external git packages that `package.json` does not declare, so add them to your `Packages/manifest.json` before importing 1.1:
+
+```json
+"tech.aspid.collections": "https://github.com/VPDPersonal/Aspid.Collections.git#upm",
+"tech.aspid.fasttools": "https://github.com/VPDPersonal/Aspid.FastTools.git#upm"
+```
+
+The `Aspid.Collections` source that previously shipped inside the package was removed; it is now the separate `tech.aspid.collections` package. Its assembly name (`Aspid.Collections.Observable`) and namespaces are unchanged, so `using` directives and type references need no edits once the package is present.
+
+### 3.2 Unity project relocated
+
+The Unity project tree moved from the repository root into `Aspid.MVVM/`, and the framework also moved out of the `Plugins/` layer:
 
 ```
-1.0:  <repo>/Assets, <repo>/ProjectSettings, <repo>/Packages
-1.1:  <repo>/Aspid.MVVM/Assets, <repo>/Aspid.MVVM/ProjectSettings, ...
+1.0:  <repo>/Assets/Plugins/Aspid/MVVM/...
+1.1:  <repo>/Aspid.MVVM/Assets/Aspid/MVVM/...
 ```
 
-Update CI/CD scripts, IDE workspaces, build pipelines and any path constants that pointed at the repo-root `Assets/`.
-
-### 3.2 .NET 9 SDK
-
-`global.json` (inside the generator / analyzer submodules) pins `9.0.x`. Required only if you rebuild the generators yourself; the bundled `Aspid.MVVM.Generators.dll` and `Aspid.MVVM.Analyzers.dll` are committed and consumed directly by Unity.
+(Third-party plugins such as Zenject stay under `Assets/Plugins/`.) `.meta` GUIDs were preserved, so prefab / scene / ScriptableObject references survive — only textual path strings (CI/CD scripts, IDE workspaces, build pipelines, path constants) need updating.
 
 ### 3.3 Unity Editor versions
 
-- `package.json` declares `"unity": "2022.3"` — minimum unchanged.
-- Repository project file is now on Unity `6000.3.0f1`.
-
-Unity 2022.3 / 2023.x stay supported in code (`#if UNITY_2023_1_OR_NEWER` branches retained). Opening on older 6000.x releases may require dismissing the version-mismatch dialog.
+`package.json` now declares `"unity": "6000.0"`, formally setting the minimum supported Unity to `6000.0`. 1.0 shipped without a UPM `package.json`, so it declared no minimum (its repository project file was already on Unity `6000.2.7f2`). Projects still on Unity 2022 / 2023 must upgrade the Editor before adopting 1.1.
 
 ---
 
 ## 4. Architectural notes
 
-### 4.1 `GeneralView` no longer exists
+### 4.1 `BindSafely` / `UnbindSafely`
 
-`GeneralView` lived briefly between PR #43 and PR #48 in the 1.1 development branch. It was merged back into `MonoView`. If you adopted `GeneralView` from a pre-release build, replace `GeneralView` with `MonoView` — the inspector-driven binder list, child validation and `[RequireBinder]` integration carried over.
+Optional `owner` and `memberName` parameters (defaulting to `null`) were appended to the existing `BindSafely` / `UnbindSafely` methods, so the null-binder diagnostic can name the owning View (its type and GameObject name), the field that holds the binders, and the element index. Existing source call sites compile unchanged.
 
-### 4.2 `BindSafely` / `UnbindSafely`
+### 4.2 Bindable Properties
 
-New overloads accept `owner` and `memberName` so error messages include the View and bindable Id. Existing call sites compile unchanged.
+Existing `[Bind]` fields keep working. Bindable Properties (PR #46) are additive — opt in **per property** by applying `[Bind]` (or `[OneWayBind]` / `[TwoWayBind]` / `[OneTimeBind]` / `[OneWayToSourceBind]`) directly to a property instead of a field. In 1.0 these attributes targeted fields only; in 1.1 they also accept properties. No ViewModel-level change is required.
 
-### 4.3 Bindable Properties
+### 4.3 `RelayCommand`
 
-Existing `[Bind]` fields keep working. Bindable Properties (PR #46) are an additive feature — opt in per ViewModel.
-
-### 4.4 `RelayCommand`
-
-`RelayCommand.Empty` is preserved. New `RelayCommand.EmptyExecution` returns a command that is executable but does nothing. The internal "empty" constructor was rewritten; this is invisible from the outside but worth knowing if you use reflection.
+`RelayCommand.Empty` is preserved (still non-executable). New `RelayCommand.EmptyExecution` returns a command that is executable but does nothing; both exist on every arity (`RelayCommand`, `RelayCommand<T>`, … up to four type arguments). The internal empty constructor changed from a parameterless `RelayCommand()` to `RelayCommand(bool value = false)` — invisible through the public API, but reflection that looks up the private parameterless constructor by signature must be updated.
 
 ---
 
 ## Upgrade checklist
 
-- [ ] Rename the package id `com.aspid.mvvm` → `tech.aspid.mvvm` in `Packages/manifest.json` and any UPM git URL
-- [ ] `git pull && git submodule update --init --recursive`
-- [ ] Update CI / build scripts: `Assets/` → `Aspid.MVVM/Assets/`
-- [ ] Install .NET 9 SDK on build agents (only if rebuilding generators)
+- [ ] Add the `tech.aspid.collections` and `tech.aspid.fasttools` git packages to `manifest.json` (required; not auto-resolved)
+- [ ] Upgrade the Editor to Unity `6000.0` or newer
+- [ ] Update CI / build scripts and path constants: `Assets/Plugins/Aspid/...` → `Aspid.MVVM/Assets/Aspid/...` (repo-root `Assets/` → `Aspid.MVVM/Assets/`)
 - [ ] Global rename of StarterKit binder classes (see § 1.1)
 - [ ] Replace `[AddComponentContextMenu(...)]` with `[AddBinderContextMenu(..., Path = ...)]`
-- [ ] Remove `[AddPropertyContextMenu]` usages
+- [ ] Move `[AddPropertyContextMenu(..., "m_Field")]` arguments into `[AddBinderContextMenu(..., serializePropertyNames: "m_Field")]`
 - [ ] Add explicit `Object.Destroy(view.gameObject)` where `view.Dispose()` was used to free objects
-- [ ] Replace `try { binder.Bind(...) } catch` with `if (!binder.IsBound) binder.Bind(...)`
-- [ ] Audit custom `CollectionMonoBinder<T>` for `OnReplace` / `OnMove`
-- [ ] Re-enter inspector data for `MonoView`s now that the base class exposes its own binders
+- [ ] Replace `view.DestroyView()` with `view.DestroyViewAndGameObject()` where you relied on it to destroy the host GameObject
+- [ ] Implement the six new abstract hooks on any custom `CollectionBinderBase<T>` subclass (`OnAdded(T?)`, `OnAdded(IReadOnlyList<T?>)`, `OnRemoved(T?)`, `OnRemoved(IReadOnlyList<T?>)`, `OnReplace`, `OnMove`)
+- [ ] Review `ViewInitializer` setups: resolution moved into `ViewInitializerBase`, container `Resolve` became `TryResolve`, and an `InitializeStage.DiConstructor` stage was added (the default stage is unchanged — `Awake`)
+- [ ] Re-check `ViewInitializer` / `ViewInitializerManual` inspector data — the serialized resolution components changed type, so existing view/viewModel resolution settings may not carry over- [ ] Review `NumberToBoolConverter` (`Inequality`) and `DynamicViewModel.Create` usages for the corrected runtime behaviour
 - [ ] Smoke-test scenes that use `ImageSpriteSwitcherBinder`, Addressable binders and `VirtualizedList*`
 - [ ] Update tests / tooling that look up components by `AddComponentMenu` path

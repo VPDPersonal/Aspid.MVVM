@@ -18,7 +18,7 @@ namespace Aspid.MVVM.StarterKit
                 EditorGUI.PropertyField(position, properties.resolve);
 
                 position.y += EditorGUIUtility.singleLineHeight + EditorGUIUtility.standardVerticalSpacing;
-                EditorGUI.PropertyField(position, properties.component);
+                EditorGUI.PropertyField(position, properties.component, true);
             }
             EditorGUI.EndProperty();
         }

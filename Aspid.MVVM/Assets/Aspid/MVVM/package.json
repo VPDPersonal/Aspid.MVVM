@@ -4,9 +4,44 @@
   "displayName": "Aspid.MVVM",
   "description": "Aspid.MVVM is a powerful, high-performance MVVM framework for Unity, eliminating reflection, minimizing GC allocations, and removing boilerplate code for faster, streamlined development.",
   "unity": "2022.3",
+  "license": "MIT",
+  "documentationUrl": "https://vpd-inc.gitbook.io/aspid.mvvm/",
+  "changelogUrl": "https://github.com/VPDPersonal/Aspid.MVVM/blob/main/Aspid.MVVM/Assets/Aspid/MVVM/CHANGELOG.md",
+  "licensesUrl": "https://github.com/VPDPersonal/Aspid.MVVM/blob/main/LICENSE",
+  "keywords": [
+    "mvvm",
+    "unity",
+    "source-generator",
+    "data-binding",
+    "viewmodel",
+    "reactive",
+    "ui"
+  ],
   "author":
   {
     "name": "Vladislav Panin",
     "email": "vpd.aspid@gmail.com"
-  }
+  },
+  "samples": [
+    {
+      "displayName": "Hello World",
+      "description": "Minimal end-to-end example wiring a View to a ViewModel.",
+      "path": "Samples/HelloWorld"
+    },
+    {
+      "displayName": "Stats",
+      "description": "Binding numeric stats with converters and bindable members.",
+      "path": "Samples/Stats"
+    },
+    {
+      "displayName": "Todo List",
+      "description": "Observable collection bound to a dynamic list of items.",
+      "path": "Samples/TodoList"
+    },
+    {
+      "displayName": "Virtualized List",
+      "description": "Virtualized list efficiently rendering large data sets.",
+      "path": "Samples/VirtualizedList"
+    }
+  ]
 }

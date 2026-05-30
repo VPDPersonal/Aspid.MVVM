@@ -30,8 +30,10 @@ namespace Aspid.MVVM.StarterKit
 
         private bool Filter(T value)
         {
-            return _filters.Select(filter => filter?.Get())
-                .Any(predicate => predicate?.Invoke(value) ?? true);
+            return _filters
+                .Select(filter => filter?.Get())
+                .Where(predicate => predicate is not null)
+                .Any(predicate => predicate!(value));
         }
     }
 }

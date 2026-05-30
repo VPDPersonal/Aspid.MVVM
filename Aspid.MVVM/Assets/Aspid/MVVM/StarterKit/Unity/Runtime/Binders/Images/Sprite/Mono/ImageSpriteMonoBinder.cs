@@ -46,5 +46,12 @@ namespace Aspid.MVVM.StarterKit
 
             SetValue(_createdSprite);
         }
+
+        /// <inheritdoc/>
+        protected override void OnUnbound()
+        {
+            if (_createdSprite) Object.Destroy(_createdSprite);
+            _createdSprite = null;
+        }
     }
 }

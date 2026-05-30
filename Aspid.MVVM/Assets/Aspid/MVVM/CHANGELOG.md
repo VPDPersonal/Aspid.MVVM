@@ -7,6 +7,27 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [Unreleased]
+
+### Changed
+
+- **BREAKING:** package id renamed from `com.aspid.mvvm` to `tech.aspid.mvvm` (PR #99). Consumers must update `Packages/manifest.json` and any UPM git URL that referenced the old id.
+
+### Fixed
+
+- `UnbindSafely`: corrected the thrown exception type (PR #82).
+- `DynamicViewModel`: bind mode honoured and the full `DynamicPropertyData` is now passed to the factory (PR #83).
+- Numeric conversion now goes through `Convert.ChangeType`; `MonoBinder.Unbind` gained a profiler guard (PR #84).
+- `AddressableMonoBinder`: added a destroyed-object guard (PR #86).
+- Collection binder: fixed an unbind leak (PR #88).
+- `VirtualizedList`: index now uses `_views.Length` (PR #89).
+- `ObservableListBinder`: aligned subscribe / unsubscribe (PR #90).
+- `RelayCommand`: fixed empty execution (PR #93).
+- `OnObjectValueChanged`: allow `null` for reference types (PR #95).
+- `Unsafe.As` size-guard was added then reverted, and the `Unsafe` helper removed.
+
+---
+
 ## [1.1.0] — 2026-04-28
 
 ### Highlights
@@ -125,7 +146,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - `AddComponentContextMenuAttribute` — replaced by `AddBinderContextMenuAttribute` / `AddBinderContextMenuByTypeAttribute` with a different signature (`Path = "..."` named property).
 - `AddPropertyContextMenuAttribute`.
-- Standalone `Aspid.Collections` source under the package — now consumed via submodule.
+- Standalone `Aspid.Collections` source under the package — now consumed via a UPM git package (`tech.aspid.collections`).
 
 ### Renamed (StarterKit class names)
 

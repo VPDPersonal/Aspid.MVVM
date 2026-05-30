@@ -106,11 +106,12 @@ namespace Aspid.MVVM.StarterKit
 
         protected sealed override void OnMove(IViewModel oldItem, IViewModel newItem, int oldStartingIndex, int newStartingIndex)
         {
-            var oldSiblingIndex = Views[oldStartingIndex].transform.GetSiblingIndex();
-            var newSiblingIndex = Views[newStartingIndex].transform.GetSiblingIndex();
-            
-            Views[oldSiblingIndex].transform.SetSiblingIndex(newSiblingIndex);
-            Views[newSiblingIndex].transform.SetSiblingIndex(oldSiblingIndex);
+            var view = Views[oldStartingIndex];
+
+            Views.RemoveAt(oldStartingIndex);
+            Views.Insert(newStartingIndex, view);
+
+            view.transform.SetSiblingIndex(newStartingIndex);
         }
 
         protected sealed override void OnReset()

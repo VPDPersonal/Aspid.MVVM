@@ -4,6 +4,8 @@ Upgrade notes for moving an existing project from **Aspid.MVVM 1.0** to **Aspid.
 
 For the full list of changes see [CHANGELOG.md](CHANGELOG.md).
 
+> **BREAKING — package id renamed.** The UPM package id changed from `com.aspid.mvvm` to `tech.aspid.mvvm`. Update the entry in `Packages/manifest.json` and any UPM git URL that referenced the old id.
+
 > Unity asset references (prefabs, scenes, ScriptableObjects) survive the upgrade because every relocated script kept its original `.meta` GUID. Source-code references to renamed classes do **not** survive — search-and-replace is required.
 
 ---
@@ -60,13 +62,13 @@ public class MyBinder : MonoBinder { }
 
 ### 1.3 Submodules are required
 
-`Aspid.Collections`, `Aspid.Internal.Unity`, `Aspid.MVVM.Generators`, `Aspid.MVVM.Analyzers`, `Aspid.MVVM.Unity.Generators` are now consumed via git submodules. Run:
+`Aspid.MVVM.Generators`, `Aspid.MVVM.Analyzers`, `Aspid.MVVM.Unity.Generators` are now consumed via git submodules. Run:
 
 ```bash
 git submodule update --init --recursive
 ```
 
-after pulling. Without this Unity will not compile (missing types in `Aspid.Collections.Observable.*`).
+after pulling. Without this Unity will not compile. `Aspid.Collections` is no longer a submodule — it is consumed as a UPM git package (`tech.aspid.collections`).
 
 ### 1.4 `Aspid.FastTools` namespace pulled in
 
@@ -198,6 +200,7 @@ Existing `[Bind]` fields keep working. Bindable Properties (PR #46) are an addit
 
 ## Upgrade checklist
 
+- [ ] Rename the package id `com.aspid.mvvm` → `tech.aspid.mvvm` in `Packages/manifest.json` and any UPM git URL
 - [ ] `git pull && git submodule update --init --recursive`
 - [ ] Update CI / build scripts: `Assets/` → `Aspid.MVVM/Assets/`
 - [ ] Install .NET 9 SDK on build agents (only if rebuilding generators)

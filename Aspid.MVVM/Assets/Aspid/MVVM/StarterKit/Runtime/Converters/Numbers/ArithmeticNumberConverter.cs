@@ -87,10 +87,19 @@ namespace Aspid.MVVM.StarterKit
         {
             NumberOperation.Plus => value + _coefficient,
             NumberOperation.Minus => value - _coefficient,
-            NumberOperation.Division => value / _coefficient,
+            NumberOperation.Division => Divide(value),
             NumberOperation.Multiply => value * _coefficient,
             _ => throw new ArgumentOutOfRangeException()
         };
+
+        private double Divide(double value)
+        {
+            if (_coefficient != 0) return value / _coefficient;
+
+            UnityEngine.Debug.LogError(
+                $"{nameof(ArithmeticNumberConverter)}: division by zero coefficient. Returning the input value unchanged.");
+            return value;
+        }
         
         double IConverter<int, double>.Convert(int value) =>
             ((IConverter<double, double>)this).Convert(value);

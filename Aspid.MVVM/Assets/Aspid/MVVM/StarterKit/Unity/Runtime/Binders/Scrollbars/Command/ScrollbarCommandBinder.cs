@@ -50,7 +50,7 @@ namespace Aspid.MVVM.StarterKit
         public ScrollbarCommandBinder(Scrollbar target,
             ICanExecuteView customInteractable,
             BindMode mode = BindMode.OneWay)
-            : this(target, InteractableMode.Custom, mode)
+            : base(target, mode)
         {
             mode.ThrowExceptionIfTwo();
             _interactableMode = InteractableMode.Custom;

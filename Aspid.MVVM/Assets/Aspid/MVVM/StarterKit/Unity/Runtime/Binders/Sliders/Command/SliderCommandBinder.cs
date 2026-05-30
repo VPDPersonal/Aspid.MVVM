@@ -42,7 +42,7 @@ namespace Aspid.MVVM.StarterKit
         /// <param name="customInteractable">A custom view that reflects the command's CanExecute state.</param>
         /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/>.</param>
         public SliderCommandBinder(Slider target, ICanExecuteView customInteractable, BindMode mode = BindMode.OneWay)
-            : this(target, InteractableMode.Custom, mode)
+            : base(target, mode)
         {
             mode.ThrowExceptionIfTwo();
             _interactableMode = InteractableMode.Custom;

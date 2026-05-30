@@ -124,8 +124,12 @@ namespace Aspid.MVVM.StarterKit
         private void Deinitialize()
         {
             if (ItemsSource is null) return;
-            StopCoroutine(_initializing);
-            _initializing = null;
+
+            if (_initializing is not null)
+            {
+                StopCoroutine(_initializing);
+                _initializing = null;
+            }
 
             if (_views is not null)
             {

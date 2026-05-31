@@ -2,3 +2,9 @@
 skills-lock.json
 .zed/
 .idea/
+
+# Obsidian working state for the knowledge wiki (docs/wiki/) — keep notes, ignore local UI/cache
+docs/wiki/.obsidian/workspace*
+docs/wiki/.obsidian/cache
+docs/wiki/.obsidian/*.json.bak
+docs/wiki/.trash/

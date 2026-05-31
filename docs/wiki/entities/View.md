@@ -23,7 +23,7 @@ A ViewModel exposes state and commands but knows nothing about UI. The View is t
 
 `IView` defines the contract: a nullable `ViewModel` property plus `Initialize(IViewModel)` and `Deinitialize()`. `IView<in T>` adds a strongly-typed `Initialize(T)` overload for a specific ViewModel type.
 
-You write a `partial` class (or struct) decorated with `[ViewAttribute|[View]]`. The Source Generator (a [[Committed DLLs|committed DLL]], not source in this repo) emits the `IView` / `IView<T>` implementation: the `ViewModel` backing field, `Initialize`/`Deinitialize` bodies, and the binding calls that hook each bindable member to its binder.
+You write a `partial` class (or struct) decorated with `[ViewAttribute|[View]]`. The [[Source Generator]] (a [[Committed DLLs|committed DLL]], not source in this repo) emits the `IView` / `IView<T>` implementation: the `ViewModel` backing field, `Initialize`/`Deinitialize` bodies, and the binding calls that hook each bindable member to its binder.
 
 `[AsBinderAttribute|[AsBinder]]` decorates a field or property of a `[View]` type. It names the [[IBinder]] type (plus optional constructor `arguments`) the generator should use to bind that member. The `Type` reference is kept only under `UNITY_EDITOR || DEBUG`.
 

@@ -28,9 +28,9 @@ translated_at: 2026-05-31
 
 ## Категории
 
-Text ([[Text Binders]]), Images, RawImages, Toggles, Sliders, Scrollbars, Scrollrects, Dropdowns, InputFields, Buttons, Selectables, Transforms, Animators, AudioSources, CanvasGroups, Graphics, Renderers, LineRenderers, Layouts, GameObjects, Objects, Colliders, Behaviours, EventTriggers, UnityEvents, LocalizeStringEvents, VirtualizedLists, Collections, Casters, Generics, Debugs, Mono helpers.
+[[Text Binders|Text]], [[Image Binders|Images]], [[RawImage Binders|RawImages]], [[Toggle Binders|Toggles]], [[Slider Binders|Sliders]], [[Scrollbar Binders|Scrollbars]], [[Scrollrect Binders|Scrollrects]], [[Dropdown Binders|Dropdowns]], [[InputField Binders|InputFields]], [[Button Binders|Buttons]], [[Selectable Binders|Selectables]], [[Transform Binders|Transforms]], [[Animator Binders|Animators]], [[AudioSource Binders|AudioSources]], [[CanvasGroup Binders|CanvasGroups]], [[Graphic Binders|Graphics]], [[Renderer Binders|Renderers]], [[LineRenderer Binders|LineRenderers]], [[Layout Binders|Layouts]], [[GameObject Binders|GameObjects]], [[Object Binders|Objects]], [[Collider Binders|Colliders]], [[Behaviour Binders|Behaviours]], [[EventTrigger Binders|EventTriggers]], [[UnityEvent Binders|UnityEvents]], [[LocalizeStringEvent Binders|LocalizeStringEvents]], [[VirtualizedList Binders|VirtualizedLists]], [[Collection Binders|Collections]], [[Caster Binders|Casters]], [[Generic Binders|Generics]], [[Debug Binders|Debugs]], [[Mono Binders|Mono helpers]].
 
-> Страницы по категориям пишутся во время ингеста; неразрешённые ссылки выше помечают страницы, которые ещё предстоит создать.
+> Каждая категория ссылается на свою страницу; все биндеры семейства разделяют оси вариативности выше.
 
 ## См. также
 

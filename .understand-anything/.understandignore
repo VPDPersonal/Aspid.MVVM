@@ -1,0 +1,62 @@
+# .understandignore — Aspid.MVVM (Unity) tuned excludes
+# Goal: graph the C# framework code + docs/configs, drop Unity binary/noise.
+# Scanner uses `git ls-files -co --exclude-standard`, so Library/Temp/obj are
+# already dropped via .gitignore; these are belt-and-suspenders + tracked noise.
+
+# --- Unity caches / generated project files ---
+Library/
+Temp/
+Obj/
+Logs/
+UserSettings/
+MemoryCaptures/
+Build/
+Builds/
+.vs/
+.idea/
+.claude/
+.understand-anything/
+*.csproj
+*.sln
+*.unityproj
+*.user
+*.rsp
+
+# --- Unity meta files (3103 of them — pure noise) ---
+*.meta
+
+# --- Unity binary/serialized assets (not code architecture) ---
+*.unity
+*.prefab
+*.asset
+*.mat
+*.anim
+*.controller
+*.physicMaterial
+*.physicsMaterial2D
+*.unitypackage
+
+# --- Shader assets (no tree-sitter grammar) ---
+*.shader
+*.shadergraph
+*.cginc
+*.hlsl
+*.compute
+
+# --- Committed build artifacts (generator/analyzer DLLs) ---
+*.dll
+*.pdb
+*.xml
+NonUnityBuild/
+
+# --- Media / fonts / binaries ---
+*.png
+*.jpg
+*.jpeg
+*.tga
+*.psd
+*.gif
+*.ttf
+*.otf
+*.fon
+*.zip

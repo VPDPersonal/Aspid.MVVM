@@ -1,0 +1,26 @@
+{
+    "name": "Aspid.MVVM.Unity.Editor",
+    "rootNamespace": "",
+    "references": [
+        "Aspid.MVVM",
+        "Aspid.FastTools",
+        "Unity.Collections",
+        "Unity.Mathematics",
+        "Aspid.MVVM.Unity",
+        "Aspid.FastTools.Unity",
+        "Aspid.Internal.Unity.Editor",
+        "Aspid.FastTools.Unity.Editor",
+        "Aspid.Collections.Observable"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

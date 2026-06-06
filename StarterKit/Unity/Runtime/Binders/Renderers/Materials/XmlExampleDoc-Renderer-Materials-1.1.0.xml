@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doc>
+    <member name="RendererMaterialsBinder">
+        <example>
+            Bind the Renderer material property using a serialized binder field — the target Renderer is assigned in the Inspector.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField]
+                    private RendererMaterialsBinder _material;
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [Bind] public Material _material;
+                }
+            </code>
+            &#xD;
+            Bind the Renderer material property by constructing the binder in code.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField] private Renderer _renderer;
+                    &#xD;
+                    private RendererMaterialsBinder Material =&gt;
+                        new(_renderer);
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [Bind] public Material _material;
+                }
+            </code>
+        </example>
+    </member>
+    <member name="RendererMaterialsSwitcherBinder">
+        <example>
+            Switch the Renderer materials array between two values using a serialized binder field — the target Renderer is assigned in the Inspector.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField]
+                    private RendererMaterialsSwitcherBinder _isHighlighted;
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [Bind] public bool _isHighlighted;
+                }
+            </code>
+            &#xD;
+            Switch the Renderer materials array between two values by constructing the binder in code.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField]
+                    private Renderer _renderer;
+                    &#xD;
+                    [SerializeField]
+                    private Material[] _highlightedMaterials;
+                    &#xD;
+                    [SerializeField]
+                    private Material[] _defaultMaterials;
+                    &#xD;
+                    private RendererMaterialsSwitcherBinder IsHighlighted =&gt; new(
+                        _renderer, _highlightedMaterials, _defaultMaterials);
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [Bind] public bool _isHighlighted;
+                }
+            </code>
+        </example>
+    </member>
+</doc>

@@ -1,0 +1,19 @@
+{
+    "name": "Aspid.MVVM.Samples.ExampleScripts",
+    "rootNamespace": "",
+    "references": [
+        "Aspid.MVVM",
+        "Aspid.MVVM.Unity",
+        "Aspid.MVVM.StarterKit",
+        "Aspid.MVVM.StarterKit.Unity"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

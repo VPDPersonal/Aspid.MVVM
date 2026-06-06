@@ -1,0 +1,182 @@
+#if ASPID_MVVM_UNITY_LOCALIZATION_INTEGRATION
+#nullable enable
+using System;
+using UnityEngine;
+using UnityEngine.Localization.Components;
+using UnityEngine.Localization.SmartFormat.PersistentVariables;
+using Object = UnityEngine.Object;
+
+// ReSharper disable once CheckNamespace
+namespace Aspid.MVVM.StarterKit
+{
+    /// <summary>
+    /// <see cref="TargetBinder{LocalizeStringEvent}"/> that updates a named Smart String variable
+    /// on a <see cref="LocalizeStringEvent"/> and calls <see cref="LocalizeStringEvent.RefreshString"/>
+    /// when the bound ViewModel value changes.
+    /// Supports numeric, boolean, string, and <see cref="Object"/> value types via
+    /// <see cref="INumberBinder"/> and additional <see cref="IBinder{T}"/> implementations.
+    /// </summary>
+    /// <include file="XmlExampleDoc-LocalizeStringEvent-Variable-1.1.0.xml" path="doc//member[@name='LocalizeStringEventVariableBinder']/*" />
+    [Serializable]
+    public class LocalizeStringEventVariableBinder : TargetBinder<LocalizeStringEvent>,
+        INumberBinder,
+        IBinder<bool>,
+        IBinder<string>, 
+        IBinder<Object>
+    {
+        [Tooltip("The name of the Smart String variable to update on the LocalizeStringEvent.")]
+        [SerializeField] private string _variableName;
+        
+        /// <summary>
+        /// Initializes a new instance of <see cref="LocalizeStringEventVariableBinder"/>.
+        /// </summary>
+        /// <param name="target">The <see cref="LocalizeStringEvent"/> to bind.</param>
+        /// <param name="variableName">The name of the Smart String variable to update.</param>
+        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/>.</param>
+        public LocalizeStringEventVariableBinder(LocalizeStringEvent target, string variableName, BindMode mode = BindMode.OneWay) 
+            : base(target, mode)
+        {
+            mode.ThrowExceptionIfTwo();
+            _variableName = variableName;
+        }
+
+        /// <summary>
+        /// Updates the named <see cref="BoolVariable"/> to the specified value and calls <see cref="LocalizeStringEvent.RefreshString"/>.
+        /// </summary>
+        public void SetValue(bool value)
+        {
+            GetSpecificVariable<BoolVariable>().Value = value;
+            Target.RefreshString();
+        }
+
+        /// <summary>
+        /// Updates the named <see cref="StringVariable"/> to the specified value and calls <see cref="LocalizeStringEvent.RefreshString"/>.
+        /// </summary>
+        public void SetValue(string? value)
+        {
+            GetSpecificVariable<StringVariable>().Value = value;
+            Target.RefreshString();
+        }
+
+        /// <summary>
+        /// Updates the named <see cref="ObjectVariable"/> to the specified value and calls <see cref="LocalizeStringEvent.RefreshString"/>.
+        /// </summary>
+        public void SetValue(Object? value)
+        {
+            GetSpecificVariable<ObjectVariable>().Value = value;
+            Target.RefreshString();
+        }
+
+        /// <summary>
+        /// Updates the named <see cref="IntVariable"/> to the specified value and calls <see cref="LocalizeStringEvent.RefreshString"/>.
+        /// </summary>
+        public void SetValue(int value)
+        {
+            GetSpecificVariable<IntVariable>().Value = value;
+            Target.RefreshString();
+        }
+        
+        /// <summary>
+        /// Updates the named <see cref="UIntVariable"/> to the specified value and calls <see cref="LocalizeStringEvent.RefreshString"/>.
+        /// </summary>
+        public void SetValue(uint value)
+        {
+            GetSpecificVariable<UIntVariable>().Value = value;
+            Target.RefreshString();
+        }
+
+        /// <summary>
+        /// Updates the named <see cref="LongVariable"/> to the specified value and calls <see cref="LocalizeStringEvent.RefreshString"/>.
+        /// </summary>
+        public void SetValue(long value)
+        {
+            GetSpecificVariable<LongVariable>().Value = value;
+            Target.RefreshString();
+        }
+        
+        /// <summary>
+        /// Updates the named <see cref="ULongVariable"/> to the specified value and calls <see cref="LocalizeStringEvent.RefreshString"/>.
+        /// </summary>
+        public void SetValue(ulong value)
+        {
+            GetSpecificVariable<ULongVariable>().Value = value;
+            Target.RefreshString();
+        }
+        
+        /// <summary>
+        /// Updates the named <see cref="ByteVariable"/> to the specified value and calls <see cref="LocalizeStringEvent.RefreshString"/>.
+        /// </summary>
+        public void SetValue(byte value)
+        {
+            GetSpecificVariable<ByteVariable>().Value = value;
+            Target.RefreshString();
+        }
+        
+        /// <summary>
+        /// Updates the named <see cref="SByteVariable"/> to the specified value and calls <see cref="LocalizeStringEvent.RefreshString"/>.
+        /// </summary>
+        public void SetValue(sbyte value)
+        {
+            GetSpecificVariable<SByteVariable>().Value = value;
+            Target.RefreshString();
+        }
+        
+        /// <summary>
+        /// Updates the named <see cref="ShortVariable"/> to the specified value and calls <see cref="LocalizeStringEvent.RefreshString"/>.
+        /// </summary>
+        public void SetValue(short value)
+        {
+            GetSpecificVariable<ShortVariable>().Value = value;
+            Target.RefreshString();
+        }
+        
+        /// <summary>
+        /// Updates the named <see cref="UShortVariable"/> to the specified value and calls <see cref="LocalizeStringEvent.RefreshString"/>.
+        /// </summary>
+        public void SetValue(ushort value)
+        {
+            GetSpecificVariable<UShortVariable>().Value = value;
+            Target.RefreshString();
+        }
+
+        /// <summary>
+        /// Updates the named <see cref="FloatVariable"/> to the specified value and calls <see cref="LocalizeStringEvent.RefreshString"/>.
+        /// </summary>
+        public void SetValue(float value)
+        {
+            GetSpecificVariable<FloatVariable>().Value = value;
+            Target.RefreshString();
+        }
+
+        /// <summary>
+        /// Updates the named <see cref="DoubleVariable"/> to the specified value and calls <see cref="LocalizeStringEvent.RefreshString"/>.
+        /// </summary>
+        public void SetValue(double value)
+        {
+            GetSpecificVariable<DoubleVariable>().Value = value;
+            Target.RefreshString();
+        }
+
+        /// <summary>
+        /// Returns the named variable of type <typeparamref name="T"/> from the component's string reference,
+        /// adding a new instance under <see cref="_variableName"/> if no variable with that name exists yet.
+        /// </summary>
+        protected T GetSpecificVariable<T>()
+            where T : IVariable, new()
+        {
+            IVariable? variable = null;
+            var stringReference = Target.StringReference;
+
+            if (!(stringReference?.TryGetValue(_variableName, out variable) ?? false))
+            {
+                variable = new T();
+                stringReference?.Add(_variableName, variable);
+            }
+            
+            return variable is T specificVariable 
+                ? specificVariable
+                : throw new InvalidCastException();
+        }
+    }
+}
+#endif

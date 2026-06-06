@@ -1,0 +1,24 @@
+{
+    "name": "Aspid.MVVM.StarterKit",
+    "rootNamespace": "",
+    "references": [
+        "Aspid.MVVM",
+        "Aspid.Collections.Observable",
+        "SerializeReferenceDropdownRuntime"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [
+        {
+            "name": "com.alexeytaranov.serializereferencedropdown",
+            "expression": "",
+            "define": "ASPID_MVVM_SERIALIZE_REFERENCE_DROPDOWN_INTEGRATION"
+        }
+    ],
+    "noEngineReferences": false
+}

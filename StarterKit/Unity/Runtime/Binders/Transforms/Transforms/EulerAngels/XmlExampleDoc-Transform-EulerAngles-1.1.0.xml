@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doc>
+    <member name="TransformEulerAnglesBinder">
+        <example>
+            Bind the Transform euler angles using a serialized binder field — the target Transform is assigned in the Inspector.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField]
+                    private TransformEulerAnglesBinder _rotation;
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [Bind] public Vector3 _rotation;
+                }
+            </code>
+            &#xD;
+            Bind the Transform euler angles by constructing the binder in code.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField] private Transform _target;
+                    &#xD;
+                    private TransformEulerAnglesBinder Rotation =&gt;
+                        new(_target);
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [Bind] public Vector3 _rotation;
+                }
+            </code>
+        </example>
+    </member>
+    <member name="TransformEulerAnglesSwitcherBinder">
+        <example>
+            Switch the Transform euler angles between two values using a serialized binder field — the target Transform is assigned in the Inspector.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField]
+                    private TransformEulerAnglesSwitcherBinder _isFlipped;
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [Bind] public bool _isFlipped;
+                }
+            </code>
+            &#xD;
+            Switch the Transform euler angles between two values by constructing the binder in code.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField]
+                    private Transform _target;
+                    &#xD;
+                    [SerializeField]
+                    private Vector3 _flippedAngles;
+                    &#xD;
+                    [SerializeField]
+                    private Vector3 _defaultAngles;
+                    &#xD;
+                    private TransformEulerAnglesSwitcherBinder IsFlipped =&gt; new(
+                        _target, _flippedAngles, _defaultAngles);
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [Bind] public bool _isFlipped;
+                }
+            </code>
+        </example>
+    </member>
+</doc>

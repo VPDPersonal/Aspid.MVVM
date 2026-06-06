@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doc>
+    <member name="InputFieldInputTypeBinder">
+        <example>
+            Bind the input type of a TMP_InputField using a serialized binder field — the target is assigned in the Inspector.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField]
+                    private InputFieldInputTypeBinder _inputType;
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [Bind] public TMP_InputField.InputType _inputType;
+                }
+            </code>
+            &#xD;
+            Bind the input type of a TMP_InputField by constructing the binder in code.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField] private TMP_InputField _inputField;
+                    &#xD;
+                    private InputFieldInputTypeBinder InputType =&gt;
+                        new(_inputField);
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [Bind] public TMP_InputField.InputType _inputType;
+                }
+            </code>
+        </example>
+    </member>
+    <member name="InputFieldInputTypeSwitcherBinder">
+        <example>
+            Switch the input type of a TMP_InputField between two values using a serialized binder field — the target is assigned in the Inspector.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField]
+                    private InputFieldInputTypeSwitcherBinder _isPassword;
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [Bind] public bool _isPassword;
+                }
+            </code>
+            &#xD;
+            Switch the input type of a TMP_InputField between two values by constructing the binder in code.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField] private TMP_InputField _inputField;
+                    &#xD;
+                    private InputFieldInputTypeSwitcherBinder IsPassword =&gt; new(
+                        _inputField,
+                        TMP_InputField.InputType.Password,
+                        TMP_InputField.InputType.Standard);
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [Bind] public bool _isPassword;
+                }
+            </code>
+        </example>
+    </member>
+</doc>

@@ -1,0 +1,115 @@
+#if !ASPID_MVVM_EDITOR_DISABLED
+#nullable enable
+using UnityEditor;
+using System.Linq;
+using UnityEngine.UIElements;
+using Aspid.FastTools.Editors;
+using Aspid.FastTools.UIElements;
+using System.Collections.Generic;
+using Aspid.FastTools.UIElements.Editors.Internal;
+using Object = UnityEngine.Object;
+
+// ReSharper disable once CheckNamespace
+namespace Aspid.MVVM
+{
+    /// <summary>
+    /// Base UIElements visual element for <see cref="IViewModel"/> inspectors.
+    /// Renders header, base inspector fields, command list, and supports incremental updates.
+    /// </summary>
+    /// <typeparam name="TViewModel">The concrete <see cref="IViewModel"/> type being inspected.</typeparam>
+    /// <typeparam name="TEditor">The corresponding <see cref="ViewModelEditor{T,TEditor}"/> type.</typeparam>
+    public class ViewModelVisualElement<TViewModel, TEditor> : VisualElement
+        where TViewModel : Object, IViewModel
+        where TEditor : ViewModelEditor<TViewModel, TEditor>
+    {
+        protected readonly TEditor Editor;
+        private bool _isInitialized;
+        
+        protected virtual IEnumerable<string> PropertiesExcluding
+        {
+            get
+            {
+                yield return "m_Script";
+            }
+        }
+        
+        protected SerializedObject SerializedObject => Editor.serializedObject;
+        
+        public ViewModelVisualElement(TEditor editor)
+        {
+            Editor = editor;
+        }
+
+        public void Initialize()
+        {
+            if (_isInitialized) return;
+
+            Build();
+            _isInitialized = true;
+        }
+        
+        public void Update()
+        {
+            OnUpdate();
+        }
+        
+        protected virtual void OnUpdate() { }
+
+        private void Build()
+        {
+            this.AddStyleSheetsFromResource(AspidStyles.DefaultStyleSheet)
+                .AddClass(AspidStyles.InspectorStyleClass);
+
+            Add(BuildHeader());
+            
+            var onBuildHeader = OnBuiltHeader();
+            if (onBuildHeader is not null)
+            {
+                Add(onBuildHeader);
+            }
+
+            var baseInspector = BuildBaseInspector();
+            if (baseInspector.style.display != DisplayStyle.None)
+            {
+                Add(baseInspector);
+            }
+
+            var onBuiltBaseInspector = OnBuiltBaseInspector();
+            if (onBuiltBaseInspector is not null)
+            {
+                Add(onBuiltBaseInspector);
+            }
+            
+            Add(BuiltCommands());
+            
+            var onBuiltCommands = OnBuiltCommands();
+            if (onBuiltCommands is not null)
+            {
+                Add(onBuiltCommands);
+            }
+        }
+
+        private AspidInspectorHeader BuildHeader() =>
+            new AspidInspectorHeader(GetScriptName(), Editor.TargetAsViewModel) { Subtext = GetScriptSubtext() }
+                .SetMargin(top: 3);
+
+        protected virtual VisualElement? OnBuiltHeader() => null;
+
+        private AspidBaseInspectorVisualElement BuildBaseInspector() =>
+            new(SerializedObject, null, PropertiesExcluding.ToArray());
+
+        protected virtual VisualElement? OnBuiltBaseInspector() => null;
+
+        private CommandsContainer BuiltCommands() =>
+            new(Editor.TargetAsViewModel);
+        
+        protected virtual VisualElement? OnBuiltCommands() => null;
+        
+        protected virtual string GetScriptName() =>
+            Editor.TargetAsViewModel.GetScriptName();
+
+        protected virtual string GetScriptSubtext() =>
+            string.Empty;
+    }
+}
+#endif

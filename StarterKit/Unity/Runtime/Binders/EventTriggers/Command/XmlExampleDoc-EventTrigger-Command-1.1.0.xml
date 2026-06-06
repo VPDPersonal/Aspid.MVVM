@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doc>
+    <member name="EventTriggerCommandBinder">
+        <example>
+            Bind an EventTrigger command using a serialized binder field — the target EventTrigger is assigned in the Inspector.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField]
+                    private EventTriggerCommandBinder _pointerEnter;
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [RelayCommand]
+                    private void OnPointerEnter() { }
+                }
+            </code>
+            &#xD;
+            Bind an EventTrigger command by constructing the binder in code.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField] private EventTrigger _eventTrigger;
+                    &#xD;
+                    private EventTriggerCommandBinder PointerEnter =&gt;
+                        new(_eventTrigger, EventTriggerType.Enter);
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [RelayCommand]
+                    private void OnPointerEnter() { }
+                }
+            </code>
+        </example>
+    </member>
+    <member name="EventTriggerCommandBinder{1}">
+        <example>
+            Bind an EventTrigger command with one additional parameter by constructing the binder in code — subclass to provide the concrete type.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField] private EventTrigger _eventTrigger;
+                    &#xD;
+                    private TaggedPointerEnterBinder PointerEnter =&gt;
+                        new(_eventTrigger, EventTriggerType.Enter, "tag");
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [RelayCommand]
+                    private void OnPointerEnter(string tag) { }
+                }
+            </code>
+        </example>
+    </member>
+    <member name="EventTriggerCommandBinder{2}">
+        <example>
+            Bind an EventTrigger command with two additional parameters by constructing the binder in code — subclass to provide the concrete types.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField] private EventTrigger _target;
+                    &#xD;
+                    private MyEventBinder EnterCommand =>
+                        new(_target, EventTriggerType.Enter, "tag", 1);
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [RelayCommand]
+                    private void Enter(string tag, int priority) { }
+                }
+            </code>
+        </example>
+    </member>
+    <member name="EventTriggerCommandBinder{3}">
+        <example>
+            Bind an EventTrigger command with three additional parameters — subclass to provide the concrete types.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField] private EventTrigger _target;
+                    &#xD;
+                    private MyEventBinder EnterCommand =>
+                        new( _target, EventTriggerType.Enter, "tag", 1, true);
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [RelayCommand]
+                    private void Enter(string tag, int priority, bool active) { }
+                }
+            </code>
+        </example>
+    </member>
+    <member name="EventTriggerCommandBinder{4}">
+        <example>
+            Bind an EventTrigger command with four additional parameters — subclass to provide the concrete types.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField] private EventTrigger _target;
+                    &#xD;
+                    private MyEventBinder EnterCommand =>
+                        new( _target, EventTriggerType.Enter, "tag", 1, true, 0.5f);
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [RelayCommand]
+                    private void Enter(string tag, int priority, bool active, float weight) { }
+                }
+            </code>
+        </example>
+    </member>
+</doc>

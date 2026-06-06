@@ -1,0 +1,20 @@
+{
+    "name": "Aspid.MVVM.Samples.VirtualizedList",
+    "rootNamespace": "",
+    "references": [
+        "Aspid.MVVM",
+        "Aspid.MVVM.Unity",
+        "Aspid.MVVM.StarterKit",
+        "Aspid.MVVM.StarterKit.Unity",
+        "Aspid.Collections.Observable"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

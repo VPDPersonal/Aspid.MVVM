@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doc>
+    <member name="LineRendererColorBinder">
+        <example>
+            Bind the LineRenderer color property using a serialized binder field — the target LineRenderer is assigned in the Inspector.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField]
+                    private LineRendererColorBinder _lineColor;
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [Bind] public Color _lineColor;
+                }
+            </code>
+            &#xD;
+            Bind the LineRenderer color property by constructing the binder in code.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField] private LineRenderer _lineRenderer;
+                    &#xD;
+                    private LineRendererColorBinder LineColor =&gt;
+                        new(_lineRenderer);
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [Bind] public Color _lineColor;
+                }
+            </code>
+        </example>
+    </member>
+    <member name="LineRendererColorSwitcherBinder">
+        <example>
+            Switch the LineRenderer color between two values using a serialized binder field — the target LineRenderer is assigned in the Inspector.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField]
+                    private LineRendererColorSwitcherBinder _isHighlighted;
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [Bind] public bool _isHighlighted;
+                }
+            </code>
+            &#xD;
+            Switch the LineRenderer color between two values by constructing the binder in code.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField] private LineRenderer _lineRenderer;
+                    &#xD;
+                    private LineRendererColorSwitcherBinder IsHighlighted =&gt; new(
+                        _lineRenderer, Color.yellow, Color.white);
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [Bind] public bool _isHighlighted;
+                }
+            </code>
+        </example>
+    </member>
+</doc>
+

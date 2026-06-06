@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doc>
+    <member name="SelectableColorBlockBinder">
+        <example>
+            Bind the Selectable colors property using a serialized binder field — the target Selectable is assigned in the Inspector.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField]
+                    private SelectableColorBlockBinder _colors;
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [Bind] public ColorBlock _colors;
+                }
+            </code>
+            &#xD;
+            Bind the Selectable colors property by constructing the binder in code.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField] private Selectable _selectable;
+                    &#xD;
+                    private SelectableColorBlockBinder Colors =&gt;
+                        new(_selectable);
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [Bind] public ColorBlock _colors;
+                }
+            </code>
+        </example>
+    </member>
+    <member name="SelectableColorBlockSwitcherBinder">
+        <example>
+            Switch the Selectable colors between two values using a serialized binder field — the target Selectable is assigned in the Inspector.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField]
+                    private SelectableColorBlockSwitcherBinder _isSelected;
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [Bind] public bool _isSelected;
+                }
+            </code>
+            &#xD;
+            Switch the Selectable colors between two values by constructing the binder in code.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField] private Selectable _selectable;
+                    &#xD;
+                    private SelectableColorBlockSwitcherBinder IsSelected =&gt; new(
+                        _selectable, _selectedColors, _defaultColors);
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [Bind] public bool _isSelected;
+                }
+            </code>
+        </example>
+    </member>
+</doc>
+

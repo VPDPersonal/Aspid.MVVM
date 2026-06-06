@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doc>
+    <member name="ObservableListViewModelBinder">
+        <example>
+            Bind an <c>ObservableListViewModelBinder</c> using a serialized field — the target factory is assigned in the Inspector.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField]
+                    private ObservableListViewModelBinder _items;
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [Bind] public ObservableList&lt;IViewModel&gt; _items;
+                }
+            </code>
+        </example>
+    </member>
+    <member name="ObservableListViewModelBinder{1}">
+        <example>
+            Bind an <c>ObservableListViewModelBinder&lt;T&gt;</c> by constructing the binder in code.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField]
+                    private ObservableListViewModelBinder&lt;ItemView&gt; _items
+                        = new(new PrefabViewFactory&lt;ItemView&gt;());
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [Bind] public ObservableList&lt;IViewModel&gt; _items;
+                }
+            </code>
+        </example>
+    </member>
+    <member name="ObservableListViewModelBinder{2}">
+        <example>
+            Bind an <c>ObservableListViewModelBinder&lt;T, TViewFactory&gt;</c> by constructing the binder in code.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField]
+                    private ObservableListViewModelBinder&lt;ItemView, CustomViewFactory&gt; _items
+                        = new(new CustomViewFactory());
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [Bind] public ObservableList&lt;IViewModel&gt; _items;
+                }
+            </code>
+        </example>
+    </member>
+</doc>

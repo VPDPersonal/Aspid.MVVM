@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doc>
+    <member name="LocalizeStringEventVariableBinder">
+        <example>
+            Bind a named Smart String variable on a LocalizeStringEvent to a ViewModel value using a serialized binder field — the target LocalizeStringEvent and variable name are assigned in the Inspector.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField]
+                    private LocalizeStringEventVariableBinder _score;
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [Bind] public int _score; // updates the named Smart String variable
+                }
+            </code>
+            &#xD;
+            Bind a named Smart String variable on a LocalizeStringEvent to a ViewModel value by constructing the binder in code.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField] private LocalizeStringEvent _target;
+                    &#xD;
+                    private LocalizeStringEventVariableBinder Score =&gt;
+                        new(_target, variableName: "score");
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [Bind] public int _score;
+                }
+            </code>
+        </example>
+    </member>
+</doc>

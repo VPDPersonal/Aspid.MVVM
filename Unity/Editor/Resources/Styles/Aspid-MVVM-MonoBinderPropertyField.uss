@@ -1,0 +1,14 @@
+VisualElement {}
+
+.mono-binder-property__drop-highlight
+{
+    margin: -3px;
+    border-width: 3;
+    border-radius: 5px;
+    border-color: #FFB742;
+}
+
+.mono-binder-property__drop-highlight--success
+{
+    border-color: rgba(44, 191, 103, 0.81);
+}

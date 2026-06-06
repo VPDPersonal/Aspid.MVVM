@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doc>
+    <member name="AudioSourceOutputAudioMixerGroupBinder">
+        <example>
+            Bind the AudioSource outputAudioMixerGroup property using a serialized binder field — the target AudioSource is assigned in the Inspector.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField]
+                    private AudioSourceOutputAudioMixerGroupBinder _outputAudioMixerGroup;
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [Bind] public AudioMixerGroup _outputAudioMixerGroup;
+                }
+            </code>
+            &#xD;
+            Bind the AudioSource outputAudioMixerGroup property by constructing the binder in code.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField] 
+                    private AudioSource _audioSource;
+                    &#xD;
+                    private AudioSourceOutputAudioMixerGroupBinder OutputAudioMixerGroup =>
+                        new(_audioSource);
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [Bind] public AudioMixerGroup _outputAudioMixerGroup;
+                }
+            </code>
+        </example>
+    </member>
+    <member name="AudioSourceOutputAudioMixerGroupSwitcherBinder">
+        <example>
+            Switch the AudioSource outputAudioMixerGroup between two values using a serialized binder field — the target AudioSource is assigned in the Inspector.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField]
+                    private AudioSourceOutputAudioMixerGroupSwitcherBinder _isMixerActive;
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [Bind] public bool _isMixerActive;
+                }
+            </code>
+            &#xD;
+            Switch the AudioSource outputAudioMixerGroup between two values by constructing the binder in code.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField] 
+                    private AudioSource _audioSource;
+                    &#xD;
+                    [SerializeField] 
+                    private AudioMixerGroup _trueMixer;
+                    &#xD;
+                    private AudioSourceOutputAudioMixerGroupSwitcherBinder IsMixerActive => new(
+                        _audioSource, _trueMixer, null);
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [Bind] public bool _isMixerActive;
+                }
+            </code>
+        </example>
+    </member>
+</doc>

@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doc>
+    <member name="InputFieldContentTypeBinder">
+        <example>
+            Bind the content type of a TMP_InputField using a serialized binder field — the target is assigned in the Inspector.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField]
+                    private InputFieldContentTypeBinder _contentType;
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [Bind] public TMP_InputField.ContentType _contentType;
+                }
+            </code>
+            &#xD;
+            Bind the content type of a TMP_InputField by constructing the binder in code.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField] private TMP_InputField _inputField;
+                    &#xD;
+                    private InputFieldContentTypeBinder ContentType =&gt;
+                        new(_inputField);
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [Bind] public TMP_InputField.ContentType _contentType;
+                }
+            </code>
+        </example>
+    </member>
+    <member name="InputFieldContentTypeSwitcherBinder">
+        <example>
+            Switch the content type of a TMP_InputField between two values using a serialized binder field — the target is assigned in the Inspector.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField]
+                    private InputFieldContentTypeSwitcherBinder _isEmailContent;
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [Bind] public bool _isEmailContent;
+                }
+            </code>
+            &#xD;
+            Switch the content type of a TMP_InputField between two values by constructing the binder in code.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField] private TMP_InputField _inputField;
+                    &#xD;
+                    private InputFieldContentTypeSwitcherBinder IsEmailContent =&gt; new(
+                        _inputField,
+                        TMP_InputField.ContentType.EmailAddress,
+                        TMP_InputField.ContentType.Standard);
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [Bind] public bool _isEmailContent;
+                }
+            </code>
+        </example>
+    </member>
+</doc>

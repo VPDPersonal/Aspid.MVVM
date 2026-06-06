@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doc>
+    <member name="ObservableDictionaryViewModelBinder{2}">
+        <example>
+            Bind an <c>ObservableDictionaryViewModelBinder&lt;TKey, TViewModel&gt;</c> using a serialized field — the target factory is assigned in the Inspector.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField]
+                    private ObservableDictionaryViewModelBinder&lt;string, ItemViewModel&gt; _items;
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [Bind] public ObservableDictionary&lt;string, ItemViewModel&gt; _items;
+                }
+            </code>
+        </example>
+    </member>
+    <member name="ObservableDictionaryViewModelBinder{4}">
+        <example>
+            Bind an <c>ObservableDictionaryViewModelBinder&lt;TKey, TViewModel, TView, TViewFactory&gt;</c> by constructing the binder in code.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField]
+                    private ObservableDictionaryViewModelBinder&lt;string, ItemViewModel, ItemView, CustomKeyedFactory&gt; _items
+                        = new(new CustomKeyedFactory());
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [Bind] public ObservableDictionary&lt;string, ItemViewModel&gt; _items;
+                }
+            </code>
+        </example>
+    </member>
+</doc>

@@ -1,0 +1,63 @@
+{
+  "name": "tech.aspid.fasttools",
+  "version": "1.0.0-rc.4",
+  "displayName": "Aspid.FastTools",
+  "description": "Unity tools to cut boilerplate \u2014 source-generated ProfilerMarkers, serializable type/enum/ID systems, and a fluent UIToolkit API.",
+  "unity": "6000.0",
+  "license": "MIT",
+  "licensesUrl": "https://github.com/VPDPersonal/Aspid.FastTools/blob/main/LICENSE",
+  "documentationUrl": "https://github.com/VPDPersonal/Aspid.FastTools/blob/main/README.md",
+  "changelogUrl": "https://github.com/VPDPersonal/Aspid.FastTools/blob/main/CHANGELOG.md",
+  "keywords": [
+    "unity",
+    "tools",
+    "boilerplate",
+    "source-generator",
+    "roslyn",
+    "profiler",
+    "profiler-marker",
+    "serialization",
+    "type",
+    "enum",
+    "id",
+    "uitoolkit",
+    "ui-toolkit",
+    "visualelement",
+    "editor",
+    "imgui",
+    "fluent"
+  ],
+  "author": {
+    "name": "Vladislav Panin",
+    "url": "https://github.com/VPDPersonal",
+    "email": "vpd.aspid@gmail.com"
+  },
+  "samples": [
+    {
+      "displayName": "Types",
+      "description": "SerializableType, SerializableType<T>, TypeSelectorAttribute and ComponentTypeSelector usage with the editor type picker.",
+      "path": "Samples/Types"
+    },
+    {
+      "displayName": "EnumValues",
+      "description": "Inspector-serializable enum-keyed dictionary, including [Flags] handling.",
+      "path": "Samples/EnumValues"
+    },
+    {
+      "displayName": "Ids",
+      "description": "IId / [UniqueId] structs paired with IdRegistry assets for stable int \u2194 string IDs.",
+      "path": "Samples/Ids"
+    },
+    {
+      "displayName": "ProfilerMarkers",
+      "description": "this.Marker() extension and the per-call-site ProfilerMarker source generator.",
+      "path": "Samples/ProfilerMarkers"
+    },
+    {
+      "displayName": "VisualElements",
+      "description": "Fluent UI Toolkit extensions, presets and helpers.",
+      "path": "Samples/VisualElements"
+    }
+  ],
+  "unityRelease": "0f1"
+}

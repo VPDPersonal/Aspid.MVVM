@@ -1,0 +1,233 @@
+AspidInspectorHeader {
+    margin-top: 2px;
+}
+
+ToolbarSearchField {
+    width: auto;
+    padding-right: 4px;
+    margin: 5px -1px 0 -1px;
+}
+
+.aspid-fasttools-id-registry__toolbar {
+    margin: 5px -1px;
+    padding-bottom: 5px;
+    flex-direction: row;
+    border-width: 0;
+    border-bottom-width: 1px;
+    border-bottom-color: var(--aspid-colors-bg-lightness);
+}
+
+IdRegistryToolbarVisualElement > VisualElement {
+    flex-direction: row;
+    align-items: center;
+    flex-grow: 1;
+    flex-basis: 0;
+}
+
+IdRegistryToolbarVisualElement > VisualElement > Label {
+    flex-shrink: 0;
+    margin: 0 6px 0 0;
+    padding: 0;
+    font-size: 11px;
+    color: var(--aspid-colors-text-dark);
+    -unity-text-align: middle-left;
+}
+
+IdRegistryToolbarVisualElement > VisualElement > EnumField {
+    flex-grow: 1;
+    flex-shrink: 1;
+    margin: 0;
+}
+
+.aspid-fasttools-id-registry__group-foldout {
+    margin-top: 5px;
+}
+
+.aspid-fasttools-id-registry__group-foldout > Toggle {
+    margin-left: 0;
+}
+
+.aspid-fasttools-id-registry__list .unity-scroller--vertical {
+    margin-left: 5px;
+}
+
+IdRegistryEntryVisualElement {
+    margin-bottom: 0;
+    flex-direction: column;
+}
+
+IdRegistryEntryVisualElement > VisualElement {
+    padding: 5px;
+    margin-bottom: 3px;
+    min-height: 22px;
+    flex-direction: row;
+    align-items: center;
+    border-radius: 10px;
+    background-color: var(--aspid-colors-shade-dark);
+}
+
+IdRegistryEntryVisualElement > VisualElement > Label {
+    margin: 0;
+    flex-shrink: 0;
+    font-size: 11px;
+    min-width: 50px;
+    padding: 2px 8px;
+    border-width: 1px;
+    border-radius: 10px;
+    border-color: var(--aspid-colors-bg-darkness);
+    -unity-text-align: middle-center;
+
+    color: var(--aspid-colors-text-light);
+    background-color: var(--aspid-colors-bg-light);
+}
+
+IdRegistryEntryVisualElement > VisualElement > Label.aspid-fasttools-status--error {
+    color: var(--aspid-colors-status-error-text-light);
+    background-color: var(--aspid-colors-status-error-dark);
+}
+
+IdRegistryEntryVisualElement TextField {
+    flex-grow: 1;
+    flex-shrink: 1;
+    margin: 0 0 0 5px;
+    border-radius: 6px;
+}
+
+IdRegistryEntryVisualElement Button {
+    margin: 0 0 0 5px;
+    padding: 0 0 2px 0;
+    flex-shrink: 0;
+    min-width: 20px;
+    max-width: 20px;
+    min-height: 18px;
+    max-height: 18px;
+    font-size: 14px;
+    border-radius: 3px;
+    color: var(--aspid-colors-text-lightness);
+    border-color: var(--aspid-colors-bg-darkness);
+    background-color: var(--aspid-colors-bg-light);
+}
+
+IdRegistryEntryVisualElement .aspid-fasttools-id-registry__delete:hover {
+    color: var(--aspid-colors-status-error-text-light);
+    background-color: var(--aspid-colors-status-error-dark);
+    border-color: var(--aspid-colors-status-error-text-light);
+}
+
+IdRegistryEntryVisualElement .aspid-fasttools-id-registry__confirm:enabled:hover {
+    color: var(--aspid-colors-status-success-text-light);
+    border-color: var(--aspid-colors-status-success-text-light);
+    background-color: var(--aspid-colors-status-success-dark);
+}
+
+IdRegistryEntryVisualElement > Label {
+    color: var(--aspid-colors-status-error-text-light);
+    font-size: 11px;
+    margin: 0 0 3px 0;
+}
+
+IdRegistryNextIdRowVisualElement {
+    border-width: 0;
+    padding-top: 5px;
+    margin: 5px 0 0 0;
+    border-top-width: 1px;
+    border-top-color: var(--aspid-colors-bg-lightness);
+}
+
+IdRegistryNextIdRowVisualElement > VisualElement {
+    padding: 5px;
+    margin: 5px 0 0 0;
+    align-items: center;
+    flex-direction: row;
+    border-radius: 10px;
+    background-color: var(--aspid-colors-shade-dark);
+}
+
+IdRegistryNextIdRowVisualElement PropertyField {
+    flex-grow: 1;
+    margin: 0 2px 0 3px;
+}
+
+IdRegistryNextIdRowVisualElement Image {
+    width: 16px;
+    height: 16px;
+    display: none;
+    margin-left: 5px;
+    --unity-image: resource("console.warnicon.sml");
+}
+
+IdRegistryNextIdRowVisualElement Image:enabled {
+    display: flex;
+}
+
+.aspid-fasttools-id-registry__add {
+    padding: 5px;
+    margin: 5px 0 0 0;
+    border-radius: 10px;
+    background-color: var(--aspid-colors-shade-dark);
+}
+
+.aspid-fasttools-id-registry__add > VisualElement {
+    border-width: 0;
+    flex-direction: row;
+}
+
+.aspid-fasttools-id-registry__add TextField {
+    margin: 0;
+    flex-grow: 1;
+    flex-shrink: 1;
+    border-radius: 6px;
+}
+
+.aspid-fasttools-id-registry__add Button {
+    margin: 0 0 0 5px;
+    padding: 0 0 2px 0;
+    color: var(--aspid-colors-text-lightness);
+    flex-shrink: 0;
+    min-width: 20px;
+    max-width: 20px;
+    min-height: 18px;
+    max-height: 18px;
+    font-size: 14px;
+    border-radius: 3px;
+    border-color: var(--aspid-colors-bg-darkness);
+    background-color: var(--aspid-colors-bg-light);
+}
+
+.aspid-fasttools-id-registry__add Button:enabled:hover {
+    color: var(--aspid-colors-status-success-text-light);
+    border-color: var(--aspid-colors-status-success-text-light);
+    background-color: var(--aspid-colors-status-success-dark);
+}
+
+.aspid-fasttools-id-registry__add > Label {
+    color: var(--aspid-colors-status-error-text-light);
+    font-size: 11px;
+    margin: 3px 0 0 0;
+}
+
+IdRegistryWarningVisualElement {
+    display: none;
+    flex-direction: row;
+    align-items: center;
+    padding: 5px 8px;
+    margin-bottom: 4px;
+    border-radius: 6px;
+    background-color: var(--aspid-colors-status-error-dark);
+}
+
+IdRegistryWarningVisualElement.aspid-fasttools-id-registry__warning--visible {
+    display: flex;
+}
+
+IdRegistryWarningVisualElement > Label {
+    flex-grow: 1;
+    font-size: 11px;
+    color: var(--aspid-colors-status-error-text-lightness);
+}
+
+IdRegistryWarningVisualElement > Button {
+    flex-shrink: 0;
+    margin-left: 8px;
+    padding: 2px 8px;
+}

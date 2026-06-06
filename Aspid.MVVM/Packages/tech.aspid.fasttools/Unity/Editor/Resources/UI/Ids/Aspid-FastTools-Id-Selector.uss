@@ -1,0 +1,40 @@
+:root {
+    padding: 5px;
+}
+
+ToolbarSearchField {
+    width: auto;
+    flex-shrink: 1;
+    margin: 5px 0 10;
+}
+
+.aspid-fasttools-id-selector__error {
+    margin-top: 2px;
+    font-size: 11px;
+    white-space: normal;
+}
+
+.aspid-fasttools-id-selector__item
+{
+    height: 22px;
+    padding-right: 6px;
+    flex-direction: row;
+    align-items: center;
+}
+
+.aspid-fasttools-id-selector__item-name
+{
+    flex-grow: 1;
+    flex-shrink: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    -unity-text-align: middle-left;
+}
+
+.aspid-fasttools-id-selector__item-id
+{
+    flex-shrink: 0;
+    font-size: 11px;
+    margin-left: 8px;
+    -unity-text-align: middle-right;
+}

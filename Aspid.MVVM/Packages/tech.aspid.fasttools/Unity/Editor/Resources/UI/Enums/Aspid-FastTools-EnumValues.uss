@@ -1,0 +1,28 @@
+:root {
+    margin:                                         1px -2px 1px 3px;
+}
+
+.unity-property-field__inspector-property .unity-base-field__inspector-field {
+    margin-left:                                    0;
+    margin-right:                                   0;
+}
+
+.unity-property-field__inspector-property Toggle.unity-base-field__inspector-field {
+    margin-left:                                    -1px;
+}
+
+.aspid-fasttools-enum-values__header {
+    padding:                                        5px 5px 2px 5px;
+    border-width:                                   1px;
+    border-radius:                                  5px 5px 0 0;
+    border-color:                                   var(--aspid-colors-bg-dark);
+    background-color:                               var(--aspid-colors-bg-light);
+}
+
+.aspid-fasttools-enum-values__container {
+    padding:                                        2px 5px 5px 5px;
+    border-width:                                   0 1px 1px 1px;
+    border-radius:                                  0 0 5px 5px;
+    border-color:                                   var(--aspid-colors-bg-dark);
+    background-color:                               var(--aspid-colors-bg-lightness);
+}

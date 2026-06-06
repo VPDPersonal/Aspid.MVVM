@@ -1,0 +1,124 @@
+:root {
+    flex-direction: column;
+}
+
+Label {
+    padding: 0;
+    flex-grow: 1;
+    white-space: normal
+}
+
+AspidDividingLine {
+    margin: 5px 0 0 0;
+}
+
+/* --- LABEL SIZES --- */
+.aspid-fasttools-label-size--h1 {
+    font-size: 36px;
+}
+
+.aspid-fasttools-label-size--h2 {
+    font-size: 24px;
+}
+
+.aspid-fasttools-label-size--h3 {
+    font-size: 18px;
+}
+
+.aspid-fasttools-label-size--h4 {
+    font-size: 16px;
+}
+
+.aspid-fasttools-label-size--h5 {
+    font-size: 14px;
+}
+
+.aspid-fasttools-label-size--h6 {
+    font-size: 13px;
+}
+
+.aspid-fasttools-label-size--h7 {
+    font-size: 12px;
+}
+
+/* General Text */
+.aspid-fasttools-theme--darkness Label {
+    color: var(--aspid-colors-text-darkness);
+}
+
+.aspid-fasttools-theme--dark Label {
+    color: var(--aspid-colors-text-dark);
+}
+
+.aspid-fasttools-theme--light Label {
+    color: var(--aspid-colors-text-light);
+}
+
+.aspid-fasttools-theme--lightness Label {
+    color: var(--aspid-colors-text-lightness);
+}
+
+/* Status Text */
+AspidLabel.aspid-fasttools-status--success.aspid-fasttools-theme--darkness > Label {
+    color: var(--aspid-colors-status-success-text-darkness);
+}
+
+AspidLabel.aspid-fasttools-status--success.aspid-fasttools-theme--dark > Label {
+    color: var(--aspid-colors-status-success-text-dark);
+}
+
+AspidLabel.aspid-fasttools-status--success.aspid-fasttools-theme--light > Label {
+    color: var(--aspid-colors-status-success-text-light);
+}
+
+AspidLabel.aspid-fasttools-status--success.aspid-fasttools-theme--lightness > Label {
+    color: var(--aspid-colors-status-success-text-lightness);
+}
+
+AspidLabel.aspid-fasttools-status--warning.aspid-fasttools-theme--darkness > Label {
+    color: var(--aspid-colors-status-warning-text-darkness);
+}
+
+AspidLabel.aspid-fasttools-status--warning.aspid-fasttools-theme--dark > Label {
+    color: var(--aspid-colors-status-warning-text-dark);
+}
+
+AspidLabel.aspid-fasttools-status--warning.aspid-fasttools-theme--light > Label {
+    color: var(--aspid-colors-status-warning-text-light);
+}
+
+AspidLabel.aspid-fasttools-status--warning.aspid-fasttools-theme--lightness > Label {
+    color: var(--aspid-colors-status-warning-text-lightness);
+}
+
+AspidLabel.aspid-fasttools-status--error.aspid-fasttools-theme--darkness > Label {
+    color: var(--aspid-colors-status-error-text-darkness);
+}
+
+AspidLabel.aspid-fasttools-status--error.aspid-fasttools-theme--dark > Label {
+    color: var(--aspid-colors-status-error-text-dark);
+}
+
+AspidLabel.aspid-fasttools-status--error.aspid-fasttools-theme--light > Label {
+    color: var(--aspid-colors-status-error-text-light);
+}
+
+AspidLabel.aspid-fasttools-status--error.aspid-fasttools-theme--lightness > Label {
+    color: var(--aspid-colors-status-error-text-lightness);
+}
+
+AspidLabel.aspid-fasttools-status--info.aspid-fasttools-theme--darkness > Label {
+    color: var(--aspid-colors-status-info-text-darkness);
+}
+
+AspidLabel.aspid-fasttools-status--info.aspid-fasttools-theme--dark > Label {
+    color: var(--aspid-colors-status-info-text-dark);
+}
+
+AspidLabel.aspid-fasttools-status--info.aspid-fasttools-theme--light > Label {
+    color: var(--aspid-colors-status-info-text-light);
+}
+
+AspidLabel.aspid-fasttools-status--info.aspid-fasttools-theme--lightness > Label {
+    color: var(--aspid-colors-status-info-text-lightness);
+}

@@ -9,13 +9,6 @@
       },
       "hash": "7cf843ddcefaa4a9d0b68beff50878d82f61c68f"
     },
-    "com.aspid.fasttools": {
-      "version": "https://github.com/VPDPersonal/Aspid.FastTools.git#upm",
-      "depth": 0,
-      "source": "git",
-      "dependencies": {},
-      "hash": "34e2a921fbd88427441411d90915ef467a5949c4"
-    },
     "com.cysharp.unitask": {
       "version": "https://github.com/Cysharp/UniTask.git?path=src/UniTask/Assets/Plugins/UniTask#2.1.0",
       "depth": 0,
@@ -308,6 +301,12 @@
         "com.unity.test-framework": "1.6.0"
       },
       "hash": "c050c3cee1c9a322d378d705d2af709ee85bc429"
+    },
+    "tech.aspid.fasttools": {
+      "version": "file:tech.aspid.fasttools",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {}
     },
     "com.unity.modules.accessibility": {
       "version": "1.0.0",

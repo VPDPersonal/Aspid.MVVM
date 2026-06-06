@@ -1,0 +1,21 @@
+:root {
+    color:                                              var(--aspid-colors-text-light);
+    height:                                             30px;
+    margin:                                             0 0 5px 0;
+    padding:                                            0 10px;
+    overflow:                                           hidden;
+    font-size:                                          14px;
+    border-width:                                       0;
+    border-radius:                                      10px;
+    flex-direction:                                     row;
+    -unity-font-style:                                  bold;
+    -unity-text-align:                                  middle-left;
+
+    --aspid-fasttools-colors-gradient_button-bg:        var(--aspid-colors-bg-darkness);
+    --aspid-fasttools-colors-gradient_button-accent:    var(--aspid-colors-status-success-text-dark);
+}
+
+.aspid-fasttools-gradient-button__trailing-label {
+    margin-left:                                        10px;
+    -unity-text-align:                                  middle-right;
+}

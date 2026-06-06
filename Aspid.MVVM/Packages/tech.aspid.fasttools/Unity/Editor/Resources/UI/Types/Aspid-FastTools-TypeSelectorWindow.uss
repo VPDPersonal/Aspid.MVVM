@@ -1,0 +1,65 @@
+:root {
+    padding:                5px;
+    flex-grow:              1;
+    flex-direction:         column;
+}
+
+.aspid-fasttools-type-selector-header {
+    padding-left:           10;
+    height:                 20px;
+    min-height:             20px;
+    align-items:            center;
+    flex-direction:         row;
+    margin:                 -5px -5px 5px;
+    background-color:       var(--aspid-colors-bg-dark);
+}
+
+/* -------------------------------------------------- Back Button --------------------------------------------------- */
+.aspid-fasttools-type-selector-header > Button {
+    margin:                 0;
+    width:                  20px;
+    height:                 16px;
+    border-width:           0;
+    margin-right:           4px;
+    background-color:       rgba(0, 0, 0, 0);
+    color:                  var(--aspid-colors-text-lightness);
+}
+
+.aspid-fasttools-type-selector-header > Button:enabled:hover,
+.aspid-fasttools-type-selector-header > Button:enabled:focus {
+    border-width:           1px;
+    color:                  var(--aspid-colors-status-info-text-lightness);
+    border-color:           var(--aspid-colors-status-info-shade-lightness);
+}
+/* ------------------------------------------------------------------------------------------------------------------ */
+
+/* ----------------------------------------------------- Title ------------------------------------------------------ */
+.aspid-fasttools-type-selector-header > Label {
+    flex-grow:              1;
+    -unity-font-style:      bold;
+}
+/* ------------------------------------------------------------------------------------------------------------------ */
+
+ToolbarSearchField {
+    width:                  auto;
+    margin-bottom:          5px;
+}
+
+/* ------------------------------------------------------ Item ------------------------------------------------------ */
+.unity-collection-view__item {
+    height:                 20px;
+    align-items:            center;
+    padding-left:           5px;
+    padding-right:          5px;
+    flex-direction:         row;
+}
+
+.aspid-fasttools-type-selector-item-title {
+    color:                  var(--aspid-colors-text-lightness);
+    flex-grow:              1;
+}
+
+.aspid-fasttools-type-selector-item-arrow {
+    color:                  var(--aspid-colors-text-light);
+}
+/* ------------------------------------------------------------------------------------------------------------------ */

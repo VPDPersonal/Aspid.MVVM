@@ -11,6 +11,10 @@
 
 ## [Unreleased]
 
+## [1.1.0-beta.1] — 2026-06-06
+
+Первый preview-срез `1.1.0`, опубликованный в канал `upm-preview`. API в основном стабилизирован, но может ещё измениться до финального релиза `1.1.0`.
+
 ### Основное
 
 - Инспекторы редактора для `MonoBinder`, `MonoView`, `MonoViewModel` переписаны на UI Toolkit / `VisualElement`.
@@ -95,14 +99,15 @@
 #### Структура проекта / инфраструктура
 - Подключены подмодули (PR #38): `Aspid.MVVM.Generators`, `Aspid.MVVM.Analyzers`, `Aspid.MVVM.Unity.Generators`.
 - Проект Unity перенесён из корня репозитория в `Aspid.MVVM/`.
-- Пакет MVVM перемещён из `Plugins/Aspid/` в `Assets/Aspid/` (PR #77).
-- `package.json` размещён внутри пакета; поле `unity` установлено в `6000.0`; версия `1.1.0`.
+- Пакет MVVM перемещён из `Plugins/Aspid/` в `Assets/Aspid/` (PR #77), затем переведён во встроенный локальный UPM-пакет в `Packages/tech.aspid.mvvm` (PR #117).
+- `package.json` размещён внутри пакета; поле `unity` установлено в `6000.0`, `unityRelease` зафиксирован; версия `1.1.0-beta.1`.
+- Сэмплы поставляются в `Samples~` и зарегистрированы в `package.json`: HelloWorld, Stats, TodoList, VirtualizedList, а также пошаговые Counter / Greeter.
 - Корневой `CLAUDE.md` с описанием структуры и конвенций.
 - GitHub Actions: воркфлоу Claude PR Assistant + Code Review (PR #64).
-- GitHub Actions: воркфлоу релиза для стабильной и preview UPM-веток с проверкой DLL (PR #78).
+- GitHub Actions: воркфлоу релиза публикует стабильный (`upm`) и preview (`upm-preview`) UPM-сабтри с неизменяемыми тегами `upm/<версия>`, проверкой дрейфа DLL генераторов и заметками о релизе из CHANGELOG (PR #78); в Readme добавлены соответствующие бейджи версий Stable / Preview.
 
 #### Интеграции / зависимости
-- `Aspid.FastTools` интегрирован как UPM-пакет (PR #26); многие визуалы редактора переведены на аналоги из FastTools.
+- `Aspid.FastTools` интегрирован (PR #26) и позже встроен как локальный UPM-пакет в `Packages/tech.aspid.fasttools`; многие визуалы редактора переведены на аналоги из FastTools.
 - `Aspid.MVVM.Generators`, `Aspid.MVVM.Analyzers`, `Aspid.Collections`, `Aspid.FastTools` обновлены до актуальных HEAD.
 - `SerializeReferenceDropdown` обновлён до `1.2.7`.
 - Обновлён шрифт `Roboto-Bold SDF`.

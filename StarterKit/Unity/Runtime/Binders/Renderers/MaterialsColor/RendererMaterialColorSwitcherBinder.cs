@@ -20,8 +20,10 @@ namespace Aspid.MVVM.StarterKit
 
         private int? _colorPropertyId;
 
+        private Material[]? _materials;
+
         private int ColorPropertyId => _colorPropertyId ??= Shader.PropertyToID(_colorPropertyName);
-        
+
         /// <summary>
         /// Initializes a new instance of <see cref="RendererMaterialColorSwitcherBinder"/>.
         /// </summary>
@@ -47,10 +49,24 @@ namespace Aspid.MVVM.StarterKit
         /// Called when applying the selected value to the material color property.
         /// Sets the named color property on all Renderer materials.
         /// </summary>
+        /// <remarks>
+        /// The Renderer's materials array is fetched once and cached, avoiding the per-call
+        /// allocation that <see cref="Renderer.materials"/> incurs on every access.
+        /// </remarks>
         protected override void SetValue(Color value)
         {
-            foreach (var material in Target.materials)
+            _materials ??= Target.materials;
+
+            foreach (var material in _materials)
                 material.SetColor(ColorPropertyId, value);
+        }
+
+        /// <summary>
+        /// Called after unbinding. Clears the cached materials array so it is re-fetched on the next bind.
+        /// </summary>
+        protected override void OnUnbound()
+        {
+            _materials = null;
         }
     }
 }

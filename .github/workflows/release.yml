@@ -18,8 +18,8 @@ on:
         type: string
 
 env:
-  PACKAGE_PATH: Aspid.MVVM/Assets/Aspid/MVVM
-  CHANGELOG_PATH: Aspid.MVVM/Assets/Aspid/MVVM/CHANGELOG.md
+  PACKAGE_PATH: Aspid.MVVM/Packages/tech.aspid.mvvm
+  CHANGELOG_PATH: Aspid.MVVM/Packages/tech.aspid.mvvm/CHANGELOG.md
   STABLE_BRANCH: upm
   PREVIEW_BRANCH: upm-preview
 

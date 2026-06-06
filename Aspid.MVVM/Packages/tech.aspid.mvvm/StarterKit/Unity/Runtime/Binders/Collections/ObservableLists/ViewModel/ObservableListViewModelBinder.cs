@@ -109,11 +109,8 @@ namespace Aspid.MVVM.StarterKit
             _filteredList = null;
         }
 
-        protected sealed override void OnAdded(IViewModel newItem, int newStartingIndex)
-        {
-            var view = _viewFactory.Create(newItem);
-            Views.Insert(newStartingIndex, view);
-        }
+        protected sealed override void OnAdded(IViewModel newItem, int newStartingIndex) =>
+            ObservableListViewModelBinderHelper.OnAdded(Views, _viewFactory, newItem, newStartingIndex);
 
         protected sealed override void OnAdded(IReadOnlyList<IViewModel> newItems, int newStartingIndex)
         {
@@ -125,11 +122,8 @@ namespace Aspid.MVVM.StarterKit
                 OnAdded(item, newStartingIndex: newStartingIndex + index++);
         }
 
-        protected sealed override void OnRemoved(IViewModel oldItem, int oldStartingIndex)
-        {
-            _viewFactory.Release(Views[oldStartingIndex]);
-            Views.RemoveAt(oldStartingIndex);
-        }
+        protected sealed override void OnRemoved(IViewModel oldItem, int oldStartingIndex) =>
+            ObservableListViewModelBinderHelper.OnRemoved(Views, _viewFactory, oldStartingIndex);
 
         protected sealed override void OnRemoved(IReadOnlyList<IViewModel> oldItems, int oldStartingIndex)
         {
@@ -139,30 +133,65 @@ namespace Aspid.MVVM.StarterKit
                 OnRemoved(item, oldStartingIndex);
         }
 
-        protected sealed override void OnReplace(IViewModel oldItem, IViewModel newItem, int newStartingIndex)
-        {
-            Views[newStartingIndex].Deinitialize();
+        protected sealed override void OnReplace(IViewModel oldItem, IViewModel newItem, int newStartingIndex) =>
+            ObservableListViewModelBinderHelper.OnReplace(Views, newItem, newStartingIndex);
 
-            if (newItem is not null)
-                Views[newStartingIndex].Initialize(newItem);
+        protected sealed override void OnMove(IViewModel oldItem, IViewModel newItem, int oldStartingIndex, int newStartingIndex) =>
+            ObservableListViewModelBinderHelper.OnMove(Views, oldStartingIndex, newStartingIndex);
+
+        protected sealed override void OnReset() =>
+            ObservableListViewModelBinderHelper.OnReset(Views, _viewFactory);
+    }
+
+    /// <summary>
+    /// Shared per-item view-list bookkeeping used by both
+    /// <see cref="ObservableListViewModelBinder{T, TViewFactory}"/> and
+    /// <c>ObservableListViewModelMonoBinder&lt;T, TViewFactory&gt;</c>,
+    /// which differ only in their base binder type.
+    /// </summary>
+    internal static class ObservableListViewModelBinderHelper
+    {
+        public static void OnAdded<T>(List<T> views, IViewFactory<T> viewFactory, IViewModel newItem, int newStartingIndex)
+            where T : MonoBehaviour, IView
+        {
+            var view = viewFactory.Create(newItem);
+            views.Insert(newStartingIndex, view);
         }
 
-        protected sealed override void OnMove(IViewModel oldItem, IViewModel newItem, int oldStartingIndex, int newStartingIndex)
+        public static void OnRemoved<T>(List<T> views, IViewFactory<T> viewFactory, int oldStartingIndex)
+            where T : MonoBehaviour, IView
         {
-            var view = Views[oldStartingIndex];
+            viewFactory.Release(views[oldStartingIndex]);
+            views.RemoveAt(oldStartingIndex);
+        }
 
-            Views.RemoveAt(oldStartingIndex);
-            Views.Insert(newStartingIndex, view);
+        public static void OnReplace<T>(List<T> views, IViewModel newItem, int newStartingIndex)
+            where T : MonoBehaviour, IView
+        {
+            views[newStartingIndex].Deinitialize();
+
+            if (newItem is not null)
+                views[newStartingIndex].Initialize(newItem);
+        }
+
+        public static void OnMove<T>(List<T> views, int oldStartingIndex, int newStartingIndex)
+            where T : MonoBehaviour, IView
+        {
+            var view = views[oldStartingIndex];
+
+            views.RemoveAt(oldStartingIndex);
+            views.Insert(newStartingIndex, view);
 
             view.transform.SetSiblingIndex(newStartingIndex);
         }
 
-        protected sealed override void OnReset()
+        public static void OnReset<T>(List<T> views, IViewFactory<T> viewFactory)
+            where T : MonoBehaviour, IView
         {
-            foreach (var view in Views)
-                _viewFactory.Release(view);
+            foreach (var view in views)
+                viewFactory.Release(view);
 
-            Views.Clear();
+            views.Clear();
         }
     }
 }

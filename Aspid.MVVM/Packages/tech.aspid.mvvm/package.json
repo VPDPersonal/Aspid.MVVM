@@ -1,12 +1,12 @@
 {
   "name": "tech.aspid.mvvm",
-  "version": "1.1.0",
+  "version": "1.1.0-beta.1",
   "displayName": "Aspid.MVVM",
   "description": "Aspid.MVVM is a powerful, high-performance MVVM framework for Unity, eliminating reflection, minimizing GC allocations, and removing boilerplate code for faster, streamlined development.",
   "unity": "6000.0",
   "license": "MIT",
   "documentationUrl": "https://vpd-inc.gitbook.io/aspid.mvvm/",
-  "changelogUrl": "https://github.com/VPDPersonal/Aspid.MVVM/blob/main/Aspid.MVVM/Assets/Aspid/MVVM/CHANGELOG.md",
+  "changelogUrl": "https://github.com/VPDPersonal/Aspid.MVVM/blob/main/Aspid.MVVM/Packages/tech.aspid.mvvm/CHANGELOG.md",
   "licensesUrl": "https://github.com/VPDPersonal/Aspid.MVVM/blob/main/LICENSE",
   "keywords": [
     "mvvm",

@@ -17,11 +17,10 @@
     "reactive",
     "ui"
   ],
-  "author":
-  {
+  "author": {
     "name": "Vladislav Panin",
-    "email": "vpd.aspid@gmail.com",
-    "url": "https://github.com/VPDPersonal"
+    "url": "https://github.com/VPDPersonal",
+    "email": "vpd.aspid@gmail.com"
   },
   "samples": [
     {
@@ -44,5 +43,6 @@
       "description": "Virtualized list efficiently rendering large data sets.",
       "path": "Samples/VirtualizedList"
     }
-  ]
+  ],
+  "unityRelease": "0f1"
 }

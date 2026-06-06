@@ -11,6 +11,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.1.0-beta.1] — 2026-06-06
+
+First preview cut of `1.1.0`, published to the `upm-preview` channel. The API is largely stabilised but may still change before the final `1.1.0` release.
+
 ### Highlights
 
 - Editor inspectors for `MonoBinder`, `MonoView`, `MonoViewModel` rewritten on top of UI Toolkit / `VisualElement`.
@@ -95,14 +99,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 #### Project structure / infrastructure
 - Submodules wired in (PR #38): `Aspid.MVVM.Generators`, `Aspid.MVVM.Analyzers`, `Aspid.MVVM.Unity.Generators`.
 - Unity project relocated from repo root into `Aspid.MVVM/`.
-- MVVM package moved from `Plugins/Aspid/` to `Assets/Aspid/` (PR #77).
-- `package.json` placed inside the package; `unity` field set to `6000.0`; version `1.1.0`.
+- MVVM package moved from `Plugins/Aspid/` to `Assets/Aspid/` (PR #77), then promoted to an embedded local UPM package under `Packages/tech.aspid.mvvm` (PR #117).
+- `package.json` placed inside the package; `unity` field set to `6000.0`, `unityRelease` pinned; version `1.1.0-beta.1`.
+- Samples shipped under `Samples~` and registered in `package.json`: HelloWorld, Stats, TodoList, VirtualizedList, plus the Counter / Greeter walkthroughs.
 - Root `CLAUDE.md` describing structure and conventions.
 - GitHub Actions: Claude PR Assistant + Code Review workflows (PR #64).
-- GitHub Actions: Release workflow for stable and preview UPM branches with DLL verification (PR #78).
+- GitHub Actions: Release workflow publishing stable (`upm`) and preview (`upm-preview`) UPM subtrees with immutable `upm/<version>` tags, generator-DLL drift verification and CHANGELOG-driven release notes (PR #78); the Readme gained matching Stable / Preview version badges.
 
 #### Integrations / dependencies
-- `Aspid.FastTools` integrated as a UPM package (PR #26); many editor visuals migrated to FastTools equivalents.
+- `Aspid.FastTools` integrated (PR #26) and later embedded as a local UPM package under `Packages/tech.aspid.fasttools`; many editor visuals migrated to FastTools equivalents.
 - `Aspid.MVVM.Generators`, `Aspid.MVVM.Analyzers`, `Aspid.Collections`, `Aspid.FastTools` updated to current heads.
 - `SerializeReferenceDropdown` updated to `1.2.7`.
 - `Roboto-Bold SDF` font refreshed.

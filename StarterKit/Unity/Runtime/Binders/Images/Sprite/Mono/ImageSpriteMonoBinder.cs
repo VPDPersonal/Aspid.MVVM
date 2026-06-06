@@ -38,7 +38,7 @@ namespace Aspid.MVVM.StarterKit
         [BinderLog]
         public void SetValue(Texture2D value)
         {
-            _createdSprite = ImageSpriteBinder.CreateSprite(_createdSprite, value);
+            _createdSprite = SpriteBinderHelper.CreateSprite(_createdSprite, value);
             SetValue(_createdSprite);
         }
 
@@ -48,6 +48,7 @@ namespace Aspid.MVVM.StarterKit
             if (_createdSprite) Object.Destroy(_createdSprite);
             _createdSprite = null;
             CachedComponent.sprite = null;
+            base.OnUnbound();
         }
     }
 }

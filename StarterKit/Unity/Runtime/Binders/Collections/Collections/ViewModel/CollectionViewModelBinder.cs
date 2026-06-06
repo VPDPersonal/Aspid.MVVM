@@ -82,6 +82,8 @@ namespace Aspid.MVVM.StarterKit
 
         protected override void OnReplace(IViewModel? oldItem, IViewModel? newItem, int newStartingIndex)
         {
+            if (newStartingIndex >= _views.Length) return;
+
             _views[newStartingIndex].Deinitialize();
             
             if (newItem is not null)

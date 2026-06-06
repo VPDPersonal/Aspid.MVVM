@@ -67,6 +67,7 @@ namespace Aspid.MVVM.StarterKit
         protected override void OnUnbound()
         {
             _materials = null;
+            base.OnUnbound();
         }
     }
 }

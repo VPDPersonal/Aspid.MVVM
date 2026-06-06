@@ -43,7 +43,7 @@ namespace Aspid.MVVM.StarterKit
         /// <param name="value">The <see cref="Texture2D"/> to convert into a sprite, or <see langword="null"/> to clear the sprite.</param>
         public void SetValue(Texture2D? value)
         {
-            _createdSprite = CreateSprite(_createdSprite, value);
+            _createdSprite = SpriteBinderHelper.CreateSprite(_createdSprite, value);
             SetValue(_createdSprite);
         }
 
@@ -53,22 +53,7 @@ namespace Aspid.MVVM.StarterKit
             if (_createdSprite) UnityEngine.Object.Destroy(_createdSprite);
             _createdSprite = null;
             Target.sprite = null;
-        }
-
-        /// <summary>
-        /// Destroys the previously created <paramref name="oldSprite"/> and creates a new
-        /// <see cref="UnityEngine.Sprite"/> from <paramref name="texture"/>.
-        /// </summary>
-        /// <param name="oldSprite">The previously created sprite to destroy, or <see langword="null"/>.</param>
-        /// <param name="texture">The <see cref="Texture2D"/> to convert into a sprite, or <see langword="null"/> to create no sprite.</param>
-        /// <returns>The newly created <see cref="UnityEngine.Sprite"/>, or <see langword="null"/> when <paramref name="texture"/> is <see langword="null"/>.</returns>
-        internal static Sprite? CreateSprite(Sprite? oldSprite, Texture2D? texture)
-        {
-            if (oldSprite) UnityEngine.Object.Destroy(oldSprite);
-
-            return !texture
-                ? null
-                : Sprite.Create(texture, new Rect(0, 0, texture!.width, texture.height), new Vector2(0.5f, 0.5f));
+            base.OnUnbound();
         }
     }
 }

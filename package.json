@@ -6,7 +6,7 @@
   "unity": "6000.0",
   "license": "MIT",
   "documentationUrl": "https://vpd-inc.gitbook.io/aspid.mvvm/",
-  "changelogUrl": "https://github.com/VPDPersonal/Aspid.MVVM/blob/main/Aspid.MVVM/Packages/tech.aspid.mvvm/CHANGELOG.md",
+  "changelogUrl": "https://github.com/VPDPersonal/Aspid.MVVM/blob/main/CHANGELOG.md",
   "licensesUrl": "https://github.com/VPDPersonal/Aspid.MVVM/blob/main/LICENSE",
   "keywords": [
     "mvvm",

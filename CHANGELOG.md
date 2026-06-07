@@ -11,6 +11,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- **`Aspid.MVVM Settings`** window restyled to match the Aspid.FastTools **Welcome** window — animated dot background, animated logo (links to the Asset Store) and title, themed cards, gradient `Apply` / `Revert` buttons and a footer with version and links.
+- Moved the settings window into the shared `Tools/Aspid 🐍` top-menu submenu, next to `Welcome FastTools`.
+- Settings window version is now read from the package manifest instead of a hard-coded constant; `AspidToggle` colors aligned with the theme.
+
+### Removed
+
+- Internal `FloatingBackgroundElement`, superseded by the FastTools animated dot background.
+
 ## [1.1.0-beta.1] — 2026-06-06
 
 First preview cut of `1.1.0`, published to the `upm-preview` channel. The API is largely stabilised but may still change before the final `1.1.0` release.

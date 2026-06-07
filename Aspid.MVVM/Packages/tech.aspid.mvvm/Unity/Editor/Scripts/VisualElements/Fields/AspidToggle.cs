@@ -19,7 +19,8 @@ namespace Aspid.MVVM
         private const float AnimationDuration = 0.15f;
         
         private static readonly Color _trackOffColor = new(0.28f, 0.28f, 0.30f, 1f);
-        private static readonly Color _trackOnColor = new(0.40f, 0.60f, 0.80f, 1f);
+        // Matches the theme's success accent (--aspid-colors-status-success-text-dark).
+        private static readonly Color _trackOnColor = new(0.333f, 0.686f, 0.392f, 1f);
         
         private static readonly Color _handleColor = new(0.95f, 0.95f, 0.95f, 1f);
         private static readonly Color _handleShadowColor = new(0f, 0f, 0f, 0.15f);
@@ -74,10 +75,10 @@ namespace Aspid.MVVM
             
             _label = new Label(label)
                 .SetFlexGrow(1)
-                .SetFontSize(12)
+                .SetFontSize(14)
                 .SetMargin(right: 10)
                 .SetUnityTextAlign(TextAnchor.MiddleLeft)
-                .SetColor(new Color(0.75f, 0.75f, 0.75f));
+                .SetColor(new Color(0.86f, 0.86f, 0.86f));
             
             // Ellipse
             _track = new VisualElement()

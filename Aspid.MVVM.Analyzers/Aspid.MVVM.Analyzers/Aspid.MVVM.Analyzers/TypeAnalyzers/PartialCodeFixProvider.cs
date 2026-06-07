@@ -14,7 +14,7 @@ namespace Aspid.MVVM.Analyzers.TypeAnalyzers;
 public sealed class PartialCodeFixProvider : CodeFixProvider
 {
     public override ImmutableArray<string> FixableDiagnosticIds =>
-        ImmutableArray.Create("AU0003", "AU0004", "AU0005", "AU0006");
+        ImmutableArray.Create("AM0003", "AM0004", "AM0005", "AM0006");
 
     public override FixAllProvider GetFixAllProvider() => WellKnownFixAllProviders.BatchFixer;
 

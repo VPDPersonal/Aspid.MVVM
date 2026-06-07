@@ -13,7 +13,7 @@ namespace Aspid.MVVM.Analyzers.FieldAnalyzers;
 [ExportCodeFixProvider(LanguageNames.CSharp)]
 public sealed class BindAttributeCodeFixProvider : CodeFixProvider
 {
-    public override ImmutableArray<string> FixableDiagnosticIds => ImmutableArray.Create("AU0001", "AU0002");
+    public override ImmutableArray<string> FixableDiagnosticIds => ImmutableArray.Create("AM0001", "AM0002");
     
     public override FixAllProvider GetFixAllProvider() => WellKnownFixAllProviders.BatchFixer;
     

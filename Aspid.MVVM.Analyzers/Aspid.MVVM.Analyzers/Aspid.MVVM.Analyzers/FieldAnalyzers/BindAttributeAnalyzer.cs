@@ -10,8 +10,8 @@ namespace Aspid.MVVM.Analyzers.FieldAnalyzers;
 [DiagnosticAnalyzer(LanguageNames.CSharp)]
 public sealed class BindAttributeAnalyzer : DiagnosticAnalyzer
 {
-    private const string DiagnosticIdError = "AU0001";
-    private const string DiagnosticIdWarning= "AU0002";
+    private const string DiagnosticIdError = "AM0001";
+    private const string DiagnosticIdWarning= "AM0002";
     
     private static readonly DiagnosticDescriptor _readRule = new(
         id: DiagnosticIdWarning,

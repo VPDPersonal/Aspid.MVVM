@@ -1,0 +1,14 @@
+Button {
+    padding:                0;
+    min-width:              18px;
+    max-width:              18px;
+    min-height:             18px;
+    max-height:             18px;
+    margin:                 0 0 0 1px;
+}
+
+Button > VisualElement {
+    width:                  100%;
+    height:                 100%;
+    background-image:       resource("d_ScriptableObject Icon");
+}

@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doc>
+    <member name="AudioSourceVolumeBinder">
+        <example>
+            Bind the AudioSource volume property using a serialized binder field — the target AudioSource is assigned in the Inspector.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField]
+                    private AudioSourceVolumeBinder _volume;
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [Bind] public float _volume;
+                }
+            </code>
+            &#xD;
+            Bind the AudioSource volume property by constructing the binder in code.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField] private AudioSource _audioSource;
+                    &#xD;
+                    private AudioSourceVolumeBinder Volume =>
+                        new(_audioSource);
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [Bind] public float _volume;
+                }
+            </code>
+        </example>
+    </member>
+    <member name="AudioSourceVolumeSwitcherBinder">
+        <example>
+            Switch the AudioSource volume between two values using a serialized binder field — the target AudioSource is assigned in the Inspector.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField]
+                    private AudioSourceVolumeSwitcherBinder _isHighVolume;
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [Bind] public bool _isHighVolume;
+                }
+            </code>
+            &#xD;
+            Switch the AudioSource volume between two values by constructing the binder in code.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField]
+                    private AudioSource _audioSource;
+                    &#xD;
+                    [SerializeField] 
+                    private float _highVolume;
+                    &#xD;
+                    [SerializeField] 
+                    private float _lowVolume;
+                    &#xD;
+                    private AudioSourceVolumeSwitcherBinder IsHighVolume => new(
+                        _audioSource, _highVolume, _lowVolume);
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [Bind] public bool _isHighVolume;
+                }
+            </code>
+        </example>
+    </member>
+</doc>

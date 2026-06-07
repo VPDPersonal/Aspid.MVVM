@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doc>
+    <member name="RectTransformSizeDeltaBinder">
+        <example>
+            Bind the RectTransform size delta using a serialized binder field — the target RectTransform is assigned in the Inspector.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField]
+                    private RectTransformSizeDeltaBinder _size;
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [Bind] public Vector3 _size;
+                }
+            </code>
+            &#xD;
+            Bind the RectTransform size delta by constructing the binder in code.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField] private RectTransform _target;
+                    &#xD;
+                    private RectTransformSizeDeltaBinder Size =&gt;
+                        new(_target);
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [Bind] public Vector3 _size;
+                }
+            </code>
+        </example>
+    </member>
+    <member name="RectTransformSizeDeltaSwitcherBinder">
+        <example>
+            Switch the RectTransform size delta between two values using a serialized binder field — the target RectTransform is assigned in the Inspector.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField]
+                    private RectTransformSizeDeltaSwitcherBinder _isExpanded;
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [Bind] public bool _isExpanded;
+                }
+            </code>
+            &#xD;
+            Switch the RectTransform size delta between two values by constructing the binder in code.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField]
+                    private RectTransform _target;
+                    &#xD;
+                    [SerializeField]
+                    private Vector2 _expandedSize;
+                    &#xD;
+                    [SerializeField]
+                    private Vector2 _collapsedSize;
+                    &#xD;
+                    private RectTransformSizeDeltaSwitcherBinder IsExpanded =&gt; new(
+                        _target, _expandedSize, _collapsedSize);
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [Bind] public bool _isExpanded;
+                }
+            </code>
+        </example>
+    </member>
+</doc>

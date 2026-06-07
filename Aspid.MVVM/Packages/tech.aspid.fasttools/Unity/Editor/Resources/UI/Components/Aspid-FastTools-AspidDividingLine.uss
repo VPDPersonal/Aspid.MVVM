@@ -1,0 +1,127 @@
+:root {
+    flex-grow: 1;
+    display: none;
+    flex-shrink: 0;
+}
+
+.aspid-fasttools-dividing-line--thin.aspid-fasttools-dividing-line--vertical {
+    width: 1px;
+    min-width: 1px;
+    max-width: 1px;
+    display: flex;
+}
+
+.aspid-fasttools-dividing-line--medium.aspid-fasttools-dividing-line--vertical {
+    width: 2px;
+    min-width: 2px;
+    max-width: 2px;
+    display: flex;
+}
+
+.aspid-fasttools-dividing-line--bold.aspid-fasttools-dividing-line--vertical {
+    width: 3px;
+    min-width: 3px;
+    max-width: 3px;
+    display: flex;
+}
+
+.aspid-fasttools-dividing-line--thin.aspid-fasttools-dividing-line--horizontal {
+    height: 1px;
+    min-height: 1px;
+    max-height: 1px;
+    display: flex;
+}
+
+.aspid-fasttools-dividing-line--medium.aspid-fasttools-dividing-line--horizontal {
+    height: 2px;
+    min-height: 2px;
+    max-height: 2px;
+    display: flex;
+}
+
+.aspid-fasttools-dividing-line--bold.aspid-fasttools-dividing-line--horizontal {
+    height: 3px;
+    min-height: 3px;
+    max-height: 3px;
+    display: flex;
+}
+
+.aspid-fasttools-theme--darkness {
+    background-color: var(--aspid-colors-shade-darkness);
+}
+
+.aspid-fasttools-theme--dark {
+    background-color: var(--aspid-colors-shade-dark);
+}
+
+.aspid-fasttools-theme--light {
+    background-color: var(--aspid-colors-shade-light);
+}
+
+.aspid-fasttools-theme--lightness {
+    background-color: var(--aspid-colors-shade-lightness);
+}
+
+.aspid-fasttools-status--success.aspid-fasttools-theme--darkness {
+    background-color: var(--aspid-colors-status-success-shade-darkness);
+}
+
+.aspid-fasttools-status--success.aspid-fasttools-theme--dark {
+    background-color: var(--aspid-colors-status-success-shade-dark);
+}
+
+.aspid-fasttools-status--success.aspid-fasttools-theme--light {
+    background-color: var(--aspid-colors-status-success-shade-light);
+}
+
+.aspid-fasttools-status--success.aspid-fasttools-theme--lightness {
+    background-color: var(--aspid-colors-status-success-shade-lightness);
+}
+
+.aspid-fasttools-status--warning.aspid-fasttools-theme--darkness {
+    background-color: var(--aspid-colors-status-warning-shade-darkness);
+}
+
+.aspid-fasttools-status--warning.aspid-fasttools-theme--dark {
+    background-color: var(--aspid-colors-status-warning-shade-dark);
+}
+
+.aspid-fasttools-status--warning.aspid-fasttools-theme--light {
+    background-color: var(--aspid-colors-status-warning-shade-light);
+}
+
+.aspid-fasttools-status--warning.aspid-fasttools-theme--lightness {
+    background-color: var(--aspid-colors-status-warning-shade-lightness);
+}
+
+.aspid-fasttools-status--error.aspid-fasttools-theme--darkness {
+    background-color: var(--aspid-colors-status-error-shade-darkness);
+}
+
+.aspid-fasttools-status--error.aspid-fasttools-theme--dark {
+    background-color: var(--aspid-colors-status-error-shade-dark);
+}
+
+.aspid-fasttools-status--error.aspid-fasttools-theme--light {
+    background-color: var(--aspid-colors-status-error-shade-light);
+}
+
+.aspid-fasttools-status--error.aspid-fasttools-theme--lightness {
+    background-color: var(--aspid-colors-status-error-shade-lightness);
+}
+
+.aspid-fasttools-status--info.aspid-fasttools-theme--darkness {
+    background-color: var(--aspid-colors-status-info-shade-darkness);
+}
+
+.aspid-fasttools-status--info.aspid-fasttools-theme--dark {
+    background-color: var(--aspid-colors-status-info-shade-dark);
+}
+
+.aspid-fasttools-status--info.aspid-fasttools-theme--light {
+    background-color: var(--aspid-colors-status-info-shade-light);
+}
+
+.aspid-fasttools-status--info.aspid-fasttools-theme--lightness {
+    background-color: var(--aspid-colors-status-info-shade-lightness);
+}

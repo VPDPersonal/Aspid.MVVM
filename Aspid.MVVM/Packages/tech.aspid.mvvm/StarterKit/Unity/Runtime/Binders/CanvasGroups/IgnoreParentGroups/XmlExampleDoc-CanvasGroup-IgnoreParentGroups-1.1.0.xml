@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doc>
+    <member name="CanvasGroupIgnoreParentGroupsBinder">
+        <example>
+            Bind the CanvasGroup ignoreParentGroups property using a serialized binder field — the target CanvasGroup is assigned in the Inspector.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField]
+                    private CanvasGroupIgnoreParentGroupsBinder _ignoreParentGroups;
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [Bind] public bool _ignoreParentGroups;
+                }
+            </code>
+            &#xD;
+            Bind the CanvasGroup ignoreParentGroups property by constructing the binder in code.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField] private CanvasGroup _canvasGroup;
+                    &#xD;
+                    private CanvasGroupIgnoreParentGroupsBinder IgnoreParentGroups =>
+                        new(_canvasGroup);
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [Bind] public bool _ignoreParentGroups;
+                }
+            </code>
+        </example>
+    </member>
+</doc>
+

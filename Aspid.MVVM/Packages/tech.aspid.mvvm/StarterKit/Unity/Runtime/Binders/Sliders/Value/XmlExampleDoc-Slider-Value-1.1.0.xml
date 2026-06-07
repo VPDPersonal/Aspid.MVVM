@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doc>
+    <member name="SliderValueBinder">
+        <example>
+            Bind a slider value to a float ViewModel property using a serialized binder field — the target is assigned in the Inspector.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField]
+                    private SliderValueBinder _volume;
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [Bindable]
+                    private float _volume;
+                }
+            </code>
+            &#xD;
+            Bind a slider value in code, using TwoWay mode so changes in either direction are propagated.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField] private Slider _volumeSlider;
+                    &#xD;
+                    private SliderValueBinder Volume =&gt; new(_volumeSlider);
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [Bindable]
+                    private float _volume;
+                }
+            </code>
+        </example>
+    </member>
+    <member name="SliderValueMonoBinder">
+        <example>
+            Bind a slider value to a float ViewModel property using a MonoBinder component assigned in the Inspector.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField]
+                    private SliderValueMonoBinder _volume;
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [Bindable]
+                    private float _volume;
+                }
+            </code>
+        </example>
+    </member>
+</doc>

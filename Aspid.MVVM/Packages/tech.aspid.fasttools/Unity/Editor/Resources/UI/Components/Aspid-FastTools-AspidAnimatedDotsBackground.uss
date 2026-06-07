@@ -1,0 +1,15 @@
+:root {
+    top:                                                        0;
+    left:                                                       0;
+    right:                                                      0;
+    bottom:                                                     0;
+    position:                                                   absolute;
+
+    --aspid-fasttools-colors-dot_blob-color_1:                  var(--aspid-colors-status-success-text-dark);
+    --aspid-fasttools-colors-dot_blob-color_2:                  var(--aspid-colors-status-warning-text-dark);
+    --aspid-fasttools-colors-dot_blob-color_3:                  var(--aspid-colors-status-error-text-dark);
+
+    --aspid-fasttools-metrics-dot_radius:                       1.55;
+    --aspid-fasttools-metrics-dot_spacing:                      18;
+    --aspid-fasttools-metrics-dot_scale_reference:              420;
+}

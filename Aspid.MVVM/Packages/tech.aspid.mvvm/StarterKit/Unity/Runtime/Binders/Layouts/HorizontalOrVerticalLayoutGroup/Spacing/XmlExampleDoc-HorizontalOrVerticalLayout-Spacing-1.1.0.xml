@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doc>
+    <member name="HorizontalOrVerticalLayoutSpacingBinder">
+        <example>
+            Bind the HorizontalOrVerticalLayoutGroup spacing property using a serialized binder field — the target HorizontalOrVerticalLayoutGroup is assigned in the Inspector.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField]
+                    private HorizontalOrVerticalLayoutSpacingBinder _spacing;
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [Bind] public float _spacing;
+                }
+            </code>
+            &#xD;
+            Bind the HorizontalOrVerticalLayoutGroup spacing property by constructing the binder in code.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField] private HorizontalOrVerticalLayoutGroup _layoutGroup;
+                    &#xD;
+                    private HorizontalOrVerticalLayoutSpacingBinder Spacing =>
+                        new(_layoutGroup);
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [Bind] public float _spacing;
+                }
+            </code>
+        </example>
+    </member>
+    <member name="HorizontalOrVerticalLayoutSpacingSwitcherBinder">
+        <example>
+            Switch the HorizontalOrVerticalLayoutGroup spacing between two values using a serialized binder field — the target HorizontalOrVerticalLayoutGroup is assigned in the Inspector.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField]
+                    private HorizontalOrVerticalLayoutSpacingSwitcherBinder _isCompact;
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [Bind] public bool _isCompact;
+                }
+            </code>
+            &#xD;
+            Switch the HorizontalOrVerticalLayoutGroup spacing between two values by constructing the binder in code.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField] 
+                    private HorizontalOrVerticalLayoutGroup _layoutGroup;
+                    &#xD;
+                    [SerializeField] 
+                    private float _compactSpacing;
+                    &#xD;
+                    [SerializeField] 
+                    private float _normalSpacing;
+                    &#xD;
+                    private HorizontalOrVerticalLayoutSpacingSwitcherBinder IsCompact => new(
+                        _layoutGroup, _compactSpacing, _normalSpacing);
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [Bind] public bool _isCompact;
+                }
+            </code>
+        </example>
+    </member>
+</doc>
+

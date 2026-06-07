@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doc>
+    <member name="RawImageTextureBinder">
+        <example>
+            Bind the RawImage texture using a serialized binder field — the target RawImage is assigned in the Inspector.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField]
+                    private RawImageTextureBinder _texture;
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [Bind] public Texture _texture;
+                }
+            </code>
+            &#xD;
+            Bind the RawImage texture by constructing the binder in code.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField] private RawImage _rawImage;
+                    &#xD;
+                    private RawImageTextureBinder Texture =>
+                        new(_rawImage);
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [Bind] public Texture _texture;
+                }
+            </code>
+        </example>
+    </member>
+    <member name="RawImageTextureSwitcherBinder">
+        <example>
+            Switch the RawImage texture between two values using a serialized binder field — the target RawImage is assigned in the Inspector.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField]
+                    private RawImageTextureSwitcherBinder _isSelected;
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [Bind] public bool _isSelected;
+                }
+            </code>
+            &#xD;
+            Switch the RawImage texture between two values by constructing the binder in code.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField] 
+                    private RawImage _rawImage;
+                    &#xD;
+                    [SerializeField] 
+                    private Texture _selectedTexture;
+                    &#xD;
+                    [SerializeField] 
+                    private Texture _defaultTexture;
+                    &#xD;
+                    private RawImageTextureSwitcherBinder IsSelected => new(
+                        _rawImage, _selectedTexture, _defaultTexture);
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [Bind] public bool _isSelected;
+                }
+            </code>
+        </example>
+    </member>
+</doc>

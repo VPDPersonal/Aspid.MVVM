@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doc>
+    <member name="TextFontBinder">
+        <example>
+            Bind the TMP_Text font using a serialized binder field — the target TMP_Text is assigned in the Inspector.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField]
+                    private TextFontBinder _font;
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [Bind] public TMP_FontAsset _font;
+                }
+            </code>
+            &#xD;
+            Bind the TMP_Text font by constructing the binder in code.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField] private TMP_Text _target;
+                    &#xD;
+                    private TextFontBinder Font =&gt;
+                        new(_target);
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [Bind] public TMP_FontAsset _font;
+                }
+            </code>
+        </example>
+    </member>
+    <member name="TextFontSwitcherBinder">
+        <example>
+            Switch the TMP_Text font between two values using a serialized binder field — the target TMP_Text is assigned in the Inspector.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField]
+                    private TextFontSwitcherBinder _isBold;
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [Bind] public bool _isBold;
+                }
+            </code>
+            &#xD;
+            Switch the TMP_Text font between two values by constructing the binder in code.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField] 
+                    private TMP_Text _target;
+                    &#xD;
+                    [SerializeField] 
+                    private TMP_FontAsset _boldFont;
+                    &#xD;
+                    [SerializeField] 
+                    private TMP_FontAsset _regularFont;
+                    &#xD;
+                    private TextFontSwitcherBinder IsBold =&gt; new(
+                        _target, _boldFont, _regularFont);
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [Bind] public bool _isBold;
+                }
+            </code>
+        </example>
+    </member>
+</doc>

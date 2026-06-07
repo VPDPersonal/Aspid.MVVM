@@ -1,0 +1,10 @@
+Foldout
+{
+    margin-left: 12;
+}
+
+Foldout > #unity-content
+{
+    margin-left: 0;
+    margin-bottom: 7;
+}

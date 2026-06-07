@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doc>
+    <member name="ToggleIsOnBinder">
+        <example>
+            Bind the Toggle's isOn state to a boolean ViewModel property using a serialized binder field — the target Toggle is assigned in the Inspector.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField]
+                    private ToggleIsOnBinder _isAccepted;
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [Bind] public bool _isAccepted;
+                }
+            </code>
+            &#xD;
+            Bind the Toggle's isOn state to a boolean ViewModel property by constructing the binder in code, with value inversion.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField] private Toggle _target;
+                    &#xD;
+                    private ToggleIsOnBinder IsAccepted =&gt;
+                        new(_target, isInvert: true);
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [Bind] public bool _isAccepted;
+                }
+            </code>
+        </example>
+    </member>
+    <member name="ToggleIsOnMonoBinder">
+        <example>
+            Bind the Toggle's isOn state to a boolean ViewModel property using a MonoBinder component assigned in the Inspector.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField]
+                    private ToggleIsOnMonoBinder _isAccepted;
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [Bind] public bool _isAccepted;
+                }
+            </code>
+        </example>
+    </member>
+</doc>

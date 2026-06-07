@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doc>
+    <member name="AnimatorSetBoolBinder">
+        <example>
+            Set a boolean Animator parameter using a serialized binder field — the target Animator is assigned in the Inspector.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField]
+                    private AnimatorSetBoolBinder _isRunning;
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [Bind] public bool _isRunning;
+                }
+            </code>
+            &#xD;
+            Set a boolean Animator parameter by constructing the binder in code.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField] private Animator _animator;
+                    &#xD;
+                    private AnimatorSetBoolBinder IsRunning =>
+                        new(_animator, "IsRunning");
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [Bind] public bool _isRunning;
+                }
+            </code>
+        </example>
+    </member>
+    <member name="AnimatorSetFloatBinder">
+        <example>
+            Set a float Animator parameter using a serialized binder field — the target Animator is assigned in the Inspector.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField]
+                    private AnimatorSetFloatBinder _speed;
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [Bind] public float _speed;
+                }
+            </code>
+            &#xD;
+            Set a float Animator parameter by constructing the binder in code.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField] private Animator _animator;
+                    &#xD;
+                    private AnimatorSetFloatBinder Speed =>
+                        new(_animator, "Speed");
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [Bind] public float _speed;
+                }
+            </code>
+        </example>
+    </member>
+    <member name="AnimatorSetIntBinder">
+        <example>
+            Set an integer Animator parameter using a serialized binder field — the target Animator is assigned in the Inspector.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField]
+                    private AnimatorSetIntBinder _weaponIndex;
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [Bind] public int _weaponIndex;
+                }
+            </code>
+            &#xD;
+            Set an integer Animator parameter by constructing the binder in code.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField] private Animator _animator;
+                    &#xD;
+                    private AnimatorSetIntBinder WeaponIndex =>
+                        new(_animator, "WeaponIndex");
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [Bind] public int _weaponIndex;
+                }
+            </code>
+        </example>
+    </member>
+    <member name="AnimatorSetTriggerBinder">
+        <example>
+            Fire a trigger Animator parameter using a serialized binder field — the target Animator is assigned in the Inspector.
+            The binder exposes the trigger as an <see cref="IRelayCommand"/> or <see cref="Action"/> on the ViewModel.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField]
+                    private AnimatorSetTriggerBinder _jump;
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [Bind] public IRelayCommand _jump;
+                }
+            </code>
+            &#xD;
+            Fire a trigger Animator parameter by constructing the binder in code.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField] private Animator _animator;
+                    &#xD;
+                    private AnimatorSetTriggerBinder Jump =>
+                        new(_animator, "Jump");
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [Bind] public IRelayCommand _jump;
+                }
+            </code>
+        </example>
+    </member>
+</doc>
+

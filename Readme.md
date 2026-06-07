@@ -1,6 +1,7 @@
-![Aspid.MVVMHeaderImage.png](Assets/Plugins/Aspid/MVVM/Documentation/Images/Aspid.MVVMHeaderImage.png)
-![](https://img.shields.io/badge/2022.3%2B-000000?style=flat&logo=unity&logoColor=white&color=4fa35d)
-[![Releases](https://img.shields.io/github/v/release/VPDPersonal/Aspid.MVVM?label=Release&labelColor=254d2c&color=4fa35d)](https://github.com/VPDPersonal/Aspid.MVVM/releases)
+![Aspid.MVVMHeaderImage.png](Aspid.MVVM/Packages/tech.aspid.mvvm/Documentation/Images/Aspid.MVVMHeaderImage.png)
+[![Unity](https://img.shields.io/badge/Unity_6.0%2B-000000?style=flat&logo=unity&logoColor=white&color=4fa35d)](https://assetstore.unity.com/packages/slug/298463)
+[![Stable](https://img.shields.io/github/package-json/v/VPDPersonal/Aspid.MVVM/upm?label=Stable&labelColor=254d2c&color=4fa35d)](https://github.com/VPDPersonal/Aspid.MVVM/releases)
+[![Preview](https://img.shields.io/github/package-json/v/VPDPersonal/Aspid.MVVM/upm-preview?label=Preview&labelColor=4d4425&color=a3923d)](https://github.com/VPDPersonal/Aspid.MVVM/releases)
 [![License](https://img.shields.io/github/license/VPDPersonal/Aspid.MVVM?label=License&labelColor=254d2c&color=4fa35d)](LICENSE)
 
 # Introduction
@@ -18,8 +19,34 @@ teams to scale projects without descending into chaos.
 ---
 
 ## Source Code
-### \[[Aspid.MVVM](https://github.com/VPDPersonal/Aspid.MVVM/tree/main)\] \[[Aspid.MVVM.Generators](https://github.com/VPDPersonal/Aspid.MVMM.Generators)\]
+### \[[Aspid.MVVM](https://github.com/VPDPersonal/Aspid.MVVM/tree/main)\] \[[Aspid.MVVM.Generators](https://github.com/VPDPersonal/Aspid.MVVM.Generators)\]
 ### \[[Aspid.MVVM.Unity.Generators](https://github.com/VPDPersonal/Aspid.MVVM.Unity.Generators)\] \[[Aspid.MVVM.Analyzers](https://github.com/VPDPersonal/Aspid.MVVM.Analyzers)\]
+
+---
+
+## Integration
+
+> **Preview only.** The `1.1.0` line is published as a UPM package on the `upm-preview` branch.
+> The current stable release (`1.0.x`) is installed the usual way — via the
+> [Unity Asset Store](https://assetstore.unity.com/packages/slug/298463) or the
+> [Releases](https://github.com/VPDPersonal/Aspid.MVVM/releases) page.
+
+Install the preview via UPM (Unity Package Manager) — add the package using its Git URL.
+The release workflow publishes the `upm-preview` branch containing only the package contents
+at its root, so no `?path=` query is needed.
+
+The `upm-preview` branch always points to the latest **preview** release (beta, rc, …):
+
+```
+https://github.com/VPDPersonal/Aspid.MVVM.git#upm-preview
+```
+
+To install a specific preview version, target the immutable per-release tag (see
+[Releases](https://github.com/VPDPersonal/Aspid.MVVM/releases) for the list of available versions):
+
+```
+https://github.com/VPDPersonal/Aspid.MVVM.git#upm-preview/1.1.0-beta.1
+```
 
 ---
 

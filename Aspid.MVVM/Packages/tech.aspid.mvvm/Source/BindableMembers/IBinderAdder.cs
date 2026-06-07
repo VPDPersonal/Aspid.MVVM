@@ -1,0 +1,24 @@
+// ReSharper disable once CheckNamespace
+namespace Aspid.MVVM
+{
+    /// <summary>
+    /// Interface for adding event bindings to a bindable member.
+    /// </summary>
+    public interface IBinderAdder
+    {
+        /// <summary>
+        /// Gets the binding mode for this member.
+        /// </summary>
+        public BindMode Mode { get; }
+        
+        /// <summary>
+        /// Adds a binding to the bindable member using the specified binder.
+        /// </summary>
+        /// <param name="binder">The binder to be used for adding the binding.</param>
+        /// <returns>
+        /// An <see cref="IBinderRemover"/> that can remove the added binding, 
+        /// or <see langword="null"/> if the binding could not be added.
+        /// </returns>
+        public IBinderRemover? Add(IBinder binder);
+    }
+}

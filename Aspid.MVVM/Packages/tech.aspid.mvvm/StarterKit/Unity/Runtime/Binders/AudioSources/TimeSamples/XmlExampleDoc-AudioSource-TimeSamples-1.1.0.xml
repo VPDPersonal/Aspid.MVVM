@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doc>
+    <member name="AudioSourceTimeSamplesBinder">
+        <example>
+            Bind the AudioSource timeSamples property using a serialized binder field — the target AudioSource is assigned in the Inspector.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField]
+                    private AudioSourceTimeSamplesBinder _timeSamples;
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [Bind] public int _timeSamples;
+                }
+            </code>
+            &#xD;
+            Bind the AudioSource timeSamples property by constructing the binder in code.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField] private AudioSource _audioSource;
+                    &#xD;
+                    private AudioSourceTimeSamplesBinder TimeSamples =>
+                        new(_audioSource);
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [Bind] public int _timeSamples;
+                }
+            </code>
+        </example>
+    </member>
+    <member name="AudioSourceTimeSamplesSwitcherBinder">
+        <example>
+            Switch the AudioSource timeSamples between two values using a serialized binder field — the target AudioSource is assigned in the Inspector.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField]
+                    private AudioSourceTimeSamplesSwitcherBinder _isHighTimeSamples;
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [Bind] public bool _isHighTimeSamples;
+                }
+            </code>
+            &#xD;
+            Switch the AudioSource timeSamples between two values by constructing the binder in code.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField] 
+                    private AudioSource _audioSource;
+                    &#xD;
+                    [SerializeField]
+                    private int _highTimeSamples;
+                    &#xD;
+                    [SerializeField] 
+                    private int _lowTimeSamples;
+                    &#xD;
+                    private AudioSourceTimeSamplesSwitcherBinder IsHighTimeSamples => new(
+                        _audioSource, _highTimeSamples, _lowTimeSamples);
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [Bind] public bool _isHighTimeSamples;
+                }
+            </code>
+        </example>
+    </member>
+</doc>

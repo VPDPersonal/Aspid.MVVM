@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doc>
+    <member name="ObjectNameBinder">
+        <example>
+            Bind the Object name property using a serialized binder field — the target is assigned in the Inspector.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField]
+                    private ObjectNameBinder _objectName;
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [Bind] public string _objectName;
+                }
+            </code>
+            &#xD;
+            Bind the Object name property by constructing the binder in code.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField] private Object _object;
+                    &#xD;
+                    private ObjectNameBinder ObjectName =&gt;
+                        new(_object);
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [Bind] public string _objectName;
+                }
+            </code>
+        </example>
+    </member>
+</doc>
+

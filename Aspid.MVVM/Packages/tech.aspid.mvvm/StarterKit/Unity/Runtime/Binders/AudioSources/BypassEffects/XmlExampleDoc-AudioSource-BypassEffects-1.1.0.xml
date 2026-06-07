@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doc>
+    <member name="AudioSourceBypassEffectsBinder">
+        <example>
+            Bind the AudioSource bypassEffects property using a serialized binder field — the target AudioSource is assigned in the Inspector.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField]
+                    private AudioSourceBypassEffectsBinder _bypassEffects;
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [Bind] public bool _bypassEffects;
+                }
+            </code>
+            &#xD;
+            Bind the AudioSource bypassEffects property by constructing the binder in code.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField]
+                    private AudioSource _audioSource;
+                    &#xD;
+                    private AudioSourceBypassEffectsBinder BypassEffects =>
+                        new(_audioSource);
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [Bind] public bool _bypassEffects;
+                }
+            </code>
+        </example>
+    </member>
+</doc>

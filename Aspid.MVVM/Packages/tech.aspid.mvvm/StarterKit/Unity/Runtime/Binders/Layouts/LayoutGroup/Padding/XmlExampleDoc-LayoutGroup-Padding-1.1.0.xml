@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doc>
+    <member name="LayoutGroupPaddingBinder">
+        <example>
+            Bind the LayoutGroup padding property using a serialized binder field — the target LayoutGroup is assigned in the Inspector.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField]
+                    private LayoutGroupPaddingBinder _padding;
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [Bind] public RectOffset _padding;
+                }
+            </code>
+            &#xD;
+            Bind the LayoutGroup padding property by constructing the binder in code.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField] private LayoutGroup _layoutGroup;
+                    &#xD;
+                    private LayoutGroupPaddingBinder Padding =>
+                        new(_layoutGroup, PaddingMode.All);
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [Bind] public RectOffset _padding;
+                }
+            </code>
+        </example>
+    </member>
+    <member name="LayoutGroupPaddingSwitcherBinder">
+        <example>
+            Switch the LayoutGroup padding between two values using a serialized binder field — the target LayoutGroup is assigned in the Inspector.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField]
+                    private LayoutGroupPaddingSwitcherBinder _isExpanded;
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [Bind] public bool _isExpanded;
+                }
+            </code>
+            &#xD;
+            Switch the LayoutGroup padding between two values by constructing the binder in code.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField] private LayoutGroup _layoutGroup;
+                    [SerializeField] private RectOffset _expandedPadding;
+                    [SerializeField] private RectOffset _collapsedPadding;
+                    &#xD;
+                    private LayoutGroupPaddingSwitcherBinder IsExpanded => new(
+                        _layoutGroup, _expandedPadding, _collapsedPadding, PaddingMode.All);
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [Bind] public bool _isExpanded;
+                }
+            </code>
+        </example>
+    </member>
+</doc>
+

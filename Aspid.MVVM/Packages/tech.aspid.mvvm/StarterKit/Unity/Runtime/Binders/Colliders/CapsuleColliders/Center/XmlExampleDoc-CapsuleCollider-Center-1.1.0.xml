@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doc>
+    <member name="CapsuleColliderCenterBinder">
+        <example>
+            Bind the CapsuleCollider center property using a serialized binder field — the target CapsuleCollider is assigned in the Inspector.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField]
+                    private CapsuleColliderCenterBinder _center;
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [Bind] public Vector3 _center;
+                }
+            </code>
+            &#xD;
+            Bind the CapsuleCollider center property by constructing the binder in code.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField] private CapsuleCollider _capsuleCollider;
+                    &#xD;
+                    private CapsuleColliderCenterBinder Center =>
+                        new(_capsuleCollider);
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [Bind] public Vector3 _center;
+                }
+            </code>
+        </example>
+    </member>
+    <member name="CapsuleColliderCenterSwitcherBinder">
+        <example>
+            Switch the CapsuleCollider center between two Vector3 values using a serialized binder field — the target CapsuleCollider is assigned in the Inspector.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField]
+                    private CapsuleColliderCenterSwitcherBinder _isActive;
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [Bind] public bool _isActive;
+                }
+            </code>
+            &#xD;
+            Switch the CapsuleCollider center between two Vector3 values by constructing the binder in code.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField] private CapsuleCollider _capsuleCollider;
+                    &#xD;
+                    private CapsuleColliderCenterSwitcherBinder IsActive => new(
+                        _capsuleCollider,
+                        trueValue: new Vector3(0, 1, 0),
+                        falseValue: Vector3.zero);
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [Bind] public bool _isActive;
+                }
+            </code>
+        </example>
+    </member>
+</doc>
+

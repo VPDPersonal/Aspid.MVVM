@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doc>
+    <member name="VirtualizedListItemSourceBinder">
+        <example>
+            Bind the VirtualizedList item source to a ViewModel collection using a serialized binder field — the target VirtualizedList is assigned in the Inspector.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField]
+                    private VirtualizedListItemSourceBinder _items;
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [Bind] public IReadOnlyList&lt;IViewModel&gt; _items;
+                }
+            </code>
+            &#xD;
+            Bind the VirtualizedList item source by constructing the binder in code, with an optional filter and comparer.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField] private VirtualizedList _target;
+                    &#xD;
+                    private VirtualizedListItemSourceBinder Items =&gt;
+                        new(_target, filter: new MyFilter(), comparer: new MyComparer());
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [Bind] public IReadOnlyList&lt;IViewModel&gt; _items;
+                }
+            </code>
+        </example>
+    </member>
+    <member name="VirtualizedListItemSourceMonoBinder">
+        <example>
+            Bind the VirtualizedList item source to a ViewModel collection using a MonoBinder component assigned in the Inspector.
+            <code>
+                [View]
+                public partial class ExampleView
+                {
+                    [SerializeField]
+                    private VirtualizedListItemSourceMonoBinder _items;
+                }
+                &#xD;
+                [ViewModel]
+                public partial class ExampleViewModel
+                {
+                    [Bind] public IReadOnlyList&lt;IViewModel&gt; _items;
+                }
+            </code>
+        </example>
+    </member>
+</doc>

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-namespace Aspid.MVVM.Generators.Binders.Data;
+namespace Aspid.MVVM.Generators.Generators.Binders.Data;
 
 public readonly struct BinderData(
     INamedTypeSymbol symbol,

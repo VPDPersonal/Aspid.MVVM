@@ -1,7 +1,7 @@
 using System;
 using Microsoft.CodeAnalysis;
 
-namespace Aspid.MVVM.Generators.Views.Data;
+namespace Aspid.MVVM.Generators.Generators.Views.Data;
 
 public readonly struct GenericViewData(bool isSelf, ITypeSymbol type) : IEquatable<GenericViewData>
 {

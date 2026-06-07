@@ -1,30 +1,39 @@
 using Microsoft.CodeAnalysis;
-using Aspid.Generator.Helpers;
-using Aspid.MVVM.Generators.Descriptions;
-using Aspid.MVVM.Generators.ViewModels.Data;
+using Aspid.Generators.Helper;
+using Aspid.MVVM.Generators.Generators.ViewModels.Data;
+using Classes = Aspid.MVVM.Generators.Generators.Descriptions.Classes;
 
-namespace Aspid.MVVM.Generators.ViewModels.Extensions;
+namespace Aspid.MVVM.Generators.Generators.ViewModels.Extensions;
 
 public static class SymbolExtensions
 {
     public static BindMode GetBindMode(this ISymbol member)
     {
-        if (member.HasAnyAttribute(out var attribute, Classes.BindAttribute, Classes.OneWayBindAttribute, 
+        if (member.TryGetAnyAttributeInSelf(out var attribute, Classes.BindAttribute, Classes.OneWayBindAttribute, 
                 Classes.TwoWayBindAttribute, Classes.OneTimeBindAttribute, Classes.OneWayToSourceBindAttribute))
         {
-            var attributeName = attribute!.AttributeClass!.ToDisplayString();
+            var attributeName = attribute!.AttributeClass.ToDisplayString();
 
             if (attributeName == Classes.BindAttribute.FullName)
             {
-                if (attribute!.ConstructorArguments.Length is 0)
+                if (attribute.ConstructorArguments.Length is 0)
                 {
-                    if (member is not IFieldSymbol field) return BindMode.TwoWay;
-                    if (field.IsReadOnly || field.IsConst) return BindMode.OneTime;
-
+                    if (member is IFieldSymbol field)
+                    {
+                        if (field.IsReadOnly || field.IsConst) return BindMode.OneTime;
+                        return BindMode.TwoWay;
+                    }
+                    
+                    if (member is IPropertySymbol property)
+                    {
+                        if (property.IsReadOnly) return Determine(BindMode.OneWay);
+                        if (property.IsWriteOnly) return Determine(BindMode.OneWayToSource);
+                    }
+                    
                     return BindMode.TwoWay;
                 }
 
-                return Determine((BindMode)(int)attribute!.ConstructorArguments[0].Value!);
+                return Determine((BindMode)(int)attribute.ConstructorArguments[0].Value!);
             }
             
             if (attributeName == Classes.OneWayBindAttribute.FullName)
@@ -49,6 +58,13 @@ public static class SymbolExtensions
                 case IFieldSymbol field:
                     {
                         if (field.IsReadOnly && current is not BindMode.OneTime) return BindMode.None;
+                        break;
+                    }
+                
+                case IPropertySymbol property:
+                    {
+                        if (property.IsReadOnly && current is not (BindMode.OneTime or BindMode.OneWay)) return BindMode.None;
+                        if (property.IsWriteOnly && current is not BindMode.OneWayToSource) return BindMode.None;
                         break;
                     }
             }

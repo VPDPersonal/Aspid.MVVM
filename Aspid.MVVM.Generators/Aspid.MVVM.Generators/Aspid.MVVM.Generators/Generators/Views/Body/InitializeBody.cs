@@ -1,35 +1,33 @@
-using System;
 using Microsoft.CodeAnalysis;
-using Aspid.Generator.Helpers;
-using Aspid.MVVM.Generators.Views.Data;
-using Aspid.MVVM.Generators.Descriptions;
-using Aspid.MVVM.Generators.Views.Data.Members;
-using Aspid.MVVM.Generators.Views.Body.Extensions;
+using Aspid.Generators.Helper;
+using Aspid.MVVM.Generators.Generators.Views.Data;
+using Aspid.MVVM.Generators.Generators.Descriptions;
+using Aspid.MVVM.Generators.Generators.Views.Helpers;
+using Aspid.MVVM.Generators.Generators.Views.Data.Members;
+using Aspid.MVVM.Generators.Generators.Views.Body.Extensions;
+using static Aspid.Generators.Helper.Classes;
+using static Aspid.Generators.Helper.Unity.UnityClasses;
+using static Aspid.MVVM.Generators.Generators.Descriptions.Classes;
+using static Aspid.MVVM.Generators.Generators.Descriptions.Constants;
 
-namespace Aspid.MVVM.Generators.Views.Body;
+namespace Aspid.MVVM.Generators.Generators.Views.Body;
 
 // ReSharper disable InconsistentNaming
 // ReSharper disable once InconsistentNaming
 public static class InitializeBody
 {
-    private const string GeneratedAttribute = General.GeneratedCodeViewAttribute;
-    
-    private static readonly string IViewModel = Classes.IViewModel.Global;
-    private static readonly string ProfilerMarker = Classes.ProfilerMarker.Global;
-    private static readonly string EditorBrowsableAttribute = $"[{Classes.EditorBrowsableAttribute.Global}({Classes.EditorBrowsableState.Global}.Never)]";
-
     public static void Generate(
         string @namespace,
         in ViewDataSpan data,
-        in DeclarationText declaration,
+        DeclarationText declaration,
         in SourceProductionContext context)
     {
         var code = new CodeWriter();
         var baseTypes = GetBaseTypes(data);
 
-        code.AppendClassBegin([Namespaces.Aspid_MVVM], @namespace, declaration, baseTypes)
+        code.BeginClass([Namespaces.Aspid_MVVM], @namespace, declaration, baseTypes)
             .AppendIView(data)
-            .AppendClassEnd(@namespace);
+            .EndClass(@namespace);
         
         context.AddSource(declaration.GetFileName(@namespace, "Initialize"), code.GetSourceText());
     }
@@ -40,7 +38,7 @@ public static class InitializeBody
         {
             Inheritor.None => code.AppendNone(data),
             Inheritor.InheritorViewAttribute => code.AppendHasInterfaceOrInheritor(data),
-            _ => throw new ArgumentOutOfRangeException()
+            _ => code
         };
         
         if (!data.IsInstantiateBinders) return code;
@@ -61,35 +59,35 @@ public static class InitializeBody
             .AppendMultiline(
                 $"""
                  [global::System.NonSerialized]
-                 {GeneratedAttribute}
-                 {EditorBrowsableAttribute}
+                 {GeneratedCodeViewAttribute}
+                 {EditorBrowsableAttributeNever}
                  private bool __isInitializing;
                  
                  """)
             .AppendMultilineIf(data.IsInstantiateBinders, 
                 $"""
                 [global::System.NonSerialized]
-                {GeneratedAttribute}
-                {EditorBrowsableAttribute}
+                {GeneratedCodeViewAttribute}
+                {EditorBrowsableAttributeNever}
                 private bool __isBindersCached;
                 
                 """)
             .AppendMultiline(
                 $$"""
-                {{GeneratedAttribute}}
+                {{GeneratedCodeViewAttribute}}
                 public {{IViewModel}} ViewModel { get; protected set; }
                 
-                {{GeneratedAttribute}}
+                {{GeneratedCodeViewAttribute}}
                 public void Initialize({{IViewModel}} viewModel)
                 {
-                    if (viewModel is null) throw new {{Classes.ArgumentNullException.Global}}(nameof(viewModel));
-                    if (ViewModel is not null) throw new {{Classes.InvalidOperationException.Global}}("View is already initialized.");
+                    if (viewModel is null) throw new {{ArgumentNullException}}(nameof(viewModel));
+                    if (ViewModel is not null) throw new {{InvalidOperationException}}("View is already initialized.");
                     
                     ViewModel = viewModel;
                     InitializeInternal(viewModel);
                 }
                 
-                {{GeneratedAttribute}}
+                {{GeneratedCodeViewAttribute}}
                 {{modifiers}} void InitializeInternal({{IViewModel}} viewModel)
                 """)
             .AppendInitializeBody(data)
@@ -97,7 +95,7 @@ public static class InitializeBody
             .AppendLine()
             .AppendMultiline(
                 $$"""
-                {{GeneratedAttribute}}
+                {{GeneratedCodeViewAttribute}}
                 public void Deinitialize()
                 {
                     if (ViewModel is null) return;
@@ -106,7 +104,7 @@ public static class InitializeBody
                     ViewModel = null;
                 }
 
-                {{GeneratedAttribute}}
+                {{GeneratedCodeViewAttribute}}
                 {{modifiers}} void DeinitializeInternal()
                 """)
             .AppendDeinitializeBody(data)
@@ -125,16 +123,16 @@ public static class InitializeBody
             .AppendMultiline(
                 $"""
                  [global::System.NonSerialized]
-                 {GeneratedAttribute}
-                 {EditorBrowsableAttribute}
+                 {GeneratedCodeViewAttribute}
+                 {EditorBrowsableAttributeNever}
                  private bool __isInitializing;
                  
                  """)
             .AppendMultilineIf(data.IsInstantiateBinders, 
                 $"""
                 [global::System.NonSerialized]
-                {GeneratedAttribute}
-                {EditorBrowsableAttribute}
+                {GeneratedCodeViewAttribute}
+                {EditorBrowsableAttributeNever}
                 private bool __isBindersCached;
                 
                 """);
@@ -156,12 +154,12 @@ public static class InitializeBody
         return code.AppendMultiline(
             $"""
              #if !{Defines.ASPID_MVVM_UNITY_PROFILER_DISABLED}
-             {EditorBrowsableAttribute}
-             {GeneratedAttribute}
+             {GeneratedCodeViewAttribute}
+             {EditorBrowsableAttributeNever}
              private static readonly {ProfilerMarker} __initializeMarker = new("{className}.Initialize");
              
-             {EditorBrowsableAttribute}
-             {GeneratedAttribute}
+             {GeneratedCodeViewAttribute}
+             {EditorBrowsableAttributeNever}
              private static readonly {ProfilerMarker} __deinitializeMarker = new("{className}.Deinitialize");
              #endif
              """);
@@ -175,7 +173,7 @@ public static class InitializeBody
         
         code.AppendMultiline(
             $"""
-             {GeneratedAttribute}
+             {GeneratedCodeViewAttribute}
              {modifiers} void InitializeInternal({IViewModel} viewModel)
              """);
 
@@ -190,7 +188,7 @@ public static class InitializeBody
         
         code.AppendMultiline(
             $"""
-             {GeneratedAttribute}
+             {GeneratedCodeViewAttribute}
              {modifiers} void DeinitializeInternal()
              """);
 
@@ -236,7 +234,11 @@ public static class InitializeBody
 
         foreach (var member in data.Members)
             code.AppendBindSafely(member);
-        
+
+        var virtualFields = VirtualBinderFields.Collect(data);
+        foreach (var info in virtualFields.Values)
+            code.AppendLine($"{info.FieldName}.BindSafely(viewModel.FindBindableMember(new({info.Id.Value})), this, {info.Id.Value});");
+
         return code.AppendLine()
             .AppendLine("OnInitializedInternal(viewModel);")
             .AppendLine("__isInitializing = false;")
@@ -263,13 +265,17 @@ public static class InitializeBody
         {
             if (member is CachedBinderMember cachedBinderMember)
             {
-                code.AppendLine($"{cachedBinderMember.CachedName}.UnbindSafely();");
+                code.AppendLine($"{cachedBinderMember.CachedName}.UnbindSafely(this, {member.Id});");
             }
             else
             {
-                code.AppendLine($"{member.Name}.UnbindSafely();");
+                code.AppendLine($"{member.Name}.UnbindSafely(this, {member.Id});");
             }
         }
+
+        var virtualFields = VirtualBinderFields.Collect(data);
+        foreach (var info in virtualFields.Values)
+            code.AppendLine($"{info.FieldName}.UnbindSafely(this, {info.Id.Value});");
 
         code.AppendLine()
             .AppendLine("OnDeinitializedInternal();")
@@ -283,7 +289,7 @@ public static class InitializeBody
     {
         code.AppendMultiline(
                 $"""
-                {GeneratedAttribute}
+                {GeneratedCodeViewAttribute}
                 private void InstantiateBinders()
                 """)
             .BeginBlock()
@@ -298,10 +304,10 @@ public static class InitializeBody
             .AppendMultiline(
                 $"""
                 
-                {GeneratedAttribute}
+                {GeneratedCodeViewAttribute}
                 partial void OnInstantiatingBinders();
                 
-                {GeneratedAttribute}
+                {GeneratedCodeViewAttribute}
                 partial void OnInstantiatedBinders();
                 """);
 
@@ -341,12 +347,12 @@ public static class InitializeBody
                     
                     code.AppendLineIf(isAppend)
                         .AppendMultiline(
-                            $$"""
-                              var {{localName}} = {{name}};
-                              {{binderName}} = new {{binderType}}[{{localName}}.Length];
+                            $"""
+                              var {localName} = {name};
+                              {binderName} = new {binderType}[{localName}.Length];
                               
-                              for (var i = 0; i < {{localName}}.Length; i++)
-                                  {{binderName}}[i] = new {{member.AsBinderType}}({{localName}}[i]{{arguments}});
+                              for (var i = 0; i < {localName}.Length; i++)
+                                  {binderName}[i] = new {member.AsBinderType}({localName}[i]{arguments});
                               """)
                         .AppendLineIf(i + 1 < membersCount);
 
@@ -368,10 +374,10 @@ public static class InitializeBody
         return code.AppendMultiline(
             $"""
              
-             {GeneratedAttribute}
+             {GeneratedCodeViewAttribute}
              partial void OnInitializingInternal({IViewModel} viewModel);
 
-             {GeneratedAttribute}
+             {GeneratedCodeViewAttribute}
              partial void OnInitializedInternal({IViewModel} viewModel);
              """);
     }
@@ -381,14 +387,14 @@ public static class InitializeBody
         return code.AppendMultiline(
             $"""
              
-             {GeneratedAttribute}
+             {GeneratedCodeViewAttribute}
              partial void OnDeinitializingInternal();
 
-             {GeneratedAttribute}
+             {GeneratedCodeViewAttribute}
              partial void OnDeinitializedInternal();
              """);
     }
     
     private static string[]? GetBaseTypes(in ViewDataSpan data) =>
-        data.Inheritor is Inheritor.None ? [Classes.IView.ToString()] : null;
+        data.Inheritor is Inheritor.None ? [IView.ToString()] : null;
 }

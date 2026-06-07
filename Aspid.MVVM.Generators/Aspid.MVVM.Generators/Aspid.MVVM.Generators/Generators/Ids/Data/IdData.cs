@@ -1,9 +1,9 @@
 using System;
 using Microsoft.CodeAnalysis;
-using Aspid.MVVM.Generators.Descriptions;
-using Aspid.MVVM.Generators.Ids.Extensions;
+using Aspid.MVVM.Generators.Generators.Descriptions;
+using Aspid.MVVM.Generators.Generators.Ids.Extensions;
 
-namespace Aspid.MVVM.Generators.Ids.Data;
+namespace Aspid.MVVM.Generators.Generators.Ids.Data;
 
 public readonly struct IdData : IEquatable<IdData>
 {

@@ -1,20 +1,22 @@
 using Microsoft.CodeAnalysis;
 using System.Collections.Immutable;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Aspid.MVVM.Generators.Views.Data.Members;
+using Aspid.MVVM.Generators.Generators.Views.Data.Members;
 
-namespace Aspid.MVVM.Generators.Views.Data;
+namespace Aspid.MVVM.Generators.Generators.Views.Data;
 
 public readonly struct ViewData(
     INamedTypeSymbol symbol,
-    Inheritor inheritor, 
+    Inheritor inheritor,
     TypeDeclarationSyntax declaration,
     ImmutableArray<BinderMember> members,
-    ImmutableArray<GenericViewData> genericViews)
+    ImmutableArray<GenericViewData> genericViews,
+    ImmutableArray<string> inheritedDeclaredIds)
 {
-    public readonly INamedTypeSymbol Symbol = symbol; 
+    public readonly INamedTypeSymbol Symbol = symbol;
     public readonly Inheritor Inheritor = inheritor;
     public readonly ImmutableArray<BinderMember> Members = members;
     public readonly TypeDeclarationSyntax Declaration = declaration;
     public readonly ImmutableArray<GenericViewData> GenericViews = genericViews;
+    public readonly ImmutableArray<string> InheritedDeclaredIds = inheritedDeclaredIds;
 }

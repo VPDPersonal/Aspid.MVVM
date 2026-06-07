@@ -2,27 +2,27 @@ using System.Linq;
 using System.Threading;
 using System.Diagnostics;
 using Microsoft.CodeAnalysis;
-using Aspid.Generator.Helpers;
+using Aspid.Generators.Helper;
 using System.Collections.Generic;
 using Microsoft.CodeAnalysis.CSharp;
 using System.Runtime.CompilerServices;
-using Aspid.MVVM.Generators.Binders.Data;
-using Aspid.MVVM.Generators.Descriptions;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Aspid.MVVM.Generators.Generators.Binders.Data;
+using Classes = Aspid.MVVM.Generators.Generators.Descriptions.Classes;
 
-namespace Aspid.MVVM.Generators.Binders;
+namespace Aspid.MVVM.Generators.Generators.Binders;
 
 public partial class BinderGenerator
 {
-    private static FoundForGenerator<BinderData> FindBinders(GeneratorSyntaxContext context,
+    private static BinderData? FindBinders(GeneratorSyntaxContext context,
         CancellationToken cancellationToken)
     {
         Debug.Assert(context.Node is TypeDeclarationSyntax);
         var candidate = Unsafe.As<TypeDeclarationSyntax>(context.Node);
         var symbol = context.SemanticModel.GetDeclaredSymbol(candidate, cancellationToken);
         
-        if (symbol is null) return default;
-        if (!symbol.HasInterfaceInSelfOrBases(Classes.IBinder, out var binderInterface)) return default;
+        if (symbol is null) return null;
+        if (!symbol.TryGetAnyInterfaceInSelfAndBases(out var binderInterface, Classes.IBinder)) return null;
         
         var hasBinderLogInBaseType = false;
         const string setValueName = "SetValue";
@@ -35,16 +35,22 @@ public partial class BinderGenerator
                     .Any(binderMethod =>
                     {
                         if (binderMethod.Name is not setValueName) return false;
-                        
+
                         return binderMethod.EqualsSignature(method) &&
                             method.ExplicitInterfaceImplementations.Length != 0;
                     });
-                    
-                if (methodsExplicitImplemented) return default;
 
-                if (!hasBinderLogInBaseType 
+                if (methodsExplicitImplemented) return null;
+
+                // Check if IAnyBinder.SetValue<T> is already explicitly implemented
+                if (method.IsGenericMethod && method.Name == setValueName
+                    && method.ExplicitInterfaceImplementations.Any(m =>
+                        m.ContainingType.Name is "IAnyBinder"))
+                    return null;
+
+                if (!hasBinderLogInBaseType
                     && !SymbolEqualityComparer.Default.Equals(type, symbol)
-                    && method.HasAnyAttribute(Classes.BinderLogAttribute))
+                    && method.HasAnyAttributeInSelf(Classes.BinderLogAttribute))
                 {
                     hasBinderLogInBaseType = true;
                 }
@@ -55,17 +61,25 @@ public partial class BinderGenerator
         
         foreach (var method in symbol.GetMembers().OfType<IMethodSymbol>())
         {
-            if (method.Parameters.Length != 1) continue;
+            if (method.Parameters.Length is not 1) continue;
             if (method.NameFromExplicitImplementation() != setValueName) continue;
-            if (!symbol.HasInterfaceInSelfOrBases($"{Classes.IBinder.FullName}<{method.Parameters[0].Type.ToDisplayString()}>")) continue;
-            
-            if (method.HasAnyAttribute(Classes.BinderLogAttribute) &&
+
+            var isIBinderMethod = !method.IsGenericMethod
+                && symbol.HasAnyInterfaceInSelfAndBases(
+                    $"{Classes.IBinder.FullName}<{method.Parameters[0].Type.ToDisplayString()}>");
+
+            var isIAnyBinderMethod = method is { IsGenericMethod: true, TypeParameters.Length: 1 }
+                && symbol.HasAnyInterfaceInSelfAndBases(Classes.IAnyBinder.FullName);
+
+            if (!isIBinderMethod && !isIAnyBinderMethod) continue;
+
+            if (method.HasAnyAttributeInSelf(Classes.BinderLogAttribute) &&
                 !method.ExplicitInterfaceImplementations.Any())
                 binderLogMethods.Add(method);
         }
-        
-        if (binderLogMethods.Count == 0) return default;
-        
-        return new FoundForGenerator<BinderData>(new BinderData(symbol, candidate, hasBinderLogInBaseType, binderLogMethods));
+
+        return binderLogMethods.Count is 0
+            ? null
+            : new BinderData(symbol, candidate, hasBinderLogInBaseType, binderLogMethods);
     }
 }

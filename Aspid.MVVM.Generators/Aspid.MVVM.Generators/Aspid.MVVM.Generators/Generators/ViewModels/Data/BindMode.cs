@@ -1,4 +1,4 @@
-namespace Aspid.MVVM.Generators.ViewModels.Data;
+namespace Aspid.MVVM.Generators.Generators.ViewModels.Data;
 
 public enum BindMode
 {

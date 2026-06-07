@@ -1,34 +1,49 @@
 using System.Linq;
 using Microsoft.CodeAnalysis;
-using Aspid.Generator.Helpers;
+using Aspid.Generators.Helper;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using Microsoft.CodeAnalysis.CSharp;
-using Aspid.MVVM.Generators.Descriptions;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Aspid.MVVM.Generators.Views.Data.Members;
+using Aspid.MVVM.Generators.Generators.Views.Data.Members;
+using Classes = Aspid.MVVM.Generators.Generators.Descriptions.Classes;
 
-namespace Aspid.MVVM.Generators.Views.Factories;
+namespace Aspid.MVVM.Generators.Generators.Views.Factories;
 
 public static class BinderMembersFactory
 {
+    public static ImmutableArray<string> CollectInheritedIds(INamedTypeSymbol symbol, SemanticModel semanticModel)
+    {
+        var ids = ImmutableArray.CreateBuilder<string>();
+
+        for (var baseType = symbol.BaseType; baseType is not null; baseType = baseType.BaseType)
+        {
+            if (!baseType.HasAnyAttributeInSelf(Classes.ViewAttribute)) continue;
+
+            foreach (var member in Create(baseType, semanticModel))
+                ids.Add(member.Id.SourceValue);
+        }
+
+        return ids.ToImmutable();
+    }
+
     public static ImmutableArray<BinderMember> Create(INamedTypeSymbol symbolClass, SemanticModel semanticModel)
     {
         var binderMembers = new List<BinderMember>();
         
         foreach (var member in symbolClass.GetMembers())
         {
-            if (member.HasAnyAttribute(Classes.IgnoreAttribute)) continue;
+            if (member.HasAnyAttributeInSelf()) continue;
 
             var type = GetType(member);
             if (type is null) continue;
 
-            if (member.HasAnyAttribute(out var asBinderAttribute, Classes.AsBinderAttribute))
+            if (member.TryGetAnyAttributeInSelf(out var asBinderAttribute, Classes.AsBinderAttribute))
             {
                 if (asBinderAttribute!.ConstructorArguments[0].Value is not INamedTypeSymbol argumentType) continue;
                 
                 if (argumentType.IsAbstract) continue;
-                if (!argumentType.HasInterfaceInSelfOrBases(Classes.IBinder)) continue;
+                if (!argumentType.HasAnyInterfaceInSelfAndBases(Classes.IBinder)) continue;
 
                 var arguments = new List<string>();
                 
@@ -93,11 +108,11 @@ public static class BinderMembersFactory
                 
                 binderMembers.Add(new AsBinderMember(member, argumentType.ToDisplayStringGlobal(), arguments));
             }
-            else if (type.HasAnyAttribute(Classes.ViewAttribute) || type.HasInterfaceInSelfOrBases(Classes.IView))
+            else if (type.HasAnyAttributeInSelf(Classes.ViewAttribute) || type.HasAnyInterfaceInSelfAndBases(Classes.IView))
             {
-                binderMembers.Add(new AsBinderMember(member, Classes.ViewBinder.Global, null));
+                binderMembers.Add(new AsBinderMember(member, Classes.ViewBinder, null));
             }
-            else if (type.HasInterfaceInSelfOrBases(Classes.IBinder))
+            else if (type.HasAnyInterfaceInSelfAndBases(Classes.IBinder))
             {
                 switch (member)
                 {
@@ -110,7 +125,7 @@ public static class BinderMembersFactory
                         var symbols = GetPropertyReturnSymbols(property, semanticModel);
                         
                         if (symbols is null) continue;
-                        if (symbols.Any(symbol => symbol is IFieldSymbol or IPropertySymbol && !symbol.HasAnyAttribute(Classes.IgnoreAttribute))) continue;
+                        if (symbols.Any(symbol => symbol is IFieldSymbol or IPropertySymbol && !symbol.HasAnyAttributeInSelf(Classes.IgnoreAttribute))) continue;
 
                         binderMembers.Add(new CachedBinderMember(property));
                         break;

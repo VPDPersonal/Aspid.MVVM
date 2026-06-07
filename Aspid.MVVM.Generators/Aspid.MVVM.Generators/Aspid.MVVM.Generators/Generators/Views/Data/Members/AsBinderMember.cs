@@ -1,7 +1,7 @@
 using Microsoft.CodeAnalysis;
 using System.Collections.Generic;
 
-namespace Aspid.MVVM.Generators.Views.Data.Members;
+namespace Aspid.MVVM.Generators.Generators.Views.Data.Members;
 
 public class AsBinderMember(ISymbol member, string asBinderType, IReadOnlyList<string>? arguments) : CachedBinderMember(member)
 {

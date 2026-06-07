@@ -1,0 +1,11 @@
+<Project>
+
+    <Target Name="CopyToUnity" AfterTargets="Build" Condition="'$(IsRoslynComponent)' == 'true'">
+        <PropertyGroup>
+            <_UnityDestination>$(MSBuildThisFileDirectory)../Aspid.MVVM/Assets/Aspid/MVVM/</_UnityDestination>
+        </PropertyGroup>
+        <MakeDir Directories="$(_UnityDestination)" />
+        <Copy SourceFiles="$(TargetPath)" DestinationFolder="$(_UnityDestination)" SkipUnchangedFiles="true" />
+    </Target>
+
+</Project>

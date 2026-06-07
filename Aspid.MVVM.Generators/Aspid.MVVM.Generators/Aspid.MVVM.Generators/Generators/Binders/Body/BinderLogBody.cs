@@ -1,127 +1,178 @@
 using System;
 using Microsoft.CodeAnalysis;
-using Aspid.Generator.Helpers;
-using Aspid.MVVM.Generators.Binders.Data;
-using Aspid.MVVM.Generators.Descriptions;
+using Aspid.Generators.Helper;
+using Aspid.MVVM.Generators.Generators.Binders.Data;
+using static Aspid.Generators.Helper.Classes;
+using static Aspid.Generators.Helper.Unity.UnityClasses;
+using static Aspid.MVVM.Generators.Generators.Descriptions.Constants;
+using Classes = Aspid.MVVM.Generators.Generators.Descriptions.Classes;
 
-namespace Aspid.MVVM.Generators.Binders.Body;
+namespace Aspid.MVVM.Generators.Generators.Binders.Body;
 
 // ReSharper disable InconsistentNaming
 public static class BinderLogBody
 {
-    private const string GeneratedAttribute = General.GeneratedCodeLogBinderAttribute;
-    
-    private static readonly string List = Classes.List.Global;
-    private static readonly string IBinder = Classes.IBinder.Global;
-    private static readonly string Exception = Classes.Exception.Global;
-    private static readonly string SerializeFieldAttribute = Classes.SerializeField.Global;
+    private static readonly string IBinder = Classes.IBinder;
+    private static readonly string IAnyBinder = Classes.IAnyBinder;
+    private static readonly string Exception = Aspid.Generators.Helper.Classes.Exception;
 
-    public static CodeWriter AppendBinderLogBody(this CodeWriter code, in BinderDataSpan data)
+    extension(CodeWriter code)
     {
-        var hasBinderLogInBaseType = data.HasBinderLogInBaseType;
-
-        if (!hasBinderLogInBaseType)
+        public CodeWriter AppendBinderLogBody(in BinderDataSpan data)
         {
-            code.AppendProfilerMarkers(data)
-                .AppendProperties(data);
+            var hasBinderLogInBaseType = data.HasBinderLogInBaseType;
+
+            if (!hasBinderLogInBaseType)
+            {
+                code.AppendProfilerMarkers(data)
+                    .AppendProperties(data);
+            }
+        
+            code.AppendSetValueMethods(data.Methods);
+
+            if (!hasBinderLogInBaseType)
+                code.AppendAddLogMethod(data);
+        
+            return code;
         }
-        
-        code.AppendSetValueMethods(data.Methods);
 
-        if (!hasBinderLogInBaseType)
-            code.AppendAddLogMethod(data);
+        private CodeWriter AppendProfilerMarkers(in BinderDataSpan data)
+        {
+            var modifier = data.Symbol.IsSealed ? "private" : "protected";
+            var className = data.Declaration.Identifier.Text;
         
-        return code;
-    }
+            code.AppendLine($"{modifier} static readonly {ProfilerMarker} SetValueMarker = new(\"{className}.SetValue\");");
+            return code.AppendLine();
+        }
 
-    private static CodeWriter AppendProfilerMarkers(this CodeWriter code, in BinderDataSpan data)
-    {
-        var modifier = data.Symbol.IsSealed ? "private" : "protected";
-        var className = data.Declaration.Identifier.Text;
+        private CodeWriter AppendProperties(in BinderDataSpan data)
+        {
+            var modifier = data.Symbol.IsSealed ? "private" : "protected";
         
-        code.AppendLine($"{modifier} static readonly {Classes.ProfilerMarker.Global} SetValueMarker = new(\"{className}.SetValue\");");
-        return code.AppendLine();
-    }
+            code.AppendMultiline(
+                    $"""
+                     {GeneratedCodeLogBinderAttribute}
+                     [{SerializeField}] private bool _isDebug;
 
-    private static CodeWriter AppendProperties(this CodeWriter code, in BinderDataSpan data)
-    {
-        var modifier = data.Symbol.IsSealed ? "private" : "protected";
-        
-        code.AppendMultiline(
-            $"""
-            {GeneratedAttribute}
-            [{SerializeFieldAttribute}] private bool _isDebug;
-            
-            // TODO Add Custom Property
-            {GeneratedAttribute}
-            [{SerializeFieldAttribute}] private {Classes.List.Global}<string> _log;
-            
-            {GeneratedAttribute}
-            {modifier} bool IsDebug => _isDebug;
-            """)
-            .AppendLine();
+                     // TODO Add Custom Property
+                     {GeneratedCodeLogBinderAttribute}
+                     [{SerializeField}] private {List_1}<string> _log;
+
+                     {GeneratedCodeLogBinderAttribute}
+                     {modifier} bool IsDebug => _isDebug;
+                     """)
+                .AppendLine();
          
-        return code;
-    }
+            return code;
+        }
 
-    private static CodeWriter AppendSetValueMethods(this CodeWriter code, in ReadOnlySpan<IMethodSymbol> methods)
-    {
-        code.AppendLoop(methods, method =>
+        private CodeWriter AppendSetValueMethods(in ReadOnlySpan<IMethodSymbol> methods)
+        {
+            foreach (var method in methods)
+            {
+                if (method.IsGenericMethod)
+                    code.AppendIAnyBinderSetValueMethod(method);
+                else
+                    code.AppendIBinderSetValueMethod(method);
+
+                code.AppendLine();
+            }
+
+            return code;
+        }
+
+        private void AppendIBinderSetValueMethod(IMethodSymbol method)
         {
             var parameterName = method.Parameters[0].Name;
             var parameterType = method.Parameters[0].Type.ToDisplayStringGlobal();
-            
+
             code.AppendMultiline(
                 $$"""
-                {{GeneratedAttribute}}
-                void {{IBinder}}<{{parameterType}}>.{{method.Name}}({{parameterType}} {{parameterName}})
-                {
-                    if (IsDebug)
-                    {
-                        try
-                        {
-                            using (SetValueMarker.Auto())
-                            {
-                                SetValue({{parameterName}});
-                            }
-                                
-                            AddLog($"SetValue: {{{parameterName}}}");
-                        }
-                        catch ({{Exception}} e)
-                        {
-                            AddLog($"<color=red>Exception: {e}. {nameof({{parameterName}})}: {{parameterName}}</color>");
-                            throw;
-                        }
-                    }
-                    else 
-                    {
-                        using (SetValueMarker.Auto())
-                        {
-                            SetValue({{parameterName}});
-                        }
-                    }
-                }
-                """)
-                .AppendLine();
-        });
+                  {{GeneratedCodeLogBinderAttribute}}
+                  void {{IBinder}}<{{parameterType}}>.{{method.Name}}({{parameterType}} {{parameterName}})
+                  {
+                      if (IsDebug)
+                      {
+                          try
+                          {
+                              using (SetValueMarker.Auto())
+                              {
+                                  SetValue({{parameterName}});
+                              }
 
-        return code;
-    }
+                              AddLog($"SetValue: {{{parameterName}}}");
+                          }
+                          catch ({{Exception}} e)
+                          {
+                              AddLog($"<color=red>Exception: {e}. {nameof({{parameterName}})}: {{parameterName}}</color>");
+                              throw;
+                          }
+                      }
+                      else
+                      {
+                          using (SetValueMarker.Auto())
+                          {
+                              SetValue({{parameterName}});
+                          }
+                      }
+                  }
+                  """);
+        }
 
-    private static CodeWriter AppendAddLogMethod(this CodeWriter code, in BinderDataSpan data)
-    {
-        var modifier = data.Symbol.IsSealed ? "private" : "protected";
+        private void AppendIAnyBinderSetValueMethod(IMethodSymbol method)
+        {
+            var typeParamName = method.TypeParameters[0].Name;
+            var parameterName = method.Parameters[0].Name;
+
+            code.AppendMultiline(
+                $$"""
+                  {{GeneratedCodeLogBinderAttribute}}
+                  void {{IAnyBinder}}.{{method.Name}}<{{typeParamName}}>({{typeParamName}} {{parameterName}})
+                  {
+                      if (IsDebug)
+                      {
+                          try
+                          {
+                              using (SetValueMarker.Auto())
+                              {
+                                  SetValue({{parameterName}});
+                              }
+
+                              AddLog($"SetValue: {{{parameterName}}}");
+                          }
+                          catch ({{Exception}} e)
+                          {
+                              AddLog($"<color=red>Exception: {e}. {nameof({{parameterName}})}: {{parameterName}}</color>");
+                              throw;
+                          }
+                      }
+                      else
+                      {
+                          using (SetValueMarker.Auto())
+                          {
+                              SetValue({{parameterName}});
+                          }
+                      }
+                  }
+                  """);
+        }
+
+        private CodeWriter AppendAddLogMethod(in BinderDataSpan data)
+        {
+            var modifier = data.Symbol.IsSealed ? "private" : "protected";
         
-        code.AppendMultiline(
-            $$"""
-            {{GeneratedAttribute}}
-            {{modifier}} void AddLog(string log)
-            {
-                _log ??= new {{List}}<string>();
-                _log.Add(log);
-            }
-            """);
+            code.AppendMultiline(
+                $$"""
+                  {{GeneratedCodeLogBinderAttribute}}
+                  {{modifier}} void AddLog(string log)
+                  {
+                      _log ??= new {{List_1}}<string>();
+                      _log.Add(log);
+                  }
+                  """);
 
-        return code;
+            return code;
+        }
     }
+
 }

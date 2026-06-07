@@ -1,7 +1,7 @@
-namespace Aspid.MVVM.Generators.Descriptions;
+namespace Aspid.MVVM.Generators.Generators.Descriptions;
 
 // ReSharper disable InconsistentNaming
-public static partial class Defines
+public static class Defines
 {
     public const string ASPID_MVVM_BINDER_LOG_DISABLED = nameof(ASPID_MVVM_BINDER_LOG_DISABLED);
     

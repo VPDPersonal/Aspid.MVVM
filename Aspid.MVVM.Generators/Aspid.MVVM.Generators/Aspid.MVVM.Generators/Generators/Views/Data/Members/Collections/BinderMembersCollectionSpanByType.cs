@@ -1,9 +1,9 @@
 using System;
 using System.Linq;
-using Aspid.Generator.Helpers;
 using System.Collections.Immutable;
+using Aspid.MVVM.Generators.Helpers;
 
-namespace Aspid.MVVM.Generators.Views.Data.Members.Collections;
+namespace Aspid.MVVM.Generators.Generators.Views.Data.Members.Collections;
 
 public readonly ref struct BinderMembersCollectionSpanByType
 {

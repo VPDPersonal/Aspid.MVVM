@@ -2,7 +2,7 @@ using System;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-namespace Aspid.MVVM.Generators.Binders.Data;
+namespace Aspid.MVVM.Generators.Generators.Binders.Data;
 
 public readonly ref struct BinderDataSpan(BinderData data)
 {

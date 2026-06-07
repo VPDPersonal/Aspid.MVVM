@@ -1,0 +1,5 @@
+# Regenerable / local-only Understand-Anything artifacts
+fingerprints.json
+intermediate/
+tmp/
+diff-overlay.json

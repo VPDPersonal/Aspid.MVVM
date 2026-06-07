@@ -43,12 +43,7 @@ namespace Aspid.MVVM.StarterKit
         /// <param name="value">The <see cref="Texture2D"/> to convert into a sprite, or <see langword="null"/> to clear the sprite.</param>
         public void SetValue(Texture2D? value)
         {
-            if (_createdSprite) UnityEngine.Object.Destroy(_createdSprite);
-
-            _createdSprite = !value
-                ? null
-                : Sprite.Create(value, new Rect(0, 0, value!.width, value.height), new Vector2(0.5f, 0.5f));
-
+            _createdSprite = SpriteBinderHelper.CreateSprite(_createdSprite, value);
             SetValue(_createdSprite);
         }
 
@@ -57,6 +52,8 @@ namespace Aspid.MVVM.StarterKit
         {
             if (_createdSprite) UnityEngine.Object.Destroy(_createdSprite);
             _createdSprite = null;
+            Target.sprite = null;
+            base.OnUnbound();
         }
     }
 }

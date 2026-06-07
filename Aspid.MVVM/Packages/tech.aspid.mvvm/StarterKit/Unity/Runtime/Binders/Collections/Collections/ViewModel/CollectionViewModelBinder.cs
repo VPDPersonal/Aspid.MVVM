@@ -50,6 +50,8 @@ namespace Aspid.MVVM.StarterKit
 
             foreach (var value in values)
             {
+                if (index >= _views.Length) break;
+
                 _views[index].gameObject.SetActive(true);
                 _views[index].Initialize(value);
 
@@ -60,25 +62,19 @@ namespace Aspid.MVVM.StarterKit
                 _views[i].gameObject.SetActive(false);
         }
 
-        protected override void OnAdded(IViewModel? newItem)
-        {
-            OnReset();
-            if (Collection?.Count > 0) OnAdded(Collection!);
-        }
+        protected override void OnAdded(IViewModel? newItem) => RebuildFromCollection();
 
-        protected override void OnAdded(IReadOnlyList<IViewModel?> newItems)
-        {
-            OnReset();
-            if (Collection?.Count > 0) OnAdded(Collection!);
-        }
+        protected override void OnAdded(IReadOnlyList<IViewModel?> newItems) => RebuildFromCollection();
 
-        protected override void OnRemoved(IViewModel? oldItem)
-        {
-            OnReset();
-            if (Collection?.Count > 0) OnAdded(Collection!);
-        }
+        protected override void OnRemoved(IViewModel? oldItem) => RebuildFromCollection();
 
-        protected override void OnRemoved(IReadOnlyList<IViewModel?> oldItems)
+        protected override void OnRemoved(IReadOnlyList<IViewModel?> oldItems) => RebuildFromCollection();
+
+        /// <summary>
+        /// Resets all views and re-applies the current <see cref="CollectionBinderBase{T}.Collection"/>
+        /// positionally, so that each view reflects the item at its corresponding index.
+        /// </summary>
+        private void RebuildFromCollection()
         {
             OnReset();
             if (Collection?.Count > 0) OnAdded(Collection!);
@@ -86,20 +82,15 @@ namespace Aspid.MVVM.StarterKit
 
         protected override void OnReplace(IViewModel? oldItem, IViewModel? newItem, int newStartingIndex)
         {
+            if (newStartingIndex >= _views.Length) return;
+
             _views[newStartingIndex].Deinitialize();
             
             if (newItem is not null)
                 _views[newStartingIndex].Initialize(newItem);
         }
 
-        protected override void OnMove(IViewModel? oldItem, IViewModel? newItem, int oldStartingIndex, int newStartingIndex)
-        {
-            var oldSiblingIndex = _views[oldStartingIndex].transform.GetSiblingIndex();
-            var newSiblingIndex = _views[newStartingIndex].transform.GetSiblingIndex();
-
-            _views[oldStartingIndex].transform.SetSiblingIndex(newSiblingIndex);
-            _views[newStartingIndex].transform.SetSiblingIndex(oldSiblingIndex);
-        }
+        protected override void OnMove(IViewModel? oldItem, IViewModel? newItem, int oldStartingIndex, int newStartingIndex) => RebuildFromCollection();
 
         protected override void OnReset()
         {

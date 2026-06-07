@@ -284,7 +284,11 @@ namespace Aspid.MVVM.StarterKit
         protected virtual void OnAdded(IReadOnlyList<IViewModel> newItems, int newStartingIndex)
         {
             // TODO Optimize
-            Refresh();
+            if (_views is null) return;
+            var viewIndex = newStartingIndex - _previousViewModelTopIndex;
+
+            if (viewIndex < 0 || viewIndex < _views.Length) Refresh();
+            else ResizeContent();
         }
 
         protected virtual void OnRemoved(IViewModel oldItem, int oldStartingIndex)
@@ -299,7 +303,11 @@ namespace Aspid.MVVM.StarterKit
         protected virtual void OnRemoved(IReadOnlyList<IViewModel> oldItems, int oldStartingIndex)
         {
             // TODO Optimize
-            Refresh();
+            if (_views is null) return;
+            var viewIndex = oldStartingIndex - _previousViewModelTopIndex;
+
+            if (viewIndex < 0 || viewIndex < _views.Length) Refresh();
+            else ResizeContent();
         }
 
         protected virtual void OnReplace(IViewModel oldItem, IViewModel newItem, int newStartingIndex)
@@ -314,7 +322,7 @@ namespace Aspid.MVVM.StarterKit
             var oldViewIndex = oldStartingIndex - _previousViewModelTopIndex;
             var newViewIndex = newStartingIndex - _previousViewModelTopIndex;
 
-            if (oldViewIndex < 0 || oldViewIndex <= _views.Length || newViewIndex < 0 || newViewIndex <= _views.Length)
+            if (oldViewIndex < 0 || oldViewIndex < _views.Length || newViewIndex < 0 || newViewIndex < _views.Length)
                 Refresh();
         }
 

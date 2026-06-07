@@ -1,5 +1,4 @@
 using System;
-using System.Linq;
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
@@ -30,10 +29,18 @@ namespace Aspid.MVVM.StarterKit
 
         private bool Filter(T value)
         {
-            return _filters
-                .Select(filter => filter?.Get())
-                .Where(predicate => predicate is not null)
-                .Any(predicate => predicate!(value));
+            var hasPredicate = false;
+
+            foreach (var filter in _filters)
+            {
+                var predicate = filter?.Get();
+                if (predicate is null) continue;
+
+                hasPredicate = true;
+                if (predicate(value)) return true;
+            }
+
+            return !hasPredicate;
         }
     }
 }

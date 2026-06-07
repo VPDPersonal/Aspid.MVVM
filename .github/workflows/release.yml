@@ -19,7 +19,10 @@ on:
 
 env:
   PACKAGE_PATH: Aspid.MVVM/Packages/tech.aspid.mvvm
-  CHANGELOG_PATH: Aspid.MVVM/Packages/tech.aspid.mvvm/CHANGELOG.md
+  # CHANGELOG / MIGRATION are canonical at the repository root (so they surface
+  # on the GitHub landing page). They are copied into the package at publish
+  # time — see the "Bundle release docs into the package" step.
+  CHANGELOG_PATH: CHANGELOG.md
   STABLE_BRANCH: upm
   PREVIEW_BRANCH: upm-preview
 
@@ -210,6 +213,22 @@ jobs:
           TAG="${{ steps.version.outputs.tag }}"
           git fetch origin "refs/tags/$TAG:refs/tags/$TAG" --no-tags 2>/dev/null || true
           git checkout "$TAG"
+
+      - name: Bundle release docs into the package
+        # CHANGELOG / MIGRATION live at the repo root, but the published UPM
+        # package should still ship them (Package Manager's Changelog tab, etc.).
+        # Copy them into the package subtree and commit on the detached release
+        # checkout so the following `git subtree split` picks them up. The commit
+        # is throwaway — it only exists to seed the split SHA.
+        run: |
+          set -euo pipefail
+          for f in CHANGELOG.md CHANGELOG.ru.md MIGRATION.md MIGRATION.ru.md; do
+            if [[ -f "$f" ]]; then
+              cp "$f" "$PACKAGE_PATH/$f"
+              git add -f "$PACKAGE_PATH/$f"
+            fi
+          done
+          git commit -m "chore(release): bundle changelog and migration into package" || echo "Nothing to bundle"
 
       - name: Publish UPM subtree
         run: |

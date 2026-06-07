@@ -1,6 +1,6 @@
 ![Aspid.MVVMHeaderImage.png](Aspid.MVVM/Packages/tech.aspid.mvvm/Documentation/Images/Aspid.MVVMHeaderImage.png)
 [![Unity](https://img.shields.io/badge/Unity_6.0%2B-000000?style=flat&logo=unity&logoColor=white&color=4fa35d)](https://assetstore.unity.com/packages/slug/298463)
-[![Stable](https://img.shields.io/github/package-json/v/VPDPersonal/Aspid.MVVM/upm?label=Stable&labelColor=254d2c&color=4fa35d)](https://github.com/VPDPersonal/Aspid.MVVM/releases)
+[![Stable](https://img.shields.io/github/v/release/VPDPersonal/Aspid.MVVM?label=Stable&labelColor=254d2c&color=4fa35d)](https://github.com/VPDPersonal/Aspid.MVVM/releases)
 [![Preview](https://img.shields.io/github/package-json/v/VPDPersonal/Aspid.MVVM/upm-preview?label=Preview&labelColor=4d4425&color=a3923d)](https://github.com/VPDPersonal/Aspid.MVVM/releases)
 [![License](https://img.shields.io/github/license/VPDPersonal/Aspid.MVVM?label=License&labelColor=254d2c&color=4fa35d)](LICENSE)
 
@@ -26,27 +26,56 @@ teams to scale projects without descending into chaos.
 
 ## Integration
 
-> **Preview only.** The `1.1.0` line is published as a UPM package on the `upm-preview` branch.
-> The current stable release (`1.0.x`) is installed the usual way — via the
-> [Unity Asset Store](https://assetstore.unity.com/packages/slug/298463) or the
-> [Releases](https://github.com/VPDPersonal/Aspid.MVVM/releases) page.
+### Stable (recommended)
 
-Install the preview via UPM (Unity Package Manager) — add the package using its Git URL.
-The release workflow publishes the `upm-preview` branch containing only the package contents
-at its root, so no `?path=` query is needed.
+The current stable release is the recommended choice for production. Install it either way:
 
-The `upm-preview` branch always points to the latest **preview** release (beta, rc, …):
+* **Unity Asset Store** — add it to your account from the
+  [Asset Store page](https://assetstore.unity.com/packages/slug/298463), then import it through the
+  Package Manager (*Window → Package Manager → My Assets*).
+* **Releases page** — download the package from the
+  [Releases](https://github.com/VPDPersonal/Aspid.MVVM/releases) page and import it into your project.
+
+<details>
+<summary><b>🧪 Preview (1.1.0) — install via UPM</b></summary>
+
+<br>
+
+The `1.1.0` line is published as a UPM package on the `upm-preview` branch and is installed through the
+Unity Package Manager via Git URLs (*Window → Package Manager → + → Install package from git URL…*).
+The release workflow publishes a branch containing only the package contents at its root, so no `?path=`
+query is needed.
+
+Its assemblies depend on two external git packages that are **not** resolved automatically. Add the
+packages **in this order** so each dependency is present before the package that needs it:
+
+**1. Aspid.FastTools** — preview channel:
+
+```
+https://github.com/VPDPersonal/Aspid.FastTools.git#upm-preview
+```
+
+**2. Aspid.Collections** — stable channel:
+
+```
+https://github.com/VPDPersonal/Aspid.Collections.git#upm
+```
+
+**3. Aspid.MVVM** — preview channel:
 
 ```
 https://github.com/VPDPersonal/Aspid.MVVM.git#upm-preview
 ```
 
-To install a specific preview version, target the immutable per-release tag (see
+The `upm-preview` branch always points to the latest **preview** release (beta, rc, …). To pin a specific
+preview version, target its immutable per-release tag (see
 [Releases](https://github.com/VPDPersonal/Aspid.MVVM/releases) for the list of available versions):
 
 ```
-https://github.com/VPDPersonal/Aspid.MVVM.git#upm-preview/1.1.0-beta.1
+https://github.com/VPDPersonal/Aspid.MVVM.git#upm/1.1.0-beta.1
 ```
+
+</details>
 
 ---
 

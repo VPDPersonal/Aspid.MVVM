@@ -1,268 +1,138 @@
-/* Aspid.MVVM Settings Window Styles */
+/* Aspid.MVVM Settings Window — styled to match the Aspid.FastTools Welcome window. */
 
-/* Root container */
-.settings-window-root 
-{
+:root {
+    --aspid-mvvm-colors-bg: rgb(0, 0, 0);
+}
+
+.settings-window-root {
     flex-grow: 1;
-    min-width: 320px;
-    background-color: #1e1e1e;
 }
 
-FloatingBackgroundElement
-{
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    position: absolute;
-    background-color: rgba(0, 0, 0, 0.3);
+AspidAnimatedDotsBackground {
+    background-color: var(--aspid-mvvm-colors-bg);
 }
 
-/* Content container */
-.content-container 
-{
+.scroll {
     flex-grow: 1;
-    padding: 20px;
-    min-width: 280px;
-    position: relative;
-    flex-direction: column;
-    justify-content: space-between;
 }
 
-.content-container > ScrollView
-{
+.content {
+    padding: 10px;
     flex-grow: 1;
-    flex-shrink: 1;
-    padding-right: 0;
-    margin-bottom: 20px;
-    margin-right: -12px;
+    align-items: stretch;
 }
 
-/* Scroller positioned outside content */
-.content-container > ScrollView .unity-scroller--vertical
-{
-    top: 0;
-    right: 0;
-    bottom: 0;
-    position: absolute;
-}
-
-.content-container > ScrollView #unity-content-viewport
-{
-    padding-right: 12px;
-}
-
-.content-container > ScrollView > * > * 
-{
-    flex-shrink: 0;
-}
-
-/* Main content area */
-.main-content 
-{
-    flex-shrink: 0;
-    flex-direction: column;
-}
-
-/* Header section */
-.header 
-{
-    flex-shrink: 0;
-    min-width: 240px;
-    border-width: 1px;
-    padding: 15px 20px;
-    flex-direction: row;
+/* ----------------------------------- HERO ----------------------------------- */
+.hero {
+    padding: 10px;
     align-items: center;
-    margin-bottom: 20px;
-    border-radius: 12px;
-    background-color: rgba(40, 40, 45, 0.6);
-    border-color: rgba(255, 255, 255, 0.08);
+    flex-direction: row;
 }
 
-.header > Image 
-{
-    width: 48px;
-    height: 48px;
-    min-width: 48px;
-    min-height: 48px;
-    flex-shrink: 0;
+.logo {
+    width: 100px;
+    height: 100px;
+    flex-shrink: 1;
     margin-right: 15px;
 }
 
-.header-title 
-{
-    color: #e0e0e0;
-    font-size: 20px;
-    overflow: hidden;
-    margin-bottom: 2px;
-    white-space: nowrap;
+.hero-text {
+    flex-grow: 1;
+}
+
+AspidAnimatedTitle {
+    margin-bottom: 5px;
+    font-size: 36px;
     -unity-font-style: bold;
-    text-overflow: ellipsis;
 }
 
-.header-subtitle 
-{
-    color: #888888;
-    font-size: 12px;
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
+.description {
+    white-space: normal;
+    border-radius: 10px;
+    background-color: var(--aspid-mvvm-colors-bg);
 }
 
-/* Settings section */
-.settings-section
-{
-    padding: 20px;
-    flex-shrink: 0;
-    min-width: 240px;
-    border-width: 1px;
-    border-radius: 12px;
-    background-color: rgba(40, 40, 45, 0.6);
-    border-color: rgba(255, 255, 255, 0.08);
+/* ----------------------------------- CARD ----------------------------------- */
+.card {
+    padding: 10px;
+    border-radius: 10px;
 }
 
-.section-title
-{
-    color: #a0a0a0;
-    font-size: 14px;
-    overflow: hidden;
-    white-space: nowrap;
-    margin-bottom: 15px;
-    padding-bottom: 10px;
-    -unity-font-style: bold;
-    text-overflow: ellipsis;
-    border-bottom-width: 1px;
-    border-bottom-color: rgba(255, 255, 255, 0.1);
+.card-header {
+    margin-bottom: 10px;
 }
 
-/* Setting row */
-.setting-row 
-{
-    flex-shrink: 0;
+.card-header--secondary {
+    margin-top: 15px;
+}
+
+/* Toggle rows */
+.setting-row {
     min-height: 36px;
     padding: 8px 12px;
     margin-bottom: 8px;
     border-radius: 8px;
-    flex-direction: row;
-    align-items: center;
-    background-color: rgba(55, 55, 60, 0.5);
+    background-color: rgba(255, 255, 255, 0.04);
 }
 
-.setting-row:hover
-{
-    background-color: rgba(65, 65, 70, 0.7);
+.setting-row:hover {
+    background-color: rgba(255, 255, 255, 0.07);
 }
 
-/* Action buttons section */
-.action-buttons 
-{
-    flex-wrap: wrap;
+/* Action buttons */
+.actions {
     margin-top: 10px;
     flex-direction: row;
     justify-content: flex-end;
 }
 
-.action-button 
-{
-    flex-shrink: 0;
-    font-size: 13px;
-    min-width: 80px;
-    margin-top: 5px;
-    border-width: 1px;
+.action {
+    min-width: 90px;
     margin-left: 10px;
-    padding: 10px 24px;
-    border-radius: 6px;
 }
 
-.apply-button 
-{
-    color: #7eb0d5;
-    border-color: rgba(100, 150, 200, 0.5);
-    background-color: rgba(100, 150, 200, 0.25);
+.action .aspid-fasttools-gradient-button__label {
+    -unity-text-align: middle-center;
 }
 
-.apply-button:hover:enabled 
-{
-    background-color: rgba(100, 150, 200, 0.35);
+/* ---------------------------------- FOOTER ---------------------------------- */
+.footer {
+    margin-top: 2px;
 }
 
-.apply-button:active:enabled 
-{
-    background-color: rgba(100, 150, 200, 0.45);
+AspidDividingLine {
+    opacity: 0.5;
 }
 
-.apply-button:disabled 
-{
-    color: rgba(100, 150, 200, 0.35);
-    border-color: rgba(100, 150, 200, 0.15);
-    background-color: rgba(100, 150, 200, 0.08);
-}
-
-.revert-button 
-{
-    color: #c49090;
-    border-color: rgba(180, 100, 100, 0.4);
-    background-color: rgba(180, 100, 100, 0.15);
-}
-
-.revert-button:hover:enabled 
-{
-    background-color: rgba(180, 100, 100, 0.25);
-}
-
-.revert-button:active:enabled 
-{
-    background-color: rgba(180, 100, 100, 0.35);
-}
-
-.revert-button:disabled 
-{
-    color: rgba(180, 100, 100, 0.35);
-    border-color: rgba(180, 100, 100, 0.15);
-    background-color: rgba(180, 100, 100, 0.08);
-}
-
-/* Footer section */
-.footer 
-{
-    flex-shrink: 0;
-    flex-wrap: wrap;
-    border-width: 1px;
-    padding: 15px 20px;
-    border-radius: 12px;
-    align-items: center;
-    flex-direction: row;
-    background-color: rgba(40, 40, 45, 0.6);
-    border-color: rgba(255, 255, 255, 0.08);
-}
-
-.footer > Label
-{
+.footer-row {
     flex-grow: 1;
-    color: #666666;
-    flex-shrink: 0;
+    margin-top: 5px;
+    padding-left: 10px;
+    padding-right: 10px;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.footer-links {
+    flex-direction: row;
+}
+
+.footer-version {
     font-size: 14px;
+    color: var(--aspid-colors-text-darkness);
 }
 
-.footer > Button 
-{
-    color: #7eb0d5;
-    flex-shrink: 0;
-    font-size: 12px;
-    padding: 8px 16px;
-    border-width: 1px;
-    border-radius: 6px;
-    white-space: nowrap;
-    border-color: rgba(100, 150, 200, 0.4);
-    background-color: rgba(100, 150, 200, 0.15);
+.footer-version:hover {
+    color: var(--aspid-colors-text-light);
 }
 
-.footer > Button:hover 
-{
-    background-color: rgba(100, 150, 200, 0.25);
+.footer-link {
+    margin-left: 15px;
+    font-size: 14px;
+    -unity-font-style: bold;
+    color: var(--aspid-colors-status-success-text-dark);
 }
 
-.Footer > Button:active 
-{
-    background-color: rgba(100, 150, 200, 0.35);
+.footer-link:hover {
+    color: var(--aspid-colors-status-success-text-light);
 }

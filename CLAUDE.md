@@ -143,6 +143,7 @@ Submodules:
 
 - Full docs: https://vpd-inc.gitbook.io/aspid.mvvm/
 - Unity Asset Store: https://assetstore.unity.com/packages/slug/298463
+- **Knowledge wiki**: `docs/wiki/` — Obsidian vault of concept/entity/binder/flow/risk pages for fast codebase orientation (read it before reading source). Built and kept in sync by the `aspid-wiki` skill in `.claude/skills/`. Start at `docs/wiki/index.md`.
 - **XML doc conventions**: skill `aspid-mvvm-xmldoc` in `.claude/skills/` — rules for writing XML documentation comments
 - Key entry points for new contributors:
   - `Readme.md` — project overview

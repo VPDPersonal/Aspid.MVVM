@@ -286,6 +286,13 @@
         "com.unity.modules.imgui": "1.0.0"
       }
     },
+    "com.yucchiy.unicli-server": {
+      "version": "https://github.com/yucchiy/UniCli.git?path=src/UniCli.Unity/Packages/com.yucchiy.unicli-server#v1.3.2",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {},
+      "hash": "be0abbd15c319e1fd6c1843f4d57acbe90eedfce"
+    },
     "jp.hadashikick.vcontainer": {
       "version": "https://github.com/hadashiA/VContainer.git?path=VContainer/Assets/VContainer#1.16.0",
       "depth": 0,

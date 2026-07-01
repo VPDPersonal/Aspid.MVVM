@@ -26,22 +26,22 @@
     {
       "displayName": "Hello World",
       "description": "Minimal end-to-end example wiring a View to a ViewModel.",
-      "path": "Samples/HelloWorld"
+      "path": "Samples~/HelloWorld"
     },
     {
       "displayName": "Stats",
       "description": "Binding numeric stats with converters and bindable members.",
-      "path": "Samples/Stats"
+      "path": "Samples~/Stats"
     },
     {
       "displayName": "Todo List",
       "description": "Observable collection bound to a dynamic list of items.",
-      "path": "Samples/TodoList"
+      "path": "Samples~/TodoList"
     },
     {
       "displayName": "Virtualized List",
       "description": "Virtualized list efficiently rendering large data sets.",
-      "path": "Samples/VirtualizedList"
+      "path": "Samples~/VirtualizedList"
     }
   ],
   "unityRelease": "0f1"

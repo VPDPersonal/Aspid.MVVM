@@ -38,7 +38,7 @@
     background-size:                                            contain;
     background-repeat:                                          no-repeat;
     background-position:                                        center;
-    background-image:                                           var(--aspid-fasttools-icons-help-box);
+    background-image:                                           var(--aspid-fasttools-icons-help_box);
 }
 
 .aspid-fasttools-help-box__icon--hidden {
@@ -46,20 +46,26 @@
 }
 
 :root.aspid-fasttools-help-box--info {
-    --aspid-fasttools-icons-help-box:                           resource("d_console.infpicon@2x"); 
+    --aspid-fasttools-icons-help_box:                           resource("d_console.infoicon@2x");
 }
 
 :root.aspid-fasttools-help-box--warning {
-    --aspid-fasttools-icons-help-box:                           resource("d_console.warnicon@2x");
+    --aspid-fasttools-icons-help_box:                           resource("d_console.warnicon@2x");
 }
 
 :root.aspid-fasttools-help-box--error {
-    --aspid-fasttools-icons-help-box:                           resource("d_console.erroricon@2x");
+    --aspid-fasttools-icons-help_box:                           resource("d_console.erroricon@2x");
 }
 
 /* --- TEXT --- */
 .aspid-fasttools-help-box__text-container {
     flex-grow:                                                  1;
+}
+
+/* Small gap below the title (and its dividing line) so the message is not glued to the line above;
+   only present when a title is set, so title-less help boxes keep the message centered on the icon. */
+.aspid-fasttools-help-box__title {
+    margin-bottom:                                              4px;
 }
 
 :root AspidLabel > Label {

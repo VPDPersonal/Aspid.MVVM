@@ -113,6 +113,16 @@ namespace Aspid.FastTools.UIElements.Editors.Internal
         }
 
         /// <summary>
+        /// Gets or sets the orientation of the dividing line.
+        /// </summary>
+        [UxmlAttribute]
+        public AspidDividingLineDirectionStyle.Type LineDirection
+        {
+            get => _line.Direction;
+            set => _line.Direction = value;
+        }
+
+        /// <summary>
         /// Creates an <see cref="AspidLabel"/> with empty text and the default preset.
         /// </summary>
         public AspidLabel()

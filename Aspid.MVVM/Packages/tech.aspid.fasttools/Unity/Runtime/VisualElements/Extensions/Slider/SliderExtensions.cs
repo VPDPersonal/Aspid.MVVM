@@ -284,8 +284,7 @@ namespace Aspid.FastTools.UIElements
         /// <param name="element">The element to modify.</param>
         /// <param name="value">Whether the track is filled up to the current value.</param>
         /// <returns>The element, for chaining.</returns>
-        public static T SetFill<T, TValue>(this T element, bool value)
-            where T : BaseSlider<TValue>
+        public static BaseSlider<TValue> SetFill<TValue>(this BaseSlider<TValue> element, bool value)
             where TValue : IComparable<TValue>
         {
             element.fill = value;
@@ -298,8 +297,7 @@ namespace Aspid.FastTools.UIElements
         /// <param name="element">The element to modify.</param>
         /// <param name="value">Whether the slider direction is inverted.</param>
         /// <returns>The element, for chaining.</returns>
-        public static T SetInverted<T, TValue>(this T element, bool value)
-            where T : BaseSlider<TValue>
+        public static BaseSlider<TValue> SetInverted<TValue>(this BaseSlider<TValue> element, bool value)
             where TValue : IComparable<TValue>
         {
             element.inverted = value;
@@ -312,8 +310,7 @@ namespace Aspid.FastTools.UIElements
         /// <param name="element">The element to modify.</param>
         /// <param name="value">The page size to set.</param>
         /// <returns>The element, for chaining.</returns>
-        public static T SetPageSize<T, TValue>(this T element, float value)
-            where T : BaseSlider<TValue>
+        public static BaseSlider<TValue> SetPageSize<TValue>(this BaseSlider<TValue> element, float value)
             where TValue : IComparable<TValue>
         {
             element.pageSize = value;
@@ -354,8 +351,7 @@ namespace Aspid.FastTools.UIElements
         /// <param name="element">The element to modify.</param>
         /// <param name="value">Whether to show a numeric input field.</param>
         /// <returns>The element, for chaining.</returns>
-        public static T SetShowInputField<T, TValue>(this T element, bool value)
-            where T : BaseSlider<TValue>
+        public static BaseSlider<TValue> SetShowInputField<TValue>(this BaseSlider<TValue> element, bool value)
             where TValue : IComparable<TValue>
         {
             element.showInputField = value;
@@ -368,8 +364,7 @@ namespace Aspid.FastTools.UIElements
         /// <param name="element">The element to modify.</param>
         /// <param name="value">The slider direction to set.</param>
         /// <returns>The element, for chaining.</returns>
-        public static T SetDirection<T, TValue>(this T element, SliderDirection value)
-            where T : BaseSlider<TValue>
+        public static BaseSlider<TValue> SetDirection<TValue>(this BaseSlider<TValue> element, SliderDirection value)
             where TValue : IComparable<TValue>
         {
             element.direction = value;

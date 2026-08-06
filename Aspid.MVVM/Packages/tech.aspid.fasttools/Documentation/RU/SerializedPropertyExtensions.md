@@ -1,4 +1,4 @@
-# SerializedProperty Extensions — full reference
+# SerializedProperty Extensions
 
 Цепочные методы расширения над `SerializedProperty` для синхронизации владеющего `SerializedObject`, установки значений и рефлексии над полем-источником.
 
@@ -58,7 +58,7 @@ property
 | `SetVector4` | `Vector4` | |
 | `SetQuaternion` | `Quaternion` | |
 | `SetAnimationCurve` | `AnimationCurve` | |
-| `SetEntityId` | `Unity.Entities.EntityId` | Unity 6.2+. Apply-вариант называется `SetEntityIdApply` *(имя метода сохраняет опечатку из исходника: пропущено `And`)* |
+| `SetEntityId` | `EntityId` (`UnityEngine`) | Unity 6.2+ |
 
 ### Enum setters
 
@@ -110,15 +110,15 @@ property
 
 | Метод | Возвращает | Описание |
 |-------|------------|----------|
-| `GetPropertyType()` | `Type` или `null` | Возвращает `FieldType` / `PropertyType` C#-члена, стоящего за property. `null`, если член не удаётся разрешить. |
-| `GetMemberInfo()` | `MemberInfo` или `null` | Находит field/property на классе-владельце, имя которого совпадает с `SerializedProperty.name`. Обходит базовые классы через `TypeExtensions.GetMembersInfosIncludingBaseClasses`. |
-| `GetClassInstance()` | `object` | Идёт по `propertyPath` от корневого `targetObject` и возвращает runtime-экземпляр, который непосредственно содержит это property. Поддерживает вложенные объекты, массивы и `List<T>`-поля. |
+| `GetPropertyType()` | `Type` или `null` | Возвращает `FieldType` поля, стоящего за property (для элемента массива/списка — тип элемента). `null`, если поле не удаётся разрешить. |
+| `GetFieldInfo()` | `FieldInfo` или `null` | Находит backing-поле, разрешая экземпляр-владелец property (`GetDeclaringInstance`) и ища поле на его runtime-типе, включая базовые классы — поэтому цепочка с `[SerializeReference]` разрешается естественно. Для элемента массива/списка возвращается поле коллекции (как `PropertyDrawer.fieldInfo`). |
+| `GetDeclaringInstance()` | `object` или `null` | Идёт по `propertyPath` от корневого `targetObject` и возвращает runtime-экземпляр, на котором объявлено backing-поле property (для элемента массива/списка — владелец поля коллекции). `null`, если путь не удаётся разрешить. Владелец-структура возвращается как boxed-копия — изменения в ней не попадут в сериализуемый объект. |
 
 ```csharp
 public override void OnGUI(Rect rect, SerializedProperty property, GUIContent label)
 {
     var declaringType = property.GetPropertyType();
-    var owner = property.GetClassInstance();
+    var owner = property.GetDeclaringInstance();
     // …
 }
 ```

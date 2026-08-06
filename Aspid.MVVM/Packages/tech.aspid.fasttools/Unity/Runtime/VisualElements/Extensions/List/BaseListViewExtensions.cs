@@ -358,6 +358,38 @@ namespace Aspid.FastTools.UIElements
             element.makeFooter = value;
             return element;
         }
+
+        /// <summary>
+        /// Subscribes to the <see cref="BaseListView.makeFooter"/> callback.
+        /// </summary>
+        /// <remarks>
+        /// This callback allows the user to make their own footer for this control.
+        /// </remarks>
+        /// <param name="element">The element to modify.</param>
+        /// <param name="value">The callback to add.</param>
+        /// <returns>The element, for chaining.</returns>
+        public static T AddMakeFooter<T>(this T element, Func<VisualElement> value)
+            where T : BaseListView
+        {
+            element.makeFooter += value;
+            return element;
+        }
+
+        /// <summary>
+        /// Unsubscribes from the <see cref="BaseListView.makeFooter"/> callback.
+        /// </summary>
+        /// <remarks>
+        /// This callback allows the user to make their own footer for this control.
+        /// </remarks>
+        /// <param name="element">The element to modify.</param>
+        /// <param name="value">The callback to remove.</param>
+        /// <returns>The element, for chaining.</returns>
+        public static T RemoveMakeFooter<T>(this T element, Func<VisualElement> value)
+            where T : BaseListView
+        {
+            element.makeFooter -= value;
+            return element;
+        }
         #endregion
 
         #region MakeHeader
@@ -376,6 +408,38 @@ namespace Aspid.FastTools.UIElements
             element.makeHeader = value;
             return element;
         }
+
+        /// <summary>
+        /// Subscribes to the <see cref="BaseListView.makeHeader"/> callback.
+        /// </summary>
+        /// <remarks>
+        /// This callback allows the user to make their own header for this control.
+        /// </remarks>
+        /// <param name="element">The element to modify.</param>
+        /// <param name="value">The callback to add.</param>
+        /// <returns>The element, for chaining.</returns>
+        public static T AddMakeHeader<T>(this T element, Func<VisualElement> value)
+            where T : BaseListView
+        {
+            element.makeHeader += value;
+            return element;
+        }
+
+        /// <summary>
+        /// Unsubscribes from the <see cref="BaseListView.makeHeader"/> callback.
+        /// </summary>
+        /// <remarks>
+        /// This callback allows the user to make their own header for this control.
+        /// </remarks>
+        /// <param name="element">The element to modify.</param>
+        /// <param name="value">The callback to remove.</param>
+        /// <returns>The element, for chaining.</returns>
+        public static T RemoveMakeHeader<T>(this T element, Func<VisualElement> value)
+            where T : BaseListView
+        {
+            element.makeHeader -= value;
+            return element;
+        }
         #endregion
 
         #region MakeNoneElement
@@ -392,6 +456,38 @@ namespace Aspid.FastTools.UIElements
             where T : BaseListView
         {
             element.makeNoneElement = value;
+            return element;
+        }
+
+        /// <summary>
+        /// Subscribes to the <see cref="BaseListView.makeNoneElement"/> callback.
+        /// </summary>
+        /// <remarks>
+        /// This callback allows the user to set a Visual Element to replace the "List is empty" Label shown when the ListView is empty.
+        /// </remarks>
+        /// <param name="element">The element to modify.</param>
+        /// <param name="value">The callback to add.</param>
+        /// <returns>The element, for chaining.</returns>
+        public static T AddMakeNoneElement<T>(this T element, Func<VisualElement> value)
+            where T : BaseListView
+        {
+            element.makeNoneElement += value;
+            return element;
+        }
+
+        /// <summary>
+        /// Unsubscribes from the <see cref="BaseListView.makeNoneElement"/> callback.
+        /// </summary>
+        /// <remarks>
+        /// This callback allows the user to set a Visual Element to replace the "List is empty" Label shown when the ListView is empty.
+        /// </remarks>
+        /// <param name="element">The element to modify.</param>
+        /// <param name="value">The callback to remove.</param>
+        /// <returns>The element, for chaining.</returns>
+        public static T RemoveMakeNoneElement<T>(this T element, Func<VisualElement> value)
+            where T : BaseListView
+        {
+            element.makeNoneElement -= value;
             return element;
         }
         #endregion

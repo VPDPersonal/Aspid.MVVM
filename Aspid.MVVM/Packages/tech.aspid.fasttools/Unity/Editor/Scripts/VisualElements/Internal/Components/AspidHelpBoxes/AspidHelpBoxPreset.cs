@@ -18,13 +18,13 @@ namespace Aspid.FastTools.UIElements.Editors.Internal
             .SetTitle(new AspidLabelPreset()
                 .SetSelectable()
                 .SetLineTheme(ThemeStyle.Type.Light)
-                .SetLabelTheme(ThemeStyle.Type.Lightness)
+                .SetLabelTheme(ThemeStyle.Type.Light)
                 .SetLineSize(AspidDividingLineSizeStyle.Type.Thin)
                 .SetLabelSize(AspidLabelSizeStyle.Type.H5)
                 .SetFontStyle(FontStyle.Bold))
             .SetMessage(new AspidLabelPreset()
                 .SetSelectable()
-                .SetLabelTheme(ThemeStyle.Type.Light)
+                .SetLabelTheme(ThemeStyle.Type.Dark)
                 .SetLineSize(AspidDividingLineSizeStyle.Type.None)
                 .SetLabelSize(AspidLabelSizeStyle.Type.H7));
 

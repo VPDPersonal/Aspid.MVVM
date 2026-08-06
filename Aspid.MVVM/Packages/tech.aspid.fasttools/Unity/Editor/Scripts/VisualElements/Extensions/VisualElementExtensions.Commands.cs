@@ -28,8 +28,9 @@ namespace Aspid.FastTools.UIElements.Editors
             if (!script) return element;
 
             var doubleClick = new DoubleClickTracker();
-            element.RegisterCallback<MouseUpEvent>(_ =>
+            element.RegisterCallback<MouseUpEvent>(evt =>
             {
+                if (evt.button != (int)MouseButton.LeftMouse) return;
                 if (doubleClick.Detect()) AssetDatabase.OpenAsset(script);
             });
 

@@ -26,7 +26,7 @@ namespace Aspid.FastTools.Types
     /// </code>
     /// </example>
     [Serializable]
-    public sealed class SerializableType
+    public sealed class SerializableType : ISerializableType, ISerializationCallbackReceiver
     {
 #pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring as nullable.
         [SerializeField] private string _assemblyQualifiedName;
@@ -34,15 +34,10 @@ namespace Aspid.FastTools.Types
 
         private Type? _type;
 
-        /// <summary>
-        /// The base constraint type. Always <see cref="object"/> for unconstrained <see cref="SerializableType"/>.
-        /// </summary>
+        /// <inheritdoc />
         public Type BaseType => typeof(object);
 
-        /// <summary>
-        /// Returns the resolved <see cref="System.Type"/>, or <c>null</c>
-        /// if the stored assembly-qualified name could not be matched to any loaded assembly.
-        /// </summary>
+        /// <inheritdoc />
         public Type? Type
         {
             get
@@ -51,22 +46,35 @@ namespace Aspid.FastTools.Types
                 using (this.Marker())
 #endif
                 {
-                    return _type ??= Type.GetType(_assemblyQualifiedName, throwOnError: false);
+                    return _type ??= GetTypeFromAssemblyQualifiedName(_assemblyQualifiedName);
                 }
             }
         }
 
         /// <summary>
-        /// Implicitly converts to <see cref="System.Type"/>. Equivalent to accessing <see cref="Type"/>.
+        /// Resolves and returns the wrapped type; equivalent to <see cref="Type"/>.
+        /// A <see langword="null"/> wrapper converts to <see langword="null"/>.
         /// </summary>
-        public static implicit operator Type?(SerializableType type) => type.Type;
+        public static implicit operator Type?(SerializableType? type) => type?.Type;
+
+        void ISerializationCallbackReceiver.OnAfterDeserialize() =>
+            _type = null;
+
+        void ISerializationCallbackReceiver.OnBeforeSerialize() { }
+
+        // Unity deserialization coerces the field to "", but a code-constructed instance still holds
+        // null — and Type.GetType(null) throws ArgumentNullException regardless of throwOnError,
+        // breaking the "or null" contract above for a plain `new SerializableType()`.
+        internal static Type? GetTypeFromAssemblyQualifiedName(string? assemblyQualifiedName) => string.IsNullOrWhiteSpace(assemblyQualifiedName)
+            ? null
+            : Type.GetType(assemblyQualifiedName, throwOnError: false);
     }
 
     /// <summary>
     /// A wrapper around <see cref="System.Type"/> that supports Unity Inspector serialization,
     /// constrained to types assignable to <typeparamref name="T"/>.
     /// </summary>
-    /// <typeparam name="T">The base constraint type. Only subtypes will be offered in the editor picker.</typeparam>
+    /// <typeparam name="T">The base constraint type. The editor picker offers only types assignable to it.</typeparam>
     /// <example>
     /// Constrain the picker to <c>MonoBehaviour</c> subtypes only:
     /// <code>
@@ -84,7 +92,7 @@ namespace Aspid.FastTools.Types
     /// </code>
     /// </example>
     [Serializable]
-    public sealed class SerializableType<T>
+    public sealed class SerializableType<T> : ISerializableType, ISerializationCallbackReceiver
     {
 #pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring as nullable.
         [SerializeField] private string _assemblyQualifiedName;
@@ -92,15 +100,10 @@ namespace Aspid.FastTools.Types
 
         private Type? _type;
 
-        /// <summary>
-        /// The base constraint type. Always <typeparamref name="T"/>.
-        /// </summary>
+        /// <inheritdoc />
         public Type BaseType => typeof(T);
 
-        /// <summary>
-        /// Returns the resolved <see cref="System.Type"/>, or <c>null</c>
-        /// if the stored assembly-qualified name could not be matched to any loaded assembly.
-        /// </summary>
+        /// <inheritdoc />
         public Type? Type
         {
             get
@@ -109,14 +112,20 @@ namespace Aspid.FastTools.Types
                 using (this.Marker())
 #endif
                 {
-                    return _type ??= Type.GetType(_assemblyQualifiedName, throwOnError: false);
+                    return _type ??= SerializableType.GetTypeFromAssemblyQualifiedName(_assemblyQualifiedName);
                 }
             }
         }
 
         /// <summary>
-        /// Implicitly converts to <see cref="System.Type"/>. Equivalent to accessing <see cref="Type"/>.
+        /// Resolves and returns the wrapped type; equivalent to <see cref="Type"/>.
+        /// A <see langword="null"/> wrapper converts to <see langword="null"/>.
         /// </summary>
-        public static implicit operator Type?(SerializableType<T> type) => type.Type;
+        public static implicit operator Type?(SerializableType<T>? type) => type?.Type;
+
+        void ISerializationCallbackReceiver.OnAfterDeserialize() =>
+            _type = null;
+
+        void ISerializationCallbackReceiver.OnBeforeSerialize() { }
     }
 }

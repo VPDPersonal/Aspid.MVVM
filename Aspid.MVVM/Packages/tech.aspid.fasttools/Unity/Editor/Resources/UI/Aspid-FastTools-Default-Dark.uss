@@ -1,9 +1,11 @@
 :root {
     /* ---------------------------------- ICONS ---------------------------------- */
-    --aspid-icons-status-success:                   resource("Icons/aspid_icon_medium_green_1022x1011"); 
-    --aspid-icons-status-warning:                   resource("Icons/aspid_icon_medium_yellow_1022x1011");
-    --aspid-icons-status-error:                     resource("Icons/aspid_icon_medium_red_1022x1011");   
-    --aspid-icons-status-info:                      resource("Icons/aspid_icon_medium_blue_1022x1011");  
+    --aspid-icons-status-success:                   resource("Icons/aspid_icon_medium_green_256x253"); 
+    --aspid-icons-status-warning:                   resource("Icons/aspid_icon_medium_yellow_256x253");
+    --aspid-icons-status-error:                     resource("Icons/aspid_icon_medium_red_256x253");   
+    --aspid-icons-status-info:                      resource("Icons/aspid_icon_medium_blue_256x253");
+    --aspid-icons-home:                             resource("Icons/aspid_icon_home");
+    --aspid-icons-settings:                         resource("Icons/aspid_icon_settings");
 
     /* ------------------------------- BACKGROUNDS ------------------------------- */
     --aspid-colors-bg-darkness:                     rgb(26, 26, 26);    /* #1A1A1A */
@@ -292,7 +294,7 @@ Button.aspid-fasttools-theme--dark {
 
 Button.aspid-fasttools-theme--light {
     color:                                          var(--aspid-colors-text-light);
-    background-color:                               var(--aspid-colors-bg-lightness);
+    background-color:                               var(--aspid-colors-bg-light);
 }
 
 Button.aspid-fasttools-theme--lightness {

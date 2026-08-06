@@ -58,7 +58,7 @@ namespace Aspid.MVVM
         {
             if (_wasLookingFor) return;
             
-            _classInstance = property.GetClassInstance();
+            _classInstance = property.GetDeclaringInstance();
             var type = _classInstance.GetType();
 
             for (; type is not null; type = type.BaseType)

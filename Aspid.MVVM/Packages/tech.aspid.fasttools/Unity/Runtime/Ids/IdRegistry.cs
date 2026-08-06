@@ -97,21 +97,24 @@ namespace Aspid.FastTools.Ids
 
         private void RebuildCache()
         {
-            using var _ = this.Marker();
-            
-            var count = Math.Min(_ids.Length, _names.Length);
-            _idByName = new Dictionary<string, int>(count);
-            _nameById = new Dictionary<int, string>(count);
-
-            for (var i = 0; i < count; i++)
+#if !ASPID_FAST_TOOLS_UNITY_PROFILER_DISABLED
+            using (this.Marker())
+#endif
             {
-                var id = _ids[i];
-                var nameId = _names[i] ?? string.Empty;
+                var count = Math.Min(_ids.Length, _names.Length);
+                _idByName = new Dictionary<string, int>(count);
+                _nameById = new Dictionary<int, string>(count);
 
-                if (!string.IsNullOrWhiteSpace(nameId))
-                    _idByName[nameId] = id;
+                for (var i = 0; i < count; i++)
+                {
+                    var id = _ids[i];
+                    var nameId = _names[i] ?? string.Empty;
 
-                _nameById[id] = nameId;
+                    if (!string.IsNullOrWhiteSpace(nameId))
+                        _idByName[nameId] = id;
+
+                    _nameById[id] = nameId;
+                }
             }
         }
     }

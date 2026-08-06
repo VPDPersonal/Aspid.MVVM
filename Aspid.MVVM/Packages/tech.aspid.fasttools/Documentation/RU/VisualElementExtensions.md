@@ -1,4 +1,4 @@
-# VisualElement Extensions — full reference
+# VisualElement Extensions
 
 Fluent-методы расширения для построения UIToolkit-деревьев в коде. Все методы возвращают `T` (сам элемент) для цепочки вызовов.
 
@@ -45,6 +45,11 @@ element
 | `InsertChildren(int, List<VisualElement>)` | Вставляет из списка |
 | `InsertChildren(int, Span<VisualElement>)` | Вставляет из span |
 | `InsertChildren(int, ReadOnlySpan<VisualElement>)` | Вставляет из read-only span |
+| `RemoveChild(VisualElement)` | Удаляет дочерний элемент, возвращает родителя |
+| `RemoveChildAt(int)` | Удаляет дочерний элемент по указанному индексу |
+| `ClearChildren()` | Удаляет все дочерние элементы |
+
+> У каждой операции с дочерними элементами есть `*If`-вариант (`AddChildIf`, `AddChildrenIf`, `InsertChildIf`, `InsertChildrenIf`, `RemoveChildIf`, `RemoveChildAtIf`, `ClearChildrenIf`) с ведущим параметром `bool condition` — операция выполняется только при `condition == true`.
 
 > `RegisterCallbackOnce<TEventType>` и `RegisterCallbackOnce<TEventType, TUserArgsType>` доступны на всех версиях Unity (пакет содержит polyfill для версий до 2023.1).
 
@@ -148,7 +153,7 @@ element
 
 | Метод | Свойство стиля | Примечания |
 |-------|---------------|------------|
-| `SetWorldSpacing(StyleLength)` | `wordSpacing` | |
+| `SetWordSpacing(StyleLength)` | `wordSpacing` | |
 | `SetLetterSpacing(StyleLength)` | `letterSpacing` | |
 | `SetUnityTextAlign(TextAnchor)` | `unityTextAlign` | |
 | `SetTextShadow(StyleTextShadow)` | `textShadow` | |
@@ -218,7 +223,7 @@ element
 
 | Метод | Свойство стиля |
 |-------|----------------|
-| `SetAspectRation(StyleRatio)` | `aspectRatio` *(имя метода сохраняет опечатку из исходника)* |
+| `SetAspectRatio(StyleRatio)` | `aspectRatio` |
 | `SetFilter(StyleList<FilterFunction>)` | `filter` |
 | `SetUnityMaterial(StyleMaterialDefinition)` | `unityMaterial` |
 
@@ -352,7 +357,7 @@ field.RemoveValueChanged(myCallback);
 
 Типизированные перегрузки доступны для `int`, `uint`, `nint`, `nuint`, `long`, `ulong`, `short`, `ushort`, `byte`, `sbyte`, `float`, `double`, `decimal`, `char`, `string`, `bool`, `Color`, `Vector2/3/4`, `Vector2Int/3Int`, `Rect/RectInt`, `Bounds/BoundsInt`, `Hash128`, `GUID`, `Quaternion`, `Matrix4x4`, `Gradient`, `AnimationCurve`, `Delegate`, `Enum`, `Object`, `object`, плюс обобщённый fallback `SetValue<T, TValue>`.
 
-> При установленном пакете `com.unity.mathematics` автоматически выставляется define `ASPID_FASTTOOLS_UNITY_MATHEMATICS_INTEGRATION` и добавляются перегрузки `SetValue` / `AddValueChanged` / `RemoveValueChanged` для `int2/3/4` (и `intMxN`), `float2/3/4` (и `floatMxN`), `bool2/3/4` (и `boolMxN`), а также `quaternion`.
+> При установленном пакете `com.unity.mathematics` автоматически выставляется define `ASPID_FASTTOOLS_UNITY_MATHEMATICS_INTEGRATION` и добавляются перегрузки `SetValue` / `AddValueChanged` / `RemoveValueChanged` для `int2/3/4` (и `intMxN`), `float2/3/4` (и `floatMxN`), `half`/`half2/3/4`, `bool2/3/4` (и `boolMxN`), а также `quaternion`.
 
 ### IMixedValueSupport
 
@@ -382,7 +387,7 @@ button
 slider
     .SetLowValue(0f)
     .SetHighValue(100f)
-    .SetShowInputField<SliderFloat, float>(true);
+    .SetShowInputField(true);
 ```
 
 | Метод | Описание |
@@ -471,6 +476,7 @@ container
 | `RemoveOnGUIHandler(Action)` | Отписка от `onGUIHandler` |
 | `SetCullingEnabled(bool)` | Пропускает `onGUIHandler`, когда элемент за пределами экрана |
 | `SetContextType(ContextType)` | Устанавливает тип контекста IMGUI |
+| `MarkDirtyLayout()` | Помечает IMGUI-layout как «грязный» для пересчёта |
 
 ### Collection views (ListView, TreeView, MultiColumn variants)
 
@@ -493,19 +499,16 @@ listView
 
 #### Source, layout and behavior — `BaseVerticalCollectionView`
 
-| Метод | Описание | Примечания |
-|-------|----------|------------|
-| `SetItemsSource(IList)` | Источник данных | |
-| `SetReorderable(bool)` | Включает drag-reorder | |
-| `SetSelectedIndex(int)` | Выбирает элемент по индексу | |
-| `SetSelectionType(SelectionType)` | None / Single / Multiple | |
-| `SetFixedItemHeight(float)` | Фиксированная высота элемента (для виртуализации `FixedHeight`) | |
-| `SetVirtualizationMethod(CollectionVirtualizationMethod)` | `FixedHeight` или `DynamicHeight` | |
-| `SetHorizontalScrollingEnabled(bool)` | Включает горизонтальную прокрутку | |
-| `SetShowAlternatingRowBackgrounds(AlternatingRowBackground)` | Режим зебра-полос | |
-| `SetMakeFooter(Func<VisualElement>)` · `AddMakeFooter` · `RemoveMakeFooter` | Фабрика подвала | Unity 6+ |
-| `SetMakeHeader(Func<VisualElement>)` · `AddMakeHeader` · `RemoveMakeHeader` | Фабрика заголовка | Unity 6+ |
-| `SetMakeNoneElement(Func<VisualElement>)` · `AddMakeNoneElement` · `RemoveMakeNoneElement` | Фабрика empty-state | Unity 6+ |
+| Метод | Описание |
+|-------|----------|
+| `SetItemsSource(IList)` | Источник данных |
+| `SetReorderable(bool)` | Включает drag-reorder |
+| `SetSelectedIndex(int)` | Выбирает элемент по индексу |
+| `SetSelectionType(SelectionType)` | None / Single / Multiple |
+| `SetFixedItemHeight(float)` | Фиксированная высота элемента (для виртуализации `FixedHeight`) |
+| `SetVirtualizationMethod(CollectionVirtualizationMethod)` | `FixedHeight` или `DynamicHeight` |
+| `SetHorizontalScrollingEnabled(bool)` | Включает горизонтальную прокрутку |
+| `SetShowAlternatingRowBackgrounds(AlternatingRowBackground)` | Режим зебра-полос |
 
 #### Events — `BaseVerticalCollectionView`
 
@@ -518,7 +521,7 @@ listView
 | `AddItemsSourceChanged(Action)` / `RemoveItemsSourceChanged` | Смена ссылки `itemsSource` |
 | `AddCanStartDrag(Func<CanStartDragArgs, bool>)` / `RemoveCanStartDrag` | Кастомный gating старта drag |
 | `AddSetupDragAndDrop(Func<SetupDragAndDropArgs, StartDragArgs>)` / `RemoveSetupDragAndDrop` | Подготовка drag-and-drop |
-| `AddSetupDragAndDrop(Func<HandleDragAndDropArgs, DragVisualMode>)` / `RemoveSetupDragAndDrop` | Визуальный режим drag-and-drop |
+| `AddDragAndDropUpdate(Func<HandleDragAndDropArgs, DragVisualMode>)` / `RemoveDragAndDropUpdate` | Визуальный режим drag-and-drop |
 | `AddHandleDrop(Func<HandleDragAndDropArgs, DragVisualMode>)` / `RemoveHandleDrop` | Обработка drop |
 
 #### `BaseListView`-specific
@@ -535,6 +538,9 @@ listView
 | `SetOnAdd(Action<BaseListView>)` · `AddOnAdd` · `RemoveOnAdd` | Кастомный коллбэк add-кнопки |
 | `SetOnRemove(Action<BaseListView>)` · `AddOnRemove` · `RemoveOnRemove` | Кастомный коллбэк remove-кнопки |
 | `SetOverridingAddButtonBehavior(Action<BaseListView, Button>)` · `AddOverridingAddButtonBehavior` · `RemoveOverridingAddButtonBehavior` | Подменяет дефолтное поведение add |
+| `SetMakeFooter(Func<VisualElement>)` · `AddMakeFooter` · `RemoveMakeFooter` | Фабрика подвала (Unity 6+) |
+| `SetMakeHeader(Func<VisualElement>)` · `AddMakeHeader` · `RemoveMakeHeader` | Фабрика заголовка (Unity 6+) |
+| `SetMakeNoneElement(Func<VisualElement>)` · `AddMakeNoneElement` · `RemoveMakeNoneElement` | Фабрика empty-state (Unity 6+) |
 | `AddItemsAdded(Action<IEnumerable<int>>)` / `RemoveItemsAdded` | Добавление элементов по индексам |
 | `AddItemsRemoved(Action<IEnumerable<int>>)` / `RemoveItemsRemoved` | Удаление элементов по индексам |
 
@@ -575,6 +581,7 @@ image.AddOpenScriptCommand(target);
 | Метод | Цель | Описание |
 |-------|------|----------|
 | `AddOpenScriptCommand(Object)` | `VisualElement` | Регистрирует обработчик двойного клика, открывающий исходный скрипт `MonoBehaviour` / `ScriptableObject` в IDE. |
+| `GetOwnerWindow()` | `VisualElement` | Возвращает `EditorWindow`, чья панель содержит элемент (для отсоединённых элементов — откат на окно в фокусе / под курсором). Используйте вместо `EditorWindow.focusedWindow` при привязке попапов к элементу — pointer-события приходят до переключения фокуса на кликнутое окно. |
 | `BindTo(SerializedObject)` | `VisualElement` | Вызывает `BindingExtensions.Bind` на элементе. |
 | `BindTo(SerializedObject, string propertyPath)` | `IBindable` | Устанавливает `bindingPath` и привязывается к указанному `SerializedObject`. |
 | `BindPropertyTo(SerializedProperty)` | `IBindable` | Вызывает `BindingExtensions.BindProperty` для переданного property. |

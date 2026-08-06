@@ -7,15 +7,31 @@ namespace Aspid.FastTools.Types.Editors
 {
     internal static class HierarchyBuilder
     {
-        public static TreeNode Build(Type[] types, TypeAllow allow)
+        internal static TreeNode Build(
+            Type[] types,
+            TypeAllow allow,
+            Func<Type, bool> filter = null,
+            IEnumerable<Type> additionalTypes = null,
+            bool includeNoneOption = true)
         {
-            var allTypes = TypeInfo.GetAllTypeInfos(types, allow);
+            var allTypes = TypeInfo.GetAllTypeInfos(types, allow, filter, additionalTypes);
 
             var root = new TreeNode("/");
-            root.Children.Add(new TreeNode(TypeSelectorHelpers.NoneOption, null, TypeSelectorHelpers.NoneOption));
 
-            AddGlobalNamespaceGroup(root, allTypes);
-            AddNamespaceHierarchy(root, allTypes);
+            // Generic-argument pages must yield a concrete type, so they omit the <None> entry.
+            if (includeNoneOption)
+                root.Children.Add(new TreeNode(TypeSelectorHelpers.NoneOption, null, TypeSelectorHelpers.NoneOption));
+
+            // An explicit [TypeSelectorDisplay(Group)] replaces the namespace placement — a grouped type
+            // appears only under its declared path, so it is excluded from the namespace passes entirely.
+            var ungrouped = allTypes.Where(type => type.GroupPath is null).ToList();
+            var grouped = allTypes.Where(type => type.GroupPath is not null).ToList();
+
+            AddGlobalNamespaceGroup(root, ungrouped);
+            AddNamespaceHierarchy(root, ungrouped);
+            AddGroupHierarchy(root, grouped);
+
+            SortNode(root);
 
             return root;
         }
@@ -24,14 +40,46 @@ namespace Aspid.FastTools.Types.Editors
         {
             var globals = types
                 .Where(type => type.Namespace == TypeSelectorHelpers.GlobalNamespace)
-                .OrderBy(type => type.Name)
                 .ToList();
 
             if (globals.Count is 0) return;
             var globalGroup = new TreeNode(TypeSelectorHelpers.GlobalNamespace);
 
-            AddTypesWithDisambiguation(globalGroup, globals, includeNamespace: false);
+            AddTypesWithDisambiguation(globalGroup, globals);
             root.Children.Add(globalGroup);
+        }
+
+        // Every [TypeSelectorDisplay(Group)] path becomes a chain of container nodes; shared segments reuse one
+        // node. Group nodes are never merged or flattened into the namespace trie — the author's path shows as spelled.
+        private static void AddGroupHierarchy(TreeNode root, List<TypeInfo> types)
+        {
+            if (types.Count is 0) return;
+
+            var nodesByPath = new Dictionary<string, TreeNode>(StringComparer.Ordinal);
+
+            // No ordering here: SortNode(root) re-sorts every level afterwards, and node reuse is keyed on the
+            // exact declared path (case-sensitive — the author's spelling is shown as written).
+            foreach (var pathGroup in types.GroupBy(type => string.Join("/", type.GroupPath)))
+            {
+                var parent = root;
+                var path = string.Empty;
+
+                foreach (var segment in pathGroup.First().GroupPath)
+                {
+                    path = path.Length is 0 ? segment : $"{path}/{segment}";
+
+                    if (!nodesByPath.TryGetValue(path, out var node))
+                    {
+                        node = new TreeNode(segment, null, path);
+                        nodesByPath[path] = node;
+                        parent.Children.Add(node);
+                    }
+
+                    parent = node;
+                }
+
+                AddTypesWithDisambiguation(parent, pathGroup.ToList(), captionPrefix: pathGroup.Key, separator: '/');
+            }
         }
 
         private static void AddNamespaceHierarchy(TreeNode root, List<TypeInfo> types)
@@ -86,15 +134,12 @@ namespace Aspid.FastTools.Types.Editors
 
             var node = new TreeNode(trieNode.Segment, null, nextDisplay);
 
-            // Add types at this namespace level
             if (trieNode.IsTerminal && nsToTypes.TryGetValue(nextNamespace, out var typeInfos))
-                AddTypesWithDisambiguation(node, typeInfos, includeNamespace: true, nextNamespace);
+                AddTypesWithDisambiguation(node, typeInfos, nextNamespace);
 
-            // Add child namespaces
             foreach (var child in trieNode.Children.Values.OrderBy(n => n.Segment))
                 node.Children.Add(BuildNamespaceNode(child, nextDisplay, nextNamespace, nsToTypes));
 
-            // Flatten single-child chains
             return FlattenSingleChildChain(node);
         }
 
@@ -117,38 +162,71 @@ namespace Aspid.FastTools.Types.Editors
                 node.AssemblyQualifiedName = onlyChild.AssemblyQualifiedName;
                 node.Caption = onlyChild.Caption;
                 node.Tooltip = onlyChild.Tooltip;
+                node.Icon = onlyChild.Icon;
+                node.SearchName = onlyChild.SearchName;
                 node.Children.Clear();
             }
 
             return node;
         }
 
+        // One leaf per type, labelled by TypeInfo.Label. Label collisions are disambiguated with the assembly
+        // suffix; collisions within one assembly (same Name override) fall back to the real type name. The caption
+        // prefixes the label with the node's path (namespaces join with '.', explicit groups with '/').
         private static void AddTypesWithDisambiguation(
             TreeNode parent,
             List<TypeInfo> types,
-            bool includeNamespace,
-            string namespacePath = "")
+            string captionPrefix = null,
+            char separator = '.')
         {
-            var nameCounts = types
-                .GroupBy(type => type.Name)
+            var labelCounts = types
+                .GroupBy(type => type.Label)
                 .ToDictionary(g => g.Key, g => g.Count());
 
-            foreach (var type in types.OrderBy(type => type.Name))
+            var labelAssemblyCounts = types
+                .GroupBy(type => (type.Label, type.Assembly))
+                .ToDictionary(g => g.Key, g => g.Count());
+
+            foreach (var type in types)
             {
-                var needsAssembly = nameCounts[type.Name] > 1;
-                var displayName = needsAssembly ? $"{type.Name} ({type.Assembly})" : type.Name;
-
-                var caption = includeNamespace
-                    ? $"{namespacePath}.{displayName}"
-                    : displayName;
-
-                var leaf = new TreeNode(displayName, type.AssemblyQualifiedName, caption)
+                var displayName = labelCounts[type.Label] switch
                 {
-                    Tooltip = type.FullName
+                    1 => type.Label,
+                    _ when labelAssemblyCounts[(type.Label, type.Assembly)] == 1 => $"{type.Label} ({type.Assembly})",
+                    _ => type.Label == type.Name ? $"{type.Label} ({type.Assembly})" : $"{type.Label} ({type.Name})",
                 };
 
-                parent.Children.Add(leaf);
+                var caption = string.IsNullOrEmpty(captionPrefix)
+                    ? displayName
+                    : $"{captionPrefix}{separator}{displayName}";
+
+                parent.Children.Add(CreateLeaf(type, displayName, caption));
             }
+        }
+
+        private static TreeNode CreateLeaf(TypeInfo type, string displayName, string caption = null) => new(displayName, type.AssemblyQualifiedName, caption ?? displayName)
+        {
+            Tooltip = type.Tooltip,
+            Icon = type.Icon,
+            SearchName = type.Name,
+        };
+
+        private static void SortNode(TreeNode node)
+        {
+            node.Children.Sort(CompareNodes);
+
+            foreach (var child in node.Children)
+                SortNode(child);
+        }
+
+        private static int CompareNodes(TreeNode left, TreeNode right)
+        {
+            // Keep <None> pinned to the top of the root list.
+            var leftNone = left.DisplayName == TypeSelectorHelpers.NoneOption;
+            var rightNone = right.DisplayName == TypeSelectorHelpers.NoneOption;
+
+            if (leftNone != rightNone) return leftNone ? -1 : 1;
+            return string.Compare(left.DisplayName, right.DisplayName, StringComparison.OrdinalIgnoreCase);
         }
     }
 }

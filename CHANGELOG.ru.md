@@ -16,6 +16,7 @@
 - Окно **`Aspid.MVVM Settings`** переоформлено в стиле окна **Welcome** из Aspid.FastTools — анимированный фон из точек, анимированные логотип (ведёт в Asset Store) и заголовок, тематические карточки, градиентные кнопки `Apply` / `Revert` и футер с версией и ссылками.
 - Окно настроек перенесено в общий раздел меню `Tools/Aspid 🐍`, рядом с `Welcome FastTools`.
 - Версия в окне настроек теперь читается из манифеста пакета, а не из константы; цвета `AspidToggle` приведены в соответствие теме.
+- Встроенный `Aspid.FastTools` обновлён с `1.0.0-rc.4` до `1.0.0-rc.6`, где появилась поддержка `[TypeSelector]` для полей `[SerializeReference]` — замена удалённой интеграции `SerializeReferenceDropdown`. Учтены два переименования API апстрима: namespace `Aspid.FastTools.Reflection` схлопнут в `Aspid.FastTools`, а `SerializedProperty.GetClassInstance()` стал `GetDeclaringInstance()`.
 - Атрибуты инспектора (`[SerializeField]`, `[SerializeReference]`, `[Tooltip]`) в Unity-независимых слоях больше не обёрнуты в `#if UNITY_2022_1_OR_NEWER`. Вне Unity их заменяют пустые заглушки из `Source/Compatibility/UnityAttributesShim.cs`, благодаря чему удалось убрать 22 блока директив в 14 файлах. Директивы вокруг настоящего Unity API (`Debug`, `Component`, `ProfilerMarker`) не тронуты.
 
 ### Удалено

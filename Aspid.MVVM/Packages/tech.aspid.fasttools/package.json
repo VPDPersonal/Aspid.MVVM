@@ -1,10 +1,13 @@
 {
   "name": "tech.aspid.fasttools",
-  "version": "1.0.0-rc.4",
+  "version": "1.0.0-rc.6",
   "displayName": "Aspid.FastTools",
   "description": "Unity tools to cut boilerplate \u2014 source-generated ProfilerMarkers, serializable type/enum/ID systems, and a fluent UIToolkit API.",
   "unity": "6000.0",
   "license": "MIT",
+  "dependencies": {
+    "com.unity.modules.uielements": "1.0.0"
+  },
   "licensesUrl": "https://github.com/VPDPersonal/Aspid.FastTools/blob/main/LICENSE",
   "documentationUrl": "https://github.com/VPDPersonal/Aspid.FastTools/blob/main/README.md",
   "changelogUrl": "https://github.com/VPDPersonal/Aspid.FastTools/blob/main/CHANGELOG.md",
@@ -35,28 +38,33 @@
   "samples": [
     {
       "displayName": "Types",
-      "description": "SerializableType, SerializableType<T>, TypeSelectorAttribute and ComponentTypeSelector usage with the editor type picker.",
-      "path": "Samples/Types"
+      "description": "SerializableType, SerializableType<T>, TypeSelectorAttribute and ComponentTypeSelector usage with the editor type picker. Includes a step-by-step TUTORIAL and a guided TypesTutorial scene.",
+      "path": "Samples~/Types"
+    },
+    {
+      "displayName": "SerializeReferences",
+      "description": "[TypeSelector] type-picker dropdown for [SerializeReference] fields (single, List<T>, abstract base, narrowing, nested, generics, required), in both UIToolkit and IMGUI inspectors. Includes a step-by-step TUTORIAL and a guided TypeSelectorTutorial scene.",
+      "path": "Samples~/SerializeReferences"
     },
     {
       "displayName": "EnumValues",
-      "description": "Inspector-serializable enum-keyed dictionary, including [Flags] handling.",
-      "path": "Samples/EnumValues"
+      "description": "Inspector-serializable enum-keyed dictionary, including [Flags] handling, in both UIToolkit and IMGUI inspectors.",
+      "path": "Samples~/EnumValues"
     },
     {
       "displayName": "Ids",
-      "description": "IId / [UniqueId] structs paired with IdRegistry assets for stable int \u2194 string IDs.",
-      "path": "Samples/Ids"
+      "description": "IId / [UniqueId] structs paired with IdRegistry assets for stable int \u2194 string IDs. Includes a step-by-step TUTORIAL and a guided IdsTutorial scene.",
+      "path": "Samples~/Ids"
     },
     {
       "displayName": "ProfilerMarkers",
       "description": "this.Marker() extension and the per-call-site ProfilerMarker source generator.",
-      "path": "Samples/ProfilerMarkers"
+      "path": "Samples~/ProfilerMarkers"
     },
     {
       "displayName": "VisualElements",
-      "description": "Fluent UI Toolkit extensions, presets and helpers.",
-      "path": "Samples/VisualElements"
+      "description": "Fluent UI Toolkit VisualElement extensions, font presets and per-element helpers. Includes a step-by-step TUTORIAL and a guided VisualElementsTutorial scene alongside the AbilityConfig custom-inspector demo.",
+      "path": "Samples~/VisualElements"
     }
   ],
   "unityRelease": "0f1"

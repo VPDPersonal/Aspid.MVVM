@@ -17,24 +17,24 @@ namespace Aspid.FastTools.Ids.Editors
             };
 
             var root = new VisualElement()
-                .AddStyleSheetsFromResource(AspidStyles.DefaultStyleSheet)
+                .AddAspidThemeStyleSheets()
                 .AddChild(new PropertyField(ctx.Property).SetDisplay(DisplayStyle.None))
                 .AddChild(idField);
 
-            Action refresh = () =>
-            {
-                IdStructDrawerHelper.SyncStringFromInt(ctx);
-                idField.RefreshFromBoundProperty();
-            };
-
-            root.RegisterCallback<AttachToPanelEvent>(_ => IdRegistryResolver.RegistryChanged += refresh);
-            root.RegisterCallback<DetachFromPanelEvent>(_ => IdRegistryResolver.RegistryChanged -= refresh);
-            idField.schedule.Execute(() => refresh()).StartingIn(0);
+            root.RegisterCallback<AttachToPanelEvent>(_ => IdRegistryResolver.RegistryChanged += Refresh);
+            root.RegisterCallback<DetachFromPanelEvent>(_ => IdRegistryResolver.RegistryChanged -= Refresh);
+            idField.schedule.Execute(Refresh).StartingIn(0);
 
             if (isUnique)
                 root.AddChild(BuildWarningLabel(ctx));
 
             return root;
+
+            void Refresh()
+            {
+                IdStructDrawerHelper.SyncStringFromInt(ctx);
+                idField.RefreshFromBoundProperty();
+            }
         }
 
         private static Label BuildWarningLabel(IdStructDrawerContext ctx)

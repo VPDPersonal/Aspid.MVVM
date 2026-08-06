@@ -54,9 +54,11 @@ namespace Aspid.FastTools.UIElements.Editors.Internal
         {
             _value = new InlineStyle<Type>(type, (oldValue, newValue) =>
             {
-                element
-                    .RemoveClass(GetClass(oldValue))
-                    .AddClass(GetClass(newValue));
+                var oldClass = GetClass(oldValue);
+                var newClass = GetClass(newValue);
+
+                if (!string.IsNullOrWhiteSpace(oldClass)) element.RemoveClass(oldClass);
+                if (!string.IsNullOrWhiteSpace(newClass)) element.AddClass(newClass);
             });
 
             element.RegisterCallback<CustomStyleResolvedEvent>(OnCustomStyleResolved);

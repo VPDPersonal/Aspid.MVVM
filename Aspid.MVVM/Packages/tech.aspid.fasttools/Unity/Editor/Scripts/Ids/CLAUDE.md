@@ -5,42 +5,7 @@ Runtime contracts live in `Unity/Runtime/Ids/`; struct-side boilerplate is gener
 
 ## Layout
 
-Mirrors the sibling `Types/` feature — `Drawers/` for IMGUI + UIToolkit drawers, `Selectors/` for the picker window, `VisualElements/` for the bound field, `Registries/` for the `IdRegistry` inspector, `Resolvers/` for the AQN → registry index.
-
-```
-Ids/
-├── Constants.cs                          ← USS class names + field names (single source of truth)
-├── UniqueIdIndex.cs                      ← project-wide [UniqueId] collision index
-├── Drawers/
-│   ├── IdStructPropertyDrawer.cs         ← [CustomPropertyDrawer(typeof(IId), useForChildren:true)]
-│   ├── IdStructIMGUIPropertyDrawer.cs    ← static IMGUI drawer body (mirrors TypeIMGUIPropertyDrawer)
-│   ├── IdStructUIToolkitPropertyDrawer.cs ← static UIToolkit drawer body (mirrors TypeUIToolkitPropertyDrawer)
-│   ├── IdStructDrawerContext.cs          ← shared drawer DTO (label + field/declaring types + child SerializedProperties)
-│   └── IdStructDrawerHelper.cs           ← caption building, int↔string sync, selection apply
-├── Selectors/
-│   └── IdSelectorWindow.cs               ← dropdown picker shown by the drawer
-├── VisualElements/
-│   ├── IdField.cs                        ← UIToolkit field; mirrors TypeField
-│   └── InspectorIdField.cs               ← Inspector-styled variant; mirrors InspectorTypeField
-├── Resolvers/
-│   ├── IdRegistryResolver.cs             ← AQN → registry asset, with one-per-type enforcement
-│   └── IdRegistryResolverCacheInvalidator.cs ← AssetPostprocessor invalidating the resolver cache
-└── Registries/
-    ├── RegistryEditorCore.cs             ← orchestrator: SerializedObject, view-model, mutation cycle, event wiring
-    ├── IdRegistryEditor.cs               ← [CustomEditor(typeof(IdRegistry))]
-    ├── IdRegistryEntryData.cs            ← row DTO
-    ├── IdRegistryValidator.cs            ← IsValidName + Summarize for the Clean-up flow
-    ├── CleanUpSummary.cs                 ← Clean-up summary DTO
-    ├── AddRowValidation.cs / NextIdWarning.cs ← DTOs returned by core's validation funnels
-    ├── RegistrySortMode.cs / RegistryGroupMode.cs ← enums shared between core and toolbar element
-    └── VisualElements/
-        ├── IdRegistryEntryVisualElement.cs   ← single row VisualElement
-        ├── IdRegistryToolbarVisualElement.cs ← Sort/Group enum-dropdowns, fires SortChanged/GroupChanged
-        ├── IdRegistryAddRowVisualElement.cs  ← input + button + error label, fires AddRequested
-        ├── IdRegistryNextIdRowVisualElement.cs ← PropertyField(_nextId) + warning icon, fires ValueChanged
-        ├── IdRegistryWarningVisualElement.cs ← Clean-up warning row, fires ReviewRequested
-        └── IdRegistryListVisualElement.cs    ← flat ListView + grouped foldouts, re-emits row events
-```
+Mirrors the sibling `Types/` feature — `Drawers/` for IMGUI + UIToolkit drawers, `Selectors/` for the picker window, `VisualElements/` for the bound field, `Registries/` for the `IdRegistry` inspector, `Resolvers/` for the AQN → registry index. The `Drawers/`, `Selectors/`, and `VisualElements/` classes mirror their `Types/` counterparts (`TypeIMGUIPropertyDrawer`, `TypeField`, `InspectorTypeField`, …). Cross-component USS classes and field names live in `Constants.cs`; `UniqueIdIndex.cs` is the project-wide `[UniqueId]` collision index.
 
 `IdRegistryEditor` is a 5-line shell that hands its `SerializedObject` to `RegistryEditorCore`. **`IdRegistry` mutations live only in `RegistryEditorCore`** (via the `Record` → `Add`/`SetName`/`RemoveAt` → `Commit` cycle, see Storage below). UI is split into `IdRegistry*VisualElement` components that are dumb shells: they own DOM and emit events, never touch the asset's `SerializedProperty`s. Wiring (event subscriptions and `Bind` calls) happens once inside `RegistryEditorCore.Build()`. Adding new inspector behavior means: a new component if it's a UI surface, plus the wiring + handler in core. The one allowed exception is `IdRegistryNextIdRowVisualElement`, which holds a `PropertyField(_nextId)` because Unity's `PropertyField` already records its own Undo and writes through `SerializedObject` — core listens for the change to invalidate the runtime cache.
 
@@ -109,5 +74,5 @@ Sort mode, group mode, and per-group foldout state persist in `SessionState`, ke
 ### Add a new IdStruct in the codebase
 
 1. Declare the `partial struct` implementing `IId` (with `[UniqueId]` if it must be globally unique among assets of its declaring type). The generator emits `_id`, `Id`, and editor-only `__stringId`.
-2. In Unity: `Assets → Create → Aspid → Id Registry → Id Registry`.
+2. In Unity: `Assets → Create → Aspid → Id Registry`.
 3. Set `_targetStructType` via the registry inspector's `Type` field — `IdRegistryResolver.Find` indexes by this AQN.

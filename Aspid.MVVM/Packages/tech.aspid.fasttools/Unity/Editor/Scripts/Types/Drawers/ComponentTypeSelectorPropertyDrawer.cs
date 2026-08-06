@@ -2,6 +2,7 @@ using System;
 using UnityEngine;
 using UnityEditor;
 using UnityEngine.UIElements;
+using UnityEditor.UIElements;
 using Aspid.FastTools.Editors;
 
 // ReSharper disable once CheckNamespace
@@ -14,18 +15,27 @@ namespace Aspid.FastTools.Types.Editors
         {
             var currentType = property.serializedObject.targetObject.GetType();
             var rowHeight = EditorGUIUtility.singleLineHeight;
-            var openButtonWidth = rowHeight;
 
-            var dropdownRect = new Rect(position.x, position.y, position.width - openButtonWidth - 2f, rowHeight);
-            var openButtonRect = new Rect(dropdownRect.xMax + 2f, position.y, openButtonWidth, rowHeight);
+            var dropdownRect = new Rect(position.x, position.y, position.width - rowHeight - 2f, rowHeight);
+            var openButtonRect = new Rect(dropdownRect.xMax + 2f, position.y, rowHeight, rowHeight);
 
-            if (EditorGUI.DropdownButton(dropdownRect, new GUIContent(currentType.Name), FocusType.Passive))
+            if (EditorGUI.DropdownButton(dropdownRect,
+                    new GUIContent(TypeSelectorHelpers.GetTypeSelectorTitle(currentType)), FocusType.Passive))
             {
+                var persistent = property.Persistent();
+                var filter = new TypeSelectorFilter
+                {
+                    Types = new[] { fieldInfo.DeclaringType },
+                };
+
                 TypeSelectorWindow.Show(
                     GUIUtility.GUIToScreenRect(dropdownRect),
-                    types: new[] { fieldInfo.DeclaringType },
+                    filter,
                     currentType.AssemblyQualifiedName,
-                    onSelected: aqn => ReplaceComponentScript(property, currentType, Type.GetType(aqn)));
+                    onSelected: aqn => ReplaceComponentScript(
+                        persistent,
+                        currentType,
+                        string.IsNullOrEmpty(aqn) ? null : Type.GetType(aqn, throwOnError: false)));
             }
 
             TypeIMGUIPropertyDrawer.DrawOpenScriptButton(openButtonRect, currentType);
@@ -37,6 +47,7 @@ namespace Aspid.FastTools.Types.Editors
         public override VisualElement CreatePropertyGUI(SerializedProperty property)
         {
             var currentType = property.serializedObject.targetObject.GetType();
+            var persistent = property.Persistent();
 
             var field = new InspectorTypeField(label: null, defaultValue: currentType)
             {
@@ -44,9 +55,20 @@ namespace Aspid.FastTools.Types.Editors
             };
 
             field.RegisterValueChangedCallback(evt =>
-                ReplaceComponentScript(property, currentType, evt.newValue));
+                ReplaceComponentScript(persistent, currentType, evt.newValue));
+            field.RegisterCallback<AttachToPanelEvent>(_ => HideScriptField(field));
 
             return field;
+        }
+
+        private static void HideScriptField(VisualElement field)
+        {
+            var inspector = field.GetFirstAncestorOfType<InspectorElement>();
+            if (inspector is null) return;
+
+            inspector.Query<PropertyField>()
+                .Where(propertyField => propertyField.bindingPath == "m_Script")
+                .ForEach(propertyField => propertyField.style.display = DisplayStyle.None);
         }
 
         private static void ReplaceComponentScript(SerializedProperty property, Type oldType, Type newType)

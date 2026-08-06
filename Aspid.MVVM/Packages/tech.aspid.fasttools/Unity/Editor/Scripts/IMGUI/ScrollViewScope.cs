@@ -116,6 +116,7 @@ namespace Aspid.FastTools.Editors
         /// <summary>
         /// Ends the scroll view by calling <see cref="EditorGUILayout.EndScrollView"/>.
         /// </summary>
-        public void Dispose() => EditorGUILayout.EndScrollView();
+        public void Dispose() =>
+            EditorGUILayout.EndScrollView();
     }
 }

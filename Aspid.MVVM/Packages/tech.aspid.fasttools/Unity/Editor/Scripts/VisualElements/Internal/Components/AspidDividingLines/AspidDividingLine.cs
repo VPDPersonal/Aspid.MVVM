@@ -5,7 +5,7 @@ namespace Aspid.FastTools.UIElements.Editors.Internal
 {
     /// <summary>
     /// A <see cref="VisualElement"/> that renders a styled dividing line.
-    /// Supports theme, status, and size customization, all of which can be driven by USS
+    /// Supports theme, status, size, and direction customization, all of which can be driven by USS
     /// custom properties or set explicitly in code.
     /// </summary>
     [UxmlElement(libraryPath = "Aspid/FastTools")]

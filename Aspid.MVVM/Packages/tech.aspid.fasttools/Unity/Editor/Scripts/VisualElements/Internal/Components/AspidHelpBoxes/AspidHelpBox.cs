@@ -17,6 +17,7 @@ namespace Aspid.FastTools.UIElements.Editors.Internal
         private const string IconClass = "aspid-fasttools-help-box__icon";
         private const string IconHiddenClass = "aspid-fasttools-help-box__icon--hidden";
         private const string TextContainerClass = "aspid-fasttools-help-box__text-container";
+        private const string TitleClass = "aspid-fasttools-help-box__title";
 
         private const string MessageTypeInfoClass = "aspid-fasttools-help-box--info";
         private const string MessageTypeWarningClass = "aspid-fasttools-help-box--warning";
@@ -39,7 +40,7 @@ namespace Aspid.FastTools.UIElements.Editors.Internal
         [UxmlAttribute]
         public string Title
         {
-            get => _titleElement?.Text ?? string.Empty;
+            get => _titleElement is { parent: not null } ? _titleElement.Text : string.Empty;
             set
             {
                 if (string.IsNullOrWhiteSpace(value))
@@ -50,7 +51,7 @@ namespace Aspid.FastTools.UIElements.Editors.Internal
 
                 if (_titleElement is not null && _titleElement.Text == value && _titleElement.parent is not null) return;
 
-                if (_titleElement is null) _titleElement = new AspidLabel(value, _titlePreset);
+                if (_titleElement is null) _titleElement = new AspidLabel(value, _titlePreset).AddClass(TitleClass);
                 else _titleElement.Text = value;
 
                 if (_titleElement.parent is null) _textContainer.InsertChild(index: 0, _titleElement);

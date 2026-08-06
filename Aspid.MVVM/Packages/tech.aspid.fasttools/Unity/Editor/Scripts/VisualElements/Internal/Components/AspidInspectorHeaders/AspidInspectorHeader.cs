@@ -1,3 +1,4 @@
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
 using Aspid.FastTools.Editors;
@@ -26,6 +27,9 @@ namespace Aspid.FastTools.UIElements.Editors.Internal
         private readonly AspidLabel _subtextElement;
         private readonly AspidHoverGradientOverlay _overlay;
         private readonly StatusStyle _status;
+
+        private Object _obj;
+        private MonoScript _script;
 
         /// <summary>
         /// Gets or sets the primary header text.
@@ -61,7 +65,20 @@ namespace Aspid.FastTools.UIElements.Editors.Internal
         /// Gets or sets the Unity Object whose script is opened on icon double-click.
         /// Setting <see langword="null"/> or an object without a resolvable script disables the open-script command.
         /// </summary>
-        public Object Obj { get; set; }
+        public Object Obj
+        {
+            get => _obj;
+            set
+            {
+                _obj = value;
+                _script = value switch
+                {
+                    MonoBehaviour mono => MonoScript.FromMonoBehaviour(mono),
+                    ScriptableObject scriptable => MonoScript.FromScriptableObject(scriptable),
+                    _ => null
+                };
+            }
+        }
 
         /// <summary>
         /// Creates an <see cref="AspidInspectorHeader"/> using <see cref="AspidInspectorHeaderPreset.Default"/>
@@ -115,8 +132,14 @@ namespace Aspid.FastTools.UIElements.Editors.Internal
             Obj = obj;
 
             var iconElement = new Image()
-                .AddClass(IconClass)
-                .AddOpenScriptCommand(obj);
+                .AddClass(IconClass);
+
+            var doubleClick = new DoubleClickTracker();
+            iconElement.RegisterCallback<MouseUpEvent>(evt =>
+            {
+                if (evt.button != (int)MouseButton.LeftMouse) return;
+                if (doubleClick.Detect() && _script) AssetDatabase.OpenAsset(_script);
+            });
 
             iconElement.RegisterCallback<MouseEnterEvent>(OnIconMouseEnter);
             iconElement.RegisterCallback<MouseLeaveEvent>(OnIconMouseLeave);

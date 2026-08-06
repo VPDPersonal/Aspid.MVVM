@@ -7,21 +7,22 @@ namespace Aspid.FastTools.Types
     /// Flags describing which special type categories the type picker should include
     /// in addition to plain concrete classes.
     /// </summary>
+    /// <seealso cref="TypeSelectorAttribute"/>
     [Flags]
     public enum TypeAllow
     {
         /// <summary>
-        /// Only concrete, non-abstract, non-interface types are allowed.
+        /// Only concrete types are offered.
         /// </summary>
         None = 0,
 
         /// <summary>
-        /// Abstract classes are allowed in addition to concrete ones.
+        /// Abstract classes are allowed in addition to concrete types.
         /// </summary>
         Abstract = 1,
 
         /// <summary>
-        /// Interfaces are allowed in addition to concrete classes.
+        /// Interfaces are allowed in addition to concrete types.
         /// </summary>
         Interface = 2,
 

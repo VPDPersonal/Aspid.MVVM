@@ -1,6 +1,6 @@
 using UnityEngine.UIElements;
 
-// ReSharper disable CheckNamespace
+// ReSharper disable once CheckNamespace
 namespace Aspid.FastTools.UIElements
 {
     public static class TextElementExtensions

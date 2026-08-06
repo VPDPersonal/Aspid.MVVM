@@ -84,7 +84,7 @@ namespace Aspid.FastTools.Ids.Editors
 
             rootVisualElement
                 .AddStyleSheetsFromResource(StyleSheetPath)
-                .AddStyleSheetsFromResource(AspidStyles.DefaultStyleSheet)
+                .AddAspidThemeStyleSheets()
                 .AddChild(_searchField)
                 .AddChild(_errorLabel)
                 .AddChild(_listView);
@@ -146,14 +146,26 @@ namespace Aspid.FastTools.Ids.Editors
             var registry = IdRegistryResolver.GetOrCreate(_idType);
             if (!IdRegistryValidator.IsValidName(nameId, registry.Contains, out _)) return;
 
-            Undo.RegisterCompleteObjectUndo(registry, "Add string id");
-
             var serializedObject = new SerializedObject(registry);
             var idsProp = serializedObject.FindProperty("_ids");
             var namesProp = serializedObject.FindProperty("_names");
             var nextIdProp = serializedObject.FindProperty("_nextId");
 
+            // Same guards as RegistryEditorCore.ValidateAddRow — stable ids must never be reused.
             var id = nextIdProp.intValue;
+            if (id < 1)
+            {
+                ShowError("Next ID must be ≥ 1 — change it in the registry inspector before adding.");
+                return;
+            }
+
+            if (NextIdCollides(idsProp, id))
+            {
+                ShowError($"Next ID {id} is already used — change it in the registry inspector before adding.");
+                return;
+            }
+
+            Undo.RegisterCompleteObjectUndo(registry, "Add string id");
             nextIdProp.intValue = id + 1;
 
             var newIndex = idsProp.arraySize;
@@ -169,6 +181,21 @@ namespace Aspid.FastTools.Ids.Editors
 
             _onSelected?.Invoke(nameId);
             Close();
+        }
+
+        private void ShowError(string message)
+        {
+            _errorLabel.text = message;
+            _errorLabel.SetDisplay(DisplayStyle.Flex);
+        }
+
+        private static bool NextIdCollides(SerializedProperty idsProp, int nextId)
+        {
+            var count = idsProp.arraySize;
+            for (var i = 0; i < count; i++)
+                if (idsProp.GetArrayElementAtIndex(i).intValue == nextId) return true;
+
+            return false;
         }
 
         private void BindItem(VisualElement element, int index)

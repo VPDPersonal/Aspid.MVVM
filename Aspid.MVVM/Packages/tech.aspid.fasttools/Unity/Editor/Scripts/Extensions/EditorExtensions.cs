@@ -56,7 +56,8 @@ namespace Aspid.FastTools.Editors
                 .Where(component => component.GetType() == type)
                 .ToArray();
 
-            if (components.Length <= 1) return targetComponent.GetScriptName();
+            if (components.Length <= 1)
+                return targetComponent.GetScriptName();
 
             for (var i = 0; i < components.Length; i++)
             {

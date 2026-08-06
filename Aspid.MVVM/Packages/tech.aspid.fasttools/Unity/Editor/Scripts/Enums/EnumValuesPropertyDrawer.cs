@@ -1,75 +1,49 @@
 using UnityEditor;
-using UnityEditor.UIElements;
+using UnityEngine;
 using UnityEngine.UIElements;
-using Aspid.FastTools.Editors;
-using Aspid.FastTools.UIElements;
-using Aspid.FastTools.UIElements.Editors;
-using Aspid.FastTools.UIElements.Manipulators;
-using Aspid.FastTools.UIElements.Editors.Internal;
+using System.Collections.Generic;
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.FastTools.Enums.Editors
 {
     /// <summary>
-    /// Property drawer for <see cref="EnumValues{TValue}"/>. Renders a header with the enum-type
-    /// picker, the entries list, and the default-value field, and exposes a context-menu action
-    /// that fills in any missing enum members from the configured type.
+    /// Property drawer for <see cref="EnumValues{TValue}"/> and <see cref="EnumValues{TEnum,TValue}"/>.
+    /// Renders a header with the enum-type picker (disabled for the typed variant — the enum is
+    /// fixed at compile time), the entries list, and the default-value field, and exposes a
+    /// context-menu action that fills in any missing enum members from the configured type.
     /// </summary>
     [CustomPropertyDrawer(typeof(EnumValues<>))]
+    [CustomPropertyDrawer(typeof(EnumValues<,>))]
     internal sealed class EnumValuesPropertyDrawer : PropertyDrawer
     {
-        private const string StylesheetPath = "UI/Enums/Aspid-FastTools-EnumValues";
-        private const string HeaderClass = "aspid-fasttools-enum-values__header";
-        private const string ContainerClass = "aspid-fasttools-enum-values__container";
+        public override void OnGUI(Rect position, SerializedProperty property, GUIContent label) =>
+            EnumValuesIMGUIPropertyDrawer.Draw(position, label, property, IsTypedVariant());
 
-        public override VisualElement CreatePropertyGUI(SerializedProperty property)
+        public override float GetPropertyHeight(SerializedProperty property, GUIContent label) =>
+            EnumValuesIMGUIPropertyDrawer.GetHeight(property);
+
+        public override VisualElement CreatePropertyGUI(SerializedProperty property) =>
+            EnumValuesUIToolkitPropertyDrawer.Draw(property, IsTypedVariant());
+
+        /// <summary>
+        /// Whether the drawn field is an <see cref="EnumValues{TEnum,TValue}"/> (directly, or as
+        /// an array/list element) — the variant with the enum fixed at compile time — rather than
+        /// the untyped <see cref="EnumValues{TValue}"/>.
+        /// </summary>
+        private bool IsTypedVariant()
         {
-            var serializedObject = property.serializedObject;
-            var valuesPath = property.FindPropertyRelative("_values").propertyPath;
-            var enumTypePath = property.FindPropertyRelative("_enumType").propertyPath;
-            var defaultValuePath = property.FindPropertyRelative("_defaultValue").propertyPath;
+            var type = fieldInfo.FieldType;
 
-            // Push the parent enum type into every existing entry up-front so already-serialized
-            // arrays don't render with a stale per-element _enumType until the user re-edits.
-            UpdateValues();
-            
-            return new VisualElement()
-                .SetName($"enum-values-{property.displayName}")
-                .AddStyleSheetsFromResource(StylesheetPath)
-                .AddStyleSheetsFromResource(AspidStyles.DefaultStyleSheet)
-                .AddManipulatorSelf(EnumValuesPropertyDrawerHelper.CreatePopulateMenuManipulator(
-                    values: serializedObject.FindProperty(valuesPath),
-                    enumType: serializedObject.FindProperty(enumTypePath),
-                    defaultValue: serializedObject.FindProperty(defaultValuePath))
-                )
-                .AddChild(new VisualElement()
-                    .AddClass(HeaderClass)
-                    .AddChild(new Label(property.displayName))
-                    .AddChild(new PropertyField(serializedObject.FindProperty(enumTypePath), label: string.Empty)
-                        .AddValueChanged(_ => UpdateValues())
-                    )
-                )
-                .AddChild(new VisualElement()
-                    .AddClass(ContainerClass)
-                    .AddChild(new PropertyField(serializedObject.FindProperty(valuesPath))
-                        .AddValueChanged(_ => UpdateValues())
-                    )
-                    .AddChild(new PropertyField(serializedObject.FindProperty(defaultValuePath)))
-                );
-
-            void UpdateValues()
+            if (type.IsArray)
             {
-                var values = serializedObject.FindProperty(valuesPath);
-                var enumTypeValue = serializedObject.FindProperty(enumTypePath).stringValue;
-
-                for (var i = 0; i < values.arraySize; i++)
-                {
-                    var enumTypeElement = values.GetArrayElementAtIndex(i).FindPropertyRelative("_enumType");
-
-                    if (enumTypeElement.stringValue != enumTypeValue)
-                        enumTypeElement.SetStringAndApply(enumTypeValue);
-                }
+                type = type.GetElementType();
             }
+            else if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(List<>))
+            {
+                type = type.GetGenericArguments()[0];
+            }
+
+            return type is { IsGenericType: true } && type.GetGenericTypeDefinition() == typeof(EnumValues<,>);
         }
     }
 }

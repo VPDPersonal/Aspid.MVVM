@@ -1,5 +1,3 @@
-using UnityEngine;
-
 // ReSharper disable once CheckNamespace
 namespace Aspid.FastTools.UIElements.Editors.Internal
 {
@@ -60,17 +58,6 @@ namespace Aspid.FastTools.UIElements.Editors.Internal
         public static AspidLabel SetLabelSize(this AspidLabel element, AspidLabelSizeStyle.Type value)
         {
             element.LabelSize = value;
-            return element;
-        }
-
-        /// <summary>
-        /// Sets <see cref="AspidLabel.LabelFontStyle"/> and returns the element for chaining.
-        /// </summary>
-        /// <param name="element">The element to configure.</param>
-        /// <param name="value">The new font style.</param>
-        public static AspidLabel SetLabelFontStyle(this AspidLabel element, FontStyle value)
-        {
-            element.LabelFontStyle = value;
             return element;
         }
 

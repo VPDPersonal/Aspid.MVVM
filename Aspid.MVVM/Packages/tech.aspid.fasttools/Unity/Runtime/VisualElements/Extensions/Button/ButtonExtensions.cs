@@ -40,6 +40,7 @@ namespace Aspid.FastTools.UIElements
         /// <remarks>
         /// Clickable MouseManipulator for this Button.
         /// </remarks>
+        /// <typeparam name="T">The element type.</typeparam>
         /// <param name="element">The element to modify.</param>
         /// <param name="value">The clickable manipulator to set.</param>
         /// <returns>The element, for chaining.</returns>

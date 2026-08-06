@@ -1,6 +1,11 @@
 // ReSharper disable once CheckNamespace
 namespace Aspid.FastTools.UIElements.Editors.Internal
 {
+    /// <summary>
+    /// Single source of truth for the shared Aspid editor USS class names and the default
+    /// stylesheet path. Internal components reference these constants instead of hard-coding
+    /// string literals so class/path names stay consistent across the package.
+    /// </summary>
     internal static class AspidStyles
     {
         /// <summary>

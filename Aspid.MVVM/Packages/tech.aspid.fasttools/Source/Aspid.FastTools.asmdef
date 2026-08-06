@@ -1,3 +1,4 @@
 {
-	"name": "Aspid.FastTools"
+	"name": "Aspid.FastTools",
+	"noEngineReferences": true
 }

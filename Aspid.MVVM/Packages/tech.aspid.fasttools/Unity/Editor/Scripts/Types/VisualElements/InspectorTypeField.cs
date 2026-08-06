@@ -8,9 +8,8 @@ using Aspid.FastTools.UIElements;
 namespace Aspid.FastTools.Types.Editors
 {
     /// <summary>
-    /// <see cref="TypeField"/> variant pre-styled to match a Unity Inspector property row:
-    /// applies <see cref="BaseField{TValueType}.alignedFieldUssClassName"/> and the
-    /// <see cref="PropertyField"/> USS classes so the label aligns with sibling property fields.
+    /// <see cref="TypeField"/> variant pre-styled to match a Unity Inspector property row,
+    /// so its label aligns with sibling property fields.
     /// </summary>
     /// <remarks>
     /// Use this in custom property drawers; use <see cref="TypeField"/> directly for

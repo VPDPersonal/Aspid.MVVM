@@ -5,7 +5,7 @@
 ToolbarSearchField {
     width: auto;
     flex-shrink: 1;
-    margin: 5px 0 10;
+    margin: 5px 0 10px;
 }
 
 .aspid-fasttools-id-selector__error {

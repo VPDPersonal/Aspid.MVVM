@@ -32,18 +32,13 @@ namespace Aspid.FastTools.Ids.Editors
             if (_index is null) return;
             if (target == null) return;
 
-            var assetType = target.GetType();
-            if (!TryGetFieldsFor(assetType, out var fields)) return;
-
             var path = AssetDatabase.GetAssetPath(target);
             if (string.IsNullOrEmpty(path)) return;
 
             var guid = AssetDatabase.AssetPathToGUID(path);
             if (string.IsNullOrEmpty(guid)) return;
 
-            var so = new SerializedObject(target);
-            RebuildAssetBucket(so, fields, assetType, guid);
-            IndexChanged?.Invoke();
+            RefreshAssetBuckets(target, guid);
         }
 
         public static void OnAssetChanged(string path)
@@ -53,15 +48,10 @@ namespace Aspid.FastTools.Ids.Editors
             var asset = AssetDatabase.LoadAssetAtPath<ScriptableObject>(path);
             if (asset == null) return;
 
-            var assetType = asset.GetType();
-            if (!TryGetFieldsFor(assetType, out var fields)) return;
-
             var guid = AssetDatabase.AssetPathToGUID(path);
             if (string.IsNullOrEmpty(guid)) return;
 
-            var so = new SerializedObject(asset);
-            RebuildAssetBucket(so, fields, assetType, guid);
-            IndexChanged?.Invoke();
+            RefreshAssetBuckets(asset, guid);
         }
 
         public static void Reset()
@@ -121,10 +111,25 @@ namespace Aspid.FastTools.Ids.Editors
             return result;
         }
 
-        private static bool TryGetFieldsFor(Type assetType, out FieldInfo[] fields)
+        // The index is keyed by the field's declaring type while assets carry their concrete type,
+        // so every declaring-type bucket the asset is assignable to must be rebuilt.
+        private static void RefreshAssetBuckets(UnityEngine.Object asset, string guid)
         {
             _fieldsByType ??= BuildFieldsByType();
-            return _fieldsByType.TryGetValue(assetType, out fields);
+
+            SerializedObject so = null;
+            var assetType = asset.GetType();
+
+            foreach (var (declaringType, fields) in _fieldsByType)
+            {
+                if (!declaringType.IsAssignableFrom(assetType)) continue;
+
+                so ??= new SerializedObject(asset);
+                RebuildAssetBucket(so, fields, declaringType, guid);
+            }
+
+            if (so is not null)
+                IndexChanged?.Invoke();
         }
 
         private static void AddToIndex(Dictionary<string, HashSet<string>> byId, string stringId, string guid)
@@ -138,12 +143,12 @@ namespace Aspid.FastTools.Ids.Editors
             set.Add(guid);
         }
 
-        private static void RebuildAssetBucket(SerializedObject so, FieldInfo[] fields, Type assetType, string guid)
+        private static void RebuildAssetBucket(SerializedObject so, FieldInfo[] fields, Type declaringType, string guid)
         {
-            if (!_index.TryGetValue(assetType, out var byId))
+            if (!_index.TryGetValue(declaringType, out var byId))
             {
                 byId = new Dictionary<string, HashSet<string>>();
-                _index[assetType] = byId;
+                _index[declaringType] = byId;
             }
             else
             {

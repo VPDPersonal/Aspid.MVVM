@@ -15,6 +15,8 @@ namespace Aspid.FastTools.UIElements.Editors.Internal
     [UxmlElement(libraryPath = "Aspid/FastTools")]
     internal sealed partial class AspidAnimatedLogo : VisualElement
     {
+        private const string StyleSheetPath = "UI/Components/Aspid-FastTools-AspidAnimatedLogo";
+
         private const int LayerCount = 3;
         private const long AnimationIntervalMs = 33;
         private const float PulseAmplitudeSmoothing = 0.07f;
@@ -104,7 +106,7 @@ namespace Aspid.FastTools.UIElements.Editors.Internal
         /// <param name="preset">The configuration preset to apply.</param>
         public AspidAnimatedLogo(AspidAnimatedLogoPreset preset)
         {
-            this.AddStyleSheetsFromResource("UI/Components/Aspid-FastTools-AspidAnimatedLogo");
+            this.AddStyleSheetsFromResource(StyleSheetPath);
 
             ColorCycleIntervalMs = preset.ColorCycleIntervalMs;
 
@@ -147,7 +149,15 @@ namespace Aspid.FastTools.UIElements.Editors.Internal
 
             _pulse = schedule.Execute(UpdatePulse).Every(AnimationIntervalMs);
 
-            RegisterCallback<AttachToPanelEvent>(_ => _pulse.Resume());
+            RegisterCallback<AttachToPanelEvent>(_ =>
+            {
+                _pulse.Resume();
+
+                // Mirror the detach handler: if the pointer is still over the logo, resume the
+                // paused color cycle. Without this the StartColorCycle guard (non-null _colorCycle)
+                // would keep the cross-fade frozen until a full pointer leave/re-enter.
+                if (_hovered) _colorCycle?.Resume();
+            });
             RegisterCallback<DetachFromPanelEvent>(_ =>
             {
                 _pulse.Pause();

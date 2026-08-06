@@ -2,6 +2,7 @@
 using System;
 using UnityEditor;
 using System.Linq;
+using UnityEngine;
 using UnityEngine.UIElements;
 using System.Collections.Generic;
 
@@ -27,30 +28,60 @@ namespace Aspid.FastTools.Enums.Editors
         /// values (e.g. <c>All = A | B</c>), so they will be added as separate rows.
         /// </remarks>
         public static ContextualMenuManipulator CreatePopulateMenuManipulator(
-            SerializedProperty values,
-            SerializedProperty enumType,
-            SerializedProperty defaultValue)
+            SerializedObject serializedObject,
+            string values,
+            string enumType,
+            string defaultValue) => new(evt =>
         {
-            var serializedObject = values.serializedObject;
-            var valuesPath = values.propertyPath;
-            var enumTypePath = enumType.propertyPath;
-            var defaultValuePath = defaultValue.propertyPath;
+            var valuesProperty = serializedObject.FindProperty(values);
+            var enumTypeProperty = serializedObject.FindProperty(enumType);
+            var defaultValueProperty = serializedObject.FindProperty(defaultValue);
 
-            return new ContextualMenuManipulator(evt =>
+            var status = HasMissingMembers(valuesProperty, enumTypeProperty)
+                ? DropdownMenuAction.Status.Normal
+                : DropdownMenuAction.Status.Disabled;
+
+            evt.menu.AppendAction(
+                PopulateMenuItem,
+                _ => PopulateMissing(valuesProperty, enumTypeProperty, defaultValueProperty),
+                status);
+        });
+
+        /// <summary>
+        /// IMGUI counterpart of <see cref="CreatePopulateMenuManipulator"/> — shows the same
+        /// "Populate Missing Enum Members" <see cref="GenericMenu"/> on a right-click inside
+        /// <paramref name="rect"/>, consuming the event.
+        /// </summary>
+        public static void ShowPopulateContextMenu(
+            Rect rect,
+            SerializedObject serializedObject,
+            string values,
+            string enumType,
+            string defaultValue)
+        {
+            var current = Event.current;
+            if (current.type != EventType.ContextClick || !rect.Contains(current.mousePosition)) return;
+
+            var valuesProperty = serializedObject.FindProperty(values);
+            var enumTypeProperty = serializedObject.FindProperty(enumType);
+
+            var menu = new GenericMenu();
+            var menuLabel = new GUIContent(PopulateMenuItem);
+
+            if (HasMissingMembers(valuesProperty, enumTypeProperty))
             {
-                var valuesProp = serializedObject.FindProperty(valuesPath);
-                var enumTypeProp = serializedObject.FindProperty(enumTypePath);
-                var defaultValueProp = serializedObject.FindProperty(defaultValuePath);
+                menu.AddItem(menuLabel, false, () => PopulateMissing(
+                    serializedObject.FindProperty(values),
+                    serializedObject.FindProperty(enumType),
+                    serializedObject.FindProperty(defaultValue)));
+            }
+            else
+            {
+                menu.AddDisabledItem(menuLabel);
+            }
 
-                var status = HasMissingMembers(valuesProp, enumTypeProp)
-                    ? DropdownMenuAction.Status.Normal
-                    : DropdownMenuAction.Status.Disabled;
-
-                evt.menu.AppendAction(
-                    PopulateMenuItem,
-                    _ => PopulateMissing(valuesProp, enumTypeProp, defaultValueProp),
-                    status);
-            });
+            menu.ShowAsContext();
+            current.Use();
         }
 
         private static void PopulateMissing(
@@ -69,14 +100,17 @@ namespace Aspid.FastTools.Enums.Editors
                 if (!existing.Add(name)) continue;
 
                 values.arraySize++;
+
                 var element = values.GetArrayElementAtIndex(values.arraySize - 1);
                 element.FindPropertyRelative("_key").stringValue = name;
                 element.FindPropertyRelative("_enumType").stringValue = enumType.stringValue;
                 element.FindPropertyRelative("_value").boxedValue = defaultValue.boxedValue;
+
                 added = true;
             }
 
-            if (added) values.serializedObject.ApplyModifiedProperties();
+            if (added)
+                values.serializedObject.ApplyModifiedProperties();
         }
 
         private static bool HasMissingMembers(SerializedProperty values, SerializedProperty enumType)
@@ -96,6 +130,7 @@ namespace Aspid.FastTools.Enums.Editors
                 var element = values.GetArrayElementAtIndex(i);
                 set.Add(element.FindPropertyRelative("_key").stringValue);
             }
+
             return set;
         }
     }

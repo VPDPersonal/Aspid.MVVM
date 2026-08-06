@@ -1101,6 +1101,22 @@ namespace Aspid.FastTools.UIElements
         }
 
         /// <summary>
+        /// Sets the left and right border colors by parsing an HTML color string via <see cref="ColorUtility.TryParseHtmlString"/>.
+        /// </summary>
+        /// <typeparam name="T">The element type.</typeparam>
+        /// <param name="element">The element to modify.</param>
+        /// <param name="value">The HTML color string (e.g. "#FF0000", "red").</param>
+        /// <returns>The element, for chaining.</returns>
+        public static T SetBorderColorX<T>(
+            this T element,
+            string value)
+            where T : VisualElement
+        {
+            element.style.SetBorderColorX(value);
+            return element;
+        }
+
+        /// <summary>
         /// Sets <see cref="IStyle.borderTopColor"/> and <see cref="IStyle.borderBottomColor"/> and returns the element for chaining.
         /// </summary>
         /// <remarks>
@@ -1113,6 +1129,22 @@ namespace Aspid.FastTools.UIElements
         public static T SetBorderColorY<T>(
             this T element,
             StyleColor value)
+            where T : VisualElement
+        {
+            element.style.SetBorderColorY(value);
+            return element;
+        }
+
+        /// <summary>
+        /// Sets the top and bottom border colors by parsing an HTML color string via <see cref="ColorUtility.TryParseHtmlString"/>.
+        /// </summary>
+        /// <typeparam name="T">The element type.</typeparam>
+        /// <param name="element">The element to modify.</param>
+        /// <param name="value">The HTML color string (e.g. "#FF0000", "red").</param>
+        /// <returns>The element, for chaining.</returns>
+        public static T SetBorderColorY<T>(
+            this T element,
+            string value)
             where T : VisualElement
         {
             element.style.SetBorderColorY(value);

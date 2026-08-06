@@ -8,12 +8,6 @@
     "precompiledReferences": [],
     "autoReferenced": true,
     "defineConstraints": [],
-    "versionDefines": [
-        {
-            "name": "com.unity.mathematics",
-            "expression": "",
-            "define": "ASPID_FASTTOOLS_UNITY_MATHEMATICS_INTEGRATION"
-        }
-    ],
+    "versionDefines": [],
     "noEngineReferences": false
 }

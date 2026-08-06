@@ -2,7 +2,7 @@ using System;
 using UnityEngine.UIElements;
 
 // ReSharper disable once CheckNamespace
-namespace Aspid.FastTools.UIElements.Manipulators
+namespace Aspid.FastTools.UIElements
 {
     public static class ManipulatorExtensions
     {

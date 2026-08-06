@@ -10,6 +10,7 @@ using System.CodeDom.Compiler;
 using System.Collections.Generic;
 using Aspid.FastTools.UIElements;
 using Aspid.FastTools.UIElements.Editors.Internal;
+using Aspid.FastTools.SerializeReferences.Editors;
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM
@@ -100,7 +101,7 @@ namespace Aspid.MVVM
         private static VisualElement GetPropertyField(FieldInfo? fieldInfo, SerializedProperty propertyCopy)
         {
             var fieldType = fieldInfo?.FieldType;
-            
+
             if (IsMonoBinderType(fieldType))
             {
                 var binderId = fieldInfo is not null
@@ -110,9 +111,19 @@ namespace Aspid.MVVM
                 var assemblyQualifiedName = GetAssemblyQualifiedName(fieldInfo);
                 return new MonoBinderPropertyField(propertyCopy, binderId, assemblyQualifiedName);
             }
-            
+
+            // A [SerializeReference] field gets the FastTools type-picker dropdown instead of Unity's default
+            // managed-reference UI. Routing it here rather than through a [TypeSelector] attribute keeps every
+            // polymorphic field in a View / ViewModel / Binder picking a type the same way, with nothing to
+            // annotate — the candidate set is the field's own declared type.
+            if (propertyCopy.propertyType is SerializedPropertyType.ManagedReference)
+                return SerializeReferenceEditorGUI.CreateField(propertyCopy);
+
+            if (IsManagedReferenceArray(propertyCopy))
+                return SerializeReferenceEditorGUI.CreateList(propertyCopy);
+
             return new AspidPropertyField(propertyCopy);
-            
+
             bool IsMonoBinderType(Type? type)
             {
                 if (type is null) return false;
@@ -120,6 +131,18 @@ namespace Aspid.MVVM
                 return typeof(MonoBinder).IsAssignableFrom(type);
             }
         }
+
+        /// <summary>
+        /// Indicates whether the property is an array or list whose elements are managed references.
+        /// </summary>
+        /// <remarks>
+        /// <see cref="SerializedProperty.arrayElementType"/> reports <c>managedReference&lt;…&gt;</c> only for a
+        /// <c>[SerializeReference]</c> collection, so it separates one from an array of plain serialized values.
+        /// </remarks>
+        private static bool IsManagedReferenceArray(SerializedProperty property) =>
+            property.isArray &&
+            property.propertyType is not SerializedPropertyType.String &&
+            property.arrayElementType.StartsWith("managedReference<", StringComparison.Ordinal);
         
         private static string? GetAssemblyQualifiedName(FieldInfo? field)
         {

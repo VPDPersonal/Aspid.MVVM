@@ -109,7 +109,31 @@ dotnet test Aspid.MVVM.Generators/Aspid.MVVM.Generators/Aspid.MVVM.Generators.Te
 dotnet test Aspid.MVVM.Analyzers/Aspid.MVVM.Analyzers/Aspid.MVVM.Analyzers.Tests/
 ```
 
-The Unity project is opened via the Unity Editor (2022.3+); there is no CLI build script.
+### Unity Editor automation (Unity CLI)
+
+Editor automation goes through the official **Unity CLI** (`unity`) and the `com.unity.pipeline`
+package, which is declared in `Aspid.MVVM/Packages/manifest.json`. A running Editor exposes ~140
+commands over its Pipeline server:
+
+```bash
+# Open the project and check that the Pipeline server is up
+unity open Aspid.MVVM
+unity status --json
+
+# Discover / run Editor commands
+unity command                                  # list every command the Editor exposes
+unity command recompile --json                 # compile check after C# edits
+unity command package_resolve --json           # re-resolve packages after a manifest change
+unity command get_console_logs --json          # read the Editor console
+unity command run_tests --mode EditMode --json # Unity Test Framework run
+unity command eval --code 'return Application.unityVersion;'
+```
+
+When several Unity Editors are open, add `--project-path ./Aspid.MVVM` — otherwise the CLI can't
+pick an instance and errors out.
+
+AI agents can consume the same command surface as MCP tools: the repo ships `.mcp.json` with a
+`unity-editor` stdio server (`unity mcp --project-path ./Aspid.MVVM`).
 
 ## Gotchas
 

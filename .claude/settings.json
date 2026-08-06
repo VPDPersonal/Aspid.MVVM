@@ -1,6 +1,5 @@
 {
   "enabledPlugins": {
-    "unicli@unicli": true,
     "codspeed@claude-plugins-official": true
   }
 }

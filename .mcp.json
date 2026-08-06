@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "unity-editor": {
+      "type": "stdio",
+      "command": "unity",
+      "args": ["mcp", "--project-path", "./Aspid.MVVM"],
+      "env": {}
+    }
+  }
+}

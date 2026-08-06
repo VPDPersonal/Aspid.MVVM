@@ -16,9 +16,7 @@ namespace Aspid.MVVM
     public abstract partial class Binder : IBinder
     {
         // ReSharper disable once MemberInitializerValueIgnored
-#if UNITY_2022_1_OR_NEWER
         [UnityEngine.SerializeField]
-#endif
         [BindMode(BindMode.OneWay, BindMode.OneTime)]
         private BindMode _mode = BindMode.TwoWay;
 

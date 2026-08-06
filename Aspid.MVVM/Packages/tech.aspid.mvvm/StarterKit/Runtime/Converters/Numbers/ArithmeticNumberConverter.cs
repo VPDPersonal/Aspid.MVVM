@@ -14,14 +14,10 @@ namespace Aspid.MVVM.StarterKit
         IConverterInt, IConverterLongToInt, IConverterFloatToInt, IConverterDoubleToInt,
         IConverterLong, IConverterIntToLong, IConverterFloatToLong, IConverterDoubleToLong
     {
-#if UNITY_2022_1_OR_NEWER
         [UnityEngine.SerializeField]
-#endif
         private NumberOperation _operation;
 
-#if UNITY_2022_1_OR_NEWER
         [UnityEngine.SerializeField]
-#endif
         private double _coefficient;
 
         /// <summary>

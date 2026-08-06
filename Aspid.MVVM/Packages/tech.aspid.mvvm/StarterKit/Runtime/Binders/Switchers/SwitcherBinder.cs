@@ -11,16 +11,12 @@ namespace Aspid.MVVM.StarterKit
     [Serializable]
     public abstract class SwitcherBinder<T> : Binder, IBinder<bool>
     {
-#if UNITY_2022_1_OR_NEWER
         [UnityEngine.Tooltip("Value applied when the bound boolean is true.")]
         [UnityEngine.SerializeField]
-#endif
         private T _trueValue;
 
-#if UNITY_2022_1_OR_NEWER
         [UnityEngine.Tooltip("Value applied when the bound boolean is false.")]
         [UnityEngine.SerializeField]
-#endif
         private T _falseValue;
 
         /// <summary>
@@ -65,16 +61,12 @@ namespace Aspid.MVVM.StarterKit
     [Serializable]
     public abstract class SwitcherBinder<TTarget, T> : TargetBinder<TTarget>, IBinder<bool>
     {
-#if UNITY_2022_1_OR_NEWER
         [UnityEngine.Tooltip("Value applied when the bound boolean is true.")]
         [UnityEngine.SerializeField]
-#endif
         private T _trueValue;
 
-#if UNITY_2022_1_OR_NEWER
         [UnityEngine.Tooltip("Value applied when the bound boolean is false.")]
         [UnityEngine.SerializeField]
-#endif
         private T _falseValue;
 
         /// <summary>
@@ -119,22 +111,16 @@ namespace Aspid.MVVM.StarterKit
     public abstract class SwitcherBinder<TTarget, T, TConverter> : TargetBinder<TTarget>, IBinder<bool>
         where TConverter : class, IConverter<T?, T?>
     {
-#if UNITY_2022_1_OR_NEWER
         [UnityEngine.Tooltip("Value applied when the bound boolean is true.")]
         [UnityEngine.SerializeField]
-#endif
         private T _trueValue;
 
-#if UNITY_2022_1_OR_NEWER
         [UnityEngine.Tooltip("Value applied when the bound boolean is false.")]
         [UnityEngine.SerializeField]
-#endif
         private T _falseValue;
 
-#if UNITY_2022_1_OR_NEWER
         [UnityEngine.Tooltip("Optional converter applied to the selected value before it is set.")]
         [UnityEngine.SerializeReference]
-#endif
         private TConverter? _converter;
 
         /// <summary>

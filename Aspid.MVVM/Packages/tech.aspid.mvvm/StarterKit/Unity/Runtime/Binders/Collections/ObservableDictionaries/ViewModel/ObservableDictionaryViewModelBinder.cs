@@ -41,7 +41,6 @@ namespace Aspid.MVVM.StarterKit
         where TView : MonoBehaviour, IView
         where TViewFactory : IViewFactoryWithKey<TView>
     {
-        [SerializeReferenceDropdown]
         [Tooltip("The factory used to create and release view instances keyed by the dictionary key.")]
         [SerializeReference] private TViewFactory _viewFactory;
 

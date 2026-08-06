@@ -17,7 +17,6 @@ namespace Aspid.MVVM.StarterKit
     [AddBinderContextMenu(typeof(Component), Path = "Add General Binder/UnityEvent/UnityEvent Binder – Number Condition Switcher")]
     public sealed partial class UnityEventNumberConditionSwitcherMonoBinder : MonoBinder, INumberBinder
     {
-        [SerializeReferenceDropdown]
         [SerializeReference] private Converter _converter;
 
         [Tooltip("The event invoked when the condition evaluates to true.")]

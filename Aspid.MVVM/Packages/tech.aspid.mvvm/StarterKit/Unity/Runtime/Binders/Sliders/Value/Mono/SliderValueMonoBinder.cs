@@ -37,7 +37,6 @@ namespace Aspid.MVVM.StarterKit
         public event Action<double> DoubleValueChanged;
 
         [Tooltip("Optional converter applied to values before they are set on the slider.")]
-        [SerializeReferenceDropdown]
         [SerializeReference] private Converter _converter;
 
         private bool _isNotifyValueChanged = true;

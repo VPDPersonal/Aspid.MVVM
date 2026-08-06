@@ -23,10 +23,8 @@ namespace Aspid.MVVM.StarterKit
     [Serializable]
     public sealed class VirtualizedListItemSourceBinder : TargetBinder<VirtualizedList>, IBinder<IReadOnlyList<IViewModel>>
     {
-        [SerializeReferenceDropdown]
         [SerializeReference] private Filter _filter;
         
-        [SerializeReferenceDropdown]
         [SerializeReference] private Comparer _comparer;
 
         private FilteredList<IViewModel> _filteredList;

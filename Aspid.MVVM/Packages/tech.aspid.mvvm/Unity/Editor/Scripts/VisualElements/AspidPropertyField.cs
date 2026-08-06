@@ -87,17 +87,6 @@ namespace Aspid.MVVM
                 field?.AddToClassList(StyleClass);
                 field?.AddToClassList(ThemeStyle.LightnessClass);
             }
-            
-            // For [SerializeReferenceDropdown]
-            foreach (var dropdown in this.Query<VisualElement>("dropdown-group").Build())
-            {
-                var labelElement = dropdown.parent?.Q<Label>();
-                if (labelElement is null) continue;
-                
-                var size = labelElement.MeasureTextSize(labelElement.text, 0, MeasureMode.Undefined, 0, MeasureMode.Undefined);
-                dropdown.style.left = Mathf.Max(75, size.x);
-                dropdown.SetMargin(left: 15);
-            }
         }
         
         // A foldout-style IMGUI drawer (e.g. Localization StringReference) reports a different

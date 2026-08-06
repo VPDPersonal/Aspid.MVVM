@@ -16,7 +16,6 @@ namespace Aspid.MVVM.StarterKit
     [AddComponentMenu("Aspid/MVVM/Binders/Animator/Animator Binder – Set Float")]
     public partial class AnimatorSetFloatMonoBinder : AnimatorSetParameterMonoBinder<float>, INumberBinder
     {
-        [SerializeReferenceDropdown]
         [Tooltip("Optional converter applied to the bound float value before setting the Animator parameter.")]
         [SerializeReference] private Converter _converter;
 

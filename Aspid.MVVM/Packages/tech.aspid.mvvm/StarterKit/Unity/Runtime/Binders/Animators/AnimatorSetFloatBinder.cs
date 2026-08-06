@@ -18,7 +18,6 @@ namespace Aspid.MVVM.StarterKit
     [Serializable]
     public class AnimatorSetFloatBinder : AnimatorSetParameterBinder<float>
     {
-        [SerializeReferenceDropdown]
         [Tooltip("Optional converter applied to the bound float value before setting the Animator parameter.")]
         [SerializeReference] private Converter? _converter;
 

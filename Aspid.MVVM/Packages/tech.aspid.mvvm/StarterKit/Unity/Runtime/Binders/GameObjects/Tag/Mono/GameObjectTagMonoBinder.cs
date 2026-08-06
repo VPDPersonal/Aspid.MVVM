@@ -27,7 +27,6 @@ namespace Aspid.MVVM.StarterKit
         /// <inheritdoc/>
         public event Action<string> ValueChanged;
         
-        [SerializeReferenceDropdown]
         [SerializeReference] private Converter _converter;
 
         /// <summary>

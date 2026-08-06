@@ -20,6 +20,7 @@
 ### Удалено
 
 - Внутренний `FloatingBackgroundElement` — заменён анимированным фоном из точек Aspid.FastTools.
+- Интеграция `SerializeReferenceDropdown`: зависимость `com.alexeytaranov.serializereferencedropdown`, атрибуты `[SerializeReferenceDropdown]` над полями `[SerializeReference]`, ссылки в asmdef и version define `ASPID_MVVM_SERIALIZE_REFERENCE_DROPDOWN_INTEGRATION`. На замену придёт встроенное решение из Aspid.FastTools.
 
 ## [1.1.0-beta.1] — 2026-06-06
 

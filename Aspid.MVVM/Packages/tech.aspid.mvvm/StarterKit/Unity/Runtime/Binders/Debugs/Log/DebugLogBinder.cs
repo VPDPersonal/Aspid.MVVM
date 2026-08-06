@@ -30,7 +30,6 @@ namespace Aspid.MVVM.StarterKit
 
         // ReSharper disable once FieldCanBeMadeReadOnly.Local
         // ReSharper disable once MemberInitializerValueIgnored
-        [SerializeReferenceDropdown]
         [Tooltip("Converter used to format bound values as log messages. Defaults to ObjectToStringConverter.")]
         [SerializeReference] private Converter _converter = new ObjectToStringConverter();
 

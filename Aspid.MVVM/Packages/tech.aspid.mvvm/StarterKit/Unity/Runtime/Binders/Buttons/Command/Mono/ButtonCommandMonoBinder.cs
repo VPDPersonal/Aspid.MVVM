@@ -18,7 +18,6 @@ namespace Aspid.MVVM.StarterKit
         [Tooltip("Controls how the button's interactable state reflects the bound command's CanExecute result.")]
         [SerializeField] private InteractableMode _interactableMode = InteractableMode.Interactable;
 
-        [SerializeReferenceDropdown]
         [Tooltip("A custom view that reflects the bound command's CanExecute state; used when Interactable Mode is set to Custom.")]
         [SerializeReference] private ICanExecuteView _customInteractable;
 
@@ -122,7 +121,6 @@ namespace Aspid.MVVM.StarterKit
         [Tooltip("Controls how the button's interactable state reflects the bound command's CanExecute result.")]
         [SerializeField] private InteractableMode _interactableMode = InteractableMode.Interactable;
 
-        [SerializeReferenceDropdown]
         [Tooltip("A custom view that reflects the bound command's CanExecute state; used when Interactable Mode is set to Custom.")]
         [SerializeReference] private ICanExecuteView _customInteractable;
 
@@ -215,7 +213,6 @@ namespace Aspid.MVVM.StarterKit
         [Tooltip("Controls how the button's interactable state reflects the bound command's CanExecute result.")]
         [SerializeField] private InteractableMode _interactableMode = InteractableMode.Interactable;
 
-        [SerializeReferenceDropdown]
         [Tooltip("A custom view that reflects the bound command's CanExecute state; used when Interactable Mode is set to Custom.")]
         [SerializeReference] private ICanExecuteView _customInteractable;
 
@@ -320,7 +317,6 @@ namespace Aspid.MVVM.StarterKit
         [Tooltip("Controls how the button's interactable state reflects the bound command's CanExecute result.")]
         [SerializeField] private InteractableMode _interactableMode = InteractableMode.Interactable;
 
-        [SerializeReferenceDropdown]
         [Tooltip("A custom view that reflects the bound command's CanExecute state; used when Interactable Mode is set to Custom.")]
         [SerializeReference] private ICanExecuteView _customInteractable;
 
@@ -437,7 +433,6 @@ namespace Aspid.MVVM.StarterKit
         [Tooltip("Controls how the button's interactable state reflects the bound command's CanExecute result.")]
         [SerializeField] private InteractableMode _interactableMode = InteractableMode.Interactable;
 
-        [SerializeReferenceDropdown]
         [Tooltip("A custom view that reflects the bound command's CanExecute state; used when Interactable Mode is set to Custom.")]
         [SerializeReference] private ICanExecuteView _customInteractable;
 

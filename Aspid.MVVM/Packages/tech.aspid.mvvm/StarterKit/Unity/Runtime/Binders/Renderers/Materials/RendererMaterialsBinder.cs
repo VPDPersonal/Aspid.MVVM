@@ -40,7 +40,6 @@ namespace Aspid.MVVM.StarterKit
             remove => _reverseMaterials -= value;
         }
         
-        [SerializeReferenceDropdown]
         [Tooltip("The optional converter applied to each material before it is assigned to the Renderer.")]
         [SerializeReference] private Converter? _converter;
         

@@ -14,8 +14,7 @@
         "Aspid.FastTools.Unity",
         "Aspid.MVVM.StarterKit",
         "Unity.ResourceManager",
-        "Aspid.Collections.Observable",
-        "SerializeReferenceDropdownRuntime"
+        "Aspid.Collections.Observable"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
@@ -49,11 +48,6 @@
             "name": "jp.hadashikick.vcontainer",
             "expression": "",
             "define": "ASPID_MVVM_VCONTAINER_INTEGRATION"
-        },
-        {
-            "name": "com.alexeytaranov.serializereferencedropdown",
-            "expression": "",
-            "define": "ASPID_MVVM_SERIALIZE_REFERENCE_DROPDOWN_INTEGRATION"
         }
     ],
     "noEngineReferences": false

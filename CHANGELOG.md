@@ -20,6 +20,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Removed
 
 - Internal `FloatingBackgroundElement`, superseded by the FastTools animated dot background.
+- `SerializeReferenceDropdown` integration: the `com.alexeytaranov.serializereferencedropdown` dependency, the `[SerializeReferenceDropdown]` attributes on `[SerializeReference]` fields, the assembly references and the `ASPID_MVVM_SERIALIZE_REFERENCE_DROPDOWN_INTEGRATION` version defines. A replacement built into Aspid.FastTools will take its place.
 
 ## [1.1.0-beta.1] — 2026-06-06
 

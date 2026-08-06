@@ -17,7 +17,6 @@ namespace Aspid.MVVM.StarterKit
     [AddBinderContextMenu(typeof(Component), Path = "Add General Binder/UnityEvent/UnityEvent Binder – Quaternion")]
     public sealed partial class UnityEventQuaternionMonoBinder : MonoBinder, IBinder<Quaternion>
     {
-        [SerializeReferenceDropdown]
         [SerializeReference] private Converter _converter;
 
         [Tooltip("The event invoked with the bound value.")]

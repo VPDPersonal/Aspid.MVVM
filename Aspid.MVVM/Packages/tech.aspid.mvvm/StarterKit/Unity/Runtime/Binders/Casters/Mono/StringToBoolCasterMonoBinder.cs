@@ -22,7 +22,6 @@ namespace Aspid.MVVM.StarterKit
     public sealed partial class StringToBoolCasterMonoBinder : MonoBinder, IBinder<string>
     {
         [Tooltip("The converter used to transform the bound string to a bool.")]
-        [SerializeReferenceDropdown]
         [SerializeReference] private Converter _converter = new StringEmptyToBoolConverter();
         
         [Tooltip("Invoked with the converted bool value each time a new value arrives from the ViewModel.")]

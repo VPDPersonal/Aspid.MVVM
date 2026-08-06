@@ -20,7 +20,6 @@ namespace Aspid.MVVM.StarterKit
     [AddComponentMenu("Aspid/MVVM/Binders/UI/Dropdown/Dropdown Binder – Options By Enum")]
     public class DropdownOptionsByEnumMonoBinder : ComponentMonoBinder<TMP_Dropdown>, IBinder<Enum>
     {
-        [SerializeReferenceDropdown]
         [Tooltip("The converter used to transform the enum value to dropdown option data. When null, the default string representation of each enum value is used.")]
         [SerializeReference] private Converter _converter;
 

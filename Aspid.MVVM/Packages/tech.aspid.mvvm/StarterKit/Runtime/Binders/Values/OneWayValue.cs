@@ -32,7 +32,6 @@ namespace Aspid.MVVM.StarterKit
 
 #if UNITY_2023_1_OR_NEWER
         [UnityEngine.SerializeReference]
-        [SerializeReferenceDropdown]
 #endif
         private IConverter<T?, T?>? _converter;
 

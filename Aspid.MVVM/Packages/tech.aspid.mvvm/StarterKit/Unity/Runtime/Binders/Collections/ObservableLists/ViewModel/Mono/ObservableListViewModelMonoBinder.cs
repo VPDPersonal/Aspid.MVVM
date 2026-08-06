@@ -27,13 +27,10 @@ namespace Aspid.MVVM.StarterKit
         where T : MonoBehaviour, IView
         where TViewFactory : IViewFactory<T>
     {
-        [SerializeReferenceDropdown]
         [SerializeReference] private TViewFactory _viewFactory;
 
-        [SerializeReferenceDropdown]
         [SerializeReference] private Filter _filter;
         
-        [SerializeReferenceDropdown]
         [SerializeReference] private Comparer _comparer;
 
         private List<T> _views;

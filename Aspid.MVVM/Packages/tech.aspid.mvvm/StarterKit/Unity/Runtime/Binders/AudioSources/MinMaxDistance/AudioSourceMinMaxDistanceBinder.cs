@@ -21,7 +21,6 @@ namespace Aspid.MVVM.StarterKit
         [Tooltip("Determines which distance component (min, max, or both) is updated when the bound value changes.")]
         [SerializeField] private AudioSourceDistanceMode _distanceMode = AudioSourceDistanceMode.Range;
 
-        [SerializeReferenceDropdown]
         [Tooltip("Optional converter applied to the bound Vector2 value before setting the min/max distance.")]
         [SerializeReference] private Converter? _converter;
 

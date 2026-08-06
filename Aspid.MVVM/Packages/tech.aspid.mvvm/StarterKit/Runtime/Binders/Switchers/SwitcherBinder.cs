@@ -133,7 +133,6 @@ namespace Aspid.MVVM.StarterKit
 
 #if UNITY_2022_1_OR_NEWER
         [UnityEngine.Tooltip("Optional converter applied to the selected value before it is set.")]
-        [SerializeReferenceDropdown]
         [UnityEngine.SerializeReference]
 #endif
         private TConverter? _converter;

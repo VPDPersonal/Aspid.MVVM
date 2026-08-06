@@ -13,7 +13,6 @@ namespace Aspid.MVVM.StarterKit
         [SerializeField] private Component _mono;
         [SerializeField] private ScriptableObject _scriptableObject;
         
-        [SerializeReferenceDropdown]
         [SerializeReference] private T _reference;
         
 #if ASPID_MVVM_ZENJECT_INTEGRATION

@@ -45,7 +45,6 @@ namespace Aspid.MVVM.StarterKit
         [Tooltip("The input field event that triggers ViewModel notifications.")]
         [SerializeField] private UpdateInputFieldEvent _updateEvent = UpdateInputFieldEvent.OnValueChanged;
         
-        [SerializeReferenceDropdown]
         [Tooltip("Optional converter applied to values before they are set on the input field.")]
         [SerializeReference] private Converter? _converter;
         

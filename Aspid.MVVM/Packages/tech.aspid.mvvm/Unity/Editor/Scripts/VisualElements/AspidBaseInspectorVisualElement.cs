@@ -117,10 +117,10 @@ namespace Aspid.MVVM
             // polymorphic field in a View / ViewModel / Binder picking a type the same way, with nothing to
             // annotate — the candidate set is the field's own declared type.
             if (propertyCopy.propertyType is SerializedPropertyType.ManagedReference)
-                return SerializeReferenceEditorGUI.CreateField(propertyCopy);
+                return StyleAsAspidField(SerializeReferenceEditorGUI.CreateField(propertyCopy));
 
             if (IsManagedReferenceArray(propertyCopy))
-                return SerializeReferenceEditorGUI.CreateList(propertyCopy);
+                return StyleAsAspidField(SerializeReferenceEditorGUI.CreateList(propertyCopy));
 
             return new AspidPropertyField(propertyCopy);
 
@@ -130,6 +130,26 @@ namespace Aspid.MVVM
                 if (type.IsArray) return IsMonoBinderType(type.GetElementType());
                 return typeof(MonoBinder).IsAssignableFrom(type);
             }
+        }
+
+        /// <summary>
+        /// Gives a field built outside <see cref="AspidPropertyField"/> the same inspector chrome:
+        /// the rounded panel, its background and the padding that insets it from the surrounding box.
+        /// </summary>
+        /// <remarks>
+        /// The style sheet keys off both classes together
+        /// (<c>.aspid-fasttools-theme--lightness.aspid-property-field</c>), so a field carrying only one of
+        /// them renders unstyled — edge to edge, with no panel behind it.
+        /// </remarks>
+        /// <param name="field">The field to style.</param>
+        /// <returns>The same field, styled.</returns>
+        private static VisualElement StyleAsAspidField(VisualElement field)
+        {
+            field.styleSheets.Add(AspidPropertyField.StyleSheet);
+            field.AddToClassList(AspidPropertyField.StyleClass);
+            field.AddToClassList(ThemeStyle.LightnessClass);
+
+            return field;
         }
 
         /// <summary>

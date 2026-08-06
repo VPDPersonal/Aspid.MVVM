@@ -15,12 +15,12 @@
     </ItemGroup>
 
     <!--
-        Compile the entire Unity-independent core (Assets/Aspid/MVVM/Source) so the
+        Compile the entire Unity-independent core (Packages/tech.aspid.mvvm/Source) so the
         source generator runs over it. A recursive glob is used instead of an explicit
         file list so the project stays in sync as Source files are added/removed/renamed.
     -->
     <ItemGroup>
-        <Compile Include="..\..\..\Aspid.MVVM\Assets\Aspid\MVVM\Source\**\*.cs">
+        <Compile Include="..\..\..\Aspid.MVVM\Packages\tech.aspid.mvvm\Source\**\*.cs">
             <Link>Source\%(RecursiveDir)%(Filename)%(Extension)</Link>
         </Compile>
     </ItemGroup>

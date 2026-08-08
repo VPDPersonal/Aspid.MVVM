@@ -246,21 +246,29 @@ namespace Aspid.MVVM
         }
 
         private AspidBaseInspectorVisualElement BuildBaseInspector() =>
-            new(SerializedObject, "Parameters", PropertiesExcluding.ToArray());
+            new AspidBaseInspectorVisualElement(SerializedObject, "Parameters", PropertiesExcluding.ToArray())
+                .SetMargin(top: 5);
 
         protected virtual VisualElement BuildLogsContainer()
         {
             if (_editor.LogsProperty is null || _editor.IsDebugProperty is null) 
                 return new VisualElement();
             
-            var isDebugPropertyField = new PropertyField(_editor.IsDebugProperty);
+            // The toggle is docked into the title row of an AspidLabel, whose style sheet forces
+            // `white-space: normal` and `flex-grow: 1` onto every Label beneath it. A field that kept its own
+            // label would therefore be squeezed to zero width by the title next to it and wrap that label one
+            // character per line, stretching the whole Logs box to the height of the wrapped text. An empty
+            // label drops the element outright, and flex-shrink 0 keeps the checkmark at its natural width.
+            var isDebugPropertyField = new PropertyField(_editor.IsDebugProperty, label: string.Empty)
+                .SetFlexShrink(0);
             isDebugPropertyField.Bind(_editor.serializedObject);
-            
+
             var title = new AspidLabel(text: "Logs").SetMarginBottom(5);
             var titleLabel = title[0];
             title.RemoveAt(0);
             title.Insert(index: 0, new VisualElement()
                 .SetFlexDirection(FlexDirection.Row)
+                .SetAlignItems(Align.Center)
                 .SetJustifyContent(Justify.SpaceBetween)
                 .AddChild(titleLabel)
                 .AddChild(isDebugPropertyField));

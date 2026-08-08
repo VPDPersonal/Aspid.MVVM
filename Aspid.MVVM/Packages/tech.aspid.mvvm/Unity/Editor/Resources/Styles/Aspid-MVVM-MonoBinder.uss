@@ -90,6 +90,33 @@
     margin-top: 1px;
 }
 
+/* The FastTools help box paints its error state with the palette's `light` fill and a `shade-lightness` border, which
+   shouts louder than the AspidInspectorHeader right above it — the header keeps to the far darker `darkness` tone on
+   hover. Pull the surface down to `dark` and the border to `shade-light` so the two sit on the same scale.
+   The base sheet also flattens the title and the message to the same `text-lightness`, erasing the header's
+   Text/Subtext hierarchy, so the message is dropped a step to `text-light` while the title keeps the bright tone.
+   Every selector is qualified with the id-selector container class, otherwise it only ties the base
+   `:root.aspid-fasttools-status--error` rules on specificity and loses on sheet order — the help box attaches its own
+   sheet to itself, which resolves after this one. Scoped to this help box only: the rest of the FastTools help boxes
+   keep the package's own look. */
+.aspid-mono-binder-id-selector .aspid-mono-binder-id-selector-help-box.aspid-fasttools-status--error
+{
+    background-color: var(--aspid-colors-status-error-dark);
+    border-color: var(--aspid-colors-status-error-shade-light);
+}
+
+.aspid-mono-binder-id-selector .aspid-mono-binder-id-selector-help-box.aspid-fasttools-status--error AspidLabel > Label
+{
+    color: var(--aspid-colors-status-error-text-light);
+}
+
+.aspid-mono-binder-id-selector
+    .aspid-mono-binder-id-selector-help-box.aspid-fasttools-status--error
+    .aspid-fasttools-help-box__title > Label
+{
+    color: var(--aspid-colors-status-error-text-lightness);
+}
+
 .aspid-mono-binder-id-selector-dropdown--previous VisualElement
 {
     background-color: var(--aspid-colors-status-error-dark);

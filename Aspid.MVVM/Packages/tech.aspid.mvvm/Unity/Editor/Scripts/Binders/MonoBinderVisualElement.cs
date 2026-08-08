@@ -138,6 +138,7 @@ namespace Aspid.MVVM
                      title: "Incomplete Binder Configuration",
                      message: "Both the View and the binding ID must be set for this binder to resolve at runtime. Select a View above and choose an ID exposed by its ViewModel.",
                      AspidHelpBoxPreset.Default.SetMessageType(HelpBoxMessageType.Error))
+                 .AddClass("aspid-mono-binder-id-selector-help-box")
                  .SetMargin(top: 5, bottom: 5)
                  .SetDisplay(_editor.HasBinderId ? DisplayStyle.None : DisplayStyle.Flex);
 

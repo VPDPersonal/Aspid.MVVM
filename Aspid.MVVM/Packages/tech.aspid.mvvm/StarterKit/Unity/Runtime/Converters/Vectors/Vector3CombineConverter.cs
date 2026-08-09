@@ -25,6 +25,8 @@ namespace Aspid.MVVM.StarterKit
 
         [SerializeReference] private Converter? _postConvertor;
 
+        [NonSerialized] private bool _loggedMissingTarget;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="Vector3CombineConverter"/> class with XYZ mode.
         /// </summary>
@@ -71,30 +73,62 @@ namespace Aspid.MVVM.StarterKit
         }
 
         /// <summary>
+        /// Gets the scene component <see cref="VectorTo"/> is read from. Derived classes must provide
+        /// this value so an unassigned or destroyed Inspector reference can be detected before use.
+        /// </summary>
+        protected abstract Component? Target { get; }
+
+        /// <summary>
         /// Gets the reference vector to combine with. Derived classes must provide this value.
         /// </summary>
+        /// <remarks>Only read once <see cref="Target"/> is known to be alive.</remarks>
         protected abstract Vector3 VectorTo { get; }
 
         /// <summary>
         /// Converts a <see cref="Vector2"/> to a <see cref="Vector3"/> by combining with the reference vector.
         /// </summary>
         /// <param name="value">The 2D vector to convert.</param>
-        /// <returns>The converted 3D vector.</returns>
+        /// <returns>The converted 3D vector, or the widened input when <see cref="Target"/> is missing.</returns>
         public Vector3 Convert(Vector2 value) =>
-            Convert(value, VectorTo);
+            Combine(value);
 
         /// <summary>
         /// Combines a <see cref="Vector3"/> with the reference vector by selecting components.
         /// </summary>
         /// <param name="value">The vector to convert.</param>
-        /// <returns>The combined vector.</returns>
+        /// <returns>The combined vector, or the input unchanged when <see cref="Target"/> is missing.</returns>
         public Vector3 Convert(Vector3 value) =>
-            Convert(value, VectorTo);
+            Combine(value);
+
+        /// <summary>
+        /// Reads the reference vector and combines with it, degrading to the input when the target
+        /// reference was never assigned or has since been destroyed.
+        /// </summary>
+        private Vector3 Combine(Vector3 from)
+        {
+            // Unity's overloaded == is deliberate: `is null` reports false for a destroyed object,
+            // whose managed reference is still alive. Same idiom as AddressableMonoBinder.
+            if (Target == null)
+            {
+                LogMissingTarget();
+                return from;
+            }
+
+            return Combine(from, VectorTo);
+        }
+
+        private void LogMissingTarget()
+        {
+            if (_loggedMissingTarget) return;
+            _loggedMissingTarget = true;
+
+            Debug.LogError($"{GetType().Name}: no target assigned. Returning the input value unchanged.");
+        }
 
         /// <summary>
         /// Combines two vectors by selecting components from each based on the configured mode.
         /// </summary>
-        private Vector3 Convert(Vector3 from, Vector3 to)
+        private Vector3 Combine(Vector3 from, Vector3 to)
         {
             from = _preConvertor?.Convert(from) ?? from;
 

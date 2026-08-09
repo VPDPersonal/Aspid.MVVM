@@ -13,6 +13,9 @@ namespace Aspid.MVVM.StarterKit
         [SerializeField] private Transform _transform;
         [SerializeField] private Space _space = Space.World;
 
+        /// <inheritdoc/>
+        protected override Component Target => _transform;
+
         /// <summary>
         /// Gets the reference vector to combine with, which is the transform's current position.
         /// </summary>

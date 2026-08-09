@@ -12,6 +12,9 @@ namespace Aspid.MVVM.StarterKit
     {
         [SerializeField] private BoxCollider _collider;
 
+        /// <inheritdoc/>
+        protected override Component Target => _collider;
+
         /// <summary>
         /// Gets the reference vector to combine with, which is the collider's size.
         /// </summary>

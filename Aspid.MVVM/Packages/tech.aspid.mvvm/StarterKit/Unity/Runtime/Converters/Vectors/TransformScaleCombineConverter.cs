@@ -12,6 +12,9 @@ namespace Aspid.MVVM.StarterKit
     {
         [SerializeField] private Transform _transform;
 
+        /// <inheritdoc/>
+        protected override Component Target => _transform;
+
         /// <summary>
         /// Gets the reference vector to combine with, which is the transform's local scale.
         /// </summary>

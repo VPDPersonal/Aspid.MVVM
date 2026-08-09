@@ -32,18 +32,17 @@ namespace Aspid.MVVM.StarterKit.Tests
         public void Convert_SingleConverter_BehavesLikeThatConverter() =>
             Assert.AreEqual(4, new SequenceConverters<int>(new Add(1)).Convert(3));
 
+        // An empty picker slot serialises as a null element.
         [Test]
-        [Ignore("Fixed in PR 2 — null-guards. An empty picker slot serialises as a null element.")]
         public void Convert_NullElement_IsSkipped() =>
             Assert.AreEqual(4, new SequenceConverters<int>(new Add(1), null).Convert(3));
 
         [Test]
-        [Ignore("Fixed in PR 2 — null-guards.")]
         public void Convert_NullArray_ReturnsInputUnchanged() =>
             Assert.AreEqual(3, new SequenceConverters<int>(null).Convert(3));
 
+        // The type picker constructs through Activator, so a parameterless constructor is required.
         [Test]
-        [Ignore("Fixed in PR 2 — null-guards. The type picker needs a parameterless constructor.")]
         public void ParameterlessConstructor_ProducesAUsableConverter()
         {
             var converter = (SequenceConverters<int>)Activator.CreateInstance(typeof(SequenceConverters<int>));

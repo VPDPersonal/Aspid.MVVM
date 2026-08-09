@@ -7,6 +7,11 @@ namespace Aspid.MVVM.StarterKit
     /// Chains multiple converters together, applying them sequentially to a value.
     /// </summary>
     /// <typeparam name="T">The type of the value being converted.</typeparam>
+    /// <remarks>
+    /// A chain authored in the Inspector is routinely incomplete — the type picker's
+    /// <c>&lt;None&gt;</c> entry is a valid selection and serializes as a null element — so gaps are
+    /// skipped rather than treated as an error.
+    /// </remarks>
     [Serializable]
     public class SequenceConverters<T> : IConverter<T, T>
     {
@@ -17,12 +22,18 @@ namespace Aspid.MVVM.StarterKit
         private IConverter<T, T>[] _converters;
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="SequenceConverters{T}"/> class with an empty chain.
+        /// </summary>
+        public SequenceConverters()
+            : this(Array.Empty<IConverter<T, T>>()) { }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="SequenceConverters{T}"/> class.
         /// </summary>
-        /// <param name="converters">The converters to apply in sequence.</param>
+        /// <param name="converters">The converters to apply in sequence. Null entries are skipped.</param>
         public SequenceConverters(params IConverter<T, T>[] converters)
         {
-            _converters = converters;
+            _converters = converters ?? Array.Empty<IConverter<T, T>>();
         }
 
         /// <summary>
@@ -32,8 +43,13 @@ namespace Aspid.MVVM.StarterKit
         /// <returns>The result after all converters have been applied.</returns>
         public T Convert(T value)
         {
+            if (_converters is null) return value;
+
             foreach (var converter in _converters)
+            {
+                if (converter is null) continue;
                 value = converter.Convert(value);
+            }
 
             return value;
         }

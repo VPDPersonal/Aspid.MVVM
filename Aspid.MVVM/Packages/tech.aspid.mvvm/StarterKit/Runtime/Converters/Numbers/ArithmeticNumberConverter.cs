@@ -7,6 +7,13 @@ namespace Aspid.MVVM.StarterKit
     /// Converts numeric values by applying arithmetic operations with a coefficient.
     /// Supports multiple numeric types (int, float, double, long) with automatic type conversions.
     /// </summary>
+    /// <remarks>
+    /// Every operation is computed in <see cref="double"/> and cast to the declared return type, so
+    /// the int and long overloads truncate toward zero rather than round.
+    /// <see cref="NumberOperation.Division"/> with a zero coefficient — the state of a converter
+    /// added in the Inspector but not yet configured — reports itself once and returns the input
+    /// unchanged instead of producing an infinity.
+    /// </remarks>
     [Serializable]
     public class ArithmeticNumberConverter :
         IConverterDouble, IConverterIntToDouble, IConverterLongToDouble, IConverterFloatToDouble,
@@ -19,6 +26,9 @@ namespace Aspid.MVVM.StarterKit
 
         [UnityEngine.SerializeField]
         private double _coefficient;
+
+        [NonSerialized]
+        private bool _loggedDivideByZero;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ArithmeticNumberConverter"/> class with default settings.
@@ -85,16 +95,24 @@ namespace Aspid.MVVM.StarterKit
             NumberOperation.Minus => value - _coefficient,
             NumberOperation.Division => Divide(value),
             NumberOperation.Multiply => value * _coefficient,
-            _ => throw new ArgumentOutOfRangeException()
+            _ => throw new ArgumentOutOfRangeException(nameof(_operation), _operation, null)
         };
 
         private double Divide(double value)
         {
             if (_coefficient != 0) return value / _coefficient;
 
+            LogDivideByZero();
+            return value;
+        }
+
+        private void LogDivideByZero()
+        {
+            if (_loggedDivideByZero) return;
+            _loggedDivideByZero = true;
+
             UnityEngine.Debug.LogError(
                 $"{nameof(ArithmeticNumberConverter)}: division by zero coefficient. Returning the input value unchanged.");
-            return value;
         }
         
         double IConverter<int, double>.Convert(int value) =>

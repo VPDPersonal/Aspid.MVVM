@@ -31,11 +31,24 @@ namespace Aspid.MVVM.StarterKit.Tests
             Assert.AreEqual(3d, Double(NumberOperation.Plus, coefficient: 0).Convert(3d), delta: 1e-12);
 
         [Test]
-        public void Convert_Division_ByZeroCoefficient_LogsOnceAndReturnsTheInput()
+        public void Convert_Division_ByZeroCoefficient_ReturnsTheInput()
         {
             LogAssert.Expect(LogType.Error, new Regex("division by zero coefficient"));
 
             Assert.AreEqual(7d, Double(NumberOperation.Division, coefficient: 0).Convert(7d), delta: 1e-12);
+        }
+
+        // A converter bound to a per-frame value would otherwise call Debug.LogError every frame,
+        // and Unity captures a stack trace for each one.
+        [Test]
+        public void Convert_Division_ByZeroCoefficient_LogsOncePerInstance()
+        {
+            LogAssert.Expect(LogType.Error, new Regex("division by zero coefficient"));
+
+            var converter = Double(NumberOperation.Division, coefficient: 0);
+            converter.Convert(1d);
+            converter.Convert(2d);
+            converter.Convert(3d);
         }
 
         [Test]

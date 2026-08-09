@@ -41,7 +41,7 @@ namespace Aspid.MVVM.StarterKit
             Values.YZ => new Vector2(value.y, value.z),
             Values.ZX => new Vector2(value.z, value.x),
             Values.ZY => new Vector2(value.z, value.y),
-            _ => throw new ArgumentOutOfRangeException()
+            _ => throw new ArgumentOutOfRangeException(nameof(_values), _values, null)
         };
 
         /// <summary>

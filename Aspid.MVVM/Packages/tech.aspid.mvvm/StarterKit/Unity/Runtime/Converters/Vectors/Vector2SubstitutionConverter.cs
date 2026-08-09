@@ -41,7 +41,7 @@ namespace Aspid.MVVM.StarterKit
 
             Mode.YY => new Vector2(value.y, value.y),
             Mode.XX => new Vector2(value.x, value.x),
-            _ => throw new ArgumentOutOfRangeException()
+            _ => throw new ArgumentOutOfRangeException(nameof(_mode), _mode, null)
         };
 
         /// <summary>

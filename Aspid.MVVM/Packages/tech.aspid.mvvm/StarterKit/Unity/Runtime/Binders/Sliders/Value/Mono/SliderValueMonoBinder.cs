@@ -102,8 +102,17 @@ namespace Aspid.MVVM.StarterKit
         protected void SetValueInternal(float value)
         {
             _isNotifyValueChanged = false;
-            CachedComponent.value = _converter?.Convert(value) ?? value;
-            _isNotifyValueChanged = true;
+
+            try
+            {
+                CachedComponent.value = _converter?.Convert(value) ?? value;
+            }
+            finally
+            {
+                // Без finally исключение из сеттера — например, из чужого слушателя onValueChanged —
+                // навсегда оставило бы флаг снятым и обесточило канал View → ViewModel.
+                _isNotifyValueChanged = true;
+            }
         }
 
         private void OnValueChanged(float value)

@@ -30,8 +30,17 @@ namespace Aspid.MVVM.StarterKit
         public void SetValue(bool value)
         {
             _isNotifyValueChanged = false;
-            CachedComponent.isOn = _isInvert ? !value : value;
-            _isNotifyValueChanged = true;
+
+            try
+            {
+                CachedComponent.isOn = _isInvert ? !value : value;
+            }
+            finally
+            {
+                // Без finally исключение из сеттера — например, из чужого слушателя onValueChanged —
+                // навсегда оставило бы флаг снятым и обесточило канал View → ViewModel.
+                _isNotifyValueChanged = true;
+            }
         }
 
         /// <summary>

@@ -112,8 +112,17 @@ namespace Aspid.MVVM.StarterKit
             value = _converter?.Convert(value) ?? value;
 
             _isNotifyValueChanged = false;
-            Target.value = value;
-            _isNotifyValueChanged = true;
+
+            try
+            {
+                Target.value = value;
+            }
+            finally
+            {
+                // Без finally исключение из сеттера — например, из чужого слушателя onValueChanged —
+                // навсегда оставило бы флаг снятым и обесточило канал View → ViewModel.
+                _isNotifyValueChanged = true;
+            }
         }
 
         private void OnValueChanged(float value)

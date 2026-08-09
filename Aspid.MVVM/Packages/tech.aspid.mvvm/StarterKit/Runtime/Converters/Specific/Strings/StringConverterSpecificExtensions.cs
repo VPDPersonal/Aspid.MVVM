@@ -1,4 +1,5 @@
 using System;
+using Aspid.FastTools.Types;
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
@@ -23,6 +24,7 @@ namespace Aspid.MVVM.StarterKit
         public static IConverterTimeSpanToString ToConvertSpecific(this IConverter<TimeSpan, string?> converter) =>
             new ConverterTimeSpanToString(converter);
         
+        [TypeSelectorDisplay(Hidden = true)]
         private sealed class ConverterString : GenericFuncConverter<string?, string?>, IConverterString
         {
             public ConverterString(IConverter<string?, string?> converter) 
@@ -32,6 +34,7 @@ namespace Aspid.MVVM.StarterKit
                 : base(converter) { }
         }
         
+        [TypeSelectorDisplay(Hidden = true)]
         private sealed class ConverterObjectToString : GenericFuncConverter<object?, string?>, IConverterObjectToString
         {
             public ConverterObjectToString(IConverter<object?, string?> converter)
@@ -41,6 +44,7 @@ namespace Aspid.MVVM.StarterKit
                 : base(converter) { }
         }
         
+        [TypeSelectorDisplay(Hidden = true)]
         private sealed class ConverterTimeSpanToString : GenericFuncConverter<TimeSpan, string?>, IConverterTimeSpanToString
         {
             public ConverterTimeSpanToString(IConverter<TimeSpan, string?> converter) 

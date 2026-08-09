@@ -1,4 +1,5 @@
 using System;
+using Aspid.FastTools.Types;
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
@@ -110,6 +111,7 @@ namespace Aspid.MVVM.StarterKit
         #endregion
         
         #region Int Clasess
+        [TypeSelectorDisplay(Hidden = true)]
         private sealed class ConverterInt : GenericFuncConverter<int, int>, IConverterInt
         {
             public ConverterInt(IConverter<int, int> converter) 
@@ -119,6 +121,7 @@ namespace Aspid.MVVM.StarterKit
                 : base(converter) { }
         }
         
+        [TypeSelectorDisplay(Hidden = true)]
         private sealed class ConverterIntToLong : GenericFuncConverter<int, long>, IConverterIntToLong
         {
             public ConverterIntToLong(IConverter<int, long> converter) 
@@ -128,6 +131,7 @@ namespace Aspid.MVVM.StarterKit
                 : base(converter) { }
         }
         
+        [TypeSelectorDisplay(Hidden = true)]
         private sealed class ConverterIntToFloat : GenericFuncConverter<int, float>, IConverterIntToFloat
         {
             public ConverterIntToFloat(IConverter<int, float> converter) 
@@ -137,6 +141,7 @@ namespace Aspid.MVVM.StarterKit
                 : base(converter) { }
         }
         
+        [TypeSelectorDisplay(Hidden = true)]
         private sealed class ConverterIntToDouble : GenericFuncConverter<int, double>, IConverterIntToDouble
         {
             public ConverterIntToDouble(IConverter<int, double> converter) 
@@ -148,6 +153,7 @@ namespace Aspid.MVVM.StarterKit
         #endregion
         
         #region Long Classes
+        [TypeSelectorDisplay(Hidden = true)]
         private sealed class ConverterLongToInt : GenericFuncConverter<long, int>, IConverterLongToInt
         {
             public ConverterLongToInt(IConverter<long, int> converter) 
@@ -157,6 +163,7 @@ namespace Aspid.MVVM.StarterKit
                 : base(converter) { }
         }
         
+        [TypeSelectorDisplay(Hidden = true)]
         private sealed class ConverterLong : GenericFuncConverter<long, long>, IConverterLong
         {
             public ConverterLong(IConverter<long, long> converter) 
@@ -166,6 +173,7 @@ namespace Aspid.MVVM.StarterKit
                 : base(converter) { }
         }
         
+        [TypeSelectorDisplay(Hidden = true)]
         private sealed class ConverterLongToFloat : GenericFuncConverter<long, float>, IConverterLongToFloat
         {
             public ConverterLongToFloat(IConverter<long, float> converter) 
@@ -175,6 +183,7 @@ namespace Aspid.MVVM.StarterKit
                 : base(converter) { }
         }
         
+        [TypeSelectorDisplay(Hidden = true)]
         private sealed class ConverterLongToDouble : GenericFuncConverter<long, double>, IConverterLongToDouble
         {
             public ConverterLongToDouble(IConverter<long, double> converter) 
@@ -186,6 +195,7 @@ namespace Aspid.MVVM.StarterKit
         #endregion
         
         #region Float Classes
+        [TypeSelectorDisplay(Hidden = true)]
         private sealed class ConverterFloatToInt : GenericFuncConverter<float, int>, IConverterFloatToInt
         {
             public ConverterFloatToInt(IConverter<float, int> converter) 
@@ -195,6 +205,7 @@ namespace Aspid.MVVM.StarterKit
                 : base(converter) { }
         }
         
+        [TypeSelectorDisplay(Hidden = true)]
         private sealed class ConverterFloatToLong : GenericFuncConverter<float, long>, IConverterFloatToLong
         {
             public ConverterFloatToLong(IConverter<float, long> converter) 
@@ -204,6 +215,7 @@ namespace Aspid.MVVM.StarterKit
                 : base(converter) { }
         }
         
+        [TypeSelectorDisplay(Hidden = true)]
         private sealed class ConverterFloat : GenericFuncConverter<float, float>, IConverterFloat
         {
             public ConverterFloat(IConverter<float, float> converter) 
@@ -213,6 +225,7 @@ namespace Aspid.MVVM.StarterKit
                 : base(converter) { }
         }
         
+        [TypeSelectorDisplay(Hidden = true)]
         private sealed class ConverterFloatToDouble : GenericFuncConverter<float, double>, IConverterFloatToDouble
         {
             public ConverterFloatToDouble(IConverter<float, double> converter) 

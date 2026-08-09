@@ -1,5 +1,6 @@
 #nullable enable
 using System;
+using Aspid.FastTools.Types;
 using UnityEngine;
 
 // ReSharper disable once CheckNamespace
@@ -31,6 +32,7 @@ namespace Aspid.MVVM.StarterKit
         public static IConverterVector3ToVector2 ToConvertSpecific(this IConverter<Vector3, Vector2> converter) =>
             new ConverterVector3ToVector2(converter);
         
+        [TypeSelectorDisplay(Hidden = true)]
         private sealed class ConverterVector2 : GenericFuncConverter<Vector2, Vector2>, IConverterVector2
         {
             public ConverterVector2(IConverter<Vector2, Vector2> converter) 
@@ -40,6 +42,7 @@ namespace Aspid.MVVM.StarterKit
                 : base(converter) { }
         }
         
+        [TypeSelectorDisplay(Hidden = true)]
         private sealed class ConverterVector2ToVector3 : GenericFuncConverter<Vector2, Vector3>, IConverterVector2ToVector3
         {
             public ConverterVector2ToVector3(IConverter<Vector2, Vector3> converter) 
@@ -49,6 +52,7 @@ namespace Aspid.MVVM.StarterKit
                 : base(converter) { }
         }
         
+        [TypeSelectorDisplay(Hidden = true)]
         private sealed class ConverterVector3 : GenericFuncConverter<Vector3, Vector3>, IConverterVector3
         {
             public ConverterVector3(IConverter<Vector3, Vector3> converter) 
@@ -58,6 +62,7 @@ namespace Aspid.MVVM.StarterKit
                 : base(converter) { }
         }
         
+        [TypeSelectorDisplay(Hidden = true)]
         private sealed class ConverterVector3ToVector2 : GenericFuncConverter<Vector3, Vector2>, IConverterVector3ToVector2
         {
             public ConverterVector3ToVector2(IConverter<Vector3, Vector2> converter) 

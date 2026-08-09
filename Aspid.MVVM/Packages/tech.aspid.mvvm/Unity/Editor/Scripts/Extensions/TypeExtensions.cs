@@ -47,7 +47,9 @@ namespace Aspid.MVVM
         internal static Dictionary<string, FieldInfo> GetInstanceFieldMap(this Type type) => type
             .GetMembersInfosIncludingBaseClasses(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
             .OfType<FieldInfo>()
-            .Where(field => field.IsPublic || field.IsDefined(typeof(SerializeField)))
+            // [SerializeReference] is the other way a private field becomes serialized — without it here, a
+            // polymorphic field resolves to a null FieldInfo and the inspector skips it entirely.
+            .Where(field => field.IsPublic || field.IsDefined(typeof(SerializeField)) || field.IsDefined(typeof(SerializeReference)))
             .ToDictionary(field => field.Name);
 
         private static Type GetUnitySerializableType(Type? type, string name)

@@ -1,4 +1,5 @@
 using System;
+using Aspid.FastTools.Types;
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
@@ -8,6 +9,7 @@ namespace Aspid.MVVM.StarterKit
     /// </summary>
     /// <typeparam name="TFrom">The type of the input value.</typeparam>
     /// <typeparam name="TTo">The type of the converted output value.</typeparam>
+    [TypeSelectorDisplay(Hidden = true)]
     public class GenericFuncConverter<TFrom, TTo> : IConverter<TFrom?, TTo?>
     {
         private readonly Func<TFrom?, TTo?> _converter;

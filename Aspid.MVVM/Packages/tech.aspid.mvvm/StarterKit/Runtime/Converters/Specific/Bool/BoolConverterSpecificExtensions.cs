@@ -1,4 +1,5 @@
 using System;
+using Aspid.FastTools.Types;
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
@@ -41,6 +42,7 @@ namespace Aspid.MVVM.StarterKit
         public static IConverterStringToBool ToConvertSpecific(this IConverter<string?, bool> converter) =>
             new ConverterStringToBool(converter);
         
+        [TypeSelectorDisplay(Hidden = true)]
         private sealed class ConverterDoubleToBool : GenericFuncConverter<double, bool>, IConverterDoubleToBool
         {
             public ConverterDoubleToBool(IConverter<double, bool> converter) 
@@ -50,6 +52,7 @@ namespace Aspid.MVVM.StarterKit
                 : base(converter) { }
         }
         
+        [TypeSelectorDisplay(Hidden = true)]
         private sealed class ConverterFloatToBool : GenericFuncConverter<float, bool>, IConverterFloatToBool
         {
             public ConverterFloatToBool(IConverter<float, bool> converter)
@@ -59,6 +62,7 @@ namespace Aspid.MVVM.StarterKit
                 : base(converter) { }
         }
         
+        [TypeSelectorDisplay(Hidden = true)]
         private sealed class ConverterIntToBool : GenericFuncConverter<int, bool>, IConverterIntToBool
         {
             public ConverterIntToBool(IConverter<int, bool> converter)
@@ -68,6 +72,7 @@ namespace Aspid.MVVM.StarterKit
                 : base(converter) { }
         }
         
+        [TypeSelectorDisplay(Hidden = true)]
         private sealed class ConverterLongToBool : GenericFuncConverter<long, bool>, IConverterLongToBool
         {
             public ConverterLongToBool(IConverter<long, bool> converter)
@@ -77,6 +82,7 @@ namespace Aspid.MVVM.StarterKit
                 : base(converter) { }
         }
         
+        [TypeSelectorDisplay(Hidden = true)]
         private sealed class ConverterObjectToBool : GenericFuncConverter<object?, bool>, IConverterObjectToBool
         {
             public ConverterObjectToBool(IConverter<object?, bool> converter)
@@ -86,6 +92,7 @@ namespace Aspid.MVVM.StarterKit
                 : base(converter) { }
         }
         
+        [TypeSelectorDisplay(Hidden = true)]
         private sealed class ConverterStringToBool : GenericFuncConverter<string?, bool>, IConverterStringToBool
         {
             public ConverterStringToBool(IConverter<string?, bool> converter) 

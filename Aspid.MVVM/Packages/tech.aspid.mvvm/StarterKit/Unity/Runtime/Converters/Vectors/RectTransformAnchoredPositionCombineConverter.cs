@@ -11,7 +11,9 @@ namespace Aspid.MVVM.StarterKit
     [Serializable]
     public sealed class RectTransformAnchoredPositionCombineConverter : Vector3CombineConverter
     {
+        [Tooltip("The rect transform whose anchored position the bound vector is combined with.")]
         [SerializeField] private RectTransform _transform;
+        [Tooltip("Which space the anchored position is read in.")]
         [SerializeField] private Space _space = Space.World;
 
         /// <summary>

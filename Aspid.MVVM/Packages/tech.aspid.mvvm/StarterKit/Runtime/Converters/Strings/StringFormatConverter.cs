@@ -15,6 +15,7 @@ namespace Aspid.MVVM.StarterKit
     [Serializable]
     public class StringFormatConverter : GenericToString<string>, IConverterString
     {
+        [Tooltip("Apply the format to a blank or null value as well, rather than passing it through.")]
         [SerializeField] private bool _formatEmptyValues;
 
         public StringFormatConverter() { }

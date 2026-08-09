@@ -18,7 +18,10 @@ namespace Aspid.MVVM.StarterKit
     [Serializable]
     public sealed class ComposeConverter<TFrom, TMid, TTo> : IConverter<TFrom?, TTo?>
     {
+        [Tooltip("Applied to the incoming value. Both links are required.")]
         [SerializeReference] private IConverter<TFrom?, TMid?>? _first;
+
+        [Tooltip("Applied to the result of the first link. Both links are required.")]
         [SerializeReference] private IConverter<TMid?, TTo?>? _second;
 
         public ComposeConverter() { }

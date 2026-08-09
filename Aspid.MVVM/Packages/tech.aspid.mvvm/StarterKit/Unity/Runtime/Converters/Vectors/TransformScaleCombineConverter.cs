@@ -11,6 +11,7 @@ namespace Aspid.MVVM.StarterKit
     [Serializable]
     public sealed class TransformScaleCombineConverter : Vector3CombineConverter
     {
+        [Tooltip("The transform whose local scale the bound vector is combined with.")]
         [SerializeField] private Transform _transform;
 
         /// <summary>

@@ -17,6 +17,7 @@ namespace Aspid.MVVM.StarterKit
     public class SequenceConverters<T> : ITwoWayConverter<T, T>
     {
         // ReSharper disable once FieldCanBeMadeReadOnly.Local
+        [Tooltip("The converters applied in order. Empty slots are skipped.")]
         [SerializeReference] private IConverter<T, T>?[] _converters;
 
         public SequenceConverters()

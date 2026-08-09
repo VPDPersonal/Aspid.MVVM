@@ -13,9 +13,11 @@ namespace Aspid.MVVM.StarterKit
         IConverterIntToBool,
         IConverterLongToBool
     {
+        [UnityEngine.Tooltip("How the bound number is compared with the value below.")]
         [UnityEngine.SerializeField]
         private Comparisons _comparison;
 
+        [UnityEngine.Tooltip("The number the bound one is compared against.")]
         [UnityEngine.SerializeField]
         private float _value;
 

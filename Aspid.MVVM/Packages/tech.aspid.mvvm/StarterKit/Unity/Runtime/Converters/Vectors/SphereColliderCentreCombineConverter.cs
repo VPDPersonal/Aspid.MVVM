@@ -11,6 +11,7 @@ namespace Aspid.MVVM.StarterKit
     [Serializable]
     public sealed class SphereColliderCentreCombineConverter : Vector3CombineConverter
     {
+        [Tooltip("The collider whose centre the bound vector is combined with.")]
         [SerializeField] private SphereCollider _collider;
 
         /// <summary>

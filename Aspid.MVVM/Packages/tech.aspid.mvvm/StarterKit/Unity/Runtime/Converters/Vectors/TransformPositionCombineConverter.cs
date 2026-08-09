@@ -11,7 +11,9 @@ namespace Aspid.MVVM.StarterKit
     [Serializable]
     public sealed class TransformPositionCombineConverter : Vector3CombineConverter
     {
+        [Tooltip("The transform whose position the bound vector is combined with.")]
         [SerializeField] private Transform _transform;
+        [Tooltip("Which space the position is read in.")]
         [SerializeField] private Space _space = Space.World;
 
         /// <summary>

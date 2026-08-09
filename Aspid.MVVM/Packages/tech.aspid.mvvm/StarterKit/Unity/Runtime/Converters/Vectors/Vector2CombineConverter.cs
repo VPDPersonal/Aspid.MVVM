@@ -17,10 +17,13 @@ namespace Aspid.MVVM.StarterKit
     [Serializable]
     public sealed class Vector2CombineConverter
     {
+        [Tooltip("Which components come from the bound vector; the rest come from the reference one.")]
         [SerializeField] private Mode _mode;
 
+        [Tooltip("Applied to the bound vector before the components are selected.")]
         [SerializeReference] private Converter? _preConvertor;
 
+        [Tooltip("Applied to the combined result.")]
         [SerializeReference] private Converter? _postConvertor;
 
         /// <summary>

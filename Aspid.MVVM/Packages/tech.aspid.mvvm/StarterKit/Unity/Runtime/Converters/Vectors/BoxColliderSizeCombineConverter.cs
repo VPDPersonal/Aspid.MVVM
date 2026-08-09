@@ -11,6 +11,7 @@ namespace Aspid.MVVM.StarterKit
     [Serializable]
     public sealed class BoxColliderSizeCombineConverter : Vector3CombineConverter
     {
+        [Tooltip("The collider whose size the bound vector is combined with.")]
         [SerializeField] private BoxCollider _collider;
 
         /// <summary>

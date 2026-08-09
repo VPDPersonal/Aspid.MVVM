@@ -12,6 +12,7 @@ namespace Aspid.MVVM.StarterKit
     [Serializable]
     public sealed class Vector3SubstitutionConverter : IConverterVector3
     {
+        [Tooltip("How the components are rearranged.")]
         [SerializeField] private Mode _mode;
 
         /// <summary>

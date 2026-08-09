@@ -11,7 +11,9 @@ namespace Aspid.MVVM.StarterKit
     [Serializable]
     public sealed class TransformEulerAnglesCombineConverter : Vector3CombineConverter
     {
+        [Tooltip("The transform whose Euler angles the bound vector is combined with.")]
         [SerializeField] private Transform _transform;
+        [Tooltip("Which space the angles are read in.")]
         [SerializeField] private Space _space = Space.World;
 
         /// <summary>

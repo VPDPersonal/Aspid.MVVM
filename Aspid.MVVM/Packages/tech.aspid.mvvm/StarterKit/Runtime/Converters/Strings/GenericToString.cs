@@ -18,6 +18,7 @@ namespace Aspid.MVVM.StarterKit
     [Serializable]
     public class GenericToString<TFrom> : IConverter<TFrom?, string?>
     {
+        [Tooltip("A composite format string such as \"{0:F2}\". Note the braces: a bare \"F2\" is a literal.")]
         [SerializeField] private string? _format;
 
         [Tooltip("The culture numbers and dates are formatted with. Defaults to the device locale.")]

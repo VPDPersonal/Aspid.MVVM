@@ -11,7 +11,9 @@ namespace Aspid.MVVM.StarterKit
     [Serializable]
     public sealed class Vector2ToVector3Converter : IConverterVector2ToVector3
     {
+        [Tooltip("Which axes of the 3D vector the 2D components are written into.")]
         [SerializeField] private Values _values;
+        [Tooltip("The constant written into the axis the mode leaves out.")]
         [SerializeField] private float _thirdValue;
 
         /// <summary>

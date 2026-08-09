@@ -22,7 +22,10 @@ namespace Aspid.MVVM.StarterKit
         IConverterLong, IConverterIntToLong, IConverterFloatToLong, IConverterDoubleToLong,
         ITwoWayConverter<double, double>, ITwoWayConverter<float, float>, ITwoWayConverter<int, int>, ITwoWayConverter<long, long>
     {
+        [Tooltip("The number the operation is applied with. Division by zero returns the input unchanged.")]
         [SerializeField] private double _coefficient;
+
+        [Tooltip("The arithmetic applied to the bound number.")]
         [SerializeField] private NumberOperation _operation;
 
         public ArithmeticNumberConverter() { }

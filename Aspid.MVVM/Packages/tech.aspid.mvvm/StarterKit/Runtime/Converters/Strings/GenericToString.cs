@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using System.Globalization;
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
@@ -19,6 +20,9 @@ namespace Aspid.MVVM.StarterKit
     {
         [SerializeField] private string? _format;
 
+        [Tooltip("The culture numbers and dates are formatted with. Defaults to the device locale.")]
+        [SerializeField] private CultureInfoMode _culture = CultureInfoMode.CurrentCulture;
+
         public GenericToString()
         {
             _format = string.Empty;
@@ -36,6 +40,11 @@ namespace Aspid.MVVM.StarterKit
         protected string? FormatString => _format;
 
         /// <summary>
+        /// Gets the culture the value is formatted with.
+        /// </summary>
+        protected CultureInfo Culture => _culture.ToCultureInfo();
+
+        /// <summary>
         /// Converts the specified value to a string using the configured format.
         /// </summary>
         /// <param name="value">The value to convert.</param>
@@ -46,7 +55,7 @@ namespace Aspid.MVVM.StarterKit
         public virtual string? Convert(TFrom? value)
         {
             if (value is null) return null;
-            if (string.IsNullOrWhiteSpace(_format)) return value.ToString();
+            if (string.IsNullOrWhiteSpace(_format)) return ToStringValue(value);
 
             try
             {
@@ -78,6 +87,15 @@ namespace Aspid.MVVM.StarterKit
         /// <param name="value">The non-null value to format.</param>
         /// <returns>The formatted string.</returns>
         protected virtual string Format(TFrom value) =>
-            string.Format(_format, value);
+            string.Format(Culture, _format, value);
+
+        // The default is the device locale, which is what ToString() already uses — so the common
+        // path keeps the plain call and takes no boxing for the IFormattable test.
+        private string? ToStringValue(TFrom value) =>
+            _culture is CultureInfoMode.CurrentCulture
+                ? value.ToString()
+                : value is IFormattable formattable
+                    ? formattable.ToString(format: null, Culture)
+                    : value.ToString();
     }
 }

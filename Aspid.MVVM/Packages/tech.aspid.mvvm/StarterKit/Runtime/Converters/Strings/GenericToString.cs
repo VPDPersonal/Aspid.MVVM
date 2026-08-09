@@ -1,4 +1,6 @@
 using System;
+using UnityEngine;
+using System.Diagnostics.CodeAnalysis;
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
@@ -10,19 +12,15 @@ namespace Aspid.MVVM.StarterKit
     [Serializable]
     public class GenericToString<TFrom> : IConverter<TFrom?, string?>
     {
-        [UnityEngine.SerializeField]
-        private string? _format;
+        [SerializeField] private string? _format;
+        
+        public GenericToString()
+        {
+            _format = string.Empty;
+        }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="GenericToString{TFrom}"/> class with no formatting.
-        /// </summary>
-        public GenericToString() { }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="GenericToString{TFrom}"/> class.
-        /// </summary>
-        /// <param name="format">The format string to apply using <see cref="string.Format(string, object)"/>, or <c>null</c> to use the default string representation.</param>
-        public GenericToString(string? format)
+        /// <param name="format">The format string to apply using <see cref="string.Format(string, object)"/>.</param>
+        public GenericToString(string format)
         {
             _format = format;
         }
@@ -35,15 +33,12 @@ namespace Aspid.MVVM.StarterKit
         public string? Convert(TFrom? value)
         {
             if (value is null) return null;
-            return string.IsNullOrEmpty(_format) ? ToStringValue(value) : string.Format(_format, value);
+            if (string.IsNullOrWhiteSpace(_format)) return value.ToString();
+            
+            return Format(value);
         }
-
-        /// <summary>
-        /// Gets the string representation of the value. Can be overridden in derived classes to provide custom conversion logic.
-        /// </summary>
-        /// <param name="value">The non-null value to convert.</param>
-        /// <returns>The string representation of the value.</returns>
-        protected virtual string ToStringValue(TFrom value) =>
-            value!.ToString();
+        
+        protected virtual string Format(TFrom value) => 
+            string.Format(_format, value);
     }
 }

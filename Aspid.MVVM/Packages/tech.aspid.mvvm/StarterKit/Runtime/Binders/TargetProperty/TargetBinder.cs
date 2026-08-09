@@ -90,7 +90,6 @@ namespace Aspid.MVVM.StarterKit
         where TConverter : IConverter<TProperty?, TProperty?>
     {
         [Tooltip("Optional converter applied to the value in both binding directions.")]
-        [SerializeReferenceDropdown]
         [SerializeReference] private TConverter? _converter;
 
         /// <summary>

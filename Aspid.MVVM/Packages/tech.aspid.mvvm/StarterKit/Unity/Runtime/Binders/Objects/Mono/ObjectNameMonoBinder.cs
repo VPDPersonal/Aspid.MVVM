@@ -34,7 +34,6 @@ namespace Aspid.MVVM.StarterKit
         [SerializeField] private Object _object;
         
         [Tooltip("Optional converter applied to the string value before it is set on the target or sent back to the ViewModel.")]
-        [SerializeReferenceDropdown]
         [SerializeReference] private Converter _converter;
         
         private void OnValidate()

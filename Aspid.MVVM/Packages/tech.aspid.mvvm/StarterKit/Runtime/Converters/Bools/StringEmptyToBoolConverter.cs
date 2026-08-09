@@ -9,9 +9,7 @@ namespace Aspid.MVVM.StarterKit
     [Serializable]
     public class StringEmptyToBoolConverter : IConverterStringToBool
     {
-#if UNITY_2022_1_OR_NEWER
         [UnityEngine.SerializeField]
-#endif
         private bool _isInvert;
 
         /// <summary>

@@ -23,7 +23,6 @@ namespace Aspid.MVVM.StarterKit
     public sealed class AnyToStringCasterMonoBinder : MonoBinder, IAnyBinder 
     {
         [Tooltip("The converter used to transform any incoming value to a string.")]
-        [SerializeReferenceDropdown]
         [SerializeReference] private Converter _converter = new ObjectToStringConverter();
         
         [Tooltip("Invoked with the converted string value each time a new value arrives from the ViewModel.")]

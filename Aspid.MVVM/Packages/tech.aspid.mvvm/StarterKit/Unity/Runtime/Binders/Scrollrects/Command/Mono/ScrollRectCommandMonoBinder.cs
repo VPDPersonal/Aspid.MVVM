@@ -17,7 +17,6 @@ namespace Aspid.MVVM.StarterKit
         IBinder<IRelayCommand<Vector3>>
     {
         [Tooltip("The view used to reflect the command's CanExecute state.")]
-        [SerializeReferenceDropdown]
         [SerializeReference] private ICanExecuteView _interactable;
 
         private IRelayCommand<Vector2> _vector2Command;
@@ -89,7 +88,6 @@ namespace Aspid.MVVM.StarterKit
 
         [Space]
         [Tooltip("The view used to reflect the command's CanExecute state.")]
-        [SerializeReferenceDropdown]
         [SerializeReference] private ICanExecuteView _interactable;
 
         private IRelayCommand<Vector2, T> _vector2Command;
@@ -173,7 +171,6 @@ namespace Aspid.MVVM.StarterKit
 
         [Space]
         [Tooltip("The view used to reflect the command's CanExecute state.")]
-        [SerializeReferenceDropdown]
         [SerializeReference] private ICanExecuteView _interactable;
 
         private IRelayCommand<Vector2, T1, T2> _vector2Command;
@@ -269,7 +266,6 @@ namespace Aspid.MVVM.StarterKit
 
         [Space]
         [Tooltip("The view used to reflect the command's CanExecute state.")]
-        [SerializeReferenceDropdown]
         [SerializeReference] private ICanExecuteView _interactable;
 
         private IRelayCommand<Vector2, T1, T2, T3> _vector2Command;

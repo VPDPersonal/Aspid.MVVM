@@ -14,7 +14,6 @@ namespace Aspid.MVVM.StarterKit
     public abstract partial class GenericToStringCasterMonoBinder<T> : MonoBinder, IBinder<T>
     {
         [Tooltip("The converter used to transform the bound value to a string.")]
-        [SerializeReferenceDropdown]
         [SerializeReference] private IConverter<T, string> _converter;
         
         [Tooltip("Invoked with the converted string value each time a new value arrives from the ViewModel.")]

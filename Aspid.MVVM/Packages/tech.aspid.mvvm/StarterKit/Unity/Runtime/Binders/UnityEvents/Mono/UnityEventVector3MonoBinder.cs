@@ -17,7 +17,6 @@ namespace Aspid.MVVM.StarterKit
     [AddBinderContextMenu(typeof(Component), Path = "Add General Binder/UnityEvent/UnityEvent Binder – Vector3")]
     public sealed partial class UnityEventVector3MonoBinder : MonoBinder, IBinder<Vector3>
     {
-        [SerializeReferenceDropdown]
         [SerializeReference] private Converter _converter;
 
         [Tooltip("The event invoked with the bound value.")]

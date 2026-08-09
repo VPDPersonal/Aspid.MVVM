@@ -79,7 +79,6 @@ namespace Aspid.MVVM.StarterKit
         [Tooltip("Value applied when the bound boolean is false.")]
         [SerializeField] private T _falseValue;
 
-        [SerializeReferenceDropdown]
         [Tooltip("Optional converter applied to the selected value before it is set.")]
         [SerializeReference] private TConverter _converter;
 

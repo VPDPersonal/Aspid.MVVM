@@ -55,15 +55,12 @@ namespace Aspid.MVVM.StarterKit
         where T : MonoBehaviour, IView
         where TViewFactory : IViewFactory<T>
     {
-        [SerializeReferenceDropdown]
         [Tooltip("The factory used to create and release view instances for each item in the list.")]
         [SerializeReference] private TViewFactory _viewFactory;
 
-        [SerializeReferenceDropdown]
         [Tooltip("Optional filter applied to the bound list. Pass null to show all items.")]
         [SerializeReference] private Filter _filter;
 
-        [SerializeReferenceDropdown]
         [Tooltip("Optional comparer used to sort the bound list. Pass null to use the source order.")]
         [SerializeReference] private Comparer _comparer;
 

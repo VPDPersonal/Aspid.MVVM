@@ -19,10 +19,8 @@ namespace Aspid.MVVM.StarterKit
     {
         [SerializeField] private Mode _mode;
 
-        [SerializeReferenceDropdown]
         [SerializeReference] private Converter? _preConvertor;
 
-        [SerializeReferenceDropdown]
         [SerializeReference] private Converter? _postConvertor;
 
         /// <summary>

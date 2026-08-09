@@ -10,9 +10,7 @@ namespace Aspid.MVVM.StarterKit
     [Serializable]
     public class GenericToString<TFrom> : IConverter<TFrom?, string?>
     {
-#if UNITY_2022_1_OR_NEWER
         [UnityEngine.SerializeField]
-#endif
         private string? _format;
 
         /// <summary>

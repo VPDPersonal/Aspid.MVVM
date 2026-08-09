@@ -1,10 +1,6 @@
 using System;
 using System.Diagnostics;
-#if UNITY_2022_1_OR_NEWER
 using Attribute = UnityEngine.PropertyAttribute;
-#else
-using Attribute = System.Attribute;
-#endif
 
 // ReSharper disable once CheckNamespace
 // ReSharper disable UnusedAutoPropertyAccessor.Global

@@ -94,11 +94,9 @@ namespace Aspid.MVVM.StarterKit
         [Tooltip("Value applied to the matching group element.")]
         [SerializeField] private TValue _selectedValue;
 
-        [SerializeReferenceDropdown]
         [Tooltip("Optional converter applied to the default value before it is set.")]
         [SerializeReference] private TConverter _defaultConverter;
 
-        [SerializeReferenceDropdown]
         [Tooltip("Optional converter applied to the selected value before it is set.")]
         [SerializeReference] private TConverter _selectedConverter;
 

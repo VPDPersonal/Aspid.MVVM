@@ -14,10 +14,8 @@ namespace Aspid.MVVM
         /// <summary>
         /// Gets the target object this binder is associated with.
         /// </summary>
-#if UNITY_2022_1_OR_NEWER
         [field: UnityEngine.Tooltip("The target object this binder operates on.")]
         [field: UnityEngine.SerializeField]
-#endif
         protected TTarget Target { get; private set; }
         
         /// <summary>

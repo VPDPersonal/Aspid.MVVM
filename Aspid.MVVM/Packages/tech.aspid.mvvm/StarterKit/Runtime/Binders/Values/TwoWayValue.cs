@@ -47,14 +47,11 @@ namespace Aspid.MVVM.StarterKit
             remove => _valueChanged -= value;
         }
 
-#if UNITY_2022_1_OR_NEWER
         [UnityEngine.SerializeField]
-#endif
         private T? _value;
 
 #if UNITY_2023_1_OR_NEWER
         [UnityEngine.SerializeReference]
-        [SerializeReferenceDropdown]
 #endif
         private IConverter<T?, T?>? _converter;
 

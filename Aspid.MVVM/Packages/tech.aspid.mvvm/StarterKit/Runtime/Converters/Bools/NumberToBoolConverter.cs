@@ -13,14 +13,10 @@ namespace Aspid.MVVM.StarterKit
         IConverterIntToBool,
         IConverterLongToBool
     {
-#if UNITY_2022_1_OR_NEWER
         [UnityEngine.SerializeField]
-#endif
         private Comparisons _comparison;
 
-#if UNITY_2022_1_OR_NEWER
         [UnityEngine.SerializeField]
-#endif
         private float _value;
 
         /// <summary>

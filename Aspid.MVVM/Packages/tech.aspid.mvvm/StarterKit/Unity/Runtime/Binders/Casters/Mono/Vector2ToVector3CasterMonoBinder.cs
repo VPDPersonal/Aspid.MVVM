@@ -22,7 +22,6 @@ namespace Aspid.MVVM.StarterKit
     public sealed partial class Vector2ToVector3CasterMonoBinder : MonoBinder, IBinder<Vector2>
     {
         [Tooltip("The converter used to transform the bound Vector2 to a Vector3.")]
-        [SerializeReferenceDropdown]
         [SerializeReference] private Converter _converter = new Vector2ToVector3Converter();
         
         [Tooltip("Invoked with the converted Vector3 value each time a new value arrives from the ViewModel.")]

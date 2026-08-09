@@ -12,7 +12,6 @@ namespace Aspid.MVVM.StarterKit
     {
         // ReSharper disable once FieldCanBeMadeReadOnly.Local
 #if UNITY_2023_1_OR_NEWER
-        [SerializeReferenceDropdown]
         [UnityEngine.SerializeReference]
 #endif
         private IConverter<T, T>[] _converters;

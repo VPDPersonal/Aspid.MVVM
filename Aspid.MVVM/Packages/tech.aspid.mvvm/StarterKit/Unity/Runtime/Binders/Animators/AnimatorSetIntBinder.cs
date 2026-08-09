@@ -18,7 +18,6 @@ namespace Aspid.MVVM.StarterKit
     [Serializable]
     public class AnimatorSetIntBinder : AnimatorSetParameterBinder<int>
     {
-        [SerializeReferenceDropdown]
         [Tooltip("Optional converter applied to the bound integer value before setting the Animator parameter.")]
         [SerializeReference] private Converter? _converter;
 

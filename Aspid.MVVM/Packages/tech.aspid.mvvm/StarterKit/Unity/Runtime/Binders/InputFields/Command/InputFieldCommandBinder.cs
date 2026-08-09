@@ -26,7 +26,6 @@ namespace Aspid.MVVM.StarterKit
         [SerializeField] private InteractableMode _interactableMode = InteractableMode.Interactable;
         
         [Tooltip("Custom view for reflecting command executability.")]
-        [SerializeReferenceDropdown]
         [SerializeReference] private ICanExecuteView _customInteractable;
         
         private IRelayCommand _command;
@@ -193,7 +192,6 @@ namespace Aspid.MVVM.StarterKit
         [SerializeField] private InteractableMode _interactableMode = InteractableMode.Interactable;
         
         [Tooltip("Custom view for reflecting command executability.")]
-        [SerializeReferenceDropdown]
         [SerializeReference] private ICanExecuteView _customInteractable;
         
         private IRelayCommand<string, T> _command;
@@ -361,7 +359,6 @@ namespace Aspid.MVVM.StarterKit
         [SerializeField] private InteractableMode _interactableMode = InteractableMode.Interactable;
         
         [Tooltip("Custom view for reflecting command executability.")]
-        [SerializeReferenceDropdown]
         [SerializeReference] private ICanExecuteView _customInteractable;
         
         private IRelayCommand<string, T1, T2> _command;
@@ -547,7 +544,6 @@ namespace Aspid.MVVM.StarterKit
         [SerializeField] private InteractableMode _interactableMode = InteractableMode.Interactable;
         
         [Tooltip("Custom view for reflecting command executability.")]
-        [SerializeReferenceDropdown]
         [SerializeReference] private ICanExecuteView _customInteractable;
         
         private IRelayCommand<string, T1, T2, T3> _command;

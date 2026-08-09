@@ -21,7 +21,6 @@ namespace Aspid.MVVM.StarterKit
         [SerializeField] private InteractableMode _interactableMode = InteractableMode.Interactable;
 
         [Tooltip("The view used to reflect the command's CanExecute state when InteractableMode is Custom.")]
-        [SerializeReferenceDropdown]
         [SerializeReference] private ICanExecuteView _customInteractable;
 
         private IRelayCommand<int> _intCommand;
@@ -122,7 +121,6 @@ namespace Aspid.MVVM.StarterKit
         [SerializeField] private InteractableMode _interactableMode = InteractableMode.Interactable;
 
         [Tooltip("The view used to reflect the command's CanExecute state when InteractableMode is Custom.")]
-        [SerializeReferenceDropdown]
         [SerializeReference] private ICanExecuteView _customInteractable;
 
         private IRelayCommand<int, T> _intCommand;
@@ -235,7 +233,6 @@ namespace Aspid.MVVM.StarterKit
         [SerializeField] private InteractableMode _interactableMode = InteractableMode.Interactable;
 
         [Tooltip("The view used to reflect the command's CanExecute state when InteractableMode is Custom.")]
-        [SerializeReferenceDropdown]
         [SerializeReference] private ICanExecuteView _customInteractable;
 
         private IRelayCommand<int, T1, T2> _intCommand;
@@ -360,7 +357,6 @@ namespace Aspid.MVVM.StarterKit
         [SerializeField] private InteractableMode _interactableMode = InteractableMode.Interactable;
 
         [Tooltip("The view used to reflect the command's CanExecute state when InteractableMode is Custom.")]
-        [SerializeReferenceDropdown]
         [SerializeReference] private ICanExecuteView _customInteractable;
 
         private IRelayCommand<int, T1, T2, T3> _intCommand;

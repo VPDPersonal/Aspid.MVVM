@@ -14,7 +14,6 @@ namespace Aspid.MVVM.StarterKit
     {
         [SerializeField] private InteractableMode _interactableMode = InteractableMode.Interactable;
         
-        [SerializeReferenceDropdown]
         [SerializeReference] private ICanExecuteView _customInteractable;
         
         private IRelayCommand _command;
@@ -111,7 +110,6 @@ namespace Aspid.MVVM.StarterKit
         [Space]
         [SerializeField] private InteractableMode _interactableMode = InteractableMode.Interactable;
         
-        [SerializeReferenceDropdown]
         [SerializeReference] private ICanExecuteView _customInteractable;
         
         private IRelayCommand<bool, T> _command;
@@ -198,7 +196,6 @@ namespace Aspid.MVVM.StarterKit
         [Space]
         [SerializeField] private InteractableMode _interactableMode = InteractableMode.Interactable;
         
-        [SerializeReferenceDropdown]
         [SerializeReference] private ICanExecuteView _customInteractable;
         
         private IRelayCommand<bool, T1, T2> _command;
@@ -296,7 +293,6 @@ namespace Aspid.MVVM.StarterKit
         [Space]
         [SerializeField] private InteractableMode _interactableMode = InteractableMode.Interactable;
         
-        [SerializeReferenceDropdown]
         [SerializeReference] private ICanExecuteView _customInteractable;
         
         private IRelayCommand<bool, T1, T2, T3> _command;

@@ -9,13 +9,9 @@ namespace Aspid.MVVM.StarterKit
     [Serializable]
     public class StringFormatConverter : IConverterString
     {
-#if UNITY_2022_1_OR_NEWER
         [UnityEngine.SerializeField]
-#endif
         private string _format;
-#if UNITY_2022_1_OR_NEWER
         [UnityEngine.SerializeField]
-#endif
         private bool _formatEmptyValues;
 
         /// <summary>

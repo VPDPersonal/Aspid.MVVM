@@ -20,7 +20,6 @@ namespace Aspid.MVVM.StarterKit
         [Tooltip("The culture used when converting numeric and object values to string.")]
         [SerializeField] private CultureInfoMode _cultureInfoMode = CultureInfoMode.CurrentCulture;
 
-        [SerializeReferenceDropdown]
         [SerializeReference] private Converter _converter;
 
         [Tooltip("The event invoked with the bound value.")]

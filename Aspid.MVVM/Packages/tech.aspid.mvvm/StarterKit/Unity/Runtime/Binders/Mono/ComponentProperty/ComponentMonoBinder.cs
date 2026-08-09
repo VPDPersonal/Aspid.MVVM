@@ -82,7 +82,6 @@ namespace Aspid.MVVM.StarterKit
         where TComponent : Component
         where TConverter : IConverter<TProperty, TProperty>
     {
-        [SerializeReferenceDropdown]
         [SerializeReference] private TConverter _converter;
 
         /// <inheritdoc/>

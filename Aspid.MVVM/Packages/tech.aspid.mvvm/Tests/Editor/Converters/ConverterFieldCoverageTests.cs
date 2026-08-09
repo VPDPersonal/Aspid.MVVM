@@ -48,16 +48,10 @@ namespace Aspid.MVVM.StarterKit.Tests
         /// </summary>
         private static readonly Dictionary<string, string> KnownGaps = new()
         {
-            ["IConverter<Boolean, Boolean>"] = "family 1 (Bool) — BoolInvert, BoolLogic…",
             ["IConverter<Color, Color>"] = "family 9 (Colour) — ColorAlpha, ColorTint, ColorGrayscale…",
             ["IConverter<ColorBlock, ColorBlock>"] = "family 10 (ColorBlock) — ColorToColorBlock…",
             ["IConverter<Enum, IEnumerable<OptionData>>"] = "family 16 (Enum) — EnumToDropdownOptionData",
-            ["IConverter<Material, Material>"] = "family 12 (Assets) — IndexToMaterial, MaterialInstance…",
-            ["IConverter<Mesh, Mesh>"] = "family 12 (Assets) — IndexToMesh, BoolToMesh…",
-            ["IConverter<PhysicsMaterial, PhysicsMaterial>"] = "family 12 (Assets) — IndexToPhysicsMaterial…",
             ["IConverter<Quaternion, Quaternion>"] = "family 14 (Rotations) — AngleToQuaternion, LookRotation…",
-            ["IConverter<RectOffset, RectOffset>"] = "family 13 (Layout) — IntToRectOffset, RectOffsetScale…",
-            ["IConverter<Texture, Texture>"] = "family 11 (Textures) — IndexToTexture, BoolToTexture…",
         };
 
         [Test]

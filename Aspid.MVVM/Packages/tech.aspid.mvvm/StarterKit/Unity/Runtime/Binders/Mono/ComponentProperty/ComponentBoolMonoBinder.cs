@@ -14,7 +14,21 @@ namespace Aspid.MVVM.StarterKit
         [SerializeField] private bool _isInvert;
 
         /// <inheritdoc/>
+        /// <remarks>
+        /// When overriding this method, always call <c>base.GetConvertedValue(value)</c> to preserve
+        /// the inversion.
+        /// </remarks>
         protected override bool GetConvertedValue(bool value) =>
-            _isInvert ? !value : value;
+            Invert(base.GetConvertedValue(value));
+
+        /// <inheritdoc/>
+        /// <remarks>
+        /// Inversion is its own inverse, so the reverse direction mirrors the forward one: undo the
+        /// inversion first, then let the base undo whatever it applied.
+        /// </remarks>
+        protected override bool GetConvertedBackValue(bool value) =>
+            base.GetConvertedBackValue(Invert(value));
+
+        private bool Invert(bool value) => _isInvert ? !value : value;
     }
 }

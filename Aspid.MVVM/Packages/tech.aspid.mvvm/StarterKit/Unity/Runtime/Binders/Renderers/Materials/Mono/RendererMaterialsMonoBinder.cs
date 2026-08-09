@@ -1,11 +1,7 @@
 using System;
 using UnityEngine;
 using System.Collections.Generic;
-#if UNITY_2023_1_OR_NEWER
 using Converter = Aspid.MVVM.StarterKit.IConverter<UnityEngine.Material, UnityEngine.Material>;
-#else
-using Converter = Aspid.MVVM.StarterKit.IConverterMaterial;
-#endif
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit

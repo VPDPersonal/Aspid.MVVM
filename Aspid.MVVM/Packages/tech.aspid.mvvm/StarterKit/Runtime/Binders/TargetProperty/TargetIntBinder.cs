@@ -1,10 +1,5 @@
 using System;
-using System.Runtime.CompilerServices;
-#if UNITY_2023_1_OR_NEWER
 using Converter = Aspid.MVVM.StarterKit.IConverter<int, int>;
-#else
-using Converter = Aspid.MVVM.StarterKit.IConverterInt;
-#endif
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
@@ -34,7 +29,7 @@ namespace Aspid.MVVM.StarterKit
 
         /// <inheritdoc/>
         protected TargetIntBinder(TTarget target, IConverter<int, int>? converter, BindMode mode = BindMode.OneWay)
-            : base(target, GetConverter(converter), mode) { }
+            : base(target, converter, mode) { }
 
         /// <summary>
         /// Sets the target int property from a <see cref="long"/> value, truncating to <see cref="int"/>.
@@ -81,14 +76,5 @@ namespace Aspid.MVVM.StarterKit
             }
         }
         
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static Converter? GetConverter(IConverter<int, int>? converter)
-        {
-            #if UNITY_2023_1_OR_NEWER
-            return converter;
-            #else
-            return converter?.ToConvertSpecific();
-            #endif
-        }
     }
 }

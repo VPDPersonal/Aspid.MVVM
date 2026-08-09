@@ -4,11 +4,7 @@ using TMPro;
 using System;
 using UnityEngine;
 using System.Globalization;
-#if UNITY_2023_1_OR_NEWER
 using Converter = Aspid.MVVM.StarterKit.IConverter<string?, string?>;
-#else
-using Converter = Aspid.MVVM.StarterKit.IConverterString;
-#endif
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit

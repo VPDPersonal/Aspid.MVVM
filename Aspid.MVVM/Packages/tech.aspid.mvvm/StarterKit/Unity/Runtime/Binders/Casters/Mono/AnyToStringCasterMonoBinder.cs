@@ -1,10 +1,6 @@
 using UnityEngine;
 using UnityEngine.Events;
-#if UNITY_2023_1_OR_NEWER
 using Converter = Aspid.MVVM.StarterKit.IConverter<object, string>;
-#else
-using Converter = Aspid.MVVM.StarterKit.IConverterObjectToString;
-#endif
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit

@@ -2,11 +2,7 @@
 using TMPro;
 using System;
 using UnityEngine;
-#if UNITY_2023_1_OR_NEWER
 using Converter = Aspid.MVVM.StarterKit.IConverter<System.Enum, System.Collections.Generic.IEnumerable<TMPro.TMP_Dropdown.OptionData>>;
-#else
-using Converter = Aspid.MVVM.StarterKit.IConverterEnumToDropdownOptionData;
-#endif
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit

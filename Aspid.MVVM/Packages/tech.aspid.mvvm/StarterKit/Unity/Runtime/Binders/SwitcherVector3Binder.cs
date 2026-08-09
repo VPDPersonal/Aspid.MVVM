@@ -1,10 +1,5 @@
 using UnityEngine;
-using System.Runtime.CompilerServices;
-#if UNITY_2023_1_OR_NEWER
 using Converter = Aspid.MVVM.StarterKit.IConverter<UnityEngine.Vector3, UnityEngine.Vector3>;
-#else
-using Converter = Aspid.MVVM.StarterKit.IConverterVector3;
-#endif
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
@@ -23,16 +18,7 @@ namespace Aspid.MVVM.StarterKit
             Vector3 falseValue,
             IConverter<Vector3, Vector3>? converter, 
             BindMode mode = BindMode.OneWay)
-            : base(target, trueValue, falseValue, GetConverter(converter), mode) { }
+            : base(target, trueValue, falseValue, converter, mode) { }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static Converter? GetConverter(IConverter<Vector3, Vector3>? converter)
-        {
-            #if UNITY_2023_1_OR_NEWER
-            return converter;
-            #else
-            return converter?.ToConvertSpecific();
-            #endif
-        }
     }
 }

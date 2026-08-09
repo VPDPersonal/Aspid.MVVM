@@ -1,5 +1,5 @@
 #nullable enable
-#if UNITY_2023_1_OR_NEWER
+#if UNITY_6000_0_OR_NEWER
 using PhysicsMaterial = UnityEngine.PhysicsMaterial;
 #else
 using PhysicsMaterial = UnityEngine.PhysicMaterial;

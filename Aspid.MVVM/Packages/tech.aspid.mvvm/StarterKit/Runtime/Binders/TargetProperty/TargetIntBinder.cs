@@ -21,7 +21,18 @@ namespace Aspid.MVVM.StarterKit
         INumberReverseBinder
     {
         /// <inheritdoc/>
-        public event Action<int>? IntValueChanged;
+        /// <remarks>
+        /// Forwards to the inherited <see cref="TargetBinder{TTarget, TProperty}.ValueChanged"/>.
+        /// The base class already implements <see cref="IReverseBinder{T}"/> for <see langword="int"/>, and a class
+        /// member always wins over a default interface implementation, so <see cref="IReverseBinder{T}.ValueChanged"/>
+        /// resolves to the inherited event rather than to the bridge declared in <see cref="INumberReverseBinder"/>.
+        /// Aliasing keeps both surfaces backed by a single subscriber list.
+        /// </remarks>
+        public event Action<int>? IntValueChanged
+        {
+            add => ValueChanged += value;
+            remove => ValueChanged -= value;
+        }
 
         /// <inheritdoc/>
         public event Action<long>? LongValueChanged;
@@ -63,22 +74,23 @@ namespace Aspid.MVVM.StarterKit
         /// <see cref="IntValueChanged"/>, <see cref="LongValueChanged"/>, <see cref="FloatValueChanged"/>, and <see cref="DoubleValueChanged"/>.
         /// </summary>
         /// <remarks>
-        /// Does not call <c>base.OnBound()</c>: provides a complete implementation of the
-        /// <see cref="BindMode.OneWayToSource"/> initialization that broadcasts to all numeric event types
-        /// via <see cref="INumberReverseBinder"/> instead of the single typed
-        /// <see cref="IReverseBinder{T}.ValueChanged"/> event.
+        /// Calls <c>base.OnBound()</c> to raise the inherited
+        /// <see cref="TargetBinder{TTarget, TProperty}.ValueChanged"/>, which backs both
+        /// <see cref="IntValueChanged"/> and <see cref="IReverseBinder{T}.ValueChanged"/> for <see langword="int"/>.
+        /// The remaining numeric events are raised here because <see cref="INumberReverseBinder"/> bridges them
+        /// to their own <see cref="IReverseBinder{T}"/> instantiations.
         /// </remarks>
         protected override void OnBound()
         {
-            if (Mode is BindMode.OneWayToSource)
-            {
-                var value = GetConvertedValue(Property);
+            base.OnBound();
 
-                IntValueChanged?.Invoke(value);
-                LongValueChanged?.Invoke(value);
-                FloatValueChanged?.Invoke(value);
-                DoubleValueChanged?.Invoke(value);
-            }
+            if (Mode is not BindMode.OneWayToSource) return;
+
+            var value = GetConvertedValue(Property);
+
+            LongValueChanged?.Invoke(value);
+            FloatValueChanged?.Invoke(value);
+            DoubleValueChanged?.Invoke(value);
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

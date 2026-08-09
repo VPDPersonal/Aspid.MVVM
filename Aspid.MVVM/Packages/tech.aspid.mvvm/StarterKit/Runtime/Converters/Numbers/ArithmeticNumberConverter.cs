@@ -19,7 +19,11 @@ namespace Aspid.MVVM.StarterKit
         IConverterDouble, IConverterIntToDouble, IConverterLongToDouble, IConverterFloatToDouble,
         IConverterFloat, IConverterIntToFloat, IConverterLongToFloat, IConverterDoubleToFloat,
         IConverterInt, IConverterLongToInt, IConverterFloatToInt, IConverterDoubleToInt,
-        IConverterLong, IConverterIntToLong, IConverterFloatToLong, IConverterDoubleToLong
+        IConverterLong, IConverterIntToLong, IConverterFloatToLong, IConverterDoubleToLong,
+        ITwoWayConverter<double, double>,
+        ITwoWayConverter<float, float>,
+        ITwoWayConverter<int, int>,
+        ITwoWayConverter<long, long>
     {
         [SerializeField] private NumberOperation _operation;
         [SerializeField] private double _coefficient;
@@ -109,6 +113,36 @@ namespace Aspid.MVVM.StarterKit
         
         double IConverter<long, double>.Convert(long value) =>
             ((IConverter<double, double>)this).Convert(value);
+        #endregion
+
+        #region Convert back
+        // Only the same-type conversions are reversible: a binder in a reverse mode is constrained to
+        // IConverter<TProperty, TProperty>, and the cross-type overloads narrow, which cannot be undone.
+        double ITwoWayConverter<double, double>.ConvertBack(double value) => Undo(value);
+
+        float ITwoWayConverter<float, float>.ConvertBack(float value) => (float)Undo(value);
+
+        int ITwoWayConverter<int, int>.ConvertBack(int value) => (int)Undo(value);
+
+        long ITwoWayConverter<long, long>.ConvertBack(long value) => (long)Undo(value);
+
+        private double Undo(double value) => _operation switch
+        {
+            NumberOperation.Plus => value - _coefficient,
+            NumberOperation.Minus => value + _coefficient,
+            NumberOperation.Division => value * _coefficient,
+            NumberOperation.Multiply => UndoMultiply(value),
+            _ => throw new ArgumentOutOfRangeException(nameof(_operation), _operation, null)
+        };
+
+        // Mirrors Divide: a zero coefficient makes the forward pass an identity, so undoing it is one too.
+        private double UndoMultiply(double value)
+        {
+            if (_coefficient != 0) return value / _coefficient;
+
+            LogDivideByZero();
+            return value;
+        }
         #endregion
     }
 }

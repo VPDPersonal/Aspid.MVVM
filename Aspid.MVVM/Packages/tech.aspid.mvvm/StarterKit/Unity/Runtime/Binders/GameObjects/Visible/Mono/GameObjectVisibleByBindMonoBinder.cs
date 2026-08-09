@@ -21,6 +21,9 @@ namespace Aspid.MVVM.StarterKit
     [AddBinderContextMenu(typeof(Component), Path = "Add General Binder/GameObject/GameObject Binder – Visible By Bind")]
     public sealed partial class GameObjectVisibleByBindMonoBinder : MonoBinder, IAnyBinder
     {
+        /// <inheritdoc/>
+        protected override BindMode DefaultMode => BindMode.OneTime;
+
         [Tooltip("When enabled, inverts the bound bool value before applying it.")]
         [SerializeField] private bool _isInvert;
         

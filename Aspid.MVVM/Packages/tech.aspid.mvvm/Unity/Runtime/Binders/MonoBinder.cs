@@ -32,6 +32,28 @@ namespace Aspid.MVVM
         /// Gets the binding mode that determines the direction of data flow.
         /// </summary>
         public BindMode Mode => _mode;
+
+        /// <summary>
+        /// Gets the binding mode a freshly added binder starts in.
+        /// The default value is <see cref="BindMode.OneWay"/>.
+        /// </summary>
+        /// <remarks>
+        /// Override this in binders whose <c>[BindModeOverride]</c> excludes <see cref="BindMode.OneWay"/> — a
+        /// reverse-only or one-time binder must not start in a mode it forbids. There is deliberately no single
+        /// correct constant here: <c>*ToSourceMonoBinder</c> needs <see cref="BindMode.OneWayToSource"/> while
+        /// everything else needs <see cref="BindMode.OneWay"/>.
+        /// </remarks>
+        protected virtual BindMode DefaultMode => BindMode.OneWay;
+
+        /// <summary>
+        /// Called by Unity when the component is added in the Editor or reset from its context menu.
+        /// Applies <see cref="DefaultMode"/> to the serialized binding mode.
+        /// </summary>
+        /// <remarks>
+        /// When overriding this method, always call <c>base.Reset()</c> to preserve the default mode.
+        /// </remarks>
+        protected virtual void Reset() =>
+            _mode = DefaultMode;
         
         /// <inheritdoc/>
         public void Bind(IBinderAdder binderAdder)

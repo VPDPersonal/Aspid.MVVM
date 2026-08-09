@@ -20,6 +20,9 @@ namespace Aspid.MVVM.StarterKit
         IReverseBinder<Action>,
         IReverseBinder<IRelayCommand>
     {
+        /// <inheritdoc/>
+        protected override BindMode DefaultMode => BindMode.OneWayToSource;
+
         event Action<Action> IReverseBinder<Action>.ValueChanged
         {
             add => _reverseAction += value;

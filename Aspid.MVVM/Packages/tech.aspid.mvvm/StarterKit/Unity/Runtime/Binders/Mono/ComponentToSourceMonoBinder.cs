@@ -13,6 +13,9 @@ namespace Aspid.MVVM.StarterKit
     public abstract class ComponentToSourceMonoBinder<TComponent> : ComponentMonoBinder<TComponent>, IReverseBinder<TComponent>
         where TComponent : Component
     {
+        /// <inheritdoc/>
+        protected override BindMode DefaultMode => BindMode.OneWayToSource;
+
         /// <summary>
         /// Raised with the cached <typeparamref name="TComponent"/> reference when binding is established.
         /// </summary>

@@ -1,6 +1,7 @@
 #if UNITY_2023_1_OR_NEWER || ASPID_MVVM_TEXT_MESH_PRO_INTEGRATION
 #nullable enable
 using TMPro;
+using System;
 using System.Collections.Generic;
 
 // ReSharper disable once CheckNamespace
@@ -11,6 +12,7 @@ namespace Aspid.MVVM.StarterKit
     /// <see cref="TMP_Dropdown.options"/> list between two <see cref="List{T}"/> values based on the bound boolean ViewModel value.
     /// </summary>
     /// <include file="XmlExampleDoc-Dropdown-Options-1.1.0.xml" path="doc//member[@name='DropdownOptionsSwitcherBinder']/*" />
+    [Serializable]
     public sealed class DropdownOptionsSwitcherBinder : SwitcherBinder<TMP_Dropdown, List<TMP_Dropdown.OptionData>>
     {
         /// <inheritdoc/>

@@ -38,6 +38,7 @@ namespace Aspid.MVVM.StarterKit.Tests
             typeof(NullGuardConverter<,>),
             typeof(CachedConverter<,>),
             typeof(PassthroughConverter<>),
+            typeof(ConverterAssetReference<,>),
         };
 
         /// <summary>
@@ -47,6 +48,7 @@ namespace Aspid.MVVM.StarterKit.Tests
         /// </summary>
         private static readonly Dictionary<string, string> KnownGaps = new()
         {
+            ["IConverter<Boolean, Boolean>"] = "family 1 (Bool) — BoolInvert, BoolLogic…",
             ["IConverter<Color, Color>"] = "family 9 (Colour) — ColorAlpha, ColorTint, ColorGrayscale…",
             ["IConverter<ColorBlock, ColorBlock>"] = "family 10 (ColorBlock) — ColorToColorBlock…",
             ["IConverter<Enum, IEnumerable<OptionData>>"] = "family 16 (Enum) — EnumToDropdownOptionData",
@@ -131,6 +133,9 @@ namespace Aspid.MVVM.StarterKit.Tests
             .SelectMany(assembly => assembly.GetTypes())
             .Where(type => !type.IsInterface && !type.IsAbstract)
             .Where(type => typeof(IConverter).IsAssignableFrom(type))
+            // A managed reference cannot hold a UnityEngine.Object, so a converter asset is never a
+            // candidate for the field itself — ConverterAssetReference is what points at one.
+            .Where(type => !typeof(UnityEngine.Object).IsAssignableFrom(type))
             .Where(type => !Structural.Contains(type))
             .Where(IsConstructible)
             .Where(type => !IsHidden(type))

@@ -68,7 +68,10 @@ namespace Aspid.MVVM.StarterKit.Tests
         private static IEnumerable<Type> ConverterTypes() => Assemblies()
             .SelectMany(assembly => assembly.GetTypes())
             .Where(type => !type.IsInterface && !type.IsAbstract)
-            .Where(type => typeof(IConverter).IsAssignableFrom(type));
+            .Where(type => typeof(IConverter).IsAssignableFrom(type))
+            // Converter assets are UnityEngine.Objects, which a managed reference cannot hold, so the
+            // picker never offers them and neither rule here applies.
+            .Where(type => !typeof(UnityEngine.Object).IsAssignableFrom(type));
 
         private static IEnumerable<Assembly> Assemblies() => new[]
         {

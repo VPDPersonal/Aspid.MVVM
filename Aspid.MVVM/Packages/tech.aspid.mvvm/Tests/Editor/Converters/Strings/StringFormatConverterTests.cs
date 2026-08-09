@@ -1,4 +1,7 @@
+using UnityEngine;
 using NUnit.Framework;
+using UnityEngine.TestTools;
+using System.Text.RegularExpressions;
 
 namespace Aspid.MVVM.StarterKit.Tests
 {
@@ -7,11 +10,10 @@ namespace Aspid.MVVM.StarterKit.Tests
     /// four input values × four format strings × both settings of <c>_formatEmptyValues</c>.
     /// </summary>
     /// <remarks>
-    /// Thirty-one of the thirty-two cells are asserted below. The missing one — a <see langword="null"/>
-    /// input with a real format and <c>_formatEmptyValues</c> on — is the behaviour that regressed when
-    /// the converter started inheriting <see cref="GenericToString{TFrom}"/>: the base returns early on
-    /// <see langword="null"/>, so the override never runs. It is asserted separately and stays
-    /// <c>[Ignore]</c>d until that is repaired.
+    /// All thirty-two cells are asserted. The interesting one is a <see langword="null"/> input with a
+    /// real format and <c>_formatEmptyValues</c> on: the base class short-circuits on
+    /// <see langword="null"/> before <c>Format</c> is reached, so covering it takes an explicit
+    /// <c>Convert</c> override and it gets a test of its own.
     /// </remarks>
     [TestFixture]
     internal sealed class StringFormatConverterTests
@@ -67,7 +69,6 @@ namespace Aspid.MVVM.StarterKit.Tests
             Assert.AreEqual(expected, new StringFormatConverter("HP: {0}", formatEmptyValues).Convert(value));
 
         [Test]
-        [Ignore("Fixed in PR 4 — strings. The inherited Convert returns early on null, so the override never runs.")]
         public void Convert_NullValue_WithFormatEmptyValues_IsStillFormatted() =>
             Assert.AreEqual("HP: ", new StringFormatConverter("HP: {0}", formatEmptyValues: true).Convert(null));
 
@@ -76,8 +77,11 @@ namespace Aspid.MVVM.StarterKit.Tests
             Assert.AreEqual("abc", new StringFormatConverter().Convert("abc"));
 
         [Test]
-        [Ignore("Fixed in PR 4 — strings. An Inspector-authored format must not throw into the dispatch.")]
-        public void Convert_BrokenFormat_FallsBackToTheValueInsteadOfThrowing() =>
+        public void Convert_BrokenFormat_FallsBackToTheValueInsteadOfThrowing()
+        {
+            LogAssert.Expect(LogType.Error, new Regex("is invalid"));
+
             Assert.AreEqual("abc", new StringFormatConverter("{0}/{1}").Convert("abc"));
+        }
     }
 }

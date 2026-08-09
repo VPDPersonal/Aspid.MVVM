@@ -1,5 +1,8 @@
 using System;
+using UnityEngine;
 using NUnit.Framework;
+using UnityEngine.TestTools;
+using System.Text.RegularExpressions;
 
 namespace Aspid.MVVM.StarterKit.Tests
 {
@@ -43,15 +46,34 @@ namespace Aspid.MVVM.StarterKit.Tests
         public void Convert_FormatWithoutPlaceholder_ReturnsTheFormatVerbatim() =>
             Assert.AreEqual("F2", new GenericToString<float>("F2").Convert(3.5f));
 
+        // An Inspector-authored format is unvalidated input; throwing from here would tear the
+        // multicast dispatch and take unrelated binders on the same object down with it.
         [Test]
-        [Ignore("Fixed in PR 4 — strings. An Inspector-authored format must not throw into the dispatch.")]
-        public void Convert_BrokenFormat_FallsBackToToStringInsteadOfThrowing() =>
+        public void Convert_BrokenFormat_FallsBackToToStringInsteadOfThrowing()
+        {
+            LogAssert.Expect(LogType.Error, new Regex("is invalid"));
+
             Assert.AreEqual("42", new GenericToString<int>("{0}/{1}").Convert(42));
+        }
 
         [Test]
-        [Ignore("Fixed in PR 4 — strings.")]
-        public void Convert_UnbalancedBrace_FallsBackToToStringInsteadOfThrowing() =>
+        public void Convert_UnbalancedBrace_FallsBackToToStringInsteadOfThrowing()
+        {
+            LogAssert.Expect(LogType.Error, new Regex("is invalid"));
+
             Assert.AreEqual("42", new GenericToString<int>("HP: {0} {").Convert(42));
+        }
+
+        [Test]
+        public void Convert_BrokenFormat_LogsOncePerInstance()
+        {
+            LogAssert.Expect(LogType.Error, new Regex("is invalid"));
+
+            var converter = new GenericToString<int>("{0}/{1}");
+            converter.Convert(1);
+            converter.Convert(2);
+            converter.Convert(3);
+        }
 
         [Test]
         public void ObjectToStringConverter_NoFormat_FallsBackToToString() =>

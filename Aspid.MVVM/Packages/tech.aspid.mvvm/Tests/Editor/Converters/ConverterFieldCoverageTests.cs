@@ -19,21 +19,28 @@ namespace Aspid.MVVM.StarterKit.Tests
     /// hidden from it. Open generic converters count when they can be closed over the field's own
     /// conversion types, which is what the picker does for a generic field.
     /// <para>
-    /// Composition containers do not count. <see cref="SequenceConverters{T}"/> is assignable to
-    /// every same-type field, so counting it would mark every such field covered while the dropdown
-    /// offers nothing but an empty chain to put converters into — the vacuous pass this test exists
-    /// to prevent.
+    /// Composition plumbing does not count. <see cref="SequenceConverters{T}"/> and
+    /// <see cref="SafeConverter{TFrom, TTo}"/> are assignable to every field of the right shape, so
+    /// counting them would mark every such field covered while the dropdown offers nothing but empty
+    /// wrappers to put converters into — the vacuous pass this test exists to prevent.
     /// </para>
     /// </remarks>
     [TestFixture]
     internal sealed class ConverterFieldCoverageTests
     {
         /// <summary>
-        /// Types that hold other converters rather than convert anything themselves.
+        /// Composition plumbing: types that hold, route or bypass other converters rather than
+        /// perform a conversion of their own.
         /// </summary>
-        private static readonly HashSet<Type> Containers = new()
+        private static readonly HashSet<Type> Structural = new()
         {
             typeof(SequenceConverters<>),
+            typeof(ChainConverter<,,>),
+            typeof(ConditionalConverter<>),
+            typeof(SafeConverter<,>),
+            typeof(NullGuardConverter<,>),
+            typeof(CachedConverter<,>),
+            typeof(PassthroughConverter<>),
         };
 
         /// <summary>
@@ -127,7 +134,7 @@ namespace Aspid.MVVM.StarterKit.Tests
             .SelectMany(assembly => assembly.GetTypes())
             .Where(type => !type.IsInterface && !type.IsAbstract)
             .Where(type => typeof(IConverter).IsAssignableFrom(type))
-            .Where(type => !Containers.Contains(type))
+            .Where(type => !Structural.Contains(type))
             .Where(IsConstructible)
             .Where(type => !IsHidden(type))
             .Select(type => Close(type, fieldType))

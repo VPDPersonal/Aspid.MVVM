@@ -12,7 +12,7 @@ namespace Aspid.MVVM.StarterKit
     /// deliberate no-op rather than an unfilled slot — and as a neutral element in code.
     /// </remarks>
     [Serializable]
-    public sealed class PassthroughConverter<T> : IConverter<T, T>
+    public sealed class PassthroughConverter<T> : ITwoWayConverter<T, T>
     {
         /// <summary>
         /// Returns the specified value unchanged.
@@ -20,5 +20,12 @@ namespace Aspid.MVVM.StarterKit
         /// <param name="value">The value to pass through.</param>
         /// <returns>The same value.</returns>
         public T Convert(T value) => value;
+
+        /// <summary>
+        /// Returns the specified value unchanged.
+        /// </summary>
+        /// <param name="value">The value to pass through.</param>
+        /// <returns>The same value.</returns>
+        public T ConvertBack(T value) => value;
     }
 }

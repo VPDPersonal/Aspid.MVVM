@@ -14,7 +14,7 @@ namespace Aspid.MVVM.StarterKit
     /// skipped rather than treated as an error.
     /// </remarks>
     [Serializable]
-    public class SequenceConverters<T> : IConverter<T, T>
+    public class SequenceConverters<T> : ITwoWayConverter<T, T>
     {
         // ReSharper disable once FieldCanBeMadeReadOnly.Local
         [SerializeReference] private IConverter<T, T>?[] _converters;
@@ -42,6 +42,31 @@ namespace Aspid.MVVM.StarterKit
                 if (converter is not null)
                     value = converter.Convert(value);
             }
+
+            return value;
+        }
+
+        /// <summary>
+        /// Converts the specified value by undoing each converter in reverse order.
+        /// </summary>
+        /// <param name="value">The value to convert back.</param>
+        /// <returns>
+        /// The result after every link has been undone, or the value unchanged if any link converts
+        /// one way only — undoing part of a chain would leave the value in neither space.
+        /// </returns>
+        public T ConvertBack(T value)
+        {
+            if (_converters is null) return value;
+
+            for (var i = _converters.Length - 1; i >= 0; i--)
+            {
+                if (_converters[i] is null) continue;
+                if (_converters[i] is not ITwoWayConverter<T, T>) return value;
+            }
+
+            for (var i = _converters.Length - 1; i >= 0; i--)
+                if (_converters[i] is ITwoWayConverter<T, T> twoWay)
+                    value = twoWay.ConvertBack(value);
 
             return value;
         }

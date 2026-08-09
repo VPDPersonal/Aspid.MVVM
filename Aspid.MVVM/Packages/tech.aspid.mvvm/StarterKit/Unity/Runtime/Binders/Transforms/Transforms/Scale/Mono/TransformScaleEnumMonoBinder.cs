@@ -16,6 +16,6 @@ namespace Aspid.MVVM.StarterKit
         /// Sets the <see cref="Transform.localScale"/> to the resolved value.
         /// </summary>
         protected override void SetValue(Vector3 value) =>
-            transform.localScale = value;
+            CachedComponent.localScale = value;
     }
 }

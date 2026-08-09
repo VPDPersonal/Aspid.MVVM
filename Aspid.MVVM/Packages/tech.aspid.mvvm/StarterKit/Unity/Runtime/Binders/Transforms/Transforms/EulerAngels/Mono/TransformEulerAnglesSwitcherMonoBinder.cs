@@ -18,6 +18,6 @@ namespace Aspid.MVVM.StarterKit
         /// Called when applying the selected value to the euler angles of the <see cref="Transform"/>.
         /// </summary>
         protected override void SetValue(Vector3 value) =>
-            transform.SetEulerAngles(value, _space);
+            CachedComponent.SetEulerAngles(value, _space);
     }
 }

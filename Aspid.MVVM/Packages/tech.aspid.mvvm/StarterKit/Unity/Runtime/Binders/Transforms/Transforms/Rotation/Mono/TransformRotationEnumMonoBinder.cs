@@ -19,6 +19,6 @@ namespace Aspid.MVVM.StarterKit
         /// Sets the rotation of the <see cref="Transform"/> in the configured <see cref="Space"/>.
         /// </summary>
         protected override void SetValue(Vector3 value) =>
-            transform.SetRotation(Quaternion.Euler(value), _space);
+            CachedComponent.SetRotation(Quaternion.Euler(value), _space);
     }
 }

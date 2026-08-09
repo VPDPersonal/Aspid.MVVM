@@ -19,6 +19,6 @@ namespace Aspid.MVVM.StarterKit
         /// Sets the position of the <see cref="Transform"/> in the configured <see cref="Space"/>.
         /// </summary>
         protected override void SetValue(Vector3 value) =>
-            transform.SetPosition(value, _space);
+            CachedComponent.SetPosition(value, _space);
     }
 }

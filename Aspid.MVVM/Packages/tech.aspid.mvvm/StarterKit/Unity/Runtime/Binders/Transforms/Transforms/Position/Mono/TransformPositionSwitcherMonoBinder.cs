@@ -18,6 +18,6 @@ namespace Aspid.MVVM.StarterKit
         /// Called when applying the selected value to the position of the <see cref="Transform"/>.
         /// </summary>
         protected override void SetValue(Vector3 value) =>
-            transform.SetPosition(value, _space);
+            CachedComponent.SetPosition(value, _space);
     }
 }

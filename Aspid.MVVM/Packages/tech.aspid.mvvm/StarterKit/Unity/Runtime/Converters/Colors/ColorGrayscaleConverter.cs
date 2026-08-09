@@ -1,4 +1,5 @@
 #nullable enable
+using Aspid.FastTools.Types;
 using System;
 using UnityEngine;
 
@@ -14,6 +15,7 @@ namespace Aspid.MVVM.StarterKit
     /// channel average.
     /// </remarks>
     [Serializable]
+    [TypeSelectorDisplay(Group = "Aspid/Colour", Name = "Color Grayscale", Tooltip = "Desaturates a colour")]
     public sealed class ColorGrayscaleConverter : IConverterColor
     {
         [Tooltip("How much colour to keep. Zero is fully grey, one leaves the colour untouched.")]

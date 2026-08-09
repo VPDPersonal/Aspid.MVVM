@@ -1,4 +1,5 @@
 #nullable enable
+using Aspid.FastTools.Types;
 using System;
 using UnityEngine;
 
@@ -10,6 +11,7 @@ namespace Aspid.MVVM.StarterKit
     /// </summary>
     /// <remarks>DPI or safe-area scaling applied to an authored padding.</remarks>
     [Serializable]
+    [TypeSelectorDisplay(Group = "Aspid/Layout", Name = "Rect Offset Scale", Tooltip = "Scales a padding")]
     public sealed class RectOffsetScaleConverter : IConverterRectOffset
     {
         [Tooltip("What the padding is multiplied by.")]

@@ -1,3 +1,4 @@
+using Aspid.FastTools.Types;
 using System;
 using UnityEngine;
 
@@ -15,6 +16,7 @@ namespace Aspid.MVVM.StarterKit
     /// Inspector. Wrapping one settles the question at the point of use.
     /// </remarks>
     [Serializable]
+    [TypeSelectorDisplay(Group = "Aspid/Composition", Name = "Null Guard", Tooltip = "Substitutes a fixed result for a  input instead of passing it on")]
     public sealed class NullGuardConverter<TFrom, TTo> : IConverter<TFrom?, TTo?>
     {
         [Tooltip("The converter to run for a non-null value. When empty, the null result is used for every value.")]

@@ -1,3 +1,4 @@
+using Aspid.FastTools.Types;
 using System;
 using UnityEngine;
 
@@ -8,6 +9,7 @@ namespace Aspid.MVVM.StarterKit
     /// Pads a string to a fixed width.
     /// </summary>
     [Serializable]
+    [TypeSelectorDisplay(Group = "Aspid/String", Name = "Pad String", Tooltip = "Pads a string to a fixed width")]
     public sealed class PadStringConverter : IConverterString
     {
         [Tooltip("The width to pad to.")]

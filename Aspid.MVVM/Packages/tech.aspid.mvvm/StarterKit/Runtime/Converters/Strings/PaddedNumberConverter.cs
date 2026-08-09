@@ -1,3 +1,4 @@
+using Aspid.FastTools.Types;
 using System;
 using UnityEngine;
 using System.Globalization;
@@ -9,6 +10,7 @@ namespace Aspid.MVVM.StarterKit
     /// Pads a number to a fixed width: 7 becomes "007".
     /// </summary>
     [Serializable]
+    [TypeSelectorDisplay(Group = "Aspid/String", Name = "Padded Number", Tooltip = "Pads a number to a fixed width: 7 becomes '007'")]
     public sealed class PaddedNumberConverter : IConverter<int, string>
     {
         [Tooltip("The minimum number of digits.")]

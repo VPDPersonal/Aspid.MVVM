@@ -1,5 +1,6 @@
 #if UNITY_2023_1_OR_NEWER || ASPID_MVVM_TEXT_MESH_PRO_INTEGRATION
 #nullable enable
+using Aspid.FastTools.Types;
 using TMPro;
 using System;
 using UnityEngine;
@@ -17,6 +18,7 @@ namespace Aspid.MVVM.StarterKit
     /// member on every notification.
     /// </remarks>
     [Serializable]
+    [TypeSelectorDisplay(Group = "Aspid/Enum", Name = "Enum To Dropdown Option Data", Tooltip = "Builds the option list of a dropdown out of an enum's members")]
     public sealed class EnumToDropdownOptionDataConverter : IConverterEnumToDropdownOptionData
     {
         /// <summary>

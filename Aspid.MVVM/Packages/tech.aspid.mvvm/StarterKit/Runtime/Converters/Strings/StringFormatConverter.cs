@@ -1,3 +1,4 @@
+using Aspid.FastTools.Types;
 using System;
 using UnityEngine;
 
@@ -13,6 +14,7 @@ namespace Aspid.MVVM.StarterKit
     /// <c>_formatEmptyValues</c> to format blank and <see langword="null"/> input as well.
     /// </remarks>
     [Serializable]
+    [TypeSelectorDisplay(Group = "Aspid/String", Name = "String Format", Tooltip = "for strings, with optional handling of empty values")]
     public class StringFormatConverter : GenericToString<string>, IConverterString
     {
         [Tooltip("Apply the format to a blank or null value as well, rather than passing it through.")]

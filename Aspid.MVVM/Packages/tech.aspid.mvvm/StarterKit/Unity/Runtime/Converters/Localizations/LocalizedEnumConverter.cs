@@ -1,5 +1,6 @@
 #if ASPID_MVVM_UNITY_LOCALIZATION_INTEGRATION
 #nullable enable
+using Aspid.FastTools.Types;
 using System;
 using UnityEngine;
 using UnityEngine.Localization;
@@ -16,6 +17,7 @@ namespace Aspid.MVVM.StarterKit
     /// member adds a key rather than a switch branch.
     /// </remarks>
     [Serializable]
+    [TypeSelectorDisplay(Group = "Aspid/Localization", Name = "Localized Enum", Tooltip = "Looks an enum member's name up in a localization table")]
     public sealed class LocalizedEnumConverter<TEnum> : IConverter<TEnum, string>
         where TEnum : struct, Enum
     {

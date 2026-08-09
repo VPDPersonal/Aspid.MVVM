@@ -1,4 +1,5 @@
 #nullable enable
+using Aspid.FastTools.Types;
 using System;
 using UnityEngine;
 
@@ -13,6 +14,7 @@ namespace Aspid.MVVM.StarterKit
     /// produces the same colour.
     /// </remarks>
     [Serializable]
+    [TypeSelectorDisplay(Group = "Aspid/Colour", Name = "Hash To Color", Tooltip = "Derives a stable colour from a string")]
     public sealed class HashToColorConverter : IConverter<string?, Color>
     {
         [Tooltip("The saturation of the produced colour.")]

@@ -1,4 +1,5 @@
 #nullable enable
+using Aspid.FastTools.Types;
 using System;
 using UnityEngine;
 
@@ -13,6 +14,7 @@ namespace Aspid.MVVM.StarterKit
     /// directions are here because the pair round-trips within the ±180 convention.
     /// </remarks>
     [Serializable]
+    [TypeSelectorDisplay(Group = "Aspid/Rotation", Name = "Euler To Quaternion", Tooltip = "Turns Euler angles into a rotation")]
     public sealed class EulerToQuaternionConverter : ITwoWayConverter<Vector3, Quaternion>
     {
         /// <summary>

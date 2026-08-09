@@ -1,3 +1,4 @@
+using Aspid.FastTools.Types;
 using System;
 using UnityEngine;
 
@@ -13,6 +14,7 @@ namespace Aspid.MVVM.StarterKit
     /// fires, and a score truncated loses the point the player just earned.
     /// </remarks>
     [Serializable]
+    [TypeSelectorDisplay(Group = "Aspid/Number", Name = "Round Number", Tooltip = "Rounds a number, in a way the caller chooses")]
     public sealed class RoundNumberConverter : IConverterFloat, IConverterFloatToInt
     {
         [Tooltip("Which way to drop the fraction.")]

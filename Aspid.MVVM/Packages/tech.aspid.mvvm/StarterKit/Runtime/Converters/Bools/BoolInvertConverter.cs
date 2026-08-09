@@ -1,3 +1,4 @@
+using Aspid.FastTools.Types;
 using System;
 
 // ReSharper disable once CheckNamespace
@@ -13,6 +14,7 @@ namespace Aspid.MVVM.StarterKit
     /// <c>_isInvert</c> flag for the same reason; this is the same thing, available to all of them.
     /// </remarks>
     [Serializable]
+    [TypeSelectorDisplay(Group = "Aspid/Bool", Name = "Bool Invert", Tooltip = "Negates a boolean")]
     public sealed class BoolInvertConverter : ITwoWayConverter<bool, bool>
     {
         /// <summary>

@@ -1,3 +1,4 @@
+using Aspid.FastTools.Types;
 using System;
 using UnityEngine;
 using System.Globalization;
@@ -16,6 +17,7 @@ namespace Aspid.MVVM.StarterKit
     /// <see cref="object.ToString"/> instead of throwing into the binder.
     /// </remarks>
     [Serializable]
+    [TypeSelectorDisplay(Group = "Aspid/String", Name = "Generic To String", Tooltip = "Generic converter that transforms values to strings with optional formatting")]
     public class GenericToString<TFrom> : IConverter<TFrom?, string?>
     {
         [Tooltip("A composite format string such as \"{0:F2}\". Note the braces: a bare \"F2\" is a literal.")]

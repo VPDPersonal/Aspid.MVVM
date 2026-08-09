@@ -1,4 +1,5 @@
 #nullable enable
+using Aspid.FastTools.Types;
 using System;
 using UnityEngine;
 
@@ -9,6 +10,7 @@ namespace Aspid.MVVM.StarterKit
     /// Wraps a string in rich-text style tags.
     /// </summary>
     [Serializable]
+    [TypeSelectorDisplay(Group = "Aspid/String", Name = "Rich Text Style", Tooltip = "Wraps a string in rich-text style tags")]
     public sealed class RichTextStyleConverter : IConverterString
     {
         [Tooltip("Wrap in <b>.")]

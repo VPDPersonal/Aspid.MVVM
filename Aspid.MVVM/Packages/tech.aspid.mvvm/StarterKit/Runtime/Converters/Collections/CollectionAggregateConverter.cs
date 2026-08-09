@@ -1,3 +1,4 @@
+using Aspid.FastTools.Types;
 using System;
 using UnityEngine;
 using System.Collections.Generic;
@@ -13,6 +14,7 @@ namespace Aspid.MVVM.StarterKit
     /// invalidated whenever the list changes.
     /// </remarks>
     [Serializable]
+    [TypeSelectorDisplay(Group = "Aspid/Collection", Name = "Collection Aggregate", Tooltip = "Reduces a collection of numbers to one")]
     public sealed class CollectionAggregateConverter : IConverter<IEnumerable<float>?, float>
     {
         [Tooltip("What to compute.")]

@@ -1,3 +1,4 @@
+using Aspid.FastTools.Types;
 using System;
 using UnityEngine;
 
@@ -12,6 +13,7 @@ namespace Aspid.MVVM.StarterKit
     /// it actually has instead of a fraction computed for one particular bar.
     /// </remarks>
     [Serializable]
+    [TypeSelectorDisplay(Group = "Aspid/Number", Name = "Inverse Lerp", Tooltip = "Converts a value in a range to its 0..1 position within it")]
     public sealed class InverseLerpConverter : ITwoWayConverter<float, float>
     {
         [Tooltip("The value that maps to 0.")]

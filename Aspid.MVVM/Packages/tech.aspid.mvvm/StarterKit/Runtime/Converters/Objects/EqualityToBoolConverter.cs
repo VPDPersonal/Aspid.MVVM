@@ -1,3 +1,4 @@
+using Aspid.FastTools.Types;
 using System;
 using UnityEngine;
 using System.Collections.Generic;
@@ -14,6 +15,7 @@ namespace Aspid.MVVM.StarterKit
     /// selected item?", "is this the equipped weapon?". Comparison uses the type's own equality.
     /// </remarks>
     [Serializable]
+    [TypeSelectorDisplay(Group = "Aspid/Object", Name = "Equality To Bool", Tooltip = "Tests a bound value against an authored one")]
     public sealed class EqualityToBoolConverter<T> : IConverter<T, bool>
     {
         [Tooltip("The value the bound one is compared against.")]

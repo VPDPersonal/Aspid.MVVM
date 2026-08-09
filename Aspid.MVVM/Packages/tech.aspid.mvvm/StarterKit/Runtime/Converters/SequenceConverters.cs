@@ -1,3 +1,4 @@
+using Aspid.FastTools.Types;
 using System;
 using UnityEngine;
 
@@ -14,6 +15,7 @@ namespace Aspid.MVVM.StarterKit
     /// skipped rather than treated as an error.
     /// </remarks>
     [Serializable]
+    [TypeSelectorDisplay(Group = "Aspid", Name = "Sequence", Tooltip = "Chains multiple converters together, applying them sequentially to a value")]
     public class SequenceConverters<T> : ITwoWayConverter<T, T>
     {
         // ReSharper disable once FieldCanBeMadeReadOnly.Local

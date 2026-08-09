@@ -1,4 +1,5 @@
 #nullable enable
+using Aspid.FastTools.Types;
 using System;
 using UnityEngine;
 
@@ -13,6 +14,7 @@ namespace Aspid.MVVM.StarterKit
     /// colour tag is built from.
     /// </remarks>
     [Serializable]
+    [TypeSelectorDisplay(Group = "Aspid/Colour", Name = "Color To Html String", Tooltip = "Writes a colour as an HTML string")]
     public sealed class ColorToHtmlStringConverter : IConverter<Color, string>
     {
         [Tooltip("Include the alpha channel.")]

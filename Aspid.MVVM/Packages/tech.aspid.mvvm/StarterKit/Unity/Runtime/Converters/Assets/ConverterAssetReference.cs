@@ -1,4 +1,5 @@
 #nullable enable
+using Aspid.FastTools.Types;
 using System;
 using UnityEngine;
 
@@ -17,6 +18,7 @@ namespace Aspid.MVVM.StarterKit
     /// shared converters without changing.
     /// </remarks>
     [Serializable]
+    [TypeSelectorDisplay(Group = "Aspid/Asset", Name = "Converter Asset Reference", Tooltip = "Forwards conversion to a shared ")]
     public sealed class ConverterAssetReference<TFrom, TTo> : IConverter<TFrom?, TTo?>
     {
         [Tooltip("The shared converter asset. When empty, the default value is returned.")]

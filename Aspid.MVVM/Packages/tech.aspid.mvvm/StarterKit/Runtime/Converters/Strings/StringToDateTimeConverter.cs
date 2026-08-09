@@ -1,3 +1,4 @@
+using Aspid.FastTools.Types;
 using System;
 using UnityEngine;
 using System.Globalization;
@@ -9,6 +10,7 @@ namespace Aspid.MVVM.StarterKit
     /// Reads a date out of text.
     /// </summary>
     [Serializable]
+    [TypeSelectorDisplay(Group = "Aspid/String", Name = "String To Date Time", Tooltip = "Reads a date out of text")]
     public sealed class StringToDateTimeConverter : IConverter<string?, DateTime>
     {
         [Tooltip("The exact format expected. When empty, any format the culture understands is accepted.")]

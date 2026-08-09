@@ -1,4 +1,5 @@
 #nullable enable
+using Aspid.FastTools.Types;
 using System;
 using UnityEngine;
 
@@ -14,6 +15,7 @@ namespace Aspid.MVVM.StarterKit
     /// on every binder was empty.
     /// </remarks>
     [Serializable]
+    [TypeSelectorDisplay(Group = "Aspid/Colour", Name = "Color Alpha", Tooltip = "Changes the alpha of a colour, leaving its hue alone")]
     public sealed class ColorAlphaConverter : IConverterColor
     {
         [Tooltip("The alpha applied to the colour.")]

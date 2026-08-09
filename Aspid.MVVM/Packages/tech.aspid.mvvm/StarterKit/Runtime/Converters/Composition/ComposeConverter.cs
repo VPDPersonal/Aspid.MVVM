@@ -1,3 +1,4 @@
+using Aspid.FastTools.Types;
 using System;
 using UnityEngine;
 
@@ -16,6 +17,7 @@ namespace Aspid.MVVM.StarterKit
     /// leaves nothing meaningful to return.
     /// </remarks>
     [Serializable]
+    [TypeSelectorDisplay(Group = "Aspid/Composition", Name = "Compose", Tooltip = "Applies two converters in sequence, converting through an intermediate type")]
     public sealed class ComposeConverter<TFrom, TMid, TTo> : IConverter<TFrom?, TTo?>
     {
         [Tooltip("Applied to the incoming value. Both links are required.")]

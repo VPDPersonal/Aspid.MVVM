@@ -31,6 +31,33 @@ namespace Aspid.MVVM.StarterKit.Tests
             Assert.IsEmpty(undocumented, Explain(undocumented));
         }
 
+        /// <summary>
+        /// Every converter the picker offers should say where it belongs and what it is for.
+        /// </summary>
+        /// <remarks>
+        /// The dropdown lists them by namespace, and they share one — so without a group the whole
+        /// catalogue arrives as a single flat list of a hundred-odd entries, which is a worse way to
+        /// find a converter than knowing its name already.
+        /// </remarks>
+        [Test]
+        public void EveryPickableConverterIsGroupedAndDescribed()
+        {
+            var ungrouped = ConverterTypes()
+                .Where(type => !type.IsAbstract)
+                .Where(type => !typeof(UnityEngine.Object).IsAssignableFrom(type))
+                .Where(type => type.IsDefined(typeof(SerializableAttribute), inherit: false))
+                .Select(type => (type, display: type.GetCustomAttribute<Aspid.FastTools.Types.TypeSelectorDisplayAttribute>(inherit: false)))
+                .Where(pair => pair.display is null || string.IsNullOrEmpty(pair.display.Group))
+                .Select(pair => pair.type)
+                .ToArray();
+
+            Assert.IsEmpty(
+                ungrouped,
+                "These converters appear in the picker with no group, so they land in one flat list:"
+                + Environment.NewLine
+                + string.Join(Environment.NewLine, ungrouped.Select(type => "  - " + type.Name)));
+        }
+
         // Guards the check above from passing because the scan stopped finding fields.
         [Test]
         public void TheScanSeesTheSerializedFields() =>

@@ -1,3 +1,4 @@
+using Aspid.FastTools.Types;
 using System;
 using UnityEngine;
 using System.Globalization;
@@ -14,6 +15,7 @@ namespace Aspid.MVVM.StarterKit
     /// stopwatch wants <see cref="RoundMode.Floor"/>.
     /// </remarks>
     [Serializable]
+    [TypeSelectorDisplay(Group = "Aspid/Time", Name = "Seconds To Time String", Tooltip = "Writes a number of seconds as a clock reading")]
     public sealed class SecondsToTimeStringConverter :
         IConverter<float, string>,
         IConverter<double, string>,

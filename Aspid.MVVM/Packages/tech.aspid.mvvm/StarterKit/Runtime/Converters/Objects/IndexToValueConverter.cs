@@ -1,3 +1,4 @@
+using Aspid.FastTools.Types;
 using System;
 using UnityEngine;
 
@@ -13,6 +14,7 @@ namespace Aspid.MVVM.StarterKit
     /// set of authored assets. Doing it in the ViewModel means the ViewModel holds sprites.
     /// </remarks>
     [Serializable]
+    [TypeSelectorDisplay(Group = "Aspid/Object", Name = "Index To Value", Tooltip = "Picks a value out of an authored array by index")]
     public sealed class IndexToValueConverter<T> : IConverter<int, T>
     {
         [Tooltip("The values to pick from, in order.")]

@@ -1,3 +1,4 @@
+using Aspid.FastTools.Types;
 using System;
 using UnityEngine;
 
@@ -8,6 +9,7 @@ namespace Aspid.MVVM.StarterKit
     /// Converts a 0..1 fraction to a percentage.
     /// </summary>
     [Serializable]
+    [TypeSelectorDisplay(Group = "Aspid/Number", Name = "Normalized To Percent", Tooltip = "Converts a 0..1 fraction to a percentage")]
     public sealed class NormalizedToPercentConverter : ITwoWayConverter<float, float>
     {
         [Tooltip("Round the percentage to a whole number.")]

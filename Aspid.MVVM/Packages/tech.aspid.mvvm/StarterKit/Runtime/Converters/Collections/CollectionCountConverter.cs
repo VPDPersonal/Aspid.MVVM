@@ -1,4 +1,6 @@
+using Aspid.FastTools.Types;
 using System;
+using UnityEngine;
 using System.Collections.Generic;
 
 // ReSharper disable once CheckNamespace
@@ -13,6 +15,7 @@ namespace Aspid.MVVM.StarterKit
     /// step with the list by hand.
     /// </remarks>
     [Serializable]
+    [TypeSelectorDisplay(Group = "Aspid/Collection", Name = "Collection Count", Tooltip = "Counts the items in a collection")]
     public sealed class CollectionCountConverter<T> : IConverter<IReadOnlyCollection<T>?, int>
     {
         /// <summary>

@@ -1,4 +1,5 @@
 #nullable enable
+using Aspid.FastTools.Types;
 using System;
 using UnityEngine;
 
@@ -18,6 +19,7 @@ namespace Aspid.MVVM.StarterKit
     /// </para>
     /// </remarks>
     [Serializable]
+    [TypeSelectorDisplay(Group = "Aspid/Asset", Name = "Material Instance", Tooltip = "Hands a renderer its own copy of a material instead of the shared asset")]
     public sealed class MaterialInstanceConverter : IConverterMaterial
     {
         [Tooltip("Return a copy rather than the shared asset.")]

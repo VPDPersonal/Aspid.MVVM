@@ -1,3 +1,4 @@
+using Aspid.FastTools.Types;
 using System;
 
 // ReSharper disable once CheckNamespace
@@ -7,6 +8,7 @@ namespace Aspid.MVVM.StarterKit
     /// Converts a number of seconds to a <see cref="TimeSpan"/>.
     /// </summary>
     [Serializable]
+    [TypeSelectorDisplay(Group = "Aspid/Time", Name = "Seconds To Time Span", Tooltip = "Converts a number of seconds to a ")]
     public sealed class SecondsToTimeSpanConverter : ITwoWayConverter<float, TimeSpan>
     {
         /// <summary>

@@ -1,4 +1,5 @@
 #nullable enable
+using Aspid.FastTools.Types;
 using System;
 using UnityEngine;
 
@@ -13,6 +14,7 @@ namespace Aspid.MVVM.StarterKit
     /// scalars.
     /// </remarks>
     [Serializable]
+    [TypeSelectorDisplay(Group = "Aspid/Vector", Name = "Vector3 Arithmetic", Tooltip = "Combines a bound vector with an authored one")]
     public sealed class Vector3ArithmeticConverter : IConverterVector3
     {
         [Tooltip("What to do with the operand.")]

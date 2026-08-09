@@ -1,4 +1,5 @@
 #nullable enable
+using Aspid.FastTools.Types;
 using System;
 using UnityEngine;
 
@@ -9,6 +10,7 @@ namespace Aspid.MVVM.StarterKit
     /// Combines a vector with a <see cref="RectTransform"/>'s anchored position.
     /// </summary>
     [Serializable]
+    [TypeSelectorDisplay(Group = "Aspid/Vector", Name = "Rect Transform Anchored Position Combine", Tooltip = "Combines a vector with a 's anchored position")]
     public sealed class RectTransformAnchoredPositionCombineConverter : Vector3CombineConverter
     {
         [Tooltip("The rect transform whose anchored position the bound vector is combined with.")]

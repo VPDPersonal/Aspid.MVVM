@@ -1,4 +1,5 @@
 #nullable enable
+using Aspid.FastTools.Types;
 using System;
 using UnityEngine;
 
@@ -10,6 +11,7 @@ namespace Aspid.MVVM.StarterKit
     /// </summary>
     /// <remarks>Snapping to a grid, for tile-based UI and level tools.</remarks>
     [Serializable]
+    [TypeSelectorDisplay(Group = "Aspid/Vector", Name = "Vector Round", Tooltip = "Rounds every axis of a vector")]
     public sealed class VectorRoundConverter : IConverterVector3
     {
         [Tooltip("Which way to drop the fraction.")]

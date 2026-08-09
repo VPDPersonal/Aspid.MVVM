@@ -1,4 +1,5 @@
 #nullable enable
+using Aspid.FastTools.Types;
 using System;
 using UnityEngine;
 
@@ -14,6 +15,7 @@ namespace Aspid.MVVM.StarterKit
     /// values immediately, but the result must not be held onto.
     /// </remarks>
     [Serializable]
+    [TypeSelectorDisplay(Group = "Aspid/Layout", Name = "Int To Rect Offset", Tooltip = "Writes one number into the chosen sides of a padding")]
     public sealed class IntToRectOffsetConverter : IConverter<int, RectOffset>
     {
         [Tooltip("Which sides the number is written into.")]

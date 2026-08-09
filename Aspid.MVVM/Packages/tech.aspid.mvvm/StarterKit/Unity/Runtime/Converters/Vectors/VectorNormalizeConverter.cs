@@ -1,4 +1,5 @@
 #nullable enable
+using Aspid.FastTools.Types;
 using System;
 using UnityEngine;
 
@@ -9,6 +10,7 @@ namespace Aspid.MVVM.StarterKit
     /// Reduces a vector to its direction.
     /// </summary>
     [Serializable]
+    [TypeSelectorDisplay(Group = "Aspid/Vector", Name = "Vector Normalize", Tooltip = "Reduces a vector to its direction")]
     public sealed class VectorNormalizeConverter : IConverterVector3
     {
         /// <summary>

@@ -1,3 +1,4 @@
+using Aspid.FastTools.Types;
 using System;
 using UnityEngine;
 
@@ -15,6 +16,7 @@ namespace Aspid.MVVM.StarterKit
     /// input unchanged instead of producing an infinity.
     /// </remarks>
     [Serializable]
+    [TypeSelectorDisplay(Group = "Aspid/Number", Name = "Arithmetic Number", Tooltip = "Converts numeric values by applying arithmetic operations with a coefficient")]
     public class ArithmeticNumberConverter :
         IConverterDouble, IConverterIntToDouble, IConverterLongToDouble, IConverterFloatToDouble,
         IConverterFloat, IConverterIntToFloat, IConverterLongToFloat, IConverterDoubleToFloat,

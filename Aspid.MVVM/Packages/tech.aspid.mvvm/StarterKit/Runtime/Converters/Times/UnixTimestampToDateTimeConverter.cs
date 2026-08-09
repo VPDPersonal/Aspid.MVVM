@@ -1,3 +1,4 @@
+using Aspid.FastTools.Types;
 using System;
 using UnityEngine;
 
@@ -9,6 +10,7 @@ namespace Aspid.MVVM.StarterKit
     /// </summary>
     /// <remarks>A backend that speaks epoch seconds, which most do.</remarks>
     [Serializable]
+    [TypeSelectorDisplay(Group = "Aspid/Time", Name = "Unix Timestamp To Date Time", Tooltip = "Converts a Unix timestamp to a ")]
     public sealed class UnixTimestampToDateTimeConverter : ITwoWayConverter<long, DateTime>
     {
         [Tooltip("The timestamp is in milliseconds rather than seconds.")]

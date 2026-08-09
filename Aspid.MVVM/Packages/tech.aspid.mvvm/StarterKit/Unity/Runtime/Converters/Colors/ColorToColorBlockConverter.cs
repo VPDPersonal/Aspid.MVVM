@@ -1,4 +1,5 @@
 #nullable enable
+using Aspid.FastTools.Types;
 using System;
 using UnityEngine;
 using UnityEngine.UI;
@@ -14,6 +15,7 @@ namespace Aspid.MVVM.StarterKit
     /// the one colour that varies, so the ViewModel does not have to model UGUI interaction states.
     /// </remarks>
     [Serializable]
+    [TypeSelectorDisplay(Group = "Aspid/Colour", Name = "Color To Color Block", Tooltip = "Builds a full  out of one colour")]
     public sealed class ColorToColorBlockConverter : IConverter<Color, ColorBlock>
     {
         [Tooltip("Scales the colour for the highlighted state.")]

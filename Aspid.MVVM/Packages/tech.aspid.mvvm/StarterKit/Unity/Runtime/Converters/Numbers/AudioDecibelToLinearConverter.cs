@@ -1,4 +1,5 @@
 #nullable enable
+using Aspid.FastTools.Types;
 using System;
 using UnityEngine;
 
@@ -13,6 +14,7 @@ namespace Aspid.MVVM.StarterKit
     /// mixer value onto a slider.
     /// </remarks>
     [Serializable]
+    [TypeSelectorDisplay(Group = "Aspid/Number", Name = "Audio Decibel To Linear", Tooltip = "Converts a decibel value to a 0..1 slider position")]
     public sealed class AudioDecibelToLinearConverter : ITwoWayConverter<float, float>
     {
         [Tooltip("The decibel value that maps to silence.")]

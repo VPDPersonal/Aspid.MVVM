@@ -1,3 +1,4 @@
+using Aspid.FastTools.Types;
 using System;
 
 // ReSharper disable once CheckNamespace
@@ -12,6 +13,7 @@ namespace Aspid.MVVM.StarterKit
     /// deliberate no-op rather than an unfilled slot — and as a neutral element in code.
     /// </remarks>
     [Serializable]
+    [TypeSelectorDisplay(Group = "Aspid/Composition", Name = "Passthrough", Tooltip = "Returns its input unchanged")]
     public sealed class PassthroughConverter<T> : ITwoWayConverter<T, T>
     {
         /// <summary>

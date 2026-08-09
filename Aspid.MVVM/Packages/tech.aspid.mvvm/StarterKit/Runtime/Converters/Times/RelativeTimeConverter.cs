@@ -1,3 +1,4 @@
+using Aspid.FastTools.Types;
 using System;
 using UnityEngine;
 using System.Globalization;
@@ -13,6 +14,7 @@ namespace Aspid.MVVM.StarterKit
     /// touching code; the default set is English.
     /// </remarks>
     [Serializable]
+    [TypeSelectorDisplay(Group = "Aspid/Time", Name = "Relative Time", Tooltip = "Writes how long ago — or how far ahead — a moment is")]
     public sealed class RelativeTimeConverter : IConverter<DateTime, string>
     {
         [Tooltip("Names for second, minute, hour, day. Longer spans use days.")]

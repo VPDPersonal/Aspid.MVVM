@@ -1,3 +1,4 @@
+using Aspid.FastTools.Types;
 using System;
 using UnityEngine;
 
@@ -12,6 +13,7 @@ namespace Aspid.MVVM.StarterKit
     /// page, a progress bar that fills repeatedly.
     /// </remarks>
     [Serializable]
+    [TypeSelectorDisplay(Group = "Aspid/Number", Name = "Wrap Number", Tooltip = "Folds a number back into a range instead of clamping it")]
     public sealed class WrapNumberConverter : IConverterFloat
     {
         [Tooltip("How to fold a value that leaves the range.")]

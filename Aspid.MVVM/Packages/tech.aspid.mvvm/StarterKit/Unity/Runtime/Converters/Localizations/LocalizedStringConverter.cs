@@ -1,5 +1,6 @@
 #if ASPID_MVVM_UNITY_LOCALIZATION_INTEGRATION
 #nullable enable
+using Aspid.FastTools.Types;
 using System;
 using UnityEngine;
 using UnityEngine.Localization;
@@ -15,6 +16,7 @@ namespace Aspid.MVVM.StarterKit
     /// localization here joins the same converter chain as truncation, casing and rich text.
     /// </remarks>
     [Serializable]
+    [TypeSelectorDisplay(Group = "Aspid/Localization", Name = "Localized String", Tooltip = "Looks a key up in a localization table")]
     public sealed class LocalizedStringConverter : IConverterString
     {
         [Tooltip("The string table the key is looked up in.")]

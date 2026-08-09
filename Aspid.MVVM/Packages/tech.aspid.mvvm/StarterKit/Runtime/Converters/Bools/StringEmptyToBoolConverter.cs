@@ -1,3 +1,4 @@
+using Aspid.FastTools.Types;
 using System;
 using UnityEngine;
 
@@ -12,6 +13,7 @@ namespace Aspid.MVVM.StarterKit
     /// means, since a string of spaces is not empty but reads as one.
     /// </remarks>
     [Serializable]
+    [TypeSelectorDisplay(Group = "Aspid/Bool", Name = "String Empty To Bool", Tooltip = "Converts string values to boolean based on empty check, with optional inversion")]
     public class StringEmptyToBoolConverter : IConverterStringToBool
     {
         [Tooltip("What counts as an absent string.")]

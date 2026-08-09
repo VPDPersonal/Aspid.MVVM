@@ -1,4 +1,5 @@
 #nullable enable
+using Aspid.FastTools.Types;
 using System;
 using UnityEngine;
 
@@ -9,6 +10,7 @@ namespace Aspid.MVVM.StarterKit
     /// Converts <see cref="Vector2"/> values to <see cref="Vector3"/> by specifying which components to use and a constant value for the third component.
     /// </summary>
     [Serializable]
+    [TypeSelectorDisplay(Group = "Aspid/Vector", Name = "Vector2 To Vector3", Tooltip = "Converts  values to  by specifying which components to use and a constant value for the third component")]
     public sealed class Vector2ToVector3Converter : IConverterVector2ToVector3
     {
         [Tooltip("Which axes of the 3D vector the 2D components are written into.")]

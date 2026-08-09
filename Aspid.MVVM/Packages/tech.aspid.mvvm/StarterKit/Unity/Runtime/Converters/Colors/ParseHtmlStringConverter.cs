@@ -1,4 +1,5 @@
 #nullable enable
+using Aspid.FastTools.Types;
 using System;
 using UnityEngine;
 
@@ -14,6 +15,7 @@ namespace Aspid.MVVM.StarterKit
     /// every time, whichever mode is chosen.
     /// </remarks>
     [Serializable]
+    [TypeSelectorDisplay(Group = "Aspid/Colour", Name = "Parse Html String", Tooltip = "Converts HTML color strings (e.g., '#FF0000') to  values")]
     public sealed class ParseHtmlStringConverter : IConverterStringToColor
     {
         [Tooltip("What to do with a string that does not parse. ReturnInput is not available here — the input is a string and the output a colour — and behaves as ReturnFallback.")]

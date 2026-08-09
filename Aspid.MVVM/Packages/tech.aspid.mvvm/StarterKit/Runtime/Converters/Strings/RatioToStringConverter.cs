@@ -1,3 +1,4 @@
+using Aspid.FastTools.Types;
 using System;
 using UnityEngine;
 
@@ -12,6 +13,7 @@ namespace Aspid.MVVM.StarterKit
     /// number that changes.
     /// </remarks>
     [Serializable]
+    [TypeSelectorDisplay(Group = "Aspid/String", Name = "Ratio To String", Tooltip = "Formats a number against a maximum: '35 / 100'")]
     public sealed class RatioToStringConverter : IConverter<float, string>
     {
         [Tooltip("The value the number is shown against.")]

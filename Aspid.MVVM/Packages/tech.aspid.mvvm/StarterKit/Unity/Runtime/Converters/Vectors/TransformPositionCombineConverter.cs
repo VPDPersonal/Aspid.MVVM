@@ -1,4 +1,5 @@
 #nullable enable
+using Aspid.FastTools.Types;
 using System;
 using UnityEngine;
 
@@ -9,6 +10,7 @@ namespace Aspid.MVVM.StarterKit
     /// Combines a vector with a <see cref="Transform"/>'s current position.
     /// </summary>
     [Serializable]
+    [TypeSelectorDisplay(Group = "Aspid/Vector", Name = "Transform Position Combine", Tooltip = "Combines a vector with a 's current position")]
     public sealed class TransformPositionCombineConverter : Vector3CombineConverter
     {
         [Tooltip("The transform whose position the bound vector is combined with.")]

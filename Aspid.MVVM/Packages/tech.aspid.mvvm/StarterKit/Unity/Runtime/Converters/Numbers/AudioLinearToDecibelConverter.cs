@@ -1,4 +1,5 @@
 #nullable enable
+using Aspid.FastTools.Types;
 using System;
 using UnityEngine;
 
@@ -14,6 +15,7 @@ namespace Aspid.MVVM.StarterKit
     /// nothing. This is the conversion that makes a linear slider sound linear.
     /// </remarks>
     [Serializable]
+    [TypeSelectorDisplay(Group = "Aspid/Number", Name = "Audio Linear To Decibel", Tooltip = "Converts a 0..1 slider position to the decibels an  expects")]
     public sealed class AudioLinearToDecibelConverter : ITwoWayConverter<float, float>
     {
         [Tooltip("The decibel value silence maps to.")]

@@ -1,3 +1,4 @@
+using Aspid.FastTools.Types;
 using System;
 using UnityEngine;
 
@@ -9,6 +10,7 @@ namespace Aspid.MVVM.StarterKit
     /// </summary>
     /// <remarks>Star ratings and pip counters without an array of sprites.</remarks>
     [Serializable]
+    [TypeSelectorDisplay(Group = "Aspid/String", Name = "Repeat String", Tooltip = "Repeats a piece of text once per count")]
     public sealed class RepeatStringConverter : IConverter<int, string>
     {
         [Tooltip("The text repeated once per count.")]

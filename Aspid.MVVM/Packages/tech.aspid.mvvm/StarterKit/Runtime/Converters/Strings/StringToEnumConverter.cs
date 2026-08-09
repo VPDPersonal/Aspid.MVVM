@@ -1,3 +1,4 @@
+using Aspid.FastTools.Types;
 using System;
 using UnityEngine;
 
@@ -10,6 +11,7 @@ namespace Aspid.MVVM.StarterKit
     /// <typeparam name="TEnum">The enum type being read.</typeparam>
     /// <remarks>State names arriving from a backend or a configuration file.</remarks>
     [Serializable]
+    [TypeSelectorDisplay(Group = "Aspid/String", Name = "String To Enum", Tooltip = "Reads an enum member out of text")]
     public sealed class StringToEnumConverter<TEnum> : ITwoWayConverter<string?, TEnum>
         where TEnum : struct, Enum
     {

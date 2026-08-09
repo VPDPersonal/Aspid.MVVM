@@ -1,3 +1,4 @@
+using Aspid.FastTools.Types;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -17,6 +18,7 @@ namespace Aspid.MVVM.StarterKit
     /// shared across scenes.
     /// </remarks>
     [Serializable]
+    [TypeSelectorDisplay(Group = "Aspid/Enum", Name = "Enum To Value", Tooltip = "Maps an enum value to an authored value")]
     public sealed class EnumToValueConverter<TEnum, T> : IConverter<TEnum, T>
         where TEnum : struct, Enum
     {

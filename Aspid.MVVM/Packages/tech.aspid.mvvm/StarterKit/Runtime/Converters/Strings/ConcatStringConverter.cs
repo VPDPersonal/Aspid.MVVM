@@ -1,3 +1,4 @@
+using Aspid.FastTools.Types;
 using System;
 using UnityEngine;
 
@@ -12,6 +13,7 @@ namespace Aspid.MVVM.StarterKit
     /// than decorating nothing.
     /// </remarks>
     [Serializable]
+    [TypeSelectorDisplay(Group = "Aspid/String", Name = "Concat String", Tooltip = "Wraps a string in authored text")]
     public sealed class ConcatStringConverter : IConverterString
     {
         [Tooltip("Placed before the value.")]

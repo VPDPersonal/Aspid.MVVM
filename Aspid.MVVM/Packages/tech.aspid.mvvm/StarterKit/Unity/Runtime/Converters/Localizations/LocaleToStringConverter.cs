@@ -1,5 +1,6 @@
 #if ASPID_MVVM_UNITY_LOCALIZATION_INTEGRATION
 #nullable enable
+using Aspid.FastTools.Types;
 using System;
 using UnityEngine;
 using UnityEngine.Localization;
@@ -12,6 +13,7 @@ namespace Aspid.MVVM.StarterKit
     /// </summary>
     /// <remarks>Labelling the entries of a language dropdown.</remarks>
     [Serializable]
+    [TypeSelectorDisplay(Group = "Aspid/Localization", Name = "Locale To String", Tooltip = "Writes the name of a locale")]
     public sealed class LocaleToStringConverter : IConverter<Locale?, string>
     {
         [Tooltip("Use the locale's own name for itself rather than its English name.")]

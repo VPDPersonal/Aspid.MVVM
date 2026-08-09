@@ -1,3 +1,4 @@
+using Aspid.FastTools.Types;
 using System;
 using UnityEngine;
 
@@ -12,6 +13,7 @@ namespace Aspid.MVVM.StarterKit
     /// has to be kept in step with it.
     /// </remarks>
     [Serializable]
+    [TypeSelectorDisplay(Group = "Aspid/Number", Name = "Countdown Progress", Tooltip = "Converts seconds remaining to a 0..1 progress value")]
     public sealed class CountdownProgressConverter : IConverterFloat
     {
         [Tooltip("The full duration, in seconds.")]

@@ -1,4 +1,5 @@
 #nullable enable
+using Aspid.FastTools.Types;
 using System;
 using UnityEngine;
 
@@ -9,6 +10,7 @@ namespace Aspid.MVVM.StarterKit
     /// Combines a vector with a <see cref="Transform"/>'s Euler angles.
     /// </summary>
     [Serializable]
+    [TypeSelectorDisplay(Group = "Aspid/Vector", Name = "Transform Euler Angles Combine", Tooltip = "Combines a vector with a 's Euler angles")]
     public sealed class TransformEulerAnglesCombineConverter : Vector3CombineConverter
     {
         [Tooltip("The transform whose Euler angles the bound vector is combined with.")]

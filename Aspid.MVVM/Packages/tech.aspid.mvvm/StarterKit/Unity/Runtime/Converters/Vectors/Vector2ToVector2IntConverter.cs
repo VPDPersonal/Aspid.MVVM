@@ -1,4 +1,5 @@
 #nullable enable
+using Aspid.FastTools.Types;
 using System;
 using UnityEngine;
 
@@ -9,6 +10,7 @@ namespace Aspid.MVVM.StarterKit
     /// Converts a 2D vector to its integer form.
     /// </summary>
     [Serializable]
+    [TypeSelectorDisplay(Group = "Aspid/Vector", Name = "Vector2 To Vector2 Int", Tooltip = "Converts a 2D vector to its integer form")]
     public sealed class Vector2ToVector2IntConverter : ITwoWayConverter<Vector2, Vector2Int>
     {
         [Tooltip("Which way to drop the fraction.")]

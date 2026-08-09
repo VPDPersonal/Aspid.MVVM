@@ -1,4 +1,5 @@
 #nullable enable
+using Aspid.FastTools.Types;
 using System;
 using UnityEngine;
 
@@ -13,6 +14,7 @@ namespace Aspid.MVVM.StarterKit
     /// <see cref="Texture"/> — two properties for one picture.
     /// </remarks>
     [Serializable]
+    [TypeSelectorDisplay(Group = "Aspid/Texture", Name = "Sprite To Texture", Tooltip = "Takes the texture a  is drawn from")]
     public sealed class SpriteToTextureConverter : IConverter<Sprite?, Texture?>
     {
         /// <summary>

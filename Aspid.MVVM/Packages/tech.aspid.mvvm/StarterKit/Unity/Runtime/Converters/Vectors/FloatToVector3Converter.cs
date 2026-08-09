@@ -1,4 +1,5 @@
 #nullable enable
+using Aspid.FastTools.Types;
 using System;
 using UnityEngine;
 
@@ -13,6 +14,7 @@ namespace Aspid.MVVM.StarterKit
     /// currently hard-code this fan-out, so the choice of axes is theirs rather than the author's.
     /// </remarks>
     [Serializable]
+    [TypeSelectorDisplay(Group = "Aspid/Vector", Name = "Float To Vector3", Tooltip = "Writes one number into the chosen axes of a vector")]
     public sealed class FloatToVector3Converter : IConverter<float, Vector3>
     {
         [Tooltip("Which axes the number is written into.")]

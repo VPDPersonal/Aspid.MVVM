@@ -1,5 +1,6 @@
 #if ASPID_MVVM_UNITY_LOCALIZATION_INTEGRATION
 #nullable enable
+using Aspid.FastTools.Types;
 using System;
 using UnityEngine;
 using UnityEngine.Localization.Settings;
@@ -16,6 +17,7 @@ namespace Aspid.MVVM.StarterKit
     /// the option that mode cannot express.
     /// </remarks>
     [Serializable]
+    [TypeSelectorDisplay(Group = "Aspid/Localization", Name = "Localized Number", Tooltip = "Formats a number with the culture of the selected locale")]
     public sealed class LocalizedNumberConverter : IConverter<double, string>
     {
         [Tooltip("A standard numeric format string.")]

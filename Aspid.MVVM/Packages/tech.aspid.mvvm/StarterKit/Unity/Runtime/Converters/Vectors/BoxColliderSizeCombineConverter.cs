@@ -1,4 +1,5 @@
 #nullable enable
+using Aspid.FastTools.Types;
 using System;
 using UnityEngine;
 
@@ -9,6 +10,7 @@ namespace Aspid.MVVM.StarterKit
     /// Combines a vector with a <see cref="BoxCollider"/>'s size.
     /// </summary>
     [Serializable]
+    [TypeSelectorDisplay(Group = "Aspid/Vector", Name = "Box Collider Size Combine", Tooltip = "Combines a vector with a 's size")]
     public sealed class BoxColliderSizeCombineConverter : Vector3CombineConverter
     {
         [Tooltip("The collider whose size the bound vector is combined with.")]

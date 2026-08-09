@@ -1,3 +1,4 @@
+using Aspid.FastTools.Types;
 using System;
 using UnityEngine;
 
@@ -12,6 +13,7 @@ namespace Aspid.MVVM.StarterKit
     /// only knows the player's locale.
     /// </remarks>
     [Serializable]
+    [TypeSelectorDisplay(Group = "Aspid/String", Name = "Currency", Tooltip = "Formats a number as an amount of currency")]
     public sealed class CurrencyConverter : IConverter<double, string>
     {
         [Tooltip("The symbol placed beside the amount.")]

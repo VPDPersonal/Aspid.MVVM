@@ -1,3 +1,4 @@
+using Aspid.FastTools.Types;
 using System;
 using UnityEngine;
 using System.Globalization;
@@ -10,6 +11,7 @@ namespace Aspid.MVVM.StarterKit
     /// </summary>
     /// <inheritdoc cref="StringToIntConverter" path="/remarks"/>
     [Serializable]
+    [TypeSelectorDisplay(Group = "Aspid/String", Name = "String To Long", Tooltip = "Reads a whole number out of text")]
     public sealed class StringToLongConverter : ITwoWayConverter<string?, long>
     {
         [Tooltip("Returned when the text is not a number.")]

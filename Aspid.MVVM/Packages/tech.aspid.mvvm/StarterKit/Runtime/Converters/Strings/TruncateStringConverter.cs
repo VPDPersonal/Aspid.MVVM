@@ -1,3 +1,4 @@
+using Aspid.FastTools.Types;
 using System;
 using UnityEngine;
 
@@ -13,6 +14,7 @@ namespace Aspid.MVVM.StarterKit
     /// place.
     /// </remarks>
     [Serializable]
+    [TypeSelectorDisplay(Group = "Aspid/String", Name = "Truncate String", Tooltip = "Shortens a string that is too long to fit")]
     public sealed class TruncateStringConverter : IConverterString
     {
         [Tooltip("The longest string allowed through, ellipsis included.")]

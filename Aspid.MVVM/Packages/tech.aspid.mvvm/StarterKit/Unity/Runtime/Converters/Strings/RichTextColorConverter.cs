@@ -1,4 +1,5 @@
 #nullable enable
+using Aspid.FastTools.Types;
 using System;
 using UnityEngine;
 
@@ -13,6 +14,7 @@ namespace Aspid.MVVM.StarterKit
     /// nobody has to.
     /// </remarks>
     [Serializable]
+    [TypeSelectorDisplay(Group = "Aspid/String", Name = "Rich Text Color", Tooltip = "Wraps a string in a rich-text colour tag")]
     public sealed class RichTextColorConverter : IConverterString
     {
         [Tooltip("The colour the text is tagged with.")]

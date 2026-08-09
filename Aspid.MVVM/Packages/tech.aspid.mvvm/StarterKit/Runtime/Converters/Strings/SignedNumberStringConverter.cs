@@ -1,3 +1,4 @@
+using Aspid.FastTools.Types;
 using System;
 using UnityEngine;
 
@@ -9,6 +10,7 @@ namespace Aspid.MVVM.StarterKit
     /// </summary>
     /// <remarks>Floating combat text, stat deltas — where the sign is the point.</remarks>
     [Serializable]
+    [TypeSelectorDisplay(Group = "Aspid/String", Name = "Signed Number String", Tooltip = "Formats a number with an explicit sign: '+15', '-3'")]
     public sealed class SignedNumberStringConverter : IConverter<float, string>
     {
         [Tooltip("A standard numeric format string applied to the magnitude.")]

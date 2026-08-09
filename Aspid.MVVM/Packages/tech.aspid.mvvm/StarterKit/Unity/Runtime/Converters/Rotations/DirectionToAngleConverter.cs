@@ -1,4 +1,5 @@
 #nullable enable
+using Aspid.FastTools.Types;
 using System;
 using UnityEngine;
 
@@ -13,6 +14,7 @@ namespace Aspid.MVVM.StarterKit
     /// direction and needs a rotation.
     /// </remarks>
     [Serializable]
+    [TypeSelectorDisplay(Group = "Aspid/Rotation", Name = "Direction To Angle", Tooltip = "Reads the angle a direction points in")]
     public sealed class DirectionToAngleConverter : IConverter<Vector2, float>
     {
         [Tooltip("Report the angle in degrees rather than radians.")]

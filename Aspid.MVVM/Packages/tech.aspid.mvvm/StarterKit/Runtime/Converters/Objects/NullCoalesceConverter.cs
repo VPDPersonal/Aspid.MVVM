@@ -1,3 +1,4 @@
+using Aspid.FastTools.Types;
 using System;
 using UnityEngine;
 
@@ -14,6 +15,7 @@ namespace Aspid.MVVM.StarterKit
     /// second property on the ViewModel.
     /// </remarks>
     [Serializable]
+    [TypeSelectorDisplay(Group = "Aspid/Object", Name = "Null Coalesce", Tooltip = "Substitutes an authored value for a null one")]
     public sealed class NullCoalesceConverter<T> : IConverter<T?, T>
         where T : class
     {

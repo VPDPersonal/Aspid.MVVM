@@ -1,3 +1,4 @@
+using Aspid.FastTools.Types;
 using System;
 using UnityEngine;
 using System.Globalization;
@@ -13,6 +14,7 @@ namespace Aspid.MVVM.StarterKit
     /// and a half, and reading it as invariant gives fifteen or nothing at all.
     /// </remarks>
     [Serializable]
+    [TypeSelectorDisplay(Group = "Aspid/String", Name = "String To Float", Tooltip = "Reads a decimal number out of text")]
     public sealed class StringToFloatConverter : ITwoWayConverter<string?, float>
     {
         [Tooltip("Returned when the text is not a number.")]

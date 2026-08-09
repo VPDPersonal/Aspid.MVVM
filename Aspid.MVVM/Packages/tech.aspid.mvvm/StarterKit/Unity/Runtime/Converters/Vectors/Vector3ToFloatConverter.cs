@@ -1,4 +1,5 @@
 #nullable enable
+using Aspid.FastTools.Types;
 using System;
 using UnityEngine;
 
@@ -10,6 +11,7 @@ namespace Aspid.MVVM.StarterKit
     /// </summary>
     /// <remarks>Driving a bar or a label from one axis, or from how long the vector is.</remarks>
     [Serializable]
+    [TypeSelectorDisplay(Group = "Aspid/Vector", Name = "Vector3 To Float", Tooltip = "Measures one number out of a vector")]
     public sealed class Vector3ToFloatConverter : IConverter<Vector3, float>
     {
         [Tooltip("Which number to take.")]

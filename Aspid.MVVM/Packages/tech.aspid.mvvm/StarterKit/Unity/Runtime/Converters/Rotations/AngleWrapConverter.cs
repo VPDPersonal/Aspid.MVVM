@@ -1,4 +1,5 @@
 #nullable enable
+using Aspid.FastTools.Types;
 using System;
 using UnityEngine;
 
@@ -13,6 +14,7 @@ namespace Aspid.MVVM.StarterKit
     /// round when it moved two degrees.
     /// </remarks>
     [Serializable]
+    [TypeSelectorDisplay(Group = "Aspid/Rotation", Name = "Angle Wrap", Tooltip = "Folds an angle into a standard range")]
     public sealed class AngleWrapConverter : IConverterFloat
     {
         [Tooltip("Which range to report in.")]

@@ -1,3 +1,4 @@
+using Aspid.FastTools.Types;
 using System;
 using UnityEngine;
 
@@ -13,6 +14,7 @@ namespace Aspid.MVVM.StarterKit
     /// the specifier everyone expects — the one on <see cref="int.ToString(string)"/>.
     /// </remarks>
     [Serializable]
+    [TypeSelectorDisplay(Group = "Aspid/String", Name = "Number Format", Tooltip = "Formats a number with a standard .NET format string")]
     public sealed class NumberFormatConverter :
         IConverter<float, string>,
         IConverter<double, string>,

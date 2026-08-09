@@ -1,3 +1,4 @@
+using Aspid.FastTools.Types;
 using System;
 using UnityEngine;
 using System.Collections.Generic;
@@ -11,6 +12,7 @@ namespace Aspid.MVVM.StarterKit
     /// <typeparam name="T">The type of the items.</typeparam>
     /// <remarks>"The leaderboard leader", "next in queue" — one item out of a bound list.</remarks>
     [Serializable]
+    [TypeSelectorDisplay(Group = "Aspid/Collection", Name = "Collection Element At", Tooltip = "Takes one item out of a list by index")]
     public sealed class CollectionElementAtConverter<T> : IConverter<IReadOnlyList<T>?, T?>
     {
         [Tooltip("Which item to take.")]

@@ -1,3 +1,4 @@
+using Aspid.FastTools.Types;
 using System;
 using UnityEngine;
 
@@ -13,6 +14,7 @@ namespace Aspid.MVVM.StarterKit
     /// configured instance degrades to the identity rather than to an error.
     /// </remarks>
     [Serializable]
+    [TypeSelectorDisplay(Group = "Aspid/Composition", Name = "Conditional", Tooltip = "Routes a value to one of two converters based on a predicate")]
     public sealed class ConditionalConverter<T> : IConverter<T, T>
     {
         [Tooltip("Decides which branch a value takes. When empty, the value passes through unchanged.")]

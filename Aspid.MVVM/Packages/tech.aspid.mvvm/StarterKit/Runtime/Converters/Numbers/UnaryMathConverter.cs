@@ -1,3 +1,4 @@
+using Aspid.FastTools.Types;
 using System;
 using UnityEngine;
 
@@ -14,6 +15,7 @@ namespace Aspid.MVVM.StarterKit
     /// is merely wrong.
     /// </remarks>
     [Serializable]
+    [TypeSelectorDisplay(Group = "Aspid/Number", Name = "Unary Math", Tooltip = "Applies a single-argument mathematical function")]
     public sealed class UnaryMathConverter : IConverterFloat
     {
         [Tooltip("The function to apply.")]

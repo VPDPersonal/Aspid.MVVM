@@ -1,4 +1,5 @@
 #nullable enable
+using Aspid.FastTools.Types;
 using System;
 using UnityEngine;
 using UnityEngine.UI;
@@ -11,6 +12,7 @@ namespace Aspid.MVVM.StarterKit
     /// </summary>
     /// <remarks>Theming a whole button at once — faction colours, a disabled palette.</remarks>
     [Serializable]
+    [TypeSelectorDisplay(Group = "Aspid/Colour", Name = "Color Block Tint", Tooltip = "Tints every colour of a ")]
     public sealed class ColorBlockTintConverter : IConverterColorBlock
     {
         [Tooltip("The colour every state is combined with.")]

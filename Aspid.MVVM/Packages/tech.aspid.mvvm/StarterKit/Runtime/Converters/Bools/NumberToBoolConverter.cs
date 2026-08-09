@@ -1,3 +1,4 @@
+using Aspid.FastTools.Types;
 using System;
 
 // ReSharper disable once CheckNamespace
@@ -7,6 +8,7 @@ namespace Aspid.MVVM.StarterKit
     /// Converts numeric values to boolean based on comparison operations.
     /// </summary>
     [Serializable]
+    [TypeSelectorDisplay(Group = "Aspid/Bool", Name = "Number To Bool", Tooltip = "Converts numeric values to boolean based on comparison operations")]
     public class NumberToBoolConverter :
         IConverterFloatToBool,
         IConverterDoubleToBool,

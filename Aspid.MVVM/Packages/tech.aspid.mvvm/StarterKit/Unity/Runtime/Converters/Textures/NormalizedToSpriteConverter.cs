@@ -1,4 +1,5 @@
 #nullable enable
+using Aspid.FastTools.Types;
 using System;
 using UnityEngine;
 
@@ -13,6 +14,7 @@ namespace Aspid.MVVM.StarterKit
     /// fixed set of frames.
     /// </remarks>
     [Serializable]
+    [TypeSelectorDisplay(Group = "Aspid/Texture", Name = "Normalized To Sprite", Tooltip = "Picks one of a list of sprites by a 0..1 amount")]
     public sealed class NormalizedToSpriteConverter : IConverter<float, Sprite?>
     {
         [Tooltip("The frames, from empty to full.")]

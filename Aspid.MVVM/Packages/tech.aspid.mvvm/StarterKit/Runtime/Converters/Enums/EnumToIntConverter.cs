@@ -1,3 +1,4 @@
+using Aspid.FastTools.Types;
 using System;
 
 // ReSharper disable once CheckNamespace
@@ -12,6 +13,7 @@ namespace Aspid.MVVM.StarterKit
     /// a conversion the ViewModel had to expose itself.
     /// </remarks>
     [Serializable]
+    [TypeSelectorDisplay(Group = "Aspid/Enum", Name = "Enum To Int", Tooltip = "Converts an enum value to its underlying integer")]
     public sealed class EnumToIntConverter<TEnum> : ITwoWayConverter<TEnum, int>
         where TEnum : struct, Enum
     {

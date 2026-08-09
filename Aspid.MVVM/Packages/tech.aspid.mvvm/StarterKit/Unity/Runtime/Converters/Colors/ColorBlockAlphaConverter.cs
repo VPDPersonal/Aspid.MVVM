@@ -1,4 +1,5 @@
 #nullable enable
+using Aspid.FastTools.Types;
 using System;
 using UnityEngine;
 using UnityEngine.UI;
@@ -11,6 +12,7 @@ namespace Aspid.MVVM.StarterKit
     /// </summary>
     /// <remarks>Dimming a whole interactive element without touching its hues.</remarks>
     [Serializable]
+    [TypeSelectorDisplay(Group = "Aspid/Colour", Name = "Color Block Alpha", Tooltip = "Changes the alpha of every colour in a ")]
     public sealed class ColorBlockAlphaConverter : IConverterColorBlock
     {
         [Tooltip("The alpha applied to every state.")]

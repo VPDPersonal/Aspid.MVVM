@@ -1,4 +1,5 @@
 #nullable enable
+using Aspid.FastTools.Types;
 using System;
 using UnityEngine;
 
@@ -14,6 +15,7 @@ namespace Aspid.MVVM.StarterKit
     /// kept in step.
     /// </remarks>
     [Serializable]
+    [TypeSelectorDisplay(Group = "Aspid/String", Name = "Threshold Rich Text Color", Tooltip = "Writes a number as coloured text, the colour chosen by how large it is")]
     public sealed class ThresholdRichTextColorConverter : IConverter<float, string>
     {
         [Tooltip("Colours by threshold. The highest threshold at or below the value wins.")]

@@ -1,4 +1,5 @@
 #nullable enable
+using Aspid.FastTools.Types;
 using System;
 using UnityEngine;
 
@@ -10,6 +11,7 @@ namespace Aspid.MVVM.StarterKit
     /// </summary>
     /// <remarks>A marker travelling along a track as progress advances.</remarks>
     [Serializable]
+    [TypeSelectorDisplay(Group = "Aspid/Vector", Name = "Vector Lerp", Tooltip = "Moves between two vectors by a 0..1 amount")]
     public sealed class VectorLerpConverter : IConverter<float, Vector3>
     {
         [Tooltip("The vector at 0.")]

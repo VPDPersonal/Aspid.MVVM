@@ -1,3 +1,4 @@
+using Aspid.FastTools.Types;
 using System;
 
 // ReSharper disable once CheckNamespace
@@ -7,6 +8,7 @@ namespace Aspid.MVVM.StarterKit
     /// <see cref="GenericToString{TFrom}"/> for any object, with optional formatting.
     /// </summary>
     [Serializable]
+    [TypeSelectorDisplay(Group = "Aspid/String", Name = "Object To String", Tooltip = "for any object, with optional formatting")]
     public sealed class ObjectToStringConverter : GenericToString<object?>, IConverterObjectToString
     {
         public ObjectToStringConverter() { }

@@ -1,5 +1,7 @@
 #nullable enable
+using Aspid.FastTools.Types;
 using System;
+using UnityEngine;
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
@@ -14,6 +16,7 @@ namespace Aspid.MVVM.StarterKit
     /// type — the rest of the converters here add markup and are for text the game itself authors.
     /// </remarks>
     [Serializable]
+    [TypeSelectorDisplay(Group = "Aspid/String", Name = "Rich Text No Parse", Tooltip = "Stops rich-text markup in a string from being interpreted")]
     public sealed class RichTextNoParseConverter : IConverterString
     {
         /// <summary>

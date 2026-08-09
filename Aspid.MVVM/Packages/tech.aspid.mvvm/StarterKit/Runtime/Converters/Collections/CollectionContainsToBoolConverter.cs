@@ -1,3 +1,4 @@
+using Aspid.FastTools.Types;
 using System;
 using UnityEngine;
 using System.Collections.Generic;
@@ -11,6 +12,7 @@ namespace Aspid.MVVM.StarterKit
     /// <typeparam name="T">The type of the items.</typeparam>
     /// <remarks>"Has this achievement", "owns this item".</remarks>
     [Serializable]
+    [TypeSelectorDisplay(Group = "Aspid/Collection", Name = "Collection Contains To Bool", Tooltip = "Reports whether a collection holds a particular item")]
     public sealed class CollectionContainsToBoolConverter<T> : IConverter<IEnumerable<T>?, bool>
     {
         [Tooltip("The item looked for.")]

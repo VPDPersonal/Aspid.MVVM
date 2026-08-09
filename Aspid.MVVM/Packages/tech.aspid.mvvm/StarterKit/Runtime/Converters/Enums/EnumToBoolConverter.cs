@@ -1,3 +1,4 @@
+using Aspid.FastTools.Types;
 using System;
 using UnityEngine;
 
@@ -13,6 +14,7 @@ namespace Aspid.MVVM.StarterKit
     /// ViewModel, one for every state any View cared about.
     /// </remarks>
     [Serializable]
+    [TypeSelectorDisplay(Group = "Aspid/Enum", Name = "Enum To Bool", Tooltip = "Tests an enum value against an authored one")]
     public sealed class EnumToBoolConverter<TEnum> : IConverter<TEnum, bool>
         where TEnum : struct, Enum
     {

@@ -1,3 +1,4 @@
+using Aspid.FastTools.Types;
 using System;
 using UnityEngine;
 
@@ -15,6 +16,7 @@ namespace Aspid.MVVM.StarterKit
     /// string covers what a dozen switcher binders each do for one property.
     /// </remarks>
     [Serializable]
+    [TypeSelectorDisplay(Group = "Aspid/Bool", Name = "Bool To Value", Tooltip = "Picks one of two authored values based on a boolean")]
     public sealed class BoolToValueConverter<T> : IConverter<bool, T>
     {
         [Tooltip("Returned when the bound value is true.")]

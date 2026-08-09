@@ -1,4 +1,5 @@
 #nullable enable
+using Aspid.FastTools.Types;
 using System;
 using UnityEngine;
 
@@ -14,6 +15,7 @@ namespace Aspid.MVVM.StarterKit
     /// ±180 is the option that removes the trap.
     /// </remarks>
     [Serializable]
+    [TypeSelectorDisplay(Group = "Aspid/Rotation", Name = "Quaternion To Euler", Tooltip = "Reads Euler angles off a rotation")]
     public sealed class QuaternionToEulerConverter : IConverter<Quaternion, Vector3>
     {
         [Tooltip("Report angles as -180..180 rather than Unity's 0..360.")]

@@ -1,4 +1,5 @@
 #nullable enable
+using Aspid.FastTools.Types;
 using System;
 using UnityEngine;
 
@@ -9,6 +10,7 @@ namespace Aspid.MVVM.StarterKit
     /// Wraps a string in a rich-text size tag.
     /// </summary>
     [Serializable]
+    [TypeSelectorDisplay(Group = "Aspid/String", Name = "Rich Text Size", Tooltip = "Wraps a string in a rich-text size tag")]
     public sealed class RichTextSizeConverter : IConverterString
     {
         [Tooltip("The size applied to the text.")]

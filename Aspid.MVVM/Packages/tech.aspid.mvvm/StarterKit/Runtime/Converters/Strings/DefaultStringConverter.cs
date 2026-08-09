@@ -1,3 +1,4 @@
+using Aspid.FastTools.Types;
 using System;
 using UnityEngine;
 
@@ -12,6 +13,7 @@ namespace Aspid.MVVM.StarterKit
     /// know what the empty state looks like.
     /// </remarks>
     [Serializable]
+    [TypeSelectorDisplay(Group = "Aspid/String", Name = "Default String", Tooltip = "Substitutes a placeholder for a blank string")]
     public sealed class DefaultStringConverter : IConverterString
     {
         [Tooltip("Shown when the bound string is blank.")]

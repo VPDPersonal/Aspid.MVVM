@@ -1,3 +1,4 @@
+using Aspid.FastTools.Types;
 using System;
 using UnityEngine;
 
@@ -13,6 +14,7 @@ namespace Aspid.MVVM.StarterKit
     /// This takes the pattern directly, the way <see cref="TimeSpan.ToString(string)"/> does.
     /// </remarks>
     [Serializable]
+    [TypeSelectorDisplay(Group = "Aspid/Time", Name = "Time Span Format", Tooltip = "Formats a  with a real  format string")]
     public sealed class TimeSpanFormatConverter : IConverterTimeSpanToString
     {
         [Tooltip(@"A TimeSpan format string, for example mm\:ss or hh\:mm\:ss.")]

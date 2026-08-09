@@ -1,4 +1,5 @@
 #nullable enable
+using Aspid.FastTools.Types;
 using System;
 using UnityEngine;
 
@@ -13,6 +14,7 @@ namespace Aspid.MVVM.StarterKit
     /// would have to be allocated on its side.
     /// </remarks>
     [Serializable]
+    [TypeSelectorDisplay(Group = "Aspid/Layout", Name = "Vector4 To Rect Offset", Tooltip = "Turns the four numbers of a  into a padding")]
     public sealed class Vector4ToRectOffsetConverter : IConverter<Vector4, RectOffset>
     {
         [Tooltip("Which way to drop the fraction.")]

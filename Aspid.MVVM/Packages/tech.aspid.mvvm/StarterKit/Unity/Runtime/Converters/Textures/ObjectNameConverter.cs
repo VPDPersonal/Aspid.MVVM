@@ -1,4 +1,5 @@
 #nullable enable
+using Aspid.FastTools.Types;
 using System;
 using UnityEngine;
 
@@ -10,6 +11,7 @@ namespace Aspid.MVVM.StarterKit
     /// </summary>
     /// <remarks>Debug overlays and tooltips that label whatever they are pointed at.</remarks>
     [Serializable]
+    [TypeSelectorDisplay(Group = "Aspid/Texture", Name = "Object Name", Tooltip = "Reads the name of a Unity object")]
     public sealed class ObjectNameConverter : IConverter<UnityEngine.Object?, string>
     {
         [Tooltip("Shown when the object is missing.")]

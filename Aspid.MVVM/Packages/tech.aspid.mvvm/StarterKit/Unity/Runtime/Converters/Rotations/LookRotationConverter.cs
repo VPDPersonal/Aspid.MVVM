@@ -1,4 +1,5 @@
 #nullable enable
+using Aspid.FastTools.Types;
 using System;
 using UnityEngine;
 
@@ -9,6 +10,7 @@ namespace Aspid.MVVM.StarterKit
     /// Builds a rotation that looks along a direction.
     /// </summary>
     [Serializable]
+    [TypeSelectorDisplay(Group = "Aspid/Rotation", Name = "Look Rotation", Tooltip = "Builds a rotation that looks along a direction")]
     public sealed class LookRotationConverter : IConverter<Vector3, Quaternion>
     {
         [Tooltip("Which way is up for the produced rotation.")]

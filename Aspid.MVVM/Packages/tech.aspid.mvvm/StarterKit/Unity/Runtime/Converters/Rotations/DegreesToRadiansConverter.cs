@@ -1,4 +1,5 @@
 #nullable enable
+using Aspid.FastTools.Types;
 using System;
 using UnityEngine;
 
@@ -10,6 +11,7 @@ namespace Aspid.MVVM.StarterKit
     /// </summary>
     /// <remarks>Physics and backend data usually speak radians; Unity's Inspector speaks degrees.</remarks>
     [Serializable]
+    [TypeSelectorDisplay(Group = "Aspid/Rotation", Name = "Degrees To Radians", Tooltip = "Converts between degrees and radians")]
     public sealed class DegreesToRadiansConverter : ITwoWayConverter<float, float>
     {
         /// <summary>

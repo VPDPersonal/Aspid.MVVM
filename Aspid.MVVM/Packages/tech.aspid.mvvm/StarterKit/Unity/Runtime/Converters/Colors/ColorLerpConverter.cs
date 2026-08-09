@@ -1,4 +1,5 @@
 #nullable enable
+using Aspid.FastTools.Types;
 using System;
 using UnityEngine;
 
@@ -10,6 +11,7 @@ namespace Aspid.MVVM.StarterKit
     /// </summary>
     /// <remarks>A two-stop gradient without a <see cref="Gradient"/> to author.</remarks>
     [Serializable]
+    [TypeSelectorDisplay(Group = "Aspid/Colour", Name = "Color Lerp", Tooltip = "Moves between two colours by a 0..1 amount")]
     public sealed class ColorLerpConverter : IConverter<float, Color>
     {
         [Tooltip("The colour at 0.")]

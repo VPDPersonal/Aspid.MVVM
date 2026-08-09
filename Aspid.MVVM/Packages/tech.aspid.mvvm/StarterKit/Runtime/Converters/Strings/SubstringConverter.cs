@@ -1,3 +1,4 @@
+using Aspid.FastTools.Types;
 using System;
 using UnityEngine;
 
@@ -9,6 +10,7 @@ namespace Aspid.MVVM.StarterKit
     /// </summary>
     /// <remarks>An avatar initial, a prefix, a fixed-position field of a code.</remarks>
     [Serializable]
+    [TypeSelectorDisplay(Group = "Aspid/String", Name = "Substring", Tooltip = "Takes a slice out of a string")]
     public sealed class SubstringConverter : IConverterString
     {
         [Tooltip("Where the slice starts.")]

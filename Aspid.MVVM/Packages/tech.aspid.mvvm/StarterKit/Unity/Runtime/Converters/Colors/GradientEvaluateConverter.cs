@@ -1,4 +1,5 @@
 #nullable enable
+using Aspid.FastTools.Types;
 using System;
 using UnityEngine;
 
@@ -14,6 +15,7 @@ namespace Aspid.MVVM.StarterKit
     /// number it already has.
     /// </remarks>
     [Serializable]
+    [TypeSelectorDisplay(Group = "Aspid/Colour", Name = "Gradient Evaluate", Tooltip = "Reads a colour off a ")]
     public sealed class GradientEvaluateConverter : IConverter<float, Color>
     {
         [Tooltip("The gradient the value is read from.")]

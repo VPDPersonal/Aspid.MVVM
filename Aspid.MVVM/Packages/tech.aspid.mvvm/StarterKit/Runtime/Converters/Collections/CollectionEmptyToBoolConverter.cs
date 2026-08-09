@@ -1,3 +1,4 @@
+using Aspid.FastTools.Types;
 using System;
 using UnityEngine;
 using System.Collections.Generic;
@@ -11,6 +12,7 @@ namespace Aspid.MVVM.StarterKit
     /// <typeparam name="T">The type of the items.</typeparam>
     /// <remarks>Empty-state placeholders, which previously needed their own boolean property.</remarks>
     [Serializable]
+    [TypeSelectorDisplay(Group = "Aspid/Collection", Name = "Collection Empty To Bool", Tooltip = "Reports whether a collection has anything in it")]
     public sealed class CollectionEmptyToBoolConverter<T> : IConverter<IReadOnlyCollection<T>?, bool>
     {
         [Tooltip("Invert the result — true when the collection has items.")]

@@ -1,3 +1,4 @@
+using Aspid.FastTools.Types;
 using System;
 using UnityEngine;
 
@@ -8,6 +9,7 @@ namespace Aspid.MVVM.StarterKit
     /// Formats a byte count as a readable size.
     /// </summary>
     [Serializable]
+    [TypeSelectorDisplay(Group = "Aspid/String", Name = "Byte Size", Tooltip = "Formats a byte count as a readable size")]
     public sealed class ByteSizeConverter : IConverter<long, string>
     {
         [Tooltip("Use 1024 as the step and KiB-style units rather than 1000 and KB.")]

@@ -1,3 +1,4 @@
+using Aspid.FastTools.Types;
 using System;
 using UnityEngine;
 using System.Collections.Generic;
@@ -19,6 +20,7 @@ namespace Aspid.MVVM.StarterKit
     /// </para>
     /// </remarks>
     [Serializable]
+    [TypeSelectorDisplay(Group = "Aspid/Composition", Name = "Cached", Tooltip = "Remembers the last conversion and reuses it while the input is unchanged")]
     public sealed class CachedConverter<TFrom, TTo> : IConverter<TFrom?, TTo?>
     {
         [Tooltip("The converter to memoize. When empty, the default value is returned.")]

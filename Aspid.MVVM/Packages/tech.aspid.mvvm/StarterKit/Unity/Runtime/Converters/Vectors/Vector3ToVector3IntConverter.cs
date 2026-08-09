@@ -1,4 +1,5 @@
 #nullable enable
+using Aspid.FastTools.Types;
 using System;
 using UnityEngine;
 
@@ -13,6 +14,7 @@ namespace Aspid.MVVM.StarterKit
     /// and the package had no way to reach them.
     /// </remarks>
     [Serializable]
+    [TypeSelectorDisplay(Group = "Aspid/Vector", Name = "Vector3 To Vector3 Int", Tooltip = "Converts a vector to its integer form")]
     public sealed class Vector3ToVector3IntConverter : ITwoWayConverter<Vector3, Vector3Int>
     {
         [Tooltip("Which way to drop the fraction.")]

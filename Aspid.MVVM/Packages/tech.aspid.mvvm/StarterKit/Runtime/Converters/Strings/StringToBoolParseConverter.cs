@@ -1,3 +1,4 @@
+using Aspid.FastTools.Types;
 using System;
 using UnityEngine;
 
@@ -12,6 +13,7 @@ namespace Aspid.MVVM.StarterKit
     /// accepted spellings are authored rather than fixed.
     /// </remarks>
     [Serializable]
+    [TypeSelectorDisplay(Group = "Aspid/String", Name = "String To Bool Parse", Tooltip = "Reads a boolean out of text")]
     public sealed class StringToBoolParseConverter : IConverterStringToBool
     {
         [Tooltip("The spellings read as true. Matched without regard to case.")]

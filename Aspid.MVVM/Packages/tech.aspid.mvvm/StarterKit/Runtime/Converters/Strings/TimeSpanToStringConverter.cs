@@ -1,3 +1,4 @@
+using Aspid.FastTools.Types;
 using System;
 
 // ReSharper disable once CheckNamespace
@@ -12,6 +13,7 @@ namespace Aspid.MVVM.StarterKit
     /// <c>"mm\\:ss"</c> that <see cref="TimeSpan.ToString(string)"/> would take comes back as itself.
     /// </remarks>
     [Serializable]
+    [TypeSelectorDisplay(Group = "Aspid/String", Name = "Time Span To String", Tooltip = "for  values, with optional formatting")]
     public sealed class TimeSpanToStringConverter : GenericToString<TimeSpan>, IConverterTimeSpanToString
     {
         public TimeSpanToStringConverter() { }

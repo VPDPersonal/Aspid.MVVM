@@ -1,4 +1,5 @@
 #nullable enable
+using Aspid.FastTools.Types;
 using System;
 using UnityEngine;
 
@@ -10,6 +11,7 @@ namespace Aspid.MVVM.StarterKit
     /// </summary>
     /// <remarks>Team colours, rarity tints, disabled states.</remarks>
     [Serializable]
+    [TypeSelectorDisplay(Group = "Aspid/Colour", Name = "Color Tint", Tooltip = "Combines a bound colour with an authored one")]
     public sealed class ColorTintConverter : IConverterColor
     {
         [Tooltip("The colour the bound one is combined with.")]

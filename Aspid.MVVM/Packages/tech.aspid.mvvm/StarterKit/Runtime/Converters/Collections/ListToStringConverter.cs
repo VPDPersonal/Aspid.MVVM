@@ -1,3 +1,4 @@
+using Aspid.FastTools.Types;
 using System;
 using System.Text;
 using UnityEngine;
@@ -15,6 +16,7 @@ namespace Aspid.MVVM.StarterKit
     /// binder pushes on every notification and <c>string.Join</c> would allocate on each one.
     /// </remarks>
     [Serializable]
+    [TypeSelectorDisplay(Group = "Aspid/Collection", Name = "List To String", Tooltip = "Joins a collection into one string")]
     public sealed class ListToStringConverter<T> : IConverter<IEnumerable<T>?, string>
     {
         [Tooltip("Placed between items.")]

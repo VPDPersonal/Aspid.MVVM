@@ -1,4 +1,5 @@
 #nullable enable
+using Aspid.FastTools.Types;
 using System;
 using UnityEngine;
 
@@ -13,6 +14,7 @@ namespace Aspid.MVVM.StarterKit
     /// which way the art faces.
     /// </remarks>
     [Serializable]
+    [TypeSelectorDisplay(Group = "Aspid/Rotation", Name = "Quaternion Offset", Tooltip = "Applies a fixed rotation on top of a bound one")]
     public sealed class QuaternionOffsetConverter : ITwoWayConverter<Quaternion, Quaternion>
     {
         [Tooltip("The rotation applied on top of the bound one, in Euler degrees.")]

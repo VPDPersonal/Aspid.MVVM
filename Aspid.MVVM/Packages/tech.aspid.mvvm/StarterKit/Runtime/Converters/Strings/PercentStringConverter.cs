@@ -1,3 +1,4 @@
+using Aspid.FastTools.Types;
 using System;
 using UnityEngine;
 
@@ -8,6 +9,7 @@ namespace Aspid.MVVM.StarterKit
     /// Formats a number as a percentage.
     /// </summary>
     [Serializable]
+    [TypeSelectorDisplay(Group = "Aspid/String", Name = "Percent String", Tooltip = "Formats a number as a percentage")]
     public sealed class PercentStringConverter : IConverter<float, string>
     {
         [Tooltip("The incoming value is a 0..1 fraction rather than an already-scaled percentage.")]

@@ -1,3 +1,4 @@
+using Aspid.FastTools.Types;
 using System;
 using UnityEngine;
 
@@ -9,6 +10,7 @@ namespace Aspid.MVVM.StarterKit
     /// </summary>
     /// <remarks>The other direction of <see cref="InverseLerpConverter"/>.</remarks>
     [Serializable]
+    [TypeSelectorDisplay(Group = "Aspid/Number", Name = "Lerp Number", Tooltip = "Converts a 0..1 position to a value in a range")]
     public sealed class LerpNumberConverter : ITwoWayConverter<float, float>
     {
         [Tooltip("The value 0 maps to.")]

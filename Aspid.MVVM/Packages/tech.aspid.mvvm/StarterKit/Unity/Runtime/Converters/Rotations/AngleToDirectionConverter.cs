@@ -1,4 +1,5 @@
 #nullable enable
+using Aspid.FastTools.Types;
 using System;
 using UnityEngine;
 
@@ -10,6 +11,7 @@ namespace Aspid.MVVM.StarterKit
     /// </summary>
     /// <remarks>Placing a marker on a radial HUD.</remarks>
     [Serializable]
+    [TypeSelectorDisplay(Group = "Aspid/Rotation", Name = "Angle To Direction", Tooltip = "Turns an angle into a direction")]
     public sealed class AngleToDirectionConverter : IConverter<float, Vector2>
     {
         [Tooltip("The angle is in degrees rather than radians.")]

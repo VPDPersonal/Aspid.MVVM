@@ -1,4 +1,5 @@
 #nullable enable
+using Aspid.FastTools.Types;
 using System;
 using UnityEngine;
 
@@ -10,6 +11,7 @@ namespace Aspid.MVVM.StarterKit
     /// </summary>
     /// <remarks>Holding a joystick offset or a drag inside a panel's radius.</remarks>
     [Serializable]
+    [TypeSelectorDisplay(Group = "Aspid/Vector", Name = "Vector Clamp Magnitude", Tooltip = "Keeps a vector inside a length")]
     public sealed class VectorClampMagnitudeConverter : IConverterVector3
     {
         [Tooltip("The longest the vector is allowed to be.")]

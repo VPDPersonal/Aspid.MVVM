@@ -1,3 +1,4 @@
+using Aspid.FastTools.Types;
 using System;
 using UnityEngine;
 
@@ -12,6 +13,7 @@ namespace Aspid.MVVM.StarterKit
     /// ViewModel means the ViewModel knows how the control is drawn.
     /// </remarks>
     [Serializable]
+    [TypeSelectorDisplay(Group = "Aspid/Number", Name = "Snap To Step", Tooltip = "Snaps a number to the nearest multiple of a step")]
     public sealed class SnapToStepConverter : IConverterFloat
     {
         [Tooltip("The size of one step. A step of zero passes the value through.")]

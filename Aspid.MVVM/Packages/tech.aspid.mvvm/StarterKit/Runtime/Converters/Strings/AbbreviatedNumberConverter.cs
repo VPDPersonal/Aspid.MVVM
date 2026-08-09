@@ -1,3 +1,4 @@
+using Aspid.FastTools.Types;
 using System;
 using UnityEngine;
 using System.Globalization;
@@ -14,6 +15,7 @@ namespace Aspid.MVVM.StarterKit
     /// the next one.
     /// </remarks>
     [Serializable]
+    [TypeSelectorDisplay(Group = "Aspid/String", Name = "Abbreviated Number", Tooltip = "Shortens a large number to a suffixed form: 1 234 567 becomes 1.23M")]
     public sealed class AbbreviatedNumberConverter : IConverter<double, string>
     {
         [Tooltip("The suffix for each power of a thousand, starting with none.")]

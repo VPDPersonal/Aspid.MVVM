@@ -1,4 +1,5 @@
 #nullable enable
+using Aspid.FastTools.Types;
 using System;
 using UnityEngine;
 
@@ -10,6 +11,7 @@ namespace Aspid.MVVM.StarterKit
     /// </summary>
     /// <remarks>A palette of variations from one authored base colour.</remarks>
     [Serializable]
+    [TypeSelectorDisplay(Group = "Aspid/Colour", Name = "Color Hsv", Tooltip = "Shifts a colour in HSV space")]
     public sealed class ColorHsvConverter : IConverterColor
     {
         [Tooltip("How far to rotate the hue, in turns. 0.5 is the opposite colour.")]

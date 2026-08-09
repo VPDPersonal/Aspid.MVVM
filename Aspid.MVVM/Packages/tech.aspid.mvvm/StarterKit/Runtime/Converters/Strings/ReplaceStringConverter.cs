@@ -1,3 +1,4 @@
+using Aspid.FastTools.Types;
 using System;
 using UnityEngine;
 
@@ -8,6 +9,7 @@ namespace Aspid.MVVM.StarterKit
     /// Replaces occurrences of one piece of text with another.
     /// </summary>
     [Serializable]
+    [TypeSelectorDisplay(Group = "Aspid/String", Name = "Replace String", Tooltip = "Replaces occurrences of one piece of text with another")]
     public sealed class ReplaceStringConverter : IConverterString
     {
         [Tooltip("The text to look for. When empty, the string passes through.")]

@@ -1,3 +1,4 @@
+using Aspid.FastTools.Types;
 using System;
 
 // ReSharper disable once CheckNamespace
@@ -7,6 +8,7 @@ namespace Aspid.MVVM.StarterKit
     /// Converts object references to boolean based on null check, with optional inversion.
     /// </summary>
     [Serializable]
+    [TypeSelectorDisplay(Group = "Aspid/Bool", Name = "Object Null To Bool", Tooltip = "Converts object references to boolean based on null check, with optional inversion")]
     public class ObjectNullToBoolConverter : IConverterObjectToBool
     {
         [UnityEngine.Tooltip("Invert the result — true when the object is not null.")]

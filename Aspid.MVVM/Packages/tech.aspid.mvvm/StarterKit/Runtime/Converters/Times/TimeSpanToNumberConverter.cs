@@ -1,3 +1,4 @@
+using Aspid.FastTools.Types;
 using System;
 using UnityEngine;
 
@@ -9,6 +10,7 @@ namespace Aspid.MVVM.StarterKit
     /// </summary>
     /// <remarks>For feeding a duration into a slider or a fill amount.</remarks>
     [Serializable]
+    [TypeSelectorDisplay(Group = "Aspid/Time", Name = "Time Span To Number", Tooltip = "Measures a  as a number")]
     public sealed class TimeSpanToNumberConverter : IConverter<TimeSpan, float>
     {
         [Tooltip("Which unit to measure in.")]

@@ -1,3 +1,4 @@
+using Aspid.FastTools.Types;
 using System;
 using UnityEngine;
 using System.Globalization;
@@ -14,6 +15,7 @@ namespace Aspid.MVVM.StarterKit
     /// <see cref="ComposeConverter{TFrom, TMid, TTo}"/>.
     /// </remarks>
     [Serializable]
+    [TypeSelectorDisplay(Group = "Aspid/String", Name = "String To Int", Tooltip = "Reads a number out of text")]
     public sealed class StringToIntConverter : ITwoWayConverter<string?, int>
     {
         [Tooltip("Returned when the text is not a number.")]

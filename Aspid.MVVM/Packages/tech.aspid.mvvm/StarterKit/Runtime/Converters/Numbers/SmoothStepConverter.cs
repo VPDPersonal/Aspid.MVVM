@@ -1,3 +1,4 @@
+using Aspid.FastTools.Types;
 using System;
 using UnityEngine;
 
@@ -8,6 +9,7 @@ namespace Aspid.MVVM.StarterKit
     /// Eases a value between two bounds with <see cref="Mathf.SmoothStep"/>.
     /// </summary>
     [Serializable]
+    [TypeSelectorDisplay(Group = "Aspid/Number", Name = "Smooth Step", Tooltip = "Eases a value between two bounds with ")]
     public sealed class SmoothStepConverter : IConverterFloat
     {
         [Tooltip("The value that maps to 0.")]

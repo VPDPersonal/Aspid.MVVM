@@ -1,3 +1,4 @@
+using Aspid.FastTools.Types;
 using System;
 using UnityEngine;
 
@@ -19,6 +20,7 @@ namespace Aspid.MVVM.StarterKit
     /// </para>
     /// </remarks>
     [Serializable]
+    [TypeSelectorDisplay(Group = "Aspid/Composition", Name = "Safe", Tooltip = "Runs another converter and substitutes a fallback value if it throws")]
     public sealed class SafeConverter<TFrom, TTo> : IConverter<TFrom?, TTo?>
     {
         [Tooltip("The converter to run. When empty, the fallback value is returned.")]

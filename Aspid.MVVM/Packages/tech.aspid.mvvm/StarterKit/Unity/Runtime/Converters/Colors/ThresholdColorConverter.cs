@@ -1,4 +1,5 @@
 #nullable enable
+using Aspid.FastTools.Types;
 using System;
 using UnityEngine;
 
@@ -10,6 +11,7 @@ namespace Aspid.MVVM.StarterKit
     /// </summary>
     /// <remarks>Stepped states — green, amber, red — rather than a continuous ramp.</remarks>
     [Serializable]
+    [TypeSelectorDisplay(Group = "Aspid/Colour", Name = "Threshold Color", Tooltip = "Picks a colour by which threshold a number has passed")]
     public sealed class ThresholdColorConverter : IConverter<float, Color>
     {
         [Tooltip("Colours by threshold. The highest threshold at or below the value wins.")]

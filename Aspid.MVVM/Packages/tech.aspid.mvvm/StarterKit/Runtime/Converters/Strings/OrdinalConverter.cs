@@ -1,3 +1,4 @@
+using Aspid.FastTools.Types;
 using System;
 using System.Globalization;
 
@@ -8,6 +9,7 @@ namespace Aspid.MVVM.StarterKit
     /// Formats a number as an English ordinal: 1 becomes "1st".
     /// </summary>
     [Serializable]
+    [TypeSelectorDisplay(Group = "Aspid/String", Name = "Ordinal", Tooltip = "Formats a number as an English ordinal: 1 becomes '1st'")]
     public sealed class OrdinalConverter : IConverter<int, string>
     {
         /// <summary>

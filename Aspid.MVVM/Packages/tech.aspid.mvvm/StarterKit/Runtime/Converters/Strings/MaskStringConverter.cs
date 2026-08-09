@@ -1,3 +1,4 @@
+using Aspid.FastTools.Types;
 using System;
 using UnityEngine;
 
@@ -9,6 +10,7 @@ namespace Aspid.MVVM.StarterKit
     /// </summary>
     /// <remarks>Account identifiers, e-mail addresses and promo codes shown in a settings screen.</remarks>
     [Serializable]
+    [TypeSelectorDisplay(Group = "Aspid/String", Name = "Mask String", Tooltip = "Hides the middle of a string, keeping a few characters at each end")]
     public sealed class MaskStringConverter : IConverterString
     {
         [Tooltip("How many characters to leave visible at the start.")]

@@ -1,3 +1,4 @@
+using Aspid.FastTools.Types;
 using System;
 using UnityEngine;
 using System.Globalization;
@@ -14,6 +15,7 @@ namespace Aspid.MVVM.StarterKit
     /// there — which is why the culture is a setting rather than an assumption.
     /// </remarks>
     [Serializable]
+    [TypeSelectorDisplay(Group = "Aspid/String", Name = "Text Case", Tooltip = "Changes the casing of a string")]
     public sealed class TextCaseConverter : IConverterString
     {
         [Tooltip("Which casing to apply.")]

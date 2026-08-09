@@ -1,3 +1,4 @@
+using Aspid.FastTools.Types;
 using System;
 using UnityEngine;
 
@@ -12,6 +13,7 @@ namespace Aspid.MVVM.StarterKit
     /// framework documented in Russian cannot treat the Slavic rule as an extra.
     /// </remarks>
     [Serializable]
+    [TypeSelectorDisplay(Group = "Aspid/String", Name = "Pluralize", Tooltip = "Picks the right word form for a count")]
     public sealed class PluralizeConverter : IConverter<int, string>
     {
         [Tooltip("Which grammar to follow.")]

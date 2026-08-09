@@ -1,3 +1,4 @@
+using Aspid.FastTools.Types;
 using System;
 using UnityEngine;
 
@@ -13,6 +14,7 @@ namespace Aspid.MVVM.StarterKit
     /// a two-link chain, where nobody can see what range it came from.
     /// </remarks>
     [Serializable]
+    [TypeSelectorDisplay(Group = "Aspid/Number", Name = "Remap Number", Tooltip = "Maps a number from one range onto another")]
     public sealed class RemapNumberConverter : ITwoWayConverter<float, float>
     {
         [Tooltip("The low end of the incoming range.")]

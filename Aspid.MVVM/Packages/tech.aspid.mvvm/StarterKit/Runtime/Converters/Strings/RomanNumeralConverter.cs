@@ -1,3 +1,4 @@
+using Aspid.FastTools.Types;
 using System;
 using UnityEngine;
 using System.Globalization;
@@ -13,6 +14,7 @@ namespace Aspid.MVVM.StarterKit
     /// digits.
     /// </remarks>
     [Serializable]
+    [TypeSelectorDisplay(Group = "Aspid/String", Name = "Roman Numeral", Tooltip = "Formats a number as a Roman numeral")]
     public sealed class RomanNumeralConverter : IConverter<int, string>
     {
         [Tooltip("Write the numeral in lower case.")]

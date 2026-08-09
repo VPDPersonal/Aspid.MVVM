@@ -1,3 +1,4 @@
+using Aspid.FastTools.Types;
 using System;
 using UnityEngine;
 
@@ -9,6 +10,7 @@ namespace Aspid.MVVM.StarterKit
     /// </summary>
     /// <remarks>Sanitising what came back from an input field before it is shown again.</remarks>
     [Serializable]
+    [TypeSelectorDisplay(Group = "Aspid/String", Name = "Trim String", Tooltip = "Removes surrounding characters from a string")]
     public sealed class TrimStringConverter : IConverterString
     {
         [Tooltip("Which ends to trim.")]

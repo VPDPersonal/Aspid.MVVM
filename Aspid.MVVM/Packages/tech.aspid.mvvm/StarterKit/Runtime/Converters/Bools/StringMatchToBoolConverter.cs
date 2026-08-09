@@ -1,3 +1,4 @@
+using Aspid.FastTools.Types;
 using System;
 using UnityEngine;
 
@@ -13,6 +14,7 @@ namespace Aspid.MVVM.StarterKit
     /// benefit.
     /// </remarks>
     [Serializable]
+    [TypeSelectorDisplay(Group = "Aspid/Bool", Name = "String Match To Bool", Tooltip = "Tests a bound string against an authored one")]
     public sealed class StringMatchToBoolConverter : IConverterStringToBool
     {
         [Tooltip("How the bound string is compared with the text below.")]

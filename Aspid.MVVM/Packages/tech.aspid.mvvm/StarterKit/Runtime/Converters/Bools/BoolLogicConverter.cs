@@ -1,3 +1,4 @@
+using Aspid.FastTools.Types;
 using System;
 using UnityEngine;
 
@@ -12,6 +13,7 @@ namespace Aspid.MVVM.StarterKit
     /// but held off in a shipping scene — without the ViewModel knowing the scene exists.
     /// </remarks>
     [Serializable]
+    [TypeSelectorDisplay(Group = "Aspid/Bool", Name = "Bool Logic", Tooltip = "Combines a bound boolean with an authored one")]
     public sealed class BoolLogicConverter : IConverter<bool, bool>
     {
         [Tooltip("How the bound value combines with the operand.")]

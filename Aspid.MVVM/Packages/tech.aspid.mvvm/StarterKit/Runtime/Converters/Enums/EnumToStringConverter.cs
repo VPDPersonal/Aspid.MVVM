@@ -1,3 +1,4 @@
+using Aspid.FastTools.Types;
 using System;
 using UnityEngine;
 
@@ -14,6 +15,7 @@ namespace Aspid.MVVM.StarterKit
     /// for the same purpose in the Inspector.
     /// </remarks>
     [Serializable]
+    [TypeSelectorDisplay(Group = "Aspid/Enum", Name = "Enum To String", Tooltip = "Converts an enum value to text")]
     public sealed class EnumToStringConverter<TEnum> : IConverter<TEnum, string>
         where TEnum : struct, Enum
     {

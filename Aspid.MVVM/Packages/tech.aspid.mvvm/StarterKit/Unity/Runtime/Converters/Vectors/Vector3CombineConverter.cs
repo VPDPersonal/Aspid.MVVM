@@ -49,8 +49,12 @@ namespace Aspid.MVVM.StarterKit
         /// Initializes a new instance of the <see cref="Vector3CombineConverter"/> class with conversion functions.
         /// </summary>
         /// <param name="mode">The combination mode specifying which components to use.</param>
-        /// <param name="preConvertor">Optional function to apply before combining vectors.</param>
-        /// <param name="postConvertor">Optional function to apply after combining vectors.</param>
+        /// <param name="preConvertor">Applied to the bound vector before the components are selected.</param>
+        /// <param name="postConvertor">Applied to the combined result.</param>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown when either function is <see langword="null"/>. Use the converter overload with
+        /// <see langword="null"/> to leave a stage out.
+        /// </exception>
         public Vector3CombineConverter(
             Mode mode,
             Func<Vector3, Vector3> preConvertor,
@@ -61,8 +65,13 @@ namespace Aspid.MVVM.StarterKit
         /// Initializes a new instance of the <see cref="Vector3CombineConverter"/> class with converter interfaces.
         /// </summary>
         /// <param name="mode">The combination mode specifying which components to use.</param>
-        /// <param name="preConvertor">Optional converter to apply before combining vectors.</param>
-        /// <param name="postConvertor">Optional converter to apply after combining vectors.</param>
+        /// <param name="preConvertor">
+        /// Applied to the bound vector before the components are selected, or <see langword="null"/> to
+        /// leave that stage out.
+        /// </param>
+        /// <param name="postConvertor">
+        /// Applied to the combined result, or <see langword="null"/> to leave that stage out.
+        /// </param>
         public Vector3CombineConverter(
             Mode mode,
             Converter? preConvertor,

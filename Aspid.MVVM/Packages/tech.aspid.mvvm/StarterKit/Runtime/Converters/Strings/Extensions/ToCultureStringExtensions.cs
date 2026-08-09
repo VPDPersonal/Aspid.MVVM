@@ -32,18 +32,28 @@ namespace Aspid.MVVM.StarterKit
             _ => throw new ArgumentOutOfRangeException(nameof(mode), mode, null)
         };
 
+        /// <summary>
+        /// Writes the specified number in the culture the mode names.
+        /// </summary>
+        /// <param name="number">The number to write.</param>
+        /// <param name="mode">The culture to write it in.</param>
+        /// <returns>The number as text.</returns>
         public static string ToCultureString(this int number, CultureInfoMode mode) =>
             number.ToString(mode.ToCultureInfo());
 
+        /// <inheritdoc cref="ToCultureString(int, CultureInfoMode)"/>
         public static string ToCultureString(this uint number, CultureInfoMode mode) =>
             number.ToString(mode.ToCultureInfo());
 
+        /// <inheritdoc cref="ToCultureString(int, CultureInfoMode)"/>
         public static string ToCultureString(this long number, CultureInfoMode mode) =>
             number.ToString(mode.ToCultureInfo());
 
+        /// <inheritdoc cref="ToCultureString(int, CultureInfoMode)"/>
         public static string ToCultureString(this double number, CultureInfoMode mode) =>
             number.ToString(mode.ToCultureInfo());
 
+        /// <inheritdoc cref="ToCultureString(int, CultureInfoMode)"/>
         public static string ToCultureString(this float number, CultureInfoMode mode) =>
             number.ToString(mode.ToCultureInfo());
     }

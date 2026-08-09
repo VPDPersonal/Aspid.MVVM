@@ -4,41 +4,123 @@ using Aspid.FastTools.Types;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
+    /// <summary>
+    /// Wraps a function or a generic converter as one of the named boolean converter
+    /// interfaces.
+    /// </summary>
+    /// <remarks>
+    /// <c>ToConvert</c> takes a function, <c>ToConvertSpecific</c> takes a converter that is
+    /// already the right shape but not the named type. Both exist because a binder before
+    /// Unity 2023.1 declares its field as the named interface rather than the generic one,
+    /// so a lambda cannot be assigned to it directly.
+    /// </remarks>
     public static class BoolConverterSpecificExtensions
     {
+        /// <summary>
+        /// Wraps the specified function as an <see cref="IConverterDoubleToBool"/>.
+        /// </summary>
+        /// <param name="converter">The function to wrap.</param>
+        /// <returns>A converter of the named interface type.</returns>
+        /// <exception cref="System.ArgumentNullException">Thrown when <paramref name="converter"/> is <see langword="null"/>.</exception>
         public static IConverterDoubleToBool ToConvert(this Func<double, bool> converter) =>
             new ConverterDoubleToBool(converter);
         
+        /// <summary>
+        /// Wraps the specified converter as an <see cref="IConverterDoubleToBool"/>.
+        /// </summary>
+        /// <param name="converter">The converter to wrap.</param>
+        /// <returns>A converter of the named interface type.</returns>
+        /// <exception cref="System.ArgumentNullException">Thrown when <paramref name="converter"/> is <see langword="null"/>.</exception>
         public static IConverterDoubleToBool ToConvertSpecific(this IConverter<double, bool> converter) =>
             new ConverterDoubleToBool(converter);
         
+        /// <summary>
+        /// Wraps the specified function as an <see cref="IConverterFloatToBool"/>.
+        /// </summary>
+        /// <param name="converter">The function to wrap.</param>
+        /// <returns>A converter of the named interface type.</returns>
+        /// <exception cref="System.ArgumentNullException">Thrown when <paramref name="converter"/> is <see langword="null"/>.</exception>
         public static IConverterFloatToBool ToConvert(this Func<float, bool> converter) =>
             new ConverterFloatToBool(converter);
         
+        /// <summary>
+        /// Wraps the specified converter as an <see cref="IConverterFloatToBool"/>.
+        /// </summary>
+        /// <param name="converter">The converter to wrap.</param>
+        /// <returns>A converter of the named interface type.</returns>
+        /// <exception cref="System.ArgumentNullException">Thrown when <paramref name="converter"/> is <see langword="null"/>.</exception>
         public static IConverterFloatToBool ToConvertSpecific(this IConverter<float, bool> converter) =>
             new ConverterFloatToBool(converter);
         
+        /// <summary>
+        /// Wraps the specified function as an <see cref="IConverterIntToBool"/>.
+        /// </summary>
+        /// <param name="converter">The function to wrap.</param>
+        /// <returns>A converter of the named interface type.</returns>
+        /// <exception cref="System.ArgumentNullException">Thrown when <paramref name="converter"/> is <see langword="null"/>.</exception>
         public static IConverterIntToBool ToConvert(this Func<int, bool> converter) =>
             new ConverterIntToBool(converter);
         
+        /// <summary>
+        /// Wraps the specified converter as an <see cref="IConverterIntToBool"/>.
+        /// </summary>
+        /// <param name="converter">The converter to wrap.</param>
+        /// <returns>A converter of the named interface type.</returns>
+        /// <exception cref="System.ArgumentNullException">Thrown when <paramref name="converter"/> is <see langword="null"/>.</exception>
         public static IConverterIntToBool ToConvertSpecific(this IConverter<int, bool> converter) =>
             new ConverterIntToBool(converter);
         
+        /// <summary>
+        /// Wraps the specified function as an <see cref="IConverterLongToBool"/>.
+        /// </summary>
+        /// <param name="converter">The function to wrap.</param>
+        /// <returns>A converter of the named interface type.</returns>
+        /// <exception cref="System.ArgumentNullException">Thrown when <paramref name="converter"/> is <see langword="null"/>.</exception>
         public static IConverterLongToBool ToConvert(this Func<long, bool> converter) =>
             new ConverterLongToBool(converter);
         
+        /// <summary>
+        /// Wraps the specified converter as an <see cref="IConverterLongToBool"/>.
+        /// </summary>
+        /// <param name="converter">The converter to wrap.</param>
+        /// <returns>A converter of the named interface type.</returns>
+        /// <exception cref="System.ArgumentNullException">Thrown when <paramref name="converter"/> is <see langword="null"/>.</exception>
         public static IConverterLongToBool ToConvertSpecific(this IConverter<long, bool> converter) =>
             new ConverterLongToBool(converter);
         
+        /// <summary>
+        /// Wraps the specified function as an <see cref="IConverterObjectToBool"/>.
+        /// </summary>
+        /// <param name="converter">The function to wrap.</param>
+        /// <returns>A converter of the named interface type.</returns>
+        /// <exception cref="System.ArgumentNullException">Thrown when <paramref name="converter"/> is <see langword="null"/>.</exception>
         public static IConverterObjectToBool ToConvert(this Func<object?, bool> converter) =>
             new ConverterObjectToBool(converter);
         
+        /// <summary>
+        /// Wraps the specified converter as an <see cref="IConverterObjectToBool"/>.
+        /// </summary>
+        /// <param name="converter">The converter to wrap.</param>
+        /// <returns>A converter of the named interface type.</returns>
+        /// <exception cref="System.ArgumentNullException">Thrown when <paramref name="converter"/> is <see langword="null"/>.</exception>
         public static IConverterObjectToBool ToConvertSpecific(this IConverter<object?, bool> converter) =>
             new ConverterObjectToBool(converter);
         
+        /// <summary>
+        /// Wraps the specified function as an <see cref="IConverterStringToBool"/>.
+        /// </summary>
+        /// <param name="converter">The function to wrap.</param>
+        /// <returns>A converter of the named interface type.</returns>
+        /// <exception cref="System.ArgumentNullException">Thrown when <paramref name="converter"/> is <see langword="null"/>.</exception>
         public static IConverterStringToBool ToConvert(this Func<string?, bool> converter) =>
             new ConverterStringToBool(converter);
         
+        /// <summary>
+        /// Wraps the specified converter as an <see cref="IConverterStringToBool"/>.
+        /// </summary>
+        /// <param name="converter">The converter to wrap.</param>
+        /// <returns>A converter of the named interface type.</returns>
+        /// <exception cref="System.ArgumentNullException">Thrown when <paramref name="converter"/> is <see langword="null"/>.</exception>
         public static IConverterStringToBool ToConvertSpecific(this IConverter<string?, bool> converter) =>
             new ConverterStringToBool(converter);
         

@@ -1,0 +1,53 @@
+#nullable enable
+using System;
+using UnityEngine;
+
+// ReSharper disable once CheckNamespace
+namespace Aspid.MVVM.StarterKit
+{
+    /// <summary>
+    /// Keeps a vector inside a length.
+    /// </summary>
+    /// <remarks>Holding a joystick offset or a drag inside a panel's radius.</remarks>
+    [Serializable]
+    public sealed class VectorClampMagnitudeConverter : IConverterVector3
+    {
+        [Tooltip("The longest the vector is allowed to be.")]
+        [SerializeField] private float _maxMagnitude = 1f;
+
+        [Tooltip("The shortest the vector is allowed to be. Zero disables the lower bound.")]
+        [SerializeField] private float _minMagnitude;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="VectorClampMagnitudeConverter"/> class clamping to one.
+        /// </summary>
+        public VectorClampMagnitudeConverter() { }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="VectorClampMagnitudeConverter"/> class.
+        /// </summary>
+        /// <param name="maxMagnitude">The longest the vector is allowed to be.</param>
+        /// <param name="minMagnitude">The shortest the vector is allowed to be.</param>
+        public VectorClampMagnitudeConverter(float maxMagnitude, float minMagnitude = 0f)
+        {
+            _maxMagnitude = maxMagnitude;
+            _minMagnitude = minMagnitude;
+        }
+
+        /// <summary>
+        /// Clamps the length of the specified vector.
+        /// </summary>
+        /// <param name="value">The vector to clamp.</param>
+        /// <returns>The clamped vector.</returns>
+        public Vector3 Convert(Vector3 value)
+        {
+            var magnitude = value.magnitude;
+            if (magnitude == 0f) return value;
+
+            if (magnitude > _maxMagnitude) return value * (_maxMagnitude / magnitude);
+            if (_minMagnitude > 0f && magnitude < _minMagnitude) return value * (_minMagnitude / magnitude);
+
+            return value;
+        }
+    }
+}

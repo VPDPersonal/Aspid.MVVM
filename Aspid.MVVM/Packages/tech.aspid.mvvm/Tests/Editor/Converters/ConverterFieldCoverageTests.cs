@@ -46,10 +46,7 @@ namespace Aspid.MVVM.StarterKit.Tests
         /// fill it. Shrinking this list is the point of it — <see cref="TheGapListHasNoStaleEntries"/>
         /// fails once an entry stops being a gap.
         /// </summary>
-        private static readonly Dictionary<string, string> KnownGaps = new()
-        {
-            ["IConverter<Quaternion, Quaternion>"] = "family 14 (Rotations) — AngleToQuaternion, LookRotation…",
-        };
+        private static readonly Dictionary<string, string> KnownGaps = new();
 
         [Test]
         public void EveryConverterFieldHasAPickableConverter()

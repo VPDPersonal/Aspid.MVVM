@@ -26,30 +26,61 @@ namespace Aspid.MVVM.StarterKit
         /// <inheritdoc/>
         public void SetValue(List<string> values)
         {
-            CachedComponent.ClearOptions();
+            var selected = CachedComponent.value;
 
-            if (values is null) return;
-            CachedComponent.AddOptions(values);
+            CachedComponent.ClearOptions();
+            if (values is not null) CachedComponent.AddOptions(values);
+
+            RestoreSelection(selected);
         }
 
         /// <inheritdoc/>
         public void SetValue(List<Sprite> values)
         {
-            CachedComponent.ClearOptions();
+            var selected = CachedComponent.value;
 
-            if (values is null) return;
-            CachedComponent.AddOptions(values);
+            CachedComponent.ClearOptions();
+            if (values is not null) CachedComponent.AddOptions(values);
+
+            RestoreSelection(selected);
         }
 
         /// <inheritdoc/>
         public void SetValue(IEnumerable<TMP_Dropdown.OptionData> values)
         {
+            var selected = CachedComponent.value;
+
             CachedComponent.ClearOptions();
 
-            if (values is null) return;
+            if (values is not null)
+            {
+                foreach (var value in values)
+                    CachedComponent.options.Add(value);
+            }
 
-            foreach (var value in values)
-                CachedComponent.options.Add(value);
+            RestoreSelection(selected);
+        }
+
+
+        /// <summary>
+        /// Rebuilds the option list while keeping the current selection where the new list still has room for it.
+        /// </summary>
+        /// <remarks>
+        /// <see cref="TMP_Dropdown.ClearOptions"/> resets the selected index to 0 (or -1 with a placeholder) and
+        /// raises nothing, so a ViewModel holding the previous index silently disagreed with the control after every
+        /// options update. Restoring the index without a notification keeps the two in step; when the new list is
+        /// shorter the selection genuinely changes, and this binder has no value channel to report that — the value
+        /// lives on <c>DropdownValueMonoBinder</c>.
+        /// </remarks>
+        private void RestoreSelection(int selected)
+        {
+            var dropdown = CachedComponent;
+
+            if (dropdown.options.Count > 0)
+                dropdown.SetValueWithoutNotify(Mathf.Clamp(selected, 0, dropdown.options.Count - 1));
+
+            // Mutating the options list directly leaves the caption showing whatever it showed before.
+            dropdown.RefreshShownValue();
         }
 
         /// <summary>

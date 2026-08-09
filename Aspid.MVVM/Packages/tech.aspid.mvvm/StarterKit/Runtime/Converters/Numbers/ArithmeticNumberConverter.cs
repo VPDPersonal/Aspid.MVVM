@@ -84,6 +84,10 @@ namespace Aspid.MVVM.StarterKit
             NumberOperation.Minus => value - _coefficient,
             NumberOperation.Division => Divide(value),
             NumberOperation.Multiply => value * _coefficient,
+            NumberOperation.Modulo => Modulo(value),
+            NumberOperation.Power => Math.Pow(value, _coefficient),
+            NumberOperation.ReverseSubtract => _coefficient - value,
+            NumberOperation.ReverseDivide => value != 0 ? _coefficient / value : value,
             _ => throw new ArgumentOutOfRangeException(nameof(_operation), _operation, null)
         };
 
@@ -116,6 +120,12 @@ namespace Aspid.MVVM.StarterKit
             NumberOperation.Minus => value + _coefficient,
             NumberOperation.Division => value * _coefficient,
             NumberOperation.Multiply => Divide(value),
+            NumberOperation.Power => _coefficient != 0 ? Math.Pow(value, 1d / _coefficient) : value,
+            // Both are their own inverse: c - (c - x) is x, and c / (c / x) is x.
+            NumberOperation.ReverseSubtract => _coefficient - value,
+            NumberOperation.ReverseDivide => value != 0 ? _coefficient / value : value,
+            // Modulo discards which multiple the value came from; there is nothing to undo it with.
+            NumberOperation.Modulo => value,
             _ => throw new ArgumentOutOfRangeException(nameof(_operation), _operation, null)
         };
         #endregion
@@ -127,6 +137,20 @@ namespace Aspid.MVVM.StarterKit
 
             LogDivideByZero();
             return value;
+        }
+
+        // C#'s % keeps the sign of the left operand, so -1 % 360 is -1 rather than 359 — which is
+        // never what a wrapped angle or a cycling index wants.
+        private double Modulo(double value)
+        {
+            if (_coefficient == 0)
+            {
+                LogDivideByZero();
+                return value;
+            }
+
+            var remainder = value % _coefficient;
+            return remainder < 0 ? remainder + Math.Abs(_coefficient) : remainder;
         }
 
         private static void LogDivideByZero() =>

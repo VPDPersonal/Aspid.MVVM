@@ -48,8 +48,6 @@ namespace Aspid.MVVM.StarterKit.Tests
         /// </summary>
         private static readonly Dictionary<string, string> KnownGaps = new()
         {
-            ["IConverter<Color, Color>"] = "family 9 (Colour) — ColorAlpha, ColorTint, ColorGrayscale…",
-            ["IConverter<ColorBlock, ColorBlock>"] = "family 10 (ColorBlock) — ColorToColorBlock…",
             ["IConverter<Quaternion, Quaternion>"] = "family 14 (Rotations) — AngleToQuaternion, LookRotation…",
         };
 

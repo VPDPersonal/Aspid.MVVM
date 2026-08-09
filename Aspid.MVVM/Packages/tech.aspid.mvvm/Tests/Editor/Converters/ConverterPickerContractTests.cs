@@ -68,17 +68,13 @@ namespace Aspid.MVVM.StarterKit.Tests
         private static IEnumerable<Type> ConverterTypes() => Assemblies()
             .SelectMany(assembly => assembly.GetTypes())
             .Where(type => !type.IsInterface && !type.IsAbstract)
-            .Where(ImplementsConverter);
+            .Where(type => typeof(IConverter).IsAssignableFrom(type));
 
         private static IEnumerable<Assembly> Assemblies() => new[]
         {
-            typeof(IConverter<,>).Assembly,
+            typeof(IConverter).Assembly,
             typeof(IConverterVector3).Assembly,
         }.Distinct();
-
-        private static bool ImplementsConverter(Type type) => type
-            .GetInterfaces()
-            .Any(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(IConverter<,>));
 
         // The picker calls Activator.CreateInstance(type, nonPublic: true), so a private or
         // protected parameterless constructor is enough to make a type constructible.

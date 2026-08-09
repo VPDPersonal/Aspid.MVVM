@@ -46,6 +46,11 @@ namespace Aspid.MVVM.StarterKit.Tests
         /// fill it. Shrinking this list is the point of it — <see cref="TheGapListHasNoStaleEntries"/>
         /// fails once an entry stops being a gap.
         /// </summary>
+        /// <remarks>
+        /// It is empty: every converter field in the package now offers something. It started at ten
+        /// and stays here so the next field added without a converter behind it lands in a list that
+        /// already knows what to say about it.
+        /// </remarks>
         private static readonly Dictionary<string, string> KnownGaps = new();
 
         [Test]

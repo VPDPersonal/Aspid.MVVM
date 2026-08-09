@@ -4,9 +4,9 @@ using UnityEngine.UIElements;
 namespace Aspid.FastTools.UIElements.Editors.Internal
 {
     /// <summary>
-    /// A <see cref="VisualElement"/> container with an Aspid background and theme support.
-    /// The theme can be driven by USS via the <c>--aspid-fasttools-prop-theme</c> custom property
-    /// or set explicitly in code.
+    /// A <see cref="VisualElement"/> container with an Aspid background plus theme and status-accent support.
+    /// The theme (<c>--aspid-fasttools-prop-theme</c>) and status (<c>--aspid-fasttools-prop-status</c>)
+    /// can be driven by USS custom properties or set explicitly in code.
     /// </summary>
     [UxmlElement(libraryPath = "Aspid/FastTools")]
     internal sealed partial class AspidBox : VisualElement

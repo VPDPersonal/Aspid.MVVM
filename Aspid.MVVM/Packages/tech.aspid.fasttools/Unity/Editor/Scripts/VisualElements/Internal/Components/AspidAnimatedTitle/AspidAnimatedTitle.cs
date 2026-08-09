@@ -15,6 +15,8 @@ namespace Aspid.FastTools.UIElements.Editors.Internal
     [UxmlElement(nameof(AspidAnimatedTitle), libraryPath = "Aspid/FastTools")]
     internal sealed partial class AspidAnimatedTitle : VisualElement
     {
+        private const string StyleSheetPath = "UI/Components/Aspid-FastTools-AspidAnimatedTitle";
+
         private const int PaletteCount = 3;
         private const string WordClass = "aspid-fasttools-animated-title__word";
 
@@ -143,7 +145,7 @@ namespace Aspid.FastTools.UIElements.Editors.Internal
         /// <param name="preset">The configuration preset to apply.</param>
         public AspidAnimatedTitle(string text, AspidAnimatedTitlePreset preset)
         {
-            this.AddStyleSheetsFromResource("UI/Components/Aspid-FastTools-AspidAnimatedTitle");
+            this.AddStyleSheetsFromResource(StyleSheetPath);
 
             _colors = new AspidAnimatedTitleColorsStyle(
                 this, preset.Color1, preset.Color2, preset.Color3, onChanged: null);

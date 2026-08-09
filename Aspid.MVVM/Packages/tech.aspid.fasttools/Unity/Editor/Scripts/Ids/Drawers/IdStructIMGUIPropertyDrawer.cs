@@ -62,7 +62,8 @@ namespace Aspid.FastTools.Ids.Editors
             if (!isUnique) return;
             if (IsUniqueFor(ctx)) return;
 
-            var warningY = position.y + position.height + EditorGUIUtility.standardVerticalSpacing;
+            // position spans the full reserved height (field line + warning line) — anchor below the field line.
+            var warningY = position.y + EditorGUIUtility.singleLineHeight + EditorGUIUtility.standardVerticalSpacing;
             var warningRect = new Rect(position.x, warningY, position.width, EditorGUIUtility.singleLineHeight);
            
             EditorGUI.HelpBox(warningRect, "ID is not unique among assets of this type", MessageType.Warning);

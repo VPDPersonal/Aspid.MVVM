@@ -4,7 +4,7 @@ using System.Reflection;
 using System.Collections.Generic;
 
 // ReSharper disable once CheckNamespace
-namespace Aspid.FastTools.Reflection
+namespace Aspid.FastTools
 {
     public static class TypeExtensions
     {
@@ -24,7 +24,7 @@ namespace Aspid.FastTools.Reflection
             while (currentType != stopAt)
             {
                 if (currentType is null) break;
-                
+
                 typeChain.Add(currentType);
                 currentType = currentType.BaseType;
             }

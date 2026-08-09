@@ -23,7 +23,8 @@ namespace Aspid.FastTools.UIElements.Editors.Internal
         {
             var currentTime = (float)EditorApplication.timeSinceStartup;
             var isDouble = _lastClickTime > 0f && currentTime - _lastClickTime < thresholdSeconds;
-            _lastClickTime = currentTime;
+
+            _lastClickTime = isDouble ? 0f : currentTime;
             return isDouble;
         }
     }

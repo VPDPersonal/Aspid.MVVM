@@ -6,19 +6,19 @@ namespace Aspid.FastTools.Types.Editors
 {
     internal class NamespaceNode
     {
-        public string Segment { get; set; }
+        internal string Segment { get; set; }
 
-        public bool IsTerminal { get; set; }
+        internal bool IsTerminal { get; set; }
 
-        public Dictionary<string, NamespaceNode> Children { get; }
+        internal Dictionary<string, NamespaceNode> Children { get; }
 
-        public NamespaceNode(string segment)
+        internal NamespaceNode(string segment)
         {
             Segment = segment;
             Children = new Dictionary<string, NamespaceNode>(StringComparer.Ordinal);
         }
 
-        public NamespaceNode GetOrCreateChild(string segment)
+        internal NamespaceNode GetOrCreateChild(string segment)
         {
             if (!Children.TryGetValue(segment, out var child))
             {

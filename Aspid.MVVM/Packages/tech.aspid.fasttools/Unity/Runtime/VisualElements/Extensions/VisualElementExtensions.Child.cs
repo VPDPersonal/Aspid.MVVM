@@ -57,7 +57,48 @@ namespace Aspid.FastTools.UIElements
             element.Clear();
             return element;
         }
-        
+
+        /// <summary>
+        /// Conditionally removes the specified child from the element and returns the element for chaining.
+        /// </summary>
+        /// <param name="element">The element to modify.</param>
+        /// <param name="condition">If true, performs the operation; otherwise skips it and returns the element unchanged.</param>
+        /// <param name="child">The child element to remove.</param>
+        /// <returns>The element, for chaining.</returns>
+        public static T RemoveChildIf<T>(this T element, bool condition, VisualElement child)
+            where T : VisualElement
+        {
+            if (condition) element.Remove(child);
+            return element;
+        }
+
+        /// <summary>
+        /// Conditionally removes the child at the specified index from the element and returns the element for chaining.
+        /// </summary>
+        /// <param name="element">The element to modify.</param>
+        /// <param name="condition">If true, performs the operation; otherwise skips it and returns the element unchanged.</param>
+        /// <param name="index">The index of the child to remove.</param>
+        /// <returns>The element, for chaining.</returns>
+        public static T RemoveChildAtIf<T>(this T element, bool condition, int index)
+            where T : VisualElement
+        {
+            if (condition) element.RemoveAt(index);
+            return element;
+        }
+
+        /// <summary>
+        /// Conditionally removes all children from the element and returns the element for chaining.
+        /// </summary>
+        /// <param name="element">The element to modify.</param>
+        /// <param name="condition">If true, performs the operation; otherwise skips it and returns the element unchanged.</param>
+        /// <returns>The element, for chaining.</returns>
+        public static T ClearChildrenIf<T>(this T element, bool condition)
+            where T : VisualElement
+        {
+            if (condition) element.Clear();
+            return element;
+        }
+
         /// <summary>
         /// Conditionally adds an element to the <see cref="VisualElement.contentContainer"/> of this element and returns the element for chaining.
         /// </summary>

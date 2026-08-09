@@ -25,6 +25,23 @@ namespace Aspid.FastTools.UIElements.Editors.Internal
         private readonly AspidGradientButtonColorsStyle _colors;
 
         private Texture2D _gradientTexture;
+        private bool _highlighted;
+        private bool _hovered;
+
+        /// <summary>
+        /// Shows the hover visual (accent overlay + accent-tinted labels) programmatically, for host-driven states
+        /// like a keyboard focus ring.
+        /// </summary>
+        /// <remarks>Mouse hover and this flag compose: the visual stays on while either is active.</remarks>
+        internal bool Highlighted
+        {
+            get => _highlighted;
+            set
+            {
+                _highlighted = value;
+                ApplyHoverVisual(_highlighted || _hovered);
+            }
+        }
 
         /// <summary>
         /// Gets or sets the button label text.
@@ -143,18 +160,68 @@ namespace Aspid.FastTools.UIElements.Editors.Internal
             RegisterCallback<DetachFromPanelEvent>(OnDetachFromPanel);
         }
 
+        /// <summary>
+        /// Inserts <paramref name="content"/> ahead of the text label in the button's child order, so it leads the
+        /// label — to its left in the default row layout, or above it when the button is switched to a column
+        /// flex-direction. Lets the button carry a richer body (e.g. a header line) alongside its
+        /// <see cref="Text"/> action label.
+        /// </summary>
+        /// <typeparam name="T">The content element type.</typeparam>
+        /// <param name="content">The element to insert ahead of the label.</param>
+        /// <returns>The same <paramref name="content"/>, for fluent chaining.</returns>
+        public T AddLeadingContent<T>(T content) where T : VisualElement
+        {
+            Insert(IndexOf(_label), content);
+            return content;
+        }
+
+        /// <summary>
+        /// Inserts <paramref name="content"/> just after the text label in the button's child order, so it trails the
+        /// label — to its right in the default row layout, or below it when the button is switched to a column
+        /// flex-direction. The mirror of <see cref="AddLeadingContent{T}"/>.
+        /// </summary>
+        /// <typeparam name="T">The content element type.</typeparam>
+        /// <param name="content">The element to insert after the label.</param>
+        /// <returns>The same <paramref name="content"/>, for fluent chaining.</returns>
+        public T AddTrailingContent<T>(T content) where T : VisualElement
+        {
+            Insert(IndexOf(_label) + 1, content);
+            return content;
+        }
+
+        /// <summary>
+        /// Hands the row's free space to a flex-grow <see cref="AddLeadingContent"/> element instead of the text label:
+        /// the <see cref="Text"/> label stops growing and shrinks to its own text, so the leading content fills the row
+        /// and the label merely pins after it. Without this the label claims the free space and the leading content
+        /// sits at its natural width. Affects only this instance.
+        /// </summary>
+        public void FillWithLeadingContent() => _label.style.flexGrow = 0f;
+
+        /// <summary>
+        /// Hands the row's free space to a flex-grow <see cref="AddTrailingContent"/> element instead of the text label:
+        /// the <see cref="Text"/> label stops growing and shrinks to its own text, so the trailing content fills the row
+        /// and the label merely pins before it. The mirror of <see cref="FillWithLeadingContent"/>.
+        /// </summary>
+        public void FillWithTrailingContent() => _label.style.flexGrow = 0f;
+
         private void OnMouseEnter(MouseEnterEvent _)
         {
-            _overlay.SetTarget(1f);
-            _label.style.color = _colors.Accent;
-            _trailingLabel.style.color = _colors.Accent;
+            _hovered = true;
+            ApplyHoverVisual(true);
         }
 
         private void OnMouseLeave(MouseLeaveEvent _)
         {
-            _overlay.SetTarget(0f);
-            _label.style.color = StyleKeyword.Null;
-            _trailingLabel.style.color = StyleKeyword.Null;
+            _hovered = false;
+            ApplyHoverVisual(_highlighted);
+        }
+
+        private void ApplyHoverVisual(bool on)
+        {
+            _overlay.SetTarget(on ? 1f : 0f);
+            var labelColor = on ? new StyleColor(_colors.Accent) : new StyleColor(StyleKeyword.Null);
+            _label.style.color = labelColor;
+            _trailingLabel.style.color = labelColor;
         }
 
         private void OnAttachToPanel(AttachToPanelEvent _)
@@ -167,6 +234,10 @@ namespace Aspid.FastTools.UIElements.Editors.Internal
 
         private void RebuildGradient(Color color)
         {
+            // Textures live only while the element is attached: OnAttachToPanel builds the first
+            // one and OnDetachFromPanel disposes it, so a detached button never holds a texture.
+            if (panel == null) return;
+
             DisposeTexture();
             _gradientTexture = CreateHorizontalFadeTexture(color);
             style.backgroundImage = new StyleBackground(_gradientTexture);

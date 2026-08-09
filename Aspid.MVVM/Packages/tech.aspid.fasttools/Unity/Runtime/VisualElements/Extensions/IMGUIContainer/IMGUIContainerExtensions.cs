@@ -81,5 +81,17 @@ namespace Aspid.FastTools.UIElements
             element.contextType = value;
             return element;
         }
+
+        /// <summary>
+        /// Marks the <see cref="IMGUIContainer"/> layout as dirty, forcing a relayout of its IMGUI content, and returns the element for chaining.
+        /// </summary>
+        /// <param name="element">The element to modify.</param>
+        /// <returns>The element, for chaining.</returns>
+        public static T MarkDirtyLayout<T>(this T element)
+            where T : IMGUIContainer
+        {
+            element.MarkDirtyLayout();
+            return element;
+        }
     }
 }

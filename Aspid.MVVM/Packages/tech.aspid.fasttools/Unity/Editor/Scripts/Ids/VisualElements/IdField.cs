@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UIElements;
 using Aspid.FastTools.Editors;
 using Aspid.FastTools.UIElements;
+using Aspid.FastTools.UIElements.Editors;
 using Aspid.FastTools.UIElements.Editors.Internal;
 
 // ReSharper disable once CheckNamespace
@@ -79,7 +80,7 @@ namespace Aspid.FastTools.Ids.Editors
         {
             this.AddClass(EnumField.ussClassName)
                 .AddStyleSheetsFromResource(StyleSheetPath)
-                .AddStyleSheetsFromResource(AspidStyles.DefaultStyleSheet);
+                .AddAspidThemeStyleSheets();
 
             _visualInput = visualInput;
 
@@ -180,10 +181,7 @@ namespace Aspid.FastTools.Ids.Editors
             if (evt.button is not 0) return;
             if (IdType is null) return;
 
-            var window = EditorWindow.focusedWindow != null
-                ? EditorWindow.focusedWindow
-                : EditorWindow.mouseOverWindow;
-
+            var window = _visualInput.GetOwnerWindow();
             if (!window) return;
 
             IdSelectorWindow.Show(

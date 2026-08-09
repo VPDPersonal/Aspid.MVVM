@@ -311,7 +311,9 @@
       "version": "file:tech.aspid.fasttools",
       "depth": 0,
       "source": "embedded",
-      "dependencies": {}
+      "dependencies": {
+        "com.unity.modules.uielements": "1.0.0"
+      }
     },
     "tech.aspid.mvvm": {
       "version": "file:tech.aspid.mvvm",

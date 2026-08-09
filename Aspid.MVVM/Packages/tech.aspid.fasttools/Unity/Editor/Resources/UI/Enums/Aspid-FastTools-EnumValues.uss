@@ -1,28 +1,54 @@
+/* Negative right margin cancels the inspector's default field padding, aligning the card's
+   right edge with sibling fields. */
 :root {
-    margin:                                         1px -2px 1px 3px;
+    margin: 1px -2px 1px 3px;
 }
 
+/* Zeroes Unity's built-in field margin, which otherwise double-counts against this drawer's
+   own padding and pushes nested fields inward. */
 .unity-property-field__inspector-property .unity-base-field__inspector-field {
-    margin-left:                                    0;
-    margin-right:                                   0;
+    margin-left: 0;
+    margin-right: 0;
 }
 
-.unity-property-field__inspector-property Toggle.unity-base-field__inspector-field {
-    margin-left:                                    -1px;
+/* Toggle carries an extra 1px inset Unity bakes into its own style — nudge it back to match
+   the other fields. */
+.unity-property-field__inspector-property
+    Toggle.unity-base-field__inspector-field {
+    margin-left: -1px;
 }
 
+/* Header and container are separate elements styled to read as one rounded card — top corners
+   on the header, bottom on the container, same border color to hide the seam. */
 .aspid-fasttools-enum-values__header {
-    padding:                                        5px 5px 2px 5px;
-    border-width:                                   1px;
-    border-radius:                                  5px 5px 0 0;
-    border-color:                                   var(--aspid-colors-bg-dark);
-    background-color:                               var(--aspid-colors-bg-light);
+    padding: 5px 5px 2px 5px;
+    border-width: 1px;
+    border-radius: 5px 5px 0 0;
+    border-color: var(--aspid-colors-bg-dark);
+    background-color: var(--aspid-colors-bg-light);
 }
 
 .aspid-fasttools-enum-values__container {
-    padding:                                        2px 5px 5px 5px;
-    border-width:                                   0 1px 1px 1px;
-    border-radius:                                  0 0 5px 5px;
-    border-color:                                   var(--aspid-colors-bg-dark);
-    background-color:                               var(--aspid-colors-bg-lightness);
+    padding: 2px 5px 5px 5px;
+    border-width: 0 1px 1px 1px;
+    border-radius: 0 0 5px 5px;
+    border-color: var(--aspid-colors-bg-dark);
+    background-color: var(--aspid-colors-bg-lightness);
+}
+
+/* Single-line values sit next to the key in two equal columns (mirrors the IMGUI layout);
+   values with a foldout keep the default column flow — key line, then a "Value" foldout. */
+.aspid-fasttools-enum-value--inline {
+    flex-direction: row;
+}
+
+.aspid-fasttools-enum-value--inline > .aspid-fasttools-enum-value__key {
+    flex-grow: 1;
+    flex-basis: 0;
+    margin-right: 4px;
+}
+
+.aspid-fasttools-enum-value--inline > .aspid-fasttools-enum-value__value {
+    flex-grow: 1;
+    flex-basis: 0;
 }

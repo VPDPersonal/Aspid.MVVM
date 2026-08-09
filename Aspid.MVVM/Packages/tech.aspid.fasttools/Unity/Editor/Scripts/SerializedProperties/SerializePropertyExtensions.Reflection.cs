@@ -1,113 +1,108 @@
 using System;
 using UnityEditor;
-using System.Linq;
 using System.Reflection;
 using System.Collections;
-using System.Collections.Generic;
-using Aspid.FastTools.Reflection;
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.FastTools.Editors
 {
     public static partial class SerializePropertyExtensions
     {
-        private const BindingFlags BindingFlags =
-            System.Reflection.BindingFlags.Instance
-            | System.Reflection.BindingFlags.Public
-            | System.Reflection.BindingFlags.NonPublic;
-
         /// <summary>
-        /// Returns the <see cref="Type"/> of the field or property that backs this <see cref="SerializedProperty"/>.
+        /// Returns the <see cref="Type"/> of the field that backs this <see cref="SerializedProperty"/>.
+        /// For an array/list element property the element type is returned.
         /// </summary>
         /// <param name="serializedProperty">The property to inspect.</param>
         /// <returns>
-        /// The <see cref="FieldInfo.FieldType"/> or <see cref="PropertyInfo.PropertyType"/> of the backing member,
-        /// or <see langword="null"/> if the member cannot be resolved.
+        /// The <see cref="FieldInfo.FieldType"/> of the backing field
+        /// (the element type when the property is an array/list element),
+        /// or <see langword="null"/> if the field cannot be resolved.
         /// </returns>
-        public static Type GetPropertyType(this SerializedProperty serializedProperty) => GetMemberInfo(serializedProperty) switch
+        public static Type GetPropertyType(this SerializedProperty serializedProperty)
         {
-            FieldInfo field => field.FieldType,
-            PropertyInfo property => property.PropertyType,
-            _ => null
-        };
-
-        /// <summary>
-        /// Uses reflection to find the <see cref="MemberInfo"/> (field or property) on the owning class
-        /// that corresponds to this <see cref="SerializedProperty"/>.
-        /// </summary>
-        /// <param name="serializedProperty">The property whose backing member should be located.</param>
-        /// <returns>
-        /// The <see cref="MemberInfo"/> whose name matches <see cref="SerializedProperty.name"/>,
-        /// or <see langword="null"/> if it cannot be found.
-        /// </returns>
-        public static MemberInfo GetMemberInfo(this SerializedProperty serializedProperty)
-        {
-            var instance = serializedProperty.GetClassInstance();
-            if (instance is null) return null;
-
-            return instance.GetType()
-                .GetMembersInfosIncludingBaseClasses(BindingFlags)
-                .FirstOrDefault(member => member.Name == serializedProperty.name);
+            var type = serializedProperty.GetFieldInfo()?.FieldType;
+            return IsArrayElement(serializedProperty) ? type?.GetCollectionElementTypeOrSelf() : type;
         }
 
         /// <summary>
-        /// Traverses the <see cref="SerializedProperty.propertyPath"/> to return the runtime object instance
-        /// that directly owns this property (i.e., the containing class instance, not the root target).
-        /// Supports nested objects, arrays, and generic <see cref="List{T}"/> fields.
+        /// Resolves the <see cref="FieldInfo"/> that backs this <see cref="SerializedProperty"/>,
+        /// looked up on the runtime type of the property's declaring instance (see <see cref="GetDeclaringInstance"/>).
         /// </summary>
-        /// <param name="property">The property whose owning instance should be resolved.</param>
-        /// <returns>The runtime object that contains the field represented by <paramref name="property"/>.</returns>
-        public static object GetClassInstance(this SerializedProperty property)
+        /// <remarks>
+        /// Base classes are searched too. For a list/array element the collection field itself is returned
+        /// (matching <c>PropertyDrawer.fieldInfo</c>); a <c>[SerializeReference]</c> segment resolves naturally
+        /// through the live managed reference's runtime type.
+        /// </remarks>
+        /// <param name="property">The property whose backing field should be located.</param>
+        /// <returns>The resolved <see cref="FieldInfo"/>, or <see langword="null"/> if it cannot be found.</returns>
+        public static FieldInfo GetFieldInfo(this SerializedProperty property)
         {
-            var path = property.propertyPath;
-            var target = property.serializedObject.targetObject;
-            var startRemoveIndex = path.Length - property.name.Length - 1;
+            var owner = property.GetDeclaringInstance();
+            return owner is null ? null : GetFieldIncludingBaseClasses(owner.GetType(), property.GetMemberName());
+        }
 
-            if (startRemoveIndex < 0) return target;
-            
-            path = path
-                .Remove(startRemoveIndex)
-                .Replace(".Array.data[", "[");
+        /// <summary>
+        /// Traverses the <see cref="SerializedProperty.propertyPath"/> to return the runtime object on which the
+        /// property's backing field is declared — the direct container, not the root <c>targetObject</c>.
+        /// For an array/list element property the instance owning the collection field is returned.
+        /// </summary>
+        /// <remarks>
+        /// When the declaring instance is a struct, the returned object is a boxed <b>copy</b> — mutating it does not
+        /// affect the serialized object. Any resolution failure (missing field, a <see langword="null"/> value
+        /// or an out-of-range element index along the path) returns <see langword="null"/>.
+        /// </remarks>
+        /// <param name="property">The property whose declaring instance should be resolved.</param>
+        /// <returns>
+        /// The instance declaring the property's backing field (the root <c>targetObject</c> for a top-level property),
+        /// or <see langword="null"/> if the path cannot be resolved.
+        /// </returns>
+        /// <example>
+        /// For <c>_inventory._slots.Array.data[2]._weapon</c> the returned instance is the slot element
+        /// <c>_slots[2]</c> — the object whose class declares the <c>_weapon</c> field:
+        /// <code>
+        /// var slot = property.GetDeclaringInstance() as InventorySlot;
+        /// </code>
+        /// </example>
+        public static object GetDeclaringInstance(this SerializedProperty property)
+        {
+            object current = property.serializedObject.targetObject;
 
-            object current = target;
+            // The simplified path minus its last segment (the property itself).
+            var path = property.SimplifyPropertyPath();
+            var lastDotIndex = path.LastIndexOf('.');
+            if (lastDotIndex < 0) return current;
 
-            foreach (var part in path.Split('.'))
+            foreach (var part in path[..lastDotIndex].Split('.'))
             {
-                if (part.Contains("["))
-                {
-                    var startPartIndex = part.IndexOf("[", StringComparison.Ordinal) + 1;
-                    var length = part.IndexOf("]", StringComparison.Ordinal) - startPartIndex;
+                if (current is null) return null;
 
-                    var index = int.Parse(part.Substring(startPartIndex, length));
-                    current = FindInstance(part[..(startPartIndex - 1)], index);
-                }
-                else
+                var bracket = part.IndexOf('[');
+                var name = bracket < 0 ? part : part[..bracket];
+
+                current = GetFieldIncludingBaseClasses(current.GetType(), name)?.GetValue(current);
+
+                if (bracket >= 0 && current is IList list)
                 {
-                    current = FindInstance(part);
+                    // A stale path can point past the end of a shrunk list — a resolution failure, not an exception.
+                    var index = int.Parse(part[(bracket + 1)..^1]);
+                    current = index < list.Count ? list[index] : null;
                 }
             }
 
             return current;
+        }
 
-            object FindInstance(string name, int index = -1)
+        private static FieldInfo GetFieldIncludingBaseClasses(Type type, string name)
+        {
+            const BindingFlags bindingAttr = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic;
+
+            for (var current = type; current is not null; current = current.BaseType)
             {
-                if (current is null) return null;
-
-                var field = FindField(current.GetType(), name);
-                if (field is null) return null;
-
-                var value = field.GetValue(current);
-                return index > -1 && value is IList list
-                    ? list[index]
-                    : value;
+                var field = current.GetField(name, bindingAttr);
+                if (field is not null) return field;
             }
 
-            FieldInfo FindField(Type type, string name)
-            {
-                return type?.GetMembersInfosIncludingBaseClasses(BindingFlags)
-                    .OfType<FieldInfo>()
-                    .FirstOrDefault(field => field.Name == name);
-            }
+            return null;
         }
     }
 }

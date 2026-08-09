@@ -5,9 +5,9 @@ using UnityEngine.UIElements;
 namespace Aspid.FastTools.UIElements.Editors.Internal
 {
     /// <summary>
-    /// A non-interactive overlay <see cref="VisualElement"/> that paints a horizontal accent
-    /// gradient (a row of vertical strips with a quadratic alpha falloff) and smoothly
-    /// fades it in or out toward a target progress between 0 and 1.
+    /// A non-interactive overlay <see cref="VisualElement"/> that paints a smooth horizontal accent
+    /// gradient with a quadratic alpha falloff and smoothly fades it in or out toward a target
+    /// progress between 0 and 1.
     /// </summary>
     [UxmlElement(libraryPath = "Aspid/FastTools")]
     internal sealed partial class AspidHoverGradientOverlay : VisualElement
@@ -19,6 +19,12 @@ namespace Aspid.FastTools.UIElements.Editors.Internal
         private const int DefaultSteps = 75;
         private const float DefaultLerpRate = 0.12f;
         private const float DefaultAlphaScale = 0.35f;
+
+        // Conservative cap on the step count: each step emits 6 indices, so 65535 / 6 = 10922 steps
+        // keeps even the total index count within ushort range. The hard limits — the largest emitted
+        // vertex index, (ushort)(i * 2 + 3) = 2 * steps + 1, and the 65535-vertex allocation ceiling —
+        // are only reached above ~32k steps, well past this cap.
+        private const int MaxSteps = ushort.MaxValue / 6;
 
         private const string StyleSheetPath = "UI/Components/Aspid-FastTools-AspidHoverGradientOverlay";
 
@@ -41,7 +47,8 @@ namespace Aspid.FastTools.UIElements.Editors.Internal
         }
 
         /// <summary>
-        /// Gets or sets the number of vertical strips painted across the overlay width.
+        /// Gets or sets the number of gradient segments painted across the overlay width.
+        /// More segments approximate the quadratic alpha falloff more finely.
         /// </summary>
         [UxmlAttribute]
         public int Steps
@@ -108,27 +115,45 @@ namespace Aspid.FastTools.UIElements.Editors.Internal
         {
             if (_progress <= DrawThreshold) return;
 
-            var painter = ctx.painter2D;
             var rect = contentRect;
-            var steps = Mathf.Max(1, _metrics.Steps);
-            var stripWidth = rect.width / steps;
+            if (rect.width <= 0f || rect.height <= 0f) return;
+
+            var steps = Mathf.Clamp(_metrics.Steps, 1, MaxSteps);
             var alphaScale = _metrics.AlphaScale;
             var baseColor = _color.Value;
 
+            // One vertical column of vertices per gradient stop (top + bottom). Adjacent quads
+            // reuse their shared boundary column, so the mesh carries no internal anti-aliased
+            // edges — only its outer silhouette is smoothed. That removes the dark seams that
+            // appeared when each strip was filled separately and faded its own edges to transparent.
+            var columns = steps + 1;
+            var mesh = ctx.Allocate(columns * 2, steps * 6);
+
+            for (var j = 0; j < columns; j++)
+            {
+                var t = (float)j / steps;
+                var alpha = (1f - t) * (1f - t) * _progress * alphaScale;
+                var color = new Color(baseColor.r, baseColor.g, baseColor.b, alpha);
+                var x = t * rect.width;
+
+                mesh.SetNextVertex(new Vertex { position = new Vector3(x, 0f, Vertex.nearZ), tint = color });
+                mesh.SetNextVertex(new Vertex { position = new Vector3(x, rect.height, Vertex.nearZ), tint = color });
+            }
+
             for (var i = 0; i < steps; i++)
             {
-                var t = (float)i / Mathf.Max(1, steps - 1);
-                var alpha = (1f - t) * (1f - t) * _progress * alphaScale;
+                var topLeft = (ushort)(i * 2);
+                var bottomLeft = (ushort)(i * 2 + 1);
+                var topRight = (ushort)(i * 2 + 2);
+                var bottomRight = (ushort)(i * 2 + 3);
 
-                painter.fillColor = new Color(baseColor.r, baseColor.g, baseColor.b, alpha);
+                mesh.SetNextIndex(bottomLeft);
+                mesh.SetNextIndex(topLeft);
+                mesh.SetNextIndex(topRight);
 
-                painter.BeginPath();
-                painter.MoveTo(new Vector2(i * stripWidth, 0f));
-                painter.LineTo(new Vector2((i + 1) * stripWidth, 0f));
-                painter.LineTo(new Vector2((i + 1) * stripWidth, rect.height));
-                painter.LineTo(new Vector2(i * stripWidth, rect.height));
-                painter.ClosePath();
-                painter.Fill();
+                mesh.SetNextIndex(topRight);
+                mesh.SetNextIndex(bottomRight);
+                mesh.SetNextIndex(bottomLeft);
             }
         }
     }

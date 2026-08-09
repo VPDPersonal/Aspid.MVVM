@@ -9,6 +9,15 @@ namespace Aspid.FastTools.UIElements.Editors.Internal
     internal static class AspidAnimatedDotsBackgroundExtensions
     {
         /// <summary>
+        /// Sets <see cref="AspidAnimatedDotsBackground.Status"/> and returns the element for chaining.
+        /// </summary>
+        public static AspidAnimatedDotsBackground SetStatus(this AspidAnimatedDotsBackground element, StatusStyle.Type value)
+        {
+            element.Status = value;
+            return element;
+        }
+
+        /// <summary>
         /// Sets <see cref="AspidAnimatedDotsBackground.Color1"/> and returns the element for chaining.
         /// </summary>
         public static AspidAnimatedDotsBackground SetColor1(this AspidAnimatedDotsBackground element, Color value)

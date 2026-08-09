@@ -16,6 +16,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **`Aspid.MVVM Settings`** window restyled to match the Aspid.FastTools **Welcome** window — animated dot background, animated logo (links to the Asset Store) and title, themed cards, gradient `Apply` / `Revert` buttons and a footer with version and links.
 - Moved the settings window into the shared `Tools/Aspid 🐍` top-menu submenu, next to `Welcome FastTools`.
 - Settings window version is now read from the package manifest instead of a hard-coded constant; `AspidToggle` colors aligned with the theme.
+- Embedded `Aspid.FastTools` updated from `1.0.0-rc.4` to `1.0.0-rc.6`, which brings `[TypeSelector]` support for `[SerializeReference]` fields — the replacement for the removed `SerializeReferenceDropdown` integration. Two upstream API renames were followed: the `Aspid.FastTools.Reflection` namespace collapsed into `Aspid.FastTools`, and `SerializedProperty.GetClassInstance()` became `GetDeclaringInstance()`.
 - Inspector attributes (`[SerializeField]`, `[SerializeReference]`, `[Tooltip]`) in the Unity-independent layers are no longer wrapped in `#if UNITY_2022_1_OR_NEWER`. No-op stubs in `Source/Compatibility/UnityAttributesShim.cs` stand in for them outside Unity, so 22 preprocessor blocks across 14 files could be dropped. Directives guarding real Unity API (`Debug`, `Component`, `ProfilerMarker`) are unchanged.
 
 ### Removed

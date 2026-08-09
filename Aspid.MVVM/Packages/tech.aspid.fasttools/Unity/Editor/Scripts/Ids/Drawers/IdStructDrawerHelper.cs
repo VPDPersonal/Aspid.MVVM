@@ -36,7 +36,6 @@ namespace Aspid.FastTools.Ids.Editors
             if (registryName == ctx.StringProperty.stringValue) return;
 
             ctx.StringProperty.SetStringAndApply(registryName);
-            ctx.Property.ApplyModifiedProperties();
         }
         
         public static void ApplySelection(
@@ -63,7 +62,6 @@ namespace Aspid.FastTools.Ids.Editors
         {
             ctx.IntProperty.SetIntAndApply(id);
             ctx.StringProperty.SetStringAndApply(nameId);
-            ctx.Property.ApplyModifiedPropertiesWithoutUndo();
         }
     }
 }

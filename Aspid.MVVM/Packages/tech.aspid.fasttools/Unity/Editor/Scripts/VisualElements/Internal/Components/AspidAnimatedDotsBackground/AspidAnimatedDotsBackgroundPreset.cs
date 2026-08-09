@@ -15,7 +15,13 @@ namespace Aspid.FastTools.UIElements.Editors.Internal
         public static AspidAnimatedDotsBackgroundPreset Default => new AspidAnimatedDotsBackgroundPreset()
             .SetDotSpacing(18)
             .SetDotRadius(1.55f)
-            .SetScaleReferenceSize(420);
+            .SetScaleReferenceSize(420)
+            .SetStatus(StatusStyle.Type.None);
+
+        /// <summary>
+        /// Status wash across all three blobs. <see cref="StatusStyle.Type.None"/> leaves the default signal gradient.
+        /// </summary>
+        public StatusStyle.Type Status;
 
         /// <summary>
         /// Color of the first blob. Falls back to USS when default.
@@ -49,6 +55,15 @@ namespace Aspid.FastTools.UIElements.Editors.Internal
         /// via <c>--aspid-fasttools-metrics-dot_scale_reference</c>.
         /// </summary>
         public float ScaleReferenceSize;
+
+        /// <summary>
+        /// Sets <see cref="Status"/> and returns the modified preset.
+        /// </summary>
+        public AspidAnimatedDotsBackgroundPreset SetStatus(StatusStyle.Type value)
+        {
+            Status = value;
+            return this;
+        }
 
         /// <summary>
         /// Sets <see cref="Color1"/> and returns the modified preset.

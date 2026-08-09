@@ -1107,6 +1107,27 @@ namespace Aspid.FastTools.UIElements
         }
 
         /// <summary>
+        /// Sets the left and right border colors by parsing an HTML color string via <see cref="ColorUtility.TryParseHtmlString"/>.
+        /// </summary>
+        /// <typeparam name="T">The style type.</typeparam>
+        /// <param name="style">The style to modify.</param>
+        /// <param name="value">The HTML color string (e.g. "#FF0000", "red").</param>
+        /// <returns>The style, for chaining.</returns>
+        public static T SetBorderColorX<T>(
+            this T style,
+            string value)
+            where T : IStyle
+        {
+            if (!ColorUtility.TryParseHtmlString(value, out var color))
+            {
+                Debug.LogWarning($"Failed to parse color string: '{value}'");
+                return style;
+            }
+
+            return style.SetBorderColorX(color);
+        }
+
+        /// <summary>
         /// Sets <see cref="IStyle.borderTopColor"/> and <see cref="IStyle.borderBottomColor"/> and returns the style for chaining.
         /// </summary>
         /// <remarks>
@@ -1124,6 +1145,27 @@ namespace Aspid.FastTools.UIElements
             return style.SetBorderColor(
                 top: value,
                 bottom: value);
+        }
+
+        /// <summary>
+        /// Sets the top and bottom border colors by parsing an HTML color string via <see cref="ColorUtility.TryParseHtmlString"/>.
+        /// </summary>
+        /// <typeparam name="T">The style type.</typeparam>
+        /// <param name="style">The style to modify.</param>
+        /// <param name="value">The HTML color string (e.g. "#FF0000", "red").</param>
+        /// <returns>The style, for chaining.</returns>
+        public static T SetBorderColorY<T>(
+            this T style,
+            string value)
+            where T : IStyle
+        {
+            if (!ColorUtility.TryParseHtmlString(value, out var color))
+            {
+                Debug.LogWarning($"Failed to parse color string: '{value}'");
+                return style;
+            }
+
+            return style.SetBorderColorY(color);
         }
 
         /// <summary>

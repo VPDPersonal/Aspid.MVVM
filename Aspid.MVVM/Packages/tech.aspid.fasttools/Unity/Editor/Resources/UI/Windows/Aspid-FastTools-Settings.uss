@@ -1,0 +1,579 @@
+/* --- Settings surface ---
+   The package's branded settings surface, shared by the SerializeReference window's Settings tab (SettingsView) and
+   the Preferences → Aspid FastTools page (AspidFastToolsPreferencesProvider) — class names and the resource path live
+   on AspidSettingsUI, which both surfaces compose from. The per-area controls are the branded AspidSwitch and
+   excluded-folders list (both self-styled) plus plain Unity fields — the Build / CI gate EnumField, the recents
+   SliderInt, the theme-override ObjectField — whose native bright fills would float oddly over the dark canvas, so
+   this sheet repaints them into the dark palette, groups each package area into a glass section card of flat rows,
+   and stripes every row by its storage scope. Every rule is scoped under the block class; the SerializeReference
+   Project Settings page never adds it and keeps its native Unity look. */
+.aspid-fasttools-settings {
+    padding:                                              12px 12px 0 12px;
+    flex-grow:                                            1;
+}
+
+/* --- Surface header ---
+   The audit tabs' results-header idiom: an underlined heading sitting on the bare canvas (no card of its own — the
+   line under the AspidLabel carries the header weight), a dim one-line description under it, then the scope legend. */
+.aspid-fasttools-settings__header {
+    margin-bottom:                                        12px;
+}
+
+.aspid-fasttools-settings__header-title {
+    margin-bottom:                                        6px;
+}
+
+.aspid-fasttools-settings__header-description {
+    color:                                                var(--aspid-colors-text-dark);
+    white-space:                                          normal;
+}
+
+/* Section card — each package area (the first is "References") is one glass group card: the same translucent dark
+   fill, neutral hairline frame and 8px radius as the Project References group cards and the Scan panel, so the
+   window's dotted canvas reads through every card on every tab alike. The controls inside are flat rows, not nested
+   boxes. */
+.aspid-fasttools-settings__section {
+    margin-bottom:                                        10px;
+    padding:                                              8px 10px;
+    border-width:                                         1px;
+    border-radius:                                        8px;
+    border-color:                                         var(--aspid-colors-shade-darkness);
+    background-color:                                     rgba(20, 20, 20, 0.55);
+}
+
+/* Section title — the card's static header row: a bold bright caption whose 4px side padding lines it up with the
+   flat rows' content below (the group cards' static-header geometry). The dividing line under it is its own element
+   (__section-divider), not a border. */
+.aspid-fasttools-settings__section-title {
+    padding:                                              4px 4px;
+    margin-bottom:                                        6px;
+    font-size:                                            13px;
+    color:                                                var(--aspid-colors-text-lightness);
+    -unity-font-style:                                    bold;
+}
+
+/* The dim hairline between the card's header and its rows — the group cards' header-divider geometry (pulled 2px
+   into the title's 6px bottom margin so the header-to-line gap lands on the shared 4px). No sweep rides it: a
+   settings header is static, there is nothing to hover. */
+.aspid-fasttools-settings__section-divider {
+    flex-grow:                                            0;
+    margin-top:                                           -2px;
+    margin-bottom:                                        4px;
+    opacity:                                              0.5;
+}
+
+/* The section body (__section-content) is a bare hook with no rules of its own — the card's padding and the title's
+   margin carry the spacing; it exists so the row selectors below can scope to a section's direct children. */
+
+/* Each control row (caption + switch / dropdown / slider — plus the custom __row rows like the clear-saved-lists
+   actions) is a flat member of its section card — no box of its own, just the scope stripe on its left edge and a
+   flat hover fill (the entry-row idiom of the other tabs) so the eye can trace a wide row from its caption to its
+   control pinned on the right. Only a section's direct children are rows — a field nested inside another control
+   (the slider's inline value box is itself a TextField, i.e. a .unity-base-field) must not pick up the row chrome. */
+.aspid-fasttools-settings__section-content > .unity-base-field,
+.aspid-fasttools-settings__row {
+    margin-left:                                          0;
+    margin-right:                                         0;
+    margin-bottom:                                        2px;
+    /* The 17px left inset = 3px stripe + 6px clear air + the backplate's 8px content inset, so captions sit 8px
+       inside the fill edge like any card content. */
+    padding:                                              4px 4px 4px 17px;
+    /* Centre every row's caption against its control so the captions sit at one height across all rows. The switches
+       already centre via inline styles; this brings the EnumField row (which has none) onto the same baseline. */
+    align-items:                                          center;
+}
+
+/* The backplate carrying a scoped row's hover / keyboard-focus fill (mounted by WithScopeStripe behind the row's
+   content): inset 9px past the stripe so a lit row never touches the line, rounded at the cards' full 8px. The fill
+   cannot live on the row itself — its box starts at the stripe — and the stripe cannot move out into a margin
+   gutter: some field types (AspidSwitch, EnumField) clip children to their bounds. */
+.aspid-fasttools-settings__row-backplate {
+    position:                                             absolute;
+    left:                                                 9px;
+    right:                                                0;
+    top:                                                  0;
+    bottom:                                               0;
+    border-radius:                                        8px;
+    /* The hover lift fades in and out on the window's shared 0.25s ease-out beat instead of snapping. */
+    transition-property:                                  background-color;
+    transition-duration:                                  0.25s;
+    transition-timing-function:                           ease-out;
+}
+
+.aspid-fasttools-settings__section-content > .unity-base-field:hover > .aspid-fasttools-settings__row-backplate,
+.aspid-fasttools-settings__row:hover > .aspid-fasttools-settings__row-backplate {
+    background-color:                                     var(--aspid-colors-bg-dark);
+}
+
+/* The footer's reset row has no scope stripe (its two buttons act on different scopes), so no backplate is mounted —
+   its hover fill stays on the row itself — and the rows' 17px stripe gutter collapses away: the -4px margin cancels
+   the 4px text padding, landing the caption exactly on the header/card left grid while the hover fill keeps 4px of
+   air around the text. */
+.aspid-fasttools-settings__footer .aspid-fasttools-settings__row {
+    margin-left:                                          -4px;
+    padding-left:                                         4px;
+    border-radius:                                        8px;
+    transition-property:                                  background-color;
+    transition-duration:                                  0.25s;
+    transition-timing-function:                           ease-out;
+}
+
+.aspid-fasttools-settings__footer .aspid-fasttools-settings__row:hover {
+    background-color:                                     var(--aspid-colors-bg-dark);
+}
+
+/* A row note — one dim line under a row surfacing what its tooltip would otherwise hide (the gate values' meaning,
+   what a team-wide toggle really does). The left padding lands the text on the rows' caption edge (3px scope stripe
+   + 8px inset); the negative top margin tucks it under its row, and the bottom margin re-opens the rhythm to the
+   next row. */
+.aspid-fasttools-settings__row-note {
+    margin-top:                                           -1px;
+    margin-bottom:                                        6px;
+    /* 17px = the rows' 9px stripe gutter + their 8px content inset, so the note sits on its row's caption edge. */
+    padding-left:                                         17px;
+    font-size:                                            11px;
+    color:                                                var(--aspid-colors-text-dark);
+    white-space:                                          normal;
+}
+
+/* Custom (non-BaseField) rows lay out like the field rows: caption left, controls pinned right. */
+.aspid-fasttools-settings__row {
+    flex-direction:                                       row;
+    min-height:                                           32px;
+}
+
+/* The custom row's caption mirrors .unity-base-field__label: light palette tone, filling the row so the controls pin
+   to the right edge. */
+.aspid-fasttools-settings__row-caption {
+    flex-grow:                                            1;
+    color:                                                var(--aspid-colors-text-light);
+    -unity-text-align:                                    middle-left;
+}
+
+/* --- Storage-scope marking ---
+   The tab mixes settings persisted in the committed ProjectSettings asset (team-wide) with per-user EditorPrefs ones,
+   so every row wears a scope stripe on its left edge: green = shared with the team, blue = just this machine. The
+   stripe is a separate element mounted by WithScopeStripe — not a border-left, which would bend around the row's
+   corner radius — absolutely pinned to the row's left edge with a small vertical inset, so it stays a straight line
+   whatever the row's rounding, and the rows' left padding keeps a clear gap between the line and the content. The
+   scope utility classes are applied by the section builders; the stripes only paint inside this window — the Project
+   Settings page never loads this sheet. The legend in the surface header decodes the two colours. */
+.aspid-fasttools-settings__scope-stripe {
+    position:                                             absolute;
+    /* Pinned inside the row's box (some field types clip children to their bounds, so it cannot hang outside);
+       the fill-carrying backplate starts 9px in, leaving 6px of clear air between the line and a lit row. */
+    left:                                                 0;
+    top:                                                  3px;
+    bottom:                                               3px;
+    width:                                                3px;
+    border-radius:                                        1px;
+}
+
+.aspid-fasttools-settings__scope-stripe.aspid-fasttools-settings-scope--shared {
+    background-color:                                     var(--aspid-colors-status-success-lightness);
+}
+
+.aspid-fasttools-settings__scope-stripe.aspid-fasttools-settings-scope--user {
+    background-color:                                     var(--aspid-colors-status-info-lightness);
+}
+
+/* The scope legend: one dim line pairing each stripe colour with what it means for persistence. Lives in the surface
+   header, under the description — the reader meets the key before the first striped row. The 6px-dot idiom of the
+   window's other legends (the audit's amber/blue key, the Welcome sample markers), so every legend in the window
+   reads as one family. Items flow in a row and wrap on narrow windows. */
+.aspid-fasttools-settings__legend {
+    flex-direction:                                       row;
+    flex-wrap:                                            wrap;
+    /* The 1px left margin optically lands the dots on the header text edge (the text has no side padding). */
+    margin:                                               6px 0 0 1px;
+}
+
+.aspid-fasttools-settings__legend-item {
+    flex-direction:                                       row;
+    align-items:                                          center;
+    margin-right:                                         16px;
+}
+
+/* Each legend dot is painted by the same scope class the rows' stripes wear (the fill rules below), so the key and
+   the marking stay one system. */
+.aspid-fasttools-settings__legend-swatch {
+    width:                                                6px;
+    height:                                               6px;
+    margin-right:                                         6px;
+    border-radius:                                        3px;
+}
+
+.aspid-fasttools-settings__legend-swatch.aspid-fasttools-settings-scope--shared {
+    background-color:                                     var(--aspid-colors-status-success-lightness);
+}
+
+.aspid-fasttools-settings__legend-swatch.aspid-fasttools-settings-scope--user {
+    background-color:                                     var(--aspid-colors-status-info-lightness);
+}
+
+.aspid-fasttools-settings__legend-text {
+    font-size:                                            11px;
+    color:                                                var(--aspid-colors-text-dark);
+}
+
+/* --- Action buttons (custom rows) ---
+   Small framed buttons pinned to a row's right edge, framed like the other settings inputs. The danger modifier gives
+   a destructive action (clearing a saved list) the red hover family instead of the signature green. */
+.aspid-fasttools-settings__action {
+    height:                                               22px;
+    margin:                                               0 0 0 6px;
+    padding:                                              0 10px;
+    background-color:                                     rgba(20, 20, 20, 0.55);
+    border-width:                                         1px;
+    border-color:                                         var(--aspid-colors-shade-dark);
+    border-radius:                                        8px;
+    color:                                                var(--aspid-colors-text-light);
+    /* The status wash (fill, frame and text together) fades on the same 0.25s ease-out beat as the row cards. */
+    transition-property:                                  background-color, border-color, color;
+    transition-duration:                                  0.25s;
+    transition-timing-function:                           ease-out;
+}
+
+.aspid-fasttools-settings__action:hover {
+    border-color:                                         var(--aspid-colors-status-success-shade-light);
+    color:                                                var(--aspid-colors-status-success-text-light);
+    background-color:                                     rgba(20, 90, 45, 0.25);
+}
+
+.aspid-fasttools-settings__action--danger:hover {
+    border-color:                                         var(--aspid-colors-status-error-text-dark);
+    color:                                                var(--aspid-colors-status-error-text-light);
+    background-color:                                     rgba(125, 35, 35, 0.25);
+}
+
+/* An action tied to the per-user scope (the per-user reset) hovers in the scope's blue instead of the signature
+   green, mirroring how the shared action's green hover matches its stripe. */
+.aspid-fasttools-settings__action--info:hover {
+    border-color:                                         var(--aspid-colors-status-info-text-dark);
+    color:                                                var(--aspid-colors-status-info-text-light);
+    background-color:                                     rgba(25, 75, 130, 0.25);
+}
+
+/* --- Reset footer ---
+   Pinned under the scroll (a sibling of it, so it never scrolls away): a hairline over one action row that resets
+   each storage scope to its defaults. The buttons wear the same scope classes as the settings rows, so each carries
+   its scope's stripe on its left edge at rest. The row card keeps the tab's side inset but drops its stacking margin —
+   the footer's own padding spaces it. */
+.aspid-fasttools-settings__footer {
+    padding:                                              8px 0;
+    border-top-width:                                     1px;
+    border-top-color:                                     var(--aspid-colors-shade-dark);
+}
+
+.aspid-fasttools-settings__footer .aspid-fasttools-settings__row {
+    margin-bottom:                                        0;
+}
+
+/* --- Recent-items slider ---
+   The SliderInt row joins the family: caption and control split 50/50 like the EnumField row, a slim dark track with
+   a muted round handle (the switch handle's palette), and the drag-value text box framed like the other inputs.
+   Every slider rule is scoped under __section-content — NOT the surface root — because a ScrollView's scrollbar is
+   internally a .unity-base-slider too: root-scoped rules would repaint the tab's own vertical scroller into a stray
+   bright pill (the dragger fill + re-pinned geometry below). The scroller lives outside the section cards, so the
+   tighter scope reaches only the real settings slider. */
+.aspid-fasttools-settings__section-content .unity-base-slider .unity-base-field__label {
+    flex-grow:                                            1;
+    flex-basis:                                           0;
+    min-width:                                            auto;
+}
+
+.aspid-fasttools-settings__section-content .unity-base-slider .unity-base-field__input {
+    flex-grow:                                            1;
+    flex-shrink:                                          1;
+    flex-basis:                                           0;
+}
+
+/* Track and handle are re-sized from Unity's defaults, so their vertical geometry is re-pinned instead of inheriting
+   offsets tuned for the default sizes — otherwise the handle rides below the track's centre line. The track centres
+   cleanly with top:50% + a minus-half-height margin; the handle's top offset is partly forced by BaseSlider itself,
+   so its margin carries an extra -4px measured against the 22px input row to land the handle's centre exactly on the
+   track's (change either height and this needs re-measuring). */
+.aspid-fasttools-settings__section-content .unity-base-slider__tracker {
+    top:                                                  50%;
+    height:                                               4px;
+    margin-top:                                           -2px;
+    border-width:                                         0;
+    border-radius:                                        2px;
+    background-color:                                     var(--aspid-colors-shade-darkness);
+}
+
+.aspid-fasttools-settings__section-content .unity-base-slider__dragger {
+    top:                                                  50%;
+    width:                                                12px;
+    height:                                               12px;
+    margin-top:                                           -10px;
+    border-width:                                         1px;
+    border-radius:                                        6px;
+    border-color:                                         var(--aspid-colors-shade-dark);
+    background-color:                                     rgba(189, 189, 196, 0.85);
+}
+
+/* Unity's separate focus halo (the dragger-border element) is sized for the default handle and pokes out from under
+   the smaller one as a stray blue disc — hide it; the handle carries the focus tint itself below. */
+.aspid-fasttools-settings__section-content .unity-base-slider__dragger-border {
+    display:                                              none;
+}
+
+/* Hovering the slider washes the handle's border in the muted signature green — the same accent family as the
+   switches, the dropdown and the folder list; keyboard focus pulls in the bright accent, replacing the hidden
+   default halo. */
+.aspid-fasttools-settings__section-content .unity-base-slider:hover .unity-base-slider__dragger {
+    border-color:                                         var(--aspid-colors-status-success-shade-light);
+}
+
+.aspid-fasttools-settings__section-content .unity-base-slider:focus .unity-base-slider__dragger {
+    border-color:                                         var(--aspid-colors-status-success-text-light);
+}
+
+/* The slider's inline value box: a fixed-size TextField (it must not stretch with the row) framed like the other
+   settings inputs instead of Unity's bright default field. The height is set on the TextField itself and mirrored on
+   its input — Unity sizes the slider's inline field shorter than our input, which otherwise clips the digit's
+   bottom against the frame. */
+.aspid-fasttools-settings__section-content .unity-base-slider__text-field {
+    flex-grow:                                            0;
+    flex-shrink:                                          0;
+    width:                                                34px;
+    height:                                               22px;
+    margin:                                               0 0 0 8px;
+}
+
+.aspid-fasttools-settings__section-content .unity-base-slider__text-field .unity-base-text-field__input {
+    height:                                               22px;
+    padding:                                              0 4px;
+    -unity-text-align:                                    middle-center;
+    background-color:                                     rgba(20, 20, 20, 0.55);
+    border-width:                                         1px;
+    border-color:                                         var(--aspid-colors-shade-dark);
+    border-radius:                                        6px;
+    color:                                                var(--aspid-colors-text-lightness);
+}
+
+.aspid-fasttools-settings__section-content .unity-base-slider__text-field .unity-base-text-field__input:focus {
+    border-color:                                         var(--aspid-colors-status-success-text-light);
+}
+
+/* Field captions read in the palette's light text tone, matching the window's other labels, and align to the row's
+   vertical centre so every caption — switch or dropdown — sits on the same height. */
+.aspid-fasttools-settings .unity-base-field__label {
+    color:                                                var(--aspid-colors-text-light);
+    -unity-text-align:                                    middle-left;
+}
+
+/* The Build / CI gate EnumField, branded to the window: a dark field framed by a neutral shade border with the
+   package's small radius, the caption text in the light palette tone, and the signature green washing in on hover and
+   when the popup is open — the same accent family as the switches and the folder list. EnumField derives from
+   BaseField, not BasePopupField, so its input box is `.unity-enum-field__input` — the base-popup class is listed
+   alongside so the rule holds across Unity versions. */
+.aspid-fasttools-settings .unity-enum-field__input,
+.aspid-fasttools-settings .unity-base-popup-field__input {
+    min-height:                                           24px;
+    padding:                                              1px 6px;
+    background-color:                                     rgba(20, 20, 20, 0.55);
+    border-width:                                         1px;
+    border-color:                                         var(--aspid-colors-shade-dark);
+    border-radius:                                        8px;
+}
+
+.aspid-fasttools-settings .unity-enum-field__text {
+    color:                                                var(--aspid-colors-text-lightness);
+}
+
+/* Split the row evenly: the caption takes the left half, the dropdown the right half (flex-grow:1 + flex-basis:0 on
+   both shares the width 50/50) instead of the dropdown stretching the whole row. */
+.aspid-fasttools-settings .unity-enum-field .unity-base-field__label {
+    flex-grow:                                            1;
+    flex-basis:                                           0;
+    min-width:                                            auto;
+}
+
+.aspid-fasttools-settings .unity-enum-field__input {
+    flex-grow:                                            1;
+    flex-shrink:                                          1;
+    flex-basis:                                           0;
+}
+
+/* The dropdown chevron rides in the dim palette tone at rest instead of Unity's bright default arrow. */
+.aspid-fasttools-settings .unity-enum-field__arrow,
+.aspid-fasttools-settings .unity-base-popup-field__arrow {
+    -unity-background-image-tint-color:                  var(--aspid-colors-text-dark);
+}
+
+/* Hover washes the border to the muted signature green and brightens the chevron — the dropdown joins the same
+   green-accent family as the switches and the folder list. */
+.aspid-fasttools-settings .unity-enum-field:hover .unity-enum-field__input,
+.aspid-fasttools-settings .unity-base-popup-field:hover .unity-base-popup-field__input {
+    border-color:                                         var(--aspid-colors-status-success-shade-light);
+}
+
+.aspid-fasttools-settings .unity-enum-field:hover .unity-enum-field__arrow,
+.aspid-fasttools-settings .unity-base-popup-field:hover .unity-base-popup-field__arrow {
+    -unity-background-image-tint-color:                  var(--aspid-colors-status-success-text-light);
+}
+
+/* Open / focused: the border pulls in the bright signature green (the same accent as the active-tab underline) so the
+   live dropdown reads clearly. */
+.aspid-fasttools-settings .unity-enum-field:focus .unity-enum-field__input {
+    border-color:                                         var(--aspid-colors-status-success-text-light);
+}
+
+/* --- Theme-override ObjectField ---
+   The Appearance section's StyleSheet picker joins the family: caption and control split 50/50 like the EnumField
+   row, the input framed as the other dark inputs, with the same green hover wash. */
+.aspid-fasttools-settings .unity-object-field .unity-base-field__label {
+    flex-grow:                                            1;
+    flex-basis:                                           0;
+    min-width:                                            auto;
+}
+
+.aspid-fasttools-settings .unity-object-field__input {
+    flex-grow:                                            1;
+    flex-shrink:                                          1;
+    flex-basis:                                           0;
+    min-height:                                           24px;
+    padding:                                              1px 2px 1px 6px;
+    background-color:                                     rgba(20, 20, 20, 0.55);
+    border-width:                                         1px;
+    border-color:                                         var(--aspid-colors-shade-dark);
+    border-radius:                                        8px;
+}
+
+.aspid-fasttools-settings .unity-object-field-display__label {
+    color:                                                var(--aspid-colors-text-lightness);
+}
+
+.aspid-fasttools-settings .unity-object-field:hover .unity-object-field__input {
+    border-color:                                         var(--aspid-colors-status-success-shade-light);
+}
+
+/* The object-picker button on the input's right edge, toned down to the dark family instead of Unity's bright chip. */
+.aspid-fasttools-settings .unity-object-field__selector {
+    background-color:                                     rgba(255, 255, 255, 0.06);
+    border-radius:                                        6px;
+}
+
+.aspid-fasttools-settings .unity-object-field__selector:hover {
+    background-color:                                     rgba(255, 255, 255, 0.16);
+}
+
+/* --- Keyboard navigation ---
+   Arrow keys walk one flat focus ring over every actionable element on the tab (switch rows, the gate dropdown, the
+   excluded-folders panel, the slider row, the action buttons); Enter activates the highlighted one, ←/→ nudge the
+   highlighted slider, Escape drops the highlight. The highlight mirrors each element's own hover treatment so
+   keyboard focus and mouse hover read as one state (the other tabs' nav idiom). Rows take the flat hover fill: */
+.aspid-fasttools-settings__nav-target--focused > .aspid-fasttools-settings__row-backplate {
+    background-color:                                     var(--aspid-colors-bg-dark);
+}
+
+/* The footer's reset row would take the flat fill directly if it ever joins the ring (it has no backplate). */
+.aspid-fasttools-settings__footer .aspid-fasttools-settings__row.aspid-fasttools-settings__nav-target--focused {
+    background-color:                                     var(--aspid-colors-bg-dark);
+}
+
+/* Action buttons mirror their own hover families — signature green, red for destructive, blue for per-user scope. */
+.aspid-fasttools-settings__action.aspid-fasttools-settings__nav-target--focused {
+    border-color:                                         var(--aspid-colors-status-success-shade-light);
+    color:                                                var(--aspid-colors-status-success-text-light);
+    background-color:                                     rgba(20, 90, 45, 0.25);
+}
+
+.aspid-fasttools-settings__action--danger.aspid-fasttools-settings__nav-target--focused {
+    border-color:                                         var(--aspid-colors-status-error-text-dark);
+    color:                                                var(--aspid-colors-status-error-text-light);
+    background-color:                                     rgba(125, 35, 35, 0.25);
+}
+
+.aspid-fasttools-settings__action--info.aspid-fasttools-settings__nav-target--focused {
+    border-color:                                         var(--aspid-colors-status-info-text-dark);
+    color:                                                var(--aspid-colors-status-info-text-light);
+    background-color:                                     rgba(25, 75, 130, 0.25);
+}
+
+/* The excluded-folders control joins the ring per element: its add header highlights via the same neutral fill it
+   shows on mouse hover (Enter opens the add-folder picker) with the "+" brightening to green alongside, and each
+   folder row takes the flat neutral fill of its own hover (Enter re-picks the folder, Delete/Backspace removes it).
+   Two classes per rule outrank the control's self-styled base rules, whose sheet loads deeper. */
+.aspid-fasttools-excluded-folders__header.aspid-fasttools-settings__nav-target--focused {
+    background-color:                                     var(--aspid-colors-bg-dark);
+}
+
+.aspid-fasttools-excluded-folders__header.aspid-fasttools-settings__nav-target--focused
+    .aspid-fasttools-excluded-folders__add {
+    color:                                                var(--aspid-colors-status-success-text-light);
+}
+
+.aspid-fasttools-excluded-folders__entry.aspid-fasttools-settings__nav-target--focused {
+    background-color:                                     var(--aspid-colors-bg-dark);
+}
+
+/* --- Scrollbar ---
+   The surface's vertical scroller re-dressed from Unity's bright default into the window's quiet family: no
+   step buttons, no track — just a slim translucent thumb that brightens while the scroller is hovered. Mirrors the
+   window sheet's scroller rules (which cover the window's other tabs) so the Preferences page — which loads only
+   this sheet — scrolls in the same chrome. Scoped to the scroller so the Recent-items slider (a base-slider too,
+   scoped under __section-content) is untouched. */
+.aspid-fasttools-settings .unity-scroller--vertical {
+    width:                                                12px;
+    margin:                                               0;
+    border-width:                                         0;
+    background-color:                                     rgba(0, 0, 0, 0);
+}
+
+.aspid-fasttools-settings .unity-scroller--vertical > .unity-scroller__low-button,
+.aspid-fasttools-settings .unity-scroller--vertical > .unity-scroller__high-button {
+    display:                                              none;
+}
+
+/* With the step buttons gone, the slider re-pins to the scroller's full height (the default offsets reserve room
+   for them). */
+.aspid-fasttools-settings .unity-scroller--vertical .unity-scroller__slider {
+    margin:                                               0;
+    padding:                                              0;
+    width:                                                12px;
+    min-width:                                            12px;
+    top:                                                  0;
+    bottom:                                               0;
+}
+
+.aspid-fasttools-settings .unity-scroller--vertical .unity-base-slider__tracker {
+    border-width:                                         0;
+    background-color:                                     rgba(0, 0, 0, 0);
+}
+
+/* The thumb: slim, rounded, translucent white so it reads over both the bare canvas and the glass cards; hover
+   brightens it on the shared 0.25s beat. The default focus halo is dropped with the rest of the chrome. */
+.aspid-fasttools-settings .unity-scroller--vertical .unity-base-slider__dragger {
+    left:                                                 3px;
+    width:                                                6px;
+    border-width:                                         0;
+    border-radius:                                        3px;
+    background-color:                                     rgba(255, 255, 255, 0.12);
+    transition-property:                                  background-color;
+    transition-duration:                                  0.25s;
+    transition-timing-function:                           ease-out;
+}
+
+.aspid-fasttools-settings .unity-scroller--vertical:hover .unity-base-slider__dragger {
+    background-color:                                     rgba(255, 255, 255, 0.28);
+}
+
+.aspid-fasttools-settings .unity-scroller--vertical .unity-base-slider__dragger-border {
+    display:                                              none;
+}
+
+/* --- Standalone canvas ---
+   The SerializeReference window owns its dotted canvas and the Settings tab floats over it; a surface hosted
+   anywhere else (the Preferences page) brings its own via this pair: the host fills the page and stacks the dots
+   component behind the surface, and the background class gives the dots the black base they paint over (mirroring
+   the window's __background rule). */
+.aspid-fasttools-settings-canvas {
+    flex-grow:                                            1;
+}
+
+.aspid-fasttools-settings-canvas__background {
+    background-color:                                     rgb(0, 0, 0);
+}

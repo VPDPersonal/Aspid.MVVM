@@ -62,12 +62,16 @@ namespace Aspid.FastTools.Editors
         }
 
         /// <summary>
-        /// Returns a copy of the property that owns its own freshly allocated <see cref="SerializedObject"/>
-        /// built from the original property's <see cref="SerializedObject.targetObjects"/>.
-        /// Use this when the property must outlive the original <see cref="SerializedObject"/>
-        /// (e.g. cached as a field on a long-lived UIToolkit element or captured in a deferred callback);
-        /// the returned property is independent of the source and can be safely stored.
+        /// Returns a copy of the property backed by its own new <see cref="SerializedObject"/>,
+        /// independent of the source and safe to store.
         /// </summary>
+        /// <remarks>
+        /// Use when the property must outlive the original <see cref="SerializedObject"/>,
+        /// e.g. cached on a long-lived UIToolkit element or captured in a deferred callback.
+        /// The new <see cref="SerializedObject"/> is owned by the caller and is never disposed by this method.
+        /// The copy reads the target's current serialized state: changes pending on the source
+        /// without <see cref="SerializedObject.ApplyModifiedProperties"/> are not visible to it.
+        /// </remarks>
         /// <param name="property">Source property — its <see cref="SerializedProperty.propertyPath"/> is reused.</param>
         /// <returns>A new <see cref="SerializedProperty"/> at the same path on a new <see cref="SerializedObject"/>.</returns>
         public static SerializedProperty Persistent(this SerializedProperty property) =>

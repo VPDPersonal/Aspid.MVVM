@@ -32,7 +32,14 @@ namespace Aspid.FastTools.UIElements
         public static T SetImageFromResource<T>(this T element, string path)
             where T : Image
         {
-            return element.SetImage(Resources.Load<Texture>(path));
+            var texture = Resources.Load<Texture>(path);
+            if (texture == null)
+            {
+                Debug.LogWarning($"Failed to load Texture from Resources path: '{path}'");
+                return element;
+            }
+
+            return element.SetImage(texture);
         }
         #endregion
 
@@ -62,7 +69,14 @@ namespace Aspid.FastTools.UIElements
         public static T SetSpriteFromResource<T>(this T element, string path)
             where T : Image
         {
-            return element.SetSprite(Resources.Load<Sprite>(path));
+            var sprite = Resources.Load<Sprite>(path);
+            if (sprite == null)
+            {
+                Debug.LogWarning($"Failed to load Sprite from Resources path: '{path}'");
+                return element;
+            }
+
+            return element.SetSprite(sprite);
         }
         #endregion
 
@@ -92,7 +106,14 @@ namespace Aspid.FastTools.UIElements
         public static T SetVectorImageFromResource<T>(this T element, string path)
             where T : Image
         {
-            return element.SetVectorImage(Resources.Load<VectorImage>(path));
+            var vectorImage = Resources.Load<VectorImage>(path);
+            if (vectorImage == null)
+            {
+                Debug.LogWarning($"Failed to load VectorImage from Resources path: '{path}'");
+                return element;
+            }
+
+            return element.SetVectorImage(vectorImage);
         }
         #endregion
 

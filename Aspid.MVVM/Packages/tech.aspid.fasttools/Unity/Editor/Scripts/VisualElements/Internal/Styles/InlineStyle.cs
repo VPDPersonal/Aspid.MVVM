@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.FastTools.UIElements.Editors.Internal
@@ -57,12 +58,15 @@ namespace Aspid.FastTools.UIElements.Editors.Internal
 
         /// <summary>
         /// Applies a default value (typically from a stylesheet or other external source).
-        /// Has no effect once <see cref="IsInline"/> is <c>true</c>, so inline code always wins.
+        /// Has no effect once <see cref="IsInline"/> is <c>true</c>, so inline code always wins,
+        /// and when <paramref name="value"/> equals the current value, so repeated USS resolutions
+        /// with an unchanged value do not re-trigger the change callback.
         /// </summary>
         /// <param name="value">The new default value.</param>
         public void SetDefaultValue(T value)
         {
             if (IsInline)  return;
+            if (EqualityComparer<T>.Default.Equals(Value, value)) return;
 
             _onSet?.Invoke(Value, value);
             Value = value;

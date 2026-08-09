@@ -20,10 +20,10 @@ namespace Aspid.FastTools.Ids.Editors
         public string ToShortLabel()
         {
             var parts = new List<string>();
-            if (DuplicateCount > 0) parts.Add($"{DuplicateCount} duplicates");
+            if (DuplicateCount > 0) parts.Add($"{DuplicateCount} duplicate" + (DuplicateCount is 1 ? string.Empty : "s"));
             if (EmptyCount > 0) parts.Add($"{EmptyCount} empty name" + (EmptyCount is 1 ? string.Empty : "s"));
-            
-            return $"⚠ {Total} invalid enter{(Total == 1 ? "y" : "ies")} ({string.Join(", ", parts)})";
+
+            return $"⚠ {Total} invalid entr{(Total == 1 ? "y" : "ies")} ({string.Join(", ", parts)})";
         }
     }
 }

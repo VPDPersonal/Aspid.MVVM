@@ -30,8 +30,7 @@ namespace Aspid.FastTools.Types
     /// public class FastEnemy : BaseEnemy { }
     /// public class TankEnemy : BaseEnemy { }
     /// </code>
-    /// Selecting "TankEnemy" in the Inspector rewrites the object's <c>m_Script</c>
-    /// so it becomes a <c>TankEnemy</c> instance.
+    /// Selecting "TankEnemy" turns the object into a <c>TankEnemy</c> instance.
     /// </example>
     [Serializable]
     public struct ComponentTypeSelector { }

@@ -1,4 +1,4 @@
-# SerializedProperty Extensions — full reference
+# SerializedProperty Extensions
 
 Chainable extension methods on `SerializedProperty` for synchronizing the owning `SerializedObject`, setting values, and reflecting on the underlying field.
 
@@ -58,7 +58,7 @@ For each supported type four variants exist:
 | `SetVector4` | `Vector4` | |
 | `SetQuaternion` | `Quaternion` | |
 | `SetAnimationCurve` | `AnimationCurve` | |
-| `SetEntityId` | `Unity.Entities.EntityId` | Unity 6.2+. The apply-variant is named `SetEntityIdApply` *(method name preserves the source typo: missing `And`)* |
+| `SetEntityId` | `EntityId` (`UnityEngine`) | Unity 6.2+ |
 
 ### Enum setters
 
@@ -110,15 +110,15 @@ For drawer / inspector code that needs to inspect the runtime type or instance b
 
 | Method | Returns | Description |
 |--------|---------|-------------|
-| `GetPropertyType()` | `Type` or `null` | Returns the `FieldType` / `PropertyType` of the C# member that backs the property. `null` if the member can't be resolved. |
-| `GetMemberInfo()` | `MemberInfo` or `null` | Locates the field/property on the owning class whose name matches `SerializedProperty.name`. Walks base classes via `TypeExtensions.GetMembersInfosIncludingBaseClasses`. |
-| `GetClassInstance()` | `object` | Walks `propertyPath` from the root `targetObject` and returns the runtime instance that directly contains this property. Supports nested objects, arrays, and `List<T>` fields. |
+| `GetPropertyType()` | `Type` or `null` | Returns the `FieldType` of the field that backs the property (the element type for an array/list element). `null` if the field can't be resolved. |
+| `GetFieldInfo()` | `FieldInfo` or `null` | Locates the backing field by resolving the property's declaring instance (`GetDeclaringInstance`) and looking the field up on its runtime type, base classes included — so a `[SerializeReference]` chain resolves naturally. For an array/list element the collection field is returned (matching `PropertyDrawer.fieldInfo`). |
+| `GetDeclaringInstance()` | `object` or `null` | Walks `propertyPath` from the root `targetObject` and returns the runtime instance on which the property's backing field is declared (the owner of the collection field for an array/list element). `null` if the path can't be resolved. A struct owner is returned as a boxed copy — mutations won't reach the serialized object. |
 
 ```csharp
 public override void OnGUI(Rect rect, SerializedProperty property, GUIContent label)
 {
     var declaringType = property.GetPropertyType();
-    var owner = property.GetClassInstance();
+    var owner = property.GetDeclaringInstance();
     // …
 }
 ```

@@ -1,27 +1,27 @@
 :root {
     --aspid-fasttools-prop-status: success;
     --aspid-fasttools-colors-gradient:                          var(--aspid-colors-status-success-lightness);
-    --aspid-fasttools-icons-inspector-header:                   var(--aspid-icons-status-success);
+    --aspid-fasttools-icons-inspector_header:                   var(--aspid-icons-status-success);
 }
 
 :root.aspid-fasttools-status--success {
     --aspid-fasttools-colors-gradient:                          var(--aspid-colors-status-success-lightness);
-    --aspid-fasttools-icons-inspector-header:                   var(--aspid-icons-status-success);
+    --aspid-fasttools-icons-inspector_header:                   var(--aspid-icons-status-success);
 }
 
 :root.aspid-fasttools-status--warning {
     --aspid-fasttools-colors-gradient:                          var(--aspid-colors-status-warning-lightness);
-    --aspid-fasttools-icons-inspector-header:                   var(--aspid-icons-status-warning);
+    --aspid-fasttools-icons-inspector_header:                   var(--aspid-icons-status-warning);
 }
 
 :root.aspid-fasttools-status--error {
     --aspid-fasttools-colors-gradient:                          var(--aspid-colors-status-error-lightness);
-    --aspid-fasttools-icons-inspector-header:                   var(--aspid-icons-status-error);
+    --aspid-fasttools-icons-inspector_header:                   var(--aspid-icons-status-error);
 }
 
 :root.aspid-fasttools-status--info {
     --aspid-fasttools-colors-gradient:                          var(--aspid-colors-status-info-lightness);
-    --aspid-fasttools-icons-inspector-header:                   var(--aspid-icons-status-info);
+    --aspid-fasttools-icons-inspector_header:                   var(--aspid-icons-status-info);
 }
 
 .aspid-fasttools-inspector-header__container {
@@ -45,7 +45,7 @@
     margin:                                                     0 10px 0 0;
     display:                                                    flex;
     flex-shrink:                                                0;
-    background-image:                                           var(--aspid-fasttools-icons-inspector-header);
+    background-image:                                           var(--aspid-fasttools-icons-inspector_header);
 }
 
 .aspid-fasttools-inspector-header__text-container {

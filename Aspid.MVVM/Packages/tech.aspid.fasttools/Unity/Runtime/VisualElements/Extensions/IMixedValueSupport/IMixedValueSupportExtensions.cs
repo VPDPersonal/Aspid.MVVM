@@ -14,7 +14,7 @@ namespace Aspid.FastTools.UIElements
         /// <param name="element">The element to modify.</param>
         /// <param name="value">Whether to show the mixed value state.</param>
         /// <returns>The element, for chaining.</returns>
-        public static T SetShowMixedValue<T>(this T element, bool value)
+        public static T SetShowMixedValue<T>(this T element, bool value = true)
             where T : IMixedValueSupport
         {
             element.showMixedValue = value;

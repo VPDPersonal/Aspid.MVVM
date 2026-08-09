@@ -19,10 +19,27 @@ namespace Aspid.FastTools.UIElements.Editors.Internal
         private readonly Vector2[] _blobRadii = new Vector2[BlobCount];
         private readonly Vector2[] _blobCenters = new Vector2[BlobCount];
 
+        private readonly StatusStyle _status;
         private readonly AspidAnimatedDotsBackgroundColorsStyle _colors;
         private readonly AspidAnimatedDotsBackgroundSizeStyle _size;
 
         private IVisualElementScheduledItem _animation;
+
+        /// <summary>
+        /// Gets or sets the status wash: one dim, desaturated hue across all three blobs, so the canvas reads as a
+        /// calm state backdrop. <see cref="StatusStyle.Type.None"/> restores the default three-tone signal gradient.
+        /// </summary>
+        /// <remarks>
+        /// Drives the blob colors through USS (the status class swaps the <c>--aspid-fasttools-colors-dot_blob-color_*</c>
+        /// properties), so it stays live across theme changes — unlike <see cref="Color1"/>–<see cref="Color3"/>, which
+        /// pin their blob inline and opt it out of USS resolution for good.
+        /// </remarks>
+        [UxmlAttribute]
+        public StatusStyle.Type Status
+        {
+            get => _status.Value;
+            set => _status.SetValue(value);
+        }
 
         /// <summary>
         /// Gets or sets the color of the first blob.
@@ -99,6 +116,8 @@ namespace Aspid.FastTools.UIElements.Editors.Internal
         {
             this.AddStyleSheetsFromResource(StyleSheetPath);
             generateVisualContent += OnGenerateVisualContent;
+
+            _status = new StatusStyle(this, preset.Status);
 
             _colors = new AspidAnimatedDotsBackgroundColorsStyle(
                 this, preset.Color1, preset.Color2, preset.Color3, MarkDirtyRepaint);

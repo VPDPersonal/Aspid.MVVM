@@ -1,5 +1,6 @@
 #nullable enable
 using System;
+using Aspid.FastTools.Types;
 using UnityEngine;
 
 // ReSharper disable once CheckNamespace
@@ -19,6 +20,7 @@ namespace Aspid.MVVM.StarterKit
         public static IConverterStringToColor ToConvertSpecific(this IConverter<string?, Color> converter) =>
             new ConverterStringToColor(converter);
         
+        [TypeSelectorDisplay(Hidden = true)]
         private sealed class ConverterColor : GenericFuncConverter<Color, Color>, IConverterColor
         {
             public ConverterColor(IConverter<Color, Color> converter) 
@@ -28,6 +30,7 @@ namespace Aspid.MVVM.StarterKit
                 : base(converter) { }
         }
         
+        [TypeSelectorDisplay(Hidden = true)]
         private sealed class ConverterStringToColor : GenericFuncConverter<string?, Color>, IConverterStringToColor
         {
             public ConverterStringToColor(IConverter<string?, Color> converter)

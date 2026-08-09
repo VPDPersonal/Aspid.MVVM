@@ -1,5 +1,6 @@
 #nullable enable
 using System;
+using Aspid.FastTools.Types;
 using UnityEngine;
 #if UNITY_2023_1_OR_NEWER
 using PhysicsMaterial = UnityEngine.PhysicsMaterial;
@@ -36,6 +37,7 @@ namespace Aspid.MVVM.StarterKit
         public static IConverterPhysicsMaterial ToConvertSpecific(this IConverter<PhysicsMaterial?, PhysicsMaterial?> converter) =>
             new ConverterPhysicsMaterial(converter);
         
+        [TypeSelectorDisplay(Hidden = true)]
         private sealed class ConverterMesh : GenericFuncConverter<Mesh?, Mesh?>, IConverterMesh
         {
             public ConverterMesh(IConverter<Mesh?, Mesh?> converter) 
@@ -45,6 +47,7 @@ namespace Aspid.MVVM.StarterKit
                 : base(converter) { }
         }
         
+        [TypeSelectorDisplay(Hidden = true)]
         private sealed class ConverterMaterial : GenericFuncConverter<Material?, Material?>, IConverterMaterial
         {
             public ConverterMaterial(IConverter<Material?, Material?> converter) 
@@ -54,6 +57,7 @@ namespace Aspid.MVVM.StarterKit
                 : base(converter) { }
         }
         
+        [TypeSelectorDisplay(Hidden = true)]
         private sealed class ConverterQuaternion : GenericFuncConverter<Quaternion, Quaternion>, IConverterQuaternion
         {
             public ConverterQuaternion(IConverter<Quaternion, Quaternion> converter)
@@ -63,6 +67,7 @@ namespace Aspid.MVVM.StarterKit
                 : base(converter) { }
         }
         
+        [TypeSelectorDisplay(Hidden = true)]
         private sealed class ConverterPhysicsMaterial : GenericFuncConverter<PhysicsMaterial?, PhysicsMaterial?>, IConverterPhysicsMaterial
         {
             public ConverterPhysicsMaterial(IConverter<PhysicsMaterial?, PhysicsMaterial?> converter) 

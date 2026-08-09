@@ -8,6 +8,15 @@ using System.Collections.Generic;
 namespace Aspid.MVVM.Tests
 {
     /// <summary>
+    /// Enum used to drive the <c>*EnumMonoBinder</c> variants from a serialized lookup table.
+    /// </summary>
+    internal enum TestBinderEnum
+    {
+        Ignored,
+        Applied,
+    }
+
+    /// <summary>
     /// Regression tests asserting that the Transform binders write to the component assigned in the inspector
     /// rather than to the binder's own <see cref="Component.transform"/>.
     /// </summary>
@@ -19,14 +28,16 @@ namespace Aspid.MVVM.Tests
     /// and its target on two different GameObjects and asserts both sides: the target changed, the binder's own
     /// transform did not.
     /// <para/>
-    /// The four <c>*EnumMonoBinder</c> variants received the same one-line change but are not covered here: they
-    /// resolve values through a serialized <c>EnumValues&lt;T&gt;</c> table whose layout makes the setup
-    /// disproportionate to a one-line fix.
+    /// The <c>*EnumMonoBinder</c> variants resolve their value through a serialized
+    /// <c>EnumValues&lt;Vector3&gt;</c> table, populated here the same way Aspid.FastTools tests it: the
+    /// assembly-qualified enum type into <c>_enumType</c> and one <c>_key</c> / <c>_value</c> entry into
+    /// <c>_values</c>.
     /// </remarks>
     [TestFixture]
     public sealed class TransformBinderTargetTests
     {
         private static readonly Vector3 Applied = new(2f, 3f, 4f);
+        private static readonly Vector3 Rotated = new(0f, 90f, 0f);
 
         private readonly List<GameObject> _spawned = new();
 
@@ -136,6 +147,50 @@ namespace Aspid.MVVM.Tests
             Assert.Less(Quaternion.Angle(Quaternion.identity, own.rotation), 0.01f, "Биндер повернул собственный Transform");
         }
 
+        [Test]
+        public void ScaleEnumMonoBinder_SetValue_WritesToAssignedTransform()
+        {
+            var (binder, target, own) = CreateEnum<TransformScaleEnumMonoBinder>(Applied);
+
+            binder.SetValue(TestBinderEnum.Applied);
+
+            Assert.AreEqual(Applied, target.localScale);
+            Assert.AreEqual(Vector3.one, own.localScale, "Биндер изменил собственный Transform");
+        }
+
+        [Test]
+        public void PositionEnumMonoBinder_SetValue_WritesToAssignedTransform()
+        {
+            var (binder, target, own) = CreateEnum<TransformPositionEnumMonoBinder>(Applied);
+
+            binder.SetValue(TestBinderEnum.Applied);
+
+            Assert.AreEqual(Applied, target.position);
+            Assert.AreEqual(Vector3.zero, own.position, "Биндер сдвинул собственный Transform");
+        }
+
+        [Test]
+        public void EulerAnglesEnumMonoBinder_SetValue_WritesToAssignedTransform()
+        {
+            var (binder, target, own) = CreateEnum<TransformEulerAnglesEnumMonoBinder>(Rotated);
+
+            binder.SetValue(TestBinderEnum.Applied);
+
+            Assert.Less(Quaternion.Angle(Quaternion.Euler(Rotated), target.rotation), 0.01f);
+            Assert.Less(Quaternion.Angle(Quaternion.identity, own.rotation), 0.01f, "Биндер повернул собственный Transform");
+        }
+
+        [Test]
+        public void RotationEnumMonoBinder_SetValue_WritesToAssignedTransform()
+        {
+            var (binder, target, own) = CreateEnum<TransformRotationEnumMonoBinder>(Rotated);
+
+            binder.SetValue(TestBinderEnum.Applied);
+
+            Assert.Less(Quaternion.Angle(Quaternion.Euler(Rotated), target.rotation), 0.01f);
+            Assert.Less(Quaternion.Angle(Quaternion.identity, own.rotation), 0.01f, "Биндер повернул собственный Transform");
+        }
+
         /// <summary>
         /// Puts the binder and its target on two different GameObjects and assigns the target through the
         /// serialized <c>_component</c> field, exactly as the inspector does.
@@ -162,6 +217,31 @@ namespace Aspid.MVVM.Tests
             var serializedObject = new SerializedObject(created.binder);
 
             serializedObject.FindProperty("_trueValue").vector3Value = trueValue;
+            serializedObject.ApplyModifiedPropertiesWithoutUndo();
+
+            return created;
+        }
+
+        /// <summary>
+        /// Populates the binder's serialized <c>EnumValues&lt;Vector3&gt;</c> with a single
+        /// <see cref="TestBinderEnum.Applied"/> entry, mirroring how Aspid.FastTools tests the same type.
+        /// </summary>
+        private (TBinder binder, Transform target, Transform own) CreateEnum<TBinder>(Vector3 appliedValue)
+            where TBinder : MonoBinder
+        {
+            var created = Create<TBinder>();
+            var serializedObject = new SerializedObject(created.binder);
+
+            serializedObject.FindProperty("_enumValues._enumType").stringValue =
+                typeof(TestBinderEnum).AssemblyQualifiedName;
+
+            var values = serializedObject.FindProperty("_enumValues._values");
+            values.arraySize = 1;
+
+            var entry = values.GetArrayElementAtIndex(0);
+            entry.FindPropertyRelative("_key").stringValue = nameof(TestBinderEnum.Applied);
+            entry.FindPropertyRelative("_value").vector3Value = appliedValue;
+
             serializedObject.ApplyModifiedPropertiesWithoutUndo();
 
             return created;

@@ -9,7 +9,7 @@ namespace Aspid.MVVM.StarterKit
     /// Formats a <see cref="DateTime"/>.
     /// </summary>
     [Serializable]
-    [TypeSelectorDisplay(Group = "Aspid/Time", Name = "Date Time Format", Tooltip = "Formats a ")]
+    [TypeSelectorDisplay(Group = "Aspid/Time", Name = "Date Time Format", Tooltip = "Formats a DateTime")]
     public sealed class DateTimeFormatConverter : IConverter<DateTime, string>
     {
         [Tooltip("A DateTime format string, for example dd.MM.yyyy or HH:mm.")]

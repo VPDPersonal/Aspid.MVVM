@@ -15,7 +15,7 @@ namespace Aspid.MVVM.StarterKit
     /// reaches without rebuilding the whole block.
     /// </remarks>
     [Serializable]
-    [TypeSelectorDisplay(Group = "Aspid/Colour", Name = "Color Block Fade Duration", Tooltip = "Sets how long a  takes to change state")]
+    [TypeSelectorDisplay(Group = "Aspid/Colour", Name = "Color Block Fade Duration", Tooltip = "Sets how long a ColorBlock takes to change state")]
     public sealed class ColorBlockFadeDurationConverter : IConverterColorBlock
     {
         [Tooltip("How long a state change takes.")]

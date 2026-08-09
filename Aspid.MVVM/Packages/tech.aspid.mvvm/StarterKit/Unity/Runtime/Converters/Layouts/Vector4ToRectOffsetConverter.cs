@@ -14,7 +14,7 @@ namespace Aspid.MVVM.StarterKit
     /// would have to be allocated on its side.
     /// </remarks>
     [Serializable]
-    [TypeSelectorDisplay(Group = "Aspid/Layout", Name = "Vector4 To Rect Offset", Tooltip = "Turns the four numbers of a  into a padding")]
+    [TypeSelectorDisplay(Group = "Aspid/Layout", Name = "Vector4 To Rect Offset", Tooltip = "Turns the four numbers of a Vector4 into a padding")]
     public sealed class Vector4ToRectOffsetConverter : IConverter<Vector4, RectOffset>
     {
         [Tooltip("Which way to drop the fraction.")]

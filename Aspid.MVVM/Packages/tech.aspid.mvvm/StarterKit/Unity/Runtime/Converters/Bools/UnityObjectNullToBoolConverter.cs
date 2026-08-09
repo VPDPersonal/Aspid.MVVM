@@ -17,7 +17,7 @@ namespace Aspid.MVVM.StarterKit
     /// overloaded <c>==</c>, which is the only check that catches both cases.
     /// </remarks>
     [Serializable]
-    [TypeSelectorDisplay(Group = "Aspid/Bool", Name = "Unity Object Null To Bool", Tooltip = "Converts a  reference to a boolean based on whether it is alive")]
+    [TypeSelectorDisplay(Group = "Aspid/Bool", Name = "Unity Object Null To Bool", Tooltip = "Converts a Unity Object reference to a boolean based on whether it is alive")]
     public sealed class UnityObjectNullToBoolConverter : IConverter<Object?, bool>
     {
         [Tooltip("Invert the result — true when the object is alive.")]

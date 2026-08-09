@@ -15,7 +15,7 @@ namespace Aspid.MVVM.StarterKit
     /// asking for one.
     /// </remarks>
     [Serializable]
-    [TypeSelectorDisplay(Group = "Aspid/Number", Name = "Animation Curve", Tooltip = "Passes a number through an ")]
+    [TypeSelectorDisplay(Group = "Aspid/Number", Name = "Animation Curve", Tooltip = "Passes a number through an AnimationCurve")]
     public sealed class AnimationCurveConverter : IConverterFloat
     {
         [Tooltip("The curve the value is passed through.")]

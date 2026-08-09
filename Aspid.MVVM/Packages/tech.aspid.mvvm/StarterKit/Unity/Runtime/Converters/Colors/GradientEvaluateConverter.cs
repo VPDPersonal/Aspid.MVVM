@@ -15,7 +15,7 @@ namespace Aspid.MVVM.StarterKit
     /// number it already has.
     /// </remarks>
     [Serializable]
-    [TypeSelectorDisplay(Group = "Aspid/Colour", Name = "Gradient Evaluate", Tooltip = "Reads a colour off a ")]
+    [TypeSelectorDisplay(Group = "Aspid/Colour", Name = "Gradient Evaluate", Tooltip = "Reads a colour off a Gradient")]
     public sealed class GradientEvaluateConverter : IConverter<float, Color>
     {
         [Tooltip("The gradient the value is read from.")]

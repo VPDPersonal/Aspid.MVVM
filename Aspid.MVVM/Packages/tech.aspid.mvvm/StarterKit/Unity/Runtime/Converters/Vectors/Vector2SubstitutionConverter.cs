@@ -11,7 +11,7 @@ namespace Aspid.MVVM.StarterKit
     /// Converts <see cref="Vector2"/> values by substituting and rearranging their components.
     /// </summary>
     [Serializable]
-    [TypeSelectorDisplay(Group = "Aspid/Vector", Name = "Vector2 Substitution", Tooltip = "Converts  values by substituting and rearranging their components")]
+    [TypeSelectorDisplay(Group = "Aspid/Vector", Name = "Vector2 Substitution", Tooltip = "Converts Vector2 values by substituting and rearranging their components")]
     public sealed class Vector2SubstitutionConverter : IConverterVector2
     {
         [Tooltip("How the components are rearranged.")]

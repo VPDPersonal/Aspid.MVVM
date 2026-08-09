@@ -11,7 +11,7 @@ namespace Aspid.MVVM.StarterKit
     /// Converts <see cref="Vector3"/> values to <see cref="Vector2"/> by selecting which components to use.
     /// </summary>
     [Serializable]
-    [TypeSelectorDisplay(Group = "Aspid/Vector", Name = "Vector3 To Vector2", Tooltip = "Converts  values to  by selecting which components to use")]
+    [TypeSelectorDisplay(Group = "Aspid/Vector", Name = "Vector3 To Vector2", Tooltip = "Converts Vector3 values to Vector2 by selecting which components to use")]
     public sealed class Vector3ToVector2Converter : IConverterVector3ToVector2
     {
         [Tooltip("Which components of the 3D vector are kept, and in what order.")]

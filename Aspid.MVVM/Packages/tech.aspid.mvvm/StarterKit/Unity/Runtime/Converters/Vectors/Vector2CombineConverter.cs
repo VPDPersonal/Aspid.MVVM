@@ -16,7 +16,7 @@ namespace Aspid.MVVM.StarterKit
     /// Supports optional pre- and post-conversion transformations.
     /// </summary>
     [Serializable]
-    [TypeSelectorDisplay(Group = "Aspid/Vector", Name = "Vector2 Combine", Tooltip = "Combines two  values by selecting which components to use from each vector")]
+    [TypeSelectorDisplay(Group = "Aspid/Vector", Name = "Vector2 Combine", Tooltip = "Combines two Vector2 values by selecting which components to use from each vector")]
     public sealed class Vector2CombineConverter
     {
         [Tooltip("Which components come from the bound vector; the rest come from the reference one.")]

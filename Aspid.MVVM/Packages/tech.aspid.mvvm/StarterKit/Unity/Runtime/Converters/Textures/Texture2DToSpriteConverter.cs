@@ -15,7 +15,7 @@ namespace Aspid.MVVM.StarterKit
     /// against the texture it came from. Without that, a bound avatar leaks a sprite per frame.
     /// </remarks>
     [Serializable]
-    [TypeSelectorDisplay(Group = "Aspid/Texture", Name = "Texture2 D To Sprite", Tooltip = "Wraps a  in a ")]
+    [TypeSelectorDisplay(Group = "Aspid/Texture", Name = "Texture2 D To Sprite", Tooltip = "Wraps a Texture2D in a Sprite")]
     public sealed class Texture2DToSpriteConverter : IConverter<Texture2D?, Sprite?>
     {
         [Tooltip("Where the sprite's pivot sits, in normalised coordinates.")]

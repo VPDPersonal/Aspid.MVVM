@@ -8,7 +8,7 @@ namespace Aspid.MVVM.StarterKit
     /// Converts a number of seconds to a <see cref="TimeSpan"/>.
     /// </summary>
     [Serializable]
-    [TypeSelectorDisplay(Group = "Aspid/Time", Name = "Seconds To Time Span", Tooltip = "Converts a number of seconds to a ")]
+    [TypeSelectorDisplay(Group = "Aspid/Time", Name = "Seconds To Time Span", Tooltip = "Converts a number of seconds to a TimeSpan")]
     public sealed class SecondsToTimeSpanConverter : ITwoWayConverter<float, TimeSpan>
     {
         /// <summary>

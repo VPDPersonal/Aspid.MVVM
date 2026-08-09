@@ -10,7 +10,7 @@ namespace Aspid.MVVM.StarterKit
     /// </summary>
     /// <remarks>Gating on "the event has started" or "the cooldown has expired".</remarks>
     [Serializable]
-    [TypeSelectorDisplay(Group = "Aspid/Time", Name = "Date Time To Bool", Tooltip = "Compares a  with a reference moment")]
+    [TypeSelectorDisplay(Group = "Aspid/Time", Name = "Date Time To Bool", Tooltip = "Compares a DateTime with a reference moment")]
     public sealed class DateTimeToBoolConverter : IConverter<DateTime, bool>
     {
         [Tooltip("How the bound moment is compared with the reference.")]

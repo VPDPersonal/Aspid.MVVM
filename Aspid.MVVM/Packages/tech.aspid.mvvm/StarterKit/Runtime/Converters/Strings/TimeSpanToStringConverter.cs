@@ -13,7 +13,7 @@ namespace Aspid.MVVM.StarterKit
     /// <c>"mm\\:ss"</c> that <see cref="TimeSpan.ToString(string)"/> would take comes back as itself.
     /// </remarks>
     [Serializable]
-    [TypeSelectorDisplay(Group = "Aspid/String", Name = "Time Span To String", Tooltip = "for  values, with optional formatting")]
+    [TypeSelectorDisplay(Group = "Aspid/String", Name = "Time Span To String", Tooltip = "Writes a TimeSpan as text, with optional formatting")]
     public sealed class TimeSpanToStringConverter : GenericToString<TimeSpan>, IConverterTimeSpanToString
     {
         public TimeSpanToStringConverter() { }

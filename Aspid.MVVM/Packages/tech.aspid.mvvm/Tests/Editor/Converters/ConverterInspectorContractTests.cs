@@ -58,6 +58,36 @@ namespace Aspid.MVVM.StarterKit.Tests
                 + string.Join(Environment.NewLine, ungrouped.Select(type => "  - " + type.Name)));
         }
 
+        /// <summary>
+        /// A picker tooltip must not have a hole where a type name should be.
+        /// </summary>
+        /// <remarks>
+        /// The tooltips were derived from the XML <c>&lt;summary&gt;</c> of each converter, and the
+        /// derivation dropped every <c>&lt;see cref="…"/&gt;</c> element rather than replacing it with
+        /// the name it referred to. The result read "Wraps a  in a " — grammatical debris in the one
+        /// piece of documentation a designer actually sees. Both symptoms are exact: a doubled space
+        /// where the element was, or a trailing space where it ended the sentence.
+        /// </remarks>
+        [Test]
+        public void EveryPickerTooltipIsWhole()
+        {
+            var broken = ConverterTypes()
+                .Select(type => (type, tooltip: type
+                    .GetCustomAttribute<Aspid.FastTools.Types.TypeSelectorDisplayAttribute>(inherit: false)
+                    ?.Tooltip))
+                .Where(pair => !string.IsNullOrEmpty(pair.tooltip))
+                .Where(pair => pair.tooltip!.Contains("  ") || pair.tooltip.Trim() != pair.tooltip)
+                .ToArray();
+
+            Assert.IsEmpty(
+                broken,
+                "These picker tooltips have a gap where a type name belongs:"
+                + Environment.NewLine
+                + string.Join(
+                    Environment.NewLine,
+                    broken.Select(pair => $"  - {pair.type.Name}: \"{pair.tooltip}\"")));
+        }
+
         // Guards the check above from passing because the scan stopped finding fields.
         [Test]
         public void TheScanSeesTheSerializedFields() =>

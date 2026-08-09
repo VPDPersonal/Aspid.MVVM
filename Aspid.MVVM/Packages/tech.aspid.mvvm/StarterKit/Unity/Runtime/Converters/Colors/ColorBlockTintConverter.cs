@@ -12,7 +12,7 @@ namespace Aspid.MVVM.StarterKit
     /// </summary>
     /// <remarks>Theming a whole button at once — faction colours, a disabled palette.</remarks>
     [Serializable]
-    [TypeSelectorDisplay(Group = "Aspid/Colour", Name = "Color Block Tint", Tooltip = "Tints every colour of a ")]
+    [TypeSelectorDisplay(Group = "Aspid/Colour", Name = "Color Block Tint", Tooltip = "Tints every colour of a ColorBlock")]
     public sealed class ColorBlockTintConverter : IConverterColorBlock
     {
         [Tooltip("The colour every state is combined with.")]

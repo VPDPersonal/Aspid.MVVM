@@ -2,7 +2,6 @@
 using TMPro;
 using System;
 using UnityEngine;
-using System.Collections.Generic;
 #if UNITY_2023_1_OR_NEWER
 using Converter = Aspid.MVVM.StarterKit.IConverter<System.Enum, System.Collections.Generic.IEnumerable<TMPro.TMP_Dropdown.OptionData>>;
 #else
@@ -23,29 +22,48 @@ namespace Aspid.MVVM.StarterKit
         [Tooltip("The converter used to transform the enum value to dropdown option data. When null, the default string representation of each enum value is used.")]
         [SerializeReference] private Converter _converter;
 
+        private Type _populatedType;
+
         /// <summary>
-        /// Clears the current options and repopulates <see cref="TMPro.TMP_Dropdown.options"/> from all values
-        /// of the enum type of <paramref name="value"/>, using the configured converter when assigned,
-        /// or the default string representation of each enum value otherwise.
+        /// Repopulates <see cref="TMPro.TMP_Dropdown.options"/> from all values of the enum type of
+        /// <paramref name="value"/>, using the configured converter when assigned, or the name of each
+        /// enum value otherwise.
         /// </summary>
         /// <param name="value">The bound enum value received from the ViewModel.</param>
+        /// <remarks>
+        /// The option set depends on the enum <i>type</i>, not on the value, so it is rebuilt only when
+        /// the type changes. The rebuild also preserves the current selection: the option list is
+        /// cleared directly rather than through <see cref="TMPro.TMP_Dropdown.ClearOptions"/>, which
+        /// resets the selected index and would clobber a value binder on the same dropdown.
+        /// </remarks>
         public void SetValue(Enum value)
         {
-            CachedComponent.options ??= new List<TMP_Dropdown.OptionData>();
-            CachedComponent.ClearOptions();
+            if (value is null) return;
+
+            var dropdown = CachedComponent;
+            var type = value.GetType();
+
+            if (_populatedType == type && dropdown.options.Count > 0) return;
+            _populatedType = type;
+
+            var selected = dropdown.value;
+            dropdown.options.Clear();
 
             if (_converter is null)
             {
-                var values = Enum.GetValues(value.GetType());
-
-                foreach (var enumObj in values)
-                    CachedComponent.options.Add(new TMP_Dropdown.OptionData(text: enumObj.ToString()));
+                foreach (var name in Enum.GetNames(type))
+                    dropdown.options.Add(new TMP_Dropdown.OptionData(text: name));
             }
             else
             {
                 foreach (var option in _converter.Convert(value))
-                    CachedComponent.options.Add(option);
+                    dropdown.options.Add(option);
             }
+
+            if (dropdown.options.Count > 0)
+                dropdown.SetValueWithoutNotify(Mathf.Clamp(selected, 0, dropdown.options.Count - 1));
+
+            dropdown.RefreshShownValue();
         }
     }
 }

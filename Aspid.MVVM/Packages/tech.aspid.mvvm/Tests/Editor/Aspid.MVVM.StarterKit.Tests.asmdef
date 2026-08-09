@@ -5,9 +5,11 @@
         "UnityEngine.TestRunner",
         "UnityEditor.TestRunner",
         "Aspid.MVVM",
+        "Aspid.MVVM.Unity",
         "Aspid.MVVM.StarterKit",
         "Aspid.MVVM.StarterKit.Unity",
-        "Aspid.FastTools.Unity"
+        "Aspid.FastTools.Unity",
+        "Unity.TextMeshPro"
     ],
     "includePlatforms": [
         "Editor"

@@ -29,9 +29,8 @@ namespace Aspid.MVVM.StarterKit
         }
 
         // ReSharper disable once FieldCanBeMadeReadOnly.Local
-        // ReSharper disable once MemberInitializerValueIgnored
         [Tooltip("Converter used to format bound values as log messages. Defaults to ObjectToStringConverter.")]
-        [SerializeReference] private Converter _converter = new ObjectToStringConverter();
+        [SerializeReference] private Converter _converter;
 
         /// <summary>
         /// Initializes a new instance of <see cref="DebugLogBinder"/>.
@@ -39,7 +38,7 @@ namespace Aspid.MVVM.StarterKit
         /// <param name="converter">The converter used to format bound values as log messages. Pass <see langword="null"/> to use <see cref="ObjectToStringConverter"/>.</param>
         public DebugLogBinder(Converter converter = null) : base(BindMode.TwoWay)
         {
-            _converter = converter;
+            _converter = converter ?? new ObjectToStringConverter();
         }
 
         /// <summary>
@@ -50,7 +49,9 @@ namespace Aspid.MVVM.StarterKit
         public void SetValue<T>(T value) =>
             Debug.Log($"SetValue: {GetMessage(value)}");
 
+        // A converter returning null is normal — GenericToString does it for a null input — so it
+        // must not be conflated with having no converter, and the fallback has to survive null too.
         private string GetMessage(object value) =>
-            _converter?.Convert(value) ?? value.ToString();
+            (_converter is not null ? _converter.Convert(value) : value?.ToString()) ?? "null";
     }
 }

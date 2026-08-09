@@ -1,3 +1,4 @@
+#nullable enable
 using UnityEngine;
 
 // ReSharper disable once CheckNamespace

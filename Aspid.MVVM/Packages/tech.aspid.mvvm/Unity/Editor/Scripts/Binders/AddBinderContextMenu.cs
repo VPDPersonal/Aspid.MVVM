@@ -53,20 +53,25 @@ namespace Aspid.MVVM
 
         private static void OnContextualPropertyMenu(GenericMenu menu, SerializedProperty property)
         {
-            menu.AddSeparator(path: "/");
             var target = property.serializedObject.targetObject;
+
+            // Binders are added via AddComponent, which requires a GameObject; skip non-Component
+            // targets (e.g. ScriptableObject assets) so the menu never shows a dead entry.
+            if (target is not Component component)
+                return;
+
             var results = FindTypesWithTargetPropertyTypeAttribute(target, property);
+            if (results.Count == 0)
+                return;
+
+            menu.AddSeparator(path: "/");
 
             foreach (var item in results)
             {
-                foreach (var type in item.Types)
-                {
-                    menu.AddItem(new GUIContent(text: $"{AddBinderText}/{item.Name}"), false, () =>
-                    {
-                        if (target is Component component)
-                            component.gameObject.AddComponent(type);
-                    }); 
-                }
+                var binderType = item.Type;
+
+                menu.AddItem(new GUIContent(text: $"{AddBinderText}/{item.Name}"), false, () =>
+                    component.gameObject.AddComponent(binderType));
             }
         }
 
@@ -83,26 +88,19 @@ namespace Aspid.MVVM
 
             foreach (var context in _contexts)
             {
-                var name = context.Name;
-                var types = new List<Type>();
-                
-                foreach (var contextMenu in context.ContextMenus)
-                {
-                    foreach (var serializePropertyName in contextMenu.SerializePropertyNames)
-                    {
-                        if (string.IsNullOrWhiteSpace(serializePropertyName)) continue;
-                        if (serializePropertyName != propertyName) continue;
-                        if (!contextMenu.Type.IsAssignableFrom(targetType)) continue;
-                            
-                        types.Add(contextMenu.Type);
-                    }
-                }
+                // Match against the attribute's target/value type, but never add that type:
+                // the menu must add the binder itself (context.Type). The property-type scan is
+                // only reached when the target-property match fails, thanks to || short-circuiting.
+                var matches = context.ContextMenus.Any(contextMenu =>
+                        contextMenu.Type.IsAssignableFrom(targetType) &&
+                        contextMenu.SerializePropertyNames.Any(serializePropertyName =>
+                            !string.IsNullOrWhiteSpace(serializePropertyName) &&
+                            serializePropertyName == propertyName))
+                    || context.ContextMenuByTypes.Any(contextMenu =>
+                        contextMenu.Type.IsAssignableFrom(propertyType));
 
-                types.AddRange(collection: context.ContextMenuByTypes
-                    .Select(c => c.Type)
-                    .Where(type => type.IsAssignableFrom(propertyType)));
-
-                results.Add(new Result(name, types));
+                if (matches)
+                    results.Add(new Result(context.Name, context.Type));
             }
 
             return results;
@@ -111,12 +109,12 @@ namespace Aspid.MVVM
         private readonly struct Result
         {
             public readonly string Name;
-            public readonly IReadOnlyList<Type> Types;
-            
-            public Result(string name, IReadOnlyList<Type> types)
+            public readonly Type Type;
+
+            public Result(string name, Type type)
             {
                 Name = name;
-                Types = types;
+                Type = type;
             }
         }
         
@@ -124,12 +122,14 @@ namespace Aspid.MVVM
         {
             private const bool Inherit = true;
             
+            public readonly Type Type;
             public readonly string Name;
             public readonly IReadOnlyList<ContextMenu> ContextMenus;
             public readonly IReadOnlyList<ContextMenuByType> ContextMenuByTypes;
-            
+
             public Context(Type type)
             {
+                Type = type;
                 Name = GetName(type);
                 
                 ContextMenus = type
@@ -159,7 +159,12 @@ namespace Aspid.MVVM
 
             public static bool IsValid(Type type)
             {
-                return type.IsDefined(typeof(AddBinderContextMenuAttribute), Inherit) 
+                // The menu adds the type via AddComponent, which only succeeds for a concrete,
+                // non-generic MonoBehaviour. Skip anything else so a click can never fail at runtime.
+                if (type.IsAbstract || type.IsGenericTypeDefinition || !typeof(MonoBehaviour).IsAssignableFrom(type))
+                    return false;
+
+                return type.IsDefined(typeof(AddBinderContextMenuAttribute), Inherit)
                     || type.IsDefined(typeof(AddBinderContextMenuByTypeAttribute), Inherit);
             }
         }

@@ -1,6 +1,7 @@
 #nullable enable
 using System;
 using UnityEngine;
+using UnityEngine.Serialization;
 using Converter = Aspid.MVVM.StarterKit.IConverter<UnityEngine.Vector3, UnityEngine.Vector3>;
 
 // The named converter aliases are [Obsolete]. The converters below keep implementing them for
@@ -24,10 +25,12 @@ namespace Aspid.MVVM.StarterKit
         [SerializeField] private Mode _mode;
 
         [Tooltip("Applied to the bound vector before the components are selected.")]
-        [SerializeReference] private Converter? _preConvertor;
+        [FormerlySerializedAs("_preConvertor")]
+        [SerializeReference] private Converter? _preConverter;
 
         [Tooltip("Applied to the combined result.")]
-        [SerializeReference] private Converter? _postConvertor;
+        [FormerlySerializedAs("_postConvertor")]
+        [SerializeReference] private Converter? _postConverter;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Vector3CombineConverter"/> class with XYZ mode.
@@ -42,45 +45,45 @@ namespace Aspid.MVVM.StarterKit
         public Vector3CombineConverter(Mode mode)
         {
             _mode = mode;
-            _preConvertor = default;
-            _postConvertor = default;
+            _preConverter = default;
+            _postConverter = default;
         }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Vector3CombineConverter"/> class with conversion functions.
         /// </summary>
         /// <param name="mode">The combination mode specifying which components to use.</param>
-        /// <param name="preConvertor">Applied to the bound vector before the components are selected.</param>
-        /// <param name="postConvertor">Applied to the combined result.</param>
+        /// <param name="preConverter">Applied to the bound vector before the components are selected.</param>
+        /// <param name="postConverter">Applied to the combined result.</param>
         /// <exception cref="ArgumentNullException">
         /// Thrown when either function is <see langword="null"/>. Use the converter overload with
         /// <see langword="null"/> to leave a stage out.
         /// </exception>
         public Vector3CombineConverter(
             Mode mode,
-            Func<Vector3, Vector3> preConvertor,
-            Func<Vector3, Vector3> postConvertor)
-            : this(mode, preConvertor.ToConvert(), postConvertor.ToConvert()) { }
+            Func<Vector3, Vector3> preConverter,
+            Func<Vector3, Vector3> postConverter)
+            : this(mode, preConverter.ToConvert(), postConverter.ToConvert()) { }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Vector3CombineConverter"/> class with converter interfaces.
         /// </summary>
         /// <param name="mode">The combination mode specifying which components to use.</param>
-        /// <param name="preConvertor">
+        /// <param name="preConverter">
         /// Applied to the bound vector before the components are selected, or <see langword="null"/> to
         /// leave that stage out.
         /// </param>
-        /// <param name="postConvertor">
+        /// <param name="postConverter">
         /// Applied to the combined result, or <see langword="null"/> to leave that stage out.
         /// </param>
         public Vector3CombineConverter(
             Mode mode,
-            Converter? preConvertor,
-            Converter? postConvertor)
+            Converter? preConverter,
+            Converter? postConverter)
         {
             _mode = mode;
-            _preConvertor = preConvertor;
-            _postConvertor = postConvertor;
+            _preConverter = preConverter;
+            _postConverter = postConverter;
         }
 
         /// <summary>
@@ -106,7 +109,7 @@ namespace Aspid.MVVM.StarterKit
 
         private Vector3 Combine(Vector3 from, Vector3 to)
         {
-            from = _preConvertor?.Convert(from) ?? from;
+            from = _preConverter?.Convert(from) ?? from;
 
             from = _mode switch
             {
@@ -120,7 +123,7 @@ namespace Aspid.MVVM.StarterKit
                 _ => throw new ArgumentOutOfRangeException(nameof(_mode), _mode, null)
             };
 
-            return _postConvertor?.Convert(from) ?? from;
+            return _postConverter?.Convert(from) ?? from;
         }
 
         /// <summary>

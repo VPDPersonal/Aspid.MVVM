@@ -87,7 +87,7 @@ namespace Aspid.MVVM.StarterKit
             Comparisons.LessThanOrEqual => value <= _value,
             Comparisons.GreaterThanOrEqual => value >= _value,
             Comparisons.Equal => Approximately(_value, value),
-            Comparisons.Inequality => !Approximately(_value, value),
+            Comparisons.NotEqual => !Approximately(_value, value),
             _ => throw new ArgumentOutOfRangeException(nameof(_comparison), _comparison, null)
         };
 

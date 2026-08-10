@@ -4,7 +4,7 @@ using NUnit.Framework;
 namespace Aspid.MVVM.StarterKit.Tests
 {
     /// <summary>
-    /// Coverage for <see cref="SequenceConverters{T}"/> — the only composition primitive the
+    /// Coverage for <see cref="SequenceConverter{T}"/> — the only composition primitive the
     /// StarterKit ships, and the one an Inspector chain is built from.
     /// </summary>
     /// <remarks>
@@ -14,38 +14,38 @@ namespace Aspid.MVVM.StarterKit.Tests
     /// guards land.
     /// </remarks>
     [TestFixture]
-    internal sealed class SequenceConvertersTests
+    internal sealed class SequenceConverterTests
     {
         [Test]
         public void Convert_AppliesConvertersInDeclarationOrder() =>
-            Assert.AreEqual(8, new SequenceConverters<int>(new Add(1), new Multiply(2)).Convert(3));
+            Assert.AreEqual(8, new SequenceConverter<int>(new Add(1), new Multiply(2)).Convert(3));
 
         [Test]
         public void Convert_OrderMatters() =>
-            Assert.AreEqual(7, new SequenceConverters<int>(new Multiply(2), new Add(1)).Convert(3));
+            Assert.AreEqual(7, new SequenceConverter<int>(new Multiply(2), new Add(1)).Convert(3));
 
         [Test]
         public void Convert_EmptyChain_ReturnsInputUnchanged() =>
-            Assert.AreEqual(3, new SequenceConverters<int>().Convert(3));
+            Assert.AreEqual(3, new SequenceConverter<int>().Convert(3));
 
         [Test]
         public void Convert_SingleConverter_BehavesLikeThatConverter() =>
-            Assert.AreEqual(4, new SequenceConverters<int>(new Add(1)).Convert(3));
+            Assert.AreEqual(4, new SequenceConverter<int>(new Add(1)).Convert(3));
 
         // An empty picker slot serialises as a null element.
         [Test]
         public void Convert_NullElement_IsSkipped() =>
-            Assert.AreEqual(4, new SequenceConverters<int>(new Add(1), null).Convert(3));
+            Assert.AreEqual(4, new SequenceConverter<int>(new Add(1), null).Convert(3));
 
         [Test]
         public void Convert_NullArray_ReturnsInputUnchanged() =>
-            Assert.AreEqual(3, new SequenceConverters<int>(null).Convert(3));
+            Assert.AreEqual(3, new SequenceConverter<int>(null).Convert(3));
 
         // The type picker constructs through Activator, so a parameterless constructor is required.
         [Test]
         public void ParameterlessConstructor_ProducesAUsableConverter()
         {
-            var converter = (SequenceConverters<int>)Activator.CreateInstance(typeof(SequenceConverters<int>));
+            var converter = (SequenceConverter<int>)Activator.CreateInstance(typeof(SequenceConverter<int>));
             Assert.AreEqual(3, converter.Convert(3));
         }
 

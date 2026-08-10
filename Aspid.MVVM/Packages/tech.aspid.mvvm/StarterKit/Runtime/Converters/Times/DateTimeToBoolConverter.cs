@@ -54,7 +54,7 @@ namespace Aspid.MVVM.StarterKit
             return _comparison switch
             {
                 Comparisons.Equal => order == 0,
-                Comparisons.Inequality => order != 0,
+                Comparisons.NotEqual => order != 0,
                 Comparisons.LessThan => order < 0,
                 Comparisons.GreaterThan => order > 0,
                 Comparisons.LessThanOrEqual => order <= 0,

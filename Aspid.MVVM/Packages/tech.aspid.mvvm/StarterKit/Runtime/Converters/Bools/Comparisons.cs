@@ -9,7 +9,7 @@ namespace Aspid.MVVM.StarterKit
     /// bound value is below the configured one, not the other way round.
     /// <para>
     /// New members are appended rather than inserted: the order is the serialized value, so moving one
-    /// silently rewrites every converter already authored in a scene. <see cref="Inequality"/> shipped
+    /// silently rewrites every converter already authored in a scene. <see cref="NotEqual"/> shipped
     /// inverted once and was fixed in 1.1.0-beta.1 — of the six, the two that are not a bare operator
     /// are the two worth a test.
     /// </para>
@@ -20,7 +20,7 @@ namespace Aspid.MVVM.StarterKit
         Equal,
 
         /// <summary>Not equal — the negation of <see cref="Equal"/>, tolerance included.</summary>
-        Inequality,
+        NotEqual,
 
         /// <summary>The bound value is below the configured one.</summary>
         LessThan,

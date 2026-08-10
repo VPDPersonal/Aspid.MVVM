@@ -29,7 +29,7 @@ namespace Aspid.MVVM.StarterKit.Tests
         public void RestoreCulture() =>
             Thread.CurrentThread.CurrentCulture = _previous;
 
-        // "N0" here is the specifier everyone expects; GenericToString would return it as a literal.
+        // "N0" here is the specifier everyone expects; GenericToStringConverter would return it as a literal.
         [Test]
         public void NumberFormat_TakesAPlainSpecifier() =>
             Assert.AreEqual("1,234,567", new NumberFormatConverter("N0").Convert(1234567));

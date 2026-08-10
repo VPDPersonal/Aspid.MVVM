@@ -77,7 +77,7 @@ namespace Aspid.MVVM.StarterKit.Tests
         [Test]
         public void Sequence_UndoesEveryLinkInReverseOrder()
         {
-            var sequence = new SequenceConverters<double>(
+            var sequence = new SequenceConverter<double>(
                 new ArithmeticNumberConverter(NumberOperation.Plus, 3),
                 new ArithmeticNumberConverter(NumberOperation.Multiply, 2));
 
@@ -87,14 +87,14 @@ namespace Aspid.MVVM.StarterKit.Tests
 
         [Test]
         public void Sequence_EmptyChain_RoundTrips() =>
-            Assert.AreEqual(5d, new SequenceConverters<double>().ConvertBack(5d), delta: 1e-12);
+            Assert.AreEqual(5d, new SequenceConverter<double>().ConvertBack(5d), delta: 1e-12);
 
         // Undoing part of a chain would leave the value in neither space, so a single one-way link
         // makes the whole sequence one-way.
         [Test]
         public void Sequence_WithAOneWayLink_ReturnsTheValueUnchanged()
         {
-            var sequence = new SequenceConverters<double>(
+            var sequence = new SequenceConverter<double>(
                 new ArithmeticNumberConverter(NumberOperation.Plus, 3),
                 new OneWayDouble());
 
@@ -104,7 +104,7 @@ namespace Aspid.MVVM.StarterKit.Tests
         [Test]
         public void Sequence_NullLinksAreSkippedInBothDirections()
         {
-            var sequence = new SequenceConverters<double>(
+            var sequence = new SequenceConverter<double>(
                 new ArithmeticNumberConverter(NumberOperation.Plus, 3),
                 null);
 

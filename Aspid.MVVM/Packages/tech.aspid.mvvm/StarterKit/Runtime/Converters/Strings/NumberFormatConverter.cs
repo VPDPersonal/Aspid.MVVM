@@ -9,7 +9,7 @@ namespace Aspid.MVVM.StarterKit
     /// Formats a number with a standard .NET format string.
     /// </summary>
     /// <remarks>
-    /// <see cref="GenericToString{TFrom}"/> takes a <i>composite</i> format, so <c>"N0"</c> comes
+    /// <see cref="GenericToStringConverter{TFrom}"/> takes a <i>composite</i> format, so <c>"N0"</c> comes
     /// back as the literal <c>N0</c> and the specifier has to be spelled <c>{0:N0}</c>. This takes
     /// the specifier everyone expects — the one on <see cref="int.ToString(string)"/>.
     /// </remarks>

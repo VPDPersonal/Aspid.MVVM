@@ -7,7 +7,7 @@ namespace Aspid.MVVM.StarterKit.Tests
     /// and all four numeric overloads.
     /// </summary>
     /// <remarks>
-    /// <see cref="Comparisons.Equal"/> and <see cref="Comparisons.Inequality"/> are deliberately
+    /// <see cref="Comparisons.Equal"/> and <see cref="Comparisons.NotEqual"/> are deliberately
     /// fuzzy — they route through a relative 1e-6 tolerance rather than <c>==</c>. The magnitude
     /// cases at the bottom pin that behaviour down as it stands today; they are characterisation,
     /// not endorsement.
@@ -30,30 +30,30 @@ namespace Aspid.MVVM.StarterKit.Tests
         [TestCase(Comparisons.Equal, 5f, false)]
         [TestCase(Comparisons.Equal, 10f, true)]
         [TestCase(Comparisons.Equal, 15f, false)]
-        [TestCase(Comparisons.Inequality, 5f, true)]
-        [TestCase(Comparisons.Inequality, 10f, false)]
-        [TestCase(Comparisons.Inequality, 15f, true)]
+        [TestCase(Comparisons.NotEqual, 5f, true)]
+        [TestCase(Comparisons.NotEqual, 10f, false)]
+        [TestCase(Comparisons.NotEqual, 15f, true)]
         public void Convert_Float_MatchesTheComparison(Comparisons comparison, float value, bool expected) =>
             Assert.AreEqual(expected, new NumberToBoolConverter(comparison, value: 10f).Convert(value));
 
         [TestCase(Comparisons.LessThan, 5, true)]
         [TestCase(Comparisons.GreaterThan, 15, true)]
         [TestCase(Comparisons.Equal, 10, true)]
-        [TestCase(Comparisons.Inequality, 11, true)]
+        [TestCase(Comparisons.NotEqual, 11, true)]
         public void Convert_Int_MatchesTheComparison(Comparisons comparison, int value, bool expected) =>
             Assert.AreEqual(expected, new NumberToBoolConverter(comparison, value: 10f).Convert(value));
 
         [TestCase(Comparisons.LessThan, 5L, true)]
         [TestCase(Comparisons.GreaterThan, 15L, true)]
         [TestCase(Comparisons.Equal, 10L, true)]
-        [TestCase(Comparisons.Inequality, 11L, true)]
+        [TestCase(Comparisons.NotEqual, 11L, true)]
         public void Convert_Long_MatchesTheComparison(Comparisons comparison, long value, bool expected) =>
             Assert.AreEqual(expected, new NumberToBoolConverter(comparison, value: 10f).Convert(value));
 
         [TestCase(Comparisons.LessThan, 5d, true)]
         [TestCase(Comparisons.GreaterThan, 15d, true)]
         [TestCase(Comparisons.Equal, 10d, true)]
-        [TestCase(Comparisons.Inequality, 11d, true)]
+        [TestCase(Comparisons.NotEqual, 11d, true)]
         public void Convert_Double_MatchesTheComparison(Comparisons comparison, double value, bool expected) =>
             Assert.AreEqual(expected, new NumberToBoolConverter(comparison, value: 10f).Convert(value));
 
@@ -70,9 +70,9 @@ namespace Aspid.MVVM.StarterKit.Tests
 
         [Test]
         public void Convert_Inequality_LargeMagnitudes_AreWithinTheRelativeTolerance() =>
-            Assert.IsFalse(new NumberToBoolConverter(Comparisons.Inequality, value: 2_000_000f).Convert(2_000_001f));
+            Assert.IsFalse(new NumberToBoolConverter(Comparisons.NotEqual, value: 2_000_000f).Convert(2_000_001f));
 
-        // The tolerance applies to Equal/Inequality only, so the predicate set is mutually
+        // The tolerance applies to Equal/NotEqual only, so the predicate set is mutually
         // inconsistent at the boundary: a value can be "equal to" and "greater than" at once.
         [Test]
         public void Convert_ToleranceIsNotAppliedToOrderingComparisons()

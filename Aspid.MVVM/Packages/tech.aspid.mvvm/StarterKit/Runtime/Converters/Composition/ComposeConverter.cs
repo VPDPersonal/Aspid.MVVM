@@ -12,7 +12,7 @@ namespace Aspid.MVVM.StarterKit
     /// <typeparam name="TMid">The intermediate type the first converter produces.</typeparam>
     /// <typeparam name="TTo">The type of the converted output value.</typeparam>
     /// <remarks>
-    /// Use <see cref="SequenceConverters{T}"/> instead when every converter in the chain shares one
+    /// Use <see cref="SequenceConverter{T}"/> instead when every converter in the chain shares one
     /// type. Both links are required here: the types on either side need not match, so a missing link
     /// leaves nothing meaningful to return.
     /// </remarks>

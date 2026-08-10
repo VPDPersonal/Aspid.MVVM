@@ -2,6 +2,7 @@
 using Aspid.FastTools.Types;
 using System;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 // The named converter aliases are [Obsolete]. The converters below keep implementing them for
 // one release so that a [SerializeReference] field a project declares as one still
@@ -20,7 +21,8 @@ namespace Aspid.MVVM.StarterKit
     public sealed class Vector3ToVector2Converter : IConverterVector3ToVector2
     {
         [Tooltip("Which components of the 3D vector are kept, and in what order.")]
-        [SerializeField] private Values _values = Values.XY;
+        [FormerlySerializedAs("_values")]
+        [SerializeField] private Mode _mode = Mode.XY;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Vector3ToVector2Converter"/> class.
@@ -30,10 +32,10 @@ namespace Aspid.MVVM.StarterKit
         /// <summary>
         /// Initializes a new instance of the <see cref="Vector3ToVector2Converter"/> class.
         /// </summary>
-        /// <param name="values">Which vector components to use.</param>
-        public Vector3ToVector2Converter(Values values)
+        /// <param name="mode">Which vector components to use.</param>
+        public Vector3ToVector2Converter(Mode mode)
         {
-            _values = values;
+            _mode = mode;
         }
 
         /// <summary>
@@ -41,21 +43,21 @@ namespace Aspid.MVVM.StarterKit
         /// </summary>
         /// <param name="value">The 3D vector to convert.</param>
         /// <returns>The converted 2D vector.</returns>
-        public Vector2 Convert(Vector3 value) => _values switch
+        public Vector2 Convert(Vector3 value) => _mode switch
         {
-            Values.XY => new Vector2(value.x, value.y),
-            Values.XZ => new Vector2(value.x, value.z),
-            Values.YX => new Vector2(value.y, value.x),
-            Values.YZ => new Vector2(value.y, value.z),
-            Values.ZX => new Vector2(value.z, value.x),
-            Values.ZY => new Vector2(value.z, value.y),
-            _ => throw new ArgumentOutOfRangeException(nameof(_values), _values, null)
+            Mode.XY => new Vector2(value.x, value.y),
+            Mode.XZ => new Vector2(value.x, value.z),
+            Mode.YX => new Vector2(value.y, value.x),
+            Mode.YZ => new Vector2(value.y, value.z),
+            Mode.ZX => new Vector2(value.z, value.x),
+            Mode.ZY => new Vector2(value.z, value.y),
+            _ => throw new ArgumentOutOfRangeException(nameof(_mode), _mode, null)
         };
 
         /// <summary>
         /// Specifies which components of the 3D vector to map to the 2D vector.
         /// </summary>
-        public enum Values
+        public enum Mode
         {
             XY,
             XZ,

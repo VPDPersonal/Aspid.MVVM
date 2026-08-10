@@ -99,13 +99,24 @@ namespace Aspid.MVVM.StarterKit
             CachedComponent.onValueChanged.RemoveListener(OnValueChanged);
         }
 
+        /// <remarks>
+        /// The value written is clamped to the slider's own range first. Unity clamps it anyway, silently, and the
+        /// echo guard around the assignment then swallows the <c>onValueChanged</c> that the clamp raises — so the
+        /// ViewModel would keep the value it sent while the slider showed a different one, and the two stayed apart
+        /// until the next change. When the clamp actually changes the value, the reverse channel is told what the
+        /// slider holds. A converter's own effect is not reported back: only the difference the clamp made is.
+        /// </remarks>
         protected void SetValueInternal(float value)
         {
+            var slider = CachedComponent;
+            var converted = _converter?.Convert(value) ?? value;
+            var clamped = BinderMath.SafeClamp(converted, slider.minValue, slider.maxValue);
+
             _isNotifyValueChanged = false;
 
             try
             {
-                CachedComponent.value = _converter?.Convert(value) ?? value;
+                slider.value = clamped;
             }
             finally
             {
@@ -113,6 +124,8 @@ namespace Aspid.MVVM.StarterKit
                 // навсегда оставило бы флаг снятым и обесточило канал View → ViewModel.
                 _isNotifyValueChanged = true;
             }
+
+            if (!Mathf.Approximately(clamped, converted)) OnValueChanged(clamped);
         }
 
         private void OnValueChanged(float value)

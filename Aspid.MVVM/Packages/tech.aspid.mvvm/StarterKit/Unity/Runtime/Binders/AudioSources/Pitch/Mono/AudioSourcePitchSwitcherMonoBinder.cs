@@ -19,6 +19,6 @@ namespace Aspid.MVVM.StarterKit
         /// Clamps the value to the valid range of −3 to 3.
         /// </summary>
         protected override void SetValue(float value) =>
-            CachedComponent.pitch = Mathf.Clamp(value, min: -3, max: 3);
+            CachedComponent.pitch = BinderMath.SafeClamp(value, -3, 3);
     }
 }

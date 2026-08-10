@@ -31,6 +31,6 @@ namespace Aspid.MVVM.StarterKit
         /// the clamping behavior.
         /// </remarks>
         protected override float GetConvertedValue(float value) =>
-            Mathf.Clamp(base.GetConvertedValue(value), min: -1, max: 1);
+            BinderMath.SafeClamp(base.GetConvertedValue(value), -1, 1);
     }
 }

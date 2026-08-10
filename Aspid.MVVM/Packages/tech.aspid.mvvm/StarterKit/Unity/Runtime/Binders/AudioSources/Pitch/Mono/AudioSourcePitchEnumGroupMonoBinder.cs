@@ -19,6 +19,6 @@ namespace Aspid.MVVM.StarterKit
         /// Sets <see cref="AudioSource.pitch"/> clamped to the valid range of −3 to 3.
         /// </summary>
         protected override void SetValue(AudioSource element, float value) =>
-            element.pitch = Mathf.Clamp(value, min: -3, max: 3);
+            element.pitch = BinderMath.SafeClamp(value, -3, 3);
     }
 }

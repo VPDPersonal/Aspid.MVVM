@@ -19,6 +19,6 @@ namespace Aspid.MVVM.StarterKit
         /// Sets <see cref="AudioSource.panStereo"/> clamped to the valid range of −1 to 1.
         /// </summary>
         protected override void SetValue(float value) =>
-            CachedComponent.panStereo = Mathf.Clamp(value, min: -1, max: 1);
+            CachedComponent.panStereo = BinderMath.SafeClamp(value, -1, 1);
     }
 }

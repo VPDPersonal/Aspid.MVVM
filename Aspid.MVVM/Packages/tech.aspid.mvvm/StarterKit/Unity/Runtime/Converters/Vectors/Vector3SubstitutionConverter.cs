@@ -12,6 +12,7 @@ namespace Aspid.MVVM.StarterKit
     [Serializable]
     public sealed class Vector3SubstitutionConverter : IConverterVector3
     {
+        [Tooltip("Which components of the vector the bound value replaces; the rest are taken from the source.")]
         [SerializeField] private Mode _mode;
 
         /// <summary>

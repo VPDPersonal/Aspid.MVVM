@@ -22,10 +22,12 @@ namespace Aspid.MVVM.StarterKit
 
         [Tooltip("Spawn position; interpreted in the chosen Space (Self = local to container, World = absolute).")]
         [SerializeField] private Vector3 _position;
+        [Tooltip("How the spawn position above is read: Self is local to the container, World is absolute.")]
         [SerializeField] private Space _positionSpace = Space.Self;
 
         [Tooltip("Spawn rotation as Euler angles; interpreted in the chosen Space.")]
         [SerializeField] private Vector3 _rotation;
+        [Tooltip("How the spawn rotation above is read: Self is local to the container, World is absolute.")]
         [SerializeField] private Space _rotationSpace = Space.Self;
 
         [Tooltip("Prefab spawned when no address is bound or when the binder is unbound.")]

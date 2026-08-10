@@ -23,6 +23,7 @@ namespace Aspid.MVVM.StarterKit
         IBinder<string>,
         IBinder<Object>
     {
+        [Tooltip("The name of the local variable inside the localized string that receives the bound value.")]
         [SerializeField] private string _variableName;
         
         /// <summary>

@@ -10,7 +10,9 @@ namespace Aspid.MVVM.StarterKit
     [Serializable]
     public sealed class TransformEulerAnglesCombineConverter : Vector3CombineConverter
     {
+        [Tooltip("The transform whose current value fills the components the bound value does not supply.")]
         [SerializeField] private Transform _transform;
+        [Tooltip("Whether the transform value is read in world or local space.")]
         [SerializeField] private Space _space = Space.World;
 
         /// <summary>

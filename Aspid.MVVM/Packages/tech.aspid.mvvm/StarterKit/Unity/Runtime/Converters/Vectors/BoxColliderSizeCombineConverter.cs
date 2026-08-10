@@ -10,6 +10,7 @@ namespace Aspid.MVVM.StarterKit
     [Serializable]
     public sealed class BoxColliderSizeCombineConverter : Vector3CombineConverter
     {
+        [Tooltip("The collider whose current value fills the components the bound value does not supply.")]
         [SerializeField] private BoxCollider _collider;
 
         /// <summary>

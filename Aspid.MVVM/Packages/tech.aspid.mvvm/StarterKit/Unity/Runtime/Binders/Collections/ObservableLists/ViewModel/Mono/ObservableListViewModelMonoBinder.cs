@@ -27,10 +27,13 @@ namespace Aspid.MVVM.StarterKit
         where T : MonoBehaviour, IView
         where TViewFactory : IViewFactory<T>
     {
+        [Tooltip("Creates a view for each item of the collection. Required — nothing is shown without it.")]
         [SerializeReference] private TViewFactory _viewFactory;
 
+        [Tooltip("Optional filter deciding which items of the collection are shown. Leave empty to show all of them.")]
         [SerializeReference] private Filter _filter;
         
+        [Tooltip("Optional comparer deciding the order items are shown in. Leave empty to keep the collection's own order.")]
         [SerializeReference] private Comparer _comparer;
 
         private List<T> _views;

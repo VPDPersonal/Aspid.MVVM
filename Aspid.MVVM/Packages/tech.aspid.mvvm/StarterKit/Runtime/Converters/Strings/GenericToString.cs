@@ -12,6 +12,7 @@ namespace Aspid.MVVM.StarterKit
     [Serializable]
     public class GenericToString<TFrom> : IConverter<TFrom?, string?>
     {
+        [Tooltip("Optional format string applied to the value. Leave empty for the type's default formatting.")]
         [SerializeField] private string? _format;
         
         public GenericToString()

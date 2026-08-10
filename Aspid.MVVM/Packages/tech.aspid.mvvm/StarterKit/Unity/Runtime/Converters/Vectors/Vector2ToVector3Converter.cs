@@ -11,7 +11,9 @@ namespace Aspid.MVVM.StarterKit
     [Serializable]
     public sealed class Vector2ToVector3Converter : IConverterVector2ToVector3
     {
+        [Tooltip("Which components of the source vector are carried over into the result.")]
         [SerializeField] private Values _values;
+        [Tooltip("The value used for the component that the source vector does not supply.")]
         [SerializeField] private float _thirdValue;
 
         /// <summary>

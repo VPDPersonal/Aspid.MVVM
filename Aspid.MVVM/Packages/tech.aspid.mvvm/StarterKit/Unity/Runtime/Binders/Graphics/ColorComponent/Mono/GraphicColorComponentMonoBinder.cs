@@ -16,6 +16,7 @@ namespace Aspid.MVVM.StarterKit
     [AddComponentMenu("Aspid/MVVM/Binders/UI/Graphic/Graphic Binder – Color Component")]
     public class GraphicColorComponentMonoBinder : ComponentFloatMonoBinder<Graphic>
     {
+        [Tooltip("Which channel of the colour the bound value writes to; the others keep their current value.")]
         [SerializeField] private ColorComponent _colorComponent = ColorComponent.A;
 
         /// <inheritdoc/>

@@ -15,6 +15,7 @@ namespace Aspid.MVVM.StarterKit
     [Serializable]
     public sealed class GraphicColorComponentSwitcherBinder : SwitcherFloatBinder<Graphic>
     {
+        [Tooltip("Which channel of the colour the bound value writes to; the others keep their current value.")]
         [SerializeField] private ColorComponent _component = ColorComponent.A;
 
         /// <inheritdoc/>

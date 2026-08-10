@@ -19,10 +19,13 @@ namespace Aspid.MVVM.StarterKit
         IConverterVector3,
         IConverterVector2ToVector3
     {
+        [Tooltip("Which components of the vector the bound value replaces; the rest are taken from the source.")]
         [SerializeField] private Mode _mode;
 
+        [Tooltip("Optional converter applied to the incoming value before the components are combined.")]
         [SerializeReference] private Converter? _preConvertor;
 
+        [Tooltip("Optional converter applied to the combined result before it leaves the converter.")]
         [SerializeReference] private Converter? _postConvertor;
 
         /// <summary>

@@ -13,6 +13,6 @@ namespace Aspid.MVVM.StarterKit
     {
         /// <inheritdoc/>
         protected override void SetValue(AudioSource element, float value) =>
-            element.dopplerLevel = value;
+            element.dopplerLevel = BinderMath.SafeClamp(value, 0, 5);
     }
 }

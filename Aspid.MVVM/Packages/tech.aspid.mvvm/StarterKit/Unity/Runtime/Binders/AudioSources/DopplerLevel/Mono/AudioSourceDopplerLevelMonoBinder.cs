@@ -20,5 +20,17 @@ namespace Aspid.MVVM.StarterKit
             get => CachedComponent.dopplerLevel;
             set => CachedComponent.dopplerLevel = value;
         }
+
+        /// <summary>
+        /// Called when converting the bound value before applying it to the <see cref="AudioSource.dopplerLevel"/> property.
+        /// Replaces a non-finite converted value with <c>0</c>.
+        /// </summary>
+        /// <remarks>
+        /// Unity clamps this property to its 0..5 range inside the setter, but lets <c>NaN</c> and infinities through,
+        /// which silently corrupts the doppler effect for the whole source. When overriding this method, always call
+        /// <c>base.GetConvertedValue(value)</c> to keep that guard.
+        /// </remarks>
+        protected override float GetConvertedValue(float value) =>
+            BinderMath.SafeClamp(base.GetConvertedValue(value), 0, 5);
     }
 }

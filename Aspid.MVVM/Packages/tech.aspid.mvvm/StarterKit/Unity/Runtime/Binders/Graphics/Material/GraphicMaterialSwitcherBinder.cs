@@ -22,13 +22,13 @@ namespace Aspid.MVVM.StarterKit
         /// <summary>
         /// Initializes a new instance of <see cref="GraphicMaterialSwitcherBinder"/>.
         /// </summary>
-        /// <param name="target">The <see cref="RawImage"/> to bind.</param>
+        /// <param name="target">The <see cref="Graphic"/> to bind.</param>
         /// <param name="trueValue">The <see cref="Material"/> applied when the bound boolean is <see langword="true"/>.</param>
         /// <param name="falseValue">The <see cref="Material"/> applied when the bound boolean is <see langword="false"/>.</param>
         /// <param name="converter">The converter used to transform the selected <see cref="Material"/> value. Pass <see langword="null"/> to use the value unchanged.</param>
         /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</param>
         public GraphicMaterialSwitcherBinder(
-            RawImage target,
+            Graphic target,
             Material trueValue,
             Material falseValue,
             Converter? converter = null,

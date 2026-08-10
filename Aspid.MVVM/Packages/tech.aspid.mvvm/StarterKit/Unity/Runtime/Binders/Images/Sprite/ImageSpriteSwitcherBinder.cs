@@ -52,7 +52,7 @@ namespace Aspid.MVVM.StarterKit
         protected override void SetValue(Sprite? value)
         {
             Target.sprite = value;
-            Target.enabled = !_disabledWhenNull || value;
+            if (_disabledWhenNull) Target.enabled = value;
         }
     }
 }

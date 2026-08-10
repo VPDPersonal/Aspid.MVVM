@@ -27,7 +27,7 @@ namespace Aspid.MVVM.StarterKit
             set
             {
                 CachedComponent.sprite = value;
-                CachedComponent.enabled = !_disabledWhenNull || value;
+                if (_disabledWhenNull) CachedComponent.enabled = value;
             }
         }
 

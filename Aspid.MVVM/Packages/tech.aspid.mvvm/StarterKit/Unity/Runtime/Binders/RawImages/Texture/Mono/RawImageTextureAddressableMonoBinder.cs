@@ -34,7 +34,7 @@ namespace Aspid.MVVM.StarterKit
             if (!component) return;
 
             component.texture = texture;
-            component.enabled = !_disabledWhenNull || texture;
+            if (_disabledWhenNull) component.enabled = texture;
         }
     }
 }

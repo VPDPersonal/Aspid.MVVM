@@ -32,7 +32,7 @@ namespace Aspid.MVVM.StarterKit
             set
             {
                 CachedComponent.texture = value;
-                CachedComponent.enabled = !_disabledWhenNull || value;
+                if (_disabledWhenNull) CachedComponent.enabled = value;
             }
         }
 

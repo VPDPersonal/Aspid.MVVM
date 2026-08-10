@@ -23,7 +23,7 @@ namespace Aspid.MVVM.StarterKit
         protected override void SetValue(Image element, Sprite value)
         {
             element.sprite = value;
-            element.enabled = !_disabledWhenNull || value;
+            if (_disabledWhenNull) element.enabled = value;
         }
     }
 }

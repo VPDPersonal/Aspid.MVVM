@@ -34,9 +34,5 @@ namespace Aspid.MVVM.StarterKit
             #endif
         }
 
-        protected override void SetValue(float value)
-        {
-            throw new System.NotImplementedException();
-        }
     }
 }

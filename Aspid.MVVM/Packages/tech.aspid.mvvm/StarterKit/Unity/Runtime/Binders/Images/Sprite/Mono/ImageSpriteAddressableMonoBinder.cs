@@ -29,7 +29,7 @@ namespace Aspid.MVVM.StarterKit
             if (!component) return;
             
             component.sprite = sprite;
-            component.enabled = !_disabledWhenNull || sprite;
+            if (_disabledWhenNull) component.enabled = sprite;
         }
     }
 }

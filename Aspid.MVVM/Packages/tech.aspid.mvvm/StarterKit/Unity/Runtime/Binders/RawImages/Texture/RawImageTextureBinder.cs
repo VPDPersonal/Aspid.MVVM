@@ -33,7 +33,7 @@ namespace Aspid.MVVM.StarterKit
             set
             {
                 Target.texture = value;
-                Target.enabled = !_disabledWhenNull || value;
+                if (_disabledWhenNull) Target.enabled = value;
             }
         }
         

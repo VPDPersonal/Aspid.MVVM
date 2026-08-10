@@ -30,10 +30,7 @@ namespace Aspid.MVVM.StarterKit
         private IRelayCommand<long> _longCommand;
         private IRelayCommand<float> _floatCommand;
         private IRelayCommand<double> _doubleCommand;
-        
-        /// <inheritdoc cref="TargetBinder{TTarget}.IsBind"/>
-        public override bool IsBind => Target is not null;
-        
+                
         /// <inheritdoc/>
         public SliderCommandBinder(Slider target, BindMode mode = BindMode.OneWay)
             : this(target, InteractableMode.Interactable, mode) { }
@@ -189,10 +186,7 @@ namespace Aspid.MVVM.StarterKit
             get => _param;
             set => _param = value;
         }
-        
-        /// <inheritdoc cref="TargetBinder{TTarget}.IsBind"/>
-        public override bool IsBind => Target is not null;
-        
+                
         /// <inheritdoc/>
         public SliderCommandBinder(Slider target, T param, BindMode mode = BindMode.OneWay)
             : this(target, param, InteractableMode.Interactable, mode) { }
@@ -368,10 +362,7 @@ namespace Aspid.MVVM.StarterKit
             get => _param2;
             set => _param2 = value;
         }
-        
-        /// <inheritdoc cref="TargetBinder{TTarget}.IsBind"/>
-        public override bool IsBind => Target is not null;
-        
+                
         /// <inheritdoc/>
         public SliderCommandBinder(Slider target, T1 param1, T2 param2, BindMode mode = BindMode.OneWay)
             : this(target, param1, param2, InteractableMode.Interactable, mode) { }
@@ -563,10 +554,7 @@ namespace Aspid.MVVM.StarterKit
             get => _param3;
             set => _param3 = value;
         }
-        
-        /// <inheritdoc cref="TargetBinder{TTarget}.IsBind"/>
-        public override bool IsBind => Target is not null;
-        
+                
         /// <inheritdoc/>
         public SliderCommandBinder(Slider target, T1 param1, T2 param2, T3 param3, BindMode mode = BindMode.OneWay)
             : this(target, param1, param2, param3, InteractableMode.Interactable, mode) { }

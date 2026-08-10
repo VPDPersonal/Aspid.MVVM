@@ -28,9 +28,6 @@ namespace Aspid.MVVM.StarterKit
         private IRelayCommand<int> _intCommand;
         private IRelayCommand<long> _longCommand;
 
-        /// <inheritdoc cref="TargetBinder{TTarget}.IsBind"/>
-        public override bool IsBind => Target is not null;
-
         /// <inheritdoc/>
         public DropdownCommandBinder(TMP_Dropdown target, BindMode mode = BindMode.OneWay)
             : this(target, InteractableMode.Interactable, mode) { }
@@ -164,9 +161,6 @@ namespace Aspid.MVVM.StarterKit
             get => _param;
             set => _param = value;
         }
-
-        /// <inheritdoc cref="TargetBinder{TTarget}.IsBind"/>
-        public override bool IsBind => Target is not null;
 
         /// <inheritdoc/>
         public DropdownCommandBinder(TMP_Dropdown target, T param, BindMode mode = BindMode.OneWay)
@@ -323,9 +317,6 @@ namespace Aspid.MVVM.StarterKit
             get => _param2;
             set => _param2 = value;
         }
-
-        /// <inheritdoc cref="TargetBinder{TTarget}.IsBind"/>
-        public override bool IsBind => Target is not null;
 
         /// <inheritdoc/>
         public DropdownCommandBinder(TMP_Dropdown target, T1 param1, T2 param2, BindMode mode = BindMode.OneWay)
@@ -500,9 +491,6 @@ namespace Aspid.MVVM.StarterKit
             get => _param3;
             set => _param3 = value;
         }
-
-        /// <inheritdoc cref="TargetBinder{TTarget}.IsBind"/>
-        public override bool IsBind => Target is not null;
 
         /// <inheritdoc/>
         public DropdownCommandBinder(TMP_Dropdown target, T1 param1, T2 param2, T3 param3, BindMode mode = BindMode.OneWay)

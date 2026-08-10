@@ -34,7 +34,7 @@ namespace Aspid.MVVM
             using (Markers<T>.UnbindSafelyMarker.Auto())
 #endif
             {
-                if (binder is null) return;
+                if (IsMissing(binder)) return;
                 binder.Unbind();
             }
         }
@@ -66,7 +66,7 @@ namespace Aspid.MVVM
                     var binder = binders[i];
                     
                     // ReSharper disable once ConditionIsAlwaysTrueOrFalseAccordingToNullableAPIContract
-                    if (binder is null)
+                    if (IsMissing(binder))
                     {
                         BuildUnbindSafelyBinderNullMessage(i, owner, memberName);
                     }
@@ -114,7 +114,7 @@ namespace Aspid.MVVM
                 {
                     var binder = binders[i];
                     
-                    if (binder is null)
+                    if (IsMissing(binder))
                     {
                         BuildUnbindSafelyBinderNullMessage(i, owner, memberName);
                     }
@@ -161,7 +161,7 @@ namespace Aspid.MVVM
                 var index = 0;
                 foreach (var binder in binders)
                 {
-                    if (binder is null)
+                    if (IsMissing(binder))
                     {
                         BuildUnbindSafelyBinderNullMessage(index, owner, memberName);
                     }

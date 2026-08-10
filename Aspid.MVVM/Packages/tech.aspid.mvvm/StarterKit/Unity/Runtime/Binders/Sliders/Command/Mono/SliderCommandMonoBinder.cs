@@ -123,15 +123,8 @@ namespace Aspid.MVVM.StarterKit
             SetInteractableMode(command.CanExecute(value));
         }
 
-        private void SetInteractableMode(bool isInteractable)
-        {
-            switch (_interactableMode)
-            {
-                case InteractableMode.Visible: gameObject.SetActive(isInteractable); break;
-                case InteractableMode.Custom: _customInteractable.SetCanExecute(isInteractable); break;
-                case InteractableMode.Interactable: CachedComponent.interactable = isInteractable; break;
-            }
-        }
+        private void SetInteractableMode(bool isInteractable) =>
+            CachedComponent.SetInteractable(_interactableMode, isInteractable, _customInteractable, this);
     }
 
     /// <summary>
@@ -265,15 +258,8 @@ namespace Aspid.MVVM.StarterKit
             SetInteractableMode(command.CanExecute(value, Param));
         }
 
-        private void SetInteractableMode(bool isInteractable)
-        {
-            switch (_interactableMode)
-            {
-                case InteractableMode.Visible: gameObject.SetActive(isInteractable); break;
-                case InteractableMode.Custom: _customInteractable.SetCanExecute(isInteractable); break;
-                case InteractableMode.Interactable: CachedComponent.interactable = isInteractable; break;
-            }
-        }
+        private void SetInteractableMode(bool isInteractable) =>
+            CachedComponent.SetInteractable(_interactableMode, isInteractable, _customInteractable, this);
     }
         
     /// <summary>
@@ -419,15 +405,8 @@ namespace Aspid.MVVM.StarterKit
             SetInteractableMode(command.CanExecute(value, Param1, Param2));
         }
 
-        private void SetInteractableMode(bool isInteractable)
-        {
-            switch (_interactableMode)
-            {
-                case InteractableMode.Visible: gameObject.SetActive(isInteractable); break;
-                case InteractableMode.Custom: _customInteractable.SetCanExecute(isInteractable); break;
-                case InteractableMode.Interactable: CachedComponent.interactable = isInteractable; break;
-            }
-        }
+        private void SetInteractableMode(bool isInteractable) =>
+            CachedComponent.SetInteractable(_interactableMode, isInteractable, _customInteractable, this);
     }
     
     /// <summary>
@@ -585,14 +564,7 @@ namespace Aspid.MVVM.StarterKit
             SetInteractableMode(command.CanExecute(value, Param1, Param2, Param3));
         }
 
-        private void SetInteractableMode(bool isInteractable)
-        {
-            switch (_interactableMode)
-            {
-                case InteractableMode.Visible: gameObject.SetActive(isInteractable); break;
-                case InteractableMode.Custom: _customInteractable.SetCanExecute(isInteractable); break;
-                case InteractableMode.Interactable: CachedComponent.interactable = isInteractable; break;
-            }
-        }
+        private void SetInteractableMode(bool isInteractable) =>
+            CachedComponent.SetInteractable(_interactableMode, isInteractable, _customInteractable, this);
     }
 }

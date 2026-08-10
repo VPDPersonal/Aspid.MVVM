@@ -85,6 +85,7 @@ namespace Aspid.MVVM.StarterKit
         /// Called when converting the bound value before applying it to the min/max distance.
         /// Applies the stored converter if one was provided; otherwise returns the value unchanged.
         /// </summary>
+        /// <param name="value">The value to convert.</param>
         protected override Vector2 GetConvertedValue(Vector2 value) =>
             _converter?.Convert(value) ?? value;
     }

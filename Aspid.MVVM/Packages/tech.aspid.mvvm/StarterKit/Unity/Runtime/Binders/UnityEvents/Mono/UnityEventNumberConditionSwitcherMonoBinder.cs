@@ -28,6 +28,7 @@ namespace Aspid.MVVM.StarterKit
         /// <summary>
         /// Converts the value to <see cref="float"/> and invokes the appropriate event based on the converted boolean result.
         /// </summary>
+        /// <param name="value">The value received from the ViewModel.</param>
         [BinderLog]
         public void SetValue(int value) =>
             SetValue((float)value);
@@ -35,6 +36,7 @@ namespace Aspid.MVVM.StarterKit
         /// <summary>
         /// Converts the value to <see cref="float"/> and invokes the appropriate event based on the converted boolean result.
         /// </summary>
+        /// <param name="value">The value received from the ViewModel.</param>
         [BinderLog]
         public void SetValue(long value) =>
             SetValue((float)value);
@@ -42,6 +44,7 @@ namespace Aspid.MVVM.StarterKit
         /// <summary>
         /// Converts the value to a <see langword="bool"/> using the configured converter and invokes the corresponding event.
         /// </summary>
+        /// <param name="value">The value received from the ViewModel.</param>
         [BinderLog]
         public void SetValue(float value)
         {
@@ -58,6 +61,7 @@ namespace Aspid.MVVM.StarterKit
         /// <summary>
         /// Converts the value to <see cref="float"/> and invokes the appropriate event based on the converted boolean result.
         /// </summary>
+        /// <param name="value">The value received from the ViewModel.</param>
         [BinderLog]
         public void SetValue(double value) =>
             SetValue((float)value);

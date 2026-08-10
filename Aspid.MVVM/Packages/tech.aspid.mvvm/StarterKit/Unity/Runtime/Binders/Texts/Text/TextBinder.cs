@@ -36,24 +36,28 @@ namespace Aspid.MVVM.StarterKit
         /// <summary>
         /// Formats the value using the configured <see cref="CultureInfoMode"/> and sets <see cref="TMP_Text.text"/>.
         /// </summary>
+        /// <param name="value">The value received from the ViewModel.</param>
         public void SetValue(int value) =>
             SetValue(value.ToCultureString(_cultureInfoMode));
 
         /// <summary>
         /// Formats the value using the configured <see cref="CultureInfoMode"/> and sets <see cref="TMP_Text.text"/>.
         /// </summary>
+        /// <param name="value">The value received from the ViewModel.</param>
         public void SetValue(long value) =>
             SetValue(value.ToCultureString(_cultureInfoMode));
 
         /// <summary>
         /// Formats the value using the configured <see cref="CultureInfoMode"/> and sets <see cref="TMP_Text.text"/>.
         /// </summary>
+        /// <param name="value">The value received from the ViewModel.</param>
         public void SetValue(float value) =>
             SetValue(value.ToCultureString(_cultureInfoMode));
 
         /// <summary>
         /// Formats the value using the configured <see cref="CultureInfoMode"/> and sets <see cref="TMP_Text.text"/>.
         /// </summary>
+        /// <param name="value">The value received from the ViewModel.</param>
         public void SetValue(double value) =>
             SetValue(value.ToCultureString(_cultureInfoMode));
     }

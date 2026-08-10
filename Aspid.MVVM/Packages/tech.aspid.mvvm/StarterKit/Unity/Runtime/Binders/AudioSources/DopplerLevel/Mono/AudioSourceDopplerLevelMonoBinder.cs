@@ -30,6 +30,7 @@ namespace Aspid.MVVM.StarterKit
         /// which silently corrupts the doppler effect for the whole source. When overriding this method, always call
         /// <c>base.GetConvertedValue(value)</c> to keep that guard.
         /// </remarks>
+        /// <param name="value">The value to convert.</param>
         protected override float GetConvertedValue(float value) =>
             BinderMath.SafeClamp(base.GetConvertedValue(value), 0, 5);
     }

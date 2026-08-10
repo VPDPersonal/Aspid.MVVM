@@ -26,6 +26,7 @@ namespace Aspid.MVVM.StarterKit
         /// <summary>
         /// Invokes the event with the specified <see cref="Vector2"/> value, applying the converter if configured.
         /// </summary>
+        /// <param name="value">The value received from the ViewModel.</param>
         [BinderLog]
         public void SetValue(Vector2 value) =>
             _set?.Invoke(_converter?.Convert(value) ?? value);

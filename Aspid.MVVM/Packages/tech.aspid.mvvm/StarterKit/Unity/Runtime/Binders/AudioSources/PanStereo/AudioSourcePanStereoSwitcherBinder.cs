@@ -33,6 +33,7 @@ namespace Aspid.MVVM.StarterKit
         /// Called when converting the bound value before applying it to the <see cref="AudioSource.panStereo"/> property.
         /// Clamps the converted value to the valid range of −1 to 1.
         /// </summary>
+        /// <param name="value">The value to convert.</param>
         protected override float GetConvertedValue(float value) =>
             BinderMath.SafeClamp(base.GetConvertedValue(value), -1, 1);
     }

@@ -29,6 +29,7 @@ namespace Aspid.MVVM.StarterKit
         /// <summary>
         /// Invokes the event with the specified string value, applying the converter if configured.
         /// </summary>
+        /// <param name="value">The value received from the ViewModel.</param>
         [BinderLog]
         public void SetValue(string value) =>
             _set?.Invoke(_converter?.Convert(value) ?? value);
@@ -36,6 +37,7 @@ namespace Aspid.MVVM.StarterKit
         /// <summary>
         /// Converts the value to <see cref="string"/> using the configured culture and invokes the event.
         /// </summary>
+        /// <param name="value">The value received from the ViewModel.</param>
         [BinderLog]
         public void SetValue(int value) =>
             SetValue(value.ToCultureString(_cultureInfoMode));
@@ -43,6 +45,7 @@ namespace Aspid.MVVM.StarterKit
         /// <summary>
         /// Converts the value to <see cref="string"/> using the configured culture and invokes the event.
         /// </summary>
+        /// <param name="value">The value received from the ViewModel.</param>
         [BinderLog]
         public void SetValue(long value) =>
             SetValue(value.ToCultureString(_cultureInfoMode));
@@ -50,6 +53,7 @@ namespace Aspid.MVVM.StarterKit
         /// <summary>
         /// Converts the value to <see cref="string"/> using the configured culture and invokes the event.
         /// </summary>
+        /// <param name="value">The value received from the ViewModel.</param>
         [BinderLog]
         public void SetValue(float value) =>
             SetValue(value.ToCultureString(_cultureInfoMode));
@@ -57,6 +61,7 @@ namespace Aspid.MVVM.StarterKit
         /// <summary>
         /// Converts the value to <see cref="string"/> using the configured culture and invokes the event.
         /// </summary>
+        /// <param name="value">The value received from the ViewModel.</param>
         [BinderLog]
         public void SetValue(double value) =>
             SetValue(value.ToCultureString(_cultureInfoMode));

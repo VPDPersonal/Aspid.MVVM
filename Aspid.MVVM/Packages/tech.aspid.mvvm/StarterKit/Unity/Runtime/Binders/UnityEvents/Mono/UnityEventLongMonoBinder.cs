@@ -26,6 +26,7 @@ namespace Aspid.MVVM.StarterKit
         /// <summary>
         /// Converts the value to <see cref="long"/> and invokes the event.
         /// </summary>
+        /// <param name="value">The value received from the ViewModel.</param>
         [BinderLog]
         public void SetValue(int value) =>
             SetValue((long)value);
@@ -33,6 +34,7 @@ namespace Aspid.MVVM.StarterKit
         /// <summary>
         /// Invokes the event with the specified long value, applying the converter if configured.
         /// </summary>
+        /// <param name="value">The value received from the ViewModel.</param>
         [BinderLog]
         public void SetValue(long value) =>
             _set?.Invoke(_converter?.Convert(value) ?? value);
@@ -40,6 +42,7 @@ namespace Aspid.MVVM.StarterKit
         /// <summary>
         /// Converts the value to <see cref="long"/> and invokes the event.
         /// </summary>
+        /// <param name="value">The value received from the ViewModel.</param>
         [BinderLog]
         public void SetValue(float value) =>
             SetValue((long)value);
@@ -47,6 +50,7 @@ namespace Aspid.MVVM.StarterKit
         /// <summary>
         /// Converts the value to <see cref="long"/> and invokes the event.
         /// </summary>
+        /// <param name="value">The value received from the ViewModel.</param>
         [BinderLog]
         public void SetValue(double value) =>
             SetValue((long)value);

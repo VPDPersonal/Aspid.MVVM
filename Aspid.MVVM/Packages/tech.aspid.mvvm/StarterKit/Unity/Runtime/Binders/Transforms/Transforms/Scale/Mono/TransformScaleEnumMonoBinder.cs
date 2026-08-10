@@ -15,6 +15,7 @@ namespace Aspid.MVVM.StarterKit
         /// Called when the bound enum resolves to a value for the current element.
         /// Sets the <see cref="Transform.localScale"/> to the resolved value.
         /// </summary>
+        /// <param name="value">The value received from the ViewModel.</param>
         protected override void SetValue(Vector3 value) =>
             CachedComponent.localScale = value;
     }

@@ -14,6 +14,8 @@ namespace Aspid.MVVM.StarterKit
         /// <summary>
         /// Called when the bound enum resolves to a value for the specified element.
         /// </summary>
+        /// <param name="element">The component this entry of the group writes to.</param>
+        /// <param name="value">The value the bound enum resolved to for this element.</param>
         protected override void SetValue(SpriteRenderer element, int value) =>
             element.sortingOrder = value;
     }

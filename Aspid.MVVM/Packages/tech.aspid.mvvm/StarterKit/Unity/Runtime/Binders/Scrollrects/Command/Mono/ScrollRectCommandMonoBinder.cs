@@ -25,6 +25,7 @@ namespace Aspid.MVVM.StarterKit
         /// <summary>
         /// Binds an <see cref="IRelayCommand{T}">IRelayCommand&lt;Vector2&gt;</see> and subscribes to its <see cref="IRelayCommand.CanExecuteChanged"/> event.
         /// </summary>
+        /// <param name="value">The value received from the ViewModel.</param>
         [BinderLog]
         public void SetValue(IRelayCommand<Vector2> value) =>
             CommandBinderExtensions.UpdateCommand(ref _vector2Command, value, OnCanExecuteChanged);
@@ -32,6 +33,7 @@ namespace Aspid.MVVM.StarterKit
         /// <summary>
         /// Binds an <see cref="IRelayCommand{T}">IRelayCommand&lt;Vector3&gt;</see> and subscribes to its <see cref="IRelayCommand.CanExecuteChanged"/> event.
         /// </summary>
+        /// <param name="value">The value received from the ViewModel.</param>
         [BinderLog]
         public void SetValue(IRelayCommand<Vector3> value) =>
             CommandBinderExtensions.UpdateCommand(ref _vector3Command, value, OnCanExecuteChanged);
@@ -105,6 +107,7 @@ namespace Aspid.MVVM.StarterKit
         /// <summary>
         /// Binds an <see cref="IRelayCommand{T1, T2}">IRelayCommand&lt;Vector2, T&gt;</see> and subscribes to its <see cref="IRelayCommand.CanExecuteChanged"/> event.
         /// </summary>
+        /// <param name="value">The value received from the ViewModel.</param>
         [BinderLog]
         public void SetValue(IRelayCommand<Vector2, T> value) =>
             CommandBinderExtensions.UpdateCommand(ref _vector2Command, value, OnCanExecuteChanged);
@@ -112,6 +115,7 @@ namespace Aspid.MVVM.StarterKit
         /// <summary>
         /// Binds an <see cref="IRelayCommand{T1, T2}">IRelayCommand&lt;Vector3, T&gt;</see> and subscribes to its <see cref="IRelayCommand.CanExecuteChanged"/> event.
         /// </summary>
+        /// <param name="value">The value received from the ViewModel.</param>
         [BinderLog]
         public void SetValue(IRelayCommand<Vector3, T> value) =>
             CommandBinderExtensions.UpdateCommand(ref _vector3Command, value, OnCanExecuteChanged);
@@ -197,6 +201,7 @@ namespace Aspid.MVVM.StarterKit
         /// <summary>
         /// Binds an <see cref="IRelayCommand{T1, T2, T3}">IRelayCommand&lt;Vector2, T1, T2&gt;</see> and subscribes to its <see cref="IRelayCommand.CanExecuteChanged"/> event.
         /// </summary>
+        /// <param name="value">The value received from the ViewModel.</param>
         [BinderLog]
         public void SetValue(IRelayCommand<Vector2, T1, T2> value) =>
             CommandBinderExtensions.UpdateCommand(ref _vector2Command, value, OnCanExecuteChanged);
@@ -204,6 +209,7 @@ namespace Aspid.MVVM.StarterKit
         /// <summary>
         /// Binds an <see cref="IRelayCommand{T1, T2, T3}">IRelayCommand&lt;Vector3, T1, T2&gt;</see> and subscribes to its <see cref="IRelayCommand.CanExecuteChanged"/> event.
         /// </summary>
+        /// <param name="value">The value received from the ViewModel.</param>
         [BinderLog]
         public void SetValue(IRelayCommand<Vector3, T1, T2> value) =>
             CommandBinderExtensions.UpdateCommand(ref _vector3Command, value, OnCanExecuteChanged);
@@ -301,6 +307,7 @@ namespace Aspid.MVVM.StarterKit
         /// <summary>
         /// Binds an <see cref="IRelayCommand{T1, T2, T3, T4}">IRelayCommand&lt;Vector2, T1, T2, T3&gt;</see> and subscribes to its <see cref="IRelayCommand.CanExecuteChanged"/> event.
         /// </summary>
+        /// <param name="value">The value received from the ViewModel.</param>
         [BinderLog]
         public void SetValue(IRelayCommand<Vector2, T1, T2, T3> value) =>
             CommandBinderExtensions.UpdateCommand(ref _vector2Command, value, OnCanExecuteChanged);
@@ -308,6 +315,7 @@ namespace Aspid.MVVM.StarterKit
         /// <summary>
         /// Binds an <see cref="IRelayCommand{T1, T2, T3, T4}">IRelayCommand&lt;Vector3, T1, T2, T3&gt;</see> and subscribes to its <see cref="IRelayCommand.CanExecuteChanged"/> event.
         /// </summary>
+        /// <param name="value">The value received from the ViewModel.</param>
         [BinderLog]
         public void SetValue(IRelayCommand<Vector3, T1, T2, T3> value) =>
             CommandBinderExtensions.UpdateCommand(ref _vector3Command, value, OnCanExecuteChanged);

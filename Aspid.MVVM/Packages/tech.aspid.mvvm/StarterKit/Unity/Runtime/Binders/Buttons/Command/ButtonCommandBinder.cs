@@ -60,6 +60,7 @@ namespace Aspid.MVVM.StarterKit
         /// <summary>
         /// Binds an <see cref="IRelayCommand"/> and subscribes to its <see cref="IRelayCommand.CanExecuteChanged"/> event.
         /// </summary>
+        /// <param name="command">The command received from the ViewModel, or <see langword="null"/> to detach the previous one.</param>
         public void SetValue(IRelayCommand command) =>
             CommandBinderExtensions.UpdateCommand(ref _command, command, OnCanExecuteChanged);
         
@@ -186,6 +187,7 @@ namespace Aspid.MVVM.StarterKit
         /// <summary>
         /// Binds an <see cref="IRelayCommand{T}"/> and subscribes to its <see cref="IRelayCommand{T}.CanExecuteChanged"/> event.
         /// </summary>
+        /// <param name="command">The command received from the ViewModel, or <see langword="null"/> to detach the previous one.</param>
         public void SetValue(IRelayCommand<T> command) =>
             CommandBinderExtensions.UpdateCommand(ref _command, command, OnCanExecuteChanged);
 
@@ -330,6 +332,7 @@ namespace Aspid.MVVM.StarterKit
         /// <summary>
         /// Binds an <see cref="IRelayCommand{T1, T2}"/> and subscribes to its <see cref="IRelayCommand{T1,T2}.CanExecuteChanged"/> event.
         /// </summary>
+        /// <param name="command">The command received from the ViewModel, or <see langword="null"/> to detach the previous one.</param>
         public void SetValue(IRelayCommand<T1, T2> command) =>
             CommandBinderExtensions.UpdateCommand(ref _command, command, OnCanExecuteChanged);
 
@@ -480,6 +483,7 @@ namespace Aspid.MVVM.StarterKit
         /// <summary>
         /// Binds an <see cref="IRelayCommand{T1, T2, T3}"/> and subscribes to its <see cref="IRelayCommand{T1,T2,T3}.CanExecuteChanged"/> event.
         /// </summary>
+        /// <param name="command">The command received from the ViewModel, or <see langword="null"/> to detach the previous one.</param>
         public void SetValue(IRelayCommand<T1, T2, T3> command) =>
             CommandBinderExtensions.UpdateCommand(ref _command, command, OnCanExecuteChanged);
         
@@ -646,6 +650,7 @@ namespace Aspid.MVVM.StarterKit
         /// <summary>
         /// Binds an <see cref="IRelayCommand{T1, T2, T3, T4}"/> and subscribes to its <see cref="IRelayCommand{T1,T2,T3,T4}.CanExecuteChanged"/> event.
         /// </summary>
+        /// <param name="command">The command received from the ViewModel, or <see langword="null"/> to detach the previous one.</param>
         public void SetValue(IRelayCommand<T1, T2, T3, T4> command) =>
             CommandBinderExtensions.UpdateCommand(ref _command, command, OnCanExecuteChanged);
         

@@ -16,6 +16,7 @@ namespace Aspid.MVVM.StarterKit
         /// Called when applying the selected value to <see cref="Scrollbar.value"/>.
         /// The value is clamped to the 0..1 range a scrollbar accepts.
         /// </summary>
+        /// <param name="value">The value received from the ViewModel.</param>
         protected override void SetValue(float value) =>
             CachedComponent.value = BinderMath.SafeClamp01(value);
     }

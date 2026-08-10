@@ -63,12 +63,14 @@ namespace Aspid.MVVM.StarterKit
         /// <summary>
         /// Casts the value to <see langword="float"/> and sets <see cref="Scrollbar.value"/>.
         /// </summary>
+        /// <param name="value">The value received from the ViewModel.</param>
         public void SetValue(int value) =>
             SetValueInternal(value);
 
         /// <summary>
         /// Casts the value to <see langword="float"/> and sets <see cref="Scrollbar.value"/>.
         /// </summary>
+        /// <param name="value">The value received from the ViewModel.</param>
         public void SetValue(long value) =>
             SetValueInternal(value);
 
@@ -76,12 +78,14 @@ namespace Aspid.MVVM.StarterKit
         /// Sets <see cref="Scrollbar.value"/>, applying the configured converter if present.
         /// Suppresses value change events during assignment.
         /// </summary>
+        /// <param name="value">The value received from the ViewModel.</param>
         public void SetValue(float value) =>
             SetValueInternal(value);
 
         /// <summary>
         /// Casts the value to <see langword="float"/> and sets <see cref="Scrollbar.value"/>.
         /// </summary>
+        /// <param name="value">The value received from the ViewModel.</param>
         public void SetValue(double value) =>
             SetValueInternal((float)value);
 

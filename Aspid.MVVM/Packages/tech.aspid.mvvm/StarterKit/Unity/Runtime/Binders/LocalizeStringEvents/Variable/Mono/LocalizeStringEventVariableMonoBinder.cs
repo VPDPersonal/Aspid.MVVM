@@ -29,6 +29,7 @@ namespace Aspid.MVVM.StarterKit
         /// <summary>
         /// Updates the named <see cref="BoolVariable"/> to the specified value and calls <see cref="LocalizeStringEvent.RefreshString"/>.
         /// </summary>
+        /// <param name="value">The value received from the ViewModel.</param>
         [BinderLog]
         public void SetValue(bool value)
         {
@@ -39,6 +40,7 @@ namespace Aspid.MVVM.StarterKit
         /// <summary>
         /// Updates the named <see cref="StringVariable"/> to the specified value and calls <see cref="LocalizeStringEvent.RefreshString"/>.
         /// </summary>
+        /// <param name="value">The value received from the ViewModel.</param>
         [BinderLog]
         public void SetValue(string value)
         {
@@ -49,6 +51,7 @@ namespace Aspid.MVVM.StarterKit
         /// <summary>
         /// Updates the named <see cref="ObjectVariable"/> to the specified value and calls <see cref="LocalizeStringEvent.RefreshString"/>.
         /// </summary>
+        /// <param name="value">The value received from the ViewModel.</param>
         [BinderLog]
         public void SetValue(Object value)
         {
@@ -59,6 +62,7 @@ namespace Aspid.MVVM.StarterKit
         /// <summary>
         /// Updates the named <see cref="IntVariable"/> to the specified value and calls <see cref="LocalizeStringEvent.RefreshString"/>.
         /// </summary>
+        /// <param name="value">The value received from the ViewModel.</param>
         [BinderLog]
         public void SetValue(int value)
         {
@@ -69,6 +73,7 @@ namespace Aspid.MVVM.StarterKit
         /// <summary>
         /// Updates the named <see cref="UIntVariable"/> to the specified value and calls <see cref="LocalizeStringEvent.RefreshString"/>.
         /// </summary>
+        /// <param name="value">The value received from the ViewModel.</param>
         [BinderLog]
         public void SetValue(uint value)
         {
@@ -79,6 +84,7 @@ namespace Aspid.MVVM.StarterKit
         /// <summary>
         /// Updates the named <see cref="LongVariable"/> to the specified value and calls <see cref="LocalizeStringEvent.RefreshString"/>.
         /// </summary>
+        /// <param name="value">The value received from the ViewModel.</param>
         [BinderLog]
         public void SetValue(long value)
         {
@@ -89,6 +95,7 @@ namespace Aspid.MVVM.StarterKit
         /// <summary>
         /// Updates the named <see cref="ULongVariable"/> to the specified value and calls <see cref="LocalizeStringEvent.RefreshString"/>.
         /// </summary>
+        /// <param name="value">The value received from the ViewModel.</param>
         [BinderLog]
         public void SetValue(ulong value)
         {
@@ -99,6 +106,7 @@ namespace Aspid.MVVM.StarterKit
         /// <summary>
         /// Updates the named <see cref="ByteVariable"/> to the specified value and calls <see cref="LocalizeStringEvent.RefreshString"/>.
         /// </summary>
+        /// <param name="value">The value received from the ViewModel.</param>
         [BinderLog]
         public void SetValue(byte value)
         {
@@ -109,6 +117,7 @@ namespace Aspid.MVVM.StarterKit
         /// <summary>
         /// Updates the named <see cref="SByteVariable"/> to the specified value and calls <see cref="LocalizeStringEvent.RefreshString"/>.
         /// </summary>
+        /// <param name="value">The value received from the ViewModel.</param>
         [BinderLog]
         public void SetValue(sbyte value)
         {
@@ -119,6 +128,7 @@ namespace Aspid.MVVM.StarterKit
         /// <summary>
         /// Updates the named <see cref="ShortVariable"/> to the specified value and calls <see cref="LocalizeStringEvent.RefreshString"/>.
         /// </summary>
+        /// <param name="value">The value received from the ViewModel.</param>
         [BinderLog]
         public void SetValue(short value)
         {
@@ -129,6 +139,7 @@ namespace Aspid.MVVM.StarterKit
         /// <summary>
         /// Updates the named <see cref="UShortVariable"/> to the specified value and calls <see cref="LocalizeStringEvent.RefreshString"/>.
         /// </summary>
+        /// <param name="value">The value received from the ViewModel.</param>
         [BinderLog]
         public void SetValue(ushort value)
         {
@@ -139,6 +150,7 @@ namespace Aspid.MVVM.StarterKit
         /// <summary>
         /// Updates the named <see cref="FloatVariable"/> to the specified value and calls <see cref="LocalizeStringEvent.RefreshString"/>.
         /// </summary>
+        /// <param name="value">The value received from the ViewModel.</param>
         [BinderLog]
         public void SetValue(float value)
         {
@@ -149,6 +161,7 @@ namespace Aspid.MVVM.StarterKit
         /// <summary>
         /// Updates the named <see cref="DoubleVariable"/> to the specified value and calls <see cref="LocalizeStringEvent.RefreshString"/>.
         /// </summary>
+        /// <param name="value">The value received from the ViewModel.</param>
         [BinderLog]
         public void SetValue(double value)
         {

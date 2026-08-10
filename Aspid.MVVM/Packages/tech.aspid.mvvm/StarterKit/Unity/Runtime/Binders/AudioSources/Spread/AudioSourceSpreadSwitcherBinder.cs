@@ -33,6 +33,7 @@ namespace Aspid.MVVM.StarterKit
         /// Called when converting the selected value before applying it to the <see cref="AudioSource.spread"/> property.
         /// Clamps the converted value to the valid range of 0 to 360.
         /// </summary>
+        /// <param name="value">The value to convert.</param>
         protected override float GetConvertedValue(float value) =>
             BinderMath.SafeClamp(base.GetConvertedValue(value), 0, 360);
     }

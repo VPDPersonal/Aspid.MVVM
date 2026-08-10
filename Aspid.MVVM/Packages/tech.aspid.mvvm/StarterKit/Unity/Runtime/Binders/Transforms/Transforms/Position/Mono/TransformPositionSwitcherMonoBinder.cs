@@ -17,6 +17,7 @@ namespace Aspid.MVVM.StarterKit
         /// <summary>
         /// Called when applying the selected value to the position of the <see cref="Transform"/>.
         /// </summary>
+        /// <param name="value">The value received from the ViewModel.</param>
         protected override void SetValue(Vector3 value) =>
             CachedComponent.SetPosition(value, _space);
     }

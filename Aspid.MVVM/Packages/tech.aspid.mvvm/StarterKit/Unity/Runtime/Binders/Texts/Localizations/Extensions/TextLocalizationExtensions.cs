@@ -14,6 +14,9 @@ namespace Aspid.MVVM.StarterKit
         /// <summary>
         /// Configures format arguments and subscribes to string change notifications.
         /// </summary>
+        /// <param name="stringReference">The localized string to subscribe to.</param>
+        /// <param name="formatArguments">The objects substituted into the localized string; an empty list leaves its arguments untouched.</param>
+        /// <param name="updateString">The handler called whenever the localized string changes.</param>
         internal static void Subscribe(this LocalizedString stringReference, List<Object> formatArguments, LocalizedString.ChangeHandler updateString)
         {
             if (formatArguments.Count > 0)
@@ -28,6 +31,8 @@ namespace Aspid.MVVM.StarterKit
         /// <summary>
         /// Unsubscribes from string change notifications.
         /// </summary>
+        /// <param name="stringReference">The localized string to unsubscribe from.</param>
+        /// <param name="updateString">The handler to detach.</param>
         internal static void Unsubscribe(this LocalizedString stringReference, LocalizedString.ChangeHandler updateString) =>
             stringReference.StringChanged -= updateString;
     }

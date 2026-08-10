@@ -40,6 +40,7 @@ namespace Aspid.MVVM.StarterKit
         /// <summary>
         /// Called when applying the selected value to the anchored position of the <see cref="RectTransform"/>.
         /// </summary>
+        /// <param name="value">The value received from the ViewModel.</param>
         protected override void SetValue(Vector3 value) =>
             Target.SetAnchoredPosition(value, _space);
     }

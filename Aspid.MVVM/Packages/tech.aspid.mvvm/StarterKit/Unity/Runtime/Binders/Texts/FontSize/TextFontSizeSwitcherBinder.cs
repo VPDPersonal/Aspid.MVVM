@@ -26,6 +26,7 @@ namespace Aspid.MVVM.StarterKit
         /// <summary>
         /// Called when applying the selected value to <see cref="TMP_Text.fontSize"/>.
         /// </summary>
+        /// <param name="value">The value received from the ViewModel.</param>
         protected override void SetValue(float value) =>
             Target.fontSize = value;
     }

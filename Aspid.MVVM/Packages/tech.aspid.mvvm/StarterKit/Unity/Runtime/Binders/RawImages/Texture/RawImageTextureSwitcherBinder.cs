@@ -44,6 +44,7 @@ namespace Aspid.MVVM.StarterKit
         /// Applies the selected value to the <see cref="RawImage.texture"/> property.
         /// Disables the <see cref="RawImage"/> component when the texture is <see langword="null"/> and the Disable When Null option is enabled.
         /// </summary>
+        /// <param name="value">The value received from the ViewModel.</param>
         protected override void SetValue(Texture? value)
         {
             Target.texture = value;

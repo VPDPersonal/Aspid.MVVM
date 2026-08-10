@@ -29,6 +29,7 @@ namespace Aspid.MVVM.StarterKit
         /// Called when applying the selected value to <see cref="TMP_InputField.contentType"/>.
         /// Sets the value and forces a label update.
         /// </summary>
+        /// <param name="value">The value received from the ViewModel.</param>
         protected override void SetValue(TMP_InputField.ContentType value)
         {
             Target.contentType = value;

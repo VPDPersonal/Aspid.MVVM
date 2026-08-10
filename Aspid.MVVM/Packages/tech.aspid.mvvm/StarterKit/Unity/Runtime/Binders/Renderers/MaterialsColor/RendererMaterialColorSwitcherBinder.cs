@@ -53,6 +53,7 @@ namespace Aspid.MVVM.StarterKit
         /// The Renderer's materials array is fetched once and cached, avoiding the per-call
         /// allocation that <see cref="Renderer.materials"/> incurs on every access.
         /// </remarks>
+        /// <param name="value">The value received from the ViewModel.</param>
         protected override void SetValue(Color value)
         {
             _materials ??= Target.materials;

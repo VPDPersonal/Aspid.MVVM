@@ -22,6 +22,7 @@ namespace Aspid.MVVM.StarterKit
         /// <summary>
         /// Called when applying the selected range to the slider using the configured <see cref="SliderValueMode"/>.
         /// </summary>
+        /// <param name="value">The value received from the ViewModel.</param>
         protected override void SetValue(Vector2 value) =>
             CachedComponent.SetMinMax(value, _valueMode);
     }

@@ -89,18 +89,21 @@ namespace Aspid.MVVM.StarterKit
         /// <summary>
         /// Casts the value to <see langword="float"/> and sets <see cref="Slider.value"/>.
         /// </summary>
+        /// <param name="value">The value received from the ViewModel.</param>
         public void SetValue(int value) =>
             SetValue((float)value);
         
         /// <summary>
         /// Casts the value to <see langword="float"/> and sets <see cref="Slider.value"/>.
         /// </summary>
+        /// <param name="value">The value received from the ViewModel.</param>
         public void SetValue(long value) =>
             SetValue((float)value);
         
         /// <summary>
         /// Casts the value to <see langword="float"/> and sets <see cref="Slider.value"/>.
         /// </summary>
+        /// <param name="value">The value received from the ViewModel.</param>
         public void SetValue(double value) =>
             SetValue((float)value);
         
@@ -115,6 +118,7 @@ namespace Aspid.MVVM.StarterKit
         /// until the next change. When the clamp actually changes the value, the reverse channel is told what the
         /// slider holds. A converter's own effect is not reported back: only the difference the clamp made is.
         /// </remarks>
+        /// <param name="value">The value received from the ViewModel.</param>
         public void SetValue(float value)
         {
             var converted = _converter?.Convert(value) ?? value;

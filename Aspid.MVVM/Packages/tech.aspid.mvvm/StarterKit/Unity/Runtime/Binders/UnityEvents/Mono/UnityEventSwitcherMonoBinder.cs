@@ -14,6 +14,7 @@ namespace Aspid.MVVM.StarterKit
         /// <summary>
         /// Called when applying the selected value. Invokes the <see cref="UnityEvent"/> if it is not <see langword="null"/>.
         /// </summary>
+        /// <param name="value">The value received from the ViewModel.</param>
         protected override void SetValue(UnityEvent value) =>
             value?.Invoke();
     }

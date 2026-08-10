@@ -44,6 +44,7 @@ namespace Aspid.MVVM.StarterKit
         /// <summary>
         /// Updates the named <see cref="BoolVariable"/> to the specified value and calls <see cref="LocalizeStringEvent.RefreshString"/>.
         /// </summary>
+        /// <param name="value">The value received from the ViewModel.</param>
         public void SetValue(bool value)
         {
             GetSpecificVariable<BoolVariable>().Value = value;
@@ -53,6 +54,7 @@ namespace Aspid.MVVM.StarterKit
         /// <summary>
         /// Updates the named <see cref="StringVariable"/> to the specified value and calls <see cref="LocalizeStringEvent.RefreshString"/>.
         /// </summary>
+        /// <param name="value">The value received from the ViewModel.</param>
         public void SetValue(string? value)
         {
             GetSpecificVariable<StringVariable>().Value = value;
@@ -62,6 +64,7 @@ namespace Aspid.MVVM.StarterKit
         /// <summary>
         /// Updates the named <see cref="ObjectVariable"/> to the specified value and calls <see cref="LocalizeStringEvent.RefreshString"/>.
         /// </summary>
+        /// <param name="value">The value received from the ViewModel.</param>
         public void SetValue(Object? value)
         {
             GetSpecificVariable<ObjectVariable>().Value = value;
@@ -71,6 +74,7 @@ namespace Aspid.MVVM.StarterKit
         /// <summary>
         /// Updates the named <see cref="IntVariable"/> to the specified value and calls <see cref="LocalizeStringEvent.RefreshString"/>.
         /// </summary>
+        /// <param name="value">The value received from the ViewModel.</param>
         public void SetValue(int value)
         {
             GetSpecificVariable<IntVariable>().Value = value;
@@ -80,6 +84,7 @@ namespace Aspid.MVVM.StarterKit
         /// <summary>
         /// Updates the named <see cref="UIntVariable"/> to the specified value and calls <see cref="LocalizeStringEvent.RefreshString"/>.
         /// </summary>
+        /// <param name="value">The value received from the ViewModel.</param>
         public void SetValue(uint value)
         {
             GetSpecificVariable<UIntVariable>().Value = value;
@@ -89,6 +94,7 @@ namespace Aspid.MVVM.StarterKit
         /// <summary>
         /// Updates the named <see cref="LongVariable"/> to the specified value and calls <see cref="LocalizeStringEvent.RefreshString"/>.
         /// </summary>
+        /// <param name="value">The value received from the ViewModel.</param>
         public void SetValue(long value)
         {
             GetSpecificVariable<LongVariable>().Value = value;
@@ -98,6 +104,7 @@ namespace Aspid.MVVM.StarterKit
         /// <summary>
         /// Updates the named <see cref="ULongVariable"/> to the specified value and calls <see cref="LocalizeStringEvent.RefreshString"/>.
         /// </summary>
+        /// <param name="value">The value received from the ViewModel.</param>
         public void SetValue(ulong value)
         {
             GetSpecificVariable<ULongVariable>().Value = value;
@@ -107,6 +114,7 @@ namespace Aspid.MVVM.StarterKit
         /// <summary>
         /// Updates the named <see cref="ByteVariable"/> to the specified value and calls <see cref="LocalizeStringEvent.RefreshString"/>.
         /// </summary>
+        /// <param name="value">The value received from the ViewModel.</param>
         public void SetValue(byte value)
         {
             GetSpecificVariable<ByteVariable>().Value = value;
@@ -116,6 +124,7 @@ namespace Aspid.MVVM.StarterKit
         /// <summary>
         /// Updates the named <see cref="SByteVariable"/> to the specified value and calls <see cref="LocalizeStringEvent.RefreshString"/>.
         /// </summary>
+        /// <param name="value">The value received from the ViewModel.</param>
         public void SetValue(sbyte value)
         {
             GetSpecificVariable<SByteVariable>().Value = value;
@@ -125,6 +134,7 @@ namespace Aspid.MVVM.StarterKit
         /// <summary>
         /// Updates the named <see cref="ShortVariable"/> to the specified value and calls <see cref="LocalizeStringEvent.RefreshString"/>.
         /// </summary>
+        /// <param name="value">The value received from the ViewModel.</param>
         public void SetValue(short value)
         {
             GetSpecificVariable<ShortVariable>().Value = value;
@@ -134,6 +144,7 @@ namespace Aspid.MVVM.StarterKit
         /// <summary>
         /// Updates the named <see cref="UShortVariable"/> to the specified value and calls <see cref="LocalizeStringEvent.RefreshString"/>.
         /// </summary>
+        /// <param name="value">The value received from the ViewModel.</param>
         public void SetValue(ushort value)
         {
             GetSpecificVariable<UShortVariable>().Value = value;
@@ -143,6 +154,7 @@ namespace Aspid.MVVM.StarterKit
         /// <summary>
         /// Updates the named <see cref="FloatVariable"/> to the specified value and calls <see cref="LocalizeStringEvent.RefreshString"/>.
         /// </summary>
+        /// <param name="value">The value received from the ViewModel.</param>
         public void SetValue(float value)
         {
             GetSpecificVariable<FloatVariable>().Value = value;
@@ -152,6 +164,7 @@ namespace Aspid.MVVM.StarterKit
         /// <summary>
         /// Updates the named <see cref="DoubleVariable"/> to the specified value and calls <see cref="LocalizeStringEvent.RefreshString"/>.
         /// </summary>
+        /// <param name="value">The value received from the ViewModel.</param>
         public void SetValue(double value)
         {
             GetSpecificVariable<DoubleVariable>().Value = value;

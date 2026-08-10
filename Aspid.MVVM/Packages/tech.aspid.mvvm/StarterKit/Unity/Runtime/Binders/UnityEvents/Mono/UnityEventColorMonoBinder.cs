@@ -26,6 +26,7 @@ namespace Aspid.MVVM.StarterKit
         /// <summary>
         /// Invokes the event with the specified <see cref="Color"/> value, applying the converter if configured.
         /// </summary>
+        /// <param name="value">The value received from the ViewModel.</param>
         [BinderLog]
         public void SetValue(Color value) =>
             _set?.Invoke(_converter?.Convert(value) ?? value);

@@ -18,6 +18,7 @@ namespace Aspid.MVVM.StarterKit
         /// Called when the bound enum resolves to a value for the current element.
         /// Sets <see cref="AudioSource.spatialBlend"/> clamped to the valid range of 0 to 1.
         /// </summary>
+        /// <param name="value">The value received from the ViewModel.</param>
         protected override void SetValue(float value) =>
             CachedComponent.spatialBlend = BinderMath.SafeClamp(value, 0, 1f);
     }

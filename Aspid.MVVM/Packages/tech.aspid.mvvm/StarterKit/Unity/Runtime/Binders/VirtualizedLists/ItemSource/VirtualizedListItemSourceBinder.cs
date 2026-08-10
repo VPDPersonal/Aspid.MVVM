@@ -82,6 +82,7 @@ namespace Aspid.MVVM.StarterKit
         /// Sets <see cref="VirtualizedList.ItemsSource"/> to the specified list,
         /// wrapping it in a <see cref="FilteredList{IViewModel}"/> when a filter or comparer is configured.
         /// </summary>
+        /// <param name="list">The collection received from the ViewModel.</param>
         public void SetValue(IReadOnlyList<IViewModel> list)
         {
             DisposeFilteredList();

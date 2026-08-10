@@ -44,6 +44,7 @@ namespace Aspid.MVVM.StarterKit
         /// <summary>
         /// Casts the value to <see langword="float"/> and sets <see cref="Slider.value"/>.
         /// </summary>
+        /// <param name="value">The value received from the ViewModel.</param>
         [BinderLog]
         public void SetValue(int value) =>
             SetValueInternal(value);
@@ -51,6 +52,7 @@ namespace Aspid.MVVM.StarterKit
         /// <summary>
         /// Casts the value to <see langword="float"/> and sets <see cref="Slider.value"/>.
         /// </summary>
+        /// <param name="value">The value received from the ViewModel.</param>
         [BinderLog]
         public void SetValue(long value) =>
             SetValueInternal(value);
@@ -59,6 +61,7 @@ namespace Aspid.MVVM.StarterKit
         /// Sets <see cref="Slider.value"/>, applying the configured converter if present.
         /// Suppresses value change events during assignment.
         /// </summary>
+        /// <param name="value">The value received from the ViewModel.</param>
         [BinderLog]
         public void SetValue(float value) =>
             SetValueInternal(value);
@@ -66,6 +69,7 @@ namespace Aspid.MVVM.StarterKit
         /// <summary>
         /// Casts the value to <see langword="float"/> and sets <see cref="Slider.value"/>.
         /// </summary>
+        /// <param name="value">The value received from the ViewModel.</param>
         [BinderLog]
         public void SetValue(double value) =>
             SetValueInternal((float)value);
@@ -106,6 +110,7 @@ namespace Aspid.MVVM.StarterKit
         /// until the next change. When the clamp actually changes the value, the reverse channel is told what the
         /// slider holds. A converter's own effect is not reported back: only the difference the clamp made is.
         /// </remarks>
+        /// <param name="value">The value received from the ViewModel.</param>
         protected void SetValueInternal(float value)
         {
             var slider = CachedComponent;

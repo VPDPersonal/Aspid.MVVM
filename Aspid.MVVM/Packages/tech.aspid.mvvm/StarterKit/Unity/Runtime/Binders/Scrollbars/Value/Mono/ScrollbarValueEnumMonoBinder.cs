@@ -16,6 +16,7 @@ namespace Aspid.MVVM.StarterKit
         /// Called when the bound enum resolves to a value for the current element.
         /// Sets <see cref="Scrollbar.value"/> to the resolved float, clamped to the 0..1 range.
         /// </summary>
+        /// <param name="value">The value received from the ViewModel.</param>
         protected override void SetValue(float value) =>
             CachedComponent.value = BinderMath.SafeClamp01(value);
     }

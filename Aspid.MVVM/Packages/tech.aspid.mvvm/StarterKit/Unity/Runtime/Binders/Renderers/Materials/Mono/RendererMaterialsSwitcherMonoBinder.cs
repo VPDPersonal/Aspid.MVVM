@@ -23,6 +23,7 @@ namespace Aspid.MVVM.StarterKit
         /// Called when applying the selected value to the <see cref="Renderer.materials"/> array.
         /// Applies the optional converter to each material before assignment.
         /// </summary>
+        /// <param name="values">The materials received from the ViewModel.</param>
         protected override void SetValue(Material[] values) =>
             CachedComponent.SetMaterials(_converter, values);
     }

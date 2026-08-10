@@ -1,5 +1,4 @@
 using Aspid.FastTools.Types;
-using UnityEngine.Scripting.APIUpdating;
 using System;
 using UnityEngine;
 using System.Globalization;
@@ -19,10 +18,7 @@ namespace Aspid.MVVM.StarterKit
     /// </remarks>
     [Serializable]
     [TypeSelectorDisplay(Group = "Aspid/String", Name = "Generic To String", Tooltip = "Generic converter that transforms values to strings with optional formatting")]
-    // Renamed from GenericToString. Without this a [SerializeReference] converter
-    // stored under the old name in an existing scene deserializes to null.
-    [MovedFrom(autoUpdateAPI: true, sourceNamespace: "Aspid.MVVM.StarterKit", sourceAssembly: "Aspid.MVVM.StarterKit", sourceClassName: "GenericToString")]
-    public class GenericToStringConverter<TFrom> : IConverter<TFrom?, string?>
+    public class GenericToString<TFrom> : IConverter<TFrom?, string?>
     {
         [Tooltip("A composite format string such as \"{0:F2}\". Note the braces: a bare \"F2\" is a literal.")]
         [SerializeField] private string? _format;
@@ -30,13 +26,13 @@ namespace Aspid.MVVM.StarterKit
         [Tooltip("The culture numbers and dates are formatted with. Defaults to the device locale.")]
         [SerializeField] private CultureInfoMode _culture = CultureInfoMode.CurrentCulture;
 
-        public GenericToStringConverter()
+        public GenericToString()
         {
             _format = string.Empty;
         }
 
         /// <param name="format">The format string to apply using <see cref="string.Format(string, object)"/>.</param>
-        public GenericToStringConverter(string format)
+        public GenericToString(string format)
         {
             _format = format;
         }

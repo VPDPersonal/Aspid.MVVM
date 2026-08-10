@@ -33,23 +33,23 @@ namespace Aspid.MVVM.StarterKit.Tests
 
         [Test]
         public void Format_DefaultsToTheDeviceCulture() =>
-            Assert.AreEqual("3,14", new GenericToStringConverter<float>("{0:F2}").Convert(3.14159f));
+            Assert.AreEqual("3,14", new GenericToString<float>("{0:F2}").Convert(3.14159f));
 
         [Test]
         public void Format_HonoursTheConfiguredCulture() =>
             Assert.AreEqual(
                 "3.14",
-                WithCulture(new GenericToStringConverter<float>("{0:F2}"), CultureInfoMode.InvariantCulture).Convert(3.14159f));
+                WithCulture(new GenericToString<float>("{0:F2}"), CultureInfoMode.InvariantCulture).Convert(3.14159f));
 
         [Test]
         public void NoFormat_DefaultsToTheDeviceCulture() =>
-            Assert.AreEqual("3,14", new GenericToStringConverter<float>().Convert(3.14f));
+            Assert.AreEqual("3,14", new GenericToString<float>().Convert(3.14f));
 
         [Test]
         public void NoFormat_HonoursTheConfiguredCulture() =>
             Assert.AreEqual(
                 "3.14",
-                WithCulture(new GenericToStringConverter<float>(), CultureInfoMode.InvariantCulture).Convert(3.14f));
+                WithCulture(new GenericToString<float>(), CultureInfoMode.InvariantCulture).Convert(3.14f));
 
         [Test]
         public void StringFormatConverter_InheritsTheCultureField() =>

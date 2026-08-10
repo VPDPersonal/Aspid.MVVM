@@ -10,11 +10,11 @@ using System;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="GenericToStringConverter{TFrom}"/> for any object, with optional formatting.
+    /// <see cref="GenericToString{TFrom}"/> for any object, with optional formatting.
     /// </summary>
     [Serializable]
     [TypeSelectorDisplay(Group = "Aspid/String", Name = "Object To String", Tooltip = "for any object, with optional formatting")]
-    public sealed class ObjectToStringConverter : GenericToStringConverter<object?>, IConverterObjectToString
+    public sealed class ObjectToStringConverter : GenericToString<object?>, IConverterObjectToString
     {
         public ObjectToStringConverter() { }
 

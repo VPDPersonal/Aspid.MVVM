@@ -11,7 +11,7 @@ using UnityEngine;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="GenericToStringConverter{TFrom}"/> for strings, with optional handling of empty values.
+    /// <see cref="GenericToString{TFrom}"/> for strings, with optional handling of empty values.
     /// </summary>
     /// <remarks>
     /// By default a blank input passes through unformatted, so a label bound to an empty field stays
@@ -20,7 +20,7 @@ namespace Aspid.MVVM.StarterKit
     /// </remarks>
     [Serializable]
     [TypeSelectorDisplay(Group = "Aspid/String", Name = "String Format", Tooltip = "for strings, with optional handling of empty values")]
-    public class StringFormatConverter : GenericToStringConverter<string>, IConverterString
+    public class StringFormatConverter : GenericToString<string>, IConverterString
     {
         [Tooltip("Apply the format to a blank or null value as well, rather than passing it through.")]
         [SerializeField] private bool _formatEmptyValues;

@@ -2,7 +2,6 @@
 using Aspid.FastTools.Types;
 using System;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 // The named converter aliases are [Obsolete]. The converters below keep implementing them for
 // one release so that a [SerializeReference] field a project declares as one still
@@ -21,8 +20,10 @@ namespace Aspid.MVVM.StarterKit
     public sealed class Vector3ToVector2Converter : IConverterVector3ToVector2
     {
         [Tooltip("Which components of the 3D vector are kept, and in what order.")]
-        [FormerlySerializedAs("_values")]
-        [SerializeField] private Mode _mode = Mode.XY;
+        // The field keeps the name _values although its type is now Mode: renaming a
+        // serialized field orphans the prefab-instance overrides authored against the old
+        // path, and [FormerlySerializedAs] does not reach them.
+        [SerializeField] private Mode _values = Mode.XY;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Vector3ToVector2Converter"/> class.
@@ -35,7 +36,7 @@ namespace Aspid.MVVM.StarterKit
         /// <param name="mode">Which vector components to use.</param>
         public Vector3ToVector2Converter(Mode mode)
         {
-            _mode = mode;
+            _values = mode;
         }
 
         /// <summary>
@@ -43,7 +44,7 @@ namespace Aspid.MVVM.StarterKit
         /// </summary>
         /// <param name="value">The 3D vector to convert.</param>
         /// <returns>The converted 2D vector.</returns>
-        public Vector2 Convert(Vector3 value) => _mode switch
+        public Vector2 Convert(Vector3 value) => _values switch
         {
             Mode.XY => new Vector2(value.x, value.y),
             Mode.XZ => new Vector2(value.x, value.z),
@@ -51,7 +52,7 @@ namespace Aspid.MVVM.StarterKit
             Mode.YZ => new Vector2(value.y, value.z),
             Mode.ZX => new Vector2(value.z, value.x),
             Mode.ZY => new Vector2(value.z, value.y),
-            _ => throw new ArgumentOutOfRangeException(nameof(_mode), _mode, null)
+            _ => throw new ArgumentOutOfRangeException(nameof(_values), _values, null)
         };
 
         /// <summary>

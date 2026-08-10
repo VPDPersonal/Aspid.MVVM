@@ -7,7 +7,7 @@ using System.Text.RegularExpressions;
 namespace Aspid.MVVM.StarterKit.Tests
 {
     /// <summary>
-    /// Coverage for <see cref="GenericToStringConverter{TFrom}"/> and its two sealed specialisations,
+    /// Coverage for <see cref="GenericToString{TFrom}"/> and its two sealed specialisations,
     /// <see cref="ObjectToStringConverter"/> and <see cref="TimeSpanToStringConverter"/>.
     /// </summary>
     /// <remarks>
@@ -17,34 +17,34 @@ namespace Aspid.MVVM.StarterKit.Tests
     /// caller. Assertions stay culture-independent so the suite does not depend on the editor locale.
     /// </remarks>
     [TestFixture]
-    internal sealed class GenericToStringConverterTests
+    internal sealed class GenericToStringTests
     {
         [Test]
         public void Convert_Null_ReturnsNull() =>
-            Assert.IsNull(new GenericToStringConverter<string>("{0}").Convert(null));
+            Assert.IsNull(new GenericToString<string>("{0}").Convert(null));
 
         [Test]
         public void Convert_NoFormat_FallsBackToToString() =>
-            Assert.AreEqual("42", new GenericToStringConverter<int>().Convert(42));
+            Assert.AreEqual("42", new GenericToString<int>().Convert(42));
 
         [TestCase("")]
         [TestCase(" ")]
         [TestCase("\t")]
         public void Convert_BlankFormat_FallsBackToToString(string format) =>
-            Assert.AreEqual("42", new GenericToStringConverter<int>(format).Convert(42));
+            Assert.AreEqual("42", new GenericToString<int>(format).Convert(42));
 
         [Test]
         public void Convert_NullFormat_FallsBackToToString() =>
-            Assert.AreEqual("42", new GenericToStringConverter<int>(null).Convert(42));
+            Assert.AreEqual("42", new GenericToString<int>(null).Convert(42));
 
         [Test]
         public void Convert_Format_IsAppliedToTheTypedValue() =>
-            Assert.AreEqual("HP: 42", new GenericToStringConverter<int>("HP: {0}").Convert(42));
+            Assert.AreEqual("HP: 42", new GenericToString<int>("HP: {0}").Convert(42));
 
         // A format specifier without a placeholder is a literal, not a specifier.
         [Test]
         public void Convert_FormatWithoutPlaceholder_ReturnsTheFormatVerbatim() =>
-            Assert.AreEqual("F2", new GenericToStringConverter<float>("F2").Convert(3.5f));
+            Assert.AreEqual("F2", new GenericToString<float>("F2").Convert(3.5f));
 
         // An Inspector-authored format is unvalidated input; throwing from here would tear the
         // multicast dispatch and take unrelated binders on the same object down with it.
@@ -53,7 +53,7 @@ namespace Aspid.MVVM.StarterKit.Tests
         {
             LogAssert.Expect(LogType.Error, new Regex("is invalid"));
 
-            Assert.AreEqual("42", new GenericToStringConverter<int>("{0}/{1}").Convert(42));
+            Assert.AreEqual("42", new GenericToString<int>("{0}/{1}").Convert(42));
         }
 
         [Test]
@@ -61,7 +61,7 @@ namespace Aspid.MVVM.StarterKit.Tests
         {
             LogAssert.Expect(LogType.Error, new Regex("is invalid"));
 
-            Assert.AreEqual("42", new GenericToStringConverter<int>("HP: {0} {").Convert(42));
+            Assert.AreEqual("42", new GenericToString<int>("HP: {0} {").Convert(42));
         }
 
         [Test]
@@ -71,7 +71,7 @@ namespace Aspid.MVVM.StarterKit.Tests
             LogAssert.Expect(LogType.Error, new Regex("is invalid"));
             LogAssert.Expect(LogType.Error, new Regex("is invalid"));
 
-            var converter = new GenericToStringConverter<int>("{0}/{1}");
+            var converter = new GenericToString<int>("{0}/{1}");
             converter.Convert(1);
             converter.Convert(2);
             converter.Convert(3);
@@ -91,7 +91,7 @@ namespace Aspid.MVVM.StarterKit.Tests
         public void Convert_ErrorHookOverride_SuppliesTheFallback() =>
             Assert.AreEqual("n/a", new CustomErrorFallback().Convert(42));
 
-        private sealed class ThrowingFormat : GenericToStringConverter<int>
+        private sealed class ThrowingFormat : GenericToString<int>
         {
             public ThrowingFormat()
                 : base("{0}") { }
@@ -100,7 +100,7 @@ namespace Aspid.MVVM.StarterKit.Tests
                 throw new InvalidOperationException("boom");
         }
 
-        private sealed class CustomErrorFallback : GenericToStringConverter<int>
+        private sealed class CustomErrorFallback : GenericToString<int>
         {
             public CustomErrorFallback()
                 : base("{0}/{1}") { }

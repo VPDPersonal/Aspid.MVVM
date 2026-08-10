@@ -10,7 +10,7 @@ using System;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="GenericToStringConverter{TFrom}"/> for <see cref="TimeSpan"/> values, with optional formatting.
+    /// <see cref="GenericToString{TFrom}"/> for <see cref="TimeSpan"/> values, with optional formatting.
     /// </summary>
     /// <remarks>
     /// The format is a <b>composite</b> format string, so a <see cref="TimeSpan"/> pattern has to be
@@ -19,7 +19,7 @@ namespace Aspid.MVVM.StarterKit
     /// </remarks>
     [Serializable]
     [TypeSelectorDisplay(Group = "Aspid/String", Name = "Time Span To String", Tooltip = "Writes a TimeSpan as text, with optional formatting")]
-    public sealed class TimeSpanToStringConverter : GenericToStringConverter<TimeSpan>, IConverterTimeSpanToString
+    public sealed class TimeSpanToStringConverter : GenericToString<TimeSpan>, IConverterTimeSpanToString
     {
         public TimeSpanToStringConverter() { }
 

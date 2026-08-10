@@ -1,5 +1,4 @@
 using Aspid.FastTools.Types;
-using UnityEngine.Scripting.APIUpdating;
 using System;
 using UnityEngine;
 
@@ -17,21 +16,18 @@ namespace Aspid.MVVM.StarterKit
     /// </remarks>
     [Serializable]
     [TypeSelectorDisplay(Group = "Aspid", Name = "Sequence", Tooltip = "Chains multiple converters together, applying them sequentially to a value")]
-    // Renamed from SequenceConverters. Without this a [SerializeReference] converter
-    // stored under the old name in an existing scene deserializes to null.
-    [MovedFrom(autoUpdateAPI: true, sourceNamespace: "Aspid.MVVM.StarterKit", sourceAssembly: "Aspid.MVVM.StarterKit", sourceClassName: "SequenceConverters")]
-    public class SequenceConverter<T> : ITwoWayConverter<T, T>
+    public class SequenceConverters<T> : ITwoWayConverter<T, T>
     {
         // ReSharper disable once FieldCanBeMadeReadOnly.Local
         [Tooltip("The converters applied in order. Empty slots are skipped.")]
         [SerializeReference] private IConverter<T, T>?[] _converters;
 
-        public SequenceConverter()
+        public SequenceConverters()
             : this(Array.Empty<IConverter<T, T>>()) { }
 
 
         /// <param name="converters">The converters to apply in sequence. Null entries are skipped.</param>
-        public SequenceConverter(params IConverter<T, T>[]? converters)
+        public SequenceConverters(params IConverter<T, T>[]? converters)
         {
             _converters = converters ?? Array.Empty<IConverter<T, T>>();
         }

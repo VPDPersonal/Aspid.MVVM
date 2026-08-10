@@ -8,7 +8,7 @@ namespace Aspid.MVVM.StarterKit
     /// using a configurable converter before forwarding it to a target setter.
     /// </summary>
     /// <remarks>
-    /// By default, uses <see cref="GenericToStringConverter{T}"/> for the conversion.
+    /// By default, uses <see cref="GenericToString{T}"/> for the conversion.
     /// A custom <see cref="IConverter{TFrom,TTo}"/> can be supplied for specialized formatting.
     /// </remarks>
     /// <include file="XmlExampleDoc-Casters-1.1.0.xml" path="doc//member[@name='AnyToStringCasterBinder']/*" />
@@ -19,13 +19,13 @@ namespace Aspid.MVVM.StarterKit
 
         /// <summary>
         /// Initializes a new instance of <see cref="AnyToStringCasterBinder"/> using the default
-        /// <see cref="GenericToStringConverter{T}"/> converter.
+        /// <see cref="GenericToString{T}"/> converter.
         /// </summary>
         /// <param name="setValue">The action invoked with the converted <see cref="string"/> value.</param>
         /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/>.</param>
         /// <exception cref="ArgumentNullException">Thrown when <paramref name="setValue"/> is <see langword="null"/>.</exception>
         public AnyToStringCasterBinder(Action<string?> setValue, BindMode mode = BindMode.OneWay)
-            : this(setValue, new GenericToStringConverter<object>(), mode) { }
+            : this(setValue, new GenericToString<object>(), mode) { }
 
         /// <summary>
         /// Initializes a new instance of <see cref="AnyToStringCasterBinder"/> with a custom converter.

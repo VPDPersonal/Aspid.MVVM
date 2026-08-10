@@ -9,7 +9,7 @@ namespace Aspid.MVVM.StarterKit
     /// </summary>
     /// <typeparam name="T">The source value type produced by the ViewModel binding.</typeparam>
     /// <remarks>
-    /// A <see cref="GenericToStringConverter{T}"/> with an optional format string is used by default.
+    /// A <see cref="GenericToString{T}"/> with an optional format string is used by default.
     /// </remarks>
     /// <include file="XmlExampleDoc-Casters-1.1.0.xml" path="doc//member[@name='GenericToStringCasterBinder{1}']/*" />
     public sealed class GenericToStringCasterBinder<T> : Binder, IBinder<T>
@@ -19,14 +19,14 @@ namespace Aspid.MVVM.StarterKit
 
         /// <summary>
         /// Initializes a new instance of <see cref="GenericToStringCasterBinder{T}"/> using a
-        /// <see cref="GenericToStringConverter{T}"/> converter with the specified format string.
+        /// <see cref="GenericToString{T}"/> converter with the specified format string.
         /// </summary>
         /// <param name="setValue">The action invoked with the converted <see cref="string"/> value.</param>
         /// <param name="format">A composite format string passed to the underlying converter.</param>
         /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/>.</param>
         /// <exception cref="ArgumentNullException">Thrown when <paramref name="setValue"/> is <see langword="null"/>.</exception>
         public GenericToStringCasterBinder(Action<string?> setValue, string format, BindMode mode = BindMode.OneWay)
-            : this(setValue, new GenericToStringConverter<T>(format), mode) { }
+            : this(setValue, new GenericToString<T>(format), mode) { }
 
         /// <summary>
         /// Initializes a new instance of <see cref="GenericToStringCasterBinder{T}"/> with a custom converter.

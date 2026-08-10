@@ -2,7 +2,6 @@
 using Aspid.FastTools.Types;
 using System;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 // The named converter aliases are [Obsolete]. The converters below keep implementing them for
 // one release so that a [SerializeReference] field a project declares as one still
@@ -20,8 +19,10 @@ namespace Aspid.MVVM.StarterKit
     public sealed class Vector2ToVector3Converter : IConverterVector2ToVector3
     {
         [Tooltip("Which axes of the 3D vector the 2D components are written into.")]
-        [FormerlySerializedAs("_values")]
-        [SerializeField] private Mode _mode;
+        // The field keeps the name _values although its type is now Mode: renaming a
+        // serialized field orphans the prefab-instance overrides authored against the old
+        // path, and [FormerlySerializedAs] does not reach them.
+        [SerializeField] private Mode _values;
         [Tooltip("The constant written into the axis the mode leaves out.")]
         [SerializeField] private float _thirdValue;
 
@@ -38,7 +39,7 @@ namespace Aspid.MVVM.StarterKit
         /// <param name="thirdValue">The constant value for the third component. Default is 0.</param>
         public Vector2ToVector3Converter(Mode mode, float thirdValue = 0)
         {
-            _mode = mode;
+            _values = mode;
             _thirdValue = thirdValue;
         }
 
@@ -47,12 +48,12 @@ namespace Aspid.MVVM.StarterKit
         /// </summary>
         /// <param name="value">The 2D vector to convert.</param>
         /// <returns>The converted 3D vector.</returns>
-        public Vector3 Convert(Vector2 value) => _mode switch
+        public Vector3 Convert(Vector2 value) => _values switch
         {
             Mode.XY => new Vector3(value.x, value.y, _thirdValue),
             Mode.XZ => new Vector3(value.x, _thirdValue, value.y),
             Mode.YZ => new Vector3(_thirdValue, value.x, value.y),
-            _ => throw new ArgumentOutOfRangeException(nameof(_mode), _mode, null)
+            _ => throw new ArgumentOutOfRangeException(nameof(_values), _values, null)
         };
 
         /// <summary>

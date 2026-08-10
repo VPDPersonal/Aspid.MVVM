@@ -20,7 +20,7 @@ namespace Aspid.MVVM.StarterKit
         /// <inheritdoc/>
         protected sealed override string Property
         {
-            get => CachedComponent.StringReference.TableEntryReference;
+            get => CachedComponent.StringReference.TableEntryReference.ToKeyName(this);
             set => CachedComponent.StringReference.TableEntryReference = value;
         }
     }

@@ -6,8 +6,8 @@ using UnityEngine;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// Concrete <see cref="ComponentToSourceMonoBinder{TMP_Dropdown}"/> that reads the current
-    /// <see cref="TMP_Dropdown"/> state back to the ViewModel when binding is established.
+    /// <see cref="ComponentToSourceMonoBinder{TMP_Dropdown}"/> that sends the cached <see cref="TMP_Dropdown"/>
+    /// component reference to the ViewModel when binding is established.
     /// </summary>
     [AddBinderContextMenu(typeof(TMP_Dropdown))]
     [AddComponentMenu("Aspid/MVVM/Binders/UI/Dropdown/Dropdown To Source Binder")]

@@ -24,6 +24,9 @@ namespace Aspid.MVVM.StarterKit
         public void SetValue(IReadOnlyObservableList<T> list) =>
             InitializeList(list);
 
+        /// <summary>
+        /// Called when the binding is released. Detaches from the list and clears everything built from it.
+        /// </summary>
         protected override void OnUnbound() =>
             DeinitializeList();
 

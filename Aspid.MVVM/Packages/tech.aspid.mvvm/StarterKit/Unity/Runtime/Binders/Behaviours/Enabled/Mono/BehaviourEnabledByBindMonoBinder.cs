@@ -24,7 +24,7 @@ namespace Aspid.MVVM.StarterKit
         /// <inheritdoc/>
         protected override BindMode DefaultMode => BindMode.OneTime;
 
-        [Tooltip("When enabled, inverts the bound bool value before applying it.")]
+        [Tooltip("When enabled, disables the behaviour while bound and enables it while unbound. This binder ignores the bound value entirely - it follows whether a binding exists.")]
         [SerializeField] private bool _isInvert;
 
         private void OnEnable() =>

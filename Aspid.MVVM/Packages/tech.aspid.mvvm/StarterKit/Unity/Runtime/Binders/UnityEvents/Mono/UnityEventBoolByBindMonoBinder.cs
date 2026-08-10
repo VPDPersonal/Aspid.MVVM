@@ -23,9 +23,20 @@ namespace Aspid.MVVM.StarterKit
         private void OnEnable() =>
             SetVisible();
 
+        /// <summary>
+        /// Called when binding is established. Applies the visibility that the new bound state implies.
+        /// </summary>
+        /// <remarks>
+        /// This binder never reads a value — visibility follows whether a binding exists, so both this hook and
+        /// its unbound counterpart do the same thing.
+        /// </remarks>
         protected override void OnBound() =>
             SetVisible();
 
+        /// <summary>
+        /// Called when the binding is released. Applies the visibility that the new bound state implies.
+        /// </summary>
+        /// <inheritdoc cref="OnBound"/>
         protected override void OnUnbound() =>
             SetVisible();
 

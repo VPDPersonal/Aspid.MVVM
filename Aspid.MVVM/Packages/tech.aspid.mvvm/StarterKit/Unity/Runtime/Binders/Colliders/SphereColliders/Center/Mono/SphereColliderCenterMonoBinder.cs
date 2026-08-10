@@ -4,7 +4,7 @@ using UnityEngine;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="ComponentVector3MonoBinder{SphereCollider}"/> that binds the <see cref="BoxCollider.center"/> property.
+    /// <see cref="ComponentVector3MonoBinder{SphereCollider}"/> that binds the <see cref="SphereCollider.center"/> property.
     /// </summary>
     /// <remarks>
     /// Supports <see cref="BindMode.OneWayToSource"/>: when binding is established, the current center value

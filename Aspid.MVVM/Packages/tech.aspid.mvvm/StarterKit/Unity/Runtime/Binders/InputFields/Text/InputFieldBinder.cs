@@ -15,7 +15,9 @@ namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
     /// <see cref="TargetBinder{TMP_InputField}"/> that binds <see cref="TMP_InputField.text"/>.
-    /// Supports <see cref="BindMode.OneWay"/>, <see cref="BindMode.TwoWay"/>, and <see cref="BindMode.OneWayToSource"/>.
+    /// Supports every binding mode: <see cref="BindMode.OneWay"/>, <see cref="BindMode.OneTime"/>,
+    /// <see cref="BindMode.TwoWay"/> and <see cref="BindMode.OneWayToSource"/> — the constructor rejects only
+    /// <see cref="BindMode.None"/>.
     /// Also implements <see cref="INumberBinder"/> and <see cref="IReverseBinder{T}"/>, allowing numeric
     /// formatting and bidirectional text binding.
     /// </summary>

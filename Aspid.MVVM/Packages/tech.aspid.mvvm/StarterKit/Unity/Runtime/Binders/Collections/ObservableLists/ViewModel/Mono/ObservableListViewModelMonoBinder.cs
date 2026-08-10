@@ -38,6 +38,15 @@ namespace Aspid.MVVM.StarterKit
         
         private List<T> Views => _views ??= new List<T>();
 
+        /// <summary>
+        /// Called when the binding is released. Disposes the filtered view of the list before the base class
+        /// detaches from it.
+        /// </summary>
+        /// <remarks>
+        /// The order matters: the filtered list subscribes to the source, so disposing it after the base class
+        /// has dropped the source would leave the subscription behind. When overriding, always call the base
+        /// implementation.
+        /// </remarks>
         protected override void OnUnbound()
         {
             DisposeFilteredList();

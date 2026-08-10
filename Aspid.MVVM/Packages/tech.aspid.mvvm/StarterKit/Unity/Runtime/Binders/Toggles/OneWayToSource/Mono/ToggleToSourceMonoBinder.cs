@@ -5,8 +5,8 @@ using UnityEngine.UI;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="ComponentToSourceMonoBinder{Toggle}"/> that sends the current bound property value
-    /// of a <see cref="Toggle"/> back to the ViewModel when binding is established.
+    /// <see cref="ComponentToSourceMonoBinder{Toggle}"/> that sends the cached <see cref="Toggle"/>
+    /// component reference to the ViewModel when binding is established.
     /// </summary>
     [AddBinderContextMenu(typeof(Toggle))]
     [AddComponentMenu("Aspid/MVVM/Binders/UI/Toggle/Toggle To Source Binder")]

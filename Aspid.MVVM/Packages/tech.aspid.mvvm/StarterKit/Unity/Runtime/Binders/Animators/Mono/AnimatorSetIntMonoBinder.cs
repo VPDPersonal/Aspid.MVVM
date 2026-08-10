@@ -27,7 +27,7 @@ namespace Aspid.MVVM.StarterKit
         protected sealed override void SetParameter(int value)
         {
             value = _converter?.Convert(value) ?? value;
-            if (Mathf.Approximately(value, CachedComponent.GetInteger(ParameterName))) return;
+            if (value == CachedComponent.GetInteger(ParameterName)) return;
 
             CachedComponent.SetInteger(ParameterName, value);
         }

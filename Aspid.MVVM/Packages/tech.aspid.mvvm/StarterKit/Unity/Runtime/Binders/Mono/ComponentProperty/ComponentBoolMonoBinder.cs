@@ -13,7 +13,15 @@ namespace Aspid.MVVM.StarterKit
         [Tooltip("When enabled, inverts the bound bool value before applying it.")]
         [SerializeField] private bool _isInvert;
 
-        /// <inheritdoc/>
+        /// <summary>
+        /// Inverts <paramref name="value"/> when the Invert option is set; otherwise returns it unchanged.
+        /// </summary>
+        /// <param name="value">The value received from the ViewModel.</param>
+        /// <returns>The value to apply to the component.</returns>
+        /// <remarks>
+        /// Documented rather than inherited: the base says it returns the value unchanged, which stops being
+        /// true the moment the option is enabled.
+        /// </remarks>
         protected override bool GetConvertedValue(bool value) =>
             _isInvert ? !value : value;
     }

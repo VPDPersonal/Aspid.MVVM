@@ -6,7 +6,7 @@ using UnityEngine;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="ComponentMonoBinder{TMP_InputField, TMP_InputField.ContentType}"/> that gets and sets
+    /// <see cref="ComponentMonoBinder{T1, T2}">ComponentMonoBinder&lt;TMP_InputField, TMP_InputField.ContentType&gt;</see> that gets and sets
     /// <see cref="TMP_InputField.contentType"/>.
     /// </summary>
     /// <remarks>

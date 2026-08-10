@@ -9,7 +9,7 @@ using Converter = Aspid.MVVM.StarterKit.IConverterVector2;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="EnumGroupMonoBinder{AudioSource, Vector2, IConverter{Vector2, Vector2}}"/> that sets the
+    /// <see cref="EnumGroupMonoBinder{T1, T2, T3}">EnumGroupMonoBinder&lt;AudioSource, Vector2, IConverter&lt;Vector2, Vector2&gt;&gt;</see> that sets the
     /// min/max distance on each <see cref="AudioSource"/> element to a <see cref="Vector2"/> resolved from the bound enum ViewModel value.
     /// </summary>
     [AddBinderContextMenu(typeof(AudioSource), SubPath = "EnumGroup")]

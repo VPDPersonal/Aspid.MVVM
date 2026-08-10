@@ -10,7 +10,7 @@ namespace Aspid.MVVM.StarterKit
 {
 
     /// <summary>
-    /// <see cref="EnumMonoBinder{AudioSource, Vector2, IConverter{Vector2, Vector2}}"/> that sets the
+    /// <see cref="EnumMonoBinder{T1, T2, T3}">EnumMonoBinder&lt;AudioSource, Vector2, IConverter&lt;Vector2, Vector2&gt;&gt;</see> that sets the
     /// min/max distance of an <see cref="AudioSource"/> to a <see cref="Vector2"/> resolved from the bound enum ViewModel value.
     /// </summary>
     [AddBinderContextMenu(typeof(AudioSource), SubPath = "Enum")]

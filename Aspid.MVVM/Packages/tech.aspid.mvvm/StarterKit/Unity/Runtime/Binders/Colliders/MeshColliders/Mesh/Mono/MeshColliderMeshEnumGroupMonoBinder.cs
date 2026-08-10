@@ -9,7 +9,7 @@ using Converter = Aspid.MVVM.StarterKit.IConverterMesh;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="EnumGroupMonoBinder{MeshCollider, Mesh, IConverter{Mesh, Mesh}}"/> that sets the <see cref="MeshCollider.sharedMesh"/>
+    /// <see cref="EnumGroupMonoBinder{T1, T2, T3}">EnumGroupMonoBinder&lt;MeshCollider, Mesh, IConverter&lt;Mesh, Mesh&gt;&gt;</see> that sets the <see cref="MeshCollider.sharedMesh"/>
     /// property on each element based on the bound enum ViewModel value.
     /// </summary>
     [AddComponentMenu("Aspid/MVVM/Binders/Collider/Mesh/MeshCollider Binder – Mesh EnumGroup")]

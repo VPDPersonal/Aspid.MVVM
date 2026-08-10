@@ -5,7 +5,7 @@ using UnityEngine.UI;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="EnumMonoBinder{Selectable, bool}"/> that sets the <see cref="Selectable.interactable"/>
+    /// <see cref="EnumMonoBinder{T1, T2}">EnumMonoBinder&lt;Selectable, bool&gt;</see> that sets the <see cref="Selectable.interactable"/>
     /// property to a value resolved from the bound enum ViewModel value.
     /// </summary>
     [AddBinderContextMenu(typeof(Selectable), serializePropertyNames: "m_Interactable", SubPath = "Enum")]

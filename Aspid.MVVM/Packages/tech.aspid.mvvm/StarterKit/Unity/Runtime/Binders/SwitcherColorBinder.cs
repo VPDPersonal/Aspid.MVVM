@@ -11,7 +11,7 @@ using Converter = Aspid.MVVM.StarterKit.IConverterColor;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// Abstract base <see cref="SwitcherBinder{TTarget, Color, IConverter{Color, Color}}"/> that fixes
+    /// Abstract base <see cref="SwitcherBinder{T1, T2, T3}">SwitcherBinder&lt;TTarget, Color, IConverter&lt;Color, Color&gt;&gt;</see> that fixes
     /// the value type to <see cref="Color"/>.
     /// </summary>
     /// <typeparam name="TTarget">The type of target object that exposes the target property.</typeparam>

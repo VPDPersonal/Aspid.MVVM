@@ -4,7 +4,7 @@ using UnityEngine;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="ComponentColorMonoBinder<Camera>"/> that binds <see cref="Camera.backgroundColor"/>.
+    /// <see cref="ComponentColorMonoBinder{Camera}"/> that binds <see cref="Camera.backgroundColor"/>.
     /// </summary>
     /// <remarks>
     /// What fills the frame where nothing is drawn. Only visible when the camera clears to a solid colour, which

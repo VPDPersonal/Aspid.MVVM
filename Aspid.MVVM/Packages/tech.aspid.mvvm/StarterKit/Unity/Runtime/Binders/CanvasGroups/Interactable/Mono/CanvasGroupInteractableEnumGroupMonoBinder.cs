@@ -4,7 +4,7 @@ using UnityEngine;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="EnumGroupMonoBinder{CanvasGroup, bool}"/> that sets the <see cref="CanvasGroup.interactable"/>
+    /// <see cref="EnumGroupMonoBinder{T1, T2}">EnumGroupMonoBinder&lt;CanvasGroup, bool&gt;</see> that sets the <see cref="CanvasGroup.interactable"/>
     /// property on each <see cref="CanvasGroup"/> in the group based on the bound enum ViewModel value.
     /// </summary>
     [AddComponentMenu("Aspid/MVVM/Binders/UI/CanvasGroup/CanvasGroup Binder – Interactable EnumGroup")]

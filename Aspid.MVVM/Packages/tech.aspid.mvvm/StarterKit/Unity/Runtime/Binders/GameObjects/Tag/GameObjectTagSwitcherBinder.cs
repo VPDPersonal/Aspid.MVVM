@@ -6,7 +6,7 @@ using UnityEngine;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="SwitcherBinder{GameObject, string}"/> that switches the <see cref="GameObject.tag"/>
+    /// <see cref="SwitcherBinder{T1, T2}">SwitcherBinder&lt;GameObject, string&gt;</see> that switches the <see cref="GameObject.tag"/>
     /// property between two <see cref="string"/> values based on the bound boolean ViewModel value.
     /// </summary>
     /// <include file="XmlExampleDoc-GameObject-Tag-1.1.0.xml" path="doc//member[@name='GameObjectTagSwitcherBinder']/*" />

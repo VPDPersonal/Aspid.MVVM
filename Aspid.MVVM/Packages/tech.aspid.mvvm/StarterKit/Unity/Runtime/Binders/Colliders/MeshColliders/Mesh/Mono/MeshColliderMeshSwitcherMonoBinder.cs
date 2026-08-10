@@ -9,7 +9,7 @@ using Converter = Aspid.MVVM.StarterKit.IConverterMesh;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="SwitcherMonoBinder{MeshCollider, Mesh, IConverter{Mesh, Mesh}}"/> that switches the <see cref="MeshCollider.sharedMesh"/>
+    /// <see cref="SwitcherMonoBinder{T1, T2, T3}">SwitcherMonoBinder&lt;MeshCollider, Mesh, IConverter&lt;Mesh, Mesh&gt;&gt;</see> that switches the <see cref="MeshCollider.sharedMesh"/>
     /// property between two values based on the bound boolean ViewModel value.
     /// </summary>
     [AddComponentMenu("Aspid/MVVM/Binders/Collider/Mesh/MeshCollider Binder – Mesh Switcher")]

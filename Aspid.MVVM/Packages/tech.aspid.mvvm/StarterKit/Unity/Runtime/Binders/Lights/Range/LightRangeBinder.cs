@@ -6,7 +6,7 @@ using UnityEngine;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="TargetFloatBinder<Light>"/> that binds <see cref="Light.range"/>.
+    /// <see cref="TargetFloatBinder{Light}"/> that binds <see cref="Light.range"/>.
     /// </summary>
     /// <remarks>
     /// How far a point or spot light reaches; a directional light ignores it. Unity maps a non-finite range to

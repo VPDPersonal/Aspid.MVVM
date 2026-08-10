@@ -11,7 +11,7 @@ using Converter = Aspid.MVVM.StarterKit.IConverterPhysicsMaterial;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="SwitcherMonoBinder{Collider, PhysicsMaterial, IConverter{PhysicsMaterial, PhysicsMaterial}}"/> that switches the <see cref="Collider.material"/>
+    /// <see cref="SwitcherMonoBinder{T1, T2, T3}">SwitcherMonoBinder&lt;Collider, PhysicsMaterial, IConverter&lt;PhysicsMaterial, PhysicsMaterial&gt;&gt;</see> that switches the <see cref="Collider.material"/>
     /// property between two values based on the bound boolean ViewModel value.
     /// </summary>
     [AddComponentMenu("Aspid/MVVM/Binders/Collider/Collider Binder – Material Switcher")]

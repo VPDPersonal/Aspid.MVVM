@@ -4,7 +4,7 @@ using UnityEngine;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="EnumGroupMonoBinder{AudioSource, bool}"/> that sets the <see cref="AudioSource.bypassListenerEffects"/>
+    /// <see cref="EnumGroupMonoBinder{T1, T2}">EnumGroupMonoBinder&lt;AudioSource, bool&gt;</see> that sets the <see cref="AudioSource.bypassListenerEffects"/>
     /// property on each element based on the bound enum ViewModel value.
     /// </summary>
     [AddBinderContextMenu(typeof(AudioSource), SubPath = "EnumGroup")]

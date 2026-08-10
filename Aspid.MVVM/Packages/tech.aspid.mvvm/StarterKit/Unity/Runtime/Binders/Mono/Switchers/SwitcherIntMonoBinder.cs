@@ -9,7 +9,7 @@ using Converter = Aspid.MVVM.StarterKit.IConverterInt;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// Abstract base <see cref="SwitcherMonoBinder{TComponent, int, IConverter{int, int}}"/> that fixes
+    /// Abstract base <see cref="SwitcherMonoBinder{T1, T2, T3}">SwitcherMonoBinder&lt;TComponent, int, IConverter&lt;int, int&gt;&gt;</see> that fixes
     /// the value type to <see cref="int"/>.
     /// </summary>
     /// <typeparam name="TComponent">The type of <see cref="Component"/> that exposes the target property.</typeparam>

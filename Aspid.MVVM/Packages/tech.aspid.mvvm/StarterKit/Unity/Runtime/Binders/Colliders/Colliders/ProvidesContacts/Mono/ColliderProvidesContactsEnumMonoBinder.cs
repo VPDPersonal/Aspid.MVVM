@@ -4,7 +4,7 @@ using UnityEngine;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="EnumMonoBinder{Collider, bool}"/> that sets the <see cref="Collider.providesContacts"/>
+    /// <see cref="EnumMonoBinder{T1, T2}">EnumMonoBinder&lt;Collider, bool&gt;</see> that sets the <see cref="Collider.providesContacts"/>
     /// property based on the bound enum ViewModel value.
     /// </summary>
     [AddComponentMenu("Aspid/MVVM/Binders/Collider/Collider Binder – ProvidesContacts Enum")]

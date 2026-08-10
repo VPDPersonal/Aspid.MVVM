@@ -4,7 +4,7 @@ using UnityEngine;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="EnumGroupMonoBinder{SpriteRenderer, int}"/> that sets <see cref="SpriteRenderer.sortingOrder"/>
+    /// <see cref="EnumGroupMonoBinder{T1, T2}">EnumGroupMonoBinder&lt;SpriteRenderer, int&gt;</see> that sets <see cref="Renderer.sortingOrder"/>
     /// on each element in the group based on the bound enum ViewModel value.
     /// </summary>
     [AddBinderContextMenu(typeof(SpriteRenderer), serializePropertyNames: "m_SortingOrder", SubPath = "EnumGroup")]

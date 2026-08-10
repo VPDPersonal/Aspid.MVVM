@@ -4,7 +4,7 @@ using UnityEngine;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="EnumGroupMonoBinder{Collider, bool}"/> that sets the <see cref="Collider.enabled"/>
+    /// <see cref="EnumGroupMonoBinder{T1, T2}">EnumGroupMonoBinder&lt;Collider, bool&gt;</see> that sets the <see cref="Collider.enabled"/>
     /// property on each element based on the bound enum ViewModel value.
     /// </summary>
     [AddBinderContextMenu(typeof(Collider), SubPath = "EnumGroup")]

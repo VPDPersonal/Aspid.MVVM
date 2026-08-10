@@ -11,7 +11,7 @@ using Converter = Aspid.MVVM.StarterKit.IConverterPhysicsMaterial;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="EnumGroupMonoBinder{Collider, PhysicsMaterial, IConverter{PhysicsMaterial, PhysicsMaterial}}"/> that sets the <see cref="Collider.material"/>
+    /// <see cref="EnumGroupMonoBinder{T1, T2, T3}">EnumGroupMonoBinder&lt;Collider, PhysicsMaterial, IConverter&lt;PhysicsMaterial, PhysicsMaterial&gt;&gt;</see> that sets the <see cref="Collider.material"/>
     /// property on each element based on the bound enum ViewModel value.
     /// </summary>
     [AddComponentMenu("Aspid/MVVM/Binders/Collider/Collider Binder – Material EnumGroup")]

@@ -4,7 +4,7 @@ using UnityEngine;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="ComponentFloatMonoBinder<Camera>"/> that binds <see cref="Camera.fieldOfView"/>.
+    /// <see cref="ComponentFloatMonoBinder{Camera}"/> that binds <see cref="Camera.fieldOfView"/>.
     /// </summary>
     /// <remarks>
     /// The vertical field of view of a perspective camera, in degrees — the number behind a zoom, a scope or a

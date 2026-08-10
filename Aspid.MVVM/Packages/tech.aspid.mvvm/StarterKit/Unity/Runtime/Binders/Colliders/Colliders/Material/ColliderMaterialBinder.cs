@@ -13,7 +13,7 @@ using Converter = Aspid.MVVM.StarterKit.IConverterPhysicsMaterial;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="TargetBinder{Collider, PhysicsMaterial, IConverter{PhysicsMaterial, PhysicsMaterial}}"/> that sets the <see cref="Collider.material"/> property.
+    /// <see cref="TargetBinder{T1, T2, T3}">TargetBinder&lt;Collider, PhysicsMaterial, IConverter&lt;PhysicsMaterial, PhysicsMaterial&gt;&gt;</see> that sets the <see cref="Collider.material"/> property.
     /// </summary>
     /// <remarks>
     /// The value read back is <see cref="Collider.sharedMaterial"/>, not <see cref="Collider.material"/>: reading

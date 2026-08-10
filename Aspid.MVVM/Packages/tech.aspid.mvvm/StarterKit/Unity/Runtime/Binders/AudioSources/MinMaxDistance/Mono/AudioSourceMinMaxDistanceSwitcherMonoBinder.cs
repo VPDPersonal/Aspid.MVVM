@@ -9,7 +9,7 @@ using Converter = Aspid.MVVM.StarterKit.IConverterVector2;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="SwitcherMonoBinder{AudioSource, Vector2, IConverter{Vector2, Vector2}}"/> that switches the
+    /// <see cref="SwitcherMonoBinder{T1, T2, T3}">SwitcherMonoBinder&lt;AudioSource, Vector2, IConverter&lt;Vector2, Vector2&gt;&gt;</see> that switches the
     /// min/max distance of an <see cref="AudioSource"/> between two <see cref="Vector2"/> values
     /// based on the bound boolean ViewModel value.
     /// </summary>

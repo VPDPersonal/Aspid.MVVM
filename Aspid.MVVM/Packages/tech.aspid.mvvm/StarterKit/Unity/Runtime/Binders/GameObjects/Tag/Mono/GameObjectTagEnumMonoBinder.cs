@@ -4,7 +4,7 @@ using UnityEngine;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="EnumMonoBinder{string}"/> that sets the <see cref="GameObject.tag"/> property
+    /// <see cref="EnumMonoBinder{T}">EnumMonoBinder&lt;string&gt;</see> that sets the <see cref="GameObject.tag"/> property
     /// of the attached <see cref="GameObject"/> to a value resolved from the bound enum ViewModel value.
     /// </summary>
     [AddComponentMenu("Aspid/MVVM/Binders/GameObject/GameObject Binder – Tag Enum")]

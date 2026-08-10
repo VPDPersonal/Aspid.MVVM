@@ -7,7 +7,7 @@ using TMPro;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="TargetIntBinder<TMP_Text>"/> that binds <see cref="TMP_Text.maxVisibleCharacters"/>.
+    /// <see cref="TargetIntBinder{TMP_Text}"/> that binds <see cref="TMP_Text.maxVisibleCharacters"/>.
     /// </summary>
     /// <remarks>
     /// How many characters of the text are drawn — the property behind a typewriter reveal, and the one way to

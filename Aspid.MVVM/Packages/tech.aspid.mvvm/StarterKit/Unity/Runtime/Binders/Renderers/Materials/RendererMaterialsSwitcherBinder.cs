@@ -11,7 +11,7 @@ using Converter = Aspid.MVVM.StarterKit.IConverterMaterial;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="SwitcherBinder{Renderer, Material[]}"/> that switches the <see cref="Renderer.materials"/> array
+    /// <see cref="SwitcherBinder{T1, T2}">SwitcherBinder&lt;Renderer, Material[]&gt;</see> that switches the <see cref="Renderer.materials"/> array
     /// between two predefined <see cref="Material"/> arrays based on the bound boolean ViewModel value.
     /// </summary>
     /// <include file="XmlExampleDoc-Renderer-Materials-1.1.0.xml" path="doc//member[@name='RendererMaterialsSwitcherBinder']/*" />

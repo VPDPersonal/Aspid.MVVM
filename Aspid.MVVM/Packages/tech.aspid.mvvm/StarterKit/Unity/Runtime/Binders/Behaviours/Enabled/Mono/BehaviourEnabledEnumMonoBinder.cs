@@ -4,7 +4,7 @@ using UnityEngine;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="EnumMonoBinder{Behaviour, bool}"/> that sets the <see cref="Behaviour.enabled"/>
+    /// <see cref="EnumMonoBinder{T1, T2}">EnumMonoBinder&lt;Behaviour, bool&gt;</see> that sets the <see cref="Behaviour.enabled"/>
     /// property to a value resolved from the bound enum ViewModel value.
     /// </summary>
     [AddBinderContextMenu(typeof(Behaviour), SubPath = "Enum")]

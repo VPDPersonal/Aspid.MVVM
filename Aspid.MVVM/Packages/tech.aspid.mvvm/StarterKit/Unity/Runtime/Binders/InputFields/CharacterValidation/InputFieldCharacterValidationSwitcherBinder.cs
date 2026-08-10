@@ -6,7 +6,7 @@ using System;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="SwitcherBinder{TMP_InputField, TMP_InputField.CharacterValidation}"/> that switches
+    /// <see cref="SwitcherBinder{T1, T2}">SwitcherBinder&lt;TMP_InputField, TMP_InputField.CharacterValidation&gt;</see> that switches
     /// <see cref="TMP_InputField.characterValidation"/> between two values based on the bound boolean ViewModel value.
     /// </summary>
     /// <include file="XmlExampleDoc-InputField-CharacterValidation-1.1.0.xml" path="doc//member[@name='InputFieldCharacterValidationSwitcherBinder']/*" />

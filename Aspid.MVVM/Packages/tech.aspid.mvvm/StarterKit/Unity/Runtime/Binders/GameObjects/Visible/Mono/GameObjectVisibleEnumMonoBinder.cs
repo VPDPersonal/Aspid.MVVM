@@ -4,7 +4,7 @@ using UnityEngine;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="EnumMonoBinder{bool}"/> that shows or hides the <see cref="GameObject"/> this component
+    /// <see cref="EnumMonoBinder{T}">EnumMonoBinder&lt;bool&gt;</see> that shows or hides the <see cref="GameObject"/> this component
     /// is attached to based on a value resolved from the bound enum ViewModel value.
     /// </summary>
     [AddComponentMenu("Aspid/MVVM/Binders/GameObject/GameObject Binder – Visible Enum")]

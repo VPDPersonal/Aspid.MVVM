@@ -7,7 +7,7 @@ using System.Collections.Generic;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="EnumGroupMonoBinder{TMP_Dropdown, List{TMP_Dropdown.OptionData}}"/> that sets the
+    /// <see cref="EnumGroupMonoBinder{T1, T2}">EnumGroupMonoBinder&lt;TMP_Dropdown, List&lt;TMP_Dropdown.OptionData&gt;&gt;</see> that sets the
     /// <see cref="TMP_Dropdown.options"/> list on each element based on the bound enum ViewModel value.
     /// </summary>
     [AddBinderContextMenu(typeof(TMP_Dropdown), SubPath = "EnumGroup")]

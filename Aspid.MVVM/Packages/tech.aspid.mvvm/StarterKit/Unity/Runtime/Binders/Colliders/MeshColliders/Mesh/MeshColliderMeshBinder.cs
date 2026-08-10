@@ -11,7 +11,7 @@ using Converter = Aspid.MVVM.StarterKit.IConverterMesh;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="TargetBinder{MeshCollider, Mesh, IConverter{Mesh, Mesh}}"/> that sets the <see cref="MeshCollider.sharedMesh"/> property.
+    /// <see cref="TargetBinder{T1, T2, T3}">TargetBinder&lt;MeshCollider, Mesh, IConverter&lt;Mesh, Mesh&gt;&gt;</see> that sets the <see cref="MeshCollider.sharedMesh"/> property.
     /// </summary>
     /// <include file="XmlExampleDoc-MeshCollider-Mesh-1.1.0.xml" path="doc//member[@name='MeshColliderMeshBinder']/*" />
     [Serializable]

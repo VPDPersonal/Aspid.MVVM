@@ -9,7 +9,7 @@ using Converter = Aspid.MVVM.StarterKit.IConverterMesh;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="ComponentMonoBinder{MeshCollider, Mesh, IConverter{Mesh, Mesh}}"/> that binds the <see cref="MeshCollider.sharedMesh"/> property.
+    /// <see cref="ComponentMonoBinder{T1, T2, T3}">ComponentMonoBinder&lt;MeshCollider, Mesh, IConverter&lt;Mesh, Mesh&gt;&gt;</see> that binds the <see cref="MeshCollider.sharedMesh"/> property.
     /// </summary>
     /// <remarks>
     /// Supports <see cref="BindMode.OneWayToSource"/>: when binding is established, the current shared mesh value

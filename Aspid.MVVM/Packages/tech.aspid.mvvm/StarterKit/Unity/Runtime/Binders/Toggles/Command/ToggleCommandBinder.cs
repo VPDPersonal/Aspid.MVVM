@@ -7,7 +7,7 @@ namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
     /// <see cref="TargetBinder{Toggle}"/> that executes a command each time <see cref="Toggle.onValueChanged"/> fires.
-    /// Accepts commands typed as <see cref="IRelayCommand"/> (no value) or <see cref="IRelayCommand{bool}"/> (receiving the isOn state).
+    /// Accepts commands typed as <see cref="IRelayCommand"/> (no value) or <see cref="IRelayCommand{T}">IRelayCommand&lt;bool&gt;</see> (receiving the isOn state).
     /// </summary>
     /// <include file="XmlExampleDoc-Toggle-Command-1.1.0.xml" path="doc//member[@name='ToggleCommandBinder']/*" />
     [Serializable]
@@ -61,7 +61,7 @@ namespace Aspid.MVVM.StarterKit
             CommandBinderExtensions.UpdateCommand(ref _command, value, OnCanExecuteChanged);
         
         /// <summary>
-        /// Binds an <see cref="IRelayCommand{bool}"/> and subscribes to its <see cref="IRelayCommand.CanExecuteChanged"/> event.
+        /// Binds an <see cref="IRelayCommand{T}">IRelayCommand&lt;bool&gt;</see> and subscribes to its <see cref="IRelayCommand.CanExecuteChanged"/> event.
         /// </summary>
         public void SetValue(IRelayCommand<bool> value) =>
             CommandBinderExtensions.UpdateCommand(ref _isOnCommand, value, OnCanExecuteChanged);
@@ -118,7 +118,7 @@ namespace Aspid.MVVM.StarterKit
     /// <summary>
     /// <see cref="TargetBinder{Toggle}"/> that executes a command with one additional parameter
     /// each time <see cref="Toggle.onValueChanged"/> fires.
-    /// Accepts commands typed as <see cref="IRelayCommand{bool, T}"/> (receiving the isOn state and the configured parameter).
+    /// Accepts commands typed as <see cref="IRelayCommand{T1, T2}">IRelayCommand&lt;bool, T&gt;</see> (receiving the isOn state and the configured parameter).
     /// </summary>
     /// <typeparam name="T">The type of the additional parameter forwarded alongside the isOn value.</typeparam>
     /// <include file="XmlExampleDoc-Toggle-Command-1.1.0.xml" path="doc//member[@name='ToggleCommandBinderT']/*" />
@@ -187,7 +187,7 @@ namespace Aspid.MVVM.StarterKit
         }
         
         /// <summary>
-        /// Binds an <see cref="IRelayCommand{bool, T}"/> and subscribes to its <see cref="IRelayCommand.CanExecuteChanged"/> event.
+        /// Binds an <see cref="IRelayCommand{T1, T2}">IRelayCommand&lt;bool, T&gt;</see> and subscribes to its <see cref="IRelayCommand.CanExecuteChanged"/> event.
         /// </summary>
         public void SetValue(IRelayCommand<bool, T> value) =>
             CommandBinderExtensions.UpdateCommand(ref _command, value, OnCanExecuteChanged);
@@ -233,7 +233,7 @@ namespace Aspid.MVVM.StarterKit
     /// <summary>
     /// <see cref="TargetBinder{Toggle}"/> that executes a command with two additional parameters
     /// each time <see cref="Toggle.onValueChanged"/> fires.
-    /// Accepts commands typed as <see cref="IRelayCommand{bool, T1, T2}"/> (receiving the isOn state and the configured parameters).
+    /// Accepts commands typed as <see cref="IRelayCommand{T1, T2, T3}">IRelayCommand&lt;bool, T1, T2&gt;</see> (receiving the isOn state and the configured parameters).
     /// </summary>
     /// <typeparam name="T1">The type of the first additional parameter forwarded alongside the isOn value.</typeparam>
     /// <typeparam name="T2">The type of the second additional parameter forwarded alongside the isOn value.</typeparam>
@@ -321,7 +321,7 @@ namespace Aspid.MVVM.StarterKit
         }
         
         /// <summary>
-        /// Binds an <see cref="IRelayCommand{bool, T1, T2}"/> and subscribes to its <see cref="IRelayCommand.CanExecuteChanged"/> event.
+        /// Binds an <see cref="IRelayCommand{T1, T2, T3}">IRelayCommand&lt;bool, T1, T2&gt;</see> and subscribes to its <see cref="IRelayCommand.CanExecuteChanged"/> event.
         /// </summary>
         public void SetValue(IRelayCommand<bool, T1, T2> value) =>
             CommandBinderExtensions.UpdateCommand(ref _command, value, OnCanExecuteChanged);
@@ -367,7 +367,7 @@ namespace Aspid.MVVM.StarterKit
     /// <summary>
     /// <see cref="TargetBinder{Toggle}"/> that executes a command with three additional parameters
     /// each time <see cref="Toggle.onValueChanged"/> fires.
-    /// Accepts commands typed as <see cref="IRelayCommand{bool, T1, T2, T3}"/> (receiving the isOn state and the configured parameters).
+    /// Accepts commands typed as <see cref="IRelayCommand{T1, T2, T3, T4}">IRelayCommand&lt;bool, T1, T2, T3&gt;</see> (receiving the isOn state and the configured parameters).
     /// </summary>
     /// <typeparam name="T1">The type of the first additional parameter forwarded alongside the isOn value.</typeparam>
     /// <typeparam name="T2">The type of the second additional parameter forwarded alongside the isOn value.</typeparam>
@@ -471,7 +471,7 @@ namespace Aspid.MVVM.StarterKit
         }
         
         /// <summary>
-        /// Binds an <see cref="IRelayCommand{bool, T1, T2, T3}"/> and subscribes to its <see cref="IRelayCommand.CanExecuteChanged"/> event.
+        /// Binds an <see cref="IRelayCommand{T1, T2, T3, T4}">IRelayCommand&lt;bool, T1, T2, T3&gt;</see> and subscribes to its <see cref="IRelayCommand.CanExecuteChanged"/> event.
         /// </summary>
         public void SetValue(IRelayCommand<bool, T1, T2, T3> value) =>
             CommandBinderExtensions.UpdateCommand(ref _command, value, OnCanExecuteChanged);

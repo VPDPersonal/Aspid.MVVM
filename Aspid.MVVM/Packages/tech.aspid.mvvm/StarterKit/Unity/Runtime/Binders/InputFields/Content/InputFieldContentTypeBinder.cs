@@ -6,7 +6,7 @@ using System;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="TargetBinder{TMP_InputField, TMP_InputField.ContentType}"/> that gets and sets
+    /// <see cref="TargetBinder{T1, T2}">TargetBinder&lt;TMP_InputField, TMP_InputField.ContentType&gt;</see> that gets and sets
     /// <see cref="TMP_InputField.contentType"/>.
     /// </summary>
     /// <include file="XmlExampleDoc-InputField-Content-1.1.0.xml" path="doc//member[@name='InputFieldContentTypeBinder']/*" />

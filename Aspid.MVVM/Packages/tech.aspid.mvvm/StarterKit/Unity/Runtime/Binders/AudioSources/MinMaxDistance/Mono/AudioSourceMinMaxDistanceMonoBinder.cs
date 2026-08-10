@@ -9,7 +9,7 @@ using Converter = Aspid.MVVM.StarterKit.IConverterVector2;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// Concrete <see cref="ComponentMonoBinder{AudioSource, Vector2, IConverter{Vector2, Vector2}}"/> that also implements <see cref="INumberBinder"/>,
+    /// Concrete <see cref="ComponentMonoBinder{T1, T2, T3}">ComponentMonoBinder&lt;AudioSource, Vector2, IConverter&lt;Vector2, Vector2&gt;&gt;</see> that also implements <see cref="INumberBinder"/>,
     /// binding the <see cref="AudioSource.minDistance"/> and <see cref="AudioSource.maxDistance"/> as a <see cref="Vector2"/>.
     /// </summary>
     /// <remarks>

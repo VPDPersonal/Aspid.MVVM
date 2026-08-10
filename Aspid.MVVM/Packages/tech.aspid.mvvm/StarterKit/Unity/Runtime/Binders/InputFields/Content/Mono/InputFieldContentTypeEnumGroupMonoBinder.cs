@@ -6,7 +6,7 @@ using UnityEngine;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="EnumGroupMonoBinder{TMP_InputField, TMP_InputField.ContentType}"/> that sets
+    /// <see cref="EnumGroupMonoBinder{T1, T2}">EnumGroupMonoBinder&lt;TMP_InputField, TMP_InputField.ContentType&gt;</see> that sets
     /// <see cref="TMP_InputField.contentType"/> on each element in the group based on the bound enum ViewModel value.
     /// </summary>
     [AddComponentMenu("Aspid/MVVM/Binders/UI/InputField/InputField Binder – ContentType EnumGroup")]

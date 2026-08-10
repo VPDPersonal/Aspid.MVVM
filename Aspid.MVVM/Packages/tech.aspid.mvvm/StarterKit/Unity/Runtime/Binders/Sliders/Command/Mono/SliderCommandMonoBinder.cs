@@ -7,10 +7,9 @@ namespace Aspid.MVVM.StarterKit
     /// <summary>
     /// <see cref="ComponentMonoBinder{Slider}"/> that executes a command each time <see cref="Slider.onValueChanged"/> fires,
     /// passing the current slider value as the command argument.
-    /// Accepts commands typed as <see cref="IRelayCommand{int}"/>, <see cref="IRelayCommand{long}"/>,
-    /// <see cref="IRelayCommand{float}"/> or <see cref="IRelayCommand{double}"/>.
+    /// Accepts commands typed as <see cref="IRelayCommand{T}">IRelayCommand&lt;int&gt;</see>, <see cref="IRelayCommand{T}">IRelayCommand&lt;long&gt;</see>,
+    /// <see cref="IRelayCommand{T}">IRelayCommand&lt;float&gt;</see> or <see cref="IRelayCommand{T}">IRelayCommand&lt;double&gt;</see>.
     /// </summary>
-    /// <include file="XmlExampleDoc-Slider-Command-1.1.0.xml" path="doc//member[@name='SliderCommandMonoBinder']/*" />
     [AddBinderContextMenu(typeof(Slider), serializePropertyNames: "m_Calls")]
     [AddComponentMenu("Aspid/MVVM/Binders/UI/Command/Slider Binder – Command")]
     public sealed partial class SliderCommandMonoBinder : ComponentMonoBinder<Slider>, 
@@ -41,28 +40,28 @@ namespace Aspid.MVVM.StarterKit
         }
 
         /// <summary>
-        /// Binds an <see cref="IRelayCommand{int}"/> and subscribes to its <see cref="IRelayCommand.CanExecuteChanged"/> event.
+        /// Binds an <see cref="IRelayCommand{T}">IRelayCommand&lt;int&gt;</see> and subscribes to its <see cref="IRelayCommand.CanExecuteChanged"/> event.
         /// </summary>
         [BinderLog]
         public void SetValue(IRelayCommand<int> value) =>
             CommandBinderExtensions.UpdateCommand(ref _intCommand, value, OnCanExecuteChanged);
 
         /// <summary>
-        /// Binds an <see cref="IRelayCommand{long}"/> and subscribes to its <see cref="IRelayCommand.CanExecuteChanged"/> event.
+        /// Binds an <see cref="IRelayCommand{T}">IRelayCommand&lt;long&gt;</see> and subscribes to its <see cref="IRelayCommand.CanExecuteChanged"/> event.
         /// </summary>
         [BinderLog]
         public void SetValue(IRelayCommand<long> value) =>
             CommandBinderExtensions.UpdateCommand(ref _longCommand, value, OnCanExecuteChanged);
         
         /// <summary>
-        /// Binds an <see cref="IRelayCommand{float}"/> and subscribes to its <see cref="IRelayCommand.CanExecuteChanged"/> event.
+        /// Binds an <see cref="IRelayCommand{T}">IRelayCommand&lt;float&gt;</see> and subscribes to its <see cref="IRelayCommand.CanExecuteChanged"/> event.
         /// </summary>
         [BinderLog]
         public void SetValue(IRelayCommand<float> value) =>
             CommandBinderExtensions.UpdateCommand(ref _floatCommand, value, OnCanExecuteChanged);
 
         /// <summary>
-        /// Binds an <see cref="IRelayCommand{double}"/> and subscribes to its <see cref="IRelayCommand.CanExecuteChanged"/> event.
+        /// Binds an <see cref="IRelayCommand{T}">IRelayCommand&lt;double&gt;</see> and subscribes to its <see cref="IRelayCommand.CanExecuteChanged"/> event.
         /// </summary>
         [BinderLog]
         public void SetValue(IRelayCommand<double> value) =>
@@ -130,11 +129,10 @@ namespace Aspid.MVVM.StarterKit
     /// <summary>
     /// Abstract base <see cref="ComponentMonoBinder{Slider}"/> that executes a command each time <see cref="Slider.onValueChanged"/> fires,
     /// passing the current slider value and an additional parameter as the command arguments.
-    /// Accepts commands typed as <see cref="IRelayCommand{int,T}"/>, <see cref="IRelayCommand{long,T}"/>,
-    /// <see cref="IRelayCommand{float,T}"/> or <see cref="IRelayCommand{double,T}"/>.
+    /// Accepts commands typed as <see cref="IRelayCommand{T1, T2}">IRelayCommand&lt;int, T&gt;</see>, <see cref="IRelayCommand{T1, T2}">IRelayCommand&lt;long, T&gt;</see>,
+    /// <see cref="IRelayCommand{T1, T2}">IRelayCommand&lt;float, T&gt;</see> or <see cref="IRelayCommand{T1, T2}">IRelayCommand&lt;double, T&gt;</see>.
     /// </summary>
     /// <typeparam name="T">The type of the additional parameter forwarded alongside the slider value.</typeparam>
-    /// <include file="XmlExampleDoc-Slider-Command-1.1.0.xml" path="doc//member[@name='SliderCommandMonoBinderT']/*" />
     public abstract partial class SliderCommandMonoBinder<T> : ComponentMonoBinder<Slider>, 
         IBinder<IRelayCommand<int, T>>,
         IBinder<IRelayCommand<long, T>>, 
@@ -176,28 +174,28 @@ namespace Aspid.MVVM.StarterKit
         }
 
         /// <summary>
-        /// Binds an <see cref="IRelayCommand{int,T}"/> and subscribes to its <see cref="IRelayCommand.CanExecuteChanged"/> event.
+        /// Binds an <see cref="IRelayCommand{T1, T2}">IRelayCommand&lt;int, T&gt;</see> and subscribes to its <see cref="IRelayCommand.CanExecuteChanged"/> event.
         /// </summary>
         [BinderLog]
         public void SetValue(IRelayCommand<int, T> value) =>
             CommandBinderExtensions.UpdateCommand(ref _intCommand, value, OnCanExecuteChanged);
 
         /// <summary>
-        /// Binds an <see cref="IRelayCommand{long,T}"/> and subscribes to its <see cref="IRelayCommand.CanExecuteChanged"/> event.
+        /// Binds an <see cref="IRelayCommand{T1, T2}">IRelayCommand&lt;long, T&gt;</see> and subscribes to its <see cref="IRelayCommand.CanExecuteChanged"/> event.
         /// </summary>
         [BinderLog]
         public void SetValue(IRelayCommand<long, T> value) =>
             CommandBinderExtensions.UpdateCommand(ref _longCommand, value, OnCanExecuteChanged);
         
         /// <summary>
-        /// Binds an <see cref="IRelayCommand{float,T}"/> and subscribes to its <see cref="IRelayCommand.CanExecuteChanged"/> event.
+        /// Binds an <see cref="IRelayCommand{T1, T2}">IRelayCommand&lt;float, T&gt;</see> and subscribes to its <see cref="IRelayCommand.CanExecuteChanged"/> event.
         /// </summary>
         [BinderLog]
         public void SetValue(IRelayCommand<float, T> value) =>
             CommandBinderExtensions.UpdateCommand(ref _floatCommand, value, OnCanExecuteChanged);
 
         /// <summary>
-        /// Binds an <see cref="IRelayCommand{double,T}"/> and subscribes to its <see cref="IRelayCommand.CanExecuteChanged"/> event.
+        /// Binds an <see cref="IRelayCommand{T1, T2}">IRelayCommand&lt;double, T&gt;</see> and subscribes to its <see cref="IRelayCommand.CanExecuteChanged"/> event.
         /// </summary>
         [BinderLog]
         public void SetValue(IRelayCommand<double, T> value) =>
@@ -265,12 +263,11 @@ namespace Aspid.MVVM.StarterKit
     /// <summary>
     /// Abstract base <see cref="ComponentMonoBinder{Slider}"/> that executes a command each time <see cref="Slider.onValueChanged"/> fires,
     /// passing the current slider value and two additional parameters as the command arguments.
-    /// Accepts commands typed as <see cref="IRelayCommand{int,T1,T2}"/>, <see cref="IRelayCommand{long,T1,T2}"/>,
-    /// <see cref="IRelayCommand{float,T1,T2}"/> or <see cref="IRelayCommand{double,T1,T2}"/>.
+    /// Accepts commands typed as <see cref="IRelayCommand{T1, T2, T3}">IRelayCommand&lt;int, T1, T2&gt;</see>, <see cref="IRelayCommand{T1, T2, T3}">IRelayCommand&lt;long, T1, T2&gt;</see>,
+    /// <see cref="IRelayCommand{T1, T2, T3}">IRelayCommand&lt;float, T1, T2&gt;</see> or <see cref="IRelayCommand{T1, T2, T3}">IRelayCommand&lt;double, T1, T2&gt;</see>.
     /// </summary>
     /// <typeparam name="T1">The type of the first additional parameter.</typeparam>
     /// <typeparam name="T2">The type of the second additional parameter.</typeparam>
-    /// <include file="XmlExampleDoc-Slider-Command-1.1.0.xml" path="doc//member[@name='SliderCommandMonoBinderT1T2']/*" />
     public abstract partial class SliderCommandMonoBinder<T1, T2> : ComponentMonoBinder<Slider>, 
         IBinder<IRelayCommand<int, T1, T2>>,
         IBinder<IRelayCommand<long, T1, T2>>, 
@@ -323,28 +320,28 @@ namespace Aspid.MVVM.StarterKit
         }
 
         /// <summary>
-        /// Binds an <see cref="IRelayCommand{int,T1,T2}"/> and subscribes to its <see cref="IRelayCommand.CanExecuteChanged"/> event.
+        /// Binds an <see cref="IRelayCommand{T1, T2, T3}">IRelayCommand&lt;int, T1, T2&gt;</see> and subscribes to its <see cref="IRelayCommand.CanExecuteChanged"/> event.
         /// </summary>
         [BinderLog]
         public void SetValue(IRelayCommand<int, T1, T2> value) =>
             CommandBinderExtensions.UpdateCommand(ref _intCommand, value, OnCanExecuteChanged);
 
         /// <summary>
-        /// Binds an <see cref="IRelayCommand{long,T1,T2}"/> and subscribes to its <see cref="IRelayCommand.CanExecuteChanged"/> event.
+        /// Binds an <see cref="IRelayCommand{T1, T2, T3}">IRelayCommand&lt;long, T1, T2&gt;</see> and subscribes to its <see cref="IRelayCommand.CanExecuteChanged"/> event.
         /// </summary>
         [BinderLog]
         public void SetValue(IRelayCommand<long, T1, T2> value) =>
             CommandBinderExtensions.UpdateCommand(ref _longCommand, value, OnCanExecuteChanged);
         
         /// <summary>
-        /// Binds an <see cref="IRelayCommand{float,T1,T2}"/> and subscribes to its <see cref="IRelayCommand.CanExecuteChanged"/> event.
+        /// Binds an <see cref="IRelayCommand{T1, T2, T3}">IRelayCommand&lt;float, T1, T2&gt;</see> and subscribes to its <see cref="IRelayCommand.CanExecuteChanged"/> event.
         /// </summary>
         [BinderLog]
         public void SetValue(IRelayCommand<float, T1, T2> value) =>
             CommandBinderExtensions.UpdateCommand(ref _floatCommand, value, OnCanExecuteChanged);
 
         /// <summary>
-        /// Binds an <see cref="IRelayCommand{double,T1,T2}"/> and subscribes to its <see cref="IRelayCommand.CanExecuteChanged"/> event.
+        /// Binds an <see cref="IRelayCommand{T1, T2, T3}">IRelayCommand&lt;double, T1, T2&gt;</see> and subscribes to its <see cref="IRelayCommand.CanExecuteChanged"/> event.
         /// </summary>
         [BinderLog]
         public void SetValue(IRelayCommand<double, T1, T2> value) =>
@@ -412,13 +409,12 @@ namespace Aspid.MVVM.StarterKit
     /// <summary>
     /// Abstract base <see cref="ComponentMonoBinder{Slider}"/> that executes a command each time <see cref="Slider.onValueChanged"/> fires,
     /// passing the current slider value and three additional parameters as the command arguments.
-    /// Accepts commands typed as <see cref="IRelayCommand{int,T1,T2,T3}"/>, <see cref="IRelayCommand{long,T1,T2,T3}"/>,
-    /// <see cref="IRelayCommand{float,T1,T2,T3}"/> or <see cref="IRelayCommand{double,T1,T2,T3}"/>.
+    /// Accepts commands typed as <see cref="IRelayCommand{T1, T2, T3, T4}">IRelayCommand&lt;int, T1, T2, T3&gt;</see>, <see cref="IRelayCommand{T1, T2, T3, T4}">IRelayCommand&lt;long, T1, T2, T3&gt;</see>,
+    /// <see cref="IRelayCommand{T1, T2, T3, T4}">IRelayCommand&lt;float, T1, T2, T3&gt;</see> or <see cref="IRelayCommand{T1, T2, T3, T4}">IRelayCommand&lt;double, T1, T2, T3&gt;</see>.
     /// </summary>
     /// <typeparam name="T1">The type of the first additional parameter.</typeparam>
     /// <typeparam name="T2">The type of the second additional parameter.</typeparam>
     /// <typeparam name="T3">The type of the third additional parameter.</typeparam>
-    /// <include file="XmlExampleDoc-Slider-Command-1.1.0.xml" path="doc//member[@name='SliderCommandMonoBinderT1T2T3']/*" />
     public abstract partial class SliderCommandMonoBinder<T1, T2, T3> : ComponentMonoBinder<Slider>, 
         IBinder<IRelayCommand<int, T1, T2, T3>>,
         IBinder<IRelayCommand<long, T1, T2, T3>>, 
@@ -482,28 +478,28 @@ namespace Aspid.MVVM.StarterKit
         }
 
         /// <summary>
-        /// Binds an <see cref="IRelayCommand{int,T1,T2,T3}"/> and subscribes to its <see cref="IRelayCommand.CanExecuteChanged"/> event.
+        /// Binds an <see cref="IRelayCommand{T1, T2, T3, T4}">IRelayCommand&lt;int, T1, T2, T3&gt;</see> and subscribes to its <see cref="IRelayCommand.CanExecuteChanged"/> event.
         /// </summary>
         [BinderLog]
         public void SetValue(IRelayCommand<int, T1, T2, T3> value) =>
             CommandBinderExtensions.UpdateCommand(ref _intCommand, value, OnCanExecuteChanged);
 
         /// <summary>
-        /// Binds an <see cref="IRelayCommand{long,T1,T2,T3}"/> and subscribes to its <see cref="IRelayCommand.CanExecuteChanged"/> event.
+        /// Binds an <see cref="IRelayCommand{T1, T2, T3, T4}">IRelayCommand&lt;long, T1, T2, T3&gt;</see> and subscribes to its <see cref="IRelayCommand.CanExecuteChanged"/> event.
         /// </summary>
         [BinderLog]
         public void SetValue(IRelayCommand<long, T1, T2, T3> value) =>
             CommandBinderExtensions.UpdateCommand(ref _longCommand, value, OnCanExecuteChanged);
         
         /// <summary>
-        /// Binds an <see cref="IRelayCommand{float,T1,T2,T3}"/> and subscribes to its <see cref="IRelayCommand.CanExecuteChanged"/> event.
+        /// Binds an <see cref="IRelayCommand{T1, T2, T3, T4}">IRelayCommand&lt;float, T1, T2, T3&gt;</see> and subscribes to its <see cref="IRelayCommand.CanExecuteChanged"/> event.
         /// </summary>
         [BinderLog]
         public void SetValue(IRelayCommand<float, T1, T2, T3> value) =>
             CommandBinderExtensions.UpdateCommand(ref _floatCommand, value, OnCanExecuteChanged);
 
         /// <summary>
-        /// Binds an <see cref="IRelayCommand{double,T1,T2,T3}"/> and subscribes to its <see cref="IRelayCommand.CanExecuteChanged"/> event.
+        /// Binds an <see cref="IRelayCommand{T1, T2, T3, T4}">IRelayCommand&lt;double, T1, T2, T3&gt;</see> and subscribes to its <see cref="IRelayCommand.CanExecuteChanged"/> event.
         /// </summary>
         [BinderLog]
         public void SetValue(IRelayCommand<double, T1, T2, T3> value) =>

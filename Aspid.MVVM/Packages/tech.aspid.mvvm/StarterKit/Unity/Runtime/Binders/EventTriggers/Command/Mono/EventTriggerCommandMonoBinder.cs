@@ -87,7 +87,7 @@ namespace Aspid.MVVM.StarterKit
         /// </summary>
         /// <remarks>
         /// Removes the <see cref="EventTrigger.Entry"/> from the triggers list, unsubscribes the callback,
-        /// clears the entry reference, and passes <see langword="null"/> to all <see cref="SetValue"/> overloads
+        /// clears the entry reference, and passes <see langword="null"/> to all <c>SetValue</c> overloads
         /// to detach command references and unsubscribe from their <see cref="IRelayCommand.CanExecuteChanged"/> events.
         /// </remarks>
         protected override void OnUnbound()
@@ -214,7 +214,7 @@ namespace Aspid.MVVM.StarterKit
         /// </summary>
         /// <remarks>
         /// Removes the <see cref="EventTrigger.Entry"/> from the triggers list, unsubscribes the callback,
-        /// clears the entry reference, and passes <see langword="null"/> to all <see cref="SetValue"/> overloads
+        /// clears the entry reference, and passes <see langword="null"/> to all <c>SetValue</c> overloads
         /// to detach command references and unsubscribe from their <see cref="IRelayCommand.CanExecuteChanged"/> events.
         /// </remarks>
         protected override void OnUnbound()
@@ -354,7 +354,7 @@ namespace Aspid.MVVM.StarterKit
         /// </summary>
         /// <remarks>
         /// Removes the <see cref="EventTrigger.Entry"/> from the triggers list, unsubscribes the callback,
-        /// clears the entry reference, and passes <see langword="null"/> to all <see cref="SetValue"/> overloads
+        /// clears the entry reference, and passes <see langword="null"/> to all <c>SetValue</c> overloads
         /// to detach command references and unsubscribe from their <see cref="IRelayCommand.CanExecuteChanged"/> events.
         /// </remarks>
         protected override void OnUnbound()
@@ -506,7 +506,7 @@ namespace Aspid.MVVM.StarterKit
         /// </summary>
         /// <remarks>
         /// Removes the <see cref="EventTrigger.Entry"/> from the triggers list, unsubscribes the callback,
-        /// clears the entry reference, and passes <see langword="null"/> to all <see cref="SetValue"/> overloads
+        /// clears the entry reference, and passes <see langword="null"/> to all <c>SetValue</c> overloads
         /// to detach command references and unsubscribe from their <see cref="IRelayCommand.CanExecuteChanged"/> events.
         /// </remarks>
         protected override void OnUnbound()
@@ -643,7 +643,7 @@ namespace Aspid.MVVM.StarterKit
         /// </summary>
         /// <remarks>
         /// Removes the <see cref="EventTrigger.Entry"/> from the triggers list, unsubscribes the callback,
-        /// clears the entry reference, and passes <see langword="null"/> to <see cref="SetValue"/>
+        /// clears the entry reference, and passes <see langword="null"/> to <c>SetValue</c>
         /// to detach the command reference and unsubscribe from its <see cref="IRelayCommand.CanExecuteChanged"/> event.
         /// </remarks>
         protected override void OnUnbound()

@@ -8,7 +8,7 @@ using Converter = Aspid.MVVM.StarterKit.IConverterInt;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// Abstract base <see cref="EnumGroupMonoBinder{TElement, int, IConverter{int, int}}"/> that fixes
+    /// Abstract base <see cref="EnumGroupMonoBinder{T1, T2, T3}">EnumGroupMonoBinder&lt;TElement, int, IConverter&lt;int, int&gt;&gt;</see> that fixes
     /// the value type to <see cref="int"/>.
     /// </summary>
     /// <typeparam name="TElement">The type of element in the group that receives the selected or default value.</typeparam>

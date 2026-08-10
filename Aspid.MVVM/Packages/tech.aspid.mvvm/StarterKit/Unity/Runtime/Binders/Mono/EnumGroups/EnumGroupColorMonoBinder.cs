@@ -9,7 +9,7 @@ using Converter = Aspid.MVVM.StarterKit.IConverterColor;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// Abstract base <see cref="EnumGroupMonoBinder{TElement, Color, IConverter{Color, Color}}"/> that fixes
+    /// Abstract base <see cref="EnumGroupMonoBinder{T1, T2, T3}">EnumGroupMonoBinder&lt;TElement, Color, IConverter&lt;Color, Color&gt;&gt;</see> that fixes
     /// the value type to <see cref="Color"/>.
     /// </summary>
     /// <typeparam name="TElement">The type of element in the group that receives the selected or default value.</typeparam>

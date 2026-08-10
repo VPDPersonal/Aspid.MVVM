@@ -10,7 +10,7 @@ using Converter = Aspid.MVVM.StarterKit.IConverterInt;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// Abstract base <see cref="TargetBinder{TTarget, int, IConverter{int, int}}"/> that binds an <see langword="int"/> property,
+    /// Abstract base <see cref="TargetBinder{T1, T2, T3}">TargetBinder&lt;TTarget, int, IConverter&lt;int, int&gt;&gt;</see> that binds an <see langword="int"/> property,
     /// implementing <see cref="INumberBinder"/> to accept all numeric types
     /// and <see cref="INumberReverseBinder"/> to broadcast to all numeric event types.
     /// </summary>

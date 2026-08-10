@@ -34,17 +34,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Converter documentation.** All 40 marker interfaces, all 70 `ToConvert` / `ToConvertSpecific` wrappers, and the `Comparisons` / `CultureInfoMode` enums are documented; every serialized converter field gained a `[Tooltip]`, which is the only documentation visible where a converter is actually configured. `Documentation/08-converters.md` was rewritten around the shipped catalogue.
 - **`ArithmeticNumberConverter`** exposes `Apply(double)` and `Undo(double)` publicly and is `sealed`. Its sixteen `Convert` overloads no longer reach the arithmetic by casting the object to one of its own interfaces.
 - **The Greeter sample** uses the shipped `RichTextColorConverter` instead of a bespoke `PaintNameConverter`.
-- **Converter renames**, taken in one wave so a project pays the migration once. Both class renames carry `[MovedFrom]` and all four field renames carry `[FormerlySerializedAs]`, so existing scenes and prefabs keep their authored values; only source code needs updating.
+- **Two converter renames with no serialized footprint**: the nested enum type `Values` → `Mode` in the two vector dimension converters (the other six vector converters already called it `Mode`), and `Comparisons.Inequality` → `Comparisons.NotEqual` (a noun among five relations). An enum serializes as an ordinal and a nested type name is not serialized at all, so scenes are unaffected; only source naming these two changes.
 
-  | Was | Is |
-  |-----|-----|
-  | `SequenceConverters<T>` | `SequenceConverter<T>` |
-  | `GenericToString<T>` | `GenericToStringConverter<T>` |
-  | `Vector*CombineConverter._preConvertor` / `_postConvertor` | `_preConverter` / `_postConverter` |
-  | `Vector2ToVector3Converter.Values` / `Vector3ToVector2Converter.Values` | `Mode` |
-  | `Comparisons.Inequality` | `Comparisons.NotEqual` |
-
-  `Inequality` has no parallel member: an enum cannot deprecate one without the replacement appearing twice in the Inspector dropdown. The serialized value is the ordinal, which is unchanged, so scenes are unaffected.
+  A wider rename wave was attempted and reverted. `[MovedFrom]` and `[FormerlySerializedAs]` cover an object's own serialized data but **not** a prefab-instance override, which is keyed by the stored type string and the property path. Renaming `SequenceConverters` emptied a converter in the shipped Hello World sample — 24 console errors, one binder that stopped converting, with `[MovedFrom]` present. `SequenceConverters`, `GenericToString`, `_preConvertor` / `_postConvertor` and `_values` therefore keep their names, and a test now says so with the reason attached.
 
 ### Deprecated
 
@@ -63,7 +55,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Reverse binding no longer re-applies the *forward* converter on the way back to the ViewModel. A binder in `TwoWay` / `OneWayToSource` now uses `ITwoWayConverter.ConvertBack` when available and sends the value unchanged otherwise.
 - `SequenceConverter` no longer dereferences an empty Inspector slot. The type picker's `<None>` entry is a valid selection that serializes as a null element, so gaps are skipped instead of throwing.
 - The `Vector3CombineConverter` family no longer throws a `NullReferenceException` when its scene reference is unassigned or destroyed. It reports itself once and returns the input unchanged.
-- A `FormatException` from a format string no longer cuts the binder subscriber list. Dispatch is a bare multicast, so one bad format used to stop every binder queued behind it; `GenericToStringConverter` now contains the failure and falls back to `ToString()`.
+- A `FormatException` from a format string no longer cuts the binder subscriber list. Dispatch is a bare multicast, so one bad format used to stop every binder queued behind it; `GenericToString` now contains the failure and falls back to `ToString()`.
 - `StringFormatConverter` formats null and empty values again when `_formatEmptyValues` is set — the branch had become unreachable when `Convert` moved to the base class.
 - The divide-by-zero diagnostic in `ArithmeticNumberConverter` fires once per instance instead of on every conversion. `Debug.LogError` captures a stack trace, so a per-frame binding used to cost frames.
 - `DropdownOptionsByEnumMonoBinder` no longer reflects over the enum on every push, nor resets the selected index of a `DropdownValueMonoBinder` on the same object.

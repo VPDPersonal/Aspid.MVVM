@@ -195,19 +195,26 @@ Existing `[Bind]` fields keep working. Bindable Properties (PR #46) are additive
 
 ## 5. Converters
 
-The converter subsystem was rebuilt: 14 converters became 148, the contract gained a reverse direction, and the pre-2023.1 compatibility layer was deprecated. Scenes and prefabs survive untouched — every rename carries `[MovedFrom]` or `[FormerlySerializedAs]`, and the deprecated types are still implemented. Only source code needs work.
+The converter subsystem was rebuilt: 14 converters became 148, the contract gained a reverse direction, and the pre-2023.1 compatibility layer was deprecated. Scenes and prefabs survive untouched — the names that appear in serialized data were deliberately left alone, and the deprecated types are still implemented. Only source code needs work.
 
-### 5.1 Renames (compilation breakers)
+### 5.1 Renames
+
+Only two names changed, and neither has a serialized footprint:
 
 | Was | Is | Notes |
 |-----|-----|-------|
-| `SequenceConverters<T>` | `SequenceConverter<T>` | `[MovedFrom]`, scenes unaffected |
-| `GenericToString<T>` | `GenericToStringConverter<T>` | `[MovedFrom]`, scenes unaffected |
-| `_preConvertor` / `_postConvertor` | `_preConverter` / `_postConverter` | Public constructor parameters too; `[FormerlySerializedAs]`, scenes unaffected |
-| `Vector2ToVector3Converter.Values`, `Vector3ToVector2Converter.Values` | `Mode` | Nested enum type; the serialized value is the ordinal and is unchanged |
-| `Comparisons.Inequality` | `Comparisons.NotEqual` | Ordinal unchanged, so scenes are unaffected |
+| `Vector2ToVector3Converter.Values`, `Vector3ToVector2Converter.Values` | `Mode` | Nested enum type; a nested type name is not serialized |
+| `Comparisons.Inequality` | `Comparisons.NotEqual` | An enum serializes as an ordinal, which is unchanged |
 
-A global search-and-replace of these five names is the whole migration for most projects.
+Search-and-replace those two and you are done. Scenes and prefabs are untouched.
+
+> **A wider rename wave was attempted and reverted, and the reason is worth knowing if you maintain
+> your own `[SerializeReference]` types.** `[MovedFrom]` and `[FormerlySerializedAs]` cover an
+> object's own serialized data. They do **not** cover a prefab-instance override, which is keyed by
+> the stored type string and the property path. Renaming `SequenceConverters` emptied a converter in
+> the package's own Hello World sample — 24 console errors and a binder that stopped converting,
+> with `[MovedFrom]` present and correct. So `SequenceConverters`, `GenericToString`,
+> `_preConvertor` / `_postConvertor` and `_values` keep their names, spelling and all.
 
 ### 5.2 Deprecated: the named converter aliases
 
@@ -256,6 +263,6 @@ This changes runtime output where a two-way binding had a converter attached. If
 - [ ] Re-check `ViewInitializer` / `ViewInitializerManual` inspector data — the serialized resolution components changed type, so existing view/viewModel resolution settings may not carry over- [ ] Review `NumberToBoolConverter` (`Inequality`) and `DynamicViewModel.Create` usages for the corrected runtime behaviour
 - [ ] Smoke-test scenes that use `ImageSpriteSwitcherBinder`, Addressable binders and `VirtualizedList*`
 - [ ] Update tests / tooling that look up components by `AddComponentMenu` path
-- [ ] Global rename of the five converter names (see § 5.1)
+- [ ] Rename `Values` → `Mode` and `Comparisons.Inequality` → `NotEqual` in your own code (see § 5.1)
 - [ ] Move `[SerializeReference]` converter fields and code off the `[Obsolete]` `IConverterXToY` aliases onto `IConverter<TFrom, TTo>` — you have one release, and the failure after that is silent (see § 5.2)
 - [ ] Review every two-way binding that has a converter: the reverse direction now converts (see § 5.3)

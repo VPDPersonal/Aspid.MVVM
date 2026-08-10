@@ -84,7 +84,7 @@ public interface ITwoWayConverter<TFrom, TTo> : IConverter<TFrom, TTo>
 `AudioLinearToDecibelConverter`, `BoolInvertConverter`, `DegreesToRadiansConverter`,
 `EnumToIntConverter`, `EulerToQuaternionConverter`, `InverseLerpConverter`, `LerpNumberConverter`,
 `NormalizedToPercentConverter`, `PassthroughConverter`, `QuaternionOffsetConverter`,
-`RemapNumberConverter`, `SecondsToTimeSpanConverter`, `SequenceConverter`, `StringToEnumConverter`,
+`RemapNumberConverter`, `SecondsToTimeSpanConverter`, `SequenceConverters`, `StringToEnumConverter`,
 `StringToFloatConverter`, `StringToIntConverter`, `StringToLongConverter`,
 `UnixTimestampToDateTimeConverter`, `Vector2ToVector2IntConverter`, `Vector3ToVector3IntConverter`.
 
@@ -137,7 +137,7 @@ Rich text (TextMeshPro): `RichTextColorConverter`, `RichTextNoParseConverter`,
 Разбор строки: `StringToBoolParseConverter`, `StringToDateTimeConverter`, `StringToEnumConverter`,
 `StringToFloatConverter`, `StringToIntConverter`, `StringToLongConverter`.
 
-Общее: `GenericToStringConverter`, `ObjectToStringConverter`, `StringFormatConverter`,
+Общее: `GenericToString`, `ObjectToStringConverter`, `StringFormatConverter`,
 `TimeSpanToStringConverter`.
 
 ### Aspid/Time (8)

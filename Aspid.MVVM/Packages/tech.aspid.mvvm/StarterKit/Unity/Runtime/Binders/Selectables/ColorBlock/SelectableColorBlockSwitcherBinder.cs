@@ -1,4 +1,3 @@
-#if UNITY_2023_1_OR_NEWER || ASPID_MVVM_TEXT_MESH_PRO_INTEGRATION
 #nullable enable
 using System;
 using UnityEngine.UI;
@@ -33,4 +32,3 @@ namespace Aspid.MVVM.StarterKit
             Target.colors = value;
     }
 }
-#endif

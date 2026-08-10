@@ -6,7 +6,7 @@ using UnityEngine;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="TargetBoolBinder<SpriteRenderer>"/> that binds <see cref="SpriteRenderer.flipX"/>.
+    /// <see cref="TargetBoolBinder{SpriteRenderer}"/> that binds <see cref="SpriteRenderer.flipX"/>.
     /// </summary>
     /// <remarks>
     /// Mirroring a sprite is how a 2D character faces the other way; it needed a scale binder before.

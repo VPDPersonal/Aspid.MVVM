@@ -6,7 +6,7 @@ using UnityEngine.UI;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="TargetFloatBinder<LayoutElement>"/> that binds <see cref="LayoutElement.preferredHeight"/>.
+    /// <see cref="TargetFloatBinder{LayoutElement}"/> that binds <see cref="LayoutElement.preferredHeight"/>.
     /// </summary>
     /// <remarks>
     /// The vertical counterpart. A negative value means "no preference".

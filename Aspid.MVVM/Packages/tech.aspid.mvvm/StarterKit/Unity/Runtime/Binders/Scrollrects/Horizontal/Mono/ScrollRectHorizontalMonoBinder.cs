@@ -5,7 +5,7 @@ using UnityEngine.UI;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="ComponentBoolMonoBinder<ScrollRect>"/> that binds <see cref="ScrollRect.horizontal"/>.
+    /// <see cref="ComponentBoolMonoBinder{ScrollRect}"/> that binds <see cref="ScrollRect.horizontal"/>.
     /// </summary>
     /// <remarks>
     /// Whether the user may scroll sideways — the way a ViewModel locks an axis while something else is in progress.

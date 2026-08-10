@@ -5,7 +5,7 @@ using UnityEngine.UI;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="ComponentIntMonoBinder<Canvas>"/> that binds <see cref="Canvas.sortingOrder"/>.
+    /// <see cref="ComponentIntMonoBinder{Canvas}"/> that binds <see cref="Canvas.sortingOrder"/>.
     /// </summary>
     /// <remarks>
     /// Which canvas draws on top. Bringing a panel to the front from the ViewModel had no binder.

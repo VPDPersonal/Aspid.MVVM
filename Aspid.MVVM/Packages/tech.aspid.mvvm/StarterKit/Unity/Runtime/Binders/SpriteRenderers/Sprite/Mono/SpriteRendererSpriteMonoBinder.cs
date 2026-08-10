@@ -4,7 +4,7 @@ using UnityEngine;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="ComponentMonoBinder<SpriteRenderer, Sprite>"/> that binds <see cref="SpriteRenderer.sprite"/>.
+    /// <see cref="ComponentMonoBinder{SpriteRenderer, Sprite}"/> that binds <see cref="SpriteRenderer.sprite"/>.
     /// </summary>
     /// <remarks>
     /// The 2D counterpart of the Image sprite binders, which only ever covered uGUI.

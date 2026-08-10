@@ -6,7 +6,7 @@ using UnityEngine.UI;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="TargetBoolBinder<ScrollRect>"/> that binds <see cref="ScrollRect.vertical"/>.
+    /// <see cref="TargetBoolBinder{ScrollRect}"/> that binds <see cref="ScrollRect.vertical"/>.
     /// </summary>
     /// <remarks>
     /// Whether the user may scroll vertically.

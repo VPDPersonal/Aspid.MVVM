@@ -11,7 +11,7 @@ namespace Aspid.MVVM.StarterKit
     /// is sent back to the ViewModel.
     /// The bound value is clamped to [0, 256] before being applied to <see cref="AudioSource.priority"/>.
     /// </remarks>
-    [AddBinderContextMenu(typeof(AudioSource))]
+    [AddBinderContextMenu(typeof(AudioSource), serializePropertyNames: "Priority")]
     [AddComponentMenu("Aspid/MVVM/Binders/Audio/AudioSource/AudioSource Binder – Priority")]
     public class AudioSourcePriorityMonoBinder : ComponentIntMonoBinder<AudioSource>
     {

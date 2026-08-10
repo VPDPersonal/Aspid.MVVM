@@ -10,7 +10,7 @@ namespace Aspid.MVVM.StarterKit
     /// <remarks>
     /// The bound value is clamped to [0, 256] before being applied to <see cref="AudioSource.priority"/>.
     /// </remarks>
-    [AddBinderContextMenu(typeof(AudioSource), SubPath = "EnumGroup")]
+    [AddBinderContextMenu(typeof(AudioSource), serializePropertyNames: "Priority", SubPath = "EnumGroup")]
     [AddComponentMenu("Aspid/MVVM/Binders/Audio/AudioSource/AudioSource Binder – Priority EnumGroup")]
     public sealed class AudioSourcePriorityEnumGroupMonoBinder : EnumGroupIntMonoBinder<AudioSource>
     {

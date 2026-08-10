@@ -31,6 +31,7 @@ namespace Aspid.MVVM.StarterKit
         /// <param name="colorComponent">The color channel to bind.</param>
         /// <param name="converter">The converter used to transform the bound float value, or <see langword="null"/> to use the value as-is.</param>
         /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/>.</param>
+        /// <exception cref="ArgumentException">Thrown when <paramref name="mode"/> is <see cref="BindMode.TwoWay"/>.</exception>
         public GraphicColorComponentBinder(Graphic target, ColorComponent colorComponent = ColorComponent.A, IConverter<float, float>? converter = null, BindMode mode = BindMode.OneWay)
             : base(target, converter, mode)
         {

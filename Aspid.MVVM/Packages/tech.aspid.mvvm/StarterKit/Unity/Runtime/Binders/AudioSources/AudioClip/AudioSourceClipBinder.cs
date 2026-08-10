@@ -20,6 +20,7 @@ namespace Aspid.MVVM.StarterKit
         }
 
         /// <inheritdoc/>
+        /// <exception cref="ArgumentException">Thrown when <paramref name="mode"/> is <see cref="BindMode.TwoWay"/>.</exception>
         public AudioSourceClipBinder(AudioSource target, BindMode mode = BindMode.OneWay)
             : base(target, mode)
         {

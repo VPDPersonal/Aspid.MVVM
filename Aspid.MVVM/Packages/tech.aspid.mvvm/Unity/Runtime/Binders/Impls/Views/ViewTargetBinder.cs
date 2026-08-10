@@ -16,6 +16,7 @@ namespace Aspid.MVVM
         /// </summary>
         /// <param name="target">The view component to bind.</param>
         /// <param name="mode">The binding mode. Only one-directional modes are supported.</param>
+        /// <exception cref="System.InvalidOperationException">Thrown when <paramref name="mode"/> is neither <see cref="BindMode.OneWay"/> nor <see cref="BindMode.OneTime"/>.</exception>
         public ViewTargetBinder(TView target, BindMode mode = BindMode.OneWay)
             : base(target, mode)
         {

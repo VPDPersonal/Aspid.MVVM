@@ -37,6 +37,7 @@ namespace Aspid.MVVM.StarterKit
         /// </summary>
         /// <param name="views">The pre-instantiated view objects to assign bound ViewModel items to.</param>
         /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</param>
+        /// <exception cref="InvalidOperationException">Thrown when <paramref name="mode"/> is <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</exception>
         public CollectionViewModelBinder(T[] views, BindMode mode = BindMode.OneWay)
             : base(mode)
         {

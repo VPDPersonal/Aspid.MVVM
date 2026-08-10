@@ -33,6 +33,7 @@ namespace Aspid.MVVM.StarterKit
         /// <param name="target">The <see cref="GameObject"/> whose active state is bound.</param>
         /// <param name="isInvert">When <see langword="true"/>, the bound boolean value is inverted before being applied.</param>
         /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/>.</param>
+        /// <exception cref="ArgumentException">Thrown when <paramref name="mode"/> is <see cref="BindMode.TwoWay"/>.</exception>
         public GameObjectVisibleBinder(GameObject target, bool isInvert = false, BindMode mode = BindMode.OneWay)
             : base(target, mode)
         {

@@ -41,6 +41,7 @@ namespace Aspid.MVVM.StarterKit
         /// <param name="paddingMode">Determines which sides of the padding are updated.</param>
         /// <param name="converter">The converter used to transform the bound value, or <see langword="null"/> to use the default.</param>
         /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/>.</param>
+        /// <exception cref="ArgumentException">Thrown when <paramref name="mode"/> is <see cref="BindMode.TwoWay"/>.</exception>
         public LayoutGroupPaddingBinder(
             LayoutGroup target,
             PaddingMode paddingMode,

@@ -29,6 +29,7 @@ namespace Aspid.MVVM.StarterKit
         /// <param name="space">The coordinate space in which the euler angles are applied.</param>
         /// <param name="converter">The converter used to transform the bound <see cref="Vector3"/> value, or <see langword="null"/> to use the value as-is.</param>
         /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/>.</param>
+        /// <exception cref="ArgumentException">Thrown when <paramref name="mode"/> is <see cref="BindMode.TwoWay"/>.</exception>
         public TransformEulerAnglesBinder(
             Transform target,
             Space space = Space.World,

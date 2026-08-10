@@ -38,6 +38,7 @@ namespace Aspid.MVVM.StarterKit
         }
         
         /// <inheritdoc/>
+        /// <exception cref="ArgumentException">Thrown when <paramref name="mode"/> is <see cref="BindMode.TwoWay"/>.</exception>
         public RawImageTextureBinder(RawImage target, bool disabledWhenNull = true, Converter? converter = null, BindMode mode = BindMode.OneWay)
             : base(target, converter, mode)
         {

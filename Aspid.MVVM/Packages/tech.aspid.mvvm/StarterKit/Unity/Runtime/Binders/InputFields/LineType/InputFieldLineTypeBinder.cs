@@ -25,6 +25,7 @@ namespace Aspid.MVVM.StarterKit
         }
 
         /// <inheritdoc/>
+        /// <exception cref="InvalidOperationException">Thrown when <paramref name="mode"/> is neither <see cref="BindMode.OneWay"/> nor <see cref="BindMode.OneTime"/>.</exception>
         public InputFieldLineTypeBinder(TMP_InputField target, BindMode mode = BindMode.OneWay) 
             : base(target, mode)
         {

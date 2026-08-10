@@ -41,6 +41,7 @@ namespace Aspid.MVVM.StarterKit
         /// <param name="colorPropertyName">The name of the shader color property to set. Defaults to <c>"_BaseColor"</c>.</param>
         /// <param name="converter">The converter used to transform the bound <see cref="Color"/> value, or <see langword="null"/> to use the value as-is.</param>
         /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/>.</param>
+        /// <exception cref="ArgumentException">Thrown when <paramref name="mode"/> is <see cref="BindMode.TwoWay"/>.</exception>
         public RendererMaterialColorBinder(
             Renderer target,
             string colorPropertyName = "_BaseColor",

@@ -22,6 +22,7 @@ namespace Aspid.MVVM.StarterKit
         }
 
         /// <inheritdoc/>
+        /// <exception cref="ArgumentException">Thrown when <paramref name="mode"/> is <see cref="BindMode.TwoWay"/>.</exception>
         public GraphicMaskableBinder(MaskableGraphic target, bool isInvert = false, BindMode mode = BindMode.OneTime)
             : base(target, isInvert, mode)
         {

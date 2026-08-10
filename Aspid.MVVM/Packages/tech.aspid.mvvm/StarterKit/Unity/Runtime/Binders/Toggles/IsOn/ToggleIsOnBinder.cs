@@ -32,6 +32,7 @@ namespace Aspid.MVVM.StarterKit
         /// <param name="target">The <see cref="Toggle"/> to bind.</param>
         /// <param name="isInvert">When <see langword="true"/>, the bound value is logically inverted before being applied or propagated.</param>
         /// <param name="mode">The binding mode. Must not be <see cref="BindMode.None"/>.</param>
+        /// <exception cref="ArgumentException">Thrown when <paramref name="mode"/> is <see cref="BindMode.None"/>.</exception>
         public ToggleIsOnBinder(Toggle target, bool isInvert = false, BindMode mode = BindMode.TwoWay)
             : base(target, mode)
         {

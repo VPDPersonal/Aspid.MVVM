@@ -14,6 +14,7 @@ namespace Aspid.MVVM.StarterKit
     public sealed class InputFieldCharacterValidationSwitcherBinder : SwitcherBinder<TMP_InputField, TMP_InputField.CharacterValidation>
     {
         /// <inheritdoc/>
+        /// <exception cref="InvalidOperationException">Thrown when <paramref name="mode"/> is neither <see cref="BindMode.OneWay"/> nor <see cref="BindMode.OneTime"/>.</exception>
         public InputFieldCharacterValidationSwitcherBinder(
             TMP_InputField target,
             TMP_InputField.CharacterValidation trueValue,

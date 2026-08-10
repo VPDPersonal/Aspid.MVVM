@@ -60,6 +60,7 @@ namespace Aspid.MVVM.StarterKit
         /// <param name="target">The <see cref="Renderer"/> to bind.</param>
         /// <param name="converter">The converter applied to each material before assignment, or <see langword="null"/> to use the value as-is.</param>
         /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/>.</param>
+        /// <exception cref="ArgumentException">Thrown when <paramref name="mode"/> is <see cref="BindMode.TwoWay"/>.</exception>
         public RendererMaterialsBinder(Renderer target, Converter? converter = null, BindMode mode = BindMode.OneWay)
             : base(target, mode)
         {

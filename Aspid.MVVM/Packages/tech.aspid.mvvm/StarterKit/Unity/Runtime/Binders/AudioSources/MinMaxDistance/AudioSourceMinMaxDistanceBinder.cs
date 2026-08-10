@@ -38,6 +38,7 @@ namespace Aspid.MVVM.StarterKit
         /// <param name="distanceMode">The <see cref="AudioSourceDistanceMode"/> that determines which distance component is updated.</param>
         /// <param name="converter">The converter used to transform the bound <see cref="Vector2"/> value, or <see langword="null"/> to use none.</param>
         /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/>.</param>
+        /// <exception cref="ArgumentException">Thrown when <paramref name="mode"/> is <see cref="BindMode.TwoWay"/>.</exception>
         public AudioSourceMinMaxDistanceBinder(
             AudioSource target,
             AudioSourceDistanceMode distanceMode = AudioSourceDistanceMode.Range,

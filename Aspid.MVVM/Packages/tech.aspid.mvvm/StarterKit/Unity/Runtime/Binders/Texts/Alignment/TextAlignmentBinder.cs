@@ -24,6 +24,7 @@ namespace Aspid.MVVM.StarterKit
         /// </summary>
         /// <param name="target">The <see cref="TMP_Text"/> to bind.</param>
         /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/>.</param>
+        /// <exception cref="ArgumentException">Thrown when <paramref name="mode"/> is <see cref="BindMode.TwoWay"/>.</exception>
         public TextAlignmentBinder(TMP_Text target, BindMode mode = BindMode.OneWay)
             : base(target, mode)
         {

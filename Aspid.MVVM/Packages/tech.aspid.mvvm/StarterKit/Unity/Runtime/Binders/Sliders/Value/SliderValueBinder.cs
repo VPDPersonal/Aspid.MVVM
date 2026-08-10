@@ -49,6 +49,7 @@ namespace Aspid.MVVM.StarterKit
         /// <param name="target">The <see cref="Slider"/> to bind.</param>
         /// <param name="converter">The converter applied to values before they are set on the slider, or <see langword="null"/> to use the value as-is.</param>
         /// <param name="mode">The binding mode. Must not be <see cref="BindMode.None"/>.</param>
+        /// <exception cref="ArgumentException">Thrown when <paramref name="mode"/> is <see cref="BindMode.None"/>.</exception>
         public SliderValueBinder(Slider target, Converter? converter = null, BindMode mode = BindMode.TwoWay)
             : base(target, mode)
         {

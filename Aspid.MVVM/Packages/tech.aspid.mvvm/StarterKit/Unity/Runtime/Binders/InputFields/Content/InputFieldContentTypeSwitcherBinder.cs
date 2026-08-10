@@ -14,6 +14,7 @@ namespace Aspid.MVVM.StarterKit
     public sealed class InputFieldContentTypeSwitcherBinder : SwitcherBinder<TMP_InputField, TMP_InputField.ContentType>
     {
         /// <inheritdoc/>
+        /// <exception cref="InvalidOperationException">Thrown when <paramref name="mode"/> is neither <see cref="BindMode.OneWay"/> nor <see cref="BindMode.OneTime"/>.</exception>
         public InputFieldContentTypeSwitcherBinder(
             TMP_InputField target,
             TMP_InputField.ContentType trueValue,

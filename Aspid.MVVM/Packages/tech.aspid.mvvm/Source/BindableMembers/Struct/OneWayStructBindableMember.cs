@@ -73,6 +73,7 @@ namespace Aspid.MVVM
         /// Initializes a new instance of the <see cref="OneWayStructBindableMember{T,TBoxed}"/> class with the specified initial value.
         /// </summary>
         /// <param name="value">The initial value of the bindable member.</param>
+        /// <exception cref="InvalidOperationException">Thrown when <paramref name="mode"/> is neither <see cref="BindMode.OneWay"/> nor <see cref="BindMode.OneTime"/>.</exception>
         protected OneWayStructBindableMember(T value)
         {
             _value = value;

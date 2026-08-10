@@ -72,11 +72,36 @@ namespace Aspid.MVVM.StarterKit
         /// </remarks>
         public enum Mode
         {
+            /// <summary>
+            /// The 2D X goes to X and the 2D Y to Y; the constant fills Z. The mode a new converter
+            /// starts in.
+            /// </summary>
             XY,
+
+            /// <summary>
+            /// The 2D X goes to X and the 2D Y to Z; the constant fills Y, laying a flat value on the
+            /// ground plane.
+            /// </summary>
             XZ,
+
+            /// <summary>
+            /// The 2D X goes to Y and the 2D Y to Z; the constant fills X.
+            /// </summary>
             YZ,
+
+            /// <summary>
+            /// The 2D X goes to Y and the 2D Y to X — the pair swapped; the constant fills Z.
+            /// </summary>
             YX,
+
+            /// <summary>
+            /// The 2D X goes to Z and the 2D Y to X; the constant fills Y.
+            /// </summary>
             ZX,
+
+            /// <summary>
+            /// The 2D X goes to Z and the 2D Y to Y; the constant fills X.
+            /// </summary>
             ZY,
         }
     }

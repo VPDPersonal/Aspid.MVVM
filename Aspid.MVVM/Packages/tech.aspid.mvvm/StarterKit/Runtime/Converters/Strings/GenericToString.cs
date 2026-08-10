@@ -52,9 +52,18 @@ namespace Aspid.MVVM.StarterKit
         /// </summary>
         /// <param name="value">The value to convert.</param>
         /// <returns>
-        /// The string representation of the value; <see langword="null"/> if the value is
-        /// <see langword="null"/>, and <see cref="object.ToString"/> if the format is blank or invalid.
+        /// The string representation of the value, or <see cref="object.ToString"/> if the format is
+        /// blank or invalid; <see langword="null"/> only when <typeparamref name="TFrom"/> can hold
+        /// <see langword="null"/> — a reference type, or a <see cref="Nullable{T}"/> — and the value is
+        /// <see langword="null"/>.
         /// </returns>
+        /// <remarks>
+        /// <typeparamref name="TFrom"/> is unconstrained, so the <c>?</c> on the parameter is an
+        /// annotation rather than a <see cref="Nullable{T}"/>: a plain value-type instantiation such as
+        /// <see cref="TimeSpanToStringConverter"/> has no null to be handed and never returns one. Each
+        /// instantiation therefore has a single behaviour, and a binder fed by a value-type one never
+        /// sees the <see langword="null"/> the contract above allows.
+        /// </remarks>
         public virtual string? Convert(TFrom? value)
         {
             if (value is null) return null;

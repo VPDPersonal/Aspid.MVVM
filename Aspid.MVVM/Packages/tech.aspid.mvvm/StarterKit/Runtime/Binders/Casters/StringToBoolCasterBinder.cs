@@ -8,9 +8,12 @@ namespace Aspid.MVVM.StarterKit
     /// using a configurable converter before forwarding it to a target setter.
     /// </summary>
     /// <remarks>
-    /// By default, uses <see cref="StringEmptyToBoolConverter"/> which treats a non-empty, non-null string as
-    /// <see langword="true"/>. The result can be inverted via the <c>isInvert</c> flag, or replaced entirely with
-    /// a custom <see cref="IConverter{TFrom,TTo}"/>.
+    /// By default, uses <see cref="StringEmptyToBoolConverter"/>, which answers the question "is this
+    /// string empty?" — so an empty or <see langword="null"/> string maps to <see langword="true"/>
+    /// and a filled one to <see langword="false"/>. That is the opposite polarity of what a
+    /// <c>SetActive</c> or <c>interactable</c> target usually wants, which is why <c>isInvert</c>
+    /// exists. The converter can also be replaced entirely with a custom
+    /// <see cref="IConverter{TFrom,TTo}"/>.
     /// </remarks>
     /// <include file="XmlExampleDoc-Casters-1.1.0.xml" path="doc//member[@name='StringToBoolCasterBinder']/*" />
     public sealed class StringToBoolCasterBinder : Binder, IBinder<string>
@@ -23,8 +26,10 @@ namespace Aspid.MVVM.StarterKit
         /// </summary>
         /// <param name="setValue">The action invoked with the converted <see cref="bool"/> value.</param>
         /// <param name="isInvert">
-        /// When <see langword="true"/>, the conversion result is logically negated so that an empty or
-        /// <see langword="null"/> string maps to <see langword="true"/>.
+        /// When <see langword="true"/>, the conversion result is logically negated, so a filled string
+        /// maps to <see langword="true"/> and an empty or <see langword="null"/> one to
+        /// <see langword="false"/> — the reading a <c>SetActive</c> or <c>interactable</c> target
+        /// expects.
         /// </param>
         /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/>.</param>
         /// <exception cref="ArgumentNullException">Thrown when <paramref name="setValue"/> is <see langword="null"/>.</exception>

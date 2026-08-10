@@ -56,15 +56,27 @@ namespace Aspid.MVVM.StarterKit
         };
 
         /// <summary>
-        /// Specifies which components of the 3D vector to map to the 2D vector.
+        /// Specifies which components of the 3D vector to map to the 2D vector. The letters name the
+        /// source components in the order they are written into the result; the third is dropped.
         /// </summary>
         public enum Mode
         {
+            /// <summary><c>(x, y)</c> — Z dropped, the mode a new converter starts in.</summary>
             XY,
+
+            /// <summary><c>(x, z)</c> — Y dropped, flattening the ground plane into 2D.</summary>
             XZ,
+
+            /// <summary><c>(y, x)</c> — Z dropped and the remaining two swapped.</summary>
             YX,
+
+            /// <summary><c>(y, z)</c> — X dropped.</summary>
             YZ,
+
+            /// <summary><c>(z, x)</c> — Y dropped and the remaining two swapped.</summary>
             ZX,
+
+            /// <summary><c>(z, y)</c> — X dropped and the remaining two swapped.</summary>
             ZY,
         }
     }

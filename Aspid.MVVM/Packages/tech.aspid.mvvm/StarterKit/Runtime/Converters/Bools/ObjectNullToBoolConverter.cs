@@ -12,6 +12,18 @@ namespace Aspid.MVVM.StarterKit
     /// <summary>
     /// Converts object references to boolean based on null check, with optional inversion.
     /// </summary>
+    /// <remarks>
+    /// Left unconfigured this answers "is it null?", returning <see langword="true"/> when the
+    /// reference is missing — the opposite of what a bool is usually wired to. <c>SetActive</c>,
+    /// <c>interactable</c> and <c>isOn</c> all read <see langword="true"/> as present or enabled, so
+    /// a panel bound straight through would show itself only while its data is absent; those want
+    /// <c>isInvert: true</c>.
+    /// <para>
+    /// The default stays as it is because the flag is serialized: scenes already holding an
+    /// unconfigured converter hold <see langword="false"/>, and changing what <see langword="false"/>
+    /// means would invert every one of them.
+    /// </para>
+    /// </remarks>
     [Serializable]
     [TypeSelectorDisplay(Group = "Aspid/Bool", Name = "Object Null To Bool", Tooltip = "Converts object references to boolean based on null check, with optional inversion")]
     public class ObjectNullToBoolConverter : IConverterObjectToBool

@@ -53,14 +53,22 @@ namespace Aspid.MVVM.StarterKit
         };
 
         /// <summary>
-        /// Specifies how to rearrange vector components.
+        /// Specifies how to rearrange vector components. The letters name the source components in
+        /// the order they are written into the result, so a repeated letter is a component copied
+        /// and a missing one is a component dropped.
         /// </summary>
         public enum Mode
         {
+            /// <summary>The vector unchanged — <c>(x, y)</c>, the mode a new converter starts in.</summary>
             XY,
+
+            /// <summary><c>(y, x)</c> — the two components swapped.</summary>
             YX,
 
+            /// <summary><c>(y, y)</c> — Y in both components, X dropped.</summary>
             YY,
+
+            /// <summary><c>(x, x)</c> — X in both components, Y dropped.</summary>
             XX,
         }
     }

@@ -12,9 +12,32 @@ using Converter = Aspid.MVVM.StarterKit.IConverter<UnityEngine.Vector3, UnityEng
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// Base class for converters that combine vector values by selecting components.
-    /// Supports optional pre- and post-conversion transformations.
+    /// Abstract base class for converters that combine a bound vector with one read from a scene
+    /// component, taking each axis from whichever of the two the configured <see cref="Mode"/> names.
+    /// Derived classes supply the component and the reference vector; this layer contributes the axis
+    /// selection and the optional pre- and post-conversion stages around it.
     /// </summary>
+    /// <remarks>
+    /// Binding one axis and leaving the rest where the scene put them: a marker that slides along X
+    /// while its Y and Z stay with the layout, a box scaled in one dimension only. The reference
+    /// vector is re-read on every conversion, so the unbound axes keep tracking the component even
+    /// when something else moves it.
+    /// <para>
+    /// The concrete members of the family, one per component property the reference vector is read
+    /// from: <see cref="TransformPositionCombineConverter"/>,
+    /// <see cref="TransformScaleCombineConverter"/>,
+    /// <see cref="TransformEulerAnglesCombineConverter"/>,
+    /// <see cref="RectTransformAnchoredPositionCombineConverter"/>,
+    /// <see cref="BoxColliderCentreCombineConverter"/>,
+    /// <see cref="BoxColliderSizeCombineConverter"/>,
+    /// <see cref="SphereColliderCentreCombineConverter"/> and
+    /// <see cref="CapsuleColliderCentreCombineConverter"/>.
+    /// </para>
+    /// <para>
+    /// <see cref="Vector2CombineConverter"/> is the two-dimensional half of the pair, for values that
+    /// arrive as a <see cref="Vector2"/> and would otherwise have to widen and narrow to be combined.
+    /// </para>
+    /// </remarks>
     [Serializable]
     public abstract class Vector3CombineConverter :
         IConverterVector3,
@@ -91,6 +114,11 @@ namespace Aspid.MVVM.StarterKit
         /// <summary>
         /// Converts a <see cref="Vector2"/> to a <see cref="Vector3"/> by combining with the reference vector.
         /// </summary>
+        /// <remarks>
+        /// Same stage order as <see cref="Convert(Vector3)"/>: pre-converter, then the axis selection,
+        /// then the post-converter. The argument widens to <c>(x, y, 0)</c> before any of that runs, so
+        /// a mode naming Z takes that zero rather than the reference vector's depth.
+        /// </remarks>
         /// <param name="value">The 2D vector to convert.</param>
         /// <returns>The converted 3D vector.</returns>
         public Vector3 Convert(Vector2 value) =>
@@ -99,6 +127,13 @@ namespace Aspid.MVVM.StarterKit
         /// <summary>
         /// Combines a <see cref="Vector3"/> with the reference vector by selecting components.
         /// </summary>
+        /// <remarks>
+        /// The stages run in this order: the pre-converter transforms the bound vector, the configured
+        /// <see cref="Mode"/> then takes each axis from that result or from the reference vector, and
+        /// the post-converter runs last on what the selection produced. So the pre-converter never
+        /// sees the reference vector, and the post-converter can still move an axis the mode took
+        /// from it.
+        /// </remarks>
         /// <param name="value">The vector to convert.</param>
         /// <returns>The combined vector.</returns>
         public Vector3 Convert(Vector3 value) =>
@@ -128,12 +163,40 @@ namespace Aspid.MVVM.StarterKit
         /// </summary>
         public enum Mode
         {
+            /// <summary>
+            /// Takes X from the bound vector; Y and Z stay at the reference vector's.
+            /// </summary>
             X,
+
+            /// <summary>
+            /// Takes Y from the bound vector; X and Z stay at the reference vector's.
+            /// </summary>
             Y,
+
+            /// <summary>
+            /// Takes Z from the bound vector; X and Y stay at the reference vector's.
+            /// </summary>
             Z,
+
+            /// <summary>
+            /// Takes X and Y from the bound vector; Z stays at the reference vector's.
+            /// </summary>
             XY,
+
+            /// <summary>
+            /// Takes X and Z from the bound vector; Y stays at the reference vector's.
+            /// </summary>
             XZ,
+
+            /// <summary>
+            /// Takes Y and Z from the bound vector; X stays at the reference vector's.
+            /// </summary>
             YZ,
+
+            /// <summary>
+            /// Takes all three components from the bound vector, leaving the reference vector with no
+            /// say — only the pre- and post-converters shape the result.
+            /// </summary>
             XYZ,
         }
     }

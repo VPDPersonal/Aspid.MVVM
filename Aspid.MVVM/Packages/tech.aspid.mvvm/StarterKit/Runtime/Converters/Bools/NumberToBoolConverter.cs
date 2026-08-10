@@ -77,9 +77,23 @@ namespace Aspid.MVVM.StarterKit
             Compare(value);
 
         /// <summary>
-        /// Performs the configured comparison in double precision so that large
-        /// integer and double magnitudes compare exactly without float rounding.
+        /// Performs the configured comparison of the bound value against the authored one.
         /// </summary>
+        /// <remarks>
+        /// The authored value is held as a <see langword="float"/> and is rounded the moment it is
+        /// assigned, so widening here restores nothing it has already lost: an <see langword="int"/>
+        /// or <see langword="long"/> too large for a <see langword="float"/> to hold exactly reaches
+        /// this method intact as a <see langword="double"/> and is then measured against a threshold
+        /// that is not.
+        /// <para>
+        /// <see cref="Comparisons.Equal"/> and <see cref="Comparisons.NotEqual"/> route through
+        /// <see cref="Approximately(double, double)"/> and match within a tolerance scaled to the
+        /// magnitude; the four ordering comparisons are bare operators and apply no tolerance at all.
+        /// The two disagree at the boundary — against a threshold of two million, a value one above it
+        /// reports as <see cref="Comparisons.Equal"/> and as <see cref="Comparisons.GreaterThan"/>
+        /// at the same time.
+        /// </para>
+        /// </remarks>
         private bool Compare(double value) => _comparison switch
         {
             Comparisons.LessThan => value < _value,
@@ -92,8 +106,14 @@ namespace Aspid.MVVM.StarterKit
         };
 
         /// <summary>
-        /// Checks if two float values are approximately equal with tolerance for floating-point precision.
+        /// Checks whether two values are approximately equal, within a tolerance scaled to their magnitude.
         /// </summary>
+        /// <remarks>
+        /// Both tolerance constants are calibrated for <see langword="float"/> — 1e-6 relative, and
+        /// <see cref="float.Epsilon"/> times eight as the floor near zero — while the parameters are
+        /// <see langword="double"/>. A <see langword="double"/> or <see langword="long"/> is therefore
+        /// judged against a float-grade epsilon and reads as equal long before its own precision runs out.
+        /// </remarks>
         private static bool Approximately(double a, double b) =>
             Math.Abs(b - a) < Math.Max(1E-06f * Math.Max(Math.Abs(a), Math.Abs(b)), float.Epsilon * 8f);
     }

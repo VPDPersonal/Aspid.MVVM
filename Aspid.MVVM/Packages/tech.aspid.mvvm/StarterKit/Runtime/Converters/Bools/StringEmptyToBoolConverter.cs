@@ -14,11 +14,24 @@ namespace Aspid.MVVM.StarterKit
     /// Converts a string to a boolean based on whether it is absent, with optional inversion.
     /// </summary>
     /// <remarks>
+    /// Left unconfigured this answers "is it empty?", returning <see langword="true"/> for a
+    /// <see langword="null"/> or empty string — the opposite of what a bool is usually wired to.
+    /// <c>SetActive</c>, <c>interactable</c> and <c>isOn</c> all read <see langword="true"/> as
+    /// present or enabled, so a label bound straight through would appear only while it has nothing
+    /// to say; those want <c>isInvert: true</c>. <see cref="StringToBoolCasterBinder"/> builds this
+    /// converter as its default and passes its own flag through, so it inherits the same orientation.
+    /// <para>
+    /// The default stays as it is because the flag is serialized: scenes already holding an
+    /// unconfigured converter hold <see langword="false"/>, and changing what <see langword="false"/>
+    /// means would invert every one of them.
+    /// </para>
+    /// <para>
     /// <see cref="StringEmptiness.NullOrWhiteSpace"/> is what "did the user type anything?" usually
     /// means, since a string of spaces is not empty but reads as one.
+    /// </para>
     /// </remarks>
     [Serializable]
-    [TypeSelectorDisplay(Group = "Aspid/Bool", Name = "String Empty To Bool", Tooltip = "Converts string values to boolean based on empty check, with optional inversion")]
+    [TypeSelectorDisplay(Group = "Aspid/Bool", Name = "String Empty To Bool", Tooltip = "Converts a string to a boolean based on whether it is absent, with optional inversion")]
     public class StringEmptyToBoolConverter : IConverterStringToBool
     {
         [Tooltip("What counts as an absent string.")]

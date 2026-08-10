@@ -246,6 +246,23 @@ This changes runtime output where a two-way binding had a converter attached. If
 - **A `FormatException` in a converter no longer stops unrelated binders.** If your scene had a broken format string, binders behind it in the dispatch order were silently not updating; they will now update.
 - **The `Vector3CombineConverter` family returns the input unchanged** instead of throwing when its scene reference is missing, and reports it once.
 
+### 5.5 `GenericToString.ToStringValue` is gone
+
+`protected virtual string ToStringValue(TFrom)` became a private detail when formatting moved to the
+`Format` hook. A subclass that overrode it no longer compiles:
+
+```csharp
+// before
+protected override string ToStringValue(float value) => value.ToString("F2");
+
+// after — Format receives the typed value and runs for every non-blank format
+protected override string? Format(float value) => value.ToString("F2");
+```
+
+The two hooks are not called on the same schedule. `ToStringValue` ran only when the format was
+blank; `Format` runs whenever it is **not** blank, and a blank one falls back to `ToString()`. If the
+override existed to change the no-format rendering, it now belongs in the subclass's own `Convert`.
+
 ---
 
 ## Upgrade checklist
@@ -266,3 +283,4 @@ This changes runtime output where a two-way binding had a converter attached. If
 - [ ] Rename `Values` → `Mode` and `Comparisons.Inequality` → `NotEqual` in your own code (see § 5.1)
 - [ ] Move `[SerializeReference]` converter fields and code off the `[Obsolete]` `IConverterXToY` aliases onto `IConverter<TFrom, TTo>` — you have one release, and the failure after that is silent (see § 5.2)
 - [ ] Review every two-way binding that has a converter: the reverse direction now converts (see § 5.3)
+- [ ] Move any `ToStringValue` override to `Format` (see § 5.5)

@@ -84,45 +84,91 @@ namespace Aspid.MVVM.StarterKit
         };
 
         /// <summary>
-        /// Specifies how to rearrange vector components.
+        /// Specifies how to rearrange vector components. The letters name the source components in
+        /// the order they are written into the result, so a repeated letter is a component copied
+        /// and a missing one is a component dropped.
         /// </summary>
         public enum Mode
         {
+            /// <summary>The vector unchanged — <c>(x, y, z)</c>, the mode a new converter starts in.</summary>
             XYZ,
+
+            /// <summary><c>(x, z, y)</c> — Y and Z swapped.</summary>
             XZY,
 
+            /// <summary><c>(y, x, z)</c> — X and Y swapped.</summary>
             YXZ,
+
+            /// <summary><c>(y, z, x)</c> — the components cycled left, X ending up last.</summary>
             YZX,
-            
+
+            /// <summary><c>(z, x, y)</c> — the components cycled right, Z ending up first.</summary>
             ZXY,
+
+            /// <summary><c>(z, y, x)</c> — the order reversed, X and Z swapped.</summary>
             ZYX,
-            
+
+            /// <summary><c>(x, x, y)</c> — X duplicated, Z dropped.</summary>
             XXY,
+
+            /// <summary><c>(x, y, x)</c> — X duplicated, Z dropped.</summary>
             XYX,
+
+            /// <summary><c>(y, x, x)</c> — X duplicated, Z dropped.</summary>
             YXX,
-            
+
+            /// <summary><c>(x, x, z)</c> — X duplicated, Y dropped.</summary>
             XXZ,
+
+            /// <summary><c>(x, z, x)</c> — X duplicated, Y dropped.</summary>
             XZX,
+
+            /// <summary><c>(z, x, x)</c> — X duplicated, Y dropped.</summary>
             ZXX,
-            
+
+            /// <summary><c>(y, y, x)</c> — Y duplicated, Z dropped.</summary>
             YYX,
+
+            /// <summary><c>(y, x, y)</c> — Y duplicated, Z dropped.</summary>
             YXY,
+
+            /// <summary><c>(x, y, y)</c> — Y duplicated, Z dropped.</summary>
             XYY,
-            
+
+            /// <summary><c>(y, y, z)</c> — Y duplicated, X dropped.</summary>
             YYZ,
+
+            /// <summary><c>(y, z, y)</c> — Y duplicated, X dropped.</summary>
             YZY,
+
+            /// <summary><c>(z, y, y)</c> — Y duplicated, X dropped.</summary>
             ZYY,
-            
+
+            /// <summary><c>(z, z, x)</c> — Z duplicated, Y dropped.</summary>
             ZZX,
+
+            /// <summary><c>(z, x, z)</c> — Z duplicated, Y dropped.</summary>
             ZXZ,
+
+            /// <summary><c>(x, z, z)</c> — Z duplicated, Y dropped.</summary>
             XZZ,
-            
+
+            /// <summary><c>(z, z, y)</c> — Z duplicated, X dropped.</summary>
             ZZY,
+
+            /// <summary><c>(z, y, z)</c> — Z duplicated, X dropped.</summary>
             ZYZ,
+
+            /// <summary><c>(y, z, z)</c> — Z duplicated, X dropped.</summary>
             YZZ,
-            
+
+            /// <summary><c>(x, x, x)</c> — X broadcast to every axis, Y and Z dropped.</summary>
             XXX,
+
+            /// <summary><c>(y, y, y)</c> — Y broadcast to every axis, X and Z dropped.</summary>
             YYY,
+
+            /// <summary><c>(z, z, z)</c> — Z broadcast to every axis, X and Y dropped.</summary>
             ZZZ,
         }
     }

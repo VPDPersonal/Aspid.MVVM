@@ -176,8 +176,20 @@ namespace Aspid.MVVM.StarterKit
         /// </summary>
         public enum Mode
         {
+            /// <summary>
+            /// Takes X from the bound vector; Y stays at the reference vector's.
+            /// </summary>
             X,
+
+            /// <summary>
+            /// Takes Y from the bound vector; X stays at the reference vector's.
+            /// </summary>
             Y,
+
+            /// <summary>
+            /// Takes both components from the bound vector, leaving the reference vector with no
+            /// say — only the pre- and post-converters shape the result.
+            /// </summary>
             XY,
         }
     }

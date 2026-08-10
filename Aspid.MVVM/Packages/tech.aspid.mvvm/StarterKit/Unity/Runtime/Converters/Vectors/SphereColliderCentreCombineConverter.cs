@@ -7,8 +7,13 @@ using UnityEngine;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// Combines a vector with a <see cref="SphereCollider"/>'s center point.
+    /// <see cref="Vector3CombineConverter"/> that reads the reference vector from a
+    /// <see cref="SphereCollider"/>'s centre.
     /// </summary>
+    /// <remarks>
+    /// The centre is the only vector a sphere collider exposes — its radius is a single float and no
+    /// combine converter reaches it, so binding the size of one is a job for a float binder.
+    /// </remarks>
     [Serializable]
     [TypeSelectorDisplay(Group = "Aspid/Vector", Name = "Sphere Collider Centre Combine", Tooltip = "Combines a vector with a 's center point")]
     public sealed class SphereColliderCentreCombineConverter : Vector3CombineConverter
@@ -17,8 +22,9 @@ namespace Aspid.MVVM.StarterKit
         [SerializeField] private SphereCollider _collider;
 
         /// <summary>
-        /// Gets the reference vector to combine with, which is the collider's center point.
-        /// When the collider is not assigned, logs an error and returns <see cref="Vector3.zero"/>.
+        /// Gets the reference vector to combine with, which is the collider's
+        /// <see cref="SphereCollider.center"/>. When the collider is not assigned, logs an error
+        /// and returns <see cref="Vector3.zero"/>.
         /// </summary>
         protected override Vector3 VectorTo
         {

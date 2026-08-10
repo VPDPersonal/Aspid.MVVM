@@ -217,6 +217,25 @@ public interface ITwoWayConverter<TFrom, TTo> : IConverter<TFrom, TTo>
 
 ---
 
+## Общие перечисления
+
+Три енума настраивают конвертеры из разных групп, поэтому их стоит знать до каталога.
+
+| Енум | Где встречается | Что решает |
+|------|-----------------|-----------|
+| `Comparisons` | `NumberToBoolConverter`, `DateTimeToBoolConverter` | `Equal`, `NotEqual`, `LessThan`, `GreaterThan`, `LessThanOrEqual`, `GreaterThanOrEqual`. Читается как `привязанное <оп> настроенное`. `Equal`/`NotEqual` у чисел сравнивают приблизительно, с допуском по величине; порядковые — точно |
+| `CultureInfoMode` | все строковые и разбирающие конвертеры | Какой культурой форматировать и разбирать. Текст, который видит игрок, — `CurrentCulture`; текст, который уезжает в сейв, в сеть или в `PlayerPrefs`, — `InvariantCulture` |
+| `ConverterFailureMode` | parse-семейство, `ParseHtmlStringConverter`, `StringToSpriteConverter` | Что делать с данными, которые не преобразуются: `ReturnFallback`, `ReturnInput`, `Throw` |
+
+> Разделитель дробной части — запятая в половине Европы. Число, записанное одной культурой и
+> разобранное другой, теряет дробную часть, а не падает: `1,5` под `InvariantCulture` читается как
+> `15`. Для всего, что ходит туда-обратно, ставьте `InvariantCulture`.
+
+`CultureInfoMode` резолвится в `CultureInfo` расширением `ToCultureInfo()` из
+`ToCultureStringExtensions` — там же лежат перегрузки `ToCultureString(число, режим)`.
+
+---
+
 ## Композиция
 
 Группа `Aspid/Composition` — не преобразования, а обёртки над другими конвертерами.
@@ -327,6 +346,11 @@ public sealed class ClampFloatConverter : IConverter<float, float>
 - **`[Tooltip]` на каждом сериализуемом поле** — в Inspector XML-документация не видна, tooltip
   единственное объяснение, которое дойдёт до того, кто настраивает значение.
 - **`Group` и `Tooltip` в `[TypeSelectorDisplay]`** — иначе конвертер попадёт в общий плоский список.
+
+> `TypeSelectorDisplayAttribute` помечен `[Conditional("UNITY_EDITOR")]` и `Inherited = false`. Это
+> значит две вещи. Все аннотации исчезают из метаданных, если собрать сборку вне Unity — DLL,
+> собранная обычным `dotnet build`, придёт в пикер без групп, имён и скрытий. И атрибут не
+> наследуется: подкласс не получает разметку базового класса, её нужно повторить.
 - **Никаких аллокаций без кэша** — см. `CachedConverter` выше.
 
 ---

@@ -1,5 +1,6 @@
 using Aspid.FastTools.Types;
 using System;
+using System.Text;
 using UnityEngine;
 using System.Globalization;
 
@@ -28,6 +29,8 @@ namespace Aspid.MVVM.StarterKit
 
         [Tooltip("The culture whose casing rules apply. Turkish and Azeri differ from the rest.")]
         [SerializeField] private CultureInfoMode _culture = CultureInfoMode.CurrentCulture;
+
+        [NonSerialized] private StringBuilder? _builder;
 
         /// <remarks>Default: upper-casing.</remarks>
         public TextCaseConverter() { }
@@ -58,8 +61,57 @@ namespace Aspid.MVVM.StarterKit
                 TextCase.Lower => value!.ToLower(culture),
                 TextCase.FirstUpper => char.ToUpper(value![0], culture) + value[1..],
                 TextCase.Title => culture.TextInfo.ToTitleCase(value!.ToLower(culture)),
+                TextCase.Sentence => Sentence(value!, culture),
+                TextCase.Invert => Invert(value!, culture),
                 _ => throw new ArgumentOutOfRangeException(nameof(_case), _case, null)
             };
+        }
+
+        // Lowering the whole string first and then raising the sentence openings would read better,
+        // but it means a second string nobody sees. One pass over the characters produces the same
+        // text and only the one the caller gets.
+        private string Sentence(string value, CultureInfo culture)
+        {
+            var builder = Builder();
+            var opening = true;
+
+            foreach (var character in value)
+            {
+                if (opening && char.IsLetter(character))
+                {
+                    builder.Append(char.ToUpper(character, culture));
+                    opening = false;
+                    continue;
+                }
+
+                builder.Append(char.ToLower(character, culture));
+
+                // Anything between the stop and the next letter — a quote, a bracket, the space —
+                // stays where it is and keeps the sentence open.
+                if (character is '.' or '!' or '?') opening = true;
+            }
+
+            return builder.ToString();
+        }
+
+        private string Invert(string value, CultureInfo culture)
+        {
+            var builder = Builder();
+
+            foreach (var character in value)
+                builder.Append(char.IsUpper(character)
+                    ? char.ToLower(character, culture)
+                    : char.ToUpper(character, culture));
+
+            return builder.ToString();
+        }
+
+        private StringBuilder Builder()
+        {
+            _builder ??= new StringBuilder();
+            _builder.Clear();
+
+            return _builder;
         }
     }
 }

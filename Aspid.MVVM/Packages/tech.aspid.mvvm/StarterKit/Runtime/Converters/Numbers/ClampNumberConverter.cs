@@ -17,16 +17,27 @@ namespace Aspid.MVVM.StarterKit
     /// A View property with a legal range — <c>Image.fillAmount</c>, an alpha, a slider — will take
     /// whatever the ViewModel sends and render it wrong rather than complain. Clamping at the
     /// boundary keeps a bad number from becoming a bad frame.
+    /// <para>
+    /// The bounds are authored as <see cref="double"/> so that the same converter can guard an
+    /// <see cref="int"/> or <see cref="long"/> field without the bound itself being rounded on the way
+    /// in — a <see cref="float"/> cannot even name every <see cref="int"/>, let alone every
+    /// <see cref="long"/>. The int and long overloads return the incoming value untouched when it is
+    /// already inside the range, so no value survives a round trip through a floating-point number.
+    /// </para>
     /// </remarks>
     [Serializable]
     [TypeSelectorDisplay(Group = "Aspid/Number", Name = "Clamp Number", Tooltip = "Keeps a number inside a range")]
-    public sealed class ClampNumberConverter : IConverterFloat
+    public sealed class ClampNumberConverter :
+        IConverterFloat,
+        IConverter<int, int>,
+        IConverter<long, long>,
+        IConverter<double, double>
     {
         [Tooltip("The lowest value allowed through.")]
-        [SerializeField] private float _min;
+        [SerializeField] private double _min;
 
         [Tooltip("The highest value allowed through.")]
-        [SerializeField] private float _max = 1f;
+        [SerializeField] private double _max = 1d;
 
         [Tooltip("Which bound to apply.")]
         [SerializeField] private ClampMode _mode = ClampMode.Both;
@@ -37,7 +48,7 @@ namespace Aspid.MVVM.StarterKit
         /// <param name="min">The lowest value allowed through.</param>
         /// <param name="max">The highest value allowed through.</param>
         /// <param name="mode">Which bound to apply.</param>
-        public ClampNumberConverter(float min, float max, ClampMode mode = ClampMode.Both)
+        public ClampNumberConverter(double min, double max, ClampMode mode = ClampMode.Both)
         {
             _min = min;
             _max = max;
@@ -48,13 +59,54 @@ namespace Aspid.MVVM.StarterKit
         /// Clamps the specified value.
         /// </summary>
         /// <param name="value">The value to clamp.</param>
-        /// <returns>The value, held inside the configured bounds.</returns>
+        /// <returns>The value, held inside the configured bounds. A NaN passes through unchanged.</returns>
         /// <exception cref="ArgumentOutOfRangeException">Thrown when the mode is not a declared value.</exception>
-        public float Convert(float value) => _mode switch
+        public double Convert(double value)
         {
-            ClampMode.Both => Mathf.Clamp(value, _min, _max),
-            ClampMode.Min => Mathf.Max(value, _min),
-            ClampMode.Max => Mathf.Min(value, _max),
+            var (low, high) = Bounds();
+
+            // Written as two comparisons rather than Math.Clamp so that a NaN — which fails every
+            // comparison — passes through instead of collapsing onto a bound.
+            if (low && value < _min) return _min;
+            if (high && value > _max) return _max;
+
+            return value;
+        }
+
+        /// <inheritdoc cref="Convert(double)"/>
+        public float Convert(float value) => (float)Convert((double)value);
+
+        /// <inheritdoc cref="Convert(double)"/>
+        public int Convert(int value)
+        {
+            var (low, high) = Bounds();
+
+            // The bounds are authored as doubles, so a fractional one has to round INTO the range:
+            // truncating 0.5 toward zero would return 0 for a minimum of 0.5 and leave the value
+            // still below the bound the converter promised to hold it above.
+            if (low && value < _min) return NumericSaturation.ToInt(Math.Ceiling(_min));
+            if (high && value > _max) return NumericSaturation.ToInt(Math.Floor(_max));
+
+            return value;
+        }
+
+        /// <inheritdoc cref="Convert(double)"/>
+        public long Convert(long value)
+        {
+            var (low, high) = Bounds();
+
+            if (low && value < _min) return NumericSaturation.ToLong(Math.Ceiling(_min));
+            if (high && value > _max) return NumericSaturation.ToLong(Math.Floor(_max));
+
+            return value;
+        }
+
+        /// <exception cref="ArgumentOutOfRangeException">Thrown when the mode is not a declared value.</exception>
+        private (bool Low, bool High) Bounds() => _mode switch
+        {
+            ClampMode.Both => (true, true),
+            ClampMode.Min => (true, false),
+            ClampMode.Max => (false, true),
             _ => throw new ArgumentOutOfRangeException(nameof(_mode), _mode, null)
         };
     }

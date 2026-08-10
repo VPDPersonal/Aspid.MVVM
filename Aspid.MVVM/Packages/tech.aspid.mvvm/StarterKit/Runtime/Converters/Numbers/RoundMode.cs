@@ -7,7 +7,8 @@ namespace Aspid.MVVM.StarterKit
     public enum RoundMode
     {
         /// <summary>
-        /// To the nearest, halves going to the even neighbour.
+        /// To the nearest. Which way an exact half goes is the converter's midpoint rule, not part of
+        /// this choice.
         /// </summary>
         Round,
 

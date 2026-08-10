@@ -12,7 +12,14 @@ namespace Aspid.MVVM.StarterKit
     /// <remarks>
     /// Labelling a state without this means either a switch in the ViewModel or a member name leaking
     /// into the UI. <see cref="EnumNameSource.InspectorName"/> reads the attribute Unity already uses
-    /// for the same purpose in the Inspector.
+    /// for the same purpose in the Inspector, and <see cref="EnumNameSource.Description"/> the one a
+    /// domain assembly can carry without a reference to UnityEngine.
+    /// <para>
+    /// The text is metadata, not formatting, so there is no culture setting here: a member name, an
+    /// <c>InspectorName</c> and a <c>Description</c> are all authored once in the source, and
+    /// <c>Enum.ToString</c> ignores any format provider it is handed. Text that has to follow the
+    /// player's locale belongs in a string table — <c>LocalizedEnumConverter</c> reads one.
+    /// </para>
     /// </remarks>
     [Serializable]
     [TypeSelectorDisplay(Group = "Aspid/Enum", Name = "Enum To String", Tooltip = "Converts an enum value to text")]
@@ -22,7 +29,7 @@ namespace Aspid.MVVM.StarterKit
         [Tooltip("Where the text comes from.")]
         [SerializeField] private EnumNameSource _source;
 
-        [Tooltip("Returned for a value that is not a declared member.")]
+        [Tooltip("Returned for a value that is not a declared member. The Raw source never needs it — it writes such a value as its number.")]
         [SerializeField] private string _fallback = string.Empty;
 
         public EnumToStringConverter() { }
@@ -39,19 +46,19 @@ namespace Aspid.MVVM.StarterKit
         /// Converts the specified enum value to text.
         /// </summary>
         /// <param name="value">The enum value to convert.</param>
-        /// <returns>The member's text, or the fallback when it is not a declared member.</returns>
+        /// <returns>
+        /// The member's text, or the fallback when it is not a declared member — except under
+        /// <see cref="EnumNameSource.Raw"/>, which writes such a value as its number.
+        /// </returns>
+        /// <exception cref="ArgumentOutOfRangeException">Thrown when the source is not a declared value.</exception>
         public string Convert(TEnum value)
         {
-            var name = Enum.GetName(typeof(TEnum), value);
-            if (name is null) return _fallback;
-            if (_source is EnumNameSource.Name) return name;
+            // ToString boxes the value to reach Enum's override. It is also the only source that can
+            // name a flag combination or an undeclared number, neither of which the metadata holds.
+            if (_source is EnumNameSource.Raw) return value.ToString();
 
-            var field = typeof(TEnum).GetField(name);
-            var attributes = field?.GetCustomAttributes(typeof(InspectorNameAttribute), inherit: false);
-
-            return attributes is { Length: > 0 } && attributes[0] is InspectorNameAttribute inspector
-                ? inspector.displayName
-                : name;
+            var index = EnumMembers<TEnum>.IndexOf(value);
+            return index < 0 ? _fallback : EnumMembers<TEnum>.Label(index, _source);
         }
     }
 }

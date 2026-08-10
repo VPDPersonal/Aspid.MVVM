@@ -13,6 +13,12 @@ namespace Aspid.MVVM.StarterKit
     /// The reference-type counterpart of a placeholder string: a default sprite while an avatar
     /// loads, a neutral material for an unequipped slot. Without it the empty state has to be a
     /// second property on the ViewModel.
+    /// <para>
+    /// A destroyed <see cref="UnityEngine.Object"/> counts as missing here, which plain <c>??</c>
+    /// would not catch: Unity's overloaded <c>==</c> reports a destroyed object as null while its
+    /// managed reference is still alive, and a sprite destroyed mid-scene would otherwise reach the
+    /// binder instead of the fallback.
+    /// </para>
     /// </remarks>
     [Serializable]
     [TypeSelectorDisplay(Group = "Aspid/Object", Name = "Null Coalesce", Tooltip = "Substitutes an authored value for a null one")]
@@ -35,6 +41,13 @@ namespace Aspid.MVVM.StarterKit
         /// </summary>
         /// <param name="value">The value to check.</param>
         /// <returns>The value, or the fallback.</returns>
-        public T Convert(T? value) => value ?? _fallback;
+        public T Convert(T? value)
+        {
+            // Deliberately Unity's overloaded ==: `is null` and `??` both report false for a
+            // destroyed object, whose managed reference outlives the native one.
+            if (value is UnityEngine.Object unityObject) return unityObject == null ? _fallback : value;
+
+            return value ?? _fallback;
+        }
     }
 }

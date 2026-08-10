@@ -1,5 +1,6 @@
 using Aspid.FastTools.Types;
 using System;
+using System.Text;
 using UnityEngine;
 
 // ReSharper disable once CheckNamespace

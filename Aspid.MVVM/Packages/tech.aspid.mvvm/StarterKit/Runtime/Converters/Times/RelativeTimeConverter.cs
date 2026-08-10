@@ -1,5 +1,6 @@
 using Aspid.FastTools.Types;
 using System;
+using System.Text;
 using UnityEngine;
 using System.Globalization;
 
@@ -12,6 +13,12 @@ namespace Aspid.MVVM.StarterKit
     /// <remarks>
     /// Mail, inboxes, friend lists. The unit names are authored so the text can be translated without
     /// touching code; the default set is English.
+    /// <para>
+    /// One unit is the usual answer and the one the two formats were written for — <c>{0}</c> the
+    /// amount, <c>{1}</c> its name. Asking for more than one has nothing single to put in
+    /// <c>{0}</c>, so the whole quantity goes there — "1h 5m" — and <c>{1}</c> arrives empty. The
+    /// default formats read correctly either way, which is why they run the two together.
+    /// </para>
     /// </remarks>
     [Serializable]
     [TypeSelectorDisplay(Group = "Aspid/Time", Name = "Relative Time", Tooltip = "Writes how long ago — or how far ahead — a moment is")]
@@ -32,8 +39,37 @@ namespace Aspid.MVVM.StarterKit
         [Tooltip("Compare against UTC rather than local time.")]
         [SerializeField] private bool _useUtcNow;
 
+        [Tooltip("How many units to write, largest first: 1 gives \"1h\", 2 gives \"1h 5m\". Units "
+            + "that are zero are passed over. Past 1 the whole quantity arrives as {0} and {1} is "
+            + "empty.")]
+        [SerializeField] private int _maxUnits = 1;
+
+        [Tooltip("Placed between the units when there is more than one.")]
+        [SerializeField] private string _unitSeparator = " ";
+
+        [Tooltip("The culture the amounts are written with.")]
+        [SerializeField] private CultureInfoMode _culture = CultureInfoMode.InvariantCulture;
+
+        [NonSerialized] private StringBuilder? _builder;
+
         /// <remarks>Default: with English defaults.</remarks>
         public RelativeTimeConverter() { }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="RelativeTimeConverter"/> class.
+        /// </summary>
+        /// <param name="maxUnits">How many units to write, largest first.</param>
+        /// <param name="culture">The culture the amounts are written with.</param>
+        /// <param name="useUtcNow">Whether to compare against UTC rather than local time.</param>
+        public RelativeTimeConverter(
+            int maxUnits,
+            CultureInfoMode culture = CultureInfoMode.InvariantCulture,
+            bool useUtcNow = false)
+        {
+            _maxUnits = maxUnits;
+            _culture = culture;
+            _useUtcNow = useUtcNow;
+        }
 
         /// <summary>
         /// Writes how far the specified moment is from now.
@@ -48,17 +84,58 @@ namespace Aspid.MVVM.StarterKit
 
             if (magnitude.TotalSeconds < 1d) return _nowText;
 
-            var (amount, unit) = magnitude.TotalSeconds switch
-            {
-                < 60d => ((long)magnitude.TotalSeconds, Unit(0)),
-                < 3600d => ((long)magnitude.TotalMinutes, Unit(1)),
-                < 86400d => ((long)magnitude.TotalHours, Unit(2)),
-                _ => ((long)magnitude.TotalDays, Unit(3)),
-            };
+            var format = delta.Ticks < 0L ? _pastFormat : _futureFormat;
+            var culture = _culture.ToCultureInfo();
 
-            var format = delta.Ticks < 0 ? _pastFormat : _futureFormat;
-            return string.Format(CultureInfo.InvariantCulture, format, amount, unit);
+            return _maxUnits > 1
+                ? Several(magnitude, Math.Min(_maxUnits, 4), format, culture)
+                : Single(magnitude, format, culture);
         }
+
+        private string Single(TimeSpan magnitude, string format, CultureInfo culture)
+        {
+            for (var index = 3; index > 0; index--)
+            {
+                var amount = Amount(magnitude, index);
+                if (amount > 0L) return string.Format(culture, format, amount, Unit(index));
+            }
+
+            return string.Format(culture, format, (long)magnitude.TotalSeconds, Unit(0));
+        }
+
+        private string Several(TimeSpan magnitude, int maxUnits, string format, CultureInfo culture)
+        {
+            _builder ??= new StringBuilder();
+            _builder.Clear();
+
+            var written = 0;
+
+            for (var index = 3; index >= 0 && written < maxUnits; index--)
+            {
+                var amount = Amount(magnitude, index);
+                if (amount == 0L) continue;
+
+                if (written > 0) _builder.Append(_unitSeparator);
+                _builder.Append(amount.ToString(culture)).Append(Unit(index));
+                written++;
+            }
+
+            // Under a second is already handled, so nothing written here means every component
+            // rounded away — a fraction of a second either side of a whole one.
+            if (written == 0) return _nowText;
+
+            return string.Format(culture, format, _builder.ToString(), string.Empty);
+        }
+
+        // Days accumulate — a month is thirty-odd of them — while the smaller units are the
+        // components of what is left, so that two of them read as "1h 5m" rather than "1h 65m".
+        private static long Amount(TimeSpan magnitude, int index) => index switch
+        {
+            3 => (long)magnitude.TotalDays,
+            2 => magnitude.Hours,
+            1 => magnitude.Minutes,
+            _ => magnitude.Seconds,
+        };
 
         private string Unit(int index) =>
             _unitNames is { Length: > 0 } && index < _unitNames.Length ? _unitNames[index] : string.Empty;

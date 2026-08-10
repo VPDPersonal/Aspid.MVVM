@@ -13,6 +13,18 @@ namespace Aspid.MVVM.StarterKit
     /// <remarks>
     /// The generalisation of <see cref="NumberToBoolConverter"/> beyond numbers: "is this the
     /// selected item?", "is this the equipped weapon?". Comparison uses the type's own equality.
+    /// <para>
+    /// Reference equality is the option for a type whose <c>Equals</c> answers a different question
+    /// than the binding does — a record or a value object where two loadouts with the same numbers
+    /// are equal, while the View wants to know whether this is the very instance the player picked.
+    /// </para>
+    /// <para>
+    /// One case to know about with a <c>UnityEngine.Object</c>: an operand left empty.
+    /// <see cref="EqualityComparer{T}"/> settles a null operand with a reference check before Unity's
+    /// own equality is ever consulted, so a destroyed object — which Unity's <c>==</c> reports as
+    /// null — does not match it here. Ask that question with <c>UnityObjectNullToBoolConverter</c>,
+    /// which goes through the operator.
+    /// </para>
     /// </remarks>
     [Serializable]
     [TypeSelectorDisplay(Group = "Aspid/Object", Name = "Equality To Bool", Tooltip = "Tests a bound value against an authored one")]
@@ -24,24 +36,40 @@ namespace Aspid.MVVM.StarterKit
         [Tooltip("Invert the result.")]
         [SerializeField] private bool _isInvert;
 
+        [Tooltip("Ask whether it is the same instance instead of whether it is equal. Ignored for a value type, which has no instances to tell apart.")]
+        [SerializeField] private bool _referenceEquality;
+
+        // Boxing a struct hands ReferenceEquals two fresh objects, so reference equality over a value
+        // type would answer false for every pair — including a value and itself. The type's own
+        // equality is the only reading of the option that is ever useful there.
+        private static readonly bool IsReferenceType = !typeof(T).IsValueType;
+
         public EqualityToBoolConverter() { }
 
         /// <param name="operand">The value the bound one is compared against.</param>
         /// <param name="isInvert">If <see langword="true"/>, inverts the result.</param>
-        public EqualityToBoolConverter(T operand, bool isInvert = false)
+        /// <param name="referenceEquality">
+        /// If <see langword="true"/>, compares by reference rather than by the type's own equality.
+        /// Has no effect when <typeparamref name="T"/> is a value type.
+        /// </param>
+        public EqualityToBoolConverter(T operand, bool isInvert = false, bool referenceEquality = false)
         {
             _operand = operand;
             _isInvert = isInvert;
+            _referenceEquality = referenceEquality;
         }
 
         /// <summary>
         /// Compares the specified value with the authored one.
         /// </summary>
         /// <param name="value">The value to compare.</param>
-        /// <returns>Whether the two are equal, inverted when configured.</returns>
+        /// <returns>Whether the two are equal — the same instance under reference equality — inverted when configured.</returns>
         public bool Convert(T value)
         {
-            var equal = EqualityComparer<T>.Default.Equals(value, _operand);
+            var equal = _referenceEquality && IsReferenceType
+                ? ReferenceEquals(value, _operand)
+                : EqualityComparer<T>.Default.Equals(value, _operand);
+
             return _isInvert ? !equal : equal;
         }
     }

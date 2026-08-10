@@ -92,7 +92,7 @@ public interface ITwoWayConverter<TFrom, TTo> : IConverter<TFrom, TTo>
 
 ## Каталог
 
-В пакете 147 конвертеров. В Inspector они разложены по группам — группа видна в выпадающем списке
+В пакете 163 конвертера. В Inspector они разложены по группам — группа видна в выпадающем списке
 поля `Converter`.
 
 ### Aspid/Bool (8)
@@ -108,27 +108,34 @@ public interface ITwoWayConverter<TFrom, TTo> : IConverter<TFrom, TTo>
 `NullOrEmpty` (по умолчанию), `Null` — пустая строка считается заполненной, `NullOrWhiteSpace` —
 строка из пробелов считается пустой. Последнее и означает «пользователь что-нибудь ввёл?».
 
-### Aspid/Number (15)
+### Aspid/Number (21)
 
 `AnimationCurveConverter`, `ArithmeticNumberConverter`, `AudioDecibelToLinearConverter`,
 `AudioLinearToDecibelConverter`, `ClampNumberConverter`, `CountdownProgressConverter`,
-`InverseLerpConverter`, `LerpNumberConverter`, `NormalizedToPercentConverter`,
-`RemapNumberConverter`, `RoundNumberConverter`, `SmoothStepConverter`, `SnapToStepConverter`,
-`UnaryMathConverter`, `WrapNumberConverter`
+`EasingConverter`, `InverseLerpConverter`, `LerpNumberConverter`, `ModuloNumberConverter`,
+`NormalizedToPercentConverter`, `NumericCastConverter`, `PercentToNormalizedConverter`,
+`PowerNumberConverter`, `RemapNumberConverter`, `RoundNumberConverter`, `SmoothStepConverter`,
+`SnapToStepConverter`, `SumConstantThenScaleConverter`, `UnaryMathConverter`, `WrapNumberConverter`
 
-### Aspid/String (36)
+> `NumericCastConverter` — единственный способ сузить число управляемо. Без него `long.MaxValue`,
+> попавший в int-биндер, молча уходит в отрицательное; `OverflowMode.Saturate` прижимает к границе,
+> `Checked` бросает.
+
+### Aspid/String (41)
 
 Форматирование чисел: `AbbreviatedNumberConverter` (`1234` → `1.2K`), `ByteSizeConverter`,
-`CurrencyConverter`, `NumberFormatConverter`, `OrdinalConverter` (`3` → `3rd`),
-`PaddedNumberConverter`, `PercentStringConverter`, `RatioToStringConverter`, `RomanNumeralConverter`,
-`SignedNumberStringConverter`.
+`CurrencyConverter`, `DecimalFormatConverter`, `NumberFormatConverter`, `OrdinalConverter`
+(`3` → `3rd`), `PaddedNumberConverter`, `PercentStringConverter`, `RatioToStringConverter`,
+`RomanNumeralConverter`, `SignedNumberStringConverter`, `ThousandsSeparatorConverter`.
 
 Манипуляции со строкой: `ConcatStringConverter`, `DefaultStringConverter`, `MaskStringConverter`,
 `PadStringConverter`, `PluralizeConverter`, `RepeatStringConverter`, `ReplaceStringConverter`,
-`SubstringConverter`, `TextCaseConverter`, `TrimStringConverter`, `TruncateStringConverter`.
+`ReverseStringConverter`, `SplitJoinStringConverter`, `SubstringConverter`, `TextCaseConverter`,
+`TrimStringConverter`, `TruncateStringConverter`.
 
 Rich text (TextMeshPro): `RichTextColorConverter`, `RichTextNoParseConverter`,
-`RichTextSizeConverter`, `RichTextStyleConverter`, `ThresholdRichTextColorConverter`.
+`RichTextSizeConverter`, `RichTextStyleConverter`, `SanitizeRichTextConverter`,
+`ThresholdRichTextColorConverter`.
 
 > `RichTextNoParseConverter` — для любого текста, который ввёл игрок. TMP исполняет разметку в любой
 > строке, которую получает: ник `<size=400%>` растянет каждый ярлык, где он покажется, на экране
@@ -140,11 +147,12 @@ Rich text (TextMeshPro): `RichTextColorConverter`, `RichTextNoParseConverter`,
 Общее: `GenericToString`, `ObjectToStringConverter`, `StringFormatConverter`,
 `TimeSpanToStringConverter`.
 
-### Aspid/Time (8)
+### Aspid/Time (12)
 
-`DateTimeFormatConverter`, `DateTimeToBoolConverter`, `RelativeTimeConverter`,
-`SecondsToTimeSpanConverter`, `SecondsToTimeStringConverter`, `TimeSpanFormatConverter`,
-`TimeSpanToNumberConverter`, `UnixTimestampToDateTimeConverter`
+`DateTimeFormatConverter`, `DateTimeOffsetFormatConverter`, `DateTimeToBoolConverter`,
+`DateTimeToUnixTimestampConverter`, `RelativeTimeConverter`, `SecondsToTimeSpanConverter`,
+`SecondsToTimeStringConverter`, `TimeSpanArithmeticConverter`, `TimeSpanFormatConverter`,
+`TimeSpanToNumberConverter`, `TimeUntilConverter`, `UnixTimestampToDateTimeConverter`
 
 ### Aspid/Colour (14)
 
@@ -183,7 +191,7 @@ Rich text (TextMeshPro): `RichTextColorConverter`, `RichTextNoParseConverter`,
 
 | Группа | Конвертеры |
 |--------|-----------|
-| `Aspid/Enum` (5) | `EnumToBoolConverter`, `EnumToDropdownOptionDataConverter`, `EnumToIntConverter`, `EnumToStringConverter`, `EnumToValueConverter` |
+| `Aspid/Enum` (6) | `EnumToBoolConverter`, `EnumToDropdownOptionDataConverter`, `EnumToIntConverter`, `EnumToStringConverter`, `EnumToValueConverter`, `IntToEnumConverter` |
 | `Aspid/Object` (3) | `EqualityToBoolConverter`, `IndexToValueConverter`, `NullCoalesceConverter` |
 | `Aspid/Texture` (4) | `NormalizedToSpriteConverter`, `ObjectNameConverter`, `SpriteToTextureConverter`, `Texture2DToSpriteConverter` |
 | `Aspid/Layout` (3) | `IntToRectOffsetConverter`, `RectOffsetScaleConverter`, `Vector4ToRectOffsetConverter` |

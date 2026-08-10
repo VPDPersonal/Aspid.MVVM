@@ -62,8 +62,10 @@ namespace Aspid.MVVM.StarterKit
             return _isInvert ? !matched : matched;
         }
 
-        // A type parameter carries no enum operators, so the numeric form is what lets one switch
-        // cover equality and flags alike. It boxes the operand, exactly as Enum.HasFlag would.
+        // Reading the bits directly rather than calling Enum.HasFlag skips Enum's type check on
+        // every push. It is not allocation-free — Convert.ToInt64 has no generic overload, so it
+        // binds to the object one and boxes, the same as HasFlag. EnumMembers avoids that by
+        // converting once per member at type load; this path has no cache to hang it on.
         private static long EnumNumber(TEnum value) => System.Convert.ToInt64(value);
     }
 }

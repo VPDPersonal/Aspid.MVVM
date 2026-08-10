@@ -17,6 +17,17 @@ namespace Aspid.MVVM
         private bool _isCached;
 
         /// <summary>
+        /// Indicates whether binding is allowed: <see langword="false"/> when no target component can be found.
+        /// </summary>
+        /// <remarks>
+        /// Without this the binder bound successfully and then threw a <see cref="System.NullReferenceException"/>
+        /// on the first value, from inside a leaf class's property setter — a message naming neither the binder nor
+        /// the GameObject it sits on. The serializable binders have had the equivalent guard on
+        /// <c>TargetBinder</c> all along; this is the same check on the component side.
+        /// </remarks>
+        public override bool IsBind => IsAssigned(CachedComponent);
+
+        /// <summary>
         /// Gets the target component.
         /// Returns the serialized value if assigned; otherwise resolves it via <see cref="Component.GetComponent{T}"/> and caches the result.
         /// </summary>

@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **Binders for the flags that decide whether a component participates.** `Graphic.raycastTarget` — the usual way to let clicks pass through an overlay — and `MaskableGraphic.maskable` had no binder at all. `Renderer.enabled` had none either: a `Renderer` is a `Component` and not a `Behaviour`, so the behaviour binders cannot take one. Three families, each with the serializable binder, the `MonoBinder`, and the `Enum` and `EnumGroup` variants.
 - **`Scrollbar.value` binders.** The Scrollbar domain shipped only Command and OneWayToSource binders, so the one property a scrollbar exists for could not be bound at all — while `Slider` had the full matrix. Five new types mirror it: `ScrollbarValueBinder` and `ScrollbarValueMonoBinder` (both `TwoWay` and `OneWayToSource`, both accepting `int`, `long`, `float` and `double`), plus the `Switcher`, `Enum` and `EnumGroup` variants. A scrollbar has no configurable range — its value is always normalised to 0..1 — so the clamp is fixed rather than read from the component, and a clamped value is reported back to the ViewModel the same way the slider binders now do.
 
 ### Changed

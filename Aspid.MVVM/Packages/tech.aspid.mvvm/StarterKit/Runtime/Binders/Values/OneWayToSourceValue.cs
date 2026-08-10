@@ -35,13 +35,20 @@ namespace Aspid.MVVM.StarterKit
             : base(value, BindMode.OneWayToSource) { }
 
         /// <summary>
-        /// Initializes a new instance of <see cref="OneWayToSourceValue{T}"/> with a pre-set value and a converter.
+        /// Initializes a new instance of <see cref="OneWayToSourceValue{T}"/> with a pre-set value and a converter
+        /// that this mode never reaches.
         /// </summary>
-        /// <param name="value">The initial value passed through the converter before being stored.</param>
-        /// <param name="converter">
-        /// An optional converter applied to the incoming value before it is stored.
-        /// Pass <see langword="null"/> to store the value unchanged.
-        /// </param>
+        /// <remarks>
+        /// The inherited converter is applied on the ViewModel → View path, in <see cref="IBinder{T}.SetValue"/>.
+        /// <see cref="BindMode.OneWayToSource"/> has no such path, so a converter passed here is silently ignored
+        /// and values reach the ViewModel unchanged. The overload is kept so existing code still compiles, but it
+        /// warns rather than doing nothing quietly; convert in the ViewModel, or use <see cref="TwoWayValue{T}"/>
+        /// in a mode that actually feeds the View.
+        /// </remarks>
+        /// <param name="value">The initial value.</param>
+        /// <param name="converter">Ignored in this mode.</param>
+        [Obsolete("A converter is only applied on the ViewModel -> View path, which BindMode.OneWayToSource does " +
+                  "not have, so this one never runs. Convert in the ViewModel, or use TwoWayValue<T>.")]
         public OneWayToSourceValue(T? value, IConverter<T?, T?>? converter)
             : base(value, converter, BindMode.OneWayToSource) { }
     }

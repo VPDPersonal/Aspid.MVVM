@@ -34,14 +34,23 @@ namespace Aspid.MVVM.StarterKit
         }
         
         [NonSerialized] private T _value;
-        
+
         private IRelayCommand<T> _command;
+        private AnimatorParameterProbe _probe;
         private Action<Action<T>> _reverseAction;
         private Action<IRelayCommand<T>> _reverseCommand;
-        
-        [field: SerializeField] 
+
+        [field: SerializeField]
         [field: Tooltip("The name of the Animator parameter to set.")]
         protected string ParameterName { get; private set; }
+
+        /// <summary>
+        /// The Animator parameter type this binder sets, inferred from <typeparamref name="T"/>.
+        /// Returns <see langword="null"/> when <typeparamref name="T"/> is none of the types an
+        /// <see cref="Animator"/> parameter can hold, in which case the name is checked on its own.
+        /// </summary>
+        protected virtual AnimatorControllerParameterType? ParameterType =>
+            AnimatorParameterTypes.Of<T>();
 
         /// <summary>
         /// Re-applies the last received value and notifies the bound command that <c>CanExecute</c>
@@ -53,7 +62,7 @@ namespace Aspid.MVVM.StarterKit
         /// </remarks>
         protected virtual void OnEnable()
         {
-            SetParameter(_value);
+            SetParameterInternal(_value);
             _command?.NotifyCanExecuteChanged();
         }
 
@@ -103,7 +112,7 @@ namespace Aspid.MVVM.StarterKit
             }
             else
             {
-                _reverseAction?.Invoke(SetParameter);
+                _reverseAction?.Invoke(SetParameterInternal);
             }
         }
 
@@ -126,10 +135,16 @@ namespace Aspid.MVVM.StarterKit
 
         /// <summary>
         /// Determines whether the Animator parameter may be set.
-        /// Returns <see langword="true"/> when the <see cref="Animator"/>'s <see cref="UnityEngine.GameObject"/> is active in the hierarchy.
+        /// Returns <see langword="true"/> when the <see cref="Animator"/>'s <see cref="UnityEngine.GameObject"/> is
+        /// active in the hierarchy and <see cref="ParameterName"/> names a parameter its controller actually has.
         /// </summary>
+        /// <remarks>
+        /// The activity check comes first because it is the cheaper of the two and because a binder on an inactive
+        /// object has nothing to say about a parameter it is not going to set.
+        /// </remarks>
         /// <param name="value">The value that would be applied (not used in the default implementation).</param>
-        protected virtual bool CanExecute(T value) => 
-            CachedComponent.gameObject.activeInHierarchy;
+        protected virtual bool CanExecute(T value) =>
+            CachedComponent && CachedComponent.gameObject.activeInHierarchy &&
+            _probe.IsUsable(CachedComponent, ParameterName, ParameterType, this);
     }
 }

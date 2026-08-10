@@ -34,6 +34,7 @@ namespace Aspid.MVVM.StarterKit
         }
 
         private IRelayCommand? _command;
+        private AnimatorParameterProbe _probe;
         private Action<Action?>? _reverseAction;
         private Action<IRelayCommand?>? _reverseCommand;
 
@@ -97,9 +98,15 @@ namespace Aspid.MVVM.StarterKit
 
         /// <summary>
         /// Determines whether the trigger may be fired.
-        /// Returns <see langword="true"/> when the <see cref="Animator"/>'s <see cref="UnityEngine.GameObject"/> is active in the hierarchy.
+        /// Returns <see langword="true"/> when the <see cref="Animator"/>'s <see cref="UnityEngine.GameObject"/> is
+        /// active in the hierarchy and <see cref="TriggerName"/> names a trigger its controller actually has.
         /// </summary>
+        /// <remarks>
+        /// The activity check comes first because it is the cheaper of the two and because a binder on an inactive
+        /// object has nothing to say about a trigger it is not going to set.
+        /// </remarks>
         protected virtual bool CanExecute() =>
-            Target.gameObject.activeInHierarchy;
+            Target && Target.gameObject.activeInHierarchy &&
+            _probe.IsUsable(Target, TriggerName, AnimatorControllerParameterType.Trigger, this);
     }
 }

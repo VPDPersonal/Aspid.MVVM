@@ -15,23 +15,60 @@ namespace Aspid.MVVM.StarterKit
         [Tooltip("Lookup table mapping each enum value to its corresponding group element.")]
         [SerializeField] private EnumValues<TElement> _enumValues;
 
-        private bool _initialized;
+        private bool _reportedEmptyEntry;
 
         /// <summary>
         /// Iterates all enum entries, calling <see cref="SetSelectedValue"/> for the matching one and <see cref="SetDefaultValue"/> for all others.
         /// </summary>
+        /// <remarks>
+        /// An entry whose element is unassigned or destroyed is skipped rather than dereferenced, so the rest of the
+        /// group still reaches a consistent state; a half-edited table is an ordinary thing to run into.
+        /// Entries whose enum key failed to resolve never arrive here — <c>EnumValues</c> filters them out of its
+        /// own enumerator.
+        /// </remarks>
         /// <param name="value">The bound enum value received from the ViewModel.</param>
         [BinderLog]
         public void SetValue(Enum value)
         {
             foreach (var enumValue in _enumValues)
             {
-                if (enumValue.Key is null)
-                    throw new NullReferenceException("Key is null");
+                if (IsEmpty(enumValue.Value))
+                {
+                    ReportEmptyEntry(enumValue.Key);
+                    continue;
+                }
 
                 if (!_enumValues.Equals(value, enumValue.Key)) SetDefaultValue(enumValue.Value);
                 else SetSelectedValue(enumValue.Value);
             }
+        }
+
+        /// <summary>
+        /// Reports whether <paramref name="element"/> cannot be written to.
+        /// </summary>
+        /// <remarks>
+        /// <typeparamref name="TElement"/> is unconstrained, and for a <see cref="UnityEngine.Object"/> a plain
+        /// <c>is null</c> misses the destroyed-but-not-null case that Unity's own <c>==</c> reports.
+        /// </remarks>
+        private static bool IsEmpty(TElement element) =>
+            element is UnityEngine.Object unityObject ? !unityObject : element is null;
+
+        /// <summary>
+        /// Reports the first empty entry of this binder's table and stays quiet afterwards.
+        /// </summary>
+        /// <remarks>
+        /// An empty slot is a serialized misconfiguration: it cannot heal on its own, and the enum driving the group
+        /// may change every frame, so repeating the message would only make the console unusable.
+        /// </remarks>
+        private void ReportEmptyEntry(Enum key)
+        {
+            if (_reportedEmptyEntry) return;
+            _reportedEmptyEntry = true;
+
+            UnityEngine.Debug.LogError(
+                $"[{GetType().Name}] The '{key}' entry of the enum table has no {typeof(TElement).Name} assigned " +
+                "and is skipped; the rest of the group is still updated. Further empty entries are not reported.",
+                this);
         }
 
         /// <summary>

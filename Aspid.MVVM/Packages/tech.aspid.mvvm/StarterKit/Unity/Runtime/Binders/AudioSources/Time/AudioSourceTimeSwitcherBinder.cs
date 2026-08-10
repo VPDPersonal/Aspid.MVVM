@@ -24,6 +24,6 @@ namespace Aspid.MVVM.StarterKit
 
         /// <inheritdoc/>
         protected override void SetValue(float value) =>
-            Target.time = value;
+            Target.SetTime(value);
     }
 }

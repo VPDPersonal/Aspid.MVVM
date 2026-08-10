@@ -24,6 +24,6 @@ namespace Aspid.MVVM.StarterKit
 
         /// <inheritdoc/>
         protected override void SetValue(float value) =>
-            Target.radius = value;
+            Target.radius = BinderMath.NonNegative(value);
     }
 }

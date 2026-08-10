@@ -18,7 +18,7 @@ namespace Aspid.MVVM.StarterKit
         protected sealed override Vector3 Property
         {
             get => CachedComponent.size;
-            set => CachedComponent.size = value;
+            set => CachedComponent.size = BinderMath.NonNegative(value);
         }
     }
 }

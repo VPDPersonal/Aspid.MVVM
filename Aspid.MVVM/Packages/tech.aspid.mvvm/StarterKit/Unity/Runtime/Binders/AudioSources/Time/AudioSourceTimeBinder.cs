@@ -16,7 +16,7 @@ namespace Aspid.MVVM.StarterKit
         protected sealed override float Property
         {
             get => Target.time;
-            set => Target.time = value;
+            set => Target.SetTime(value);
         }
 
         /// <inheritdoc/>

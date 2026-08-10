@@ -16,6 +16,6 @@ namespace Aspid.MVVM.StarterKit
         /// Sets <see cref="AudioSource.time"/> to the resolved value.
         /// </summary>
         protected override void SetValue(AudioSource element, float value) =>
-            element.time = value;
+            element.SetTime(value);
     }
 }

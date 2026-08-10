@@ -18,7 +18,7 @@ namespace Aspid.MVVM.StarterKit
         protected sealed override int Property
         {
             get => CachedComponent.timeSamples;
-            set => CachedComponent.timeSamples = value;
+            set => CachedComponent.SetTimeSamples(value);
         }
     }
 }

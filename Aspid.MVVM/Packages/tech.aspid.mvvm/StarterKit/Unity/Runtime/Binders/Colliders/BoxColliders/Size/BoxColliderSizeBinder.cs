@@ -16,7 +16,7 @@ namespace Aspid.MVVM.StarterKit
         protected sealed override Vector3 Property
         {
             get => Target.size;
-            set => Target.size = value;
+            set => Target.size = BinderMath.NonNegative(value);
         }
 
         /// <inheritdoc/>

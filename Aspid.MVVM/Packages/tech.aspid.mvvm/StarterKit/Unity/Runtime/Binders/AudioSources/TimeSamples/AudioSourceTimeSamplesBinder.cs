@@ -16,7 +16,7 @@ namespace Aspid.MVVM.StarterKit
         protected sealed override int Property
         {
             get => Target.timeSamples;
-            set => Target.timeSamples = value;
+            set => Target.SetTimeSamples(value);
         }
 
         /// <inheritdoc/>

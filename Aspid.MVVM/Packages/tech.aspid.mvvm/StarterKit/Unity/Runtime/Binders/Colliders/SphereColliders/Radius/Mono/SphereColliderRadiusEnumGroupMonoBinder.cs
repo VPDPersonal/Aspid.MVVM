@@ -13,6 +13,6 @@ namespace Aspid.MVVM.StarterKit
     {
         /// <inheritdoc/>
         protected override void SetValue(SphereCollider element, float value) =>
-            element.radius = value;
+            element.radius = BinderMath.NonNegative(value);
     }
 }

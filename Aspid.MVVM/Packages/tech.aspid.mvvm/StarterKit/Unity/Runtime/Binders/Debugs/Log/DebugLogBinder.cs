@@ -39,7 +39,9 @@ namespace Aspid.MVVM.StarterKit
         /// <param name="converter">The converter used to format bound values as log messages. Pass <see langword="null"/> to use <see cref="ObjectToStringConverter"/>.</param>
         public DebugLogBinder(Converter converter = null) : base(BindMode.TwoWay)
         {
-            _converter = converter;
+            // The field initializer above does not survive the constructor, so the documented default has to be
+            // repeated here — otherwise the parameterless call leaves the binder with no converter at all.
+            _converter = converter ?? new ObjectToStringConverter();
         }
 
         /// <summary>
@@ -50,7 +52,19 @@ namespace Aspid.MVVM.StarterKit
         public void SetValue<T>(T value) =>
             Debug.Log($"SetValue: {GetMessage(value)}");
 
-        private string GetMessage(object value) =>
-            _converter?.Convert(value) ?? value.ToString();
+        /// <summary>
+        /// Formats <paramref name="value"/> for the console, without assuming it is there.
+        /// </summary>
+        /// <remarks>
+        /// This binder accepts every bound type through <see cref="IAnyBinder"/>, and a bindable member of a
+        /// reference type publishes <see langword="null"/> the moment the binder is added — so the very first
+        /// message a debug binder is asked to produce is usually for a null value. Both the converter and the
+        /// fallback used to dereference it.
+        /// </remarks>
+        private string GetMessage(object value)
+        {
+            if (value is null) return "null";
+            return _converter?.Convert(value) ?? value.ToString();
+        }
     }
 }

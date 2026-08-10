@@ -40,7 +40,19 @@ namespace Aspid.MVVM.StarterKit
         public void SetValue<T>(T value) =>
             Debug.Log($"SetValue: {GetMessage(value)}");
 
-        private string GetMessage(object value) =>
-            _converter?.Convert(value) ?? value.ToString();
+        /// <summary>
+        /// Formats <paramref name="value"/> for the console, without assuming it is there.
+        /// </summary>
+        /// <remarks>
+        /// This binder accepts every bound type through <see cref="IAnyBinder"/>, and a bindable member of a
+        /// reference type publishes <see langword="null"/> the moment the binder is added — so the very first
+        /// message a debug binder is asked to produce is usually for a null value. Both the converter and the
+        /// fallback used to dereference it.
+        /// </remarks>
+        private string GetMessage(object value)
+        {
+            if (value is null) return "null";
+            return _converter?.Convert(value) ?? value.ToString();
+        }
     }
 }

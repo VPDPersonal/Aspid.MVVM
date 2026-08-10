@@ -9,7 +9,7 @@ namespace Aspid.MVVM.StarterKit
     /// <see cref="EnumGroupMonoBinder{TMP_InputField, TMP_InputField.InputType}"/> that sets
     /// <see cref="TMP_InputField.inputType"/> on each element in the group based on the bound enum ViewModel value.
     /// </summary>
-    [AddComponentMenu("Aspid/MVVM/Binders/UI/InputField/InputField Binder - InputType EnumGroup")]
+    [AddComponentMenu("Aspid/MVVM/Binders/UI/InputField/InputField Binder – InputType EnumGroup")]
     [AddBinderContextMenu(typeof(TMP_InputField), serializePropertyNames: "m_InputType", SubPath = "EnumGroup")]
     public sealed class InputFieldInputTypeEnumGroupMonoBinder : EnumGroupMonoBinder<TMP_InputField, TMP_InputField.InputType>
     {

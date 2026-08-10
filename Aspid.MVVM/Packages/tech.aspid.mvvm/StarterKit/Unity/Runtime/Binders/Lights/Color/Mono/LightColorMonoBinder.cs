@@ -11,7 +11,7 @@ namespace Aspid.MVVM.StarterKit
     /// guttering — meant reaching for the component by hand.
     /// </remarks>
     [AddBinderContextMenu(typeof(Light), serializePropertyNames: "m_Color")]
-    [AddComponentMenu("Aspid/MVVM/Binders/Rendering/Light Binder - Color")]
+    [AddComponentMenu("Aspid/MVVM/Binders/Rendering/Light Binder – Color")]
     public class LightColorMonoBinder : ComponentColorMonoBinder<Light>
     {
         /// <inheritdoc/>

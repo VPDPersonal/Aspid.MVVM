@@ -13,7 +13,7 @@ namespace Aspid.MVVM.StarterKit
     /// Supports <see cref="BindMode.OneWayToSource"/>: when first bound, the current
     /// <see cref="TMP_InputField.contentType"/> value is forwarded to the ViewModel.
     /// </remarks>
-    [AddComponentMenu("Aspid/MVVM/Binders/UI/InputField/InputField Binder - ContentType")]
+    [AddComponentMenu("Aspid/MVVM/Binders/UI/InputField/InputField Binder – ContentType")]
     [AddBinderContextMenu(typeof(TMP_InputField), serializePropertyNames: "m_ContentType")]
     public class InputFieldContentTypeMonoBinder : ComponentMonoBinder<TMP_InputField, TMP_InputField.ContentType>
     {

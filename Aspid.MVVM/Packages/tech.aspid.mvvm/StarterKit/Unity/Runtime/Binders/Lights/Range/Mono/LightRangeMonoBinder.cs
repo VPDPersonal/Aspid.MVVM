@@ -11,7 +11,7 @@ namespace Aspid.MVVM.StarterKit
     /// zero, which switches the lamp off — dropping the write keeps the last range that lit something instead.
     /// </remarks>
     [AddBinderContextMenu(typeof(Light), serializePropertyNames: "m_Range")]
-    [AddComponentMenu("Aspid/MVVM/Binders/Rendering/Light Binder - Range")]
+    [AddComponentMenu("Aspid/MVVM/Binders/Rendering/Light Binder – Range")]
     public class LightRangeMonoBinder : ComponentFloatMonoBinder<Light>
     {
         /// <inheritdoc/>

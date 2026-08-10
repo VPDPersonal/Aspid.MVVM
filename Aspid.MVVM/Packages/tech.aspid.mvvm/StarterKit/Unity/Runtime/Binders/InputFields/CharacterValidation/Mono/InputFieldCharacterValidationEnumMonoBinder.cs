@@ -9,7 +9,7 @@ namespace Aspid.MVVM.StarterKit
     /// <see cref="EnumMonoBinder{TMP_InputField, TMP_InputField.CharacterValidation}"/> that sets
     /// <see cref="TMP_InputField.characterValidation"/> based on the bound enum ViewModel value.
     /// </summary>
-    [AddComponentMenu("Aspid/MVVM/Binders/UI/InputField/InputField Binder - CharacterValidation Enum")]
+    [AddComponentMenu("Aspid/MVVM/Binders/UI/InputField/InputField Binder – CharacterValidation Enum")]
     [AddBinderContextMenu(typeof(TMP_InputField), serializePropertyNames: "m_CharacterValidation", SubPath = "Enum")]
     public sealed class InputFieldCharacterValidationEnumMonoBinder : EnumMonoBinder<TMP_InputField, TMP_InputField.CharacterValidation>
     {

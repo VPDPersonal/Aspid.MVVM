@@ -13,7 +13,7 @@ namespace Aspid.MVVM.StarterKit
     /// makes the image wrong in a way that points nowhere near the ViewModel that produced it.
     /// </remarks>
     [AddBinderContextMenu(typeof(Light), serializePropertyNames: "m_SpotAngle")]
-    [AddComponentMenu("Aspid/MVVM/Binders/Rendering/Light Binder - Spot Angle")]
+    [AddComponentMenu("Aspid/MVVM/Binders/Rendering/Light Binder – Spot Angle")]
     public class LightSpotAngleMonoBinder : ComponentFloatMonoBinder<Light>
     {
         /// <inheritdoc/>

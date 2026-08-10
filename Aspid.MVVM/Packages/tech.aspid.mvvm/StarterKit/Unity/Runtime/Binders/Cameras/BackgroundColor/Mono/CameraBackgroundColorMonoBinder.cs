@@ -11,7 +11,7 @@ namespace Aspid.MVVM.StarterKit
     /// is worth knowing before binding it to a skybox camera and seeing nothing happen.
     /// </remarks>
     [AddBinderContextMenu(typeof(Camera), serializePropertyNames: "m_BackGroundColor")]
-    [AddComponentMenu("Aspid/MVVM/Binders/Rendering/Camera Binder - Background Color")]
+    [AddComponentMenu("Aspid/MVVM/Binders/Rendering/Camera Binder – Background Color")]
     public class CameraBackgroundColorMonoBinder : ComponentColorMonoBinder<Camera>
     {
         /// <inheritdoc/>

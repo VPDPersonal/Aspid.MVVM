@@ -16,7 +16,7 @@ namespace Aspid.MVVM.StarterKit
     /// </para>
     /// </remarks>
     [AddBinderContextMenu(typeof(Rigidbody), serializePropertyNames: "m_Mass")]
-    [AddComponentMenu("Aspid/MVVM/Binders/Physics/Rigidbody Binder - Mass")]
+    [AddComponentMenu("Aspid/MVVM/Binders/Physics/Rigidbody Binder – Mass")]
     public class RigidbodyMassMonoBinder : ComponentFloatMonoBinder<Rigidbody>
     {
         /// <inheritdoc/>

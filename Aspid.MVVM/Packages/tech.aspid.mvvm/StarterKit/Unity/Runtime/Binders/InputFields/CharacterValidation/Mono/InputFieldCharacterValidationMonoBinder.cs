@@ -13,7 +13,7 @@ namespace Aspid.MVVM.StarterKit
     /// Supports <see cref="BindMode.OneWayToSource"/>: when first bound, the current
     /// <see cref="TMP_InputField.characterValidation"/> value is forwarded to the ViewModel.
     /// </remarks>
-    [AddComponentMenu("Aspid/MVVM/Binders/UI/InputField/InputField Binder - CharacterValidation")]
+    [AddComponentMenu("Aspid/MVVM/Binders/UI/InputField/InputField Binder – CharacterValidation")]
     [AddBinderContextMenu(typeof(TMP_InputField), serializePropertyNames: "m_CharacterValidation")]
     public class InputFieldCharacterValidationMonoBinder : ComponentMonoBinder<TMP_InputField, TMP_InputField.CharacterValidation>
     {

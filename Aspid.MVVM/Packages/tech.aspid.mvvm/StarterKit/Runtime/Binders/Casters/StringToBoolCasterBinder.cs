@@ -26,7 +26,7 @@ namespace Aspid.MVVM.StarterKit
         /// When <see langword="true"/>, the conversion result is logically negated so that an empty or
         /// <see langword="null"/> string maps to <see langword="true"/>.
         /// </param>
-        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/>.</param>
+        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</param>
         /// <exception cref="ArgumentNullException">Thrown when <paramref name="setValue"/> is <see langword="null"/>.</exception>
         public StringToBoolCasterBinder(Action<bool> setValue, bool isInvert = false, BindMode mode = BindMode.OneWay)
             : this(setValue, new StringEmptyToBoolConverter(isInvert), mode) { }
@@ -36,7 +36,7 @@ namespace Aspid.MVVM.StarterKit
         /// </summary>
         /// <param name="setValue">The action invoked with the converted <see cref="bool"/> value.</param>
         /// <param name="converter">The converter used to transform a <see cref="string"/> to a <see cref="bool"/>.</param>
-        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/>.</param>
+        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</param>
         /// <exception cref="ArgumentNullException">
         /// Thrown when <paramref name="setValue"/> or <paramref name="converter"/> is <see langword="null"/>.
         /// </exception>

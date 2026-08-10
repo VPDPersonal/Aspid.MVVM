@@ -36,7 +36,7 @@ namespace Aspid.MVVM.StarterKit
         /// Initializes a new instance of <see cref="CollectionViewModelBinder{T}"/>.
         /// </summary>
         /// <param name="views">The pre-instantiated view objects to assign bound ViewModel items to.</param>
-        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/>.</param>
+        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</param>
         public CollectionViewModelBinder(T[] views, BindMode mode = BindMode.OneWay)
             : base(mode)
         {

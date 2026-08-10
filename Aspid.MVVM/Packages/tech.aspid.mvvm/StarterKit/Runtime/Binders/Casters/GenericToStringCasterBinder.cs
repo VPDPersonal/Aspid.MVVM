@@ -23,7 +23,7 @@ namespace Aspid.MVVM.StarterKit
         /// </summary>
         /// <param name="setValue">The action invoked with the converted <see cref="string"/> value.</param>
         /// <param name="format">A composite format string passed to the underlying converter.</param>
-        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/>.</param>
+        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</param>
         /// <exception cref="ArgumentNullException">Thrown when <paramref name="setValue"/> is <see langword="null"/>.</exception>
         public GenericToStringCasterBinder(Action<string?> setValue, string format, BindMode mode = BindMode.OneWay)
             : this(setValue, new GenericToString<T>(format), mode) { }
@@ -33,7 +33,7 @@ namespace Aspid.MVVM.StarterKit
         /// </summary>
         /// <param name="setValue">The action invoked with the converted <see cref="string"/> value.</param>
         /// <param name="converter">The converter used to transform a <typeparamref name="T"/> value to a <see cref="string"/>.</param>
-        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/>.</param>
+        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</param>
         /// <exception cref="ArgumentNullException">
         /// Thrown when <paramref name="setValue"/> or <paramref name="converter"/> is <see langword="null"/>.
         /// </exception>

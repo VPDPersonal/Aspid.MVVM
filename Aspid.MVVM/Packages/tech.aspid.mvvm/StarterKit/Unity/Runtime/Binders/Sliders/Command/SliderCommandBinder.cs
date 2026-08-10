@@ -43,7 +43,7 @@ namespace Aspid.MVVM.StarterKit
         /// </summary>
         /// <param name="target">The <see cref="Slider"/> to bind.</param>
         /// <param name="customInteractable">A custom view that reflects the command's CanExecute state.</param>
-        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/>.</param>
+        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</param>
         public SliderCommandBinder(Slider target, ICanExecuteView customInteractable, BindMode mode = BindMode.OneWay)
             : base(target, mode)
         {
@@ -57,7 +57,7 @@ namespace Aspid.MVVM.StarterKit
         /// </summary>
         /// <param name="target">The <see cref="Slider"/> to bind.</param>
         /// <param name="interactableMode">Controls how the slider's interactable state reflects CanExecute.</param>
-        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/>.</param>
+        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</param>
         public SliderCommandBinder(Slider target, InteractableMode interactableMode, BindMode mode = BindMode.OneWay)
             : base(target, mode)
         {
@@ -203,7 +203,7 @@ namespace Aspid.MVVM.StarterKit
         /// <param name="target">The <see cref="Slider"/> to bind.</param>
         /// <param name="param">The additional parameter forwarded alongside the slider value.</param>
         /// <param name="customInteractable">A custom view that reflects the command's CanExecute state.</param>
-        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/>.</param>
+        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</param>
         public SliderCommandBinder(Slider target, T param, ICanExecuteView customInteractable, BindMode mode = BindMode.OneWay)
             : base(target, mode)
         {
@@ -221,7 +221,7 @@ namespace Aspid.MVVM.StarterKit
         /// <param name="target">The <see cref="Slider"/> to bind.</param>
         /// <param name="param">The additional parameter forwarded alongside the slider value.</param>
         /// <param name="interactableMode">Controls how the slider's interactable state reflects CanExecute.</param>
-        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/>.</param>
+        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</param>
         public SliderCommandBinder(Slider target, T param, InteractableMode interactableMode, BindMode mode = BindMode.OneWay)
             : base(target, mode)
         {
@@ -383,7 +383,7 @@ namespace Aspid.MVVM.StarterKit
         /// <param name="param1">The first additional parameter.</param>
         /// <param name="param2">The second additional parameter.</param>
         /// <param name="customInteractable">A custom view that reflects the command's CanExecute state.</param>
-        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/>.</param>
+        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</param>
         public SliderCommandBinder(Slider target, T1 param1, T2 param2, ICanExecuteView customInteractable, BindMode mode = BindMode.OneWay)
             : base(target, mode)
         {
@@ -403,7 +403,7 @@ namespace Aspid.MVVM.StarterKit
         /// <param name="param1">The first additional parameter.</param>
         /// <param name="param2">The second additional parameter.</param>
         /// <param name="interactableMode">Controls how the slider's interactable state reflects CanExecute.</param>
-        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/>.</param>
+        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</param>
         public SliderCommandBinder(Slider target, T1 param1, T2 param2, InteractableMode interactableMode, BindMode mode = BindMode.OneWay)
             : base(target, mode)
         {
@@ -579,7 +579,7 @@ namespace Aspid.MVVM.StarterKit
         /// <param name="param2">The second additional parameter.</param>
         /// <param name="param3">The third additional parameter.</param>
         /// <param name="customInteractable">A custom view that reflects the command's CanExecute state.</param>
-        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/>.</param>
+        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</param>
         public SliderCommandBinder(Slider target, T1 param1, T2 param2, T3 param3, ICanExecuteView customInteractable, BindMode mode = BindMode.OneWay)
             : base(target, mode)
         {
@@ -601,7 +601,7 @@ namespace Aspid.MVVM.StarterKit
         /// <param name="param2">The second additional parameter.</param>
         /// <param name="param3">The third additional parameter.</param>
         /// <param name="interactableMode">Controls how the slider's interactable state reflects CanExecute.</param>
-        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/>.</param>
+        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</param>
         public SliderCommandBinder(Slider target, T1 param1, T2 param2, T3 param3, InteractableMode interactableMode, BindMode mode = BindMode.OneWay)
             : base(target, mode)
         {

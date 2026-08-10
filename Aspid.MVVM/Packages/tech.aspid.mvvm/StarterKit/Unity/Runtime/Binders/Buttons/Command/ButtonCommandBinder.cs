@@ -34,7 +34,7 @@ namespace Aspid.MVVM.StarterKit
         /// </summary>
         /// <param name="target">The <see cref="Button"/> to bind.</param>
         /// <param name="customInteractable">A custom view that reflects the command's <see cref="IRelayCommand.CanExecute()"/> state.</param>
-        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/>.</param>
+        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</param>
         public ButtonCommandBinder(Button target, ICanExecuteView customInteractable, BindMode mode = BindMode.OneWay)   
             : base(target, mode)
         {
@@ -48,7 +48,7 @@ namespace Aspid.MVVM.StarterKit
         /// </summary>
         /// <param name="target">The <see cref="Button"/> to bind.</param>
         /// <param name="interactableMode">Controls how the button's interactable state reflects <see cref="IRelayCommand.CanExecute()"/>.</param>
-        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/>.</param>
+        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</param>
         public ButtonCommandBinder(Button target, InteractableMode interactableMode, BindMode mode = BindMode.OneWay)   
             : base(target, mode)
         {
@@ -146,7 +146,7 @@ namespace Aspid.MVVM.StarterKit
         /// <param name="target">The <see cref="Button"/> to bind.</param>
         /// <param name="param">The additional parameter forwarded when the command is executed.</param>
         /// <param name="customInteractable">A custom view that reflects the command's <see cref="IRelayCommand{T}.CanExecute(T)"/> state.</param>
-        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/>.</param>
+        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</param>
         public ButtonCommandBinder(
             Button target,
             T param,
@@ -168,7 +168,7 @@ namespace Aspid.MVVM.StarterKit
         /// <param name="target">The <see cref="Button"/> to bind.</param>
         /// <param name="param">The additional parameter forwarded when the command is executed.</param>
         /// <param name="interactableMode">Controls how the button's interactable state reflects <see cref="IRelayCommand{T}.CanExecute(T)"/>.</param>
-        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/>.</param>
+        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</param>
         public ButtonCommandBinder(
             Button target,
             T param,
@@ -286,7 +286,7 @@ namespace Aspid.MVVM.StarterKit
         /// <param name="param1">The first additional parameter forwarded when the command is executed.</param>
         /// <param name="param2">The second additional parameter forwarded when the command is executed.</param>
         /// <param name="customInteractable">A custom view that reflects the command's <see cref="IRelayCommand{T1,T2}.CanExecute(T1,T2)"/> state.</param>
-        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/>.</param>
+        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</param>
         public ButtonCommandBinder(
             Button target,
             T1 param1,
@@ -311,7 +311,7 @@ namespace Aspid.MVVM.StarterKit
         /// <param name="param1">The first additional parameter forwarded when the command is executed.</param>
         /// <param name="param2">The second additional parameter forwarded when the command is executed.</param>
         /// <param name="interactableMode">Controls how the button's interactable state reflects <see cref="IRelayCommand{T1,T2}.CanExecute(T1,T2)"/>.</param>
-        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/>.</param>
+        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</param>
         public ButtonCommandBinder(
             Button target,
             T1 param1,
@@ -444,7 +444,7 @@ namespace Aspid.MVVM.StarterKit
         /// <param name="param2">The second additional parameter forwarded when the command is executed.</param>
         /// <param name="param3">The third additional parameter forwarded when the command is executed.</param>
         /// <param name="customInteractable">A custom view that reflects the command's <see cref="IRelayCommand{T1,T2,T3}.CanExecute(T1,T2,T3)"/> state.</param>
-        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/>.</param>
+        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</param>
         public ButtonCommandBinder(Button target, T1 param1, T2 param2, T3 param3, ICanExecuteView customInteractable, BindMode mode = BindMode.OneWay)
             : base(target, mode)
         {
@@ -466,7 +466,7 @@ namespace Aspid.MVVM.StarterKit
         /// <param name="param2">The second additional parameter forwarded when the command is executed.</param>
         /// <param name="param3">The third additional parameter forwarded when the command is executed.</param>
         /// <param name="interactableMode">Controls how the button's interactable state reflects <see cref="IRelayCommand{T1,T2,T3}.CanExecute(T1,T2,T3)"/>.</param>
-        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/>.</param>
+        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</param>
         public ButtonCommandBinder(Button target, T1 param1, T2 param2, T3 param3, InteractableMode interactableMode, BindMode mode = BindMode.OneWay)
             : base(target, mode)
         {
@@ -608,7 +608,7 @@ namespace Aspid.MVVM.StarterKit
         /// <param name="param3">The third additional parameter forwarded when the command is executed.</param>
         /// <param name="param4">The fourth additional parameter forwarded when the command is executed.</param>
         /// <param name="customInteractable">A custom view that reflects the command's <see cref="IRelayCommand{T1,T2,T3,T4}.CanExecute(T1,T2,T3,T4)"/> state.</param>
-        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/>.</param>
+        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</param>
         public ButtonCommandBinder(Button target, T1 param1, T2 param2, T3 param3, T4 param4, ICanExecuteView customInteractable, BindMode mode = BindMode.OneWay)
             : base(target, mode)
         {
@@ -632,7 +632,7 @@ namespace Aspid.MVVM.StarterKit
         /// <param name="param3">The third additional parameter forwarded when the command is executed.</param>
         /// <param name="param4">The fourth additional parameter forwarded when the command is executed.</param>
         /// <param name="interactableMode">Controls how the button's interactable state reflects <see cref="IRelayCommand{T1,T2,T3,T4}.CanExecute(T1,T2,T3,T4)"/>.</param>
-        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/>.</param>
+        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</param>
         public ButtonCommandBinder(Button target, T1 param1, T2 param2, T3 param3, T4 param4, InteractableMode interactableMode, BindMode mode = BindMode.OneWay)
             : base(target, mode)
         {

@@ -33,7 +33,7 @@ namespace Aspid.MVVM.StarterKit
         /// <param name="trueValue">The <see cref="UnityEngine.Sprite"/> applied when the bound boolean is <see langword="true"/>.</param>
         /// <param name="falseValue">The <see cref="UnityEngine.Sprite"/> applied when the bound boolean is <see langword="false"/>.</param>
         /// <param name="disabledWhenNull">When <see langword="true"/>, the <see cref="Image"/> is disabled when the selected sprite is <see langword="null"/>.</param>
-        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/>.</param>
+        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</param>
         public ImageSpriteSwitcherBinder(
             Image target,
             Sprite trueValue,

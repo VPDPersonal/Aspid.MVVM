@@ -45,7 +45,7 @@ namespace Aspid.MVVM.StarterKit
         /// <summary>
         /// Initializes a new instance of <see cref="OneWayValue{T}"/> with the default value.
         /// </summary>
-        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/>.</param>
+        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</param>
         public OneWayValue(BindMode mode = BindMode.OneWay)
             : this(default, mode) { }
 
@@ -53,7 +53,7 @@ namespace Aspid.MVVM.StarterKit
         /// Initializes a new instance of <see cref="OneWayValue{T}"/> with a pre-set initial value.
         /// </summary>
         /// <param name="value">The initial value.</param>
-        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/>.</param>
+        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</param>
         public OneWayValue(T? value, BindMode mode = BindMode.OneWay)
             : base(mode)
         {
@@ -69,7 +69,7 @@ namespace Aspid.MVVM.StarterKit
         /// An optional converter applied to each incoming value before it is stored in <see cref="Value"/>.
         /// Pass <see langword="null"/> to store values unchanged.
         /// </param>
-        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/>.</param>
+        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</param>
         public OneWayValue(T? value, IConverter<T?, T?>? converter, BindMode mode = BindMode.OneWay)
             : base(mode)
         {

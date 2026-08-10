@@ -20,7 +20,7 @@ namespace Aspid.MVVM.StarterKit
         /// Initializes a new instance of <see cref="GenericOneWayBinder{T}"/>.
         /// </summary>
         /// <param name="setValue">The action invoked with each new value received from the ViewModel.</param>
-        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/>.</param>
+        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</param>
         /// <exception cref="ArgumentNullException">Thrown when <paramref name="setValue"/> is <see langword="null"/>.</exception>
         public GenericOneWayBinder(Action<T?> setValue, BindMode mode = BindMode.OneWay)
             : base(mode)
@@ -61,7 +61,7 @@ namespace Aspid.MVVM.StarterKit
         /// <param name="setValue">
         /// The action invoked with the target and each new value received from the ViewModel.
         /// </param>
-        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/>.</param>
+        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</param>
         /// <exception cref="ArgumentNullException">
         /// Thrown when <paramref name="target"/> or <paramref name="setValue"/> is <see langword="null"/>.
         /// </exception>

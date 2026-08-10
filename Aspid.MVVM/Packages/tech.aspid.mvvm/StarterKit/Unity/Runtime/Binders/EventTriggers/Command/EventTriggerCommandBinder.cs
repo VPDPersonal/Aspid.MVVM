@@ -37,7 +37,7 @@ namespace Aspid.MVVM.StarterKit
         /// <param name="target">The <see cref="EventTrigger"/> to bind.</param>
         /// <param name="eventTriggerType">The <see cref="EventTriggerType"/> event that triggers command execution.</param>
         /// <param name="customInteractable">An optional custom view that reflects the command's <see cref="IRelayCommand.CanExecute(object)"/> state. Pass <see langword="null"/> to disable interactable feedback.</param>
-        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/>.</param>
+        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</param>
         public EventTriggerCommandBinder(
             EventTrigger target,
             EventTriggerType eventTriggerType,
@@ -178,7 +178,7 @@ namespace Aspid.MVVM.StarterKit
         /// <param name="eventTriggerType">The <see cref="EventTriggerType"/> event that triggers command execution.</param>
         /// <param name="param1">The additional parameter forwarded when the command is executed.</param>
         /// <param name="customInteractable">An optional custom view that reflects the command's <see cref="IRelayCommand.CanExecute(object)"/> state. Pass <see langword="null"/> to disable interactable feedback.</param>
-        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/>.</param>
+        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</param>
         public EventTriggerCommandBinder(EventTrigger target, EventTriggerType eventTriggerType, T1 param1, ICanExecuteView customInteractable = null, BindMode mode = BindMode.OneWay)
             : base(target, mode)
         {
@@ -330,7 +330,7 @@ namespace Aspid.MVVM.StarterKit
         /// <param name="param1">The first additional parameter forwarded when the command is executed.</param>
         /// <param name="param2">The second additional parameter forwarded when the command is executed.</param>
         /// <param name="customInteractable">An optional custom view that reflects the command's <see cref="IRelayCommand.CanExecute(object)"/> state. Pass <see langword="null"/> to disable interactable feedback.</param>
-        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/>.</param>
+        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</param>
         public EventTriggerCommandBinder(EventTrigger target, EventTriggerType eventTriggerType, T1 param1, T2 param2, ICanExecuteView customInteractable = null, BindMode mode = BindMode.OneWay)
             : base(target, mode)
         {
@@ -497,7 +497,7 @@ namespace Aspid.MVVM.StarterKit
         /// <param name="param2">The second additional parameter forwarded when the command is executed.</param>
         /// <param name="param3">The third additional parameter forwarded when the command is executed.</param>
         /// <param name="customInteractable">An optional custom view that reflects the command's <see cref="IRelayCommand.CanExecute(object)"/> state. Pass <see langword="null"/> to disable interactable feedback.</param>
-        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/>.</param>
+        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</param>
         public EventTriggerCommandBinder(EventTrigger target, EventTriggerType eventTriggerType, T1 param1, T2 param2, T3 param3, ICanExecuteView customInteractable = null, BindMode mode = BindMode.OneWay)
             : base(target, mode)
         {
@@ -670,7 +670,7 @@ namespace Aspid.MVVM.StarterKit
         /// <param name="param3">The third additional parameter forwarded when the command is executed.</param>
         /// <param name="param4">The fourth additional parameter forwarded when the command is executed.</param>
         /// <param name="customInteractable">An optional custom view that reflects the command's <see cref="IRelayCommand.CanExecute(object)"/> state. Pass <see langword="null"/> to disable interactable feedback.</param>
-        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/>.</param>
+        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</param>
         public EventTriggerCommandBinder(EventTrigger target, EventTriggerType eventTriggerType, T1 param1, T2 param2, T3 param3, T4 param4, ICanExecuteView customInteractable = null, BindMode mode = BindMode.OneWay)
             : base(target, mode)
         {

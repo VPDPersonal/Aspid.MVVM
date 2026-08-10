@@ -3,6 +3,11 @@ using System;
 using UnityEngine;
 using Converter = Aspid.MVVM.StarterKit.IConverter<UnityEngine.Vector3, UnityEngine.Vector3>;
 
+// The named converter aliases are [Obsolete]. The converters below keep implementing them for
+// one release so that a [SerializeReference] field a project declares as one still
+// deserializes; the base lists go with the aliases in the next major.
+#pragma warning disable CS0618 // Type or member is obsolete
+
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {

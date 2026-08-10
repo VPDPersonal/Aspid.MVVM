@@ -14,6 +14,7 @@ namespace Aspid.MVVM.StarterKit
     /// Unity 2023.1 declares its field as the named interface rather than the generic one,
     /// so a lambda cannot be assigned to it directly.
     /// </remarks>
+    [Obsolete("Only needed to assign a lambda to a field typed as a named converter alias, which Unity before 2023.1 required. The package now requires Unity 6000.0, so assign the converter directly. This will be removed in the next major version.")]
     public static class NumberConverterSpecificExtensions
     {
         #region Int Methods
@@ -23,6 +24,7 @@ namespace Aspid.MVVM.StarterKit
         /// <param name="converter">The function to wrap.</param>
         /// <returns>A converter of the named interface type.</returns>
         /// <exception cref="System.ArgumentNullException">Thrown when <paramref name="converter"/> is <see langword="null"/>.</exception>
+        [Obsolete("Only needed to assign a lambda to a field typed as a named converter alias, which Unity before 2023.1 required. The package now requires Unity 6000.0, so assign the converter directly. This will be removed in the next major version.")]
         public static IConverterInt ToConvert(this Func<int, int> converter) =>
             new ConverterInt(converter);
         
@@ -32,6 +34,7 @@ namespace Aspid.MVVM.StarterKit
         /// <param name="converter">The converter to wrap.</param>
         /// <returns>A converter of the named interface type.</returns>
         /// <exception cref="System.ArgumentNullException">Thrown when <paramref name="converter"/> is <see langword="null"/>.</exception>
+        [Obsolete("Only needed to assign a lambda to a field typed as a named converter alias, which Unity before 2023.1 required. The package now requires Unity 6000.0, so assign the converter directly. This will be removed in the next major version.")]
         public static IConverterInt ToConvertSpecific(this IConverter<int, int> converter) =>
             new ConverterInt(converter);
         
@@ -41,6 +44,7 @@ namespace Aspid.MVVM.StarterKit
         /// <param name="converter">The function to wrap.</param>
         /// <returns>A converter of the named interface type.</returns>
         /// <exception cref="System.ArgumentNullException">Thrown when <paramref name="converter"/> is <see langword="null"/>.</exception>
+        [Obsolete("Only needed to assign a lambda to a field typed as a named converter alias, which Unity before 2023.1 required. The package now requires Unity 6000.0, so assign the converter directly. This will be removed in the next major version.")]
         public static IConverterIntToLong ToConvert(this Func<int, long> converter) =>
             new ConverterIntToLong(converter);
         
@@ -50,6 +54,7 @@ namespace Aspid.MVVM.StarterKit
         /// <param name="converter">The converter to wrap.</param>
         /// <returns>A converter of the named interface type.</returns>
         /// <exception cref="System.ArgumentNullException">Thrown when <paramref name="converter"/> is <see langword="null"/>.</exception>
+        [Obsolete("Only needed to assign a lambda to a field typed as a named converter alias, which Unity before 2023.1 required. The package now requires Unity 6000.0, so assign the converter directly. This will be removed in the next major version.")]
         public static IConverterIntToLong ToConvertSpecific(this IConverter<int, long> converter) =>
             new ConverterIntToLong(converter);
         
@@ -59,6 +64,7 @@ namespace Aspid.MVVM.StarterKit
         /// <param name="converter">The function to wrap.</param>
         /// <returns>A converter of the named interface type.</returns>
         /// <exception cref="System.ArgumentNullException">Thrown when <paramref name="converter"/> is <see langword="null"/>.</exception>
+        [Obsolete("Only needed to assign a lambda to a field typed as a named converter alias, which Unity before 2023.1 required. The package now requires Unity 6000.0, so assign the converter directly. This will be removed in the next major version.")]
         public static IConverterIntToFloat ToConvert(this Func<int, float> converter) =>
             new ConverterIntToFloat(converter);
         
@@ -68,6 +74,7 @@ namespace Aspid.MVVM.StarterKit
         /// <param name="converter">The converter to wrap.</param>
         /// <returns>A converter of the named interface type.</returns>
         /// <exception cref="System.ArgumentNullException">Thrown when <paramref name="converter"/> is <see langword="null"/>.</exception>
+        [Obsolete("Only needed to assign a lambda to a field typed as a named converter alias, which Unity before 2023.1 required. The package now requires Unity 6000.0, so assign the converter directly. This will be removed in the next major version.")]
         public static IConverterIntToFloat ToConvertSpecific(this IConverter<int, float> converter) =>
             new ConverterIntToFloat(converter);
         
@@ -77,6 +84,7 @@ namespace Aspid.MVVM.StarterKit
         /// <param name="converter">The function to wrap.</param>
         /// <returns>A converter of the named interface type.</returns>
         /// <exception cref="System.ArgumentNullException">Thrown when <paramref name="converter"/> is <see langword="null"/>.</exception>
+        [Obsolete("Only needed to assign a lambda to a field typed as a named converter alias, which Unity before 2023.1 required. The package now requires Unity 6000.0, so assign the converter directly. This will be removed in the next major version.")]
         public static IConverterIntToDouble ToConvert(this Func<int, double> converter) =>
             new ConverterIntToDouble(converter);
         
@@ -86,6 +94,7 @@ namespace Aspid.MVVM.StarterKit
         /// <param name="converter">The converter to wrap.</param>
         /// <returns>A converter of the named interface type.</returns>
         /// <exception cref="System.ArgumentNullException">Thrown when <paramref name="converter"/> is <see langword="null"/>.</exception>
+        [Obsolete("Only needed to assign a lambda to a field typed as a named converter alias, which Unity before 2023.1 required. The package now requires Unity 6000.0, so assign the converter directly. This will be removed in the next major version.")]
         public static IConverterIntToDouble ToConvertSpecific(this IConverter<int, double> converter) =>
             new ConverterIntToDouble(converter);
         #endregion
@@ -97,6 +106,7 @@ namespace Aspid.MVVM.StarterKit
         /// <param name="converter">The function to wrap.</param>
         /// <returns>A converter of the named interface type.</returns>
         /// <exception cref="System.ArgumentNullException">Thrown when <paramref name="converter"/> is <see langword="null"/>.</exception>
+        [Obsolete("Only needed to assign a lambda to a field typed as a named converter alias, which Unity before 2023.1 required. The package now requires Unity 6000.0, so assign the converter directly. This will be removed in the next major version.")]
         public static IConverterLongToInt ToConvert(this Func<long, int> converter) =>
             new ConverterLongToInt(converter);
         
@@ -106,6 +116,7 @@ namespace Aspid.MVVM.StarterKit
         /// <param name="converter">The converter to wrap.</param>
         /// <returns>A converter of the named interface type.</returns>
         /// <exception cref="System.ArgumentNullException">Thrown when <paramref name="converter"/> is <see langword="null"/>.</exception>
+        [Obsolete("Only needed to assign a lambda to a field typed as a named converter alias, which Unity before 2023.1 required. The package now requires Unity 6000.0, so assign the converter directly. This will be removed in the next major version.")]
         public static IConverterLongToInt ToConvertSpecific(this IConverter<long, int> converter) =>
             new ConverterLongToInt(converter);
         
@@ -115,6 +126,7 @@ namespace Aspid.MVVM.StarterKit
         /// <param name="converter">The function to wrap.</param>
         /// <returns>A converter of the named interface type.</returns>
         /// <exception cref="System.ArgumentNullException">Thrown when <paramref name="converter"/> is <see langword="null"/>.</exception>
+        [Obsolete("Only needed to assign a lambda to a field typed as a named converter alias, which Unity before 2023.1 required. The package now requires Unity 6000.0, so assign the converter directly. This will be removed in the next major version.")]
         public static IConverterLong ToConvert(this Func<long, long> converter) =>
             new ConverterLong(converter);
         
@@ -124,6 +136,7 @@ namespace Aspid.MVVM.StarterKit
         /// <param name="converter">The converter to wrap.</param>
         /// <returns>A converter of the named interface type.</returns>
         /// <exception cref="System.ArgumentNullException">Thrown when <paramref name="converter"/> is <see langword="null"/>.</exception>
+        [Obsolete("Only needed to assign a lambda to a field typed as a named converter alias, which Unity before 2023.1 required. The package now requires Unity 6000.0, so assign the converter directly. This will be removed in the next major version.")]
         public static IConverterLong ToConvertSpecific(this IConverter<long, long> converter) =>
             new ConverterLong(converter);
         
@@ -133,6 +146,7 @@ namespace Aspid.MVVM.StarterKit
         /// <param name="converter">The function to wrap.</param>
         /// <returns>A converter of the named interface type.</returns>
         /// <exception cref="System.ArgumentNullException">Thrown when <paramref name="converter"/> is <see langword="null"/>.</exception>
+        [Obsolete("Only needed to assign a lambda to a field typed as a named converter alias, which Unity before 2023.1 required. The package now requires Unity 6000.0, so assign the converter directly. This will be removed in the next major version.")]
         public static IConverterLongToFloat ToConvert(this Func<long, float> converter) =>
             new ConverterLongToFloat(converter);
         
@@ -142,6 +156,7 @@ namespace Aspid.MVVM.StarterKit
         /// <param name="converter">The converter to wrap.</param>
         /// <returns>A converter of the named interface type.</returns>
         /// <exception cref="System.ArgumentNullException">Thrown when <paramref name="converter"/> is <see langword="null"/>.</exception>
+        [Obsolete("Only needed to assign a lambda to a field typed as a named converter alias, which Unity before 2023.1 required. The package now requires Unity 6000.0, so assign the converter directly. This will be removed in the next major version.")]
         public static IConverterLongToFloat ToConvertSpecific(this IConverter<long, float> converter) =>
             new ConverterLongToFloat(converter);
         
@@ -151,6 +166,7 @@ namespace Aspid.MVVM.StarterKit
         /// <param name="converter">The function to wrap.</param>
         /// <returns>A converter of the named interface type.</returns>
         /// <exception cref="System.ArgumentNullException">Thrown when <paramref name="converter"/> is <see langword="null"/>.</exception>
+        [Obsolete("Only needed to assign a lambda to a field typed as a named converter alias, which Unity before 2023.1 required. The package now requires Unity 6000.0, so assign the converter directly. This will be removed in the next major version.")]
         public static IConverterLongToDouble ToConvert(this Func<long, double> converter) =>
             new ConverterLongToDouble(converter);
         
@@ -160,6 +176,7 @@ namespace Aspid.MVVM.StarterKit
         /// <param name="converter">The converter to wrap.</param>
         /// <returns>A converter of the named interface type.</returns>
         /// <exception cref="System.ArgumentNullException">Thrown when <paramref name="converter"/> is <see langword="null"/>.</exception>
+        [Obsolete("Only needed to assign a lambda to a field typed as a named converter alias, which Unity before 2023.1 required. The package now requires Unity 6000.0, so assign the converter directly. This will be removed in the next major version.")]
         public static IConverterLongToDouble ToConvertSpecific(this IConverter<long, double> converter) =>
             new ConverterLongToDouble(converter);
         #endregion
@@ -171,6 +188,7 @@ namespace Aspid.MVVM.StarterKit
         /// <param name="converter">The function to wrap.</param>
         /// <returns>A converter of the named interface type.</returns>
         /// <exception cref="System.ArgumentNullException">Thrown when <paramref name="converter"/> is <see langword="null"/>.</exception>
+        [Obsolete("Only needed to assign a lambda to a field typed as a named converter alias, which Unity before 2023.1 required. The package now requires Unity 6000.0, so assign the converter directly. This will be removed in the next major version.")]
         public static IConverterFloatToInt ToConvert(this Func<float, int> converter) =>
             new ConverterFloatToInt(converter);
         
@@ -180,6 +198,7 @@ namespace Aspid.MVVM.StarterKit
         /// <param name="converter">The converter to wrap.</param>
         /// <returns>A converter of the named interface type.</returns>
         /// <exception cref="System.ArgumentNullException">Thrown when <paramref name="converter"/> is <see langword="null"/>.</exception>
+        [Obsolete("Only needed to assign a lambda to a field typed as a named converter alias, which Unity before 2023.1 required. The package now requires Unity 6000.0, so assign the converter directly. This will be removed in the next major version.")]
         public static IConverterFloatToInt ToConvertSpecific(this IConverter<float, int> converter) =>
             new ConverterFloatToInt(converter);
         
@@ -189,6 +208,7 @@ namespace Aspid.MVVM.StarterKit
         /// <param name="converter">The function to wrap.</param>
         /// <returns>A converter of the named interface type.</returns>
         /// <exception cref="System.ArgumentNullException">Thrown when <paramref name="converter"/> is <see langword="null"/>.</exception>
+        [Obsolete("Only needed to assign a lambda to a field typed as a named converter alias, which Unity before 2023.1 required. The package now requires Unity 6000.0, so assign the converter directly. This will be removed in the next major version.")]
         public static IConverterFloatToLong ToConvert(this Func<float, long> converter) =>
             new ConverterFloatToLong(converter);
         
@@ -198,6 +218,7 @@ namespace Aspid.MVVM.StarterKit
         /// <param name="converter">The converter to wrap.</param>
         /// <returns>A converter of the named interface type.</returns>
         /// <exception cref="System.ArgumentNullException">Thrown when <paramref name="converter"/> is <see langword="null"/>.</exception>
+        [Obsolete("Only needed to assign a lambda to a field typed as a named converter alias, which Unity before 2023.1 required. The package now requires Unity 6000.0, so assign the converter directly. This will be removed in the next major version.")]
         public static IConverterFloatToLong ToConvertSpecific(this IConverter<float, long> converter) =>
             new ConverterFloatToLong(converter);
         
@@ -207,6 +228,7 @@ namespace Aspid.MVVM.StarterKit
         /// <param name="converter">The function to wrap.</param>
         /// <returns>A converter of the named interface type.</returns>
         /// <exception cref="System.ArgumentNullException">Thrown when <paramref name="converter"/> is <see langword="null"/>.</exception>
+        [Obsolete("Only needed to assign a lambda to a field typed as a named converter alias, which Unity before 2023.1 required. The package now requires Unity 6000.0, so assign the converter directly. This will be removed in the next major version.")]
         public static IConverterFloat ToConvert(this Func<float, float> converter) =>
             new ConverterFloat(converter);
         
@@ -216,6 +238,7 @@ namespace Aspid.MVVM.StarterKit
         /// <param name="converter">The converter to wrap.</param>
         /// <returns>A converter of the named interface type.</returns>
         /// <exception cref="System.ArgumentNullException">Thrown when <paramref name="converter"/> is <see langword="null"/>.</exception>
+        [Obsolete("Only needed to assign a lambda to a field typed as a named converter alias, which Unity before 2023.1 required. The package now requires Unity 6000.0, so assign the converter directly. This will be removed in the next major version.")]
         public static IConverterFloat ToConvertSpecific(this IConverter<float, float> converter) =>
             new ConverterFloat(converter);
         
@@ -225,6 +248,7 @@ namespace Aspid.MVVM.StarterKit
         /// <param name="converter">The function to wrap.</param>
         /// <returns>A converter of the named interface type.</returns>
         /// <exception cref="System.ArgumentNullException">Thrown when <paramref name="converter"/> is <see langword="null"/>.</exception>
+        [Obsolete("Only needed to assign a lambda to a field typed as a named converter alias, which Unity before 2023.1 required. The package now requires Unity 6000.0, so assign the converter directly. This will be removed in the next major version.")]
         public static IConverterFloatToDouble ToConvert(this Func<float, double> converter) =>
             new ConverterFloatToDouble(converter);
         
@@ -234,6 +258,7 @@ namespace Aspid.MVVM.StarterKit
         /// <param name="converter">The converter to wrap.</param>
         /// <returns>A converter of the named interface type.</returns>
         /// <exception cref="System.ArgumentNullException">Thrown when <paramref name="converter"/> is <see langword="null"/>.</exception>
+        [Obsolete("Only needed to assign a lambda to a field typed as a named converter alias, which Unity before 2023.1 required. The package now requires Unity 6000.0, so assign the converter directly. This will be removed in the next major version.")]
         public static IConverterFloatToDouble ToConvertSpecific(this IConverter<float, double> converter) =>
             new ConverterFloatToDouble(converter);
         #endregion
@@ -245,6 +270,7 @@ namespace Aspid.MVVM.StarterKit
         /// <param name="converter">The function to wrap.</param>
         /// <returns>A converter of the named interface type.</returns>
         /// <exception cref="System.ArgumentNullException">Thrown when <paramref name="converter"/> is <see langword="null"/>.</exception>
+        [Obsolete("Only needed to assign a lambda to a field typed as a named converter alias, which Unity before 2023.1 required. The package now requires Unity 6000.0, so assign the converter directly. This will be removed in the next major version.")]
         public static IConverterDoubleToInt ToConvert(this Func<double, int> converter) =>
             new ConverterDoubleToInt(converter);
         
@@ -254,6 +280,7 @@ namespace Aspid.MVVM.StarterKit
         /// <param name="converter">The converter to wrap.</param>
         /// <returns>A converter of the named interface type.</returns>
         /// <exception cref="System.ArgumentNullException">Thrown when <paramref name="converter"/> is <see langword="null"/>.</exception>
+        [Obsolete("Only needed to assign a lambda to a field typed as a named converter alias, which Unity before 2023.1 required. The package now requires Unity 6000.0, so assign the converter directly. This will be removed in the next major version.")]
         public static IConverterDoubleToInt ToConvertSpecific(this IConverter<double, int> converter) =>
             new ConverterDoubleToInt(converter);
         
@@ -263,6 +290,7 @@ namespace Aspid.MVVM.StarterKit
         /// <param name="converter">The function to wrap.</param>
         /// <returns>A converter of the named interface type.</returns>
         /// <exception cref="System.ArgumentNullException">Thrown when <paramref name="converter"/> is <see langword="null"/>.</exception>
+        [Obsolete("Only needed to assign a lambda to a field typed as a named converter alias, which Unity before 2023.1 required. The package now requires Unity 6000.0, so assign the converter directly. This will be removed in the next major version.")]
         public static IConverterDoubleToLong ToConvert(this Func<double, long> converter) =>
             new ConverterDoubleToLong(converter);
         
@@ -272,6 +300,7 @@ namespace Aspid.MVVM.StarterKit
         /// <param name="converter">The converter to wrap.</param>
         /// <returns>A converter of the named interface type.</returns>
         /// <exception cref="System.ArgumentNullException">Thrown when <paramref name="converter"/> is <see langword="null"/>.</exception>
+        [Obsolete("Only needed to assign a lambda to a field typed as a named converter alias, which Unity before 2023.1 required. The package now requires Unity 6000.0, so assign the converter directly. This will be removed in the next major version.")]
         public static IConverterDoubleToLong ToConvertSpecific(this IConverter<double, long> converter) =>
             new ConverterDoubleToLong(converter);
         
@@ -281,6 +310,7 @@ namespace Aspid.MVVM.StarterKit
         /// <param name="converter">The function to wrap.</param>
         /// <returns>A converter of the named interface type.</returns>
         /// <exception cref="System.ArgumentNullException">Thrown when <paramref name="converter"/> is <see langword="null"/>.</exception>
+        [Obsolete("Only needed to assign a lambda to a field typed as a named converter alias, which Unity before 2023.1 required. The package now requires Unity 6000.0, so assign the converter directly. This will be removed in the next major version.")]
         public static IConverterDoubleToFloat ToConvert(this Func<double, float> converter) =>
             new ConverterDoubleToFloat(converter);
         
@@ -290,6 +320,7 @@ namespace Aspid.MVVM.StarterKit
         /// <param name="converter">The converter to wrap.</param>
         /// <returns>A converter of the named interface type.</returns>
         /// <exception cref="System.ArgumentNullException">Thrown when <paramref name="converter"/> is <see langword="null"/>.</exception>
+        [Obsolete("Only needed to assign a lambda to a field typed as a named converter alias, which Unity before 2023.1 required. The package now requires Unity 6000.0, so assign the converter directly. This will be removed in the next major version.")]
         public static IConverterDoubleToFloat ToConvertSpecific(this IConverter<double, float> converter) =>
             new ConverterDoubleToFloat(converter);
         
@@ -299,6 +330,7 @@ namespace Aspid.MVVM.StarterKit
         /// <param name="converter">The function to wrap.</param>
         /// <returns>A converter of the named interface type.</returns>
         /// <exception cref="System.ArgumentNullException">Thrown when <paramref name="converter"/> is <see langword="null"/>.</exception>
+        [Obsolete("Only needed to assign a lambda to a field typed as a named converter alias, which Unity before 2023.1 required. The package now requires Unity 6000.0, so assign the converter directly. This will be removed in the next major version.")]
         public static IConverterDouble ToConvert(this Func<double, double> converter) =>
             new ConverterDouble(converter);
         
@@ -308,6 +340,7 @@ namespace Aspid.MVVM.StarterKit
         /// <param name="converter">The converter to wrap.</param>
         /// <returns>A converter of the named interface type.</returns>
         /// <exception cref="System.ArgumentNullException">Thrown when <paramref name="converter"/> is <see langword="null"/>.</exception>
+        [Obsolete("Only needed to assign a lambda to a field typed as a named converter alias, which Unity before 2023.1 required. The package now requires Unity 6000.0, so assign the converter directly. This will be removed in the next major version.")]
         public static IConverterDouble ToConvertSpecific(this IConverter<double, double> converter) =>
             new ConverterDouble(converter);
         #endregion

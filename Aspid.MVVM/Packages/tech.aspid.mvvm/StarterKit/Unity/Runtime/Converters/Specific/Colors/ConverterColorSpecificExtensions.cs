@@ -16,6 +16,7 @@ namespace Aspid.MVVM.StarterKit
     /// Unity 2023.1 declares its field as the named interface rather than the generic one,
     /// so a lambda cannot be assigned to it directly.
     /// </remarks>
+    [Obsolete("Only needed to assign a lambda to a field typed as a named converter alias, which Unity before 2023.1 required. The package now requires Unity 6000.0, so assign the converter directly. This will be removed in the next major version.")]
     public static class ConverterColorSpecificExtensions
     {
         /// <summary>
@@ -24,6 +25,7 @@ namespace Aspid.MVVM.StarterKit
         /// <param name="converter">The function to wrap.</param>
         /// <returns>A converter of the named interface type.</returns>
         /// <exception cref="System.ArgumentNullException">Thrown when <paramref name="converter"/> is <see langword="null"/>.</exception>
+        [Obsolete("Only needed to assign a lambda to a field typed as a named converter alias, which Unity before 2023.1 required. The package now requires Unity 6000.0, so assign the converter directly. This will be removed in the next major version.")]
         public static IConverterColor ToConvert(this Func<Color, Color> converter) =>
             new ConverterColor(converter);
         
@@ -33,6 +35,7 @@ namespace Aspid.MVVM.StarterKit
         /// <param name="converter">The converter to wrap.</param>
         /// <returns>A converter of the named interface type.</returns>
         /// <exception cref="System.ArgumentNullException">Thrown when <paramref name="converter"/> is <see langword="null"/>.</exception>
+        [Obsolete("Only needed to assign a lambda to a field typed as a named converter alias, which Unity before 2023.1 required. The package now requires Unity 6000.0, so assign the converter directly. This will be removed in the next major version.")]
         public static IConverterColor ToConvertSpecific(this IConverter<Color, Color> converter) =>
             new ConverterColor(converter);
         
@@ -42,6 +45,7 @@ namespace Aspid.MVVM.StarterKit
         /// <param name="converter">The function to wrap.</param>
         /// <returns>A converter of the named interface type.</returns>
         /// <exception cref="System.ArgumentNullException">Thrown when <paramref name="converter"/> is <see langword="null"/>.</exception>
+        [Obsolete("Only needed to assign a lambda to a field typed as a named converter alias, which Unity before 2023.1 required. The package now requires Unity 6000.0, so assign the converter directly. This will be removed in the next major version.")]
         public static IConverterStringToColor ToConvert(this Func<string?, Color> converter) =>
             new ConverterStringToColor(converter);
         
@@ -51,6 +55,7 @@ namespace Aspid.MVVM.StarterKit
         /// <param name="converter">The converter to wrap.</param>
         /// <returns>A converter of the named interface type.</returns>
         /// <exception cref="System.ArgumentNullException">Thrown when <paramref name="converter"/> is <see langword="null"/>.</exception>
+        [Obsolete("Only needed to assign a lambda to a field typed as a named converter alias, which Unity before 2023.1 required. The package now requires Unity 6000.0, so assign the converter directly. This will be removed in the next major version.")]
         public static IConverterStringToColor ToConvertSpecific(this IConverter<string?, Color> converter) =>
             new ConverterStringToColor(converter);
         

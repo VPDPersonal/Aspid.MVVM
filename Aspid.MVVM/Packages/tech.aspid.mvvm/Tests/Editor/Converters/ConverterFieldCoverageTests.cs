@@ -7,6 +7,10 @@ using System.Reflection;
 using Aspid.FastTools.Types;
 using System.Collections.Generic;
 
+// These fixtures name the [Obsolete] converter aliases on purpose — guarding the deprecated
+// surface is the point.
+#pragma warning disable CS0618 // Type or member is obsolete
+
 namespace Aspid.MVVM.StarterKit.Tests
 {
     /// <summary>

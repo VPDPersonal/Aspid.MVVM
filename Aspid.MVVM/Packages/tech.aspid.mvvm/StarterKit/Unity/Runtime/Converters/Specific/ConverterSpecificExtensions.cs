@@ -17,6 +17,7 @@ namespace Aspid.MVVM.StarterKit
     /// Unity 2023.1 declares its field as the named interface rather than the generic one,
     /// so a lambda cannot be assigned to it directly.
     /// </remarks>
+    [Obsolete("Only needed to assign a lambda to a field typed as a named converter alias, which Unity before 2023.1 required. The package now requires Unity 6000.0, so assign the converter directly. This will be removed in the next major version.")]
     public static class ConverterSpecificExtensions
     {
         /// <summary>
@@ -25,6 +26,7 @@ namespace Aspid.MVVM.StarterKit
         /// <param name="converter">The function to wrap.</param>
         /// <returns>A converter of the named interface type.</returns>
         /// <exception cref="System.ArgumentNullException">Thrown when <paramref name="converter"/> is <see langword="null"/>.</exception>
+        [Obsolete("Only needed to assign a lambda to a field typed as a named converter alias, which Unity before 2023.1 required. The package now requires Unity 6000.0, so assign the converter directly. This will be removed in the next major version.")]
         public static IConverterMesh ToConvert(this Func<Mesh?, Mesh?> converter) =>
             new ConverterMesh(converter);
         
@@ -34,6 +36,7 @@ namespace Aspid.MVVM.StarterKit
         /// <param name="converter">The converter to wrap.</param>
         /// <returns>A converter of the named interface type.</returns>
         /// <exception cref="System.ArgumentNullException">Thrown when <paramref name="converter"/> is <see langword="null"/>.</exception>
+        [Obsolete("Only needed to assign a lambda to a field typed as a named converter alias, which Unity before 2023.1 required. The package now requires Unity 6000.0, so assign the converter directly. This will be removed in the next major version.")]
         public static IConverterMesh ToConvertSpecific(this IConverter<Mesh?, Mesh?> converter) =>
             new ConverterMesh(converter);
         
@@ -43,6 +46,7 @@ namespace Aspid.MVVM.StarterKit
         /// <param name="converter">The function to wrap.</param>
         /// <returns>A converter of the named interface type.</returns>
         /// <exception cref="System.ArgumentNullException">Thrown when <paramref name="converter"/> is <see langword="null"/>.</exception>
+        [Obsolete("Only needed to assign a lambda to a field typed as a named converter alias, which Unity before 2023.1 required. The package now requires Unity 6000.0, so assign the converter directly. This will be removed in the next major version.")]
         public static IConverterMaterial ToConvert(this Func<Material?, Material?> converter) =>
             new ConverterMaterial(converter);
         
@@ -52,6 +56,7 @@ namespace Aspid.MVVM.StarterKit
         /// <param name="converter">The converter to wrap.</param>
         /// <returns>A converter of the named interface type.</returns>
         /// <exception cref="System.ArgumentNullException">Thrown when <paramref name="converter"/> is <see langword="null"/>.</exception>
+        [Obsolete("Only needed to assign a lambda to a field typed as a named converter alias, which Unity before 2023.1 required. The package now requires Unity 6000.0, so assign the converter directly. This will be removed in the next major version.")]
         public static IConverterMaterial ToConvertSpecific(this IConverter<Material?, Material?> converter) =>
             new ConverterMaterial(converter);
         
@@ -61,6 +66,7 @@ namespace Aspid.MVVM.StarterKit
         /// <param name="converter">The function to wrap.</param>
         /// <returns>A converter of the named interface type.</returns>
         /// <exception cref="System.ArgumentNullException">Thrown when <paramref name="converter"/> is <see langword="null"/>.</exception>
+        [Obsolete("Only needed to assign a lambda to a field typed as a named converter alias, which Unity before 2023.1 required. The package now requires Unity 6000.0, so assign the converter directly. This will be removed in the next major version.")]
         public static IConverterQuaternion ToConvert(this Func<Quaternion, Quaternion> converter) =>
             new ConverterQuaternion(converter);
         
@@ -70,6 +76,7 @@ namespace Aspid.MVVM.StarterKit
         /// <param name="converter">The converter to wrap.</param>
         /// <returns>A converter of the named interface type.</returns>
         /// <exception cref="System.ArgumentNullException">Thrown when <paramref name="converter"/> is <see langword="null"/>.</exception>
+        [Obsolete("Only needed to assign a lambda to a field typed as a named converter alias, which Unity before 2023.1 required. The package now requires Unity 6000.0, so assign the converter directly. This will be removed in the next major version.")]
         public static IConverterQuaternion ToConvertSpecific(this IConverter<Quaternion, Quaternion> converter) =>
             new ConverterQuaternion(converter);
         
@@ -79,6 +86,7 @@ namespace Aspid.MVVM.StarterKit
         /// <param name="converter">The function to wrap.</param>
         /// <returns>A converter of the named interface type.</returns>
         /// <exception cref="System.ArgumentNullException">Thrown when <paramref name="converter"/> is <see langword="null"/>.</exception>
+        [Obsolete("Only needed to assign a lambda to a field typed as a named converter alias, which Unity before 2023.1 required. The package now requires Unity 6000.0, so assign the converter directly. This will be removed in the next major version.")]
         public static IConverterPhysicsMaterial ToConvert(this Func<PhysicsMaterial?, PhysicsMaterial?> converter) =>
             new ConverterPhysicsMaterial(converter);
         
@@ -88,6 +96,7 @@ namespace Aspid.MVVM.StarterKit
         /// <param name="converter">The converter to wrap.</param>
         /// <returns>A converter of the named interface type.</returns>
         /// <exception cref="System.ArgumentNullException">Thrown when <paramref name="converter"/> is <see langword="null"/>.</exception>
+        [Obsolete("Only needed to assign a lambda to a field typed as a named converter alias, which Unity before 2023.1 required. The package now requires Unity 6000.0, so assign the converter directly. This will be removed in the next major version.")]
         public static IConverterPhysicsMaterial ToConvertSpecific(this IConverter<PhysicsMaterial?, PhysicsMaterial?> converter) =>
             new ConverterPhysicsMaterial(converter);
         

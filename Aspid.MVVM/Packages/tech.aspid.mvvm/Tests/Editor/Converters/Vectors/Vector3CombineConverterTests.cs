@@ -4,6 +4,10 @@ using UnityEngine.TestTools;
 using System.Text.RegularExpressions;
 using Mode = Aspid.MVVM.StarterKit.Vector3CombineConverter.Mode;
 
+// These fixtures name the [Obsolete] converter aliases on purpose — guarding the deprecated
+// surface is the point.
+#pragma warning disable CS0618 // Type or member is obsolete
+
 namespace Aspid.MVVM.StarterKit.Tests
 {
     /// <summary>

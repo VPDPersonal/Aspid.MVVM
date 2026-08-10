@@ -18,6 +18,10 @@ namespace Aspid.MVVM.StarterKit
         [Tooltip("Match member names without regard to case.")]
         [SerializeField] private bool _ignoreCase = true;
 
+        [Tooltip("What to do with text that does not parse. ReturnInput is not available here — the "
+            + "input is text and the output is not — and behaves as ReturnFallback.")]
+        [SerializeField] private ConverterFailureMode _onFailure = ConverterFailureMode.ReturnFallback;
+
         [Tooltip("Returned when the text names no member.")]
         [SerializeField] private TEnum _fallback;
 
@@ -44,8 +48,25 @@ namespace Aspid.MVVM.StarterKit
             // rarely what a name-shaped input means.
             return Enum.TryParse<TEnum>(value, _ignoreCase, out var parsed) && Enum.IsDefined(typeof(TEnum), parsed)
                 ? parsed
-                : _fallback;
+                : OnUnparsed(value);
         }
+
+        private TEnum OnUnparsed(string? value)
+        {
+            if (_onFailure is ConverterFailureMode.Throw)
+                throw ConverterFailure.Rejected(
+                    nameof(StringToEnumConverter<TEnum>), value, $"a member of {typeof(TEnum).Name}");
+
+            ConverterFailure.Report(
+                ref _loggedFailure,
+                nameof(StringToEnumConverter<TEnum>),
+                value,
+                $"a member of {typeof(TEnum).Name}",
+                "the fallback");
+            return _fallback;
+        }
+
+        [NonSerialized] private bool _loggedFailure;
 
         /// <summary>
         /// Writes the specified member as text.

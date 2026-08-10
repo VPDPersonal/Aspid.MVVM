@@ -20,6 +20,10 @@ namespace Aspid.MVVM.StarterKit
         [Tooltip("Returned when the text is not a number.")]
         [SerializeField] private float _fallback;
 
+        [Tooltip("What to do with text that does not parse. ReturnInput is not available here — the "
+            + "input is text and the output is not — and behaves as ReturnFallback.")]
+        [SerializeField] private ConverterFailureMode _onFailure = ConverterFailureMode.ReturnFallback;
+
         [Tooltip("Hold the result inside the bounds below.")]
         [SerializeField] private bool _clamp;
 
@@ -50,12 +54,26 @@ namespace Aspid.MVVM.StarterKit
         /// <returns>The number, or the fallback when the text is not one.</returns>
         public float Convert(string? value)
         {
+            // Blank text is an unfilled field, not a malformed number. Reporting it would fire on
+            // every scene with an empty input, which is the noise that gets error logs ignored.
+            if (string.IsNullOrWhiteSpace(value)) return _fallback;
+
             const NumberStyles styles = NumberStyles.Float | NumberStyles.AllowThousands;
 
             if (!float.TryParse(value, styles, _culture.ToCultureInfo(), out var parsed))
-                return _fallback;
+                return OnUnparsed(value);
 
             return _clamp ? Mathf.Clamp(parsed, _min, _max) : parsed;
+        }
+
+        private float OnUnparsed(string? value)
+        {
+            if (_onFailure is ConverterFailureMode.Throw)
+                throw ConverterFailure.Rejected(nameof(StringToFloatConverter), value, "a decimal number");
+
+            ConverterFailure.Report(
+                ref _loggedFailure, nameof(StringToFloatConverter), value, "a decimal number", "the fallback");
+            return _fallback;
         }
 
         /// <summary>
@@ -64,5 +82,7 @@ namespace Aspid.MVVM.StarterKit
         /// <param name="value">The number to write.</param>
         /// <returns>The text.</returns>
         public string ConvertBack(float value) => value.ToString(_culture.ToCultureInfo());
+
+        [NonSerialized] private bool _loggedFailure;
     }
 }

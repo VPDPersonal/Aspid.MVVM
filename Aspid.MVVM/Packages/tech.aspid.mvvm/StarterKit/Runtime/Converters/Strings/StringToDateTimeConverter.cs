@@ -19,6 +19,10 @@ namespace Aspid.MVVM.StarterKit
         [Tooltip("The culture the text is read with.")]
         [SerializeField] private CultureInfoMode _culture = CultureInfoMode.CurrentCulture;
 
+        [Tooltip("What to do with text that does not parse. ReturnInput is not available here — the "
+            + "input is text and the output is not — and behaves as ReturnFallback.")]
+        [SerializeField] private ConverterFailureMode _onFailure = ConverterFailureMode.ReturnFallback;
+
         [Tooltip("Ticks of the date returned when the text is not one.")]
         [SerializeField] private long _fallbackTicks;
 
@@ -43,11 +47,28 @@ namespace Aspid.MVVM.StarterKit
             var culture = _culture.ToCultureInfo();
             var fallback = new DateTime(_fallbackTicks);
 
+            // Empty text is absence rather than a malformed date, so it takes the fallback quietly.
             if (string.IsNullOrWhiteSpace(value)) return fallback;
 
-            return string.IsNullOrWhiteSpace(_format)
-                ? DateTime.TryParse(value, culture, DateTimeStyles.None, out var any) ? any : fallback
-                : DateTime.TryParseExact(value, _format, culture, DateTimeStyles.None, out var exact) ? exact : fallback;
+            var parsed = string.IsNullOrWhiteSpace(_format)
+                ? DateTime.TryParse(value, culture, DateTimeStyles.None, out var any) ? any : (DateTime?)null
+                : DateTime.TryParseExact(value, _format, culture, DateTimeStyles.None, out var exact) ? exact : null;
+
+            return parsed ?? OnUnparsed(value, fallback);
         }
+
+        private DateTime OnUnparsed(string? value, DateTime fallback)
+        {
+            var expected = string.IsNullOrWhiteSpace(_format) ? "a date" : $"a date shaped \"{_format}\"";
+
+            if (_onFailure is ConverterFailureMode.Throw)
+                throw ConverterFailure.Rejected(nameof(StringToDateTimeConverter), value, expected);
+
+            ConverterFailure.Report(
+                ref _loggedFailure, nameof(StringToDateTimeConverter), value, expected, "the fallback date");
+            return fallback;
+        }
+
+        [NonSerialized] private bool _loggedFailure;
     }
 }

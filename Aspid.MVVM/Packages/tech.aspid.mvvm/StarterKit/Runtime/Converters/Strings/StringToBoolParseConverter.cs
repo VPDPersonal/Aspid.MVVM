@@ -24,6 +24,14 @@ namespace Aspid.MVVM.StarterKit
         [Tooltip("The spellings read as true. Matched without regard to case.")]
         [SerializeField] private string[] _trueTokens = { "true", "1", "yes", "on" };
 
+        [Tooltip("The spellings read as false. Leave empty to treat anything unmatched as false; "
+            + "fill it in to have text matching neither list reported as a failure.")]
+        [SerializeField] private string[] _falseTokens = Array.Empty<string>();
+
+        [Tooltip("What to do with text that does not parse. ReturnInput is not available here — the "
+            + "input is text and the output is not — and behaves as ReturnFallback.")]
+        [SerializeField] private ConverterFailureMode _onFailure = ConverterFailureMode.ReturnFallback;
+
         [Tooltip("Returned when the text matches nothing.")]
         [SerializeField] private bool _fallback;
 
@@ -53,7 +61,31 @@ namespace Aspid.MVVM.StarterKit
                 if (string.Equals(trimmed, _trueTokens[i], StringComparison.OrdinalIgnoreCase))
                     return true;
 
+            if (_falseTokens is { Length: > 0 })
+            {
+                for (var i = 0; i < _falseTokens.Length; i++)
+                    if (string.Equals(trimmed, _falseTokens[i], StringComparison.OrdinalIgnoreCase))
+                        return false;
+
+                // Neither list matched, so the text is not a spelling of either answer.
+                return OnUnparsed(value);
+            }
+
+            // With no false-spellings configured, anything unmatched is false by construction rather
+            // than by failure — there is nothing to report.
             return _fallback;
         }
+
+        private bool OnUnparsed(string? value)
+        {
+            if (_onFailure is ConverterFailureMode.Throw)
+                throw ConverterFailure.Rejected(nameof(StringToBoolParseConverter), value, "a boolean spelling");
+
+            ConverterFailure.Report(
+                ref _loggedFailure, nameof(StringToBoolParseConverter), value, "a boolean spelling", "the fallback");
+            return _fallback;
+        }
+
+        [NonSerialized] private bool _loggedFailure;
     }
 }

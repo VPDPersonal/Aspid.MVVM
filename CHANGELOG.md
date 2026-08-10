@@ -11,6 +11,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- **~150 converters**, taking the catalogue from 14 to 148 and closing every empty `[SerializeReference]` picker in the package. Grouped in the type-picker dropdown as `Aspid/Bool` (9), `Aspid/Number` (15), `Aspid/String` (36), `Aspid/Time` (8), `Aspid/Colour` (14), `Aspid/Vector` (23), `Aspid/Rotation` (9), `Aspid/Collection` (6), `Aspid/Enum` (5), `Aspid/Object` (3), `Aspid/Texture` (4), `Aspid/Layout` (3), `Aspid/Localization` (4), `Aspid/Asset` (2), `Aspid/Composition` (6). Highlights: `PercentStringConverter`, `AbbreviatedNumberConverter` (`1234` → `1.2K`), `RelativeTimeConverter`, `SecondsToTimeStringConverter`, `ThresholdColorConverter`, `RichTextNoParseConverter`, `RemapNumberConverter`, `CollectionCountConverter`.
+- **`ITwoWayConverter<TFrom, TTo>`** — a converter that can undo itself. A binder in `BindMode.TwoWay` or `BindMode.OneWayToSource` now applies `ConvertBack` when the configured converter offers one, and warns in the console when it does not. Twenty-three shipped converters implement it.
+- **Non-generic `IConverter`** as the root of the hierarchy. It declares nothing; it exists so validation, the picker and tests can recognise a converter without enumerating every closed generic.
+- **`ConverterFailureMode`** — one vocabulary (`ReturnFallback`, `ReturnInput`, `Throw`) for what a converter does with data it cannot convert, replacing three different ad-hoc answers.
+- **Composition primitives** under `Aspid/Composition`: `ComposeConverter`, `CachedConverter`, `SafeConverter`, `NullGuardConverter`, `ConditionalConverter`, `PassthroughConverter`. `CachedConverter` matters more than it looks — a binder pushes on every *notification*, not every *change*, so an allocating converter runs far more often than it appears to.
+- **`ConverterAsset<TFrom, TTo>`** — a converter authored once as a `ScriptableObject` and referenced from any number of fields through `ConverterAssetReference`, instead of re-authored per prefab. Eight ready-made subclasses in **Create → Aspid → MVVM → Converters**.
+- **`CultureInfoMode`** on every string and parsing converter. The decimal separator is a comma in half of Europe, so a number written by one culture and parsed by another loses its fraction rather than failing; `InvariantCulture` is now selectable for anything that round-trips.
+- **A test suite where there was none**: 1048 EditMode tests, including contract tests that fail when a converter field has nothing to pick, when a serialized field has no `[Tooltip]`, when a pickable converter has no group, when a picker tooltip has a gap in it, or when a code-only converter is offered in the dropdown.
+
 ### Changed
 
 - **`Aspid.MVVM Settings`** window restyled to match the Aspid.FastTools **Welcome** window — animated dot background, animated logo (links to the Asset Store) and title, themed cards, gradient `Apply` / `Revert` buttons and a footer with version and links.
@@ -20,16 +31,47 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `Aspid.FastTools` is no longer embedded under `Packages/`. It is consumed as a UPM git dependency pinned to the immutable per-release tag `upm-preview/1.0.0-rc.7`, up from the embedded `1.0.0-rc.4`. rc.6 brought `[TypeSelector]` support for `[SerializeReference]` fields — the replacement for the removed `SerializeReferenceDropdown` integration — and rc.7 adds three type-picker fixes this project depends on: a candidate the field cannot close is no longer offered, generic arguments are inferred through the field's interfaces, and Unity's built-in types are accepted as generic arguments. Two upstream API renames were followed: the `Aspid.FastTools.Reflection` namespace collapsed into `Aspid.FastTools`, and `SerializedProperty.GetClassInstance()` became `GetDeclaringInstance()`.
 - `GenericToString<TFrom>` exposes formatting as a virtual `Format` hook instead of hard-coding the decision in `Convert`. An empty format now falls back to `ToString()` rather than producing an empty string, and `Format` still receives the typed value, so numeric and date specifiers (`{0:F2}`, `{0:hh\:mm}`) keep working. `formatEmptyValues` moved down to `StringFormatConverter`, the only converter with an opinion about blank input; `ObjectToStringConverter` and `TimeSpanToStringConverter` gained the format constructor they were missing.
 - Inspector attributes (`[SerializeField]`, `[SerializeReference]`, `[Tooltip]`) in the Unity-independent layers are no longer wrapped in `#if UNITY_2022_1_OR_NEWER`. No-op stubs in `Source/Compatibility/UnityAttributesShim.cs` stand in for them outside Unity, so 22 preprocessor blocks across 14 files could be dropped. Directives guarding real Unity API (`Debug`, `Component`, `ProfilerMarker`) are unchanged.
+- **Converter documentation.** All 40 marker interfaces, all 70 `ToConvert` / `ToConvertSpecific` wrappers, and the `Comparisons` / `CultureInfoMode` enums are documented; every serialized converter field gained a `[Tooltip]`, which is the only documentation visible where a converter is actually configured. `Documentation/08-converters.md` was rewritten around the shipped catalogue.
+- **`ArithmeticNumberConverter`** exposes `Apply(double)` and `Undo(double)` publicly and is `sealed`. Its sixteen `Convert` overloads no longer reach the arithmetic by casting the object to one of its own interfaces.
+- **The Greeter sample** uses the shipped `RichTextColorConverter` instead of a bespoke `PaintNameConverter`.
+- **Converter renames**, taken in one wave so a project pays the migration once. Both class renames carry `[MovedFrom]` and all four field renames carry `[FormerlySerializedAs]`, so existing scenes and prefabs keep their authored values; only source code needs updating.
 
-### Fixed
+  | Was | Is |
+  |-----|-----|
+  | `SequenceConverters<T>` | `SequenceConverter<T>` |
+  | `GenericToString<T>` | `GenericToStringConverter<T>` |
+  | `Vector*CombineConverter._preConvertor` / `_postConvertor` | `_preConverter` / `_postConverter` |
+  | `Vector2ToVector3Converter.Values` / `Vector3ToVector2Converter.Values` | `Mode` |
+  | `Comparisons.Inequality` | `Comparisons.NotEqual` |
 
-- Private `[SerializeReference]` fields no longer disappear from the `MonoView` / `MonoViewModel` / `MonoBinder` inspectors. The reflected field map admitted a private field only when it carried `[SerializeField]`, so a polymorphic field resolved to a null `FieldInfo` and was skipped for every property — a binder's `_converter` or `_customInteractable` was simply not drawn.
-- Converters that can only be built in code are no longer offered by the type picker. `GenericFuncConverter` and the private types behind `ToConvert` / `ToConvertSpecific` wrap a delegate no inspector can supply, so picking one produced an instance with a null delegate; they now carry `[TypeSelectorDisplay(Hidden = true)]`.
+  `Inequality` has no parallel member: an enum cannot deprecate one without the replacement appearing twice in the Inspector dropdown. The serialized value is the ordinal, which is unchanged, so scenes are unaffected.
+
+### Deprecated
+
+- **The 40 named converter aliases** (`IConverterFloat`, `IConverterIntToLong`, `IConverterString`, …) and the **70 `ToConvert` / `ToConvertSpecific` wrappers** are marked `[Obsolete]` and will be removed in the next major. They existed only because Unity before 2023.1 could not serialize a `[SerializeReference]` field of an open generic type; the package requires Unity 6000.0. Use `IConverter<TFrom, TTo>` and the generic `ConverterExtensions.ToConvert<TFrom, TTo>`, which stays.
+
+  The package's own converters keep implementing the aliases for one release, so a `[SerializeReference]` field a project declares as one still deserializes. Delete that base list and the field would resolve to `null` on load with no diagnostic at all — which is why this is a deprecation and not a removal.
 
 ### Removed
 
+- The pre-2023.1 converter compatibility gate: 117 `using Converter = …` alias pairs, 12 inline `ToConvertSpecific()` branches, 4 conditional `[SerializeReference]` attributes, 10 `GetConverter` helpers the collapse reduced to identity functions, and 8 `UNITY_6000_0_OR_NEWER` branches naming the pre-Unity-6 `PhysicMaterial`. `package.json` has declared `"unity": "6000.0"` since 1.1.0, so none of it compiled in a supported configuration.
 - Internal `FloatingBackgroundElement`, superseded by the FastTools animated dot background.
 - `SerializeReferenceDropdown` integration: the `com.alexeytaranov.serializereferencedropdown` dependency, the `[SerializeReferenceDropdown]` attributes on `[SerializeReference]` fields, the assembly references and the `ASPID_MVVM_SERIALIZE_REFERENCE_DROPDOWN_INTEGRATION` version defines. A replacement built into Aspid.FastTools will take its place.
+
+### Fixed
+
+- Reverse binding no longer re-applies the *forward* converter on the way back to the ViewModel. A binder in `TwoWay` / `OneWayToSource` now uses `ITwoWayConverter.ConvertBack` when available and sends the value unchanged otherwise.
+- `SequenceConverter` no longer dereferences an empty Inspector slot. The type picker's `<None>` entry is a valid selection that serializes as a null element, so gaps are skipped instead of throwing.
+- The `Vector3CombineConverter` family no longer throws a `NullReferenceException` when its scene reference is unassigned or destroyed. It reports itself once and returns the input unchanged.
+- A `FormatException` from a format string no longer cuts the binder subscriber list. Dispatch is a bare multicast, so one bad format used to stop every binder queued behind it; `GenericToStringConverter` now contains the failure and falls back to `ToString()`.
+- `StringFormatConverter` formats null and empty values again when `_formatEmptyValues` is set — the branch had become unreachable when `Convert` moved to the base class.
+- The divide-by-zero diagnostic in `ArithmeticNumberConverter` fires once per instance instead of on every conversion. `Debug.LogError` captures a stack trace, so a per-frame binding used to cost frames.
+- `DropdownOptionsByEnumMonoBinder` no longer reflects over the enum on every push, nor resets the selected index of a `DropdownValueMonoBinder` on the same object.
+- `DebugLogBinder` / `DebugLogMonoBinder` no longer throw on a null value: `?? value.ToString()` could not tell "the converter returned null" from "the value is null".
+- Four `Double` converters that cannot be built in the Inspector are hidden from the picker; the region had been missed when its three siblings were marked.
+- Six bare `ArgumentOutOfRangeException()` throws now name the argument and its value.
+- Private `[SerializeReference]` fields no longer disappear from the `MonoView` / `MonoViewModel` / `MonoBinder` inspectors. The reflected field map admitted a private field only when it carried `[SerializeField]`, so a polymorphic field resolved to a null `FieldInfo` and was skipped for every property — a binder's `_converter` or `_customInteractable` was simply not drawn.
+- Converters that can only be built in code are no longer offered by the type picker. `GenericFuncConverter` and the private types behind `ToConvert` / `ToConvertSpecific` wrap a delegate no inspector can supply, so picking one produced an instance with a null delegate; they now carry `[TypeSelectorDisplay(Hidden = true)]`.
 
 ## [1.1.0-beta.1] — 2026-06-06
 

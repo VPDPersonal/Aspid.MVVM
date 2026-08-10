@@ -84,7 +84,7 @@ public interface ITwoWayConverter<TFrom, TTo> : IConverter<TFrom, TTo>
 `AudioLinearToDecibelConverter`, `BoolInvertConverter`, `DegreesToRadiansConverter`,
 `EnumToIntConverter`, `EulerToQuaternionConverter`, `InverseLerpConverter`, `LerpNumberConverter`,
 `NormalizedToPercentConverter`, `PassthroughConverter`, `QuaternionOffsetConverter`,
-`RemapNumberConverter`, `SecondsToTimeSpanConverter`, `SequenceConverters`, `StringToEnumConverter`,
+`RemapNumberConverter`, `SecondsToTimeSpanConverter`, `SequenceConverter`, `StringToEnumConverter`,
 `StringToFloatConverter`, `StringToIntConverter`, `StringToLongConverter`,
 `UnixTimestampToDateTimeConverter`, `Vector2ToVector2IntConverter`, `Vector3ToVector3IntConverter`.
 
@@ -137,7 +137,7 @@ Rich text (TextMeshPro): `RichTextColorConverter`, `RichTextNoParseConverter`,
 Разбор строки: `StringToBoolParseConverter`, `StringToDateTimeConverter`, `StringToEnumConverter`,
 `StringToFloatConverter`, `StringToIntConverter`, `StringToLongConverter`.
 
-Общее: `GenericToString`, `ObjectToStringConverter`, `StringFormatConverter`,
+Общее: `GenericToStringConverter`, `ObjectToStringConverter`, `StringFormatConverter`,
 `TimeSpanToStringConverter`.
 
 ### Aspid/Time (8)
@@ -335,15 +335,16 @@ public interface IConverterIntToLong : IConverter<int, long> { }
 `IConverterTimeSpanToString`, `IConverterColor`, `IConverterVector2`/`IConverterVector3` и их
 кросс-комбинации. Полный список — в папках `Converters/Specific/` обеих сборок.
 
-Лямбду нельзя присвоить полю такого типа напрямую, поэтому есть методы-обёртки:
+> **Все 40 помечены `[Obsolete]` и будут удалены в следующем мажоре.** Минимальная версия
+> пакета — Unity 6000.0, где генерик-форма сериализуется напрямую, так что причины, по которой
+> они существовали, больше нет. Используйте `IConverter<TFrom, TTo>`.
+
+Вместе с ними устарели 70 обёрток `ToConvert` / `ToConvertSpecific`: они нужны были только затем,
+чтобы присвоить лямбду полю с типом-псевдонимом. Замена — генерик-версия, которая остаётся:
 
 ```csharp
-IConverterFloat converter = ((Func<float, float>)(x => x * 2f)).ToConvert();
-IConverterFloat wrapped   = someGenericConverter.ToConvertSpecific();
+IConverter<float, float> converter = ((Func<float, float>)(x => x * 2f)).ToConvert();
 ```
-
-Начиная с 2023.1 генерик-форма работает напрямую, и эти интерфейсы — совместимость. Минимальная
-версия пакета — Unity 6000.0, так что в новом коде используйте `IConverter<TFrom, TTo>`.
 
 ---
 

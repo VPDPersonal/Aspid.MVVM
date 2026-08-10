@@ -193,6 +193,54 @@ Existing `[Bind]` fields keep working. Bindable Properties (PR #46) are additive
 
 ---
 
+## 5. Converters
+
+The converter subsystem was rebuilt: 14 converters became 148, the contract gained a reverse direction, and the pre-2023.1 compatibility layer was deprecated. Scenes and prefabs survive untouched — every rename carries `[MovedFrom]` or `[FormerlySerializedAs]`, and the deprecated types are still implemented. Only source code needs work.
+
+### 5.1 Renames (compilation breakers)
+
+| Was | Is | Notes |
+|-----|-----|-------|
+| `SequenceConverters<T>` | `SequenceConverter<T>` | `[MovedFrom]`, scenes unaffected |
+| `GenericToString<T>` | `GenericToStringConverter<T>` | `[MovedFrom]`, scenes unaffected |
+| `_preConvertor` / `_postConvertor` | `_preConverter` / `_postConverter` | Public constructor parameters too; `[FormerlySerializedAs]`, scenes unaffected |
+| `Vector2ToVector3Converter.Values`, `Vector3ToVector2Converter.Values` | `Mode` | Nested enum type; the serialized value is the ordinal and is unchanged |
+| `Comparisons.Inequality` | `Comparisons.NotEqual` | Ordinal unchanged, so scenes are unaffected |
+
+A global search-and-replace of these five names is the whole migration for most projects.
+
+### 5.2 Deprecated: the named converter aliases
+
+The 40 `IConverterXToY` interfaces and the 70 `ToConvert` / `ToConvertSpecific` wrappers are `[Obsolete]`. They existed because Unity before 2023.1 could not serialize a `[SerializeReference]` field of an open generic; 1.1 requires Unity 6000.0.
+
+```csharp
+// before
+[SerializeReference] private IConverterFloat _converter;
+IConverterFloat c = ((Func<float, float>)(x => x * 2f)).ToConvert();
+
+// after
+[SerializeReference] private IConverter<float, float> _converter;
+IConverter<float, float> c = ((Func<float, float>)(x => x * 2f)).ToConvert();
+```
+
+The generic `ConverterExtensions.ToConvert<TFrom, TTo>` is the replacement and is not deprecated.
+
+**You have one release to act.** The package's own converters still implement the aliases, so a field declared as `IConverterFloat` keeps deserializing today. When the aliases are removed, such a field resolves to `null` on load — silently, with no exception and no console entry. The compiler warning is the only notice you get.
+
+### 5.3 Reverse binding now converts
+
+A binder in `BindMode.TwoWay` or `BindMode.OneWayToSource` used to send the View's value back to the ViewModel unconverted. It now calls `ITwoWayConverter.ConvertBack` when the assigned converter implements it, and warns in the console when it does not.
+
+This changes runtime output where a two-way binding had a converter attached. If you compensated for the missing reverse conversion in the ViewModel — a setter that undid the converter's work — remove that compensation.
+
+### 5.4 Behavioural fixes that change runtime output
+
+- **`StringFormatConverter` with `_formatEmptyValues` enabled** formats null and empty input again. Between the 1.1 previews it returned `null` instead of the formatted empty string.
+- **A `FormatException` in a converter no longer stops unrelated binders.** If your scene had a broken format string, binders behind it in the dispatch order were silently not updating; they will now update.
+- **The `Vector3CombineConverter` family returns the input unchanged** instead of throwing when its scene reference is missing, and reports it once.
+
+---
+
 ## Upgrade checklist
 
 - [ ] Add the `tech.aspid.collections` and `tech.aspid.fasttools` git packages to `manifest.json` (required; not auto-resolved)
@@ -208,3 +256,6 @@ Existing `[Bind]` fields keep working. Bindable Properties (PR #46) are additive
 - [ ] Re-check `ViewInitializer` / `ViewInitializerManual` inspector data — the serialized resolution components changed type, so existing view/viewModel resolution settings may not carry over- [ ] Review `NumberToBoolConverter` (`Inequality`) and `DynamicViewModel.Create` usages for the corrected runtime behaviour
 - [ ] Smoke-test scenes that use `ImageSpriteSwitcherBinder`, Addressable binders and `VirtualizedList*`
 - [ ] Update tests / tooling that look up components by `AddComponentMenu` path
+- [ ] Global rename of the five converter names (see § 5.1)
+- [ ] Move `[SerializeReference]` converter fields and code off the `[Obsolete]` `IConverterXToY` aliases onto `IConverter<TFrom, TTo>` — you have one release, and the failure after that is silent (see § 5.2)
+- [ ] Review every two-way binding that has a converter: the reverse direction now converts (see § 5.3)

@@ -11,6 +11,17 @@
 
 ## [Unreleased]
 
+### Добавлено
+
+- **~150 конвертеров** — каталог вырос с 14 до 148, и в пакете не осталось ни одного пустого пикера `[SerializeReference]`. В выпадающем списке типов они разложены по группам: `Aspid/Bool` (9), `Aspid/Number` (15), `Aspid/String` (36), `Aspid/Time` (8), `Aspid/Colour` (14), `Aspid/Vector` (23), `Aspid/Rotation` (9), `Aspid/Collection` (6), `Aspid/Enum` (5), `Aspid/Object` (3), `Aspid/Texture` (4), `Aspid/Layout` (3), `Aspid/Localization` (4), `Aspid/Asset` (2), `Aspid/Composition` (6). Из заметного: `PercentStringConverter`, `AbbreviatedNumberConverter` (`1234` → `1.2K`), `RelativeTimeConverter`, `SecondsToTimeStringConverter`, `ThresholdColorConverter`, `RichTextNoParseConverter`, `RemapNumberConverter`, `CollectionCountConverter`.
+- **`ITwoWayConverter<TFrom, TTo>`** — конвертер, умеющий отменить себя. Биндер в `BindMode.TwoWay` или `BindMode.OneWayToSource` теперь применяет `ConvertBack`, когда конвертер её предлагает, и пишет предупреждение в консоль, когда нет. Реализуют 23 конвертера из поставки.
+- **Негенерический `IConverter`** в корне иерархии. Он ничего не объявляет; он нужен, чтобы валидация, пикер и тесты опознавали конвертер, не перебирая все закрытия генерика.
+- **`ConverterFailureMode`** — единый словарь (`ReturnFallback`, `ReturnInput`, `Throw`) для того, что конвертер делает с данными, которые не может преобразовать; раньше на этот вопрос было три разных самодельных ответа.
+- **Примитивы композиции** в группе `Aspid/Composition`: `ComposeConverter`, `CachedConverter`, `SafeConverter`, `NullGuardConverter`, `ConditionalConverter`, `PassthroughConverter`. `CachedConverter` важнее, чем кажется: биндер шлёт значение на каждое *уведомление*, а не на каждое *изменение*, поэтому аллоцирующий конвертер вызывается заметно чаще, чем выглядит.
+- **`ConverterAsset<TFrom, TTo>`** — конвертер, настроенный один раз как `ScriptableObject` и подключаемый ссылкой через `ConverterAssetReference` из любого числа полей вместо перенастройки в каждом префабе. Восемь готовых подклассов в меню **Create → Aspid → MVVM → Converters**.
+- **`CultureInfoMode`** у всех строковых конвертеров и конвертеров разбора. В половине Европы десятичный разделитель — запятая, поэтому число, записанное одной культурой и разобранное другой, теряет дробную часть, а не падает; теперь для всего, что ходит туда-обратно, можно выбрать `InvariantCulture`.
+- **Тесты там, где их не было вовсе**: 1048 EditMode-тестов, включая контрактные — они падают, когда у поля конвертера нечего выбрать, когда у сериализуемого поля нет `[Tooltip]`, когда у конвертера в пикере нет группы, когда в тултипе пикера дыра или когда в списке предлагается конвертер, который можно создать только из кода.
+
 ### Изменено
 
 - Окно **`Aspid.MVVM Settings`** переоформлено в стиле окна **Welcome** из Aspid.FastTools — анимированный фон из точек, анимированные логотип (ведёт в Asset Store) и заголовок, тематические карточки, градиентные кнопки `Apply` / `Revert` и футер с версией и ссылками.
@@ -20,16 +31,47 @@
 - `Aspid.FastTools` больше не лежит встроенным пакетом в `Packages/`. Он подключён как UPM-зависимость из git и закреплён на неизменяемом тег-релизе `upm-preview/1.0.0-rc.7` — вместо встроенного `1.0.0-rc.4`. В rc.6 появилась поддержка `[TypeSelector]` для полей `[SerializeReference]` — замена удалённой интеграции `SerializeReferenceDropdown`, — а rc.7 добавляет три исправления пикера типов, от которых зависит проект: кандидат, который поле не может закрыть, больше не предлагается; аргументы generic-типов выводятся через интерфейсы поля; встроенные типы Unity принимаются как аргументы generic-типов. Учтены два переименования API апстрима: namespace `Aspid.FastTools.Reflection` схлопнут в `Aspid.FastTools`, а `SerializedProperty.GetClassInstance()` стал `GetDeclaringInstance()`.
 - `GenericToString<TFrom>` выносит форматирование в виртуальный метод `Format` вместо жёстко зашитого решения внутри `Convert`. Пустой формат теперь откатывается на `ToString()`, а не даёт пустую строку, и `Format` по-прежнему получает типизированное значение, поэтому числовые и датовые спецификаторы (`{0:F2}`, `{0:hh\:mm}`) продолжают работать. Флаг `formatEmptyValues` опущен в `StringFormatConverter` — единственный конвертер, у которого есть мнение о пустом вводе; у `ObjectToStringConverter` и `TimeSpanToStringConverter` появился отсутствовавший конструктор с форматом.
 - Атрибуты инспектора (`[SerializeField]`, `[SerializeReference]`, `[Tooltip]`) в Unity-независимых слоях больше не обёрнуты в `#if UNITY_2022_1_OR_NEWER`. Вне Unity их заменяют пустые заглушки из `Source/Compatibility/UnityAttributesShim.cs`, благодаря чему удалось убрать 22 блока директив в 14 файлах. Директивы вокруг настоящего Unity API (`Debug`, `Component`, `ProfilerMarker`) не тронуты.
+- **Документация конвертеров.** Задокументированы все 40 маркер-интерфейсов, все 70 обёрток `ToConvert` / `ToConvertSpecific` и енумы `Comparisons` / `CultureInfoMode`; каждое сериализуемое поле конвертера получило `[Tooltip]` — единственную документацию, видимую там, где конвертер настраивают. `Documentation/08-converters.md` переписан вокруг реального каталога.
+- **`ArithmeticNumberConverter`** публикует `Apply(double)` и `Undo(double)` и помечен `sealed`. Его шестнадцать перегрузок `Convert` больше не добираются до арифметики приведением объекта к одному из его же интерфейсов.
+- **Сэмпл Greeter** использует готовый `RichTextColorConverter` вместо самописного `PaintNameConverter`.
+- **Переименования конвертеров** — одной волной, чтобы проект оплатил миграцию один раз. Оба переименования классов несут `[MovedFrom]`, все четыре переименования полей — `[FormerlySerializedAs]`, поэтому существующие сцены и префабы сохраняют настроенные значения; правки нужны только в исходном коде.
 
-### Исправлено
+  | Было | Стало |
+  |------|-------|
+  | `SequenceConverters<T>` | `SequenceConverter<T>` |
+  | `GenericToString<T>` | `GenericToStringConverter<T>` |
+  | `Vector*CombineConverter._preConvertor` / `_postConvertor` | `_preConverter` / `_postConverter` |
+  | `Vector2ToVector3Converter.Values` / `Vector3ToVector2Converter.Values` | `Mode` |
+  | `Comparisons.Inequality` | `Comparisons.NotEqual` |
 
-- Приватные поля `[SerializeReference]` больше не пропадают из инспекторов `MonoView` / `MonoViewModel` / `MonoBinder`. Карта полей через рефлексию принимала приватное поле только с атрибутом `[SerializeField]`, поэтому полиморфное поле давало `FieldInfo` равный `null` и пропускалось на обоих проходах — `_converter` или `_customInteractable` у биндера просто не отрисовывался.
-- Конвертеры, которые можно создать только из кода, больше не предлагаются пикером типов. `GenericFuncConverter` и приватные типы за `ToConvert` / `ToConvertSpecific` оборачивают делегат, который инспектор передать не может, поэтому их выбор давал экземпляр с `null` внутри; теперь они помечены `[TypeSelectorDisplay(Hidden = true)]`.
+  У `Inequality` нет параллельного члена: в enum нельзя объявить один член устаревшим так, чтобы замена не появилась в выпадающем списке инспектора дважды. Сериализуется порядковый номер, который не изменился, так что сцены не затронуты.
+
+### Устарело
+
+- **40 именованных псевдонимов конвертеров** (`IConverterFloat`, `IConverterIntToLong`, `IConverterString`, …) и **70 обёрток `ToConvert` / `ToConvertSpecific`** помечены `[Obsolete]` и будут удалены в следующем мажоре. Они существовали только потому, что Unity до 2023.1 не умела сериализовать поле `[SerializeReference]` с типом-открытым генериком; пакет требует Unity 6000.0. Используйте `IConverter<TFrom, TTo>` и генерик-версию `ConverterExtensions.ToConvert<TFrom, TTo>`, которая остаётся.
+
+  Конвертеры самого пакета продолжают реализовывать псевдонимы ещё один релиз, чтобы поле `[SerializeReference]`, объявленное проектом как один из них, по-прежнему десериализовалось. Убери базовый тип — и поле при загрузке стало бы `null` вообще без диагностики; поэтому это депрекация, а не удаление.
 
 ### Удалено
 
+- Слой совместимости конвертеров с Unity до 2023.1: 117 пар-псевдонимов `using Converter = …`, 12 встроенных ветвлений с `ToConvertSpecific()`, 4 условных атрибута `[SerializeReference]`, 10 хелперов `GetConverter`, превратившихся после сворачивания в тождественные функции, и 8 веток `UNITY_6000_0_OR_NEWER`, называвших `PhysicMaterial` из времён до Unity 6. `package.json` объявляет `"unity": "6000.0"` начиная с 1.1.0, так что ничего из этого не компилировалось ни в одной поддерживаемой конфигурации.
 - Внутренний `FloatingBackgroundElement` — заменён анимированным фоном из точек Aspid.FastTools.
 - Интеграция `SerializeReferenceDropdown`: зависимость `com.alexeytaranov.serializereferencedropdown`, атрибуты `[SerializeReferenceDropdown]` над полями `[SerializeReference]`, ссылки в asmdef и version define `ASPID_MVVM_SERIALIZE_REFERENCE_DROPDOWN_INTEGRATION`. На замену придёт встроенное решение из Aspid.FastTools.
+
+### Исправлено
+
+- Обратный биндинг больше не применяет *прямой* конвертер на пути во ViewModel. Биндер в `TwoWay` / `OneWayToSource` использует `ITwoWayConverter.ConvertBack`, когда она есть, и отправляет значение без изменений, когда нет.
+- `SequenceConverter` больше не разыменовывает пустой слот в инспекторе. Пункт `<None>` в пикере типов — допустимый выбор, который сериализуется как null-элемент, поэтому пропуски пропускаются, а не приводят к исключению.
+- Семейство `Vector3CombineConverter` больше не бросает `NullReferenceException`, когда ссылка на сцену не назначена или объект уничтожен. Оно сообщает о себе один раз и возвращает вход без изменений.
+- `FormatException` из строки формата больше не обрывает список подписчиков биндера. Рассылка — голый multicast, поэтому один неверный формат раньше останавливал все биндеры, стоявшие за ним в очереди; `GenericToStringConverter` теперь удерживает сбой и откатывается на `ToString()`.
+- `StringFormatConverter` снова форматирует null и пустые значения при включённом `_formatEmptyValues` — эта ветка стала недостижимой, когда `Convert` переехал в базовый класс.
+- Диагностика деления на ноль в `ArithmeticNumberConverter` срабатывает один раз на экземпляр, а не на каждое преобразование. `Debug.LogError` захватывает стек вызовов, поэтому покадровый биндинг раньше стоил кадров.
+- `DropdownOptionsByEnumMonoBinder` больше не обходит enum рефлексией на каждый push и не сбрасывает выбранный индекс у `DropdownValueMonoBinder` на том же объекте.
+- `DebugLogBinder` / `DebugLogMonoBinder` больше не падают на null-значении: `?? value.ToString()` не различал «конвертер вернул null» и «значение null».
+- Четыре конвертера `Double`, которые нельзя создать в инспекторе, скрыты из пикера; про этот регион забыли, когда размечали три соседних.
+- Шесть голых `throw new ArgumentOutOfRangeException()` теперь называют аргумент и его значение.
+- Приватные поля `[SerializeReference]` больше не пропадают из инспекторов `MonoView` / `MonoViewModel` / `MonoBinder`. Карта полей через рефлексию принимала приватное поле только с атрибутом `[SerializeField]`, поэтому полиморфное поле давало `FieldInfo` равный `null` и пропускалось на обоих проходах — `_converter` или `_customInteractable` у биндера просто не отрисовывался.
+- Конвертеры, которые можно создать только из кода, больше не предлагаются пикером типов. `GenericFuncConverter` и приватные типы за `ToConvert` / `ToConvertSpecific` оборачивают делегат, который инспектор передать не может, поэтому их выбор давал экземпляр с `null` внутри; теперь они помечены `[TypeSelectorDisplay(Hidden = true)]`.
 
 ## [1.1.0-beta.1] — 2026-06-06
 

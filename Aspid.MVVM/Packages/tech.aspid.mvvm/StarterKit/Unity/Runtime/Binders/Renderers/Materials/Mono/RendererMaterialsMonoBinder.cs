@@ -69,7 +69,7 @@ namespace Aspid.MVVM.StarterKit
                         materials = new Material[CachedComponent.materials.Length];
 
                         for (var i = 0; i < materials.Length; i++)
-                            materials[i] = GetConvertedValue(CachedComponent.materials[i]);
+                            materials[i] = GetConvertedBackValue(CachedComponent.materials[i]);
                     }
                     
                     _reverseMaterials?.Invoke(materials);
@@ -89,5 +89,21 @@ namespace Aspid.MVVM.StarterKit
 
         private Material GetConvertedValue(Material value) =>
             _converter?.Convert(value) ?? value;
+
+        /// <summary>
+        /// Converts a value on its way back to the ViewModel.
+        /// </summary>
+        /// <param name="value">The value read from the View.</param>
+        /// <returns>
+        /// The value as the ViewModel expects it: undone by the converter when it offers
+        /// <see cref="ITwoWayConverter{TFrom, TTo}"/>, and unchanged when it does not.
+        /// </returns>
+        /// <remarks>
+        /// The forward converter must not be applied here. It is a View-side presentation concern,
+        /// and running it on a value travelling the other way writes the presentation back into the
+        /// ViewModel.
+        /// </remarks>
+        private Material GetConvertedBackValue(Material value) =>
+            _converter is ITwoWayConverter<Material, Material> twoWay ? twoWay.ConvertBack(value) : value;
     }
 }

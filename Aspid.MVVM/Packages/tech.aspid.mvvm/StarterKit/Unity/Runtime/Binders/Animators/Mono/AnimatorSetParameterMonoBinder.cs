@@ -13,7 +13,7 @@ namespace Aspid.MVVM.StarterKit
     /// Supports <see cref="BindMode.OneWay"/>, <see cref="BindMode.OneTime"/>, and
     /// <see cref="BindMode.OneWayToSource"/>. In <see cref="BindMode.OneWayToSource"/> mode the binder
     /// exposes <see cref="SetParameter"/> to the ViewModel either as a plain <see cref="Action{T}"/>
-    /// or as an <see cref="IRelayCommand{T}"/> whose <c>CanExecute</c> mirrors <see cref="CanExecute(T)"/>.
+    /// or as an <see cref="IRelayCommand{T}"/> whose <see cref="IRelayCommand.CanExecute()"/> mirrors <see cref="CanExecute(T)"/>.
     /// </remarks>
     [BindModeOverride(BindMode.OneWay, BindMode.OneTime, BindMode.OneWayToSource)]
     public abstract partial class AnimatorSetParameterMonoBinder<T> : ComponentMonoBinder<Animator>, 
@@ -55,7 +55,7 @@ namespace Aspid.MVVM.StarterKit
 
         /// <summary>
         /// Re-applies the last value received from the ViewModel, if there was one, and notifies the bound command
-        /// that <c>CanExecute</c> may have changed.
+        /// that <see cref="IRelayCommand.CanExecute()"/> may have changed.
         /// </summary>
         /// <remarks>
         /// Re-applying is skipped until a value has actually arrived. It used to run unconditionally, writing
@@ -74,7 +74,7 @@ namespace Aspid.MVVM.StarterKit
         }
 
         /// <summary>
-        /// Notifies the bound command that <c>CanExecute</c> may have changed.
+        /// Notifies the bound command that <see cref="IRelayCommand.CanExecute()"/> may have changed.
         /// </summary>
         /// <remarks>
         /// When overriding this method, always call <c>base.OnDisable()</c> to preserve

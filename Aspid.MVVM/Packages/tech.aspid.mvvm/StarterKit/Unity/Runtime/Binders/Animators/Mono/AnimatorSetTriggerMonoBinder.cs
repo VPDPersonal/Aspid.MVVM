@@ -10,8 +10,8 @@ namespace Aspid.MVVM.StarterKit
     /// </summary>
     /// <remarks>
     /// Only <see cref="BindMode.OneWayToSource"/> is supported. When binding is established, the binder
-    /// exposes an internal <c>SetTrigger</c> action to the ViewModel either as a plain <see cref="Action"/>
-    /// or as an <see cref="IRelayCommand"/> whose <c>CanExecute</c> mirrors <see cref="CanExecute()"/>.
+    /// exposes an internal <see cref="Animator.SetTrigger(string)"/> action to the ViewModel either as a plain <see cref="Action"/>
+    /// or as an <see cref="IRelayCommand"/> whose <see cref="IRelayCommand.CanExecute()"/> mirrors <see cref="CanExecute()"/>.
     /// </remarks>
     [AddBinderContextMenu(typeof(Animator))]
     [AddComponentMenu("Aspid/MVVM/Binders/Animator/Animator Binder – Set Trigger")]
@@ -45,7 +45,7 @@ namespace Aspid.MVVM.StarterKit
         protected string TriggerName { get; private set; }
 
         /// <summary>
-        /// Notifies the bound command that <c>CanExecute</c> may have changed.
+        /// Notifies the bound command that <see cref="IRelayCommand.CanExecute()"/> may have changed.
         /// </summary>
         /// <remarks>
         /// When overriding this method, always call <c>base.OnEnable()</c> to preserve
@@ -55,7 +55,7 @@ namespace Aspid.MVVM.StarterKit
             _command?.NotifyCanExecuteChanged();
 
         /// <summary>
-        /// Notifies the bound command that <c>CanExecute</c> may have changed.
+        /// Notifies the bound command that <see cref="IRelayCommand.CanExecute()"/> may have changed.
         /// </summary>
         /// <remarks>
         /// When overriding this method, always call <c>base.OnDisable()</c> to preserve
@@ -72,7 +72,7 @@ namespace Aspid.MVVM.StarterKit
 
         /// <summary>
         /// Called when binding is established.
-        /// Exposes <c>SetTrigger</c> to the ViewModel as an <see cref="IRelayCommand"/> or a plain <see cref="Action"/>.
+        /// Exposes <see cref="Animator.SetTrigger(string)"/> to the ViewModel as an <see cref="IRelayCommand"/> or a plain <see cref="Action"/>.
         /// </summary>
         protected sealed override void OnBound()
         {

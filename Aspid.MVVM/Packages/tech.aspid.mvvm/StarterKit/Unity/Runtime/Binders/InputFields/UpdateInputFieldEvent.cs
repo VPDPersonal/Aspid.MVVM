@@ -6,15 +6,25 @@ namespace Aspid.MVVM.StarterKit
     /// </summary>
     public enum UpdateInputFieldEvent
     {
-        /// <summary>Triggered whenever the input field text value changes.</summary>
+        /// <summary>
+        /// Triggered whenever the input field text value changes.
+        /// </summary>
         OnValueChanged,
-        /// <summary>Triggered when the user finishes editing the input field.</summary>
+        /// <summary>
+        /// Triggered when the user finishes editing the input field.
+        /// </summary>
         OnEndEdit,
-        /// <summary>Triggered when the user presses Submit.</summary>
+        /// <summary>
+        /// Triggered when the user presses Submit.
+        /// </summary>
         OnSubmit,
-        /// <summary>Triggered when the input field gains focus.</summary>
+        /// <summary>
+        /// Triggered when the input field gains focus.
+        /// </summary>
         OnSelect,
-        /// <summary>Triggered when the input field loses focus.</summary>
+        /// <summary>
+        /// Triggered when the input field loses focus.
+        /// </summary>
         OnDeselect,
     }
 }

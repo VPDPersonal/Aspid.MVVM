@@ -18,7 +18,7 @@ namespace Aspid.MVVM.StarterKit
         /// Initializes a new instance of the <see cref="GenericFuncConverter{TFrom, TTo}"/> class.
         /// </summary>
         /// <param name="converter">The converter interface implementation to wrap.</param>
-        /// <exception cref="ArgumentNullException">Thrown when <paramref name="converter"/> is <c>null</c>.</exception>
+        /// <exception cref="ArgumentNullException">Thrown when <paramref name="converter"/> is <see langword="null"/>.</exception>
         public GenericFuncConverter(IConverter<TFrom?, TTo?> converter)
             : this(converter.Convert) { }
 
@@ -26,7 +26,7 @@ namespace Aspid.MVVM.StarterKit
         /// Initializes a new instance of the <see cref="GenericFuncConverter{TFrom, TTo}"/> class.
         /// </summary>
         /// <param name="converter">The conversion function.</param>
-        /// <exception cref="ArgumentNullException">Thrown when <paramref name="converter"/> is <c>null</c>.</exception>
+        /// <exception cref="ArgumentNullException">Thrown when <paramref name="converter"/> is <see langword="null"/>.</exception>
         public GenericFuncConverter(Func<TFrom?, TTo?> converter)
         {
             _converter = converter ?? throw new ArgumentNullException(nameof(converter));

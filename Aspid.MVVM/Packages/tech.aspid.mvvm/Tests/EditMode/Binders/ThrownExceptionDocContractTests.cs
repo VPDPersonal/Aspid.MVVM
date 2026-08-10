@@ -24,7 +24,9 @@ namespace Aspid.MVVM.Tests
     {
         private static readonly Regex Guard = new(@"\.ThrowExceptionIf[A-Za-z]*\(", RegexOptions.Compiled);
 
-        /// <summary>Matches a member declaration, including an explicit interface implementation.</summary>
+        /// <summary>
+        /// Matches a member declaration, including an explicit interface implementation.
+        /// </summary>
         private static readonly Regex Member = new(
             @"^\s*(?:(?:public|protected|internal|private)\s|[A-Za-z_][A-Za-z0-9_.<>?]*\s+[A-Za-z_][A-Za-z0-9_.<>]*\s*\()",
             RegexOptions.Compiled);

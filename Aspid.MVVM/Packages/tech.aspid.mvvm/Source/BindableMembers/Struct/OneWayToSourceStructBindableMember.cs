@@ -8,7 +8,7 @@ using System;
 namespace Aspid.MVVM
 {
     /// <summary>
-    /// Concrete <see cref="OneWayToSourceStructBindableMember{T,TBoxed}"/> that fixes <c>TBoxed</c> to <see cref="ValueType"/>
+    /// Concrete <see cref="OneWayToSourceStructBindableMember{T,TBoxed}"/> that fixes <typeparamref name="TBoxed"/> to <see cref="ValueType"/>
     /// for any value-type payload that does not need a more specific boxing target.
     /// </summary>
     /// <typeparam name="T">The struct type of the bound value.</typeparam>

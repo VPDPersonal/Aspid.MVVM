@@ -14,7 +14,7 @@ namespace Aspid.MVVM.StarterKit
     /// Supports <see cref="BindMode.OneWay"/>, <see cref="BindMode.OneTime"/>, and
     /// <see cref="BindMode.OneWayToSource"/>. In <see cref="BindMode.OneWayToSource"/> mode the binder
     /// exposes <see cref="SetParameter"/> to the ViewModel either as a plain <see cref="Action{T}"/>
-    /// or as an <see cref="IRelayCommand{T}"/> whose <c>CanExecute</c> mirrors
+    /// or as an <see cref="IRelayCommand{T}"/> whose <see cref="IRelayCommand.CanExecute()"/> mirrors
     /// <see cref="CanExecute(T?)"/>.
     /// </remarks>
     [Serializable]
@@ -70,7 +70,7 @@ namespace Aspid.MVVM.StarterKit
         }
 
         /// <summary>
-        /// Notifies the bound <see cref="IRelayCommand{T}"/> that its <c>CanExecute</c> state may have changed.
+        /// Notifies the bound <see cref="IRelayCommand{T}"/> that its <see cref="IRelayCommand.CanExecute()"/> state may have changed.
         /// Has no effect when the binder is not in <see cref="BindMode.OneWayToSource"/> mode.
         /// </summary>
         public void NotifyCanExecuteChanged() =>

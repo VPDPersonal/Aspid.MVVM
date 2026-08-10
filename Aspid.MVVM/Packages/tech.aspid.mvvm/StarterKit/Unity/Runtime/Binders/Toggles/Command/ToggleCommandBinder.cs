@@ -127,7 +127,7 @@ namespace Aspid.MVVM.StarterKit
     /// Accepts commands typed as <see cref="IRelayCommand{T1, T2}">IRelayCommand&lt;bool, T&gt;</see> (receiving the isOn state and the configured parameter).
     /// </summary>
     /// <typeparam name="T">The type of the additional parameter forwarded alongside the isOn value.</typeparam>
-    /// <include file="XmlExampleDoc-Toggle-Command-1.1.0.xml" path="doc//member[@name='ToggleCommandBinderT']/*" />
+    /// <include file="XmlExampleDoc-Toggle-Command-1.1.0.xml" path="doc//member[@name='ToggleCommandBinder{1}']/*" />
     [Serializable]
     public class ToggleCommandBinder<T> : TargetBinder<Toggle>, IBinder<IRelayCommand<bool, T>>
     {
@@ -249,7 +249,7 @@ namespace Aspid.MVVM.StarterKit
     /// </summary>
     /// <typeparam name="T1">The type of the first additional parameter forwarded alongside the isOn value.</typeparam>
     /// <typeparam name="T2">The type of the second additional parameter forwarded alongside the isOn value.</typeparam>
-    /// <include file="XmlExampleDoc-Toggle-Command-1.1.0.xml" path="doc//member[@name='ToggleCommandBinderT1T2']/*" />
+    /// <include file="XmlExampleDoc-Toggle-Command-1.1.0.xml" path="doc//member[@name='ToggleCommandBinder{2}']/*" />
     [Serializable]
     public class ToggleCommandBinder<T1, T2> : TargetBinder<Toggle>, IBinder<IRelayCommand<bool, T1, T2>>
     {
@@ -391,7 +391,7 @@ namespace Aspid.MVVM.StarterKit
     /// <typeparam name="T1">The type of the first additional parameter forwarded alongside the isOn value.</typeparam>
     /// <typeparam name="T2">The type of the second additional parameter forwarded alongside the isOn value.</typeparam>
     /// <typeparam name="T3">The type of the third additional parameter forwarded alongside the isOn value.</typeparam>
-    /// <include file="XmlExampleDoc-Toggle-Command-1.1.0.xml" path="doc//member[@name='ToggleCommandBinderT1T2T3']/*" />
+    /// <include file="XmlExampleDoc-Toggle-Command-1.1.0.xml" path="doc//member[@name='ToggleCommandBinder{3}']/*" />
     [Serializable]
     public class ToggleCommandBinder<T1, T2, T3> : TargetBinder<Toggle>, IBinder<IRelayCommand<bool, T1, T2, T3>>
     {

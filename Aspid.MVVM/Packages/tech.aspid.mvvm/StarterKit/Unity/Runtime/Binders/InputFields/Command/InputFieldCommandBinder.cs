@@ -172,7 +172,7 @@ namespace Aspid.MVVM.StarterKit
     /// input field text and <typeparamref name="T"/> as arguments) to a <see cref="TMP_InputField"/> event.
     /// </summary>
     /// <typeparam name="T">The type of the additional command parameter.</typeparam>
-    /// <include file="XmlExampleDoc-InputField-Command-1.1.0.xml" path="doc//member[@name='InputFieldCommandBinderT']/*" />
+    /// <include file="XmlExampleDoc-InputField-Command-1.1.0.xml" path="doc//member[@name='InputFieldCommandBinder{1}']/*" />
     [Serializable]
     public class InputFieldCommandBinder<T>: TargetBinder<TMP_InputField>, IBinder<IRelayCommand<string, T>>
     {
@@ -193,7 +193,9 @@ namespace Aspid.MVVM.StarterKit
         
         private IRelayCommand<string, T> _command;
 
-        /// <summary>Gets or sets the parameter passed to the command alongside the input field text.</summary>
+        /// <summary>
+        /// Gets or sets the parameter passed to the command alongside the input field text.
+        /// </summary>
         public virtual T Param
         {
             get => _param;
@@ -334,7 +336,7 @@ namespace Aspid.MVVM.StarterKit
     /// </summary>
     /// <typeparam name="T1">The type of the first additional command parameter.</typeparam>
     /// <typeparam name="T2">The type of the second additional command parameter.</typeparam>
-    /// <include file="XmlExampleDoc-InputField-Command-1.1.0.xml" path="doc//member[@name='InputFieldCommandBinderT1T2']/*" />
+    /// <include file="XmlExampleDoc-InputField-Command-1.1.0.xml" path="doc//member[@name='InputFieldCommandBinder{2}']/*" />
     [Serializable]
     public class InputFieldCommandBinder<T1, T2>: TargetBinder<TMP_InputField>, IBinder<IRelayCommand<string, T1, T2>>
     {
@@ -356,14 +358,18 @@ namespace Aspid.MVVM.StarterKit
         
         private IRelayCommand<string, T1, T2> _command;
 
-        /// <summary>Gets or sets the first parameter passed to the command alongside the input field text.</summary>
+        /// <summary>
+        /// Gets or sets the first parameter passed to the command alongside the input field text.
+        /// </summary>
         public virtual T1 Param1
         {
             get => _param1;
             set => _param1 = value;
         }
 
-        /// <summary>Gets or sets the second parameter passed to the command alongside the input field text.</summary>
+        /// <summary>
+        /// Gets or sets the second parameter passed to the command alongside the input field text.
+        /// </summary>
         public virtual T2 Param2
         {
             get => _param2;
@@ -512,7 +518,7 @@ namespace Aspid.MVVM.StarterKit
     /// <typeparam name="T1">The type of the first additional command parameter.</typeparam>
     /// <typeparam name="T2">The type of the second additional command parameter.</typeparam>
     /// <typeparam name="T3">The type of the third additional command parameter.</typeparam>
-    /// <include file="XmlExampleDoc-InputField-Command-1.1.0.xml" path="doc//member[@name='InputFieldCommandBinderT1T2T3']/*" />
+    /// <include file="XmlExampleDoc-InputField-Command-1.1.0.xml" path="doc//member[@name='InputFieldCommandBinder{3}']/*" />
     [Serializable]
     public class InputFieldCommandBinder<T1, T2, T3>: TargetBinder<TMP_InputField>, IBinder<IRelayCommand<string, T1, T2, T3>>
     {
@@ -537,21 +543,27 @@ namespace Aspid.MVVM.StarterKit
         
         private IRelayCommand<string, T1, T2, T3> _command;
 
-        /// <summary>Gets or sets the first parameter passed to the command alongside the input field text.</summary>
+        /// <summary>
+        /// Gets or sets the first parameter passed to the command alongside the input field text.
+        /// </summary>
         public virtual T1 Param1
         {
             get => _param1;
             set => _param1 = value;
         }
 
-        /// <summary>Gets or sets the second parameter passed to the command alongside the input field text.</summary>
+        /// <summary>
+        /// Gets or sets the second parameter passed to the command alongside the input field text.
+        /// </summary>
         public virtual T2 Param2
         {
             get => _param2;
             set => _param2 = value;
         }
 
-        /// <summary>Gets or sets the third parameter passed to the command alongside the input field text.</summary>
+        /// <summary>
+        /// Gets or sets the third parameter passed to the command alongside the input field text.
+        /// </summary>
         public virtual T3 Param3
         {
             get => _param3;

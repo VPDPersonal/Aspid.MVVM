@@ -8,7 +8,7 @@ using System;
 namespace Aspid.MVVM
 {
     /// <summary>
-    /// Concrete <see cref="OneTimeStructBindableMember{T,TBoxed}"/> that fixes <c>TBoxed</c> to <see cref="Enum"/>,
+    /// Concrete <see cref="OneTimeStructBindableMember{T,TBoxed}"/> that fixes <typeparamref name="TBoxed"/> to <see cref="Enum"/>,
     /// exposed as a per-type singleton via <see cref="Get(T)"/> for one-time enum bindings.
     /// </summary>
     /// <typeparam name="T">The enum type of the bound value.</typeparam>

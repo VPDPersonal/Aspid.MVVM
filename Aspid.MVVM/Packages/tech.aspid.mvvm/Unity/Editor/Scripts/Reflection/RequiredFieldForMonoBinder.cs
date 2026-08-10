@@ -195,8 +195,8 @@ namespace Aspid.MVVM
         /// <c>IMonoBinderValidable</c>, <c>IMonoBinderValidable[]</c>,
         /// <c>List&lt;IMonoBinderValidable&gt;</c>, or <c>List&lt;IMonoBinderValidable[]&gt;</c>.
         /// </summary>
-        /// <param name="field">The field to inspect, or <c>null</c>.</param>
-        /// <returns><c>true</c> if the field requires a binder to be assigned; otherwise, <c>false</c>.</returns>
+        /// <param name="field">The field to inspect, or <see langword="null"/>.</param>
+        /// <returns><see langword="true"/> if the field requires a binder to be assigned; otherwise, <see langword="false"/>.</returns>
         public static bool IsRequireBinderField(FieldInfo? field)
         {
             if (field is null) return false;

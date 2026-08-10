@@ -22,7 +22,7 @@ namespace Aspid.MVVM.StarterKit
     /// </remarks>
     [Serializable]
     [TypeSelectorDisplay(Group = "Aspid/Number", Name = "Arithmetic Number", Tooltip = "Converts numeric values by applying arithmetic operations with a coefficient")]
-    public class ArithmeticNumberConverter :
+    public sealed class ArithmeticNumberConverter :
         IConverterDouble, IConverterIntToDouble, IConverterLongToDouble, IConverterFloatToDouble,
         IConverterFloat, IConverterIntToFloat, IConverterLongToFloat, IConverterDoubleToFloat,
         IConverterInt, IConverterLongToInt, IConverterFloatToInt, IConverterDoubleToInt,
@@ -47,48 +47,62 @@ namespace Aspid.MVVM.StarterKit
         
         #region Return int
         int IConverter<int, int>.Convert(int value) =>
-            (int)((IConverter<double, double>)this).Convert(value);
+            (int)Apply(value);
         
         int IConverter<long, int>.Convert(long value) =>
-            (int)((IConverter<double, double>)this).Convert(value);
+            (int)Apply(value);
         
         int IConverter<float, int>.Convert(float value) =>
-            (int)((IConverter<double, double>)this).Convert(value);
+            (int)Apply(value);
         
         int IConverter<double, int>.Convert(double value) =>
-            (int)((IConverter<double, double>)this).Convert(value);
+            (int)Apply(value);
         #endregion
         
         #region Return long
         long IConverter<long, long>.Convert(long value) => 
-            (long)((IConverter<double, double>)this).Convert(value);
+            (long)Apply(value);
         
         long IConverter<int, long>.Convert(int value) => 
-            (long)((IConverter<double, double>)this).Convert(value);
+            (long)Apply(value);
         
         long IConverter<float, long>.Convert(float value) => 
-            (long)((IConverter<double, double>)this).Convert(value);
+            (long)Apply(value);
 
         long IConverter<double, long>.Convert(double value) => 
-            (long)((IConverter<double, double>)this).Convert(value);
+            (long)Apply(value);
         #endregion
 
         #region Return float
         float IConverter<float, float>.Convert(float value) => 
-            (float)((IConverter<double, double>)this).Convert(value);
+            (float)Apply(value);
         
         float IConverter<int, float>.Convert(int value) => 
-            (float)((IConverter<double, double>)this).Convert(value);
+            (float)Apply(value);
         
         float IConverter<long, float>.Convert(long value) => 
-            (float)((IConverter<double, double>)this).Convert(value);
+            (float)Apply(value);
         
         float IConverter<double, float>.Convert(double value) => 
-            (float)((IConverter<double, double>)this).Convert(value);
+            (float)Apply(value);
         #endregion
 
         #region Return double
-        double IConverter<double, double>.Convert(double value) => _operation switch
+        double IConverter<double, double>.Convert(double value) => Apply(value);
+
+        /// <summary>
+        /// Applies the configured arithmetic to the specified number.
+        /// </summary>
+        /// <param name="value">The number to transform.</param>
+        /// <returns>The result, in <see cref="double"/> whatever the caller's own numeric type.</returns>
+        /// <remarks>
+        /// Every overload of <c>Convert</c> lands here and casts the result. It is public because the
+        /// alternative — reaching the arithmetic through
+        /// <c>((IConverter&lt;double, double&gt;)converter).Convert(x)</c> — is a cast a reader has to
+        /// decode, and this class did it fifteen times against itself.
+        /// </remarks>
+        /// <exception cref="ArgumentOutOfRangeException">Thrown when the configured operation is not a declared value.</exception>
+        public double Apply(double value) => _operation switch
         {
             NumberOperation.Plus => value + _coefficient,
             NumberOperation.Minus => value - _coefficient,
@@ -102,13 +116,13 @@ namespace Aspid.MVVM.StarterKit
         };
 
         double IConverter<int, double>.Convert(int value) =>
-            ((IConverter<double, double>)this).Convert(value);
-        
+            Apply(value);
+
         double IConverter<float, double>.Convert(float value) =>
-            ((IConverter<double, double>)this).Convert(value);
-        
+            Apply(value);
+
         double IConverter<long, double>.Convert(long value) =>
-            ((IConverter<double, double>)this).Convert(value);
+            Apply(value);
         #endregion
 
         #region Convert back
@@ -124,7 +138,20 @@ namespace Aspid.MVVM.StarterKit
         long ITwoWayConverter<long, long>.ConvertBack(long value) => 
             (long)Undo(value);
 
-        private double Undo(double value) => _operation switch
+        /// <summary>
+        /// Reverses <see cref="Apply"/>.
+        /// </summary>
+        /// <param name="value">The number to transform back.</param>
+        /// <returns>
+        /// The number the forward pass was given, or <paramref name="value"/> unchanged where the
+        /// operation cannot be undone.
+        /// </returns>
+        /// <remarks>
+        /// <see cref="NumberOperation.Modulo"/> discards which multiple the value came from, and a
+        /// zero coefficient makes multiplication and division identities; both return the input.
+        /// </remarks>
+        /// <exception cref="ArgumentOutOfRangeException">Thrown when the configured operation is not a declared value.</exception>
+        public double Undo(double value) => _operation switch
         {
             NumberOperation.Plus => value - _coefficient,
             NumberOperation.Minus => value + _coefficient,

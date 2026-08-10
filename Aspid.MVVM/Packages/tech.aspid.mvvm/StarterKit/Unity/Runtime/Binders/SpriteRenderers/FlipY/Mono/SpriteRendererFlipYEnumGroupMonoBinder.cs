@@ -1,0 +1,20 @@
+using UnityEngine;
+
+// ReSharper disable once CheckNamespace
+namespace Aspid.MVVM.StarterKit
+{
+    /// <summary>
+    /// <see cref="EnumGroupMonoBinder{SpriteRenderer, bool}"/> that sets <see cref="SpriteRenderer.flipY"/>
+    /// on each element in the group based on the bound enum ViewModel value.
+    /// </summary>
+    [AddBinderContextMenu(typeof(SpriteRenderer), serializePropertyNames: "m_FlipY", SubPath = "EnumGroup")]
+    [AddComponentMenu("Aspid/MVVM/Binders/SpriteRenderer/SpriteRenderer Binder – Flip Y EnumGroup")]
+    public sealed class SpriteRendererFlipYEnumGroupMonoBinder : EnumGroupMonoBinder<SpriteRenderer, bool>
+    {
+        /// <summary>
+        /// Called when the bound enum resolves to a value for the specified element.
+        /// </summary>
+        protected override void SetValue(SpriteRenderer element, bool value) =>
+            element.flipY = value;
+    }
+}

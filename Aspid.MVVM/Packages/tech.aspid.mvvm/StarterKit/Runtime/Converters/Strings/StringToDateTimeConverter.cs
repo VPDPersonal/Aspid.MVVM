@@ -59,15 +59,21 @@ namespace Aspid.MVVM.StarterKit
 
         private DateTime OnUnparsed(string? value, DateTime fallback)
         {
-            var expected = string.IsNullOrWhiteSpace(_format) ? "a date" : $"a date shaped \"{_format}\"";
-
             if (_onFailure is ConverterFailureMode.Throw)
-                throw ConverterFailure.Rejected(nameof(StringToDateTimeConverter), value, expected);
+                throw ConverterFailure.Rejected(nameof(StringToDateTimeConverter), value, Expected());
+
+            // Report keeps the first message and drops every one after it, and text that will not
+            // parse usually fails on every push: composing the message past that point allocates a
+            // string per notification for the guard inside Report to throw away.
+            if (_loggedFailure) return fallback;
 
             ConverterFailure.Report(
-                ref _loggedFailure, nameof(StringToDateTimeConverter), value, expected, "the fallback date");
+                ref _loggedFailure, nameof(StringToDateTimeConverter), value, Expected(), "the fallback date");
             return fallback;
         }
+
+        private string Expected() =>
+            string.IsNullOrWhiteSpace(_format) ? "a date" : $"a date shaped \"{_format}\"";
 
         [NonSerialized] private bool _loggedFailure;
     }

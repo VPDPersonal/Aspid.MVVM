@@ -59,10 +59,25 @@ namespace Aspid.MVVM.StarterKit
             // every scene with an empty input, which is the noise that gets error logs ignored.
             if (string.IsNullOrWhiteSpace(value)) return _fallback;
 
-            if (!int.TryParse(value, NumberStyles.Integer, _culture.ToCultureInfo(), out var parsed))
+            // Grouped text is a spelling of the number rather than a mistake — a player typing
+            // 1,000 in en-US means a thousand — and the float, double and decimal converters in this
+            // family already read it as one. The group separator is the player's own, so a culture
+            // that writes 1,5 for one and a half still refuses that text here.
+            const NumberStyles styles = NumberStyles.Integer | NumberStyles.AllowThousands;
+
+            if (!int.TryParse(value, styles, _culture.ToCultureInfo(), out var parsed))
                 return OnUnparsed(value);
 
-            return _clamp ? Math.Clamp(parsed, _min, _max) : parsed;
+            return _clamp ? Clamp(parsed) : parsed;
+        }
+
+        // Two comparisons rather than Math.Clamp, which throws when Max is authored below Min: the
+        // bounds are Inspector fields with nothing to validate them, and an exception on the push
+        // path is not what ReturnFallback promises. A reversed pair reads as the minimum.
+        private int Clamp(int value)
+        {
+            if (value < _min) return _min;
+            return value > _max ? _max : value;
         }
 
         private int OnUnparsed(string? value)

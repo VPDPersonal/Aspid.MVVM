@@ -46,14 +46,18 @@ namespace Aspid.MVVM.StarterKit
         /// <param name="value">The colour to adjust.</param>
         /// <returns>The colour with its alpha changed.</returns>
         /// <exception cref="ArgumentOutOfRangeException">Thrown when the mode is not a declared value.</exception>
-        public Color Convert(Color value)
+        public Color Convert(Color value) => Apply(value, _alpha, _mode);
+
+        // Static because ColorBlockAlphaConverter needs the same arithmetic for five colours on every
+        // push, and reaching it through an instance meant constructing one converter per notification.
+        internal static Color Apply(Color value, float alpha, AlphaMode mode)
         {
-            value.a = _mode switch
+            value.a = mode switch
             {
-                AlphaMode.Set => _alpha,
-                AlphaMode.Multiply => Mathf.Clamp01(value.a * _alpha),
-                AlphaMode.Add => Mathf.Clamp01(value.a + _alpha),
-                _ => throw new ArgumentOutOfRangeException(nameof(_mode), _mode, null)
+                AlphaMode.Set => alpha,
+                AlphaMode.Multiply => Mathf.Clamp01(value.a * alpha),
+                AlphaMode.Add => Mathf.Clamp01(value.a + alpha),
+                _ => throw new ArgumentOutOfRangeException(nameof(mode), mode, null)
             };
 
             return value;

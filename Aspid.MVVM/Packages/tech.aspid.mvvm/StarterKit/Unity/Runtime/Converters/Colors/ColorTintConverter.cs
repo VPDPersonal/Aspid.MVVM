@@ -46,17 +46,21 @@ namespace Aspid.MVVM.StarterKit
         /// <param name="value">The colour to tint.</param>
         /// <returns>The combined colour.</returns>
         /// <exception cref="ArgumentOutOfRangeException">Thrown when the blend is not a declared value.</exception>
-        public Color Convert(Color value) => _blend switch
+        public Color Convert(Color value) => Blend(value, _tint, _blend, _amount);
+
+        // Static because ColorBlockTintConverter needs the same arithmetic for five colours on every
+        // push, and reaching it through an instance meant constructing one converter per notification.
+        internal static Color Blend(Color value, Color tint, ColorBlend blend, float amount) => blend switch
         {
-            ColorBlend.Multiply => value * _tint,
+            ColorBlend.Multiply => value * tint,
             ColorBlend.Add => new Color(
-                Mathf.Clamp01(value.r + _tint.r),
-                Mathf.Clamp01(value.g + _tint.g),
-                Mathf.Clamp01(value.b + _tint.b),
+                Mathf.Clamp01(value.r + tint.r),
+                Mathf.Clamp01(value.g + tint.g),
+                Mathf.Clamp01(value.b + tint.b),
                 value.a),
-            ColorBlend.Lerp => Color.Lerp(value, _tint, _amount),
-            ColorBlend.Replace => new Color(_tint.r, _tint.g, _tint.b, value.a),
-            _ => throw new ArgumentOutOfRangeException(nameof(_blend), _blend, null)
+            ColorBlend.Lerp => Color.Lerp(value, tint, amount),
+            ColorBlend.Replace => new Color(tint.r, tint.g, tint.b, value.a),
+            _ => throw new ArgumentOutOfRangeException(nameof(blend), blend, null)
         };
     }
 }

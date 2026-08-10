@@ -53,17 +53,31 @@ namespace Aspid.MVVM.StarterKit
             Mode.XY => new Vector3(value.x, value.y, _thirdValue),
             Mode.XZ => new Vector3(value.x, _thirdValue, value.y),
             Mode.YZ => new Vector3(_thirdValue, value.x, value.y),
+            Mode.YX => new Vector3(value.y, value.x, _thirdValue),
+            Mode.ZX => new Vector3(value.y, _thirdValue, value.x),
+            Mode.ZY => new Vector3(_thirdValue, value.y, value.x),
             _ => throw new ArgumentOutOfRangeException(nameof(_values), _values, null)
         };
 
         /// <summary>
-        /// Specifies which components of the 2D vector to map to the 3D vector.
+        /// Specifies which components of the 2D vector to map to the 3D vector. The letters name the
+        /// destination axes, in the order the 2D components are read.
         /// </summary>
+        /// <remarks>
+        /// The last three complete the set <see cref="Vector3ToVector2Converter"/> has always
+        /// offered, so the pair round-trips whichever order was picked there. They are appended
+        /// rather than filed in alphabetical order because the declaration order is the value Unity
+        /// stores — inserting YX between XZ and YZ would silently repoint every field authored as
+        /// YZ.
+        /// </remarks>
         public enum Mode
         {
             XY,
             XZ,
             YZ,
+            YX,
+            ZX,
+            ZY,
         }
     }
 }

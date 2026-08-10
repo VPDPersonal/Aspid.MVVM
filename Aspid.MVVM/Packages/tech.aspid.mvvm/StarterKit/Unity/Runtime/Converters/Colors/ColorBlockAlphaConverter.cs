@@ -44,15 +44,17 @@ namespace Aspid.MVVM.StarterKit
         /// <returns>The adjusted block.</returns>
         public ColorBlock Convert(ColorBlock value)
         {
-            var alpha = new ColorAlphaConverter(_alpha, _mode);
-
-            value.normalColor = alpha.Convert(value.normalColor);
-            value.highlightedColor = alpha.Convert(value.highlightedColor);
-            value.pressedColor = alpha.Convert(value.pressedColor);
-            value.selectedColor = alpha.Convert(value.selectedColor);
-            value.disabledColor = alpha.Convert(value.disabledColor);
+            value.normalColor = Fade(value.normalColor);
+            value.highlightedColor = Fade(value.highlightedColor);
+            value.pressedColor = Fade(value.pressedColor);
+            value.selectedColor = Fade(value.selectedColor);
+            value.disabledColor = Fade(value.disabledColor);
 
             return value;
         }
+
+        // Through the static rather than a ColorAlphaConverter instance: this runs on every push, and
+        // an instance per push is an allocation per notification for arithmetic that holds no state.
+        private Color Fade(Color color) => ColorAlphaConverter.Apply(color, _alpha, _mode);
     }
 }

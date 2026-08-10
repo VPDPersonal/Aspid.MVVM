@@ -63,7 +63,16 @@ namespace Aspid.MVVM.StarterKit
             if (!float.TryParse(value, styles, _culture.ToCultureInfo(), out var parsed))
                 return OnUnparsed(value);
 
-            return _clamp ? Mathf.Clamp(parsed, _min, _max) : parsed;
+            return _clamp ? Clamp(parsed) : parsed;
+        }
+
+        // Two comparisons, the same shape the int, long and double siblings use: Math.Clamp throws
+        // when Max is authored below Min, and the whole family reads a reversed pair as the minimum
+        // rather than as a crash. A NaN fails both comparisons and passes through.
+        private float Clamp(float value)
+        {
+            if (value < _min) return _min;
+            return value > _max ? _max : value;
         }
 
         private float OnUnparsed(string? value)

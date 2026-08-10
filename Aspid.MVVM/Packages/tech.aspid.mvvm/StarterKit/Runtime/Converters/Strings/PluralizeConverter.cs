@@ -87,7 +87,10 @@ namespace Aspid.MVVM.StarterKit
             return (magnitude % 10) switch
             {
                 1 => _oneForm,
-                2 or 3 or 4 => _fewForm,
+                // The constructor substitutes the many form for an absent few form; the field
+                // initializer cannot, so an Inspector-authored converter reaches here with an empty
+                // string and writes "2 " with the word missing.
+                2 or 3 or 4 => string.IsNullOrEmpty(_fewForm) ? _manyForm : _fewForm,
                 _ => _manyForm
             };
         }

@@ -40,16 +40,33 @@ namespace Aspid.MVVM.StarterKit
         /// Clamps the length of the specified vector.
         /// </summary>
         /// <param name="value">The vector to clamp.</param>
-        /// <returns>The clamped vector.</returns>
+        /// <returns>
+        /// The clamped vector. A pair typed the wrong way round is read in the order that holds the
+        /// vector inside both bounds, and a negative ceiling reads as zero.
+        /// </returns>
         public Vector3 Convert(Vector3 value)
         {
             var magnitude = value.magnitude;
             if (magnitude == 0f) return value;
 
-            if (magnitude > _maxMagnitude) return value * (_maxMagnitude / magnitude);
-            if (_minMagnitude > 0f && magnitude < _minMagnitude) return value * (_minMagnitude / magnitude);
+            return value * ClampScale(magnitude, _minMagnitude, _maxMagnitude);
+        }
 
-            return value;
+        // Taken raw, a ceiling below the floor shrinks a long vector past the floor and stretches a
+        // short one past the ceiling — one instance breaking both of its own bounds, which reads as
+        // "the binding stopped working" rather than as a mistake in the Inspector. A negative
+        // ceiling is worse: scaling by it turns the vector around, from a converter whose whole job
+        // is to keep a length. Ordering the pair and holding it at zero costs two comparisons and
+        // removes both traps, the way VectorClampComponentsConverter.ClampComponent does.
+        internal static float ClampScale(float magnitude, float minMagnitude, float maxMagnitude)
+        {
+            var lower = Mathf.Max(0f, Mathf.Min(minMagnitude, maxMagnitude));
+            var upper = Mathf.Max(0f, Mathf.Max(minMagnitude, maxMagnitude));
+
+            if (magnitude > upper) return upper / magnitude;
+            if (lower > 0f && magnitude < lower) return lower / magnitude;
+
+            return 1f;
         }
     }
 }

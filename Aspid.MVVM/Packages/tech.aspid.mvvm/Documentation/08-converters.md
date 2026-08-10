@@ -92,7 +92,7 @@ public interface ITwoWayConverter<TFrom, TTo> : IConverter<TFrom, TTo>
 
 ## Каталог
 
-В пакете 163 конвертера. В Inspector они разложены по группам — группа видна в выпадающем списке
+В пакете 210 конвертеров. В Inspector они разложены по группам — группа видна в выпадающем списке
 поля `Converter`.
 
 ### Aspid/Bool (8)
@@ -101,12 +101,9 @@ public interface ITwoWayConverter<TFrom, TTo> : IConverter<TFrom, TTo>
 `ObjectNullToBoolConverter`, `StringEmptyToBoolConverter`, `StringMatchToBoolConverter`,
 `UnityObjectNullToBoolConverter`
 
-`UnityObjectNullToBoolConverter` — не то же самое, что `ObjectNullToBoolConverter`: он использует
-перегруженный `==` Unity и потому видит уничтоженный объект, для которого `is null` вернёт `false`.
-
-`StringEmptyToBoolConverter` полем `StringEmptiness` выбирает, что считать отсутствующей строкой:
-`NullOrEmpty` (по умолчанию), `Null` — пустая строка считается заполненной, `NullOrWhiteSpace` —
-строка из пробелов считается пустой. Последнее и означает «пользователь что-нибудь ввёл?».
+> `StringEmptyToBoolConverter` полем `StringEmptiness` выбирает, что считать отсутствующей строкой:
+> `NullOrEmpty` (по умолчанию), `Null` — пустая строка считается заполненной, `NullOrWhiteSpace` —
+> строка из пробелов считается пустой. Последнее и означает «пользователь что-нибудь ввёл?».
 
 ### Aspid/Number (21)
 
@@ -115,37 +112,36 @@ public interface ITwoWayConverter<TFrom, TTo> : IConverter<TFrom, TTo>
 `EasingConverter`, `InverseLerpConverter`, `LerpNumberConverter`, `ModuloNumberConverter`,
 `NormalizedToPercentConverter`, `NumericCastConverter`, `PercentToNormalizedConverter`,
 `PowerNumberConverter`, `RemapNumberConverter`, `RoundNumberConverter`, `SmoothStepConverter`,
-`SnapToStepConverter`, `SumConstantThenScaleConverter`, `UnaryMathConverter`, `WrapNumberConverter`
+`SnapToStepConverter`, `SumConstantThenScaleConverter`, `UnaryMathConverter`,
+`WrapNumberConverter`
 
 > `NumericCastConverter` — единственный способ сузить число управляемо. Без него `long.MaxValue`,
 > попавший в int-биндер, молча уходит в отрицательное; `OverflowMode.Saturate` прижимает к границе,
 > `Checked` бросает.
 
-### Aspid/String (41)
+### Aspid/String (46)
 
-Форматирование чисел: `AbbreviatedNumberConverter` (`1234` → `1.2K`), `ByteSizeConverter`,
-`CurrencyConverter`, `DecimalFormatConverter`, `NumberFormatConverter`, `OrdinalConverter`
-(`3` → `3rd`), `PaddedNumberConverter`, `PercentStringConverter`, `RatioToStringConverter`,
-`RomanNumeralConverter`, `SignedNumberStringConverter`, `ThousandsSeparatorConverter`.
+`AbbreviatedNumberConverter`, `ByteSizeConverter`, `ConcatStringConverter`, `CurrencyConverter`,
+`DecimalFormatConverter`, `DefaultStringConverter`, `GenericToString`, `MaskStringConverter`,
+`NumberFormatConverter`, `ObjectToStringConverter`, `OrdinalConverter`, `PadStringConverter`,
+`PaddedNumberConverter`, `PercentStringConverter`, `PluralizeConverter`,
+`RatioToStringConverter`, `RepeatStringConverter`, `ReplaceStringConverter`,
+`ReverseStringConverter`, `RichTextColorConverter`, `RichTextNoParseConverter`,
+`RichTextSizeConverter`, `RichTextStyleConverter`, `RomanNumeralConverter`,
+`SanitizeRichTextConverter`, `SignedNumberStringConverter`, `SplitJoinStringConverter`,
+`StringFormatConverter`, `StringToBoolParseConverter`, `StringToDateTimeConverter`,
+`StringToDecimalConverter`, `StringToDoubleConverter`, `StringToEnumConverter`,
+`StringToFloatConverter`, `StringToIntConverter`, `StringToLongConverter`,
+`StringToTimeSpanConverter`, `StringToVector2Converter`, `StringToVector3Converter`,
+`SubstringConverter`, `TextCaseConverter`, `ThousandsSeparatorConverter`,
+`ThresholdRichTextColorConverter`, `TimeSpanToStringConverter`, `TrimStringConverter`,
+`TruncateStringConverter`
 
-Манипуляции со строкой: `ConcatStringConverter`, `DefaultStringConverter`, `MaskStringConverter`,
-`PadStringConverter`, `PluralizeConverter`, `RepeatStringConverter`, `ReplaceStringConverter`,
-`ReverseStringConverter`, `SplitJoinStringConverter`, `SubstringConverter`, `TextCaseConverter`,
-`TrimStringConverter`, `TruncateStringConverter`.
-
-Rich text (TextMeshPro): `RichTextColorConverter`, `RichTextNoParseConverter`,
-`RichTextSizeConverter`, `RichTextStyleConverter`, `SanitizeRichTextConverter`,
-`ThresholdRichTextColorConverter`.
-
-> `RichTextNoParseConverter` — для любого текста, который ввёл игрок. TMP исполняет разметку в любой
-> строке, которую получает: ник `<size=400%>` растянет каждый ярлык, где он покажется, на экране
-> каждого другого игрока.
-
-Разбор строки: `StringToBoolParseConverter`, `StringToDateTimeConverter`, `StringToEnumConverter`,
-`StringToFloatConverter`, `StringToIntConverter`, `StringToLongConverter`.
-
-Общее: `GenericToString`, `ObjectToStringConverter`, `StringFormatConverter`,
-`TimeSpanToStringConverter`.
+> Для любого текста, который ввёл игрок, нужен `SanitizeRichTextConverter` или
+> `RichTextNoParseConverter`. TMP исполняет разметку в любой строке, которую получает: ник
+> `<size=400%>` растянет каждый ярлык, где он покажется, на экране каждого другого игрока.
+> `RichTextNoParse` заворачивает всё в `<noparse>`; `SanitizeRichText` вырезает или экранирует теги
+> выборочно, оставляя белый список.
 
 ### Aspid/Time (12)
 
@@ -154,46 +150,62 @@ Rich text (TextMeshPro): `RichTextColorConverter`, `RichTextNoParseConverter`,
 `SecondsToTimeStringConverter`, `TimeSpanArithmeticConverter`, `TimeSpanFormatConverter`,
 `TimeSpanToNumberConverter`, `TimeUntilConverter`, `UnixTimestampToDateTimeConverter`
 
-### Aspid/Colour (14)
+### Aspid/Colour (21)
 
-`ColorAlphaConverter`, `ColorBlockAlphaConverter`, `ColorBlockFadeDurationConverter`,
-`ColorBlockTintConverter`, `ColorGrayscaleConverter`, `ColorHsvConverter`, `ColorLerpConverter`,
-`ColorTintConverter`, `ColorToColorBlockConverter`, `ColorToHtmlStringConverter`,
-`GradientEvaluateConverter`, `HashToColorConverter`, `ParseHtmlStringConverter`,
-`ThresholdColorConverter`
+`Color32ToColorConverter`, `ColorAlphaConverter`, `ColorBlockAlphaConverter`,
+`ColorBlockFadeDurationConverter`, `ColorBlockStateConverter`, `ColorBlockTintConverter`,
+`ColorChannelConverter`, `ColorGrayscaleConverter`, `ColorHsvConverter`, `ColorLerpConverter`,
+`ColorTintConverter`, `ColorToColor32Converter`, `ColorToColorBlockConverter`,
+`ColorToHtmlStringConverter`, `ColorToVector4Converter`, `GradientEvaluateConverter`,
+`HashToColorConverter`, `HdrIntensityConverter`, `ParseHtmlStringConverter`,
+`ThresholdColorConverter`, `Vector4ToColorConverter`
 
-### Aspid/Vector (23)
+### Aspid/Vector (43)
 
-Арифметика и форма: `FloatToVector2Converter`, `FloatToVector3Converter`,
-`Vector2SubstitutionConverter`, `Vector2ToVector2IntConverter`, `Vector2ToVector3Converter`,
-`Vector3ArithmeticConverter`, `Vector3SubstitutionConverter`, `Vector3ToFloatConverter`,
-`Vector3ToVector2Converter`, `Vector3ToVector3IntConverter`, `VectorClampMagnitudeConverter`,
-`VectorLerpConverter`, `VectorNormalizeConverter`, `VectorRoundConverter`.
-
-Комбинирование со сценой — берут часть компонент у привязанного вектора, часть у компонента сцены:
-`Vector2CombineConverter`, `BoxColliderCentreCombineConverter`, `BoxColliderSizeCombineConverter`,
-`CapsuleColliderCentreCombineConverter`, `RectTransformAnchoredPositionCombineConverter`,
+`BoundsCenterConverter`, `BoundsSizeConverter`, `BoundsToRectConverter`,
+`BoxCollider2DOffsetCombineConverter`, `BoxCollider2DSizeCombineConverter`,
+`BoxColliderCentreCombineConverter`, `BoxColliderSizeCombineConverter`,
+`CapsuleColliderCentreCombineConverter`, `FloatToVector2Converter`, `FloatToVector3Converter`,
+`RectToVector4Converter`, `RectTransformAnchoredPosition2DCombineConverter`,
+`RectTransformAnchoredPositionCombineConverter`, `RectTransformSizeDeltaCombineConverter`,
 `SphereColliderCentreCombineConverter`, `TransformEulerAnglesCombineConverter`,
-`TransformPositionCombineConverter`, `TransformScaleCombineConverter`.
+`TransformPosition2DCombineConverter`, `TransformPositionCombineConverter`,
+`TransformScaleCombineConverter`, `Vector2ArithmeticConverter`,
+`Vector2ClampComponentsConverter`, `Vector2ClampMagnitudeConverter`,
+`Vector2NormalizeConverter`, `Vector2RoundConverter`, `Vector2SubstitutionConverter`,
+`Vector2ToFloatConverter`, `Vector2ToVector2IntConverter`, `Vector2ToVector3Converter`,
+`Vector3ArithmeticConverter`, `Vector3SubstitutionConverter`, `Vector3ToFloatConverter`,
+`Vector3ToVector2Converter`, `Vector3ToVector3IntConverter`, `Vector3ToVector4Converter`,
+`Vector4SwizzleConverter`, `Vector4ToRectConverter`, `Vector4ToVector3Converter`,
+`VectorClampComponentsConverter`, `VectorClampMagnitudeConverter`, `VectorDistanceConverter`,
+`VectorLerpConverter`, `VectorNormalizeConverter`, `VectorRoundConverter`
 
-### Aspid/Rotation (9)
+> Конвертеры `*CombineConverter` берут часть компонент у привязанного вектора, часть — у компонента
+> сцены (`Transform`, `RectTransform`, коллайдер). Пары `*2D*` — для двумерных коллайдеров и
+> `Vector2`-свойств.
 
-`AngleToDirectionConverter`, `AngleToQuaternionConverter`, `AngleWrapConverter`,
-`DegreesToRadiansConverter`, `DirectionToAngleConverter`, `EulerToQuaternionConverter`,
-`LookRotationConverter`, `QuaternionOffsetConverter`, `QuaternionToEulerConverter`
+### Aspid/Rotation (15)
 
-### Aspid/Collection (6)
+`AngleDifferenceConverter`, `AngleToDirectionConverter`, `AngleToQuaternionConverter`,
+`AngleWrapConverter`, `DegreesToRadiansConverter`, `DirectionToAngleConverter`,
+`EulerToQuaternionConverter`, `LookRotationConverter`, `QuaternionOffsetConverter`,
+`QuaternionSlerpConverter`, `QuaternionToAngleConverter`, `QuaternionToEulerConverter`,
+`QuaternionToVector4Converter`, `RadiansToDegreesConverter`, `Vector4ToQuaternionConverter`
+
+### Aspid/Collection (11)
 
 `CollectionAggregateConverter`, `CollectionContainsToBoolConverter`, `CollectionCountConverter`,
-`CollectionElementAtConverter`, `CollectionEmptyToBoolConverter`, `ListToStringConverter`
+`CollectionCountToStringConverter`, `CollectionElementAtConverter`,
+`CollectionEmptyToBoolConverter`, `CollectionFirstConverter`, `CollectionLastConverter`,
+`CollectionTakeConverter`, `DictionaryLookupConverter`, `ListToStringConverter`
 
 ### Остальные группы
 
 | Группа | Конвертеры |
 |--------|-----------|
-| `Aspid/Enum` (6) | `EnumToBoolConverter`, `EnumToDropdownOptionDataConverter`, `EnumToIntConverter`, `EnumToStringConverter`, `EnumToValueConverter`, `IntToEnumConverter` |
+| `Aspid/Enum` (8) | `EnumFlagsToStringConverter`, `EnumMaskConverter`, `EnumToBoolConverter`, `EnumToDropdownOptionDataConverter`, `EnumToIntConverter`, `EnumToStringConverter`, `EnumToValueConverter`, `IntToEnumConverter` |
 | `Aspid/Object` (3) | `EqualityToBoolConverter`, `IndexToValueConverter`, `NullCoalesceConverter` |
-| `Aspid/Texture` (4) | `NormalizedToSpriteConverter`, `ObjectNameConverter`, `SpriteToTextureConverter`, `Texture2DToSpriteConverter` |
+| `Aspid/Texture` (6) | `NormalizedToSpriteConverter`, `ObjectNameConverter`, `SpriteToTextureConverter`, `StringToSpriteConverter`, `Texture2DToSpriteConverter`, `TextureToSpriteRectConverter` |
 | `Aspid/Layout` (3) | `IntToRectOffsetConverter`, `RectOffsetScaleConverter`, `Vector4ToRectOffsetConverter` |
 | `Aspid/Localization` (4) | `LocaleToStringConverter`, `LocalizedEnumConverter`, `LocalizedNumberConverter`, `LocalizedStringConverter` |
 | `Aspid/Asset` (2) | `ConverterAssetReference`, `MaterialInstanceConverter` |

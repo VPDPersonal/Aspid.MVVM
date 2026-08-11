@@ -101,11 +101,31 @@ namespace Aspid.MVVM.Tests
             Assert.DoesNotThrow(() => ((IBinder<string>)binder).SetValue("   "), "Пустое имя состояния уронило биндер");
         }
 
+        /// <summary>
+        /// A trigger that was set and never consumed stays armed and fires the moment its state becomes reachable, so
+        /// resetting it has to be expressible — and both operations now come from one base rather than from two copies of
+        /// the same command plumbing.
+        /// </summary>
+        [Test]
+        public void SetAndResetTrigger_ShareTheirPlumbing()
+        {
+            var animator = New();
+
+            var set = animator.gameObject.AddComponent<AnimatorSetTriggerMonoBinder>();
+            var reset = animator.gameObject.AddComponent<AnimatorResetTriggerMonoBinder>();
+
+            Assert.IsInstanceOf<AnimatorTriggerMonoBinder>(set, "Set-биндер больше не наследует общую базу");
+            Assert.IsInstanceOf<AnimatorTriggerMonoBinder>(reset, "Reset-биндер не наследует общую базу");
+            Assert.AreEqual(BindMode.OneWayToSource, reset.Mode, "Режим по умолчанию не OneWayToSource");
+        }
+
         [Test]
         public void TheSerializableTwins_AcceptTheirTargets()
         {
             var animator = New();
 
+            Assert.IsTrue(new AnimatorSetTriggerBinder(animator, "Hit").IsBind);
+            Assert.IsTrue(new AnimatorResetTriggerBinder(animator, "Hit").IsBind);
             Assert.IsTrue(new AnimatorSpeedBinder(animator).IsBind);
             Assert.IsTrue(new AnimatorControllerBinder(animator).IsBind);
             Assert.IsTrue(new AnimatorLayerWeightBinder(animator).IsBind);

@@ -6,18 +6,17 @@ using UnityEngine;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="TargetBinder{Animator}"/> that fires a trigger parameter on a Unity <see cref="Animator"/>
-    /// when the bound ViewModel command or action is invoked.
+    /// Abstract base <see cref="TargetBinder{Animator}"/> that hands the ViewModel one operation on a trigger parameter —
+    /// setting it or resetting it — as an <see cref="Action"/> or an <see cref="IRelayCommand"/>.
     /// </summary>
     /// <remarks>
     /// Only <see cref="BindMode.OneWayToSource"/> is supported. When binding is established, the binder
     /// exposes an internal <see cref="Animator.SetTrigger(string)"/> action to the ViewModel either as a plain <see cref="Action"/>
     /// or as an <see cref="IRelayCommand"/> whose <see cref="IRelayCommand.CanExecute()"/> mirrors <see cref="CanExecute()"/>.
     /// </remarks>
-    /// <include file="XmlExampleDoc-Animator-1.1.0.xml" path="doc//member[@name='AnimatorSetTriggerBinder']/*" />
     [Serializable]
     [BindModeOverride(BindMode.OneWayToSource)]
-    public class AnimatorSetTriggerBinder : TargetBinder<Animator>,
+    public abstract class AnimatorTriggerBinder : TargetBinder<Animator>,
         IReverseBinder<Action?>,
         IReverseBinder<IRelayCommand?>
     {
@@ -43,14 +42,14 @@ namespace Aspid.MVVM.StarterKit
         protected string TriggerName { get; private set; }
 
         /// <summary>
-        /// Initializes a new instance of <see cref="AnimatorSetTriggerBinder"/>.
+        /// Initializes a new instance of <see cref="AnimatorTriggerBinder"/>.
         /// </summary>
         /// <param name="target">The <see cref="Animator"/> whose trigger parameter is fired.</param>
         /// <param name="triggerName">The name of the trigger Animator parameter.</param>
         /// <exception cref="ArgumentNullException">
         /// Thrown when <paramref name="target"/> or <paramref name="triggerName"/> is <see langword="null"/>.
         /// </exception>
-        public AnimatorSetTriggerBinder(Animator target, string triggerName)
+        protected AnimatorTriggerBinder(Animator target, string triggerName)
             : base(target, BindMode.OneWayToSource)
         {
             TriggerName = triggerName ?? throw new ArgumentNullException(nameof(triggerName));
@@ -62,11 +61,17 @@ namespace Aspid.MVVM.StarterKit
         public void NotifyCanExecuteChanged() =>
             _command?.NotifyCanExecuteChanged();
 
-        private void SetTrigger()
+        private void Run()
         {
             if (!CanExecute()) return;
-            Target.SetTrigger(TriggerName);
+            Apply(TriggerName);
         }
+
+        /// <summary>
+        /// Performs the operation this binder exposes on <paramref name="triggerName"/>.
+        /// </summary>
+        /// <param name="triggerName">The name of the trigger parameter, already checked to exist.</param>
+        protected abstract void Apply(string triggerName);
 
         /// <summary>
         /// Called when binding is established.
@@ -76,12 +81,12 @@ namespace Aspid.MVVM.StarterKit
         {
             if (_reverseCommand is not null)
             {
-                _command = new RelayCommand(SetTrigger, CanExecute);
+                _command = new RelayCommand(Run, CanExecute);
                 _reverseCommand.Invoke(_command);
             }
             else
             {
-                _reverseAction?.Invoke(SetTrigger);
+                _reverseAction?.Invoke(Run);
             }
         }
 
@@ -108,5 +113,44 @@ namespace Aspid.MVVM.StarterKit
         protected virtual bool CanExecute() =>
             Target && Target.gameObject.activeInHierarchy &&
             _probe.IsUsable(Target, TriggerName, AnimatorControllerParameterType.Trigger, this);
+    }
+
+    /// <summary>
+    /// Concrete <see cref="AnimatorTriggerBinder"/> that sets the trigger parameter.
+    /// </summary>
+    /// <remarks>
+    /// The original binder of this family: the ViewModel says when the animation starts.
+    /// </remarks>
+    /// <include file="XmlExampleDoc-Animator-1.1.0.xml" path="doc//member[@name='AnimatorSetTriggerBinder']/*" />
+    [Serializable]
+    public class AnimatorSetTriggerBinder : AnimatorTriggerBinder
+    {
+        /// <inheritdoc/>
+        public AnimatorSetTriggerBinder(Animator target, string triggerName)
+            : base(target, triggerName) { }
+
+        /// <inheritdoc/>
+        protected override void Apply(string triggerName) =>
+            Target.SetTrigger(triggerName);
+    }
+
+    /// <summary>
+    /// Concrete <see cref="AnimatorTriggerBinder"/> that resets the trigger parameter.
+    /// </summary>
+    /// <remarks>
+    /// A trigger that was set and never consumed stays armed, and the animation fires the moment its state becomes
+    /// reachable — often seconds later, in a state nobody connected to it. Resetting is how that is undone, and nothing
+    /// in the package could do it.
+    /// </remarks>
+    [Serializable]
+    public class AnimatorResetTriggerBinder : AnimatorTriggerBinder
+    {
+        /// <inheritdoc/>
+        public AnimatorResetTriggerBinder(Animator target, string triggerName)
+            : base(target, triggerName) { }
+
+        /// <inheritdoc/>
+        protected override void Apply(string triggerName) =>
+            Target.ResetTrigger(triggerName);
     }
 }

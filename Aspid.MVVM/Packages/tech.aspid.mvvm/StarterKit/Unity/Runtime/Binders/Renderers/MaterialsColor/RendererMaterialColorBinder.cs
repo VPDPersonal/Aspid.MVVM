@@ -17,10 +17,10 @@ namespace Aspid.MVVM.StarterKit
         [Tooltip("The name of the shader color property to set on all materials. Defaults to \"_BaseColor\".")]
         [SerializeField] private string _colorPropertyName = "_BaseColor";
         
-        private int? _colorPropertyId;
+        private ShaderPropertyId _colorPropertyId;
         private Material[] _materials;
         
-        private int ColorPropertyId => _colorPropertyId ??= Shader.PropertyToID(_colorPropertyName);
+        private int ColorPropertyId => _colorPropertyId.Resolve(_colorPropertyName);
         
         protected sealed override Color Property
         {

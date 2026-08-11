@@ -159,6 +159,41 @@ namespace Aspid.MVVM.Tests
             binder.SetValue("value");
         }
 
+        /// <summary>
+        /// A ListView owns its recycling, so the binder only hands it a source and tells it what changed — and the source
+        /// it takes is a mutable <see cref="System.Collections.IList"/>, which a ViewModel's collection is not.
+        /// </summary>
+        [Test]
+        public void ListViewItemsSource_WrapsAReadOnlyCollectionWithoutCopyingIt()
+        {
+            var (document, listView) = NewDocument<ListView>("items");
+            var binder = NewBinder<ElementListViewItemsSourceMonoBinder>(document, "items");
+
+            var items = new List<object> { "a", "b", "c" };
+            ((IBinder<System.Collections.Generic.IReadOnlyList<object>>)binder).SetValue(items);
+
+            Assert.AreEqual(3, listView.itemsSource.Count, "Источник не доехал до ListView");
+            Assert.AreEqual("b", listView.itemsSource[1], "Элементы источника не совпадают с коллекцией");
+
+            Assert.Throws<System.NotSupportedException>(() => listView.itemsSource.Add("d"),
+                "Источник позволил писать в коллекцию ViewModel");
+        }
+
+        /// <summary>
+        /// A recycled panel must not show the previous ViewModel's items for a frame.
+        /// </summary>
+        [Test]
+        public void ListViewItemsSource_IsClearedOnUnbind()
+        {
+            var (document, listView) = NewDocument<ListView>("items");
+            var binder = NewBinder<ElementListViewItemsSourceMonoBinder>(document, "items");
+
+            binder.Bind(new OneWayBindableMember<System.Collections.Generic.IReadOnlyList<object>>(new List<object> { "a" }));
+            binder.Unbind();
+
+            Assert.IsNull(listView.itemsSource, "Источник не очищен при отвязке");
+        }
+
         [Test]
         public void WithoutADocument_TheBinderSaysSo()
         {

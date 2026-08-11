@@ -18,6 +18,7 @@ namespace Aspid.MVVM.StarterKit
     /// onBoundValueChanged and onUnboundValueChanged factory functions respectively.
     /// </remarks>
     /// <include file="XmlExampleDoc-UnityGenerics-1.1.0.xml" path="doc//member[@name='UnityGenericTwoWayBinder{1}']/*" />
+    [System.Obsolete("Use the GenericTwoWay binder instead: it takes a plain Action, which a UnityAction converts to implicitly. The Unity-flavoured copies exist only for that conversion and will be removed in the next major version.")]
     public class UnityGenericTwoWayBinder<T> : Binder, IBinder<T>, IReverseBinder<T>
     {
         /// <summary>
@@ -125,6 +126,7 @@ namespace Aspid.MVVM.StarterKit
     /// Otherwise behaves identically to <see cref="UnityGenericTwoWayBinder{T}"/>.
     /// </remarks>
     /// <include file="XmlExampleDoc-UnityGenerics-1.1.0.xml" path="doc//member[@name='UnityGenericTwoWayBinder{2}']/*" />
+    [System.Obsolete("Use the GenericTwoWay binder instead: it takes a plain Action, which a UnityAction converts to implicitly. The Unity-flavoured copies exist only for that conversion and will be removed in the next major version.")]
     public class UnityGenericTwoWayBinder<TTarget, T> : Binder, IBinder<T>, IReverseBinder<T>
     {
         /// <summary>

@@ -32,6 +32,7 @@ namespace Aspid.MVVM
         /// <param name="mode">The binding mode to check.</param>
         /// <returns><see langword="true"/> if the mode is <see cref="BindMode.None"/>; otherwise, <see langword="false"/>.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [System.Obsolete("Compare with BindMode.None directly. Nothing in the package calls this, and the name reads as a question about validity rather than about one enum member. Will be removed in the next major version.")]
         public static bool IsNone(this BindMode mode) =>
             mode is BindMode.None;
     }

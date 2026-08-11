@@ -152,6 +152,10 @@ namespace Aspid.MVVM.Tests
                 .GroupBy(type => type.BaseType!.IsGenericType
                     ? type.BaseType.GetGenericTypeDefinition()
                     : type.BaseType)
+                // Прямые наследники корня — не семейство: их роднит только то, что они биндеры. Среди них
+                // и сериализуемые биндеры для полей View, и чисто кодовые кастеры с ViewBinder, и большинство
+                // здесь ничего не значит — оно меняется от того, кого добавили последним.
+                .Where(family => family.Key != typeof(Binder))
                 .Where(family => family.Count(type => type.IsSerializable) > family.Count() / 2)
                 .SelectMany(family => family.Where(type => !type.IsSerializable)
                     .Select(type => $"{type.FullName} — базовый {Name(family.Key)}, "

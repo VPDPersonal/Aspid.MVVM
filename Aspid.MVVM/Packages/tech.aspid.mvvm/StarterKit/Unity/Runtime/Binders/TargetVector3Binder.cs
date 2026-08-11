@@ -1,6 +1,5 @@
 #nullable enable
 using UnityEngine;
-using System.Runtime.CompilerServices;
 #if UNITY_2023_1_OR_NEWER
 using Converter = Aspid.MVVM.StarterKit.IConverter<UnityEngine.Vector3, UnityEngine.Vector3>;
 #else
@@ -23,7 +22,7 @@ namespace Aspid.MVVM.StarterKit
     {
         /// <inheritdoc/>
         protected TargetVector3Binder(TTarget target, IConverter<Vector3, Vector3>? converter, BindMode mode = BindMode.OneWay)
-            : base(target, GetConverter(converter), mode) { }
+            : base(target, ConverterBridgeUnity.Vector3(converter), mode) { }
 
         /// <summary>
         /// Sets the bound property to <paramref name="value"/>.
@@ -73,14 +72,5 @@ namespace Aspid.MVVM.StarterKit
         public void SetValue(double value) =>
             SetValue((float)value);
         
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static Converter? GetConverter(IConverter<Vector3, Vector3>? converter)
-        {
-            #if UNITY_2023_1_OR_NEWER
-            return converter;
-            #else
-            return converter?.ToConvertSpecific();
-            #endif
-        }
     }
 }

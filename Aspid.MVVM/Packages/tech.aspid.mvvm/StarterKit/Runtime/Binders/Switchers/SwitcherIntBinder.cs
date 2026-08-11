@@ -1,4 +1,3 @@
-using System.Runtime.CompilerServices;
 #if UNITY_2023_1_OR_NEWER
 using Converter = Aspid.MVVM.StarterKit.IConverter<int, int>;
 #else
@@ -22,16 +21,7 @@ namespace Aspid.MVVM.StarterKit
             int falseValue,
             IConverter<int, int>? converter, 
             BindMode mode = BindMode.OneWay)
-            : base(target, trueValue, falseValue, GetConverter(converter), mode) { }
+            : base(target, trueValue, falseValue, ConverterBridge.Int(converter), mode) { }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static Converter? GetConverter(IConverter<int, int>? converter)
-        {
-            #if UNITY_2023_1_OR_NEWER
-            return converter;
-            #else
-            return converter?.ToConvertSpecific();
-            #endif
-        }
     }
 }

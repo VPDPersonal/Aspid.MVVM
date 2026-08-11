@@ -1,7 +1,6 @@
 #nullable enable
 using System;
 using UnityEngine;
-using System.Runtime.CompilerServices;
 #if UNITY_2023_1_OR_NEWER
 using Converter = Aspid.MVVM.StarterKit.IConverter<UnityEngine.Quaternion, UnityEngine.Quaternion>;
 #else
@@ -31,7 +30,7 @@ namespace Aspid.MVVM.StarterKit
         /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/> — a rotation property raises no change event to listen to.</param>
         /// <exception cref="ArgumentException">Thrown when <paramref name="mode"/> is <see cref="BindMode.TwoWay"/>.</exception>
         protected TargetQuaternionBinder(TTarget target, IConverter<Quaternion, Quaternion>? converter, BindMode mode = BindMode.OneWay)
-            : base(target, GetConverter(converter), mode)
+            : base(target, ConverterBridgeUnity.Quaternion(converter), mode)
         {
             mode.ThrowExceptionIfMatches(BindMode.TwoWay);
         }
@@ -64,14 +63,5 @@ namespace Aspid.MVVM.StarterKit
         public void SetValue(float value) =>
             base.SetValue(Quaternion.Euler(new Vector3(value, value, value)));
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static Converter? GetConverter(IConverter<Quaternion, Quaternion>? converter)
-        {
-            #if UNITY_2023_1_OR_NEWER
-            return converter;
-            #else
-            return converter?.ToConvertSpecific();
-            #endif
-        }
     }
 }

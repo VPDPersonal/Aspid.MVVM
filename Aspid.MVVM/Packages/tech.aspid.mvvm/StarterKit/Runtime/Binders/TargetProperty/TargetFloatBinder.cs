@@ -1,5 +1,4 @@
 using System;
-using System.Runtime.CompilerServices;
 #if UNITY_2023_1_OR_NEWER
 using Converter = Aspid.MVVM.StarterKit.IConverter<float, float>;
 #else
@@ -45,7 +44,7 @@ namespace Aspid.MVVM.StarterKit
         
         /// <inheritdoc/>
          protected TargetFloatBinder(TTarget target, IConverter<float, float>? converter, BindMode mode = BindMode.OneWay)
-             : base(target, GetConverter(converter), mode) { }
+             : base(target, ConverterBridge.Float(converter), mode) { }
 
         /// <summary>
         /// Sets the target float property from an <see cref="int"/> value.
@@ -93,14 +92,5 @@ namespace Aspid.MVVM.StarterKit
             DoubleValueChanged?.Invoke(value);
         }
         
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static Converter? GetConverter(IConverter<float, float>? converter)
-        {
-            #if UNITY_2023_1_OR_NEWER
-            return converter;
-            #else
-            return converter?.ToConvertSpecific();
-            #endif
-        }
     }
 }

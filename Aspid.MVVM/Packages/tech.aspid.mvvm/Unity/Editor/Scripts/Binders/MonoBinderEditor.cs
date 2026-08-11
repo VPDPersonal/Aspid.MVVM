@@ -71,10 +71,13 @@ namespace Aspid.MVVM
                 {
                     var view = ViewProperty.Value;
 
+                    // Валидация умеет только MonoView: у остальных реализаций IView нет сцены, по которой
+                    // можно свериться. Раньше здесь бросался NullReferenceException — из OnDisable, где
+                    // исключение ломает разборку инспектора, и с именем локальной переменной вместо причины.
                     if (view is not null && string.IsNullOrEmpty(IdProperty.Value))
                     {
-                        if (view is not MonoView monoView) throw new NullReferenceException(nameof(monoView));
-                        ViewAndMonoBinderSyncValidator.ValidateView(monoView);
+                        if (view is MonoView monoView) ViewAndMonoBinderSyncValidator.ValidateView(monoView);
+                        else Debug.LogWarning($"[{nameof(MonoBinderEditor)}] Binder id sync is only validated for a {nameof(MonoView)}; '{view.GetType().Name}' is left alone.", target);
                     }
                 }
             }

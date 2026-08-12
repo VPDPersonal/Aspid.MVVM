@@ -18,15 +18,18 @@ namespace Aspid.MVVM.StarterKit
         [SerializeField] private string _colorPropertyName = "_BaseColor";
         
         private int? _colorPropertyId;
+        private Material[] _materials;
         
         private int ColorPropertyId => _colorPropertyId ??= Shader.PropertyToID(_colorPropertyName);
         
         protected sealed override Color Property
         {
-            get => Target.material.GetColor(ColorPropertyId);
+            get => Target.sharedMaterial.GetColor(ColorPropertyId);
             set
             {
-                foreach (var material in Target.materials)
+                _materials ??= Target.materials;
+
+                foreach (var material in _materials)
                     material.SetColor(ColorPropertyId, value);
             }
         }
@@ -48,5 +51,15 @@ namespace Aspid.MVVM.StarterKit
             mode.ThrowExceptionIfMatches(BindMode.TwoWay);
             _colorPropertyName = colorPropertyName;
         }
+
+        /// <summary>
+        /// Called after unbinding. Clears the cached materials array so it is re-fetched on the next bind.
+        /// </summary>
+        protected override void OnUnbound()
+        {
+            _materials = null;
+            base.OnUnbound();
+        }
+
     }
 }

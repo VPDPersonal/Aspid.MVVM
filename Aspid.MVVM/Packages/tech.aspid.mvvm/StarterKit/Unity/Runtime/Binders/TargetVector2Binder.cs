@@ -1,0 +1,92 @@
+#nullable enable
+using UnityEngine;
+using System.Runtime.CompilerServices;
+#if UNITY_2023_1_OR_NEWER
+using Converter = Aspid.MVVM.StarterKit.IConverter<UnityEngine.Vector2, UnityEngine.Vector2>;
+#else
+using Converter = Aspid.MVVM.StarterKit.IConverterVector2;
+#endif
+
+// ReSharper disable once CheckNamespace
+namespace Aspid.MVVM.StarterKit
+{
+    /// <summary>
+    /// Abstract base <see cref="TargetBinder{T1, T2, T3}">TargetBinder&lt;TTarget, Vector2, IConverter&lt;Vector2, Vector2&gt;&gt;</see> that binds a <see cref="Vector2"/> property,
+    /// implementing <see cref="IVectorBinder"/> and <see cref="INumberBinder"/>.
+    /// A <see cref="Vector3"/> is accepted by dropping its Z component, and scalar values
+    /// (<see langword="int"/>, <see langword="long"/>, <see langword="float"/>, <see langword="double"/>)
+    /// are broadcast to both vector components as <c>new Vector2(value, value)</c>.
+    /// </summary>
+    /// <remarks>
+    /// Use this base rather than <see cref="TargetVector3Binder{TTarget}"/> for properties that are genuinely
+    /// two-dimensional. A Vector3 base reports <c>Vector3(x, y, 0)</c> back to the ViewModel in
+    /// <see cref="BindMode.OneWayToSource"/>, which is a value the property never held.
+    /// </remarks>
+    /// <typeparam name="TTarget">The type of the target object that exposes the target <see cref="Vector2"/> property.</typeparam>
+    public abstract class TargetVector2Binder<TTarget> : TargetBinder<TTarget, Vector2, Converter>,
+        IVectorBinder,
+        INumberBinder
+    {
+        /// <inheritdoc/>
+        protected TargetVector2Binder(TTarget target, IConverter<Vector2, Vector2>? converter, BindMode mode = BindMode.OneWay)
+            : base(target, GetConverter(converter), mode) { }
+
+        /// <summary>
+        /// Sets the bound property to <paramref name="value"/>.
+        /// </summary>
+        /// <param name="value">The vector to apply.</param>
+        /// <remarks>
+        /// Redeclared rather than inherited on purpose. Overload resolution stops at the most derived type that
+        /// declares an applicable <c>SetValue</c>, and <see cref="Vector2"/> converts implicitly to
+        /// <see cref="Vector3"/> — without this member a direct <c>SetValue(someVector2)</c> would bind to
+        /// <see cref="SetValue(Vector3)"/> and make a round trip through a three-component vector.
+        /// </remarks>
+        public new void SetValue(Vector2 value) =>
+            base.SetValue(value);
+
+        /// <summary>
+        /// Sets the bound property by dropping the Z component of <paramref name="value"/>.
+        /// </summary>
+        /// <param name="value">The 3D vector whose X and Y components are applied.</param>
+        public void SetValue(Vector3 value) =>
+            base.SetValue(value);
+
+        /// <summary>
+        /// Sets the bound property to <c>new <see cref="Vector2"/>(<paramref name="value"/>, <paramref name="value"/>)</c>.
+        /// </summary>
+        /// <param name="value">The scalar value applied to both vector components.</param>
+        public void SetValue(int value) =>
+            base.SetValue(new Vector2(value, value));
+
+        /// <summary>
+        /// Sets the bound property to <c>new <see cref="Vector2"/>(<paramref name="value"/>, <paramref name="value"/>)</c>.
+        /// </summary>
+        /// <param name="value">The scalar value applied to both vector components.</param>
+        public void SetValue(long value) =>
+            base.SetValue(new Vector2(value, value));
+
+        /// <summary>
+        /// Sets the bound property to <c>new <see cref="Vector2"/>(<paramref name="value"/>, <paramref name="value"/>)</c>.
+        /// </summary>
+        /// <param name="value">The scalar value applied to both vector components.</param>
+        public void SetValue(float value) =>
+            base.SetValue(new Vector2(value, value));
+
+        /// <summary>
+        /// Sets the bound property to <c>new <see cref="Vector2"/>(<paramref name="value"/>, <paramref name="value"/>)</c>.
+        /// </summary>
+        /// <param name="value">The scalar value applied to both vector components. Narrowed to <see langword="float"/> — precision may be lost.</param>
+        public void SetValue(double value) =>
+            SetValue((float)value);
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private static Converter? GetConverter(IConverter<Vector2, Vector2>? converter)
+        {
+            #if UNITY_2023_1_OR_NEWER
+            return converter;
+            #else
+            return converter?.ToConvertSpecific();
+            #endif
+        }
+    }
+}

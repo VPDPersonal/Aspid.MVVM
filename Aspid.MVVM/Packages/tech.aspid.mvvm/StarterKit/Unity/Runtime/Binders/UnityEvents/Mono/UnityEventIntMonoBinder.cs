@@ -17,6 +17,7 @@ namespace Aspid.MVVM.StarterKit
     [AddBinderContextMenu(typeof(Component), Path = "Add General Binder/UnityEvent/UnityEvent Binder – Int")]
     public sealed partial class UnityEventIntMonoBinder : MonoBinder, INumberBinder
     {
+        [Tooltip("Optional converter applied to the value before it is used. Leave empty to use the value as-is.")]
         [SerializeReference] private Converter _converter;
 
         [Tooltip("The event invoked with the bound value.")]

@@ -12,8 +12,10 @@ namespace Aspid.MVVM.StarterKit
     [AddComponentMenu("Aspid/MVVM/Binders/UI/Command/Toggle Binder – Command")]
     public partial class ToggleCommandMonoBinder : ComponentMonoBinder<Toggle>, IBinder<IRelayCommand>, IBinder<IRelayCommand<bool>>
     {
+        [Tooltip("How the target reflects the command's CanExecute state: by interactability, by enabling the object, or not at all.")]
         [SerializeField] private InteractableMode _interactableMode = InteractableMode.Interactable;
         
+        [Tooltip("An extra view told whether the command can execute. Leave empty for no feedback beyond the mode above.")]
         [SerializeReference] private ICanExecuteView _customInteractable;
         
         private IRelayCommand _command;
@@ -98,11 +100,14 @@ namespace Aspid.MVVM.StarterKit
     /// <typeparam name="T">The type of the additional parameter forwarded alongside the isOn value.</typeparam>
     public abstract partial class ToggleCommandMonoBinder<T> : ComponentMonoBinder<Toggle>, IBinder<IRelayCommand<bool, T>>
     {
+        [Tooltip("The argument passed to the command each time it is executed.")]
         [SerializeField] private T _param;
         
+        [Tooltip("How the target reflects the command's CanExecute state: by interactability, by enabling the object, or not at all.")]
         [Space]
         [SerializeField] private InteractableMode _interactableMode = InteractableMode.Interactable;
         
+        [Tooltip("An extra view told whether the command can execute. Leave empty for no feedback beyond the mode above.")]
         [SerializeReference] private ICanExecuteView _customInteractable;
         
         private IRelayCommand<bool, T> _command;
@@ -176,12 +181,16 @@ namespace Aspid.MVVM.StarterKit
     /// <typeparam name="T2">The type of the second additional parameter forwarded alongside the isOn value.</typeparam>
     public abstract partial class ToggleCommandMonoBinder<T1, T2> : ComponentMonoBinder<Toggle>, IBinder<IRelayCommand<bool, T1, T2>>
     {
+        [Tooltip("The first argument passed to the command each time it is executed.")]
         [SerializeField] private T1 _param1;
+        [Tooltip("The second argument passed to the command each time it is executed.")]
         [SerializeField] private T2 _param2;
         
+        [Tooltip("How the target reflects the command's CanExecute state: by interactability, by enabling the object, or not at all.")]
         [Space]
         [SerializeField] private InteractableMode _interactableMode = InteractableMode.Interactable;
         
+        [Tooltip("An extra view told whether the command can execute. Leave empty for no feedback beyond the mode above.")]
         [SerializeReference] private ICanExecuteView _customInteractable;
         
         private IRelayCommand<bool, T1, T2> _command;
@@ -265,13 +274,18 @@ namespace Aspid.MVVM.StarterKit
     /// <typeparam name="T3">The type of the third additional parameter forwarded alongside the isOn value.</typeparam>
     public abstract partial class ToggleCommandMonoBinder<T1, T2, T3> : ComponentMonoBinder<Toggle>, IBinder<IRelayCommand<bool, T1, T2, T3>>
     {
+        [Tooltip("The first argument passed to the command each time it is executed.")]
         [SerializeField] private T1 _param1;
+        [Tooltip("The second argument passed to the command each time it is executed.")]
         [SerializeField] private T2 _param2;
+        [Tooltip("The third argument passed to the command each time it is executed.")]
         [SerializeField] private T3 _param3;
         
+        [Tooltip("How the target reflects the command's CanExecute state: by interactability, by enabling the object, or not at all.")]
         [Space]
         [SerializeField] private InteractableMode _interactableMode = InteractableMode.Interactable;
         
+        [Tooltip("An extra view told whether the command can execute. Leave empty for no feedback beyond the mode above.")]
         [SerializeReference] private ICanExecuteView _customInteractable;
         
         private IRelayCommand<bool, T1, T2, T3> _command;

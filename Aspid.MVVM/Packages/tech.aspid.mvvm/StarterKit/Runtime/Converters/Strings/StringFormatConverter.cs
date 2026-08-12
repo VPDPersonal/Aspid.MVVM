@@ -10,6 +10,7 @@ namespace Aspid.MVVM.StarterKit
     [Serializable]
     public class StringFormatConverter : GenericToString<string>, IConverterString
     {
+        [Tooltip("When enabled, an empty or null value is formatted as well; otherwise it is passed through untouched.")]
         [SerializeField] private bool _formatEmptyValues;
 
         public StringFormatConverter() { }

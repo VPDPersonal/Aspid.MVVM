@@ -12,6 +12,7 @@ namespace Aspid.MVVM.StarterKit
     [AddBinderContextMenu(typeof(Graphic), serializePropertyNames: "m_Color", SubPath = "Switcher")]
     public sealed class GraphicColorComponentSwitcherMonoBinder : SwitcherFloatMonoBinder<Graphic>
     {
+        [Tooltip("Which channel of the colour the bound value writes to; the others keep their current value.")]
         [SerializeField] private ColorComponent _colorComponent = ColorComponent.A;
 
         /// <inheritdoc/>

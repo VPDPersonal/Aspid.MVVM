@@ -13,9 +13,11 @@ namespace Aspid.MVVM.StarterKit
     [Serializable]
     public sealed class ToggleCommandBinder : TargetBinder<Toggle>, IBinder<IRelayCommand>, IBinder<IRelayCommand<bool>>
     {
+        [Tooltip("How the target reflects the command's CanExecute state: by interactability, by enabling the object, or not at all.")]
         // ReSharper disable once MemberInitializerValueIgnored
         [SerializeField] private InteractableMode _interactableMode = InteractableMode.Interactable;
         
+        [Tooltip("An extra view told whether the command can execute. Leave empty for no feedback beyond the mode above.")]
         [SerializeReference] private ICanExecuteView _customInteractable;
         
         private IRelayCommand _command;
@@ -127,12 +129,15 @@ namespace Aspid.MVVM.StarterKit
     [Serializable]
     public class ToggleCommandBinder<T> : TargetBinder<Toggle>, IBinder<IRelayCommand<bool, T>>
     {
+        [Tooltip("The argument passed to the command each time it is executed.")]
         [SerializeField] private T _param;
         
+        [Tooltip("How the target reflects the command's CanExecute state: by interactability, by enabling the object, or not at all.")]
         // ReSharper disable once MemberInitializerValueIgnored
         [Space]
         [SerializeField] private InteractableMode _interactableMode = InteractableMode.Interactable;
                 
+        [Tooltip("An extra view told whether the command can execute. Leave empty for no feedback beyond the mode above.")]
         [SerializeReference] private ICanExecuteView _customInteractable;
         
         private IRelayCommand<bool, T> _command;
@@ -245,13 +250,17 @@ namespace Aspid.MVVM.StarterKit
     [Serializable]
     public class ToggleCommandBinder<T1, T2> : TargetBinder<Toggle>, IBinder<IRelayCommand<bool, T1, T2>>
     {
+        [Tooltip("The first argument passed to the command each time it is executed.")]
         [SerializeField] private T1 _param1;
+        [Tooltip("The second argument passed to the command each time it is executed.")]
         [SerializeField] private T2 _param2;
         
+        [Tooltip("How the target reflects the command's CanExecute state: by interactability, by enabling the object, or not at all.")]
         // ReSharper disable once MemberInitializerValueIgnored
         [Space]
         [SerializeField] private InteractableMode _interactableMode = InteractableMode.Interactable;
                 
+        [Tooltip("An extra view told whether the command can execute. Leave empty for no feedback beyond the mode above.")]
         [SerializeReference] private ICanExecuteView _customInteractable;
 
         private IRelayCommand<bool, T1, T2> _command;
@@ -382,14 +391,19 @@ namespace Aspid.MVVM.StarterKit
     [Serializable]
     public class ToggleCommandBinder<T1, T2, T3> : TargetBinder<Toggle>, IBinder<IRelayCommand<bool, T1, T2, T3>>
     {
+        [Tooltip("The first argument passed to the command each time it is executed.")]
         [SerializeField] private T1 _param1;
+        [Tooltip("The second argument passed to the command each time it is executed.")]
         [SerializeField] private T2 _param2;
+        [Tooltip("The third argument passed to the command each time it is executed.")]
         [SerializeField] private T3 _param3;
         
+        [Tooltip("How the target reflects the command's CanExecute state: by interactability, by enabling the object, or not at all.")]
         // ReSharper disable once MemberInitializerValueIgnored
         [Space]
         [SerializeField] private InteractableMode _interactableMode = InteractableMode.Interactable;
                 
+        [Tooltip("An extra view told whether the command can execute. Leave empty for no feedback beyond the mode above.")]
         [SerializeReference] private ICanExecuteView _customInteractable;
 
         private IRelayCommand<bool, T1, T2, T3> _command;

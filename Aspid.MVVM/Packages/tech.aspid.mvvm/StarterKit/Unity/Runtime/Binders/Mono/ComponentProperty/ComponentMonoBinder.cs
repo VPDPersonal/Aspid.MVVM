@@ -82,6 +82,7 @@ namespace Aspid.MVVM.StarterKit
         where TComponent : Component
         where TConverter : IConverter<TProperty, TProperty>
     {
+        [Tooltip("Optional converter applied to the value before it is written to the component. Leave empty to use the value as-is.")]
         [SerializeReference] private TConverter _converter;
 
         /// <inheritdoc/>

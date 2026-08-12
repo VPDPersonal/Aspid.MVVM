@@ -11,7 +11,9 @@ namespace Aspid.MVVM.StarterKit
     [Serializable]
     public sealed class ParseHtmlStringConverter : IConverterStringToColor
     {
+        [Tooltip("When enabled, an unparsable colour string throws instead of falling back to the default below.")]
         [SerializeField] private bool _throwException;
+        [Tooltip("The colour used when the string cannot be parsed and throwing is disabled.")]
         [SerializeField] private Color _defaultColor = new(r: 0, g: 0, b: 0, a: 0);
 
         /// <summary>

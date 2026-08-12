@@ -10,6 +10,7 @@ namespace Aspid.MVVM.StarterKit
     [Serializable]
     public sealed class TransformScaleCombineConverter : Vector3CombineConverter
     {
+        [Tooltip("The transform whose current value fills the components the bound value does not supply.")]
         [SerializeField] private Transform _transform;
 
         /// <summary>

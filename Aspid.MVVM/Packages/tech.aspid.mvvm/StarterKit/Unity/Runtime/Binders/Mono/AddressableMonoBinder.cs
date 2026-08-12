@@ -19,6 +19,7 @@ namespace Aspid.MVVM.StarterKit
 	/// <typeparam name="TAsset">The type of Addressable asset to load and apply.</typeparam>
 	public abstract partial class AddressableMonoBinder<TAsset> : MonoBinder, IBinder<string>, IBinder<IKeyEvaluator>
 	{
+		[Tooltip("When enabled, the previous asset stays loaded until the new one is ready, so nothing blinks between them.")]
 		[SerializeField] private bool _seamlessSwap;
 
 		private AsyncOperationHandle<TAsset> _currentHandle;
@@ -179,6 +180,7 @@ namespace Aspid.MVVM.StarterKit
 		IBinder<IKeyEvaluator>
 		where TComponent : Component
 	{
+		[Tooltip("When enabled, the previous asset stays loaded until the new one is ready, so nothing blinks between them.")]
 		[SerializeField] private bool _seamlessSwap;
 
 		private AsyncOperationHandle<TAsset> _currentHandle;

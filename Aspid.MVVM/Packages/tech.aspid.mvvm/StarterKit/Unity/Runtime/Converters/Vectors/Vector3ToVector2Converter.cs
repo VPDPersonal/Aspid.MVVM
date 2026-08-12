@@ -12,6 +12,7 @@ namespace Aspid.MVVM.StarterKit
     [Serializable]
     public sealed class Vector3ToVector2Converter : IConverterVector3ToVector2
     {
+        [Tooltip("Which components of the source vector are carried over into the result.")]
         [SerializeField] private Values _values = Values.XY;
 
         /// <summary>

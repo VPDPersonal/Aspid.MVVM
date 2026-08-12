@@ -20,6 +20,7 @@ namespace Aspid.MVVM.StarterKit
         /// <inheritdoc/>
         public event Action<bool> ValueChanged;
 
+        [Tooltip("When enabled, inverts the bound bool value before applying it.")]
         [SerializeField] private bool _isInvert;
         [NonSerialized] private bool _isNotifyValueChanged = true;
 

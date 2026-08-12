@@ -11,6 +11,7 @@ namespace Aspid.MVVM.StarterKit
     public abstract class CollectionViewModelMonoBinder<T> : CollectionMonoBinder<IViewModel>
         where T : MonoBehaviour, IView
     {
+        [Tooltip("The views the collection items are shown in, in order. Items beyond this many are not shown.")]
         [SerializeField] private T[] _views;
 
         protected override void OnAdded(IReadOnlyCollection<IViewModel> values)

@@ -33,8 +33,16 @@ namespace Aspid.MVVM.StarterKit
 
         private GameObject _currentInstance;
 
-        private void Reset() =>
+        /// <inheritdoc/>
+        /// <remarks>
+        /// Also seeds the container with this binder's own transform.
+        /// </remarks>
+        protected override void Reset()
+        {
+            base.Reset();
+
             _container = transform;
+        }
 
         /// <summary>
         /// Called when the MonoBehaviour is destroyed. Destroys the spawned instance before releasing the prefab handle.

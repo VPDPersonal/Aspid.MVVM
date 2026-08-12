@@ -21,6 +21,9 @@ namespace Aspid.MVVM.StarterKit
     [BindModeOverride(modes: BindMode.OneTime)]
     public sealed partial class BehaviourEnabledByBindMonoBinder : MonoBinder, IAnyBinder
     {
+        /// <inheritdoc/>
+        protected override BindMode DefaultMode => BindMode.OneTime;
+
         [Tooltip("When enabled, inverts the bound bool value before applying it.")]
         [SerializeField] private bool _isInvert;
 

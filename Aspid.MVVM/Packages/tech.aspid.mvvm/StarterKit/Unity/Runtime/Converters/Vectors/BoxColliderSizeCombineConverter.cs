@@ -12,12 +12,22 @@ namespace Aspid.MVVM.StarterKit
     {
         [SerializeField] private BoxCollider _collider;
 
-        /// <inheritdoc/>
-        protected override Component Target => _collider;
-
         /// <summary>
         /// Gets the reference vector to combine with, which is the collider's size.
+        /// When the collider is not assigned, logs an error and returns <see cref="Vector3.zero"/>.
         /// </summary>
-        protected override Vector3 VectorTo => _collider.size;
+        protected override Vector3 VectorTo
+        {
+            get
+            {
+                if (_collider == null)
+                {
+                    Debug.LogError($"{nameof(BoxColliderSizeCombineConverter)}: no collider assigned. Using {nameof(Vector3)}.{nameof(Vector3.zero)}.");
+                    return Vector3.zero;
+                }
+
+                return _collider.size;
+            }
+        }
     }
 }

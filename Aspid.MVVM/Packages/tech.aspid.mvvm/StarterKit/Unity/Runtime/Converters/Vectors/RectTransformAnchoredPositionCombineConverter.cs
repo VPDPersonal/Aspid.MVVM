@@ -13,9 +13,6 @@ namespace Aspid.MVVM.StarterKit
         [SerializeField] private RectTransform _transform;
         [SerializeField] private Space _space = Space.World;
 
-        /// <inheritdoc/>
-        protected override Component Target => _transform;
-
         /// <summary>
         /// Gets the reference vector to combine with, which is the rect transform's anchored position.
         /// </summary>

@@ -58,6 +58,7 @@ namespace Aspid.MVVM.StarterKit
         /// <param name="target">The <see cref="TMP_InputField"/> to bind.</param>
         /// <param name="converter">The converter applied to values before they are set on the input field, or <see langword="null"/> to use the value as-is.</param>
         /// <param name="mode">The binding mode. Must not be <see cref="BindMode.None"/>.</param>
+        /// <exception cref="ArgumentException">Thrown when <paramref name="mode"/> is <see cref="BindMode.None"/>.</exception>
         public InputFieldBinder(TMP_InputField target, Converter? converter = null, BindMode mode = BindMode.TwoWay)
             : base(target, mode)
         {

@@ -46,6 +46,7 @@ namespace Aspid.MVVM.StarterKit
         /// <param name="customInteractable">The custom view that reflects whether the command can execute.</param>
         /// <param name="updateEvent">The input field event that triggers command execution.</param>
         /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</param>
+        /// <exception cref="InvalidOperationException">Thrown when <paramref name="mode"/> is <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</exception>
         public InputFieldCommandBinder(
             TMP_InputField target, 
             ICanExecuteView customInteractable,
@@ -66,6 +67,7 @@ namespace Aspid.MVVM.StarterKit
         /// <param name="interactableMode">Determines how command executability is reflected on the input field. Must not be <see cref="InteractableMode.Custom"/>.</param>
         /// <param name="updateEvent">The input field event that triggers command execution.</param>
         /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</param>
+        /// <exception cref="InvalidOperationException">Thrown when <paramref name="mode"/> is <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</exception>
         public InputFieldCommandBinder(
             TMP_InputField target, 
             InteractableMode interactableMode,
@@ -212,6 +214,7 @@ namespace Aspid.MVVM.StarterKit
         /// <param name="customInteractable">The custom view that reflects whether the command can execute.</param>
         /// <param name="updateEvent">The input field event that triggers command execution.</param>
         /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</param>
+        /// <exception cref="InvalidOperationException">Thrown when <paramref name="mode"/> is <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</exception>
         public InputFieldCommandBinder(
             TMP_InputField target, 
             T param,
@@ -237,6 +240,7 @@ namespace Aspid.MVVM.StarterKit
         /// <param name="interactableMode">Determines how command executability is reflected on the input field. Must not be <see cref="InteractableMode.Custom"/>.</param>
         /// <param name="updateEvent">The input field event that triggers command execution.</param>
         /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</param>
+        /// <exception cref="InvalidOperationException">Thrown when <paramref name="mode"/> is <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</exception>
         public InputFieldCommandBinder(
             TMP_InputField target, 
             T param,
@@ -380,6 +384,7 @@ namespace Aspid.MVVM.StarterKit
         /// <param name="customInteractable">The custom view that reflects whether the command can execute.</param>
         /// <param name="updateEvent">The input field event that triggers command execution.</param>
         /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</param>
+        /// <exception cref="InvalidOperationException">Thrown when <paramref name="mode"/> is <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</exception>
         public InputFieldCommandBinder(
             TMP_InputField target, 
             T1 param1, 
@@ -408,6 +413,7 @@ namespace Aspid.MVVM.StarterKit
         /// <param name="interactableMode">Determines how command executability is reflected on the input field. Must not be <see cref="InteractableMode.Custom"/>.</param>
         /// <param name="updateEvent">The input field event that triggers command execution.</param>
         /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</param>
+        /// <exception cref="InvalidOperationException">Thrown when <paramref name="mode"/> is <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</exception>
         public InputFieldCommandBinder(
             TMP_InputField target, 
             T1 param1, 
@@ -566,6 +572,7 @@ namespace Aspid.MVVM.StarterKit
         /// <param name="customInteractable">The custom view that reflects whether the command can execute.</param>
         /// <param name="updateEvent">The input field event that triggers command execution.</param>
         /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</param>
+        /// <exception cref="InvalidOperationException">Thrown when <paramref name="mode"/> is <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</exception>
         public InputFieldCommandBinder(
             TMP_InputField target, 
             T1 param1, 
@@ -597,6 +604,7 @@ namespace Aspid.MVVM.StarterKit
         /// <param name="interactableMode">Determines how command executability is reflected on the input field. Must not be <see cref="InteractableMode.Custom"/>.</param>
         /// <param name="updateEvent">The input field event that triggers command execution.</param>
         /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</param>
+        /// <exception cref="InvalidOperationException">Thrown when <paramref name="mode"/> is <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</exception>
         public InputFieldCommandBinder(
             TMP_InputField target, 
             T1 param1, 

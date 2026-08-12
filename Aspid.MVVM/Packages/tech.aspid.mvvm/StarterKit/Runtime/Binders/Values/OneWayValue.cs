@@ -54,6 +54,7 @@ namespace Aspid.MVVM.StarterKit
         /// </summary>
         /// <param name="value">The initial value.</param>
         /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</param>
+        /// <exception cref="InvalidOperationException">Thrown when <paramref name="mode"/> is <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</exception>
         public OneWayValue(T? value, BindMode mode = BindMode.OneWay)
             : base(mode)
         {
@@ -70,6 +71,7 @@ namespace Aspid.MVVM.StarterKit
         /// Pass <see langword="null"/> to store values unchanged.
         /// </param>
         /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</param>
+        /// <exception cref="InvalidOperationException">Thrown when <paramref name="mode"/> is <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</exception>
         public OneWayValue(T? value, IConverter<T?, T?>? converter, BindMode mode = BindMode.OneWay)
             : base(mode)
         {

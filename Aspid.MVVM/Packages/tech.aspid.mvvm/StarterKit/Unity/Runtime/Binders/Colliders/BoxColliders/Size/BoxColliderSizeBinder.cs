@@ -20,6 +20,7 @@ namespace Aspid.MVVM.StarterKit
         }
 
         /// <inheritdoc/>
+        /// <exception cref="ArgumentException">Thrown when <paramref name="mode"/> is <see cref="BindMode.TwoWay"/>.</exception>
         public BoxColliderSizeBinder(
             BoxCollider target,
             IConverter<Vector3, Vector3>? converter = null,

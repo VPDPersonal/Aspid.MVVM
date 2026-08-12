@@ -25,6 +25,7 @@ namespace Aspid.MVVM.StarterKit
         /// <param name="trueValue">The value forwarded when the bound boolean is <see langword="true"/>.</param>
         /// <param name="falseValue">The value forwarded when the bound boolean is <see langword="false"/>.</param>
         /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</param>
+        /// <exception cref="InvalidOperationException">Thrown when <paramref name="mode"/> is <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</exception>
         protected SwitcherBinder(T trueValue, T falseValue, BindMode mode)
             : base(mode)
         {
@@ -76,6 +77,7 @@ namespace Aspid.MVVM.StarterKit
         /// <param name="trueValue">The value forwarded when the bound boolean is <see langword="true"/>.</param>
         /// <param name="falseValue">The value forwarded when the bound boolean is <see langword="false"/>.</param>
         /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</param>
+        /// <exception cref="InvalidOperationException">Thrown when <paramref name="mode"/> is <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</exception>
         protected SwitcherBinder(TTarget target, T trueValue, T falseValue, BindMode mode)
             : base(target, mode)
         {
@@ -134,6 +136,7 @@ namespace Aspid.MVVM.StarterKit
         /// Pass <see langword="null"/> to forward the value unchanged.
         /// </param>
         /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</param>
+        /// <exception cref="InvalidOperationException">Thrown when <paramref name="mode"/> is <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</exception>
         protected SwitcherBinder(
             TTarget target,
             T trueValue,

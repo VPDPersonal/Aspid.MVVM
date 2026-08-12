@@ -26,6 +26,7 @@ namespace Aspid.MVVM.StarterKit
         [SerializeField] private CultureInfoMode _cultureInfoMode = CultureInfoMode.CurrentCulture;
 
         /// <inheritdoc/>
+        /// <exception cref="ArgumentException">Thrown when <paramref name="mode"/> is <see cref="BindMode.TwoWay"/>.</exception>
         public TextBinder(TMP_Text target, IConverter<string?, string?>? converter = null, BindMode mode = BindMode.OneWay)
             : base(target, converter, mode)
         {

@@ -43,6 +43,7 @@ namespace Aspid.MVVM.StarterKit
         /// </summary>
         /// <param name="target">The <see cref="VirtualizedList"/> to bind.</param>
         /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</param>
+        /// <exception cref="InvalidOperationException">Thrown when <paramref name="mode"/> is <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</exception>
         public VirtualizedListItemSourceBinder(VirtualizedList target, BindMode mode = BindMode.OneWay)
             : base(target, mode)
         {

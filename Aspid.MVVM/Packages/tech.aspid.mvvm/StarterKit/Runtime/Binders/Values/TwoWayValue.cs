@@ -84,6 +84,7 @@ namespace Aspid.MVVM.StarterKit
         /// </summary>
         /// <param name="value">The initial value.</param>
         /// <param name="mode">The binding mode to use.</param>
+        /// <exception cref="ArgumentException">Thrown when <paramref name="mode"/> is <see cref="BindMode.None"/>.</exception>
         public TwoWayValue(T? value, BindMode mode = BindMode.TwoWay)
             : base(mode)
         {
@@ -100,6 +101,7 @@ namespace Aspid.MVVM.StarterKit
         /// Pass <see langword="null"/> to store values unchanged.
         /// </param>
         /// <param name="mode">The binding mode to use.</param>
+        /// <exception cref="ArgumentException">Thrown when <paramref name="mode"/> is <see cref="BindMode.None"/>.</exception>
         public TwoWayValue(T? value, IConverter<T?, T?>? converter, BindMode mode = BindMode.TwoWay)
             : base(mode)
         {

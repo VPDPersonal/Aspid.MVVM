@@ -14,6 +14,7 @@ namespace Aspid.MVVM.StarterKit
     public sealed class InputFieldLineTypeSwitcherBinder : SwitcherBinder<TMP_InputField, TMP_InputField.LineType>
     {
         /// <inheritdoc/>
+        /// <exception cref="InvalidOperationException">Thrown when <paramref name="mode"/> is neither <see cref="BindMode.OneWay"/> nor <see cref="BindMode.OneTime"/>.</exception>
         public InputFieldLineTypeSwitcherBinder(
             TMP_InputField target, 
             TMP_InputField.LineType trueValue,

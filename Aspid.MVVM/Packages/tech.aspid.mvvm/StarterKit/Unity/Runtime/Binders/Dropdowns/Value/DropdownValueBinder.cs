@@ -21,6 +21,7 @@ namespace Aspid.MVVM.StarterKit
         }
 
         /// <inheritdoc/>
+        /// <exception cref="ArgumentException">Thrown when <paramref name="mode"/> is <see cref="BindMode.TwoWay"/>.</exception>
         public DropdownValueBinder(TMP_Dropdown target, IConverter<int, int>? converter = null, BindMode mode = BindMode.OneWay)
             : base(target, converter, mode)
         {

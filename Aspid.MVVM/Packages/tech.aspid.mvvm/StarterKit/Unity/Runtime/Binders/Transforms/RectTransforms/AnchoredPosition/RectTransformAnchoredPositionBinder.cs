@@ -29,6 +29,7 @@ namespace Aspid.MVVM.StarterKit
         /// <param name="space">Determines which property is used: <see cref="Space.Self"/> for <see cref="RectTransform.anchoredPosition"/>, <see cref="Space.World"/> for <see cref="RectTransform.anchoredPosition3D"/>.</param>
         /// <param name="converter">The converter used to transform the bound <see cref="Vector3"/> value, or <see langword="null"/> to use the value as-is.</param>
         /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/>.</param>
+        /// <exception cref="ArgumentException">Thrown when <paramref name="mode"/> is <see cref="BindMode.TwoWay"/>.</exception>
         public RectTransformAnchoredPositionBinder(
             RectTransform target,
             Space space = Space.World, 

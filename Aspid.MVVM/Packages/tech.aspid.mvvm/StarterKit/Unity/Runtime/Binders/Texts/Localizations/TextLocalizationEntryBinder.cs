@@ -39,6 +39,7 @@ namespace Aspid.MVVM.StarterKit
         /// <param name="formatArguments">Format arguments passed to the localized string, or <see langword="null"/> to use none.</param>
         /// <param name="converter">The converter used to transform the bound <see cref="string"/> value, or <see langword="null"/> to use the value as-is.</param>
         /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/>.</param>
+        /// <exception cref="ArgumentException">Thrown when <paramref name="mode"/> is <see cref="BindMode.TwoWay"/>.</exception>
         public TextLocalizationEntryBinder(
             TMP_Text target, 
             string? entry = null,

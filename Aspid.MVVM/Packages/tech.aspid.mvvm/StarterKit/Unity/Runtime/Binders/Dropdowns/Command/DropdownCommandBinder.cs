@@ -38,6 +38,7 @@ namespace Aspid.MVVM.StarterKit
         /// <param name="target">The <see cref="TMP_Dropdown"/> to bind.</param>
         /// <param name="customInteractable">A custom view that reflects the command's <c>CanExecute</c> state.</param>
         /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</param>
+        /// <exception cref="InvalidOperationException">Thrown when <paramref name="mode"/> is <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</exception>
         public DropdownCommandBinder(
             TMP_Dropdown target,
             ICanExecuteView customInteractable,
@@ -55,6 +56,7 @@ namespace Aspid.MVVM.StarterKit
         /// <param name="target">The <see cref="TMP_Dropdown"/> to bind.</param>
         /// <param name="interactableMode">Controls how the dropdown's interactable state reflects <c>CanExecute</c>.</param>
         /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</param>
+        /// <exception cref="InvalidOperationException">Thrown when <paramref name="mode"/> is <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</exception>
         public DropdownCommandBinder(
             TMP_Dropdown target,
             InteractableMode interactableMode,
@@ -173,6 +175,7 @@ namespace Aspid.MVVM.StarterKit
         /// <param name="param">The additional parameter forwarded alongside the dropdown selection index when the command is executed.</param>
         /// <param name="customInteractable">A custom view that reflects the command's <c>CanExecute</c> state.</param>
         /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</param>
+        /// <exception cref="InvalidOperationException">Thrown when <paramref name="mode"/> is <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</exception>
         public DropdownCommandBinder(
             TMP_Dropdown target,
             T param,
@@ -195,6 +198,7 @@ namespace Aspid.MVVM.StarterKit
         /// <param name="param">The additional parameter forwarded alongside the dropdown selection index when the command is executed.</param>
         /// <param name="interactableMode">Controls how the dropdown's interactable state reflects <c>CanExecute</c>.</param>
         /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</param>
+        /// <exception cref="InvalidOperationException">Thrown when <paramref name="mode"/> is <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</exception>
         public DropdownCommandBinder(
             TMP_Dropdown target,
             T param,
@@ -330,6 +334,7 @@ namespace Aspid.MVVM.StarterKit
         /// <param name="param2">The second additional parameter forwarded alongside the dropdown selection index when the command is executed.</param>
         /// <param name="customInteractable">A custom view that reflects the command's <c>CanExecute</c> state.</param>
         /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</param>
+        /// <exception cref="InvalidOperationException">Thrown when <paramref name="mode"/> is <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</exception>
         public DropdownCommandBinder(
             TMP_Dropdown target,
             T1 param1,
@@ -355,6 +360,7 @@ namespace Aspid.MVVM.StarterKit
         /// <param name="param2">The second additional parameter forwarded alongside the dropdown selection index when the command is executed.</param>
         /// <param name="interactableMode">Controls how the dropdown's interactable state reflects <c>CanExecute</c>.</param>
         /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</param>
+        /// <exception cref="InvalidOperationException">Thrown when <paramref name="mode"/> is <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</exception>
         public DropdownCommandBinder(
             TMP_Dropdown target,
             T1 param1,
@@ -505,6 +511,7 @@ namespace Aspid.MVVM.StarterKit
         /// <param name="param3">The third additional parameter forwarded alongside the dropdown selection index when the command is executed.</param>
         /// <param name="customInteractable">A custom view that reflects the command's <c>CanExecute</c> state.</param>
         /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</param>
+        /// <exception cref="InvalidOperationException">Thrown when <paramref name="mode"/> is <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</exception>
         public DropdownCommandBinder(
             TMP_Dropdown target,
             T1 param1,
@@ -533,6 +540,7 @@ namespace Aspid.MVVM.StarterKit
         /// <param name="param3">The third additional parameter forwarded alongside the dropdown selection index when the command is executed.</param>
         /// <param name="interactableMode">Controls how the dropdown's interactable state reflects <c>CanExecute</c>.</param>
         /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</param>
+        /// <exception cref="InvalidOperationException">Thrown when <paramref name="mode"/> is <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</exception>
         public DropdownCommandBinder(
             TMP_Dropdown target,
             T1 param1,

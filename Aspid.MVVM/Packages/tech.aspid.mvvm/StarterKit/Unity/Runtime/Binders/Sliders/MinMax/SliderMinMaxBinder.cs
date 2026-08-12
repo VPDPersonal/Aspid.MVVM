@@ -36,6 +36,7 @@ namespace Aspid.MVVM.StarterKit
         /// <param name="valueMode">Determines which endpoint(s) of the slider range are updated.</param>
         /// <param name="converter">The converter applied to values before they are set on the slider, or <see langword="null"/> to use the value as-is.</param>
         /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/>.</param>
+        /// <exception cref="ArgumentException">Thrown when <paramref name="mode"/> is <see cref="BindMode.TwoWay"/>.</exception>
         public SliderMinMaxBinder(
             Slider target,
             SliderValueMode valueMode = SliderValueMode.Range,

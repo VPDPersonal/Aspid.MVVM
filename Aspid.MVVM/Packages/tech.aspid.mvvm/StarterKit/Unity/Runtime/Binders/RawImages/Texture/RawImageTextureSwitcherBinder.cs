@@ -47,7 +47,7 @@ namespace Aspid.MVVM.StarterKit
         protected override void SetValue(Texture? value)
         {
             Target.texture = value;
-            Target.enabled = !_disabledWhenNull || value;
+            if (_disabledWhenNull) Target.enabled = value;
         }
     }
 }

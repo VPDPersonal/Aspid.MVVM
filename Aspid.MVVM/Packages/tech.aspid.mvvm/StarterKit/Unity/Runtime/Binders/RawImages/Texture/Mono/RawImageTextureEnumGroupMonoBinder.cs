@@ -29,7 +29,7 @@ namespace Aspid.MVVM.StarterKit
         protected override void SetValue(RawImage element, Texture value) 
         {
             element.texture = value;
-            element.enabled = !_disabledWhenNull || value;
+            if (_disabledWhenNull) element.enabled = value;
         }
     }
 }

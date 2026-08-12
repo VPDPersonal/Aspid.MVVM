@@ -28,10 +28,10 @@ namespace Aspid.MVVM.StarterKit
         /// <summary>
         /// Initializes a new instance of <see cref="GraphicMaterialBinder"/>.
         /// </summary>
-        /// <param name="target">The <see cref="RawImage"/> to bind.</param>
+        /// <param name="target">The <see cref="Graphic"/> to bind.</param>
         /// <param name="converter">The converter used to transform the bound <see cref="Material"/> value. Pass <see langword="null"/> to use the value unchanged.</param>
         /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/>.</param>
-        public GraphicMaterialBinder(RawImage target, Converter? converter = null, BindMode mode = BindMode.OneWay)
+        public GraphicMaterialBinder(Graphic target, Converter? converter = null, BindMode mode = BindMode.OneWay)
             : base(target, converter, mode)
         {
             mode.ThrowExceptionIfMatches(BindMode.TwoWay);

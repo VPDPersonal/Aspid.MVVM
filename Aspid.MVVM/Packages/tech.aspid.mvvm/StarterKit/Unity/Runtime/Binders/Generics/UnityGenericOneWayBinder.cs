@@ -16,6 +16,7 @@ namespace Aspid.MVVM.StarterKit
     /// Only non-two-way bind modes are supported; <see cref="BindMode.TwoWay"/> and <see cref="BindMode.OneWayToSource"/> throw.
     /// </remarks>
     /// <include file="XmlExampleDoc-UnityGenerics-1.1.0.xml" path="doc//member[@name='UnityGenericOneWayBinder{1}']/*" />
+    [System.Obsolete("Use the GenericOneWay binder instead: it takes a plain Action, which a UnityAction converts to implicitly. The Unity-flavoured copies exist only for that conversion and will be removed in the next major version.")]
     public class UnityGenericOneWayBinder<T> : Binder, IBinder<T>
     {
         private readonly UnityAction<T?> _setValue;
@@ -55,6 +56,7 @@ namespace Aspid.MVVM.StarterKit
     /// Only non-two-way bind modes are supported; <see cref="BindMode.TwoWay"/> and <see cref="BindMode.OneWayToSource"/> throw.
     /// </remarks>
     /// <include file="XmlExampleDoc-UnityGenerics-1.1.0.xml" path="doc//member[@name='UnityGenericOneWayBinder{2}']/*" />
+    [System.Obsolete("Use the GenericOneWay binder instead: it takes a plain Action, which a UnityAction converts to implicitly. The Unity-flavoured copies exist only for that conversion and will be removed in the next major version.")]
     public class UnityGenericOneWayBinder<TTarget, T> : Binder, IBinder<T>
     {
         private readonly TTarget _target;

@@ -18,6 +18,7 @@ namespace Aspid.MVVM.StarterKit
     /// Only non-two-way bind modes are supported; passing <see cref="BindMode.TwoWay"/> will throw.
     /// </remarks>
     /// <include file="XmlExampleDoc-UnityGenerics-1.1.0.xml" path="doc//member[@name='UnityGenericCasterBinder{2}']/*" />
+    [System.Obsolete("Use the GenericCaster binder instead: it takes a plain Action, which a UnityAction converts to implicitly. The Unity-flavoured copies exist only for that conversion and will be removed in the next major version.")]
     public class UnityGenericCasterBinder<TFrom, TTo> : Binder, IBinder<TFrom>
     {
         private readonly UnityAction<TTo?> _setValue;
@@ -67,6 +68,7 @@ namespace Aspid.MVVM.StarterKit
     /// Only non-two-way bind modes are supported; passing <see cref="BindMode.TwoWay"/> will throw.
     /// </remarks>
     /// <include file="XmlExampleDoc-UnityGenerics-1.1.0.xml" path="doc//member[@name='UnityGenericCasterBinder{3}']/*" />
+    [System.Obsolete("Use the GenericCaster binder instead: it takes a plain Action, which a UnityAction converts to implicitly. The Unity-flavoured copies exist only for that conversion and will be removed in the next major version.")]
     public class UnityGenericCasterBinder<TTarget, TFrom, TTo> : Binder, IBinder<TFrom>
     {
         private readonly TTarget _target;

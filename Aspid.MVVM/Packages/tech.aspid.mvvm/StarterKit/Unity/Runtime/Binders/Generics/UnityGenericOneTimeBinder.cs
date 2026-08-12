@@ -14,6 +14,7 @@ namespace Aspid.MVVM.StarterKit
     /// The setter is called only for the first value pushed from the ViewModel.
     /// </remarks>
     /// <include file="XmlExampleDoc-UnityGenerics-1.1.0.xml" path="doc//member[@name='UnityGenericOneTimeBinder{1}']/*" />
+    [System.Obsolete("Use the GenericOneTime binder instead: it takes a plain Action, which a UnityAction converts to implicitly. The Unity-flavoured copies exist only for that conversion and will be removed in the next major version.")]
     public class UnityGenericOneTimeBinder<T> : UnityGenericOneWayBinder<T>
     {
         /// <summary>
@@ -35,6 +36,7 @@ namespace Aspid.MVVM.StarterKit
     /// The setter is called only for the first value pushed from the ViewModel.
     /// </remarks>
     /// <include file="XmlExampleDoc-UnityGenerics-1.1.0.xml" path="doc//member[@name='UnityGenericOneTimeBinder{2}']/*" />
+    [System.Obsolete("Use the GenericOneTime binder instead: it takes a plain Action, which a UnityAction converts to implicitly. The Unity-flavoured copies exist only for that conversion and will be removed in the next major version.")]
     public class UnityGenericOneTimeBinder<TTarget, T> : UnityGenericOneWayBinder<TTarget, T>
     {
         /// <summary>

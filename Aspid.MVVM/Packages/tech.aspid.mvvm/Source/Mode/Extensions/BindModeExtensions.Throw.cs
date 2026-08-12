@@ -22,6 +22,7 @@ namespace Aspid.MVVM
         /// <param name="mode">The binding mode to check.</param>
         /// <exception cref="InvalidOperationException">Thrown when the mode is <see cref="BindMode.OneWay"/> or <see cref="BindMode.OneTime"/>.</exception>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [System.Obsolete("Nothing in the package throws for the one-way modes: a binder that supports only the reverse direction uses ThrowExceptionIfNotTwo, and one that supports only the forward direction has nothing to reject. Will be removed in the next major version.")]
         public static void ThrowExceptionIfOne(this BindMode mode)
         {
             if (!mode.IsOne()) return;

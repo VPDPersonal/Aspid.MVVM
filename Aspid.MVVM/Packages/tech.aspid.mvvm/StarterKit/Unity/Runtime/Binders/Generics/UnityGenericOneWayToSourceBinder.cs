@@ -20,6 +20,7 @@ namespace Aspid.MVVM.StarterKit
     /// by the onBoundValueChanged and onUnboundValueChanged factory functions respectively.
     /// </remarks>
     /// <include file="XmlExampleDoc-UnityGenerics-1.1.0.xml" path="doc//member[@name='UnityGenericOneWayToSourceBinder{1}']/*" />
+    [System.Obsolete("Use the GenericOneWayToSource binder instead: it takes a plain Action, which a UnityAction converts to implicitly. The Unity-flavoured copies exist only for that conversion and will be removed in the next major version.")]
     public class UnityGenericOneWayToSourceBinder<T> : Binder, IReverseBinder<T>
     {
         /// <summary>
@@ -121,6 +122,7 @@ namespace Aspid.MVVM.StarterKit
     /// functions, avoiding closures. Otherwise behaves identically to <see cref="UnityGenericOneWayToSourceBinder{T}"/>.
     /// </remarks>
     /// <include file="XmlExampleDoc-UnityGenerics-1.1.0.xml" path="doc//member[@name='UnityGenericOneWayToSourceBinder{2}']/*" />
+    [System.Obsolete("Use the GenericOneWayToSource binder instead: it takes a plain Action, which a UnityAction converts to implicitly. The Unity-flavoured copies exist only for that conversion and will be removed in the next major version.")]
     public class UnityGenericOneWayToSourceBinder<TTarget, T> : Binder, IReverseBinder<T>
     {
         /// <summary>

@@ -17,6 +17,7 @@ namespace Aspid.MVVM.StarterKit
         /// Called when the bound enum resolves to a value.
         /// Sets <see cref="UnityEngine.UI.HorizontalOrVerticalLayoutGroup.spacing"/> directly.
         /// </summary>
+        /// <param name="value">The value received from the ViewModel.</param>
         protected override void SetValue(float value) =>
             CachedComponent.spacing = value;
     }

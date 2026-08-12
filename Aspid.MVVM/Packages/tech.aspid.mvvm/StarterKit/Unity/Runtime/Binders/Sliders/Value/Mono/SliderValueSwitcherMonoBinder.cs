@@ -15,6 +15,7 @@ namespace Aspid.MVVM.StarterKit
         /// <summary>
         /// Called when applying the selected value to <see cref="Slider.value"/>.
         /// </summary>
+        /// <param name="value">The value received from the ViewModel.</param>
         protected override void SetValue(float value) =>
             CachedComponent.value = value;
     }

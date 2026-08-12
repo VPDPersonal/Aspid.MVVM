@@ -55,24 +55,28 @@ namespace Aspid.MVVM.StarterKit
         /// <summary>
         /// Converts the value to a <see cref="float"/> and applies a uniform <see cref="Quaternion.Euler(float, float, float)"/> rotation.
         /// </summary>
+        /// <param name="value">The value received from the ViewModel.</param>
         public void SetValue(int value) =>
             SetValue((float)value);
 
         /// <summary>
         /// Converts the value to a <see cref="float"/> and applies a uniform <see cref="Quaternion.Euler(float, float, float)"/> rotation.
         /// </summary>
+        /// <param name="value">The value received from the ViewModel.</param>
         public void SetValue(long value) =>
             SetValue((float)value);
 
         /// <summary>
         /// Converts the value to a <see cref="float"/> and applies a uniform <see cref="Quaternion.Euler(float, float, float)"/> rotation.
         /// </summary>
+        /// <param name="value">The value received from the ViewModel.</param>
         public void SetValue(double value) =>
             SetValue((float)value);
 
         /// <summary>
         /// Applies a uniform <see cref="Quaternion.Euler(float, float, float)"/> rotation using the given angle on all three axes.
         /// </summary>
+        /// <param name="value">The value received from the ViewModel.</param>
         public void SetValue(float value) =>
             base.SetValue(Quaternion.Euler(new Vector3(value, value, value)));
     }

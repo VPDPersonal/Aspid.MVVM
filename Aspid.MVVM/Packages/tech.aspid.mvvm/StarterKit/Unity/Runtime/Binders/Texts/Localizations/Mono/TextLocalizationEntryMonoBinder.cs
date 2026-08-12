@@ -69,6 +69,7 @@ namespace Aspid.MVVM.StarterKit
         /// <summary>
         /// Called when the localized string changes. Updates <see cref="TMP_Text.text"/> with the localized value.
         /// </summary>
+        /// <param name="value">The value formatted into the localized string.</param>
         protected virtual void UpdateString(string value) =>
             CachedComponent.text = value;
     }

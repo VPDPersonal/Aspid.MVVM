@@ -29,6 +29,7 @@ namespace Aspid.MVVM.StarterKit
         /// Called when applying the selected value to <see cref="TMP_InputField.characterValidation"/>.
         /// Sets the value and forces a label update.
         /// </summary>
+        /// <param name="value">The value received from the ViewModel.</param>
         protected override void SetValue(TMP_InputField.CharacterValidation value)
         {
             Target.characterValidation = value;

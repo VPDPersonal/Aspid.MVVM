@@ -23,6 +23,7 @@ namespace Aspid.MVVM.StarterKit
         /// Called when the bound enum resolves to a value for the current element.
         /// Sets the <see cref="Renderer.materials"/> array, applying the optional converter to each material.
         /// </summary>
+        /// <param name="values">The materials received from the ViewModel.</param>
         protected override void SetValue(Material[] values) =>
             CachedComponent.SetMaterials(_converter, values);
     }

@@ -31,6 +31,7 @@ namespace Aspid.MVVM.StarterKit
         /// Called when applying the default materials to the specified element.
         /// Sets <see cref="Renderer.materials"/> using the default value array, applying the default converter.
         /// </summary>
+        /// <param name="element">The component this entry of the group writes to.</param>
         protected override void SetDefaultValue(Renderer element) =>
             element.SetMaterials(_defaultValueConverter, _defaultValue);
 
@@ -38,6 +39,7 @@ namespace Aspid.MVVM.StarterKit
         /// Called when applying the selected materials to the specified element.
         /// Sets <see cref="Renderer.materials"/> using the selected value array, applying the selected converter.
         /// </summary>
+        /// <param name="element">The component this entry of the group writes to.</param>
         protected override void SetSelectedValue(Renderer element) =>
             element.SetMaterials(_selectedValueConverter, _selectedValue);
     }

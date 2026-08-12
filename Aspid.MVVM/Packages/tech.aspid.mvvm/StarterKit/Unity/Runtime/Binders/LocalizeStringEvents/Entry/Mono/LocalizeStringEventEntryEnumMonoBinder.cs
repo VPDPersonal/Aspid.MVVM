@@ -17,6 +17,7 @@ namespace Aspid.MVVM.StarterKit
         /// Called when the bound enum resolves to a value for the current element.
         /// Sets the TableEntryReference of the component's StringReference.
         /// </summary>
+        /// <param name="value">The value received from the ViewModel.</param>
         protected override void SetValue(string value) =>
             CachedComponent.StringReference.TableEntryReference = value;
     }

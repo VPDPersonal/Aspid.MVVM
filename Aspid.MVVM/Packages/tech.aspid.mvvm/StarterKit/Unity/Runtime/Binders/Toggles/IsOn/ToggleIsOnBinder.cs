@@ -44,6 +44,7 @@ namespace Aspid.MVVM.StarterKit
         /// <summary>
         /// Sets <see cref="Toggle.isOn"/> to the specified value, applying inversion if configured.
         /// </summary>
+        /// <param name="value">The value received from the ViewModel.</param>
         public void SetValue(bool value)
         {
             _isNotifyValueChanged = false;

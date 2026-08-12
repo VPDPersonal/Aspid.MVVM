@@ -24,6 +24,7 @@ namespace Aspid.MVVM.StarterKit
         /// Called when the bound enum resolves to a value for the current element.
         /// Sets the named color property on all materials of the <see cref="Renderer"/>.
         /// </summary>
+        /// <param name="value">The value received from the ViewModel.</param>
         protected override void SetValue(Color value) 
         {
             _materials ??= CachedComponent.materials;

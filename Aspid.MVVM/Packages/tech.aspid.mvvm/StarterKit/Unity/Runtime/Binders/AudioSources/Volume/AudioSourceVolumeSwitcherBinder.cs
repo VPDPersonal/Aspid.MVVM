@@ -29,6 +29,7 @@ namespace Aspid.MVVM.StarterKit
         /// Called when applying the selected value to the <see cref="AudioSource.volume"/> property.
         /// Clamps the value to the valid range of 0 to 1.
         /// </summary>
+        /// <param name="value">The value received from the ViewModel.</param>
         protected override void SetValue(float value) =>
             Target.volume = BinderMath.SafeClamp(value, 0, 1);
     }

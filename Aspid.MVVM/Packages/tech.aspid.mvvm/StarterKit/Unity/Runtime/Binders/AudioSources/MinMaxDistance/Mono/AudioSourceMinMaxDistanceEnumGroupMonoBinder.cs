@@ -24,6 +24,8 @@ namespace Aspid.MVVM.StarterKit
         /// Applies the <see cref="Vector2"/> to <see cref="AudioSource.minDistance"/>, <see cref="AudioSource.maxDistance"/>,
         /// or both according to the configured <see cref="AudioSourceDistanceMode"/>.
         /// </summary>
+        /// <param name="element">The component this entry of the group writes to.</param>
+        /// <param name="value">The value the bound enum resolved to for this element.</param>
         protected override void SetValue(AudioSource element, Vector2 value) =>
             element.SetMinMaxDistance(value, _distanceMode);
     }

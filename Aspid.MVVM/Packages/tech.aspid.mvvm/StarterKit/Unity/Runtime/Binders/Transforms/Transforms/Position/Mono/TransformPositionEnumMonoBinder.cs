@@ -18,6 +18,7 @@ namespace Aspid.MVVM.StarterKit
         /// Called when the bound enum resolves to a value for the current element.
         /// Sets the position of the <see cref="Transform"/> in the configured <see cref="Space"/>.
         /// </summary>
+        /// <param name="value">The value received from the ViewModel.</param>
         protected override void SetValue(Vector3 value) =>
             CachedComponent.SetPosition(value, _space);
     }

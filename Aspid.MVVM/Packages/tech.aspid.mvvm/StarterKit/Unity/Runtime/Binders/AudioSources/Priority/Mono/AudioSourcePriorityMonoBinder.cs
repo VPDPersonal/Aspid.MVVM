@@ -30,6 +30,7 @@ namespace Aspid.MVVM.StarterKit
         /// When overriding this method, always call <c>base.GetConvertedValue(value)</c> to preserve
         /// the clamping behavior.
         /// </remarks>
+        /// <param name="value">The value to convert.</param>
         protected override int GetConvertedValue(int value) =>
             Mathf.Clamp(base.GetConvertedValue(value), min: 0, max: 256);
     }

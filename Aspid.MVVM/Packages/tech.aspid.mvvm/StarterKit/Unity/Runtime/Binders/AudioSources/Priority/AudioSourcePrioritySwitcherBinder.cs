@@ -29,6 +29,7 @@ namespace Aspid.MVVM.StarterKit
         /// Called when applying the selected value to the <see cref="AudioSource.priority"/> property.
         /// Clamps the value to the valid range of 0 to 256.
         /// </summary>
+        /// <param name="value">The value received from the ViewModel.</param>
         protected override void SetValue(int value) =>
             Target.priority = Mathf.Clamp(value, min: 0, max: 256);
     }

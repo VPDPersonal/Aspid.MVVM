@@ -18,6 +18,7 @@ namespace Aspid.MVVM.StarterKit
         /// Called when applying the selected value to the <see cref="AudioSource.pitch"/> property.
         /// Clamps the value to the valid range of −3 to 3.
         /// </summary>
+        /// <param name="value">The value received from the ViewModel.</param>
         protected override void SetValue(float value) =>
             CachedComponent.pitch = BinderMath.SafeClamp(value, -3, 3);
     }

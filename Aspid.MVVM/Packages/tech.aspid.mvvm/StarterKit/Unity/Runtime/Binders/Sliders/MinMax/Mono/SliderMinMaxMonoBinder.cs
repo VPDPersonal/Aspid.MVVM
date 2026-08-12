@@ -35,6 +35,7 @@ namespace Aspid.MVVM.StarterKit
         /// Sets both <see cref="Slider.minValue"/> and <see cref="Slider.maxValue"/> to
         /// the same value, then applies the configured <see cref="SliderValueMode"/>.
         /// </summary>
+        /// <param name="value">The value received from the ViewModel.</param>
         [BinderLog]
         public void SetValue(float value) =>
             SetValue(new Vector2(value, value));
@@ -42,6 +43,7 @@ namespace Aspid.MVVM.StarterKit
         /// <summary>
         /// Casts the value to <see langword="float"/> and sets both slider endpoints.
         /// </summary>
+        /// <param name="value">The value received from the ViewModel.</param>
         [BinderLog]
         public void SetValue(int value) =>
             SetValue((float)value);
@@ -49,6 +51,7 @@ namespace Aspid.MVVM.StarterKit
         /// <summary>
         /// Casts the value to <see langword="float"/> and sets both slider endpoints.
         /// </summary>
+        /// <param name="value">The value received from the ViewModel.</param>
         [BinderLog]
         public void SetValue(long value) =>
             SetValue((float)value);
@@ -56,6 +59,7 @@ namespace Aspid.MVVM.StarterKit
         /// <summary>
         /// Casts the value to <see langword="float"/> and sets both slider endpoints.
         /// </summary>
+        /// <param name="value">The value received from the ViewModel.</param>
         [BinderLog]
         public void SetValue(double value) =>
             SetValue((float)value);

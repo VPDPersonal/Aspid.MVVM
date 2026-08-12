@@ -25,6 +25,7 @@ namespace Aspid.MVVM.StarterKit
         /// Applies the <see cref="Vector2"/> to <see cref="AudioSource.minDistance"/>, <see cref="AudioSource.maxDistance"/>,
         /// or both according to the configured <see cref="AudioSourceDistanceMode"/>.
         /// </summary>
+        /// <param name="value">The value received from the ViewModel.</param>
         protected override void SetValue(Vector2 value) =>
             CachedComponent.SetMinMaxDistance(value, _distanceMode);
     }

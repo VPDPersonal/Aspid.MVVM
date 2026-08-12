@@ -59,12 +59,14 @@ namespace Aspid.MVVM.StarterKit
         /// Called when the bound enum resolves to a value.
         /// Sets the localized string table entry reference.
         /// </summary>
+        /// <param name="value">The value received from the ViewModel.</param>
         protected sealed override void SetValue(string value) =>
             _stringReference.TableEntryReference = value;
         
         /// <summary>
         /// Called when the localized string changes. Updates <see cref="TMP_Text.text"/> with the localized value.
         /// </summary>
+        /// <param name="value">The value formatted into the localized string.</param>
         protected virtual void UpdateString(string value) =>
             CachedComponent.text = value;
     }

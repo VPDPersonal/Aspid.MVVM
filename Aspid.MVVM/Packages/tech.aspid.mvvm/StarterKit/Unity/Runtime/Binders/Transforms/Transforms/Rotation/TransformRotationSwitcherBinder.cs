@@ -40,6 +40,7 @@ namespace Aspid.MVVM.StarterKit
         /// <summary>
         /// Called when applying the selected euler angles as a <see cref="Quaternion"/> rotation to the <see cref="Transform"/>.
         /// </summary>
+        /// <param name="value">The value received from the ViewModel.</param>
         protected override void SetValue(Vector3 value) =>
             Target.SetRotation(Quaternion.Euler(value), _space);
     }

@@ -51,6 +51,7 @@ namespace Aspid.MVVM.StarterKit
         /// <summary>
         /// Assigns the relay command and subscribes to <see cref="IRelayCommand.CanExecuteChanged"/> notifications.
         /// </summary>
+        /// <param name="value">The value received from the ViewModel.</param>
         [BinderLog]
         public void SetValue(IRelayCommand value) =>
             CommandBinderExtensions.UpdateCommand(ref _command, value, OnCanExecuteChanged);
@@ -58,6 +59,7 @@ namespace Aspid.MVVM.StarterKit
         /// <summary>
         /// Assigns the parameterized relay command and subscribes to <see cref="IRelayCommand.CanExecuteChanged"/> notifications.
         /// </summary>
+        /// <param name="value">The value received from the ViewModel.</param>
         [BinderLog]
         public void SetValue(IRelayCommand<string> value) =>
             CommandBinderExtensions.UpdateCommand(ref _stringCommand, value, OnCanExecuteChanged);
@@ -183,6 +185,7 @@ namespace Aspid.MVVM.StarterKit
         /// <summary>
         /// Assigns the parameterized relay command and subscribes to <see cref="IRelayCommand.CanExecuteChanged"/> notifications.
         /// </summary>
+        /// <param name="value">The value received from the ViewModel.</param>
         [BinderLog]
         public void SetValue(IRelayCommand<string, T> value) =>
             CommandBinderExtensions.UpdateCommand(ref _command, value, OnCanExecuteChanged);
@@ -307,6 +310,7 @@ namespace Aspid.MVVM.StarterKit
         /// <summary>
         /// Assigns the parameterized relay command and subscribes to <see cref="IRelayCommand.CanExecuteChanged"/> notifications.
         /// </summary>
+        /// <param name="value">The value received from the ViewModel.</param>
         [BinderLog]
         public void SetValue(IRelayCommand<string, T1, T2> value) =>
             CommandBinderExtensions.UpdateCommand(ref _command, value, OnCanExecuteChanged);
@@ -442,6 +446,7 @@ namespace Aspid.MVVM.StarterKit
         /// <summary>
         /// Assigns the parameterized relay command and subscribes to <see cref="IRelayCommand.CanExecuteChanged"/> notifications.
         /// </summary>
+        /// <param name="value">The value received from the ViewModel.</param>
         [BinderLog]
         public void SetValue(IRelayCommand<string, T1, T2, T3> value) =>
             CommandBinderExtensions.UpdateCommand(ref _command, value, OnCanExecuteChanged);

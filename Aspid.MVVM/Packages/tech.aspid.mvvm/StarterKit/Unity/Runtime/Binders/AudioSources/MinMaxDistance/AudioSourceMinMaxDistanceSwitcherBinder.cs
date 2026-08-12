@@ -48,6 +48,7 @@ namespace Aspid.MVVM.StarterKit
         /// Dispatches to <see cref="AudioSource.minDistance"/>, <see cref="AudioSource.maxDistance"/>, or both
         /// according to the configured <see cref="AudioSourceDistanceMode"/>.
         /// </summary>
+        /// <param name="value">The value received from the ViewModel.</param>
         protected override void SetValue(Vector2 value) =>
             Target.SetMinMaxDistance(value, _distanceMode);
     }

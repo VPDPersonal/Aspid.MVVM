@@ -18,6 +18,7 @@ namespace Aspid.MVVM.StarterKit
         /// Called when the bound enum resolves to a value.
         /// Sets <see cref="AudioSource.reverbZoneMix"/> clamped to the valid range of 0 to 1.1.
         /// </summary>
+        /// <param name="value">The value received from the ViewModel.</param>
         protected override void SetValue(float value) =>
             CachedComponent.reverbZoneMix = BinderMath.SafeClamp(value, 0, 1.1f);
     }

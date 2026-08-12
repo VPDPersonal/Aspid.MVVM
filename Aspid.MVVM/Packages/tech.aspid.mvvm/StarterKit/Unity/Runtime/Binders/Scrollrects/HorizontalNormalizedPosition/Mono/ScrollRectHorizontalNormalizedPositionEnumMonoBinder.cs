@@ -15,6 +15,7 @@ namespace Aspid.MVVM.StarterKit
         /// <summary>
         /// Called when the bound enum resolves to a value for the current element.
         /// </summary>
+        /// <param name="value">The value received from the ViewModel.</param>
         protected override void SetValue(float value) =>
             CachedComponent.horizontalNormalizedPosition = BinderMath.SafeClamp01(value);
     }

@@ -20,6 +20,7 @@ namespace Aspid.MVVM.StarterKit
         /// <summary>
         /// Invokes the event with the specified boolean value, applying inversion if configured.
         /// </summary>
+        /// <param name="value">The value received from the ViewModel.</param>
         [BinderLog]
         public void SetValue(bool value) =>
             _set?.Invoke(_isInvert ? !value : value);

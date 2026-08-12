@@ -78,12 +78,14 @@ namespace Aspid.MVVM.StarterKit
         /// Called when applying the selected entry key.
         /// Sets the localized string table entry reference.
         /// </summary>
+        /// <param name="value">The value received from the ViewModel.</param>
         protected override void SetValue(string value) =>
             _stringReference.TableEntryReference = value;
 
         /// <summary>
         /// Called when the localized string changes. Sets <see cref="TMP_Text.text"/> to the localized value.
         /// </summary>
+        /// <param name="value">The value formatted into the localized string.</param>
         protected virtual void UpdateString(string value) =>
             Target.text = value;
     }

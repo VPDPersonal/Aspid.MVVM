@@ -23,6 +23,7 @@ namespace Aspid.MVVM.StarterKit
         /// Called when the bound enum resolves to a value for the current element.
         /// Sets the slider range using the configured <see cref="SliderValueMode"/>.
         /// </summary>
+        /// <param name="value">The value received from the ViewModel.</param>
         protected override void SetValue(Vector2 value) =>
             CachedComponent.SetMinMax(value, _valueMode);
     }

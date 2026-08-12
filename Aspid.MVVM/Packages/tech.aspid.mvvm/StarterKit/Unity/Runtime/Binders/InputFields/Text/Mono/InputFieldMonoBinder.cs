@@ -117,6 +117,7 @@ namespace Aspid.MVVM.StarterKit
         /// Sets <see cref="TMP_InputField.text"/>, applying the configured converter if present.
         /// Suppresses value change events during assignment.
         /// </summary>
+        /// <param name="value">The value received from the ViewModel.</param>
         [BinderLog]
         public void SetValue(string value)
         {
@@ -137,6 +138,7 @@ namespace Aspid.MVVM.StarterKit
         /// <summary>
         /// Formats the value using the configured <see cref="CultureInfoMode"/> and sets <see cref="TMP_InputField.text"/>.
         /// </summary>
+        /// <param name="value">The value received from the ViewModel.</param>
         [BinderLog]
         public void SetValue(int value) =>
             SetValue(value.ToCultureString(_cultureInfoMode));
@@ -144,6 +146,7 @@ namespace Aspid.MVVM.StarterKit
         /// <summary>
         /// Formats the value using the configured <see cref="CultureInfoMode"/> and sets <see cref="TMP_InputField.text"/>.
         /// </summary>
+        /// <param name="value">The value received from the ViewModel.</param>
         [BinderLog]
         public void SetValue(long value) =>
             SetValue(value.ToCultureString(_cultureInfoMode));
@@ -151,6 +154,7 @@ namespace Aspid.MVVM.StarterKit
         /// <summary>
         /// Formats the value using the configured <see cref="CultureInfoMode"/> and sets <see cref="TMP_InputField.text"/>.
         /// </summary>
+        /// <param name="value">The value received from the ViewModel.</param>
         [BinderLog]
         public void SetValue(float value) =>
             SetValue(value.ToCultureString(_cultureInfoMode));
@@ -158,6 +162,7 @@ namespace Aspid.MVVM.StarterKit
         /// <summary>
         /// Formats the value using the configured <see cref="CultureInfoMode"/> and sets <see cref="TMP_InputField.text"/>.
         /// </summary>
+        /// <param name="value">The value received from the ViewModel.</param>
         [BinderLog]
         public void SetValue(double value) =>
             SetValue(value.ToCultureString(_cultureInfoMode));

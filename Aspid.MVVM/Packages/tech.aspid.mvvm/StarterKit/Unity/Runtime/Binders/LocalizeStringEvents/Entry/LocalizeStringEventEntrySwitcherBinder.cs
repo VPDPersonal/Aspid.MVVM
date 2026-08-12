@@ -27,6 +27,7 @@ namespace Aspid.MVVM.StarterKit
         /// Called when applying the selected entry key.
         /// Sets the TableEntryReference of the component's StringReference.
         /// </summary>
+        /// <param name="value">The value received from the ViewModel.</param>
         protected override void SetValue(string? value) =>
             Target.StringReference.TableEntryReference = value;
     }

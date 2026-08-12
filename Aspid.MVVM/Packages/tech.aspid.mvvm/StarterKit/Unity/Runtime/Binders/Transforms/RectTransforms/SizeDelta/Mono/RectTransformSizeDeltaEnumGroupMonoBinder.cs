@@ -18,6 +18,8 @@ namespace Aspid.MVVM.StarterKit
         /// Called when the bound enum resolves to a value for the specified element.
         /// Sets the <see cref="RectTransform.sizeDelta"/> of the element according to the configured <see cref="SizeDeltaMode"/>.
         /// </summary>
+        /// <param name="element">The component this entry of the group writes to.</param>
+        /// <param name="value">The value the bound enum resolved to for this element.</param>
         protected override void SetValue(RectTransform element, Vector3 value) => 
             element.SetSizeDelta(value, _sizeMode);
     }

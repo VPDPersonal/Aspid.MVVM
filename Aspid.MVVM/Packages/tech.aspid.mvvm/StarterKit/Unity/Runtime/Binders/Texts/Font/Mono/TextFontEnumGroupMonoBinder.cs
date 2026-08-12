@@ -16,6 +16,8 @@ namespace Aspid.MVVM.StarterKit
         /// <summary>
         /// Called when applying the selected value to <see cref="TMP_Text.font"/> of the specified element.
         /// </summary>
+        /// <param name="element">The component this entry of the group writes to.</param>
+        /// <param name="value">The value the bound enum resolved to for this element.</param>
         protected override void SetValue(TMP_Text element, TMP_FontAsset value) =>
             element.font = value;
     }

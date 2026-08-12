@@ -16,6 +16,8 @@ namespace Aspid.MVVM.StarterKit
         /// Called when the bound enum resolves to a value for the specified element.
         /// Sets <see cref="Slider.value"/> of the element to the resolved float.
         /// </summary>
+        /// <param name="element">The component this entry of the group writes to.</param>
+        /// <param name="value">The value the bound enum resolved to for this element.</param>
         protected override void SetValue(Slider element, float value) =>
             element.value = value;
     }

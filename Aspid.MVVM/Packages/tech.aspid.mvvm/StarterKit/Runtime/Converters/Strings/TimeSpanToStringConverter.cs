@@ -9,9 +9,10 @@ namespace Aspid.MVVM.StarterKit
     [Serializable]
     public sealed class TimeSpanToStringConverter : GenericToString<TimeSpan>, IConverterTimeSpanToString
     {
+        /// <inheritdoc/>
         public TimeSpanToStringConverter() { }
 
-        /// <param name="format">The format string to apply using <see cref="string.Format(string, object)"/>.</param>
+        /// <inheritdoc/>
         public TimeSpanToStringConverter(string format)
             : base(format) { }
     }

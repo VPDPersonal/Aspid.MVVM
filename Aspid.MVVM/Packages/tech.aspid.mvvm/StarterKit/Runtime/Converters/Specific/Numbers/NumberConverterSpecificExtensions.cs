@@ -237,6 +237,7 @@ namespace Aspid.MVVM.StarterKit
         #endregion
         
         #region Double Classes
+        [TypeSelectorDisplay(Hidden = true)]
         private sealed class ConverterDoubleToInt : GenericFuncConverter<double, int>, IConverterDoubleToInt
         {
             public ConverterDoubleToInt(IConverter<double, int> converter) 
@@ -246,6 +247,7 @@ namespace Aspid.MVVM.StarterKit
                 : base(converter) { }
         }
         
+        [TypeSelectorDisplay(Hidden = true)]
         private sealed class ConverterDoubleToLong : GenericFuncConverter<double, long>, IConverterDoubleToLong
         {
             public ConverterDoubleToLong(IConverter<double, long> converter) 
@@ -255,6 +257,7 @@ namespace Aspid.MVVM.StarterKit
                 : base(converter) { }
         }
         
+        [TypeSelectorDisplay(Hidden = true)]
         private sealed class ConverterDoubleToFloat : GenericFuncConverter<double, float>, IConverterDoubleToFloat
         {
             public ConverterDoubleToFloat(IConverter<double, float> converter) 
@@ -264,6 +267,7 @@ namespace Aspid.MVVM.StarterKit
                 : base(converter) { }
         }
         
+        [TypeSelectorDisplay(Hidden = true)]
         private sealed class ConverterDouble : GenericFuncConverter<double, double>, IConverterDouble
         {
             public ConverterDouble(IConverter<double, double> converter) 

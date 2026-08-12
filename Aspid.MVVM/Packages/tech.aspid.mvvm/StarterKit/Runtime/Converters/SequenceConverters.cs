@@ -12,9 +12,23 @@ namespace Aspid.MVVM.StarterKit
     {
         // ReSharper disable once FieldCanBeMadeReadOnly.Local
 #if UNITY_2023_1_OR_NEWER
+        [UnityEngine.Tooltip("Converters applied to the value one after another, in the order listed here.")]
         [UnityEngine.SerializeReference]
 #endif
         private IConverter<T, T>[] _converters;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SequenceConverters{T}"/> class with an empty sequence,
+        /// leaving the value untouched until converters are added.
+        /// </summary>
+        /// <remarks>
+        /// Required by the type picker, which builds the chosen type through its parameterless constructor: without
+        /// one it hands back an instance whose array is <see langword="null"/>, and the first converted value throws.
+        /// </remarks>
+        public SequenceConverters()
+        {
+            _converters = Array.Empty<IConverter<T, T>>();
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SequenceConverters{T}"/> class.

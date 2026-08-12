@@ -6,6 +6,7 @@
         "Aspid.MVVM.Unity",
         "Aspid.MVVM.StarterKit",
         "Aspid.MVVM.StarterKit.Unity",
+        "Aspid.FastTools.Unity",
         "Unity.TextMeshPro",
         "Unity.Localization",
         "Aspid.Collections.Observable",

@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 using NUnit.Framework;
 using UnityEngine.TestTools;
@@ -10,28 +9,18 @@ namespace Aspid.MVVM.StarterKit.Tests
     /// <summary>
     /// Coverage for <see cref="Vector3CombineConverter"/> — all seven <see cref="Mode"/> branches,
     /// the pre/post converter hooks, both entry points (<c>Convert(Vector2)</c> and
-    /// <c>Convert(Vector3)</c>), and the unassigned-target degrade path.
+    /// <c>Convert(Vector3)</c>), and the unassigned-collider degrade path of the subclasses.
     /// </summary>
     /// <remarks>
-    /// The class is abstract, so both the target component and the reference vector are supplied
-    /// here by stubs. The <c>Convert(Vector2)</c> rows pin a known defect: the 2D entry point widens
-    /// its argument before the mode is applied, so the source z is always zero.
+    /// The class is abstract, so the reference vector is supplied here by a stub. The
+    /// <c>Convert(Vector2)</c> rows pin a known defect: the 2D entry point widens its argument
+    /// before the mode is applied, so the source z is always zero.
     /// </remarks>
     [TestFixture]
     internal sealed class Vector3CombineConverterTests
     {
         private static readonly Vector3 From = new(1f, 2f, 3f);
         private static readonly Vector3 To = new(10f, 20f, 30f);
-
-        private GameObject _target;
-
-        [OneTimeSetUp]
-        public void CreateTargetObject() =>
-            _target = new GameObject(nameof(Vector3CombineConverterTests));
-
-        [OneTimeTearDown]
-        public void DestroyTargetObject() =>
-            UnityEngine.Object.DestroyImmediate(_target);
 
         [TestCase(Mode.X, 1f, 20f, 30f)]
         [TestCase(Mode.Y, 10f, 2f, 30f)]
@@ -75,65 +64,39 @@ namespace Aspid.MVVM.StarterKit.Tests
                 new Vector3(3f, 21f, 31f),
                 NewStub(Mode.X, pre: new Offset(1f), post: new Offset(1f)).Convert(From));
 
-        // An unassigned Inspector reference degrades to the input instead of throwing. VectorTo
-        // throws in the stub to prove the guard short-circuits before the reference is ever read.
+        // The null guard lives in the collider subclasses now: an unassigned collider logs an error
+        // and substitutes Vector3.zero as the reference vector.
         [Test]
-        public void Convert_MissingTarget_ReturnsTheInputUnchanged()
+        public void Convert_MissingCollider_LogsAndSubstitutesZero()
         {
-            LogAssert.Expect(LogType.Error, new Regex("no target assigned"));
+            LogAssert.Expect(LogType.Error, new Regex("no collider assigned"));
 
-            Assert.AreEqual(From, new MissingTargetStub(Mode.XYZ).Convert(From));
-        }
-
-        [Test]
-        public void Convert_MissingTarget_LogsOncePerInstance()
-        {
-            LogAssert.Expect(LogType.Error, new Regex("no target assigned"));
-
-            var converter = new MissingTargetStub(Mode.XYZ);
-            converter.Convert(From);
-            converter.Convert(From);
-            converter.Convert(From);
+            Assert.AreEqual(From, new BoxColliderCentreCombineConverter().Convert(From));
         }
 
         private Stub NewStub(Mode mode) =>
-            new(_target.transform, To, mode);
+            new(To, mode);
 
         private Stub NewStub(Mode mode, IConverterVector3 pre, IConverterVector3 post) =>
-            new(_target.transform, To, mode, pre, post);
+            new(To, mode, pre, post);
 
         private sealed class Stub : Vector3CombineConverter
         {
             private readonly Vector3 _to;
-            private readonly Component _target;
 
-            public Stub(Component target, Vector3 to, Mode mode)
+            public Stub(Vector3 to, Mode mode)
                 : base(mode)
             {
-                _target = target;
                 _to = to;
             }
 
-            public Stub(Component target, Vector3 to, Mode mode, IConverterVector3 pre, IConverterVector3 post)
+            public Stub(Vector3 to, Mode mode, IConverterVector3 pre, IConverterVector3 post)
                 : base(mode, pre, post)
             {
-                _target = target;
                 _to = to;
             }
 
-            protected override Component Target => _target;
-
             protected override Vector3 VectorTo => _to;
-        }
-
-        private sealed class MissingTargetStub : Vector3CombineConverter
-        {
-            public MissingTargetStub(Mode mode)
-                : base(mode) { }
-
-            protected override Component Target => null;
-
-            protected override Vector3 VectorTo => throw new NullReferenceException();
         }
 
         private sealed class Offset : IConverterVector3

@@ -72,7 +72,17 @@ namespace Aspid.MVVM
                     }
                     else
                     {
-                        binder.Unbind();
+                        try
+                        {
+                            binder.Unbind();
+                        }
+                        catch (System.Exception exception)
+                        {
+                            // One binder must not take the rest of the collection with it: on Bind that would leave
+                            // the View half-initialised, and on Unbind it would leave the remaining binders
+                            // subscribed to a ViewModel that is going away.
+                            ReportBinderFailure("UnbindSafely", i, owner, memberName, exception);
+                        }
                     }
                 }
             }
@@ -110,7 +120,17 @@ namespace Aspid.MVVM
                     }
                     else
                     {
-                        binder.Unbind();
+                        try
+                        {
+                            binder.Unbind();
+                        }
+                        catch (System.Exception exception)
+                        {
+                            // One binder must not take the rest of the collection with it: on Bind that would leave
+                            // the View half-initialised, and on Unbind it would leave the remaining binders
+                            // subscribed to a ViewModel that is going away.
+                            ReportBinderFailure("UnbindSafely", i, owner, memberName, exception);
+                        }
                     }
                 }
             }
@@ -147,7 +167,17 @@ namespace Aspid.MVVM
                     }
                     else
                     {
-                        binder.Unbind();
+                        try
+                        {
+                            binder.Unbind();
+                        }
+                        catch (System.Exception exception)
+                        {
+                            // One binder must not take the rest of the collection with it: on Bind that would leave
+                            // the View half-initialised, and on Unbind it would leave the remaining binders
+                            // subscribed to a ViewModel that is going away.
+                            ReportBinderFailure("UnbindSafely", index, owner, memberName, exception);
+                        }
                     }
                     
                     index++;

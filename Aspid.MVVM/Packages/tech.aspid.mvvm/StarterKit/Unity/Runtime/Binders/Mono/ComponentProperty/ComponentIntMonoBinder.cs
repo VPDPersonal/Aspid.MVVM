@@ -76,5 +76,27 @@ namespace Aspid.MVVM.StarterKit
             FloatValueChanged?.Invoke(value);
             DoubleValueChanged?.Invoke(value);
         }
+
+        /// <summary>
+        /// Sends <paramref name="value"/> to the ViewModel on every numeric channel this binder exposes.
+        /// </summary>
+        /// <param name="value">The value to send, before conversion.</param>
+        /// <remarks>
+        /// A binder that is only ever pushed to has no use for this; it exists for the ones that also listen to
+        /// their component and forward what the user did — a dropdown selection, for instance. Raising
+        /// <see cref="ComponentMonoBinder{TComponent, TProperty}.ValueChanged"/> alone would reach an
+        /// <see langword="int"/> field in the ViewModel but leave a <see langword="float"/> one silent, because
+        /// the other three channels are bridged by <see cref="INumberReverseBinder"/> rather than inherited.
+        /// </remarks>
+        protected void RaiseNumberValueChanged(int value)
+        {
+            RaiseValueChanged(value);
+
+            var converted = GetConvertedValue(value);
+
+            LongValueChanged?.Invoke(converted);
+            FloatValueChanged?.Invoke(converted);
+            DoubleValueChanged?.Invoke(converted);
+        }
     }
 }

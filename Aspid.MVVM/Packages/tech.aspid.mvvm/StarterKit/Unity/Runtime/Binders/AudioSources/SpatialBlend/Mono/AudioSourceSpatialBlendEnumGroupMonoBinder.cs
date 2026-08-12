@@ -19,6 +19,6 @@ namespace Aspid.MVVM.StarterKit
         /// Sets <see cref="AudioSource.spatialBlend"/> clamped to the valid range of 0 to 1.
         /// </summary>
         protected override void SetValue(AudioSource element, float value) =>
-            element.spatialBlend = Mathf.Clamp(value, min: 0, max: 1f);
+            element.spatialBlend = BinderMath.SafeClamp(value, 0, 1f);
     }
 }

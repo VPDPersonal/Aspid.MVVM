@@ -19,6 +19,6 @@ namespace Aspid.MVVM.StarterKit
         /// Sets <see cref="CanvasGroup.alpha"/> clamped to the valid range of 0 to 1.
         /// </summary>
         protected override void SetValue(float value) =>
-            CachedComponent.alpha = Mathf.Clamp01(value);
+            CachedComponent.alpha = BinderMath.SafeClamp01(value);
     }
 }

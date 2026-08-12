@@ -19,6 +19,6 @@ namespace Aspid.MVVM.StarterKit
         /// Sets <see cref="AudioSource.spread"/> clamped to the valid range of 0 to 360.
         /// </summary>
         protected override void SetValue(AudioSource element, float value) =>
-            element.spread = Mathf.Clamp(value, min: 0, max: 360f);
+            element.spread = BinderMath.SafeClamp(value, 0, 360f);
     }
 }

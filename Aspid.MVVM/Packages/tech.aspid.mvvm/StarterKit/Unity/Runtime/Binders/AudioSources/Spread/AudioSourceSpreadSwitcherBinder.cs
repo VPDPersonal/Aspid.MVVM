@@ -34,6 +34,6 @@ namespace Aspid.MVVM.StarterKit
         /// Clamps the converted value to the valid range of 0 to 360.
         /// </summary>
         protected override float GetConvertedValue(float value) =>
-            Mathf.Clamp(base.GetConvertedValue(value), min: 0, max: 360);
+            BinderMath.SafeClamp(base.GetConvertedValue(value), 0, 360);
     }
 }

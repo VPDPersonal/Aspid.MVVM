@@ -19,6 +19,6 @@ namespace Aspid.MVVM.StarterKit
         /// Clamps the value to the valid range of 0 to 1.
         /// </summary>
         protected override void SetValue(float value) =>
-            CachedComponent.volume = Mathf.Clamp(value, min: 0, max: 1);
+            CachedComponent.volume = BinderMath.SafeClamp(value, 0, 1);
     }
 }

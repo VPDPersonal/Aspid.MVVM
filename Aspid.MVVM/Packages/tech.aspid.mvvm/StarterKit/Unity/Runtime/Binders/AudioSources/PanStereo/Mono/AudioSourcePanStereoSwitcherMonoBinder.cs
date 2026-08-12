@@ -23,6 +23,6 @@ namespace Aspid.MVVM.StarterKit
         /// Clamps the converted value to the valid range of −1 to 1.
         /// </summary>
         protected override float GetConvertedValue(float value) =>
-            Mathf.Clamp(base.GetConvertedValue(value), min: -1, max: 1);
+            BinderMath.SafeClamp(base.GetConvertedValue(value), -1, 1);
     }
 }

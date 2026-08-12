@@ -34,6 +34,6 @@ namespace Aspid.MVVM.StarterKit
         /// Clamps the converted value to the valid range of −3 to 3.
         /// </summary>
         protected override float GetConvertedValue(float value) =>
-            Mathf.Clamp(base.GetConvertedValue(value), min: -3, max: 3);
+            BinderMath.SafeClamp(base.GetConvertedValue(value), -3, 3);
     }
 }

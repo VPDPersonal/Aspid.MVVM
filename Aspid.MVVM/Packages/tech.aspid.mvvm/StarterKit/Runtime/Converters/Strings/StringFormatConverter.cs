@@ -16,7 +16,7 @@ namespace Aspid.MVVM.StarterKit
         public StringFormatConverter() { }
 
         /// <param name="format">The format string to apply using <see cref="string.Format(string, object)"/>.</param>
-        /// <param name="formatEmptyValues">If <c>true</c>, applies the format even when the input value is empty or whitespace-only. Default is <c>false</c>.</param>
+        /// <param name="formatEmptyValues">If <see langword="true"/>, applies the format even when the input value is empty or whitespace-only. Default is <see langword="false"/>.</param>
         public StringFormatConverter(string format, bool formatEmptyValues = false)
             : base(format)
         {

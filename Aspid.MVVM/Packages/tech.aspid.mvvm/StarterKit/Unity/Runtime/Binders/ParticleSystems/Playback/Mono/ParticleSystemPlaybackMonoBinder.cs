@@ -11,7 +11,7 @@ namespace Aspid.MVVM.StarterKit
     /// <remarks>
     /// Only <see cref="BindMode.OneWayToSource"/> is supported: this is a binder the ViewModel calls, not one that
     /// receives values. When binding is established it exposes the operation either as a plain <see cref="Action"/>
-    /// or as an <see cref="IRelayCommand"/> whose <c>CanExecute</c> mirrors <see cref="CanExecute"/>.
+    /// or as an <see cref="IRelayCommand"/> whose <see cref="IRelayCommand.CanExecute()"/> mirrors <see cref="CanExecute"/>.
     /// <para/>
     /// An effect is something a ViewModel starts — a hit, a pickup, a level-up — and nothing in the package could
     /// start one. The shape follows <see cref="AudioSourcePlaybackMonoBinder"/>, which solves the same problem for
@@ -42,7 +42,7 @@ namespace Aspid.MVVM.StarterKit
         private Action<IRelayCommand> _reverseCommand;
 
         /// <summary>
-        /// Notifies the bound command that <c>CanExecute</c> may have changed.
+        /// Notifies the bound command that <see cref="IRelayCommand.CanExecute()"/> may have changed.
         /// </summary>
         /// <remarks>
         /// When overriding this method, always call <c>base.OnEnable()</c>.

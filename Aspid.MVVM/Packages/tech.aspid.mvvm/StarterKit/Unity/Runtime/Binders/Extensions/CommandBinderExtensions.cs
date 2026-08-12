@@ -7,8 +7,8 @@ using Object = UnityEngine.Object;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// Static helpers for atomically replacing a bound command reference while managing <c>CanExecuteChanged</c> subscriptions,
-    /// and for reflecting a command's <c>CanExecute</c> result on a <see cref="Selectable"/>.
+    /// Static helpers for atomically replacing a bound command reference while managing <see cref="IRelayCommand.CanExecuteChanged"/> subscriptions,
+    /// and for reflecting a command's <see cref="IRelayCommand.CanExecute()"/> result on a <see cref="Selectable"/>.
     /// </summary>
     public static class CommandBinderExtensions
     {
@@ -18,12 +18,12 @@ namespace Aspid.MVVM.StarterKit
         /// <remarks>
         /// Every reference the chosen mode needs is checked before it is dereferenced, and a missing one is reported
         /// with the owning binder and the mode that required it. A command binder is driven by
-        /// <c>CanExecuteChanged</c>, so an exception raised here would also cut the notification short for every
+        /// <see cref="IRelayCommand.CanExecuteChanged"/>, so an exception raised here would also cut the notification short for every
         /// other subscriber of that event; reporting and returning keeps the rest of them running.
         /// </remarks>
         /// <param name="target">The <see cref="Selectable"/> the command binder operates on.</param>
         /// <param name="mode">Determines what <paramref name="isInteractable"/> is applied to.</param>
-        /// <param name="isInteractable">The command's current <c>CanExecute</c> result.</param>
+        /// <param name="isInteractable">The command's current <see cref="IRelayCommand.CanExecute()"/> result.</param>
         /// <param name="customView">
         /// The view used by <see cref="InteractableMode.Custom"/>. Ignored by every other mode.
         /// </param>
@@ -81,13 +81,13 @@ namespace Aspid.MVVM.StarterKit
 
         /// <summary>
         /// Replaces <paramref name="command"/> with <paramref name="value"/>,
-        /// transferring the <c>CanExecuteChanged</c> subscription and immediately invoking <paramref name="onCanExecuteChanged"/>.
+        /// transferring the <see cref="IRelayCommand.CanExecuteChanged"/> subscription and immediately invoking <paramref name="onCanExecuteChanged"/>.
         /// Does nothing if <paramref name="command"/> already references <paramref name="value"/>.
         /// </summary>
         /// <param name="command">Reference to the current command field to replace.</param>
         /// <param name="value">The new command to bind, or <see langword="null"/> to unbind.</param>
         /// <param name="onCanExecuteChanged">
-        /// Callback subscribed to the new command's <c>CanExecuteChanged</c> and invoked immediately after binding.
+        /// Callback subscribed to the new command's <see cref="IRelayCommand.CanExecuteChanged"/> and invoked immediately after binding.
         /// Pass <see langword="null"/> to skip subscription.
         /// </param>
         public static void UpdateCommand(ref IRelayCommand command, IRelayCommand value, in Action<IRelayCommand> onCanExecuteChanged = null)
@@ -108,14 +108,14 @@ namespace Aspid.MVVM.StarterKit
 
         /// <summary>
         /// Replaces <paramref name="command"/> with <paramref name="value"/>,
-        /// transferring the <c>CanExecuteChanged</c> subscription and immediately invoking <paramref name="onCanExecuteChanged"/>.
+        /// transferring the <see cref="IRelayCommand.CanExecuteChanged"/> subscription and immediately invoking <paramref name="onCanExecuteChanged"/>.
         /// Does nothing if <paramref name="command"/> already references <paramref name="value"/>.
         /// </summary>
         /// <typeparam name="T">The type of the command parameter.</typeparam>
         /// <param name="command">Reference to the current command field to replace.</param>
         /// <param name="value">The new command to bind, or <see langword="null"/> to unbind.</param>
         /// <param name="onCanExecuteChanged">
-        /// Callback subscribed to the new command's <c>CanExecuteChanged</c> and invoked immediately after binding.
+        /// Callback subscribed to the new command's <see cref="IRelayCommand.CanExecuteChanged"/> and invoked immediately after binding.
         /// Pass <see langword="null"/> to skip subscription.
         /// </param>
         public static void UpdateCommand<T>(ref IRelayCommand<T> command,
@@ -138,7 +138,7 @@ namespace Aspid.MVVM.StarterKit
 
         /// <summary>
         /// Replaces <paramref name="command"/> with <paramref name="value"/>,
-        /// transferring the <c>CanExecuteChanged</c> subscription and immediately invoking <paramref name="onCanExecuteChanged"/>.
+        /// transferring the <see cref="IRelayCommand.CanExecuteChanged"/> subscription and immediately invoking <paramref name="onCanExecuteChanged"/>.
         /// Does nothing if <paramref name="command"/> already references <paramref name="value"/>.
         /// </summary>
         /// <typeparam name="T1">The type of the first command parameter.</typeparam>
@@ -146,7 +146,7 @@ namespace Aspid.MVVM.StarterKit
         /// <param name="command">Reference to the current command field to replace.</param>
         /// <param name="value">The new command to bind, or <see langword="null"/> to unbind.</param>
         /// <param name="onCanExecuteChanged">
-        /// Callback subscribed to the new command's <c>CanExecuteChanged</c> and invoked immediately after binding.
+        /// Callback subscribed to the new command's <see cref="IRelayCommand.CanExecuteChanged"/> and invoked immediately after binding.
         /// Pass <see langword="null"/> to skip subscription.
         /// </param>
         public static void UpdateCommand<T1, T2>(
@@ -170,7 +170,7 @@ namespace Aspid.MVVM.StarterKit
 
         /// <summary>
         /// Replaces <paramref name="command"/> with <paramref name="value"/>,
-        /// transferring the <c>CanExecuteChanged</c> subscription and immediately invoking <paramref name="onCanExecuteChanged"/>.
+        /// transferring the <see cref="IRelayCommand.CanExecuteChanged"/> subscription and immediately invoking <paramref name="onCanExecuteChanged"/>.
         /// Does nothing if <paramref name="command"/> already references <paramref name="value"/>.
         /// </summary>
         /// <typeparam name="T1">The type of the first command parameter.</typeparam>
@@ -179,7 +179,7 @@ namespace Aspid.MVVM.StarterKit
         /// <param name="command">Reference to the current command field to replace.</param>
         /// <param name="value">The new command to bind, or <see langword="null"/> to unbind.</param>
         /// <param name="onCanExecuteChanged">
-        /// Callback subscribed to the new command's <c>CanExecuteChanged</c> and invoked immediately after binding.
+        /// Callback subscribed to the new command's <see cref="IRelayCommand.CanExecuteChanged"/> and invoked immediately after binding.
         /// Pass <see langword="null"/> to skip subscription.
         /// </param>
         public static void UpdateCommand<T1, T2, T3>(
@@ -203,7 +203,7 @@ namespace Aspid.MVVM.StarterKit
 
         /// <summary>
         /// Replaces <paramref name="command"/> with <paramref name="value"/>,
-        /// transferring the <c>CanExecuteChanged</c> subscription and immediately invoking <paramref name="onCanExecuteChanged"/>.
+        /// transferring the <see cref="IRelayCommand.CanExecuteChanged"/> subscription and immediately invoking <paramref name="onCanExecuteChanged"/>.
         /// Does nothing if <paramref name="command"/> already references <paramref name="value"/>.
         /// </summary>
         /// <typeparam name="T1">The type of the first command parameter.</typeparam>
@@ -213,7 +213,7 @@ namespace Aspid.MVVM.StarterKit
         /// <param name="command">Reference to the current command field to replace.</param>
         /// <param name="value">The new command to bind, or <see langword="null"/> to unbind.</param>
         /// <param name="onCanExecuteChanged">
-        /// Callback subscribed to the new command's <c>CanExecuteChanged</c> and invoked immediately after binding.
+        /// Callback subscribed to the new command's <see cref="IRelayCommand.CanExecuteChanged"/> and invoked immediately after binding.
         /// Pass <see langword="null"/> to skip subscription.
         /// </param>
         public static void UpdateCommand<T1, T2, T3, T4>(

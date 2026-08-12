@@ -39,7 +39,7 @@
             </code>
         </example>
     </member>
-    <member name="InputFieldCommandBinderT">
+    <member name="InputFieldCommandBinder{1}">
         <example>
             Bind a relay command with one additional parameter to a TMP_InputField.
             <code>
@@ -59,7 +59,7 @@
             </code>
         </example>
     </member>
-    <member name="InputFieldCommandBinderT1T2">
+    <member name="InputFieldCommandBinder{2}">
         <example>
             Bind a relay command with two additional parameters to a TMP_InputField.
             <code>
@@ -79,7 +79,7 @@
             </code>
         </example>
     </member>
-    <member name="InputFieldCommandBinderT1T2T3">
+    <member name="InputFieldCommandBinder{3}">
         <example>
             Bind a relay command with three additional parameters to a TMP_InputField.
             <code>

@@ -160,7 +160,7 @@ namespace Aspid.MVVM.StarterKit
     /// <see cref="IRelayCommand{T1, T2}">IRelayCommand&lt;float, T&gt;</see> or <see cref="IRelayCommand{T1, T2}">IRelayCommand&lt;double, T&gt;</see>.
     /// </summary>
     /// <typeparam name="T">The type of the additional parameter forwarded alongside the slider value.</typeparam>
-    /// <include file="XmlExampleDoc-Slider-Command-1.1.0.xml" path="doc//member[@name='SliderCommandBinderT']/*" />
+    /// <include file="XmlExampleDoc-Slider-Command-1.1.0.xml" path="doc//member[@name='SliderCommandBinder{1}']/*" />
     [Serializable]
     public class SliderCommandBinder<T> : TargetBinder<Slider>,
         IBinder<IRelayCommand<int, T>>,
@@ -331,7 +331,7 @@ namespace Aspid.MVVM.StarterKit
     /// </summary>
     /// <typeparam name="T1">The type of the first additional parameter.</typeparam>
     /// <typeparam name="T2">The type of the second additional parameter.</typeparam>
-    /// <include file="XmlExampleDoc-Slider-Command-1.1.0.xml" path="doc//member[@name='SliderCommandBinderT1T2']/*" />
+    /// <include file="XmlExampleDoc-Slider-Command-1.1.0.xml" path="doc//member[@name='SliderCommandBinder{2}']/*" />
     [Serializable]
     public class SliderCommandBinder<T1, T2> : TargetBinder<Slider>,
         IBinder<IRelayCommand<int, T1, T2>>,
@@ -518,7 +518,7 @@ namespace Aspid.MVVM.StarterKit
     /// <typeparam name="T1">The type of the first additional parameter.</typeparam>
     /// <typeparam name="T2">The type of the second additional parameter.</typeparam>
     /// <typeparam name="T3">The type of the third additional parameter.</typeparam>
-    /// <include file="XmlExampleDoc-Slider-Command-1.1.0.xml" path="doc//member[@name='SliderCommandBinderT1T2T3']/*" />
+    /// <include file="XmlExampleDoc-Slider-Command-1.1.0.xml" path="doc//member[@name='SliderCommandBinder{3}']/*" />
     [Serializable]
     public class SliderCommandBinder<T1, T2, T3> : TargetBinder<Slider>,
         IBinder<IRelayCommand<int, T1, T2, T3>>,

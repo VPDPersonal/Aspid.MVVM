@@ -16,14 +16,14 @@ namespace Aspid.MVVM
     {
         /// <summary>
         /// The ViewModel types available for selection in the design ViewModel dropdown.
-        /// Always includes <see cref="IViewModel"/> unless <see cref="StrictType"/> is <c>true</c>
+        /// Always includes <see cref="IViewModel"/> unless <see cref="StrictType"/> is <see langword="true"/>
         /// and the provided type already implements it.
         /// </summary>
         public readonly Type[] Types;
 
         /// <summary>
         /// Indicates whether the type filter is strict.
-        /// When <c>true</c>, only the exact specified type is shown, and it must implement <see cref="IViewModel"/>.
+        /// When <see langword="true"/>, only the exact specified type is shown, and it must implement <see cref="IViewModel"/>.
         /// </summary>
         public readonly bool StrictType;
 
@@ -55,11 +55,11 @@ namespace Aspid.MVVM
         /// </summary>
         /// <param name="type">The ViewModel type to show in the design ViewModel selector.</param>
         /// <param name="strictType">
-        /// When <c>true</c>, only the exact <paramref name="type"/> is shown.
+        /// When <see langword="true"/>, only the exact <paramref name="type"/> is shown.
         /// The type must implement <see cref="IViewModel"/>; otherwise an <see cref="ArgumentException"/> is thrown.
         /// </param>
         /// <exception cref="ArgumentException">
-        /// Thrown when <paramref name="strictType"/> is <c>true</c> and <paramref name="type"/>
+        /// Thrown when <paramref name="strictType"/> is <see langword="true"/> and <paramref name="type"/>
         /// does not implement <see cref="IViewModel"/>.
         /// </exception>
         public ShowDesignViewModelAttribute(Type type, bool strictType = false)

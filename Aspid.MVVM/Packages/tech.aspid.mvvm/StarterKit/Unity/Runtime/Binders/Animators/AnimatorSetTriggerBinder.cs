@@ -11,8 +11,8 @@ namespace Aspid.MVVM.StarterKit
     /// </summary>
     /// <remarks>
     /// Only <see cref="BindMode.OneWayToSource"/> is supported. When binding is established, the binder
-    /// exposes an internal <c>SetTrigger</c> action to the ViewModel either as a plain <see cref="Action"/>
-    /// or as an <see cref="IRelayCommand"/> whose <c>CanExecute</c> mirrors <see cref="CanExecute()"/>.
+    /// exposes an internal <see cref="Animator.SetTrigger(string)"/> action to the ViewModel either as a plain <see cref="Action"/>
+    /// or as an <see cref="IRelayCommand"/> whose <see cref="IRelayCommand.CanExecute()"/> mirrors <see cref="CanExecute()"/>.
     /// </remarks>
     /// <include file="XmlExampleDoc-Animator-1.1.0.xml" path="doc//member[@name='AnimatorSetTriggerBinder']/*" />
     [Serializable]
@@ -57,7 +57,7 @@ namespace Aspid.MVVM.StarterKit
         }
 
         /// <summary>
-        /// Notifies the bound <see cref="IRelayCommand"/> that its <c>CanExecute</c> state may have changed.
+        /// Notifies the bound <see cref="IRelayCommand"/> that its <see cref="IRelayCommand.CanExecute()"/> state may have changed.
         /// </summary>
         public void NotifyCanExecuteChanged() =>
             _command?.NotifyCanExecuteChanged();
@@ -70,7 +70,7 @@ namespace Aspid.MVVM.StarterKit
 
         /// <summary>
         /// Called when binding is established.
-        /// Exposes <c>SetTrigger</c> to the ViewModel as an <see cref="IRelayCommand"/> or a plain <see cref="Action"/>.
+        /// Exposes <see cref="Animator.SetTrigger(string)"/> to the ViewModel as an <see cref="IRelayCommand"/> or a plain <see cref="Action"/>.
         /// </summary>
         protected sealed override void OnBound()
         {

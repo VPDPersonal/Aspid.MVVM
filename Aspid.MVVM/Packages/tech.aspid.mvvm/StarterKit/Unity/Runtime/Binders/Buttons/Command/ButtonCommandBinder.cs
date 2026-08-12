@@ -107,7 +107,7 @@ namespace Aspid.MVVM.StarterKit
     /// Accepts commands typed as <see cref="IRelayCommand{T}"/>.
     /// </summary>
     /// <typeparam name="T">The type of the additional parameter forwarded when the command is executed.</typeparam>
-    /// <include file="XmlExampleDoc-Button-Command-1.1.0.xml" path="doc//member[@name='ButtonCommandBinderT']/*" />
+    /// <include file="XmlExampleDoc-Button-Command-1.1.0.xml" path="doc//member[@name='ButtonCommandBinder{1}']/*" />
     [Serializable]
     public class ButtonCommandBinder<T> : TargetBinder<Button>, IBinder<IRelayCommand<T>>
     {
@@ -235,7 +235,7 @@ namespace Aspid.MVVM.StarterKit
     /// </summary>
     /// <typeparam name="T1">The type of the first additional parameter forwarded when the command is executed.</typeparam>
     /// <typeparam name="T2">The type of the second additional parameter forwarded when the command is executed.</typeparam>
-    /// <include file="XmlExampleDoc-Button-Command-1.1.0.xml" path="doc//member[@name='ButtonCommandBinderT1T2']/*" />
+    /// <include file="XmlExampleDoc-Button-Command-1.1.0.xml" path="doc//member[@name='ButtonCommandBinder{2}']/*" />
     [Serializable]
     public class ButtonCommandBinder<T1, T2> : TargetBinder<Button>, IBinder<IRelayCommand<T1, T2>>
     {
@@ -381,7 +381,7 @@ namespace Aspid.MVVM.StarterKit
     /// <typeparam name="T1">The type of the first additional parameter forwarded when the command is executed.</typeparam>
     /// <typeparam name="T2">The type of the second additional parameter forwarded when the command is executed.</typeparam>
     /// <typeparam name="T3">The type of the third additional parameter forwarded when the command is executed.</typeparam>
-    /// <include file="XmlExampleDoc-Button-Command-1.1.0.xml" path="doc//member[@name='ButtonCommandBinderT1T2T3']/*" />
+    /// <include file="XmlExampleDoc-Button-Command-1.1.0.xml" path="doc//member[@name='ButtonCommandBinder{3}']/*" />
     [Serializable]
     public class ButtonCommandBinder<T1, T2, T3> : TargetBinder<Button>, IBinder<IRelayCommand<T1, T2, T3>>
     {
@@ -533,7 +533,7 @@ namespace Aspid.MVVM.StarterKit
     /// <typeparam name="T2">The type of the second additional parameter forwarded when the command is executed.</typeparam>
     /// <typeparam name="T3">The type of the third additional parameter forwarded when the command is executed.</typeparam>
     /// <typeparam name="T4">The type of the fourth additional parameter forwarded when the command is executed.</typeparam>
-    /// <include file="XmlExampleDoc-Button-Command-1.1.0.xml" path="doc//member[@name='ButtonCommandBinderT1T2T3T4']/*" />
+    /// <include file="XmlExampleDoc-Button-Command-1.1.0.xml" path="doc//member[@name='ButtonCommandBinder{4}']/*" />
     [Serializable]
     public class ButtonCommandBinder<T1, T2, T3, T4> : TargetBinder<Button>, IBinder<IRelayCommand<T1, T2, T3, T4>>
     {

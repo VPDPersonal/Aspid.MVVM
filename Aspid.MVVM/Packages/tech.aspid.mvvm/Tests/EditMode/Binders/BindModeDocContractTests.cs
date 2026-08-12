@@ -27,7 +27,9 @@ namespace Aspid.MVVM.Tests
     {
         private const string Guard = "ThrowExceptionIfTwo()";
 
-        /// <summary>The wording that names only TwoWay: the constraint sentence ends right after the tag.</summary>
+        /// <summary>
+        /// The wording that names only TwoWay: the constraint sentence ends right after the tag.
+        /// </summary>
         private const string TwoWayOnly = "Must not be <see cref=\"BindMode.TwoWay\"/>.";
 
         private static readonly Regex DeclarationWithBase =

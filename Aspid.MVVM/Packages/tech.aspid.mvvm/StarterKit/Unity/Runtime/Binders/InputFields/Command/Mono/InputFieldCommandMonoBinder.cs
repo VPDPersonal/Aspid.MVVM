@@ -157,7 +157,9 @@ namespace Aspid.MVVM.StarterKit
         
         private IRelayCommand<string, T> _command;
 
-        /// <summary>Gets or sets the parameter passed to the command alongside the input field text.</summary>
+        /// <summary>
+        /// Gets or sets the parameter passed to the command alongside the input field text.
+        /// </summary>
         public virtual T Param
         {
             get => _param;
@@ -275,14 +277,18 @@ namespace Aspid.MVVM.StarterKit
         
         private IRelayCommand<string, T1, T2> _command;
 
-        /// <summary>Gets or sets the first parameter passed to the command alongside the input field text.</summary>
+        /// <summary>
+        /// Gets or sets the first parameter passed to the command alongside the input field text.
+        /// </summary>
         public virtual T1 Param1
         {
             get => _param1;
             set => _param1 = value;
         }
 
-        /// <summary>Gets or sets the second parameter passed to the command alongside the input field text.</summary>
+        /// <summary>
+        /// Gets or sets the second parameter passed to the command alongside the input field text.
+        /// </summary>
         public virtual T2 Param2
         {
             get => _param2;
@@ -404,21 +410,27 @@ namespace Aspid.MVVM.StarterKit
         
         private IRelayCommand<string, T1, T2, T3> _command;
 
-        /// <summary>Gets or sets the first parameter passed to the command alongside the input field text.</summary>
+        /// <summary>
+        /// Gets or sets the first parameter passed to the command alongside the input field text.
+        /// </summary>
         public virtual T1 Param1
         {
             get => _param1;
             set => _param1 = value;
         }
 
-        /// <summary>Gets or sets the second parameter passed to the command alongside the input field text.</summary>
+        /// <summary>
+        /// Gets or sets the second parameter passed to the command alongside the input field text.
+        /// </summary>
         public virtual T2 Param2
         {
             get => _param2;
             set => _param2 = value;
         }
 
-        /// <summary>Gets or sets the third parameter passed to the command alongside the input field text.</summary>
+        /// <summary>
+        /// Gets or sets the third parameter passed to the command alongside the input field text.
+        /// </summary>
         public virtual T3 Param3
         {
             get => _param3;

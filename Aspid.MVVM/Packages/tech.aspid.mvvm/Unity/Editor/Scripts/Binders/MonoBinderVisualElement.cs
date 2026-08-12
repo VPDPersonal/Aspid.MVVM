@@ -64,7 +64,7 @@ namespace Aspid.MVVM
 
         /// <summary>
         /// Optional subtext rendered under the main header label.
-        /// Returning <c>null</c> keeps the header single-line (default).
+        /// Returning <see langword="null"/> keeps the header single-line (default).
         /// </summary>
         protected virtual string ScriptSubtext => null;
 

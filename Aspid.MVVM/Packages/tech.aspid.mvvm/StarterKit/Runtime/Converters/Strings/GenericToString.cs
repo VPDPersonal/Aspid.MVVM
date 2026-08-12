@@ -30,7 +30,7 @@ namespace Aspid.MVVM.StarterKit
         /// Converts the specified value to a string using the configured format.
         /// </summary>
         /// <param name="value">The value to convert.</param>
-        /// <returns>The string representation of the value, or <c>null</c> if the value is <c>null</c>.</returns>
+        /// <returns>The string representation of the value, or <see langword="null"/> if the value is <see langword="null"/>.</returns>
         public string? Convert(TFrom? value)
         {
             if (value is null) return null;

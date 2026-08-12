@@ -25,7 +25,7 @@ namespace Aspid.MVVM
 
         /// <summary>
         /// Assembly-qualified type names of the binder types accepted by this field.
-        /// <c>null</c> when the attribute is used without specifying types.
+        /// <see langword="null"/> when the attribute is used without specifying types.
         /// </summary>
         public string[]? AssemblyQualifiedNames { get; }
 

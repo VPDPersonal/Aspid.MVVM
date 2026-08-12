@@ -7,10 +7,13 @@ namespace Aspid.MVVM
 {
     // TODO Move To UnityFastTools
     /// <summary>
-    /// Editor-only attribute that marks a <see cref="MonoBinder"/> class for inclusion in the
-    /// "Add Binder" context menu for a specific target component type.
-    /// The editor uses this attribute to automatically populate serialized properties when the binder is added.
+    /// Editor-only attribute that offers a <see cref="MonoBinder"/> in the "Add Binder" context menu of a
+    /// component, and of the specific serialized properties it names.
     /// </summary>
+    /// <remarks>
+    /// Choosing the entry adds the binder component to the same GameObject. It does not fill any of the binder's
+    /// own fields — the property names decide <em>where the entry appears</em>, not what happens afterwards.
+    /// </remarks>
     [Conditional(conditionString: "UNITY_EDITOR")]
     [AttributeUsage(validOn: AttributeTargets.Class)]
     public class AddBinderContextMenuAttribute : Attribute
@@ -22,20 +25,26 @@ namespace Aspid.MVVM
         public Type Type { get; }
 
         /// <summary>
-        /// Optional override for the root menu path displayed in the context menu.
-        /// When <c>null</c> or empty, a default path is generated from the binder type name.
+        /// Intended override for the root menu path. Nothing reads it yet.
         /// </summary>
+        /// <remarks>
+        /// Set on a number of binders, but no code consults it, so the entry appears under the path derived from
+        /// the binder type name regardless. Kept because the binders that set it describe a hierarchy worth
+        /// having; documented as unimplemented rather than removed silently.
+        /// </remarks>
         public string Path { get; set; }
 
-        /// <summary>
-        /// Optional sub-path appended under <see cref="Path"/> in the context menu hierarchy.
-        /// </summary>
+        /// <inheritdoc cref="Path"/>
         public string SubPath { get; set; }
 
         /// <summary>
-        /// Names of serialized properties that should be automatically populated
-        /// when this binder is added via the context menu.
+        /// Names of serialized properties on the target component whose context menu should offer this binder.
         /// </summary>
+        /// <remarks>
+        /// Matched against the leaf name of the right-clicked property, so a nested one such as
+        /// <c>m_OnClick.m_PersistentCalls.m_Calls</c> is matched as <c>m_Calls</c>. A name the component does not
+        /// have simply never matches, and the entry never appears — which is why a contract test checks them.
+        /// </remarks>
         public string[] SerializePropertyNames { get; }
 
         /// <summary>

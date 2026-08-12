@@ -24,15 +24,26 @@ namespace Aspid.MVVM.StarterKit
         /// <inheritdoc/>
         protected override BindMode DefaultMode => BindMode.OneTime;
 
-        [Tooltip("When enabled, inverts the bound bool value before applying it.")]
+        [Tooltip("When enabled, hides while bound and shows while unbound. This binder ignores the bound value entirely - it follows whether a binding exists.")]
         [SerializeField] private bool _isInvert;
         
         private void OnEnable() =>
             SetVisible();
         
+        /// <summary>
+        /// Called when binding is established. Applies the visibility that the new bound state implies.
+        /// </summary>
+        /// <remarks>
+        /// This binder never reads a value — visibility follows whether a binding exists, so both this hook and
+        /// its unbound counterpart do the same thing.
+        /// </remarks>
         protected override void OnBound() => 
             SetVisible();
 
+        /// <summary>
+        /// Called when the binding is released. Applies the visibility that the new bound state implies.
+        /// </summary>
+        /// <inheritdoc cref="OnBound"/>
         protected override void OnUnbound() => 
             SetVisible();
 

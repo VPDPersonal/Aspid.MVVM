@@ -47,6 +47,14 @@ namespace Aspid.MVVM.StarterKit
         public void SetValue(bool value) =>
             Target.SetActive(GetConvertedValue(value));
         
+        /// <summary>
+        /// Called when binding is established. In <see cref="BindMode.OneWayToSource"/>, sends the value the
+        /// target already holds to the ViewModel so the source starts in step with the view.
+        /// </summary>
+        /// <remarks>
+        /// Does nothing in the other modes: they push from the ViewModel, and reporting the target's current
+        /// value back would be the ViewModel hearing its own state from the view.
+        /// </remarks>
         protected override void OnBound()
         {
             if (Mode is BindMode.OneWayToSource)

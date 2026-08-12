@@ -31,10 +31,11 @@ namespace Aspid.MVVM.StarterKit
         }
 
         /// <summary>
-        /// Sets both <see cref="AudioSource.minDistance"/> and <see cref="AudioSource.maxDistance"/>
-        /// to <paramref name="value"/>.
+        /// Assigns <paramref name="value"/> to whichever of <see cref="AudioSource.minDistance"/> and
+        /// <see cref="AudioSource.maxDistance"/> the configured <see cref="AudioSourceDistanceMode"/>
+        /// selects — both of them only when it is <see cref="AudioSourceDistanceMode.Range"/>.
         /// </summary>
-        /// <param name="value">The value to assign to both distance properties.</param>
+        /// <param name="value">The distance to assign to the selected endpoint or endpoints.</param>
         [BinderLog]
         public void SetValue(float value) =>
             SetValue(new Vector2(value, value));

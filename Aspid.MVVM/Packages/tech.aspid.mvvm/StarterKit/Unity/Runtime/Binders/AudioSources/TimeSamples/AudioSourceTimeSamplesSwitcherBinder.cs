@@ -24,6 +24,6 @@ namespace Aspid.MVVM.StarterKit
 
         /// <inheritdoc/>
         protected override void SetValue(int value) =>
-            Target.timeSamples = value;
+            Target.SetTimeSamples(value);
     }
 }

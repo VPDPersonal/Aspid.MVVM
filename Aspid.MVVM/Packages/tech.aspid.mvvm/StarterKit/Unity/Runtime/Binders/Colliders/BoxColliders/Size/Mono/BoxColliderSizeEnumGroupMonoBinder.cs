@@ -13,6 +13,6 @@ namespace Aspid.MVVM.StarterKit
     {
         /// <inheritdoc/>
         protected override void SetValue(BoxCollider element, Vector3 value) =>
-            element.size = value;
+            element.size = BinderMath.NonNegative(value);
     }
 }

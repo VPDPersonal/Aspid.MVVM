@@ -18,7 +18,7 @@ namespace Aspid.MVVM.StarterKit
         protected sealed override float Property
         {
             get => CachedComponent.time;
-            set => CachedComponent.time = value;
+            set => CachedComponent.SetTime(value);
         }
     }
 }

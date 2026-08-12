@@ -13,6 +13,6 @@ namespace Aspid.MVVM.StarterKit
     {
         /// <inheritdoc/>
         protected override void SetValue(float value) =>
-            CachedComponent.time = value;
+            CachedComponent.SetTime(value);
     }
 }

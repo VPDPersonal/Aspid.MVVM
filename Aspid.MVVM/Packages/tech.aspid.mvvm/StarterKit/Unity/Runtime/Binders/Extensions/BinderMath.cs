@@ -34,6 +34,23 @@ namespace Aspid.MVVM.StarterKit
             IsFinite(value) ? Mathf.Clamp01(value) : 0f;
 
         /// <summary>
+        /// Returns <paramref name="value"/> with anything below zero — and anything not finite — raised to <c>0</c>.
+        /// </summary>
+        /// <remarks>
+        /// For an extent such as a collider size or radius, where there is no meaningful upper bound but a negative
+        /// is never meaningful. Unity refuses a non-finite extent on its own and says so, but stores a negative one
+        /// silently, leaving the physics engine to make sense of inverted geometry.
+        /// </remarks>
+        /// <param name="value">The extent to sanitise.</param>
+        /// <returns><paramref name="value"/> when it is finite and positive; otherwise <c>0</c>.</returns>
+        public static float NonNegative(float value) =>
+            IsFinite(value) && value > 0f ? value : 0f;
+
+        /// <inheritdoc cref="NonNegative(float)"/>
+        public static Vector3 NonNegative(Vector3 value) =>
+            new(NonNegative(value.x), NonNegative(value.y), NonNegative(value.z));
+
+        /// <summary>
         /// Indicates whether <paramref name="value"/> is a finite number.
         /// </summary>
         /// <param name="value">The value to test.</param>

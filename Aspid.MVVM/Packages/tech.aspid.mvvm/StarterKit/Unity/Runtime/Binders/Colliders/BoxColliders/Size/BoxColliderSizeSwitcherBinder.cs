@@ -24,6 +24,6 @@ namespace Aspid.MVVM.StarterKit
 
         /// <inheritdoc/>
         protected override void SetValue(Vector3 value) =>
-            Target.size = value;
+            Target.size = BinderMath.NonNegative(value);
     }
 }

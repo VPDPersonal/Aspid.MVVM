@@ -16,6 +16,6 @@ namespace Aspid.MVVM.StarterKit
         /// Sets <see cref="AudioSource.timeSamples"/> to the resolved value.
         /// </summary>
         protected override void SetValue(int value) =>
-            CachedComponent.timeSamples = value;
+            CachedComponent.SetTimeSamples(value);
     }
 }

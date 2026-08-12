@@ -16,7 +16,7 @@ namespace Aspid.MVVM.StarterKit
         protected sealed override float Property
         {
             get => Target.radius;
-            set => Target.radius = value;
+            set => Target.radius = BinderMath.NonNegative(value);
         }
 
         /// <inheritdoc/>

@@ -11,6 +11,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- **`Scrollbar.value` binders.** The Scrollbar domain shipped only Command and OneWayToSource binders, so the one property a scrollbar exists for could not be bound at all — while `Slider` had the full matrix. Five new types mirror it: `ScrollbarValueBinder` and `ScrollbarValueMonoBinder` (both `TwoWay` and `OneWayToSource`, both accepting `int`, `long`, `float` and `double`), plus the `Switcher`, `Enum` and `EnumGroup` variants. A scrollbar has no configurable range — its value is always normalised to 0..1 — so the clamp is fixed rather than read from the component, and a clamped value is reported back to the ViewModel the same way the slider binders now do.
+
 ### Changed
 
 - **`Aspid.MVVM Settings`** window restyled to match the Aspid.FastTools **Welcome** window — animated dot background, animated logo (links to the Asset Store) and title, themed cards, gradient `Apply` / `Revert` buttons and a footer with version and links.

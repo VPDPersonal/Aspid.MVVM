@@ -48,7 +48,15 @@ namespace Aspid.MVVM.StarterKit
             SetValue(_createdSprite);
         }
 
-        /// <inheritdoc/>
+        /// <summary>
+        /// Called after unbinding. Destroys the sprite this binder created, clears the image, and then runs the
+        /// base implementation.
+        /// </summary>
+        /// <remarks>
+        /// The destruction is the part worth knowing: a sprite built here from a bound texture belongs to this
+        /// binder and nothing else would ever free it. A sprite assigned from the ViewModel is not touched — only
+        /// the one this binder made.
+        /// </remarks>
         protected override void OnUnbound()
         {
             if (_createdSprite) UnityEngine.Object.Destroy(_createdSprite);

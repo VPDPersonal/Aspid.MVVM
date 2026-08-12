@@ -86,11 +86,24 @@ namespace Aspid.MVVM
         /// <summary>
         /// Called before binding is established. Override to add pre-binding logic.
         /// </summary>
+        /// <remarks>
+        /// The order is: <see cref="OnBinding"/>, then the ViewModel pushes its current value, then
+        /// <see cref="IsBound"/> becomes <see langword="true"/>, then <see cref="OnBound"/>.
+        /// <para/>
+        /// That first push happens <em>after</em> this hook, which is why a binder that listens to its component
+        /// subscribes in <see cref="OnBound"/> and not here: subscribing here means hearing the ViewModel's own
+        /// first value come back as if the user had entered it.
+        /// </remarks>
         protected virtual void OnBinding() { }
 
         /// <summary>
         /// Called after binding is established. Override to add post-binding logic.
         /// </summary>
+        /// <remarks>
+        /// Runs after the ViewModel's first value has been applied and after <see cref="IsBound"/> is
+        /// <see langword="true"/>. This is where a binder subscribes to its component — see
+        /// <see cref="OnBinding"/> for why the earlier hook is the wrong place.
+        /// </remarks>
         protected virtual void OnBound() { }
         
         /// <inheritdoc/>
@@ -137,11 +150,19 @@ namespace Aspid.MVVM
         /// <summary>
         /// Called before unbinding. Override to add pre-unbinding logic.
         /// </summary>
+        /// <remarks>
+        /// Runs while <see cref="IsBound"/> is still <see langword="true"/> and the binder is still
+        /// attached to the ViewModel, so anything sent from here still arrives.
+        /// </remarks>
         protected virtual void OnUnbinding() { }
 
         /// <summary>
         /// Called after unbinding. Override to add post-unbinding logic.
         /// </summary>
+        /// <remarks>
+        /// Runs once the binder is detached and <see cref="IsBound"/> is <see langword="false"/>.
+        /// This is where a subscription taken in <see cref="OnBound"/> is released.
+        /// </remarks>
         protected virtual void OnUnbound() { }
     }
 }

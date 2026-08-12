@@ -45,7 +45,7 @@ namespace Aspid.MVVM.StarterKit
         /// </summary>
         /// <param name="target">The <see cref="Scrollbar"/> to bind.</param>
         /// <param name="customInteractable">A custom view that reflects the command's CanExecute state.</param>
-        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/>.</param>
+        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</param>
         public ScrollbarCommandBinder(Scrollbar target,
             ICanExecuteView customInteractable,
             BindMode mode = BindMode.OneWay)
@@ -61,7 +61,7 @@ namespace Aspid.MVVM.StarterKit
         /// </summary>
         /// <param name="target">The <see cref="Scrollbar"/> to bind.</param>
         /// <param name="interactableMode">Controls how the scrollbar's interactable state reflects CanExecute.</param>
-        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/>.</param>
+        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</param>
         public ScrollbarCommandBinder(Scrollbar target,
             InteractableMode interactableMode,
             BindMode mode = BindMode.OneWay)
@@ -211,7 +211,7 @@ namespace Aspid.MVVM.StarterKit
         /// <param name="target">The <see cref="Scrollbar"/> to bind.</param>
         /// <param name="param">The additional parameter forwarded alongside the scrollbar value when the command is executed.</param>
         /// <param name="customInteractable">A custom view that reflects the command's CanExecute state.</param>
-        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/>.</param>
+        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</param>
         public ScrollbarCommandBinder(
             Scrollbar target,
             T param,
@@ -233,7 +233,7 @@ namespace Aspid.MVVM.StarterKit
         /// <param name="target">The <see cref="Scrollbar"/> to bind.</param>
         /// <param name="param">The additional parameter forwarded alongside the scrollbar value when the command is executed.</param>
         /// <param name="interactableMode">Controls how the scrollbar's interactable state reflects CanExecute.</param>
-        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/>.</param>
+        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</param>
         public ScrollbarCommandBinder(
             Scrollbar target,
             T param,
@@ -401,7 +401,7 @@ namespace Aspid.MVVM.StarterKit
         /// <param name="param1">The first additional parameter forwarded alongside the scrollbar value when the command is executed.</param>
         /// <param name="param2">The second additional parameter forwarded alongside the scrollbar value when the command is executed.</param>
         /// <param name="customInteractable">A custom view that reflects the command's CanExecute state.</param>
-        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/>.</param>
+        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</param>
         public ScrollbarCommandBinder(
             Scrollbar target,
             T1 param1,
@@ -426,7 +426,7 @@ namespace Aspid.MVVM.StarterKit
         /// <param name="param1">The first additional parameter forwarded alongside the scrollbar value when the command is executed.</param>
         /// <param name="param2">The second additional parameter forwarded alongside the scrollbar value when the command is executed.</param>
         /// <param name="interactableMode">Controls how the scrollbar's interactable state reflects CanExecute.</param>
-        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/>.</param>
+        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</param>
         public ScrollbarCommandBinder(
             Scrollbar target,
             T1 param1,
@@ -614,7 +614,7 @@ namespace Aspid.MVVM.StarterKit
         /// <param name="param2">The second additional parameter forwarded alongside the scrollbar value when the command is executed.</param>
         /// <param name="param3">The third additional parameter forwarded alongside the scrollbar value when the command is executed.</param>
         /// <param name="customInteractable">A custom view that reflects the command's CanExecute state.</param>
-        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/>.</param>
+        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</param>
         public ScrollbarCommandBinder(
             Scrollbar target,
             T1 param1,
@@ -642,7 +642,7 @@ namespace Aspid.MVVM.StarterKit
         /// <param name="param2">The second additional parameter forwarded alongside the scrollbar value when the command is executed.</param>
         /// <param name="param3">The third additional parameter forwarded alongside the scrollbar value when the command is executed.</param>
         /// <param name="interactableMode">Controls how the scrollbar's interactable state reflects CanExecute.</param>
-        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/>.</param>
+        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</param>
         public ScrollbarCommandBinder(
             Scrollbar target,
             T1 param1,

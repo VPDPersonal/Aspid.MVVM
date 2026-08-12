@@ -52,7 +52,7 @@ namespace Aspid.MVVM.StarterKit
         /// Initializes a new instance of <see cref="ObservableDictionaryViewModelBinder{TKey, TViewModel, TView, TViewFactory}"/>.
         /// </summary>
         /// <param name="viewFactory">The factory used to create and release view instances for each dictionary entry.</param>
-        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/>.</param>
+        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</param>
         public ObservableDictionaryViewModelBinder(TViewFactory viewFactory, BindMode mode = BindMode.OneWay)
             : base(mode)
         {

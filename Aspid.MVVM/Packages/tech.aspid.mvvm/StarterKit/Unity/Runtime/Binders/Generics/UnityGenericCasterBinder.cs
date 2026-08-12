@@ -28,7 +28,7 @@ namespace Aspid.MVVM.StarterKit
         /// </summary>
         /// <param name="setValue">The <see cref="UnityAction{T}"/> invoked with the converted <typeparamref name="TTo"/> value.</param>
         /// <param name="converter">The converter used to transform a <typeparamref name="TFrom"/> value to <typeparamref name="TTo"/>.</param>
-        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/>.</param>
+        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</param>
         /// <exception cref="ArgumentNullException">
         /// Thrown when <paramref name="setValue"/> or <paramref name="converter"/> is <see langword="null"/>.
         /// </exception>
@@ -81,7 +81,7 @@ namespace Aspid.MVVM.StarterKit
         /// The <see cref="UnityAction{T0,T1}"/> invoked with the target and the converted <typeparamref name="TTo"/> value.
         /// </param>
         /// <param name="converter">The converter used to transform a <typeparamref name="TFrom"/> value to <typeparamref name="TTo"/>.</param>
-        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/>.</param>
+        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</param>
         /// <exception cref="ArgumentNullException">
         /// Thrown when <paramref name="target"/>, <paramref name="setValue"/>, or <paramref name="converter"/>
         /// is <see langword="null"/>.

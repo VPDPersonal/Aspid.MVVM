@@ -31,7 +31,7 @@ namespace Aspid.MVVM.StarterKit
         /// </summary>
         /// <param name="target">The <see cref="ScrollRect"/> to bind.</param>
         /// <param name="interactable">A custom view that reflects the command's CanExecute state.</param>
-        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/>.</param>
+        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</param>
         public ScrollRectCommandBinder(ScrollRect target, ICanExecuteView interactable, BindMode mode = BindMode.OneWay)
             : this(target, mode)
         {
@@ -42,7 +42,7 @@ namespace Aspid.MVVM.StarterKit
         /// Initializes a new instance of <see cref="ScrollRectCommandBinder"/>.
         /// </summary>
         /// <param name="target">The <see cref="ScrollRect"/> to bind.</param>
-        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/>.</param>
+        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</param>
         public ScrollRectCommandBinder(ScrollRect target, BindMode mode = BindMode.OneWay)
             : base(target, mode)
         {
@@ -140,7 +140,7 @@ namespace Aspid.MVVM.StarterKit
         /// <param name="target">The <see cref="ScrollRect"/> to bind.</param>
         /// <param name="param">The additional parameter forwarded alongside the scroll position when the command is executed.</param>
         /// <param name="interactable">A custom view that reflects the command's CanExecute state.</param>
-        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/>.</param>
+        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</param>
         public ScrollRectCommandBinder(
             ScrollRect target,
             T param,
@@ -156,7 +156,7 @@ namespace Aspid.MVVM.StarterKit
         /// </summary>
         /// <param name="target">The <see cref="ScrollRect"/> to bind.</param>
         /// <param name="param">The additional parameter forwarded alongside the scroll position when the command is executed.</param>
-        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/>.</param>
+        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</param>
         public ScrollRectCommandBinder(ScrollRect target, T param, BindMode mode = BindMode.OneWay)
             : base(target, mode)
         {
@@ -268,7 +268,7 @@ namespace Aspid.MVVM.StarterKit
         /// <param name="param1">The first additional parameter forwarded alongside the scroll position when the command is executed.</param>
         /// <param name="param2">The second additional parameter forwarded alongside the scroll position when the command is executed.</param>
         /// <param name="interactable">A custom view that reflects the command's CanExecute state.</param>
-        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/>.</param>
+        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</param>
         public ScrollRectCommandBinder(
             ScrollRect target,
             T1 param1,
@@ -286,7 +286,7 @@ namespace Aspid.MVVM.StarterKit
         /// <param name="target">The <see cref="ScrollRect"/> to bind.</param>
         /// <param name="param1">The first additional parameter forwarded alongside the scroll position when the command is executed.</param>
         /// <param name="param2">The second additional parameter forwarded alongside the scroll position when the command is executed.</param>
-        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/>.</param>
+        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</param>
         public ScrollRectCommandBinder(ScrollRect target, T1 param1, T2 param2, BindMode mode = BindMode.OneWay)
             : base(target, mode)
         {
@@ -413,7 +413,7 @@ namespace Aspid.MVVM.StarterKit
         /// <param name="param2">The second additional parameter forwarded alongside the scroll position when the command is executed.</param>
         /// <param name="param3">The third additional parameter forwarded alongside the scroll position when the command is executed.</param>
         /// <param name="interactable">A custom view that reflects the command's CanExecute state.</param>
-        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/>.</param>
+        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</param>
         public ScrollRectCommandBinder(
             ScrollRect target,
             T1 param1,
@@ -433,7 +433,7 @@ namespace Aspid.MVVM.StarterKit
         /// <param name="param1">The first additional parameter forwarded alongside the scroll position when the command is executed.</param>
         /// <param name="param2">The second additional parameter forwarded alongside the scroll position when the command is executed.</param>
         /// <param name="param3">The third additional parameter forwarded alongside the scroll position when the command is executed.</param>
-        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/>.</param>
+        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</param>
         public ScrollRectCommandBinder(
             ScrollRect target,
             T1 param1,

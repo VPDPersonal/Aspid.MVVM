@@ -24,7 +24,7 @@ namespace Aspid.MVVM.StarterKit
         /// </summary>
         /// <param name="trueValue">The value forwarded when the bound boolean is <see langword="true"/>.</param>
         /// <param name="falseValue">The value forwarded when the bound boolean is <see langword="false"/>.</param>
-        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/>.</param>
+        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</param>
         protected SwitcherBinder(T trueValue, T falseValue, BindMode mode)
             : base(mode)
         {
@@ -75,7 +75,7 @@ namespace Aspid.MVVM.StarterKit
         /// <param name="target">The target object that receives the resolved value.</param>
         /// <param name="trueValue">The value forwarded when the bound boolean is <see langword="true"/>.</param>
         /// <param name="falseValue">The value forwarded when the bound boolean is <see langword="false"/>.</param>
-        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/>.</param>
+        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</param>
         protected SwitcherBinder(TTarget target, T trueValue, T falseValue, BindMode mode)
             : base(target, mode)
         {
@@ -133,7 +133,7 @@ namespace Aspid.MVVM.StarterKit
         /// An optional converter applied to the selected value before it is forwarded to the target.
         /// Pass <see langword="null"/> to forward the value unchanged.
         /// </param>
-        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/>.</param>
+        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</param>
         protected SwitcherBinder(
             TTarget target,
             T trueValue,

@@ -42,7 +42,7 @@ namespace Aspid.MVVM.StarterKit
         /// Initializes a new instance of <see cref="VirtualizedListItemSourceBinder"/>.
         /// </summary>
         /// <param name="target">The <see cref="VirtualizedList"/> to bind.</param>
-        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/>.</param>
+        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</param>
         public VirtualizedListItemSourceBinder(VirtualizedList target, BindMode mode = BindMode.OneWay)
             : base(target, mode)
         {
@@ -67,7 +67,7 @@ namespace Aspid.MVVM.StarterKit
         /// <param name="target">The <see cref="VirtualizedList"/> to bind.</param>
         /// <param name="comparer">The comparer used to sort items, or <see langword="null"/> to use source order.</param>
         /// <param name="filter">The filter used to exclude items, or <see langword="null"/> to include all items.</param>
-        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/>.</param>
+        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</param>
         public VirtualizedListItemSourceBinder(VirtualizedList target, Comparer comparer, Filter filter, BindMode mode = BindMode.OneWay)
             : this(target, mode)
         {

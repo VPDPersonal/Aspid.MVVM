@@ -9,5 +9,10 @@ namespace Aspid.MVVM.StarterKit
     /// </summary>
     [AddBinderContextMenu(typeof(Behaviour))]
     [AddComponentMenu("Aspid/MVVM/Binders/Behaviour/Behaviour To Source Binder")]
-    public sealed class BehaviourToSourceMonoBinder : ComponentToSourceMonoBinder<Behaviour> { }
+    public sealed class BehaviourToSourceMonoBinder : ComponentToSourceMonoBinder<Behaviour>
+    {
+        /// <inheritdoc/>
+        protected override Behaviour ResolveComponent() =>
+            BehaviourResolution.FirstThatIsNotABinder(gameObject);
+    }
 }

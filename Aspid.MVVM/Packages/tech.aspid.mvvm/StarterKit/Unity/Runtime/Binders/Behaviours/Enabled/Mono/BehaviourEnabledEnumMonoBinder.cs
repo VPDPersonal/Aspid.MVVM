@@ -14,5 +14,9 @@ namespace Aspid.MVVM.StarterKit
         /// <inheritdoc/>
         protected override void SetValue(bool value) =>
             CachedComponent.enabled = value;
+
+        /// <inheritdoc/>
+        protected override Behaviour ResolveComponent() =>
+            BehaviourResolution.FirstThatIsNotABinder(gameObject);
     }
 }

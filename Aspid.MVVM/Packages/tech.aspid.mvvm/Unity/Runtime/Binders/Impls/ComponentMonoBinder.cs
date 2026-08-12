@@ -45,9 +45,21 @@ namespace Aspid.MVVM
                 _isCached = true;
 
                 if (IsAssigned(_component)) return _component;
-                return _component = GetComponent<TComponent>();
+                return _component = ResolveComponent();
             }
         }
+
+        /// <summary>
+        /// Finds the target component on this GameObject when the serialized field is empty.
+        /// </summary>
+        /// <remarks>
+        /// Override where the plain search is ambiguous. It is fine for a concrete component type — there is only
+        /// one <c>Slider</c> to find — but a binder typed on a base class such as <see cref="Behaviour"/> matches
+        /// anything, including the binder itself, and a binder that disables itself stops working with no
+        /// indication of why.
+        /// </remarks>
+        protected virtual TComponent ResolveComponent() =>
+            GetComponent<TComponent>();
 
         /// <summary>
         /// Reports whether <paramref name="component"/> refers to a live component.
@@ -73,7 +85,7 @@ namespace Aspid.MVVM
             if (Application.isPlaying) return;
             if (IsAssigned(_component)) return;
 
-            _component = GetComponent<TComponent>();
+            _component = ResolveComponent();
         }
     }
 }

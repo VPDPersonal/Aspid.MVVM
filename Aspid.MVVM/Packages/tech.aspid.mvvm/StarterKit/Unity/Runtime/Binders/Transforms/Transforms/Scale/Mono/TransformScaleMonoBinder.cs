@@ -16,8 +16,8 @@ namespace Aspid.MVVM.StarterKit
     {
         protected sealed override Vector3 Property
         {
-            get => transform.localScale;
-            set => transform.localScale = value;
+            get => CachedComponent.localScale;
+            set => CachedComponent.localScale = value;
         }
     }
 }

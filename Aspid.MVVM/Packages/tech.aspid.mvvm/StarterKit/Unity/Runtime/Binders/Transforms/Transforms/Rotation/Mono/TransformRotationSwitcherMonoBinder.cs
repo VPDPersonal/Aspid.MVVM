@@ -18,6 +18,6 @@ namespace Aspid.MVVM.StarterKit
         /// Called when applying the selected euler angles as a <see cref="Quaternion"/> rotation to the <see cref="Transform"/>.
         /// </summary>
         protected override void SetValue(Vector3 value) => 
-            transform.SetRotation(Quaternion.Euler(value), _space);
+            CachedComponent.SetRotation(Quaternion.Euler(value), _space);
     }
 }

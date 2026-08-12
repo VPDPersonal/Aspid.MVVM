@@ -19,6 +19,6 @@ namespace Aspid.MVVM.StarterKit
         /// Sets the euler angles of the <see cref="Transform"/> in the configured <see cref="Space"/>.
         /// </summary>
         protected override void SetValue(Vector3 value) =>
-            transform.SetEulerAngles(value, _space);
+            CachedComponent.SetEulerAngles(value, _space);
     }
 }

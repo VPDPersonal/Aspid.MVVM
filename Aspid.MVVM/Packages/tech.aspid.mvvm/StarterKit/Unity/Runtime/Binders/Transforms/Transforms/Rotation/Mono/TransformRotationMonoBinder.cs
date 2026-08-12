@@ -30,8 +30,8 @@ namespace Aspid.MVVM.StarterKit
         
         protected sealed override Quaternion Property
         {
-            get => transform.GetRotation(_space);
-            set => transform.SetRotation(value, _space);
+            get => CachedComponent.GetRotation(_space);
+            set => CachedComponent.SetRotation(value, _space);
         }
         
         /// <summary>

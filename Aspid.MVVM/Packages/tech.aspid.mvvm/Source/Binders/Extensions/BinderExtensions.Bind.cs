@@ -123,7 +123,7 @@ namespace Aspid.MVVM
                     var binder = binders[i];
                     
                     // ReSharper disable once ConditionIsAlwaysTrueOrFalseAccordingToNullableAPIContract
-                    if (binder is null)
+                    if (IsMissing(binder))
                     {
                         BuildBindSafelyBinderNullMessage(i, owner, memberName);
                     }
@@ -201,7 +201,7 @@ namespace Aspid.MVVM
                 {
                     var binder = binders[i];
                     
-                    if (binder is null)
+                    if (IsMissing(binder))
                     {
                         BuildBindSafelyBinderNullMessage(i, owner, memberName);
                     }
@@ -278,7 +278,7 @@ namespace Aspid.MVVM
                 var index = 0;
                 foreach (var binder in binders)
                 {
-                    if (binder is null)
+                    if (IsMissing(binder))
                     {
                         BuildBindSafelyBinderNullMessage(index, owner, memberName);
                     }
@@ -334,6 +334,25 @@ namespace Aspid.MVVM
             System.Console.Error.WriteLine(message);
             System.Console.Error.WriteLine(exception);
 #endif
+        }
+
+        /// <summary>
+        /// Reports whether a slot holds no usable binder.
+        /// </summary>
+        /// <remarks>
+        /// A <c>MonoBinder</c> is a component, so a slot can hold one that has since been destroyed. Its managed
+        /// wrapper is not <see langword="null"/> to C#, so a plain <c>is null</c> lets it through and the loop calls
+        /// <c>Bind</c> on it — which throws from whatever Unity API it touches first. Unity's own conversion is what
+        /// tells the two apart.
+        /// </remarks>
+        private static bool IsMissing<T>(T binder)
+        {
+            if (binder is null) return true;
+
+#if UNITY_2020_3_OR_NEWER
+            if (binder is UnityEngine.Object unityObject) return !unityObject;
+#endif
+            return false;
         }
 
         private static string BuildBinderNullMessage(string operation, int index, object? owner, string? memberName) =>

@@ -23,9 +23,6 @@ namespace Aspid.MVVM.StarterKit
         private IRelayCommand<Vector2> _vector2Command;
         private IRelayCommand<Vector3> _vector3Command;
 
-        /// <inheritdoc cref="TargetBinder{TTarget}.IsBind"/>
-        public override bool IsBind => Target is not null;
-
         /// <summary>
         /// Initializes a new instance of <see cref="ScrollRectCommandBinder"/> with a custom interactable view.
         /// </summary>
@@ -130,9 +127,6 @@ namespace Aspid.MVVM.StarterKit
             get => _param;
             set => _param = value;
         }
-
-        /// <inheritdoc cref="TargetBinder{TTarget}.IsBind"/>
-        public override bool IsBind => Target is not null;
 
         /// <summary>
         /// Initializes a new instance of <see cref="ScrollRectCommandBinder{T}"/> with a custom interactable view.
@@ -257,9 +251,6 @@ namespace Aspid.MVVM.StarterKit
             get => _param2;
             set => _param2 = value;
         }
-
-        /// <inheritdoc cref="TargetBinder{TTarget}.IsBind"/>
-        public override bool IsBind => Target is not null;
 
         /// <summary>
         /// Initializes a new instance of <see cref="ScrollRectCommandBinder{T1, T2}"/> with a custom interactable view.
@@ -401,9 +392,6 @@ namespace Aspid.MVVM.StarterKit
             get => _param3;
             set => _param3 = value;
         }
-
-        /// <inheritdoc cref="TargetBinder{TTarget}.IsBind"/>
-        public override bool IsBind => Target is not null;
 
         /// <summary>
         /// Initializes a new instance of <see cref="ScrollRectCommandBinder{T1, T2, T3}"/> with a custom interactable view.

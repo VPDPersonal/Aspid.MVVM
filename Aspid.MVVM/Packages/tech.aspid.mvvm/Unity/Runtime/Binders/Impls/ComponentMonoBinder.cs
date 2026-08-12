@@ -20,6 +20,12 @@ namespace Aspid.MVVM
         /// Gets the target component.
         /// Returns the serialized value if assigned; otherwise resolves it via <see cref="Component.GetComponent{T}"/> and caches the result.
         /// </summary>
+        /// <remarks>
+        /// "Assigned" is decided with Unity's own <see cref="Object"/> conversion rather than <c>is not null</c>:
+        /// an empty or broken object reference reaches managed code as a wrapper that is not <see langword="null"/>
+        /// to C# yet points at nothing, and treating that as assigned would skip the fallback and hand every
+        /// caller a component it cannot use.
+        /// </remarks>
         protected TComponent CachedComponent
         {
             get
@@ -27,10 +33,21 @@ namespace Aspid.MVVM
                 if (_isCached) return _component;
                 _isCached = true;
 
-                if (_component is not null) return _component;
+                if (IsAssigned(_component)) return _component;
                 return _component = GetComponent<TComponent>();
             }
         }
+
+        /// <summary>
+        /// Reports whether <paramref name="component"/> refers to a live component.
+        /// </summary>
+        /// <remarks>
+        /// The cast to <see cref="Object"/> is what makes this work: Unity's <c>bool</c> conversion is a
+        /// user-defined operator, and C# does not apply those to an unconstrained-enough generic type parameter,
+        /// so <c>if (component)</c> on a <typeparamref name="TComponent"/> would not compile.
+        /// </remarks>
+        private static bool IsAssigned(TComponent component) =>
+            (Object)component;
 
         /// <summary>
         /// Called by Unity in the Editor when a serialized field value changes.
@@ -43,7 +60,7 @@ namespace Aspid.MVVM
         protected virtual void OnValidate()
         {
             if (Application.isPlaying) return;
-            if (_component is not null) return;
+            if (IsAssigned(_component)) return;
 
             _component = GetComponent<TComponent>();
         }

@@ -27,8 +27,13 @@ namespace Aspid.MVVM.StarterKit
 		/// <summary>
 		/// Called when the MonoBehaviour is destroyed. Releases both the current and any pending Addressable asset handles.
 		/// </summary>
-		protected virtual void OnDestroy()
+		/// <remarks>
+		/// Calls <c>base.OnDestroy()</c> so the binder still unbinds from the ViewModel.
+		/// </remarks>
+		protected override void OnDestroy()
 		{
+			base.OnDestroy();
+
 			ReleasePendingHandle();
 			ReleaseCurrentHandle();
 		}
@@ -182,8 +187,13 @@ namespace Aspid.MVVM.StarterKit
 		/// <summary>
 		/// Called when the MonoBehaviour is destroyed. Releases both the current and any pending Addressable asset handles.
 		/// </summary>
-		protected virtual void OnDestroy()
+		/// <remarks>
+		/// Calls <c>base.OnDestroy()</c> so the binder still unbinds from the ViewModel.
+		/// </remarks>
+		protected override void OnDestroy()
 		{
+			base.OnDestroy();
+
 			ReleasePendingHandle();
 			ReleaseCurrentHandle();
 		}

@@ -1,5 +1,5 @@
 {
-    "name": "Aspid.MVVM.Tests.EditMode",
+    "name": "Aspid.MVVM.Tests.PlayMode",
     "rootNamespace": "",
     "references": [
         "Aspid.MVVM",
@@ -7,12 +7,9 @@
         "Aspid.MVVM.StarterKit",
         "Aspid.MVVM.StarterKit.Unity",
         "Unity.TextMeshPro",
-        "UnityEngine.TestRunner",
-        "UnityEditor.TestRunner"
+        "UnityEngine.TestRunner"
     ],
-    "includePlatforms": [
-        "Editor"
-    ],
+    "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
     "overrideReferences": true,

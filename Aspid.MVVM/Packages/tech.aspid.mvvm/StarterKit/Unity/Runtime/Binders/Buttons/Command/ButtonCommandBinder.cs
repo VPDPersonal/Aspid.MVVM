@@ -97,12 +97,7 @@ namespace Aspid.MVVM.StarterKit
             if (_interactableMode is InteractableMode.None) return;
             var isInteractable = command.CanExecute();
             
-            switch (_interactableMode)
-            {
-                case InteractableMode.Interactable: Target.interactable = isInteractable; break;
-                case InteractableMode.Visible: Target.gameObject.SetActive(isInteractable); break;
-                case InteractableMode.Custom: _customInteractable.SetCanExecute(isInteractable); break;
-            }
+            Target.SetInteractable(_interactableMode, isInteractable, _customInteractable, this);
         }
     }
     
@@ -229,12 +224,7 @@ namespace Aspid.MVVM.StarterKit
             if (_interactableMode is InteractableMode.None) return;
             var isInteractable = command.CanExecute(Param);
             
-            switch (_interactableMode)
-            {
-                case InteractableMode.Interactable: Target.interactable = isInteractable; break;
-                case InteractableMode.Visible: Target.gameObject.SetActive(isInteractable); break;
-                case InteractableMode.Custom: _customInteractable.SetCanExecute(isInteractable); break;
-            }
+            Target.SetInteractable(_interactableMode, isInteractable, _customInteractable, this);
         }
     }
     
@@ -379,12 +369,7 @@ namespace Aspid.MVVM.StarterKit
             if (_interactableMode is InteractableMode.None) return;
             var isInteractable = command.CanExecute(Param1, Param2);
             
-            switch (_interactableMode)
-            {
-                case InteractableMode.Interactable: Target.interactable = isInteractable; break;
-                case InteractableMode.Visible: Target.gameObject.SetActive(isInteractable); break;
-                case InteractableMode.Custom: _customInteractable.SetCanExecute(isInteractable); break;
-            }
+            Target.SetInteractable(_interactableMode, isInteractable, _customInteractable, this);
         }
     }
     
@@ -535,12 +520,7 @@ namespace Aspid.MVVM.StarterKit
             if (_interactableMode is InteractableMode.None) return;
             var isInteractable = command.CanExecute(Param1, Param2, Param3);
             
-            switch (_interactableMode)
-            {
-                case InteractableMode.Interactable: Target.interactable = isInteractable; break;
-                case InteractableMode.Visible: Target.gameObject.SetActive(isInteractable); break;
-                case InteractableMode.Custom: _customInteractable.SetCanExecute(isInteractable); break;
-            }
+            Target.SetInteractable(_interactableMode, isInteractable, _customInteractable, this);
         }
     }
     
@@ -707,12 +687,7 @@ namespace Aspid.MVVM.StarterKit
             if (_interactableMode is InteractableMode.None) return;
             var isInteractable = command.CanExecute(Param1, Param2, Param3, Param4);
             
-            switch (_interactableMode)
-            {
-                case InteractableMode.Interactable: Target.interactable = isInteractable; break;
-                case InteractableMode.Visible: Target.gameObject.SetActive(isInteractable); break;
-                case InteractableMode.Custom: _customInteractable.SetCanExecute(isInteractable); break;
-            }
+            Target.SetInteractable(_interactableMode, isInteractable, _customInteractable, this);
         }
     }
 }

@@ -9,13 +9,9 @@ namespace Aspid.MVVM.Tests
     /// Regression tests for the <see cref="BindMode.OneWayToSource"/> channel of the serializable numeric binders.
     /// </summary>
     /// <remarks>
-    /// <see cref="TargetFloatBinder{TTarget}"/> and <see cref="TargetIntBinder{TTarget}"/> implement
-    /// <see cref="INumberReverseBinder"/>, whose default interface methods bridge each
-    /// <see cref="IReverseBinder{T}"/> instantiation to a concrete numeric event. For the type the base class is
-    /// already closed over — <see langword="float"/> and <see langword="int"/> respectively — that bridge does not
-    /// apply: a class member always wins over a default interface implementation, so the inherited
-    /// <c>ValueChanged</c> is what <see cref="IBinderAdder"/> subscribes to. These tests pin every combination of
-    /// binder and ViewModel field type so the native channel cannot go silent again.
+    /// Pins every combination of binder and ViewModel field type for <see cref="TargetFloatBinder{TTarget}"/>
+    /// and <see cref="TargetIntBinder{TTarget}"/>, so the binder's own type — where the inherited
+    /// <c>ValueChanged</c> wins over the <see cref="INumberReverseBinder"/> bridge — cannot go silent again.
     /// </remarks>
     [TestFixture]
     public sealed class TargetNumberReverseChannelTests

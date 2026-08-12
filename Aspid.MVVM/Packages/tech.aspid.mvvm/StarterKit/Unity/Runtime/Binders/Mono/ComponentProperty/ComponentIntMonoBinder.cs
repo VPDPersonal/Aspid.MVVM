@@ -22,11 +22,8 @@ namespace Aspid.MVVM.StarterKit
     {
         /// <inheritdoc/>
         /// <remarks>
-        /// Forwards to the inherited <see cref="ComponentMonoBinder{TComponent, TProperty}.ValueChanged"/>.
-        /// The base class already implements <see cref="IReverseBinder{T}"/> for <see langword="int"/>, and a class
-        /// member always wins over a default interface implementation, so <see cref="IReverseBinder{T}.ValueChanged"/>
-        /// resolves to the inherited event rather than to the bridge declared in <see cref="INumberReverseBinder"/>.
-        /// Aliasing keeps both surfaces backed by a single subscriber list.
+        /// Aliases the inherited <see cref="ComponentMonoBinder{TComponent, TProperty}.ValueChanged"/>, which already
+        /// backs <see cref="IReverseBinder{T}"/> for <see langword="int"/>, so both events share one subscriber list.
         /// </remarks>
         public event Action<int> IntValueChanged
         {
@@ -64,11 +61,8 @@ namespace Aspid.MVVM.StarterKit
         /// <see cref="IntValueChanged"/>, <see cref="LongValueChanged"/>, <see cref="FloatValueChanged"/>, and <see cref="DoubleValueChanged"/>.
         /// </summary>
         /// <remarks>
-        /// Calls <c>base.OnBound()</c> to raise the inherited
-        /// <see cref="ComponentMonoBinder{TComponent, TProperty}.ValueChanged"/>, which backs both
-        /// <see cref="IntValueChanged"/> and <see cref="IReverseBinder{T}.ValueChanged"/> for <see langword="int"/>.
-        /// The remaining numeric events are raised here because <see cref="INumberReverseBinder"/> bridges them
-        /// to their own <see cref="IReverseBinder{T}"/> instantiations.
+        /// Calls <c>base.OnBound()</c> to raise <see cref="IntValueChanged"/> via the inherited
+        /// <see cref="ComponentMonoBinder{TComponent, TProperty}.ValueChanged"/>; the remaining numeric events are raised here.
         /// </remarks>
         protected override void OnBound()
         {

@@ -1,3 +1,4 @@
+#if UNITY_EDITOR && !ASPID_MVVM_EDITOR_DISABLED
 using System;
 using System.Linq;
 using UnityEditor;
@@ -17,7 +18,6 @@ namespace Aspid.MVVM
     [CustomPropertyDrawer(typeof(BindModeAttribute))]
     internal sealed class BindModeDrawer : PropertyDrawer
     {
-        private bool _wasLookingFor;
         private object _classInstance;
         private BindModeOverrideAttribute _overrideAttribute;
         
@@ -28,15 +28,21 @@ namespace Aspid.MVVM
             var availableModes = GetAvailableModes();
             var selectedIndex = GetSelectedIndex(property, availableModes);
 
+            var wasMixed = EditorGUI.showMixedValue;
+            EditorGUI.showMixedValue = property.hasMultipleDifferentValues;
+
             EditorGUI.BeginChangeCheck();
             {
-                var displayedOptions = availableModes.Modes.Select(mode => mode.ToString()).ToArray();
-                selectedIndex = EditorGUI.Popup(position, string.Empty, selectedIndex, displayedOptions);
+                // Перегрузка с GUIContent-подписью требует GUIContent-вариантов: без неё подпись поля теряется,
+                // и вложенное поле BindMode рисуется без имени.
+                var displayedOptions = availableModes.Modes.Select(mode => new GUIContent(mode.ToString())).ToArray();
+                selectedIndex = EditorGUI.Popup(position, label, selectedIndex, displayedOptions);
             }
-            if (EditorGUI.EndChangeCheck())
-            {
-                SetPropertyValue(property, availableModes, selectedIndex);
-            }
+            var changed = EditorGUI.EndChangeCheck();
+
+            EditorGUI.showMixedValue = wasMixed;
+
+            if (changed) SetPropertyValue(property, availableModes, selectedIndex);
         }
 
         public override VisualElement CreatePropertyGUI(SerializedProperty property)
@@ -47,18 +53,34 @@ namespace Aspid.MVVM
             var selectedIndex = GetSelectedIndex(property, availableModes);
             
             var displayedOptions = availableModes.Modes.Select(mode => mode.ToString()).ToList();
-            var popup = new PopupField<string>(string.Empty, displayedOptions, selectedIndex, static data => data, static data => data)
-                .SetMargin(0, 0, 0, 0);;
+            var popup = new PopupField<string>(property.displayName, displayedOptions, selectedIndex, static data => data, static data => data)
+                .SetMargin(0, 0, 0, 0);
 
+            popup.showMixedValue = property.hasMultipleDifferentValues;
             popup.RegisterValueChangedCallback(_ => SetPropertyValue(property, availableModes, popup.index));
+
             return popup;
         }
         
+        /// <summary>
+        /// Resolves the owning instance and its <see cref="BindModeOverrideAttribute"/>, re-resolving whenever the
+        /// drawer is handed a different instance.
+        /// </summary>
+        /// <remarks>
+        /// Unity reuses one drawer instance for every element of a list and for every object in a multi-selection, so a
+        /// cache that only remembers "already looked" hands the second binder the first one's allowed modes — and the
+        /// dropdown then offers modes the class forbids. The cache is keyed on the instance instead.
+        /// </remarks>
         private void InitializeOverrideAttribute(SerializedProperty property)
         {
-            if (_wasLookingFor) return;
-            
-            _classInstance = property.GetDeclaringInstance();
+            var instance = property.GetDeclaringInstance();
+            if (instance is not null && ReferenceEquals(instance, _classInstance)) return;
+
+            _classInstance = instance;
+            _overrideAttribute = null;
+
+            if (_classInstance is null) return;
+
             var type = _classInstance.GetType();
 
             for (; type is not null; type = type.BaseType)
@@ -69,8 +91,6 @@ namespace Aspid.MVVM
                 
                 if (_overrideAttribute is not null) break;
             }
-            
-            _wasLookingFor = true;
         }
         
         private BindModes GetAvailableModes()
@@ -100,25 +120,60 @@ namespace Aspid.MVVM
                 : BindModes.Create(provider.Modes);
         }
 
+        /// <summary>
+        /// Returns the index of the property's current mode among the allowed ones, correcting a value the class does
+        /// not allow.
+        /// </summary>
+        /// <remarks>
+        /// The correction is deferred to the next editor tick rather than applied here. Writing serialized data from
+        /// inside a drawer mutates the object while Unity is laying it out — which loses the change on a repaint,
+        /// marks a scene dirty from a redraw alone, and cannot be undone. The dropdown shows the first allowed mode in
+        /// the meantime, which is what the deferred write is about to store.
+        /// </remarks>
         private static int GetSelectedIndex(SerializedProperty property, BindModes availableModes)
         {
             var currentMode = (BindMode)property.intValue;
             var selectedIndex = Array.IndexOf(availableModes.Modes, currentMode);
             if (selectedIndex >= 0) return selectedIndex;
-            
-            selectedIndex = 0;
-            property.intValue = (int)availableModes.FirstMode;
-            property.serializedObject.ApplyModifiedProperties();
-            return selectedIndex;
+
+            var deferred = property.serializedObject.targetObject;
+            var path = property.propertyPath;
+            var firstMode = (int)availableModes.FirstMode;
+
+            EditorApplication.delayCall += Correct;
+            return 0;
+
+            void Correct()
+            {
+                EditorApplication.delayCall -= Correct;
+                if (!deferred) return;
+
+                using var serializedObject = new SerializedObject(deferred);
+                var target = serializedObject.FindProperty(path);
+
+                if (target is null || target.intValue == firstMode) return;
+
+                target.intValue = firstMode;
+                serializedObject.ApplyModifiedProperties();
+            }
         }
         
+        /// <summary>
+        /// Stores the chosen mode and rebinds the owner when it can be rebound.
+        /// </summary>
+        /// <remarks>
+        /// The write comes first and happens unconditionally. It used to sit behind the <see cref="IRebindableBinder"/>
+        /// check, so choosing a mode on anything else — a serializable binder inside a View, a plain
+        /// <see cref="BindModeAttribute"/> field — did nothing at all and the dropdown snapped back on the next repaint.
+        /// </remarks>
         private void SetPropertyValue(SerializedProperty property, BindModes availableModes, int selectedIndex)
         {
-            if (_classInstance is not IRebindableBinder rebindable) return;
+            if (selectedIndex < 0 || selectedIndex >= availableModes.Modes.Length) return;
+
             property.intValue = (int)availableModes.Modes[selectedIndex];
             property.serializedObject.ApplyModifiedProperties();
-                
-            rebindable.Rebind();
+
+            if (_classInstance is IRebindableBinder rebindable) rebindable.Rebind();
         }
         
         private readonly struct BindModes
@@ -209,3 +264,4 @@ namespace Aspid.MVVM
         }
     }
 }
+#endif

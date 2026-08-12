@@ -1,4 +1,5 @@
 using System;
+using Conditional = System.Diagnostics.ConditionalAttribute;
 using UnityEngine;
 #if UNITY_2023_1_OR_NEWER
 using Converter = Aspid.MVVM.StarterKit.IConverter<object, string>;
@@ -24,8 +25,8 @@ namespace Aspid.MVVM.StarterKit
         /// </summary>
         public event Action<object> ValueChanged
         {
-            add => Debug.Log($"Add ValueChanged: {GetMessage(value)}");
-            remove => Debug.Log($"Remove ValueChanged: {GetMessage(value)}");
+            add => Log($"Add ValueChanged: {GetMessage(value)}");
+            remove => Log($"Remove ValueChanged: {GetMessage(value)}");
         }
 
         // ReSharper disable once FieldCanBeMadeReadOnly.Local
@@ -50,7 +51,22 @@ namespace Aspid.MVVM.StarterKit
         /// <typeparam name="T">The runtime type of the incoming value.</typeparam>
         /// <param name="value">The bound value received from the ViewModel.</param>
         public void SetValue<T>(T value) =>
-            Debug.Log($"SetValue: {GetMessage(value)}");
+            Log($"SetValue: {GetMessage(value)}");
+
+        /// <summary>
+        /// Writes <paramref name="message"/> to the Unity console, in the Editor and in a development build only.
+        /// </summary>
+        /// <param name="message">The message to write.</param>
+        /// <remarks>
+        /// Marked with both <see cref="System.Diagnostics.ConditionalAttribute"/> symbols rather than wrapped in <c>#if</c>: the compiler
+        /// removes the call and the interpolated string with it, so a release build pays nothing — and the binder
+        /// itself still exists, which matters because a component compiled out of a build takes every scene reference
+        /// to it with it.
+        /// </remarks>
+        [Conditional("UNITY_EDITOR")]
+        [Conditional("DEVELOPMENT_BUILD")]
+        private static void Log(string message) =>
+            Debug.Log(message);
 
         /// <summary>
         /// Formats <paramref name="value"/> for the console, without assuming it is there.

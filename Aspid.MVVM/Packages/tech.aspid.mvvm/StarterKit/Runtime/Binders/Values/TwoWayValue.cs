@@ -113,10 +113,17 @@ namespace Aspid.MVVM.StarterKit
         /// Stores the incoming ViewModel value (passing it through the converter if one is set)
         /// and raises <see cref="Changed"/> with the original unconverted value.
         /// </summary>
+        /// <remarks>
+        /// The backing field is written directly rather than through <see cref="Value"/>, because that property's
+        /// setter is the View-side entry point and raises <see cref="IReverseBinder{T}.ValueChanged"/>. Going
+        /// through it turned every ViewModel update straight back into a View update — carrying the
+        /// <em>converted</em> value, so the model was overwritten with what the display shows, and a converter that
+        /// is not idempotent kept going until the generated setter's equality check happened to stop it.
+        /// </remarks>
         /// <param name="value">The new value received from the ViewModel.</param>
         void IBinder<T>.SetValue(T? value)
         {
-            Value = _converter is not null ? _converter.Convert(value) : value;
+            _value = _converter is not null ? _converter.Convert(value) : value;
             Changed?.Invoke(value);
         }
 

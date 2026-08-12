@@ -13,7 +13,11 @@ namespace Aspid.MVVM.StarterKit
     /// </summary>
     /// <include file="XmlExampleDoc-Slider-Command-1.1.0.xml" path="doc//member[@name='SliderCommandBinder']/*" />
     [Serializable]
-    public sealed class SliderCommandBinder : TargetBinder<Slider>, IBinder<IRelayCommand<float>>
+    public sealed class SliderCommandBinder : TargetBinder<Slider>,
+        IBinder<IRelayCommand<int>>,
+        IBinder<IRelayCommand<long>>,
+        IBinder<IRelayCommand<float>>,
+        IBinder<IRelayCommand<double>>
     {
         [Tooltip("Controls how the slider's interactable state reflects the command's CanExecute result.")]
         // ReSharper disable once MemberInitializerValueIgnored
@@ -162,7 +166,11 @@ namespace Aspid.MVVM.StarterKit
     /// <typeparam name="T">The type of the additional parameter forwarded alongside the slider value.</typeparam>
     /// <include file="XmlExampleDoc-Slider-Command-1.1.0.xml" path="doc//member[@name='SliderCommandBinderT']/*" />
     [Serializable]
-    public class SliderCommandBinder<T> : TargetBinder<Slider>, IBinder<IRelayCommand<float, T>>
+    public class SliderCommandBinder<T> : TargetBinder<Slider>,
+        IBinder<IRelayCommand<int, T>>,
+        IBinder<IRelayCommand<long, T>>,
+        IBinder<IRelayCommand<float, T>>,
+        IBinder<IRelayCommand<double, T>>
     {
         [Tooltip("The additional parameter forwarded alongside the slider value when the command is executed.")]
         [SerializeField] private T _param;
@@ -333,7 +341,11 @@ namespace Aspid.MVVM.StarterKit
     /// <typeparam name="T2">The type of the second additional parameter.</typeparam>
     /// <include file="XmlExampleDoc-Slider-Command-1.1.0.xml" path="doc//member[@name='SliderCommandBinderT1T2']/*" />
     [Serializable]
-    public class SliderCommandBinder<T1, T2> : TargetBinder<Slider>, IBinder<IRelayCommand<float, T1, T2>>
+    public class SliderCommandBinder<T1, T2> : TargetBinder<Slider>,
+        IBinder<IRelayCommand<int, T1, T2>>,
+        IBinder<IRelayCommand<long, T1, T2>>,
+        IBinder<IRelayCommand<float, T1, T2>>,
+        IBinder<IRelayCommand<double, T1, T2>>
     {
         [Tooltip("The first additional parameter forwarded alongside the slider value when the command is executed.")]
         [SerializeField] private T1 _param1;
@@ -520,7 +532,11 @@ namespace Aspid.MVVM.StarterKit
     /// <typeparam name="T3">The type of the third additional parameter.</typeparam>
     /// <include file="XmlExampleDoc-Slider-Command-1.1.0.xml" path="doc//member[@name='SliderCommandBinderT1T2T3']/*" />
     [Serializable]
-    public class SliderCommandBinder<T1, T2, T3> : TargetBinder<Slider>, IBinder<IRelayCommand<float, T1, T2, T3>>
+    public class SliderCommandBinder<T1, T2, T3> : TargetBinder<Slider>,
+        IBinder<IRelayCommand<int, T1, T2, T3>>,
+        IBinder<IRelayCommand<long, T1, T2, T3>>,
+        IBinder<IRelayCommand<float, T1, T2, T3>>,
+        IBinder<IRelayCommand<double, T1, T2, T3>>
     {
         [Tooltip("The first additional parameter forwarded alongside the slider value when the command is executed.")]
         [SerializeField] private T1 _param1;

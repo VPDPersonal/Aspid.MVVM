@@ -19,17 +19,11 @@ namespace Aspid.MVVM.StarterKit
 #if UNITY_2023_1_OR_NEWER
         [UnityEngine.SerializeReference]
 #endif
-        private IConverter<T, T>[] _converters;
+        private IConverter<T, T>?[] _converters;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="SequenceConverters{T}"/> class with an empty chain.
-        /// </summary>
         public SequenceConverters()
             : this(Array.Empty<IConverter<T, T>>()) { }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="SequenceConverters{T}"/> class.
-        /// </summary>
         /// <param name="converters">The converters to apply in sequence. Null entries are skipped.</param>
         public SequenceConverters(params IConverter<T, T>[] converters)
         {
@@ -47,8 +41,8 @@ namespace Aspid.MVVM.StarterKit
 
             foreach (var converter in _converters)
             {
-                if (converter is null) continue;
-                value = converter.Convert(value);
+                if (converter is not null)
+                    value = converter.Convert(value);
             }
 
             return value;

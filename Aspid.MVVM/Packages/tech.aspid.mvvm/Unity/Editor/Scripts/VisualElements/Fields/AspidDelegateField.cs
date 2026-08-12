@@ -9,10 +9,23 @@ using Object = UnityEngine.Object;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM
 {
+    /// <summary>
+    /// A read-only foldout listing what a delegate is subscribed to: one row per handler, naming its target and
+    /// method.
+    /// </summary>
+    /// <remarks>
+    /// For inspecting a binding that is already established. A delegate has no Inspector drawer of its own, so
+    /// without this the field shows nothing at all.
+    /// </remarks>
     public sealed class AspidDelegateField : Foldout
     {
         private const string StyleSheetPath = "Styles/Fields/aspid-delegate";
         
+        /// <summary>
+        /// Creates a foldout listing the handlers of the given delegate.
+        /// </summary>
+        /// <param name="label">The text shown on the foldout.</param>
+        /// <param name="value">The delegate to list, or <see langword="null"/> for an empty foldout.</param>
         public AspidDelegateField(string label, Delegate value)
         {
             this.SetText(label)

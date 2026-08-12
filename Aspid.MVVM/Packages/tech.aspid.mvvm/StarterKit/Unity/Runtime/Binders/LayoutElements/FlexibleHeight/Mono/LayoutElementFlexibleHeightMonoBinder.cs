@@ -5,7 +5,7 @@ using UnityEngine.UI;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="ComponentFloatMonoBinder<LayoutElement>"/> that binds <see cref="LayoutElement.flexibleHeight"/>.
+    /// <see cref="ComponentFloatMonoBinder{LayoutElement}"/> that binds <see cref="LayoutElement.flexibleHeight"/>.
     /// </summary>
     /// <remarks>
     /// The vertical counterpart of the flexible width.

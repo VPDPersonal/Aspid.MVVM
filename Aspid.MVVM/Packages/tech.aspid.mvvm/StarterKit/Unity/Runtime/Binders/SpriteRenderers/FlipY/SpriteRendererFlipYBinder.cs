@@ -6,7 +6,7 @@ using UnityEngine;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="TargetBoolBinder<SpriteRenderer>"/> that binds <see cref="SpriteRenderer.flipY"/>.
+    /// <see cref="TargetBoolBinder{SpriteRenderer}"/> that binds <see cref="SpriteRenderer.flipY"/>.
     /// </summary>
     /// <remarks>
     /// Mirrors the sprite vertically.

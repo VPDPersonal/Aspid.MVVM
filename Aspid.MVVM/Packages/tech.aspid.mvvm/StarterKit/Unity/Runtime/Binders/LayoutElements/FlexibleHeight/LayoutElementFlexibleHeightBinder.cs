@@ -6,7 +6,7 @@ using UnityEngine.UI;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="TargetFloatBinder<LayoutElement>"/> that binds <see cref="LayoutElement.flexibleHeight"/>.
+    /// <see cref="TargetFloatBinder{LayoutElement}"/> that binds <see cref="LayoutElement.flexibleHeight"/>.
     /// </summary>
     /// <remarks>
     /// The vertical counterpart of the flexible width.

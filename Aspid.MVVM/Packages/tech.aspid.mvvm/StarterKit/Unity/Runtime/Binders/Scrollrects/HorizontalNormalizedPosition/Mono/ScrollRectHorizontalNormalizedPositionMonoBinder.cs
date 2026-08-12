@@ -5,7 +5,7 @@ using UnityEngine.UI;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="ComponentFloatMonoBinder<ScrollRect>"/> that binds <see cref="ScrollRect.horizontalNormalizedPosition"/>.
+    /// <see cref="ComponentFloatMonoBinder{ScrollRect}"/> that binds <see cref="ScrollRect.horizontalNormalizedPosition"/>.
     /// </summary>
     /// <remarks>
     /// The horizontal counterpart. Scroll position as a fraction: 0 is one end of the content, 1 the other. Clamped to that range before it is written — a value outside it is silently clamped by Unity anyway, and a non-finite one would leave the content nowhere.

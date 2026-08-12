@@ -6,7 +6,7 @@ using UnityEngine;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="TargetColorBinder<SpriteRenderer>"/> that binds <see cref="SpriteRenderer.color"/>.
+    /// <see cref="TargetColorBinder{SpriteRenderer}"/> that binds <see cref="SpriteRenderer.color"/>.
     /// </summary>
     /// <remarks>
     /// Tints the sprite directly, without touching the shared material the way the renderer colour binders do.

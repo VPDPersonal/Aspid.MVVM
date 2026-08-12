@@ -5,7 +5,7 @@ using UnityEngine.UI;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="ComponentFloatMonoBinder<LayoutElement>"/> that binds <see cref="LayoutElement.preferredWidth"/>.
+    /// <see cref="ComponentFloatMonoBinder{LayoutElement}"/> that binds <see cref="LayoutElement.preferredWidth"/>.
     /// </summary>
     /// <remarks>
     /// A LayoutElement is how a single child overrides what its layout group would otherwise decide, and none of its numbers could be bound. A negative value means "no preference", which is why it is passed through rather than clamped.

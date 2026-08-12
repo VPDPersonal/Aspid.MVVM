@@ -5,7 +5,7 @@ using UnityEngine.UI;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="ComponentBoolMonoBinder<LayoutElement>"/> that binds <see cref="LayoutElement.ignoreLayout"/>.
+    /// <see cref="ComponentBoolMonoBinder{LayoutElement}"/> that binds <see cref="LayoutElement.ignoreLayout"/>.
     /// </summary>
     /// <remarks>
     /// Takes the child out of its layout group entirely — the usual way to let one element float free while the rest stay arranged.

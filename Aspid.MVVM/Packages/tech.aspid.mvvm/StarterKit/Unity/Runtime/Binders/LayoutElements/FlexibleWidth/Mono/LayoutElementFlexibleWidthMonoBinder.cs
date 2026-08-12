@@ -5,7 +5,7 @@ using UnityEngine.UI;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="ComponentFloatMonoBinder<LayoutElement>"/> that binds <see cref="LayoutElement.flexibleWidth"/>.
+    /// <see cref="ComponentFloatMonoBinder{LayoutElement}"/> that binds <see cref="LayoutElement.flexibleWidth"/>.
     /// </summary>
     /// <remarks>
     /// How much of the leftover space this child claims, relative to its siblings.

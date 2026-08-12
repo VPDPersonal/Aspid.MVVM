@@ -6,7 +6,7 @@ using UnityEngine;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="TargetBoolBinder<Canvas>"/> that binds <see cref="Canvas.overrideSorting"/>.
+    /// <see cref="TargetBoolBinder{Canvas}"/> that binds <see cref="Canvas.overrideSorting"/>.
     /// </summary>
     /// <remarks>
     /// Whether this canvas sorts independently of its parent — the switch that makes the sorting order above take effect on a nested canvas.

@@ -107,15 +107,23 @@ namespace Aspid.MVVM.StarterKit
         /// Sets <see cref="Slider.value"/>, applying the configured converter if present.
         /// Suppresses value change events during assignment.
         /// </summary>
+        /// <remarks>
+        /// The value written is clamped to the slider's own range first. Unity clamps it anyway, silently, and the
+        /// echo guard around the assignment then swallows the <c>onValueChanged</c> that the clamp raises — so the
+        /// ViewModel would keep the value it sent while the slider showed a different one, and the two stayed apart
+        /// until the next change. When the clamp actually changes the value, the reverse channel is told what the
+        /// slider holds. A converter's own effect is not reported back: only the difference the clamp made is.
+        /// </remarks>
         public void SetValue(float value)
         {
-            value = _converter?.Convert(value) ?? value;
+            var converted = _converter?.Convert(value) ?? value;
+            var clamped = BinderMath.SafeClamp(converted, Target.minValue, Target.maxValue);
 
             _isNotifyValueChanged = false;
 
             try
             {
-                Target.value = value;
+                Target.value = clamped;
             }
             finally
             {
@@ -123,6 +131,8 @@ namespace Aspid.MVVM.StarterKit
                 // навсегда оставило бы флаг снятым и обесточило канал View → ViewModel.
                 _isNotifyValueChanged = true;
             }
+
+            if (!Mathf.Approximately(clamped, converted)) OnValueChanged(clamped);
         }
 
         private void OnValueChanged(float value)

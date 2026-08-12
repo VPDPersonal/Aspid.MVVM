@@ -74,13 +74,38 @@ namespace Aspid.MVVM.StarterKit
         /// <param name="values">The option data entries to populate. Pass <see langword="null"/> to clear all options.</param>
         public void SetValue(IEnumerable<TMP_Dropdown.OptionData>? values)
         {
+            var selected = Target.value;
+
             Target.options ??= new List<TMP_Dropdown.OptionData>();
             Target.options.Clear();
 
-            if (values is null) return;
+            if (values is not null)
+            {
+                foreach (var value in values)
+                    Target.options.Add(value);
+            }
 
-            foreach (var value in values)
-                Target.options.Add(value);
+            RestoreSelection(selected);
+        }
+
+
+        /// <summary>
+        /// Rebuilds the option list while keeping the current selection where the new list still has room for it.
+        /// </summary>
+        /// <remarks>
+        /// <see cref="TMP_Dropdown.ClearOptions"/> resets the selected index to 0 (or -1 with a placeholder) and
+        /// raises nothing, so a ViewModel holding the previous index silently disagreed with the control after every
+        /// options update. Restoring the index without a notification keeps the two in step; when the new list is
+        /// shorter the selection genuinely changes, and this binder has no value channel to report that — the value
+        /// lives on <c>DropdownValueMonoBinder</c>.
+        /// </remarks>
+        private void RestoreSelection(int selected)
+        {
+            if (Target.options.Count > 0)
+                Target.SetValueWithoutNotify(Mathf.Clamp(selected, 0, Target.options.Count - 1));
+
+            // Mutating the options list directly leaves the caption showing whatever it showed before.
+            Target.RefreshShownValue();
         }
 
         /// <summary>

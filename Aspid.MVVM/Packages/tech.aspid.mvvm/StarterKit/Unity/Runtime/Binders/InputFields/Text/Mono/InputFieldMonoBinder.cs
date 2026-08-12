@@ -58,11 +58,20 @@ namespace Aspid.MVVM.StarterKit
         
         private bool _isNotifyValueChanged = true;
 
+        /// <summary>
+        /// Re-wires the input field subscriptions after the bind mode is changed in the inspector during play mode.
+        /// </summary>
+        /// <remarks>
+        /// Only while the binder is actually bound. Without that condition it subscribed to an unbound binder as
+        /// well, and <c>Unbind</c> returns immediately when the binder is not bound — so <c>OnUnbound</c>, and with
+        /// it the unsubscribe, never ran and the listener stayed on the field. Editing the inspector repeatedly
+        /// also stacked duplicate subscriptions, since <c>UnityEvent</c> accepts the same listener more than once.
+        /// </remarks>
         protected override void OnValidate()
         {
             base.OnValidate();
-            if (!Application.isPlaying) return;
-            
+            if (!Application.isPlaying || !IsBound) return;
+
             if (Mode is BindMode.TwoWay or BindMode.OneWayToSource)
             {
                 CachedComponent.onValueChanged.RemoveListener(OnValueChanged);

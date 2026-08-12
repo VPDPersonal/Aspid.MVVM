@@ -70,8 +70,11 @@ namespace Aspid.MVVM.Tests
 
             ((IBinder<float>)binder).SetValue(100f);
 
+            // Верхняя граница нестрогая: источник играет, и playhead успевает дойти до самого конца клипа
+            // между присваиванием и чтением. Дефект здесь в другом — без клампа Unity отвергает перемотку
+            // с ошибкой и оставляет позицию у начала.
             Assert.Greater(audioSource.time, 0.9f, "Позиция не доведена до конца клипа");
-            Assert.Less(audioSource.time, 1f, "Позиция вышла за пределы клипа");
+            Assert.LessOrEqual(audioSource.time, 1f, "Позиция вышла за пределы клипа");
         }
 
         [UnityTest]

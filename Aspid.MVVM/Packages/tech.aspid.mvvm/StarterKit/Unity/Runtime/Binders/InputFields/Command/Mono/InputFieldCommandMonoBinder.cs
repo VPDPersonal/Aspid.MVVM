@@ -31,7 +31,10 @@ namespace Aspid.MVVM.StarterKit
         protected override void OnValidate()
         {
             base.OnValidate();
-            if (!Application.isPlaying) return;
+
+            // Только у привязанного биндера: Unbind у непривязанного выходит сразу, поэтому Unsubscribe
+            // никогда не отработает, и слушатель останется висеть на поле.
+            if (!Application.isPlaying || !IsBound) return;
             
             CachedComponent.onValueChanged.RemoveListener(OnValueChanged);
             CachedComponent.onEndEdit.RemoveListener(OnValueChanged);
@@ -162,7 +165,10 @@ namespace Aspid.MVVM.StarterKit
         protected override void OnValidate()
         {
             base.OnValidate();
-            if (!Application.isPlaying) return;
+
+            // Только у привязанного биндера: Unbind у непривязанного выходит сразу, поэтому Unsubscribe
+            // никогда не отработает, и слушатель останется висеть на поле.
+            if (!Application.isPlaying || !IsBound) return;
 
             CachedComponent.onValueChanged.RemoveListener(OnValueChanged);
             CachedComponent.onEndEdit.RemoveListener(OnValueChanged);
@@ -283,7 +289,10 @@ namespace Aspid.MVVM.StarterKit
         protected override void OnValidate()
         {
             base.OnValidate();
-            if (!Application.isPlaying) return;
+
+            // Только у привязанного биндера: Unbind у непривязанного выходит сразу, поэтому Unsubscribe
+            // никогда не отработает, и слушатель останется висеть на поле.
+            if (!Application.isPlaying || !IsBound) return;
 
             CachedComponent.onValueChanged.RemoveListener(OnValueChanged);
             CachedComponent.onEndEdit.RemoveListener(OnValueChanged);
@@ -415,7 +424,10 @@ namespace Aspid.MVVM.StarterKit
         protected override void OnValidate()
         {
             base.OnValidate();
-            if (!Application.isPlaying) return;
+
+            // Только у привязанного биндера: Unbind у непривязанного выходит сразу, поэтому Unsubscribe
+            // никогда не отработает, и слушатель останется висеть на поле.
+            if (!Application.isPlaying || !IsBound) return;
             
             CachedComponent.onValueChanged.RemoveListener(OnValueChanged);
             CachedComponent.onEndEdit.RemoveListener(OnValueChanged);

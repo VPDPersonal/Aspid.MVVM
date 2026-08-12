@@ -10,7 +10,7 @@ namespace Aspid.MVVM.StarterKit
     /// Switches the camera between perspective and orthographic projection.
     /// </remarks>
     [AddBinderContextMenu(typeof(Camera), serializePropertyNames: "orthographic")]
-    [AddComponentMenu("Aspid/MVVM/Binders/Rendering/Camera Binder - Orthographic")]
+    [AddComponentMenu("Aspid/MVVM/Binders/Rendering/Camera Binder – Orthographic")]
     public class CameraOrthographicMonoBinder : ComponentBoolMonoBinder<Camera>
     {
         /// <inheritdoc/>

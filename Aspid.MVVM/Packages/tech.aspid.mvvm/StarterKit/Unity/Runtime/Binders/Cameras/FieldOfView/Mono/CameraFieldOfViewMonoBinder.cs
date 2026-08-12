@@ -14,7 +14,7 @@ namespace Aspid.MVVM.StarterKit
     /// nowhere near the ViewModel that produced it.
     /// </remarks>
     [AddBinderContextMenu(typeof(Camera), serializePropertyNames: "field of view")]
-    [AddComponentMenu("Aspid/MVVM/Binders/Rendering/Camera Binder - Field Of View")]
+    [AddComponentMenu("Aspid/MVVM/Binders/Rendering/Camera Binder – Field Of View")]
     public class CameraFieldOfViewMonoBinder : ComponentFloatMonoBinder<Camera>
     {
         /// <inheritdoc/>

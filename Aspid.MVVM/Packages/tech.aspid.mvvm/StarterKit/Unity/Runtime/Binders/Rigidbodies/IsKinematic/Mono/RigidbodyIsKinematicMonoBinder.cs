@@ -11,7 +11,7 @@ namespace Aspid.MVVM.StarterKit
     /// and take it back.
     /// </remarks>
     [AddBinderContextMenu(typeof(Rigidbody), serializePropertyNames: "m_IsKinematic")]
-    [AddComponentMenu("Aspid/MVVM/Binders/Physics/Rigidbody Binder - Is Kinematic")]
+    [AddComponentMenu("Aspid/MVVM/Binders/Physics/Rigidbody Binder – Is Kinematic")]
     public class RigidbodyIsKinematicMonoBinder : ComponentBoolMonoBinder<Rigidbody>
     {
         /// <inheritdoc/>

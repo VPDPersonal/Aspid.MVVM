@@ -4,6 +4,7 @@ using System.Text;
 using UnityEditor;
 using UnityEngine;
 using NUnit.Framework;
+using UnityEngine.TestTools;
 using System.Collections.Generic;
 
 // ReSharper disable once CheckNamespace
@@ -28,13 +29,31 @@ namespace Aspid.MVVM.Tests
             var complaints = new List<string>();
             var skipped = new List<string>();
 
-            foreach (var binder in BindersWithContextMenu())
-            {
-                var attribute = binder.GetCustomAttributes(typeof(AddBinderContextMenuAttribute), false)
-                    .Cast<AddBinderContextMenuAttribute>()
-                    .First();
+            // Adding an arbitrary component runs its Awake, and Unity logs whatever that throws instead of
+            // letting it reach us — LocalizeStringEvent complains about missing LocalizationSettings unless
+            // another fixture happened to create them first. Without this the sweep passes or fails by test
+            // order, which is worse than not having it.
+            LogAssert.ignoreFailingMessages = true;
 
-                Inspect(binder, attribute, complaints, skipped);
+            var binders = BindersWithContextMenu().ToArray();
+
+            // The same guard the menu-path contract carries: a sweep that finds nothing must not read as clean.
+            Assert.Greater(binders.Length, 300, "Обход не нашёл биндеров — проверка прошла бы впустую");
+
+            try
+            {
+                foreach (var binder in binders)
+                {
+                    var attribute = binder.GetCustomAttributes(typeof(AddBinderContextMenuAttribute), false)
+                        .Cast<AddBinderContextMenuAttribute>()
+                        .First();
+
+                    Inspect(binder, attribute, complaints, skipped);
+                }
+            }
+            finally
+            {
+                LogAssert.ignoreFailingMessages = false;
             }
 
             if (complaints.Count > 0)

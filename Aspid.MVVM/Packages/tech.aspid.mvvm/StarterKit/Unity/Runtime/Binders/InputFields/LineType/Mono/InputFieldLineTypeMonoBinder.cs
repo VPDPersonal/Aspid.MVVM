@@ -13,7 +13,7 @@ namespace Aspid.MVVM.StarterKit
     /// Supports <see cref="BindMode.OneWayToSource"/>: when first bound, the current
     /// <see cref="TMP_InputField.lineType"/> value is forwarded to the ViewModel.
     /// </remarks>
-    [AddComponentMenu("Aspid/MVVM/Binders/UI/InputField/InputField Binder - LineType")]
+    [AddComponentMenu("Aspid/MVVM/Binders/UI/InputField/InputField Binder – LineType")]
     [AddBinderContextMenu(typeof(TMP_InputField), serializePropertyNames: "m_LineType")]
     public class InputFieldLineTypeMonoBinder : ComponentMonoBinder<TMP_InputField, TMP_InputField.LineType>
     {

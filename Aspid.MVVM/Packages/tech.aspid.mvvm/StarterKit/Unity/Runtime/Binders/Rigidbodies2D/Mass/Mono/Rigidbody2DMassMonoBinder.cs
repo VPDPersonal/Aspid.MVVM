@@ -14,7 +14,7 @@ namespace Aspid.MVVM.StarterKit
     /// in one dimension and staying quiet in the other. The range needs no guard — Unity clamps it itself.
     /// </remarks>
     [AddBinderContextMenu(typeof(Rigidbody2D), serializePropertyNames: "m_Mass")]
-    [AddComponentMenu("Aspid/MVVM/Binders/Physics/Rigidbody2D Binder - Mass")]
+    [AddComponentMenu("Aspid/MVVM/Binders/Physics/Rigidbody2D Binder – Mass")]
     public class Rigidbody2DMassMonoBinder : ComponentFloatMonoBinder<Rigidbody2D>
     {
         /// <inheritdoc/>

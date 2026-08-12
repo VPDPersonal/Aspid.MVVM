@@ -13,7 +13,7 @@ namespace Aspid.MVVM.StarterKit
     /// ViewModel that produced it.
     /// </remarks>
     [AddBinderContextMenu(typeof(Light), serializePropertyNames: "m_Intensity")]
-    [AddComponentMenu("Aspid/MVVM/Binders/Rendering/Light Binder - Intensity")]
+    [AddComponentMenu("Aspid/MVVM/Binders/Rendering/Light Binder – Intensity")]
     public class LightIntensityMonoBinder : ComponentFloatMonoBinder<Light>
     {
         /// <inheritdoc/>

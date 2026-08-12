@@ -9,7 +9,7 @@ namespace Aspid.MVVM.StarterKit
     /// <see cref="SwitcherMonoBinder{TMP_InputField, TMP_InputField.CharacterValidation}"/> that switches
     /// <see cref="TMP_InputField.characterValidation"/> between two values based on the bound boolean ViewModel value.
     /// </summary>
-    [AddComponentMenu("Aspid/MVVM/Binders/UI/InputField/InputField Binder - CharacterValidation Switcher")]
+    [AddComponentMenu("Aspid/MVVM/Binders/UI/InputField/InputField Binder – CharacterValidation Switcher")]
     [AddBinderContextMenu(typeof(TMP_InputField), serializePropertyNames: "m_CharacterValidation", SubPath = "Switcher")]
     public sealed class InputFieldCharacterValidationSwitcherMonoBinder : SwitcherMonoBinder<TMP_InputField, TMP_InputField.CharacterValidation>
     {

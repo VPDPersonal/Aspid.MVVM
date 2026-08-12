@@ -11,7 +11,7 @@ namespace Aspid.MVVM.StarterKit
     /// a negative value mirrors the view rather than being rejected, so only a non-finite value is dropped.
     /// </remarks>
     [AddBinderContextMenu(typeof(Camera), serializePropertyNames: "orthographic size")]
-    [AddComponentMenu("Aspid/MVVM/Binders/Rendering/Camera Binder - Orthographic Size")]
+    [AddComponentMenu("Aspid/MVVM/Binders/Rendering/Camera Binder – Orthographic Size")]
     public class CameraOrthographicSizeMonoBinder : ComponentFloatMonoBinder<Camera>
     {
         /// <inheritdoc/>

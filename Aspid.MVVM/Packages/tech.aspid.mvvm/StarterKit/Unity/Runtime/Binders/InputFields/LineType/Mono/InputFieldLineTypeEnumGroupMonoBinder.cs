@@ -9,7 +9,7 @@ namespace Aspid.MVVM.StarterKit
     /// <see cref="EnumGroupMonoBinder{TMP_InputField, TMP_InputField.LineType}"/> that sets
     /// <see cref="TMP_InputField.lineType"/> on each element in the group based on the bound enum ViewModel value.
     /// </summary>
-    [AddComponentMenu("Aspid/MVVM/Binders/UI/InputField/InputField Binder - LineType EnumGroup")]
+    [AddComponentMenu("Aspid/MVVM/Binders/UI/InputField/InputField Binder – LineType EnumGroup")]
     [AddBinderContextMenu(typeof(TMP_InputField), serializePropertyNames: "m_LineType", SubPath = "EnumGroup")]
     public sealed class InputFieldLineTypeEnumGroupMonoBinder : EnumGroupMonoBinder<TMP_InputField, TMP_InputField.LineType>
     {

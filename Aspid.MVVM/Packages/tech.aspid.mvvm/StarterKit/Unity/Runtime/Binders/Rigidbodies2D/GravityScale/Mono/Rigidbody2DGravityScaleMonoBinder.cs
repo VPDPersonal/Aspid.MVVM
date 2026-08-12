@@ -11,7 +11,7 @@ namespace Aspid.MVVM.StarterKit
     /// nothing is clamped. Unity refuses a non-finite scale on its own.
     /// </remarks>
     [AddBinderContextMenu(typeof(Rigidbody2D), serializePropertyNames: "m_GravityScale")]
-    [AddComponentMenu("Aspid/MVVM/Binders/Physics/Rigidbody2D Binder - Gravity Scale")]
+    [AddComponentMenu("Aspid/MVVM/Binders/Physics/Rigidbody2D Binder – Gravity Scale")]
     public class Rigidbody2DGravityScaleMonoBinder : ComponentFloatMonoBinder<Rigidbody2D>
     {
         /// <inheritdoc/>

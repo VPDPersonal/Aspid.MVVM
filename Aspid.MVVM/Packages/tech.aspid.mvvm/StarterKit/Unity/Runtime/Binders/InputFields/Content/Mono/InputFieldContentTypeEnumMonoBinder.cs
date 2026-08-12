@@ -9,7 +9,7 @@ namespace Aspid.MVVM.StarterKit
     /// <see cref="EnumMonoBinder{TMP_InputField, TMP_InputField.ContentType}"/> that sets
     /// <see cref="TMP_InputField.contentType"/> based on the bound enum ViewModel value.
     /// </summary>
-    [AddComponentMenu("Aspid/MVVM/Binders/UI/InputField/InputField Binder - ContentType Enum")]
+    [AddComponentMenu("Aspid/MVVM/Binders/UI/InputField/InputField Binder – ContentType Enum")]
     [AddBinderContextMenu(typeof(TMP_InputField), serializePropertyNames: "m_ContentType", SubPath = "Enum")]
     public sealed class InputFieldContentTypeEnumMonoBinder : EnumMonoBinder<TMP_InputField, TMP_InputField.ContentType>
     {

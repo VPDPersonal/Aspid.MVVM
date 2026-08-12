@@ -9,7 +9,7 @@ namespace Aspid.MVVM.StarterKit
     /// <see cref="SwitcherMonoBinder{TMP_InputField, TMP_InputField.InputType}"/> that switches
     /// <see cref="TMP_InputField.inputType"/> between two values based on the bound boolean ViewModel value.
     /// </summary>
-    [AddComponentMenu("Aspid/MVVM/Binders/UI/InputField/InputField Binder - InputType Switcher")]
+    [AddComponentMenu("Aspid/MVVM/Binders/UI/InputField/InputField Binder – InputType Switcher")]
     [AddBinderContextMenu(typeof(TMP_InputField), serializePropertyNames: "m_InputType", SubPath = "Switcher")]
     public sealed class InputFieldInputTypeSwitcherMonoBinder : SwitcherMonoBinder<TMP_InputField, TMP_InputField.InputType>
     {

@@ -1,5 +1,6 @@
 #if UNITY_2023_1_OR_NEWER || ASPID_MVVM_TEXT_MESH_PRO_INTEGRATION
 #nullable enable
+using System;
 using TMPro;
 
 // ReSharper disable once CheckNamespace
@@ -10,6 +11,7 @@ namespace Aspid.MVVM.StarterKit
     /// property between two <see cref="TMP_FontAsset"/> values based on the bound boolean ViewModel value.
     /// </summary>
     /// <include file="XmlExampleDoc-Text-Font-1.1.0.xml" path="doc//member[@name='TextFontSwitcherBinder']/*" />
+    [Serializable]
     public sealed class TextFontSwitcherBinder : SwitcherBinder<TMP_Text, TMP_FontAsset>
     {
         /// <inheritdoc/>

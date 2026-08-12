@@ -18,7 +18,8 @@ namespace Aspid.MVVM.StarterKit
         /// <param name="values">The materials to assign.</param>
         public static void SetMaterials(this Renderer renderer, IConverter<Material?, Material?>? converter, params Material[]? values)
         {
-            if (converter is null) renderer.materials = values;
+            // Renderer.materials rejects null outright — ArgumentNullException straight from SetMaterialArray.
+            if (converter is null) renderer.materials = values ?? System.Array.Empty<Material>();
             else SetMaterials(renderer, converter, (IReadOnlyCollection<Material>?)values);
         }
 
@@ -34,7 +35,8 @@ namespace Aspid.MVVM.StarterKit
         {
             if (values is null || values.Count is 0)
             {
-                renderer.materials = null;
+                // Renderer.materials rejects null outright — ArgumentNullException straight from SetMaterialArray.
+                renderer.materials = System.Array.Empty<Material>();
             }
             else if (values.Count is 1)
             {
@@ -42,9 +44,8 @@ namespace Aspid.MVVM.StarterKit
 
                 foreach (var value in values)
                     convertedValue = converter?.Convert(value) ?? value;
-                
-                renderer.materials = null;
-                renderer.material = convertedValue;
+
+                renderer.materials = new[] { convertedValue };
             }
             else
             {

@@ -38,26 +38,6 @@
             </code>
         </example>
     </member>
-    <member name="SliderMinMaxMonoBinder">
-        <example>
-            Bind the slider's range to a Vector2 ViewModel property using a MonoBinder component assigned in the Inspector.
-            <code>
-                [View]
-                public partial class ExampleView
-                {
-                    [SerializeField]
-                    private SliderMinMaxMonoBinder _range;
-                }
-                &#xD;
-                [ViewModel]
-                public partial class ExampleViewModel
-                {
-                    [Bindable]
-                    private Vector2 _range;
-                }
-            </code>
-        </example>
-    </member>
     <member name="SliderMinMaxSwitcherBinder">
         <example>
             Switch the slider's min/max range between two values using a serialized binder field — the target is assigned in the Inspector.

@@ -4,7 +4,7 @@ using UnityEngine;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="EnumMonoBinder{MeshCollider, bool}"/> that sets the <see cref="MeshCollider.convex"/>
+    /// <see cref="EnumMonoBinder{T1, T2}">EnumMonoBinder&lt;MeshCollider, bool&gt;</see> that sets the <see cref="MeshCollider.convex"/>
     /// property based on the bound enum ViewModel value.
     /// </summary>
     [AddComponentMenu("Aspid/MVVM/Binders/Collider/Mesh/MeshCollider Binder – Convex Enum")]

@@ -39,7 +39,7 @@ namespace Aspid.MVVM.StarterKit
             Command = null;
 
         /// <summary>
-        /// Called after a new command is bound via <see cref="SetValue"/>.
+        /// Called after a new command is bound via <c>SetValue</c>.
         /// </summary>
         /// <param name="value">The newly bound command, or <see langword="null"/> if unbound.</param>
         protected virtual void OnSetValue(IRelayCommand value) { }
@@ -99,7 +99,7 @@ namespace Aspid.MVVM.StarterKit
             Command = null;
 
         /// <summary>
-        /// Called after a new command is bound via <see cref="SetValue"/>.
+        /// Called after a new command is bound via <c>SetValue</c>.
         /// </summary>
         /// <param name="value">The newly bound command, or <see langword="null"/> if unbound.</param>
         protected virtual void OnSetValue(IRelayCommand<T> value) { }
@@ -162,7 +162,7 @@ namespace Aspid.MVVM.StarterKit
             Command = null;
 
         /// <summary>
-        /// Called after a new command is bound via <see cref="SetValue"/>.
+        /// Called after a new command is bound via <c>SetValue</c>.
         /// </summary>
         /// <param name="value">The newly bound command, or <see langword="null"/> if unbound.</param>
         protected virtual void OnSetValue(IRelayCommand<T1, T2> value) { }
@@ -228,7 +228,7 @@ namespace Aspid.MVVM.StarterKit
             Command = null;
 
         /// <summary>
-        /// Called after a new command is bound via <see cref="SetValue"/>.
+        /// Called after a new command is bound via <c>SetValue</c>.
         /// </summary>
         /// <param name="value">The newly bound command, or <see langword="null"/> if unbound.</param>
         protected virtual void OnSetValue(IRelayCommand<T1, T2, T3> value) { }
@@ -297,7 +297,7 @@ namespace Aspid.MVVM.StarterKit
             Command = null;
 
         /// <summary>
-        /// Called after a new command is bound via <see cref="SetValue"/>.
+        /// Called after a new command is bound via <c>SetValue</c>.
         /// </summary>
         /// <param name="value">The newly bound command, or <see langword="null"/> if unbound.</param>
         protected virtual void OnSetValue(IRelayCommand<T1, T2, T3, T4> value) { }

@@ -7,7 +7,7 @@ using TMPro;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="TargetBoolBinder<TMP_Text>"/> that binds <see cref="TMP_Text.richText"/>.
+    /// <see cref="TargetBoolBinder{TMP_Text}"/> that binds <see cref="TMP_Text.richText"/>.
     /// </summary>
     /// <remarks>
     /// Whether tags in the text are interpreted or shown literally. Worth binding when the string comes from

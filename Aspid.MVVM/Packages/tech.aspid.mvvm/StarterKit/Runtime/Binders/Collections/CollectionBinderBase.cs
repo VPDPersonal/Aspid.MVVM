@@ -13,12 +13,12 @@ namespace Aspid.MVVM.StarterKit
     /// </summary>
     /// <typeparam name="T">The element type of the collection.</typeparam>
     /// <remarks>
-    /// When a new collection is assigned via <see cref="SetValue"/>, the previously held collection is reset
-    /// first via <see cref="OnReset"/>, then the new items are passed to <see cref="OnAdded"/> if the collection
+    /// When a new collection is assigned via <c>SetValue</c>, the previously held collection is reset
+    /// first via <see cref="OnReset"/>, then the new items are passed to <see cref="OnAdded(IReadOnlyCollection{T})"/> if the collection
     /// is non-empty.
     /// When the binder is unbound (via <see cref="Binder.Unbind"/>), <see cref="OnUnbound"/> unsubscribes from
     /// the collection's <c>CollectionChanged</c> event to prevent handler leaks.
-    /// The class also implements <see cref="IDisposable"/>; disposing it calls <see cref="SetValue"/> with
+    /// The class also implements <see cref="IDisposable"/>; disposing it calls <c>SetValue</c> with
     /// <see langword="null"/>, which unsubscribes from <c>CollectionChanged</c>, clears <see cref="Collection"/>,
     /// and calls <see cref="OnReset"/>.
     /// </remarks>
@@ -40,7 +40,7 @@ namespace Aspid.MVVM.StarterKit
 
         /// <summary>
         /// Binds to <paramref name="collection"/>, resetting any previously bound collection first.
-        /// Items already present in the new collection are immediately forwarded to <see cref="OnAdded"/>.
+        /// Items already present in the new collection are immediately forwarded to <see cref="OnAdded(IReadOnlyCollection{T})"/>.
         /// </summary>
         /// <param name="collection">
         /// The new collection to bind to, or <see langword="null"/> to clear the current binding.

@@ -11,7 +11,7 @@ using Converter = Aspid.MVVM.StarterKit.IConverterPhysicsMaterial;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="ComponentMonoBinder{Collider, PhysicsMaterial, IConverter{PhysicsMaterial, PhysicsMaterial}}"/> that binds the <see cref="Collider.material"/> property.
+    /// <see cref="ComponentMonoBinder{T1, T2, T3}">ComponentMonoBinder&lt;Collider, PhysicsMaterial, IConverter&lt;PhysicsMaterial, PhysicsMaterial&gt;&gt;</see> that binds the <see cref="Collider.material"/> property.
     /// </summary>
     /// <remarks>
     /// Supports <see cref="BindMode.OneWayToSource"/>: when binding is established, the current material value

@@ -6,7 +6,7 @@ using UnityEngine;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="ComponentBoolMonoBinder<TMP_InputField>"/> that binds <see cref="TMP_InputField.readOnly"/>.
+    /// <see cref="ComponentBoolMonoBinder{TMP_InputField}"/> that binds <see cref="TMP_InputField.readOnly"/>.
     /// </summary>
     /// <remarks>
     /// Whether the field can be edited. Unlike clearing <c>interactable</c>, this keeps the field looking normal

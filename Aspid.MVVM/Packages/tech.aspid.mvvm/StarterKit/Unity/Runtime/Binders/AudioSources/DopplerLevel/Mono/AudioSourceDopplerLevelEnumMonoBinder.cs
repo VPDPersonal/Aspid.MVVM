@@ -4,7 +4,7 @@ using UnityEngine;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="EnumMonoBinder{AudioSource, float, Converter}"/> that sets the <see cref="AudioSource.dopplerLevel"/>
+    /// <see cref="EnumFloatMonoBinder{AudioSource}"/> that sets the <see cref="AudioSource.dopplerLevel"/>
     /// property to a value resolved from the bound enum ViewModel value.
     /// </summary>
     [AddBinderContextMenu(typeof(AudioSource), SubPath = "Enum")]

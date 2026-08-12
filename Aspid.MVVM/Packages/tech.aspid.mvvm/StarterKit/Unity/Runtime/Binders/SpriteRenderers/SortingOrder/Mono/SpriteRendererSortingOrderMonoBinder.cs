@@ -4,7 +4,7 @@ using UnityEngine;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="ComponentIntMonoBinder{SpriteRenderer}"/> that binds <see cref="SpriteRenderer.sortingOrder"/>.
+    /// <see cref="ComponentIntMonoBinder{SpriteRenderer}"/> that binds <see cref="Renderer.sortingOrder"/>.
     /// </summary>
     /// <remarks>
     /// Draw order inside a sorting layer — the usual way a 2D scene expresses depth.

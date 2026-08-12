@@ -6,7 +6,7 @@ using UnityEngine;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="ComponentIntMonoBinder<TMP_InputField>"/> that binds <see cref="TMP_InputField.characterLimit"/>.
+    /// <see cref="ComponentIntMonoBinder{TMP_InputField}"/> that binds <see cref="TMP_InputField.characterLimit"/>.
     /// </summary>
     /// <remarks>
     /// How many characters the field accepts, where <c>0</c> means no limit. Nothing is sanitised: Unity maps a

@@ -6,7 +6,7 @@ using System;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="TargetBinder{TMP_InputField, TMP_InputField.LineType}"/> that gets and sets
+    /// <see cref="TargetBinder{T1, T2}">TargetBinder&lt;TMP_InputField, TMP_InputField.LineType&gt;</see> that gets and sets
     /// <see cref="TMP_InputField.lineType"/>.
     /// </summary>
     /// <include file="XmlExampleDoc-InputField-LineType-1.1.0.xml" path="doc//member[@name='InputFieldLineTypeBinder']/*" />

@@ -20,7 +20,7 @@ namespace Aspid.MVVM.StarterKit
     ///   <item><see cref="IReadOnlyList{T}"/> — plain read-only list, bound without change notifications.</item>
     /// </list>
     /// When a filtered or observable list is bound, the binder subscribes to its
-    /// <see cref="IReadOnlyObservableList{T}.CollectionChanged"/> event. On unbinding (<see cref="OnUnbound"/>), the subscription
+    /// <see cref="IObservableCollection{T}.CollectionChanged"/> event. On unbinding (<see cref="OnUnbound"/>), the subscription
     /// is released and <see cref="OnReset"/> is called.
     /// Subclasses may override <see cref="GetFilterList"/> to wrap an incoming list in a custom
     /// <see cref="IReadOnlyFilteredList{T}"/> before processing.

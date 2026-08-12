@@ -5,7 +5,7 @@ using UnityEngine;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// Abstract base <see cref="TargetBinder{TTarget, bool}"/> that adds optional value inversion.
+    /// Abstract base <see cref="TargetBinder{T1, T2}">TargetBinder&lt;TTarget, bool&gt;</see> that adds optional value inversion.
     /// </summary>
     /// <typeparam name="TTarget">The type of the target object that exposes the target <see langword="bool"/> property.</typeparam>
     [Serializable]

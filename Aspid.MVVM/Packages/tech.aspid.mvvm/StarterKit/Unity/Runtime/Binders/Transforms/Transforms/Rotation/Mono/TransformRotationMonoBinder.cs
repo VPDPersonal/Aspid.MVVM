@@ -35,28 +35,28 @@ namespace Aspid.MVVM.StarterKit
         }
         
         /// <summary>
-        /// Converts the value to a <see cref="float"/> and applies a uniform <see cref="Quaternion.Euler"/> rotation.
+        /// Converts the value to a <see cref="float"/> and applies a uniform <see cref="Quaternion.Euler(float, float, float)"/> rotation.
         /// </summary>
         [BinderLog]
         public void SetValue(int value) =>
             SetValue((float)value);
 
         /// <summary>
-        /// Converts the value to a <see cref="float"/> and applies a uniform <see cref="Quaternion.Euler"/> rotation.
+        /// Converts the value to a <see cref="float"/> and applies a uniform <see cref="Quaternion.Euler(float, float, float)"/> rotation.
         /// </summary>
         [BinderLog]
         public void SetValue(long value) =>
             SetValue((float)value);
 
         /// <summary>
-        /// Converts the value to a <see cref="float"/> and applies a uniform <see cref="Quaternion.Euler"/> rotation.
+        /// Converts the value to a <see cref="float"/> and applies a uniform <see cref="Quaternion.Euler(float, float, float)"/> rotation.
         /// </summary>
         [BinderLog]
         public void SetValue(double value) =>
             SetValue((float)value);
 
         /// <summary>
-        /// Applies a uniform <see cref="Quaternion.Euler"/> rotation using the given angle on all three axes.
+        /// Applies a uniform <see cref="Quaternion.Euler(float, float, float)"/> rotation using the given angle on all three axes.
         /// </summary>
         [BinderLog]
         public void SetValue(float value) =>

@@ -6,7 +6,7 @@ using TMPro;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="SwitcherBinder{TMP_InputField, TMP_InputField.ContentType}"/> that switches
+    /// <see cref="SwitcherBinder{T1, T2}">SwitcherBinder&lt;TMP_InputField, TMP_InputField.ContentType&gt;</see> that switches
     /// <see cref="TMP_InputField.contentType"/> between two values based on the bound boolean ViewModel value.
     /// </summary>
     /// <include file="XmlExampleDoc-InputField-Content-1.1.0.xml" path="doc//member[@name='InputFieldContentTypeSwitcherBinder']/*" />

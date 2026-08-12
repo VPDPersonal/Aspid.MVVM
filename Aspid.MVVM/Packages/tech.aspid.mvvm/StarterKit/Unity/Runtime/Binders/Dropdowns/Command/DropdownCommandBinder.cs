@@ -93,7 +93,7 @@ namespace Aspid.MVVM.StarterKit
         /// and releases all bound command references.
         /// </summary>
         /// <remarks>
-        /// Passes <see langword="null"/> to all <see cref="SetValue"/> overloads to detach command references
+        /// Passes <see langword="null"/> to all <c>SetValue</c> overloads to detach command references
         /// and unsubscribe from their <see cref="IRelayCommand{T}.CanExecuteChanged"/> events.
         /// </remarks>
         protected override void OnUnbound()
@@ -237,7 +237,7 @@ namespace Aspid.MVVM.StarterKit
         /// and releases all bound command references.
         /// </summary>
         /// <remarks>
-        /// Passes <see langword="null"/> to all <see cref="SetValue"/> overloads to detach command references
+        /// Passes <see langword="null"/> to all <c>SetValue</c> overloads to detach command references
         /// and unsubscribe from their <see cref="IRelayCommand{T}.CanExecuteChanged"/> events.
         /// </remarks>
         protected override void OnUnbound()
@@ -399,7 +399,7 @@ namespace Aspid.MVVM.StarterKit
         /// and releases all bound command references.
         /// </summary>
         /// <remarks>
-        /// Passes <see langword="null"/> to all <see cref="SetValue"/> overloads to detach command references
+        /// Passes <see langword="null"/> to all <c>SetValue</c> overloads to detach command references
         /// and unsubscribe from their <see cref="IRelayCommand{T}.CanExecuteChanged"/> events.
         /// </remarks>
         protected override void OnUnbound()
@@ -579,7 +579,7 @@ namespace Aspid.MVVM.StarterKit
         /// and releases all bound command references.
         /// </summary>
         /// <remarks>
-        /// Passes <see langword="null"/> to all <see cref="SetValue"/> overloads to detach command references
+        /// Passes <see langword="null"/> to all <c>SetValue</c> overloads to detach command references
         /// and unsubscribe from their <see cref="IRelayCommand{T}.CanExecuteChanged"/> events.
         /// </remarks>
         protected override void OnUnbound()

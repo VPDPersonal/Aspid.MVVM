@@ -9,7 +9,7 @@ using Converter = Aspid.MVVM.StarterKit.IConverterColor;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// Abstract base <see cref="EnumMonoBinder{TComponent, Color, IConverter{Color, Color}}"/> that fixes
+    /// Abstract base <see cref="EnumMonoBinder{T1, T2, T3}">EnumMonoBinder&lt;TComponent, Color, IConverter&lt;Color, Color&gt;&gt;</see> that fixes
     /// the value type to <see cref="Color"/>.
     /// </summary>
     /// <typeparam name="TComponent">The type of <see cref="Component"/> that exposes the target property.</typeparam>

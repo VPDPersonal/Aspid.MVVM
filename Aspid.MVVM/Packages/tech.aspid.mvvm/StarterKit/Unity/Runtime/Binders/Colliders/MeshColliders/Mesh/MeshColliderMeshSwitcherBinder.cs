@@ -11,7 +11,7 @@ using Converter = Aspid.MVVM.StarterKit.IConverterMesh;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="SwitcherBinder{MeshCollider, Mesh, IConverter{Mesh, Mesh}}"/> that switches the <see cref="MeshCollider.sharedMesh"/>
+    /// <see cref="SwitcherBinder{T1, T2, T3}">SwitcherBinder&lt;MeshCollider, Mesh, IConverter&lt;Mesh, Mesh&gt;&gt;</see> that switches the <see cref="MeshCollider.sharedMesh"/>
     /// property between two <see cref="Mesh"/> values based on the bound boolean ViewModel value.
     /// </summary>
     /// <include file="XmlExampleDoc-MeshCollider-Mesh-1.1.0.xml" path="doc//member[@name='MeshColliderMeshSwitcherBinder']/*" />

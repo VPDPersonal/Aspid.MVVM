@@ -4,7 +4,7 @@ using UnityEngine;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="EnumMonoBinder{AudioSource, bool}"/> that sets the <see cref="AudioSource.bypassReverbZones"/>
+    /// <see cref="EnumMonoBinder{T1, T2}">EnumMonoBinder&lt;AudioSource, bool&gt;</see> that sets the <see cref="AudioSource.bypassReverbZones"/>
     /// property to a value resolved from the bound enum ViewModel value.
     /// </summary>
     [AddBinderContextMenu(typeof(AudioSource), SubPath = "Enum")]

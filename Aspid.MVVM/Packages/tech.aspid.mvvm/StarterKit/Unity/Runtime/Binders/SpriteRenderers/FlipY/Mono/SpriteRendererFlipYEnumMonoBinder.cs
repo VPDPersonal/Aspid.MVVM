@@ -4,7 +4,7 @@ using UnityEngine;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="EnumMonoBinder{SpriteRenderer, bool}"/> that sets <see cref="SpriteRenderer.flipY"/>
+    /// <see cref="EnumMonoBinder{T1, T2}">EnumMonoBinder&lt;SpriteRenderer, bool&gt;</see> that sets <see cref="SpriteRenderer.flipY"/>
     /// based on the bound enum ViewModel value.
     /// </summary>
     [AddBinderContextMenu(typeof(SpriteRenderer), serializePropertyNames: "m_FlipY", SubPath = "Enum")]

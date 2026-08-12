@@ -4,7 +4,7 @@ using UnityEngine;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="ComponentColorMonoBinder<Light>"/> that binds <see cref="Light.color"/>.
+    /// <see cref="ComponentColorMonoBinder{Light}"/> that binds <see cref="Light.color"/>.
     /// </summary>
     /// <remarks>
     /// Lighting had no binders at all. Tinting a lamp from the ViewModel — a warning light going red, a torch

@@ -6,7 +6,7 @@ using UnityEngine;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="TargetFloatBinder<Camera>"/> that binds <see cref="Camera.orthographicSize"/>.
+    /// <see cref="TargetFloatBinder{Camera}"/> that binds <see cref="Camera.orthographicSize"/>.
     /// </summary>
     /// <remarks>
     /// Half the vertical height the camera sees — the zoom of a 2D or isometric game. Unity does not clamp it, and

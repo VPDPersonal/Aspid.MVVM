@@ -9,7 +9,7 @@ using Converter = Aspid.MVVM.StarterKit.IConverterMaterial;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="EnumMonoBinder{Renderer, Material[]}"/> that sets the <see cref="Renderer.materials"/> array
+    /// <see cref="EnumMonoBinder{T1, T2}">EnumMonoBinder&lt;Renderer, Material[]&gt;</see> that sets the <see cref="Renderer.materials"/> array
     /// based on the bound enum ViewModel value.
     /// </summary>
     [AddComponentMenu("Aspid/MVVM/Binders/Renderer/Renderer Binder – Materials Enum")]

@@ -6,7 +6,7 @@ using UnityEngine;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="TargetFloatBinder<Light>"/> that binds <see cref="Light.intensity"/>.
+    /// <see cref="TargetFloatBinder{Light}"/> that binds <see cref="Light.intensity"/>.
     /// </summary>
     /// <remarks>
     /// How bright the lamp burns. A non-finite value is dropped rather than written. Unity clamps the range on its

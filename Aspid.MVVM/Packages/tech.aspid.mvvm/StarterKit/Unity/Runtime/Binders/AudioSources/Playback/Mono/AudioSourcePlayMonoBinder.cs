@@ -4,7 +4,7 @@ using UnityEngine;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="AudioSourcePlaybackMonoBinder"/> that calls <see cref="AudioSource.Play"/> when the bound
+    /// <see cref="AudioSourcePlaybackMonoBinder"/> that calls <see cref="AudioSource.Play()"/> when the bound
     /// ViewModel command or action is invoked.
     /// </summary>
     /// <remarks>

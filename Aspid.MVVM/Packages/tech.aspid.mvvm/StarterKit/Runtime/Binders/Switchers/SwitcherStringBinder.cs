@@ -9,7 +9,7 @@ using Converter = Aspid.MVVM.StarterKit.IConverterString;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// Abstract base <see cref="SwitcherBinder{TTarget, string, IConverter{string, string}}"/> that fixes
+    /// Abstract base <see cref="SwitcherBinder{T1, T2, T3}">SwitcherBinder&lt;TTarget, string, IConverter&lt;string, string&gt;&gt;</see> that fixes
     /// the value type to <see cref="string"/>.
     /// </summary>
     /// <typeparam name="TTarget">The type of target object that exposes the target property.</typeparam>

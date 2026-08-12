@@ -6,7 +6,7 @@ using UnityEngine;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="SwitcherMonoBinder{TMP_InputField, TMP_InputField.ContentType}"/> that switches
+    /// <see cref="SwitcherMonoBinder{T1, T2}">SwitcherMonoBinder&lt;TMP_InputField, TMP_InputField.ContentType&gt;</see> that switches
     /// <see cref="TMP_InputField.contentType"/> between two values based on the bound boolean ViewModel value.
     /// </summary>
     [AddComponentMenu("Aspid/MVVM/Binders/UI/InputField/InputField Binder – ContentType Switcher")]

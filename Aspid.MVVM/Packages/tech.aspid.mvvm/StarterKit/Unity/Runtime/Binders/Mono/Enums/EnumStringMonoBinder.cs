@@ -9,7 +9,7 @@ using Converter = Aspid.MVVM.StarterKit.IConverterString;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// Abstract base <see cref="EnumMonoBinder{TComponent, string, IConverter{string, string}}"/> that fixes
+    /// Abstract base <see cref="EnumMonoBinder{T1, T2, T3}">EnumMonoBinder&lt;TComponent, string, IConverter&lt;string, string&gt;&gt;</see> that fixes
     /// the value type to <see cref="string"/>.
     /// </summary>
     /// <typeparam name="TComponent">The type of <see cref="Component"/> that exposes the target property.</typeparam>

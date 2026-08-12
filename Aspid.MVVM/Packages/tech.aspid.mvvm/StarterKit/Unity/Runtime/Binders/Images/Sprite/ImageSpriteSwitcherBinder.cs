@@ -7,7 +7,7 @@ using UnityEngine.UI;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="SwitcherBinder{Image, Sprite?}"/> that switches the <see cref="Image.sprite"/> property
+    /// <see cref="SwitcherBinder{T1, T2}">SwitcherBinder&lt;Image, Sprite?&gt;</see> that switches the <see cref="Image.sprite"/> property
     /// between two <see cref="Sprite"/> assets based on the bound boolean ViewModel value.
     /// Optionally disables the <see cref="Image"/> when the selected sprite is <see langword="null"/>.
     /// </summary>

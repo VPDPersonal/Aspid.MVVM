@@ -6,7 +6,7 @@ using UnityEngine;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="TargetFloatBinder<Light>"/> that binds <see cref="Light.spotAngle"/>.
+    /// <see cref="TargetFloatBinder{Light}"/> that binds <see cref="Light.spotAngle"/>.
     /// </summary>
     /// <remarks>
     /// The width of a spot light's cone, in degrees. Unity keeps it inside 1..179 itself. A non-finite value is

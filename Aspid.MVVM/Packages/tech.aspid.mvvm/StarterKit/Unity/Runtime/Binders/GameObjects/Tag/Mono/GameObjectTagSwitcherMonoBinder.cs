@@ -4,7 +4,7 @@ using UnityEngine;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="SwitcherMonoBinder{string}"/> that switches the <see cref="GameObject.tag"/> property
+    /// <see cref="SwitcherMonoBinder{T}">SwitcherMonoBinder&lt;string&gt;</see> that switches the <see cref="GameObject.tag"/> property
     /// of the <see cref="GameObject"/> this component is attached to between two values
     /// based on the bound boolean ViewModel value.
     /// </summary>

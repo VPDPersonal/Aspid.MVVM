@@ -27,7 +27,7 @@ namespace Aspid.MVVM.StarterKit
         /// <inheritdoc/>
         protected sealed override string? Property
         {
-            get => _stringReference.TableEntryReference;
+            get => _stringReference.TableEntryReference.ToKeyName(Target);
             set => _stringReference.TableEntryReference = value;
         }
         

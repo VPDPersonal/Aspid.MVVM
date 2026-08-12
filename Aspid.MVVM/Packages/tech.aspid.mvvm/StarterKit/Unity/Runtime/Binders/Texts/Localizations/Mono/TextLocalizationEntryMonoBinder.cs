@@ -28,7 +28,7 @@ namespace Aspid.MVVM.StarterKit
 
         protected override string Property
         {
-            get => _stringReference.TableEntryReference;
+            get => _stringReference.TableEntryReference.ToKeyName(this);
             set => _stringReference.TableEntryReference = value;
         }
         

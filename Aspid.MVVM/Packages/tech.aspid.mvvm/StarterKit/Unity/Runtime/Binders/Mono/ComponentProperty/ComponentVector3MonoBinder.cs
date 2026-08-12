@@ -21,6 +21,20 @@ namespace Aspid.MVVM.StarterKit
         where TComponent : Component
     {
         /// <summary>
+        /// Sets the bound property to <paramref name="value"/>.
+        /// </summary>
+        /// <param name="value">The vector to apply.</param>
+        /// <remarks>
+        /// Redeclared rather than inherited on purpose. Overload resolution stops at the most derived type that
+        /// declares an applicable <c>SetValue</c>, and <see cref="Vector3"/> converts implicitly to
+        /// <see cref="Vector2"/> — without this member a direct <c>SetValue(someVector3)</c> would bind to
+        /// <see cref="SetValue(Vector2)"/> and silently drop Z.
+        /// </remarks>
+        [BinderLog]
+        public new void SetValue(Vector3 value) =>
+            base.SetValue(value);
+
+        /// <summary>
         /// Sets the bound property by promoting <paramref name="value"/> to a <see cref="Vector3"/> with Z set to zero.
         /// </summary>
         /// <param name="value">The 2D vector to promote.</param>

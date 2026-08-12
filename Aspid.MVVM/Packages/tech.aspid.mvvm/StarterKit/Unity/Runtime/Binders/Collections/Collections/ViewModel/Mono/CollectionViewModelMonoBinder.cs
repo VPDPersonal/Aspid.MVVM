@@ -19,6 +19,9 @@ namespace Aspid.MVVM.StarterKit
             
             foreach (var value in values)
             {
+                // The serialized view list is fixed; a collection longer than it must not run past the end.
+                if (index >= _views.Length) break;
+
                 _views[index].gameObject.SetActive(true);
                 _views[index].Initialize(value);
 

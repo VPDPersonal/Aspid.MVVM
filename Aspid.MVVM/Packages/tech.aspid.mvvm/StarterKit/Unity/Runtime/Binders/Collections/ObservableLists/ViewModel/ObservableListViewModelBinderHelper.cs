@@ -16,7 +16,13 @@ namespace Aspid.MVVM.StarterKit
             where T : MonoBehaviour, IView
         {
             var view = viewFactory.Create(newItem);
+
             views.Insert(newStartingIndex, view);
+
+            // The factory appends the new object last in the hierarchy, so an insert anywhere but the end would
+            // leave the visual order — and therefore any LayoutGroup — out of step with the model. OnMove below
+            // already does this.
+            view.transform.SetSiblingIndex(newStartingIndex);
         }
 
         public static void OnRemoved<T>(List<T> views, IViewFactory<T> viewFactory, int oldStartingIndex)

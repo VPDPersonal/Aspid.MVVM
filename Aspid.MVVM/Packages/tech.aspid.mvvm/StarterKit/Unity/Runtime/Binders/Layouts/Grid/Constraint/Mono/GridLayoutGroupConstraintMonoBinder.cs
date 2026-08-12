@@ -1,0 +1,27 @@
+using UnityEngine;
+using UnityEngine.UI;
+
+// ReSharper disable once CheckNamespace
+namespace Aspid.MVVM.StarterKit
+{
+    /// <summary>
+    /// <see cref="ComponentMonoBinder{T1, T2}">ComponentMonoBinder&lt;GridLayoutGroup, GridLayoutGroup.Constraint&gt;</see> that binds
+    /// <see cref="GridLayoutGroup.constraint"/>.
+    /// </summary>
+    /// <remarks>
+    /// Whether the grid is bounded by a column count, a row count, or neither. Paired with
+    /// <see cref="GridLayoutGroupConstraintCountMonoBinder"/>: the count means nothing until the
+    /// constraint says which axis it counts.
+    /// </remarks>
+    [AddBinderContextMenu(typeof(GridLayoutGroup), serializePropertyNames: "m_Constraint")]
+    [AddComponentMenu("Aspid/MVVM/Binders/UI/LayoutGroup/Grid/GridLayoutGroup Binder – Constraint")]
+    public class GridLayoutGroupConstraintMonoBinder : ComponentMonoBinder<GridLayoutGroup, GridLayoutGroup.Constraint>
+    {
+        /// <inheritdoc/>
+        protected sealed override GridLayoutGroup.Constraint Property
+        {
+            get => CachedComponent.constraint;
+            set => CachedComponent.constraint = value;
+        }
+    }
+}

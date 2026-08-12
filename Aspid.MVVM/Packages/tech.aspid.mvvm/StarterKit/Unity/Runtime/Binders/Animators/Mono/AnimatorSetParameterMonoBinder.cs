@@ -34,6 +34,7 @@ namespace Aspid.MVVM.StarterKit
         }
         
         [NonSerialized] private T _value;
+        [NonSerialized] private bool _hasValue;
 
         private IRelayCommand<T> _command;
         private AnimatorParameterProbe _probe;
@@ -53,16 +54,22 @@ namespace Aspid.MVVM.StarterKit
             AnimatorParameterTypes.Of<T>();
 
         /// <summary>
-        /// Re-applies the last received value and notifies the bound command that <c>CanExecute</c>
-        /// may have changed.
+        /// Re-applies the last value received from the ViewModel, if there was one, and notifies the bound command
+        /// that <c>CanExecute</c> may have changed.
         /// </summary>
         /// <remarks>
+        /// Re-applying is skipped until a value has actually arrived. It used to run unconditionally, writing
+        /// <c>default(T)</c> into the Animator on every enable — resetting a parameter the ViewModel had set and
+        /// never telling it. Both reverse paths now record the value they push, so re-enabling restores what the
+        /// ViewModel last asked for rather than a zero.
+        /// <para/>
         /// When overriding this method, always call <c>base.OnEnable()</c> to preserve
         /// the parameter re-application and command notification behavior.
         /// </remarks>
         protected virtual void OnEnable()
         {
-            SetParameterInternal(_value);
+            if (_hasValue) SetParameterInternal(_value);
+
             _command?.NotifyCanExecuteChanged();
         }
 
@@ -91,6 +98,8 @@ namespace Aspid.MVVM.StarterKit
         private void SetParameterInternal(T value)
         {
             _value = value;
+            _hasValue = true;
+
             if (!CanExecute(value)) return;
             
             SetParameter(value);
@@ -107,7 +116,7 @@ namespace Aspid.MVVM.StarterKit
             
             if (_reverseCommand is not null)
             {
-                _command = new RelayCommand<T>(SetParameter, CanExecute);
+                _command = new RelayCommand<T>(SetParameterInternal, CanExecute);
                 _reverseCommand.Invoke(_command);
             }
             else

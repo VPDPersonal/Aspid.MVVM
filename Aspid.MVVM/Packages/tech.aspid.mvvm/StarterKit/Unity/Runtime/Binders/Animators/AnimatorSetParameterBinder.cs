@@ -107,7 +107,7 @@ namespace Aspid.MVVM.StarterKit
 
             if (_reverseCommand is not null)
             {
-                _command = new RelayCommand<T>(SetParameter, CanExecute);
+                _command = new RelayCommand<T>(SetParameterChecked, CanExecute);
                 _reverseCommand.Invoke(_command);
             }
             else

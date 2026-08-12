@@ -21,7 +21,15 @@ namespace Aspid.MVVM.StarterKit
         INumberReverseBinder
     {
         /// <inheritdoc/>
-        public event Action<int>? IntValueChanged;
+        /// <remarks>
+        /// Aliases the inherited <see cref="TargetBinder{TTarget, TProperty}.ValueChanged"/>, which already backs
+        /// <see cref="IReverseBinder{T}"/> for <see langword="int"/>, so both events share one subscriber list.
+        /// </remarks>
+        public event Action<int>? IntValueChanged
+        {
+            add => ValueChanged += value;
+            remove => ValueChanged -= value;
+        }
 
         /// <inheritdoc/>
         public event Action<long>? LongValueChanged;
@@ -63,22 +71,20 @@ namespace Aspid.MVVM.StarterKit
         /// <see cref="IntValueChanged"/>, <see cref="LongValueChanged"/>, <see cref="FloatValueChanged"/>, and <see cref="DoubleValueChanged"/>.
         /// </summary>
         /// <remarks>
-        /// Does not call <c>base.OnBound()</c>: provides a complete implementation of the
-        /// <see cref="BindMode.OneWayToSource"/> initialization that broadcasts to all numeric event types
-        /// via <see cref="INumberReverseBinder"/> instead of the single typed
-        /// <see cref="IReverseBinder{T}.ValueChanged"/> event.
+        /// Calls <c>base.OnBound()</c> to raise <see cref="IntValueChanged"/> via the inherited
+        /// <see cref="TargetBinder{TTarget, TProperty}.ValueChanged"/>; the remaining numeric events are raised here.
         /// </remarks>
         protected override void OnBound()
         {
-            if (Mode is BindMode.OneWayToSource)
-            {
-                var value = GetConvertedValue(Property);
+            base.OnBound();
 
-                IntValueChanged?.Invoke(value);
-                LongValueChanged?.Invoke(value);
-                FloatValueChanged?.Invoke(value);
-                DoubleValueChanged?.Invoke(value);
-            }
+            if (Mode is not BindMode.OneWayToSource) return;
+
+            var value = GetConvertedValue(Property);
+
+            LongValueChanged?.Invoke(value);
+            FloatValueChanged?.Invoke(value);
+            DoubleValueChanged?.Invoke(value);
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

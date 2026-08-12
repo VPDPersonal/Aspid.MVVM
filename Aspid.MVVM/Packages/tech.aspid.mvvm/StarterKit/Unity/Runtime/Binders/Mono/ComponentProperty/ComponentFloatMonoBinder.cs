@@ -27,7 +27,15 @@ namespace Aspid.MVVM.StarterKit
         public event Action<long> LongValueChanged;
 
         /// <inheritdoc/>
-        public event Action<float> FloatValueChanged;
+        /// <remarks>
+        /// Aliases the inherited <see cref="ComponentMonoBinder{TComponent, TProperty}.ValueChanged"/>, which already
+        /// backs <see cref="IReverseBinder{T}"/> for <see langword="float"/>, so both events share one subscriber list.
+        /// </remarks>
+        public event Action<float> FloatValueChanged
+        {
+            add => ValueChanged += value;
+            remove => ValueChanged -= value;
+        }
 
         /// <inheritdoc/>
         public event Action<double> DoubleValueChanged;
@@ -52,17 +60,21 @@ namespace Aspid.MVVM.StarterKit
         /// In <see cref="BindMode.OneWayToSource"/> mode, broadcasts the current value to all numeric event types:
         /// <see cref="IntValueChanged"/>, <see cref="LongValueChanged"/>, <see cref="FloatValueChanged"/>, and <see cref="DoubleValueChanged"/>.
         /// </summary>
+        /// <remarks>
+        /// Calls <c>base.OnBound()</c> to raise <see cref="FloatValueChanged"/> via the inherited
+        /// <see cref="ComponentMonoBinder{TComponent, TProperty}.ValueChanged"/>; the remaining numeric events are raised here.
+        /// </remarks>
         protected override void OnBound()
         {
-            if (Mode is BindMode.OneWayToSource)
-            {
-                var value = GetConvertedValue(Property);
-                
-                IntValueChanged?.Invoke((int)value);
-                LongValueChanged?.Invoke((long)value);
-                FloatValueChanged?.Invoke(value);
-                DoubleValueChanged?.Invoke(value);
-            }
+            base.OnBound();
+
+            if (Mode is not BindMode.OneWayToSource) return;
+
+            var value = GetConvertedValue(Property);
+
+            IntValueChanged?.Invoke((int)value);
+            LongValueChanged?.Invoke((long)value);
+            DoubleValueChanged?.Invoke(value);
         }
     }
 }

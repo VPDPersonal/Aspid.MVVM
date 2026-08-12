@@ -21,7 +21,15 @@ namespace Aspid.MVVM.StarterKit
         where TComponent : Component
     {
         /// <inheritdoc/>
-        public event Action<int> IntValueChanged;
+        /// <remarks>
+        /// Aliases the inherited <see cref="ComponentMonoBinder{TComponent, TProperty}.ValueChanged"/>, which already
+        /// backs <see cref="IReverseBinder{T}"/> for <see langword="int"/>, so both events share one subscriber list.
+        /// </remarks>
+        public event Action<int> IntValueChanged
+        {
+            add => ValueChanged += value;
+            remove => ValueChanged -= value;
+        }
 
         /// <inheritdoc/>
         public event Action<long> LongValueChanged;
@@ -52,17 +60,21 @@ namespace Aspid.MVVM.StarterKit
         /// In <see cref="BindMode.OneWayToSource"/> mode, broadcasts the current value to all numeric event types:
         /// <see cref="IntValueChanged"/>, <see cref="LongValueChanged"/>, <see cref="FloatValueChanged"/>, and <see cref="DoubleValueChanged"/>.
         /// </summary>
+        /// <remarks>
+        /// Calls <c>base.OnBound()</c> to raise <see cref="IntValueChanged"/> via the inherited
+        /// <see cref="ComponentMonoBinder{TComponent, TProperty}.ValueChanged"/>; the remaining numeric events are raised here.
+        /// </remarks>
         protected override void OnBound()
         {
-            if (Mode is BindMode.OneWayToSource)
-            {
-                var value = GetConvertedValue(Property);
-                
-                IntValueChanged?.Invoke(value);
-                LongValueChanged?.Invoke(value);
-                FloatValueChanged?.Invoke(value);
-                DoubleValueChanged?.Invoke(value);
-            }
+            base.OnBound();
+
+            if (Mode is not BindMode.OneWayToSource) return;
+
+            var value = GetConvertedValue(Property);
+
+            LongValueChanged?.Invoke(value);
+            FloatValueChanged?.Invoke(value);
+            DoubleValueChanged?.Invoke(value);
         }
     }
 }

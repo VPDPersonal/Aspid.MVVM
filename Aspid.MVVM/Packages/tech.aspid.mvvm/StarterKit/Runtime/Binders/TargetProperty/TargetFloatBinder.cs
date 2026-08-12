@@ -27,7 +27,15 @@ namespace Aspid.MVVM.StarterKit
         public event Action<long>? LongValueChanged;
 
         /// <inheritdoc/>
-        public event Action<float>? FloatValueChanged;
+        /// <remarks>
+        /// Aliases the inherited <see cref="TargetBinder{TTarget, TProperty}.ValueChanged"/>, which already backs
+        /// <see cref="IReverseBinder{T}"/> for <see langword="float"/>, so both events share one subscriber list.
+        /// </remarks>
+        public event Action<float>? FloatValueChanged
+        {
+            add => ValueChanged += value;
+            remove => ValueChanged -= value;
+        }
 
         /// <inheritdoc/>
         public event Action<double>? DoubleValueChanged;
@@ -63,22 +71,20 @@ namespace Aspid.MVVM.StarterKit
         /// <see cref="IntValueChanged"/>, <see cref="LongValueChanged"/>, <see cref="FloatValueChanged"/>, and <see cref="DoubleValueChanged"/>.
         /// </summary>
         /// <remarks>
-        /// Does not call <c>base.OnBound()</c>: provides a complete implementation of the
-        /// <see cref="BindMode.OneWayToSource"/> initialization that broadcasts to all numeric event types
-        /// via <see cref="INumberReverseBinder"/> instead of the single typed
-        /// <see cref="IReverseBinder{T}.ValueChanged"/> event.
+        /// Calls <c>base.OnBound()</c> to raise <see cref="FloatValueChanged"/> via the inherited
+        /// <see cref="TargetBinder{TTarget, TProperty}.ValueChanged"/>; the remaining numeric events are raised here.
         /// </remarks>
         protected override void OnBound()
         {
-            if (Mode is BindMode.OneWayToSource)
-            {
-                var value = GetConvertedValue(Property);
+            base.OnBound();
 
-                IntValueChanged?.Invoke((int)value);
-                LongValueChanged?.Invoke((long)value);
-                FloatValueChanged?.Invoke(value);
-                DoubleValueChanged?.Invoke(value);
-            }
+            if (Mode is not BindMode.OneWayToSource) return;
+
+            var value = GetConvertedValue(Property);
+
+            IntValueChanged?.Invoke((int)value);
+            LongValueChanged?.Invoke((long)value);
+            DoubleValueChanged?.Invoke(value);
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

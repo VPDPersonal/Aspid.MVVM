@@ -9,9 +9,10 @@ namespace Aspid.MVVM.StarterKit
     [Serializable]
     public sealed class ObjectToStringConverter : GenericToString<object?>, IConverterObjectToString
     {
+        /// <inheritdoc/>
         public ObjectToStringConverter() { }
-        
-        /// <param name="format">The format string to apply using <see cref="string.Format(string, object)"/>.</param>
+
+        /// <inheritdoc/>
         public ObjectToStringConverter(string format)
             : base(format) { }
     }

@@ -62,9 +62,16 @@ namespace Aspid.MVVM.StarterKit
 
         /// <summary>
         /// Converts the value to its string representation and invokes the event.
+        /// A <see langword="null"/> value is forwarded as an empty string.
         /// </summary>
+        /// <remarks>
+        /// This overload is the <see cref="IAnyBinder"/> path, chosen whenever the bound member's type has no
+        /// dedicated overload above — that is, for every reference type other than <see cref="string"/>. A bindable
+        /// member of such a type starts out <see langword="null"/> and publishes that value the moment the binder
+        /// is added, so <see langword="null"/> is the first thing this method sees rather than an edge case.
+        /// </remarks>
         [BinderLog]
         public void SetValue<T>(T value) =>
-            SetValue(value.ToString());
+            SetValue(value?.ToString() ?? string.Empty);
     }
 }

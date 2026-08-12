@@ -13,6 +13,6 @@ namespace Aspid.MVVM.StarterKit
     {
         /// <inheritdoc/>
         protected override void SetValue(float value) =>
-            CachedComponent.dopplerLevel = value;
+            CachedComponent.dopplerLevel = BinderMath.SafeClamp(value, 0, 5);
     }
 }

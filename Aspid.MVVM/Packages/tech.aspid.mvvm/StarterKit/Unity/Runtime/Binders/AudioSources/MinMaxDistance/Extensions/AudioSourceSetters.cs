@@ -31,6 +31,22 @@ namespace Aspid.MVVM.StarterKit
                 _ => throw new ArgumentOutOfRangeException()
             };
             
+            if (!BinderMath.IsFinite(value.x) || !BinderMath.IsFinite(value.y))
+            {
+                Debug.LogError($"[SetMinMaxDistance] Non-finite distance range ({value.x}, {value.y}) ignored.", audioSource);
+                return;
+            }
+
+            // Distances are also required to be non-negative, and minDistance must not exceed maxDistance —
+            // neither is enforced by the setters, and an inverted pair silences the source at every distance.
+            value = new Vector2(Mathf.Max(0f, value.x), Mathf.Max(0f, value.y));
+
+            if (value.x > value.y)
+            {
+                Debug.LogError($"[SetMinMaxDistance] Inverted distance range ({value.x} > {value.y}); endpoints swapped.", audioSource);
+                value = new Vector2(value.y, value.x);
+            }
+
             audioSource.minDistance = value.x;
             audioSource.maxDistance = value.y;
         }

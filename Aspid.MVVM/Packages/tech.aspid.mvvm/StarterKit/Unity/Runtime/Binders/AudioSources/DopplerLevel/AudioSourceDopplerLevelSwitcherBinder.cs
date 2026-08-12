@@ -24,6 +24,6 @@ namespace Aspid.MVVM.StarterKit
 
         /// <inheritdoc/>
         protected override void SetValue(float value) =>
-            Target.dopplerLevel = value;
+            Target.dopplerLevel = BinderMath.SafeClamp(value, 0, 5);
     }
 }

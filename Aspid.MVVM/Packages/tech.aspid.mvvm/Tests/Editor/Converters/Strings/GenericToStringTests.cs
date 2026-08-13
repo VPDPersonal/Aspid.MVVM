@@ -65,14 +65,47 @@ namespace Aspid.MVVM.StarterKit.Tests
         }
 
         [Test]
-        public void Convert_BrokenFormat_LogsOncePerInstance()
+        public void Convert_BrokenFormat_LogsEveryFailure()
         {
+            LogAssert.Expect(LogType.Error, new Regex("is invalid"));
+            LogAssert.Expect(LogType.Error, new Regex("is invalid"));
             LogAssert.Expect(LogType.Error, new Regex("is invalid"));
 
             var converter = new GenericToString<int>("{0}/{1}");
             converter.Convert(1);
             converter.Convert(2);
             converter.Convert(3);
+        }
+
+        // Converters feed UI, so any exception out of Format — not just FormatException — must
+        // degrade instead of tearing the binder dispatch.
+        [Test]
+        public void Convert_ThrowingFormatOverride_FallsBackToToString()
+        {
+            LogAssert.Expect(LogType.Error, new Regex("is invalid or threw"));
+
+            Assert.AreEqual("42", new ThrowingFormat().Convert(42));
+        }
+
+        [Test]
+        public void Convert_ErrorHookOverride_SuppliesTheFallback() =>
+            Assert.AreEqual("n/a", new CustomErrorFallback().Convert(42));
+
+        private sealed class ThrowingFormat : GenericToString<int>
+        {
+            public ThrowingFormat()
+                : base("{0}") { }
+
+            protected override string Format(int value) =>
+                throw new InvalidOperationException("boom");
+        }
+
+        private sealed class CustomErrorFallback : GenericToString<int>
+        {
+            public CustomErrorFallback()
+                : base("{0}/{1}") { }
+
+            protected override string HandleFormatError(int value, Exception exception) => "n/a";
         }
 
         [Test]

@@ -9,30 +9,21 @@ namespace Aspid.MVVM.StarterKit
     /// </summary>
     /// <typeparam name="TFrom">The type of the value to convert.</typeparam>
     /// <remarks>
-    /// The format is a <b>composite</b> format string, so it needs a placeholder: <c>"{0:F2}"</c>
-    /// formats the value, while <c>"F2"</c> is a literal that comes back unchanged. A format the
-    /// Inspector cannot validate is treated as a configuration mistake, not a failure: the converter
-    /// reports it once and falls back to <see cref="object.ToString"/> rather than throwing into the
-    /// binder that pushed the value.
+    /// The format is a <b>composite</b> format string: <c>"{0:F2}"</c> formats the value, while
+    /// <c>"F2"</c> is a literal. Exceptions from <see cref="Format"/> are routed to
+    /// <see cref="HandleFormatError"/>, which by default logs the error and falls back to
+    /// <see cref="object.ToString"/> instead of throwing into the binder.
     /// </remarks>
     [Serializable]
     public class GenericToString<TFrom> : IConverter<TFrom?, string?>
     {
         [SerializeField] private string? _format;
 
-        [NonSerialized] private bool _loggedFormatFailure;
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="GenericToString{TFrom}"/> class with no formatting.
-        /// </summary>
         public GenericToString()
         {
             _format = string.Empty;
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="GenericToString{TFrom}"/> class.
-        /// </summary>
         /// <param name="format">The format string to apply using <see cref="string.Format(string, object)"/>.</param>
         public GenericToString(string format)
         {
@@ -61,11 +52,23 @@ namespace Aspid.MVVM.StarterKit
             {
                 return Format(value);
             }
-            catch (FormatException exception)
+            catch (Exception exception)
             {
-                LogFormatFailure(exception);
-                return value.ToString();
+                return HandleFormatError(value, exception);
             }
+        }
+
+        /// <summary>
+        /// Called when <see cref="Format"/> throws. Override to substitute a different fallback
+        /// value or rethrow when the failure should not be swallowed.
+        /// </summary>
+        /// <param name="value">The non-null value that failed to format.</param>
+        /// <param name="exception">The exception thrown by <see cref="Format"/>.</param>
+        /// <returns>The fallback string, which is <see cref="object.ToString"/> by default.</returns>
+        protected virtual string? HandleFormatError(TFrom value, Exception exception)
+        {
+            Debug.LogError($"{GetType().Name}: format string \"{_format}\" is invalid or threw ({exception.Message}). Falling back to ToString().");
+            return value.ToString();
         }
 
         /// <summary>
@@ -76,15 +79,5 @@ namespace Aspid.MVVM.StarterKit
         /// <returns>The formatted string.</returns>
         protected virtual string Format(TFrom value) =>
             string.Format(_format, value);
-
-        private void LogFormatFailure(FormatException exception)
-        {
-            if (_loggedFormatFailure) return;
-            _loggedFormatFailure = true;
-
-            Debug.LogError(
-                $"{GetType().Name}: format string \"{_format}\" is invalid ({exception.Message}). "
-                + "Falling back to ToString().");
-        }
     }
 }

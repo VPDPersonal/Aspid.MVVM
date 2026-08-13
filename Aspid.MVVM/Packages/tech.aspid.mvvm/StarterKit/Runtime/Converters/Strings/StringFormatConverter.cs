@@ -17,14 +17,8 @@ namespace Aspid.MVVM.StarterKit
     {
         [SerializeField] private bool _formatEmptyValues;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="StringFormatConverter"/> class with no formatting.
-        /// </summary>
         public StringFormatConverter() { }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="StringFormatConverter"/> class.
-        /// </summary>
         /// <param name="format">The format string to apply using <see cref="string.Format(string, object)"/>.</param>
         /// <param name="formatEmptyValues">If <see langword="true"/>, applies the format even when the input value is null, empty or whitespace-only. Default is <see langword="false"/>.</param>
         public StringFormatConverter(string format, bool formatEmptyValues = false)
@@ -53,9 +47,8 @@ namespace Aspid.MVVM.StarterKit
         /// </summary>
         /// <param name="value">The non-null value to format.</param>
         /// <returns>The formatted string, or the value unchanged.</returns>
-        protected override string Format(string value) =>
-            _formatEmptyValues || !string.IsNullOrWhiteSpace(value)
-                ? base.Format(value)
-                : value;
+        protected override string Format(string value) => _formatEmptyValues || !string.IsNullOrWhiteSpace(value)
+            ? base.Format(value)
+            : value;
     }
 }

@@ -37,8 +37,7 @@ namespace Aspid.MVVM.StarterKit
         /// The base class short-circuits on <see langword="null"/> before <see cref="Format"/> is
         /// reached, so covering null takes substituting an empty string ahead of it.
         /// </remarks>
-        public override string? Convert(string? value) =>
-            value is null && _formatEmptyValues && !string.IsNullOrWhiteSpace(FormatString)
+        public override string? Convert(string? value) => value is null && _formatEmptyValues && !string.IsNullOrWhiteSpace(FormatString)
                 ? base.Convert(string.Empty)
                 : base.Convert(value);
 

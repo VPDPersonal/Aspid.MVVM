@@ -38,8 +38,8 @@ namespace Aspid.MVVM.StarterKit
         /// reached, so covering null takes substituting an empty string ahead of it.
         /// </remarks>
         public override string? Convert(string? value) => value is null && _formatEmptyValues && !string.IsNullOrWhiteSpace(FormatString)
-                ? base.Convert(string.Empty)
-                : base.Convert(value);
+            ? base.Convert(string.Empty)
+            : base.Convert(value);
 
         /// <summary>
         /// Applies the format unless the value is blank and blank values are not being formatted.

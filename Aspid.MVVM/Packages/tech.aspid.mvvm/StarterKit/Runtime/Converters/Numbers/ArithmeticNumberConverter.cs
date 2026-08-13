@@ -1,4 +1,5 @@
 using System;
+using UnityEngine;
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
@@ -11,7 +12,7 @@ namespace Aspid.MVVM.StarterKit
     /// Every operation is computed in <see cref="double"/> and cast to the declared return type, so
     /// the int and long overloads truncate toward zero rather than round.
     /// <see cref="NumberOperation.Division"/> with a zero coefficient — the state of a converter
-    /// added in the Inspector but not yet configured — reports itself once and returns the input
+    /// added in the Inspector but not yet configured — reports an error and returns the input
     /// unchanged instead of producing an infinity.
     /// </remarks>
     [Serializable]
@@ -21,14 +22,8 @@ namespace Aspid.MVVM.StarterKit
         IConverterInt, IConverterLongToInt, IConverterFloatToInt, IConverterDoubleToInt,
         IConverterLong, IConverterIntToLong, IConverterFloatToLong, IConverterDoubleToLong
     {
-        [UnityEngine.SerializeField]
-        private NumberOperation _operation;
-
-        [UnityEngine.SerializeField]
-        private double _coefficient;
-
-        [NonSerialized]
-        private bool _loggedDivideByZero;
+        [SerializeField] private NumberOperation _operation;
+        [SerializeField] private double _coefficient;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ArithmeticNumberConverter"/> class with default settings.
@@ -100,21 +95,13 @@ namespace Aspid.MVVM.StarterKit
 
         private double Divide(double value)
         {
-            if (_coefficient != 0) return value / _coefficient;
+            if (_coefficient != 0)
+                return value / _coefficient;
 
-            LogDivideByZero();
+            Debug.LogError($"{nameof(ArithmeticNumberConverter)}: division by zero coefficient. Returning the input value unchanged.");
             return value;
         }
 
-        private void LogDivideByZero()
-        {
-            if (_loggedDivideByZero) return;
-            _loggedDivideByZero = true;
-
-            UnityEngine.Debug.LogError(
-                $"{nameof(ArithmeticNumberConverter)}: division by zero coefficient. Returning the input value unchanged.");
-        }
-        
         double IConverter<int, double>.Convert(int value) =>
             ((IConverter<double, double>)this).Convert(value);
         

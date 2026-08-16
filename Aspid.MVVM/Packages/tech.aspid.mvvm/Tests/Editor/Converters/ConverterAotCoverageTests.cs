@@ -13,12 +13,8 @@ namespace Aspid.MVVM.StarterKit.Tests
     /// <remarks>
     /// A <c>[SerializeReference]</c> converter closed over a value type exists in a build only as a
     /// string in YAML, so IL2CPP has no reason to emit its code and the scene fails to load on a
-    /// device while working in the editor. This reads the YAML the way the player will and checks the
-    /// hints in <c>ConverterAotHints</c> cover what it finds.
-    /// <para>
-    /// It cannot prove a build succeeds — only an IL2CPP build can. What it can do is fail the moment
-    /// somebody authors an instantiation nobody seeded, which is when the information is cheap.
-    /// </para>
+    /// device while working in the editor. This reads the YAML the way the player will and checks
+    /// that <c>ConverterAotHints</c> covers what it finds — it cannot prove a build succeeds.
     /// </remarks>
     [TestFixture]
     internal sealed class ConverterAotCoverageTests

@@ -80,18 +80,14 @@ namespace Aspid.MVVM.StarterKit
         /// Performs the configured comparison of the bound value against the authored one.
         /// </summary>
         /// <remarks>
-        /// The authored value is held as a <see langword="float"/> and is rounded the moment it is
-        /// assigned, so widening here restores nothing it has already lost: an <see langword="int"/>
-        /// or <see langword="long"/> too large for a <see langword="float"/> to hold exactly reaches
-        /// this method intact as a <see langword="double"/> and is then measured against a threshold
-        /// that is not.
+        /// The authored value is held as a <see langword="float"/> and rounded on assignment, so widening
+        /// here restores nothing: a large <see langword="int"/> or <see langword="long"/> reaches this
+        /// method intact and is measured against a threshold that is not.
         /// <para>
-        /// <see cref="Comparisons.Equal"/> and <see cref="Comparisons.NotEqual"/> route through
-        /// <see cref="Approximately(double, double)"/> and match within a tolerance scaled to the
-        /// magnitude; the four ordering comparisons are bare operators and apply no tolerance at all.
-        /// The two disagree at the boundary — against a threshold of two million, a value one above it
-        /// reports as <see cref="Comparisons.Equal"/> and as <see cref="Comparisons.GreaterThan"/>
-        /// at the same time.
+        /// <see cref="Comparisons.Equal"/> and <see cref="Comparisons.NotEqual"/> match within a
+        /// magnitude-scaled tolerance while the four ordering comparisons are bare operators, so the two
+        /// disagree at the boundary: against two million, a value one above reports as
+        /// <see cref="Comparisons.Equal"/> and <see cref="Comparisons.GreaterThan"/> at once.
         /// </para>
         /// </remarks>
         private bool Compare(double value) => _comparison switch

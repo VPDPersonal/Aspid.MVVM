@@ -18,24 +18,17 @@ namespace Aspid.MVVM.StarterKit
     /// selection and the optional pre- and post-conversion stages around it.
     /// </summary>
     /// <remarks>
-    /// Binding one axis and leaving the rest where the scene put them: a marker that slides along X
-    /// while its Y and Z stay with the layout, a box scaled in one dimension only. The reference
-    /// vector is re-read on every conversion, so the unbound axes keep tracking the component even
-    /// when something else moves it.
+    /// Binding one axis and leaving the rest where the scene put them. The reference vector is re-read
+    /// on every conversion, so the unbound axes keep tracking the component even when something else
+    /// moves it. <see cref="Vector2CombineConverter"/> is the two-dimensional half of the pair.
     /// <para>
-    /// The concrete members of the family, one per component property the reference vector is read
-    /// from: <see cref="TransformPositionCombineConverter"/>,
-    /// <see cref="TransformScaleCombineConverter"/>,
+    /// One concrete member per component property the reference vector is read from:
+    /// <see cref="TransformPositionCombineConverter"/>, <see cref="TransformScaleCombineConverter"/>,
     /// <see cref="TransformEulerAnglesCombineConverter"/>,
     /// <see cref="RectTransformAnchoredPositionCombineConverter"/>,
-    /// <see cref="BoxColliderCentreCombineConverter"/>,
-    /// <see cref="BoxColliderSizeCombineConverter"/>,
+    /// <see cref="BoxColliderCentreCombineConverter"/>, <see cref="BoxColliderSizeCombineConverter"/>,
     /// <see cref="SphereColliderCentreCombineConverter"/> and
     /// <see cref="CapsuleColliderCentreCombineConverter"/>.
-    /// </para>
-    /// <para>
-    /// <see cref="Vector2CombineConverter"/> is the two-dimensional half of the pair, for values that
-    /// arrive as a <see cref="Vector2"/> and would otherwise have to widen and narrow to be combined.
     /// </para>
     /// </remarks>
     [Serializable]
@@ -128,11 +121,10 @@ namespace Aspid.MVVM.StarterKit
         /// Combines a <see cref="Vector3"/> with the reference vector by selecting components.
         /// </summary>
         /// <remarks>
-        /// The stages run in this order: the pre-converter transforms the bound vector, the configured
-        /// <see cref="Mode"/> then takes each axis from that result or from the reference vector, and
-        /// the post-converter runs last on what the selection produced. So the pre-converter never
-        /// sees the reference vector, and the post-converter can still move an axis the mode took
-        /// from it.
+        /// The pre-converter transforms the bound vector, the <see cref="Mode"/> then takes each axis
+        /// from that result or from the reference vector, and the post-converter runs last. So the
+        /// pre-converter never sees the reference vector, and the post-converter can still move an axis
+        /// the mode took from it.
         /// </remarks>
         /// <param name="value">The vector to convert.</param>
         /// <returns>The combined vector.</returns>

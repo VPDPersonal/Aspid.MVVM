@@ -59,10 +59,8 @@ namespace Aspid.MVVM.StarterKit
         /// </returns>
         /// <remarks>
         /// <typeparamref name="TFrom"/> is unconstrained, so the <c>?</c> on the parameter is an
-        /// annotation rather than a <see cref="Nullable{T}"/>: a plain value-type instantiation such as
-        /// <see cref="TimeSpanToStringConverter"/> has no null to be handed and never returns one. Each
-        /// instantiation therefore has a single behaviour, and a binder fed by a value-type one never
-        /// sees the <see langword="null"/> the contract above allows.
+        /// annotation rather than a <see cref="Nullable{T}"/>: a value-type instantiation such as
+        /// <see cref="TimeSpanToStringConverter"/> has no null to be handed and never returns one.
         /// </remarks>
         public virtual string? Convert(TFrom? value)
         {

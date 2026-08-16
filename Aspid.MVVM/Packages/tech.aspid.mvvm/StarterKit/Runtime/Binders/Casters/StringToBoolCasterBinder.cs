@@ -8,12 +8,9 @@ namespace Aspid.MVVM.StarterKit
     /// using a configurable converter before forwarding it to a target setter.
     /// </summary>
     /// <remarks>
-    /// By default, uses <see cref="StringEmptyToBoolConverter"/>, which answers the question "is this
-    /// string empty?" — so an empty or <see langword="null"/> string maps to <see langword="true"/>
-    /// and a filled one to <see langword="false"/>. That is the opposite polarity of what a
-    /// <c>SetActive</c> or <c>interactable</c> target usually wants, which is why <c>isInvert</c>
-    /// exists. The converter can also be replaced entirely with a custom
-    /// <see cref="IConverter{TFrom,TTo}"/>.
+    /// By default uses <see cref="StringEmptyToBoolConverter"/>, so an empty or <see langword="null"/>
+    /// string maps to <see langword="true"/> — the opposite polarity of what a <c>SetActive</c> or
+    /// <c>interactable</c> target usually wants, which is why <c>isInvert</c> exists.
     /// </remarks>
     /// <include file="XmlExampleDoc-Casters-1.1.0.xml" path="doc//member[@name='StringToBoolCasterBinder']/*" />
     public sealed class StringToBoolCasterBinder : Binder, IBinder<string>

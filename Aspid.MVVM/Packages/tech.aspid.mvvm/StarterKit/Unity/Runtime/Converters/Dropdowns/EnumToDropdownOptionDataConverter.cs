@@ -21,11 +21,6 @@ namespace Aspid.MVVM.StarterKit
     /// keeps matching the enum member it did before the converter was assigned.
     /// </para>
     /// <para>
-    /// Members missing from the lookup table fall back to its configured default value: an entry without
-    /// a sprite yields an option without an image, and an entry with an empty label yields the name of
-    /// the enum member.
-    /// </para>
-    /// <para>
     /// Sprites are only visible when the dropdown template carries an item image — the built-in TextMeshPro
     /// dropdown prefab does, a hand-built template may not.
     /// </para>

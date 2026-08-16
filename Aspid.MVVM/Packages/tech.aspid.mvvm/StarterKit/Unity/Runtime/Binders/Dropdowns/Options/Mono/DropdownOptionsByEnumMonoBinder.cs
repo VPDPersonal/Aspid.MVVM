@@ -40,8 +40,8 @@ namespace Aspid.MVVM.StarterKit
         {
             if (value is null) return;
 
-            var dropdown = CachedComponent;
             var type = value.GetType();
+            var dropdown = CachedComponent;
 
             if (_populatedType == type && dropdown.options.Count > 0) return;
             _populatedType = type;

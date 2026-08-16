@@ -11,9 +11,8 @@ namespace Aspid.MVVM.StarterKit
     /// <remarks>
     /// Every operation is computed in <see cref="double"/> and cast to the declared return type, so
     /// the int and long overloads truncate toward zero rather than round.
-    /// <see cref="NumberOperation.Division"/> with a zero coefficient — the state of a converter
-    /// added in the Inspector but not yet configured — reports an error and returns the input
-    /// unchanged instead of producing an infinity.
+    /// <see cref="NumberOperation.Division"/> by a zero coefficient reports an error and returns the
+    /// input unchanged instead of producing an infinity.
     /// </remarks>
     [Serializable]
     public class ArithmeticNumberConverter :

@@ -13,12 +13,10 @@ namespace Aspid.MVVM.StarterKit.Tests
     /// a type the picker cannot construct must not be offered.
     /// </summary>
     /// <remarks>
-    /// The picker instantiates a chosen type through <see cref="Activator"/> and, when that fails,
-    /// through <c>FormatterServices.GetUninitializedObject</c> — which skips field initialisers and
-    /// leaves a delegate-backed adapter with a null delegate. Nothing in the picker filters by
-    /// accessibility or by constructor availability, so the guard has to live on the type itself as
-    /// <c>[TypeSelectorDisplay(Hidden = true)]</c>. Enumerating the assemblies here catches the next
-    /// adapter somebody adds without it.
+    /// The picker falls back to <c>FormatterServices.GetUninitializedObject</c> when
+    /// <see cref="Activator"/> fails, which skips field initialisers and leaves a delegate-backed
+    /// adapter with a null delegate. It filters by neither accessibility nor constructor, so the
+    /// guard has to live on the type as <c>[TypeSelectorDisplay(Hidden = true)]</c>.
     /// </remarks>
     [TestFixture]
     internal sealed class ConverterPickerContractTests

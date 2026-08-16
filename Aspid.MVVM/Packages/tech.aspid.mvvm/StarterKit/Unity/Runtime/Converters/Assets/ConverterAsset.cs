@@ -10,17 +10,13 @@ namespace Aspid.MVVM.StarterKit
     /// <typeparam name="TFrom">The type of the input value.</typeparam>
     /// <typeparam name="TTo">The type of the converted output value.</typeparam>
     /// <remarks>
-    /// A <c>[SerializeReference]</c> converter is data belonging to one field, so a twelve-stop
-    /// gradient or a forty-entry enum map has to be re-authored in every prefab that wants it, and a
-    /// correction has to be repeated everywhere. An asset is authored once and referenced.
+    /// A <c>[SerializeReference]</c> converter is data belonging to one field, so a large gradient or
+    /// enum map has to be re-authored in every prefab that wants it; an asset is authored once and
+    /// referenced.
     /// <para>
-    /// Reference one from a field through <see cref="ConverterAssetReference{TFrom, TTo}"/>, which is
-    /// pickable in the ordinary converter dropdown — a managed reference cannot hold a
-    /// <see cref="ScriptableObject"/> directly.
-    /// </para>
-    /// <para>
-    /// Unity cannot create an asset of an open generic type, so each usable asset is a small sealed
-    /// subclass that closes the type arguments and carries <see cref="CreateAssetMenuAttribute"/>.
+    /// A managed reference cannot hold a <see cref="ScriptableObject"/>, so a field points at one
+    /// through <see cref="ConverterAssetReference{TFrom, TTo}"/>. Unity cannot create an asset of an
+    /// open generic type either, so each usable asset is a sealed subclass that closes the arguments.
     /// </para>
     /// </remarks>
     public abstract class ConverterAsset<TFrom, TTo> : ScriptableObject, IConverter<TFrom, TTo>

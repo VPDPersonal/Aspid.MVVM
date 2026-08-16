@@ -21,14 +21,9 @@ namespace Aspid.MVVM.StarterKit
         [Tooltip("Returned for an empty collection.")]
         [SerializeField] private float _emptyResult;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="CollectionAggregateConverter"/> class computing a sum.
-        /// </summary>
+        /// <remarks>Default: computing a sum.</remarks>
         public CollectionAggregateConverter() { }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="CollectionAggregateConverter"/> class.
-        /// </summary>
         /// <param name="operation">What to compute.</param>
         /// <param name="emptyResult">Returned for an empty collection.</param>
         public CollectionAggregateConverter(Aggregate operation, float emptyResult = 0f)

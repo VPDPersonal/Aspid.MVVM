@@ -16,14 +16,8 @@ namespace Aspid.MVVM.StarterKit
         [Tooltip("Invert the result — true when the collection has items.")]
         [SerializeField] private bool _isInvert;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="CollectionEmptyToBoolConverter{T}"/> class.
-        /// </summary>
         public CollectionEmptyToBoolConverter() { }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="CollectionEmptyToBoolConverter{T}"/> class.
-        /// </summary>
         /// <param name="isInvert">If <see langword="true"/>, inverts the result.</param>
         public CollectionEmptyToBoolConverter(bool isInvert)
         {

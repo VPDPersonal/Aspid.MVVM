@@ -26,14 +26,8 @@ namespace Aspid.MVVM.StarterKit
         [NonSerialized] private Material? _source;
         [NonSerialized] private Material? _copy;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="MaterialInstanceConverter"/> class that copies.
-        /// </summary>
         public MaterialInstanceConverter() { }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="MaterialInstanceConverter"/> class.
-        /// </summary>
         /// <param name="instantiate">Whether to return a copy rather than the shared asset.</param>
         public MaterialInstanceConverter(bool instantiate)
         {

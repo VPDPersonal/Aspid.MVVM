@@ -47,14 +47,8 @@ namespace Aspid.MVVM.StarterKit
         [NonSerialized] private Type? _builtType;
         [NonSerialized] private List<TMP_Dropdown.OptionData>? _options;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="EnumToDropdownOptionDataConverter"/> class with no overrides.
-        /// </summary>
         public EnumToDropdownOptionDataConverter() { }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="EnumToDropdownOptionDataConverter"/> class.
-        /// </summary>
         /// <param name="entries">Labels and icons per member.</param>
         public EnumToDropdownOptionDataConverter(Entry[]? entries)
         {

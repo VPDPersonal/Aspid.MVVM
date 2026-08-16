@@ -31,14 +31,9 @@ namespace Aspid.MVVM.StarterKit
 
         [NonSerialized] private StringBuilder? _builder;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ListToStringConverter{T}"/> class joining with commas.
-        /// </summary>
+        /// <remarks>Default: joining with commas.</remarks>
         public ListToStringConverter() { }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ListToStringConverter{T}"/> class.
-        /// </summary>
         /// <param name="separator">Placed between items.</param>
         /// <param name="maxItems">How many items to show. Zero shows all of them.</param>
         /// <param name="emptyText">Shown when the collection is empty.</param>

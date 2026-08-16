@@ -22,14 +22,9 @@ namespace Aspid.MVVM.StarterKit
         [Tooltip("Returned when the index is outside the list.")]
         [SerializeField] private T _fallback = default!;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="CollectionElementAtConverter{T}"/> class taking the first item.
-        /// </summary>
+        /// <remarks>Default: taking the first item.</remarks>
         public CollectionElementAtConverter() { }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="CollectionElementAtConverter{T}"/> class.
-        /// </summary>
         /// <param name="index">Which item to take.</param>
         /// <param name="fromEnd">Whether to count from the end.</param>
         /// <param name="fallback">Returned when the index is outside the list.</param>

@@ -25,14 +25,8 @@ namespace Aspid.MVVM.StarterKit
 
         [NonSerialized] private bool _loggedFailure;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ParseHtmlStringConverter"/> class.
-        /// </summary>
         public ParseHtmlStringConverter() { }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ParseHtmlStringConverter"/> class.
-        /// </summary>
         /// <param name="defaultColor">Returned when the string does not parse.</param>
         /// <param name="onFailure">What to do with a string that does not parse.</param>
         public ParseHtmlStringConverter(

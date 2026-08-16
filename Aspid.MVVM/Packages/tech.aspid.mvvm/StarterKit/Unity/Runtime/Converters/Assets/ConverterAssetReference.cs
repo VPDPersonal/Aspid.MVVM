@@ -17,12 +17,10 @@ namespace Aspid.MVVM.StarterKit
     /// shared converters without changing.
     /// </remarks>
     [Serializable]
-    public sealed class ConverterAssetReference<TFrom, TTo> : IConverter<TFrom, TTo>
+    public sealed class ConverterAssetReference<TFrom, TTo> : IConverter<TFrom?, TTo?>
     {
         [Tooltip("The shared converter asset. When empty, the default value is returned.")]
         [SerializeField] private ConverterAsset<TFrom, TTo>? _asset;
-
-        [NonSerialized] private bool _loggedMissingAsset;
 
         public ConverterAssetReference() { }
 
@@ -39,25 +37,14 @@ namespace Aspid.MVVM.StarterKit
         /// <returns>
         /// The converted value, or the default of <typeparamref name="TTo"/> when no asset is assigned.
         /// </returns>
-        public TTo Convert(TFrom value)
+        public TTo? Convert(TFrom? value)
         {
-            // Unity's overloaded == also catches an asset deleted from under a live reference.
-            if (_asset == null)
-            {
-                LogMissingAsset();
-                return default!;
-            }
+            // Unity's overloaded != also catches an asset deleted from under a live reference.
+            if (_asset != null)
+                return _asset.Convert(value);
 
-            return _asset.Convert(value);
-        }
-
-        private void LogMissingAsset()
-        {
-            if (_loggedMissingAsset) return;
-            _loggedMissingAsset = true;
-
-            Debug.LogError(
-                $"{nameof(ConverterAssetReference<TFrom, TTo>)}: no asset assigned. Returning the default value.");
+            Debug.LogError($"{nameof(ConverterAssetReference<TFrom, TTo>)}: no asset assigned. Returning the default value.");
+            return default;
         }
     }
 }

@@ -19,10 +19,10 @@ namespace Aspid.MVVM.StarterKit
     /// open generic type either, so each usable asset is a sealed subclass that closes the arguments.
     /// </para>
     /// </remarks>
-    public abstract class ConverterAsset<TFrom, TTo> : ScriptableObject, IConverter<TFrom, TTo>
+    public abstract class ConverterAsset<TFrom, TTo> : ScriptableObject, IConverter<TFrom?, TTo?>
     {
         [Tooltip("The converter this asset shares. When empty, the default value is returned.")]
-        [SerializeReference] private IConverter<TFrom, TTo>? _converter;
+        [SerializeReference] private IConverter<TFrom?, TTo?>? _converter;
 
         /// <summary>
         /// Converts the specified value using the shared converter.
@@ -31,7 +31,7 @@ namespace Aspid.MVVM.StarterKit
         /// <returns>
         /// The converted value, or the default of <typeparamref name="TTo"/> when the asset is empty.
         /// </returns>
-        public TTo Convert(TFrom value) =>
-            _converter is null ? default! : _converter.Convert(value);
+        public TTo? Convert(TFrom? value) =>
+            _converter is null ? default : _converter.Convert(value);
     }
 }

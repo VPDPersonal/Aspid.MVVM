@@ -12,15 +12,9 @@ namespace Aspid.MVVM.StarterKit
     /// Builds the option list of a dropdown out of an enum's members.
     /// </summary>
     /// <remarks>
-    /// <c>IConverterEnumToDropdownOptionData</c> has been declared since the first release with no
-    /// implementation, so <c>DropdownOptionsByEnumMonoBinder</c> only ever had its reflection
-    /// fallback and the picker beside it was empty. This is the converter that interface was
-    /// declared for: an authored label and icon per member, rather than member names.
-    /// <para>
     /// The option list depends on the enum type, not the value, so it is built once per type and
     /// reused. Rebuilding it per push would allocate an <see cref="TMP_Dropdown.OptionData"/> per
     /// member on every notification.
-    /// </para>
     /// </remarks>
     [Serializable]
     public sealed class EnumToDropdownOptionDataConverter : IConverterEnumToDropdownOptionData

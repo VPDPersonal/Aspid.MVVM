@@ -9,14 +9,12 @@ namespace Aspid.MVVM.StarterKit
     /// Hands a renderer its own copy of a material instead of the shared asset.
     /// </summary>
     /// <remarks>
-    /// Writing to <c>Renderer.material</c> already instantiates, but writing to a material a binder
-    /// hands over does not — so a per-object tint quietly edits the shared asset and every object
-    /// using it changes, including in the project files. This is the point where that can be
-    /// intercepted.
+    /// Writing to <c>Renderer.material</c> instantiates, but writing to a material a binder hands over
+    /// does not — a per-object tint quietly edits the shared asset, project files included.
     /// <para>
     /// The copy is cached against the source, because a binder pushes on every notification and
-    /// <c>new Material(...)</c> would leak one per push. The copies are owned by this converter and
-    /// released when the source changes.
+    /// <c>new Material(...)</c> would leak one per push. The copies are owned here and released when
+    /// the source changes.
     /// </para>
     /// </remarks>
     [Serializable]

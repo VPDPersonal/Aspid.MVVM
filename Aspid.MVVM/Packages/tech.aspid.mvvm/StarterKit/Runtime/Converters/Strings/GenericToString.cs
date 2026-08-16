@@ -91,11 +91,10 @@ namespace Aspid.MVVM.StarterKit
 
         // The default is the device locale, which is what ToString() already uses — so the common
         // path keeps the plain call and takes no boxing for the IFormattable test.
-        private string? ToStringValue(TFrom value) =>
-            _culture is CultureInfoMode.CurrentCulture
-                ? value.ToString()
-                : value is IFormattable formattable
-                    ? formattable.ToString(format: null, Culture)
-                    : value.ToString();
+        private string? ToStringValue(TFrom value) => _culture is CultureInfoMode.CurrentCulture
+            ? value?.ToString()
+            : value is IFormattable formattable
+                ? formattable.ToString(format: null, Culture)
+                : value?.ToString();
     }
 }

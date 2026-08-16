@@ -6,17 +6,13 @@ namespace Aspid.MVVM.StarterKit
     /// </summary>
     /// <remarks>
     /// A serializable stand-in for <see cref="System.Globalization.CultureInfo"/>, which Unity cannot
-    /// serialize — the Inspector picks the mode and <see cref="ToCultureStringExtensions.ToCultureInfo"/>
-    /// resolves it at call time, so a change of locale is picked up without re-authoring the scene.
+    /// serialize; <see cref="ToCultureStringExtensions.ToCultureInfo"/> resolves it at call time.
     /// <para>
-    /// The choice matters more than it looks: a decimal separator is a comma in half of Europe, so a
-    /// number written by one culture and parsed by another loses its fractional part rather than
-    /// failing. Text a player sees wants <see cref="CurrentCulture"/>; text that round-trips through
-    /// a save file, a network message or <c>PlayerPrefs</c> wants <see cref="InvariantCulture"/>.
-    /// </para>
-    /// <para>
-    /// New members are appended rather than inserted: the order is the serialized value, so moving one
-    /// silently rewrites every converter already authored in a scene.
+    /// A decimal separator is a comma in half of Europe, so a number written by one culture and parsed
+    /// by another loses its fractional part rather than failing. Text a player sees wants
+    /// <see cref="CurrentCulture"/>; text that round-trips through a save file or a network message
+    /// wants <see cref="InvariantCulture"/>. Append new members rather than inserting one — the order
+    /// is the serialized value.
     /// </para>
     /// </remarks>
     public enum CultureInfoMode

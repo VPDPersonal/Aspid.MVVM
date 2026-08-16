@@ -7,11 +7,9 @@ namespace Aspid.MVVM.StarterKit.Tests
     /// The documented null contract of <see cref="GenericFuncConverter{TFrom,TTo}"/>.
     /// </summary>
     /// <remarks>
-    /// Both constructors promised an <see cref="ArgumentNullException"/>, but the converter overload
-    /// delegated with <c>converter.Convert</c> — reading a method group off a null reference, which
-    /// throws a <see cref="NullReferenceException"/> instead. Every one of the seventy
-    /// <c>ToConvert</c> / <c>ToConvertSpecific</c> extension methods funnels through here, so the
-    /// contract is worth pinning rather than trusting.
+    /// The converter overload delegated with <c>converter.Convert</c> — a method group read off a null
+    /// reference, which throws <see cref="NullReferenceException"/> where the constructor promised
+    /// <see cref="ArgumentNullException"/>. Every <c>ToConvert</c> extension funnels through here.
     /// </remarks>
     [TestFixture]
     internal sealed class GenericFuncConverterTests

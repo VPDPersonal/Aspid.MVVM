@@ -7,15 +7,8 @@ namespace Aspid.MVVM.StarterKit
     /// A converter from <see cref="long"/> to <see cref="bool"/>.
     /// </summary>
     /// <remarks>
-    /// A named alias for <see cref="IConverter{TFrom, TTo}"/> closed over these two types. It
-    /// existed because Unity before 2023.1 could not serialize a <c>[SerializeReference]</c> field
-    /// typed as an open generic, so a binder declared the field as this instead.
-    /// <para>
-    /// The package requires Unity 6000.0, so nothing in it declares such a field any more and this
-    /// carries no behaviour of its own. It stays one release so that code naming it keeps compiling
-    /// with a warning, and so that a <c>[SerializeReference]</c> field a project declares as this
-    /// type does not silently deserialize to <see langword="null"/>.
-    /// </para>
+    /// Kept for one release so code naming it still compiles and a <c>[SerializeReference]</c> field
+    /// a project declares as this type does not silently deserialize to <see langword="null"/>.
     /// </remarks>
     [Obsolete("Named converter aliases only existed because Unity before 2023.1 could not serialize a [SerializeReference] field of an open generic type. The package now requires Unity 6000.0, so use IConverter<long, bool> directly. This will be removed in the next major version.")]
     public interface IConverterLongToBool : IConverter<long, bool> { }

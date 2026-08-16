@@ -10,15 +10,10 @@ namespace Aspid.MVVM.StarterKit.Tests
     /// The named converter aliases and their wrappers are on their way out, and must say so.
     /// </summary>
     /// <remarks>
-    /// Forty <c>IConverterXToY</c> interfaces and seventy <c>ToConvert</c> wrappers exist for one
-    /// reason: Unity before 2023.1 could not serialize a <c>[SerializeReference]</c> field of an open
-    /// generic type. The package requires Unity 6000.0, so that reason is gone, but the surface has to
-    /// outlive it by a release — a field a project declares as one of these would otherwise
-    /// deserialize to <see langword="null"/> without a word.
-    /// <para>
-    /// The risk this guards is a new alias being added out of habit, or an existing one losing its
-    /// attribute in a merge. Either would restart the clock on a deprecation that is meant to end.
-    /// </para>
+    /// The aliases must outlive their reason by a release: a field a project declares as one of them
+    /// would otherwise deserialize to <see langword="null"/> without a word. This guards against a new
+    /// alias added out of habit, or an existing one losing its attribute in a merge — either restarts
+    /// the clock on a deprecation that is meant to end.
     /// </remarks>
     [TestFixture]
     internal sealed class ConverterDeprecationTests

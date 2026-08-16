@@ -29,16 +29,24 @@ namespace Aspid.MVVM.StarterKit
         /// <paramref name="value"/>, using the configured converter when assigned, or the name of each
         /// enum value otherwise.
         /// </summary>
-        /// <param name="value">The bound enum value received from the ViewModel.</param>
+        /// <param name="value">The bound enum value received from the ViewModel. Pass <see langword="null"/> to clear all options.</param>
         /// <remarks>
         /// The option set depends on the enum <i>type</i>, not on the value, so it is rebuilt only when
         /// the type changes. The rebuild also preserves the current selection: the option list is
         /// cleared directly rather than through <see cref="TMPro.TMP_Dropdown.ClearOptions"/>, which
-        /// resets the selected index and would clobber a value binder on the same dropdown.
+        /// resets the selected index and would clobber a value binder on the same dropdown. A
+        /// <see langword="null"/> value carries no enum type to populate from, so it clears the options
+        /// through <see cref="TMPro.TMP_Dropdown.ClearOptions"/> — matching the rest of the options
+        /// binder family, and with no selection left to preserve.
         /// </remarks>
         public void SetValue(Enum value)
         {
-            if (value is null) return;
+            if (value is null)
+            {
+                _populatedType = null;
+                CachedComponent.ClearOptions();
+                return;
+            }
 
             var type = value.GetType();
             var dropdown = CachedComponent;

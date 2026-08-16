@@ -19,14 +19,9 @@ namespace Aspid.MVVM.StarterKit
         [Tooltip("How the alpha is applied.")]
         [SerializeField] private AlphaMode _mode = AlphaMode.Multiply;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ColorBlockAlphaConverter"/> class at full opacity.
-        /// </summary>
+        /// <remarks>Default: at full opacity.</remarks>
         public ColorBlockAlphaConverter() { }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ColorBlockAlphaConverter"/> class.
-        /// </summary>
         /// <param name="alpha">The alpha applied to every state.</param>
         /// <param name="mode">How the alpha is applied.</param>
         public ColorBlockAlphaConverter(float alpha, AlphaMode mode = AlphaMode.Multiply)

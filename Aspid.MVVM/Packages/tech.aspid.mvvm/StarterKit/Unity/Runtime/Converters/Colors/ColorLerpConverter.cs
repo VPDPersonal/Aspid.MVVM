@@ -21,14 +21,9 @@ namespace Aspid.MVVM.StarterKit
         [Tooltip("Hold the incoming amount inside 0..1.")]
         [SerializeField] private bool _clamp = true;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ColorLerpConverter"/> class going red to green.
-        /// </summary>
+        /// <remarks>Default: going red to green.</remarks>
         public ColorLerpConverter() { }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ColorLerpConverter"/> class.
-        /// </summary>
         /// <param name="from">The colour at 0.</param>
         /// <param name="to">The colour at 1.</param>
         public ColorLerpConverter(Color from, Color to)

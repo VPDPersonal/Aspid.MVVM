@@ -19,14 +19,9 @@ namespace Aspid.MVVM.StarterKit
         [Tooltip("How much colour to keep. Zero is fully grey, one leaves the colour untouched.")]
         [SerializeField, Range(0f, 1f)] private float _saturation;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ColorGrayscaleConverter"/> class that fully desaturates.
-        /// </summary>
+        /// <remarks>Default: fully desaturating.</remarks>
         public ColorGrayscaleConverter() { }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ColorGrayscaleConverter"/> class.
-        /// </summary>
         /// <param name="saturation">How much colour to keep.</param>
         public ColorGrayscaleConverter(float saturation)
         {

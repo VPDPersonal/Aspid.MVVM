@@ -22,14 +22,9 @@ namespace Aspid.MVVM.StarterKit
         [Tooltip("How the alpha is applied.")]
         [SerializeField] private AlphaMode _mode = AlphaMode.Set;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ColorAlphaConverter"/> class at full opacity.
-        /// </summary>
+        /// <remarks>Default: at full opacity.</remarks>
         public ColorAlphaConverter() { }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ColorAlphaConverter"/> class.
-        /// </summary>
         /// <param name="alpha">The alpha applied to the colour.</param>
         /// <param name="mode">How the alpha is applied.</param>
         public ColorAlphaConverter(float alpha, AlphaMode mode = AlphaMode.Set)

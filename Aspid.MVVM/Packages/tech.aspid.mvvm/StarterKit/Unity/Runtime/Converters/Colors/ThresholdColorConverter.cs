@@ -18,14 +18,8 @@ namespace Aspid.MVVM.StarterKit
         [Tooltip("Used when the value is below every threshold.")]
         [SerializeField] private Color _fallback = Color.white;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ThresholdColorConverter"/> class with no stops.
-        /// </summary>
         public ThresholdColorConverter() { }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ThresholdColorConverter"/> class.
-        /// </summary>
         /// <param name="stops">Colours by threshold.</param>
         /// <param name="fallback">Used when the value is below every threshold.</param>
         public ThresholdColorConverter(ColorStop[]? stops, Color fallback)

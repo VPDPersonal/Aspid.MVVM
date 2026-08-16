@@ -19,14 +19,8 @@ namespace Aspid.MVVM.StarterKit
         [Tooltip("How long a state change takes.")]
         [SerializeField] private float _fadeDuration = 0.1f;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ColorBlockFadeDurationConverter"/> class.
-        /// </summary>
         public ColorBlockFadeDurationConverter() { }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ColorBlockFadeDurationConverter"/> class.
-        /// </summary>
         /// <param name="fadeDuration">How long a state change takes.</param>
         public ColorBlockFadeDurationConverter(float fadeDuration)
         {

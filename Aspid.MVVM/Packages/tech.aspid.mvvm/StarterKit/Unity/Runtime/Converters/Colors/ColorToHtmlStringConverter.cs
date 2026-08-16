@@ -24,14 +24,8 @@ namespace Aspid.MVVM.StarterKit
         [Tooltip("Write the digits in lower case.")]
         [SerializeField] private bool _lowercase;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ColorToHtmlStringConverter"/> class.
-        /// </summary>
         public ColorToHtmlStringConverter() { }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ColorToHtmlStringConverter"/> class.
-        /// </summary>
         /// <param name="includeAlpha">Whether to include the alpha channel.</param>
         /// <param name="includeHash">Whether to prefix the string with a hash.</param>
         public ColorToHtmlStringConverter(bool includeAlpha, bool includeHash = true)

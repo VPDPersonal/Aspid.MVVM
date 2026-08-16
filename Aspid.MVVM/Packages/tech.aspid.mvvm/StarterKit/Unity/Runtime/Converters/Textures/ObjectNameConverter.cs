@@ -18,14 +18,8 @@ namespace Aspid.MVVM.StarterKit
         [Tooltip("Drop the \"(Clone)\" an instantiated object carries.")]
         [SerializeField] private bool _stripCloneSuffix = true;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ObjectNameConverter"/> class.
-        /// </summary>
         public ObjectNameConverter() { }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ObjectNameConverter"/> class.
-        /// </summary>
         /// <param name="fallback">Shown when the object is missing.</param>
         /// <param name="stripCloneSuffix">Whether to drop the "(Clone)" suffix.</param>
         public ObjectNameConverter(string fallback, bool stripCloneSuffix = true)

@@ -37,9 +37,7 @@ namespace Aspid.MVVM.StarterKit
         [Tooltip("The overall multiplier UGUI applies on top.")]
         [SerializeField] private float _colorMultiplier = 1f;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ColorToColorBlockConverter"/> class with UGUI-like defaults.
-        /// </summary>
+        /// <remarks>Default: with UGUI-like defaults.</remarks>
         public ColorToColorBlockConverter() { }
 
         /// <summary>

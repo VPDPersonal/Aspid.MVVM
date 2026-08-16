@@ -18,14 +18,8 @@ namespace Aspid.MVVM.StarterKit
         [Tooltip("The frames, from empty to full.")]
         [SerializeField] private Sprite[] _frames = Array.Empty<Sprite>();
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="NormalizedToSpriteConverter"/> class with no frames.
-        /// </summary>
         public NormalizedToSpriteConverter() { }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="NormalizedToSpriteConverter"/> class.
-        /// </summary>
         /// <param name="frames">The frames, from empty to full.</param>
         public NormalizedToSpriteConverter(Sprite[]? frames)
         {

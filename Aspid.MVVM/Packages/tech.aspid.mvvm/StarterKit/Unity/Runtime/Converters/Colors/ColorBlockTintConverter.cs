@@ -22,14 +22,8 @@ namespace Aspid.MVVM.StarterKit
         [Tooltip("How far towards the tint to move, for the Lerp blend.")]
         [SerializeField, Range(0f, 1f)] private float _amount = 1f;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ColorBlockTintConverter"/> class that changes nothing.
-        /// </summary>
         public ColorBlockTintConverter() { }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ColorBlockTintConverter"/> class.
-        /// </summary>
         /// <param name="tint">The colour every state is combined with.</param>
         /// <param name="blend">How the two are combined.</param>
         public ColorBlockTintConverter(Color tint, ColorBlend blend = ColorBlend.Multiply)

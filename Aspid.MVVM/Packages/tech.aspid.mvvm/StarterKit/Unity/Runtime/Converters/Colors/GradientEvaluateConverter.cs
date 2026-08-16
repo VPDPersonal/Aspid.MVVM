@@ -25,14 +25,9 @@ namespace Aspid.MVVM.StarterKit
         [Tooltip("The input value that maps to the end of the gradient.")]
         [SerializeField] private float _inputMax = 1f;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="GradientEvaluateConverter"/> class over 0..1.
-        /// </summary>
+        /// <remarks>Default: over 0..1.</remarks>
         public GradientEvaluateConverter() { }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="GradientEvaluateConverter"/> class.
-        /// </summary>
         /// <param name="gradient">The gradient the value is read from.</param>
         /// <param name="inputMin">The input value that maps to the start of the gradient.</param>
         /// <param name="inputMax">The input value that maps to the end of the gradient.</param>

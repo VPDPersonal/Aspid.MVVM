@@ -24,9 +24,6 @@ namespace Aspid.MVVM.StarterKit
         [Tooltip("Used for a null or empty string.")]
         [SerializeField] private Color _fallback = Color.gray;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="HashToColorConverter"/> class.
-        /// </summary>
         public HashToColorConverter() { }
 
         /// <summary>

@@ -25,14 +25,9 @@ namespace Aspid.MVVM.StarterKit
         [NonSerialized] private Texture2D? _lastTexture;
         [NonSerialized] private Sprite? _lastSprite;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Texture2DToSpriteConverter"/> class with a centred pivot.
-        /// </summary>
+        /// <remarks>Default: with a centred pivot.</remarks>
         public Texture2DToSpriteConverter() { }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Texture2DToSpriteConverter"/> class.
-        /// </summary>
         /// <param name="pivot">Where the sprite's pivot sits, in normalised coordinates.</param>
         /// <param name="pixelsPerUnit">How many texture pixels make up one world unit.</param>
         public Texture2DToSpriteConverter(Vector2 pivot, float pixelsPerUnit = 100f)

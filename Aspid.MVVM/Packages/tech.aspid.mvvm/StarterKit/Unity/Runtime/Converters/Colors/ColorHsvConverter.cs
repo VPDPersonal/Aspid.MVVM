@@ -21,14 +21,8 @@ namespace Aspid.MVVM.StarterKit
         [Tooltip("Scales the brightness.")]
         [SerializeField] private float _valueMultiplier = 1f;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ColorHsvConverter"/> class that changes nothing.
-        /// </summary>
         public ColorHsvConverter() { }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ColorHsvConverter"/> class.
-        /// </summary>
         /// <param name="hueShift">How far to rotate the hue, in turns.</param>
         /// <param name="saturationMultiplier">Scales the saturation.</param>
         /// <param name="valueMultiplier">Scales the brightness.</param>

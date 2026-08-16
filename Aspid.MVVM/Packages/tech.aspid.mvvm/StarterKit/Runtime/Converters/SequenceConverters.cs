@@ -1,4 +1,5 @@
 using System;
+using UnityEngine;
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
@@ -16,16 +17,13 @@ namespace Aspid.MVVM.StarterKit
     public class SequenceConverters<T> : IConverter<T, T>
     {
         // ReSharper disable once FieldCanBeMadeReadOnly.Local
-#if UNITY_2023_1_OR_NEWER
-        [UnityEngine.SerializeReference]
-#endif
-        private IConverter<T, T>?[] _converters;
+        [SerializeReference] private IConverter<T, T>?[] _converters;
 
         public SequenceConverters()
             : this(Array.Empty<IConverter<T, T>>()) { }
 
         /// <param name="converters">The converters to apply in sequence. Null entries are skipped.</param>
-        public SequenceConverters(params IConverter<T, T>[] converters)
+        public SequenceConverters(params IConverter<T, T>[]? converters)
         {
             _converters = converters ?? Array.Empty<IConverter<T, T>>();
         }

@@ -25,24 +25,16 @@ namespace Aspid.MVVM.StarterKit
         [Tooltip("The direction Dot measures along. Keep it unit length to read a plain distance.")]
         [SerializeField] private Vector2 _dotAgainst = Vector2.up;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Vector2ToFloatConverter"/> class measuring length.
-        /// </summary>
+        /// <remarks>Default: measuring length.</remarks>
         public Vector2ToFloatConverter() { }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Vector2ToFloatConverter"/> class.
-        /// </summary>
         /// <param name="component">Which number to take.</param>
         public Vector2ToFloatConverter(Vector2Component component)
         {
             _component = component;
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Vector2ToFloatConverter"/> class measuring
-        /// along a direction.
-        /// </summary>
+        /// <remarks>Default: measuring along a direction.</remarks>
         /// <param name="dotAgainst">The direction to measure along.</param>
         public Vector2ToFloatConverter(Vector2 dotAgainst)
         {

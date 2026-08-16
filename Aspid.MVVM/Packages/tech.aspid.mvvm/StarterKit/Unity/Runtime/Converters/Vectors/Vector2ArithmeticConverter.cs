@@ -29,14 +29,8 @@ namespace Aspid.MVVM.StarterKit
         [Tooltip("The vector the bound one is combined with.")]
         [SerializeField] private Vector2 _operand;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Vector2ArithmeticConverter"/> class that adds nothing.
-        /// </summary>
         public Vector2ArithmeticConverter() { }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Vector2ArithmeticConverter"/> class.
-        /// </summary>
         /// <param name="operation">What to do with the operand.</param>
         /// <param name="operand">The vector the bound one is combined with.</param>
         public Vector2ArithmeticConverter(VectorOperation operation, Vector2 operand)

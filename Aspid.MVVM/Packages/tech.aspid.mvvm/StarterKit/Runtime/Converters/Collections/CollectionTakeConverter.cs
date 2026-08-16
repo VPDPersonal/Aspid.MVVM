@@ -28,15 +28,9 @@ namespace Aspid.MVVM.StarterKit
 
         [NonSerialized] private List<T>? _buffer;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="CollectionTakeConverter{T}"/> class keeping the
-        /// first three items.
-        /// </summary>
+        /// <remarks>Default: keeping the first three items.</remarks>
         public CollectionTakeConverter() { }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="CollectionTakeConverter{T}"/> class.
-        /// </summary>
         /// <param name="count">How many items to keep.</param>
         /// <param name="fromEnd">Whether to take from the end rather than from the start.</param>
         public CollectionTakeConverter(int count, bool fromEnd = false)

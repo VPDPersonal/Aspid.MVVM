@@ -38,14 +38,8 @@ namespace Aspid.MVVM.StarterKit
         [NonSerialized] private TEnum _cachedResult;
         [NonSerialized] private EnumMaskOperation _cachedOperation;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="EnumMaskConverter{TEnum}"/> class with an empty mask.
-        /// </summary>
         public EnumMaskConverter() { }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="EnumMaskConverter{TEnum}"/> class.
-        /// </summary>
         /// <param name="mask">The flags the bound value is combined with.</param>
         /// <param name="operation">What is done with the flags <paramref name="mask"/> names.</param>
         public EnumMaskConverter(TEnum mask, EnumMaskOperation operation = EnumMaskOperation.And)

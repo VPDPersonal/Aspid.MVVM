@@ -30,14 +30,8 @@ namespace Aspid.MVVM.StarterKit
         [Tooltip("Which incoming component the W of the result is read from.")]
         [SerializeField] private Vector4Component _w = Vector4Component.W;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Vector4SwizzleConverter"/> class that reorders nothing.
-        /// </summary>
         public Vector4SwizzleConverter() { }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Vector4SwizzleConverter"/> class.
-        /// </summary>
         /// <param name="x">Which incoming component the X of the result is read from.</param>
         /// <param name="y">Which incoming component the Y of the result is read from.</param>
         /// <param name="z">Which incoming component the Z of the result is read from.</param>

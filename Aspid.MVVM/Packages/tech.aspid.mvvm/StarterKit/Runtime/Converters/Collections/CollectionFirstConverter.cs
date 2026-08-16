@@ -23,14 +23,8 @@ namespace Aspid.MVVM.StarterKit
         [Tooltip("Returned when the sequence is empty.")]
         [SerializeField] private T _fallback = default!;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="CollectionFirstConverter{T}"/> class with no fallback.
-        /// </summary>
         public CollectionFirstConverter() { }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="CollectionFirstConverter{T}"/> class.
-        /// </summary>
         /// <param name="fallback">Returned when the sequence is empty.</param>
         public CollectionFirstConverter(T fallback)
         {

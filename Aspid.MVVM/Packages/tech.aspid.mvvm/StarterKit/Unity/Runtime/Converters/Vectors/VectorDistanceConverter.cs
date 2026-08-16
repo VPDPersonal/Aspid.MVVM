@@ -27,14 +27,10 @@ namespace Aspid.MVVM.StarterKit
         [Tooltip("Ignore the height difference, measuring along the ground only.")]
         [SerializeField] private bool _flattenY;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="VectorDistanceConverter"/> class measuring to the origin.
-        /// </summary>
+        /// <remarks>Default: measuring to the origin.</remarks>
         public VectorDistanceConverter() { }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="VectorDistanceConverter"/> class measuring to a point.
-        /// </summary>
+        /// <remarks>Default: measuring to a point.</remarks>
         /// <param name="point">The position the distance is measured to.</param>
         /// <param name="flattenY">Whether to ignore the height difference.</param>
         public VectorDistanceConverter(Vector3 point, bool flattenY = false)
@@ -43,9 +39,7 @@ namespace Aspid.MVVM.StarterKit
             _flattenY = flattenY;
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="VectorDistanceConverter"/> class measuring to a transform.
-        /// </summary>
+        /// <remarks>Default: measuring to a transform.</remarks>
         /// <param name="target">The transform the distance is measured to.</param>
         /// <param name="flattenY">Whether to ignore the height difference.</param>
         public VectorDistanceConverter(Transform target, bool flattenY = false)

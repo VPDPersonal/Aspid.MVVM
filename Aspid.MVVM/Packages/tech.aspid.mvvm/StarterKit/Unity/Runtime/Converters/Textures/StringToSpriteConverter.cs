@@ -38,14 +38,8 @@ namespace Aspid.MVVM.StarterKit
 
         [NonSerialized] private bool _loggedFailure;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="StringToSpriteConverter"/> class with an empty map.
-        /// </summary>
         public StringToSpriteConverter() { }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="StringToSpriteConverter"/> class.
-        /// </summary>
         /// <param name="map">The keys and the sprites they name.</param>
         /// <param name="fallback">Used when the key is blank, and when nothing matches it.</param>
         /// <param name="ignoreCase">Whether to match keys without regard to case.</param>

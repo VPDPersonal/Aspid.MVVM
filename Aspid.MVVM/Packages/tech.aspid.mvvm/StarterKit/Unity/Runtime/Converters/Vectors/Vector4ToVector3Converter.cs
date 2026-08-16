@@ -20,14 +20,9 @@ namespace Aspid.MVVM.StarterKit
         [Tooltip("Which component is left out. The other three keep their order.")]
         [SerializeField] private Vector4Component _drop = Vector4Component.W;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Vector4ToVector3Converter"/> class dropping W.
-        /// </summary>
+        /// <remarks>Default: dropping W.</remarks>
         public Vector4ToVector3Converter() { }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Vector4ToVector3Converter"/> class.
-        /// </summary>
         /// <param name="drop">Which component is left out.</param>
         public Vector4ToVector3Converter(Vector4Component drop)
         {

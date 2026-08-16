@@ -25,14 +25,8 @@ namespace Aspid.MVVM.StarterKit
         [Tooltip("The exposure applied to the colour, in stops. Each whole step doubles its brightness; zero changes nothing.")]
         [SerializeField] private float _intensity;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="HdrIntensityConverter"/> class that changes nothing.
-        /// </summary>
         public HdrIntensityConverter() { }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="HdrIntensityConverter"/> class.
-        /// </summary>
         /// <param name="intensity">The exposure applied to the colour, in stops.</param>
         public HdrIntensityConverter(float intensity)
         {

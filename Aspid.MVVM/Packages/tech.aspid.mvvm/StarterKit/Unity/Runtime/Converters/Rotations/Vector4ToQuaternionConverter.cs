@@ -20,14 +20,9 @@ namespace Aspid.MVVM.StarterKit
         [Tooltip("Scale the result back to unit length before handing it over.")]
         [SerializeField] private bool _normalize = true;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Vector4ToQuaternionConverter"/> class that normalises.
-        /// </summary>
+        /// <remarks>Default: normalising the result.</remarks>
         public Vector4ToQuaternionConverter() { }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Vector4ToQuaternionConverter"/> class.
-        /// </summary>
         /// <param name="normalize">Whether to scale the result back to unit length.</param>
         public Vector4ToQuaternionConverter(bool normalize)
         {

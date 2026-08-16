@@ -28,14 +28,9 @@ namespace Aspid.MVVM.StarterKit
         [Tooltip("Report the angle as -180..180 rather than Unity's 0..360.")]
         [SerializeField] private bool _signed = true;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="QuaternionToAngleConverter"/> class reading Z.
-        /// </summary>
+        /// <remarks>Default: reading Z.</remarks>
         public QuaternionToAngleConverter() { }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="QuaternionToAngleConverter"/> class.
-        /// </summary>
         /// <param name="axis">The axis the angle is read around.</param>
         /// <param name="signed">Whether to report the angle as -180..180.</param>
         public QuaternionToAngleConverter(RotationAxis axis, bool signed = true)

@@ -29,14 +29,9 @@ namespace Aspid.MVVM.StarterKit
         [Tooltip("The highest each axis is allowed to be.")]
         [SerializeField] private Vector2 _max = Vector2.one;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Vector2ClampComponentsConverter"/> class clamping to ±1.
-        /// </summary>
+        /// <remarks>Default: clamping to ±1.</remarks>
         public Vector2ClampComponentsConverter() { }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Vector2ClampComponentsConverter"/> class.
-        /// </summary>
         /// <param name="min">The lowest each axis is allowed to be.</param>
         /// <param name="max">The highest each axis is allowed to be.</param>
         public Vector2ClampComponentsConverter(Vector2 min, Vector2 max)

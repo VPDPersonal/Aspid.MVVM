@@ -30,14 +30,9 @@ namespace Aspid.MVVM.StarterKit
         [Tooltip("The colour written into the chosen states.")]
         [SerializeField] private Color _color = Color.gray;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ColorBlockStateConverter"/> class overriding the disabled state.
-        /// </summary>
+        /// <remarks>Default: overriding the disabled state.</remarks>
         public ColorBlockStateConverter() { }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ColorBlockStateConverter"/> class.
-        /// </summary>
         /// <param name="states">Which states the colour is written into.</param>
         /// <param name="color">The colour written into the chosen states.</param>
         public ColorBlockStateConverter(SelectableStates states, Color color)

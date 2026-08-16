@@ -31,14 +31,9 @@ namespace Aspid.MVVM.StarterKit
         [Tooltip("The culture the text is read with.")]
         [SerializeField] private CultureInfoMode _culture = CultureInfoMode.CurrentCulture;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="StringToDecimalConverter"/> class falling back to zero.
-        /// </summary>
+        /// <remarks>Default: falling back to zero.</remarks>
         public StringToDecimalConverter() { }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="StringToDecimalConverter"/> class.
-        /// </summary>
         /// <param name="fallback">Returned when the text is not a number.</param>
         /// <param name="culture">The culture the text is read with.</param>
         public StringToDecimalConverter(decimal fallback, CultureInfoMode culture = CultureInfoMode.CurrentCulture)

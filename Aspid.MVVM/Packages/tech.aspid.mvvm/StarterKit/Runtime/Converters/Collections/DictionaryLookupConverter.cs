@@ -30,15 +30,8 @@ namespace Aspid.MVVM.StarterKit
         [Tooltip("Returned for a key the table does not list.")]
         [SerializeField] private TValue _fallback = default!;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="DictionaryLookupConverter{TKey, TValue}"/>
-        /// class with an empty table.
-        /// </summary>
         public DictionaryLookupConverter() { }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="DictionaryLookupConverter{TKey, TValue}"/> class.
-        /// </summary>
         /// <param name="map">The value returned for each key.</param>
         /// <param name="fallback">Returned for a key <paramref name="map"/> does not list.</param>
         public DictionaryLookupConverter(LookupEntry<TKey, TValue>[]? map, TValue fallback = default!)

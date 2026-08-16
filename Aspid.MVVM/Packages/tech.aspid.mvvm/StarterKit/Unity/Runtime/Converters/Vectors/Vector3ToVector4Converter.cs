@@ -21,14 +21,9 @@ namespace Aspid.MVVM.StarterKit
         [Tooltip("The value written into the fourth component.")]
         [SerializeField] private float _w;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Vector3ToVector4Converter"/> class with a zero fourth component.
-        /// </summary>
+        /// <remarks>Default: with a zero fourth component.</remarks>
         public Vector3ToVector4Converter() { }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Vector3ToVector4Converter"/> class.
-        /// </summary>
         /// <param name="w">The value written into the fourth component.</param>
         public Vector3ToVector4Converter(float w)
         {

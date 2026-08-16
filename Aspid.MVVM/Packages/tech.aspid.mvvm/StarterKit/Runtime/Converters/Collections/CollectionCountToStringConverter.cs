@@ -47,15 +47,9 @@ namespace Aspid.MVVM.StarterKit
         [NonSerialized] private int _cachedCount;
         [NonSerialized] private string? _cached;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="CollectionCountToStringConverter{T}"/> class
-        /// writing English item counts.
-        /// </summary>
+        /// <remarks>Default: writing English item counts.</remarks>
         public CollectionCountToStringConverter() { }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="CollectionCountToStringConverter{T}"/> class.
-        /// </summary>
         /// <param name="oneForm">The word used for one item.</param>
         /// <param name="manyForm">The word used for every other count.</param>
         /// <param name="zeroText">

@@ -32,14 +32,9 @@ namespace Aspid.MVVM.StarterKit
             + "them to the second.")]
         [SerializeField] private long _fallbackTicks;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="StringToTimeSpanConverter"/> class accepting any format.
-        /// </summary>
+        /// <remarks>Default: accepting any format.</remarks>
         public StringToTimeSpanConverter() { }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="StringToTimeSpanConverter"/> class.
-        /// </summary>
         /// <param name="format">The exact format expected.</param>
         /// <param name="fallback">Returned when the text is not a duration.</param>
         public StringToTimeSpanConverter(string format, TimeSpan fallback = default)

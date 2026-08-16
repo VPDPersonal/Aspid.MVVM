@@ -38,14 +38,8 @@ namespace Aspid.MVVM.StarterKit
         [Tooltip("Hold every written channel inside 0..1. Clear it for HDR colours, which live above one.")]
         [SerializeField] private bool _clamp = true;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ColorChannelConverter"/> class that changes nothing.
-        /// </summary>
         public ColorChannelConverter() { }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ColorChannelConverter"/> class.
-        /// </summary>
         /// <param name="operation">What the operand does to each chosen channel.</param>
         /// <param name="operand">Supplies the operand for each channel.</param>
         /// <param name="channels">Which channels are written.</param>

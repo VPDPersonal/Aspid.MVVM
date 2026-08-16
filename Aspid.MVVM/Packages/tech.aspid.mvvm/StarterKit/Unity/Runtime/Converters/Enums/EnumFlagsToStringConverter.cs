@@ -51,14 +51,9 @@ namespace Aspid.MVVM.StarterKit
         [NonSerialized] private TEnum _cachedValue;
         [NonSerialized] private string _cachedText = string.Empty;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="EnumFlagsToStringConverter{TEnum}"/> class joining with commas.
-        /// </summary>
+        /// <remarks>Default: joining with commas.</remarks>
         public EnumFlagsToStringConverter() { }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="EnumFlagsToStringConverter{TEnum}"/> class.
-        /// </summary>
         /// <param name="separator">Placed between the named flags.</param>
         /// <param name="source">Where the name of each flag comes from.</param>
         /// <param name="noneText">Shown when the value names no flags.</param>

@@ -31,14 +31,9 @@ namespace Aspid.MVVM.StarterKit
             + "input is text and the output is not — and behaves as ReturnFallback.")]
         [SerializeField] private ConverterFailureMode _onFailure = ConverterFailureMode.ReturnFallback;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="StringToVector3Converter"/> class reading comma-separated text.
-        /// </summary>
+        /// <remarks>Default: reading comma-separated text.</remarks>
         public StringToVector3Converter() { }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="StringToVector3Converter"/> class.
-        /// </summary>
         /// <param name="separator">Placed between the components.</param>
         /// <param name="fallback">Returned when the text is not a vector.</param>
         /// <param name="culture">The culture the components are read with.</param>

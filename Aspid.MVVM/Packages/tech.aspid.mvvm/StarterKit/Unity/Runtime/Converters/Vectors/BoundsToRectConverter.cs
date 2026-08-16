@@ -20,14 +20,9 @@ namespace Aspid.MVVM.StarterKit
         [Tooltip("Which two axes the box is flattened onto.")]
         [SerializeField] private BoundsPlane _plane = BoundsPlane.XY;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="BoundsToRectConverter"/> class flattening onto XY.
-        /// </summary>
+        /// <remarks>Default: flattening onto XY.</remarks>
         public BoundsToRectConverter() { }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="BoundsToRectConverter"/> class.
-        /// </summary>
         /// <param name="plane">Which two axes the box is flattened onto.</param>
         public BoundsToRectConverter(BoundsPlane plane)
         {

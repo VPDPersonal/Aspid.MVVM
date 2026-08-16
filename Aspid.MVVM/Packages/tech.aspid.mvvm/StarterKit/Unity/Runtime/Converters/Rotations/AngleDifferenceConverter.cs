@@ -29,14 +29,9 @@ namespace Aspid.MVVM.StarterKit
         [Tooltip("Keep the sign. Clear it to report how far off the angle is whichever way it went.")]
         [SerializeField] private bool _signed = true;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="AngleDifferenceConverter"/> class measuring from zero.
-        /// </summary>
+        /// <remarks>Default: measuring from zero.</remarks>
         public AngleDifferenceConverter() { }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="AngleDifferenceConverter"/> class.
-        /// </summary>
         /// <param name="reference">The angle the bound one is measured against, in degrees.</param>
         /// <param name="signed">Whether to keep the sign of the difference.</param>
         public AngleDifferenceConverter(float reference, bool signed = true)

@@ -30,14 +30,8 @@ namespace Aspid.MVVM.StarterKit
         [Tooltip("Hold the incoming amount inside 0..1.")]
         [SerializeField] private bool _clamp = true;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="QuaternionSlerpConverter"/> class turning nowhere.
-        /// </summary>
         public QuaternionSlerpConverter() { }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="QuaternionSlerpConverter"/> class.
-        /// </summary>
         /// <param name="fromEuler">The rotation at 0, in Euler degrees.</param>
         /// <param name="toEuler">The rotation at 1, in Euler degrees.</param>
         /// <param name="curve">Shapes the amount before the turn, or <see langword="null"/> for an even sweep.</param>

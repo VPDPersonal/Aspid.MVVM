@@ -20,14 +20,9 @@ namespace Aspid.MVVM.StarterKit
         [Tooltip("Report the half-size instead, which is what a radius or an offset from the middle wants.")]
         [SerializeField] private bool _extents;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="BoundsSizeConverter"/> class reporting the full size.
-        /// </summary>
+        /// <remarks>Default: reporting the full size.</remarks>
         public BoundsSizeConverter() { }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="BoundsSizeConverter"/> class.
-        /// </summary>
         /// <param name="extents">Whether to report the half-size.</param>
         public BoundsSizeConverter(bool extents)
         {

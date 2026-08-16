@@ -29,10 +29,7 @@ namespace Aspid.MVVM.StarterKit
             _component = component;
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Vector3ToFloatConverter"/> class measuring
-        /// along a direction.
-        /// </summary>
+        /// <remarks>Default: measuring along a direction.</remarks>
         /// <param name="dotAgainst">The direction to measure along.</param>
         public Vector3ToFloatConverter(Vector3 dotAgainst)
         {

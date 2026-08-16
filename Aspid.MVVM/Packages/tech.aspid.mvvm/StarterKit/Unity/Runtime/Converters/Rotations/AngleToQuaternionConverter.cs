@@ -47,10 +47,7 @@ namespace Aspid.MVVM.StarterKit
             _clockwise = clockwise;
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="AngleToQuaternionConverter"/> class turning
-        /// around an arbitrary axis.
-        /// </summary>
+        /// <remarks>Default: turning around an arbitrary axis.</remarks>
         /// <param name="customAxis">The axis the angle turns around.</param>
         /// <param name="offset">Added to the angle before it is applied.</param>
         /// <param name="clockwise">If <see langword="true"/>, turns the other way.</param>

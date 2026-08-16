@@ -32,14 +32,9 @@ namespace Aspid.MVVM.StarterKit
             + "Turn it off for C#'s own % semantics, where the result takes the value's sign.")]
         [SerializeField] private bool _euclidean = true;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ModuloNumberConverter"/> class dividing by one.
-        /// </summary>
+        /// <remarks>Default: dividing by one.</remarks>
         public ModuloNumberConverter() { }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ModuloNumberConverter"/> class.
-        /// </summary>
         /// <param name="divisor">The number the value is divided by.</param>
         /// <param name="euclidean">
         /// If <see langword="true"/>, always returns a non-negative remainder.

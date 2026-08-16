@@ -27,14 +27,9 @@ namespace Aspid.MVVM.StarterKit
             + "instead of turning into a NaN. With this off, -2 raised to 2 gives 4 rather than -4.")]
         [SerializeField] private bool _preserveSign = true;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="PowerNumberConverter"/> class squaring the value.
-        /// </summary>
+        /// <remarks>Default: squaring the value.</remarks>
         public PowerNumberConverter() { }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="PowerNumberConverter"/> class.
-        /// </summary>
         /// <param name="exponent">The exponent the value is raised to.</param>
         /// <param name="preserveSign">
         /// If <see langword="true"/>, raises the magnitude and puts the sign back.

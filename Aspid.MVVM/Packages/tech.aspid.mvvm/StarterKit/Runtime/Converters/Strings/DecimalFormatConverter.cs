@@ -25,14 +25,9 @@ namespace Aspid.MVVM.StarterKit
         [Tooltip("The culture the amount is formatted with. C picks its currency symbol from here.")]
         [SerializeField] private CultureInfoMode _culture = CultureInfoMode.CurrentCulture;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="DecimalFormatConverter"/> class writing two decimals.
-        /// </summary>
+        /// <remarks>Default: writing two decimals.</remarks>
         public DecimalFormatConverter() { }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="DecimalFormatConverter"/> class.
-        /// </summary>
         /// <param name="format">A standard numeric format string.</param>
         /// <param name="culture">The culture the amount is formatted with.</param>
         public DecimalFormatConverter(string format, CultureInfoMode culture = CultureInfoMode.CurrentCulture)

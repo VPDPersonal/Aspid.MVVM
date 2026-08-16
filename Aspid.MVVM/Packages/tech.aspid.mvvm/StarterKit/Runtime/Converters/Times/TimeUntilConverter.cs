@@ -24,14 +24,9 @@ namespace Aspid.MVVM.StarterKit
         [Tooltip("Report a moment that has already passed as zero rather than as a negative duration.")]
         [SerializeField] private bool _clampToZero = true;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="TimeUntilConverter"/> class measuring against local time.
-        /// </summary>
+        /// <remarks>Default: measuring against local time.</remarks>
         public TimeUntilConverter() { }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="TimeUntilConverter"/> class.
-        /// </summary>
         /// <param name="useUtcNow">Whether to measure against UTC rather than local time.</param>
         /// <param name="clampToZero">If <see langword="true"/>, reports a moment already past as zero.</param>
         public TimeUntilConverter(bool useUtcNow, bool clampToZero = true)

@@ -53,9 +53,6 @@ namespace Aspid.MVVM.StarterKit
         /// <remarks>Default: with English defaults.</remarks>
         public RelativeTimeConverter() { }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="RelativeTimeConverter"/> class.
-        /// </summary>
         /// <param name="maxUnits">How many units to write, largest first.</param>
         /// <param name="culture">The culture the amounts are written with.</param>
         /// <param name="useUtcNow">Whether to compare against UTC rather than local time.</param>

@@ -34,14 +34,9 @@ namespace Aspid.MVVM.StarterKit
         private const float BounceFactor = 7.5625f;
         private const float BounceStep = 2.75f;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="EasingConverter"/> class easing out quadratically.
-        /// </summary>
+        /// <remarks>Default: easing out quadratically.</remarks>
         public EasingConverter() { }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="EasingConverter"/> class.
-        /// </summary>
         /// <param name="ease">The curve applied to the value.</param>
         /// <param name="clamp">If <see langword="true"/>, holds the incoming value inside 0..1.</param>
         public EasingConverter(EaseType ease, bool clamp = true)

@@ -33,14 +33,8 @@ namespace Aspid.MVVM.StarterKit
 
         [NonSerialized] private bool _loggedDivideByZero;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="TimeSpanArithmeticConverter"/> class adding nothing.
-        /// </summary>
         public TimeSpanArithmeticConverter() { }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="TimeSpanArithmeticConverter"/> class.
-        /// </summary>
         /// <param name="operation">The arithmetic applied to the bound duration.</param>
         /// <param name="operandSeconds">The operand, in seconds where the operation reads it as a duration.</param>
         public TimeSpanArithmeticConverter(NumberOperation operation, float operandSeconds)

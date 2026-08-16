@@ -30,14 +30,9 @@ namespace Aspid.MVVM.StarterKit
         [Tooltip("Returned by the reverse direction for a position outside the enum. Unused while the position mode is off.")]
         [SerializeField] private TEnum _fallback;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="EnumToIntConverter{TEnum}"/> class reading the underlying value.
-        /// </summary>
+        /// <remarks>Default: reading the underlying value.</remarks>
         public EnumToIntConverter() { }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="EnumToIntConverter{TEnum}"/> class.
-        /// </summary>
         /// <param name="byIndexNotValue">
         /// If <see langword="true"/>, converts to and from the member's position in the enum rather
         /// than its underlying value.

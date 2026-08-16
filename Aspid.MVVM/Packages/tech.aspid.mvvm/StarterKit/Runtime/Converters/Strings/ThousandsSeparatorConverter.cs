@@ -33,14 +33,9 @@ namespace Aspid.MVVM.StarterKit
         [NonSerialized] private CultureInfo? _formatCulture;
         [NonSerialized] private string? _formatSeparator;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ThousandsSeparatorConverter"/> class using the culture's separator.
-        /// </summary>
+        /// <remarks>Default: using the culture's separator.</remarks>
         public ThousandsSeparatorConverter() { }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ThousandsSeparatorConverter"/> class.
-        /// </summary>
         /// <param name="separator">Placed between groups of digits. When empty, the culture's own separator is used.</param>
         /// <param name="culture">The culture the number is formatted with.</param>
         public ThousandsSeparatorConverter(string separator, CultureInfoMode culture = CultureInfoMode.CurrentCulture)

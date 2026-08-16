@@ -21,14 +21,9 @@ namespace Aspid.MVVM.StarterKit
         [Tooltip("Produce milliseconds rather than seconds.")]
         [SerializeField] private bool _milliseconds;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="DateTimeToUnixTimestampConverter"/> class producing seconds.
-        /// </summary>
+        /// <remarks>Default: producing seconds.</remarks>
         public DateTimeToUnixTimestampConverter() { }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="DateTimeToUnixTimestampConverter"/> class.
-        /// </summary>
         /// <param name="milliseconds">Whether to produce milliseconds rather than seconds.</param>
         public DateTimeToUnixTimestampConverter(bool milliseconds)
         {

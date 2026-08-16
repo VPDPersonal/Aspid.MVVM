@@ -35,14 +35,9 @@ namespace Aspid.MVVM.StarterKit
 
         [NonSerialized] private StringBuilder? _builder;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="SplitJoinStringConverter"/> class re-spacing a comma-separated list.
-        /// </summary>
+        /// <remarks>Default: re-spacing a comma-separated list.</remarks>
         public SplitJoinStringConverter() { }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="SplitJoinStringConverter"/> class.
-        /// </summary>
         /// <param name="splitOn">The text the value is split on.</param>
         /// <param name="joinWith">Placed between the parts when they are joined back.</param>
         /// <param name="maxParts">How many parts to make. Zero makes as many as there are.</param>

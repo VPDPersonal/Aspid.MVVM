@@ -23,14 +23,9 @@ namespace Aspid.MVVM.StarterKit
             + "any ordinal: .NET writes ASCII digits whatever the culture, and the suffix is English.")]
         [SerializeField] private CultureInfoMode _culture = CultureInfoMode.InvariantCulture;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="OrdinalConverter"/> class writing invariant digits.
-        /// </summary>
+        /// <remarks>Default: writing invariant digits.</remarks>
         public OrdinalConverter() { }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="OrdinalConverter"/> class.
-        /// </summary>
         /// <param name="culture">The culture the digits are written with.</param>
         public OrdinalConverter(CultureInfoMode culture)
         {

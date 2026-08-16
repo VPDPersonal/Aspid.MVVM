@@ -36,14 +36,9 @@ namespace Aspid.MVVM.StarterKit
 
         [NonSerialized] private StringBuilder? _builder;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="SanitizeRichTextConverter"/> class stripping every tag.
-        /// </summary>
+        /// <remarks>Default: stripping every tag.</remarks>
         public SanitizeRichTextConverter() { }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="SanitizeRichTextConverter"/> class.
-        /// </summary>
         /// <param name="mode">Whether markup is removed or shown as text.</param>
         /// <param name="allowedTags">Tag names allowed through untouched, without their angle brackets.</param>
         /// <param name="keepStrayBrackets">

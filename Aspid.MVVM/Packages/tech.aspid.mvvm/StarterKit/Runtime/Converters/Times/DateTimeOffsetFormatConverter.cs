@@ -36,14 +36,9 @@ namespace Aspid.MVVM.StarterKit
 
         [NonSerialized] private bool _loggedFormatFailure;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="DateTimeOffsetFormatConverter"/> class with the general format.
-        /// </summary>
+        /// <remarks>Default: with the general format.</remarks>
         public DateTimeOffsetFormatConverter() { }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="DateTimeOffsetFormatConverter"/> class.
-        /// </summary>
         /// <param name="format">A <see cref="DateTimeOffset"/> format string.</param>
         /// <param name="toLocalTime">Whether to show the moment in the player's own time zone.</param>
         /// <param name="offsetOverride">

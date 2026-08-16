@@ -23,14 +23,8 @@ namespace Aspid.MVVM.StarterKit
         [Tooltip("Multiplies the sum. A scale of zero flattens every value to nothing and cannot be undone.")]
         [SerializeField] private float _scale = 1f;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="SumConstantThenScaleConverter"/> class leaving the value unchanged.
-        /// </summary>
         public SumConstantThenScaleConverter() { }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="SumConstantThenScaleConverter"/> class.
-        /// </summary>
         /// <param name="offset">Added to the value first.</param>
         /// <param name="scale">Multiplies the sum.</param>
         public SumConstantThenScaleConverter(float offset, float scale = 1f)

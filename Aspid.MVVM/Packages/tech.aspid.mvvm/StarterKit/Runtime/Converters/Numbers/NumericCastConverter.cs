@@ -34,15 +34,9 @@ namespace Aspid.MVVM.StarterKit
             + "value it can hold, Checked throws, and Unchecked reproduces a plain C# cast.")]
         [SerializeField] private OverflowMode _mode = OverflowMode.Saturate;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="NumericCastConverter"/> class saturating at
-        /// the target type's bounds.
-        /// </summary>
+        /// <remarks>Default: saturating at the target type's bounds.</remarks>
         public NumericCastConverter() { }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="NumericCastConverter"/> class.
-        /// </summary>
         /// <param name="mode">What to do with a value the target type cannot hold.</param>
         public NumericCastConverter(OverflowMode mode)
         {

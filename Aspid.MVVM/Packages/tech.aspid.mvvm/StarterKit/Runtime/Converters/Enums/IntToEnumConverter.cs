@@ -26,14 +26,9 @@ namespace Aspid.MVVM.StarterKit
         [Tooltip("Returned for an integer that names no member.")]
         [SerializeField] private TEnum _fallback;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="IntToEnumConverter{TEnum}"/> class reading the underlying value.
-        /// </summary>
+        /// <remarks>Default: reading the underlying value.</remarks>
         public IntToEnumConverter() { }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="IntToEnumConverter{TEnum}"/> class.
-        /// </summary>
         /// <param name="byIndexNotValue">
         /// If <see langword="true"/>, reads the integer as a member's position in the enum rather
         /// than as an underlying value.

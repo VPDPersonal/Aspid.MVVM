@@ -63,8 +63,10 @@ namespace Aspid.MVVM.StarterKit.Tests
         }
 
         [Test]
-        public void Reference_WithoutAnAsset_ReturnsTheDefaultAndReportsOnce()
+        public void Reference_WithoutAnAsset_ReturnsTheDefaultAndReportsEveryTime()
         {
+            LogAssert.Expect(LogType.Error, new Regex("no asset assigned"));
+            LogAssert.Expect(LogType.Error, new Regex("no asset assigned"));
             LogAssert.Expect(LogType.Error, new Regex("no asset assigned"));
 
             var reference = new ConverterAssetReference<string, string>(null);

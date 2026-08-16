@@ -6,13 +6,8 @@ namespace Aspid.MVVM.StarterKit
     /// </summary>
     /// <remarks>
     /// Read every member as <c>bound &lt;op&gt; configured</c>: <see cref="LessThan"/> asks whether the
-    /// bound value is below the configured one, not the other way round.
-    /// <para>
-    /// New members are appended rather than inserted: the order is the serialized value, so moving one
-    /// silently rewrites every converter already authored in a scene. <see cref="NotEqual"/> shipped
-    /// inverted once and was fixed in 1.1.0-beta.1 — of the six, the two that are not a bare operator
-    /// are the two worth a test.
-    /// </para>
+    /// bound value is below the configured one, not the other way round. Append new members rather than
+    /// inserting one — the order is the serialized value.
     /// </remarks>
     public enum Comparisons
     {

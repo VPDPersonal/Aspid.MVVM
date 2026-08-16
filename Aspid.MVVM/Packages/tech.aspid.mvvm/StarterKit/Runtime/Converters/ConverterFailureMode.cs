@@ -5,13 +5,8 @@ namespace Aspid.MVVM.StarterKit
     /// What a converter does with a value it cannot convert.
     /// </summary>
     /// <remarks>
-    /// The shipped converters each answered this differently — one had a throw switch, one logged and
-    /// passed the value through, one returned a default indistinguishable from success — so a
-    /// designer could not predict what a bad value would do. This is the vocabulary they share.
-    /// <para>
     /// This is about the <i>data</i>: a colour string that does not parse, a number outside a range.
     /// A misconfigured converter is a different matter and always reports itself.
-    /// </para>
     /// </remarks>
     public enum ConverterFailureMode
     {

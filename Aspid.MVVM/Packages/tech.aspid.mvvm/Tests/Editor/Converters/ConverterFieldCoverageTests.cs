@@ -32,7 +32,7 @@ namespace Aspid.MVVM.StarterKit.Tests
         private static readonly HashSet<Type> Structural = new()
         {
             typeof(SequenceConverters<>),
-            typeof(ChainConverter<,,>),
+            typeof(ComposeConverter<,,>),
             typeof(ConditionalConverter<>),
             typeof(SafeConverter<,>),
             typeof(NullGuardConverter<,>),

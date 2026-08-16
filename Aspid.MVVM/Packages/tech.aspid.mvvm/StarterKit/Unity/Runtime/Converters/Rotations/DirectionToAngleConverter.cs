@@ -24,14 +24,9 @@ namespace Aspid.MVVM.StarterKit
         [Tooltip("Measure clockwise rather than counter-clockwise.")]
         [SerializeField] private bool _clockwise;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="DirectionToAngleConverter"/> class reporting degrees.
-        /// </summary>
+        /// <remarks>Default: reporting degrees.</remarks>
         public DirectionToAngleConverter() { }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="DirectionToAngleConverter"/> class.
-        /// </summary>
         /// <param name="offset">Added to the angle.</param>
         /// <param name="clockwise">Whether to measure clockwise.</param>
         public DirectionToAngleConverter(float offset, bool clockwise = false)

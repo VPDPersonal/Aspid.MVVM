@@ -18,14 +18,9 @@ namespace Aspid.MVVM.StarterKit
         [Tooltip("The size of one grid step. Zero rounds to whole numbers.")]
         [SerializeField] private float _step;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="VectorRoundConverter"/> class rounding to whole numbers.
-        /// </summary>
+        /// <remarks>Default: rounding to whole numbers.</remarks>
         public VectorRoundConverter() { }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="VectorRoundConverter"/> class.
-        /// </summary>
         /// <param name="mode">Which way to drop the fraction.</param>
         /// <param name="step">The size of one grid step.</param>
         public VectorRoundConverter(RoundMode mode, float step = 0f)

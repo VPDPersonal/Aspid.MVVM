@@ -17,14 +17,9 @@ namespace Aspid.MVVM.StarterKit
         [Tooltip("The value used for the axes the number does not write.")]
         [SerializeField] private Vector2 _base = Vector2.one;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="FloatToVector2Converter"/> class writing both axes.
-        /// </summary>
+        /// <remarks>Default: writing both axes.</remarks>
         public FloatToVector2Converter() { }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="FloatToVector2Converter"/> class.
-        /// </summary>
         /// <param name="axes">Which axes the number is written into.</param>
         /// <param name="base">The value used for the axes the number does not write.</param>
         public FloatToVector2Converter(AxisMask axes, Vector2 @base = default)

@@ -18,14 +18,9 @@ namespace Aspid.MVVM.StarterKit
         [Tooltip("The shortest the vector is allowed to be. Zero disables the lower bound.")]
         [SerializeField] private float _minMagnitude;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="VectorClampMagnitudeConverter"/> class clamping to one.
-        /// </summary>
+        /// <remarks>Default: clamping to one.</remarks>
         public VectorClampMagnitudeConverter() { }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="VectorClampMagnitudeConverter"/> class.
-        /// </summary>
         /// <param name="maxMagnitude">The longest the vector is allowed to be.</param>
         /// <param name="minMagnitude">The shortest the vector is allowed to be.</param>
         public VectorClampMagnitudeConverter(float maxMagnitude, float minMagnitude = 0f)

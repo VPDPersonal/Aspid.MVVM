@@ -24,14 +24,9 @@ namespace Aspid.MVVM.StarterKit
 
         [NonSerialized] private RectOffset? _result;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="IntToRectOffsetConverter"/> class writing every side.
-        /// </summary>
+        /// <remarks>Default: writing every side.</remarks>
         public IntToRectOffsetConverter() { }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="IntToRectOffsetConverter"/> class.
-        /// </summary>
         /// <param name="sides">Which sides the number is written into.</param>
         public IntToRectOffsetConverter(RectSides sides)
         {

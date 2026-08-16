@@ -19,14 +19,9 @@ namespace Aspid.MVVM.StarterKit
         [Tooltip("Report angles as -180..180 rather than Unity's 0..360.")]
         [SerializeField] private bool _normalizeToSigned180 = true;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="QuaternionToEulerConverter"/> class normalising to ±180.
-        /// </summary>
+        /// <remarks>Default: normalising to ±180.</remarks>
         public QuaternionToEulerConverter() { }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="QuaternionToEulerConverter"/> class.
-        /// </summary>
         /// <param name="normalizeToSigned180">Whether to report angles as -180..180.</param>
         public QuaternionToEulerConverter(bool normalizeToSigned180)
         {

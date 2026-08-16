@@ -18,14 +18,9 @@ namespace Aspid.MVVM.StarterKit
         [Tooltip("How long the produced direction is.")]
         [SerializeField] private float _magnitude = 1f;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="AngleToDirectionConverter"/> class producing a unit vector.
-        /// </summary>
+        /// <remarks>Default: producing a unit vector.</remarks>
         public AngleToDirectionConverter() { }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="AngleToDirectionConverter"/> class.
-        /// </summary>
         /// <param name="magnitude">How long the produced direction is.</param>
         public AngleToDirectionConverter(float magnitude)
         {

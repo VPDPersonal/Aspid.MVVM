@@ -23,14 +23,8 @@ namespace Aspid.MVVM.StarterKit
 
         [NonSerialized] private RectOffset? _result;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="RectOffsetScaleConverter"/> class that changes nothing.
-        /// </summary>
         public RectOffsetScaleConverter() { }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="RectOffsetScaleConverter"/> class.
-        /// </summary>
         /// <param name="scale">What the padding is multiplied by.</param>
         /// <param name="sides">Which sides are scaled.</param>
         public RectOffsetScaleConverter(float scale, RectSides sides = RectSides.All)

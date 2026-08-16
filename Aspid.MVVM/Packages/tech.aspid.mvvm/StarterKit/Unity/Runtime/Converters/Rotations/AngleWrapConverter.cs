@@ -21,14 +21,9 @@ namespace Aspid.MVVM.StarterKit
         [Tooltip("Added before wrapping.")]
         [SerializeField] private float _offset;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="AngleWrapConverter"/> class reporting 0..360.
-        /// </summary>
+        /// <remarks>Default: reporting 0..360.</remarks>
         public AngleWrapConverter() { }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="AngleWrapConverter"/> class.
-        /// </summary>
         /// <param name="range">Which range to report in.</param>
         /// <param name="offset">Added before wrapping.</param>
         public AngleWrapConverter(AngleRange range, float offset = 0f)

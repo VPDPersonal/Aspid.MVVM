@@ -21,14 +21,9 @@ namespace Aspid.MVVM.StarterKit
         [Tooltip("Hold the incoming amount inside 0..1.")]
         [SerializeField] private bool _clamp = true;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="VectorLerpConverter"/> class going zero to one.
-        /// </summary>
+        /// <remarks>Default: going zero to one.</remarks>
         public VectorLerpConverter() { }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="VectorLerpConverter"/> class.
-        /// </summary>
         /// <param name="from">The vector at 0.</param>
         /// <param name="to">The vector at 1.</param>
         public VectorLerpConverter(Vector3 from, Vector3 to)

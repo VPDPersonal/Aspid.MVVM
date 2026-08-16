@@ -21,14 +21,8 @@ namespace Aspid.MVVM.StarterKit
         [Tooltip("Apply the offset before the bound rotation rather than after.")]
         [SerializeField] private bool _applyFirst;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="QuaternionOffsetConverter"/> class with no offset.
-        /// </summary>
         public QuaternionOffsetConverter() { }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="QuaternionOffsetConverter"/> class.
-        /// </summary>
         /// <param name="offsetEuler">The rotation applied on top of the bound one, in Euler degrees.</param>
         /// <param name="applyFirst">Whether to apply the offset before the bound rotation.</param>
         public QuaternionOffsetConverter(Vector3 offsetEuler, bool applyFirst = false)

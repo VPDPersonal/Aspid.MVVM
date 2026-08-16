@@ -24,14 +24,9 @@ namespace Aspid.MVVM.StarterKit
         [Tooltip("Turn the other way.")]
         [SerializeField] private bool _clockwise;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="AngleToQuaternionConverter"/> class turning around Z.
-        /// </summary>
+        /// <remarks>Default: turning around Z.</remarks>
         public AngleToQuaternionConverter() { }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="AngleToQuaternionConverter"/> class.
-        /// </summary>
         /// <param name="axis">The axis the angle turns around.</param>
         /// <param name="offset">Added to the angle before it is applied.</param>
         /// <param name="clockwise">If <see langword="true"/>, turns the other way.</param>

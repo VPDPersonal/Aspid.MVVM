@@ -17,14 +17,9 @@ namespace Aspid.MVVM.StarterKit
         [Tooltip("Drop the vertical component before looking, keeping the rotation level.")]
         [SerializeField] private bool _flatten;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="LookRotationConverter"/> class with world up.
-        /// </summary>
+        /// <remarks>Default: with world up.</remarks>
         public LookRotationConverter() { }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="LookRotationConverter"/> class.
-        /// </summary>
         /// <param name="up">Which way is up for the produced rotation.</param>
         /// <param name="flatten">Whether to drop the vertical component before looking.</param>
         public LookRotationConverter(Vector3 up, bool flatten = false)

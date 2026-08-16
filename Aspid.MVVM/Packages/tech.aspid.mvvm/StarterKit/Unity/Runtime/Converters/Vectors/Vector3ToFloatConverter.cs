@@ -15,14 +15,9 @@ namespace Aspid.MVVM.StarterKit
         [Tooltip("Which number to take.")]
         [SerializeField] private VectorComponent _component = VectorComponent.Magnitude;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Vector3ToFloatConverter"/> class measuring length.
-        /// </summary>
+        /// <remarks>Default: measuring length.</remarks>
         public Vector3ToFloatConverter() { }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Vector3ToFloatConverter"/> class.
-        /// </summary>
         /// <param name="component">Which number to take.</param>
         public Vector3ToFloatConverter(VectorComponent component)
         {

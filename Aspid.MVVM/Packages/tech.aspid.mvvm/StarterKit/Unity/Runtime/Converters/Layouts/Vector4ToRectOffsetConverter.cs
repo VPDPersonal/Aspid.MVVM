@@ -20,14 +20,9 @@ namespace Aspid.MVVM.StarterKit
 
         [NonSerialized] private RectOffset? _result;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Vector4ToRectOffsetConverter"/> class rounding to nearest.
-        /// </summary>
+        /// <remarks>Default: rounding to nearest.</remarks>
         public Vector4ToRectOffsetConverter() { }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Vector4ToRectOffsetConverter"/> class.
-        /// </summary>
         /// <param name="rounding">Which way to drop the fraction.</param>
         public Vector4ToRectOffsetConverter(RoundMode rounding)
         {

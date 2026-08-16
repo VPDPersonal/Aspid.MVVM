@@ -14,14 +14,9 @@ namespace Aspid.MVVM.StarterKit
         [Tooltip("Which way to drop the fraction.")]
         [SerializeField] private RoundMode _mode;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Vector2ToVector2IntConverter"/> class rounding to nearest.
-        /// </summary>
+        /// <remarks>Default: rounding to nearest.</remarks>
         public Vector2ToVector2IntConverter() { }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Vector2ToVector2IntConverter"/> class.
-        /// </summary>
         /// <param name="mode">Which way to drop the fraction.</param>
         public Vector2ToVector2IntConverter(RoundMode mode)
         {

@@ -21,14 +21,9 @@ namespace Aspid.MVVM.StarterKit
         [Tooltip("The value used for the axes the number does not write.")]
         [SerializeField] private Vector3 _base = Vector3.one;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="FloatToVector3Converter"/> class writing every axis.
-        /// </summary>
+        /// <remarks>Default: writing every axis.</remarks>
         public FloatToVector3Converter() { }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="FloatToVector3Converter"/> class.
-        /// </summary>
         /// <param name="axes">Which axes the number is written into.</param>
         /// <param name="base">The value used for the axes the number does not write.</param>
         public FloatToVector3Converter(AxisMask axes, Vector3 @base = default)

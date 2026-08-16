@@ -30,13 +30,9 @@ namespace Aspid.MVVM.StarterKit
     /// Writes a number of seconds as a clock reading.
     /// </summary>
     /// <remarks>
-    /// The countdown converter. Turning <c>95.4</c> into <c>01:35</c> previously took a class of your
-    /// own, which is why every project has one.
-    /// <para>
     /// Rounding direction matters more than it looks: a floored timer shows <c>0:00</c> for a whole
     /// second before it fires, so a countdown usually wants <see cref="RoundMode.Ceil"/> while a
     /// stopwatch wants <see cref="RoundMode.Floor"/>.
-    /// </para>
     /// </remarks>
     [Serializable]
     public sealed class SecondsToTimeStringConverter :

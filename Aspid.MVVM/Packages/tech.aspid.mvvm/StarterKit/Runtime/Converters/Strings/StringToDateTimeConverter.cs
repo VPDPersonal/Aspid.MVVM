@@ -20,14 +20,9 @@ namespace Aspid.MVVM.StarterKit
         [Tooltip("Ticks of the date returned when the text is not one.")]
         [SerializeField] private long _fallbackTicks;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="StringToDateTimeConverter"/> class accepting any format.
-        /// </summary>
+        /// <remarks>Default: accepting any format.</remarks>
         public StringToDateTimeConverter() { }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="StringToDateTimeConverter"/> class.
-        /// </summary>
         /// <param name="format">The exact format expected.</param>
         /// <param name="fallback">Returned when the text is not a date.</param>
         public StringToDateTimeConverter(string format, DateTime fallback = default)

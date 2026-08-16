@@ -20,9 +20,6 @@ namespace Aspid.MVVM.StarterKit
         [Tooltip("Shown when there is no locale.")]
         [SerializeField] private string _fallback = string.Empty;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="LocaleToStringConverter"/> class.
-        /// </summary>
         public LocaleToStringConverter() { }
 
         /// <summary>

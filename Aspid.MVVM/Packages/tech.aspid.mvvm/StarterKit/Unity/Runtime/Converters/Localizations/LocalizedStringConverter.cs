@@ -26,9 +26,6 @@ namespace Aspid.MVVM.StarterKit
         [Tooltip("A composite format for a missing entry: {0} is the key.")]
         [SerializeField] private string _missingFormat = "#{0}#";
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="LocalizedStringConverter"/> class.
-        /// </summary>
         public LocalizedStringConverter() { }
 
         /// <summary>

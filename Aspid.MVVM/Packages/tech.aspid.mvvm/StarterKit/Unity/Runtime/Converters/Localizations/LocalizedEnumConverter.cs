@@ -28,9 +28,6 @@ namespace Aspid.MVVM.StarterKit
         [Tooltip("Show the member name when it has no entry.")]
         [SerializeField] private bool _fallbackToName = true;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="LocalizedEnumConverter{TEnum}"/> class.
-        /// </summary>
         public LocalizedEnumConverter() { }
 
         /// <summary>

@@ -21,14 +21,8 @@ namespace Aspid.MVVM.StarterKit
         [Tooltip("A standard numeric format string.")]
         [SerializeField] private string _format = "N0";
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="LocalizedNumberConverter"/> class.
-        /// </summary>
         public LocalizedNumberConverter() { }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="LocalizedNumberConverter"/> class.
-        /// </summary>
         /// <param name="format">A standard numeric format string.</param>
         public LocalizedNumberConverter(string format)
         {

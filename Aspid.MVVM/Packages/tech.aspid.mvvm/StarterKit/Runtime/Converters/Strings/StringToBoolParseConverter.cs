@@ -20,14 +20,9 @@ namespace Aspid.MVVM.StarterKit
         [Tooltip("Returned when the text matches nothing.")]
         [SerializeField] private bool _fallback;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="StringToBoolParseConverter"/> class with the usual spellings.
-        /// </summary>
+        /// <remarks>Default: with the usual spellings.</remarks>
         public StringToBoolParseConverter() { }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="StringToBoolParseConverter"/> class.
-        /// </summary>
         /// <param name="trueTokens">The spellings read as <see langword="true"/>.</param>
         /// <param name="fallback">Returned when the text matches nothing.</param>
         public StringToBoolParseConverter(string[]? trueTokens, bool fallback = false)

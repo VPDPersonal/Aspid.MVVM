@@ -19,14 +19,8 @@ namespace Aspid.MVVM.StarterKit
         [Tooltip("Returned when the text names no member.")]
         [SerializeField] private TEnum _fallback;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="StringToEnumConverter{TEnum}"/> class.
-        /// </summary>
         public StringToEnumConverter() { }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="StringToEnumConverter{TEnum}"/> class.
-        /// </summary>
         /// <param name="fallback">Returned when the text names no member.</param>
         /// <param name="ignoreCase">Whether to match without regard to case.</param>
         public StringToEnumConverter(TEnum fallback, bool ignoreCase = true)

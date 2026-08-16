@@ -107,8 +107,7 @@ namespace Aspid.MVVM.StarterKit
     public abstract class TargetBinder<TTarget, TProperty, TConverter> : TargetBinder<TTarget, TProperty>
         where TConverter : IConverter<TProperty?, TProperty?>
     {
-        [Tooltip("Optional converter applied to the value on its way to the target. It also runs in "
-            + "reverse only if it implements ITwoWayConverter.")]
+        [Tooltip("Optional converter applied to the value on its way to the target. It also runs in reverse only if it implements ITwoWayConverter.")]
         [SerializeReference] private TConverter? _converter;
 
         /// <summary>
@@ -146,9 +145,7 @@ namespace Aspid.MVVM.StarterKit
             if (Mode is not (BindMode.OneWayToSource or BindMode.TwoWay)) return;
             if (_converter is null or ITwoWayConverter<TProperty?, TProperty?>) return;
 
-            Debug.LogWarning(
-                $"{GetType().Name} is bound as {Mode} with {_converter.GetType().Name}, which converts "
-                + "one way only. Values sent back to the ViewModel are not converted.");
+            Debug.LogWarning($"{GetType().Name} is bound as {Mode} with {_converter.GetType().Name}, which converts one way only. Values sent back to the ViewModel are not converted.");
         }
     }
 }

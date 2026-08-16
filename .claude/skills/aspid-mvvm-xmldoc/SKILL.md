@@ -115,7 +115,7 @@ Before finishing a file with XML docs, verify:
 - [ ] Class summary follows hierarchy style (see `references/class-summary.md`)
 - [ ] Non-MonoBehaviour binders have `<example>` blocks via `<include>` from `XmlExampleDoc-*.xml` (see `references/binders.md`)
 - [ ] MonoBinder (MonoBehaviour) classes do NOT have `<include>` / `<example>` blocks
-- [ ] Constructors: `<inheritdoc/>` when matching parent; full doc when API differs (see `references/tags.md`)
+- [ ] Constructors: no `<summary>` at all — `<param>` always, `<remarks>` only if it says something (see `references/tags.md`)
 - [ ] No `<inheritdoc/>` where behavior differs from base
 - [ ] `<see langword="null"/>` / `<see langword="true"/>` — never `<c>null</c>` / `<c>true</c>`
 - [ ] Enum members: `<see cref="Enum.Member"/>` — never `<c>EnumValue</c>`

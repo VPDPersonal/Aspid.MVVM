@@ -40,7 +40,7 @@ Use `<inheritdoc/>` when there is literally nothing to add beyond what the base 
 **Do NOT use when:**
 
 - Behavior is different or additional to the base.
-- Constructors change the effective API (fewer parameters, hardcoded arguments). Write a full `<summary>` + `<param>` block so the new signature is documented in its own terms.
+- Constructors change the effective API (fewer parameters, hardcoded arguments). Document the parameters so the new signature is readable in its own terms.
 
 ```csharp
 // Pass-through constructor — use inheritdoc
@@ -48,13 +48,34 @@ Use `<inheritdoc/>` when there is literally nothing to add beyond what the base 
 public AudioSourceVolumeBinder(AudioSource target, IConverter<float, float>? converter = null, BindMode mode = BindMode.OneWay)
     : base(target, converter, mode) { }
 
-// Hardcoded argument — write full doc
-/// <summary>
-/// Initializes a new instance of <see cref="UnityGenericOneTimeBinder{T}"/>.
-/// </summary>
+// Hardcoded argument — document the parameters, not the act of constructing
 /// <param name="setValue">The <see cref="UnityAction{T}"/> invoked once with the bound value.</param>
 public UnityGenericOneTimeBinder(UnityAction<T?> setValue)
     : base(setValue, BindMode.OneTime) { }
+```
+
+---
+
+## Constructors
+
+Never write a `<summary>` of the form *"Initializes a new instance of the `<see cref="X"/>` class."* That a
+constructor constructs is obvious from the declaration, and the block is pure noise in the tooltip.
+
+A constructor carries:
+
+| Tag | When |
+|---|---|
+| `<param>` | Always, one per parameter. |
+| `<remarks>` | Only when there is something to say — most often the defaults a parameterless overload picks. Optional. |
+| `<summary>` | Never. |
+
+```csharp
+/// <remarks>Default: writing every axis.</remarks>
+public FloatToVector3Converter() { }
+
+/// <param name="axes">Which axes the number is written into.</param>
+/// <param name="base">The value used for the axes the number does not write.</param>
+public FloatToVector3Converter(AxisMask axes, Vector3 @base = default) { }
 ```
 
 ---

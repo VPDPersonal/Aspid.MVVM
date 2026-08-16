@@ -9,14 +9,9 @@ namespace Aspid.MVVM.StarterKit
     /// Reads a number out of text.
     /// </summary>
     /// <remarks>
-    /// Parsing currently lives inside <c>InputFieldBinder</c>, hard-coded: no choice of culture, no
-    /// fallback, and a failed parse silently swallows the event. As a converter the decisions belong
-    /// to whoever authored the field.
-    /// <para>
-    /// Both directions are here, but the binder API has nowhere to put a cross-type two-way
-    /// converter yet — its converter field is same-type. Until that changes these are for use from
-    /// code and inside <see cref="ComposeConverter{TFrom, TMid, TTo}"/>.
-    /// </para>
+    /// Both directions are here, but the binder converter field is same-type, so a cross-type two-way
+    /// converter has nowhere to sit yet: until that changes these are for use from code and inside
+    /// <see cref="ComposeConverter{TFrom, TMid, TTo}"/>.
     /// </remarks>
     [Serializable]
     public sealed class StringToIntConverter : ITwoWayConverter<string?, int>

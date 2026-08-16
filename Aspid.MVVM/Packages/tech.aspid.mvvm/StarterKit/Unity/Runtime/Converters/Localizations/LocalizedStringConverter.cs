@@ -11,13 +11,8 @@ namespace Aspid.MVVM.StarterKit
     /// Looks a key up in a localization table.
     /// </summary>
     /// <remarks>
-    /// The package has localized binders, but they are a separate path — a localized label cannot
-    /// also be truncated, recased or wrapped in rich text, because those are converters and the
-    /// localized binder has no converter slot. As a converter, localization joins the same chain as
-    /// everything else.
-    /// <para>
-    /// Only compiled when <c>com.unity.localization</c> is installed.
-    /// </para>
+    /// Only compiled when <c>com.unity.localization</c> is installed. Unlike the localized binders,
+    /// localization here joins the same converter chain as truncation, casing and rich text.
     /// </remarks>
     [Serializable]
     public sealed class LocalizedStringConverter : IConverterString

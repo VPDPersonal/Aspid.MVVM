@@ -20,9 +20,10 @@ namespace Aspid.MVVM.StarterKit.Tests
             Assert.AreEqual(new Color(r, g, b), new ParseHtmlStringConverter().Convert(html));
 
         [Test]
-        public void Convert_UnparseableString_ReturnsTheFallbackAndReportsOnce()
+        public void Convert_UnparseableString_ReturnsTheFallbackAndReportsEveryTime()
         {
-            LogAssert.Expect(LogType.Error, new Regex("is not an HTML colour"));
+            for (var i = 0; i < 3; i++)
+                LogAssert.Expect(LogType.Error, new Regex("is not an HTML colour"));
 
             var converter = new ParseHtmlStringConverter(Color.magenta);
 

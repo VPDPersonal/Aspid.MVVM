@@ -20,22 +20,13 @@ namespace Aspid.MVVM.StarterKit
         IConverterFloat, IConverterIntToFloat, IConverterLongToFloat, IConverterDoubleToFloat,
         IConverterInt, IConverterLongToInt, IConverterFloatToInt, IConverterDoubleToInt,
         IConverterLong, IConverterIntToLong, IConverterFloatToLong, IConverterDoubleToLong,
-        ITwoWayConverter<double, double>,
-        ITwoWayConverter<float, float>,
-        ITwoWayConverter<int, int>,
-        ITwoWayConverter<long, long>
+        ITwoWayConverter<double, double>, ITwoWayConverter<float, float>, ITwoWayConverter<int, int>, ITwoWayConverter<long, long>
     {
-        [SerializeField] private NumberOperation _operation;
         [SerializeField] private double _coefficient;
+        [SerializeField] private NumberOperation _operation;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ArithmeticNumberConverter"/> class with default settings.
-        /// </summary>
         public ArithmeticNumberConverter() { }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ArithmeticNumberConverter"/> class.
-        /// </summary>
         /// <param name="operation">The arithmetic operation to perform.</param>
         /// <param name="coefficient">The coefficient to use in the operation.</param>
         public ArithmeticNumberConverter(NumberOperation operation, double coefficient)
@@ -96,15 +87,6 @@ namespace Aspid.MVVM.StarterKit
             _ => throw new ArgumentOutOfRangeException(nameof(_operation), _operation, null)
         };
 
-        private double Divide(double value)
-        {
-            if (_coefficient != 0)
-                return value / _coefficient;
-
-            Debug.LogError($"{nameof(ArithmeticNumberConverter)}: division by zero coefficient. Returning the input value unchanged.");
-            return value;
-        }
-
         double IConverter<int, double>.Convert(int value) =>
             ((IConverter<double, double>)this).Convert(value);
         
@@ -116,33 +98,38 @@ namespace Aspid.MVVM.StarterKit
         #endregion
 
         #region Convert back
-        // Only the same-type conversions are reversible: a binder in a reverse mode is constrained to
-        // IConverter<TProperty, TProperty>, and the cross-type overloads narrow, which cannot be undone.
-        double ITwoWayConverter<double, double>.ConvertBack(double value) => Undo(value);
+        double ITwoWayConverter<double, double>.ConvertBack(double value) => 
+            Undo(value);
 
-        float ITwoWayConverter<float, float>.ConvertBack(float value) => (float)Undo(value);
+        float ITwoWayConverter<float, float>.ConvertBack(float value) => 
+            (float)Undo(value);
 
-        int ITwoWayConverter<int, int>.ConvertBack(int value) => (int)Undo(value);
+        int ITwoWayConverter<int, int>.ConvertBack(int value) => 
+            (int)Undo(value);
 
-        long ITwoWayConverter<long, long>.ConvertBack(long value) => (long)Undo(value);
+        long ITwoWayConverter<long, long>.ConvertBack(long value) => 
+            (long)Undo(value);
 
         private double Undo(double value) => _operation switch
         {
             NumberOperation.Plus => value - _coefficient,
             NumberOperation.Minus => value + _coefficient,
             NumberOperation.Division => value * _coefficient,
-            NumberOperation.Multiply => UndoMultiply(value),
+            NumberOperation.Multiply => Divide(value),
             _ => throw new ArgumentOutOfRangeException(nameof(_operation), _operation, null)
         };
-
-        // Mirrors Divide: a zero coefficient makes the forward pass an identity, so undoing it is one too.
-        private double UndoMultiply(double value)
+        #endregion
+        
+        private double Divide(double value)
         {
-            if (_coefficient != 0) return value / _coefficient;
+            if (_coefficient != 0)
+                return value / _coefficient;
 
             LogDivideByZero();
             return value;
         }
-        #endregion
+
+        private static void LogDivideByZero() =>
+            Debug.LogError($"{nameof(ArithmeticNumberConverter)}: division by zero coefficient. Returning the input value unchanged.");
     }
 }

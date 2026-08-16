@@ -94,8 +94,7 @@ namespace Aspid.MVVM.StarterKit
         where TComponent : Component
         where TConverter : IConverter<TProperty, TProperty>
     {
-        [Tooltip("Optional converter applied to the value on its way to the component. It also runs in "
-            + "reverse only if it implements ITwoWayConverter.")]
+        [Tooltip("Optional converter applied to the value on its way to the component. It also runs in reverse only if it implements ITwoWayConverter.")]
         [SerializeReference] private TConverter _converter;
 
         /// <inheritdoc/>
@@ -119,8 +118,7 @@ namespace Aspid.MVVM.StarterKit
             if (_converter is null or ITwoWayConverter<TProperty, TProperty>) return;
 
             Debug.LogWarning(
-                $"{GetType().Name} is bound as {Mode} with {_converter.GetType().Name}, which converts "
-                + "one way only. Values sent back to the ViewModel are not converted.",
+                $"{GetType().Name} is bound as {Mode} with {_converter.GetType().Name}, which converts one way only. Values sent back to the ViewModel are not converted.",
                 context: this);
         }
     }

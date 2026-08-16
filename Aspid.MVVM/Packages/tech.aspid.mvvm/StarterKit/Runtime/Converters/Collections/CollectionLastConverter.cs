@@ -12,14 +12,10 @@ namespace Aspid.MVVM.StarterKit
     /// </summary>
     /// <typeparam name="T">The type of the items.</typeparam>
     /// <remarks>
-    /// "The most recent message", "the latest unlock" — the tail of a bound sequence, shown on its own.
-    /// <see cref="CollectionElementAtConverter{T}"/> reaches the same item with index 0 counted from
-    /// the end, but it needs an <see cref="IReadOnlyList{T}"/>; this one takes any
-    /// <see cref="IEnumerable{T}"/>, which is what an observable set, queue or stack arrives as.
-    /// <para>
-    /// A sequence that exposes no indexer has to be walked to its end before its last item is known;
-    /// there is no cheaper way to ask. A list or an array is read straight from its last index.
-    /// </para>
+    /// <see cref="CollectionElementAtConverter{T}"/> reaches the same item with index 0 counted from the
+    /// end, but it needs an <see cref="IReadOnlyList{T}"/>; this one takes any
+    /// <see cref="IEnumerable{T}"/>, which is what an observable set, queue or stack arrives as — and
+    /// has to be walked to its end before its last item is known.
     /// </remarks>
     [Serializable]
     [TypeSelectorDisplay(Group = "Aspid/Collection", Name = "Collection Last", Tooltip = "Takes the last item of a sequence")]

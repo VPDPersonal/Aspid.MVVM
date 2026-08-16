@@ -12,25 +12,13 @@ namespace Aspid.MVVM.StarterKit
     /// </summary>
     /// <typeparam name="TEnum">The enum type being combined.</typeparam>
     /// <remarks>
-    /// One panel shows the elemental damage of an attack while another shows the physical part of the
-    /// same value. Both read one property, and the choice of which flags each cares about is the
-    /// View's business — as a mask on the binder it is authored beside the panel it belongs to,
-    /// rather than as a second filtered property on the ViewModel.
-    /// <para>
     /// Chained ahead of <see cref="EnumFlagsToStringConverter{TEnum}"/> or
-    /// <see cref="EnumToBoolConverter{TEnum}"/> it narrows what those see, which is what makes it
-    /// worth a node of its own rather than an option on each of them.
-    /// </para>
+    /// <see cref="EnumToBoolConverter{TEnum}"/> it narrows what those see.
     /// <para>
-    /// On an enum not marked <see cref="FlagsAttribute"/> the value passes through untouched: its
-    /// number is one member's value rather than a set of bits, and combining it would blank the
-    /// value or produce a number no member declares.
-    /// </para>
-    /// <para>
-    /// The previous result is reused while the value, the mask and the operation are unchanged: an
-    /// enum has no non-boxing route back from its bits, so a mask applied on every push would
-    /// allocate on every notification. Only the last input is remembered, so a source alternating
-    /// between two values pays for both.
+    /// On an enum not marked <see cref="FlagsAttribute"/> the value passes through untouched: its number
+    /// is one member's value rather than a set of bits. The previous result is reused while the value,
+    /// the mask and the operation are unchanged, because an enum has no non-boxing route back from its
+    /// bits — only the last input is remembered, so a source alternating between two values pays for both.
     /// </para>
     /// </remarks>
     [Serializable]

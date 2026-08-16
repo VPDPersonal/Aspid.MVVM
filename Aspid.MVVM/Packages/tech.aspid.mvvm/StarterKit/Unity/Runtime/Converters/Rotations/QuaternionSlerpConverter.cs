@@ -10,14 +10,9 @@ namespace Aspid.MVVM.StarterKit
     /// Turns between two rotations by a 0..1 amount.
     /// </summary>
     /// <remarks>
-    /// A lid that swings open as a progress value advances, a gauge that sweeps between two stops.
-    /// The rotation counterpart of <see cref="VectorLerpConverter"/>, and slerp rather than lerp
-    /// because interpolating the four numbers of a rotation directly makes the turn speed up in the
-    /// middle.
-    /// <para>
-    /// Both ends are authored as Euler angles: a serialized <see cref="Quaternion"/> shows four raw
-    /// numbers in the Inspector, and nobody sets those by hand.
-    /// </para>
+    /// Slerp rather than lerp, because interpolating the four numbers of a rotation directly makes the
+    /// turn speed up in the middle. Both ends are authored as Euler angles: a serialized
+    /// <see cref="Quaternion"/> shows four raw numbers in the Inspector, and nobody sets those by hand.
     /// </remarks>
     [Serializable]
     [TypeSelectorDisplay(Group = "Aspid/Rotation", Name = "Quaternion Slerp", Tooltip = "Turns between two rotations by a 0..1 amount")]

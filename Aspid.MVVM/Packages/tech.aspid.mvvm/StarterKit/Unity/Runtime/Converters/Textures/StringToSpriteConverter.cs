@@ -10,21 +10,13 @@ namespace Aspid.MVVM.StarterKit
     /// Looks a sprite up by name.
     /// </summary>
     /// <remarks>
-    /// The item catalogue case: a backend sends <c>"sword_iron"</c> and the icon lives in the
-    /// project. The ViewModel would otherwise have to hold a <see cref="Sprite"/> — a reference to a
-    /// project asset in a layer that is meant not to know about them — or the scene would need one
-    /// switcher binder per icon.
+    /// The lookup is a scan of the authored array rather than a dictionary: the maps are short, the scan
+    /// allocates nothing, and a dictionary built once would go stale the moment the array is edited in
+    /// play mode.
     /// <para>
-    /// The lookup is a scan of the authored array rather than a dictionary. The maps are written by
-    /// hand and are short, the scan allocates nothing, and a dictionary built once from the array
-    /// would go stale the moment the array is edited in play mode — which is exactly when someone is
-    /// looking at it.
-    /// </para>
-    /// <para>
-    /// A <c>SpriteAtlas</c> is deliberately not a source here: <c>SpriteAtlas.GetSprite</c> returns a
-    /// fresh <see cref="Sprite"/> instance on every call, so a binder pushing on every notification
-    /// would leak one per push, and a cache keyed by string would grow without a bound. Point the
-    /// map at the sprites instead.
+    /// A <c>SpriteAtlas</c> is deliberately not a source: <c>SpriteAtlas.GetSprite</c> returns a fresh
+    /// <see cref="Sprite"/> on every call, so a binder pushing per notification would leak one per push.
+    /// Point the map at the sprites instead.
     /// </para>
     /// </remarks>
     [Serializable]

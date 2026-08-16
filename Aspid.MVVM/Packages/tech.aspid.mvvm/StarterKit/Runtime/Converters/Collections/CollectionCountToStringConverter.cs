@@ -12,21 +12,14 @@ namespace Aspid.MVVM.StarterKit
     /// </summary>
     /// <typeparam name="T">The type of the items.</typeparam>
     /// <remarks>
-    /// "3 items" under a list, and "Empty" when there is nothing in it — the caption every inventory,
-    /// party roster and mailbox needs, which otherwise lives as a formatted string property on the
-    /// ViewModel.
+    /// The two shipped halves do not compose into this: chaining
+    /// <see cref="CollectionCountConverter{T}"/> into <see cref="PluralizeConverter"/> puts the count in
+    /// front of whichever form it picked, so a zero form reads "0 Empty". The empty caption has to be a
+    /// phrase of its own.
     /// <para>
-    /// The two shipped halves do not compose into this. Chaining
-    /// <see cref="CollectionCountConverter{T}"/> into <see cref="PluralizeConverter"/> puts the count
-    /// in front of whichever form it picked, so a zero form reads "0 Empty"; clearing that format to
-    /// fix the zero case then drops the number from every other count. The empty caption has to be a
-    /// phrase of its own rather than a word the count is prepended to.
-    /// </para>
-    /// <para>
-    /// The last phrase is kept and returned again while the count is unchanged, because a binder
-    /// pushes on every notification rather than on every change and <c>string.Format</c> allocates a
-    /// string on each one. A field edited in the Inspector during play therefore shows up on the next
-    /// count change rather than immediately.
+    /// The last phrase is returned again while the count is unchanged, because a binder pushes on every
+    /// notification and <c>string.Format</c> allocates on each — so a field edited in the Inspector during
+    /// play shows up on the next count change rather than immediately.
     /// </para>
     /// </remarks>
     [Serializable]

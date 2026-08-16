@@ -12,34 +12,21 @@ namespace Aspid.MVVM.StarterKit.Tests
     /// <see cref="QuaternionToVector4Converter"/>/<see cref="Vector4ToQuaternionConverter"/> pair.
     /// </summary>
     /// <remarks>
-    /// The mistakes guarded against here are the ones a rotation converter makes silently: an angle
-    /// that reads 358° when it moved two degrees the other way, a mirror-image converter that was
-    /// copy-pasted the wrong way round and multiplies by 0.0175 where it should multiply by 57.3, a
-    /// quaternion rebuilt from four numbers that were never unit length and so scales and shears
-    /// whatever it lands on, and a custom axis whose sign is taken from the wrong end.
+    /// The mistakes guarded against are the ones a rotation converter makes silently: an angle that
+    /// reads 358° when it moved two degrees the other way, a degree/radian factor copy-pasted the wrong
+    /// way round, a quaternion rebuilt from four numbers that were never unit length, a custom axis
+    /// whose sign is taken from the wrong end.
     /// <para>
-    /// The expectations were taken by working the arithmetic through, not from the XML docs, and two
-    /// of them contradict what those docs promise. <c>CustomAngle</c> — shared verbatim by
-    /// <see cref="AngleToQuaternionConverter"/> and <see cref="QuaternionToAngleConverter"/> — does
-    /// not project onto the custom axis at all: it returns the whole turn <c>ToAngleAxis</c> reports
-    /// and only borrows a sign from the dot, so a rotation about a perpendicular axis reads as its
-    /// full angle rather than as zero. And <see cref="QuaternionSlerpConverter"/> always takes the
-    /// short arc, so a gauge authored to sweep from 0° to 350° runs ten degrees backwards instead of
-    /// most of the way round. Each such test pins the behaviour and says so where it stands, so a
-    /// later fix has to change the test deliberately.
+    /// Expectations were worked through by hand, and the tests that contradict the XML docs say so in
+    /// their names: <c>CustomAngle</c> does not project onto the custom axis, and
+    /// <see cref="QuaternionSlerpConverter"/> always takes the short arc. One outright defect is pinned
+    /// rather than fixed, because the fix belongs to the source: a clockwise round trip of 30° through
+    /// <see cref="AngleToQuaternionConverter"/> comes back as -330.
     /// </para>
     /// <para>
-    /// One outright defect is pinned rather than fixed, because fixing it belongs to the source and
-    /// not to a test: <see cref="AngleToQuaternionConverter"/> negates for <c>clockwise</c> after
-    /// reading <c>eulerAngles</c>, which Unity reports in 0..360, so a clockwise round trip of 30°
-    /// comes back as -330 — the right rotation named by a number a whole turn away from the one that
-    /// went in. The Custom branch escapes it because it reads a signed angle to begin with.
-    /// </para>
-    /// <para>
-    /// Two serialized fields have no constructor parameter and no setter —
-    /// <c>QuaternionSlerpConverter._clamp</c> and <c>QuaternionToAngleConverter._customAxis</c> — so
-    /// the unclamped slerp branch and a custom axis other than up are only reachable through the
-    /// Inspector and are not covered here.
+    /// <c>QuaternionSlerpConverter._clamp</c> and <c>QuaternionToAngleConverter._customAxis</c> have no
+    /// constructor parameter and no setter, so those branches are reachable only through the Inspector
+    /// and are not covered here.
     /// </para>
     /// </remarks>
     [TestFixture]

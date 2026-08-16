@@ -10,16 +10,10 @@ namespace Aspid.MVVM.StarterKit
     /// Measures the pixel rect of a texture.
     /// </summary>
     /// <remarks>
-    /// The rect <see cref="Sprite.Create(Texture2D, Rect, Vector2)"/> and the UV maths around an
-    /// atlas both want, taken from the texture itself rather than authored beside it and left to go
-    /// stale when the texture is replaced.
-    /// <para>
     /// Typed on <see cref="Texture"/> rather than <see cref="Texture2D"/> because that is where
-    /// <see cref="Texture.width"/> and <see cref="Texture.height"/> are declared: a
-    /// <c>RawImage</c>-facing ViewModel holds the base type, and a <c>RenderTexture</c> measures the
-    /// same way. A field typed for <see cref="Texture2D"/> still takes it, because
-    /// <see cref="IConverter{TFrom, TTo}"/> is contravariant in its input.
-    /// </para>
+    /// <see cref="Texture.width"/> and <see cref="Texture.height"/> are declared, so a
+    /// <c>RenderTexture</c> measures the same way. A field typed for <see cref="Texture2D"/> still takes
+    /// it, because <see cref="IConverter{TFrom, TTo}"/> is contravariant in its input.
     /// </remarks>
     [Serializable]
     [TypeSelectorDisplay(Group = "Aspid/Texture", Name = "Texture To Sprite Rect", Tooltip = "Measures the pixel rect of a texture")]

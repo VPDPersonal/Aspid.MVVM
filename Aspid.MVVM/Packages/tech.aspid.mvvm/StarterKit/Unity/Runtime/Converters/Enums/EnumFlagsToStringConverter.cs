@@ -13,35 +13,20 @@ namespace Aspid.MVVM.StarterKit
     /// </summary>
     /// <typeparam name="TEnum">The enum type being named.</typeparam>
     /// <remarks>
-    /// A damage mask, an unlocked-ability set or a list of active status effects reaching the UI as
-    /// "Fire, Ice, Poison". Written in the ViewModel instead, the summary drags the separator and the
-    /// wording of the empty case into logic that is otherwise about the fight.
-    /// <para>
     /// <see cref="EnumToStringConverter{TEnum}"/> names one member and returns its fallback for a
-    /// combination, because a combination is not a declared member. This is the converter that takes
-    /// the value apart first, and it asks that one for each piece — so a member's
-    /// <see cref="InspectorNameAttribute"/> or
-    /// <see cref="System.ComponentModel.DescriptionAttribute"/> reads the same here as it does there.
+    /// combination; this takes the value apart first and asks that one for each piece, so a member's
+    /// <see cref="InspectorNameAttribute"/> reads the same here as it does there.
+    /// <para>
+    /// Members are read in the order <c>Enum.GetValues</c> returns them — by unsigned underlying value,
+    /// never declaration order — and each consumes the bits it names. A composite member always sorts
+    /// after its parts, so it is named only when the bits it covers are not declared members of their
+    /// own, and a member covering one declared bit and one undeclared one is skipped, leaving that bit
+    /// unnamed. On an enum not marked <see cref="FlagsAttribute"/> the value is named whole and the
+    /// separator goes unused.
     /// </para>
     /// <para>
-    /// Members are read in the order <c>Enum.GetValues</c> returns them — by unsigned underlying
-    /// value, never declaration order — and each consumes the bits it names. A composite member,
-    /// <c>All = Fire | Ice | Poison</c>, carries every bit its parts carry and so always sorts after
-    /// them: it is named only when the bits it covers are not declared members of their own, and
-    /// moving it up the enum cannot change that. A member covering one declared bit and one
-    /// undeclared one is skipped the same way, leaving the undeclared bit unnamed.
-    /// </para>
-    /// <para>
-    /// On an enum not marked <see cref="FlagsAttribute"/> the value is one member rather than a set
-    /// of bits, so it is named whole and the separator goes unused: splitting the number would name
-    /// whichever members happen to sit inside it.
-    /// </para>
-    /// <para>
-    /// The previous text is reused while the value is unchanged: a binder pushes on every
-    /// notification, and a summary rebuilt on each one would allocate a string per push. Only the
-    /// last value is remembered, so a source alternating between two values rebuilds on every push.
-    /// An edit to the separator or the empty text while the game is running therefore reaches the
-    /// View on the next value that differs, not on the next push.
+    /// The previous text is reused while the value is unchanged, so an edit to the separator or the
+    /// empty text while the game is running reaches the View on the next value that differs.
     /// </para>
     /// </remarks>
     [Serializable]

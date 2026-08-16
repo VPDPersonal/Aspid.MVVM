@@ -12,15 +12,10 @@ namespace Aspid.MVVM.StarterKit
     /// </summary>
     /// <typeparam name="T">The type of the items.</typeparam>
     /// <remarks>
-    /// Tag lists, party rosters, ingredient lines. The builder is reused between calls, and so is the
-    /// text it produced: a binder pushes on every notification rather than on every change, so the
-    /// converter reuses the previous result when the text it builds is unchanged, where
-    /// <c>string.Join</c> hands back a new string on every push.
-    /// <para>
-    /// Each item can carry a wrapper of its own — brackets around a tag, a bullet in front of a line.
-    /// <c>string.Join</c> cannot express that without projecting the whole collection first, which is
-    /// a second allocation on top of the one this converter exists to avoid.
-    /// </para>
+    /// The builder is reused between calls, and so is the text it produced: a binder pushes on every
+    /// notification, where <c>string.Join</c> hands back a new string on every push. Each item can also
+    /// carry a wrapper of its own, which <c>string.Join</c> cannot express without projecting the whole
+    /// collection first.
     /// </remarks>
     [Serializable]
     [TypeSelectorDisplay(Group = "Aspid/Collection", Name = "List To String", Tooltip = "Joins a collection into one string")]

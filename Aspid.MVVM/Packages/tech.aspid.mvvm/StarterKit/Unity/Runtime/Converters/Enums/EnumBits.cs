@@ -9,13 +9,9 @@ namespace Aspid.MVVM.StarterKit
     /// </summary>
     /// <typeparam name="TEnum">The enum type described.</typeparam>
     /// <remarks>
-    /// An unconstrained enum has no non-boxing route to its underlying number, so reading the member
-    /// list per call would allocate once per member on every push. A static field of a generic type
-    /// is per closed type, so each enum pays for the table once, at type load.
-    /// <para>
-    /// <c>EnumMembers</c> in the StarterKit runtime assembly keeps the same table for the converters
-    /// that live beside it, but it is internal to that assembly and so out of reach here.
-    /// </para>
+    /// An unconstrained enum has no non-boxing route to its underlying number, so reading the member list
+    /// per call would allocate once per member on every push. A static field of a generic type is per
+    /// closed type, so each enum pays for the table once, at type load.
     /// </remarks>
     internal static class EnumBits<TEnum>
         where TEnum : struct, Enum

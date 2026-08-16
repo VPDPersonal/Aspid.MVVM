@@ -12,16 +12,11 @@ namespace Aspid.MVVM.StarterKit.Tests
     /// and <see cref="ThresholdColorConverter"/> blending over stops authored out of order.
     /// </summary>
     /// <remarks>
-    /// The mistake this fixture guards against is always "a channel that should not have moved,
-    /// moved": a mask compared with <c>==</c> instead of <c>HasFlag</c>, a clamp applied to channels
-    /// the mask never wrote, a curve consulted for an amount it cannot answer for, and a threshold
-    /// search that assumes the Inspector left the stops sorted.
-    /// <para>
-    /// Several assertions pin behaviour the XML docs do not describe, or describe loosely — the
-    /// clamp reaching only written channels, a curve keeping the endpoints away from the two stops,
-    /// and the fallback never taking part in a blend. Those cases carry a comment saying which claim
-    /// they are measured against.
-    /// </para>
+    /// The mistake this fixture guards against is always "a channel that should not have moved, moved":
+    /// a mask compared with <c>==</c> instead of <c>HasFlag</c>, a clamp applied to channels the mask
+    /// never wrote, a curve consulted for an amount it cannot answer for, a threshold search assuming
+    /// sorted stops. Several assertions pin behaviour the XML docs describe loosely and carry a comment
+    /// saying which claim they are measured against.
     /// </remarks>
     [TestFixture]
     internal sealed class ColorConverterAdditionsTests

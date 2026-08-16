@@ -11,28 +11,14 @@ namespace Aspid.MVVM.StarterKit.Tests
     /// and <see cref="DictionaryLookupConverter{TKey, TValue}"/>.
     /// </summary>
     /// <remarks>
-    /// Three classes of mistake are guarded against here.
+    /// Each sequence converter branches on <see cref="IReadOnlyList{T}"/> and walks the sequence
+    /// otherwise, so every behavioural assertion is made against both paths, and the walking path is
+    /// pinned on how many items it pulls — the property a rewrite silently loses.
     /// <para>
-    /// The first is the fast path disagreeing with the slow one. Each of the sequence converters
-    /// branches on <see cref="IReadOnlyList{T}"/> and walks the sequence otherwise, so an array and a
-    /// lazily generated sequence holding the same items run through different code. Every behavioural
-    /// assertion below is therefore made against both, and the walking path is additionally pinned on
-    /// how many items it pulls — the property that keeps a converter bound to a long feed cheap, and
-    /// the one a rewrite silently loses.
-    /// </para>
-    /// <para>
-    /// The second is the shared mutable state these converters carry for the sake of not allocating on
-    /// every binder push: the list <see cref="CollectionTakeConverter{T}"/> hands out and the phrase
-    /// <see cref="CollectionCountToStringConverter{T}"/> caches. Both are asserted by reference, since
-    /// an implementation that quietly starts returning fresh instances is still correct by value and
-    /// only shows up as a per-frame allocation.
-    /// </para>
-    /// <para>
-    /// The third is a word going missing. <see cref="CollectionCountToStringConverter{T}"/> ships with
-    /// its few form empty, so a converter authored in the Inspector under
-    /// <see cref="PluralRule.Slavic"/> reaches the 2-4 branch with nothing to write; the fix falls back
-    /// to the many form, and the assertions on it are written against the whole phrase so that a blank
-    /// word cannot pass unnoticed.
+    /// The shared mutable state these converters carry to avoid allocating per push — the list
+    /// <see cref="CollectionTakeConverter{T}"/> hands out, the phrase
+    /// <see cref="CollectionCountToStringConverter{T}"/> caches — is asserted by reference, since
+    /// returning fresh instances is still correct by value and only shows up as an allocation.
     /// </para>
     /// </remarks>
     [TestFixture]

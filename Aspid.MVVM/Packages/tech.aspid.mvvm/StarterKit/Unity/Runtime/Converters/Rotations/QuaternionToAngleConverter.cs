@@ -10,17 +10,10 @@ namespace Aspid.MVVM.StarterKit
     /// Reads the angle a rotation carries around one axis.
     /// </summary>
     /// <remarks>
-    /// A dial or a steering wheel reporting where the player left it. A
-    /// <see cref="BindMode.OneWay"/> binding never calls <c>ConvertBack</c>, so a ViewModel that
-    /// wants an angle out of a rotation had nothing it could pick.
-    /// <para>
-    /// It is not <see cref="AngleToQuaternionConverter"/>'s <c>ConvertBack</c> spelled as a
-    /// converter of its own. It reads the axis the same way, but it carries no offset and no
-    /// clockwise flag of its own, and it folds the result into 0..360 or ±180. Reading back a
-    /// rotation an <see cref="AngleToQuaternionConverter"/> built with an offset, or set clockwise,
-    /// therefore does not return the angle that went in — that converter undoes both in its
-    /// <c>ConvertBack</c>, and this one has neither to undo.
-    /// </para>
+    /// Not <see cref="AngleToQuaternionConverter"/>'s <c>ConvertBack</c> spelled as a converter of its
+    /// own: it reads the axis the same way, but carries no offset and no clockwise flag, and folds the
+    /// result into 0..360 or ±180. Reading back a rotation that converter built with an offset, or set
+    /// clockwise, therefore does not return the angle that went in.
     /// </remarks>
     [Serializable]
     [TypeSelectorDisplay(Group = "Aspid/Rotation", Name = "Quaternion To Angle", Tooltip = "Reads the angle a rotation carries around one axis")]

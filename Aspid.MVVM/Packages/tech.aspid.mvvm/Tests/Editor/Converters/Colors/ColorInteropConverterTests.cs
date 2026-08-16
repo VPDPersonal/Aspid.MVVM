@@ -9,18 +9,12 @@ namespace Aspid.MVVM.StarterKit.Tests
     /// <see cref="Color"/>/<see cref="Color32"/> pair.
     /// </summary>
     /// <remarks>
-    /// These are the converters where an assumption about range costs the most. The exposure maths is
-    /// unclamped on purpose and a well-meaning <c>Clamp01</c> would silently kill every bloom that
-    /// depends on it; the <see cref="Vector4"/> pair must stay a plain channel copy, because a
-    /// colour-space conversion sneaked into either half would break the round trip the docs promise;
-    /// and the <see cref="Color32"/> pair rides Unity's implicit operators, whose clamping and
-    /// rounding are easy to mis-describe from memory. Every expectation below is the value the
-    /// conversion actually produces, so a later tidy-up that clamps a channel, drops the alpha or
-    /// swaps rounding for truncation fails here rather than in a scene.
-    /// <para>
-    /// No converter in this file logs or allocates a Unity object, so the fixture needs neither
-    /// <c>LogAssert</c> nor a teardown.
-    /// </para>
+    /// These are the converters where an assumption about range costs the most: the exposure maths is
+    /// unclamped on purpose and a well-meaning <c>Clamp01</c> would kill every bloom that depends on it;
+    /// the <see cref="Vector4"/> pair must stay a plain channel copy, or the round trip the docs promise
+    /// breaks; and the <see cref="Color32"/> pair rides Unity's implicit operators, whose clamping and
+    /// rounding are easy to mis-describe from memory. Every expectation is the value the conversion
+    /// actually produces.
     /// </remarks>
     [TestFixture]
     internal sealed class ColorInteropConverterTests

@@ -16,21 +16,14 @@ namespace Aspid.MVVM.StarterKit
     /// by selecting components. Supports optional pre- and post-conversion transformations.
     /// </summary>
     /// <remarks>
-    /// Binding one axis and leaving the other where the designer put it: a bar that grows in width
-    /// only, a marker that slides along X while its Y stays with the layout.
+    /// Binding one axis and leaving the other where the designer put it: a bar that grows in width only,
+    /// a marker that slides along X while its Y stays with the layout.
     /// <para>
-    /// The 3D half of this pair has had eight subclasses since 1.0. The 2D half had none, and the
-    /// class itself did not implement <see cref="IConverter{TFrom, TTo}"/> — a
-    /// <c>Convert(Vector2, Vector2)</c> nothing in the package calls, so none of it was reachable
-    /// from a binder. Everything authored in two dimensions had to widen to <see cref="Vector3"/>
-    /// and back, or do the selection in the ViewModel.
-    /// </para>
-    /// <para>
-    /// Breaking change: this class shipped <see langword="sealed"/> and concrete, and becoming a
-    /// base class takes its <c>Default</c> property and its <c>Convert(Vector2, Vector2)</c>
-    /// overload with it. Code that constructed one directly, or a <c>[SerializeReference]</c> field
-    /// holding one, now names a type that cannot be instantiated: pick the concrete converter for
-    /// the component the reference vector is read from — <see cref="TransformPosition2DCombineConverter"/>,
+    /// Breaking change: this class shipped <see langword="sealed"/> and concrete, and becoming a base
+    /// class takes its <c>Default</c> property and its <c>Convert(Vector2, Vector2)</c> overload with it.
+    /// Code that constructed one directly, or a <c>[SerializeReference]</c> field holding one, now names
+    /// a type that cannot be instantiated: pick the concrete converter for the component the reference
+    /// vector is read from — <see cref="TransformPosition2DCombineConverter"/>,
     /// <see cref="RectTransformAnchoredPosition2DCombineConverter"/>,
     /// <see cref="RectTransformSizeDeltaCombineConverter"/>,
     /// <see cref="BoxCollider2DSizeCombineConverter"/> or

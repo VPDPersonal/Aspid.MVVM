@@ -15,16 +15,10 @@ namespace Aspid.MVVM.StarterKit
     /// Applies one arithmetic operation to the chosen channels of a colour.
     /// </summary>
     /// <remarks>
-    /// The general case the other colour converters are special cases of — boosting only red for a
-    /// damage flash, zeroing blue for a sepia pass, halving green on a colour-blind palette. Each of
-    /// those otherwise needs its own converter or a hand-written one.
-    /// <para>
-    /// Channels outside the mask pass through untouched, so a mask of <see cref="ColorChannels.A"/>
-    /// with <see cref="ChannelOp.Set"/> is <see cref="ColorAlphaConverter"/>, and a mask of
+    /// Channels outside the mask pass through untouched, so a mask of <see cref="ColorChannels.A"/> with
+    /// <see cref="ChannelOp.Set"/> is <see cref="ColorAlphaConverter"/>, and a mask of
     /// <see cref="ColorChannels.All"/> with <see cref="ChannelOp.Multiply"/> is a
-    /// <see cref="ColorTintConverter"/> multiply. Reach for those when they say what you mean; reach
-    /// for this when they do not.
-    /// </para>
+    /// <see cref="ColorTintConverter"/> multiply. Reach for those when they say what you mean.
     /// </remarks>
     [Serializable]
     [TypeSelectorDisplay(Group = "Aspid/Colour", Name = "Color Channel", Tooltip = "Applies one arithmetic operation to the chosen channels of a colour")]

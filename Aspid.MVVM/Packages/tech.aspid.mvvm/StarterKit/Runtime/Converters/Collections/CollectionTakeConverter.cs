@@ -12,15 +12,9 @@ namespace Aspid.MVVM.StarterKit
     /// </summary>
     /// <typeparam name="T">The type of the items.</typeparam>
     /// <remarks>
-    /// A "top three" feed into a virtualized list, or the last five lines of a log — a shorter view of
-    /// a bound collection, without a second projected property on the ViewModel that has to be rebuilt
-    /// whenever the source changes.
-    /// <para>
     /// The result is one <see cref="List{T}"/> reused between calls, because a binder pushes on every
     /// notification and a fresh list per push allocates once a frame while a value is being dragged.
-    /// Read it inside the push it arrived on: the next conversion clears and refills the same list, so
-    /// anything that stores it ends up holding a view of whatever came last.
-    /// </para>
+    /// Read it inside the push it arrived on: the next conversion clears and refills the same list.
     /// </remarks>
     [Serializable]
     [TypeSelectorDisplay(Group = "Aspid/Collection", Name = "Collection Take", Tooltip = "Keeps a few items off one end of a sequence")]

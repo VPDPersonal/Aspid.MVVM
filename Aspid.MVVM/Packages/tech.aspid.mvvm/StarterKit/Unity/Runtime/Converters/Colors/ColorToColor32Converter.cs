@@ -10,12 +10,8 @@ namespace Aspid.MVVM.StarterKit
     /// Narrows a <see cref="Color"/> into a <see cref="Color32"/>.
     /// </summary>
     /// <remarks>
-    /// The other direction of <see cref="Color32ToColorConverter"/>: handing a picked colour back to
-    /// something that stores bytes — a mesh's vertex colours, a network message, a save file.
-    /// <para>
-    /// Each channel is clamped to 0..255 and rounded, so an HDR colour loses everything above white
-    /// and the round trip back through <see cref="Color32ToColorConverter"/> is not exact.
-    /// </para>
+    /// Each channel is clamped to 0..255 and rounded, so an HDR colour loses everything above white and
+    /// the round trip back through <see cref="Color32ToColorConverter"/> is not exact.
     /// </remarks>
     [Serializable]
     [TypeSelectorDisplay(Group = "Aspid/Colour", Name = "Color To Color32", Tooltip = "Narrows a Color into a Color32")]

@@ -10,18 +10,11 @@ namespace Aspid.MVVM.StarterKit
     /// Reads an exact decimal number out of text.
     /// </summary>
     /// <remarks>
-    /// Prices, balances and anything else where a tenth has to stay a tenth: binary floating point
-    /// cannot hold 0.1, so a shop total accumulated in <see langword="float"/> drifts by a fraction of
-    /// a cent and then shows it.
-    /// <para>
-    /// Unity cannot serialize a <see langword="decimal"/> field, so the fallback is authored as text
-    /// and read with the invariant culture — write <c>1.5</c>, never <c>1,5</c>, whatever the machine
-    /// reads player input with. A comma there is refused rather than read as a group separator, so an
-    /// author who types the number their own machine shows them is told about it instead of getting
-    /// ten times the value they meant. Bounds are not offered: they would have to be authored as text
-    /// for the same reason, and nothing this converter is for — a price, a balance, an id — has
-    /// wanted a range yet.
-    /// </para>
+    /// Unity cannot serialize a <see langword="decimal"/> field, so the fallback is authored as text and
+    /// read with the invariant culture — write <c>1.5</c>, never <c>1,5</c>. A comma there is refused
+    /// rather than read as a group separator, so an author who types the number their own machine shows
+    /// them is told about it instead of getting ten times the value they meant. Bounds are not offered
+    /// for the same reason.
     /// </remarks>
     [Serializable]
     [TypeSelectorDisplay(Group = "Aspid/String", Name = "String To Decimal", Tooltip = "Reads an exact decimal number out of text")]

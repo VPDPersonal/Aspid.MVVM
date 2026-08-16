@@ -10,18 +10,12 @@ namespace Aspid.MVVM.StarterKit
     /// Pushes a colour above white by an exposure value.
     /// </summary>
     /// <remarks>
-    /// Emissive glow driven by a bound number — a charging weapon, an overheating engine, a portal
-    /// that brightens as it opens. A material's emission colour is what bloom reads, and it only
-    /// blooms above one, so the ViewModel would otherwise have to know the exposure maths to send a
-    /// colour a shader can glow with.
+    /// The exposure is in stops, matching Unity's own HDR colour field: the picked colour times two to the
+    /// power of the intensity. One stop is twice as bright.
     /// <para>
-    /// The exposure is in stops, matching Unity's own HDR colour field: the picked colour times two
-    /// to the power of the intensity. One stop is twice as bright.
-    /// </para>
-    /// <para>
-    /// The result leaves the 0..1 range on purpose, so it belongs on something that keeps it — a
-    /// material colour through <c>RendererMaterialColorBinder</c>, or a light. A UGUI
-    /// <see cref="UnityEngine.UI.Graphic"/> clamps it and shows no difference above white.
+    /// The result leaves the 0..1 range on purpose, so it belongs on something that keeps it — a material
+    /// colour or a light. A UGUI <see cref="UnityEngine.UI.Graphic"/> clamps it and shows no difference
+    /// above white.
     /// </para>
     /// </remarks>
     [Serializable]

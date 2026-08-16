@@ -14,13 +14,11 @@ namespace Aspid.MVVM.StarterKit.Tests
     /// <see cref="Vector2CombineConverter"/>.
     /// </summary>
     /// <remarks>
-    /// The mistakes here all look the same from the Inspector and only differ once something is
-    /// running: a lookup that is quietly wrong for a key nobody typed the way the map spells it, a
-    /// diagnostic that fires per push instead of per converter, and an emptiness check written as
-    /// <c>is null</c> — which sees a managed reference that outlived its native object, so a
-    /// destroyed texture reaches <see cref="Texture.width"/> and throws. Every expectation below was
-    /// taken from the code rather than from the XML docs; where the two disagree the code is what is
-    /// pinned, and the comment on the case says so.
+    /// The mistakes here all look the same from the Inspector and differ only once something is running:
+    /// a lookup quietly wrong for a key nobody typed the way the map spells it, a diagnostic firing per
+    /// push instead of per converter, and an emptiness check written as <c>is null</c> — which sees a
+    /// managed reference that outlived its native object, so a destroyed texture throws. Where code and
+    /// XML docs disagree the code is what is pinned, and the comment on the case says so.
     /// </remarks>
     [TestFixture]
     internal sealed class TextureAdditionsTests

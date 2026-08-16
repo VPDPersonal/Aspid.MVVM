@@ -16,23 +16,18 @@ namespace Aspid.MVVM.StarterKit.Tests
     /// <see cref="StringToVector3Converter"/> — plus the clamp bounds every numeric parser shares.
     /// </summary>
     /// <remarks>
-    /// The mistakes guarded against here are the ones that only appear on somebody else's machine:
-    /// a decimal separator that collides with the separator between vector components, a fallback
-    /// authored once in the Inspector and then read under a locale that spells numbers differently,
-    /// and a pair of clamp bounds an author can transpose with nothing to validate them.
+    /// The mistakes guarded against are the ones that only appear on somebody else's machine: a decimal
+    /// separator colliding with the separator between vector components, a fallback authored under one
+    /// locale and read under another, a pair of clamp bounds an author can transpose.
     /// <para>
     /// The bounds, the failure mode and the decimal fallback are Inspector state with no constructor
-    /// overload, so they are set through <see cref="With{T}"/> the way the Inspector would set them.
-    /// The thread culture is pinned to invariant for the duration of each test and restored after,
-    /// because every one of these converters resolves its culture at call time.
+    /// overload, so they are set through <see cref="With{T}"/>; the thread culture is pinned to invariant
+    /// per test, because these converters resolve their culture at call time.
     /// </para>
     /// <para>
-    /// Every expectation below was taken from running the implementation rather than from its
-    /// documentation. One contradicts it: the clamp comment repeated across the numeric parsers says
-    /// "a reversed pair reads as the minimum", and it only does so below the minimum — from the
-    /// minimum upward the same pair reads as the maximum, so a transposed pair lets nothing through
-    /// unchanged. <see cref="StringToDouble_ReversedClampBounds_PinInsteadOfThrowing"/> pins both
-    /// halves of that.
+    /// Expectations come from running the implementation. One contradicts the docs: a reversed clamp pair
+    /// reads as the minimum only below the minimum and as the maximum from there up, so it lets nothing
+    /// through unchanged.
     /// </para>
     /// </remarks>
     [TestFixture]

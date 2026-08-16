@@ -13,14 +13,11 @@ namespace Aspid.MVVM.StarterKit
     /// <typeparam name="TKey">The type of the key being looked up.</typeparam>
     /// <typeparam name="TValue">The type of the value the key names.</typeparam>
     /// <remarks>
-    /// A ViewModel holds an id — an item key, a status code, a faction name — and the View wants the
-    /// thing that id names: an icon, a label, a colour. Seated on any binder bound to that id, this
-    /// converter carries the map. The enum-keyed form of the same table already ships as
-    /// <see cref="EnumToValueConverter{TEnum, T}"/>, but a key that is a string or an int had nowhere
-    /// to look, so the map ended up as a switch in the ViewModel.
+    /// The enum-keyed form of the same table ships as <see cref="EnumToValueConverter{TEnum, T}"/>; this
+    /// takes a string or an int key.
     /// <para>
-    /// Keys are matched with the type's own equality, which for a string is ordinal and
-    /// case-sensitive: an id authored as "Fire" does not answer a pushed "fire".
+    /// Keys are matched with the type's own equality, which for a string is ordinal and case-sensitive:
+    /// an id authored as "Fire" does not answer a pushed "fire".
     /// </para>
     /// </remarks>
     [Serializable]

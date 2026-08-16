@@ -16,14 +16,9 @@ namespace Aspid.MVVM.StarterKit
     /// Writes one authored colour into the chosen states of a <see cref="ColorBlock"/>.
     /// </summary>
     /// <remarks>
-    /// Overriding a single state of a block that comes from somewhere else — the disabled grey a
-    /// theme should not have touched, or a pressed colour a designer wants louder than the derived
-    /// one. Chained after <see cref="ColorToColorBlockConverter"/> it corrects the one state whose
-    /// derived value was wrong, without the ViewModel producing a whole block to correct it.
-    /// <para>
-    /// The state is a mask rather than a single choice, so one converter can pin normal and selected
-    /// to the same colour — the usual way to say "this toggle stays lit once chosen".
-    /// </para>
+    /// Chained after <see cref="ColorToColorBlockConverter"/> it corrects the one state whose derived
+    /// value was wrong. The state is a mask rather than a single choice, so one converter can pin normal
+    /// and selected to the same colour.
     /// </remarks>
     [Serializable]
     [TypeSelectorDisplay(Group = "Aspid/Colour", Name = "Color Block State", Tooltip = "Writes one authored colour into the chosen states of a ColorBlock")]

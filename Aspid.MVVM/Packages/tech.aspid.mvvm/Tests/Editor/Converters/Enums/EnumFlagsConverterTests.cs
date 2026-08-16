@@ -10,28 +10,13 @@ namespace Aspid.MVVM.StarterKit.Tests
     /// passthrough, the four mask operations and the size-one cache both converters keep.
     /// </summary>
     /// <remarks>
-    /// The mistake guarded against is reading a plain enum as a set of bits. Its number is one
-    /// member's value, so masking it either blanks it or produces a number no member declares, and
-    /// splitting it names whichever members happen to sit inside it — in both cases the View is
-    /// handed a value no <c>switch</c> in the game has a case for. Every non-[Flags] assertion below
-    /// is paired with the same operation on a [Flags] enum, so the passthrough cannot pass by being
-    /// a no-op everywhere.
+    /// The mistake guarded against is reading a plain enum as a set of bits: masking it either blanks it
+    /// or produces a number no member declares. Every non-[Flags] assertion is paired with the same
+    /// operation on a [Flags] enum, so the passthrough cannot pass by being a no-op everywhere.
     /// <para>
-    /// The second class of mistake is naming a composite member instead of its parts. A composite
-    /// carries every bit its parts carry, so it always sorts after them and each part consumes its
-    /// own bits first; a composite is named only when the bits it covers are not declared members.
-    /// The consequence is that a bit reachable only through a composite has no name at all, and a
-    /// composite spanning one declared and one undeclared bit under-reports.
-    /// </para>
-    /// <para>
-    /// Three assertions pin behaviour the documentation reads against.
-    /// <c>EnumFlagsToStringConverter</c> documents an <see cref="ArgumentOutOfRangeException"/> for
-    /// an undeclared name source, but the source is only consulted once a flag has to be named, so a
-    /// zero value returns the empty text instead of throwing. <c>EnumMaskConverter</c> documents the
-    /// same exception for an undeclared operation, and never reaches the switch at all on a
-    /// non-[Flags] enum. And the empty text is documented as covering "a value that names no flags",
-    /// yet under <see cref="EnumNameSource.Raw"/> on a non-[Flags] enum an undeclared value is
-    /// written as its number and the empty text goes unused.
+    /// The second is naming a composite member instead of its parts — a bit reachable only through a
+    /// composite ends up with no name at all. The third is documentation: three assertions pin behaviour
+    /// the XML docs read against, and are named to say so.
     /// </para>
     /// </remarks>
     [TestFixture]

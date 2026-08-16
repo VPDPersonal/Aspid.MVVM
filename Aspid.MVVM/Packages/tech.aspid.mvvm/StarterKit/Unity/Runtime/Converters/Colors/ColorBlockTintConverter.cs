@@ -16,12 +16,8 @@ namespace Aspid.MVVM.StarterKit
     /// Tints the chosen colours of a <see cref="ColorBlock"/>.
     /// </summary>
     /// <remarks>
-    /// Theming a whole button at once — faction colours, a disabled palette.
-    /// <para>
-    /// The mask is what keeps the disabled colour out of the theme. A faction tint that also
-    /// recolours the disabled state makes an unavailable button look like an available one in
-    /// another faction's colours, which is the one thing that state exists to say.
-    /// </para>
+    /// The mask is what keeps the disabled colour out of the theme: a faction tint that also recolours
+    /// the disabled state makes an unavailable button look available in another faction's colours.
     /// </remarks>
     [Serializable]
     [TypeSelectorDisplay(Group = "Aspid/Colour", Name = "Color Block Tint", Tooltip = "Tints the chosen colours of a ColorBlock")]

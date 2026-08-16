@@ -15,20 +15,14 @@ namespace Aspid.MVVM.StarterKit.Tests
     /// <see cref="VectorDistanceConverter"/> and the curve on <see cref="VectorLerpConverter"/>.
     /// </summary>
     /// <remarks>
-    /// The class of mistake guarded here is a converter that silently stops honouring its own
-    /// contract on input an Inspector can legitimately produce: a min/max pair typed the wrong way
-    /// round, so a clamp breaks both of its bounds at once; a negative ceiling, so a length clamp
-    /// turns the vector around; a negative grid step, so Floor rounds up; a direction that was never
-    /// normalised, so a dot product silently scales its reading; a target Transform destroyed
-    /// mid-session, so a distance either throws or measures to a corpse.
+    /// The class of mistake guarded here is a converter that stops honouring its own contract on input an
+    /// Inspector can legitimately produce: a min/max pair typed the wrong way round, a negative ceiling,
+    /// a negative grid step, a direction that was never normalised, a target destroyed mid-session.
     /// <para>
-    /// Every expectation below was taken from the arithmetic the source actually performs, not from
-    /// the XML docs, and three of them contradict what a reader would assume. <c>Mathf.Round</c> is
-    /// banker's rounding, so an exact half goes to the even neighbour rather than away from zero.
-    /// Unity's <c>normalized</c> has a length floor of 1e-5, so a very short vector answers zero
-    /// rather than a unit vector. And <see cref="VectorLerpConverter"/>'s "hold the incoming amount
-    /// inside 0..1" is done by <c>Vector3.Lerp</c> on the amount the curve produced — the incoming
-    /// value itself is never clamped. Each such test pins the behaviour and says so where it stands.
+    /// Expectations come from the arithmetic the source performs, and three contradict what a reader would
+    /// assume: <c>Mathf.Round</c> is banker's rounding, Unity's <c>normalized</c> has a length floor of
+    /// 1e-5, and <see cref="VectorLerpConverter"/> clamps the amount the curve produced rather than the
+    /// incoming value. Each such test says so where it stands.
     /// </para>
     /// </remarks>
     [TestFixture]

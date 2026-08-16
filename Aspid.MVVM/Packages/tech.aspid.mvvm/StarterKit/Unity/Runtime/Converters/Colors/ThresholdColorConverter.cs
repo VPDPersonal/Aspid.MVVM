@@ -10,12 +10,9 @@ namespace Aspid.MVVM.StarterKit
     /// Picks a colour by which threshold a number has passed.
     /// </summary>
     /// <remarks>
-    /// Stepped states — green, amber, red — rather than a continuous ramp.
-    /// <para>
-    /// Blending turns the same authored stops into that ramp, which is the difference between a
-    /// health bar that snaps at 25% and one that slides towards red as it approaches it. It is off
-    /// by default because the step is what makes a threshold readable as a state.
-    /// </para>
+    /// Stepped states — green, amber, red — rather than a continuous ramp. Blending turns the same
+    /// authored stops into that ramp; it is off by default because the step is what makes a threshold
+    /// readable as a state.
     /// </remarks>
     [Serializable]
     [TypeSelectorDisplay(Group = "Aspid/Colour", Name = "Threshold Color", Tooltip = "Picks a colour by which threshold a number has passed")]

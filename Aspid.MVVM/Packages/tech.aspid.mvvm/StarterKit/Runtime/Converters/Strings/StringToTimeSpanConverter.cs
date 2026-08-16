@@ -9,16 +9,9 @@ namespace Aspid.MVVM.StarterKit
     /// Reads a duration out of text.
     /// </summary>
     /// <remarks>
-    /// The outbound half of this ships twice — <see cref="TimeSpanToStringConverter"/> and
-    /// <see cref="TimeSpanFormatConverter"/> — while nothing read a duration back in; a cooldown or a
-    /// session length arriving from a save file or a backend as <c>"00:01:30"</c> had to be parsed by
-    /// the ViewModel before it could reach a binder.
-    /// <para>
-    /// A bare number is not seconds here: <c>TimeSpan</c> reads <c>"90"</c> as ninety <i>days</i>,
-    /// which is the trap this converter is most often walked into. Text that counts seconds wants
-    /// <see cref="StringToFloatConverter"/> followed by <see cref="SecondsToTimeSpanConverter"/>
-    /// instead.
-    /// </para>
+    /// A bare number is not seconds here: <c>TimeSpan</c> reads <c>"90"</c> as ninety <i>days</i>, which
+    /// is the trap this converter is most often walked into. Text that counts seconds wants
+    /// <see cref="StringToFloatConverter"/> followed by <see cref="SecondsToTimeSpanConverter"/> instead.
     /// </remarks>
     [Serializable]
     [TypeSelectorDisplay(Group = "Aspid/String", Name = "String To Time Span", Tooltip = "Reads a duration out of text")]

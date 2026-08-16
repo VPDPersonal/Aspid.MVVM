@@ -9,21 +9,13 @@ namespace Aspid.MVVM.StarterKit
     /// Reads a 2D vector out of text.
     /// </summary>
     /// <remarks>
-    /// Debug consoles, level tools and cheat panels, where a position or a size is typed into one
-    /// field rather than authored component by component. It reads back what a vector's own
-    /// <see cref="object.ToString"/> writes, brackets and all, so a value copied out of a log or a
-    /// console goes straight back in.
+    /// Reads back what a vector's own <see cref="object.ToString"/> writes, brackets and all, so a value
+    /// copied out of a log goes straight back in.
     /// <para>
-    /// The culture defaults to invariant rather than to the machine's, unlike the rest of this family:
-    /// a culture that writes <c>1,5</c> for one and a half cannot also use a comma between the
-    /// components, and a tool field is typed by whoever is debugging rather than by a player. Thousands
-    /// separators are refused for the same reason.
-    /// </para>
-    /// <para>
-    /// A culture chosen anyway whose decimal separator <i>is</i> the separator — the machine's, on a
-    /// German player's device — reads and writes its components as invariant instead. The pair would
-    /// otherwise be written <c>"1,5,2,5"</c>, which no split recovers, and the two halves of a
-    /// two-way converter have to agree on text one of them can read back.
+    /// The culture defaults to invariant rather than to the machine's, unlike the rest of this family: a
+    /// culture that writes <c>1,5</c> cannot also use a comma between components, and thousands
+    /// separators are refused for the same reason. A culture chosen anyway whose decimal separator
+    /// <i>is</i> the component separator reads and writes its components as invariant instead.
     /// </para>
     /// </remarks>
     [Serializable]

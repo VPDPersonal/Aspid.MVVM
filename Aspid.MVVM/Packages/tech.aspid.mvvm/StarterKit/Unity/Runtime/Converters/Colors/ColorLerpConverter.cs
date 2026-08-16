@@ -10,18 +10,12 @@ namespace Aspid.MVVM.StarterKit
     /// Moves between two colours by a 0..1 amount.
     /// </summary>
     /// <remarks>
-    /// A two-stop gradient without a <see cref="Gradient"/> to author.
+    /// A two-stop gradient without a <see cref="Gradient"/> to author, with a curve shaping how the
+    /// amount travels between the two colours.
     /// <para>
-    /// The curve shapes how the amount travels between the two colours, which is what a straight
-    /// lerp cannot do: a bar that should look red well before it is empty needs the change bunched
-    /// at one end, and without the curve that meant reaching for a <see cref="Gradient"/> and
-    /// authoring both stops again.
-    /// </para>
-    /// <para>
-    /// Shaping and extrapolating are one choice rather than two. A curve answers with its end key
-    /// for anything past either end of its own range — no wrap mode extrapolates — so an amount
-    /// outside 0..1 cannot survive one. The clamp therefore turns the curve on; clearing it hands
-    /// the amount to the lerp as it arrived, and the colours carry past the two stops.
+    /// Shaping and extrapolating are one choice rather than two. A curve answers with its end key past
+    /// either end of its own range — no wrap mode extrapolates — so the clamp turns the curve on;
+    /// clearing it hands the amount to the lerp as it arrived, and the colours carry past the two stops.
     /// </para>
     /// </remarks>
     [Serializable]

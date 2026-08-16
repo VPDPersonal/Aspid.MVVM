@@ -12,13 +12,9 @@ namespace Aspid.MVVM.StarterKit
     /// </summary>
     /// <typeparam name="T">The type of the items.</typeparam>
     /// <remarks>
-    /// "Next in the queue", "the current objective" — the head of a bound sequence, shown on its own.
     /// <see cref="CollectionElementAtConverter{T}"/> answers the same question but needs an
     /// <see cref="IReadOnlyList{T}"/>, which an observable set, queue or stack is not: they stop at
-    /// <see cref="IReadOnlyCollection{T}"/> and expose no indexer to read.
-    /// <para>
-    /// Only the first item is read, so the cost does not grow with the length of the sequence.
-    /// </para>
+    /// <see cref="IReadOnlyCollection{T}"/> and expose no indexer. Only the first item is read here.
     /// </remarks>
     [Serializable]
     [TypeSelectorDisplay(Group = "Aspid/Collection", Name = "Collection First", Tooltip = "Takes the first item of a sequence")]

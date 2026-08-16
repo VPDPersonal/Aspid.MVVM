@@ -10,14 +10,9 @@ namespace Aspid.MVVM.StarterKit
     /// Reads a decimal number out of text, keeping the precision a float would lose.
     /// </summary>
     /// <remarks>
-    /// <c>InputFieldBinder</c> has a double path of its own, hard-coded the same way its int and float
-    /// paths were: the machine's culture, no fallback, and a silent swallow when the text is not a
-    /// number. This is that path made authorable.
-    /// <para>
-    /// Use it over <see cref="StringToFloatConverter"/> when the number is large or precise rather
-    /// than merely fractional — a currency total, a cumulative timer, an id that arrived as text — as
-    /// a <see langword="float"/> carries about seven significant digits and quietly rounds past them.
-    /// </para>
+    /// Use it over <see cref="StringToFloatConverter"/> when the number is large or precise rather than
+    /// merely fractional — a currency total, a cumulative timer, an id that arrived as text — since a
+    /// <see langword="float"/> carries about seven significant digits and quietly rounds past them.
     /// </remarks>
     [Serializable]
     [TypeSelectorDisplay(Group = "Aspid/String", Name = "String To Double", Tooltip = "Reads a decimal number out of text, keeping the precision a float would lose")]

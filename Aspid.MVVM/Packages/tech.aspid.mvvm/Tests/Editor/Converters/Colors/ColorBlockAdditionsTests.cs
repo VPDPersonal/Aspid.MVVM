@@ -12,20 +12,14 @@ namespace Aspid.MVVM.StarterKit.Tests
     /// that the four it does not write survive bit for bit.
     /// </summary>
     /// <remarks>
-    /// A mask converter fails in two ways a "does it tint?" test never sees: it writes a state the
-    /// mask excluded, or it reads the wrong field and writes the right colour into the wrong state.
-    /// Both need a source block whose five colours are all different, which is why nothing here
-    /// starts from <see cref="ColorBlock.defaultColorBlock"/> — that block gives highlighted and
-    /// selected the same colour, so a converter swapping the two would pass.
+    /// A mask converter fails in two ways a "does it tint?" test never sees: it writes a state the mask
+    /// excluded, or it reads the wrong field and writes the right colour into the wrong state. Both need
+    /// a source block whose five colours all differ, which is why nothing here starts from
+    /// <see cref="ColorBlock.defaultColorBlock"/> — it gives highlighted and selected the same colour.
     /// <para>
-    /// The second thing guarded is the default. The mask arrived after the converters shipped, so
-    /// <see cref="SelectableStates.All"/> has to stay the default in both the constructor and the
-    /// field initializer; any narrower default silently stops tinting a state that used to be
-    /// tinted, and nothing about the binder would look broken.
-    /// </para>
-    /// <para>
-    /// Neither converter logs or allocates a Unity object, so there is no <c>LogAssert</c> and
-    /// nothing to destroy — <see cref="ColorBlock"/> is a struct and both converters are pure.
+    /// The second thing guarded is the default: <see cref="SelectableStates.All"/> has to stay the default
+    /// in both the constructor and the field initializer, since any narrower one silently stops tinting a
+    /// state that used to be tinted.
     /// </para>
     /// </remarks>
     [TestFixture]

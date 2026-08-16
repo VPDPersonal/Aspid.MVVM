@@ -13,15 +13,11 @@ namespace Aspid.MVVM.StarterKit.Tests
     /// <see cref="BoundsSizeConverter"/> and <see cref="BoundsToRectConverter"/>.
     /// </summary>
     /// <remarks>
-    /// Guards against slot-shuffling mistakes, which are the failure mode this whole file invites:
-    /// a converter that reads the wrong component still returns a value of the right type and never
-    /// throws, so the bug surfaces only as a rectangle in the wrong place or a swapped axis on
-    /// screen. Three particular traps are pinned here — Unity's implicit <see cref="Vector3"/> to
-    /// <see cref="Vector4"/> conversion already zeroes <c>w</c>, so a default-<c>w</c> assertion
-    /// alone cannot tell the converter from doing nothing; <see cref="Rect"/> stores a corner plus a
-    /// size while <see cref="Bounds"/> stores a centre plus extents, so "the same four numbers"
-    /// means different geometry on each side; and neither the rectangle nor the bounding-box
-    /// converters normalise, so an inverted input stays inverted.
+    /// A converter that reads the wrong component still returns a value of the right type and never
+    /// throws, so the bug surfaces only as a rectangle in the wrong place. Three traps are pinned here:
+    /// Unity's implicit <see cref="Vector3"/> to <see cref="Vector4"/> conversion already zeroes
+    /// <c>w</c>; <see cref="Rect"/> stores a corner plus a size while <see cref="Bounds"/> stores a
+    /// centre plus extents; and neither converter normalises, so an inverted input stays inverted.
     /// </remarks>
     [TestFixture]
     internal sealed class VectorInteropConverterTests

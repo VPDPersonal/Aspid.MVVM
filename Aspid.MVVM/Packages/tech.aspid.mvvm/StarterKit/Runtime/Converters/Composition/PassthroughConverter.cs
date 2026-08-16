@@ -8,10 +8,8 @@ namespace Aspid.MVVM.StarterKit
     /// </summary>
     /// <typeparam name="T">The type of the value passing through.</typeparam>
     /// <remarks>
-    /// An explicit no-op reads differently from an empty slot: it says the author considered the
-    /// conversion and chose none. Useful as a placeholder branch in
-    /// <see cref="ConditionalConverter{T}"/> and as a neutral element when a converter is assembled
-    /// from code.
+    /// Useful as an explicit branch in <see cref="ConditionalConverter{T}"/> — one that reads as a
+    /// deliberate no-op rather than an unfilled slot — and as a neutral element in code.
     /// </remarks>
     [Serializable]
     public sealed class PassthroughConverter<T> : IConverter<T, T>

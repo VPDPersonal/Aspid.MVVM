@@ -11,10 +11,9 @@ namespace Aspid.MVVM.StarterKit
     /// <typeparam name="TMid">The intermediate type the first converter produces.</typeparam>
     /// <typeparam name="TTo">The type of the converted output value.</typeparam>
     /// <remarks>
-    /// <see cref="SequenceConverters{T}"/> chains converters that all share one type, which rules out
-    /// the common case: a value formatted through one converter and reshaped by another. Both links
-    /// are required — with a link missing there is no meaningful result to return, since the types on
-    /// either side need not match, so the converter reports itself once and returns the default.
+    /// Use <see cref="SequenceConverters{T}"/> instead when every converter in the chain shares one
+    /// type. Both links are required here: the types on either side need not match, so a missing link
+    /// leaves nothing meaningful to return.
     /// </remarks>
     [Serializable]
     public sealed class ChainConverter<TFrom, TMid, TTo> : IConverter<TFrom, TTo>

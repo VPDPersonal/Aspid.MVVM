@@ -27,14 +27,9 @@ namespace Aspid.MVVM.StarterKit
         [Tooltip("The culture the number is formatted with.")]
         [SerializeField] private CultureInfoMode _culture = CultureInfoMode.CurrentCulture;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="NumberFormatConverter"/> class formatting with thousands separators.
-        /// </summary>
+        /// <remarks>Default: formatting with thousands separators.</remarks>
         public NumberFormatConverter() { }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="NumberFormatConverter"/> class.
-        /// </summary>
         /// <param name="format">A standard numeric format string.</param>
         /// <param name="culture">The culture the number is formatted with.</param>
         public NumberFormatConverter(string format, CultureInfoMode culture = CultureInfoMode.CurrentCulture)
@@ -82,14 +77,9 @@ namespace Aspid.MVVM.StarterKit
         [Tooltip("The culture the number is formatted with.")]
         [SerializeField] private CultureInfoMode _culture = CultureInfoMode.CurrentCulture;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="AbbreviatedNumberConverter"/> class with K/M/B/T suffixes.
-        /// </summary>
+        /// <remarks>Default: with K/M/B/T suffixes.</remarks>
         public AbbreviatedNumberConverter() { }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="AbbreviatedNumberConverter"/> class.
-        /// </summary>
         /// <param name="decimals">How many decimals to show on a shortened number.</param>
         /// <param name="suffixes">The suffix for each power of a thousand, starting with none.</param>
         public AbbreviatedNumberConverter(int decimals, string[]? suffixes = null)
@@ -176,14 +166,9 @@ namespace Aspid.MVVM.StarterKit
         [Tooltip("A composite format for the result: {0} is the count, {1} the word.")]
         [SerializeField] private string _format = "{0} {1}";
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="PluralizeConverter"/> class with English grammar.
-        /// </summary>
+        /// <remarks>Default: with English grammar.</remarks>
         public PluralizeConverter() { }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="PluralizeConverter"/> class.
-        /// </summary>
         /// <param name="rule">Which grammar to follow.</param>
         /// <param name="one">Used for one.</param>
         /// <param name="many">Used for everything else.</param>
@@ -277,14 +262,9 @@ namespace Aspid.MVVM.StarterKit
         [Tooltip("The culture the number is formatted with.")]
         [SerializeField] private CultureInfoMode _culture = CultureInfoMode.CurrentCulture;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="CurrencyConverter"/> class with a leading dollar sign.
-        /// </summary>
+        /// <remarks>Default: with a leading dollar sign.</remarks>
         public CurrencyConverter() { }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="CurrencyConverter"/> class.
-        /// </summary>
         /// <param name="symbol">The symbol placed beside the amount.</param>
         /// <param name="position">Which side of the amount the symbol goes on.</param>
         /// <param name="decimals">How many decimals to show.</param>
@@ -327,14 +307,9 @@ namespace Aspid.MVVM.StarterKit
         [Tooltip("The culture the number is formatted with.")]
         [SerializeField] private CultureInfoMode _culture = CultureInfoMode.CurrentCulture;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="PercentStringConverter"/> class expecting a 0..1 fraction.
-        /// </summary>
+        /// <remarks>Default: expecting a 0..1 fraction.</remarks>
         public PercentStringConverter() { }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="PercentStringConverter"/> class.
-        /// </summary>
         /// <param name="decimals">How many decimals to show.</param>
         /// <param name="inputIsNormalized">Whether the incoming value is a 0..1 fraction.</param>
         public PercentStringConverter(int decimals, bool inputIsNormalized = true)
@@ -377,14 +352,9 @@ namespace Aspid.MVVM.StarterKit
         [Tooltip("The culture the numbers are formatted with.")]
         [SerializeField] private CultureInfoMode _culture = CultureInfoMode.CurrentCulture;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="RatioToStringConverter"/> class against 100.
-        /// </summary>
+        /// <remarks>Default: against 100.</remarks>
         public RatioToStringConverter() { }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="RatioToStringConverter"/> class.
-        /// </summary>
         /// <param name="max">The value the number is shown against.</param>
         /// <param name="format">A composite format: <c>{0}</c> is the value, <c>{1}</c> the maximum.</param>
         public RatioToStringConverter(float max, string format = "{0} / {1}")
@@ -427,14 +397,8 @@ namespace Aspid.MVVM.StarterKit
         [Tooltip("The culture the number is formatted with.")]
         [SerializeField] private CultureInfoMode _culture = CultureInfoMode.CurrentCulture;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="SignedNumberStringConverter"/> class.
-        /// </summary>
         public SignedNumberStringConverter() { }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="SignedNumberStringConverter"/> class.
-        /// </summary>
         /// <param name="format">A standard numeric format string applied to the magnitude.</param>
         /// <param name="hideZero">If <see langword="true"/>, returns an empty string for zero.</param>
         public SignedNumberStringConverter(string format, bool hideZero = false)
@@ -471,14 +435,9 @@ namespace Aspid.MVVM.StarterKit
         [Tooltip("The character used for padding.")]
         [SerializeField] private char _padChar = '0';
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="PaddedNumberConverter"/> class padding to two digits.
-        /// </summary>
+        /// <remarks>Default: padding to two digits.</remarks>
         public PaddedNumberConverter() { }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="PaddedNumberConverter"/> class.
-        /// </summary>
         /// <param name="digits">The minimum number of digits.</param>
         /// <param name="padChar">The character used for padding.</param>
         public PaddedNumberConverter(int digits, char padChar = '0')

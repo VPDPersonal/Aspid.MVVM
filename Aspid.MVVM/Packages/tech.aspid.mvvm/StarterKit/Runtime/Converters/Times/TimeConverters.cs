@@ -55,14 +55,9 @@ namespace Aspid.MVVM.StarterKit
         [Tooltip("Shown for a negative duration. When empty, negatives are treated as zero.")]
         [SerializeField] private string _negativeText = string.Empty;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="SecondsToTimeStringConverter"/> class writing mm:ss.
-        /// </summary>
+        /// <remarks>Default: writing mm:ss.</remarks>
         public SecondsToTimeStringConverter() { }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="SecondsToTimeStringConverter"/> class.
-        /// </summary>
         /// <param name="layout">Which units to show.</param>
         /// <param name="rounding">How to drop the fractional second.</param>
         /// <param name="padLeading">If <see langword="true"/>, pads the leading unit to two digits.</param>
@@ -150,14 +145,9 @@ namespace Aspid.MVVM.StarterKit
 
         [NonSerialized] private bool _loggedFormatFailure;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="TimeSpanFormatConverter"/> class writing mm:ss.
-        /// </summary>
+        /// <remarks>Default: writing mm:ss.</remarks>
         public TimeSpanFormatConverter() { }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="TimeSpanFormatConverter"/> class.
-        /// </summary>
         /// <param name="format">A <see cref="TimeSpan"/> format string.</param>
         public TimeSpanFormatConverter(string format)
         {
@@ -247,14 +237,9 @@ namespace Aspid.MVVM.StarterKit
         [Tooltip("Which unit to measure in.")]
         [SerializeField] private TimeUnit _unit = TimeUnit.TotalSeconds;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="TimeSpanToNumberConverter"/> class measuring in seconds.
-        /// </summary>
+        /// <remarks>Default: measuring in seconds.</remarks>
         public TimeSpanToNumberConverter() { }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="TimeSpanToNumberConverter"/> class.
-        /// </summary>
         /// <param name="unit">Which unit to measure in.</param>
         public TimeSpanToNumberConverter(TimeUnit unit)
         {
@@ -291,14 +276,9 @@ namespace Aspid.MVVM.StarterKit
         [Tooltip("Produce a UTC time rather than a local one.")]
         [SerializeField] private bool _utc;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="UnixTimestampToDateTimeConverter"/> class reading local seconds.
-        /// </summary>
+        /// <remarks>Default: reading local seconds.</remarks>
         public UnixTimestampToDateTimeConverter() { }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="UnixTimestampToDateTimeConverter"/> class.
-        /// </summary>
         /// <param name="milliseconds">Whether the timestamp is in milliseconds.</param>
         /// <param name="utc">Whether to produce a UTC time.</param>
         public UnixTimestampToDateTimeConverter(bool milliseconds, bool utc = false)
@@ -348,14 +328,9 @@ namespace Aspid.MVVM.StarterKit
         [Tooltip("The culture the date is formatted with.")]
         [SerializeField] private CultureInfoMode _culture = CultureInfoMode.CurrentCulture;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="DateTimeFormatConverter"/> class with the general format.
-        /// </summary>
+        /// <remarks>Default: with the general format.</remarks>
         public DateTimeFormatConverter() { }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="DateTimeFormatConverter"/> class.
-        /// </summary>
         /// <param name="format">A <see cref="DateTime"/> format string.</param>
         /// <param name="toLocalTime">Whether to convert to local time before formatting.</param>
         public DateTimeFormatConverter(string format, bool toLocalTime = false)
@@ -403,9 +378,7 @@ namespace Aspid.MVVM.StarterKit
         [Tooltip("Compare against UTC rather than local time.")]
         [SerializeField] private bool _useUtcNow;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="RelativeTimeConverter"/> class with English defaults.
-        /// </summary>
+        /// <remarks>Default: with English defaults.</remarks>
         public RelativeTimeConverter() { }
 
         /// <summary>
@@ -456,14 +429,9 @@ namespace Aspid.MVVM.StarterKit
         [Tooltip("Ticks of the moment compared against when not using the current time.")]
         [SerializeField] private long _referenceTicks;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="DateTimeToBoolConverter"/> class comparing against now.
-        /// </summary>
+        /// <remarks>Default: comparing against now.</remarks>
         public DateTimeToBoolConverter() { }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="DateTimeToBoolConverter"/> class.
-        /// </summary>
         /// <param name="comparison">How the bound moment is compared with the reference.</param>
         /// <param name="reference">The moment compared against. When <see langword="null"/>, the current time is used.</param>
         public DateTimeToBoolConverter(Comparisons comparison, DateTime? reference = null)

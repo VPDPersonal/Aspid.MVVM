@@ -9,12 +9,9 @@ namespace Aspid.MVVM.StarterKit
     /// Wraps a <see cref="Texture2D"/> in a <see cref="Sprite"/>.
     /// </summary>
     /// <remarks>
-    /// A downloaded avatar or a screenshot arrives as a texture and an <c>Image</c> wants a sprite.
-    /// <para>
     /// <see cref="Sprite.Create(Texture2D, Rect, Vector2)"/> allocates every time it is called, and a
     /// binder pushes on every notification rather than on every change — so the result is cached
     /// against the texture it came from. Without that, a bound avatar leaks a sprite per frame.
-    /// </para>
     /// </remarks>
     [Serializable]
     public sealed class Texture2DToSpriteConverter : IConverter<Texture2D?, Sprite?>

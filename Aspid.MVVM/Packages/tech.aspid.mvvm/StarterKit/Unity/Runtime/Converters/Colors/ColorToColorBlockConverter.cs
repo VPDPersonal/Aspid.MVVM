@@ -10,13 +10,8 @@ namespace Aspid.MVVM.StarterKit
     /// Builds a full <see cref="ColorBlock"/> out of one colour.
     /// </summary>
     /// <remarks>
-    /// A <see cref="Selectable"/> keeps five colours and a fade duration, so binding a theme colour
-    /// to a button meant the ViewModel producing all five — teaching it how UGUI models interaction
-    /// states. This derives them from the one colour that actually varies.
-    /// <para>
-    /// <c>IConverterColorBlock</c> has been declared since the first release with no implementation
-    /// behind it, so the picker on six binders has always been empty.
-    /// </para>
+    /// A <see cref="Selectable"/> keeps five colours and a fade duration; these derive all five from
+    /// the one colour that varies, so the ViewModel does not have to model UGUI interaction states.
     /// </remarks>
     [Serializable]
     public sealed class ColorToColorBlockConverter : IConverter<Color, ColorBlock>

@@ -19,25 +19,23 @@ namespace Aspid.MVVM.StarterKit
     /// </para>
     /// </remarks>
     [Serializable]
-    public sealed class SafeConverter<TFrom, TTo> : IConverter<TFrom, TTo>
+    public sealed class SafeConverter<TFrom, TTo> : IConverter<TFrom?, TTo?>
     {
         [Tooltip("The converter to run. When empty, the fallback value is returned.")]
-        [SerializeReference] private IConverter<TFrom, TTo>? _inner;
+        [SerializeReference] private IConverter<TFrom?, TTo?>? _inner;
 
         [Tooltip("Returned when the wrapped converter throws or is empty.")]
-        [SerializeField] private TTo _fallback = default!;
+        [SerializeField] private TTo? _fallback;
 
-        [Tooltip("Report the first failure to the console.")]
+        [Tooltip("Report failures to the console.")]
         [SerializeField] private bool _logErrors = true;
-
-        [NonSerialized] private bool _logged;
 
         public SafeConverter() { }
 
         /// <param name="inner">The converter to run.</param>
         /// <param name="fallback">Returned when <paramref name="inner"/> throws or is <see langword="null"/>.</param>
-        /// <param name="logErrors">If <see langword="true"/>, reports the first failure to the console.</param>
-        public SafeConverter(IConverter<TFrom, TTo>? inner, TTo fallback = default!, bool logErrors = true)
+        /// <param name="logErrors">If <see langword="true"/>, reports failures to the console.</param>
+        public SafeConverter(IConverter<TFrom?, TTo?>? inner, TTo? fallback = default, bool logErrors = true)
         {
             _inner = inner;
             _fallback = fallback;
@@ -49,9 +47,10 @@ namespace Aspid.MVVM.StarterKit
         /// </summary>
         /// <param name="value">The value to convert.</param>
         /// <returns>The converted value, or the fallback.</returns>
-        public TTo Convert(TFrom value)
+        public TTo? Convert(TFrom? value)
         {
-            if (_inner is null) return _fallback;
+            if (_inner is null)
+                return _fallback;
 
             try
             {
@@ -59,17 +58,11 @@ namespace Aspid.MVVM.StarterKit
             }
             catch (Exception exception)
             {
-                LogFailure(exception);
+                if (_logErrors)
+                    Debug.LogError($"{_inner.GetType().Name} threw ({exception.Message}). Using the fallback value.");
+
                 return _fallback;
             }
-        }
-
-        private void LogFailure(Exception exception)
-        {
-            if (!_logErrors || _logged) return;
-            _logged = true;
-
-            Debug.LogError($"{_inner!.GetType().Name} threw ({exception.Message}). Using the fallback value.");
         }
     }
 }

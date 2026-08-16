@@ -34,9 +34,9 @@ namespace Aspid.MVVM.StarterKit
             IConverter<T, T>? then,
             IConverter<T, T>? @else)
         {
-            _predicate = predicate;
             _then = then;
             _else = @else;
+            _predicate = predicate;
         }
 
         /// <summary>

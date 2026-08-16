@@ -19,19 +19,19 @@ namespace Aspid.MVVM.StarterKit
     /// </para>
     /// </remarks>
     [Serializable]
-    public sealed class CachedConverter<TFrom, TTo> : IConverter<TFrom, TTo>
+    public sealed class CachedConverter<TFrom, TTo> : IConverter<TFrom?, TTo?>
     {
         [Tooltip("The converter to memoize. When empty, the default value is returned.")]
-        [SerializeReference] private IConverter<TFrom, TTo>? _inner;
+        [SerializeReference] private IConverter<TFrom?, TTo?>? _inner;
 
         [NonSerialized] private bool _hasCache;
+        [NonSerialized] private TTo? _lastOutput;
         [NonSerialized] private TFrom? _lastInput;
-        [NonSerialized] private TTo _lastOutput = default!;
 
         public CachedConverter() { }
 
         /// <param name="inner">The converter to memoize.</param>
-        public CachedConverter(IConverter<TFrom, TTo>? inner)
+        public CachedConverter(IConverter<TFrom?, TTo?>? inner)
         {
             _inner = inner;
         }
@@ -41,10 +41,11 @@ namespace Aspid.MVVM.StarterKit
         /// </summary>
         /// <param name="value">The value to convert.</param>
         /// <returns>The converted value.</returns>
-        public TTo Convert(TFrom value)
+        public TTo? Convert(TFrom? value)
         {
             if (_inner is null) return default!;
-            if (_hasCache && EqualityComparer<TFrom>.Default.Equals(_lastInput!, value)) return _lastOutput;
+            if (_hasCache && EqualityComparer<TFrom?>.Default.Equals(_lastInput, value))
+                return _lastOutput;
 
             _lastInput = value;
             _lastOutput = _inner.Convert(value);

@@ -16,16 +16,16 @@ namespace Aspid.MVVM.StarterKit
     /// leaves nothing meaningful to return.
     /// </remarks>
     [Serializable]
-    public sealed class ComposeConverter<TFrom, TMid, TTo> : IConverter<TFrom, TTo>
+    public sealed class ComposeConverter<TFrom, TMid, TTo> : IConverter<TFrom?, TTo?>
     {
-        [SerializeReference] private IConverter<TFrom, TMid>? _first;
-        [SerializeReference] private IConverter<TMid, TTo>? _second;
+        [SerializeReference] private IConverter<TFrom?, TMid?>? _first;
+        [SerializeReference] private IConverter<TMid?, TTo?>? _second;
 
         public ComposeConverter() { }
 
         /// <param name="first">The converter applied to the input value.</param>
         /// <param name="second">The converter applied to the result of <paramref name="first"/>.</param>
-        public ComposeConverter(IConverter<TFrom, TMid> first, IConverter<TMid, TTo> second)
+        public ComposeConverter(IConverter<TFrom?, TMid?> first, IConverter<TMid?, TTo?> second)
         {
             _first = first;
             _second = second;
@@ -39,7 +39,7 @@ namespace Aspid.MVVM.StarterKit
         /// The result of the second converter, or the default of <typeparamref name="TTo"/> when
         /// either link is missing.
         /// </returns>
-        public TTo Convert(TFrom value)
+        public TTo? Convert(TFrom? value)
         {
             if (_first is not null && _second is not null)
                 return _second.Convert(_first.Convert(value));
@@ -48,7 +48,7 @@ namespace Aspid.MVVM.StarterKit
                 $"{nameof(ComposeConverter<TFrom, TMid, TTo>)}: both links are required, and one is missing. "
                 + "Returning the default value.");
 
-            return default!;
+            return default;
         }
     }
 }

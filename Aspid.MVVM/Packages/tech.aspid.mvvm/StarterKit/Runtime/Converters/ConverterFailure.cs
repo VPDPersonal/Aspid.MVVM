@@ -8,15 +8,12 @@ namespace Aspid.MVVM.StarterKit
     /// The shared half of <see cref="ConverterFailureMode"/>: reporting a value that would not convert.
     /// </summary>
     /// <remarks>
-    /// The enum gave the converters a common vocabulary but left each to write its own reporting, and
-    /// the first two to adopt it already disagreed about wording and about how often to log. This is
-    /// the other half — one message shape and one log-once rule, so a designer reading the console
-    /// sees the same thing whichever converter failed.
+    /// One message shape and one log-once rule, so a designer reading the console sees the same thing
+    /// whichever converter failed.
     /// <para>
-    /// The log-once flag lives on the calling converter, passed by reference, because "once" has to
-    /// mean once per converter instance. A binder pushes on every notification, and a value that
-    /// fails to parse usually fails on every one of them; <see cref="UnityEngine.Debug.LogError"/>
-    /// captures a stack trace, so logging per call costs frames rather than just noise.
+    /// The log-once flag lives on the calling converter, passed by reference, because "once" has to mean
+    /// once per converter instance: a binder pushes on every notification and a bad value fails on each,
+    /// and <see cref="UnityEngine.Debug.LogError"/> captures a stack trace — logging per call costs frames.
     /// </para>
     /// </remarks>
     internal static class ConverterFailure

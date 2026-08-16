@@ -11,14 +11,11 @@ namespace Aspid.MVVM.StarterKit.Tests
     /// The parse converters answer a value they cannot read according to <see cref="ConverterFailureMode"/>.
     /// </summary>
     /// <remarks>
-    /// Before this, every one of them returned its fallback in silence. A fallback of zero is
-    /// indistinguishable from text that legitimately read as zero, so a mistyped field in a save file
-    /// or a locale mismatch presented as a value rather than as a problem — the failure mode that
-    /// costs the most time to find.
+    /// A fallback of zero is indistinguishable from text that legitimately read as zero, so a mistyped
+    /// field or a locale mismatch used to present as a value rather than as a problem.
     /// <para>
-    /// Only the parse family took the mode. A converter whose fallback is its purpose —
-    /// <c>NullCoalesceConverter</c>, <c>DefaultStringConverter</c>, the threshold converters — has no
-    /// failure to report, and giving it a failure mode would have been vocabulary for its own sake.
+    /// Only the parse family took the mode: a converter whose fallback is its purpose has no failure to
+    /// report.
     /// </para>
     /// </remarks>
     [TestFixture]

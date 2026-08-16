@@ -61,9 +61,10 @@ namespace Aspid.MVVM.StarterKit.Tests
         }
 
         [Test]
-        public void Safe_ReportsOncePerInstance()
+        public void Safe_ReportsEveryFailure()
         {
-            LogAssert.Expect(LogType.Error, new Regex("threw"));
+            for (var i = 0; i < 3; i++)
+                LogAssert.Expect(LogType.Error, new Regex("threw"));
 
             var converter = new SafeConverter<int, int>(new Throws(), fallback: -1);
             converter.Convert(1);

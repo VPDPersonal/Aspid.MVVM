@@ -24,14 +24,8 @@ namespace Aspid.MVVM.StarterKit
 
         [NonSerialized] private bool _loggedMissingAsset;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ConverterAssetReference{TFrom, TTo}"/> class with no asset.
-        /// </summary>
         public ConverterAssetReference() { }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ConverterAssetReference{TFrom, TTo}"/> class.
-        /// </summary>
         /// <param name="asset">The shared converter asset.</param>
         public ConverterAssetReference(ConverterAsset<TFrom, TTo>? asset)
         {

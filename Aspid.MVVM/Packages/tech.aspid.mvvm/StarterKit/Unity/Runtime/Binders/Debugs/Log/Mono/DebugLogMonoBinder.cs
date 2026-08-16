@@ -40,8 +40,6 @@ namespace Aspid.MVVM.StarterKit
         public void SetValue<T>(T value) =>
             Debug.Log($"SetValue: {GetMessage(value)}");
 
-        // A converter returning null is normal — GenericToString does it for a null input — so it
-        // must not be conflated with having no converter, and the fallback has to survive null too.
         private string GetMessage(object value) =>
             (_converter is not null ? _converter.Convert(value) : value?.ToString()) ?? "null";
     }

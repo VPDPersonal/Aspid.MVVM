@@ -28,14 +28,9 @@ namespace Aspid.MVVM.StarterKit
         [Tooltip("The input value that maps to the end of the curve.")]
         [SerializeField] private float _inputMax = 1f;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="AnimationCurveConverter"/> class with a linear curve.
-        /// </summary>
+        /// <remarks>Default: with a linear curve.</remarks>
         public AnimationCurveConverter() { }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="AnimationCurveConverter"/> class.
-        /// </summary>
         /// <param name="curve">The curve the value is passed through.</param>
         public AnimationCurveConverter(AnimationCurve curve)
         {
@@ -81,14 +76,9 @@ namespace Aspid.MVVM.StarterKit
         [Tooltip("Slider positions at or below this are treated as silence.")]
         [SerializeField] private float _silenceThreshold = 0.0001f;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="AudioLinearToDecibelConverter"/> class over -80..0 dB.
-        /// </summary>
+        /// <remarks>Default: over -80..0 dB.</remarks>
         public AudioLinearToDecibelConverter() { }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="AudioLinearToDecibelConverter"/> class.
-        /// </summary>
         /// <param name="minDecibels">The decibel value silence maps to.</param>
         /// <param name="maxDecibels">The decibel value full volume maps to.</param>
         public AudioLinearToDecibelConverter(float minDecibels, float maxDecibels = 0f)
@@ -140,14 +130,9 @@ namespace Aspid.MVVM.StarterKit
 
         [NonSerialized] private AudioLinearToDecibelConverter? _inverse;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="AudioDecibelToLinearConverter"/> class over -80..0 dB.
-        /// </summary>
+        /// <remarks>Default: over -80..0 dB.</remarks>
         public AudioDecibelToLinearConverter() { }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="AudioDecibelToLinearConverter"/> class.
-        /// </summary>
         /// <param name="minDecibels">The decibel value that maps to silence.</param>
         /// <param name="maxDecibels">The decibel value that maps to full volume.</param>
         public AudioDecibelToLinearConverter(float minDecibels, float maxDecibels = 0f)

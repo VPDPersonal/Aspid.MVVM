@@ -39,14 +39,9 @@ namespace Aspid.MVVM.StarterKit
         [Tooltip("Which bound to apply.")]
         [SerializeField] private ClampMode _mode = ClampMode.Both;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ClampNumberConverter"/> class clamping to 0..1.
-        /// </summary>
+        /// <remarks>Default: clamping to 0..1.</remarks>
         public ClampNumberConverter() { }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ClampNumberConverter"/> class.
-        /// </summary>
         /// <param name="min">The lowest value allowed through.</param>
         /// <param name="max">The highest value allowed through.</param>
         /// <param name="mode">Which bound to apply.</param>
@@ -107,14 +102,9 @@ namespace Aspid.MVVM.StarterKit
         [Tooltip("How many decimal places to keep. Ignored when converting to int.")]
         [SerializeField] private int _digits;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="RoundNumberConverter"/> class rounding to the nearest whole number.
-        /// </summary>
+        /// <remarks>Default: rounding to the nearest whole number.</remarks>
         public RoundNumberConverter() { }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="RoundNumberConverter"/> class.
-        /// </summary>
         /// <param name="mode">Which way to drop the fraction.</param>
         /// <param name="digits">How many decimal places to keep.</param>
         public RoundNumberConverter(RoundMode mode, int digits = 0)
@@ -165,14 +155,9 @@ namespace Aspid.MVVM.StarterKit
         [Tooltip("Shifts where the steps fall.")]
         [SerializeField] private float _offset;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="SnapToStepConverter"/> class snapping to whole numbers.
-        /// </summary>
+        /// <remarks>Default: snapping to whole numbers.</remarks>
         public SnapToStepConverter() { }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="SnapToStepConverter"/> class.
-        /// </summary>
         /// <param name="step">The size of one step.</param>
         /// <param name="offset">Shifts where the steps fall.</param>
         public SnapToStepConverter(float step, float offset = 0f)
@@ -244,14 +229,9 @@ namespace Aspid.MVVM.StarterKit
         [Tooltip("The function to apply.")]
         [SerializeField] private UnaryMathOperation _operation;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="UnaryMathConverter"/> class applying <see cref="UnaryMathOperation.Abs"/>.
-        /// </summary>
+        /// <remarks>Default: applying <see cref="UnaryMathOperation.Abs"/>.</remarks>
         public UnaryMathConverter() { }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="UnaryMathConverter"/> class.
-        /// </summary>
         /// <param name="operation">The function to apply.</param>
         public UnaryMathConverter(UnaryMathOperation operation)
         {

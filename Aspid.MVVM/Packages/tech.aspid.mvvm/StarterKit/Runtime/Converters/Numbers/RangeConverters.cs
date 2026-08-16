@@ -30,14 +30,9 @@ namespace Aspid.MVVM.StarterKit
         [Tooltip("Hold the result inside the outgoing range.")]
         [SerializeField] private bool _clamp = true;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="RemapNumberConverter"/> class mapping 0..1 onto 0..1.
-        /// </summary>
+        /// <remarks>Default: mapping 0..1 onto 0..1.</remarks>
         public RemapNumberConverter() { }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="RemapNumberConverter"/> class.
-        /// </summary>
         /// <param name="fromMin">The low end of the incoming range.</param>
         /// <param name="fromMax">The high end of the incoming range.</param>
         /// <param name="toMin">The low end of the outgoing range.</param>
@@ -97,14 +92,9 @@ namespace Aspid.MVVM.StarterKit
         [Tooltip("Hold the result inside 0..1.")]
         [SerializeField] private bool _clamp = true;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="InverseLerpConverter"/> class over 0..1.
-        /// </summary>
+        /// <remarks>Default: over 0..1.</remarks>
         public InverseLerpConverter() { }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="InverseLerpConverter"/> class.
-        /// </summary>
         /// <param name="min">The value that maps to 0.</param>
         /// <param name="max">The value that maps to 1.</param>
         /// <param name="clamp">If <see langword="true"/>, holds the result inside 0..1.</param>
@@ -146,14 +136,9 @@ namespace Aspid.MVVM.StarterKit
         [Tooltip("Hold the incoming position inside 0..1.")]
         [SerializeField] private bool _clamp = true;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="LerpNumberConverter"/> class over 0..1.
-        /// </summary>
+        /// <remarks>Default: over 0..1.</remarks>
         public LerpNumberConverter() { }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="LerpNumberConverter"/> class.
-        /// </summary>
         /// <param name="from">The value 0 maps to.</param>
         /// <param name="to">The value 1 maps to.</param>
         /// <param name="clamp">If <see langword="true"/>, holds the incoming position inside 0..1.</param>
@@ -188,14 +173,8 @@ namespace Aspid.MVVM.StarterKit
         [Tooltip("Round the percentage to a whole number.")]
         [SerializeField] private bool _round;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="NormalizedToPercentConverter"/> class.
-        /// </summary>
         public NormalizedToPercentConverter() { }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="NormalizedToPercentConverter"/> class.
-        /// </summary>
         /// <param name="round">If <see langword="true"/>, rounds the percentage to a whole number.</param>
         public NormalizedToPercentConverter(bool round)
         {
@@ -252,14 +231,9 @@ namespace Aspid.MVVM.StarterKit
         [Tooltip("The high end of the range.")]
         [SerializeField] private float _max = 1f;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="WrapNumberConverter"/> class over 0..1.
-        /// </summary>
+        /// <remarks>Default: over 0..1.</remarks>
         public WrapNumberConverter() { }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="WrapNumberConverter"/> class.
-        /// </summary>
         /// <param name="mode">How to fold a value that leaves the range.</param>
         /// <param name="min">The low end of the range.</param>
         /// <param name="max">The high end of the range.</param>
@@ -306,14 +280,9 @@ namespace Aspid.MVVM.StarterKit
         [Tooltip("Return the elapsed fraction instead of the remaining one.")]
         [SerializeField] private bool _elapsed;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="CountdownProgressConverter"/> class over one second.
-        /// </summary>
+        /// <remarks>Default: over one second.</remarks>
         public CountdownProgressConverter() { }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="CountdownProgressConverter"/> class.
-        /// </summary>
         /// <param name="totalSeconds">The full duration, in seconds.</param>
         /// <param name="elapsed">If <see langword="true"/>, returns the elapsed fraction.</param>
         public CountdownProgressConverter(float totalSeconds, bool elapsed = false)
@@ -348,14 +317,9 @@ namespace Aspid.MVVM.StarterKit
         [Tooltip("The value that maps to 1.")]
         [SerializeField] private float _to = 1f;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="SmoothStepConverter"/> class over 0..1.
-        /// </summary>
+        /// <remarks>Default: over 0..1.</remarks>
         public SmoothStepConverter() { }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="SmoothStepConverter"/> class.
-        /// </summary>
         /// <param name="from">The value that maps to 0.</param>
         /// <param name="to">The value that maps to 1.</param>
         public SmoothStepConverter(float from, float to)

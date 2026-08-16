@@ -32,14 +32,8 @@ namespace Aspid.MVVM.StarterKit
 
         [NonSerialized] private bool _logged;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="SafeConverter{TFrom, TTo}"/> class with no wrapped converter.
-        /// </summary>
         public SafeConverter() { }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="SafeConverter{TFrom, TTo}"/> class.
-        /// </summary>
         /// <param name="inner">The converter to run.</param>
         /// <param name="fallback">Returned when <paramref name="inner"/> throws or is <see langword="null"/>.</param>
         /// <param name="logErrors">If <see langword="true"/>, reports the first failure to the console.</param>

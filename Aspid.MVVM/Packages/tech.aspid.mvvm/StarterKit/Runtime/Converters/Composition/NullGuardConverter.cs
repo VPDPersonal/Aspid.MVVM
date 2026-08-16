@@ -23,14 +23,8 @@ namespace Aspid.MVVM.StarterKit
         [Tooltip("Returned when the incoming value is null.")]
         [SerializeField] private TTo? _nullResult;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="NullGuardConverter{TFrom, TTo}"/> class with no wrapped converter.
-        /// </summary>
         public NullGuardConverter() { }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="NullGuardConverter{TFrom, TTo}"/> class.
-        /// </summary>
         /// <param name="inner">The converter to run for a non-null value.</param>
         /// <param name="nullResult">Returned when the incoming value is <see langword="null"/>.</param>
         public NullGuardConverter(IConverter<TFrom?, TTo?>? inner, TTo? nullResult = default)

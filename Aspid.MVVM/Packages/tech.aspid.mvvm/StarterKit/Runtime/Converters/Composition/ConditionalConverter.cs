@@ -24,14 +24,8 @@ namespace Aspid.MVVM.StarterKit
         [Tooltip("Applied when the predicate is false. When empty, the value passes through unchanged.")]
         [SerializeReference] private IConverter<T, T>? _else;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ConditionalConverter{T}"/> class with no branches.
-        /// </summary>
         public ConditionalConverter() { }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ConditionalConverter{T}"/> class.
-        /// </summary>
         /// <param name="predicate">Decides which branch a value takes.</param>
         /// <param name="then">Applied when the predicate is <see langword="true"/>.</param>
         /// <param name="else">Applied when the predicate is <see langword="false"/>.</param>

@@ -17,14 +17,9 @@ namespace Aspid.MVVM.StarterKit
         [Tooltip("How many characters to take. Zero or less takes everything from the start.")]
         [SerializeField] private int _length = 1;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="SubstringConverter"/> class taking the first character.
-        /// </summary>
+        /// <remarks>Default: taking the first character.</remarks>
         public SubstringConverter() { }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="SubstringConverter"/> class.
-        /// </summary>
         /// <param name="start">Where the slice starts.</param>
         /// <param name="length">How many characters to take.</param>
         public SubstringConverter(int start, int length)

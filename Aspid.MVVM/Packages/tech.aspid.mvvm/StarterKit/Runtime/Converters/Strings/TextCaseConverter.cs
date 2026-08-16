@@ -22,14 +22,9 @@ namespace Aspid.MVVM.StarterKit
         [Tooltip("The culture whose casing rules apply. Turkish and Azeri differ from the rest.")]
         [SerializeField] private CultureInfoMode _culture = CultureInfoMode.CurrentCulture;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="TextCaseConverter"/> class upper-casing.
-        /// </summary>
+        /// <remarks>Default: upper-casing.</remarks>
         public TextCaseConverter() { }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="TextCaseConverter"/> class.
-        /// </summary>
         /// <param name="textCase">Which casing to apply.</param>
         /// <param name="culture">The culture whose casing rules apply.</param>
         public TextCaseConverter(TextCase textCase, CultureInfoMode culture = CultureInfoMode.CurrentCulture)

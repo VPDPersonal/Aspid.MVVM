@@ -17,14 +17,9 @@ namespace Aspid.MVVM.StarterKit
         [Tooltip("Treat the size as a percentage of the label's own size rather than as points.")]
         [SerializeField] private bool _isPercent = true;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="RichTextSizeConverter"/> class at full size.
-        /// </summary>
+        /// <remarks>Default: at full size.</remarks>
         public RichTextSizeConverter() { }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="RichTextSizeConverter"/> class.
-        /// </summary>
         /// <param name="size">The size applied to the text.</param>
         /// <param name="isPercent">If <see langword="true"/>, treats the size as a percentage.</param>
         public RichTextSizeConverter(float size, bool isPercent = true)

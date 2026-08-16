@@ -27,14 +27,9 @@ namespace Aspid.MVVM.StarterKit
         [Tooltip("Cut at a space rather than mid-word.")]
         [SerializeField] private bool _atWordBoundary;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="TruncateStringConverter"/> class cutting at twenty characters.
-        /// </summary>
+        /// <remarks>Default: cutting at twenty characters.</remarks>
         public TruncateStringConverter() { }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="TruncateStringConverter"/> class.
-        /// </summary>
         /// <param name="maxLength">The longest string allowed through, ellipsis included.</param>
         /// <param name="side">Which end to cut from.</param>
         /// <param name="atWordBoundary">If <see langword="true"/>, cuts at a space rather than mid-word.</param>

@@ -17,14 +17,9 @@ namespace Aspid.MVVM.StarterKit
         [Tooltip("The characters to remove. When empty, whitespace is removed.")]
         [SerializeField] private string _trimChars = string.Empty;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="TrimStringConverter"/> class trimming whitespace from both ends.
-        /// </summary>
+        /// <remarks>Default: trimming whitespace from both ends.</remarks>
         public TrimStringConverter() { }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="TrimStringConverter"/> class.
-        /// </summary>
         /// <param name="side">Which ends to trim.</param>
         /// <param name="trimChars">The characters to remove. When empty, whitespace is removed.</param>
         public TrimStringConverter(TrimSide side, string trimChars = "")

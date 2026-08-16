@@ -23,14 +23,8 @@ namespace Aspid.MVVM.StarterKit
         [Tooltip("Leave a blank value undecorated.")]
         [SerializeField] private bool _skipWhenEmpty = true;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ConcatStringConverter"/> class that adds nothing.
-        /// </summary>
         public ConcatStringConverter() { }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ConcatStringConverter"/> class.
-        /// </summary>
         /// <param name="prefix">Placed before the value.</param>
         /// <param name="suffix">Placed after the value.</param>
         /// <param name="skipWhenEmpty">If <see langword="true"/>, leaves a blank value undecorated.</param>

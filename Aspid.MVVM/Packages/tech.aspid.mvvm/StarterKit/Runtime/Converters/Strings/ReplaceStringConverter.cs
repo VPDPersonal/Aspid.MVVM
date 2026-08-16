@@ -19,14 +19,8 @@ namespace Aspid.MVVM.StarterKit
         [Tooltip("Match without regard to case.")]
         [SerializeField] private bool _ignoreCase;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ReplaceStringConverter"/> class that replaces nothing.
-        /// </summary>
         public ReplaceStringConverter() { }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ReplaceStringConverter"/> class.
-        /// </summary>
         /// <param name="search">The text to look for.</param>
         /// <param name="replacement">The text put in its place.</param>
         /// <param name="ignoreCase">If <see langword="true"/>, matches without regard to case.</param>

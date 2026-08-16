@@ -20,14 +20,9 @@ namespace Aspid.MVVM.StarterKit
         [Tooltip("The character the hidden part is written with.")]
         [SerializeField] private char _maskChar = '•';
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="MaskStringConverter"/> class showing two characters at each end.
-        /// </summary>
+        /// <remarks>Default: showing two characters at each end.</remarks>
         public MaskStringConverter() { }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="MaskStringConverter"/> class.
-        /// </summary>
         /// <param name="visibleHead">How many characters to leave visible at the start.</param>
         /// <param name="visibleTail">How many characters to leave visible at the end.</param>
         /// <param name="maskChar">The character the hidden part is written with.</param>

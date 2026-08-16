@@ -20,14 +20,9 @@ namespace Aspid.MVVM.StarterKit
         [Tooltip("The total number of units. Zero means no maximum.")]
         [SerializeField] private int _max = 5;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="RepeatStringConverter"/> class with five stars.
-        /// </summary>
+        /// <remarks>Default: with five stars.</remarks>
         public RepeatStringConverter() { }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="RepeatStringConverter"/> class.
-        /// </summary>
         /// <param name="unit">The text repeated once per count.</param>
         /// <param name="max">The total number of units. Zero means no maximum.</param>
         /// <param name="emptyUnit">The text used for the remainder up to the maximum.</param>

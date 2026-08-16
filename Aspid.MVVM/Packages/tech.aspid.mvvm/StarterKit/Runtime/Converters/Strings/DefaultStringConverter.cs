@@ -20,14 +20,9 @@ namespace Aspid.MVVM.StarterKit
         [Tooltip("Count a string of spaces as blank.")]
         [SerializeField] private bool _treatWhiteSpaceAsEmpty = true;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="DefaultStringConverter"/> class with an em dash.
-        /// </summary>
+        /// <remarks>Default: with an em dash.</remarks>
         public DefaultStringConverter() { }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="DefaultStringConverter"/> class.
-        /// </summary>
         /// <param name="fallback">Shown when the bound string is blank.</param>
         /// <param name="treatWhiteSpaceAsEmpty">If <see langword="true"/>, counts a string of spaces as blank.</param>
         public DefaultStringConverter(string fallback, bool treatWhiteSpaceAsEmpty = true)

@@ -28,14 +28,8 @@ namespace Aspid.MVVM.StarterKit
         [Tooltip("The culture the number is formatted with.")]
         [SerializeField] private CultureInfoMode _culture = CultureInfoMode.CurrentCulture;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ThresholdRichTextColorConverter"/> class with no stops.
-        /// </summary>
         public ThresholdRichTextColorConverter() { }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ThresholdRichTextColorConverter"/> class.
-        /// </summary>
         /// <param name="stops">Colours by threshold.</param>
         /// <param name="fallback">Used when the value is below every threshold.</param>
         public ThresholdRichTextColorConverter(ColorStop[]? stops, Color fallback)

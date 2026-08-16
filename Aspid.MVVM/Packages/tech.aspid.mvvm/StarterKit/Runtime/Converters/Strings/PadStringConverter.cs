@@ -19,14 +19,9 @@ namespace Aspid.MVVM.StarterKit
         [Tooltip("Pad on the left rather than the right.")]
         [SerializeField] private bool _padLeft = true;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="PadStringConverter"/> class padding to eight characters.
-        /// </summary>
+        /// <remarks>Default: padding to eight characters.</remarks>
         public PadStringConverter() { }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="PadStringConverter"/> class.
-        /// </summary>
         /// <param name="totalWidth">The width to pad to.</param>
         /// <param name="padChar">The character used for padding.</param>
         /// <param name="padLeft">If <see langword="true"/>, pads on the left.</param>

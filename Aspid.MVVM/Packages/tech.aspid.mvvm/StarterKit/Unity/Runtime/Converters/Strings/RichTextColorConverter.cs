@@ -21,14 +21,9 @@ namespace Aspid.MVVM.StarterKit
         [Tooltip("Include the alpha channel in the tag.")]
         [SerializeField] private bool _includeAlpha;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="RichTextColorConverter"/> class colouring white.
-        /// </summary>
+        /// <remarks>Default: colouring white.</remarks>
         public RichTextColorConverter() { }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="RichTextColorConverter"/> class.
-        /// </summary>
         /// <param name="color">The colour the text is tagged with.</param>
         /// <param name="includeAlpha">If <see langword="true"/>, includes the alpha channel.</param>
         public RichTextColorConverter(Color color, bool includeAlpha = false)

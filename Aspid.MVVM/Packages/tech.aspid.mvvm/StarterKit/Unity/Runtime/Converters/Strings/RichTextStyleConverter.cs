@@ -23,14 +23,8 @@ namespace Aspid.MVVM.StarterKit
         [Tooltip("Wrap in <s>.")]
         [SerializeField] private bool _strikethrough;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="RichTextStyleConverter"/> class with no styling.
-        /// </summary>
         public RichTextStyleConverter() { }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="RichTextStyleConverter"/> class.
-        /// </summary>
         /// <param name="bold">Whether to wrap in <c>&lt;b&gt;</c>.</param>
         /// <param name="italic">Whether to wrap in <c>&lt;i&gt;</c>.</param>
         /// <param name="underline">Whether to wrap in <c>&lt;u&gt;</c>.</param>

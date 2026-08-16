@@ -8,15 +8,11 @@ namespace Aspid.MVVM.StarterKit.Tests
     /// A binder must never run the forward converter on a value going back to the ViewModel.
     /// </summary>
     /// <remarks>
-    /// The base <see cref="TargetBinder{TTarget, TProperty, TConverter}"/> was fixed to route the
-    /// reverse direction through <see cref="ITwoWayConverter{TFrom, TTo}"/>, but four binders carry
-    /// their own private converter field and never inherited that: <c>GameObjectTagBinder</c>,
-    /// <c>GameObjectTagMonoBinder</c>, <c>ObjectNameBinder</c> and <c>ObjectNameMonoBinder</c> each
-    /// pushed <c>GetConvertedValue(target)</c> to the ViewModel on bind.
+    /// Four binders carry their own private converter field and never inherited the base fix that routes
+    /// the reverse direction through <see cref="ITwoWayConverter{TFrom, TTo}"/>.
     /// <para>
-    /// The bug hides behind the converters people test with. Inversion and negation are their own
-    /// inverse, so applying the forward conversion twice looks correct; a converter that appends a
-    /// suffix shows it immediately. That is why the converter here is deliberately not an involution.
+    /// The bug hides behind the converters people test with: inversion is its own inverse, so applying
+    /// the forward conversion twice looks correct. The converter here is deliberately not an involution.
     /// </para>
     /// </remarks>
     [TestFixture]

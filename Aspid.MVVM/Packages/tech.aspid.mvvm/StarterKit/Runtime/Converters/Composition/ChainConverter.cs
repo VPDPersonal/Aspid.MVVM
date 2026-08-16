@@ -24,14 +24,8 @@ namespace Aspid.MVVM.StarterKit
 
         [NonSerialized] private bool _loggedIncomplete;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ChainConverter{TFrom, TMid, TTo}"/> class with no links.
-        /// </summary>
         public ChainConverter() { }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ChainConverter{TFrom, TMid, TTo}"/> class.
-        /// </summary>
         /// <param name="first">The converter applied to the input value.</param>
         /// <param name="second">The converter applied to the result of <paramref name="first"/>.</param>
         public ChainConverter(IConverter<TFrom, TMid> first, IConverter<TMid, TTo> second)

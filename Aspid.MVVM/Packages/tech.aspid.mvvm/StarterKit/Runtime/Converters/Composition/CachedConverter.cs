@@ -28,14 +28,8 @@ namespace Aspid.MVVM.StarterKit
         [NonSerialized] private TFrom? _lastInput;
         [NonSerialized] private TTo _lastOutput = default!;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="CachedConverter{TFrom, TTo}"/> class with no wrapped converter.
-        /// </summary>
         public CachedConverter() { }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="CachedConverter{TFrom, TTo}"/> class.
-        /// </summary>
         /// <param name="inner">The converter to memoize.</param>
         public CachedConverter(IConverter<TFrom, TTo>? inner)
         {

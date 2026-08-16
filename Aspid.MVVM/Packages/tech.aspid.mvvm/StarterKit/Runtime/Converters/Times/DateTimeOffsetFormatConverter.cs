@@ -9,11 +9,9 @@ namespace Aspid.MVVM.StarterKit
     /// Formats a <see cref="DateTimeOffset"/>.
     /// </summary>
     /// <remarks>
-    /// An event window arrives from a server with the server's offset attached, and that offset is
-    /// the part a <see cref="DateTime"/> cannot carry — converting to one either drops it or quietly
-    /// re-reads the moment in the player's own zone. This keeps it, and lets the field choose which
-    /// zone to show the moment in: the one it came with, the player's, or a fixed one the game picked
-    /// so that everyone reads the same clock.
+    /// A <see cref="DateTime"/> cannot carry the offset a server sends with a moment: converting to one
+    /// either drops it or re-reads the moment in the player's own zone. This keeps it, and lets the
+    /// field choose which zone to show the moment in.
     /// </remarks>
     [Serializable]
     [TypeSelectorDisplay(Group = "Aspid/Time", Name = "Date Time Offset Format", Tooltip = "Formats a DateTimeOffset")]

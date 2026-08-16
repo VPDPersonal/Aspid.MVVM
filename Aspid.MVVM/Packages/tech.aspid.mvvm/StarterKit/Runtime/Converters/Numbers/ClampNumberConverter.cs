@@ -14,16 +14,11 @@ namespace Aspid.MVVM.StarterKit
     /// Keeps a number inside a range.
     /// </summary>
     /// <remarks>
-    /// A View property with a legal range — <c>Image.fillAmount</c>, an alpha, a slider — will take
-    /// whatever the ViewModel sends and render it wrong rather than complain. Clamping at the
-    /// boundary keeps a bad number from becoming a bad frame.
-    /// <para>
-    /// The bounds are authored as <see cref="double"/> so that the same converter can guard an
-    /// <see cref="int"/> or <see cref="long"/> field without the bound itself being rounded on the way
-    /// in — a <see cref="float"/> cannot even name every <see cref="int"/>, let alone every
-    /// <see cref="long"/>. The int and long overloads return the incoming value untouched when it is
-    /// already inside the range, so no value survives a round trip through a floating-point number.
-    /// </para>
+    /// The bounds are authored as <see cref="double"/> so the same converter can guard an
+    /// <see cref="int"/> or <see cref="long"/> field without the bound being rounded on the way in — a
+    /// <see cref="float"/> cannot name every <see cref="int"/>. The int and long overloads return the
+    /// incoming value untouched when it is already in range, so no value round-trips through a
+    /// floating-point number.
     /// </remarks>
     [Serializable]
     [TypeSelectorDisplay(Group = "Aspid/Number", Name = "Clamp Number", Tooltip = "Keeps a number inside a range")]

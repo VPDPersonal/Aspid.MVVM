@@ -9,19 +9,12 @@ namespace Aspid.MVVM.StarterKit.Tests
     /// every target type.
     /// </summary>
     /// <remarks>
-    /// The converter exists because a bare <c>(int)</c> cast turns <see cref="long.MaxValue"/> into
-    /// <c>-1</c>, so the load-bearing tests are the ones that pin each mode's answer to a value the
-    /// target cannot hold. A regression that routed <see cref="OverflowMode.Saturate"/> back
-    /// through a plain cast, or that reordered the enum so a serialized <c>0</c> means a different
-    /// policy, would leave every in-range test green. All twelve conversions are implemented as
-    /// explicit interface members, which is why every call below goes through a cast.
+    /// A bare <c>(int)</c> cast turns <see cref="long.MaxValue"/> into <c>-1</c>, so the load-bearing
+    /// rows are the ones pinning each mode's answer to a value the target cannot hold. All twelve
+    /// conversions are explicit interface members, which is why every call below goes through a cast.
     /// <para>
-    /// Nothing here asserts an <see cref="OverflowMode.Unchecked"/> floating-point narrowing that
-    /// lands out of range. The C# specification calls that result unspecified and the runtimes
-    /// disagree — CoreCLR saturates, Mono's x64 JIT returns the <c>cvttsd2si</c> sentinel — so those
-    /// combinations are covered only where a specification pins them down: integer-to-integer
-    /// wrapping, in-range truncation, and <see cref="double"/> to <see cref="float"/>, which
-    /// IEEE-754 defines completely.
+    /// Nothing asserts an <see cref="OverflowMode.Unchecked"/> floating-point narrowing that lands out
+    /// of range: the specification calls that result unspecified and the runtimes disagree.
     /// </para>
     /// </remarks>
     [TestFixture]

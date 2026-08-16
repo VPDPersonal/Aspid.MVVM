@@ -10,18 +10,13 @@ namespace Aspid.MVVM.StarterKit
     /// </summary>
     /// <typeparam name="TEnum">The enum type being converted.</typeparam>
     /// <remarks>
-    /// A dropdown's selected index is an <see cref="int"/>, so binding one to an enum property took
-    /// a conversion the ViewModel had to expose itself.
-    /// <para>
     /// A dropdown numbers its options 0, 1, 2 whatever its entries stand for, so an enum that skips
-    /// values — <c>None = 0, Bronze = 10, Silver = 20</c> — selects the wrong row while the
-    /// underlying number is passed through. The position mode counts members instead, which is what
-    /// an index means.
-    /// </para>
+    /// values — <c>None = 0, Bronze = 10, Silver = 20</c> — selects the wrong row while the underlying
+    /// number is passed through. The position mode counts members instead.
     /// <para>
     /// Only a binder in TwoWay or OneWayToSource calls <see cref="ConvertBack"/>. An integer source
-    /// driving an enum property one way wants <see cref="IntToEnumConverter{TEnum}"/>, which also
-    /// refuses an integer that names no member rather than casting it.
+    /// driving an enum property one way wants <see cref="IntToEnumConverter{TEnum}"/>, which refuses an
+    /// integer that names no member rather than casting it.
     /// </para>
     /// </remarks>
     [Serializable]

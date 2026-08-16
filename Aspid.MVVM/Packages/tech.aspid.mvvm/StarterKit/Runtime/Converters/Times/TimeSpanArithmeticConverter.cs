@@ -9,23 +9,15 @@ namespace Aspid.MVVM.StarterKit
     /// Applies arithmetic to a duration.
     /// </summary>
     /// <remarks>
-    /// The duration a View shows is rarely the one the ViewModel holds: a progress ring wants the
-    /// total minus what has elapsed, a "sale ends in" label wants a fixed head start added. This is
-    /// <see cref="ArithmeticNumberConverter"/>'s counterpart for <see cref="TimeSpan"/>, and it keeps
-    /// the sum in ticks rather than sending it through a float number of seconds and back.
-    /// <para>
-    /// <see cref="NumberOperation.ReverseSubtract"/> is the one most often wanted: it is the operand
-    /// minus the value, which is the total-minus-elapsed case.
-    /// </para>
+    /// <see cref="ArithmeticNumberConverter"/>'s counterpart for <see cref="TimeSpan"/>, kept in ticks
+    /// rather than routed through a float number of seconds and back.
     /// <para>
     /// The operand is a number of seconds for <see cref="NumberOperation.Plus"/>,
     /// <see cref="NumberOperation.Minus"/>, <see cref="NumberOperation.ReverseSubtract"/> and
     /// <see cref="NumberOperation.Modulo"/>, and a plain factor for
-    /// <see cref="NumberOperation.Multiply"/> and <see cref="NumberOperation.Division"/> — a duration
-    /// multiplied by a duration is not a duration. <see cref="NumberOperation.Power"/> and
-    /// <see cref="NumberOperation.ReverseDivide"/> have no meaning for durations at all; they treat
-    /// the value as its number of seconds and read the result back as seconds, which is what
-    /// <see cref="ArithmeticNumberConverter"/> would have done with the same numbers.
+    /// <see cref="NumberOperation.Multiply"/> and <see cref="NumberOperation.Division"/>.
+    /// <see cref="NumberOperation.Power"/> and <see cref="NumberOperation.ReverseDivide"/> have no
+    /// meaning for a duration: they treat the value as seconds and read the result back as seconds.
     /// </para>
     /// </remarks>
     [Serializable]

@@ -16,23 +16,11 @@ namespace Aspid.MVVM.StarterKit.Tests
     /// and the multi-unit fields of <see cref="RelativeTimeConverter"/>.
     /// </summary>
     /// <remarks>
-    /// The mistakes guarded against here are the ones a duration or a moment invites: an arithmetic
-    /// result that wraps through <see cref="TimeSpan.MinValue"/> instead of saturating, a remainder
-    /// that keeps the sign of its left operand, a zero operand that throws or logs every frame, an
-    /// offset dropped on the way to a label, an epoch count that reads an unspecified moment as UTC,
-    /// and a multi-unit relative time that emits a separator it has nothing to separate.
+    /// Two converters here read the clock through <see cref="DateTime.Now"/> with no seam to inject one,
+    /// so the assertions on them are written to hold whatever the clock says.
     /// <para>
-    /// Two converters here read the clock through <see cref="DateTime.Now"/> with no seam to inject
-    /// one, so the assertions on them are written to hold whatever the clock says: a moment in the
-    /// past only grows more past, so its unit amounts are stable, while a moment in the future is
-    /// given a spare second to be measured within. Nothing here asserts a value that only holds if
-    /// the clock stands still.
-    /// </para>
-    /// <para>
-    /// The culture is pinned to invariant for the whole fixture because the date converters default
-    /// to <see cref="CultureInfoMode.CurrentCulture"/> and a custom format's <c>:</c> is the
-    /// culture's time separator, not a literal — otherwise these rows would fail on a machine whose
-    /// locale writes 10.30 rather than 10:30.
+    /// The culture is pinned to invariant for the whole fixture, because a custom format's <c>:</c> is
+    /// the culture's time separator rather than a literal.
     /// </para>
     /// </remarks>
     [TestFixture]

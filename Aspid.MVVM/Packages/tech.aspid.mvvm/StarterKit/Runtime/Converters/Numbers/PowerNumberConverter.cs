@@ -9,17 +9,10 @@ namespace Aspid.MVVM.StarterKit
     /// Raises a number to an authored exponent.
     /// </summary>
     /// <remarks>
-    /// Response curves: damage that grows faster than the stat behind it, a 0..1 fill given a
-    /// gamma-like bend, a difficulty that ramps. <see cref="ArithmeticNumberConverter"/> can raise a
-    /// power too, but only as one branch of a shared operation switch with a shared coefficient, so a
-    /// picker looking for "power" does not find it.
-    /// <para>
-    /// The sign is preserved by default because the alternative is a NaN. <c>Math.Pow</c> of a
-    /// negative base and a fractional exponent has no real answer, and a stat that briefly goes
-    /// negative is normal — a debuff, a delta below zero. Preserving the sign raises the magnitude and
-    /// puts the sign back, which makes the curve odd: -2 with exponent 2 gives -4, not 4. Turn it off
+    /// The sign is preserved by default because the alternative is a NaN: <c>Math.Pow</c> of a negative
+    /// base and a fractional exponent has no real answer, and a stat that briefly goes negative is
+    /// normal. Preserving it makes the curve odd — -2 with exponent 2 gives -4, not 4 — so turn it off
     /// for plain arithmetic.
-    /// </para>
     /// </remarks>
     [Serializable]
     [TypeSelectorDisplay(Group = "Aspid/Number", Name = "Power Number", Tooltip = "Raises a number to an authored exponent")]

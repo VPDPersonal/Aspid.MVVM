@@ -9,15 +9,10 @@ namespace Aspid.MVVM.StarterKit
     /// Formats a <see cref="decimal"/> with a standard .NET format string.
     /// </summary>
     /// <remarks>
-    /// The type prices are kept in. A <see cref="decimal"/> counts in hundredths exactly, where a
-    /// <see cref="double"/> stores 0.1 as an approximation and a basket full of them drifts by a
-    /// cent; <see cref="NumberFormatConverter"/> covers the other four numeric types but cannot take
-    /// this one, because reaching it through <see cref="double"/> gives away the property the type
-    /// was chosen for.
-    /// <para>
-    /// Unity cannot serialize a <see cref="decimal"/> field, so the amount has to arrive from the
-    /// ViewModel — only the format and the culture are authored here.
-    /// </para>
+    /// A <see cref="decimal"/> counts in hundredths exactly; <see cref="NumberFormatConverter"/> covers
+    /// the other four numeric types but cannot take this one, because reaching it through
+    /// <see cref="double"/> gives away the property the type was chosen for. Unity cannot serialize a
+    /// <see cref="decimal"/> field, so the amount has to arrive from the ViewModel.
     /// </remarks>
     [Serializable]
     [TypeSelectorDisplay(Group = "Aspid/String", Name = "Decimal Format", Tooltip = "Formats a decimal with a standard .NET format string")]

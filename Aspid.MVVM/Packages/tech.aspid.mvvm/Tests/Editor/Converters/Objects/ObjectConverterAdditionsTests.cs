@@ -12,13 +12,11 @@ namespace Aspid.MVVM.StarterKit.Tests
     /// and the undeclared-<see cref="IndexMode"/> branch of <see cref="IndexToValueConverter{T}"/>.
     /// </summary>
     /// <remarks>
-    /// These are the mistakes that only surface once the project is running. A reference-equality
-    /// option silently reduced to value equality (or the reverse) the day a value object grows an
-    /// <c>Equals</c>; a boxed struct making a reference comparison answer false for a value against
-    /// itself; and a destroyed asset reaching a binder because the emptiness check was written as
-    /// <c>??</c> or <c>is null</c> — both of which see a managed reference that outlived its native
-    /// object. Every equality expectation below was confirmed by executing it in an Editor rather
-    /// than read off the XML docs.
+    /// The mistakes that only surface once the project is running: a reference-equality option reduced
+    /// to value equality the day a value object grows an <c>Equals</c>; a boxed struct making a
+    /// reference comparison answer false for a value against itself; and a destroyed asset reaching a
+    /// binder because the emptiness check was written as <c>??</c> or <c>is null</c>. Every equality
+    /// expectation below was confirmed by executing it in an Editor.
     /// </remarks>
     [TestFixture]
     internal sealed class ObjectConverterAdditionsTests

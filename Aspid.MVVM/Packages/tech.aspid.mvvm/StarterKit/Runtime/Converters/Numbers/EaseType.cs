@@ -7,11 +7,9 @@ namespace Aspid.MVVM.StarterKit
     /// The easing curve <see cref="EasingConverter"/> applies.
     /// </summary>
     /// <remarks>
-    /// The standard Penner set. Each family is offered in three phrasings: <c>In</c> starts slowly,
-    /// <c>Out</c> ends slowly, and <c>InOut</c> does both around a midpoint. The families are ordered
-    /// by how hard they pull — Sine, Quad, Cubic, Quart, Quint, Expo, Circ — and then the three
-    /// shaped ones, Back, Elastic and Bounce. Of those only Back and Elastic leave the 0..1 range;
-    /// Bounce stays inside it.
+    /// The standard Penner set: <c>In</c> starts slowly, <c>Out</c> ends slowly, <c>InOut</c> does both
+    /// around a midpoint. Families are ordered by how hard they pull — Sine, Quad, Cubic, Quart, Quint,
+    /// Expo, Circ — then Back, Elastic and Bounce. Only Back and Elastic leave the 0..1 range.
     /// </remarks>
     public enum EaseType
     {

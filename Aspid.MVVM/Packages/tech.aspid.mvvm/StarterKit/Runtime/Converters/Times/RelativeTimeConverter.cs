@@ -11,13 +11,11 @@ namespace Aspid.MVVM.StarterKit
     /// Writes how long ago — or how far ahead — a moment is.
     /// </summary>
     /// <remarks>
-    /// Mail, inboxes, friend lists. The unit names are authored so the text can be translated without
-    /// touching code; the default set is English.
+    /// The unit names are authored so the text can be translated without touching code.
     /// <para>
-    /// One unit is the usual answer and the one the two formats were written for — <c>{0}</c> the
-    /// amount, <c>{1}</c> its name. Asking for more than one has nothing single to put in
-    /// <c>{0}</c>, so the whole quantity goes there — "1h 5m" — and <c>{1}</c> arrives empty. The
-    /// default formats read correctly either way, which is why they run the two together.
+    /// The two formats were written for a single unit — <c>{0}</c> the amount, <c>{1}</c> its name.
+    /// Asking for more than one has nothing single to put in <c>{0}</c>, so the whole quantity goes
+    /// there — "1h 5m" — and <c>{1}</c> arrives empty.
     /// </para>
     /// </remarks>
     [Serializable]

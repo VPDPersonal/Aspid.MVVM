@@ -9,37 +9,15 @@ namespace Aspid.MVVM.StarterKit.Tests
     /// <see cref="SplitJoinStringConverter"/> and <see cref="ReverseStringConverter"/>.
     /// </summary>
     /// <remarks>
-    /// Three classes of mistake are guarded here.
+    /// All four members walk the string themselves rather than calling <c>string.Split</c>,
+    /// <c>ToLower</c> and <c>Array.Reverse</c>, so the interesting inputs are the degenerate ones — an
+    /// empty string, a string that is only separators, a mark at index 0, a limit of one. Three of them
+    /// keep a <see cref="System.Text.StringBuilder"/> on the instance, so each is exercised twice on one
+    /// instance to catch a missing <c>Clear()</c>.
     /// <para>
-    /// First, hand-rolled single-pass scanners. All four members walk the string themselves rather
-    /// than calling <c>string.Split</c>, <c>ToLower</c> and <c>Array.Reverse</c>, which buys the
-    /// allocation back but puts every index and every state flag in reach of an off-by-one. The
-    /// interesting inputs are therefore the degenerate ones — an empty string, a string that is only
-    /// separators, a mark at index 0, a limit of one — not the happy path.
-    /// </para>
-    /// <para>
-    /// Second, cached <c>StringBuilder</c>s. <see cref="TextCaseConverter"/>,
-    /// <see cref="SplitJoinStringConverter"/> and <see cref="ReverseStringConverter"/> each keep one
-    /// on the instance and clear it per call. A converter is authored once and bound for the life of
-    /// the View, so a missing <c>Clear()</c> shows up as text accumulating across frames rather than
-    /// as a first-call failure; every one of them is exercised twice on a single instance below.
-    /// </para>
-    /// <para>
-    /// Third, the serialized surface. The <see cref="TextCase"/> ordinals are what a scene stores, and
-    /// <c>_trimParts</c> is a serialized field the public constructors cannot reach, so neither is
-    /// covered by simply calling <c>Convert</c>.
-    /// </para>
-    /// <para>
-    /// Every expectation below was taken from running the implementation, not from its documentation.
-    /// Two of them contradict it: <see cref="ReverseStringConverter"/> claims a combining mark "lands
-    /// on the letter that used to precede it" when it in fact lands on the one that used to follow it,
-    /// and <see cref="TextCase.Sentence"/> is described as sentence casing but has no notion of a
-    /// token, so it raises the first letter of a word that opens with a digit.
-    /// </para>
-    /// <para>
-    /// The culture is pinned to <see cref="CultureInfoMode.InvariantCulture"/> throughout. The default
-    /// is <see cref="CultureInfoMode.CurrentCulture"/>, which on a machine set to Turkish maps a
-    /// dotless i and would make these assertions machine-dependent.
+    /// Expectations were taken from running the implementation; where one contradicts the documentation,
+    /// the test says so in its name. The culture is pinned to
+    /// <see cref="CultureInfoMode.InvariantCulture"/> — the default would make these machine-dependent.
     /// </para>
     /// </remarks>
     [TestFixture]

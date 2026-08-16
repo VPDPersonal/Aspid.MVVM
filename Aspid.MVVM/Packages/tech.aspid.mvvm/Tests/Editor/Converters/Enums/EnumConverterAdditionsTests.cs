@@ -11,19 +11,14 @@ namespace Aspid.MVVM.StarterKit.Tests
     /// <see cref="EnumNameSource.Raw"/> text sources.
     /// </summary>
     /// <remarks>
-    /// The integer these converters read comes from outside the ViewModel — a save file, a server
-    /// field, a dropdown row — so it is whatever someone else put there. The mistake guarded against
-    /// is turning such a number into an enum by casting it, or by masking it down to the underlying
-    /// width: both hand the View a value no <c>switch</c> in the game has a case for, and the symptom
-    /// surfaces far from the number that caused it. The byte-backed cases below are the ones a mask
-    /// would silently pass.
+    /// The integer these converters read comes from outside the ViewModel, so the mistake guarded
+    /// against is turning it into an enum by casting or by masking it down to the underlying width —
+    /// both hand the View a value no <c>switch</c> in the game has a case for. The byte-backed cases
+    /// below are the ones a mask would silently pass.
     /// <para>
-    /// Two assertions pin behaviour the documentation reads against. <c>EnumToIntConverter</c>
-    /// documents its <see cref="OverflowException"/> as something "only a long- or ulong-backed enum
-    /// can manage"; a <see cref="uint"/>-backed member above <see cref="int.MaxValue"/> throws it
-    /// too, and the test asserts the throw. And <c>ConvertBack</c> in the value mode still casts, so
-    /// the number <see cref="IntToEnumConverter{TEnum}"/> refuses is one a TwoWay binder on the other
-    /// converter accepts — an asymmetry between the two, not a bug in either.
+    /// Two assertions pin behaviour the documentation reads against: a <see cref="uint"/>-backed member
+    /// above <see cref="int.MaxValue"/> also throws <see cref="OverflowException"/>, and
+    /// <c>ConvertBack</c> in the value mode still casts, so the two converters are asymmetric.
     /// </para>
     /// </remarks>
     [TestFixture]

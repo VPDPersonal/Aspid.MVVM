@@ -11,19 +11,11 @@ namespace Aspid.MVVM.StarterKit
     /// Takes rich-text markup out of a string, or shows it as text instead of obeying it.
     /// </summary>
     /// <remarks>
-    /// A player whose name is <c>&lt;size=400%&gt;</c> resizes the chat line for everyone who reads
-    /// it, and one whose name is <c>&lt;color=#00000000&gt;</c> vanishes from the leaderboard. Any
-    /// string that came from outside the build — a name, a clan tag, a server message — reaches a
-    /// text component that will happily do what it says.
+    /// <c>RichTextNoParseConverter</c> answers the same problem by wrapping the whole string, which also
+    /// disables the markup the game itself put there; this works tag by tag.
     /// <para>
-    /// <c>RichTextNoParseConverter</c> answers the same problem by wrapping the whole string, which
-    /// also disables the markup the game itself put there. This works tag by tag, so a chain that
-    /// colours a name still colours it while the name's own markup is dealt with.
-    /// </para>
-    /// <para>
-    /// <see cref="RichTextSanitize.Escape"/> emits <c>&lt;noparse&gt;</c>, which is TextMeshPro's
-    /// tag — a legacy uGUI <c>Text</c> shows it as letters. Use <see cref="RichTextSanitize.Strip"/>
-    /// there.
+    /// <see cref="RichTextSanitize.Escape"/> emits <c>&lt;noparse&gt;</c>, which is TextMeshPro's tag — a
+    /// legacy uGUI <c>Text</c> shows it as letters, so use <see cref="RichTextSanitize.Strip"/> there.
     /// </para>
     /// </remarks>
     [Serializable]

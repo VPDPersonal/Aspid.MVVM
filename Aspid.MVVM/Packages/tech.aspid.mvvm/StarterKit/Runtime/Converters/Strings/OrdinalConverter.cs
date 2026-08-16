@@ -10,13 +10,10 @@ namespace Aspid.MVVM.StarterKit
     /// Formats a number as an English ordinal: 1 becomes "1st".
     /// </summary>
     /// <remarks>
-    /// The suffix is grammar rather than formatting, and a <see cref="CultureInfo"/> carries no
-    /// ordinal rules, so the culture reaches the digits only — the suffix stays English whichever
-    /// culture is picked. The culture is worth almost nothing here and is offered only for
-    /// consistency with the other number converters: .NET does not substitute native digits when
-    /// formatting an integer, so an Arabic or Burmese culture still writes 1234 rather than ١٢٣٤,
-    /// and the only culture-visible difference is the negative sign — which no ordinal has. A
-    /// language that needs its own suffixes needs its own converter.
+    /// The suffix is grammar rather than formatting, and a <see cref="CultureInfo"/> carries no ordinal
+    /// rules, so the culture reaches the digits only — the suffix stays English whichever culture is
+    /// picked, and .NET writes 1234 rather than native digits anyway. A language that needs its own
+    /// suffixes needs its own converter.
     /// </remarks>
     [Serializable]
     [TypeSelectorDisplay(Group = "Aspid/String", Name = "Ordinal", Tooltip = "Formats a number as an English ordinal: 1 becomes '1st'")]

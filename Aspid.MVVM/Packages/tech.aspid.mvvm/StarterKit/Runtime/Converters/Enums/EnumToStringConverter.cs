@@ -10,15 +10,13 @@ namespace Aspid.MVVM.StarterKit
     /// </summary>
     /// <typeparam name="TEnum">The enum type being converted.</typeparam>
     /// <remarks>
-    /// Labelling a state without this means either a switch in the ViewModel or a member name leaking
-    /// into the UI. <see cref="EnumNameSource.InspectorName"/> reads the attribute Unity already uses
-    /// for the same purpose in the Inspector, and <see cref="EnumNameSource.Description"/> the one a
-    /// domain assembly can carry without a reference to UnityEngine.
+    /// <see cref="EnumNameSource.InspectorName"/> reads the attribute Unity already uses for the same
+    /// purpose, and <see cref="EnumNameSource.Description"/> the one a domain assembly can carry without
+    /// referencing UnityEngine.
     /// <para>
-    /// The text is metadata, not formatting, so there is no culture setting here: a member name, an
-    /// <c>InspectorName</c> and a <c>Description</c> are all authored once in the source, and
-    /// <c>Enum.ToString</c> ignores any format provider it is handed. Text that has to follow the
-    /// player's locale belongs in a string table — <c>LocalizedEnumConverter</c> reads one.
+    /// The text is metadata, not formatting, so there is no culture setting: <c>Enum.ToString</c> ignores
+    /// any format provider. Text that must follow the player's locale belongs in a string table —
+    /// <c>LocalizedEnumConverter</c> reads one.
     /// </para>
     /// </remarks>
     [Serializable]

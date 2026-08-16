@@ -11,19 +11,13 @@ namespace Aspid.MVVM.StarterKit
     /// </summary>
     /// <typeparam name="T">The type of the values being compared.</typeparam>
     /// <remarks>
-    /// The generalisation of <see cref="NumberToBoolConverter"/> beyond numbers: "is this the
-    /// selected item?", "is this the equipped weapon?". Comparison uses the type's own equality.
-    /// <para>
-    /// Reference equality is the option for a type whose <c>Equals</c> answers a different question
-    /// than the binding does — a record or a value object where two loadouts with the same numbers
-    /// are equal, while the View wants to know whether this is the very instance the player picked.
-    /// </para>
+    /// Comparison uses the type's own equality; reference equality is the option for a type whose
+    /// <c>Equals</c> answers a different question than the binding does.
     /// <para>
     /// One case to know about with a <c>UnityEngine.Object</c>: an operand left empty.
     /// <see cref="EqualityComparer{T}"/> settles a null operand with a reference check before Unity's
-    /// own equality is ever consulted, so a destroyed object — which Unity's <c>==</c> reports as
-    /// null — does not match it here. Ask that question with <c>UnityObjectNullToBoolConverter</c>,
-    /// which goes through the operator.
+    /// own equality is consulted, so a destroyed object does not match it here — ask that question with
+    /// <c>UnityObjectNullToBoolConverter</c>, which goes through the operator.
     /// </para>
     /// </remarks>
     [Serializable]

@@ -10,16 +10,9 @@ namespace Aspid.MVVM.StarterKit
     /// Reshapes a 0..1 value along an easing curve.
     /// </summary>
     /// <remarks>
-    /// A bar that fills linearly reads as flat, and the usual fix — <c>AnimationCurveConverter</c> —
-    /// means authoring and maintaining a curve asset per binder for a shape that has a name. This
-    /// takes the name instead, so a designer picks "Bounce Out" from a dropdown and a prefab diff
-    /// stays one line.
-    /// <para>
-    /// The Back and Elastic families leave the 0..1 range on purpose: that overshoot is the
-    /// effect. <see cref="Convert"/> clamps what goes in, never what comes out, so a target with a
-    /// hard range of its own — <c>Image.fillAmount</c>, an alpha — wants a
-    /// <see cref="ClampNumberConverter"/> after this one.
-    /// </para>
+    /// The Back and Elastic families leave the 0..1 range on purpose — that overshoot is the effect.
+    /// <see cref="Convert"/> clamps what goes in, never what comes out, so a target with a hard range of
+    /// its own — <c>Image.fillAmount</c>, an alpha — wants a <see cref="ClampNumberConverter"/> after it.
     /// </remarks>
     [Serializable]
     [TypeSelectorDisplay(Group = "Aspid/Number", Name = "Easing", Tooltip = "Reshapes a 0..1 value along an easing curve")]

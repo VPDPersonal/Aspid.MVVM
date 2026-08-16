@@ -9,21 +9,11 @@ namespace Aspid.MVVM.StarterKit.Tests
     /// markup a player can type into a name field.
     /// </summary>
     /// <remarks>
-    /// The converter exists so that a hostile string cannot reach a text component as live markup,
-    /// so the mistake worth guarding against is a rewrite of the hand-written scanner that lets one
-    /// class of input back through: a tag recognised by name but not by its attribute, a closing tag
-    /// treated differently from its opening one, a whitelist entry matching by prefix, or a second
-    /// <c>&lt;</c> hiding a real tag inside a run that scans as ordinary text.
-    /// <para>
-    /// Two rows below assert behaviour the source's own documentation contradicts and are named to
-    /// say so — see <see cref="Convert_UnterminatedBracket_SurvivesEvenWhenStrayBracketsAreOff"/>
-    /// and <see cref="Convert_StrayBracketBeforeATag_StillSanitizesTheTagBehindIt"/>. Every
-    /// expected value here was taken from running the converter, not from reading its comments.
-    /// </para>
-    /// <para>
-    /// Nothing in this converter logs, so no row needs <c>LogAssert</c>; the one failure path is an
-    /// exception.
-    /// </para>
+    /// The mistake worth guarding against is a rewrite of the hand-written scanner that lets one class
+    /// of input back through: a tag recognised by name but not by its attribute, a closing tag treated
+    /// differently from its opening one, a whitelist entry matching by prefix, or a second <c>&lt;</c>
+    /// hiding a real tag. Every expected value was taken from running the converter; two rows assert
+    /// behaviour the source's own documentation contradicts and are named to say so.
     /// </remarks>
     [TestFixture]
     internal sealed class SanitizeRichTextConverterTests

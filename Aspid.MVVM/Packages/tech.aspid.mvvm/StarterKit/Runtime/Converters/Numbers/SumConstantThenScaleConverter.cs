@@ -10,15 +10,8 @@ namespace Aspid.MVVM.StarterKit
     /// Adds a constant to a number and scales the sum.
     /// </summary>
     /// <remarks>
-    /// <c>(x + a) * b</c> in one node. Reaching it before meant two
-    /// <see cref="ArithmeticNumberConverter"/>s joined by a <see cref="ComposeConverter{TFrom, TMid, TTo}"/>,
-    /// or a <see cref="RemapNumberConverter"/> whose four bounds had to be solved backwards from the
-    /// offset and scale you actually had — three managed references and a calculation in the commit
-    /// message, for an affine map.
-    /// <para>
     /// The order is fixed and is the one the name states: the offset is applied first. <c>x * b + a</c>
     /// is the same shape with the offset divided by the scale.
-    /// </para>
     /// </remarks>
     [Serializable]
     [TypeSelectorDisplay(Group = "Aspid/Number", Name = "Sum Constant Then Scale", Tooltip = "Adds a constant to a number and scales the sum")]

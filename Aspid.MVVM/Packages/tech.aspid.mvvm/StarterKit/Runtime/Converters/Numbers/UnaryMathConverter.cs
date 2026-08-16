@@ -14,21 +14,13 @@ namespace Aspid.MVVM.StarterKit
     /// Applies a single-argument mathematical function.
     /// </summary>
     /// <remarks>
-    /// Fifteen one-line conversions that would otherwise be fifteen converter classes. The functions
-    /// with a domain — square root, logarithm, reciprocal, the two inverse trigonometric ones —
-    /// return zero or clamp outside it rather than yielding NaN or infinity, because a NaN reaching a
-    /// <see cref="Transform"/> corrupts it silently while a zero is merely wrong.
+    /// The functions with a domain — square root, logarithm, reciprocal, the inverse trigonometric
+    /// pair — return zero or clamp outside it rather than yielding NaN or infinity.
     /// <para>
-    /// That guard covers the domain, not every non-finite input. It tests <c>value &lt;= 0</c>, which
-    /// a NaN fails, so a NaN arriving from upstream passes through the logarithms and the reciprocal
-    /// unchanged, and the inverse trigonometric pair turn it into zero's answer rather than into NaN.
-    /// An infinity is likewise inside the domain of a logarithm and comes back infinite. If the
-    /// source can produce a NaN, guard it before this converter rather than expecting this one to.
-    /// </para>
-    /// <para>
-    /// The arithmetic runs in <see cref="double"/> whichever overload is called, so the
-    /// <see cref="float"/> result is the double result rounded once rather than a chain of float
-    /// operations; the difference shows on <see cref="UnaryMathOperation.Exp"/> and the logarithms.
+    /// That guard covers the domain, not every non-finite input: it tests <c>value &lt;= 0</c>, which a
+    /// NaN fails, so a NaN passes through the logarithms and the reciprocal unchanged and an infinity
+    /// comes back infinite. Guard a source that can produce a NaN before this converter. The arithmetic
+    /// runs in <see cref="double"/> whichever overload is called.
     /// </para>
     /// </remarks>
     [Serializable]

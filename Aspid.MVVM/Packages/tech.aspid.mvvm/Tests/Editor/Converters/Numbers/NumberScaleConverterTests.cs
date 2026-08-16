@@ -8,19 +8,12 @@ namespace Aspid.MVVM.StarterKit.Tests
     /// order in which the offset and the scale are applied, and the inverse of both.
     /// </summary>
     /// <remarks>
-    /// Both classes are affine maps of <see langword="float"/> onto <see langword="float"/>, so every
-    /// mistake available to them type-checks and every one of them still produces a value that moves in
-    /// the right direction when watched in Play mode. This fixture exists for the two that hide there:
-    /// a percentage scaled the wrong way (a fill amount of 5000 instead of 0.5, which looks like a
-    /// full bar because the consumer clamps), and <c>(x + a) * b</c> reassociated into
-    /// <c>x + (a * b)</c>, which agrees with the correct reading whenever <c>x</c> is zero or the scale
-    /// is one — that is, in exactly the cases someone reaches for while sanity-checking. Every
-    /// order-of-operations row below is picked so the two readings disagree.
-    /// <para>
-    /// The pairing with <see cref="NormalizedToPercentConverter"/> is asserted directly rather than
-    /// assumed, because the two live in different files and nothing but these tests keeps them
-    /// reciprocal.
-    /// </para>
+    /// Both classes are affine maps of float onto float, so every available mistake type-checks and still
+    /// moves in the right direction in Play mode. The two that hide there are a percentage scaled the
+    /// wrong way, and <c>(x + a) * b</c> reassociated into <c>x + (a * b)</c>, which agrees with the
+    /// correct reading whenever <c>x</c> is zero or the scale is one — so every order-of-operations row
+    /// is picked to make the two readings disagree. The reciprocal pairing with
+    /// <see cref="NormalizedToPercentConverter"/> is asserted rather than assumed.
     /// </remarks>
     [TestFixture]
     internal sealed class NumberScaleConverterTests

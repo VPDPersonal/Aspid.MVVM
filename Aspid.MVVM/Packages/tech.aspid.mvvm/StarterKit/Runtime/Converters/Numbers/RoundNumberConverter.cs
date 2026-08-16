@@ -14,16 +14,10 @@ namespace Aspid.MVVM.StarterKit
     /// Rounds a number, in a way the caller chooses.
     /// </summary>
     /// <remarks>
-    /// Rounding used to be an implicit truncation inside a cast, with no say in the matter. The
-    /// direction is rarely arbitrary: a countdown floored shows 0:00 for a whole second before it
-    /// fires, and a score truncated loses the point the player just earned.
-    /// <para>
     /// The midpoint rule is separate from the direction because the two answer different questions.
-    /// <see cref="MidpointRounding.ToEven"/> is what <c>Mathf.Round</c> does and what statistics
-    /// wants — it does not drift upwards over many values. <see cref="MidpointRounding.AwayFromZero"/>
-    /// is what a player expects when they see 2.5 become 3, and it is the only one worth having on a
-    /// score or a price.
-    /// </para>
+    /// <see cref="MidpointRounding.ToEven"/> is what <c>Mathf.Round</c> does and does not drift upwards
+    /// over many values; <see cref="MidpointRounding.AwayFromZero"/> is what a player expects when 2.5
+    /// becomes 3, and the only one worth having on a score or a price.
     /// </remarks>
     [Serializable]
     [TypeSelectorDisplay(Group = "Aspid/Number", Name = "Round Number", Tooltip = "Rounds a number, in a way the caller chooses")]

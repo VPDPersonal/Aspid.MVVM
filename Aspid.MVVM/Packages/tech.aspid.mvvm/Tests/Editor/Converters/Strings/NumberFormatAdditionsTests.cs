@@ -11,19 +11,11 @@ namespace Aspid.MVVM.StarterKit.Tests
     /// and the last-two-digits rule in <see cref="OrdinalConverter"/>.
     /// </summary>
     /// <remarks>
-    /// Three classes of mistake are being pinned down here. A separator authored to outlive the
-    /// player's locale that quietly reverts to the device one — or, worse, is written into the
-    /// <see cref="NumberFormatInfo"/> the whole process shares, so every other converter in the game
-    /// changes with it. An amount routed through <see cref="double"/> on its way to the screen, which
-    /// is the single thing <see cref="decimal"/> was chosen to prevent. And 11th/12th/13th, the
-    /// ordinals that break the last-digit rule and come out as "11st" in every implementation that
-    /// reads one digit instead of two — 111th and 1011th with them, because the exception repeats in
-    /// every hundred rather than living only in the teens.
-    /// <para>
-    /// The fixture is pinned to the invariant culture, so an assertion that mentions a comma is about
-    /// grouping rather than about the machine the tests run on. The rows that exist <i>because</i> of
-    /// culture set the thread themselves; <c>TearDown</c> puts it back either way.
-    /// </para>
+    /// Three mistakes are pinned here: a separator authored to outlive the player's locale that reverts
+    /// to the device one, or is written into the process-wide <see cref="NumberFormatInfo"/>; an amount
+    /// routed through <see cref="double"/>, which is what <see cref="decimal"/> was chosen to prevent;
+    /// and 11th/12th/13th, which a last-digit rule turns into "11st" — 111th and 1011th with them.
+    /// The fixture is pinned to the invariant culture, and <c>TearDown</c> restores the thread either way.
     /// </remarks>
     [TestFixture]
     internal sealed class NumberFormatAdditionsTests

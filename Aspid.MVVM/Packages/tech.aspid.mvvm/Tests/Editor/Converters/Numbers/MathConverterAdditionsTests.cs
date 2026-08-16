@@ -11,16 +11,11 @@ namespace Aspid.MVVM.StarterKit.Tests
     /// </summary>
     /// <remarks>
     /// Every case here is one a plausible one-line implementation gets wrong: a fractional bound
-    /// truncated instead of rounded, so a minimum of 0.5 lets 0 through; a midpoint rule left at the
-    /// framework default, so a score of 2.5 silently becomes 2; an integer modulo routed through a
-    /// <see cref="double"/>, so a counter past 2^53 answers about the wrong number; a negative base
-    /// raised to a fractional exponent, which is a NaN unless the sign is handled first.
+    /// truncated instead of rounded, a midpoint rule left at the framework default, an integer modulo
+    /// routed through a <see cref="double"/>, a negative base raised to a fractional exponent.
     /// <para>
-    /// The expectations were taken by running the arithmetic, not from the XML docs, and a few of them
-    /// disagree with what those docs promise: a NaN or an infinity walks straight through the
-    /// <see cref="UnaryMathConverter"/> domain guards, and <see cref="PowerNumberConverter"/> answers 0
-    /// rather than 1 for a zero raised to the zeroth power. Each such test pins the behaviour and says
-    /// so where it stands, so that a later fix has to change the test deliberately.
+    /// Expectations were taken by running the arithmetic, and a few disagree with the XML docs; each such
+    /// test pins the behaviour and says so, so that a later fix has to change the test deliberately.
     /// </para>
     /// </remarks>
     [TestFixture]

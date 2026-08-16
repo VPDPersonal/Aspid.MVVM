@@ -10,15 +10,10 @@ namespace Aspid.MVVM.StarterKit
     /// </summary>
     /// <typeparam name="TEnum">The enum type being converted to.</typeparam>
     /// <remarks>
-    /// <see cref="EnumToIntConverter{TEnum}"/> has this direction as its <c>ConvertBack</c>, which a
-    /// binder calls only in TwoWay or OneWayToSource — so a property that is already an integer (a
-    /// save file's difficulty, a server's status code) had nothing to pick for a one-way binding.
-    /// <para>
-    /// An integer that names no member is refused rather than cast. A cast would hand the View a
-    /// value no <c>switch</c> in the game has a case for, and the symptom would surface far from the
-    /// number that caused it. An enum marked <see cref="FlagsAttribute"/> still accepts any
-    /// combination of its declared flags: those are legal values the member list does not hold.
-    /// </para>
+    /// An integer that names no member is refused rather than cast: a cast would hand the View a value
+    /// no <c>switch</c> in the game has a case for, and the symptom would surface far from the number
+    /// that caused it. An enum marked <see cref="FlagsAttribute"/> still accepts any combination of its
+    /// declared flags.
     /// </remarks>
     [Serializable]
     [TypeSelectorDisplay(Group = "Aspid/Enum", Name = "Int To Enum", Tooltip = "Converts an integer to the enum value it stands for")]

@@ -9,15 +9,11 @@ namespace Aspid.MVVM.StarterKit
     /// Returns the remainder of a number divided by an authored divisor.
     /// </summary>
     /// <remarks>
-    /// C#'s <c>%</c> takes the sign of the left operand, so <c>-1 % 360</c> is <c>-1</c> — never what
-    /// a wrapped angle, a cycling page index or an alternating row colour wants. The euclidean form
-    /// gives 359 instead, and is the default here for the same reason
-    /// <see cref="ArithmeticNumberConverter"/> hard-codes it: a project that gets the C# answer gets a
-    /// bug the first time a value goes below zero.
+    /// C#'s <c>%</c> takes the sign of the left operand, so <c>-1 % 360</c> is <c>-1</c> — never what a
+    /// wrapped angle or a cycling index wants. The euclidean form gives 359 and is the default here.
     /// <para>
-    /// The int and long overloads take the whole-number part of the divisor and do the arithmetic in
-    /// integers, so a counter beyond 2^53 stays exact instead of being rounded on the way through a
-    /// <see cref="double"/>.
+    /// The int and long overloads take the whole-number part of the divisor and stay in integers, so a
+    /// counter beyond 2^53 stays exact.
     /// </para>
     /// </remarks>
     [Serializable]

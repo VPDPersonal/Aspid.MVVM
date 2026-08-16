@@ -10,18 +10,13 @@ namespace Aspid.MVVM.StarterKit
     /// Converts a number to another numeric type under a chosen overflow policy.
     /// </summary>
     /// <remarks>
-    /// Every narrowing in the package used to be a bare <c>(int)</c> or <c>(long)</c> cast, which
-    /// wraps silently: a <see cref="long"/> score of <see cref="long.MaxValue"/> pushed at an
-    /// <see cref="int"/> binder arrives negative, and a <see cref="float"/> of NaN arrives as
-    /// whatever the platform's conversion instruction happened to leave behind. A bar that reads
-    /// backwards is a bug report nobody can reproduce, so the default here is
-    /// <see cref="OverflowMode.Saturate"/> — the only mode with no undefined result.
+    /// A bare <c>(int)</c> cast wraps silently — a <see cref="long"/> score of
+    /// <see cref="long.MaxValue"/> arrives negative — so the default is
+    /// <see cref="OverflowMode.Saturate"/>, the only mode with no undefined result.
     /// <para>
-    /// Only the twelve conversions that actually change type are offered; converting a number to its
-    /// own type would be a picker entry that does nothing. The class is closed over the four numeric
-    /// types rather than generic because C# before generic math cannot cast an unconstrained
-    /// <c>TFrom</c> to a <c>TTo</c> without going through <see cref="System.Convert"/>, which boxes —
-    /// and a binder converts on every notification, not every change.
+    /// The class is closed over the four numeric types rather than generic because casting an
+    /// unconstrained <c>TFrom</c> would go through <see cref="System.Convert"/>, which boxes on a path
+    /// that runs per notification.
     /// </para>
     /// </remarks>
     [Serializable]

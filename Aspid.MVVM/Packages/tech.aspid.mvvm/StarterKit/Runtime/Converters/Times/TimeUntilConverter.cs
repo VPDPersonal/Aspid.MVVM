@@ -9,16 +9,9 @@ namespace Aspid.MVVM.StarterKit
     /// Measures how long there is until a moment.
     /// </summary>
     /// <remarks>
-    /// The step a countdown was missing. A server says when the cooldown ends, so the ViewModel holds
-    /// a moment rather than a number it has to decrement itself; this turns it into the duration the
-    /// label wants, ready for <see cref="TimeSpanFormatConverter"/> or for
-    /// <see cref="TimeSpanToNumberConverter"/> ahead of
-    /// <see cref="SecondsToTimeStringConverter"/>.
-    /// <para>
-    /// The result is only as fresh as the last push: the moment itself never changes, so something
-    /// still has to make the ViewModel raise it — a tick each frame or each second. What this removes
-    /// is the arithmetic, not the tick.
-    /// </para>
+    /// The result is only as fresh as the last push: the moment itself never changes, so something still
+    /// has to make the ViewModel raise it — a tick each frame or each second. What this removes is the
+    /// arithmetic, not the tick.
     /// </remarks>
     [Serializable]
     [TypeSelectorDisplay(Group = "Aspid/Time", Name = "Time Until", Tooltip = "Measures how long there is until a moment")]

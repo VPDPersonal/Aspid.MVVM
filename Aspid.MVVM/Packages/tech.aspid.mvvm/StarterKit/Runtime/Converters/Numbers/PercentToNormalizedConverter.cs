@@ -10,11 +10,8 @@ namespace Aspid.MVVM.StarterKit
     /// Converts a percentage to a 0..1 fraction.
     /// </summary>
     /// <remarks>
-    /// The other direction of <see cref="NormalizedToPercentConverter"/>, and the one a ViewModel that
-    /// already holds a percentage needs. Until now that direction existed only as
-    /// <c>NormalizedToPercentConverter.ConvertBack</c>, which a binder calls in
-    /// <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/> — so a plain
-    /// <see cref="BindMode.OneWay"/> binding from a percentage to a fill amount had nothing to pick.
+    /// The other direction of <see cref="NormalizedToPercentConverter"/>, whose <c>ConvertBack</c> a
+    /// binder only calls in <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.
     /// </remarks>
     [Serializable]
     [TypeSelectorDisplay(Group = "Aspid/Number", Name = "Percent To Normalized", Tooltip = "Converts a percentage to a 0..1 fraction")]

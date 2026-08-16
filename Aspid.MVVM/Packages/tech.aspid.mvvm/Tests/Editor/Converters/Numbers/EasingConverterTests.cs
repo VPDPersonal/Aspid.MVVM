@@ -10,17 +10,13 @@ namespace Aspid.MVVM.StarterKit.Tests
     /// occupies, and the <c>clamp</c> flag.
     /// </summary>
     /// <remarks>
-    /// Every curve is a hand-transcribed Penner formula. The <c>InOut</c> phrasings splice two of them
-    /// at <c>t = 0.5</c> and <c>BounceOut</c> splices four parabolas, so a single mistyped constant
-    /// moves one branch and leaves its neighbour where it was — a class of mistake that never shows up
-    /// at <c>t = 0</c> or <c>t = 1</c> and is invisible in a running scene until someone notices the
-    /// bar stutters. The fixture therefore scans each curve end to end instead of sampling a few
-    /// points, and pins a midpoint value for all thirty-one so a wrong exponent cannot pass.
+    /// Every curve is a hand-transcribed Penner formula, and the <c>InOut</c> phrasings splice two of
+    /// them at <c>t = 0.5</c> — a mistyped constant moves one branch and leaves its neighbour, which
+    /// never shows at <c>t = 0</c> or <c>t = 1</c>. The fixture therefore scans each curve end to end and
+    /// pins a midpoint value for all thirty-one.
     /// <para>
-    /// Every expectation below was produced by executing the formulas, not by reading the enum's
-    /// <c>remarks</c>, and two of the documented claims do not survive that. See
-    /// <see cref="Evaluate_CircAndExpo_BreakTheDocumentedPullOrder"/> and
-    /// <see cref="Evaluate_ExpoFamily_StepsOffZeroInsteadOfLeavingIt"/>.
+    /// Expectations were produced by executing the formulas; two documented claims do not survive that,
+    /// and the tests naming them say so.
     /// </para>
     /// </remarks>
     [TestFixture]

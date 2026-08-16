@@ -10,15 +10,10 @@ namespace Aspid.MVVM.StarterKit
     /// </summary>
     /// <typeparam name="T">The type of the value.</typeparam>
     /// <remarks>
-    /// The reference-type counterpart of a placeholder string: a default sprite while an avatar
-    /// loads, a neutral material for an unequipped slot. Without it the empty state has to be a
-    /// second property on the ViewModel.
-    /// <para>
-    /// A destroyed <see cref="UnityEngine.Object"/> counts as missing here, which plain <c>??</c>
-    /// would not catch: Unity's overloaded <c>==</c> reports a destroyed object as null while its
-    /// managed reference is still alive, and a sprite destroyed mid-scene would otherwise reach the
-    /// binder instead of the fallback.
-    /// </para>
+    /// A destroyed <see cref="UnityEngine.Object"/> counts as missing here, which plain <c>??</c> would
+    /// not catch: Unity's overloaded <c>==</c> reports a destroyed object as null while its managed
+    /// reference is still alive, so a sprite destroyed mid-scene would otherwise reach the binder
+    /// instead of the fallback.
     /// </remarks>
     [Serializable]
     [TypeSelectorDisplay(Group = "Aspid/Object", Name = "Null Coalesce", Tooltip = "Substitutes an authored value for a null one")]

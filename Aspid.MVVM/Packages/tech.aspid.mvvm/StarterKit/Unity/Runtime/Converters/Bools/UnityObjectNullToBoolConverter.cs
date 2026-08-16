@@ -21,14 +21,8 @@ namespace Aspid.MVVM.StarterKit
         [Tooltip("Invert the result — true when the object is alive.")]
         [SerializeField] private bool _isInvert;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="UnityObjectNullToBoolConverter"/> class.
-        /// </summary>
         public UnityObjectNullToBoolConverter() { }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="UnityObjectNullToBoolConverter"/> class.
-        /// </summary>
         /// <param name="isInvert">If <see langword="true"/>, inverts the result.</param>
         public UnityObjectNullToBoolConverter(bool isInvert)
         {

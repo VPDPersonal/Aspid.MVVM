@@ -23,14 +23,8 @@ namespace Aspid.MVVM.StarterKit
         [Tooltip("Returned when the bound value is false.")]
         [SerializeField] private T _falseValue = default!;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="BoolToValueConverter{T}"/> class with default values.
-        /// </summary>
         public BoolToValueConverter() { }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="BoolToValueConverter{T}"/> class.
-        /// </summary>
         /// <param name="trueValue">Returned when the bound value is <see langword="true"/>.</param>
         /// <param name="falseValue">Returned when the bound value is <see langword="false"/>.</param>
         public BoolToValueConverter(T trueValue, T falseValue)

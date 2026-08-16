@@ -45,14 +45,8 @@ namespace Aspid.MVVM.StarterKit
         [Tooltip("Invert the result.")]
         [SerializeField] private bool _isInvert;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="StringMatchToBoolConverter"/> class with default settings.
-        /// </summary>
         public StringMatchToBoolConverter() { }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="StringMatchToBoolConverter"/> class.
-        /// </summary>
         /// <param name="match">How the bound string is compared with <paramref name="text"/>.</param>
         /// <param name="text">The text the bound string is compared against.</param>
         /// <param name="ignoreCase">If <see langword="true"/>, compares without regard to case.</param>
@@ -105,14 +99,8 @@ namespace Aspid.MVVM.StarterKit
         [Tooltip("Invert the result — true when the string has content.")]
         [SerializeField] private bool _isInvert;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="StringWhiteSpaceToBoolConverter"/> class.
-        /// </summary>
         public StringWhiteSpaceToBoolConverter() { }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="StringWhiteSpaceToBoolConverter"/> class.
-        /// </summary>
         /// <param name="isInvert">If <see langword="true"/>, inverts the result.</param>
         public StringWhiteSpaceToBoolConverter(bool isInvert)
         {

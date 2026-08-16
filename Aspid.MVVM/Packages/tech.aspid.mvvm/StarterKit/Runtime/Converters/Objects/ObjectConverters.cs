@@ -40,14 +40,8 @@ namespace Aspid.MVVM.StarterKit
         [Tooltip("Returned for an out-of-range index when the mode is Fallback, or when the array is empty.")]
         [SerializeField] private T _fallback = default!;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="IndexToValueConverter{T}"/> class with an empty array.
-        /// </summary>
         public IndexToValueConverter() { }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="IndexToValueConverter{T}"/> class.
-        /// </summary>
         /// <param name="values">The values to pick from, in order.</param>
         /// <param name="mode">What to do with an index outside the array.</param>
         /// <param name="fallback">Returned for an out-of-range index when <paramref name="mode"/> is <see cref="IndexMode.Fallback"/>.</param>
@@ -95,14 +89,8 @@ namespace Aspid.MVVM.StarterKit
         [Tooltip("Returned when the bound value is null.")]
         [SerializeField] private T _fallback = default!;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="NullCoalesceConverter{T}"/> class with no fallback.
-        /// </summary>
         public NullCoalesceConverter() { }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="NullCoalesceConverter{T}"/> class.
-        /// </summary>
         /// <param name="fallback">Returned when the bound value is <see langword="null"/>.</param>
         public NullCoalesceConverter(T fallback)
         {
@@ -134,14 +122,8 @@ namespace Aspid.MVVM.StarterKit
         [Tooltip("Invert the result.")]
         [SerializeField] private bool _isInvert;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="EqualityToBoolConverter{T}"/> class with a default operand.
-        /// </summary>
         public EqualityToBoolConverter() { }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="EqualityToBoolConverter{T}"/> class.
-        /// </summary>
         /// <param name="operand">The value the bound one is compared against.</param>
         /// <param name="isInvert">If <see langword="true"/>, inverts the result.</param>
         public EqualityToBoolConverter(T operand, bool isInvert = false)

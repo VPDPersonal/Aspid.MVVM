@@ -44,14 +44,8 @@ namespace Aspid.MVVM.StarterKit
         [Tooltip("Returned for an enum member the map does not list.")]
         [SerializeField] private T _fallback = default!;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="EnumToValueConverter{TEnum, T}"/> class with an empty map.
-        /// </summary>
         public EnumToValueConverter() { }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="EnumToValueConverter{TEnum, T}"/> class.
-        /// </summary>
         /// <param name="map">The value returned for each enum member.</param>
         /// <param name="fallback">Returned for a member <paramref name="map"/> does not list.</param>
         public EnumToValueConverter(EnumEntry<TEnum, T>[]? map, T fallback = default!)
@@ -118,14 +112,8 @@ namespace Aspid.MVVM.StarterKit
         [Tooltip("Invert the result.")]
         [SerializeField] private bool _isInvert;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="EnumToBoolConverter{TEnum}"/> class with default settings.
-        /// </summary>
         public EnumToBoolConverter() { }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="EnumToBoolConverter{TEnum}"/> class.
-        /// </summary>
         /// <param name="target">The enum value the bound one is tested against.</param>
         /// <param name="match">How the bound value is tested against <paramref name="target"/>.</param>
         /// <param name="isInvert">If <see langword="true"/>, inverts the result.</param>
@@ -222,14 +210,8 @@ namespace Aspid.MVVM.StarterKit
         [Tooltip("Returned for a value that is not a declared member.")]
         [SerializeField] private string _fallback = string.Empty;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="EnumToStringConverter{TEnum}"/> class with default settings.
-        /// </summary>
         public EnumToStringConverter() { }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="EnumToStringConverter{TEnum}"/> class.
-        /// </summary>
         /// <param name="source">Where the text comes from.</param>
         /// <param name="fallback">Returned for a value that is not a declared member.</param>
         public EnumToStringConverter(EnumNameSource source, string fallback = "")

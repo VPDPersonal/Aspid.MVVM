@@ -44,14 +44,8 @@ namespace Aspid.MVVM.StarterKit
         [Tooltip("The authored value the bound one combines with.")]
         [SerializeField] private bool _operand;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="BoolLogicConverter"/> class with default settings.
-        /// </summary>
         public BoolLogicConverter() { }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="BoolLogicConverter"/> class.
-        /// </summary>
         /// <param name="operation">How the bound value combines with the operand.</param>
         /// <param name="operand">The authored value the bound one combines with.</param>
         public BoolLogicConverter(LogicOperation operation, bool operand)

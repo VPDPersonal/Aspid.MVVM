@@ -62,11 +62,9 @@ namespace Aspid.MVVM.StarterKit.Tests
         /// A picker tooltip must not have a hole where a type name should be.
         /// </summary>
         /// <remarks>
-        /// The tooltips were derived from the XML <c>&lt;summary&gt;</c> of each converter, and the
-        /// derivation dropped every <c>&lt;see cref="…"/&gt;</c> element rather than replacing it with
-        /// the name it referred to. The result read "Wraps a  in a " — grammatical debris in the one
-        /// piece of documentation a designer actually sees. Both symptoms are exact: a doubled space
-        /// where the element was, or a trailing space where it ended the sentence.
+        /// Tooltips are derived from each converter's XML <c>&lt;summary&gt;</c>, and the derivation used
+        /// to drop <c>&lt;see cref="…"/&gt;</c> elements instead of substituting the name they referred
+        /// to. Both symptoms are exact: a doubled space where the element was, or a trailing space.
         /// </remarks>
         [Test]
         public void EveryPickerTooltipIsWhole()

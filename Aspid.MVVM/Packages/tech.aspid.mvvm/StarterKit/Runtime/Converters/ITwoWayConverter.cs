@@ -7,16 +7,12 @@ namespace Aspid.MVVM.StarterKit
     /// <typeparam name="TFrom">The type held by the ViewModel.</typeparam>
     /// <typeparam name="TTo">The type held by the View.</typeparam>
     /// <remarks>
-    /// Most conversions are one-directional and cannot be undone — a number rendered as text, a
-    /// vector reduced to one axis — so this is opt-in. A binder in
-    /// <see cref="BindMode.OneWayToSource"/> or <see cref="BindMode.TwoWay"/> applies
-    /// <see cref="ConvertBack"/> when the configured converter offers it, and sends the value
-    /// unchanged when it does not.
+    /// Most conversions cannot be undone — a number rendered as text, a vector reduced to one axis —
+    /// so this is opt-in: a binder in <see cref="BindMode.OneWayToSource"/> or
+    /// <see cref="BindMode.TwoWay"/> sends the value unchanged when the converter does not offer it.
     /// <para>
-    /// <see cref="ConvertBack"/> is expected to satisfy
-    /// <c>ConvertBack(Convert(x)) == x</c> for every value the binder can carry. A converter that
-    /// cannot promise that should not implement this interface: the alternative is a value that
-    /// silently drifts every time it makes the round trip.
+    /// <see cref="ConvertBack"/> must satisfy <c>ConvertBack(Convert(x)) == x</c> for every value the
+    /// binder can carry; a converter that cannot promise that makes the value drift each round trip.
     /// </para>
     /// </remarks>
     public interface ITwoWayConverter<TFrom, TTo> : IConverter<TFrom, TTo>

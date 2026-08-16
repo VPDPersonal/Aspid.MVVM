@@ -11,13 +11,11 @@ namespace Aspid.MVVM.StarterKit
     /// <typeparam name="TFrom">The type of the input value.</typeparam>
     /// <typeparam name="TTo">The type of the converted output value.</typeparam>
     /// <remarks>
-    /// Binders push on every notification, not on every change, so a converter that allocates —
-    /// anything producing a string, a <see cref="RectOffset"/>, a collection — allocates once per
-    /// push even while the value stands still.
+    /// Binders push on every notification, not on every change, so an allocating converter allocates
+    /// once per push even while the value stands still.
     /// <para>
-    /// Only wrap a pure converter. Anything reading outside its input, such as a converter that
-    /// combines with a scene component's current position, will keep returning the value it had when
-    /// the input last changed.
+    /// Only wrap a pure converter: one that also reads outside its input — a scene component's
+    /// current position, for instance — keeps returning the value it had when the input last changed.
     /// </para>
     /// </remarks>
     [Serializable]

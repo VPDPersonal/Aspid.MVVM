@@ -16,13 +16,10 @@ namespace Aspid.MVVM.StarterKit.Tests
     /// </summary>
     /// <remarks>
     /// A candidate is a concrete type assignable to the field, constructible by the picker, and not
-    /// hidden from it. Open generic converters count when they can be closed over the field's own
-    /// conversion types, which is what the picker does for a generic field.
+    /// hidden from it — including an open generic the picker can close over the field's own types.
     /// <para>
-    /// Composition plumbing does not count. <see cref="SequenceConverters{T}"/> and
-    /// <see cref="SafeConverter{TFrom, TTo}"/> are assignable to every field of the right shape, so
-    /// counting them would mark every such field covered while the dropdown offers nothing but empty
-    /// wrappers to put converters into — the vacuous pass this test exists to prevent.
+    /// Composition plumbing does not count: it fits every field of the right shape, so counting it
+    /// would mark a field covered while the dropdown offers nothing but empty wrappers.
     /// </para>
     /// </remarks>
     [TestFixture]

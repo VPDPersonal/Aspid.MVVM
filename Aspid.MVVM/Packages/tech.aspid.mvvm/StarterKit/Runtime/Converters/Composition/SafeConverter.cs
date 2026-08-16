@@ -10,14 +10,12 @@ namespace Aspid.MVVM.StarterKit
     /// <typeparam name="TFrom">The type of the input value.</typeparam>
     /// <typeparam name="TTo">The type of the converted output value.</typeparam>
     /// <remarks>
-    /// Dispatch to binders is a bare multicast, so an exception raised inside a converter cuts the
-    /// subscriber list and silently stops every binder queued behind it — including correctly
-    /// configured ones on the same object. Wrapping a converter that can throw contains the damage to
-    /// that converter.
+    /// Dispatch to binders is a bare multicast: an exception raised inside a converter cuts the
+    /// subscriber list and silently stops every binder queued behind it. Wrapping contains the damage
+    /// to that converter.
     /// <para>
-    /// It catches everything on purpose: the point is a containment boundary the author opts into,
-    /// not a filter for expected failures. Do not wrap a converter whose exceptions you have not
-    /// decided to ignore.
+    /// It catches everything on purpose — a containment boundary the author opts into, not a filter
+    /// for expected failures.
     /// </para>
     /// </remarks>
     [Serializable]

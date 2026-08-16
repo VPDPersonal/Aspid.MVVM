@@ -9,10 +9,8 @@ namespace Aspid.MVVM.StarterKit
     /// </summary>
     /// <typeparam name="T">The type of the value being converted.</typeparam>
     /// <remarks>
-    /// Every part is optional and every missing part means "leave the value alone", so a partially
-    /// configured instance degrades to the identity rather than to an error. State-dependent
-    /// formatting — a different colour below a threshold, a different label while loading — needed a
-    /// purpose-built converter class before this.
+    /// Every part is optional, and a missing part means "leave the value alone", so a partially
+    /// configured instance degrades to the identity rather than to an error.
     /// </remarks>
     [Serializable]
     public sealed class ConditionalConverter<T> : IConverter<T, T>

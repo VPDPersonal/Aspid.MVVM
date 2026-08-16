@@ -10,10 +10,9 @@ namespace Aspid.MVVM.StarterKit
     /// <typeparam name="TFrom">The type of the input value.</typeparam>
     /// <typeparam name="TTo">The type of the converted output value.</typeparam>
     /// <remarks>
-    /// Converters disagree on what a <see langword="null"/> input means — some return
-    /// <see langword="null"/>, some throw, some pass it to a formatter — and the disagreement is not
-    /// visible from the Inspector. Wrapping one settles the question at the point of use, and gives a
-    /// placeholder for the empty state without a converter written for it.
+    /// Converters disagree on what a <see langword="null"/> input means — return
+    /// <see langword="null"/>, throw, or format it — and the disagreement is not visible from the
+    /// Inspector. Wrapping one settles the question at the point of use.
     /// </remarks>
     [Serializable]
     public sealed class NullGuardConverter<TFrom, TTo> : IConverter<TFrom?, TTo?>

@@ -11,19 +11,16 @@ namespace Aspid.MVVM.StarterKit
     /// <remarks>
     /// The default fallback is fully transparent black, which is also what <c>"#00000000"</c> parses
     /// to — so a failure and a success were indistinguishable in the scene. A failure is now reported
-    /// once, whichever mode is chosen.
+    /// every time, whichever mode is chosen.
     /// </remarks>
     [Serializable]
     public sealed class ParseHtmlStringConverter : IConverterStringToColor
     {
-        [Tooltip("What to do with a string that does not parse. ReturnInput is not available here — "
-            + "the input is a string and the output a colour — and behaves as ReturnFallback.")]
+        [Tooltip("What to do with a string that does not parse. ReturnInput is not available here — the input is a string and the output a colour — and behaves as ReturnFallback.")]
         [SerializeField] private ConverterFailureMode _onFailure = ConverterFailureMode.ReturnFallback;
 
         [Tooltip("Returned when the string does not parse.")]
         [SerializeField] private Color _defaultColor = new(r: 0, g: 0, b: 0, a: 0);
-
-        [NonSerialized] private bool _loggedFailure;
 
         public ParseHtmlStringConverter() { }
 
@@ -33,8 +30,8 @@ namespace Aspid.MVVM.StarterKit
             Color defaultColor,
             ConverterFailureMode onFailure = ConverterFailureMode.ReturnFallback)
         {
-            _defaultColor = defaultColor;
             _onFailure = onFailure;
+            _defaultColor = defaultColor;
         }
 
         /// <summary>
@@ -53,18 +50,8 @@ namespace Aspid.MVVM.StarterKit
             if (_onFailure is ConverterFailureMode.Throw)
                 throw new ArgumentException($"Not an HTML colour: \"{value}\"", nameof(value));
 
-            LogFailure(value);
+            Debug.LogError($"{nameof(ParseHtmlStringConverter)}: \"{value}\" is not an HTML colour. Using the fallback colour.");
             return _defaultColor;
-        }
-
-        private void LogFailure(string? value)
-        {
-            if (_loggedFailure) return;
-            _loggedFailure = true;
-
-            Debug.LogError(
-                $"{nameof(ParseHtmlStringConverter)}: \"{value}\" is not an HTML colour. "
-                + "Using the fallback colour.");
         }
     }
 }

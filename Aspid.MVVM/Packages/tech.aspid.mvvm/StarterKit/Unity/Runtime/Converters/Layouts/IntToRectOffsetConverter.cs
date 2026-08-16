@@ -9,14 +9,9 @@ namespace Aspid.MVVM.StarterKit
     /// Writes one number into the chosen sides of a padding.
     /// </summary>
     /// <remarks>
-    /// A single "UI density" value driving every layout's padding. <c>IConverterRectOffset</c> has
-    /// been declared with no implementation behind it, so the picker on six binders has always been
-    /// empty.
-    /// <para>
     /// <see cref="RectOffset"/> is a class, so returning a new one on every push would allocate once
-    /// per notification. One instance is kept and rewritten instead — which is safe here because
-    /// layout reads the values immediately, but means the result must not be held onto.
-    /// </para>
+    /// per notification. One instance is kept and rewritten instead — safe because layout reads the
+    /// values immediately, but the result must not be held onto.
     /// </remarks>
     [Serializable]
     public sealed class IntToRectOffsetConverter : IConverter<int, RectOffset>

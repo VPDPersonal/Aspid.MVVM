@@ -11,17 +11,10 @@ namespace Aspid.MVVM.StarterKit.Tests
     /// Every binder that carries a converter and can send a value back must convert it back.
     /// </summary>
     /// <remarks>
-    /// Three separate rounds of this fix each left binders behind, because each looked for the shape
-    /// it had just fixed rather than for the property itself. The base
-    /// <see cref="TargetBinder{TTarget, TProperty, TConverter}"/> was fixed first; four binders with
-    /// a private converter field were found later by grepping for the symptom; two more —
-    /// <c>RendererMaterials</c> — hid because the conversion sat in a loop rather than on the line
-    /// that raised the event.
-    /// <para>
-    /// So this fixture does not name binders. It walks the assemblies, finds every type that owns a
-    /// converter field and a reverse channel, and requires the reverse path to exist. A binder added
-    /// tomorrow is covered without anyone remembering to add it here.
-    /// </para>
+    /// This fixture does not name binders: it walks the assemblies, finds every type that owns a
+    /// converter field and a reverse channel, and requires the reverse path to exist. Three earlier
+    /// rounds of the same fix each left binders behind by looking for the shape just fixed rather than
+    /// for the property itself.
     /// </remarks>
     [TestFixture]
     internal sealed class ReverseConversionCoverageTests

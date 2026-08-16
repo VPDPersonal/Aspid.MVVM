@@ -19,17 +19,18 @@ namespace Aspid.MVVM.StarterKit.Tests
     internal sealed class CompositionConverterTests
     {
         [Test]
-        public void Chain_AppliesBothLinksInOrder() =>
+        public void Compose_AppliesBothLinksInOrder() =>
             Assert.AreEqual(
                 "8",
-                new ChainConverter<int, int, string>(new Add(1), new ToText()).Convert(7));
+                new ComposeConverter<int, int, string>(new Add(1), new ToText()).Convert(7));
 
         [Test]
-        public void Chain_MissingLink_ReturnsDefaultAndReportsOnce()
+        public void Compose_MissingLink_ReturnsDefaultAndReportsEveryTime()
         {
-            LogAssert.Expect(LogType.Error, new Regex("both links are required"));
+            for (var i = 0; i < 3; i++)
+                LogAssert.Expect(LogType.Error, new Regex("both links are required"));
 
-            var converter = new ChainConverter<int, int, string>(new Add(1), null);
+            var converter = new ComposeConverter<int, int, string>(new Add(1), null);
             Assert.IsNull(converter.Convert(7));
             converter.Convert(8);
             converter.Convert(9);

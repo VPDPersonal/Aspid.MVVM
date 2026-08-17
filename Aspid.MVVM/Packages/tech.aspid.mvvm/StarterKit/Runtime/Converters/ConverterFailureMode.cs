@@ -11,12 +11,12 @@ namespace Aspid.MVVM.StarterKit
     public enum ConverterFailureMode
     {
         /// <summary>
-        /// Return the converter's configured fallback value and report the failure once.
+        /// Return the converter's configured fallback value and report the failure.
         /// </summary>
         ReturnFallback,
 
         /// <summary>
-        /// Return the incoming value unchanged and report the failure once. Converters whose input
+        /// Return the incoming value unchanged and report the failure. Converters whose input
         /// and output types differ cannot honour this and treat it as
         /// <see cref="ReturnFallback"/>.
         /// </summary>

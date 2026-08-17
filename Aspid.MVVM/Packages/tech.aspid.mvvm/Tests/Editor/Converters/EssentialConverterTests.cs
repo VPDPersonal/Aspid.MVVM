@@ -93,17 +93,33 @@ namespace Aspid.MVVM.StarterKit.Tests
         [TestCase("   ", true)]
         [TestCase("\t", true)]
         [TestCase("abc", false)]
-        public void StringWhiteSpace_CountsBlankAsEmpty(string value, bool expected) =>
-            Assert.AreEqual(expected, new StringWhiteSpaceToBoolConverter().Convert(value));
+        public void StringEmpty_CountsBlankAsEmptyWhenAsked(string value, bool expected) =>
+            Assert.AreEqual(
+                expected,
+                new StringEmptyToBoolConverter(StringEmptiness.NullOrWhiteSpace).Convert(value));
+
+        [TestCase(StringEmptiness.Null, null, true)]
+        [TestCase(StringEmptiness.Null, "", false)]
+        [TestCase(StringEmptiness.NullOrEmpty, "", true)]
+        [TestCase(StringEmptiness.NullOrEmpty, "   ", false)]
+        public void StringEmpty_HonoursTheConfiguredEmptiness(
+            StringEmptiness emptiness,
+            string value,
+            bool expected) =>
+            Assert.AreEqual(expected, new StringEmptyToBoolConverter(emptiness).Convert(value));
+
+        [Test]
+        public void StringEmpty_DefaultsToNullOrEmpty() =>
+            Assert.IsTrue(new StringEmptyToBoolConverter().Convert(string.Empty));
 
         [Test]
         public void EnumToValue_MapsAndFallsBack()
         {
             var converter = new EnumToValueConverter<Weather, Color>(
-                new[]
+                new EnumToValueConverter<Weather, Color>.Entry[]
                 {
-                    new EnumEntry<Weather, Color> { Key = Weather.Clear, Value = Color.yellow },
-                    new EnumEntry<Weather, Color> { Key = Weather.Rain, Value = Color.blue },
+                    new() { Key = Weather.Clear, Value = Color.yellow },
+                    new() { Key = Weather.Rain, Value = Color.blue },
                 },
                 fallback: Color.gray);
 

@@ -38,7 +38,6 @@ namespace Aspid.MVVM.StarterKit
         /// </returns>
         public bool Convert(Object? value)
         {
-            // Deliberately Unity's overloaded ==: `is null` misses a destroyed object.
             var isMissing = value == null;
             return _isInvert ? !isMissing : isMissing;
         }

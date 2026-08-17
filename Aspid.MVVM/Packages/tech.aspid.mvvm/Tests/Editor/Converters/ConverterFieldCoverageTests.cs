@@ -50,7 +50,6 @@ namespace Aspid.MVVM.StarterKit.Tests
         {
             ["IConverter<Color, Color>"] = "family 9 (Colour) — ColorAlpha, ColorTint, ColorGrayscale…",
             ["IConverter<ColorBlock, ColorBlock>"] = "family 10 (ColorBlock) — ColorToColorBlock…",
-            ["IConverter<Enum, IEnumerable<OptionData>>"] = "family 16 (Enum) — EnumToDropdownOptionData",
             ["IConverter<Quaternion, Quaternion>"] = "family 14 (Rotations) — AngleToQuaternion, LookRotation…",
         };
 

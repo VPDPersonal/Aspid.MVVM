@@ -10,16 +10,24 @@ namespace Aspid.MVVM.StarterKit
     /// </remarks>
     public enum NumberOperation
     {
-        /// <summary>Add the coefficient.</summary>
+        /// <summary>
+        /// Add the coefficient.
+        /// </summary>
         Plus,
 
-        /// <summary>Subtract the coefficient.</summary>
+        /// <summary>
+        /// Subtract the coefficient.
+        /// </summary>
         Minus,
 
-        /// <summary>Divide by the coefficient. A zero coefficient returns the input unchanged.</summary>
+        /// <summary>
+        /// Divide by the coefficient. A zero coefficient returns the input unchanged.
+        /// </summary>
         Division,
 
-        /// <summary>Multiply by the coefficient.</summary>
+        /// <summary>
+        /// Multiply by the coefficient.
+        /// </summary>
         Multiply,
 
         /// <summary>
@@ -28,13 +36,19 @@ namespace Aspid.MVVM.StarterKit
         /// </summary>
         Modulo,
 
-        /// <summary>Raise to the power of the coefficient.</summary>
+        /// <summary>
+        /// Raise to the power of the coefficient.
+        /// </summary>
         Power,
 
-        /// <summary>Subtract from the coefficient — <c>c - x</c>, for "how much is left".</summary>
+        /// <summary>
+        /// Subtract from the coefficient — <c>c - x</c>, for "how much is left".
+        /// </summary>
         ReverseSubtract,
 
-        /// <summary>Divide the coefficient by the value — <c>c / x</c>. A zero value returns the input.</summary>
+        /// <summary>
+        /// Divide the coefficient by the value — <c>c / x</c>. A zero value returns the input.
+        /// </summary>
         ReverseDivide,
     }
 }

@@ -1,0 +1,29 @@
+{
+    "name": "Aspid.MVVM.StarterKit.Tests",
+    "rootNamespace": "",
+    "references": [
+        "UnityEngine.TestRunner",
+        "UnityEditor.TestRunner",
+        "Aspid.MVVM",
+        "Aspid.MVVM.Unity",
+        "Aspid.MVVM.StarterKit",
+        "Aspid.MVVM.StarterKit.Unity",
+        "Aspid.FastTools.Unity",
+        "Unity.TextMeshPro"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": true,
+    "precompiledReferences": [
+        "nunit.framework.dll"
+    ],
+    "autoReferenced": false,
+    "defineConstraints": [
+        "UNITY_INCLUDE_TESTS"
+    ],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

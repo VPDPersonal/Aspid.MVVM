@@ -2,11 +2,7 @@
 using System;
 using UnityEngine;
 using UnityEngine.UI;
-#if UNITY_2023_1_OR_NEWER
 using Converter = Aspid.MVVM.StarterKit.IConverter<UnityEngine.RectOffset?, UnityEngine.RectOffset?>;
-#else
-using Converter = Aspid.MVVM.StarterKit.IConverterRectOffset;
-#endif
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit

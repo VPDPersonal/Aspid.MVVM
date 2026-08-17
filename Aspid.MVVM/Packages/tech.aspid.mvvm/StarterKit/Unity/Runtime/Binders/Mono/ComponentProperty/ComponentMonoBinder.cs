@@ -55,18 +55,30 @@ namespace Aspid.MVVM.StarterKit
 
         /// <summary>
         /// Raises <see cref="ValueChanged"/> with <paramref name="value"/>,
-        /// passing it through <see cref="GetConvertedValue"/> first.
+        /// passing it through <see cref="GetConvertedBackValue"/> first.
         /// </summary>
         /// <param name="value">The value to send to the ViewModel.</param>
         protected void RaiseValueChanged(TProperty value) =>
-            ValueChanged?.Invoke(GetConvertedValue(value));
+            ValueChanged?.Invoke(GetConvertedBackValue(value));
 
         /// <summary>
-        /// Converts <paramref name="value"/> before it is applied to the component or sent back to the ViewModel. Returns the value unchanged by default.
+        /// Converts <paramref name="value"/> before it is applied to the component. Returns the value unchanged by default.
         /// </summary>
         /// <param name="value">The value to convert.</param>
         /// <returns>The converted value.</returns>
         protected virtual TProperty GetConvertedValue(TProperty value) => value;
+
+        /// <summary>
+        /// Converts <paramref name="value"/> before it is sent back to the ViewModel. Returns the value unchanged by default.
+        /// </summary>
+        /// <param name="value">The value to convert.</param>
+        /// <returns>The converted value.</returns>
+        /// <remarks>
+        /// Separate from <see cref="GetConvertedValue"/> because the reverse direction is not the
+        /// forward one: applying the forward conversion again compounds it, so a ×100 converter
+        /// turns 0.75 into 7500 on the way back rather than into 0.75.
+        /// </remarks>
+        protected virtual TProperty GetConvertedBackValue(TProperty value) => value;
     }
     
     /// <summary>
@@ -82,10 +94,32 @@ namespace Aspid.MVVM.StarterKit
         where TComponent : Component
         where TConverter : IConverter<TProperty, TProperty>
     {
+        [Tooltip("Optional converter applied to the value on its way to the component. It also runs in reverse only if it implements ITwoWayConverter.")]
         [SerializeReference] private TConverter _converter;
 
         /// <inheritdoc/>
         protected override TProperty GetConvertedValue(TProperty value) =>
             _converter is not null ? _converter.Convert(value) : value;
+
+        /// <inheritdoc/>
+        protected override TProperty GetConvertedBackValue(TProperty value) =>
+            _converter is ITwoWayConverter<TProperty, TProperty> twoWay ? twoWay.ConvertBack(value) : value;
+
+        /// <inheritdoc/>
+        protected override void OnBound()
+        {
+            WarnAboutOneWayConverter();
+            base.OnBound();
+        }
+
+        private void WarnAboutOneWayConverter()
+        {
+            if (Mode is not (BindMode.OneWayToSource or BindMode.TwoWay)) return;
+            if (_converter is null or ITwoWayConverter<TProperty, TProperty>) return;
+
+            Debug.LogWarning(
+                $"{GetType().Name} is bound as {Mode} with {_converter.GetType().Name}, which converts one way only. Values sent back to the ViewModel are not converted.",
+                context: this);
+        }
     }
 }

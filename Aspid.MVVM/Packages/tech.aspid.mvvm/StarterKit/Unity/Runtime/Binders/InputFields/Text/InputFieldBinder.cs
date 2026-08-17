@@ -4,11 +4,7 @@ using TMPro;
 using System;
 using UnityEngine;
 using System.Globalization;
-#if UNITY_2023_1_OR_NEWER
 using Converter = Aspid.MVVM.StarterKit.IConverter<string?, string?>;
-#else
-using Converter = Aspid.MVVM.StarterKit.IConverterString;
-#endif
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
@@ -156,7 +152,8 @@ namespace Aspid.MVVM.StarterKit
         private void OnValueChanged(string value)
         {
             if (!_isNotifyValueChanged) return;
-            
+
+            value = GetConvertedBackValue(value);
             ValueChanged?.Invoke(value);
 
             if (Target.contentType 
@@ -183,6 +180,23 @@ namespace Aspid.MVVM.StarterKit
                 DoubleValueChanged?.Invoke(decimalValue);
             }
         }
+        /// <summary>
+        /// Converts a value on its way back to the ViewModel.
+        /// </summary>
+        /// <param name="value">The text read from the field.</param>
+        /// <returns>
+        /// The text as the ViewModel expects it: undone by the converter when it offers
+        /// <see cref="ITwoWayConverter{TFrom, TTo}"/>, and unchanged when it does not.
+        /// </returns>
+        /// <remarks>
+        /// A one-way converter cannot be undone, so the raw text is the only honest answer — and it
+        /// must not be the forward-converted one, which would write the View's presentation back
+        /// into the ViewModel. The numeric channels read the same converted-back text, so a field
+        /// whose converter strips a currency symbol parses the number underneath it.
+        /// </remarks>
+        private string? GetConvertedBackValue(string? value) =>
+            _converter is ITwoWayConverter<string?, string?> twoWay ? twoWay.ConvertBack(value) : value;
+
     }
 }
 #endif

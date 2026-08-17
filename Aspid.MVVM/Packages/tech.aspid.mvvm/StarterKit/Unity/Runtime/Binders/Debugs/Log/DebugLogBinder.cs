@@ -1,10 +1,6 @@
 using System;
 using UnityEngine;
-#if UNITY_2023_1_OR_NEWER
 using Converter = Aspid.MVVM.StarterKit.IConverter<object, string>;
-#else
-using Converter = Aspid.MVVM.StarterKit.IConverterObjectToString;
-#endif
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
@@ -29,9 +25,8 @@ namespace Aspid.MVVM.StarterKit
         }
 
         // ReSharper disable once FieldCanBeMadeReadOnly.Local
-        // ReSharper disable once MemberInitializerValueIgnored
         [Tooltip("Converter used to format bound values as log messages. Defaults to ObjectToStringConverter.")]
-        [SerializeReference] private Converter _converter = new ObjectToStringConverter();
+        [SerializeReference] private Converter _converter;
 
         /// <summary>
         /// Initializes a new instance of <see cref="DebugLogBinder"/>.
@@ -39,7 +34,7 @@ namespace Aspid.MVVM.StarterKit
         /// <param name="converter">The converter used to format bound values as log messages. Pass <see langword="null"/> to use <see cref="ObjectToStringConverter"/>.</param>
         public DebugLogBinder(Converter converter = null) : base(BindMode.TwoWay)
         {
-            _converter = converter;
+            _converter = converter ?? new ObjectToStringConverter();
         }
 
         /// <summary>
@@ -51,6 +46,6 @@ namespace Aspid.MVVM.StarterKit
             Debug.Log($"SetValue: {GetMessage(value)}");
 
         private string GetMessage(object value) =>
-            _converter?.Convert(value) ?? value.ToString();
+            (_converter is not null ? _converter.Convert(value) : value?.ToString()) ?? "null";
     }
 }

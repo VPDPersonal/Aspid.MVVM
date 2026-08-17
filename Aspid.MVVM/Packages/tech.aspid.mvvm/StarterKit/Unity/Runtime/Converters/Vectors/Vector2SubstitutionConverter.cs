@@ -1,6 +1,12 @@
 #nullable enable
+using Aspid.FastTools.Types;
 using System;
 using UnityEngine;
+
+// The named converter aliases are [Obsolete]. The converters below keep implementing them for
+// one release so that a [SerializeReference] field a project declares as one still
+// deserializes; the base lists go with the aliases in the next major.
+#pragma warning disable CS0618 // Type or member is obsolete
 
 // ReSharper disable InconsistentNaming
 // ReSharper disable once CheckNamespace
@@ -10,8 +16,10 @@ namespace Aspid.MVVM.StarterKit
     /// Converts <see cref="Vector2"/> values by substituting and rearranging their components.
     /// </summary>
     [Serializable]
+    [TypeSelectorDisplay(Group = "Aspid/Vector", Name = "Vector2 Substitution", Tooltip = "Converts Vector2 values by substituting and rearranging their components")]
     public sealed class Vector2SubstitutionConverter : IConverterVector2
     {
+        [Tooltip("How the components are rearranged.")]
         [SerializeField] private Mode _mode;
 
         /// <summary>
@@ -41,18 +49,26 @@ namespace Aspid.MVVM.StarterKit
 
             Mode.YY => new Vector2(value.y, value.y),
             Mode.XX => new Vector2(value.x, value.x),
-            _ => throw new ArgumentOutOfRangeException()
+            _ => throw new ArgumentOutOfRangeException(nameof(_mode), _mode, null)
         };
 
         /// <summary>
-        /// Specifies how to rearrange vector components.
+        /// Specifies how to rearrange vector components. The letters name the source components in
+        /// the order they are written into the result, so a repeated letter is a component copied
+        /// and a missing one is a component dropped.
         /// </summary>
         public enum Mode
         {
+            /// <summary>The vector unchanged — <c>(x, y)</c>, the mode a new converter starts in.</summary>
             XY,
+
+            /// <summary><c>(y, x)</c> — the two components swapped.</summary>
             YX,
 
+            /// <summary><c>(y, y)</c> — Y in both components, X dropped.</summary>
             YY,
+
+            /// <summary><c>(x, x)</c> — X in both components, Y dropped.</summary>
             XX,
         }
     }

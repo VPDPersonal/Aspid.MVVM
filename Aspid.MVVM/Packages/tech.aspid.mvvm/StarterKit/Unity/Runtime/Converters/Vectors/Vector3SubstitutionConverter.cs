@@ -1,6 +1,12 @@
 #nullable enable
+using Aspid.FastTools.Types;
 using System;
 using UnityEngine;
+
+// The named converter aliases are [Obsolete]. The converters below keep implementing them for
+// one release so that a [SerializeReference] field a project declares as one still
+// deserializes; the base lists go with the aliases in the next major.
+#pragma warning disable CS0618 // Type or member is obsolete
 
 // ReSharper disable InconsistentNaming
 // ReSharper disable once CheckNamespace
@@ -10,8 +16,10 @@ namespace Aspid.MVVM.StarterKit
     /// Converts <see cref="Vector3"/> values by substituting and rearranging their components.
     /// </summary>
     [Serializable]
+    [TypeSelectorDisplay(Group = "Aspid/Vector", Name = "Vector3 Substitution", Tooltip = "Converts Vector3 values by substituting and rearranging their components")]
     public sealed class Vector3SubstitutionConverter : IConverterVector3
     {
+        [Tooltip("How the components are rearranged.")]
         [SerializeField] private Mode _mode;
 
         /// <summary>
@@ -72,49 +80,95 @@ namespace Aspid.MVVM.StarterKit
             Mode.XXX => new Vector3(value.x, value.x, value.x),
             Mode.YYY => new Vector3(value.y, value.y, value.y),
             Mode.ZZZ => new Vector3(value.z, value.z, value.z),
-            _ => throw new ArgumentOutOfRangeException()
+            _ => throw new ArgumentOutOfRangeException(nameof(_mode), _mode, null)
         };
 
         /// <summary>
-        /// Specifies how to rearrange vector components.
+        /// Specifies how to rearrange vector components. The letters name the source components in
+        /// the order they are written into the result, so a repeated letter is a component copied
+        /// and a missing one is a component dropped.
         /// </summary>
         public enum Mode
         {
+            /// <summary>The vector unchanged — <c>(x, y, z)</c>, the mode a new converter starts in.</summary>
             XYZ,
+
+            /// <summary><c>(x, z, y)</c> — Y and Z swapped.</summary>
             XZY,
 
+            /// <summary><c>(y, x, z)</c> — X and Y swapped.</summary>
             YXZ,
+
+            /// <summary><c>(y, z, x)</c> — the components cycled left, X ending up last.</summary>
             YZX,
-            
+
+            /// <summary><c>(z, x, y)</c> — the components cycled right, Z ending up first.</summary>
             ZXY,
+
+            /// <summary><c>(z, y, x)</c> — the order reversed, X and Z swapped.</summary>
             ZYX,
-            
+
+            /// <summary><c>(x, x, y)</c> — X duplicated, Z dropped.</summary>
             XXY,
+
+            /// <summary><c>(x, y, x)</c> — X duplicated, Z dropped.</summary>
             XYX,
+
+            /// <summary><c>(y, x, x)</c> — X duplicated, Z dropped.</summary>
             YXX,
-            
+
+            /// <summary><c>(x, x, z)</c> — X duplicated, Y dropped.</summary>
             XXZ,
+
+            /// <summary><c>(x, z, x)</c> — X duplicated, Y dropped.</summary>
             XZX,
+
+            /// <summary><c>(z, x, x)</c> — X duplicated, Y dropped.</summary>
             ZXX,
-            
+
+            /// <summary><c>(y, y, x)</c> — Y duplicated, Z dropped.</summary>
             YYX,
+
+            /// <summary><c>(y, x, y)</c> — Y duplicated, Z dropped.</summary>
             YXY,
+
+            /// <summary><c>(x, y, y)</c> — Y duplicated, Z dropped.</summary>
             XYY,
-            
+
+            /// <summary><c>(y, y, z)</c> — Y duplicated, X dropped.</summary>
             YYZ,
+
+            /// <summary><c>(y, z, y)</c> — Y duplicated, X dropped.</summary>
             YZY,
+
+            /// <summary><c>(z, y, y)</c> — Y duplicated, X dropped.</summary>
             ZYY,
-            
+
+            /// <summary><c>(z, z, x)</c> — Z duplicated, Y dropped.</summary>
             ZZX,
+
+            /// <summary><c>(z, x, z)</c> — Z duplicated, Y dropped.</summary>
             ZXZ,
+
+            /// <summary><c>(x, z, z)</c> — Z duplicated, Y dropped.</summary>
             XZZ,
-            
+
+            /// <summary><c>(z, z, y)</c> — Z duplicated, X dropped.</summary>
             ZZY,
+
+            /// <summary><c>(z, y, z)</c> — Z duplicated, X dropped.</summary>
             ZYZ,
+
+            /// <summary><c>(y, z, z)</c> — Z duplicated, X dropped.</summary>
             YZZ,
-            
+
+            /// <summary><c>(x, x, x)</c> — X broadcast to every axis, Y and Z dropped.</summary>
             XXX,
+
+            /// <summary><c>(y, y, y)</c> — Y broadcast to every axis, X and Z dropped.</summary>
             YYY,
+
+            /// <summary><c>(z, z, z)</c> — Z broadcast to every axis, X and Y dropped.</summary>
             ZZZ,
         }
     }

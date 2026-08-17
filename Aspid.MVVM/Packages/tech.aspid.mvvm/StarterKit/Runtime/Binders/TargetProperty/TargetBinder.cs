@@ -62,34 +62,52 @@ namespace Aspid.MVVM.StarterKit
 
         /// <summary>
         /// Raises <see cref="ValueChanged"/> with <paramref name="value"/>,
-        /// passing it through <see cref="GetConvertedValue"/> first.
+        /// passing it through <see cref="GetConvertedBackValue"/> first.
         /// </summary>
         /// <param name="value">The value to send to the ViewModel.</param>
         protected void RaiseValueChanged(TProperty? value) =>
-            ValueChanged?.Invoke(GetConvertedValue(value));
+            ValueChanged?.Invoke(GetConvertedBackValue(value));
 
         /// <summary>
-        /// Converts <paramref name="value"/> before it is applied to the target property or sent back to the ViewModel.
+        /// Converts <paramref name="value"/> before it is applied to the target property.
         /// Returns <paramref name="value"/> unchanged by default.
         /// </summary>
         /// <param name="value">The value to convert.</param>
         /// <returns>The converted value.</returns>
         protected virtual TProperty? GetConvertedValue(TProperty? value) => value;
+
+        /// <summary>
+        /// Converts <paramref name="value"/> before it is sent back to the ViewModel.
+        /// Returns <paramref name="value"/> unchanged by default.
+        /// </summary>
+        /// <param name="value">The value to convert.</param>
+        /// <returns>The converted value.</returns>
+        /// <remarks>
+        /// Separate from <see cref="GetConvertedValue"/> because the reverse direction is not the
+        /// forward one: applying the forward conversion again compounds it, so a ×100 converter
+        /// turns 0.75 into 7500 on the way back rather than into 0.75.
+        /// </remarks>
+        protected virtual TProperty? GetConvertedBackValue(TProperty? value) => value;
     }
 
     /// <summary>
-    /// Abstract base <see cref="TargetBinder{TTarget,TProperty}"/> that applies an optional <typeparamref name="TConverter"/> to values in both binding directions.
+    /// Abstract base <see cref="TargetBinder{TTarget,TProperty}"/> that applies an optional <typeparamref name="TConverter"/> to the bound value.
     /// Supports <see cref="BindMode.OneWay">OneWay</see> and <see cref="BindMode.OneTime">OneTime</see>: the converter transforms the incoming value before setting it on the target property.
     /// Supports <see cref="BindMode.OneWayToSource">OneWayToSource</see> for reverse binding: when binding is established,
-    /// the current property value is converted and sent back to the ViewModel.
+    /// the current property value is sent back to the ViewModel.
     /// </summary>
+    /// <remarks>
+    /// The reverse direction only converts when the configured converter implements
+    /// <see cref="ITwoWayConverter{TFrom, TTo}"/>; otherwise the value is sent back unchanged, and a
+    /// binder bound in a reverse mode reports the one-way converter once.
+    /// </remarks>
     /// <typeparam name="TTarget">The type of the target object that exposes the bound property.</typeparam>
     /// <typeparam name="TProperty">The type of the property being bound.</typeparam>
     /// <typeparam name="TConverter">The converter type used to transform the bound value before applying it.</typeparam>
     public abstract class TargetBinder<TTarget, TProperty, TConverter> : TargetBinder<TTarget, TProperty>
         where TConverter : IConverter<TProperty?, TProperty?>
     {
-        [Tooltip("Optional converter applied to the value in both binding directions.")]
+        [Tooltip("Optional converter applied to the value on its way to the target. It also runs in reverse only if it implements ITwoWayConverter.")]
         [SerializeReference] private TConverter? _converter;
 
         /// <summary>
@@ -110,5 +128,24 @@ namespace Aspid.MVVM.StarterKit
         /// <inheritdoc/>
         protected override TProperty? GetConvertedValue(TProperty? value) =>
             _converter is not null ? _converter.Convert(value) : value;
+
+        /// <inheritdoc/>
+        protected override TProperty? GetConvertedBackValue(TProperty? value) =>
+            _converter is ITwoWayConverter<TProperty?, TProperty?> twoWay ? twoWay.ConvertBack(value) : value;
+
+        /// <inheritdoc/>
+        protected override void OnBound()
+        {
+            WarnAboutOneWayConverter();
+            base.OnBound();
+        }
+
+        private void WarnAboutOneWayConverter()
+        {
+            if (Mode is not (BindMode.OneWayToSource or BindMode.TwoWay)) return;
+            if (_converter is null or ITwoWayConverter<TProperty?, TProperty?>) return;
+
+            Debug.LogWarning($"{GetType().Name} is bound as {Mode} with {_converter.GetType().Name}, which converts one way only. Values sent back to the ViewModel are not converted.");
+        }
     }
 }

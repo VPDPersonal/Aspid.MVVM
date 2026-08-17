@@ -193,6 +193,78 @@ Existing `[Bind]` fields keep working. Bindable Properties (PR #46) are additive
 
 ---
 
+## 5. Converters
+
+The converter subsystem was rebuilt: 14 converters became 148, the contract gained a reverse direction, and the pre-2023.1 compatibility layer was deprecated. Scenes and prefabs survive untouched — the names that appear in serialized data were deliberately left alone, and the deprecated types are still implemented. Only source code needs work.
+
+### 5.1 Renames
+
+Only two names changed, and neither has a serialized footprint:
+
+| Was | Is | Notes |
+|-----|-----|-------|
+| `Vector2ToVector3Converter.Values`, `Vector3ToVector2Converter.Values` | `Mode` | Nested enum type; a nested type name is not serialized |
+| `Comparisons.Inequality` | `Comparisons.NotEqual` | An enum serializes as an ordinal, which is unchanged |
+
+Search-and-replace those two and you are done. Scenes and prefabs are untouched.
+
+> **A wider rename wave was attempted and reverted, and the reason is worth knowing if you maintain
+> your own `[SerializeReference]` types.** `[MovedFrom]` and `[FormerlySerializedAs]` cover an
+> object's own serialized data. They do **not** cover a prefab-instance override, which is keyed by
+> the stored type string and the property path. Renaming `SequenceConverters` emptied a converter in
+> the package's own Hello World sample — 24 console errors and a binder that stopped converting,
+> with `[MovedFrom]` present and correct. So `SequenceConverters`, `GenericToString`,
+> `_preConvertor` / `_postConvertor` and `_values` keep their names, spelling and all.
+
+### 5.2 Deprecated: the named converter aliases
+
+The 40 `IConverterXToY` interfaces and the 70 `ToConvert` / `ToConvertSpecific` wrappers are `[Obsolete]`. They existed because Unity before 2023.1 could not serialize a `[SerializeReference]` field of an open generic; 1.1 requires Unity 6000.0.
+
+```csharp
+// before
+[SerializeReference] private IConverterFloat _converter;
+IConverterFloat c = ((Func<float, float>)(x => x * 2f)).ToConvert();
+
+// after
+[SerializeReference] private IConverter<float, float> _converter;
+IConverter<float, float> c = ((Func<float, float>)(x => x * 2f)).ToConvert();
+```
+
+The generic `ConverterExtensions.ToConvert<TFrom, TTo>` is the replacement and is not deprecated.
+
+**You have one release to act.** The package's own converters still implement the aliases, so a field declared as `IConverterFloat` keeps deserializing today. When the aliases are removed, such a field resolves to `null` on load — silently, with no exception and no console entry. The compiler warning is the only notice you get.
+
+### 5.3 Reverse binding now converts
+
+A binder in `BindMode.TwoWay` or `BindMode.OneWayToSource` used to send the View's value back to the ViewModel unconverted. It now calls `ITwoWayConverter.ConvertBack` when the assigned converter implements it, and warns in the console when it does not.
+
+This changes runtime output where a two-way binding had a converter attached. If you compensated for the missing reverse conversion in the ViewModel — a setter that undid the converter's work — remove that compensation.
+
+### 5.4 Behavioural fixes that change runtime output
+
+- **`StringFormatConverter` with `_formatEmptyValues` enabled** formats null and empty input again. Between the 1.1 previews it returned `null` instead of the formatted empty string.
+- **A `FormatException` in a converter no longer stops unrelated binders.** If your scene had a broken format string, binders behind it in the dispatch order were silently not updating; they will now update.
+- **The `Vector3CombineConverter` family returns the input unchanged** instead of throwing when its scene reference is missing, and reports it once.
+
+### 5.5 `GenericToString.ToStringValue` is gone
+
+`protected virtual string ToStringValue(TFrom)` became a private detail when formatting moved to the
+`Format` hook. A subclass that overrode it no longer compiles:
+
+```csharp
+// before
+protected override string ToStringValue(float value) => value.ToString("F2");
+
+// after — Format receives the typed value and runs for every non-blank format
+protected override string? Format(float value) => value.ToString("F2");
+```
+
+The two hooks are not called on the same schedule. `ToStringValue` ran only when the format was
+blank; `Format` runs whenever it is **not** blank, and a blank one falls back to `ToString()`. If the
+override existed to change the no-format rendering, it now belongs in the subclass's own `Convert`.
+
+---
+
 ## Upgrade checklist
 
 - [ ] Add the `tech.aspid.collections` and `tech.aspid.fasttools` git packages to `manifest.json` (required; not auto-resolved)
@@ -208,3 +280,7 @@ Existing `[Bind]` fields keep working. Bindable Properties (PR #46) are additive
 - [ ] Re-check `ViewInitializer` / `ViewInitializerManual` inspector data — the serialized resolution components changed type, so existing view/viewModel resolution settings may not carry over- [ ] Review `NumberToBoolConverter` (`Inequality`) and `DynamicViewModel.Create` usages for the corrected runtime behaviour
 - [ ] Smoke-test scenes that use `ImageSpriteSwitcherBinder`, Addressable binders and `VirtualizedList*`
 - [ ] Update tests / tooling that look up components by `AddComponentMenu` path
+- [ ] Rename `Values` → `Mode` and `Comparisons.Inequality` → `NotEqual` in your own code (see § 5.1)
+- [ ] Move `[SerializeReference]` converter fields and code off the `[Obsolete]` `IConverterXToY` aliases onto `IConverter<TFrom, TTo>` — you have one release, and the failure after that is silent (see § 5.2)
+- [ ] Review every two-way binding that has a converter: the reverse direction now converts (see § 5.3)
+- [ ] Move any `ToStringValue` override to `Format` (see § 5.5)

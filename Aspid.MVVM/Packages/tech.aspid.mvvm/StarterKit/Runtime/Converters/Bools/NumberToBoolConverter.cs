@@ -1,4 +1,10 @@
+using Aspid.FastTools.Types;
 using System;
+
+// The named converter aliases are [Obsolete]. The converters below keep implementing them for
+// one release so that a [SerializeReference] field a project declares as one still
+// deserializes; the base lists go with the aliases in the next major.
+#pragma warning disable CS0618 // Type or member is obsolete
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
@@ -7,15 +13,18 @@ namespace Aspid.MVVM.StarterKit
     /// Converts numeric values to boolean based on comparison operations.
     /// </summary>
     [Serializable]
+    [TypeSelectorDisplay(Group = "Aspid/Bool", Name = "Number To Bool", Tooltip = "Converts numeric values to boolean based on comparison operations")]
     public class NumberToBoolConverter :
         IConverterFloatToBool,
         IConverterDoubleToBool,
         IConverterIntToBool,
         IConverterLongToBool
     {
+        [UnityEngine.Tooltip("How the bound number is compared with the value below.")]
         [UnityEngine.SerializeField]
         private Comparisons _comparison;
 
+        [UnityEngine.Tooltip("The number the bound one is compared against.")]
         [UnityEngine.SerializeField]
         private float _value;
 
@@ -68,9 +77,19 @@ namespace Aspid.MVVM.StarterKit
             Compare(value);
 
         /// <summary>
-        /// Performs the configured comparison in double precision so that large
-        /// integer and double magnitudes compare exactly without float rounding.
+        /// Performs the configured comparison of the bound value against the authored one.
         /// </summary>
+        /// <remarks>
+        /// The authored value is held as a <see langword="float"/> and rounded on assignment, so widening
+        /// here restores nothing: a large <see langword="int"/> or <see langword="long"/> reaches this
+        /// method intact and is measured against a threshold that is not.
+        /// <para>
+        /// <see cref="Comparisons.Equal"/> and <see cref="Comparisons.NotEqual"/> match within a
+        /// magnitude-scaled tolerance while the four ordering comparisons are bare operators, so the two
+        /// disagree at the boundary: against two million, a value one above reports as
+        /// <see cref="Comparisons.Equal"/> and <see cref="Comparisons.GreaterThan"/> at once.
+        /// </para>
+        /// </remarks>
         private bool Compare(double value) => _comparison switch
         {
             Comparisons.LessThan => value < _value,
@@ -78,13 +97,19 @@ namespace Aspid.MVVM.StarterKit
             Comparisons.LessThanOrEqual => value <= _value,
             Comparisons.GreaterThanOrEqual => value >= _value,
             Comparisons.Equal => Approximately(_value, value),
-            Comparisons.Inequality => !Approximately(_value, value),
-            _ => throw new ArgumentOutOfRangeException()
+            Comparisons.NotEqual => !Approximately(_value, value),
+            _ => throw new ArgumentOutOfRangeException(nameof(_comparison), _comparison, null)
         };
 
         /// <summary>
-        /// Checks if two float values are approximately equal with tolerance for floating-point precision.
+        /// Checks whether two values are approximately equal, within a tolerance scaled to their magnitude.
         /// </summary>
+        /// <remarks>
+        /// Both tolerance constants are calibrated for <see langword="float"/> — 1e-6 relative, and
+        /// <see cref="float.Epsilon"/> times eight as the floor near zero — while the parameters are
+        /// <see langword="double"/>. A <see langword="double"/> or <see langword="long"/> is therefore
+        /// judged against a float-grade epsilon and reads as equal long before its own precision runs out.
+        /// </remarks>
         private static bool Approximately(double a, double b) =>
             Math.Abs(b - a) < Math.Max(1E-06f * Math.Max(Math.Abs(a), Math.Abs(b)), float.Epsilon * 8f);
     }

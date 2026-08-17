@@ -1,11 +1,7 @@
 using System;
 using UnityEngine;
 using UnityEngine.UI;
-#if UNITY_2023_1_OR_NEWER
 using Converter = Aspid.MVVM.StarterKit.IConverter<float, float>;
-#else
-using Converter = Aspid.MVVM.StarterKit.IConverterFloat;
-#endif
 
 // ReSharper disable once CheckNamespace
 // ReSharper disable NotNullOrRequiredMemberIsNotInitialized
@@ -110,10 +106,28 @@ namespace Aspid.MVVM.StarterKit
         {
             if (!_isNotifyValueChanged) return;
 
+            value = GetConvertedBackValue(value);
+
             IntValueChanged?.Invoke((int)value);
             LongValueChanged?.Invoke((long)value);
             FloatValueChanged?.Invoke(value);
             DoubleValueChanged?.Invoke(value);
         }
+        /// <summary>
+        /// Converts a value on its way back to the ViewModel.
+        /// </summary>
+        /// <param name="value">The value read from the View.</param>
+        /// <returns>
+        /// The value as the ViewModel expects it: undone by the converter when it offers
+        /// <see cref="ITwoWayConverter{TFrom, TTo}"/>, and unchanged when it does not.
+        /// </returns>
+        /// <remarks>
+        /// A one-way converter cannot be undone, so the raw value is the only honest answer — and it
+        /// must not be the forward-converted one, which would write the View's presentation back
+        /// into the ViewModel.
+        /// </remarks>
+        private float GetConvertedBackValue(float value) =>
+            _converter is ITwoWayConverter<float, float> twoWay ? twoWay.ConvertBack(value) : value;
+
     }
 }

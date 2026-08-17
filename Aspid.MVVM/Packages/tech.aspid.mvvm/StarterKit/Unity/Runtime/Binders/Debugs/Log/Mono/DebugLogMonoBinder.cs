@@ -1,10 +1,6 @@
 using System;
 using UnityEngine;
-#if UNITY_2023_1_OR_NEWER
 using Converter = Aspid.MVVM.StarterKit.IConverter<object, string>;
-#else
-using Converter = Aspid.MVVM.StarterKit.IConverterObjectToString;
-#endif
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
@@ -41,6 +37,6 @@ namespace Aspid.MVVM.StarterKit
             Debug.Log($"SetValue: {GetMessage(value)}");
 
         private string GetMessage(object value) =>
-            _converter?.Convert(value) ?? value.ToString();
+            (_converter is not null ? _converter.Convert(value) : value?.ToString()) ?? "null";
     }
 }

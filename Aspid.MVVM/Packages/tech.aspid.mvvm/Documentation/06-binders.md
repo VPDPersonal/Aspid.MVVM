@@ -139,12 +139,23 @@ public abstract class TargetBinder<TTarget, TProperty> : MonoBinder
 }
 
 // С конвертером:
-public abstract class TargetBinder<TTarget, TProperty, TConverter> : ...
+public abstract class TargetBinder<TTarget, TProperty, TConverter> : TargetBinder<TTarget, TProperty>
+    where TConverter : IConverter<TProperty?, TProperty?>
 {
     // Конвертер назначается через Inspector ([SerializeReference])
-    protected TConverter Converter { get; }
+    [SerializeReference] private TConverter? _converter;
+
+    // ViewModel → View
+    protected override TProperty? GetConvertedValue(TProperty? value) => ...
+
+    // View → ViewModel: срабатывает, только если конвертер реализует ITwoWayConverter
+    protected override TProperty? GetConvertedBackValue(TProperty? value) => ...
 }
 ```
+
+Конвертер хранится в приватном поле — производный класс переопределяет не его, а `GetConvertedValue` /
+`GetConvertedBackValue`. Ограничение `TProperty → TProperty` намеренное: конвертер на биндере меняет
+значение, а не его тип. Кросс-типовые преобразования (`float → string`) делает сам биндер.
 
 **Специализированные базовые классы:**
 

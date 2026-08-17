@@ -1,0 +1,69 @@
+#nullable enable
+using Aspid.FastTools.Types;
+using System;
+using UnityEngine;
+
+// The named converter aliases are [Obsolete]. The converters below keep implementing them for
+// one release so that a [SerializeReference] field a project declares as one still
+// deserializes; the base lists go with the aliases in the next major.
+#pragma warning disable CS0618 // Type or member is obsolete
+
+// ReSharper disable once CheckNamespace
+namespace Aspid.MVVM.StarterKit
+{
+    /// <summary>
+    /// Rounds both axes of a 2D vector.
+    /// </summary>
+    /// <remarks>
+    /// The 2D counterpart of <see cref="VectorRoundConverter"/>, and the form a tile coordinate or a
+    /// snapped anchored position arrives in.
+    /// </remarks>
+    [Serializable]
+    [TypeSelectorDisplay(Group = "Aspid/Vector", Name = "Vector2 Round", Tooltip = "Rounds both axes of a 2D vector")]
+    public sealed class Vector2RoundConverter : IConverterVector2
+    {
+        [Tooltip("Which way to drop the fraction.")]
+        [SerializeField] private RoundMode _mode;
+
+        [Tooltip("The size of one grid step. Zero rounds to whole numbers.")]
+        [SerializeField] private float _step;
+
+        /// <remarks>Default: rounding to whole numbers.</remarks>
+        public Vector2RoundConverter() { }
+
+        /// <param name="mode">Which way to drop the fraction.</param>
+        /// <param name="step">The size of one grid step.</param>
+        public Vector2RoundConverter(RoundMode mode, float step = 0f)
+        {
+            _mode = mode;
+            _step = step;
+        }
+
+        /// <summary>
+        /// Rounds both axes of the specified vector.
+        /// </summary>
+        /// <param name="value">The vector to round.</param>
+        /// <returns>The rounded vector.</returns>
+        public Vector2 Convert(Vector2 value) => new(Apply(value.x), Apply(value.y));
+
+        /// <exception cref="ArgumentOutOfRangeException">Thrown when the mode is not a declared value.</exception>
+        private float Apply(float value)
+        {
+            // A step of zero would divide the value away, so it reads as "no grid" — which is the
+            // only thing an unset step can sensibly mean.
+            var step = _step == 0f ? 1f : _step;
+            var scaled = value / step;
+
+            var rounded = _mode switch
+            {
+                RoundMode.Round => Mathf.Round(scaled),
+                RoundMode.Floor => Mathf.Floor(scaled),
+                RoundMode.Ceil => Mathf.Ceil(scaled),
+                RoundMode.Truncate => (float)Math.Truncate(scaled),
+                _ => throw new ArgumentOutOfRangeException(nameof(_mode), _mode, null)
+            };
+
+            return rounded * step;
+        }
+    }
+}

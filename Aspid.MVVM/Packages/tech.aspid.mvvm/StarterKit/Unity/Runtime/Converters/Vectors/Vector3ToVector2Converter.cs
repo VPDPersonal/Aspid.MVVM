@@ -1,6 +1,12 @@
 #nullable enable
+using Aspid.FastTools.Types;
 using System;
 using UnityEngine;
+
+// The named converter aliases are [Obsolete]. The converters below keep implementing them for
+// one release so that a [SerializeReference] field a project declares as one still
+// deserializes; the base lists go with the aliases in the next major.
+#pragma warning disable CS0618 // Type or member is obsolete
 
 // ReSharper disable InconsistentNaming
 // ReSharper disable once CheckNamespace
@@ -10,9 +16,14 @@ namespace Aspid.MVVM.StarterKit
     /// Converts <see cref="Vector3"/> values to <see cref="Vector2"/> by selecting which components to use.
     /// </summary>
     [Serializable]
+    [TypeSelectorDisplay(Group = "Aspid/Vector", Name = "Vector3 To Vector2", Tooltip = "Converts Vector3 values to Vector2 by selecting which components to use")]
     public sealed class Vector3ToVector2Converter : IConverterVector3ToVector2
     {
-        [SerializeField] private Values _values = Values.XY;
+        [Tooltip("Which components of the 3D vector are kept, and in what order.")]
+        // The field keeps the name _values although its type is now Mode: renaming a
+        // serialized field orphans the prefab-instance overrides authored against the old
+        // path, and [FormerlySerializedAs] does not reach them.
+        [SerializeField] private Mode _values = Mode.XY;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Vector3ToVector2Converter"/> class.
@@ -22,10 +33,10 @@ namespace Aspid.MVVM.StarterKit
         /// <summary>
         /// Initializes a new instance of the <see cref="Vector3ToVector2Converter"/> class.
         /// </summary>
-        /// <param name="values">Which vector components to use.</param>
-        public Vector3ToVector2Converter(Values values)
+        /// <param name="mode">Which vector components to use.</param>
+        public Vector3ToVector2Converter(Mode mode)
         {
-            _values = values;
+            _values = mode;
         }
 
         /// <summary>
@@ -35,25 +46,37 @@ namespace Aspid.MVVM.StarterKit
         /// <returns>The converted 2D vector.</returns>
         public Vector2 Convert(Vector3 value) => _values switch
         {
-            Values.XY => new Vector2(value.x, value.y),
-            Values.XZ => new Vector2(value.x, value.z),
-            Values.YX => new Vector2(value.y, value.x),
-            Values.YZ => new Vector2(value.y, value.z),
-            Values.ZX => new Vector2(value.z, value.x),
-            Values.ZY => new Vector2(value.z, value.y),
-            _ => throw new ArgumentOutOfRangeException()
+            Mode.XY => new Vector2(value.x, value.y),
+            Mode.XZ => new Vector2(value.x, value.z),
+            Mode.YX => new Vector2(value.y, value.x),
+            Mode.YZ => new Vector2(value.y, value.z),
+            Mode.ZX => new Vector2(value.z, value.x),
+            Mode.ZY => new Vector2(value.z, value.y),
+            _ => throw new ArgumentOutOfRangeException(nameof(_values), _values, null)
         };
 
         /// <summary>
-        /// Specifies which components of the 3D vector to map to the 2D vector.
+        /// Specifies which components of the 3D vector to map to the 2D vector. The letters name the
+        /// source components in the order they are written into the result; the third is dropped.
         /// </summary>
-        public enum Values
+        public enum Mode
         {
+            /// <summary><c>(x, y)</c> — Z dropped, the mode a new converter starts in.</summary>
             XY,
+
+            /// <summary><c>(x, z)</c> — Y dropped, flattening the ground plane into 2D.</summary>
             XZ,
+
+            /// <summary><c>(y, x)</c> — Z dropped and the remaining two swapped.</summary>
             YX,
+
+            /// <summary><c>(y, z)</c> — X dropped.</summary>
             YZ,
+
+            /// <summary><c>(z, x)</c> — Y dropped and the remaining two swapped.</summary>
             ZX,
+
+            /// <summary><c>(z, y)</c> — X dropped and the remaining two swapped.</summary>
             ZY,
         }
     }

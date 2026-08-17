@@ -1,0 +1,35 @@
+#nullable enable
+using Aspid.FastTools.Types;
+using System;
+using UnityEngine;
+
+// The named converter aliases are [Obsolete]. The converters below keep implementing them for
+// one release so that a [SerializeReference] field a project declares as one still
+// deserializes; the base lists go with the aliases in the next major.
+#pragma warning disable CS0618 // Type or member is obsolete
+
+// ReSharper disable once CheckNamespace
+namespace Aspid.MVVM.StarterKit
+{
+    /// <summary>
+    /// Stops rich-text markup in a string from being interpreted.
+    /// </summary>
+    /// <remarks>
+    /// TextMeshPro reads markup out of any text it is given, including text a player typed: a name like
+    /// <c>&lt;size=400%&gt;</c> resizes every label that shows that player, on every screen.
+    /// <c>&lt;noparse&gt;</c> renders the characters instead. Reach for this on anything a player can
+    /// type — the rest of the converters here add markup and are for text the game itself authors.
+    /// </remarks>
+    [Serializable]
+    [TypeSelectorDisplay(Group = "Aspid/String", Name = "Rich Text No Parse", Tooltip = "Stops rich-text markup in a string from being interpreted")]
+    public sealed class RichTextNoParseConverter : IConverterString
+    {
+        /// <summary>
+        /// Wraps the specified string so its markup is shown rather than obeyed.
+        /// </summary>
+        /// <param name="value">The untrusted string.</param>
+        /// <returns>The wrapped string.</returns>
+        public string? Convert(string? value) =>
+            string.IsNullOrEmpty(value) ? value : "<noparse>" + value + "</noparse>";
+    }
+}

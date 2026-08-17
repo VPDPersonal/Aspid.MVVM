@@ -18,15 +18,18 @@ namespace Aspid.MVVM.StarterKit
         /// Initializes a new instance of the <see cref="GenericFuncConverter{TFrom, TTo}"/> class.
         /// </summary>
         /// <param name="converter">The converter interface implementation to wrap.</param>
-        /// <exception cref="ArgumentNullException">Thrown when <paramref name="converter"/> is <c>null</c>.</exception>
+        /// <exception cref="ArgumentNullException">Thrown when <paramref name="converter"/> is <see langword="null"/>.</exception>
+        // The null check has to happen before the method group is taken, because reading .Convert off a
+        // null reference throws an NRE — which is what this overload used to do, in flat contradiction
+        // of the contract documented right above it.
         public GenericFuncConverter(IConverter<TFrom?, TTo?> converter)
-            : this(converter.Convert) { }
+            : this((converter ?? throw new ArgumentNullException(nameof(converter))).Convert) { }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="GenericFuncConverter{TFrom, TTo}"/> class.
         /// </summary>
         /// <param name="converter">The conversion function.</param>
-        /// <exception cref="ArgumentNullException">Thrown when <paramref name="converter"/> is <c>null</c>.</exception>
+        /// <exception cref="ArgumentNullException">Thrown when <paramref name="converter"/> is <see langword="null"/>.</exception>
         public GenericFuncConverter(Func<TFrom?, TTo?> converter)
         {
             _converter = converter ?? throw new ArgumentNullException(nameof(converter));

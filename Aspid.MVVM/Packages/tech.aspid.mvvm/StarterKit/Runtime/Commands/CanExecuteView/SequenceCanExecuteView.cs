@@ -6,9 +6,7 @@ namespace Aspid.MVVM.StarterKit
     [Serializable]
     public sealed class SequenceCanExecuteView : ICanExecuteView
     {
-        #if UNITY_2023_1_OR_NEWER
         [UnityEngine.SerializeReference] 
-        #endif
         private ICanExecuteView[] _canExecuteViews;
 
         public SequenceCanExecuteView(params ICanExecuteView[] canExecuteViews)

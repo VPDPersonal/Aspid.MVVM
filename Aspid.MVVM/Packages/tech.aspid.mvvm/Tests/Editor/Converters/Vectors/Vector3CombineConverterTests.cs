@@ -1,0 +1,115 @@
+using UnityEngine;
+using NUnit.Framework;
+using UnityEngine.TestTools;
+using System.Text.RegularExpressions;
+using Mode = Aspid.MVVM.StarterKit.Vector3CombineConverter.Mode;
+
+// These fixtures name the [Obsolete] converter aliases on purpose — guarding the deprecated
+// surface is the point.
+#pragma warning disable CS0618 // Type or member is obsolete
+
+namespace Aspid.MVVM.StarterKit.Tests
+{
+    /// <summary>
+    /// Coverage for <see cref="Vector3CombineConverter"/> — all seven <see cref="Mode"/> branches,
+    /// the pre/post converter hooks, both entry points (<c>Convert(Vector2)</c> and
+    /// <c>Convert(Vector3)</c>), and the unassigned-collider degrade path of the subclasses.
+    /// </summary>
+    /// <remarks>
+    /// The class is abstract, so the reference vector is supplied here by a stub. The
+    /// <c>Convert(Vector2)</c> rows pin a known defect: the 2D entry point widens its argument
+    /// before the mode is applied, so the source z is always zero.
+    /// </remarks>
+    [TestFixture]
+    internal sealed class Vector3CombineConverterTests
+    {
+        private static readonly Vector3 From = new(1f, 2f, 3f);
+        private static readonly Vector3 To = new(10f, 20f, 30f);
+
+        [TestCase(Mode.X, 1f, 20f, 30f)]
+        [TestCase(Mode.Y, 10f, 2f, 30f)]
+        [TestCase(Mode.Z, 10f, 20f, 3f)]
+        [TestCase(Mode.XY, 1f, 2f, 30f)]
+        [TestCase(Mode.XZ, 1f, 20f, 3f)]
+        [TestCase(Mode.YZ, 10f, 2f, 3f)]
+        [TestCase(Mode.XYZ, 1f, 2f, 3f)]
+        public void Convert_Vector3_TakesTheNamedAxesFromTheInput(Mode mode, float x, float y, float z) =>
+            Assert.AreEqual(new Vector3(x, y, z), NewStub(mode).Convert(From));
+
+        [Test]
+        public void Convert_DefaultMode_IsXyz() =>
+            Assert.AreEqual(From, NewStub(Mode.XYZ).Convert(From));
+
+        // Known defect: Convert(Vector2) has no dedicated combine path, so the argument widens to
+        // (x, y, 0) before the mode runs and the source z is lost. Characterisation only — the fix
+        // changes existing scenes and is deliberately out of the Phase 0 batch.
+        [TestCase(Mode.XYZ, 1f, 2f, 0f)]
+        [TestCase(Mode.Z, 10f, 20f, 0f)]
+        [TestCase(Mode.XZ, 1f, 20f, 0f)]
+        [TestCase(Mode.XY, 1f, 2f, 30f)]
+        public void Convert_Vector2_WidensBeforeCombining(Mode mode, float x, float y, float z) =>
+            Assert.AreEqual(new Vector3(x, y, z), NewStub(mode).Convert(new Vector2(1f, 2f)));
+
+        [Test]
+        public void Convert_PreConverter_RunsBeforeTheModeSelection() =>
+            Assert.AreEqual(
+                new Vector3(2f, 20f, 30f),
+                NewStub(Mode.X, pre: new Offset(1f), post: null).Convert(From));
+
+        [Test]
+        public void Convert_PostConverter_RunsOnTheCombinedResult() =>
+            Assert.AreEqual(
+                new Vector3(2f, 21f, 31f),
+                NewStub(Mode.X, pre: null, post: new Offset(1f)).Convert(From));
+
+        [Test]
+        public void Convert_BothHooks_RunInOrder() =>
+            Assert.AreEqual(
+                new Vector3(3f, 21f, 31f),
+                NewStub(Mode.X, pre: new Offset(1f), post: new Offset(1f)).Convert(From));
+
+        // The null guard lives in the collider subclasses now: an unassigned collider logs an error
+        // and substitutes Vector3.zero as the reference vector.
+        [Test]
+        public void Convert_MissingCollider_LogsAndSubstitutesZero()
+        {
+            LogAssert.Expect(LogType.Error, new Regex("no collider assigned"));
+
+            Assert.AreEqual(From, new BoxColliderCentreCombineConverter().Convert(From));
+        }
+
+        private Stub NewStub(Mode mode) =>
+            new(To, mode);
+
+        private Stub NewStub(Mode mode, IConverterVector3 pre, IConverterVector3 post) =>
+            new(To, mode, pre, post);
+
+        private sealed class Stub : Vector3CombineConverter
+        {
+            private readonly Vector3 _to;
+
+            public Stub(Vector3 to, Mode mode)
+                : base(mode)
+            {
+                _to = to;
+            }
+
+            public Stub(Vector3 to, Mode mode, IConverterVector3 pre, IConverterVector3 post)
+                : base(mode, pre, post)
+            {
+                _to = to;
+            }
+
+            protected override Vector3 VectorTo => _to;
+        }
+
+        private sealed class Offset : IConverterVector3
+        {
+            private readonly float _amount;
+
+            public Offset(float amount) => _amount = amount;
+
+            public Vector3 Convert(Vector3 value) => value + Vector3.one * _amount;
+        }
+    }
+}

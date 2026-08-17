@@ -1,11 +1,6 @@
 #nullable enable
 using UnityEngine;
-using System.Runtime.CompilerServices;
-#if UNITY_2023_1_OR_NEWER
 using Converter = Aspid.MVVM.StarterKit.IConverter<UnityEngine.Color, UnityEngine.Color>;
-#else
-using Converter = Aspid.MVVM.StarterKit.IConverterColor;
-#endif
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
@@ -24,16 +19,6 @@ namespace Aspid.MVVM.StarterKit
             Color falseValue,
             IConverter<Color, Color>? converter, 
             BindMode mode = BindMode.OneWay)
-            : base(target, trueValue, falseValue, GetConverter(converter), mode) { }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static Converter? GetConverter(IConverter<Color, Color>? converter)
-        {
-            #if UNITY_2023_1_OR_NEWER
-            return converter;
-            #else
-            return converter?.ToConvertSpecific();
-            #endif
-        }
+            : base(target, trueValue, falseValue, converter, mode) { }
     }
 }

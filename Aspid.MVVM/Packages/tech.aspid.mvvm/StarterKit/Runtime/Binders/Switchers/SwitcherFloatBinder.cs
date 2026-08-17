@@ -1,9 +1,4 @@
-using System.Runtime.CompilerServices;
-#if UNITY_2023_1_OR_NEWER
 using Converter = Aspid.MVVM.StarterKit.IConverter<float, float>;
-#else
-using Converter = Aspid.MVVM.StarterKit.IConverterFloat;
-#endif
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
@@ -22,17 +17,8 @@ namespace Aspid.MVVM.StarterKit
             float falseValue,
             IConverter<float, float>? converter, 
             BindMode mode = BindMode.OneWay)
-            : base(target, trueValue, falseValue, GetConverter(converter), mode) { }
+            : base(target, trueValue, falseValue, converter, mode) { }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static Converter? GetConverter(IConverter<float, float>? converter)
-        {
-            #if UNITY_2023_1_OR_NEWER
-            return converter;
-            #else
-            return converter?.ToConvertSpecific();
-            #endif
-        }
 
         protected override void SetValue(float value)
         {

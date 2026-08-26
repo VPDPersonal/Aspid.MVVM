@@ -1,3 +1,4 @@
+// ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit.Tests
 {
     // Sparse values, so a member's position and its underlying number disagree from the second

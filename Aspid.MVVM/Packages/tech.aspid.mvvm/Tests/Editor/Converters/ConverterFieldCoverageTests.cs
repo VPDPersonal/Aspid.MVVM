@@ -7,10 +7,7 @@ using System.Reflection;
 using Aspid.FastTools.Types;
 using System.Collections.Generic;
 
-// These fixtures name the [Obsolete] converter aliases on purpose — guarding the deprecated
-// surface is the point.
-#pragma warning disable CS0618 // Type or member is obsolete
-
+// ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit.Tests
 {
     /// <summary>
@@ -33,9 +30,9 @@ namespace Aspid.MVVM.StarterKit.Tests
         /// Composition plumbing: types that hold, route or bypass other converters rather than
         /// perform a conversion of their own.
         /// </summary>
-        private static readonly HashSet<Type> Structural = new()
+        private static readonly HashSet<Type> _structural = new()
         {
-            typeof(SequenceConverters<>),
+            typeof(SequenceConverter<>),
             typeof(ComposeConverter<,,>),
             typeof(ConditionalConverter<>),
             typeof(SafeConverter<,>),
@@ -55,13 +52,13 @@ namespace Aspid.MVVM.StarterKit.Tests
         /// and stays here so the next field added without a converter behind it lands in a list that
         /// already knows what to say about it.
         /// </remarks>
-        private static readonly Dictionary<string, string> KnownGaps = new();
+        private static readonly Dictionary<string, string> _knownGaps = new();
 
         [Test]
         public void EveryConverterFieldHasAPickableConverter()
         {
             var uncovered = ConverterFieldTypes()
-                .Where(type => !KnownGaps.ContainsKey(Describe(type)))
+                .Where(type => !_knownGaps.ContainsKey(Describe(type)))
                 .Where(type => !Candidates(type).Any())
                 .ToArray();
 
@@ -75,16 +72,16 @@ namespace Aspid.MVVM.StarterKit.Tests
             foreach (var type in ConverterFieldTypes())
                 byName[Describe(type)] = type;
 
-            var filled = KnownGaps.Keys
+            var filled = _knownGaps.Keys
                 .Where(name => !byName.ContainsKey(name) || Candidates(byName[name]).Any())
                 .ToArray();
 
             Assert.IsEmpty(
                 filled,
-                "These entries are no longer gaps — the field is gone, or it now has a pickable "
-                + "converter. Drop them from KnownGaps:"
-                + Environment.NewLine
-                + string.Join(Environment.NewLine, filled.Select(name => "  - " + name)));
+                "These entries are no longer gaps — the field is gone, or it now has a pickable " +
+                "converter. Drop them from _knownGaps:" +
+                Environment.NewLine +
+                string.Join(Environment.NewLine, filled.Select(name => "  - " + name)));
         }
 
         [Test]
@@ -104,7 +101,7 @@ namespace Aspid.MVVM.StarterKit.Tests
         // Most converter fields are private and declared on a generic binder base, so DeclaredOnly on
         // the concrete type misses them and inheritance does not surface private fields. Walking the
         // base chain does both: each base is already a constructed type, so reflection hands back the
-        // field with its type arguments substituted — `TConverter` arrives as `IConverterColor`.
+        // field with its type arguments substituted — `TConverter` arrives as `IConverter<Color, Color>`.
         private static IEnumerable<FieldInfo> SerializedReferenceFields(Type type)
         {
             for (var current = type; current is not null && current != typeof(object); current = current.BaseType)
@@ -121,7 +118,7 @@ namespace Aspid.MVVM.StarterKit.Tests
         private static IEnumerable<Assembly> Assemblies() => new[]
         {
             typeof(IConverter).Assembly,
-            typeof(IConverterVector3).Assembly,
+            typeof(Vector3CombineConverter).Assembly,
             typeof(MonoBinder).Assembly,
             typeof(Binder).Assembly,
         }.Distinct();
@@ -133,7 +130,7 @@ namespace Aspid.MVVM.StarterKit.Tests
             // A managed reference cannot hold a UnityEngine.Object, so a converter asset is never a
             // candidate for the field itself — ConverterAssetReference is what points at one.
             .Where(type => !typeof(UnityEngine.Object).IsAssignableFrom(type))
-            .Where(type => !Structural.Contains(type))
+            .Where(type => !_structural.Contains(type))
             .Where(IsConstructible)
             .Where(type => !IsHidden(type))
             .Select(type => Close(type, fieldType))
@@ -197,8 +194,8 @@ namespace Aspid.MVVM.StarterKit.Tests
         private static bool IsHidden(Type type) =>
             type.GetCustomAttribute<TypeSelectorDisplayAttribute>(inherit: false)?.Hidden is true;
 
-        // Markers and their generic aliases both appear as field types; a readable rendering keeps
-        // the gap list legible and stable across the two spellings.
+        // A field type reads as IConverter`2 through reflection; rendering it as IConverter<A, B>
+        // keeps the gap list legible.
         private static string Describe(Type type)
         {
             if (!type.IsGenericType) return type.Name;
@@ -217,7 +214,7 @@ namespace Aspid.MVVM.StarterKit.Tests
             var message = new StringBuilder()
                 .AppendLine("These converter field types have no pickable converter, so their Inspector")
                 .AppendLine("dropdown offers nothing but <None>. Either ship a converter for them, drop")
-                .AppendLine("the field, or record the gap in KnownGaps with the family that will fill it:")
+                .AppendLine("the field, or record the gap in _knownGaps with the family that will fill it:")
                 .AppendLine();
 
             foreach (var type in uncovered)

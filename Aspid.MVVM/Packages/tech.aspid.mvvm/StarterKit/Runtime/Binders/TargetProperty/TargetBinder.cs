@@ -45,17 +45,29 @@ namespace Aspid.MVVM.StarterKit
         /// </summary>
         /// <remarks>
         /// When overriding this method, always call <c>base.OnBound()</c> to preserve
-        /// the <see cref="BindMode.OneWayToSource"/> initialization behavior.
+        /// the <see cref="BindMode.OneWayToSource"/> initialization behavior. To change what is sent,
+        /// override <see cref="SendInitialValueToSource"/> instead.
         /// </remarks>
         protected override void OnBound()
         {
             if (Mode is BindMode.OneWayToSource)
-                RaiseValueChanged();
+                SendInitialValueToSource();
         }
-        
+
+        /// <summary>
+        /// Sends the current <see cref="Property"/> value to the ViewModel on binding in
+        /// <see cref="BindMode.OneWayToSource"/>. Override to broadcast through additional channels.
+        /// </summary>
+        /// <remarks>
+        /// An override must route the value through <see cref="GetConvertedBackValue"/>: the forward
+        /// conversion describes the ViewModel to View direction only.
+        /// </remarks>
+        protected virtual void SendInitialValueToSource() =>
+            RaiseValueChanged();
+
         /// <summary>
         /// Raises <see cref="ValueChanged"/> with the current <see cref="Property"/> value,
-        /// passing it through <see cref="GetConvertedValue"/> first.
+        /// passing it through <see cref="GetConvertedBackValue"/> first.
         /// </summary>
         protected void RaiseValueChanged() =>
             RaiseValueChanged(Property);
@@ -107,7 +119,8 @@ namespace Aspid.MVVM.StarterKit
     public abstract class TargetBinder<TTarget, TProperty, TConverter> : TargetBinder<TTarget, TProperty>
         where TConverter : IConverter<TProperty?, TProperty?>
     {
-        [Tooltip("Optional converter applied to the value on its way to the target. It also runs in reverse only if it implements ITwoWayConverter.")]
+        [Tooltip("Optional converter applied on the way to the target. It runs in reverse only if it " +
+            "implements ITwoWayConverter.")]
         [SerializeReference] private TConverter? _converter;
 
         /// <summary>

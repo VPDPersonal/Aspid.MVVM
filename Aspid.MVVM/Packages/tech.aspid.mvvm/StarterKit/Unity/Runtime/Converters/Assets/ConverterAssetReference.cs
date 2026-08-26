@@ -1,7 +1,7 @@
 #nullable enable
-using Aspid.FastTools.Types;
 using System;
 using UnityEngine;
+using Aspid.FastTools.Types;
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
@@ -12,24 +12,30 @@ namespace Aspid.MVVM.StarterKit
     /// <typeparam name="TFrom">The type of the input value.</typeparam>
     /// <typeparam name="TTo">The type of the converted output value.</typeparam>
     /// <remarks>
-    /// A managed reference cannot hold a <see cref="ScriptableObject"/>, so a converter field cannot
-    /// point at an asset directly. This is the bridge: it is an ordinary converter, appears in the
-    /// ordinary dropdown, and holds the asset in a plain object field. Every existing binder gains
-    /// shared converters without changing.
+    /// A managed reference cannot hold a <see cref="ScriptableObject"/>, so a converter field points
+    /// at the asset through this ordinary converter instead.
     /// </remarks>
     [Serializable]
-    [TypeSelectorDisplay(Group = "Aspid/Asset", Name = "Converter Asset Reference", Tooltip = "Forwards conversion to a shared ConverterAsset")]
-    public sealed class ConverterAssetReference<TFrom, TTo> : IConverter<TFrom?, TTo?>
+    [TypeSelectorDisplay(
+        Group = "Aspid/Asset",
+        Name = "Converter Asset Reference",
+        Tooltip = "Forwards conversion to a shared ConverterAsset")]
+    public class ConverterAssetReference<TFrom, TTo> : IConverter<TFrom?, TTo?>
     {
-        [Tooltip("The shared converter asset. When empty, the default value is returned.")]
+        [Tooltip("The shared converter asset. " +
+            "When empty or destroyed, the reference reports an error and returns the default value.")]
         [SerializeField] private ConverterAsset<TFrom, TTo>? _asset;
 
-        public ConverterAssetReference() { }
+        protected ConverterAssetReference() { }
 
         /// <param name="asset">The shared converter asset.</param>
-        public ConverterAssetReference(ConverterAsset<TFrom, TTo>? asset)
+        /// <exception cref="ArgumentNullException">
+        /// Thrown when <paramref name="asset"/> is <see langword="null"/> or already destroyed. The empty
+        /// shape belongs to the Inspector, which reports it and returns the default value.
+        /// </exception>
+        public ConverterAssetReference(ConverterAsset<TFrom, TTo> asset)
         {
-            _asset = asset;
+            _asset = asset ? asset : throw new ArgumentNullException(nameof(asset));
         }
 
         /// <summary>
@@ -37,15 +43,18 @@ namespace Aspid.MVVM.StarterKit
         /// </summary>
         /// <param name="value">The value to convert.</param>
         /// <returns>
-        /// The converted value, or the default of <typeparamref name="TTo"/> when no asset is assigned.
+        /// The converted value, or the default value when no asset is assigned or the assigned asset
+        /// has been destroyed. Both are reported as errors, every time.
         /// </returns>
         public TTo? Convert(TFrom? value)
         {
-            // Unity's overloaded != also catches an asset deleted from under a live reference.
             if (_asset != null)
                 return _asset.Convert(value);
 
-            Debug.LogError($"{nameof(ConverterAssetReference<TFrom, TTo>)}: no asset assigned. Returning the default value.");
+            this.LogError(
+                problem: "no asset assigned, or the assigned asset has been destroyed",
+                consequence: "Returning the default value.");
+
             return default;
         }
     }

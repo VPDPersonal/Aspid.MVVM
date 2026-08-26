@@ -1,12 +1,7 @@
 #nullable enable
-using Aspid.FastTools.Types;
 using System;
 using UnityEngine;
-
-// The named converter aliases are [Obsolete]. The converters below keep implementing them for
-// one release so that a [SerializeReference] field a project declares as one still
-// deserializes; the base lists go with the aliases in the next major.
-#pragma warning disable CS0618 // Type or member is obsolete
+using Aspid.FastTools.Types;
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
@@ -14,22 +9,31 @@ namespace Aspid.MVVM.StarterKit
     /// <summary>
     /// Keeps a vector inside a length.
     /// </summary>
-    /// <remarks>Holding a joystick offset or a drag inside a panel's radius.</remarks>
     [Serializable]
-    [TypeSelectorDisplay(Group = "Aspid/Vector", Name = "Vector Clamp Magnitude", Tooltip = "Keeps a vector inside a length")]
-    public sealed class VectorClampMagnitudeConverter : IConverterVector3
+    [TypeSelectorDisplay(
+        Group = "Aspid/Vector",
+        Name = "Clamp Magnitude",
+        Tooltip = "Keeps a vector inside a length")]
+    public sealed class VectorClampMagnitudeConverter :
+        IConverter<Vector2, Vector2>, IConverter<Vector3, Vector3>, IConverter<Vector4, Vector4>
     {
         [Tooltip("The longest the vector is allowed to be.")]
-        [SerializeField] private float _maxMagnitude = 1f;
+        [SerializeField] [Min(0f)] private float _maxMagnitude = 1f;
 
         [Tooltip("The shortest the vector is allowed to be. Zero disables the lower bound.")]
-        [SerializeField] private float _minMagnitude;
+        [SerializeField] [Min(0f)] private float _minMagnitude;
 
         /// <remarks>Default: clamping to one.</remarks>
         public VectorClampMagnitudeConverter() { }
 
-        /// <param name="maxMagnitude">The longest the vector is allowed to be.</param>
-        /// <param name="minMagnitude">The shortest the vector is allowed to be.</param>
+        /// <param name="maxMagnitude">
+        /// The longest the vector is allowed to be. Bounds typed the wrong way round are reported and
+        /// swapped, and a negative bound reads as zero.
+        /// </param>
+        /// <param name="minMagnitude">
+        /// The shortest the vector is allowed to be. Zero disables the lower bound; bounds typed the
+        /// wrong way round are reported and swapped.
+        /// </param>
         public VectorClampMagnitudeConverter(float maxMagnitude, float minMagnitude = 0f)
         {
             _maxMagnitude = maxMagnitude;
@@ -41,23 +45,37 @@ namespace Aspid.MVVM.StarterKit
         /// </summary>
         /// <param name="value">The vector to clamp.</param>
         /// <returns>
-        /// The clamped vector. A pair typed the wrong way round is read in the order that holds the
-        /// vector inside both bounds, and a negative ceiling reads as zero.
+        /// The clamped vector, with a zero vector left as it is. A pair typed the wrong way round,
+        /// or with a negative length in it, reports an error and is read in the order that holds the
+        /// vector inside both bounds, with a negative bound reading as zero.
         /// </returns>
-        public Vector3 Convert(Vector3 value)
-        {
-            var magnitude = value.magnitude;
-            if (magnitude == 0f) return value;
+        public Vector3 Convert(Vector3 value) => value * Scale(value.magnitude);
 
-            return value * ClampScale(magnitude, _minMagnitude, _maxMagnitude);
+        Vector2 IConverter<Vector2, Vector2>.Convert(Vector2 value) => value * Scale(value.magnitude);
+
+        Vector4 IConverter<Vector4, Vector4>.Convert(Vector4 value) => value * Scale(value.magnitude);
+
+        // Unity's ClampMagnitude has no lower bound, so every width works the scale out here.
+        private float Scale(float magnitude)
+        {
+            ReportInvalidBounds();
+
+            // A zero vector has no direction to stretch along, so the lower bound cannot be applied.
+            if (magnitude == 0f) return 1f;
+
+            return ClampScale(magnitude, _minMagnitude, _maxMagnitude);
         }
 
-        // Taken raw, a ceiling below the floor shrinks a long vector past the floor and stretches a
-        // short one past the ceiling — one instance breaking both of its own bounds, which reads as
-        // "the binding stopped working" rather than as a mistake in the Inspector. A negative
-        // ceiling is worse: scaling by it turns the vector around, from a converter whose whole job
-        // is to keep a length. Ordering the pair and holding it at zero costs two comparisons and
-        // removes both traps, the way VectorClampComponentsConverter.ClampComponent does.
+        private void ReportInvalidBounds()
+        {
+            if (_minMagnitude >= 0f && _maxMagnitude >= _minMagnitude) return;
+
+            this.LogError(
+                $"the length bounds {_minMagnitude}..{_maxMagnitude} are not two ordered non-negative lengths",
+                "Clamping to the ordered pair, with a negative bound held at zero.");
+        }
+
+        // A ceiling below the floor would break both bounds, and a negative one would flip the vector.
         internal static float ClampScale(float magnitude, float minMagnitude, float maxMagnitude)
         {
             var lower = Mathf.Max(0f, Mathf.Min(minMagnitude, maxMagnitude));

@@ -82,20 +82,27 @@ public FloatToVector3Converter(AxisMask axes, Vector3 @base = default) { }
 
 ## `<remarks>`
 
+Default position: **no `<remarks>` at all.** The block earns its place only when it states a
+non-obvious constraint or behavior of the type/member itself. Keep it to one or two sentences.
+
 **Use for:**
 
 - Conditional compilation notes (`UNITY_EDITOR`, `DEBUG`).
 - Non-obvious defaults.
 - Availability constraints (only under certain platforms / symbols).
 - Mandatory `base.Method()` calls for overrides.
+- Behavioral traps (e.g. a two-way converter whose reverse path becomes ambiguous for certain configs).
 
 **Do NOT use for:**
 
 - Info already covered by `<exception>`, `<param>`, or `<returns>` — duplication rots.
 - Things visible from the declaration itself (attributes, modifiers, base type).
+- History of how the type came to be, comparisons with other classes, or scenario-style
+  motivation ("a ViewModel holding X could not feed Y..."). The doc describes the type, not its
+  backstory.
 
 ```csharp
-/// <remarks>By default, uses <see cref="GenericToString{T}"/> for the conversion.</remarks>
+/// <remarks>By default, uses <see cref="GenericToStringConverter{TFrom}"/> for the conversion.</remarks>
 /// <remarks>Only available when <c>UNITY_EDITOR</c> or <c>DEBUG</c> is defined.</remarks>
 ```
 
@@ -104,6 +111,8 @@ public FloatToVector3Converter(AxisMask axes, Vector3 @base = default) { }
 ## `[Tooltip]` on serialized fields
 
 Every `[SerializeField]` and `[SerializeReference]` must have a `[Tooltip]` directly above it so Inspector users see the field's purpose without jumping to source.
+
+When a behavioral caveat applies to a field (clamping, ignored-when, fallback rules), it must appear **both** in the field's `[Tooltip]` and in the `<param>` of the constructor parameter that sets the same field — the Inspector user and the code user get the same warning.
 
 Inside `#if UNITY_2022_1_OR_NEWER` blocks, use the fully-qualified `[UnityEngine.Tooltip]` to avoid `using` resolution issues across conditional branches.
 

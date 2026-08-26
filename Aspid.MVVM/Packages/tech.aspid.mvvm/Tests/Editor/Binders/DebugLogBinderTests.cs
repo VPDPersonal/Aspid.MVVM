@@ -2,10 +2,6 @@ using UnityEngine;
 using NUnit.Framework;
 using UnityEngine.TestTools;
 
-// These fixtures name the [Obsolete] converter aliases on purpose — guarding the deprecated
-// surface is the point.
-#pragma warning disable CS0618 // Type or member is obsolete
-
 namespace Aspid.MVVM.StarterKit.Tests
 {
     /// <summary>
@@ -37,20 +33,20 @@ namespace Aspid.MVVM.StarterKit.Tests
         {
             LogAssert.Expect(LogType.Log, "SetValue: HP: 42");
 
-            new DebugLogBinder(new ObjectToStringConverter("HP: {0}")).SetValue(42);
+            new DebugLogBinder(new GenericToStringConverter<object>("HP: {0}")).SetValue(42);
         }
 
-        // The parameter is documented as "pass null to use ObjectToStringConverter", which the
-        // constructor used to contradict by overwriting the field initialiser with null.
+        // The parameter is documented as "pass null to use GenericToStringConverter", which the
+        // constructor used to contradict by overwriting the field initializer with null.
         [Test]
-        public void DefaultConstructed_FallsBackToObjectToStringConverter()
+        public void DefaultConstructed_FallsBackToGenericToStringConverter()
         {
             LogAssert.Expect(LogType.Log, "SetValue: 42");
 
             new DebugLogBinder().SetValue(42);
         }
 
-        private sealed class NullConverter : IConverterObjectToString
+        private sealed class NullConverter : IConverter<object, string>
         {
             public string Convert(object value) => null;
         }

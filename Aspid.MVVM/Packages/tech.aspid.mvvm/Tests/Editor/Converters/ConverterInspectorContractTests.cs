@@ -6,10 +6,7 @@ using NUnit.Framework;
 using System.Reflection;
 using System.Collections.Generic;
 
-// These fixtures name the [Obsolete] converter aliases on purpose — guarding the deprecated
-// surface is the point.
-#pragma warning disable CS0618 // Type or member is obsolete
-
+// ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit.Tests
 {
     /// <summary>
@@ -57,9 +54,9 @@ namespace Aspid.MVVM.StarterKit.Tests
 
             Assert.IsEmpty(
                 ungrouped,
-                "These converters appear in the picker with no group, so they land in one flat list:"
-                + Environment.NewLine
-                + string.Join(Environment.NewLine, ungrouped.Select(type => "  - " + type.Name)));
+                "These converters appear in the picker with no group, so they land in one flat list:" +
+                Environment.NewLine +
+                string.Join(Environment.NewLine, ungrouped.Select(type => "  - " + type.Name)));
         }
 
         /// <summary>
@@ -83,9 +80,9 @@ namespace Aspid.MVVM.StarterKit.Tests
 
             Assert.IsEmpty(
                 broken,
-                "These picker tooltips have a gap where a type name belongs:"
-                + Environment.NewLine
-                + string.Join(
+                "These picker tooltips have a gap where a type name belongs:" +
+                Environment.NewLine +
+                string.Join(
                     Environment.NewLine,
                     broken.Select(pair => $"  - {pair.type.Name}: \"{pair.tooltip}\"")));
         }
@@ -101,7 +98,7 @@ namespace Aspid.MVVM.StarterKit.Tests
         private static IEnumerable<Type> ConverterTypes() => new[]
             {
                 typeof(IConverter).Assembly,
-                typeof(IConverterVector3).Assembly,
+                typeof(Vector3CombineConverter).Assembly,
             }
             .Distinct()
             .SelectMany(assembly => assembly.GetTypes())

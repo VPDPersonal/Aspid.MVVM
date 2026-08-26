@@ -38,17 +38,29 @@ namespace Aspid.MVVM.StarterKit
         /// </summary>
         /// <remarks>
         /// When overriding this method, always call the base implementation to preserve
-        /// the <see cref="BindMode.OneWayToSource"/> initialization behavior.
+        /// the <see cref="BindMode.OneWayToSource"/> initialization behavior. To change what is sent,
+        /// override <see cref="SendInitialValueToSource"/> instead.
         /// </remarks>
         protected override void OnBound()
         {
             if (Mode is BindMode.OneWayToSource)
-                RaiseValueChanged();
+                SendInitialValueToSource();
         }
 
         /// <summary>
+        /// Sends the current <see cref="Property"/> value to the ViewModel on binding in
+        /// <see cref="BindMode.OneWayToSource"/>. Override to broadcast through additional channels.
+        /// </summary>
+        /// <remarks>
+        /// An override must route the value through <see cref="GetConvertedBackValue"/>: the forward
+        /// conversion describes the ViewModel to View direction only.
+        /// </remarks>
+        protected virtual void SendInitialValueToSource() =>
+            RaiseValueChanged();
+
+        /// <summary>
         /// Raises <see cref="ValueChanged"/> with the current <see cref="Property"/> value,
-        /// passing it through <see cref="GetConvertedValue"/> first.
+        /// passing it through <see cref="GetConvertedBackValue"/> first.
         /// </summary>
         protected void RaiseValueChanged() =>
             RaiseValueChanged(Property);
@@ -80,7 +92,7 @@ namespace Aspid.MVVM.StarterKit
         /// </remarks>
         protected virtual TProperty GetConvertedBackValue(TProperty value) => value;
     }
-    
+
     /// <summary>
     /// Abstract base <see cref="ComponentMonoBinder{TComponent, TProperty}"/> that applies an optional <typeparamref name="TConverter"/> to values in both binding directions.
     /// Supports <see cref="BindMode.OneWay">OneWay</see> and <see cref="BindMode.OneTime">OneTime</see>: the converter transforms the incoming value before setting it on the component.
@@ -94,7 +106,8 @@ namespace Aspid.MVVM.StarterKit
         where TComponent : Component
         where TConverter : IConverter<TProperty, TProperty>
     {
-        [Tooltip("Optional converter applied to the value on its way to the component. It also runs in reverse only if it implements ITwoWayConverter.")]
+        [Tooltip("Optional converter applied on the way to the component. It runs in reverse only if it " +
+            "implements ITwoWayConverter.")]
         [SerializeReference] private TConverter _converter;
 
         /// <inheritdoc/>

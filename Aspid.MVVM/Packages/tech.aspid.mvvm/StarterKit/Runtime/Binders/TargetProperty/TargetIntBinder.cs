@@ -53,28 +53,26 @@ namespace Aspid.MVVM.StarterKit
             base.SetValue((int)value);
 
         /// <summary>
-        /// Called after binding is established.
-        /// In <see cref="BindMode.OneWayToSource"/> mode, broadcasts the current value to all numeric event types:
+        /// Broadcasts the current value to all numeric event types:
         /// <see cref="IntValueChanged"/>, <see cref="LongValueChanged"/>, <see cref="FloatValueChanged"/>, and <see cref="DoubleValueChanged"/>.
         /// </summary>
         /// <remarks>
-        /// Does not call <c>base.OnBound()</c>: provides a complete implementation of the
-        /// <see cref="BindMode.OneWayToSource"/> initialization that broadcasts to all numeric event types
-        /// via <see cref="INumberReverseBinder"/> instead of the single typed
-        /// <see cref="IReverseBinder{T}.ValueChanged"/> event.
+        /// Also calls the base implementation: a member bound through <see cref="IReverseBinder{T}"/>
+        /// for the property's own type reaches the base <c>ValueChanged</c> event rather than the
+        /// matching <see cref="INumberReverseBinder"/> channel, because a class member outranks the
+        /// implementation the interface carries.
         /// </remarks>
-        protected override void OnBound()
+        protected override void SendInitialValueToSource()
         {
-            if (Mode is BindMode.OneWayToSource)
-            {
-                var value = GetConvertedValue(Property);
+            base.SendInitialValueToSource();
 
-                IntValueChanged?.Invoke(value);
-                LongValueChanged?.Invoke(value);
-                FloatValueChanged?.Invoke(value);
-                DoubleValueChanged?.Invoke(value);
-            }
+            var value = GetConvertedBackValue(Property);
+
+            IntValueChanged?.Invoke(value);
+            LongValueChanged?.Invoke(value);
+            FloatValueChanged?.Invoke(value);
+            DoubleValueChanged?.Invoke(value);
         }
-        
+
     }
 }

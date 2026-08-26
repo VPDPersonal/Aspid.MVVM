@@ -6,10 +6,7 @@ using NUnit.Framework;
 using Aspid.FastTools.Types;
 using System.Collections.Generic;
 
-// These fixtures name the [Obsolete] converter aliases on purpose — guarding the deprecated
-// surface is the point.
-#pragma warning disable CS0618 // Type or member is obsolete
-
+// ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit.Tests
 {
     /// <summary>
@@ -18,7 +15,7 @@ namespace Aspid.MVVM.StarterKit.Tests
     /// </summary>
     /// <remarks>
     /// The picker falls back to <c>FormatterServices.GetUninitializedObject</c> when
-    /// <see cref="Activator"/> fails, which skips field initialisers and leaves a delegate-backed
+    /// <see cref="Activator"/> fails, which skips field initializers and leaves a delegate-backed
     /// adapter with a null delegate. It filters by neither accessibility nor constructor, so the
     /// guard has to live on the type as <c>[TypeSelectorDisplay(Hidden = true)]</c>.
     /// </remarks>
@@ -46,16 +43,20 @@ namespace Aspid.MVVM.StarterKit.Tests
 
             Assert.IsEmpty(
                 hidden,
-                "These converters can be constructed by the picker but are hidden from it. "
-                + "If that is intentional the exclusion belongs in this test:"
-                + Environment.NewLine
-                + string.Join(Environment.NewLine, hidden.Select(t => "  - " + t.FullName)));
+                "These converters can be constructed by the picker but are hidden from it. " +
+                "If that is intentional the exclusion belongs in this test:" +
+                Environment.NewLine +
+                string.Join(Environment.NewLine, hidden.Select(t => "  - " + t.FullName)));
         }
 
         // Guards against the two tests above passing vacuously: both are "no offenders" assertions,
-        // so if the scan ever stopped seeing the private adapters — a changed namespace, an assembly
-        // rename, an attribute the compiler stopped emitting — they would go green while the picker
-        // filled back up with types it cannot construct.
+        // so if the scan ever stopped seeing the delegate-backed adapters — a changed namespace, an
+        // assembly rename, an attribute the compiler stopped emitting — they would go green while the
+        // picker filled back up with types it cannot construct.
+        //
+        // The counts here used to be twenties: one private adapter per named converter alias. The
+        // aliases and their adapters are gone and FuncConverter is what is left of that population, so
+        // the assertions ask for at least one rather than pin a number that would now have to be 1.
         [Test]
         public void TheScanSeesBothPopulationsItGuards()
         {
@@ -63,10 +64,10 @@ namespace Aspid.MVVM.StarterKit.Tests
 
             Assert.That(types.Length, Is.GreaterThan(30), "converter types found");
             Assert.That(
-                types.Count(t => !HasParameterlessConstructor(t)),
-                Is.GreaterThan(20),
+                types.Where(type => !HasParameterlessConstructor(type)),
+                Is.Not.Empty,
                 "converters the picker cannot construct — the population the hidden-check guards");
-            Assert.That(types.Count(IsHidden), Is.GreaterThan(20), "converters carrying the attribute");
+            Assert.That(types.Where(IsHidden), Is.Not.Empty, "converters carrying the attribute");
         }
 
         private static IEnumerable<Type> ConverterTypes() => Assemblies()
@@ -80,7 +81,7 @@ namespace Aspid.MVVM.StarterKit.Tests
         private static IEnumerable<Assembly> Assemblies() => new[]
         {
             typeof(IConverter).Assembly,
-            typeof(IConverterVector3).Assembly,
+            typeof(Vector3CombineConverter).Assembly,
         }.Distinct();
 
         // The picker calls Activator.CreateInstance(type, nonPublic: true), so a private or

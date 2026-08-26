@@ -1,6 +1,17 @@
-# Class `<summary>` — Hierarchy Style
+# Class `<summary>` — Hierarchy Style vs Leaf Style
 
-Describe the class **in terms of its parent**, not in isolation. The first word of the summary is either `<see cref="DirectParent"/>` or the literal `"Concrete"` — never `"A"`, `"The"`, or `"This"`. Only describe what *this* class adds on top of its parent; don't repeat information that's already visible in the class declaration (base class, implemented interfaces, generic parameters).
+Two styles, chosen by the shape of the type:
+
+- **Hierarchy style** — for types inside a real inheritance chain (binders, base classes,
+  MonoBinder layers). Describe the class **in terms of its parent**.
+- **Leaf style** — for flat standalone types (converters, enums, helper structs) whose base is
+  only a marker interface like `IConverter<,>`. One short behavioral sentence, nothing else:
+  `"Takes the texture a <see cref="Sprite"/> is drawn from."` No parent cref, no "implementing
+  IConverter" boilerplate — the declaration already shows it.
+
+## Hierarchy style
+
+The first word of the summary is either `<see cref="DirectParent"/>` or the literal `"Concrete"` — never `"A"`, `"The"`, or `"This"`. Only describe what *this* class adds on top of its parent; don't repeat information that's already visible in the class declaration (base class, implemented interfaces, generic parameters).
 
 The reason for this style is that Aspid.MVVM has deep binder hierarchies. A reader looking at `AudioSourceVolumeBinder` cares about what's special about it — not about what every `ComponentBinder` does. Framing each class relative to its parent makes the inheritance chain readable in IDE tooltips.
 

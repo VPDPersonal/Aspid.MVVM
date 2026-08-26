@@ -1,10 +1,8 @@
-#nullable enable
-
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// The arithmetic <see cref="Vector3ArithmeticConverter"/> can apply.
+    /// The arithmetic <see cref="VectorArithmeticConverter"/> can apply.
     /// </summary>
     public enum VectorOperation
     {
@@ -29,7 +27,8 @@ namespace Aspid.MVVM.StarterKit
         Divide,
 
         /// <summary>
-        /// Reflect off the operand as a normal.
+        /// Reflect off the operand as a normal. The normal is used raw, so one longer than unit
+        /// scales the reflected part and a zero one leaves the vector alone.
         /// </summary>
         Reflect,
     }

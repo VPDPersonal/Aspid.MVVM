@@ -21,7 +21,7 @@ namespace Aspid.MVVM.StarterKit
         Minus,
 
         /// <summary>
-        /// Divide by the coefficient. A zero coefficient returns the input unchanged.
+        /// Divide by the coefficient. A zero coefficient reports an error and falls back.
         /// </summary>
         Division,
 
@@ -31,8 +31,7 @@ namespace Aspid.MVVM.StarterKit
         Multiply,
 
         /// <summary>
-        /// The remainder after dividing by the coefficient, always non-negative — unlike C#'s
-        /// <c>%</c>, which keeps the sign of the left operand. Cannot be undone.
+        /// The remainder after dividing by the coefficient, always non-negative. Cannot be undone.
         /// </summary>
         Modulo,
 
@@ -47,7 +46,8 @@ namespace Aspid.MVVM.StarterKit
         ReverseSubtract,
 
         /// <summary>
-        /// Divide the coefficient by the value — <c>c / x</c>. A zero value returns the input.
+        /// Divide the coefficient by the value — <c>c / x</c>. A zero value reports an error and
+        /// falls back.
         /// </summary>
         ReverseDivide,
     }

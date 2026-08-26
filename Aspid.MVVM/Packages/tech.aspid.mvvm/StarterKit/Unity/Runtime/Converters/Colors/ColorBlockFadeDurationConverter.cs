@@ -1,34 +1,32 @@
 #nullable enable
-using Aspid.FastTools.Types;
 using System;
 using UnityEngine;
 using UnityEngine.UI;
-
-// The named converter aliases are [Obsolete]. The converters below keep implementing them for
-// one release so that a [SerializeReference] field a project declares as one still
-// deserializes; the base lists go with the aliases in the next major.
-#pragma warning disable CS0618 // Type or member is obsolete
+using Aspid.FastTools.Types;
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// Sets how long a <see cref="Selectable"/> takes to change state.
+    /// Sets how long a <see cref="ColorBlock"/> takes to fade between states.
     /// </summary>
-    /// <remarks>
-    /// A reduce-motion accessibility setting bound straight to the fade, which no other converter
-    /// reaches without rebuilding the whole block.
-    /// </remarks>
     [Serializable]
-    [TypeSelectorDisplay(Group = "Aspid/Colour", Name = "Color Block Fade Duration", Tooltip = "Sets how long a ColorBlock takes to change state")]
-    public sealed class ColorBlockFadeDurationConverter : IConverterColorBlock
+    [TypeSelectorDisplay(
+        Group = "Aspid/Color",
+        Name = "Color Block Fade Duration",
+        Tooltip = "Sets how long a ColorBlock takes to fade between states")]
+    public sealed class ColorBlockFadeDurationConverter : IConverter<ColorBlock, ColorBlock>
     {
-        [Tooltip("How long a state change takes.")]
-        [SerializeField] private float _fadeDuration = 0.1f;
+        [Tooltip("How long a state change takes, in seconds.")]
+        [SerializeField] [Min(0f)] private float _fadeDuration = 0.1f;
 
+        /// <remarks>Default: a tenth of a second, the same as a fresh <see cref="Selectable"/>.</remarks>
         public ColorBlockFadeDurationConverter() { }
 
-        /// <param name="fadeDuration">How long a state change takes.</param>
+        /// <param name="fadeDuration">
+        /// How long a state change takes, in seconds. A duration that is negative or not a number is
+        /// reported as an error and zero is used instead.
+        /// </param>
         public ColorBlockFadeDurationConverter(float fadeDuration)
         {
             _fadeDuration = fadeDuration;
@@ -38,11 +36,33 @@ namespace Aspid.MVVM.StarterKit
         /// Sets the fade duration of the specified block.
         /// </summary>
         /// <param name="value">The block to adjust.</param>
-        /// <returns>The adjusted block.</returns>
+        /// <returns>
+        /// The adjusted block, or the block with an instant fade when the configured duration is
+        /// negative or not a number.
+        /// </returns>
         public ColorBlock Convert(ColorBlock value)
         {
-            value.fadeDuration = _fadeDuration;
+            value.fadeDuration = Resolve(this, _fadeDuration);
             return value;
+        }
+
+        /// <summary>
+        /// Screens an authored fade duration.
+        /// </summary>
+        /// <param name="reporter">The converter the duration was authored on — the report names it.</param>
+        /// <param name="fadeDuration">The authored duration, in seconds.</param>
+        /// <returns>The duration, or zero when it is negative or not a number.</returns>
+        // Shared with ColorToColorBlockConverter, which writes the same field out of its own setting.
+        internal static float Resolve(IConverter reporter, float fadeDuration)
+        {
+            // Testing the good case rather than the bad one catches a NaN as well as a negative.
+            if (fadeDuration >= 0f) return fadeDuration;
+
+            reporter.LogError(
+                $"the fade duration is {fadeDuration.Describe()}, which is not a length of time",
+                "Fading instantly instead.");
+
+            return 0f;
         }
     }
 }

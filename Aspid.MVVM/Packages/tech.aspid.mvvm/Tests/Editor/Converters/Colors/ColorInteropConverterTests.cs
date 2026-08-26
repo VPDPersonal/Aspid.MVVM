@@ -1,11 +1,12 @@
 using UnityEngine;
 using NUnit.Framework;
 
+// ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit.Tests
 {
     /// <summary>
-    /// Coverage for the interop converters in <c>ColorInteropConverters.cs</c> —
-    /// <see cref="HdrIntensityConverter"/>, the <see cref="Color"/>/<see cref="Vector4"/> pair and the
+    /// Coverage for the color interop converters — <see cref="HdrIntensityConverter"/>, the
+    /// <see cref="Color"/>/<see cref="Vector4"/> pair and the
     /// <see cref="Color"/>/<see cref="Color32"/> pair.
     /// </summary>
     /// <remarks>
@@ -38,7 +39,7 @@ namespace Aspid.MVVM.StarterKit.Tests
                 1e-5f);
 
         [Test]
-        public void HdrIntensity_DefaultConstructed_LeavesTheColourAlone() =>
+        public void HdrIntensity_DefaultConstructed_LeavesTheColorAlone() =>
             Assert.AreEqual(
                 new Color(0.1f, 0.2f, 0.3f, 0.4f),
                 new HdrIntensityConverter().Convert(new Color(0.1f, 0.2f, 0.3f, 0.4f)));
@@ -87,9 +88,9 @@ namespace Aspid.MVVM.StarterKit.Tests
 
         // Distinct channels, so a converter that transposed two of them could not pass.
         [Test]
-        public void ColorToVector4_AnyColour_CopiesRgbaIntoXyzw()
+        public void ColorToVector4_AnyColor_CopiesRgbaIntoXyzw()
         {
-            var result = new ColorToVector4Converter().Convert(new Color(0.1f, 0.2f, 0.3f, 0.4f));
+            var result = new ColorVector4Converter().Convert(new Color(0.1f, 0.2f, 0.3f, 0.4f));
 
             Assert.AreEqual(0.1f, result.x, 1e-6f);
             Assert.AreEqual(0.2f, result.y, 1e-6f);
@@ -100,7 +101,7 @@ namespace Aspid.MVVM.StarterKit.Tests
         [Test]
         public void Vector4ToColor_AnyVector_CopiesXyzwIntoRgba()
         {
-            var result = new Vector4ToColorConverter().Convert(new Vector4(0.1f, 0.2f, 0.3f, 0.4f));
+            var result = new ColorVector4Converter().Convert(new Vector4(0.1f, 0.2f, 0.3f, 0.4f));
 
             Assert.AreEqual(0.1f, result.r, 1e-6f);
             Assert.AreEqual(0.2f, result.g, 1e-6f);
@@ -113,7 +114,7 @@ namespace Aspid.MVVM.StarterKit.Tests
         [Test]
         public void Vector4ToColor_OutOfRangeComponents_AreNotClamped()
         {
-            var result = new Vector4ToColorConverter().Convert(new Vector4(1.5f, -0.5f, 0f, 2f));
+            var result = new ColorVector4Converter().Convert(new Vector4(1.5f, -0.5f, 0f, 2f));
 
             Assert.AreEqual(1.5f, result.r, 1e-6f);
             Assert.AreEqual(-0.5f, result.g, 1e-6f);
@@ -126,9 +127,22 @@ namespace Aspid.MVVM.StarterKit.Tests
         public void Vector4RoundTrip_AwkwardChannels_IsBitExact()
         {
             var color = new Color(0.1f, 0.7f, 0.13f, 0.37f);
-            var result = new Vector4ToColorConverter().Convert(new ColorToVector4Converter().Convert(color));
+            var result = new ColorVector4Converter().Convert(new ColorVector4Converter().Convert(color));
 
             Assert.AreEqual(color, result);
+        }
+
+        // A binder reaches the reverse direction only through the interface, so the merged class has
+        // to expose both two-way pairs, not just the four public overloads.
+        [Test]
+        public void ColorAndVector4_ConvertBack_IsReachableThroughBothTwoWayInterfaces()
+        {
+            ITwoWayConverter<Color, Vector4> toVector = new ColorVector4Converter();
+            ITwoWayConverter<Vector4, Color> toColor = new ColorVector4Converter();
+            var color = new Color(0.1f, 0.7f, 0.13f, 0.37f);
+
+            Assert.AreEqual(color, toVector.ConvertBack(toVector.Convert(color)));
+            Assert.AreEqual(color, toColor.Convert(toColor.ConvertBack(color)));
         }
 
         [TestCase((byte)0, 0f)]
@@ -139,17 +153,17 @@ namespace Aspid.MVVM.StarterKit.Tests
         public void Color32ToColor_AnyByte_DividesByTwoHundredFiftyFive(byte channel, float expected) =>
             Assert.AreEqual(
                 expected,
-                new Color32ToColorConverter().Convert(new Color32(channel, channel, channel, 255)).r,
+                new ColorColor32Converter().Convert(new Color32(channel, channel, channel, 255)).r,
                 1e-6f);
 
-        // A widening that forgot alpha would turn a fully transparent stored colour into opaque black.
+        // A widening that forgot alpha would turn a fully transparent stored color into opaque black.
         [Test]
         public void Color32ToColor_ZeroAlpha_StaysTransparent() =>
-            Assert.AreEqual(0f, new Color32ToColorConverter().Convert(new Color32(0, 0, 0, 0)).a, 1e-6f);
+            Assert.AreEqual(0f, new ColorColor32Converter().Convert(new Color32(0, 0, 0, 0)).a, 1e-6f);
 
         // The discriminating cases are 0.5 and 0.25: Unity's implicit operator adds a half before the
         // byte cast, so they land on 128 and 64. A hand-rolled (byte)(c.r * 255f) would give 127 and 63
-        // and drift every colour a step darker on each save/load cycle.
+        // and drift every color a step darker on each save/load cycle.
         [TestCase(0f, 0)]
         [TestCase(0.2f, 51)]
         [TestCase(0.25f, 64)]
@@ -160,7 +174,7 @@ namespace Aspid.MVVM.StarterKit.Tests
         public void ColorToColor32_AnyChannel_RoundsRatherThanTruncates(float channel, int expected) =>
             Assert.AreEqual(
                 expected,
-                new ColorToColor32Converter().Convert(new Color(channel, channel, channel, 1f)).r);
+                new ColorColor32Converter().Convert(new Color(channel, channel, channel, 1f)).r);
 
         [TestCase(2f, 255)]
         [TestCase(5f, 255)]
@@ -168,51 +182,50 @@ namespace Aspid.MVVM.StarterKit.Tests
         public void ColorToColor32_OutOfRangeChannel_IsClampedNotWrapped(float channel, int expected) =>
             Assert.AreEqual(
                 expected,
-                new ColorToColor32Converter().Convert(new Color(channel, channel, channel, 1f)).r);
+                new ColorColor32Converter().Convert(new Color(channel, channel, channel, 1f)).r);
 
         [Test]
         public void ColorToColor32_FractionalAlpha_NarrowsLikeAnyOtherChannel() =>
-            Assert.AreEqual(128, new ColorToColor32Converter().Convert(new Color(1f, 1f, 1f, 0.5f)).a);
+            Assert.AreEqual(128, new ColorColor32Converter().Convert(new Color(1f, 1f, 1f, 0.5f)).a);
 
         // The lossy direction the remarks warn about, pinned to the value it actually returns: a
-        // mid-grey comes back as 128/255, not as the 0.5 that went in. Anything comparing a colour
+        // mid-gray comes back as 128/255, not as the 0.5 that went in. Anything comparing a color
         // before and after a save round trip with == on floats will therefore see a change.
         [Test]
         public void ColorRoundTrip_ThroughColor32_ReturnsTheQuantisedChannel()
         {
-            var result = new Color32ToColorConverter().Convert(
-                new ColorToColor32Converter().Convert(new Color(0.5f, 0.5f, 0.5f, 1f)));
+            var result = new ColorColor32Converter().Convert(
+                new ColorColor32Converter().Convert(new Color(0.5f, 0.5f, 0.5f, 1f)));
 
             Assert.AreEqual(128f / 255f, result.r, 1e-6f);
             Assert.AreNotEqual(0.5f, result.r);
         }
 
-        // The other direction is the one that must survive intact: vertex colours and save-file
-        // colours make this trip on every load, and a channel drifting by one per pass would show up
+        // The other direction is the one that must survive intact: vertex colors and save-file
+        // colors make this trip on every load, and a channel drifting by one per pass would show up
         // as a mesh that slowly fades.
         [Test]
         public void Color32RoundTrip_ThroughColor_IsExactForEveryByte()
         {
-            var widen = new Color32ToColorConverter();
-            var narrow = new ColorToColor32Converter();
+            var converter = new ColorColor32Converter();
 
             for (var channel = 0; channel <= 255; channel++)
             {
                 var source = new Color32((byte)channel, (byte)channel, (byte)channel, (byte)channel);
-                var result = narrow.Convert(widen.Convert(source));
+                var result = converter.Convert(converter.Convert(source));
 
                 Assert.AreEqual(channel, (int)result.r, $"Byte {channel} did not survive the round trip.");
                 Assert.AreEqual(channel, (int)result.a, $"Alpha {channel} did not survive the round trip.");
             }
         }
 
-        // Why the remarks send an HDR colour to a material rather than to anything byte-backed: one
-        // stop and five stops are already indistinguishable once narrowed, while the unexposed grey
+        // Why the remarks send an HDR color to a material rather than to anything byte-backed: one
+        // stop and five stops are already indistinguishable once narrowed, while the unexposed gray
         // still carries its value. The glow is not dimmed by the trip, it is gone.
         [Test]
         public void HdrIntensity_NarrowedToColor32_CollapsesEveryGlowToWhite()
         {
-            var narrow = new ColorToColor32Converter();
+            var narrow = new ColorColor32Converter();
 
             Assert.AreEqual(128, narrow.Convert(Color.gray).r);
             Assert.AreEqual(255, narrow.Convert(new HdrIntensityConverter(1f).Convert(Color.gray)).r);

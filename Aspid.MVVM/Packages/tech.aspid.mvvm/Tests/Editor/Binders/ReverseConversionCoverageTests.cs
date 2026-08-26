@@ -28,12 +28,12 @@ namespace Aspid.MVVM.StarterKit.Tests
 
             Assert.IsEmpty(
                 missing,
-                "These binders hold a converter and can push a value to the ViewModel, but never call "
-                + "ConvertBack. Either they send the View's presentation back as if it were the "
-                + "ViewModel's own value, or they send the raw value while the guide promises "
-                + "otherwise:"
-                + Environment.NewLine
-                + string.Join(Environment.NewLine, missing.Select(type => "  - " + type.Name)));
+                "These binders hold a converter and can push a value to the ViewModel, but never call " +
+                "ConvertBack. Either they send the View's presentation back as if it were the " +
+                "ViewModel's own value, or they send the raw value while the guide promises " +
+                "otherwise:" +
+                Environment.NewLine +
+                string.Join(Environment.NewLine, missing.Select(type => "  - " + type.Name)));
         }
 
         // Guards the check above from passing because the scan stopped finding binders.

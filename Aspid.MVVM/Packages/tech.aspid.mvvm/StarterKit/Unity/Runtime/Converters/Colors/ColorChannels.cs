@@ -5,7 +5,7 @@ using System;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// Which channels of a colour a converter writes.
+    /// Which channels of a color a converter writes.
     /// </summary>
     [Flags]
     public enum ColorChannels
@@ -36,7 +36,7 @@ namespace Aspid.MVVM.StarterKit
         A = 8,
 
         /// <summary>
-        /// The three colour channels, leaving the alpha alone.
+        /// The three color channels, leaving the alpha alone.
         /// </summary>
         Rgb = R | G | B,
 

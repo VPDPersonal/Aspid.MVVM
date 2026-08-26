@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
-using NUnit.Framework;
 
+// ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit.Tests
 {
     [Flags]

@@ -1,33 +1,32 @@
-using Aspid.FastTools.Types;
 using System;
 using UnityEngine;
-
-// The named converter aliases are [Obsolete]. The converters below keep implementing them for
-// one release so that a [SerializeReference] field a project declares as one still
-// deserializes; the base lists go with the aliases in the next major.
-#pragma warning disable CS0618 // Type or member is obsolete
+using Aspid.FastTools.Types;
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// Eases a value between two bounds with <see cref="Mathf.SmoothStep"/>.
+    /// Converts a 0..1 position to a value in a range, eased in and out at the ends.
     /// </summary>
+    /// <remarks>The incoming position is always held inside 0..1; there is no unclamped mode.</remarks>
     [Serializable]
-    [TypeSelectorDisplay(Group = "Aspid/Number", Name = "Smooth Step", Tooltip = "Eases a value between two bounds with smoothstep")]
-    public sealed class SmoothStepConverter : IConverterFloat
+    [TypeSelectorDisplay(
+        Group = "Aspid/Number",
+        Name = "Smooth Step",
+        Tooltip = "Converts a 0..1 position to a value in a range, eased in and out at the ends")]
+    public sealed class SmoothStepConverter : IConverter<float, float>, IConverter<double, double>
     {
-        [Tooltip("The value that maps to 0.")]
+        [Tooltip("The value 0 maps to.")]
         [SerializeField] private float _from;
 
-        [Tooltip("The value that maps to 1.")]
+        [Tooltip("The value 1 maps to.")]
         [SerializeField] private float _to = 1f;
 
         /// <remarks>Default: over 0..1.</remarks>
         public SmoothStepConverter() { }
 
-        /// <param name="from">The value that maps to 0.</param>
-        /// <param name="to">The value that maps to 1.</param>
+        /// <param name="from">The value 0 maps to.</param>
+        /// <param name="to">The value 1 maps to.</param>
         public SmoothStepConverter(float from, float to)
         {
             _from = from;
@@ -35,10 +34,14 @@ namespace Aspid.MVVM.StarterKit
         }
 
         /// <summary>
-        /// Eases the specified value.
+        /// Converts the specified position to an eased value in the range.
         /// </summary>
-        /// <param name="value">The value to ease.</param>
-        /// <returns>The eased value.</returns>
+        /// <param name="value">The 0..1 position. A position outside it is held at the nearer end.</param>
+        /// <returns>The eased value at that position.</returns>
         public float Convert(float value) => Mathf.SmoothStep(_from, _to, value);
+
+        // Unity's own curve, so the double overload runs through it and carries a float's precision.
+        double IConverter<double, double>.Convert(double value) =>
+            Convert(NumericSaturation.ToFloat(value));
     }
 }

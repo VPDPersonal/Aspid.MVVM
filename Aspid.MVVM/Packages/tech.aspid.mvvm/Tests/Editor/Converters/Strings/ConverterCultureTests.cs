@@ -1,9 +1,11 @@
 using System;
+using UnityEngine;
 using System.Threading;
 using NUnit.Framework;
 using System.Reflection;
 using System.Globalization;
 
+// ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit.Tests
 {
     /// <summary>
@@ -33,23 +35,23 @@ namespace Aspid.MVVM.StarterKit.Tests
 
         [Test]
         public void Format_DefaultsToTheDeviceCulture() =>
-            Assert.AreEqual("3,14", new GenericToString<float>("{0:F2}").Convert(3.14159f));
+            Assert.AreEqual("3,14", new GenericToStringConverter<float>("{0:F2}").Convert(3.14159f));
 
         [Test]
         public void Format_HonoursTheConfiguredCulture() =>
             Assert.AreEqual(
                 "3.14",
-                WithCulture(new GenericToString<float>("{0:F2}"), CultureInfoMode.InvariantCulture).Convert(3.14159f));
+                WithCulture(new GenericToStringConverter<float>("{0:F2}"), CultureInfoMode.InvariantCulture).Convert(3.14159f));
 
         [Test]
         public void NoFormat_DefaultsToTheDeviceCulture() =>
-            Assert.AreEqual("3,14", new GenericToString<float>().Convert(3.14f));
+            Assert.AreEqual("3,14", new GenericToStringConverter<float>().Convert(3.14f));
 
         [Test]
         public void NoFormat_HonoursTheConfiguredCulture() =>
             Assert.AreEqual(
                 "3.14",
-                WithCulture(new GenericToString<float>(), CultureInfoMode.InvariantCulture).Convert(3.14f));
+                WithCulture(new GenericToStringConverter<float>(), CultureInfoMode.InvariantCulture).Convert(3.14f));
 
         [Test]
         public void StringFormatConverter_InheritsTheCultureField() =>
@@ -88,8 +90,13 @@ namespace Aspid.MVVM.StarterKit.Tests
             Assert.IsNotNull(mode.ToCultureInfo());
 
         [Test]
-        public void AnUndeclaredModeThrowsWithItsValue() =>
-            Assert.Throws<ArgumentOutOfRangeException>(() => ((CultureInfoMode)99).ToCultureInfo());
+        public void AnUndeclaredModeReportsAndReadsAsTheCurrentCulture()
+        {
+            UnityEngine.TestTools.LogAssert.Expect(UnityEngine.LogType.Error,
+                new System.Text.RegularExpressions.Regex("CultureInfoMode.*not a declared value"));
+
+            Assert.AreEqual(CultureInfo.CurrentCulture, ((CultureInfoMode)99).ToCultureInfo());
+        }
 
         // The culture is Inspector state with no constructor overload, so a test sets it the way the
         // Inspector does. Walking the base chain covers StringFormatConverter, which inherits it.
@@ -104,6 +111,11 @@ namespace Aspid.MVVM.StarterKit.Tests
                 if (field is null) continue;
 
                 field.SetValue(converter, mode);
+
+                // Unity reads the object again after an Inspector edit, which is where a converter
+                // holding a cache built from its settings drops it.
+                if (converter is ISerializationCallbackReceiver receiver) receiver.OnAfterDeserialize();
+
                 return converter;
             }
 

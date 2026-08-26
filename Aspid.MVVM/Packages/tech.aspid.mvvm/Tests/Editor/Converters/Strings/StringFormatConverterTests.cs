@@ -3,6 +3,7 @@ using NUnit.Framework;
 using UnityEngine.TestTools;
 using System.Text.RegularExpressions;
 
+// ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit.Tests
 {
     /// <summary>
@@ -10,24 +11,35 @@ namespace Aspid.MVVM.StarterKit.Tests
     /// four input values × four format strings × both settings of <c>_formatEmptyValues</c>.
     /// </summary>
     /// <remarks>
-    /// All thirty-two cells are asserted. The interesting one is a <see langword="null"/> input with a
-    /// real format and <c>_formatEmptyValues</c> on: the base class short-circuits on
-    /// <see langword="null"/> before <c>Format</c> is reached, so covering it takes an explicit
-    /// <c>Convert</c> override and it gets a test of its own.
+    /// All thirty-two cells are asserted. The interesting ones are the <see langword="null"/> inputs
+    /// with <c>_formatEmptyValues</c> on: the base class short-circuits on <see langword="null"/>
+    /// before <c>Format</c> is reached, so the override substitutes an empty string ahead of it — and
+    /// a null and an empty input then answer the same thing whatever the format is.
     /// </remarks>
     [TestFixture]
     internal sealed class StringFormatConverterTests
     {
-        // A null input short-circuits before the format is ever consulted.
+        // Left alone, a null input short-circuits before the format is ever consulted.
         [TestCase(null, false, null)]
         [TestCase("", false, null)]
         [TestCase(" ", false, null)]
         [TestCase("HP: {0}", false, null)]
-        [TestCase(null, true, null)]
-        [TestCase("", true, null)]
-        [TestCase(" ", true, null)]
         public void Convert_NullValue_ReturnsNull(string format, bool formatEmptyValues, string expected) =>
             Assert.AreEqual(expected, new StringFormatConverter(format, formatEmptyValues).Convert(null));
+
+        // With blank values being formatted, null and an empty string are the same absent value, so a
+        // format that has nothing to say about it hands back the empty string rather than the null.
+        // Anything else would make the two inputs disagree for no reason a caller could see.
+        [TestCase(null)]
+        [TestCase("")]
+        [TestCase(" ")]
+        public void Convert_NullValue_WithFormatEmptyValues_ReadsAsEmpty(string format)
+        {
+            var converter = new StringFormatConverter(format, formatEmptyValues: true);
+
+            Assert.AreEqual(string.Empty, converter.Convert(null));
+            Assert.AreEqual(converter.Convert(string.Empty), converter.Convert(null));
+        }
 
         // A blank format is a no-op regardless of the value or the flag.
         [TestCase(null, "", false, "")]

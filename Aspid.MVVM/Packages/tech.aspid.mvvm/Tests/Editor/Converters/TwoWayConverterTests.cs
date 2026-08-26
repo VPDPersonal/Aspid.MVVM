@@ -1,5 +1,9 @@
 using NUnit.Framework;
+using UnityEngine;
+using UnityEngine.TestTools;
+using System.Text.RegularExpressions;
 
+// ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit.Tests
 {
     /// <summary>
@@ -77,7 +81,7 @@ namespace Aspid.MVVM.StarterKit.Tests
         [Test]
         public void Sequence_UndoesEveryLinkInReverseOrder()
         {
-            var sequence = new SequenceConverters<double>(
+            var sequence = new SequenceConverter<double>(
                 new ArithmeticNumberConverter(NumberOperation.Plus, 3),
                 new ArithmeticNumberConverter(NumberOperation.Multiply, 2));
 
@@ -87,14 +91,16 @@ namespace Aspid.MVVM.StarterKit.Tests
 
         [Test]
         public void Sequence_EmptyChain_RoundTrips() =>
-            Assert.AreEqual(5d, new SequenceConverters<double>().ConvertBack(5d), delta: 1e-12);
+            Assert.AreEqual(5d, new SequenceConverter<double>().ConvertBack(5d), delta: 1e-12);
 
         // Undoing part of a chain would leave the value in neither space, so a single one-way link
-        // makes the whole sequence one-way.
+        // makes the whole sequence one-way — and says so rather than undoing the rest silently.
         [Test]
-        public void Sequence_WithAOneWayLink_ReturnsTheValueUnchanged()
+        public void Sequence_WithAOneWayLink_ReturnsTheValueUnchangedAndReports()
         {
-            var sequence = new SequenceConverters<double>(
+            LogAssert.Expect(LogType.Error, new Regex("OneWayDouble converts one way only"));
+
+            var sequence = new SequenceConverter<double>(
                 new ArithmeticNumberConverter(NumberOperation.Plus, 3),
                 new OneWayDouble());
 
@@ -104,12 +110,43 @@ namespace Aspid.MVVM.StarterKit.Tests
         [Test]
         public void Sequence_NullLinksAreSkippedInBothDirections()
         {
-            var sequence = new SequenceConverters<double>(
+            var sequence = new SequenceConverter<double>(
                 new ArithmeticNumberConverter(NumberOperation.Plus, 3),
                 null);
 
             Assert.AreEqual(8d, sequence.Convert(5d), delta: 1e-12);
             Assert.AreEqual(5d, sequence.ConvertBack(8d), delta: 1e-12);
+        }
+
+        // A parse converter writes the first spelling authored for the answer, so a project reading
+        // "да"/"нет" pushes those words back rather than the framework's own.
+        [Test]
+        public void StringToBool_WritesTheFirstAuthoredSpelling()
+        {
+            var converter = new StringToBoolConverter(new[] { "да", "1" }, new[] { "нет", "0" });
+
+            Assert.AreEqual("да", converter.ConvertBack(true));
+            Assert.AreEqual("нет", converter.ConvertBack(false));
+        }
+
+        [TestCase(true)]
+        [TestCase(false)]
+        public void StringToBool_RoundTripsBothAnswers(bool value)
+        {
+            var converter = new StringToBoolConverter(new[] { "да", "1" }, new[] { "нет", "0" });
+
+            Assert.AreEqual(value, converter.Convert(converter.ConvertBack(value)));
+        }
+
+        // Without false spellings authored there is no word to pick, and "not true" is the definition
+        // of false — so the plain word goes back, and the same rule reads it as false again.
+        [Test]
+        public void StringToBool_WithoutFalseSpellings_WritesThePlainWord()
+        {
+            var converter = new StringToBoolConverter(new[] { "yes" });
+
+            Assert.AreEqual("false", converter.ConvertBack(false));
+            Assert.IsFalse(converter.Convert(converter.ConvertBack(false)));
         }
 
         private static ITwoWayConverter<T, T> TwoWay<T>(NumberOperation operation, double coefficient) =>

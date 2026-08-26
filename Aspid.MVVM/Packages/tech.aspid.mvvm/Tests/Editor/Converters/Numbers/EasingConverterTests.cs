@@ -1,7 +1,10 @@
 using System;
 using UnityEngine;
 using NUnit.Framework;
+using UnityEngine.TestTools;
+using System.Text.RegularExpressions;
 
+// ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit.Tests
 {
     /// <summary>
@@ -30,7 +33,7 @@ namespace Aspid.MVVM.StarterKit.Tests
         // Back and Elastic are the two families the enum documents as leaving 0..1, and that claim is
         // the one Evaluate_BackAndElastic_LeaveTheUnitRange measures. Everything else — Bounce very
         // much included — is required to stay inside.
-        private static readonly EaseType[] Overshooting =
+        private static readonly EaseType[] _overshooting =
         {
             EaseType.BackIn, EaseType.BackOut, EaseType.BackInOut,
             EaseType.ElasticIn, EaseType.ElasticOut, EaseType.ElasticInOut,
@@ -39,7 +42,7 @@ namespace Aspid.MVVM.StarterKit.Tests
         // The three families that reverse direction somewhere. Bounce belongs here even though it
         // never leaves 0..1: staying in range and moving in one direction are different properties,
         // and the enum's "shaped" wording blurs them.
-        private static readonly EaseType[] Reversing =
+        private static readonly EaseType[] _reversing =
         {
             EaseType.BackIn, EaseType.BackOut, EaseType.BackInOut,
             EaseType.ElasticIn, EaseType.ElasticOut, EaseType.ElasticInOut,
@@ -50,8 +53,8 @@ namespace Aspid.MVVM.StarterKit.Tests
 
         // A curve that misses 1 leaves a health bar a hair short of full forever, and one that misses
         // 0 leaves a faded-out element faintly visible. Iterating the enum rather than listing the
-        // curves also means a new EaseType added without a switch arm fails here, on the
-        // ArgumentOutOfRangeException from the default branch, instead of shipping.
+        // curves also means a new EaseType added without a switch arm fails here, on the unexpected
+        // error the default branch reports, instead of shipping.
         [Test]
         public void Evaluate_EveryCurve_PinsBothEndpoints()
         {
@@ -217,7 +220,7 @@ namespace Aspid.MVVM.StarterKit.Tests
         {
             foreach (EaseType ease in Enum.GetValues(typeof(EaseType)))
             {
-                if (Array.IndexOf(Overshooting, ease) >= 0) continue;
+                if (Array.IndexOf(_overshooting, ease) >= 0) continue;
 
                 Range(ease, out var min, out var max);
 
@@ -236,7 +239,7 @@ namespace Aspid.MVVM.StarterKit.Tests
         {
             foreach (EaseType ease in Enum.GetValues(typeof(EaseType)))
             {
-                if (Array.IndexOf(Reversing, ease) >= 0) continue;
+                if (Array.IndexOf(_reversing, ease) >= 0) continue;
 
                 var descent = WorstDescent(ease);
 
@@ -277,8 +280,8 @@ namespace Aspid.MVVM.StarterKit.Tests
         // The enum's remarks order the families "by how hard they pull — Sine, Quad, Cubic, Quart,
         // Quint, Expo, Circ", which reads as Circ being the hardest. Measured at the midpoint it is
         // not: CircIn sits above CubicIn, i.e. gentler than the third-softest polynomial, and ExpoIn
-        // does not beat QuintIn either — the two are bit-identical there. The behaviour is correct
-        // Penner; the sentence describing it is wrong, so this test pins the behaviour.
+        // does not beat QuintIn either — the two are bit-identical there. The behavior is correct
+        // Penner; the sentence describing it is wrong, so this test pins the behavior.
         [Test]
         public void Evaluate_CircAndExpo_BreakTheDocumentedPullOrder()
         {
@@ -381,15 +384,26 @@ namespace Aspid.MVVM.StarterKit.Tests
         // ---------------------------------------------------------------- undeclared curve
 
         // A serialized enum survives its declaration being reordered or an entry being deleted, so a
-        // prefab can hand this converter a value no branch matches. It has to fail loudly rather than
-        // silently returning 0.
+        // prefab can hand this converter a value no branch matches. It has to report that on every
+        // push rather than silently returning 0.
         [Test]
-        public void Evaluate_UndeclaredCurve_Throws() =>
-            Assert.Throws<ArgumentOutOfRangeException>(() => EasingConverter.Evaluate((EaseType)999, 0.5f));
+        public void Evaluate_UndeclaredCurve_ReportsAndReturnsThePositionUnchanged()
+        {
+            ExpectUndeclaredCurve();
+
+            Assert.AreEqual(0.5f, EasingConverter.Evaluate((EaseType)999, 0.5f), 1e-6f);
+        }
 
         [Test]
-        public void Convert_UndeclaredCurve_Throws() =>
-            Assert.Throws<ArgumentOutOfRangeException>(() => new EasingConverter((EaseType)999).Convert(0.5f));
+        public void Convert_UndeclaredCurve_ReportsAndReturnsTheValueUnchanged()
+        {
+            ExpectUndeclaredCurve();
+
+            Assert.AreEqual(0.5f, new EasingConverter((EaseType)999).Convert(0.5f), 1e-6f);
+        }
+
+        private static void ExpectUndeclaredCurve() =>
+            LogAssert.Expect(LogType.Error, new Regex("EasingConverter.*not a declared EaseType"));
 
         // ---------------------------------------------------------------- helpers
 
@@ -449,5 +463,13 @@ namespace Aspid.MVVM.StarterKit.Tests
                 if (value > max) max = value;
             }
         }
+        // The curves are Unity's float math; the double width carries a float's precision through them.
+        [Test]
+        public void Easing_Double_RunsTheSameCurveAsTheFloatWidth() =>
+            Assert.AreEqual(
+                new EasingConverter(EaseType.QuadOut).Convert(0.25f),
+                ((IConverter<double, double>)new EasingConverter(EaseType.QuadOut)).Convert(0.25d),
+                1e-6d);
+
     }
 }

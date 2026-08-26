@@ -1,6 +1,10 @@
 using System;
+using UnityEngine;
 using NUnit.Framework;
+using UnityEngine.TestTools;
+using System.Text.RegularExpressions;
 
+// ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit.Tests
 {
     /// <summary>
@@ -21,7 +25,7 @@ namespace Aspid.MVVM.StarterKit.Tests
     internal sealed class NumericCastConverterTests
     {
         // Only reachable from a serialized asset written by a newer package version, or from
-        // hand-edited YAML. Every narrowing path has to reject it rather than fall through.
+        // hand-edited YAML. Every narrowing path has to report it and saturate rather than fall through.
         private const OverflowMode UndeclaredMode = (OverflowMode)42;
 
         #region The case the audit named: long.MaxValue into an int
@@ -210,19 +214,19 @@ namespace Aspid.MVVM.StarterKit.Tests
         // the identical value an overflow. Widening then narrowing is only an identity in Saturate.
         [Test]
         public void Convert_IntMaxValueThroughFloat_Saturate_ComesBackAsIntMaxValue() =>
-            Assert.AreEqual(int.MaxValue, FloatToInt(OverflowMode.Saturate).Convert((float)int.MaxValue));
+            Assert.AreEqual(int.MaxValue, FloatToInt(OverflowMode.Saturate).Convert(int.MaxValue));
 
         [Test]
         public void Convert_IntMaxValueThroughFloat_Checked_Throws() =>
-            Assert.Throws<OverflowException>(() => FloatToInt(OverflowMode.Checked).Convert((float)int.MaxValue));
+            Assert.Throws<OverflowException>(() => FloatToInt(OverflowMode.Checked).Convert(int.MaxValue));
 
         [Test]
         public void Convert_LongMaxValueThroughFloat_Saturate_ComesBackAsLongMaxValue() =>
-            Assert.AreEqual(long.MaxValue, FloatToLong(OverflowMode.Saturate).Convert((float)long.MaxValue));
+            Assert.AreEqual(long.MaxValue, FloatToLong(OverflowMode.Saturate).Convert(long.MaxValue));
 
         [Test]
         public void Convert_LongMaxValueThroughFloat_Checked_Throws() =>
-            Assert.Throws<OverflowException>(() => FloatToLong(OverflowMode.Checked).Convert((float)long.MaxValue));
+            Assert.Throws<OverflowException>(() => FloatToLong(OverflowMode.Checked).Convert(long.MaxValue));
         #endregion
 
         #region double to float
@@ -243,7 +247,7 @@ namespace Aspid.MVVM.StarterKit.Tests
         public void Convert_DoubleToFloat_Saturate_KeepsNaN() =>
             Assert.IsTrue(float.IsNaN(DoubleToFloat(OverflowMode.Saturate).Convert(double.NaN)));
 
-        // Documented behaviour and actual behaviour part company here. A float can represent an
+        // Documented behavior and actual behavior part company here. A float can represent an
         // infinity just as well as it represents a NaN, but the `value >= float.MaxValue` bound test
         // catches the infinity before the cast, so Saturate replaces it with a finite number while
         // Unchecked and Checked both hand it back. Asserted so the asymmetry is on the record.
@@ -280,7 +284,7 @@ namespace Aspid.MVVM.StarterKit.Tests
             Assert.Throws<OverflowException>(() => DoubleToFloat(OverflowMode.Checked).Convert(double.MaxValue));
         }
 
-        // Documented behaviour and actual behaviour part company again. Checked is described as
+        // Documented behavior and actual behavior part company again. Checked is described as
         // throwing for a value the target cannot hold, but the hand-written test only looks at the
         // top of the range: a double too small for a float underflows to a clean zero in every mode,
         // silently, which is exactly the class of loss Checked is chosen to prevent.
@@ -354,7 +358,7 @@ namespace Aspid.MVVM.StarterKit.Tests
             Assert.IsTrue(double.IsPositiveInfinity(FloatToDouble(OverflowMode.Saturate).Convert(float.PositiveInfinity)));
 
         // The widening paths never read the mode — there is no switch on them at all. If one is ever
-        // routed through the shared helper "for consistency", an undeclared mode starts throwing
+        // routed through the shared helper "for consistency", an undeclared mode starts reporting
         // where it used to be ignored, and these are the tests that notice.
         [Test]
         public void Convert_Widening_IgnoresTheModeEntirely()
@@ -369,21 +373,42 @@ namespace Aspid.MVVM.StarterKit.Tests
         #endregion
 
         #region Contract
+        // An undeclared mode is a misconfiguration, not data: it is reported on every push and
+        // answered with the default policy, the only one whose result is defined everywhere.
         [Test]
-        public void Convert_UndeclaredMode_LongToInt_Throws() =>
-            Assert.Throws<ArgumentOutOfRangeException>(() => LongToInt(UndeclaredMode).Convert(1L));
+        public void Convert_UndeclaredMode_LongToInt_ReportsAndSaturates()
+        {
+            ExpectUndeclaredMode();
+
+            Assert.AreEqual(int.MaxValue, LongToInt(UndeclaredMode).Convert(long.MaxValue));
+        }
 
         [Test]
-        public void Convert_UndeclaredMode_DoubleToInt_Throws() =>
-            Assert.Throws<ArgumentOutOfRangeException>(() => DoubleToInt(UndeclaredMode).Convert(1d));
+        public void Convert_UndeclaredMode_DoubleToInt_ReportsAndSaturates()
+        {
+            ExpectUndeclaredMode();
+
+            Assert.AreEqual(int.MaxValue, DoubleToInt(UndeclaredMode).Convert(1e30d));
+        }
 
         [Test]
-        public void Convert_UndeclaredMode_DoubleToLong_Throws() =>
-            Assert.Throws<ArgumentOutOfRangeException>(() => DoubleToLong(UndeclaredMode).Convert(1d));
+        public void Convert_UndeclaredMode_DoubleToLong_ReportsAndSaturates()
+        {
+            ExpectUndeclaredMode();
+
+            Assert.AreEqual(long.MaxValue, DoubleToLong(UndeclaredMode).Convert(1e30d));
+        }
 
         [Test]
-        public void Convert_UndeclaredMode_DoubleToFloat_Throws() =>
-            Assert.Throws<ArgumentOutOfRangeException>(() => DoubleToFloat(UndeclaredMode).Convert(1d));
+        public void Convert_UndeclaredMode_DoubleToFloat_ReportsAndSaturates()
+        {
+            ExpectUndeclaredMode();
+
+            Assert.AreEqual(float.MaxValue, DoubleToFloat(UndeclaredMode).Convert(double.MaxValue));
+        }
+
+        private static void ExpectUndeclaredMode() =>
+            LogAssert.Expect(LogType.Error, new Regex("NumericCastConverter.*not a declared OverflowMode"));
 
         // A picker entry that silently lost one of its twelve pairs would fail at bind time in a
         // build, not here, so the interface list is asserted rather than assumed. The self-pairs

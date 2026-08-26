@@ -1,4 +1,3 @@
-#nullable enable
 using System;
 using UnityEngine;
 
@@ -14,15 +13,25 @@ namespace Aspid.MVVM.StarterKit
     public struct LookupEntry<TKey, TValue>
     {
         /// <summary>
-        /// The key this row matches.
+        /// Gets the key this row matches.
         /// </summary>
-        [Tooltip("The key this row matches.")]
-        public TKey Key;
+        [field: Tooltip("The key this row matches.")]
+        [field: SerializeField]
+        public TKey Key { get; private set; }
 
         /// <summary>
-        /// The value returned for <see cref="Key"/>.
+        /// Gets the value returned for <see cref="Key"/>.
         /// </summary>
-        [Tooltip("The value returned for the key.")]
-        public TValue Value;
+        [field: Tooltip("The value returned for the key.")]
+        [field: SerializeField]
+        public TValue Value { get; private set; }
+
+        /// <param name="key">The key this row matches.</param>
+        /// <param name="value">The value returned for the key.</param>
+        public LookupEntry(TKey key, TValue value)
+        {
+            Key = key;
+            Value = value;
+        }
     }
 }

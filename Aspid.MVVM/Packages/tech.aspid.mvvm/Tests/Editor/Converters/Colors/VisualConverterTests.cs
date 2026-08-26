@@ -1,11 +1,14 @@
 using UnityEngine;
 using NUnit.Framework;
 using UnityEngine.UI;
+using UnityEngine.TestTools;
+using System.Text.RegularExpressions;
 
+// ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit.Tests
 {
     /// <summary>
-    /// Coverage for the colour, ColorBlock and texture converters.
+    /// Coverage for the color, ColorBlock and texture converters.
     /// </summary>
     /// <remarks>
     /// This wave fills the two pickers that had been declared but never implemented, so a few of the
@@ -29,6 +32,29 @@ namespace Aspid.MVVM.StarterKit.Tests
                 0.25f,
                 new ColorAlphaConverter(0.5f, AlphaMode.Multiply).Convert(new Color(1f, 1f, 1f, 0.5f)).a,
                 1e-5f);
+
+        // The [Range] screens the serialized field but not a constructor argument, and the two other
+        // modes clamp already — Set holding to 0..1 is what makes the three agree on their output.
+        [TestCase(2f, 1f)]
+        [TestCase(-1f, 0f)]
+        public void ColorAlpha_Set_HoldsTheAlphaToTheZeroOneRange(float alpha, float expected) =>
+            Assert.AreEqual(
+                expected,
+                new ColorAlphaConverter(alpha).Convert(new Color(0.2f, 0.4f, 0.6f, 0.5f)).a,
+                1e-5f);
+
+        // The hue is left alone whatever happens to the alpha, so an unchanged 0.5 alpha alongside
+        // the original hue is the only reading that says the mode was skipped rather than applied.
+        [Test]
+        public void ColorAlpha_UndeclaredMode_ReportsItAndLeavesTheAlphaAlone()
+        {
+            LogAssert.Expect(LogType.Error, new Regex("ColorAlphaConverter.*not a declared AlphaMode"));
+
+            var result = new ColorAlphaConverter(0.25f, (AlphaMode)42).Convert(new Color(0.2f, 0.4f, 0.6f, 0.5f));
+
+            Assert.AreEqual(0.5f, result.a, 1e-5f);
+            Assert.AreEqual(0.2f, result.r, 1e-5f);
+        }
 
         [Test]
         public void ColorTint_Multiplies() =>
@@ -83,6 +109,58 @@ namespace Aspid.MVVM.StarterKit.Tests
             Assert.AreEqual(0.8f, parsed.a, 0.01f);
         }
 
+        [TestCase("#FF0000")]
+        [TestCase("red")]
+        public void ColorToHtmlString_ConvertBack_ParsesAnHtmlColor(string html) =>
+            Assert.AreEqual(Color.red, new ColorToHtmlStringConverter().ConvertBack(html));
+
+        [Test]
+        public void ColorToHtmlString_ConvertBack_RoundTripsItsOwnOutput()
+        {
+            var converter = new ColorToHtmlStringConverter(includeAlpha: true);
+            var parsed = converter.ConvertBack(converter.Convert(new Color(0.2f, 0.4f, 0.6f, 0.8f)));
+
+            Assert.AreEqual(0.2f, parsed.r, 0.01f);
+            Assert.AreEqual(0.8f, parsed.a, 0.01f);
+        }
+
+        // A blank string is no value rather than a failed parse, in this direction too.
+        [TestCase((string)null)]
+        [TestCase("")]
+        [TestCase("   ")]
+        public void ColorToHtmlString_ConvertBack_BlankString_ReturnsTheFallbackSilently(string html)
+        {
+            var converter = new ColorToHtmlStringConverter(includeAlpha: true, convertBackFallback: Color.magenta);
+
+            Assert.AreEqual(Color.magenta, converter.ConvertBack(html));
+            LogAssert.NoUnexpectedReceived();
+        }
+
+        [Test]
+        public void ColorToHtmlString_ConvertBack_UnparseableString_ReturnsTheFallbackAndReportsEveryTime()
+        {
+            for (var i = 0; i < 3; i++)
+                LogAssert.Expect(LogType.Error, new Regex("ColorToHtmlStringConverter.*an HTML color"));
+
+            var converter = new ColorToHtmlStringConverter(includeAlpha: true, convertBackFallback: Color.magenta);
+
+            Assert.AreEqual(Color.magenta, converter.ConvertBack("not a colour"));
+            converter.ConvertBack("still not");
+            converter.ConvertBack("nor this");
+        }
+
+        // The two converters share one parse path, so the reverse direction answers exactly as
+        // ParseHtmlStringConverter.Convert does — down to the default fallback.
+        [Test]
+        public void ColorToHtmlString_ConvertBack_WithoutAFallback_AnswersLikeParseHtmlString()
+        {
+            LogAssert.Expect(LogType.Error, new Regex("ParseHtmlStringConverter.*an HTML color"));
+            var expected = new ParseHtmlStringConverter().Convert("nope");
+
+            LogAssert.Expect(LogType.Error, new Regex("ColorToHtmlStringConverter.*an HTML color"));
+            Assert.AreEqual(expected, new ColorToHtmlStringConverter().ConvertBack("nope"));
+        }
+
         [Test]
         public void GradientEvaluate_ReadsTheRamp()
         {
@@ -123,8 +201,8 @@ namespace Aspid.MVVM.StarterKit.Tests
             var converter = new ThresholdColorConverter(
                 new[]
                 {
-                    new ColorStop { Threshold = 0.75f, Color = Color.green },
-                    new ColorStop { Threshold = 0.25f, Color = Color.blue },
+                    new ColorStop(0.75f, Color.green),
+                    new ColorStop(0.25f, Color.blue),
                 },
                 fallback: Color.red);
 
@@ -134,7 +212,7 @@ namespace Aspid.MVVM.StarterKit.Tests
         }
 
         // string.GetHashCode is randomised per process, so the same name would take a different
-        // colour on every launch. The hash here is FNV-1a, which is not.
+        // color on every launch. The hash here is FNV-1a, which is not.
         [Test]
         public void HashToColor_IsStableForTheSameName()
         {
@@ -149,6 +227,20 @@ namespace Aspid.MVVM.StarterKit.Tests
             Assert.AreEqual(Color.gray, new HashToColorConverter().Convert(null));
 
         [Test]
+        public void HashToColor_AuthoredFallback_IsUsedForABlankName() =>
+            Assert.AreEqual(
+                Color.magenta,
+                new HashToColorConverter(0.6f, fallback: Color.magenta).Convert(string.Empty));
+
+        // The Range attribute only holds the Inspector; the constructor takes any float, and HSVToRGB
+        // reads a saturation above one as a color outside the gamut.
+        [Test]
+        public void HashToColor_SaturationOutsideTheRange_IsHeldToIt() =>
+            Assert.AreEqual(
+                new HashToColorConverter(1f).Convert("Vladislav"),
+                new HashToColorConverter(4f).Convert("Vladislav"));
+
+        [Test]
         public void ColorToColorBlock_DerivesEveryState()
         {
             var block = new ColorToColorBlockConverter().Convert(Color.white);
@@ -156,6 +248,34 @@ namespace Aspid.MVVM.StarterKit.Tests
             Assert.AreEqual(Color.white, block.normalColor);
             Assert.Less(block.pressedColor.r, block.normalColor.r);
             Assert.AreEqual(0.5f, block.disabledColor.a, 1e-5f);
+        }
+
+        [Test]
+        public void ColorToColorBlock_AuthoredMultipliers_ScaleEachState()
+        {
+            var block = new ColorToColorBlockConverter(0.8f, pressedMultiplier: 0.4f, disabledAlpha: 0.2f)
+                .Convert(Color.white);
+
+            Assert.AreEqual(0.8f, block.highlightedColor.r, 1e-5f);
+            Assert.AreEqual(0.4f, block.pressedColor.r, 1e-5f);
+            Assert.AreEqual(0.2f, block.disabledColor.a, 1e-5f);
+        }
+
+        // UGUI renders a Selectable black at a zero multiplier, and the [Range] screens the field but
+        // not the constructor argument. Held to the near end rather than to the default 1, so a value
+        // above the range keeps the emphasis it was asking for.
+        [TestCase(0f, 1f)]
+        [TestCase(9f, 5f)]
+        [TestCase(float.NaN, 1f)]
+        public void ColorToColorBlock_MultiplierOutsideTheRange_ReportsItAndHoldsItToTheRange(
+            float authored,
+            float expected)
+        {
+            LogAssert.Expect(LogType.Error, new Regex("ColorToColorBlockConverter.*color multiplier"));
+
+            var block = new ColorToColorBlockConverter(1.1f, colorMultiplier: authored).Convert(Color.white);
+
+            Assert.AreEqual(expected, block.colorMultiplier, 1e-5f);
         }
 
         [Test]
@@ -187,6 +307,18 @@ namespace Aspid.MVVM.StarterKit.Tests
 
             Assert.AreEqual(0.5f, slowed.fadeDuration, 1e-5f);
             Assert.AreEqual(block.normalColor, slowed.normalColor);
+        }
+
+        // A Selectable tween over a negative duration never finishes, so the state change is stuck
+        // rather than instant — and nothing about the block says which duration it was handed.
+        [Test]
+        public void ColorBlockFadeDuration_NegativeDuration_IsReportedAndFadesInstantly()
+        {
+            LogAssert.Expect(LogType.Error, new Regex("ColorBlockFadeDurationConverter.*not a length of time"));
+
+            var slowed = new ColorBlockFadeDurationConverter(-1f).Convert(ColorBlock.defaultColorBlock);
+
+            Assert.AreEqual(0f, slowed.fadeDuration, 1e-5f);
         }
 
         [Test]
@@ -233,6 +365,29 @@ namespace Aspid.MVVM.StarterKit.Tests
         public void Texture2DToSprite_NullClearsTheCache() =>
             Assert.IsNull(new Texture2DToSpriteConverter().Convert(null));
 
+        // Sprite.Create divides the pixel rect by this, so zero would hand back a sprite of infinite
+        // world size — a bound image that simply stops drawing, with nothing in the log about it.
+        [Test]
+        public void Texture2DToSprite_PixelsPerUnitNotAboveZero_IsReportedAndBuildsAt100()
+        {
+            LogAssert.Expect(LogType.Error, new Regex("Texture2DToSpriteConverter.*not a scale"));
+
+            var texture = new Texture2D(4, 4);
+            var converter = new Texture2DToSpriteConverter(Vector2.one * 0.5f, 0f);
+
+            try
+            {
+                var sprite = converter.Convert(texture);
+
+                Assert.IsNotNull(sprite);
+                Assert.AreEqual(100f, sprite.pixelsPerUnit, 1e-5f);
+            }
+            finally
+            {
+                Object.DestroyImmediate(texture);
+            }
+        }
+
         [Test]
         public void NormalizedToSprite_PicksTheFrame()
         {
@@ -258,9 +413,15 @@ namespace Aspid.MVVM.StarterKit.Tests
             }
         }
 
+        // A converter with no frames can never show anything, so it reports the misconfiguration on
+        // every push rather than quietly answering null for the life of the scene.
         [Test]
-        public void NormalizedToSprite_WithNoFramesReturnsNull() =>
+        public void NormalizedToSprite_WithNoFramesReturnsNull()
+        {
+            LogAssert.Expect(LogType.Error, new Regex("NormalizedToSpriteConverter.*no frames are assigned"));
+
             Assert.IsNull(new NormalizedToSpriteConverter(null).Convert(0.5f));
+        }
 
         [Test]
         public void ObjectName_StripsTheCloneSuffix()
@@ -269,7 +430,7 @@ namespace Aspid.MVVM.StarterKit.Tests
 
             try
             {
-                Assert.AreEqual("Enemy", new ObjectNameConverter(string.Empty).Convert(gameObject));
+                Assert.AreEqual("Enemy", new ObjectNameConverter(fallback: string.Empty).Convert(gameObject));
             }
             finally
             {
@@ -279,6 +440,6 @@ namespace Aspid.MVVM.StarterKit.Tests
 
         [Test]
         public void ObjectName_MissingObjectGivesTheFallback() =>
-            Assert.AreEqual("—", new ObjectNameConverter("—").Convert(null));
+            Assert.AreEqual("—", new ObjectNameConverter(fallback: "—").Convert(null));
     }
 }

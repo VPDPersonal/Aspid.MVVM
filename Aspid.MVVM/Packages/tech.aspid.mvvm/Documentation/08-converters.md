@@ -25,10 +25,10 @@
 
 | Из | В | Конвертер |
 |----|---|-----------|
-| `float` 0..1 | `"75%"` | `PercentStringConverter` |
+| `float` 0..1 | `"75%"` | `NumberFormatConverter` с форматом `P0` |
 | `int` 1500 | `"Score: 1500"` | `StringFormatConverter` |
 | `float` здоровья | `Color` красный → зелёный | `ThresholdColorConverter` |
-| `float` 0..1 | `Vector3` шкалы | `FloatToVector3Converter` |
+| `float` 0..1 | `Vector3` шкалы | `FloatToVectorConverter` |
 | `TimeSpan` | `"01:23"` | `TimeSpanFormatConverter` |
 | `int` секунд | `"2 hours ago"` | `RelativeTimeConverter` |
 
@@ -55,7 +55,7 @@ public interface IConverter<in TFrom, out TTo> : IConverter
 > Маркер останется пустым: один тип реализует `IConverter<,>` сколько нужно раз, поэтому член,
 > называющий преобразуемые типы, отвечал бы сразу за все реализации.
 
-Конвертеры, которые умеют преобразовывать в обе стороны, реализуют `ITwoWayConverter<TFrom, TTo>` с методом `ConvertBack`: `BoolInvertConverter`, `EnumToIntConverter<TEnum>`, `PassthroughConverter<T>`, `SequenceConverters<T>`.
+Конвертеры, которые умеют преобразовывать в обе стороны, реализуют `ITwoWayConverter<TFrom, TTo>` с методом `ConvertBack`: `BoolInvertConverter`, `EnumToNumberConverter<TEnum>`, `PassthroughConverter<T>`, `SequenceConverter<T>`.
 
 ---
 
@@ -83,137 +83,208 @@ public interface ITwoWayConverter<TFrom, TTo> : IConverter<TFrom, TTo>
 Ожидание к реализации: `ConvertBack(Convert(x)) == x`. Конвертер, который этого не гарантирует, не
 должен реализовывать интерфейс — иначе значение будет дрейфовать на каждом круге.
 
+Конвертер, у которого есть **обратный интерфейс** — вторая реализация, принимающая результат и
+возвращающая исходное (`IConverter<B, A>` или `ITwoWayConverter<B, A>` рядом с прямой парой, либо
+`ITwoWayConverter<A, A>`, где стороны совпадают) — называется **без `To`**:
+`Vector2Vector3Converter`, `ColorColor32Converter`, `DegreesRadiansConverter`. Один
+`ITwoWayConverter<A, B>` направления не добавляет — `ConvertBack` живёт внутри той же пары, — поэтому
+`StringToIntConverter` и `BoolToValueConverter` остаются с `To`. Так по имени видно, можно ли
+привязать конвертер с любой из двух сторон. Исключение одно — `SnapToStepConverter`: «to» там входит
+в саму операцию, а не соединяет пару типов.
+
 Двусторонние из коробки:
 
-`ArithmeticNumberConverter`, `AngleToQuaternionConverter`, `AudioDecibelToLinearConverter`,
-`AudioLinearToDecibelConverter`, `BoolInvertConverter`, `DegreesToRadiansConverter`,
-`EnumToIntConverter`, `EulerToQuaternionConverter`, `InverseLerpConverter`, `LerpNumberConverter`,
-`NormalizedToPercentConverter`, `PassthroughConverter`, `QuaternionOffsetConverter`,
-`RemapNumberConverter`, `SecondsToTimeSpanConverter`, `SequenceConverters`, `StringToEnumConverter`,
-`StringToFloatConverter`, `StringToIntConverter`, `StringToLongConverter`,
-`UnixTimestampToDateTimeConverter`, `Vector2ToVector2IntConverter`, `Vector3ToVector3IntConverter`.
+`AngleToQuaternionConverter`, `ArithmeticNumberConverter`,
+`AudioLinearDecibelConverter`, `BoolInvertConverter`, `BoolLogicConverter`,
+`BoolToValueConverter`, `CachedConverter`, `ColorColor32Converter`,
+`ColorToHtmlStringConverter`, `ColorVector4Converter`, `DateTimeToUnixTimestampConverter`,
+`DegreesRadiansConverter`, `EnumToNumberConverter`, `EulerToQuaternionConverter`,
+`InverseConverter`, `InverseLerpConverter`, `LerpNumberConverter`,
+`NormalizedPercentConverter`, `OffsetThenScaleConverter`, `PassthroughConverter`,
+`PowerNumberConverter`, `QuaternionOffsetConverter`,
+`RectVector4Converter`, `RemapNumberConverter`, `SafeConverter`,
+`SecondsToTimeSpanConverter`, `SequenceConverter`, `StringToBoolConverter`,
+`StringToDateTimeConverter`,
+`StringToDecimalConverter`,
+`StringToDoubleConverter`, `StringToEnumConverter`, `StringToFloatConverter`,
+`StringToIntConverter`, `StringToLongConverter`, `StringToTimeSpanConverter`,
+`StringToVector2Converter`, `StringToVector3Converter`, `UnixTimestampToDateTimeConverter`,
+`Vector2Vector3Converter`, `VectorToVectorIntConverter`.
 
 ---
 
 ## Каталог
 
-В пакете 210 конвертеров. В Inspector они разложены по группам — группа видна в выпадающем списке
-поля `Converter`.
+В пакете 192 конвертера. Правило раскладки одно: **группа — тип значения, которое лежит во
+ViewModel; подгруппа `To <тип>` — то, во что оно превращается**. Ищете конвертер — начинайте с
+того, что у вас есть: `float` — в `Aspid/Number`, строка — в `Aspid/String`; нужен другой тип на
+выходе — откройте подгруппу `To ...`. Исключения три: `Aspid/Composition` — обёртки над другими
+конвертерами, `Aspid/Localization` — вся локализация в одном месте, `Aspid/Asset` — инфраструктура
+конвертеров-ассетов.
 
-### Aspid/Bool (8)
+То же правило действует и в исходниках: папка повторяет группу
+(`Converters/Strings/ToNumber/` ↔ `Aspid/String/To Number`).
 
-`BoolInvertConverter`, `BoolLogicConverter`, `BoolToValueConverter`, `NumberToBoolConverter`,
-`ObjectNullToBoolConverter`, `StringEmptyToBoolConverter`, `StringMatchToBoolConverter`,
-`UnityObjectNullToBoolConverter`
+### Aspid/Bool (3)
 
-> `StringEmptyToBoolConverter` полем `StringEmptiness` выбирает, что считать отсутствующей строкой:
-> `NullOrEmpty` (по умолчанию), `Null` — пустая строка считается заполненной, `NullOrWhiteSpace` —
-> строка из пробелов считается пустой. Последнее и означает «пользователь что-нибудь ввёл?».
+`BoolInvertConverter`, `BoolLogicConverter`; **To Value**: `BoolToValueConverter`.
 
-### Aspid/Number (21)
+> `BoolToValueConverter` двусторонний: обратный путь сравнивает пришедшее значение с двумя
+> заданными и возвращает соответствующий bool. Значение, не совпавшее ни с одним, отдаёт fallback;
+> одинаковые значения в обеих ветках делают обратный путь невозможным и пишутся в консоль ошибкой.
 
-`AnimationCurveConverter`, `ArithmeticNumberConverter`, `AudioDecibelToLinearConverter`,
-`AudioLinearToDecibelConverter`, `ClampNumberConverter`, `CountdownProgressConverter`,
+### Aspid/Number (51)
+
+Число → число: `AngleDifferenceConverter`, `AngleWrapConverter`, `AnimationCurveConverter`,
+`ArithmeticNumberConverter`, `AudioLinearDecibelConverter`,
+`ClampNumberConverter`, `CountdownProgressConverter`, `DegreesRadiansConverter`,
 `EasingConverter`, `InverseLerpConverter`, `LerpNumberConverter`, `ModuloNumberConverter`,
-`NormalizedToPercentConverter`, `NumericCastConverter`, `PercentToNormalizedConverter`,
-`PowerNumberConverter`, `RemapNumberConverter`, `RoundNumberConverter`, `SmoothStepConverter`,
-`SnapToStepConverter`, `SumConstantThenScaleConverter`, `UnaryMathConverter`,
-`WrapNumberConverter`
+`NormalizedPercentConverter`, `NumericCastConverter`,
+`PowerNumberConverter`, `RemapNumberConverter`,
+`RoundNumberConverter`, `SmoothStepConverter`, `SnapToStepConverter`,
+`OffsetThenScaleConverter`, `UnaryMathConverter`, `WrapNumberConverter`
+
+| Подгруппа | Конвертеры |
+|-----------|-----------|
+| To Bool | `NumberCompareConverter` |
+| To Color | `ColorLerpConverter`, `GradientEvaluateConverter`, `ThresholdColorConverter` |
+| To Enum | `NumberToEnumConverter` |
+| To Quaternion | `AngleToQuaternionConverter`, `QuaternionSlerpConverter` |
+| To Rect Offset | `IntToRectOffsetConverter` |
+| To Sprite | `NormalizedToSpriteConverter` |
+| To String | `AbbreviatedNumberConverter`, `ByteSizeConverter`, `CurrencyConverter`, `DecimalFormatConverter`, `NumberFormatConverter`, `OrdinalConverter`, `PaddedNumberConverter`, `PluralizeConverter`, `RatioToStringConverter`, `RepeatStringConverter`, `RomanNumeralConverter`, `SecondsToTimeStringConverter`, `SignedNumberStringConverter`, `ThousandsSeparatorConverter`, `ThresholdRichTextColorConverter` |
+| To Time | `SecondsToTimeSpanConverter`, `UnixTimestampToDateTimeConverter` |
+| To Value | `IndexToValueConverter` |
+| To Vector | `FloatToVectorConverter`, `VectorLerpConverter` |
 
 > `NumericCastConverter` — единственный способ сузить число управляемо. Без него `long.MaxValue`,
 > попавший в int-биндер, молча уходит в отрицательное; `OverflowMode.Saturate` прижимает к границе,
 > `Checked` бросает.
 
-### Aspid/String (46)
+> `SecondsToTimeSpanConverter` принимает `int`, `long`, `float` и `double`. В целочисленных
+> перегрузках обратный путь отбрасывает дробную часть секунды, а измерение, не помещающееся
+> в `int` или `long`, прижимается к границе типа.
 
-`AbbreviatedNumberConverter`, `ByteSizeConverter`, `ConcatStringConverter`, `CurrencyConverter`,
-`DecimalFormatConverter`, `DefaultStringConverter`, `GenericToString`, `MaskStringConverter`,
-`NumberFormatConverter`, `ObjectToStringConverter`, `OrdinalConverter`, `PadStringConverter`,
-`PaddedNumberConverter`, `PercentStringConverter`, `PluralizeConverter`,
-`RatioToStringConverter`, `RepeatStringConverter`, `ReplaceStringConverter`,
-`ReverseStringConverter`, `RichTextColorConverter`, `RichTextNoParseConverter`,
-`RichTextSizeConverter`, `RichTextStyleConverter`, `RomanNumeralConverter`,
-`SanitizeRichTextConverter`, `SignedNumberStringConverter`, `SplitJoinStringConverter`,
-`StringFormatConverter`, `StringToBoolParseConverter`, `StringToDateTimeConverter`,
-`StringToDecimalConverter`, `StringToDoubleConverter`, `StringToEnumConverter`,
-`StringToFloatConverter`, `StringToIntConverter`, `StringToLongConverter`,
-`StringToTimeSpanConverter`, `StringToVector2Converter`, `StringToVector3Converter`,
-`SubstringConverter`, `TextCaseConverter`, `ThousandsSeparatorConverter`,
-`ThresholdRichTextColorConverter`, `TimeSpanToStringConverter`, `TrimStringConverter`,
-`TruncateStringConverter`
+### Aspid/String (33)
 
-> Для любого текста, который ввёл игрок, нужен `SanitizeRichTextConverter` или
+Строка → строка: `ConcatStringConverter`, `DefaultStringConverter`, `MaskStringConverter`,
+`PadStringConverter`, `ReplaceStringConverter`, `ReverseStringConverter`,
+`SplitJoinStringConverter`, `StringFormatConverter`, `SubstringConverter`, `TextCaseConverter`,
+`TrimStringConverter`, `TruncateStringConverter`
+
+| Подгруппа | Конвертеры |
+|-----------|-----------|
+| Rich Text | `RichTextColorConverter`, `RichTextNoParseConverter`, `RichTextSizeConverter`, `RichTextStyleConverter`, `RichTextSanitizeConverter` |
+| To Bool | `StringEmptyToBoolConverter`, `StringMatchToBoolConverter`, `StringToBoolConverter` |
+| To Color | `HashToColorConverter`, `ParseHtmlStringConverter` |
+| To Enum | `StringToEnumConverter` |
+| To Number | `StringToDecimalConverter`, `StringToDoubleConverter`, `StringToFloatConverter`, `StringToIntConverter`, `StringToLongConverter` |
+| To Sprite | `StringToSpriteConverter` |
+| To Time | `StringToDateTimeConverter`, `StringToTimeSpanConverter` |
+| To Vector | `StringToVector2Converter`, `StringToVector3Converter` |
+
+Разбирающие конвертеры (`String To *`) в пикере называются `Parse *`: они парсят с учётом культуры
+(`CultureInfoMode`), а текст, который не читается, отдают запасным значением.
+
+> Для любого текста, который ввёл игрок, нужен `RichTextSanitizeConverter` или
 > `RichTextNoParseConverter`. TMP исполняет разметку в любой строке, которую получает: ник
 > `<size=400%>` растянет каждый ярлык, где он покажется, на экране каждого другого игрока.
 > `RichTextNoParse` заворачивает всё в `<noparse>`; `SanitizeRichText` вырезает или экранирует теги
 > выборочно, оставляя белый список.
 
-### Aspid/Time (12)
+> `StringEmptyToBoolConverter` полем `StringEmptiness` выбирает, что считать отсутствующей строкой:
+> `NullOrEmpty` (по умолчанию), `Null` — пустая строка считается заполненной, `NullOrWhiteSpace` —
+> строка из пробелов считается пустой. Последнее и означает «пользователь что-нибудь ввёл?».
 
-`DateTimeFormatConverter`, `DateTimeOffsetFormatConverter`, `DateTimeToBoolConverter`,
-`DateTimeToUnixTimestampConverter`, `RelativeTimeConverter`, `SecondsToTimeSpanConverter`,
-`SecondsToTimeStringConverter`, `TimeSpanArithmeticConverter`, `TimeSpanFormatConverter`,
-`TimeSpanToNumberConverter`, `TimeUntilConverter`, `UnixTimestampToDateTimeConverter`
+### Aspid/Time (9)
 
-### Aspid/Colour (21)
+`TimeSpanArithmeticConverter`, `TimeUntilConverter`
 
-`Color32ToColorConverter`, `ColorAlphaConverter`, `ColorBlockAlphaConverter`,
-`ColorBlockFadeDurationConverter`, `ColorBlockStateConverter`, `ColorBlockTintConverter`,
-`ColorChannelConverter`, `ColorGrayscaleConverter`, `ColorHsvConverter`, `ColorLerpConverter`,
-`ColorTintConverter`, `ColorToColor32Converter`, `ColorToColorBlockConverter`,
-`ColorToHtmlStringConverter`, `ColorToVector4Converter`, `GradientEvaluateConverter`,
-`HashToColorConverter`, `HdrIntensityConverter`, `ParseHtmlStringConverter`,
-`ThresholdColorConverter`, `Vector4ToColorConverter`
+| Подгруппа | Конвертеры |
+|-----------|-----------|
+| To Bool | `DateTimeCompareConverter` |
+| To Number | `DateTimeToUnixTimestampConverter`, `TimeSpanToNumberConverter` |
+| To String | `DateTimeFormatConverter`, `DateTimeOffsetFormatConverter`, `RelativeTimeConverter`, `TimeSpanFormatConverter` |
 
-### Aspid/Vector (43)
+### Aspid/Enum (7)
 
-`BoundsCenterConverter`, `BoundsSizeConverter`, `BoundsToRectConverter`,
-`BoxCollider2DOffsetCombineConverter`, `BoxCollider2DSizeCombineConverter`,
-`BoxColliderCentreCombineConverter`, `BoxColliderSizeCombineConverter`,
-`CapsuleColliderCentreCombineConverter`, `FloatToVector2Converter`, `FloatToVector3Converter`,
-`RectToVector4Converter`, `RectTransformAnchoredPosition2DCombineConverter`,
-`RectTransformAnchoredPositionCombineConverter`, `RectTransformSizeDeltaCombineConverter`,
-`SphereColliderCentreCombineConverter`, `TransformEulerAnglesCombineConverter`,
-`TransformPosition2DCombineConverter`, `TransformPositionCombineConverter`,
-`TransformScaleCombineConverter`, `Vector2ArithmeticConverter`,
-`Vector2ClampComponentsConverter`, `Vector2ClampMagnitudeConverter`,
-`Vector2NormalizeConverter`, `Vector2RoundConverter`, `Vector2SubstitutionConverter`,
-`Vector2ToFloatConverter`, `Vector2ToVector2IntConverter`, `Vector2ToVector3Converter`,
-`Vector3ArithmeticConverter`, `Vector3SubstitutionConverter`, `Vector3ToFloatConverter`,
-`Vector3ToVector2Converter`, `Vector3ToVector3IntConverter`, `Vector3ToVector4Converter`,
-`Vector4SwizzleConverter`, `Vector4ToRectConverter`, `Vector4ToVector3Converter`,
-`VectorClampComponentsConverter`, `VectorClampMagnitudeConverter`, `VectorDistanceConverter`,
-`VectorLerpConverter`, `VectorNormalizeConverter`, `VectorRoundConverter`
-
-> Конвертеры `*CombineConverter` берут часть компонент у привязанного вектора, часть — у компонента
-> сцены (`Transform`, `RectTransform`, коллайдер). Пары `*2D*` — для двумерных коллайдеров и
-> `Vector2`-свойств.
-
-### Aspid/Rotation (15)
-
-`AngleDifferenceConverter`, `AngleToDirectionConverter`, `AngleToQuaternionConverter`,
-`AngleWrapConverter`, `DegreesToRadiansConverter`, `DirectionToAngleConverter`,
-`EulerToQuaternionConverter`, `LookRotationConverter`, `QuaternionOffsetConverter`,
-`QuaternionSlerpConverter`, `QuaternionToAngleConverter`, `QuaternionToEulerConverter`,
-`QuaternionToVector4Converter`, `RadiansToDegreesConverter`, `Vector4ToQuaternionConverter`
+`EnumMaskConverter`; **To Bool**: `EnumMatchConverter`; **To Collection**:
+`EnumToDropdownOptionDataConverter`; **To Number**: `EnumToNumberConverter`; **To String**:
+`EnumFlagsToStringConverter`, `EnumToStringConverter`; **To Value**: `EnumToValueConverter`.
 
 ### Aspid/Collection (11)
 
-`CollectionAggregateConverter`, `CollectionContainsToBoolConverter`, `CollectionCountConverter`,
-`CollectionCountToStringConverter`, `CollectionElementAtConverter`,
-`CollectionEmptyToBoolConverter`, `CollectionFirstConverter`, `CollectionLastConverter`,
-`CollectionTakeConverter`, `DictionaryLookupConverter`, `ListToStringConverter`
+`CollectionTakeConverter`, `DictionaryLookupConverter`
+
+| Подгруппа | Конвертеры |
+|-----------|-----------|
+| To Bool | `CollectionContainsToBoolConverter`, `CollectionEmptyToBoolConverter` |
+| To Number | `CollectionAggregateConverter`, `CollectionCountConverter` |
+| To String | `CollectionCountToStringConverter`, `CollectionJoinToStringConverter` |
+| To Value | `CollectionElementAtConverter`, `CollectionFirstConverter`, `CollectionLastConverter` |
+
+> Все конвертеры группы, кроме `CollectionElementAtConverter`, принимают любой `IEnumerable<T>` — итератор
+> или LINQ-запрос тоже. Счётчики берут `Count`, если он есть, и обходят последовательность только когда
+> его нет; `CollectionEmptyToBoolConverter` в этом случае дёргает один элемент.
+> `CollectionElementAtConverter` остаётся на `IReadOnlyList<T>`: чтобы выбрать элемент с конца, нужна
+> длина.
+
+### Aspid/Object (4)
+
+`NullCoalesceConverter`; **To Bool**: `EqualityToBoolConverter`;
+**To String**: `GenericToStringConverter`, `ObjectNameConverter`, `ObjectToStringConverter`.
+
+> `EqualityToBoolConverter` с пустым операндом работает как проверка «отсутствует ли объект» и
+> считает уничтоженный `UnityEngine.Object` отсутствующим: null-сторона сравнивается через
+> перегруженный Unity оператор `==`, потому что `is null` для уничтоженного объекта даёт `false`.
+> Reference equality сравнивает экземпляры как есть — уничтоженный объект пустому операнду там не равен.
+
+### Aspid/Vector (28)
+
+Вектор → вектор: `Vector2Vector3Converter`, `Vector3Vector4Converter`,
+`VectorArithmeticConverter`, `VectorClampComponentsConverter`,
+`VectorClampMagnitudeConverter`, `VectorNormalizeConverter`, `VectorRoundConverter`,
+`VectorSwizzleConverter`, `VectorToVectorIntConverter`
+
+> `VectorArithmeticConverter`, `VectorClampComponentsConverter`, `VectorClampMagnitudeConverter`,
+> `VectorNormalizeConverter`, `VectorRoundConverter`, `VectorSwizzleConverter`, `VectorToFloatConverter`
+> и `FloatToVectorConverter` обслуживают `Vector2`, `Vector3` и `Vector4` одним классом,
+> `VectorToVectorIntConverter` — `Vector2` и `Vector3`, а `Vector2Vector3Converter` ходит в обе стороны. Настройки-векторы (`_operand`, `_min`, `_max`) хранятся как `Vector4`, и читаются
+> только те компоненты, которые есть у привязанного вектора.
+
+| Подгруппа | Конвертеры |
+|-----------|-----------|
+| Combine | `BoxCollider2DOffsetCombineConverter`, `BoxCollider2DSizeCombineConverter`, `BoxColliderCenterCombineConverter`, `BoxColliderSizeCombineConverter`, `CapsuleColliderCenterCombineConverter`, `RectTransformAnchoredPosition2DCombineConverter`, `RectTransformAnchoredPositionCombineConverter`, `RectTransformSizeDeltaCombineConverter`, `SphereColliderCenterCombineConverter`, `TransformEulerAnglesCombineConverter`, `TransformPosition2DCombineConverter`, `TransformPositionCombineConverter`, `TransformScaleCombineConverter` |
+| To Number | `DirectionAngleConverter`, `VectorDistanceConverter`, `VectorToFloatConverter` |
+| To Quaternion | `EulerToQuaternionConverter`, `LookRotationConverter` |
+| To Rect Offset | `Vector4ToRectOffsetConverter` |
+
+> Конвертеры подгруппы `Combine` берут часть компонент у привязанного вектора, часть — у компонента
+> сцены (`Transform`, `RectTransform`, коллайдер). Пары `*2D*` — для двумерных коллайдеров и
+> `Vector2`-свойств.
+
+### Aspid/Color (14)
+
+Цвет → цвет: `ColorAlphaConverter`, `ColorBlockAlphaConverter`,
+`ColorBlockFadeDurationConverter`, `ColorBlockStateConverter`, `ColorBlockTintConverter`,
+`ColorChannelConverter`, `ColorGrayscaleConverter`, `ColorHsvConverter`, `ColorTintConverter`,
+`ColorColor32Converter`, `ColorToColorBlockConverter`, `HdrIntensityConverter`;
+**To String**: `ColorToHtmlStringConverter`; **To Vector**: `ColorVector4Converter`.
 
 ### Остальные группы
 
 | Группа | Конвертеры |
 |--------|-----------|
-| `Aspid/Enum` (8) | `EnumFlagsToStringConverter`, `EnumMaskConverter`, `EnumToBoolConverter`, `EnumToDropdownOptionDataConverter`, `EnumToIntConverter`, `EnumToStringConverter`, `EnumToValueConverter`, `IntToEnumConverter` |
-| `Aspid/Object` (3) | `EqualityToBoolConverter`, `IndexToValueConverter`, `NullCoalesceConverter` |
-| `Aspid/Texture` (6) | `NormalizedToSpriteConverter`, `ObjectNameConverter`, `SpriteToTextureConverter`, `StringToSpriteConverter`, `Texture2DToSpriteConverter`, `TextureToSpriteRectConverter` |
-| `Aspid/Layout` (3) | `IntToRectOffsetConverter`, `RectOffsetScaleConverter`, `Vector4ToRectOffsetConverter` |
+| `Aspid/Quaternion` (4) | `QuaternionOffsetConverter`; **To Number**: `QuaternionToAngleConverter`; **To Vector**: `QuaternionToEulerConverter`, `QuaternionVector4Converter` |
+| `Aspid/Bounds` (2) | **To Rect**: `BoundsToRectConverter`; **To Vector**: `BoundsToVectorConverter` |
+| `Aspid/Rect` (1) | **To Vector**: `RectVector4Converter` |
+| `Aspid/Rect Offset` (1) | `RectOffsetScaleConverter` |
+| `Aspid/Texture` (3) | `SpriteToTextureConverter`, `Texture2DToSpriteConverter`; **To Rect**: `TextureToSpriteRectConverter` |
 | `Aspid/Localization` (4) | `LocaleToStringConverter`, `LocalizedEnumConverter`, `LocalizedNumberConverter`, `LocalizedStringConverter` |
-| `Aspid/Asset` (2) | `ConverterAssetReference`, `MaterialInstanceConverter` |
+| `Aspid/Material` (1) | `MaterialInstanceConverter` |
+| `Aspid/Asset` (1) | `ConverterAssetReference` |
+
+Группа `Aspid/Composition` (8) описана в разделе [Композиция](#композиция).
 
 ---
 
@@ -223,16 +294,53 @@ public interface ITwoWayConverter<TFrom, TTo> : IConverter<TFrom, TTo>
 
 | Енум | Где встречается | Что решает |
 |------|-----------------|-----------|
-| `Comparisons` | `NumberToBoolConverter`, `DateTimeToBoolConverter` | `Equal`, `NotEqual`, `LessThan`, `GreaterThan`, `LessThanOrEqual`, `GreaterThanOrEqual`. Читается как `привязанное <оп> настроенное`. `Equal`/`NotEqual` у чисел сравнивают приблизительно, с допуском по величине; порядковые — точно |
-| `CultureInfoMode` | все строковые и разбирающие конвертеры | Какой культурой форматировать и разбирать. Текст, который видит игрок, — `CurrentCulture`; текст, который уезжает в сейв, в сеть или в `PlayerPrefs`, — `InvariantCulture` |
-| `ConverterFailureMode` | parse-семейство, `ParseHtmlStringConverter`, `StringToSpriteConverter` | Что делать с данными, которые не преобразуются: `ReturnFallback`, `ReturnInput`, `Throw` |
+| `ComparisonMode` | `NumberCompareConverter`, `DateTimeCompareConverter` | `Equal`, `NotEqual`, `LessThan`, `GreaterThan`, `LessThanOrEqual`, `GreaterThanOrEqual`. Читается как `привязанное <оп> настроенное`. У `NumberCompareConverter` допуск общий для всех шести сравнений и зависит от типа: `int`/`long` — точно, `float` — 1e-6 от величины, `double` — 1e-12 |
+| `CultureInfoMode` | все строковые и разбирающие конвертеры, а также биндеры полей ввода и текста | Какой культурой форматировать и разбирать. Текст, который видит игрок, — `CurrentCulture`; текст, который уезжает в сейв, в сеть или в `PlayerPrefs`, — `InvariantCulture` |
+| `ConverterFailureMode` | `BoolLogicConverter`, `EnumMaskConverter` | Что делать со значением, которое не преобразуется: `ReturnFallback` или `ReturnInput`. Поле есть только у конвертеров, у которых вход и выход одного типа, — вернуть вход больше негде |
 
 > Разделитель дробной части — запятая в половине Европы. Число, записанное одной культурой и
 > разобранное другой, теряет дробную часть, а не падает: `1,5` под `InvariantCulture` читается как
 > `15`. Для всего, что ходит туда-обратно, ставьте `InvariantCulture`.
 
 `CultureInfoMode` резолвится в `CultureInfo` расширением `ToCultureInfo()` из
-`ToCultureStringExtensions` — там же лежат перегрузки `ToCultureString(число, режим)`.
+`ToCultureStringExtensions` — там же лежат перегрузки `ToCultureString(число, режим)`. Оба типа
+лежат вне папки конвертеров, в `StarterKit/Runtime/Globalization`: биндеры полей ввода и текста
+держат такое же сериализованное поле.
+
+---
+
+## Плюрализация
+
+`PluralizeConverter` (`Aspid/Number/To String`) пишет число со словом в нужной форме. Грамматики в нём
+нет: конвертер держит только формат фразы, а слова и правило их выбора лежат в `PluralRule`, который
+выбирается в инспекторе — группа `Aspid/Plural Rule`.
+
+`PluralRule` — абстрактный класс, реализующий `IConverter<long, string>`: число (по модулю) → слово.
+Наследник объявляет только те слова, которые нужны его языку, поэтому в инспекторе не бывает поля, до
+которого выбранная грамматика не дотянется.
+
+| Правило | Языки | Поля |
+|---------|-------|------|
+| `SingleFormPluralRule` | китайский, японский, корейский, тайский, вьетнамский, турецкий | `word` |
+| `EnglishPluralRule` | английский, немецкий, нидерландский, испанский, итальянский, шведский | `one`, `other` |
+| `FrenchPluralRule` | французский, бразильский португальский, хинди | `one` (0 и 1), `other` |
+| `EastSlavicPluralRule` | русский, украинский, белорусский | `one`, `few`, `many` |
+| `PolishPluralRule` | польский | `one` (ровно 1), `few`, `many` |
+| `CzechPluralRule` | чешский, словацкий | `one`, `few`, `other` |
+| `ArabicPluralRule` | арабский | `one`, `two`, `few`, `many`, `other` |
+
+Общее у всех — поле `zero` из базового класса: необязательное слово, которое забирает ноль независимо
+от грамматики. В английском отдельной формы для нуля нет, а «Нет предметов» нужно всем. Слово, до
+которого грамматика дотянулась, но которое не заполнено, логируется на каждый push — молча подставлять
+соседнюю форму конвертер не станет.
+
+Языка нет в списке — наследник `PluralRule` в проекте: объявить свои поля и переопределить
+`Word(long)`. Ноль и отчёт о незаполненном слове достаются от базы, а в picker'е правило встаёт в ту
+же группу рядом со встроенными.
+
+`CollectionCountToStringConverter` эту логику не дублирует: он считает элементы, отдаёт число
+`PluralizeConverter` и оставляет себе только текст для пустой коллекции — фразу, которая пишется без
+числа впереди.
 
 ---
 
@@ -243,17 +351,18 @@ public interface ITwoWayConverter<TFrom, TTo> : IConverter<TFrom, TTo>
 | Конвертер | Назначение |
 |-----------|-----------|
 | `ComposeConverter<TFrom, TMid, TTo>` | Два конвертера подряд, с разными типами на стыке |
-| `SequenceConverters<T>` | Цепочка любой длины, все звенья `T → T` |
-| `CachedConverter<TFrom, TTo>` | Повторяет прошлый результат, пока вход не изменился |
-| `SafeConverter<TFrom, TTo>` | Ловит исключение внутреннего конвертера и отдаёт запасное значение |
+| `SequenceConverter<T>` | Цепочка любой длины, все звенья `T → T` |
+| `CachedConverter<TFrom, TTo>` | Повторяет прошлый результат, пока вход не изменился; каждое направление кэширует отдельно |
+| `SafeConverter<TFrom, TTo>` | Ловит исключение внутреннего конвертера и отдаёт запасное значение — в обе стороны |
 | `NullGuardConverter<TFrom, TTo>` | Не вызывает внутренний конвертер на `null` |
 | `ConditionalConverter<T>` | Выбирает один из двух конвертеров по предикату |
 | `PassthroughConverter<T>` | Ничего не делает; заглушка и элемент по умолчанию |
+| `InverseConverter<TFrom, TTo>` | Гоняет двусторонний конвертер в обратную сторону |
 
 ```csharp
-// float 0..1 → "75%" с кэшем, чтобы не собирать строку заново на каждом push
+// float → "1,500" с кэшем, чтобы не собирать строку заново на каждом push
 var converter = new CachedConverter<float, string>(
-    new PercentStringConverter());
+    new NumberFormatConverter());
 ```
 
 `CachedConverter` стоит держать в голове: биндер шлёт значение на каждое **уведомление**, а не на
@@ -262,6 +371,14 @@ var converter = new CachedConverter<float, string>(
 
 `SafeConverter` полезен потому, что рассылка биндеров — голый multicast: исключение из одного
 конвертера обрывает список подписчиков и останавливает соседние, ни в чём не виноватые биндеры.
+
+Обёртка без того, что она оборачивает, бессмысленна, поэтому конструкторы обёрток бросают
+`ArgumentNullException` на пустое звено: `inner` у `Cached`, `Safe` и `NullGuard`, оба звена у
+`Compose`, конвертер у `Inverse`, предикат у `Conditional`, ассет у `ConverterAssetReference`. Полупустое состояние —
+инспекторное: там обёртка собирается по полю за раз, поэтому пустое звено не падает, а сообщает
+об ошибке на каждом преобразовании и отдаёт запасное значение. Ветви `then` / `else`
+у `Conditional` и звенья `SequenceConverter` пустыми быть могут — там `null` означает «пропустить
+этот шаг».
 
 ---
 
@@ -272,9 +389,14 @@ var converter = new CachedConverter<float, string>(
 принадлежат одному этому полю: их приходится набирать заново в каждом префабе, а исправление —
 повторять везде. Ассет настраивается один раз и подключается ссылкой.
 
-Готовые подклассы уже есть в меню **Create → Aspid → MVVM → Converters** (`String`, `Float`, `Int`,
-`Bool`, `Color`, `Vector2`, `Vector3`, `Object To String`). Свой тип — пустой запечатанный подкласс:
-Unity не умеет создавать ассет открытого генерика, поэтому типы нужно закрыть.
+Готовые подклассы уже есть в меню **Create → Aspid → MVVM → Converters**, сгруппированные по типу
+входа (`Numbers`, `String`, `Vector`, `Color`, `Time` и т.д.): одноимённые для преобразований
+«в себя» (`Float Converter`, `Vector3 Converter`) и `X To Y Converter` для смены типа
+(`Vector3 To Vector2 Converter`, `String To Int Converter`). Покрыты не все пары каталога —
+числовые касты между `int`, `long`, `float` и `double` ассетов не имеют, их настраивают
+`[SerializeReference]`-полем. Недостающая пара — это пустой запечатанный подкласс на одну строку:
+Unity не умеет создавать ассет открытого генерика, поэтому типы нужно закрыть. Enum-семейство поставляется и открытыми базами
+(`EnumConverterAsset<T>` и т.д.) — закройте их своим enum'ом.
 
 ```csharp
 [CreateAssetMenu(menuName = "Game/Converters/Health Color", fileName = "HealthColorConverter")]
@@ -288,20 +410,52 @@ public sealed class HealthColorConverterAsset : ConverterAsset<float, Color> { }
 
 ## Отказ данных
 
-`ConverterFailureMode` — общий словарь для конвертеров, которым могут дать значение, которое нельзя
-преобразовать (строка цвета, которая не парсится; число вне диапазона):
+Конвертер, которому дали значение, которое нельзя преобразовать (строка цвета, которая не парсится;
+число вне диапазона), сообщает об этом ошибкой и возвращает настроенное запасное значение — поле
+`Fallback` в инспекторе.
 
-| Режим | Поведение |
-|-------|-----------|
-| `ReturnFallback` | Вернуть настроенное запасное значение, сообщить об ошибке один раз |
-| `ReturnInput` | Вернуть вход без изменений, сообщить об ошибке один раз |
-| `Throw` | Бросить исключение |
+Об ошибке сообщается на каждом провале, а не один раз: значение, которое перестало преобразовываться
+посреди сессии, — как раз тот случай, который правило «логировать однажды» скрывает.
 
-Речь именно о **данных**. Неверно настроенный конвертер сообщает о себе всегда и независимо от
-режима.
+Запасное значение отвечает на **любой** провал — и на данные, которые не преобразуются, и на
+конфигурацию, через которую не преобразуется ничто (обе ветки `BoolToValueConverter` равны, список
+true-написаний пуст).
 
-`Throw` стоит выбирать осознанно: исключение внутри push-а биндера останавливает все биндеры,
-стоящие за ним в очереди. Чтобы бросок остался локальным, оберните конвертер в `SafeConverter`.
+`ConverterFailureMode` добавляет к запасному значению второй вариант — вернуть вход без изменений
+(`ReturnInput`) — и стоит поэтому только у `BoolLogicConverter` и `EnumMaskConverter`: вернуть вход
+можно лишь там, где вход и выход одного типа. У остальных конвертеров возвращать нечего, поэтому
+поля `On Failure` у них нет.
+
+Все сообщения — и об отказе данных, и о неверной настройке — проходят через один хелпер
+`ConverterLogger`: отказ данных печатается через `LogError` как
+`[Aspid.MVVM] Конвертер: expected X but got "Y". Using the fallback.` (или
+`Returning the input unchanged.` при `ReturnInput`), всё остальное — как
+`[Aspid.MVVM] Конвертер: проблема. Что возвращается вместо результата.` По префиксу `[Aspid.MVVM]`
+ошибки пакета ищутся в консоли; `null` печатается словом `null`, строка — в кавычках, остальные
+значения — как есть; generic-имя конвертера печатается закрытым (`BoolToValueConverter<Sprite>`).
+Само это оформление типов и значений вынесено в `ConverterMessageText`: имя типа пишет
+`ConverterMessageText.GetTypeName`, а значение — extension `value.Describe()`, который
+интерполируется прямо в текст сообщения. Так текст внутри сообщения выглядит одинаково и в логе,
+и в исключении. Для сообщений, которые не являются ошибками, у хелпера есть обычный `Log` в том же
+формате. `Debug.Log`/`Debug.LogError` в коде конвертеров живут только внутри `ConverterLogger`.
+
+Конвертер логирует о себе extension-методами на `IConverter` — `this.LogError(problem, consequence)`,
+`this.LogError(exception, consequence)`, `this.Log(message)` — тип берётся из `this`, а конвертер,
+который сам является объектом Unity (например, `ConverterAsset`), автоматически становится и
+`context` — объектом, который Unity подсветит по клику на лог; для остальных `context` передаётся
+опциональным параметром. Перегрузки с `Type` остаются для хелперов, которые сообщают от чужого
+имени.
+
+В коде запасное значение отдаётся одним вызовом — extension
+`this.UseFallback(_fallback, value.Expected("a whole number"))`: он логирует отказ и возвращает
+`_fallback`. Формулировку проблемы вызов приносит готовой; канонную — «expected X but got Y» —
+строит extension `value.Expected("a whole number")` из `ConverterMessageText`, провал конфигурации
+пишет её сам.
+
+У двух конвертеров, у которых есть режим, он лежит вместе со значением в одном поле
+`ConverterFallback<T>` (в инспекторе — две строки: значение и `On Failure`), а вызов выглядит как
+`_fallback.Fail(this, value, problem)` — он тоже логирует отказ, но возвращает то, что велит режим,
+поэтому принимает и само значение, на котором случился провал.
 
 ---
 
@@ -337,12 +491,21 @@ public sealed class ClampFloatConverter : IConverter<float, float>
 }
 ```
 
+Имя класса выбирается по одному правилу. `XToYConverter` — зарезервированное имя канонического
+преобразования пары типов, того единственного, которое ожидается по умолчанию
+(`Vector2Vector3Converter`, `StringToIntConverter` — парсинг). Любой другой конвертер той же пары
+называется по операции (`OrdinalConverter`, `StringLengthConverter`), а вариант канонического
+преобразования — это настройка существующего класса, не новый класс. В пикере `Name` несёт
+операцию, типы уже сказаны группой и подгруппой.
+
 Чек-лист:
 
 - **`[Serializable]`** — без него класс не появится в списке `[SerializeReference]`.
-- **Публичный конструктор без параметров** — пикер создаёт экземпляр именно им. Если его нет,
-  пометьте класс `[TypeSelectorDisplay(Hidden = true)]`, иначе он окажется в списке и выбор его
-  сломается.
+- **Конструктор без параметров** — пикер создаёт экземпляр именно им, через
+  `Activator.CreateInstance(type, nonPublic: true)`, так что публичным он быть не обязан: многие
+  конвертеры прячут его как `private`, оставляя публичным только конструктор с параметрами. Если
+  такого конструктора нет вовсе, пометьте класс `[TypeSelectorDisplay(Hidden = true)]`, иначе он
+  окажется в списке и выбор его сломается.
 - **`[Tooltip]` на каждом сериализуемом поле** — в Inspector XML-документация не видна, tooltip
   единственное объяснение, которое дойдёт до того, кто настраивает значение.
 - **`Group` и `Tooltip` в `[TypeSelectorDisplay]`** — иначе конвертер попадёт в общий плоский список.
@@ -365,34 +528,10 @@ public sealed class ClampFloatConverter : IConverter<float, float>
 
 ```csharp
 // лямбда как конвертер
-var converter = new GenericFuncConverter<float, string>(value => $"{value:P0}");
-```
+var converter = new FuncConverter<float, string>(value => $"{value:P0}");
 
----
-
-## Специализированные интерфейсы
-
-Unity до 2023.1 не сериализует `[SerializeReference]`-поле с типом-открытым генериком. Для таких
-версий существуют именованные псевдонимы:
-
-```csharp
-public interface IConverterFloat : IConverter<float, float> { }
-public interface IConverterIntToLong : IConverter<int, long> { }
-```
-
-Всего их 40 — числовые пары, `IConverterString`, `IConverterObjectToString`,
-`IConverterTimeSpanToString`, `IConverterColor`, `IConverterVector2`/`IConverterVector3` и их
-кросс-комбинации. Полный список — в папках `Converters/Specific/` обеих сборок.
-
-> **Все 40 помечены `[Obsolete]` и будут удалены в следующем мажоре.** Минимальная версия
-> пакета — Unity 6000.0, где генерик-форма сериализуется напрямую, так что причины, по которой
-> они существовали, больше нет. Используйте `IConverter<TFrom, TTo>`.
-
-Вместе с ними устарели 70 обёрток `ToConvert` / `ToConvertSpecific`: они нужны были только затем,
-чтобы присвоить лямбду полю с типом-псевдонимом. Замена — генерик-версия, которая остаётся:
-
-```csharp
-IConverter<float, float> converter = ((Func<float, float>)(x => x * 2f)).ToConvert();
+// то же через ToConverter
+IConverter<float, float> doubler = ((Func<float, float>)(x => x * 2f)).ToConverter();
 ```
 
 ---

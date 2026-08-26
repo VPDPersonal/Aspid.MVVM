@@ -16,18 +16,7 @@ namespace Aspid.MVVM.StarterKit
         INumberReverseBinder
     {
         /// <inheritdoc/>
-        /// <remarks>
-        /// Forwards to the inherited <see cref="TargetBinder{TTarget, TProperty}.ValueChanged"/>.
-        /// The base class already implements <see cref="IReverseBinder{T}"/> for <see langword="int"/>, and a class
-        /// member always wins over a default interface implementation, so <see cref="IReverseBinder{T}.ValueChanged"/>
-        /// resolves to the inherited event rather than to the bridge declared in <see cref="INumberReverseBinder"/>.
-        /// Aliasing keeps both surfaces backed by a single subscriber list.
-        /// </remarks>
-        public event Action<int>? IntValueChanged
-        {
-            add => ValueChanged += value;
-            remove => ValueChanged -= value;
-        }
+        public event Action<int>? IntValueChanged;
 
         /// <inheritdoc/>
         public event Action<long>? LongValueChanged;

@@ -22,18 +22,7 @@ namespace Aspid.MVVM.StarterKit
         public event Action<long>? LongValueChanged;
 
         /// <inheritdoc/>
-        /// <remarks>
-        /// Forwards to the inherited <see cref="TargetBinder{TTarget, TProperty}.ValueChanged"/>.
-        /// The base class already implements <see cref="IReverseBinder{T}"/> for <see langword="float"/>, and a class
-        /// member always wins over a default interface implementation, so <see cref="IReverseBinder{T}.ValueChanged"/>
-        /// resolves to the inherited event rather than to the bridge declared in <see cref="INumberReverseBinder"/>.
-        /// Aliasing keeps both surfaces backed by a single subscriber list.
-        /// </remarks>
-        public event Action<float>? FloatValueChanged
-        {
-            add => ValueChanged += value;
-            remove => ValueChanged -= value;
-        }
+        public event Action<float>? FloatValueChanged;
 
         /// <inheritdoc/>
         public event Action<double>? DoubleValueChanged;

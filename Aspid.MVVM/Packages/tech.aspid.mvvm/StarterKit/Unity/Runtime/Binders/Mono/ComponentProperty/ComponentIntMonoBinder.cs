@@ -17,18 +17,7 @@ namespace Aspid.MVVM.StarterKit
         where TComponent : Component
     {
         /// <inheritdoc/>
-        /// <remarks>
-        /// Forwards to the inherited <see cref="ComponentMonoBinder{TComponent, TProperty}.ValueChanged"/>.
-        /// The base class already implements <see cref="IReverseBinder{T}"/> for <see langword="int"/>, and a class
-        /// member always wins over a default interface implementation, so <see cref="IReverseBinder{T}.ValueChanged"/>
-        /// resolves to the inherited event rather than to the bridge declared in <see cref="INumberReverseBinder"/>.
-        /// Aliasing keeps both surfaces backed by a single subscriber list.
-        /// </remarks>
-        public event Action<int> IntValueChanged
-        {
-            add => ValueChanged += value;
-            remove => ValueChanged -= value;
-        }
+        public event Action<int> IntValueChanged;
 
         /// <inheritdoc/>
         public event Action<long> LongValueChanged;
@@ -93,6 +82,7 @@ namespace Aspid.MVVM.StarterKit
 
             var converted = GetConvertedBackValue(value);
 
+            IntValueChanged?.Invoke(converted);
             LongValueChanged?.Invoke(converted);
             FloatValueChanged?.Invoke(converted);
             DoubleValueChanged?.Invoke(converted);

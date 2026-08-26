@@ -193,6 +193,97 @@ Existing `[Bind]` fields keep working. Bindable Properties (PR #46) are additive
 
 ---
 
+## 5. Converters
+
+The converter subsystem was rebuilt: 14 converters became 148, the contract gained a reverse direction, and the pre-2023.1 compatibility layer was deprecated. Almost all of it is source-code work — the names that appear in serialized data were deliberately left alone, and the deprecated types are still implemented. Three exceptions need authoring time: `DateTimeCompareConverter` and `DateTimeOffsetFormatConverter` lose their settings to the enum change and `NumberCompareConverter` loses its threshold to a widened field (§ 5.4), and a prefab-instance override on a renamed or re-encapsulated type needs the repair tool (§ 5.1).
+
+### 5.1 Renames
+
+Nine names changed. Four have no serialized footprint at all; the rest are types that `[MovedFrom]` migrates for an object's own data:
+
+| Was | Is | Notes |
+|-----|-----|-------|
+| `Vector2ToVector3Converter.Values`, `Vector3ToVector2Converter.Values` | `Mode` | Nested enum type; a nested type name is not serialized |
+| `Comparisons.Inequality` | `ComparisonMode.NotEqual` | An enum serializes as an ordinal, which is unchanged |
+| `EnumMatch.Equals` | `EnumMatch.Equal` | Same — an ordinal. The member was hiding the inherited `object.Equals` |
+| `ConverterExtensions.ToConvert` | `ToConverter` | Extension method; code only. The method returns a converter, so the old name read as an imperative |
+| `WrapMode` | `NumberWrapMode` | Enum **type** rename; the value stays an ordinal, so authored data is unaffected. The old name was ambiguous against `UnityEngine.WrapMode` |
+| `ListToStringConverter` | `CollectionJoinToStringConverter` | Carries `[MovedFrom]`. It accepts any `IEnumerable<T>`, and every sibling is named `Collection*` |
+| `NumberToBoolConverter` | `NumberCompareConverter` | Class rename, plus `Comparisons` → `ComparisonMode` and a threshold widened from `float` to `double` — that one costs authoring time (§ 5.4) |
+| `BoxColliderCentreCombineConverter`, `CapsuleColliderCentreCombineConverter`, `SphereColliderCentreCombineConverter` | `…CenterCombineConverter` | Carry `[MovedFrom]`. American spelling, and it matches Unity's own `center` property |
+
+Search-and-replace the first five and you are done. For everything carrying `[MovedFrom]`, read the warning below before assuming scenes are untouched.
+
+> **A wider rename wave was attempted and reverted, and the reason is worth knowing if you maintain
+> your own `[SerializeReference]` types.** `[MovedFrom]` and `[FormerlySerializedAs]` cover an
+> object's own serialized data. They do **not** cover a prefab-instance override, which is keyed by
+> the stored type string and the property path. Renaming `SequenceConverters` emptied a converter in
+> the package's own Hello World sample — 24 console errors and a binder that stopped converting,
+> with `[MovedFrom]` present and correct. So `SequenceConverters`, `GenericToString`,
+> `_preConvertor` / `_postConvertor` and `_values` keep their names, spelling and all.
+>
+> The same caveat applies to `ListToStringConverter` → `CollectionJoinToStringConverter`, and to
+> `EnumToValueConverter.Entry` / `LookupEntry`, whose public fields became private `[SerializeField]`
+> with `[FormerlySerializedAs]`. None of the three is authored in any scene or prefab shipped with
+> the package, so nothing inside it needed migrating. If **your** project authored one as a
+> prefab-instance override, run the repair tool that rewrites the stored type strings and property
+> paths over every scene and prefab — otherwise the override is dropped on load with no diagnostic.
+
+### 5.2 Deprecated: the named converter aliases
+
+The 40 `IConverterXToY` interfaces and the 70 `ToConvert` / `ToConvertSpecific` wrappers are `[Obsolete]`. They existed because Unity before 2023.1 could not serialize a `[SerializeReference]` field of an open generic; 1.1 requires Unity 6000.0.
+
+```csharp
+// before
+[SerializeReference] private IConverterFloat _converter;
+IConverterFloat c = ((Func<float, float>)(x => x * 2f)).ToConvert();
+
+// after
+[SerializeReference] private IConverter<float, float> _converter;
+IConverter<float, float> c = ((Func<float, float>)(x => x * 2f)).ToConverter();
+```
+
+The generic `ConverterExtensions.ToConverter<TFrom, TTo>` is the replacement and is not deprecated. It was called `ToConvert` before this release — the name said "convert" but the method hands back a converter.
+
+**You have one release to act.** The package's own converters still implement the aliases, so a field declared as `IConverterFloat` keeps deserializing today. When the aliases are removed, such a field resolves to `null` on load — silently, with no exception and no console entry. The compiler warning is the only notice you get.
+
+### 5.3 Reverse binding now converts
+
+A binder in `BindMode.TwoWay` or `BindMode.OneWayToSource` used to send the View's value back to the ViewModel unconverted. It now calls `ITwoWayConverter.ConvertBack` when the assigned converter implements it, and warns in the console when it does not.
+
+This changes runtime output where a two-way binding had a converter attached. If you compensated for the missing reverse conversion in the ViewModel — a setter that undid the converter's work — remove that compensation.
+
+### 5.4 Behavioural fixes that change runtime output
+
+- **`StringFormatConverter` with `_formatEmptyValues` enabled** formats null and empty input again. Between the 1.1 previews it returned `null` instead of the formatted empty string.
+- **A `FormatException` in a converter no longer stops unrelated binders.** If your scene had a broken format string, binders behind it in the dispatch order were silently not updating; they will now update.
+- **The `Vector3CombineConverter` family returns the input unchanged** instead of throwing when its scene reference is missing, and reports it on every push.
+- **A misconfigured converter now reports on every conversion.** Expect new console output from converters that were already misconfigured and silently returned a fallback — an empty token list, an inverted `min`/`max`, a missing inner converter, a duplicate lookup key. The messages name the converter and what it did instead; they are pointing at authoring that was already broken, not at a new failure.
+- **`SafeConverter` lost its `_logErrors` field.** A caught exception is always logged, in full. If you relied on that switch to keep a scene quiet, the noise it was hiding will now appear.
+- **`NumberCompareConverter` needs its threshold re-authored.** The former `NumberToBoolConverter` kept its `_value` field name but widened it from `float` to `double`, and Unity does not carry a float across to a double field: every authored threshold reads back as `0`. The comparison itself survives — `ComparisonMode` has the same members in the same order as `Comparisons`.
+- **`DateTimeCompareConverter` and `DateTimeOffsetFormatConverter` need re-authoring.** Their bool pairs became the `ReferenceSource` and `OffsetSource` enums, and the old booleans do **not** migrate: each instance reverts to its default and the intended source has to be picked again in the Inspector. Both converters are worth a scene search before you upgrade.
+- **Two-way bindings gained a reverse direction they did not have.** `DateTimeToUnixTimestampConverter`, `StringToDateTimeConverter` and `StringToTimeSpanConverter` used to hand the value back untouched in a `TwoWay` binding; they now convert. If your ViewModel was compensating for that, remove the compensation.
+- **An undeclared enum value raises `InvalidOperationException` instead of `ArgumentOutOfRangeException`.** Only relevant if you catch it — the arm reports corrupt serialized state, not a bad argument.
+
+### 5.5 `GenericToString.ToStringValue` is gone
+
+`protected virtual string ToStringValue(TFrom)` became a private detail when formatting moved to the
+`Format` hook. A subclass that overrode it no longer compiles:
+
+```csharp
+// before
+protected override string ToStringValue(float value) => value.ToString("F2");
+
+// after — Format receives the typed value and runs for every non-blank format
+protected override string? Format(float value) => value.ToString("F2");
+```
+
+The two hooks are not called on the same schedule. `ToStringValue` ran only when the format was
+blank; `Format` runs whenever it is **not** blank, and a blank one falls back to `ToString()`. If the
+override existed to change the no-format rendering, it now belongs in the subclass's own `Convert`.
+
+---
+
 ## Upgrade checklist
 
 - [ ] Add the `tech.aspid.collections` and `tech.aspid.fasttools` git packages to `manifest.json` (required; not auto-resolved)
@@ -208,3 +299,11 @@ Existing `[Bind]` fields keep working. Bindable Properties (PR #46) are additive
 - [ ] Re-check `ViewInitializer` / `ViewInitializerManual` inspector data — the serialized resolution components changed type, so existing view/viewModel resolution settings may not carry over- [ ] Review `NumberToBoolConverter` (`Inequality`) and `DynamicViewModel.Create` usages for the corrected runtime behaviour
 - [ ] Smoke-test scenes that use `ImageSpriteSwitcherBinder`, Addressable binders and `VirtualizedList*`
 - [ ] Update tests / tooling that look up components by `AddComponentMenu` path
+- [ ] Rename `Values` → `Mode`, `Comparisons.Inequality` → `NotEqual`, `EnumMatch.Equals` → `Equal`, `ToConvert` → `ToConverter`, `WrapMode` → `NumberWrapMode` and `ListToStringConverter` → `CollectionJoinToStringConverter` in your own code (see § 5.1)
+- [ ] Re-author `NumberCompareConverter` thresholds (see § 5.4)
+- [ ] Re-author `DateTimeCompareConverter` and `DateTimeOffsetFormatConverter` in every scene and prefab — their bool settings do not migrate to the new enums (see § 5.4)
+- [ ] Run the serialized-reference repair tool if any scene or prefab overrides `CollectionJoinToStringConverter`, `EnumToValueConverter.Entry` or `LookupEntry` on a prefab instance (see § 5.1)
+- [ ] Expect and triage new console errors from converters that were already misconfigured — they no longer report only once (see § 5.4)
+- [ ] Move `[SerializeReference]` converter fields and code off the `[Obsolete]` `IConverterXToY` aliases onto `IConverter<TFrom, TTo>` — you have one release, and the failure after that is silent (see § 5.2)
+- [ ] Review every two-way binding that has a converter: the reverse direction now converts (see § 5.3)
+- [ ] Move any `ToStringValue` override to `Format` (see § 5.5)

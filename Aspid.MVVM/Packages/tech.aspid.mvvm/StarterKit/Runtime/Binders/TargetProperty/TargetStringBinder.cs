@@ -1,8 +1,4 @@
-#if UNITY_2023_1_OR_NEWER
 using Converter = Aspid.MVVM.StarterKit.IConverter<string?, string?>;
-#else
-using Converter = Aspid.MVVM.StarterKit.IConverterString;
-#endif
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
@@ -15,7 +11,7 @@ namespace Aspid.MVVM.StarterKit
     {
         /// <inheritdoc/>
         protected TargetStringBinder(TTarget target, IConverter<string?, string?>? converter, BindMode mode) 
-            : base(target, ConverterBridge.String(converter), mode) { }
+            : base(target, converter, mode) { }
         
     }
 }

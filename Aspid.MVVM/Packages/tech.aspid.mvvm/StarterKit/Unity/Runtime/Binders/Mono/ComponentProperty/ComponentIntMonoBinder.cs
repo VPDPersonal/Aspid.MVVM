@@ -1,10 +1,6 @@
 using System;
 using UnityEngine;
-#if UNITY_2023_1_OR_NEWER
 using Converter = Aspid.MVVM.StarterKit.IConverter<int, int>;
-#else
-using Converter = Aspid.MVVM.StarterKit.IConverterInt;
-#endif
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
@@ -57,27 +53,24 @@ namespace Aspid.MVVM.StarterKit
         [BinderLog]
         public void SetValue(double value) =>
             base.SetValue((int)value);
-        
+
         /// <summary>
-        /// Called after binding is established.
-        /// In <see cref="BindMode.OneWayToSource"/> mode, broadcasts the current value to all numeric event types:
+        /// Broadcasts the current value to all numeric event types:
         /// <see cref="IntValueChanged"/>, <see cref="LongValueChanged"/>, <see cref="FloatValueChanged"/>, and <see cref="DoubleValueChanged"/>.
         /// </summary>
         /// <remarks>
-        /// Calls <c>base.OnBound()</c> to raise the inherited
-        /// <see cref="ComponentMonoBinder{TComponent, TProperty}.ValueChanged"/>, which backs both
-        /// <see cref="IntValueChanged"/> and <see cref="IReverseBinder{T}.ValueChanged"/> for <see langword="int"/>.
-        /// The remaining numeric events are raised here because <see cref="INumberReverseBinder"/> bridges them
-        /// to their own <see cref="IReverseBinder{T}"/> instantiations.
+        /// Also calls the base implementation: a member bound through <see cref="IReverseBinder{T}"/>
+        /// for the property's own type reaches the base <c>ValueChanged</c> event rather than the
+        /// matching <see cref="INumberReverseBinder"/> channel, because a class member outranks the
+        /// implementation the interface carries.
         /// </remarks>
-        protected override void OnBound()
+        protected override void SendInitialValueToSource()
         {
-            base.OnBound();
+            base.SendInitialValueToSource();
 
-            if (Mode is not BindMode.OneWayToSource) return;
+            var value = GetConvertedBackValue(Property);
 
-            var value = GetConvertedValue(Property);
-
+            IntValueChanged?.Invoke(value);
             LongValueChanged?.Invoke(value);
             FloatValueChanged?.Invoke(value);
             DoubleValueChanged?.Invoke(value);
@@ -98,7 +91,7 @@ namespace Aspid.MVVM.StarterKit
         {
             RaiseValueChanged(value);
 
-            var converted = GetConvertedValue(value);
+            var converted = GetConvertedBackValue(value);
 
             LongValueChanged?.Invoke(converted);
             FloatValueChanged?.Invoke(converted);

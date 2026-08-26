@@ -40,7 +40,7 @@ Use `<inheritdoc/>` when there is literally nothing to add beyond what the base 
 **Do NOT use when:**
 
 - Behavior is different or additional to the base.
-- Constructors change the effective API (fewer parameters, hardcoded arguments). Write a full `<summary>` + `<param>` block so the new signature is documented in its own terms.
+- Constructors change the effective API (fewer parameters, hardcoded arguments). Document the parameters so the new signature is readable in its own terms.
 
 ```csharp
 // Pass-through constructor — use inheritdoc
@@ -48,14 +48,7 @@ Use `<inheritdoc/>` when there is literally nothing to add beyond what the base 
 public LightIntensityBinder(Light target, IConverter<float, float>? converter = null, BindMode mode = BindMode.OneWay)
     : base(target, converter, mode) { }
 
-// Not pass-through, despite the identical signature: a guard in the body
-// narrows which modes are accepted, so it needs its own doc and an <exception>.
-// AudioSourceVolumeBinder is this case — it calls mode.ThrowExceptionIfMatches(BindMode.TwoWay).
-
-// Hardcoded argument — write full doc
-/// <summary>
-/// Initializes a new instance of <see cref="UnityGenericOneTimeBinder{T}"/>.
-/// </summary>
+// Hardcoded argument — document the parameters, not the act of constructing
 /// <param name="setValue">The <see cref="UnityAction{T}"/> invoked once with the bound value.</param>
 public UnityGenericOneTimeBinder(UnityAction<T?> setValue)
     : base(setValue, BindMode.OneTime) { }
@@ -63,7 +56,34 @@ public UnityGenericOneTimeBinder(UnityAction<T?> setValue)
 
 ---
 
+## Constructors
+
+Never write a `<summary>` of the form *"Initializes a new instance of the `<see cref="X"/>` class."* That a
+constructor constructs is obvious from the declaration, and the block is pure noise in the tooltip.
+
+A constructor carries:
+
+| Tag | When |
+|---|---|
+| `<param>` | Always, one per parameter. |
+| `<remarks>` | Only when there is something to say — most often the defaults a parameterless overload picks. Optional. |
+| `<summary>` | Never. |
+
+```csharp
+/// <remarks>Default: writing every axis.</remarks>
+public FloatToVector3Converter() { }
+
+/// <param name="axes">Which axes the number is written into.</param>
+/// <param name="base">The value used for the axes the number does not write.</param>
+public FloatToVector3Converter(AxisMask axes, Vector3 @base = default) { }
+```
+
+---
+
 ## `<remarks>`
+
+Default position: **no `<remarks>` at all.** The block earns its place only when it states a
+non-obvious constraint or behavior of the type/member itself. Keep it to one or two sentences.
 
 **Use for:**
 
@@ -71,14 +91,18 @@ public UnityGenericOneTimeBinder(UnityAction<T?> setValue)
 - Non-obvious defaults.
 - Availability constraints (only under certain platforms / symbols).
 - Mandatory `base.Method()` calls for overrides.
+- Behavioral traps (e.g. a two-way converter whose reverse path becomes ambiguous for certain configs).
 
 **Do NOT use for:**
 
 - Info already covered by `<exception>`, `<param>`, or `<returns>` — duplication rots.
 - Things visible from the declaration itself (attributes, modifiers, base type).
+- History of how the type came to be, comparisons with other classes, or scenario-style
+  motivation ("a ViewModel holding X could not feed Y..."). The doc describes the type, not its
+  backstory.
 
 ```csharp
-/// <remarks>By default, uses <see cref="GenericToString{T}"/> for the conversion.</remarks>
+/// <remarks>By default, uses <see cref="GenericToStringConverter{TFrom}"/> for the conversion.</remarks>
 /// <remarks>Only available when <c>UNITY_EDITOR</c> or <c>DEBUG</c> is defined.</remarks>
 ```
 
@@ -87,6 +111,8 @@ public UnityGenericOneTimeBinder(UnityAction<T?> setValue)
 ## `[Tooltip]` on serialized fields
 
 Every `[SerializeField]` and `[SerializeReference]` must have a `[Tooltip]` directly above it so Inspector users see the field's purpose without jumping to source.
+
+When a behavioral caveat applies to a field (clamping, ignored-when, fallback rules), it must appear **both** in the field's `[Tooltip]` and in the `<param>` of the constructor parameter that sets the same field — the Inspector user and the code user get the same warning.
 
 Inside `#if UNITY_2022_1_OR_NEWER` blocks, use the fully-qualified `[UnityEngine.Tooltip]` to avoid `using` resolution issues across conditional branches.
 

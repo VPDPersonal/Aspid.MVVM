@@ -1,10 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
-#if UNITY_2023_1_OR_NEWER
 using ViewFactory = Aspid.MVVM.StarterKit.IViewFactory<Aspid.MVVM.MonoView>;
-#else
-using ViewFactory = Aspid.MVVM.StarterKit.IViewFactoryMonoView;
-#endif
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit

@@ -50,9 +50,7 @@ namespace Aspid.MVVM.StarterKit
         [UnityEngine.SerializeField]
         private T? _value;
 
-#if UNITY_2023_1_OR_NEWER
         [UnityEngine.SerializeReference]
-#endif
         private IConverter<T?, T?>? _converter;
 
         private Action<T?>? _valueChanged;
@@ -68,7 +66,7 @@ namespace Aspid.MVVM.StarterKit
             set
             {
                 _value = value;
-                _valueChanged?.Invoke(value);
+                _valueChanged?.Invoke(GetConvertedBackValue(value));
             }
         }
 
@@ -134,10 +132,14 @@ namespace Aspid.MVVM.StarterKit
         /// In <see cref="BindMode.OneWayToSource"/> mode, immediately pushes the current <see cref="Value"/>
         /// to the ViewModel to synchronise the initial state.
         /// </summary>
+        /// <remarks>
+        /// The push goes through <see cref="GetConvertedBackValue"/>, so the initial value reaches the
+        /// ViewModel in the same space as every later one.
+        /// </remarks>
         protected override void OnBound()
         {
             if (Mode is not BindMode.OneWayToSource) return;
-            _valueChanged?.Invoke(Value);
+            _valueChanged?.Invoke(GetConvertedBackValue(Value));
         }
 
         /// <summary>
@@ -146,5 +148,22 @@ namespace Aspid.MVVM.StarterKit
         /// <param name="binder">The binder whose value is extracted.</param>
         /// <returns>The current value stored in <paramref name="binder"/>.</returns>
         public static implicit operator T?(TwoWayValue<T?> binder) => binder.Value;
+        /// <summary>
+        /// Converts a value on its way back to the ViewModel.
+        /// </summary>
+        /// <param name="value">The stored value, which the converter has already shaped.</param>
+        /// <returns>
+        /// The value as the ViewModel expects it: undone by the converter when it offers
+        /// <see cref="ITwoWayConverter{TFrom, TTo}"/>, and unchanged when it does not.
+        /// </returns>
+        /// <remarks>
+        /// <see cref="Value"/> holds what the converter produced, so raising it unchanged handed the
+        /// ViewModel the View's own presentation — a ViewModel that set X immediately received
+        /// <c>Convert(X)</c> back. Undoing the conversion makes the round trip an identity again for
+        /// a two-way converter, and leaves it as it was for a one-way one.
+        /// </remarks>
+        private T? GetConvertedBackValue(T? value) =>
+            _converter is ITwoWayConverter<T?, T?> twoWay ? twoWay.ConvertBack(value) : value;
+
     }
 }

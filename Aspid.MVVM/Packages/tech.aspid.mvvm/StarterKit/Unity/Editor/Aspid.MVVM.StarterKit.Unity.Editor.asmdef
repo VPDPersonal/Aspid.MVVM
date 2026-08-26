@@ -9,7 +9,8 @@
         "Aspid.MVVM.Unity.Editor",
         "Aspid.Internal.Unity.Editor",
         "Aspid.FastTools.Unity.Editor",
-        "Aspid.MVVM.StarterKit.Unity"
+        "Aspid.MVVM.StarterKit.Unity",
+        "Aspid.MVVM.StarterKit"
     ],
     "includePlatforms": [
         "Editor"

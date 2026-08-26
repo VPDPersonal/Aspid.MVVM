@@ -1,10 +1,6 @@
 #nullable enable
 using UnityEngine;
-#if UNITY_2023_1_OR_NEWER
 using Converter = Aspid.MVVM.StarterKit.IConverter<UnityEngine.Color, UnityEngine.Color>;
-#else
-using Converter = Aspid.MVVM.StarterKit.IConverterColor;
-#endif
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
@@ -18,7 +14,7 @@ namespace Aspid.MVVM.StarterKit
     {
         /// <inheritdoc/>
         protected TargetColorBinder(TTarget target, IConverter<Color, Color>? converter, BindMode mode = BindMode.OneWay)
-            : base(target, ConverterBridgeUnity.Color(converter), mode) { }
+            : base(target, converter, mode) { }
         
     }
 }

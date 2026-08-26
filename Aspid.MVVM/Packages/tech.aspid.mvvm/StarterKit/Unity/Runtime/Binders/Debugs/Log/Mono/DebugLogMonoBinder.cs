@@ -1,11 +1,7 @@
 using System;
 using Conditional = System.Diagnostics.ConditionalAttribute;
 using UnityEngine;
-#if UNITY_2023_1_OR_NEWER
 using Converter = Aspid.MVVM.StarterKit.IConverter<object, string>;
-#else
-using Converter = Aspid.MVVM.StarterKit.IConverterObjectToString;
-#endif
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
@@ -19,8 +15,8 @@ namespace Aspid.MVVM.StarterKit
     [AddBinderContextMenu(typeof(Component), Path = "Add General Binder/Debug/Debug Binder – Log")]
     public sealed partial class DebugLogMonoBinder : MonoBinder, IAnyBinder, IAnyReverseBinder
     {
-        [Tooltip("Converter used to format bound values as log messages. Defaults to ObjectToStringConverter.")]
-        [SerializeReference] private Converter _converter = new ObjectToStringConverter();
+        [Tooltip("Converter used to format bound values as log messages. Defaults to GenericToStringConverter.")]
+        [SerializeReference] private Converter _converter = new GenericToStringConverter<object>();
 
         /// <summary>
         /// Raised with the bound value when propagating back to the ViewModel in <see cref="BindMode.OneWayToSource"/>.

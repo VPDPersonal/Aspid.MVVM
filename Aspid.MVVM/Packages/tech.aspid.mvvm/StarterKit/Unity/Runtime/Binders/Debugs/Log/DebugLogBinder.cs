@@ -1,11 +1,7 @@
 using System;
 using Conditional = System.Diagnostics.ConditionalAttribute;
 using UnityEngine;
-#if UNITY_2023_1_OR_NEWER
 using Converter = Aspid.MVVM.StarterKit.IConverter<object, string>;
-#else
-using Converter = Aspid.MVVM.StarterKit.IConverterObjectToString;
-#endif
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
@@ -30,19 +26,16 @@ namespace Aspid.MVVM.StarterKit
         }
 
         // ReSharper disable once FieldCanBeMadeReadOnly.Local
-        // ReSharper disable once MemberInitializerValueIgnored
-        [Tooltip("Converter used to format bound values as log messages. Defaults to ObjectToStringConverter.")]
-        [SerializeReference] private Converter _converter = new ObjectToStringConverter();
+        [Tooltip("Converter used to format bound values as log messages. Defaults to GenericToStringConverter.")]
+        [SerializeReference] private Converter _converter;
 
         /// <summary>
         /// Initializes a new instance of <see cref="DebugLogBinder"/>.
         /// </summary>
-        /// <param name="converter">The converter used to format bound values as log messages. Pass <see langword="null"/> to use <see cref="ObjectToStringConverter"/>.</param>
+        /// <param name="converter">The converter used to format bound values as log messages. Pass <see langword="null"/> to use <see cref="GenericToStringConverter{T}"/>.</param>
         public DebugLogBinder(Converter converter = null) : base(BindMode.TwoWay)
         {
-            // The field initializer above does not survive the constructor, so the documented default has to be
-            // repeated here — otherwise the parameterless call leaves the binder with no converter at all.
-            _converter = converter ?? new ObjectToStringConverter();
+            _converter = converter ?? new GenericToStringConverter<object>();
         }
 
         /// <summary>

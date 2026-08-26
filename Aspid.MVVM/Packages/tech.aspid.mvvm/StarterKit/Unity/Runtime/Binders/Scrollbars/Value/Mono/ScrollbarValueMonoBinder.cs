@@ -1,11 +1,7 @@
 using System;
 using UnityEngine;
 using UnityEngine.UI;
-#if UNITY_2023_1_OR_NEWER
 using Converter = Aspid.MVVM.StarterKit.IConverter<float, float>;
-#else
-using Converter = Aspid.MVVM.StarterKit.IConverterFloat;
-#endif
 
 // ReSharper disable once CheckNamespace
 // ReSharper disable NotNullOrRequiredMemberIsNotInitialized

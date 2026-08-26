@@ -1,13 +1,8 @@
 using UnityEngine;
 using System.Collections.Generic;
 using Aspid.Collections.Observable.Filtered;
-#if UNITY_2023_1_OR_NEWER
 using Filter = Aspid.MVVM.StarterKit.ICollectionFilter<Aspid.MVVM.IViewModel>;
 using Comparer = Aspid.MVVM.StarterKit.ICollectionComparer<Aspid.MVVM.IViewModel>;
-#else
-using Filter = Aspid.MVVM.StarterKit.IViewModelCollectionFilter;
-using Comparer = Aspid.MVVM.StarterKit.IViewModelCollectionComparer;
-#endif
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit

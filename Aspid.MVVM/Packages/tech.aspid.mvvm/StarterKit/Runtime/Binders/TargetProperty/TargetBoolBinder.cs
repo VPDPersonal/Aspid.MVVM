@@ -28,16 +28,22 @@ namespace Aspid.MVVM.StarterKit
             _isInvert = isInvert;
         }
 
-        /// <summary>
-        /// Inverts <paramref name="value"/> when the Invert option is set; otherwise returns it unchanged.
-        /// </summary>
-        /// <param name="value">The value received from the ViewModel.</param>
-        /// <returns>The value to apply to the component.</returns>
+        /// <inheritdoc/>
         /// <remarks>
-        /// Documented rather than inherited: the base says it returns the value unchanged, which stops being
-        /// true the moment the option is enabled.
+        /// When overriding this method, always call <c>base.GetConvertedValue(value)</c> to preserve
+        /// the inversion.
         /// </remarks>
         protected override bool GetConvertedValue(bool value) =>
-            _isInvert ? !value : value;
+            Invert(base.GetConvertedValue(value));
+
+        /// <inheritdoc/>
+        /// <remarks>
+        /// Inversion is its own inverse, so the reverse direction mirrors the forward one: undo the
+        /// inversion first, then let the base undo whatever it applied.
+        /// </remarks>
+        protected override bool GetConvertedBackValue(bool value) =>
+            base.GetConvertedBackValue(Invert(value));
+
+        private bool Invert(bool value) => _isInvert ? !value : value;
     }
 }

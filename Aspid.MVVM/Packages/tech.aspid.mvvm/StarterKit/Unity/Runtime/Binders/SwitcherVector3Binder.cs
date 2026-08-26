@@ -1,9 +1,5 @@
 using UnityEngine;
-#if UNITY_2023_1_OR_NEWER
 using Converter = Aspid.MVVM.StarterKit.IConverter<UnityEngine.Vector3, UnityEngine.Vector3>;
-#else
-using Converter = Aspid.MVVM.StarterKit.IConverterVector3;
-#endif
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
@@ -22,7 +18,7 @@ namespace Aspid.MVVM.StarterKit
             Vector3 falseValue,
             IConverter<Vector3, Vector3>? converter, 
             BindMode mode = BindMode.OneWay)
-            : base(target, trueValue, falseValue, ConverterBridgeUnity.Vector3(converter), mode) { }
+            : base(target, trueValue, falseValue, converter, mode) { }
 
     }
 }

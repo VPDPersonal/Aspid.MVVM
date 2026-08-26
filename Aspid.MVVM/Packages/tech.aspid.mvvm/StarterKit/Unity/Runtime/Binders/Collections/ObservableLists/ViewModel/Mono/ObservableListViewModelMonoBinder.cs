@@ -1,15 +1,9 @@
 using UnityEngine;
 using System.Collections.Generic;
 using Aspid.Collections.Observable.Filtered;
-#if UNITY_2023_1_OR_NEWER
 using Filter = Aspid.MVVM.StarterKit.ICollectionFilter<Aspid.MVVM.IViewModel>;
 using Comparer = Aspid.MVVM.StarterKit.ICollectionComparer<Aspid.MVVM.IViewModel>;
 using ViewFactory = Aspid.MVVM.StarterKit.IViewFactory<Aspid.MVVM.MonoView>;
-#else
-using ViewFactory = Aspid.MVVM.StarterKit.IViewFactoryMonoView;
-using Filter = Aspid.MVVM.StarterKit.IViewModelCollectionFilter;
-using Comparer = Aspid.MVVM.StarterKit.IViewModelCollectionComparer;
-#endif
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
@@ -18,10 +12,8 @@ namespace Aspid.MVVM.StarterKit
     [AddBinderContextMenu(typeof(Component), Path = "Add General Binder/Collection/Observable List Binder – ViewModel")]
     public class ObservableListViewModelMonoBinder : ObservableListViewModelMonoBinder<MonoView, ViewFactory> { }
 
-#if UNITY_2023_1_OR_NEWER
-    public abstract class ObservableListViewModelMonoBinder<T> : ObservableListViewModelMonoBinder<T, IViewFactory<T>> 
+    public abstract class ObservableListViewModelMonoBinder<T> : ObservableListViewModelMonoBinder<T, IViewFactory<T>>
         where T : MonoBehaviour, IView { }
-#endif
     
     public abstract class ObservableListViewModelMonoBinder<T, TViewFactory> : ObservableListMonoBinder<IViewModel>
         where T : MonoBehaviour, IView

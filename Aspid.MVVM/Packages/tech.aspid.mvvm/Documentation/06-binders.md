@@ -12,6 +12,7 @@
 - [TargetBinder](#targetbinder)
 - [Создание кастомного биндера](#создание-кастомного-биндера)
 - [\[BindModeOverride\]](#bindmodeoverride)
+- [\[UsedInModes\]](#usedinmodes)
 - [DebugLogBinder](#debuglogbinder)
 
 ---
@@ -139,12 +140,23 @@ public abstract class TargetBinder<TTarget, TProperty> : MonoBinder
 }
 
 // С конвертером:
-public abstract class TargetBinder<TTarget, TProperty, TConverter> : ...
+public abstract class TargetBinder<TTarget, TProperty, TConverter> : TargetBinder<TTarget, TProperty>
+    where TConverter : IConverter<TProperty?, TProperty?>
 {
     // Конвертер назначается через Inspector ([SerializeReference])
-    protected TConverter Converter { get; }
+    [SerializeReference] private TConverter? _converter;
+
+    // ViewModel → View
+    protected override TProperty? GetConvertedValue(TProperty? value) => ...
+
+    // View → ViewModel: срабатывает, только если конвертер реализует ITwoWayConverter
+    protected override TProperty? GetConvertedBackValue(TProperty? value) => ...
 }
 ```
+
+Конвертер хранится в приватном поле — производный класс переопределяет не его, а `GetConvertedValue` /
+`GetConvertedBackValue`. Ограничение `TProperty → TProperty` намеренное: конвертер на биндере меняет
+значение, а не его тип. Кросс-типовые преобразования (`float → string`) делает сам биндер.
 
 **Специализированные базовые классы:**
 
@@ -239,6 +251,31 @@ public class UniversalBinder : MonoBinder { }
 ```
 
 Если биндер не поддерживает обратную привязку (нет `IReverseBinder<T>`), ограничьте TwoWay и OneWayToSource.
+
+---
+
+## [UsedInModes]
+
+Помечает сериализованное поле как используемое только в перечисленных режимах — в Inspector оно
+становится серым, когда биндер привязан в другом режиме, и получает подсказку
+`Not used in the current Mode.`:
+
+```csharp
+public class MyBinder : MonoBinder, IBinder<string>, IReverseBinder<string>
+{
+    [Tooltip("Возвращается, когда обратное преобразование не удалось.")]
+    [UsedInModes(BindMode.TwoWay, BindMode.OneWayToSource)]
+    [SerializeField] private string _convertBackFallback = string.Empty;
+}
+```
+
+Поле может лежать и на самом биндере, и внутри любого сериализуемого объекта, который биндер
+держит — вложенного класса, конвертера, элемента массива. Режим берётся у **ближайшего** биндера
+над полем: если биндер вложен в другой биндер, решает вложенный. Вне биндера поле остаётся
+активным.
+
+Атрибут ничего не меняет в рантайме — он только для Inspector, и в сборку без `UNITY_EDITOR`
+не попадает.
 
 ---
 

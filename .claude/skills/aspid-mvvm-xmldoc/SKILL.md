@@ -9,9 +9,11 @@ Rules for XML doc comments on all public and protected APIs in the Aspid.MVVM fr
 
 Skim the quick rules below first — they cover ~80% of cases. For deeper topics (class summaries, hook methods, binder examples), consult the matching reference file.
 
+**Overriding rule — brevity.** Every doc block is as short as it can be while staying readable: no filler ("This class provides...", "is used to..."), no restating what the declaration shows, no scenario-style motivation. `<remarks>` is absent by default and appears only for a non-obvious constraint of the type itself.
+
 ## When to use reference files
 
-- **Writing a class/struct/interface `<summary>`** → read `references/class-summary.md` (hierarchy-style templates for abstract, sealed, concrete, and binder-targeting-specific-properties cases).
+- **Writing a class/struct/interface `<summary>`** → read `references/class-summary.md` (hierarchy-style templates for binder chains; leaf style for flat types like converters).
 - **Documenting hook methods, `<inheritdoc/>`, `<remarks>`, `<exception>` for Unity conditional behavior, `[Tooltip]` rules** → read `references/tags.md`.
 - **Writing `<example>` blocks for non-MonoBehaviour binder classes** (using `XmlExampleDoc-*.xml` files and `<include>`) → read `references/binders.md`. Note: `MonoBinder` classes (MonoBehaviour-based) do NOT need `<include>` or XML example blocks.
 
@@ -112,15 +114,18 @@ Always use multiline form; always end with a period. Never use the single-line `
 
 Before finishing a file with XML docs, verify:
 
-- [ ] Class summary follows hierarchy style (see `references/class-summary.md`)
+- [ ] Class summary follows hierarchy style for binder chains, leaf style for flat types (see `references/class-summary.md`)
+- [ ] No filler words; every sentence carries information the declaration does not
 - [ ] Non-MonoBehaviour binders have `<example>` blocks via `<include>` from `XmlExampleDoc-*.xml` (see `references/binders.md`)
 - [ ] MonoBinder (MonoBehaviour) classes do NOT have `<include>` / `<example>` blocks
-- [ ] Constructors: `<inheritdoc/>` when matching parent; full doc when API differs (see `references/tags.md`)
+- [ ] Constructors: no `<summary>` at all — `<param>` always, `<remarks>` only if it says something (see `references/tags.md`)
 - [ ] No `<inheritdoc/>` where behavior differs from base
 - [ ] `<see langword="null"/>` / `<see langword="true"/>` — never `<c>null</c>` / `<c>true</c>`
 - [ ] Enum members: `<see cref="Enum.Member"/>` — never `<c>EnumValue</c>`
 - [ ] Every `[SerializeField]` / `[SerializeReference]` has `[Tooltip]`
+- [ ] `<remarks>` absent unless it states a non-obvious constraint; never history, comparisons, or scenario motivation
 - [ ] `<remarks>` does not duplicate `<exception>` / `<param>` content
+- [ ] Behavioral caveats stand in BOTH the field `[Tooltip]` and the paired constructor `<param>`
 - [ ] Exception docs cover Unity conditional behavior (skip / log / throw — see `references/tags.md`)
 - [ ] `<typeparam>` is concrete — not just `"The type."`
 - [ ] Properties: `"Gets"`, `"Gets or sets"`, `"Indicates whether"`

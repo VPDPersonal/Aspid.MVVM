@@ -2,11 +2,7 @@
 using System;
 using UnityEngine;
 using Object = UnityEngine.Object;
-#if UNITY_2023_1_OR_NEWER
 using Converter = Aspid.MVVM.StarterKit.IConverter<string?, string?>;
-#else
-using Converter = Aspid.MVVM.StarterKit.IConverterString;
-#endif
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
@@ -69,10 +65,29 @@ namespace Aspid.MVVM.StarterKit
         protected override void OnBound()
         {
             if (Mode is BindMode.OneWayToSource)
-                ValueChanged?.Invoke(GetConvertedValue(Target.name));
+                ValueChanged?.Invoke(GetConvertedBackValue(Target.name));
         }
         
         private string GetConvertedValue(string value) =>
             _converter?.Convert(value) ?? value ?? string.Empty;
+
+        /// <summary>
+        /// Converts a value on its way back to the ViewModel.
+        /// </summary>
+        /// <param name="value">The value read from the target.</param>
+        /// <returns>
+        /// The value as the ViewModel expects it: undone by the converter when it offers
+        /// <see cref="ITwoWayConverter{TFrom, TTo}"/>, and unchanged when it does not.
+        /// </returns>
+        /// <remarks>
+        /// The forward converter must not be applied here. This binder pushes the target's current
+        /// value to the ViewModel, so running it through <c>Convert</c> a second time hands the
+        /// ViewModel a value that has been converted twice — visibly wrong for anything that is not
+        /// its own inverse.
+        /// </remarks>
+        private string GetConvertedBackValue(string value) =>
+            _converter is ITwoWayConverter<string?, string?> twoWay
+                ? twoWay.ConvertBack(value) ?? value
+                : value;
     }
 }

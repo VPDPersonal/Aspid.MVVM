@@ -28,9 +28,7 @@ namespace Aspid.MVVM.StarterKit
         [UnityEngine.SerializeField]
         private T? _value;
 
-#if UNITY_2023_1_OR_NEWER
         [UnityEngine.SerializeReference]
-#endif
         private IConverter<T?, T?>? _converter;
 
         /// <summary>

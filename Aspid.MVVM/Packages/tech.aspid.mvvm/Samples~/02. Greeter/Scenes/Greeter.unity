@@ -961,9 +961,10 @@ MonoBehaviour:
         - rid: 665231020239880480
         - rid: 665231020239880481
     - rid: 665231020239880480
-      type: {class: PaintNameConverter, ns: Aspid.MVVM.Samples.Greeter, asm: Assembly-CSharp-firstpass}
+      type: {class: RichTextColorConverter, ns: Aspid.MVVM.StarterKit, asm: Aspid.MVVM.StarterKit.Unity}
       data:
         _color: {r: 0.07058824, g: 0.54901963, b: 0.3254902, a: 1}
+        _includeAlpha: 0
     - rid: 665231020239880481
       type: {class: StringFormatConverter, ns: Aspid.MVVM.StarterKit, asm: Aspid.MVVM.StarterKit}
       data:

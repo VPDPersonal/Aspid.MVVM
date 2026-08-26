@@ -1,9 +1,5 @@
 using System;
-#if UNITY_2023_1_OR_NEWER
 using Converter = Aspid.MVVM.StarterKit.IConverter<float, float>;
-#else
-using Converter = Aspid.MVVM.StarterKit.IConverterFloat;
-#endif
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
@@ -41,10 +37,10 @@ namespace Aspid.MVVM.StarterKit
 
         /// <inheritdoc/>
         public event Action<double>? DoubleValueChanged;
-        
+
         /// <inheritdoc/>
          protected TargetFloatBinder(TTarget target, IConverter<float, float>? converter, BindMode mode = BindMode.OneWay)
-             : base(target, ConverterBridge.Float(converter), mode) { }
+             : base(target, converter, mode) { }
 
         /// <summary>
         /// Sets the target float property from an <see cref="int"/> value.
@@ -68,29 +64,26 @@ namespace Aspid.MVVM.StarterKit
             base.SetValue((float)value);
 
         /// <summary>
-        /// Called after binding is established.
-        /// In <see cref="BindMode.OneWayToSource"/> mode, broadcasts the current value to all numeric event types:
+        /// Broadcasts the current value to all numeric event types:
         /// <see cref="IntValueChanged"/>, <see cref="LongValueChanged"/>, <see cref="FloatValueChanged"/>, and <see cref="DoubleValueChanged"/>.
         /// </summary>
         /// <remarks>
-        /// Calls <c>base.OnBound()</c> to raise the inherited
-        /// <see cref="TargetBinder{TTarget, TProperty}.ValueChanged"/>, which backs both
-        /// <see cref="FloatValueChanged"/> and <see cref="IReverseBinder{T}.ValueChanged"/> for <see langword="float"/>.
-        /// The remaining numeric events are raised here because <see cref="INumberReverseBinder"/> bridges them
-        /// to their own <see cref="IReverseBinder{T}"/> instantiations.
+        /// Also calls the base implementation: a member bound through <see cref="IReverseBinder{T}"/>
+        /// for the property's own type reaches the base <c>ValueChanged</c> event rather than the
+        /// matching <see cref="INumberReverseBinder"/> channel, because a class member outranks the
+        /// implementation the interface carries.
         /// </remarks>
-        protected override void OnBound()
+        protected override void SendInitialValueToSource()
         {
-            base.OnBound();
+            base.SendInitialValueToSource();
 
-            if (Mode is not BindMode.OneWayToSource) return;
-
-            var value = GetConvertedValue(Property);
+            var value = GetConvertedBackValue(Property);
 
             IntValueChanged?.Invoke((int)value);
             LongValueChanged?.Invoke((long)value);
+            FloatValueChanged?.Invoke(value);
             DoubleValueChanged?.Invoke(value);
         }
-        
+
     }
 }

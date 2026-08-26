@@ -24,7 +24,7 @@ namespace Aspid.MVVM.Tests
     {
         private static readonly Assembly[] ConverterAssemblies =
         {
-            typeof(GenericToString<>).Assembly,
+            typeof(StringFormatConverter).Assembly,
             typeof(IConverter<,>).Assembly,
         };
 

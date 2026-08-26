@@ -42,23 +42,27 @@ namespace Aspid.MVVM.StarterKit
         [BinderLog]
         public void SetValue(double value) =>
             base.SetValue((int)value);
-        
+
         /// <summary>
-        /// Called after binding is established.
-        /// In <see cref="BindMode.OneWayToSource"/> mode, broadcasts the current value to all numeric event types:
+        /// Broadcasts the current value to all numeric event types:
         /// <see cref="IntValueChanged"/>, <see cref="LongValueChanged"/>, <see cref="FloatValueChanged"/>, and <see cref="DoubleValueChanged"/>.
         /// </summary>
-        protected override void OnBound()
+        /// <remarks>
+        /// Also calls the base implementation: a member bound through <see cref="IReverseBinder{T}"/>
+        /// for the property's own type reaches the base <c>ValueChanged</c> event rather than the
+        /// matching <see cref="INumberReverseBinder"/> channel, because a class member outranks the
+        /// implementation the interface carries.
+        /// </remarks>
+        protected override void SendInitialValueToSource()
         {
-            if (Mode is BindMode.OneWayToSource)
-            {
-                var value = GetConvertedValue(Property);
-                
-                IntValueChanged?.Invoke(value);
-                LongValueChanged?.Invoke(value);
-                FloatValueChanged?.Invoke(value);
-                DoubleValueChanged?.Invoke(value);
-            }
+            base.SendInitialValueToSource();
+
+            var value = GetConvertedBackValue(Property);
+
+            IntValueChanged?.Invoke(value);
+            LongValueChanged?.Invoke(value);
+            FloatValueChanged?.Invoke(value);
+            DoubleValueChanged?.Invoke(value);
         }
     }
 }

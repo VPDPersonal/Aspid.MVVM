@@ -1,13 +1,12 @@
+using System;
 using System.Linq;
 using UnityEngine;
 using NUnit.Framework;
 using UnityEngine.TestTools;
 using System.Text.RegularExpressions;
+using Object = UnityEngine.Object;
 
-// These fixtures name the [Obsolete] converter aliases on purpose — guarding the deprecated
-// surface is the point.
-#pragma warning disable CS0618 // Type or member is obsolete
-
+// ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit.Tests
 {
     /// <summary>
@@ -35,18 +34,48 @@ namespace Aspid.MVVM.StarterKit.Tests
             Assert.AreEqual("HP: 42", _asset.Convert("42"));
 
         [Test]
-        public void Asset_WithoutAConverter_ReturnsTheDefault()
+        public void Asset_WithoutAConverter_ReturnsTheDefaultAndReportsEveryTime()
         {
+            LogAssert.Expect(LogType.Error, new Regex("no converter assigned"));
+            LogAssert.Expect(LogType.Error, new Regex("no converter assigned"));
+
             var empty = ScriptableObject.CreateInstance<StringConverterAsset>();
 
             try
             {
                 Assert.IsNull(empty.Convert("42"));
+                empty.Convert("43");
             }
             finally
             {
                 Object.DestroyImmediate(empty);
             }
+        }
+
+        // An asset whose converter points back at the asset would recurse until the process dies, and
+        // a stack overflow takes the Editor with it — the cycle has to be refused, not survived.
+        [Test]
+        public void Asset_WhoseConverterLeadsBackToIt_ReturnsTheDefaultAndReports()
+        {
+            LogAssert.Expect(LogType.Error, new Regex("leads back to this asset"));
+
+            SetConverter(_asset, new ConverterAssetReference<string, string>(_asset));
+
+            Assert.IsNull(_asset.Convert("42"));
+        }
+
+        // The guard is per conversion, not per asset: refusing a cycle must not leave the asset dead.
+        [Test]
+        public void Asset_KeepsConverting_AfterACycleWasRefused()
+        {
+            LogAssert.Expect(LogType.Error, new Regex("leads back to this asset"));
+
+            SetConverter(_asset, new ConverterAssetReference<string, string>(_asset));
+            _asset.Convert("42");
+
+            SetConverter(_asset, new StringFormatConverter("HP: {0}"));
+
+            Assert.AreEqual("HP: 42", _asset.Convert("42"));
         }
 
         [Test]
@@ -67,13 +96,14 @@ namespace Aspid.MVVM.StarterKit.Tests
         }
 
         [Test]
-        public void Reference_WithoutAnAsset_ReturnsTheDefaultAndReportsEveryTime()
+        public void Reference_WithoutAnAsset_ReturnsTheFallbackAndReportsEveryTime()
         {
             LogAssert.Expect(LogType.Error, new Regex("no asset assigned"));
             LogAssert.Expect(LogType.Error, new Regex("no asset assigned"));
             LogAssert.Expect(LogType.Error, new Regex("no asset assigned"));
 
-            var reference = new ConverterAssetReference<string, string>(null);
+            var reference = (ConverterAssetReference<string, string>)Activator.CreateInstance(
+                typeof(ConverterAssetReference<string, string>), nonPublic: true);
 
             Assert.IsNull(reference.Convert("42"));
             reference.Convert("43");
@@ -85,7 +115,7 @@ namespace Aspid.MVVM.StarterKit.Tests
         [Test]
         public void EveryShippedAssetTypeIsConcreteAndCreatable()
         {
-            var assets = typeof(IConverterVector3).Assembly
+            var assets = typeof(Vector3CombineConverter).Assembly
                 .GetTypes()
                 .Where(type => !type.IsAbstract)
                 .Where(type => typeof(ScriptableObject).IsAssignableFrom(type))

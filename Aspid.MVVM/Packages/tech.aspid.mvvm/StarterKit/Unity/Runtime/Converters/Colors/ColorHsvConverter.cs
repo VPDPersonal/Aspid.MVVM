@@ -1,38 +1,44 @@
 #nullable enable
-using Aspid.FastTools.Types;
 using System;
 using UnityEngine;
-
-// The named converter aliases are [Obsolete]. The converters below keep implementing them for
-// one release so that a [SerializeReference] field a project declares as one still
-// deserializes; the base lists go with the aliases in the next major.
-#pragma warning disable CS0618 // Type or member is obsolete
+using Aspid.FastTools.Types;
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// Shifts a colour in HSV space.
+    /// Shifts a color in HSV space.
     /// </summary>
-    /// <remarks>A palette of variations from one authored base colour.</remarks>
+    /// <remarks>
+    /// Saturation and brightness are held inside 0..1, so an HDR color comes back at white level.
+    /// </remarks>
     [Serializable]
-    [TypeSelectorDisplay(Group = "Aspid/Colour", Name = "Color Hsv", Tooltip = "Shifts a colour in HSV space")]
-    public sealed class ColorHsvConverter : IConverterColor
+    [TypeSelectorDisplay(
+        Group = "Aspid/Color",
+        Name = "HSV",
+        Tooltip = "Shifts a color in HSV space")]
+    public sealed class ColorHsvConverter : IConverter<Color, Color>
     {
-        [Tooltip("How far to rotate the hue, in turns. 0.5 is the opposite colour.")]
+        [Tooltip("How far to rotate the hue, in turns. 0.5 is the opposite color.")]
         [SerializeField] private float _hueShift;
 
-        [Tooltip("Scales the saturation.")]
+        [Tooltip("Scales the saturation. The result is held to 0..1.")]
         [SerializeField] private float _saturationMultiplier = 1f;
 
-        [Tooltip("Scales the brightness.")]
+        [Tooltip("Scales the brightness. The result is held to 0..1, so an HDR color comes back at " +
+            "white level.")]
         [SerializeField] private float _valueMultiplier = 1f;
 
+        /// <remarks>Default: no shift and no scaling, which changes nothing.</remarks>
         public ColorHsvConverter() { }
 
-        /// <param name="hueShift">How far to rotate the hue, in turns.</param>
-        /// <param name="saturationMultiplier">Scales the saturation.</param>
-        /// <param name="valueMultiplier">Scales the brightness.</param>
+        /// <param name="hueShift">
+        /// How far to rotate the hue, in turns. 0.5 is the opposite color.
+        /// </param>
+        /// <param name="saturationMultiplier">Scales the saturation. The result is held to 0..1.</param>
+        /// <param name="valueMultiplier">
+        /// Scales the brightness. The result is held to 0..1, so an HDR color comes back at white level.
+        /// </param>
         public ColorHsvConverter(float hueShift, float saturationMultiplier = 1f, float valueMultiplier = 1f)
         {
             _hueShift = hueShift;
@@ -41,10 +47,10 @@ namespace Aspid.MVVM.StarterKit
         }
 
         /// <summary>
-        /// Shifts the specified colour.
+        /// Shifts the specified color.
         /// </summary>
-        /// <param name="value">The colour to shift.</param>
-        /// <returns>The shifted colour, with its alpha untouched.</returns>
+        /// <param name="value">The color to shift.</param>
+        /// <returns>The shifted color, with its alpha untouched.</returns>
         public Color Convert(Color value)
         {
             Color.RGBToHSV(value, out var h, out var s, out var v);

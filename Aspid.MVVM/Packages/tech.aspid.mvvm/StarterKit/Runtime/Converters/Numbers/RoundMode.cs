@@ -7,23 +7,22 @@ namespace Aspid.MVVM.StarterKit
     public enum RoundMode
     {
         /// <summary>
-        /// To the nearest. Which way an exact half goes is the converter's midpoint rule, not part of
-        /// this choice.
+        /// To the nearest; which side an exact half lands on is the converter's own rule.
         /// </summary>
         Round,
 
         /// <summary>
-        /// Towards negative infinity.
+        /// Toward negative infinity.
         /// </summary>
         Floor,
 
         /// <summary>
-        /// Towards positive infinity.
+        /// Toward positive infinity.
         /// </summary>
         Ceil,
 
         /// <summary>
-        /// Towards zero.
+        /// Toward zero.
         /// </summary>
         Truncate,
     }

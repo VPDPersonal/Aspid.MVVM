@@ -1,7 +1,6 @@
-#nullable enable
-using Aspid.FastTools.Types;
 using System;
 using UnityEngine;
+using Aspid.FastTools.Types;
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
@@ -10,19 +9,21 @@ namespace Aspid.MVVM.StarterKit
     /// Reshapes a 0..1 value along an easing curve.
     /// </summary>
     /// <remarks>
-    /// The Back and Elastic families leave the 0..1 range on purpose — that overshoot is the effect.
-    /// <see cref="Convert"/> clamps what goes in, never what comes out, so a target with a hard range of
-    /// its own — <c>Image.fillAmount</c>, an alpha — wants a <see cref="ClampNumberConverter"/> after it.
+    /// <see cref="Convert"/> clamps what goes in, never what comes out: the Back and Elastic curves
+    /// overshoot 0..1 on purpose. The curves are evaluated in <see langword="float"/>, so the double
+    /// overload carries a float's precision — ample for a 0..1 position.
     /// </remarks>
     [Serializable]
-    [TypeSelectorDisplay(Group = "Aspid/Number", Name = "Easing", Tooltip = "Reshapes a 0..1 value along an easing curve")]
-    public sealed class EasingConverter : IConverter<float, float>
+    [TypeSelectorDisplay(
+        Group = "Aspid/Number",
+        Name = "Easing",
+        Tooltip = "Reshapes a 0..1 value along an easing curve")]
+    public sealed class EasingConverter : IConverter<float, float>, IConverter<double, double>
     {
         [Tooltip("The curve applied to the value.")]
         [SerializeField] private EaseType _ease = EaseType.QuadOut;
 
-        [Tooltip("Hold the incoming value inside 0..1. The Back and Elastic curves still "
-            + "leave that range on the way out — that overshoot is what they are for.")]
+        [Tooltip("Hold the incoming value inside 0..1. Back and Elastic still overshoot on the way out.")]
         [SerializeField] private bool _clamp = true;
 
         // The Penner constants, named as the reference implementation names them.
@@ -50,23 +51,23 @@ namespace Aspid.MVVM.StarterKit
         /// </summary>
         /// <param name="value">The 0..1 position along the curve.</param>
         /// <returns>
-        /// The eased value. The Back and Elastic curves may return a value outside 0..1.
+        /// The eased value, outside 0..1 for the Back and Elastic curves. An undeclared curve reports
+        /// an error and returns the value unchanged.
         /// </returns>
-        /// <exception cref="ArgumentOutOfRangeException">Thrown when the curve is not a declared value.</exception>
         public float Convert(float value) => Evaluate(_ease, _clamp ? Mathf.Clamp01(value) : value);
+
+        double IConverter<double, double>.Convert(double value) =>
+            Convert(NumericSaturation.ToFloat(value));
 
         /// <summary>
         /// Evaluates an easing curve at a position.
         /// </summary>
         /// <param name="ease">The curve to evaluate.</param>
         /// <param name="t">The position along it, normally 0..1.</param>
-        /// <returns>The eased position.</returns>
-        /// <remarks>
-        /// Public because the curves are useful to anything that animates a number, and reaching them
-        /// through a converter instance would mean allocating one to ask a question about a shape.
-        /// </remarks>
-        /// <exception cref="ArgumentOutOfRangeException">Thrown when the curve is not a declared value.</exception>
-        public static float Evaluate(EaseType ease, float t) => ease switch
+        /// <returns>
+        /// The eased position. An undeclared curve reports an error and returns <paramref name="t"/> unchanged.
+        /// </returns>
+        internal static float Evaluate(EaseType ease, float t) => ease switch
         {
             EaseType.Linear => t,
 
@@ -120,15 +121,23 @@ namespace Aspid.MVVM.StarterKit
                 ? (1f - BounceOut(1f - 2f * t)) / 2f
                 : (1f + BounceOut(2f * t - 1f)) / 2f,
 
-            _ => throw new ArgumentOutOfRangeException(nameof(ease), ease, null)
+            _ => Undeclared(ease, t)
         };
+
+        // Reported through the type: the curve is evaluated without an instance to report on.
+        private static float Undeclared(EaseType ease, float t)
+        {
+            ConverterLogger.LogError(typeof(EasingConverter),
+                $"the ease {ease.Describe()} is not a declared {nameof(EaseType)}",
+                "Returning the value unchanged.");
+            return t;
+        }
 
         private static float Square(float value) => value * value;
 
         private static float Cube(float value) => value * value * value;
 
-        // Only reachable with clamping off, where t may leave 0..1 and put the circle's argument
-        // below zero. A NaN out of a converter reaches a Transform and corrupts it silently.
+        // Only reachable with clamping off, where t leaves 0..1; a NaN out of here corrupts a Transform.
         private static float SafeSqrt(float value) => value <= 0f ? 0f : Mathf.Sqrt(value);
 
         private static float ExpoInOut(float t)
@@ -149,8 +158,7 @@ namespace Aspid.MVVM.StarterKit
             ? Square(2f * t) * ((C2 + 1f) * 2f * t - C2) / 2f
             : (Square(2f * t - 2f) * ((C2 + 1f) * (2f * t - 2f) + C2) + 2f) / 2f;
 
-        // The endpoints are stated rather than computed: the oscillation is a product of a growing
-        // exponential and a sine, and only the exact 0 and 1 make both factors land on the endpoint.
+        // The endpoints are stated rather than computed: only exact 0 and 1 make both factors land.
         private static float ElasticIn(float t)
         {
             if (t <= 0f) return 0f;

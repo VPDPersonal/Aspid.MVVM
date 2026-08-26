@@ -9,10 +9,7 @@ namespace Aspid.MVVM.StarterKit
     /// Which states of a <see cref="ColorBlock"/> a converter writes.
     /// </summary>
     /// <remarks>
-    /// The five colours a <see cref="Selectable"/> keeps, as a mask. A converter that writes all of
-    /// them cannot express "everything except disabled", which is the usual shape of a theme: the
-    /// disabled colour says the control is unavailable and must survive the theming that recolours
-    /// the rest.
+    /// The five colors a <see cref="Selectable"/> keeps, as a mask.
     /// </remarks>
     [Flags]
     public enum SelectableStates
@@ -23,32 +20,32 @@ namespace Aspid.MVVM.StarterKit
         None = 0,
 
         /// <summary>
-        /// The resting colour.
+        /// The resting color.
         /// </summary>
         Normal = 1,
 
         /// <summary>
-        /// The colour under the pointer or the focus.
+        /// The color under the pointer or the focus.
         /// </summary>
         Highlighted = 2,
 
         /// <summary>
-        /// The colour while held down.
+        /// The color while held down.
         /// </summary>
         Pressed = 4,
 
         /// <summary>
-        /// The colour once chosen.
+        /// The color once chosen.
         /// </summary>
         Selected = 8,
 
         /// <summary>
-        /// The colour while the control is not interactable.
+        /// The color while the control is not interactable.
         /// </summary>
         Disabled = 16,
 
         /// <summary>
-        /// Every state but the disabled one, which usually has to stay readable as itself.
+        /// Every state but <see cref="SelectableStates.Disabled"/>.
         /// </summary>
         Interactive = Normal | Highlighted | Pressed | Selected,
 

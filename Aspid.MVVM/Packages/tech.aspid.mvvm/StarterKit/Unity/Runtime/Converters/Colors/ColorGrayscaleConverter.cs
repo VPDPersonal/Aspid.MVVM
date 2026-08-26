@@ -1,51 +1,50 @@
 #nullable enable
-using Aspid.FastTools.Types;
 using System;
 using UnityEngine;
-
-// The named converter aliases are [Obsolete]. The converters below keep implementing them for
-// one release so that a [SerializeReference] field a project declares as one still
-// deserializes; the base lists go with the aliases in the next major.
-#pragma warning disable CS0618 // Type or member is obsolete
+using Aspid.FastTools.Types;
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// Desaturates a colour.
+    /// Desaturates a color.
     /// </summary>
     /// <remarks>
-    /// Greying out a locked item without a second sprite. The weights are the usual luminance
-    /// coefficients, so the result matches what the eye reads as brightness rather than a flat
-    /// channel average.
+    /// Gray is computed with the luminance weights, not a flat channel average.
     /// </remarks>
     [Serializable]
-    [TypeSelectorDisplay(Group = "Aspid/Colour", Name = "Color Grayscale", Tooltip = "Desaturates a colour")]
-    public sealed class ColorGrayscaleConverter : IConverterColor
+    [TypeSelectorDisplay(
+        Group = "Aspid/Color",
+        Name = "Grayscale",
+        Tooltip = "Desaturates a color")]
+    public sealed class ColorGrayscaleConverter : IConverter<Color, Color>
     {
-        [Tooltip("How much colour to keep. Zero is fully grey, one leaves the colour untouched.")]
-        [SerializeField, Range(0f, 1f)] private float _saturation;
+        [Tooltip("How much color to keep. Zero is fully gray, one leaves the color untouched.")]
+        [SerializeField] [Range(0f, 1f)] private float _saturation;
 
-        /// <remarks>Default: fully desaturating.</remarks>
+        /// <remarks>Default: fully gray.</remarks>
         public ColorGrayscaleConverter() { }
 
-        /// <param name="saturation">How much colour to keep.</param>
+        /// <param name="saturation">
+        /// How much color to keep. Zero is fully gray, one leaves the color untouched; a value
+        /// outside that range is held to it.
+        /// </param>
         public ColorGrayscaleConverter(float saturation)
         {
             _saturation = saturation;
         }
 
         /// <summary>
-        /// Desaturates the specified colour.
+        /// Desaturates the specified color.
         /// </summary>
-        /// <param name="value">The colour to desaturate.</param>
-        /// <returns>The desaturated colour, with its alpha untouched.</returns>
+        /// <param name="value">The color to desaturate.</param>
+        /// <returns>The desaturated color, with its alpha untouched.</returns>
         public Color Convert(Color value)
         {
             var luminance = value.r * 0.299f + value.g * 0.587f + value.b * 0.114f;
-            var grey = new Color(luminance, luminance, luminance, value.a);
+            var gray = new Color(luminance, luminance, luminance, value.a);
 
-            return Color.Lerp(grey, value, Mathf.Clamp01(_saturation));
+            return Color.Lerp(gray, value, Mathf.Clamp01(_saturation));
         }
     }
 }

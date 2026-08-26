@@ -14,8 +14,8 @@ namespace Aspid.MVVM.StarterKit
     [AddBinderContextMenu(typeof(Component), Path = "Add General Binder/Debug/Debug Binder – Log")]
     public sealed partial class DebugLogMonoBinder : MonoBinder, IAnyBinder, IAnyReverseBinder
     {
-        [Tooltip("Converter used to format bound values as log messages. Defaults to ObjectToStringConverter.")]
-        [SerializeReference] private Converter _converter = new ObjectToStringConverter();
+        [Tooltip("Converter used to format bound values as log messages. Defaults to GenericToStringConverter.")]
+        [SerializeReference] private Converter _converter = new GenericToStringConverter<object>();
 
         /// <summary>
         /// Raised with the bound value when propagating back to the ViewModel in <see cref="BindMode.OneWayToSource"/>.

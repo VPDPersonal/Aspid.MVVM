@@ -61,16 +61,24 @@ namespace Aspid.MVVM.StarterKit
         /// </summary>
         Tan,
 
-        /// <summary>The base-2 logarithm. A non-positive value yields zero.</summary>
+        /// <summary>
+        /// The base-2 logarithm. A non-positive value yields zero.
+        /// </summary>
         Log2,
 
-        /// <summary>The arcsine, in radians. The value is clamped to -1..1 first.</summary>
+        /// <summary>
+        /// The arcsine, in radians. The value is clamped to -1..1 first.
+        /// </summary>
         Asin,
 
-        /// <summary>The arccosine, in radians. The value is clamped to -1..1 first.</summary>
+        /// <summary>
+        /// The arccosine, in radians. The value is clamped to -1..1 first.
+        /// </summary>
         Acos,
 
-        /// <summary>The arctangent, in radians.</summary>
+        /// <summary>
+        /// The arctangent, in radians.
+        /// </summary>
         Atan,
     }
 }

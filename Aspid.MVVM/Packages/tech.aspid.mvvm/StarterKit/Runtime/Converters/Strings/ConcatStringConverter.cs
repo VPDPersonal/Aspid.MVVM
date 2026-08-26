@@ -1,25 +1,19 @@
-using Aspid.FastTools.Types;
 using System;
 using UnityEngine;
-
-// The named converter aliases are [Obsolete]. The converters below keep implementing them for
-// one release so that a [SerializeReference] field a project declares as one still
-// deserializes; the base lists go with the aliases in the next major.
-#pragma warning disable CS0618 // Type or member is obsolete
+using Aspid.FastTools.Types;
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// Wraps a string in authored text.
+    /// Wraps a string in authored text, and takes that text back off.
     /// </summary>
-    /// <remarks>
-    /// Friendlier than remembering where <c>{0}</c> goes, and it can leave a blank value alone rather
-    /// than decorating nothing.
-    /// </remarks>
     [Serializable]
-    [TypeSelectorDisplay(Group = "Aspid/String", Name = "Concat String", Tooltip = "Wraps a string in authored text")]
-    public sealed class ConcatStringConverter : IConverterString
+    [TypeSelectorDisplay(
+        Group = "Aspid/String",
+        Name = "Concat",
+        Tooltip = "Wraps a string in authored text")]
+    public sealed class ConcatStringConverter : ITwoWayConverter<string?, string?>
     {
         [Tooltip("Placed before the value.")]
         [SerializeField] private string _prefix = string.Empty;
@@ -30,6 +24,7 @@ namespace Aspid.MVVM.StarterKit
         [Tooltip("Leave a blank value undecorated.")]
         [SerializeField] private bool _skipWhenEmpty = true;
 
+        /// <remarks>Default: with no text to wrap the value in.</remarks>
         public ConcatStringConverter() { }
 
         /// <param name="prefix">Placed before the value.</param>
@@ -51,6 +46,35 @@ namespace Aspid.MVVM.StarterKit
         {
             if (_skipWhenEmpty && string.IsNullOrWhiteSpace(value)) return value;
             return _prefix + value + _suffix;
+        }
+
+        /// <summary>
+        /// Takes the authored text back off the specified string.
+        /// </summary>
+        /// <param name="value">The string to undecorate.</param>
+        /// <returns>
+        /// The string without the prefix and the suffix; text carrying neither comes back unchanged.
+        /// A value left with nothing between the two comes back as an empty string, never as
+        /// <see langword="null"/>: <see cref="Convert"/> wraps a <see langword="null"/> and an empty
+        /// value alike when blank values are not skipped, so the round trip cannot tell them apart.
+        /// </returns>
+        public string? ConvertBack(string? value)
+        {
+            if (string.IsNullOrEmpty(value)) return value;
+
+            var start = 0;
+            var end = value.Length;
+
+            if (!string.IsNullOrEmpty(_prefix) && value.StartsWith(_prefix, StringComparison.Ordinal))
+                start = _prefix.Length;
+
+            // Measured against what is left after the prefix, so the two cannot claim the same characters.
+            if (!string.IsNullOrEmpty(_suffix)
+                && end - start >= _suffix.Length
+                && string.CompareOrdinal(value, end - _suffix.Length, _suffix, 0, _suffix.Length) == 0)
+                end -= _suffix.Length;
+
+            return value[start..end];
         }
     }
 }

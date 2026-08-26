@@ -1,7 +1,10 @@
 using System;
 using UnityEngine;
 using NUnit.Framework;
+using UnityEngine.TestTools;
+using System.Text.RegularExpressions;
 
+// ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit.Tests
 {
     internal enum Weather
@@ -48,6 +51,39 @@ namespace Aspid.MVVM.StarterKit.Tests
 
             Assert.AreEqual(Color.green, converter.Convert(true));
             Assert.AreEqual(Color.red, converter.Convert(false));
+        }
+
+        [Test]
+        public void BoolToValue_ReadsTheAuthoredBranchBack()
+        {
+            var converter = new BoolToValueConverter<Color>(Color.green, Color.red);
+
+            Assert.IsTrue(converter.ConvertBack(Color.green));
+            Assert.IsFalse(converter.ConvertBack(Color.red));
+        }
+
+        [Test]
+        public void BoolToValue_UnmatchedValue_ReturnsFallbackAndReportsEveryTime()
+        {
+            for (var i = 0; i < 2; i++)
+                LogAssert.Expect(LogType.Error, new Regex("one of the two authored values"));
+
+            var converter = new BoolToValueConverter<Color>(Color.green, Color.red, convertBackFallback: true);
+
+            Assert.IsTrue(converter.ConvertBack(Color.blue));
+            Assert.IsTrue(converter.ConvertBack(Color.blue));
+        }
+
+        [Test]
+        public void BoolToValue_BranchesAuthoredAlike_ReportsEveryTime()
+        {
+            for (var i = 0; i < 2; i++)
+                LogAssert.Expect(LogType.Error, new Regex("both branches hold"));
+
+            var converter = new BoolToValueConverter<Color>(Color.green, Color.green, convertBackFallback: true);
+
+            Assert.IsTrue(converter.ConvertBack(Color.green));
+            Assert.IsTrue(converter.ConvertBack(Color.green));
         }
 
         [TestCase(LogicOperation.And, true, true, true)]
@@ -118,8 +154,8 @@ namespace Aspid.MVVM.StarterKit.Tests
             var converter = new EnumToValueConverter<Weather, Color>(
                 new EnumToValueConverter<Weather, Color>.Entry[]
                 {
-                    new() { Key = Weather.Clear, Value = Color.yellow },
-                    new() { Key = Weather.Rain, Value = Color.blue },
+                    new(Weather.Clear, Color.yellow),
+                    new(Weather.Rain, Color.blue),
                 },
                 fallback: Color.gray);
 
@@ -134,23 +170,23 @@ namespace Aspid.MVVM.StarterKit.Tests
                 Color.gray,
                 new EnumToValueConverter<Weather, Color>(null, Color.gray).Convert(Weather.Clear));
 
-        [TestCase(Weather.Rain, EnumMatch.Equals, true)]
-        [TestCase(Weather.Snow, EnumMatch.Equals, false)]
+        [TestCase(Weather.Rain, EnumMatch.Equal, true)]
+        [TestCase(Weather.Snow, EnumMatch.Equal, false)]
         [TestCase(Weather.Snow, EnumMatch.NotEquals, true)]
-        public void EnumToBool_TestsTheValue(Weather value, EnumMatch match, bool expected) =>
-            Assert.AreEqual(expected, new EnumToBoolConverter<Weather>(Weather.Rain, match).Convert(value));
+        public void EnumMatch_TestsTheValue(Weather value, EnumMatch match, bool expected) =>
+            Assert.AreEqual(expected, new EnumMatchConverter<Weather>(Weather.Rain, match).Convert(value));
 
         [TestCase(Damage.Both, EnumMatch.HasAllFlags, true)]
         [TestCase(Damage.Fire, EnumMatch.HasAllFlags, false)]
         [TestCase(Damage.Fire, EnumMatch.HasAnyFlag, true)]
         [TestCase(Damage.None, EnumMatch.HasAnyFlag, false)]
-        public void EnumToBool_TestsFlags(Damage value, EnumMatch match, bool expected) =>
-            Assert.AreEqual(expected, new EnumToBoolConverter<Damage>(Damage.Both, match).Convert(value));
+        public void EnumMatch_TestsFlags(Damage value, EnumMatch match, bool expected) =>
+            Assert.AreEqual(expected, new EnumMatchConverter<Damage>(Damage.Both, match).Convert(value));
 
         [Test]
-        public void EnumToInt_RoundTrips()
+        public void EnumToNumber_RoundTrips()
         {
-            var converter = new EnumToIntConverter<Weather>();
+            var converter = new EnumToNumberConverter<Weather>();
 
             Assert.AreEqual(2, converter.Convert(Weather.Snow));
             Assert.AreEqual(Weather.Snow, converter.ConvertBack(2));
@@ -173,8 +209,12 @@ namespace Aspid.MVVM.StarterKit.Tests
                 new EnumToStringConverter<Weather>(EnumNameSource.InspectorName).Convert(Weather.Snow));
 
         [Test]
-        public void EnumToString_UndeclaredValue_ReturnsTheFallback() =>
+        public void EnumToString_UndeclaredValue_ReturnsTheFallback()
+        {
+            LogAssert.Expect(LogType.Error, new Regex("EnumToStringConverter.*a declared member"));
+
             Assert.AreEqual("?", new EnumToStringConverter<Weather>(EnumNameSource.Name, "?").Convert((Weather)99));
+        }
 
         [TestCase(0, "a")]
         [TestCase(2, "c")]
@@ -195,8 +235,12 @@ namespace Aspid.MVVM.StarterKit.Tests
             Assert.AreEqual("?", Index(IndexMode.Fallback).Convert(index));
 
         [Test]
-        public void IndexToValue_EmptyArray_ReturnsTheFallback() =>
+        public void IndexToValue_EmptyArray_ReportsAndReturnsTheFallback()
+        {
+            LogAssert.Expect(LogType.Error, new Regex("IndexToValueConverter.*no values are authored"));
+
             Assert.AreEqual("?", new IndexToValueConverter<string>(null, IndexMode.Clamp, "?").Convert(0));
+        }
 
         [Test]
         public void NullCoalesce_SubstitutesTheFallback()
@@ -214,12 +258,13 @@ namespace Aspid.MVVM.StarterKit.Tests
         }
 
         // `is null` reports false for a destroyed object, so a crosshair bound to a dead target
-        // would stay on screen. Only Unity's overloaded == catches it.
+        // would stay on screen. Only Unity's overloaded == catches it — the null-operand form of
+        // EqualityToBool makes that check.
         [Test]
-        public void UnityObjectNullToBool_CountsADestroyedObjectAsMissing()
+        public void EqualityToBool_NullOperand_CountsADestroyedObjectAsNull()
         {
-            var gameObject = new GameObject(nameof(UnityObjectNullToBool_CountsADestroyedObjectAsMissing));
-            var converter = new UnityObjectNullToBoolConverter();
+            var gameObject = new GameObject(nameof(EqualityToBool_NullOperand_CountsADestroyedObjectAsNull));
+            var converter = new EqualityToBoolConverter<object>(null);
 
             Assert.IsFalse(converter.Convert(gameObject));
 
@@ -229,8 +274,15 @@ namespace Aspid.MVVM.StarterKit.Tests
         }
 
         [Test]
-        public void UnityObjectNullToBool_UnassignedIsMissing() =>
-            Assert.IsTrue(new UnityObjectNullToBoolConverter().Convert(null));
+        public void EqualityToBool_NullOperand_PlainReferenceIsNotNull()
+        {
+            Assert.IsFalse(new EqualityToBoolConverter<object>(null).Convert("abc"));
+            Assert.IsTrue(new EqualityToBoolConverter<object>(null).Convert(null));
+        }
+
+        [Test]
+        public void EqualityToBool_NullOperand_InvertFlipsTheResult() =>
+            Assert.IsFalse(new EqualityToBoolConverter<object>(null, isInvert: true).Convert(null));
 
         private static IndexToValueConverter<string> Index(IndexMode mode) =>
             new(new[] { "a", "b", "c" }, mode, "?");

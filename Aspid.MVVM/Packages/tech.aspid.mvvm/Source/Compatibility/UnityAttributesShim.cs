@@ -1,8 +1,8 @@
 // The Unity-independent core (Source) and StarterKit runtime are compiled both inside Unity and as a
-// plain .NET library (see Aspid.MVVM.Generators.Sample). Inside Unity these attributes come from
-// UnityEngine.CoreModule; outside it they do not exist, which would otherwise force every annotated
-// field to be wrapped in `#if UNITY_2022_1_OR_NEWER`. These no-op stubs stand in for them instead,
-// so the attributes can be written unconditionally at every usage site.
+// plain .NET library (see Aspid.MVVM.Generators.Sample). Inside Unity these attributes and the
+// serialization callback come from UnityEngine.CoreModule; outside it they do not exist, which would
+// otherwise force every annotated field to be wrapped in `#if UNITY_2022_1_OR_NEWER`. These no-op stubs
+// stand in for them instead, so they can be written unconditionally at every usage site.
 #if !UNITY_2022_1_OR_NEWER
 using System;
 
@@ -50,6 +50,23 @@ namespace UnityEngine
         /// </summary>
         // ReSharper disable once InconsistentNaming — mirrors the public field name of Unity's TooltipAttribute.
         public string tooltip { get; }
+    }
+
+    /// <summary>
+    /// Stand-in for Unity's hook into serialization. Compiled only outside Unity, where
+    /// <c>UnityEngine.CoreModule</c> is unavailable and nothing ever calls it.
+    /// </summary>
+    public interface ISerializationCallbackReceiver
+    {
+        /// <summary>
+        /// Called before the object is written.
+        /// </summary>
+        void OnBeforeSerialize();
+
+        /// <summary>
+        /// Called after the object is read.
+        /// </summary>
+        void OnAfterDeserialize();
     }
 }
 #endif

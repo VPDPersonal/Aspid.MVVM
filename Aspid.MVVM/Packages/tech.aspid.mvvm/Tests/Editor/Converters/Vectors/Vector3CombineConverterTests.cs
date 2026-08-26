@@ -4,16 +4,13 @@ using UnityEngine.TestTools;
 using System.Text.RegularExpressions;
 using Mode = Aspid.MVVM.StarterKit.Vector3CombineConverter.Mode;
 
-// These fixtures name the [Obsolete] converter aliases on purpose — guarding the deprecated
-// surface is the point.
-#pragma warning disable CS0618 // Type or member is obsolete
-
+// ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit.Tests
 {
     /// <summary>
     /// Coverage for <see cref="Vector3CombineConverter"/> — all seven <see cref="Mode"/> branches,
     /// the pre/post converter hooks, both entry points (<c>Convert(Vector2)</c> and
-    /// <c>Convert(Vector3)</c>), and the unassigned-collider degrade path of the subclasses.
+    /// <c>Convert(Vector3)</c>), and the unassigned-target degrade path of the base.
     /// </summary>
     /// <remarks>
     /// The class is abstract, so the reference vector is supplied here by a stub. The
@@ -23,8 +20,8 @@ namespace Aspid.MVVM.StarterKit.Tests
     [TestFixture]
     internal sealed class Vector3CombineConverterTests
     {
-        private static readonly Vector3 From = new(1f, 2f, 3f);
-        private static readonly Vector3 To = new(10f, 20f, 30f);
+        private static readonly Vector3 _from = new(1f, 2f, 3f);
+        private static readonly Vector3 _to = new(10f, 20f, 30f);
 
         [TestCase(Mode.X, 1f, 20f, 30f)]
         [TestCase(Mode.Y, 10f, 2f, 30f)]
@@ -34,11 +31,11 @@ namespace Aspid.MVVM.StarterKit.Tests
         [TestCase(Mode.YZ, 10f, 2f, 3f)]
         [TestCase(Mode.XYZ, 1f, 2f, 3f)]
         public void Convert_Vector3_TakesTheNamedAxesFromTheInput(Mode mode, float x, float y, float z) =>
-            Assert.AreEqual(new Vector3(x, y, z), NewStub(mode).Convert(From));
+            Assert.AreEqual(new Vector3(x, y, z), NewStub(mode).Convert(_from));
 
         [Test]
         public void Convert_DefaultMode_IsXyz() =>
-            Assert.AreEqual(From, NewStub(Mode.XYZ).Convert(From));
+            Assert.AreEqual(_from, NewStub(Mode.XYZ).Convert(_from));
 
         // Known defect: Convert(Vector2) has no dedicated combine path, so the argument widens to
         // (x, y, 0) before the mode runs and the source z is lost. Characterisation only — the fix
@@ -54,56 +51,72 @@ namespace Aspid.MVVM.StarterKit.Tests
         public void Convert_PreConverter_RunsBeforeTheModeSelection() =>
             Assert.AreEqual(
                 new Vector3(2f, 20f, 30f),
-                NewStub(Mode.X, pre: new Offset(1f), post: null).Convert(From));
+                NewStub(Mode.X, pre: new Offset(1f), post: null).Convert(_from));
 
         [Test]
         public void Convert_PostConverter_RunsOnTheCombinedResult() =>
             Assert.AreEqual(
                 new Vector3(2f, 21f, 31f),
-                NewStub(Mode.X, pre: null, post: new Offset(1f)).Convert(From));
+                NewStub(Mode.X, pre: null, post: new Offset(1f)).Convert(_from));
 
         [Test]
         public void Convert_BothHooks_RunInOrder() =>
             Assert.AreEqual(
                 new Vector3(3f, 21f, 31f),
-                NewStub(Mode.X, pre: new Offset(1f), post: new Offset(1f)).Convert(From));
+                NewStub(Mode.X, pre: new Offset(1f), post: new Offset(1f)).Convert(_from));
 
-        // The null guard lives in the collider subclasses now: an unassigned collider logs an error
-        // and substitutes Vector3.zero as the reference vector.
+        // The null guard lives in the base: an unassigned target logs an error and the input
+        // comes back unchanged.
         [Test]
-        public void Convert_MissingCollider_LogsAndSubstitutesZero()
+        public void Convert_MissingTarget_LogsAndReturnsTheInput()
         {
-            LogAssert.Expect(LogType.Error, new Regex("no collider assigned"));
+            LogAssert.Expect(LogType.Error, new Regex("no target assigned"));
 
-            Assert.AreEqual(From, new BoxColliderCentreCombineConverter().Convert(From));
+            Assert.AreEqual(_from, new BoxColliderCenterCombineConverter().Convert(_from));
         }
 
-        private Stub NewStub(Mode mode) =>
-            new(To, mode);
+        private GameObject _host;
 
-        private Stub NewStub(Mode mode, IConverterVector3 pre, IConverterVector3 post) =>
-            new(To, mode, pre, post);
+        [SetUp]
+        public void SetUp() =>
+            // Hidden and unsaved so that a failing assertion cannot leave a stray object in the editor scene.
+            _host = new GameObject("Vector3CombineHost") { hideFlags = HideFlags.HideAndDontSave };
+
+        [TearDown]
+        public void TearDown() =>
+            Object.DestroyImmediate(_host);
+
+        private Stub NewStub(Mode mode) =>
+            new(_host.transform, _to, mode);
+
+        private Stub NewStub(Mode mode, IConverter<Vector3, Vector3> pre, IConverter<Vector3, Vector3> post) =>
+            new(_host.transform, _to, mode, pre, post);
 
         private sealed class Stub : Vector3CombineConverter
         {
-            private readonly Vector3 _to;
+            private readonly Vector3 _vectorTo;
+            private readonly Component _target;
 
-            public Stub(Vector3 to, Mode mode)
+            public Stub(Component target, Vector3 to, Mode mode)
                 : base(mode)
             {
-                _to = to;
+                _target = target;
+                _vectorTo = to;
             }
 
-            public Stub(Vector3 to, Mode mode, IConverterVector3 pre, IConverterVector3 post)
+            public Stub(Component target, Vector3 to, Mode mode, IConverter<Vector3, Vector3> pre, IConverter<Vector3, Vector3> post)
                 : base(mode, pre, post)
             {
-                _to = to;
+                _target = target;
+                _vectorTo = to;
             }
 
-            protected override Vector3 VectorTo => _to;
+            protected override Component Target => _target;
+
+            protected override Vector3 VectorTo => _vectorTo;
         }
 
-        private sealed class Offset : IConverterVector3
+        private sealed class Offset : IConverter<Vector3, Vector3>
         {
             private readonly float _amount;
 

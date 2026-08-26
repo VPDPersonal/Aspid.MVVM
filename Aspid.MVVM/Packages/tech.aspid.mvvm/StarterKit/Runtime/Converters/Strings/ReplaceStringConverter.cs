@@ -1,11 +1,6 @@
-using Aspid.FastTools.Types;
 using System;
 using UnityEngine;
-
-// The named converter aliases are [Obsolete]. The converters below keep implementing them for
-// one release so that a [SerializeReference] field a project declares as one still
-// deserializes; the base lists go with the aliases in the next major.
-#pragma warning disable CS0618 // Type or member is obsolete
+using Aspid.FastTools.Types;
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
@@ -14,8 +9,11 @@ namespace Aspid.MVVM.StarterKit
     /// Replaces occurrences of one piece of text with another.
     /// </summary>
     [Serializable]
-    [TypeSelectorDisplay(Group = "Aspid/String", Name = "Replace String", Tooltip = "Replaces occurrences of one piece of text with another")]
-    public sealed class ReplaceStringConverter : IConverterString
+    [TypeSelectorDisplay(
+        Group = "Aspid/String",
+        Name = "Replace",
+        Tooltip = "Replaces occurrences of one piece of text with another")]
+    public sealed class ReplaceStringConverter : IConverter<string?, string?>
     {
         [Tooltip("The text to look for. When empty, the string passes through.")]
         [SerializeField] private string _search = string.Empty;
@@ -26,9 +24,10 @@ namespace Aspid.MVVM.StarterKit
         [Tooltip("Match without regard to case.")]
         [SerializeField] private bool _ignoreCase;
 
+        /// <remarks>Default: with nothing to look for, which leaves the string as it is.</remarks>
         public ReplaceStringConverter() { }
 
-        /// <param name="search">The text to look for.</param>
+        /// <param name="search">The text to look for. When empty, the string passes through.</param>
         /// <param name="replacement">The text put in its place.</param>
         /// <param name="ignoreCase">If <see langword="true"/>, matches without regard to case.</param>
         public ReplaceStringConverter(string search, string replacement, bool ignoreCase = false)

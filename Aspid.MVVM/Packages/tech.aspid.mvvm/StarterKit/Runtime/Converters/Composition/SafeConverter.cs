@@ -1,6 +1,6 @@
-using Aspid.FastTools.Types;
 using System;
 using UnityEngine;
+using Aspid.FastTools.Types;
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
@@ -11,37 +11,54 @@ namespace Aspid.MVVM.StarterKit
     /// <typeparam name="TFrom">The type of the input value.</typeparam>
     /// <typeparam name="TTo">The type of the converted output value.</typeparam>
     /// <remarks>
-    /// Dispatch to binders is a bare multicast: an exception raised inside a converter cuts the
-    /// subscriber list and silently stops every binder queued behind it. Wrapping contains the damage
-    /// to that converter.
+    /// Binder dispatch is a bare multicast: an exception from one converter cuts the subscriber list
+    /// and stops the binders queued behind it.
     /// <para>
-    /// It catches everything on purpose — a containment boundary the author opts into, not a filter
-    /// for expected failures.
+    /// It catches every exception on purpose — a containment boundary, not a filter.
     /// </para>
     /// </remarks>
     [Serializable]
-    [TypeSelectorDisplay(Group = "Aspid/Composition", Name = "Safe", Tooltip = "Runs another converter and substitutes a fallback value if it throws")]
-    public sealed class SafeConverter<TFrom, TTo> : IConverter<TFrom?, TTo?>
+    [TypeSelectorDisplay(
+        Group = "Aspid/Composition",
+        Name = "Safe",
+        Tooltip = "Runs another converter and substitutes a fallback value if it throws")]
+    public class SafeConverter<TFrom, TTo> : ITwoWayConverter<TFrom?, TTo?>
     {
-        [Tooltip("The converter to run. When empty, the fallback value is returned.")]
+        [Tooltip("The converter to run. When empty, each direction returns its fallback.")]
+        [TypeSelector]
         [SerializeReference] private IConverter<TFrom?, TTo?>? _inner;
 
-        [Tooltip("Returned when the wrapped converter throws or is empty.")]
+        [Tooltip("Returned from Convert when the wrapped converter throws or is empty. Every failure is reported.")]
         [SerializeField] private TTo? _fallback;
 
-        [Tooltip("Report failures to the console.")]
-        [SerializeField] private bool _logErrors = true;
+        [Tooltip("Returned from Convert Back when the wrapped converter throws, converts one way only, or is empty. " +
+            "Every failure is reported.")]
+        [UsedInModes(BindMode.TwoWay, BindMode.OneWayToSource)]
+        [SerializeField] private TFrom? _convertBackFallback;
 
-        public SafeConverter() { }
+        protected SafeConverter() { }
 
         /// <param name="inner">The converter to run.</param>
-        /// <param name="fallback">Returned when <paramref name="inner"/> throws or is <see langword="null"/>.</param>
-        /// <param name="logErrors">If <see langword="true"/>, reports failures to the console.</param>
-        public SafeConverter(IConverter<TFrom?, TTo?>? inner, TTo? fallback = default, bool logErrors = true)
+        /// <param name="fallback">
+        /// Returned from <see cref="Convert"/> when <paramref name="inner"/> throws. Every failure
+        /// is reported.
+        /// </param>
+        /// <param name="convertBackFallback">
+        /// Returned from <see cref="ConvertBack"/> when <paramref name="inner"/> throws or converts
+        /// one way only. Every failure is reported.
+        /// </param>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown when <paramref name="inner"/> is <see langword="null"/>. The empty shape belongs to
+        /// the Inspector, which answers it with the fallback for the direction.
+        /// </exception>
+        public SafeConverter(
+            IConverter<TFrom?, TTo?> inner,
+            TTo? fallback = default,
+            TFrom? convertBackFallback = default)
         {
-            _inner = inner;
             _fallback = fallback;
-            _logErrors = logErrors;
+            _convertBackFallback = convertBackFallback;
+            _inner = inner ?? throw new ArgumentNullException(nameof(inner));
         }
 
         /// <summary>
@@ -52,7 +69,11 @@ namespace Aspid.MVVM.StarterKit
         public TTo? Convert(TFrom? value)
         {
             if (_inner is null)
-                return _fallback;
+            {
+                return this.UseFallback(
+                    fallback: _fallback,
+                    problem: "the inner converter is required, and it is missing");
+            }
 
             try
             {
@@ -60,10 +81,52 @@ namespace Aspid.MVVM.StarterKit
             }
             catch (Exception exception)
             {
-                if (_logErrors)
-                    Debug.LogError($"{_inner.GetType().Name} threw ({exception.Message}). Using the fallback value.");
+                _inner.LogError(
+                    exception: exception,
+                    consequence: "Returning the fallback value.");
 
                 return _fallback;
+            }
+        }
+
+        /// <summary>
+        /// Converts the specified value back, substituting the reverse fallback if the wrapped
+        /// converter throws.
+        /// </summary>
+        /// <param name="value">The value to convert back.</param>
+        /// <returns>
+        /// The value converted back, or the reverse fallback — also returned when the wrapped
+        /// converter converts one way only.
+        /// </returns>
+        public TFrom? ConvertBack(TTo? value)
+        {
+            if (_inner is null)
+            {
+                return this.UseFallback(
+                    fallback: _convertBackFallback,
+                    problem: "the inner converter is required, and it is missing");
+            }
+
+            if (_inner is not ITwoWayConverter<TFrom?, TTo?> inner)
+            {
+                var converterName = ConverterMessageText.GetTypeName(_inner.GetType());
+
+                return this.UseFallback(
+                    fallback: _convertBackFallback,
+                    problem: $"{converterName} converts one way only, so the conversion cannot be undone");
+            }
+
+            try
+            {
+                return inner.ConvertBack(value);
+            }
+            catch (Exception exception)
+            {
+                _inner.LogError(
+                    exception: exception,
+                    consequence: "Returning the fallback value.");
+
+                return _convertBackFallback;
             }
         }
     }

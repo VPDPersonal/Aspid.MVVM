@@ -1,5 +1,3 @@
-#nullable enable
-
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
@@ -7,9 +5,8 @@ namespace Aspid.MVVM.StarterKit
     /// The easing curve <see cref="EasingConverter"/> applies.
     /// </summary>
     /// <remarks>
-    /// The standard Penner set: <c>In</c> starts slowly, <c>Out</c> ends slowly, <c>InOut</c> does both
-    /// around a midpoint. Families are ordered by how hard they pull — Sine, Quad, Cubic, Quart, Quint,
-    /// Expo, Circ — then Back, Elastic and Bounce. Only Back and Elastic leave the 0..1 range.
+    /// <c>In</c> starts slowly, <c>Out</c> ends slowly, <c>InOut</c> does both; only Back and Elastic
+    /// leave the 0..1 range.
     /// </remarks>
     public enum EaseType
     {
@@ -19,7 +16,7 @@ namespace Aspid.MVVM.StarterKit
         Linear,
 
         /// <summary>
-        /// A quarter sine wave, starting slowly. The gentlest of the set.
+        /// A quarter sine wave, starting slowly.
         /// </summary>
         SineIn,
 
@@ -79,7 +76,7 @@ namespace Aspid.MVVM.StarterKit
         QuartInOut,
 
         /// <summary>
-        /// The fifth power, starting slowly. The hardest of the polynomials.
+        /// The fifth power, starting slowly.
         /// </summary>
         QuintIn,
 
@@ -154,12 +151,12 @@ namespace Aspid.MVVM.StarterKit
         ElasticInOut,
 
         /// <summary>
-        /// Bounces towards the start.
+        /// Bounces toward the start.
         /// </summary>
         BounceIn,
 
         /// <summary>
-        /// Lands on 1 and bounces to a stop. The one most animations want.
+        /// Lands on 1 and bounces to a stop.
         /// </summary>
         BounceOut,
 

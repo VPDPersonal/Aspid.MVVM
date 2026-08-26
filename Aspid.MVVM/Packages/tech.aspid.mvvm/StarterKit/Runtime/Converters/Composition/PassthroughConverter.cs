@@ -1,5 +1,5 @@
-using Aspid.FastTools.Types;
 using System;
+using Aspid.FastTools.Types;
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
@@ -8,13 +8,12 @@ namespace Aspid.MVVM.StarterKit
     /// Returns its input unchanged.
     /// </summary>
     /// <typeparam name="T">The type of the value passing through.</typeparam>
-    /// <remarks>
-    /// Useful as an explicit branch in <see cref="ConditionalConverter{T}"/> — one that reads as a
-    /// deliberate no-op rather than an unfilled slot — and as a neutral element in code.
-    /// </remarks>
     [Serializable]
-    [TypeSelectorDisplay(Group = "Aspid/Composition", Name = "Passthrough", Tooltip = "Returns its input unchanged")]
-    public sealed class PassthroughConverter<T> : ITwoWayConverter<T, T>
+    [TypeSelectorDisplay(
+        Group = "Aspid/Composition",
+        Name = "Passthrough",
+        Tooltip = "Returns its input unchanged")]
+    public class PassthroughConverter<T> : ITwoWayConverter<T, T>
     {
         /// <summary>
         /// Returns the specified value unchanged.

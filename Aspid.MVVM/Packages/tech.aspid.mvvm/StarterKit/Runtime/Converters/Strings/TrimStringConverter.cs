@@ -1,11 +1,6 @@
-using Aspid.FastTools.Types;
 using System;
 using UnityEngine;
-
-// The named converter aliases are [Obsolete]. The converters below keep implementing them for
-// one release so that a [SerializeReference] field a project declares as one still
-// deserializes; the base lists go with the aliases in the next major.
-#pragma warning disable CS0618 // Type or member is obsolete
+using Aspid.FastTools.Types;
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
@@ -13,16 +8,20 @@ namespace Aspid.MVVM.StarterKit
     /// <summary>
     /// Removes surrounding characters from a string.
     /// </summary>
-    /// <remarks>Sanitising what came back from an input field before it is shown again.</remarks>
     [Serializable]
-    [TypeSelectorDisplay(Group = "Aspid/String", Name = "Trim String", Tooltip = "Removes surrounding characters from a string")]
-    public sealed class TrimStringConverter : IConverterString
+    [TypeSelectorDisplay(
+        Group = "Aspid/String",
+        Name = "Trim",
+        Tooltip = "Removes surrounding characters from a string")]
+    public sealed class TrimStringConverter : IConverter<string?, string?>, ISerializationCallbackReceiver
     {
         [Tooltip("Which ends to trim.")]
         [SerializeField] private TrimSide _side = TrimSide.Both;
 
         [Tooltip("The characters to remove. When empty, whitespace is removed.")]
         [SerializeField] private string _trimChars = string.Empty;
+
+        [NonSerialized] private char[]? _trimCharsCache;
 
         /// <remarks>Default: trimming whitespace from both ends.</remarks>
         public TrimStringConverter() { }
@@ -39,21 +38,54 @@ namespace Aspid.MVVM.StarterKit
         /// Trims the specified string.
         /// </summary>
         /// <param name="value">The string to trim.</param>
-        /// <returns>The trimmed string.</returns>
-        /// <exception cref="ArgumentOutOfRangeException">Thrown when the side is not a declared value.</exception>
+        /// <returns>
+        /// The trimmed string — or the string unchanged when the side is not a declared value.
+        /// </returns>
         public string? Convert(string? value)
         {
             if (value is null) return null;
 
-            var chars = string.IsNullOrEmpty(_trimChars) ? null : _trimChars.ToCharArray();
+            var chars = TrimChars();
 
             return _side switch
             {
                 TrimSide.Both => chars is null ? value.Trim() : value.Trim(chars),
                 TrimSide.Start => chars is null ? value.TrimStart() : value.TrimStart(chars),
                 TrimSide.End => chars is null ? value.TrimEnd() : value.TrimEnd(chars),
-                _ => throw new ArgumentOutOfRangeException(nameof(_side), _side, null)
+                _ => Undeclared(value)
             };
+        }
+
+        void ISerializationCallbackReceiver.OnBeforeSerialize() { }
+
+        // TODO Aspid.MVVM – Verify in the Editor that Unity calls OnAfterDeserialize on a converter held
+        // in a [SerializeReference] field after an Inspector edit, not only on load. Five converters now
+        // drop their cache this way instead of keeping a copy of every setting to compare against:
+        // TrimStringConverter, ThousandsSeparatorConverter, StringToVector2Converter,
+        // StringToVector3Converter and EnumFlagsToStringConverter. If it is not called, they need the
+        // host binder to invalidate them from OnValidate instead.
+
+        // The one moment the authored field changes: Unity reads the object again after every edit.
+        void ISerializationCallbackReceiver.OnAfterDeserialize() =>
+            _trimCharsCache = null;
+
+        private string Undeclared(string value)
+        {
+            this.LogError($"the side {_side.Describe()} is not a declared {nameof(TrimSide)}",
+                "Returning the value unchanged.");
+
+            return value;
+        }
+
+        // ToCharArray allocates and a binder pushes on every notification, so the array is made once.
+        // An empty one stands for "trim whitespace", which is what Trim does with no argument.
+        private char[]? TrimChars()
+        {
+            _trimCharsCache ??= string.IsNullOrEmpty(_trimChars)
+                ? Array.Empty<char>()
+                : _trimChars.ToCharArray();
+
+            return _trimCharsCache.Length is 0 ? null : _trimCharsCache;
         }
     }
 }

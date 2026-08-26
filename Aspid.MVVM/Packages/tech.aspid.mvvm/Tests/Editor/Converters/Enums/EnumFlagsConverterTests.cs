@@ -1,7 +1,9 @@
-using System;
 using UnityEngine;
 using NUnit.Framework;
+using UnityEngine.TestTools;
+using System.Text.RegularExpressions;
 
+// ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit.Tests
 {
     /// <summary>
@@ -15,7 +17,7 @@ namespace Aspid.MVVM.StarterKit.Tests
     /// operation on a [Flags] enum, so the passthrough cannot pass by being a no-op everywhere.
     /// <para>
     /// The second is naming a composite member instead of its parts — a bit reachable only through a
-    /// composite ends up with no name at all. The third is documentation: three assertions pin behaviour
+    /// composite ends up with no name at all. The third is documentation: three assertions pin behavior
     /// the XML docs read against, and are named to say so.
     /// </para>
     /// </remarks>
@@ -139,15 +141,16 @@ namespace Aspid.MVVM.StarterKit.Tests
             Assert.AreEqual("9", new EnumToStringConverter<Hazard>(EnumNameSource.Raw).Convert(FireAndUnnamedBit));
         }
 
-        // Documented as "thrown when the name source is not a declared value" without qualification.
-        // The source is only consulted once a flag has to be named, so a value carrying none returns
-        // the empty text from the same instance that just threw.
+        // The source is only consulted once a flag has to be named, so a value carrying none stays
+        // quiet, while a named flag reports the undeclared source and falls back to the member name.
         [Test]
-        public void Convert_UndeclaredNameSource_ThrowsOnlyWhenAFlagHasToBeNamed()
+        public void Convert_UndeclaredNameSource_ReportsOnlyWhenAFlagHasToBeNamed()
         {
             var converter = new EnumFlagsToStringConverter<Hazard>(", ", (EnumNameSource)99, "Nothing");
 
-            Assert.Throws<ArgumentOutOfRangeException>(() => converter.Convert(Hazard.Fire));
+            LogAssert.Expect(LogType.Error, new Regex("not a declared EnumNameSource"));
+
+            Assert.AreEqual("Fire", converter.Convert(Hazard.Fire));
             Assert.AreEqual("Nothing", converter.Convert(Hazard.None));
         }
 
@@ -172,9 +175,14 @@ namespace Aspid.MVVM.StarterKit.Tests
             Assert.AreEqual("None", Medals().Convert(Medal.None));
         }
 
+        // The whole value is handed to the inner name converter, which has no name for it and says so.
         [Test]
-        public void Convert_NonFlags_UndeclaredValue_ReturnsTheNoneText() =>
+        public void Convert_NonFlags_UndeclaredValue_ReturnsTheNoneText()
+        {
+            LogAssert.Expect(LogType.Error, new Regex("EnumToStringConverter.*a declared member"));
+
             Assert.AreEqual("n/a", Medals().Convert(MissingMedal));
+        }
 
         // Documented as the text shown "when the value names no flags". Under Raw the inner converter
         // answers with the number, which is not empty, so the empty text is never reached — the View
@@ -224,12 +232,12 @@ namespace Aspid.MVVM.StarterKit.Tests
         public void MaskConvert_Flags_AppliesTheOperation(EnumMaskOperation operation, Hazard expected) =>
             Assert.AreEqual(expected, new EnumMaskConverter<Hazard>(FireAndShock, operation).Convert(FireAndIce));
 
-        // The empty mask is what an unauthored converter carries, and And is its default operation —
-        // so a converter dropped on a binder and left alone blanks the value it is given. This is the
-        // behaviour the non-[Flags] passthrough below exists to avoid.
+        // An empty mask under the default operation is what an unauthored converter carries, and And
+        // is that default — so a converter dropped on a binder and left alone blanks the value it is
+        // given. This is the behavior the non-[Flags] passthrough below exists to avoid.
         [Test]
-        public void MaskConvert_DefaultConstructed_AndsWithAnEmptyMaskAndBlanksTheValue() =>
-            Assert.AreEqual(Hazard.None, new EnumMaskConverter<Hazard>().Convert(FireAndIce));
+        public void MaskConvert_EmptyMask_AndsWithAnEmptyMaskAndBlanksTheValue() =>
+            Assert.AreEqual(Hazard.None, new EnumMaskConverter<Hazard>(default).Convert(FireAndIce));
 
         // A combination is a legal value the member list does not hold, so the result is not checked
         // against it — including when the value carries a bit no member declares.
@@ -240,10 +248,35 @@ namespace Aspid.MVVM.StarterKit.Tests
             Assert.AreEqual(FireAndUnnamedBit, new EnumMaskConverter<Hazard>(Hazard.Fire, EnumMaskOperation.Or).Convert(UnnamedBit));
         }
 
+        // An operation outside the enum is what a renamed or reordered member deserializes into. It
+        // is reported rather than combining bits under a rule nobody authored, and the value the
+        // View already shows is left alone.
         [Test]
-        public void MaskConvert_Flags_UndeclaredOperation_Throws() =>
-            Assert.Throws<ArgumentOutOfRangeException>(() =>
+        public void MaskConvert_Flags_UndeclaredOperation_ReportsItAndPassesTheValueThrough()
+        {
+            ExpectUndeclaredOperationError();
+
+            Assert.AreEqual(
+                FireAndIce,
                 new EnumMaskConverter<Hazard>(Hazard.Fire, (EnumMaskOperation)99).Convert(FireAndIce));
+        }
+
+        // The passthrough is never cached, so a converter left broken says so on every push instead
+        // of answering the second one out of the cache.
+        [Test]
+        public void MaskConvert_Flags_UndeclaredOperation_ReportsItOnEveryPush()
+        {
+            var converter = new EnumMaskConverter<Hazard>(Hazard.Fire, (EnumMaskOperation)99);
+
+            ExpectUndeclaredOperationError();
+            ExpectUndeclaredOperationError();
+
+            converter.Convert(FireAndIce);
+            converter.Convert(FireAndIce);
+        }
+
+        private static void ExpectUndeclaredOperationError() =>
+            LogAssert.Expect(LogType.Error, new Regex("EnumMaskConverter.*not a declared"));
 
         // -------------------------------------------------------------------------------------------
         // EnumMaskConverter — an enum that is not [Flags]
@@ -253,32 +286,69 @@ namespace Aspid.MVVM.StarterKit.Tests
         [TestCase(EnumMaskOperation.Or)]
         [TestCase(EnumMaskOperation.Xor)]
         [TestCase(EnumMaskOperation.Clear)]
-        public void MaskConvert_NonFlags_PassesTheValueThroughUnchanged(EnumMaskOperation operation) =>
+        public void MaskConvert_NonFlags_PassesTheValueThroughUnchanged(EnumMaskOperation operation)
+        {
+            ExpectNonFlagsError();
+
             Assert.AreEqual(Medal.Silver, new EnumMaskConverter<Medal>(Medal.Bronze, operation).Convert(Medal.Silver));
+        }
 
         // Both masks reduce Silver's 20 to 0 when read as bits, which would hand the View Medal.None —
         // a medal the player does not have, indistinguishable from the real thing.
         [TestCase(EnumMaskOperation.And, Medal.None)]     // 20 & 0 == 0
         [TestCase(EnumMaskOperation.Clear, Medal.Silver)] // 20 & ~20 == 0
-        public void MaskConvert_NonFlags_MaskThatWouldBlankTheValue_LeavesItAlone(EnumMaskOperation operation, Medal mask) =>
+        public void MaskConvert_NonFlags_MaskThatWouldBlankTheValue_LeavesItAlone(EnumMaskOperation operation, Medal mask)
+        {
+            ExpectNonFlagsError();
+
             Assert.AreEqual(Medal.Silver, new EnumMaskConverter<Medal>(mask, operation).Convert(Medal.Silver));
+        }
 
         // 20 against 10 gives 30 under both operations, and no medal holds 30 — a value every switch
         // in the game would fall through.
         [TestCase(EnumMaskOperation.Or)]  // 20 | 10 == 30
         [TestCase(EnumMaskOperation.Xor)] // 20 ^ 10 == 30
-        public void MaskConvert_NonFlags_MaskThatWouldProduceAnUndeclaredNumber_LeavesItAlone(EnumMaskOperation operation) =>
+        public void MaskConvert_NonFlags_MaskThatWouldProduceAnUndeclaredNumber_LeavesItAlone(EnumMaskOperation operation)
+        {
+            ExpectNonFlagsError();
+
             Assert.AreEqual(Medal.Silver, new EnumMaskConverter<Medal>(Medal.Bronze, operation).Convert(Medal.Silver));
+        }
 
         [Test]
-        public void MaskConvert_NonFlags_UndeclaredValue_PassesThroughUnchanged() =>
+        public void MaskConvert_NonFlags_UndeclaredValue_PassesThroughUnchanged()
+        {
+            ExpectNonFlagsError();
+
             Assert.AreEqual(MissingMedal, new EnumMaskConverter<Medal>(Medal.Bronze).Convert(MissingMedal));
+        }
 
-        // Documented as "thrown when the operation is not a declared value". The passthrough happens
-        // before the switch, so the same broken operation that throws on Hazard is never read here.
+        // The non-[Flags] passthrough happens before the switch, so the same broken operation that is
+        // reported on Hazard is never read here: only the one error comes out.
         [Test]
-        public void MaskConvert_NonFlags_UndeclaredOperation_DoesNotThrow() =>
+        public void MaskConvert_NonFlags_UndeclaredOperation_ReportsOnlyTheNonFlagsError()
+        {
+            ExpectNonFlagsError();
+
             Assert.AreEqual(Medal.Silver, new EnumMaskConverter<Medal>(Medal.Bronze, (EnumMaskOperation)99).Convert(Medal.Silver));
+        }
+
+        // The passthrough is a misconfiguration, not a feature: every push says so rather than
+        // leaving a converter that does nothing looking as if it works.
+        [Test]
+        public void MaskConvert_NonFlags_ReportsTheMisconfigurationOnEveryPush()
+        {
+            var converter = new EnumMaskConverter<Medal>(Medal.Bronze);
+
+            ExpectNonFlagsError();
+            ExpectNonFlagsError();
+
+            converter.Convert(Medal.Silver);
+            converter.Convert(Medal.Silver);
+        }
+
+        private static void ExpectNonFlagsError() =>
+            LogAssert.Expect(LogType.Error, new Regex(@"EnumMaskConverter.*is not marked \[Flags\]"));
 
         // -------------------------------------------------------------------------------------------
         // EnumMaskConverter — a signed enum holding the sign bit
@@ -310,7 +380,7 @@ namespace Aspid.MVVM.StarterKit.Tests
         [Test]
         public void MaskConvert_AlternatingBetweenTwoValues_AnswersForTheValueItWasGiven()
         {
-            var converter = new EnumMaskConverter<Hazard>(FireAndIce, EnumMaskOperation.And);
+            var converter = new EnumMaskConverter<Hazard>(FireAndIce);
 
             Assert.AreEqual(Hazard.Fire, converter.Convert(FireAndShock));
             Assert.AreEqual(Hazard.Ice, converter.Convert(IceAndShock));
@@ -322,7 +392,7 @@ namespace Aspid.MVVM.StarterKit.Tests
         [Test]
         public void MaskConvert_ChainedIntoTheStringConverter_NarrowsWhatTheTextNames()
         {
-            var mask = new EnumMaskConverter<Hazard>(FireAndIce, EnumMaskOperation.And);
+            var mask = new EnumMaskConverter<Hazard>(FireAndIce);
             var text = new EnumFlagsToStringConverter<Hazard>();
 
             Assert.AreEqual("Fire, Ice", text.Convert(mask.Convert(EveryHazard)));

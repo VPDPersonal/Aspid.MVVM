@@ -1,5 +1,6 @@
 using System;
 
+// ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit.Tests
 {
     // A signed backing type whose member holds the sign bit: reading it as bits sign-extends to

@@ -123,10 +123,14 @@ namespace Aspid.MVVM.StarterKit
         /// In <see cref="BindMode.OneWayToSource"/> mode, immediately pushes the current <see cref="Value"/>
         /// to the ViewModel to synchronise the initial state.
         /// </summary>
+        /// <remarks>
+        /// The push goes through <see cref="GetConvertedBackValue"/>, so the initial value reaches the
+        /// ViewModel in the same space as every later one.
+        /// </remarks>
         protected override void OnBound()
         {
             if (Mode is not BindMode.OneWayToSource) return;
-            _valueChanged?.Invoke(Value);
+            _valueChanged?.Invoke(GetConvertedBackValue(Value));
         }
 
         /// <summary>

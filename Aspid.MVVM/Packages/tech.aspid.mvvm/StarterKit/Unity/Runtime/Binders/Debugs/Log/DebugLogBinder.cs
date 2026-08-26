@@ -25,16 +25,16 @@ namespace Aspid.MVVM.StarterKit
         }
 
         // ReSharper disable once FieldCanBeMadeReadOnly.Local
-        [Tooltip("Converter used to format bound values as log messages. Defaults to ObjectToStringConverter.")]
+        [Tooltip("Converter used to format bound values as log messages. Defaults to GenericToStringConverter.")]
         [SerializeReference] private Converter _converter;
 
         /// <summary>
         /// Initializes a new instance of <see cref="DebugLogBinder"/>.
         /// </summary>
-        /// <param name="converter">The converter used to format bound values as log messages. Pass <see langword="null"/> to use <see cref="ObjectToStringConverter"/>.</param>
+        /// <param name="converter">The converter used to format bound values as log messages. Pass <see langword="null"/> to use <see cref="GenericToStringConverter{T}"/>.</param>
         public DebugLogBinder(Converter converter = null) : base(BindMode.TwoWay)
         {
-            _converter = converter ?? new ObjectToStringConverter();
+            _converter = converter ?? new GenericToStringConverter<object>();
         }
 
         /// <summary>

@@ -1,59 +1,30 @@
-using System;
 using UnityEngine;
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="MonoBinder"/> implementing <see cref="INumberBinder"/> and
-    /// <see cref="IReverseBinder{T}">IReverseBinder&lt;int&gt;</see> that binds the active <see cref="QualitySettings"/> level.
+    /// <see cref="IntMonoBinder"/> that binds the active <see cref="QualitySettings"/> level.
     /// </summary>
     /// <remarks>
     /// Clamped to the range of levels the project defines, rather than letting Unity throw on an out-of-range
     /// index. Expensive changes are applied immediately instead of being deferred to the next frame.
     /// </remarks>
-    [BindModeOverride(BindMode.OneWay, BindMode.OneTime, BindMode.OneWayToSource)]
     [AddComponentMenu("Aspid/MVVM/Binders/Application/Application Binder – Quality Level")]
     [AddBinderContextMenu(typeof(Component), Path = "Add General Binder/Application/QualityLevel")]
-    public partial class QualityLevelMonoBinder : MonoBinder, INumberBinder, IReverseBinder<int>
+    public class QualityLevelMonoBinder : IntMonoBinder
     {
         /// <inheritdoc/>
-        public event Action<int> ValueChanged;
-
-        /// <summary>
-        /// Casts the value to <see langword="int"/> and applies it.
-        /// </summary>
-        /// <param name="value">The value received from the ViewModel.</param>
-        [BinderLog]
-        public void SetValue(long value) => SetValue((int)value);
-
-        /// <inheritdoc cref="SetValue(long)"/>
-        [BinderLog]
-        public void SetValue(float value) => SetValue((int)value);
-
-        /// <inheritdoc cref="SetValue(long)"/>
-        [BinderLog]
-        public void SetValue(double value) => SetValue((int)value);
-
-        /// <summary>
-        /// Applies the value.
-        /// </summary>
-        /// <param name="value">The value received from the ViewModel.</param>
-        [BinderLog]
-        public void SetValue(int value)
+        protected sealed override int Property
         {
-            var levels = QualitySettings.names.Length;
-            QualitySettings.SetQualityLevel(Mathf.Clamp(value, 0, levels - 1), applyExpensiveChanges: true);
-        }
+            get => QualitySettings.GetQualityLevel();
+            set
+            {
+                var levels = QualitySettings.names.Length;
+                var index = Mathf.Clamp(value, min: 0, max: levels - 1);
 
-        /// <summary>
-        /// Called when the binder is bound. Sends the current value to the ViewModel when using
-        /// <see cref="BindMode.OneWayToSource"/>.
-        /// </summary>
-        protected override void OnBound()
-        {
-            if (Mode is BindMode.OneWayToSource)
-                ValueChanged?.Invoke(QualitySettings.GetQualityLevel());
+                QualitySettings.SetQualityLevel(index, applyExpensiveChanges: true);
+            }
         }
     }
 }

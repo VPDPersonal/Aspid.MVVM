@@ -55,8 +55,11 @@ namespace Aspid.MVVM.StarterKit
         {
             if (Mode is not BindMode.OneWayToSource) return;
 
-            var fullScreen = Screen.fullScreen;
-            ValueChanged?.Invoke(_converter is ITwoWayConverter<bool, bool> twoWay ? twoWay.ConvertBack(fullScreen) : fullScreen);
+            var fullScreen = _converter is ITwoWayConverter<bool, bool> twoWay
+                ? twoWay.ConvertBack(Screen.fullScreen)
+                : Screen.fullScreen;
+            
+            ValueChanged?.Invoke(fullScreen);
         }
     }
 }

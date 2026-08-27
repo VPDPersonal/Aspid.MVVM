@@ -20,22 +20,22 @@ namespace Aspid.MVVM.StarterKit
         /// <summary>
         /// Raised when the View value changes and should be propagated to an <see cref="int"/> binding target.
         /// </summary>
-        public event Action<int> IntValueChanged;
+        public event Action<int>? IntValueChanged;
 
         /// <summary>
         /// Raised when the View value changes and should be propagated to a <see cref="long"/> binding target.
         /// </summary>
-        public event Action<long> LongValueChanged;
+        public event Action<long>? LongValueChanged;
 
         /// <summary>
         /// Raised when the View value changes and should be propagated to a <see cref="float"/> binding target.
         /// </summary>
-        public event Action<float> FloatValueChanged;
+        public event Action<float>? FloatValueChanged;
 
         /// <summary>
         /// Raised when the View value changes and should be propagated to a <see cref="double"/> binding target.
         /// </summary>
-        public event Action<double> DoubleValueChanged;
+        public event Action<double>? DoubleValueChanged;
 
         /// <inheritdoc/>
         event Action<int>? IReverseBinder<int>.ValueChanged

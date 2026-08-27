@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 using UnityEngine.Audio;
 
@@ -7,83 +6,62 @@ using UnityEngine.Audio;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="MonoBinder"/> implementing <see cref="INumberBinder"/> and <see cref="IReverseBinder{T}">IReverseBinder&lt;float&gt;</see>
-    /// that writes an exposed <see cref="AudioMixer"/> parameter.
+    /// <see cref="FloatMonoBinder"/> that binds an exposed <see cref="AudioMixer"/> parameter.
     /// </summary>
     /// <remarks>
     /// The value is written to the parameter unchanged; mixer volumes are typically in decibels, so a linear 0..1
     /// slider needs a converter.
+    /// <para/>
+    /// Reads and writes are logged as errors and dropped when the mixer is missing, the name is blank, the value is
+    /// non-finite, or no parameter of that name is exposed.
     /// </remarks>
-    [BindModeOverride(BindMode.OneWay, BindMode.OneTime, BindMode.OneWayToSource)]
     [AddComponentMenu("Aspid/MVVM/Binders/Audio/AudioMixer Binder – Float")]
     [AddBinderContextMenu(typeof(Component), Path = "Add General Binder/Audio/AudioMixer Binder – Float")]
-    public partial class AudioMixerFloatMonoBinder : MonoBinder, INumberBinder, IReverseBinder<float>
+    public class AudioMixerFloatMonoBinder : FloatMonoBinder
     {
-        /// <inheritdoc/>
-        public event Action<float> ValueChanged;
-
         [Tooltip("The mixer that exposes the parameter. Required — logs an error if missing.")]
         [SerializeField] private AudioMixer _mixer;
 
         [Tooltip("Exposed parameter name, exactly as in the mixer's Exposed Parameters list.")]
         [SerializeField] private string _parameter;
 
-        /// <summary>
-        /// Casts the value to <see langword="float"/> and writes the exposed parameter.
-        /// </summary>
-        /// <param name="value">The value received from the ViewModel.</param>
-        [BinderLog]
-        public void SetValue(int value) =>
-            SetValue((float)value);
-
-        /// <inheritdoc cref="SetValue(int)"/>
-        [BinderLog]
-        public void SetValue(long value) =>
-            SetValue((float)value);
-
-        /// <inheritdoc cref="SetValue(int)"/>
-        /// <remarks>
-        /// Narrowed to <see langword="float"/> — precision may be lost.
-        /// </remarks>
-        [BinderLog]
-        public void SetValue(double value) =>
-            SetValue((float)value);
-
-        /// <summary>
-        /// Writes the exposed parameter named by the Inspector.
-        /// </summary>
-        /// <param name="value">The value received from the ViewModel, in the parameter's own units.</param>
-        /// <remarks>
-        /// Logs an error and writes nothing when the mixer is missing, the name is blank, the value is non-finite,
-        /// or the mixer refuses the write — which it does when no parameter of that name is exposed.
-        /// </remarks>
-        [BinderLog]
-        public void SetValue(float value)
+        /// <inheritdoc/>
+        protected sealed override float Property
         {
-            if (!IsUsable()) return;
-
-            if (!BinderMath.IsFinite(value))
+            get => TryGetParameter(out var value) ? value : default;
+            set
             {
-                Debug.LogError($"[{nameof(AudioMixerFloatMonoBinder)}] Non-finite value ignored for parameter '{_parameter}'.", context: this);
-                return;
-            }
+                if (!IsUsable()) return;
 
-            // SetFloat returns false silently on an unmatched parameter name — the only way to catch a typo.
-            if (!_mixer.SetFloat(_parameter, value))
-                Debug.LogError($"[{nameof(AudioMixerFloatMonoBinder)}] Mixer '{_mixer.name}' exposes no parameter '{_parameter}'.", context: this);
+                if (!BinderMath.IsFinite(value))
+                {
+                    Debug.LogError($"[{nameof(AudioMixerFloatMonoBinder)}] Non-finite value ignored for parameter '{_parameter}'.", context: this);
+                    return;
+                }
+
+                // SetFloat returns false silently on an unmatched parameter name — the only way to catch a typo.
+                if (!_mixer.SetFloat(_parameter, value))
+                    Debug.LogError($"[{nameof(AudioMixerFloatMonoBinder)}] Mixer '{_mixer.name}' exposes no parameter '{_parameter}'.", context: this);
+            }
         }
 
         /// <summary>
-        /// Called when the binder is bound. Sends the parameter's current value to the ViewModel when using
-        /// <see cref="BindMode.OneWayToSource"/>.
+        /// Sends the parameter's current value to the ViewModel, and nothing at all when it cannot be read.
         /// </summary>
-        protected override void OnBound()
+        protected override void SendInitialValueToSource()
         {
-            if (Mode is not BindMode.OneWayToSource) return;
-            if (!IsUsable()) return;
+            if (TryGetParameter(out _))
+                base.SendInitialValueToSource();
+        }
 
-            if (_mixer.GetFloat(_parameter, out var value)) ValueChanged?.Invoke(value);
-            else Debug.LogError($"[{nameof(AudioMixerFloatMonoBinder)}] Mixer '{_mixer.name}' exposes no parameter '{_parameter}'.", context: this);
+        private bool TryGetParameter(out float value)
+        {
+            value = default;
+            if (!IsUsable()) return false;
+            if (_mixer.GetFloat(_parameter, out value)) return true;
+
+            Debug.LogError($"[{nameof(AudioMixerFloatMonoBinder)}] Mixer '{_mixer.name}' exposes no parameter '{_parameter}'.", context: this);
+            return false;
         }
 
         private bool IsUsable()

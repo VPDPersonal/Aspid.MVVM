@@ -1,7 +1,6 @@
 #nullable enable
 using System;
 using UnityEngine;
-using Converter = Aspid.MVVM.StarterKit.IConverter<string?, string?>;
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
@@ -24,13 +23,13 @@ namespace Aspid.MVVM.StarterKit
         public event Action<string?>? ValueChanged;
         
         [Tooltip("Optional converter applied to the value; empty leaves it as-is.")]
-        [SerializeReference] private Converter? _converter;
+        [SerializeReference] private IConverter<string?, string?>? _converter;
         
         /// <param name="target">The <see cref="GameObject"/> whose <see cref="GameObject.tag"/> property is bound.</param>
         /// <param name="converter">The converter used to transform the bound string value, or <see langword="null"/> to use the value as-is.</param>
         /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/>.</param>
         /// <exception cref="ArgumentException">Thrown when <paramref name="mode"/> is <see cref="BindMode.TwoWay"/>.</exception>
-        public GameObjectTagBinder(GameObject target, Converter? converter = null, BindMode mode = BindMode.OneWay)
+        public GameObjectTagBinder(GameObject target, IConverter<string?, string?>? converter = null, BindMode mode = BindMode.OneWay)
             : base(target, mode)
         {
             mode.ThrowExceptionIfMatches(BindMode.TwoWay);

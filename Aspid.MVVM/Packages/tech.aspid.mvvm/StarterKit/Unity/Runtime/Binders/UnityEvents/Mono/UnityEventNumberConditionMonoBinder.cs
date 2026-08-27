@@ -1,6 +1,5 @@
 using UnityEngine;
 using UnityEngine.Events;
-using Converter = Aspid.MVVM.StarterKit.IConverter<float, bool>;
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
@@ -14,7 +13,7 @@ namespace Aspid.MVVM.StarterKit
     public sealed partial class UnityEventNumberConditionMonoBinder : MonoBinder, INumberBinder
     {
         [Tooltip("Required — an empty converter logs an error instead of invoking the event.")]
-        [SerializeReference] private Converter _converter;
+        [SerializeReference] private IConverter<float, bool> _converter;
 
         [Tooltip("The event invoked with the boolean result of the condition.")]
         [SerializeField] private UnityEvent<bool> _set;

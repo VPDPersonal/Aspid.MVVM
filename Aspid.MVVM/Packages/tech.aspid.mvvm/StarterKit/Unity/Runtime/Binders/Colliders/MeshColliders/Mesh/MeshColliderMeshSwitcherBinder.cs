@@ -1,25 +1,24 @@
 #nullable enable
 using System;
 using UnityEngine;
-using Converter = Aspid.MVVM.StarterKit.IConverter<UnityEngine.Mesh?, UnityEngine.Mesh?>;
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="SwitcherBinder{T1, T2, T3}">SwitcherBinder&lt;MeshCollider, Mesh, IConverter&lt;Mesh, Mesh&gt;&gt;</see> that switches the <see cref="MeshCollider.sharedMesh"/>
+    /// <see cref="SwitcherBinderWithConverter{T1, T2}">SwitcherBinderWithConverter&lt;MeshCollider, Mesh&gt;</see> that switches the <see cref="MeshCollider.sharedMesh"/>
     /// property between two <see cref="Mesh"/> values based on the bound boolean ViewModel value.
     /// </summary>
     /// <include file="XmlExampleDoc-MeshCollider-Mesh-1.1.0.xml" path="doc//member[@name='MeshColliderMeshSwitcherBinder']/*" />
     [Serializable]
-    public sealed class MeshColliderMeshSwitcherBinder : SwitcherBinder<MeshCollider, Mesh, Converter>
+    public sealed class MeshColliderMeshSwitcherBinder : SwitcherBinderWithConverter<MeshCollider, Mesh>
     {
         /// <inheritdoc/>
         public MeshColliderMeshSwitcherBinder(
             MeshCollider target,
             Mesh trueValue,
             Mesh falseValue,
-            Converter? converter = null,
+            IConverter<Mesh?, Mesh?>? converter = null,
             BindMode mode = BindMode.OneWay)
             : base(target, trueValue, falseValue, converter, mode) { }
 

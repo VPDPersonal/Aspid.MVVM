@@ -1,17 +1,16 @@
 using UnityEngine;
 using UnityEngine.UI;
-using Converter = Aspid.MVVM.StarterKit.IConverter<UnityEngine.Vector2, UnityEngine.Vector2>;
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="ComponentMonoBinder{Slider, Vector2, Converter}"/> that sets the minimum and maximum
+    /// <see cref="ComponentMonoBinderWithConverter{T1, T2}"/> that sets the minimum and maximum
     /// values of a <see cref="Slider"/> when the bound ViewModel value changes.
     /// </summary>
     [AddComponentMenu("Aspid/MVVM/Binders/UI/Slider/Slider Binder – MinMax")]
     [AddBinderContextMenu(typeof(Slider), "m_MinValue", "m_MaxValue")]
-    public partial class SliderMinMaxMonoBinder : ComponentMonoBinder<Slider, Vector2, Converter>, INumberBinder
+    public partial class SliderMinMaxMonoBinder : ComponentMonoBinderWithConverter<Slider, Vector2>, INumberBinder
     {
         [Tooltip("Determines which endpoint(s) of the slider range are updated.")]
         [SerializeField] private SliderValueMode _valueMode = SliderValueMode.Range;

@@ -2,18 +2,17 @@
 using System;
 using UnityEngine;
 using UnityEngine.UI;
-using Converter = Aspid.MVVM.StarterKit.IConverter<UnityEngine.Vector2, UnityEngine.Vector2>;
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="TargetBinder{Slider, Vector2, Converter}"/> that sets <see cref="Slider.minValue"/> and <see cref="Slider.maxValue"/>.
+    /// <see cref="TargetBinderWithConverter{T1, T2}"/> that sets <see cref="Slider.minValue"/> and <see cref="Slider.maxValue"/>.
     /// Also implements <see cref="INumberBinder"/>, allowing a scalar numeric value to be applied as equal min and max.
     /// </summary>
     /// <include file="XmlExampleDoc-Slider-MinMax-1.1.0.xml" path="doc//member[@name='SliderMinMaxBinder']/*" />
     [Serializable]
-    public class SliderMinMaxBinder : TargetBinder<Slider, Vector2, Converter>, INumberBinder
+    public class SliderMinMaxBinder : TargetBinderWithConverter<Slider, Vector2>, INumberBinder
     {
         [Tooltip("Determines which endpoint(s) of the slider range are updated.")]
         [SerializeField] private SliderValueMode _valueMode;
@@ -33,7 +32,7 @@ namespace Aspid.MVVM.StarterKit
         public SliderMinMaxBinder(
             Slider target,
             SliderValueMode valueMode = SliderValueMode.Range,
-            Converter? converter = null,
+            IConverter<Vector2, Vector2>? converter = null,
             BindMode mode = BindMode.OneWay)
             : base(target, converter, mode)
         {

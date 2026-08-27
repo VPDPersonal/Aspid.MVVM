@@ -1,5 +1,4 @@
 using UnityEngine;
-using Converter = Aspid.MVVM.StarterKit.IConverter<float, float>;
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
@@ -13,7 +12,7 @@ namespace Aspid.MVVM.StarterKit
     public partial class AnimatorSetFloatMonoBinder : AnimatorSetParameterMonoBinder<float>, INumberBinder
     {
         [Tooltip("Converts the bound float value before setting the Animator parameter.")]
-        [SerializeReference] private Converter _converter;
+        [SerializeReference] private IConverter<float, float> _converter;
 
         /// <summary>
         /// Applies <paramref name="value"/> (optionally converted) to the float Animator parameter.

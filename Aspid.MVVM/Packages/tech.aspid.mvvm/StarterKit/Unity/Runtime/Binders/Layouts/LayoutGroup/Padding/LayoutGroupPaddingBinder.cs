@@ -2,13 +2,12 @@
 using System;
 using UnityEngine;
 using UnityEngine.UI;
-using Converter = Aspid.MVVM.StarterKit.IConverter<UnityEngine.RectOffset?, UnityEngine.RectOffset?>;
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="TargetBinder{LayoutGroup, RectOffset, Converter}"/> that sets the <see cref="UnityEngine.UI.LayoutGroup.padding"/> property.
+    /// <see cref="TargetBinderWithConverter{T1, T2}"/> that sets the <see cref="UnityEngine.UI.LayoutGroup.padding"/> property.
     /// </summary>
     /// <remarks>
     /// The affected padding sides are determined by the configured <see cref="PaddingMode"/>.
@@ -17,7 +16,7 @@ namespace Aspid.MVVM.StarterKit
     /// </remarks>
     /// <include file="XmlExampleDoc-LayoutGroup-Padding-1.1.0.xml" path="doc//member[@name='LayoutGroupPaddingBinder']/*" />
     [Serializable]
-    public class LayoutGroupPaddingBinder : TargetBinder<LayoutGroup, RectOffset, Converter>, INumberBinder
+    public class LayoutGroupPaddingBinder : TargetBinderWithConverter<LayoutGroup, RectOffset>, INumberBinder
     {
         [Tooltip("Which sides of the padding are updated when a value is received.")]
         [SerializeField] private PaddingMode _paddingMode;
@@ -38,7 +37,7 @@ namespace Aspid.MVVM.StarterKit
         public LayoutGroupPaddingBinder(
             LayoutGroup target,
             PaddingMode paddingMode,
-            Converter? converter = null,
+            IConverter<RectOffset?, RectOffset?>? converter = null,
             BindMode mode = BindMode.OneWay)
             : base(target, converter, mode)
         {

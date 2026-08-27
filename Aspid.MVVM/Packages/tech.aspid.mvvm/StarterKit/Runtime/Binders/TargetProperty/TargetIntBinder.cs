@@ -1,17 +1,16 @@
 using System;
-using Converter = Aspid.MVVM.StarterKit.IConverter<int, int>;
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// Abstract base <see cref="TargetBinder{T1, T2, T3}">TargetBinder&lt;TTarget, int, IConverter&lt;int, int&gt;&gt;</see> that binds an <see langword="int"/> property,
+    /// Abstract base <see cref="TargetBinderWithConverter{T1, T2}">TargetBinderWithConverter&lt;TTarget, int&gt;</see> that binds an <see langword="int"/> property,
     /// implementing <see cref="INumberBinder"/> to accept all numeric types
     /// and <see cref="INumberReverseBinder"/> to broadcast to all numeric event types.
     /// </summary>
     /// <typeparam name="TTarget">The type of the target object that exposes the target <see langword="int"/> property.</typeparam>
     [Serializable]
-    public abstract class TargetIntBinder<TTarget> : TargetBinder<TTarget, int, Converter>,
+    public abstract class TargetIntBinder<TTarget> : TargetBinderWithConverter<TTarget, int>,
         INumberBinder,
         INumberReverseBinder
     {

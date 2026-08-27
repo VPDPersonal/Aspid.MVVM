@@ -1,7 +1,6 @@
 using System;
 using UnityEngine;
 using UnityEngine.UI;
-using Converter = Aspid.MVVM.StarterKit.IConverter<float, float>;
 
 // ReSharper disable once CheckNamespace
 // ReSharper disable NotNullOrRequiredMemberIsNotInitialized
@@ -36,7 +35,7 @@ namespace Aspid.MVVM.StarterKit
         public event Action<double> DoubleValueChanged;
 
         [Tooltip("Optional converter applied to values before they are set on the scrollbar.")]
-        [SerializeReference] private Converter _converter;
+        [SerializeReference] private IConverter<float, float> _converter;
 
         private bool _isNotifyValueChanged = true;
 

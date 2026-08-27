@@ -1,17 +1,15 @@
 using UnityEngine;
-using PhysicsMaterial = UnityEngine.PhysicsMaterial;
-using Converter = Aspid.MVVM.StarterKit.IConverter<UnityEngine.PhysicsMaterial, UnityEngine.PhysicsMaterial>;
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="SwitcherMonoBinder{T1, T2, T3}">SwitcherMonoBinder&lt;Collider, PhysicsMaterial, IConverter&lt;PhysicsMaterial, PhysicsMaterial&gt;&gt;</see> that switches the <see cref="Collider.material"/>
+    /// <see cref="SwitcherMonoBinderWithConverter{T1, T2}">SwitcherMonoBinderWithConverter&lt;Collider, PhysicsMaterial&gt;</see> that switches the <see cref="Collider.material"/>
     /// property between two values based on the bound boolean ViewModel value.
     /// </summary>
     [AddComponentMenu("Aspid/MVVM/Binders/Collider/Collider Binder – Material Switcher")]
     [AddBinderContextMenu(typeof(Collider), serializePropertyNames: "m_Material", SubPath = "Switcher")]
-    public sealed class ColliderMaterialSwitcherMonoBinder : SwitcherMonoBinder<Collider, PhysicsMaterial, Converter>
+    public sealed class ColliderMaterialSwitcherMonoBinder : SwitcherMonoBinderWithConverter<Collider, PhysicsMaterial>
     {
         /// <inheritdoc/>
         protected override void SetValue(PhysicsMaterial value) =>

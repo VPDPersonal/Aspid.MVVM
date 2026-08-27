@@ -1,17 +1,16 @@
 using UnityEngine;
 using UnityEngine.UI;
-using Converter = Aspid.MVVM.StarterKit.IConverter<UnityEngine.UI.ColorBlock, UnityEngine.UI.ColorBlock>;
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="EnumMonoBinder{Selectable, ColorBlock, Converter}"/> that sets the <see cref="Selectable.colors"/>
+    /// <see cref="EnumMonoBinderWithConverter{T1, T2}"/> that sets the <see cref="Selectable.colors"/>
     /// property to a value resolved from the bound enum ViewModel value.
     /// </summary>
     [AddBinderContextMenu(typeof(Selectable), SubPath = "Enum")]
     [AddComponentMenu("Aspid/MVVM/Binders/UI/Selectable/Selectable Binder – ColorBlock Enum")]
-    public sealed class SelectableColorBlockEnumMonoBinder : EnumMonoBinder<Selectable, ColorBlock, Converter>
+    public sealed class SelectableColorBlockEnumMonoBinder : EnumMonoBinderWithConverter<Selectable, ColorBlock>
     {
         /// <inheritdoc/>
         protected override void SetValue(ColorBlock value) =>

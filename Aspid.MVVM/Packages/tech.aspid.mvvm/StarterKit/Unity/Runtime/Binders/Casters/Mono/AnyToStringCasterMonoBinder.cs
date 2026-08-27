@@ -1,6 +1,5 @@
 using UnityEngine;
 using UnityEngine.Events;
-using Converter = Aspid.MVVM.StarterKit.IConverter<object, string>;
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
@@ -19,7 +18,7 @@ namespace Aspid.MVVM.StarterKit
     public sealed class AnyToStringCasterMonoBinder : MonoBinder, IAnyBinder
     {
         [Tooltip("The converter used to transform any incoming value to a string.")]
-        [SerializeReference] private Converter _converter = new GenericToStringConverter<object>();
+        [SerializeReference] private IConverter<object, string> _converter = new GenericToStringConverter<object>();
 
         [Tooltip("Invoked with the converted string value.")]
         [SerializeField] private UnityEvent<string> _casted;

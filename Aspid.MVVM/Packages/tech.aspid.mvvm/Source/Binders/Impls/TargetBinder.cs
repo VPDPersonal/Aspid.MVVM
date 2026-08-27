@@ -1,4 +1,5 @@
 using System;
+using UnityEngine;
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM
@@ -14,8 +15,8 @@ namespace Aspid.MVVM
         /// <summary>
         /// Gets the target object this binder is associated with.
         /// </summary>
-        [field: UnityEngine.Tooltip("The target object this binder operates on.")]
-        [field: UnityEngine.SerializeField]
+        [field: Tooltip("The target object this binder operates on.")]
+        [field: SerializeField]
         protected TTarget Target { get; private set; }
 
         /// <summary>

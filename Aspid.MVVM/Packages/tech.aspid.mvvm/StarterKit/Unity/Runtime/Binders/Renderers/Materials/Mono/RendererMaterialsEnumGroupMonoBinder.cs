@@ -1,5 +1,5 @@
+using System;
 using UnityEngine;
-using Converter = Aspid.MVVM.StarterKit.IConverter<UnityEngine.Material, UnityEngine.Material>;
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
@@ -18,10 +18,10 @@ namespace Aspid.MVVM.StarterKit
         [SerializeField] private Material[] _selectedValue;
 
         [Tooltip("The optional converter applied to each material in the default value.")]
-        [SerializeReference] private Converter _defaultValueConverter;
+        [SerializeReference] private IConverter<Material, Material> _defaultValueConverter;
 
         [Tooltip("The optional converter applied to each material in the selected value.")]
-        [SerializeReference] private Converter _selectedValueConverter;
+        [SerializeReference] private IConverter<Material, Material> _selectedValueConverter;
 
         /// <summary>
         /// Sets <see cref="Renderer.materials"/> on <paramref name="element"/> from the default value array, applying the default converter.

@@ -1,14 +1,12 @@
 #nullable enable
 using System;
 using UnityEngine;
-using PhysicsMaterial = UnityEngine.PhysicsMaterial;
-using Converter = Aspid.MVVM.StarterKit.IConverter<UnityEngine.PhysicsMaterial?, UnityEngine.PhysicsMaterial?>;
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="TargetBinder{T1, T2, T3}">TargetBinder&lt;Collider, PhysicsMaterial, IConverter&lt;PhysicsMaterial, PhysicsMaterial&gt;&gt;</see> that sets the <see cref="Collider.material"/> property.
+    /// <see cref="TargetBinderWithConverter{T1, T2}">TargetBinderWithConverter&lt;Collider, PhysicsMaterial&gt;</see> that sets the <see cref="Collider.material"/> property.
     /// </summary>
     /// <remarks>
     /// Reads back <see cref="Collider.sharedMaterial"/>, not <see cref="Collider.material"/> — reading the latter
@@ -16,7 +14,7 @@ namespace Aspid.MVVM.StarterKit
     /// </remarks>
     /// <include file="XmlExampleDoc-Collider-Material-1.1.0.xml" path="doc//member[@name='ColliderMaterialBinder']/*" />
     [Serializable]
-    public class ColliderMaterialBinder : TargetBinder<Collider, PhysicsMaterial, Converter>
+    public class ColliderMaterialBinder : TargetBinderWithConverter<Collider, PhysicsMaterial>
     {
         /// <inheritdoc/>
         protected sealed override PhysicsMaterial? Property
@@ -27,7 +25,7 @@ namespace Aspid.MVVM.StarterKit
 
         /// <inheritdoc/>
         /// <exception cref="ArgumentException">Thrown when <paramref name="mode"/> is <see cref="BindMode.TwoWay"/>.</exception>
-        public ColliderMaterialBinder(Collider target, Converter? converter = null, BindMode mode = BindMode.OneWay)
+        public ColliderMaterialBinder(Collider target, IConverter<PhysicsMaterial?, PhysicsMaterial?>? converter = null, BindMode mode = BindMode.OneWay)
             : base(target, converter, mode)
         {
             mode.ThrowExceptionIfMatches(BindMode.TwoWay);

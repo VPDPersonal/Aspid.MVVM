@@ -4,7 +4,6 @@ using TMPro;
 using System;
 using UnityEngine;
 using System.Globalization;
-using Converter = Aspid.MVVM.StarterKit.IConverter<string?, string?>;
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
@@ -39,7 +38,7 @@ namespace Aspid.MVVM.StarterKit
         [SerializeField] private UpdateInputFieldEvent _updateEvent = UpdateInputFieldEvent.OnValueChanged;
         
         [Tooltip("Optional converter applied before setting the input field text.")]
-        [SerializeReference] private Converter? _converter;
+        [SerializeReference] private IConverter<string?, string?>? _converter;
         
         private bool _isNotifyValueChanged = true;
         
@@ -47,7 +46,7 @@ namespace Aspid.MVVM.StarterKit
         /// <param name="converter">The converter applied to values before they are set on the input field, or <see langword="null"/> to use the value as-is.</param>
         /// <param name="mode">The binding mode. Must not be <see cref="BindMode.None"/>.</param>
         /// <exception cref="ArgumentException">Thrown when <paramref name="mode"/> is <see cref="BindMode.None"/>.</exception>
-        public InputFieldBinder(TMP_InputField target, Converter? converter = null, BindMode mode = BindMode.TwoWay)
+        public InputFieldBinder(TMP_InputField target, IConverter<string?, string?>? converter = null, BindMode mode = BindMode.TwoWay)
             : base(target, mode)
         {
             mode.ThrowExceptionIfNone();

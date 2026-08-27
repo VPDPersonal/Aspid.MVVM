@@ -1,7 +1,6 @@
 #nullable enable
 using System;
 using UnityEngine;
-using Converter = Aspid.MVVM.StarterKit.IConverter<float, float>;
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
@@ -15,7 +14,7 @@ namespace Aspid.MVVM.StarterKit
     public class AnimatorSetFloatBinder : AnimatorSetParameterBinder<float>
     {
         [Tooltip("Converts the bound float value before setting the Animator parameter.")]
-        [SerializeReference] private Converter? _converter;
+        [SerializeReference] private IConverter<float, float>? _converter;
 
         /// <param name="animator">The <see cref="Animator"/> whose float parameter is set.</param>
         /// <param name="parameterName">The name of the float Animator parameter.</param>
@@ -30,7 +29,7 @@ namespace Aspid.MVVM.StarterKit
         public AnimatorSetFloatBinder(
             Animator animator,
             string parameterName,
-            Converter? converter = null,
+            IConverter<float, float>? converter = null,
             BindMode mode = BindMode.OneWay)
             : base(animator, parameterName, mode)
         {

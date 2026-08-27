@@ -1,6 +1,5 @@
 using UnityEngine;
 using UnityEngine.Events;
-using Converter = Aspid.MVVM.StarterKit.IConverter<UnityEngine.Vector3, UnityEngine.Vector3>;
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
@@ -14,7 +13,7 @@ namespace Aspid.MVVM.StarterKit
     public sealed partial class UnityEventVector3MonoBinder : MonoBinder, IBinder<Vector3>
     {
         [Tooltip("Optional converter applied to the value; empty leaves it as-is.")]
-        [SerializeReference] private Converter _converter;
+        [SerializeReference] private IConverter<Vector3, Vector3> _converter;
 
         [Tooltip("The event invoked with the bound value.")]
         [SerializeField] private UnityEvent<Vector3> _set;

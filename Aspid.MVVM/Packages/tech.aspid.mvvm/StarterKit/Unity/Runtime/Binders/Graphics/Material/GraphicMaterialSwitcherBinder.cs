@@ -2,18 +2,17 @@
 using System;
 using UnityEngine;
 using UnityEngine.UI;
-using Converter = Aspid.MVVM.StarterKit.IConverter<UnityEngine.Material?, UnityEngine.Material?>;
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="SwitcherBinder{Graphic, Material, Converter}"/> that switches the <see cref="Graphic.material"/>
+    /// <see cref="SwitcherBinderWithConverter{T1, T2}"/> that switches the <see cref="Graphic.material"/>
     /// property between two <see cref="Material"/> values based on the bound boolean ViewModel value.
     /// </summary>
     /// <include file="XmlExampleDoc-Graphic-Material-1.1.0.xml" path="doc//member[@name='GraphicMaterialSwitcherBinder']/*" />
     [Serializable]
-    public sealed class GraphicMaterialSwitcherBinder : SwitcherBinder<Graphic, Material, Converter>
+    public sealed class GraphicMaterialSwitcherBinder : SwitcherBinderWithConverter<Graphic, Material>
     {
         /// <param name="target">The <see cref="Graphic"/> to bind.</param>
         /// <param name="trueValue">The <see cref="Material"/> applied when the bound boolean is <see langword="true"/>.</param>
@@ -24,7 +23,7 @@ namespace Aspid.MVVM.StarterKit
             Graphic target,
             Material trueValue,
             Material falseValue,
-            Converter? converter = null,
+            IConverter<Material?, Material?>? converter = null,
             BindMode mode = BindMode.OneWay)
             : base(target, trueValue, falseValue, converter, mode) { }
 

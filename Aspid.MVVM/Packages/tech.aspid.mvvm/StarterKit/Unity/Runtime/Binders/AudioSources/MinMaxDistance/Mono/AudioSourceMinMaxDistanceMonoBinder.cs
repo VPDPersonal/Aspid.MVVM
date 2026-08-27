@@ -1,16 +1,15 @@
 using UnityEngine;
-using Converter = Aspid.MVVM.StarterKit.IConverter<UnityEngine.Vector2, UnityEngine.Vector2>;
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// Concrete <see cref="ComponentMonoBinder{T1, T2, T3}">ComponentMonoBinder&lt;AudioSource, Vector2, IConverter&lt;Vector2, Vector2&gt;&gt;</see> that also implements <see cref="INumberBinder"/>,
+    /// Concrete <see cref="ComponentMonoBinderWithConverter{T1, T2}">ComponentMonoBinderWithConverter&lt;AudioSource, Vector2&gt;</see> that also implements <see cref="INumberBinder"/>,
     /// binding the <see cref="AudioSource.minDistance"/> and <see cref="AudioSource.maxDistance"/> as a <see cref="Vector2"/>.
     /// </summary>
     [AddBinderContextMenu(typeof(AudioSource))]
     [AddComponentMenu("Aspid/MVVM/Binders/Audio/AudioSource/AudioSource Binder – MinMaxDistance")]
-    public partial class AudioSourceMinMaxDistanceMonoBinder : ComponentMonoBinder<AudioSource, Vector2, Converter>, INumberBinder
+    public partial class AudioSourceMinMaxDistanceMonoBinder : ComponentMonoBinderWithConverter<AudioSource, Vector2>, INumberBinder
     {
         [Tooltip("Which distance component the bound value updates.")]
         [SerializeField] private AudioSourceDistanceMode _distanceMode = AudioSourceDistanceMode.Range;

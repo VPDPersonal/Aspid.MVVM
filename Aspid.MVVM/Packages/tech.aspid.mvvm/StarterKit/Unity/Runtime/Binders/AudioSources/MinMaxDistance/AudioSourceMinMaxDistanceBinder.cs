@@ -1,7 +1,6 @@
 #nullable enable
 using System;
 using UnityEngine;
-using Converter = Aspid.MVVM.StarterKit.IConverter<UnityEngine.Vector2, UnityEngine.Vector2>;
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
@@ -18,7 +17,7 @@ namespace Aspid.MVVM.StarterKit
         [SerializeField] private AudioSourceDistanceMode _distanceMode = AudioSourceDistanceMode.Range;
 
         [Tooltip("Converts the bound value before setting the min/max distance.")]
-        [SerializeReference] private Converter? _converter;
+        [SerializeReference] private IConverter<Vector2, Vector2>? _converter;
 
         /// <inheritdoc/>
         protected sealed override Vector2 Property
@@ -35,7 +34,7 @@ namespace Aspid.MVVM.StarterKit
         public AudioSourceMinMaxDistanceBinder(
             AudioSource target,
             AudioSourceDistanceMode distanceMode = AudioSourceDistanceMode.Range,
-            Converter? converter = null,
+            IConverter<Vector2, Vector2>? converter = null,
             BindMode mode = BindMode.OneWay)
             : base(target, mode)
         {

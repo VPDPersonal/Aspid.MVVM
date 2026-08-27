@@ -4,6 +4,6 @@ using UnityEditor;
 namespace Aspid.MVVM.StarterKit
 {
     [CanEditMultipleObjects]
-    [CustomEditor(typeof(SwitcherMonoBinder<,,>), editorForChildClasses: true)]
+    [CustomEditor(typeof(SwitcherMonoBinderWithConverter<,>), editorForChildClasses: true)]
     internal class SwitcherMonoBinderComponentConverterEditor : SwitcherMonoBinderEditor { }
 }

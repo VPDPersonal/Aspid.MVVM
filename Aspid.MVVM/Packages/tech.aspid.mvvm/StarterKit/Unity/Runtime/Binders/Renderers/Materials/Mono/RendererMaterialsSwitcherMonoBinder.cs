@@ -1,5 +1,4 @@
 using UnityEngine;
-using Converter = Aspid.MVVM.StarterKit.IConverter<UnityEngine.Material, UnityEngine.Material>;
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
@@ -13,7 +12,7 @@ namespace Aspid.MVVM.StarterKit
     public sealed class RendererMaterialsSwitcherMonoBinder : SwitcherMonoBinder<Renderer, Material[]>
     {
         [Tooltip("The optional converter applied to each material before assignment.")]
-        [SerializeReference] private Converter _converter;
+        [SerializeReference] private IConverter<Material, Material> _converter;
 
         /// <summary>
         /// Sets the <see cref="Renderer.materials"/> array, applying the optional converter to each material.

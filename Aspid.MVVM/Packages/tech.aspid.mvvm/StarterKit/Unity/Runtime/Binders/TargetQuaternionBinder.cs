@@ -1,20 +1,19 @@
 #nullable enable
 using System;
 using UnityEngine;
-using Converter = Aspid.MVVM.StarterKit.IConverter<UnityEngine.Quaternion, UnityEngine.Quaternion>;
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// Abstract base <see cref="TargetBinder{T1, T2, T3}">TargetBinder&lt;TTarget, Quaternion, IConverter&lt;Quaternion, Quaternion&gt;&gt;</see> that binds a <see cref="Quaternion"/> property,
+    /// Abstract base <see cref="TargetBinderWithConverter{T1, T2}">TargetBinderWithConverter&lt;TTarget, Quaternion&gt;</see> that binds a <see cref="Quaternion"/> property,
     /// implementing <see cref="IRotationBinder"/> and <see cref="INumberBinder"/>.
     /// <see cref="Vector2"/> and <see cref="Vector3"/> values are read as Euler angles, and a scalar
     /// (<see langword="int"/>, <see langword="long"/>, <see langword="float"/>, <see langword="double"/>)
     /// is applied as the same angle on all three axes.
     /// </summary>
     /// <typeparam name="TTarget">The type of the target object that exposes the target <see cref="Quaternion"/> property.</typeparam>
-    public abstract class TargetQuaternionBinder<TTarget> : TargetBinder<TTarget, Quaternion, Converter>,
+    public abstract class TargetQuaternionBinder<TTarget> : TargetBinderWithConverter<TTarget, Quaternion>,
         IRotationBinder,
         INumberBinder
     {

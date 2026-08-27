@@ -1,7 +1,6 @@
 #nullable enable
 using System;
 using UnityEngine;
-using Converter = Aspid.MVVM.StarterKit.IConverter<UnityEngine.Material?, UnityEngine.Material?>;
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
@@ -15,7 +14,7 @@ namespace Aspid.MVVM.StarterKit
     public sealed class RendererMaterialsSwitcherBinder : SwitcherBinder<Renderer, Material[]?>
     {
         [Tooltip("The optional converter applied to each material before assignment.")]
-        [SerializeReference] private Converter? _converter;
+        [SerializeReference] private IConverter<Material?, Material?>? _converter;
 
         /// <param name="target">The <see cref="Renderer"/> to bind.</param>
         /// <param name="trueValue">The materials array applied when the bound boolean is <see langword="true"/>.</param>
@@ -33,7 +32,7 @@ namespace Aspid.MVVM.StarterKit
             Renderer target,
             Material[]? trueValue,
             Material[]? falseValue,
-            Converter? converter = null,
+            IConverter<Material?, Material?>? converter = null,
             BindMode mode = BindMode.OneWay)
             : base(target, trueValue, falseValue, mode)
         {

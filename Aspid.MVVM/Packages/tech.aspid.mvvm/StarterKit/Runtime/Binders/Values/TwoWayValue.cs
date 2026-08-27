@@ -1,4 +1,5 @@
 using System;
+using UnityEngine;
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
@@ -27,11 +28,8 @@ namespace Aspid.MVVM.StarterKit
             remove => _valueChanged -= value;
         }
 
-        [UnityEngine.SerializeField]
-        private T? _value;
-
-        [UnityEngine.SerializeReference]
-        private IConverter<T?, T?>? _converter;
+        [SerializeField] private T? _value;
+        [SerializeReference] private IConverter<T?, T?>? _converter;
 
         private Action<T?>? _valueChanged;
 

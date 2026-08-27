@@ -1,12 +1,11 @@
 using UnityEngine;
 using UnityEngine.UI;
-using Converter = Aspid.MVVM.StarterKit.IConverter<UnityEngine.RectOffset, UnityEngine.RectOffset>;
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="ComponentMonoBinder{LayoutGroup, RectOffset, Converter}"/> that binds the <see cref="UnityEngine.UI.LayoutGroup.padding"/> property.
+    /// <see cref="ComponentMonoBinderWithConverter{T1, T2}"/> that binds the <see cref="UnityEngine.UI.LayoutGroup.padding"/> property.
     /// </summary>
     /// <remarks>
     /// The affected padding sides are determined by the configured <see cref="PaddingMode"/>.
@@ -15,7 +14,7 @@ namespace Aspid.MVVM.StarterKit
     /// </remarks>
     [AddComponentMenu("Aspid/MVVM/Binders/UI/LayoutGroup/LayoutGroup Binder – Padding")]
     [AddBinderContextMenu(typeof(LayoutGroup), serializePropertyNames: "m_Padding")]
-    public partial class LayoutGroupPaddingMonoBinder : ComponentMonoBinder<LayoutGroup, RectOffset, Converter>, INumberBinder
+    public partial class LayoutGroupPaddingMonoBinder : ComponentMonoBinderWithConverter<LayoutGroup, RectOffset>, INumberBinder
     {
         [Tooltip("Which sides of the padding are updated when a value is received.")]
         [SerializeField] private PaddingMode _paddingMode;

@@ -29,33 +29,4 @@ namespace Aspid.MVVM.StarterKit
             // Cast to Object is required: `value != null` would be a reference comparison and miss a destroyed object.
             (Object)value ? value : null;
     }
-
-    /// <summary>
-    /// Abstract base <see cref="ComponentMonoBinder{T1, T2, T3}">ComponentMonoBinder&lt;TComponent, TObject, TConverter&gt;</see> that binds a
-    /// property holding a reference to a <see cref="Object">UnityEngine.Object</see>, normalizing destroyed
-    /// references to <see langword="null"/> after the configured converter has run.
-    /// </summary>
-    /// <remarks>
-    /// The converter runs first, so a converter that resolves one asset into another is still checked: whatever it
-    /// returns is what reaches the property. See <see cref="ComponentObjectMonoBinder{TComponent, TObject}"/> for why
-    /// the check is needed at all.
-    /// </remarks>
-    /// <typeparam name="TComponent">The type of <see cref="Component"/> that exposes the target property.</typeparam>
-    /// <typeparam name="TObject">The type of <see cref="Object">UnityEngine.Object</see> the property holds.</typeparam>
-    /// <typeparam name="TConverter">The converter type used to transform the bound value before applying it.</typeparam>
-    public abstract class ComponentObjectMonoBinder<TComponent, TObject, TConverter> : ComponentMonoBinder<TComponent, TObject, TConverter>
-        where TComponent : Component
-        where TObject : Object
-        where TConverter : IConverter<TObject, TObject>
-    {
-        /// <inheritdoc/>
-        /// <remarks>
-        /// Returns <see langword="null"/> when the converted value refers to a destroyed object.
-        /// </remarks>
-        protected override TObject GetConvertedValue(TObject value)
-        {
-            var converted = base.GetConvertedValue(value);
-            return (Object)converted ? converted : null;
-        }
-    }
 }

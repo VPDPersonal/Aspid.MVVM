@@ -1,6 +1,5 @@
 using UnityEngine;
 using UnityEngine.Events;
-using Converter = Aspid.MVVM.StarterKit.IConverter<string, string>;
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
@@ -17,7 +16,7 @@ namespace Aspid.MVVM.StarterKit
         [SerializeField] private CultureInfoMode _cultureInfoMode = CultureInfoMode.CurrentCulture;
 
         [Tooltip("Optional converter applied to the value; empty leaves it as-is.")]
-        [SerializeReference] private Converter _converter;
+        [SerializeReference] private IConverter<string, string> _converter;
 
         [Tooltip("The event invoked with the bound value.")]
         [SerializeField] private UnityEvent<string> _set;

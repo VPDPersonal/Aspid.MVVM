@@ -1,4 +1,5 @@
 using System;
+using UnityEngine;
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
@@ -17,11 +18,8 @@ namespace Aspid.MVVM.StarterKit
         /// </summary>
         public event Action<T?>? Changed;
 
-        [UnityEngine.SerializeField]
-        private T? _value;
-
-        [UnityEngine.SerializeReference]
-        private IConverter<T?, T?>? _converter;
+        [SerializeField] private T? _value;
+        [SerializeReference] private IConverter<T?, T?>? _converter;
 
         /// <summary>
         /// Gets the most recently received (and optionally converted) value.

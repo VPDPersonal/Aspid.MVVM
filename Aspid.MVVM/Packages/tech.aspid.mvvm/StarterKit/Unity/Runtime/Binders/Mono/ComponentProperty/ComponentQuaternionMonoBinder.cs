@@ -1,18 +1,17 @@
 using UnityEngine;
-using Converter = Aspid.MVVM.StarterKit.IConverter<UnityEngine.Quaternion, UnityEngine.Quaternion>;
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// Abstract base <see cref="ComponentMonoBinder{T1, T2, T3}">ComponentMonoBinder&lt;TComponent, Quaternion, IConverter&lt;Quaternion, Quaternion&gt;&gt;</see> that binds a <see cref="Quaternion"/> property,
+    /// Abstract base <see cref="ComponentMonoBinderWithConverter{T1, T2}">ComponentMonoBinderWithConverter&lt;TComponent, Quaternion&gt;</see> that binds a <see cref="Quaternion"/> property,
     /// implementing <see cref="IRotationBinder"/> and <see cref="INumberBinder"/>.
     /// <see cref="Vector2"/> and <see cref="Vector3"/> values are read as Euler angles, and a scalar
     /// (<see langword="int"/>, <see langword="long"/>, <see langword="float"/>, <see langword="double"/>)
     /// is applied as the same angle on all three axes.
     /// </summary>
     /// <typeparam name="TComponent">The type of <see cref="Component"/> that exposes the target <see cref="Quaternion"/> property.</typeparam>
-    public abstract partial class ComponentQuaternionMonoBinder<TComponent> : ComponentMonoBinder<TComponent, Quaternion, Converter>,
+    public abstract partial class ComponentQuaternionMonoBinder<TComponent> : ComponentMonoBinderWithConverter<TComponent, Quaternion>,
         IRotationBinder,
         INumberBinder
         where TComponent : Component

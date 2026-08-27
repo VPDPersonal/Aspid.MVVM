@@ -1,19 +1,18 @@
 #nullable enable
 using System;
 using UnityEngine;
-using Converter = Aspid.MVVM.StarterKit.IConverter<UnityEngine.Vector2, UnityEngine.Vector2>;
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="SwitcherBinder{T1, T2, T3}">SwitcherBinder&lt;AudioSource, Vector2, IConverter&lt;Vector2, Vector2&gt;&gt;</see> that switches the
+    /// <see cref="SwitcherBinderWithConverter{T1, T2}">SwitcherBinderWithConverter&lt;AudioSource, Vector2&gt;</see> that switches the
     /// min/max distance of an <see cref="AudioSource"/> between two <see cref="Vector2"/> values
     /// based on the bound boolean ViewModel value.
     /// </summary>
     /// <include file="XmlExampleDoc-AudioSource-MinMaxDistance-1.1.0.xml" path="doc//member[@name='AudioSourceMinMaxDistanceSwitcherBinder']/*" />
     [Serializable]
-    public sealed class AudioSourceMinMaxDistanceSwitcherBinder : SwitcherBinder<AudioSource, Vector2, Converter>
+    public sealed class AudioSourceMinMaxDistanceSwitcherBinder : SwitcherBinderWithConverter<AudioSource, Vector2>
     {
         [Tooltip("Which distance component the bound value updates.")]
         [SerializeField] private AudioSourceDistanceMode _distanceMode = AudioSourceDistanceMode.Range;
@@ -29,7 +28,7 @@ namespace Aspid.MVVM.StarterKit
             Vector2 trueValue,
             Vector2 falseValue,
             AudioSourceDistanceMode distanceMode = AudioSourceDistanceMode.Range,
-            Converter? converter = null,
+            IConverter<Vector2, Vector2>? converter = null,
             BindMode mode = BindMode.OneWay)
             : base(target, trueValue, falseValue, converter, mode)
         {

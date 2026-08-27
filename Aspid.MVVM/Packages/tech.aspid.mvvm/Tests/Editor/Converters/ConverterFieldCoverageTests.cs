@@ -101,7 +101,8 @@ namespace Aspid.MVVM.StarterKit.Tests
         // Most converter fields are private and declared on a generic binder base, so DeclaredOnly on
         // the concrete type misses them and inheritance does not surface private fields. Walking the
         // base chain does both: each base is already a constructed type, so reflection hands back the
-        // field with its type arguments substituted — `TConverter` arrives as `IConverter<Color, Color>`.
+        // field with its type arguments substituted — `IConverter<TProperty, TProperty>` arrives as
+        // `IConverter<Color, Color>`.
         private static IEnumerable<FieldInfo> SerializedReferenceFields(Type type)
         {
             for (var current = type; current is not null && current != typeof(object); current = current.BaseType)

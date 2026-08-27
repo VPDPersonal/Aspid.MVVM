@@ -1,6 +1,5 @@
 using System;
 using UnityEngine;
-using Converter = Aspid.MVVM.StarterKit.IConverter<string, string>;
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
@@ -24,7 +23,7 @@ namespace Aspid.MVVM.StarterKit
         public event Action<string> ValueChanged;
         
         [Tooltip("Optional converter applied to the value; empty leaves it as-is.")]
-        [SerializeReference] private Converter _converter;
+        [SerializeReference] private IConverter<string, string> _converter;
 
         /// <summary>
         /// Sets <see cref="GameObject.tag"/> to <paramref name="value"/> (optionally converted).

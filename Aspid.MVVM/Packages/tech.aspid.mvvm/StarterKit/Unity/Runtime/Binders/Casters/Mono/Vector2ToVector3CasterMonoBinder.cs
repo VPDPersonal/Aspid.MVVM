@@ -1,6 +1,5 @@
 using UnityEngine;
 using UnityEngine.Events;
-using Converter = Aspid.MVVM.StarterKit.IConverter<UnityEngine.Vector2, UnityEngine.Vector3>;
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
@@ -18,7 +17,7 @@ namespace Aspid.MVVM.StarterKit
     public sealed partial class Vector2ToVector3CasterMonoBinder : MonoBinder, IBinder<Vector2>
     {
         [Tooltip("The converter used to transform the bound Vector2 to a Vector3.")]
-        [SerializeReference] private Converter _converter = new Vector2Vector3Converter();
+        [SerializeReference] private IConverter<Vector2, Vector3> _converter = new Vector2Vector3Converter();
         
         [Tooltip("Invoked with the converted Vector3 value.")]
         [SerializeField] private UnityEvent<Vector3> _casted;

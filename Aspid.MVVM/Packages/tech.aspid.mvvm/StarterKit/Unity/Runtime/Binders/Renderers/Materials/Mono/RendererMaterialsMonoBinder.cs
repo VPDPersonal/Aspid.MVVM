@@ -1,7 +1,6 @@
 using System;
 using UnityEngine;
 using System.Collections.Generic;
-using Converter = Aspid.MVVM.StarterKit.IConverter<UnityEngine.Material, UnityEngine.Material>;
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
@@ -35,7 +34,7 @@ namespace Aspid.MVVM.StarterKit
         }
         
         [Tooltip("The optional converter applied to each material before assignment.")]
-        [SerializeReference] private Converter _converter;
+        [SerializeReference] private IConverter<Material, Material> _converter;
         
         private Action<Material> _reverseMaterial;
         private Action<Material[]> _reverseMaterials;

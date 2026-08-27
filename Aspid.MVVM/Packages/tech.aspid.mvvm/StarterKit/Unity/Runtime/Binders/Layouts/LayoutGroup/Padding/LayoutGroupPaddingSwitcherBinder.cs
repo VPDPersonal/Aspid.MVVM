@@ -2,13 +2,12 @@
 using System;
 using UnityEngine;
 using UnityEngine.UI;
-using Converter = Aspid.MVVM.StarterKit.IConverter<UnityEngine.RectOffset?, UnityEngine.RectOffset?>;
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="SwitcherBinder{LayoutGroup, RectOffset, Converter}"/> that switches the <see cref="UnityEngine.UI.LayoutGroup.padding"/>
+    /// <see cref="SwitcherBinderWithConverter{T1, T2}"/> that switches the <see cref="UnityEngine.UI.LayoutGroup.padding"/>
     /// property between two values based on the bound boolean ViewModel value.
     /// </summary>
     /// <remarks>
@@ -16,7 +15,7 @@ namespace Aspid.MVVM.StarterKit
     /// </remarks>
     /// <include file="XmlExampleDoc-LayoutGroup-Padding-1.1.0.xml" path="doc//member[@name='LayoutGroupPaddingSwitcherBinder']/*" />
     [Serializable]
-    public sealed class LayoutGroupPaddingSwitcherBinder : SwitcherBinder<LayoutGroup, RectOffset, Converter>
+    public sealed class LayoutGroupPaddingSwitcherBinder : SwitcherBinderWithConverter<LayoutGroup, RectOffset>
     {
         [Tooltip("Which sides of the padding are updated when a value is applied.")]
         [SerializeField] private PaddingMode _paddingMode;
@@ -32,7 +31,7 @@ namespace Aspid.MVVM.StarterKit
             RectOffset trueValue,
             RectOffset falseValue,
             PaddingMode paddingMode,
-            Converter? converter = null,
+            IConverter<RectOffset?, RectOffset?>? converter = null,
             BindMode mode = BindMode.OneWay)
             : base(target, trueValue, falseValue, converter, mode)
         {

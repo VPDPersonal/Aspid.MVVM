@@ -2,17 +2,16 @@
 using System;
 using UnityEngine;
 using UnityEngine.UI;
-using Converter = Aspid.MVVM.StarterKit.IConverter<UnityEngine.Vector2, UnityEngine.Vector2>;
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="SwitcherBinder{Slider, Vector2, Converter}"/> that switches <see cref="Slider.minValue"/> and <see cref="Slider.maxValue"/> between two ranges based on the bound boolean ViewModel value.
+    /// <see cref="SwitcherBinderWithConverter{T1, T2}"/> that switches <see cref="Slider.minValue"/> and <see cref="Slider.maxValue"/> between two ranges based on the bound boolean ViewModel value.
     /// </summary>
     /// <include file="XmlExampleDoc-Slider-MinMax-1.1.0.xml" path="doc//member[@name='SliderMinMaxSwitcherBinder']/*" />
     [Serializable]
-    public sealed class SliderMinMaxSwitcherBinder : SwitcherBinder<Slider, Vector2, Converter>
+    public sealed class SliderMinMaxSwitcherBinder : SwitcherBinderWithConverter<Slider, Vector2>
     {
         [Tooltip("Determines which endpoint(s) of the slider range are updated.")]
         [SerializeField] private SliderValueMode _valueMode;
@@ -28,7 +27,7 @@ namespace Aspid.MVVM.StarterKit
             Vector2 trueValue,
             Vector2 falseValue,
             SliderValueMode valueMode = SliderValueMode.Range,
-            Converter? converter = null,
+            IConverter<Vector2, Vector2>? converter = null,
             BindMode mode = BindMode.OneWay)
             : base(target, trueValue, falseValue, converter, mode)
         {

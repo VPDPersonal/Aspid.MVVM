@@ -1,19 +1,18 @@
 #nullable enable
 using UnityEngine;
-using Converter = Aspid.MVVM.StarterKit.IConverter<UnityEngine.Vector2, UnityEngine.Vector2>;
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// Abstract base <see cref="TargetBinder{T1, T2, T3}">TargetBinder&lt;TTarget, Vector2, IConverter&lt;Vector2, Vector2&gt;&gt;</see> that binds a <see cref="Vector2"/> property,
+    /// Abstract base <see cref="TargetBinderWithConverter{T1, T2}">TargetBinderWithConverter&lt;TTarget, Vector2&gt;</see> that binds a <see cref="Vector2"/> property,
     /// implementing <see cref="IVectorBinder"/> and <see cref="INumberBinder"/>.
     /// A <see cref="Vector3"/> is accepted by dropping its Z component, and scalar values
     /// (<see langword="int"/>, <see langword="long"/>, <see langword="float"/>, <see langword="double"/>)
     /// are broadcast to both vector components as <c>new Vector2(value, value)</c>.
     /// </summary>
     /// <typeparam name="TTarget">The type of the target object that exposes the target <see cref="Vector2"/> property.</typeparam>
-    public abstract class TargetVector2Binder<TTarget> : TargetBinder<TTarget, Vector2, Converter>,
+    public abstract class TargetVector2Binder<TTarget> : TargetBinderWithConverter<TTarget, Vector2>,
         IVectorBinder,
         INumberBinder
     {

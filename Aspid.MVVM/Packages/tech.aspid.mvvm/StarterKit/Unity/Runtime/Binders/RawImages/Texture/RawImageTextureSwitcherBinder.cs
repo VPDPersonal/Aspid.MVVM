@@ -2,18 +2,17 @@
 using System;
 using UnityEngine;
 using UnityEngine.UI;
-using Converter = Aspid.MVVM.StarterKit.IConverter<UnityEngine.Texture?, UnityEngine.Texture?>;
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="SwitcherBinder{RawImage, Texture, Converter}"/> that switches the <see cref="RawImage.texture"/>
+    /// <see cref="SwitcherBinderWithConverter{T1, T2}"/> that switches the <see cref="RawImage.texture"/>
     /// property between two <see cref="Texture"/> values based on the bound boolean ViewModel value.
     /// </summary>
     /// <include file="XmlExampleDoc-RawImage-Texture-1.1.0.xml" path="doc//member[@name='RawImageTextureSwitcherBinder']/*" />
     [Serializable]
-    public sealed class RawImageTextureSwitcherBinder : SwitcherBinder<RawImage, Texture?, Converter>
+    public sealed class RawImageTextureSwitcherBinder : SwitcherBinderWithConverter<RawImage, Texture?>
     {
         // ReSharper disable once MemberInitializerValueIgnored
         [Tooltip("Disables the RawImage component when the selected texture is null.")]
@@ -30,7 +29,7 @@ namespace Aspid.MVVM.StarterKit
             Texture trueValue,
             Texture falseValue,
             bool disabledWhenNull = true,
-            Converter? converter = null,
+            IConverter<Texture?, Texture?>? converter = null,
             BindMode mode = BindMode.OneWay)
             : base(target, trueValue, falseValue, converter, mode)
         {

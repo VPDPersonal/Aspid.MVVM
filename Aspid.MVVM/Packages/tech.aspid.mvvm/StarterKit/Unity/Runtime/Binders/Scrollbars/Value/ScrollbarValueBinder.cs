@@ -2,7 +2,6 @@
 using System;
 using UnityEngine;
 using UnityEngine.UI;
-using Converter = Aspid.MVVM.StarterKit.IConverter<float, float>;
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
@@ -36,7 +35,7 @@ namespace Aspid.MVVM.StarterKit
         private bool _isNotifyValueChanged = true;
 
         [Tooltip("Optional converter applied to values before they are set on the scrollbar.")]
-        [SerializeReference] private Converter? _converter;
+        [SerializeReference] private IConverter<float, float>? _converter;
 
         /// <inheritdoc/>
         public ScrollbarValueBinder(Scrollbar target, BindMode mode)
@@ -46,7 +45,7 @@ namespace Aspid.MVVM.StarterKit
         /// <param name="converter">The converter applied to values before they are set on the scrollbar, or <see langword="null"/> to use the value as-is.</param>
         /// <param name="mode">The binding mode. Must not be <see cref="BindMode.None"/>.</param>
         /// <exception cref="ArgumentException">Thrown when <paramref name="mode"/> is <see cref="BindMode.None"/>.</exception>
-        public ScrollbarValueBinder(Scrollbar target, Converter? converter = null, BindMode mode = BindMode.TwoWay)
+        public ScrollbarValueBinder(Scrollbar target, IConverter<float, float>? converter = null, BindMode mode = BindMode.TwoWay)
             : base(target, mode)
         {
             mode.ThrowExceptionIfNone();

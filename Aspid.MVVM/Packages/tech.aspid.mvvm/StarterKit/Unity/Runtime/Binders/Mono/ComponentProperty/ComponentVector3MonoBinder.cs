@@ -1,17 +1,16 @@
 using UnityEngine;
-using Converter = Aspid.MVVM.StarterKit.IConverter<UnityEngine.Vector3, UnityEngine.Vector3>;
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// Abstract base <see cref="ComponentMonoBinder{T1, T2, T3}">ComponentMonoBinder&lt;TComponent, Vector3, IConverter&lt;Vector3, Vector3&gt;&gt;</see> that binds a <see cref="Vector3"/> property,
+    /// Abstract base <see cref="ComponentMonoBinderWithConverter{T1, T2}">ComponentMonoBinderWithConverter&lt;TComponent, Vector3&gt;</see> that binds a <see cref="Vector3"/> property,
     /// implementing <see cref="IVectorBinder"/> and <see cref="INumberBinder"/>.
     /// Scalar values (<see langword="int"/>, <see langword="long"/>, <see langword="float"/>, <see langword="double"/>)
     /// are broadcast to all three vector components as <c>new Vector3(value, value, value)</c>.
     /// </summary>
     /// <typeparam name="TComponent">The type of <see cref="Component"/> that exposes the target <see cref="Vector3"/> property.</typeparam>
-    public abstract class ComponentVector3MonoBinder<TComponent> : ComponentMonoBinder<TComponent, Vector3, Converter>,
+    public abstract class ComponentVector3MonoBinder<TComponent> : ComponentMonoBinderWithConverter<TComponent, Vector3>,
         IVectorBinder,
         INumberBinder
         where TComponent : Component

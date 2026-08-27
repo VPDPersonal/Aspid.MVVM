@@ -1,16 +1,15 @@
 using UnityEngine;
 using UnityEngine.UI;
-using Converter = Aspid.MVVM.StarterKit.IConverter<UnityEngine.Vector2, UnityEngine.Vector2>;
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="EnumGroupMonoBinder{Slider, Vector2, Converter}"/> that sets <see cref="Slider.minValue"/> and <see cref="Slider.maxValue"/> on each element in the group based on the bound enum ViewModel value.
+    /// <see cref="EnumGroupMonoBinderWithConverter{T1, T2}"/> that sets <see cref="Slider.minValue"/> and <see cref="Slider.maxValue"/> on each element in the group based on the bound enum ViewModel value.
     /// </summary>
     [AddComponentMenu("Aspid/MVVM/Binders/UI/Slider/Slider Binder – MinMax EnumGroup")]
     [AddBinderContextMenu(typeof(Slider), "m_MinValue", "m_MaxValue", SubPath = "EnumGroup")]
-    public sealed class SliderMinMaxEnumGroupMonoBinder : EnumGroupMonoBinder<Slider, Vector2, Converter>
+    public sealed class SliderMinMaxEnumGroupMonoBinder : EnumGroupMonoBinderWithConverter<Slider, Vector2>
     {
         [Tooltip("Determines which endpoint(s) of the slider range are updated.")]
         [SerializeField] private SliderValueMode _valueMode = SliderValueMode.Range;

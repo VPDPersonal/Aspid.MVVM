@@ -1,5 +1,4 @@
 using System;
-using UnityEngine;
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
@@ -96,60 +95,5 @@ namespace Aspid.MVVM.StarterKit
         /// turns 0.75 into 7500 on the way back rather than into 0.75.
         /// </remarks>
         protected virtual TProperty? GetConvertedBackValue(TProperty? value) => value;
-    }
-
-    /// <summary>
-    /// Abstract base <see cref="TargetBinder{TTarget,TProperty}"/> that applies an optional <typeparamref name="TConverter"/> to the bound value.
-    /// </summary>
-    /// <remarks>
-    /// The reverse direction only converts when the configured converter implements
-    /// <see cref="ITwoWayConverter{TFrom, TTo}"/>; otherwise the value is sent back unchanged, and a
-    /// binder bound in a reverse mode reports the one-way converter once.
-    /// </remarks>
-    /// <typeparam name="TTarget">The type of the target object that exposes the bound property.</typeparam>
-    /// <typeparam name="TProperty">The type of the property being bound.</typeparam>
-    /// <typeparam name="TConverter">The converter type used to transform the bound value before applying it.</typeparam>
-    [Serializable]
-    public abstract class TargetBinder<TTarget, TProperty, TConverter> : TargetBinder<TTarget, TProperty>
-        where TConverter : IConverter<TProperty?, TProperty?>
-    {
-        [Tooltip("Converts the value; runs in reverse only via ITwoWayConverter.")]
-        [SerializeReference] private TConverter? _converter;
-
-        /// <param name="target">The target object that owns the property.</param>
-        /// <param name="converter">
-        /// An optional converter applied to each value before it is stored in the target property.
-        /// Pass <see langword="null"/> to use the value unchanged. Runs in reverse only if it implements
-        /// <see cref="ITwoWayConverter{TFrom, TTo}"/>.
-        /// </param>
-        /// <param name="mode">The binding mode to use.</param>
-        protected TargetBinder(TTarget target, TConverter? converter, BindMode mode)
-            : base(target, mode)
-        {
-            _converter = converter;
-        }
-
-        /// <inheritdoc/>
-        protected override TProperty? GetConvertedValue(TProperty? value) =>
-            _converter is not null ? _converter.Convert(value) : value;
-
-        /// <inheritdoc/>
-        protected override TProperty? GetConvertedBackValue(TProperty? value) =>
-            _converter is ITwoWayConverter<TProperty?, TProperty?> twoWay ? twoWay.ConvertBack(value) : value;
-
-        /// <inheritdoc/>
-        protected override void OnBound()
-        {
-            WarnAboutOneWayConverter();
-            base.OnBound();
-        }
-
-        private void WarnAboutOneWayConverter()
-        {
-            if (Mode is not (BindMode.OneWayToSource or BindMode.TwoWay)) return;
-            if (_converter is null or ITwoWayConverter<TProperty?, TProperty?>) return;
-
-            Debug.LogWarning($"{GetType().Name} is bound as {Mode} with {_converter.GetType().Name}, which converts one way only. Values sent back to the ViewModel are not converted.");
-        }
     }
 }

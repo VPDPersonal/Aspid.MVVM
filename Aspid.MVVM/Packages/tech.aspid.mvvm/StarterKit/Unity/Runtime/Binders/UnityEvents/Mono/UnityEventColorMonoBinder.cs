@@ -1,6 +1,5 @@
 using UnityEngine;
 using UnityEngine.Events;
-using Converter = Aspid.MVVM.StarterKit.IConverter<UnityEngine.Color, UnityEngine.Color>;
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
@@ -14,7 +13,7 @@ namespace Aspid.MVVM.StarterKit
     public sealed partial class UnityEventColorMonoBinder : MonoBinder, IColorBinder
     {
         [Tooltip("Optional converter applied to the value; empty leaves it as-is.")]
-        [SerializeReference] private Converter _converter;
+        [SerializeReference] private IConverter<Color, Color> _converter;
 
         [Tooltip("The event invoked with the bound value.")]
         [SerializeField] private UnityEvent<Color> _set;

@@ -1,17 +1,16 @@
 using System;
 using UnityEngine;
-using Converter = Aspid.MVVM.StarterKit.IConverter<float, float>;
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// Abstract base <see cref="ComponentMonoBinder{T1, T2, T3}">ComponentMonoBinder&lt;TComponent, float, IConverter&lt;float, float&gt;&gt;</see> that binds a <see langword="float"/> property,
+    /// Abstract base <see cref="ComponentMonoBinderWithConverter{T1, T2}">ComponentMonoBinderWithConverter&lt;TComponent, float&gt;</see> that binds a <see langword="float"/> property,
     /// implementing <see cref="INumberBinder"/> to accept all numeric types
     /// and <see cref="INumberReverseBinder"/> to broadcast to all numeric event types.
     /// </summary>
     /// <typeparam name="TComponent">The type of <see cref="UnityEngine.Component"/> that exposes the target <see langword="float"/> property.</typeparam>
-    public abstract partial class ComponentFloatMonoBinder<TComponent> : ComponentMonoBinder<TComponent, float, Converter>,
+    public abstract partial class ComponentFloatMonoBinder<TComponent> : ComponentMonoBinderWithConverter<TComponent, float>,
         INumberBinder,
         INumberReverseBinder
         where TComponent : Component

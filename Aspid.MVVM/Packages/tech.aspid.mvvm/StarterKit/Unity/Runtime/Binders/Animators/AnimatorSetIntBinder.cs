@@ -1,7 +1,6 @@
 #nullable enable
 using System;
 using UnityEngine;
-using Converter = Aspid.MVVM.StarterKit.IConverter<int, int>;
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
@@ -15,7 +14,7 @@ namespace Aspid.MVVM.StarterKit
     public class AnimatorSetIntBinder : AnimatorSetParameterBinder<int>
     {
         [Tooltip("Converts the bound integer value before setting the Animator parameter.")]
-        [SerializeReference] private Converter? _converter;
+        [SerializeReference] private IConverter<int, int>? _converter;
 
         /// <param name="animator">The <see cref="Animator"/> whose integer parameter is set.</param>
         /// <param name="parameterName">The name of the integer Animator parameter.</param>
@@ -30,7 +29,7 @@ namespace Aspid.MVVM.StarterKit
         public AnimatorSetIntBinder(
             Animator animator,
             string parameterName,
-            Converter? converter = null,
+            IConverter<int, int>? converter = null,
             BindMode mode = BindMode.OneWay)
             : base(animator, parameterName, mode)
         {

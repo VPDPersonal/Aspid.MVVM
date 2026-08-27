@@ -1,17 +1,16 @@
 #nullable enable
 using System;
 using UnityEngine;
-using Converter = Aspid.MVVM.StarterKit.IConverter<UnityEngine.Mesh?, UnityEngine.Mesh?>;
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="TargetBinder{T1, T2, T3}">TargetBinder&lt;MeshCollider, Mesh, IConverter&lt;Mesh, Mesh&gt;&gt;</see> that sets the <see cref="MeshCollider.sharedMesh"/> property.
+    /// <see cref="TargetBinderWithConverter{T1, T2}">TargetBinderWithConverter&lt;MeshCollider, Mesh&gt;</see> that sets the <see cref="MeshCollider.sharedMesh"/> property.
     /// </summary>
     /// <include file="XmlExampleDoc-MeshCollider-Mesh-1.1.0.xml" path="doc//member[@name='MeshColliderMeshBinder']/*" />
     [Serializable]
-    public class MeshColliderMeshBinder : TargetBinder<MeshCollider, Mesh, Converter>
+    public class MeshColliderMeshBinder : TargetBinderWithConverter<MeshCollider, Mesh>
     {
         /// <inheritdoc/>
         protected sealed override Mesh? Property
@@ -22,7 +21,7 @@ namespace Aspid.MVVM.StarterKit
 
         /// <inheritdoc/>
         /// <exception cref="ArgumentException">Thrown when <paramref name="mode"/> is <see cref="BindMode.TwoWay"/>.</exception>
-        public MeshColliderMeshBinder(MeshCollider target, Converter? converter = null, BindMode mode = BindMode.OneWay)
+        public MeshColliderMeshBinder(MeshCollider target, IConverter<Mesh?, Mesh?>? converter = null, BindMode mode = BindMode.OneWay)
             : base(target, converter, mode)
         {
             mode.ThrowExceptionIfMatches(BindMode.TwoWay);

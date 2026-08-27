@@ -1,7 +1,6 @@
 using System;
-using Conditional = System.Diagnostics.ConditionalAttribute;
 using UnityEngine;
-using Converter = Aspid.MVVM.StarterKit.IConverter<object, string>;
+using Conditional = System.Diagnostics.ConditionalAttribute;
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
@@ -27,10 +26,10 @@ namespace Aspid.MVVM.StarterKit
 
         // ReSharper disable once FieldCanBeMadeReadOnly.Local
         [Tooltip("Formats bound values as log messages. Defaults to GenericToStringConverter.")]
-        [SerializeReference] private Converter _converter;
+        [SerializeReference] private IConverter<object, string> _converter;
 
         /// <param name="converter">The converter used to format bound values as log messages. Pass <see langword="null"/> to use <see cref="GenericToStringConverter{T}"/>.</param>
-        public DebugLogBinder(Converter converter = null) : base(BindMode.TwoWay)
+        public DebugLogBinder(IConverter<object, string> converter = null) : base(BindMode.TwoWay)
         {
             _converter = converter ?? new GenericToStringConverter<object>();
         }

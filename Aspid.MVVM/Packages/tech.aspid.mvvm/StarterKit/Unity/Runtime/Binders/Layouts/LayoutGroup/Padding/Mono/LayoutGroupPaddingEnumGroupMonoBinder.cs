@@ -1,12 +1,11 @@
 using UnityEngine;
 using UnityEngine.UI;
-using Converter = Aspid.MVVM.StarterKit.IConverter<UnityEngine.RectOffset, UnityEngine.RectOffset>;
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="EnumGroupMonoBinder{LayoutGroup, RectOffset, Converter}"/> that sets the
+    /// <see cref="EnumGroupMonoBinderWithConverter{T1, T2}"/> that sets the
     /// <see cref="UnityEngine.UI.LayoutGroup.padding"/> property on each element based on the bound enum ViewModel value.
     /// </summary>
     /// <remarks>
@@ -14,7 +13,7 @@ namespace Aspid.MVVM.StarterKit
     /// </remarks>
     [AddComponentMenu("Aspid/MVVM/Binders/UI/LayoutGroup/LayoutGroup Binder – Padding EnumGroup")]
     [AddBinderContextMenu(typeof(LayoutGroup), serializePropertyNames: "m_Padding", SubPath = "EnumGroup")]
-    public sealed class LayoutGroupPaddingEnumGroupMonoBinder : EnumGroupMonoBinder<LayoutGroup, RectOffset, Converter>
+    public sealed class LayoutGroupPaddingEnumGroupMonoBinder : EnumGroupMonoBinderWithConverter<LayoutGroup, RectOffset>
     {
         [Tooltip("Which sides of the padding are updated per element.")]
         [SerializeField] private PaddingMode _paddingMode;

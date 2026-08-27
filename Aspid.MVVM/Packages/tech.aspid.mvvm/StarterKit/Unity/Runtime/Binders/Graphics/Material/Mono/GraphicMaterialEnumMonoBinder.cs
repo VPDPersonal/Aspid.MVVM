@@ -1,17 +1,16 @@
 using UnityEngine;
 using UnityEngine.UI;
-using Converter = Aspid.MVVM.StarterKit.IConverter<UnityEngine.Material, UnityEngine.Material>;
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="EnumMonoBinder{Graphic, Material, Converter}"/> that sets the <see cref="Graphic.material"/>
+    /// <see cref="EnumMonoBinderWithConverter{T1, T2}"/> that sets the <see cref="Graphic.material"/>
     /// property to a value resolved from the bound enum ViewModel value.
     /// </summary>
     [AddComponentMenu("Aspid/MVVM/Binders/UI/Graphic/Graphic Binder – Material Enum")]
     [AddBinderContextMenu(typeof(Graphic), serializePropertyNames: "m_Material", SubPath = "Enum")]
-    public sealed class GraphicMaterialEnumMonoBinder : EnumMonoBinder<Graphic, Material, Converter>
+    public sealed class GraphicMaterialEnumMonoBinder : EnumMonoBinderWithConverter<Graphic, Material>
     {
         /// <inheritdoc/>
         protected override void SetValue(Material value) =>

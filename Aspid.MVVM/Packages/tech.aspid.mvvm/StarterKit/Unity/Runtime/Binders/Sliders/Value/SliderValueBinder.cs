@@ -2,7 +2,6 @@
 using System;
 using UnityEngine;
 using UnityEngine.UI;
-using Converter = Aspid.MVVM.StarterKit.IConverter<float, float>;
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
@@ -33,7 +32,7 @@ namespace Aspid.MVVM.StarterKit
         private bool _isNotifyValueChanged = true;
 
         [Tooltip("Optional converter applied to values before they are set on the slider.")]
-        [SerializeReference] private Converter? _converter;
+        [SerializeReference] private IConverter<float, float>? _converter;
         
         /// <inheritdoc/>
         public SliderValueBinder(Slider target, BindMode mode)
@@ -43,7 +42,7 @@ namespace Aspid.MVVM.StarterKit
         /// <param name="converter">The converter applied to values before they are set on the slider, or <see langword="null"/> to use the value as-is.</param>
         /// <param name="mode">The binding mode. Must not be <see cref="BindMode.None"/>.</param>
         /// <exception cref="ArgumentException">Thrown when <paramref name="mode"/> is <see cref="BindMode.None"/>.</exception>
-        public SliderValueBinder(Slider target, Converter? converter = null, BindMode mode = BindMode.TwoWay)
+        public SliderValueBinder(Slider target, IConverter<float, float>? converter = null, BindMode mode = BindMode.TwoWay)
             : base(target, mode)
         {
             mode.ThrowExceptionIfNone();

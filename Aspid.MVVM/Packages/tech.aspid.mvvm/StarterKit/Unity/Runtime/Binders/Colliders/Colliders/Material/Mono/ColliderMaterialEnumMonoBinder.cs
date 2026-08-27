@@ -1,17 +1,15 @@
 using UnityEngine;
-using PhysicsMaterial = UnityEngine.PhysicsMaterial;
-using Converter = Aspid.MVVM.StarterKit.IConverter<UnityEngine.PhysicsMaterial, UnityEngine.PhysicsMaterial>;
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="EnumMonoBinder{T1, T2, T3}">EnumMonoBinder&lt;Collider, PhysicsMaterial, IConverter&lt;PhysicsMaterial, PhysicsMaterial&gt;&gt;</see> that sets the <see cref="Collider.material"/>
+    /// <see cref="EnumMonoBinderWithConverter{T1, T2}">EnumMonoBinderWithConverter&lt;Collider, PhysicsMaterial&gt;</see> that sets the <see cref="Collider.material"/>
     /// property based on the bound enum ViewModel value.
     /// </summary>
     [AddComponentMenu("Aspid/MVVM/Binders/Collider/Collider Binder – Material Enum")]
     [AddBinderContextMenu(typeof(Collider), serializePropertyNames: "m_Material", SubPath = "Enum")]
-    public sealed class ColliderMaterialEnumMonoBinder : EnumMonoBinder<Collider, PhysicsMaterial, Converter>
+    public sealed class ColliderMaterialEnumMonoBinder : EnumMonoBinderWithConverter<Collider, PhysicsMaterial>
     {
         /// <inheritdoc/>
         protected override void SetValue(PhysicsMaterial value) =>

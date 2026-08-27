@@ -1,16 +1,15 @@
 using UnityEngine;
 using UnityEngine.UI;
-using Converter = Aspid.MVVM.StarterKit.IConverter<UnityEngine.Texture, UnityEngine.Texture>;
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="ComponentMonoBinder{RawImage, Texture, Converter}"/> that sets the <see cref="RawImage.texture"/> property.
+    /// <see cref="ComponentMonoBinderWithConverter{T1, T2}"/> that sets the <see cref="RawImage.texture"/> property.
     /// </summary>
     [AddBinderContextMenu(typeof(RawImage), serializePropertyNames: "m_Texture")]
     [AddComponentMenu("Aspid/MVVM/Binders/UI/RawImage/RawImage Binder – Texture")]
-    public sealed partial class RawImageTextureMonoBinder : ComponentMonoBinder<RawImage, Texture, Converter>, IBinder<Sprite>
+    public sealed partial class RawImageTextureMonoBinder : ComponentMonoBinderWithConverter<RawImage, Texture>, IBinder<Sprite>
     {
         [Tooltip("Disables the RawImage component when the bound texture is null.")]
         [SerializeField] private bool _disabledWhenNull = true;

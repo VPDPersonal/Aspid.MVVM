@@ -1,15 +1,14 @@
 using UnityEngine;
-using Converter = Aspid.MVVM.StarterKit.IConverter<UnityEngine.Mesh, UnityEngine.Mesh>;
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="ComponentMonoBinder{T1, T2, T3}">ComponentMonoBinder&lt;MeshCollider, Mesh, IConverter&lt;Mesh, Mesh&gt;&gt;</see> that binds the <see cref="MeshCollider.sharedMesh"/> property.
+    /// <see cref="ComponentMonoBinderWithConverter{T1, T2}">ComponentMonoBinderWithConverter&lt;MeshCollider, Mesh&gt;</see> that binds the <see cref="MeshCollider.sharedMesh"/> property.
     /// </summary>
     [AddBinderContextMenu(typeof(MeshCollider), serializePropertyNames: "m_Mesh")]
     [AddComponentMenu("Aspid/MVVM/Binders/Collider/Mesh/MeshCollider Binder – Mesh")]
-    public class MeshColliderMeshMonoBinder : ComponentMonoBinder<MeshCollider, Mesh, Converter>
+    public class MeshColliderMeshMonoBinder : ComponentMonoBinderWithConverter<MeshCollider, Mesh>
     {
         /// <inheritdoc/>
         protected sealed override Mesh Property

@@ -1,6 +1,5 @@
 using UnityEngine;
 using UnityEngine.Events;
-using Converter = Aspid.MVVM.StarterKit.IConverter<string, bool>;
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
@@ -18,7 +17,7 @@ namespace Aspid.MVVM.StarterKit
     public sealed partial class StringToBoolCasterMonoBinder : MonoBinder, IBinder<string>
     {
         [Tooltip("The converter used to transform the bound string to a bool.")]
-        [SerializeReference] private Converter _converter = new StringEmptyToBoolConverter();
+        [SerializeReference] private IConverter<string, bool> _converter = new StringEmptyToBoolConverter();
         
         [Tooltip("Invoked with the converted bool value.")]
         [SerializeField] private UnityEvent<bool> _casted;

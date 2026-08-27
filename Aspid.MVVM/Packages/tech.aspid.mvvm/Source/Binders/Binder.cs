@@ -3,6 +3,7 @@
 #endif
 
 using System;
+using UnityEngine;
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM
@@ -16,9 +17,8 @@ namespace Aspid.MVVM
     public abstract partial class Binder : IBinder
     {
         // ReSharper disable once MemberInitializerValueIgnored
-        [UnityEngine.SerializeField]
         [BindMode(BindMode.OneWay, BindMode.OneTime)]
-        private BindMode _mode = BindMode.TwoWay;
+        [SerializeField] private BindMode _mode = BindMode.TwoWay;
 
         private IBinderRemover? _binderRemover;
 

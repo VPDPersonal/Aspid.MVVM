@@ -2,7 +2,6 @@
 using System;
 using UnityEngine;
 using System.Collections.Generic;
-using Converter = Aspid.MVVM.StarterKit.IConverter<UnityEngine.Material?, UnityEngine.Material?>;
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
@@ -37,7 +36,7 @@ namespace Aspid.MVVM.StarterKit
         }
         
         [Tooltip("The optional converter applied to each material before assignment.")]
-        [SerializeReference] private Converter? _converter;
+        [SerializeReference] private IConverter<Material?, Material?>? _converter;
         
         private Action<Material?>? _reverseMaterial;
         private Action<Material[]?>? _reverseMaterials;
@@ -51,7 +50,7 @@ namespace Aspid.MVVM.StarterKit
         /// <param name="converter">The converter applied to each material before assignment, or <see langword="null"/> to use the value as-is.</param>
         /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/>.</param>
         /// <exception cref="ArgumentException">Thrown when <paramref name="mode"/> is <see cref="BindMode.TwoWay"/>.</exception>
-        public RendererMaterialsBinder(Renderer target, Converter? converter = null, BindMode mode = BindMode.OneWay)
+        public RendererMaterialsBinder(Renderer target, IConverter<Material?, Material?>? converter = null, BindMode mode = BindMode.OneWay)
             : base(target, mode)
         {
             mode.ThrowExceptionIfMatches(BindMode.TwoWay);

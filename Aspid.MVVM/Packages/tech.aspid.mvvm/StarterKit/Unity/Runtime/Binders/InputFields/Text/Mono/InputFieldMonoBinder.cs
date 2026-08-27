@@ -3,7 +3,6 @@ using TMPro;
 using System;
 using UnityEngine;
 using System.Globalization;
-using Converter = Aspid.MVVM.StarterKit.IConverter<string, string>;
 
 // ReSharper disable once CheckNamespace
 // ReSharper disable ConditionIsAlwaysTrueOrFalse
@@ -44,7 +43,7 @@ namespace Aspid.MVVM.StarterKit
         [SerializeField] private UpdateInputFieldEvent _updateEvent = UpdateInputFieldEvent.OnValueChanged;
 
         [Tooltip("Optional converter applied before setting the input field text.")]
-        [SerializeReference] private Converter _converter;
+        [SerializeReference] private IConverter<string, string> _converter;
         
         private bool _isNotifyValueChanged = true;
 

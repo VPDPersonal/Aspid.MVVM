@@ -2,7 +2,7 @@
 using TMPro;
 using System;
 using UnityEngine;
-using Converter = Aspid.MVVM.StarterKit.IConverter<System.Enum, System.Collections.Generic.IEnumerable<TMPro.TMP_Dropdown.OptionData>>;
+using System.Collections.Generic;
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
@@ -16,7 +16,7 @@ namespace Aspid.MVVM.StarterKit
     public class DropdownOptionsByEnumMonoBinder : ComponentMonoBinder<TMP_Dropdown>, IBinder<Enum>
     {
         [Tooltip("Converts the enum value to option data. Null uses each value's name.")]
-        [SerializeReference] private Converter _converter;
+        [SerializeReference] private IConverter<Enum, IEnumerable<TMP_Dropdown.OptionData>> _converter;
 
         private Type _populatedType;
 

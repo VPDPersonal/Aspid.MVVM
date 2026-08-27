@@ -2,7 +2,6 @@
 using System;
 using UnityEngine;
 using Object = UnityEngine.Object;
-using Converter = Aspid.MVVM.StarterKit.IConverter<string?, string?>;
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
@@ -26,7 +25,7 @@ namespace Aspid.MVVM.StarterKit
         public event Action<string?>? ValueChanged;
         
         [Tooltip("Optional converter applied to the string value in both directions.")]
-        [SerializeReference] private Converter? _converter;
+        [SerializeReference] private IConverter<string?, string?>? _converter;
 
         /// <param name="target">The <see cref="GameObject"/> whose <see cref="Object.name"/> will be bound.</param>
         /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/>.</param>
@@ -41,7 +40,7 @@ namespace Aspid.MVVM.StarterKit
         /// </param>
         /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/>. Defaults to <see cref="BindMode.OneWay"/>.</param>
         /// <exception cref="ArgumentException">Thrown when <paramref name="mode"/> is <see cref="BindMode.TwoWay"/>.</exception>
-        public ObjectNameBinder(GameObject target, Converter? converter = null, BindMode mode = BindMode.OneWay)
+        public ObjectNameBinder(GameObject target, IConverter<string?, string?>? converter = null, BindMode mode = BindMode.OneWay)
             : base(target, mode)
         {
             mode.ThrowExceptionIfMatches(BindMode.TwoWay);

@@ -1,7 +1,6 @@
 using System;
 using UnityEngine;
 using Object = UnityEngine.Object;
-using Converter = Aspid.MVVM.StarterKit.IConverter<string, string>;
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
@@ -30,7 +29,7 @@ namespace Aspid.MVVM.StarterKit
         [SerializeField] private Object _object;
         
         [Tooltip("Optional converter applied to the string value in both directions.")]
-        [SerializeReference] private Converter _converter;
+        [SerializeReference] private IConverter<string, string> _converter;
         
         private void OnValidate()
         {

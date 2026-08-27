@@ -17,7 +17,7 @@
 
 | Свойство | Описание |
 |----------|----------|
-| `_isInvert` | Инвертирует значение: `true` в ViewModel → `false` в Toggle |
+| `_converter` | Опциональный конвертер значения; в обратную сторону работает через `ITwoWayConverter` |
 
 ### Защита от циклов
 
@@ -87,7 +87,7 @@ public partial class SettingsViewModel
 [ViewModel]
 public partial class NotificationViewModel
 {
-    // isInvert = true → Toggle ON = "не беспокоить выключен"
+    // BoolInvertConverter → Toggle ON = "не беспокоить выключен"
     [TwoWayBind] private bool _doNotDisturb;
 }
 ```

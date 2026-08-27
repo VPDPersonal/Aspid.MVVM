@@ -4,31 +4,11 @@ using UnityEngine;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// Abstract base <see cref="ComponentMonoBinder{T1, T2}">ComponentMonoBinder&lt;TComponent, bool&gt;</see> that adds optional value inversion.
+    /// Abstract base <see cref="ComponentMonoBinderWithConverter{T1, T2}">ComponentMonoBinderWithConverter&lt;TComponent, bool&gt;</see> that binds a <see langword="bool"/> property.
     /// </summary>
     /// <typeparam name="TComponent">The type of <see cref="Component"/> that exposes the target <see langword="bool"/> property.</typeparam>
-    public abstract class ComponentBoolMonoBinder<TComponent> : ComponentMonoBinder<TComponent, bool>
+    public abstract class ComponentBoolMonoBinder<TComponent> : ComponentMonoBinderWithConverter<TComponent, bool>
         where TComponent : Component
     {
-        [Tooltip("When enabled, inverts the bound bool value before applying it.")]
-        [SerializeField] private bool _isInvert;
-
-        /// <inheritdoc/>
-        /// <remarks>
-        /// When overriding this method, always call <c>base.GetConvertedValue(value)</c> to preserve
-        /// the inversion.
-        /// </remarks>
-        protected override bool GetConvertedValue(bool value) =>
-            Invert(base.GetConvertedValue(value));
-
-        /// <inheritdoc/>
-        /// <remarks>
-        /// Inversion is its own inverse, so the reverse direction mirrors the forward one: undo the
-        /// inversion first, then let the base undo whatever it applied.
-        /// </remarks>
-        protected override bool GetConvertedBackValue(bool value) =>
-            base.GetConvertedBackValue(Invert(value));
-
-        private bool Invert(bool value) => _isInvert ? !value : value;
     }
 }

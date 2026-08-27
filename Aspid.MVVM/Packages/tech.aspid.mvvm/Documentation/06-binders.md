@@ -162,7 +162,7 @@ public abstract class TargetBinder<TTarget, TProperty, TConverter> : TargetBinde
 
 | Класс | Тип Property | Доп. возможности |
 |-------|-------------|-----------------|
-| `TargetBoolBinder<T>` | `bool` | `_isInvert` — инверсия |
+| `TargetBoolBinder<T>` | `bool` | `_converter` — опциональный `IConverter<bool, bool>` |
 | `TargetFloatBinder<T>` | `float` | `INumberBinder` — принимает int/long/double |
 | `TargetIntBinder<T>` | `int` | `INumberBinder` |
 | `TargetVector3Binder<T>` | `Vector3` | `IVectorBinder`, `INumberBinder` (scalar → Vector3) |

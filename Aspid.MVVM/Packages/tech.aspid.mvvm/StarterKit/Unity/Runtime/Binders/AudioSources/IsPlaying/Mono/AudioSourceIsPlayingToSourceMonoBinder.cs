@@ -19,8 +19,8 @@ namespace Aspid.MVVM.StarterKit
         /// <inheritdoc/>
         public event Action<bool> ValueChanged;
 
-        [Tooltip("When enabled, inverts the reported value before it is raised.")]
-        [SerializeField] private bool _isInvert;
+        [Tooltip("Optional converter applied to the reported value; empty leaves it as-is.")]
+        [SerializeReference] private IConverter<bool, bool> _converter;
 
         private bool _wasPlaying;
 
@@ -54,6 +54,6 @@ namespace Aspid.MVVM.StarterKit
         }
 
         private void Raise(bool isPlaying) =>
-            ValueChanged?.Invoke(_isInvert ? !isPlaying : isPlaying);
+            ValueChanged?.Invoke(_converter?.Convert(isPlaying) ?? isPlaying);
     }
 }

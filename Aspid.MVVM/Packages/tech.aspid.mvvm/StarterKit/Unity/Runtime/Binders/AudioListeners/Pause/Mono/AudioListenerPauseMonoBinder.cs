@@ -22,31 +22,31 @@ namespace Aspid.MVVM.StarterKit
         /// <inheritdoc/>
         public event Action<bool> ValueChanged;
 
-        [Tooltip("When enabled, the bound value is inverted before it is applied.")]
-        [SerializeField] private bool _isInvert;
+        [Tooltip("Optional converter applied to the value; runs in reverse only via ITwoWayConverter.")]
+        [SerializeReference] private IConverter<bool, bool> _converter;
 
         /// <summary>
-        /// Sets <see cref="AudioListener.pause"/>, inverting the value first when the Invert option is set.
+        /// Sets <see cref="AudioListener.pause"/>, applying the configured converter if present.
         /// </summary>
         /// <param name="value">The value received from the ViewModel.</param>
         [BinderLog]
         public void SetValue(bool value) =>
-            AudioListener.pause = _isInvert ? !value : value;
+            AudioListener.pause = _converter?.Convert(value) ?? value;
 
         /// <summary>
         /// Called when the binder is bound. Sends the current state to the ViewModel when using
         /// <see cref="BindMode.OneWayToSource"/>.
         /// </summary>
         /// <remarks>
-        /// The Invert option applies in this direction too, so the value the ViewModel receives is the one it would
-        /// have had to send to produce the current state.
+        /// The converter runs in this direction only when it implements <see cref="ITwoWayConverter{TFrom, TTo}"/>;
+        /// otherwise the raw state is sent.
         /// </remarks>
         protected override void OnBound()
         {
             if (Mode is not BindMode.OneWayToSource) return;
 
             var paused = AudioListener.pause;
-            ValueChanged?.Invoke(_isInvert ? !paused : paused);
+            ValueChanged?.Invoke(_converter is ITwoWayConverter<bool, bool> twoWay ? twoWay.ConvertBack(paused) : paused);
         }
     }
 }

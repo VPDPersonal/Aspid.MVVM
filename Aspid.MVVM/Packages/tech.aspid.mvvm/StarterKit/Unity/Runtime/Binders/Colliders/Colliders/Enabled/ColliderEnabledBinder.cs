@@ -21,8 +21,8 @@ namespace Aspid.MVVM.StarterKit
 
         /// <inheritdoc/>
         /// <exception cref="ArgumentException">Thrown when <paramref name="mode"/> is <see cref="BindMode.TwoWay"/>.</exception>
-        public ColliderEnabledBinder(Collider target, bool isInvert = false, BindMode mode = BindMode.OneWay)
-            : base(target, isInvert, mode)
+        public ColliderEnabledBinder(Collider target, IConverter<bool, bool>? converter = null, BindMode mode = BindMode.OneWay)
+            : base(target, converter, mode)
         {
             mode.ThrowExceptionIfMatches(BindMode.TwoWay);
         }

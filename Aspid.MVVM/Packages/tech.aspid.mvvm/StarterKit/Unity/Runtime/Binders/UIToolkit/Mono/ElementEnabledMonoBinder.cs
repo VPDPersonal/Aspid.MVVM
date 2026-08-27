@@ -17,8 +17,8 @@ namespace Aspid.MVVM.StarterKit
     [AddBinderContextMenuByType(typeof(bool))]
     public sealed partial class ElementEnabledMonoBinder : VisualElementMonoBinder<VisualElement>, IBinder<bool>
     {
-        [Tooltip("When enabled, the bound value is inverted before it is applied.")]
-        [SerializeField] private bool _isInvert;
+        [Tooltip("Optional converter applied to the value; empty leaves it as-is.")]
+        [SerializeReference] private IConverter<bool, bool> _converter;
 
         /// <summary>
         /// Enables the element when <paramref name="value"/> is <see langword="true"/>, and disables it otherwise.
@@ -30,7 +30,7 @@ namespace Aspid.MVVM.StarterKit
             var element = Element;
             if (element is null) return;
 
-            element.SetEnabled(_isInvert ? !value : value);
+            element.SetEnabled(_converter?.Convert(value) ?? value);
         }
     }
 }

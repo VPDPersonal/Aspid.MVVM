@@ -18,7 +18,7 @@
                 }
             </code>
             &#xD;
-            Bind the Toggle's isOn state to a boolean ViewModel property by constructing the binder in code, with value inversion.
+            Bind the Toggle's isOn state to a boolean ViewModel property by constructing the binder in code, with an inverting converter.
             <code>
                 [View]
                 public partial class ExampleView
@@ -26,7 +26,7 @@
                     [SerializeField] private Toggle _target;
                     &#xD;
                     private ToggleIsOnBinder IsAccepted =&gt;
-                        new(_target, isInvert: true);
+                        new(_target, new BoolInvertConverter());
                 }
                 &#xD;
                 [ViewModel]

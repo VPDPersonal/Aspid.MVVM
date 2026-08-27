@@ -20,28 +20,34 @@ namespace Aspid.MVVM.StarterKit
         /// <inheritdoc/>
         public event Action<bool> ValueChanged;
 
-        [Tooltip("Inverts the bound value before it is applied.")]
-        [SerializeField] private bool _isInvert;
+        [Tooltip("Optional converter applied to the value; runs in reverse only via ITwoWayConverter.")]
+        [SerializeReference] private IConverter<bool, bool> _converter;
 
         /// <summary>
-        /// Sets <see cref="Screen.fullScreen"/>, inverting the value first when the Invert option is set.
+        /// Sets <see cref="Screen.fullScreen"/>, applying the configured converter if present.
         /// </summary>
         /// <param name="value">The value received from the ViewModel.</param>
         [BinderLog]
         public void SetValue(bool value) =>
-            Screen.fullScreen = _isInvert ? !value : value;
+            Screen.fullScreen = _converter?.Convert(value) ?? value;
 
         /// <summary>
         /// Called when the binder is bound. Sends the current state to the ViewModel when using
         /// <see cref="BindMode.OneWayToSource"/>.
         /// </summary>
-        /// <remarks>The Invert option applies in this direction too.</remarks>
+        /// <remarks>
+        /// The converter runs in this direction only when it implements <see cref="ITwoWayConverter{TFrom, TTo}"/>;
+        /// otherwise the raw state is sent.
+        /// </remarks>
         protected override void OnBound()
         {
             if (Mode is not BindMode.OneWayToSource) return;
 
-            var fullScreen = Screen.fullScreen;
-            ValueChanged?.Invoke(_isInvert ? !fullScreen : fullScreen);
+            var fullScreen = _converter is ITwoWayConverter<bool, bool> twoWay
+                ? twoWay.ConvertBack(Screen.fullScreen)
+                : Screen.fullScreen;
+            
+            ValueChanged?.Invoke(fullScreen);
         }
     }
 }

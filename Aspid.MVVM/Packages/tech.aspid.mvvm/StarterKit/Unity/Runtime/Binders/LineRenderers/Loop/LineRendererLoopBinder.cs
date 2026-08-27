@@ -21,8 +21,8 @@ namespace Aspid.MVVM.StarterKit
         /// <inheritdoc/>
         public LineRendererLoopBinder(
             LineRenderer target,
-            bool isInvert = false,
+            IConverter<bool, bool>? converter = null,
             BindMode mode = BindMode.OneWay)
-            : base(target, isInvert, mode) { }
+            : base(target, converter, mode) { }
     }
 }

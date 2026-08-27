@@ -12,17 +12,17 @@ namespace Aspid.MVVM.StarterKit
     [AddBinderContextMenu(typeof(Component), Path = "Add General Binder/UnityEvent/UnityEvent Binder – Bool")]
     public sealed partial class UnityEventBoolMonoBinder : MonoBinder, IBinder<bool>
     {
-        [Tooltip("Inverts the value before passing it to the event.")]
-        [SerializeField] private bool _isInvert;
+        [Tooltip("Optional converter applied to the value; empty leaves it as-is.")]
+        [SerializeReference] private IConverter<bool, bool> _converter;
         [Tooltip("The event invoked with the bound value.")]
         [SerializeField] private UnityEvent<bool> _set;
 
         /// <summary>
-        /// Invokes the event with the specified boolean value, applying inversion if configured.
+        /// Invokes the event with the specified boolean value, applying the configured converter if present.
         /// </summary>
         /// <param name="value">The value received from the ViewModel.</param>
         [BinderLog]
         public void SetValue(bool value) =>
-            _set?.Invoke(_isInvert ? !value : value);
+            _set?.Invoke(_converter?.Convert(value) ?? value);
     }
 }

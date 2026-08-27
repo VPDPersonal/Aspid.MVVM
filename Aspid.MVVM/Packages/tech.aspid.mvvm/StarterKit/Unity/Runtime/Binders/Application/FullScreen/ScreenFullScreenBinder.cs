@@ -20,36 +20,43 @@ namespace Aspid.MVVM.StarterKit
         /// <inheritdoc/>
         public event Action<bool>? ValueChanged;
 
-        [Tooltip("Inverts the bound value before it is applied.")]
-        [SerializeField] private bool _isInvert;
+        [Tooltip("Optional converter applied to the value; runs in reverse only via ITwoWayConverter.")]
+        [SerializeReference] private IConverter<bool, bool>? _converter;
 
-        /// <param name="isInvert">When <see langword="true"/>, the bound value is inverted before it is applied.</param>
+        /// <param name="converter">
+        /// An optional converter applied to the value before it is applied. Pass <see langword="null"/> to use the
+        /// value unchanged. Runs in reverse only if it implements <see cref="ITwoWayConverter{TFrom, TTo}"/>.
+        /// </param>
         /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/> — the property raises no change event to listen to.</param>
         /// <exception cref="ArgumentException">Thrown when <paramref name="mode"/> is <see cref="BindMode.TwoWay"/>.</exception>
-        public ScreenFullScreenBinder(bool isInvert = false, BindMode mode = BindMode.OneWay)
+        public ScreenFullScreenBinder(IConverter<bool, bool>? converter = null, BindMode mode = BindMode.OneWay)
             : base(mode)
         {
             mode.ThrowExceptionIfMatches(BindMode.TwoWay);
-            _isInvert = isInvert;
+            _converter = converter;
         }
 
         /// <summary>
-        /// Sets <see cref="Screen.fullScreen"/>, inverting the value first when the Invert option is set.
+        /// Sets <see cref="Screen.fullScreen"/>, applying the configured converter if present.
         /// </summary>
         /// <param name="value">The value received from the ViewModel.</param>
         public void SetValue(bool value) =>
-            Screen.fullScreen = _isInvert ? !value : value;
+            Screen.fullScreen = _converter?.Convert(value) ?? value;
 
         /// <summary>
         /// Called when the binder is bound. Sends the current state to the ViewModel when using
         /// <see cref="BindMode.OneWayToSource"/>.
         /// </summary>
+        /// <remarks>
+        /// The converter runs in this direction only when it implements <see cref="ITwoWayConverter{TFrom, TTo}"/>;
+        /// otherwise the raw state is sent.
+        /// </remarks>
         protected override void OnBound()
         {
             if (Mode is not BindMode.OneWayToSource) return;
 
             var fullScreen = Screen.fullScreen;
-            ValueChanged?.Invoke(_isInvert ? !fullScreen : fullScreen);
+            ValueChanged?.Invoke(_converter is ITwoWayConverter<bool, bool> twoWay ? twoWay.ConvertBack(fullScreen) : fullScreen);
         }
     }
 }

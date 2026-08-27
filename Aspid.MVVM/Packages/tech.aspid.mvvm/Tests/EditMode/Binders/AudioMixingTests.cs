@@ -92,7 +92,7 @@ namespace Aspid.MVVM.Tests
         }
 
         /// <summary>
-        /// The Invert option has to apply in both directions, or a ViewModel bound in
+        /// A two-way converter has to apply in both directions, or a ViewModel bound in
         /// <see cref="BindMode.OneWayToSource"/> would be told the opposite of what it would have sent.
         /// </summary>
         [Test]
@@ -100,7 +100,7 @@ namespace Aspid.MVVM.Tests
         {
             AudioListener.pause = true;
 
-            var binder = new AudioListenerPauseBinder(isInvert: true, BindMode.OneWayToSource);
+            var binder = new AudioListenerPauseBinder(new BoolInvertConverter(), BindMode.OneWayToSource);
             var received = true;
 
             binder.Bind(new OneWayToSourceStructBindableMember<bool>(value => received = value));
@@ -111,7 +111,7 @@ namespace Aspid.MVVM.Tests
         [Test]
         public void ListenerPause_Inverted_AppliesTheOppositeValue()
         {
-            var binder = new AudioListenerPauseBinder(isInvert: true);
+            var binder = new AudioListenerPauseBinder(new BoolInvertConverter());
 
             binder.SetValue(true);
 

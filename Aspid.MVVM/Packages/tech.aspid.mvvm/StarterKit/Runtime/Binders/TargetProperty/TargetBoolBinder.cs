@@ -1,46 +1,18 @@
+#nullable enable
 using System;
-using UnityEngine;
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// Abstract base <see cref="TargetBinder{T1, T2}">TargetBinder&lt;TTarget, bool&gt;</see> that adds optional value inversion.
+    /// Abstract base <see cref="TargetBinderWithConverter{T1, T2}">TargetBinderWithConverter&lt;TTarget, bool&gt;</see> that binds a <see langword="bool"/> property.
     /// </summary>
     /// <typeparam name="TTarget">The type of the target object that exposes the target <see langword="bool"/> property.</typeparam>
     [Serializable]
-    public abstract class TargetBoolBinder<TTarget> : TargetBinder<TTarget, bool>
+    public abstract class TargetBoolBinder<TTarget> : TargetBinderWithConverter<TTarget, bool>
     {
-        [Tooltip("When enabled, inverts the bound bool value before applying it.")]
-        [SerializeField] private bool _isInvert;
-
-        /// <param name="target">The target object whose boolean property is managed by this binder.</param>
-        /// <param name="isInvert">
-        /// When <see langword="true"/>, the ViewModel value is logically negated before being applied.
-        /// </param>
-        /// <param name="mode">The binding mode to use.</param>
-        protected TargetBoolBinder(TTarget target, bool isInvert, BindMode mode = BindMode.OneWay)
-            : base(target, mode)
-        {
-            _isInvert = isInvert;
-        }
-
         /// <inheritdoc/>
-        /// <remarks>
-        /// When overriding this method, always call <c>base.GetConvertedValue(value)</c> to preserve
-        /// the inversion.
-        /// </remarks>
-        protected override bool GetConvertedValue(bool value) =>
-            Invert(base.GetConvertedValue(value));
-
-        /// <inheritdoc/>
-        /// <remarks>
-        /// Inversion is its own inverse, so the reverse direction mirrors the forward one: undo the
-        /// inversion first, then let the base undo whatever it applied.
-        /// </remarks>
-        protected override bool GetConvertedBackValue(bool value) =>
-            base.GetConvertedBackValue(Invert(value));
-
-        private bool Invert(bool value) => _isInvert ? !value : value;
+        protected TargetBoolBinder(TTarget target, IConverter<bool, bool>? converter, BindMode mode = BindMode.OneWay)
+            : base(target, converter, mode) { }
     }
 }

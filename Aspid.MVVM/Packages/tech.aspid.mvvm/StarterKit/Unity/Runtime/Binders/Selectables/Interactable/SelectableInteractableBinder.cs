@@ -21,8 +21,8 @@ namespace Aspid.MVVM.StarterKit
 
         /// <inheritdoc/>
         /// <exception cref="ArgumentException">Thrown when <paramref name="mode"/> is <see cref="BindMode.TwoWay"/>.</exception>
-        public SelectableInteractableBinder(Selectable target, bool isInvert = false, BindMode mode = BindMode.OneTime)
-            : base(target, isInvert, mode)
+        public SelectableInteractableBinder(Selectable target, IConverter<bool, bool>? converter = null, BindMode mode = BindMode.OneTime)
+            : base(target, converter, mode)
         {
             mode.ThrowExceptionIfMatches(BindMode.TwoWay);
         }

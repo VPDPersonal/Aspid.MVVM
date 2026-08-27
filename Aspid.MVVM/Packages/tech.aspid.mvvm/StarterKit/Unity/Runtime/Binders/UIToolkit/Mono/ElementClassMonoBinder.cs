@@ -16,8 +16,8 @@ namespace Aspid.MVVM.StarterKit
         [Tooltip("The USS class toggled by the bound value.")]
         [SerializeField] private string _class;
 
-        [Tooltip("When enabled, the bound value is inverted before it is applied.")]
-        [SerializeField] private bool _isInvert;
+        [Tooltip("Optional converter applied to the value; empty leaves it as-is.")]
+        [SerializeReference] private IConverter<bool, bool> _converter;
 
         /// <summary>
         /// Adds the class when <paramref name="value"/> is <see langword="true"/>, and removes it otherwise.
@@ -39,7 +39,7 @@ namespace Aspid.MVVM.StarterKit
                 return;
             }
 
-            element.EnableInClassList(_class, _isInvert ? !value : value);
+            element.EnableInClassList(_class, _converter?.Convert(value) ?? value);
         }
     }
 }

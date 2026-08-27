@@ -11,7 +11,7 @@ namespace Aspid.MVVM.StarterKit
     [AddComponentMenu("Aspid/MVVM/Binders/Animator/Animator Binder – Set Bool")]
     public class AnimatorSetBoolMonoBinder : AnimatorSetParameterMonoBinder<bool>
     {
-        [Tooltip("When enabled, the bound boolean value is inverted before being applied to the Animator parameter.")]
+        [Tooltip("When enabled, inverts the bound bool value before applying it.")]
         [SerializeField] private bool _isInvert;
 
         /// <summary>

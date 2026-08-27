@@ -12,10 +12,10 @@ namespace Aspid.MVVM.StarterKit
     [AddComponentMenu("Aspid/MVVM/Binders/UI/Command/Toggle Binder – Command")]
     public partial class ToggleCommandMonoBinder : ComponentMonoBinder<Toggle>, IBinder<IRelayCommand>, IBinder<IRelayCommand<bool>>
     {
-        [Tooltip("How the target reflects the command's CanExecute state: by interactability, by enabling the object, or not at all.")]
+        [Tooltip("How the target reflects CanExecute.")]
         [SerializeField] private InteractableMode _interactableMode = InteractableMode.Interactable;
         
-        [Tooltip("An extra view told whether the command can execute. Leave empty for no feedback beyond the mode above.")]
+        [Tooltip("View that reflects CanExecute when Interactable Mode is Custom.")]
         [SerializeReference] private ICanExecuteView _customInteractable;
         
         private IRelayCommand _command;
@@ -60,14 +60,10 @@ namespace Aspid.MVVM.StarterKit
         /// Called when the binder is unbound. Unsubscribes from <see cref="Toggle.onValueChanged"/>
         /// and releases all bound command references.
         /// </summary>
-        /// <remarks>
-        /// Passes <see langword="null"/> to each SetValue overload to detach command
-        /// references and unsubscribe from their <see cref="IRelayCommand.CanExecuteChanged"/> events.
-        /// </remarks>
         protected override void OnUnbound()
         {
             CachedComponent.onValueChanged.RemoveListener(OnValueChanged);
-            
+
             SetValue((IRelayCommand)null);
             SetValue((IRelayCommand<bool>)null);
         }
@@ -105,11 +101,11 @@ namespace Aspid.MVVM.StarterKit
         [Tooltip("The argument passed to the command each time it is executed.")]
         [SerializeField] private T _param;
         
-        [Tooltip("How the target reflects the command's CanExecute state: by interactability, by enabling the object, or not at all.")]
+        [Tooltip("How the target reflects CanExecute.")]
         [Space]
         [SerializeField] private InteractableMode _interactableMode = InteractableMode.Interactable;
         
-        [Tooltip("An extra view told whether the command can execute. Leave empty for no feedback beyond the mode above.")]
+        [Tooltip("View that reflects CanExecute when Interactable Mode is Custom.")]
         [SerializeReference] private ICanExecuteView _customInteractable;
         
         private IRelayCommand<bool, T> _command;
@@ -141,27 +137,19 @@ namespace Aspid.MVVM.StarterKit
         /// Called when the binder is bound. Subscribes to <see cref="Toggle.onValueChanged"/> so that
         /// every value change executes the bound command with the current isOn value and the configured parameter.
         /// </summary>
-        /// <remarks>
-        /// The subscription connects the toggle's value change event to OnValueChanged,
-        /// which executes the bound command with the isOn state and <see cref="Param"/>.
-        /// </remarks>
         protected override void OnBound() =>
             CachedComponent.onValueChanged.AddListener(OnValueChanged);
-        
+
         /// <summary>
         /// Called when the binder is unbound. Unsubscribes from <see cref="Toggle.onValueChanged"/>
         /// and releases the bound command reference.
         /// </summary>
-        /// <remarks>
-        /// Passes <see langword="null"/> to SetValue to detach the command reference
-        /// and unsubscribe from its <see cref="IRelayCommand.CanExecuteChanged"/> event.
-        /// </remarks>
         protected override void OnUnbound()
         {
             CachedComponent.onValueChanged.RemoveListener(OnValueChanged);
             SetValue(null);
         }
-        
+
         private void OnValueChanged(bool isOn) =>
             _command?.Execute(isOn, Param);
         
@@ -189,11 +177,11 @@ namespace Aspid.MVVM.StarterKit
         [Tooltip("The second argument passed to the command each time it is executed.")]
         [SerializeField] private T2 _param2;
         
-        [Tooltip("How the target reflects the command's CanExecute state: by interactability, by enabling the object, or not at all.")]
+        [Tooltip("How the target reflects CanExecute.")]
         [Space]
         [SerializeField] private InteractableMode _interactableMode = InteractableMode.Interactable;
         
-        [Tooltip("An extra view told whether the command can execute. Leave empty for no feedback beyond the mode above.")]
+        [Tooltip("View that reflects CanExecute when Interactable Mode is Custom.")]
         [SerializeReference] private ICanExecuteView _customInteractable;
         
         private IRelayCommand<bool, T1, T2> _command;
@@ -234,27 +222,19 @@ namespace Aspid.MVVM.StarterKit
         /// Called when the binder is bound. Subscribes to <see cref="Toggle.onValueChanged"/> so that
         /// every value change executes the bound command with the current isOn value and the configured parameters.
         /// </summary>
-        /// <remarks>
-        /// The subscription connects the toggle's value change event to OnValueChanged,
-        /// which executes the bound command with the isOn state, <see cref="Param1"/>, and <see cref="Param2"/>.
-        /// </remarks>
         protected override void OnBound() =>
             CachedComponent.onValueChanged.AddListener(OnValueChanged);
-        
+
         /// <summary>
         /// Called when the binder is unbound. Unsubscribes from <see cref="Toggle.onValueChanged"/>
         /// and releases the bound command reference.
         /// </summary>
-        /// <remarks>
-        /// Passes <see langword="null"/> to SetValue to detach the command reference
-        /// and unsubscribe from its <see cref="IRelayCommand.CanExecuteChanged"/> event.
-        /// </remarks>
         protected override void OnUnbound()
         {
             CachedComponent.onValueChanged.RemoveListener(OnValueChanged);
             SetValue(null);
         }
-        
+
         private void OnValueChanged(bool isOn) =>
             _command?.Execute(isOn, Param1, Param2);
         
@@ -285,11 +265,11 @@ namespace Aspid.MVVM.StarterKit
         [Tooltip("The third argument passed to the command each time it is executed.")]
         [SerializeField] private T3 _param3;
         
-        [Tooltip("How the target reflects the command's CanExecute state: by interactability, by enabling the object, or not at all.")]
+        [Tooltip("How the target reflects CanExecute.")]
         [Space]
         [SerializeField] private InteractableMode _interactableMode = InteractableMode.Interactable;
         
-        [Tooltip("An extra view told whether the command can execute. Leave empty for no feedback beyond the mode above.")]
+        [Tooltip("View that reflects CanExecute when Interactable Mode is Custom.")]
         [SerializeReference] private ICanExecuteView _customInteractable;
         
         private IRelayCommand<bool, T1, T2, T3> _command;
@@ -339,27 +319,19 @@ namespace Aspid.MVVM.StarterKit
         /// Called when the binder is bound. Subscribes to <see cref="Toggle.onValueChanged"/> so that
         /// every value change executes the bound command with the current isOn value and the configured parameters.
         /// </summary>
-        /// <remarks>
-        /// The subscription connects the toggle's value change event to OnValueChanged,
-        /// which executes the bound command with the isOn state, <see cref="Param1"/>, <see cref="Param2"/>, and <see cref="Param3"/>.
-        /// </remarks>
         protected override void OnBound() =>
             CachedComponent.onValueChanged.AddListener(OnValueChanged);
-        
+
         /// <summary>
         /// Called when the binder is unbound. Unsubscribes from <see cref="Toggle.onValueChanged"/>
         /// and releases the bound command reference.
         /// </summary>
-        /// <remarks>
-        /// Passes <see langword="null"/> to SetValue to detach the command reference
-        /// and unsubscribe from its <see cref="IRelayCommand.CanExecuteChanged"/> event.
-        /// </remarks>
         protected override void OnUnbound()
         {
             CachedComponent.onValueChanged.RemoveListener(OnValueChanged);
             SetValue(null);
         }
-        
+
         private void OnValueChanged(bool isOn) =>
             _command?.Execute(isOn, Param1, Param2, Param3);
         

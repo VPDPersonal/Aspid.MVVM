@@ -18,8 +18,8 @@ namespace Aspid.MVVM.StarterKit
     /// When <see cref="BindMode.OneWayToSource"/> is active, the current value is also immediately
     /// forwarded when binding is established.
     /// <para/>
-    /// Unlike <see cref="Slider"/>, a scrollbar has no configurable range: its value is always normalised to
-    /// 0..1, so the incoming value is clamped to that range rather than to inspector-set bounds.
+    /// A scrollbar has no configurable range: its value is always normalised to 0..1, so the incoming
+    /// value is clamped to that range rather than to inspector-set bounds.
     /// </remarks>
     [BindModeOverride(IsAll = true)]
     [AddComponentMenu("Aspid/MVVM/Binders/UI/Scrollbar/Scrollbar Binder – Value")]
@@ -92,10 +92,6 @@ namespace Aspid.MVVM.StarterKit
         /// <summary>
         /// Called when the binder is unbound. Unsubscribes from <see cref="Scrollbar.onValueChanged"/> if active.
         /// </summary>
-        /// <remarks>
-        /// Has no effect when <see cref="BindMode.OneWay"/> is active, since no event subscription
-        /// was made during binding.
-        /// </remarks>
         protected override void OnUnbound()
         {
             if (Mode is not (BindMode.TwoWay or BindMode.OneWayToSource)) return;
@@ -106,11 +102,9 @@ namespace Aspid.MVVM.StarterKit
         /// Applies <paramref name="value"/> to the scrollbar without reading the write back as user input.
         /// </summary>
         /// <remarks>
-        /// The value is clamped to 0..1 first. Unity clamps it anyway, silently, and the echo guard around the
-        /// assignment then swallows the <c>onValueChanged</c> that the clamp raises — so the ViewModel would keep
-        /// the value it sent while the scrollbar showed a different one. When the clamp actually changes the value,
-        /// the reverse channel is told what the scrollbar holds. A converter's own effect is not reported back:
-        /// only the difference the clamp made is.
+        /// The value is clamped to 0..1 first, and the reverse channel is told whenever the clamp changed it —
+        /// otherwise the ViewModel would keep a value the scrollbar never held. A converter's own effect is not
+        /// reported back: only the difference the clamp made is.
         /// </remarks>
         protected void SetValueInternal(float value)
         {
@@ -125,8 +119,7 @@ namespace Aspid.MVVM.StarterKit
             }
             finally
             {
-                // Без finally исключение из сеттера — например, из чужого слушателя onValueChanged —
-                // навсегда оставило бы флаг снятым и обесточило канал View → ViewModel.
+                // Without finally, an exception from the setter (e.g. a foreign onValueChanged listener) would leave the flag stuck off.
                 _isNotifyValueChanged = true;
             }
 

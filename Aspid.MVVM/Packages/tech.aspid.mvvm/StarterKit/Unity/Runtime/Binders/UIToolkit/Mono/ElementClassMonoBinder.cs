@@ -8,11 +8,6 @@ namespace Aspid.MVVM.StarterKit
     /// <see cref="VisualElementMonoBinder{VisualElement}"/> implementing
     /// <see cref="IBinder{T}">IBinder&lt;bool&gt;</see> that adds and removes one USS class.
     /// </summary>
-    /// <remarks>
-    /// The idiomatic way to express state in UI Toolkit: the look lives in the stylesheet and the ViewModel says only
-    /// whether the state holds. A colour, a border and an animation all follow from one class, without the View knowing
-    /// any of them.
-    /// </remarks>
     [BindModeOverride(BindMode.OneWay, BindMode.OneTime)]
     [AddComponentMenu("Aspid/MVVM/Binders/UIToolkit/Element Binder – Class")]
     [AddBinderContextMenuByType(typeof(bool))]

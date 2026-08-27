@@ -13,7 +13,7 @@ namespace Aspid.MVVM.StarterKit
     [AddBinderContextMenu(typeof(Component), Path = "Add General Binder/UnityEvent/UnityEvent Binder – Float")]
     public sealed partial class UnityEventFloatMonoBinder : MonoBinder, INumberBinder
     {
-        [Tooltip("Optional converter applied to the value before it is used. Leave empty to use the value as-is.")]
+        [Tooltip("Optional converter applied to the value; empty leaves it as-is.")]
         [SerializeReference] private Converter _converter;
 
         [Tooltip("The event invoked with the bound value.")]

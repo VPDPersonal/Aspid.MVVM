@@ -22,13 +22,8 @@ namespace Aspid.MVVM.StarterKit
     /// it when the entry goes away.
     /// </summary>
     /// <remarks>
-    /// The MonoBehaviour half the dictionary domain was missing: the list domain had one and the dictionary domain did
-    /// not, so a dictionary could be shown from a View's own field and not from a component dropped next to the objects
-    /// it drives.
-    /// <para/>
     /// Views are created and released through the factory by key, so a replacement under an existing key reuses nothing
-    /// and leaks nothing: the old view is released and a new one is created. A missing factory is reported once rather
-    /// than on every entry.
+    /// and leaks nothing: the old view is released and a new one is created.
     /// </remarks>
     /// <typeparam name="TKey">The type of the dictionary's keys.</typeparam>
     /// <typeparam name="TViewModel">The type of ViewModel stored as the dictionary's values.</typeparam>
@@ -40,7 +35,7 @@ namespace Aspid.MVVM.StarterKit
         where TView : MonoBehaviour, IView
         where TViewFactory : IViewFactoryWithKey<TView>
     {
-        [Tooltip("Creates and releases a view for each entry, keyed by the dictionary's key. Required — nothing is shown without it.")]
+        [Tooltip("Creates a view per entry. Required — nothing is shown without it.")]
         [SerializeReference] private TViewFactory _viewFactory;
 
         private Dictionary<TKey, TView> _views;
@@ -53,8 +48,6 @@ namespace Aspid.MVVM.StarterKit
             if (!IsUsable()) return;
             if (Views.ContainsKey(newItem.Key)) return;
 
-            // Фабрика создаёт view сразу со ViewModel и ключом — та же сигнатура, что у сериализуемого
-            // близнеца, чтобы у одной и той же фабрики оба биндера вели себя одинаково.
             var view = _viewFactory.Create(newItem.Value, newItem.Key);
             Views.Add(newItem.Key, view);
         }

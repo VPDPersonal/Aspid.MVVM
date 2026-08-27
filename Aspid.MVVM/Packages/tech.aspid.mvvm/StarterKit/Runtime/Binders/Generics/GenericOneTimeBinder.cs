@@ -14,9 +14,6 @@ namespace Aspid.MVVM.StarterKit
     /// <include file="XmlExampleDoc-Generics-1.1.0.xml" path="doc//member[@name='GenericOneTimeBinder{1}']/*" />
     public class GenericOneTimeBinder<T> : GenericOneWayBinder<T>
     {
-        /// <summary>
-        /// Initializes a new instance of <see cref="GenericOneTimeBinder{T}"/>.
-        /// </summary>
         /// <param name="setValue">The action invoked once with the bound value.</param>
         public GenericOneTimeBinder(Action<T?> setValue)
             : base(setValue, BindMode.OneTime) { }
@@ -34,9 +31,6 @@ namespace Aspid.MVVM.StarterKit
     /// <include file="XmlExampleDoc-Generics-1.1.0.xml" path="doc//member[@name='GenericOneTimeBinder{2}']/*" />
     public class GenericOneTimeBinder<TTarget, T> : GenericOneWayBinder<TTarget, T>
     {
-        /// <summary>
-        /// Initializes a new instance of <see cref="GenericOneTimeBinder{TTarget,T}"/>.
-        /// </summary>
         /// <param name="target">The target object whose property is updated.</param>
         /// <param name="setValue">The action invoked once with the target and the bound value.</param>
         public GenericOneTimeBinder(TTarget target, Action<TTarget, T?> setValue)

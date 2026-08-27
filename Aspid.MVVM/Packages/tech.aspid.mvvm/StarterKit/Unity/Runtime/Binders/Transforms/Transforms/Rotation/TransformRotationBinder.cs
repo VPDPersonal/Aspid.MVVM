@@ -22,9 +22,6 @@ namespace Aspid.MVVM.StarterKit
             set => Target.SetRotation(value, _space);
         }
         
-        /// <summary>
-        /// Initializes a new instance of <see cref="TransformRotationBinder"/>.
-        /// </summary>
         /// <param name="target">The <see cref="Transform"/> to bind.</param>
         /// <param name="space">The coordinate space in which the rotation is applied.</param>
         /// <param name="converter">The converter used to transform the bound <see cref="Quaternion"/> value, or <see langword="null"/> to use the value as-is.</param>

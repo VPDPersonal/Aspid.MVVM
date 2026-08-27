@@ -9,10 +9,6 @@ namespace Aspid.MVVM.StarterKit
     /// <summary>
     /// <see cref="TargetBoolBinder{Image}"/> that binds <see cref="Image.preserveAspect"/>.
     /// </summary>
-    /// <remarks>
-    /// Whether the sprite keeps its proportions inside the rect. It matters exactly when the sprite is not known
-    /// in advance — an avatar, a downloaded banner, a card art of any shape.
-    /// </remarks>
     [Serializable]
     public class ImagePreserveAspectBinder : TargetBoolBinder<Image>
     {

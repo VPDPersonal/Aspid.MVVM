@@ -1,4 +1,3 @@
-#nullable enable
 using System;
 
 // ReSharper disable once CheckNamespace
@@ -23,9 +22,6 @@ namespace Aspid.MVVM.StarterKit
         private readonly TEnum _fallback;
         private readonly Action<TEnum> _setValue;
 
-        /// <summary>
-        /// Initializes a new instance of <see cref="StringToEnumCasterBinder{TEnum}"/>.
-        /// </summary>
         /// <param name="setValue">The action invoked with the parsed <typeparamref name="TEnum"/> value.</param>
         /// <param name="fallback">The value forwarded when the string names no member.</param>
         /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</param>

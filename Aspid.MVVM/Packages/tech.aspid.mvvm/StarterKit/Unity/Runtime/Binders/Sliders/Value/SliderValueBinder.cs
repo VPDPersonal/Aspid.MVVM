@@ -39,9 +39,6 @@ namespace Aspid.MVVM.StarterKit
         public SliderValueBinder(Slider target, BindMode mode)
             : this(target, converter: null, mode) { }
 
-        /// <summary>
-        /// Initializes a new instance of <see cref="SliderValueBinder"/>.
-        /// </summary>
         /// <param name="target">The <see cref="Slider"/> to bind.</param>
         /// <param name="converter">The converter applied to values before they are set on the slider, or <see langword="null"/> to use the value as-is.</param>
         /// <param name="mode">The binding mode. Must not be <see cref="BindMode.None"/>.</param>
@@ -108,11 +105,10 @@ namespace Aspid.MVVM.StarterKit
         /// Suppresses value change events during assignment.
         /// </summary>
         /// <remarks>
-        /// The value written is clamped to the slider's own range first. Unity clamps it anyway, silently, and the
-        /// echo guard around the assignment then swallows the <c>onValueChanged</c> that the clamp raises — so the
-        /// ViewModel would keep the value it sent while the slider showed a different one, and the two stayed apart
-        /// until the next change. When the clamp actually changes the value, the reverse channel is told what the
-        /// slider holds. A converter's own effect is not reported back: only the difference the clamp made is.
+        /// The value is clamped to the slider's own range before assignment. Unity would clamp it anyway, but
+        /// silently, and the echo guard would swallow the <c>onValueChanged</c> the clamp raises — leaving the
+        /// ViewModel out of sync until the next change. When the clamp changes the value, the difference is
+        /// reported back; a converter's own effect is not.
         /// </remarks>
         /// <param name="value">The value received from the ViewModel.</param>
         public void SetValue(float value)
@@ -128,8 +124,8 @@ namespace Aspid.MVVM.StarterKit
             }
             finally
             {
-                // Без finally исключение из сеттера — например, из чужого слушателя onValueChanged —
-                // навсегда оставило бы флаг снятым и обесточило канал View → ViewModel.
+                // Without finally, an exception from the setter (e.g. from another onValueChanged listener)
+                // would leave the flag stuck false, permanently killing the View -> ViewModel channel.
                 _isNotifyValueChanged = true;
             }
 
@@ -147,6 +143,7 @@ namespace Aspid.MVVM.StarterKit
             FloatValueChanged?.Invoke(value);
             DoubleValueChanged?.Invoke(value);
         }
+
         /// <summary>
         /// Converts a value on its way back to the ViewModel.
         /// </summary>

@@ -14,21 +14,15 @@ namespace Aspid.MVVM.StarterKit
     [Serializable]
     public class AnimatorSetFloatBinder : AnimatorSetParameterBinder<float>
     {
-        [Tooltip("Optional converter applied to the bound float value before setting the Animator parameter.")]
+        [Tooltip("Converts the bound float value before setting the Animator parameter.")]
         [SerializeReference] private Converter? _converter;
 
-        /// <summary>
-        /// Initializes a new instance of <see cref="AnimatorSetFloatBinder"/> with no converter.
-        /// </summary>
         /// <param name="animator">The <see cref="Animator"/> whose float parameter is set.</param>
         /// <param name="parameterName">The name of the float Animator parameter.</param>
         /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/>.</param>
         public AnimatorSetFloatBinder(Animator animator, string parameterName, BindMode mode)
             : this(animator, parameterName, converter: null, mode) { }
 
-        /// <summary>
-        /// Initializes a new instance of <see cref="AnimatorSetFloatBinder"/>.
-        /// </summary>
         /// <param name="animator">The <see cref="Animator"/> whose float parameter is set.</param>
         /// <param name="parameterName">The name of the float Animator parameter.</param>
         /// <param name="converter">The converter used to transform the bound float value, or <see langword="null"/> to use the value as-is.</param>

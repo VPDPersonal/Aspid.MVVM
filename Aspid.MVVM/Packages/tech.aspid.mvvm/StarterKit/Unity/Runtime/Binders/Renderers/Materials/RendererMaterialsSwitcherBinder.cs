@@ -14,12 +14,9 @@ namespace Aspid.MVVM.StarterKit
     [Serializable]
     public sealed class RendererMaterialsSwitcherBinder : SwitcherBinder<Renderer, Material[]?>
     {
-        [Tooltip("The optional converter applied to each material before it is assigned to the Renderer.")]
+        [Tooltip("The optional converter applied to each material before assignment.")]
         [SerializeReference] private Converter? _converter;
 
-        /// <summary>
-        /// Initializes a new instance of <see cref="RendererMaterialsSwitcherBinder"/> without a converter.
-        /// </summary>
         /// <param name="target">The <see cref="Renderer"/> to bind.</param>
         /// <param name="trueValue">The materials array applied when the bound boolean is <see langword="true"/>.</param>
         /// <param name="falseValue">The materials array applied when the bound boolean is <see langword="false"/>.</param>
@@ -44,8 +41,7 @@ namespace Aspid.MVVM.StarterKit
         }
 
         /// <summary>
-        /// Called when applying the selected value to the <see cref="Renderer.materials"/> array.
-        /// Applies the optional converter to each material before assignment.
+        /// Sets the <see cref="Renderer.materials"/> array, applying the optional converter to each material.
         /// </summary>
         /// <param name="values">The materials received from the ViewModel.</param>
         protected override void SetValue(Material[]? values) =>

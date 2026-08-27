@@ -13,12 +13,8 @@ namespace Aspid.MVVM.StarterKit
         /// Sets <see cref="AudioSource.timeSamples"/>, keeping the position inside the current clip.
         /// </summary>
         /// <remarks>
-        /// The property stores whatever it is given, including a negative sample index and one past the end of
-        /// the clip. Its usual source is a seek slider or a <c>progress * clip.samples</c> calculation, which is
-        /// exactly where an off-by-one or a stale clip length comes from.
-        /// <para/>
-        /// With no clip assigned the write is skipped: there is no timeline to seek, and Unity ignores the
-        /// assignment anyway.
+        /// <see cref="AudioSource.timeSamples"/> accepts any value unclamped, including one past the end of the
+        /// clip. With no clip assigned, the write is skipped.
         /// </remarks>
         /// <param name="audioSource">The source whose playback position is set.</param>
         /// <param name="value">The sample index to seek to.</param>
@@ -35,11 +31,8 @@ namespace Aspid.MVVM.StarterKit
         /// Sets <see cref="AudioSource.time"/>, keeping the position inside the current clip.
         /// </summary>
         /// <remarks>
-        /// Unlike <see cref="AudioSource.timeSamples"/>, this property refuses a position outside the clip rather
-        /// than storing it — but it refuses it loudly, with an audio-engine error per assignment, and drops the
-        /// source back to the start. Bound to a seek slider or a <c>progress * duration</c> calculation whose
-        /// duration is stale or zero, that is an error per frame and a playhead that jumps to the beginning
-        /// instead of stopping at the end.
+        /// Unlike <see cref="AudioSource.timeSamples"/>, <see cref="AudioSource.time"/> logs an error and resets
+        /// to the start for an out-of-range value instead of clamping it.
         /// </remarks>
         /// <param name="audioSource">The source whose playback position is set.</param>
         /// <param name="value">The position, in seconds, to seek to.</param>

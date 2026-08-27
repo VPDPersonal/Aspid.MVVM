@@ -11,20 +11,15 @@ namespace Aspid.MVVM.StarterKit
     /// snapshots listed in the Inspector.
     /// </summary>
     /// <remarks>
-    /// A snapshot is how a mixer expresses a whole audio state — paused, underwater, in a cutscene — and the state
-    /// itself is a ViewModel value. Without a binder the transition had to be called from a MonoBehaviour written for
-    /// the purpose, which is the one thing the framework exists to avoid.
-    /// <para/>
-    /// The ViewModel may send either the index into the serialized list, which is what an enum-driven state does, or
-    /// the snapshot's name. An index outside the list, a name that is not in it, and an empty slot are all logged
-    /// rather than ignored: a silent no-op here leaves the game in the previous audio state with no clue why.
+    /// The ViewModel may send either the index into the serialized list or the snapshot's name. An index outside the
+    /// list, a name not found, and an empty slot are all logged rather than ignored.
     /// </remarks>
     [BindModeOverride(BindMode.OneWay, BindMode.OneTime)]
     [AddComponentMenu("Aspid/MVVM/Binders/Audio/AudioMixer Binder – Snapshot")]
     [AddBinderContextMenu(typeof(Component), Path = "Add General Binder/Audio/AudioMixer Binder – Snapshot")]
     public partial class AudioMixerSnapshotMonoBinder : MonoBinder, IBinder<int>, IBinder<string>
     {
-        [Tooltip("Snapshots the ViewModel can select, by index or by name. Required — the binder logs an error and does nothing while it is empty.")]
+        [Tooltip("Snapshots to select by index or name. Required — logs an error if empty.")]
         [SerializeField] private AudioMixerSnapshot[] _snapshots;
 
         [Tooltip("Seconds the mixer takes to reach the snapshot. Zero switches instantly.")]

@@ -10,11 +10,8 @@ namespace Aspid.MVVM.StarterKit
     /// <see cref="IReverseBinder{T}">IReverseBinder&lt;int&gt;</see> that binds <see cref="Application.targetFrameRate"/>.
     /// </summary>
     /// <remarks>
-    /// The frame cap a battery-saver or a performance option sets. <c>-1</c> hands the decision back to the platform,
-    /// and is the only negative value that means anything — everything below it is clamped to it.
-    /// <para/>
-    /// On a platform where <see cref="QualitySettings.vSyncCount"/> is not zero, vsync wins and the cap is ignored;
-    /// that is Unity's rule, not this binder's.
+    /// Values below <c>-1</c> are clamped to <c>-1</c>, which hands the decision back to the platform. When
+    /// <see cref="QualitySettings.vSyncCount"/> is not zero, vsync wins and the cap is ignored.
     /// </remarks>
     [BindModeOverride(BindMode.OneWay, BindMode.OneTime, BindMode.OneWayToSource)]
     [Serializable]
@@ -23,9 +20,6 @@ namespace Aspid.MVVM.StarterKit
         /// <inheritdoc/>
         public event Action<int>? ValueChanged;
 
-        /// <summary>
-        /// Initializes a new instance of <see cref="TargetFrameRateBinder"/>.
-        /// </summary>
         /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/> — the value raises no change event to listen to.</param>
         /// <exception cref="ArgumentException">Thrown when <paramref name="mode"/> is <see cref="BindMode.TwoWay"/>.</exception>
         public TargetFrameRateBinder(BindMode mode = BindMode.OneWay)

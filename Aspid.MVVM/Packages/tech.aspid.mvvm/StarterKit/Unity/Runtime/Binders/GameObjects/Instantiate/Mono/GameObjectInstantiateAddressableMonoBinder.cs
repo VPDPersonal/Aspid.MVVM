@@ -17,17 +17,17 @@ namespace Aspid.MVVM.StarterKit
     [AddBinderContextMenu(typeof(Component), Path = "Add General Binder/GameObject/GameObject Binder – Addressable")]
     public sealed class GameObjectInstantiateAddressableMonoBinder : AddressableMonoBinder<GameObject>
     {
-        [Tooltip("Parent transform under which loaded prefabs are spawned. Defaults to this object on Reset.")]
+        [Tooltip("Parent for spawned prefabs; defaults to this transform on Reset.")]
         [SerializeField] private Transform _container;
 
-        [Tooltip("Spawn position; interpreted in the chosen Space (Self = local to container, World = absolute).")]
+        [Tooltip("Spawn position, interpreted per the Position Space below.")]
         [SerializeField] private Vector3 _position;
-        [Tooltip("How the spawn position above is read: Self is local to the container, World is absolute.")]
+        [Tooltip("Which space the position is read in: Self → local, World → absolute.")]
         [SerializeField] private Space _positionSpace = Space.Self;
 
-        [Tooltip("Spawn rotation as Euler angles; interpreted in the chosen Space.")]
+        [Tooltip("Spawn rotation as Euler angles, interpreted per the Rotation Space below.")]
         [SerializeField] private Vector3 _rotation;
-        [Tooltip("How the spawn rotation above is read: Self is local to the container, World is absolute.")]
+        [Tooltip("Which space the rotation is read in: Self → local, World → absolute.")]
         [SerializeField] private Space _rotationSpace = Space.Self;
 
         [Tooltip("Prefab spawned when no address is bound or when the binder is unbound.")]

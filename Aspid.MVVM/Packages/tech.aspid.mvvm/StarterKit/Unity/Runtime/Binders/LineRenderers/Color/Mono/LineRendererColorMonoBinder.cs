@@ -7,10 +7,6 @@ namespace Aspid.MVVM.StarterKit
     /// <see cref="ComponentColorMonoBinder{LineRenderer}"/> that sets the <see cref="LineRenderer.startColor"/> and <see cref="LineRenderer.endColor"/>
     /// color depending on the configured <see cref="LineRendererColorMode"/>.
     /// </summary>
-    /// <remarks>
-    /// Supports <see cref="BindMode.OneWayToSource"/>: when binding is established, the current color value
-    /// is sent back to the ViewModel.
-    /// </remarks>
     [AddComponentMenu("Aspid/MVVM/Binders/LineRenderer/LineRenderer Binder – Color")]
     [AddBinderContextMenu(typeof(LineRenderer), serializePropertyNames: "colorGradient")]
     public class LineRendererColorMonoBinder : ComponentColorMonoBinder<LineRenderer>

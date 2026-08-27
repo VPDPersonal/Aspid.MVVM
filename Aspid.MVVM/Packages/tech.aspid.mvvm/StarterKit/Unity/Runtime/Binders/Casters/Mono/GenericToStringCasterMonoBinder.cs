@@ -15,7 +15,7 @@ namespace Aspid.MVVM.StarterKit
         [Tooltip("The converter used to transform the bound value to a string.")]
         [SerializeReference] private IConverter<T, string> _converter;
         
-        [Tooltip("Invoked with the converted string value each time a new value arrives from the ViewModel.")]
+        [Tooltip("Invoked with the converted string value.")]
         [SerializeField] private UnityEvent<string> _casted;
         
         /// <summary>
@@ -35,7 +35,7 @@ namespace Aspid.MVVM.StarterKit
                 return;
             }
             
-            _casted.Invoke(_converter.Convert(value));
+            _casted?.Invoke(_converter.Convert(value));
         }
     }
 }

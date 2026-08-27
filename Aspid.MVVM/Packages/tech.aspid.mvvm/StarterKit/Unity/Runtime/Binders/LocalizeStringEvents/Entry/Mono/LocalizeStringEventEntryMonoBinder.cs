@@ -9,10 +9,6 @@ namespace Aspid.MVVM.StarterKit
     /// <see cref="ComponentStringMonoBinder{LocalizeStringEvent}"/> that sets the TableEntryReference
     /// of the component's StringReference when the bound ViewModel string value changes.
     /// </summary>
-    /// <remarks>
-    /// Supports <see cref="BindMode.OneWayToSource"/>: when binding is established, the current
-    /// table entry reference is immediately forwarded to the ViewModel.
-    /// </remarks>
     [AddBinderContextMenu(typeof(LocalizeStringEvent), serializePropertyNames: "m_StringReference")]
     [AddComponentMenu("Aspid/MVVM/Binders/UI/LocalizeStringEvent/LocalizeStringEvent Binder – Entry")]
     public class LocalizeStringEventEntryMonoBinder : ComponentStringMonoBinder<LocalizeStringEvent>

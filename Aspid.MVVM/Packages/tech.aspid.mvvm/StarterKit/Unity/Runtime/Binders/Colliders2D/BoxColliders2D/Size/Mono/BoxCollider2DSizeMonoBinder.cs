@@ -7,9 +7,7 @@ namespace Aspid.MVVM.StarterKit
     /// <see cref="ComponentVector2MonoBinder{BoxCollider2D}"/> that binds <see cref="BoxCollider2D.size"/>.
     /// </summary>
     /// <remarks>
-    /// The 2D counterpart of <see cref="BoxCollider.size"/>, which the package already bound. Clamped
-    /// non-negative on both axes: Unity logs an error for a size below zero and keeps the previous one, so a
-    /// bound value could leave the collider silently unchanged.
+    /// Clamped non-negative on both axes; a non-finite value maps to <c>0</c>.
     /// </remarks>
     [AddBinderContextMenu(typeof(BoxCollider2D), serializePropertyNames: "m_Size")]
     [AddComponentMenu("Aspid/MVVM/Binders/Collider2D/Box/BoxCollider2D Binder – Size")]

@@ -19,9 +19,6 @@ namespace Aspid.MVVM.StarterKit
             set => Target.alignment = value;
         }
         
-        /// <summary>
-        /// Initializes a new instance of <see cref="TextAlignmentBinder"/>.
-        /// </summary>
         /// <param name="target">The <see cref="TMP_Text"/> to bind.</param>
         /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/>.</param>
         /// <exception cref="ArgumentException">Thrown when <paramref name="mode"/> is <see cref="BindMode.TwoWay"/>.</exception>

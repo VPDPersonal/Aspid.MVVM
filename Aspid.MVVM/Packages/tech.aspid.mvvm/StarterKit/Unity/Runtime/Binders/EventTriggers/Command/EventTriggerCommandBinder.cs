@@ -31,9 +31,6 @@ namespace Aspid.MVVM.StarterKit
         private BaseEventData _lastEvent;
         private EventTrigger.Entry _entry;
 
-        /// <summary>
-        /// Initializes a new instance of <see cref="EventTriggerCommandBinder"/>.
-        /// </summary>
         /// <param name="target">The <see cref="EventTrigger"/> to bind.</param>
         /// <param name="eventTriggerType">The <see cref="EventTriggerType"/> event that triggers command execution.</param>
         /// <param name="customInteractable">An optional custom view that reflects the command's <see cref="IRelayCommand.CanExecute()"/> state. Pass <see langword="null"/> to disable interactable feedback.</param>
@@ -81,10 +78,6 @@ namespace Aspid.MVVM.StarterKit
         /// Called when the binder is bound. Creates an <see cref="EventTrigger.Entry"/> for the configured event
         /// and registers it on the target's triggers list.
         /// </summary>
-        /// <remarks>
-        /// A new <see cref="EventTrigger.Entry"/> is created, <see cref="OnTrigger(BaseEventData)"/> is added to its callback,
-        /// and the entry is appended to <see cref="EventTrigger.triggers"/>.
-        /// </remarks>
         protected override void OnBound()
         {
             _entry = new EventTrigger.Entry
@@ -100,11 +93,6 @@ namespace Aspid.MVVM.StarterKit
         /// Called when the binder is unbound. Removes the registered entry from the triggers list
         /// and releases all bound command references.
         /// </summary>
-        /// <remarks>
-        /// Removes the <see cref="EventTrigger.Entry"/> from the triggers list, unsubscribes the callback,
-        /// clears the entry reference, and passes <see langword="null"/> to all <c>SetValue</c> overloads
-        /// to detach command references and unsubscribe from their <see cref="IRelayCommand.CanExecuteChanged"/> events.
-        /// </remarks>
         protected override void OnUnbound()
         {
             Target.triggers.Remove(_entry);
@@ -175,9 +163,6 @@ namespace Aspid.MVVM.StarterKit
             set => _param1 = value;
         }
 
-        /// <summary>
-        /// Initializes a new instance of <see cref="EventTriggerCommandBinder{T1}"/>.
-        /// </summary>
         /// <param name="target">The <see cref="EventTrigger"/> to bind.</param>
         /// <param name="eventTriggerType">The <see cref="EventTriggerType"/> event that triggers command execution.</param>
         /// <param name="param1">The additional parameter forwarded when the command is executed.</param>
@@ -224,10 +209,6 @@ namespace Aspid.MVVM.StarterKit
         /// Called when the binder is bound. Creates an <see cref="EventTrigger.Entry"/> for the configured event
         /// and registers it on the target's triggers list.
         /// </summary>
-        /// <remarks>
-        /// A new <see cref="EventTrigger.Entry"/> is created, <see cref="OnTrigger(BaseEventData)"/> is added to its callback,
-        /// and the entry is appended to <see cref="EventTrigger.triggers"/>.
-        /// </remarks>
         protected override void OnBound()
         {
             _entry = new EventTrigger.Entry
@@ -243,11 +224,6 @@ namespace Aspid.MVVM.StarterKit
         /// Called when the binder is unbound. Removes the registered entry from the triggers list
         /// and releases all bound command references.
         /// </summary>
-        /// <remarks>
-        /// Removes the <see cref="EventTrigger.Entry"/> from the triggers list, unsubscribes the callback,
-        /// clears the entry reference, and passes <see langword="null"/> to all <c>SetValue</c> overloads
-        /// to detach command references and unsubscribe from their <see cref="IRelayCommand.CanExecuteChanged"/> events.
-        /// </remarks>
         protected override void OnUnbound()
         {
             Target.triggers.Remove(_entry);
@@ -330,9 +306,6 @@ namespace Aspid.MVVM.StarterKit
             set => _param2 = value;
         }
 
-        /// <summary>
-        /// Initializes a new instance of <see cref="EventTriggerCommandBinder{T1, T2}"/>.
-        /// </summary>
         /// <param name="target">The <see cref="EventTrigger"/> to bind.</param>
         /// <param name="eventTriggerType">The <see cref="EventTriggerType"/> event that triggers command execution.</param>
         /// <param name="param1">The first additional parameter forwarded when the command is executed.</param>
@@ -382,10 +355,6 @@ namespace Aspid.MVVM.StarterKit
         /// Called when the binder is bound. Creates an <see cref="EventTrigger.Entry"/> for the configured event
         /// and registers it on the target's triggers list.
         /// </summary>
-        /// <remarks>
-        /// A new <see cref="EventTrigger.Entry"/> is created, <see cref="OnTrigger(BaseEventData)"/> is added to its callback,
-        /// and the entry is appended to <see cref="EventTrigger.triggers"/>.
-        /// </remarks>
         protected override void OnBound()
         {
             _entry = new EventTrigger.Entry
@@ -401,11 +370,6 @@ namespace Aspid.MVVM.StarterKit
         /// Called when the binder is unbound. Removes the registered entry from the triggers list
         /// and releases all bound command references.
         /// </summary>
-        /// <remarks>
-        /// Removes the <see cref="EventTrigger.Entry"/> from the triggers list, unsubscribes the callback,
-        /// clears the entry reference, and passes <see langword="null"/> to all <c>SetValue</c> overloads
-        /// to detach command references and unsubscribe from their <see cref="IRelayCommand.CanExecuteChanged"/> events.
-        /// </remarks>
         protected override void OnUnbound()
         {
             Target.triggers.Remove(_entry);
@@ -500,9 +464,6 @@ namespace Aspid.MVVM.StarterKit
             set => _param3 = value;
         }
 
-        /// <summary>
-        /// Initializes a new instance of <see cref="EventTriggerCommandBinder{T1, T2, T3}"/>.
-        /// </summary>
         /// <param name="target">The <see cref="EventTrigger"/> to bind.</param>
         /// <param name="eventTriggerType">The <see cref="EventTriggerType"/> event that triggers command execution.</param>
         /// <param name="param1">The first additional parameter forwarded when the command is executed.</param>
@@ -554,10 +515,6 @@ namespace Aspid.MVVM.StarterKit
         /// Called when the binder is bound. Creates an <see cref="EventTrigger.Entry"/> for the configured event
         /// and registers it on the target's triggers list.
         /// </summary>
-        /// <remarks>
-        /// A new <see cref="EventTrigger.Entry"/> is created, <see cref="OnTrigger(BaseEventData)"/> is added to its callback,
-        /// and the entry is appended to <see cref="EventTrigger.triggers"/>.
-        /// </remarks>
         protected override void OnBound()
         {
             _entry = new EventTrigger.Entry
@@ -573,11 +530,6 @@ namespace Aspid.MVVM.StarterKit
         /// Called when the binder is unbound. Removes the registered entry from the triggers list
         /// and releases all bound command references.
         /// </summary>
-        /// <remarks>
-        /// Removes the <see cref="EventTrigger.Entry"/> from the triggers list, unsubscribes the callback,
-        /// clears the entry reference, and passes <see langword="null"/> to all <c>SetValue</c> overloads
-        /// to detach command references and unsubscribe from their <see cref="IRelayCommand.CanExecuteChanged"/> events.
-        /// </remarks>
         protected override void OnUnbound()
         {
             Target.triggers.Remove(_entry);
@@ -676,9 +628,6 @@ namespace Aspid.MVVM.StarterKit
             set => _param4 = value;
         }
 
-        /// <summary>
-        /// Initializes a new instance of <see cref="EventTriggerCommandBinder{T1, T2, T3, T4}"/>.
-        /// </summary>
         /// <param name="target">The <see cref="EventTrigger"/> to bind.</param>
         /// <param name="eventTriggerType">The <see cref="EventTriggerType"/> event that triggers command execution.</param>
         /// <param name="param1">The first additional parameter forwarded when the command is executed.</param>
@@ -714,10 +663,6 @@ namespace Aspid.MVVM.StarterKit
         /// Called when the binder is bound. Creates an <see cref="EventTrigger.Entry"/> for the configured event
         /// and registers it on the target's triggers list.
         /// </summary>
-        /// <remarks>
-        /// A new <see cref="EventTrigger.Entry"/> is created, <see cref="OnTrigger(BaseEventData)"/> is added to its callback,
-        /// and the entry is appended to <see cref="EventTrigger.triggers"/>.
-        /// </remarks>
         protected override void OnBound()
         {
             _entry = new EventTrigger.Entry
@@ -733,11 +678,6 @@ namespace Aspid.MVVM.StarterKit
         /// Called when the binder is unbound. Removes the registered entry from the triggers list
         /// and releases the bound command reference.
         /// </summary>
-        /// <remarks>
-        /// Removes the <see cref="EventTrigger.Entry"/> from the triggers list, unsubscribes the callback,
-        /// clears the entry reference, and passes <see langword="null"/> to <c>SetValue</c>
-        /// to detach the command reference and unsubscribe from its <see cref="IRelayCommand.CanExecuteChanged"/> event.
-        /// </remarks>
         protected override void OnUnbound()
         {
             Target.triggers.Remove(_entry);

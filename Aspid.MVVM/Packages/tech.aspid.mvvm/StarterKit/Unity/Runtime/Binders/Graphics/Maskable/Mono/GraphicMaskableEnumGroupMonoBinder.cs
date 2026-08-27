@@ -12,11 +12,7 @@ namespace Aspid.MVVM.StarterKit
     [AddComponentMenu("Aspid/MVVM/Binders/UI/Graphic/MaskableGraphic Binder – Maskable EnumGroup")]
     public sealed class GraphicMaskableEnumGroupMonoBinder : EnumGroupMonoBinder<MaskableGraphic, bool>
     {
-        /// <summary>
-        /// Called when the bound enum resolves to a value for the specified element.
-        /// </summary>
-        /// <param name="element">The component this entry of the group writes to.</param>
-        /// <param name="value">The value the bound enum resolved to for this element.</param>
+        /// <inheritdoc/>
         protected override void SetValue(MaskableGraphic element, bool value) =>
             element.maskable = value;
     }

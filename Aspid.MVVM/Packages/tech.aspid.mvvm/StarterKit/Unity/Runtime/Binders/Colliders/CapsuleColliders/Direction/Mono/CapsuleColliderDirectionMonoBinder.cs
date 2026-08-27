@@ -7,9 +7,7 @@ namespace Aspid.MVVM.StarterKit
     /// <see cref="ComponentIntMonoBinder{CapsuleCollider}"/> that binds <see cref="CapsuleCollider.direction"/>.
     /// </summary>
     /// <remarks>
-    /// Which axis the capsule stands on: 0 for X, 1 for Y, 2 for Z. A character that lies down changes it, and
-    /// so does a projectile that turns. Clamped to the three axes that exist — Unity accepts any integer and
-    /// then behaves as if it were zero.
+    /// Clamped to 0–2 (X/Y/Z); Unity silently treats an out-of-range value as 0.
     /// </remarks>
     [AddBinderContextMenu(typeof(CapsuleCollider), serializePropertyNames: "m_Direction")]
     [AddComponentMenu("Aspid/MVVM/Binders/Collider/Capsule/CapsuleCollider Binder – Direction")]

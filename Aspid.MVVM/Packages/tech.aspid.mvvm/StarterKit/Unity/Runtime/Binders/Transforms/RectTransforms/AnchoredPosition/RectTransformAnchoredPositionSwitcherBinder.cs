@@ -13,12 +13,9 @@ namespace Aspid.MVVM.StarterKit
     [Serializable]
     public sealed class RectTransformAnchoredPositionSwitcherBinder : SwitcherVector3Binder<RectTransform>
     {
-        [Tooltip("The space that determines which anchored position property is used: Self for anchoredPosition, World for anchoredPosition3D.")]
+        [Tooltip("Which property is written: Self → anchoredPosition, World → anchoredPosition3D.")]
         [SerializeField] private Space _space;
         
-        /// <summary>
-        /// Initializes a new instance of <see cref="RectTransformAnchoredPositionSwitcherBinder"/>.
-        /// </summary>
         /// <param name="target">The <see cref="RectTransform"/> to bind.</param>
         /// <param name="trueValue">The anchored position applied when the bound boolean is <see langword="true"/>.</param>
         /// <param name="falseValue">The anchored position applied when the bound boolean is <see langword="false"/>.</param>

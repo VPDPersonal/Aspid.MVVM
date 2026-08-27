@@ -27,9 +27,6 @@ namespace Aspid.MVVM.StarterKit
         public ToggleIsOnBinder(Toggle target, BindMode mode)
             : this(target, false, mode) { }
         
-        /// <summary>
-        /// Initializes a new instance of <see cref="ToggleIsOnBinder"/>.
-        /// </summary>
         /// <param name="target">The <see cref="Toggle"/> to bind.</param>
         /// <param name="isInvert">When <see langword="true"/>, the bound value is logically inverted before being applied or propagated.</param>
         /// <param name="mode">The binding mode. Must not be <see cref="BindMode.None"/>.</param>
@@ -55,11 +52,12 @@ namespace Aspid.MVVM.StarterKit
             }
             finally
             {
-                // Без finally исключение из сеттера — например, из чужого слушателя onValueChanged —
-                // навсегда оставило бы флаг снятым и обесточило канал View → ViewModel.
+                // Without finally, an exception from the setter (e.g. from another onValueChanged listener)
+                // would leave the flag stuck false, permanently killing the View -> ViewModel channel.
                 _isNotifyValueChanged = true;
             }
         }
+
         /// <summary>
         /// Called when the binder is bound. Subscribes to <see cref="Toggle.onValueChanged"/> when the mode supports it.
         /// </summary>

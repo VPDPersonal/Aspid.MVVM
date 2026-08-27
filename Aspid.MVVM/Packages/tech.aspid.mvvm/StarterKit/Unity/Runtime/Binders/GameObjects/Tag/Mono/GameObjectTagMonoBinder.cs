@@ -23,7 +23,7 @@ namespace Aspid.MVVM.StarterKit
         /// <inheritdoc/>
         public event Action<string> ValueChanged;
         
-        [Tooltip("Optional converter applied to the value before it is used. Leave empty to use the value as-is.")]
+        [Tooltip("Optional converter applied to the value; empty leaves it as-is.")]
         [SerializeReference] private Converter _converter;
 
         /// <summary>

@@ -21,7 +21,7 @@ namespace Aspid.MVVM.StarterKit
         [Tooltip("The converter used to transform any incoming value to a string.")]
         [SerializeReference] private Converter _converter = new GenericToStringConverter<object>();
 
-        [Tooltip("Invoked with the converted string value each time a new value arrives from the ViewModel.")]
+        [Tooltip("Invoked with the converted string value.")]
         [SerializeField] private UnityEvent<string> _casted;
 
         /// <summary>

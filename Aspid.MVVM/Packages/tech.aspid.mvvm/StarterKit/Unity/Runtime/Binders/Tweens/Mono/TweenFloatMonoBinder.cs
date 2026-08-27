@@ -7,9 +7,6 @@ namespace Aspid.MVVM.StarterKit
     /// Concrete <see cref="TweenMonoBinder{T}">TweenMonoBinder&lt;float&gt;</see> that also implements
     /// <see cref="INumberBinder"/>, easing a number toward each value it receives.
     /// </summary>
-    /// <remarks>
-    /// The health bar case: the ViewModel publishes the number it holds and the bar catches up over time.
-    /// </remarks>
     [BindModeOverride(BindMode.OneWay, BindMode.OneTime)]
     [AddComponentMenu("Aspid/MVVM/Binders/Tween/Tween Binder – Float")]
     [AddBinderContextMenuByType(typeof(float))]

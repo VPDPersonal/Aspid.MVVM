@@ -12,13 +12,7 @@ namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
     /// <see cref="ComponentMonoBinder{TMP_InputField}"/> that binds <see cref="TMP_InputField.text"/>.
-    /// Also implements <see cref="INumberBinder"/> and <see cref="IReverseBinder{T}"/>, allowing numeric
-    /// formatting and bidirectional text binding.
     /// </summary>
-    /// <remarks>
-    /// Supports <see cref="BindMode.TwoWay"/> and <see cref="BindMode.OneWayToSource"/>: when the configured
-    /// input field event fires, the current text is forwarded to the ViewModel through the corresponding events.
-    /// </remarks>
     [AddComponentMenu("Aspid/MVVM/Binders/UI/InputField/InputField Binder – Text")]
     [AddBinderContextMenu(typeof(TMP_InputField), serializePropertyNames: "m_Text")]
     [BindModeOverride(IsAll = true)]
@@ -49,7 +43,7 @@ namespace Aspid.MVVM.StarterKit
         [Tooltip("The input field event that triggers ViewModel notifications.")]
         [SerializeField] private UpdateInputFieldEvent _updateEvent = UpdateInputFieldEvent.OnValueChanged;
 
-        [Tooltip("Optional converter applied to values before they are set on the input field.")]
+        [Tooltip("Optional converter applied before setting the input field text.")]
         [SerializeReference] private Converter _converter;
         
         private bool _isNotifyValueChanged = true;
@@ -125,8 +119,7 @@ namespace Aspid.MVVM.StarterKit
             }
             finally
             {
-                // Без finally исключение из сеттера — например, из чужого слушателя onValueChanged —
-                // навсегда оставило бы флаг снятым и обесточило канал View → ViewModel.
+                // finally guards against a listener exception (e.g. from onValueChanged) leaving the flag stuck off.
                 _isNotifyValueChanged = true;
             }
         }

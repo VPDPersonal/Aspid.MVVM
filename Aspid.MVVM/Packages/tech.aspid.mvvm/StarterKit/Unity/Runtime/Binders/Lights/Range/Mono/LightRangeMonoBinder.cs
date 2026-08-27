@@ -7,8 +7,8 @@ namespace Aspid.MVVM.StarterKit
     /// <see cref="ComponentFloatMonoBinder{Light}"/> that binds <see cref="Light.range"/>.
     /// </summary>
     /// <remarks>
-    /// How far a point or spot light reaches; a directional light ignores it. Unity maps a non-finite range to
-    /// zero, which switches the lamp off — dropping the write keeps the last range that lit something instead.
+    /// Non-finite values are dropped instead of the zero Unity would otherwise coerce them to, which would
+    /// switch the light off.
     /// </remarks>
     [AddBinderContextMenu(typeof(Light), serializePropertyNames: "m_Range")]
     [AddComponentMenu("Aspid/MVVM/Binders/Rendering/Light Binder – Range")]

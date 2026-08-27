@@ -8,15 +8,11 @@ namespace Aspid.MVVM.StarterKit
     /// <see cref="Collider2D.sharedMaterial"/>.
     /// </summary>
     /// <remarks>
-    /// Friction and bounce as one swappable asset: ice, mud, rubber. The 3D domain had this binder and the 2D one had
-    /// nothing at all.
+    /// Reads and writes <see cref="Collider2D.sharedMaterial"/> rather than <c>material</c>, which instantiates a
+    /// copy on read and leaks it into the scene.
     /// <para/>
-    /// Reads and writes <see cref="Collider2D.sharedMaterial"/> rather than <c>material</c>, which instantiates a copy
-    /// on read and leaks it into the scene. Writing the shared asset does affect every collider using it, which is
-    /// what swapping a surface material is meant to do.
-    /// <para/>
-    /// Supports <see cref="BindMode.OneWayToSource"/>: when binding is established, the current material is sent back
-    /// to the ViewModel — as <see langword="null"/> if it has been destroyed.
+    /// The value sent back to the ViewModel in <see cref="BindMode.OneWayToSource"/> is
+    /// <see langword="null"/> if the material has been destroyed.
     /// </remarks>
     [AddBinderContextMenu(typeof(Collider2D), serializePropertyNames: "m_Material")]
     [AddComponentMenu("Aspid/MVVM/Binders/Collider2D/Collider2D Binder – Material")]

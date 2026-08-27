@@ -10,13 +10,7 @@ namespace Aspid.MVVM.StarterKit
     /// <see cref="TargetBinder{T1, T2}">TargetBinder&lt;RawImage, Rect&gt;</see> that binds
     /// <see cref="RawImage.uvRect"/>.
     /// </summary>
-    /// <remarks>
-    /// Which part of the texture is shown, and how many times it repeats — a scrolling background, a sprite sheet
-    /// frame, a minimap window.
-    /// <para/>
-    /// A non-finite component is refused: the quad's UVs are computed from these four numbers and one <c>NaN</c> makes
-    /// the image vanish.
-    /// </remarks>
+    /// <remarks>A non-finite component is refused, since a <c>NaN</c> in any of the four values makes the image vanish.</remarks>
     [Serializable]
     public class RawImageUvRectBinder : TargetBinder<RawImage, Rect>
     {

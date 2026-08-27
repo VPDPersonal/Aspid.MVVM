@@ -25,9 +25,6 @@ namespace Aspid.MVVM.StarterKit
         /// <inheritdoc/>
         public event Action<float>? ValueChanged;
 
-        /// <summary>
-        /// Initializes a new instance of <see cref="AudioListenerVolumeBinder"/>.
-        /// </summary>
         /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/> — the volume raises no change event to listen to.</param>
         /// <exception cref="ArgumentException">Thrown when <paramref name="mode"/> is <see cref="BindMode.TwoWay"/>.</exception>
         public AudioListenerVolumeBinder(BindMode mode = BindMode.OneWay)

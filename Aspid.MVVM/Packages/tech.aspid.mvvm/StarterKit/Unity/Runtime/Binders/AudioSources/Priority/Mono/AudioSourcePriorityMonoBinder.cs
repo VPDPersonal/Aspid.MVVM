@@ -7,8 +7,6 @@ namespace Aspid.MVVM.StarterKit
     /// <see cref="ComponentIntMonoBinder{AudioSource}"/> that binds the <see cref="AudioSource.priority"/> property.
     /// </summary>
     /// <remarks>
-    /// Supports <see cref="BindMode.OneWayToSource"/>: when binding is established, the current priority value
-    /// is sent back to the ViewModel.
     /// The bound value is clamped to [0, 256] before being applied to <see cref="AudioSource.priority"/>.
     /// </remarks>
     [AddBinderContextMenu(typeof(AudioSource), serializePropertyNames: "Priority")]

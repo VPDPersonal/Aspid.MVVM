@@ -12,7 +12,7 @@ namespace Aspid.MVVM.StarterKit
     [AddBinderContextMenu(typeof(Graphic), serializePropertyNames: "m_Color", SubPath = "Enum")]
     public sealed class GraphicColorComponentEnumMonoBinder : EnumFloatMonoBinder<Graphic>
     {
-        [Tooltip("Which channel of the colour the bound value writes to; the others keep their current value.")]
+        [Tooltip("Which color channel the bound value writes to; others keep their value.")]
         [SerializeField] private ColorComponent _colorComponent = ColorComponent.A;
 
         /// <inheritdoc/>

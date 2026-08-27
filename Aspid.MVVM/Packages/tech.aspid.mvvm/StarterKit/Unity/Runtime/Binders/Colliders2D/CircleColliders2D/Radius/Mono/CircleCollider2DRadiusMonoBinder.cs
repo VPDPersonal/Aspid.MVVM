@@ -7,8 +7,7 @@ namespace Aspid.MVVM.StarterKit
     /// <see cref="ComponentFloatMonoBinder{CircleCollider2D}"/> that binds <see cref="CircleCollider2D.radius"/>.
     /// </summary>
     /// <remarks>
-    /// The 2D counterpart of <see cref="SphereCollider.radius"/>, which the package already bound — an
-    /// explosion radius, a pickup range, a shield that grows. Clamped non-negative.
+    /// Clamped non-negative; a non-finite value maps to <c>0</c>.
     /// </remarks>
     [AddBinderContextMenu(typeof(CircleCollider2D), serializePropertyNames: "m_Radius")]
     [AddComponentMenu("Aspid/MVVM/Binders/Collider2D/Circle/CircleCollider2D Binder – Radius")]

@@ -18,10 +18,10 @@ namespace Aspid.MVVM.StarterKit
         IBinder<IRelayCommand<float>>,
         IBinder<IRelayCommand<double>>
     {
-        [Tooltip("Controls how the slider's interactable state reflects the command's CanExecute result.")]
+        [Tooltip("How CanExecute affects the slider's interactable state.")]
         [SerializeField] private InteractableMode _interactableMode = InteractableMode.Interactable;
 
-        [Tooltip("The view used to reflect the command's CanExecute state when InteractableMode is Custom.")]
+        [Tooltip("View that reflects CanExecute when Interactable Mode is Custom.")]
         [SerializeReference] private ICanExecuteView _customInteractable;
         
         private IRelayCommand<int> _intCommand;
@@ -86,14 +86,10 @@ namespace Aspid.MVVM.StarterKit
         /// Called when the binder is unbound. Unsubscribes from <see cref="Slider.onValueChanged"/>
         /// and releases all bound command references.
         /// </summary>
-        /// <remarks>
-        /// Passes <see langword="null"/> to each SetValue overload to detach command
-        /// references and unsubscribe from their <see cref="IRelayCommand.CanExecuteChanged"/> events.
-        /// </remarks>
         protected override void OnUnbound()
         {
             CachedComponent.onValueChanged.RemoveListener(OnValueChanged);
-            
+
             SetValue((IRelayCommand<int>)null);
             SetValue((IRelayCommand<long>)null);
             SetValue((IRelayCommand<float>)null);
@@ -143,14 +139,14 @@ namespace Aspid.MVVM.StarterKit
         IBinder<IRelayCommand<float, T>>, 
         IBinder<IRelayCommand<double, T>>
     {
-        [Tooltip("The additional parameter forwarded alongside the slider value when the command is executed.")]
+        [Tooltip("Extra parameter forwarded alongside the slider value.")]
         [SerializeField] private T _param;
         
-        [Tooltip("Controls how the slider's interactable state reflects the command's CanExecute result.")]
+        [Tooltip("How CanExecute affects the slider's interactable state.")]
         [Space]
         [SerializeField] private InteractableMode _interactableMode = InteractableMode.Interactable;
 
-        [Tooltip("The view used to reflect the command's CanExecute state when InteractableMode is Custom.")]
+        [Tooltip("View that reflects CanExecute when Interactable Mode is Custom.")]
         [SerializeReference] private ICanExecuteView _customInteractable;
         
         private IRelayCommand<int, T> _intCommand;
@@ -224,14 +220,10 @@ namespace Aspid.MVVM.StarterKit
         /// Called when the binder is unbound. Unsubscribes from <see cref="Slider.onValueChanged"/>
         /// and releases all bound command references.
         /// </summary>
-        /// <remarks>
-        /// Passes <see langword="null"/> to each SetValue overload to detach command
-        /// references and unsubscribe from their <see cref="IRelayCommand.CanExecuteChanged"/> events.
-        /// </remarks>
         protected override void OnUnbound()
         {
             CachedComponent.onValueChanged.RemoveListener(OnValueChanged);
-            
+
             SetValue((IRelayCommand<int, T>)null);
             SetValue((IRelayCommand<long, T>)null);
             SetValue((IRelayCommand<float, T>)null);
@@ -282,16 +274,16 @@ namespace Aspid.MVVM.StarterKit
         IBinder<IRelayCommand<float, T1, T2>>, 
         IBinder<IRelayCommand<double, T1, T2>>
     {
-        [Tooltip("The first additional parameter forwarded alongside the slider value when the command is executed.")]
+        [Tooltip("First extra parameter forwarded alongside the slider value.")]
         [SerializeField] private T1 _param1;
-        [Tooltip("The second additional parameter forwarded alongside the slider value when the command is executed.")]
+        [Tooltip("Second extra parameter forwarded alongside the slider value.")]
         [SerializeField] private T2 _param2;
         
-        [Tooltip("Controls how the slider's interactable state reflects the command's CanExecute result.")]
+        [Tooltip("How CanExecute affects the slider's interactable state.")]
         [Space]
         [SerializeField] private InteractableMode _interactableMode = InteractableMode.Interactable;
 
-        [Tooltip("The view used to reflect the command's CanExecute state when InteractableMode is Custom.")]
+        [Tooltip("View that reflects CanExecute when Interactable Mode is Custom.")]
         [SerializeReference] private ICanExecuteView _customInteractable;
         
         private IRelayCommand<int, T1, T2> _intCommand;
@@ -374,14 +366,10 @@ namespace Aspid.MVVM.StarterKit
         /// Called when the binder is unbound. Unsubscribes from <see cref="Slider.onValueChanged"/>
         /// and releases all bound command references.
         /// </summary>
-        /// <remarks>
-        /// Passes <see langword="null"/> to each SetValue overload to detach command
-        /// references and unsubscribe from their <see cref="IRelayCommand.CanExecuteChanged"/> events.
-        /// </remarks>
         protected override void OnUnbound()
         {
             CachedComponent.onValueChanged.RemoveListener(OnValueChanged);
-            
+
             SetValue((IRelayCommand<int, T1, T2>)null);
             SetValue((IRelayCommand<long, T1, T2>)null);
             SetValue((IRelayCommand<float, T1, T2>)null);
@@ -433,18 +421,18 @@ namespace Aspid.MVVM.StarterKit
         IBinder<IRelayCommand<float, T1, T2, T3>>, 
         IBinder<IRelayCommand<double, T1, T2, T3>>
     {
-        [Tooltip("The first additional parameter forwarded alongside the slider value when the command is executed.")]
+        [Tooltip("First extra parameter forwarded alongside the slider value.")]
         [SerializeField] private T1 _param1;
-        [Tooltip("The second additional parameter forwarded alongside the slider value when the command is executed.")]
+        [Tooltip("Second extra parameter forwarded alongside the slider value.")]
         [SerializeField] private T2 _param2;
-        [Tooltip("The third additional parameter forwarded alongside the slider value when the command is executed.")]
+        [Tooltip("Third extra parameter forwarded alongside the slider value.")]
         [SerializeField] private T3 _param3;
         
-        [Tooltip("Controls how the slider's interactable state reflects the command's CanExecute result.")]
+        [Tooltip("How CanExecute affects the slider's interactable state.")]
         [Space]
         [SerializeField] private InteractableMode _interactableMode = InteractableMode.Interactable;
 
-        [Tooltip("The view used to reflect the command's CanExecute state when InteractableMode is Custom.")]
+        [Tooltip("View that reflects CanExecute when Interactable Mode is Custom.")]
         [SerializeReference] private ICanExecuteView _customInteractable;
         
         private IRelayCommand<int, T1, T2, T3> _intCommand;
@@ -536,14 +524,10 @@ namespace Aspid.MVVM.StarterKit
         /// Called when the binder is unbound. Unsubscribes from <see cref="Slider.onValueChanged"/>
         /// and releases all bound command references.
         /// </summary>
-        /// <remarks>
-        /// Passes <see langword="null"/> to each SetValue overload to detach command
-        /// references and unsubscribe from their <see cref="IRelayCommand.CanExecuteChanged"/> events.
-        /// </remarks>
         protected override void OnUnbound()
         {
             CachedComponent.onValueChanged.RemoveListener(OnValueChanged);
-            
+
             SetValue((IRelayCommand<int, T1, T2, T3>)null);
             SetValue((IRelayCommand<long, T1, T2, T3>)null);
             SetValue((IRelayCommand<float, T1, T2, T3>)null);

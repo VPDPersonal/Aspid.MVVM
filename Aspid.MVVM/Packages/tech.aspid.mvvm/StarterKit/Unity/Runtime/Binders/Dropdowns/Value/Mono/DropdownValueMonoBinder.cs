@@ -11,11 +11,6 @@ namespace Aspid.MVVM.StarterKit
     /// <remarks>
     /// Supports <see cref="BindMode.TwoWay"/> and <see cref="BindMode.OneWayToSource"/>: when
     /// <see cref="TMP_Dropdown.onValueChanged"/> fires, the current value is forwarded to the ViewModel.
-    /// When <see cref="BindMode.OneWayToSource"/> is active, the current value is also immediately
-    /// forwarded when binding is established.
-    /// <para/>
-    /// A dropdown exists to be chosen from, and until now nothing carried that choice back — the binder could
-    /// set the selection but never learn of one. Reading it took a second binder wired to the ViewModel by hand.
     /// <para/>
     /// A write goes through <see cref="TMP_Dropdown.SetValueWithoutNotify"/>. Assigning
     /// <see cref="TMP_Dropdown.value"/> directly raises <see cref="TMP_Dropdown.onValueChanged"/> exactly as a

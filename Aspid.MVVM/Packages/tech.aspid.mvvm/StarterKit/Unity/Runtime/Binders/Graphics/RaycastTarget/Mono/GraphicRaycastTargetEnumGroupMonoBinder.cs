@@ -12,11 +12,7 @@ namespace Aspid.MVVM.StarterKit
     [AddComponentMenu("Aspid/MVVM/Binders/UI/Graphic/Graphic Binder – Raycast Target EnumGroup")]
     public sealed class GraphicRaycastTargetEnumGroupMonoBinder : EnumGroupMonoBinder<Graphic, bool>
     {
-        /// <summary>
-        /// Called when the bound enum resolves to a value for the specified element.
-        /// </summary>
-        /// <param name="element">The component this entry of the group writes to.</param>
-        /// <param name="value">The value the bound enum resolved to for this element.</param>
+        /// <inheritdoc/>
         protected override void SetValue(Graphic element, bool value) =>
             element.raycastTarget = value;
     }

@@ -37,16 +37,13 @@ namespace Aspid.MVVM.StarterKit
         where TView : MonoBehaviour, IView
         where TViewFactory : IViewFactoryWithKey<TView>
     {
-        [Tooltip("The factory used to create and release view instances keyed by the dictionary key.")]
+        [Tooltip("Creates and releases a view for each entry, keyed by the dictionary key.")]
         [SerializeReference] private TViewFactory _viewFactory;
 
         private Dictionary<TKey, TView> _views;
 
         private Dictionary<TKey, TView> Views => _views ??= new Dictionary<TKey, TView>();
 
-        /// <summary>
-        /// Initializes a new instance of <see cref="ObservableDictionaryViewModelBinder{TKey, TViewModel, TView, TViewFactory}"/>.
-        /// </summary>
         /// <param name="viewFactory">The factory used to create and release view instances for each dictionary entry.</param>
         /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</param>
         /// <exception cref="InvalidOperationException">Thrown when <paramref name="mode"/> is <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</exception>

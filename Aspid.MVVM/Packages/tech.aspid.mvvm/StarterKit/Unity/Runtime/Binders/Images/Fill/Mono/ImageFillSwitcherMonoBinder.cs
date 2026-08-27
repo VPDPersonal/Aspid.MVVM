@@ -16,8 +16,7 @@ namespace Aspid.MVVM.StarterKit
     public sealed class ImageFillSwitcherMonoBinder : SwitcherFloatMonoBinder<Image>
     {
         /// <summary>
-        /// Called when applying the selected value to the <see cref="Image.fillAmount"/> property.
-        /// Clamps the value to the valid range of 0 to 1.
+        /// Sets <see cref="Image.fillAmount"/> to <paramref name="value"/>, clamped to 0..1.
         /// </summary>
         /// <param name="value">The value received from the ViewModel.</param>
         protected override void SetValue(float value) =>

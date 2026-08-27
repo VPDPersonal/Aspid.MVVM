@@ -11,8 +11,8 @@ namespace Aspid.MVVM.StarterKit
     /// <see cref="TargetFloatBinder{TMP_Text}"/> that binds <see cref="TMP_Text.characterSpacing"/>.
     /// </summary>
     /// <remarks>
-    /// Tracking, in font units. A negative value tightens the line, which is ordinary in a title, so only a
-    /// non-finite value is refused — TMP rebuilds the mesh from it and the text disappears entirely.
+    /// Non-finite values are ignored — TMP would otherwise rebuild the mesh from <see cref="float.NaN"/>
+    /// and the text disappears entirely.
     /// </remarks>
     [Serializable]
     public class TextCharacterSpacingBinder : TargetFloatBinder<TMP_Text>
@@ -23,8 +23,6 @@ namespace Aspid.MVVM.StarterKit
             get => Target.characterSpacing;
             set
             {
-                // Отрицательный трекинг — обычное дело: так поджимают заголовки. Отбрасывается только нефинитное,
-                // иначе TMP пересобирает меш с NaN и текст исчезает целиком.
                 if (!BinderMath.IsFinite(value)) return;
                 Target.characterSpacing = value;
             }

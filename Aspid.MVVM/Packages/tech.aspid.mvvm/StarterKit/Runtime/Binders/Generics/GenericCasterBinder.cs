@@ -9,24 +9,19 @@ namespace Aspid.MVVM.StarterKit
     /// </summary>
     /// <typeparam name="TFrom">The source value type produced by the ViewModel binding.</typeparam>
     /// <typeparam name="TTo">The target value type expected by the setter action.</typeparam>
-    /// <remarks>
-    /// Only non-two-way bind modes are supported; passing <see cref="BindMode.TwoWay"/> will throw.
-    /// </remarks>
     /// <include file="XmlExampleDoc-Generics-1.1.0.xml" path="doc//member[@name='GenericCasterBinder{2}']/*" />
     public class GenericCasterBinder<TFrom, TTo> : Binder, IBinder<TFrom>
     {
         private readonly Action<TTo?> _setValue;
         private readonly IConverter<TFrom?, TTo?> _converter;
 
-        /// <summary>
-        /// Initializes a new instance of <see cref="GenericCasterBinder{TFrom,TTo}"/>.
-        /// </summary>
         /// <param name="setValue">The action invoked with the converted <typeparamref name="TTo"/> value.</param>
         /// <param name="converter">The converter used to transform a <typeparamref name="TFrom"/> value to <typeparamref name="TTo"/>.</param>
         /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</param>
         /// <exception cref="ArgumentNullException">
         /// Thrown when <paramref name="setValue"/> or <paramref name="converter"/> is <see langword="null"/>.
         /// </exception>
+        /// <exception cref="InvalidOperationException">Thrown when <paramref name="mode"/> is <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</exception>
         public GenericCasterBinder(
             Action<TTo?> setValue,
             IConverter<TFrom?, TTo?> converter,
@@ -57,7 +52,6 @@ namespace Aspid.MVVM.StarterKit
     /// <remarks>
     /// Passing the target separately enables method-group-style property setters on Unity components
     /// without capturing them in a closure.
-    /// Only non-two-way bind modes are supported; passing <see cref="BindMode.TwoWay"/> will throw.
     /// </remarks>
     /// <include file="XmlExampleDoc-Generics-1.1.0.xml" path="doc//member[@name='GenericCasterBinder{3}']/*" />
     public class GenericCasterBinder<TTarget, TFrom, TTo> : Binder, IBinder<TFrom>
@@ -66,9 +60,6 @@ namespace Aspid.MVVM.StarterKit
         private readonly Action<TTarget, TTo?> _setValue;
         private readonly IConverter<TFrom?, TTo?> _converter;
 
-        /// <summary>
-        /// Initializes a new instance of <see cref="GenericCasterBinder{TTarget,TFrom,TTo}"/>.
-        /// </summary>
         /// <param name="target">The target object whose property is updated on each value change.</param>
         /// <param name="setValue">
         /// The action invoked with the target and the converted <typeparamref name="TTo"/> value.
@@ -79,6 +70,7 @@ namespace Aspid.MVVM.StarterKit
         /// Thrown when <paramref name="target"/>, <paramref name="setValue"/>, or <paramref name="converter"/>
         /// is <see langword="null"/>.
         /// </exception>
+        /// <exception cref="InvalidOperationException">Thrown when <paramref name="mode"/> is <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</exception>
         public GenericCasterBinder(
             TTarget target,
             Action<TTarget, TTo?> setValue,

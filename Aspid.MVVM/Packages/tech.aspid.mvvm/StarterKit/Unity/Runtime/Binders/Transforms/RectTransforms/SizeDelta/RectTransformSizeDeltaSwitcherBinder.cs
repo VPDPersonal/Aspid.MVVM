@@ -13,12 +13,9 @@ namespace Aspid.MVVM.StarterKit
     [Serializable]
     public sealed class RectTransformSizeDeltaSwitcherBinder : SwitcherVector3Binder<RectTransform>
     {
-        [Tooltip("Determines which axes of sizeDelta are modified: Width only, Height only, or both (SizeDelta).")]
+        [Tooltip("Which axes of sizeDelta are modified.")]
         [SerializeField] private SizeDeltaMode _sizeMode;
         
-        /// <summary>
-        /// Initializes a new instance of <see cref="RectTransformSizeDeltaSwitcherBinder"/>.
-        /// </summary>
         /// <param name="target">The <see cref="RectTransform"/> to bind.</param>
         /// <param name="trueValue">The size delta applied when the bound boolean is <see langword="true"/>.</param>
         /// <param name="falseValue">The size delta applied when the bound boolean is <see langword="false"/>.</param>

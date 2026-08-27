@@ -8,11 +8,6 @@ namespace Aspid.MVVM.StarterKit
     /// Abstract base <see cref="ComponentMonoBinder{Animator}"/> that hands the ViewModel one operation on a trigger
     /// parameter — setting it or resetting it — as an <see cref="Action"/> or an <see cref="IRelayCommand"/>.
     /// </summary>
-    /// <remarks>
-    /// Only <see cref="BindMode.OneWayToSource"/> is supported. When binding is established, the binder
-    /// exposes an internal <see cref="Animator.SetTrigger(string)"/> action to the ViewModel either as a plain <see cref="Action"/>
-    /// or as an <see cref="IRelayCommand"/> whose <see cref="IRelayCommand.CanExecute()"/> mirrors <see cref="CanExecute()"/>.
-    /// </remarks>
     [BindModeOverride(modes: BindMode.OneWayToSource)]
     public abstract class AnimatorTriggerMonoBinder : ComponentMonoBinder<Animator>, 
         IReverseBinder<Action>,

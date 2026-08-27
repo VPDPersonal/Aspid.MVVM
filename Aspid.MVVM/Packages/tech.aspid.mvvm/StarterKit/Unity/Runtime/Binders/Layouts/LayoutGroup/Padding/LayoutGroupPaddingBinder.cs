@@ -19,7 +19,7 @@ namespace Aspid.MVVM.StarterKit
     [Serializable]
     public class LayoutGroupPaddingBinder : TargetBinder<LayoutGroup, RectOffset, Converter>, INumberBinder
     {
-        [Tooltip("Determines which sides of the padding are updated when a value is received from the ViewModel.")]
+        [Tooltip("Which sides of the padding are updated when a value is received.")]
         [SerializeField] private PaddingMode _paddingMode;
         [NonSerialized] private RectOffset? _cachedRectOffset;
 
@@ -30,9 +30,6 @@ namespace Aspid.MVVM.StarterKit
             set => Target.SetPadding(value.top, value.right, value.bottom, value.left, _paddingMode);
         }
         
-        /// <summary>
-        /// Initializes a new instance of <see cref="LayoutGroupPaddingBinder"/> targeting the specified <see cref="LayoutGroup"/>.
-        /// </summary>
         /// <param name="target">The <see cref="LayoutGroup"/> whose <see cref="UnityEngine.UI.LayoutGroup.padding"/> property is bound.</param>
         /// <param name="paddingMode">Determines which sides of the padding are updated.</param>
         /// <param name="converter">The converter used to transform the bound value, or <see langword="null"/> to use the default.</param>
@@ -66,14 +63,14 @@ namespace Aspid.MVVM.StarterKit
 
         /// <inheritdoc cref="SetValue(int)"/>
         public void SetValue(long value) =>
-            SetValue((int)value);
+            SetValue(NumericSaturation.ToInt(value));
 
         /// <inheritdoc cref="SetValue(int)"/>
         public void SetValue(float value) =>
-            SetValue((int)value);
+            SetValue(NumericSaturation.ToInt((double)value));
 
         /// <inheritdoc cref="SetValue(int)"/>
         public void SetValue(double value) =>
-            SetValue((int)value);
+            SetValue(NumericSaturation.ToInt(value));
     }
 }

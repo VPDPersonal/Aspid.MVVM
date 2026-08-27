@@ -7,7 +7,8 @@ namespace Aspid.MVVM.StarterKit
     /// Concrete <see cref="AnimatorTriggerMonoBinder"/> that resets the trigger parameter.
     /// </summary>
     /// <remarks>
-    /// A trigger that was set and never consumed stays armed, and the animation fires the moment its state becomes reachable - often several seconds later, in a state nobody connected to it. Resetting is how that is undone, and nothing in the package could do it.
+    /// A trigger that was set and never consumed stays armed, firing the moment its state becomes reachable —
+    /// often much later, in a state nobody connected to it.
     /// </remarks>
     [AddBinderContextMenu(typeof(Animator))]
     [AddComponentMenu("Aspid/MVVM/Binders/Animator/Animator Binder – Reset Trigger")]

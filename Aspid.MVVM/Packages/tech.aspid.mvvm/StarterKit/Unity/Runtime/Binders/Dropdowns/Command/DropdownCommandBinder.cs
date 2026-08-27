@@ -19,10 +19,10 @@ namespace Aspid.MVVM.StarterKit
         IBinder<IRelayCommand<long>>
     {
         // ReSharper disable once MemberInitializerValueIgnored
-        [Tooltip("Controls how the dropdown's interactable state reflects the command's CanExecute result.")]
+        [Tooltip("Determines how command executability is reflected on the dropdown.")]
         [SerializeField] private InteractableMode _interactableMode = InteractableMode.Interactable;
 
-        [Tooltip("The view used to reflect the command's CanExecute state when InteractableMode is Custom.")]
+        [Tooltip("Custom view for reflecting command executability.")]
         [SerializeReference] private ICanExecuteView _customInteractable;
 
         private IRelayCommand<int> _intCommand;
@@ -32,9 +32,6 @@ namespace Aspid.MVVM.StarterKit
         public DropdownCommandBinder(TMP_Dropdown target, BindMode mode = BindMode.OneWay)
             : this(target, InteractableMode.Interactable, mode) { }
 
-        /// <summary>
-        /// Initializes a new instance of <see cref="DropdownCommandBinder"/> with a custom interactable view.
-        /// </summary>
         /// <param name="target">The <see cref="TMP_Dropdown"/> to bind.</param>
         /// <param name="customInteractable">A custom view that reflects the command's <see cref="IRelayCommand.CanExecute()"/> state.</param>
         /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</param>
@@ -50,9 +47,6 @@ namespace Aspid.MVVM.StarterKit
             _customInteractable = customInteractable ?? throw new ArgumentNullException(nameof(customInteractable));
         }
 
-        /// <summary>
-        /// Initializes a new instance of <see cref="DropdownCommandBinder"/>.
-        /// </summary>
         /// <param name="target">The <see cref="TMP_Dropdown"/> to bind.</param>
         /// <param name="interactableMode">Controls how the dropdown's interactable state reflects <see cref="IRelayCommand.CanExecute()"/>.</param>
         /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</param>
@@ -96,10 +90,6 @@ namespace Aspid.MVVM.StarterKit
         /// Called when the binder is unbound. Unsubscribes from <see cref="TMP_Dropdown.onValueChanged"/>
         /// and releases all bound command references.
         /// </summary>
-        /// <remarks>
-        /// Passes <see langword="null"/> to all <c>SetValue</c> overloads to detach command references
-        /// and unsubscribe from their <see cref="IRelayCommand{T}.CanExecuteChanged"/> events.
-        /// </remarks>
         protected override void OnUnbound()
         {
             Target.onValueChanged.RemoveListener(OnValueChanged);
@@ -143,15 +133,15 @@ namespace Aspid.MVVM.StarterKit
         IBinder<IRelayCommand<int, T>>,
         IBinder<IRelayCommand<long, T>>
     {
-        [Tooltip("The additional parameter forwarded alongside the dropdown selection index when the command is executed.")]
+        [Tooltip("The extra parameter passed alongside the selection index.")]
         [SerializeField] private T _param;
 
         // ReSharper disable once MemberInitializerValueIgnored
         [Space]
-        [Tooltip("Controls how the dropdown's interactable state reflects the command's CanExecute result.")]
+        [Tooltip("Determines how command executability is reflected on the dropdown.")]
         [SerializeField] private InteractableMode _interactableMode = InteractableMode.Interactable;
 
-        [Tooltip("The view used to reflect the command's CanExecute state when InteractableMode is Custom.")]
+        [Tooltip("Custom view for reflecting command executability.")]
         [SerializeReference] private ICanExecuteView _customInteractable;
 
         private IRelayCommand<int, T> _intCommand;
@@ -170,11 +160,8 @@ namespace Aspid.MVVM.StarterKit
         public DropdownCommandBinder(TMP_Dropdown target, T param, BindMode mode = BindMode.OneWay)
             : this(target, param, InteractableMode.Interactable, mode) { }
 
-        /// <summary>
-        /// Initializes a new instance of <see cref="DropdownCommandBinder{T}"/> with a custom interactable view.
-        /// </summary>
         /// <param name="target">The <see cref="TMP_Dropdown"/> to bind.</param>
-        /// <param name="param">The additional parameter forwarded alongside the dropdown selection index when the command is executed.</param>
+        /// <param name="param">The extra parameter passed alongside the selection index.</param>
         /// <param name="customInteractable">A custom view that reflects the command's <see cref="IRelayCommand.CanExecute()"/> state.</param>
         /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</param>
         /// <exception cref="InvalidOperationException">Thrown when <paramref name="mode"/> is <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</exception>
@@ -193,11 +180,8 @@ namespace Aspid.MVVM.StarterKit
             _customInteractable = customInteractable ?? throw new ArgumentNullException(nameof(customInteractable));
         }
 
-        /// <summary>
-        /// Initializes a new instance of <see cref="DropdownCommandBinder{T}"/>.
-        /// </summary>
         /// <param name="target">The <see cref="TMP_Dropdown"/> to bind.</param>
-        /// <param name="param">The additional parameter forwarded alongside the dropdown selection index when the command is executed.</param>
+        /// <param name="param">The extra parameter passed alongside the selection index.</param>
         /// <param name="interactableMode">Controls how the dropdown's interactable state reflects <see cref="IRelayCommand.CanExecute()"/>.</param>
         /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</param>
         /// <exception cref="InvalidOperationException">Thrown when <paramref name="mode"/> is <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</exception>
@@ -244,10 +228,6 @@ namespace Aspid.MVVM.StarterKit
         /// Called when the binder is unbound. Unsubscribes from <see cref="TMP_Dropdown.onValueChanged"/>
         /// and releases all bound command references.
         /// </summary>
-        /// <remarks>
-        /// Passes <see langword="null"/> to all <c>SetValue</c> overloads to detach command references
-        /// and unsubscribe from their <see cref="IRelayCommand{T}.CanExecuteChanged"/> events.
-        /// </remarks>
         protected override void OnUnbound()
         {
             Target.onValueChanged.RemoveListener(OnValueChanged);
@@ -292,17 +272,17 @@ namespace Aspid.MVVM.StarterKit
         IBinder<IRelayCommand<int, T1, T2>>,
         IBinder<IRelayCommand<long, T1, T2>>
     {
-        [Tooltip("The first additional parameter forwarded alongside the dropdown selection index when the command is executed.")]
+        [Tooltip("The first extra parameter passed alongside the selection index.")]
         [SerializeField] private T1 _param1;
-        [Tooltip("The second additional parameter forwarded alongside the dropdown selection index when the command is executed.")]
+        [Tooltip("The second extra parameter passed alongside the selection index.")]
         [SerializeField] private T2 _param2;
 
         // ReSharper disable once MemberInitializerValueIgnored
         [Space]
-        [Tooltip("Controls how the dropdown's interactable state reflects the command's CanExecute result.")]
+        [Tooltip("Determines how command executability is reflected on the dropdown.")]
         [SerializeField] private InteractableMode _interactableMode = InteractableMode.Interactable;
 
-        [Tooltip("The view used to reflect the command's CanExecute state when InteractableMode is Custom.")]
+        [Tooltip("Custom view for reflecting command executability.")]
         [SerializeReference] private ICanExecuteView _customInteractable;
 
         private IRelayCommand<int, T1, T2> _intCommand;
@@ -330,12 +310,9 @@ namespace Aspid.MVVM.StarterKit
         public DropdownCommandBinder(TMP_Dropdown target, T1 param1, T2 param2, BindMode mode = BindMode.OneWay)
             : this(target, param1, param2, InteractableMode.Interactable, mode) { }
 
-        /// <summary>
-        /// Initializes a new instance of <see cref="DropdownCommandBinder{T1, T2}"/> with a custom interactable view.
-        /// </summary>
         /// <param name="target">The <see cref="TMP_Dropdown"/> to bind.</param>
-        /// <param name="param1">The first additional parameter forwarded alongside the dropdown selection index when the command is executed.</param>
-        /// <param name="param2">The second additional parameter forwarded alongside the dropdown selection index when the command is executed.</param>
+        /// <param name="param1">The first extra parameter passed alongside the selection index.</param>
+        /// <param name="param2">The second extra parameter passed alongside the selection index.</param>
         /// <param name="customInteractable">A custom view that reflects the command's <see cref="IRelayCommand.CanExecute()"/> state.</param>
         /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</param>
         /// <exception cref="InvalidOperationException">Thrown when <paramref name="mode"/> is <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</exception>
@@ -356,12 +333,9 @@ namespace Aspid.MVVM.StarterKit
             _customInteractable = customInteractable ?? throw new ArgumentNullException(nameof(customInteractable));
         }
 
-        /// <summary>
-        /// Initializes a new instance of <see cref="DropdownCommandBinder{T1, T2}"/>.
-        /// </summary>
         /// <param name="target">The <see cref="TMP_Dropdown"/> to bind.</param>
-        /// <param name="param1">The first additional parameter forwarded alongside the dropdown selection index when the command is executed.</param>
-        /// <param name="param2">The second additional parameter forwarded alongside the dropdown selection index when the command is executed.</param>
+        /// <param name="param1">The first extra parameter passed alongside the selection index.</param>
+        /// <param name="param2">The second extra parameter passed alongside the selection index.</param>
         /// <param name="interactableMode">Controls how the dropdown's interactable state reflects <see cref="IRelayCommand.CanExecute()"/>.</param>
         /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</param>
         /// <exception cref="InvalidOperationException">Thrown when <paramref name="mode"/> is <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</exception>
@@ -410,10 +384,6 @@ namespace Aspid.MVVM.StarterKit
         /// Called when the binder is unbound. Unsubscribes from <see cref="TMP_Dropdown.onValueChanged"/>
         /// and releases all bound command references.
         /// </summary>
-        /// <remarks>
-        /// Passes <see langword="null"/> to all <c>SetValue</c> overloads to detach command references
-        /// and unsubscribe from their <see cref="IRelayCommand{T}.CanExecuteChanged"/> events.
-        /// </remarks>
         protected override void OnUnbound()
         {
             Target.onValueChanged.RemoveListener(OnValueChanged);
@@ -459,19 +429,19 @@ namespace Aspid.MVVM.StarterKit
         IBinder<IRelayCommand<int, T1, T2, T3>>,
         IBinder<IRelayCommand<long, T1, T2, T3>>
     {
-        [Tooltip("The first additional parameter forwarded alongside the dropdown selection index when the command is executed.")]
+        [Tooltip("The first extra parameter passed alongside the selection index.")]
         [SerializeField] private T1 _param1;
-        [Tooltip("The second additional parameter forwarded alongside the dropdown selection index when the command is executed.")]
+        [Tooltip("The second extra parameter passed alongside the selection index.")]
         [SerializeField] private T2 _param2;
-        [Tooltip("The third additional parameter forwarded alongside the dropdown selection index when the command is executed.")]
+        [Tooltip("The third extra parameter passed alongside the selection index.")]
         [SerializeField] private T3 _param3;
 
         // ReSharper disable once MemberInitializerValueIgnored
         [Space]
-        [Tooltip("Controls how the dropdown's interactable state reflects the command's CanExecute result.")]
+        [Tooltip("Determines how command executability is reflected on the dropdown.")]
         [SerializeField] private InteractableMode _interactableMode = InteractableMode.Interactable;
 
-        [Tooltip("The view used to reflect the command's CanExecute state when InteractableMode is Custom.")]
+        [Tooltip("Custom view for reflecting command executability.")]
         [SerializeReference] private ICanExecuteView _customInteractable;
 
         private IRelayCommand<int, T1, T2, T3> _intCommand;
@@ -508,13 +478,10 @@ namespace Aspid.MVVM.StarterKit
         public DropdownCommandBinder(TMP_Dropdown target, T1 param1, T2 param2, T3 param3, BindMode mode = BindMode.OneWay)
             : this(target, param1, param2, param3, InteractableMode.Interactable, mode) { }
 
-        /// <summary>
-        /// Initializes a new instance of <see cref="DropdownCommandBinder{T1, T2, T3}"/> with a custom interactable view.
-        /// </summary>
         /// <param name="target">The <see cref="TMP_Dropdown"/> to bind.</param>
-        /// <param name="param1">The first additional parameter forwarded alongside the dropdown selection index when the command is executed.</param>
-        /// <param name="param2">The second additional parameter forwarded alongside the dropdown selection index when the command is executed.</param>
-        /// <param name="param3">The third additional parameter forwarded alongside the dropdown selection index when the command is executed.</param>
+        /// <param name="param1">The first extra parameter passed alongside the selection index.</param>
+        /// <param name="param2">The second extra parameter passed alongside the selection index.</param>
+        /// <param name="param3">The third extra parameter passed alongside the selection index.</param>
         /// <param name="customInteractable">A custom view that reflects the command's <see cref="IRelayCommand.CanExecute()"/> state.</param>
         /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</param>
         /// <exception cref="InvalidOperationException">Thrown when <paramref name="mode"/> is <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</exception>
@@ -537,13 +504,10 @@ namespace Aspid.MVVM.StarterKit
             _customInteractable = customInteractable ?? throw new ArgumentNullException(nameof(customInteractable));
         }
 
-        /// <summary>
-        /// Initializes a new instance of <see cref="DropdownCommandBinder{T1, T2, T3}"/>.
-        /// </summary>
         /// <param name="target">The <see cref="TMP_Dropdown"/> to bind.</param>
-        /// <param name="param1">The first additional parameter forwarded alongside the dropdown selection index when the command is executed.</param>
-        /// <param name="param2">The second additional parameter forwarded alongside the dropdown selection index when the command is executed.</param>
-        /// <param name="param3">The third additional parameter forwarded alongside the dropdown selection index when the command is executed.</param>
+        /// <param name="param1">The first extra parameter passed alongside the selection index.</param>
+        /// <param name="param2">The second extra parameter passed alongside the selection index.</param>
+        /// <param name="param3">The third extra parameter passed alongside the selection index.</param>
         /// <param name="interactableMode">Controls how the dropdown's interactable state reflects <see cref="IRelayCommand.CanExecute()"/>.</param>
         /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</param>
         /// <exception cref="InvalidOperationException">Thrown when <paramref name="mode"/> is <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</exception>
@@ -594,10 +558,6 @@ namespace Aspid.MVVM.StarterKit
         /// Called when the binder is unbound. Unsubscribes from <see cref="TMP_Dropdown.onValueChanged"/>
         /// and releases all bound command references.
         /// </summary>
-        /// <remarks>
-        /// Passes <see langword="null"/> to all <c>SetValue</c> overloads to detach command references
-        /// and unsubscribe from their <see cref="IRelayCommand{T}.CanExecuteChanged"/> events.
-        /// </remarks>
         protected override void OnUnbound()
         {
             Target.onValueChanged.RemoveListener(OnValueChanged);

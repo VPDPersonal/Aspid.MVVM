@@ -9,6 +9,10 @@ namespace Aspid.MVVM.StarterKit
     /// <summary>
     /// <see cref="TargetFloatBinder{TMP_Text}"/> that sets the <see cref="TMP_Text.fontSize"/> property.
     /// </summary>
+    /// <remarks>
+    /// Non-finite values are ignored — TMP would otherwise rebuild the mesh from <see cref="float.NaN"/>
+    /// and the text disappears entirely.
+    /// </remarks>
     /// <include file="XmlExampleDoc-Text-FontSize-1.1.0.xml" path="doc//member[@name='TextFontSizeBinder']/*" />
     [Serializable]
     public class TextFontSizeBinder : TargetFloatBinder<TMP_Text>
@@ -16,7 +20,11 @@ namespace Aspid.MVVM.StarterKit
         protected sealed override float Property
         {
             get => Target.fontSize;
-            set => Target.fontSize = value;
+            set
+            {
+                if (!BinderMath.IsFinite(value)) return;
+                Target.fontSize = value;
+            }
         }
 
         /// <inheritdoc/>

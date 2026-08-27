@@ -9,28 +9,21 @@ namespace Aspid.MVVM.StarterKit
     /// <see cref="UIDocument"/> and binds it.
     /// </summary>
     /// <remarks>
-    /// The runtime layer was uGUI and TextMeshPro from end to end, so a project on the stack Unity itself recommends
-    /// could not use the framework at all. This is the piece everything else in the UI Toolkit family stands on.
-    /// <para/>
-    /// The element is looked up lazily rather than when the binder is bound. A document builds its tree in
-    /// <c>OnEnable</c>, and a View that binds from <c>Awake</c> would otherwise search an empty root — the failure would
-    /// look like a wrong name.
-    /// <para/>
-    /// A missing document, a blank name and a name that matches nothing are each reported once. A lookup that failed is
-    /// not retried every value: a UI Toolkit query walks the tree, and an error per value would cost more than the
-    /// binding it is complaining about.
+    /// The element is resolved lazily rather than when the binder is bound, since a document builds its tree in
+    /// <c>OnEnable</c> and an earlier lookup would search an empty root. A successful resolution is cached; a failed
+    /// one is retried on the next access, so the element is found once the document's tree exists.
     /// </remarks>
     /// <typeparam name="TElement">The type of <see cref="VisualElement"/> this binder drives.</typeparam>
     public abstract partial class VisualElementMonoBinder<TElement> : MonoBinder
         where TElement : VisualElement
     {
-        [Tooltip("The document the element lives in. Left empty, the binder looks for one on this object or its parents.")]
+        [Tooltip("The document the element lives in, or empty to search this object and parents.")]
         [SerializeField] private UIDocument _document;
 
-        [Tooltip("Name of the element, as set in UXML. Leave empty to use the class name below instead.")]
+        [Tooltip("Name of the element, as set in UXML. Empty falls back to the class below.")]
         [SerializeField] private string _elementName;
 
-        [Tooltip("USS class to search by when no name is given. The first element of the right type carrying it is used.")]
+        [Tooltip("USS class to search by when no name is given. Uses the first match.")]
         [SerializeField] private string _elementClass;
 
         private TElement _element;
@@ -45,8 +38,8 @@ namespace Aspid.MVVM.StarterKit
             {
                 if (_isResolved) return _element;
 
-                _isResolved = true;
                 _element = Resolve();
+                _isResolved = _element is not null;
 
                 return _element;
             }

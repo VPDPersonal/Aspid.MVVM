@@ -8,9 +8,6 @@ namespace Aspid.MVVM.StarterKit
     /// <summary>
     /// <see cref="TargetBoolBinder{SpriteRenderer}"/> that binds <see cref="SpriteRenderer.flipY"/>.
     /// </summary>
-    /// <remarks>
-    /// Mirrors the sprite vertically.
-    /// </remarks>
     [Serializable]
     public class SpriteRendererFlipYBinder : TargetBoolBinder<SpriteRenderer>
     {

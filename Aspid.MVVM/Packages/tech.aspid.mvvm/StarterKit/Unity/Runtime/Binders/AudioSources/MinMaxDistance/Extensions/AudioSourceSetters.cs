@@ -37,8 +37,7 @@ namespace Aspid.MVVM.StarterKit
                 return;
             }
 
-            // Distances are also required to be non-negative, and minDistance must not exceed maxDistance —
-            // neither is enforced by the setters, and an inverted pair silences the source at every distance.
+            // Neither setter enforces non-negative values or min <= max; an inverted pair silences the source.
             value = new Vector2(Mathf.Max(0f, value.x), Mathf.Max(0f, value.y));
 
             if (value.x > value.y)

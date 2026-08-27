@@ -19,8 +19,7 @@ namespace Aspid.MVVM.StarterKit
             get => Target.main.startColor.color;
             set
             {
-                // Модуль — структура-обёртка над самой системой: запись через локальную копию доходит до системы,
-                // а обратиться к свойству модуля напрямую язык не даёт (main — свойство, а не поле).
+                // main is a struct wrapper; write through a local copy since the property can't be accessed by ref.
                 var main = Target.main;
                 main.startColor = value;
             }

@@ -24,8 +24,6 @@ namespace Aspid.MVVM.StarterKit
             get => CachedComponent.pivot;
             set
             {
-                // Значения вне 0..1 законны — так растягивают элемент за границы родителя. Отбрасывается
-                // только нефинитное: rect считается из этих чисел, и один NaN убирает элемент с экрана.
                 if (!BinderMath.IsFinite(value.x) || !BinderMath.IsFinite(value.y)) return;
                 CachedComponent.pivot = value;
             }

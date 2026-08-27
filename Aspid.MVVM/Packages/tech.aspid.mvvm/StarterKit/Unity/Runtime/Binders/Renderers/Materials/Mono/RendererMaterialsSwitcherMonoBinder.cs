@@ -12,12 +12,11 @@ namespace Aspid.MVVM.StarterKit
     [AddBinderContextMenu(typeof(Renderer), serializePropertyNames: "m_Materials", SubPath = "Switcher")]
     public sealed class RendererMaterialsSwitcherMonoBinder : SwitcherMonoBinder<Renderer, Material[]>
     {
-        [Tooltip("The optional converter applied to each material before it is assigned to the Renderer.")]
+        [Tooltip("The optional converter applied to each material before assignment.")]
         [SerializeReference] private Converter _converter;
 
         /// <summary>
-        /// Called when applying the selected value to the <see cref="Renderer.materials"/> array.
-        /// Applies the optional converter to each material before assignment.
+        /// Sets the <see cref="Renderer.materials"/> array, applying the optional converter to each material.
         /// </summary>
         /// <param name="values">The materials received from the ViewModel.</param>
         protected override void SetValue(Material[] values) =>

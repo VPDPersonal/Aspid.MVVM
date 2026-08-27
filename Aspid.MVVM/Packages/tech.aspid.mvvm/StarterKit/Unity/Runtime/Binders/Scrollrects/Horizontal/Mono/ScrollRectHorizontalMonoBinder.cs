@@ -7,9 +7,6 @@ namespace Aspid.MVVM.StarterKit
     /// <summary>
     /// <see cref="ComponentBoolMonoBinder{ScrollRect}"/> that binds <see cref="ScrollRect.horizontal"/>.
     /// </summary>
-    /// <remarks>
-    /// Whether the user may scroll sideways — the way a ViewModel locks an axis while something else is in progress.
-    /// </remarks>
     [AddBinderContextMenu(typeof(ScrollRect), serializePropertyNames: "m_Horizontal")]
     [AddComponentMenu("Aspid/MVVM/Binders/UI/ScrollRect/ScrollRect Binder – Horizontal Enabled")]
     public class ScrollRectHorizontalMonoBinder : ComponentBoolMonoBinder<ScrollRect>

@@ -9,10 +9,6 @@ namespace Aspid.MVVM.StarterKit
     /// <see cref="string"/> as an <see langword="int"/> and forwards the result to a target <see cref="UnityEvent{T}"/>.
     /// </summary>
     /// <remarks>
-    /// The casters covered the direction into a string and not the one out of it, which is the direction an input
-    /// field works in: a ViewModel holding an <see langword="int"/> could be shown in a text field and not filled
-    /// from one.
-    /// <para/>
     /// A string that does not parse forwards the fallback value. Failures are not logged by default: a half-typed
     /// number is normal while a user is typing, and an error per keystroke would bury the console.
     /// </remarks>
@@ -21,13 +17,13 @@ namespace Aspid.MVVM.StarterKit
     [AddBinderContextMenu(typeof(Component), Path = "Add General Binder/Casters/String To Int Caster Binder")]
     public sealed partial class StringToIntCasterMonoBinder : MonoBinder, IBinder<string>
     {
-        [Tooltip("Invoked with the parsed value each time a new string arrives from the ViewModel.")]
+        [Tooltip("Invoked with the parsed value.")]
         [SerializeField] private UnityEvent<int> _casted;
 
-        [Tooltip("Value forwarded when the string cannot be parsed — an empty field, a partially typed number, letters.")]
+        [Tooltip("Value forwarded when the string cannot be parsed.")]
         [SerializeField] private int _fallback;
 
-        [Tooltip("Log an error for every string that cannot be parsed. Off by default: while a user types, most of what arrives is not yet a number.")]
+        [Tooltip("Logs an error for every string that fails to parse.")]
         [SerializeField] private bool _logFailures;
 
         /// <summary>

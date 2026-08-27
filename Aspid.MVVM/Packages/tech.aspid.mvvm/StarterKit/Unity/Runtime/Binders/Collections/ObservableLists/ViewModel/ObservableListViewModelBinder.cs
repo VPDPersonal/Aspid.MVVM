@@ -49,13 +49,13 @@ namespace Aspid.MVVM.StarterKit
         where T : MonoBehaviour, IView
         where TViewFactory : IViewFactory<T>
     {
-        [Tooltip("The factory used to create and release view instances for each item in the list.")]
+        [Tooltip("Creates and releases a view for each list item.")]
         [SerializeReference] private TViewFactory _viewFactory;
 
-        [Tooltip("Optional filter applied to the bound list. Pass null to show all items.")]
+        [Tooltip("Optional filter for which items are shown. Leave empty to show all.")]
         [SerializeReference] private Filter _filter;
 
-        [Tooltip("Optional comparer used to sort the bound list. Pass null to use the source order.")]
+        [Tooltip("Optional comparer for sort order. Leave empty to keep the collection's own order.")]
         [SerializeReference] private Comparer _comparer;
 
         private List<T> _views;
@@ -63,9 +63,6 @@ namespace Aspid.MVVM.StarterKit
 
         private List<T> Views => _views ??= new List<T>();
 
-        /// <summary>
-        /// Initializes a new instance of <see cref="ObservableListViewModelBinder{T, TViewFactory}"/>.
-        /// </summary>
         /// <param name="viewFactory">The factory used to create and release view instances for each list item.</param>
         /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</param>
         /// <exception cref="InvalidOperationException">Thrown when <paramref name="mode"/> is <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</exception>

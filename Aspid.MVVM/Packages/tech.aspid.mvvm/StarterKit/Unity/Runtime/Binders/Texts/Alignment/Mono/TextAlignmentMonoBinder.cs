@@ -8,10 +8,6 @@ namespace Aspid.MVVM.StarterKit
     /// <summary>
     /// <see cref="ComponentMonoBinder{TMP_Text, TextAlignmentOptions}"/> that sets the <see cref="TMP_Text.alignment"/>.
     /// </summary>
-    /// <remarks>
-    /// Supports <see cref="BindMode.OneWayToSource"/>: when binding is established, the current alignment
-    /// is sent back to the ViewModel.
-    /// </remarks>
     [AddComponentMenu("Aspid/MVVM/Binders/UI/Text/Text Binder – Alignment")]
     [AddBinderContextMenu(typeof(TMP_Text), serializePropertyNames: "m_textAlignment")]
     public class TextAlignmentMonoBinder : ComponentMonoBinder<TMP_Text, TextAlignmentOptions>

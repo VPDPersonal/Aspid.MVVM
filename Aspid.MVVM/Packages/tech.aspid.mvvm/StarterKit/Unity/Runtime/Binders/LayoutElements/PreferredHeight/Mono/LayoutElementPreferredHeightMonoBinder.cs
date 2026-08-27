@@ -8,7 +8,7 @@ namespace Aspid.MVVM.StarterKit
     /// <see cref="ComponentFloatMonoBinder{LayoutElement}"/> that binds <see cref="LayoutElement.preferredHeight"/>.
     /// </summary>
     /// <remarks>
-    /// The vertical counterpart. A negative value means "no preference".
+    /// A negative value means "no preference". A non-finite value is rejected instead of being written.
     /// </remarks>
     [AddBinderContextMenu(typeof(LayoutElement), serializePropertyNames: "m_PreferredHeight")]
     [AddComponentMenu("Aspid/MVVM/Binders/UI/LayoutElement/LayoutElement Binder – Preferred Height")]
@@ -18,7 +18,11 @@ namespace Aspid.MVVM.StarterKit
         protected sealed override float Property
         {
             get => CachedComponent.preferredHeight;
-            set => CachedComponent.preferredHeight = value;
+            set
+            {
+                if (!BinderMath.IsFinite(value)) return;
+                CachedComponent.preferredHeight = value;
+            }
         }
     }
 }

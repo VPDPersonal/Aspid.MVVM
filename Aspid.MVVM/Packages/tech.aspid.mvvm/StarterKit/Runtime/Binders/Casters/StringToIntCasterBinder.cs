@@ -1,4 +1,3 @@
-#nullable enable
 using System;
 
 // ReSharper disable once CheckNamespace
@@ -21,9 +20,6 @@ namespace Aspid.MVVM.StarterKit
         private readonly int _fallback;
         private readonly Action<int> _setValue;
 
-        /// <summary>
-        /// Initializes a new instance of <see cref="StringToIntCasterBinder"/>.
-        /// </summary>
         /// <param name="setValue">The action invoked with the parsed <see langword="int"/> value.</param>
         /// <param name="fallback">The value forwarded when the string cannot be parsed.</param>
         /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</param>

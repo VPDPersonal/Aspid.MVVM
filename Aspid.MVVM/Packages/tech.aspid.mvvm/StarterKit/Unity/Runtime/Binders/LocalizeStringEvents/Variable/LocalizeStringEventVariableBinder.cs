@@ -27,9 +27,6 @@ namespace Aspid.MVVM.StarterKit
         [Tooltip("The name of the Smart String variable to update on the LocalizeStringEvent.")]
         [SerializeField] private string _variableName;
         
-        /// <summary>
-        /// Initializes a new instance of <see cref="LocalizeStringEventVariableBinder"/>.
-        /// </summary>
         /// <param name="target">The <see cref="LocalizeStringEvent"/> to bind.</param>
         /// <param name="variableName">The name of the Smart String variable to update.</param>
         /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</param>

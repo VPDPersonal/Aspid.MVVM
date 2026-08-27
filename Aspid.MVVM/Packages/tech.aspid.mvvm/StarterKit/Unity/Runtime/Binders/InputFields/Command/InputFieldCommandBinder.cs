@@ -39,9 +39,6 @@ namespace Aspid.MVVM.StarterKit
         public InputFieldCommandBinder(TMP_InputField target, UpdateInputFieldEvent updateEvent, BindMode mode = BindMode.OneWay)
             : this(target, InteractableMode.Interactable, updateEvent, mode) { }
         
-        /// <summary>
-        /// Initializes a new instance of <see cref="InputFieldCommandBinder"/> with a custom interactable view.
-        /// </summary>
         /// <param name="target">The <see cref="TMP_InputField"/> to bind.</param>
         /// <param name="customInteractable">The custom view that reflects whether the command can execute.</param>
         /// <param name="updateEvent">The input field event that triggers command execution.</param>
@@ -60,9 +57,6 @@ namespace Aspid.MVVM.StarterKit
             _customInteractable = customInteractable ?? throw new ArgumentNullException(nameof(customInteractable));
         }
         
-        /// <summary>
-        /// Initializes a new instance of <see cref="InputFieldCommandBinder"/>.
-        /// </summary>
         /// <param name="target">The <see cref="TMP_InputField"/> to bind.</param>
         /// <param name="interactableMode">Determines how command executability is reflected on the input field. Must not be <see cref="InteractableMode.Custom"/>.</param>
         /// <param name="updateEvent">The input field event that triggers command execution.</param>
@@ -99,22 +93,16 @@ namespace Aspid.MVVM.StarterKit
         /// <summary>
         /// Called when the binder is bound. Subscribes to the configured input field event.
         /// </summary>
-        /// <remarks>
-        /// The specific event subscribed to is determined by the configured <see cref="UpdateInputFieldEvent"/> value.
-        /// </remarks>
         protected override void OnBound() =>
             Subscribe();
 
         /// <summary>
         /// Called when the binder is unbound. Unsubscribes from the input field event and clears bound commands.
         /// </summary>
-        /// <remarks>
-        /// Commands are nullified to release <see cref="IRelayCommand.CanExecuteChanged"/> subscriptions and prevent stale references.
-        /// </remarks>
         protected override void OnUnbound()
         {
             Unsubscribe();
-            
+
             SetValue((IRelayCommand)null);
             SetValue((IRelayCommand<string>)null);
         }
@@ -210,9 +198,6 @@ namespace Aspid.MVVM.StarterKit
         public InputFieldCommandBinder(TMP_InputField target, T param, UpdateInputFieldEvent updateEvent, BindMode mode = BindMode.OneWay)
             : this(target, param, InteractableMode.Interactable, updateEvent, mode) { }
         
-        /// <summary>
-        /// Initializes a new instance of <see cref="InputFieldCommandBinder{T}"/> with a custom interactable view.
-        /// </summary>
         /// <param name="target">The <see cref="TMP_InputField"/> to bind.</param>
         /// <param name="param">The parameter passed to the command alongside the input field text.</param>
         /// <param name="customInteractable">The custom view that reflects whether the command can execute.</param>
@@ -236,9 +221,6 @@ namespace Aspid.MVVM.StarterKit
             _customInteractable = customInteractable ?? throw new ArgumentNullException(nameof(customInteractable));
         }
         
-        /// <summary>
-        /// Initializes a new instance of <see cref="InputFieldCommandBinder{T}"/>.
-        /// </summary>
         /// <param name="target">The <see cref="TMP_InputField"/> to bind.</param>
         /// <param name="param">The parameter passed to the command alongside the input field text.</param>
         /// <param name="interactableMode">Determines how command executability is reflected on the input field. Must not be <see cref="InteractableMode.Custom"/>.</param>
@@ -273,18 +255,12 @@ namespace Aspid.MVVM.StarterKit
         /// <summary>
         /// Called when the binder is bound. Subscribes to the configured input field event.
         /// </summary>
-        /// <remarks>
-        /// The specific event subscribed to is determined by the configured <see cref="UpdateInputFieldEvent"/> value.
-        /// </remarks>
         protected override void OnBound() =>
             Subscribe();
 
         /// <summary>
         /// Called when the binder is unbound. Unsubscribes from the input field event and clears the bound command.
         /// </summary>
-        /// <remarks>
-        /// The command is nullified to release the <see cref="IRelayCommand.CanExecuteChanged"/> subscription and prevent stale references.
-        /// </remarks>
         protected override void OnUnbound()
         {
             Unsubscribe();
@@ -384,9 +360,6 @@ namespace Aspid.MVVM.StarterKit
         public InputFieldCommandBinder(TMP_InputField target, T1 param1, T2 param2, UpdateInputFieldEvent updateEvent, BindMode mode = BindMode.OneWay)
             : this(target, param1, param2, InteractableMode.Interactable, updateEvent, mode) { }
         
-        /// <summary>
-        /// Initializes a new instance of <see cref="InputFieldCommandBinder{T1,T2}"/> with a custom interactable view.
-        /// </summary>
         /// <param name="target">The <see cref="TMP_InputField"/> to bind.</param>
         /// <param name="param1">The first parameter passed to the command.</param>
         /// <param name="param2">The second parameter passed to the command.</param>
@@ -413,9 +386,6 @@ namespace Aspid.MVVM.StarterKit
             _customInteractable = customInteractable ?? throw new ArgumentNullException(nameof(customInteractable));
         }
         
-        /// <summary>
-        /// Initializes a new instance of <see cref="InputFieldCommandBinder{T1,T2}"/>.
-        /// </summary>
         /// <param name="target">The <see cref="TMP_InputField"/> to bind.</param>
         /// <param name="param1">The first parameter passed to the command.</param>
         /// <param name="param2">The second parameter passed to the command.</param>
@@ -453,18 +423,12 @@ namespace Aspid.MVVM.StarterKit
         /// <summary>
         /// Called when the binder is bound. Subscribes to the configured input field event.
         /// </summary>
-        /// <remarks>
-        /// The specific event subscribed to is determined by the configured <see cref="UpdateInputFieldEvent"/> value.
-        /// </remarks>
         protected override void OnBound() =>
             Subscribe();
 
         /// <summary>
         /// Called when the binder is unbound. Unsubscribes from the input field event and clears the bound command.
         /// </summary>
-        /// <remarks>
-        /// The command is nullified to release the <see cref="IRelayCommand.CanExecuteChanged"/> subscription and prevent stale references.
-        /// </remarks>
         protected override void OnUnbound()
         {
             Unsubscribe();
@@ -578,9 +542,6 @@ namespace Aspid.MVVM.StarterKit
         public InputFieldCommandBinder(TMP_InputField target, T1 param1, T2 param2, T3 param3, UpdateInputFieldEvent updateEvent, BindMode mode = BindMode.OneWay)
             : this(target, param1, param2, param3, InteractableMode.Interactable, updateEvent, mode) { }
         
-        /// <summary>
-        /// Initializes a new instance of <see cref="InputFieldCommandBinder{T1,T2,T3}"/> with a custom interactable view.
-        /// </summary>
         /// <param name="target">The <see cref="TMP_InputField"/> to bind.</param>
         /// <param name="param1">The first parameter passed to the command.</param>
         /// <param name="param2">The second parameter passed to the command.</param>
@@ -610,9 +571,6 @@ namespace Aspid.MVVM.StarterKit
             _customInteractable = customInteractable ?? throw new ArgumentNullException(nameof(customInteractable));
         }
         
-        /// <summary>
-        /// Initializes a new instance of <see cref="InputFieldCommandBinder{T1,T2,T3}"/>.
-        /// </summary>
         /// <param name="target">The <see cref="TMP_InputField"/> to bind.</param>
         /// <param name="param1">The first parameter passed to the command.</param>
         /// <param name="param2">The second parameter passed to the command.</param>
@@ -653,18 +611,12 @@ namespace Aspid.MVVM.StarterKit
         /// <summary>
         /// Called when the binder is bound. Subscribes to the configured input field event.
         /// </summary>
-        /// <remarks>
-        /// The specific event subscribed to is determined by the configured <see cref="UpdateInputFieldEvent"/> value.
-        /// </remarks>
         protected override void OnBound() =>
             Subscribe();
 
         /// <summary>
         /// Called when the binder is unbound. Unsubscribes from the input field event and clears the bound command.
         /// </summary>
-        /// <remarks>
-        /// The command is nullified to release the <see cref="IRelayCommand.CanExecuteChanged"/> subscription and prevent stale references.
-        /// </remarks>
         protected override void OnUnbound()
         {
             Unsubscribe();

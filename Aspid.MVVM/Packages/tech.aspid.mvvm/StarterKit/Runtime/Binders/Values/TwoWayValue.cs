@@ -6,30 +6,10 @@ namespace Aspid.MVVM.StarterKit
     /// <summary>
     /// <see cref="Binder"/> implementing <see cref="IBinder{T}"/> and <see cref="IReverseBinder{T}"/>
     /// that stores a value of type <typeparamref name="T"/> and synchronises it in both directions between the ViewModel and the View.
+    /// Supports all binding modes; in <see cref="BindMode.OneWayToSource"/>, the current value is pushed
+    /// to the ViewModel when binding is established.
     /// </summary>
     /// <typeparam name="T">The type of the bindable value.</typeparam>
-    /// <remarks>
-    /// <para>
-    /// Supports all binding modes (<see cref="BindModeOverrideAttribute"/> with <c>IsAll = true</c>).
-    /// </para>
-    /// <para>
-    /// When a new value arrives from the ViewModel via <see cref="IBinder{T}.SetValue"/>, it is
-    /// optionally passed through an <see cref="IConverter{TFrom,TTo}"/> before being stored, and the
-    /// <see cref="Changed"/> event is raised with the original unconverted value.
-    /// </para>
-    /// <para>
-    /// When <see cref="Value"/> is set from the View side, <see cref="IReverseBinder{T}.ValueChanged"/>
-    /// is raised so the ViewModel receives the update.
-    /// </para>
-    /// <para>
-    /// In <see cref="BindMode.OneWayToSource"/> mode, <see cref="OnBound"/> pushes the current
-    /// <see cref="Value"/> to the ViewModel immediately on binding so that the initial state is synchronised.
-    /// </para>
-    /// <para>
-    /// An implicit conversion operator allows instances to be used directly where a
-    /// <typeparamref name="T"/> value is expected.
-    /// </para>
-    /// </remarks>
     /// <include file="XmlExampleDoc-Values-1.1.0.xml" path="doc//member[@name='TwoWayValue{1}']/*" />
     [Serializable]
     [BindModeOverride(IsAll = true)]
@@ -70,16 +50,11 @@ namespace Aspid.MVVM.StarterKit
             }
         }
 
-        /// <summary>
-        /// Initializes a new instance of <see cref="TwoWayValue{T}"/> with the default value.
-        /// </summary>
         /// <param name="mode">The binding mode to use.</param>
+        /// <exception cref="ArgumentException">Thrown when <paramref name="mode"/> is <see cref="BindMode.None"/>.</exception>
         public TwoWayValue(BindMode mode = BindMode.TwoWay)
             : this(default, mode) { }
 
-        /// <summary>
-        /// Initializes a new instance of <see cref="TwoWayValue{T}"/> with a pre-set initial value.
-        /// </summary>
         /// <param name="value">The initial value.</param>
         /// <param name="mode">The binding mode to use.</param>
         /// <exception cref="ArgumentException">Thrown when <paramref name="mode"/> is <see cref="BindMode.None"/>.</exception>
@@ -90,9 +65,6 @@ namespace Aspid.MVVM.StarterKit
             _value = value;
         }
 
-        /// <summary>
-        /// Initializes a new instance of <see cref="TwoWayValue{T}"/> with a pre-set initial value and a converter.
-        /// </summary>
         /// <param name="value">The initial value.</param>
         /// <param name="converter">
         /// An optional converter applied to each value received from the ViewModel before it is stored.
@@ -148,6 +120,7 @@ namespace Aspid.MVVM.StarterKit
         /// <param name="binder">The binder whose value is extracted.</param>
         /// <returns>The current value stored in <paramref name="binder"/>.</returns>
         public static implicit operator T?(TwoWayValue<T?> binder) => binder.Value;
+
         /// <summary>
         /// Converts a value on its way back to the ViewModel.
         /// </summary>

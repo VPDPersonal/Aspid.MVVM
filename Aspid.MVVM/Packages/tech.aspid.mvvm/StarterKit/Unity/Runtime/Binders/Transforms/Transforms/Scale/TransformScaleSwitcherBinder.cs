@@ -13,20 +13,17 @@ namespace Aspid.MVVM.StarterKit
     [Serializable]
     public sealed class TransformScaleSwitcherBinder : SwitcherVector3Binder<Transform>
     {
-        /// <summary>
-        /// Initializes a new instance of <see cref="TransformScaleSwitcherBinder"/>.
-        /// </summary>
         /// <param name="target">The <see cref="Transform"/> to bind.</param>
         /// <param name="trueValue">The scale applied when the bound boolean is <see langword="true"/>.</param>
         /// <param name="falseValue">The scale applied when the bound boolean is <see langword="false"/>.</param>
         /// <param name="converter">The converter used to transform the selected <see cref="Vector3"/> value, or <see langword="null"/> to use the value as-is.</param>
         /// <param name="mode">The binding mode.</param>
         public TransformScaleSwitcherBinder(
-            Transform target, 
+            Transform target,
             Vector3 trueValue,
-            Vector3 falseValue, 
-            IConverter<Vector3, Vector3>? converter,
-            BindMode mode = BindMode.OneWay) 
+            Vector3 falseValue,
+            IConverter<Vector3, Vector3>? converter = null,
+            BindMode mode = BindMode.OneWay)
             : base(target, trueValue, falseValue, converter, mode) { }
 
         /// <summary>

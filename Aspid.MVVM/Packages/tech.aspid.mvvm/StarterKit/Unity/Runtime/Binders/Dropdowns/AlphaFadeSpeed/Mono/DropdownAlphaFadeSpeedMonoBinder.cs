@@ -10,8 +10,6 @@ namespace Aspid.MVVM.StarterKit
     /// property when the bound ViewModel value changes.
     /// </summary>
     /// <remarks>
-    /// Supports <see cref="BindMode.OneWayToSource"/>: when binding is established, the current value
-    /// is sent back to the ViewModel.
     /// The bound value is clamped to a minimum of 0 before being applied.
     /// </remarks>
     [AddBinderContextMenu(typeof(TMP_Dropdown))]

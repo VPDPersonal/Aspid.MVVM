@@ -23,9 +23,6 @@ namespace Aspid.MVVM.StarterKit
             set => Target.SetColor(value, _colorMode);
         }
 
-        /// <summary>
-        /// Initializes a new instance of <see cref="LineRendererColorBinder"/> targeting the specified <see cref="LineRenderer"/>.
-        /// </summary>
         /// <param name="target">The <see cref="LineRenderer"/> to bind.</param>
         /// <param name="colorMode">The color endpoint(s) to set when a value arrives from the ViewModel.</param>
         /// <param name="converter">The converter used to transform the bound value, or <see langword="null"/> to use no conversion.</param>

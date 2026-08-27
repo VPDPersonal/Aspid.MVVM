@@ -1,4 +1,3 @@
-#nullable enable
 using System;
 
 // ReSharper disable once CheckNamespace
@@ -27,8 +26,6 @@ namespace Aspid.MVVM.StarterKit
             result = default;
             if (string.IsNullOrWhiteSpace(value)) return false;
 
-            // Число отбрасываем до TryParse: он принимает любое, в том числе такое, которого нет ни у одного
-            // члена, и тогда в enum окажется значение, на которое не рассчитан ни один switch.
             var text = value!.Trim();
             if (char.IsDigit(text[0]) || text[0] is '-' or '+') return false;
 

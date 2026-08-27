@@ -8,10 +8,8 @@ namespace Aspid.MVVM.StarterKit
     /// <see cref="ComponentIntMonoBinder{GridLayoutGroup}"/> that binds <see cref="GridLayoutGroup.constraintCount"/>.
     /// </summary>
     /// <remarks>
-    /// How many columns or rows the grid is fixed to — the number an inventory changes when it is widened,
-    /// and the number a responsive grid recomputes per screen. Meaningful only while
-    /// <see cref="GridLayoutGroup.constraint"/> names an axis to count. Not clamped here: Unity raises
-    /// anything below one to one itself.
+    /// Meaningful only while <see cref="GridLayoutGroup.constraint"/> names an axis to count. Not clamped
+    /// here — Unity itself raises anything below one to one.
     /// </remarks>
     [AddBinderContextMenu(typeof(GridLayoutGroup), serializePropertyNames: "m_ConstraintCount")]
     [AddComponentMenu("Aspid/MVVM/Binders/UI/LayoutGroup/Grid/GridLayoutGroup Binder – Constraint Count")]

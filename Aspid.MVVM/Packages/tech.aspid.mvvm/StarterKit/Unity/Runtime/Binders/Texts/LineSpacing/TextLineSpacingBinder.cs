@@ -11,8 +11,8 @@ namespace Aspid.MVVM.StarterKit
     /// <see cref="TargetFloatBinder{TMP_Text}"/> that binds <see cref="TMP_Text.lineSpacing"/>.
     /// </summary>
     /// <remarks>
-    /// Leading, in font units. Negative values pull the lines together and are as ordinary as negative
-    /// tracking, so only a non-finite value is refused.
+    /// Non-finite values are ignored — TMP would otherwise rebuild the mesh from <see cref="float.NaN"/>
+    /// and the text disappears entirely.
     /// </remarks>
     [Serializable]
     public class TextLineSpacingBinder : TargetFloatBinder<TMP_Text>
@@ -23,7 +23,6 @@ namespace Aspid.MVVM.StarterKit
             get => Target.lineSpacing;
             set
             {
-                // Отрицательный интерлиньяж осмыслен так же, как отрицательный трекинг: строки сближаются.
                 if (!BinderMath.IsFinite(value)) return;
                 Target.lineSpacing = value;
             }

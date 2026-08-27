@@ -12,11 +12,6 @@ namespace Aspid.MVVM.StarterKit
     /// (<see langword="int"/>, <see langword="long"/>, <see langword="float"/>, <see langword="double"/>)
     /// are broadcast to both vector components as <c>new Vector2(value, value)</c>.
     /// </summary>
-    /// <remarks>
-    /// Use this base rather than <see cref="TargetVector3Binder{TTarget}"/> for properties that are genuinely
-    /// two-dimensional. A Vector3 base reports <c>Vector3(x, y, 0)</c> back to the ViewModel in
-    /// <see cref="BindMode.OneWayToSource"/>, which is a value the property never held.
-    /// </remarks>
     /// <typeparam name="TTarget">The type of the target object that exposes the target <see cref="Vector2"/> property.</typeparam>
     public abstract class TargetVector2Binder<TTarget> : TargetBinder<TTarget, Vector2, Converter>,
         IVectorBinder,

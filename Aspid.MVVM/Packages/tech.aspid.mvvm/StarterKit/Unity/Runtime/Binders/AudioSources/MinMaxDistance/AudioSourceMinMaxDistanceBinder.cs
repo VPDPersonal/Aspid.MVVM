@@ -14,10 +14,10 @@ namespace Aspid.MVVM.StarterKit
     [Serializable]
     public class AudioSourceMinMaxDistanceBinder : TargetBinder<AudioSource, Vector2>, INumberBinder
     {
-        [Tooltip("Determines which distance component (min, max, or both) is updated when the bound value changes.")]
+        [Tooltip("Which distance component the bound value updates.")]
         [SerializeField] private AudioSourceDistanceMode _distanceMode = AudioSourceDistanceMode.Range;
 
-        [Tooltip("Optional converter applied to the bound Vector2 value before setting the min/max distance.")]
+        [Tooltip("Converts the bound value before setting the min/max distance.")]
         [SerializeReference] private Converter? _converter;
 
         /// <inheritdoc/>
@@ -27,9 +27,6 @@ namespace Aspid.MVVM.StarterKit
             set => Target.SetMinMaxDistance(value, _distanceMode);
         }
 
-        /// <summary>
-        /// Initializes a new instance of <see cref="AudioSourceMinMaxDistanceBinder"/> targeting the specified <see cref="AudioSource"/>.
-        /// </summary>
         /// <param name="target">The <see cref="AudioSource"/> whose min/max distance is bound.</param>
         /// <param name="distanceMode">The <see cref="AudioSourceDistanceMode"/> that determines which distance component is updated.</param>
         /// <param name="converter">The converter used to transform the bound <see cref="Vector2"/> value, or <see langword="null"/> to use none.</param>

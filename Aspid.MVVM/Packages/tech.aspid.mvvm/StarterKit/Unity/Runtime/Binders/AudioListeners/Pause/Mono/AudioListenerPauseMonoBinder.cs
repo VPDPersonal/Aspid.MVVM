@@ -13,9 +13,6 @@ namespace Aspid.MVVM.StarterKit
     /// Silences every source at once while keeping their playback positions, which is what a pause menu wants and
     /// what setting <see cref="Time.timeScale"/> to zero does not do — audio ignores the time scale. Like
     /// <see cref="AudioListener.volume"/> it is a static property, so the binder needs no target.
-    /// <para/>
-    /// Supports <see cref="BindMode.OneWayToSource"/>: when binding is established, the current state is sent to the
-    /// ViewModel.
     /// </remarks>
     [BindModeOverride(BindMode.OneWay, BindMode.OneTime, BindMode.OneWayToSource)]
     [AddComponentMenu("Aspid/MVVM/Binders/Audio/AudioListener Binder – Pause")]
@@ -25,7 +22,7 @@ namespace Aspid.MVVM.StarterKit
         /// <inheritdoc/>
         public event Action<bool> ValueChanged;
 
-        [Tooltip("When enabled, the bound value is inverted before it is applied — bind an IsPlaying flag to it directly.")]
+        [Tooltip("When enabled, the bound value is inverted before it is applied.")]
         [SerializeField] private bool _isInvert;
 
         /// <summary>

@@ -9,12 +9,6 @@ namespace Aspid.MVVM.StarterKit
     /// <see cref="Animator"/> component when the bound ViewModel value changes.
     /// </summary>
     /// <typeparam name="T">The type of the Animator parameter value.</typeparam>
-    /// <remarks>
-    /// Supports <see cref="BindMode.OneWay"/>, <see cref="BindMode.OneTime"/>, and
-    /// <see cref="BindMode.OneWayToSource"/>. In <see cref="BindMode.OneWayToSource"/> mode the binder
-    /// exposes <see cref="SetParameter"/> to the ViewModel either as a plain <see cref="Action{T}"/>
-    /// or as an <see cref="IRelayCommand{T}"/> whose <see cref="IRelayCommand.CanExecute()"/> mirrors <see cref="CanExecute(T)"/>.
-    /// </remarks>
     [BindModeOverride(BindMode.OneWay, BindMode.OneTime, BindMode.OneWayToSource)]
     public abstract partial class AnimatorSetParameterMonoBinder<T> : ComponentMonoBinder<Animator>, 
         IBinder<T>,
@@ -46,9 +40,9 @@ namespace Aspid.MVVM.StarterKit
         protected string ParameterName { get; private set; }
 
         /// <summary>
-        /// The Animator parameter type this binder sets, inferred from <typeparamref name="T"/>.
-        /// Returns <see langword="null"/> when <typeparamref name="T"/> is none of the types an
-        /// <see cref="Animator"/> parameter can hold, in which case the name is checked on its own.
+        /// Gets the Animator parameter type this binder sets, inferred from <typeparamref name="T"/>, or
+        /// <see langword="null"/> when <typeparamref name="T"/> is none of the types an <see cref="Animator"/>
+        /// parameter can hold, in which case the name is checked on its own.
         /// </summary>
         protected virtual AnimatorControllerParameterType? ParameterType =>
             AnimatorParameterTypes.Of<T>();
@@ -58,11 +52,6 @@ namespace Aspid.MVVM.StarterKit
         /// that <see cref="IRelayCommand.CanExecute()"/> may have changed.
         /// </summary>
         /// <remarks>
-        /// Re-applying is skipped until a value has actually arrived. It used to run unconditionally, writing
-        /// <c>default(T)</c> into the Animator on every enable — resetting a parameter the ViewModel had set and
-        /// never telling it. Both reverse paths now record the value they push, so re-enabling restores what the
-        /// ViewModel last asked for rather than a zero.
-        /// <para/>
         /// When overriding this method, always call <c>base.OnEnable()</c> to preserve
         /// the parameter re-application and command notification behavior.
         /// </remarks>

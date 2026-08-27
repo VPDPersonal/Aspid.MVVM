@@ -20,7 +20,7 @@ namespace Aspid.MVVM.StarterKit
         [Tooltip("The converter used to transform the bound Vector3 to a Vector2.")]
         [SerializeReference] private Converter _converter = new Vector2Vector3Converter();
 
-        [Tooltip("Invoked with the converted Vector2 value each time a new value arrives from the ViewModel.")]
+        [Tooltip("Invoked with the converted Vector2 value.")]
         [SerializeField] private UnityEvent<Vector2> _casted;
 
         /// <summary>

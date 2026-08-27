@@ -14,9 +14,6 @@ namespace Aspid.MVVM.StarterKit
     /// property, so this binder needs no target and works wherever it is dropped. A project without an
     /// <see cref="AudioMixer"/> has nothing else to bind a master slider to.
     /// <para/>
-    /// Supports <see cref="BindMode.OneWayToSource"/>: when binding is established, the current volume is sent to the
-    /// ViewModel — which is how a settings screen shows the value the game already had.
-    /// <para/>
     /// Clamped to 0..1, the range Unity documents; a non-finite value lands on zero rather than silencing the game
     /// with nothing in the log.
     /// </remarks>

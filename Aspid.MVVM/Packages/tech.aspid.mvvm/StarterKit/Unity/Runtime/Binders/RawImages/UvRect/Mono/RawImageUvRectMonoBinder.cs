@@ -8,17 +8,7 @@ namespace Aspid.MVVM.StarterKit
     /// <see cref="ComponentMonoBinder{T1, T2}">ComponentMonoBinder&lt;RawImage, Rect&gt;</see> that binds
     /// <see cref="RawImage.uvRect"/>.
     /// </summary>
-    /// <remarks>
-    /// Which part of the texture is shown, and how many times it repeats. It is how a scrolling background, a sprite
-    /// sheet frame or a minimap window is driven from a value — and the only property of a RawImage worth binding
-    /// beyond its texture, which is why the component had no binder at all before.
-    /// <para/>
-    /// A non-finite component is refused: the quad's UVs are computed from these four numbers and one <c>NaN</c> makes
-    /// the image vanish.
-    /// <para/>
-    /// Supports <see cref="BindMode.OneWayToSource"/>: when binding is established, the current rect is sent back to
-    /// the ViewModel.
-    /// </remarks>
+    /// <remarks>A non-finite component is refused, since a <c>NaN</c> in any of the four values makes the image vanish.</remarks>
     [AddBinderContextMenu(typeof(RawImage), serializePropertyNames: "m_UVRect")]
     [AddComponentMenu("Aspid/MVVM/Binders/UI/RawImage/RawImage Binder – UV Rect")]
     public class RawImageUvRectMonoBinder : ComponentMonoBinder<RawImage, Rect>

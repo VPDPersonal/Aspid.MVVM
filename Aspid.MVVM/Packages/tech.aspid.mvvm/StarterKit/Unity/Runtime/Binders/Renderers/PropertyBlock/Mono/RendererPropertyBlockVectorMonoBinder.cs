@@ -8,8 +8,8 @@ namespace Aspid.MVVM.StarterKit
     /// writes a vector shader property, and accepts <see cref="Vector2"/> and <see cref="Vector3"/> as well.
     /// </summary>
     /// <remarks>
-    /// Shader vectors are always four components — a <see cref="Vector2"/> or a <see cref="Vector3"/> arrives with the
-    /// rest left at zero, which is what a UV offset or a world-space direction wants.
+    /// Shader vectors are always four components; a <see cref="Vector2"/> or <see cref="Vector3"/> arrives with the
+    /// remaining components left at zero.
     /// </remarks>
     [AddBinderContextMenu(typeof(Renderer))]
     [AddComponentMenu("Aspid/MVVM/Binders/Renderer/PropertyBlock Binder – Vector")]
@@ -21,8 +21,7 @@ namespace Aspid.MVVM.StarterKit
         /// <param name="value">The value received from the ViewModel.</param>
         [BinderLog]
         public void SetValue(Vector2 value) =>
-            // base., иначе вызов неоднозначен: Vector4 неявно приводится и к Vector2, и к Vector3,
-            // то есть подходит обеим перегрузкам этого же класса.
+            // Without base., this would recurse into itself instead of the Vector4 overload.
             base.SetValue(value);
 
         /// <summary>

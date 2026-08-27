@@ -31,9 +31,6 @@ namespace Aspid.MVVM.StarterKit
             set => _stringReference.TableEntryReference = value;
         }
         
-        /// <summary>
-        /// Initializes a new instance of <see cref="TextLocalizationEntryBinder"/>.
-        /// </summary>
         /// <param name="target">The <see cref="TMP_Text"/> to bind.</param>
         /// <param name="entry">The initial localization table entry reference, or <see langword="null"/> to leave unset.</param>
         /// <param name="formatArguments">Format arguments passed to the localized string, or <see langword="null"/> to use none.</param>
@@ -58,8 +55,10 @@ namespace Aspid.MVVM.StarterKit
         /// Called before binding is established. Subscribes to localization string changes.
         /// </summary>
         /// <remarks>
-        /// When overriding this method, always call base.OnBinding() to preserve
-        /// the localization string subscription behavior.
+        /// Subscribing here rather than in <c>OnBound</c> is required: the ViewModel's first push sets
+        /// the table entry reference, which itself raises <see cref="LocalizedString.StringChanged"/> —
+        /// a later subscription would miss that initial value. When overriding this method, always call
+        /// base.OnBinding() to preserve the subscription.
         /// </remarks>
         protected override void OnBinding() =>
             Subscribe();

@@ -9,7 +9,7 @@ namespace Aspid.MVVM.StarterKit
     /// <see cref="TargetFloatBinder{LayoutElement}"/> that binds <see cref="LayoutElement.preferredHeight"/>.
     /// </summary>
     /// <remarks>
-    /// The vertical counterpart. A negative value means "no preference".
+    /// A negative value means "no preference". A non-finite value is rejected instead of being written.
     /// </remarks>
     [Serializable]
     public class LayoutElementPreferredHeightBinder : TargetFloatBinder<LayoutElement>
@@ -18,7 +18,11 @@ namespace Aspid.MVVM.StarterKit
         protected sealed override float Property
         {
             get => Target.preferredHeight;
-            set => Target.preferredHeight = value;
+            set
+            {
+                if (!BinderMath.IsFinite(value)) return;
+                Target.preferredHeight = value;
+            }
         }
 
         /// <inheritdoc/>

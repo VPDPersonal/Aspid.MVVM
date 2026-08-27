@@ -14,11 +14,13 @@ namespace Aspid.MVVM.StarterKit
     public sealed class HorizontalOrVerticalLayoutSpacingSwitcherMonoBinder : SwitcherFloatMonoBinder<HorizontalOrVerticalLayoutGroup>
     {
         /// <summary>
-        /// Called when applying the selected spacing value to the <see cref="HorizontalOrVerticalLayoutGroup"/>.
-        /// Sets <see cref="UnityEngine.UI.HorizontalOrVerticalLayoutGroup.spacing"/> directly.
+        /// Sets <see cref="UnityEngine.UI.HorizontalOrVerticalLayoutGroup.spacing"/> to <paramref name="value"/> if it is finite.
         /// </summary>
         /// <param name="value">The value received from the ViewModel.</param>
-        protected override void SetValue(float value) =>
+        protected override void SetValue(float value)
+        {
+            if (!BinderMath.IsFinite(value)) return;
             CachedComponent.spacing = value;
+        }
     }
 }

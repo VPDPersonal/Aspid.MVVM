@@ -12,19 +12,6 @@ namespace Aspid.MVVM.StarterKit
     /// granular change notifications — add, remove, replace, move, and reset — to a target View component.
     /// </summary>
     /// <typeparam name="T">The element type of the list.</typeparam>
-    /// <remarks>
-    /// Accepts three list variants via overloaded <see cref="SetValue(IReadOnlyObservableList{T})"/> methods:
-    /// <list type="bullet">
-    ///   <item><see cref="IReadOnlyObservableList{T}"/> — standard observable list with fine-grained events.</item>
-    ///   <item><see cref="IReadOnlyFilteredList{T}"/> — filtered view; resets and replays on every change.</item>
-    ///   <item><see cref="IReadOnlyList{T}"/> — plain read-only list, bound without change notifications.</item>
-    /// </list>
-    /// When a filtered or observable list is bound, the binder subscribes to its
-    /// <see cref="IObservableCollection{T}.CollectionChanged"/> event. On unbinding (<see cref="OnUnbound"/>), the subscription
-    /// is released and <see cref="OnReset"/> is called.
-    /// Subclasses may override <see cref="GetFilterList"/> to wrap an incoming list in a custom
-    /// <see cref="IReadOnlyFilteredList{T}"/> before processing.
-    /// </remarks>
     public abstract class ObservableListBinder<T> : Binder,
         IBinder<IReadOnlyList<T>>,
         IBinder<IReadOnlyFilteredList<T>>,
@@ -35,9 +22,6 @@ namespace Aspid.MVVM.StarterKit
         /// </summary>
         protected IReadOnlyList<T?>? List { get; private set; }
 
-        /// <summary>
-        /// Initializes a new instance of <see cref="ObservableListBinder{T}"/> with the specified binding mode.
-        /// </summary>
         /// <param name="mode">The binding mode to use.</param>
         protected ObservableListBinder(BindMode mode = BindMode.OneWay)
             : base(mode) { }

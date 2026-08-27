@@ -8,9 +8,8 @@ namespace Aspid.MVVM.StarterKit
     /// Provides the adapter a <see cref="UnityEngine.UIElements.ListView"/> needs from a read-only collection.
     /// </summary>
     /// <remarks>
-    /// <c>ListView.itemsSource</c> is an <see cref="IList"/>, and the collections a ViewModel exposes are read-only. The
-    /// adapter wraps rather than copies, so a list of ten thousand items costs one object and not ten thousand — and
-    /// every mutating member throws, because a view has no business writing into the ViewModel's collection.
+    /// Wraps rather than copies, so a large collection costs one object. Every mutating member throws, since the
+    /// ViewModel's collection is read-only.
     /// </remarks>
     public static class ListSourceExtensions
     {

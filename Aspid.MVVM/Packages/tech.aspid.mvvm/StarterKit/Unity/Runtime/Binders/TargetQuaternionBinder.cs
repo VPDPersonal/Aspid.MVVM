@@ -18,9 +18,6 @@ namespace Aspid.MVVM.StarterKit
         IRotationBinder,
         INumberBinder
     {
-        /// <summary>
-        /// Initializes a new instance of <see cref="TargetQuaternionBinder{TTarget}"/>.
-        /// </summary>
         /// <param name="target">The target object that owns the rotation property.</param>
         /// <param name="converter">The converter used to transform the bound <see cref="Quaternion"/> value, or <see langword="null"/> to use the value as-is.</param>
         /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/> — a rotation property raises no change event to listen to.</param>

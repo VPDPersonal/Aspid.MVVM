@@ -9,27 +9,17 @@ namespace Aspid.MVVM.StarterKit
     /// target <see cref="UnityEvent{T}"/>.
     /// </summary>
     /// <remarks>
-    /// A binder binds one member, which is the right shape for a value and the wrong one for a question like "is the
-    /// button available", whose answer depends on three of them. Composition existed only for collection filters, so the
-    /// usual workaround adds a fourth field to the ViewModel that exists to hold the answer — moving view logic into the
-    /// layer that is supposed to be free of it.
-    /// <para/>
-    /// This is not a binder itself. It is the shared point that several
-    /// <see cref="AggregatorInputMonoBinder{TInput}"/> components write into, each of them an ordinary binder bound to its
-    /// own member. The aggregator recomputes the result whenever an input changes.
-    /// <para/>
-    /// Nothing is forwarded until every input has reported once. A partial answer is worse than a late one: with an
-    /// <c>And</c> over three conditions, two of them arriving first would enable a button the third would immediately
-    /// disable.
+    /// Not a binder itself — it is the shared point that several <see cref="AggregatorInputMonoBinder{TInput, TResult}"/>
+    /// components write into. Nothing is forwarded until every input has reported at least once.
     /// </remarks>
     /// <typeparam name="TInput">The type of value each input contributes.</typeparam>
     /// <typeparam name="TResult">The type of the combined value.</typeparam>
     public abstract class AggregatorMonoBinder<TInput, TResult> : MonoBehaviour
     {
-        [Tooltip("How many inputs are expected. Nothing is forwarded until every one of them has reported a value.")]
+        [Tooltip("How many inputs are expected. Nothing forwards until all have reported.")]
         [SerializeField] [Min(1)] private int _inputCount = 2;
 
-        [Tooltip("Invoked with the combined value whenever any input changes, once all inputs have reported.")]
+        [Tooltip("Invoked with the combined value on every change, once all have reported.")]
         [SerializeField] private UnityEvent<TResult> _result;
 
         private TInput[] _values;
@@ -45,10 +35,7 @@ namespace Aspid.MVVM.StarterKit
         /// </summary>
         /// <param name="index">Index of the input, as configured on the input binder.</param>
         /// <param name="value">The value that input received from the ViewModel.</param>
-        /// <remarks>
-        /// An index outside the configured count is reported rather than ignored: it means an input binder and the
-        /// aggregator disagree about the shape, and the missing value would keep the result from ever being forwarded.
-        /// </remarks>
+        /// <remarks>Logs an error and does nothing when <paramref name="index"/> is outside the configured count.</remarks>
         public void SetInput(int index, TInput value)
         {
             EnsureSize();

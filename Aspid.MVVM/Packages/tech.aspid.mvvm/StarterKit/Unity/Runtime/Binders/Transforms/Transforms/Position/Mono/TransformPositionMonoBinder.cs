@@ -7,10 +7,6 @@ namespace Aspid.MVVM.StarterKit
     /// <see cref="ComponentVector3MonoBinder{Transform}"/> that sets the <see cref="Transform.position"/> or
     /// <see cref="Transform.localPosition"/> property depending on the configured <see cref="Space"/>.
     /// </summary>
-    /// <remarks>
-    /// Supports <see cref="BindMode.OneWayToSource"/>: when binding is established, the current position
-    /// is sent back to the ViewModel.
-    /// </remarks>
     [AddComponentMenu("Aspid/MVVM/Binders/Transform/Transform Binder – Position")]
     [AddBinderContextMenu(typeof(Transform), serializePropertyNames: "m_LocalPosition")]
     public class TransformPositionMonoBinder : ComponentVector3MonoBinder<Transform>

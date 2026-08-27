@@ -1,4 +1,3 @@
-#nullable enable
 using System.Globalization;
 
 // ReSharper disable once CheckNamespace
@@ -63,7 +62,7 @@ namespace Aspid.MVVM.StarterKit
             var parsed = float.TryParse(value, styles, CultureInfo.CurrentCulture, out result)
                 || float.TryParse(value, styles, CultureInfo.InvariantCulture, out result);
 
-            // BinderMath живёт в Unity-сборке, а этот файл — нет: проверка написана вручную.
+            // BinderMath lives in the Unity assembly; this file does not reference it, so the check is inlined.
             if (parsed && !float.IsNaN(result) && !float.IsInfinity(result)) return true;
 
             result = 0f;

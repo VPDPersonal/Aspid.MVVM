@@ -9,11 +9,6 @@ namespace Aspid.MVVM.StarterKit
     /// <see cref="TargetBinder{T1, T2}">TargetBinder&lt;Rigidbody, RigidbodyConstraints&gt;</see> that binds
     /// <see cref="Rigidbody.constraints"/>.
     /// </summary>
-    /// <remarks>
-    /// The one property of a body a ViewModel changes at runtime rather than authoring once: pinning a ragdoll,
-    /// locking a door on its hinge, holding a 3D body in a 2D plane. <see cref="RigidbodyConstraints"/> is a flag
-    /// enum, so the ViewModel sends the whole mask — an individual axis is a combination, not a separate binder.
-    /// </remarks>
     [Serializable]
     public class RigidbodyConstraintsBinder : TargetBinder<Rigidbody, RigidbodyConstraints>
     {

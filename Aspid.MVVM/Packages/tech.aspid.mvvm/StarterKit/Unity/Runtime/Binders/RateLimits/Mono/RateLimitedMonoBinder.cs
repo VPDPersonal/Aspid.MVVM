@@ -8,28 +8,16 @@ namespace Aspid.MVVM.StarterKit
     /// Abstract base <see cref="MonoBinder"/> that decides <em>when</em> a received value is forwarded to a target
     /// <see cref="UnityEvent{T}"/>, without changing the value itself.
     /// </summary>
-    /// <remarks>
-    /// A search field publishes a value per keystroke and a high-frequency source publishes one per frame. Nothing in
-    /// the package could space those out, so the ViewModel either sent every one — a request per character — or grew a
-    /// timer of its own, which is the frame-rate concern the framework exists to keep out of it.
-    /// <para/>
-    /// Derived classes decide the policy: hold until the values stop, let one through per interval, or let each through
-    /// late. They are casters rather than property binders, so the spaced-out values drive whatever binder listens to
-    /// the event.
-    /// <para/>
-    /// The clock is unscaled by default, so a menu keeps working while the game is paused through
-    /// <see cref="Time.timeScale"/>.
-    /// </remarks>
     /// <typeparam name="TValue">The type of value being forwarded.</typeparam>
     public abstract partial class RateLimitedMonoBinder<TValue> : MonoBinder, IBinder<TValue>
     {
         [Tooltip("Invoked with each value the policy lets through.")]
         [SerializeField] private UnityEvent<TValue> _value;
 
-        [Tooltip("The interval the policy works with, in seconds. Zero forwards every value immediately.")]
+        [Tooltip("Interval the policy works with, in seconds. Zero forwards immediately.")]
         [SerializeField] [Min(0f)] private float _seconds = 0.25f;
 
-        [Tooltip("Use unscaled time, so the binder keeps working while the game is paused through Time.timeScale.")]
+        [Tooltip("Use unscaled time so the binder keeps working while the game is paused.")]
         [SerializeField] private bool _isUnscaledTime = true;
 
         /// <summary>

@@ -9,9 +9,6 @@ namespace Aspid.MVVM.StarterKit
     /// according to the configured <see cref="SizeDeltaMode"/>.
     /// </summary>
     /// <remarks>
-    /// Supports <see cref="BindMode.OneWayToSource"/>: when binding is established, the current
-    /// <see cref="RectTransform.sizeDelta"/> is sent back to the ViewModel.
-    /// <para/>
     /// Also implements <see cref="IReverseBinder{T}">IReverseBinder&lt;Vector2&gt;</see>. A rect's size is two numbers,
     /// and the Vector3 base this family is built on reports <c>Vector3(width, height, 0)</c> — a value the property
     /// never held, and one a ViewModel field of type <see cref="Vector2"/> could not receive at all. The Vector2 channel
@@ -39,7 +36,7 @@ namespace Aspid.MVVM.StarterKit
             remove => _sizeChanged -= value;
         }
 
-        [Tooltip("Determines which axes of sizeDelta are modified: Width only, Height only, or both (SizeDelta).")]
+        [Tooltip("Which axes of sizeDelta are modified.")]
         [SerializeField] private SizeDeltaMode _sizeMode = SizeDeltaMode.SizeDelta;
 
         protected sealed override Vector3 Property

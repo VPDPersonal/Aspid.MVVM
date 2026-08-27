@@ -9,10 +9,7 @@ namespace Aspid.MVVM.StarterKit
     /// <see cref="TargetFloatBinder{Light}"/> that binds <see cref="Light.spotAngle"/>.
     /// </summary>
     /// <remarks>
-    /// The width of a spot light's cone, in degrees. Unity keeps it inside 1..179 itself. A non-finite value is
-    /// dropped rather than written. Unity clamps the range on its own, so nothing else needs guarding here, but it
-    /// stores <see cref="float.NaN"/> verbatim — and a NaN in a rendering number does not fail loudly, it just
-    /// makes the image wrong in a way that points nowhere near the ViewModel that produced it.
+    /// Unity clamps the angle to 1–179 degrees on its own; non-finite values are dropped instead of being written.
     /// </remarks>
     [Serializable]
     public class LightSpotAngleBinder : TargetFloatBinder<Light>

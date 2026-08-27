@@ -8,11 +8,6 @@ namespace Aspid.MVVM.StarterKit
     /// that synchronises values of type <typeparamref name="T"/> in both directions between the ViewModel and the View.
     /// </summary>
     /// <typeparam name="T">The type of the value exchanged between View and ViewModel.</typeparam>
-    /// <remarks>
-    /// Optionally pushes a value to the ViewModel when the binding is established (<see cref="OnBound"/>)
-    /// or just before it is released (<see cref="OnUnbinding"/>), controlled by the
-    /// <c>onBoundValueChanged</c> and <c>onUnboundValueChanged</c> factory functions respectively.
-    /// </remarks>
     /// <include file="XmlExampleDoc-Generics-1.1.0.xml" path="doc//member[@name='GenericTwoWayBinder{1}']/*" />
     public class GenericTwoWayBinder<T> : Binder, IBinder<T>, IReverseBinder<T>
     {
@@ -25,10 +20,6 @@ namespace Aspid.MVVM.StarterKit
         private readonly Func<T?>? _onBoundValueChanged;
         private readonly Func<T?>? _onUnboundValueChanged;
 
-        /// <summary>
-        /// Initializes a new instance of <see cref="GenericTwoWayBinder{T}"/> and immediately
-        /// wires up the View-side event via <paramref name="initialize"/>.
-        /// </summary>
         /// <param name="initialize">
         /// An action that receives the internal <c>OnValueChanged</c> callback and registers it
         /// with the appropriate View event so that View changes are propagated to the ViewModel.
@@ -51,9 +42,6 @@ namespace Aspid.MVVM.StarterKit
             initialize.Invoke(OnValueChanged);
         }
 
-        /// <summary>
-        /// Initializes a new instance of <see cref="GenericTwoWayBinder{T}"/> without an event-wire-up action.
-        /// </summary>
         /// <param name="setValue">The action invoked when a new value arrives from the ViewModel.</param>
         /// <param name="onBoundValueChanged">
         /// Optional factory invoked when the binding is established; the returned value is pushed to the ViewModel.
@@ -131,10 +119,6 @@ namespace Aspid.MVVM.StarterKit
         private readonly Func<TTarget, T?>? _onBoundValueChanged;
         private readonly Func<TTarget, T?>? _onUnboundValueChanged;
 
-        /// <summary>
-        /// Initializes a new instance of <see cref="GenericTwoWayBinder{TTarget,T}"/> and immediately
-        /// wires up the View-side event via <paramref name="initialize"/>.
-        /// </summary>
         /// <param name="target">The target View object.</param>
         /// <param name="initialize">
         /// An action that receives <paramref name="target"/> and the internal <c>OnValueChanged</c>
@@ -171,11 +155,6 @@ namespace Aspid.MVVM.StarterKit
             initialize.Invoke(target, OnValueChanged);
         }
 
-        /// <summary>
-        /// Initializes a new instance of <see cref="GenericTwoWayBinder{TTarget,T}"/> without an
-        /// event-wire-up action. At least one of <paramref name="onBoundValueChanged"/> or
-        /// <paramref name="onUnboundValueChanged"/> must be non-<see langword="null"/>.
-        /// </summary>
         /// <param name="target">The target View object.</param>
         /// <param name="setValue">
         /// The action invoked with the target and each new value received from the ViewModel.

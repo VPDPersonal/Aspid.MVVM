@@ -37,7 +37,7 @@ namespace Aspid.MVVM.StarterKit
             remove => _sizeChanged -= value;
         }
 
-        [Tooltip("Determines which axes of sizeDelta are modified: Width only, Height only, or both (SizeDelta).")]
+        [Tooltip("Which axes of sizeDelta are modified.")]
         [SerializeField] private SizeDeltaMode _sizeMode;
 
         protected sealed override Vector3 Property
@@ -61,9 +61,6 @@ namespace Aspid.MVVM.StarterKit
                 _sizeChanged?.Invoke(Target.sizeDelta);
         }
         
-        /// <summary>
-        /// Initializes a new instance of <see cref="RectTransformSizeDeltaBinder"/>.
-        /// </summary>
         /// <param name="target">The <see cref="RectTransform"/> to bind.</param>
         /// <param name="sizeMode">Determines which axes of <see cref="RectTransform.sizeDelta"/> are modified.</param>
         /// <param name="converter">The converter used to transform the bound <see cref="Vector3"/> value, or <see langword="null"/> to use the value as-is.</param>

@@ -24,7 +24,6 @@ namespace Aspid.MVVM.StarterKit
             get => CachedComponent.offsetMin;
             set
             {
-                // Отрицательные отступы — норма: так элемент выходит за края родителя.
                 if (!BinderMath.IsFinite(value.x) || !BinderMath.IsFinite(value.y)) return;
                 CachedComponent.offsetMin = value;
             }

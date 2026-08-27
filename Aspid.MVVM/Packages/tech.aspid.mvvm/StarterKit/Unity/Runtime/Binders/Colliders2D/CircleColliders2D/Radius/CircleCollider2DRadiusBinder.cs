@@ -9,8 +9,7 @@ namespace Aspid.MVVM.StarterKit
     /// <see cref="TargetFloatBinder{CircleCollider2D}"/> that binds <see cref="CircleCollider2D.radius"/>.
     /// </summary>
     /// <remarks>
-    /// The 2D counterpart of <see cref="SphereCollider.radius"/>, which the package already bound — an
-    /// explosion radius, a pickup range, a shield that grows. Clamped non-negative.
+    /// Clamped non-negative; a non-finite value maps to <c>0</c>.
     /// </remarks>
     [Serializable]
     public class CircleCollider2DRadiusBinder : TargetFloatBinder<CircleCollider2D>

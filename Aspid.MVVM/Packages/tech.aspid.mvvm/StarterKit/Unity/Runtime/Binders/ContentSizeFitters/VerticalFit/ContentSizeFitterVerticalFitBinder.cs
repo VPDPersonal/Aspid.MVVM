@@ -10,11 +10,6 @@ namespace Aspid.MVVM.StarterKit
     /// <see cref="TargetBinder{T1, T2}">TargetBinder&lt;ContentSizeFitter, ContentSizeFitter.FitMode&gt;</see> that binds
     /// <see cref="ContentSizeFitter.verticalFit"/>.
     /// </summary>
-    /// <remarks>
-    /// Whether the element sizes itself to its content on this axis. A dialog that grows to fit a message
-    /// and then stops growing has to turn the fit off, and turning it off was not bindable —
-    /// <see cref="ContentSizeFitter.FitMode.Unconstrained"/> is what hands the axis back to the layout.
-    /// </remarks>
     [Serializable]
     public class ContentSizeFitterVerticalFitBinder : TargetBinder<ContentSizeFitter, ContentSizeFitter.FitMode>
     {

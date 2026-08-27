@@ -9,10 +9,6 @@ namespace Aspid.MVVM.StarterKit
     /// <summary>
     /// <see cref="TargetBoolBinder{Image}"/> that binds <see cref="Image.fillClockwise"/>.
     /// </summary>
-    /// <remarks>
-    /// Which way a radial fill turns. Paired with <see cref="Image.fillAmount"/>, which the package already
-    /// bound, it is the difference between a timer that winds down and one that winds up.
-    /// </remarks>
     [Serializable]
     public class ImageFillClockwiseBinder : TargetBoolBinder<Image>
     {

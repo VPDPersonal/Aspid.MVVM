@@ -9,11 +9,7 @@ namespace Aspid.MVVM.StarterKit
     /// <summary>
     /// <see cref="TargetColorBinder{Shadow}"/> that binds <see cref="Shadow.effectColor"/>.
     /// </summary>
-    /// <remarks>
-    /// The colour of a shadow or an outline — <see cref="Outline"/> is a <see cref="Shadow"/>, so this binder
-    /// takes either. It is how a rarity glow, a team colour or a selection highlight is expressed without a
-    /// second graphic, and neither effect could be bound at all.
-    /// </remarks>
+    /// <remarks><see cref="Outline"/> is a <see cref="Shadow"/>, so this binder targets either.</remarks>
     [Serializable]
     public class ShadowEffectColorBinder : TargetColorBinder<Shadow>
     {

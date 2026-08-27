@@ -7,9 +7,7 @@ namespace Aspid.MVVM.StarterKit
     /// <summary>
     /// <see cref="ComponentFloatMonoBinder{LayoutElement}"/> that binds <see cref="LayoutElement.flexibleHeight"/>.
     /// </summary>
-    /// <remarks>
-    /// The vertical counterpart of the flexible width.
-    /// </remarks>
+    /// <remarks>A non-finite value is rejected instead of being written.</remarks>
     [AddBinderContextMenu(typeof(LayoutElement), serializePropertyNames: "m_FlexibleHeight")]
     [AddComponentMenu("Aspid/MVVM/Binders/UI/LayoutElement/LayoutElement Binder – Flexible Height")]
     public class LayoutElementFlexibleHeightMonoBinder : ComponentFloatMonoBinder<LayoutElement>
@@ -18,7 +16,11 @@ namespace Aspid.MVVM.StarterKit
         protected sealed override float Property
         {
             get => CachedComponent.flexibleHeight;
-            set => CachedComponent.flexibleHeight = value;
+            set
+            {
+                if (!BinderMath.IsFinite(value)) return;
+                CachedComponent.flexibleHeight = value;
+            }
         }
     }
 }

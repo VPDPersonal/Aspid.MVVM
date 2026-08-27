@@ -10,11 +10,9 @@ namespace Aspid.MVVM.StarterKit
     /// <see cref="TargetFloatBinder{CanvasScaler}"/> that binds <see cref="CanvasScaler.scaleFactor"/>.
     /// </summary>
     /// <remarks>
-    /// The UI scale slider a settings screen offers, and the reason the scaler needed a binder: accessibility
-    /// scaling is a ViewModel value, not an authored one. Only read when
-    /// <see cref="CanvasScaler.uiScaleMode"/> is <see cref="CanvasScaler.ScaleMode.ConstantPixelSize"/>.
-    /// Clamped to the same floor Unity applies in its own setter, <c>0.01</c> — a non-finite value lands
-    /// there rather than reaching the scaler.
+    /// Only read when <see cref="CanvasScaler.uiScaleMode"/> is <see cref="CanvasScaler.ScaleMode.ConstantPixelSize"/>.
+    /// Clamped to the same floor Unity applies in its own setter, <c>0.01</c> — a non-finite value lands there
+    /// rather than reaching the scaler.
     /// </remarks>
     [Serializable]
     public class CanvasScalerScaleFactorBinder : TargetFloatBinder<CanvasScaler>

@@ -10,12 +10,8 @@ namespace Aspid.MVVM.StarterKit
     /// <see cref="IReverseBinder{T}">IReverseBinder&lt;float&gt;</see> that binds <see cref="BaseSlider{T}.value"/>.
     /// </summary>
     /// <remarks>
-    /// Two-way, like its uGUI counterpart: the ViewModel sets the slider and the user's drag reaches the ViewModel.
-    /// <para/>
-    /// A write by the binder is not read back as a drag. UI Toolkit raises the same change event for both, so the guard is
-    /// the only thing that keeps the ViewModel from receiving its own value back — and it is released in a
-    /// <see langword="finally"/>, because an exception from another listener would otherwise leave the reverse channel
-    /// dead for good.
+    /// A write by the binder is not read back as a drag; the guard is released in a <see langword="finally"/> so an
+    /// exception from another listener cannot leave the reverse channel stuck.
     /// </remarks>
     [BindModeOverride(IsAll = true)]
     [AddComponentMenu("Aspid/MVVM/Binders/UIToolkit/Element Binder – Slider Value")]

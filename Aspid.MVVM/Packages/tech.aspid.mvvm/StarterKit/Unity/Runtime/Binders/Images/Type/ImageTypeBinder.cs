@@ -10,10 +10,6 @@ namespace Aspid.MVVM.StarterKit
     /// <see cref="TargetBinder{T1, T2}">TargetBinder&lt;Image, Image.Type&gt;</see> that binds
     /// <see cref="Image.type"/>.
     /// </summary>
-    /// <remarks>
-    /// Whether the sprite is drawn simple, sliced, tiled or filled. A bar that switches between a fill and a
-    /// plain icon changes this, and so does a panel that must stop stretching its border.
-    /// </remarks>
     [Serializable]
     public class ImageTypeBinder : TargetBinder<Image, Image.Type>
     {

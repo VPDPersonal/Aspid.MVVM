@@ -7,9 +7,7 @@ namespace Aspid.MVVM.StarterKit
     /// <summary>
     /// <see cref="ComponentFloatMonoBinder{LayoutElement}"/> that binds <see cref="LayoutElement.flexibleWidth"/>.
     /// </summary>
-    /// <remarks>
-    /// How much of the leftover space this child claims, relative to its siblings.
-    /// </remarks>
+    /// <remarks>A non-finite value is rejected instead of being written.</remarks>
     [AddBinderContextMenu(typeof(LayoutElement), serializePropertyNames: "m_FlexibleWidth")]
     [AddComponentMenu("Aspid/MVVM/Binders/UI/LayoutElement/LayoutElement Binder – Flexible Width")]
     public class LayoutElementFlexibleWidthMonoBinder : ComponentFloatMonoBinder<LayoutElement>
@@ -18,7 +16,11 @@ namespace Aspid.MVVM.StarterKit
         protected sealed override float Property
         {
             get => CachedComponent.flexibleWidth;
-            set => CachedComponent.flexibleWidth = value;
+            set
+            {
+                if (!BinderMath.IsFinite(value)) return;
+                CachedComponent.flexibleWidth = value;
+            }
         }
     }
 }

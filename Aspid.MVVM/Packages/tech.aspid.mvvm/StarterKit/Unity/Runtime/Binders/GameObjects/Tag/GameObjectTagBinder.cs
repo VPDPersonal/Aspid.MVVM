@@ -23,12 +23,9 @@ namespace Aspid.MVVM.StarterKit
         /// <inheritdoc/>
         public event Action<string?>? ValueChanged;
         
-        [Tooltip("Optional converter applied to the value before it is used. Leave empty to use the value as-is.")]
+        [Tooltip("Optional converter applied to the value; empty leaves it as-is.")]
         [SerializeReference] private Converter? _converter;
         
-        /// <summary>
-        /// Initializes a new instance of <see cref="GameObjectTagBinder"/> targeting the specified <see cref="GameObject"/>.
-        /// </summary>
         /// <param name="target">The <see cref="GameObject"/> whose <see cref="GameObject.tag"/> property is bound.</param>
         /// <param name="converter">The converter used to transform the bound string value, or <see langword="null"/> to use the value as-is.</param>
         /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/>.</param>

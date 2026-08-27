@@ -4,18 +4,14 @@ using UnityEngine;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="EnumGroupMonoBinder{Renderer, Boolean}"/> that sets <see cref="Renderer.enabled"/>
-    /// on each element in the group based on the bound enum ViewModel value.
+    /// <see cref="EnumGroupMonoBinder{T1, T2}">EnumGroupMonoBinder&lt;Renderer, bool&gt;</see> that sets the <see cref="Renderer.enabled"/>
+    /// property on each element based on the bound enum ViewModel value.
     /// </summary>
     [AddBinderContextMenu(typeof(Renderer), serializePropertyNames: "m_Enabled", SubPath = "EnumGroup")]
     [AddComponentMenu("Aspid/MVVM/Binders/Renderer/Renderer Binder – Enabled EnumGroup")]
     public sealed class RendererEnabledEnumGroupMonoBinder : EnumGroupMonoBinder<Renderer, bool>
     {
-        /// <summary>
-        /// Called when the bound enum resolves to a value for the specified element.
-        /// </summary>
-        /// <param name="element">The component this entry of the group writes to.</param>
-        /// <param name="value">The value the bound enum resolved to for this element.</param>
+        /// <inheritdoc/>
         protected override void SetValue(Renderer element, bool value) =>
             element.enabled = value;
     }

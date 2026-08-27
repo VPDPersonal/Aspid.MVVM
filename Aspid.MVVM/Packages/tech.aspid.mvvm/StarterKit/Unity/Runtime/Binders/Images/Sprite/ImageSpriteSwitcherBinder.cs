@@ -9,7 +9,6 @@ namespace Aspid.MVVM.StarterKit
     /// <summary>
     /// <see cref="SwitcherBinder{T1, T2}">SwitcherBinder&lt;Image, Sprite?&gt;</see> that switches the <see cref="Image.sprite"/> property
     /// between two <see cref="Sprite"/> assets based on the bound boolean ViewModel value.
-    /// Optionally disables the <see cref="Image"/> when the selected sprite is <see langword="null"/>.
     /// </summary>
     /// <include file="XmlExampleDoc-Image-Sprite-1.1.0.xml" path="doc//member[@name='ImageSpriteSwitcherBinder']/*" />
     [Serializable]
@@ -18,7 +17,11 @@ namespace Aspid.MVVM.StarterKit
         [Tooltip("When enabled, disables the Image component when the selected sprite is null.")]
         [SerializeField] private bool _disabledWhenNull;
 
-        /// <inheritdoc/>
+        /// <param name="target">The <see cref="Image"/> to bind.</param>
+        /// <param name="trueValue">The <see cref="UnityEngine.Sprite"/> applied when the bound boolean is <see langword="true"/>.</param>
+        /// <param name="falseValue">The <see cref="UnityEngine.Sprite"/> applied when the bound boolean is <see langword="false"/>.</param>
+        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</param>
+        /// <remarks>Disables the <see cref="Image"/> on a <see langword="null"/> selection.</remarks>
         public ImageSpriteSwitcherBinder(
             Image target,
             Sprite trueValue,
@@ -26,9 +29,6 @@ namespace Aspid.MVVM.StarterKit
             BindMode mode)
             : this(target, trueValue, falseValue, disabledWhenNull: true, mode) { }
 
-        /// <summary>
-        /// Initializes a new instance of <see cref="ImageSpriteSwitcherBinder"/>.
-        /// </summary>
         /// <param name="target">The <see cref="Image"/> to bind.</param>
         /// <param name="trueValue">The <see cref="UnityEngine.Sprite"/> applied when the bound boolean is <see langword="true"/>.</param>
         /// <param name="falseValue">The <see cref="UnityEngine.Sprite"/> applied when the bound boolean is <see langword="false"/>.</param>
@@ -46,8 +46,8 @@ namespace Aspid.MVVM.StarterKit
         }
 
         /// <summary>
-        /// Called when applying the selected value to the <see cref="Image.sprite"/> property.
-        /// Disables the <see cref="Image"/> when <paramref name="value"/> is <see langword="null"/> and the disable-when-null option is enabled.
+        /// Sets <see cref="Image.sprite"/> to <paramref name="value"/>; disables the <see cref="Image"/> when
+        /// <paramref name="value"/> is <see langword="null"/> and disable-when-null is enabled.
         /// </summary>
         protected override void SetValue(Sprite? value)
         {

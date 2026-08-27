@@ -14,10 +14,10 @@ namespace Aspid.MVVM.StarterKit
     public sealed class ButtonCommandBinder : TargetBinder<Button>, IBinder<IRelayCommand>
     {
         // ReSharper disable once MemberInitializerValueIgnored
-        [Tooltip("Controls how the button's interactable state reflects the bound command's CanExecute result.")]
+        [Tooltip("How CanExecute affects the button's interactable state.")]
         [SerializeField] private InteractableMode _interactableMode = InteractableMode.Interactable;
 
-        [Tooltip("A custom view that reflects the bound command's CanExecute state; used when Interactable Mode is set to Custom.")]
+        [Tooltip("View that reflects CanExecute when Interactable Mode is Custom.")]
         [SerializeReference] private ICanExecuteView _customInteractable;
 
         private IRelayCommand _command;
@@ -26,9 +26,6 @@ namespace Aspid.MVVM.StarterKit
         public ButtonCommandBinder(Button target, BindMode mode = BindMode.OneWay)   
             : this(target, InteractableMode.Interactable, mode) { }
         
-        /// <summary>
-        /// Initializes a new instance of <see cref="ButtonCommandBinder"/> with a custom interactable view.
-        /// </summary>
         /// <param name="target">The <see cref="Button"/> to bind.</param>
         /// <param name="customInteractable">A custom view that reflects the command's <see cref="IRelayCommand.CanExecute()"/> state.</param>
         /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</param>
@@ -41,9 +38,6 @@ namespace Aspid.MVVM.StarterKit
             _customInteractable = customInteractable ?? throw new ArgumentNullException(nameof(customInteractable));
         }
         
-        /// <summary>
-        /// Initializes a new instance of <see cref="ButtonCommandBinder"/>.
-        /// </summary>
         /// <param name="target">The <see cref="Button"/> to bind.</param>
         /// <param name="interactableMode">Controls how the button's interactable state reflects <see cref="IRelayCommand.CanExecute()"/>.</param>
         /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</param>
@@ -68,10 +62,6 @@ namespace Aspid.MVVM.StarterKit
         /// Called when the binder is bound. Subscribes to <see cref="Button.onClick"/> so that
         /// every click executes the bound command.
         /// </summary>
-        /// <remarks>
-        /// The subscription connects the button's click event to <see cref="OnClicked()"/>,
-        /// which executes the bound command.
-        /// </remarks>
         protected override void OnBound() =>
             Target.onClick.AddListener(OnClicked);
 
@@ -79,10 +69,6 @@ namespace Aspid.MVVM.StarterKit
         /// Called when the binder is unbound. Unsubscribes from <see cref="Button.onClick"/>
         /// and releases the bound command reference.
         /// </summary>
-        /// <remarks>
-        /// Passes <see langword="null"/> to <see cref="SetValue(IRelayCommand)"/> to detach the command reference
-        /// and unsubscribe from its <see cref="IRelayCommand.CanExecuteChanged"/> event.
-        /// </remarks>
         protected override void OnUnbound()
         {
             Target.onClick.RemoveListener(OnClicked);
@@ -116,10 +102,10 @@ namespace Aspid.MVVM.StarterKit
 
         // ReSharper disable once MemberInitializerValueIgnored
         [Space]
-        [Tooltip("Controls how the button's interactable state reflects the bound command's CanExecute result.")]
+        [Tooltip("How CanExecute affects the button's interactable state.")]
         [SerializeField] private InteractableMode _interactableMode = InteractableMode.Interactable;
 
-        [Tooltip("A custom view that reflects the bound command's CanExecute state; used when Interactable Mode is set to Custom.")]
+        [Tooltip("View that reflects CanExecute when Interactable Mode is Custom.")]
         [SerializeReference] private ICanExecuteView _customInteractable;
 
         private IRelayCommand<T> _command;
@@ -137,9 +123,6 @@ namespace Aspid.MVVM.StarterKit
         public ButtonCommandBinder(Button target, T param, BindMode mode = BindMode.OneWay)
             : this(target, param, InteractableMode.Interactable, mode) { }
         
-        /// <summary>
-        /// Initializes a new instance of <see cref="ButtonCommandBinder{T}"/> with a custom interactable view.
-        /// </summary>
         /// <param name="target">The <see cref="Button"/> to bind.</param>
         /// <param name="param">The additional parameter forwarded when the command is executed.</param>
         /// <param name="customInteractable">A custom view that reflects the command's <see cref="IRelayCommand{T}.CanExecute(T)"/> state.</param>
@@ -160,9 +143,6 @@ namespace Aspid.MVVM.StarterKit
             _customInteractable = customInteractable ?? throw new ArgumentNullException(nameof(customInteractable));
         }
         
-        /// <summary>
-        /// Initializes a new instance of <see cref="ButtonCommandBinder{T}"/>.
-        /// </summary>
         /// <param name="target">The <see cref="Button"/> to bind.</param>
         /// <param name="param">The additional parameter forwarded when the command is executed.</param>
         /// <param name="interactableMode">Controls how the button's interactable state reflects <see cref="IRelayCommand{T}.CanExecute(T)"/>.</param>
@@ -195,10 +175,6 @@ namespace Aspid.MVVM.StarterKit
         /// Called when the binder is bound. Subscribes to <see cref="Button.onClick"/> so that
         /// every click executes the bound command with the configured parameter.
         /// </summary>
-        /// <remarks>
-        /// The subscription connects the button's click event to <see cref="OnClicked()"/>,
-        /// which executes the bound command with <see cref="Param"/>.
-        /// </remarks>
         protected override void OnBound() =>
             Target.onClick.AddListener(OnClicked);
 
@@ -206,10 +182,6 @@ namespace Aspid.MVVM.StarterKit
         /// Called when the binder is unbound. Unsubscribes from <see cref="Button.onClick"/>
         /// and releases the bound command reference.
         /// </summary>
-        /// <remarks>
-        /// Passes <see langword="null"/> to <see cref="SetValue(IRelayCommand{T})"/> to detach the command reference
-        /// and unsubscribe from its <see cref="IRelayCommand{T}.CanExecuteChanged"/> event.
-        /// </remarks>
         protected override void OnUnbound()
         {
             Target.onClick.RemoveListener(OnClicked);
@@ -246,10 +218,10 @@ namespace Aspid.MVVM.StarterKit
 
         // ReSharper disable once MemberInitializerValueIgnored
         [Space]
-        [Tooltip("Controls how the button's interactable state reflects the bound command's CanExecute result.")]
+        [Tooltip("How CanExecute affects the button's interactable state.")]
         [SerializeField] private InteractableMode _interactableMode = InteractableMode.Interactable;
 
-        [Tooltip("A custom view that reflects the bound command's CanExecute state; used when Interactable Mode is set to Custom.")]
+        [Tooltip("View that reflects CanExecute when Interactable Mode is Custom.")]
         [SerializeReference] private ICanExecuteView _customInteractable;
 
         private IRelayCommand<T1, T2> _command;
@@ -276,9 +248,6 @@ namespace Aspid.MVVM.StarterKit
         public ButtonCommandBinder(Button target, T1 param1, T2 param2, BindMode mode = BindMode.OneWay)
             : this(target, param1, param2, InteractableMode.Interactable, mode) { }
         
-        /// <summary>
-        /// Initializes a new instance of <see cref="ButtonCommandBinder{T1, T2}"/> with a custom interactable view.
-        /// </summary>
         /// <param name="target">The <see cref="Button"/> to bind.</param>
         /// <param name="param1">The first additional parameter forwarded when the command is executed.</param>
         /// <param name="param2">The second additional parameter forwarded when the command is executed.</param>
@@ -302,9 +271,6 @@ namespace Aspid.MVVM.StarterKit
             _customInteractable = customInteractable ?? throw new ArgumentNullException(nameof(customInteractable));
         }
         
-        /// <summary>
-        /// Initializes a new instance of <see cref="ButtonCommandBinder{T1, T2}"/>.
-        /// </summary>
         /// <param name="target">The <see cref="Button"/> to bind.</param>
         /// <param name="param1">The first additional parameter forwarded when the command is executed.</param>
         /// <param name="param2">The second additional parameter forwarded when the command is executed.</param>
@@ -340,10 +306,6 @@ namespace Aspid.MVVM.StarterKit
         /// Called when the binder is bound. Subscribes to <see cref="Button.onClick"/> so that
         /// every click executes the bound command with the configured parameters.
         /// </summary>
-        /// <remarks>
-        /// The subscription connects the button's click event to <see cref="OnClicked()"/>,
-        /// which executes the bound command with <see cref="Param1"/> and <see cref="Param2"/>.
-        /// </remarks>
         protected override void OnBound() =>
             Target.onClick.AddListener(OnClicked);
 
@@ -351,10 +313,6 @@ namespace Aspid.MVVM.StarterKit
         /// Called when the binder is unbound. Unsubscribes from <see cref="Button.onClick"/>
         /// and releases the bound command reference.
         /// </summary>
-        /// <remarks>
-        /// Passes <see langword="null"/> to <see cref="SetValue(IRelayCommand{T1,T2})"/> to detach the command reference
-        /// and unsubscribe from its <see cref="IRelayCommand{T1,T2}.CanExecuteChanged"/> event.
-        /// </remarks>
         protected override void OnUnbound()
         {
             Target.onClick.RemoveListener(OnClicked);
@@ -394,10 +352,10 @@ namespace Aspid.MVVM.StarterKit
 
         // ReSharper disable once MemberInitializerValueIgnored
         [Space]
-        [Tooltip("Controls how the button's interactable state reflects the bound command's CanExecute result.")]
+        [Tooltip("How CanExecute affects the button's interactable state.")]
         [SerializeField] private InteractableMode _interactableMode = InteractableMode.Interactable;
 
-        [Tooltip("A custom view that reflects the bound command's CanExecute state; used when Interactable Mode is set to Custom.")]
+        [Tooltip("View that reflects CanExecute when Interactable Mode is Custom.")]
         [SerializeReference] private ICanExecuteView _customInteractable;
 
         private IRelayCommand<T1, T2, T3> _command;
@@ -433,9 +391,6 @@ namespace Aspid.MVVM.StarterKit
         public ButtonCommandBinder(Button target, T1 param1, T2 param2, T3 param3, BindMode mode = BindMode.OneWay)
             : this(target, param1, param2, param3, InteractableMode.Interactable, mode) { }
         
-        /// <summary>
-        /// Initializes a new instance of <see cref="ButtonCommandBinder{T1, T2, T3}"/> with a custom interactable view.
-        /// </summary>
         /// <param name="target">The <see cref="Button"/> to bind.</param>
         /// <param name="param1">The first additional parameter forwarded when the command is executed.</param>
         /// <param name="param2">The second additional parameter forwarded when the command is executed.</param>
@@ -456,9 +411,6 @@ namespace Aspid.MVVM.StarterKit
             _customInteractable = customInteractable ?? throw new ArgumentNullException(nameof(customInteractable));
         }
         
-        /// <summary>
-        /// Initializes a new instance of <see cref="ButtonCommandBinder{T1, T2, T3}"/>.
-        /// </summary>
         /// <param name="target">The <see cref="Button"/> to bind.</param>
         /// <param name="param1">The first additional parameter forwarded when the command is executed.</param>
         /// <param name="param2">The second additional parameter forwarded when the command is executed.</param>
@@ -491,10 +443,6 @@ namespace Aspid.MVVM.StarterKit
         /// Called when the binder is bound. Subscribes to <see cref="Button.onClick"/> so that
         /// every click executes the bound command with the configured parameters.
         /// </summary>
-        /// <remarks>
-        /// The subscription connects the button's click event to <see cref="OnClicked()"/>,
-        /// which executes the bound command with <see cref="Param1"/>, <see cref="Param2"/>, and <see cref="Param3"/>.
-        /// </remarks>
         protected override void OnBound() =>
             Target.onClick.AddListener(OnClicked);
 
@@ -502,10 +450,6 @@ namespace Aspid.MVVM.StarterKit
         /// Called when the binder is unbound. Unsubscribes from <see cref="Button.onClick"/>
         /// and releases the bound command reference.
         /// </summary>
-        /// <remarks>
-        /// Passes <see langword="null"/> to <see cref="SetValue(IRelayCommand{T1,T2,T3})"/> to detach the command reference
-        /// and unsubscribe from its <see cref="IRelayCommand{T1,T2,T3}.CanExecuteChanged"/> event.
-        /// </remarks>
         protected override void OnUnbound()
         {
             Target.onClick.RemoveListener(OnClicked);
@@ -548,10 +492,10 @@ namespace Aspid.MVVM.StarterKit
 
         // ReSharper disable once MemberInitializerValueIgnored
         [Space]
-        [Tooltip("Controls how the button's interactable state reflects the bound command's CanExecute result.")]
+        [Tooltip("How CanExecute affects the button's interactable state.")]
         [SerializeField] private InteractableMode _interactableMode = InteractableMode.Interactable;
 
-        [Tooltip("A custom view that reflects the bound command's CanExecute state; used when Interactable Mode is set to Custom.")]
+        [Tooltip("View that reflects CanExecute when Interactable Mode is Custom.")]
         [SerializeReference] private ICanExecuteView _customInteractable;
 
         private IRelayCommand<T1, T2, T3, T4> _command;
@@ -596,9 +540,6 @@ namespace Aspid.MVVM.StarterKit
         public ButtonCommandBinder(Button target, T1 param1, T2 param2, T3 param3, T4 param4, BindMode mode = BindMode.OneWay)
             : this(target, param1, param2, param3, param4, InteractableMode.Interactable, mode) { }
         
-        /// <summary>
-        /// Initializes a new instance of <see cref="ButtonCommandBinder{T1, T2, T3, T4}"/> with a custom interactable view.
-        /// </summary>
         /// <param name="target">The <see cref="Button"/> to bind.</param>
         /// <param name="param1">The first additional parameter forwarded when the command is executed.</param>
         /// <param name="param2">The second additional parameter forwarded when the command is executed.</param>
@@ -621,9 +562,6 @@ namespace Aspid.MVVM.StarterKit
             _customInteractable = customInteractable ?? throw new ArgumentNullException(nameof(customInteractable));
         }
         
-        /// <summary>
-        /// Initializes a new instance of <see cref="ButtonCommandBinder{T1, T2, T3, T4}"/>.
-        /// </summary>
         /// <param name="target">The <see cref="Button"/> to bind.</param>
         /// <param name="param1">The first additional parameter forwarded when the command is executed.</param>
         /// <param name="param2">The second additional parameter forwarded when the command is executed.</param>
@@ -658,10 +596,6 @@ namespace Aspid.MVVM.StarterKit
         /// Called when the binder is bound. Subscribes to <see cref="Button.onClick"/> so that
         /// every click executes the bound command with the configured parameters.
         /// </summary>
-        /// <remarks>
-        /// The subscription connects the button's click event to <see cref="OnClicked()"/>,
-        /// which executes the bound command with <see cref="Param1"/>, <see cref="Param2"/>, <see cref="Param3"/>, and <see cref="Param4"/>.
-        /// </remarks>
         protected override void OnBound() =>
             Target.onClick.AddListener(OnClicked);
 
@@ -669,10 +603,6 @@ namespace Aspid.MVVM.StarterKit
         /// Called when the binder is unbound. Unsubscribes from <see cref="Button.onClick"/>
         /// and releases the bound command reference.
         /// </summary>
-        /// <remarks>
-        /// Passes <see langword="null"/> to <see cref="SetValue(IRelayCommand{T1,T2,T3,T4})"/> to detach the command reference
-        /// and unsubscribe from its <see cref="IRelayCommand{T1,T2,T3,T4}.CanExecuteChanged"/> event.
-        /// </remarks>
         protected override void OnUnbound()
         {
             Target.onClick.RemoveListener(OnClicked);

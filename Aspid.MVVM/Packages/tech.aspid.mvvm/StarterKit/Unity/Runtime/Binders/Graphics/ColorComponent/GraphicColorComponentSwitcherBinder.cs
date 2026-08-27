@@ -15,10 +15,15 @@ namespace Aspid.MVVM.StarterKit
     [Serializable]
     public sealed class GraphicColorComponentSwitcherBinder : SwitcherFloatBinder<Graphic>
     {
-        [Tooltip("Which channel of the colour the bound value writes to; the others keep their current value.")]
+        [Tooltip("Which color channel the bound value writes to; others keep their value.")]
         [SerializeField] private ColorComponent _component = ColorComponent.A;
 
-        /// <inheritdoc/>
+        /// <param name="target">The <see cref="Graphic"/> whose color channel is switched.</param>
+        /// <param name="trueColor">The channel value used when the bound boolean value is <see langword="true"/>.</param>
+        /// <param name="falseColor">The channel value used when the bound boolean value is <see langword="false"/>.</param>
+        /// <param name="component">Which color channel the bound value writes to; others keep their value.</param>
+        /// <param name="converter">The converter used to transform the bound float value, or <see langword="null"/> to use the value as-is.</param>
+        /// <param name="mode">The binding mode.</param>
         public GraphicColorComponentSwitcherBinder(
             Graphic target,
             float trueColor,

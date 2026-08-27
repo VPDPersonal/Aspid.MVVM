@@ -26,12 +26,9 @@ namespace Aspid.MVVM.StarterKit
         }
 
         // ReSharper disable once FieldCanBeMadeReadOnly.Local
-        [Tooltip("Converter used to format bound values as log messages. Defaults to GenericToStringConverter.")]
+        [Tooltip("Formats bound values as log messages. Defaults to GenericToStringConverter.")]
         [SerializeReference] private Converter _converter;
 
-        /// <summary>
-        /// Initializes a new instance of <see cref="DebugLogBinder"/>.
-        /// </summary>
         /// <param name="converter">The converter used to format bound values as log messages. Pass <see langword="null"/> to use <see cref="GenericToStringConverter{T}"/>.</param>
         public DebugLogBinder(Converter converter = null) : base(BindMode.TwoWay)
         {
@@ -50,12 +47,7 @@ namespace Aspid.MVVM.StarterKit
         /// Writes <paramref name="message"/> to the Unity console, in the Editor and in a development build only.
         /// </summary>
         /// <param name="message">The message to write.</param>
-        /// <remarks>
-        /// Marked with both <see cref="System.Diagnostics.ConditionalAttribute"/> symbols rather than wrapped in <c>#if</c>: the compiler
-        /// removes the call and the interpolated string with it, so a release build pays nothing — and the binder
-        /// itself still exists, which matters because a component compiled out of a build takes every scene reference
-        /// to it with it.
-        /// </remarks>
+        /// <remarks>The call and its interpolated string are compiled out entirely in other builds.</remarks>
         [Conditional("UNITY_EDITOR")]
         [Conditional("DEVELOPMENT_BUILD")]
         private static void Log(string message) =>
@@ -64,12 +56,6 @@ namespace Aspid.MVVM.StarterKit
         /// <summary>
         /// Formats <paramref name="value"/> for the console, without assuming it is there.
         /// </summary>
-        /// <remarks>
-        /// This binder accepts every bound type through <see cref="IAnyBinder"/>, and a bindable member of a
-        /// reference type publishes <see langword="null"/> the moment the binder is added — so the very first
-        /// message a debug binder is asked to produce is usually for a null value. Both the converter and the
-        /// fallback used to dereference it.
-        /// </remarks>
         private string GetMessage(object value)
         {
             if (value is null) return "null";

@@ -5,10 +5,8 @@ using UnityEngine;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// Abstract base <see cref="ComponentMonoBinder{TComponent}"/> that binds a single component property using its get/set accessors.
-    /// Supports <see cref="BindMode.OneWay">OneWay</see> and <see cref="BindMode.OneTime">OneTime</see> for one-way binding.
-    /// Supports <see cref="BindMode.OneWayToSource">OneWayToSource</see> for reverse binding: when binding is established,
-    /// the current property value is sent back to the ViewModel.
+    /// Abstract base <see cref="ComponentMonoBinder{TComponent}"/> that binds a single component property using its
+    /// get/set accessors, sending the current value back to the ViewModel when bound in <see cref="BindMode.OneWayToSource"/>.
     /// </summary>
     /// <typeparam name="TComponent">The type of <see cref="Component"/> that exposes the target property.</typeparam>
     /// <typeparam name="TProperty">The type of the property being bound.</typeparam>
@@ -94,20 +92,18 @@ namespace Aspid.MVVM.StarterKit
     }
 
     /// <summary>
-    /// Abstract base <see cref="ComponentMonoBinder{TComponent, TProperty}"/> that applies an optional <typeparamref name="TConverter"/> to values in both binding directions.
-    /// Supports <see cref="BindMode.OneWay">OneWay</see> and <see cref="BindMode.OneTime">OneTime</see>: the converter transforms the incoming value before setting it on the component.
-    /// Supports <see cref="BindMode.OneWayToSource">OneWayToSource</see> for reverse binding: when binding is established,
-    /// the current property value is converted and sent back to the ViewModel.
+    /// Abstract base <see cref="ComponentMonoBinder{TComponent, TProperty}"/> that applies an optional
+    /// <typeparamref name="TConverter"/> to values in both binding directions; in <see cref="BindMode.OneWayToSource"/>,
+    /// the current property value is converted before being sent back to the ViewModel.
     /// </summary>
-    /// <typeparam name="TComponent">The type of<see cref="Component"/> that exposes the target property.</typeparam>
+    /// <typeparam name="TComponent">The type of <see cref="Component"/> that exposes the target property.</typeparam>
     /// <typeparam name="TProperty">The type of the property being bound.</typeparam>
     /// <typeparam name="TConverter">The converter type used to transform the bound value before applying it.</typeparam>
     public abstract class ComponentMonoBinder<TComponent, TProperty, TConverter> : ComponentMonoBinder<TComponent, TProperty>
         where TComponent : Component
         where TConverter : IConverter<TProperty, TProperty>
     {
-        [Tooltip("Optional converter applied on the way to the component. It runs in reverse only if it " +
-            "implements ITwoWayConverter.")]
+        [Tooltip("Optional converter for the component. Reverses only via ITwoWayConverter.")]
         [SerializeReference] private TConverter _converter;
 
         /// <inheritdoc/>

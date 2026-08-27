@@ -8,10 +8,6 @@ namespace Aspid.MVVM.StarterKit
     /// <summary>
     /// <see cref="TargetColorBinder{Light}"/> that binds <see cref="Light.color"/>.
     /// </summary>
-    /// <remarks>
-    /// Lighting had no binders at all. Tinting a lamp from the ViewModel — a warning light going red, a torch
-    /// guttering — meant reaching for the component by hand.
-    /// </remarks>
     [Serializable]
     public class LightColorBinder : TargetColorBinder<Light>
     {

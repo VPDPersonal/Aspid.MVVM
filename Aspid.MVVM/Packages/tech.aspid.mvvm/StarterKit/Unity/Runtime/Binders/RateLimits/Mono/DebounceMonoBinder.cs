@@ -4,14 +4,7 @@ namespace Aspid.MVVM.StarterKit
     /// <summary>
     /// Abstract base <see cref="RateLimitedMonoBinder{TValue}"/> that forwards a value only once the values stop coming.
     /// </summary>
-    /// <remarks>
-    /// The search field case: a value per keystroke becomes one value once the user pauses, which is the difference
-    /// between a request per character and a request per word.
-    /// <para/>
-    /// Every new value restarts the wait, so a fast typist produces exactly one forwarded value. Nothing is forwarded if
-    /// the binding is released while a value is still waiting — an answer to a query nobody is looking at any more is
-    /// worse than no answer.
-    /// </remarks>
+    /// <remarks>A value pending when the binding is released is dropped, not forwarded.</remarks>
     /// <typeparam name="TValue">The type of value being forwarded.</typeparam>
     public abstract class DebounceMonoBinder<TValue> : RateLimitedMonoBinder<TValue>
     {

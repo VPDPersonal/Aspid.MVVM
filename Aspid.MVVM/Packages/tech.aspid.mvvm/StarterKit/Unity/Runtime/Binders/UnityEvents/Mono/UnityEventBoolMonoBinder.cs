@@ -12,7 +12,7 @@ namespace Aspid.MVVM.StarterKit
     [AddBinderContextMenu(typeof(Component), Path = "Add General Binder/UnityEvent/UnityEvent Binder – Bool")]
     public sealed partial class UnityEventBoolMonoBinder : MonoBinder, IBinder<bool>
     {
-        [Tooltip("When enabled, the boolean value is logically inverted before being passed to the event.")]
+        [Tooltip("Inverts the value before passing it to the event.")]
         [SerializeField] private bool _isInvert;
         [Tooltip("The event invoked with the bound value.")]
         [SerializeField] private UnityEvent<bool> _set;

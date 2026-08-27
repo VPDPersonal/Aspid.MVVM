@@ -11,7 +11,7 @@ namespace Aspid.MVVM.StarterKit
     [AddComponentMenu("Aspid/MVVM/Binders/UI/RectTransform/RectTransform Binder – AnchoredPosition EnumGroup")]
     public sealed class RectTransformAnchoredPositionEnumGroupMonoBinder : EnumGroupVector3MonoBinder<RectTransform>
     {
-        [Tooltip("The space that determines which anchored position property is used: Self for anchoredPosition, World for anchoredPosition3D.")]
+        [Tooltip("Which property is written: Self → anchoredPosition, World → anchoredPosition3D.")]
         [SerializeField] private Space _space = Space.World;
 
         /// <summary>

@@ -8,9 +8,6 @@ namespace Aspid.MVVM.StarterKit
     /// <summary>
     /// <see cref="TargetBoolBinder{ScrollRect}"/> that binds <see cref="ScrollRect.horizontal"/>.
     /// </summary>
-    /// <remarks>
-    /// Whether the user may scroll sideways — the way a ViewModel locks an axis while something else is in progress.
-    /// </remarks>
     [Serializable]
     public class ScrollRectHorizontalBinder : TargetBoolBinder<ScrollRect>
     {

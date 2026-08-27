@@ -8,11 +8,6 @@ namespace Aspid.MVVM.StarterKit
     /// <summary>
     /// <see cref="ComponentBoolMonoBinder{TMP_Text}"/> that binds <see cref="TMP_Text.richText"/>.
     /// </summary>
-    /// <remarks>
-    /// Whether tags in the text are interpreted or shown literally. Worth binding when the string comes from
-    /// somewhere the game does not control — a player name, a server message — and its markup should be shown
-    /// rather than obeyed.
-    /// </remarks>
     [AddBinderContextMenu(typeof(TMP_Text), serializePropertyNames: "m_isRichText")]
     [AddComponentMenu("Aspid/MVVM/Binders/UI/Text/Text Binder – RichText")]
     public class TextRichTextMonoBinder : ComponentBoolMonoBinder<TMP_Text>

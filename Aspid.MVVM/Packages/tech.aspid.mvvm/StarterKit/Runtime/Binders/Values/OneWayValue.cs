@@ -8,14 +8,6 @@ namespace Aspid.MVVM.StarterKit
     /// ViewModel value of type <typeparamref name="T"/> and notifies subscribers when it changes.
     /// </summary>
     /// <typeparam name="T">The type of the bindable value.</typeparam>
-    /// <remarks>
-    /// Each time <see cref="IBinder{T}.SetValue"/> is called, the stored value is updated (passing
-    /// through an optional <see cref="IConverter{TFrom,TTo}"/>) and the <see cref="Changed"/> event
-    /// is raised with the original unconverted value.
-    /// An implicit conversion operator allows instances to be used directly where a
-    /// <typeparamref name="T"/> value is expected.
-    /// Only non-two-way bind modes are supported; passing <see cref="BindMode.TwoWay"/> will throw.
-    /// </remarks>
     /// <include file="XmlExampleDoc-Values-1.1.0.xml" path="doc//member[@name='OneWayValue{1}']/*" />
     [Serializable]
     public class OneWayValue<T> : Binder, IBinder<T>
@@ -40,16 +32,11 @@ namespace Aspid.MVVM.StarterKit
             private set => _value = value;
         }
 
-        /// <summary>
-        /// Initializes a new instance of <see cref="OneWayValue{T}"/> with the default value.
-        /// </summary>
         /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</param>
+        /// <exception cref="InvalidOperationException">Thrown when <paramref name="mode"/> is <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</exception>
         public OneWayValue(BindMode mode = BindMode.OneWay)
             : this(default, mode) { }
 
-        /// <summary>
-        /// Initializes a new instance of <see cref="OneWayValue{T}"/> with a pre-set initial value.
-        /// </summary>
         /// <param name="value">The initial value.</param>
         /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</param>
         /// <exception cref="InvalidOperationException">Thrown when <paramref name="mode"/> is <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</exception>
@@ -60,9 +47,6 @@ namespace Aspid.MVVM.StarterKit
             _value = value;
         }
 
-        /// <summary>
-        /// Initializes a new instance of <see cref="OneWayValue{T}"/> with a pre-set initial value and a converter.
-        /// </summary>
         /// <param name="value">The initial value.</param>
         /// <param name="converter">
         /// An optional converter applied to each incoming value before it is stored in <see cref="Value"/>.

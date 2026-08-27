@@ -10,14 +10,8 @@ namespace Aspid.MVVM.StarterKit
     /// <see cref="TMP_Text.margin"/>.
     /// </summary>
     /// <remarks>
-    /// The inset between the text and its own rect, as <c>(left, top, right, bottom)</c> — what makes room for an icon
-    /// that appears next to a line, or for a scrollbar that shows up only when the text is long.
-    /// <para/>
-    /// A non-finite component is refused: TMP lays the text out from these four numbers and one <c>NaN</c> collapses
-    /// the whole block.
-    /// <para/>
-    /// Supports <see cref="BindMode.OneWayToSource"/>: when binding is established, the current margin is sent back to
-    /// the ViewModel.
+    /// Component order is <c>(left, top, right, bottom)</c>. A non-finite component is ignored — TMP lays the
+    /// text out from these four numbers and one <see cref="float.NaN"/> collapses the whole block.
     /// </remarks>
     [AddBinderContextMenu(typeof(TMP_Text), serializePropertyNames: "m_margin")]
     [AddComponentMenu("Aspid/MVVM/Binders/UI/Text/Text Binder – Margin")]

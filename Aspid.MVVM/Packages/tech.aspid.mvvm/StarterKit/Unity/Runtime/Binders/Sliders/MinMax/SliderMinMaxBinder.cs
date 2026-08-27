@@ -25,9 +25,6 @@ namespace Aspid.MVVM.StarterKit
             set => Target.SetMinMax(value, _valueMode);
         }
         
-        /// <summary>
-        /// Initializes a new instance of <see cref="SliderMinMaxBinder"/>.
-        /// </summary>
         /// <param name="target">The <see cref="Slider"/> to bind.</param>
         /// <param name="valueMode">Determines which endpoint(s) of the slider range are updated.</param>
         /// <param name="converter">The converter applied to values before they are set on the slider, or <see langword="null"/> to use the value as-is.</param>

@@ -16,7 +16,7 @@ namespace Aspid.MVVM.StarterKit
     [AddBinderContextMenu(typeof(LayoutGroup), serializePropertyNames: "m_Padding", SubPath = "Switcher")]
     public sealed class LayoutGroupPaddingSwitcherMonoBinder : SwitcherMonoBinder<LayoutGroup, RectOffset, Converter>
     {
-        [Tooltip("Determines which sides of the padding are updated when a value is applied.")]
+        [Tooltip("Which sides of the padding are updated when a value is applied.")]
         [SerializeField] private PaddingMode _paddingMode;
 
         protected override void SetValue(RectOffset value) =>

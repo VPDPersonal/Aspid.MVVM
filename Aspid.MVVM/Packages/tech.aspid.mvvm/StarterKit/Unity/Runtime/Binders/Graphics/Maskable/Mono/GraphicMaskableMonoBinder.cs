@@ -9,8 +9,6 @@ namespace Aspid.MVVM.StarterKit
     /// </summary>
     /// <remarks>
     /// Turning this off exempts the graphic from any enclosing mask, so it draws outside the masked area.
-    /// Supports <see cref="BindMode.OneWayToSource"/>: when binding is established, the current value is sent back
-    /// to the ViewModel. Supports optional value inversion.
     /// </remarks>
     [AddBinderContextMenu(typeof(MaskableGraphic), serializePropertyNames: "m_Maskable")]
     [AddComponentMenu("Aspid/MVVM/Binders/UI/Graphic/MaskableGraphic Binder – Maskable")]

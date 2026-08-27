@@ -10,9 +10,6 @@ namespace Aspid.MVVM.StarterKit
     /// <see cref="Selectable.targetGraphic"/>.
     /// </summary>
     /// <remarks>
-    /// Which graphic the control tints when it is hovered, pressed or disabled. Swapping it moves the whole colour
-    /// transition from the background to an icon or a frame.
-    /// <para/>
     /// A destroyed graphic arrives as <see langword="null"/>, which leaves the control untinted rather than pointing at
     /// a graphic that no longer exists.
     /// </remarks>

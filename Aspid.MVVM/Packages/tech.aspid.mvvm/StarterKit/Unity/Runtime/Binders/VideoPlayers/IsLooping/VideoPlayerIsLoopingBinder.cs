@@ -9,10 +9,6 @@ namespace Aspid.MVVM.StarterKit
     /// <summary>
     /// <see cref="TargetBoolBinder{VideoPlayer}"/> that binds <see cref="VideoPlayer.isLooping"/>.
     /// </summary>
-    /// <remarks>
-    /// Whether the clip repeats. A background loop and a cutscene that must end are the same component with this
-    /// one flag different.
-    /// </remarks>
     [Serializable]
     public class VideoPlayerIsLoopingBinder : TargetBoolBinder<VideoPlayer>
     {

@@ -8,9 +8,6 @@ namespace Aspid.MVVM.StarterKit
     /// <summary>
     /// <see cref="TargetBoolBinder{Camera}"/> that binds <see cref="Camera.orthographic"/>.
     /// </summary>
-    /// <remarks>
-    /// Switches the camera between perspective and orthographic projection.
-    /// </remarks>
     [Serializable]
     public class CameraOrthographicBinder : TargetBoolBinder<Camera>
     {

@@ -15,12 +15,9 @@ namespace Aspid.MVVM.StarterKit
     [Serializable]
     public sealed class AudioSourceMinMaxDistanceSwitcherBinder : SwitcherBinder<AudioSource, Vector2, Converter>
     {
-        [Tooltip("Determines which distance component (min, max, or both) is updated when the bound value changes.")]
+        [Tooltip("Which distance component the bound value updates.")]
         [SerializeField] private AudioSourceDistanceMode _distanceMode = AudioSourceDistanceMode.Range;
         
-        /// <summary>
-        /// Initializes a new instance of <see cref="AudioSourceMinMaxDistanceSwitcherBinder"/>.
-        /// </summary>
         /// <param name="target">The <see cref="AudioSource"/> whose min/max distance is switched.</param>
         /// <param name="trueValue">The min/max distance assigned when the bound value is <see langword="true"/>.</param>
         /// <param name="falseValue">The min/max distance assigned when the bound value is <see langword="false"/>.</param>

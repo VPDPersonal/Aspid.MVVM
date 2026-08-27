@@ -9,8 +9,7 @@ namespace Aspid.MVVM.StarterKit
     /// <see cref="TargetVector2Binder{CapsuleCollider2D}"/> that binds <see cref="CapsuleCollider2D.size"/>.
     /// </summary>
     /// <remarks>
-    /// Width and height of a 2D capsule — the shape most 2D characters stand on, and the one a crouch
-    /// changes. Clamped non-negative on both axes.
+    /// Clamped non-negative on both axes; a non-finite value maps to <c>0</c>.
     /// </remarks>
     [Serializable]
     public class CapsuleCollider2DSizeBinder : TargetVector2Binder<CapsuleCollider2D>

@@ -17,9 +17,6 @@ namespace Aspid.MVVM.StarterKit
         [Tooltip("Determines which endpoint(s) of the slider range are updated.")]
         [SerializeField] private SliderValueMode _valueMode;
         
-        /// <summary>
-        /// Initializes a new instance of <see cref="SliderMinMaxSwitcherBinder"/>.
-        /// </summary>
         /// <param name="target">The <see cref="Slider"/> to bind.</param>
         /// <param name="trueValue">The range applied when the bound property is <see langword="true"/>.</param>
         /// <param name="falseValue">The range applied when the bound property is <see langword="false"/>.</param>

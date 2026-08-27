@@ -12,14 +12,9 @@ namespace Aspid.MVVM.StarterKit
     /// holds none.
     /// </summary>
     /// <remarks>
-    /// "Items: 12" and an empty-state panel are both derived from a collection the View is already given, and neither
-    /// could be bound: the ViewModel had to carry a count field and an emptiness flag next to the collection and keep
-    /// all three in step by hand.
-    /// <para/>
     /// An observable collection is subscribed to, so the count follows every insert and removal. A plain
     /// <see cref="IReadOnlyList{T}"/> is read once — there is nothing to listen to — and a <see langword="null"/>
-    /// collection reports zero and empty rather than nothing at all, because a panel that says "nothing here" is the
-    /// right answer to a list that has not arrived.
+    /// collection reports zero and empty rather than nothing at all.
     /// </remarks>
     /// <typeparam name="T">The element type of the bound collection.</typeparam>
     public abstract partial class CollectionCountMonoBinder<T> : MonoBinder,
@@ -82,9 +77,7 @@ namespace Aspid.MVVM.StarterKit
         {
             switch (_list)
             {
-                // Два разных делегата: у фильтрованного списка это Action без аргументов,
-                // у наблюдаемого — NotifyCollectionChangedEventHandler<T> с описанием изменения.
-                // Счётчику всё равно, что именно изменилось, поэтому оба ведут в один Report.
+                // Different delegate shapes per list type; the counter doesn't care what changed, so both call Report.
                 case IReadOnlyFilteredList<T> filtered: filtered.CollectionChanged += Report; break;
                 case IReadOnlyObservableList<T> observable: observable.CollectionChanged += OnCollectionChanged; break;
             }

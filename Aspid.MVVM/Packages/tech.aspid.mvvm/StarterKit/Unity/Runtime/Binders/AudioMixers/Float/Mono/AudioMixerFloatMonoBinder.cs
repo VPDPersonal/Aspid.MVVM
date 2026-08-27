@@ -11,16 +11,8 @@ namespace Aspid.MVVM.StarterKit
     /// that writes an exposed <see cref="AudioMixer"/> parameter.
     /// </summary>
     /// <remarks>
-    /// The canonical way to build a sound settings screen. The alternative the package left was
-    /// <see cref="AudioSource.volume"/>, which is one binder per source and does not survive a source being
-    /// spawned at runtime — a mixer group is one value for everything routed through it.
-    /// <para/>
-    /// Supports <see cref="BindMode.OneWayToSource"/>: when binding is established, the parameter's current value is
-    /// read from the mixer and sent to the ViewModel.
-    /// <para/>
-    /// The value is written to the parameter unchanged. Mixer volumes are in decibels, so a linear 0..1 slider needs
-    /// a converter — the parameter's own range is whatever the mixer exposes, and this binder does not guess at it.
-    /// A non-finite value is refused: the mixer accepts one and the group then goes silent with nothing in the log.
+    /// The value is written to the parameter unchanged; mixer volumes are typically in decibels, so a linear 0..1
+    /// slider needs a converter.
     /// </remarks>
     [BindModeOverride(BindMode.OneWay, BindMode.OneTime, BindMode.OneWayToSource)]
     [AddComponentMenu("Aspid/MVVM/Binders/Audio/AudioMixer Binder – Float")]
@@ -30,10 +22,10 @@ namespace Aspid.MVVM.StarterKit
         /// <inheritdoc/>
         public event Action<float> ValueChanged;
 
-        [Tooltip("The mixer that exposes the parameter. Required — the binder logs an error and does nothing without it.")]
+        [Tooltip("The mixer that exposes the parameter. Required — logs an error if missing.")]
         [SerializeField] private AudioMixer _mixer;
 
-        [Tooltip("Name of the exposed parameter, exactly as it appears in the mixer's Exposed Parameters list.")]
+        [Tooltip("Exposed parameter name, exactly as in the mixer's Exposed Parameters list.")]
         [SerializeField] private string _parameter;
 
         /// <summary>
@@ -76,8 +68,7 @@ namespace Aspid.MVVM.StarterKit
                 return;
             }
 
-            // SetFloat отвечает false, если параметра с таким именем в микшере не выставлено наружу:
-            // единственный способ узнать об опечатке в имени, потому что молча ничего не произойдёт.
+            // SetFloat returns false silently on an unmatched parameter name — the only way to catch a typo.
             if (!_mixer.SetFloat(_parameter, value))
                 Debug.LogError($"[{nameof(AudioMixerFloatMonoBinder)}] Mixer '{_mixer.name}' exposes no parameter '{_parameter}'.", context: this);
         }

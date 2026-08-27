@@ -10,11 +10,7 @@ namespace Aspid.MVVM.StarterKit
     /// <see cref="IReverseBinder{T}">IReverseBinder&lt;int&gt;</see> that sets <see cref="GameObject.layer"/>.
     /// </summary>
     /// <remarks>
-    /// The domain had a Tag binder and no Layer one, though the layer is the property gameplay actually reads: what a
-    /// raycast hits, what a camera renders, what collides with what.
-    /// <para/>
-    /// Only the object itself changes layer, not its children. Values outside the 32 layers Unity has are refused with
-    /// an error rather than written: Unity silently keeps the previous layer for them.
+    /// Only the object itself changes layer, not its children.
     /// </remarks>
     [Serializable]
     [BindModeOverride(BindMode.OneWay, BindMode.OneTime, BindMode.OneWayToSource)]
@@ -25,9 +21,6 @@ namespace Aspid.MVVM.StarterKit
         /// <inheritdoc/>
         public event Action<int>? ValueChanged;
 
-        /// <summary>
-        /// Initializes a new instance of <see cref="GameObjectLayerBinder"/>.
-        /// </summary>
         /// <param name="target">The <see cref="GameObject"/> whose layer is set.</param>
         /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/> — the layer raises no change event to listen to.</param>
         /// <exception cref="ArgumentException">Thrown when <paramref name="mode"/> is <see cref="BindMode.TwoWay"/>.</exception>

@@ -9,11 +9,6 @@ namespace Aspid.MVVM.StarterKit
     /// <summary>
     /// <see cref="TargetVector2Binder{ScrollRect}"/> that binds <see cref="ScrollRect.normalizedPosition"/>.
     /// </summary>
-    /// <remarks>
-    /// Both axes at once, for the case the two scalar binders cannot express: restoring a remembered
-    /// position, or scrolling a grid back to a corner. Each component is clamped to 0..1 separately —
-    /// Unity clamps them silently anyway, and a non-finite one would leave the content nowhere.
-    /// </remarks>
     [Serializable]
     public class ScrollRectNormalizedPositionBinder : TargetVector2Binder<ScrollRect>
     {

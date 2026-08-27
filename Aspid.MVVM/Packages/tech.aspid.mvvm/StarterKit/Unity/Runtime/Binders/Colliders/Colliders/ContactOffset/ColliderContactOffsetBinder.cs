@@ -9,13 +9,7 @@ namespace Aspid.MVVM.StarterKit
     /// <see cref="TargetFloatBinder{Collider}"/> that binds <see cref="Collider.contactOffset"/>.
     /// </summary>
     /// <remarks>
-    /// The distance at which the engine starts treating a pair as touching. Tuning it is how jitter on a
-    /// stack of boxes or a wheel resting on a ramp gets fixed, which makes it a value worth exposing to a
-    /// difficulty or quality setting.
-    /// <para/>
-    /// Clamped to a small positive minimum rather than to zero: Unity refuses a contact offset of zero and logs
-    /// <c>"Contact offset must be greater than zero"</c> for it, so a bound zero — or a non-finite value landing on a
-    /// zero floor — would fill the console instead of taking effect.
+    /// Clamped to a small positive minimum instead of zero — Unity rejects a zero contact offset and logs an error.
     /// </remarks>
     [Serializable]
     public class ColliderContactOffsetBinder : TargetFloatBinder<Collider>

@@ -19,7 +19,7 @@ namespace Aspid.MVVM.StarterKit
             TMP_Dropdown target,
             int trueValue,
             int falseValue,
-            IConverter<int, int>? converter,
+            IConverter<int, int>? converter = null,
             BindMode mode = BindMode.OneWay)
             : base(target, trueValue, falseValue, converter, mode) { }
 

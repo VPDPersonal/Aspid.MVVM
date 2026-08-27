@@ -7,8 +7,7 @@ namespace Aspid.MVVM.StarterKit
     /// <see cref="ComponentStringMonoBinder{Renderer}"/> that binds <see cref="Renderer.sortingLayerName"/>.
     /// </summary>
     /// <remarks>
-    /// Which sorting layer the renderer belongs to. A name no layer has is refused with an error: Unity ignores
-    /// it silently and leaves the object where it was, which looks exactly like a depth bug.
+    /// A name no layer has is refused with an error instead of being silently ignored by Unity.
     /// </remarks>
     [AddBinderContextMenu(typeof(Renderer))]
     [AddComponentMenu("Aspid/MVVM/Binders/Renderer/Renderer Binder – Sorting Layer Name")]
@@ -20,8 +19,6 @@ namespace Aspid.MVVM.StarterKit
             get => CachedComponent.sortingLayerName;
             set
             {
-                // Unity молча игнорирует имя несуществующего слоя, поэтому существование проверяется заранее:
-                // иначе опечатка оставляет объект на прежнем слое и ничего об этом не сообщает.
                 if (string.IsNullOrEmpty(value)) return;
                 if (SortingLayer.NameToID(value) == 0 && value != "Default")
                 {

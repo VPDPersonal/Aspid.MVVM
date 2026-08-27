@@ -11,7 +11,7 @@ namespace Aspid.MVVM.StarterKit
     [AddComponentMenu("Aspid/MVVM/Binders/UI/RectTransform/RectTransform Binder – SizeDelta EnumGroup")]
     public sealed class RectTransformSizeDeltaEnumGroupMonoBinder : EnumGroupVector3MonoBinder<RectTransform>
     {
-        [Tooltip("Determines which axes of sizeDelta are modified: Width only, Height only, or both (SizeDelta).")]
+        [Tooltip("Which axes of sizeDelta are modified.")]
         [SerializeField] private SizeDeltaMode _sizeMode = SizeDeltaMode.SizeDelta;
 
         /// <summary>

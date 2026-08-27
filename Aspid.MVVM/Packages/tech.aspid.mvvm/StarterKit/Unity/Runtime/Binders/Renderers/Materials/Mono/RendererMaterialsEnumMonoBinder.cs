@@ -12,11 +12,10 @@ namespace Aspid.MVVM.StarterKit
     [AddBinderContextMenu(typeof(Renderer), serializePropertyNames: "m_Materials", SubPath = "Enum")]
     public sealed class RendererMaterialsEnumMonoBinder : EnumMonoBinder<Renderer, Material[]>
     {
-        [Tooltip("The optional converter applied to each material before it is assigned to the Renderer.")]
+        [Tooltip("The optional converter applied to each material before assignment.")]
         [SerializeReference] private Converter _converter;
 
         /// <summary>
-        /// Called when the bound enum resolves to a value for the current element.
         /// Sets the <see cref="Renderer.materials"/> array, applying the optional converter to each material.
         /// </summary>
         /// <param name="values">The materials received from the ViewModel.</param>

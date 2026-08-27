@@ -16,10 +16,9 @@ namespace Aspid.MVVM.StarterKit
         /// Reflects <paramref name="isInteractable"/> on <paramref name="target"/> according to <paramref name="mode"/>.
         /// </summary>
         /// <remarks>
-        /// Every reference the chosen mode needs is checked before it is dereferenced, and a missing one is reported
-        /// with the owning binder and the mode that required it. A command binder is driven by
-        /// <see cref="IRelayCommand.CanExecuteChanged"/>, so an exception raised here would also cut the notification short for every
-        /// other subscriber of that event; reporting and returning keeps the rest of them running.
+        /// A missing reference is logged rather than thrown: this method runs from
+        /// <see cref="IRelayCommand.CanExecuteChanged"/>, and throwing would cut that notification short for every
+        /// other subscriber.
         /// </remarks>
         /// <param name="target">The <see cref="Selectable"/> the command binder operates on.</param>
         /// <param name="mode">Determines what <paramref name="isInteractable"/> is applied to.</param>

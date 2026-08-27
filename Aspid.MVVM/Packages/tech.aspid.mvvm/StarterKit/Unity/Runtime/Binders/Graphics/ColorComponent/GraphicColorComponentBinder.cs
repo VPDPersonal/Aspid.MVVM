@@ -24,9 +24,6 @@ namespace Aspid.MVVM.StarterKit
             set => Target.SetColorComponent(_colorComponent, value);
         }
         
-        /// <summary>
-        /// Initializes a new instance of <see cref="GraphicColorComponentBinder"/> targeting the specified <see cref="Graphic"/>.
-        /// </summary>
         /// <param name="target">The <see cref="Graphic"/> whose color channel is bound.</param>
         /// <param name="colorComponent">The color channel to bind.</param>
         /// <param name="converter">The converter used to transform the bound float value, or <see langword="null"/> to use the value as-is.</param>

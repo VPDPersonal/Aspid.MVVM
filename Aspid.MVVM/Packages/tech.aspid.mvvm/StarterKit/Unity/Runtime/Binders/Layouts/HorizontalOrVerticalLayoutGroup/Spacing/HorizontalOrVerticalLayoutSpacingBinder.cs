@@ -9,8 +9,9 @@ namespace Aspid.MVVM.StarterKit
     /// <see cref="TargetFloatBinder{HorizontalOrVerticalLayoutGroup}"/> that sets the <see cref="UnityEngine.UI.HorizontalOrVerticalLayoutGroup.spacing"/> property.
     /// </summary>
     /// <remarks>
-    /// Also implements <see cref="INumberBinder"/>: numeric ViewModel values (int, long, float, double)
-    /// are forwarded directly to <see cref="UnityEngine.UI.HorizontalOrVerticalLayoutGroup.spacing"/>.
+    /// A non-finite value is rejected instead of being written. Also implements <see cref="INumberBinder"/>:
+    /// numeric ViewModel values (int, long, float, double) are forwarded directly to
+    /// <see cref="UnityEngine.UI.HorizontalOrVerticalLayoutGroup.spacing"/>.
     /// </remarks>
     /// <include file="XmlExampleDoc-HorizontalOrVerticalLayout-Spacing-1.1.0.xml" path="doc//member[@name='HorizontalOrVerticalLayoutSpacingBinder']/*" />
     [Serializable]
@@ -20,7 +21,11 @@ namespace Aspid.MVVM.StarterKit
         protected sealed override float Property
         {
             get => Target.spacing;
-            set => Target.spacing = value;
+            set
+            {
+                if (!BinderMath.IsFinite(value)) return;
+                Target.spacing = value;
+            }
         }
 
         /// <inheritdoc/>

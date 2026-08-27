@@ -8,9 +8,8 @@ namespace Aspid.MVVM.StarterKit
     /// <see cref="ComponentBoolMonoBinder{ToggleGroup}"/> that binds <see cref="ToggleGroup.allowSwitchOff"/>.
     /// </summary>
     /// <remarks>
-    /// Whether the group may end up with nothing selected. It is the difference between a filter the player can clear
-    /// and a set of tabs that must always have one open — and the only property of a <see cref="ToggleGroup"/>, which had
-    /// no binder at all.
+    /// Whether the group may end up with nothing selected — the difference between a filter the player can clear and
+    /// a set of tabs that must always have one open.
     /// <para/>
     /// Turning it off does not select anything: Unity leaves an already-empty group empty, and the first toggle the user
     /// presses becomes the selection. A ViewModel that needs one selected from the start has to say which.

@@ -10,9 +10,6 @@ namespace Aspid.MVVM.StarterKit
     /// <see cref="Animator.runtimeAnimatorController"/>.
     /// </summary>
     /// <remarks>
-    /// Swapping the whole controller is how one rig plays a different set of animations: a character that changes class
-    /// or mount, a weapon that brings its own moves.
-    /// <para/>
     /// Assigning a controller rebinds the animator and resets its state machine — parameters keep their values, the
     /// state does not. A destroyed controller arrives as <see langword="null"/>.
     /// </remarks>

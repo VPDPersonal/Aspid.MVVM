@@ -8,9 +8,6 @@ namespace Aspid.MVVM.StarterKit
     /// <summary>
     /// <see cref="TargetIntBinder{SpriteRenderer}"/> that binds <see cref="Renderer.sortingOrder"/>.
     /// </summary>
-    /// <remarks>
-    /// Draw order inside a sorting layer — the usual way a 2D scene expresses depth.
-    /// </remarks>
     [Serializable]
     public class SpriteRendererSortingOrderBinder : TargetIntBinder<SpriteRenderer>
     {

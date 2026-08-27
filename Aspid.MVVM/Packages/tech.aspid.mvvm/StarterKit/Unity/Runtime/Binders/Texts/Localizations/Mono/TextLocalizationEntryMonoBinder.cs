@@ -12,10 +12,6 @@ namespace Aspid.MVVM.StarterKit
     /// <see cref="ComponentStringMonoBinder{TMP_Text}"/> that sets the <see cref="TMP_Text.text"/> property
     /// using a Unity Localization entry, resolved via a <see cref="LocalizedString"/>.
     /// </summary>
-    /// <remarks>
-    /// Supports <see cref="BindMode.OneWayToSource"/>: when binding is established, the current text
-    /// is sent back to the ViewModel.
-    /// </remarks>
     [AddBinderContextMenu(typeof(TMP_Text), serializePropertyNames: "m_text")]
     [AddComponentMenu("Aspid/MVVM/Binders/UI/Text/Text Binder – Localization Entry")]
     public class TextLocalizationEntryMonoBinder : ComponentStringMonoBinder<TMP_Text>

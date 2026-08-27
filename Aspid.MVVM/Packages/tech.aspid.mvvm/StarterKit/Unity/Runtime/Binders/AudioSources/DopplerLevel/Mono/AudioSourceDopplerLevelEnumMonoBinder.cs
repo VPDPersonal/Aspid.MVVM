@@ -11,7 +11,11 @@ namespace Aspid.MVVM.StarterKit
     [AddComponentMenu("Aspid/MVVM/Binders/Audio/AudioSource/AudioSource Binder – DopplerLevel Enum")]
     public sealed class AudioSourceDopplerLevelEnumMonoBinder : EnumFloatMonoBinder<AudioSource>
     {
-        /// <inheritdoc/>
+        /// <summary>
+        /// Called when the bound enum resolves to a value.
+        /// Sets <see cref="AudioSource.dopplerLevel"/> clamped to the valid range of 0 to 5.
+        /// </summary>
+        /// <param name="value">The value received from the ViewModel.</param>
         protected override void SetValue(float value) =>
             CachedComponent.dopplerLevel = BinderMath.SafeClamp(value, 0, 5);
     }

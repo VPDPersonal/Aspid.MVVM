@@ -9,8 +9,6 @@ namespace Aspid.MVVM.StarterKit
     /// <see cref="ComponentMonoBinder{LayoutGroup, RectOffset, Converter}"/> that binds the <see cref="UnityEngine.UI.LayoutGroup.padding"/> property.
     /// </summary>
     /// <remarks>
-    /// Supports <see cref="BindMode.OneWayToSource"/>: when binding is established, the current padding value
-    /// is sent back to the ViewModel.
     /// The affected padding sides are determined by the configured <see cref="PaddingMode"/>.
     /// Also implements <see cref="INumberBinder"/>: numeric ViewModel values (int, long, float, double)
     /// are applied uniformly to all four padding sides before being forwarded to the layout group.
@@ -19,7 +17,7 @@ namespace Aspid.MVVM.StarterKit
     [AddBinderContextMenu(typeof(LayoutGroup), serializePropertyNames: "m_Padding")]
     public partial class LayoutGroupPaddingMonoBinder : ComponentMonoBinder<LayoutGroup, RectOffset, Converter>, INumberBinder
     {
-        [Tooltip("Determines which sides of the padding are updated when a value is received from the ViewModel.")]
+        [Tooltip("Which sides of the padding are updated when a value is received.")]
         [SerializeField] private PaddingMode _paddingMode;
         private RectOffset _cachedRectOffset;
 
@@ -49,16 +47,16 @@ namespace Aspid.MVVM.StarterKit
         /// <inheritdoc cref="SetValue(int)"/>
         [BinderLog]
         public void SetValue(long value) =>
-            SetValue((int)value);
+            SetValue(NumericSaturation.ToInt(value));
 
         /// <inheritdoc cref="SetValue(int)"/>
         [BinderLog]
         public void SetValue(float value) =>
-            SetValue((int)value);
+            SetValue(NumericSaturation.ToInt((double)value));
 
         /// <inheritdoc cref="SetValue(int)"/>
         [BinderLog]
         public void SetValue(double value) =>
-            SetValue((int)value);
+            SetValue(NumericSaturation.ToInt(value));
     }
 }

@@ -6,7 +6,7 @@ using UnityEngine.Localization.Tables;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// Reads a <see cref="TableEntryReference"/> back as the string the binders exchange with the ViewModel.
+    /// Provides extension methods for <see cref="TableEntryReference"/>.
     /// </summary>
     internal static class TableEntryReferences
     {
@@ -15,12 +15,8 @@ namespace Aspid.MVVM.StarterKit
         /// carry one.
         /// </summary>
         /// <remarks>
-        /// The implicit conversion to <see cref="string"/> yields <see cref="TableEntryReference.Key"/>, which is
-        /// filled only for a reference stored by name. Picking an entry through the Localization inspector stores
-        /// it by <em>id</em> instead — the common case — so the conversion produced <see langword="null"/> and the
-        /// binders handed that to the ViewModel in <see cref="BindMode.OneWayToSource"/> as if it were the entry.
-        /// Resolving an id to its name needs the shared table data loaded, which a binder cannot assume, so the
-        /// value is still <see langword="null"/>; what changes is that it now says so instead of passing silently.
+        /// Returns <see langword="null"/> when the reference is stored by id rather than by name, since resolving
+        /// an id to its name needs the shared table data a binder cannot assume it has.
         /// </remarks>
         /// <param name="reference">The reference to read.</param>
         /// <param name="owner">The binder reading it; used to name the source in the diagnostic.</param>

@@ -13,16 +13,7 @@ namespace Aspid.MVVM.StarterKit
     /// <typeparam name="TKey">The type of keys in the observable dictionary.</typeparam>
     /// <typeparam name="TValue">The type of values in the observable dictionary.</typeparam>
     /// <remarks>
-    /// On binding, existing entries are replayed through <see cref="OnAdded(KeyValuePair{TKey, TValue?})"/>
-    /// so that the initial state is reflected in the View.
-    /// Subsequent <see cref="NotifyCollectionChangedAction.Add"/>,
-    /// <see cref="NotifyCollectionChangedAction.Remove"/>,
-    /// <see cref="NotifyCollectionChangedAction.Replace"/>, and
-    /// <see cref="NotifyCollectionChangedAction.Reset"/> events are dispatched to the corresponding
-    /// abstract hook methods.
-    /// <see cref="NotifyCollectionChangedAction.Move"/> is not supported and will throw
-    /// <see cref="NotImplementedException"/>.
-    /// When the binder is unbound, the dictionary subscription is released and <see cref="OnReset"/> is called.
+    /// <see cref="NotifyCollectionChangedAction.Move"/> is not supported and throws <see cref="NotImplementedException"/>.
     /// </remarks>
     public abstract class ObservableDictionaryBinder<TKey, TValue> : Binder, IBinder<IReadOnlyObservableDictionary<TKey, TValue?>>
     {
@@ -31,10 +22,6 @@ namespace Aspid.MVVM.StarterKit
         /// </summary>
         protected IReadOnlyObservableDictionary<TKey, TValue?>? Dictionary { get; private set; }
 
-        /// <summary>
-        /// Initializes a new instance of <see cref="ObservableDictionaryBinder{TKey,TValue}"/>
-        /// with the specified binding mode.
-        /// </summary>
         /// <param name="mode">The binding mode to use.</param>
         protected ObservableDictionaryBinder(BindMode mode = BindMode.OneWay)
             : base(mode) { }

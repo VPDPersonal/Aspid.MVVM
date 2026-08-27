@@ -74,10 +74,6 @@ namespace Aspid.MVVM.StarterKit
         /// Called when the binder is bound. Subscribes to <see cref="Slider.onValueChanged"/> when using
         /// <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.
         /// </summary>
-        /// <remarks>
-        /// When <see cref="BindMode.OneWayToSource"/> is active, the current slider value is also immediately
-        /// forwarded to the ViewModel to synchronize the source with the current view state.
-        /// </remarks>
         protected override void OnBound()
         {
             if (Mode is not (BindMode.TwoWay or BindMode.OneWayToSource)) return;
@@ -99,12 +95,15 @@ namespace Aspid.MVVM.StarterKit
             CachedComponent.onValueChanged.RemoveListener(OnValueChanged);
         }
 
+        /// <summary>
+        /// Sets <see cref="Slider.value"/>, applying the configured converter if present.
+        /// Suppresses value change events during assignment.
+        /// </summary>
         /// <remarks>
-        /// The value written is clamped to the slider's own range first. Unity clamps it anyway, silently, and the
-        /// echo guard around the assignment then swallows the <c>onValueChanged</c> that the clamp raises — so the
-        /// ViewModel would keep the value it sent while the slider showed a different one, and the two stayed apart
-        /// until the next change. When the clamp actually changes the value, the reverse channel is told what the
-        /// slider holds. A converter's own effect is not reported back: only the difference the clamp made is.
+        /// The value is clamped to the slider's own range before assignment. Unity would clamp it anyway, but
+        /// silently, and the echo guard would swallow the <c>onValueChanged</c> the clamp raises — leaving the
+        /// ViewModel out of sync until the next change. When the clamp changes the value, the difference is
+        /// reported back; a converter's own effect is not.
         /// </remarks>
         /// <param name="value">The value received from the ViewModel.</param>
         protected void SetValueInternal(float value)
@@ -121,8 +120,8 @@ namespace Aspid.MVVM.StarterKit
             }
             finally
             {
-                // Без finally исключение из сеттера — например, из чужого слушателя onValueChanged —
-                // навсегда оставило бы флаг снятым и обесточило канал View → ViewModel.
+                // Without finally, an exception from the setter (e.g. from another onValueChanged listener)
+                // would leave the flag stuck false, permanently killing the View -> ViewModel channel.
                 _isNotifyValueChanged = true;
             }
 
@@ -140,6 +139,7 @@ namespace Aspid.MVVM.StarterKit
             FloatValueChanged?.Invoke(value);
             DoubleValueChanged?.Invoke(value);
         }
+
         /// <summary>
         /// Converts a value on its way back to the ViewModel.
         /// </summary>

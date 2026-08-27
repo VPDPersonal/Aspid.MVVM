@@ -11,16 +11,8 @@ namespace Aspid.MVVM.StarterKit
     /// a stack — and forwards its changes as hook calls.
     /// </summary>
     /// <remarks>
-    /// The package bound observable lists and dictionaries and left the other three types of the collections library
-    /// unbound, though a set of owned ids, a queue of pending requests and a stack of open screens are all things a View
-    /// shows. One binder covers all three because that is exactly what they have in common: membership that changes, and
-    /// no index worth binding to.
-    /// <para/>
-    /// Deliberately not built on the list binder. A list binder's hooks carry an index, and none of these three has one
-    /// that survives a change — a queue renumbers on every dequeue. The hooks here carry items only, which is the honest
-    /// contract for a set, and it is why a reset is the answer to any change a collection reports without detail.
-    /// <para/>
     /// What the collection already holds is replayed when it arrives, so a View built after the data still shows it.
+    /// The hooks carry items only, with no index — a set, a queue and a stack have no index that survives a change.
     /// </remarks>
     /// <typeparam name="T">The element type of the bound collection.</typeparam>
     public abstract partial class ObservableCollectionMonoBinder<T> : MonoBinder, IBinder<IObservableCollection<T>>
@@ -91,8 +83,7 @@ namespace Aspid.MVVM.StarterKit
                     }
                     break;
 
-                // Порядок в множестве, очереди и стеке не адресуется, поэтому перемещение и любое
-                // изменение без деталей сводятся к пересбору: это честнее, чем угадывать индексы.
+                // No addressable order to update in place, so a move or an unspecified change triggers a full rebuild.
                 case NotifyCollectionChangedAction.Move:
                 case NotifyCollectionChangedAction.Reset:
                     {

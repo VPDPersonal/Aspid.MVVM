@@ -15,9 +15,6 @@ namespace Aspid.MVVM.StarterKit
     [Serializable]
     public sealed class GraphicMaterialSwitcherBinder : SwitcherBinder<Graphic, Material, Converter>
     {
-        /// <summary>
-        /// Initializes a new instance of <see cref="GraphicMaterialSwitcherBinder"/>.
-        /// </summary>
         /// <param name="target">The <see cref="Graphic"/> to bind.</param>
         /// <param name="trueValue">The <see cref="Material"/> applied when the bound boolean is <see langword="true"/>.</param>
         /// <param name="falseValue">The <see cref="Material"/> applied when the bound boolean is <see langword="false"/>.</param>

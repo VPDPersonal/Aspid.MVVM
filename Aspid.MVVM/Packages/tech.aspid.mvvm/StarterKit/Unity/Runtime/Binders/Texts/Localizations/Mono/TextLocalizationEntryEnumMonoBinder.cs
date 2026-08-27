@@ -56,8 +56,7 @@ namespace Aspid.MVVM.StarterKit
             _stringReference.Unsubscribe(UpdateString);
 
         /// <summary>
-        /// Called when the bound enum resolves to a value.
-        /// Sets the localized string table entry reference.
+        /// Sets the localized string table entry reference to the resolved value.
         /// </summary>
         /// <param name="value">The value received from the ViewModel.</param>
         protected sealed override void SetValue(string value) =>

@@ -13,7 +13,7 @@ namespace Aspid.MVVM.StarterKit
     [AddBinderContextMenu(typeof(Component), Path = "Add General Binder/UnityEvent/UnityEvent Binder – Number Condition")]
     public sealed partial class UnityEventNumberConditionMonoBinder : MonoBinder, INumberBinder
     {
-        [Tooltip("Optional converter applied to the value before it is used. Leave empty to use the value as-is.")]
+        [Tooltip("Required — an empty converter logs an error instead of invoking the event.")]
         [SerializeReference] private Converter _converter;
 
         [Tooltip("The event invoked with the boolean result of the condition.")]

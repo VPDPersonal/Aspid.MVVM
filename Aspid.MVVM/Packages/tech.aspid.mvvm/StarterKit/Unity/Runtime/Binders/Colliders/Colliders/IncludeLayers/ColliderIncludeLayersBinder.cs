@@ -9,9 +9,8 @@ namespace Aspid.MVVM.StarterKit
     /// <see cref="TargetIntBinder{Collider}"/> that binds <see cref="Collider.includeLayers"/>.
     /// </summary>
     /// <remarks>
-    /// A per-collider layer mask, on top of the global collision matrix — how a ghost passes through walls
-    /// while a living character does not, without a second prefab. The mask travels as an <see langword="int"/>,
-    /// which is what <see cref="LayerMask"/> converts to and from.
+    /// A per-collider layer mask applied on top of the global collision matrix. Travels as an
+    /// <see langword="int"/>, which is what <see cref="LayerMask"/> converts to and from.
     /// </remarks>
     [Serializable]
     public class ColliderIncludeLayersBinder : TargetIntBinder<Collider>

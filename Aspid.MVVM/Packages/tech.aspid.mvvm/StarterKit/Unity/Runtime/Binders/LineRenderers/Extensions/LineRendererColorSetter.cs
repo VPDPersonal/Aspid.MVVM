@@ -47,12 +47,6 @@ namespace Aspid.MVVM.StarterKit
         /// which writes both endpoints at once — the start color is returned.
         /// </returns>
         /// <exception cref="ArgumentOutOfRangeException">Thrown when <paramref name="mode"/> is not a valid value.</exception>
-        /// <remarks>
-        /// <see cref="LineRendererColorMode.StartAndEnd"/> is the MonoBinder's default, and
-        /// <see cref="BindMode.OneWayToSource"/> reads the property back the moment binding is established — so
-        /// throwing here aborted the View's initialization before the ViewModel ever saw a value. Since that mode
-        /// keeps both endpoints in step, either one answers the question; the start color is the natural choice.
-        /// </remarks>
         public static Color GetColor(this LineRenderer lineRenderer, LineRendererColorMode mode)
         {
             switch (mode)

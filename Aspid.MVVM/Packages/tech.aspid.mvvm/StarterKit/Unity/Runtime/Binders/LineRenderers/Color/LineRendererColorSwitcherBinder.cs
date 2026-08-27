@@ -16,9 +16,6 @@ namespace Aspid.MVVM.StarterKit
         [Tooltip("The color endpoint(s) to set when a value is applied.")]
         [SerializeField] private LineRendererColorMode _colorMode;
 
-        /// <summary>
-        /// Initializes a new instance of <see cref="LineRendererColorSwitcherBinder"/> targeting the specified <see cref="LineRenderer"/>.
-        /// </summary>
         /// <param name="target">The <see cref="LineRenderer"/> to bind.</param>
         /// <param name="trueValue">The color applied when the bound boolean is <see langword="true"/>.</param>
         /// <param name="falseValue">The color applied when the bound boolean is <see langword="false"/>.</param>

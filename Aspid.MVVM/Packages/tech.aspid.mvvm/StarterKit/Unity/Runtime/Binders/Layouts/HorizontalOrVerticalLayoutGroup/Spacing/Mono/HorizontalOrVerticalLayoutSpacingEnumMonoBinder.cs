@@ -14,11 +14,13 @@ namespace Aspid.MVVM.StarterKit
     public sealed class HorizontalOrVerticalLayoutSpacingEnumMonoBinder : EnumFloatMonoBinder<HorizontalOrVerticalLayoutGroup>
     {
         /// <summary>
-        /// Called when the bound enum resolves to a value.
-        /// Sets <see cref="UnityEngine.UI.HorizontalOrVerticalLayoutGroup.spacing"/> directly.
+        /// Sets <see cref="UnityEngine.UI.HorizontalOrVerticalLayoutGroup.spacing"/> to <paramref name="value"/> if it is finite.
         /// </summary>
         /// <param name="value">The value received from the ViewModel.</param>
-        protected override void SetValue(float value) =>
+        protected override void SetValue(float value)
+        {
+            if (!BinderMath.IsFinite(value)) return;
             CachedComponent.spacing = value;
+        }
     }
 }

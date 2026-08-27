@@ -21,7 +21,6 @@ namespace Aspid.MVVM.StarterKit
             get => CachedComponent.effectDistance;
             set
             {
-                // Отрицательное смещение — обычное дело: так тень уходит влево или вверх.
                 if (!BinderMath.IsFinite(value.x) || !BinderMath.IsFinite(value.y)) return;
                 CachedComponent.effectDistance = value;
             }

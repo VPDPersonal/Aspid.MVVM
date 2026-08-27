@@ -10,11 +10,6 @@ namespace Aspid.MVVM.StarterKit
     /// <see cref="TargetBinder{T1, T2}">TargetBinder&lt;AspectRatioFitter, AspectRatioFitter.AspectMode&gt;</see> that binds
     /// <see cref="AspectRatioFitter.aspectMode"/>.
     /// </summary>
-    /// <remarks>
-    /// How the element reconciles its aspect ratio with the space it is given — fit inside, envelope, or
-    /// follow one axis. A video or a portrait that can arrive in any shape decides this at runtime, from the
-    /// shape it actually got.
-    /// </remarks>
     [Serializable]
     public class AspectRatioFitterAspectModeBinder : TargetBinder<AspectRatioFitter, AspectRatioFitter.AspectMode>
     {

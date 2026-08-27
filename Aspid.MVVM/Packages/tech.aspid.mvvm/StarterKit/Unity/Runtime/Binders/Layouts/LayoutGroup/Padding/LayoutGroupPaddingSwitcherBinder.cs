@@ -18,12 +18,9 @@ namespace Aspid.MVVM.StarterKit
     [Serializable]
     public sealed class LayoutGroupPaddingSwitcherBinder : SwitcherBinder<LayoutGroup, RectOffset, Converter>
     {
-        [Tooltip("Determines which sides of the padding are updated when a value is applied.")]
+        [Tooltip("Which sides of the padding are updated when a value is applied.")]
         [SerializeField] private PaddingMode _paddingMode;
 
-        /// <summary>
-        /// Initializes a new instance of <see cref="LayoutGroupPaddingSwitcherBinder"/> targeting the specified <see cref="LayoutGroup"/>.
-        /// </summary>
         /// <param name="target">The <see cref="LayoutGroup"/> whose <see cref="UnityEngine.UI.LayoutGroup.padding"/> property is switched.</param>
         /// <param name="trueValue">The padding assigned when the bound value is <see langword="true"/>.</param>
         /// <param name="falseValue">The padding assigned when the bound value is <see langword="false"/>.</param>

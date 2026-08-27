@@ -12,16 +12,6 @@ namespace Aspid.MVVM.StarterKit
     /// and reflects add/reset operations onto a target View component.
     /// </summary>
     /// <typeparam name="T">The element type of the collection.</typeparam>
-    /// <remarks>
-    /// When a new collection is assigned via <c>SetValue</c>, the previously held collection is reset
-    /// first via <see cref="OnReset"/>, then the new items are passed to <see cref="OnAdded(IReadOnlyCollection{T})"/> if the collection
-    /// is non-empty.
-    /// When the binder is unbound (via <see cref="Binder.Unbind"/>), <see cref="OnUnbound"/> unsubscribes from
-    /// the collection's <c>CollectionChanged</c> event to prevent handler leaks.
-    /// The class also implements <see cref="IDisposable"/>; disposing it calls <c>SetValue</c> with
-    /// <see langword="null"/>, which unsubscribes from <c>CollectionChanged</c>, clears <see cref="Collection"/>,
-    /// and calls <see cref="OnReset"/>.
-    /// </remarks>
     public abstract class CollectionBinderBase<T> : Binder,
         IBinder<IReadOnlyCollection<T>>,
         IDisposable
@@ -31,9 +21,6 @@ namespace Aspid.MVVM.StarterKit
         /// </summary>
         protected IReadOnlyCollection<T>? Collection { get; private set; }
 
-        /// <summary>
-        /// Initializes a new instance of <see cref="CollectionBinderBase{T}"/> with the specified binding mode.
-        /// </summary>
         /// <param name="mode">The binding mode to use.</param>
         protected CollectionBinderBase(BindMode mode = BindMode.OneWay)
             : base(mode) { }

@@ -13,9 +13,6 @@ namespace Aspid.MVVM.StarterKit
     /// <remarks>
     /// Unity-specific variant of <see cref="GenericTwoWayBinder{T}"/> that accepts <see cref="UnityAction{T}"/>
     /// callbacks instead of plain <see cref="System.Action{T}"/> delegates.
-    /// Optionally pushes a value to the ViewModel when the binding is established (<see cref="OnBound"/>)
-    /// or just before it is released (<see cref="OnUnbinding"/>), controlled by the
-    /// onBoundValueChanged and onUnboundValueChanged factory functions respectively.
     /// </remarks>
     /// <include file="XmlExampleDoc-UnityGenerics-1.1.0.xml" path="doc//member[@name='UnityGenericTwoWayBinder{1}']/*" />
     [System.Obsolete("Use the GenericTwoWay binder instead: it takes a plain Action, which a UnityAction converts to implicitly. The Unity-flavoured copies exist only for that conversion and will be removed in the next major version.")]
@@ -30,10 +27,6 @@ namespace Aspid.MVVM.StarterKit
         private readonly Func<T?>? _onBoundValueChanged;
         private readonly Func<T?>? _onUnboundValueChanged;
 
-        /// <summary>
-        /// Initializes a new instance of <see cref="UnityGenericTwoWayBinder{T}"/> and immediately
-        /// wires up the View-side event via <paramref name="initialize"/>.
-        /// </summary>
         /// <param name="initialize">
         /// A <see cref="UnityAction{T}"/> that receives the internal <see cref="OnValueChanged"/> callback and registers it
         /// with the appropriate View event so that View changes are propagated to the ViewModel.
@@ -56,9 +49,6 @@ namespace Aspid.MVVM.StarterKit
             initialize.Invoke(OnValueChanged);
         }
 
-        /// <summary>
-        /// Initializes a new instance of <see cref="UnityGenericTwoWayBinder{T}"/> without an event-wire-up action.
-        /// </summary>
         /// <param name="setValue">The <see cref="UnityAction{T}"/> invoked when a new value arrives from the ViewModel.</param>
         /// <param name="onBoundValueChanged">
         /// Optional factory invoked when the binding is established; the returned value is pushed to the ViewModel.
@@ -139,10 +129,6 @@ namespace Aspid.MVVM.StarterKit
         private readonly Func<TTarget, T?>? _onBoundValueChanged;
         private readonly Func<TTarget, T?>? _onUnboundValueChanged;
 
-        /// <summary>
-        /// Initializes a new instance of <see cref="UnityGenericTwoWayBinder{TTarget,T}"/> and immediately
-        /// wires up the View-side event via <paramref name="initialize"/>.
-        /// </summary>
         /// <param name="target">The target View object.</param>
         /// <param name="initialize">
         /// A <see cref="UnityAction{T0,T1}"/> that receives <paramref name="target"/> and the internal <see cref="OnValueChanged"/>
@@ -164,7 +150,7 @@ namespace Aspid.MVVM.StarterKit
         /// </exception>
         public UnityGenericTwoWayBinder(
             TTarget target,
-            UnityAction<TTarget, UnityAction<T>> initialize, 
+            UnityAction<TTarget, UnityAction<T>> initialize,
             UnityAction<TTarget, T?> setValue,
             Func<TTarget, T?>? onBoundValueChanged = null,
             Func<TTarget, T?>? onUnboundValueChanged = null)
@@ -179,18 +165,14 @@ namespace Aspid.MVVM.StarterKit
             initialize.Invoke(target, OnValueChanged);
         }
 
-        /// <summary>
-        /// Initializes a new instance of <see cref="UnityGenericTwoWayBinder{TTarget,T}"/> without an
-        /// event-wire-up action. At least one of <paramref name="onBoundValueChanged"/> or
-        /// <paramref name="onUnboundValueChanged"/> must be non-<see langword="null"/>.
-        /// </summary>
         /// <param name="target">The target View object.</param>
         /// <param name="setValue">
         /// The <see cref="UnityAction{T0,T1}"/> invoked with the target and each new value received from the ViewModel.
         /// </param>
         /// <param name="onBoundValueChanged">
         /// Optional factory invoked with <paramref name="target"/> when the binding is established;
-        /// the returned value is pushed to the ViewModel.
+        /// the returned value is pushed to the ViewModel. At least one of <paramref name="onBoundValueChanged"/>
+        /// or <paramref name="onUnboundValueChanged"/> must be non-<see langword="null"/>.
         /// </param>
         /// <param name="onUnboundValueChanged">
         /// Optional factory invoked with <paramref name="target"/> just before the binding is released;

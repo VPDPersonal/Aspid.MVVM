@@ -8,9 +8,6 @@ namespace Aspid.MVVM.StarterKit
     /// <summary>
     /// <see cref="TargetBoolBinder{Rigidbody}"/> that binds <see cref="Rigidbody.useGravity"/>.
     /// </summary>
-    /// <remarks>
-    /// Suspending gravity for a held or hovering object is a state a ViewModel usually owns, and it had no binder.
-    /// </remarks>
     [Serializable]
     public class RigidbodyUseGravityBinder : TargetBoolBinder<Rigidbody>
     {

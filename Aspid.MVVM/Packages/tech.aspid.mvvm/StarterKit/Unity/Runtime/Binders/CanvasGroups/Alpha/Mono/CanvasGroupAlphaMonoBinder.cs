@@ -7,8 +7,6 @@ namespace Aspid.MVVM.StarterKit
     /// <see cref="ComponentFloatMonoBinder{CanvasGroup}"/> that binds the <see cref="CanvasGroup.alpha"/> property.
     /// </summary>
     /// <remarks>
-    /// Supports <see cref="BindMode.OneWayToSource"/>: when binding is established, the current alpha value
-    /// is sent back to the ViewModel.
     /// The bound value is clamped to [0, 1] before being applied to <see cref="CanvasGroup.alpha"/>.
     /// </remarks>
     [AddBinderContextMenu(typeof(CanvasGroup), serializePropertyNames: "m_Alpha")]

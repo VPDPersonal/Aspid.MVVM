@@ -27,9 +27,6 @@ namespace Aspid.MVVM.StarterKit
         [Tooltip("When enabled, inverts the bound bool value before applying it.")]
         [SerializeField] private bool _isInvert;
         
-        /// <summary>
-        /// Initializes a new instance of <see cref="GameObjectVisibleBinder"/> targeting the specified <see cref="GameObject"/>.
-        /// </summary>
         /// <param name="target">The <see cref="GameObject"/> whose active state is bound.</param>
         /// <param name="isInvert">When <see langword="true"/>, the bound boolean value is inverted before being applied.</param>
         /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/>.</param>

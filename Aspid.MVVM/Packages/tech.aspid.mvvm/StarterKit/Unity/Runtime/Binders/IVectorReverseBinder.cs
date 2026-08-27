@@ -9,10 +9,6 @@ namespace Aspid.MVVM.StarterKit
     /// as <see cref="Vector2"/> or <see cref="Vector3"/>.
     /// </summary>
     /// <remarks>
-    /// Exposes two strongly typed events — <see cref="Vector2ValueChanged"/> and <see cref="Vector3ValueChanged"/> — that implementors raise when
-    /// the View value changes. Default interface method implementations bridge these concrete events to the
-    /// generic <see cref="IReverseBinder{T}.ValueChanged"/> event required by each <see cref="IReverseBinder{T}"/>
-    /// base interface, so the binding infrastructure can subscribe via a single, type-safe surface.
     /// Typically implemented alongside <see cref="IVectorBinder"/> on vector UI binders.
     /// </remarks>
     // ReSharper disable once PossibleInterfaceMemberAmbiguity

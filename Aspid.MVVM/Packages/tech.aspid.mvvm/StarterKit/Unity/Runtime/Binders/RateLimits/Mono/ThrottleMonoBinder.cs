@@ -5,12 +5,8 @@ namespace Aspid.MVVM.StarterKit
     /// Abstract base <see cref="RateLimitedMonoBinder{TValue}"/> that forwards at most one value per interval.
     /// </summary>
     /// <remarks>
-    /// The opposite end from a debounce: a source that publishes every frame — a position, a timer, a physics value —
-    /// reaches the view often enough to look live and rarely enough to be affordable.
-    /// <para/>
-    /// The first value goes through immediately, because waiting out the interval before showing anything makes the view
-    /// look broken. A value that arrives inside the interval is held, and the last one held is what goes out when the
-    /// interval ends — an intermediate value nobody saw is not worth delaying the current one for.
+    /// The first value in each interval is forwarded immediately. A value that arrives before the interval elapses
+    /// replaces any already held and is the one emitted when it ends.
     /// </remarks>
     /// <typeparam name="TValue">The type of value being forwarded.</typeparam>
     public abstract class ThrottleMonoBinder<TValue> : RateLimitedMonoBinder<TValue>

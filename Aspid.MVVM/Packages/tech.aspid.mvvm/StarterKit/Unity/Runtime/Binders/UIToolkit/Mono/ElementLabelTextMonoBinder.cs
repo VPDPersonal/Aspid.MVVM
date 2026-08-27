@@ -8,13 +8,7 @@ namespace Aspid.MVVM.StarterKit
     /// <see cref="VisualElementMonoBinder{Label}"/> implementing <see cref="IBinder{T}">IBinder&lt;string&gt;</see> and
     /// <see cref="IAnyBinder"/> that sets <see cref="TextElement.text"/>.
     /// </summary>
-    /// <remarks>
-    /// The UI Toolkit counterpart of the text binder, and the first thing any View needs. Accepts any bound value, not
-    /// only a string: a number or an enum reaches a label the same way it reaches a TextMeshPro one.
-    /// <para/>
-    /// A <see langword="null"/> value is written as an empty string — a label showing the word <c>null</c> is never what
-    /// was meant.
-    /// </remarks>
+    /// <remarks>A <see langword="null"/> value is written as an empty string.</remarks>
     [BindModeOverride(BindMode.OneWay, BindMode.OneTime)]
     [AddComponentMenu("Aspid/MVVM/Binders/UIToolkit/Element Binder – Label Text")]
     [AddBinderContextMenu(typeof(Component), Path = "Add General Binder/UIToolkit/Element Binder – Label Text")]

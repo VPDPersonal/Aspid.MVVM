@@ -10,10 +10,6 @@ namespace Aspid.MVVM.StarterKit
     /// <see cref="UnityEngine.Object.name"/> of the object this component is attached to.
     /// </summary>
     /// <remarks>
-    /// A spawned object named after what it holds — "Slot 3", the item's id, the player's nickname — is the difference
-    /// between a readable hierarchy and forty copies of <c>Clone</c> while debugging. The Tag binder existed and this
-    /// did not.
-    /// <para/>
     /// A <see langword="null"/> name is refused rather than written: Unity replaces it with an empty string and the
     /// object becomes unfindable by name.
     /// <para/>

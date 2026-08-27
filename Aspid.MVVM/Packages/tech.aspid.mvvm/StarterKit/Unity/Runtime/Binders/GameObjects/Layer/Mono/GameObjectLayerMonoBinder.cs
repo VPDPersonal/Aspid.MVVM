@@ -10,13 +10,7 @@ namespace Aspid.MVVM.StarterKit
     /// <see cref="GameObject.layer"/> of the object this component is attached to.
     /// </summary>
     /// <remarks>
-    /// The domain had a Tag binder and no Layer one, though the layer is the property gameplay actually reads: what a
-    /// raycast hits, what a camera renders, what collides with what. Moving an object to a "ghost" or "no-collision"
-    /// layer for the duration of a state is a ViewModel decision.
-    /// <para/>
-    /// Only the object itself changes layer, not its children — the same as assigning the property by hand. Values
-    /// outside the 32 layers Unity has are refused with an error rather than written: Unity silently keeps the
-    /// previous layer for them.
+    /// Only the object itself changes layer, not its children — the same as assigning the property by hand.
     /// <para/>
     /// Supports <see cref="BindMode.OneWayToSource"/>: when binding is established, the current layer is sent back to
     /// the ViewModel.

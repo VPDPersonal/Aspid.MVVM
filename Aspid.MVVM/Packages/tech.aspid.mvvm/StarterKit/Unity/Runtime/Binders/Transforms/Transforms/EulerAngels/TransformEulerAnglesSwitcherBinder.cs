@@ -16,9 +16,6 @@ namespace Aspid.MVVM.StarterKit
         [Tooltip("The coordinate space in which the euler angles are applied.")]
         [SerializeField] private Space _space;
         
-        /// <summary>
-        /// Initializes a new instance of <see cref="TransformEulerAnglesSwitcherBinder"/>.
-        /// </summary>
         /// <param name="target">The <see cref="Transform"/> to bind.</param>
         /// <param name="trueValue">The euler angles applied when the bound boolean is <see langword="true"/>.</param>
         /// <param name="falseValue">The euler angles applied when the bound boolean is <see langword="false"/>.</param>

@@ -7,13 +7,8 @@ namespace Aspid.MVVM.StarterKit
     /// <see cref="ComponentVector2MonoBinder{SpriteRenderer}"/> that binds <see cref="SpriteRenderer.size"/>.
     /// </summary>
     /// <remarks>
-    /// The size a tiled or sliced sprite is stretched to — a health bar, a growing panel, a rope. It is the
-    /// only property of the domain that was left out, and it is the one that needs a binder most: the
-    /// alternative is scaling the transform, which stretches the border of a sliced sprite with it.
-    /// <para/>
-    /// Ignored by Unity unless <see cref="SpriteRenderer.drawMode"/> is
-    /// <see cref="SpriteDrawMode.Sliced"/> or <see cref="SpriteDrawMode.Tiled"/>. Negative values are
-    /// clamped to zero, which is also where a non-finite value lands.
+    /// Ignored by Unity unless <see cref="SpriteRenderer.drawMode"/> is <see cref="SpriteDrawMode.Sliced"/> or
+    /// <see cref="SpriteDrawMode.Tiled"/>. Negative and non-finite values are clamped to zero.
     /// </remarks>
     [AddBinderContextMenu(typeof(SpriteRenderer), serializePropertyNames: "m_Size")]
     [AddComponentMenu("Aspid/MVVM/Binders/SpriteRenderer/SpriteRenderer Binder – Size")]

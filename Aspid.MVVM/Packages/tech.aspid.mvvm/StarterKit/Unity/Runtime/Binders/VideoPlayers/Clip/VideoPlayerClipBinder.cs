@@ -10,9 +10,8 @@ namespace Aspid.MVVM.StarterKit
     /// <see cref="VideoPlayer.clip"/>.
     /// </summary>
     /// <remarks>
-    /// Which video plays: a cutscene chosen by progress, a tutorial chosen by the step the player is on. Assigning a clip
-    /// stops playback and rewinds — Unity's behaviour, not the binder's. A destroyed clip arrives as
-    /// <see langword="null"/>.
+    /// Assigning a clip stops playback and rewinds — Unity's behavior, not the binder's. A destroyed clip arrives
+    /// as <see langword="null"/>.
     /// </remarks>
     [Serializable]
     public class VideoPlayerClipBinder : TargetObjectBinder<VideoPlayer, VideoClip>

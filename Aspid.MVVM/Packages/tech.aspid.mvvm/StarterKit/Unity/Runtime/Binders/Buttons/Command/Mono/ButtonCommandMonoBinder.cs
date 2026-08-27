@@ -15,10 +15,10 @@ namespace Aspid.MVVM.StarterKit
         IBinder<IRelayCommand>,
         IBinder<IRelayCommand<bool>>
     {
-        [Tooltip("Controls how the button's interactable state reflects the bound command's CanExecute result.")]
+        [Tooltip("How CanExecute affects the button's interactable state.")]
         [SerializeField] private InteractableMode _interactableMode = InteractableMode.Interactable;
 
-        [Tooltip("A custom view that reflects the bound command's CanExecute state; used when Interactable Mode is set to Custom.")]
+        [Tooltip("View that reflects CanExecute when Interactable Mode is Custom.")]
         [SerializeReference] private ICanExecuteView _customInteractable;
 
         private IRelayCommand _command;
@@ -54,30 +54,26 @@ namespace Aspid.MVVM.StarterKit
         /// every click executes the bound command.
         /// </summary>
         /// <remarks>
-        /// The subscription connects the button's click event to <see cref="OnCLicked()"/>,
+        /// The subscription connects the button's click event to <see cref="OnClicked()"/>,
         /// which dispatches to the first non-null command: the plain <see cref="IRelayCommand"/> is executed
         /// without a parameter; otherwise <see cref="IRelayCommand{T}">IRelayCommand&lt;bool&gt;</see> is executed with <see langword="true"/>.
         /// </remarks>
         protected override void OnBound() =>
-            CachedComponent.onClick.AddListener(OnCLicked);
+            CachedComponent.onClick.AddListener(OnClicked);
 
         /// <summary>
         /// Called when the binder is unbound. Unsubscribes from <see cref="Button.onClick"/>
         /// and releases both bound command references.
         /// </summary>
-        /// <remarks>
-        /// Passes <see langword="null"/> to both <see cref="SetValue(IRelayCommand)"/> overloads to detach the command references
-        /// and unsubscribe from their <see cref="IRelayCommand.CanExecuteChanged"/> events.
-        /// </remarks>
         protected override void OnUnbound()
         {
-            CachedComponent.onClick.RemoveListener(OnCLicked);
-            
+            CachedComponent.onClick.RemoveListener(OnClicked);
+
             SetValue((IRelayCommand)null);
             SetValue((IRelayCommand<bool>)null);
         }
-        
-        private void OnCLicked()
+
+        private void OnClicked()
         {
             if (_command is not null) _command.Execute();
             else _selectableCommand?.Execute(true);
@@ -113,10 +109,10 @@ namespace Aspid.MVVM.StarterKit
         [SerializeField] private T _param;
 
         [Space]
-        [Tooltip("Controls how the button's interactable state reflects the bound command's CanExecute result.")]
+        [Tooltip("How CanExecute affects the button's interactable state.")]
         [SerializeField] private InteractableMode _interactableMode = InteractableMode.Interactable;
 
-        [Tooltip("A custom view that reflects the bound command's CanExecute state; used when Interactable Mode is set to Custom.")]
+        [Tooltip("View that reflects CanExecute when Interactable Mode is Custom.")]
         [SerializeReference] private ICanExecuteView _customInteractable;
 
         private IRelayCommand<T> _command;
@@ -148,28 +144,20 @@ namespace Aspid.MVVM.StarterKit
         /// Called when the binder is bound. Subscribes to <see cref="Button.onClick"/> so that
         /// every click executes the bound command with the configured parameter.
         /// </summary>
-        /// <remarks>
-        /// The subscription connects the button's click event to <see cref="OnCLicked()"/>,
-        /// which executes the bound command with <see cref="Param"/>.
-        /// </remarks>
         protected override void OnBound() =>
-            CachedComponent.onClick.AddListener(OnCLicked);
+            CachedComponent.onClick.AddListener(OnClicked);
 
         /// <summary>
         /// Called when the binder is unbound. Unsubscribes from <see cref="Button.onClick"/>
         /// and releases the bound command reference.
         /// </summary>
-        /// <remarks>
-        /// Passes <see langword="null"/> to <see cref="SetValue(IRelayCommand{T})"/> to detach the command reference
-        /// and unsubscribe from its <see cref="IRelayCommand{T}.CanExecuteChanged"/> event.
-        /// </remarks>
         protected override void OnUnbound()
         {
-            CachedComponent.onClick.RemoveListener(OnCLicked);
+            CachedComponent.onClick.RemoveListener(OnClicked);
             SetValue(null);
         }
 
-        private void OnCLicked() =>
+        private void OnClicked() =>
             _command?.Execute(Param);
 
         private void OnCanExecuteChanged(IRelayCommand<T> command)
@@ -199,10 +187,10 @@ namespace Aspid.MVVM.StarterKit
         [SerializeField] private T2 _param2;
 
         [Space]
-        [Tooltip("Controls how the button's interactable state reflects the bound command's CanExecute result.")]
+        [Tooltip("How CanExecute affects the button's interactable state.")]
         [SerializeField] private InteractableMode _interactableMode = InteractableMode.Interactable;
 
-        [Tooltip("A custom view that reflects the bound command's CanExecute state; used when Interactable Mode is set to Custom.")]
+        [Tooltip("View that reflects CanExecute when Interactable Mode is Custom.")]
         [SerializeReference] private ICanExecuteView _customInteractable;
 
         private IRelayCommand<T1, T2> _command;
@@ -243,28 +231,20 @@ namespace Aspid.MVVM.StarterKit
         /// Called when the binder is bound. Subscribes to <see cref="Button.onClick"/> so that
         /// every click executes the bound command with the configured parameters.
         /// </summary>
-        /// <remarks>
-        /// The subscription connects the button's click event to <see cref="OnCLicked()"/>,
-        /// which executes the bound command with <see cref="Param1"/> and <see cref="Param2"/>.
-        /// </remarks>
         protected override void OnBound() =>
-            CachedComponent.onClick.AddListener(OnCLicked);
+            CachedComponent.onClick.AddListener(OnClicked);
 
         /// <summary>
         /// Called when the binder is unbound. Unsubscribes from <see cref="Button.onClick"/>
         /// and releases the bound command reference.
         /// </summary>
-        /// <remarks>
-        /// Passes <see langword="null"/> to <see cref="SetValue(IRelayCommand{T1,T2})"/> to detach the command reference
-        /// and unsubscribe from its <see cref="IRelayCommand{T1,T2}.CanExecuteChanged"/> event.
-        /// </remarks>
         protected override void OnUnbound()
         {
-            CachedComponent.onClick.RemoveListener(OnCLicked);
+            CachedComponent.onClick.RemoveListener(OnClicked);
             SetValue(null);
         }
 
-        private void OnCLicked() =>
+        private void OnClicked() =>
             _command?.Execute(Param1, Param2);
 
         private void OnCanExecuteChanged(IRelayCommand<T1, T2> command)
@@ -297,10 +277,10 @@ namespace Aspid.MVVM.StarterKit
         [SerializeField] private T3 _param3;
 
         [Space]
-        [Tooltip("Controls how the button's interactable state reflects the bound command's CanExecute result.")]
+        [Tooltip("How CanExecute affects the button's interactable state.")]
         [SerializeField] private InteractableMode _interactableMode = InteractableMode.Interactable;
 
-        [Tooltip("A custom view that reflects the bound command's CanExecute state; used when Interactable Mode is set to Custom.")]
+        [Tooltip("View that reflects CanExecute when Interactable Mode is Custom.")]
         [SerializeReference] private ICanExecuteView _customInteractable;
 
         private IRelayCommand<T1, T2, T3> _command;
@@ -350,28 +330,20 @@ namespace Aspid.MVVM.StarterKit
         /// Called when the binder is bound. Subscribes to <see cref="Button.onClick"/> so that
         /// every click executes the bound command with the configured parameters.
         /// </summary>
-        /// <remarks>
-        /// The subscription connects the button's click event to <see cref="OnCLicked()"/>,
-        /// which executes the bound command with <see cref="Param1"/>, <see cref="Param2"/>, and <see cref="Param3"/>.
-        /// </remarks>
         protected override void OnBound() =>
-            CachedComponent.onClick.AddListener(OnCLicked);
+            CachedComponent.onClick.AddListener(OnClicked);
 
         /// <summary>
         /// Called when the binder is unbound. Unsubscribes from <see cref="Button.onClick"/>
         /// and releases the bound command reference.
         /// </summary>
-        /// <remarks>
-        /// Passes <see langword="null"/> to <see cref="SetValue(IRelayCommand{T1,T2,T3})"/> to detach the command reference
-        /// and unsubscribe from its <see cref="IRelayCommand{T1,T2,T3}.CanExecuteChanged"/> event.
-        /// </remarks>
         protected override void OnUnbound()
         {
-            CachedComponent.onClick.RemoveListener(OnCLicked);
+            CachedComponent.onClick.RemoveListener(OnClicked);
             SetValue(null);
         }
 
-        private void OnCLicked() =>
+        private void OnClicked() =>
             _command?.Execute(Param1, Param2, Param3);
         
         private void OnCanExecuteChanged(IRelayCommand<T1, T2, T3> command)
@@ -407,10 +379,10 @@ namespace Aspid.MVVM.StarterKit
         [SerializeField] private T4 _param4;
 
         [Space]
-        [Tooltip("Controls how the button's interactable state reflects the bound command's CanExecute result.")]
+        [Tooltip("How CanExecute affects the button's interactable state.")]
         [SerializeField] private InteractableMode _interactableMode = InteractableMode.Interactable;
 
-        [Tooltip("A custom view that reflects the bound command's CanExecute state; used when Interactable Mode is set to Custom.")]
+        [Tooltip("View that reflects CanExecute when Interactable Mode is Custom.")]
         [SerializeReference] private ICanExecuteView _customInteractable;
 
         private IRelayCommand<T1, T2, T3, T4> _command;
@@ -469,28 +441,20 @@ namespace Aspid.MVVM.StarterKit
         /// Called when the binder is bound. Subscribes to <see cref="Button.onClick"/> so that
         /// every click executes the bound command with the configured parameters.
         /// </summary>
-        /// <remarks>
-        /// The subscription connects the button's click event to <see cref="OnCLicked()"/>,
-        /// which executes the bound command with <see cref="Param1"/>, <see cref="Param2"/>, <see cref="Param3"/>, and <see cref="Param4"/>.
-        /// </remarks>
         protected override void OnBound() =>
-            CachedComponent.onClick.AddListener(OnCLicked);
+            CachedComponent.onClick.AddListener(OnClicked);
 
         /// <summary>
         /// Called when the binder is unbound. Unsubscribes from <see cref="Button.onClick"/>
         /// and releases the bound command reference.
         /// </summary>
-        /// <remarks>
-        /// Passes <see langword="null"/> to <see cref="SetValue(IRelayCommand{T1,T2,T3,T4})"/> to detach the command reference
-        /// and unsubscribe from its <see cref="IRelayCommand{T1,T2,T3,T4}.CanExecuteChanged"/> event.
-        /// </remarks>
         protected override void OnUnbound()
         {
-            CachedComponent.onClick.RemoveListener(OnCLicked);
+            CachedComponent.onClick.RemoveListener(OnClicked);
             SetValue(null);
         }
 
-        private void OnCLicked() =>
+        private void OnClicked() =>
             _command?.Execute(Param1, Param2, Param3, Param4);
         
         private void OnCanExecuteChanged(IRelayCommand<T1, T2, T3, T4> command)

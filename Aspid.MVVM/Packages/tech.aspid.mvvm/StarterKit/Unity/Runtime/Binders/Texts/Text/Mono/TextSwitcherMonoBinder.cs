@@ -13,10 +13,7 @@ namespace Aspid.MVVM.StarterKit
     [AddBinderContextMenu(typeof(TMP_Text), serializePropertyNames: "m_text", SubPath = "Switcher")]
     public sealed class TextSwitcherMonoBinder : SwitcherStringMonoBinder<TMP_Text>
     {
-        /// <summary>
-        /// Called when applying the selected value to <see cref="TMP_Text.text"/>.
-        /// </summary>
-        /// <param name="value">The value received from the ViewModel.</param>
+        /// <inheritdoc/>
         protected override void SetValue(string value) =>
             CachedComponent.text = value;
     }

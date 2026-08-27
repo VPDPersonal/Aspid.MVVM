@@ -29,20 +29,18 @@ namespace Aspid.MVVM.StarterKit
     public class CollectionViewModelBinder<T> : CollectionBinderBase<IViewModel>
         where T : MonoBehaviour, IView
     {
-        [Tooltip("The pre-instantiated view objects assigned to bound ViewModel items in order.")]
+        [Tooltip("Pre-instantiated views, assigned in order. Extra items beyond this many are hidden.")]
         [SerializeField] private T[] _views;
 
-        /// <summary>
-        /// Initializes a new instance of <see cref="CollectionViewModelBinder{T}"/>.
-        /// </summary>
-        /// <param name="views">The pre-instantiated view objects to assign bound ViewModel items to.</param>
+        /// <param name="views">The pre-instantiated views to assign items to, in order; extra items beyond this many are hidden.</param>
         /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</param>
         /// <exception cref="InvalidOperationException">Thrown when <paramref name="mode"/> is <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</exception>
+        /// <exception cref="ArgumentNullException">Thrown when <paramref name="views"/> is <see langword="null"/>.</exception>
         public CollectionViewModelBinder(T[] views, BindMode mode = BindMode.OneWay)
             : base(mode)
         {
-            _views = views;
             mode.ThrowExceptionIfTwo();
+            _views = views ?? throw new ArgumentNullException(nameof(views));
         }
 
         protected override void OnAdded(IReadOnlyCollection<IViewModel> values)

@@ -18,9 +18,6 @@ namespace Aspid.MVVM.StarterKit
             set => Target.localScale = value;
         }
 
-        /// <summary>
-        /// Initializes a new instance of <see cref="TransformScaleBinder"/>.
-        /// </summary>
         /// <param name="target">The <see cref="Transform"/> to bind.</param>
         /// <param name="converter">The converter used to transform the bound <see cref="Vector3"/> value, or <see langword="null"/> to use the value as-is.</param>
         /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/>.</param>

@@ -24,7 +24,7 @@ namespace Aspid.MVVM.StarterKit
         
         /// <inheritdoc/>
         /// <exception cref="ArgumentException">Thrown when <paramref name="mode"/> is <see cref="BindMode.TwoWay"/>.</exception>
-        public AudioSourcePriorityBinder(AudioSource target, IConverter<int, int>? converter, BindMode mode = BindMode.OneWay)
+        public AudioSourcePriorityBinder(AudioSource target, IConverter<int, int>? converter = null, BindMode mode = BindMode.OneWay)
             : base(target, converter, mode)
         {
             mode.ThrowExceptionIfMatches(BindMode.TwoWay);

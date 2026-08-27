@@ -8,10 +8,6 @@ namespace Aspid.MVVM.StarterKit
     /// <summary>
     /// <see cref="TargetBoolBinder{Rigidbody}"/> that binds <see cref="Rigidbody.isKinematic"/>.
     /// </summary>
-    /// <remarks>
-    /// Switches the body between simulated and script-driven — the usual way to hand an object over to an animation
-    /// and take it back.
-    /// </remarks>
     [Serializable]
     public class RigidbodyIsKinematicBinder : TargetBoolBinder<Rigidbody>
     {

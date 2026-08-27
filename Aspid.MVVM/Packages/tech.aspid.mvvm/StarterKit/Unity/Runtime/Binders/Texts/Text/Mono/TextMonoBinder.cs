@@ -9,10 +9,6 @@ namespace Aspid.MVVM.StarterKit
     /// <see cref="ComponentStringMonoBinder{TMP_Text}"/> that sets the <see cref="TMP_Text.text"/> property.
     /// Also implements <see cref="INumberBinder"/>, allowing numeric values to be formatted and bound as text.
     /// </summary>
-    /// <remarks>
-    /// Supports <see cref="BindMode.OneWayToSource"/>: when binding is established, the current text
-    /// is sent back to the ViewModel.
-    /// </remarks>
     [AddComponentMenu("Aspid/MVVM/Binders/UI/Text/Text Binder – Text")]
     [AddBinderContextMenu(typeof(TMP_Text), serializePropertyNames: "m_text")]
     [BindModeOverride(BindMode.OneWay, BindMode.OneTime, BindMode.OneWayToSource)]

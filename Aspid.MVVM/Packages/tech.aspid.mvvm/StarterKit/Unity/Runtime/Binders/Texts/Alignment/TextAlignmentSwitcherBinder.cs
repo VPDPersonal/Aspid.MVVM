@@ -14,13 +14,7 @@ namespace Aspid.MVVM.StarterKit
     [Serializable]
     public sealed class TextAlignmentSwitcherBinder : SwitcherBinder<TMP_Text, TextAlignmentOptions>
     {
-        /// <summary>
-        /// Initializes a new instance of <see cref="TextAlignmentSwitcherBinder"/>.
-        /// </summary>
-        /// <param name="target">The <see cref="TMP_Text"/> to bind.</param>
-        /// <param name="trueValue">The alignment applied when the bound boolean is <see langword="true"/>.</param>
-        /// <param name="falseValue">The alignment applied when the bound boolean is <see langword="false"/>.</param>
-        /// <param name="mode">The binding mode.</param>
+        /// <inheritdoc/>
         public TextAlignmentSwitcherBinder(
             TMP_Text target,
             TextAlignmentOptions trueValue,
@@ -28,10 +22,7 @@ namespace Aspid.MVVM.StarterKit
             BindMode mode = BindMode.OneWay)
             : base(target, trueValue, falseValue, mode) { }
 
-        /// <summary>
-        /// Called when applying the selected value to <see cref="TMP_Text.alignment"/>.
-        /// </summary>
-        /// <param name="value">The value received from the ViewModel.</param>
+        /// <inheritdoc/>
         protected override void SetValue(TextAlignmentOptions value) =>
             Target.alignment = value;
     }

@@ -8,11 +8,9 @@ namespace Aspid.MVVM.StarterKit
     /// <see cref="ComponentVector2MonoBinder{CanvasScaler}"/> that binds <see cref="CanvasScaler.referenceResolution"/>.
     /// </summary>
     /// <remarks>
-    /// The resolution the layout was designed against — what a game switches when it ships one UI for phones
-    /// and another for tablets. Only read when <see cref="CanvasScaler.uiScaleMode"/> is
-    /// <see cref="CanvasScaler.ScaleMode.ScaleWithScreenSize"/>. Each component is clamped to at least one:
-    /// the scaler divides the screen size by this value, so a zero or a non-finite one would scale the whole
-    /// canvas to infinity.
+    /// Only read when <see cref="CanvasScaler.uiScaleMode"/> is
+    /// <see cref="CanvasScaler.ScaleMode.ScaleWithScreenSize"/>. Each component is clamped to at least <c>1</c>,
+    /// since the scaler divides the screen size by this value.
     /// </remarks>
     [AddBinderContextMenu(typeof(CanvasScaler), serializePropertyNames: "m_ReferenceResolution")]
     [AddComponentMenu("Aspid/MVVM/Binders/UI/CanvasScaler/CanvasScaler Binder – Reference Resolution")]

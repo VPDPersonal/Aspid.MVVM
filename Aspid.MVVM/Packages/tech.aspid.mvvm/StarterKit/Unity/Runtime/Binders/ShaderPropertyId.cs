@@ -6,15 +6,6 @@ namespace Aspid.MVVM.StarterKit
     /// <summary>
     /// Caches the id a shader property name resolves to.
     /// </summary>
-    /// <remarks>
-    /// <see cref="Shader.PropertyToID"/> hashes the string, so resolving it per value pays for the hash on every write.
-    /// Six binders carried their own <c>int?</c> field and <c>??=</c> line to avoid that; this is the same two lines,
-    /// once.
-    /// <para/>
-    /// The name itself stays where it is — a serialized field on the binder. Moving it in here would move it inside a
-    /// nested struct in the serialized data and lose the value every project had set, which is the failure the converter
-    /// rename in this package had to be reverted for.
-    /// </remarks>
     public struct ShaderPropertyId
     {
         private int? _id;

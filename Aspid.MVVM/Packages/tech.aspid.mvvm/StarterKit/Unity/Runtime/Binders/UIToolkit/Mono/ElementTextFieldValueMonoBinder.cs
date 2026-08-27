@@ -11,14 +11,9 @@ namespace Aspid.MVVM.StarterKit
     /// <see cref="IReverseBinder{T}">IReverseBinder&lt;string&gt;</see> that binds the field's text.
     /// </summary>
     /// <remarks>
-    /// Two-way, like its uGUI counterpart: the ViewModel fills the field and what the user types reaches the ViewModel.
-    /// <para/>
-    /// A write by the binder is not read back as typing — UI Toolkit raises the same change event for both — and the guard
-    /// is released in a <see langword="finally"/>, because an exception from another listener would otherwise leave the
-    /// reverse channel dead for good.
-    /// <para/>
-    /// A <see langword="null"/> value is written as an empty string, which is what the field would show anyway; writing
-    /// <see langword="null"/> itself makes UI Toolkit throw.
+    /// A write by the binder is not read back as typing; the guard is released in a <see langword="finally"/> so an
+    /// exception from another listener cannot leave the reverse channel stuck. A <see langword="null"/> value is
+    /// written as an empty string, since UI Toolkit throws on a <see langword="null"/> field value.
     /// </remarks>
     [BindModeOverride(IsAll = true)]
     [AddComponentMenu("Aspid/MVVM/Binders/UIToolkit/Element Binder – TextField Value")]

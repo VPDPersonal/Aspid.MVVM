@@ -26,7 +26,7 @@ namespace Aspid.MVVM.StarterKit
         /// <summary>
         /// Sets the materials on a <see cref="Renderer"/> from a collection, applying an optional converter to each element.
         /// When the collection is <see langword="null"/> or empty, clears the materials.
-        /// When the collection contains a single element, assigns it via <see cref="Renderer.material"/>.
+        /// When the collection contains a single element, assigns it as a single-element array via <see cref="Renderer.materials"/>.
         /// </summary>
         /// <param name="renderer">The <see cref="Renderer"/> to update.</param>
         /// <param name="converter">The converter applied to each material before assignment, or <see langword="null"/> to use the value as-is.</param>

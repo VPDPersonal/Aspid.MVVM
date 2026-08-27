@@ -6,9 +6,6 @@ namespace Aspid.MVVM.StarterKit
     /// <summary>
     /// <see cref="ComponentIntMonoBinder{SpriteRenderer}"/> that binds <see cref="Renderer.sortingOrder"/>.
     /// </summary>
-    /// <remarks>
-    /// Draw order inside a sorting layer — the usual way a 2D scene expresses depth.
-    /// </remarks>
     [AddBinderContextMenu(typeof(SpriteRenderer), serializePropertyNames: "m_SortingOrder")]
     [AddComponentMenu("Aspid/MVVM/Binders/SpriteRenderer/SpriteRenderer Binder – Sorting Order")]
     public class SpriteRendererSortingOrderMonoBinder : ComponentIntMonoBinder<SpriteRenderer>

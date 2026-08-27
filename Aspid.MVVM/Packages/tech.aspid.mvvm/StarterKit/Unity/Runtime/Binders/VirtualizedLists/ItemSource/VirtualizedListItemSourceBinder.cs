@@ -18,10 +18,10 @@ namespace Aspid.MVVM.StarterKit
     [Serializable]
     public sealed class VirtualizedListItemSourceBinder : TargetBinder<VirtualizedList>, IBinder<IReadOnlyList<IViewModel>>
     {
-        [Tooltip("Optional filter deciding which items of the collection are shown. Leave empty to show all of them.")]
+        [Tooltip("Optional filter for which items are shown. Leave empty to show all.")]
         [SerializeReference] private Filter _filter;
         
-        [Tooltip("Optional comparer deciding the order items are shown in. Leave empty to keep the collection's own order.")]
+        [Tooltip("Optional comparer for sort order. Leave empty to keep the collection's own order.")]
         [SerializeReference] private Comparer _comparer;
 
         private FilteredList<IViewModel> _filteredList;
@@ -35,9 +35,6 @@ namespace Aspid.MVVM.StarterKit
             DisposeFilteredList();
         }
 
-        /// <summary>
-        /// Initializes a new instance of <see cref="VirtualizedListItemSourceBinder"/>.
-        /// </summary>
         /// <param name="target">The <see cref="VirtualizedList"/> to bind.</param>
         /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</param>
         /// <exception cref="InvalidOperationException">Thrown when <paramref name="mode"/> is <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</exception>
@@ -59,9 +56,6 @@ namespace Aspid.MVVM.StarterKit
         public VirtualizedListItemSourceBinder(VirtualizedList target, Comparer comparer, BindMode mode = BindMode.OneWay) :
             this(target, comparer, filter: null, mode) { }
         
-        /// <summary>
-        /// Initializes a new instance of <see cref="VirtualizedListItemSourceBinder"/> with a comparer and filter.
-        /// </summary>
         /// <param name="target">The <see cref="VirtualizedList"/> to bind.</param>
         /// <param name="comparer">The comparer used to sort items, or <see langword="null"/> to use source order.</param>
         /// <param name="filter">The filter used to exclude items, or <see langword="null"/> to include all items.</param>

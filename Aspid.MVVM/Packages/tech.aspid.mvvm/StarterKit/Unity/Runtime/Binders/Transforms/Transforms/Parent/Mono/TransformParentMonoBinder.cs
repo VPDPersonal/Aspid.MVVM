@@ -14,9 +14,6 @@ namespace Aspid.MVVM.StarterKit
     /// The transform keeps its local position and rotation, which is what a UI slot wants: the item lands where the
     /// slot is. A destroyed parent arrives as <see langword="null"/>, which detaches the object to the scene root
     /// rather than throwing.
-    /// <para/>
-    /// Supports <see cref="BindMode.OneWayToSource"/>: when binding is established, the current parent is sent back to
-    /// the ViewModel — as <see langword="null"/> at the scene root.
     /// </remarks>
     [AddBinderContextMenu(typeof(Transform))]
     [AddComponentMenu("Aspid/MVVM/Binders/Transform/Transform Binder – Parent")]

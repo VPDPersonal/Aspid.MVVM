@@ -6,13 +6,12 @@ namespace Aspid.MVVM.StarterKit
     /// <summary>
     /// <see cref="SwitcherColorMonoBinder{Renderer}"/> that switches a named color property on all materials of a <see cref="Renderer"/> component
     /// between two <see cref="Color"/> values based on the bound boolean ViewModel value.
-    /// The color property name defaults to <c>"_BaseColor"</c> and can be configured in the Inspector.
     /// </summary>
     [AddComponentMenu("Aspid/MVVM/Binders/Renderer/Renderer Binder – MaterialsColor Switcher")]
     [AddBinderContextMenu(typeof(Renderer), serializePropertyNames: "m_Materials", SubPath = "Switcher")]
     public sealed class RendererMaterialsColorSwitcherMonoBinder : SwitcherColorMonoBinder<Renderer>
     {
-        [Tooltip("The name of the shader color property to set on all materials. Defaults to \"_BaseColor\".")]
+        [Tooltip("The name of the shader color property to set on all materials.")]
         [SerializeField] private string _colorPropertyName = "_BaseColor";
         
         private ShaderPropertyId _colorPropertyId;
@@ -21,7 +20,6 @@ namespace Aspid.MVVM.StarterKit
         private int ColorPropertyId => _colorPropertyId.Resolve(_colorPropertyName);
 
         /// <summary>
-        /// Called when applying the selected value to the material color property.
         /// Sets the named color property on all materials of the <see cref="Renderer"/>.
         /// </summary>
         /// <param name="value">The value received from the ViewModel.</param>

@@ -8,15 +8,6 @@ namespace Aspid.MVVM.StarterKit
     /// <see cref="MonoBinder"/> implementing <see cref="IReverseBinder{T}">IReverseBinder&lt;GameObject&gt;</see> that
     /// hands the ViewModel the <see cref="GameObject"/> this binder is attached to.
     /// </summary>
-    /// <remarks>
-    /// The other of the two domains that had no ToSource binder. A ViewModel that spawns a view and then has to move it,
-    /// parent it or destroy it needs the object itself — the component binders hand over a component, and walking to
-    /// <see cref="Component.gameObject"/> from the ViewModel means the ViewModel knows about Unity types it otherwise
-    /// would not.
-    /// <para/>
-    /// Only <see cref="BindMode.OneWayToSource"/> is supported, and the reference is sent once, when binding is
-    /// established.
-    /// </remarks>
     [BindModeOverride(modes: BindMode.OneWayToSource)]
     [AddComponentMenu("Aspid/MVVM/Binders/GameObject/GameObject To Source Binder")]
     [AddBinderContextMenu(typeof(Component), Path = "Add General Binder/GameObject/GameObject To Source Binder")]

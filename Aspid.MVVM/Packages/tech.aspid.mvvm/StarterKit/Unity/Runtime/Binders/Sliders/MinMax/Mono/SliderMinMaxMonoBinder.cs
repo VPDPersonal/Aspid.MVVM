@@ -9,10 +9,6 @@ namespace Aspid.MVVM.StarterKit
     /// <see cref="ComponentMonoBinder{Slider, Vector2, Converter}"/> that sets the minimum and maximum
     /// values of a <see cref="Slider"/> when the bound ViewModel value changes.
     /// </summary>
-    /// <remarks>
-    /// Supports <see cref="BindMode.OneWayToSource"/>: when binding is established, the current
-    /// slider range is immediately forwarded to the ViewModel.
-    /// </remarks>
     [AddComponentMenu("Aspid/MVVM/Binders/UI/Slider/Slider Binder – MinMax")]
     [AddBinderContextMenu(typeof(Slider), "m_MinValue", "m_MaxValue")]
     public partial class SliderMinMaxMonoBinder : ComponentMonoBinder<Slider, Vector2, Converter>, INumberBinder

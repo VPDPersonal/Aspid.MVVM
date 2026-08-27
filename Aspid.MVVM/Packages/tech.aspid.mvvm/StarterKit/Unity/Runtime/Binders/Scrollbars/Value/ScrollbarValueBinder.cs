@@ -14,8 +14,8 @@ namespace Aspid.MVVM.StarterKit
     /// values of multiple types to be both pushed to and received from the scrollbar.
     /// </summary>
     /// <remarks>
-    /// Unlike <see cref="Slider"/>, a scrollbar has no configurable range: its value is always normalised to
-    /// 0..1, so the incoming value is clamped to that range rather than to inspector-set bounds.
+    /// A scrollbar has no configurable range: its value is always normalised to 0..1, so the incoming
+    /// value is clamped to that range rather than to inspector-set bounds.
     /// </remarks>
     [Serializable]
     [BindModeOverride(IsAll = true)]
@@ -42,9 +42,6 @@ namespace Aspid.MVVM.StarterKit
         public ScrollbarValueBinder(Scrollbar target, BindMode mode)
             : this(target, converter: null, mode) { }
 
-        /// <summary>
-        /// Initializes a new instance of <see cref="ScrollbarValueBinder"/>.
-        /// </summary>
         /// <param name="target">The <see cref="Scrollbar"/> to bind.</param>
         /// <param name="converter">The converter applied to values before they are set on the scrollbar, or <see langword="null"/> to use the value as-is.</param>
         /// <param name="mode">The binding mode. Must not be <see cref="BindMode.None"/>.</param>
@@ -131,8 +128,7 @@ namespace Aspid.MVVM.StarterKit
             }
             finally
             {
-                // Без finally исключение из сеттера — например, из чужого слушателя onValueChanged —
-                // навсегда оставило бы флаг снятым и обесточило канал View → ViewModel.
+                // Without finally, an exception from the setter (e.g. a foreign onValueChanged listener) would leave the flag stuck off.
                 _isNotifyValueChanged = true;
             }
 

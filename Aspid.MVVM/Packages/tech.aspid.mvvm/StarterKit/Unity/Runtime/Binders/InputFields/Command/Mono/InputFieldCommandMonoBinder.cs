@@ -32,8 +32,8 @@ namespace Aspid.MVVM.StarterKit
         {
             base.OnValidate();
 
-            // Только у привязанного биндера: Unbind у непривязанного выходит сразу, поэтому Unsubscribe
-            // никогда не отработает, и слушатель останется висеть на поле.
+            // Only while bound — Unbind on an unbound binder returns immediately, so Unsubscribe never runs
+            // and the listener stays on the field.
             if (!Application.isPlaying || !IsBound) return;
             
             CachedComponent.onValueChanged.RemoveListener(OnValueChanged);
@@ -67,22 +67,16 @@ namespace Aspid.MVVM.StarterKit
         /// <summary>
         /// Called when the binder is bound. Subscribes to the configured input field event.
         /// </summary>
-        /// <remarks>
-        /// The specific event subscribed to is determined by the configured <see cref="UpdateInputFieldEvent"/> value.
-        /// </remarks>
         protected override void OnBound() =>
             Subscribe();
 
         /// <summary>
         /// Called when the binder is unbound. Unsubscribes from the input field event and clears bound commands.
         /// </summary>
-        /// <remarks>
-        /// Commands are nullified to release <see cref="IRelayCommand.CanExecuteChanged"/> subscriptions and prevent stale references.
-        /// </remarks>
         protected override void OnUnbound()
         {
             Unsubscribe();
-            
+
             SetValue((IRelayCommand)null);
             SetValue((IRelayCommand<string>)null);
         }
@@ -170,8 +164,8 @@ namespace Aspid.MVVM.StarterKit
         {
             base.OnValidate();
 
-            // Только у привязанного биндера: Unbind у непривязанного выходит сразу, поэтому Unsubscribe
-            // никогда не отработает, и слушатель останется висеть на поле.
+            // Only while bound — Unbind on an unbound binder returns immediately, so Unsubscribe never runs
+            // and the listener stays on the field.
             if (!Application.isPlaying || !IsBound) return;
 
             CachedComponent.onValueChanged.RemoveListener(OnValueChanged);
@@ -195,18 +189,12 @@ namespace Aspid.MVVM.StarterKit
         /// <summary>
         /// Called when the binder is bound. Subscribes to the configured input field event.
         /// </summary>
-        /// <remarks>
-        /// The specific event subscribed to is determined by the configured <see cref="UpdateInputFieldEvent"/> value.
-        /// </remarks>
         protected override void OnBound() =>
             Subscribe();
 
         /// <summary>
         /// Called when the binder is unbound. Unsubscribes from the input field event and clears the bound command.
         /// </summary>
-        /// <remarks>
-        /// The command is nullified to release the <see cref="IRelayCommand.CanExecuteChanged"/> subscription and prevent stale references.
-        /// </remarks>
         protected override void OnUnbound()
         {
             Unsubscribe();
@@ -299,8 +287,8 @@ namespace Aspid.MVVM.StarterKit
         {
             base.OnValidate();
 
-            // Только у привязанного биндера: Unbind у непривязанного выходит сразу, поэтому Unsubscribe
-            // никогда не отработает, и слушатель останется висеть на поле.
+            // Only while bound — Unbind on an unbound binder returns immediately, so Unsubscribe never runs
+            // and the listener stays on the field.
             if (!Application.isPlaying || !IsBound) return;
 
             CachedComponent.onValueChanged.RemoveListener(OnValueChanged);
@@ -324,18 +312,12 @@ namespace Aspid.MVVM.StarterKit
         /// <summary>
         /// Called when the binder is bound. Subscribes to the configured input field event.
         /// </summary>
-        /// <remarks>
-        /// The specific event subscribed to is determined by the configured <see cref="UpdateInputFieldEvent"/> value.
-        /// </remarks>
         protected override void OnBound() =>
             Subscribe();
 
         /// <summary>
         /// Called when the binder is unbound. Unsubscribes from the input field event and clears the bound command.
         /// </summary>
-        /// <remarks>
-        /// The command is nullified to release the <see cref="IRelayCommand.CanExecuteChanged"/> subscription and prevent stale references.
-        /// </remarks>
         protected override void OnUnbound()
         {
             Unsubscribe();
@@ -441,8 +423,8 @@ namespace Aspid.MVVM.StarterKit
         {
             base.OnValidate();
 
-            // Только у привязанного биндера: Unbind у непривязанного выходит сразу, поэтому Unsubscribe
-            // никогда не отработает, и слушатель останется висеть на поле.
+            // Only while bound — Unbind on an unbound binder returns immediately, so Unsubscribe never runs
+            // and the listener stays on the field.
             if (!Application.isPlaying || !IsBound) return;
             
             CachedComponent.onValueChanged.RemoveListener(OnValueChanged);
@@ -466,18 +448,12 @@ namespace Aspid.MVVM.StarterKit
         /// <summary>
         /// Called when the binder is bound. Subscribes to the configured input field event.
         /// </summary>
-        /// <remarks>
-        /// The specific event subscribed to is determined by the configured <see cref="UpdateInputFieldEvent"/> value.
-        /// </remarks>
         protected override void OnBound() =>
             Subscribe();
 
         /// <summary>
         /// Called when the binder is unbound. Unsubscribes from the input field event and clears the bound command.
         /// </summary>
-        /// <remarks>
-        /// The command is nullified to release the <see cref="IRelayCommand.CanExecuteChanged"/> subscription and prevent stale references.
-        /// </remarks>
         protected override void OnUnbound()
         {
             Unsubscribe();

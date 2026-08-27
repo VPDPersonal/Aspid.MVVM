@@ -9,8 +9,8 @@ namespace Aspid.MVVM.StarterKit
     /// <see cref="ComponentFloatMonoBinder{TMP_Text}"/> that sets the <see cref="TMP_Text.fontSize"/> property.
     /// </summary>
     /// <remarks>
-    /// Supports <see cref="BindMode.OneWayToSource"/>: when binding is established, the current font size
-    /// is sent back to the ViewModel.
+    /// Non-finite values are ignored — TMP would otherwise rebuild the mesh from <see cref="float.NaN"/>
+    /// and the text disappears entirely.
     /// </remarks>
     [AddComponentMenu("Aspid/MVVM/Binders/UI/Text/Text Binder – FontSize")]
     [AddBinderContextMenu(typeof(TMP_Text), serializePropertyNames: "m_fontSize")]
@@ -20,7 +20,11 @@ namespace Aspid.MVVM.StarterKit
         protected sealed override float Property
         {
             get => CachedComponent.fontSize;
-            set => CachedComponent.fontSize = value;
+            set
+            {
+                if (!BinderMath.IsFinite(value)) return;
+                CachedComponent.fontSize = value;
+            }
         }
     }
 }

@@ -16,9 +16,6 @@ namespace Aspid.MVVM.StarterKit
     /// <para/>
     /// A destroyed graphic arrives as <see langword="null"/>, which leaves the field with no placeholder rather than
     /// with a reference that throws on the next keystroke.
-    /// <para/>
-    /// Supports <see cref="BindMode.OneWayToSource"/>: when binding is established, the current placeholder is sent
-    /// back to the ViewModel.
     /// </remarks>
     [AddBinderContextMenu(typeof(TMP_InputField), serializePropertyNames: "m_Placeholder")]
     [AddComponentMenu("Aspid/MVVM/Binders/UI/InputField/InputField Binder – Placeholder")]

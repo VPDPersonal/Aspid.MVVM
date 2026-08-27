@@ -7,10 +7,7 @@ namespace Aspid.MVVM.StarterKit
     /// <see cref="ParticleSystemPlaybackMonoBinder"/> that calls <see cref="ParticleSystem.Stop()"/> when the bound
     /// ViewModel command or action is invoked.
     /// </summary>
-    /// <remarks>
-    /// Stops emitting, children included, and lets the particles already alive finish their lifetime. Nothing
-    /// disappears at the moment of the call, which is what makes an effect end rather than vanish.
-    /// </remarks>
+    /// <remarks>Stops emitting, children included; particles already alive finish their lifetime.</remarks>
     [AddBinderContextMenu(typeof(ParticleSystem), SubPath = "Playback")]
     [AddComponentMenu("Aspid/MVVM/Binders/Effects/ParticleSystem/ParticleSystem Binder – Stop")]
     public sealed class ParticleSystemStopMonoBinder : ParticleSystemPlaybackMonoBinder

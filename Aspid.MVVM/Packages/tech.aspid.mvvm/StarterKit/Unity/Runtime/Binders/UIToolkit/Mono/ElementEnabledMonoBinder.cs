@@ -17,7 +17,7 @@ namespace Aspid.MVVM.StarterKit
     [AddBinderContextMenuByType(typeof(bool))]
     public sealed partial class ElementEnabledMonoBinder : VisualElementMonoBinder<VisualElement>, IBinder<bool>
     {
-        [Tooltip("When enabled, the bound value is inverted before it is applied — bind an IsBusy flag to it directly.")]
+        [Tooltip("When enabled, the bound value is inverted before it is applied.")]
         [SerializeField] private bool _isInvert;
 
         /// <summary>

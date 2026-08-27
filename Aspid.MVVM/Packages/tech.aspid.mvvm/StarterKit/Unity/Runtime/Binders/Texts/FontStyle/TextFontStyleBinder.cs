@@ -11,11 +11,6 @@ namespace Aspid.MVVM.StarterKit
     /// <see cref="TargetBinder{T1, T2}">TargetBinder&lt;TMP_Text, FontStyles&gt;</see> that binds
     /// <see cref="TMP_Text.fontStyle"/>.
     /// </summary>
-    /// <remarks>
-    /// Bold, italic, underline, strikethrough — the flags a rules panel, a diff view or a chat log turns on per
-    /// line. <see cref="FontStyles"/> is a flag enum, so the ViewModel sends the whole set: one style is a
-    /// combination, not a binder of its own.
-    /// </remarks>
     [Serializable]
     public class TextFontStyleBinder : TargetBinder<TMP_Text, FontStyles>
     {

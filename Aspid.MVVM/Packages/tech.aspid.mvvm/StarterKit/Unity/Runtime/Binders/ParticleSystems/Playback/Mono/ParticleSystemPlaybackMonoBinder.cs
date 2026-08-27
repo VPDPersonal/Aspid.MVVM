@@ -10,12 +10,8 @@ namespace Aspid.MVVM.StarterKit
     /// </summary>
     /// <remarks>
     /// Only <see cref="BindMode.OneWayToSource"/> is supported: this is a binder the ViewModel calls, not one that
-    /// receives values. When binding is established it exposes the operation either as a plain <see cref="Action"/>
-    /// or as an <see cref="IRelayCommand"/> whose <see cref="IRelayCommand.CanExecute()"/> mirrors <see cref="CanExecute"/>.
-    /// <para/>
-    /// An effect is something a ViewModel starts — a hit, a pickup, a level-up — and nothing in the package could
-    /// start one. The shape follows <see cref="AudioSourcePlaybackMonoBinder"/>, which solves the same problem for
-    /// sound, and <see cref="AnimatorSetTriggerMonoBinder"/>, which solves it for animation.
+    /// receives values. Once bound, it exposes the operation either as a plain <see cref="Action"/> or as an
+    /// <see cref="IRelayCommand"/> whose <see cref="IRelayCommand.CanExecute()"/> mirrors <see cref="CanExecute"/>.
     /// </remarks>
     [BindModeOverride(modes: BindMode.OneWayToSource)]
     public abstract class ParticleSystemPlaybackMonoBinder : ComponentMonoBinder<ParticleSystem>,
@@ -50,7 +46,12 @@ namespace Aspid.MVVM.StarterKit
         protected virtual void OnEnable() =>
             _command?.NotifyCanExecuteChanged();
 
-        /// <inheritdoc cref="OnEnable"/>
+        /// <summary>
+        /// Notifies the bound command that <see cref="IRelayCommand.CanExecute()"/> may have changed.
+        /// </summary>
+        /// <remarks>
+        /// When overriding this method, always call <c>base.OnDisable()</c>.
+        /// </remarks>
         protected virtual void OnDisable() =>
             _command?.NotifyCanExecuteChanged();
 
@@ -65,9 +66,7 @@ namespace Aspid.MVVM.StarterKit
         /// Returns <see langword="true"/> when the system exists and its GameObject is active in the hierarchy.
         /// </summary>
         /// <remarks>
-        /// Nothing about the system's current state is required. Stopping a system that is not playing and clearing
-        /// one that holds no particles are both harmless, and refusing them would only make the ViewModel track
-        /// state the effect already knows.
+        /// The system's playback state isn't checked — stopping an idle system or clearing an empty one is harmless.
         /// </remarks>
         protected virtual bool CanExecute() =>
             CachedComponent && CachedComponent.gameObject.activeInHierarchy;

@@ -11,26 +11,24 @@ namespace Aspid.MVVM.StarterKit
     /// <see cref="UnityEvent{T}"/>.
     /// </summary>
     /// <remarks>
-    /// The direction a dropdown of names, a save file or a config value arrives in. Names are matched
-    /// case-insensitively, because a value that came from text rarely matches the C# casing, and a numeric string is
-    /// refused — <see cref="Enum.TryParse{TEnum}(string, bool, out TEnum)"/> accepts any number, including one no
-    /// member has.
+    /// Names are matched case-insensitively, because a value that came from text rarely matches the C# casing, and a
+    /// numeric string is refused — <see cref="Enum.TryParse{TEnum}(string, bool, out TEnum)"/> accepts any number,
+    /// including one no member has.
     /// <para/>
-    /// Abstract because the enum is the project's own: a concrete subclass closing <typeparamref name="TEnum"/> is
-    /// what Unity can add as a component. One line is enough —
-    /// <c>public sealed class StringToDifficultyCaster : StringToEnumCasterMonoBinder&lt;Difficulty&gt; { }</c>.
+    /// Logs failures by default, unlike the numeric casters: an enum name is typically selected, not typed
+    /// character by character.
     /// </remarks>
     /// <typeparam name="TEnum">The enum type the string is parsed into.</typeparam>
     public abstract partial class StringToEnumCasterMonoBinder<TEnum> : MonoBinder, IBinder<string>
         where TEnum : struct, Enum
     {
-        [Tooltip("Invoked with the parsed value each time a new string arrives from the ViewModel.")]
+        [Tooltip("Invoked with the parsed value.")]
         [SerializeField] private UnityEvent<TEnum> _casted;
 
         [Tooltip("Value forwarded when the string names no member of the enum.")]
         [SerializeField] private TEnum _fallback;
 
-        [Tooltip("Log an error for every string that names no member. On by default: unlike a number, an enum name is not something a user types character by character.")]
+        [Tooltip("Logs an error for every string that names no member.")]
         [SerializeField] private bool _logFailures = true;
 
         /// <summary>

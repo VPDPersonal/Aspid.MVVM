@@ -40,7 +40,7 @@ namespace Aspid.MVVM.StarterKit
             Command = null;
 
         /// <summary>
-        /// Called after a new command is bound via <c>SetValue</c>.
+        /// Called after a new command is bound via <c>SetValue</c>. Override to react to the change.
         /// </summary>
         /// <param name="value">The newly bound command, or <see langword="null"/> if unbound.</param>
         protected virtual void OnSetValue(IRelayCommand value) { }
@@ -60,6 +60,7 @@ namespace Aspid.MVVM.StarterKit
 
         /// <summary>
         /// Called when the bound command's <see cref="IRelayCommand.CanExecuteChanged"/> event fires.
+        /// Override to react to the command's executability changing.
         /// </summary>
         /// <param name="command">The command whose state changed.</param>
         protected virtual void OnCanExecuteChanged(IRelayCommand command) { }
@@ -101,7 +102,7 @@ namespace Aspid.MVVM.StarterKit
             Command = null;
 
         /// <summary>
-        /// Called after a new command is bound via <c>SetValue</c>.
+        /// Called after a new command is bound via <c>SetValue</c>. Override to react to the change.
         /// </summary>
         /// <param name="value">The newly bound command, or <see langword="null"/> if unbound.</param>
         protected virtual void OnSetValue(IRelayCommand<T> value) { }
@@ -123,6 +124,7 @@ namespace Aspid.MVVM.StarterKit
 
         /// <summary>
         /// Called when the bound command's <see cref="IRelayCommand.CanExecuteChanged"/> event fires.
+        /// Override to react to the command's executability changing.
         /// </summary>
         /// <param name="command">The command whose state changed.</param>
         protected virtual void OnCanExecuteChanged(IRelayCommand<T> command) { }
@@ -165,7 +167,7 @@ namespace Aspid.MVVM.StarterKit
             Command = null;
 
         /// <summary>
-        /// Called after a new command is bound via <c>SetValue</c>.
+        /// Called after a new command is bound via <c>SetValue</c>. Override to react to the change.
         /// </summary>
         /// <param name="value">The newly bound command, or <see langword="null"/> if unbound.</param>
         protected virtual void OnSetValue(IRelayCommand<T1, T2> value) { }
@@ -189,6 +191,7 @@ namespace Aspid.MVVM.StarterKit
 
         /// <summary>
         /// Called when the bound command's <see cref="IRelayCommand.CanExecuteChanged"/> event fires.
+        /// Override to react to the command's executability changing.
         /// </summary>
         /// <param name="command">The command whose state changed.</param>
         protected virtual void OnCanExecuteChanged(IRelayCommand<T1, T2> command) { }
@@ -232,7 +235,7 @@ namespace Aspid.MVVM.StarterKit
             Command = null;
 
         /// <summary>
-        /// Called after a new command is bound via <c>SetValue</c>.
+        /// Called after a new command is bound via <c>SetValue</c>. Override to react to the change.
         /// </summary>
         /// <param name="value">The newly bound command, or <see langword="null"/> if unbound.</param>
         protected virtual void OnSetValue(IRelayCommand<T1, T2, T3> value) { }
@@ -258,6 +261,7 @@ namespace Aspid.MVVM.StarterKit
 
         /// <summary>
         /// Called when the bound command's <see cref="IRelayCommand.CanExecuteChanged"/> event fires.
+        /// Override to react to the command's executability changing.
         /// </summary>
         /// <param name="command">The command whose state changed.</param>
         protected virtual void OnCanExecuteChanged(IRelayCommand<T1, T2, T3> command) { }
@@ -302,7 +306,7 @@ namespace Aspid.MVVM.StarterKit
             Command = null;
 
         /// <summary>
-        /// Called after a new command is bound via <c>SetValue</c>.
+        /// Called after a new command is bound via <c>SetValue</c>. Override to react to the change.
         /// </summary>
         /// <param name="value">The newly bound command, or <see langword="null"/> if unbound.</param>
         protected virtual void OnSetValue(IRelayCommand<T1, T2, T3, T4> value) { }
@@ -330,6 +334,7 @@ namespace Aspid.MVVM.StarterKit
 
         /// <summary>
         /// Called when the bound command's <see cref="IRelayCommand.CanExecuteChanged"/> event fires.
+        /// Override to react to the command's executability changing.
         /// </summary>
         /// <param name="command">The command whose state changed.</param>
         protected virtual void OnCanExecuteChanged(IRelayCommand<T1, T2, T3, T4> command) { }

@@ -9,8 +9,8 @@ namespace Aspid.MVVM.StarterKit
     /// <see cref="TargetFloatBinder{Camera}"/> that binds <see cref="Camera.orthographicSize"/>.
     /// </summary>
     /// <remarks>
-    /// Half the vertical height the camera sees — the zoom of a 2D or isometric game. Unity does not clamp it, and
-    /// a negative value mirrors the view rather than being rejected, so only a non-finite value is dropped.
+    /// Unity does not clamp this value; a negative value mirrors the view instead of being rejected. Non-finite
+    /// values are dropped.
     /// </remarks>
     [Serializable]
     public class CameraOrthographicSizeBinder : TargetFloatBinder<Camera>

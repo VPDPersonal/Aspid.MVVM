@@ -33,7 +33,7 @@ namespace Aspid.MVVM.StarterKit
         where TView : MonoBehaviour, IView
         where TViewFactory : IViewFactory<TView>
     {
-        [Tooltip("Creates a view for each member of the collection. Required — nothing is shown without it.")]
+        [Tooltip("Creates a view per collection member. Required — nothing is shown without it.")]
         [SerializeReference] private TViewFactory _viewFactory;
 
         private Dictionary<IViewModel, TView> _views;

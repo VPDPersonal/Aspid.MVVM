@@ -10,9 +10,6 @@ namespace Aspid.MVVM.StarterKit
     /// the animator state the ViewModel names.
     /// </summary>
     /// <remarks>
-    /// Naming a state directly is how a cutscene, a reaction or a one-off flourish is triggered without inventing a
-    /// parameter and a transition for it.
-    /// <para/>
     /// A blank or <see langword="null"/> name does nothing, so a ViewModel field that starts empty does not make the
     /// animator jump.
     /// </remarks>
@@ -20,15 +17,12 @@ namespace Aspid.MVVM.StarterKit
     [BindModeOverride(BindMode.OneWay, BindMode.OneTime)]
     public class AnimatorPlayStateBinder : TargetBinder<Animator>, IBinder<string>
     {
-        [Tooltip("Layer the state is played on. -1 plays it on the first layer that has a state of that name.")]
+        [Tooltip("Layer the state plays on. -1 = first layer with a matching state.")]
         [SerializeField] private int _layer;
 
-        [Tooltip("Where in the clip playback starts, as a fraction of its length. Leave at zero to play from the beginning.")]
+        [Tooltip("Where playback starts, as a fraction of the clip's length.")]
         [SerializeField] private float _normalizedTime;
 
-        /// <summary>
-        /// Initializes a new instance of <see cref="AnimatorPlayStateBinder"/>.
-        /// </summary>
         /// <param name="target">The <see cref="Animator"/> to play states on.</param>
         /// <param name="layer">The layer the state is played on, or <c>-1</c> for the first layer that has it.</param>
         /// <param name="normalizedTime">Where in the clip playback starts, as a fraction of its length.</param>

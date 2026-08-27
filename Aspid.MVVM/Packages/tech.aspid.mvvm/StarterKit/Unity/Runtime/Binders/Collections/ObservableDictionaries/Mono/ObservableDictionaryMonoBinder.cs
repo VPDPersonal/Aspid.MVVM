@@ -11,14 +11,9 @@ namespace Aspid.MVVM.StarterKit
     /// <see cref="IReadOnlyObservableDictionary{TKey, TValue}"/> and forwards its changes as hook calls.
     /// </summary>
     /// <remarks>
-    /// The list domain had both a serializable binder and a MonoBehaviour one; the dictionary domain had only the
-    /// serializable one, so a dictionary could be shown from a View's own field and not from a component dropped next to
-    /// the objects it drives. This is that missing half, and it dispatches exactly what
-    /// <see cref="ObservableDictionaryBinder{TKey, TValue}"/> dispatches.
-    /// <para/>
     /// Existing entries are replayed through the add hook when the dictionary arrives, so a View built after the data
     /// shows it. <see cref="NotifyCollectionChangedAction.Move"/> is not supported: a dictionary has no order to move
-    /// within, and the collection raises it only for a list.
+    /// within.
     /// </remarks>
     /// <typeparam name="TKey">The type of the dictionary's keys.</typeparam>
     /// <typeparam name="TValue">The type of the dictionary's values.</typeparam>

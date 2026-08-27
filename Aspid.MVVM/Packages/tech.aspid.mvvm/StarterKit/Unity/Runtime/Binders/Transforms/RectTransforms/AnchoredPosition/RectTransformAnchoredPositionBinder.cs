@@ -13,7 +13,7 @@ namespace Aspid.MVVM.StarterKit
     [Serializable]
     public class RectTransformAnchoredPositionBinder : TargetVector3Binder<RectTransform>
     {
-        [Tooltip("The space that determines which anchored position property is used: Self for anchoredPosition, World for anchoredPosition3D.")]
+        [Tooltip("Which property is written: Self → anchoredPosition, World → anchoredPosition3D.")]
         [SerializeField] private Space _space;
 
         protected sealed override Vector3 Property
@@ -22,9 +22,6 @@ namespace Aspid.MVVM.StarterKit
             set => Target.SetAnchoredPosition(value, _space);
         }
         
-        /// <summary>
-        /// Initializes a new instance of <see cref="RectTransformAnchoredPositionBinder"/>.
-        /// </summary>
         /// <param name="target">The <see cref="RectTransform"/> to bind.</param>
         /// <param name="space">Determines which property is used: <see cref="Space.Self"/> for <see cref="RectTransform.anchoredPosition"/>, <see cref="Space.World"/> for <see cref="RectTransform.anchoredPosition3D"/>.</param>
         /// <param name="converter">The converter used to transform the bound <see cref="Vector3"/> value, or <see langword="null"/> to use the value as-is.</param>

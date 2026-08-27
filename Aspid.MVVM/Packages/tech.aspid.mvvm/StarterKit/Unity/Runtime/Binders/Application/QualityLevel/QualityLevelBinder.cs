@@ -10,11 +10,8 @@ namespace Aspid.MVVM.StarterKit
     /// <see cref="IReverseBinder{T}">IReverseBinder&lt;int&gt;</see> that binds the active <see cref="QualitySettings"/> level.
     /// </summary>
     /// <remarks>
-    /// The graphics preset a settings screen offers. It is an index into the levels the project defines, so the
-    /// binder clamps to the ones that exist rather than letting Unity throw on an index it does not have.
-    /// <para/>
-    /// The level is applied without waiting for the next frame, which is what a settings screen wants: the change is
-    /// visible while the user is still looking at the option they picked.
+    /// Clamped to the range of levels the project defines, rather than letting Unity throw on an out-of-range
+    /// index. Expensive changes are applied immediately instead of being deferred to the next frame.
     /// </remarks>
     [BindModeOverride(BindMode.OneWay, BindMode.OneTime, BindMode.OneWayToSource)]
     [Serializable]
@@ -23,9 +20,6 @@ namespace Aspid.MVVM.StarterKit
         /// <inheritdoc/>
         public event Action<int>? ValueChanged;
 
-        /// <summary>
-        /// Initializes a new instance of <see cref="QualityLevelBinder"/>.
-        /// </summary>
         /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/> — the value raises no change event to listen to.</param>
         /// <exception cref="ArgumentException">Thrown when <paramref name="mode"/> is <see cref="BindMode.TwoWay"/>.</exception>
         public QualityLevelBinder(BindMode mode = BindMode.OneWay)

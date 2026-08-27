@@ -7,9 +7,6 @@ namespace Aspid.MVVM.StarterKit
     /// Concrete <see cref="RendererPropertyBlockMonoBinder{T}">RendererPropertyBlockMonoBinder&lt;float&gt;</see> that
     /// also implements <see cref="INumberBinder"/>, writing a <see langword="float"/> shader property.
     /// </summary>
-    /// <remarks>
-    /// The usual case: a dissolve amount, a fill, a damage flash, a per-object timer.
-    /// </remarks>
     [AddBinderContextMenu(typeof(Renderer))]
     [AddComponentMenu("Aspid/MVVM/Binders/Renderer/PropertyBlock Binder – Float")]
     public partial class RendererPropertyBlockFloatMonoBinder : RendererPropertyBlockMonoBinder<float>, INumberBinder

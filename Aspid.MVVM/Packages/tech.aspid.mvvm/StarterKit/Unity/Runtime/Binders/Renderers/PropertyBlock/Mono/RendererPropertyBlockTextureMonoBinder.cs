@@ -8,11 +8,8 @@ namespace Aspid.MVVM.StarterKit
     /// writes a texture shader property.
     /// </summary>
     /// <remarks>
-    /// A skin, a decal or a downloaded avatar per object, without a material per object.
-    /// <para/>
-    /// A destroyed or <see langword="null"/> texture is not written: a property block cannot clear an override, so the
-    /// previous texture stays rather than the shader falling back to the material's own — which is the behaviour to
-    /// design around, and the reason nothing is written instead of writing nothing.
+    /// A destroyed or <see langword="null"/> texture is not written: a property block cannot clear an override, so
+    /// the previous texture would stay instead of the shader falling back to the material's own.
     /// </remarks>
     [AddBinderContextMenu(typeof(Renderer))]
     [AddComponentMenu("Aspid/MVVM/Binders/Renderer/PropertyBlock Binder – Texture")]

@@ -12,12 +12,8 @@ namespace Aspid.MVVM.StarterKit
     /// snapshots it is given.
     /// </summary>
     /// <remarks>
-    /// A snapshot is how a mixer expresses a whole audio state — paused, underwater, in a cutscene — and the state
-    /// itself is a ViewModel value.
-    /// <para/>
-    /// The ViewModel may send either the index into the snapshot list, which is what an enum-driven state does, or the
-    /// snapshot's name. An index outside the list, a name that is not in it, and an empty slot are all logged rather
-    /// than ignored: a silent no-op leaves the game in the previous audio state with no clue why.
+    /// The ViewModel may send either the index into the snapshot list or the snapshot's name. An index outside the
+    /// list, a name not found, and an empty slot are all logged rather than ignored.
     /// </remarks>
     [Serializable]
     [BindModeOverride(BindMode.OneWay, BindMode.OneTime)]
@@ -34,9 +30,6 @@ namespace Aspid.MVVM.StarterKit
         /// </summary>
         public override bool IsBind => _snapshots is { Length: > 0 };
 
-        /// <summary>
-        /// Initializes a new instance of <see cref="AudioMixerSnapshotBinder"/>.
-        /// </summary>
         /// <param name="snapshots">The snapshots the ViewModel can select, by index or by name.</param>
         /// <param name="transitionSeconds">Seconds the mixer takes to reach the snapshot. Zero switches instantly.</param>
         /// <param name="mode">The binding mode. Must be <see cref="BindMode.OneWay"/> or <see cref="BindMode.OneTime"/> — a snapshot transition has no value to read back.</param>

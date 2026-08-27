@@ -29,7 +29,7 @@ namespace Aspid.MVVM.StarterKit
         [Tooltip("The target Object whose name property will be driven by the binding.")]
         [SerializeField] private Object _object;
         
-        [Tooltip("Optional converter applied to the string value before it is set on the target or sent back to the ViewModel.")]
+        [Tooltip("Optional converter applied to the string value in both directions.")]
         [SerializeReference] private Converter _converter;
         
         private void OnValidate()

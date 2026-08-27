@@ -9,16 +9,8 @@ namespace Aspid.MVVM.StarterKit
     /// several bound strings into one line.
     /// </summary>
     /// <remarks>
-    /// "Level 7 - Archer", "3 / 12", "Alice (offline)": one label built from values that live in different members. The
-    /// alternative is a field in the ViewModel that exists only to hold the concatenation, which puts a piece of the
-    /// view's wording into the ViewModel.
-    /// <para/>
-    /// A <see langword="null"/> input is composed as an empty string, the way
-    /// <see cref="string.Format(string, object[])"/> would treat one - a missing name should leave a gap, not the word
-    /// <c>null</c>.
-    /// <para/>
-    /// A format string that does not match the inputs is reported rather than thrown: it is a configuration mistake, and
-    /// an exception inside a binding loop would take the rest of the View's bindings with it.
+    /// A <see langword="null"/> input is composed as an empty string. A format string that does not match the inputs is
+    /// logged rather than thrown.
     /// </remarks>
     [AddComponentMenu("Aspid/MVVM/Binders/Aggregator/Aggregator – Format String")]
     public sealed class FormatStringMonoBinder : AggregatorMonoBinder<string, string>

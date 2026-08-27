@@ -10,13 +10,6 @@ namespace Aspid.MVVM.StarterKit
     /// <see cref="Animator"/> when the bound ViewModel value changes.
     /// </summary>
     /// <typeparam name="T">The type of the Animator parameter value.</typeparam>
-    /// <remarks>
-    /// Supports <see cref="BindMode.OneWay"/>, <see cref="BindMode.OneTime"/>, and
-    /// <see cref="BindMode.OneWayToSource"/>. In <see cref="BindMode.OneWayToSource"/> mode the binder
-    /// exposes <see cref="SetParameter"/> to the ViewModel either as a plain <see cref="Action{T}"/>
-    /// or as an <see cref="IRelayCommand{T}"/> whose <see cref="IRelayCommand.CanExecute()"/> mirrors
-    /// <see cref="CanExecute(T?)"/>.
-    /// </remarks>
     [Serializable]
     [BindModeOverride(BindMode.OneWay, BindMode.OneTime, BindMode.OneWayToSource)]
     public abstract class AnimatorSetParameterBinder<T> : TargetBinder<Animator>,
@@ -46,16 +39,13 @@ namespace Aspid.MVVM.StarterKit
         protected string ParameterName { get; private set; }
 
         /// <summary>
-        /// The Animator parameter type this binder sets, inferred from <typeparamref name="T"/>.
-        /// Returns <see langword="null"/> when <typeparamref name="T"/> is none of the types an
-        /// <see cref="Animator"/> parameter can hold, in which case the name is checked on its own.
+        /// Gets the Animator parameter type this binder sets, inferred from <typeparamref name="T"/>, or
+        /// <see langword="null"/> when <typeparamref name="T"/> is none of the types an <see cref="Animator"/>
+        /// parameter can hold, in which case the name is checked on its own.
         /// </summary>
         protected virtual AnimatorControllerParameterType? ParameterType =>
             AnimatorParameterTypes.Of<T>();
 
-        /// <summary>
-        /// Initializes a new instance of <see cref="AnimatorSetParameterBinder{T}"/>.
-        /// </summary>
         /// <param name="target">The <see cref="Animator"/> whose parameter is set.</param>
         /// <param name="parameterName">The name of the Animator parameter to set.</param>
         /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/>.</param>

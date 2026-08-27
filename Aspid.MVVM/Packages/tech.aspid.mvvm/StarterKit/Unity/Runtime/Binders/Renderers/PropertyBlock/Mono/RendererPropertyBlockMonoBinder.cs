@@ -8,20 +8,13 @@ namespace Aspid.MVVM.StarterKit
     /// <see cref="MaterialPropertyBlock"/>.
     /// </summary>
     /// <remarks>
-    /// The only path the package offered to a shader value was <see cref="Renderer.material"/>, which instantiates a
-    /// copy of the material on first touch: every bound object gets its own material, batching stops, and the copies leak
-    /// into the scene. A property block overrides the value per renderer while the material stays shared.
-    /// <para/>
-    /// The block is created once and reused, so a value per frame allocates nothing. The property name is resolved to an
-    /// id when binding is established — <see cref="Shader.PropertyToID"/> hashes the string, and doing it per value
-    /// would pay for the hash on every write.
-    /// <para/>
-    /// A blank property name is reported once rather than on every value, and nothing is written until it is fixed.
+    /// The property name is resolved to an id once, when binding is established. A blank name logs an error and
+    /// disables writes until the binder is rebound.
     /// </remarks>
     /// <typeparam name="TValue">The type of value written to the shader property.</typeparam>
     public abstract partial class RendererPropertyBlockMonoBinder<TValue> : ComponentMonoBinder<Renderer>, IBinder<TValue>
     {
-        [Tooltip("Name of the shader property to override, exactly as the shader declares it — including the leading underscore.")]
+        [Tooltip("Shader property name, exactly as declared (including the leading underscore).")]
         [SerializeField] private string _propertyName;
 
         private int _propertyId;

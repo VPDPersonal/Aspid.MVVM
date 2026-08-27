@@ -9,7 +9,6 @@ namespace Aspid.MVVM.StarterKit
     /// </summary>
     /// <remarks>
     /// By default, uses <see cref="GenericToStringConverter{T}"/> for the conversion.
-    /// A custom <see cref="IConverter{TFrom,TTo}"/> can be supplied for specialized formatting.
     /// </remarks>
     /// <include file="XmlExampleDoc-Casters-1.1.0.xml" path="doc//member[@name='AnyToStringCasterBinder']/*" />
     public sealed class AnyToStringCasterBinder : Binder, IAnyBinder
@@ -17,25 +16,20 @@ namespace Aspid.MVVM.StarterKit
         private readonly Action<string?> _setValue;
         private readonly IConverter<object?, string?> _converter;
 
-        /// <summary>
-        /// Initializes a new instance of <see cref="AnyToStringCasterBinder"/> using the default
-        /// <see cref="GenericToStringConverter{T}"/> converter.
-        /// </summary>
         /// <param name="setValue">The action invoked with the converted <see cref="string"/> value.</param>
         /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</param>
         /// <exception cref="ArgumentNullException">Thrown when <paramref name="setValue"/> is <see langword="null"/>.</exception>
+        /// <exception cref="InvalidOperationException">Thrown when <paramref name="mode"/> is <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</exception>
         public AnyToStringCasterBinder(Action<string?> setValue, BindMode mode = BindMode.OneWay)
             : this(setValue, new GenericToStringConverter<object>(), mode) { }
 
-        /// <summary>
-        /// Initializes a new instance of <see cref="AnyToStringCasterBinder"/> with a custom converter.
-        /// </summary>
         /// <param name="setValue">The action invoked with the converted <see cref="string"/> value.</param>
         /// <param name="converter">The converter used to transform the incoming value to a <see cref="string"/>.</param>
         /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</param>
         /// <exception cref="ArgumentNullException">
         /// Thrown when <paramref name="setValue"/> or <paramref name="converter"/> is <see langword="null"/>.
         /// </exception>
+        /// <exception cref="InvalidOperationException">Thrown when <paramref name="mode"/> is <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</exception>
         public AnyToStringCasterBinder(Action<string?> setValue, IConverter<object?, string?> converter, BindMode mode = BindMode.OneWay)
             : base(mode)
         {

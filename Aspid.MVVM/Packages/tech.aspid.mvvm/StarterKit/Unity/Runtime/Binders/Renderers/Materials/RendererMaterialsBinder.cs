@@ -36,23 +36,17 @@ namespace Aspid.MVVM.StarterKit
             remove => _reverseMaterials -= value;
         }
         
-        [Tooltip("The optional converter applied to each material before it is assigned to the Renderer.")]
+        [Tooltip("The optional converter applied to each material before assignment.")]
         [SerializeReference] private Converter? _converter;
         
         private Action<Material?>? _reverseMaterial;
         private Action<Material[]?>? _reverseMaterials;
         
-        /// <summary>
-        /// Initializes a new instance of <see cref="RendererMaterialsBinder"/> without a converter.
-        /// </summary>
         /// <param name="target">The <see cref="Renderer"/> to bind.</param>
         /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/>.</param>
         public RendererMaterialsBinder(Renderer target, BindMode mode)
             : this(target, converter: null, mode) { }
 
-        /// <summary>
-        /// Initializes a new instance of <see cref="RendererMaterialsBinder"/>.
-        /// </summary>
         /// <param name="target">The <see cref="Renderer"/> to bind.</param>
         /// <param name="converter">The converter applied to each material before assignment, or <see langword="null"/> to use the value as-is.</param>
         /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/>.</param>

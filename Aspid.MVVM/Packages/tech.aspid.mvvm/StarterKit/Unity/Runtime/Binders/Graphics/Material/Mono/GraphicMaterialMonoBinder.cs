@@ -8,10 +8,6 @@ namespace Aspid.MVVM.StarterKit
     /// <summary>
     /// <see cref="ComponentMonoBinder{Graphic, Material, Converter}"/> that binds the <see cref="Graphic.material"/> property.
     /// </summary>
-    /// <remarks>
-    /// Supports <see cref="BindMode.OneWayToSource"/>: when binding is established, the current material value
-    /// is sent back to the ViewModel.
-    /// </remarks>
     [AddBinderContextMenu(typeof(Graphic), serializePropertyNames: "m_Material")]
     [AddComponentMenu("Aspid/MVVM/Binders/UI/Graphic/Graphic Binder – Material")]
     public class GraphicMaterialMonoBinder : ComponentMonoBinder<Graphic, Material, Converter>

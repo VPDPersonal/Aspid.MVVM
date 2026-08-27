@@ -22,7 +22,11 @@ namespace Aspid.MVVM.StarterKit
             BindMode mode = BindMode.OneWay)
             : base(target, trueValue, falseValue, converter, mode) { }
 
-        /// <inheritdoc/>
+        /// <summary>
+        /// Called when applying the selected value to the <see cref="AudioSource.dopplerLevel"/> property.
+        /// Clamps the value to the valid range of 0 to 5.
+        /// </summary>
+        /// <param name="value">The value received from the ViewModel.</param>
         protected override void SetValue(float value) =>
             Target.dopplerLevel = BinderMath.SafeClamp(value, 0, 5);
     }

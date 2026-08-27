@@ -6,12 +6,7 @@ namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
     /// <see cref="ComponentMonoBinder{Image, Sprite}"/> that sets the <see cref="Image.sprite"/> property.
-    /// Optionally disables the <see cref="Image"/> when the bound sprite is <see langword="null"/>.
     /// </summary>
-    /// <remarks>
-    /// Supports <see cref="BindMode.OneWayToSource"/>: when binding is established, the current sprite value
-    /// is sent back to the ViewModel.
-    /// </remarks>
     [AddComponentMenu("Aspid/MVVM/Binders/UI/Image/Image Binder – Sprite")]
     [AddBinderContextMenu(typeof(Image), serializePropertyNames: "m_Sprite")]
     public partial class ImageSpriteMonoBinder : ComponentMonoBinder<Image, Sprite>, IBinder<Texture2D>
@@ -42,7 +37,10 @@ namespace Aspid.MVVM.StarterKit
             SetValue(_createdSprite);
         }
 
-        /// <inheritdoc/>
+        /// <summary>
+        /// Destroys the sprite this binder created, clears the sprite, and then runs the base implementation.
+        /// </summary>
+        /// <remarks>Only a sprite created from a bound <see cref="Texture2D"/> is destroyed; one assigned directly is left untouched.</remarks>
         protected override void OnUnbound()
         {
             if (_createdSprite) Object.Destroy(_createdSprite);

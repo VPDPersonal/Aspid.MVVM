@@ -7,8 +7,6 @@ namespace Aspid.MVVM.StarterKit
     /// <see cref="ComponentFloatMonoBinder{AudioSource}"/> that binds the <see cref="AudioSource.pitch"/> property.
     /// </summary>
     /// <remarks>
-    /// Supports <see cref="BindMode.OneWayToSource"/>: when binding is established, the current pitch value
-    /// is sent back to the ViewModel.
     /// The bound value is clamped to [−3, 3] before being applied to <see cref="AudioSource.pitch"/>.
     /// </remarks>
     [AddBinderContextMenu(typeof(AudioSource))]

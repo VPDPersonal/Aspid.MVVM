@@ -20,12 +20,9 @@ namespace Aspid.MVVM.StarterKit
         /// <inheritdoc/>
         public event Action<bool>? ValueChanged;
 
-        [Tooltip("When enabled, the bound value is inverted before it is applied — bind an IsWindowed flag to it directly.")]
+        [Tooltip("Inverts the bound value before it is applied.")]
         [SerializeField] private bool _isInvert;
 
-        /// <summary>
-        /// Initializes a new instance of <see cref="ScreenFullScreenBinder"/>.
-        /// </summary>
         /// <param name="isInvert">When <see langword="true"/>, the bound value is inverted before it is applied.</param>
         /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/> — the property raises no change event to listen to.</param>
         /// <exception cref="ArgumentException">Thrown when <paramref name="mode"/> is <see cref="BindMode.TwoWay"/>.</exception>

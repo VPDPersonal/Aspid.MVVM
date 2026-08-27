@@ -13,10 +13,7 @@ namespace Aspid.MVVM.StarterKit
     [AddBinderContextMenu(typeof(TMP_Text), serializePropertyNames: "m_fontAsset", SubPath = "Enum")]
     public sealed class TextFontEnumMonoBinder : EnumMonoBinder<TMP_Text, TMP_FontAsset>
     {
-        /// <summary>
-        /// Called when applying the selected value to <see cref="TMP_Text.font"/>.
-        /// </summary>
-        /// <param name="value">The value received from the ViewModel.</param>
+        /// <inheritdoc/>
         protected override void SetValue(TMP_FontAsset value) =>
             CachedComponent.font = value;
     }

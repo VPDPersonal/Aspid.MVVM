@@ -11,15 +11,11 @@ namespace Aspid.MVVM.StarterKit
     /// <see cref="TargetBinder{RawImage, Texture, Converter}"/> that sets the <see cref="RawImage.texture"/> property,
     /// also accepting <see cref="Sprite"/> values by extracting their underlying texture.
     /// </summary>
-    /// <remarks>
-    /// Disables the <see cref="RawImage"/> component when the bound texture is <see langword="null"/> and
-    /// the disabledWhenNull option is set to <see langword="true"/> (the default).
-    /// </remarks>
     /// <include file="XmlExampleDoc-RawImage-Texture-1.1.0.xml" path="doc//member[@name='RawImageTextureBinder']/*" />
     [Serializable]
     public class RawImageTextureBinder : TargetBinder<RawImage, Texture, Converter>, IBinder<Sprite?>
     {
-        [Tooltip("When true, disables the RawImage component automatically when the bound texture is null.")]
+        [Tooltip("Disables the RawImage component when the bound texture is null.")]
         [SerializeField] private bool _disabledWhenNull;
 
         /// <inheritdoc/>
@@ -33,7 +29,10 @@ namespace Aspid.MVVM.StarterKit
             }
         }
         
-        /// <inheritdoc/>
+        /// <param name="target">The <see cref="RawImage"/> to bind.</param>
+        /// <param name="disabledWhenNull">When <see langword="true"/>, disables the <see cref="RawImage"/> component when the bound texture is <see langword="null"/>.</param>
+        /// <param name="converter">The converter used to transform the bound value to a <see cref="Texture"/>.</param>
+        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/>.</param>
         /// <exception cref="ArgumentException">Thrown when <paramref name="mode"/> is <see cref="BindMode.TwoWay"/>.</exception>
         public RawImageTextureBinder(RawImage target, bool disabledWhenNull = true, Converter? converter = null, BindMode mode = BindMode.OneWay)
             : base(target, converter, mode)

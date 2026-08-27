@@ -17,26 +17,21 @@ namespace Aspid.MVVM.StarterKit
         private readonly Action<string?> _setValue;
         private readonly IConverter<T?, string?> _converter;
 
-        /// <summary>
-        /// Initializes a new instance of <see cref="GenericToStringCasterBinder{T}"/> using a
-        /// <see cref="GenericToStringConverter{T}"/> converter with the specified format string.
-        /// </summary>
         /// <param name="setValue">The action invoked with the converted <see cref="string"/> value.</param>
         /// <param name="format">A composite format string passed to the underlying converter.</param>
         /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</param>
         /// <exception cref="ArgumentNullException">Thrown when <paramref name="setValue"/> is <see langword="null"/>.</exception>
+        /// <exception cref="InvalidOperationException">Thrown when <paramref name="mode"/> is <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</exception>
         public GenericToStringCasterBinder(Action<string?> setValue, string format, BindMode mode = BindMode.OneWay)
             : this(setValue, new GenericToStringConverter<T>(format), mode) { }
 
-        /// <summary>
-        /// Initializes a new instance of <see cref="GenericToStringCasterBinder{T}"/> with a custom converter.
-        /// </summary>
         /// <param name="setValue">The action invoked with the converted <see cref="string"/> value.</param>
         /// <param name="converter">The converter used to transform a <typeparamref name="T"/> value to a <see cref="string"/>.</param>
         /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</param>
         /// <exception cref="ArgumentNullException">
         /// Thrown when <paramref name="setValue"/> or <paramref name="converter"/> is <see langword="null"/>.
         /// </exception>
+        /// <exception cref="InvalidOperationException">Thrown when <paramref name="mode"/> is <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</exception>
         public GenericToStringCasterBinder(Action<string?> setValue, IConverter<T?, string?> converter, BindMode mode = BindMode.OneWay)
             : base(mode)
         {

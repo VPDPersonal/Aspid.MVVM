@@ -18,9 +18,6 @@ namespace Aspid.MVVM.StarterKit
         private readonly Action<bool> _setValue;
         private readonly IConverter<string?, bool> _converter;
         
-        /// <summary>
-        /// Initializes a new instance of <see cref="StringToBoolCasterBinder"/> with an optional inversion flag.
-        /// </summary>
         /// <param name="setValue">The action invoked with the converted <see cref="bool"/> value.</param>
         /// <param name="isInvert">
         /// When <see langword="true"/>, the conversion result is logically negated, so a filled string
@@ -30,18 +27,17 @@ namespace Aspid.MVVM.StarterKit
         /// </param>
         /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</param>
         /// <exception cref="ArgumentNullException">Thrown when <paramref name="setValue"/> is <see langword="null"/>.</exception>
+        /// <exception cref="InvalidOperationException">Thrown when <paramref name="mode"/> is <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</exception>
         public StringToBoolCasterBinder(Action<bool> setValue, bool isInvert = false, BindMode mode = BindMode.OneWay)
             : this(setValue, new StringEmptyToBoolConverter(isInvert), mode) { }
 
-        /// <summary>
-        /// Initializes a new instance of <see cref="StringToBoolCasterBinder"/> with a custom converter.
-        /// </summary>
         /// <param name="setValue">The action invoked with the converted <see cref="bool"/> value.</param>
         /// <param name="converter">The converter used to transform a <see cref="string"/> to a <see cref="bool"/>.</param>
         /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</param>
         /// <exception cref="ArgumentNullException">
         /// Thrown when <paramref name="setValue"/> or <paramref name="converter"/> is <see langword="null"/>.
         /// </exception>
+        /// <exception cref="InvalidOperationException">Thrown when <paramref name="mode"/> is <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</exception>
         public StringToBoolCasterBinder(Action<bool> setValue, IConverter<string?, bool> converter, BindMode mode = BindMode.OneWay)
             : base(mode)
         {

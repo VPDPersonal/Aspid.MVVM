@@ -9,13 +9,7 @@ namespace Aspid.MVVM.StarterKit
     /// <see cref="IReverseBinder{T}">IReverseBinder&lt;bool&gt;</see> that reports whether the source is playing.
     /// </summary>
     /// <remarks>
-    /// The ViewModel could start and stop a sound and could not learn that one had finished, so a button that should
-    /// re-enable itself when a voice line ends had nothing to listen to.
-    /// <para/>
-    /// <see cref="AudioSource"/> raises no event for this, so the state is polled in <c>Update</c> and the ViewModel is
-    /// told only when it changes. That is one boolean comparison per frame per binder — cheap, but not free, which is
-    /// why this is a binder a project adds where it needs it rather than something the playback binders do on their own.
-    /// While the component is disabled nothing is polled: a paused game does not report a sound as finished.
+    /// <see cref="AudioSource"/> raises no event for playback finishing, so the state is polled once per frame instead.
     /// </remarks>
     [BindModeOverride(modes: BindMode.OneWayToSource)]
     [AddBinderContextMenu(typeof(AudioSource))]
@@ -25,7 +19,7 @@ namespace Aspid.MVVM.StarterKit
         /// <inheritdoc/>
         public event Action<bool> ValueChanged;
 
-        [Tooltip("When enabled, the reported value is inverted — bind an IsIdle flag to it directly.")]
+        [Tooltip("When enabled, inverts the reported value before it is raised.")]
         [SerializeField] private bool _isInvert;
 
         private bool _wasPlaying;
@@ -46,8 +40,7 @@ namespace Aspid.MVVM.StarterKit
         /// Polls <see cref="AudioSource.isPlaying"/> and reports a change.
         /// </summary>
         /// <remarks>
-        /// Unity calls this only while the component is enabled, which is the behaviour that keeps a paused game from
-        /// reporting a sound as finished.
+        /// Runs only while the component is enabled, so a disabled or paused source is not reported as finished.
         /// </remarks>
         private void Update()
         {

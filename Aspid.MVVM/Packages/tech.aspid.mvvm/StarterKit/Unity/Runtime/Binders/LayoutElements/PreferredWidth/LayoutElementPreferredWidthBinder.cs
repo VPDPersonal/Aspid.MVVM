@@ -9,7 +9,8 @@ namespace Aspid.MVVM.StarterKit
     /// <see cref="TargetFloatBinder{LayoutElement}"/> that binds <see cref="LayoutElement.preferredWidth"/>.
     /// </summary>
     /// <remarks>
-    /// A LayoutElement is how a single child overrides what its layout group would otherwise decide, and none of its numbers could be bound. A negative value means "no preference", which is why it is passed through rather than clamped.
+    /// A negative value means "no preference", which is why it is passed through rather than clamped. A
+    /// non-finite value is rejected instead of being written.
     /// </remarks>
     [Serializable]
     public class LayoutElementPreferredWidthBinder : TargetFloatBinder<LayoutElement>
@@ -18,7 +19,11 @@ namespace Aspid.MVVM.StarterKit
         protected sealed override float Property
         {
             get => Target.preferredWidth;
-            set => Target.preferredWidth = value;
+            set
+            {
+                if (!BinderMath.IsFinite(value)) return;
+                Target.preferredWidth = value;
+            }
         }
 
         /// <inheritdoc/>

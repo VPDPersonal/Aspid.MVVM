@@ -17,23 +17,21 @@ namespace Aspid.MVVM.StarterKit
         [Tooltip("The materials array applied to the element matching the selected enum value.")]
         [SerializeField] private Material[] _selectedValue;
 
-        [Tooltip("The optional converter applied to each material in the default value before assignment.")]
+        [Tooltip("The optional converter applied to each material in the default value.")]
         [SerializeReference] private Converter _defaultValueConverter;
 
-        [Tooltip("The optional converter applied to each material in the selected value before assignment.")]
+        [Tooltip("The optional converter applied to each material in the selected value.")]
         [SerializeReference] private Converter _selectedValueConverter;
 
         /// <summary>
-        /// Called when applying the default materials to the specified element.
-        /// Sets <see cref="Renderer.materials"/> using the default value array, applying the default converter.
+        /// Sets <see cref="Renderer.materials"/> on <paramref name="element"/> from the default value array, applying the default converter.
         /// </summary>
         /// <param name="element">The component this entry of the group writes to.</param>
         protected override void SetDefaultValue(Renderer element) =>
             element.SetMaterials(_defaultValueConverter, _defaultValue);
 
         /// <summary>
-        /// Called when applying the selected materials to the specified element.
-        /// Sets <see cref="Renderer.materials"/> using the selected value array, applying the selected converter.
+        /// Sets <see cref="Renderer.materials"/> on <paramref name="element"/> from the selected value array, applying the selected converter.
         /// </summary>
         /// <param name="element">The component this entry of the group writes to.</param>
         protected override void SetSelectedValue(Renderer element) =>

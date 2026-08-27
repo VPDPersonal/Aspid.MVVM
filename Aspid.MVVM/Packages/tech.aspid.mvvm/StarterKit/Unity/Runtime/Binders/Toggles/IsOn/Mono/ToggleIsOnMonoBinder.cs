@@ -39,8 +39,8 @@ namespace Aspid.MVVM.StarterKit
             }
             finally
             {
-                // Без finally исключение из сеттера — например, из чужого слушателя onValueChanged —
-                // навсегда оставило бы флаг снятым и обесточило канал View → ViewModel.
+                // Without finally, an exception from the setter (e.g. from another onValueChanged listener)
+                // would leave the flag stuck false, permanently killing the View -> ViewModel channel.
                 _isNotifyValueChanged = true;
             }
         }

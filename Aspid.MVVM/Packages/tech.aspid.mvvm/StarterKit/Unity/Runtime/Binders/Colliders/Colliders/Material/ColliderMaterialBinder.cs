@@ -11,10 +11,8 @@ namespace Aspid.MVVM.StarterKit
     /// <see cref="TargetBinder{T1, T2, T3}">TargetBinder&lt;Collider, PhysicsMaterial, IConverter&lt;PhysicsMaterial, PhysicsMaterial&gt;&gt;</see> that sets the <see cref="Collider.material"/> property.
     /// </summary>
     /// <remarks>
-    /// The value read back is <see cref="Collider.sharedMaterial"/>, not <see cref="Collider.material"/>: reading
-    /// the latter makes Unity replace the assigned asset with a private clone named <c>"… (Instance)"</c> — the
-    /// ViewModel would receive something that no longer compares equal to the asset it handed over, and the clone
-    /// lives until the collider is destroyed.
+    /// Reads back <see cref="Collider.sharedMaterial"/>, not <see cref="Collider.material"/> — reading the latter
+    /// would replace the asset with a private clone and break equality with what the ViewModel sent.
     /// </remarks>
     /// <include file="XmlExampleDoc-Collider-Material-1.1.0.xml" path="doc//member[@name='ColliderMaterialBinder']/*" />
     [Serializable]

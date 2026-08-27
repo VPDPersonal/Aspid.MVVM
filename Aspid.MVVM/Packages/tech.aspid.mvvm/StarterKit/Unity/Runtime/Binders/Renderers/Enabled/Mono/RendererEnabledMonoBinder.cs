@@ -8,8 +8,6 @@ namespace Aspid.MVVM.StarterKit
     /// </summary>
     /// <remarks>
     /// A <see cref="Renderer"/> is a <see cref="Component"/> and not a <see cref="Behaviour"/>, so the behaviour binders cannot take one — this is the equivalent for it.
-    /// Supports <see cref="BindMode.OneWayToSource"/>: when binding is established, the current value is sent back
-    /// to the ViewModel. Supports optional value inversion.
     /// </remarks>
     [AddBinderContextMenu(typeof(Renderer), serializePropertyNames: "m_Enabled")]
     [AddComponentMenu("Aspid/MVVM/Binders/Renderer/Renderer Binder – Enabled")]

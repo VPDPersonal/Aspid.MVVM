@@ -7,8 +7,6 @@ namespace Aspid.MVVM.StarterKit
     /// <see cref="ComponentFloatMonoBinder{AudioSource}"/> that binds the <see cref="AudioSource.spatialBlend"/> property.
     /// </summary>
     /// <remarks>
-    /// Supports <see cref="BindMode.OneWayToSource"/>: when binding is established, the current spatialBlend value
-    /// is sent back to the ViewModel.
     /// The bound value is clamped to [0, 1] before being applied to <see cref="AudioSource.spatialBlend"/>.
     /// </remarks>
     [AddBinderContextMenu(typeof(AudioSource))]

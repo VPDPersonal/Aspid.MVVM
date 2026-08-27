@@ -6,9 +6,6 @@ namespace Aspid.MVVM.StarterKit
     /// <summary>
     /// Concrete <see cref="ThrottleMonoBinder{T}">ThrottleMonoBinder&lt;string&gt;</see> that lets at most one value through per interval for a string.
     /// </summary>
-    /// <remarks>
-    /// The case this closure exists for: a position or a timer that publishes every frame.
-    /// </remarks>
     [BindModeOverride(BindMode.OneWay, BindMode.OneTime)]
     [AddComponentMenu("Aspid/MVVM/Binders/RateLimit/Throttle Binder – String")]
     [AddBinderContextMenuByType(typeof(string))]

@@ -7,10 +7,8 @@ namespace Aspid.MVVM.StarterKit
     /// Clamping helpers that also reject non-finite values.
     /// </summary>
     /// <remarks>
-    /// <see cref="Mathf.Clamp(float, float, float)"/> is written as two comparisons, and both are false for
-    /// <see cref="float.NaN"/> — so NaN passes straight through a clamp and on into the component. Unity accepts it
-    /// without complaint and the symptom surfaces later and elsewhere: a slider handle that will not move, a graphic
-    /// that vanishes, a transform that stops rendering. A ViewModel only has to divide by zero once to produce it.
+    /// <see cref="Mathf.Clamp(float, float, float)"/> is two comparisons that are both false for
+    /// <see cref="float.NaN"/>, so NaN passes through untouched.
     /// </remarks>
     public static class BinderMath
     {
@@ -37,9 +35,7 @@ namespace Aspid.MVVM.StarterKit
         /// Returns <paramref name="value"/> with anything below zero — and anything not finite — raised to <c>0</c>.
         /// </summary>
         /// <remarks>
-        /// For an extent such as a collider size or radius, where there is no meaningful upper bound but a negative
-        /// is never meaningful. Unity refuses a non-finite extent on its own and says so, but stores a negative one
-        /// silently, leaving the physics engine to make sense of inverted geometry.
+        /// Unity rejects a non-finite extent with an error but accepts a negative one silently.
         /// </remarks>
         /// <param name="value">The extent to sanitise.</param>
         /// <returns><paramref name="value"/> when it is finite and positive; otherwise <c>0</c>.</returns>

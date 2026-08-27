@@ -13,10 +13,7 @@ namespace Aspid.MVVM.StarterKit
     [AddBinderContextMenu(typeof(TMP_Text), serializePropertyNames: "m_textAlignment", SubPath = "Switcher")]
     public sealed class TextAlignmentSwitcherMonoBinder : SwitcherMonoBinder<TMP_Text, TextAlignmentOptions>
     {
-        /// <summary>
-        /// Called when applying the selected value to <see cref="TMP_Text.alignment"/>.
-        /// </summary>
-        /// <param name="value">The value received from the ViewModel.</param>
+        /// <inheritdoc/>
         protected override void SetValue(TextAlignmentOptions value) =>
             CachedComponent.alignment = value;
     }

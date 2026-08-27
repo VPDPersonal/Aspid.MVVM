@@ -14,9 +14,6 @@ namespace Aspid.MVVM.StarterKit
         [Tooltip("When enabled, inverts the bound bool value before applying it.")]
         [SerializeField] private bool _isInvert;
 
-        /// <summary>
-        /// Initializes a new instance of <see cref="TargetBoolBinder{TTarget}"/>.
-        /// </summary>
         /// <param name="target">The target object whose boolean property is managed by this binder.</param>
         /// <param name="isInvert">
         /// When <see langword="true"/>, the ViewModel value is logically negated before being applied.

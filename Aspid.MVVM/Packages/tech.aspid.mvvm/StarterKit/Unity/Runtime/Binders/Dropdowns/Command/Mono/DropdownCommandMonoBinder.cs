@@ -17,10 +17,10 @@ namespace Aspid.MVVM.StarterKit
         IBinder<IRelayCommand<int>>,
         IBinder<IRelayCommand<long>>
     {
-        [Tooltip("Controls how the dropdown's interactable state reflects the command's CanExecute result.")]
+        [Tooltip("Determines how command executability is reflected on the dropdown.")]
         [SerializeField] private InteractableMode _interactableMode = InteractableMode.Interactable;
 
-        [Tooltip("The view used to reflect the command's CanExecute state when InteractableMode is Custom.")]
+        [Tooltip("Custom view for reflecting command executability.")]
         [SerializeReference] private ICanExecuteView _customInteractable;
 
         private IRelayCommand<int> _intCommand;
@@ -63,10 +63,6 @@ namespace Aspid.MVVM.StarterKit
         /// Called when the binder is unbound. Unsubscribes from <see cref="TMP_Dropdown.onValueChanged"/>
         /// and releases all bound command references.
         /// </summary>
-        /// <remarks>
-        /// Passes <see langword="null"/> to all <c>SetValue</c> overloads to detach command references
-        /// and unsubscribe from their <see cref="IRelayCommand{T}.CanExecuteChanged"/> events.
-        /// </remarks>
         protected override void OnUnbound()
         {
             CachedComponent.onValueChanged.RemoveListener(OnValueChanged);
@@ -108,14 +104,14 @@ namespace Aspid.MVVM.StarterKit
         IBinder<IRelayCommand<int, T>>,
         IBinder<IRelayCommand<long, T>>
     {
-        [Tooltip("The additional parameter forwarded alongside the dropdown selection index when the command is executed.")]
+        [Tooltip("The extra parameter passed alongside the selection index.")]
         [SerializeField] private T _param;
 
         [Space]
-        [Tooltip("Controls how the dropdown's interactable state reflects the command's CanExecute result.")]
+        [Tooltip("Determines how command executability is reflected on the dropdown.")]
         [SerializeField] private InteractableMode _interactableMode = InteractableMode.Interactable;
 
-        [Tooltip("The view used to reflect the command's CanExecute state when InteractableMode is Custom.")]
+        [Tooltip("Custom view for reflecting command executability.")]
         [SerializeReference] private ICanExecuteView _customInteractable;
 
         private IRelayCommand<int, T> _intCommand;
@@ -167,10 +163,6 @@ namespace Aspid.MVVM.StarterKit
         /// Called when the binder is unbound. Unsubscribes from <see cref="TMP_Dropdown.onValueChanged"/>
         /// and releases all bound command references.
         /// </summary>
-        /// <remarks>
-        /// Passes <see langword="null"/> to all <c>SetValue</c> overloads to detach command references
-        /// and unsubscribe from their <see cref="IRelayCommand{T}.CanExecuteChanged"/> events.
-        /// </remarks>
         protected override void OnUnbound()
         {
             CachedComponent.onValueChanged.RemoveListener(OnValueChanged);
@@ -213,16 +205,16 @@ namespace Aspid.MVVM.StarterKit
         IBinder<IRelayCommand<int, T1, T2>>,
         IBinder<IRelayCommand<long, T1, T2>>
     {
-        [Tooltip("The first additional parameter forwarded alongside the dropdown selection index when the command is executed.")]
+        [Tooltip("The first extra parameter passed alongside the selection index.")]
         [SerializeField] private T1 _param1;
-        [Tooltip("The second additional parameter forwarded alongside the dropdown selection index when the command is executed.")]
+        [Tooltip("The second extra parameter passed alongside the selection index.")]
         [SerializeField] private T2 _param2;
 
         [Space]
-        [Tooltip("Controls how the dropdown's interactable state reflects the command's CanExecute result.")]
+        [Tooltip("Determines how command executability is reflected on the dropdown.")]
         [SerializeField] private InteractableMode _interactableMode = InteractableMode.Interactable;
 
-        [Tooltip("The view used to reflect the command's CanExecute state when InteractableMode is Custom.")]
+        [Tooltip("Custom view for reflecting command executability.")]
         [SerializeReference] private ICanExecuteView _customInteractable;
 
         private IRelayCommand<int, T1, T2> _intCommand;
@@ -283,10 +275,6 @@ namespace Aspid.MVVM.StarterKit
         /// Called when the binder is unbound. Unsubscribes from <see cref="TMP_Dropdown.onValueChanged"/>
         /// and releases all bound command references.
         /// </summary>
-        /// <remarks>
-        /// Passes <see langword="null"/> to all <c>SetValue</c> overloads to detach command references
-        /// and unsubscribe from their <see cref="IRelayCommand{T}.CanExecuteChanged"/> events.
-        /// </remarks>
         protected override void OnUnbound()
         {
             CachedComponent.onValueChanged.RemoveListener(OnValueChanged);
@@ -330,18 +318,18 @@ namespace Aspid.MVVM.StarterKit
         IBinder<IRelayCommand<int, T1, T2, T3>>,
         IBinder<IRelayCommand<long, T1, T2, T3>>
     {
-        [Tooltip("The first additional parameter forwarded alongside the dropdown selection index when the command is executed.")]
+        [Tooltip("The first extra parameter passed alongside the selection index.")]
         [SerializeField] private T1 _param1;
-        [Tooltip("The second additional parameter forwarded alongside the dropdown selection index when the command is executed.")]
+        [Tooltip("The second extra parameter passed alongside the selection index.")]
         [SerializeField] private T2 _param2;
-        [Tooltip("The third additional parameter forwarded alongside the dropdown selection index when the command is executed.")]
+        [Tooltip("The third extra parameter passed alongside the selection index.")]
         [SerializeField] private T3 _param3;
 
         [Space]
-        [Tooltip("Controls how the dropdown's interactable state reflects the command's CanExecute result.")]
+        [Tooltip("Determines how command executability is reflected on the dropdown.")]
         [SerializeField] private InteractableMode _interactableMode = InteractableMode.Interactable;
 
-        [Tooltip("The view used to reflect the command's CanExecute state when InteractableMode is Custom.")]
+        [Tooltip("Custom view for reflecting command executability.")]
         [SerializeReference] private ICanExecuteView _customInteractable;
 
         private IRelayCommand<int, T1, T2, T3> _intCommand;
@@ -411,10 +399,6 @@ namespace Aspid.MVVM.StarterKit
         /// Called when the binder is unbound. Unsubscribes from <see cref="TMP_Dropdown.onValueChanged"/>
         /// and releases all bound command references.
         /// </summary>
-        /// <remarks>
-        /// Passes <see langword="null"/> to all <c>SetValue</c> overloads to detach command references
-        /// and unsubscribe from their <see cref="IRelayCommand{T}.CanExecuteChanged"/> events.
-        /// </remarks>
         protected override void OnUnbound()
         {
             CachedComponent.onValueChanged.RemoveListener(OnValueChanged);

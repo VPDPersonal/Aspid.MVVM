@@ -9,9 +9,8 @@ namespace Aspid.MVVM.StarterKit
     /// <see cref="GridLayoutGroup.constraint"/>.
     /// </summary>
     /// <remarks>
-    /// Whether the grid is bounded by a column count, a row count, or neither. Paired with
-    /// <see cref="GridLayoutGroupConstraintCountMonoBinder"/>: the count means nothing until the
-    /// constraint says which axis it counts.
+    /// Paired with <see cref="GridLayoutGroupConstraintCountMonoBinder"/> — the count means nothing until this
+    /// names which axis it counts.
     /// </remarks>
     [AddBinderContextMenu(typeof(GridLayoutGroup), serializePropertyNames: "m_Constraint")]
     [AddComponentMenu("Aspid/MVVM/Binders/UI/LayoutGroup/Grid/GridLayoutGroup Binder – Constraint")]

@@ -16,7 +16,7 @@ namespace Aspid.MVVM.StarterKit
     [AddBinderContextMenu(typeof(LayoutGroup), serializePropertyNames: "m_Padding", SubPath = "EnumGroup")]
     public sealed class LayoutGroupPaddingEnumGroupMonoBinder : EnumGroupMonoBinder<LayoutGroup, RectOffset, Converter>
     {
-        [Tooltip("Determines which sides of the padding are updated when a value is applied to an element.")]
+        [Tooltip("Which sides of the padding are updated per element.")]
         [SerializeField] private PaddingMode _paddingMode;
         
         protected override void SetValue(LayoutGroup element, RectOffset value) =>

@@ -8,24 +8,40 @@ using ViewFactory = Aspid.MVVM.StarterKit.IViewFactory<Aspid.MVVM.MonoView>;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
+    /// <summary>
+    /// Concrete <see cref="ObservableListViewModelMonoBinder{T, TViewFactory}"/> that uses <see cref="MonoView"/> as
+    /// the view type and the default <see cref="IViewFactory{T}"/> as the factory.
+    /// </summary>
     [AddComponentMenu("Aspid/MVVM/Binders/Collection/Observable List Binder – ViewModel")]
     [AddBinderContextMenu(typeof(Component), Path = "Add General Binder/Collection/Observable List Binder – ViewModel")]
     public class ObservableListViewModelMonoBinder : ObservableListViewModelMonoBinder<MonoView, ViewFactory> { }
 
+    /// <summary>
+    /// <see cref="ObservableListViewModelMonoBinder{T, TViewFactory}"/> that uses <see cref="IViewFactory{T}"/> as
+    /// the factory type.
+    /// </summary>
+    /// <typeparam name="T">The type of <see cref="MonoBehaviour"/> view created for each item in the list.</typeparam>
     public abstract class ObservableListViewModelMonoBinder<T> : ObservableListViewModelMonoBinder<T, IViewFactory<T>>
         where T : MonoBehaviour, IView { }
-    
+
+    /// <summary>
+    /// <see cref="ObservableListMonoBinder{T}"/> that instantiates and releases <typeparamref name="T"/> view
+    /// objects for each <see cref="IViewModel"/> in a bound observable list, with optional filtering and sorting
+    /// support.
+    /// </summary>
+    /// <typeparam name="T">The type of <see cref="MonoBehaviour"/> view created for each item in the list.</typeparam>
+    /// <typeparam name="TViewFactory">The factory type used to create and release view instances.</typeparam>
     public abstract class ObservableListViewModelMonoBinder<T, TViewFactory> : ObservableListMonoBinder<IViewModel>
         where T : MonoBehaviour, IView
         where TViewFactory : IViewFactory<T>
     {
-        [Tooltip("Creates a view for each item of the collection. Required — nothing is shown without it.")]
+        [Tooltip("Creates a view per list item. Required — nothing is shown without it.")]
         [SerializeReference] private TViewFactory _viewFactory;
 
-        [Tooltip("Optional filter deciding which items of the collection are shown. Leave empty to show all of them.")]
+        [Tooltip("Optional filter for which items are shown. Leave empty to show all.")]
         [SerializeReference] private Filter _filter;
         
-        [Tooltip("Optional comparer deciding the order items are shown in. Leave empty to keep the collection's own order.")]
+        [Tooltip("Optional comparer for sort order. Leave empty to keep the collection's own order.")]
         [SerializeReference] private Comparer _comparer;
 
         private List<T> _views;

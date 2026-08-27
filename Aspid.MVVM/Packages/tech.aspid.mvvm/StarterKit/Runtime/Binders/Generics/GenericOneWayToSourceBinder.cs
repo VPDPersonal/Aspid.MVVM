@@ -8,13 +8,6 @@ namespace Aspid.MVVM.StarterKit
     /// from the View back to the ViewModel.
     /// </summary>
     /// <typeparam name="T">The type of the value reported to the ViewModel.</typeparam>
-    /// <remarks>
-    /// Subscribes to a View-side event or callback via an <c>initialize</c> action and raises
-    /// <see cref="ValueChanged"/> whenever the View value changes.
-    /// Optionally, a value can be pushed to the ViewModel immediately when the binding is established
-    /// (<see cref="OnBound"/>) or when it is being released (<see cref="OnUnbinding"/>), controlled
-    /// by the <c>onBoundValueChanged</c> and <c>onUnboundValueChanged</c> factory functions respectively.
-    /// </remarks>
     /// <include file="XmlExampleDoc-Generics-1.1.0.xml" path="doc//member[@name='GenericOneWayToSourceBinder{1}']/*" />
     public class GenericOneWayToSourceBinder<T> : Binder, IReverseBinder<T>
     {
@@ -26,10 +19,6 @@ namespace Aspid.MVVM.StarterKit
         private readonly Func<T?>? _onBoundValueChanged;
         private readonly Func<T?>? _onUnboundValueChanged;
 
-        /// <summary>
-        /// Initializes a new instance of <see cref="GenericOneWayToSourceBinder{T}"/> and immediately
-        /// wires up the View-side event via <paramref name="initialize"/>.
-        /// </summary>
         /// <param name="initialize">
         /// An action that receives the internal <c>OnValueChanged</c> callback and registers it with the View event.
         /// </param>
@@ -51,11 +40,6 @@ namespace Aspid.MVVM.StarterKit
             _onUnboundValueChanged = onUnboundValueChanged;
         }
 
-        /// <summary>
-        /// Initializes a new instance of <see cref="GenericOneWayToSourceBinder{T}"/> without an
-        /// event-wire-up action. At least one of <paramref name="onBoundValueChanged"/> or
-        /// <paramref name="onUnboundValueChanged"/> must be provided.
-        /// </summary>
         /// <param name="onBoundValueChanged">
         /// Optional factory invoked when the binding is established; the returned value is pushed to the ViewModel.
         /// </param>
@@ -126,10 +110,6 @@ namespace Aspid.MVVM.StarterKit
         private readonly Func<TTarget, T?>? _onBoundValueChanged;
         private readonly Func<TTarget, T?>? _onUnboundValueChanged;
 
-        /// <summary>
-        /// Initializes a new instance of <see cref="GenericOneWayToSourceBinder{TTarget,T}"/> and immediately
-        /// wires up the View-side event via <paramref name="initialize"/>.
-        /// </summary>
         /// <param name="target">The target object whose event or value is monitored.</param>
         /// <param name="initialize">
         /// An action that receives <paramref name="target"/> and the internal <c>OnValueChanged</c>
@@ -158,11 +138,6 @@ namespace Aspid.MVVM.StarterKit
             initialize.Invoke(target, OnValueChanged);
         }
 
-        /// <summary>
-        /// Initializes a new instance of <see cref="GenericOneWayToSourceBinder{TTarget,T}"/> without an
-        /// event-wire-up action. At least one of <paramref name="onBoundValueChanged"/> or
-        /// <paramref name="onUnboundValueChanged"/> must be provided.
-        /// </summary>
         /// <param name="target">The target object whose value is read when bound or unbound.</param>
         /// <param name="onBoundValueChanged">
         /// Optional factory invoked with <paramref name="target"/> when the binding is established;

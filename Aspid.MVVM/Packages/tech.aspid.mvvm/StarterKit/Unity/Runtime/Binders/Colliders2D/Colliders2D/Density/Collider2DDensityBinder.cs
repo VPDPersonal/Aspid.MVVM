@@ -9,12 +9,10 @@ namespace Aspid.MVVM.StarterKit
     /// <see cref="TargetFloatBinder{Collider2D}"/> that binds <see cref="Collider2D.density"/>.
     /// </summary>
     /// <remarks>
-    /// How heavy the shape is, when the body computes its mass from its colliders — a crate that fills with
-    /// water, a balloon that deflates. Clamped non-negative.
+    /// Clamped non-negative; a non-finite value maps to <c>0</c>.
     /// <para/>
-    /// Unity <em>ignores</em> the write unless the attached <see cref="Rigidbody2D"/> has
-    /// <see cref="Rigidbody2D.useAutoMass"/> enabled — the property keeps its previous value and nothing is logged.
-    /// Bind the density only on a body that computes its mass from its colliders.
+    /// Unity ignores the write unless the attached <see cref="Rigidbody2D"/> has
+    /// <see cref="Rigidbody2D.useAutoMass"/> enabled, silently keeping the previous value.
     /// </remarks>
     [Serializable]
     public class Collider2DDensityBinder : TargetFloatBinder<Collider2D>

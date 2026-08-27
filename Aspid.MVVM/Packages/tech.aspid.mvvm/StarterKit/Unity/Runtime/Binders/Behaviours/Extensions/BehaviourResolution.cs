@@ -12,11 +12,7 @@ namespace Aspid.MVVM.StarterKit
         /// Returns the first <see cref="Behaviour"/> on <paramref name="gameObject"/> that is not itself a binder.
         /// </summary>
         /// <remarks>
-        /// A plain <c>GetComponent&lt;Behaviour&gt;</c> matches every behaviour on the object, binders included, and
-        /// component order decides which one wins. On an object carrying little else that is the binder itself — so
-        /// the binder would enable and disable itself, stop receiving values, and leave nothing in the log to
-        /// explain it. Skipping binders removes that outcome; which of the remaining behaviours is meant is still
-        /// the author's choice, made by filling the field.
+        /// Skips components that are themselves binders, so a binder cannot end up resolving — and disabling — itself.
         /// </remarks>
         /// <param name="gameObject">The object to search.</param>
         /// <returns>The first non-binder <see cref="Behaviour"/>, or <see langword="null"/> when there is none.</returns>

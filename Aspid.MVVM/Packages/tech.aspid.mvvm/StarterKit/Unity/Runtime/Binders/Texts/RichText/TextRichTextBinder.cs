@@ -9,11 +9,6 @@ namespace Aspid.MVVM.StarterKit
     /// <summary>
     /// <see cref="TargetBoolBinder{TMP_Text}"/> that binds <see cref="TMP_Text.richText"/>.
     /// </summary>
-    /// <remarks>
-    /// Whether tags in the text are interpreted or shown literally. Worth binding when the string comes from
-    /// somewhere the game does not control — a player name, a server message — and its markup should be shown
-    /// rather than obeyed.
-    /// </remarks>
     [Serializable]
     public class TextRichTextBinder : TargetBoolBinder<TMP_Text>
     {

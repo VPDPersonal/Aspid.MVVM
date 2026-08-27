@@ -13,11 +13,7 @@ namespace Aspid.MVVM.StarterKit
     [AddBinderContextMenu(typeof(TMP_Text), serializePropertyNames: "m_textAlignment", SubPath = "EnumGroup")]
     public sealed class TextAlignmentEnumGroupMonoBinder : EnumGroupMonoBinder<TMP_Text, TextAlignmentOptions>
     {
-        /// <summary>
-        /// Called when applying the selected value to <see cref="TMP_Text.alignment"/> of the specified element.
-        /// </summary>
-        /// <param name="element">The component this entry of the group writes to.</param>
-        /// <param name="value">The value the bound enum resolved to for this element.</param>
+        /// <inheritdoc/>
         protected override void SetValue(TMP_Text element, TextAlignmentOptions value) =>
             element.alignment = value;
     }

@@ -12,7 +12,7 @@ namespace Aspid.MVVM.StarterKit
     [AddComponentMenu("Aspid/MVVM/Binders/Audio/AudioSource/AudioSource Binder – MinMaxDistance EnumGroup")]
     public sealed class AudioSourceMinMaxDistanceEnumGroupMonoBinder : EnumGroupMonoBinder<AudioSource, Vector2, Converter>
     {
-        [Tooltip("Which end of the distance range the bound value writes: the minimum, the maximum, or both.")]
+        [Tooltip("Which end of the distance range the bound value writes.")]
         [SerializeField] private AudioSourceDistanceMode _distanceMode = AudioSourceDistanceMode.Range;
 
         /// <summary>

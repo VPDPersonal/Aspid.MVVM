@@ -8,10 +8,7 @@ namespace Aspid.MVVM.StarterKit
     /// <summary>
     /// <see cref="TargetFloatBinder{Rigidbody2D}"/> that binds <see cref="Rigidbody2D.gravityScale"/>.
     /// </summary>
-    /// <remarks>
-    /// How strongly gravity pulls this body, where <c>0</c> suspends it and a negative value inverts it — so
-    /// nothing is clamped. Unity refuses a non-finite scale on its own.
-    /// </remarks>
+    /// <remarks>Unity rejects a non-finite scale on its own, so no guard is needed here.</remarks>
     [Serializable]
     public class Rigidbody2DGravityScaleBinder : TargetFloatBinder<Rigidbody2D>
     {

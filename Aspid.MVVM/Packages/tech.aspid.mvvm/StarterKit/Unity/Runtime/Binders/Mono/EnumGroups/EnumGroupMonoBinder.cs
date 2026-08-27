@@ -15,8 +15,6 @@ namespace Aspid.MVVM.StarterKit
         [Tooltip("Lookup table mapping each enum value to its corresponding group element.")]
         [SerializeField] private EnumValues<TElement> _enumValues;
 
-        private bool _reportedEmptyEntry;
-
         /// <summary>
         /// Iterates all enum entries, calling <see cref="SetSelectedValue"/> for the matching one and <see cref="SetDefaultValue"/> for all others.
         /// </summary>
@@ -54,22 +52,13 @@ namespace Aspid.MVVM.StarterKit
             element is UnityEngine.Object unityObject ? !unityObject : element is null;
 
         /// <summary>
-        /// Reports the first empty entry of this binder's table and stays quiet afterwards.
+        /// Reports an empty entry of this binder's table.
         /// </summary>
-        /// <remarks>
-        /// An empty slot is a serialized misconfiguration: it cannot heal on its own, and the enum driving the group
-        /// may change every frame, so repeating the message would only make the console unusable.
-        /// </remarks>
-        private void ReportEmptyEntry(Enum key)
-        {
-            if (_reportedEmptyEntry) return;
-            _reportedEmptyEntry = true;
-
+        private void ReportEmptyEntry(Enum key) =>
             UnityEngine.Debug.LogError(
                 $"[{GetType().Name}] The '{key}' entry of the enum table has no {typeof(TElement).Name} assigned " +
-                "and is skipped; the rest of the group is still updated. Further empty entries are not reported.",
+                "and is skipped; the rest of the group is still updated.",
                 this);
-        }
 
         /// <summary>
         /// Applies the default visual state to <paramref name="element"/>. Called for every non-matching entry.

@@ -7,10 +7,6 @@ namespace Aspid.MVVM.StarterKit
     /// <summary>
     /// <see cref="ComponentMonoBinder{Scrollbar}"/> that executes a command each time <see cref="Scrollbar.onValueChanged"/> fires,
     /// passing the current scrollbar value as the command argument.
-    /// Accepts commands typed as <see cref="IRelayCommand{T}">IRelayCommand&lt;int&gt;</see>,
-    /// <see cref="IRelayCommand{T}">IRelayCommand&lt;long&gt;</see>,
-    /// <see cref="IRelayCommand{T}">IRelayCommand&lt;float&gt;</see>,
-    /// or <see cref="IRelayCommand{T}">IRelayCommand&lt;double&gt;</see>.
     /// </summary>
     [AddBinderContextMenu(typeof(Scrollbar), serializePropertyNames: "m_Calls")]
     [AddComponentMenu("Aspid/MVVM/Binders/UI/Command/Scrollbar Binder – Command")]
@@ -20,10 +16,10 @@ namespace Aspid.MVVM.StarterKit
         IBinder<IRelayCommand<float>>,
         IBinder<IRelayCommand<double>>
     {
-        [Tooltip("Controls how the scrollbar's interactable state reflects the command's CanExecute result.")]
+        [Tooltip("Controls how the scrollbar's interactable state reflects CanExecute.")]
         [SerializeField] private InteractableMode _interactableMode = InteractableMode.Interactable;
 
-        [Tooltip("The view used to reflect the command's CanExecute state when InteractableMode is Custom.")]
+        [Tooltip("Used to reflect CanExecute state when InteractableMode is Custom.")]
         [SerializeReference] private ICanExecuteView _customInteractable;
 
         private IRelayCommand<int> _intCommand;
@@ -131,10 +127,6 @@ namespace Aspid.MVVM.StarterKit
     /// <summary>
     /// Abstract base <see cref="ComponentMonoBinder{Scrollbar}"/> that executes a command each time <see cref="Scrollbar.onValueChanged"/> fires,
     /// passing the current scrollbar value and an additional parameter as the command arguments.
-    /// Accepts commands typed as <see cref="IRelayCommand{T1, T2}">IRelayCommand&lt;int, T&gt;</see>,
-    /// <see cref="IRelayCommand{T1, T2}">IRelayCommand&lt;long, T&gt;</see>,
-    /// <see cref="IRelayCommand{T1, T2}">IRelayCommand&lt;float, T&gt;</see>,
-    /// or <see cref="IRelayCommand{T1, T2}">IRelayCommand&lt;double, T&gt;</see>.
     /// </summary>
     /// <typeparam name="T">The type of the additional parameter forwarded alongside the scrollbar value.</typeparam>
     public abstract partial class ScrollBarCommandMonoBinder<T> : ComponentMonoBinder<Scrollbar>,
@@ -143,14 +135,14 @@ namespace Aspid.MVVM.StarterKit
         IBinder<IRelayCommand<float, T>>,
         IBinder<IRelayCommand<double, T>>
     {
-        [Tooltip("The additional parameter forwarded alongside the scrollbar value when the command is executed.")]
+        [Tooltip("Extra parameter passed with the scrollbar value when the command executes.")]
         [SerializeField] private T _param;
 
-        [Tooltip("Controls how the scrollbar's interactable state reflects the command's CanExecute result.")]
+        [Tooltip("Controls how the scrollbar's interactable state reflects CanExecute.")]
         [Space]
         [SerializeField] private InteractableMode _interactableMode = InteractableMode.Interactable;
 
-        [Tooltip("The view used to reflect the command's CanExecute state when InteractableMode is Custom.")]
+        [Tooltip("Used to reflect CanExecute state when InteractableMode is Custom.")]
         [SerializeReference] private ICanExecuteView _customInteractable;
 
         private IRelayCommand<int, T> _intCommand;
@@ -267,10 +259,6 @@ namespace Aspid.MVVM.StarterKit
     /// <summary>
     /// Abstract base <see cref="ComponentMonoBinder{Scrollbar}"/> that executes a command each time <see cref="Scrollbar.onValueChanged"/> fires,
     /// passing the current scrollbar value and two additional parameters as the command arguments.
-    /// Accepts commands typed as <see cref="IRelayCommand{T1, T2, T3}">IRelayCommand&lt;int, T1, T2&gt;</see>,
-    /// <see cref="IRelayCommand{T1, T2, T3}">IRelayCommand&lt;long, T1, T2&gt;</see>,
-    /// <see cref="IRelayCommand{T1, T2, T3}">IRelayCommand&lt;float, T1, T2&gt;</see>,
-    /// or <see cref="IRelayCommand{T1, T2, T3}">IRelayCommand&lt;double, T1, T2&gt;</see>.
     /// </summary>
     /// <typeparam name="T1">The type of the first additional parameter.</typeparam>
     /// <typeparam name="T2">The type of the second additional parameter.</typeparam>
@@ -280,16 +268,16 @@ namespace Aspid.MVVM.StarterKit
         IBinder<IRelayCommand<float, T1, T2>>,
         IBinder<IRelayCommand<double, T1, T2>>
     {
-        [Tooltip("The first additional parameter forwarded alongside the scrollbar value when the command is executed.")]
+        [Tooltip("First extra parameter passed with the scrollbar value when the command executes.")]
         [SerializeField] private T1 _param1;
-        [Tooltip("The second additional parameter forwarded alongside the scrollbar value when the command is executed.")]
+        [Tooltip("Second extra parameter passed with the scrollbar value when the command executes.")]
         [SerializeField] private T2 _param2;
 
-        [Tooltip("Controls how the scrollbar's interactable state reflects the command's CanExecute result.")]
+        [Tooltip("Controls how the scrollbar's interactable state reflects CanExecute.")]
         [Space]
         [SerializeField] private InteractableMode _interactableMode = InteractableMode.Interactable;
 
-        [Tooltip("The view used to reflect the command's CanExecute state when InteractableMode is Custom.")]
+        [Tooltip("Used to reflect CanExecute state when InteractableMode is Custom.")]
         [SerializeReference] private ICanExecuteView _customInteractable;
 
         private IRelayCommand<int, T1, T2> _intCommand;
@@ -415,10 +403,6 @@ namespace Aspid.MVVM.StarterKit
     /// <summary>
     /// Abstract base <see cref="ComponentMonoBinder{Scrollbar}"/> that executes a command each time <see cref="Scrollbar.onValueChanged"/> fires,
     /// passing the current scrollbar value and three additional parameters as the command arguments.
-    /// Accepts commands typed as <see cref="IRelayCommand{T1, T2, T3, T4}">IRelayCommand&lt;int, T1, T2, T3&gt;</see>,
-    /// <see cref="IRelayCommand{T1, T2, T3, T4}">IRelayCommand&lt;long, T1, T2, T3&gt;</see>,
-    /// <see cref="IRelayCommand{T1, T2, T3, T4}">IRelayCommand&lt;float, T1, T2, T3&gt;</see>,
-    /// or <see cref="IRelayCommand{T1, T2, T3, T4}">IRelayCommand&lt;double, T1, T2, T3&gt;</see>.
     /// </summary>
     /// <typeparam name="T1">The type of the first additional parameter.</typeparam>
     /// <typeparam name="T2">The type of the second additional parameter.</typeparam>
@@ -429,18 +413,18 @@ namespace Aspid.MVVM.StarterKit
         IBinder<IRelayCommand<float, T1, T2, T3>>,
         IBinder<IRelayCommand<double, T1, T2, T3>>
     {
-        [Tooltip("The first additional parameter forwarded alongside the scrollbar value when the command is executed.")]
+        [Tooltip("First extra parameter passed with the scrollbar value when the command executes.")]
         [SerializeField] private T1 _param1;
-        [Tooltip("The second additional parameter forwarded alongside the scrollbar value when the command is executed.")]
+        [Tooltip("Second extra parameter passed with the scrollbar value when the command executes.")]
         [SerializeField] private T2 _param2;
-        [Tooltip("The third additional parameter forwarded alongside the scrollbar value when the command is executed.")]
+        [Tooltip("Third extra parameter passed with the scrollbar value when the command executes.")]
         [SerializeField] private T3 _param3;
 
-        [Tooltip("Controls how the scrollbar's interactable state reflects the command's CanExecute result.")]
+        [Tooltip("Controls how the scrollbar's interactable state reflects CanExecute.")]
         [Space]
         [SerializeField] private InteractableMode _interactableMode = InteractableMode.Interactable;
 
-        [Tooltip("The view used to reflect the command's CanExecute state when InteractableMode is Custom.")]
+        [Tooltip("Used to reflect CanExecute state when InteractableMode is Custom.")]
         [SerializeReference] private ICanExecuteView _customInteractable;
 
         private IRelayCommand<int, T1, T2, T3> _intCommand;

@@ -56,8 +56,7 @@ namespace Aspid.MVVM.StarterKit
             _stringReference.Unsubscribe(UpdateString);
 
         /// <summary>
-        /// Called when the selected entry key is applied.
-        /// Sets the localized string table entry reference.
+        /// Sets the localized string table entry reference to the selected value.
         /// </summary>
         /// <param name="value">The value received from the ViewModel.</param>
         protected override void SetValue(string value) =>

@@ -7,10 +7,6 @@ namespace Aspid.MVVM.StarterKit
     /// <see cref="ComponentQuaternionMonoBinder{Transform}"/> that sets the <see cref="Transform.rotation"/> or
     /// <see cref="Transform.localRotation"/> property depending on the configured <see cref="Space"/>.
     /// </summary>
-    /// <remarks>
-    /// Supports <see cref="BindMode.OneWayToSource"/>: when binding is established, the current rotation
-    /// is sent back to the ViewModel.
-    /// </remarks>
     [AddComponentMenu("Aspid/MVVM/Binders/Transform/Transform Binder – Rotation")]
     [AddBinderContextMenu(typeof(Transform), serializePropertyNames: "m_LocalRotation")]
     public partial class TransformRotationMonoBinder : ComponentQuaternionMonoBinder<Transform>

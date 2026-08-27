@@ -13,12 +13,7 @@ namespace Aspid.MVVM.StarterKit
     [AddBinderContextMenu(typeof(TMP_Text), serializePropertyNames: "m_text", SubPath = "EnumGroup")]
     public sealed class TextEnumGroupMonoBinder : EnumGroupStringMonoBinder<TMP_Text>
     {
-        /// <summary>
-        /// Called when the bound enum resolves to a value for the specified element.
-        /// Sets <see cref="TMP_Text.text"/> of the element to the resolved string.
-        /// </summary>
-        /// <param name="element">The component this entry of the group writes to.</param>
-        /// <param name="value">The value the bound enum resolved to for this element.</param>
+        /// <inheritdoc/>
         protected override void SetValue(TMP_Text element, string value) =>
             element.text = value;
     }

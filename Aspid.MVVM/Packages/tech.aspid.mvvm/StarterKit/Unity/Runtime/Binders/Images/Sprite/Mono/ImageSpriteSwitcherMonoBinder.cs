@@ -7,7 +7,6 @@ namespace Aspid.MVVM.StarterKit
     /// <summary>
     /// <see cref="SwitcherMonoBinder{Image, Sprite}"/> that switches the <see cref="Image.sprite"/> property
     /// between two <see cref="Sprite"/> assets based on the bound boolean ViewModel value.
-    /// Optionally disables the <see cref="Image"/> when the selected sprite is <see langword="null"/>.
     /// </summary>
     [AddComponentMenu("Aspid/MVVM/Binders/UI/Image/Image Binder – Sprite Switcher")]
     [AddBinderContextMenu(typeof(Image), serializePropertyNames: "m_Sprite", SubPath = "Switcher")]
@@ -17,8 +16,8 @@ namespace Aspid.MVVM.StarterKit
         [SerializeField] private bool _disabledWhenNull = true;
         
         /// <summary>
-        /// Called when applying the selected value to the <see cref="Image.sprite"/> property.
-        /// Disables the <see cref="Image"/> when <paramref name="value"/> is <see langword="null"/> and the disable-when-null option is enabled.
+        /// Sets <see cref="Image.sprite"/> to <paramref name="value"/>; disables the <see cref="Image"/> when
+        /// <paramref name="value"/> is <see langword="null"/> and disable-when-null is enabled.
         /// </summary>
         protected override void SetValue(Sprite value)
         {

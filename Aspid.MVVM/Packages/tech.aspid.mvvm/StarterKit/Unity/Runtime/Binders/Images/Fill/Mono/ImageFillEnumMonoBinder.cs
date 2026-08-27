@@ -16,8 +16,7 @@ namespace Aspid.MVVM.StarterKit
     public sealed class ImageFillEnumMonoBinder : EnumFloatMonoBinder<Image>
     {
         /// <summary>
-        /// Called when the bound enum resolves to a value for the current element.
-        /// Sets <see cref="Image.fillAmount"/> clamped to the valid range of 0 to 1.
+        /// Sets <see cref="Image.fillAmount"/> to <paramref name="value"/>, clamped to 0..1.
         /// </summary>
         /// <param name="value">The value received from the ViewModel.</param>
         protected override void SetValue(float value) =>

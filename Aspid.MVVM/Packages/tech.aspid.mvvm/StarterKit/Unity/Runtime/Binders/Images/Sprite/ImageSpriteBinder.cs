@@ -8,7 +8,6 @@ namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
     /// <see cref="TargetBinder{Image, Sprite}"/> that sets the <see cref="Image.sprite"/> property.
-    /// Optionally disables the <see cref="Image"/> when the bound sprite is <see langword="null"/>.
     /// </summary>
     /// <include file="XmlExampleDoc-Image-Sprite-1.1.0.xml" path="doc//member[@name='ImageSpriteBinder']/*" />
     [Serializable]
@@ -29,7 +28,9 @@ namespace Aspid.MVVM.StarterKit
             }
         }
 
-        /// <inheritdoc/>
+        /// <param name="target">The <see cref="Image"/> to bind.</param>
+        /// <param name="disabledWhenNull">When <see langword="true"/>, disables the <see cref="Image"/> when the bound sprite is <see langword="null"/>.</param>
+        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/>.</param>
         /// <exception cref="ArgumentException">Thrown when <paramref name="mode"/> is <see cref="BindMode.TwoWay"/>.</exception>
         public ImageSpriteBinder(Image target, bool disabledWhenNull = true, BindMode mode = BindMode.OneWay)
             : base(target, mode)
@@ -52,11 +53,7 @@ namespace Aspid.MVVM.StarterKit
         /// Called after unbinding. Destroys the sprite this binder created, clears the image, and then runs the
         /// base implementation.
         /// </summary>
-        /// <remarks>
-        /// The destruction is the part worth knowing: a sprite built here from a bound texture belongs to this
-        /// binder and nothing else would ever free it. A sprite assigned from the ViewModel is not touched — only
-        /// the one this binder made.
-        /// </remarks>
+        /// <remarks>Only a sprite created from a bound <see cref="Texture2D"/> is destroyed; one assigned directly is left untouched.</remarks>
         protected override void OnUnbound()
         {
             if (_createdSprite) UnityEngine.Object.Destroy(_createdSprite);

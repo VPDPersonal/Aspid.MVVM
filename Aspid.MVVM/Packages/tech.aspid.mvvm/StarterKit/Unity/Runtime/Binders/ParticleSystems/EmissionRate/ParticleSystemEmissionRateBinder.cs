@@ -19,8 +19,7 @@ namespace Aspid.MVVM.StarterKit
             get => Target.emission.rateOverTimeMultiplier;
             set
             {
-                // Модуль — структура-обёртка над самой системой: запись через локальную копию доходит до системы,
-                // а обратиться к свойству модуля напрямую язык не даёт (emission — свойство, а не поле).
+                // emission is a struct wrapper; write through a local copy since the property can't be accessed by ref.
                 var emission = Target.emission;
                 emission.rateOverTimeMultiplier = BinderMath.SafeClamp(value, 0f, float.MaxValue);
             }

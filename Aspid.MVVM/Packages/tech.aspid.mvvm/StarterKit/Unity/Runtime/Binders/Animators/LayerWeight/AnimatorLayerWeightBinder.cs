@@ -10,9 +10,7 @@ namespace Aspid.MVVM.StarterKit
     /// <see cref="IReverseBinder{T}">IReverseBinder&lt;float&gt;</see> that binds the weight of one animator layer.
     /// </summary>
     /// <remarks>
-    /// Layer weight is how an additive layer is faded in: an injured limp over a walk, an aim pose over a stance.
-    /// Clamped to 0..1; a non-finite value lands on zero. A layer index the controller does not have is reported once
-    /// rather than on every value.
+    /// Clamped to 0..1; a non-finite value lands on zero.
     /// </remarks>
     [Serializable]
     [BindModeOverride(BindMode.OneWay, BindMode.OneTime, BindMode.OneWayToSource)]
@@ -21,14 +19,12 @@ namespace Aspid.MVVM.StarterKit
         /// <inheritdoc/>
         public event Action<float>? ValueChanged;
 
-        [Tooltip("Index of the animator layer whose weight is bound. Layer 0 is the base layer, whose weight the animator ignores.")]
-        [SerializeField] [Min(0)] private int _layer;
+        // ReSharper disable once MemberInitializerValueIgnored
+        [Tooltip("Index of the animator layer to bind. Layer 0 is ignored by the animator.")]
+        [SerializeField] [Min(0)] private int _layer = 1;
 
-        /// <summary>
-        /// Initializes a new instance of <see cref="AnimatorLayerWeightBinder"/>.
-        /// </summary>
         /// <param name="target">The <see cref="Animator"/> whose layer weight is bound.</param>
-        /// <param name="layer">Index of the layer whose weight is bound.</param>
+        /// <param name="layer">Index of the layer whose weight is bound. Layer 0 is ignored by the animator.</param>
         /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/> — a layer weight raises no change event to listen to.</param>
         /// <exception cref="ArgumentException">Thrown when <paramref name="mode"/> is <see cref="BindMode.TwoWay"/>.</exception>
         public AnimatorLayerWeightBinder(Animator target, int layer = 1, BindMode mode = BindMode.OneWay)

@@ -9,9 +9,7 @@ namespace Aspid.MVVM.StarterKit
     /// <see cref="TargetFloatBinder{CapsuleCollider}"/> that binds <see cref="CapsuleCollider.height"/>.
     /// </summary>
     /// <remarks>
-    /// The domain had the capsule's radius and not its height, which is the half of it a crouch, a stretch or a
-    /// growing character changes. Clamped non-negative: a negative height leaves the collider inverted, and a
-    /// non-finite one lands on zero rather than reaching the physics engine.
+    /// Clamped non-negative; a non-finite value maps to <c>0</c>.
     /// </remarks>
     [Serializable]
     public class CapsuleColliderHeightBinder : TargetFloatBinder<CapsuleCollider>

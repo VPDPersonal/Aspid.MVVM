@@ -9,8 +9,7 @@ namespace Aspid.MVVM.StarterKit
     /// <see cref="TargetFloatBinder{LineRenderer}"/> that binds <see cref="LineRenderer.widthMultiplier"/>.
     /// </summary>
     /// <remarks>
-    /// Scales the whole width curve, so a line authored with a taper keeps its shape and only gets thicker or
-    /// thinner — a laser that charges, a rope under tension, a trail that fades. Clamped non-negative.
+    /// Clamped non-negative.
     /// </remarks>
     [Serializable]
     public class LineRendererWidthMultiplierBinder : TargetFloatBinder<LineRenderer>

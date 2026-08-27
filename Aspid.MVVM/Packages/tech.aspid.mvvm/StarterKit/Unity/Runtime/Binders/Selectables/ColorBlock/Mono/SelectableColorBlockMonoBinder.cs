@@ -8,10 +8,6 @@ namespace Aspid.MVVM.StarterKit
     /// <summary>
     /// <see cref="ComponentMonoBinder{Selectable, ColorBlock, Converter}"/> that binds the <see cref="Selectable.colors"/> property.
     /// </summary>
-    /// <remarks>
-    /// Supports <see cref="BindMode.OneWayToSource"/>: when binding is established, the current colors value
-    /// is sent back to the ViewModel.
-    /// </remarks>
     [AddBinderContextMenu(typeof(Selectable))]
     [AddComponentMenu("Aspid/MVVM/Binders/UI/Selectable/Selectable Binder – ColorBlock")]
     public class SelectableColorBlockMonoBinder : ComponentMonoBinder<Selectable, ColorBlock, Converter>

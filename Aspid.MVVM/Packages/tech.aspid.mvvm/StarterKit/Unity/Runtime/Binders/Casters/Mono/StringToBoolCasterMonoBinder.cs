@@ -20,7 +20,7 @@ namespace Aspid.MVVM.StarterKit
         [Tooltip("The converter used to transform the bound string to a bool.")]
         [SerializeReference] private Converter _converter = new StringEmptyToBoolConverter();
         
-        [Tooltip("Invoked with the converted bool value each time a new value arrives from the ViewModel.")]
+        [Tooltip("Invoked with the converted bool value.")]
         [SerializeField] private UnityEvent<bool> _casted;
         
         /// <summary>

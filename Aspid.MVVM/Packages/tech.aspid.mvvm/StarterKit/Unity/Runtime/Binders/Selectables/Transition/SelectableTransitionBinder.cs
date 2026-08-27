@@ -10,11 +10,6 @@ namespace Aspid.MVVM.StarterKit
     /// <see cref="TargetBinder{T1, T2}">TargetBinder&lt;Selectable, Selectable.Transition&gt;</see> that binds
     /// <see cref="Selectable.transition"/>.
     /// </summary>
-    /// <remarks>
-    /// How the control reacts to being hovered or pressed: colour tint, sprite swap, animation, or nothing at
-    /// all. Turning it off is how a control is made to look inert without being disabled — the package bound
-    /// the colours and left the switch that decides whether they are used.
-    /// </remarks>
     [Serializable]
     public class SelectableTransitionBinder : TargetBinder<Selectable, Selectable.Transition>
     {

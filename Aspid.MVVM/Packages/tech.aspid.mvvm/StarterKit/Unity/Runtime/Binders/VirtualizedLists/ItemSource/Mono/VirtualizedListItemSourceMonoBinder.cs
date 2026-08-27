@@ -17,10 +17,10 @@ namespace Aspid.MVVM.StarterKit
     [AddComponentMenu("Aspid/MVVM/Binders/UI/VirtualizedList/VirtualizedList Binder – ItemSource")]
     public sealed partial class VirtualizedListItemSourceMonoBinder : ComponentMonoBinder<VirtualizedList>, IBinder<IReadOnlyList<IViewModel>>
     {
-        [Tooltip("Optional filter deciding which items of the collection are shown. Leave empty to show all of them.")]
+        [Tooltip("Optional filter for which items are shown. Leave empty to show all.")]
         [SerializeReference] private Filter _filter;
         
-        [Tooltip("Optional comparer deciding the order items are shown in. Leave empty to keep the collection's own order.")]
+        [Tooltip("Optional comparer for sort order. Leave empty to keep the collection's own order.")]
         [SerializeReference] private Comparer _comparer;
 
         private FilteredList<IViewModel> _filteredList;

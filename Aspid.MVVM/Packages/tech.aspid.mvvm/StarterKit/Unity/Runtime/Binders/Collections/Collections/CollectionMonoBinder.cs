@@ -13,10 +13,7 @@ namespace Aspid.MVVM.StarterKit
     /// <typeparam name="T">The element type of the collection.</typeparam>
     /// <remarks>
     /// When the bound collection raises <c>CollectionChanged</c>, the View is rebuilt: <see cref="OnReset"/> followed
-    /// by <see cref="OnAdded"/> for the current contents. The serializable twin
-    /// <see cref="CollectionBinderBase{T}"/> additionally exposes granular add/remove/replace/move hooks; this class
-    /// deliberately keeps the coarse rebuild so that adding change tracking does not force a breaking change on
-    /// existing subclasses.
+    /// by <see cref="OnAdded"/> for the current contents.
     /// </remarks>
     public abstract partial class CollectionMonoBinder<T> : MonoBinder, IBinder<IReadOnlyCollection<T>>
     {

@@ -22,9 +22,6 @@ namespace Aspid.MVVM.StarterKit
         /// <inheritdoc/>
         public event Action<int>? ValueChanged;
 
-        /// <summary>
-        /// Initializes a new instance of <see cref="TransformSiblingIndexBinder"/>.
-        /// </summary>
         /// <param name="target">The <see cref="Transform"/> to reorder.</param>
         /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/> — sibling order raises no change event to listen to.</param>
         /// <exception cref="ArgumentException">Thrown when <paramref name="mode"/> is <see cref="BindMode.TwoWay"/>.</exception>

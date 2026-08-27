@@ -13,11 +13,7 @@ namespace Aspid.MVVM.StarterKit
     [AddBinderContextMenu(typeof(TMP_Text), serializePropertyNames: "m_fontSize", SubPath = "Enum")]
     public sealed class TextFontSizeEnumMonoBinder : EnumFloatMonoBinder<TMP_Text>
     {
-        /// <summary>
-        /// Called when the bound enum resolves to a value for the current element.
-        /// Sets <see cref="TMP_Text.fontSize"/> to the resolved value.
-        /// </summary>
-        /// <param name="value">The value received from the ViewModel.</param>
+        /// <inheritdoc/>
         protected override void SetValue(float value) =>
             CachedComponent.fontSize = value;
     }

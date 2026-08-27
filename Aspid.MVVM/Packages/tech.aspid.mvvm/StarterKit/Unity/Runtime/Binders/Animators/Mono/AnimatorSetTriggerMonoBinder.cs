@@ -6,9 +6,6 @@ namespace Aspid.MVVM.StarterKit
     /// <summary>
     /// Concrete <see cref="AnimatorTriggerMonoBinder"/> that sets the trigger parameter.
     /// </summary>
-    /// <remarks>
-    /// The original binder of this family: the ViewModel says when the animation starts.
-    /// </remarks>
     [AddBinderContextMenu(typeof(Animator))]
     [AddComponentMenu("Aspid/MVVM/Binders/Animator/Animator Binder – Set Trigger")]
     public class AnimatorSetTriggerMonoBinder : AnimatorTriggerMonoBinder

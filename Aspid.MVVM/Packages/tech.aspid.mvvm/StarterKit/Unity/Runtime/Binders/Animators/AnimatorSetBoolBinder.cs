@@ -13,21 +13,15 @@ namespace Aspid.MVVM.StarterKit
     [Serializable]
     public class AnimatorSetBoolBinder : AnimatorSetParameterBinder<bool>
     {
-        [Tooltip("When enabled, the bound boolean value is inverted before being applied to the Animator parameter.")]
+        [Tooltip("When enabled, inverts the bound bool value before applying it.")]
         [SerializeField] private bool _isInvert;
 
-        /// <summary>
-        /// Initializes a new instance of <see cref="AnimatorSetBoolBinder"/> with inversion disabled.
-        /// </summary>
         /// <param name="animator">The <see cref="Animator"/> whose boolean parameter is set.</param>
         /// <param name="parameterName">The name of the boolean Animator parameter.</param>
         /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/>.</param>
         public AnimatorSetBoolBinder(Animator animator, string parameterName, BindMode mode)
             : this(animator, parameterName, isInvert: false, mode) { }
 
-        /// <summary>
-        /// Initializes a new instance of <see cref="AnimatorSetBoolBinder"/>.
-        /// </summary>
         /// <param name="animator">The <see cref="Animator"/> whose boolean parameter is set.</param>
         /// <param name="parameterName">The name of the boolean Animator parameter.</param>
         /// <param name="isInvert">When <see langword="true"/>, the bound boolean value is inverted before being applied.</param>

@@ -26,9 +26,7 @@ namespace Aspid.MVVM.StarterKit
         /// Returns <see langword="null"/> when <paramref name="value"/> refers to a destroyed object.
         /// </remarks>
         protected override TObject GetConvertedValue(TObject value) =>
-            // Приведение к Object обязательно: пользовательский operator bool не применяется
-            // к значению параметра типа, поэтому `value ? …` без каста не скомпилируется,
-            // а `value != null` собралось бы в ссылочное сравнение и пропустило уничтоженный объект.
+            // Cast to Object is required: `value != null` would be a reference comparison and miss a destroyed object.
             (Object)value ? value : null;
     }
 

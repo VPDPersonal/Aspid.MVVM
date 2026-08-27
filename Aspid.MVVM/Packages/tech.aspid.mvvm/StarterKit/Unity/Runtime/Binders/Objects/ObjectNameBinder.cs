@@ -25,21 +25,15 @@ namespace Aspid.MVVM.StarterKit
         /// <inheritdoc/>
         public event Action<string?>? ValueChanged;
         
-        [Tooltip("Optional converter applied to the string value before it is set on the target or sent back to the ViewModel.")]
+        [Tooltip("Optional converter applied to the string value in both directions.")]
         [SerializeReference] private Converter? _converter;
 
-        /// <summary>
-        /// Initializes a new instance of <see cref="ObjectNameBinder"/> with the specified target and binding mode.
-        /// </summary>
         /// <param name="target">The <see cref="GameObject"/> whose <see cref="Object.name"/> will be bound.</param>
         /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/>.</param>
         /// <exception cref="ArgumentException">Thrown when <paramref name="mode"/> is <see cref="BindMode.TwoWay"/>.</exception>
         public ObjectNameBinder(GameObject target, BindMode mode)
             : this(target, converter: null, mode) { }
-        
-        /// <summary>
-        /// Initializes a new instance of <see cref="ObjectNameBinder"/> with the specified target, optional converter, and binding mode.
-        /// </summary>
+
         /// <param name="target">The <see cref="GameObject"/> whose <see cref="Object.name"/> will be bound.</param>
         /// <param name="converter">
         /// An optional converter to transform the value before applying it or propagating it back to the ViewModel.

@@ -6,9 +6,6 @@ namespace Aspid.MVVM.StarterKit
     /// <summary>
     /// Concrete <see cref="DelayMonoBinder{T}">DelayMonoBinder&lt;float&gt;</see> that forwards every value, late for a number.
     /// </summary>
-    /// <remarks>
-    /// The case this closure exists for: a list that fills in one row at a time.
-    /// </remarks>
     [BindModeOverride(BindMode.OneWay, BindMode.OneTime)]
     [AddComponentMenu("Aspid/MVVM/Binders/RateLimit/Delay Binder – Float")]
     [AddBinderContextMenuByType(typeof(float))]

@@ -8,13 +8,8 @@ namespace Aspid.MVVM.StarterKit
     /// <see cref="IBinder{T}">IBinder&lt;AudioClip&gt;</see> that plays each clip the ViewModel publishes, once.
     /// </summary>
     /// <remarks>
-    /// The playback binders start and stop the clip a source is configured with. This one takes the clip from the
-    /// ViewModel instead, which is what a sound per event needs — a hit, a purchase, a level-up — and it does not
-    /// interrupt whatever the source is already playing, because <see cref="AudioSource.PlayOneShot(AudioClip, float)"/>
-    /// mixes rather than replaces.
-    /// <para/>
-    /// A <see langword="null"/> clip does nothing, so a ViewModel field that starts empty — and one that is cleared
-    /// after a sound has been requested — is silent rather than an error. A destroyed clip is treated the same way.
+    /// <see cref="AudioSource.PlayOneShot(AudioClip, float)"/> mixes over whatever the source is already playing
+    /// instead of replacing it.
     /// </remarks>
     [BindModeOverride(BindMode.OneWay, BindMode.OneTime)]
     [AddBinderContextMenu(typeof(AudioSource), serializePropertyNames: "m_audioClip")]

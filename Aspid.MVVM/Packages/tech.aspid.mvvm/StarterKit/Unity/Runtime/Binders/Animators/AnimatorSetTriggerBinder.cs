@@ -9,11 +9,6 @@ namespace Aspid.MVVM.StarterKit
     /// Abstract base <see cref="TargetBinder{Animator}"/> that hands the ViewModel one operation on a trigger parameter —
     /// setting it or resetting it — as an <see cref="Action"/> or an <see cref="IRelayCommand"/>.
     /// </summary>
-    /// <remarks>
-    /// Only <see cref="BindMode.OneWayToSource"/> is supported. When binding is established, the binder
-    /// exposes an internal <see cref="Animator.SetTrigger(string)"/> action to the ViewModel either as a plain <see cref="Action"/>
-    /// or as an <see cref="IRelayCommand"/> whose <see cref="IRelayCommand.CanExecute()"/> mirrors <see cref="CanExecute()"/>.
-    /// </remarks>
     [Serializable]
     [BindModeOverride(BindMode.OneWayToSource)]
     public abstract class AnimatorTriggerBinder : TargetBinder<Animator>,
@@ -41,9 +36,6 @@ namespace Aspid.MVVM.StarterKit
         [field: Tooltip("The name of the trigger Animator parameter to fire.")]
         protected string TriggerName { get; private set; }
 
-        /// <summary>
-        /// Initializes a new instance of <see cref="AnimatorTriggerBinder"/>.
-        /// </summary>
         /// <param name="target">The <see cref="Animator"/> whose trigger parameter is fired.</param>
         /// <param name="triggerName">The name of the trigger Animator parameter.</param>
         /// <exception cref="ArgumentNullException">
@@ -118,9 +110,6 @@ namespace Aspid.MVVM.StarterKit
     /// <summary>
     /// Concrete <see cref="AnimatorTriggerBinder"/> that sets the trigger parameter.
     /// </summary>
-    /// <remarks>
-    /// The original binder of this family: the ViewModel says when the animation starts.
-    /// </remarks>
     /// <include file="XmlExampleDoc-Animator-1.1.0.xml" path="doc//member[@name='AnimatorSetTriggerBinder']/*" />
     [Serializable]
     public class AnimatorSetTriggerBinder : AnimatorTriggerBinder
@@ -138,9 +127,8 @@ namespace Aspid.MVVM.StarterKit
     /// Concrete <see cref="AnimatorTriggerBinder"/> that resets the trigger parameter.
     /// </summary>
     /// <remarks>
-    /// A trigger that was set and never consumed stays armed, and the animation fires the moment its state becomes
-    /// reachable — often seconds later, in a state nobody connected to it. Resetting is how that is undone, and nothing
-    /// in the package could do it.
+    /// A trigger that was set and never consumed stays armed, firing the moment its state becomes reachable —
+    /// often much later, in a state nobody connected to it.
     /// </remarks>
     [Serializable]
     public class AnimatorResetTriggerBinder : AnimatorTriggerBinder

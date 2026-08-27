@@ -19,9 +19,6 @@ namespace Aspid.MVVM.StarterKit
         [UnityEngine.SerializeField]
         private T _falseValue;
 
-        /// <summary>
-        /// Initializes a new instance of <see cref="SwitcherBinder{T}"/>.
-        /// </summary>
         /// <param name="trueValue">The value forwarded when the bound boolean is <see langword="true"/>.</param>
         /// <param name="falseValue">The value forwarded when the bound boolean is <see langword="false"/>.</param>
         /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</param>
@@ -70,9 +67,6 @@ namespace Aspid.MVVM.StarterKit
         [UnityEngine.SerializeField]
         private T _falseValue;
 
-        /// <summary>
-        /// Initializes a new instance of <see cref="SwitcherBinder{TTarget, T}"/>.
-        /// </summary>
         /// <param name="target">The target object that receives the resolved value.</param>
         /// <param name="trueValue">The value forwarded when the bound boolean is <see langword="true"/>.</param>
         /// <param name="falseValue">The value forwarded when the bound boolean is <see langword="false"/>.</param>
@@ -125,9 +119,6 @@ namespace Aspid.MVVM.StarterKit
         [UnityEngine.SerializeReference]
         private TConverter? _converter;
 
-        /// <summary>
-        /// Initializes a new instance of <see cref="SwitcherBinder{TTarget, T, TConverter}"/>.
-        /// </summary>
         /// <param name="target">The target object that receives the resolved value.</param>
         /// <param name="trueValue">The value forwarded when the bound boolean is <see langword="true"/>.</param>
         /// <param name="falseValue">The value forwarded when the bound boolean is <see langword="false"/>.</param>

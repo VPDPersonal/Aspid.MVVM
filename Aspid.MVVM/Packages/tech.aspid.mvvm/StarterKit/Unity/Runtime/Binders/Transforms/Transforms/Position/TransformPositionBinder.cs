@@ -22,9 +22,6 @@ namespace Aspid.MVVM.StarterKit
             set => Target.SetPosition(value, _space);
         }
 
-        /// <summary>
-        /// Initializes a new instance of <see cref="TransformPositionBinder"/>.
-        /// </summary>
         /// <param name="target">The <see cref="Transform"/> to bind.</param>
         /// <param name="space">The coordinate space in which the position is applied.</param>
         /// <param name="converter">The converter used to transform the bound <see cref="Vector3"/> value, or <see langword="null"/> to use the value as-is.</param>

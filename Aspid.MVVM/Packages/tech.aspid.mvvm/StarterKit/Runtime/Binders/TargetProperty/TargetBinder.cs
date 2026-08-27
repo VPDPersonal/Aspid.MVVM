@@ -6,9 +6,8 @@ namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
     /// Abstract base <see cref="TargetBinder{TTarget}"/> that binds a <typeparamref name="TProperty"/> target property using its get/set accessors.
-    /// Supports <see cref="BindMode.OneWay">OneWay</see> and <see cref="BindMode.OneTime">OneTime</see> for one-way binding.
-    /// Supports <see cref="BindMode.OneWayToSource">OneWayToSource</see> for reverse binding: when binding is established,
-    /// the current property value is sent back to the ViewModel.
+    /// Supports <see cref="BindMode.OneWay"/> and <see cref="BindMode.OneTime"/>; in <see cref="BindMode.OneWayToSource"/>,
+    /// the current property value is sent back to the ViewModel when binding is established.
     /// </summary>
     /// <typeparam name="TTarget">The type of the target object that exposes the bound property.</typeparam>
     /// <typeparam name="TProperty">The type of the property being bound.</typeparam>
@@ -24,9 +23,6 @@ namespace Aspid.MVVM.StarterKit
         /// </summary>
         protected abstract TProperty? Property { get; set; }
 
-        /// <summary>
-        /// Initializes a new instance of <see cref="TargetBinder{TTarget, TProperty}"/>.
-        /// </summary>
         /// <param name="target">The target object that owns the property.</param>
         /// <param name="mode">The binding mode to use.</param>
         protected TargetBinder(TTarget target, BindMode mode)
@@ -104,9 +100,6 @@ namespace Aspid.MVVM.StarterKit
 
     /// <summary>
     /// Abstract base <see cref="TargetBinder{TTarget,TProperty}"/> that applies an optional <typeparamref name="TConverter"/> to the bound value.
-    /// Supports <see cref="BindMode.OneWay">OneWay</see> and <see cref="BindMode.OneTime">OneTime</see>: the converter transforms the incoming value before setting it on the target property.
-    /// Supports <see cref="BindMode.OneWayToSource">OneWayToSource</see> for reverse binding: when binding is established,
-    /// the current property value is sent back to the ViewModel.
     /// </summary>
     /// <remarks>
     /// The reverse direction only converts when the configured converter implements
@@ -116,20 +109,18 @@ namespace Aspid.MVVM.StarterKit
     /// <typeparam name="TTarget">The type of the target object that exposes the bound property.</typeparam>
     /// <typeparam name="TProperty">The type of the property being bound.</typeparam>
     /// <typeparam name="TConverter">The converter type used to transform the bound value before applying it.</typeparam>
+    [Serializable]
     public abstract class TargetBinder<TTarget, TProperty, TConverter> : TargetBinder<TTarget, TProperty>
         where TConverter : IConverter<TProperty?, TProperty?>
     {
-        [Tooltip("Optional converter applied on the way to the target. It runs in reverse only if it " +
-            "implements ITwoWayConverter.")]
+        [Tooltip("Converts the value; runs in reverse only via ITwoWayConverter.")]
         [SerializeReference] private TConverter? _converter;
 
-        /// <summary>
-        /// Initializes a new instance of <see cref="TargetBinder{TTarget, TProperty, TConverter}"/>.
-        /// </summary>
         /// <param name="target">The target object that owns the property.</param>
         /// <param name="converter">
         /// An optional converter applied to each value before it is stored in the target property.
-        /// Pass <see langword="null"/> to use the value unchanged.
+        /// Pass <see langword="null"/> to use the value unchanged. Runs in reverse only if it implements
+        /// <see cref="ITwoWayConverter{TFrom, TTo}"/>.
         /// </param>
         /// <param name="mode">The binding mode to use.</param>
         protected TargetBinder(TTarget target, TConverter? converter, BindMode mode)

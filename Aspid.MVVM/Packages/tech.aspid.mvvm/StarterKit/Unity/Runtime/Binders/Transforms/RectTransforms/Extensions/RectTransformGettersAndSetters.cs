@@ -17,14 +17,20 @@ namespace Aspid.MVVM.StarterKit
         /// <param name="transform">The <see cref="RectTransform"/> to modify.</param>
         /// <param name="value">The value to apply. <c>x</c> is used as the width and <c>y</c> as the height.</param>
         /// <param name="mode">Determines whether to set width only, height only, or both axes.</param>
+        /// <remarks>
+        /// A non-finite axis is skipped entirely: the rect is computed from these numbers and one <c>NaN</c>
+        /// takes the element off the screen.
+        /// </remarks>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void SetSizeDelta(this RectTransform transform, Vector3 value, SizeDeltaMode mode)
         {
-            var width = mode is not SizeDeltaMode.Height ? value.x : transform.sizeDelta.x;
-            var height = mode is not SizeDeltaMode.Width ? value.y : transform.sizeDelta.y;
-            
-            value = new Vector2(width, height);
-            transform.sizeDelta = value;
+            var current = transform.sizeDelta;
+            var width = mode is not SizeDeltaMode.Height ? value.x : current.x;
+            var height = mode is not SizeDeltaMode.Width ? value.y : current.y;
+
+            if (!BinderMath.IsFinite(width) || !BinderMath.IsFinite(height)) return;
+
+            transform.sizeDelta = new Vector2(width, height);
         }
         
         /// <summary>

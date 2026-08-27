@@ -11,11 +11,6 @@ namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
     /// <see cref="TargetBinder{TMP_InputField}"/> that binds <see cref="TMP_InputField.text"/>.
-    /// Supports every binding mode: <see cref="BindMode.OneWay"/>, <see cref="BindMode.OneTime"/>,
-    /// <see cref="BindMode.TwoWay"/> and <see cref="BindMode.OneWayToSource"/> — the constructor rejects only
-    /// <see cref="BindMode.None"/>.
-    /// Also implements <see cref="INumberBinder"/> and <see cref="IReverseBinder{T}"/>, allowing numeric
-    /// formatting and bidirectional text binding.
     /// </summary>
     /// <include file="XmlExampleDoc-InputField-Text-1.1.0.xml" path="doc//member[@name='InputFieldBinder']/*" />
     [Serializable]
@@ -43,14 +38,11 @@ namespace Aspid.MVVM.StarterKit
         [Tooltip("The input field event that triggers ViewModel notifications.")]
         [SerializeField] private UpdateInputFieldEvent _updateEvent = UpdateInputFieldEvent.OnValueChanged;
         
-        [Tooltip("Optional converter applied to values before they are set on the input field.")]
+        [Tooltip("Optional converter applied before setting the input field text.")]
         [SerializeReference] private Converter? _converter;
         
         private bool _isNotifyValueChanged = true;
         
-        /// <summary>
-        /// Initializes a new instance of <see cref="InputFieldBinder"/>.
-        /// </summary>
         /// <param name="target">The <see cref="TMP_InputField"/> to bind.</param>
         /// <param name="converter">The converter applied to values before they are set on the input field, or <see langword="null"/> to use the value as-is.</param>
         /// <param name="mode">The binding mode. Must not be <see cref="BindMode.None"/>.</param>
@@ -106,8 +98,7 @@ namespace Aspid.MVVM.StarterKit
             }
             finally
             {
-                // Без finally исключение из сеттера — например, из чужого слушателя onValueChanged —
-                // навсегда оставило бы флаг снятым и обесточило канал View → ViewModel.
+                // finally guards against a listener exception (e.g. from onValueChanged) leaving the flag stuck off.
                 _isNotifyValueChanged = true;
             }
         }

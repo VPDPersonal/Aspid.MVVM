@@ -8,9 +8,8 @@ namespace Aspid.MVVM.StarterKit
     /// <see cref="ComponentVector2MonoBinder{GridLayoutGroup}"/> that binds <see cref="GridLayoutGroup.spacing"/>.
     /// </summary>
     /// <remarks>
-    /// The gap between cells, on both axes. Unlike the cell size it is meaningfully negative — cards dealt
-    /// into a hand overlap — so only a non-finite value is refused, and it is refused rather than clamped:
-    /// one NaN would put the whole layout at NaN.
+    /// Unlike <see cref="GridLayoutGroup.cellSize"/>, a negative value is meaningful and is not clamped —
+    /// only a non-finite value is rejected.
     /// </remarks>
     [AddBinderContextMenu(typeof(GridLayoutGroup), serializePropertyNames: "m_Spacing")]
     [AddComponentMenu("Aspid/MVVM/Binders/UI/LayoutGroup/Grid/GridLayoutGroup Binder – Spacing")]
@@ -22,8 +21,7 @@ namespace Aspid.MVVM.StarterKit
             get => CachedComponent.spacing;
             set
             {
-                // Отрицательный отступ — не ошибка: так карты в руке кладут с перекрытием.
-                // Отбрасывается только нефинитное значение, иначе весь layout уходит в NaN.
+                // A NaN component would put the whole layout at NaN, so only finite values are written.
                 if (!BinderMath.IsFinite(value.x) || !BinderMath.IsFinite(value.y)) return;
                 CachedComponent.spacing = value;
             }

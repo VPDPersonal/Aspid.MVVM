@@ -13,10 +13,6 @@ namespace Aspid.MVVM.StarterKit
     /// receives values. When binding is established it exposes <see cref="Execute"/> either as a plain
     /// <see cref="Action"/> or as an <see cref="IRelayCommand"/> whose <see cref="IRelayCommand.CanExecute()"/> mirrors
     /// <see cref="CanExecute"/>.
-    /// <para/>
-    /// The package had binders for every AudioSource <em>property</em> and none for the operations, so a ViewModel
-    /// could set the volume of a sound it had no way to start. The shape follows
-    /// <see cref="AnimatorSetTriggerMonoBinder"/>, which solves the same problem for animation.
     /// </remarks>
     [BindModeOverride(modes: BindMode.OneWayToSource)]
     public abstract class AudioSourcePlaybackMonoBinder : ComponentMonoBinder<AudioSource>,
@@ -51,7 +47,12 @@ namespace Aspid.MVVM.StarterKit
         protected virtual void OnEnable() =>
             _command?.NotifyCanExecuteChanged();
 
-        /// <inheritdoc cref="OnEnable"/>
+        /// <summary>
+        /// Notifies the bound command that <see cref="IRelayCommand.CanExecute()"/> may have changed.
+        /// </summary>
+        /// <remarks>
+        /// When overriding this method, always call <c>base.OnDisable()</c>.
+        /// </remarks>
         protected virtual void OnDisable() =>
             _command?.NotifyCanExecuteChanged();
 
@@ -66,9 +67,7 @@ namespace Aspid.MVVM.StarterKit
         /// Returns <see langword="true"/> when the source exists and its GameObject is active in the hierarchy.
         /// </summary>
         /// <remarks>
-        /// A clip is deliberately not required: <c>Stop</c> and <c>Pause</c> are meaningful without one, and a
-        /// binder that refused to run because no clip is assigned yet would be surprising in the one case where
-        /// the ViewModel assigns the clip and starts playback in the same frame.
+        /// A clip is deliberately not required, since <c>Stop</c> and <c>Pause</c> are meaningful without one.
         /// </remarks>
         protected virtual bool CanExecute() =>
             CachedComponent && CachedComponent.gameObject.activeInHierarchy;

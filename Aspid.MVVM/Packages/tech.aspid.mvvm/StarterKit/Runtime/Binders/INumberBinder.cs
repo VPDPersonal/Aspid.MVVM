@@ -18,8 +18,6 @@ namespace Aspid.MVVM.StarterKit
     ///   <item><see cref="byte"/> and <see cref="sbyte"/> are cast to <see cref="short"/>.</item>
     ///   <item><see cref="short"/> and <see cref="ushort"/> are cast to <see cref="int"/>.</item>
     /// </list>
-    /// This interface is primarily intended for binders that target numeric UI elements (e.g., sliders,
-    /// progress bars) that need to accept bound values regardless of the exact numeric type on the ViewModel.
     /// </remarks>
     public interface INumberBinder :
         IBinder<int>, IBinder<uint>,

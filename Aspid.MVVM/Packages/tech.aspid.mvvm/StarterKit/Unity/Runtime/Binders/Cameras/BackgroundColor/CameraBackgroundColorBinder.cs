@@ -8,10 +8,7 @@ namespace Aspid.MVVM.StarterKit
     /// <summary>
     /// <see cref="TargetColorBinder{Camera}"/> that binds <see cref="Camera.backgroundColor"/>.
     /// </summary>
-    /// <remarks>
-    /// What fills the frame where nothing is drawn. Only visible when the camera clears to a solid colour, which
-    /// is worth knowing before binding it to a skybox camera and seeing nothing happen.
-    /// </remarks>
+    /// <remarks>Only visible when the camera's clear flags are set to solid color.</remarks>
     [Serializable]
     public class CameraBackgroundColorBinder : TargetColorBinder<Camera>
     {

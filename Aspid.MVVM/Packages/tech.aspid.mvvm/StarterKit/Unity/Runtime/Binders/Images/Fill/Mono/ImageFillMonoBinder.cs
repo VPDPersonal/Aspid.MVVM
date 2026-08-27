@@ -7,11 +7,7 @@ namespace Aspid.MVVM.StarterKit
     /// <summary>
     /// <see cref="ComponentFloatMonoBinder{Image}"/> that sets the <see cref="Image.fillAmount"/> property.
     /// </summary>
-    /// <remarks>
-    /// Supports <see cref="BindMode.OneWayToSource"/>: when binding is established, the current fill amount value
-    /// is sent back to the ViewModel.
-    /// The bound value is clamped to [0, 1] before being applied to <see cref="Image.fillAmount"/>.
-    /// </remarks>
+    /// <remarks>The bound value is clamped to [0, 1] before being applied to <see cref="Image.fillAmount"/>.</remarks>
     [AddComponentMenu("Aspid/MVVM/Binders/UI/Image/Image Binder – Fill")]
     [AddBinderContextMenu(typeof(Image), serializePropertyNames: "m_FillAmount")]
     public class ImageFillMonoBinder : ComponentFloatMonoBinder<Image>
@@ -23,13 +19,9 @@ namespace Aspid.MVVM.StarterKit
         }
         
         /// <summary>
-        /// Called when converting the bound value before applying it to the <see cref="Image.fillAmount"/> property.
-        /// Clamps the converted value to the valid range of 0 to 1.
+        /// Clamps <paramref name="value"/> to 0..1 before it reaches <see cref="Image.fillAmount"/>.
         /// </summary>
-        /// <remarks>
-        /// When overriding this method, always call the base implementation to preserve
-        /// the clamping behavior.
-        /// </remarks>
+        /// <remarks>Override calls must invoke the base implementation to preserve the clamping.</remarks>
         /// <param name="value">The value to convert.</param>
         protected override float GetConvertedValue(float value) =>
             BinderMath.SafeClamp01(base.GetConvertedValue(value));

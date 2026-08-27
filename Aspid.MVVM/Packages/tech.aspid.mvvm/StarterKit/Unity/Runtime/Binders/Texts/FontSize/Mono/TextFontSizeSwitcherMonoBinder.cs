@@ -13,10 +13,7 @@ namespace Aspid.MVVM.StarterKit
     [AddBinderContextMenu(typeof(TMP_Text), serializePropertyNames: "m_fontSize", SubPath = "Switcher")]
     public sealed class TextFontSizeSwitcherMonoBinder : SwitcherFloatMonoBinder<TMP_Text>
     {
-        /// <summary>
-        /// Called when applying the selected value to <see cref="TMP_Text.fontSize"/>.
-        /// </summary>
-        /// <param name="value">The value received from the ViewModel.</param>
+        /// <inheritdoc/>
         protected override void SetValue(float value) =>
             CachedComponent.fontSize = value;
     }

@@ -9,18 +9,14 @@ namespace Aspid.MVVM.StarterKit
     /// <see cref="AddressableMonoBinder{Texture2D, RawImage}"/> that sets the <see cref="RawImage.texture"/> property
     /// by loading a <see cref="Texture2D"/> asset from the Addressables system when the bound ViewModel value changes.
     /// </summary>
-    /// <remarks>
-    /// Disables the <see cref="RawImage"/> component when the loaded texture is <see langword="null"/> and
-    /// the Disable When Null option is enabled.
-    /// </remarks>
     [AddBinderContextMenu(typeof(RawImage), serializePropertyNames: "m_Texture")]
     [AddComponentMenu("Aspid/MVVM/Binders/UI/RawImage/RawImage Binder – Texture Addressable")]
     public sealed class RawImageTextureAddressableMonoBinder : AddressableMonoBinder<Texture2D, RawImage>
     {
-        [Tooltip("The texture to display while the Addressable asset is loading or when no address is set.")]
+        [Tooltip("Shown while the asset is loading, or when no address is set.")]
         [SerializeField] private Texture2D _defaultTexture;
-        
-        [Tooltip("When true, disables the RawImage component automatically when the loaded texture is null.")]
+
+        [Tooltip("Disables the RawImage component when the loaded texture is null.")]
         [SerializeField] private bool _disabledWhenNull = true;
 
         /// <inheritdoc/>

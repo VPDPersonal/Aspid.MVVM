@@ -8,19 +8,13 @@ namespace Aspid.MVVM.StarterKit
     /// expected type, so a binder can refuse to address one that does not.
     /// </summary>
     /// <remarks>
-    /// Unity accepts any string here and reports the mistake itself — once per call. Bound to a value that changes
-    /// every frame, that is an error per frame in the editor and complete silence in a build, which is what makes a
-    /// typo in a parameter name expensive to find.
-    /// <para/>
-    /// Only a <em>match</em> is cached, and only for as long as the controller stays the same: a binder that is
-    /// working pays one scan and nothing after it, while a binder that is not keeps re-checking, so swapping in a
-    /// controller that does have the parameter starts working on its own. The scan is allocation-free —
-    /// <see cref="Animator.parameters"/> would allocate an array on every read, so it goes through
+    /// Only a <em>match</em> is cached, and only for as long as the controller stays the same, so swapping in a
+    /// controller that does have the parameter starts working on its own. The scan avoids
+    /// <see cref="Animator.parameters"/>, which allocates an array on every read, using
     /// <see cref="Animator.parameterCount"/> and <see cref="Animator.GetParameter"/> instead.
     /// </remarks>
     internal struct AnimatorParameterProbe
     {
-        private bool _reported;
         private bool _isUsable;
         private RuntimeAnimatorController _controller;
 
@@ -52,7 +46,6 @@ namespace Aspid.MVVM.StarterKit
             {
                 _controller = controller;
                 _isUsable = false;
-                _reported = false;
             }
 
             if (_isUsable) return true;
@@ -81,22 +74,15 @@ namespace Aspid.MVVM.StarterKit
         }
 
         /// <summary>
-        /// Reports the first problem found for this binder and stays quiet afterwards, until the controller changes.
+        /// Logs the problem found for this binder and returns <see langword="false"/>.
         /// </summary>
-        /// <remarks>
-        /// The name is serialized and cannot heal on its own, while the value driving it may change every frame —
-        /// repeating the message would reproduce the very log flood this check exists to stop.
-        /// </remarks>
-        private bool Refuse(string reason, string parameterName, object owner)
+        private static bool Refuse(string reason, string parameterName, object owner)
         {
-            if (_reported) return false;
-            _reported = true;
-
             var name = string.IsNullOrWhiteSpace(parameterName) ? "<empty>" : parameterName;
 
             Debug.LogError(
                 $"[{owner?.GetType().Name ?? "Animator binder"}] Animator parameter '{name}' is not set because " +
-                $"{reason}. Further attempts are not reported.",
+                $"{reason}.",
                 owner as Object);
 
             return false;

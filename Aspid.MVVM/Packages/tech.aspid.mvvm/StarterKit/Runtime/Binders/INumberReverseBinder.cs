@@ -13,8 +13,6 @@ namespace Aspid.MVVM.StarterKit
     /// the View value changes. Default interface method implementations bridge these concrete events to the
     /// generic <see cref="IReverseBinder{T}.ValueChanged"/> event required by each <see cref="IReverseBinder{T}"/>
     /// base interface, so the binding infrastructure can subscribe via a single, type-safe surface.
-    /// Typically implemented alongside <see cref="INumberBinder"/> on numeric UI binders such as slider
-    /// or input-field binders.
     /// </remarks>
     // ReSharper disable once PossibleInterfaceMemberAmbiguity
     public interface INumberReverseBinder : IReverseBinder<int>, IReverseBinder<long>, IReverseBinder<float>, IReverseBinder<double>

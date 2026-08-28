@@ -19,8 +19,9 @@ namespace Aspid.MVVM.StarterKit
             TMP_InputField target,
             TMP_InputField.CharacterValidation trueValue,
             TMP_InputField.CharacterValidation falseValue,
+            IConverter<TMP_InputField.CharacterValidation, TMP_InputField.CharacterValidation> converter = null,
             BindMode mode = BindMode.OneWay)
-            : base(target, trueValue, falseValue, mode)
+            : base(target, trueValue, falseValue, converter, mode)
         {
             mode.ThrowExceptionIfNotOne();
         }

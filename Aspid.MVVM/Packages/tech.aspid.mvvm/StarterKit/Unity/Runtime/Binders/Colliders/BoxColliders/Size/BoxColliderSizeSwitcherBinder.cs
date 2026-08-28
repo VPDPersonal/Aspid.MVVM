@@ -6,12 +6,12 @@ using UnityEngine;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="SwitcherVector3Binder{BoxCollider}"/> that switches the <see cref="BoxCollider.size"/>
+    /// <see cref="SwitcherBinder{TTarget,T}">SwitcherBinder&lt;BoxCollider, Vector3&gt;</see> that switches the <see cref="BoxCollider.size"/>
     /// property between two <see cref="Vector3"/> values based on the bound boolean ViewModel value.
     /// </summary>
     /// <include file="XmlExampleDoc-BoxCollider-Size-1.1.0.xml" path="doc//member[@name='BoxColliderSizeSwitcherBinder']/*" />
     [Serializable]
-    public sealed class BoxColliderSizeSwitcherBinder : SwitcherVector3Binder<BoxCollider>
+    public sealed class BoxColliderSizeSwitcherBinder : SwitcherBinder<BoxCollider, Vector3>
     {
         /// <inheritdoc/>
         public BoxColliderSizeSwitcherBinder(
@@ -24,6 +24,6 @@ namespace Aspid.MVVM.StarterKit
 
         /// <inheritdoc/>
         protected override void SetValue(Vector3 value) =>
-            Target.size = BinderMath.NonNegative(value);
+            Target.size = this.NonNegative(value, Target);
     }
 }

@@ -4,11 +4,11 @@ using UnityEngine;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="ComponentBoolMonoBinder{SpriteRenderer}"/> that binds <see cref="SpriteRenderer.flipX"/>.
+    /// <see cref="ComponentMonoBinder{TComponent,TProperty}"/> that binds <see cref="SpriteRenderer.flipX"/>.
     /// </summary>
     [AddBinderContextMenu(typeof(SpriteRenderer), serializePropertyNames: "m_FlipX")]
     [AddComponentMenu("Aspid/MVVM/Binders/SpriteRenderer/SpriteRenderer Binder – Flip X")]
-    public class SpriteRendererFlipXMonoBinder : ComponentBoolMonoBinder<SpriteRenderer>
+    public class SpriteRendererFlipXMonoBinder : ComponentMonoBinder<SpriteRenderer, bool>
     {
         /// <inheritdoc/>
         protected sealed override bool Property

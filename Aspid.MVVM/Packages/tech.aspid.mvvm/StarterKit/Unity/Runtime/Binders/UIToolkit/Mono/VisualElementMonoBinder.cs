@@ -61,7 +61,7 @@ namespace Aspid.MVVM.StarterKit
 
             if (!document)
             {
-                Debug.LogError($"[{GetType().Name}] No UIDocument assigned and none found on this object or its parents.", context: this);
+                this.LogError("no UIDocument is assigned, and none is found on this object or its parents", "The binder does nothing.");
                 return null;
             }
 
@@ -69,7 +69,7 @@ namespace Aspid.MVVM.StarterKit
 
             if (root is null)
             {
-                Debug.LogError($"[{GetType().Name}] The document has no visual tree yet; is its source asset assigned?", context: this);
+                this.LogError("the document has no visual tree yet", "The binder does nothing; check that its source asset is assigned.");
                 return null;
             }
 
@@ -78,7 +78,7 @@ namespace Aspid.MVVM.StarterKit
 
             if (!hasName && !hasClass)
             {
-                Debug.LogError($"[{GetType().Name}] Neither an element name nor a USS class is set.", context: this);
+                this.LogError("neither an element name nor a USS class is set", "The binder does nothing.");
                 return null;
             }
 
@@ -89,7 +89,7 @@ namespace Aspid.MVVM.StarterKit
             if (element is null)
             {
                 var what = hasName ? $"named '{_elementName}'" : $"with class '{_elementClass}'";
-                Debug.LogError($"[{GetType().Name}] No {typeof(TElement).Name} {what} in the document.", context: this);
+                this.LogError($"the document holds no {typeof(TElement).Name} {what}", "The binder does nothing.");
             }
 
             return element;

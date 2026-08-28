@@ -18,8 +18,9 @@ namespace Aspid.MVVM.StarterKit
             GameObject target,
             string trueValue,
             string falseValue, 
+            IConverter<string?, string?>? converter = null,
             BindMode mode = BindMode.OneWay)
-            : base(target, trueValue, falseValue, mode) { }
+            : base(target, trueValue, falseValue, converter, mode) { }
 
         /// <inheritdoc/>
         protected override void SetValue(string value) =>

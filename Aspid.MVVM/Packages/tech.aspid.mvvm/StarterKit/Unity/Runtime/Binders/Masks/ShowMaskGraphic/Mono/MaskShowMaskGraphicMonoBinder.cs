@@ -5,11 +5,11 @@ using UnityEngine.UI;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="ComponentBoolMonoBinder{Mask}"/> that binds <see cref="Mask.showMaskGraphic"/>.
+    /// <see cref="ComponentMonoBinder{TComponent,TProperty}"/> that binds <see cref="Mask.showMaskGraphic"/>.
     /// </summary>
     [AddBinderContextMenu(typeof(Mask), serializePropertyNames: "m_ShowMaskGraphic")]
     [AddComponentMenu("Aspid/MVVM/Binders/UI/Mask/Mask Binder – Show Mask Graphic")]
-    public class MaskShowMaskGraphicMonoBinder : ComponentBoolMonoBinder<Mask>
+    public class MaskShowMaskGraphicMonoBinder : ComponentMonoBinder<Mask, bool>
     {
         /// <inheritdoc/>
         protected sealed override bool Property

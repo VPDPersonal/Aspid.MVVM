@@ -5,12 +5,12 @@ using UnityEngine.UI;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="ComponentColorMonoBinder{Shadow}"/> that binds <see cref="Shadow.effectColor"/>.
+    /// <see cref="ComponentMonoBinder{Shadow, Color}"/> that binds <see cref="Shadow.effectColor"/>.
     /// </summary>
     /// <remarks><see cref="Outline"/> is a <see cref="Shadow"/>, so this binder targets either.</remarks>
     [AddBinderContextMenu(typeof(Shadow), serializePropertyNames: "m_EffectColor")]
     [AddComponentMenu("Aspid/MVVM/Binders/UI/Shadow/Shadow Binder – Effect Color")]
-    public class ShadowEffectColorMonoBinder : ComponentColorMonoBinder<Shadow>
+    public class ShadowEffectColorMonoBinder : ComponentMonoBinder<Shadow, Color>, IColorBinder
     {
         /// <inheritdoc/>
         protected sealed override Color Property

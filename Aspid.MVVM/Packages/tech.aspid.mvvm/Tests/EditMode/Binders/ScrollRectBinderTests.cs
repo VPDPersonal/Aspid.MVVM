@@ -1,7 +1,9 @@
 using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.TestTools;
 using Aspid.MVVM.StarterKit;
+using System.Text.RegularExpressions;
 using System.Collections.Generic;
 
 // ReSharper disable once CheckNamespace
@@ -59,6 +61,7 @@ namespace Aspid.MVVM.Tests
             var scrollRect = NewScrollRect();
             var binder = scrollRect.gameObject.AddComponent<ScrollRectVerticalNormalizedPositionMonoBinder>();
 
+            LogAssert.Expect(LogType.Error, new Regex("is not finite"));
             ((IBinder<float>)binder).SetValue(float.NaN);
 
             Assert.IsFalse(float.IsNaN(scrollRect.verticalNormalizedPosition), "NaN дошёл до ScrollRect");

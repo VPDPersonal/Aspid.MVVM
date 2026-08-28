@@ -5,7 +5,7 @@ using UnityEngine.UI;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="ComponentMonoBinder{T1, T2}">ComponentMonoBinder&lt;ContentSizeFitter, ContentSizeFitter.FitMode&gt;</see> that binds
+    /// <see cref="ComponentMonoBinder{TComponent,TProperty}">ComponentMonoBinder&lt;ContentSizeFitter, ContentSizeFitter.FitMode&gt;</see> that binds
     /// <see cref="ContentSizeFitter.verticalFit"/>.
     /// </summary>
     [AddBinderContextMenu(typeof(ContentSizeFitter), serializePropertyNames: "m_VerticalFit")]

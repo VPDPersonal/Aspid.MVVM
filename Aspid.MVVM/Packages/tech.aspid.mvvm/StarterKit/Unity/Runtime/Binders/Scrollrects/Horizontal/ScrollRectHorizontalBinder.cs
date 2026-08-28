@@ -6,10 +6,10 @@ using UnityEngine.UI;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="TargetBoolBinder{ScrollRect}"/> that binds <see cref="ScrollRect.horizontal"/>.
+    /// <see cref="TargetBinder{ScrollRect, bool}"/> that binds <see cref="ScrollRect.horizontal"/>.
     /// </summary>
     [Serializable]
-    public class ScrollRectHorizontalBinder : TargetBoolBinder<ScrollRect>
+    public class ScrollRectHorizontalBinder : TargetBinder<ScrollRect, bool>
     {
         /// <inheritdoc/>
         protected sealed override bool Property

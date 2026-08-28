@@ -21,7 +21,7 @@ namespace Aspid.MVVM.StarterKit
             get => Target.range;
             set
             {
-                if (!BinderMath.IsFinite(value)) return;
+                if (!this.RequireFinite(value, Target)) return;
                 Target.range = value;
             }
         }

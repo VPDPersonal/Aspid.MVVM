@@ -8,12 +8,12 @@ using System.Collections.Generic;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="SwitcherStringMonoBinder{TMP_Text}"/> that switches the localization table entry reference
+    /// <see cref="SwitcherMonoBinder{TComponent,T}">SwitcherMonoBinder&lt;TMP_Text, string&gt;</see> that switches the localization table entry reference
     /// between two values and sets <see cref="TMP_Text.text"/> via a <see cref="LocalizedString"/>.
     /// </summary>
     [AddComponentMenu("Aspid/MVVM/Binders/UI/Text/Text Binder – Localization Entry Switcher")]
     [AddBinderContextMenu(typeof(TMP_Text), serializePropertyNames: "m_text", SubPath = "Switcher")]
-    public class TextLocalizationEntrySwitcherMonoBinder : SwitcherStringMonoBinder<TMP_Text>
+    public class TextLocalizationEntrySwitcherMonoBinder : SwitcherMonoBinder<TMP_Text, string>
     {
         [Tooltip("The localized string reference that provides the localized text.")]
         [SerializeField] private LocalizedString _stringReference = new();

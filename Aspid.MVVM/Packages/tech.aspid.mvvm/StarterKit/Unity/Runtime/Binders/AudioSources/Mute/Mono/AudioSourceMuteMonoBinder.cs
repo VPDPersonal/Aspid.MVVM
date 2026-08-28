@@ -4,11 +4,11 @@ using UnityEngine;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="ComponentBoolMonoBinder{AudioSource}"/> that binds the <see cref="AudioSource.mute"/> property.
+    /// <see cref="ComponentMonoBinder{TComponent,TProperty}"/> that binds the <see cref="AudioSource.mute"/> property.
     /// </summary>
     [AddBinderContextMenu(typeof(AudioSource))]
     [AddComponentMenu("Aspid/MVVM/Binders/Audio/AudioSource/AudioSource Binder – Mute")]
-    public class AudioSourceMuteMonoBinder : ComponentBoolMonoBinder<AudioSource>
+    public class AudioSourceMuteMonoBinder : ComponentMonoBinder<AudioSource, bool>
     {
         /// <inheritdoc/>
         protected sealed override bool Property

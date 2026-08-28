@@ -6,27 +6,27 @@ using UnityEngine.UI;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="TargetBoolBinder{Graphic}"/> that sets the <see cref="Graphic.raycastTarget"/> property.
+    /// <see cref="TargetBinder{Graphic, bool}"/> that sets the <see cref="Graphic.raycastTarget"/> property.
     /// </summary>
     /// <remarks>
     /// Turning this off makes the graphic invisible to pointer input while it stays on screen — the usual way to let clicks pass through an overlay.
     /// </remarks>
     [Serializable]
-    public class GraphicRaycastTargetBinder : TargetBoolBinder<Graphic>
+    public class GraphicRaycastTargetBinder : TargetBinder<Graphic, bool>
     {
-        /// <inheritdoc/>
-        protected sealed override bool Property
-        {
-            get => Target.raycastTarget;
-            set => Target.raycastTarget = value;
-        }
-
         /// <inheritdoc/>
         /// <exception cref="ArgumentException">Thrown when <paramref name="mode"/> is <see cref="BindMode.TwoWay"/>.</exception>
         public GraphicRaycastTargetBinder(Graphic target, IConverter<bool, bool>? converter = null, BindMode mode = BindMode.OneTime)
             : base(target, converter, mode)
         {
             mode.ThrowExceptionIfMatches(BindMode.TwoWay);
+        }
+
+        /// <inheritdoc/>
+        protected sealed override bool Property
+        {
+            get => Target.raycastTarget;
+            set => Target.raycastTarget = value;
         }
     }
 }

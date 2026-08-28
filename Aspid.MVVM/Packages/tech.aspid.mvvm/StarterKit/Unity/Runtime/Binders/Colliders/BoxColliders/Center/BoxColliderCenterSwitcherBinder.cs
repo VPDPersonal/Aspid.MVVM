@@ -6,12 +6,12 @@ using UnityEngine;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="SwitcherVector3Binder{BoxCollider}"/> that switches the <see cref="BoxCollider.center"/>
+    /// <see cref="SwitcherBinder{TTarget,T}">SwitcherBinder&lt;BoxCollider, Vector3&gt;</see> that switches the <see cref="BoxCollider.center"/>
     /// property between two <see cref="Vector3"/> values based on the bound boolean ViewModel value.
     /// </summary>
     /// <include file="XmlExampleDoc-BoxCollider-Center-1.1.0.xml" path="doc//member[@name='BoxColliderCenterSwitcherBinder']/*" />
     [Serializable]
-    public sealed class BoxColliderCenterSwitcherBinder : SwitcherVector3Binder<BoxCollider>
+    public sealed class BoxColliderCenterSwitcherBinder : SwitcherBinder<BoxCollider, Vector3>
     {
         /// <inheritdoc/>
         public BoxColliderCenterSwitcherBinder(

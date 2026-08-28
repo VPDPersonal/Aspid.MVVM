@@ -7,12 +7,12 @@ using UnityEngine.UI;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="SwitcherColorBinder{Graphic}"/> that switches the <see cref="Graphic.color"/>
+    /// <see cref="SwitcherBinder{TTarget,T}">SwitcherBinder&lt;Graphic, Color&gt;</see> that switches the <see cref="Graphic.color"/>
     /// property between two <see cref="Color"/> values based on the bound boolean ViewModel value.
     /// </summary>
     /// <include file="XmlExampleDoc-Graphic-Color-1.1.0.xml" path="doc//member[@name='GraphicColorSwitcherBinder']/*" />
     [Serializable]
-    public sealed class GraphicColorSwitcherBinder : SwitcherColorBinder<Graphic>
+    public sealed class GraphicColorSwitcherBinder : SwitcherBinder<Graphic, Color>
     {
         /// <inheritdoc/>
         public GraphicColorSwitcherBinder(

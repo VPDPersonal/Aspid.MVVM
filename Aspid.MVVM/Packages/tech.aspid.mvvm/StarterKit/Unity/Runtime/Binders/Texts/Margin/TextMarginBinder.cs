@@ -24,22 +24,18 @@ namespace Aspid.MVVM.StarterKit
             get => Target.margin;
             set
             {
-                if (!IsFinite(value)) return;
+                if (!this.RequireFinite(value, Target)) return;
                 Target.margin = value;
             }
         }
 
         /// <inheritdoc/>
         /// <exception cref="ArgumentException">Thrown when <paramref name="mode"/> is <see cref="BindMode.TwoWay"/> — the property raises no change event to listen to.</exception>
-        public TextMarginBinder(TMP_Text target, BindMode mode = BindMode.OneWay)
-            : base(target, mode)
+        public TextMarginBinder(TMP_Text target, IConverter<Vector4, Vector4>? converter = null, BindMode mode = BindMode.OneWay)
+            : base(target, converter, mode)
         {
             mode.ThrowExceptionIfMatches(BindMode.TwoWay);
         }
-
-        private static bool IsFinite(Vector4 value) =>
-            BinderMath.IsFinite(value.x) && BinderMath.IsFinite(value.y)
-            && BinderMath.IsFinite(value.z) && BinderMath.IsFinite(value.w);
     }
 }
 #endif

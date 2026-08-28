@@ -24,11 +24,51 @@ namespace Aspid.MVVM.StarterKit
 
         private TInput[] _values;
         private bool[] _reported;
+        private Component[] _inputs;
 
         /// <summary>
         /// Gets how many inputs the aggregator expects.
         /// </summary>
         public int InputCount => Mathf.Max(1, _inputCount);
+
+        /// <summary>
+        /// Claims an input index for <paramref name="input"/>.
+        /// </summary>
+        /// <param name="index">Index of the input, as configured on the input binder.</param>
+        /// <param name="input">The input binder claiming the index.</param>
+        /// <remarks>
+        /// Logs an error when the index is outside the configured count or already claimed by another input — a
+        /// duplicated index leaves another one without a source, so the aggregator would otherwise stay silent forever.
+        /// </remarks>
+        public void RegisterInput(int index, Component input)
+        {
+            EnsureSize();
+
+            if (index < 0 || index >= _inputs.Length)
+            {
+                BinderLogger.LogError(GetType(), $"the input index {index} is outside the configured count of {InputCount}", "The input is ignored.", this);
+                return;
+            }
+
+            if (_inputs[index] && _inputs[index] != input)
+            {
+                BinderLogger.LogError(GetType(), $"the input index {index} is already used by {_inputs[index].name}", "Another index stays without a source, so nothing is forwarded.", this);
+                return;
+            }
+
+            _inputs[index] = input;
+        }
+
+        /// <summary>
+        /// Releases the input index claimed by <paramref name="input"/>.
+        /// </summary>
+        /// <param name="index">Index of the input, as configured on the input binder.</param>
+        /// <param name="input">The input binder releasing the index.</param>
+        public void UnregisterInput(int index, Component input)
+        {
+            if (_inputs is null || index < 0 || index >= _inputs.Length) return;
+            if (_inputs[index] == input) _inputs[index] = null;
+        }
 
         /// <summary>
         /// Stores one input's value and forwards the combined result once every input has reported.
@@ -42,7 +82,7 @@ namespace Aspid.MVVM.StarterKit
 
             if (index < 0 || index >= _values.Length)
             {
-                Debug.LogError($"[{GetType().Name}] Input index {index} is outside the configured count of {InputCount}.", this);
+                BinderLogger.LogError(GetType(), $"the input index {index} is outside the configured count of {InputCount}", "The value is dropped.", this);
                 return;
             }
 
@@ -84,6 +124,7 @@ namespace Aspid.MVVM.StarterKit
 
             _values = new TInput[InputCount];
             _reported = new bool[InputCount];
+            _inputs = new Component[InputCount];
         }
     }
 }

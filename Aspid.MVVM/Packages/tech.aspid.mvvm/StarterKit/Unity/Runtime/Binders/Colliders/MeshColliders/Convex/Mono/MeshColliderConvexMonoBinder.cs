@@ -4,11 +4,11 @@ using UnityEngine;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="ComponentBoolMonoBinder{MeshCollider}"/> that binds the <see cref="MeshCollider.convex"/> property.
+    /// <see cref="ComponentMonoBinder{TComponent,TProperty}"/> that binds the <see cref="MeshCollider.convex"/> property.
     /// </summary>
     [AddBinderContextMenu(typeof(MeshCollider), serializePropertyNames: "m_Convex")]
     [AddComponentMenu("Aspid/MVVM/Binders/Collider/Mesh/MeshCollider Binder – Convex")]
-    public class MeshColliderConvexMonoBinder : ComponentBoolMonoBinder<MeshCollider>
+    public class MeshColliderConvexMonoBinder : ComponentMonoBinder<MeshCollider, bool>
     {
         /// <inheritdoc/>
         protected sealed override bool Property

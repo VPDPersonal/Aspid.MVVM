@@ -14,7 +14,7 @@ namespace Aspid.MVVM.StarterKit
         protected sealed override float Property
         {
             get => CachedComponent.radius;
-            set => CachedComponent.radius = BinderMath.NonNegative(value);
+            set => CachedComponent.radius = this.NonNegative(value);
         }
     }
 }

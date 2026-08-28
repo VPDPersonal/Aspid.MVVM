@@ -4,11 +4,11 @@ using UnityEngine;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="ComponentColorMonoBinder{Renderer}"/> that sets a named color property on all materials of a <see cref="Renderer"/> component.
+    /// <see cref="ComponentMonoBinder{Renderer, Color}"/> that sets a named color property on all materials of a <see cref="Renderer"/> component.
     /// </summary>
     [AddBinderContextMenu(typeof(Renderer), serializePropertyNames: "m_Materials")]
     [AddComponentMenu("Aspid/MVVM/Binders/Renderer/Renderer Binder – MaterialsColor")]
-    public class RendererMaterialsColorMonoBinder : ComponentColorMonoBinder<Renderer>
+    public class RendererMaterialsColorMonoBinder : ComponentMonoBinder<Renderer, Color>, IColorBinder
     {
         [Tooltip("The name of the shader color property to set on all materials.")]
         [SerializeField] private string _colorPropertyName = "_BaseColor";

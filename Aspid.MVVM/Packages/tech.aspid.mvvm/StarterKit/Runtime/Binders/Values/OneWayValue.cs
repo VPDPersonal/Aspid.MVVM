@@ -18,7 +18,10 @@ namespace Aspid.MVVM.StarterKit
         /// </summary>
         public event Action<T?>? Changed;
 
+        [Tooltip("The stored value. Set in the Inspector, it is the value before the first ViewModel push.")]
         [SerializeField] private T? _value;
+
+        [Tooltip("Optional converter applied to each incoming value before it is stored.")]
         [SerializeReference] private IConverter<T?, T?>? _converter;
 
         /// <summary>

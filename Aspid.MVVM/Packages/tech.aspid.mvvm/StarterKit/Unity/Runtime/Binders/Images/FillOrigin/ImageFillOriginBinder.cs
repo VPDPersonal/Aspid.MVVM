@@ -1,6 +1,5 @@
 #nullable enable
 using System;
-using UnityEngine;
 using UnityEngine.UI;
 
 // ReSharper disable once CheckNamespace
@@ -14,17 +13,17 @@ namespace Aspid.MVVM.StarterKit
     public class ImageFillOriginBinder : TargetIntBinder<Image>
     {
         /// <inheritdoc/>
-        protected sealed override int Property
-        {
-            get => Target.fillOrigin;
-            set => Target.fillOrigin = value;
-        }
-
-        /// <inheritdoc/>
         public ImageFillOriginBinder(
             Image target,
             IConverter<int, int>? converter = null,
             BindMode mode = BindMode.OneWay)
             : base(target, converter, mode) { }
+
+        /// <inheritdoc/>
+        protected sealed override int Property
+        {
+            get => Target.fillOrigin;
+            set => Target.fillOrigin = value;
+        }
     }
 }

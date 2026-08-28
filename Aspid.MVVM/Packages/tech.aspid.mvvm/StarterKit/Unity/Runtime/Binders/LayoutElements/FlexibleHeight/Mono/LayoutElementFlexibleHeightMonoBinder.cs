@@ -18,7 +18,7 @@ namespace Aspid.MVVM.StarterKit
             get => CachedComponent.flexibleHeight;
             set
             {
-                if (!BinderMath.IsFinite(value)) return;
+                if (!this.RequireFinite(value)) return;
                 CachedComponent.flexibleHeight = value;
             }
         }

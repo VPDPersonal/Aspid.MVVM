@@ -20,7 +20,7 @@ namespace Aspid.MVVM.StarterKit
             get => Target.preferredHeight;
             set
             {
-                if (!BinderMath.IsFinite(value)) return;
+                if (!this.RequireFinite(value, Target)) return;
                 Target.preferredHeight = value;
             }
         }

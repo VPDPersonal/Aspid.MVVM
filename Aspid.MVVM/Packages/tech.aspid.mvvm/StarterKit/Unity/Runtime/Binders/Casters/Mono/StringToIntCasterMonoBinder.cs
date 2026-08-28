@@ -41,7 +41,7 @@ namespace Aspid.MVVM.StarterKit
             }
 
             if (_logFailures)
-                Debug.LogError($"[{nameof(StringToIntCasterMonoBinder)}] '{value}' is not an integer; forwarding {_fallback}.", context: this);
+                this.LogError(value.Expected("a whole number"), $"Forwarding {_fallback} instead.");
 
             _casted?.Invoke(_fallback);
         }

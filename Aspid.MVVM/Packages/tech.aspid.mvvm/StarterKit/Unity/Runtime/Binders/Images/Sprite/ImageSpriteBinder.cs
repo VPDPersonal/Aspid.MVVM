@@ -32,8 +32,8 @@ namespace Aspid.MVVM.StarterKit
         /// <param name="disabledWhenNull">When <see langword="true"/>, disables the <see cref="Image"/> when the bound sprite is <see langword="null"/>.</param>
         /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/>.</param>
         /// <exception cref="ArgumentException">Thrown when <paramref name="mode"/> is <see cref="BindMode.TwoWay"/>.</exception>
-        public ImageSpriteBinder(Image target, bool disabledWhenNull = true, BindMode mode = BindMode.OneWay)
-            : base(target, mode)
+        public ImageSpriteBinder(Image target, bool disabledWhenNull = true, IConverter<Sprite, Sprite>? converter = null, BindMode mode = BindMode.OneWay)
+            : base(target, converter, mode)
         {
             mode.ThrowExceptionIfMatches(BindMode.TwoWay);
             _disabledWhenNull = disabledWhenNull;

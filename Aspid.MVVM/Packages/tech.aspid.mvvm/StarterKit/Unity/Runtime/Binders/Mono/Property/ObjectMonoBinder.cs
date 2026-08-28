@@ -20,9 +20,22 @@ namespace Aspid.MVVM.StarterKit
     {
         /// <inheritdoc/>
         /// <remarks>
-        /// Returns <see langword="null"/> when <paramref name="value"/> refers to a destroyed object.
+        /// Returns <see langword="null"/> when the converted value refers to a destroyed object.
         /// </remarks>
-        protected override TObject GetConvertedValue(TObject value) =>
-            value ? value : null;
+        protected override TObject GetConvertedValue(TObject value)
+        {
+            var converted = base.GetConvertedValue(value);
+            return converted ? converted : null;
+        }
+
+        /// <inheritdoc/>
+        /// <remarks>
+        /// Returns <see langword="null"/> when the converted value refers to a destroyed object.
+        /// </remarks>
+        protected override TObject GetConvertedBackValue(TObject value)
+        {
+            var converted = base.GetConvertedBackValue(value);
+            return converted ? converted : null;
+        }
     }
 }

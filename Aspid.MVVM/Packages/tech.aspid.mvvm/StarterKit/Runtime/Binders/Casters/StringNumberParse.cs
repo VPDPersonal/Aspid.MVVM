@@ -7,14 +7,10 @@ namespace Aspid.MVVM.StarterKit
     /// Provides parsing helpers for the string-to-number caster binders.
     /// </summary>
     /// <remarks>
-    /// The user's own culture is tried first, because the string usually comes from a person typing into an input
-    /// field and a comma is a decimal separator in most of Europe. The invariant form is tried second, so a value
-    /// produced by code — <c>ToString()</c> without a culture, a save file, a network payload — still parses.
-    /// Without the second attempt a game shipped in a comma-decimal locale would refuse its own serialized numbers.
+    /// The user's own culture is tried first, the invariant form second, so both a typed string and one produced
+    /// by code parse.
     /// <para/>
-    /// Group separators are deliberately not accepted. With them, <c>"1,2,3"</c> parses to <c>123</c> under a culture
-    /// that groups with a comma — a typo turning into a number a hundred times larger, silently. A field that has to
-    /// accept grouped input needs a converter that says so.
+    /// Group separators are not accepted: a field that has to take grouped input needs a converter that says so.
     /// </remarks>
     public static class StringNumberParse
     {

@@ -17,7 +17,7 @@ namespace Aspid.MVVM.StarterKit
         protected sealed override float Property
         {
             get => CachedComponent.widthMultiplier;
-            set => CachedComponent.widthMultiplier = BinderMath.SafeClamp(value, 0f, float.MaxValue);
+            set => CachedComponent.widthMultiplier = this.SafeClamp(value, 0f, float.MaxValue);
         }
     }
 }

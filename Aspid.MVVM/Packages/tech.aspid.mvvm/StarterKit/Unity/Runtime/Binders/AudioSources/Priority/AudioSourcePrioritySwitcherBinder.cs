@@ -6,7 +6,7 @@ using UnityEngine;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="SwitcherIntBinder{AudioSource}"/> that switches the <see cref="AudioSource.priority"/>
+    /// <see cref="SwitcherBinder{TTarget,T}">SwitcherBinder&lt;AudioSource, int&gt;</see> that switches the <see cref="AudioSource.priority"/>
     /// property between two <see cref="int"/> values based on the bound boolean ViewModel value.
     /// </summary>
     /// <remarks>
@@ -14,7 +14,7 @@ namespace Aspid.MVVM.StarterKit
     /// </remarks>
     /// <include file="XmlExampleDoc-AudioSource-Priority-1.1.0.xml" path="doc//member[@name='AudioSourcePrioritySwitcherBinder']/*" />
     [Serializable]
-    public sealed class AudioSourcePrioritySwitcherBinder : SwitcherIntBinder<AudioSource>
+    public sealed class AudioSourcePrioritySwitcherBinder : SwitcherBinder<AudioSource, int>
     {
         /// <inheritdoc/>
         public AudioSourcePrioritySwitcherBinder(

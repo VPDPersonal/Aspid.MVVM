@@ -23,19 +23,7 @@ namespace Aspid.MVVM.StarterKit
     { 
         /// <inheritdoc/>
         public event Action<string> ValueChanged;
-        
-        /// <inheritdoc/>
-        public event Action<int> IntValueChanged;
-        
-        /// <inheritdoc/>
-        public event Action<long> LongValueChanged;
-        
-        /// <inheritdoc/>
-        public event Action<float> FloatValueChanged;
-        
-        /// <inheritdoc/>
-        public event Action<double> DoubleValueChanged;
-        
+
         [Tooltip("Determines the culture used when converting numeric values to string.")]
         [SerializeField] private CultureInfoMode _cultureInfoMode = CultureInfoMode.CurrentCulture;
 
@@ -44,8 +32,12 @@ namespace Aspid.MVVM.StarterKit
 
         [Tooltip("Optional converter applied before setting the input field text.")]
         [SerializeReference] private IConverter<string, string> _converter;
-        
+
+        private NumberReverseChannel _channel;
         private bool _isNotifyValueChanged = true;
+
+        /// <inheritdoc/>
+        ref NumberReverseChannel INumberReverseBinder.Channel => ref _channel;
 
         /// <summary>
         /// Re-wires the input field subscriptions after the bind mode is changed in the inspector during play mode.
@@ -192,25 +184,21 @@ namespace Aspid.MVVM.StarterKit
                 is not (TMP_InputField.ContentType.IntegerNumber 
                 or TMP_InputField.ContentType.DecimalNumber)) return;
            
-            if (IntValueChanged != null || LongValueChanged != null)
+            if (!_channel.HasIntegerListeners && !_channel.HasDecimalListeners) return;
+
+            var culture = _cultureInfoMode.ToCultureInfo();
+            if (!double.TryParse(value, NumberStyles.Any, culture, out var number)) return;
+
+            if (_channel.HasIntegerListeners)
             {
-                if (!long.TryParse(value, NumberStyles.Any, _cultureInfoMode.ToCultureInfo(), out var integerValue)) return;
-
-                if (integerValue is <= int.MaxValue and >= int.MinValue)
-                    IntValueChanged?.Invoke((int)integerValue);
-
-                LongValueChanged?.Invoke(integerValue);
+                // Parsed as a long when it can be: a double holds no long past 2^53 exactly, and the long
+                // channel is there for the numbers that need those bits.
+                if (long.TryParse(value, NumberStyles.Any, culture, out var integerValue))
+                    _channel.RaiseIntegers(integerValue);
+                else _channel.RaiseIntegers(number);
             }
-            
-            if (FloatValueChanged != null || DoubleValueChanged != null)
-            {
-                if (!double.TryParse(value, NumberStyles.Any, _cultureInfoMode.ToCultureInfo(), out var decimalValue)) return;
-                
-                if (decimalValue is <= float.MaxValue and >= float.MinValue)
-                    FloatValueChanged?.Invoke((float)decimalValue);
 
-                DoubleValueChanged?.Invoke(decimalValue);
-            }
+            if (_channel.HasDecimalListeners) _channel.RaiseDecimals(number);
         }
         /// <summary>
         /// Converts a value on its way back to the ViewModel.

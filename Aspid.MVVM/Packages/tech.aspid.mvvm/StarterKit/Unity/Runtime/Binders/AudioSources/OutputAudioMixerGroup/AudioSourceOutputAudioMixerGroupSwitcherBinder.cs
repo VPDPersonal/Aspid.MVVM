@@ -19,8 +19,9 @@ namespace Aspid.MVVM.StarterKit
             AudioSource target,
             AudioMixerGroup? trueValue,
             AudioMixerGroup? falseValue,
+            IConverter<AudioMixerGroup?, AudioMixerGroup?>? converter = null,
             BindMode mode = BindMode.OneWay)
-            : base(target, trueValue, falseValue, mode) { }
+            : base(target, trueValue, falseValue, converter, mode) { }
 
         /// <inheritdoc/>
         protected override void SetValue(AudioMixerGroup? value) =>

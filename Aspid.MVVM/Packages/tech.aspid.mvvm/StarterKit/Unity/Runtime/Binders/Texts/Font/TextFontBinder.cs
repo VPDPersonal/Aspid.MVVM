@@ -1,7 +1,7 @@
 #if UNITY_2023_1_OR_NEWER || ASPID_MVVM_TEXT_MESH_PRO_INTEGRATION
 #nullable enable
-using System;
 using TMPro;
+using System;
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
@@ -13,18 +13,18 @@ namespace Aspid.MVVM.StarterKit
     [Serializable]
     public class TextFontBinder : TargetBinder<TMP_Text, TMP_FontAsset>
     {
+        /// <inheritdoc/>
+        /// <exception cref="ArgumentException">Thrown when <paramref name="mode"/> is <see cref="BindMode.TwoWay"/>.</exception>
+        public TextFontBinder(TMP_Text target, IConverter<TMP_FontAsset, TMP_FontAsset>? converter = null, BindMode mode = BindMode.OneWay)
+            : base(target, converter, mode)
+        {
+            mode.ThrowExceptionIfMatches(BindMode.TwoWay);
+        }
+
         protected sealed override TMP_FontAsset? Property
         {
             get => Target.font;
             set => Target.font = value;
-        }
-
-        /// <inheritdoc/>
-        /// <exception cref="ArgumentException">Thrown when <paramref name="mode"/> is <see cref="BindMode.TwoWay"/>.</exception>
-        public TextFontBinder(TMP_Text target, BindMode mode = BindMode.OneWay)
-            : base(target, mode)
-        {
-            mode.ThrowExceptionIfMatches(BindMode.TwoWay);
         }
     }
 }

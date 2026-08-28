@@ -2,7 +2,9 @@ using NUnit.Framework;
 using UnityEngine;
 using UnityEditor;
 using UnityEngine.UI;
+using UnityEngine.TestTools;
 using Aspid.MVVM.StarterKit;
+using System.Text.RegularExpressions;
 using System.Collections.Generic;
 
 // ReSharper disable once CheckNamespace
@@ -40,7 +42,7 @@ namespace Aspid.MVVM.Tests
             var (binder, slider) = Create();
 
             var received = new List<float>();
-            binder.FloatValueChanged += value => received.Add(value);
+            ((IReverseBinder<float>)binder).ValueChanged += value => received.Add(value);
 
             ((IBinder<float>)binder).SetValue(5f);
 
@@ -54,7 +56,7 @@ namespace Aspid.MVVM.Tests
             var (binder, slider) = Create();
 
             var received = new List<float>();
-            binder.FloatValueChanged += value => received.Add(value);
+            ((IReverseBinder<float>)binder).ValueChanged += value => received.Add(value);
 
             ((IBinder<float>)binder).SetValue(-5f);
 
@@ -71,7 +73,7 @@ namespace Aspid.MVVM.Tests
             var (binder, slider) = Create();
 
             var received = new List<float>();
-            binder.FloatValueChanged += value => received.Add(value);
+            ((IReverseBinder<float>)binder).ValueChanged += value => received.Add(value);
 
             ((IBinder<float>)binder).SetValue(0.5f);
 
@@ -85,6 +87,7 @@ namespace Aspid.MVVM.Tests
             var (binder, slider) = Create();
             slider.value = 0.5f;
 
+            LogAssert.Expect(LogType.Error, new Regex("is not finite"));
             ((IBinder<float>)binder).SetValue(float.NaN);
 
             Assert.IsFalse(float.IsNaN(slider.value), "NaN дошёл до ползунка");

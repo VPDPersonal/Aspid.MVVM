@@ -12,17 +12,17 @@ namespace Aspid.MVVM.StarterKit
     public class SpriteRendererSortingOrderBinder : TargetIntBinder<SpriteRenderer>
     {
         /// <inheritdoc/>
-        protected sealed override int Property
-        {
-            get => Target.sortingOrder;
-            set => Target.sortingOrder = value;
-        }
-
-        /// <inheritdoc/>
         public SpriteRendererSortingOrderBinder(
             SpriteRenderer target,
             IConverter<int, int>? converter = null,
             BindMode mode = BindMode.OneWay)
             : base(target, converter, mode) { }
+
+        /// <inheritdoc/>
+        protected sealed override int Property
+        {
+            get => Target.sortingOrder;
+            set => Target.sortingOrder = value;
+        }
     }
 }

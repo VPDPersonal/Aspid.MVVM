@@ -6,7 +6,7 @@ using UnityEngine;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="EnumFloatMonoBinder{TMP_Dropdown}"/> that sets the <see cref="TMP_Dropdown.alphaFadeSpeed"/>
+    /// <see cref="EnumMonoBinder{TComponent,TValue}">EnumMonoBinder&lt;TMP_Dropdown, float&gt;</see> that sets the <see cref="TMP_Dropdown.alphaFadeSpeed"/>
     /// property to a value resolved from a bound enum ViewModel property.
     /// </summary>
     /// <remarks>
@@ -14,7 +14,7 @@ namespace Aspid.MVVM.StarterKit
     /// </remarks>
     [AddBinderContextMenu(typeof(TMP_Dropdown), SubPath = "Enum")]
     [AddComponentMenu("Aspid/MVVM/Binders/UI/Dropdown/Dropdown Binder – AlphaFadeSpeed Enum")]
-    public sealed class DropdownAlphaFadeSpeedEnumMonoBinder : EnumFloatMonoBinder<TMP_Dropdown>
+    public sealed class DropdownAlphaFadeSpeedEnumMonoBinder : EnumMonoBinder<TMP_Dropdown, float>
     {
         /// <summary>
         /// Applies the resolved enum value to the <see cref="TMP_Dropdown.alphaFadeSpeed"/> property.

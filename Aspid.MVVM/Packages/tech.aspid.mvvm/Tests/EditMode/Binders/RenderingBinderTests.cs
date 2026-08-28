@@ -1,6 +1,8 @@
 using NUnit.Framework;
 using UnityEngine;
+using UnityEngine.TestTools;
 using Aspid.MVVM.StarterKit;
+using System.Text.RegularExpressions;
 using System.Collections.Generic;
 
 // ReSharper disable once CheckNamespace
@@ -70,7 +72,9 @@ namespace Aspid.MVVM.Tests
             ((IBinder<float>)intensity).SetValue(2.5f);
             ((IBinder<float>)range).SetValue(12f);
 
+            LogAssert.Expect(LogType.Error, new Regex("is not finite"));
             ((IBinder<float>)intensity).SetValue(float.NaN);
+            LogAssert.Expect(LogType.Error, new Regex("is not finite"));
             ((IBinder<float>)range).SetValue(float.NaN);
 
             Assert.AreEqual(2.5f, light.intensity, 0.001f, "NaN затёр яркость");
@@ -111,7 +115,9 @@ namespace Aspid.MVVM.Tests
             ((IBinder<float>)fieldOfView).SetValue(75f);
             ((IBinder<float>)size).SetValue(8f);
 
+            LogAssert.Expect(LogType.Error, new Regex("is not finite"));
             ((IBinder<float>)fieldOfView).SetValue(float.NaN);
+            LogAssert.Expect(LogType.Error, new Regex("is not finite"));
             ((IBinder<float>)size).SetValue(float.PositiveInfinity);
 
             Assert.AreEqual(75f, camera.fieldOfView, 0.001f, "NaN затёр поле зрения");

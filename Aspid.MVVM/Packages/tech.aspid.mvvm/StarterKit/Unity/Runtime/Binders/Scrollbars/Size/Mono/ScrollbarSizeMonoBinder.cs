@@ -18,7 +18,7 @@ namespace Aspid.MVVM.StarterKit
         protected sealed override float Property
         {
             get => CachedComponent.size;
-            set => CachedComponent.size = BinderMath.SafeClamp01(value);
+            set => CachedComponent.size = this.SafeClamp01(value);
         }
     }
 }

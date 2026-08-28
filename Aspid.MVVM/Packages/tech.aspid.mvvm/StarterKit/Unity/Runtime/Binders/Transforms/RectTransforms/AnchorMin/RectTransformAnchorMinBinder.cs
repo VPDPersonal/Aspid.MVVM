@@ -6,7 +6,7 @@ using UnityEngine;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="TargetVector2Binder{RectTransform}"/> that binds <see cref="RectTransform.anchorMin"/>.
+    /// <see cref="TargetBinder{RectTransform, Vector2}"/> that binds <see cref="RectTransform.anchorMin"/>.
     /// </summary>
     /// <remarks>
     /// Where the element's lower-left corner is pinned inside its parent, as a fraction. Moving the anchors is how a
@@ -18,7 +18,7 @@ namespace Aspid.MVVM.StarterKit
     /// off the screen.
     /// </remarks>
     [Serializable]
-    public class RectTransformAnchorMinBinder : TargetVector2Binder<RectTransform>
+    public class RectTransformAnchorMinBinder : TargetBinder<RectTransform, Vector2>, IVector2Binder
     {
         /// <inheritdoc/>
         protected sealed override Vector2 Property
@@ -26,7 +26,7 @@ namespace Aspid.MVVM.StarterKit
             get => Target.anchorMin;
             set
             {
-                if (!BinderMath.IsFinite(value.x) || !BinderMath.IsFinite(value.y)) return;
+                if (!this.RequireFinite(value, Target)) return;
                 Target.anchorMin = value;
             }
         }

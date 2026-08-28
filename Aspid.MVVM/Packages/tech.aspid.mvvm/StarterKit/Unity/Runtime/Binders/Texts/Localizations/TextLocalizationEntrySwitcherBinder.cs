@@ -11,12 +11,12 @@ using Object = UnityEngine.Object;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="SwitcherStringBinder{TMP_Text}"/> that switches the localization table entry reference
+    /// <see cref="SwitcherBinder{TTarget,T}">SwitcherBinder&lt;TMP_Text, string&gt;</see> that switches the localization table entry reference
     /// between two values and sets <see cref="TMP_Text.text"/> via a <see cref="LocalizedString"/>.
     /// </summary>
     /// <include file="XmlExampleDoc-Text-Localization-1.1.0.xml" path="doc//member[@name='TextLocalizationEntrySwitcherBinder']/*" />
     [Serializable]
-    public class TextLocalizationEntrySwitcherBinder : SwitcherStringBinder<TMP_Text>
+    public class TextLocalizationEntrySwitcherBinder : SwitcherBinder<TMP_Text, string>
     {
         [Tooltip("The localized string reference that provides the localized text.")]
         [SerializeField] private LocalizedString _stringReference = new();

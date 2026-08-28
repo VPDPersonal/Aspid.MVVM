@@ -4,7 +4,7 @@ using UnityEngine;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="ComponentMonoBinder{T1, T2}">ComponentMonoBinder&lt;MeshCollider, MeshColliderCookingOptions&gt;</see> that binds
+    /// <see cref="ComponentMonoBinder{TComponent,TProperty}">ComponentMonoBinder&lt;MeshCollider, MeshColliderCookingOptions&gt;</see> that binds
     /// <see cref="MeshCollider.cookingOptions"/>.
     /// </summary>
     /// <remarks>

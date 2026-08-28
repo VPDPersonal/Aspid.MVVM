@@ -6,56 +6,45 @@ using UnityEngine;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="TargetBinder{GameObject}"/> implementing <see cref="IBinder{T}">IBinder&lt;int&gt;</see> and
-    /// <see cref="IReverseBinder{T}">IReverseBinder&lt;int&gt;</see> that sets <see cref="GameObject.layer"/>.
+    /// <see cref="TargetBinder{TTarget,TProperty}">TargetBinder&lt;GameObject, int&gt;</see>
+    /// that binds the <see cref="GameObject.layer"/> property.
     /// </summary>
     /// <remarks>
-    /// Only the object itself changes layer, not its children.
+    /// Only the object itself changes layer, not its children — the same as assigning the property by hand.
+    /// An index that names no layer is logged as an error and written nowhere.
     /// </remarks>
     [Serializable]
-    [BindModeOverride(BindMode.OneWay, BindMode.OneTime, BindMode.OneWayToSource)]
-    public class GameObjectLayerBinder : TargetBinder<GameObject>, IBinder<int>, IReverseBinder<int>
+    public class GameObjectLayerBinder : TargetBinder<GameObject, int>
     {
         private const int MaxLayer = 31;
 
-        /// <inheritdoc/>
-        public event Action<int>? ValueChanged;
-
-        /// <param name="target">The <see cref="GameObject"/> whose layer is set.</param>
+        /// <param name="target">The <see cref="GameObject"/> whose layer is bound.</param>
+        /// <param name="converter">
+        /// An optional converter applied to the layer index before it is applied. Pass <see langword="null"/> to use
+        /// the value unchanged. Runs in reverse only if it implements <see cref="ITwoWayConverter{TFrom, TTo}"/>.
+        /// </param>
         /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/> — the layer raises no change event to listen to.</param>
         /// <exception cref="ArgumentException">Thrown when <paramref name="mode"/> is <see cref="BindMode.TwoWay"/>.</exception>
-        public GameObjectLayerBinder(GameObject target, BindMode mode = BindMode.OneWay)
-            : base(target, mode)
+        public GameObjectLayerBinder(GameObject target, IConverter<int, int>? converter = null, BindMode mode = BindMode.OneWay)
+            : base(target, converter, mode)
         {
             mode.ThrowExceptionIfMatches(BindMode.TwoWay);
         }
 
-        /// <summary>
-        /// Sets <see cref="GameObject.layer"/> to <paramref name="value"/>.
-        /// </summary>
-        /// <param name="value">The layer index received from the ViewModel.</param>
-        /// <remarks>
-        /// Logs an error and writes nothing when the index names no layer.
-        /// </remarks>
-        public void SetValue(int value)
+        /// <inheritdoc/>
+        protected sealed override int Property
         {
-            if (value is < 0 or > MaxLayer)
+            get => Target.layer;
+            set
             {
-                Debug.LogError($"[{nameof(GameObjectLayerBinder)}] Layer {value} does not exist; ignored.", Target);
-                return;
+                if (value is < 0 or > MaxLayer)
+                {
+                    this.LogError($"the layer {value} does not exist", "The layer is left unchanged.", Target);
+                    return;
+                }
+
+                Target.layer = value;
             }
-
-            Target.layer = value;
-        }
-
-        /// <summary>
-        /// Called when the binder is bound. Sends the current layer to the ViewModel when using
-        /// <see cref="BindMode.OneWayToSource"/>.
-        /// </summary>
-        protected override void OnBound()
-        {
-            if (Mode is BindMode.OneWayToSource)
-                ValueChanged?.Invoke(Target.layer);
         }
     }
 }

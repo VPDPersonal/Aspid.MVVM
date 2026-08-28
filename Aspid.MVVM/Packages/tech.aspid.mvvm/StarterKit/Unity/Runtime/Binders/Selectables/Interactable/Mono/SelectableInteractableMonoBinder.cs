@@ -5,11 +5,11 @@ using UnityEngine.UI;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="ComponentBoolMonoBinder{Selectable}"/> that binds the <see cref="Selectable.interactable"/> property.
+    /// <see cref="ComponentMonoBinder{TComponent,TProperty}"/> that binds the <see cref="Selectable.interactable"/> property.
     /// </summary>
     [AddBinderContextMenu(typeof(Selectable), serializePropertyNames: "m_Interactable")]
     [AddComponentMenu("Aspid/MVVM/Binders/UI/Selectable/Selectable Binder – Interactable")]
-    public class SelectableInteractableMonoBinder : ComponentBoolMonoBinder<Selectable>
+    public class SelectableInteractableMonoBinder : ComponentMonoBinder<Selectable, bool>
     {
         /// <inheritdoc/>
         protected sealed override bool Property

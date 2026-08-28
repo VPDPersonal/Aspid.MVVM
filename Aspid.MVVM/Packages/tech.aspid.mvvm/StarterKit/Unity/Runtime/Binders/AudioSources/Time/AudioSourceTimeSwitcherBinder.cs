@@ -6,12 +6,12 @@ using UnityEngine;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="SwitcherFloatBinder{AudioSource}"/> that switches the <see cref="AudioSource.time"/>
+    /// <see cref="SwitcherBinder{TTarget,T}">SwitcherBinder&lt;AudioSource, float&gt;</see> that switches the <see cref="AudioSource.time"/>
     /// property between two <see cref="float"/> values based on the bound boolean ViewModel value.
     /// </summary>
     /// <include file="XmlExampleDoc-AudioSource-Time-1.1.0.xml" path="doc//member[@name='AudioSourceTimeSwitcherBinder']/*" />
     [Serializable]
-    public sealed class AudioSourceTimeSwitcherBinder : SwitcherFloatBinder<AudioSource>
+    public sealed class AudioSourceTimeSwitcherBinder : SwitcherBinder<AudioSource, float>
     {
         /// <inheritdoc/>
         public AudioSourceTimeSwitcherBinder(

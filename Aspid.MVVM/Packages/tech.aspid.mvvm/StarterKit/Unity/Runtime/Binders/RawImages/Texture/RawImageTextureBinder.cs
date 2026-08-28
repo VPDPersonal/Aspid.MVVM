@@ -7,12 +7,12 @@ using UnityEngine.UI;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="TargetBinderWithConverter{T1, T2}"/> that sets the <see cref="RawImage.texture"/> property,
+    /// <see cref="TargetBinder{T1, T2}"/> that sets the <see cref="RawImage.texture"/> property,
     /// also accepting <see cref="Sprite"/> values by extracting their underlying texture.
     /// </summary>
     /// <include file="XmlExampleDoc-RawImage-Texture-1.1.0.xml" path="doc//member[@name='RawImageTextureBinder']/*" />
     [Serializable]
-    public class RawImageTextureBinder : TargetBinderWithConverter<RawImage, Texture>, IBinder<Sprite?>
+    public class RawImageTextureBinder : TargetBinder<RawImage, Texture>, IBinder<Sprite?>
     {
         [Tooltip("Disables the RawImage component when the bound texture is null.")]
         [SerializeField] private bool _disabledWhenNull;

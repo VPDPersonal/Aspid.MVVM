@@ -4,7 +4,7 @@ using UnityEngine;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="ComponentBoolMonoBinder{ParticleSystem}"/> that binds <see cref="ParticleSystem.EmissionModule.enabled"/>.
+    /// <see cref="ComponentMonoBinder{TComponent,TProperty}"/> that binds <see cref="ParticleSystem.EmissionModule.enabled"/>.
     /// </summary>
     /// <remarks>
     /// Turns emission off without stopping the system: particles already alive keep going, and emission resumes
@@ -12,7 +12,7 @@ namespace Aspid.MVVM.StarterKit
     /// </remarks>
     [AddBinderContextMenu(typeof(ParticleSystem))]
     [AddComponentMenu("Aspid/MVVM/Binders/Effects/ParticleSystem/ParticleSystem Binder – Emission Enabled")]
-    public class ParticleSystemEmissionEnabledMonoBinder : ComponentBoolMonoBinder<ParticleSystem>
+    public class ParticleSystemEmissionEnabledMonoBinder : ComponentMonoBinder<ParticleSystem, bool>
     {
         /// <inheritdoc/>
         protected sealed override bool Property

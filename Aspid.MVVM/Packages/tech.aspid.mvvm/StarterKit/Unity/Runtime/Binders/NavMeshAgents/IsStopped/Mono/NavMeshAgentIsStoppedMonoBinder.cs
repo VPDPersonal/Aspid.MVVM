@@ -5,12 +5,12 @@ using UnityEngine.AI;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="ComponentBoolMonoBinder{NavMeshAgent}"/> that binds <see cref="NavMeshAgent.isStopped"/>.
+    /// <see cref="ComponentMonoBinder{TComponent,TProperty}"/> that binds <see cref="NavMeshAgent.isStopped"/>.
     /// </summary>
     /// <remarks>The write is skipped while the agent is off the navmesh, since Unity throws for that case.</remarks>
     [AddBinderContextMenu(typeof(NavMeshAgent))]
     [AddComponentMenu("Aspid/MVVM/Binders/Navigation/NavMeshAgent Binder – Is Stopped")]
-    public class NavMeshAgentIsStoppedMonoBinder : ComponentBoolMonoBinder<NavMeshAgent>
+    public class NavMeshAgentIsStoppedMonoBinder : ComponentMonoBinder<NavMeshAgent, bool>
     {
         /// <inheritdoc/>
         protected sealed override bool Property

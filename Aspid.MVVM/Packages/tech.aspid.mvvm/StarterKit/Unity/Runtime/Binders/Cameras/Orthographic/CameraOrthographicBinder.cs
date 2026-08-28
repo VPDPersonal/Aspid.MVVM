@@ -6,23 +6,23 @@ using UnityEngine;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="TargetBoolBinder{Camera}"/> that binds <see cref="Camera.orthographic"/>.
+    /// <see cref="TargetBinder{Camera, bool}"/> that binds <see cref="Camera.orthographic"/>.
     /// </summary>
     [Serializable]
-    public class CameraOrthographicBinder : TargetBoolBinder<Camera>
+    public class CameraOrthographicBinder : TargetBinder<Camera, bool>
     {
-        /// <inheritdoc/>
-        protected sealed override bool Property
-        {
-            get => Target.orthographic;
-            set => Target.orthographic = value;
-        }
-
         /// <inheritdoc/>
         public CameraOrthographicBinder(
             Camera target,
             IConverter<bool, bool>? converter = null,
             BindMode mode = BindMode.OneWay)
             : base(target, converter, mode) { }
+
+        /// <inheritdoc/>
+        protected sealed override bool Property
+        {
+            get => Target.orthographic;
+            set => Target.orthographic = value;
+        }
     }
 }

@@ -4,11 +4,11 @@ using UnityEngine;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="ComponentBoolMonoBinder{CanvasGroup}"/> that binds the <see cref="CanvasGroup.interactable"/> property.
+    /// <see cref="ComponentMonoBinder{TComponent,TProperty}"/> that binds the <see cref="CanvasGroup.interactable"/> property.
     /// </summary>
     [AddBinderContextMenu(typeof(CanvasGroup), serializePropertyNames: "m_Interactable")]
     [AddComponentMenu("Aspid/MVVM/Binders/UI/CanvasGroup/CanvasGroup Binder – Interactable")]
-    public class CanvasGroupInteractableMonoBinder : ComponentBoolMonoBinder<CanvasGroup>
+    public class CanvasGroupInteractableMonoBinder : ComponentMonoBinder<CanvasGroup, bool>
     {
         /// <inheritdoc/>
         protected sealed override bool Property

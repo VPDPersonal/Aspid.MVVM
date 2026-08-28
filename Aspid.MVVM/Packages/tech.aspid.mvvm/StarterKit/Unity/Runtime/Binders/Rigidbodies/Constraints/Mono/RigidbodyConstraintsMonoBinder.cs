@@ -4,7 +4,7 @@ using UnityEngine;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="ComponentMonoBinder{T1, T2}">ComponentMonoBinder&lt;Rigidbody, RigidbodyConstraints&gt;</see> that binds
+    /// <see cref="ComponentMonoBinder{TComponent,TProperty}">ComponentMonoBinder&lt;Rigidbody, RigidbodyConstraints&gt;</see> that binds
     /// <see cref="Rigidbody.constraints"/>.
     /// </summary>
     [AddBinderContextMenu(typeof(Rigidbody))]

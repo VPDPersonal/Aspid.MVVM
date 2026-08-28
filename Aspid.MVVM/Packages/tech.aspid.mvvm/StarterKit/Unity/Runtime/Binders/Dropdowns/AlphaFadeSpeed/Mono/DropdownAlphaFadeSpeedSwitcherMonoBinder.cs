@@ -6,7 +6,7 @@ using UnityEngine;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="SwitcherFloatMonoBinder{TMP_Dropdown}"/> that switches the <see cref="TMP_Dropdown.alphaFadeSpeed"/>
+    /// <see cref="SwitcherMonoBinder{TComponent,T}">SwitcherMonoBinder&lt;TMP_Dropdown, float&gt;</see> that switches the <see cref="TMP_Dropdown.alphaFadeSpeed"/>
     /// property between two <see cref="float"/> values based on the bound boolean ViewModel value.
     /// </summary>
     /// <remarks>
@@ -14,7 +14,7 @@ namespace Aspid.MVVM.StarterKit
     /// </remarks>
     [AddBinderContextMenu(typeof(TMP_Dropdown), SubPath = "Switcher")]
     [AddComponentMenu("Aspid/MVVM/Binders/UI/Dropdown/Dropdown Binder – AlphaFadeSpeed Switcher")]
-    public sealed class DropdownAlphaFadeSpeedSwitcherMonoBinder : SwitcherFloatMonoBinder<TMP_Dropdown>
+    public sealed class DropdownAlphaFadeSpeedSwitcherMonoBinder : SwitcherMonoBinder<TMP_Dropdown, float>
     {
         /// <summary>
         /// Applies the selected value to the <see cref="TMP_Dropdown.alphaFadeSpeed"/> property.

@@ -45,7 +45,7 @@ namespace Aspid.MVVM.StarterKit
             var frequency = clip.frequency;
             var end = frequency > 0 ? LastSample(clip) / (float)frequency : 0f;
 
-            audioSource.time = BinderMath.SafeClamp(value, 0f, end);
+            audioSource.time = BinderMath.SafeClamp(typeof(AudioSourceTimeSetters), value, 0f, end, audioSource);
         }
 
         /// <summary>

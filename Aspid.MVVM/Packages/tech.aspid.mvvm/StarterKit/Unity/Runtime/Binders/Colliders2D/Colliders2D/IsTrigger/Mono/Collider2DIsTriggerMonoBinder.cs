@@ -4,11 +4,11 @@ using UnityEngine;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="ComponentBoolMonoBinder{Collider2D}"/> that binds <see cref="Collider2D.isTrigger"/>.
+    /// <see cref="ComponentMonoBinder{TComponent,TProperty}"/> that binds <see cref="Collider2D.isTrigger"/>.
     /// </summary>
     [AddBinderContextMenu(typeof(Collider2D), serializePropertyNames: "m_IsTrigger")]
     [AddComponentMenu("Aspid/MVVM/Binders/Collider2D/Collider2D Binder – Is Trigger")]
-    public class Collider2DIsTriggerMonoBinder : ComponentBoolMonoBinder<Collider2D>
+    public class Collider2DIsTriggerMonoBinder : ComponentMonoBinder<Collider2D, bool>
     {
         /// <inheritdoc/>
         protected sealed override bool Property

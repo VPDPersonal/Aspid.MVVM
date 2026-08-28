@@ -4,12 +4,12 @@ using UnityEngine;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="EnumGroupFloatMonoBinder{AudioSource}"/> that sets the <see cref="AudioSource.time"/>
+    /// <see cref="EnumGroupMonoBinder{TElement,TValue}">EnumGroupMonoBinder&lt;AudioSource, float&gt;</see> that sets the <see cref="AudioSource.time"/>
     /// property on each element based on the bound enum ViewModel value.
     /// </summary>
     [AddBinderContextMenu(typeof(AudioSource), SubPath = "EnumGroup")]
     [AddComponentMenu("Aspid/MVVM/Binders/Audio/AudioSource/AudioSource Binder – Time EnumGroup")]
-    public sealed class AudioSourceTimeEnumGroupMonoBinder : EnumGroupFloatMonoBinder<AudioSource>
+    public sealed class AudioSourceTimeEnumGroupMonoBinder : EnumGroupMonoBinder<AudioSource, float>
     {
         /// <summary>
         /// Called when the bound enum resolves to a value for the specified element.

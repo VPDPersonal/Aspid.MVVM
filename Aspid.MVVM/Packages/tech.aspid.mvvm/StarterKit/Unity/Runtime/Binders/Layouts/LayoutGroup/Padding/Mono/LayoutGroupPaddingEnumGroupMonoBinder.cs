@@ -5,7 +5,7 @@ using UnityEngine.UI;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="EnumGroupMonoBinderWithConverter{T1, T2}"/> that sets the
+    /// <see cref="EnumGroupMonoBinder{T1, T2}"/> that sets the
     /// <see cref="UnityEngine.UI.LayoutGroup.padding"/> property on each element based on the bound enum ViewModel value.
     /// </summary>
     /// <remarks>
@@ -13,7 +13,7 @@ namespace Aspid.MVVM.StarterKit
     /// </remarks>
     [AddComponentMenu("Aspid/MVVM/Binders/UI/LayoutGroup/LayoutGroup Binder – Padding EnumGroup")]
     [AddBinderContextMenu(typeof(LayoutGroup), serializePropertyNames: "m_Padding", SubPath = "EnumGroup")]
-    public sealed class LayoutGroupPaddingEnumGroupMonoBinder : EnumGroupMonoBinderWithConverter<LayoutGroup, RectOffset>
+    public sealed class LayoutGroupPaddingEnumGroupMonoBinder : EnumGroupMonoBinder<LayoutGroup, RectOffset>
     {
         [Tooltip("Which sides of the padding are updated per element.")]
         [SerializeField] private PaddingMode _paddingMode;

@@ -20,21 +20,17 @@ namespace Aspid.MVVM.StarterKit
             get => Target.uvRect;
             set
             {
-                if (!IsFinite(value)) return;
+                if (!this.RequireFinite(value, Target)) return;
                 Target.uvRect = value;
             }
         }
 
         /// <inheritdoc/>
         /// <exception cref="ArgumentException">Thrown when <paramref name="mode"/> is <see cref="BindMode.TwoWay"/> — the property raises no change event to listen to.</exception>
-        public RawImageUvRectBinder(RawImage target, BindMode mode = BindMode.OneWay)
-            : base(target, mode)
+        public RawImageUvRectBinder(RawImage target, IConverter<Rect, Rect>? converter = null, BindMode mode = BindMode.OneWay)
+            : base(target, converter, mode)
         {
             mode.ThrowExceptionIfMatches(BindMode.TwoWay);
         }
-
-        private static bool IsFinite(Rect value) =>
-            BinderMath.IsFinite(value.x) && BinderMath.IsFinite(value.y)
-            && BinderMath.IsFinite(value.width) && BinderMath.IsFinite(value.height);
     }
 }

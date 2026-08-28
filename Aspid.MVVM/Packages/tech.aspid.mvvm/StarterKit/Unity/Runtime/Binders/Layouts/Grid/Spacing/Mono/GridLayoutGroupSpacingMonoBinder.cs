@@ -5,7 +5,7 @@ using UnityEngine.UI;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="ComponentVector2MonoBinder{GridLayoutGroup}"/> that binds <see cref="GridLayoutGroup.spacing"/>.
+    /// <see cref="ComponentMonoBinder{GridLayoutGroup, Vector2}"/> that binds <see cref="GridLayoutGroup.spacing"/>.
     /// </summary>
     /// <remarks>
     /// Unlike <see cref="GridLayoutGroup.cellSize"/>, a negative value is meaningful and is not clamped —
@@ -13,7 +13,7 @@ namespace Aspid.MVVM.StarterKit
     /// </remarks>
     [AddBinderContextMenu(typeof(GridLayoutGroup), serializePropertyNames: "m_Spacing")]
     [AddComponentMenu("Aspid/MVVM/Binders/UI/LayoutGroup/Grid/GridLayoutGroup Binder – Spacing")]
-    public class GridLayoutGroupSpacingMonoBinder : ComponentVector2MonoBinder<GridLayoutGroup>
+    public class GridLayoutGroupSpacingMonoBinder : ComponentMonoBinder<GridLayoutGroup, Vector2>, IVector2Binder
     {
         /// <inheritdoc/>
         protected sealed override Vector2 Property
@@ -22,7 +22,7 @@ namespace Aspid.MVVM.StarterKit
             set
             {
                 // A NaN component would put the whole layout at NaN, so only finite values are written.
-                if (!BinderMath.IsFinite(value.x) || !BinderMath.IsFinite(value.y)) return;
+                if (!this.RequireFinite(value)) return;
                 CachedComponent.spacing = value;
             }
         }

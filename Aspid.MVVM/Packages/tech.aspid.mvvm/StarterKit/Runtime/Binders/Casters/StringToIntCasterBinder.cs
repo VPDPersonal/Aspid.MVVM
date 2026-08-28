@@ -8,10 +8,6 @@ namespace Aspid.MVVM.StarterKit
     /// <see cref="string"/> as an <see langword="int"/> before forwarding it to a target setter.
     /// </summary>
     /// <remarks>
-    /// The casters covered the direction into a string and not the one out of it, which is the direction an input
-    /// field works in: a ViewModel holding an <see langword="int"/> could be shown in a text field and not filled
-    /// from one.
-    /// <para/>
     /// A string that does not parse forwards the fallback value instead. Parsing follows
     /// <see cref="StringNumberParse.TryInt"/>: the user's culture first, the invariant form second.
     /// </remarks>

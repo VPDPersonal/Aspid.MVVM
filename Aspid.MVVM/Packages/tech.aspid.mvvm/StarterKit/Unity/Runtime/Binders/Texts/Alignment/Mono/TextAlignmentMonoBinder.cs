@@ -6,7 +6,7 @@ using UnityEngine;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="ComponentMonoBinder{TMP_Text, TextAlignmentOptions}"/> that sets the <see cref="TMP_Text.alignment"/>.
+    /// <see cref="ComponentMonoBinder{TComponent,TProperty}"/> that sets the <see cref="TMP_Text.alignment"/>.
     /// </summary>
     [AddComponentMenu("Aspid/MVVM/Binders/UI/Text/Text Binder – Alignment")]
     [AddBinderContextMenu(typeof(TMP_Text), serializePropertyNames: "m_textAlignment")]

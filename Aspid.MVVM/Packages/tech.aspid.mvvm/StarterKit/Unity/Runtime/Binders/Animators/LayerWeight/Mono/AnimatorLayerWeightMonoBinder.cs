@@ -5,7 +5,7 @@ using UnityEngine;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="ComponentMonoBinder{Animator}"/> implementing <see cref="INumberBinder"/> and
+    /// <see cref="ComponentMonoBinder{Animator}"/> implementing <see cref="IFloatBinder"/> and
     /// <see cref="IReverseBinder{T}">IReverseBinder&lt;float&gt;</see> that binds the weight of one animator layer.
     /// </summary>
     /// <remarks>
@@ -14,31 +14,16 @@ namespace Aspid.MVVM.StarterKit
     [BindModeOverride(BindMode.OneWay, BindMode.OneTime, BindMode.OneWayToSource)]
     [AddBinderContextMenu(typeof(Animator))]
     [AddComponentMenu("Aspid/MVVM/Binders/Animator/Animator Binder – Layer Weight")]
-    public partial class AnimatorLayerWeightMonoBinder : ComponentMonoBinder<Animator>, INumberBinder, IReverseBinder<float>
+    public partial class AnimatorLayerWeightMonoBinder : ComponentMonoBinder<Animator>,
+        IFloatBinder,
+        IReverseBinder<float>
     {
-        /// <inheritdoc/>
-        public event Action<float> ValueChanged;
-
+        // TODO Aspid.MVVM 1.1.0 -> add validate max layer
         [Tooltip("Index of the animator layer to bind. Layer 0 is ignored by the animator.")]
         [SerializeField] [Min(0)] private int _layer = 1;
-
-        /// <summary>
-        /// Casts the value to <see langword="float"/> and sets the layer's weight.
-        /// </summary>
-        /// <param name="value">The value received from the ViewModel.</param>
-        [BinderLog]
-        public void SetValue(int value) => SetValue((float)value);
-
-        /// <inheritdoc cref="SetValue(int)"/>
-        [BinderLog]
-        public void SetValue(long value) => SetValue((float)value);
-
-        /// <inheritdoc cref="SetValue(int)"/>
-        /// <remarks>
-        /// Narrowed to <see langword="float"/> — precision may be lost.
-        /// </remarks>
-        [BinderLog]
-        public void SetValue(double value) => SetValue((float)value);
+        
+        /// <inheritdoc/>
+        public event Action<float> ValueChanged;
 
         /// <summary>
         /// Sets the weight of the configured layer, clamped to 0..1.
@@ -48,7 +33,10 @@ namespace Aspid.MVVM.StarterKit
         public void SetValue(float value)
         {
             if (!HasLayer()) return;
-            CachedComponent.SetLayerWeight(_layer, BinderMath.SafeClamp01(value));
+            
+            CachedComponent.SetLayerWeight(
+                layerIndex: _layer,
+                weight: this.SafeClamp01(value));
         }
 
         /// <summary>
@@ -58,14 +46,19 @@ namespace Aspid.MVVM.StarterKit
         protected override void OnBound()
         {
             if (!HasLayer()) return;
-            if (Mode is BindMode.OneWayToSource) ValueChanged?.Invoke(CachedComponent.GetLayerWeight(_layer));
+            
+            if (Mode is BindMode.OneWayToSource)
+                ValueChanged?.Invoke(CachedComponent.GetLayerWeight(_layer));
         }
 
         private bool HasLayer()
         {
-            if (_layer >= 0 && _layer < CachedComponent.layerCount) return true;
-
-            Debug.LogError($"[{nameof(AnimatorLayerWeightMonoBinder)}] Layer {_layer} does not exist on this controller.", context: this);
+            if (_layer < CachedComponent.layerCount) return true;
+            
+            this.LogError(
+                problem: $"the controller has no layer {_layer}",
+                consequence: "The weight is not applied.");
+            
             return false;
         }
     }

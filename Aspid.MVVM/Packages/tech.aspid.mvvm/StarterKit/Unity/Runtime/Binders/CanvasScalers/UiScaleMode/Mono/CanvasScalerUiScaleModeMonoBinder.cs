@@ -5,7 +5,7 @@ using UnityEngine.UI;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="ComponentMonoBinder{T1, T2}">ComponentMonoBinder&lt;CanvasScaler, CanvasScaler.ScaleMode&gt;</see> that binds
+    /// <see cref="ComponentMonoBinder{TComponent,TProperty}">ComponentMonoBinder&lt;CanvasScaler, CanvasScaler.ScaleMode&gt;</see> that binds
     /// <see cref="CanvasScaler.uiScaleMode"/>.
     /// </summary>
     [AddBinderContextMenu(typeof(CanvasScaler), serializePropertyNames: "m_UiScaleMode")]

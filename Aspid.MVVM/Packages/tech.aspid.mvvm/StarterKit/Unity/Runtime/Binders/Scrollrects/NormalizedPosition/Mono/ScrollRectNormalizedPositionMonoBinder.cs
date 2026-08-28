@@ -5,17 +5,17 @@ using UnityEngine.UI;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="ComponentVector2MonoBinder{ScrollRect}"/> that binds <see cref="ScrollRect.normalizedPosition"/>.
+    /// <see cref="ComponentMonoBinder{ScrollRect, Vector2}"/> that binds <see cref="ScrollRect.normalizedPosition"/>.
     /// </summary>
     [AddBinderContextMenu(typeof(ScrollRect), serializePropertyNames: "m_Content")]
     [AddComponentMenu("Aspid/MVVM/Binders/UI/ScrollRect/ScrollRect Binder – Normalized Position")]
-    public class ScrollRectNormalizedPositionMonoBinder : ComponentVector2MonoBinder<ScrollRect>
+    public class ScrollRectNormalizedPositionMonoBinder : ComponentMonoBinder<ScrollRect, Vector2>, IVector2Binder
     {
         /// <inheritdoc/>
         protected sealed override Vector2 Property
         {
             get => CachedComponent.normalizedPosition;
-            set => CachedComponent.normalizedPosition = new Vector2(BinderMath.SafeClamp01(value.x), BinderMath.SafeClamp01(value.y));
+            set => CachedComponent.normalizedPosition = new Vector2(this.SafeClamp01(value.x), this.SafeClamp01(value.y));
         }
     }
 }

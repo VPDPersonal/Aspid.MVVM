@@ -6,12 +6,12 @@ using UnityEngine;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="SwitcherColorBinder{Renderer}"/> that switches a named color property on all materials of a <see cref="Renderer"/>
+    /// <see cref="SwitcherBinder{TTarget,T}">SwitcherBinder&lt;Renderer, Color&gt;</see> that switches a named color property on all materials of a <see cref="Renderer"/>
     /// between two <see cref="Color"/> values based on the bound boolean ViewModel value.
     /// </summary>
     /// <include file="XmlExampleDoc-Renderer-MaterialsColor-1.1.0.xml" path="doc//member[@name='RendererMaterialColorSwitcherBinder']/*" />
     [Serializable]
-    public sealed class RendererMaterialColorSwitcherBinder : SwitcherColorBinder<Renderer>
+    public sealed class RendererMaterialColorSwitcherBinder : SwitcherBinder<Renderer, Color>
     {
         // ReSharper disable once MemberInitializerValueIgnored
         [Tooltip("The name of the shader color property to set on all materials.")]

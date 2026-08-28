@@ -4,7 +4,7 @@ using UnityEngine;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="ComponentVector2MonoBinder{SpriteRenderer}"/> that binds <see cref="SpriteRenderer.size"/>.
+    /// <see cref="ComponentMonoBinder{SpriteRenderer, Vector2}"/> that binds <see cref="SpriteRenderer.size"/>.
     /// </summary>
     /// <remarks>
     /// Ignored by Unity unless <see cref="SpriteRenderer.drawMode"/> is <see cref="SpriteDrawMode.Sliced"/> or
@@ -12,13 +12,13 @@ namespace Aspid.MVVM.StarterKit
     /// </remarks>
     [AddBinderContextMenu(typeof(SpriteRenderer), serializePropertyNames: "m_Size")]
     [AddComponentMenu("Aspid/MVVM/Binders/SpriteRenderer/SpriteRenderer Binder – Size")]
-    public class SpriteRendererSizeMonoBinder : ComponentVector2MonoBinder<SpriteRenderer>
+    public class SpriteRendererSizeMonoBinder : ComponentMonoBinder<SpriteRenderer, Vector2>, IVector2Binder
     {
         /// <inheritdoc/>
         protected sealed override Vector2 Property
         {
             get => CachedComponent.size;
-            set => CachedComponent.size = new Vector2(BinderMath.SafeClamp(value.x, 0f, float.MaxValue), BinderMath.SafeClamp(value.y, 0f, float.MaxValue));
+            set => CachedComponent.size = new Vector2(this.SafeClamp(value.x, 0f, float.MaxValue), this.SafeClamp(value.y, 0f, float.MaxValue));
         }
     }
 }

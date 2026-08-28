@@ -4,12 +4,12 @@ using UnityEngine;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="SwitcherFloatMonoBinder{AudioSource}"/> that switches the <see cref="AudioSource.dopplerLevel"/>
+    /// <see cref="SwitcherMonoBinder{TComponent,T}">SwitcherMonoBinder&lt;AudioSource, float&gt;</see> that switches the <see cref="AudioSource.dopplerLevel"/>
     /// property between two values based on the bound boolean ViewModel value.
     /// </summary>
     [AddBinderContextMenu(typeof(AudioSource), SubPath = "Switcher")]
     [AddComponentMenu("Aspid/MVVM/Binders/Audio/AudioSource/AudioSource Binder – DopplerLevel Switcher")]
-    public sealed class AudioSourceDopplerLevelSwitcherMonoBinder : SwitcherFloatMonoBinder<AudioSource>
+    public sealed class AudioSourceDopplerLevelSwitcherMonoBinder : SwitcherMonoBinder<AudioSource, float>
     {
         /// <summary>
         /// Called when applying the selected value to the <see cref="AudioSource.dopplerLevel"/> property.
@@ -17,6 +17,6 @@ namespace Aspid.MVVM.StarterKit
         /// </summary>
         /// <param name="value">The value received from the ViewModel.</param>
         protected override void SetValue(float value) =>
-            CachedComponent.dopplerLevel = BinderMath.SafeClamp(value, 0, 5);
+            CachedComponent.dopplerLevel = this.SafeClamp(value, 0, 5);
     }
 }

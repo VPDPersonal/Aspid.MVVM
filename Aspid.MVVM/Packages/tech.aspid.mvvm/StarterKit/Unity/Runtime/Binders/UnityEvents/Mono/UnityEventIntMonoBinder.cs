@@ -10,7 +10,7 @@ namespace Aspid.MVVM.StarterKit
     [AddBinderContextMenuByType(typeof(int))]
     [AddComponentMenu("Aspid/MVVM/Binders/UnityEvent/UnityEvent Binder – Int")]
     [AddBinderContextMenu(typeof(Component), Path = "Add General Binder/UnityEvent/UnityEvent Binder – Int")]
-    public sealed partial class UnityEventIntMonoBinder : MonoBinder, INumberBinder
+    public sealed partial class UnityEventIntMonoBinder : MonoBinder, IIntBinder
     {
         [Tooltip("Optional converter applied to the value; empty leaves it as-is.")]
         [SerializeReference] private IConverter<int, int> _converter;
@@ -25,29 +25,5 @@ namespace Aspid.MVVM.StarterKit
         [BinderLog]
         public void SetValue(int value) =>
             _set?.Invoke(_converter?.Convert(value) ?? value);
-
-        /// <summary>
-        /// Converts the value to <see cref="int"/> and invokes the event.
-        /// </summary>
-        /// <param name="value">The value received from the ViewModel.</param>
-        [BinderLog]
-        public void SetValue(long value) =>
-            SetValue((int)value);
-
-        /// <summary>
-        /// Converts the value to <see cref="int"/> and invokes the event.
-        /// </summary>
-        /// <param name="value">The value received from the ViewModel.</param>
-        [BinderLog]
-        public void SetValue(float value) =>
-            SetValue((int)value);
-
-        /// <summary>
-        /// Converts the value to <see cref="int"/> and invokes the event.
-        /// </summary>
-        /// <param name="value">The value received from the ViewModel.</param>
-        [BinderLog]
-        public void SetValue(double value) =>
-            SetValue((int)value);
     }
 }

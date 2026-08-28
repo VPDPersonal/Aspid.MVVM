@@ -4,7 +4,7 @@ using UnityEngine;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="SwitcherFloatMonoBinder{AudioSource}"/> that switches the <see cref="AudioSource.spatialBlend"/>
+    /// <see cref="SwitcherMonoBinder{TComponent,T}">SwitcherMonoBinder&lt;AudioSource, float&gt;</see> that switches the <see cref="AudioSource.spatialBlend"/>
     /// property between two values based on the bound boolean ViewModel value.
     /// </summary>
     /// <remarks>
@@ -12,7 +12,7 @@ namespace Aspid.MVVM.StarterKit
     /// </remarks>
     [AddBinderContextMenu(typeof(AudioSource), SubPath = "Switcher")]
     [AddComponentMenu("Aspid/MVVM/Binders/Audio/AudioSource/AudioSource Binder – SpatialBlend Switcher")]
-    public sealed class AudioSourceSpatialBlendSwitcherMonoBinder : SwitcherFloatMonoBinder<AudioSource>
+    public sealed class AudioSourceSpatialBlendSwitcherMonoBinder : SwitcherMonoBinder<AudioSource, float>
     {
         /// <inheritdoc/>
         protected override void SetValue(float value) =>
@@ -24,6 +24,6 @@ namespace Aspid.MVVM.StarterKit
         /// </summary>
         /// <param name="value">The value to convert.</param>
         protected override float GetConvertedValue(float value) =>
-            BinderMath.SafeClamp(base.GetConvertedValue(value), 0, 1);
+            this.SafeClamp(base.GetConvertedValue(value), 0, 1);
     }
 }

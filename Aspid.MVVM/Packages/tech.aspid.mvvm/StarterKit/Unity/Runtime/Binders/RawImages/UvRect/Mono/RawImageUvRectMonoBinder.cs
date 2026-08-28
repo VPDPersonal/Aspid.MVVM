@@ -5,7 +5,7 @@ using UnityEngine.UI;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="ComponentMonoBinder{T1, T2}">ComponentMonoBinder&lt;RawImage, Rect&gt;</see> that binds
+    /// <see cref="ComponentMonoBinder{TComponent,TProperty}">ComponentMonoBinder&lt;RawImage, Rect&gt;</see> that binds
     /// <see cref="RawImage.uvRect"/>.
     /// </summary>
     /// <remarks>A non-finite component is refused, since a <c>NaN</c> in any of the four values makes the image vanish.</remarks>
@@ -19,13 +19,9 @@ namespace Aspid.MVVM.StarterKit
             get => CachedComponent.uvRect;
             set
             {
-                if (!IsFinite(value)) return;
+                if (!this.RequireFinite(value)) return;
                 CachedComponent.uvRect = value;
             }
         }
-
-        private static bool IsFinite(Rect value) =>
-            BinderMath.IsFinite(value.x) && BinderMath.IsFinite(value.y)
-            && BinderMath.IsFinite(value.width) && BinderMath.IsFinite(value.height);
     }
 }

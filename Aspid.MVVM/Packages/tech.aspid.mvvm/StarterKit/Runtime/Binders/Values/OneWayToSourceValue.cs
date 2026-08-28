@@ -22,10 +22,8 @@ namespace Aspid.MVVM.StarterKit
 
         /// <remarks>
         /// The inherited converter is applied on the ViewModel → View path, in <see cref="IBinder{T}.SetValue"/>.
-        /// <see cref="BindMode.OneWayToSource"/> has no such path, so a converter passed here is silently ignored
-        /// and values reach the ViewModel unchanged. The overload is kept so existing code still compiles, but it
-        /// warns rather than doing nothing quietly; convert in the ViewModel, or use <see cref="TwoWayValue{T}"/>
-        /// in a mode that actually feeds the View.
+        /// <see cref="BindMode.OneWayToSource"/> has no such path, so a converter passed here never runs.
+        /// Convert in the ViewModel, or use <see cref="TwoWayValue{T}"/>.
         /// </remarks>
         /// <param name="value">The initial value.</param>
         /// <param name="converter">Ignored in this mode.</param>

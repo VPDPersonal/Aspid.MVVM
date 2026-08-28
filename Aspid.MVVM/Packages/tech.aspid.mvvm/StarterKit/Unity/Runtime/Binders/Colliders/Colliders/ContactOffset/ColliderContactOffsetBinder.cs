@@ -23,7 +23,7 @@ namespace Aspid.MVVM.StarterKit
         protected sealed override float Property
         {
             get => Target.contactOffset;
-            set => Target.contactOffset = BinderMath.SafeClamp(value, MinimumContactOffset, float.MaxValue);
+            set => Target.contactOffset = this.SafeClamp(value, MinimumContactOffset, float.MaxValue, Target);
         }
 
         /// <inheritdoc/>

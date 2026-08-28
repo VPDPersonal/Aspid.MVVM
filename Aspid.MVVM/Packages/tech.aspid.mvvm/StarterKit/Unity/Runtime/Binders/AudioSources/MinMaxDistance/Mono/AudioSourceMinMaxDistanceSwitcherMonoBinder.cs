@@ -4,13 +4,13 @@ using UnityEngine;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="SwitcherMonoBinderWithConverter{T1, T2}">SwitcherMonoBinderWithConverter&lt;AudioSource, Vector2&gt;</see> that switches the
+    /// <see cref="SwitcherMonoBinder{T1, T2}">SwitcherMonoBinder&lt;AudioSource, Vector2&gt;</see> that switches the
     /// min/max distance of an <see cref="AudioSource"/> between two <see cref="Vector2"/> values
     /// based on the bound boolean ViewModel value.
     /// </summary>
     [AddBinderContextMenu(typeof(AudioSource), SubPath = "Switcher")]
     [AddComponentMenu("Aspid/MVVM/Binders/Audio/AudioSource/AudioSource Binder – MinMaxDistance Switcher")]
-    public sealed class AudioSourceMinMaxDistanceSwitcherMonoBinder : SwitcherMonoBinderWithConverter<AudioSource, Vector2>
+    public sealed class AudioSourceMinMaxDistanceSwitcherMonoBinder : SwitcherMonoBinder<AudioSource, Vector2>
     {
         [Tooltip("Which distance component the bound value updates.")]
         [SerializeField] private AudioSourceDistanceMode _distanceMode = AudioSourceDistanceMode.Range;

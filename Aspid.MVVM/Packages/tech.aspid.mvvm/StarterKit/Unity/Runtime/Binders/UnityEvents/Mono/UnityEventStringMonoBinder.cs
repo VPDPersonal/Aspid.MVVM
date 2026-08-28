@@ -10,7 +10,10 @@ namespace Aspid.MVVM.StarterKit
     [AddBinderContextMenuByType(typeof(string))]
     [AddComponentMenu("Aspid/MVVM/Binders/UnityEvent/UnityEvent Binder – String")]
     [AddBinderContextMenu(typeof(Component), Path = "Add General Binder/UnityEvent/UnityEvent Binder – String")]
-    public sealed partial class UnityEventStringMonoBinder : MonoBinder, IBinder<string>, IAnyBinder, INumberBinder
+    public sealed partial class UnityEventStringMonoBinder : MonoBinder, 
+        IAnyBinder,
+        INumberBinder,
+        IBinder<string>
     {
         [Tooltip("The culture used when converting numeric and object values to string.")]
         [SerializeField] private CultureInfoMode _cultureInfoMode = CultureInfoMode.CurrentCulture;

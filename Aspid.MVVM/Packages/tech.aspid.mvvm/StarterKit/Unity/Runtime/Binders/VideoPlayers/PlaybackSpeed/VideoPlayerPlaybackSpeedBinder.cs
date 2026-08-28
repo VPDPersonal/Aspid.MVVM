@@ -1,6 +1,5 @@
 #nullable enable
 using System;
-using UnityEngine;
 using UnityEngine.Video;
 
 // ReSharper disable once CheckNamespace
@@ -14,17 +13,17 @@ namespace Aspid.MVVM.StarterKit
     public class VideoPlayerPlaybackSpeedBinder : TargetFloatBinder<VideoPlayer>
     {
         /// <inheritdoc/>
-        protected sealed override float Property
-        {
-            get => Target.playbackSpeed;
-            set => Target.playbackSpeed = BinderMath.SafeClamp(value, 0f, 10f);
-        }
-
-        /// <inheritdoc/>
         public VideoPlayerPlaybackSpeedBinder(
             VideoPlayer target,
             IConverter<float, float>? converter = null,
             BindMode mode = BindMode.OneWay)
             : base(target, converter, mode) { }
+
+        /// <inheritdoc/>
+        protected sealed override float Property
+        {
+            get => Target.playbackSpeed;
+            set => Target.playbackSpeed = this.SafeClamp(value, 0f, 10f, Target);
+        }
     }
 }

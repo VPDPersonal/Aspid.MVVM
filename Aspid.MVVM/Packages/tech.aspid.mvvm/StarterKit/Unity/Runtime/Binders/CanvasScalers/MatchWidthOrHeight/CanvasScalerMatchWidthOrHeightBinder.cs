@@ -1,6 +1,5 @@
 #nullable enable
 using System;
-using UnityEngine;
 using UnityEngine.UI;
 
 // ReSharper disable once CheckNamespace
@@ -20,7 +19,7 @@ namespace Aspid.MVVM.StarterKit
         protected sealed override float Property
         {
             get => Target.matchWidthOrHeight;
-            set => Target.matchWidthOrHeight = BinderMath.SafeClamp01(value);
+            set => Target.matchWidthOrHeight = this.SafeClamp01(value, Target);
         }
 
         /// <inheritdoc/>

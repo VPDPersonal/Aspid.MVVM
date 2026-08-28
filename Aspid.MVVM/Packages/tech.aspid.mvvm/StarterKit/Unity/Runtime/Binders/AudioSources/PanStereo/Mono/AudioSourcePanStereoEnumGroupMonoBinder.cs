@@ -4,7 +4,7 @@ using UnityEngine;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="EnumGroupFloatMonoBinder{AudioSource}"/> that sets the <see cref="AudioSource.panStereo"/>
+    /// <see cref="EnumGroupMonoBinder{TElement,TValue}">EnumGroupMonoBinder&lt;AudioSource, float&gt;</see> that sets the <see cref="AudioSource.panStereo"/>
     /// property on each element based on the bound enum ViewModel value.
     /// </summary>
     /// <remarks>
@@ -12,7 +12,7 @@ namespace Aspid.MVVM.StarterKit
     /// </remarks>
     [AddBinderContextMenu(typeof(AudioSource), SubPath = "EnumGroup")]
     [AddComponentMenu("Aspid/MVVM/Binders/Audio/AudioSource/AudioSource Binder – PanStereo EnumGroup")]
-    public sealed class AudioSourcePanStereoEnumGroupMonoBinder : EnumGroupFloatMonoBinder<AudioSource>
+    public sealed class AudioSourcePanStereoEnumGroupMonoBinder : EnumGroupMonoBinder<AudioSource, float>
     {
         /// <summary>
         /// Called when the bound enum resolves to a value for the specified element.
@@ -21,6 +21,6 @@ namespace Aspid.MVVM.StarterKit
         /// <param name="element">The component this entry of the group writes to.</param>
         /// <param name="value">The value the bound enum resolved to for this element.</param>
         protected override void SetValue(AudioSource element, float value) =>
-            element.panStereo = BinderMath.SafeClamp(value, -1, 1);
+            element.panStereo = this.SafeClamp(value, -1, 1);
     }
 }

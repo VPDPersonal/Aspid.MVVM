@@ -22,7 +22,7 @@ namespace Aspid.MVVM.StarterKit
             get => CachedComponent.lineSpacing;
             set
             {
-                if (!BinderMath.IsFinite(value)) return;
+                if (!this.RequireFinite(value)) return;
                 CachedComponent.lineSpacing = value;
             }
         }

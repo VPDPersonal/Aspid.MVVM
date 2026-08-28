@@ -15,7 +15,7 @@ namespace Aspid.MVVM.StarterKit
         protected sealed override float Property
         {
             get => CachedComponent.horizontalNormalizedPosition;
-            set => CachedComponent.horizontalNormalizedPosition = BinderMath.SafeClamp01(value);
+            set => CachedComponent.horizontalNormalizedPosition = this.SafeClamp01(value);
         }
     }
 }

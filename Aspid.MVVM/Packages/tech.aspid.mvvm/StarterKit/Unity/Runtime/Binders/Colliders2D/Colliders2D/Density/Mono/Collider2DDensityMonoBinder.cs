@@ -20,7 +20,7 @@ namespace Aspid.MVVM.StarterKit
         protected sealed override float Property
         {
             get => CachedComponent.density;
-            set => CachedComponent.density = BinderMath.SafeClamp(value, 0f, float.MaxValue);
+            set => CachedComponent.density = this.SafeClamp(value, 0f, float.MaxValue);
         }
     }
 }

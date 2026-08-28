@@ -12,7 +12,7 @@ namespace Aspid.MVVM.StarterKit
     /// </summary>
     [AddBinderContextMenu(typeof(EventTrigger))]
     [AddComponentMenu("Aspid/MVVM/Binders/UI/EventTrigger/EventTrigger Binder – Command")]
-    public sealed class EventTriggerCommandMonoBinder : ComponentMonoBinder<EventTrigger>,
+    public sealed partial class EventTriggerCommandMonoBinder : ComponentMonoBinder<EventTrigger>,
         IBinder<IRelayCommand>,
         IBinder<IRelayCommand<BaseEventData>>,
         IBinder<IRelayCommand<EventTriggerType>>

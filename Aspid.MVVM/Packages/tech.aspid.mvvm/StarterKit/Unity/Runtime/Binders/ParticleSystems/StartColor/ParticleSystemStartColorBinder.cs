@@ -6,12 +6,12 @@ using UnityEngine;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="TargetColorBinder{ParticleSystem}"/> that binds
+    /// <see cref="TargetBinder{ParticleSystem, Color}"/> that binds
     /// <see cref="ParticleSystem.MainModule.startColor"/>.
     /// </summary>
     /// <inheritdoc cref="ParticleSystemStartColorMonoBinder"/>
     [Serializable]
-    public class ParticleSystemStartColorBinder : TargetColorBinder<ParticleSystem>
+    public class ParticleSystemStartColorBinder : TargetBinder<ParticleSystem, Color>, IColorBinder
     {
         /// <inheritdoc/>
         protected sealed override Color Property

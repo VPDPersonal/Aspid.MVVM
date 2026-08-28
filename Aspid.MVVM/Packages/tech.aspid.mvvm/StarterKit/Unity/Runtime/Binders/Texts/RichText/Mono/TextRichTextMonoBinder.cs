@@ -6,11 +6,11 @@ using UnityEngine;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="ComponentBoolMonoBinder{TMP_Text}"/> that binds <see cref="TMP_Text.richText"/>.
+    /// <see cref="ComponentMonoBinder{TComponent,TProperty}"/> that binds <see cref="TMP_Text.richText"/>.
     /// </summary>
     [AddBinderContextMenu(typeof(TMP_Text), serializePropertyNames: "m_isRichText")]
     [AddComponentMenu("Aspid/MVVM/Binders/UI/Text/Text Binder – RichText")]
-    public class TextRichTextMonoBinder : ComponentBoolMonoBinder<TMP_Text>
+    public class TextRichTextMonoBinder : ComponentMonoBinder<TMP_Text, bool>
     {
         /// <inheritdoc/>
         protected sealed override bool Property

@@ -4,12 +4,12 @@ using UnityEngine;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="EnumVector3MonoBinder{RectTransform}"/> that sets the <see cref="RectTransform.sizeDelta"/>
+    /// <see cref="EnumMonoBinder{RectTransform, Vector3}"/> that sets the <see cref="RectTransform.sizeDelta"/>
     /// according to the configured <see cref="SizeDeltaMode"/> based on the bound enum ViewModel value.
     /// </summary>
     [AddBinderContextMenu(typeof(RectTransform), SubPath = "Enum")]
     [AddComponentMenu("Aspid/MVVM/Binders/UI/RectTransform/RectTransform Binder – SizeDelta Enum")]
-    public sealed class RectTransformSizeDeltaEnumMonoBinder : EnumVector3MonoBinder<RectTransform>
+    public sealed class RectTransformSizeDeltaEnumMonoBinder : EnumMonoBinder<RectTransform, Vector3>
     {
         [Tooltip("Which axes of sizeDelta are modified.")]
         [SerializeField] private SizeDeltaMode _sizeMode = SizeDeltaMode.SizeDelta;

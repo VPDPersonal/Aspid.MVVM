@@ -6,58 +6,38 @@ using UnityEngine;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="Binder"/> implementing <see cref="INumberBinder"/> and
-    /// <see cref="IReverseBinder{T}">IReverseBinder&lt;int&gt;</see> that binds the active <see cref="QualitySettings"/> level.
+    /// <see cref="IntBinder"/> that binds the active <see cref="QualitySettings"/> level.
     /// </summary>
     /// <remarks>
     /// Clamped to the range of levels the project defines, rather than letting Unity throw on an out-of-range
     /// index. Expensive changes are applied immediately instead of being deferred to the next frame.
     /// </remarks>
-    [BindModeOverride(BindMode.OneWay, BindMode.OneTime, BindMode.OneWayToSource)]
     [Serializable]
-    public class QualityLevelBinder : Binder, INumberBinder, IReverseBinder<int>
+    public class QualityLevelBinder : IntBinder
     {
-        /// <inheritdoc/>
-        public event Action<int>? ValueChanged;
-
+        /// <param name="converter">
+        /// An optional converter applied to the level before it is applied. Pass <see langword="null"/> to use the
+        /// value unchanged. Runs in reverse only if it implements <see cref="ITwoWayConverter{TFrom, TTo}"/>.
+        /// </param>
         /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/> — the value raises no change event to listen to.</param>
         /// <exception cref="ArgumentException">Thrown when <paramref name="mode"/> is <see cref="BindMode.TwoWay"/>.</exception>
-        public QualityLevelBinder(BindMode mode = BindMode.OneWay)
-            : base(mode)
+        public QualityLevelBinder(IConverter<int, int>? converter = null, BindMode mode = BindMode.OneWay)
+            : base(converter, mode)
         {
             mode.ThrowExceptionIfMatches(BindMode.TwoWay);
         }
 
-        /// <summary>
-        /// Casts the value to <see langword="int"/> and applies it.
-        /// </summary>
-        /// <param name="value">The value received from the ViewModel.</param>
-        public void SetValue(long value) => SetValue((int)value);
-
-        /// <inheritdoc cref="SetValue(long)"/>
-        public void SetValue(float value) => SetValue((int)value);
-
-        /// <inheritdoc cref="SetValue(long)"/>
-        public void SetValue(double value) => SetValue((int)value);
-
-        /// <summary>
-        /// Applies the value.
-        /// </summary>
-        /// <param name="value">The value received from the ViewModel.</param>
-        public void SetValue(int value)
+        /// <inheritdoc/>
+        protected sealed override int Property
         {
-            var levels = QualitySettings.names.Length;
-            QualitySettings.SetQualityLevel(Mathf.Clamp(value, 0, levels - 1), applyExpensiveChanges: true);
-        }
+            get => QualitySettings.GetQualityLevel();
+            set
+            {
+                var levels = QualitySettings.names.Length;
+                var index = Mathf.Clamp(value, min: 0, max: levels - 1);
 
-        /// <summary>
-        /// Called when the binder is bound. Sends the current value to the ViewModel when using
-        /// <see cref="BindMode.OneWayToSource"/>.
-        /// </summary>
-        protected override void OnBound()
-        {
-            if (Mode is BindMode.OneWayToSource)
-                ValueChanged?.Invoke(QualitySettings.GetQualityLevel());
+                QualitySettings.SetQualityLevel(index, applyExpensiveChanges: true);
+            }
         }
     }
 }

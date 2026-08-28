@@ -4,11 +4,11 @@ using UnityEngine;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="ComponentBoolMonoBinder{Rigidbody}"/> that binds <see cref="Rigidbody.useGravity"/>.
+    /// <see cref="ComponentMonoBinder{TComponent,TProperty}"/> that binds <see cref="Rigidbody.useGravity"/>.
     /// </summary>
     [AddBinderContextMenu(typeof(Rigidbody), serializePropertyNames: "m_UseGravity")]
     [AddComponentMenu("Aspid/MVVM/Binders/Physics/Rigidbody Binder – Use Gravity")]
-    public class RigidbodyUseGravityMonoBinder : ComponentBoolMonoBinder<Rigidbody>
+    public class RigidbodyUseGravityMonoBinder : ComponentMonoBinder<Rigidbody, bool>
     {
         /// <inheritdoc/>
         protected sealed override bool Property

@@ -10,12 +10,12 @@ namespace Aspid.MVVM.StarterKit
     /// </summary>
     /// <remarks>
     /// By default, uses <see cref="GenericToStringConverter{T}"/> for the conversion.
-    /// A custom <see cref="Converter"/> can be supplied for specialized formatting.
+    /// A custom <see cref="IConverter{TFrom, TTo}"/> can be supplied for specialized formatting.
     /// </remarks>
     [AddBinderContextMenuByType(typeof(string))]
     [AddComponentMenu("Aspid/MVVM/Binders/Casters/Any To String Caster Binder")]
     [AddBinderContextMenu(typeof(Component), Path = "Add General Binder/Casters/Any To String Caster Binder")]
-    public sealed class AnyToStringCasterMonoBinder : MonoBinder, IAnyBinder
+    public sealed partial class AnyToStringCasterMonoBinder : MonoBinder, IAnyBinder
     {
         [Tooltip("The converter used to transform any incoming value to a string.")]
         [SerializeReference] private IConverter<object, string> _converter = new GenericToStringConverter<object>();
@@ -44,7 +44,7 @@ namespace Aspid.MVVM.StarterKit
         {
             if (_converter is null)
             {
-                Debug.LogError($"No converter assigned to {nameof(AnyToStringCasterMonoBinder)}", context: this);
+                this.LogError("no converter is assigned", "The value is not forwarded.");
                 return;
             }
 

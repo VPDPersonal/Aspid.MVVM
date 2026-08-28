@@ -4,11 +4,11 @@ using UnityEngine;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="ComponentBoolMonoBinder{LineRenderer}"/> that binds <see cref="LineRenderer.loop"/>.
+    /// <see cref="ComponentMonoBinder{TComponent,TProperty}"/> that binds <see cref="LineRenderer.loop"/>.
     /// </summary>
     [AddBinderContextMenu(typeof(LineRenderer), serializePropertyNames: "m_Loop")]
     [AddComponentMenu("Aspid/MVVM/Binders/LineRenderer/LineRenderer Binder – Loop")]
-    public class LineRendererLoopMonoBinder : ComponentBoolMonoBinder<LineRenderer>
+    public class LineRendererLoopMonoBinder : ComponentMonoBinder<LineRenderer, bool>
     {
         /// <inheritdoc/>
         protected sealed override bool Property

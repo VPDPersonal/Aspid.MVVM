@@ -4,7 +4,7 @@ using UnityEngine;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="MonoBinderWithConverter{TProperty}">MonoBinderWithConverter&lt;int&gt;</see> that binds the
+    /// <see cref="MonoBinder{TProperty}">MonoBinder&lt;int&gt;</see> that binds the
     /// <see cref="GameObject.layer"/> of the object this component is attached to.
     /// </summary>
     /// <remarks>
@@ -13,7 +13,7 @@ namespace Aspid.MVVM.StarterKit
     /// </remarks>
     [AddComponentMenu("Aspid/MVVM/Binders/GameObject/GameObject Binder – Layer")]
     [AddBinderContextMenu(typeof(Component), Path = "Add General Binder/GameObject/GameObject Binder – Layer")]
-    public sealed class GameObjectLayerMonoBinder : MonoBinderWithConverter<int>
+    public sealed class GameObjectLayerMonoBinder : MonoBinder<int>
     {
         private const int MaxLayer = 31;
 
@@ -25,7 +25,7 @@ namespace Aspid.MVVM.StarterKit
             {
                 if (value is < 0 or > MaxLayer)
                 {
-                    Debug.LogError($"[{nameof(GameObjectLayerMonoBinder)}] Layer {value} does not exist; ignored.", context: this);
+                    this.LogError($"the layer {value} does not exist", "The layer is left unchanged.");
                     return;
                 }
 

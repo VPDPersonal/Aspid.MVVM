@@ -6,7 +6,7 @@ using UnityEngine;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="TargetVector2Binder{RectTransform}"/> that binds <see cref="RectTransform.pivot"/>.
+    /// <see cref="TargetBinder{RectTransform, Vector2}"/> that binds <see cref="RectTransform.pivot"/>.
     /// </summary>
     /// <remarks>
     /// The point the element rotates and scales around, as a fraction of its own rect. A menu that grows from the
@@ -17,7 +17,7 @@ namespace Aspid.MVVM.StarterKit
     /// off the screen.
     /// </remarks>
     [Serializable]
-    public class RectTransformPivotBinder : TargetVector2Binder<RectTransform>
+    public class RectTransformPivotBinder : TargetBinder<RectTransform, Vector2>, IVector2Binder
     {
         /// <inheritdoc/>
         protected sealed override Vector2 Property
@@ -25,7 +25,7 @@ namespace Aspid.MVVM.StarterKit
             get => Target.pivot;
             set
             {
-                if (!BinderMath.IsFinite(value.x) || !BinderMath.IsFinite(value.y)) return;
+                if (!this.RequireFinite(value, Target)) return;
                 Target.pivot = value;
             }
         }

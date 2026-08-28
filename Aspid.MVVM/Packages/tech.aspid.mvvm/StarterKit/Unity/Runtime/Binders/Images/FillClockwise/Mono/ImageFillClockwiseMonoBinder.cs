@@ -5,11 +5,11 @@ using UnityEngine.UI;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="ComponentBoolMonoBinder{Image}"/> that binds <see cref="Image.fillClockwise"/>.
+    /// <see cref="ComponentMonoBinder{TComponent,TProperty}"/> that binds <see cref="Image.fillClockwise"/>.
     /// </summary>
     [AddBinderContextMenu(typeof(Image), serializePropertyNames: "m_FillClockwise")]
     [AddComponentMenu("Aspid/MVVM/Binders/UI/Image/Image Binder – Fill Clockwise")]
-    public class ImageFillClockwiseMonoBinder : ComponentBoolMonoBinder<Image>
+    public class ImageFillClockwiseMonoBinder : ComponentMonoBinder<Image, bool>
     {
         /// <inheritdoc/>
         protected sealed override bool Property

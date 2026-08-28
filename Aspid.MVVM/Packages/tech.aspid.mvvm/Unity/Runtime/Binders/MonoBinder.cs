@@ -54,16 +54,32 @@ namespace Aspid.MVVM
         /// </remarks>
         protected virtual void Reset() =>
             _mode = DefaultMode;
-        
+
+        /// <summary>
+        /// Called by Unity when the binder is destroyed. Unbinds so the ViewModel drops its reference to this binder.
+        /// </summary>
+        /// <remarks>
+        /// A binder is a component in its own right and can be destroyed independently of the <see cref="IViewModel"/>
+        /// it is bound to — pooling, or a <c>Destroy</c> on a child object while the View lives on. Without this the
+        /// subscription survives the component: the ViewModel keeps a managed reference to a dead
+        /// <see cref="MonoBehaviour"/> and raises <c>MissingReferenceException</c> on every subsequent change, which
+        /// also stops delivery to every binder subscribed after it.
+        /// <para/>
+        /// When overriding this method, always call <c>base.OnDestroy()</c> to preserve unbinding.
+        /// </remarks>
+        protected virtual void OnDestroy() =>
+            Unbind();
+
         /// <inheritdoc/>
         public void Bind(IBinderAdder binderAdder)
         {
-#if UNITY_2022_1_OR_NEWER && !ASPID_MVVM_UNITY_PROFILER_DISABLED
+#if !ASPID_MVVM_UNITY_PROFILER_DISABLED
             using (this.Marker())
 #endif
             {
                 if (IsBound)
                 {
+                    // TODO Aspid.MVVM 1.1.0 -> add log with prefix
                     Debug.LogError($"Binder is already bound. Type: {GetType().Name}, Name: {name}");
                     return;
                 }
@@ -109,10 +125,11 @@ namespace Aspid.MVVM
         /// <inheritdoc/>
         public void Unbind()
         {
-#if UNITY_2022_1_OR_NEWER && !ASPID_MVVM_UNITY_PROFILER_DISABLED
+#if !ASPID_MVVM_UNITY_PROFILER_DISABLED
             using (this.Marker())
 #endif
             {
+                // TODO Aspid.MVVM 1.1.0 -> add log with prefix
                 if (!IsBound) return;
                 
                 OnUnbinding();
@@ -131,21 +148,6 @@ namespace Aspid.MVVM
         }
         
         partial void OnUnboundDebug();
-
-        /// <summary>
-        /// Called by Unity when the binder is destroyed. Unbinds so the ViewModel drops its reference to this binder.
-        /// </summary>
-        /// <remarks>
-        /// A binder is a component in its own right and can be destroyed independently of the <see cref="IViewModel"/>
-        /// it is bound to — pooling, or a <c>Destroy</c> on a child object while the View lives on. Without this the
-        /// subscription survives the component: the ViewModel keeps a managed reference to a dead
-        /// <see cref="MonoBehaviour"/> and raises <c>MissingReferenceException</c> on every subsequent change, which
-        /// also stops delivery to every binder subscribed after it.
-        /// <para/>
-        /// When overriding this method, always call <c>base.OnDestroy()</c> to preserve unbinding.
-        /// </remarks>
-        protected virtual void OnDestroy() =>
-            Unbind();
 
         /// <summary>
         /// Called before unbinding. Override to add pre-unbinding logic.

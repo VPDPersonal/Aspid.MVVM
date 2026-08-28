@@ -21,7 +21,7 @@ namespace Aspid.MVVM.StarterKit
         protected sealed override float Property
         {
             get => Target.density;
-            set => Target.density = BinderMath.SafeClamp(value, 0f, float.MaxValue);
+            set => Target.density = this.SafeClamp(value, 0f, float.MaxValue, Target);
         }
 
         /// <inheritdoc/>

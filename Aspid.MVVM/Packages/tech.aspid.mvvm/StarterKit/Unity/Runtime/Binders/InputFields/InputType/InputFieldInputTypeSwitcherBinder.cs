@@ -16,14 +16,19 @@ namespace Aspid.MVVM.StarterKit
         /// <param name="target">The <see cref="TMP_InputField"/> to bind.</param>
         /// <param name="trueValue">The input type applied when the bound boolean is <see langword="true"/>.</param>
         /// <param name="falseValue">The input type applied when the bound boolean is <see langword="false"/>.</param>
+        /// <param name="converter">
+        /// An optional converter applied to the selected value before it is forwarded to the target.
+        /// Pass <see langword="null"/> to forward the value unchanged.
+        /// </param>
         /// <param name="mode">The binding mode. Must be <see cref="BindMode.OneWay"/> or <see cref="BindMode.OneTime"/>.</param>
         /// <exception cref="InvalidOperationException">Thrown when <paramref name="mode"/> is neither <see cref="BindMode.OneWay"/> nor <see cref="BindMode.OneTime"/>.</exception>
         public InputFieldInputTypeSwitcherBinder(
             TMP_InputField target,
             TMP_InputField.InputType trueValue,
             TMP_InputField.InputType falseValue, 
+            IConverter<TMP_InputField.InputType, TMP_InputField.InputType> converter = null,
             BindMode mode = BindMode.OneWay)
-            : base(target, trueValue, falseValue, mode)
+            : base(target, trueValue, falseValue, converter, mode)
         {
             mode.ThrowExceptionIfNotOne();
         }

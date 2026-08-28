@@ -1,29 +1,28 @@
 #nullable enable
 using System;
-using UnityEngine;
 using UnityEngine.UI;
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="TargetBoolBinder{Image}"/> that binds <see cref="Image.preserveAspect"/>.
+    /// <see cref="TargetBinder{Image, bool}"/> that binds <see cref="Image.preserveAspect"/>.
     /// </summary>
     [Serializable]
-    public class ImagePreserveAspectBinder : TargetBoolBinder<Image>
+    public class ImagePreserveAspectBinder : TargetBinder<Image, bool>
     {
-        /// <inheritdoc/>
-        protected sealed override bool Property
-        {
-            get => Target.preserveAspect;
-            set => Target.preserveAspect = value;
-        }
-
         /// <inheritdoc/>
         public ImagePreserveAspectBinder(
             Image target,
             IConverter<bool, bool>? converter = null,
             BindMode mode = BindMode.OneWay)
             : base(target, converter, mode) { }
+
+        /// <inheritdoc/>
+        protected sealed override bool Property
+        {
+            get => Target.preserveAspect;
+            set => Target.preserveAspect = value;
+        }
     }
 }

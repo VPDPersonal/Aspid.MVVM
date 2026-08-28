@@ -57,6 +57,7 @@ namespace Aspid.MVVM.Tests
             ((IBinder<Rect>)binder).SetValue(new Rect(0f, 0.5f, 2f, 2f));
             Assert.AreEqual(new Rect(0f, 0.5f, 2f, 2f), raw.uvRect, "UV-прямоугольник не доехал");
 
+            LogAssert.Expect(LogType.Error, new Regex("is not finite"));
             ((IBinder<Rect>)binder).SetValue(new Rect(0f, float.NaN, 1f, 1f));
             Assert.AreEqual(new Rect(0f, 0.5f, 2f, 2f), raw.uvRect, "Нефинитная компонента дошла до RawImage");
         }

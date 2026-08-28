@@ -4,11 +4,11 @@ using UnityEngine;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="ComponentBoolMonoBinder{Collider}"/> that binds the <see cref="Collider.enabled"/> property.
+    /// <see cref="ComponentMonoBinder{TComponent,TProperty}"/> that binds the <see cref="Collider.enabled"/> property.
     /// </summary>
     [AddBinderContextMenu(typeof(Collider))]
     [AddComponentMenu("Aspid/MVVM/Binders/Collider/Collider Binder – Enabled")]
-    public class ColliderEnabledMonoBinder : ComponentBoolMonoBinder<Collider>
+    public class ColliderEnabledMonoBinder : ComponentMonoBinder<Collider, bool>
     {
         /// <inheritdoc/>
         protected sealed override bool Property

@@ -5,13 +5,13 @@ using UnityEngine.UI;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="EnumFloatMonoBinder{HorizontalOrVerticalLayoutGroup}"/> that sets the
+    /// <see cref="EnumMonoBinder{TComponent,TValue}">EnumMonoBinder&lt;HorizontalOrVerticalLayoutGroup, float&gt;</see> that sets the
     /// <see cref="UnityEngine.UI.HorizontalOrVerticalLayoutGroup.spacing"/> property to a value
     /// resolved from the bound enum ViewModel value.
     /// </summary>
     [AddBinderContextMenu(typeof(HorizontalOrVerticalLayoutGroup), serializePropertyNames: "m_Spacing", SubPath = "Enum")]
     [AddComponentMenu("Aspid/MVVM/Binders/UI/LayoutGroup/HorizontalOrVertical/HorizontalOrVerticalLayoutGroup Binder – Spacing Enum")]
-    public sealed class HorizontalOrVerticalLayoutSpacingEnumMonoBinder : EnumFloatMonoBinder<HorizontalOrVerticalLayoutGroup>
+    public sealed class HorizontalOrVerticalLayoutSpacingEnumMonoBinder : EnumMonoBinder<HorizontalOrVerticalLayoutGroup, float>
     {
         /// <summary>
         /// Sets <see cref="UnityEngine.UI.HorizontalOrVerticalLayoutGroup.spacing"/> to <paramref name="value"/> if it is finite.
@@ -19,7 +19,7 @@ namespace Aspid.MVVM.StarterKit
         /// <param name="value">The value received from the ViewModel.</param>
         protected override void SetValue(float value)
         {
-            if (!BinderMath.IsFinite(value)) return;
+            if (!this.RequireFinite(value)) return;
             CachedComponent.spacing = value;
         }
     }

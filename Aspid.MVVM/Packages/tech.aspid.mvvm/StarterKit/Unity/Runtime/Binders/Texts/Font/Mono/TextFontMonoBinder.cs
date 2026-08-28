@@ -6,7 +6,7 @@ using UnityEngine;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="ComponentMonoBinder{TMP_Text, TMP_FontAsset}"/> that sets the <see cref="TMP_Text.font"/> property.
+    /// <see cref="ComponentMonoBinder{TComponent,TProperty}"/> that sets the <see cref="TMP_Text.font"/> property.
     /// </summary>
     [AddComponentMenu("Aspid/MVVM/Binders/UI/Text/Text Binder – Font")]
     [AddBinderContextMenu(typeof(TMP_Text), serializePropertyNames: "m_fontAsset")]

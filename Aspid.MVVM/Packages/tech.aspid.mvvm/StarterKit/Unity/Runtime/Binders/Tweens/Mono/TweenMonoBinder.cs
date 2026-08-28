@@ -73,7 +73,7 @@ namespace Aspid.MVVM.StarterKit
 
             _elapsed += _isUnscaledTime ? Time.unscaledDeltaTime : Time.deltaTime;
 
-            var progress = BinderMath.SafeClamp01(_elapsed / _duration);
+            var progress = this.SafeClamp01(_elapsed / _duration);
             _current = Interpolate(_from, _to, progress);
 
             _value?.Invoke(_current);

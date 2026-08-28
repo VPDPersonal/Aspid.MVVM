@@ -4,11 +4,11 @@ using UnityEngine;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="ComponentBoolMonoBinder{CanvasGroup}"/> that binds the <see cref="CanvasGroup.blocksRaycasts"/> property.
+    /// <see cref="ComponentMonoBinder{TComponent,TProperty}"/> that binds the <see cref="CanvasGroup.blocksRaycasts"/> property.
     /// </summary>
     [AddBinderContextMenu(typeof(CanvasGroup), serializePropertyNames: "m_BlocksRaycasts")]
     [AddComponentMenu("Aspid/MVVM/Binders/UI/CanvasGroup/CanvasGroup Binder – BlocksRaycasts")]
-    public class CanvasGroupBlocksRaycastsMonoBinder : ComponentBoolMonoBinder<CanvasGroup>
+    public class CanvasGroupBlocksRaycastsMonoBinder : ComponentMonoBinder<CanvasGroup, bool>
     {
         /// <inheritdoc/>
         protected sealed override bool Property

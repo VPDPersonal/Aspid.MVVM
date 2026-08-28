@@ -5,7 +5,7 @@ using UnityEngine.UI;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="ComponentMonoBinder{Image, Sprite}"/> that sets the <see cref="Image.sprite"/> property.
+    /// <see cref="ComponentMonoBinder{TComponent,TProperty}"/> that sets the <see cref="Image.sprite"/> property.
     /// </summary>
     [AddComponentMenu("Aspid/MVVM/Binders/UI/Image/Image Binder – Sprite")]
     [AddBinderContextMenu(typeof(Image), serializePropertyNames: "m_Sprite")]

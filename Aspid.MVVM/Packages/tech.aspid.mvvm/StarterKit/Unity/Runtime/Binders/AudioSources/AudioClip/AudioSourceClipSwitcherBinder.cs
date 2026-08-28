@@ -18,8 +18,9 @@ namespace Aspid.MVVM.StarterKit
             AudioSource target,
             AudioClip? trueValue,
             AudioClip? falseValue,
+            IConverter<AudioClip?, AudioClip?>? converter = null,
             BindMode mode = BindMode.OneWay)
-            : base(target, trueValue, falseValue, mode) { }
+            : base(target, trueValue, falseValue, converter, mode) { }
         
         /// <inheritdoc/>
         protected override void SetValue(AudioClip? value) =>

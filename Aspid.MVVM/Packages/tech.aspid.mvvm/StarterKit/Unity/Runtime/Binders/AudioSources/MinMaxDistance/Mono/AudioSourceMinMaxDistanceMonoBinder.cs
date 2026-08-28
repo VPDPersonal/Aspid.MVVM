@@ -4,12 +4,12 @@ using UnityEngine;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// Concrete <see cref="ComponentMonoBinderWithConverter{T1, T2}">ComponentMonoBinderWithConverter&lt;AudioSource, Vector2&gt;</see> that also implements <see cref="INumberBinder"/>,
+    /// Concrete <see cref="ComponentMonoBinder{TComponent,TProperty}">ComponentMonoBinder&lt;AudioSource, Vector2&gt;</see> that also implements <see cref="IFloatBinder"/>,
     /// binding the <see cref="AudioSource.minDistance"/> and <see cref="AudioSource.maxDistance"/> as a <see cref="Vector2"/>.
     /// </summary>
     [AddBinderContextMenu(typeof(AudioSource))]
     [AddComponentMenu("Aspid/MVVM/Binders/Audio/AudioSource/AudioSource Binder – MinMaxDistance")]
-    public partial class AudioSourceMinMaxDistanceMonoBinder : ComponentMonoBinderWithConverter<AudioSource, Vector2>, INumberBinder
+    public partial class AudioSourceMinMaxDistanceMonoBinder : ComponentMonoBinder<AudioSource, Vector2>, IFloatBinder
     {
         [Tooltip("Which distance component the bound value updates.")]
         [SerializeField] private AudioSourceDistanceMode _distanceMode = AudioSourceDistanceMode.Range;
@@ -30,29 +30,5 @@ namespace Aspid.MVVM.StarterKit
         [BinderLog]
         public void SetValue(float value) =>
             SetValue(new Vector2(value, value));
-
-        /// <summary>
-        /// Converts <paramref name="value"/> to <see cref="float"/> and calls <see cref="SetValue(float)"/>.
-        /// </summary>
-        /// <param name="value">The value to convert and apply.</param>
-        [BinderLog]
-        public void SetValue(int value) =>
-            SetValue((float)value);
-
-        /// <summary>
-        /// Converts <paramref name="value"/> to <see cref="float"/> and calls <see cref="SetValue(float)"/>.
-        /// </summary>
-        /// <param name="value">The value to convert and apply.</param>
-        [BinderLog]
-        public void SetValue(long value) =>
-            SetValue((float)value);
-
-        /// <summary>
-        /// Converts <paramref name="value"/> to <see cref="float"/> and calls <see cref="SetValue(float)"/>.
-        /// </summary>
-        /// <param name="value">The value to convert and apply.</param>
-        [BinderLog]
-        public void SetValue(double value) =>
-            SetValue((float)value);
     }
 }

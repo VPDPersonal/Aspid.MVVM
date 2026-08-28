@@ -5,12 +5,12 @@ using UnityEngine.UI;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="EnumFloatMonoBinder{Scrollbar}"/> that sets <see cref="Scrollbar.value"/>
+    /// <see cref="EnumMonoBinder{TComponent,TValue}">EnumMonoBinder&lt;Scrollbar, float&gt;</see> that sets <see cref="Scrollbar.value"/>
     /// based on the bound enum ViewModel value.
     /// </summary>
     [AddComponentMenu("Aspid/MVVM/Binders/UI/Scrollbar/Scrollbar Binder – Value Enum")]
     [AddBinderContextMenu(typeof(Scrollbar), serializePropertyNames: "m_Value", SubPath = "Enum")]
-    public sealed class ScrollbarValueEnumMonoBinder : EnumFloatMonoBinder<Scrollbar>
+    public sealed class ScrollbarValueEnumMonoBinder : EnumMonoBinder<Scrollbar, float>
     {
         /// <summary>
         /// Called when the bound enum resolves to a value for the current element.
@@ -18,6 +18,6 @@ namespace Aspid.MVVM.StarterKit
         /// </summary>
         /// <param name="value">The value received from the ViewModel.</param>
         protected override void SetValue(float value) =>
-            CachedComponent.value = BinderMath.SafeClamp01(value);
+            CachedComponent.value = this.SafeClamp01(value);
     }
 }

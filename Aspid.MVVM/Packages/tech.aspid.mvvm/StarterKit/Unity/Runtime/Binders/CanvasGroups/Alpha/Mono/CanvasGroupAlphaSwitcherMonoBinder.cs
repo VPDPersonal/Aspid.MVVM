@@ -4,7 +4,7 @@ using UnityEngine;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="SwitcherFloatMonoBinder{CanvasGroup}"/> that switches the <see cref="CanvasGroup.alpha"/>
+    /// <see cref="SwitcherMonoBinder{TComponent,T}">SwitcherMonoBinder&lt;CanvasGroup, float&gt;</see> that switches the <see cref="CanvasGroup.alpha"/>
     /// property between two values based on the bound boolean ViewModel value.
     /// </summary>
     /// <remarks>
@@ -12,7 +12,7 @@ namespace Aspid.MVVM.StarterKit
     /// </remarks>
     [AddComponentMenu("Aspid/MVVM/Binders/UI/CanvasGroup/CanvasGroup Binder – Alpha Switcher")]
     [AddBinderContextMenu(typeof(CanvasGroup), serializePropertyNames: "m_Alpha", SubPath = "Switcher")]
-    public sealed class CanvasGroupAlphaSwitcherMonoBinder : SwitcherFloatMonoBinder<CanvasGroup>
+    public sealed class CanvasGroupAlphaSwitcherMonoBinder : SwitcherMonoBinder<CanvasGroup, float>
     {
         /// <summary>
         /// Called when applying the selected <see cref="float"/> value to the <see cref="CanvasGroup.alpha"/> property.
@@ -20,6 +20,6 @@ namespace Aspid.MVVM.StarterKit
         /// </summary>
         /// <param name="value">The value received from the ViewModel.</param>
         protected override void SetValue(float value) =>
-            CachedComponent.alpha = BinderMath.SafeClamp01(value);
+            CachedComponent.alpha = this.SafeClamp01(value);
     }
 }

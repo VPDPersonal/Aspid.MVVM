@@ -6,12 +6,12 @@ using UnityEngine;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="TargetVector3Binder{RectTransform}"/> that sets the <see cref="RectTransform.anchoredPosition"/> or
+    /// <see cref="TargetBinder{RectTransform, Vector3}"/> that sets the <see cref="RectTransform.anchoredPosition"/> or
     /// <see cref="RectTransform.anchoredPosition3D"/> property depending on the configured <see cref="Space"/>.
     /// </summary>
     /// <include file="XmlExampleDoc-RectTransform-AnchoredPosition-1.1.0.xml" path="doc//member[@name='RectTransformAnchoredPositionBinder']/*" />
     [Serializable]
-    public class RectTransformAnchoredPositionBinder : TargetVector3Binder<RectTransform>
+    public class RectTransformAnchoredPositionBinder : TargetBinder<RectTransform, Vector3>, IVector3Binder
     {
         [Tooltip("Which property is written: Self → anchoredPosition, World → anchoredPosition3D.")]
         [SerializeField] private Space _space;

@@ -6,12 +6,12 @@ using UnityEngine;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="SwitcherVector3Binder{Transform}"/> that switches the <see cref="Transform.rotation"/> or
+    /// <see cref="SwitcherBinder{TTarget,T}">SwitcherBinder&lt;Transform, Vector3&gt;</see> that switches the <see cref="Transform.rotation"/> or
     /// <see cref="Transform.localRotation"/> between two euler angle <see cref="Vector3"/> values based on the bound boolean ViewModel value.
     /// </summary>
     /// <include file="XmlExampleDoc-Transform-Rotation-1.1.0.xml" path="doc//member[@name='TransformRotationSwitcherBinder']/*" />
     [Serializable]
-    public sealed class TransformRotationSwitcherBinder : SwitcherVector3Binder<Transform>
+    public sealed class TransformRotationSwitcherBinder : SwitcherBinder<Transform, Vector3>
     {
         [Tooltip("The coordinate space in which the rotation is applied.")]
         [SerializeField] private Space _space;

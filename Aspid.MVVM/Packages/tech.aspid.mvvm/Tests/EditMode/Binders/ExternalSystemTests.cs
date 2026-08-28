@@ -2,7 +2,9 @@ using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.Video;
+using UnityEngine.TestTools;
 using Aspid.MVVM.StarterKit;
+using System.Text.RegularExpressions;
 using System.Collections.Generic;
 using Object = UnityEngine.Object;
 
@@ -46,6 +48,7 @@ namespace Aspid.MVVM.Tests
             ((IBinder<float>)binder).SetValue(100f);
             Assert.AreEqual(10f, player.playbackSpeed, 0.001f, "Скорость вне 0..10 не обрезана");
 
+            LogAssert.Expect(LogType.Error, new Regex("is not finite"));
             ((IBinder<float>)binder).SetValue(float.NaN);
             Assert.IsFalse(float.IsNaN(player.playbackSpeed), "NaN дошёл до плеера");
         }

@@ -4,7 +4,7 @@ using UnityEngine;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="EnumFloatMonoBinder{AudioSource}"/> that sets the <see cref="AudioSource.pitch"/>
+    /// <see cref="EnumMonoBinder{TComponent,TValue}">EnumMonoBinder&lt;AudioSource, float&gt;</see> that sets the <see cref="AudioSource.pitch"/>
     /// property to a value resolved from the bound enum ViewModel value.
     /// </summary>
     /// <remarks>
@@ -12,7 +12,7 @@ namespace Aspid.MVVM.StarterKit
     /// </remarks>
     [AddBinderContextMenu(typeof(AudioSource), SubPath = "Enum")]
     [AddComponentMenu("Aspid/MVVM/Binders/Audio/AudioSource/AudioSource Binder – Pitch Enum")]
-    public sealed class AudioSourcePitchEnumMonoBinder : EnumFloatMonoBinder<AudioSource>
+    public sealed class AudioSourcePitchEnumMonoBinder : EnumMonoBinder<AudioSource, float>
     {
         /// <summary>
         /// Called when the bound enum resolves to a value.
@@ -20,6 +20,6 @@ namespace Aspid.MVVM.StarterKit
         /// </summary>
         /// <param name="value">The value received from the ViewModel.</param>
         protected override void SetValue(float value) =>
-            CachedComponent.pitch = BinderMath.SafeClamp(value, -3, 3);
+            CachedComponent.pitch = this.SafeClamp(value, -3, 3);
     }
 }

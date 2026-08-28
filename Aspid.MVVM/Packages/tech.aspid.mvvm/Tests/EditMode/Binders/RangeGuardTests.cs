@@ -40,7 +40,7 @@ namespace Aspid.MVVM.Tests
         {
             var slider = NewGameObject().AddComponent<Slider>();
 
-            LogAssert.Expect(LogType.Error, new Regex("Inverted slider range"));
+            LogAssert.Expect(LogType.Error, new Regex("is inverted"));
             slider.SetMinMax(new Vector2(10f, 2f), SliderValueMode.Range);
 
             Assert.AreEqual(2f, slider.minValue);
@@ -54,7 +54,7 @@ namespace Aspid.MVVM.Tests
             slider.minValue = 0f;
             slider.maxValue = 1f;
 
-            LogAssert.Expect(LogType.Error, new Regex("Non-finite slider range"));
+            LogAssert.Expect(LogType.Error, new Regex("is not finite"));
             slider.SetMinMax(new Vector2(float.NaN, 1f), SliderValueMode.Range);
 
             Assert.AreEqual(0f, slider.minValue);
@@ -66,7 +66,7 @@ namespace Aspid.MVVM.Tests
         {
             var audioSource = NewGameObject().AddComponent<AudioSource>();
 
-            LogAssert.Expect(LogType.Error, new Regex("Inverted distance range"));
+            LogAssert.Expect(LogType.Error, new Regex("is inverted"));
             audioSource.SetMinMaxDistance(new Vector2(50f, 5f), AudioSourceDistanceMode.Range);
 
             Assert.AreEqual(5f, audioSource.minDistance);
@@ -100,6 +100,7 @@ namespace Aspid.MVVM.Tests
             var audioSource = gameObject.AddComponent<AudioSource>();
             var binder = gameObject.AddComponent<AudioSourceDopplerLevelMonoBinder>();
 
+            LogAssert.Expect(LogType.Error, new Regex("is not finite"));
             ((IBinder<float>)binder).SetValue(float.NaN);
             Assert.AreEqual(0f, audioSource.dopplerLevel, "NaN дошёл до компонента");
         }

@@ -4,7 +4,7 @@ using UnityEngine;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="ComponentColorMonoBinder{ParticleSystem}"/> that binds
+    /// <see cref="ComponentMonoBinder{ParticleSystem, Color}"/> that binds
     /// <see cref="ParticleSystem.MainModule.startColor"/>.
     /// </summary>
     /// <remarks>
@@ -14,7 +14,7 @@ namespace Aspid.MVVM.StarterKit
     /// </remarks>
     [AddBinderContextMenu(typeof(ParticleSystem), serializePropertyNames: "startColor")]
     [AddComponentMenu("Aspid/MVVM/Binders/Effects/ParticleSystem/ParticleSystem Binder – Start Color")]
-    public class ParticleSystemStartColorMonoBinder : ComponentColorMonoBinder<ParticleSystem>
+    public class ParticleSystemStartColorMonoBinder : ComponentMonoBinder<ParticleSystem, Color>, IColorBinder
     {
         /// <inheritdoc/>
         protected sealed override Color Property

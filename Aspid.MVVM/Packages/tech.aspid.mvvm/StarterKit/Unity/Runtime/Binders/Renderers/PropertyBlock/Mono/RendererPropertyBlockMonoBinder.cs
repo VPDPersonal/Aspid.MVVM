@@ -53,7 +53,7 @@ namespace Aspid.MVVM.StarterKit
 
             if (!_isUsable)
             {
-                Debug.LogError($"[{GetType().Name}] No shader property name set.", context: this);
+                this.LogError("no shader property name is set", "No value is written to the renderer.");
                 return;
             }
 

@@ -4,7 +4,7 @@ using UnityEngine;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="StringMonoBinder"/> that binds the <see cref="GameObject.tag"/> of the
+    /// <see cref="MonoBinder{TProperty}">MonoBinder&lt;string&gt;</see> that binds the <see cref="GameObject.tag"/> of the
     /// <see cref="GameObject"/> this component is attached to.
     /// </summary>
     /// <remarks>
@@ -12,7 +12,7 @@ namespace Aspid.MVVM.StarterKit
     /// </remarks>
     [AddComponentMenu("Aspid/MVVM/Binders/GameObject/GameObject Binder – Tag")]
     [AddBinderContextMenu(typeof(Component), Path = "Add General Binder/GameObject/GameObject Binder – Tag")]
-    public sealed class GameObjectTagMonoBinder : StringMonoBinder
+    public sealed class GameObjectTagMonoBinder : MonoBinder<string>
     {
         /// <inheritdoc/>
         protected override string Property

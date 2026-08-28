@@ -5,7 +5,7 @@ using UnityEngine.UI;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="ComponentVector3MonoBinder{RectMask2D}"/> that binds <see cref="RectMask2D.padding"/>.
+    /// <see cref="ComponentMonoBinder{RectMask2D, Vector3}"/> that binds <see cref="RectMask2D.padding"/>.
     /// </summary>
     /// <remarks>
     /// The property is a <see cref="Vector4"/>; the fourth component keeps its previous value since only
@@ -13,7 +13,7 @@ namespace Aspid.MVVM.StarterKit
     /// </remarks>
     [AddBinderContextMenu(typeof(RectMask2D), serializePropertyNames: "m_Padding")]
     [AddComponentMenu("Aspid/MVVM/Binders/UI/Mask/RectMask2D Binder – Padding")]
-    public class RectMask2DPaddingMonoBinder : ComponentVector3MonoBinder<RectMask2D>
+    public class RectMask2DPaddingMonoBinder : ComponentMonoBinder<RectMask2D, Vector3>, IVector3Binder
     {
         /// <inheritdoc/>
         protected sealed override Vector3 Property
@@ -21,7 +21,7 @@ namespace Aspid.MVVM.StarterKit
             get => CachedComponent.padding;
             set
             {
-                if (!BinderMath.IsFinite(value.x) || !BinderMath.IsFinite(value.y) || !BinderMath.IsFinite(value.z)) return;
+                if (!this.RequireFinite(value)) return;
                 var padding = CachedComponent.padding;
                 CachedComponent.padding = new Vector4(value.x, value.y, value.z, padding.w);
             }

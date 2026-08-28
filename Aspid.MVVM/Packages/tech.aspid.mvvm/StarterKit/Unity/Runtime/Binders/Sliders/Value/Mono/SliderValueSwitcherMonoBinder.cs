@@ -5,12 +5,12 @@ using UnityEngine.UI;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="SwitcherFloatMonoBinder{Slider}"/> that switches <see cref="Slider.value"/>
+    /// <see cref="SwitcherMonoBinder{TComponent,T}">SwitcherMonoBinder&lt;Slider, float&gt;</see> that switches <see cref="Slider.value"/>
     /// between two float values based on the bound boolean ViewModel value.
     /// </summary>
     [AddComponentMenu("Aspid/MVVM/Binders/UI/Slider/Slider Binder – Value Switcher")]
     [AddBinderContextMenu(typeof(Slider), serializePropertyNames: "m_Value", SubPath = "Switcher")]
-    public sealed class SliderValueSwitcherMonoBinder : SwitcherFloatMonoBinder<Slider>
+    public sealed class SliderValueSwitcherMonoBinder : SwitcherMonoBinder<Slider, float>
     {
         /// <summary>
         /// Called when applying the selected value to <see cref="Slider.value"/>.

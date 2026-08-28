@@ -6,7 +6,7 @@ using UnityEngine;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="ComponentMonoBinder{T1, T2}">ComponentMonoBinder&lt;TMP_Text, Vector4&gt;</see> that binds
+    /// <see cref="ComponentMonoBinder{TComponent,TProperty}">ComponentMonoBinder&lt;TMP_Text, Vector4&gt;</see> that binds
     /// <see cref="TMP_Text.margin"/>.
     /// </summary>
     /// <remarks>
@@ -23,14 +23,10 @@ namespace Aspid.MVVM.StarterKit
             get => CachedComponent.margin;
             set
             {
-                if (!IsFinite(value)) return;
+                if (!this.RequireFinite(value)) return;
                 CachedComponent.margin = value;
             }
         }
-
-        private static bool IsFinite(Vector4 value) =>
-            BinderMath.IsFinite(value.x) && BinderMath.IsFinite(value.y)
-            && BinderMath.IsFinite(value.z) && BinderMath.IsFinite(value.w);
     }
 }
 #endif

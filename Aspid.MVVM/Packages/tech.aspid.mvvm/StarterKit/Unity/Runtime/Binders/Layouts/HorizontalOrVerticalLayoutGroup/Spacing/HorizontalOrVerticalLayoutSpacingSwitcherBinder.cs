@@ -6,13 +6,13 @@ using UnityEngine.UI;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="SwitcherFloatBinder{HorizontalOrVerticalLayoutGroup}"/> that switches the
+    /// <see cref="SwitcherBinder{TTarget,T}">SwitcherBinder&lt;HorizontalOrVerticalLayoutGroup, float&gt;</see> that switches the
     /// <see cref="UnityEngine.UI.HorizontalOrVerticalLayoutGroup.spacing"/> property between two values
     /// based on the bound boolean ViewModel value.
     /// </summary>
     /// <include file="XmlExampleDoc-HorizontalOrVerticalLayout-Spacing-1.1.0.xml" path="doc//member[@name='HorizontalOrVerticalLayoutSpacingSwitcherBinder']/*" />
     [Serializable]
-    public sealed class HorizontalOrVerticalLayoutSpacingSwitcherBinder : SwitcherFloatBinder<HorizontalOrVerticalLayoutGroup>
+    public sealed class HorizontalOrVerticalLayoutSpacingSwitcherBinder : SwitcherBinder<HorizontalOrVerticalLayoutGroup, float>
     {
         /// <inheritdoc/>
         public HorizontalOrVerticalLayoutSpacingSwitcherBinder(
@@ -29,7 +29,7 @@ namespace Aspid.MVVM.StarterKit
         /// <param name="value">The value received from the ViewModel.</param>
         protected override void SetValue(float value)
         {
-            if (!BinderMath.IsFinite(value)) return;
+            if (!this.RequireFinite(value, Target)) return;
             Target.spacing = value;
         }
     }

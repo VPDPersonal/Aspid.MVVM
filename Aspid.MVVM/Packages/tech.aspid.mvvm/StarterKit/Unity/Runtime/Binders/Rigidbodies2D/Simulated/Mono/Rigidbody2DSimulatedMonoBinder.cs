@@ -4,11 +4,11 @@ using UnityEngine;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="ComponentBoolMonoBinder{Rigidbody2D}"/> that binds <see cref="Rigidbody2D.simulated"/>.
+    /// <see cref="ComponentMonoBinder{TComponent,TProperty}"/> that binds <see cref="Rigidbody2D.simulated"/>.
     /// </summary>
     [AddBinderContextMenu(typeof(Rigidbody2D), serializePropertyNames: "m_Simulated")]
     [AddComponentMenu("Aspid/MVVM/Binders/Physics/Rigidbody2D Binder – Simulated")]
-    public class Rigidbody2DSimulatedMonoBinder : ComponentBoolMonoBinder<Rigidbody2D>
+    public class Rigidbody2DSimulatedMonoBinder : ComponentMonoBinder<Rigidbody2D, bool>
     {
         /// <inheritdoc/>
         protected sealed override bool Property

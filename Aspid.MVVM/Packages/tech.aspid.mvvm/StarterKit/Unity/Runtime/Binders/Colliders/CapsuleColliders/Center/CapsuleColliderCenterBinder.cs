@@ -6,11 +6,11 @@ using UnityEngine;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="TargetVector3Binder{CapsuleCollider}"/> that sets the <see cref="CapsuleCollider.center"/> property.
+    /// <see cref="TargetBinder{CapsuleCollider, Vector3}"/> that sets the <see cref="CapsuleCollider.center"/> property.
     /// </summary>
     /// <include file="XmlExampleDoc-CapsuleCollider-Center-1.1.0.xml" path="doc//member[@name='CapsuleColliderCenterBinder']/*" />
     [Serializable]
-    public class CapsuleColliderCenterBinder : TargetVector3Binder<CapsuleCollider>
+    public class CapsuleColliderCenterBinder : TargetBinder<CapsuleCollider, Vector3>, IVector3Binder
     {
         /// <inheritdoc/>
         protected sealed override Vector3 Property

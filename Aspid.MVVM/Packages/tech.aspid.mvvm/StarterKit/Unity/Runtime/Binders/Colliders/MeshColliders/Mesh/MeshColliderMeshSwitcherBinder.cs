@@ -6,12 +6,12 @@ using UnityEngine;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="SwitcherBinderWithConverter{T1, T2}">SwitcherBinderWithConverter&lt;MeshCollider, Mesh&gt;</see> that switches the <see cref="MeshCollider.sharedMesh"/>
+    /// <see cref="SwitcherBinder{TTarget,T}">SwitcherBinder&lt;MeshCollider, Mesh&gt;</see> that switches the <see cref="MeshCollider.sharedMesh"/>
     /// property between two <see cref="Mesh"/> values based on the bound boolean ViewModel value.
     /// </summary>
     /// <include file="XmlExampleDoc-MeshCollider-Mesh-1.1.0.xml" path="doc//member[@name='MeshColliderMeshSwitcherBinder']/*" />
     [Serializable]
-    public sealed class MeshColliderMeshSwitcherBinder : SwitcherBinderWithConverter<MeshCollider, Mesh>
+    public sealed class MeshColliderMeshSwitcherBinder : SwitcherBinder<MeshCollider, Mesh>
     {
         /// <inheritdoc/>
         public MeshColliderMeshSwitcherBinder(

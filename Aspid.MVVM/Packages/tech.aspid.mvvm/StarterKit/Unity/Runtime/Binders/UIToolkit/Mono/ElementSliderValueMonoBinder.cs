@@ -6,7 +6,7 @@ using UnityEngine.UIElements;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="VisualElementMonoBinder{Slider}"/> implementing <see cref="INumberBinder"/> and
+    /// <see cref="VisualElementMonoBinder{Slider}"/> implementing <see cref="IFloatBinder"/> and
     /// <see cref="IReverseBinder{T}">IReverseBinder&lt;float&gt;</see> that binds <see cref="BaseSlider{T}.value"/>.
     /// </summary>
     /// <remarks>
@@ -16,31 +16,15 @@ namespace Aspid.MVVM.StarterKit
     [BindModeOverride(IsAll = true)]
     [AddComponentMenu("Aspid/MVVM/Binders/UIToolkit/Element Binder – Slider Value")]
     [AddBinderContextMenuByType(typeof(float))]
-    public sealed partial class ElementSliderValueMonoBinder : VisualElementMonoBinder<Slider>, INumberBinder, IReverseBinder<float>
+    public sealed partial class ElementSliderValueMonoBinder : VisualElementMonoBinder<Slider>, 
+        IFloatBinder,
+        IReverseBinder<float>
     {
         /// <inheritdoc/>
         public event Action<float> ValueChanged;
 
         private bool _isNotifying = true;
-
-        /// <summary>
-        /// Casts the value to <see langword="float"/> and sets the slider.
-        /// </summary>
-        /// <param name="value">The value received from the ViewModel.</param>
-        [BinderLog]
-        public void SetValue(int value) => SetValue((float)value);
-
-        /// <inheritdoc cref="SetValue(int)"/>
-        [BinderLog]
-        public void SetValue(long value) => SetValue((float)value);
-
-        /// <inheritdoc cref="SetValue(int)"/>
-        /// <remarks>
-        /// Narrowed to <see langword="float"/> — precision may be lost.
-        /// </remarks>
-        [BinderLog]
-        public void SetValue(double value) => SetValue((float)value);
-
+        
         /// <summary>
         /// Sets the slider without reading the write back as a drag.
         /// </summary>
@@ -51,7 +35,7 @@ namespace Aspid.MVVM.StarterKit
             var element = Element;
             if (element is null) return;
 
-            if (!BinderMath.IsFinite(value)) return;
+            if (!this.RequireFinite(value)) return;
 
             _isNotifying = false;
 

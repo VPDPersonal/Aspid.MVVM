@@ -5,11 +5,11 @@ using UnityEngine.UI;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="ComponentBoolMonoBinder{Image}"/> that binds <see cref="Image.preserveAspect"/>.
+    /// <see cref="ComponentMonoBinder{TComponent,TProperty}"/> that binds <see cref="Image.preserveAspect"/>.
     /// </summary>
     [AddBinderContextMenu(typeof(Image), serializePropertyNames: "m_PreserveAspect")]
     [AddComponentMenu("Aspid/MVVM/Binders/UI/Image/Image Binder – Preserve Aspect")]
-    public class ImagePreserveAspectMonoBinder : ComponentBoolMonoBinder<Image>
+    public class ImagePreserveAspectMonoBinder : ComponentMonoBinder<Image, bool>
     {
         /// <inheritdoc/>
         protected sealed override bool Property

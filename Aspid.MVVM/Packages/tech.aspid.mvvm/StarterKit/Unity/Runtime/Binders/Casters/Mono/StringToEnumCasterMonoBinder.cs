@@ -46,7 +46,7 @@ namespace Aspid.MVVM.StarterKit
             }
 
             if (_logFailures)
-                Debug.LogError($"[{GetType().Name}] '{value}' names no member of {typeof(TEnum).Name}; forwarding {_fallback}.", context: this);
+                this.LogError(value.Expected($"a member of {typeof(TEnum).Name}"), $"Forwarding {_fallback} instead.");
 
             _casted?.Invoke(_fallback);
         }

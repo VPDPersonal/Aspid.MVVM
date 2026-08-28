@@ -6,13 +6,13 @@ using UnityEngine;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="TargetVector2Binder{Collider2D}"/> that binds <see cref="Collider2D.offset"/>.
+    /// <see cref="TargetBinder{Collider2D, Vector2}"/> that binds <see cref="Collider2D.offset"/>.
     /// </summary>
     /// <remarks>
     /// Negative offsets are ordinary, so only a non-finite value is refused, leaving the offset unchanged.
     /// </remarks>
     [Serializable]
-    public class Collider2DOffsetBinder : TargetVector2Binder<Collider2D>
+    public class Collider2DOffsetBinder : TargetBinder<Collider2D, Vector2>, IVector2Binder
     {
         /// <inheritdoc/>
         protected sealed override Vector2 Property
@@ -20,7 +20,7 @@ namespace Aspid.MVVM.StarterKit
             get => Target.offset;
             set
             {
-                if (!BinderMath.IsFinite(value.x) || !BinderMath.IsFinite(value.y)) return;
+                if (!this.RequireFinite(value, Target)) return;
                 Target.offset = value;
             }
         }

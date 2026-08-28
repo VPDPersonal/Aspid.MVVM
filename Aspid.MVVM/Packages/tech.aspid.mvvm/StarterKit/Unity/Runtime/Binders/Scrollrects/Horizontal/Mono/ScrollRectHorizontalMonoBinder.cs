@@ -5,11 +5,11 @@ using UnityEngine.UI;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="ComponentBoolMonoBinder{ScrollRect}"/> that binds <see cref="ScrollRect.horizontal"/>.
+    /// <see cref="ComponentMonoBinder{TComponent,TProperty}"/> that binds <see cref="ScrollRect.horizontal"/>.
     /// </summary>
     [AddBinderContextMenu(typeof(ScrollRect), serializePropertyNames: "m_Horizontal")]
     [AddComponentMenu("Aspid/MVVM/Binders/UI/ScrollRect/ScrollRect Binder – Horizontal Enabled")]
-    public class ScrollRectHorizontalMonoBinder : ComponentBoolMonoBinder<ScrollRect>
+    public class ScrollRectHorizontalMonoBinder : ComponentMonoBinder<ScrollRect, bool>
     {
         /// <inheritdoc/>
         protected sealed override bool Property

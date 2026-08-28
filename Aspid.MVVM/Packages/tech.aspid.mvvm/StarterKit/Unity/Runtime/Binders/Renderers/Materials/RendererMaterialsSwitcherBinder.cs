@@ -34,7 +34,7 @@ namespace Aspid.MVVM.StarterKit
             Material[]? falseValue,
             IConverter<Material?, Material?>? converter = null,
             BindMode mode = BindMode.OneWay)
-            : base(target, trueValue, falseValue, mode)
+            : base(target, trueValue, falseValue, converter: null, mode)
         {
             _converter = converter;
         }

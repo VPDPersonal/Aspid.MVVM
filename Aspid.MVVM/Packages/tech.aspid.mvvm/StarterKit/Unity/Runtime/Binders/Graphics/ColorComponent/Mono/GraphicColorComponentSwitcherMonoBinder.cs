@@ -5,12 +5,12 @@ using UnityEngine.UI;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="SwitcherFloatMonoBinder{Graphic}"/> that switches a single <see cref="ColorComponent"/> channel
+    /// <see cref="SwitcherMonoBinder{TComponent,T}">SwitcherMonoBinder&lt;Graphic, float&gt;</see> that switches a single <see cref="ColorComponent"/> channel
     /// of the <see cref="Graphic.color"/> property between two values based on the bound boolean ViewModel value.
     /// </summary>
     [AddComponentMenu("Aspid/MVVM/Binders/UI/Graphic/Graphic Binder – Color Component Switcher")]
     [AddBinderContextMenu(typeof(Graphic), serializePropertyNames: "m_Color", SubPath = "Switcher")]
-    public sealed class GraphicColorComponentSwitcherMonoBinder : SwitcherFloatMonoBinder<Graphic>
+    public sealed class GraphicColorComponentSwitcherMonoBinder : SwitcherMonoBinder<Graphic, float>
     {
         [Tooltip("Which color channel the bound value writes to; others keep their value.")]
         [SerializeField] private ColorComponent _colorComponent = ColorComponent.A;

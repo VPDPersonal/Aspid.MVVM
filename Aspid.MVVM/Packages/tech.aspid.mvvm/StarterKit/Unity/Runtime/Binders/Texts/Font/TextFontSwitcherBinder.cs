@@ -19,8 +19,9 @@ namespace Aspid.MVVM.StarterKit
             TMP_Text target, 
             TMP_FontAsset trueValue, 
             TMP_FontAsset falseValue, 
+            IConverter<TMP_FontAsset?, TMP_FontAsset?>? converter = null,
             BindMode mode = BindMode.OneWay) 
-            : base(target, trueValue, falseValue, mode) { }
+            : base(target, trueValue, falseValue, converter, mode) { }
 
         /// <inheritdoc/>
         protected override void SetValue(TMP_FontAsset value) =>

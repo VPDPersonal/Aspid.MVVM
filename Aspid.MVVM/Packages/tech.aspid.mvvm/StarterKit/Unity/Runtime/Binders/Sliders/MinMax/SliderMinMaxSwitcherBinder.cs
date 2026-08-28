@@ -7,11 +7,11 @@ using UnityEngine.UI;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="SwitcherBinderWithConverter{T1, T2}"/> that switches <see cref="Slider.minValue"/> and <see cref="Slider.maxValue"/> between two ranges based on the bound boolean ViewModel value.
+    /// <see cref="SwitcherBinder{TTarget,T}"/> that switches <see cref="Slider.minValue"/> and <see cref="Slider.maxValue"/> between two ranges based on the bound boolean ViewModel value.
     /// </summary>
     /// <include file="XmlExampleDoc-Slider-MinMax-1.1.0.xml" path="doc//member[@name='SliderMinMaxSwitcherBinder']/*" />
     [Serializable]
-    public sealed class SliderMinMaxSwitcherBinder : SwitcherBinderWithConverter<Slider, Vector2>
+    public sealed class SliderMinMaxSwitcherBinder : SwitcherBinder<Slider, Vector2>
     {
         [Tooltip("Determines which endpoint(s) of the slider range are updated.")]
         [SerializeField] private SliderValueMode _valueMode;

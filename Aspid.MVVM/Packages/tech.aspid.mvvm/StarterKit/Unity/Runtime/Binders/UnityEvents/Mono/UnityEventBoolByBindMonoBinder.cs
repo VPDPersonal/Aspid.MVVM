@@ -11,7 +11,7 @@ namespace Aspid.MVVM.StarterKit
     [AddComponentMenu("Aspid/MVVM/Binders/UnityEvent/UnityEvent Binder – Bool By Bind")]
     [AddBinderContextMenu(typeof(Component), Path = "Add General Binder/UnityEvent/UnityEvent Binder – Bool By Bind")]
     [BindModeOverride(modes: BindMode.OneTime)]
-    public sealed class UnityEventBoolByBindMonoBinder : MonoBinder, IAnyBinder
+    public sealed partial class UnityEventBoolByBindMonoBinder : MonoBinder, IAnyBinder
     {
         /// <inheritdoc/>
         protected override BindMode DefaultMode => BindMode.OneTime;

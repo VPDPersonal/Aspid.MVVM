@@ -6,12 +6,12 @@ using UnityEngine;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="EnumGroupIntMonoBinder{TMP_Dropdown}"/> that sets the <see cref="TMP_Dropdown.value"/>
+    /// <see cref="EnumGroupMonoBinder{TElement,TValue}">EnumGroupMonoBinder&lt;TMP_Dropdown, int&gt;</see> that sets the <see cref="TMP_Dropdown.value"/>
     /// property on each element based on the bound enum ViewModel value.
     /// </summary>
     [AddBinderContextMenu(typeof(TMP_Dropdown), SubPath = "EnumGroup")]
     [AddComponentMenu("Aspid/MVVM/Binders/UI/Dropdown/Dropdown Binder – Value EnumGroup")]
-    public sealed class DropdownValueEnumGroupMonoBinder : EnumGroupIntMonoBinder<TMP_Dropdown>
+    public sealed class DropdownValueEnumGroupMonoBinder : EnumGroupMonoBinder<TMP_Dropdown, int>
     {
         /// <inheritdoc/>
         protected override void SetValue(TMP_Dropdown element, int value) =>

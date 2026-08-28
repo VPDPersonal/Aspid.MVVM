@@ -7,12 +7,12 @@ using UnityEngine.UI;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="TargetBinderWithConverter{T1, T2}"/> that sets <see cref="Slider.minValue"/> and <see cref="Slider.maxValue"/>.
-    /// Also implements <see cref="INumberBinder"/>, allowing a scalar numeric value to be applied as equal min and max.
+    /// <see cref="TargetBinder{Slider, Vector2}"/> that sets <see cref="Slider.minValue"/> and <see cref="Slider.maxValue"/>.
+    /// Also implements <see cref="IVector2Binder"/>, allowing a scalar numeric value to be applied as equal min and max.
     /// </summary>
     /// <include file="XmlExampleDoc-Slider-MinMax-1.1.0.xml" path="doc//member[@name='SliderMinMaxBinder']/*" />
     [Serializable]
-    public class SliderMinMaxBinder : TargetBinderWithConverter<Slider, Vector2>, INumberBinder
+    public partial class SliderMinMaxBinder : TargetBinder<Slider, Vector2>, IVector2Binder
     {
         [Tooltip("Determines which endpoint(s) of the slider range are updated.")]
         [SerializeField] private SliderValueMode _valueMode;
@@ -39,38 +39,5 @@ namespace Aspid.MVVM.StarterKit
             mode.ThrowExceptionIfMatches(BindMode.TwoWay);
             _valueMode = valueMode;
         }
-
-        /// <summary>
-        /// Sets both <see cref="Slider.minValue"/> and <see cref="Slider.maxValue"/> to
-        /// the same value, then applies the configured <see cref="SliderValueMode"/>.
-        /// </summary>
-        /// <param name="value">The value received from the ViewModel.</param>
-        [BinderLog]
-        public void SetValue(float value) =>
-            SetValue(new Vector2(value, value));
-
-        /// <summary>
-        /// Casts the value to <see langword="float"/> and sets both slider endpoints.
-        /// </summary>
-        /// <param name="value">The value received from the ViewModel.</param>
-        [BinderLog]
-        public void SetValue(int value) =>
-            SetValue((float)value);
-
-        /// <summary>
-        /// Casts the value to <see langword="float"/> and sets both slider endpoints.
-        /// </summary>
-        /// <param name="value">The value received from the ViewModel.</param>
-        [BinderLog]
-        public void SetValue(long value) =>
-            SetValue((float)value);
-
-        /// <summary>
-        /// Casts the value to <see langword="float"/> and sets both slider endpoints.
-        /// </summary>
-        /// <param name="value">The value received from the ViewModel.</param>
-        [BinderLog]
-        public void SetValue(double value) =>
-            SetValue((float)value);
     }
 }

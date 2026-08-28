@@ -9,12 +9,12 @@ using Object = UnityEngine.Object;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="ComponentStringMonoBinder{TMP_Text}"/> that sets the <see cref="TMP_Text.text"/> property
+    /// <see cref="ComponentMonoBinder{TComponent,TProperty}"/> that sets the <see cref="TMP_Text.text"/> property
     /// using a Unity Localization entry, resolved via a <see cref="LocalizedString"/>.
     /// </summary>
     [AddBinderContextMenu(typeof(TMP_Text), serializePropertyNames: "m_text")]
     [AddComponentMenu("Aspid/MVVM/Binders/UI/Text/Text Binder – Localization Entry")]
-    public class TextLocalizationEntryMonoBinder : ComponentStringMonoBinder<TMP_Text>
+    public class TextLocalizationEntryMonoBinder : ComponentMonoBinder<TMP_Text, string>
     {
         [Tooltip("The localized string reference that provides the localized text.")]
         [SerializeField] private LocalizedString _stringReference = new();

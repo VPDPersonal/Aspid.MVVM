@@ -7,7 +7,7 @@ using UnityEngine.UI;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="SwitcherBinderWithConverter{T1, T2}"/> that switches the <see cref="UnityEngine.UI.LayoutGroup.padding"/>
+    /// <see cref="SwitcherBinder{TTarget,T}"/> that switches the <see cref="UnityEngine.UI.LayoutGroup.padding"/>
     /// property between two values based on the bound boolean ViewModel value.
     /// </summary>
     /// <remarks>
@@ -15,7 +15,7 @@ namespace Aspid.MVVM.StarterKit
     /// </remarks>
     /// <include file="XmlExampleDoc-LayoutGroup-Padding-1.1.0.xml" path="doc//member[@name='LayoutGroupPaddingSwitcherBinder']/*" />
     [Serializable]
-    public sealed class LayoutGroupPaddingSwitcherBinder : SwitcherBinderWithConverter<LayoutGroup, RectOffset>
+    public sealed class LayoutGroupPaddingSwitcherBinder : SwitcherBinder<LayoutGroup, RectOffset>
     {
         [Tooltip("Which sides of the padding are updated when a value is applied.")]
         [SerializeField] private PaddingMode _paddingMode;

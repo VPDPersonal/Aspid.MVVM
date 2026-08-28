@@ -7,12 +7,12 @@ using UnityEngine.UI;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="SwitcherBinderWithConverter{T1, T2}"/> that switches the <see cref="RawImage.texture"/>
+    /// <see cref="SwitcherBinder{TTarget,T}"/> that switches the <see cref="RawImage.texture"/>
     /// property between two <see cref="Texture"/> values based on the bound boolean ViewModel value.
     /// </summary>
     /// <include file="XmlExampleDoc-RawImage-Texture-1.1.0.xml" path="doc//member[@name='RawImageTextureSwitcherBinder']/*" />
     [Serializable]
-    public sealed class RawImageTextureSwitcherBinder : SwitcherBinderWithConverter<RawImage, Texture?>
+    public sealed class RawImageTextureSwitcherBinder : SwitcherBinder<RawImage, Texture?>
     {
         // ReSharper disable once MemberInitializerValueIgnored
         [Tooltip("Disables the RawImage component when the selected texture is null.")]

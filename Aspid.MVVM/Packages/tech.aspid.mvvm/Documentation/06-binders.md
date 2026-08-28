@@ -162,11 +162,14 @@ public abstract class TargetBinder<TTarget, TProperty, TConverter> : TargetBinde
 
 | Класс | Тип Property | Доп. возможности |
 |-------|-------------|-----------------|
-| `TargetBoolBinder<T>` | `bool` | `_converter` — опциональный `IConverter<bool, bool>` |
-| `TargetFloatBinder<T>` | `float` | `INumberBinder` — принимает int/long/double |
-| `TargetIntBinder<T>` | `int` | `INumberBinder` |
-| `TargetVector3Binder<T>` | `Vector3` | `IVectorBinder`, `INumberBinder` (scalar → Vector3) |
-| `TargetColorBinder<T>` | `Color` | `IColorBinder` |
+| `TargetBinder<T, bool>` | `bool` | `_converter` — опциональный `IConverter<bool, bool>` |
+| `TargetBinder<T, string>` | `string` | `_converter` — опциональный `IConverter<string, string>` |
+| `TargetFloatBinder<T>` | `float` | `IFloatBinder` — принимает int/long/double |
+| `TargetIntBinder<T>` | `int` | `IIntBinder` |
+| `TargetBinder<T, Vector3>` + `IVector3Binder` | `Vector3` | принимает `Vector2` (Z = 0) и скаляр (во все три компоненты) |
+| `TargetBinder<T, Vector2>` + `IVector2Binder` | `Vector2` | принимает `Vector3` (отбрасывает Z) и скаляр (в обе компоненты) |
+| `TargetBinder<T, Color>` + `IColorBinder` | `Color` | принимает hex/HTML-строку цвета |
+| `TargetBinder<T, Quaternion>` + `IRotationBinder` | `Quaternion` | читает `Vector2`/`Vector3` как углы Эйлера, скаляр — как одинаковый угол по трём осям |
 
 ---
 
@@ -182,7 +185,7 @@ using Aspid.MVVM.StarterKit;
 
 // Ограничиваем режимы: только OneWay и OneTime
 [BindModeOverride(BindMode.OneWay, BindMode.OneTime)]
-public sealed class TextColorBinder : TargetColorBinder<TMP_Text>
+public sealed class TextColorBinder : TargetBinder<TMP_Text, Color>, IColorBinder
 {
     // Читаем и пишем цвет текста
     protected override Color Property

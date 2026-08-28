@@ -6,10 +6,10 @@ using UnityEngine;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="TargetBoolBinder{Collider2D}"/> that binds <see cref="Collider2D.isTrigger"/>.
+    /// <see cref="TargetBinder{Collider2D, bool}"/> that binds <see cref="Collider2D.isTrigger"/>.
     /// </summary>
     [Serializable]
-    public class Collider2DIsTriggerBinder : TargetBoolBinder<Collider2D>
+    public class Collider2DIsTriggerBinder : TargetBinder<Collider2D, bool>
     {
         /// <inheritdoc/>
         protected sealed override bool Property

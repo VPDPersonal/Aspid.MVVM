@@ -73,17 +73,16 @@ namespace Aspid.MVVM.StarterKit
             return false;
         }
 
-        /// <summary>
-        /// Logs the problem found for this binder and returns <see langword="false"/>.
-        /// </summary>
-        private static bool Refuse(string reason, string parameterName, object owner)
+        private static bool Refuse(
+            string reason,
+            string parameterName,
+            object owner)
         {
-            var name = string.IsNullOrWhiteSpace(parameterName) ? "<empty>" : parameterName;
-
-            Debug.LogError(
-                $"[{owner?.GetType().Name ?? "Animator binder"}] Animator parameter '{name}' is not set because " +
-                $"{reason}.",
-                owner as Object);
+            BinderLogger.LogError(
+                binderType: owner.GetType(),
+                problem: reason,
+                consequence: $"The animator parameter {parameterName.Describe()} is not set.",
+                context: owner as Object);
 
             return false;
         }

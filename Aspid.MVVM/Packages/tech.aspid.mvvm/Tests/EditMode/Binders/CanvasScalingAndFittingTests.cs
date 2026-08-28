@@ -1,7 +1,9 @@
 using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.TestTools;
 using Aspid.MVVM.StarterKit;
+using System.Text.RegularExpressions;
 using System.Collections.Generic;
 using Object = UnityEngine.Object;
 
@@ -57,6 +59,7 @@ namespace Aspid.MVVM.Tests
             ((IBinder<float>)binder).SetValue(-3f);
             Assert.AreEqual(0.01f, scaler.scaleFactor, 0.001f, "Отрицательный масштаб не поднят до минимума Unity");
 
+            LogAssert.Expect(LogType.Error, new Regex("is not finite"));
             ((IBinder<float>)binder).SetValue(float.NaN);
             Assert.IsFalse(float.IsNaN(scaler.scaleFactor), "NaN дошёл до скейлера");
         }
@@ -73,6 +76,7 @@ namespace Aspid.MVVM.Tests
             ((IBinder<Vector2>)binder).SetValue(new Vector2(1920f, 1080f));
             Assert.AreEqual(new Vector2(1920f, 1080f), scaler.referenceResolution, "Разрешение не доехало");
 
+            LogAssert.Expect(LogType.Error, new Regex("is not finite"));
             ((IBinder<Vector2>)binder).SetValue(new Vector2(0f, float.NaN));
             Assert.AreEqual(new Vector2(1f, 1f), scaler.referenceResolution, "Нулевое или нефинитное разрешение не поднято до единицы");
         }
@@ -99,6 +103,7 @@ namespace Aspid.MVVM.Tests
             ((IBinder<Vector2>)binder).SetValue(new Vector2(64f, 64f));
             Assert.AreEqual(new Vector2(64f, 64f), grid.cellSize, "Размер ячейки не доехал");
 
+            LogAssert.Expect(LogType.Error, new Regex("is not finite"));
             ((IBinder<Vector2>)binder).SetValue(new Vector2(-10f, float.NaN));
             Assert.AreEqual(Vector2.zero, grid.cellSize, "Отрицательный или нефинитный размер не обрезан");
         }
@@ -116,6 +121,7 @@ namespace Aspid.MVVM.Tests
             ((IBinder<Vector2>)binder).SetValue(new Vector2(-20f, 5f));
             Assert.AreEqual(new Vector2(-20f, 5f), grid.spacing, "Отрицательный отступ не сохранён");
 
+            LogAssert.Expect(LogType.Error, new Regex("is not finite"));
             ((IBinder<Vector2>)binder).SetValue(new Vector2(float.NaN, 5f));
             Assert.AreEqual(new Vector2(-20f, 5f), grid.spacing, "Нефинитный отступ дошёл до сетки");
         }
@@ -179,6 +185,7 @@ namespace Aspid.MVVM.Tests
             var binder = fitter.gameObject.AddComponent<AspectRatioFitterAspectRatioMonoBinder>();
 
             ((IBinder<float>)binder).SetValue(2f);
+            LogAssert.Expect(LogType.Error, new Regex("is not finite"));
             ((IBinder<float>)binder).SetValue(float.NaN);
 
             Assert.AreEqual(2f, fitter.aspectRatio, 0.001f, "NaN дошёл до фиттера");
@@ -218,7 +225,7 @@ namespace Aspid.MVVM.Tests
             var scaler = New<CanvasScaler>();
 
             Assert.Throws<System.ArgumentException>(
-                () => _ = new CanvasScalerUiScaleModeBinder(scaler, BindMode.TwoWay),
+                () => _ = new CanvasScalerUiScaleModeBinder(scaler, mode: BindMode.TwoWay),
                 "TwoWay принят режимом, в котором обратный канал невозможен");
         }
         #endregion

@@ -7,12 +7,12 @@ using System;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="SwitcherFloatBinder{TMP_Text}"/> that switches the <see cref="TMP_Text.fontSize"/> between two
+    /// <see cref="SwitcherBinder{TTarget,T}">SwitcherBinder&lt;TMP_Text, float&gt;</see> that switches the <see cref="TMP_Text.fontSize"/> between two
     /// <see cref="float"/> values based on the bound boolean ViewModel value.
     /// </summary>
     /// <include file="XmlExampleDoc-Text-FontSize-1.1.0.xml" path="doc//member[@name='TextFontSizeSwitcherBinder']/*" />
     [Serializable]
-    public sealed class TextFontSizeSwitcherBinder : SwitcherFloatBinder<TMP_Text>
+    public sealed class TextFontSizeSwitcherBinder : SwitcherBinder<TMP_Text, float>
     {
         /// <inheritdoc/>
         public TextFontSizeSwitcherBinder(

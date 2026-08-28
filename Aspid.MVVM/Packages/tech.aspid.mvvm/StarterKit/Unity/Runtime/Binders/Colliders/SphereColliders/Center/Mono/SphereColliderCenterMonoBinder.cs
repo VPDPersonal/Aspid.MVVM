@@ -4,11 +4,11 @@ using UnityEngine;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="ComponentVector3MonoBinder{SphereCollider}"/> that binds the <see cref="SphereCollider.center"/> property.
+    /// <see cref="ComponentMonoBinder{SphereCollider, Vector3}"/> that binds the <see cref="SphereCollider.center"/> property.
     /// </summary>
     [AddBinderContextMenu(typeof(SphereCollider), serializePropertyNames: "m_Center")]
     [AddComponentMenu("Aspid/MVVM/Binders/Collider/Sphere/SphereCollider Binder – Center")]
-    public class SphereColliderCenterMonoBinder : ComponentVector3MonoBinder<SphereCollider>
+    public class SphereColliderCenterMonoBinder : ComponentMonoBinder<SphereCollider, Vector3>, IVector3Binder
     {
         /// <inheritdoc/>
         protected sealed override Vector3 Property

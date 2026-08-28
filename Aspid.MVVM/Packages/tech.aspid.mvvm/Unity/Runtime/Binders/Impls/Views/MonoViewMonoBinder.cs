@@ -8,7 +8,7 @@ namespace Aspid.MVVM
     /// initializing the cached <typeparamref name="TView"/> component view when a bound <see cref="IViewModel"/> is received.
     /// </summary>
     /// <typeparam name="TView">The type of <see cref="Component"/> that implements <see cref="IView"/>.</typeparam>
-    public abstract class MonoViewMonoBinder<TView> : ComponentMonoBinder<TView>, IBinder<IViewModel>
+    public abstract partial class MonoViewMonoBinder<TView> : ComponentMonoBinder<TView>, IBinder<IViewModel>
         where TView : Component, IView
     {
         /// <summary>

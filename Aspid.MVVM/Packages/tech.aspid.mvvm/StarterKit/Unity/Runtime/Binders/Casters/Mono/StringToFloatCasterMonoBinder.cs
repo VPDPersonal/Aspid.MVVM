@@ -43,7 +43,7 @@ namespace Aspid.MVVM.StarterKit
             }
 
             if (_logFailures)
-                Debug.LogError($"[{nameof(StringToFloatCasterMonoBinder)}] '{value}' is not a finite number; forwarding {_fallback}.", context: this);
+                this.LogError(value.Expected("a finite number"), $"Forwarding {_fallback} instead.");
 
             _casted?.Invoke(_fallback);
         }

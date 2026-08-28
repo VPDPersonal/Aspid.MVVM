@@ -4,11 +4,11 @@ using UnityEngine;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="ComponentVector3MonoBinder{Transform}"/> that sets the <see cref="Transform.localScale"/> property.
+    /// <see cref="ComponentMonoBinder{Transform, Vector3}"/> that sets the <see cref="Transform.localScale"/> property.
     /// </summary>
     [AddComponentMenu("Aspid/MVVM/Binders/Transform/Transform Binder – Scale")]
     [AddBinderContextMenu(typeof(Transform), serializePropertyNames: "m_LocalScale")]
-    public class TransformScaleMonoBinder : ComponentVector3MonoBinder<Transform>
+    public class TransformScaleMonoBinder : ComponentMonoBinder<Transform, Vector3>, IVector3Binder
     {
         protected sealed override Vector3 Property
         {

@@ -6,23 +6,23 @@ using UnityEngine.UI;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="TargetBoolBinder{LayoutElement}"/> that binds <see cref="LayoutElement.ignoreLayout"/>.
+    /// <see cref="TargetBinder{LayoutElement, bool}"/> that binds <see cref="LayoutElement.ignoreLayout"/>.
     /// </summary>
     [Serializable]
-    public class LayoutElementIgnoreLayoutBinder : TargetBoolBinder<LayoutElement>
+    public class LayoutElementIgnoreLayoutBinder : TargetBinder<LayoutElement, bool>
     {
-        /// <inheritdoc/>
-        protected sealed override bool Property
-        {
-            get => Target.ignoreLayout;
-            set => Target.ignoreLayout = value;
-        }
-
         /// <inheritdoc/>
         public LayoutElementIgnoreLayoutBinder(
             LayoutElement target,
             IConverter<bool, bool>? converter = null,
             BindMode mode = BindMode.OneWay)
             : base(target, converter, mode) { }
+
+        /// <inheritdoc/>
+        protected sealed override bool Property
+        {
+            get => Target.ignoreLayout;
+            set => Target.ignoreLayout = value;
+        }
     }
 }

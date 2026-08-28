@@ -4,12 +4,12 @@ using UnityEngine;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="EnumVector3MonoBinder{RectTransform}"/> that sets the <see cref="RectTransform.anchoredPosition"/> or
+    /// <see cref="EnumMonoBinder{RectTransform, Vector3}"/> that sets the <see cref="RectTransform.anchoredPosition"/> or
     /// <see cref="RectTransform.anchoredPosition3D"/> property based on the bound enum ViewModel value.
     /// </summary>
     [AddBinderContextMenu(typeof(RectTransform), SubPath = "Enum")]
     [AddComponentMenu("Aspid/MVVM/Binders/UI/RectTransform/RectTransform Binder – AnchoredPosition Enum")]
-    public sealed class RectTransformAnchoredPositionEnumMonoBinder : EnumVector3MonoBinder<RectTransform>
+    public sealed class RectTransformAnchoredPositionEnumMonoBinder : EnumMonoBinder<RectTransform, Vector3>
     {
         [Tooltip("Which property is written: Self → anchoredPosition, World → anchoredPosition3D.")]
         [SerializeField] private Space _space = Space.World;

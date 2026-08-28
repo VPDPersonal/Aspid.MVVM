@@ -5,11 +5,11 @@ using UnityEngine.UI;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="ComponentMonoBinderWithConverter{T1, T2}"/> that sets the <see cref="RawImage.texture"/> property.
+    /// <see cref="ComponentMonoBinder{TComponent,TProperty}"/> that sets the <see cref="RawImage.texture"/> property.
     /// </summary>
     [AddBinderContextMenu(typeof(RawImage), serializePropertyNames: "m_Texture")]
     [AddComponentMenu("Aspid/MVVM/Binders/UI/RawImage/RawImage Binder – Texture")]
-    public sealed partial class RawImageTextureMonoBinder : ComponentMonoBinderWithConverter<RawImage, Texture>, IBinder<Sprite>
+    public sealed partial class RawImageTextureMonoBinder : ComponentMonoBinder<RawImage, Texture>, IBinder<Sprite>
     {
         [Tooltip("Disables the RawImage component when the bound texture is null.")]
         [SerializeField] private bool _disabledWhenNull = true;

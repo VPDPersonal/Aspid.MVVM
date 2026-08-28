@@ -1,6 +1,5 @@
 #nullable enable
 using System;
-using UnityEngine;
 using UnityEngine.UI;
 
 // ReSharper disable once CheckNamespace
@@ -21,21 +20,21 @@ namespace Aspid.MVVM.StarterKit
     public class AspectRatioFitterAspectRatioBinder : TargetFloatBinder<AspectRatioFitter>
     {
         /// <inheritdoc/>
-        protected sealed override float Property
-        {
-            get => Target.aspectRatio;
-            set
-            {
-                if (!BinderMath.IsFinite(value)) return;
-                Target.aspectRatio = value;
-            }
-        }
-
-        /// <inheritdoc/>
         public AspectRatioFitterAspectRatioBinder(
             AspectRatioFitter target,
             IConverter<float, float>? converter = null,
             BindMode mode = BindMode.OneWay)
             : base(target, converter, mode) { }
+
+        /// <inheritdoc/>
+        protected sealed override float Property
+        {
+            get => Target.aspectRatio;
+            set
+            {
+                if (!this.RequireFinite(value, Target)) return;
+                Target.aspectRatio = value;
+            }
+        }
     }
 }

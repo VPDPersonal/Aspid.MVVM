@@ -6,28 +6,31 @@ using TMPro;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="TargetBinder{TMP_InputField}"/> that implements <see cref="IBinder{TValue}"/> for
-    /// <see cref="TMP_InputField.CharacterValidation"/> and sets <see cref="TMP_InputField.characterValidation"/>.
+    /// <see cref="TargetBinder{TTarget,TProperty}">TargetBinder&lt;TMP_InputField, TMP_InputField.CharacterValidation&gt;</see>
+    /// that gets and sets <see cref="TMP_InputField.characterValidation"/>.
     /// </summary>
     /// <include file="XmlExampleDoc-InputField-CharacterValidation-1.1.0.xml" path="doc//member[@name='InputFieldCharacterValidationBinder']/*" />
     [Serializable]
-    public class InputFieldCharacterValidationBinder : TargetBinder<TMP_InputField>, IBinder<TMP_InputField.CharacterValidation>
+    public class InputFieldCharacterValidationBinder : TargetBinder<TMP_InputField, TMP_InputField.CharacterValidation>
     {
-        /// <inheritdoc/>
-        /// <exception cref="InvalidOperationException">Thrown when <paramref name="mode"/> is neither <see cref="BindMode.OneWay"/> nor <see cref="BindMode.OneTime"/>.</exception>
-        public InputFieldCharacterValidationBinder(TMP_InputField target, BindMode mode = BindMode.OneWay) 
-            : base(target, mode)
+        /// <param name="target">The <see cref="TMP_InputField"/> whose <see cref="TMP_InputField.characterValidation"/> is bound.</param>
+        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/> — the validation mode raises no change event to listen to.</param>
+        /// <exception cref="ArgumentException">Thrown when <paramref name="mode"/> is <see cref="BindMode.TwoWay"/>.</exception>
+        public InputFieldCharacterValidationBinder(TMP_InputField target, IConverter<TMP_InputField.CharacterValidation, TMP_InputField.CharacterValidation> converter = null, BindMode mode = BindMode.OneWay)
+            : base(target, converter, mode)
         {
-            mode.ThrowExceptionIfNotOne();
+            mode.ThrowExceptionIfMatches(BindMode.TwoWay);
         }
 
-        /// <summary>
-        /// Sets <see cref="TMP_InputField.characterValidation"/> to <paramref name="value"/> and forces a label update.
-        /// </summary>
-        public void SetValue(TMP_InputField.CharacterValidation value)
+        /// <inheritdoc/>
+        protected sealed override TMP_InputField.CharacterValidation Property
         {
-            Target.characterValidation = value;
-            Target.ForceLabelUpdate();
+            get => Target.characterValidation;
+            set
+            {
+                Target.characterValidation = value;
+                Target.ForceLabelUpdate();
+            }
         }
     }
 }

@@ -20,8 +20,9 @@ namespace Aspid.MVVM.StarterKit
             TMP_Dropdown target,
             List<TMP_Dropdown.OptionData> trueValue,
             List<TMP_Dropdown.OptionData> falseValue,
+            IConverter<List<TMP_Dropdown.OptionData>?, List<TMP_Dropdown.OptionData>?>? converter = null,
             BindMode mode = BindMode.OneWay)
-            : base(target, trueValue, falseValue, mode) { }
+            : base(target, trueValue, falseValue, converter, mode) { }
 
         /// <inheritdoc/>
         protected override void SetValue(List<TMP_Dropdown.OptionData> value) =>

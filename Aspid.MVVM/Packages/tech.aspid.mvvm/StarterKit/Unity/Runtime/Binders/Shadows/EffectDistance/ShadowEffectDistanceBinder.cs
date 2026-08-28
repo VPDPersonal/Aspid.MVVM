@@ -7,14 +7,14 @@ using UnityEngine.UI;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="TargetVector2Binder{Shadow}"/> that binds <see cref="Shadow.effectDistance"/>.
+    /// <see cref="TargetBinder{Shadow, Vector2}"/> that binds <see cref="Shadow.effectDistance"/>.
     /// </summary>
     /// <remarks>
     /// How far the shadow is offset, or how thick an outline is — <see cref="Outline"/> reads the same
     /// property. Negative offsets are ordinary, so only a non-finite value is refused.
     /// </remarks>
     [Serializable]
-    public class ShadowEffectDistanceBinder : TargetVector2Binder<Shadow>
+    public class ShadowEffectDistanceBinder : TargetBinder<Shadow, Vector2>, IVector2Binder
     {
         /// <inheritdoc/>
         protected sealed override Vector2 Property
@@ -22,7 +22,7 @@ namespace Aspid.MVVM.StarterKit
             get => Target.effectDistance;
             set
             {
-                if (!BinderMath.IsFinite(value.x) || !BinderMath.IsFinite(value.y)) return;
+                if (!this.RequireFinite(value, Target)) return;
                 Target.effectDistance = value;
             }
         }

@@ -5,12 +5,12 @@ using UnityEngine.UI;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="EnumFloatMonoBinder{Graphic}"/> that sets a single <see cref="ColorComponent"/> channel
+    /// <see cref="EnumMonoBinder{TComponent,TValue}">EnumMonoBinder&lt;Graphic, float&gt;</see> that sets a single <see cref="ColorComponent"/> channel
     /// of the <see cref="Graphic.color"/> property to a value resolved from the bound enum ViewModel value.
     /// </summary>
     [AddComponentMenu("Aspid/MVVM/Binders/UI/Graphic/Graphic Binder – Color Component Enum")]
     [AddBinderContextMenu(typeof(Graphic), serializePropertyNames: "m_Color", SubPath = "Enum")]
-    public sealed class GraphicColorComponentEnumMonoBinder : EnumFloatMonoBinder<Graphic>
+    public sealed class GraphicColorComponentEnumMonoBinder : EnumMonoBinder<Graphic, float>
     {
         [Tooltip("Which color channel the bound value writes to; others keep their value.")]
         [SerializeField] private ColorComponent _colorComponent = ColorComponent.A;

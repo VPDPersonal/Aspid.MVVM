@@ -8,7 +8,7 @@ using UnityEngine;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="SwitcherFloatBinder{TMP_Dropdown}"/> that switches the <see cref="TMP_Dropdown.alphaFadeSpeed"/>
+    /// <see cref="SwitcherBinder{TTarget,T}">SwitcherBinder&lt;TMP_Dropdown, float&gt;</see> that switches the <see cref="TMP_Dropdown.alphaFadeSpeed"/>
     /// property between two <see cref="float"/> values based on the bound boolean ViewModel value.
     /// </summary>
     /// <remarks>
@@ -16,7 +16,7 @@ namespace Aspid.MVVM.StarterKit
     /// </remarks>
     /// <include file="XmlExampleDoc-Dropdown-AlphaFadeSpeed-1.1.0.xml" path="doc//member[@name='DropdownAlphaFadeSpeedSwitcherBinder']/*" />
     [Serializable]
-    public class DropdownAlphaFadeSpeedSwitcherBinder : SwitcherFloatBinder<TMP_Dropdown>
+    public class DropdownAlphaFadeSpeedSwitcherBinder : SwitcherBinder<TMP_Dropdown, float>
     {
         /// <inheritdoc/>
         public DropdownAlphaFadeSpeedSwitcherBinder(

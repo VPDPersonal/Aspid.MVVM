@@ -18,7 +18,7 @@ namespace Aspid.MVVM.StarterKit
         protected sealed override float Property
         {
             get => Target.radius;
-            set => Target.radius = BinderMath.SafeClamp(value, 0f, float.MaxValue);
+            set => Target.radius = this.SafeClamp(value, 0f, float.MaxValue, Target);
         }
 
         /// <inheritdoc/>

@@ -6,17 +6,17 @@ using UnityEngine;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="TargetVector3Binder{BoxCollider}"/> that sets the <see cref="BoxCollider.size"/> property.
+    /// <see cref="TargetBinder{BoxCollider, Vector3}"/> that sets the <see cref="BoxCollider.size"/> property.
     /// </summary>
     /// <include file="XmlExampleDoc-BoxCollider-Size-1.1.0.xml" path="doc//member[@name='BoxColliderSizeBinder']/*" />
     [Serializable]
-    public class BoxColliderSizeBinder : TargetVector3Binder<BoxCollider>
+    public class BoxColliderSizeBinder : TargetBinder<BoxCollider, Vector3>, IVector3Binder
     {
         /// <inheritdoc/>
         protected sealed override Vector3 Property
         {
             get => Target.size;
-            set => Target.size = BinderMath.NonNegative(value);
+            set => Target.size = this.NonNegative(value, Target);
         }
 
         /// <inheritdoc/>

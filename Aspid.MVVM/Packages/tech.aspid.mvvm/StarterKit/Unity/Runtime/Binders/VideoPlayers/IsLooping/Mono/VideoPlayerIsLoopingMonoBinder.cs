@@ -5,11 +5,11 @@ using UnityEngine.Video;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="ComponentBoolMonoBinder{VideoPlayer}"/> that binds <see cref="VideoPlayer.isLooping"/>.
+    /// <see cref="ComponentMonoBinder{TComponent,TProperty}"/> that binds <see cref="VideoPlayer.isLooping"/>.
     /// </summary>
     [AddBinderContextMenu(typeof(VideoPlayer))]
     [AddComponentMenu("Aspid/MVVM/Binders/Video/VideoPlayer Binder – Is Looping")]
-    public class VideoPlayerIsLoopingMonoBinder : ComponentBoolMonoBinder<VideoPlayer>
+    public class VideoPlayerIsLoopingMonoBinder : ComponentMonoBinder<VideoPlayer, bool>
     {
         /// <inheritdoc/>
         protected sealed override bool Property

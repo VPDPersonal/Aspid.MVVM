@@ -5,12 +5,12 @@ using UnityEngine.UI;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="SwitcherColorMonoBinder{Graphic}"/> that switches the <see cref="Graphic.color"/>
+    /// <see cref="SwitcherMonoBinder{Graphic, Color}"/> that switches the <see cref="Graphic.color"/>
     /// property between two values based on the bound boolean ViewModel value.
     /// </summary>
     [AddComponentMenu("Aspid/MVVM/Binders/UI/Graphic/Graphic Binder – Color Switcher")]
     [AddBinderContextMenu(typeof(Graphic), serializePropertyNames: "m_Color", SubPath = "Switcher")]
-    public sealed class GraphicColorSwitcherMonoBinder : SwitcherColorMonoBinder<Graphic>
+    public sealed class GraphicColorSwitcherMonoBinder : SwitcherMonoBinder<Graphic, Color>
     {
         /// <inheritdoc/>
         protected override void SetValue(Color value) =>

@@ -6,12 +6,12 @@ using UnityEngine;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="SwitcherColorBinder{LineRenderer}"/> that switches the <see cref="LineRenderer.startColor"/> and <see cref="LineRenderer.endColor"/>
+    /// <see cref="SwitcherBinder{TTarget,T}">SwitcherBinder&lt;LineRenderer, Color&gt;</see> that switches the <see cref="LineRenderer.startColor"/> and <see cref="LineRenderer.endColor"/>
     /// color between two <see cref="Color"/> values depending on the configured <see cref="LineRendererColorMode"/>.
     /// </summary>
     /// <include file="XmlExampleDoc-LineRenderer-Color-1.1.0.xml" path="doc//member[@name='LineRendererColorSwitcherBinder']/*" />
     [Serializable]
-    public sealed class LineRendererColorSwitcherBinder : SwitcherColorBinder<LineRenderer>
+    public sealed class LineRendererColorSwitcherBinder : SwitcherBinder<LineRenderer, Color>
     {
         [Tooltip("The color endpoint(s) to set when a value is applied.")]
         [SerializeField] private LineRendererColorMode _colorMode;

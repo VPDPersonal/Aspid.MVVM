@@ -6,19 +6,19 @@ using UnityEngine;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="TargetVector2Binder{BoxCollider2D}"/> that binds <see cref="BoxCollider2D.size"/>.
+    /// <see cref="TargetBinder{BoxCollider2D, Vector2}"/> that binds <see cref="BoxCollider2D.size"/>.
     /// </summary>
     /// <remarks>
     /// Clamped non-negative on both axes; a non-finite value maps to <c>0</c>.
     /// </remarks>
     [Serializable]
-    public class BoxCollider2DSizeBinder : TargetVector2Binder<BoxCollider2D>
+    public class BoxCollider2DSizeBinder : TargetBinder<BoxCollider2D, Vector2>, IVector2Binder
     {
         /// <inheritdoc/>
         protected sealed override Vector2 Property
         {
             get => Target.size;
-            set => Target.size = new Vector2(BinderMath.SafeClamp(value.x, 0f, float.MaxValue), BinderMath.SafeClamp(value.y, 0f, float.MaxValue));
+            set => Target.size = new Vector2(this.SafeClamp(value.x, 0f, float.MaxValue, Target), this.SafeClamp(value.y, 0f, float.MaxValue, Target));
         }
 
         /// <inheritdoc/>

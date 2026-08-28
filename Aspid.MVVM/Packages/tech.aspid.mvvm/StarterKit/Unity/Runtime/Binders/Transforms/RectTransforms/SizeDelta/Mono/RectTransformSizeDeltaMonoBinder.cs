@@ -5,7 +5,7 @@ using UnityEngine;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="ComponentVector3MonoBinder{RectTransform}"/> that sets the <see cref="RectTransform.sizeDelta"/>
+    /// <see cref="ComponentMonoBinder{RectTransform, Vector3}"/> that sets the <see cref="RectTransform.sizeDelta"/>
     /// according to the configured <see cref="SizeDeltaMode"/>.
     /// </summary>
     /// <remarks>
@@ -16,7 +16,7 @@ namespace Aspid.MVVM.StarterKit
     /// </remarks>
     [AddBinderContextMenu(typeof(RectTransform))]
     [AddComponentMenu("Aspid/MVVM/Binders/UI/RectTransform/RectTransform Binder – SizeDelta")]
-    public class RectTransformSizeDeltaMonoBinder : ComponentVector3MonoBinder<RectTransform>, IReverseBinder<Vector2>
+    public class RectTransformSizeDeltaMonoBinder : ComponentMonoBinder<RectTransform, Vector3>, IVector3Binder, IReverseBinder<Vector2>
     {
         private Action<Vector2> _sizeChanged;
 

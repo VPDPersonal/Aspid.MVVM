@@ -25,7 +25,7 @@ namespace Aspid.MVVM.StarterKit
                 case ColorComponent.G: color.g = value; break;
                 case ColorComponent.B: color.b = value; break;
                 case ColorComponent.A: color.a = value; break;
-                default: Debug.LogError($"Invalid color component {component}", context: graphic); return;
+                default: ReportInvalidComponent(component, graphic, "The color is left unchanged."); return;
             }
             
             graphic.color = color;
@@ -45,10 +45,17 @@ namespace Aspid.MVVM.StarterKit
                 case ColorComponent.G: return graphic.color.g;
                 case ColorComponent.B: return graphic.color.b;
                 case ColorComponent.A: return graphic.color.a;
-                default: Debug.LogError($"Invalid color component {component}", context: graphic); break;
+                default: ReportInvalidComponent(component, graphic, "Zero is returned."); break;
             }
 
             return 0;
         }
+
+        private static void ReportInvalidComponent(ColorComponent component, Graphic graphic, string consequence) =>
+            BinderLogger.LogError(
+                binderType: typeof(GraphicExtensions),
+                problem: $"the component {component.Describe()} is not a declared {nameof(ColorComponent)}",
+                consequence: consequence,
+                context: graphic);
     }
 }

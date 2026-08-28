@@ -6,12 +6,12 @@ using UnityEngine.Localization.Components;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="EnumGroupStringMonoBinder{LocalizeStringEvent}"/> that sets the TableEntryReference
+    /// <see cref="EnumGroupMonoBinder{TElement,TValue}">EnumGroupMonoBinder&lt;LocalizeStringEvent, string&gt;</see> that sets the TableEntryReference
     /// of the StringReference on each element in the group based on the bound enum ViewModel value.
     /// </summary>
     [AddComponentMenu("Aspid/MVVM/Binders/UI/LocalizeStringEvent/LocalizeStringEvent Binder – Entry EnumGroup")]
     [AddBinderContextMenu(typeof(LocalizeStringEvent), serializePropertyNames: "m_StringReference", SubPath = "EnumGroup")]
-    public sealed class LocalizeStringEventEntryEnumGroupMonoBinder : EnumGroupStringMonoBinder<LocalizeStringEvent>
+    public sealed class LocalizeStringEventEntryEnumGroupMonoBinder : EnumGroupMonoBinder<LocalizeStringEvent, string>
     {
         /// <summary>
         /// Called when the bound enum resolves to a value for the specified element.

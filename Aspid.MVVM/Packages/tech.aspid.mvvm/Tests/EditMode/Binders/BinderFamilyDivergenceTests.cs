@@ -11,7 +11,7 @@ namespace Aspid.MVVM.Tests
     /// Regression tests for the places where one member of a binder family behaved unlike the rest.
     /// </summary>
     /// <remarks>
-    /// The <c>SwitcherFloatBinder</c> stub removed alongside these has no test of its own on purpose: it was a
+    /// The <c>SwitcherBinder</c, float> stub removed alongside these has no test of its own on purpose: it was a
     /// <c>NotImplementedException</c> override that suppressed the compiler's demand for a real implementation, and
     /// deleting it means the compiler enforces that demand again. That the package still builds is the check.
     /// </remarks>

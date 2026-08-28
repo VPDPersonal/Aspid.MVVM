@@ -6,11 +6,11 @@ using UnityEngine;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="TargetBoolBinder{Behaviour}"/> that sets the <see cref="Behaviour.enabled"/> property.
+    /// <see cref="TargetBinder{Behaviour, bool}"/> that sets the <see cref="Behaviour.enabled"/> property.
     /// </summary>
     /// <include file="XmlExampleDoc-Behaviour-Enabled-1.1.0.xml" path="doc//member[@name='BehaviourEnabledBinder']/*" />
     [Serializable]
-    public class BehaviourEnabledBinder : TargetBoolBinder<Behaviour>
+    public class BehaviourEnabledBinder : TargetBinder<Behaviour, bool>
     {
         /// <inheritdoc/>
         protected sealed override bool Property

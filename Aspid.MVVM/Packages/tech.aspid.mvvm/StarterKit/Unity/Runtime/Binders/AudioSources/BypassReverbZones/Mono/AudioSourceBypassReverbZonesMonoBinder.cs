@@ -4,11 +4,11 @@ using UnityEngine;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="ComponentBoolMonoBinder{AudioSource}"/> that binds the <see cref="AudioSource.bypassReverbZones"/> property.
+    /// <see cref="ComponentMonoBinder{TComponent,TProperty}"/> that binds the <see cref="AudioSource.bypassReverbZones"/> property.
     /// </summary>
     [AddBinderContextMenu(typeof(AudioSource))]
     [AddComponentMenu("Aspid/MVVM/Binders/Audio/AudioSource/AudioSource Binder – BypassReverbZones")]
-    public class AudioSourceBypassReverbZonesMonoBinder : ComponentBoolMonoBinder<AudioSource>
+    public class AudioSourceBypassReverbZonesMonoBinder : ComponentMonoBinder<AudioSource, bool>
     {
         /// <inheritdoc/>
         protected sealed override bool Property

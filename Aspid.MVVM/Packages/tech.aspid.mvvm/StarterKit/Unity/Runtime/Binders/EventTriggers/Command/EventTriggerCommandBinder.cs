@@ -13,7 +13,7 @@ namespace Aspid.MVVM.StarterKit
     /// </summary>
     /// <include file="XmlExampleDoc-EventTrigger-Command-1.1.0.xml" path="doc//member[@name='EventTriggerCommandBinder']/*" />
     [Serializable]
-    public sealed class EventTriggerCommandBinder : TargetBinder<EventTrigger>,
+    public sealed partial class EventTriggerCommandBinder : TargetBinder<EventTrigger>,
         IBinder<IRelayCommand>,
         IBinder<IRelayCommand<BaseEventData>>,
         IBinder<IRelayCommand<EventTriggerType>>

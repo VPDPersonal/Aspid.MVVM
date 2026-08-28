@@ -3,14 +3,13 @@ using UnityEngine;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
-
     /// <summary>
-    /// <see cref="EnumMonoBinderWithConverter{T1, T2}">EnumMonoBinderWithConverter&lt;AudioSource, Vector2&gt;</see> that sets the
+    /// <see cref="EnumMonoBinder{T1, T2}">EnumMonoBinder&lt;AudioSource, Vector2&gt;</see> that sets the
     /// min/max distance of an <see cref="AudioSource"/> to a <see cref="Vector2"/> resolved from the bound enum ViewModel value.
     /// </summary>
     [AddBinderContextMenu(typeof(AudioSource), SubPath = "Enum")]
     [AddComponentMenu("Aspid/MVVM/Binders/Audio/AudioSource/AudioSource Binder – MinMaxDistance Enum")]
-    public sealed class AudioSourceMinMaxDistanceEnumMonoBinder : EnumMonoBinderWithConverter<AudioSource, Vector2>
+    public sealed class AudioSourceMinMaxDistanceEnumMonoBinder : EnumMonoBinder<AudioSource, Vector2>
     {
         [Tooltip("Which end of the distance range the bound value writes.")]
         [SerializeField] private AudioSourceDistanceMode _distanceMode = AudioSourceDistanceMode.Range;

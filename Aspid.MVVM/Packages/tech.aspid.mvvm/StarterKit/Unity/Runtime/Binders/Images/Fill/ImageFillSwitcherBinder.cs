@@ -7,7 +7,7 @@ using UnityEngine.UI;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="SwitcherFloatBinder{Image}"/> that switches the <see cref="Image.fillAmount"/> property
+    /// <see cref="SwitcherBinder{TTarget,T}">SwitcherBinder&lt;Image, float&gt;</see> that switches the <see cref="Image.fillAmount"/> property
     /// between two <see cref="float"/> values based on the bound boolean ViewModel value.
     /// </summary>
     /// <remarks>
@@ -15,7 +15,7 @@ namespace Aspid.MVVM.StarterKit
     /// </remarks>
     /// <include file="XmlExampleDoc-Image-Fill-1.1.0.xml" path="doc//member[@name='ImageFillSwitcherBinder']/*" />
     [Serializable]
-    public sealed class ImageFillSwitcherBinder : SwitcherFloatBinder<Image>
+    public sealed class ImageFillSwitcherBinder : SwitcherBinder<Image, float>
     {
         /// <inheritdoc/>
         public ImageFillSwitcherBinder(
@@ -31,6 +31,6 @@ namespace Aspid.MVVM.StarterKit
         /// </summary>
         /// <param name="value">The value received from the ViewModel.</param>
         protected override void SetValue(float value) =>
-            Target.fillAmount = BinderMath.SafeClamp01(value);
+            Target.fillAmount = this.SafeClamp01(value, Target);
     }
 }

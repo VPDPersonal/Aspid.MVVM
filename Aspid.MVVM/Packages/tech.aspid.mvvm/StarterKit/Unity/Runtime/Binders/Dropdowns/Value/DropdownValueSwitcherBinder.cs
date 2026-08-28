@@ -7,12 +7,12 @@ using System;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="SwitcherIntBinder{TMP_Dropdown}"/> that switches the <see cref="TMP_Dropdown.value"/>
+    /// <see cref="SwitcherBinder{TTarget,T}">SwitcherBinder&lt;TMP_Dropdown, int&gt;</see> that switches the <see cref="TMP_Dropdown.value"/>
     /// property between two <see cref="int"/> values based on the bound boolean ViewModel value.
     /// </summary>
     /// <include file="XmlExampleDoc-Dropdown-Value-1.1.0.xml" path="doc//member[@name='DropdownValueSwitcherBinder']/*" />
     [Serializable]
-    public sealed class DropdownValueSwitcherBinder : SwitcherIntBinder<TMP_Dropdown>
+    public sealed class DropdownValueSwitcherBinder : SwitcherBinder<TMP_Dropdown, int>
     {
         /// <inheritdoc/>
         public DropdownValueSwitcherBinder(

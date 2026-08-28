@@ -6,12 +6,12 @@ using UnityEngine;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="SwitcherVector3Binder{RectTransform}"/> that switches the <see cref="RectTransform.sizeDelta"/>
+    /// <see cref="SwitcherBinder{TTarget,T}">SwitcherBinder&lt;RectTransform, Vector3&gt;</see> that switches the <see cref="RectTransform.sizeDelta"/>
     /// between two <see cref="Vector2"/> values based on the bound boolean ViewModel value.
     /// </summary>
     /// <include file="XmlExampleDoc-RectTransform-SizeDelta-1.1.0.xml" path="doc//member[@name='RectTransformSizeDeltaSwitcherBinder']/*" />
     [Serializable]
-    public sealed class RectTransformSizeDeltaSwitcherBinder : SwitcherVector3Binder<RectTransform>
+    public sealed class RectTransformSizeDeltaSwitcherBinder : SwitcherBinder<RectTransform, Vector3>
     {
         [Tooltip("Which axes of sizeDelta are modified.")]
         [SerializeField] private SizeDeltaMode _sizeMode;

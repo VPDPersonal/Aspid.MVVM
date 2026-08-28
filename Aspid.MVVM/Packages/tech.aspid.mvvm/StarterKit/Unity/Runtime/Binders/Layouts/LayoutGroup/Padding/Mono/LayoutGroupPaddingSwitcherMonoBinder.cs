@@ -5,7 +5,7 @@ using UnityEngine.UI;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="SwitcherMonoBinderWithConverter{T1, T2}"/> that switches the
+    /// <see cref="SwitcherMonoBinder{T1, T2}"/> that switches the
     /// <see cref="UnityEngine.UI.LayoutGroup.padding"/> property between two values based on the bound boolean ViewModel value.
     /// </summary>
     /// <remarks>
@@ -13,7 +13,7 @@ namespace Aspid.MVVM.StarterKit
     /// </remarks>
     [AddComponentMenu("Aspid/MVVM/Binders/UI/LayoutGroup/LayoutGroup Binder – Padding Switcher")]
     [AddBinderContextMenu(typeof(LayoutGroup), serializePropertyNames: "m_Padding", SubPath = "Switcher")]
-    public sealed class LayoutGroupPaddingSwitcherMonoBinder : SwitcherMonoBinderWithConverter<LayoutGroup, RectOffset>
+    public sealed class LayoutGroupPaddingSwitcherMonoBinder : SwitcherMonoBinder<LayoutGroup, RectOffset>
     {
         [Tooltip("Which sides of the padding are updated when a value is applied.")]
         [SerializeField] private PaddingMode _paddingMode;

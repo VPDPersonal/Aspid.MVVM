@@ -6,12 +6,12 @@ using UnityEngine;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="TargetColorBinder{LineRenderer}"/> that sets the <see cref="LineRenderer.startColor"/> and <see cref="LineRenderer.endColor"/>
+    /// <see cref="TargetBinder{LineRenderer, Color}"/> that sets the <see cref="LineRenderer.startColor"/> and <see cref="LineRenderer.endColor"/>
     /// color depending on the configured <see cref="LineRendererColorMode"/>.
     /// </summary>
     /// <include file="XmlExampleDoc-LineRenderer-Color-1.1.0.xml" path="doc//member[@name='LineRendererColorBinder']/*" />
     [Serializable]
-    public class LineRendererColorBinder : TargetColorBinder<LineRenderer>
+    public class LineRendererColorBinder : TargetBinder<LineRenderer, Color>, IColorBinder
     {
         [Tooltip("The color endpoint(s) to set when a value arrives from the ViewModel.")]
         [SerializeField] private LineRendererColorMode _colorMode;

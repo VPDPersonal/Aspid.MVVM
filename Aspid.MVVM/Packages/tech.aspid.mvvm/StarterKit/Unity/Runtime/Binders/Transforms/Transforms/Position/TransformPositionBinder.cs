@@ -6,12 +6,12 @@ using UnityEngine;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="TargetVector3Binder{Transform}"/> that sets the <see cref="Transform.position"/> or
+    /// <see cref="TargetBinder{Transform, Vector3}"/> that sets the <see cref="Transform.position"/> or
     /// <see cref="Transform.localPosition"/> property depending on the configured <see cref="Space"/>.
     /// </summary>
     /// <include file="XmlExampleDoc-Transform-Position-1.1.0.xml" path="doc//member[@name='TransformPositionBinder']/*" />
     [Serializable]
-    public class TransformPositionBinder : TargetVector3Binder<Transform>
+    public class TransformPositionBinder : TargetBinder<Transform, Vector3>, IVector3Binder
     {
         [Tooltip("The coordinate space in which the position is applied.")]
         [SerializeField] private Space _space;

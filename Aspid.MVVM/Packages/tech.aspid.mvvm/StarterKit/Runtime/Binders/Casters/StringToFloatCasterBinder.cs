@@ -8,12 +8,8 @@ namespace Aspid.MVVM.StarterKit
     /// <see cref="string"/> as a <see langword="float"/> before forwarding it to a target setter.
     /// </summary>
     /// <remarks>
-    /// The casters covered the direction into a string and not the one out of it, which is the direction an input
-    /// field works in: a ViewModel holding a <see langword="float"/> could be shown in a text field and not filled
-    /// from one.
-    /// <para/>
     /// A string that does not parse forwards the fallback value instead, and so does one that parses to
-    /// <c>NaN</c> or an infinity — those are words <see cref="float"/> parsing accepts. Parsing follows
+    /// <see cref="float.NaN"/> or an infinity — those are words <see cref="float"/> parsing accepts. Parsing follows
     /// <see cref="StringNumberParse.TryFloat"/>: the user's culture first, the invariant form second.
     /// </remarks>
     public sealed class StringToFloatCasterBinder : Binder, IBinder<string>

@@ -17,18 +17,21 @@ namespace Aspid.MVVM.StarterKit
     public class AnimatorControllerBinder : TargetObjectBinder<Animator, RuntimeAnimatorController>
     {
         /// <inheritdoc/>
+        /// <exception cref="ArgumentException">Thrown when <paramref name="mode"/> is <see cref="BindMode.TwoWay"/> — the property raises no change event to listen to.</exception>
+        public AnimatorControllerBinder(
+            Animator target,
+            IConverter<RuntimeAnimatorController?, RuntimeAnimatorController?>? converter = null,
+            BindMode mode = BindMode.OneWay)
+            : base(target, converter, mode)
+        {
+            mode.ThrowExceptionIfMatches(BindMode.TwoWay);
+        }
+
+        /// <inheritdoc/>
         protected sealed override RuntimeAnimatorController? Property
         {
             get => Target.runtimeAnimatorController;
             set => Target.runtimeAnimatorController = value;
-        }
-
-        /// <inheritdoc/>
-        /// <exception cref="ArgumentException">Thrown when <paramref name="mode"/> is <see cref="BindMode.TwoWay"/> — the property raises no change event to listen to.</exception>
-        public AnimatorControllerBinder(Animator target, BindMode mode = BindMode.OneWay)
-            : base(target, mode)
-        {
-            mode.ThrowExceptionIfMatches(BindMode.TwoWay);
         }
     }
 }

@@ -9,6 +9,5 @@ namespace Aspid.MVVM.StarterKit
     [BindModeOverride(BindMode.OneWay, BindMode.OneTime)]
     [AddComponentMenu("Aspid/MVVM/Binders/RateLimit/Throttle Binder – String")]
     [AddBinderContextMenuByType(typeof(string))]
-    public sealed partial class ThrottleStringMonoBinder : ThrottleMonoBinder<string>
-    {    }
+    public sealed partial class ThrottleStringMonoBinder : ThrottleMonoBinder<string> { }
 }

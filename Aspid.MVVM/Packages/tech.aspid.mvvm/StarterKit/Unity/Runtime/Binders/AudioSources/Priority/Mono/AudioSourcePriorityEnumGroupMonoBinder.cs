@@ -4,7 +4,7 @@ using UnityEngine;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="EnumGroupIntMonoBinder{AudioSource}"/> that sets the <see cref="AudioSource.priority"/>
+    /// <see cref="EnumGroupMonoBinder{TElement,TValue}">EnumGroupMonoBinder&lt;AudioSource, int&gt;</see> that sets the <see cref="AudioSource.priority"/>
     /// property on each element based on the bound enum ViewModel value.
     /// </summary>
     /// <remarks>
@@ -12,7 +12,7 @@ namespace Aspid.MVVM.StarterKit
     /// </remarks>
     [AddBinderContextMenu(typeof(AudioSource), serializePropertyNames: "Priority", SubPath = "EnumGroup")]
     [AddComponentMenu("Aspid/MVVM/Binders/Audio/AudioSource/AudioSource Binder – Priority EnumGroup")]
-    public sealed class AudioSourcePriorityEnumGroupMonoBinder : EnumGroupIntMonoBinder<AudioSource>
+    public sealed class AudioSourcePriorityEnumGroupMonoBinder : EnumGroupMonoBinder<AudioSource, int>
     {
         /// <summary>
         /// Called when the bound enum resolves to a value for the specified element.

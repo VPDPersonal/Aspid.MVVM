@@ -1,6 +1,5 @@
 #nullable enable
 using System;
-using UnityEngine;
 using UnityEngine.UI;
 
 // ReSharper disable once CheckNamespace
@@ -17,17 +16,17 @@ namespace Aspid.MVVM.StarterKit
     public class GridLayoutGroupConstraintCountBinder : TargetIntBinder<GridLayoutGroup>
     {
         /// <inheritdoc/>
-        protected sealed override int Property
-        {
-            get => Target.constraintCount;
-            set => Target.constraintCount = value;
-        }
-
-        /// <inheritdoc/>
         public GridLayoutGroupConstraintCountBinder(
             GridLayoutGroup target,
             IConverter<int, int>? converter = null,
             BindMode mode = BindMode.OneWay)
             : base(target, converter, mode) { }
+
+        /// <inheritdoc/>
+        protected sealed override int Property
+        {
+            get => Target.constraintCount;
+            set => Target.constraintCount = value;
+        }
     }
 }

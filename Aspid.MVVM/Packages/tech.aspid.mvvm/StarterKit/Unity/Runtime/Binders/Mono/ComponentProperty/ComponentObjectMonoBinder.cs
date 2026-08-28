@@ -5,7 +5,7 @@ using UnityEngine;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// Abstract base <see cref="ComponentMonoBinder{T1, T2}">ComponentMonoBinder&lt;TComponent, TObject&gt;</see> that binds a
+    /// Abstract base <see cref="ComponentMonoBinder{TComponent,TProperty}">ComponentMonoBinder&lt;TComponent, TObject&gt;</see> that binds a
     /// property holding a reference to a <see cref="Object">UnityEngine.Object</see>, normalizing destroyed
     /// references to <see langword="null"/> in both binding directions.
     /// </summary>
@@ -23,10 +23,22 @@ namespace Aspid.MVVM.StarterKit
     {
         /// <inheritdoc/>
         /// <remarks>
-        /// Returns <see langword="null"/> when <paramref name="value"/> refers to a destroyed object.
+        /// Returns <see langword="null"/> when the converted value refers to a destroyed object.
         /// </remarks>
-        protected override TObject GetConvertedValue(TObject value) =>
-            // Cast to Object is required: `value != null` would be a reference comparison and miss a destroyed object.
-            (Object)value ? value : null;
+        protected override TObject GetConvertedValue(TObject value)
+        {
+            var converted = base.GetConvertedValue(value);
+            return converted ? converted : null;
+        }
+
+        /// <inheritdoc/>
+        /// <remarks>
+        /// Returns <see langword="null"/> when the converted value refers to a destroyed object.
+        /// </remarks>
+        protected override TObject GetConvertedBackValue(TObject value)
+        {
+            var converted = base.GetConvertedBackValue(value);
+            return converted ? converted : null;
+        }
     }
 }

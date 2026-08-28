@@ -6,11 +6,11 @@ using UnityEngine;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="TargetVector3Binder{SphereCollider}"/> that sets the <see cref="SphereCollider.center"/> property.
+    /// <see cref="TargetBinder{SphereCollider, Vector3}"/> that sets the <see cref="SphereCollider.center"/> property.
     /// </summary>
     /// <include file="XmlExampleDoc-SphereCollider-Center-1.1.0.xml" path="doc//member[@name='SphereColliderCenterBinder']/*" />
     [Serializable]
-    public class SphereColliderCenterBinder : TargetVector3Binder<SphereCollider>
+    public class SphereColliderCenterBinder : TargetBinder<SphereCollider, Vector3>, IVector3Binder
     {
         /// <inheritdoc/>
         protected sealed override Vector3 Property

@@ -7,12 +7,12 @@ using UnityEngine.Localization.Components;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="SwitcherStringBinder{LocalizeStringEvent}"/> that switches the TableEntryReference
+    /// <see cref="SwitcherBinder{TTarget,T}">SwitcherBinder&lt;LocalizeStringEvent, string&gt;</see> that switches the TableEntryReference
     /// of the component's StringReference between two values based on the bound boolean ViewModel value.
     /// </summary>
     /// <include file="XmlExampleDoc-LocalizeStringEvent-Entry-1.1.0.xml" path="doc//member[@name='LocalizeStringEventEntrySwitcherBinder']/*" />
     [Serializable]
-    public sealed class LocalizeStringEventEntrySwitcherBinder : SwitcherStringBinder<LocalizeStringEvent>
+    public sealed class LocalizeStringEventEntrySwitcherBinder : SwitcherBinder<LocalizeStringEvent, string>
     {
         /// <inheritdoc/>
         public LocalizeStringEventEntrySwitcherBinder(

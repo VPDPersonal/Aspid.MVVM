@@ -4,11 +4,11 @@ using UnityEngine;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="ComponentVector3MonoBinder{CapsuleCollider}"/> that binds the <see cref="CapsuleCollider.center"/> property.
+    /// <see cref="ComponentMonoBinder{CapsuleCollider, Vector3}"/> that binds the <see cref="CapsuleCollider.center"/> property.
     /// </summary>
     [AddBinderContextMenu(typeof(CapsuleCollider), serializePropertyNames: "m_Center")]
     [AddComponentMenu("Aspid/MVVM/Binders/Collider/Capsule/CapsuleCollider Binder – Center")]
-    public class CapsuleColliderCenterMonoBinder : ComponentVector3MonoBinder<CapsuleCollider>
+    public class CapsuleColliderCenterMonoBinder : ComponentMonoBinder<CapsuleCollider, Vector3>, IVector3Binder
     {
         /// <inheritdoc/>
         protected sealed override Vector3 Property

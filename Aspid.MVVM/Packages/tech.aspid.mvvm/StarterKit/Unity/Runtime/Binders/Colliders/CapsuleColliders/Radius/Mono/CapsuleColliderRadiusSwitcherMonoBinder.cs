@@ -4,15 +4,15 @@ using UnityEngine;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="SwitcherFloatMonoBinder{CapsuleCollider}"/> that switches the <see cref="CapsuleCollider.radius"/>
+    /// <see cref="SwitcherMonoBinder{TComponent,T}">SwitcherMonoBinder&lt;CapsuleCollider, float&gt;</see> that switches the <see cref="CapsuleCollider.radius"/>
     /// property between two values based on the bound boolean ViewModel value.
     /// </summary>
     [AddComponentMenu("Aspid/MVVM/Binders/Collider/Capsule/CapsuleCollider Binder – Radius Switcher")]
     [AddBinderContextMenu(typeof(CapsuleCollider), serializePropertyNames: "m_Radius", SubPath = "Switcher")]
-    public sealed class CapsuleColliderRadiusSwitcherMonoBinder : SwitcherFloatMonoBinder<CapsuleCollider>
+    public sealed class CapsuleColliderRadiusSwitcherMonoBinder : SwitcherMonoBinder<CapsuleCollider, float>
     {
         /// <inheritdoc/>
         protected override void SetValue(float value) =>
-            CachedComponent.radius = BinderMath.NonNegative(value);
+            CachedComponent.radius = this.NonNegative(value);
     }
 }

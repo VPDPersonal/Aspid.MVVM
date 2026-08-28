@@ -5,16 +5,16 @@ using UnityEngine.UI;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="ComponentMonoBinderWithConverter{T1, T2}"/> that binds the <see cref="UnityEngine.UI.LayoutGroup.padding"/> property.
+    /// <see cref="ComponentMonoBinder{TComponent,TProperty}"/> that binds the <see cref="UnityEngine.UI.LayoutGroup.padding"/> property.
     /// </summary>
     /// <remarks>
     /// The affected padding sides are determined by the configured <see cref="PaddingMode"/>.
-    /// Also implements <see cref="INumberBinder"/>: numeric ViewModel values (int, long, float, double)
+    /// Also implements <see cref="IIntBinder"/>: numeric ViewModel values (int, long, float, double)
     /// are applied uniformly to all four padding sides before being forwarded to the layout group.
     /// </remarks>
     [AddComponentMenu("Aspid/MVVM/Binders/UI/LayoutGroup/LayoutGroup Binder – Padding")]
     [AddBinderContextMenu(typeof(LayoutGroup), serializePropertyNames: "m_Padding")]
-    public partial class LayoutGroupPaddingMonoBinder : ComponentMonoBinderWithConverter<LayoutGroup, RectOffset>, INumberBinder
+    public partial class LayoutGroupPaddingMonoBinder : ComponentMonoBinder<LayoutGroup, RectOffset>, IIntBinder
     {
         [Tooltip("Which sides of the padding are updated when a value is received.")]
         [SerializeField] private PaddingMode _paddingMode;
@@ -42,20 +42,5 @@ namespace Aspid.MVVM.StarterKit
 
             base.SetValue(_cachedRectOffset);
         }
-
-        /// <inheritdoc cref="SetValue(int)"/>
-        [BinderLog]
-        public void SetValue(long value) =>
-            SetValue(NumericSaturation.ToInt(value));
-
-        /// <inheritdoc cref="SetValue(int)"/>
-        [BinderLog]
-        public void SetValue(float value) =>
-            SetValue(NumericSaturation.ToInt((double)value));
-
-        /// <inheritdoc cref="SetValue(int)"/>
-        [BinderLog]
-        public void SetValue(double value) =>
-            SetValue(NumericSaturation.ToInt(value));
     }
 }

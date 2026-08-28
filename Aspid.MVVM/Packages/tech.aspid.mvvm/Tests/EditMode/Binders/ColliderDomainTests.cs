@@ -1,6 +1,8 @@
 using NUnit.Framework;
 using UnityEngine;
+using UnityEngine.TestTools;
 using Aspid.MVVM.StarterKit;
+using System.Text.RegularExpressions;
 using System.Collections.Generic;
 using Object = UnityEngine.Object;
 
@@ -44,6 +46,7 @@ namespace Aspid.MVVM.Tests
             ((IBinder<float>)binder).SetValue(-1f);
             Assert.AreEqual(0f, collider.height, 0.001f, "Отрицательная высота не обрезана");
 
+            LogAssert.Expect(LogType.Error, new Regex("is not finite"));
             ((IBinder<float>)binder).SetValue(float.NaN);
             Assert.IsFalse(float.IsNaN(collider.height), "NaN дошёл до коллайдера");
         }
@@ -88,6 +91,7 @@ namespace Aspid.MVVM.Tests
             ((IBinder<float>)binder).SetValue(0.05f);
             Assert.AreEqual(0.05f, collider.contactOffset, 0.001f, "Отступ контакта не доехал");
 
+            LogAssert.Expect(LogType.Error, new Regex("is not finite"));
             ((IBinder<float>)binder).SetValue(float.NegativeInfinity);
             Assert.Greater(collider.contactOffset, 0f, "Нефинитный отступ дошёл до коллайдера");
         }
@@ -129,6 +133,7 @@ namespace Aspid.MVVM.Tests
             ((IBinder<Vector2>)binder).SetValue(new Vector2(-1f, -2f));
             Assert.AreEqual(new Vector2(-1f, -2f), collider.offset, "Отрицательное смещение не сохранено");
 
+            LogAssert.Expect(LogType.Error, new Regex("is not finite"));
             ((IBinder<Vector2>)binder).SetValue(new Vector2(float.NaN, 0f));
             Assert.AreEqual(new Vector2(-1f, -2f), collider.offset, "Нефинитное смещение дошло до коллайдера");
         }

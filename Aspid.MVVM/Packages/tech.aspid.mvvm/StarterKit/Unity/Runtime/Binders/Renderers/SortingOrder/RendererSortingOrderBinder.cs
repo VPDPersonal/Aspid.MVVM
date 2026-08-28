@@ -12,17 +12,17 @@ namespace Aspid.MVVM.StarterKit
     public class RendererSortingOrderBinder : TargetIntBinder<Renderer>
     {
         /// <inheritdoc/>
-        protected sealed override int Property
-        {
-            get => Target.sortingOrder;
-            set => Target.sortingOrder = value;
-        }
-
-        /// <inheritdoc/>
         public RendererSortingOrderBinder(
             Renderer target,
             IConverter<int, int>? converter = null,
             BindMode mode = BindMode.OneWay)
             : base(target, converter, mode) { }
+
+        /// <inheritdoc/>
+        protected sealed override int Property
+        {
+            get => Target.sortingOrder;
+            set => Target.sortingOrder = value;
+        }
     }
 }

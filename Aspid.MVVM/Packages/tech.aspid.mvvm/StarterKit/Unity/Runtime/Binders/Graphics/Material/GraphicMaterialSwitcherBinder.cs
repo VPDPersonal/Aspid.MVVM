@@ -7,12 +7,12 @@ using UnityEngine.UI;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="SwitcherBinderWithConverter{T1, T2}"/> that switches the <see cref="Graphic.material"/>
+    /// <see cref="SwitcherBinder{TTarget,T}"/> that switches the <see cref="Graphic.material"/>
     /// property between two <see cref="Material"/> values based on the bound boolean ViewModel value.
     /// </summary>
     /// <include file="XmlExampleDoc-Graphic-Material-1.1.0.xml" path="doc//member[@name='GraphicMaterialSwitcherBinder']/*" />
     [Serializable]
-    public sealed class GraphicMaterialSwitcherBinder : SwitcherBinderWithConverter<Graphic, Material>
+    public sealed class GraphicMaterialSwitcherBinder : SwitcherBinder<Graphic, Material>
     {
         /// <param name="target">The <see cref="Graphic"/> to bind.</param>
         /// <param name="trueValue">The <see cref="Material"/> applied when the bound boolean is <see langword="true"/>.</param>

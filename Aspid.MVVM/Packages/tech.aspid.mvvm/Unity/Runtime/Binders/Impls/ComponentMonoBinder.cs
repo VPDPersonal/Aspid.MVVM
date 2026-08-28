@@ -5,7 +5,8 @@ namespace Aspid.MVVM
 {
     /// <summary>
     /// Abstract base class for <see cref="MonoBinder"/> implementations that operate on a <see cref="Component"/>.
-    /// Provides lazy resolution of the target component — either from the serialized field or via <see cref="Component.GetComponent{T}"/>.
+    /// Provides lazy resolution of the target component — either from
+    /// the serialized field or via <see cref="Component.GetComponent{T}"/>.
     /// </summary>
     /// <typeparam name="TComponent">The type of <see cref="Component"/> this binder targets.</typeparam>
     public abstract class ComponentMonoBinder<TComponent> : MonoBinder
@@ -29,7 +30,8 @@ namespace Aspid.MVVM
 
         /// <summary>
         /// Gets the target component.
-        /// Returns the serialized value if assigned; otherwise resolves it via <see cref="Component.GetComponent{T}"/> and caches the result.
+        /// Returns the serialized value if assigned;
+        /// otherwise resolves it via <see cref="Component.GetComponent{T}"/> and caches the result.
         /// </summary>
         /// <remarks>
         /// "Assigned" is decided with Unity's own <see cref="Object"/> conversion rather than <c>is not null</c>:
@@ -50,6 +52,22 @@ namespace Aspid.MVVM
         }
 
         /// <summary>
+        /// Called by Unity in the Editor when a serialized field value changes.
+        /// Automatically resolves and assigns the component if it is not yet set and the application is not playing.
+        /// </summary>
+        /// <remarks>
+        /// When overriding this method, always call <c>base.OnValidate()</c> to preserve
+        /// automatic component resolution in the Editor.
+        /// </remarks>
+        protected virtual void OnValidate()
+        {
+            if (Application.isPlaying) return;
+            if (IsAssigned(_component)) return;
+
+            _component = ResolveComponent();
+        }
+
+        /// <summary>
         /// Finds the target component on this GameObject when the serialized field is empty.
         /// </summary>
         /// <remarks>
@@ -65,27 +83,10 @@ namespace Aspid.MVVM
         /// Reports whether <paramref name="component"/> refers to a live component.
         /// </summary>
         /// <remarks>
-        /// The cast to <see cref="Object"/> is what makes this work: Unity's <c>bool</c> conversion is a
-        /// user-defined operator, and C# does not apply those to an unconstrained-enough generic type parameter,
-        /// so <c>if (component)</c> on a <typeparamref name="TComponent"/> would not compile.
+        /// The conversion to <see langword="bool"/> is Unity's own operator, reached through the
+        /// <see cref="Component"/> constraint: a destroyed component is not a <see langword="null"/>
+        /// reference, so <c>is not null</c> would report it as assigned.
         /// </remarks>
-        private static bool IsAssigned(TComponent component) =>
-            (Object)component;
-
-        /// <summary>
-        /// Called by Unity in the Editor when a serialized field value changes.
-        /// Automatically resolves and assigns the component if it is not yet set and the application is not playing.
-        /// </summary>
-        /// <remarks>
-        /// When overriding this method, always call <c>base.OnValidate()</c> to preserve
-        /// automatic component resolution in the Editor.
-        /// </remarks>
-        protected virtual void OnValidate()
-        {
-            if (Application.isPlaying) return;
-            if (IsAssigned(_component)) return;
-
-            _component = ResolveComponent();
-        }
+        private static bool IsAssigned(TComponent component) => component;
     }
 }

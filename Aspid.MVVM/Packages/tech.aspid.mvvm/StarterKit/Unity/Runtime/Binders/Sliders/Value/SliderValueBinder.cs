@@ -9,31 +9,25 @@ namespace Aspid.MVVM.StarterKit
     /// <summary>
     /// <see cref="TargetBinder{Slider}"/> that binds <see cref="Slider.value"/>.
     /// Supports <see cref="BindMode.OneWay"/>, <see cref="BindMode.TwoWay"/>, and <see cref="BindMode.OneWayToSource"/>.
-    /// Also implements <see cref="INumberBinder"/> and <see cref="INumberReverseBinder"/>, allowing numeric
+    /// Also implements <see cref="IFloatBinder"/> and <see cref="INumberReverseBinder"/>, allowing numeric
     /// values of multiple types to be both pushed to and received from the slider.
     /// </summary>
     /// <include file="XmlExampleDoc-Slider-Value-1.1.0.xml" path="doc//member[@name='SliderValueBinder']/*" />
     [Serializable]
     [BindModeOverride(IsAll = true)]
-    public class SliderValueBinder : TargetBinder<Slider>, INumberBinder, INumberReverseBinder
+    public class SliderValueBinder : TargetBinder<Slider>,
+        IFloatBinder,
+        INumberReverseBinder
     {
-        /// <inheritdoc/>
-        public event Action<int>? IntValueChanged;
-        
-        /// <inheritdoc/>
-        public event Action<long>? LongValueChanged;
-        
-        /// <inheritdoc/>
-        public event Action<float>? FloatValueChanged;
-        
-        /// <inheritdoc/>
-        public event Action<double>? DoubleValueChanged;
-
-        private bool _isNotifyValueChanged = true;
-
         [Tooltip("Optional converter applied to values before they are set on the slider.")]
         [SerializeReference] private IConverter<float, float>? _converter;
-        
+
+        private NumberReverseChannel _channel;
+        private bool _isNotifyValueChanged = true;
+
+        /// <inheritdoc/>
+        ref NumberReverseChannel INumberReverseBinder.Channel => ref _channel;
+
         /// <inheritdoc/>
         public SliderValueBinder(Slider target, BindMode mode)
             : this(target, converter: null, mode) { }
@@ -79,27 +73,6 @@ namespace Aspid.MVVM.StarterKit
         }
         
         /// <summary>
-        /// Casts the value to <see langword="float"/> and sets <see cref="Slider.value"/>.
-        /// </summary>
-        /// <param name="value">The value received from the ViewModel.</param>
-        public void SetValue(int value) =>
-            SetValue((float)value);
-        
-        /// <summary>
-        /// Casts the value to <see langword="float"/> and sets <see cref="Slider.value"/>.
-        /// </summary>
-        /// <param name="value">The value received from the ViewModel.</param>
-        public void SetValue(long value) =>
-            SetValue((float)value);
-        
-        /// <summary>
-        /// Casts the value to <see langword="float"/> and sets <see cref="Slider.value"/>.
-        /// </summary>
-        /// <param name="value">The value received from the ViewModel.</param>
-        public void SetValue(double value) =>
-            SetValue((float)value);
-        
-        /// <summary>
         /// Sets <see cref="Slider.value"/>, applying the configured converter if present.
         /// Suppresses value change events during assignment.
         /// </summary>
@@ -113,7 +86,7 @@ namespace Aspid.MVVM.StarterKit
         public void SetValue(float value)
         {
             var converted = _converter?.Convert(value) ?? value;
-            var clamped = BinderMath.SafeClamp(converted, Target.minValue, Target.maxValue);
+            var clamped = this.SafeClamp(converted, Target.minValue, Target.maxValue, Target);
 
             _isNotifyValueChanged = false;
 
@@ -134,13 +107,7 @@ namespace Aspid.MVVM.StarterKit
         private void OnValueChanged(float value)
         {
             if (!_isNotifyValueChanged) return;
-
-            value = GetConvertedBackValue(value);
-
-            IntValueChanged?.Invoke((int)value);
-            LongValueChanged?.Invoke((long)value);
-            FloatValueChanged?.Invoke(value);
-            DoubleValueChanged?.Invoke(value);
+            _channel.Raise(GetConvertedBackValue(value));
         }
 
         /// <summary>

@@ -17,18 +17,18 @@ namespace Aspid.MVVM.StarterKit
     public class SelectableTargetGraphicBinder : TargetObjectBinder<Selectable, Graphic>
     {
         /// <inheritdoc/>
+        /// <exception cref="ArgumentException">Thrown when <paramref name="mode"/> is <see cref="BindMode.TwoWay"/> — the property raises no change event to listen to.</exception>
+        public SelectableTargetGraphicBinder(Selectable target, IConverter<Graphic?, Graphic?>? converter = null, BindMode mode = BindMode.OneWay)
+            : base(target, converter, mode)
+        {
+            mode.ThrowExceptionIfMatches(BindMode.TwoWay);
+        }
+
+        /// <inheritdoc/>
         protected sealed override Graphic? Property
         {
             get => Target.targetGraphic;
             set => Target.targetGraphic = value;
-        }
-
-        /// <inheritdoc/>
-        /// <exception cref="ArgumentException">Thrown when <paramref name="mode"/> is <see cref="BindMode.TwoWay"/> — the property raises no change event to listen to.</exception>
-        public SelectableTargetGraphicBinder(Selectable target, BindMode mode = BindMode.OneWay)
-            : base(target, mode)
-        {
-            mode.ThrowExceptionIfMatches(BindMode.TwoWay);
         }
     }
 }

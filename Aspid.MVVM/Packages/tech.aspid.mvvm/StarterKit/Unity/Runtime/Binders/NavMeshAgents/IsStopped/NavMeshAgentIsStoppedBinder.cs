@@ -7,11 +7,11 @@ using UnityEngine.AI;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="TargetBoolBinder{NavMeshAgent}"/> that binds <see cref="NavMeshAgent.isStopped"/>.
+    /// <see cref="TargetBinder{NavMeshAgent, bool}"/> that binds <see cref="NavMeshAgent.isStopped"/>.
     /// </summary>
     /// <remarks>The write is skipped while the agent is off the navmesh, since Unity throws for that case.</remarks>
     [Serializable]
-    public class NavMeshAgentIsStoppedBinder : TargetBoolBinder<NavMeshAgent>
+    public class NavMeshAgentIsStoppedBinder : TargetBinder<NavMeshAgent, bool>
     {
         /// <inheritdoc/>
         protected sealed override bool Property

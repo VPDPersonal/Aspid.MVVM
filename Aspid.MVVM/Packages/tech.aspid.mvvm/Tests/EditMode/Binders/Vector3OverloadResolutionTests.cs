@@ -7,16 +7,15 @@ using System.Collections.Generic;
 namespace Aspid.MVVM.Tests
 {
     /// <summary>
-    /// Regression tests for <c>SetValue</c> overload resolution on the Vector3 binder bases.
+    /// Regression tests for <c>SetValue</c> overload resolution on the <see cref="IVector3Binder"/> families.
     /// </summary>
     /// <remarks>
-    /// <see cref="ComponentVector3MonoBinder{TComponent}"/> and <see cref="TargetVector3Binder{TTarget}"/> declare
-    /// <c>SetValue(Vector2)</c> while inheriting <c>SetValue(Vector3)</c> from their base. C# builds the overload
-    /// candidate set from the most derived type that declares an applicable member and looks no further, and
-    /// <see cref="Vector3"/> converts implicitly to <see cref="Vector2"/> — so <c>SetValue(someVector3)</c> bound to
-    /// the 2D overload and silently dropped Z. The binding path never saw this because it dispatches through
-    /// <see cref="IBinder{T}"/>, whose interface map points at the base method; only direct calls from user code
-    /// were affected. Each test therefore asserts both call shapes agree.
+    /// The Vector3 bases used to declare <c>SetValue(Vector2)</c> as a class member while inheriting
+    /// <c>SetValue(Vector3)</c> from their base. C# builds the overload candidate set from the most derived type
+    /// that declares an applicable member and looks no further, and <see cref="Vector3"/> converts implicitly to
+    /// <see cref="Vector2"/> — so <c>SetValue(someVector3)</c> bound to the 2D overload and silently dropped Z.
+    /// <see cref="IVector3Binder"/> keeps the 2D entry point as a default interface implementation, which is not
+    /// a class member and so never enters that candidate set. These tests pin both channels.
     /// </remarks>
     [TestFixture]
     public sealed class Vector3OverloadResolutionTests
@@ -59,11 +58,11 @@ namespace Aspid.MVVM.Tests
         }
 
         [Test]
-        public void ComponentVector3MonoBinder_Vector2Overload_StillPromotesWithZeroZ()
+        public void ComponentVector3MonoBinder_Vector2Channel_StillPromotesWithZeroZ()
         {
             var binder = CreateMonoBinder();
 
-            binder.SetValue(new Vector2(2f, 3f));
+            ((IBinder<Vector2>)binder).SetValue(new Vector2(2f, 3f));
 
             Assert.AreEqual(new Vector3(2f, 3f, 0f), binder.Applied);
         }
@@ -79,11 +78,11 @@ namespace Aspid.MVVM.Tests
         }
 
         [Test]
-        public void TargetVector3Binder_Vector2Overload_StillPromotesWithZeroZ()
+        public void TargetVector3Binder_Vector2Channel_StillPromotesWithZeroZ()
         {
             var binder = new TestTargetVector3Binder(new Vector3Holder());
 
-            binder.SetValue(new Vector2(2f, 3f));
+            ((IBinder<Vector2>)binder).SetValue(new Vector2(2f, 3f));
 
             Assert.AreEqual(new Vector3(2f, 3f, 0f), binder.Applied);
         }
@@ -103,7 +102,7 @@ namespace Aspid.MVVM.Tests
         public Vector3 Value;
     }
 
-    internal sealed class TestComponentVector3Binder : ComponentVector3MonoBinder<Vector3Component>
+    internal sealed class TestComponentVector3Binder : ComponentMonoBinder<Vector3Component, Vector3>, IVector3Binder
     {
         public Vector3 Applied => CachedComponent.Value;
 
@@ -119,10 +118,10 @@ namespace Aspid.MVVM.Tests
         public Vector3 Value;
     }
 
-    internal sealed class TestTargetVector3Binder : TargetVector3Binder<Vector3Holder>
+    internal sealed class TestTargetVector3Binder : TargetBinder<Vector3Holder, Vector3>, IVector3Binder
     {
         public TestTargetVector3Binder(Vector3Holder target)
-            : base(target, converter: null) { }
+            : base(target, converter: null, BindMode.OneWay) { }
 
         public Vector3 Applied => Target.Value;
 

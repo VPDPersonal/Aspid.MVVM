@@ -35,13 +35,13 @@ namespace Aspid.MVVM.StarterKit
 
                 if (!BinderMath.IsFinite(value))
                 {
-                    Debug.LogError($"[{nameof(AudioMixerFloatMonoBinder)}] Non-finite value ignored for parameter '{_parameter}'.", context: this);
+                    this.LogError($"the value {value.Describe()} is not finite", "The parameter is left unchanged.");
                     return;
                 }
 
                 // SetFloat returns false silently on an unmatched parameter name — the only way to catch a typo.
                 if (!_mixer.SetFloat(_parameter, value))
-                    Debug.LogError($"[{nameof(AudioMixerFloatMonoBinder)}] Mixer '{_mixer.name}' exposes no parameter '{_parameter}'.", context: this);
+                    this.LogError($"the mixer exposes no parameter {_parameter.Describe()}", "The value is not applied.");
             }
         }
 
@@ -60,7 +60,7 @@ namespace Aspid.MVVM.StarterKit
             if (!IsUsable()) return false;
             if (_mixer.GetFloat(_parameter, out value)) return true;
 
-            Debug.LogError($"[{nameof(AudioMixerFloatMonoBinder)}] Mixer '{_mixer.name}' exposes no parameter '{_parameter}'.", context: this);
+            this.LogError($"the mixer exposes no parameter {_parameter.Describe()}", "No value is read from the mixer.");
             return false;
         }
 
@@ -68,13 +68,13 @@ namespace Aspid.MVVM.StarterKit
         {
             if (!_mixer)
             {
-                Debug.LogError($"[{nameof(AudioMixerFloatMonoBinder)}] No mixer assigned.", context: this);
+                this.LogError("no mixer is assigned", "The binder does nothing.");
                 return false;
             }
 
             if (string.IsNullOrWhiteSpace(_parameter))
             {
-                Debug.LogError($"[{nameof(AudioMixerFloatMonoBinder)}] No parameter name set.", context: this);
+                this.LogError("no parameter name is set", "The mixer is left unchanged.");
                 return false;
             }
 

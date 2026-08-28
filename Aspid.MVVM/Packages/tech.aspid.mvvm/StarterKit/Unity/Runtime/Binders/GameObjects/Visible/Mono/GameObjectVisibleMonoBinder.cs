@@ -4,11 +4,11 @@ using UnityEngine;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="BoolMonoBinder"/> that shows or hides the <see cref="GameObject"/> this component is attached to.
+    /// <see cref="MonoBinder{TProperty}">MonoBinder&lt;bool&gt;</see> that shows or hides the <see cref="GameObject"/> this component is attached to.
     /// </summary>
     [AddComponentMenu("Aspid/MVVM/Binders/GameObject/GameObject Binder – Visible")]
     [AddBinderContextMenu(typeof(Component), Path = "Add General Binder/GameObject/GameObject Binder – Visible")]
-    public sealed class GameObjectVisibleMonoBinder : BoolMonoBinder
+    public sealed class GameObjectVisibleMonoBinder : MonoBinder<bool>
     {
         /// <inheritdoc/>
         protected override bool Property

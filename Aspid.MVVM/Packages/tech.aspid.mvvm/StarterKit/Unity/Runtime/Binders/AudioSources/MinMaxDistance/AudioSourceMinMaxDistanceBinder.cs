@@ -6,18 +6,15 @@ using UnityEngine;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// Concrete <see cref="TargetBinder{AudioSource, Vector2}"/> that also implements <see cref="INumberBinder"/>,
+    /// Concrete <see cref="TargetBinder{AudioSource, Vector2}"/> that also implements <see cref="IFloatBinder"/>,
     /// setting the <see cref="AudioSource.minDistance"/> and <see cref="AudioSource.maxDistance"/> from a <see cref="Vector2"/>.
     /// </summary>
     /// <include file="XmlExampleDoc-AudioSource-MinMaxDistance-1.1.0.xml" path="doc//member[@name='AudioSourceMinMaxDistanceBinder']/*" />
     [Serializable]
-    public class AudioSourceMinMaxDistanceBinder : TargetBinder<AudioSource, Vector2>, INumberBinder
+    public class AudioSourceMinMaxDistanceBinder : TargetBinder<AudioSource, Vector2>, IFloatBinder
     {
         [Tooltip("Which distance component the bound value updates.")]
         [SerializeField] private AudioSourceDistanceMode _distanceMode = AudioSourceDistanceMode.Range;
-
-        [Tooltip("Converts the bound value before setting the min/max distance.")]
-        [SerializeReference] private IConverter<Vector2, Vector2>? _converter;
 
         /// <inheritdoc/>
         protected sealed override Vector2 Property
@@ -36,10 +33,9 @@ namespace Aspid.MVVM.StarterKit
             AudioSourceDistanceMode distanceMode = AudioSourceDistanceMode.Range,
             IConverter<Vector2, Vector2>? converter = null,
             BindMode mode = BindMode.OneWay)
-            : base(target, mode)
+            : base(target, converter, mode)
         {
             mode.ThrowExceptionIfMatches(BindMode.TwoWay);
-            _converter = converter;
             _distanceMode = distanceMode;
         }
 
@@ -51,34 +47,5 @@ namespace Aspid.MVVM.StarterKit
         /// <param name="value">The distance to assign to the selected endpoint or endpoints.</param>
         public void SetValue(float value) =>
             SetValue(new Vector2(value, value));
-
-        /// <summary>
-        /// Converts <paramref name="value"/> to <see cref="float"/> and calls <see cref="SetValue(float)"/>.
-        /// </summary>
-        /// <param name="value">The value to convert and apply.</param>
-        public void SetValue(int value) =>
-            SetValue((float)value);
-
-        /// <summary>
-        /// Converts <paramref name="value"/> to <see cref="float"/> and calls <see cref="SetValue(float)"/>.
-        /// </summary>
-        /// <param name="value">The value to convert and apply.</param>
-        public void SetValue(long value) =>
-            SetValue((float)value);
-
-        /// <summary>
-        /// Converts <paramref name="value"/> to <see cref="float"/> and calls <see cref="SetValue(float)"/>.
-        /// </summary>
-        /// <param name="value">The value to convert and apply.</param>
-        public void SetValue(double value) =>
-            SetValue((float)value);
-
-        /// <summary>
-        /// Called when converting the bound value before applying it to the min/max distance.
-        /// Applies the stored converter if one was provided; otherwise returns the value unchanged.
-        /// </summary>
-        /// <param name="value">The value to convert.</param>
-        protected override Vector2 GetConvertedValue(Vector2 value) =>
-            _converter?.Convert(value) ?? value;
     }
 }

@@ -1,5 +1,4 @@
 using System;
-using UnityEngine;
 using UnityEngine.UI;
 using Object = UnityEngine.Object;
 
@@ -50,10 +49,11 @@ namespace Aspid.MVVM.StarterKit
                 case InteractableMode.Custom:
                     if (customView is null)
                     {
-                        Debug.LogError(
-                            $"{Describe(owner)} is set to {nameof(InteractableMode)}.{nameof(InteractableMode.Custom)} " +
-                            $"but no {nameof(ICanExecuteView)} is assigned. The command's CanExecute state is not reflected anywhere.",
-                            owner as Object);
+                        BinderLogger.LogError(
+                            binderType: owner.GetType(),
+                            problem: $"the mode is {nameof(InteractableMode)}.{nameof(InteractableMode.Custom)} but no {nameof(ICanExecuteView)} is assigned",
+                            consequence: "The command's CanExecute state is not reflected anywhere.",
+                            context: owner as Object);
 
                         break;
                     }
@@ -67,16 +67,14 @@ namespace Aspid.MVVM.StarterKit
         {
             if (target) return true;
 
-            Debug.LogError(
-                $"{Describe(owner)} is set to {nameof(InteractableMode)}.{mode} but its target " +
-                $"{nameof(Selectable)} is missing or destroyed. The command's CanExecute state is not reflected anywhere.",
-                owner as Object);
+            BinderLogger.LogError(
+                binderType: owner.GetType(),
+                problem: $"the mode is {nameof(InteractableMode)}.{mode} but its target {nameof(Selectable)} is missing or destroyed",
+                consequence: "The command's CanExecute state is not reflected anywhere.",
+                context: owner as Object);
 
             return false;
         }
-
-        private static string Describe(object owner) =>
-            owner is null ? "[Command binder]" : $"[{owner.GetType().Name}]";
 
         /// <summary>
         /// Replaces <paramref name="command"/> with <paramref name="value"/>,

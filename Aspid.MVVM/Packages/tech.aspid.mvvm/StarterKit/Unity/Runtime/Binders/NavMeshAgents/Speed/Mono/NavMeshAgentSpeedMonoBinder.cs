@@ -16,7 +16,7 @@ namespace Aspid.MVVM.StarterKit
         protected sealed override float Property
         {
             get => CachedComponent.speed;
-            set => CachedComponent.speed = BinderMath.SafeClamp(value, 0f, float.MaxValue);
+            set => CachedComponent.speed = this.SafeClamp(value, 0f, float.MaxValue);
         }
     }
 }

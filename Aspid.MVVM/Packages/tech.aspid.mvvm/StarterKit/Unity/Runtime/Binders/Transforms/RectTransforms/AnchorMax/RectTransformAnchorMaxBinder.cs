@@ -6,7 +6,7 @@ using UnityEngine;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="TargetVector2Binder{RectTransform}"/> that binds <see cref="RectTransform.anchorMax"/>.
+    /// <see cref="TargetBinder{RectTransform, Vector2}"/> that binds <see cref="RectTransform.anchorMax"/>.
     /// </summary>
     /// <remarks>
     /// Where the element's upper-right corner is pinned inside its parent, as a fraction. Together with the minimum
@@ -17,7 +17,7 @@ namespace Aspid.MVVM.StarterKit
     /// off the screen.
     /// </remarks>
     [Serializable]
-    public class RectTransformAnchorMaxBinder : TargetVector2Binder<RectTransform>
+    public class RectTransformAnchorMaxBinder : TargetBinder<RectTransform, Vector2>, IVector2Binder
     {
         /// <inheritdoc/>
         protected sealed override Vector2 Property
@@ -25,7 +25,7 @@ namespace Aspid.MVVM.StarterKit
             get => Target.anchorMax;
             set
             {
-                if (!BinderMath.IsFinite(value.x) || !BinderMath.IsFinite(value.y)) return;
+                if (!this.RequireFinite(value, Target)) return;
                 Target.anchorMax = value;
             }
         }

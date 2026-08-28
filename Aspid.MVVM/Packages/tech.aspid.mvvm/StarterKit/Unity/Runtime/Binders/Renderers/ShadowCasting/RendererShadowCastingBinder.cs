@@ -1,6 +1,7 @@
 #nullable enable
 using System;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
@@ -10,21 +11,21 @@ namespace Aspid.MVVM.StarterKit
     /// <see cref="Renderer.shadowCastingMode"/>.
     /// </summary>
     [Serializable]
-    public class RendererShadowCastingBinder : TargetBinder<Renderer, UnityEngine.Rendering.ShadowCastingMode>
+    public class RendererShadowCastingBinder : TargetBinder<Renderer, ShadowCastingMode>
     {
         /// <inheritdoc/>
-        protected sealed override UnityEngine.Rendering.ShadowCastingMode Property
+        /// <exception cref="ArgumentException">Thrown when <paramref name="mode"/> is <see cref="BindMode.TwoWay"/> — the property raises no change event to listen to.</exception>
+        public RendererShadowCastingBinder(Renderer target, IConverter<ShadowCastingMode, ShadowCastingMode>? converter = null, BindMode mode = BindMode.OneWay)
+            : base(target, converter, mode)
         {
-            get => Target.shadowCastingMode;
-            set => Target.shadowCastingMode = value;
+            mode.ThrowExceptionIfMatches(BindMode.TwoWay);
         }
 
         /// <inheritdoc/>
-        /// <exception cref="ArgumentException">Thrown when <paramref name="mode"/> is <see cref="BindMode.TwoWay"/> — the property raises no change event to listen to.</exception>
-        public RendererShadowCastingBinder(Renderer target, BindMode mode = BindMode.OneWay)
-            : base(target, mode)
+        protected sealed override ShadowCastingMode Property
         {
-            mode.ThrowExceptionIfMatches(BindMode.TwoWay);
+            get => Target.shadowCastingMode;
+            set => Target.shadowCastingMode = value;
         }
     }
 }

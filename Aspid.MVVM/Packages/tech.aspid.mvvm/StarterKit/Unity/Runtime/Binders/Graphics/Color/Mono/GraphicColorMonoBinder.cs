@@ -5,11 +5,11 @@ using UnityEngine.UI;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="ComponentColorMonoBinder{Graphic}"/> that binds the <see cref="Graphic.color"/> property.
+    /// <see cref="ComponentMonoBinder{Graphic, Color}"/> that binds the <see cref="Graphic.color"/> property.
     /// </summary>
     [AddComponentMenu("Aspid/MVVM/Binders/UI/Graphic/Graphic Binder – Color")]
     [AddBinderContextMenu(typeof(Graphic), serializePropertyNames: "m_Color")]
-    public class GraphicColorMonoBinder : ComponentColorMonoBinder<Graphic>
+    public class GraphicColorMonoBinder : ComponentMonoBinder<Graphic, Color>, IColorBinder
     {
         /// <inheritdoc/>
         protected sealed override Color Property

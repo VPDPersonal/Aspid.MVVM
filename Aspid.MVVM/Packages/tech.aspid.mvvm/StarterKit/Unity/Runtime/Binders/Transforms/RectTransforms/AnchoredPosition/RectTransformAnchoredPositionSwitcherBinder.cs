@@ -6,12 +6,12 @@ using UnityEngine;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="SwitcherVector3Binder{RectTransform}"/> that switches the <see cref="RectTransform.anchoredPosition"/> or
+    /// <see cref="SwitcherBinder{TTarget,T}">SwitcherBinder&lt;RectTransform, Vector3&gt;</see> that switches the <see cref="RectTransform.anchoredPosition"/> or
     /// <see cref="RectTransform.anchoredPosition3D"/> between two <see cref="Vector3"/> values based on the bound boolean ViewModel value.
     /// </summary>
     /// <include file="XmlExampleDoc-RectTransform-AnchoredPosition-1.1.0.xml" path="doc//member[@name='RectTransformAnchoredPositionSwitcherBinder']/*" />
     [Serializable]
-    public sealed class RectTransformAnchoredPositionSwitcherBinder : SwitcherVector3Binder<RectTransform>
+    public sealed class RectTransformAnchoredPositionSwitcherBinder : SwitcherBinder<RectTransform, Vector3>
     {
         [Tooltip("Which property is written: Self → anchoredPosition, World → anchoredPosition3D.")]
         [SerializeField] private Space _space;

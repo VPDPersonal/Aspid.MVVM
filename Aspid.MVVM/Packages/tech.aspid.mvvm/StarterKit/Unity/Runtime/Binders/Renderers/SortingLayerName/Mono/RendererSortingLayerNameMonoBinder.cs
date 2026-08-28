@@ -4,14 +4,14 @@ using UnityEngine;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="ComponentStringMonoBinder{Renderer}"/> that binds <see cref="Renderer.sortingLayerName"/>.
+    /// <see cref="ComponentMonoBinder{TComponent,TProperty}"/> that binds <see cref="Renderer.sortingLayerName"/>.
     /// </summary>
     /// <remarks>
     /// A name no layer has is refused with an error instead of being silently ignored by Unity.
     /// </remarks>
     [AddBinderContextMenu(typeof(Renderer))]
     [AddComponentMenu("Aspid/MVVM/Binders/Renderer/Renderer Binder – Sorting Layer Name")]
-    public class RendererSortingLayerNameMonoBinder : ComponentStringMonoBinder<Renderer>
+    public class RendererSortingLayerNameMonoBinder : ComponentMonoBinder<Renderer, string>
     {
         /// <inheritdoc/>
         protected sealed override string Property
@@ -22,7 +22,7 @@ namespace Aspid.MVVM.StarterKit
                 if (string.IsNullOrEmpty(value)) return;
                 if (SortingLayer.NameToID(value) == 0 && value != "Default")
                 {
-                    Debug.LogError($"[SortingLayerName] No sorting layer named '{value}'; ignored.", CachedComponent);
+                    this.LogError($"no sorting layer is named {value.Describe()}", "The layer is left unchanged.");
                     return;
                 }
                 

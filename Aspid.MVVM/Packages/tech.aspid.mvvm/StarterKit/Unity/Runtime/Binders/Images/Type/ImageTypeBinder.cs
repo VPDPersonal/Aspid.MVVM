@@ -1,6 +1,5 @@
 #nullable enable
 using System;
-using UnityEngine;
 using UnityEngine.UI;
 
 // ReSharper disable once CheckNamespace
@@ -14,18 +13,18 @@ namespace Aspid.MVVM.StarterKit
     public class ImageTypeBinder : TargetBinder<Image, Image.Type>
     {
         /// <inheritdoc/>
+        /// <exception cref="ArgumentException">Thrown when <paramref name="mode"/> is <see cref="BindMode.TwoWay"/> — the property raises no change event to listen to.</exception>
+        public ImageTypeBinder(Image target, IConverter<Image.Type, Image.Type>? converter = null, BindMode mode = BindMode.OneWay)
+            : base(target, converter, mode)
+        {
+            mode.ThrowExceptionIfMatches(BindMode.TwoWay);
+        }
+
+        /// <inheritdoc/>
         protected sealed override Image.Type Property
         {
             get => Target.type;
             set => Target.type = value;
-        }
-
-        /// <inheritdoc/>
-        /// <exception cref="ArgumentException">Thrown when <paramref name="mode"/> is <see cref="BindMode.TwoWay"/> — the property raises no change event to listen to.</exception>
-        public ImageTypeBinder(Image target, BindMode mode = BindMode.OneWay)
-            : base(target, mode)
-        {
-            mode.ThrowExceptionIfMatches(BindMode.TwoWay);
         }
     }
 }

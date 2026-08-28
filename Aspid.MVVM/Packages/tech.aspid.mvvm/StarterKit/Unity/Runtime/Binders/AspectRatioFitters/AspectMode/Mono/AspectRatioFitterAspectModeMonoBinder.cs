@@ -5,7 +5,7 @@ using UnityEngine.UI;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="ComponentMonoBinder{T1, T2}">ComponentMonoBinder&lt;AspectRatioFitter, AspectRatioFitter.AspectMode&gt;</see> that binds
+    /// <see cref="ComponentMonoBinder{TComponent,TProperty}">ComponentMonoBinder&lt;AspectRatioFitter, AspectRatioFitter.AspectMode&gt;</see> that binds
     /// <see cref="AspectRatioFitter.aspectMode"/>.
     /// </summary>
     [AddBinderContextMenu(typeof(AspectRatioFitter), serializePropertyNames: "m_AspectMode")]

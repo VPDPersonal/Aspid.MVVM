@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -8,7 +7,7 @@ namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
     /// <see cref="ComponentMonoBinder{Scrollbar}"/> that binds <see cref="Scrollbar.value"/>.
-    /// Also implements <see cref="INumberBinder"/> and <see cref="INumberReverseBinder"/>, allowing numeric
+    /// Also implements <see cref="IFloatBinder"/> and <see cref="INumberReverseBinder"/>, allowing numeric
     /// values of multiple types to be both pushed to and received from the scrollbar.
     /// </summary>
     /// <remarks>
@@ -23,37 +22,18 @@ namespace Aspid.MVVM.StarterKit
     [BindModeOverride(IsAll = true)]
     [AddComponentMenu("Aspid/MVVM/Binders/UI/Scrollbar/Scrollbar Binder – Value")]
     [AddBinderContextMenu(typeof(Scrollbar), serializePropertyNames: "m_Value")]
-    public class ScrollbarValueMonoBinder : ComponentMonoBinder<Scrollbar>, INumberBinder, INumberReverseBinder
+    public partial class ScrollbarValueMonoBinder : ComponentMonoBinder<Scrollbar>, 
+        IFloatBinder,
+        INumberReverseBinder
     {
-        /// <inheritdoc/>
-        public event Action<int> IntValueChanged;
-        /// <inheritdoc/>
-        public event Action<long> LongValueChanged;
-        /// <inheritdoc/>
-        public event Action<float> FloatValueChanged;
-        /// <inheritdoc/>
-        public event Action<double> DoubleValueChanged;
-
         [Tooltip("Optional converter applied to values before they are set on the scrollbar.")]
         [SerializeReference] private IConverter<float, float> _converter;
 
+        private NumberReverseChannel _channel;
         private bool _isNotifyValueChanged = true;
 
-        /// <summary>
-        /// Casts the value to <see langword="float"/> and sets <see cref="Scrollbar.value"/>.
-        /// </summary>
-        /// <param name="value">The value received from the ViewModel.</param>
-        [BinderLog]
-        public void SetValue(int value) =>
-            SetValueInternal(value);
-
-        /// <summary>
-        /// Casts the value to <see langword="float"/> and sets <see cref="Scrollbar.value"/>.
-        /// </summary>
-        /// <param name="value">The value received from the ViewModel.</param>
-        [BinderLog]
-        public void SetValue(long value) =>
-            SetValueInternal(value);
+        /// <inheritdoc/>
+        ref NumberReverseChannel INumberReverseBinder.Channel => ref _channel;
 
         /// <summary>
         /// Sets <see cref="Scrollbar.value"/>, applying the configured converter if present.
@@ -63,14 +43,6 @@ namespace Aspid.MVVM.StarterKit
         [BinderLog]
         public void SetValue(float value) =>
             SetValueInternal(value);
-
-        /// <summary>
-        /// Casts the value to <see langword="float"/> and sets <see cref="Scrollbar.value"/>.
-        /// </summary>
-        /// <param name="value">The value received from the ViewModel.</param>
-        [BinderLog]
-        public void SetValue(double value) =>
-            SetValueInternal((float)value);
 
         /// <summary>
         /// Called when the binder is bound. Subscribes to <see cref="Scrollbar.onValueChanged"/> when using
@@ -108,7 +80,7 @@ namespace Aspid.MVVM.StarterKit
         protected void SetValueInternal(float value)
         {
             var converted = _converter?.Convert(value) ?? value;
-            var clamped = BinderMath.SafeClamp01(converted);
+            var clamped = this.SafeClamp01(converted);
 
             _isNotifyValueChanged = false;
 
@@ -128,11 +100,7 @@ namespace Aspid.MVVM.StarterKit
         private void OnValueChanged(float value)
         {
             if (!_isNotifyValueChanged) return;
-
-            IntValueChanged?.Invoke((int)value);
-            LongValueChanged?.Invoke((long)value);
-            FloatValueChanged?.Invoke(value);
-            DoubleValueChanged?.Invoke(value);
+            _channel.Raise(value);
         }
     }
 }

@@ -57,9 +57,7 @@ namespace Aspid.MVVM.Tests
         {
             var (binder, target, own) = Create<TransformScaleMonoBinder>();
 
-            // Через IBinder<Vector3>, как это делает биндинг: прямой вызов binder.SetValue(Vector3)
-            // связывается с объявленной в ComponentVector3MonoBinder перегрузкой SetValue(Vector2)
-            // и теряет z — это отдельный дефект, к цели данного теста отношения не имеющий.
+            // Через IBinder<Vector3>, как это делает биндинг.
             ((IBinder<Vector3>)binder).SetValue(Applied);
 
             Assert.AreEqual(Applied, target.localScale, "Значение не доехало до назначенного Transform");

@@ -19,8 +19,9 @@ namespace Aspid.MVVM.StarterKit
             TMP_InputField target,
             TMP_InputField.ContentType trueValue,
             TMP_InputField.ContentType falseValue,
+            IConverter<TMP_InputField.ContentType, TMP_InputField.ContentType> converter = null,
             BindMode mode = BindMode.OneWay) 
-            : base(target, trueValue, falseValue, mode)
+            : base(target, trueValue, falseValue, converter, mode)
         {
             mode.ThrowExceptionIfNotOne();
         }

@@ -6,23 +6,23 @@ using UnityEngine;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="TargetBoolBinder{Canvas}"/> that binds <see cref="Canvas.overrideSorting"/>.
+    /// <see cref="TargetBinder{Canvas, bool}"/> that binds <see cref="Canvas.overrideSorting"/>.
     /// </summary>
     [Serializable]
-    public class CanvasOverrideSortingBinder : TargetBoolBinder<Canvas>
+    public class CanvasOverrideSortingBinder : TargetBinder<Canvas, bool>
     {
-        /// <inheritdoc/>
-        protected sealed override bool Property
-        {
-            get => Target.overrideSorting;
-            set => Target.overrideSorting = value;
-        }
-
         /// <inheritdoc/>
         public CanvasOverrideSortingBinder(
             Canvas target,
             IConverter<bool, bool>? converter = null,
             BindMode mode = BindMode.OneWay)
             : base(target, converter, mode) { }
+
+        /// <inheritdoc/>
+        protected sealed override bool Property
+        {
+            get => Target.overrideSorting;
+            set => Target.overrideSorting = value;
+        }
     }
 }

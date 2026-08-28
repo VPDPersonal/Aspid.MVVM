@@ -19,7 +19,7 @@ namespace Aspid.MVVM.StarterKit
         protected sealed override float Property
         {
             get => Target.size;
-            set => Target.size = BinderMath.SafeClamp01(value);
+            set => Target.size = this.SafeClamp01(value, Target);
         }
 
         /// <inheritdoc/>

@@ -8,7 +8,7 @@ namespace Aspid.MVVM.StarterKit
     /// </summary>
     /// <remarks>
     /// Negative and non-finite values are clamped to zero, which pauses the game rather than being rejected. Audio
-    /// does not follow the time scale — see <see cref="AudioListenerPauseMonoBinder"/> to silence a paused game.
+    /// does not follow the timescale — see <see cref="AudioListenerPauseMonoBinder"/> to silence a paused game.
     /// </remarks>
     [AddComponentMenu("Aspid/MVVM/Binders/Application/Application Binder – Time Scale")]
     [AddBinderContextMenu(typeof(Component), Path = "Add General Binder/Application/TimeScale")]
@@ -18,7 +18,7 @@ namespace Aspid.MVVM.StarterKit
         protected sealed override float Property
         {
             get => Time.timeScale;
-            set => Time.timeScale = BinderMath.SafeClamp(value, 0f, float.MaxValue);
+            set => Time.timeScale = this.SafeClamp(value, 0f, float.MaxValue);
         }
     }
 }

@@ -4,7 +4,7 @@ using UnityEngine;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="BoolMonoBinder"/> that binds <see cref="AudioListener.pause"/>.
+    /// <see cref="MonoBinder{TProperty}">MonoBinder&lt;bool&gt;</see> that binds <see cref="AudioListener.pause"/>.
     /// </summary>
     /// <remarks>
     /// Silences every source at once while keeping their playback positions, which is what a pause menu wants and
@@ -13,7 +13,7 @@ namespace Aspid.MVVM.StarterKit
     /// </remarks>
     [AddComponentMenu("Aspid/MVVM/Binders/Audio/AudioListener Binder – Pause")]
     [AddBinderContextMenu(typeof(Component), Path = "Add General Binder/Audio/AudioListener Binder – Pause")]
-    public class AudioListenerPauseMonoBinder : BoolMonoBinder
+    public class AudioListenerPauseMonoBinder : MonoBinder<bool>
     {
         /// <inheritdoc/>
         protected sealed override bool Property

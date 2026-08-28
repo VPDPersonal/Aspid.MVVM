@@ -13,30 +13,31 @@ namespace Aspid.MVVM.StarterKit
         IReverseBinder<Action>,
         IReverseBinder<IRelayCommand>
     {
-        /// <inheritdoc/>
-        protected override BindMode DefaultMode => BindMode.OneWayToSource;
+        [Tooltip("The name of the trigger Animator parameter to fire.")]
+        [SerializeField] private string _triggerName; 
+        
+        private IRelayCommand _command;
+        private AnimatorParameterProbe _probe;
+        private Action<Action> _reverseAction;
+        private Action<IRelayCommand> _reverseCommand;
 
         event Action<Action> IReverseBinder<Action>.ValueChanged
         {
             add => _reverseAction += value;
             remove => _reverseAction -= value;
         }
-        
+
         event Action<IRelayCommand> IReverseBinder<IRelayCommand>.ValueChanged
         {
             add => _reverseCommand += value;
             remove => _reverseCommand -= value;
         }
         
-        private IRelayCommand _command;
-        private AnimatorParameterProbe _probe;
-        private Action<Action> _reverseAction;
-        private Action<IRelayCommand> _reverseCommand;
-        
-        [field: SerializeField] 
-        [field: Tooltip("The name of the trigger Animator parameter to fire.")]
-        protected string TriggerName { get; private set; }
+        protected string TriggerName => _triggerName;
 
+        /// <inheritdoc/>
+        protected override BindMode DefaultMode => BindMode.OneWayToSource;
+        
         /// <summary>
         /// Notifies the bound command that <see cref="IRelayCommand.CanExecute()"/> may have changed.
         /// </summary>
@@ -107,7 +108,8 @@ namespace Aspid.MVVM.StarterKit
         /// object has nothing to say about a trigger it is not going to set.
         /// </remarks>
         protected virtual bool CanExecute() =>
-            CachedComponent && CachedComponent.gameObject.activeInHierarchy &&
+            CachedComponent &&
+            CachedComponent.gameObject.activeInHierarchy &&
             _probe.IsUsable(CachedComponent, TriggerName, AnimatorControllerParameterType.Trigger, this);
     }
 }

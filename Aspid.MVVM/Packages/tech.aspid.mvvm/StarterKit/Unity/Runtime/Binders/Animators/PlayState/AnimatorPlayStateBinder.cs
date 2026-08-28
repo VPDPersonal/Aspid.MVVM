@@ -48,7 +48,7 @@ namespace Aspid.MVVM.StarterKit
         public void SetValue(string? value)
         {
             if (string.IsNullOrWhiteSpace(value)) return;
-            Target.Play(value, _layer, BinderMath.SafeClamp01(_normalizedTime));
+            Target.Play(value, _layer, this.SafeClamp01(_normalizedTime, Target));
         }
     }
 }

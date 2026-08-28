@@ -8,12 +8,12 @@ using System.Collections.Generic;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="EnumStringMonoBinder{TMP_Text}"/> that sets the <see cref="TMP_Text.text"/> property
+    /// <see cref="EnumMonoBinder{TComponent,TValue}">EnumMonoBinder&lt;TMP_Text, string&gt;</see> that sets the <see cref="TMP_Text.text"/> property
     /// by resolving a localization table entry based on the bound enum ViewModel value.
     /// </summary>
     [AddComponentMenu("Aspid/MVVM/Binders/UI/Text/Text Binder – Localization Entry Enum")]
     [AddBinderContextMenu(typeof(TMP_Text), serializePropertyNames: "m_text", SubPath = "Enum")]
-    public class TextLocalizationEntryEnumMonoBinder : EnumStringMonoBinder<TMP_Text>
+    public class TextLocalizationEntryEnumMonoBinder : EnumMonoBinder<TMP_Text, string>
     {
         [Tooltip("The localized string reference that provides the localized text.")]
         [SerializeField] private LocalizedString _stringReference = new();

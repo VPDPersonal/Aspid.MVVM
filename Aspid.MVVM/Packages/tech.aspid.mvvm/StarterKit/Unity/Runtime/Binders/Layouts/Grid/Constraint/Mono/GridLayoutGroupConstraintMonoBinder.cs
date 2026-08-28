@@ -5,7 +5,7 @@ using UnityEngine.UI;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="ComponentMonoBinder{T1, T2}">ComponentMonoBinder&lt;GridLayoutGroup, GridLayoutGroup.Constraint&gt;</see> that binds
+    /// <see cref="ComponentMonoBinder{TComponent,TProperty}">ComponentMonoBinder&lt;GridLayoutGroup, GridLayoutGroup.Constraint&gt;</see> that binds
     /// <see cref="GridLayoutGroup.constraint"/>.
     /// </summary>
     /// <remarks>

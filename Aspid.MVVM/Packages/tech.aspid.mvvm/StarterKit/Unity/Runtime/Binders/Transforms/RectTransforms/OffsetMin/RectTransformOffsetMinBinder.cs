@@ -6,7 +6,7 @@ using UnityEngine;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="TargetVector2Binder{RectTransform}"/> that binds <see cref="RectTransform.offsetMin"/>.
+    /// <see cref="TargetBinder{RectTransform, Vector2}"/> that binds <see cref="RectTransform.offsetMin"/>.
     /// </summary>
     /// <remarks>
     /// The distance between this corner of the element and the anchor it is pinned to, in pixels. It is what
@@ -17,7 +17,7 @@ namespace Aspid.MVVM.StarterKit
     /// one is refused.
     /// </remarks>
     [Serializable]
-    public class RectTransformOffsetMinBinder : TargetVector2Binder<RectTransform>
+    public class RectTransformOffsetMinBinder : TargetBinder<RectTransform, Vector2>, IVector2Binder
     {
         /// <inheritdoc/>
         protected sealed override Vector2 Property
@@ -25,7 +25,7 @@ namespace Aspid.MVVM.StarterKit
             get => Target.offsetMin;
             set
             {
-                if (!BinderMath.IsFinite(value.x) || !BinderMath.IsFinite(value.y)) return;
+                if (!this.RequireFinite(value, Target)) return;
                 Target.offsetMin = value;
             }
         }

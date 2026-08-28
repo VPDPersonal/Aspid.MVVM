@@ -1,18 +1,17 @@
 using UnityEngine;
-using UnityEngine.UI;
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="ComponentBoolMonoBinder{Canvas}"/> that binds <see cref="Canvas.overrideSorting"/>.
+    /// <see cref="ComponentMonoBinder{TComponent,TProperty}"/> that binds <see cref="Canvas.overrideSorting"/>.
     /// </summary>
     /// <remarks>
     /// Unity ignores this on a root canvas, which already sorts independently, so binding it there has no effect.
     /// </remarks>
     [AddBinderContextMenu(typeof(Canvas), serializePropertyNames: "m_OverrideSorting")]
     [AddComponentMenu("Aspid/MVVM/Binders/UI/Canvas/Canvas Binder – Override Sorting")]
-    public class CanvasOverrideSortingMonoBinder : ComponentBoolMonoBinder<Canvas>
+    public class CanvasOverrideSortingMonoBinder : ComponentMonoBinder<Canvas, bool>
     {
         /// <inheritdoc/>
         protected sealed override bool Property

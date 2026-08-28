@@ -4,12 +4,12 @@ using UnityEngine;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="EnumGroupVector3MonoBinder{Transform}"/> that sets the <see cref="Transform.rotation"/> or
+    /// <see cref="EnumGroupMonoBinder{Transform, Vector3}"/> that sets the <see cref="Transform.rotation"/> or
     /// <see cref="Transform.localRotation"/> on each element in the group based on the bound enum ViewModel value.
     /// </summary>
     [AddComponentMenu("Aspid/MVVM/Binders/Transform/Transform Binder – Rotation EnumGroup")]
     [AddBinderContextMenu(typeof(Transform), serializePropertyNames: "m_LocalRotation", SubPath = "EnumGroup")]
-    public sealed class TransformRotationEnumGroupMonoBinder : EnumGroupVector3MonoBinder<Transform>
+    public sealed class TransformRotationEnumGroupMonoBinder : EnumGroupMonoBinder<Transform, Vector3>
     {
         [Tooltip("The coordinate space in which the rotation is applied.")]
         [SerializeField] private Space _space = Space.World;

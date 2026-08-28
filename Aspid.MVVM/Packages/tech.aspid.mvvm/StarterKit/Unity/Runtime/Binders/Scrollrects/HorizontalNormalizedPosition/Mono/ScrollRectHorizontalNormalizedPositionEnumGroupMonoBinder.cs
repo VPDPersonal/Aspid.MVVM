@@ -18,6 +18,6 @@ namespace Aspid.MVVM.StarterKit
         /// <param name="element">The component this entry of the group writes to.</param>
         /// <param name="value">The value the bound enum resolved to for this element.</param>
         protected override void SetValue(ScrollRect element, float value) =>
-            element.horizontalNormalizedPosition = BinderMath.SafeClamp01(value);
+            element.horizontalNormalizedPosition = this.SafeClamp01(value);
     }
 }

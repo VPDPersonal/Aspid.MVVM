@@ -28,7 +28,11 @@ namespace Aspid.MVVM.StarterKit
             remove => _valueChanged -= value;
         }
 
+        [Tooltip("The stored value. Set in the Inspector, it is the value before the first ViewModel push.")]
         [SerializeField] private T? _value;
+
+        [Tooltip("Optional converter applied to each incoming value before it is stored. " +
+            "Reverses only via ITwoWayConverter.")]
         [SerializeReference] private IConverter<T?, T?>? _converter;
 
         private Action<T?>? _valueChanged;
@@ -84,11 +88,9 @@ namespace Aspid.MVVM.StarterKit
         /// and raises <see cref="Changed"/> with the original unconverted value.
         /// </summary>
         /// <remarks>
-        /// The backing field is written directly rather than through <see cref="Value"/>, because that property's
-        /// setter is the View-side entry point and raises <see cref="IReverseBinder{T}.ValueChanged"/>. Going
-        /// through it turned every ViewModel update straight back into a View update — carrying the
-        /// <em>converted</em> value, so the model was overwritten with what the display shows, and a converter that
-        /// is not idempotent kept going until the generated setter's equality check happened to stop it.
+        /// The backing field is written directly rather than through <see cref="Value"/>: that property's setter
+        /// is the View-side entry point and raises <see cref="IReverseBinder{T}.ValueChanged"/>, which would send
+        /// every ViewModel update straight back to the ViewModel.
         /// </remarks>
         /// <param name="value">The new value received from the ViewModel.</param>
         void IBinder<T>.SetValue(T? value)

@@ -4,11 +4,11 @@ using UnityEngine;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="ComponentColorMonoBinder{Light}"/> that binds <see cref="Light.color"/>.
+    /// <see cref="ComponentMonoBinder{Light, Color}"/> that binds <see cref="Light.color"/>.
     /// </summary>
     [AddBinderContextMenu(typeof(Light), serializePropertyNames: "m_Color")]
     [AddComponentMenu("Aspid/MVVM/Binders/Rendering/Light Binder – Color")]
-    public class LightColorMonoBinder : ComponentColorMonoBinder<Light>
+    public class LightColorMonoBinder : ComponentMonoBinder<Light, Color>, IColorBinder
     {
         /// <inheritdoc/>
         protected sealed override Color Property

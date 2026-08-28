@@ -1,7 +1,7 @@
 #if UNITY_2023_1_OR_NEWER || ASPID_MVVM_TEXT_MESH_PRO_INTEGRATION
 #nullable enable
-using System;
 using TMPro;
+using System;
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
@@ -19,18 +19,18 @@ namespace Aspid.MVVM.StarterKit
     public class InputFieldCharacterLimitBinder : TargetIntBinder<TMP_InputField>
     {
         /// <inheritdoc/>
-        protected sealed override int Property
-        {
-            get => Target.characterLimit;
-            set => Target.characterLimit = value;
-        }
-
-        /// <inheritdoc/>
         public InputFieldCharacterLimitBinder(
             TMP_InputField target,
             IConverter<int, int>? converter = null,
             BindMode mode = BindMode.OneWay)
             : base(target, converter, mode) { }
+
+        /// <inheritdoc/>
+        protected sealed override int Property
+        {
+            get => Target.characterLimit;
+            set => Target.characterLimit = value;
+        }
     }
 }
 #endif

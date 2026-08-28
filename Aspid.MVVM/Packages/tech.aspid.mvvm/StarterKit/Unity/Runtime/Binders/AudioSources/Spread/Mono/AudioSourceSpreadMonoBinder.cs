@@ -30,6 +30,6 @@ namespace Aspid.MVVM.StarterKit
         /// </remarks>
         /// <param name="value">The value to convert.</param>
         protected override float GetConvertedValue(float value) =>
-            BinderMath.SafeClamp(base.GetConvertedValue(value), 0, 360);
+            this.SafeClamp(base.GetConvertedValue(value), 0, 360);
     }
 }

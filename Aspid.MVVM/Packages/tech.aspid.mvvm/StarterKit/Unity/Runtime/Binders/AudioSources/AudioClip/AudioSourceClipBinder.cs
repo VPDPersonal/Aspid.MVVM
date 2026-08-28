@@ -13,18 +13,18 @@ namespace Aspid.MVVM.StarterKit
     public class AudioSourceClipBinder : TargetBinder<AudioSource, AudioClip>
     {
         /// <inheritdoc/>
+        /// <exception cref="ArgumentException">Thrown when <paramref name="mode"/> is <see cref="BindMode.TwoWay"/>.</exception>
+        public AudioSourceClipBinder(AudioSource target, IConverter<AudioClip, AudioClip>? converter = null, BindMode mode = BindMode.OneWay)
+            : base(target, converter, mode)
+        {
+            mode.ThrowExceptionIfMatches(BindMode.TwoWay);
+        }
+
+        /// <inheritdoc/>
         protected sealed override AudioClip? Property
         {
             get => Target.clip;
             set => Target.clip = value;
-        }
-
-        /// <inheritdoc/>
-        /// <exception cref="ArgumentException">Thrown when <paramref name="mode"/> is <see cref="BindMode.TwoWay"/>.</exception>
-        public AudioSourceClipBinder(AudioSource target, BindMode mode = BindMode.OneWay)
-            : base(target, mode)
-        {
-            mode.ThrowExceptionIfMatches(BindMode.TwoWay);
         }
     }
 }

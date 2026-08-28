@@ -6,7 +6,7 @@ using UnityEngine;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="ComponentMonoBinder{T1, T2}">ComponentMonoBinder&lt;TMP_InputField, TMP_InputField.LineType&gt;</see> that gets and sets
+    /// <see cref="ComponentMonoBinder{TComponent,TProperty}">ComponentMonoBinder&lt;TMP_InputField, TMP_InputField.LineType&gt;</see> that gets and sets
     /// <see cref="TMP_InputField.lineType"/>.
     /// </summary>
     [AddComponentMenu("Aspid/MVVM/Binders/UI/InputField/InputField Binder – LineType")]

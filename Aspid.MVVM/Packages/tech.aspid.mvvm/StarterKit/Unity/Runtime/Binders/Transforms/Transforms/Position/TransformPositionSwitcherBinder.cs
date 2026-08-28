@@ -6,12 +6,12 @@ using UnityEngine;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="SwitcherVector3Binder{Transform}"/> that switches the <see cref="Transform.position"/> or
+    /// <see cref="SwitcherBinder{TTarget,T}">SwitcherBinder&lt;Transform, Vector3&gt;</see> that switches the <see cref="Transform.position"/> or
     /// <see cref="Transform.localPosition"/> between two <see cref="Vector3"/> values based on the bound boolean ViewModel value.
     /// </summary>
     /// <include file="XmlExampleDoc-Transform-Position-1.1.0.xml" path="doc//member[@name='TransformPositionSwitcherBinder']/*" />
     [Serializable]
-    public sealed class TransformPositionSwitcherBinder : SwitcherVector3Binder<Transform>
+    public sealed class TransformPositionSwitcherBinder : SwitcherBinder<Transform, Vector3>
     {
         [Tooltip("The coordinate space in which the position is applied.")]
         [SerializeField] private Space _space;

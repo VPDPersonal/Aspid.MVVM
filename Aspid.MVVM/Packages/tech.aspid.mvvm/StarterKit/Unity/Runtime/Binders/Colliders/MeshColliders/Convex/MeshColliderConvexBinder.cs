@@ -6,11 +6,11 @@ using UnityEngine;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="TargetBoolBinder{MeshCollider}"/> that sets the <see cref="MeshCollider.convex"/> property.
+    /// <see cref="TargetBinder{MeshCollider, bool}"/> that sets the <see cref="MeshCollider.convex"/> property.
     /// </summary>
     /// <include file="XmlExampleDoc-MeshCollider-Convex-1.1.0.xml" path="doc//member[@name='MeshColliderConvexBinder']/*" />
     [Serializable]
-    public class MeshColliderConvexBinder : TargetBoolBinder<MeshCollider>
+    public class MeshColliderConvexBinder : TargetBinder<MeshCollider, bool>
     {
         /// <inheritdoc/>
         protected sealed override bool Property

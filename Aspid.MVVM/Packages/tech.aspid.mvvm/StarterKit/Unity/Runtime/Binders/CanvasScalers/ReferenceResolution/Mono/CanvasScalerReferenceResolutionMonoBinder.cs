@@ -5,7 +5,7 @@ using UnityEngine.UI;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="ComponentVector2MonoBinder{CanvasScaler}"/> that binds <see cref="CanvasScaler.referenceResolution"/>.
+    /// <see cref="ComponentMonoBinder{CanvasScaler, Vector2}"/> that binds <see cref="CanvasScaler.referenceResolution"/>.
     /// </summary>
     /// <remarks>
     /// Only read when <see cref="CanvasScaler.uiScaleMode"/> is
@@ -14,13 +14,13 @@ namespace Aspid.MVVM.StarterKit
     /// </remarks>
     [AddBinderContextMenu(typeof(CanvasScaler), serializePropertyNames: "m_ReferenceResolution")]
     [AddComponentMenu("Aspid/MVVM/Binders/UI/CanvasScaler/CanvasScaler Binder – Reference Resolution")]
-    public class CanvasScalerReferenceResolutionMonoBinder : ComponentVector2MonoBinder<CanvasScaler>
+    public class CanvasScalerReferenceResolutionMonoBinder : ComponentMonoBinder<CanvasScaler, Vector2>, IVector2Binder
     {
         /// <inheritdoc/>
         protected sealed override Vector2 Property
         {
             get => CachedComponent.referenceResolution;
-            set => CachedComponent.referenceResolution = new Vector2(BinderMath.SafeClamp(value.x, 1f, float.MaxValue), BinderMath.SafeClamp(value.y, 1f, float.MaxValue));
+            set => CachedComponent.referenceResolution = new Vector2(this.SafeClamp(value.x, 1f, float.MaxValue), this.SafeClamp(value.y, 1f, float.MaxValue));
         }
     }
 }

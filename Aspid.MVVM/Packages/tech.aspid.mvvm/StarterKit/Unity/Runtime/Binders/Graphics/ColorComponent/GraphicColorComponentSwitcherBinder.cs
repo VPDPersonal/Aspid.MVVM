@@ -7,13 +7,13 @@ using UnityEngine.UI;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="SwitcherFloatBinder{Graphic}"/> that switches a single <see cref="ColorComponent"/>
+    /// <see cref="SwitcherBinder{TTarget,T}">SwitcherBinder&lt;Graphic, float&gt;</see> that switches a single <see cref="ColorComponent"/>
     /// channel of the <see cref="Graphic.color"/> property between two <see cref="float"/> values
     /// based on the bound boolean ViewModel value.
     /// </summary>
     /// <include file="XmlExampleDoc-Graphic-ColorComponent-1.1.0.xml" path="doc//member[@name='GraphicColorComponentSwitcherBinder']/*" />
     [Serializable]
-    public sealed class GraphicColorComponentSwitcherBinder : SwitcherFloatBinder<Graphic>
+    public sealed class GraphicColorComponentSwitcherBinder : SwitcherBinder<Graphic, float>
     {
         [Tooltip("Which color channel the bound value writes to; others keep their value.")]
         [SerializeField] private ColorComponent _component = ColorComponent.A;

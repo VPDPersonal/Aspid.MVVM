@@ -80,7 +80,7 @@ namespace Aspid.MVVM.StarterKit
         {
             if (_viewFactory is not null) return true;
 
-            Debug.LogError($"[{GetType().Name}] No view factory assigned.", context: this);
+            this.LogError("no view factory is assigned", "No view is created for the collection.");
             return false;
         }
     }

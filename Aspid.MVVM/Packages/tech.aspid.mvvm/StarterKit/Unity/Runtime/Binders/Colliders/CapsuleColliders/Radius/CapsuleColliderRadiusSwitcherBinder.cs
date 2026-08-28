@@ -6,12 +6,12 @@ using UnityEngine;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="SwitcherFloatBinder{CapsuleCollider}"/> that switches the <see cref="CapsuleCollider.radius"/>
+    /// <see cref="SwitcherBinder{TTarget,T}">SwitcherBinder&lt;CapsuleCollider, float&gt;</see> that switches the <see cref="CapsuleCollider.radius"/>
     /// property between two <see langword="float"/> values based on the bound boolean ViewModel value.
     /// </summary>
     /// <include file="XmlExampleDoc-CapsuleCollider-Radius-1.1.0.xml" path="doc//member[@name='CapsuleColliderRadiusSwitcherBinder']/*" />
     [Serializable]
-    public sealed class CapsuleColliderRadiusSwitcherBinder : SwitcherFloatBinder<CapsuleCollider>
+    public sealed class CapsuleColliderRadiusSwitcherBinder : SwitcherBinder<CapsuleCollider, float>
     {
         /// <inheritdoc/>
         public CapsuleColliderRadiusSwitcherBinder(
@@ -24,6 +24,6 @@ namespace Aspid.MVVM.StarterKit
 
         /// <inheritdoc/>
         protected override void SetValue(float value) =>
-            Target.radius = BinderMath.NonNegative(value);
+            Target.radius = this.NonNegative(value, Target);
     }
 }

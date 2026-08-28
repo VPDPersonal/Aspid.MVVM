@@ -7,16 +7,16 @@ using UnityEngine.UI;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="TargetVector2Binder{ScrollRect}"/> that binds <see cref="ScrollRect.normalizedPosition"/>.
+    /// <see cref="TargetBinder{ScrollRect, Vector2}"/> that binds <see cref="ScrollRect.normalizedPosition"/>.
     /// </summary>
     [Serializable]
-    public class ScrollRectNormalizedPositionBinder : TargetVector2Binder<ScrollRect>
+    public class ScrollRectNormalizedPositionBinder : TargetBinder<ScrollRect, Vector2>, IVector2Binder
     {
         /// <inheritdoc/>
         protected sealed override Vector2 Property
         {
             get => Target.normalizedPosition;
-            set => Target.normalizedPosition = new Vector2(BinderMath.SafeClamp01(value.x), BinderMath.SafeClamp01(value.y));
+            set => Target.normalizedPosition = new Vector2(this.SafeClamp01(value.x, Target), this.SafeClamp01(value.y, Target));
         }
 
         /// <inheritdoc/>

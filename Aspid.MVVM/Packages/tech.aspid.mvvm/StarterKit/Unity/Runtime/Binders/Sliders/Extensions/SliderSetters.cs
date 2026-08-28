@@ -38,16 +38,16 @@ namespace Aspid.MVVM.StarterKit
             
             if (!BinderMath.IsFinite(value.x) || !BinderMath.IsFinite(value.y))
             {
-                Debug.LogError($"[SetMinMax] Non-finite slider range ({value.x}, {value.y}) ignored.", slider);
+                BinderLogger.LogError(typeof(SliderSetters), $"the range ({value.x}, {value.y}) is not finite", "The slider range is left unchanged.", slider);
                 return;
             }
 
             // Unity does not keep minValue <= maxValue for you: assigning them in order is enough to leave the
             // slider inverted, and normalizedValue then reads backwards. Swapping keeps the control usable, and the
-            // log names the binder that produced the inverted pair — silently clamping would hide the mistake.
+            // log reports the inverted pair — silently clamping would hide the mistake.
             if (value.x > value.y)
             {
-                Debug.LogError($"[SetMinMax] Inverted slider range ({value.x} > {value.y}); endpoints swapped.", slider);
+                BinderLogger.LogError(typeof(SliderSetters), $"the range ({value.x}, {value.y}) is inverted", "The endpoints are swapped.", slider);
                 value = new Vector2(value.y, value.x);
             }
 

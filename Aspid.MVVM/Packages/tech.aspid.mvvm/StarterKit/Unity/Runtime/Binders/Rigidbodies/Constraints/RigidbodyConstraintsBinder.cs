@@ -21,8 +21,8 @@ namespace Aspid.MVVM.StarterKit
 
         /// <inheritdoc/>
         /// <exception cref="ArgumentException">Thrown when <paramref name="mode"/> is <see cref="BindMode.TwoWay"/> — the property raises no change event to listen to.</exception>
-        public RigidbodyConstraintsBinder(Rigidbody target, BindMode mode = BindMode.OneWay)
-            : base(target, mode)
+        public RigidbodyConstraintsBinder(Rigidbody target, IConverter<RigidbodyConstraints, RigidbodyConstraints>? converter = null, BindMode mode = BindMode.OneWay)
+            : base(target, converter, mode)
         {
             mode.ThrowExceptionIfMatches(BindMode.TwoWay);
         }

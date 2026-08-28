@@ -10,8 +10,8 @@ namespace Aspid.MVVM.Tests
 {
     /// <summary>
     /// Tests for the property bases the binder set was missing:
-    /// <see cref="ComponentVector2MonoBinder{TComponent}"/>, <see cref="ComponentQuaternionMonoBinder{TComponent}"/>,
-    /// <see cref="ComponentObjectMonoBinder{TComponent, TObject}"/> and their <c>Target</c> counterparts.
+    /// <see cref="ComponentMonoBinder{TComponent, TProperty}"/>, <see cref="ComponentObjectMonoBinder{TComponent, TObject}"/>
+    /// and their <c>Target</c> counterparts.
     /// </summary>
     /// <remarks>
     /// Two-dimensional properties used to be bound through a Vector3 base, which reports <c>Vector3(x, y, 0)</c>
@@ -63,7 +63,7 @@ namespace Aspid.MVVM.Tests
             var (component, binder) = NewVector2Binder(BindMode.OneWay);
             binder.Bind(new OneWayStructBindableMember<Vector2>(Vector2.zero));
 
-            binder.SetValue(new Vector3(1f, 2f, 3f));
+            ((IBinder<Vector3>)binder).SetValue(new Vector3(1f, 2f, 3f));
 
             Assert.AreEqual(new Vector2(1f, 2f), component.Value, "Vector3 применился не как (X, Y)");
         }
@@ -74,14 +74,14 @@ namespace Aspid.MVVM.Tests
             var (component, binder) = NewVector2Binder(BindMode.OneWay);
             binder.Bind(new OneWayStructBindableMember<Vector2>(Vector2.zero));
 
-            binder.SetValue(5f);
+            ((IBinder<float>)binder).SetValue(5f);
 
             Assert.AreEqual(new Vector2(5f, 5f), component.Value, "Скаляр не разошёлся по обеим компонентам");
         }
 
         /// <summary>
-        /// Guards the redeclared <c>SetValue(Vector2)</c>: without it the Vector3 overload wins for a Vector2
-        /// argument, because Vector2 converts to Vector3 implicitly.
+        /// The property's own type stays the direct call: <see cref="IVector2Binder"/> keeps the Vector3 and scalar
+        /// entry points as default interface implementations, so neither can win overload resolution here.
         /// </summary>
         [Test]
         public void Vector2MonoBinder_ADirectVector2Call_AppliesTheVectorItself()
@@ -128,25 +128,12 @@ namespace Aspid.MVVM.Tests
             var (component, binder) = NewQuaternionBinder(BindMode.OneWay);
             binder.Bind(new OneWayStructBindableMember<Quaternion>(Quaternion.identity));
 
-            binder.SetValue(30f);
+            ((IBinder<float>)binder).SetValue(30f);
 
             Assert.AreEqual(Quaternion.Euler(30f, 30f, 30f).eulerAngles, component.Value.eulerAngles,
                 "Скаляр не применился как одинаковый угол по трём осям");
         }
 
-        /// <summary>
-        /// A rotation property raises no change event, so TwoWay would be a channel that never delivers.
-        /// The base refuses it rather than degrading silently.
-        /// </summary>
-        [Test]
-        public void QuaternionTargetBinder_RefusesTwoWay()
-        {
-            var component = NewGameObject().AddComponent<QuaternionComponent>();
-
-            Assert.Throws<System.ArgumentException>(
-                () => _ = new TestTargetQuaternionBinder(component, mode: BindMode.TwoWay),
-                "TwoWay принят режимом, в котором обратный канал невозможен");
-        }
         #endregion
 
         #region Object
@@ -197,7 +184,7 @@ namespace Aspid.MVVM.Tests
         {
             var component = NewGameObject().AddComponent<ObjectComponent>();
             var texture = NewTexture();
-            var binder = new TestTargetObjectBinder(component, BindMode.OneWay);
+            var binder = new TestTargetObjectBinder(component, mode: BindMode.OneWay);
 
             binder.Bind(new OneWayBindableMember<Texture2D>(null));
             Object.DestroyImmediate(texture);
@@ -225,11 +212,15 @@ namespace Aspid.MVVM.Tests
             Assert.AreEqual(Quaternion.Euler(0f, 45f, 0f).eulerAngles, gameObject.transform.rotation.eulerAngles,
                 "Углы Эйлера перестали применяться после переноса на базу");
 
-            binder.SetValue(15f);
+            ((IBinder<float>)binder).SetValue(15f);
             Assert.AreEqual(Quaternion.Euler(15f, 15f, 15f).eulerAngles, gameObject.transform.rotation.eulerAngles,
                 "Скаляр перестал применяться после переноса на базу");
         }
 
+        /// <summary>
+        /// A rotation property raises no change event, so TwoWay would be a channel that never delivers.
+        /// Each rotation binder refuses it in its own constructor rather than degrading silently.
+        /// </summary>
         [Test]
         public void TransformRotationBinder_StillRefusesTwoWay()
         {
@@ -316,7 +307,7 @@ namespace Aspid.MVVM.Tests
         public Texture2D Value;
     }
 
-    internal sealed class TestComponentVector2Binder : ComponentVector2MonoBinder<Vector2Component>
+    internal sealed class TestComponentVector2Binder : ComponentMonoBinder<Vector2Component, Vector2>, IVector2Binder
     {
         protected override Vector2 Property
         {
@@ -325,7 +316,7 @@ namespace Aspid.MVVM.Tests
         }
     }
 
-    internal sealed class TestComponentQuaternionBinder : ComponentQuaternionMonoBinder<QuaternionComponent>
+    internal sealed class TestComponentQuaternionBinder : ComponentMonoBinder<QuaternionComponent, Quaternion>, IRotationBinder
     {
         protected override Quaternion Property
         {
@@ -343,7 +334,7 @@ namespace Aspid.MVVM.Tests
         }
     }
 
-    internal sealed class TestTargetVector2Binder : TargetVector2Binder<Vector2Component>
+    internal sealed class TestTargetVector2Binder : TargetBinder<Vector2Component, Vector2>, IVector2Binder
     {
         public TestTargetVector2Binder(
             Vector2Component target,
@@ -358,25 +349,10 @@ namespace Aspid.MVVM.Tests
         }
     }
 
-    internal sealed class TestTargetQuaternionBinder : TargetQuaternionBinder<QuaternionComponent>
-    {
-        public TestTargetQuaternionBinder(
-            QuaternionComponent target,
-            IConverter<Quaternion, Quaternion> converter = null,
-            BindMode mode = BindMode.OneWay)
-            : base(target, converter, mode) { }
-
-        protected override Quaternion Property
-        {
-            get => Target.Value;
-            set => Target.Value = value;
-        }
-    }
-
     internal sealed class TestTargetObjectBinder : TargetObjectBinder<ObjectComponent, Texture2D>
     {
-        public TestTargetObjectBinder(ObjectComponent target, BindMode mode = BindMode.OneWay)
-            : base(target, mode) { }
+        public TestTargetObjectBinder(ObjectComponent target, IConverter<Texture2D, Texture2D> converter = null, BindMode mode = BindMode.OneWay)
+            : base(target, converter, mode) { }
 
         protected override Texture2D Property
         {

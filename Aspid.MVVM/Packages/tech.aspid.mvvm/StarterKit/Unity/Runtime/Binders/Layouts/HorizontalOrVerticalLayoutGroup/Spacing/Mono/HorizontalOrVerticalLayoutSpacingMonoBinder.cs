@@ -8,13 +8,13 @@ namespace Aspid.MVVM.StarterKit
     /// <see cref="ComponentFloatMonoBinder{HorizontalOrVerticalLayoutGroup}"/> that binds the <see cref="UnityEngine.UI.HorizontalOrVerticalLayoutGroup.spacing"/> property.
     /// </summary>
     /// <remarks>
-    /// Also implements <see cref="INumberBinder"/>: numeric ViewModel values are forwarded directly to
+    /// Also implements <see cref="IFloatBinder"/>: numeric ViewModel values are forwarded directly to
     /// <see cref="UnityEngine.UI.HorizontalOrVerticalLayoutGroup.spacing"/>. A non-finite value is rejected
     /// instead of being written.
     /// </remarks>
     [AddBinderContextMenu(typeof(HorizontalOrVerticalLayoutGroup), serializePropertyNames: "m_Spacing")]
     [AddComponentMenu("Aspid/MVVM/Binders/UI/LayoutGroup/HorizontalOrVertical/HorizontalOrVerticalLayoutGroup Binder – Spacing")]
-    public class HorizontalOrVerticalLayoutSpacingMonoBinder : ComponentFloatMonoBinder<HorizontalOrVerticalLayoutGroup>, INumberBinder
+    public class HorizontalOrVerticalLayoutSpacingMonoBinder : ComponentFloatMonoBinder<HorizontalOrVerticalLayoutGroup>
     {
         /// <inheritdoc/>
         protected sealed override float Property
@@ -22,7 +22,7 @@ namespace Aspid.MVVM.StarterKit
             get => CachedComponent.spacing;
             set
             {
-                if (!BinderMath.IsFinite(value)) return;
+                if (!this.RequireFinite(value)) return;
                 CachedComponent.spacing = value;
             }
         }

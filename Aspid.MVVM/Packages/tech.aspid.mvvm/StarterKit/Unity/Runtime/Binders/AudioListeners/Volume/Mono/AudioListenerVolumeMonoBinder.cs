@@ -22,7 +22,7 @@ namespace Aspid.MVVM.StarterKit
         protected sealed override float Property
         {
             get => AudioListener.volume;
-            set => AudioListener.volume = BinderMath.SafeClamp01(value);
+            set => AudioListener.volume = this.SafeClamp01(value);
         }
     }
 }

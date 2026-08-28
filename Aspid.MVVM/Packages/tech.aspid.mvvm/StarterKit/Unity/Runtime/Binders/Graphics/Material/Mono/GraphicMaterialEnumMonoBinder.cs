@@ -5,12 +5,12 @@ using UnityEngine.UI;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="EnumMonoBinderWithConverter{T1, T2}"/> that sets the <see cref="Graphic.material"/>
+    /// <see cref="EnumMonoBinder{T1, T2}"/> that sets the <see cref="Graphic.material"/>
     /// property to a value resolved from the bound enum ViewModel value.
     /// </summary>
     [AddComponentMenu("Aspid/MVVM/Binders/UI/Graphic/Graphic Binder – Material Enum")]
     [AddBinderContextMenu(typeof(Graphic), serializePropertyNames: "m_Material", SubPath = "Enum")]
-    public sealed class GraphicMaterialEnumMonoBinder : EnumMonoBinderWithConverter<Graphic, Material>
+    public sealed class GraphicMaterialEnumMonoBinder : EnumMonoBinder<Graphic, Material>
     {
         /// <inheritdoc/>
         protected override void SetValue(Material value) =>

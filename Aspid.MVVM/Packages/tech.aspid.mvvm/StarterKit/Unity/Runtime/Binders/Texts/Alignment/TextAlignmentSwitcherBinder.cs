@@ -1,7 +1,7 @@
 #if UNITY_2023_1_OR_NEWER || ASPID_MVVM_TEXT_MESH_PRO_INTEGRATION
 #nullable enable
-using System;
 using TMPro;
+using System;
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
@@ -19,8 +19,9 @@ namespace Aspid.MVVM.StarterKit
             TMP_Text target,
             TextAlignmentOptions trueValue,
             TextAlignmentOptions falseValue,
+            IConverter<TextAlignmentOptions, TextAlignmentOptions>? converter = null,
             BindMode mode = BindMode.OneWay)
-            : base(target, trueValue, falseValue, mode) { }
+            : base(target, trueValue, falseValue, converter, mode) { }
 
         /// <inheritdoc/>
         protected override void SetValue(TextAlignmentOptions value) =>

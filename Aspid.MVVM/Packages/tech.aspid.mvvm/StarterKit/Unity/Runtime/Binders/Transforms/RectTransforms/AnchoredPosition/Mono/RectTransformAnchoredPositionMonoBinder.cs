@@ -4,12 +4,12 @@ using UnityEngine;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="ComponentVector3MonoBinder{RectTransform}"/> that sets the <see cref="RectTransform.anchoredPosition"/> or
+    /// <see cref="ComponentMonoBinder{RectTransform, Vector3}"/> that sets the <see cref="RectTransform.anchoredPosition"/> or
     /// <see cref="RectTransform.anchoredPosition3D"/> property depending on the configured <see cref="Space"/>.
     /// </summary>
     [AddBinderContextMenu(typeof(RectTransform))]
     [AddComponentMenu("Aspid/MVVM/Binders/UI/RectTransform/RectTransform Binder – AnchoredPosition")]
-    public class RectTransformAnchoredPositionMonoBinder : ComponentVector3MonoBinder<RectTransform>
+    public class RectTransformAnchoredPositionMonoBinder : ComponentMonoBinder<RectTransform, Vector3>, IVector3Binder
     {
         [Tooltip("Which property is written: Self → anchoredPosition, World → anchoredPosition3D.")]
         [SerializeField] private Space _space = Space.World;

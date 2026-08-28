@@ -6,7 +6,7 @@ using UnityEngine;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="SwitcherFloatBinder{AudioSource}"/> that switches the <see cref="AudioSource.reverbZoneMix"/>
+    /// <see cref="SwitcherBinder{TTarget,T}">SwitcherBinder&lt;AudioSource, float&gt;</see> that switches the <see cref="AudioSource.reverbZoneMix"/>
     /// property between two <see cref="float"/> values based on the bound boolean ViewModel value.
     /// </summary>
     /// <remarks>
@@ -14,7 +14,7 @@ namespace Aspid.MVVM.StarterKit
     /// </remarks>
     /// <include file="XmlExampleDoc-AudioSource-ReverbZone-1.1.0.xml" path="doc//member[@name='AudioSourceReverbZoneMixSwitcherBinder']/*" />
     [Serializable]
-    public sealed class AudioSourceReverbZoneMixSwitcherBinder : SwitcherFloatBinder<AudioSource>
+    public sealed class AudioSourceReverbZoneMixSwitcherBinder : SwitcherBinder<AudioSource, float>
     {
         /// <inheritdoc/>
         public AudioSourceReverbZoneMixSwitcherBinder(
@@ -31,6 +31,6 @@ namespace Aspid.MVVM.StarterKit
         /// </summary>
         /// <param name="value">The value received from the ViewModel.</param>
         protected override void SetValue(float value) =>
-            Target.reverbZoneMix = BinderMath.SafeClamp(value, 0, 1.1f);
+            Target.reverbZoneMix = this.SafeClamp(value, 0, 1.1f, Target);
     }
 }

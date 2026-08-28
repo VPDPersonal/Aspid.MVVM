@@ -6,13 +6,13 @@ using UnityEngine;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="ComponentStringMonoBinder{TMP_Text}"/> that sets the <see cref="TMP_Text.text"/> property.
+    /// <see cref="ComponentMonoBinder{TComponent,TProperty}"/> that sets the <see cref="TMP_Text.text"/> property.
     /// Also implements <see cref="INumberBinder"/>, allowing numeric values to be formatted and bound as text.
     /// </summary>
     [AddComponentMenu("Aspid/MVVM/Binders/UI/Text/Text Binder – Text")]
     [AddBinderContextMenu(typeof(TMP_Text), serializePropertyNames: "m_text")]
     [BindModeOverride(BindMode.OneWay, BindMode.OneTime, BindMode.OneWayToSource)]
-    public partial class TextMonoBinder : ComponentStringMonoBinder<TMP_Text>, INumberBinder
+    public partial class TextMonoBinder : ComponentMonoBinder<TMP_Text, string>, INumberBinder
     {
         /// <inheritdoc/>
         protected sealed override string Property

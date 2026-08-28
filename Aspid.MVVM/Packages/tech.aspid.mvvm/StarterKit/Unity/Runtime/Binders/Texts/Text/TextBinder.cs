@@ -8,12 +8,12 @@ using UnityEngine;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="TargetStringBinder{TMP_Text}"/> that sets the <see cref="TMP_Text.text"/> property.
+    /// <see cref="TargetBinder{TMP_Text, string}"/> that sets the <see cref="TMP_Text.text"/> property.
     /// Also implements <see cref="INumberBinder"/>, allowing numeric values to be formatted and bound as text.
     /// </summary>
     /// <include file="XmlExampleDoc-Text-Text-1.1.0.xml" path="doc//member[@name='TextBinder']/*" />
     [Serializable]
-    public class TextBinder : TargetStringBinder<TMP_Text>, INumberBinder
+    public class TextBinder : TargetBinder<TMP_Text, string>, INumberBinder
     {
         /// <inheritdoc/>
         protected sealed override string? Property

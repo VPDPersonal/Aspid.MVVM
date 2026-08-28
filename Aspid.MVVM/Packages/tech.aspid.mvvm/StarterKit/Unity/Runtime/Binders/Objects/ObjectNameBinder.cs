@@ -7,80 +7,40 @@ using Object = UnityEngine.Object;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// Concrete <see cref="TargetBinder{TTarget}"/> that binds the <see cref="Object.name"/> property
-    /// to a <see langword="string"/> ViewModel property.
+    /// <see cref="TargetBinder{T1, T2}">TargetBinder&lt;Object, string&gt;</see> that binds the
+    /// <see cref="Object.name"/> of the target object.
     /// </summary>
     /// <remarks>
-    /// When <see cref="BindMode.OneWayToSource"/> is active, the current <see cref="Object.name"/>
-    /// is propagated to the ViewModel when binding is established.
+    /// A <see langword="null"/> name is written as an empty string, which is what Unity stores for it anyway.
     /// </remarks>
     /// <include file="XmlExampleDoc-Object-Name-1.1.0.xml" path="doc//member[@name='ObjectNameBinder']/*" />
     [Serializable]
-    [BindModeOverride(BindMode.OneWay, BindMode.OneTime, BindMode.OneWayToSource)]
-    public sealed class ObjectNameBinder : TargetBinder<Object>,
-        IBinder<string>, 
-        IReverseBinder<string>
+    public sealed class ObjectNameBinder : TargetBinder<Object, string>
     {
-        /// <inheritdoc/>
-        public event Action<string?>? ValueChanged;
-        
-        [Tooltip("Optional converter applied to the string value in both directions.")]
-        [SerializeReference] private IConverter<string?, string?>? _converter;
-
-        /// <param name="target">The <see cref="GameObject"/> whose <see cref="Object.name"/> will be bound.</param>
+        /// <param name="target">The <see cref="GameObject"/> whose <see cref="Object.name"/> is bound.</param>
         /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/>.</param>
         /// <exception cref="ArgumentException">Thrown when <paramref name="mode"/> is <see cref="BindMode.TwoWay"/>.</exception>
         public ObjectNameBinder(GameObject target, BindMode mode)
             : this(target, converter: null, mode) { }
 
-        /// <param name="target">The <see cref="GameObject"/> whose <see cref="Object.name"/> will be bound.</param>
+        /// <param name="target">The <see cref="GameObject"/> whose <see cref="Object.name"/> is bound.</param>
         /// <param name="converter">
-        /// An optional converter to transform the value before applying it or propagating it back to the ViewModel.
-        /// Pass <see langword="null"/> to use the value unchanged.
+        /// An optional converter applied to the value before it is applied. Pass <see langword="null"/> to use the
+        /// value unchanged. Runs in reverse only if it implements <see cref="ITwoWayConverter{TFrom, TTo}"/>.
         /// </param>
-        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/>. Defaults to <see cref="BindMode.OneWay"/>.</param>
+        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/> — the name raises no change event to listen to.</param>
         /// <exception cref="ArgumentException">Thrown when <paramref name="mode"/> is <see cref="BindMode.TwoWay"/>.</exception>
         public ObjectNameBinder(GameObject target, IConverter<string?, string?>? converter = null, BindMode mode = BindMode.OneWay)
-            : base(target, mode)
+            : base(target, converter, mode)
         {
             mode.ThrowExceptionIfMatches(BindMode.TwoWay);
-            _converter = converter;
         }
 
         /// <inheritdoc/>
-        public void SetValue(string? value) =>
-            Target.name = GetConvertedValue(value);
-        
-        /// <summary>
-        /// Called after binding is established.
-        /// In <see cref="BindMode.OneWayToSource"/> mode, propagates the current <see cref="Object.name"/> to the ViewModel.
-        /// </summary>
-        protected override void OnBound()
+        protected override string? Property
         {
-            if (Mode is BindMode.OneWayToSource)
-                ValueChanged?.Invoke(GetConvertedBackValue(Target.name));
+            get => Target.name;
+            set => Target.name = value ?? string.Empty;
         }
-        
-        private string GetConvertedValue(string value) =>
-            _converter?.Convert(value) ?? value ?? string.Empty;
-
-        /// <summary>
-        /// Converts a value on its way back to the ViewModel.
-        /// </summary>
-        /// <param name="value">The value read from the target.</param>
-        /// <returns>
-        /// The value as the ViewModel expects it: undone by the converter when it offers
-        /// <see cref="ITwoWayConverter{TFrom, TTo}"/>, and unchanged when it does not.
-        /// </returns>
-        /// <remarks>
-        /// The forward converter must not be applied here. This binder pushes the target's current
-        /// value to the ViewModel, so running it through <c>Convert</c> a second time hands the
-        /// ViewModel a value that has been converted twice — visibly wrong for anything that is not
-        /// its own inverse.
-        /// </remarks>
-        private string GetConvertedBackValue(string value) =>
-            _converter is ITwoWayConverter<string?, string?> twoWay
-                ? twoWay.ConvertBack(value) ?? value
-                : value;
     }
 }

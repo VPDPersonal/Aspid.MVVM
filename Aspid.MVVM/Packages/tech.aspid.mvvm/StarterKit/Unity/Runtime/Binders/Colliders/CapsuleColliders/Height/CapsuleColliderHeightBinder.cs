@@ -18,7 +18,7 @@ namespace Aspid.MVVM.StarterKit
         protected sealed override float Property
         {
             get => Target.height;
-            set => Target.height = BinderMath.SafeClamp(value, 0f, float.MaxValue);
+            set => Target.height = this.SafeClamp(value, 0f, float.MaxValue, Target);
         }
 
         /// <inheritdoc/>

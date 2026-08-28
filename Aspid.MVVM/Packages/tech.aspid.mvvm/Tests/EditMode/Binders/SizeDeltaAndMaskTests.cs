@@ -1,7 +1,9 @@
 using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.TestTools;
 using Aspid.MVVM.StarterKit;
+using System.Text.RegularExpressions;
 using System.Collections.Generic;
 using Object = UnityEngine.Object;
 
@@ -114,6 +116,7 @@ namespace Aspid.MVVM.Tests
             mask.padding = new Vector4(1f, 1f, 1f, 1f);
 
             var binder = rect.gameObject.AddComponent<RectMask2DPaddingMonoBinder>();
+            LogAssert.Expect(LogType.Error, new Regex("is not finite"));
             ((IBinder<Vector3>)binder).SetValue(new Vector3(2f, float.NaN, 2f));
 
             Assert.AreEqual(new Vector4(1f, 1f, 1f, 1f), mask.padding, "Нефинитная компонента дошла до маски");

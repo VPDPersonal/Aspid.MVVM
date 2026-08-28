@@ -5,7 +5,7 @@ using UnityEngine.UI;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="ComponentMonoBinder{T1, T2}">ComponentMonoBinder&lt;Image, Image.Type&gt;</see> that binds
+    /// <see cref="ComponentMonoBinder{TComponent,TProperty}">ComponentMonoBinder&lt;Image, Image.Type&gt;</see> that binds
     /// <see cref="Image.type"/>.
     /// </summary>
     [AddBinderContextMenu(typeof(Image), serializePropertyNames: "m_Type")]

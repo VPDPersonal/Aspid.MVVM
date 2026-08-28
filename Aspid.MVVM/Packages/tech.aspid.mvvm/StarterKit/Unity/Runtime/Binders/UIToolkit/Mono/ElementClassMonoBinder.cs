@@ -35,7 +35,7 @@ namespace Aspid.MVVM.StarterKit
 
             if (string.IsNullOrWhiteSpace(_class))
             {
-                Debug.LogError($"[{nameof(ElementClassMonoBinder)}] No USS class set.", context: this);
+                this.LogError("no USS class is set", "The element is left unchanged.");
                 return;
             }
 

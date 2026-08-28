@@ -6,11 +6,11 @@ using UnityEngine;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="TargetColorBinder{Renderer}"/> that sets a named color property on all materials of a <see cref="Renderer"/>.
+    /// <see cref="TargetBinder{Renderer, Color}"/> that sets a named color property on all materials of a <see cref="Renderer"/>.
     /// </summary>
     /// <include file="XmlExampleDoc-Renderer-MaterialsColor-1.1.0.xml" path="doc//member[@name='RendererMaterialColorBinder']/*" />
     [Serializable]
-    public class RendererMaterialColorBinder : TargetColorBinder<Renderer>
+    public class RendererMaterialColorBinder : TargetBinder<Renderer, Color>, IColorBinder
     {
         // ReSharper disable once MemberInitializerValueIgnored
         [Tooltip("The name of the shader color property to set on all materials.")]

@@ -4,12 +4,12 @@ using UnityEngine;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// Concrete <see cref="AnimatorSetParameterMonoBinder{T}"/> that also implements <see cref="INumberBinder"/>,
+    /// Concrete <see cref="AnimatorSetParameterMonoBinder{T}"/> that also implements <see cref="IIntBinder"/>,
     /// setting an integer Animator parameter and accepting <see cref="long"/>, <see cref="float"/>, and <see cref="double"/> values via truncating cast.
     /// </summary>
     [AddBinderContextMenu(typeof(Animator))]
     [AddComponentMenu("Aspid/MVVM/Binders/Animator/Animator Binder – Set Int")]
-    public partial class AnimatorSetIntMonoBinder : AnimatorSetParameterMonoBinder<int>, INumberBinder
+    public class AnimatorSetIntMonoBinder : AnimatorSetParameterMonoBinder<int>, IIntBinder
     {
         [Tooltip("Converts the bound integer value before setting the Animator parameter.")]
         [SerializeReference] private IConverter<int, int> _converter;
@@ -26,26 +26,5 @@ namespace Aspid.MVVM.StarterKit
 
             CachedComponent.SetInteger(ParameterName, value);
         }
-
-        /// <summary>
-        /// Forwards <paramref name="value"/> truncated to <see cref="int"/>.
-        /// </summary>
-        [BinderLog]
-        public void SetValue(long value) =>
-            base.SetValue((int)value);
-
-        /// <summary>
-        /// Forwards <paramref name="value"/> truncated to <see cref="int"/>.
-        /// </summary>
-        [BinderLog]
-        public void SetValue(float value) =>
-            base.SetValue((int)value);
-
-        /// <summary>
-        /// Forwards <paramref name="value"/> truncated to <see cref="int"/>.
-        /// </summary>
-        [BinderLog]
-        public void SetValue(double value) =>
-            base.SetValue((int)value);
     }
 }

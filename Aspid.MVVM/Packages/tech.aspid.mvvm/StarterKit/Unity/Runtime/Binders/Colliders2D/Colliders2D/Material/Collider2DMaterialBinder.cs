@@ -25,8 +25,8 @@ namespace Aspid.MVVM.StarterKit
 
         /// <inheritdoc/>
         /// <exception cref="ArgumentException">Thrown when <paramref name="mode"/> is <see cref="BindMode.TwoWay"/> — the property raises no change event to listen to.</exception>
-        public Collider2DMaterialBinder(Collider2D target, BindMode mode = BindMode.OneWay)
-            : base(target, mode)
+        public Collider2DMaterialBinder(Collider2D target, IConverter<PhysicsMaterial2D?, PhysicsMaterial2D?>? converter = null, BindMode mode = BindMode.OneWay)
+            : base(target, converter, mode)
         {
             mode.ThrowExceptionIfMatches(BindMode.TwoWay);
         }

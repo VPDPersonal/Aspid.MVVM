@@ -67,7 +67,7 @@ namespace Aspid.MVVM.Tests
             var gameObject = NewGameObject("Object");
             gameObject.layer = 9;
 
-            var binder = new GameObjectLayerBinder(gameObject, BindMode.OneWayToSource);
+            var binder = new GameObjectLayerBinder(gameObject, mode: BindMode.OneWayToSource);
             var received = -1;
 
             binder.Bind(new OneWayToSourceStructBindableMember<int>(value => received = value));
@@ -178,6 +178,7 @@ namespace Aspid.MVVM.Tests
             ((IBinder<Vector2>)binder).SetValue(new Vector2(-0.5f, 1.5f));
             Assert.AreEqual(new Vector2(-0.5f, 1.5f), rect.anchorMin, "Значение вне 0..1 не сохранено");
 
+            LogAssert.Expect(LogType.Error, new Regex("is not finite"));
             ((IBinder<Vector2>)binder).SetValue(new Vector2(float.NaN, 0f));
             Assert.AreEqual(new Vector2(-0.5f, 1.5f), rect.anchorMin, "Нефинитное значение дошло до rect");
         }

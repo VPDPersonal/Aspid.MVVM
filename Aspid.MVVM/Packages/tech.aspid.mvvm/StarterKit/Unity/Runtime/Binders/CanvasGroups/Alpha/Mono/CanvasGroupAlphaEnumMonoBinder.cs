@@ -4,7 +4,7 @@ using UnityEngine;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="EnumFloatMonoBinder{CanvasGroup}"/> that sets the <see cref="CanvasGroup.alpha"/>
+    /// <see cref="EnumMonoBinder{TComponent,TValue}">EnumMonoBinder&lt;CanvasGroup, float&gt;</see> that sets the <see cref="CanvasGroup.alpha"/>
     /// property to a value resolved from the bound enum ViewModel value.
     /// </summary>
     /// <remarks>
@@ -12,7 +12,7 @@ namespace Aspid.MVVM.StarterKit
     /// </remarks>
     [AddComponentMenu("Aspid/MVVM/Binders/UI/CanvasGroup/CanvasGroup Binder – Alpha Enum")]
     [AddBinderContextMenu(typeof(CanvasGroup), serializePropertyNames: "m_Alpha", SubPath = "Enum")]
-    public sealed class CanvasGroupAlphaEnumMonoBinder : EnumFloatMonoBinder<CanvasGroup>
+    public sealed class CanvasGroupAlphaEnumMonoBinder : EnumMonoBinder<CanvasGroup, float>
     {
         /// <summary>
         /// Called when the bound enum resolves to a value.
@@ -20,6 +20,6 @@ namespace Aspid.MVVM.StarterKit
         /// </summary>
         /// <param name="value">The value received from the ViewModel.</param>
         protected override void SetValue(float value) =>
-            CachedComponent.alpha = BinderMath.SafeClamp01(value);
+            CachedComponent.alpha = this.SafeClamp01(value);
     }
 }

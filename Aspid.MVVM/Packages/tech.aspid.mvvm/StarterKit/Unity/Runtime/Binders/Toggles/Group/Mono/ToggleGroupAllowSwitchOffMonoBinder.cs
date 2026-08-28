@@ -5,7 +5,7 @@ using UnityEngine.UI;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="ComponentBoolMonoBinder{ToggleGroup}"/> that binds <see cref="ToggleGroup.allowSwitchOff"/>.
+    /// <see cref="ComponentMonoBinder{TComponent,TProperty}"/> that binds <see cref="ToggleGroup.allowSwitchOff"/>.
     /// </summary>
     /// <remarks>
     /// Whether the group may end up with nothing selected — the difference between a filter the player can clear and
@@ -16,7 +16,7 @@ namespace Aspid.MVVM.StarterKit
     /// </remarks>
     [AddBinderContextMenu(typeof(ToggleGroup), serializePropertyNames: "m_AllowSwitchOff")]
     [AddComponentMenu("Aspid/MVVM/Binders/UI/Toggle/ToggleGroup Binder – Allow Switch Off")]
-    public class ToggleGroupAllowSwitchOffMonoBinder : ComponentBoolMonoBinder<ToggleGroup>
+    public class ToggleGroupAllowSwitchOffMonoBinder : ComponentMonoBinder<ToggleGroup, bool>
     {
         /// <inheritdoc/>
         protected sealed override bool Property

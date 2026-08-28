@@ -26,8 +26,8 @@ namespace Aspid.MVVM.StarterKit
         /// <param name="target">The <see cref="TMP_InputField"/> to bind.</param>
         /// <param name="mode">The binding mode. Must be <see cref="BindMode.OneWay"/> or <see cref="BindMode.OneTime"/>.</param>
         /// <exception cref="InvalidOperationException">Thrown when <paramref name="mode"/> is neither <see cref="BindMode.OneWay"/> nor <see cref="BindMode.OneTime"/>.</exception>
-        public InputFieldInputTypeBinder(TMP_InputField target, BindMode mode = BindMode.OneWay)
-            : base(target, mode)
+        public InputFieldInputTypeBinder(TMP_InputField target, IConverter<TMP_InputField.InputType, TMP_InputField.InputType> converter = null, BindMode mode = BindMode.OneWay)
+            : base(target, converter, mode)
         {
             mode.ThrowExceptionIfNotOne();
         }

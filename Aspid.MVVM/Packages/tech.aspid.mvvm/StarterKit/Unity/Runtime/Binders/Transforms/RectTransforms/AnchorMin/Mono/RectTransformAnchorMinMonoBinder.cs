@@ -4,7 +4,7 @@ using UnityEngine;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="ComponentVector2MonoBinder{RectTransform}"/> that binds <see cref="RectTransform.anchorMin"/>.
+    /// <see cref="ComponentMonoBinder{RectTransform, Vector2}"/> that binds <see cref="RectTransform.anchorMin"/>.
     /// </summary>
     /// <remarks>
     /// Where the element's lower-left corner is pinned inside its parent, as a fraction. Moving the anchors is how a
@@ -17,7 +17,7 @@ namespace Aspid.MVVM.StarterKit
     /// </remarks>
     [AddBinderContextMenu(typeof(RectTransform), serializePropertyNames: "m_AnchorMin")]
     [AddComponentMenu("Aspid/MVVM/Binders/UI/RectTransform/RectTransform Binder – AnchorMin")]
-    public class RectTransformAnchorMinMonoBinder : ComponentVector2MonoBinder<RectTransform>
+    public class RectTransformAnchorMinMonoBinder : ComponentMonoBinder<RectTransform, Vector2>, IVector2Binder
     {
         /// <inheritdoc/>
         protected sealed override Vector2 Property
@@ -25,7 +25,7 @@ namespace Aspid.MVVM.StarterKit
             get => CachedComponent.anchorMin;
             set
             {
-                if (!BinderMath.IsFinite(value.x) || !BinderMath.IsFinite(value.y)) return;
+                if (!this.RequireFinite(value)) return;
                 CachedComponent.anchorMin = value;
             }
         }

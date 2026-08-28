@@ -4,7 +4,7 @@ using UnityEngine;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="EnumGroupFloatMonoBinder{AudioSource}"/> that sets the <see cref="AudioSource.spread"/>
+    /// <see cref="EnumGroupMonoBinder{TElement,TValue}">EnumGroupMonoBinder&lt;AudioSource, float&gt;</see> that sets the <see cref="AudioSource.spread"/>
     /// property on each element based on the bound enum ViewModel value.
     /// </summary>
     /// <remarks>
@@ -12,7 +12,7 @@ namespace Aspid.MVVM.StarterKit
     /// </remarks>
     [AddBinderContextMenu(typeof(AudioSource), SubPath = "EnumGroup")]
     [AddComponentMenu("Aspid/MVVM/Binders/Audio/AudioSource/AudioSource Binder – Spread EnumGroup")]
-    public sealed class AudioSourceSpreadEnumGroupMonoBinder : EnumGroupFloatMonoBinder<AudioSource>
+    public sealed class AudioSourceSpreadEnumGroupMonoBinder : EnumGroupMonoBinder<AudioSource, float>
     {
         /// <summary>
         /// Called when the bound enum resolves to a value for the specified element.
@@ -21,6 +21,6 @@ namespace Aspid.MVVM.StarterKit
         /// <param name="element">The component this entry of the group writes to.</param>
         /// <param name="value">The value the bound enum resolved to for this element.</param>
         protected override void SetValue(AudioSource element, float value) =>
-            element.spread = BinderMath.SafeClamp(value, 0, 360f);
+            element.spread = this.SafeClamp(value, 0, 360f);
     }
 }

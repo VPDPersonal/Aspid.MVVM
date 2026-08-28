@@ -50,6 +50,7 @@ namespace Aspid.MVVM.Tests
             var binder = animator.gameObject.AddComponent<AnimatorSpeedMonoBinder>();
 
             Assert.DoesNotThrow(() => ((IBinder<float>)binder).SetValue(-1f), "Отрицательная скорость уронила биндер");
+            LogAssert.Expect(LogType.Error, new Regex("is not finite"));
             Assert.DoesNotThrow(() => ((IBinder<float>)binder).SetValue(float.NaN), "NaN уронил биндер");
             Assert.IsFalse(float.IsNaN(animator.speed), "NaN дошёл до аниматора");
         }

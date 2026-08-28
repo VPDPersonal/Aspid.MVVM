@@ -33,7 +33,7 @@ namespace Aspid.MVVM.StarterKit
             
             if (!BinderMath.IsFinite(value.x) || !BinderMath.IsFinite(value.y))
             {
-                Debug.LogError($"[SetMinMaxDistance] Non-finite distance range ({value.x}, {value.y}) ignored.", audioSource);
+                BinderLogger.LogError(typeof(AudioSourceSetters), $"the distance range ({value.x}, {value.y}) is not finite", "The distances are left unchanged.", audioSource);
                 return;
             }
 
@@ -42,7 +42,7 @@ namespace Aspid.MVVM.StarterKit
 
             if (value.x > value.y)
             {
-                Debug.LogError($"[SetMinMaxDistance] Inverted distance range ({value.x} > {value.y}); endpoints swapped.", audioSource);
+                BinderLogger.LogError(typeof(AudioSourceSetters), $"the distance range ({value.x}, {value.y}) is inverted", "The endpoints are swapped.", audioSource);
                 value = new Vector2(value.y, value.x);
             }
 

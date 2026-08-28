@@ -6,10 +6,10 @@ using UnityEngine;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="TargetBoolBinder{Rigidbody}"/> that binds <see cref="Rigidbody.useGravity"/>.
+    /// <see cref="TargetBinder{Rigidbody, bool}"/> that binds <see cref="Rigidbody.useGravity"/>.
     /// </summary>
     [Serializable]
-    public class RigidbodyUseGravityBinder : TargetBoolBinder<Rigidbody>
+    public class RigidbodyUseGravityBinder : TargetBinder<Rigidbody, bool>
     {
         /// <inheritdoc/>
         protected sealed override bool Property

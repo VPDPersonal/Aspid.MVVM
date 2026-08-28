@@ -1,7 +1,9 @@
 using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.TestTools;
 using Aspid.MVVM.StarterKit;
+using System.Text.RegularExpressions;
 using System.Collections.Generic;
 using Object = UnityEngine.Object;
 
@@ -60,6 +62,7 @@ namespace Aspid.MVVM.Tests
             ((IBinder<float>)binder).SetValue(-2f);
             Assert.AreEqual(0f, Time.timeScale, 0.001f, "Отрицательный масштаб времени не обрезан");
 
+            LogAssert.Expect(LogType.Error, new Regex("is not finite"));
             ((IBinder<float>)binder).SetValue(float.NaN);
             Assert.IsFalse(float.IsNaN(Time.timeScale), "NaN дошёл до масштаба времени");
         }
@@ -69,7 +72,7 @@ namespace Aspid.MVVM.Tests
         {
             Time.timeScale = 0.5f;
 
-            var binder = new TimeScaleBinder(BindMode.OneWayToSource);
+            var binder = new TimeScaleBinder(mode: BindMode.OneWayToSource);
             var received = float.NaN;
 
             binder.Bind(new OneWayToSourceStructBindableMember<float>(value => received = value));
@@ -145,6 +148,7 @@ namespace Aspid.MVVM.Tests
             Assert.AreEqual(Color.red, shadow.effectColor, "Цвет эффекта не доехал");
             Assert.AreEqual(new Vector2(-2f, 3f), shadow.effectDistance, "Смещение эффекта не доехало");
 
+            LogAssert.Expect(LogType.Error, new Regex("is not finite"));
             ((IBinder<Vector2>)distance).SetValue(new Vector2(float.NaN, 0f));
             Assert.AreEqual(new Vector2(-2f, 3f), shadow.effectDistance, "Нефинитное смещение дошло до эффекта");
         }

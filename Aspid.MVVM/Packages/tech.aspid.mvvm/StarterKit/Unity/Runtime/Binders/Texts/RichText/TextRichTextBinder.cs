@@ -1,30 +1,30 @@
 #if UNITY_2023_1_OR_NEWER || ASPID_MVVM_TEXT_MESH_PRO_INTEGRATION
 #nullable enable
-using System;
 using TMPro;
+using System;
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="TargetBoolBinder{TMP_Text}"/> that binds <see cref="TMP_Text.richText"/>.
+    /// <see cref="TargetBinder{TMP_Text, bool}"/> that binds <see cref="TMP_Text.richText"/>.
     /// </summary>
     [Serializable]
-    public class TextRichTextBinder : TargetBoolBinder<TMP_Text>
+    public class TextRichTextBinder : TargetBinder<TMP_Text, bool>
     {
-        /// <inheritdoc/>
-        protected sealed override bool Property
-        {
-            get => Target.richText;
-            set => Target.richText = value;
-        }
-
         /// <inheritdoc/>
         public TextRichTextBinder(
             TMP_Text target,
             IConverter<bool, bool>? converter = null,
             BindMode mode = BindMode.OneWay)
             : base(target, converter, mode) { }
+
+        /// <inheritdoc/>
+        protected sealed override bool Property
+        {
+            get => Target.richText;
+            set => Target.richText = value;
+        }
     }
 }
 #endif

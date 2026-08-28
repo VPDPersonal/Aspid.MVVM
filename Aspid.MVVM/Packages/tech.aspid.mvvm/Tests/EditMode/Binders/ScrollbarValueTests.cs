@@ -49,7 +49,7 @@ namespace Aspid.MVVM.Tests
             var (binder, scrollbar) = Create();
 
             var received = new List<float>();
-            binder.FloatValueChanged += value => received.Add(value);
+            ((IReverseBinder<float>)binder).ValueChanged += value => received.Add(value);
 
             scrollbar.value = 0.75f;
 
@@ -62,7 +62,7 @@ namespace Aspid.MVVM.Tests
             var (binder, scrollbar) = Create();
 
             var received = new List<float>();
-            binder.FloatValueChanged += value => received.Add(value);
+            ((IReverseBinder<float>)binder).ValueChanged += value => received.Add(value);
 
             ((IBinder<float>)binder).SetValue(5f);
 
@@ -76,7 +76,7 @@ namespace Aspid.MVVM.Tests
             var (binder, _) = Create();
 
             var received = new List<float>();
-            binder.FloatValueChanged += value => received.Add(value);
+            ((IReverseBinder<float>)binder).ValueChanged += value => received.Add(value);
 
             ((IBinder<float>)binder).SetValue(0.5f);
 

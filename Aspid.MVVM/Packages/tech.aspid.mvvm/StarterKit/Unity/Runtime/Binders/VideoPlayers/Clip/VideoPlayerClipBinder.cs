@@ -17,18 +17,18 @@ namespace Aspid.MVVM.StarterKit
     public class VideoPlayerClipBinder : TargetObjectBinder<VideoPlayer, VideoClip>
     {
         /// <inheritdoc/>
+        /// <exception cref="ArgumentException">Thrown when <paramref name="mode"/> is <see cref="BindMode.TwoWay"/> — the property raises no change event to listen to.</exception>
+        public VideoPlayerClipBinder(VideoPlayer target, IConverter<VideoClip?, VideoClip?>? converter = null, BindMode mode = BindMode.OneWay)
+            : base(target, converter, mode)
+        {
+            mode.ThrowExceptionIfMatches(BindMode.TwoWay);
+        }
+
+        /// <inheritdoc/>
         protected sealed override VideoClip? Property
         {
             get => Target.clip;
             set => Target.clip = value;
-        }
-
-        /// <inheritdoc/>
-        /// <exception cref="ArgumentException">Thrown when <paramref name="mode"/> is <see cref="BindMode.TwoWay"/> — the property raises no change event to listen to.</exception>
-        public VideoPlayerClipBinder(VideoPlayer target, BindMode mode = BindMode.OneWay)
-            : base(target, mode)
-        {
-            mode.ThrowExceptionIfMatches(BindMode.TwoWay);
         }
     }
 }

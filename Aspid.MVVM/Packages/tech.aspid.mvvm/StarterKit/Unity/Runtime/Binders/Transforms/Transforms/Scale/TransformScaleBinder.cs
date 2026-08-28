@@ -6,11 +6,11 @@ using UnityEngine;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="TargetVector3Binder{Transform}"/> that sets the <see cref="Transform.localScale"/> property.
+    /// <see cref="TargetBinder{Transform, Vector3}"/> that sets the <see cref="Transform.localScale"/> property.
     /// </summary>
     /// <include file="XmlExampleDoc-Transform-Scale-1.1.0.xml" path="doc//member[@name='TransformScaleBinder']/*" />
     [Serializable]
-    public class TransformScaleBinder : TargetVector3Binder<Transform>
+    public class TransformScaleBinder : TargetBinder<Transform, Vector3>, IVector3Binder
     {
         protected sealed override Vector3 Property
         {

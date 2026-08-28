@@ -7,12 +7,12 @@ using System;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="SwitcherStringBinder{TMP_Text}"/> that switches the <see cref="TMP_Text.text"/> between two
+    /// <see cref="SwitcherBinder{TTarget,T}">SwitcherBinder&lt;TMP_Text, string&gt;</see> that switches the <see cref="TMP_Text.text"/> between two
     /// string values based on the bound boolean ViewModel value.
     /// </summary>
     /// <include file="XmlExampleDoc-Text-Text-1.1.0.xml" path="doc//member[@name='TextSwitcherBinder']/*" />
     [Serializable]
-    public sealed class TextSwitcherBinder : SwitcherStringBinder<TMP_Text>
+    public sealed class TextSwitcherBinder : SwitcherBinder<TMP_Text, string>
     {
         /// <inheritdoc/>
         public TextSwitcherBinder(

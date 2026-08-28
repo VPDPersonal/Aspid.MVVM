@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -8,7 +7,7 @@ namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
     /// <see cref="ComponentMonoBinder{Slider}"/> that binds <see cref="Slider.value"/>.
-    /// Also implements <see cref="INumberBinder"/> and <see cref="INumberReverseBinder"/>, allowing numeric
+    /// Also implements <see cref="IFloatBinder"/> and <see cref="INumberReverseBinder"/>, allowing numeric
     /// values of multiple types to be both pushed to and received from the slider.
     /// </summary>
     /// <remarks>
@@ -20,37 +19,18 @@ namespace Aspid.MVVM.StarterKit
     [BindModeOverride(IsAll = true)]
     [AddComponentMenu("Aspid/MVVM/Binders/UI/Slider/Slider Binder – Value")]
     [AddBinderContextMenu(typeof(Slider), serializePropertyNames: "m_Value")]
-    public class SliderValueMonoBinder : ComponentMonoBinder<Slider>, INumberBinder, INumberReverseBinder
+    public partial class SliderValueMonoBinder : ComponentMonoBinder<Slider>, 
+        IFloatBinder,
+        INumberReverseBinder
     {
-        /// <inheritdoc/>
-        public event Action<int> IntValueChanged;
-        /// <inheritdoc/>
-        public event Action<long> LongValueChanged;
-        /// <inheritdoc/>
-        public event Action<float> FloatValueChanged;
-        /// <inheritdoc/>
-        public event Action<double> DoubleValueChanged;
-
         [Tooltip("Optional converter applied to values before they are set on the slider.")]
         [SerializeReference] private IConverter<float, float> _converter;
 
+        private NumberReverseChannel _channel;
         private bool _isNotifyValueChanged = true;
-        
-        /// <summary>
-        /// Casts the value to <see langword="float"/> and sets <see cref="Slider.value"/>.
-        /// </summary>
-        /// <param name="value">The value received from the ViewModel.</param>
-        [BinderLog]
-        public void SetValue(int value) =>
-            SetValueInternal(value);
-        
-        /// <summary>
-        /// Casts the value to <see langword="float"/> and sets <see cref="Slider.value"/>.
-        /// </summary>
-        /// <param name="value">The value received from the ViewModel.</param>
-        [BinderLog]
-        public void SetValue(long value) =>
-            SetValueInternal(value);
+
+        /// <inheritdoc/>
+        ref NumberReverseChannel INumberReverseBinder.Channel => ref _channel;
         
         /// <summary>
         /// Sets <see cref="Slider.value"/>, applying the configured converter if present.
@@ -60,15 +40,7 @@ namespace Aspid.MVVM.StarterKit
         [BinderLog]
         public void SetValue(float value) =>
             SetValueInternal(value);
-        
-        /// <summary>
-        /// Casts the value to <see langword="float"/> and sets <see cref="Slider.value"/>.
-        /// </summary>
-        /// <param name="value">The value received from the ViewModel.</param>
-        [BinderLog]
-        public void SetValue(double value) =>
-            SetValueInternal((float)value);
-        
+ 
         /// <summary>
         /// Called when the binder is bound. Subscribes to <see cref="Slider.onValueChanged"/> when using
         /// <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.
@@ -109,7 +81,7 @@ namespace Aspid.MVVM.StarterKit
         {
             var slider = CachedComponent;
             var converted = _converter?.Convert(value) ?? value;
-            var clamped = BinderMath.SafeClamp(converted, slider.minValue, slider.maxValue);
+            var clamped = this.SafeClamp(converted, slider.minValue, slider.maxValue);
 
             _isNotifyValueChanged = false;
 
@@ -130,13 +102,7 @@ namespace Aspid.MVVM.StarterKit
         private void OnValueChanged(float value)
         {
             if (!_isNotifyValueChanged) return;
-
-            value = GetConvertedBackValue(value);
-
-            IntValueChanged?.Invoke((int)value);
-            LongValueChanged?.Invoke((long)value);
-            FloatValueChanged?.Invoke(value);
-            DoubleValueChanged?.Invoke(value);
+            _channel.Raise(GetConvertedBackValue(value));
         }
 
         /// <summary>

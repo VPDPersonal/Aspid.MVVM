@@ -55,7 +55,7 @@ namespace Aspid.MVVM.StarterKit
         {
             if (value < 0 || value >= _snapshots.Length)
             {
-                Debug.LogError($"[{nameof(AudioMixerSnapshotBinder)}] Snapshot index {value} is outside the list of {_snapshots.Length}.");
+                this.LogError($"the index {value} is outside the list of {_snapshots.Length} snapshots", "No transition is started.");
                 return;
             }
 
@@ -78,18 +78,18 @@ namespace Aspid.MVVM.StarterKit
                 return;
             }
 
-            Debug.LogError($"[{nameof(AudioMixerSnapshotBinder)}] No snapshot named '{value}' in the list.");
+            this.LogError($"the list holds no snapshot named {value.Describe()}", "No transition is started.");
         }
 
         private void TransitionTo(AudioMixerSnapshot snapshot, string requested)
         {
             if (!snapshot)
             {
-                Debug.LogError($"[{nameof(AudioMixerSnapshotBinder)}] Snapshot '{requested}' is an empty slot.");
+                this.LogError($"the snapshot {requested.Describe()} is an empty slot", "No transition is started.");
                 return;
             }
 
-            snapshot.TransitionTo(BinderMath.SafeClamp(_transitionSeconds, 0f, float.MaxValue));
+            snapshot.TransitionTo(this.SafeClamp(_transitionSeconds, 0f, float.MaxValue, snapshot));
         }
     }
 }

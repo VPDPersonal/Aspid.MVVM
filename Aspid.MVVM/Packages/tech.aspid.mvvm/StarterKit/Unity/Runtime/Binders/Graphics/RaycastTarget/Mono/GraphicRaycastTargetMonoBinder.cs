@@ -5,14 +5,14 @@ using UnityEngine.UI;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="ComponentBoolMonoBinder{Graphic}"/> that binds the <see cref="Graphic.raycastTarget"/> property.
+    /// <see cref="ComponentMonoBinder{TComponent,TProperty}"/> that binds the <see cref="Graphic.raycastTarget"/> property.
     /// </summary>
     /// <remarks>
     /// Turning this off makes the graphic invisible to pointer input while it stays on screen — the usual way to let clicks pass through an overlay.
     /// </remarks>
     [AddBinderContextMenu(typeof(Graphic), serializePropertyNames: "m_RaycastTarget")]
     [AddComponentMenu("Aspid/MVVM/Binders/UI/Graphic/Graphic Binder – Raycast Target")]
-    public class GraphicRaycastTargetMonoBinder : ComponentBoolMonoBinder<Graphic>
+    public class GraphicRaycastTargetMonoBinder : ComponentMonoBinder<Graphic, bool>
     {
         /// <inheritdoc/>
         protected sealed override bool Property

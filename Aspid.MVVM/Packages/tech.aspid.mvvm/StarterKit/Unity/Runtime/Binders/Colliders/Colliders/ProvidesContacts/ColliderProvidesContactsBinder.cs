@@ -6,11 +6,11 @@ using UnityEngine;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="TargetBoolBinder{Collider}"/> that sets the <see cref="Collider.providesContacts"/> property.
+    /// <see cref="TargetBinder{Collider, bool}"/> that sets the <see cref="Collider.providesContacts"/> property.
     /// </summary>
     /// <include file="XmlExampleDoc-Collider-ProvidesContacts-1.1.0.xml" path="doc//member[@name='ColliderProvidesContactsBinder']/*" />
     [Serializable]
-    public class ColliderProvidesContactsBinder : TargetBoolBinder<Collider>
+    public class ColliderProvidesContactsBinder : TargetBinder<Collider, bool>
     {
         /// <inheritdoc/>
         protected sealed override bool Property

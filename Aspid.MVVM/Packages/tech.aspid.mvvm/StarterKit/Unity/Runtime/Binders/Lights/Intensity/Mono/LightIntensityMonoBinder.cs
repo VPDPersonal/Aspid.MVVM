@@ -17,7 +17,7 @@ namespace Aspid.MVVM.StarterKit
             get => CachedComponent.intensity;
             set
             {
-                if (!BinderMath.IsFinite(value)) return;
+                if (!this.RequireFinite(value)) return;
                 CachedComponent.intensity = value;
             }
         }

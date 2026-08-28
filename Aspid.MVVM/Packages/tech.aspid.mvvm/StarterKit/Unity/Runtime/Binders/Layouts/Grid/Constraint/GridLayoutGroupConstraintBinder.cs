@@ -1,6 +1,5 @@
 #nullable enable
 using System;
-using UnityEngine;
 using UnityEngine.UI;
 
 // ReSharper disable once CheckNamespace
@@ -18,18 +17,18 @@ namespace Aspid.MVVM.StarterKit
     public class GridLayoutGroupConstraintBinder : TargetBinder<GridLayoutGroup, GridLayoutGroup.Constraint>
     {
         /// <inheritdoc/>
+        /// <exception cref="ArgumentException">Thrown when <paramref name="mode"/> is <see cref="BindMode.TwoWay"/> — the property raises no change event to listen to.</exception>
+        public GridLayoutGroupConstraintBinder(GridLayoutGroup target, IConverter<GridLayoutGroup.Constraint, GridLayoutGroup.Constraint>? converter = null, BindMode mode = BindMode.OneWay)
+            : base(target, converter, mode)
+        {
+            mode.ThrowExceptionIfMatches(BindMode.TwoWay);
+        }
+
+        /// <inheritdoc/>
         protected sealed override GridLayoutGroup.Constraint Property
         {
             get => Target.constraint;
             set => Target.constraint = value;
-        }
-
-        /// <inheritdoc/>
-        /// <exception cref="ArgumentException">Thrown when <paramref name="mode"/> is <see cref="BindMode.TwoWay"/> — the property raises no change event to listen to.</exception>
-        public GridLayoutGroupConstraintBinder(GridLayoutGroup target, BindMode mode = BindMode.OneWay)
-            : base(target, mode)
-        {
-            mode.ThrowExceptionIfMatches(BindMode.TwoWay);
         }
     }
 }

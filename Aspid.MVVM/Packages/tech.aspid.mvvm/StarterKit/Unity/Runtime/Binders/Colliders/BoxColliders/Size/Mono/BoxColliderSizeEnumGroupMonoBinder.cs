@@ -4,15 +4,15 @@ using UnityEngine;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="EnumGroupVector3MonoBinder{BoxCollider}"/> that sets the <see cref="BoxCollider.size"/>
+    /// <see cref="EnumGroupMonoBinder{BoxCollider, Vector3}"/> that sets the <see cref="BoxCollider.size"/>
     /// property on each element based on the bound enum ViewModel value.
     /// </summary>
     [AddComponentMenu("Aspid/MVVM/Binders/Collider/Box/BoxCollider Binder – Size EnumGroup")]
     [AddBinderContextMenu(typeof(BoxCollider), serializePropertyNames: "m_Size", SubPath = "EnumGroup")]
-    public sealed class BoxColliderSizeEnumGroupMonoBinder : EnumGroupVector3MonoBinder<BoxCollider>
+    public sealed class BoxColliderSizeEnumGroupMonoBinder : EnumGroupMonoBinder<BoxCollider, Vector3>
     {
         /// <inheritdoc/>
         protected override void SetValue(BoxCollider element, Vector3 value) =>
-            element.size = BinderMath.NonNegative(value);
+            element.size = this.NonNegative(value);
     }
 }

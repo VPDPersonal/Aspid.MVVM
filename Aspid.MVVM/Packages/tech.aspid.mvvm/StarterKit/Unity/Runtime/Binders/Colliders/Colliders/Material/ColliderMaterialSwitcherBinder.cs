@@ -6,12 +6,12 @@ using UnityEngine;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="SwitcherBinderWithConverter{T1, T2}">SwitcherBinderWithConverter&lt;Collider, PhysicsMaterial&gt;</see> that switches the <see cref="Collider.material"/>
+    /// <see cref="SwitcherBinder{TTarget,T}">SwitcherBinder&lt;Collider, PhysicsMaterial&gt;</see> that switches the <see cref="Collider.material"/>
     /// property between two <see cref="PhysicsMaterial"/> values based on the bound boolean ViewModel value.
     /// </summary>
     /// <include file="XmlExampleDoc-Collider-Material-1.1.0.xml" path="doc//member[@name='ColliderMaterialSwitcherBinder']/*" />
     [Serializable]
-    public sealed class ColliderMaterialSwitcherBinder : SwitcherBinderWithConverter<Collider, PhysicsMaterial>
+    public sealed class ColliderMaterialSwitcherBinder : SwitcherBinder<Collider, PhysicsMaterial>
     {
         /// <inheritdoc/>
         public ColliderMaterialSwitcherBinder(

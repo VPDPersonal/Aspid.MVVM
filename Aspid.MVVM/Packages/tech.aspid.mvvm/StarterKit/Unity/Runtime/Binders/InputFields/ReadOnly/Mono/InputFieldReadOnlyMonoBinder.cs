@@ -6,7 +6,7 @@ using UnityEngine;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="ComponentBoolMonoBinder{TMP_InputField}"/> that binds <see cref="TMP_InputField.readOnly"/>.
+    /// <see cref="ComponentMonoBinder{TComponent,TProperty}"/> that binds <see cref="TMP_InputField.readOnly"/>.
     /// </summary>
     /// <remarks>
     /// Whether the field can be edited. Unlike clearing <c>interactable</c>, this keeps the field looking normal
@@ -14,7 +14,7 @@ namespace Aspid.MVVM.StarterKit
     /// </remarks>
     [AddBinderContextMenu(typeof(TMP_InputField), serializePropertyNames: "m_ReadOnly")]
     [AddComponentMenu("Aspid/MVVM/Binders/UI/InputField/InputField Binder – ReadOnly")]
-    public class InputFieldReadOnlyMonoBinder : ComponentBoolMonoBinder<TMP_InputField>
+    public class InputFieldReadOnlyMonoBinder : ComponentMonoBinder<TMP_InputField, bool>
     {
         /// <inheritdoc/>
         protected sealed override bool Property

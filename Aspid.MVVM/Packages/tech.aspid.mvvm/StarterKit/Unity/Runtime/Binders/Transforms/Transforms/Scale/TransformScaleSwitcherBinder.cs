@@ -6,12 +6,12 @@ using UnityEngine;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="SwitcherVector3Binder{Transform}"/> that switches the <see cref="Transform.localScale"/> between two
+    /// <see cref="SwitcherBinder{TTarget,T}">SwitcherBinder&lt;Transform, Vector3&gt;</see> that switches the <see cref="Transform.localScale"/> between two
     /// <see cref="Vector3"/> values based on the bound boolean ViewModel value.
     /// </summary>
     /// <include file="XmlExampleDoc-Transform-Scale-1.1.0.xml" path="doc//member[@name='TransformScaleSwitcherBinder']/*" />
     [Serializable]
-    public sealed class TransformScaleSwitcherBinder : SwitcherVector3Binder<Transform>
+    public sealed class TransformScaleSwitcherBinder : SwitcherBinder<Transform, Vector3>
     {
         /// <param name="target">The <see cref="Transform"/> to bind.</param>
         /// <param name="trueValue">The scale applied when the bound boolean is <see langword="true"/>.</param>

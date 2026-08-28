@@ -17,6 +17,6 @@ namespace Aspid.MVVM.StarterKit
         /// </summary>
         /// <param name="value">The value received from the ViewModel.</param>
         protected override void SetValue(float value) =>
-            CachedComponent.horizontalNormalizedPosition = BinderMath.SafeClamp01(value);
+            CachedComponent.horizontalNormalizedPosition = this.SafeClamp01(value);
     }
 }

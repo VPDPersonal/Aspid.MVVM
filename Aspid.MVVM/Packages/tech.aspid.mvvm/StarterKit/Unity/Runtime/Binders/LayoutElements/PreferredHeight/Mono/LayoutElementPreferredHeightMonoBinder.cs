@@ -20,7 +20,7 @@ namespace Aspid.MVVM.StarterKit
             get => CachedComponent.preferredHeight;
             set
             {
-                if (!BinderMath.IsFinite(value)) return;
+                if (!this.RequireFinite(value)) return;
                 CachedComponent.preferredHeight = value;
             }
         }

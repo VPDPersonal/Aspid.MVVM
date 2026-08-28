@@ -7,19 +7,12 @@ using UnityEngine.UI;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="TargetBinderWithConverter{T1, T2}"/> that sets the <see cref="Graphic.material"/> property.
+    /// <see cref="TargetBinder{T1, T2}"/> that sets the <see cref="Graphic.material"/> property.
     /// </summary>
     /// <include file="XmlExampleDoc-Graphic-Material-1.1.0.xml" path="doc//member[@name='GraphicMaterialBinder']/*" />
     [Serializable]
-    public class GraphicMaterialBinder : TargetBinderWithConverter<Graphic, Material>
+    public class GraphicMaterialBinder : TargetBinder<Graphic, Material>
     {
-        /// <inheritdoc/>
-        protected sealed override Material? Property
-        {
-            get => Target.material;
-            set => Target.material = value;
-        }
-
         /// <param name="target">The <see cref="Graphic"/> to bind.</param>
         /// <param name="converter">The converter used to transform the bound <see cref="Material"/> value. Pass <see langword="null"/> to use the value unchanged.</param>
         /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/>.</param>
@@ -28,6 +21,13 @@ namespace Aspid.MVVM.StarterKit
             : base(target, converter, mode)
         {
             mode.ThrowExceptionIfMatches(BindMode.TwoWay);
+        }
+
+        /// <inheritdoc/>
+        protected sealed override Material? Property
+        {
+            get => Target.material;
+            set => Target.material = value;
         }
     }
 }

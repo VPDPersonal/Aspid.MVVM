@@ -6,12 +6,12 @@ using UnityEngine.Localization.Components;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="SwitcherStringMonoBinder{LocalizeStringEvent}"/> that switches the TableEntryReference
+    /// <see cref="SwitcherMonoBinder{TComponent,T}">SwitcherMonoBinder&lt;LocalizeStringEvent, string&gt;</see> that switches the TableEntryReference
     /// of the component's StringReference between two values based on the bound boolean ViewModel value.
     /// </summary>
     [AddComponentMenu("Aspid/MVVM/Binders/UI/LocalizeStringEvent/LocalizeStringEvent Binder – Entry Switcher")]
     [AddBinderContextMenu(typeof(LocalizeStringEvent), serializePropertyNames: "m_StringReference", SubPath = "Switcher")]
-    public sealed class LocalizeStringEventEntrySwitcherMonoBinder : SwitcherStringMonoBinder<LocalizeStringEvent>
+    public sealed class LocalizeStringEventEntrySwitcherMonoBinder : SwitcherMonoBinder<LocalizeStringEvent, string>
     {
         /// <summary>
         /// Called when applying the selected entry key.

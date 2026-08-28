@@ -20,16 +20,16 @@ namespace Aspid.MVVM.StarterKit
         /// </remarks>
         /// <param name="reference">The reference to read.</param>
         /// <param name="owner">The binder reading it; used to name the source in the diagnostic.</param>
-        public static string ToKeyName(this TableEntryReference reference, Object owner)
+        /// <param name="context">The object to ping instead of the binder.</param>
+        public static string ToKeyName(this TableEntryReference reference, IBinder owner, Object context = null)
         {
             if (reference.ReferenceType is TableEntryReference.Type.Name) return reference.Key;
             if (reference.ReferenceType is TableEntryReference.Type.Empty) return null;
 
-            Debug.LogError(
-                $"[{(owner ? owner.GetType().Name : "Localization binder")}] The table entry is referenced by id " +
-                $"({reference.KeyId}), which carries no key name, so the ViewModel receives null instead of the " +
-                "entry. Reference the entry by name, or convert the id in the ViewModel where the table is known.",
-                owner);
+            owner.LogError(
+                problem: $"the table entry is referenced by id ({reference.KeyId}), which carries no key name",
+                consequence: "The ViewModel receives null; reference the entry by name, or convert the id in the ViewModel where the table is known.",
+                context: context);
 
             return null;
         }

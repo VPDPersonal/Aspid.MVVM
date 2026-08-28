@@ -6,11 +6,11 @@ using UnityEngine;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="TargetBoolBinder{Collider}"/> that sets the <see cref="Collider.enabled"/> property.
+    /// <see cref="TargetBinder{Collider, bool}"/> that sets the <see cref="Collider.enabled"/> property.
     /// </summary>
     /// <include file="XmlExampleDoc-Collider-Enabled-1.1.0.xml" path="doc//member[@name='ColliderEnabledBinder']/*" />
     [Serializable]
-    public class ColliderEnabledBinder : TargetBoolBinder<Collider>
+    public class ColliderEnabledBinder : TargetBinder<Collider, bool>
     {
         /// <inheritdoc/>
         protected sealed override bool Property

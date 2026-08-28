@@ -10,8 +10,8 @@ namespace Aspid.MVVM.StarterKit.Tests
     /// A binder must never run the forward converter on a value going back to the ViewModel.
     /// </summary>
     /// <remarks>
-    /// Four binders carry their own private converter field and never inherited the base fix that routes
-    /// the reverse direction through <see cref="ITwoWayConverter{TFrom, TTo}"/>.
+    /// The reverse direction is routed through <see cref="ITwoWayConverter{TFrom, TTo}"/> by the shared base;
+    /// these cases pin that down for the binders that used to carry their own private converter field.
     /// <para>
     /// The bug hides behind the converters people test with: inversion is its own inverse, so applying
     /// the forward conversion twice looks correct. The converter here is deliberately not an involution.
@@ -38,8 +38,10 @@ namespace Aspid.MVVM.StarterKit.Tests
         }
 
         [Test]
-        public void GameObjectTagBinder_OneWayToSource_WithAOneWayConverter_SendsTheRawValue()
+        public void GameObjectTagBinder_OneWayToSource_WithAOneWayConverter_SendsTheRawValueAndWarns()
         {
+            LogAssert.Expect(LogType.Warning, new Regex("converts one way only"));
+
             var go = new GameObject("probe") { tag = "Player" };
             try
             {

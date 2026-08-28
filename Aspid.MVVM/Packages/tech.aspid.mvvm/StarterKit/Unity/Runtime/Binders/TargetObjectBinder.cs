@@ -21,15 +21,29 @@ namespace Aspid.MVVM.StarterKit
         where TObject : Object
     {
         /// <inheritdoc/>
-        protected TargetObjectBinder(TTarget target, BindMode mode)
-            : base(target, mode) { }
+        protected TargetObjectBinder(TTarget target, IConverter<TObject?, TObject?>? converter, BindMode mode)
+            : base(target, converter, mode) { }
 
         /// <inheritdoc/>
         /// <remarks>
-        /// Returns <see langword="null"/> when <paramref name="value"/> refers to a destroyed object.
+        /// Returns <see langword="null"/> when the converted value refers to a destroyed object.
         /// </remarks>
-        protected override TObject? GetConvertedValue(TObject? value) =>
-            // Cast to Object is required: `value != null` would be a reference comparison and miss a destroyed object.
-            (Object?)value ? value : null;
+        protected override TObject? GetConvertedValue(TObject? value)
+        {
+            var converted = base.GetConvertedValue(value);
+
+            // Cast to Object is required: `converted != null` would be a reference comparison and miss a destroyed object.
+            return (Object?)converted ? converted : null;
+        }
+
+        /// <inheritdoc/>
+        /// <remarks>
+        /// Returns <see langword="null"/> when the converted value refers to a destroyed object.
+        /// </remarks>
+        protected override TObject? GetConvertedBackValue(TObject? value)
+        {
+            var converted = base.GetConvertedBackValue(value);
+            return (Object?)converted ? converted : null;
+        }
     }
 }

@@ -6,7 +6,7 @@ using UnityEngine;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="ComponentMonoBinder{T1, T2}">ComponentMonoBinder&lt;TMP_Text, FontStyles&gt;</see> that binds
+    /// <see cref="ComponentMonoBinder{TComponent,TProperty}">ComponentMonoBinder&lt;TMP_Text, FontStyles&gt;</see> that binds
     /// <see cref="TMP_Text.fontStyle"/>.
     /// </summary>
     [AddBinderContextMenu(typeof(TMP_Text), serializePropertyNames: "m_fontStyle")]

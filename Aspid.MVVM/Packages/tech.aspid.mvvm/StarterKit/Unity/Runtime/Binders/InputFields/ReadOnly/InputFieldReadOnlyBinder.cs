@@ -7,14 +7,14 @@ using TMPro;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="TargetBoolBinder{TMP_InputField}"/> that binds <see cref="TMP_InputField.readOnly"/>.
+    /// <see cref="TargetBinder{TMP_InputField, bool}"/> that binds <see cref="TMP_InputField.readOnly"/>.
     /// </summary>
     /// <remarks>
     /// Whether the field can be edited. Unlike clearing <c>interactable</c>, this keeps the field looking normal
     /// and its text selectable — the difference between "not now" and "not yours".
     /// </remarks>
     [Serializable]
-    public class InputFieldReadOnlyBinder : TargetBoolBinder<TMP_InputField>
+    public class InputFieldReadOnlyBinder : TargetBinder<TMP_InputField, bool>
     {
         /// <inheritdoc/>
         protected sealed override bool Property

@@ -3,7 +3,9 @@ using TMPro;
 using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.TestTools;
 using Aspid.MVVM.StarterKit;
+using System.Text.RegularExpressions;
 using System.Collections.Generic;
 using Object = UnityEngine.Object;
 
@@ -70,7 +72,9 @@ namespace Aspid.MVVM.Tests
             Assert.AreEqual(-5f, text.characterSpacing, 0.001f, "Отрицательный трекинг не сохранён");
             Assert.AreEqual(-10f, text.lineSpacing, 0.001f, "Отрицательный интерлиньяж не сохранён");
 
+            LogAssert.Expect(LogType.Error, new Regex("is not finite"));
             ((IBinder<float>)character).SetValue(float.NaN);
+            LogAssert.Expect(LogType.Error, new Regex("is not finite"));
             ((IBinder<float>)line).SetValue(float.PositiveInfinity);
 
             Assert.AreEqual(-5f, text.characterSpacing, 0.001f, "NaN дошёл до трекинга");
@@ -86,6 +90,7 @@ namespace Aspid.MVVM.Tests
             ((IBinder<Vector4>)binder).SetValue(new Vector4(1f, 2f, 3f, 4f));
             Assert.AreEqual(new Vector4(1f, 2f, 3f, 4f), text.margin, "Отступы не доехали");
 
+            LogAssert.Expect(LogType.Error, new Regex("is not finite"));
             ((IBinder<Vector4>)binder).SetValue(new Vector4(1f, float.NaN, 3f, 4f));
             Assert.AreEqual(new Vector4(1f, 2f, 3f, 4f), text.margin, "Нефинитная компонента дошла до текста");
         }

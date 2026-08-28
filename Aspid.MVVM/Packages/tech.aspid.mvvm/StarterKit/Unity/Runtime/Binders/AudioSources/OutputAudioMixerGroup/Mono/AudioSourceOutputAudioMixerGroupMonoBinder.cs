@@ -5,7 +5,7 @@ using UnityEngine.Audio;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="ComponentMonoBinder{AudioSource, AudioMixerGroup}"/> that binds the <see cref="AudioSource.outputAudioMixerGroup"/> property.
+    /// <see cref="ComponentMonoBinder{TComponent,TProperty}"/> that binds the <see cref="AudioSource.outputAudioMixerGroup"/> property.
     /// </summary>
     [AddBinderContextMenu(typeof(AudioSource))]
     [AddComponentMenu("Aspid/MVVM/Binders/Audio/AudioSource/AudioSource Binder – OutputAudioMixerGroup")]

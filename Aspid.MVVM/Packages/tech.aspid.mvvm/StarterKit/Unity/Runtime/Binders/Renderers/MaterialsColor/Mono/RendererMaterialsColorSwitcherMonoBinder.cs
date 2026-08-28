@@ -4,12 +4,12 @@ using UnityEngine;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="SwitcherColorMonoBinder{Renderer}"/> that switches a named color property on all materials of a <see cref="Renderer"/> component
+    /// <see cref="SwitcherMonoBinder{Renderer, Color}"/> that switches a named color property on all materials of a <see cref="Renderer"/> component
     /// between two <see cref="Color"/> values based on the bound boolean ViewModel value.
     /// </summary>
     [AddComponentMenu("Aspid/MVVM/Binders/Renderer/Renderer Binder – MaterialsColor Switcher")]
     [AddBinderContextMenu(typeof(Renderer), serializePropertyNames: "m_Materials", SubPath = "Switcher")]
-    public sealed class RendererMaterialsColorSwitcherMonoBinder : SwitcherColorMonoBinder<Renderer>
+    public sealed class RendererMaterialsColorSwitcherMonoBinder : SwitcherMonoBinder<Renderer, Color>
     {
         [Tooltip("The name of the shader color property to set on all materials.")]
         [SerializeField] private string _colorPropertyName = "_BaseColor";

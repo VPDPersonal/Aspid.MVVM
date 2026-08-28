@@ -23,7 +23,7 @@ namespace Aspid.MVVM.StarterKit
             {
                 // emission is a struct wrapper; write through a local copy since the property can't be accessed by ref.
                 var emission = CachedComponent.emission;
-                emission.rateOverTimeMultiplier = BinderMath.SafeClamp(value, 0f, float.MaxValue);
+                emission.rateOverTimeMultiplier = this.SafeClamp(value, 0f, float.MaxValue);
             }
         }
     }

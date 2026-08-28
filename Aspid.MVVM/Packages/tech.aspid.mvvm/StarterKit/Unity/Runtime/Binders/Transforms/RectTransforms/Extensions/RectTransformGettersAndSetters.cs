@@ -28,9 +28,10 @@ namespace Aspid.MVVM.StarterKit
             var width = mode is not SizeDeltaMode.Height ? value.x : current.x;
             var height = mode is not SizeDeltaMode.Width ? value.y : current.y;
 
-            if (!BinderMath.IsFinite(width) || !BinderMath.IsFinite(height)) return;
+            var size = new Vector2(width, height);
+            if (!BinderMath.RequireFinite(typeof(RectTransformGettersAndSetters), size, transform)) return;
 
-            transform.sizeDelta = new Vector2(width, height);
+            transform.sizeDelta = size;
         }
         
         /// <summary>

@@ -4,12 +4,12 @@ using UnityEngine;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="EnumColorMonoBinder{Renderer}"/> that sets a named color property on all materials of a <see cref="Renderer"/> component
+    /// <see cref="EnumMonoBinder{Renderer, Color}"/> that sets a named color property on all materials of a <see cref="Renderer"/> component
     /// based on the bound enum ViewModel value.
     /// </summary>
     [AddComponentMenu("Aspid/MVVM/Binders/Renderer/Renderer Binder – MaterialsColor Enum")]
     [AddBinderContextMenu(typeof(Renderer), serializePropertyNames: "m_Materials", SubPath = "Enum")]
-    public sealed class RendererMaterialsColorEnumMonoBinder : EnumColorMonoBinder<Renderer>
+    public sealed class RendererMaterialsColorEnumMonoBinder : EnumMonoBinder<Renderer, Color>
     {
         [Tooltip("The name of the shader color property to set on all materials.")]
         [SerializeField] private string _colorPropertyName = "_BaseColor";

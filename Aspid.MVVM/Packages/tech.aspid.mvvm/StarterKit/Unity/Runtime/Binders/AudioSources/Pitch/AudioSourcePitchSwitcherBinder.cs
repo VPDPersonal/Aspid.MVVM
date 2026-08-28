@@ -6,7 +6,7 @@ using UnityEngine;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="SwitcherFloatBinder{AudioSource}"/> that switches the <see cref="AudioSource.pitch"/>
+    /// <see cref="SwitcherBinder{TTarget,T}">SwitcherBinder&lt;AudioSource, float&gt;</see> that switches the <see cref="AudioSource.pitch"/>
     /// property between two <see cref="float"/> values based on the bound boolean ViewModel value.
     /// </summary>
     /// <remarks>
@@ -14,7 +14,7 @@ namespace Aspid.MVVM.StarterKit
     /// </remarks>
     /// <include file="XmlExampleDoc-AudioSource-Pitch-1.1.0.xml" path="doc//member[@name='AudioSourcePitchSwitcherBinder']/*" />
     [Serializable]
-    public sealed class AudioSourcePitchSwitcherBinder : SwitcherFloatBinder<AudioSource>
+    public sealed class AudioSourcePitchSwitcherBinder : SwitcherBinder<AudioSource, float>
     {
         /// <inheritdoc/>
         public AudioSourcePitchSwitcherBinder(
@@ -35,6 +35,6 @@ namespace Aspid.MVVM.StarterKit
         /// </summary>
         /// <param name="value">The value to convert.</param>
         protected override float GetConvertedValue(float value) =>
-            BinderMath.SafeClamp(base.GetConvertedValue(value), -3, 3);
+            this.SafeClamp(base.GetConvertedValue(value), -3, 3, Target);
     }
 }

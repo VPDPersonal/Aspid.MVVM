@@ -6,20 +6,20 @@ using UnityEngine;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="TargetVector2Binder{SpriteRenderer}"/> that binds <see cref="SpriteRenderer.size"/>.
+    /// <see cref="TargetBinder{SpriteRenderer, Vector2}"/> that binds <see cref="SpriteRenderer.size"/>.
     /// </summary>
     /// <remarks>
     /// Ignored by Unity unless <see cref="SpriteRenderer.drawMode"/> is <see cref="SpriteDrawMode.Sliced"/> or
     /// <see cref="SpriteDrawMode.Tiled"/>. Negative and non-finite values are clamped to zero.
     /// </remarks>
     [Serializable]
-    public class SpriteRendererSizeBinder : TargetVector2Binder<SpriteRenderer>
+    public class SpriteRendererSizeBinder : TargetBinder<SpriteRenderer, Vector2>, IVector2Binder
     {
         /// <inheritdoc/>
         protected sealed override Vector2 Property
         {
             get => Target.size;
-            set => Target.size = new Vector2(BinderMath.SafeClamp(value.x, 0f, float.MaxValue), BinderMath.SafeClamp(value.y, 0f, float.MaxValue));
+            set => Target.size = new Vector2(this.SafeClamp(value.x, 0f, float.MaxValue, Target), this.SafeClamp(value.y, 0f, float.MaxValue, Target));
         }
 
         /// <inheritdoc/>

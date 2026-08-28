@@ -1,47 +1,22 @@
-using System;
-
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// Abstract base <see cref="MonoBinderWithConverter{TProperty}">MonoBinderWithConverter&lt;int&gt;</see> that binds an <see langword="int"/> property,
-    /// implementing <see cref="INumberBinder"/> to accept all numeric types
+    /// Abstract base <see cref="MonoBinder{TProperty}">MonoBinder&lt;int&gt;</see> that binds an <see langword="int"/> property,
+    /// implementing <see cref="IIntBinder"/> to accept all numeric types
     /// and <see cref="INumberReverseBinder"/> to broadcast to all numeric event types.
     /// </summary>
-    public abstract partial class IntMonoBinder : MonoBinderWithConverter<int>,
-        INumberBinder,
+    public abstract class IntMonoBinder : MonoBinder<int>,
+        IIntBinder,
         INumberReverseBinder
     {
-        /// <inheritdoc/>
-        public event Action<int> IntValueChanged;
+        private NumberReverseChannel _channel;
 
         /// <inheritdoc/>
-        public event Action<long> LongValueChanged;
-
-        /// <inheritdoc/>
-        public event Action<float> FloatValueChanged;
-
-        /// <inheritdoc/>
-        public event Action<double> DoubleValueChanged;
-
-        /// <inheritdoc/>
-        [BinderLog]
-        public void SetValue(long value) =>
-            base.SetValue((int)value);
-
-        /// <inheritdoc/>
-        [BinderLog]
-        public void SetValue(float value) =>
-            base.SetValue((int)value);
-
-        /// <inheritdoc/>
-        [BinderLog]
-        public void SetValue(double value) =>
-            base.SetValue((int)value);
+        ref NumberReverseChannel INumberReverseBinder.Channel => ref _channel;
 
         /// <summary>
-        /// Broadcasts the current value to all numeric event types:
-        /// <see cref="IntValueChanged"/>, <see cref="LongValueChanged"/>, <see cref="FloatValueChanged"/>, and <see cref="DoubleValueChanged"/>.
+        /// Broadcasts the current value on every numeric channel.
         /// </summary>
         /// <remarks>
         /// Also calls the base implementation: a member bound through <see cref="IReverseBinder{T}"/>
@@ -52,13 +27,7 @@ namespace Aspid.MVVM.StarterKit
         protected override void SendInitialValueToSource()
         {
             base.SendInitialValueToSource();
-
-            var value = GetConvertedBackValue(Property);
-
-            IntValueChanged?.Invoke(value);
-            LongValueChanged?.Invoke(value);
-            FloatValueChanged?.Invoke(value);
-            DoubleValueChanged?.Invoke(value);
+            _channel.Raise(GetConvertedBackValue(Property));
         }
 
         /// <summary>
@@ -75,13 +44,7 @@ namespace Aspid.MVVM.StarterKit
         protected void RaiseNumberValueChanged(int value)
         {
             RaiseValueChanged(value);
-
-            var converted = GetConvertedBackValue(value);
-
-            IntValueChanged?.Invoke(converted);
-            LongValueChanged?.Invoke(converted);
-            FloatValueChanged?.Invoke(converted);
-            DoubleValueChanged?.Invoke(converted);
+            _channel.Raise(GetConvertedBackValue(value));
         }
     }
 }

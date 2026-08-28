@@ -6,12 +6,12 @@ using UnityEngine.Localization.Components;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="ComponentStringMonoBinder{LocalizeStringEvent}"/> that sets the TableEntryReference
+    /// <see cref="ComponentMonoBinder{TComponent,TProperty}"/> that sets the TableEntryReference
     /// of the component's StringReference when the bound ViewModel string value changes.
     /// </summary>
     [AddBinderContextMenu(typeof(LocalizeStringEvent), serializePropertyNames: "m_StringReference")]
     [AddComponentMenu("Aspid/MVVM/Binders/UI/LocalizeStringEvent/LocalizeStringEvent Binder – Entry")]
-    public class LocalizeStringEventEntryMonoBinder : ComponentStringMonoBinder<LocalizeStringEvent>
+    public class LocalizeStringEventEntryMonoBinder : ComponentMonoBinder<LocalizeStringEvent, string>
     {
         /// <inheritdoc/>
         protected sealed override string Property

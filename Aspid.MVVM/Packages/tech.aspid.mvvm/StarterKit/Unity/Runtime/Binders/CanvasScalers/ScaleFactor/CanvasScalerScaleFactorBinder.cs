@@ -26,7 +26,7 @@ namespace Aspid.MVVM.StarterKit
         protected sealed override float Property
         {
             get => Target.scaleFactor;
-            set => Target.scaleFactor = BinderMath.SafeClamp(value, MinimumScaleFactor, float.MaxValue);
+            set => Target.scaleFactor = this.SafeClamp(value, MinimumScaleFactor, float.MaxValue, Target);
         }
 
         /// <inheritdoc/>

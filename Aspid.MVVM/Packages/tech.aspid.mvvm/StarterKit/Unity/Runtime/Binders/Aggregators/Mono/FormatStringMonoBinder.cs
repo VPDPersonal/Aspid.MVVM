@@ -32,7 +32,7 @@ namespace Aspid.MVVM.StarterKit
             }
             catch (FormatException exception)
             {
-                Debug.LogError($"[{nameof(FormatStringMonoBinder)}] Format '{_format}' does not match {values.Length} inputs: {exception.Message}", this);
+                BinderLogger.LogError(GetType(), exception, $"The format {_format.Describe()} does not match {values.Length} inputs, so an empty string is combined.", this);
                 return string.Empty;
             }
         }

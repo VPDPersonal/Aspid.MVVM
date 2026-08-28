@@ -11,12 +11,12 @@ using Object = UnityEngine.Object;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="TargetStringBinder{TMP_Text}"/> that sets the <see cref="TMP_Text.text"/> property
+    /// <see cref="TargetBinder{TMP_Text, string}"/> that sets the <see cref="TMP_Text.text"/> property
     /// using a Unity Localization entry, resolved via a <see cref="LocalizedString"/>.
     /// </summary>
     /// <include file="XmlExampleDoc-Text-Localization-1.1.0.xml" path="doc//member[@name='TextLocalizationEntryBinder']/*" />
     [Serializable]
-    public class TextLocalizationEntryBinder : TargetStringBinder<TMP_Text>
+    public class TextLocalizationEntryBinder : TargetBinder<TMP_Text, string>
     {
         [Tooltip("The localized string reference that provides the localized text.")]
         [SerializeField] private LocalizedString _stringReference = new();
@@ -27,7 +27,7 @@ namespace Aspid.MVVM.StarterKit
         /// <inheritdoc/>
         protected sealed override string? Property
         {
-            get => _stringReference.TableEntryReference.ToKeyName(Target);
+            get => _stringReference.TableEntryReference.ToKeyName(this, Target);
             set => _stringReference.TableEntryReference = value;
         }
         

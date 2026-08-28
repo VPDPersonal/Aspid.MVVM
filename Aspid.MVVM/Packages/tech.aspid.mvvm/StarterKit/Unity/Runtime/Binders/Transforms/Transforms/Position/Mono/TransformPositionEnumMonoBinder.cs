@@ -4,12 +4,12 @@ using UnityEngine;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="EnumVector3MonoBinder{Transform}"/> that sets the <see cref="Transform.position"/> or
+    /// <see cref="EnumMonoBinder{Transform, Vector3}"/> that sets the <see cref="Transform.position"/> or
     /// <see cref="Transform.localPosition"/> property based on the bound enum ViewModel value.
     /// </summary>
     [AddComponentMenu("Aspid/MVVM/Binders/Transform/Transform Binder – Position Enum")]
     [AddBinderContextMenu(typeof(Transform), serializePropertyNames: "m_LocalPosition", SubPath = "Enum")]
-    public sealed class TransformPositionEnumMonoBinder : EnumVector3MonoBinder<Transform>
+    public sealed class TransformPositionEnumMonoBinder : EnumMonoBinder<Transform, Vector3>
     {
         [Tooltip("The coordinate space in which the position is applied.")]
         [SerializeField] private Space _space = Space.World;

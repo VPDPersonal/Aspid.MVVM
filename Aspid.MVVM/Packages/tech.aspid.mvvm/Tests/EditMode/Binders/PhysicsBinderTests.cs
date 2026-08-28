@@ -1,6 +1,8 @@
 using NUnit.Framework;
 using UnityEngine;
+using UnityEngine.TestTools;
 using Aspid.MVVM.StarterKit;
+using System.Text.RegularExpressions;
 using System.Collections.Generic;
 
 // ReSharper disable once CheckNamespace
@@ -45,9 +47,11 @@ namespace Aspid.MVVM.Tests
             ((IBinder<float>)binder).SetValue(5f);
             Assert.AreEqual(5f, body.mass, 0.001f, "Обычная масса не доехала");
 
+            LogAssert.Expect(LogType.Error, new Regex("is not finite"));
             ((IBinder<float>)binder).SetValue(float.NaN);
             Assert.AreEqual(5f, body.mass, 0.001f, "NaN затёр рабочую массу");
 
+            LogAssert.Expect(LogType.Error, new Regex("is not finite"));
             ((IBinder<float>)binder).SetValue(float.PositiveInfinity);
             Assert.AreEqual(5f, body.mass, 0.001f, "Бесконечность затёрла рабочую массу");
         }
@@ -67,6 +71,7 @@ namespace Aspid.MVVM.Tests
             ((IBinder<float>)binder).SetValue(5f);
             Assert.AreEqual(5f, body.mass, 0.001f, "Обычная масса не доехала");
 
+            LogAssert.Expect(LogType.Error, new Regex("is not finite"));
             ((IBinder<float>)binder).SetValue(float.NaN);
             Assert.AreEqual(5f, body.mass, 0.001f, "NaN затёр рабочую массу");
         }

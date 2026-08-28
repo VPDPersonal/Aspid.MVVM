@@ -27,7 +27,7 @@ namespace Aspid.MVVM.StarterKit
         public void SetValue(AudioClip value)
         {
             if (!value) return;
-            CachedComponent.PlayOneShot(value, BinderMath.SafeClamp01(_volumeScale));
+            CachedComponent.PlayOneShot(value, this.SafeClamp01(_volumeScale));
         }
     }
 }

@@ -6,7 +6,7 @@ using UnityEngine.UI;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="TargetBoolBinder{ToggleGroup}"/> that binds <see cref="ToggleGroup.allowSwitchOff"/>.
+    /// <see cref="TargetBinder{ToggleGroup, bool}"/> that binds <see cref="ToggleGroup.allowSwitchOff"/>.
     /// </summary>
     /// <remarks>
     /// Whether the group may end up with nothing selected — the difference between a filter the player can clear and a
@@ -15,20 +15,20 @@ namespace Aspid.MVVM.StarterKit
     /// Turning it off does not select anything: Unity leaves an already-empty group empty.
     /// </remarks>
     [Serializable]
-    public class ToggleGroupAllowSwitchOffBinder : TargetBoolBinder<ToggleGroup>
+    public class ToggleGroupAllowSwitchOffBinder : TargetBinder<ToggleGroup, bool>
     {
-        /// <inheritdoc/>
-        protected sealed override bool Property
-        {
-            get => Target.allowSwitchOff;
-            set => Target.allowSwitchOff = value;
-        }
-
         /// <inheritdoc/>
         public ToggleGroupAllowSwitchOffBinder(
             ToggleGroup target,
             IConverter<bool, bool>? converter = null,
             BindMode mode = BindMode.OneWay)
             : base(target, converter, mode) { }
+
+        /// <inheritdoc/>
+        protected sealed override bool Property
+        {
+            get => Target.allowSwitchOff;
+            set => Target.allowSwitchOff = value;
+        }
     }
 }

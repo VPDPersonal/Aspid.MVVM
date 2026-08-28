@@ -4,12 +4,12 @@ using UnityEngine;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="SwitcherVector3MonoBinder{Transform}"/> that switches the <see cref="Transform.rotation"/> or
+    /// <see cref="SwitcherMonoBinder{Transform, Vector3}"/> that switches the <see cref="Transform.rotation"/> or
     /// <see cref="Transform.localRotation"/> between two euler angle values based on the bound boolean ViewModel value.
     /// </summary>
     [AddComponentMenu("Aspid/MVVM/Binders/Transform/Transform Binder – Rotation Switcher")]
     [AddBinderContextMenu(typeof(Transform), serializePropertyNames: "m_LocalRotation", SubPath = "Switcher")]
-    public sealed class TransformRotationSwitcherMonoBinder : SwitcherVector3MonoBinder<Transform>
+    public sealed class TransformRotationSwitcherMonoBinder : SwitcherMonoBinder<Transform, Vector3>
     {
         [Tooltip("The coordinate space in which the rotation is applied.")]
         [SerializeField] private Space _space = Space.World;

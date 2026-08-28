@@ -62,6 +62,7 @@ namespace Aspid.MVVM.Tests
             ((IBinder<float>)binder).SetValue(5f);
             Assert.AreEqual(1f, AudioListener.volume, 0.001f, "Громкость вне 0..1 не обрезана");
 
+            LogAssert.Expect(LogType.Error, new Regex("is not finite"));
             ((IBinder<float>)binder).SetValue(float.NaN);
             Assert.IsFalse(float.IsNaN(AudioListener.volume), "NaN дошёл до слушателя");
         }
@@ -71,7 +72,7 @@ namespace Aspid.MVVM.Tests
         {
             AudioListener.volume = 0.4f;
 
-            var binder = new AudioListenerVolumeBinder(BindMode.OneWayToSource);
+            var binder = new AudioListenerVolumeBinder(mode: BindMode.OneWayToSource);
             var received = float.NaN;
 
             binder.Bind(new OneWayToSourceStructBindableMember<float>(value => received = value));
@@ -125,7 +126,7 @@ namespace Aspid.MVVM.Tests
         {
             var binder = NewBinder<AudioMixerFloatMonoBinder>(BindMode.OneWay);
 
-            LogAssert.Expect(LogType.Error, new Regex("No mixer assigned"));
+            LogAssert.Expect(LogType.Error, new Regex("no mixer is assigned"));
             ((IBinder<float>)binder).SetValue(1f);
         }
 
@@ -134,7 +135,7 @@ namespace Aspid.MVVM.Tests
         {
             var binder = NewBinder<AudioMixerSnapshotMonoBinder>(BindMode.OneWay);
 
-            LogAssert.Expect(LogType.Error, new Regex("No snapshots assigned"));
+            LogAssert.Expect(LogType.Error, new Regex("no snapshots are assigned"));
             ((IBinder<int>)binder).SetValue(0);
         }
 
@@ -179,7 +180,7 @@ namespace Aspid.MVVM.Tests
         [Test]
         public void TheStaticBinders_RefuseTwoWay()
         {
-            Assert.Throws<System.ArgumentException>(() => _ = new AudioListenerVolumeBinder(BindMode.TwoWay));
+            Assert.Throws<System.ArgumentException>(() => _ = new AudioListenerVolumeBinder(mode: BindMode.TwoWay));
             Assert.Throws<System.ArgumentException>(() => _ = new AudioListenerPauseBinder(mode: BindMode.TwoWay));
         }
 

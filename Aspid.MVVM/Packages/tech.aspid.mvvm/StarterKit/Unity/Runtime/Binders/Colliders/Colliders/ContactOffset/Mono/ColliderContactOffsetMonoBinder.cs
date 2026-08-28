@@ -22,7 +22,7 @@ namespace Aspid.MVVM.StarterKit
         protected sealed override float Property
         {
             get => CachedComponent.contactOffset;
-            set => CachedComponent.contactOffset = BinderMath.SafeClamp(value, MinimumContactOffset, float.MaxValue);
+            set => CachedComponent.contactOffset = this.SafeClamp(value, MinimumContactOffset, float.MaxValue);
         }
     }
 }

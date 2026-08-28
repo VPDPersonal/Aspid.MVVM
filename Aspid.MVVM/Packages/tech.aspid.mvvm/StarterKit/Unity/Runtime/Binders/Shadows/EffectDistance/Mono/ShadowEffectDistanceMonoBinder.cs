@@ -5,7 +5,7 @@ using UnityEngine.UI;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="ComponentVector2MonoBinder{Shadow}"/> that binds <see cref="Shadow.effectDistance"/>.
+    /// <see cref="ComponentMonoBinder{Shadow, Vector2}"/> that binds <see cref="Shadow.effectDistance"/>.
     /// </summary>
     /// <remarks>
     /// How far the shadow is offset, or how thick an outline is — <see cref="Outline"/> reads the same
@@ -13,7 +13,7 @@ namespace Aspid.MVVM.StarterKit
     /// </remarks>
     [AddBinderContextMenu(typeof(Shadow), serializePropertyNames: "m_EffectDistance")]
     [AddComponentMenu("Aspid/MVVM/Binders/UI/Shadow/Shadow Binder – Effect Distance")]
-    public class ShadowEffectDistanceMonoBinder : ComponentVector2MonoBinder<Shadow>
+    public class ShadowEffectDistanceMonoBinder : ComponentMonoBinder<Shadow, Vector2>, IVector2Binder
     {
         /// <inheritdoc/>
         protected sealed override Vector2 Property
@@ -21,7 +21,7 @@ namespace Aspid.MVVM.StarterKit
             get => CachedComponent.effectDistance;
             set
             {
-                if (!BinderMath.IsFinite(value.x) || !BinderMath.IsFinite(value.y)) return;
+                if (!this.RequireFinite(value)) return;
                 CachedComponent.effectDistance = value;
             }
         }

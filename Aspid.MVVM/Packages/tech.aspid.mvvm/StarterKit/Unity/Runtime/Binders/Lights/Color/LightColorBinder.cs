@@ -6,23 +6,23 @@ using UnityEngine;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="TargetColorBinder{Light}"/> that binds <see cref="Light.color"/>.
+    /// <see cref="TargetBinder{Light, Color}"/> that binds <see cref="Light.color"/>.
     /// </summary>
     [Serializable]
-    public class LightColorBinder : TargetColorBinder<Light>
+    public class LightColorBinder : TargetBinder<Light, Color>, IColorBinder
     {
-        /// <inheritdoc/>
-        protected sealed override Color Property
-        {
-            get => Target.color;
-            set => Target.color = value;
-        }
-
         /// <inheritdoc/>
         public LightColorBinder(
             Light target,
             IConverter<Color, Color>? converter = null,
             BindMode mode = BindMode.OneWay)
             : base(target, converter, mode) { }
+
+        /// <inheritdoc/>
+        protected sealed override Color Property
+        {
+            get => Target.color;
+            set => Target.color = value;
+        }
     }
 }

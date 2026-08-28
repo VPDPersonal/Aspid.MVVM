@@ -6,7 +6,7 @@ using UnityEngine;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="SwitcherFloatBinder{CanvasGroup}"/> that switches the <see cref="CanvasGroup.alpha"/>
+    /// <see cref="SwitcherBinder{TTarget,T}">SwitcherBinder&lt;CanvasGroup, float&gt;</see> that switches the <see cref="CanvasGroup.alpha"/>
     /// property between two <see cref="float"/> values based on the bound boolean ViewModel value.
     /// </summary>
     /// <remarks>
@@ -14,7 +14,7 @@ namespace Aspid.MVVM.StarterKit
     /// </remarks>
     /// <include file="XmlExampleDoc-CanvasGroup-Alpha-1.1.0.xml" path="doc//member[@name='CanvasGroupAlphaSwitcherBinder']/*" />
     [Serializable]
-    public sealed class CanvasGroupAlphaSwitcherBinder : SwitcherFloatBinder<CanvasGroup>
+    public sealed class CanvasGroupAlphaSwitcherBinder : SwitcherBinder<CanvasGroup, float>
     {
         /// <inheritdoc/>
         public CanvasGroupAlphaSwitcherBinder(
@@ -31,6 +31,6 @@ namespace Aspid.MVVM.StarterKit
         /// </summary>
         /// <param name="value">The value received from the ViewModel.</param>
         protected override void SetValue(float value) =>
-            Target.alpha = BinderMath.SafeClamp01(value);
+            Target.alpha = this.SafeClamp01(value, Target);
     }
 }

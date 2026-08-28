@@ -1,7 +1,9 @@
 using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.TestTools;
 using Aspid.MVVM.StarterKit;
+using System.Text.RegularExpressions;
 using System.Collections.Generic;
 using Object = UnityEngine.Object;
 
@@ -63,6 +65,7 @@ namespace Aspid.MVVM.Tests
             var scrollbar = NewGameObject("Scrollbar").AddComponent<Scrollbar>();
             var binder = scrollbar.gameObject.AddComponent<ScrollbarSizeMonoBinder>();
 
+            LogAssert.Expect(LogType.Error, new Regex("is not finite"));
             ((IBinder<float>)binder).SetValue(float.NaN);
 
             Assert.IsFalse(float.IsNaN(scrollbar.size), "NaN дошёл до скроллбара");
@@ -88,6 +91,7 @@ namespace Aspid.MVVM.Tests
             var scrollRect = NewScrollRect();
             var binder = scrollRect.gameObject.AddComponent<ScrollRectNormalizedPositionMonoBinder>();
 
+            LogAssert.Expect(LogType.Error, new Regex("is not finite"));
             ((IBinder<Vector2>)binder).SetValue(new Vector2(5f, float.NaN));
 
             Assert.AreEqual(1f, scrollRect.horizontalNormalizedPosition, 0.001f, "Позиция вне 0..1 не обрезана");
@@ -131,6 +135,7 @@ namespace Aspid.MVVM.Tests
             renderer.drawMode = SpriteDrawMode.Sliced;
 
             var binder = renderer.gameObject.AddComponent<SpriteRendererSizeMonoBinder>();
+            LogAssert.Expect(LogType.Error, new Regex("is not finite"));
             ((IBinder<Vector2>)binder).SetValue(new Vector2(-2f, float.NaN));
 
             Assert.AreEqual(Vector2.zero, renderer.size, "Отрицательный или нефинитный размер не обрезан");
@@ -157,7 +162,7 @@ namespace Aspid.MVVM.Tests
             var body = NewGameObject("Body").AddComponent<Rigidbody>();
             body.constraints = RigidbodyConstraints.FreezePositionZ;
 
-            var binder = new RigidbodyConstraintsBinder(body, BindMode.OneWayToSource);
+            var binder = new RigidbodyConstraintsBinder(body, mode: BindMode.OneWayToSource);
             var received = default(RigidbodyConstraints);
 
             binder.Bind(new OneWayToSourceStructBindableMember<RigidbodyConstraints>(value => received = value));
@@ -198,6 +203,7 @@ namespace Aspid.MVVM.Tests
             ((IBinder<float>)binder).SetValue(-5f);
             Assert.AreEqual(0f, particles.emission.rateOverTimeMultiplier, 0.001f, "Отрицательная частота не обрезана");
 
+            LogAssert.Expect(LogType.Error, new Regex("is not finite"));
             ((IBinder<float>)binder).SetValue(float.NaN);
             Assert.IsFalse(float.IsNaN(particles.emission.rateOverTimeMultiplier), "NaN дошёл до модуля");
         }

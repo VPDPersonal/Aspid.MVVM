@@ -6,13 +6,13 @@ using UnityEngine;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="SwitcherBinderWithConverter{T1, T2}">SwitcherBinderWithConverter&lt;AudioSource, Vector2&gt;</see> that switches the
+    /// <see cref="SwitcherBinder{TTarget,T}">SwitcherBinder&lt;AudioSource, Vector2&gt;</see> that switches the
     /// min/max distance of an <see cref="AudioSource"/> between two <see cref="Vector2"/> values
     /// based on the bound boolean ViewModel value.
     /// </summary>
     /// <include file="XmlExampleDoc-AudioSource-MinMaxDistance-1.1.0.xml" path="doc//member[@name='AudioSourceMinMaxDistanceSwitcherBinder']/*" />
     [Serializable]
-    public sealed class AudioSourceMinMaxDistanceSwitcherBinder : SwitcherBinderWithConverter<AudioSource, Vector2>
+    public sealed class AudioSourceMinMaxDistanceSwitcherBinder : SwitcherBinder<AudioSource, Vector2>
     {
         [Tooltip("Which distance component the bound value updates.")]
         [SerializeField] private AudioSourceDistanceMode _distanceMode = AudioSourceDistanceMode.Range;

@@ -6,23 +6,23 @@ using UnityEngine;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="TargetBoolBinder{SpriteRenderer}"/> that binds <see cref="SpriteRenderer.flipX"/>.
+    /// <see cref="TargetBinder{SpriteRenderer, bool}"/> that binds <see cref="SpriteRenderer.flipX"/>.
     /// </summary>
     [Serializable]
-    public class SpriteRendererFlipXBinder : TargetBoolBinder<SpriteRenderer>
+    public class SpriteRendererFlipXBinder : TargetBinder<SpriteRenderer, bool>
     {
-        /// <inheritdoc/>
-        protected sealed override bool Property
-        {
-            get => Target.flipX;
-            set => Target.flipX = value;
-        }
-
         /// <inheritdoc/>
         public SpriteRendererFlipXBinder(
             SpriteRenderer target,
             IConverter<bool, bool>? converter = null,
             BindMode mode = BindMode.OneWay)
             : base(target, converter, mode) { }
+
+        /// <inheritdoc/>
+        protected sealed override bool Property
+        {
+            get => Target.flipX;
+            set => Target.flipX = value;
+        }
     }
 }

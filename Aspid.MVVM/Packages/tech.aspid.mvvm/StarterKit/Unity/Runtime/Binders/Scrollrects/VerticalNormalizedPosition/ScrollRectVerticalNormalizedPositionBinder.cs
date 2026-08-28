@@ -12,17 +12,17 @@ namespace Aspid.MVVM.StarterKit
     public class ScrollRectVerticalNormalizedPositionBinder : TargetFloatBinder<ScrollRect>
     {
         /// <inheritdoc/>
-        protected sealed override float Property
-        {
-            get => Target.verticalNormalizedPosition;
-            set => Target.verticalNormalizedPosition = BinderMath.SafeClamp01(value);
-        }
-
-        /// <inheritdoc/>
         public ScrollRectVerticalNormalizedPositionBinder(
             ScrollRect target,
             IConverter<float, float>? converter = null,
             BindMode mode = BindMode.OneWay)
             : base(target, converter, mode) { }
+
+        /// <inheritdoc/>
+        protected sealed override float Property
+        {
+            get => Target.verticalNormalizedPosition;
+            set => Target.verticalNormalizedPosition = this.SafeClamp01(value, Target);
+        }
     }
 }

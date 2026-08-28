@@ -4,7 +4,7 @@ using UnityEngine;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="ComponentVector2MonoBinder{RectTransform}"/> that binds <see cref="RectTransform.anchorMax"/>.
+    /// <see cref="ComponentMonoBinder{RectTransform, Vector2}"/> that binds <see cref="RectTransform.anchorMax"/>.
     /// </summary>
     /// <remarks>
     /// Where the element's upper-right corner is pinned inside its parent, as a fraction. Together with the minimum
@@ -16,7 +16,7 @@ namespace Aspid.MVVM.StarterKit
     /// </remarks>
     [AddBinderContextMenu(typeof(RectTransform), serializePropertyNames: "m_AnchorMax")]
     [AddComponentMenu("Aspid/MVVM/Binders/UI/RectTransform/RectTransform Binder – AnchorMax")]
-    public class RectTransformAnchorMaxMonoBinder : ComponentVector2MonoBinder<RectTransform>
+    public class RectTransformAnchorMaxMonoBinder : ComponentMonoBinder<RectTransform, Vector2>, IVector2Binder
     {
         /// <inheritdoc/>
         protected sealed override Vector2 Property
@@ -24,7 +24,7 @@ namespace Aspid.MVVM.StarterKit
             get => CachedComponent.anchorMax;
             set
             {
-                if (!BinderMath.IsFinite(value.x) || !BinderMath.IsFinite(value.y)) return;
+                if (!this.RequireFinite(value)) return;
                 CachedComponent.anchorMax = value;
             }
         }

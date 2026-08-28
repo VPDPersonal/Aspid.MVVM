@@ -4,11 +4,11 @@ using UnityEngine;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="ComponentMonoBinderWithConverter{T1, T2}">ComponentMonoBinderWithConverter&lt;MeshCollider, Mesh&gt;</see> that binds the <see cref="MeshCollider.sharedMesh"/> property.
+    /// <see cref="ComponentMonoBinder{TComponent,TProperty}">ComponentMonoBinder&lt;MeshCollider, Mesh&gt;</see> that binds the <see cref="MeshCollider.sharedMesh"/> property.
     /// </summary>
     [AddBinderContextMenu(typeof(MeshCollider), serializePropertyNames: "m_Mesh")]
     [AddComponentMenu("Aspid/MVVM/Binders/Collider/Mesh/MeshCollider Binder – Mesh")]
-    public class MeshColliderMeshMonoBinder : ComponentMonoBinderWithConverter<MeshCollider, Mesh>
+    public class MeshColliderMeshMonoBinder : ComponentMonoBinder<MeshCollider, Mesh>
     {
         /// <inheritdoc/>
         protected sealed override Mesh Property

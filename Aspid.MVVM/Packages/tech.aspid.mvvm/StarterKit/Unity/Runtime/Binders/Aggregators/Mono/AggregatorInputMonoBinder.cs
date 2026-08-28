@@ -35,22 +35,11 @@ namespace Aspid.MVVM.StarterKit
         }
 
         /// <summary>
-        /// Called before binding. Claims this input's index on the aggregator.
-        /// </summary>
-        protected override void OnBinding()
-        {
-            if (_aggregator) _aggregator.RegisterInput(_index, this);
-        }
-
-        /// <summary>
-        /// Called when the binder is unbound. Releases the index and clears the aggregator's collected values.
+        /// Called when the binder is unbound. Clears the aggregator's collected values.
         /// </summary>
         protected override void OnUnbound()
         {
-            if (!_aggregator) return;
-
-            _aggregator.UnregisterInput(_index, this);
-            _aggregator.ResetInputs();
+            if (_aggregator) _aggregator.ResetInputs();
         }
     }
 }

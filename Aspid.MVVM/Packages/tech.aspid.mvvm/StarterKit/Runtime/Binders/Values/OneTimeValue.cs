@@ -8,7 +8,6 @@ namespace Aspid.MVVM.StarterKit
     /// accepting a ViewModel value exactly once.
     /// </summary>
     /// <typeparam name="T">The type of the bindable value.</typeparam>
-    /// <include file="XmlExampleDoc-Values-1.1.0.xml" path="doc//member[@name='OneTimeValue{1}']/*" />
     [Serializable]
     [BindModeOverride(BindMode.OneTime)]
     public class OneTimeValue<T> : OneWayValue<T>

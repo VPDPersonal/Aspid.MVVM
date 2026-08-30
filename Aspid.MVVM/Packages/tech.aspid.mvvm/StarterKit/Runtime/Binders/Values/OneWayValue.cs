@@ -9,29 +9,14 @@ namespace Aspid.MVVM.StarterKit
     /// ViewModel value of type <typeparamref name="T"/> and notifies subscribers when it changes.
     /// </summary>
     /// <typeparam name="T">The type of the bindable value.</typeparam>
-    /// <include file="XmlExampleDoc-Values-1.1.0.xml" path="doc//member[@name='OneWayValue{1}']/*" />
     [Serializable]
     public class OneWayValue<T> : Binder, IBinder<T>
     {
-        /// <summary>
-        /// Raised with the new pre-conversion value when <see cref="Value"/> is updated.
-        /// </summary>
-        public event Action<T?>? Changed;
-
         [Tooltip("The stored value. Set in the Inspector, it is the value before the first ViewModel push.")]
         [SerializeField] private T? _value;
 
         [Tooltip("Optional converter applied to each incoming value before it is stored.")]
         [SerializeReference] private IConverter<T?, T?>? _converter;
-
-        /// <summary>
-        /// Gets the most recently received (and optionally converted) value.
-        /// </summary>
-        public T? Value
-        {
-            get => _value;
-            private set => _value = value;
-        }
 
         /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</param>
         /// <exception cref="InvalidOperationException">Thrown when <paramref name="mode"/> is <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</exception>
@@ -62,6 +47,20 @@ namespace Aspid.MVVM.StarterKit
 
             _value = value;
             _converter = converter;
+        }
+
+        /// <summary>
+        /// Raised with the new pre-conversion value when <see cref="Value"/> is updated.
+        /// </summary>
+        public event Action<T?>? Changed;
+
+        /// <summary>
+        /// Gets the most recently received (and optionally converted) value.
+        /// </summary>
+        public T? Value
+        {
+            get => _value;
+            private set => _value = value;
         }
 
         /// <summary>

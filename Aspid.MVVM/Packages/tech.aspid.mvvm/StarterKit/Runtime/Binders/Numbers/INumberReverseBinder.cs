@@ -15,6 +15,15 @@ namespace Aspid.MVVM.StarterKit
     // ReSharper disable once PossibleInterfaceMemberAmbiguity
     public interface INumberReverseBinder : IReverseBinder<int>, IReverseBinder<long>, IReverseBinder<float>, IReverseBinder<double>
     {
+        /// <summary>
+        /// Gets the channel holding this binder's numeric subscriptions.
+        /// </summary>
+        /// <remarks>
+        /// Returned by reference: the channel is a mutable field of the implementor, and a copy would
+        /// collect subscriptions the binder never raises.
+        /// </remarks>
+        protected ref NumberReverseChannel Channel { get; }
+
         /// <inheritdoc/>
         event Action<int>? IReverseBinder<int>.ValueChanged
         {
@@ -42,14 +51,5 @@ namespace Aspid.MVVM.StarterKit
             add => Channel.DoubleValueChanged += value;
             remove => Channel.DoubleValueChanged -= value;
         }
-        
-        /// <summary>
-        /// Gets the channel holding this binder's numeric subscriptions.
-        /// </summary>
-        /// <remarks>
-        /// Returned by reference: the channel is a mutable field of the implementor, and a copy would
-        /// collect subscriptions the binder never raises.
-        /// </remarks>
-        protected ref NumberReverseChannel Channel { get; }
     }
 }

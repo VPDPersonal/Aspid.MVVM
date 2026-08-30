@@ -13,7 +13,6 @@ namespace Aspid.MVVM.StarterKit
     /// Concrete <see cref="ObservableListViewModelBinder{T, TViewFactory}"/> that uses <see cref="MonoView"/> as the view type
     /// and the default <see cref="IViewFactory{T}"/> as the factory.
     /// </summary>
-    /// <include file="XmlExampleDoc-ObservableList-ViewModel-1.1.0.xml" path="doc//member[@name='ObservableListViewModelBinder']/*" />
     [Serializable]
     public class ObservableListViewModelBinder : ObservableListViewModelBinder<MonoView, ViewFactory>
     {
@@ -26,7 +25,6 @@ namespace Aspid.MVVM.StarterKit
     /// <see cref="ObservableListViewModelBinder{T, TViewFactory}"/> that uses <see cref="IViewFactory{T}"/> as the factory type.
     /// </summary>
     /// <typeparam name="T">The type of <see cref="MonoBehaviour"/> view created for each item in the list.</typeparam>
-    /// <include file="XmlExampleDoc-ObservableList-ViewModel-1.1.0.xml" path="doc//member[@name='ObservableListViewModelBinder{1}']/*" />
     [Serializable]
     public class ObservableListViewModelBinder<T> : ObservableListViewModelBinder<T, IViewFactory<T>>
         where T : MonoBehaviour, IView
@@ -43,7 +41,6 @@ namespace Aspid.MVVM.StarterKit
     /// </summary>
     /// <typeparam name="T">The type of <see cref="MonoBehaviour"/> view created for each item in the list.</typeparam>
     /// <typeparam name="TViewFactory">The factory type used to create and release view instances.</typeparam>
-    /// <include file="XmlExampleDoc-ObservableList-ViewModel-1.1.0.xml" path="doc//member[@name='ObservableListViewModelBinder{2}']/*" />
     [Serializable]
     public class ObservableListViewModelBinder<T, TViewFactory> : ObservableListBinder<IViewModel>
         where T : MonoBehaviour, IView

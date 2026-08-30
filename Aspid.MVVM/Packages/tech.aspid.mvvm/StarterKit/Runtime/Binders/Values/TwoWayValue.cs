@@ -11,23 +11,10 @@ namespace Aspid.MVVM.StarterKit
     /// to the ViewModel when binding is established.
     /// </summary>
     /// <typeparam name="T">The type of the bindable value.</typeparam>
-    /// <include file="XmlExampleDoc-Values-1.1.0.xml" path="doc//member[@name='TwoWayValue{1}']/*" />
     [Serializable]
     [BindModeOverride(IsAll = true)]
     public class TwoWayValue<T> : Binder, IBinder<T>, IReverseBinder<T>
     {
-        /// <summary>
-        /// Raised with the new pre-conversion value when the ViewModel updates <see cref="Value"/> via <see cref="IBinder{T}.SetValue"/>.
-        /// </summary>
-        public event Action<T?>? Changed;
-
-        /// <inheritdoc/>
-        event Action<T?>? IReverseBinder<T>.ValueChanged
-        {
-            add => _valueChanged += value;
-            remove => _valueChanged -= value;
-        }
-
         [Tooltip("The stored value. Set in the Inspector, it is the value before the first ViewModel push.")]
         [SerializeField] private T? _value;
 
@@ -36,21 +23,6 @@ namespace Aspid.MVVM.StarterKit
         [SerializeReference] private IConverter<T?, T?>? _converter;
 
         private Action<T?>? _valueChanged;
-
-        /// <summary>
-        /// Gets or sets the current value.
-        /// Setting this property raises <see cref="IReverseBinder{T}.ValueChanged"/> so the ViewModel
-        /// is notified.
-        /// </summary>
-        public T? Value
-        {
-            get => _value;
-            set
-            {
-                _value = value;
-                _valueChanged?.Invoke(GetConvertedBackValue(value));
-            }
-        }
 
         /// <param name="mode">The binding mode to use.</param>
         /// <exception cref="ArgumentException">Thrown when <paramref name="mode"/> is <see cref="BindMode.None"/>.</exception>
@@ -81,6 +53,33 @@ namespace Aspid.MVVM.StarterKit
 
             _value = value;
             _converter = converter;
+        }
+
+        /// <summary>
+        /// Raised with the new pre-conversion value when the ViewModel updates <see cref="Value"/> via <see cref="IBinder{T}.SetValue"/>.
+        /// </summary>
+        public event Action<T?>? Changed;
+
+        /// <inheritdoc/>
+        event Action<T?>? IReverseBinder<T>.ValueChanged
+        {
+            add => _valueChanged += value;
+            remove => _valueChanged -= value;
+        }
+
+        /// <summary>
+        /// Gets or sets the current value.
+        /// Setting this property raises <see cref="IReverseBinder{T}.ValueChanged"/> so the ViewModel
+        /// is notified.
+        /// </summary>
+        public T? Value
+        {
+            get => _value;
+            set
+            {
+                _value = value;
+                _valueChanged?.Invoke(GetConvertedBackValue(value));
+            }
         }
 
         /// <summary>
@@ -130,13 +129,10 @@ namespace Aspid.MVVM.StarterKit
         /// <see cref="ITwoWayConverter{TFrom, TTo}"/>, and unchanged when it does not.
         /// </returns>
         /// <remarks>
-        /// <see cref="Value"/> holds what the converter produced, so raising it unchanged handed the
-        /// ViewModel the View's own presentation — a ViewModel that set X immediately received
-        /// <c>Convert(X)</c> back. Undoing the conversion makes the round trip an identity again for
-        /// a two-way converter, and leaves it as it was for a one-way one.
+        /// <see cref="Value"/> holds what the converter produced, so it is undone here: without that, a
+        /// ViewModel that set X would receive <c>Convert(X)</c> straight back.
         /// </remarks>
         private T? GetConvertedBackValue(T? value) =>
             _converter is ITwoWayConverter<T?, T?> twoWay ? twoWay.ConvertBack(value) : value;
-
     }
 }

@@ -9,10 +9,8 @@ namespace Aspid.MVVM.StarterKit
     /// </summary>
     /// <remarks>
     /// By default uses <see cref="StringEmptyToBoolConverter"/>, so an empty or <see langword="null"/>
-    /// string maps to <see langword="true"/> — the opposite polarity of what a <c>SetActive</c> or
-    /// <c>interactable</c> target usually wants, which is why <c>isInvert</c> exists.
+    /// string maps to <see langword="true"/>.
     /// </remarks>
-    /// <include file="XmlExampleDoc-Casters-1.1.0.xml" path="doc//member[@name='StringToBoolCasterBinder']/*" />
     public sealed class StringToBoolCasterBinder : Binder, IBinder<string>
     {
         private readonly Action<bool> _setValue;

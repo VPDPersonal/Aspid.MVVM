@@ -36,7 +36,16 @@ namespace Aspid.MVVM.StarterKit
         /// does not parse.
         /// </summary>
         /// <param name="value">The source string value to parse and forward.</param>
-        public void SetValue(string? value) =>
-            _setValue(StringNumberParse.TryFloat(value, out var parsed) ? parsed : _fallback);
+        public void SetValue(string? value)
+        {
+            if (StringNumberParse.TryFloat(value, out var parsed))
+            {
+                _setValue(parsed);
+                return;
+            }
+
+            this.LogError(value.Expected("a finite number"), $"Forwarding {_fallback} instead.");
+            _setValue(_fallback);
+        }
     }
 }

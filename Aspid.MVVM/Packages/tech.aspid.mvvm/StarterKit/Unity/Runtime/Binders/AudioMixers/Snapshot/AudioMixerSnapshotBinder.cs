@@ -25,11 +25,6 @@ namespace Aspid.MVVM.StarterKit
         [Tooltip("Seconds the mixer takes to reach the snapshot. Zero switches instantly.")]
         [SerializeField] [Min(0f)] private float _transitionSeconds;
 
-        /// <summary>
-        /// Indicates whether binding is allowed: <see langword="false"/> when no snapshots were given.
-        /// </summary>
-        public override bool IsBind => _snapshots is { Length: > 0 };
-
         /// <param name="snapshots">The snapshots the ViewModel can select, by index or by name.</param>
         /// <param name="transitionSeconds">Seconds the mixer takes to reach the snapshot. Zero switches instantly.</param>
         /// <param name="mode">The binding mode. Must be <see cref="BindMode.OneWay"/> or <see cref="BindMode.OneTime"/> — a snapshot transition has no value to read back.</param>
@@ -46,6 +41,11 @@ namespace Aspid.MVVM.StarterKit
             _snapshots = snapshots ?? throw new ArgumentNullException(nameof(snapshots));
             _transitionSeconds = transitionSeconds;
         }
+
+        /// <summary>
+        /// Indicates whether binding is allowed: <see langword="false"/> when no snapshots were given.
+        /// </summary>
+        public override bool IsBind => _snapshots is { Length: > 0 };
 
         /// <summary>
         /// Transitions to the snapshot at <paramref name="value"/> in the list.

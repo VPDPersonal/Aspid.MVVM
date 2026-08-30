@@ -8,7 +8,6 @@ namespace Aspid.MVVM.StarterKit
     /// from the ViewModel to a setter action.
     /// </summary>
     /// <typeparam name="T">The type of the value to bind.</typeparam>
-    /// <include file="XmlExampleDoc-Generics-1.1.0.xml" path="doc//member[@name='GenericOneWayBinder{1}']/*" />
     public class GenericOneWayBinder<T> : Binder, IBinder<T>
     {
         private readonly Action<T?> _setValue;
@@ -42,7 +41,6 @@ namespace Aspid.MVVM.StarterKit
     /// Holding a <typeparamref name="TTarget"/> instance avoids capturing it in a closure when using
     /// method-group-style setters on Unity components.
     /// </remarks>
-    /// <include file="XmlExampleDoc-Generics-1.1.0.xml" path="doc//member[@name='GenericOneWayBinder{2}']/*" />
     public class GenericOneWayBinder<TTarget, T> : Binder, IBinder<T>
     {
         private readonly TTarget _target;

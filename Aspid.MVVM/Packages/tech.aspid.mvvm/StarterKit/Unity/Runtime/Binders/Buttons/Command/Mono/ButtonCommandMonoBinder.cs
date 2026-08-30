@@ -54,9 +54,8 @@ namespace Aspid.MVVM.StarterKit
         /// every click executes the bound command.
         /// </summary>
         /// <remarks>
-        /// The subscription connects the button's click event to <see cref="OnClicked()"/>,
-        /// which dispatches to the first non-null command: the plain <see cref="IRelayCommand"/> is executed
-        /// without a parameter; otherwise <see cref="IRelayCommand{T}">IRelayCommand&lt;bool&gt;</see> is executed with <see langword="true"/>.
+        /// When both a plain <see cref="IRelayCommand"/> and an <see cref="IRelayCommand{T}">IRelayCommand&lt;bool&gt;</see>
+        /// are bound, the plain command takes priority and runs without a parameter.
         /// </remarks>
         protected override void OnBound() =>
             CachedComponent.onClick.AddListener(OnClicked);

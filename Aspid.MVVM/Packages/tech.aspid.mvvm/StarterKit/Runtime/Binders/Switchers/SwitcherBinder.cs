@@ -30,6 +30,12 @@ namespace Aspid.MVVM.StarterKit
         /// </param>
         /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</param>
         /// <exception cref="InvalidOperationException">Thrown when <paramref name="mode"/> is <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</exception>
+        /// <remarks>
+        /// For deserialization only: Unity builds a serialized instance without running a constructor's arguments and
+        /// assigns the fields itself.
+        /// </remarks>
+        protected SwitcherBinder() { }
+
         protected SwitcherBinder(T trueValue, T falseValue, IConverter<T?, T?>? converter = null, BindMode mode = BindMode.OneWay)
             : base(mode)
         {
@@ -91,6 +97,12 @@ namespace Aspid.MVVM.StarterKit
         /// </param>
         /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</param>
         /// <exception cref="InvalidOperationException">Thrown when <paramref name="mode"/> is <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</exception>
+        /// <remarks>
+        /// For deserialization only: Unity builds a serialized instance without running a constructor's arguments and
+        /// assigns the fields itself.
+        /// </remarks>
+        protected SwitcherBinder() { }
+
         protected SwitcherBinder(
             TTarget target,
             T trueValue,

@@ -16,20 +16,25 @@ namespace Aspid.MVVM.StarterKit
         private NumberReverseChannel _channel;
 
         /// <inheritdoc/>
-        ref NumberReverseChannel INumberReverseBinder.Channel => ref _channel;
+        /// <remarks>
+        /// For deserialization only: Unity builds a serialized instance without running a constructor's arguments and
+        /// assigns the fields itself.
+        /// </remarks>
+        protected FloatBinder() { }
 
-        /// <inheritdoc/>
         protected FloatBinder(IConverter<float, float>? converter, BindMode mode = BindMode.OneWay)
             : base(converter, mode) { }
+
+        /// <inheritdoc/>
+        ref NumberReverseChannel INumberReverseBinder.Channel => ref _channel;
 
         /// <summary>
         /// Broadcasts the current value on every numeric channel.
         /// </summary>
         /// <remarks>
-        /// Also calls the base implementation: a member bound through <see cref="IReverseBinder{T}"/>
-        /// for the property's own type reaches the base <see cref="ValueChanged"/> event rather than the
-        /// matching <see cref="INumberReverseBinder"/> channel, because a class member outranks the
-        /// implementation the interface carries.
+        /// Also calls the base implementation: <see cref="IReverseBinder{T}"/> bound for the property's own type
+        /// resolves to the base <see cref="ValueChanged"/> event, not this channel — a class member outranks an
+        /// interface implementation.
         /// </remarks>
         protected override void SendInitialValueToSource()
         {

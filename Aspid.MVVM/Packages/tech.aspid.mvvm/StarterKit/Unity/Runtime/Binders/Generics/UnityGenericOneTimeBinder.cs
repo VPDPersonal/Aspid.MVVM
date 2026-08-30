@@ -12,7 +12,6 @@ namespace Aspid.MVVM.StarterKit
     /// <remarks>
     /// Unity-specific variant of <see cref="GenericOneTimeBinder{T}"/> that accepts a <see cref="UnityAction{T}"/>.
     /// </remarks>
-    /// <include file="XmlExampleDoc-UnityGenerics-1.1.0.xml" path="doc//member[@name='UnityGenericOneTimeBinder{1}']/*" />
     [System.Obsolete("Use the GenericOneTime binder instead: it takes a plain Action, which a UnityAction converts to implicitly. The Unity-flavoured copies exist only for that conversion and will be removed in the next major version.")]
     public class UnityGenericOneTimeBinder<T> : UnityGenericOneWayBinder<T>
     {
@@ -30,7 +29,6 @@ namespace Aspid.MVVM.StarterKit
     /// <remarks>
     /// Unity-specific variant of <see cref="GenericOneTimeBinder{TTarget,T}"/> that accepts a <see cref="UnityAction{T0,T1}"/>.
     /// </remarks>
-    /// <include file="XmlExampleDoc-UnityGenerics-1.1.0.xml" path="doc//member[@name='UnityGenericOneTimeBinder{2}']/*" />
     [System.Obsolete("Use the GenericOneTime binder instead: it takes a plain Action, which a UnityAction converts to implicitly. The Unity-flavoured copies exist only for that conversion and will be removed in the next major version.")]
     public class UnityGenericOneTimeBinder<TTarget, T> : UnityGenericOneWayBinder<TTarget, T>
     {

@@ -11,9 +11,7 @@ namespace Aspid.MVVM.StarterKit
     /// </summary>
     /// <remarks>
     /// A destroyed Unity object is not a <see langword="null"/> reference: the managed wrapper survives and compares
-    /// equal to <see langword="null"/> only through <see cref="Object"/>'s own operators. Without this layer a
-    /// ViewModel could hand over a destroyed asset — which the property would accept and the Inspector would show as
-    /// <c>Missing</c> — or receive one back in <see cref="BindMode.OneWayToSource"/> and store it as a live value.
+    /// equal to <see langword="null"/> only through <see cref="Object"/>'s own operators.
     /// </remarks>
     /// <typeparam name="TComponent">The type of <see cref="Component"/> that exposes the target property.</typeparam>
     /// <typeparam name="TObject">The type of <see cref="Object">UnityEngine.Object</see> the property holds.</typeparam>

@@ -16,13 +16,13 @@ namespace Aspid.MVVM.StarterKit
         [Tooltip("Optional converter for the property. Reverses only via ITwoWayConverter.")]
         [SerializeReference] private IConverter<TProperty, TProperty> _converter;
 
-        /// <inheritdoc/>
-        public event Action<TProperty> ValueChanged;
-
         /// <summary>
         /// Gets or sets the property that this binder reads from and writes to.
         /// </summary>
         protected abstract TProperty Property { get; set; }
+
+        /// <inheritdoc/>
+        public event Action<TProperty> ValueChanged;
 
         /// <summary>
         /// Sets the bound property to <paramref name="value"/>, passing it through <see cref="GetConvertedValue"/> first.

@@ -8,8 +8,7 @@ namespace Aspid.MVVM.StarterKit
     /// <see cref="string"/> as <typeparamref name="TEnum"/> before forwarding it to a target setter.
     /// </summary>
     /// <remarks>
-    /// The direction a dropdown of names, a save file or a config value arrives in. Names are matched
-    /// case-insensitively, because a value that came from text rarely matches the C# casing.
+    /// Names are matched case-insensitively, because a value that came from text rarely matches the C# casing.
     /// <para/>
     /// A string that names no member forwards the fallback value instead. A numeric string is deliberately refused:
     /// <see cref="Enum.TryParse{TEnum}(string, bool, out TEnum)"/> accepts any number, including one no member has,
@@ -41,7 +40,16 @@ namespace Aspid.MVVM.StarterKit
         /// setter, or the fallback value when it names no member.
         /// </summary>
         /// <param name="value">The source string value to parse and forward.</param>
-        public void SetValue(string? value) =>
-            _setValue(EnumCasterParse.TryName(value, out TEnum parsed) ? parsed : _fallback);
+        public void SetValue(string? value)
+        {
+            if (EnumCasterParse.TryName(value, out TEnum parsed))
+            {
+                _setValue(parsed);
+                return;
+            }
+
+            this.LogError(value.Expected($"a member of {typeof(TEnum).Name}"), $"Forwarding {_fallback} instead.");
+            _setValue(_fallback);
+        }
     }
 }

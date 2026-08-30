@@ -130,7 +130,7 @@ namespace Aspid.MVVM.Tests
             var gameObject = NewGameObject();
             var input = gameObject.AddComponent<BoolAggregatorInputMonoBinder>();
 
-            LogAssert.Expect(LogType.Error, new Regex("No aggregator assigned"));
+            LogAssert.Expect(LogType.Error, new Regex("no aggregator is assigned"));
             ((IBinder<bool>)input).SetValue(true);
         }
 

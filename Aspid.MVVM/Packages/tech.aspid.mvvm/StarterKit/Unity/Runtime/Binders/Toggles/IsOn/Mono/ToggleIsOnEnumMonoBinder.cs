@@ -6,8 +6,7 @@ namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
     /// <see cref="EnumMonoBinder{Toggle, Boolean}"/> that sets <see cref="Toggle.isOn"/>
-    /// based on the bound enum ViewModel value — the usual shape for tabs or modes, where one enum picks
-    /// which toggle is on.
+    /// based on the bound enum ViewModel value.
     /// </summary>
     /// <remarks>
     /// The toggle is set without notification, so driving it from the ViewModel is not read back as a click.

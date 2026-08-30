@@ -37,7 +37,7 @@ namespace Aspid.MVVM.StarterKit
                 return;
             }
 
-            // Neither setter enforces non-negative values or min <= max; an inverted pair silences the source.
+            // Unity validates neither setter; a negative or inverted pair silences the source.
             value = new Vector2(Mathf.Max(0f, value.x), Mathf.Max(0f, value.y));
 
             if (value.x > value.y)

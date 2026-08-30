@@ -11,16 +11,13 @@ namespace Aspid.MVVM.StarterKit
     /// supporting all binding modes.
     /// An optional converter transforms the value before it is applied to the toggle or propagated back to the source.
     /// </summary>
-    /// <include file="XmlExampleDoc-Toggle-IsOn-1.1.0.xml" path="doc//member[@name='ToggleIsOnBinder']/*" />
     [Serializable]
     [BindModeOverride(IsAll = true)]
     public sealed class ToggleIsOnBinder : TargetBinder<Toggle>, IBinder<bool>, IReverseBinder<bool>
     {
-        /// <inheritdoc/>
-        public event Action<bool>? ValueChanged;
-
         [Tooltip("Optional converter applied to the value; runs in reverse only via ITwoWayConverter.")]
         [SerializeReference] private IConverter<bool, bool>? _converter;
+
         [NonSerialized] private bool _isNotifyValueChanged = true;
 
         /// <inheritdoc/>
@@ -40,6 +37,9 @@ namespace Aspid.MVVM.StarterKit
             mode.ThrowExceptionIfNone();
             _converter = converter;
         }
+
+        /// <inheritdoc/>
+        public event Action<bool>? ValueChanged;
 
         /// <summary>
         /// Sets <see cref="Toggle.isOn"/> to the specified value, applying the configured converter if present.

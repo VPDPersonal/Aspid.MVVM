@@ -9,7 +9,6 @@ namespace Aspid.MVVM.StarterKit
     /// <see cref="SwitcherBinder{TTarget,T}">SwitcherBinder&lt;Renderer, Color&gt;</see> that switches a named color property on all materials of a <see cref="Renderer"/>
     /// between two <see cref="Color"/> values based on the bound boolean ViewModel value.
     /// </summary>
-    /// <include file="XmlExampleDoc-Renderer-MaterialsColor-1.1.0.xml" path="doc//member[@name='RendererMaterialColorSwitcherBinder']/*" />
     [Serializable]
     public sealed class RendererMaterialColorSwitcherBinder : SwitcherBinder<Renderer, Color>
     {
@@ -20,8 +19,6 @@ namespace Aspid.MVVM.StarterKit
         private ShaderPropertyId _colorPropertyId;
 
         private Material[]? _materials;
-
-        private int ColorPropertyId => _colorPropertyId.Resolve(_colorPropertyName);
 
         /// <param name="target">The <see cref="Renderer"/> to bind.</param>
         /// <param name="trueValue">The color applied when the bound boolean is <see langword="true"/>.</param>
@@ -40,6 +37,8 @@ namespace Aspid.MVVM.StarterKit
         {
             _colorPropertyName = colorPropertyName;
         }
+
+        private int ColorPropertyId => _colorPropertyId.Resolve(_colorPropertyName);
 
         /// <summary>
         /// Sets the named color property on all Renderer materials.

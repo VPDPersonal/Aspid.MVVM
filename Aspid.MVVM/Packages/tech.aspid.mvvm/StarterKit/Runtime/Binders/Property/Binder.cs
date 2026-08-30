@@ -17,9 +17,6 @@ namespace Aspid.MVVM.StarterKit
         [Tooltip("Optional converter for the property. Reverses only via ITwoWayConverter.")]
         [SerializeReference] private IConverter<TProperty?, TProperty?>? _converter;
 
-        /// <inheritdoc/>
-        public event Action<TProperty?>? ValueChanged;
-
         /// <summary>
         /// Gets or sets the property that this binder reads from and writes to.
         /// </summary>
@@ -31,11 +28,20 @@ namespace Aspid.MVVM.StarterKit
         /// <see cref="ITwoWayConverter{TFrom, TTo}"/>.
         /// </param>
         /// <param name="mode">The binding mode to use.</param>
-        protected Binder(IConverter<TProperty?, TProperty?>? converter, BindMode mode)
+        /// <remarks>
+        /// For deserialization only: Unity builds a serialized instance without running a constructor's arguments and
+        /// assigns the fields itself.
+        /// </remarks>
+        protected Binder() { }
+
+        protected Binder(IConverter<TProperty?, TProperty?>? converter, BindMode mode = BindMode.OneWay)
             : base(mode)
         {
             _converter = converter;
         }
+
+        /// <inheritdoc/>
+        public event Action<TProperty?>? ValueChanged;
 
         /// <summary>
         /// Sets the bound property to <paramref name="value"/>, passing it through <see cref="GetConvertedValue"/> first.

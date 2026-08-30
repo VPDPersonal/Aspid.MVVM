@@ -19,9 +19,6 @@ namespace Aspid.MVVM.StarterKit
         [Tooltip("Converts the value; runs in reverse only via ITwoWayConverter.")]
         [SerializeReference] private IConverter<TProperty?, TProperty?>? _converter;
 
-        /// <inheritdoc/>
-        public event Action<TProperty?>? ValueChanged;
-
         /// <summary>
         /// Gets or sets the target property that this binder reads from and writes to.
         /// </summary>
@@ -34,11 +31,20 @@ namespace Aspid.MVVM.StarterKit
         /// <see cref="ITwoWayConverter{TFrom, TTo}"/>.
         /// </param>
         /// <param name="mode">The binding mode to use.</param>
-        protected TargetBinder(TTarget target, IConverter<TProperty?, TProperty?>? converter, BindMode mode)
+        /// <remarks>
+        /// For deserialization only: Unity builds a serialized instance without running a constructor's arguments and
+        /// assigns the fields itself.
+        /// </remarks>
+        protected TargetBinder() { }
+
+        protected TargetBinder(TTarget target, IConverter<TProperty?, TProperty?>? converter, BindMode mode = BindMode.OneWay)
             : base(target, mode)
         {
             _converter = converter;
         }
+
+        /// <inheritdoc/>
+        public event Action<TProperty?>? ValueChanged;
 
         /// <summary>
         /// Sets the bound property to <paramref name="value"/>, passing it through <see cref="GetConvertedValue"/> first.
@@ -106,9 +112,8 @@ namespace Aspid.MVVM.StarterKit
         /// <param name="value">The value to convert.</param>
         /// <returns>The converted value.</returns>
         /// <remarks>
-        /// Separate from <see cref="GetConvertedValue"/> because the reverse direction is not the
-        /// forward one: applying the forward conversion again compounds it, so a ×100 converter
-        /// turns 0.75 into 7500 on the way back rather than into 0.75.
+        /// Separate from <see cref="GetConvertedValue"/>: applying the forward conversion on the way back
+        /// compounds it instead of undoing it.
         /// </remarks>
         protected virtual TProperty? GetConvertedBackValue(TProperty? value) =>
             _converter is ITwoWayConverter<TProperty?, TProperty?> twoWay ? twoWay.ConvertBack(value) : value;

@@ -19,6 +19,6 @@ namespace Aspid.MVVM.StarterKit
         /// <param name="element">The component this entry of the group writes to.</param>
         /// <param name="value">The value the bound enum resolved to for this element.</param>
         protected override void SetValue(Slider element, float value) =>
-            element.value = value;
+            element.SetValueWithoutNotify(this.SafeClamp(value, element.minValue, element.maxValue));
     }
 }

@@ -11,8 +11,7 @@ namespace Aspid.MVVM.StarterKit
     /// <see cref="AudioMixer"/> parameter.
     /// </summary>
     /// <remarks>
-    /// The value is written to the parameter unchanged; mixer volumes are typically in decibels, so a linear 0..1
-    /// slider needs a converter.
+    /// The value is written to the parameter unchanged; mixer volumes are typically in decibels.
     /// <para/>
     /// Reads and writes are logged as errors and dropped when the name is blank, the value is non-finite, or no
     /// parameter of that name is exposed.

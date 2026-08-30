@@ -1,0 +1,23 @@
+using UnityEngine;
+using UnityEngine.UI;
+
+// ReSharper disable once CheckNamespace
+namespace Aspid.MVVM.StarterKit
+{
+    /// <summary>
+    /// <see cref="SwitcherMonoBinder{TComponent,T}">SwitcherMonoBinder&lt;Graphic, float&gt;</see> that switches a single <see cref="ColorComponent"/> channel
+    /// of the <see cref="Graphic.color"/> property between two values based on the bound boolean ViewModel value.
+    /// </summary>
+    [GenerateSerializableBinder]
+    [AddComponentMenu("Aspid/MVVM/Binders/UI/Graphic/Graphic Binder – Color Component Switcher")]
+    [AddBinderContextMenu(typeof(Graphic), serializePropertyNames: "m_Color", SubPath = "Switcher")]
+    public sealed class GraphicColorComponentSwitcherMonoBinder : SwitcherMonoBinder<Graphic, float>
+    {
+        [Tooltip("Which color channel the bound value writes to; others keep their value.")]
+        [SerializeField] private ColorComponent _colorComponent = ColorComponent.A;
+
+        /// <inheritdoc/>
+        protected override void SetValue(float value) =>
+            CachedComponent.SetColorComponent(_colorComponent, value);
+    }
+}

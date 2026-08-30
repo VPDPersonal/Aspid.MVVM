@@ -9,10 +9,9 @@ namespace Aspid.MVVM.StarterKit
     /// Sanitising helpers that report the value they had to replace.
     /// </summary>
     /// <remarks>
-    /// A value outside the target's range saturates at the bound silently — that is the documented contract.
-    /// A non-finite one has no bound to saturate at, so it is replaced and reported through
-    /// <see cref="BinderLogger"/>. The <see cref="Type"/> overloads are for helpers reporting on another
-    /// binder's behalf.
+    /// A value outside the target's range saturates at the bound without reporting. A non-finite value has
+    /// no bound to saturate at, so it is replaced and reported through <see cref="BinderLogger"/>. The
+    /// <see cref="Type"/> overloads let a helper report on another binder's behalf.
     /// </remarks>
     public static class BinderMath
     {

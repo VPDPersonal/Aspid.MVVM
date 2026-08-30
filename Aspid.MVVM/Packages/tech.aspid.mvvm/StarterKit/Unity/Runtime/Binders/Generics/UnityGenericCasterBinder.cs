@@ -12,11 +12,6 @@ namespace Aspid.MVVM.StarterKit
     /// </summary>
     /// <typeparam name="TFrom">The source value type produced by the ViewModel binding.</typeparam>
     /// <typeparam name="TTo">The target value type expected by the setter action.</typeparam>
-    /// <remarks>
-    /// Unity-specific variant of <see cref="GenericCasterBinder{TFrom,TTo}"/> that accepts a
-    /// <see cref="UnityAction{T}"/> instead of a plain <see cref="System.Action{T}"/>.
-    /// </remarks>
-    /// <include file="XmlExampleDoc-UnityGenerics-1.1.0.xml" path="doc//member[@name='UnityGenericCasterBinder{2}']/*" />
     [System.Obsolete("Use the GenericCaster binder instead: it takes a plain Action, which a UnityAction converts to implicitly. The Unity-flavoured copies exist only for that conversion and will be removed in the next major version.")]
     public class UnityGenericCasterBinder<TFrom, TTo> : Binder, IBinder<TFrom>
     {
@@ -60,12 +55,9 @@ namespace Aspid.MVVM.StarterKit
     /// <typeparam name="TFrom">The source value type produced by the ViewModel binding.</typeparam>
     /// <typeparam name="TTo">The target value type expected by the setter action.</typeparam>
     /// <remarks>
-    /// Unity-specific variant of <see cref="GenericCasterBinder{TTarget,TFrom,TTo}"/> that accepts a
-    /// <see cref="UnityAction{T0,T1}"/> instead of a plain <see cref="System.Action{T1,T2}"/>.
     /// Passing the target separately enables method-group-style property setters on Unity components
     /// without capturing them in a closure.
     /// </remarks>
-    /// <include file="XmlExampleDoc-UnityGenerics-1.1.0.xml" path="doc//member[@name='UnityGenericCasterBinder{3}']/*" />
     [System.Obsolete("Use the GenericCaster binder instead: it takes a plain Action, which a UnityAction converts to implicitly. The Unity-flavoured copies exist only for that conversion and will be removed in the next major version.")]
     public class UnityGenericCasterBinder<TTarget, TFrom, TTo> : Binder, IBinder<TFrom>
     {

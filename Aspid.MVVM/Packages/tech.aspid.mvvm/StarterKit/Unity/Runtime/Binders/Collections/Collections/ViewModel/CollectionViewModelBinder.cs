@@ -9,7 +9,6 @@ namespace Aspid.MVVM.StarterKit
     /// <summary>
     /// Concrete <see cref="CollectionViewModelBinder{T}"/> that uses <see cref="MonoView"/> as the view type.
     /// </summary>
-    /// <include file="XmlExampleDoc-Collection-ViewModel-1.1.0.xml" path="doc//member[@name='CollectionViewModelBinder']/*" />
     [Serializable]
     public class CollectionViewModelBinder : CollectionViewModelBinder<MonoView>
     {
@@ -24,7 +23,6 @@ namespace Aspid.MVVM.StarterKit
     /// activating and initializing each view in order and deactivating any excess views.
     /// </summary>
     /// <typeparam name="T">The type of pre-instantiated <see cref="MonoBehaviour"/> view objects in the collection.</typeparam>
-    /// <include file="XmlExampleDoc-Collection-ViewModel-1.1.0.xml" path="doc//member[@name='ViewModelCollectionBinder{1}']/*" />
     [Serializable]
     public class CollectionViewModelBinder<T> : CollectionBinderBase<IViewModel>
         where T : MonoBehaviour, IView

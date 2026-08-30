@@ -14,7 +14,6 @@ namespace Aspid.MVVM.StarterKit
     /// <see cref="SwitcherBinder{TTarget,T}">SwitcherBinder&lt;TMP_Text, string&gt;</see> that switches the localization table entry reference
     /// between two values and sets <see cref="TMP_Text.text"/> via a <see cref="LocalizedString"/>.
     /// </summary>
-    /// <include file="XmlExampleDoc-Text-Localization-1.1.0.xml" path="doc//member[@name='TextLocalizationEntrySwitcherBinder']/*" />
     [Serializable]
     public class TextLocalizationEntrySwitcherBinder : SwitcherBinder<TMP_Text, string>
     {
@@ -50,9 +49,8 @@ namespace Aspid.MVVM.StarterKit
         /// </summary>
         /// <remarks>
         /// Subscribing here rather than in <c>OnBound</c> is required: the ViewModel's first push sets
-        /// the table entry reference, which itself raises <see cref="LocalizedString.StringChanged"/> —
-        /// a later subscription would miss that initial value. When overriding this method, always call
-        /// base.OnBinding() to preserve the subscription.
+        /// the table entry reference, which raises <see cref="LocalizedString.StringChanged"/> — a later
+        /// subscription would miss it. Overrides must call base.OnBinding() to preserve the subscription.
         /// </remarks>
         protected override void OnBinding() =>
             Subscribe();

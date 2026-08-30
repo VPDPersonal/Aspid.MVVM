@@ -23,10 +23,9 @@ namespace Aspid.MVVM.StarterKit
         /// Broadcasts the current value on every numeric channel.
         /// </summary>
         /// <remarks>
-        /// Also calls the base implementation: a member bound through <see cref="IReverseBinder{T}"/>
-        /// for the property's own type reaches the base <c>ValueChanged</c> event rather than the
-        /// matching <see cref="INumberReverseBinder"/> channel, because a class member outranks the
-        /// implementation the interface carries.
+        /// Also calls the base implementation: <see cref="IReverseBinder{T}"/> bound for the property's own type
+        /// resolves to the base <c>ValueChanged</c> event, not this channel — a class member outranks an interface
+        /// implementation.
         /// </remarks>
         protected override void SendInitialValueToSource()
         {
@@ -39,11 +38,9 @@ namespace Aspid.MVVM.StarterKit
         /// </summary>
         /// <param name="value">The value to send, before conversion.</param>
         /// <remarks>
-        /// A binder that is only ever pushed to has no use for this; it exists for the ones that also listen to
-        /// their component and forward what the user did — a dropdown selection, for instance. Raising
-        /// <see cref="ComponentMonoBinder{TComponent,TProperty}.ValueChanged"/> alone would reach an
-        /// <see langword="int"/> field in the ViewModel but leave a <see langword="float"/> one silent, because
-        /// the other three channels are bridged by <see cref="INumberReverseBinder"/> rather than inherited.
+        /// Raising <see cref="ComponentMonoBinder{TComponent,TProperty}.ValueChanged"/> alone would reach an
+        /// <see langword="int"/> field in the ViewModel but leave a <see langword="float"/> one silent, since the
+        /// other three channels are bridged by <see cref="INumberReverseBinder"/> rather than inherited.
         /// </remarks>
         protected void RaiseNumberValueChanged(int value)
         {

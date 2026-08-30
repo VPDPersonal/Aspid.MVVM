@@ -9,7 +9,6 @@ namespace Aspid.MVVM.StarterKit
     /// <see cref="TargetBinder{T1, T2}">TargetBinder&lt;GameObject, bool&gt;</see> that shows or hides the
     /// bound <see cref="GameObject"/> via <see cref="GameObject.SetActive"/>.
     /// </summary>
-    /// <include file="XmlExampleDoc-GameObject-Visible-1.1.0.xml" path="doc//member[@name='GameObjectVisibleBinder']/*" />
     [Serializable]
     public sealed class GameObjectVisibleBinder : TargetBinder<GameObject, bool>
     {

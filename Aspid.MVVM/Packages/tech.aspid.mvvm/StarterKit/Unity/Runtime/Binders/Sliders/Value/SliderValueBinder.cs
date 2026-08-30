@@ -8,11 +8,13 @@ namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
     /// <see cref="TargetBinder{Slider}"/> that binds <see cref="Slider.value"/>.
-    /// Supports <see cref="BindMode.OneWay"/>, <see cref="BindMode.TwoWay"/>, and <see cref="BindMode.OneWayToSource"/>.
     /// Also implements <see cref="IFloatBinder"/> and <see cref="INumberReverseBinder"/>, allowing numeric
     /// values of multiple types to be both pushed to and received from the slider.
     /// </summary>
-    /// <include file="XmlExampleDoc-Slider-Value-1.1.0.xml" path="doc//member[@name='SliderValueBinder']/*" />
+    /// <remarks>
+    /// When <see cref="BindMode.OneWayToSource"/> is active, the current value is also immediately
+    /// forwarded when binding is established.
+    /// </remarks>
     [Serializable]
     [BindModeOverride(IsAll = true)]
     public class SliderValueBinder : TargetBinder<Slider>,
@@ -24,9 +26,6 @@ namespace Aspid.MVVM.StarterKit
 
         private NumberReverseChannel _channel;
         private bool _isNotifyValueChanged = true;
-
-        /// <inheritdoc/>
-        ref NumberReverseChannel INumberReverseBinder.Channel => ref _channel;
 
         /// <inheritdoc/>
         public SliderValueBinder(Slider target, BindMode mode)
@@ -42,14 +41,17 @@ namespace Aspid.MVVM.StarterKit
             mode.ThrowExceptionIfNone();
             _converter = converter;
         }
-        
+
+        /// <inheritdoc/>
+        ref NumberReverseChannel INumberReverseBinder.Channel => ref _channel;
+
         /// <summary>
         /// Called when the binder is bound. Subscribes to <see cref="Slider.onValueChanged"/> when using
         /// <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.
         /// </summary>
         /// <remarks>
-        /// When <see cref="BindMode.OneWayToSource"/> is active, the current slider value is also immediately
-        /// forwarded to the ViewModel to synchronize the source with the current view state.
+        /// When <see cref="BindMode.OneWayToSource"/> is active, the current slider value is also
+        /// immediately forwarded to the ViewModel.
         /// </remarks>
         protected override void OnBound()
         {
@@ -58,7 +60,7 @@ namespace Aspid.MVVM.StarterKit
             Target.onValueChanged.AddListener(OnValueChanged);
             if (Mode is BindMode.OneWayToSource) OnValueChanged(Target.value);
         }
-        
+
         /// <summary>
         /// Called when the binder is unbound. Unsubscribes from <see cref="Slider.onValueChanged"/> if active.
         /// </summary>
@@ -71,16 +73,14 @@ namespace Aspid.MVVM.StarterKit
             if (Mode is not (BindMode.TwoWay or BindMode.OneWayToSource)) return;
             Target.onValueChanged.RemoveListener(OnValueChanged);
         }
-        
+
         /// <summary>
         /// Sets <see cref="Slider.value"/>, applying the configured converter if present.
         /// Suppresses value change events during assignment.
         /// </summary>
         /// <remarks>
-        /// The value is clamped to the slider's own range before assignment. Unity would clamp it anyway, but
-        /// silently, and the echo guard would swallow the <c>onValueChanged</c> the clamp raises — leaving the
-        /// ViewModel out of sync until the next change. When the clamp changes the value, the difference is
-        /// reported back; a converter's own effect is not.
+        /// The value is clamped to the slider's own range before assignment; the reverse channel is raised
+        /// only when the clamp changed it, not when the converter did.
         /// </remarks>
         /// <param name="value">The value received from the ViewModel.</param>
         public void SetValue(float value)
@@ -119,12 +119,10 @@ namespace Aspid.MVVM.StarterKit
         /// <see cref="ITwoWayConverter{TFrom, TTo}"/>, and unchanged when it does not.
         /// </returns>
         /// <remarks>
-        /// A one-way converter cannot be undone, so the raw value is the only honest answer — and it
-        /// must not be the forward-converted one, which would write the View's presentation back
-        /// into the ViewModel.
+        /// The raw value is returned, not the forward-converted one — applying the forward conversion
+        /// again would write the View's presentation back into the ViewModel.
         /// </remarks>
         private float GetConvertedBackValue(float value) =>
             _converter is ITwoWayConverter<float, float> twoWay ? twoWay.ConvertBack(value) : value;
-
     }
 }

@@ -17,12 +17,13 @@ namespace Aspid.MVVM.StarterKit
         IBinder<bool>,
         IReverseBinder<bool>
     {
-        /// <inheritdoc/>
-        public event Action<bool> ValueChanged;
-
         [Tooltip("Optional converter applied to the value; runs in reverse only via ITwoWayConverter.")]
         [SerializeReference] private IConverter<bool, bool> _converter;
+
         [NonSerialized] private bool _isNotifyValueChanged = true;
+
+        /// <inheritdoc/>
+        public event Action<bool> ValueChanged;
 
         /// <summary>
         /// Sets <see cref="Toggle.isOn"/> to the specified value, applying the configured converter if present.

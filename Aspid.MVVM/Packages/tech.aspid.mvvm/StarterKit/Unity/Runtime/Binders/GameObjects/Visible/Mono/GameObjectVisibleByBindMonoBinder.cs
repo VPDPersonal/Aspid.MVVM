@@ -12,15 +12,15 @@ namespace Aspid.MVVM.StarterKit
     [AddBinderContextMenu(typeof(Component), Path = "Add General Binder/GameObject/GameObject Binder – Visible By Bind")]
     public sealed partial class GameObjectVisibleByBindMonoBinder : MonoBinder, IAnyBinder
     {
+        [Tooltip("Inverts visibility (hide while bound). Ignores the bound value entirely.")]
+        [SerializeField] private bool _isInvert;
+
         /// <inheritdoc/>
         protected override BindMode DefaultMode => BindMode.OneTime;
 
-        [Tooltip("Inverts visibility (hide while bound). Ignores the bound value entirely.")]
-        [SerializeField] private bool _isInvert;
-        
         private void OnEnable() =>
             SetVisible();
-        
+
         /// <summary>
         /// Called when binding is established. Applies the visibility that the new bound state implies.
         /// </summary>
@@ -40,7 +40,7 @@ namespace Aspid.MVVM.StarterKit
         /// <inheritdoc/>
         [BinderLog]
         public void SetValue<T>(T value) { }
-        
+
         private void SetVisible() =>
             gameObject.SetActive(_isInvert ? !IsBound : IsBound);
     }

@@ -20,9 +20,8 @@ namespace Aspid.MVVM.StarterKit
         /// </summary>
         /// <remarks>
         /// An entry whose element is unassigned or destroyed is skipped rather than dereferenced, so the rest of the
-        /// group still reaches a consistent state; a half-edited table is an ordinary thing to run into.
-        /// Entries whose enum key failed to resolve never arrive here — <c>EnumValues</c> filters them out of its
-        /// own enumerator.
+        /// group still reaches a consistent state. Entries whose enum key failed to resolve never arrive here —
+        /// <c>EnumValues</c> filters them out of its own enumerator.
         /// </remarks>
         /// <param name="value">The bound enum value received from the ViewModel.</param>
         [BinderLog]

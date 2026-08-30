@@ -15,7 +15,7 @@ namespace Aspid.MVVM.StarterKit
     {
         /// <inheritdoc/>
         protected override void SetValue(TMP_Dropdown element, int value) =>
-            element.value = value;
+            element.SetValueWithoutNotify(value);
     }
 }
 #endif

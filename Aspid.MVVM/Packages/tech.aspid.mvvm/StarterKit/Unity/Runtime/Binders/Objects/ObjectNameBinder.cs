@@ -13,7 +13,6 @@ namespace Aspid.MVVM.StarterKit
     /// <remarks>
     /// A <see langword="null"/> name is written as an empty string, which is what Unity stores for it anyway.
     /// </remarks>
-    /// <include file="XmlExampleDoc-Object-Name-1.1.0.xml" path="doc//member[@name='ObjectNameBinder']/*" />
     [Serializable]
     public sealed class ObjectNameBinder : TargetBinder<Object, string>
     {

@@ -37,7 +37,13 @@ namespace Aspid.MVVM
         /// <param name="target">The target object this binder will operate on.</param>
         /// <param name="mode">The binding mode to use for the binder.</param>
         /// <exception cref="ArgumentNullException">Thrown if <paramref name="target"/> is <see langword="null"/>.</exception>
-        protected TargetBinder(TTarget target, BindMode mode)
+        /// <remarks>
+        /// For deserialization only: Unity builds a serialized instance without running a constructor's arguments and
+        /// assigns the fields itself.
+        /// </remarks>
+        protected TargetBinder() { }
+
+        protected TargetBinder(TTarget target, BindMode mode = BindMode.OneWay)
             : base(mode)
         {
             Target = target ?? throw new ArgumentNullException(nameof(target));

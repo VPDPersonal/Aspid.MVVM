@@ -66,11 +66,9 @@ namespace Aspid.MVVM.StarterKit
         /// Rebuilds the option list while keeping the current selection where the new list still has room for it.
         /// </summary>
         /// <remarks>
-        /// <see cref="TMP_Dropdown.ClearOptions"/> resets the selected index to 0 (or -1 with a placeholder) and
-        /// raises nothing, so a ViewModel holding the previous index silently disagreed with the control after every
-        /// options update. Restoring the index without a notification keeps the two in step; when the new list is
-        /// shorter the selection genuinely changes, and this binder has no value channel to report that — the value
-        /// lives on <c>DropdownValueMonoBinder</c>.
+        /// <see cref="TMP_Dropdown.ClearOptions"/> resets the selection without raising a notification; restoring it
+        /// here keeps the ViewModel in sync. If the new list is shorter and the selection actually changes, this
+        /// binder does not report it — that value channel is <c>DropdownValueMonoBinder</c>.
         /// </remarks>
         private void RestoreSelection(int selected)
         {

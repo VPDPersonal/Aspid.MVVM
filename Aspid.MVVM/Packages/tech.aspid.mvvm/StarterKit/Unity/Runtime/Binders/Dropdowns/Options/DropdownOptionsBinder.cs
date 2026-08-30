@@ -11,11 +11,6 @@ namespace Aspid.MVVM.StarterKit
     /// <summary>
     /// <see cref="TargetBinder{TMP_Dropdown}"/> that manages the <see cref="TMP_Dropdown.options"/> list.
     /// </summary>
-    /// <remarks>
-    /// When <see cref="BindMode.OneWayToSource"/> is active, the current <see cref="TMP_Dropdown.options"/>
-    /// list is propagated to the ViewModel when binding is established.
-    /// </remarks>
-    /// <include file="XmlExampleDoc-Dropdown-Options-1.1.0.xml" path="doc//member[@name='DropdownOptionsBinder']/*" />
     [Serializable]
     [BindModeOverride(BindMode.OneWay, BindMode.OneTime, BindMode.OneWayToSource)]
     public class DropdownOptionsBinder : TargetBinder<TMP_Dropdown>,
@@ -24,11 +19,6 @@ namespace Aspid.MVVM.StarterKit
         IBinder<IEnumerable<TMP_Dropdown.OptionData>>,
         IReverseBinder<List<TMP_Dropdown.OptionData>>
     {
-        /// <summary>
-        /// Raised when the bound value changes.
-        /// </summary>
-        public event Action<List<TMP_Dropdown.OptionData>>? ValueChanged;
-
         /// <param name="target">The <see cref="TMP_Dropdown"/> whose options will be bound.</param>
         /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/>.</param>
         /// <exception cref="ArgumentException">Thrown when <paramref name="mode"/> is <see cref="BindMode.TwoWay"/>.</exception>
@@ -37,6 +27,11 @@ namespace Aspid.MVVM.StarterKit
         {
             mode.ThrowExceptionIfMatches(BindMode.TwoWay);
         }
+
+        /// <summary>
+        /// Raised when the bound value changes.
+        /// </summary>
+        public event Action<List<TMP_Dropdown.OptionData>>? ValueChanged;
 
         /// <summary>
         /// Clears the current options and replaces them with options built from the bound string list.
@@ -94,11 +89,9 @@ namespace Aspid.MVVM.StarterKit
         /// Rebuilds the option list while keeping the current selection where the new list still has room for it.
         /// </summary>
         /// <remarks>
-        /// <see cref="TMP_Dropdown.ClearOptions"/> resets the selected index to 0 (or -1 with a placeholder) and
-        /// raises nothing, so a ViewModel holding the previous index silently disagreed with the control after every
-        /// options update. Restoring the index without a notification keeps the two in step; when the new list is
-        /// shorter the selection genuinely changes, and this binder has no value channel to report that — the value
-        /// lives on <c>DropdownValueMonoBinder</c>.
+        /// <see cref="TMP_Dropdown.ClearOptions"/> resets the selection without raising a notification; restoring it
+        /// here keeps the ViewModel in sync. If the new list is shorter and the selection actually changes, this
+        /// binder does not report it — that value channel is <c>DropdownValueMonoBinder</c>.
         /// </remarks>
         private void RestoreSelection(int selected)
         {

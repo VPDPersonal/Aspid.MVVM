@@ -1,7 +1,3 @@
-#if UNITY_2022_1_OR_NEWER && !ASPID_MVVM_UNITY_PROFILER_DISABLED                                                                                                                                                                                                                    
-#define PROFILER
-#endif
-
 using System;
 using UnityEngine;
 
@@ -17,6 +13,7 @@ namespace Aspid.MVVM
     public abstract partial class Binder : IBinder
     {
         // ReSharper disable once MemberInitializerValueIgnored
+        [Tooltip("Binding mode that controls the direction of data flow between the View and ViewModel.")]
         [BindMode(BindMode.OneWay, BindMode.OneTime)]
         [SerializeField] private BindMode _mode = BindMode.TwoWay;
 
@@ -38,7 +35,11 @@ namespace Aspid.MVVM
         /// </summary>
         public BindMode Mode => _mode;
 
-        internal Binder()
+        /// <remarks>
+        /// For deserialization only: Unity builds a serialized instance without running a constructor's
+        /// arguments and assigns the fields itself.
+        /// </remarks>
+        protected Binder()
             : this(BindMode.OneWay) { }
 
         /// <summary>
@@ -53,7 +54,7 @@ namespace Aspid.MVVM
         /// <inheritdoc/>
         public void Bind(IBinderAdder binderAdder)
         {
-#if PROFILER
+#if ENABLE_PROFILER
             using (this.Marker())
 #endif
             {
@@ -109,7 +110,7 @@ namespace Aspid.MVVM
         /// <inheritdoc/>
         public void Unbind()
         {
-#if PROFILER
+#if ENABLE_PROFILER
             using (this.Marker())
 #endif
             {

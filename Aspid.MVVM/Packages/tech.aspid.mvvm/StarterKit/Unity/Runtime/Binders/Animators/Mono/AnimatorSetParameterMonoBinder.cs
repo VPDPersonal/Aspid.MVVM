@@ -15,18 +15,6 @@ namespace Aspid.MVVM.StarterKit
         IReverseBinder<Action<T>>,
         IReverseBinder<IRelayCommand<T>>
     {
-        event Action<Action<T>> IReverseBinder<Action<T>>.ValueChanged
-        {
-            add => _reverseAction += value;
-            remove => _reverseAction -= value;
-        }
-        
-        event Action<IRelayCommand<T>> IReverseBinder<IRelayCommand<T>>.ValueChanged
-        {
-            add => _reverseCommand += value;
-            remove => _reverseCommand -= value;
-        }
-        
         [NonSerialized] private T _value;
         [NonSerialized] private bool _hasValue;
 
@@ -38,6 +26,18 @@ namespace Aspid.MVVM.StarterKit
         [field: SerializeField]
         [field: Tooltip("The name of the Animator parameter to set.")]
         protected string ParameterName { get; private set; }
+
+        event Action<Action<T>> IReverseBinder<Action<T>>.ValueChanged
+        {
+            add => _reverseAction += value;
+            remove => _reverseAction -= value;
+        }
+
+        event Action<IRelayCommand<T>> IReverseBinder<IRelayCommand<T>>.ValueChanged
+        {
+            add => _reverseCommand += value;
+            remove => _reverseCommand -= value;
+        }
 
         /// <summary>
         /// Gets the Animator parameter type this binder sets, inferred from <typeparamref name="T"/>, or
@@ -120,6 +120,9 @@ namespace Aspid.MVVM.StarterKit
         /// </summary>
         protected sealed override void OnUnbinding()
         {
+            _value = default;
+            _hasValue = false;
+
             _command = null;
             _reverseAction?.Invoke(null);
             _reverseCommand?.Invoke(null);

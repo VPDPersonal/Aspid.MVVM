@@ -10,7 +10,6 @@ namespace Aspid.MVVM.StarterKit
     /// <remarks>
     /// By default, uses <see cref="GenericToStringConverter{T}"/> for the conversion.
     /// </remarks>
-    /// <include file="XmlExampleDoc-Casters-1.1.0.xml" path="doc//member[@name='AnyToStringCasterBinder']/*" />
     public sealed class AnyToStringCasterBinder : Binder, IAnyBinder
     {
         private readonly Action<string?> _setValue;

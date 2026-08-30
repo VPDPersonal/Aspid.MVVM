@@ -12,7 +12,6 @@ namespace Aspid.MVVM.StarterKit
     /// <remarks>
     /// Unity throws when the tag is not declared in the Tags and Layers settings.
     /// </remarks>
-    /// <include file="XmlExampleDoc-GameObject-Tag-1.1.0.xml" path="doc//member[@name='GameObjectTagBinder']/*" />
     [Serializable]
     public sealed class GameObjectTagBinder : TargetBinder<GameObject, string>
     {

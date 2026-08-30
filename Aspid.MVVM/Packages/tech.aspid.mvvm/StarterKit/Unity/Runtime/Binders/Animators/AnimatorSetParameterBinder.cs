@@ -17,18 +17,6 @@ namespace Aspid.MVVM.StarterKit
         IReverseBinder<Action<T>?>,
         IReverseBinder<IRelayCommand<T>?>
     {
-        event Action<Action<T>?>? IReverseBinder<Action<T>?>.ValueChanged
-        {
-            add => _reverseAction += value;
-            remove => _reverseAction -= value;
-        }
-        
-        event Action<IRelayCommand<T>?>? IReverseBinder<IRelayCommand<T>?>.ValueChanged
-        {
-            add => _reverseCommand += value;
-            remove => _reverseCommand -= value;
-        }
-
         private IRelayCommand<T>? _command;
         private AnimatorParameterProbe _probe;
         private Action<Action<T>?>? _reverseAction;
@@ -38,6 +26,37 @@ namespace Aspid.MVVM.StarterKit
         [field: Tooltip("The name of the Animator parameter to set.")]
         protected string ParameterName { get; private set; }
 
+        /// <param name="target">The <see cref="Animator"/> whose parameter is set.</param>
+        /// <param name="parameterName">The name of the Animator parameter to set.</param>
+        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/>.</param>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown when <paramref name="target"/> or <paramref name="parameterName"/> is <see langword="null"/>.
+        /// </exception>
+        /// <remarks>
+        /// For deserialization only: Unity builds a serialized instance without running a constructor's arguments and
+        /// assigns the fields itself.
+        /// </remarks>
+        protected AnimatorSetParameterBinder() { }
+
+        protected AnimatorSetParameterBinder(Animator target, string parameterName, BindMode mode = BindMode.OneWay)
+            : base(target, mode)
+        {
+            mode.ThrowExceptionIfMatches(BindMode.TwoWay);
+            ParameterName = parameterName ?? throw new ArgumentNullException(nameof(parameterName));
+        }
+
+        event Action<Action<T>?>? IReverseBinder<Action<T>?>.ValueChanged
+        {
+            add => _reverseAction += value;
+            remove => _reverseAction -= value;
+        }
+
+        event Action<IRelayCommand<T>?>? IReverseBinder<IRelayCommand<T>?>.ValueChanged
+        {
+            add => _reverseCommand += value;
+            remove => _reverseCommand -= value;
+        }
+
         /// <summary>
         /// Gets the Animator parameter type this binder sets, inferred from <typeparamref name="T"/>, or
         /// <see langword="null"/> when <typeparamref name="T"/> is none of the types an <see cref="Animator"/>
@@ -45,19 +64,6 @@ namespace Aspid.MVVM.StarterKit
         /// </summary>
         protected virtual AnimatorControllerParameterType? ParameterType =>
             AnimatorParameterTypes.Of<T>();
-
-        /// <param name="target">The <see cref="Animator"/> whose parameter is set.</param>
-        /// <param name="parameterName">The name of the Animator parameter to set.</param>
-        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/>.</param>
-        /// <exception cref="ArgumentNullException">
-        /// Thrown when <paramref name="target"/> or <paramref name="parameterName"/> is <see langword="null"/>.
-        /// </exception>
-        protected AnimatorSetParameterBinder(Animator target, string parameterName, BindMode mode = BindMode.OneWay)
-            : base(target, mode)
-        {
-            mode.ThrowExceptionIfMatches(BindMode.TwoWay);
-            ParameterName = parameterName ?? throw new ArgumentNullException(nameof(parameterName));
-        }
 
         /// <summary>
         /// Notifies the bound <see cref="IRelayCommand{T}"/> that its <see cref="IRelayCommand.CanExecute()"/> state may have changed.

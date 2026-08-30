@@ -27,10 +27,9 @@ namespace Aspid.MVVM.StarterKit
         /// </summary>
         /// <param name="value">The bound enum value received from the ViewModel. Pass <see langword="null"/> to clear all options.</param>
         /// <remarks>
-        /// The option set depends on the enum <i>type</i>, not the value, so it is rebuilt only when the
-        /// type changes. The list is cleared directly rather than through
-        /// <see cref="TMPro.TMP_Dropdown.ClearOptions"/>, which resets the selected index and would clobber
-        /// a value binder on the same dropdown — except for a <see langword="null"/> value, which has none.
+        /// The option set depends on the enum <i>type</i>, not the value, so it rebuilds only when the type
+        /// changes. Options are cleared directly rather than via <see cref="TMPro.TMP_Dropdown.ClearOptions"/>,
+        /// which would reset the selected index and disrupt a value binder on the same dropdown.
         /// </remarks>
         public void SetValue(Enum value)
         {

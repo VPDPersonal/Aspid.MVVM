@@ -9,7 +9,6 @@ namespace Aspid.MVVM.StarterKit
     /// </summary>
     /// <typeparam name="TFrom">The source value type produced by the ViewModel binding.</typeparam>
     /// <typeparam name="TTo">The target value type expected by the setter action.</typeparam>
-    /// <include file="XmlExampleDoc-Generics-1.1.0.xml" path="doc//member[@name='GenericCasterBinder{2}']/*" />
     public class GenericCasterBinder<TFrom, TTo> : Binder, IBinder<TFrom>
     {
         private readonly Action<TTo?> _setValue;
@@ -53,7 +52,6 @@ namespace Aspid.MVVM.StarterKit
     /// Passing the target separately enables method-group-style property setters on Unity components
     /// without capturing them in a closure.
     /// </remarks>
-    /// <include file="XmlExampleDoc-Generics-1.1.0.xml" path="doc//member[@name='GenericCasterBinder{3}']/*" />
     public class GenericCasterBinder<TTarget, TFrom, TTo> : Binder, IBinder<TFrom>
     {
         private readonly TTarget _target;

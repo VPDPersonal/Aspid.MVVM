@@ -9,7 +9,6 @@ namespace Aspid.MVVM.StarterKit
     /// <see cref="TargetBinder{Button}"/> that executes a command each time <see cref="Button.onClick"/> fires.
     /// Accepts commands typed as <see cref="IRelayCommand"/>.
     /// </summary>
-    /// <include file="XmlExampleDoc-Button-Command-1.1.0.xml" path="doc//member[@name='ButtonCommandBinder']/*" />
     [Serializable]
     public sealed class ButtonCommandBinder : TargetBinder<Button>, IBinder<IRelayCommand>
     {
@@ -93,7 +92,6 @@ namespace Aspid.MVVM.StarterKit
     /// Accepts commands typed as <see cref="IRelayCommand{T}"/>.
     /// </summary>
     /// <typeparam name="T">The type of the additional parameter forwarded when the command is executed.</typeparam>
-    /// <include file="XmlExampleDoc-Button-Command-1.1.0.xml" path="doc//member[@name='ButtonCommandBinder{1}']/*" />
     [Serializable]
     public class ButtonCommandBinder<T> : TargetBinder<Button>, IBinder<IRelayCommand<T>>
     {
@@ -110,19 +108,10 @@ namespace Aspid.MVVM.StarterKit
 
         private IRelayCommand<T> _command;
 
-        /// <summary>
-        /// Gets or sets the additional parameter forwarded when the command is executed.
-        /// </summary>
-        public virtual T Param
-        {
-            get => _param;
-            set => _param = value;
-        }
-                
         /// <inheritdoc/>
         public ButtonCommandBinder(Button target, T param, BindMode mode = BindMode.OneWay)
             : this(target, param, InteractableMode.Interactable, mode) { }
-        
+
         /// <param name="target">The <see cref="Button"/> to bind.</param>
         /// <param name="param">The additional parameter forwarded when the command is executed.</param>
         /// <param name="customInteractable">A custom view that reflects the command's <see cref="IRelayCommand{T}.CanExecute(T)"/> state.</param>
@@ -142,7 +131,7 @@ namespace Aspid.MVVM.StarterKit
             _interactableMode = InteractableMode.Custom;
             _customInteractable = customInteractable ?? throw new ArgumentNullException(nameof(customInteractable));
         }
-        
+
         /// <param name="target">The <see cref="Button"/> to bind.</param>
         /// <param name="param">The additional parameter forwarded when the command is executed.</param>
         /// <param name="interactableMode">Controls how the button's interactable state reflects <see cref="IRelayCommand{T}.CanExecute(T)"/>.</param>
@@ -163,7 +152,16 @@ namespace Aspid.MVVM.StarterKit
                 ? interactableMode
                 : throw new ArgumentOutOfRangeException(nameof(mode), "InteractableMode can't be Custom. Use constructor by ICanExecuteView");
         }
-        
+
+        /// <summary>
+        /// Gets or sets the additional parameter forwarded when the command is executed.
+        /// </summary>
+        public virtual T Param
+        {
+            get => _param;
+            set => _param = value;
+        }
+
         /// <summary>
         /// Binds an <see cref="IRelayCommand{T}"/> and subscribes to its <see cref="IRelayCommand{T}.CanExecuteChanged"/> event.
         /// </summary>
@@ -207,7 +205,6 @@ namespace Aspid.MVVM.StarterKit
     /// </summary>
     /// <typeparam name="T1">The type of the first additional parameter forwarded when the command is executed.</typeparam>
     /// <typeparam name="T2">The type of the second additional parameter forwarded when the command is executed.</typeparam>
-    /// <include file="XmlExampleDoc-Button-Command-1.1.0.xml" path="doc//member[@name='ButtonCommandBinder{2}']/*" />
     [Serializable]
     public class ButtonCommandBinder<T1, T2> : TargetBinder<Button>, IBinder<IRelayCommand<T1, T2>>
     {
@@ -226,28 +223,10 @@ namespace Aspid.MVVM.StarterKit
 
         private IRelayCommand<T1, T2> _command;
 
-        /// <summary>
-        /// Gets or sets the first additional parameter forwarded when the command is executed.
-        /// </summary>
-        public virtual T1 Param1
-        {
-            get => _param1;
-            set => _param1 = value;
-        }
-        
-        /// <summary>
-        /// Gets or sets the second additional parameter forwarded when the command is executed.
-        /// </summary>
-        public virtual T2 Param2
-        {
-            get => _param2;
-            set => _param2 = value;
-        }
-                
         /// <inheritdoc/>
         public ButtonCommandBinder(Button target, T1 param1, T2 param2, BindMode mode = BindMode.OneWay)
             : this(target, param1, param2, InteractableMode.Interactable, mode) { }
-        
+
         /// <param name="target">The <see cref="Button"/> to bind.</param>
         /// <param name="param1">The first additional parameter forwarded when the command is executed.</param>
         /// <param name="param2">The second additional parameter forwarded when the command is executed.</param>
@@ -270,7 +249,7 @@ namespace Aspid.MVVM.StarterKit
             _interactableMode = InteractableMode.Custom;
             _customInteractable = customInteractable ?? throw new ArgumentNullException(nameof(customInteractable));
         }
-        
+
         /// <param name="target">The <see cref="Button"/> to bind.</param>
         /// <param name="param1">The first additional parameter forwarded when the command is executed.</param>
         /// <param name="param2">The second additional parameter forwarded when the command is executed.</param>
@@ -294,7 +273,25 @@ namespace Aspid.MVVM.StarterKit
                 ? interactableMode
                 : throw new ArgumentOutOfRangeException(nameof(mode), "InteractableMode can't be Custom. Use constructor by ICanExecuteView");
         }
-        
+
+        /// <summary>
+        /// Gets or sets the first additional parameter forwarded when the command is executed.
+        /// </summary>
+        public virtual T1 Param1
+        {
+            get => _param1;
+            set => _param1 = value;
+        }
+
+        /// <summary>
+        /// Gets or sets the second additional parameter forwarded when the command is executed.
+        /// </summary>
+        public virtual T2 Param2
+        {
+            get => _param2;
+            set => _param2 = value;
+        }
+
         /// <summary>
         /// Binds an <see cref="IRelayCommand{T1, T2}"/> and subscribes to its <see cref="IRelayCommand{T1,T2}.CanExecuteChanged"/> event.
         /// </summary>
@@ -339,7 +336,6 @@ namespace Aspid.MVVM.StarterKit
     /// <typeparam name="T1">The type of the first additional parameter forwarded when the command is executed.</typeparam>
     /// <typeparam name="T2">The type of the second additional parameter forwarded when the command is executed.</typeparam>
     /// <typeparam name="T3">The type of the third additional parameter forwarded when the command is executed.</typeparam>
-    /// <include file="XmlExampleDoc-Button-Command-1.1.0.xml" path="doc//member[@name='ButtonCommandBinder{3}']/*" />
     [Serializable]
     public class ButtonCommandBinder<T1, T2, T3> : TargetBinder<Button>, IBinder<IRelayCommand<T1, T2, T3>>
     {
@@ -360,37 +356,10 @@ namespace Aspid.MVVM.StarterKit
 
         private IRelayCommand<T1, T2, T3> _command;
 
-        /// <summary>
-        /// Gets or sets the first additional parameter forwarded when the command is executed.
-        /// </summary>
-        public virtual T1 Param1
-        {
-            get => _param1;
-            set => _param1 = value;
-        }
-        
-        /// <summary>
-        /// Gets or sets the second additional parameter forwarded when the command is executed.
-        /// </summary>
-        public virtual T2 Param2
-        {
-            get => _param2;
-            set => _param2 = value;
-        }
-        
-        /// <summary>
-        /// Gets or sets the third additional parameter forwarded when the command is executed.
-        /// </summary>
-        public virtual T3 Param3
-        {
-            get => _param3;
-            set => _param3 = value;
-        }
-                
         /// <inheritdoc/>
         public ButtonCommandBinder(Button target, T1 param1, T2 param2, T3 param3, BindMode mode = BindMode.OneWay)
             : this(target, param1, param2, param3, InteractableMode.Interactable, mode) { }
-        
+
         /// <param name="target">The <see cref="Button"/> to bind.</param>
         /// <param name="param1">The first additional parameter forwarded when the command is executed.</param>
         /// <param name="param2">The second additional parameter forwarded when the command is executed.</param>
@@ -410,7 +379,7 @@ namespace Aspid.MVVM.StarterKit
             _interactableMode = InteractableMode.Custom;
             _customInteractable = customInteractable ?? throw new ArgumentNullException(nameof(customInteractable));
         }
-        
+
         /// <param name="target">The <see cref="Button"/> to bind.</param>
         /// <param name="param1">The first additional parameter forwarded when the command is executed.</param>
         /// <param name="param2">The second additional parameter forwarded when the command is executed.</param>
@@ -431,14 +400,41 @@ namespace Aspid.MVVM.StarterKit
                 ? interactableMode
                 : throw new ArgumentOutOfRangeException(nameof(mode), "InteractableMode can't be Custom. Use constructor by ICanExecuteView");
         }
-        
+
+        /// <summary>
+        /// Gets or sets the first additional parameter forwarded when the command is executed.
+        /// </summary>
+        public virtual T1 Param1
+        {
+            get => _param1;
+            set => _param1 = value;
+        }
+
+        /// <summary>
+        /// Gets or sets the second additional parameter forwarded when the command is executed.
+        /// </summary>
+        public virtual T2 Param2
+        {
+            get => _param2;
+            set => _param2 = value;
+        }
+
+        /// <summary>
+        /// Gets or sets the third additional parameter forwarded when the command is executed.
+        /// </summary>
+        public virtual T3 Param3
+        {
+            get => _param3;
+            set => _param3 = value;
+        }
+
         /// <summary>
         /// Binds an <see cref="IRelayCommand{T1, T2, T3}"/> and subscribes to its <see cref="IRelayCommand{T1,T2,T3}.CanExecuteChanged"/> event.
         /// </summary>
         /// <param name="command">The command received from the ViewModel, or <see langword="null"/> to detach the previous one.</param>
         public void SetValue(IRelayCommand<T1, T2, T3> command) =>
             CommandBinderExtensions.UpdateCommand(ref _command, command, OnCanExecuteChanged);
-        
+
         /// <summary>
         /// Called when the binder is bound. Subscribes to <see cref="Button.onClick"/> so that
         /// every click executes the bound command with the configured parameters.
@@ -458,7 +454,7 @@ namespace Aspid.MVVM.StarterKit
 
         private void OnClicked() =>
             _command?.Execute(Param1, Param2, Param3);
-        
+
         private void OnCanExecuteChanged(IRelayCommand<T1, T2, T3> command)
         {
             if (_interactableMode is InteractableMode.None) return;
@@ -477,7 +473,6 @@ namespace Aspid.MVVM.StarterKit
     /// <typeparam name="T2">The type of the second additional parameter forwarded when the command is executed.</typeparam>
     /// <typeparam name="T3">The type of the third additional parameter forwarded when the command is executed.</typeparam>
     /// <typeparam name="T4">The type of the fourth additional parameter forwarded when the command is executed.</typeparam>
-    /// <include file="XmlExampleDoc-Button-Command-1.1.0.xml" path="doc//member[@name='ButtonCommandBinder{4}']/*" />
     [Serializable]
     public class ButtonCommandBinder<T1, T2, T3, T4> : TargetBinder<Button>, IBinder<IRelayCommand<T1, T2, T3, T4>>
     {
@@ -500,46 +495,10 @@ namespace Aspid.MVVM.StarterKit
 
         private IRelayCommand<T1, T2, T3, T4> _command;
 
-        /// <summary>
-        /// Gets or sets the first additional parameter forwarded when the command is executed.
-        /// </summary>
-        public virtual T1 Param1
-        {
-            get => _param1;
-            set => _param1 = value;
-        }
-        
-        /// <summary>
-        /// Gets or sets the second additional parameter forwarded when the command is executed.
-        /// </summary>
-        public virtual T2 Param2
-        {
-            get => _param2;
-            set => _param2 = value;
-        }
-        
-        /// <summary>
-        /// Gets or sets the third additional parameter forwarded when the command is executed.
-        /// </summary>
-        public virtual T3 Param3
-        {
-            get => _param3;
-            set => _param3 = value;
-        }
-        
-        /// <summary>
-        /// Gets or sets the fourth additional parameter forwarded when the command is executed.
-        /// </summary>
-        public virtual T4 Param4
-        {
-            get => _param4;
-            set => _param4 = value;
-        }
-                
         /// <inheritdoc/>
         public ButtonCommandBinder(Button target, T1 param1, T2 param2, T3 param3, T4 param4, BindMode mode = BindMode.OneWay)
             : this(target, param1, param2, param3, param4, InteractableMode.Interactable, mode) { }
-        
+
         /// <param name="target">The <see cref="Button"/> to bind.</param>
         /// <param name="param1">The first additional parameter forwarded when the command is executed.</param>
         /// <param name="param2">The second additional parameter forwarded when the command is executed.</param>
@@ -561,7 +520,7 @@ namespace Aspid.MVVM.StarterKit
             _interactableMode = InteractableMode.Custom;
             _customInteractable = customInteractable ?? throw new ArgumentNullException(nameof(customInteractable));
         }
-        
+
         /// <param name="target">The <see cref="Button"/> to bind.</param>
         /// <param name="param1">The first additional parameter forwarded when the command is executed.</param>
         /// <param name="param2">The second additional parameter forwarded when the command is executed.</param>
@@ -584,14 +543,50 @@ namespace Aspid.MVVM.StarterKit
                 ? interactableMode
                 : throw new ArgumentOutOfRangeException(nameof(mode), "InteractableMode can't be Custom. Use constructor by ICanExecuteView");
         }
-        
+
+        /// <summary>
+        /// Gets or sets the first additional parameter forwarded when the command is executed.
+        /// </summary>
+        public virtual T1 Param1
+        {
+            get => _param1;
+            set => _param1 = value;
+        }
+
+        /// <summary>
+        /// Gets or sets the second additional parameter forwarded when the command is executed.
+        /// </summary>
+        public virtual T2 Param2
+        {
+            get => _param2;
+            set => _param2 = value;
+        }
+
+        /// <summary>
+        /// Gets or sets the third additional parameter forwarded when the command is executed.
+        /// </summary>
+        public virtual T3 Param3
+        {
+            get => _param3;
+            set => _param3 = value;
+        }
+
+        /// <summary>
+        /// Gets or sets the fourth additional parameter forwarded when the command is executed.
+        /// </summary>
+        public virtual T4 Param4
+        {
+            get => _param4;
+            set => _param4 = value;
+        }
+
         /// <summary>
         /// Binds an <see cref="IRelayCommand{T1, T2, T3, T4}"/> and subscribes to its <see cref="IRelayCommand{T1,T2,T3,T4}.CanExecuteChanged"/> event.
         /// </summary>
         /// <param name="command">The command received from the ViewModel, or <see langword="null"/> to detach the previous one.</param>
         public void SetValue(IRelayCommand<T1, T2, T3, T4> command) =>
             CommandBinderExtensions.UpdateCommand(ref _command, command, OnCanExecuteChanged);
-        
+
         /// <summary>
         /// Called when the binder is bound. Subscribes to <see cref="Button.onClick"/> so that
         /// every click executes the bound command with the configured parameters.
@@ -611,7 +606,7 @@ namespace Aspid.MVVM.StarterKit
 
         private void OnClicked() =>
             _command?.Execute(Param1, Param2, Param3, Param4);
-        
+
         private void OnCanExecuteChanged(IRelayCommand<T1, T2, T3, T4> command)
         {
             if (_interactableMode is InteractableMode.None) return;

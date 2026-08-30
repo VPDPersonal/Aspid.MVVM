@@ -9,16 +9,12 @@ namespace Aspid.MVVM.StarterKit
     /// <see cref="ComponentIntMonoBinder{TMP_Dropdown}"/> that binds <see cref="TMP_Dropdown.value"/>.
     /// </summary>
     /// <remarks>
-    /// Supports <see cref="BindMode.TwoWay"/> and <see cref="BindMode.OneWayToSource"/>: when
-    /// <see cref="TMP_Dropdown.onValueChanged"/> fires, the current value is forwarded to the ViewModel.
+    /// Writes go through <see cref="TMP_Dropdown.SetValueWithoutNotify"/> rather than assigning
+    /// <see cref="TMP_Dropdown.value"/> directly, which would raise <see cref="TMP_Dropdown.onValueChanged"/> as
+    /// if the user had clicked, echoing the write back to every binder on the dropdown.
     /// <para/>
-    /// A write goes through <see cref="TMP_Dropdown.SetValueWithoutNotify"/>. Assigning
-    /// <see cref="TMP_Dropdown.value"/> directly raises <see cref="TMP_Dropdown.onValueChanged"/> exactly as a
-    /// click does, so the binder would read its own write back as a user choice — and any other binder on the
-    /// same dropdown would too.
-    /// <para/>
-    /// Unity clamps the selection to the options that exist. When the clamp changes the value, the ViewModel is
-    /// told what the dropdown actually holds rather than being left believing in an index that was refused.
+    /// When Unity clamps the selection to the available options, the clamped value is reported back to the
+    /// ViewModel.
     /// </remarks>
     [BindModeOverride(IsAll = true)]
     [AddBinderContextMenu(typeof(TMP_Dropdown), serializePropertyNames: "m_Value")]

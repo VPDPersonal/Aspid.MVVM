@@ -8,14 +8,8 @@ namespace Aspid.MVVM.StarterKit
     /// that synchronises values of type <typeparamref name="T"/> in both directions between the ViewModel and the View.
     /// </summary>
     /// <typeparam name="T">The type of the value exchanged between View and ViewModel.</typeparam>
-    /// <include file="XmlExampleDoc-Generics-1.1.0.xml" path="doc//member[@name='GenericTwoWayBinder{1}']/*" />
     public class GenericTwoWayBinder<T> : Binder, IBinder<T>, IReverseBinder<T>
     {
-        /// <summary>
-        /// Raised when the View-side value changes and should be propagated to the ViewModel.
-        /// </summary>
-        public event Action<T?>? ValueChanged;
-
         private readonly Action<T?> _setValue;
         private readonly Func<T?>? _onBoundValueChanged;
         private readonly Func<T?>? _onUnboundValueChanged;
@@ -62,6 +56,11 @@ namespace Aspid.MVVM.StarterKit
         }
 
         /// <summary>
+        /// Raised when the View-side value changes and should be propagated to the ViewModel.
+        /// </summary>
+        public event Action<T?>? ValueChanged;
+
+        /// <summary>
         /// Forwards <paramref name="value"/> from the ViewModel to the View setter.
         /// </summary>
         /// <param name="value">The new value received from the ViewModel.</param>
@@ -104,16 +103,9 @@ namespace Aspid.MVVM.StarterKit
     /// <remarks>
     /// Holds a reference to a <typeparamref name="TTarget"/> instance and passes it to all factory
     /// functions, avoiding closures over Unity component references.
-    /// Otherwise behaves identically to <see cref="GenericTwoWayBinder{T}"/>.
     /// </remarks>
-    /// <include file="XmlExampleDoc-Generics-1.1.0.xml" path="doc//member[@name='GenericTwoWayBinder{2}']/*" />
     public class GenericTwoWayBinder<TTarget, T> : Binder, IBinder<T>, IReverseBinder<T>
     {
-        /// <summary>
-        /// Raised when the View-side value changes and should be propagated to the ViewModel.
-        /// </summary>
-        public event Action<T?>? ValueChanged;
-
         private readonly TTarget _target;
         private readonly Action<TTarget, T?> _setValue;
         private readonly Func<TTarget, T?>? _onBoundValueChanged;
@@ -190,6 +182,11 @@ namespace Aspid.MVVM.StarterKit
             _target = target ?? throw new ArgumentNullException(nameof(target));
             _setValue = setValue ?? throw new ArgumentNullException(nameof(setValue));
         }
+
+        /// <summary>
+        /// Raised when the View-side value changes and should be propagated to the ViewModel.
+        /// </summary>
+        public event Action<T?>? ValueChanged;
 
         /// <summary>
         /// Forwards <paramref name="value"/> from the ViewModel to the View setter together with the stored target.

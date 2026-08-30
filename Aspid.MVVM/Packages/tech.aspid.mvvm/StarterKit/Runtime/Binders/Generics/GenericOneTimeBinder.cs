@@ -11,7 +11,6 @@ namespace Aspid.MVVM.StarterKit
     /// <remarks>
     /// The setter is called only for the first value pushed from the ViewModel.
     /// </remarks>
-    /// <include file="XmlExampleDoc-Generics-1.1.0.xml" path="doc//member[@name='GenericOneTimeBinder{1}']/*" />
     public class GenericOneTimeBinder<T> : GenericOneWayBinder<T>
     {
         /// <param name="setValue">The action invoked once with the bound value.</param>
@@ -28,7 +27,6 @@ namespace Aspid.MVVM.StarterKit
     /// <remarks>
     /// The setter is called only for the first value pushed from the ViewModel.
     /// </remarks>
-    /// <include file="XmlExampleDoc-Generics-1.1.0.xml" path="doc//member[@name='GenericOneTimeBinder{2}']/*" />
     public class GenericOneTimeBinder<TTarget, T> : GenericOneWayBinder<TTarget, T>
     {
         /// <param name="target">The target object whose property is updated.</param>

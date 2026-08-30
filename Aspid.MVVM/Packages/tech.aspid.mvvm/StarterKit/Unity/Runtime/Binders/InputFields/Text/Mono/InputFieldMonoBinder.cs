@@ -21,9 +21,6 @@ namespace Aspid.MVVM.StarterKit
         INumberReverseBinder,
         IReverseBinder<string>
     { 
-        /// <inheritdoc/>
-        public event Action<string> ValueChanged;
-
         [Tooltip("Determines the culture used when converting numeric values to string.")]
         [SerializeField] private CultureInfoMode _cultureInfoMode = CultureInfoMode.CurrentCulture;
 
@@ -37,32 +34,32 @@ namespace Aspid.MVVM.StarterKit
         private bool _isNotifyValueChanged = true;
 
         /// <inheritdoc/>
+        public event Action<string> ValueChanged;
+
+        /// <inheritdoc/>
         ref NumberReverseChannel INumberReverseBinder.Channel => ref _channel;
 
         /// <summary>
         /// Re-wires the input field subscriptions after the bind mode is changed in the inspector during play mode.
         /// </summary>
         /// <remarks>
-        /// Only while the binder is actually bound. Without that condition it subscribed to an unbound binder as
-        /// well, and <c>Unbind</c> returns immediately when the binder is not bound — so <c>OnUnbound</c>, and with
-        /// it the unsubscribe, never ran and the listener stayed on the field. Editing the inspector repeatedly
-        /// also stacked duplicate subscriptions, since <c>UnityEvent</c> accepts the same listener more than once.
+        /// Only rewires while the binder is bound. <c>UnityEvent</c> accepts the same listener more than once, so
+        /// resubscribing unconditionally would stack duplicate listeners on repeated inspector edits.
         /// </remarks>
         protected override void OnValidate()
         {
             base.OnValidate();
             if (!Application.isPlaying || !IsBound) return;
 
-            if (Mode is BindMode.TwoWay or BindMode.OneWayToSource)
-            {
-                CachedComponent.onValueChanged.RemoveListener(OnValueChanged);
-                CachedComponent.onEndEdit.RemoveListener(OnValueChanged);
-                CachedComponent.onSubmit.RemoveListener(OnValueChanged);
-                CachedComponent.onSelect.RemoveListener(OnValueChanged);
-                CachedComponent.onDeselect.RemoveListener(OnValueChanged);
-                
-                Subscribe();
-            }
+            // Removed unconditionally: switching Mode away from TwoWay/OneWayToSource in the inspector must
+            // also drop the listener registered under the old mode, or it stays subscribed forever.
+            CachedComponent.onValueChanged.RemoveListener(OnValueChanged);
+            CachedComponent.onEndEdit.RemoveListener(OnValueChanged);
+            CachedComponent.onSubmit.RemoveListener(OnValueChanged);
+            CachedComponent.onSelect.RemoveListener(OnValueChanged);
+            CachedComponent.onDeselect.RemoveListener(OnValueChanged);
+
+            if (Mode is BindMode.TwoWay or BindMode.OneWayToSource) Subscribe();
         }
 
         /// <summary>
@@ -200,6 +197,7 @@ namespace Aspid.MVVM.StarterKit
 
             if (_channel.HasDecimalListeners) _channel.RaiseDecimals(number);
         }
+
         /// <summary>
         /// Converts a value on its way back to the ViewModel.
         /// </summary>
@@ -209,14 +207,10 @@ namespace Aspid.MVVM.StarterKit
         /// <see cref="ITwoWayConverter{TFrom, TTo}"/>, and unchanged when it does not.
         /// </returns>
         /// <remarks>
-        /// A one-way converter cannot be undone, so the raw text is the only honest answer — and it
-        /// must not be the forward-converted one, which would write the View's presentation back
-        /// into the ViewModel. The numeric channels read the same converted-back text, so a field
-        /// whose converter strips a currency symbol parses the number underneath it.
+        /// The numeric channels parse the same converted-back text this method returns.
         /// </remarks>
         private string? GetConvertedBackValue(string? value) =>
             _converter is ITwoWayConverter<string?, string?> twoWay ? twoWay.ConvertBack(value) : value;
-
     }
 }
 #endif

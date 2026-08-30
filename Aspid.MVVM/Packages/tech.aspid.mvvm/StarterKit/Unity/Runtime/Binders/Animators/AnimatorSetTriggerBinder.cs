@@ -15,18 +15,6 @@ namespace Aspid.MVVM.StarterKit
         IReverseBinder<Action?>,
         IReverseBinder<IRelayCommand?>
     {
-        event Action<Action?>? IReverseBinder<Action?>.ValueChanged
-        {
-            add => _reverseAction += value;
-            remove => _reverseAction -= value;
-        }
-
-        event Action<IRelayCommand?>? IReverseBinder<IRelayCommand?>.ValueChanged
-        {
-            add => _reverseCommand += value;
-            remove => _reverseCommand -= value;
-        }
-
         private IRelayCommand? _command;
         private AnimatorParameterProbe _probe;
         private Action<Action?>? _reverseAction;
@@ -45,6 +33,18 @@ namespace Aspid.MVVM.StarterKit
             : base(target, BindMode.OneWayToSource)
         {
             TriggerName = triggerName ?? throw new ArgumentNullException(nameof(triggerName));
+        }
+
+        event Action<Action?>? IReverseBinder<Action?>.ValueChanged
+        {
+            add => _reverseAction += value;
+            remove => _reverseAction -= value;
+        }
+
+        event Action<IRelayCommand?>? IReverseBinder<IRelayCommand?>.ValueChanged
+        {
+            add => _reverseCommand += value;
+            remove => _reverseCommand -= value;
         }
 
         /// <summary>
@@ -110,7 +110,6 @@ namespace Aspid.MVVM.StarterKit
     /// <summary>
     /// Concrete <see cref="AnimatorTriggerBinder"/> that sets the trigger parameter.
     /// </summary>
-    /// <include file="XmlExampleDoc-Animator-1.1.0.xml" path="doc//member[@name='AnimatorSetTriggerBinder']/*" />
     [Serializable]
     public class AnimatorSetTriggerBinder : AnimatorTriggerBinder
     {

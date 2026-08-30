@@ -8,7 +8,6 @@ namespace Aspid.MVVM.StarterKit
     /// propagating the current value from the View back to the ViewModel on binding.
     /// </summary>
     /// <typeparam name="T">The type of the bindable value.</typeparam>
-    /// <include file="XmlExampleDoc-Values-1.1.0.xml" path="doc//member[@name='OneWayToSourceValue{1}']/*" />
     [Serializable]
     [BindModeOverride(BindMode.OneWayToSource)]
     public class OneWayToSourceValue<T> : TwoWayValue<T>
@@ -21,14 +20,15 @@ namespace Aspid.MVVM.StarterKit
             : base(value, BindMode.OneWayToSource) { }
 
         /// <remarks>
-        /// The inherited converter is applied on the ViewModel → View path, in <see cref="IBinder{T}.SetValue"/>.
-        /// <see cref="BindMode.OneWayToSource"/> has no such path, so a converter passed here never runs.
-        /// Convert in the ViewModel, or use <see cref="TwoWayValue{T}"/>.
+        /// Only the forward conversion is unreachable here: it runs in <see cref="IBinder{T}.SetValue"/>, and
+        /// <see cref="BindMode.OneWayToSource"/> has no ViewModel → View path. A one-way converter therefore
+        /// never runs.
         /// </remarks>
         /// <param name="value">The initial value.</param>
-        /// <param name="converter">Ignored in this mode.</param>
-        [Obsolete("A converter is only applied on the ViewModel -> View path, which BindMode.OneWayToSource does " +
-                  "not have, so this one never runs. Convert in the ViewModel, or use TwoWayValue<T>.")]
+        /// <param name="converter">
+        /// The converter applied to each value on its way to the ViewModel; only an
+        /// <see cref="ITwoWayConverter{TFrom, TTo}"/> takes effect, through its reverse conversion.
+        /// </param>
         public OneWayToSourceValue(T? value, IConverter<T?, T?>? converter)
             : base(value, converter, BindMode.OneWayToSource) { }
     }

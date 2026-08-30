@@ -15,7 +15,7 @@ namespace Aspid.MVVM.StarterKit
     {
         /// <inheritdoc/>
         protected override void SetValue(int value) =>
-            CachedComponent.value = value;
+            CachedComponent.SetValueWithoutNotify(value);
     }
 }
 #endif

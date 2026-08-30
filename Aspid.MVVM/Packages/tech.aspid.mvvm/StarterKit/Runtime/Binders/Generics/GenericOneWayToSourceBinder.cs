@@ -8,14 +8,8 @@ namespace Aspid.MVVM.StarterKit
     /// from the View back to the ViewModel.
     /// </summary>
     /// <typeparam name="T">The type of the value reported to the ViewModel.</typeparam>
-    /// <include file="XmlExampleDoc-Generics-1.1.0.xml" path="doc//member[@name='GenericOneWayToSourceBinder{1}']/*" />
     public class GenericOneWayToSourceBinder<T> : Binder, IReverseBinder<T>
     {
-        /// <summary>
-        /// Raised when the View-side value changes and should be propagated to the ViewModel.
-        /// </summary>
-        public event Action<T?>? ValueChanged;
-
         private readonly Func<T?>? _onBoundValueChanged;
         private readonly Func<T?>? _onUnboundValueChanged;
 
@@ -63,6 +57,11 @@ namespace Aspid.MVVM.StarterKit
         }
 
         /// <summary>
+        /// Raised when the View-side value changes and should be propagated to the ViewModel.
+        /// </summary>
+        public event Action<T?>? ValueChanged;
+
+        /// <summary>
         /// Called after binding is established.
         /// Invokes the <c>onBoundValueChanged</c> factory and pushes the returned value to the ViewModel,
         /// if the factory was provided.
@@ -98,14 +97,8 @@ namespace Aspid.MVVM.StarterKit
     /// Holds a reference to a <typeparamref name="TTarget"/> instance and passes it to all factory
     /// functions, avoiding closures. Otherwise behaves identically to <see cref="GenericOneWayToSourceBinder{T}"/>.
     /// </remarks>
-    /// <include file="XmlExampleDoc-Generics-1.1.0.xml" path="doc//member[@name='GenericOneWayToSourceBinder{2}']/*" />
     public class GenericOneWayToSourceBinder<TTarget, T> : Binder, IReverseBinder<T>
     {
-        /// <summary>
-        /// Raised when the View-side value changes and should be propagated to the ViewModel.
-        /// </summary>
-        public event Action<T?>? ValueChanged;
-
         private readonly TTarget _target;
         private readonly Func<TTarget, T?>? _onBoundValueChanged;
         private readonly Func<TTarget, T?>? _onUnboundValueChanged;
@@ -165,6 +158,11 @@ namespace Aspid.MVVM.StarterKit
             _onUnboundValueChanged = onUnboundValueChanged;
             _target = target ?? throw new ArgumentNullException(nameof(target));
         }
+
+        /// <summary>
+        /// Raised when the View-side value changes and should be propagated to the ViewModel.
+        /// </summary>
+        public event Action<T?>? ValueChanged;
 
         /// <summary>
         /// Called after binding is established.

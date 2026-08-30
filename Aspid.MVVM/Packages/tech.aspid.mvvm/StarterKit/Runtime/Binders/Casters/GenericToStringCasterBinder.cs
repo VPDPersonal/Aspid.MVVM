@@ -11,7 +11,6 @@ namespace Aspid.MVVM.StarterKit
     /// <remarks>
     /// A <see cref="GenericToStringConverter{T}"/> with an optional format string is used by default.
     /// </remarks>
-    /// <include file="XmlExampleDoc-Casters-1.1.0.xml" path="doc//member[@name='GenericToStringCasterBinder{1}']/*" />
     public sealed class GenericToStringCasterBinder<T> : Binder, IBinder<T>
     {
         private readonly Action<string?> _setValue;

@@ -11,28 +11,21 @@ namespace Aspid.MVVM.StarterKit
     /// <summary>
     /// <see cref="TargetBinder{TMP_InputField}"/> that binds <see cref="TMP_InputField.text"/>.
     /// </summary>
-    /// <include file="XmlExampleDoc-InputField-Text-1.1.0.xml" path="doc//member[@name='InputFieldBinder']/*" />
     [Serializable]
     [BindModeOverride(IsAll = true)]
     public class InputFieldBinder : TargetBinder<TMP_InputField>, IBinder<string?>, INumberBinder, IReverseBinder<string>, INumberReverseBinder
     {
-        /// <inheritdoc/>
-        public event Action<string>? ValueChanged;
-
         [Tooltip("Determines the culture used when converting numeric values to string.")]
         [SerializeField] private CultureInfoMode _cultureInfoMode = CultureInfoMode.CurrentCulture;
 
         [Tooltip("The input field event that triggers ViewModel notifications.")]
         [SerializeField] private UpdateInputFieldEvent _updateEvent = UpdateInputFieldEvent.OnValueChanged;
-        
+
         [Tooltip("Optional converter applied before setting the input field text.")]
         [SerializeReference] private IConverter<string?, string?>? _converter;
 
         private NumberReverseChannel _channel;
         private bool _isNotifyValueChanged = true;
-
-        /// <inheritdoc/>
-        ref NumberReverseChannel INumberReverseBinder.Channel => ref _channel;
 
         /// <param name="target">The <see cref="TMP_InputField"/> to bind.</param>
         /// <param name="converter">The converter applied to values before they are set on the input field, or <see langword="null"/> to use the value as-is.</param>
@@ -44,6 +37,12 @@ namespace Aspid.MVVM.StarterKit
             mode.ThrowExceptionIfNone();
             _converter = converter;
         }
+
+        /// <inheritdoc/>
+        public event Action<string>? ValueChanged;
+
+        /// <inheritdoc/>
+        ref NumberReverseChannel INumberReverseBinder.Channel => ref _channel;
 
         /// <summary>
         /// Called when the binder is bound. Subscribes to the configured input field event when using
@@ -100,28 +99,28 @@ namespace Aspid.MVVM.StarterKit
         /// <param name="value">The value received from the ViewModel.</param>
         public void SetValue(int value) =>
             SetValue(value.ToCultureString(_cultureInfoMode));
-        
+
         /// <summary>
         /// Formats the value using the configured <see cref="CultureInfoMode"/> and sets <see cref="TMP_InputField.text"/>.
         /// </summary>
         /// <param name="value">The value received from the ViewModel.</param>
         public void SetValue(long value) =>
             SetValue(value.ToCultureString(_cultureInfoMode));
-        
+
         /// <summary>
         /// Formats the value using the configured <see cref="CultureInfoMode"/> and sets <see cref="TMP_InputField.text"/>.
         /// </summary>
         /// <param name="value">The value received from the ViewModel.</param>
         public void SetValue(float value) =>
             SetValue(value.ToCultureString(_cultureInfoMode));
-        
+
         /// <summary>
         /// Formats the value using the configured <see cref="CultureInfoMode"/> and sets <see cref="TMP_InputField.text"/>.
         /// </summary>
         /// <param name="value">The value received from the ViewModel.</param>
         public void SetValue(double value) =>
             SetValue(value.ToCultureString(_cultureInfoMode));
-        
+
         private void Subscribe()
         {
             switch (_updateEvent)
@@ -175,6 +174,7 @@ namespace Aspid.MVVM.StarterKit
 
             if (_channel.HasDecimalListeners) _channel.RaiseDecimals(number);
         }
+
         /// <summary>
         /// Converts a value on its way back to the ViewModel.
         /// </summary>
@@ -184,14 +184,10 @@ namespace Aspid.MVVM.StarterKit
         /// <see cref="ITwoWayConverter{TFrom, TTo}"/>, and unchanged when it does not.
         /// </returns>
         /// <remarks>
-        /// A one-way converter cannot be undone, so the raw text is the only honest answer — and it
-        /// must not be the forward-converted one, which would write the View's presentation back
-        /// into the ViewModel. The numeric channels read the same converted-back text, so a field
-        /// whose converter strips a currency symbol parses the number underneath it.
+        /// The numeric channels parse the same converted-back text this method returns.
         /// </remarks>
         private string? GetConvertedBackValue(string? value) =>
             _converter is ITwoWayConverter<string?, string?> twoWay ? twoWay.ConvertBack(value) : value;
-
     }
 }
 #endif

@@ -11,8 +11,6 @@ namespace Aspid.MVVM.StarterKit
     /// values of multiple types to be both pushed to and received from the slider.
     /// </summary>
     /// <remarks>
-    /// Supports <see cref="BindMode.TwoWay"/> and <see cref="BindMode.OneWayToSource"/>: when
-    /// <see cref="Slider.onValueChanged"/> fires, the current value is forwarded to the ViewModel.
     /// When <see cref="BindMode.OneWayToSource"/> is active, the current value is also immediately
     /// forwarded when binding is established.
     /// </remarks>
@@ -71,10 +69,8 @@ namespace Aspid.MVVM.StarterKit
         /// Suppresses value change events during assignment.
         /// </summary>
         /// <remarks>
-        /// The value is clamped to the slider's own range before assignment. Unity would clamp it anyway, but
-        /// silently, and the echo guard would swallow the <c>onValueChanged</c> the clamp raises — leaving the
-        /// ViewModel out of sync until the next change. When the clamp changes the value, the difference is
-        /// reported back; a converter's own effect is not.
+        /// The value is clamped to the slider's own range before assignment; the reverse channel is raised
+        /// only when the clamp changed it, not when the converter did.
         /// </remarks>
         /// <param name="value">The value received from the ViewModel.</param>
         protected void SetValueInternal(float value)
@@ -114,9 +110,8 @@ namespace Aspid.MVVM.StarterKit
         /// <see cref="ITwoWayConverter{TFrom, TTo}"/>, and unchanged when it does not.
         /// </returns>
         /// <remarks>
-        /// A one-way converter cannot be undone, so the raw value is the only honest answer — and it
-        /// must not be the forward-converted one, which would write the View's presentation back
-        /// into the ViewModel.
+        /// The raw value is returned, not the forward-converted one — applying the forward conversion
+        /// again would write the View's presentation back into the ViewModel.
         /// </remarks>
         private float GetConvertedBackValue(float value) =>
             _converter is ITwoWayConverter<float, float> twoWay ? twoWay.ConvertBack(value) : value;

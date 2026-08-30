@@ -5,7 +5,7 @@ using UnityEngine;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// Shared sprite lifecycle helper used by the Image sprite binders to create a
+    /// Shared sprite lifecycle helper used by the sprite binders to create a
     /// <see cref="Sprite"/> from a <see cref="Texture2D"/> and destroy the previously created one.
     /// </summary>
     internal static class SpriteBinderHelper

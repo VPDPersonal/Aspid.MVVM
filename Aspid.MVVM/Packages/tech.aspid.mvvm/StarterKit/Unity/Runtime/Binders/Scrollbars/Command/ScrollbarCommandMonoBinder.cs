@@ -11,7 +11,7 @@ namespace Aspid.MVVM.StarterKit
     [GenerateSerializableBinder]
     [AddBinderContextMenu(typeof(Scrollbar), serializePropertyNames: "m_Calls")]
     [AddComponentMenu("Aspid/MVVM/Binders/UI/Command/Scrollbar Binder – Command")]
-    public sealed partial class ScrollBarCommandMonoBinder : ComponentMonoBinder<Scrollbar>,
+    public sealed partial class ScrollbarCommandMonoBinder : ComponentMonoBinder<Scrollbar>,
         IBinder<IRelayCommand<int>>,
         IBinder<IRelayCommand<long>>,
         IBinder<IRelayCommand<float>>,
@@ -130,7 +130,7 @@ namespace Aspid.MVVM.StarterKit
     /// passing the current scrollbar value and an additional parameter as the command arguments.
     /// </summary>
     /// <typeparam name="T">The type of the additional parameter forwarded alongside the scrollbar value.</typeparam>
-    public abstract partial class ScrollBarCommandMonoBinder<T> : ComponentMonoBinder<Scrollbar>,
+    public abstract partial class ScrollbarCommandMonoBinder<T> : ComponentMonoBinder<Scrollbar>,
         IBinder<IRelayCommand<int, T>>,
         IBinder<IRelayCommand<long, T>>,
         IBinder<IRelayCommand<float, T>>,
@@ -263,7 +263,7 @@ namespace Aspid.MVVM.StarterKit
     /// </summary>
     /// <typeparam name="T1">The type of the first additional parameter.</typeparam>
     /// <typeparam name="T2">The type of the second additional parameter.</typeparam>
-    public abstract partial class ScrollBarCommandMonoBinder<T1, T2> : ComponentMonoBinder<Scrollbar>,
+    public abstract partial class ScrollbarCommandMonoBinder<T1, T2> : ComponentMonoBinder<Scrollbar>,
         IBinder<IRelayCommand<int, T1, T2>>,
         IBinder<IRelayCommand<long, T1, T2>>,
         IBinder<IRelayCommand<float, T1, T2>>,
@@ -408,7 +408,7 @@ namespace Aspid.MVVM.StarterKit
     /// <typeparam name="T1">The type of the first additional parameter.</typeparam>
     /// <typeparam name="T2">The type of the second additional parameter.</typeparam>
     /// <typeparam name="T3">The type of the third additional parameter.</typeparam>
-    public abstract partial class ScrollBarCommandMonoBinder<T1, T2, T3> : ComponentMonoBinder<Scrollbar>,
+    public abstract partial class ScrollbarCommandMonoBinder<T1, T2, T3> : ComponentMonoBinder<Scrollbar>,
         IBinder<IRelayCommand<int, T1, T2, T3>>,
         IBinder<IRelayCommand<long, T1, T2, T3>>,
         IBinder<IRelayCommand<float, T1, T2, T3>>,

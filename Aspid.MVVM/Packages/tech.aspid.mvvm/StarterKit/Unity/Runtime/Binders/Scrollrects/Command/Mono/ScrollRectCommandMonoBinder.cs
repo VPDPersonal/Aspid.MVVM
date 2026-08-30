@@ -10,7 +10,6 @@ namespace Aspid.MVVM.StarterKit
     /// Accepts commands typed as <see cref="IRelayCommand{T}">IRelayCommand&lt;Vector2&gt;</see>
     /// or <see cref="IRelayCommand{T}">IRelayCommand&lt;Vector3&gt;</see>.
     /// </summary>
-    [GenerateSerializableBinder]
     [AddBinderContextMenu(typeof(ScrollRect), serializePropertyNames: "m_Calls")]
     [AddComponentMenu("Aspid/MVVM/Binders/UI/Command/ScrollRect Binder – Command")]
     public sealed partial class ScrollRectCommandMonoBinder : ComponentMonoBinder<ScrollRect>,

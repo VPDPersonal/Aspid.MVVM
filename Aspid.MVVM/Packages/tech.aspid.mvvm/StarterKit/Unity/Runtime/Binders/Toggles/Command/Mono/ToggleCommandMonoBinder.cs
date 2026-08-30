@@ -8,7 +8,6 @@ namespace Aspid.MVVM.StarterKit
     /// <see cref="ComponentMonoBinder{Toggle}"/> that executes a command each time <see cref="Toggle.onValueChanged"/> fires.
     /// Accepts commands typed as <see cref="IRelayCommand"/> (no value) or <see cref="IRelayCommand{T}">IRelayCommand&lt;bool&gt;</see> (receiving the isOn state).
     /// </summary>
-    [GenerateSerializableBinder]
     [AddBinderContextMenu(typeof(Toggle), serializePropertyNames: "m_Calls")]
     [AddComponentMenu("Aspid/MVVM/Binders/UI/Command/Toggle Binder – Command")]
     public partial class ToggleCommandMonoBinder : ComponentMonoBinder<Toggle>, IBinder<IRelayCommand>, IBinder<IRelayCommand<bool>>

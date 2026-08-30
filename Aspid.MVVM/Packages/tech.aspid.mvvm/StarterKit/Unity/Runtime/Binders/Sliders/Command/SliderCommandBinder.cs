@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -5,23 +6,22 @@ using UnityEngine.UI;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="ComponentMonoBinder{Slider}"/> that executes a command each time <see cref="Slider.onValueChanged"/> fires,
+    /// <see cref="TargetBinder{Slider}"/> that executes a command each time <see cref="Slider.onValueChanged"/> fires,
     /// passing the current slider value as the command argument.
     /// Accepts commands typed as <see cref="IRelayCommand{T}">IRelayCommand&lt;int&gt;</see>, <see cref="IRelayCommand{T}">IRelayCommand&lt;long&gt;</see>,
     /// <see cref="IRelayCommand{T}">IRelayCommand&lt;float&gt;</see> or <see cref="IRelayCommand{T}">IRelayCommand&lt;double&gt;</see>.
     /// </summary>
-    [GenerateSerializableBinder]
-    [AddBinderContextMenu(typeof(Slider), serializePropertyNames: "m_Calls")]
-    [AddComponentMenu("Aspid/MVVM/Binders/UI/Command/Slider Binder – Command")]
-    public sealed partial class SliderCommandMonoBinder : ComponentMonoBinder<Slider>, 
-        IBinder<IRelayCommand<int>>, 
+    [Serializable]
+    public sealed class SliderCommandBinder : TargetBinder<Slider>,
+        IBinder<IRelayCommand<int>>,
         IBinder<IRelayCommand<long>>,
         IBinder<IRelayCommand<float>>,
         IBinder<IRelayCommand<double>>
     {
         [Tooltip("How CanExecute affects the slider's interactable state.")]
+        // ReSharper disable once MemberInitializerValueIgnored
         [SerializeField] private InteractableMode _interactableMode = InteractableMode.Interactable;
-
+        
         [Tooltip("View that reflects CanExecute when Interactable Mode is Custom.")]
         [SerializeReference] private ICanExecuteView _customInteractable;
         
@@ -29,30 +29,47 @@ namespace Aspid.MVVM.StarterKit
         private IRelayCommand<long> _longCommand;
         private IRelayCommand<float> _floatCommand;
         private IRelayCommand<double> _doubleCommand;
-
-        protected override void OnValidate()
+                
+        /// <inheritdoc/>
+        public SliderCommandBinder(Slider target, BindMode mode = BindMode.OneWay)
+            : this(target, InteractableMode.Interactable, mode) { }
+        
+        /// <param name="target">The <see cref="Slider"/> to bind.</param>
+        /// <param name="customInteractable">A custom view that reflects the command's CanExecute state.</param>
+        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</param>
+        /// <exception cref="InvalidOperationException">Thrown when <paramref name="mode"/> is <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</exception>
+        public SliderCommandBinder(Slider target, ICanExecuteView customInteractable, BindMode mode = BindMode.OneWay)
+            : base(target, mode)
         {
-            base.OnValidate();
-            
-            if (_intCommand is not null) OnCanExecuteChanged(_intCommand);
-            else if (_longCommand is not null) OnCanExecuteChanged(_longCommand);
-            else if (_floatCommand is not null) OnCanExecuteChanged(_floatCommand);
-            else if (_doubleCommand is not null) OnCanExecuteChanged(_doubleCommand);
+            mode.ThrowExceptionIfTwo();
+            _interactableMode = InteractableMode.Custom;
+            _customInteractable = customInteractable ?? throw new ArgumentNullException(nameof(customInteractable));
         }
-
+        
+        /// <param name="target">The <see cref="Slider"/> to bind.</param>
+        /// <param name="interactableMode">Controls how the slider's interactable state reflects CanExecute.</param>
+        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</param>
+        /// <exception cref="InvalidOperationException">Thrown when <paramref name="mode"/> is <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</exception>
+        public SliderCommandBinder(Slider target, InteractableMode interactableMode, BindMode mode = BindMode.OneWay)
+            : base(target, mode)
+        {
+            mode.ThrowExceptionIfTwo();
+            _interactableMode = interactableMode is not InteractableMode.Custom
+                ? interactableMode
+                : throw new ArgumentOutOfRangeException(nameof(mode), "InteractableMode can't be Custom. Use constructor by ICanExecuteView");
+        }
+        
         /// <summary>
         /// Binds an <see cref="IRelayCommand{T}">IRelayCommand&lt;int&gt;</see> and subscribes to its <see cref="IRelayCommand.CanExecuteChanged"/> event.
         /// </summary>
         /// <param name="value">The value received from the ViewModel.</param>
-        [BinderLog]
         public void SetValue(IRelayCommand<int> value) =>
             CommandBinderExtensions.UpdateCommand(ref _intCommand, value, OnCanExecuteChanged);
-
+        
         /// <summary>
         /// Binds an <see cref="IRelayCommand{T}">IRelayCommand&lt;long&gt;</see> and subscribes to its <see cref="IRelayCommand.CanExecuteChanged"/> event.
         /// </summary>
         /// <param name="value">The value received from the ViewModel.</param>
-        [BinderLog]
         public void SetValue(IRelayCommand<long> value) =>
             CommandBinderExtensions.UpdateCommand(ref _longCommand, value, OnCanExecuteChanged);
         
@@ -60,15 +77,13 @@ namespace Aspid.MVVM.StarterKit
         /// Binds an <see cref="IRelayCommand{T}">IRelayCommand&lt;float&gt;</see> and subscribes to its <see cref="IRelayCommand.CanExecuteChanged"/> event.
         /// </summary>
         /// <param name="value">The value received from the ViewModel.</param>
-        [BinderLog]
         public void SetValue(IRelayCommand<float> value) =>
             CommandBinderExtensions.UpdateCommand(ref _floatCommand, value, OnCanExecuteChanged);
-
+        
         /// <summary>
         /// Binds an <see cref="IRelayCommand{T}">IRelayCommand&lt;double&gt;</see> and subscribes to its <see cref="IRelayCommand.CanExecuteChanged"/> event.
         /// </summary>
         /// <param name="value">The value received from the ViewModel.</param>
-        [BinderLog]
         public void SetValue(IRelayCommand<double> value) =>
             CommandBinderExtensions.UpdateCommand(ref _doubleCommand, value, OnCanExecuteChanged);
 
@@ -81,7 +96,7 @@ namespace Aspid.MVVM.StarterKit
         /// dispatches to the first non-null command among all bound command types.
         /// </remarks>
         protected override void OnBound() =>
-            CachedComponent.onValueChanged.AddListener(OnValueChanged);
+            Target.onValueChanged.AddListener(OnValueChanged);
 
         /// <summary>
         /// Called when the binder is unbound. Unsubscribes from <see cref="Slider.onValueChanged"/>
@@ -89,7 +104,7 @@ namespace Aspid.MVVM.StarterKit
         /// </summary>
         protected override void OnUnbound()
         {
-            CachedComponent.onValueChanged.RemoveListener(OnValueChanged);
+            Target.onValueChanged.RemoveListener(OnValueChanged);
 
             SetValue((IRelayCommand<int>)null);
             SetValue((IRelayCommand<long>)null);
@@ -99,23 +114,23 @@ namespace Aspid.MVVM.StarterKit
 
         private void OnValueChanged(float value)
         {
-            if (_floatCommand is not null) _floatCommand.Execute(CachedComponent.value);
-            else if (_intCommand is not null) _intCommand.Execute((int)CachedComponent.value);
-            else if (_doubleCommand is not null) _doubleCommand.Execute(CachedComponent.value);
-            else if (_longCommand is not null) _longCommand.Execute((long)CachedComponent.value);
+            if (_floatCommand is not null) _floatCommand.Execute(Target.value);
+            else if (_intCommand is not null) _intCommand.Execute((int)Target.value);
+            else if (_doubleCommand is not null) _doubleCommand.Execute(Target.value);
+            else if (_longCommand is not null) _longCommand.Execute((long)Target.value);
         }
         
         private void OnCanExecuteChanged(IRelayCommand<int> command) =>
-            ApplyCanExecute(command, (int)CachedComponent.value);
+            ApplyCanExecute(command, (int)Target.value);
 
         private void OnCanExecuteChanged(IRelayCommand<long> command) =>
-            ApplyCanExecute(command, (long)CachedComponent.value);
+            ApplyCanExecute(command, (long)Target.value);
 
         private void OnCanExecuteChanged(IRelayCommand<float> command) =>
-            ApplyCanExecute(command, CachedComponent.value);
+            ApplyCanExecute(command, Target.value);
 
         private void OnCanExecuteChanged(IRelayCommand<double> command) =>
-            ApplyCanExecute(command, (double)CachedComponent.value);
+            ApplyCanExecute(command, (double)Target.value);
 
         private void ApplyCanExecute<T>(IRelayCommand<T> command, T value)
         {
@@ -124,29 +139,31 @@ namespace Aspid.MVVM.StarterKit
         }
 
         private void SetInteractableMode(bool isInteractable) =>
-            CachedComponent.SetInteractable(_interactableMode, isInteractable, _customInteractable, this);
+            Target.SetInteractable(_interactableMode, isInteractable, _customInteractable, this);
     }
 
     /// <summary>
-    /// Abstract base <see cref="ComponentMonoBinder{Slider}"/> that executes a command each time <see cref="Slider.onValueChanged"/> fires,
+    /// <see cref="TargetBinder{Slider}"/> that executes a command each time <see cref="Slider.onValueChanged"/> fires,
     /// passing the current slider value and an additional parameter as the command arguments.
     /// Accepts commands typed as <see cref="IRelayCommand{T1, T2}">IRelayCommand&lt;int, T&gt;</see>, <see cref="IRelayCommand{T1, T2}">IRelayCommand&lt;long, T&gt;</see>,
     /// <see cref="IRelayCommand{T1, T2}">IRelayCommand&lt;float, T&gt;</see> or <see cref="IRelayCommand{T1, T2}">IRelayCommand&lt;double, T&gt;</see>.
     /// </summary>
     /// <typeparam name="T">The type of the additional parameter forwarded alongside the slider value.</typeparam>
-    public abstract partial class SliderCommandMonoBinder<T> : ComponentMonoBinder<Slider>, 
+    [Serializable]
+    public class SliderCommandBinder<T> : TargetBinder<Slider>,
         IBinder<IRelayCommand<int, T>>,
-        IBinder<IRelayCommand<long, T>>, 
-        IBinder<IRelayCommand<float, T>>, 
+        IBinder<IRelayCommand<long, T>>,
+        IBinder<IRelayCommand<float, T>>,
         IBinder<IRelayCommand<double, T>>
     {
         [Tooltip("Extra parameter forwarded alongside the slider value.")]
         [SerializeField] private T _param;
         
         [Tooltip("How CanExecute affects the slider's interactable state.")]
+        // ReSharper disable once MemberInitializerValueIgnored
         [Space]
         [SerializeField] private InteractableMode _interactableMode = InteractableMode.Interactable;
-
+        
         [Tooltip("View that reflects CanExecute when Interactable Mode is Custom.")]
         [SerializeReference] private ICanExecuteView _customInteractable;
         
@@ -163,30 +180,55 @@ namespace Aspid.MVVM.StarterKit
             get => _param;
             set => _param = value;
         }
-
-        protected override void OnValidate()
+                
+        /// <inheritdoc/>
+        public SliderCommandBinder(Slider target, T param, BindMode mode = BindMode.OneWay)
+            : this(target, param, InteractableMode.Interactable, mode) { }
+        
+        /// <param name="target">The <see cref="Slider"/> to bind.</param>
+        /// <param name="param">The additional parameter forwarded alongside the slider value.</param>
+        /// <param name="customInteractable">A custom view that reflects the command's CanExecute state.</param>
+        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</param>
+        /// <exception cref="InvalidOperationException">Thrown when <paramref name="mode"/> is <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</exception>
+        public SliderCommandBinder(Slider target, T param, ICanExecuteView customInteractable, BindMode mode = BindMode.OneWay)
+            : base(target, mode)
         {
-            base.OnValidate();
+            mode.ThrowExceptionIfTwo();
             
-            if (_intCommand is not null) OnCanExecuteChanged(_intCommand);
-            else if (_longCommand is not null) OnCanExecuteChanged(_longCommand);
-            else if (_floatCommand is not null) OnCanExecuteChanged(_floatCommand);
-            else if (_doubleCommand is not null) OnCanExecuteChanged(_doubleCommand);
+            _param = param;
+            
+            _interactableMode = InteractableMode.Custom;
+            _customInteractable = customInteractable ?? throw new ArgumentNullException(nameof(customInteractable));
         }
-
+        
+        /// <param name="target">The <see cref="Slider"/> to bind.</param>
+        /// <param name="param">The additional parameter forwarded alongside the slider value.</param>
+        /// <param name="interactableMode">Controls how the slider's interactable state reflects CanExecute.</param>
+        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</param>
+        /// <exception cref="InvalidOperationException">Thrown when <paramref name="mode"/> is <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</exception>
+        public SliderCommandBinder(Slider target, T param, InteractableMode interactableMode, BindMode mode = BindMode.OneWay)
+            : base(target, mode)
+        {
+            mode.ThrowExceptionIfTwo();
+            
+            _param = param;
+            
+            _interactableMode = interactableMode is not InteractableMode.Custom
+                ? interactableMode
+                : throw new ArgumentOutOfRangeException(nameof(mode), "InteractableMode can't be Custom. Use constructor by ICanExecuteView");
+        }
+        
         /// <summary>
         /// Binds an <see cref="IRelayCommand{T1, T2}">IRelayCommand&lt;int, T&gt;</see> and subscribes to its <see cref="IRelayCommand.CanExecuteChanged"/> event.
         /// </summary>
         /// <param name="value">The value received from the ViewModel.</param>
-        [BinderLog]
         public void SetValue(IRelayCommand<int, T> value) =>
             CommandBinderExtensions.UpdateCommand(ref _intCommand, value, OnCanExecuteChanged);
-
+        
         /// <summary>
         /// Binds an <see cref="IRelayCommand{T1, T2}">IRelayCommand&lt;long, T&gt;</see> and subscribes to its <see cref="IRelayCommand.CanExecuteChanged"/> event.
         /// </summary>
         /// <param name="value">The value received from the ViewModel.</param>
-        [BinderLog]
         public void SetValue(IRelayCommand<long, T> value) =>
             CommandBinderExtensions.UpdateCommand(ref _longCommand, value, OnCanExecuteChanged);
         
@@ -194,15 +236,13 @@ namespace Aspid.MVVM.StarterKit
         /// Binds an <see cref="IRelayCommand{T1, T2}">IRelayCommand&lt;float, T&gt;</see> and subscribes to its <see cref="IRelayCommand.CanExecuteChanged"/> event.
         /// </summary>
         /// <param name="value">The value received from the ViewModel.</param>
-        [BinderLog]
         public void SetValue(IRelayCommand<float, T> value) =>
             CommandBinderExtensions.UpdateCommand(ref _floatCommand, value, OnCanExecuteChanged);
-
+        
         /// <summary>
         /// Binds an <see cref="IRelayCommand{T1, T2}">IRelayCommand&lt;double, T&gt;</see> and subscribes to its <see cref="IRelayCommand.CanExecuteChanged"/> event.
         /// </summary>
         /// <param name="value">The value received from the ViewModel.</param>
-        [BinderLog]
         public void SetValue(IRelayCommand<double, T> value) =>
             CommandBinderExtensions.UpdateCommand(ref _doubleCommand, value, OnCanExecuteChanged);
 
@@ -215,7 +255,7 @@ namespace Aspid.MVVM.StarterKit
         /// dispatches to the first non-null command among all bound command types.
         /// </remarks>
         protected override void OnBound() =>
-            CachedComponent.onValueChanged.AddListener(OnValueChanged);
+            Target.onValueChanged.AddListener(OnValueChanged);
 
         /// <summary>
         /// Called when the binder is unbound. Unsubscribes from <see cref="Slider.onValueChanged"/>
@@ -223,7 +263,7 @@ namespace Aspid.MVVM.StarterKit
         /// </summary>
         protected override void OnUnbound()
         {
-            CachedComponent.onValueChanged.RemoveListener(OnValueChanged);
+            Target.onValueChanged.RemoveListener(OnValueChanged);
 
             SetValue((IRelayCommand<int, T>)null);
             SetValue((IRelayCommand<long, T>)null);
@@ -233,23 +273,23 @@ namespace Aspid.MVVM.StarterKit
 
         private void OnValueChanged(float value)
         {
-            if (_floatCommand is not null) _floatCommand.Execute(CachedComponent.value, Param);
-            else if (_intCommand is not null) _intCommand.Execute((int)CachedComponent.value, Param);
-            else if (_doubleCommand is not null) _doubleCommand.Execute(CachedComponent.value, Param);
-            else if (_longCommand is not null) _longCommand.Execute((long)CachedComponent.value, Param);
+            if (_floatCommand is not null) _floatCommand.Execute(Target.value, Param);
+            else if (_intCommand is not null) _intCommand.Execute((int)Target.value, Param);
+            else if (_doubleCommand is not null) _doubleCommand.Execute(Target.value, Param);
+            else if (_longCommand is not null) _longCommand.Execute((long)Target.value, Param);
         }
         
         private void OnCanExecuteChanged(IRelayCommand<int, T> command) =>
-            ApplyCanExecute(command, (int)CachedComponent.value);
+            ApplyCanExecute(command, (int)Target.value);
 
         private void OnCanExecuteChanged(IRelayCommand<long, T> command) =>
-            ApplyCanExecute(command, (long)CachedComponent.value);
+            ApplyCanExecute(command, (long)Target.value);
 
         private void OnCanExecuteChanged(IRelayCommand<float, T> command) =>
-            ApplyCanExecute(command, CachedComponent.value);
+            ApplyCanExecute(command, Target.value);
 
         private void OnCanExecuteChanged(IRelayCommand<double, T> command) =>
-            ApplyCanExecute(command, (double)CachedComponent.value);
+            ApplyCanExecute(command, (double)Target.value);
 
         private void ApplyCanExecute<TValue>(IRelayCommand<TValue, T> command, TValue value)
         {
@@ -258,21 +298,22 @@ namespace Aspid.MVVM.StarterKit
         }
 
         private void SetInteractableMode(bool isInteractable) =>
-            CachedComponent.SetInteractable(_interactableMode, isInteractable, _customInteractable, this);
+            Target.SetInteractable(_interactableMode, isInteractable, _customInteractable, this);
     }
-        
+    
     /// <summary>
-    /// Abstract base <see cref="ComponentMonoBinder{Slider}"/> that executes a command each time <see cref="Slider.onValueChanged"/> fires,
+    /// <see cref="TargetBinder{Slider}"/> that executes a command each time <see cref="Slider.onValueChanged"/> fires,
     /// passing the current slider value and two additional parameters as the command arguments.
     /// Accepts commands typed as <see cref="IRelayCommand{T1, T2, T3}">IRelayCommand&lt;int, T1, T2&gt;</see>, <see cref="IRelayCommand{T1, T2, T3}">IRelayCommand&lt;long, T1, T2&gt;</see>,
     /// <see cref="IRelayCommand{T1, T2, T3}">IRelayCommand&lt;float, T1, T2&gt;</see> or <see cref="IRelayCommand{T1, T2, T3}">IRelayCommand&lt;double, T1, T2&gt;</see>.
     /// </summary>
     /// <typeparam name="T1">The type of the first additional parameter.</typeparam>
     /// <typeparam name="T2">The type of the second additional parameter.</typeparam>
-    public abstract partial class SliderCommandMonoBinder<T1, T2> : ComponentMonoBinder<Slider>, 
+    [Serializable]
+    public class SliderCommandBinder<T1, T2> : TargetBinder<Slider>,
         IBinder<IRelayCommand<int, T1, T2>>,
-        IBinder<IRelayCommand<long, T1, T2>>, 
-        IBinder<IRelayCommand<float, T1, T2>>, 
+        IBinder<IRelayCommand<long, T1, T2>>,
+        IBinder<IRelayCommand<float, T1, T2>>,
         IBinder<IRelayCommand<double, T1, T2>>
     {
         [Tooltip("First extra parameter forwarded alongside the slider value.")]
@@ -281,9 +322,10 @@ namespace Aspid.MVVM.StarterKit
         [SerializeField] private T2 _param2;
         
         [Tooltip("How CanExecute affects the slider's interactable state.")]
+        // ReSharper disable once MemberInitializerValueIgnored
         [Space]
         [SerializeField] private InteractableMode _interactableMode = InteractableMode.Interactable;
-
+        
         [Tooltip("View that reflects CanExecute when Interactable Mode is Custom.")]
         [SerializeReference] private ICanExecuteView _customInteractable;
         
@@ -309,30 +351,59 @@ namespace Aspid.MVVM.StarterKit
             get => _param2;
             set => _param2 = value;
         }
-
-        protected override void OnValidate()
+                
+        /// <inheritdoc/>
+        public SliderCommandBinder(Slider target, T1 param1, T2 param2, BindMode mode = BindMode.OneWay)
+            : this(target, param1, param2, InteractableMode.Interactable, mode) { }
+        
+        /// <param name="target">The <see cref="Slider"/> to bind.</param>
+        /// <param name="param1">The first additional parameter.</param>
+        /// <param name="param2">The second additional parameter.</param>
+        /// <param name="customInteractable">A custom view that reflects the command's CanExecute state.</param>
+        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</param>
+        /// <exception cref="InvalidOperationException">Thrown when <paramref name="mode"/> is <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</exception>
+        public SliderCommandBinder(Slider target, T1 param1, T2 param2, ICanExecuteView customInteractable, BindMode mode = BindMode.OneWay)
+            : base(target, mode)
         {
-            base.OnValidate();
+            mode.ThrowExceptionIfTwo();
             
-            if (_intCommand is not null) OnCanExecuteChanged(_intCommand);
-            else if (_longCommand is not null) OnCanExecuteChanged(_longCommand);
-            else if (_floatCommand is not null) OnCanExecuteChanged(_floatCommand);
-            else if (_doubleCommand is not null) OnCanExecuteChanged(_doubleCommand);
+            _param1 = param1;
+            _param2 = param2;
+            
+            _interactableMode = InteractableMode.Custom;
+            _customInteractable = customInteractable ?? throw new ArgumentNullException(nameof(customInteractable));
         }
-
+        
+        /// <param name="target">The <see cref="Slider"/> to bind.</param>
+        /// <param name="param1">The first additional parameter.</param>
+        /// <param name="param2">The second additional parameter.</param>
+        /// <param name="interactableMode">Controls how the slider's interactable state reflects CanExecute.</param>
+        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</param>
+        /// <exception cref="InvalidOperationException">Thrown when <paramref name="mode"/> is <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</exception>
+        public SliderCommandBinder(Slider target, T1 param1, T2 param2, InteractableMode interactableMode, BindMode mode = BindMode.OneWay)
+            : base(target, mode)
+        {
+            mode.ThrowExceptionIfTwo();
+            
+            _param1 = param1;
+            _param2 = param2;     
+            
+            _interactableMode = interactableMode is not InteractableMode.Custom
+                ? interactableMode
+                : throw new ArgumentOutOfRangeException(nameof(mode), "InteractableMode can't be Custom. Use constructor by ICanExecuteView");
+        }
+        
         /// <summary>
         /// Binds an <see cref="IRelayCommand{T1, T2, T3}">IRelayCommand&lt;int, T1, T2&gt;</see> and subscribes to its <see cref="IRelayCommand.CanExecuteChanged"/> event.
         /// </summary>
         /// <param name="value">The value received from the ViewModel.</param>
-        [BinderLog]
         public void SetValue(IRelayCommand<int, T1, T2> value) =>
             CommandBinderExtensions.UpdateCommand(ref _intCommand, value, OnCanExecuteChanged);
-
+        
         /// <summary>
         /// Binds an <see cref="IRelayCommand{T1, T2, T3}">IRelayCommand&lt;long, T1, T2&gt;</see> and subscribes to its <see cref="IRelayCommand.CanExecuteChanged"/> event.
         /// </summary>
         /// <param name="value">The value received from the ViewModel.</param>
-        [BinderLog]
         public void SetValue(IRelayCommand<long, T1, T2> value) =>
             CommandBinderExtensions.UpdateCommand(ref _longCommand, value, OnCanExecuteChanged);
         
@@ -340,15 +411,13 @@ namespace Aspid.MVVM.StarterKit
         /// Binds an <see cref="IRelayCommand{T1, T2, T3}">IRelayCommand&lt;float, T1, T2&gt;</see> and subscribes to its <see cref="IRelayCommand.CanExecuteChanged"/> event.
         /// </summary>
         /// <param name="value">The value received from the ViewModel.</param>
-        [BinderLog]
         public void SetValue(IRelayCommand<float, T1, T2> value) =>
             CommandBinderExtensions.UpdateCommand(ref _floatCommand, value, OnCanExecuteChanged);
-
+        
         /// <summary>
         /// Binds an <see cref="IRelayCommand{T1, T2, T3}">IRelayCommand&lt;double, T1, T2&gt;</see> and subscribes to its <see cref="IRelayCommand.CanExecuteChanged"/> event.
         /// </summary>
         /// <param name="value">The value received from the ViewModel.</param>
-        [BinderLog]
         public void SetValue(IRelayCommand<double, T1, T2> value) =>
             CommandBinderExtensions.UpdateCommand(ref _doubleCommand, value, OnCanExecuteChanged);
 
@@ -361,7 +430,7 @@ namespace Aspid.MVVM.StarterKit
         /// dispatches to the first non-null command among all bound command types.
         /// </remarks>
         protected override void OnBound() =>
-            CachedComponent.onValueChanged.AddListener(OnValueChanged);
+            Target.onValueChanged.AddListener(OnValueChanged);
 
         /// <summary>
         /// Called when the binder is unbound. Unsubscribes from <see cref="Slider.onValueChanged"/>
@@ -369,7 +438,7 @@ namespace Aspid.MVVM.StarterKit
         /// </summary>
         protected override void OnUnbound()
         {
-            CachedComponent.onValueChanged.RemoveListener(OnValueChanged);
+            Target.onValueChanged.RemoveListener(OnValueChanged);
 
             SetValue((IRelayCommand<int, T1, T2>)null);
             SetValue((IRelayCommand<long, T1, T2>)null);
@@ -379,23 +448,23 @@ namespace Aspid.MVVM.StarterKit
 
         private void OnValueChanged(float value)
         {
-            if (_floatCommand is not null) _floatCommand.Execute(CachedComponent.value, Param1, Param2);
-            else if (_intCommand is not null) _intCommand.Execute((int)CachedComponent.value, Param1, Param2);
-            else if (_doubleCommand is not null) _doubleCommand.Execute(CachedComponent.value, Param1, Param2);
-            else if (_longCommand is not null) _longCommand.Execute((long)CachedComponent.value, Param1, Param2);
+            if (_floatCommand is not null) _floatCommand.Execute(Target.value, Param1, Param2);
+            else if (_intCommand is not null) _intCommand.Execute((int)Target.value, Param1, Param2);
+            else if (_doubleCommand is not null) _doubleCommand.Execute(Target.value, Param1, Param2);
+            else if (_longCommand is not null) _longCommand.Execute((long)Target.value, Param1, Param2);
         }
         
         private void OnCanExecuteChanged(IRelayCommand<int, T1, T2> command) =>
-            ApplyCanExecute(command, (int)CachedComponent.value);
+            ApplyCanExecute(command, (int)Target.value);
 
         private void OnCanExecuteChanged(IRelayCommand<long, T1, T2> command) =>
-            ApplyCanExecute(command, (long)CachedComponent.value);
+            ApplyCanExecute(command, (long)Target.value);
 
         private void OnCanExecuteChanged(IRelayCommand<float, T1, T2> command) =>
-            ApplyCanExecute(command, CachedComponent.value);
+            ApplyCanExecute(command, Target.value);
 
         private void OnCanExecuteChanged(IRelayCommand<double, T1, T2> command) =>
-            ApplyCanExecute(command, (double)CachedComponent.value);
+            ApplyCanExecute(command, (double)Target.value);
 
         private void ApplyCanExecute<TValue>(IRelayCommand<TValue, T1, T2> command, TValue value)
         {
@@ -404,11 +473,11 @@ namespace Aspid.MVVM.StarterKit
         }
 
         private void SetInteractableMode(bool isInteractable) =>
-            CachedComponent.SetInteractable(_interactableMode, isInteractable, _customInteractable, this);
+            Target.SetInteractable(_interactableMode, isInteractable, _customInteractable, this);
     }
     
     /// <summary>
-    /// Abstract base <see cref="ComponentMonoBinder{Slider}"/> that executes a command each time <see cref="Slider.onValueChanged"/> fires,
+    /// <see cref="TargetBinder{Slider}"/> that executes a command each time <see cref="Slider.onValueChanged"/> fires,
     /// passing the current slider value and three additional parameters as the command arguments.
     /// Accepts commands typed as <see cref="IRelayCommand{T1, T2, T3, T4}">IRelayCommand&lt;int, T1, T2, T3&gt;</see>, <see cref="IRelayCommand{T1, T2, T3, T4}">IRelayCommand&lt;long, T1, T2, T3&gt;</see>,
     /// <see cref="IRelayCommand{T1, T2, T3, T4}">IRelayCommand&lt;float, T1, T2, T3&gt;</see> or <see cref="IRelayCommand{T1, T2, T3, T4}">IRelayCommand&lt;double, T1, T2, T3&gt;</see>.
@@ -416,10 +485,11 @@ namespace Aspid.MVVM.StarterKit
     /// <typeparam name="T1">The type of the first additional parameter.</typeparam>
     /// <typeparam name="T2">The type of the second additional parameter.</typeparam>
     /// <typeparam name="T3">The type of the third additional parameter.</typeparam>
-    public abstract partial class SliderCommandMonoBinder<T1, T2, T3> : ComponentMonoBinder<Slider>, 
+    [Serializable]
+    public class SliderCommandBinder<T1, T2, T3> : TargetBinder<Slider>,
         IBinder<IRelayCommand<int, T1, T2, T3>>,
-        IBinder<IRelayCommand<long, T1, T2, T3>>, 
-        IBinder<IRelayCommand<float, T1, T2, T3>>, 
+        IBinder<IRelayCommand<long, T1, T2, T3>>,
+        IBinder<IRelayCommand<float, T1, T2, T3>>,
         IBinder<IRelayCommand<double, T1, T2, T3>>
     {
         [Tooltip("First extra parameter forwarded alongside the slider value.")]
@@ -430,9 +500,10 @@ namespace Aspid.MVVM.StarterKit
         [SerializeField] private T3 _param3;
         
         [Tooltip("How CanExecute affects the slider's interactable state.")]
+        // ReSharper disable once MemberInitializerValueIgnored
         [Space]
         [SerializeField] private InteractableMode _interactableMode = InteractableMode.Interactable;
-
+        
         [Tooltip("View that reflects CanExecute when Interactable Mode is Custom.")]
         [SerializeReference] private ICanExecuteView _customInteractable;
         
@@ -467,30 +538,63 @@ namespace Aspid.MVVM.StarterKit
             get => _param3;
             set => _param3 = value;
         }
+                
+        /// <inheritdoc/>
+        public SliderCommandBinder(Slider target, T1 param1, T2 param2, T3 param3, BindMode mode = BindMode.OneWay)
+            : this(target, param1, param2, param3, InteractableMode.Interactable, mode) { }
 
-        protected override void OnValidate()
+        /// <param name="target">The <see cref="Slider"/> to bind.</param>
+        /// <param name="param1">The first additional parameter.</param>
+        /// <param name="param2">The second additional parameter.</param>
+        /// <param name="param3">The third additional parameter.</param>
+        /// <param name="customInteractable">A custom view that reflects the command's CanExecute state.</param>
+        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</param>
+        /// <exception cref="InvalidOperationException">Thrown when <paramref name="mode"/> is <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</exception>
+        public SliderCommandBinder(Slider target, T1 param1, T2 param2, T3 param3, ICanExecuteView customInteractable, BindMode mode = BindMode.OneWay)
+            : base(target, mode)
         {
-            base.OnValidate();
+            mode.ThrowExceptionIfTwo();
             
-            if (_intCommand is not null) OnCanExecuteChanged(_intCommand);
-            else if (_longCommand is not null) OnCanExecuteChanged(_longCommand);
-            else if (_floatCommand is not null) OnCanExecuteChanged(_floatCommand);
-            else if (_doubleCommand is not null) OnCanExecuteChanged(_doubleCommand);
+            _param1 = param1;
+            _param2 = param2;
+            _param3 = param3;
+            
+            _interactableMode = InteractableMode.Custom;
+            _customInteractable = customInteractable ?? throw new ArgumentNullException(nameof(customInteractable));
         }
-
+        
+        /// <param name="target">The <see cref="Slider"/> to bind.</param>
+        /// <param name="param1">The first additional parameter.</param>
+        /// <param name="param2">The second additional parameter.</param>
+        /// <param name="param3">The third additional parameter.</param>
+        /// <param name="interactableMode">Controls how the slider's interactable state reflects CanExecute.</param>
+        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</param>
+        /// <exception cref="InvalidOperationException">Thrown when <paramref name="mode"/> is <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</exception>
+        public SliderCommandBinder(Slider target, T1 param1, T2 param2, T3 param3, InteractableMode interactableMode, BindMode mode = BindMode.OneWay)
+            : base(target, mode)
+        {
+            mode.ThrowExceptionIfTwo();
+            
+            _param1 = param1;
+            _param2 = param2;
+            _param3 = param3;         
+            
+            _interactableMode = interactableMode is not InteractableMode.Custom
+                ? interactableMode
+                : throw new ArgumentOutOfRangeException(nameof(mode), "InteractableMode can't be Custom. Use constructor by ICanExecuteView");
+        }
+        
         /// <summary>
         /// Binds an <see cref="IRelayCommand{T1, T2, T3, T4}">IRelayCommand&lt;int, T1, T2, T3&gt;</see> and subscribes to its <see cref="IRelayCommand.CanExecuteChanged"/> event.
         /// </summary>
         /// <param name="value">The value received from the ViewModel.</param>
-        [BinderLog]
         public void SetValue(IRelayCommand<int, T1, T2, T3> value) =>
             CommandBinderExtensions.UpdateCommand(ref _intCommand, value, OnCanExecuteChanged);
-
+        
         /// <summary>
         /// Binds an <see cref="IRelayCommand{T1, T2, T3, T4}">IRelayCommand&lt;long, T1, T2, T3&gt;</see> and subscribes to its <see cref="IRelayCommand.CanExecuteChanged"/> event.
         /// </summary>
         /// <param name="value">The value received from the ViewModel.</param>
-        [BinderLog]
         public void SetValue(IRelayCommand<long, T1, T2, T3> value) =>
             CommandBinderExtensions.UpdateCommand(ref _longCommand, value, OnCanExecuteChanged);
         
@@ -498,7 +602,6 @@ namespace Aspid.MVVM.StarterKit
         /// Binds an <see cref="IRelayCommand{T1, T2, T3, T4}">IRelayCommand&lt;float, T1, T2, T3&gt;</see> and subscribes to its <see cref="IRelayCommand.CanExecuteChanged"/> event.
         /// </summary>
         /// <param name="value">The value received from the ViewModel.</param>
-        [BinderLog]
         public void SetValue(IRelayCommand<float, T1, T2, T3> value) =>
             CommandBinderExtensions.UpdateCommand(ref _floatCommand, value, OnCanExecuteChanged);
 
@@ -506,7 +609,6 @@ namespace Aspid.MVVM.StarterKit
         /// Binds an <see cref="IRelayCommand{T1, T2, T3, T4}">IRelayCommand&lt;double, T1, T2, T3&gt;</see> and subscribes to its <see cref="IRelayCommand.CanExecuteChanged"/> event.
         /// </summary>
         /// <param name="value">The value received from the ViewModel.</param>
-        [BinderLog]
         public void SetValue(IRelayCommand<double, T1, T2, T3> value) =>
             CommandBinderExtensions.UpdateCommand(ref _doubleCommand, value, OnCanExecuteChanged);
 
@@ -519,7 +621,7 @@ namespace Aspid.MVVM.StarterKit
         /// dispatches to the first non-null command among all bound command types.
         /// </remarks>
         protected override void OnBound() =>
-            CachedComponent.onValueChanged.AddListener(OnValueChanged);
+            Target.onValueChanged.AddListener(OnValueChanged);
 
         /// <summary>
         /// Called when the binder is unbound. Unsubscribes from <see cref="Slider.onValueChanged"/>
@@ -527,7 +629,7 @@ namespace Aspid.MVVM.StarterKit
         /// </summary>
         protected override void OnUnbound()
         {
-            CachedComponent.onValueChanged.RemoveListener(OnValueChanged);
+            Target.onValueChanged.RemoveListener(OnValueChanged);
 
             SetValue((IRelayCommand<int, T1, T2, T3>)null);
             SetValue((IRelayCommand<long, T1, T2, T3>)null);
@@ -537,23 +639,23 @@ namespace Aspid.MVVM.StarterKit
 
         private void OnValueChanged(float value)
         {
-            if (_floatCommand is not null) _floatCommand.Execute(CachedComponent.value, Param1, Param2, Param3);
-            else if (_intCommand is not null) _intCommand.Execute((int)CachedComponent.value, Param1, Param2, Param3);
-            else if (_doubleCommand is not null) _doubleCommand.Execute(CachedComponent.value, Param1, Param2, Param3);
-            else if (_longCommand is not null) _longCommand.Execute((long)CachedComponent.value, Param1, Param2, Param3);
+            if (_floatCommand is not null) _floatCommand.Execute(Target.value, Param1, Param2, Param3);
+            else if (_intCommand is not null) _intCommand.Execute((int)Target.value, Param1, Param2, Param3);
+            else if (_doubleCommand is not null) _doubleCommand.Execute(Target.value, Param1, Param2, Param3);
+            else if (_longCommand is not null) _longCommand.Execute((long)Target.value, Param1, Param2, Param3);
         }
         
         private void OnCanExecuteChanged(IRelayCommand<int, T1, T2, T3> command) =>
-            ApplyCanExecute(command, (int)CachedComponent.value);
+            ApplyCanExecute(command, (int)Target.value);
 
         private void OnCanExecuteChanged(IRelayCommand<long, T1, T2, T3> command) =>
-            ApplyCanExecute(command, (long)CachedComponent.value);
+            ApplyCanExecute(command, (long)Target.value);
 
         private void OnCanExecuteChanged(IRelayCommand<float, T1, T2, T3> command) =>
-            ApplyCanExecute(command, CachedComponent.value);
+            ApplyCanExecute(command, Target.value);
 
         private void OnCanExecuteChanged(IRelayCommand<double, T1, T2, T3> command) =>
-            ApplyCanExecute(command, (double)CachedComponent.value);
+            ApplyCanExecute(command, (double)Target.value);
 
         private void ApplyCanExecute<TValue>(IRelayCommand<TValue, T1, T2, T3> command, TValue value)
         {
@@ -562,6 +664,6 @@ namespace Aspid.MVVM.StarterKit
         }
 
         private void SetInteractableMode(bool isInteractable) =>
-            CachedComponent.SetInteractable(_interactableMode, isInteractable, _customInteractable, this);
+            Target.SetInteractable(_interactableMode, isInteractable, _customInteractable, this);
     }
 }

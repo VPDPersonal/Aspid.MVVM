@@ -11,7 +11,6 @@ namespace Aspid.MVVM.StarterKit
     /// <see cref="IRelayCommand{T}"/> (with string argument) to a <see cref="TMP_InputField"/> event,
     /// and optionally updates the field's interactability based on <see cref="IRelayCommand.CanExecute()"/>.
     /// </summary>
-    [GenerateSerializableBinder]
     [AddComponentMenu("Aspid/MVVM/Binders/UI/Command/InputField Binder – Command")]
     [AddBinderContextMenu(typeof(TMP_InputField), serializePropertyNames: "m_Calls")]
     public sealed partial class InputFieldCommandMonoBinder : ComponentMonoBinder<TMP_InputField>, 

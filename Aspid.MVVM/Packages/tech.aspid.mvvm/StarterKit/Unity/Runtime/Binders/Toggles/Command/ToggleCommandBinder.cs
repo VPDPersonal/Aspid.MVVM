@@ -1,0 +1,487 @@
+using System;
+using UnityEngine;
+using UnityEngine.UI;
+
+// ReSharper disable once CheckNamespace
+namespace Aspid.MVVM.StarterKit
+{
+    /// <summary>
+    /// <see cref="TargetBinder{Toggle}"/> that executes a command each time <see cref="Toggle.onValueChanged"/> fires.
+    /// Accepts commands typed as <see cref="IRelayCommand"/> (no value) or <see cref="IRelayCommand{T}">IRelayCommand&lt;bool&gt;</see> (receiving the isOn state).
+    /// </summary>
+    [Serializable]
+    public sealed class ToggleCommandBinder : TargetBinder<Toggle>, IBinder<IRelayCommand>, IBinder<IRelayCommand<bool>>
+    {
+        [Tooltip("How the target reflects CanExecute.")]
+        // ReSharper disable once MemberInitializerValueIgnored
+        [SerializeField] private InteractableMode _interactableMode = InteractableMode.Interactable;
+        
+        [Tooltip("View that reflects CanExecute when Interactable Mode is Custom.")]
+        [SerializeReference] private ICanExecuteView _customInteractable;
+        
+        private IRelayCommand _command;
+        private IRelayCommand<bool> _isOnCommand;
+                
+        /// <inheritdoc/>
+        public ToggleCommandBinder(Toggle target, BindMode mode = BindMode.OneWay)
+            : this(target, InteractableMode.Interactable, mode) { }
+        
+        /// <param name="target">The <see cref="Toggle"/> to bind.</param>
+        /// <param name="customInteractable">A custom view that reflects the command's CanExecute state.</param>
+        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</param>
+        /// <exception cref="InvalidOperationException">Thrown when <paramref name="mode"/> is <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</exception>
+        public ToggleCommandBinder(Toggle target, ICanExecuteView customInteractable, BindMode mode = BindMode.OneWay)
+            : base(target, mode)
+        {
+            mode.ThrowExceptionIfTwo();
+            _interactableMode = InteractableMode.Custom;
+            _customInteractable = customInteractable ?? throw new ArgumentNullException(nameof(customInteractable));
+        }
+        
+        /// <param name="target">The <see cref="Toggle"/> to bind.</param>
+        /// <param name="interactableMode">Controls how the toggle's interactable state reflects CanExecute.</param>
+        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</param>
+        /// <exception cref="InvalidOperationException">Thrown when <paramref name="mode"/> is <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</exception>
+        public ToggleCommandBinder(Toggle target, InteractableMode interactableMode, BindMode mode = BindMode.OneWay)
+            : base(target, mode)
+        {
+            mode.ThrowExceptionIfTwo();
+            _interactableMode = interactableMode is not InteractableMode.Custom
+                ? interactableMode
+                : throw new ArgumentOutOfRangeException(nameof(mode), "InteractableMode can't be Custom. Use constructor by ICanExecuteView");
+        }
+        
+        /// <summary>
+        /// Binds an <see cref="IRelayCommand"/> and subscribes to its <see cref="IRelayCommand.CanExecuteChanged"/> event.
+        /// </summary>
+        /// <param name="value">The value received from the ViewModel.</param>
+        public void SetValue(IRelayCommand value) =>
+            CommandBinderExtensions.UpdateCommand(ref _command, value, OnCanExecuteChanged);
+        
+        /// <summary>
+        /// Binds an <see cref="IRelayCommand{T}">IRelayCommand&lt;bool&gt;</see> and subscribes to its <see cref="IRelayCommand.CanExecuteChanged"/> event.
+        /// </summary>
+        /// <param name="value">The value received from the ViewModel.</param>
+        public void SetValue(IRelayCommand<bool> value) =>
+            CommandBinderExtensions.UpdateCommand(ref _isOnCommand, value, OnCanExecuteChanged);
+
+        /// <summary>
+        /// Called when the binder is bound. Subscribes to <see cref="Toggle.onValueChanged"/> so that
+        /// every value change executes the bound command.
+        /// </summary>
+        /// <remarks>
+        /// The subscription connects the toggle's value change event to OnValueChanged, which
+        /// dispatches to the first non-null command among all bound command types.
+        /// </remarks>
+        protected override void OnBound() =>
+            Target.onValueChanged.AddListener(OnValueChanged);
+        
+        /// <summary>
+        /// Called when the binder is unbound. Unsubscribes from <see cref="Toggle.onValueChanged"/>
+        /// and releases all bound command references.
+        /// </summary>
+        protected override void OnUnbound()
+        {
+            Target.onValueChanged.RemoveListener(OnValueChanged);
+
+            SetValue((IRelayCommand)null);
+            SetValue((IRelayCommand<bool>)null);
+        }
+        
+        private void OnValueChanged(bool isOn)
+        {
+            if (_command is not null) _command.Execute();
+            else _isOnCommand?.Execute(isOn);
+        }
+        
+        private void OnCanExecuteChanged(IRelayCommand command)
+        {
+            if (_interactableMode is InteractableMode.None) return;
+            SetInteractableMode(command.CanExecute());
+        }
+        
+        private void OnCanExecuteChanged(IRelayCommand<bool> command)
+        {
+            if (_interactableMode is InteractableMode.None) return;
+            SetInteractableMode(command.CanExecute(Target.isOn));
+        }
+
+        private void SetInteractableMode(bool isInteractable) =>
+            Target.SetInteractable(_interactableMode, isInteractable, _customInteractable, this);
+    }
+    
+    /// <summary>
+    /// <see cref="TargetBinder{Toggle}"/> that executes a command with one additional parameter
+    /// each time <see cref="Toggle.onValueChanged"/> fires.
+    /// Accepts commands typed as <see cref="IRelayCommand{T1, T2}">IRelayCommand&lt;bool, T&gt;</see> (receiving the isOn state and the configured parameter).
+    /// </summary>
+    /// <typeparam name="T">The type of the additional parameter forwarded alongside the isOn value.</typeparam>
+    [Serializable]
+    public class ToggleCommandBinder<T> : TargetBinder<Toggle>, IBinder<IRelayCommand<bool, T>>
+    {
+        [Tooltip("The argument passed to the command each time it is executed.")]
+        [SerializeField] private T _param;
+        
+        [Tooltip("How the target reflects CanExecute.")]
+        // ReSharper disable once MemberInitializerValueIgnored
+        [Space]
+        [SerializeField] private InteractableMode _interactableMode = InteractableMode.Interactable;
+                
+        [Tooltip("View that reflects CanExecute when Interactable Mode is Custom.")]
+        [SerializeReference] private ICanExecuteView _customInteractable;
+        
+        private IRelayCommand<bool, T> _command;
+        
+        /// <summary>
+        /// Gets or sets the additional parameter forwarded alongside the isOn value when the command is executed.
+        /// </summary>
+        public virtual T Param
+        {
+            get => _param;
+            set => _param = value;
+        }
+                
+        /// <inheritdoc/>
+        public ToggleCommandBinder(Toggle target, T param, BindMode mode = BindMode.OneWay)
+            : this(target, param, InteractableMode.Interactable, mode) { }
+        
+        /// <param name="target">The <see cref="Toggle"/> to bind.</param>
+        /// <param name="param">The additional parameter forwarded alongside the isOn value.</param>
+        /// <param name="customInteractable">A custom view that reflects the command's CanExecute state.</param>
+        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</param>
+        /// <exception cref="InvalidOperationException">Thrown when <paramref name="mode"/> is <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</exception>
+        public ToggleCommandBinder(Toggle target, T param, ICanExecuteView customInteractable, BindMode mode = BindMode.OneWay)
+            : base(target, mode)
+        {
+            mode.ThrowExceptionIfTwo();
+
+            _param = param;
+            
+            _interactableMode = InteractableMode.Custom;
+            _customInteractable = customInteractable ?? throw new ArgumentNullException(nameof(customInteractable));
+        }
+        
+        /// <param name="target">The <see cref="Toggle"/> to bind.</param>
+        /// <param name="param">The additional parameter forwarded alongside the isOn value.</param>
+        /// <param name="interactableMode">Controls how the toggle's interactable state reflects CanExecute.</param>
+        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</param>
+        /// <exception cref="InvalidOperationException">Thrown when <paramref name="mode"/> is <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</exception>
+        public ToggleCommandBinder(
+            Toggle target, T param, InteractableMode interactableMode, BindMode mode = BindMode.OneWay)
+            : base(target, mode)
+        {
+            mode.ThrowExceptionIfTwo();
+            
+            _param = param;   
+            
+            _interactableMode = interactableMode is not InteractableMode.Custom
+                ? interactableMode
+                : throw new ArgumentOutOfRangeException(nameof(mode), "InteractableMode can't be Custom. Use constructor by ICanExecuteView");
+        }
+        
+        /// <summary>
+        /// Binds an <see cref="IRelayCommand{T1, T2}">IRelayCommand&lt;bool, T&gt;</see> and subscribes to its <see cref="IRelayCommand.CanExecuteChanged"/> event.
+        /// </summary>
+        /// <param name="value">The value received from the ViewModel.</param>
+        public void SetValue(IRelayCommand<bool, T> value) =>
+            CommandBinderExtensions.UpdateCommand(ref _command, value, OnCanExecuteChanged);
+
+        /// <summary>
+        /// Called when the binder is bound. Subscribes to <see cref="Toggle.onValueChanged"/> so that
+        /// every value change executes the bound command with the current isOn value and the configured parameter.
+        /// </summary>
+        protected override void OnBound() =>
+            Target.onValueChanged.AddListener(OnValueChanged);
+
+        /// <summary>
+        /// Called when the binder is unbound. Unsubscribes from <see cref="Toggle.onValueChanged"/>
+        /// and releases the bound command reference.
+        /// </summary>
+        protected override void OnUnbound()
+        {
+            Target.onValueChanged.RemoveListener(OnValueChanged);
+            SetValue(null);
+        }
+
+        private void OnValueChanged(bool isOn) =>
+            _command?.Execute(isOn, Param);
+        
+        private void OnCanExecuteChanged(IRelayCommand<bool, T> command)
+        {
+            if (_interactableMode is InteractableMode.None) return;
+            SetInteractableMode(command.CanExecute(Target.isOn, Param));
+        }
+
+        private void SetInteractableMode(bool isInteractable) =>
+            Target.SetInteractable(_interactableMode, isInteractable, _customInteractable, this);
+    }
+    
+    /// <summary>
+    /// <see cref="TargetBinder{Toggle}"/> that executes a command with two additional parameters
+    /// each time <see cref="Toggle.onValueChanged"/> fires.
+    /// Accepts commands typed as <see cref="IRelayCommand{T1, T2, T3}">IRelayCommand&lt;bool, T1, T2&gt;</see> (receiving the isOn state and the configured parameters).
+    /// </summary>
+    /// <typeparam name="T1">The type of the first additional parameter forwarded alongside the isOn value.</typeparam>
+    /// <typeparam name="T2">The type of the second additional parameter forwarded alongside the isOn value.</typeparam>
+    [Serializable]
+    public class ToggleCommandBinder<T1, T2> : TargetBinder<Toggle>, IBinder<IRelayCommand<bool, T1, T2>>
+    {
+        [Tooltip("The first argument passed to the command each time it is executed.")]
+        [SerializeField] private T1 _param1;
+        [Tooltip("The second argument passed to the command each time it is executed.")]
+        [SerializeField] private T2 _param2;
+        
+        [Tooltip("How the target reflects CanExecute.")]
+        // ReSharper disable once MemberInitializerValueIgnored
+        [Space]
+        [SerializeField] private InteractableMode _interactableMode = InteractableMode.Interactable;
+                
+        [Tooltip("View that reflects CanExecute when Interactable Mode is Custom.")]
+        [SerializeReference] private ICanExecuteView _customInteractable;
+
+        private IRelayCommand<bool, T1, T2> _command;
+        
+        /// <summary>
+        /// Gets or sets the first additional parameter forwarded alongside the isOn value when the command is executed.
+        /// </summary>
+        public virtual T1 Param1
+        {
+            get => _param1;
+            set => _param1 = value;
+        }
+        
+        /// <summary>
+        /// Gets or sets the second additional parameter forwarded alongside the isOn value when the command is executed.
+        /// </summary>
+        public virtual T2 Param2
+        {
+            get => _param2;
+            set => _param2 = value;
+        }
+                
+        /// <inheritdoc/>
+        public ToggleCommandBinder(Toggle target, T1 param1, T2 param2, BindMode mode = BindMode.OneWay)
+            : this(target, param1, param2, InteractableMode.Interactable, mode) { }
+        
+        /// <param name="target">The <see cref="Toggle"/> to bind.</param>
+        /// <param name="param1">The first additional parameter forwarded alongside the isOn value.</param>
+        /// <param name="param2">The second additional parameter forwarded alongside the isOn value.</param>
+        /// <param name="customInteractable">A custom view that reflects the command's CanExecute state.</param>
+        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</param>
+        /// <exception cref="InvalidOperationException">Thrown when <paramref name="mode"/> is <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</exception>
+        public ToggleCommandBinder(Toggle target, T1 param1, T2 param2, ICanExecuteView customInteractable, BindMode mode = BindMode.OneWay)
+            : base(target, mode)
+        {
+            mode.ThrowExceptionIfTwo();
+            
+            _param1 = param1;
+            _param2 = param2;
+            
+            _interactableMode = InteractableMode.Custom;
+            _customInteractable = customInteractable ?? throw new ArgumentNullException(nameof(customInteractable));
+        }
+        
+        /// <param name="target">The <see cref="Toggle"/> to bind.</param>
+        /// <param name="param1">The first additional parameter forwarded alongside the isOn value.</param>
+        /// <param name="param2">The second additional parameter forwarded alongside the isOn value.</param>
+        /// <param name="interactableMode">Controls how the toggle's interactable state reflects CanExecute.</param>
+        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</param>
+        /// <exception cref="InvalidOperationException">Thrown when <paramref name="mode"/> is <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</exception>
+        public ToggleCommandBinder(
+            Toggle target,
+            T1 param1, 
+            T2 param2,
+            InteractableMode interactableMode,
+            BindMode mode = BindMode.OneWay)
+            : base(target, mode)
+        {
+            mode.ThrowExceptionIfTwo();
+            
+            _param1 = param1;
+            _param2 = param2;       
+            
+            _interactableMode = interactableMode is not InteractableMode.Custom
+                ? interactableMode
+                : throw new ArgumentOutOfRangeException(nameof(mode), "InteractableMode can't be Custom. Use constructor by ICanExecuteView");
+        }
+        
+        /// <summary>
+        /// Binds an <see cref="IRelayCommand{T1, T2, T3}">IRelayCommand&lt;bool, T1, T2&gt;</see> and subscribes to its <see cref="IRelayCommand.CanExecuteChanged"/> event.
+        /// </summary>
+        /// <param name="value">The value received from the ViewModel.</param>
+        public void SetValue(IRelayCommand<bool, T1, T2> value) =>
+            CommandBinderExtensions.UpdateCommand(ref _command, value, OnCanExecuteChanged);
+
+        /// <summary>
+        /// Called when the binder is bound. Subscribes to <see cref="Toggle.onValueChanged"/> so that
+        /// every value change executes the bound command with the current isOn value and the configured parameters.
+        /// </summary>
+        protected override void OnBound() =>
+            Target.onValueChanged.AddListener(OnValueChanged);
+
+        /// <summary>
+        /// Called when the binder is unbound. Unsubscribes from <see cref="Toggle.onValueChanged"/>
+        /// and releases the bound command reference.
+        /// </summary>
+        protected override void OnUnbound()
+        {
+            Target.onValueChanged.RemoveListener(OnValueChanged);
+            SetValue(null);
+        }
+
+        private void OnValueChanged(bool isOn) =>
+            _command?.Execute(isOn, Param1, Param2);
+        
+        private void OnCanExecuteChanged(IRelayCommand<bool, T1, T2> command)
+        {
+            if (_interactableMode is InteractableMode.None) return;
+            SetInteractableMode(command.CanExecute(Target.isOn, Param1, Param2));
+        }
+
+        private void SetInteractableMode(bool isInteractable) =>
+            Target.SetInteractable(_interactableMode, isInteractable, _customInteractable, this);
+    }
+    
+    /// <summary>
+    /// <see cref="TargetBinder{Toggle}"/> that executes a command with three additional parameters
+    /// each time <see cref="Toggle.onValueChanged"/> fires.
+    /// Accepts commands typed as <see cref="IRelayCommand{T1, T2, T3, T4}">IRelayCommand&lt;bool, T1, T2, T3&gt;</see> (receiving the isOn state and the configured parameters).
+    /// </summary>
+    /// <typeparam name="T1">The type of the first additional parameter forwarded alongside the isOn value.</typeparam>
+    /// <typeparam name="T2">The type of the second additional parameter forwarded alongside the isOn value.</typeparam>
+    /// <typeparam name="T3">The type of the third additional parameter forwarded alongside the isOn value.</typeparam>
+    [Serializable]
+    public class ToggleCommandBinder<T1, T2, T3> : TargetBinder<Toggle>, IBinder<IRelayCommand<bool, T1, T2, T3>>
+    {
+        [Tooltip("The first argument passed to the command each time it is executed.")]
+        [SerializeField] private T1 _param1;
+        [Tooltip("The second argument passed to the command each time it is executed.")]
+        [SerializeField] private T2 _param2;
+        [Tooltip("The third argument passed to the command each time it is executed.")]
+        [SerializeField] private T3 _param3;
+        
+        [Tooltip("How the target reflects CanExecute.")]
+        // ReSharper disable once MemberInitializerValueIgnored
+        [Space]
+        [SerializeField] private InteractableMode _interactableMode = InteractableMode.Interactable;
+                
+        [Tooltip("View that reflects CanExecute when Interactable Mode is Custom.")]
+        [SerializeReference] private ICanExecuteView _customInteractable;
+
+        private IRelayCommand<bool, T1, T2, T3> _command;
+        
+        /// <summary>
+        /// Gets or sets the first additional parameter forwarded alongside the isOn value when the command is executed.
+        /// </summary>
+        public virtual T1 Param1
+        {
+            get => _param1;
+            set => _param1 = value;
+        }
+        
+        /// <summary>
+        /// Gets or sets the second additional parameter forwarded alongside the isOn value when the command is executed.
+        /// </summary>
+        public virtual T2 Param2
+        {
+            get => _param2;
+            set => _param2 = value;
+        }
+        
+        /// <summary>
+        /// Gets or sets the third additional parameter forwarded alongside the isOn value when the command is executed.
+        /// </summary>
+        public virtual T3 Param3
+        {
+            get => _param3;
+            set => _param3 = value;
+        }
+        
+        /// <inheritdoc/>
+        public ToggleCommandBinder(Toggle target, T1 param1, T2 param2, T3 param3, BindMode mode = BindMode.OneWay)
+            : this(target, param1, param2, param3, InteractableMode.Interactable, mode) { }
+
+        /// <param name="target">The <see cref="Toggle"/> to bind.</param>
+        /// <param name="param1">The first additional parameter forwarded alongside the isOn value.</param>
+        /// <param name="param2">The second additional parameter forwarded alongside the isOn value.</param>
+        /// <param name="param3">The third additional parameter forwarded alongside the isOn value.</param>
+        /// <param name="customInteractable">A custom view that reflects the command's CanExecute state.</param>
+        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</param>
+        /// <exception cref="InvalidOperationException">Thrown when <paramref name="mode"/> is <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</exception>
+        public ToggleCommandBinder(Toggle target, T1 param1, T2 param2, T3 param3, ICanExecuteView customInteractable, BindMode mode = BindMode.OneWay)
+            : base(target, mode)
+        {
+            mode.ThrowExceptionIfTwo();
+            
+            _param1 = param1;
+            _param2 = param2;
+            _param3 = param3;
+            
+            _interactableMode = InteractableMode.Custom;
+            _customInteractable = customInteractable ?? throw new ArgumentNullException(nameof(customInteractable));
+        }
+        
+        /// <param name="target">The <see cref="Toggle"/> to bind.</param>
+        /// <param name="param1">The first additional parameter forwarded alongside the isOn value.</param>
+        /// <param name="param2">The second additional parameter forwarded alongside the isOn value.</param>
+        /// <param name="param3">The third additional parameter forwarded alongside the isOn value.</param>
+        /// <param name="interactableMode">Controls how the toggle's interactable state reflects CanExecute.</param>
+        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</param>
+        /// <exception cref="InvalidOperationException">Thrown when <paramref name="mode"/> is <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</exception>
+        public ToggleCommandBinder(
+            Toggle target,
+            T1 param1,
+            T2 param2, 
+            T3 param3,
+            InteractableMode interactableMode, 
+            BindMode mode = BindMode.OneWay)
+            : base(target, mode)
+        {
+            mode.ThrowExceptionIfTwo();
+            
+            _param1 = param1;
+            _param2 = param2;
+            _param3 = param3;         
+            
+            _interactableMode = interactableMode is not InteractableMode.Custom
+                ? interactableMode
+                : throw new ArgumentOutOfRangeException(nameof(mode), "InteractableMode can't be Custom. Use constructor by ICanExecuteView");
+        }
+        
+        /// <summary>
+        /// Binds an <see cref="IRelayCommand{T1, T2, T3, T4}">IRelayCommand&lt;bool, T1, T2, T3&gt;</see> and subscribes to its <see cref="IRelayCommand.CanExecuteChanged"/> event.
+        /// </summary>
+        /// <param name="value">The value received from the ViewModel.</param>
+        public void SetValue(IRelayCommand<bool, T1, T2, T3> value) =>
+            CommandBinderExtensions.UpdateCommand(ref _command, value, OnCanExecuteChanged);
+
+        /// <summary>
+        /// Called when the binder is bound. Subscribes to <see cref="Toggle.onValueChanged"/> so that
+        /// every value change executes the bound command with the current isOn value and the configured parameters.
+        /// </summary>
+        protected override void OnBound() =>
+            Target.onValueChanged.AddListener(OnValueChanged);
+
+        /// <summary>
+        /// Called when the binder is unbound. Unsubscribes from <see cref="Toggle.onValueChanged"/>
+        /// and releases the bound command reference.
+        /// </summary>
+        protected override void OnUnbound()
+        {
+            Target.onValueChanged.RemoveListener(OnValueChanged);
+            SetValue(null);
+        }
+
+        private void OnValueChanged(bool isOn) =>
+            _command?.Execute(isOn, Param1, Param2, Param3);
+        
+        private void OnCanExecuteChanged(IRelayCommand<bool, T1, T2, T3> command)
+        {
+            if (_interactableMode is InteractableMode.None) return;
+            SetInteractableMode(command.CanExecute(Target.isOn, Param1, Param2, Param3));
+        }
+
+        private void SetInteractableMode(bool isInteractable) =>
+            Target.SetInteractable(_interactableMode, isInteractable, _customInteractable, this);
+    }
+}

@@ -42,11 +42,8 @@ namespace Aspid.MVVM
         protected Binder()
             : this(BindMode.OneWay) { }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Binder"/> class with the specified binding mode.
-        /// </summary>
         /// <param name="mode">The binding mode to use for the binder.</param>
-        protected Binder(BindMode mode)
+        protected Binder(BindMode mode = BindMode.OneWay)
         {
             _mode = mode;
         }

@@ -1,3 +1,4 @@
+using Aspid.MVVM.StarterKit;
 using UnityEngine;
 
 // ReSharper disable once CheckNamespace

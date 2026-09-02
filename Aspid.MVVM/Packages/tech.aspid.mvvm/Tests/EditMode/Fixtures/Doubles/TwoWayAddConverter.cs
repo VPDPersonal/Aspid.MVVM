@@ -1,3 +1,5 @@
+using Aspid.MVVM.StarterKit;
+
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.Tests
 {

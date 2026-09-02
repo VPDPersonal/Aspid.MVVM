@@ -9,6 +9,10 @@
         <RootNamespace>MVVMGenerators.Tests</RootNamespace>
 
         <LangVersion>13</LangVersion>
+
+        <!-- Тестовый хост net9.0 запускается на машине, где установлен только рантайм 10:
+             без roll-forward `dotnet test` падает ещё до первого теста. -->
+        <RollForward>LatestMajor</RollForward>
     </PropertyGroup>
 
     <ItemGroup>

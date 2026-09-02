@@ -8,48 +8,50 @@ using Aspid.Collections.Observable.Filtered;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// Abstract base <see cref="Binder"/> that subscribes to an observable or filtered list and forwards
-    /// granular change notifications — add, remove, replace, move, and reset — to a target View component.
+    /// Abstract base <see cref="Binder"/> that follows a plain, observable or filtered list and reflects its
+    /// add, remove, replace, move and reset changes onto a View.
     /// </summary>
     /// <typeparam name="T">The element type of the list.</typeparam>
+    /// <remarks>
+    /// Multi-item <see cref="NotifyCollectionChangedAction.Replace"/> throws <see cref="NotImplementedException"/>.
+    /// </remarks>
     public abstract class ObservableListBinder<T> : Binder,
         IBinder<IReadOnlyList<T>>,
         IBinder<IReadOnlyFilteredList<T>>,
         IBinder<IReadOnlyObservableList<T>>
     {
         /// <summary>
-        /// Gets the currently bound list (which may be a filtered view), or <see langword="null"/> if unbound.
+        /// Gets the bound list, possibly wrapped by <see cref="GetFilteredList"/>, or <see langword="null"/> when none is set.
         /// </summary>
         protected IReadOnlyList<T?>? List { get; private set; }
 
-        /// <param name="mode">The binding mode to use.</param>
+        /// <param name="mode">The binding mode.</param>
         protected ObservableListBinder(BindMode mode = BindMode.OneWay)
             : base(mode) { }
 
         /// <summary>
-        /// Binds to a plain read-only list without change-notification support.
+        /// Binds to a plain list; changes to it are not observed.
         /// </summary>
-        /// <param name="list">The list to bind to, or <see langword="null"/> to clear the current binding.</param>
+        /// <param name="list">The list to bind, or <see langword="null"/> to clear the binding.</param>
         public void SetValue(IReadOnlyList<T>? list) =>
             InitializeList(list);
 
         /// <summary>
-        /// Binds to a filtered list. Any change to the filter resets and replays the full list.
+        /// Binds to a filtered list; a filter change resets and replays the whole list.
         /// </summary>
-        /// <param name="list">The filtered list to bind to, or <see langword="null"/> to clear the current binding.</param>
+        /// <param name="list">The list to bind, or <see langword="null"/> to clear the binding.</param>
         public void SetValue(IReadOnlyFilteredList<T>? list) =>
             InitializeList(list);
 
         /// <summary>
-        /// Binds to an observable list with fine-grained add/remove/replace/move/reset notifications.
+        /// Binds to an observable list and follows its granular changes.
         /// </summary>
-        /// <param name="list">The observable list to bind to, or <see langword="null"/> to clear the current binding.</param>
+        /// <param name="list">The list to bind, or <see langword="null"/> to clear the binding.</param>
         public void SetValue(IReadOnlyObservableList<T>? list) =>
             InitializeList(list);
 
         /// <summary>
-        /// Called after the binder is unbound from the ViewModel.
-        /// Releases any change-notification subscriptions on the previously bound list and calls <see cref="OnReset"/>.
+        /// Unsubscribes from the bound list and resets the View.
         /// </summary>
         protected override void OnUnbound() =>
             DeinitializeList();
@@ -60,9 +62,9 @@ namespace Aspid.MVVM.StarterKit
 
             List = list;
             if (List is null) return;
-            List = GetFilterList(list!) ?? list;
+            List = GetFilteredList(list!) ?? list;
 
-            OnAdded(List, newStartingIndex: 0);
+            OnAdded(List, index: 0);
 
             switch (List)
             {
@@ -88,7 +90,7 @@ namespace Aspid.MVVM.StarterKit
         private void OnCollectionChanged()
         {
             OnReset();
-            OnAdded(List, newStartingIndex: 0);
+            OnAdded(List, index: 0);
         }
 
         private void OnCollectionChanged(INotifyCollectionChangedEventArgs<T?> e)
@@ -111,7 +113,7 @@ namespace Aspid.MVVM.StarterKit
 
                 case NotifyCollectionChangedAction.Replace:
                     {
-                        if (e.IsSingleItem) OnReplace(e.OldItem, e.NewItem, e.OldStartingIndex);
+                        if (e.IsSingleItem) OnReplaced(e.OldItem, e.NewItem, e.OldStartingIndex);
                         else throw new NotImplementedException();
                     }
                     break;
@@ -124,7 +126,7 @@ namespace Aspid.MVVM.StarterKit
 
                 case NotifyCollectionChangedAction.Move:
                     {
-                        OnMove(e.OldItem, e.NewItem, e.OldStartingIndex, e.NewStartingIndex);
+                        OnMoved(e.OldItem, e.NewItem, e.OldStartingIndex, e.NewStartingIndex);
                     }
                     break;
 
@@ -133,61 +135,59 @@ namespace Aspid.MVVM.StarterKit
         }
 
         /// <summary>
-        /// Optionally wraps the incoming list in a custom <see cref="IReadOnlyFilteredList{T}"/>.
+        /// Called on binding to optionally wrap the list in a filtered view. Override to add a filter.
         /// </summary>
-        /// <param name="list">The original list.</param>
-        /// <returns>
-        /// A filtered view of <paramref name="list"/>, or <see langword="null"/> to use the original list as-is.
-        /// </returns>
-        protected virtual IReadOnlyFilteredList<T>? GetFilterList(IReadOnlyList<T> list) => null;
+        /// <param name="list">The bound list.</param>
+        /// <returns>The filtered view, or <see langword="null"/> to use <paramref name="list"/> as-is.</returns>
+        protected virtual IReadOnlyFilteredList<T>? GetFilteredList(IReadOnlyList<T> list) => null;
 
         /// <summary>
-        /// Called when a single item has been added to the list.
+        /// Called when one item was added.
         /// </summary>
-        /// <param name="newItem">The item that was added.</param>
-        /// <param name="newStartingIndex">The index at which the item was inserted.</param>
-        protected abstract void OnAdded(T? newItem, int newStartingIndex);
+        /// <param name="newItem">The added item.</param>
+        /// <param name="index">The index it was inserted at.</param>
+        protected abstract void OnAdded(T? newItem, int index);
 
         /// <summary>
-        /// Called when multiple items have been added to the list in a single batch, or on initial population.
+        /// Called when several items were added at once, including the whole list on binding.
         /// </summary>
-        /// <param name="newItems">The items that were added.</param>
-        /// <param name="newStartingIndex">The starting index at which the items were inserted.</param>
-        protected abstract void OnAdded(IReadOnlyList<T?>? newItems, int newStartingIndex);
+        /// <param name="newItems">The added items.</param>
+        /// <param name="index">The index of the first added item.</param>
+        protected abstract void OnAdded(IReadOnlyList<T?>? newItems, int index);
 
         /// <summary>
-        /// Called when a single item has been removed from the list.
+        /// Called when one item was removed.
         /// </summary>
-        /// <param name="oldItem">The item that was removed.</param>
-        /// <param name="oldStartingIndex">The index from which the item was removed.</param>
+        /// <param name="oldItem">The removed item.</param>
+        /// <param name="oldStartingIndex">The index it was removed from.</param>
         protected abstract void OnRemoved(T? oldItem, int oldStartingIndex);
 
         /// <summary>
-        /// Called when multiple items have been removed from the list in a single batch.
+        /// Called when several items were removed at once.
         /// </summary>
-        /// <param name="oldItems">The items that were removed.</param>
-        /// <param name="oldStartingIndex">The starting index from which the items were removed.</param>
+        /// <param name="oldItems">The removed items.</param>
+        /// <param name="oldStartingIndex">The index of the first removed item.</param>
         protected abstract void OnRemoved(IReadOnlyList<T?>? oldItems, int oldStartingIndex);
 
         /// <summary>
-        /// Called when an existing item at <paramref name="newStartingIndex"/> has been replaced.
+        /// Called when the item at <paramref name="index"/> was replaced.
         /// </summary>
         /// <param name="oldItem">The item before replacement.</param>
         /// <param name="newItem">The item after replacement.</param>
-        /// <param name="newStartingIndex">The index of the replaced item.</param>
-        protected abstract void OnReplace(T? oldItem, T? newItem, int newStartingIndex);
+        /// <param name="index">The index of the replaced item.</param>
+        protected abstract void OnReplaced(T? oldItem, T? newItem, int index);
 
         /// <summary>
-        /// Called when an item has moved from one position to another within the list.
+        /// Called when an item was moved.
         /// </summary>
-        /// <param name="oldItem">The item at the old position before the move.</param>
-        /// <param name="newItem">The item at the new position after the move.</param>
-        /// <param name="oldStartingIndex">The index from which the item was moved.</param>
-        /// <param name="newStartingIndex">The index to which the item was moved.</param>
-        protected abstract void OnMove(T? oldItem, T? newItem, int oldStartingIndex, int newStartingIndex);
+        /// <param name="oldItem">The item at <paramref name="oldStartingIndex"/> before the move.</param>
+        /// <param name="newItem">The item at <paramref name="newStartingIndex"/> after the move.</param>
+        /// <param name="oldStartingIndex">The index before the move.</param>
+        /// <param name="newStartingIndex">The index after the move.</param>
+        protected abstract void OnMoved(T? oldItem, T? newItem, int oldStartingIndex, int newStartingIndex);
 
         /// <summary>
-        /// Called when the list has been reset and the View representation should be cleared.
+        /// Called when the list was cleared or replaced; the View should drop every item.
         /// </summary>
         protected abstract void OnReset();
     }

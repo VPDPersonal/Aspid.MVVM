@@ -8,30 +8,27 @@ namespace Aspid.MVVM.StarterKit
     /// and raises them together.
     /// </summary>
     /// <remarks>
-    /// The subscriptions have to live outside the binder: a binder cannot declare four events named
-    /// <c>ValueChanged</c>, and an interface cannot hold a field. An implementor keeps this as a mutable
-    /// field, hands it to <see cref="INumberReverseBinder.Channel"/>, and calls one <c>Raise</c> to reach
-    /// every numeric type at once.
+    /// Keep it as a mutable field and expose it through <see cref="INumberReverseBinder.Channel"/>.
     /// </remarks>
     public struct NumberReverseChannel
     {
         /// <summary>
-        /// Raised when the View value changes and should be propagated to an <see cref="int"/> binding target.
+        /// Raised with the View value for <see cref="int"/> subscribers.
         /// </summary>
         public event Action<int>? IntValueChanged;
 
         /// <summary>
-        /// Raised when the View value changes and should be propagated to a <see cref="long"/> binding target.
+        /// Raised with the View value for <see cref="long"/> subscribers.
         /// </summary>
         public event Action<long>? LongValueChanged;
 
         /// <summary>
-        /// Raised when the View value changes and should be propagated to a <see cref="float"/> binding target.
+        /// Raised with the View value for <see cref="float"/> subscribers.
         /// </summary>
         public event Action<float>? FloatValueChanged;
 
         /// <summary>
-        /// Raised when the View value changes and should be propagated to a <see cref="double"/> binding target.
+        /// Raised with the View value for <see cref="double"/> subscribers.
         /// </summary>
         public event Action<double>? DoubleValueChanged;
 
@@ -44,7 +41,7 @@ namespace Aspid.MVVM.StarterKit
         /// <summary>
         /// Indicates whether <see cref="FloatValueChanged"/> or <see cref="DoubleValueChanged"/> has a subscriber.
         /// </summary>
-        public bool HasDecimalListeners =>
+        public bool HasFloatingPointListeners =>
             FloatValueChanged is not null || DoubleValueChanged is not null;
 
         /// <summary>
@@ -54,51 +51,45 @@ namespace Aspid.MVVM.StarterKit
         public void Raise(int value)
         {
             RaiseIntegers(value);
-            RaiseDecimals(value);
+            RaiseFloatingPoint(value);
         }
 
         /// <summary>
-        /// Raises all four events with <paramref name="value"/>, saturating at <see cref="int"/>'s bounds
-        /// on <see cref="IntValueChanged"/>.
+        /// Raises all four events with <paramref name="value"/>, saturating at the <see cref="int"/> bounds.
         /// </summary>
         /// <param name="value">The value read from the View.</param>
         public void Raise(long value)
         {
             RaiseIntegers(value);
-            RaiseDecimals(value);
+            RaiseFloatingPoint(value);
         }
 
         /// <summary>
-        /// Raises all four events with <paramref name="value"/>, saturating at each event type's bounds.
-        /// The fraction is dropped toward zero on the integer events, and a NaN reaches them as zero.
+        /// Raises all four events with <paramref name="value"/>, saturating at each type's bounds.
+        /// Integer events receive the value truncated toward zero, or zero for a NaN.
         /// </summary>
         /// <param name="value">The value read from the View.</param>
         public void Raise(float value)
         {
             RaiseIntegers(value);
-            RaiseDecimals(value);
+            RaiseFloatingPoint(value);
         }
 
         /// <summary>
-        /// Raises all four events with <paramref name="value"/>, saturating at each event type's bounds.
-        /// The fraction is dropped toward zero on the integer events, and a NaN reaches them as zero.
+        /// Raises all four events with <paramref name="value"/>, saturating at each type's bounds.
+        /// Integer events receive the value truncated toward zero, or zero for a NaN.
         /// </summary>
         /// <param name="value">The value read from the View.</param>
         public void Raise(double value)
         {
             RaiseIntegers(value);
-            RaiseDecimals(value);
+            RaiseFloatingPoint(value);
         }
 
         /// <summary>
-        /// Raises <see cref="IntValueChanged"/> and <see cref="LongValueChanged"/> only, saturating at
-        /// <see cref="int"/>'s bounds.
+        /// Raises only <see cref="IntValueChanged"/> and <see cref="LongValueChanged"/>, saturating at the <see cref="int"/> bounds.
         /// </summary>
         /// <param name="value">The value read from the View.</param>
-        /// <remarks>
-        /// For a binder that reaches the integer and the decimal events by separate routes — parsing text,
-        /// for instance, where the two parses succeed independently.
-        /// </remarks>
         public void RaiseIntegers(long value)
         {
             IntValueChanged?.Invoke(NumericSaturation.ToInt(value));
@@ -106,14 +97,10 @@ namespace Aspid.MVVM.StarterKit
         }
 
         /// <summary>
-        /// Raises <see cref="IntValueChanged"/> and <see cref="LongValueChanged"/> only, dropping the
-        /// fraction toward zero and saturating at each type's bounds. A NaN reaches them as zero.
+        /// Raises only <see cref="IntValueChanged"/> and <see cref="LongValueChanged"/>, saturating at each type's bounds.
+        /// The value is truncated toward zero; a NaN arrives as zero.
         /// </summary>
         /// <param name="value">The value read from the View.</param>
-        /// <remarks>
-        /// For a binder holding a decimal value that a ViewModel may bind as an integer — a text field
-        /// whose contents are not whole, for instance.
-        /// </remarks>
         public void RaiseIntegers(double value)
         {
             IntValueChanged?.Invoke(NumericSaturation.ToInt(value));
@@ -121,15 +108,10 @@ namespace Aspid.MVVM.StarterKit
         }
 
         /// <summary>
-        /// Raises <see cref="FloatValueChanged"/> and <see cref="DoubleValueChanged"/> only, saturating at
-        /// <see cref="float"/>'s bounds.
+        /// Raises only <see cref="FloatValueChanged"/> and <see cref="DoubleValueChanged"/>, saturating at the <see cref="float"/> bounds.
         /// </summary>
         /// <param name="value">The value read from the View.</param>
-        /// <remarks>
-        /// For a binder that reaches the integer and the decimal events by separate routes — parsing text,
-        /// for instance, where the two parses succeed independently.
-        /// </remarks>
-        public void RaiseDecimals(double value)
+        public void RaiseFloatingPoint(double value)
         {
             FloatValueChanged?.Invoke(NumericSaturation.ToFloat(value));
             DoubleValueChanged?.Invoke(value);

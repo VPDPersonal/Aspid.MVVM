@@ -38,7 +38,7 @@ namespace Aspid.MVVM.StarterKit
         [BinderLog]
         public void SetValue(string value)
         {
-            if (EnumCasterParse.TryName(value, out TEnum parsed))
+            if (EnumNameParse.TryName(value, out TEnum parsed))
             {
                 _casted?.Invoke(parsed);
                 return;

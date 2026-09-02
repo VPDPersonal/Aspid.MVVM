@@ -82,7 +82,7 @@ namespace Aspid.MVVM.StarterKit
         /// The old view is released and a new one created rather than the existing view re-initialized: a factory may
         /// hand out a different prefab for a different ViewModel, and reusing the old one would show the wrong thing.
         /// </remarks>
-        protected override void OnReplace(KeyValuePair<TKey, TViewModel> oldItem, KeyValuePair<TKey, TViewModel> newItem)
+        protected override void OnReplaced(KeyValuePair<TKey, TViewModel> oldItem, KeyValuePair<TKey, TViewModel> newItem)
         {
             OnRemoved(oldItem);
             OnAdded(newItem);

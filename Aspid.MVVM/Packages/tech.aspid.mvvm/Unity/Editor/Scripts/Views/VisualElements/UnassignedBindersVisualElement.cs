@@ -34,17 +34,17 @@ namespace Aspid.MVVM
 
         private readonly TEditor _editor;
         private readonly VisualElement _unassignedBindersContainer;
-        private readonly Action<IMonoBinderValidable>? _onBinderClicked;
-        private readonly Func<IMonoBinderValidable, bool>? _canAutoAssign;
-        private readonly Action<IMonoBinderValidable>? _onAutoAssign;
+        private readonly Action<IMonoBinderValidatable>? _onBinderClicked;
+        private readonly Func<IMonoBinderValidatable, bool>? _canAutoAssign;
+        private readonly Action<IMonoBinderValidatable>? _onAutoAssign;
 
-        private IMonoBinderValidable[]? LastBinders;
+        private IMonoBinderValidatable[]? LastBinders;
 
-        private readonly HashSet<IMonoBinderValidable> _selectedBinders = new();
+        private readonly HashSet<IMonoBinderValidatable> _selectedBinders = new();
         private readonly List<ObjectField> _currentFields = new();
         private int _lastClickedIndex = -1;
 
-        public UnassignedBindersVisualElement(TEditor editor, Action<IMonoBinderValidable>? onBinderClicked = null, Func<IMonoBinderValidable, bool>? canAutoAssign = null, Action<IMonoBinderValidable>? onAutoAssign = null)
+        public UnassignedBindersVisualElement(TEditor editor, Action<IMonoBinderValidatable>? onBinderClicked = null, Func<IMonoBinderValidatable, bool>? canAutoAssign = null, Action<IMonoBinderValidatable>? onAutoAssign = null)
         {
             _editor = editor;
             _onAutoAssign = onAutoAssign;

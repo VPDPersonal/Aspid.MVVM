@@ -45,7 +45,7 @@ namespace Aspid.MVVM.StarterKit
         /// <summary>
         /// Indicates whether binding is allowed: <see langword="false"/> when no snapshots were given.
         /// </summary>
-        public override bool IsBind => _snapshots is { Length: > 0 };
+        public override bool CanBind => _snapshots is { Length: > 0 };
 
         /// <summary>
         /// Transitions to the snapshot at <paramref name="value"/> in the list.

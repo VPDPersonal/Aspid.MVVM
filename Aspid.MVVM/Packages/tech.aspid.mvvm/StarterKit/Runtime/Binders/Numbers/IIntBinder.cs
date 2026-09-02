@@ -2,8 +2,7 @@
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="INumberBinder"/> whose implementors bind an <see langword="int"/>: every other numeric type
-    /// is converted to <see cref="int"/>, saturating at its bounds rather than wrapping.
+    /// <see cref="INumberBinder"/> whose implementors bind an <see langword="int"/>; wider types saturate at the bounds instead of wrapping.
     /// </summary>
     public interface IIntBinder : INumberBinder
     {

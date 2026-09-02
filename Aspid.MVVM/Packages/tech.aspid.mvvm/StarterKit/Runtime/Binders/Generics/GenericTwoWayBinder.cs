@@ -4,89 +4,75 @@ using System;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="Binder"/> implementing <see cref="IBinder{T}"/> and <see cref="IReverseBinder{T}"/>
-    /// that synchronises values of type <typeparamref name="T"/> in both directions between the ViewModel and the View.
+    /// <see cref="Binder"/> implementing <see cref="IBinder{T}"/> and <see cref="IReverseBinder{T}"/> that synchronises
+    /// a value in both directions between the ViewModel and the View.
     /// </summary>
     /// <typeparam name="T">The type of the value exchanged between View and ViewModel.</typeparam>
     public class GenericTwoWayBinder<T> : Binder, IBinder<T>, IReverseBinder<T>
     {
         private readonly Action<T?> _setValue;
-        private readonly Func<T?>? _onBoundValueChanged;
-        private readonly Func<T?>? _onUnboundValueChanged;
+        private readonly Func<T?>? _getValueOnBound;
+        private readonly Func<T?>? _getValueOnUnbinding;
 
-        /// <param name="initialize">
-        /// An action that receives the internal <c>OnValueChanged</c> callback and registers it
-        /// with the appropriate View event so that View changes are propagated to the ViewModel.
-        /// </param>
-        /// <param name="setValue">The action invoked when a new value arrives from the ViewModel.</param>
-        /// <param name="onBoundValueChanged">
-        /// Optional factory invoked when the binding is established; the returned value is pushed to the ViewModel.
-        /// </param>
-        /// <param name="onUnboundValueChanged">
-        /// Optional factory invoked just before the binding is released; the returned value is pushed to the ViewModel.
-        /// </param>
-        /// <exception cref="ArgumentNullException">Thrown when <paramref name="setValue"/> is <see langword="null"/>.</exception>
+        /// <param name="subscribe">Receives the callback that raises <see cref="ValueChanged"/>; subscribe it to the View event.</param>
+        /// <param name="setValue">The action invoked with each value received from the ViewModel.</param>
+        /// <param name="getValueOnBound">Optional factory whose result is pushed to the ViewModel on binding.</param>
+        /// <param name="getValueOnUnbinding">Optional factory whose result is pushed to the ViewModel just before unbinding.</param>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown when <paramref name="subscribe"/> or <paramref name="setValue"/> is <see langword="null"/>.
+        /// </exception>
         public GenericTwoWayBinder(
-            Action<Action<T>> initialize,
+            Action<Action<T>> subscribe,
             Action<T?> setValue,
-            Func<T?>? onBoundValueChanged = null,
-            Func<T?>? onUnboundValueChanged = null)
-            : this(setValue, onBoundValueChanged, onUnboundValueChanged)
+            Func<T?>? getValueOnBound = null,
+            Func<T?>? getValueOnUnbinding = null)
+            : this(setValue, getValueOnBound, getValueOnUnbinding)
         {
-            initialize.Invoke(OnValueChanged);
+            if (subscribe is null) throw new ArgumentNullException(nameof(subscribe));
+            subscribe.Invoke(OnValueChanged);
         }
 
-        /// <param name="setValue">The action invoked when a new value arrives from the ViewModel.</param>
-        /// <param name="onBoundValueChanged">
-        /// Optional factory invoked when the binding is established; the returned value is pushed to the ViewModel.
-        /// </param>
-        /// <param name="onUnboundValueChanged">
-        /// Optional factory invoked just before the binding is released; the returned value is pushed to the ViewModel.
-        /// </param>
+        /// <param name="setValue">The action invoked with each value received from the ViewModel.</param>
+        /// <param name="getValueOnBound">Optional factory whose result is pushed to the ViewModel on binding.</param>
+        /// <param name="getValueOnUnbinding">Optional factory whose result is pushed to the ViewModel just before unbinding.</param>
         /// <exception cref="ArgumentNullException">Thrown when <paramref name="setValue"/> is <see langword="null"/>.</exception>
         public GenericTwoWayBinder(
             Action<T?> setValue,
-            Func<T?>? onBoundValueChanged = null,
-            Func<T?>? onUnboundValueChanged = null)
+            Func<T?>? getValueOnBound = null,
+            Func<T?>? getValueOnUnbinding = null)
             : base(BindMode.TwoWay)
         {
-            _onBoundValueChanged = onBoundValueChanged;
-            _onUnboundValueChanged = onUnboundValueChanged;
+            _getValueOnBound = getValueOnBound;
+            _getValueOnUnbinding = getValueOnUnbinding;
             _setValue = setValue ?? throw new ArgumentNullException(nameof(setValue));
         }
 
-        /// <summary>
-        /// Raised when the View-side value changes and should be propagated to the ViewModel.
-        /// </summary>
+        /// <inheritdoc/>
         public event Action<T?>? ValueChanged;
 
         /// <summary>
-        /// Forwards <paramref name="value"/> from the ViewModel to the View setter.
+        /// Forwards <paramref name="value"/> to the setter action.
         /// </summary>
-        /// <param name="value">The new value received from the ViewModel.</param>
+        /// <param name="value">The value received from the ViewModel.</param>
         public void SetValue(T? value) =>
             _setValue.Invoke(value);
 
         /// <summary>
-        /// Called after binding is established.
-        /// Invokes the <c>onBoundValueChanged</c> factory and pushes the returned value to the ViewModel,
-        /// if the factory was provided.
+        /// Pushes the <c>getValueOnBound</c> result to the ViewModel, when that factory was provided.
         /// </summary>
         protected override void OnBound()
         {
-            if (_onBoundValueChanged is not null)
-                OnValueChanged(_onBoundValueChanged.Invoke());
+            if (_getValueOnBound is not null)
+                OnValueChanged(_getValueOnBound.Invoke());
         }
 
         /// <summary>
-        /// Called just before the binding is released.
-        /// Invokes the <c>onUnboundValueChanged</c> factory and pushes the returned value to the ViewModel,
-        /// if the factory was provided.
+        /// Pushes the <c>getValueOnUnbinding</c> result to the ViewModel, when that factory was provided.
         /// </summary>
         protected override void OnUnbinding()
         {
-            if (_onUnboundValueChanged is not null)
-                OnValueChanged(_onUnboundValueChanged.Invoke());
+            if (_getValueOnUnbinding is not null)
+                OnValueChanged(_getValueOnUnbinding.Invoke());
         }
 
         private void OnValueChanged(T? value) =>
@@ -94,127 +80,98 @@ namespace Aspid.MVVM.StarterKit
     }
 
     /// <summary>
-    /// <see cref="Binder"/> implementing <see cref="IBinder{T}"/> and <see cref="IReverseBinder{T}"/>
-    /// that synchronises values of type <typeparamref name="T"/> in both directions between the ViewModel
-    /// and a specific <typeparamref name="TTarget"/> View object.
+    /// <see cref="Binder"/> implementing <see cref="IBinder{T}"/> and <see cref="IReverseBinder{T}"/> that synchronises
+    /// a value in both directions between the ViewModel and the View, passing the stored <typeparamref name="TTarget"/> to every callback.
     /// </summary>
-    /// <typeparam name="TTarget">The type of the target View object that both receives and exposes the value.</typeparam>
+    /// <typeparam name="TTarget">The type of the View object that receives and exposes the value.</typeparam>
     /// <typeparam name="T">The type of the value exchanged between View and ViewModel.</typeparam>
-    /// <remarks>
-    /// Holds a reference to a <typeparamref name="TTarget"/> instance and passes it to all factory
-    /// functions, avoiding closures over Unity component references.
-    /// </remarks>
     public class GenericTwoWayBinder<TTarget, T> : Binder, IBinder<T>, IReverseBinder<T>
     {
         private readonly TTarget _target;
         private readonly Action<TTarget, T?> _setValue;
-        private readonly Func<TTarget, T?>? _onBoundValueChanged;
-        private readonly Func<TTarget, T?>? _onUnboundValueChanged;
+        private readonly Func<TTarget, T?>? _getValueOnBound;
+        private readonly Func<TTarget, T?>? _getValueOnUnbinding;
 
-        /// <param name="target">The target View object.</param>
-        /// <param name="initialize">
-        /// An action that receives <paramref name="target"/> and the internal <c>OnValueChanged</c>
-        /// callback, and registers it with the appropriate View event.
-        /// </param>
-        /// <param name="setValue">
-        /// The action invoked with the target and each new value received from the ViewModel.
-        /// </param>
-        /// <param name="onBoundValueChanged">
-        /// Optional factory invoked with <paramref name="target"/> when the binding is established;
-        /// the returned value is pushed to the ViewModel.
-        /// </param>
-        /// <param name="onUnboundValueChanged">
-        /// Optional factory invoked with <paramref name="target"/> just before the binding is released;
-        /// the returned value is pushed to the ViewModel.
-        /// </param>
+        /// <param name="target">The View object passed to every callback.</param>
+        /// <param name="subscribe">Receives <paramref name="target"/> and the callback that raises <see cref="ValueChanged"/>; subscribe it to the View event.</param>
+        /// <param name="setValue">The action invoked with the target and each value received from the ViewModel.</param>
+        /// <param name="getValueOnBound">Optional factory whose result is pushed to the ViewModel on binding.</param>
+        /// <param name="getValueOnUnbinding">Optional factory whose result is pushed to the ViewModel just before unbinding.</param>
         /// <exception cref="ArgumentNullException">
-        /// Thrown when <paramref name="target"/> or <paramref name="setValue"/> is <see langword="null"/>.
+        /// Thrown when <paramref name="target"/>, <paramref name="subscribe"/> or <paramref name="setValue"/> is <see langword="null"/>.
         /// </exception>
         public GenericTwoWayBinder(
             TTarget target,
-            Action<TTarget, Action<T>> initialize,
+            Action<TTarget, Action<T>> subscribe,
             Action<TTarget, T?> setValue,
-            Func<TTarget, T?>? onBoundValueChanged = null,
-            Func<TTarget, T?>? onUnboundValueChanged = null)
+            Func<TTarget, T?>? getValueOnBound = null,
+            Func<TTarget, T?>? getValueOnUnbinding = null)
             : base(BindMode.TwoWay)
         {
-            _onBoundValueChanged = onBoundValueChanged;
-            _onUnboundValueChanged = onUnboundValueChanged;
+            if (subscribe is null) throw new ArgumentNullException(nameof(subscribe));
+
+            _getValueOnBound = getValueOnBound;
+            _getValueOnUnbinding = getValueOnUnbinding;
 
             _target = target ?? throw new ArgumentNullException(nameof(target));
             _setValue = setValue ?? throw new ArgumentNullException(nameof(setValue));
 
-            initialize.Invoke(target, OnValueChanged);
+            subscribe.Invoke(target, OnValueChanged);
         }
 
-        /// <param name="target">The target View object.</param>
-        /// <param name="setValue">
-        /// The action invoked with the target and each new value received from the ViewModel.
-        /// </param>
-        /// <param name="onBoundValueChanged">
-        /// Optional factory invoked with <paramref name="target"/> when the binding is established;
-        /// the returned value is pushed to the ViewModel.
-        /// </param>
-        /// <param name="onUnboundValueChanged">
-        /// Optional factory invoked with <paramref name="target"/> just before the binding is released;
-        /// the returned value is pushed to the ViewModel.
-        /// </param>
+        /// <param name="target">The View object passed to every callback.</param>
+        /// <param name="setValue">The action invoked with the target and each value received from the ViewModel.</param>
+        /// <param name="getValueOnBound">Optional factory whose result is pushed to the ViewModel on binding.</param>
+        /// <param name="getValueOnUnbinding">Optional factory whose result is pushed to the ViewModel just before unbinding.</param>
         /// <exception cref="ArgumentNullException">
         /// Thrown when <paramref name="target"/> or <paramref name="setValue"/> is <see langword="null"/>.
         /// </exception>
-        /// <exception cref="Exception">
-        /// Thrown when both <paramref name="onBoundValueChanged"/> and <paramref name="onUnboundValueChanged"/>
-        /// are <see langword="null"/>.
+        /// <exception cref="ArgumentException">
+        /// Thrown when both <paramref name="getValueOnBound"/> and <paramref name="getValueOnUnbinding"/> are <see langword="null"/>.
         /// </exception>
         public GenericTwoWayBinder(
             TTarget target,
             Action<TTarget, T?> setValue,
-            Func<TTarget, T?>? onBoundValueChanged = null,
-            Func<TTarget, T?>? onUnboundValueChanged = null)
+            Func<TTarget, T?>? getValueOnBound = null,
+            Func<TTarget, T?>? getValueOnUnbinding = null)
             : base(BindMode.TwoWay)
         {
-            if (onBoundValueChanged is null && onUnboundValueChanged is null)
-                throw new Exception("OnBoundValueChanged and OnUnboundValueChanged are both null");
+            if (getValueOnBound is null && getValueOnUnbinding is null)
+                throw new ArgumentException($"{nameof(getValueOnBound)} and {nameof(getValueOnUnbinding)} are both null.");
 
-            _onBoundValueChanged = onBoundValueChanged;
-            _onUnboundValueChanged = onUnboundValueChanged;
+            _getValueOnBound = getValueOnBound;
+            _getValueOnUnbinding = getValueOnUnbinding;
 
             _target = target ?? throw new ArgumentNullException(nameof(target));
             _setValue = setValue ?? throw new ArgumentNullException(nameof(setValue));
         }
 
-        /// <summary>
-        /// Raised when the View-side value changes and should be propagated to the ViewModel.
-        /// </summary>
+        /// <inheritdoc/>
         public event Action<T?>? ValueChanged;
 
         /// <summary>
-        /// Forwards <paramref name="value"/> from the ViewModel to the View setter together with the stored target.
+        /// Forwards <paramref name="value"/>, with the stored target, to the setter action.
         /// </summary>
-        /// <param name="value">The new value received from the ViewModel.</param>
+        /// <param name="value">The value received from the ViewModel.</param>
         public void SetValue(T? value) =>
             _setValue.Invoke(_target, value);
 
         /// <summary>
-        /// Called after binding is established.
-        /// Invokes the <c>onBoundValueChanged</c> factory with the stored <typeparamref name="TTarget"/>
-        /// and pushes the returned value to the ViewModel, if the factory was provided.
+        /// Pushes the <c>getValueOnBound</c> result to the ViewModel, when that factory was provided.
         /// </summary>
         protected override void OnBound()
         {
-            if (_onBoundValueChanged is not null)
-                OnValueChanged(_onBoundValueChanged.Invoke(_target));
+            if (_getValueOnBound is not null)
+                OnValueChanged(_getValueOnBound.Invoke(_target));
         }
 
         /// <summary>
-        /// Called just before the binding is released.
-        /// Invokes the <c>onUnboundValueChanged</c> factory with the stored <typeparamref name="TTarget"/>
-        /// and pushes the returned value to the ViewModel, if the factory was provided.
+        /// Pushes the <c>getValueOnUnbinding</c> result to the ViewModel, when that factory was provided.
         /// </summary>
         protected override void OnUnbinding()
         {
-            if (_onUnboundValueChanged is not null)
-                OnValueChanged(_onUnboundValueChanged.Invoke(_target));
+            if (_getValueOnUnbinding is not null)
+                OnValueChanged(_getValueOnUnbinding.Invoke(_target));
         }
 
         private void OnValueChanged(T? value) =>

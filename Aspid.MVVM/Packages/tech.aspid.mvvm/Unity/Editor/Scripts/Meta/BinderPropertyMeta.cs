@@ -34,7 +34,7 @@ namespace Aspid.MVVM
             }
             
             var bindIdAttribute = memberInfo.GetCustomAttribute<BindIdAttribute>();
-            Id = bindIdAttribute is not null ? bindIdAttribute.Id : BinderFieldInfoExtensions.GetBinderId(memberInfo.Name);
+            Id = bindIdAttribute is not null ? bindIdAttribute.Id : BinderIdUtility.FromFieldName(memberInfo.Name);
         }
 
         public static bool IsBinderProperty(MemberInfo memberInfo)

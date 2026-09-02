@@ -157,6 +157,24 @@ is the documented contract, and a slider driven every frame would otherwise fill
 
 ---
 
+### 1.6 Renamed binder members
+
+| 1.1.0-beta | Now |
+|---|---|
+| `Binder.IsBind`, `MonoBinder.IsBind` | `CanBind` |
+| `CollectionBinderBase<T>` | `CollectionBinder<T>` |
+| `OnReplace(…)`, `OnMove(…)` on the collection binder bases | `OnReplaced(…)`, `OnMoved(…)` |
+| `NumberReverseChannel.HasDecimalListeners`, `RaiseDecimals` | `HasFloatingPointListeners`, `RaiseFloatingPoint` |
+| `ObservableListBinder.GetFilterList` | `GetFilteredList` |
+| `EnumCasterParse` | `EnumNameParse` |
+| `IMonoBinderValidable`, `IsMonoExist` | `IMonoBinderValidatable`, `IsMonoAlive` |
+| `Generic*ToSourceBinder` / `GenericTwoWayBinder` ctor parameters `initialize`, `onBoundValueChanged`, `onUnboundValueChanged` | `subscribe`, `getValueOnBound`, `getValueOnUnbinding` |
+| `BinderFieldInfoExtensions.GetBinderId` (runtime assembly) | `BinderIdUtility.FromFieldName` (Editor assembly) |
+
+**Compile impact:** overrides of `IsBind`, `OnReplace`, `OnMove`, `GetFilterList` and any named-argument call of the generic constructors stop compiling until renamed. No serialized data changes.
+
+---
+
 ## 2. Runtime / behavioural changes
 
 ### 2.1 `MonoView` is no longer abstract
@@ -207,18 +225,18 @@ view.DestroyViewAndGameObject();
 
 Both methods are now null/destroyed-safe (they return `null` instead of throwing) and, in the Editor outside play mode, use `DestroyImmediate`. The same pair exists for the generic `DestroyView<T>()` / `DestroyViewAndGameObject<T>()` overloads.
 
-### 2.4 `CollectionBinderBase<T>` forwards granular change events
+### 2.4 `CollectionBinder<T>` forwards granular change events
 
-In 1.0, `CollectionBinderBase<T>` exposed only `OnAdded(IReadOnlyCollection<T>)` and `OnReset()`, and did not subscribe to `CollectionChanged`. In 1.1 it subscribes to `CollectionChanged` and adds six new abstract hooks:
+In 1.0, `CollectionBinder<T>` exposed only `OnAdded(IReadOnlyCollection<T>)` and `OnReset()`, and did not subscribe to `CollectionChanged`. In 1.1 it subscribes to `CollectionChanged` and adds six new abstract hooks:
 
 - `OnAdded(T?)`, `OnAdded(IReadOnlyList<T?>)`
 - `OnRemoved(T?)`, `OnRemoved(IReadOnlyList<T?>)`
-- `OnReplace(T? oldItem, T? newItem, int newStartingIndex)`
-- `OnMove(T? oldItem, T? newItem, int oldStartingIndex, int newStartingIndex)`
+- `OnReplaced(T? oldItem, T? newItem, int newStartingIndex)`
+- `OnMoved(T? oldItem, T? newItem, int oldStartingIndex, int newStartingIndex)`
 
-Batch `Replace` events are unrolled into per-item `OnReplace` calls.
+Batch `Replace` events are unrolled into per-item `OnReplaced` calls.
 
-**Compile impact:** any class deriving from `CollectionBinderBase<T>` must implement all six new abstract methods or it will not compile. Empty bodies preserve the 1.0 behaviour. `CollectionMonoBinder<T>` itself is unchanged (still only `OnAdded` / `OnReset`).
+**Compile impact:** any class deriving from `CollectionBinder<T>` must implement all six new abstract methods or it will not compile. Empty bodies preserve the 1.0 behaviour. `CollectionMonoBinder<T>` itself is unchanged (still only `OnAdded` / `OnReset`).
 
 ### 2.5 `ViewInitializer` overhaul
 
@@ -395,7 +413,7 @@ override existed to change the no-format rendering, it now belongs in the subcla
 - [ ] Move `[AddPropertyContextMenu(..., "m_Field")]` arguments into `[AddBinderContextMenu(..., serializePropertyNames: "m_Field")]`
 - [ ] Add explicit `Object.Destroy(view.gameObject)` where `view.Dispose()` was used to free objects
 - [ ] Replace `view.DestroyView()` with `view.DestroyViewAndGameObject()` where you relied on it to destroy the host GameObject
-- [ ] Implement the six new abstract hooks on any custom `CollectionBinderBase<T>` subclass (`OnAdded(T?)`, `OnAdded(IReadOnlyList<T?>)`, `OnRemoved(T?)`, `OnRemoved(IReadOnlyList<T?>)`, `OnReplace`, `OnMove`)
+- [ ] Implement the six new abstract hooks on any custom `CollectionBinder<T>` subclass (`OnAdded(T?)`, `OnAdded(IReadOnlyList<T?>)`, `OnRemoved(T?)`, `OnRemoved(IReadOnlyList<T?>)`, `OnReplaced`, `OnMoved`)
 - [ ] Review `ViewInitializer` setups: resolution moved into `ViewInitializerBase`, container `Resolve` became `TryResolve`, and an `InitializeStage.DiConstructor` stage was added (the default stage is unchanged — `Awake`)
 - [ ] Re-check `ViewInitializer` / `ViewInitializerManual` inspector data — the serialized resolution components changed type, so existing view/viewModel resolution settings may not carry over- [ ] Review `NumberToBoolConverter` (`Inequality`) and `DynamicViewModel.Create` usages for the corrected runtime behaviour
 - [ ] Smoke-test scenes that use `ImageSpriteSwitcherBinder`, Addressable binders and `VirtualizedList*`

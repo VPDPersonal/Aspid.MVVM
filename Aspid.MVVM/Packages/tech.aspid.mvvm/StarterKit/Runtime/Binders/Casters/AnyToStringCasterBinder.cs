@@ -5,7 +5,7 @@ namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
     /// <see cref="Binder"/> implementing <see cref="IAnyBinder"/> that converts any bound value to a <see cref="string"/>
-    /// using a configurable converter before forwarding it to a target setter.
+    /// and forwards it to a target setter.
     /// </summary>
     /// <remarks>
     /// By default, uses <see cref="GenericToStringConverter{T}"/> for the conversion.
@@ -38,10 +38,10 @@ namespace Aspid.MVVM.StarterKit
         }
 
         /// <summary>
-        /// Converts <paramref name="value"/> to a <see cref="string"/> and forwards the result to the target setter.
+        /// Converts <paramref name="value"/> to a <see cref="string"/> and forwards it to the target setter.
         /// </summary>
         /// <typeparam name="T">The runtime type of the incoming value.</typeparam>
-        /// <param name="value">The value to convert and forward.</param>
+        /// <param name="value">The value received from the ViewModel.</param>
         public void SetValue<T>(T value) =>
             _setValue(_converter.Convert(value));
     }

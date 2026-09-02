@@ -157,6 +157,24 @@ audioSource.time = BinderMath.SafeClamp(typeof(AudioSourceTimeSetters), value, 0
 
 ---
 
+### 1.6 Переименованные члены биндеров
+
+| 1.1.0-beta | Теперь |
+|---|---|
+| `Binder.IsBind`, `MonoBinder.IsBind` | `CanBind` |
+| `CollectionBinderBase<T>` | `CollectionBinder<T>` |
+| `OnReplace(…)`, `OnMove(…)` в базах коллекционных биндеров | `OnReplaced(…)`, `OnMoved(…)` |
+| `NumberReverseChannel.HasDecimalListeners`, `RaiseDecimals` | `HasFloatingPointListeners`, `RaiseFloatingPoint` |
+| `ObservableListBinder.GetFilterList` | `GetFilteredList` |
+| `EnumCasterParse` | `EnumNameParse` |
+| `IMonoBinderValidable`, `IsMonoExist` | `IMonoBinderValidatable`, `IsMonoAlive` |
+| Параметры конструкторов `Generic*ToSourceBinder` / `GenericTwoWayBinder` `initialize`, `onBoundValueChanged`, `onUnboundValueChanged` | `subscribe`, `getValueOnBound`, `getValueOnUnbinding` |
+| `BinderFieldInfoExtensions.GetBinderId` (runtime-сборка) | `BinderIdUtility.FromFieldName` (Editor-сборка) |
+
+**Влияние на компиляцию:** переопределения `IsBind`, `OnReplace`, `OnMove`, `GetFilterList` и вызовы generic-конструкторов с именованными аргументами перестают компилироваться до переименования. Сериализованные данные не меняются.
+
+---
+
 ## 2. Изменения времени выполнения / поведения
 
 ### 2.1 `MonoView` больше не абстрактный
@@ -207,18 +225,18 @@ view.DestroyViewAndGameObject();
 
 Оба метода теперь безопасны к null/уничтоженным объектам (возвращают `null` вместо исключения) и в редакторе вне play-режима используют `DestroyImmediate`. Та же пара есть для обобщённых перегрузок `DestroyView<T>()` / `DestroyViewAndGameObject<T>()`.
 
-### 2.4 `CollectionBinderBase<T>` пробрасывает гранулярные события изменений
+### 2.4 `CollectionBinder<T>` пробрасывает гранулярные события изменений
 
-В 1.0 `CollectionBinderBase<T>` имел только `OnAdded(IReadOnlyCollection<T>)` и `OnReset()` и не подписывался на `CollectionChanged`. В 1.1 он подписывается на `CollectionChanged` и добавляет шесть новых абстрактных хуков:
+В 1.0 `CollectionBinder<T>` имел только `OnAdded(IReadOnlyCollection<T>)` и `OnReset()` и не подписывался на `CollectionChanged`. В 1.1 он подписывается на `CollectionChanged` и добавляет шесть новых абстрактных хуков:
 
 - `OnAdded(T?)`, `OnAdded(IReadOnlyList<T?>)`
 - `OnRemoved(T?)`, `OnRemoved(IReadOnlyList<T?>)`
-- `OnReplace(T? oldItem, T? newItem, int newStartingIndex)`
-- `OnMove(T? oldItem, T? newItem, int oldStartingIndex, int newStartingIndex)`
+- `OnReplaced(T? oldItem, T? newItem, int newStartingIndex)`
+- `OnMoved(T? oldItem, T? newItem, int oldStartingIndex, int newStartingIndex)`
 
-Пакетные события `Replace` разворачиваются в поэлементные вызовы `OnReplace`.
+Пакетные события `Replace` разворачиваются в поэлементные вызовы `OnReplaced`.
 
-**Влияние на компиляцию:** любой класс-наследник `CollectionBinderBase<T>` обязан реализовать все шесть новых абстрактных методов, иначе он не скомпилируется. Пустые тела сохраняют поведение 1.0. Сам `CollectionMonoBinder<T>` не изменился (по-прежнему только `OnAdded` / `OnReset`).
+**Влияние на компиляцию:** любой класс-наследник `CollectionBinder<T>` обязан реализовать все шесть новых абстрактных методов, иначе он не скомпилируется. Пустые тела сохраняют поведение 1.0. Сам `CollectionMonoBinder<T>` не изменился (по-прежнему только `OnAdded` / `OnReset`).
 
 ### 2.5 Переработка `ViewInitializer`
 
@@ -398,7 +416,7 @@ protected override string? Format(float value) => value.ToString("F2");
 - [ ] Перенести аргументы `[AddPropertyContextMenu(..., "m_Field")]` в `[AddBinderContextMenu(..., serializePropertyNames: "m_Field")]`
 - [ ] Добавить явный `Object.Destroy(view.gameObject)` там, где `view.Dispose()` использовался для освобождения объектов
 - [ ] Заменить `view.DestroyView()` на `view.DestroyViewAndGameObject()` там, где он использовался для уничтожения GameObject-хоста
-- [ ] Реализовать шесть новых абстрактных хуков в любом кастомном наследнике `CollectionBinderBase<T>` (`OnAdded(T?)`, `OnAdded(IReadOnlyList<T?>)`, `OnRemoved(T?)`, `OnRemoved(IReadOnlyList<T?>)`, `OnReplace`, `OnMove`)
+- [ ] Реализовать шесть новых абстрактных хуков в любом кастомном наследнике `CollectionBinder<T>` (`OnAdded(T?)`, `OnAdded(IReadOnlyList<T?>)`, `OnRemoved(T?)`, `OnRemoved(IReadOnlyList<T?>)`, `OnReplaced`, `OnMoved`)
 - [ ] Пересмотреть настройки `ViewInitializer`: разрешение перенесено в `ViewInitializerBase`, `Resolve` контейнера стал `TryResolve`, добавлена стадия `InitializeStage.DiConstructor` (стадия по умолчанию не изменилась — `Awake`)
 - [ ] Перепроверить данные инспектора `ViewInitializer` / `ViewInitializerManual` — сериализуемые компоненты разрешения сменили тип, поэтому существующие настройки разрешения view/viewModel могут не перенестись- [ ] Проверить использования `NumberToBoolConverter` (`Inequality`) и `DynamicViewModel.Create` на исправленное поведение во время выполнения
 - [ ] Прогнать сцены, использующие `ImageSpriteSwitcherBinder`, Addressable-биндеры и `VirtualizedList*`

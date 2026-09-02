@@ -4,68 +4,53 @@ using UnityEngine;
 namespace Aspid.MVVM
 {
     /// <summary>
-    /// Abstract base <see cref="MonoBehaviour"/> for binder implementations.
-    /// Manages the binding lifecycle — binding to and unbinding from an <see cref="IViewModel"/>.
-    /// Derived classes must implement <see cref="IBinder{T}"/> to define the specific binding behavior.
+    /// Abstract base <see cref="MonoBehaviour"/> binder that manages binding to and unbinding from an <see cref="IViewModel"/>.
+    /// Derived classes implement <see cref="IBinder{T}"/> to define what is bound.
     /// </summary>
     // ReSharper disable once RedundantExtendsListEntry
     public abstract partial class MonoBinder : MonoBehaviour, IBinder
     {
-        [Tooltip("Binding mode that controls the direction of data flow between the View and ViewModel.")]
+        [Tooltip("Direction of data flow between the View and the ViewModel.")]
         [BindMode(BindMode.OneWay, BindMode.OneTime)]
         [SerializeField] private BindMode _mode = BindMode.TwoWay;
-        
+
         private IBinderRemover _binderRemover;
 
         /// <summary>
-        /// Indicates whether binding is allowed.
-        /// The default value is <see langword="true"/>.
+        /// Indicates whether binding is allowed. The default is <see langword="true"/>.
         /// </summary>
-        public virtual bool IsBind => true;
-        
+        public virtual bool CanBind => true;
+
         /// <summary>
         /// Indicates whether the binder is currently bound to a ViewModel.
         /// </summary>
         public bool IsBound { get; private set; }
 
         /// <summary>
-        /// Gets the binding mode that determines the direction of data flow.
+        /// Gets the binding mode.
         /// </summary>
         public BindMode Mode => _mode;
 
         /// <summary>
-        /// Gets the binding mode a freshly added binder starts in.
-        /// The default value is <see cref="BindMode.OneWay"/>.
+        /// Gets the binding mode a freshly added binder starts in. The default is <see cref="BindMode.OneWay"/>.
+        /// Override in binders whose <c>[BindModeOverride]</c> excludes it.
         /// </summary>
-        /// <remarks>
-        /// Override this in binders whose <c>[BindModeOverride]</c> excludes <see cref="BindMode.OneWay"/> — a
-        /// reverse-only or one-time binder must not start in a mode it forbids. There is deliberately no single
-        /// correct constant here: <c>*ToSourceMonoBinder</c> needs <see cref="BindMode.OneWayToSource"/> while
-        /// everything else needs <see cref="BindMode.OneWay"/>.
-        /// </remarks>
         protected virtual BindMode DefaultMode => BindMode.OneWay;
 
         /// <summary>
-        /// Called by Unity when the component is added in the Editor or reset from its context menu.
-        /// Applies <see cref="DefaultMode"/> to the serialized binding mode.
+        /// Called by Unity when the component is added or reset in the Editor. Applies <see cref="DefaultMode"/>.
         /// </summary>
         /// <remarks>
-        /// When overriding this method, always call <c>base.Reset()</c> to preserve the default mode.
+        /// When overriding, always call <c>base.Reset()</c>.
         /// </remarks>
         protected virtual void Reset() =>
             _mode = DefaultMode;
 
         /// <summary>
-        /// Called by Unity when the binder is destroyed. Unbinds so the ViewModel drops its reference to this binder.
+        /// Called by Unity when the component is destroyed. Unbinds so the ViewModel drops its reference to this binder.
         /// </summary>
         /// <remarks>
-        /// A binder is a component in its own right and can be destroyed independently of the <see cref="IViewModel"/>
-        /// it is bound to — pooling, or a <c>Destroy</c> on a child object while the View lives on. Without this the
-        /// subscription survives the component: the ViewModel keeps a managed reference to a dead
-        /// <see cref="MonoBehaviour"/> and raises <c>MissingReferenceException</c> on every subsequent change, which
-        /// also stops delivery to every binder subscribed after it.
-        /// <para/>
-        /// When overriding this method, always call <c>base.OnDestroy()</c> to preserve unbinding.
+        /// When overriding, always call <c>base.OnDestroy()</c>.
         /// </remarks>
         protected virtual void OnDestroy() =>
             Unbind();
@@ -83,45 +68,36 @@ namespace Aspid.MVVM
                     Debug.LogError($"Binder is already bound. Type: {GetType().Name}, Name: {name}");
                     return;
                 }
-                
-                if (!IsBind) return;
-                
+
+                if (!CanBind) return;
+
                 OnBinding();
                 {
                     _binderRemover = binderAdder.Add(binder: this);
-                  
+
                     IsBound = true;
                     OnBoundDebug(binderAdder);
                 }
                 OnBound();
             }
         }
-        
+
         partial void OnBoundDebug(IBinderAdder binderAdder);
-        
+
         /// <summary>
         /// Called before binding is established. Override to add pre-binding logic.
         /// </summary>
         /// <remarks>
-        /// The order is: <see cref="OnBinding"/>, then the ViewModel pushes its current value, then
-        /// <see cref="IsBound"/> becomes <see langword="true"/>, then <see cref="OnBound"/>.
-        /// <para/>
-        /// That first push happens <em>after</em> this hook, which is why a binder that listens to its component
-        /// subscribes in <see cref="OnBound"/> and not here: subscribing here means hearing the ViewModel's own
-        /// first value come back as if the user had entered it.
+        /// The ViewModel pushes its first value after this hook, so subscribe to the component in <see cref="OnBound"/>,
+        /// not here: a subscription taken here hears that first value as if the user had entered it.
         /// </remarks>
         protected virtual void OnBinding() { }
 
         /// <summary>
-        /// Called after binding is established. Override to add post-binding logic.
+        /// Called after binding is established and the first value is applied. Override to subscribe to the component.
         /// </summary>
-        /// <remarks>
-        /// Runs after the ViewModel's first value has been applied and after <see cref="IsBound"/> is
-        /// <see langword="true"/>. This is where a binder subscribes to its component — see
-        /// <see cref="OnBinding"/> for why the earlier hook is the wrong place.
-        /// </remarks>
         protected virtual void OnBound() { }
-        
+
         /// <inheritdoc/>
         public void Unbind()
         {
@@ -131,7 +107,7 @@ namespace Aspid.MVVM
             {
                 // TODO Aspid.MVVM 1.1.0 -> add log with prefix
                 if (!IsBound) return;
-                
+
                 OnUnbinding();
                 {
                     if (_binderRemover is not null)
@@ -139,32 +115,24 @@ namespace Aspid.MVVM
                         _binderRemover.Remove(binder: this);
                         _binderRemover = null;
                     }
-                    
+
                     IsBound = false;
                     OnUnboundDebug();
                 }
                 OnUnbound();
             }
         }
-        
+
         partial void OnUnboundDebug();
 
         /// <summary>
-        /// Called before unbinding. Override to add pre-unbinding logic.
+        /// Called before unbinding, while the binder is still attached to the ViewModel. Override to add pre-unbinding logic.
         /// </summary>
-        /// <remarks>
-        /// Runs while <see cref="IsBound"/> is still <see langword="true"/> and the binder is still
-        /// attached to the ViewModel, so anything sent from here still arrives.
-        /// </remarks>
         protected virtual void OnUnbinding() { }
 
         /// <summary>
-        /// Called after unbinding. Override to add post-unbinding logic.
+        /// Called after unbinding. Override to release a subscription taken in <see cref="OnBound"/>.
         /// </summary>
-        /// <remarks>
-        /// Runs once the binder is detached and <see cref="IsBound"/> is <see langword="false"/>.
-        /// This is where a subscription taken in <see cref="OnBound"/> is released.
-        /// </remarks>
         protected virtual void OnUnbound() { }
     }
 }

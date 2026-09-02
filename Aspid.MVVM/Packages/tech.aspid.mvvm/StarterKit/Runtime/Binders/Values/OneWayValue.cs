@@ -5,17 +5,16 @@ using UnityEngine;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="Binder"/> implementing <see cref="IBinder{T}"/> that stores the most recently received
-    /// ViewModel value of type <typeparamref name="T"/> and notifies subscribers when it changes.
+    /// <see cref="Binder"/> implementing <see cref="IBinder{T}"/> that stores the latest ViewModel value and raises <see cref="Changed"/>.
     /// </summary>
-    /// <typeparam name="T">The type of the bindable value.</typeparam>
+    /// <typeparam name="T">The type of the stored value.</typeparam>
     [Serializable]
     public class OneWayValue<T> : Binder, IBinder<T>
     {
-        [Tooltip("The stored value. Set in the Inspector, it is the value before the first ViewModel push.")]
+        [Tooltip("Initial value until the ViewModel pushes one.")]
         [SerializeField] private T? _value;
 
-        [Tooltip("Optional converter applied to each incoming value before it is stored.")]
+        [Tooltip("Optional converter applied to the value; empty leaves it as-is.")]
         [SerializeReference] private IConverter<T?, T?>? _converter;
 
         /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</param>
@@ -34,10 +33,7 @@ namespace Aspid.MVVM.StarterKit
         }
 
         /// <param name="value">The initial value.</param>
-        /// <param name="converter">
-        /// An optional converter applied to each incoming value before it is stored in <see cref="Value"/>.
-        /// Pass <see langword="null"/> to store values unchanged.
-        /// </param>
+        /// <param name="converter">The converter applied to each incoming value, or <see langword="null"/> to store it unchanged.</param>
         /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</param>
         /// <exception cref="InvalidOperationException">Thrown when <paramref name="mode"/> is <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</exception>
         public OneWayValue(T? value, IConverter<T?, T?>? converter, BindMode mode = BindMode.OneWay)
@@ -50,12 +46,12 @@ namespace Aspid.MVVM.StarterKit
         }
 
         /// <summary>
-        /// Raised with the new pre-conversion value when <see cref="Value"/> is updated.
+        /// Raised with the unconverted ViewModel value when <see cref="Value"/> is updated.
         /// </summary>
         public event Action<T?>? Changed;
 
         /// <summary>
-        /// Gets the most recently received (and optionally converted) value.
+        /// Gets the latest, converted value.
         /// </summary>
         public T? Value
         {
@@ -64,10 +60,9 @@ namespace Aspid.MVVM.StarterKit
         }
 
         /// <summary>
-        /// Stores the incoming ViewModel value (passing it through the converter if one is set)
-        /// and raises <see cref="Changed"/> with the original unconverted value.
+        /// Stores the converted <paramref name="value"/> and raises <see cref="Changed"/> with the original one.
         /// </summary>
-        /// <param name="value">The new value received from the ViewModel.</param>
+        /// <param name="value">The value received from the ViewModel.</param>
         void IBinder<T>.SetValue(T? value)
         {
             Value = _converter is not null ? _converter.Convert(value) : value;
@@ -75,10 +70,10 @@ namespace Aspid.MVVM.StarterKit
         }
 
         /// <summary>
-        /// Implicitly converts a <see cref="OneWayValue{T}"/> to its current <see cref="Value"/>.
+        /// Returns <see cref="Value"/>.
         /// </summary>
-        /// <param name="binder">The binder whose value is extracted.</param>
-        /// <returns>The current value stored in <paramref name="binder"/>.</returns>
-        public static implicit operator T?(OneWayValue<T?> binder) => binder.Value;
+        /// <param name="binder">The binder to read.</param>
+        /// <returns>The current <see cref="Value"/>.</returns>
+        public static implicit operator T?(OneWayValue<T> binder) => binder.Value;
     }
 }

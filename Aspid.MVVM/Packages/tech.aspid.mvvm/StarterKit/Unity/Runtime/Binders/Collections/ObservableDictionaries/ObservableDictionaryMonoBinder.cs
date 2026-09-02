@@ -79,7 +79,7 @@ namespace Aspid.MVVM.StarterKit
 
                 case NotifyCollectionChangedAction.Replace:
                     {
-                        if (e.IsSingleItem) OnReplace(e.OldItem, e.NewItem);
+                        if (e.IsSingleItem) OnReplaced(e.OldItem, e.NewItem);
                         else throw new NotImplementedException();
                     }
                     break;
@@ -120,7 +120,7 @@ namespace Aspid.MVVM.StarterKit
         /// </summary>
         /// <param name="oldItem">The pair before the replacement.</param>
         /// <param name="newItem">The pair after it.</param>
-        protected abstract void OnReplace(KeyValuePair<TKey, TValue> oldItem, KeyValuePair<TKey, TValue> newItem);
+        protected abstract void OnReplaced(KeyValuePair<TKey, TValue> oldItem, KeyValuePair<TKey, TValue> newItem);
 
         /// <summary>
         /// Called when everything built from the dictionary should be cleared.

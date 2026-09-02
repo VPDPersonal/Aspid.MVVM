@@ -2,24 +2,10 @@
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// A composite binder interface that accepts values of all common numeric primitive types
-    /// (<see cref="int"/>, <see cref="uint"/>, <see cref="long"/>, <see cref="ulong"/>,
-    /// <see cref="byte"/>, <see cref="sbyte"/>, <see cref="short"/>, <see cref="ushort"/>,
-    /// <see cref="float"/>, <see cref="double"/>) and routes them to a unified integer or
-    /// floating-point setter.
+    /// Composite <see cref="IBinder{T}"/> that accepts every common numeric primitive.
+    /// Implementors provide only the <see cref="int"/>, <see cref="long"/>, <see cref="float"/> and <see cref="double"/>
+    /// overloads; the rest are routed to them here.
     /// </summary>
-    /// <remarks>
-    /// Default interface method implementations handle the widening/narrowing conversions so that
-    /// implementors only need to provide the <see cref="IBinder{T}.SetValue"/> of four instantiations —
-    /// <see cref="int"/>, <see cref="long"/>, <see cref="float"/> and <see cref="double"/>.
-    /// Unsigned and shorter integer types
-    /// are automatically cast to the nearest appropriate signed type before dispatch:
-    /// <list type="bullet">
-    ///   <item><see cref="uint"/> and <see cref="ulong"/> are cast to <see cref="long"/>.</item>
-    ///   <item><see cref="byte"/> and <see cref="sbyte"/> are cast to <see cref="short"/>.</item>
-    ///   <item><see cref="short"/> and <see cref="ushort"/> are cast to <see cref="int"/>.</item>
-    /// </list>
-    /// </remarks>
     public interface INumberBinder :
         IBinder<int>, IBinder<uint>,
         IBinder<long>, IBinder<ulong>,
@@ -33,7 +19,7 @@ namespace Aspid.MVVM.StarterKit
 
         /// <inheritdoc cref="IBinder{T}.SetValue"/>
         void IBinder<ulong>.SetValue(ulong value) =>
-            SetValue((long)value);
+            SetValue(NumericSaturation.ToLong(value));
 
         /// <inheritdoc cref="IBinder{T}.SetValue"/>
         void IBinder<sbyte>.SetValue(sbyte value) =>

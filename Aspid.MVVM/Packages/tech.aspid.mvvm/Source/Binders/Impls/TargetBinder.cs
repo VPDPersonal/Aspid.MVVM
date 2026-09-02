@@ -29,7 +29,7 @@ namespace Aspid.MVVM
         /// which names the Unity type rather than the binder or its View. Refusing to bind is quieter and leaves the
         /// rest of the View working.
         /// </remarks>
-        public override bool IsBind => IsTargetAlive(Target);
+        public override bool CanBind => IsTargetAlive(Target);
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TargetBinder{TTarget}"/> class with the specified target and binding mode.

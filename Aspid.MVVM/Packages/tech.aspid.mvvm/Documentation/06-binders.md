@@ -75,7 +75,7 @@ UI-элемент вызывает `ValueChanged?.Invoke(newValue)` при из�
 public abstract class Binder
 {
     public BindMode Mode { get; }        // Режим привязки (сериализуется)
-    public virtual bool IsBind => true;  // Можно отключить привязку
+    public virtual bool CanBind => true;  // Можно отключить привязку
     public bool IsBound { get; }         // Привязан ли сейчас
 
     public void Bind(IBinderAdder binderAdder);   // Привязка

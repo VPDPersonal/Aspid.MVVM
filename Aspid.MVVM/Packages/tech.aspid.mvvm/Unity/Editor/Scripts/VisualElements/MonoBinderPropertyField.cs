@@ -84,7 +84,7 @@ namespace Aspid.MVVM
         /// </summary>
         /// <param name="binder">The binder being dragged.</param>
         /// <returns>The quality of the match; see <see cref="CompatibleBinderWithField"/>.</returns>
-        public CompatibleBinderWithField IsCompatibleBinderWithField(IMonoBinderValidable binder)
+        public CompatibleBinderWithField IsCompatibleBinderWithField(IMonoBinderValidatable binder)
         {
             var binderType = ((Component)binder).GetType();
             

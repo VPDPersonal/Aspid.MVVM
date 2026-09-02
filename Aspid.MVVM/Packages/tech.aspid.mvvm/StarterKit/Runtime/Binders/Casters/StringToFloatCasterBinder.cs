@@ -5,12 +5,11 @@ namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
     /// <see cref="Binder"/> implementing <see cref="IBinder{T}">IBinder&lt;string&gt;</see> that parses a bound
-    /// <see cref="string"/> as a <see langword="float"/> before forwarding it to a target setter.
+    /// <see cref="string"/> as a <see langword="float"/> and forwards it to a target setter.
     /// </summary>
     /// <remarks>
-    /// A string that does not parse forwards the fallback value instead, and so does one that parses to
-    /// <see cref="float.NaN"/> or an infinity — those are words <see cref="float"/> parsing accepts. Parsing follows
-    /// <see cref="StringNumberParse.TryFloat"/>: the user's culture first, the invariant form second.
+    /// Parsing follows <see cref="StringNumberParse.TryFloat"/>. A string that does not parse to a finite number
+    /// is logged as an error and the fallback value is forwarded instead.
     /// </remarks>
     public sealed class StringToFloatCasterBinder : Binder, IBinder<string>
     {
@@ -32,10 +31,9 @@ namespace Aspid.MVVM.StarterKit
         }
 
         /// <summary>
-        /// Parses <paramref name="value"/> and forwards the result to the target setter, or the fallback value when it
-        /// does not parse.
+        /// Parses <paramref name="value"/> and forwards the result, or the fallback value when it does not parse.
         /// </summary>
-        /// <param name="value">The source string value to parse and forward.</param>
+        /// <param name="value">The value received from the ViewModel.</param>
         public void SetValue(string? value)
         {
             if (StringNumberParse.TryFloat(value, out var parsed))

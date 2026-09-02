@@ -4,15 +4,14 @@ using UnityEngine;
 namespace Aspid.MVVM
 {
     /// <summary>
-    /// Abstract base class for <see cref="MonoBinder"/> implementations that operate on a <see cref="Component"/>.
-    /// Provides lazy resolution of the target component — either from
-    /// the serialized field or via <see cref="Component.GetComponent{T}"/>.
+    /// Abstract base <see cref="MonoBinder"/> that targets a <typeparamref name="TComponent"/>, taken from the
+    /// serialized field or found on the same GameObject.
     /// </summary>
     /// <typeparam name="TComponent">The type of <see cref="Component"/> this binder targets.</typeparam>
     public abstract class ComponentMonoBinder<TComponent> : MonoBinder
         where TComponent : Component
     {
-        [Tooltip("Target component this binder operates on. Resolved automatically via GetComponent<TComponent> if left empty.")]
+        [Tooltip("Target component. Found on this GameObject when empty.")]
         [SerializeField] private TComponent _component;
 
         private bool _isCached;
@@ -20,25 +19,11 @@ namespace Aspid.MVVM
         /// <summary>
         /// Indicates whether binding is allowed: <see langword="false"/> when no target component can be found.
         /// </summary>
-        /// <remarks>
-        /// Without this the binder bound successfully and then threw a <see cref="System.NullReferenceException"/>
-        /// on the first value, from inside a leaf class's property setter — a message naming neither the binder nor
-        /// the GameObject it sits on. The serializable binders have had the equivalent guard on
-        /// <c>TargetBinder</c> all along; this is the same check on the component side.
-        /// </remarks>
-        public override bool IsBind => IsAssigned(CachedComponent);
+        public override bool CanBind => IsAssigned(CachedComponent);
 
         /// <summary>
-        /// Gets the target component.
-        /// Returns the serialized value if assigned;
-        /// otherwise resolves it via <see cref="Component.GetComponent{T}"/> and caches the result.
+        /// Gets the target component: the serialized one if assigned, otherwise the result of <see cref="ResolveComponent"/>, cached.
         /// </summary>
-        /// <remarks>
-        /// "Assigned" is decided with Unity's own <see cref="Object"/> conversion rather than <c>is not null</c>:
-        /// an empty or broken object reference reaches managed code as a wrapper that is not <see langword="null"/>
-        /// to C# yet points at nothing, and treating that as assigned would skip the fallback and hand every
-        /// caller a component it cannot use.
-        /// </remarks>
         protected TComponent CachedComponent
         {
             get
@@ -52,12 +37,10 @@ namespace Aspid.MVVM
         }
 
         /// <summary>
-        /// Called by Unity in the Editor when a serialized field value changes.
-        /// Automatically resolves and assigns the component if it is not yet set and the application is not playing.
+        /// Called by Unity in the Editor when a serialized value changes. Fills the empty component field outside Play mode.
         /// </summary>
         /// <remarks>
-        /// When overriding this method, always call <c>base.OnValidate()</c> to preserve
-        /// automatic component resolution in the Editor.
+        /// When overriding, always call <c>base.OnValidate()</c>.
         /// </remarks>
         protected virtual void OnValidate()
         {
@@ -68,25 +51,14 @@ namespace Aspid.MVVM
         }
 
         /// <summary>
-        /// Finds the target component on this GameObject when the serialized field is empty.
+        /// Called when the serialized field is empty to find the target component. Override when the plain
+        /// <see cref="Component.GetComponent{T}"/> is ambiguous, such as for a base type like <see cref="Behaviour"/>.
         /// </summary>
-        /// <remarks>
-        /// Override where the plain search is ambiguous. It is fine for a concrete component type — there is only
-        /// one <c>Slider</c> to find — but a binder typed on a base class such as <see cref="Behaviour"/> matches
-        /// anything, including the binder itself, and a binder that disables itself stops working with no
-        /// indication of why.
-        /// </remarks>
+        /// <returns>The component to target.</returns>
         protected virtual TComponent ResolveComponent() =>
             GetComponent<TComponent>();
 
-        /// <summary>
-        /// Reports whether <paramref name="component"/> refers to a live component.
-        /// </summary>
-        /// <remarks>
-        /// The conversion to <see langword="bool"/> is Unity's own operator, reached through the
-        /// <see cref="Component"/> constraint: a destroyed component is not a <see langword="null"/>
-        /// reference, so <c>is not null</c> would report it as assigned.
-        /// </remarks>
+        // Unity's bool conversion: a destroyed component is not null to C#.
         private static bool IsAssigned(TComponent component) => component;
     }
 }

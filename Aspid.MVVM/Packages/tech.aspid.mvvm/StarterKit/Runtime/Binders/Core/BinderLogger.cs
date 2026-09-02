@@ -16,9 +16,9 @@ namespace Aspid.MVVM.StarterKit
         private const string Prefix = "[Aspid.MVVM] ";
 
         /// <summary>
-        /// Logs an informational message that is not a problem.
+        /// Logs an informational message.
         /// </summary>
-        /// <param name="binder">The logging binder; a scene or asset object is pinged by default.</param>
+        /// <param name="binder">The logging binder; pinged when it is a scene or asset object.</param>
         /// <param name="message">The message, as full sentences.</param>
         /// <param name="context">The object to ping instead of the binder.</param>
         [HideInCallstack]
@@ -26,7 +26,7 @@ namespace Aspid.MVVM.StarterKit
             Log(binder.GetType(), message, context ?? binder as Object);
 
         /// <summary>
-        /// Logs an informational message on behalf of the specified binder type.
+        /// Logs an informational message on behalf of <paramref name="binderType"/>.
         /// </summary>
         /// <param name="binderType">The logging binder's type.</param>
         /// <param name="message">The message, as full sentences.</param>
@@ -41,7 +41,7 @@ namespace Aspid.MVVM.StarterKit
         /// <summary>
         /// Reports a setup the binder still works with, but not the way it reads.
         /// </summary>
-        /// <param name="binder">The reporting binder; a scene or asset object is pinged by default.</param>
+        /// <param name="binder">The reporting binder; pinged when it is a scene or asset object.</param>
         /// <param name="problem">What is wrong, as a sentence without the trailing period.</param>
         /// <param name="consequence">What the binder does instead, as a full sentence.</param>
         /// <param name="context">The object to ping instead of the binder.</param>
@@ -50,7 +50,7 @@ namespace Aspid.MVVM.StarterKit
             LogWarning(binder.GetType(), problem, consequence, context ?? binder as Object);
 
         /// <summary>
-        /// Reports a questionable setup on behalf of the specified binder type.
+        /// Reports a questionable setup on behalf of <paramref name="binderType"/>.
         /// </summary>
         /// <param name="binderType">The reporting binder's type.</param>
         /// <param name="problem">What is wrong, as a sentence without the trailing period.</param>
@@ -66,7 +66,7 @@ namespace Aspid.MVVM.StarterKit
         /// <summary>
         /// Reports a problem: a value the target will not take, a missing reference, a bad setting.
         /// </summary>
-        /// <param name="binder">The reporting binder; a scene or asset object is pinged by default.</param>
+        /// <param name="binder">The reporting binder; pinged when it is a scene or asset object.</param>
         /// <param name="problem">What is wrong, as a sentence without the trailing period.</param>
         /// <param name="consequence">What the binder does instead, as a full sentence.</param>
         /// <param name="context">The object to ping instead of the binder.</param>
@@ -75,7 +75,7 @@ namespace Aspid.MVVM.StarterKit
             LogError(binder.GetType(), problem, consequence, context ?? binder as Object);
 
         /// <summary>
-        /// Reports a problem on behalf of the specified binder type.
+        /// Reports a problem on behalf of <paramref name="binderType"/>.
         /// </summary>
         /// <param name="binderType">The reporting binder's type.</param>
         /// <param name="problem">What is wrong, as a sentence without the trailing period.</param>
@@ -91,7 +91,7 @@ namespace Aspid.MVVM.StarterKit
         /// <summary>
         /// Reports an exception the binder caught.
         /// </summary>
-        /// <param name="binder">The throwing binder; a scene or asset object is pinged by default.</param>
+        /// <param name="binder">The throwing binder; pinged when it is a scene or asset object.</param>
         /// <param name="exception">The exception caught.</param>
         /// <param name="consequence">What the binder does instead, as a full sentence.</param>
         /// <param name="context">The object to ping instead of the binder.</param>
@@ -100,7 +100,7 @@ namespace Aspid.MVVM.StarterKit
             LogError(binder.GetType(), exception, consequence, context ?? binder as Object);
 
         /// <summary>
-        /// Reports an exception on behalf of the specified binder type.
+        /// Reports an exception on behalf of <paramref name="binderType"/>.
         /// </summary>
         /// <param name="binderType">The throwing binder's type.</param>
         /// <param name="exception">The exception caught.</param>

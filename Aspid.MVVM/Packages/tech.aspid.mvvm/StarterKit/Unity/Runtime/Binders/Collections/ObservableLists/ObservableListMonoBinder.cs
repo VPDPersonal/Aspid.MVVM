@@ -55,9 +55,9 @@ namespace Aspid.MVVM.StarterKit
 
             List = list;
             if (List is null) return;
-            List = GetFilterList(list) ?? list;
+            List = GetFilteredList(list) ?? list;
 
-            OnAdded(List, newStartingIndex: 0);
+            OnAdded(List, index: 0);
 
             switch (List)
             {
@@ -83,7 +83,7 @@ namespace Aspid.MVVM.StarterKit
         private void OnCollectionChanged()
         {
             OnReset();
-            OnAdded(List, newStartingIndex: 0);
+            OnAdded(List, index: 0);
         }
 
         private void OnCollectionChanged(INotifyCollectionChangedEventArgs<T> e)
@@ -106,7 +106,7 @@ namespace Aspid.MVVM.StarterKit
 
                 case NotifyCollectionChangedAction.Replace:
                     {
-                        if (e.IsSingleItem) OnReplace(e.OldItem, e.NewItem, e.OldStartingIndex);
+                        if (e.IsSingleItem) OnReplaced(e.OldItem, e.NewItem, e.OldStartingIndex);
                         else throw new NotImplementedException();
                     }
                     break;
@@ -119,7 +119,7 @@ namespace Aspid.MVVM.StarterKit
 
                 case NotifyCollectionChangedAction.Move:
                     {
-                        OnMove(e.OldItem, e.NewItem, e.OldStartingIndex, e.NewStartingIndex);
+                        OnMoved(e.OldItem, e.NewItem, e.OldStartingIndex, e.NewStartingIndex);
                     }
                     break;
 
@@ -132,21 +132,21 @@ namespace Aspid.MVVM.StarterKit
         /// </summary>
         /// <param name="list">The list that was just bound.</param>
         /// <returns>The filtered list to follow instead, or <see langword="null"/> to follow <paramref name="list"/> as is.</returns>
-        protected virtual IReadOnlyFilteredList<T> GetFilterList(IReadOnlyList<T> list) => null;
+        protected virtual IReadOnlyFilteredList<T> GetFilteredList(IReadOnlyList<T> list) => null;
 
         /// <summary>
         /// Called when one item has been added.
         /// </summary>
         /// <param name="newItem">The item that was added.</param>
-        /// <param name="newStartingIndex">The index the item was added at.</param>
-        protected abstract void OnAdded(T newItem, int newStartingIndex);
+        /// <param name="index">The index the item was added at.</param>
+        protected abstract void OnAdded(T newItem, int index);
 
         /// <summary>
         /// Called when several items have been added at once.
         /// </summary>
         /// <param name="newItems">The items that were added.</param>
-        /// <param name="newStartingIndex">The index the first item was added at.</param>
-        protected abstract void OnAdded(IReadOnlyList<T> newItems, int newStartingIndex);
+        /// <param name="index">The index the first item was added at.</param>
+        protected abstract void OnAdded(IReadOnlyList<T> newItems, int index);
 
         /// <summary>
         /// Called when one item has been removed.
@@ -167,8 +167,8 @@ namespace Aspid.MVVM.StarterKit
         /// </summary>
         /// <param name="oldItem">The item before the replacement.</param>
         /// <param name="newItem">The item after it.</param>
-        /// <param name="newStartingIndex">The index of the replaced item.</param>
-        protected abstract void OnReplace(T oldItem, T newItem, int newStartingIndex);
+        /// <param name="index">The index of the replaced item.</param>
+        protected abstract void OnReplaced(T oldItem, T newItem, int index);
 
         /// <summary>
         /// Called when an item has moved to a different index.
@@ -177,7 +177,7 @@ namespace Aspid.MVVM.StarterKit
         /// <param name="newItem">The item after it.</param>
         /// <param name="oldStartingIndex">The index the item moved from.</param>
         /// <param name="newStartingIndex">The index the item moved to.</param>
-        protected abstract void OnMove(T oldItem, T newItem, int oldStartingIndex, int newStartingIndex);
+        protected abstract void OnMoved(T oldItem, T newItem, int oldStartingIndex, int newStartingIndex);
 
         /// <summary>
         /// Called when everything built from the list should be cleared.

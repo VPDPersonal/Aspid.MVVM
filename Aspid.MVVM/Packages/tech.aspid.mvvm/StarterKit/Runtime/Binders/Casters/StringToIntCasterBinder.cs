@@ -5,11 +5,11 @@ namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
     /// <see cref="Binder"/> implementing <see cref="IBinder{T}">IBinder&lt;string&gt;</see> that parses a bound
-    /// <see cref="string"/> as an <see langword="int"/> before forwarding it to a target setter.
+    /// <see cref="string"/> as an <see langword="int"/> and forwards it to a target setter.
     /// </summary>
     /// <remarks>
-    /// A string that does not parse forwards the fallback value instead. Parsing follows
-    /// <see cref="StringNumberParse.TryInt"/>: the user's culture first, the invariant form second.
+    /// Parsing follows <see cref="StringNumberParse.TryInt"/>. A string that does not parse is logged as an error
+    /// and the fallback value is forwarded instead.
     /// </remarks>
     public sealed class StringToIntCasterBinder : Binder, IBinder<string>
     {
@@ -31,10 +31,9 @@ namespace Aspid.MVVM.StarterKit
         }
 
         /// <summary>
-        /// Parses <paramref name="value"/> and forwards the result to the target setter, or the fallback value when it
-        /// does not parse.
+        /// Parses <paramref name="value"/> and forwards the result, or the fallback value when it does not parse.
         /// </summary>
-        /// <param name="value">The source string value to parse and forward.</param>
+        /// <param name="value">The value received from the ViewModel.</param>
         public void SetValue(string? value)
         {
             if (StringNumberParse.TryInt(value, out var parsed))

@@ -2,8 +2,7 @@
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="INumberBinder"/> whose implementors bind a <see langword="long"/>: every other numeric type
-    /// is converted to <see cref="long"/>, saturating at its bounds rather than wrapping.
+    /// <see cref="INumberBinder"/> whose implementors bind a <see langword="long"/>; wider types saturate at the bounds instead of wrapping.
     /// </summary>
     public interface ILongBinder : INumberBinder
     {

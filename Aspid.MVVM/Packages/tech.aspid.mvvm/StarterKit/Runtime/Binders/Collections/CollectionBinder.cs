@@ -8,30 +8,27 @@ using Aspid.Collections.Observable.Filtered;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// Abstract base <see cref="Binder"/> that receives a read-only collection of <typeparamref name="T"/> items
-    /// and reflects add/reset operations onto a target View component.
+    /// Abstract base <see cref="Binder"/> that receives a read-only collection and reflects its changes onto a View.
+    /// Observable and filtered lists are followed through their change notifications.
     /// </summary>
     /// <typeparam name="T">The element type of the collection.</typeparam>
-    public abstract class CollectionBinderBase<T> : Binder,
+    public abstract class CollectionBinder<T> : Binder,
         IBinder<IReadOnlyCollection<T>>,
         IDisposable
     {
         /// <summary>
-        /// Gets the currently bound collection, or <see langword="null"/> if no collection is set.
+        /// Gets the bound collection, or <see langword="null"/> when none is set.
         /// </summary>
         protected IReadOnlyCollection<T>? Collection { get; private set; }
 
-        /// <param name="mode">The binding mode to use.</param>
-        protected CollectionBinderBase(BindMode mode = BindMode.OneWay)
+        /// <param name="mode">The binding mode.</param>
+        protected CollectionBinder(BindMode mode = BindMode.OneWay)
             : base(mode) { }
 
         /// <summary>
-        /// Binds to <paramref name="collection"/>, resetting any previously bound collection first.
-        /// Items already present in the new collection are immediately forwarded to <see cref="OnAdded(IReadOnlyCollection{T})"/>.
+        /// Binds to <paramref name="collection"/>: resets the previous one, then forwards the existing items to <see cref="OnAdded(IReadOnlyCollection{T})"/>.
         /// </summary>
-        /// <param name="collection">
-        /// The new collection to bind to, or <see langword="null"/> to clear the current binding.
-        /// </param>
+        /// <param name="collection">The collection to bind, or <see langword="null"/> to clear the binding.</param>
         public void SetValue(IReadOnlyCollection<T>? collection)
         {
             if (Collection is not null)
@@ -83,7 +80,7 @@ namespace Aspid.MVVM.StarterKit
                     {
                         if (e.IsSingleItem)
                         {
-                            OnReplace(e.OldItem, e.NewItem, e.OldStartingIndex);
+                            OnReplaced(e.OldItem, e.NewItem, e.OldStartingIndex);
                         }
                         else if (e.OldItems is not null && e.NewItems is not null)
                         {
@@ -92,83 +89,77 @@ namespace Aspid.MVVM.StarterKit
                             var startIndex = e.OldStartingIndex;
 
                             for (var i = 0; i < newItems.Count; i++)
-                                OnReplace(oldItems[i], newItems[i], startIndex + i);
+                                OnReplaced(oldItems[i], newItems[i], startIndex + i);
                         }
                     } break;
 
                 case NotifyCollectionChangedAction.Move:
                     {
-                        OnMove(e.OldItem, e.NewItem, e.OldStartingIndex, e.NewStartingIndex);
+                        OnMoved(e.OldItem, e.NewItem, e.OldStartingIndex, e.NewStartingIndex);
                     } break;
             }
         }
 
         /// <summary>
-        /// Called when one or more items have been added to the collection and need to be reflected in the View.
+        /// Called with the whole collection on binding and after a filter reset.
         /// </summary>
-        /// <param name="values">The items that were added.</param>
+        /// <param name="values">The items to show.</param>
         protected abstract void OnAdded(IReadOnlyCollection<T> values);
 
         /// <summary>
-        /// Called when a single item has been added to the collection via a granular change notification.
+        /// Called when one item was added.
         /// </summary>
-        /// <param name="newItem">The item that was added, or <see langword="null"/> if the slot was empty.</param>
+        /// <param name="newItem">The added item.</param>
         protected abstract void OnAdded(T? newItem);
 
         /// <summary>
-        /// Called when multiple items have been added to the collection in a single batch via a granular change notification.
+        /// Called when several items were added at once.
         /// </summary>
-        /// <param name="newItems">The items that were added.</param>
+        /// <param name="newItems">The added items.</param>
         protected abstract void OnAdded(IReadOnlyList<T?> newItems);
 
         /// <summary>
-        /// Called when a single item has been removed from the collection via a granular change notification.
+        /// Called when one item was removed.
         /// </summary>
-        /// <param name="oldItem">The item that was removed, or <see langword="null"/> if the slot was empty.</param>
+        /// <param name="oldItem">The removed item.</param>
         protected abstract void OnRemoved(T? oldItem);
 
         /// <summary>
-        /// Called when multiple items have been removed from the collection in a single batch via a granular change notification.
+        /// Called when several items were removed at once.
         /// </summary>
-        /// <param name="oldItems">The items that were removed.</param>
+        /// <param name="oldItems">The removed items.</param>
         protected abstract void OnRemoved(IReadOnlyList<T?> oldItems);
 
         /// <summary>
-        /// Called when a single item in the bound collection has been replaced and the change
-        /// must be reflected in the View.
+        /// Called when the item at <paramref name="index"/> was replaced.
         /// </summary>
-        /// <param name="oldItem">The item that was replaced, or <see langword="null"/> if the previous slot was empty.</param>
-        /// <param name="newItem">The replacement item, or <see langword="null"/> if the slot is now empty.</param>
-        /// <param name="newStartingIndex">The index of the replaced item in the collection.</param>
-        protected abstract void OnReplace(T? oldItem, T? newItem, int newStartingIndex);
+        /// <param name="oldItem">The item before replacement.</param>
+        /// <param name="newItem">The item after replacement.</param>
+        /// <param name="index">The index of the replaced item.</param>
+        protected abstract void OnReplaced(T? oldItem, T? newItem, int index);
 
         /// <summary>
-        /// Called when an item in the bound collection has been moved from one index to another and
-        /// the change must be reflected in the View.
+        /// Called when an item was moved.
         /// </summary>
         /// <param name="oldItem">The item at <paramref name="oldStartingIndex"/> before the move.</param>
         /// <param name="newItem">The item at <paramref name="newStartingIndex"/> after the move.</param>
-        /// <param name="oldStartingIndex">The index of the item before the move.</param>
-        /// <param name="newStartingIndex">The index of the item after the move.</param>
-        protected abstract void OnMove(T? oldItem, T? newItem, int oldStartingIndex, int newStartingIndex);
+        /// <param name="oldStartingIndex">The index before the move.</param>
+        /// <param name="newStartingIndex">The index after the move.</param>
+        protected abstract void OnMoved(T? oldItem, T? newItem, int oldStartingIndex, int newStartingIndex);
 
         /// <summary>
-        /// Called when the collection is cleared or replaced, signaling that the View representation should be reset.
+        /// Called when the collection was cleared or replaced; the View should drop every item.
         /// </summary>
         protected abstract void OnReset();
 
         /// <summary>
-        /// Called after unbinding. Unsubscribes from <see cref="INotifyCollectionChanged"/> on the
-        /// currently bound collection to prevent event-handler leaks.
+        /// Unsubscribes from the bound collection.
         /// </summary>
-        protected override void OnUnbound()
-        {
+        protected override void OnUnbound() =>
             UnsubscribeFromCollection();
-        }
 
         /// <summary>
-        /// Unsubscribes from <see cref="INotifyCollectionChanged"/> on the currently bound collection,
-        /// clears the binding, and resets the binder by calling <see cref="OnReset"/>.
+        /// Clears the binding, resetting the View and unsubscribing from the collection.
         /// </summary>
         public virtual void Dispose() => SetValue(null);
 

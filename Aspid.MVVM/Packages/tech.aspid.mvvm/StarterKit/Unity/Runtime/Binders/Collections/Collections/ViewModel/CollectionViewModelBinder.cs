@@ -18,13 +18,13 @@ namespace Aspid.MVVM.StarterKit
     }
 
     /// <summary>
-    /// <see cref="CollectionBinderBase{T}"/> that distributes bound <see cref="IViewModel"/> values
+    /// <see cref="CollectionBinder{T}"/> that distributes bound <see cref="IViewModel"/> values
     /// across a fixed array of pre-instantiated <typeparamref name="T"/> view objects,
     /// activating and initializing each view in order and deactivating any excess views.
     /// </summary>
     /// <typeparam name="T">The type of pre-instantiated <see cref="MonoBehaviour"/> view objects in the collection.</typeparam>
     [Serializable]
-    public class CollectionViewModelBinder<T> : CollectionBinderBase<IViewModel>
+    public class CollectionViewModelBinder<T> : CollectionBinder<IViewModel>
         where T : MonoBehaviour, IView
     {
         [Tooltip("Pre-instantiated views, assigned in order. Extra items beyond this many are hidden.")]
@@ -68,7 +68,7 @@ namespace Aspid.MVVM.StarterKit
         protected override void OnRemoved(IReadOnlyList<IViewModel?> oldItems) => RebuildFromCollection();
 
         /// <summary>
-        /// Resets all views and re-applies the current <see cref="CollectionBinderBase{T}.Collection"/>
+        /// Resets all views and re-applies the current <see cref="CollectionBinder{T}.Collection"/>
         /// positionally, so that each view reflects the item at its corresponding index.
         /// </summary>
         private void RebuildFromCollection()
@@ -77,9 +77,9 @@ namespace Aspid.MVVM.StarterKit
             if (Collection?.Count > 0) OnAdded(Collection!);
         }
 
-        protected override void OnReplace(IViewModel? oldItem, IViewModel? newItem, int newStartingIndex)
+        protected override void OnReplaced(IViewModel? oldItem, IViewModel? newItem, int index)
         {
-            if (newStartingIndex >= _views.Length) return;
+            if (index >= _views.Length) return;
 
             _views[newStartingIndex].Deinitialize();
             
@@ -87,7 +87,7 @@ namespace Aspid.MVVM.StarterKit
                 _views[newStartingIndex].Initialize(newItem);
         }
 
-        protected override void OnMove(IViewModel? oldItem, IViewModel? newItem, int oldStartingIndex, int newStartingIndex) => RebuildFromCollection();
+        protected override void OnMoved(IViewModel? oldItem, IViewModel? newItem, int oldStartingIndex, int newStartingIndex) => RebuildFromCollection();
 
         protected override void OnReset()
         {

@@ -7,32 +7,30 @@ using System.Collections.Specialized;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// Abstract base <see cref="Binder"/> that subscribes to an <see cref="IReadOnlyObservableDictionary{TKey,TValue}"/>
-    /// and forwards granular change notifications to a target View component.
+    /// Abstract base <see cref="Binder"/> that follows an <see cref="IReadOnlyObservableDictionary{TKey,TValue}"/>
+    /// and reflects its changes onto a View.
     /// </summary>
-    /// <typeparam name="TKey">The type of keys in the observable dictionary.</typeparam>
-    /// <typeparam name="TValue">The type of values in the observable dictionary.</typeparam>
+    /// <typeparam name="TKey">The type of the dictionary keys.</typeparam>
+    /// <typeparam name="TValue">The type of the dictionary values.</typeparam>
     /// <remarks>
-    /// <see cref="NotifyCollectionChangedAction.Move"/> is not supported and throws <see cref="NotImplementedException"/>.
+    /// <see cref="NotifyCollectionChangedAction.Move"/> and multi-item <see cref="NotifyCollectionChangedAction.Replace"/>
+    /// throw <see cref="NotImplementedException"/>.
     /// </remarks>
     public abstract class ObservableDictionaryBinder<TKey, TValue> : Binder, IBinder<IReadOnlyObservableDictionary<TKey, TValue?>>
     {
         /// <summary>
-        /// Gets the currently bound observable dictionary, or <see langword="null"/> if no dictionary is set.
+        /// Gets the bound dictionary, or <see langword="null"/> when none is set.
         /// </summary>
         protected IReadOnlyObservableDictionary<TKey, TValue?>? Dictionary { get; private set; }
 
-        /// <param name="mode">The binding mode to use.</param>
+        /// <param name="mode">The binding mode.</param>
         protected ObservableDictionaryBinder(BindMode mode = BindMode.OneWay)
             : base(mode) { }
 
         /// <summary>
-        /// Binds to <paramref name="dictionary"/>, unsubscribing from any previously bound dictionary first.
-        /// Existing entries are replayed and a collection-changed subscription is established.
+        /// Binds to <paramref name="dictionary"/>: resets the previous one, then forwards the existing entries to <see cref="OnAdded(KeyValuePair{TKey, TValue})"/>.
         /// </summary>
-        /// <param name="dictionary">
-        /// The observable dictionary to bind to, or <see langword="null"/> to clear the current binding.
-        /// </param>
+        /// <param name="dictionary">The dictionary to bind, or <see langword="null"/> to clear the binding.</param>
         public void SetValue(IReadOnlyObservableDictionary<TKey, TValue?>? dictionary)
         {
             DeinitializeDictionary();
@@ -50,8 +48,7 @@ namespace Aspid.MVVM.StarterKit
         }
 
         /// <summary>
-        /// Called after the binder is unbound from the ViewModel.
-        /// Releases the change-notification subscription on the previously bound dictionary and calls <see cref="OnReset"/>.
+        /// Resets the View and unsubscribes from the bound dictionary.
         /// </summary>
         protected override void OnUnbound() =>
             DeinitializeDictionary();
@@ -87,7 +84,7 @@ namespace Aspid.MVVM.StarterKit
 
                 case NotifyCollectionChangedAction.Replace:
                     {
-                        if (e.IsSingleItem) OnReplace(e.OldItem, e.NewItem);
+                        if (e.IsSingleItem) OnReplaced(e.OldItem, e.NewItem);
                         else throw new NotImplementedException();
                     }
                     break;
@@ -104,38 +101,38 @@ namespace Aspid.MVVM.StarterKit
         }
 
         /// <summary>
-        /// Called when a single key-value pair has been added to the dictionary.
+        /// Called when one entry was added.
         /// </summary>
-        /// <param name="newItem">The newly added key-value pair.</param>
+        /// <param name="newItem">The added entry.</param>
         protected abstract void OnAdded(KeyValuePair<TKey, TValue?> newItem);
 
         /// <summary>
-        /// Called when multiple key-value pairs have been added to the dictionary in a single batch.
+        /// Called when several entries were added at once.
         /// </summary>
-        /// <param name="newItems">The list of newly added key-value pairs.</param>
+        /// <param name="newItems">The added entries.</param>
         protected abstract void OnAdded(IReadOnlyList<KeyValuePair<TKey, TValue?>> newItems);
 
         /// <summary>
-        /// Called when a single key-value pair has been removed from the dictionary.
+        /// Called when one entry was removed.
         /// </summary>
-        /// <param name="oldItem">The key-value pair that was removed.</param>
+        /// <param name="oldItem">The removed entry.</param>
         protected abstract void OnRemoved(KeyValuePair<TKey, TValue?> oldItem);
 
         /// <summary>
-        /// Called when multiple key-value pairs have been removed from the dictionary in a single batch.
+        /// Called when several entries were removed at once.
         /// </summary>
-        /// <param name="oldItems">The list of key-value pairs that were removed.</param>
+        /// <param name="oldItems">The removed entries.</param>
         protected abstract void OnRemoved(IReadOnlyList<KeyValuePair<TKey, TValue?>> oldItems);
 
         /// <summary>
-        /// Called when an existing key-value pair has been replaced by a new one.
+        /// Called when an entry was replaced.
         /// </summary>
-        /// <param name="oldItem">The key-value pair before replacement.</param>
-        /// <param name="newItem">The key-value pair after replacement.</param>
-        protected abstract void OnReplace(KeyValuePair<TKey, TValue?> oldItem, KeyValuePair<TKey, TValue?> newItem);
+        /// <param name="oldItem">The entry before replacement.</param>
+        /// <param name="newItem">The entry after replacement.</param>
+        protected abstract void OnReplaced(KeyValuePair<TKey, TValue?> oldItem, KeyValuePair<TKey, TValue?> newItem);
 
         /// <summary>
-        /// Called when the dictionary has been reset and the View representation should be cleared.
+        /// Called when the dictionary was cleared; the View should drop every entry.
         /// </summary>
         protected abstract void OnReset();
     }

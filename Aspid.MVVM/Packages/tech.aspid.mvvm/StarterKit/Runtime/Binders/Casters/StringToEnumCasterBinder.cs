@@ -5,16 +5,13 @@ namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
     /// <see cref="Binder"/> implementing <see cref="IBinder{T}">IBinder&lt;string&gt;</see> that parses a bound
-    /// <see cref="string"/> as <typeparamref name="TEnum"/> before forwarding it to a target setter.
+    /// <see cref="string"/> as a <typeparamref name="TEnum"/> member name and forwards it to a target setter.
     /// </summary>
-    /// <remarks>
-    /// Names are matched case-insensitively, because a value that came from text rarely matches the C# casing.
-    /// <para/>
-    /// A string that names no member forwards the fallback value instead. A numeric string is deliberately refused:
-    /// <see cref="Enum.TryParse{TEnum}(string, bool, out TEnum)"/> accepts any number, including one no member has,
-    /// and an enum holding an undefined value fails later and elsewhere.
-    /// </remarks>
     /// <typeparam name="TEnum">The enum type the string is parsed into.</typeparam>
+    /// <remarks>
+    /// Parsing follows <see cref="EnumNameParse.TryName{TEnum}"/>. A string that names no member is logged
+    /// as an error and the fallback value is forwarded instead.
+    /// </remarks>
     public sealed class StringToEnumCasterBinder<TEnum> : Binder, IBinder<string>
         where TEnum : struct, Enum
     {
@@ -36,13 +33,12 @@ namespace Aspid.MVVM.StarterKit
         }
 
         /// <summary>
-        /// Parses <paramref name="value"/> as <typeparamref name="TEnum"/> and forwards the result to the target
-        /// setter, or the fallback value when it names no member.
+        /// Parses <paramref name="value"/> and forwards the result, or the fallback value when it names no member.
         /// </summary>
-        /// <param name="value">The source string value to parse and forward.</param>
+        /// <param name="value">The value received from the ViewModel.</param>
         public void SetValue(string? value)
         {
-            if (EnumCasterParse.TryName(value, out TEnum parsed))
+            if (EnumNameParse.TryName(value, out TEnum parsed))
             {
                 _setValue(parsed);
                 return;

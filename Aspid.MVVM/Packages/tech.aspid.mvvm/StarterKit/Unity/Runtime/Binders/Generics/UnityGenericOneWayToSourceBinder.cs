@@ -13,51 +13,52 @@ namespace Aspid.MVVM.StarterKit
     [System.Obsolete("Use the GenericOneWayToSource binder instead: it takes a plain Action, which a UnityAction converts to implicitly. The Unity-flavoured copies exist only for that conversion and will be removed in the next major version.")]
     public class UnityGenericOneWayToSourceBinder<T> : Binder, IReverseBinder<T>
     {
-        private readonly Func<T?>? _onBoundValueChanged;
-        private readonly Func<T?>? _onUnboundValueChanged;
+        private readonly Func<T?>? _getValueOnBound;
+        private readonly Func<T?>? _getValueOnUnbinding;
 
-        /// <param name="initialize">
+        /// <param name="subscribe">
         /// A <see cref="UnityAction{T}"/> that receives the internal <see cref="OnValueChanged"/> callback and registers it with the View event.
         /// </param>
-        /// <param name="onBoundValueChanged">
+        /// <param name="getValueOnBound">
         /// Optional factory invoked when the binding is established; the returned value is pushed to the ViewModel.
         /// </param>
-        /// <param name="onUnboundValueChanged">
+        /// <param name="getValueOnUnbinding">
         /// Optional factory invoked just before the binding is released; the returned value is pushed to the ViewModel.
         /// </param>
+        /// <exception cref="ArgumentNullException">Thrown when <paramref name="subscribe"/> is <see langword="null"/>.</exception>
         public UnityGenericOneWayToSourceBinder(
-            UnityAction<UnityAction<T>> initialize, 
-            Func<T?>? onBoundValueChanged = null,
-            Func<T?>? onUnboundValueChanged = null)
+            UnityAction<UnityAction<T>> subscribe, 
+            Func<T?>? getValueOnBound = null,
+            Func<T?>? getValueOnUnbinding = null)
             : base(BindMode.OneWayToSource)
         {
-            initialize.Invoke(OnValueChanged);
+            (subscribe ?? throw new ArgumentNullException(nameof(subscribe))).Invoke(OnValueChanged);
             
-            _onBoundValueChanged = onBoundValueChanged;
-            _onUnboundValueChanged = onUnboundValueChanged;
+            _getValueOnBound = getValueOnBound;
+            _getValueOnUnbinding = getValueOnUnbinding;
         }
 
-        /// <param name="onBoundValueChanged">
+        /// <param name="getValueOnBound">
         /// Optional factory invoked when the binding is established; the returned value is pushed to the ViewModel.
-        /// At least one of <paramref name="onBoundValueChanged"/> or <paramref name="onUnboundValueChanged"/> must be provided.
+        /// At least one of <paramref name="getValueOnBound"/> or <paramref name="getValueOnUnbinding"/> must be provided.
         /// </param>
-        /// <param name="onUnboundValueChanged">
+        /// <param name="getValueOnUnbinding">
         /// Optional factory invoked just before the binding is released; the returned value is pushed to the ViewModel.
         /// </param>
-        /// <exception cref="Exception">
-        /// Thrown when both <paramref name="onBoundValueChanged"/> and <paramref name="onUnboundValueChanged"/>
+        /// <exception cref="ArgumentException">
+        /// Thrown when both <paramref name="getValueOnBound"/> and <paramref name="getValueOnUnbinding"/>
         /// are <see langword="null"/>.
         /// </exception>
         public UnityGenericOneWayToSourceBinder(
-            Func<T?>? onBoundValueChanged = null,
-            Func<T?>? onUnboundValueChanged = null)
+            Func<T?>? getValueOnBound = null,
+            Func<T?>? getValueOnUnbinding = null)
             : base(BindMode.OneWayToSource)
         {
-            if (onBoundValueChanged is null && onUnboundValueChanged is null)
-                throw new Exception("OnBoundValueChanged and OnUnboundValueChanged are both null");
+            if (getValueOnBound is null && getValueOnUnbinding is null)
+                throw new ArgumentException($"{nameof(getValueOnBound)} and {nameof(getValueOnUnbinding)} are both null.");
 
-            _onBoundValueChanged = onBoundValueChanged;
-            _onUnboundValueChanged = onUnboundValueChanged;
+            _getValueOnBound = getValueOnBound;
+            _getValueOnUnbinding = getValueOnUnbinding;
         }
 
         /// <summary>
@@ -67,24 +68,24 @@ namespace Aspid.MVVM.StarterKit
 
         /// <summary>
         /// Called after binding is established.
-        /// Invokes the onBoundValueChanged factory and pushes the returned value to the ViewModel,
+        /// Invokes the getValueOnBound factory and pushes the returned value to the ViewModel,
         /// if the factory was provided.
         /// </summary>
         protected override void OnBound()
         {
-            if (_onBoundValueChanged is not null)
-                OnValueChanged(_onBoundValueChanged.Invoke());
+            if (_getValueOnBound is not null)
+                OnValueChanged(_getValueOnBound.Invoke());
         }
 
         /// <summary>
         /// Called just before the binding is released.
-        /// Invokes the onUnboundValueChanged factory and pushes the returned value to the ViewModel,
+        /// Invokes the getValueOnUnbinding factory and pushes the returned value to the ViewModel,
         /// if the factory was provided.
         /// </summary>
         protected override void OnUnbinding()
         {
-            if (_onUnboundValueChanged is not null)
-                OnValueChanged(_onUnboundValueChanged.Invoke());
+            if (_getValueOnUnbinding is not null)
+                OnValueChanged(_getValueOnUnbinding.Invoke());
         }
 
         private void OnValueChanged(T? value) =>
@@ -104,63 +105,63 @@ namespace Aspid.MVVM.StarterKit
     public class UnityGenericOneWayToSourceBinder<TTarget, T> : Binder, IReverseBinder<T>
     {
         private readonly TTarget _target;
-        private readonly Func<TTarget, T?>? _onBoundValueChanged;
-        private readonly Func<TTarget, T?>? _onUnboundValueChanged;
+        private readonly Func<TTarget, T?>? _getValueOnBound;
+        private readonly Func<TTarget, T?>? _getValueOnUnbinding;
 
         /// <param name="target">The target object whose event or value is monitored.</param>
-        /// <param name="initialize">
+        /// <param name="subscribe">
         /// A <see cref="UnityAction{T0,T1}"/> that receives <paramref name="target"/> and the internal <see cref="OnValueChanged"/>
         /// callback, and registers it with the appropriate View event.
         /// </param>
-        /// <param name="onBoundValueChanged">
+        /// <param name="getValueOnBound">
         /// Optional factory invoked with <paramref name="target"/> when the binding is established;
         /// the returned value is pushed to the ViewModel.
         /// </param>
-        /// <param name="onUnboundValueChanged">
+        /// <param name="getValueOnUnbinding">
         /// Optional factory invoked with <paramref name="target"/> just before the binding is released;
         /// the returned value is pushed to the ViewModel.
         /// </param>
-        /// <exception cref="ArgumentNullException">Thrown when <paramref name="target"/> is <see langword="null"/>.</exception>
+        /// <exception cref="ArgumentNullException">Thrown when <paramref name="target"/> or <paramref name="subscribe"/> is <see langword="null"/>.</exception>
         public UnityGenericOneWayToSourceBinder(
             TTarget target,
-            UnityAction<TTarget, UnityAction<T>> initialize, 
-            Func<TTarget, T?>? onBoundValueChanged = null,
-            Func<TTarget, T?>? onUnboundValueChanged = null)
+            UnityAction<TTarget, UnityAction<T>> subscribe, 
+            Func<TTarget, T?>? getValueOnBound = null,
+            Func<TTarget, T?>? getValueOnUnbinding = null)
             : base(BindMode.OneWayToSource)
         {
-            _onBoundValueChanged = onBoundValueChanged;
-            _onUnboundValueChanged = onUnboundValueChanged;
+            _getValueOnBound = getValueOnBound;
+            _getValueOnUnbinding = getValueOnUnbinding;
             _target = target ?? throw new ArgumentNullException(nameof(target));
             
-            initialize.Invoke(target, OnValueChanged);
+            (subscribe ?? throw new ArgumentNullException(nameof(subscribe))).Invoke(target, OnValueChanged);
         }
 
         /// <param name="target">The target object whose value is read when bound or unbound.</param>
-        /// <param name="onBoundValueChanged">
+        /// <param name="getValueOnBound">
         /// Optional factory invoked with <paramref name="target"/> when the binding is established;
-        /// the returned value is pushed to the ViewModel. At least one of <paramref name="onBoundValueChanged"/>
-        /// or <paramref name="onUnboundValueChanged"/> must be provided.
+        /// the returned value is pushed to the ViewModel. At least one of <paramref name="getValueOnBound"/>
+        /// or <paramref name="getValueOnUnbinding"/> must be provided.
         /// </param>
-        /// <param name="onUnboundValueChanged">
+        /// <param name="getValueOnUnbinding">
         /// Optional factory invoked with <paramref name="target"/> just before the binding is released;
         /// the returned value is pushed to the ViewModel.
         /// </param>
         /// <exception cref="ArgumentNullException">Thrown when <paramref name="target"/> is <see langword="null"/>.</exception>
-        /// <exception cref="Exception">
-        /// Thrown when both <paramref name="onBoundValueChanged"/> and <paramref name="onUnboundValueChanged"/>
+        /// <exception cref="ArgumentException">
+        /// Thrown when both <paramref name="getValueOnBound"/> and <paramref name="getValueOnUnbinding"/>
         /// are <see langword="null"/>.
         /// </exception>
         public UnityGenericOneWayToSourceBinder(
             TTarget target,
-            Func<TTarget, T?>? onBoundValueChanged = null,
-            Func<TTarget, T?>? onUnboundValueChanged = null)
+            Func<TTarget, T?>? getValueOnBound = null,
+            Func<TTarget, T?>? getValueOnUnbinding = null)
             : base(BindMode.OneWayToSource)
         {
-            if (onBoundValueChanged is null && onUnboundValueChanged is null)
-                throw new Exception("OnBoundValueChanged and OnUnboundValueChanged are both null");
+            if (getValueOnBound is null && getValueOnUnbinding is null)
+                throw new ArgumentException($"{nameof(getValueOnBound)} and {nameof(getValueOnUnbinding)} are both null.");
 
-            _onBoundValueChanged = onBoundValueChanged;
-            _onUnboundValueChanged = onUnboundValueChanged;
+            _getValueOnBound = getValueOnBound;
+            _getValueOnUnbinding = getValueOnUnbinding;
             _target = target ?? throw new ArgumentNullException(nameof(target));
         }
 
@@ -171,24 +172,24 @@ namespace Aspid.MVVM.StarterKit
 
         /// <summary>
         /// Called after binding is established.
-        /// Invokes the onBoundValueChanged factory with the stored <typeparamref name="TTarget"/>
+        /// Invokes the getValueOnBound factory with the stored <typeparamref name="TTarget"/>
         /// and pushes the returned value to the ViewModel, if the factory was provided.
         /// </summary>
         protected override void OnBound()
         {
-            if (_onBoundValueChanged is not null)
-                OnValueChanged(_onBoundValueChanged.Invoke(_target));
+            if (_getValueOnBound is not null)
+                OnValueChanged(_getValueOnBound.Invoke(_target));
         }
 
         /// <summary>
         /// Called just before the binding is released.
-        /// Invokes the onUnboundValueChanged factory with the stored <typeparamref name="TTarget"/>
+        /// Invokes the getValueOnUnbinding factory with the stored <typeparamref name="TTarget"/>
         /// and pushes the returned value to the ViewModel, if the factory was provided.
         /// </summary>
         protected override void OnUnbinding()
         {
-            if (_onUnboundValueChanged is not null)
-                OnValueChanged(_onUnboundValueChanged.Invoke(_target));
+            if (_getValueOnUnbinding is not null)
+                OnValueChanged(_getValueOnUnbinding.Invoke(_target));
         }
 
         private void OnValueChanged(T? value) =>

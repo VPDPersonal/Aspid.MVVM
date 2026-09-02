@@ -158,7 +158,7 @@ namespace Aspid.MVVM.StarterKit
                 is not (TMP_InputField.ContentType.IntegerNumber 
                 or TMP_InputField.ContentType.DecimalNumber)) return;
            
-            if (!_channel.HasIntegerListeners && !_channel.HasDecimalListeners) return;
+            if (!_channel.HasIntegerListeners && !_channel.HasFloatingPointListeners) return;
 
             var culture = _cultureInfoMode.ToCultureInfo();
             if (!double.TryParse(value, NumberStyles.Any, culture, out var number)) return;
@@ -172,7 +172,7 @@ namespace Aspid.MVVM.StarterKit
                 else _channel.RaiseIntegers(number);
             }
 
-            if (_channel.HasDecimalListeners) _channel.RaiseDecimals(number);
+            if (_channel.HasFloatingPointListeners) _channel.RaiseFloatingPoint(number);
         }
 
         /// <summary>

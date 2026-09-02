@@ -4,18 +4,16 @@ using UnityEngine;
 namespace Aspid.MVVM
 {
     /// <summary>
-    /// Abstract base <see cref="ComponentMonoBinder{TComponent}"/> that adds <see cref="IViewModel"/> binding support,
-    /// initializing the cached <typeparamref name="TView"/> component view when a bound <see cref="IViewModel"/> is received.
+    /// Abstract base <see cref="ComponentMonoBinder{TComponent}"/> that initializes the target view with the bound <see cref="IViewModel"/>.
     /// </summary>
     /// <typeparam name="TView">The type of <see cref="Component"/> that implements <see cref="IView"/>.</typeparam>
     public abstract partial class MonoViewMonoBinder<TView> : ComponentMonoBinder<TView>, IBinder<IViewModel>
         where TView : Component, IView
     {
         /// <summary>
-        /// Called when the bound <see cref="IViewModel"/> value is received.
-        /// Deinitializes the current view and initializes it with the new ViewModel if it is not <see langword="null"/>.
+        /// Deinitializes the view, then initializes it with <paramref name="viewModel"/> unless it is <see langword="null"/>.
         /// </summary>
-        /// <param name="viewModel">The new ViewModel value, or <see langword="null"/> to deinitialize.</param>
+        /// <param name="viewModel">The ViewModel received from the binding, or <see langword="null"/> to deinitialize only.</param>
         [BinderLog]
         public void SetValue(IViewModel viewModel)
         {
@@ -26,28 +24,27 @@ namespace Aspid.MVVM
         }
 
         /// <summary>
-        /// Called after unbinding is complete.
-        /// Deinitializes the view, detaching any bound <see cref="IViewModel"/>.
+        /// Deinitializes the view.
         /// </summary>
         protected override void OnUnbound() =>
             DeinitializeView();
 
         /// <summary>
-        /// Initializes the cached view component with the specified ViewModel.
+        /// Initializes the target view with <paramref name="viewModel"/>.
         /// </summary>
-        /// <param name="viewModel">The ViewModel to bind to the view.</param>
+        /// <param name="viewModel">The ViewModel to initialize the view with.</param>
         protected void InitializeView(IViewModel viewModel) =>
             CachedComponent.Initialize(viewModel);
 
         /// <summary>
-        /// Deinitializes the cached view component, detaching any bound ViewModel.
+        /// Deinitializes the target view.
         /// </summary>
         protected void DeinitializeView() =>
             CachedComponent.Deinitialize();
     }
 
     /// <summary>
-    /// <see cref="MonoViewMonoBinder{TView}"/> specialized for <see cref="MonoView"/> components.
+    /// <see cref="MonoViewMonoBinder{TView}"/> for <see cref="MonoView"/>.
     /// </summary>
     [AddBinderContextMenu(typeof(MonoView))]
     [AddComponentMenu("Aspid/MVVM/Binders/Views/MonoView Binder")]

@@ -4,19 +4,17 @@ using UnityEngine;
 namespace Aspid.MVVM
 {
     /// <summary>
-    /// <see cref="TargetBinder{TTarget}"/> that initializes a <typeparamref name="TView"/> when a bound <see cref="IViewModel"/> is received,
+    /// Abstract base <see cref="TargetBinder{TTarget}"/> that initializes the target view with the bound <see cref="IViewModel"/>
     /// and deinitializes it on unbind.
     /// </summary>
     /// <typeparam name="TView">The type of <see cref="Object"/> that implements <see cref="IView"/>.</typeparam>
     public abstract class ViewTargetBinder<TView> : TargetBinder<TView>, IBinder<IViewModel>
         where TView : Object, IView
     {
-        /// <summary>
-        /// Initializes a new instance of <see cref="ViewTargetBinder{TView}"/> for the specified view target.
-        /// </summary>
-        /// <param name="target">The view component to bind.</param>
-        /// <param name="mode">The binding mode. Only one-directional modes are supported.</param>
-        /// <exception cref="System.InvalidOperationException">Thrown when <paramref name="mode"/> is neither <see cref="BindMode.OneWay"/> nor <see cref="BindMode.OneTime"/>.</exception>
+        /// <param name="target">The view to bind.</param>
+        /// <param name="mode">The binding mode. Must be <see cref="BindMode.OneWay"/> or <see cref="BindMode.OneTime"/>.</param>
+        /// <exception cref="System.ArgumentNullException">Thrown when <paramref name="target"/> is <see langword="null"/>.</exception>
+        /// <exception cref="System.InvalidOperationException">Thrown when <paramref name="mode"/> is not <see cref="BindMode.OneWay"/> or <see cref="BindMode.OneTime"/>.</exception>
         public ViewTargetBinder(TView target, BindMode mode = BindMode.OneWay)
             : base(target, mode)
         {
@@ -24,10 +22,9 @@ namespace Aspid.MVVM
         }
 
         /// <summary>
-        /// Called when the bound <see cref="IViewModel"/> value is received.
-        /// Deinitializes the view first, then initializes it with <paramref name="viewModel"/> if it is not <see langword="null"/>.
+        /// Deinitializes the view, then initializes it with <paramref name="viewModel"/> unless it is <see langword="null"/>.
         /// </summary>
-        /// <param name="viewModel">The new ViewModel, or <see langword="null"/> to deinitialize without reinitializing.</param>
+        /// <param name="viewModel">The ViewModel received from the binding, or <see langword="null"/> to deinitialize only.</param>
         public void SetValue(IViewModel viewModel)
         {
             DeinitializeView();
@@ -37,20 +34,20 @@ namespace Aspid.MVVM
         }
 
         /// <summary>
-        /// Called after unbinding. Deinitializes the target view.
+        /// Deinitializes the view.
         /// </summary>
         protected override void OnUnbound() =>
             DeinitializeView();
 
         /// <summary>
-        /// Initializes the target <typeparamref name="TView"/> with <paramref name="viewModel"/>.
+        /// Initializes the target view with <paramref name="viewModel"/>.
         /// </summary>
         /// <param name="viewModel">The ViewModel to initialize the view with.</param>
         protected void InitializeView(IViewModel viewModel) =>
             Target.Initialize(viewModel);
 
         /// <summary>
-        /// Deinitializes the target <typeparamref name="TView"/>, clearing its current ViewModel.
+        /// Deinitializes the target view.
         /// </summary>
         protected void DeinitializeView() =>
             Target.Deinitialize();

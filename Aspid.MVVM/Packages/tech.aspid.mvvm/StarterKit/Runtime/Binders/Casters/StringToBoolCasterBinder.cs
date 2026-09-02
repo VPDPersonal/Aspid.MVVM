@@ -4,25 +4,19 @@ using System;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="Binder"/> implementing <see cref="IBinder{T}"/> that converts a <see cref="string"/> value to a <see cref="bool"/>
-    /// using a configurable converter before forwarding it to a target setter.
+    /// <see cref="Binder"/> implementing <see cref="IBinder{T}">IBinder&lt;string&gt;</see> that converts a bound
+    /// <see cref="string"/> to a <see cref="bool"/> and forwards it to a target setter.
     /// </summary>
     /// <remarks>
-    /// By default uses <see cref="StringEmptyToBoolConverter"/>, so an empty or <see langword="null"/>
-    /// string maps to <see langword="true"/>.
+    /// By default, uses <see cref="StringEmptyToBoolConverter"/>: an empty or <see langword="null"/> string maps to <see langword="true"/>.
     /// </remarks>
     public sealed class StringToBoolCasterBinder : Binder, IBinder<string>
     {
         private readonly Action<bool> _setValue;
         private readonly IConverter<string?, bool> _converter;
-        
+
         /// <param name="setValue">The action invoked with the converted <see cref="bool"/> value.</param>
-        /// <param name="isInvert">
-        /// When <see langword="true"/>, the conversion result is logically negated, so a filled string
-        /// maps to <see langword="true"/> and an empty or <see langword="null"/> one to
-        /// <see langword="false"/> — the reading a <c>SetActive</c> or <c>interactable</c> target
-        /// expects.
-        /// </param>
+        /// <param name="isInvert">When <see langword="true"/>, the result is negated: a filled string maps to <see langword="true"/>.</param>
         /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</param>
         /// <exception cref="ArgumentNullException">Thrown when <paramref name="setValue"/> is <see langword="null"/>.</exception>
         /// <exception cref="InvalidOperationException">Thrown when <paramref name="mode"/> is <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</exception>
@@ -45,9 +39,9 @@ namespace Aspid.MVVM.StarterKit
         }
 
         /// <summary>
-        /// Converts <paramref name="value"/> to a <see cref="bool"/> and forwards the result to the target setter.
+        /// Converts <paramref name="value"/> to a <see cref="bool"/> and forwards it to the target setter.
         /// </summary>
-        /// <param name="value">The source string value to convert and forward.</param>
+        /// <param name="value">The value received from the ViewModel.</param>
         public void SetValue(string? value) =>
             _setValue(_converter.Convert(value));
     }

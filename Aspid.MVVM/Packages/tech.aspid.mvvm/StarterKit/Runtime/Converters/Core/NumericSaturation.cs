@@ -35,6 +35,14 @@ namespace Aspid.MVVM.StarterKit
         };
 
         /// <summary>
+        /// Converts a <see cref="ulong"/> to a <see cref="long"/>, saturating at its upper bound.
+        /// </summary>
+        /// <param name="value">The value to convert.</param>
+        /// <returns>The value, or <see cref="long.MaxValue"/> when it is out of range.</returns>
+        internal static long ToLong(ulong value) =>
+            value > long.MaxValue ? long.MaxValue : (long)value;
+
+        /// <summary>
         /// Converts a <see cref="double"/> to a <see cref="long"/>, saturating at its bounds.
         /// </summary>
         /// <param name="value">The value to convert. The fraction is dropped toward zero.</param>

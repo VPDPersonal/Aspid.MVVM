@@ -23,7 +23,7 @@ namespace Aspid.MVVM
         /// Indicates whether binding is allowed.
         /// The default value is <see langword="true"/>.
         /// </summary>
-        public virtual bool IsBind => true;
+        public virtual bool CanBind => true;
 
         /// <summary>
         /// Indicates whether the binder is currently bound to a ViewModel.
@@ -66,7 +66,7 @@ namespace Aspid.MVVM
                     throw new Exception(message);
                 }
                 
-                if (!IsBind) return;
+                if (!CanBind) return;
 
                 OnBinding();
                 {

@@ -141,7 +141,7 @@ namespace Aspid.MVVM
             return _unassignedBindersVisualElement;
         }
 
-        private bool CanAutoAssign(IMonoBinderValidable binder)
+        private bool CanAutoAssign(IMonoBinderValidatable binder)
         {
             var result = false;
 
@@ -154,7 +154,7 @@ namespace Aspid.MVVM
             return result;
         }
 
-        private void OnAutoAssign(IMonoBinderValidable binder)
+        private void OnAutoAssign(IMonoBinderValidatable binder)
         {
             MonoBinderPropertyField? targetField = null;
 
@@ -181,7 +181,7 @@ namespace Aspid.MVVM
             property.ApplyModifiedProperties();
         }
 
-        private void OnUnassignedBinderClicked(IMonoBinderValidable binder)
+        private void OnUnassignedBinderClicked(IMonoBinderValidatable binder)
         {
             this.Query<MonoBinderPropertyField>().ForEach(field =>
             {

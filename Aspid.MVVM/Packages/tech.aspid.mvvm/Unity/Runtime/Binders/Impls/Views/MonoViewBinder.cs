@@ -10,25 +10,17 @@ namespace Aspid.MVVM
     public class MonoViewBinder<TView> : ViewTargetBinder<TView>
         where TView : Component, IView
     {
-        /// <summary>
-        /// Initializes a new instance of <see cref="MonoViewBinder{TView}"/> for the specified view target.
-        /// </summary>
-        /// <param name="target">The view component to bind.</param>
-        /// <param name="mode">The binding mode. Only one-directional modes are supported.</param>
+        /// <inheritdoc/>
         public MonoViewBinder(TView target, BindMode mode = BindMode.OneWay)
             : base(target, mode) { }
     }
 
     /// <summary>
-    /// <see cref="MonoViewBinder{TView}"/> specialized for <see cref="MonoView"/> components.
+    /// <see cref="MonoViewBinder{TView}"/> for <see cref="MonoView"/>.
     /// </summary>
     public class MonoViewBinder : MonoViewBinder<MonoView>
     {
-        /// <summary>
-        /// Initializes a new instance of <see cref="MonoViewBinder"/> for the specified <see cref="MonoView"/>.
-        /// </summary>
-        /// <param name="target">The <see cref="MonoView"/> to bind.</param>
-        /// <param name="mode">The binding mode. Only one-directional modes are supported.</param>
+        /// <inheritdoc/>
         public MonoViewBinder(MonoView target, BindMode mode = BindMode.OneWay)
             : base(target, mode) { }
     }

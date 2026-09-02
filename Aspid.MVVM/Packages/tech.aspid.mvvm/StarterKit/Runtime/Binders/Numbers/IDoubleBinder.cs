@@ -2,8 +2,7 @@
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="INumberBinder"/> whose implementors bind a <see langword="double"/>: every other numeric type
-    /// widens to <see cref="double"/> without loss.
+    /// <see cref="INumberBinder"/> whose implementors bind a <see langword="double"/>; every other numeric type widens to it.
     /// </summary>
     public interface IDoubleBinder : INumberBinder
     {

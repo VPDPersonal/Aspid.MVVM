@@ -12,17 +12,17 @@ namespace Aspid.MVVM.StarterKit
     /// </summary>
     internal static class ObservableListViewModelBinderHelper
     {
-        public static void OnAdded<T>(List<T> views, IViewFactory<T> viewFactory, IViewModel newItem, int newStartingIndex)
+        public static void OnAdded<T>(List<T> views, IViewFactory<T> viewFactory, IViewModel newItem, int index)
             where T : MonoBehaviour, IView
         {
             var view = viewFactory.Create(newItem);
 
-            views.Insert(newStartingIndex, view);
+            views.Insert(index, view);
 
             // The factory appends the new object last in the hierarchy, so an insert anywhere but the end would
-            // leave the visual order — and therefore any LayoutGroup — out of step with the model. OnMove below
+            // leave the visual order — and therefore any LayoutGroup — out of step with the model. OnMoved below
             // already does this.
-            view.transform.SetSiblingIndex(newStartingIndex);
+            view.transform.SetSiblingIndex(index);
         }
 
         public static void OnRemoved<T>(List<T> views, IViewFactory<T> viewFactory, int oldStartingIndex)
@@ -32,16 +32,16 @@ namespace Aspid.MVVM.StarterKit
             views.RemoveAt(oldStartingIndex);
         }
 
-        public static void OnReplace<T>(List<T> views, IViewModel newItem, int newStartingIndex)
+        public static void OnReplaced<T>(List<T> views, IViewModel newItem, int index)
             where T : MonoBehaviour, IView
         {
-            views[newStartingIndex].Deinitialize();
+            views[index].Deinitialize();
 
             if (newItem is not null)
                 views[newStartingIndex].Initialize(newItem);
         }
 
-        public static void OnMove<T>(List<T> views, int oldStartingIndex, int newStartingIndex)
+        public static void OnMoved<T>(List<T> views, int oldStartingIndex, int newStartingIndex)
             where T : MonoBehaviour, IView
         {
             var view = views[oldStartingIndex];

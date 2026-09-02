@@ -85,7 +85,7 @@ namespace Aspid.MVVM.StarterKit
             base.OnUnbound();
         }
 
-        protected sealed override IReadOnlyFilteredList<IViewModel> GetFilterList(IReadOnlyList<IViewModel> list)
+        protected sealed override IReadOnlyFilteredList<IViewModel> GetFilteredList(IReadOnlyList<IViewModel> list)
         {
             DisposeFilteredList();
 
@@ -104,17 +104,17 @@ namespace Aspid.MVVM.StarterKit
             _filteredList = null;
         }
 
-        protected sealed override void OnAdded(IViewModel newItem, int newStartingIndex) =>
-            ObservableListViewModelBinderHelper.OnAdded(Views, _viewFactory, newItem, newStartingIndex);
+        protected sealed override void OnAdded(IViewModel newItem, int index) =>
+            ObservableListViewModelBinderHelper.OnAdded(Views, _viewFactory, newItem, index);
 
-        protected sealed override void OnAdded(IReadOnlyList<IViewModel> newItems, int newStartingIndex)
+        protected sealed override void OnAdded(IReadOnlyList<IViewModel> newItems, int index)
         {
             if (newItems is null) return;
 
             var index = 0;
 
             foreach (var item in newItems)
-                OnAdded(item, newStartingIndex: newStartingIndex + index++);
+                OnAdded(item, index: index + index++);
         }
 
         protected sealed override void OnRemoved(IViewModel oldItem, int oldStartingIndex) =>
@@ -128,11 +128,11 @@ namespace Aspid.MVVM.StarterKit
                 OnRemoved(item, oldStartingIndex);
         }
 
-        protected sealed override void OnReplace(IViewModel oldItem, IViewModel newItem, int newStartingIndex) =>
-            ObservableListViewModelBinderHelper.OnReplace(Views, newItem, newStartingIndex);
+        protected sealed override void OnReplaced(IViewModel oldItem, IViewModel newItem, int index) =>
+            ObservableListViewModelBinderHelper.OnReplaced(Views, newItem, index);
 
-        protected sealed override void OnMove(IViewModel oldItem, IViewModel newItem, int oldStartingIndex, int newStartingIndex) =>
-            ObservableListViewModelBinderHelper.OnMove(Views, oldStartingIndex, newStartingIndex);
+        protected sealed override void OnMoved(IViewModel oldItem, IViewModel newItem, int oldStartingIndex, int newStartingIndex) =>
+            ObservableListViewModelBinderHelper.OnMoved(Views, oldStartingIndex, newStartingIndex);
 
         protected sealed override void OnReset() =>
             ObservableListViewModelBinderHelper.OnReset(Views, _viewFactory);

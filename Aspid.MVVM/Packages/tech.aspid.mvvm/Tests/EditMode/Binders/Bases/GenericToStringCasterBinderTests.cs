@@ -65,10 +65,10 @@ namespace Aspid.MVVM.Tests
             Assert.Throws<InvalidOperationException>(
                 () => _ = new GenericToStringCasterBinder<int>(_ => { }, string.Empty, mode: BindMode.OneWayToSource));
 
-        private sealed class DoublingConverter : IConverter<int?, string?>
+        private sealed class DoublingConverter : IConverter<int, string?>
         {
-            public string? Convert(int? value) =>
-                ((value ?? 0) * 2).ToString();
+            public string? Convert(int value) =>
+                (value * 2).ToString();
         }
     }
 }

@@ -1,4 +1,5 @@
 using UnityEngine.UI;
+using UnityEngine;
 using NUnit.Framework;
 using UnityEngine.TestTools;
 using Aspid.MVVM.StarterKit;

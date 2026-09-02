@@ -4,7 +4,7 @@ using Aspid.MVVM.StarterKit;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.Tests
 {
-    internal enum Quest
+    public enum Quest
     {
         [System.ComponentModel.Description("Not started yet")]
         Idle,

@@ -1,4 +1,5 @@
 #nullable enable
+using UnityEngine;
 using NUnit.Framework;
 using UnityEngine.TestTools;
 using Aspid.MVVM.StarterKit;

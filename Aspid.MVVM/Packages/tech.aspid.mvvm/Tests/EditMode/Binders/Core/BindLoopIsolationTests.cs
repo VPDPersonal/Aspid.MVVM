@@ -1,3 +1,4 @@
+using UnityEngine;
 using NUnit.Framework;
 using UnityEngine.TestTools;
 using System.Text.RegularExpressions;

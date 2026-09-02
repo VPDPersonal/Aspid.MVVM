@@ -81,10 +81,10 @@ namespace Aspid.MVVM.StarterKit
         {
             if (index >= _views.Length) return;
 
-            _views[newStartingIndex].Deinitialize();
+            _views[index].Deinitialize();
             
             if (newItem is not null)
-                _views[newStartingIndex].Initialize(newItem);
+                _views[index].Initialize(newItem);
         }
 
         protected override void OnMoved(IViewModel? oldItem, IViewModel? newItem, int oldStartingIndex, int newStartingIndex) => RebuildFromCollection();

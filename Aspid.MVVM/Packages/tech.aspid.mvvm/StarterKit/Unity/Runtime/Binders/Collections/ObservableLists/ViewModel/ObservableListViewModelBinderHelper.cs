@@ -38,7 +38,7 @@ namespace Aspid.MVVM.StarterKit
             views[index].Deinitialize();
 
             if (newItem is not null)
-                views[newStartingIndex].Initialize(newItem);
+                views[index].Initialize(newItem);
         }
 
         public static void OnMoved<T>(List<T> views, int oldStartingIndex, int newStartingIndex)
